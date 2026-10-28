@@ -1,0 +1,7683 @@
+{
+ "dan": "- Part 1: one per slot\n- Part 2: one code\n- Part 3: first vs the rest",
+ "models": [
+  {
+   "target": "qwen3.5-9b",
+   "runs": {
+    "1": "qwen35_9b_x51_11_p1",
+    "2": "qwen35_9b_x51_11_p2",
+    "3": "qwen35_9b_x51_11_p3"
+   },
+   "present": {
+    "1": "qwen35_9b_x51_11_p1",
+    "2": "qwen35_9b_x51_11_p2",
+    "3": "qwen35_9b_x51_11_p3"
+   },
+   "part1": {
+    "run": "qwen35_9b_x51_11_p1",
+    "S": {
+     "3": {
+      "status": "tested",
+      "curve": {
+       "n": 50,
+       "entities": 6,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.74,
+        0.627906976744186,
+        0.8421052631578947
+       ],
+       "recall_moved": {
+        "P_k1": 0.04,
+        "P_k2": 0.16,
+        "P_k3": 0.18,
+        "P_k4": 0.2,
+        "P_k5": 0.16,
+        "P_k7": 0.16,
+        "R_k1": 0.26,
+        "R_k2": 0.4,
+        "R_k3": 0.38,
+        "R_k4": 0.38,
+        "R_k5": 0.36,
+        "R_k7": 0.36,
+        "U": 0.14,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.02,
+        "shuf_k2": 0.08,
+        "shuf_k3": 0.04,
+        "shuf_k4": 0.02,
+        "shuf_k5": 0.02,
+        "shuf_k7": 0.06,
+        "whole": 0.22
+       },
+       "R": {
+        "1": [
+         0.6,
+         0.4599583333333334,
+         0.7066666666666667
+        ],
+        "2": [
+         0.98,
+         0.9354838709677419,
+         1.0
+        ],
+        "3": [
+         0.96,
+         0.8863636363636364,
+         1.0
+        ],
+        "4": [
+         0.98,
+         0.9354838709677419,
+         1.0
+        ],
+        "5": [
+         0.98,
+         0.9166666666666666,
+         1.0
+        ],
+        "7": [
+         0.98,
+         0.9354838709677419,
+         1.0
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.24,
+         0.11363636363636363,
+         0.3548387096774194
+        ],
+        "2": [
+         0.74,
+         0.6444444444444445,
+         0.8421052631578947
+        ],
+        "3": [
+         0.84,
+         0.7948717948717948,
+         0.8837209302325582
+        ],
+        "4": [
+         0.86,
+         0.7948717948717948,
+         0.9387755102040817
+        ],
+        "5": [
+         0.86,
+         0.7948717948717948,
+         0.9387755102040817
+        ],
+        "7": [
+         0.86,
+         0.7948717948717948,
+         0.9387755102040817
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.02,
+         0.0,
+         0.0625
+        ],
+        "2": [
+         0.22,
+         0.16393442622950818,
+         0.29411764705882354
+        ],
+        "3": [
+         0.04,
+         0.0,
+         0.09090909090909091
+        ],
+        "4": [
+         0.04,
+         0.0,
+         0.09090909090909091
+        ],
+        "5": [
+         0.04,
+         0.0,
+         0.09090909090909091
+        ],
+        "7": [
+         0.2,
+         0.09615384615384616,
+         0.3125
+        ]
+       },
+       "select_R": {
+        "1": 0.5579,
+        "2": 0.9474,
+        "3": 0.9579,
+        "4": 0.9789,
+        "5": 0.9895,
+        "7": 0.9895
+       }
+      },
+      "d_star": {
+       "d_star": 2,
+       "own_only": 2,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": 3,
+       "own_only": 3,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 3,
+       "candidates": 1800,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         3,
+         12,
+         21
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 860,
+        "org_read_accuracy": {
+         "lookup": 0.9988372093023256,
+         "recall": 0.9232558139534883
+        },
+        "gate": 0.8,
+        "eligible": 769,
+        "pass": true
+       },
+       "quota_per_pair": 60,
+       "pairs": 358,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "position": 358,
+        "other": 14,
+        "identity": 397
+       },
+       "position_share_of_eligible": 0.4655,
+       "per_pair": {
+        "1-2": {
+         "read": 88,
+         "pairs": 62,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 112,
+         "pairs": 65,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 72,
+         "pairs": 62,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 300,
+         "pairs": 48,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 96,
+         "pairs": 61,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 192,
+         "pairs": 60,
+         "candidates": 300,
+         "gave_up": false
+        }
+       },
+       "ordered_pairs_covered": 6,
+       "ordered_pairs": 6,
+       "missing_ordered_pairs": [],
+       "all_ordered_pairs": true,
+       "at_least_300": true,
+       "fit_scenes": 462,
+       "pairs_per_split": {
+        "train": 213,
+        "select": 95,
+        "test": 50
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 6
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 40,
+         "1->3": 44,
+         "2->1": 38,
+         "2->3": 26,
+         "3->1": 33,
+         "3->2": 32
+        },
+        "select": {
+         "1->2": 9,
+         "1->3": 12,
+         "2->1": 15,
+         "2->3": 17,
+         "3->1": 21,
+         "3->2": 21
+        },
+        "test": {
+         "1->2": 13,
+         "1->3": 9,
+         "2->1": 9,
+         "2->3": 5,
+         "3->1": 7,
+         "3->2": 7
+        }
+       }
+      },
+      "unit": {
+       "value": 7.948808670043945,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 74,
+        "best_dev_iia": 0.5579,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 24,
+        "best_dev_iia": 0.1474,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 74,
+        "best_dev_iia": 0.9474,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 49,
+        "best_dev_iia": 0.1895,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.9579,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 24,
+        "best_dev_iia": 0.1263,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 149,
+        "best_dev_iia": 0.9789,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 24,
+        "best_dev_iia": 0.1263,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 149,
+        "best_dev_iia": 1.0,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 24,
+        "best_dev_iia": 0.1158,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 149,
+        "best_dev_iia": 0.9895,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 24,
+        "best_dev_iia": 0.1474,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "4": {
+      "status": "tested",
+      "curve": {
+       "n": 56,
+       "entities": 5,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        0.9821428571428571,
+        0.94,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.75,
+        0.6909090909090909,
+        0.8367346938775511
+       ],
+       "recall_moved": {
+        "P_k1": 0.0714,
+        "P_k2": 0.1071,
+        "P_k3": 0.1429,
+        "P_k4": 0.1429,
+        "P_k5": 0.1429,
+        "P_k7": 0.1429,
+        "R_k1": 0.1429,
+        "R_k2": 0.2321,
+        "R_k3": 0.2143,
+        "R_k4": 0.2321,
+        "R_k5": 0.25,
+        "R_k7": 0.2321,
+        "U": 0.125,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0,
+        "shuf_k2": 0.0893,
+        "shuf_k3": 0.0179,
+        "shuf_k4": 0.0893,
+        "shuf_k5": 0.0893,
+        "shuf_k7": 0.125,
+        "whole": 0.1964
+       },
+       "R": {
+        "1": [
+         0.625,
+         0.5087719298245614,
+         0.8035714285714286
+        ],
+        "2": [
+         0.9107142857142857,
+         0.7872340425531915,
+         0.9859154929577465
+        ],
+        "3": [
+         0.8928571428571429,
+         0.7659574468085106,
+         0.971830985915493
+        ],
+        "4": [
+         0.9464285714285714,
+         0.8703703703703703,
+         1.0
+        ],
+        "5": [
+         0.9464285714285714,
+         0.8703703703703703,
+         1.0
+        ],
+        "7": [
+         0.9821428571428571,
+         0.9361702127659575,
+         1.0
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.08928571428571429,
+         0.01818181818181818,
+         0.16326530612244897
+        ],
+        "2": [
+         0.6964285714285714,
+         0.6326530612244898,
+         0.7959183673469388
+        ],
+        "3": [
+         0.7142857142857143,
+         0.6282051282051282,
+         0.82
+        ],
+        "4": [
+         0.7321428571428571,
+         0.6612903225806451,
+         0.8245614035087719
+        ],
+        "5": [
+         0.7321428571428571,
+         0.6612903225806451,
+         0.8245614035087719
+        ],
+        "7": [
+         0.75,
+         0.6909090909090909,
+         0.8367346938775511
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.07142857142857142,
+         0.03571428571428571,
+         0.10416666666666667
+        ],
+        "2": [
+         0.17857142857142858,
+         0.09259259259259259,
+         0.24561403508771928
+        ],
+        "3": [
+         0.14285714285714285,
+         0.061224489795918366,
+         0.2
+        ],
+        "4": [
+         0.16071428571428573,
+         0.08163265306122448,
+         0.21875
+        ],
+        "5": [
+         0.35714285714285715,
+         0.2826086956521739,
+         0.44
+        ],
+        "7": [
+         0.4107142857142857,
+         0.2553191489361702,
+         0.5535714285714286
+        ]
+       },
+       "select_R": {
+        "1": 0.4237,
+        "2": 0.8644,
+        "3": 0.8983,
+        "4": 0.9492,
+        "5": 0.9661,
+        "7": 0.9492
+       }
+      },
+      "d_star": {
+       "d_star": 2,
+       "own_only": 2,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 4,
+       "candidates": 2400,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         3,
+         12,
+         21,
+         30
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 912,
+        "org_read_accuracy": {
+         "lookup": 1.0,
+         "recall": 0.9331140350877193
+        },
+        "gate": 0.8,
+        "eligible": 836,
+        "pass": true
+       },
+       "quota_per_pair": 30,
+       "pairs": 306,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "position": 306,
+        "identity": 473,
+        "other": 57
+       },
+       "position_share_of_eligible": 0.366,
+       "per_pair": {
+        "1-2": {
+         "read": 40,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 64,
+         "pairs": 31,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 56,
+         "pairs": 33,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 40,
+         "pairs": 31,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 200,
+         "pairs": 25,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 160,
+         "pairs": 31,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 48,
+         "pairs": 31,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 104,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 200,
+         "gave_up": true
+        },
+        "4-1": {
+         "read": 40,
+         "pairs": 34,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 64,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 200,
+         "gave_up": true
+        }
+       },
+       "ordered_pairs_covered": 10,
+       "ordered_pairs": 12,
+       "missing_ordered_pairs": [
+        "3-4",
+        "4-3"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 527,
+       "pairs_per_split": {
+        "select": 59,
+        "train": 191,
+        "test": 56
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 5
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 19,
+         "1->3": 23,
+         "1->4": 24,
+         "2->1": 18,
+         "2->3": 20,
+         "2->4": 15,
+         "3->1": 17,
+         "3->2": 20,
+         "4->1": 16,
+         "4->2": 19
+        },
+        "select": {
+         "1->2": 5,
+         "1->3": 5,
+         "1->4": 4,
+         "2->1": 6,
+         "2->3": 4,
+         "2->4": 8,
+         "3->1": 5,
+         "3->2": 7,
+         "4->1": 8,
+         "4->2": 7
+        },
+        "test": {
+         "1->2": 6,
+         "1->3": 3,
+         "1->4": 5,
+         "2->1": 7,
+         "2->3": 1,
+         "2->4": 8,
+         "3->1": 9,
+         "3->2": 3,
+         "4->1": 10,
+         "4->2": 4
+        }
+       }
+      },
+      "unit": {
+       "value": 8.044166564941406,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 74,
+        "best_dev_iia": 0.4237,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 24,
+        "best_dev_iia": 0.1017,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 99,
+        "best_dev_iia": 0.8644,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 99,
+        "best_dev_iia": 0.1186,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 49,
+        "best_dev_iia": 0.8983,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 24,
+        "best_dev_iia": 0.1695,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 149,
+        "best_dev_iia": 0.9661,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 49,
+        "best_dev_iia": 0.1186,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 174,
+        "best_dev_iia": 0.9661,
+        "stopped_at": 274,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 99,
+        "best_dev_iia": 0.1525,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 149,
+        "best_dev_iia": 0.9661,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 74,
+        "best_dev_iia": 0.1695,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "6": {
+      "status": "tested",
+      "curve": {
+       "n": 42,
+       "entities": 6,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.47619047619047616,
+        0.375,
+        0.6333333333333333
+       ],
+       "recall_moved": {
+        "P_k1": 0.0476,
+        "P_k2": 0.0952,
+        "P_k3": 0.119,
+        "P_k4": 0.119,
+        "P_k5": 0.119,
+        "P_k7": 0.119,
+        "R_k1": 0.1905,
+        "R_k2": 0.2143,
+        "R_k3": 0.2619,
+        "R_k4": 0.2381,
+        "R_k5": 0.2381,
+        "R_k7": 0.2381,
+        "U": 0.119,
+        "none": 0.0,
+        "rand_k1": 0.0238,
+        "rand_k2": 0.0238,
+        "rand_k3": 0.0238,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0238,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0,
+        "shuf_k2": 0.0238,
+        "shuf_k3": 0.0476,
+        "shuf_k4": 0.0476,
+        "shuf_k5": 0.0952,
+        "shuf_k7": 0.0714,
+        "whole": 0.1667
+       },
+       "R": {
+        "1": [
+         0.3333333333333333,
+         0.23076923076923078,
+         0.45652173913043476
+        ],
+        "2": [
+         0.7142857142857143,
+         0.5909090909090909,
+         0.8666666666666667
+        ],
+        "3": [
+         0.7857142857142857,
+         0.6923076923076923,
+         0.9
+        ],
+        "4": [
+         0.7380952380952381,
+         0.625,
+         0.8666666666666667
+        ],
+        "5": [
+         0.7142857142857143,
+         0.6111111111111112,
+         0.8076923076923077
+        ],
+        "7": [
+         0.7857142857142857,
+         0.631578947368421,
+         0.9333333333333333
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.14285714285714285,
+         0.07692307692307693,
+         0.17307692307692307
+        ],
+        "2": [
+         0.3333333333333333,
+         0.20588235294117646,
+         0.45
+        ],
+        "3": [
+         0.4523809523809524,
+         0.3333333333333333,
+         0.6176470588235294
+        ],
+        "4": [
+         0.5,
+         0.38095238095238093,
+         0.6578947368421053
+        ],
+        "5": [
+         0.5238095238095238,
+         0.4166666666666667,
+         0.6666666666666666
+        ],
+        "7": [
+         0.5476190476190477,
+         0.4318181818181818,
+         0.6764705882352942
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.09523809523809523,
+         0.038461538461538464,
+         0.15625
+        ],
+        "2": [
+         0.09523809523809523,
+         0.02,
+         0.2001470588235273
+        ],
+        "3": [
+         0.2619047619047619,
+         0.175,
+         0.38461538461538464
+        ],
+        "4": [
+         0.3333333333333333,
+         0.2222222222222222,
+         0.43333333333333335
+        ],
+        "5": [
+         0.2857142857142857,
+         0.15789473684210525,
+         0.42857142857142855
+        ],
+        "7": [
+         0.3333333333333333,
+         0.2222222222222222,
+         0.45454545454545453
+        ]
+       },
+       "select_R": {
+        "1": 0.3607,
+        "2": 0.7869,
+        "3": 0.9016,
+        "4": 0.918,
+        "5": 0.9344,
+        "7": 0.918
+       }
+      },
+      "d_star": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 6,
+       "candidates": 3600,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         3,
+         12,
+         21,
+         30,
+         39,
+         48
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 1672,
+        "org_read_accuracy": {
+         "lookup": 1.0,
+         "recall": 0.9270334928229665
+        },
+        "gate": 0.8,
+        "eligible": 1527,
+        "pass": true
+       },
+       "quota_per_pair": 12,
+       "pairs": 303,
+       "topup_chunks": 13,
+       "whole_change_routes": {
+        "position": 303,
+        "other": 178,
+        "identity": 1046
+       },
+       "position_share_of_eligible": 0.1984,
+       "per_pair": {
+        "1-2": {
+         "read": 24,
+         "pairs": 17,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 40,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 48,
+         "pairs": 16,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-5": {
+         "read": 56,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-6": {
+         "read": 40,
+         "pairs": 16,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 24,
+         "pairs": 21,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 88,
+         "pairs": 13,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 120,
+         "pairs": 11,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-5": {
+         "read": 64,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-6": {
+         "read": 48,
+         "pairs": 17,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 24,
+         "pairs": 20,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 32,
+         "pairs": 18,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "3-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "3-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "4-1": {
+         "read": 24,
+         "pairs": 22,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 24,
+         "pairs": 18,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 120,
+         "pairs": 2,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "4-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "5-1": {
+         "read": 16,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-2": {
+         "read": 24,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-3": {
+         "read": 120,
+         "pairs": 2,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "5-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "6-1": {
+         "read": 16,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-2": {
+         "read": 24,
+         "pairs": 13,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-3": {
+         "read": 120,
+         "pairs": 7,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-4": {
+         "read": 120,
+         "pairs": 2,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-5": {
+         "read": 120,
+         "pairs": 1,
+         "candidates": 120,
+         "gave_up": false
+        }
+       },
+       "ordered_pairs_covered": 23,
+       "ordered_pairs": 30,
+       "missing_ordered_pairs": [
+        "3-4",
+        "3-5",
+        "3-6",
+        "4-5",
+        "4-6",
+        "5-4",
+        "5-6"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 935,
+       "pairs_per_split": {
+        "select": 61,
+        "train": 200,
+        "test": 42
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 6
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 13,
+         "1->3": 9,
+         "1->4": 10,
+         "1->5": 7,
+         "1->6": 11,
+         "2->1": 13,
+         "2->3": 8,
+         "2->4": 9,
+         "2->5": 10,
+         "2->6": 11,
+         "3->1": 15,
+         "3->2": 11,
+         "4->1": 16,
+         "4->2": 9,
+         "4->3": 2,
+         "5->1": 8,
+         "5->2": 10,
+         "5->3": 2,
+         "6->1": 10,
+         "6->2": 11,
+         "6->3": 4,
+         "6->4": 1
+        },
+        "select": {
+         "1->2": 4,
+         "1->3": 4,
+         "1->4": 1,
+         "1->5": 4,
+         "1->6": 2,
+         "2->1": 6,
+         "2->3": 1,
+         "2->4": 2,
+         "2->5": 3,
+         "2->6": 4,
+         "3->1": 3,
+         "3->2": 6,
+         "4->1": 4,
+         "4->2": 5,
+         "5->1": 4,
+         "5->2": 1,
+         "6->1": 3,
+         "6->2": 1,
+         "6->3": 2,
+         "6->4": 1
+        },
+        "test": {
+         "1->3": 2,
+         "1->4": 5,
+         "1->5": 4,
+         "1->6": 3,
+         "2->1": 2,
+         "2->3": 4,
+         "2->5": 2,
+         "2->6": 2,
+         "3->1": 2,
+         "3->2": 1,
+         "4->1": 2,
+         "4->2": 4,
+         "5->1": 3,
+         "5->2": 1,
+         "6->1": 2,
+         "6->2": 1,
+         "6->3": 1,
+         "6->5": 1
+        }
+       }
+      },
+      "unit": {
+       "value": 7.998368263244629,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 74,
+        "best_dev_iia": 0.3607,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 174,
+        "best_dev_iia": 0.1148,
+        "stopped_at": 274,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 49,
+        "best_dev_iia": 0.7869,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 24,
+        "best_dev_iia": 0.2295,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.9016,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.1148,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 174,
+        "best_dev_iia": 0.918,
+        "stopped_at": 274,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 99,
+        "best_dev_iia": 0.1475,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 99,
+        "best_dev_iia": 0.9344,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 49,
+        "best_dev_iia": 0.1311,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 199,
+        "best_dev_iia": 0.918,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 24,
+        "best_dev_iia": 0.082,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "8": {
+      "status": "tested",
+      "curve": {
+       "n": 57,
+       "entities": 6,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.5087719298245614,
+        0.38095238095238093,
+        0.6129032258064516
+       ],
+       "recall_moved": {
+        "P_k1": 0.0,
+        "P_k2": 0.0,
+        "P_k3": 0.0175,
+        "P_k4": 0.0351,
+        "P_k5": 0.0175,
+        "P_k7": 0.0175,
+        "R_k1": 0.0702,
+        "R_k2": 0.0526,
+        "R_k3": 0.1228,
+        "R_k4": 0.1228,
+        "R_k5": 0.1228,
+        "R_k7": 0.1228,
+        "U": 0.0351,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0351,
+        "shuf_k2": 0.0351,
+        "shuf_k3": 0.0351,
+        "shuf_k4": 0.0,
+        "shuf_k5": 0.0526,
+        "shuf_k7": 0.0175,
+        "whole": 0.0702
+       },
+       "R": {
+        "1": [
+         0.5614035087719298,
+         0.37209302325581395,
+         0.6956521739130435
+        ],
+        "2": [
+         0.8245614035087719,
+         0.6976744186046512,
+         0.90625
+        ],
+        "3": [
+         0.8596491228070176,
+         0.6976744186046512,
+         0.967741935483871
+        ],
+        "4": [
+         0.8947368421052632,
+         0.7636363636363637,
+         0.9841269841269841
+        ],
+        "5": [
+         0.8771929824561403,
+         0.7209302325581395,
+         0.971830985915493
+        ],
+        "7": [
+         0.8947368421052632,
+         0.7636363636363637,
+         0.9841269841269841
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.08771929824561403,
+         0.018867924528301886,
+         0.15625
+        ],
+        "2": [
+         0.3333333333333333,
+         0.15384615384615385,
+         0.4827586206896552
+        ],
+        "3": [
+         0.43859649122807015,
+         0.30952380952380953,
+         0.532258064516129
+        ],
+        "4": [
+         0.49122807017543857,
+         0.3333333333333333,
+         0.6046511627906976
+        ],
+        "5": [
+         0.49122807017543857,
+         0.35714285714285715,
+         0.6
+        ],
+        "7": [
+         0.5263157894736842,
+         0.42857142857142855,
+         0.6119402985074627
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.03508771929824561,
+         0.0,
+         0.06779661016949153
+        ],
+        "2": [
+         0.07017543859649122,
+         0.01818181818181818,
+         0.12962962962962962
+        ],
+        "3": [
+         0.10526315789473684,
+         0.047619047619047616,
+         0.14814814814814814
+        ],
+        "4": [
+         0.05263157894736842,
+         0.0,
+         0.125
+        ],
+        "5": [
+         0.21052631578947367,
+         0.14035087719298245,
+         0.2878787878787879
+        ],
+        "7": [
+         0.12280701754385964,
+         0.09375,
+         0.15217391304347827
+        ]
+       },
+       "select_R": {
+        "1": 0.3151,
+        "2": 0.726,
+        "3": 0.8082,
+        "4": 0.7808,
+        "5": 0.8082,
+        "7": 0.863
+       }
+      },
+      "d_star": {
+       "d_star": 2,
+       "own_only": 2,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 8,
+       "candidates": 4480,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         3,
+         12,
+         21,
+         30,
+         39,
+         48,
+         57,
+         66
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 2344,
+        "org_read_accuracy": {
+         "lookup": 1.0,
+         "recall": 0.9330204778156996
+        },
+        "gate": 0.8,
+        "eligible": 2152,
+        "pass": true
+       },
+       "quota_per_pair": 7,
+       "pairs": 304,
+       "topup_chunks": 14,
+       "whole_change_routes": {
+        "other": 283,
+        "position": 304,
+        "identity": 1565
+       },
+       "position_share_of_eligible": 0.1413,
+       "per_pair": {
+        "1-2": {
+         "read": 24,
+         "pairs": 16,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 40,
+         "pairs": 13,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 56,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-5": {
+         "read": 32,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-6": {
+         "read": 32,
+         "pairs": 12,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-7": {
+         "read": 40,
+         "pairs": 11,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-8": {
+         "read": 24,
+         "pairs": 11,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 16,
+         "pairs": 16,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 80,
+         "pairs": 4,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 80,
+         "pairs": 4,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-5": {
+         "read": 64,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-6": {
+         "read": 40,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-7": {
+         "read": 40,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-8": {
+         "read": 24,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 24,
+         "pairs": 20,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 32,
+         "pairs": 16,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-8": {
+         "read": 80,
+         "pairs": 1,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-1": {
+         "read": 8,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 16,
+         "pairs": 10,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-8": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-1": {
+         "read": 16,
+         "pairs": 14,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-2": {
+         "read": 16,
+         "pairs": 12,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-3": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-8": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "6-1": {
+         "read": 8,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-2": {
+         "read": 16,
+         "pairs": 13,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-3": {
+         "read": 80,
+         "pairs": 5,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "6-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "6-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "6-8": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "7-1": {
+         "read": 8,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-2": {
+         "read": 16,
+         "pairs": 13,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-3": {
+         "read": 48,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-4": {
+         "read": 80,
+         "pairs": 1,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "7-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "7-8": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "8-1": {
+         "read": 16,
+         "pairs": 14,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-2": {
+         "read": 8,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-3": {
+         "read": 48,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "8-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "8-6": {
+         "read": 80,
+         "pairs": 2,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        }
+       },
+       "ordered_pairs_covered": 32,
+       "ordered_pairs": 56,
+       "missing_ordered_pairs": [
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "4-3",
+        "4-5",
+        "4-6",
+        "4-7",
+        "4-8",
+        "5-3",
+        "5-4",
+        "5-6",
+        "5-7",
+        "5-8",
+        "6-4",
+        "6-5",
+        "6-7",
+        "6-8",
+        "7-5",
+        "7-6",
+        "7-8",
+        "8-4",
+        "8-5",
+        "8-7"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 1338,
+       "pairs_per_split": {
+        "train": 174,
+        "select": 73,
+        "test": 57
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 6
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 11,
+         "1->3": 7,
+         "1->4": 6,
+         "1->5": 7,
+         "1->6": 7,
+         "1->7": 6,
+         "1->8": 6,
+         "2->1": 10,
+         "2->3": 2,
+         "2->4": 2,
+         "2->5": 5,
+         "2->6": 7,
+         "2->7": 6,
+         "2->8": 6,
+         "3->1": 8,
+         "3->2": 11,
+         "4->1": 5,
+         "4->2": 7,
+         "5->1": 4,
+         "5->2": 7,
+         "6->1": 4,
+         "6->2": 6,
+         "6->3": 1,
+         "7->1": 3,
+         "7->2": 8,
+         "7->3": 6,
+         "7->4": 1,
+         "8->1": 8,
+         "8->2": 2,
+         "8->3": 4,
+         "8->6": 1
+        },
+        "select": {
+         "1->2": 5,
+         "1->3": 4,
+         "1->4": 3,
+         "1->6": 4,
+         "1->7": 3,
+         "1->8": 3,
+         "2->1": 3,
+         "2->3": 2,
+         "2->4": 2,
+         "2->5": 1,
+         "2->6": 2,
+         "2->7": 1,
+         "2->8": 2,
+         "3->1": 3,
+         "3->2": 3,
+         "3->8": 1,
+         "4->1": 1,
+         "4->2": 2,
+         "5->1": 4,
+         "5->2": 4,
+         "6->1": 2,
+         "6->2": 4,
+         "7->1": 3,
+         "7->2": 2,
+         "7->3": 2,
+         "8->2": 4,
+         "8->3": 2,
+         "8->6": 1
+        },
+        "test": {
+         "1->3": 2,
+         "1->5": 1,
+         "1->6": 1,
+         "1->7": 2,
+         "1->8": 2,
+         "2->1": 3,
+         "2->5": 1,
+         "2->7": 2,
+         "2->8": 1,
+         "3->1": 9,
+         "3->2": 2,
+         "4->1": 2,
+         "4->2": 1,
+         "5->1": 6,
+         "5->2": 1,
+         "6->1": 1,
+         "6->2": 3,
+         "6->3": 4,
+         "7->1": 2,
+         "7->2": 3,
+         "8->1": 6,
+         "8->2": 1,
+         "8->3": 1
+        }
+       }
+      },
+      "unit": {
+       "value": 8.399002075195312,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 24,
+        "best_dev_iia": 0.3151,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 24,
+        "best_dev_iia": 0.0822,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 99,
+        "best_dev_iia": 0.726,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 24,
+        "best_dev_iia": 0.137,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.8082,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 24,
+        "best_dev_iia": 0.1781,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 249,
+        "best_dev_iia": 0.7945,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 24,
+        "best_dev_iia": 0.137,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 74,
+        "best_dev_iia": 0.8082,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 49,
+        "best_dev_iia": 0.1507,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 124,
+        "best_dev_iia": 0.863,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 124,
+        "best_dev_iia": 0.1507,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     }
+    },
+    "target": "qwen3.5-9b",
+    "layer": 12,
+    "rule": {
+     "label": "in_between",
+     "text": "in between",
+     "holding": [],
+     "clauses": {
+      "ordinal": false,
+      "one_per_slot": false,
+      "growing": false
+     },
+     "not_found": [
+      6
+     ]
+    },
+    "d_star": {
+     "3": 2,
+     "4": 2,
+     "6": null,
+     "8": 2
+    }
+   },
+   "part2": {
+    "run": "qwen35_9b_x51_11_p2",
+    "target": "qwen3.5-9b",
+    "layer": 12,
+    "S": {
+     "6": {
+      "status": "tested",
+      "cells": {
+       "n": 600,
+       "items": 120,
+       "entities": 6,
+       "table": {
+        "none": {
+         "whole": [
+          0.36333333333333334,
+          0.32212389380530976,
+          0.4
+         ],
+         "U": [
+          0.3616666666666667,
+          0.32166666666666666,
+          0.39814814814814814
+         ],
+         "P": [
+          0.355,
+          0.31603053435114503,
+          0.3871794871794872
+         ],
+         "R": [
+          0.44333333333333336,
+          0.4268041237113402,
+          0.4641025641025641
+         ]
+        },
+        "U": {
+         "whole": [
+          0.03166666666666667,
+          0.01415929203539823,
+          0.05333333333333334
+         ],
+         "U": [
+          0.03166666666666667,
+          0.01415929203539823,
+          0.05333333333333334
+         ],
+         "P": [
+          0.03833333333333333,
+          0.022222222222222223,
+          0.05692307692307692
+         ],
+         "R": [
+          0.3883333333333333,
+          0.37303370786516854,
+          0.404
+         ]
+        },
+        "P": {
+         "whole": [
+          0.025,
+          0.011881188118811881,
+          0.04090909090909091
+         ],
+         "U": [
+          0.025,
+          0.011881188118811881,
+          0.04090909090909091
+         ],
+         "P": [
+          0.03,
+          0.01415929203539823,
+          0.04873949579831933
+         ],
+         "R": [
+          0.38333333333333336,
+          0.3651376146788991,
+          0.40530973451327434
+         ]
+        },
+        "R": {
+         "whole": [
+          0.008333333333333333,
+          0.0015748031496062992,
+          0.015267175572519083
+         ],
+         "U": [
+          0.008333333333333333,
+          0.0015748031496062992,
+          0.015267175572519083
+         ],
+         "P": [
+          0.006666666666666667,
+          0.0015748031496062992,
+          0.012413793103448275
+         ],
+         "R": [
+          0.045,
+          0.031818181818181815,
+          0.05909090909090909
+         ]
+        }
+       },
+       "random": {
+        "whole": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "U": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "P": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "R": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "reach": {
+        "U": [
+         0.9954128440366973,
+         0.9855072463768116,
+         1.0
+        ],
+        "P": [
+         0.9770642201834862,
+         0.9600000000000001,
+         0.9957446808510638
+        ],
+        "R": [
+         1.2201834862385321,
+         1.0833333333333335,
+         1.373015873015873
+        ]
+       },
+       "cuts": {
+        "U->P": [
+         0.892018779342723,
+         0.8374384236453202,
+         0.9378531073446328
+        ],
+        "U->R": [
+         0.12406015037593998,
+         0.08695652173913049,
+         0.15555555555555556
+        ],
+        "P->U": [
+         0.9308755760368663,
+         0.8854166666666666,
+         0.966996699669967
+        ],
+        "P->R": [
+         0.13533834586466165,
+         0.10152284263959399,
+         0.1691176470588236
+        ],
+        "R->U": [
+         0.9769585253456221,
+         0.9568627450980393,
+         0.9959349593495935
+        ],
+        "R->P": [
+         0.9812206572769953,
+         0.963302752293578,
+         0.9959183673469387
+        ]
+       },
+       "self_removal_left": {
+        "U": [
+         0.08755760368663594,
+         0.0391459074733096,
+         0.14666666666666667
+        ],
+        "P": [
+         0.08450704225352113,
+         0.04,
+         0.13680781758957652
+        ],
+        "R": [
+         0.10150375939849623,
+         0.07048458149779735,
+         0.13414634146341461
+        ]
+       },
+       "removal_alone_moves": {
+        "U": 0.1583,
+        "P": 0.15,
+        "R": 0.225
+       },
+       "recall_moved": {
+        "none|whole": 0.1517,
+        "none|U": 0.1483,
+        "none|P": 0.14,
+        "none|R": 0.2383,
+        "U|whole": 0.0167,
+        "U|U": 0.0167,
+        "U|P": 0.0233,
+        "U|R": 0.1867,
+        "P|whole": 0.02,
+        "P|U": 0.02,
+        "P|P": 0.0167,
+        "P|R": 0.2017,
+        "R|whole": 0.0467,
+        "R|U": 0.0483,
+        "R|P": 0.0467,
+        "R|R": 0.0233
+       },
+       "median_norm": {
+        "whole": 12.8914,
+        "U": 12.8913,
+        "P": 12.8146,
+        "R": 10.709
+       }
+      },
+      "rule": {
+       "label": "in_between",
+       "text": "in between (none of the three)",
+       "holding": [],
+       "clauses": {
+        "one_code": false,
+        "partly": false,
+        "different": false
+       }
+      },
+      "readouts": {
+       "working": {
+        "d_star": {
+         "d_star": null,
+         "own_only": null,
+         "random_blocked": [],
+         "max_k": 7
+        },
+        "k": 7,
+        "flag": "d*(6) > 7: the working dimension is k = 7"
+       },
+       "geometry": {
+        "d": 4096,
+        "ranks": {
+         "U": 5,
+         "P": 7,
+         "R": 7
+        },
+        "U-P": {
+         "mean_cos2": 0.757311,
+         "random_expectation": 0.001709,
+         "random_mean": 0.001798,
+         "random_max": 0.00302,
+         "angles_deg": [
+          3.507,
+          5.275,
+          7.013,
+          26.214,
+          84.622
+         ]
+        },
+        "U-R": {
+         "mean_cos2": 0.397205,
+         "random_expectation": 0.001709,
+         "random_mean": 0.001798,
+         "random_max": 0.00302,
+         "angles_deg": [
+          30.379,
+          39.457,
+          41.717,
+          73.586,
+          84.674
+         ]
+        },
+        "P-R": {
+         "mean_cos2": 0.308243,
+         "random_expectation": 0.001709,
+         "random_mean": 0.001699,
+         "random_max": 0.002457,
+         "angles_deg": [
+          30.254,
+          39.014,
+          40.364,
+          64.78,
+          79.218,
+          84.063,
+          89.835
+         ]
+        }
+       }
+      }
+     },
+     "3": {
+      "status": "tested",
+      "cells": {
+       "n": 240,
+       "items": 120,
+       "entities": 7,
+       "table": {
+        "none": {
+         "whole": [
+          0.8208333333333333,
+          0.7584269662921348,
+          0.8733333333333333
+         ],
+         "U": [
+          0.8208333333333333,
+          0.7584269662921348,
+          0.8733333333333333
+         ],
+         "P": [
+          0.825,
+          0.7586206896551724,
+          0.8798701298701299
+         ],
+         "R": [
+          0.9208333333333333,
+          0.8951612903225806,
+          0.9481140810621942
+         ]
+        },
+        "U": {
+         "whole": [
+          0.03333333333333333,
+          0.01953125,
+          0.04950495049504951
+         ],
+         "U": [
+          0.03333333333333333,
+          0.01953125,
+          0.04950495049504951
+         ],
+         "P": [
+          0.03333333333333333,
+          0.01953125,
+          0.04950495049504951
+         ],
+         "R": [
+          0.8291666666666667,
+          0.7850467289719626,
+          0.860655737704918
+         ]
+        },
+        "P": {
+         "whole": [
+          0.04583333333333333,
+          0.02517535971223022,
+          0.07408033033033024
+         ],
+         "U": [
+          0.04583333333333333,
+          0.02517535971223022,
+          0.07408033033033024
+         ],
+         "P": [
+          0.03333333333333333,
+          0.01953125,
+          0.04950495049504951
+         ],
+         "R": [
+          0.8333333333333334,
+          0.7877605789384241,
+          0.8648648648648649
+         ]
+        },
+        "R": {
+         "whole": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "U": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "P": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "R": [
+          0.125,
+          0.06296296296296296,
+          0.17054263565891473
+         ]
+        }
+       },
+       "random": {
+        "whole": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "U": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "P": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "R": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "reach": {
+        "U": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "P": [
+         1.0050761421319796,
+         0.9859154929577465,
+         1.0185185185185186
+        ],
+        "R": [
+         1.1218274111675126,
+         1.0555555555555556,
+         1.205748839893246
+        ]
+       },
+       "cuts": {
+        "U->P": [
+         0.9595959595959596,
+         0.9407894736842105,
+         0.9747899159663865
+        ],
+        "U->R": [
+         0.09954751131221706,
+         0.06701030927835061,
+         0.13586956521739135
+        ],
+        "P->U": [
+         0.9441624365482233,
+         0.9132947976878613,
+         0.9678714859437751
+        ],
+        "P->R": [
+         0.09502262443438902,
+         0.06140350877192979,
+         0.13362068965517226
+        ],
+        "R->U": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "R->P": [
+         1.0,
+         1.0,
+         1.0
+        ]
+       },
+       "self_removal_left": {
+        "U": [
+         0.04060913705583757,
+         0.025251464222052458,
+         0.05970149253731343
+        ],
+        "P": [
+         0.04040404040404041,
+         0.025210084033613443,
+         0.05921052631578948
+        ],
+        "R": [
+         0.13574660633484165,
+         0.06817884340790101,
+         0.1864406779661017
+        ]
+       },
+       "removal_alone_moves": {
+        "U": 0.0667,
+        "P": 0.0667,
+        "R": 0.25
+       },
+       "recall_moved": {
+        "none|whole": 0.3542,
+        "none|U": 0.35,
+        "none|P": 0.3542,
+        "none|R": 0.3833,
+        "U|whole": 0.0167,
+        "U|U": 0.0208,
+        "U|P": 0.0417,
+        "U|R": 0.3375,
+        "P|whole": 0.025,
+        "P|U": 0.025,
+        "P|P": 0.0333,
+        "P|R": 0.3292,
+        "R|whole": 0.0542,
+        "R|U": 0.0542,
+        "R|P": 0.0542,
+        "R|R": 0.05
+       },
+       "median_norm": {
+        "whole": 15.9205,
+        "U": 15.9206,
+        "P": 15.848,
+        "R": 12.583
+       }
+      },
+      "rule": {
+       "label": "in_between",
+       "text": "in between (none of the three)",
+       "holding": [],
+       "clauses": {
+        "one_code": false,
+        "partly": false,
+        "different": false
+       }
+      },
+      "readouts": {
+       "working": {
+        "d_star": {
+         "d_star": 2,
+         "own_only": 2,
+         "random_blocked": [],
+         "max_k": 7
+        },
+        "k": 2,
+        "flag": null
+       },
+       "geometry": {
+        "d": 4096,
+        "ranks": {
+         "U": 2,
+         "P": 2,
+         "R": 2
+        },
+        "U-P": {
+         "mean_cos2": 0.985283,
+         "random_expectation": 0.000488,
+         "random_mean": 0.000387,
+         "random_max": 0.000712,
+         "angles_deg": [
+          3.841,
+          9.088
+         ]
+        },
+        "U-R": {
+         "mean_cos2": 0.669795,
+         "random_expectation": 0.000488,
+         "random_mean": 0.000387,
+         "random_max": 0.000712,
+         "angles_deg": [
+          31.219,
+          38.749
+         ]
+        },
+        "P-R": {
+         "mean_cos2": 0.665433,
+         "random_expectation": 0.000488,
+         "random_mean": 0.000387,
+         "random_max": 0.000712,
+         "angles_deg": [
+          32.083,
+          38.47
+         ]
+        }
+       }
+      }
+     }
+    },
+    "rule": {
+     "label": "in_between",
+     "text": "in between (none of the three)",
+     "holding": [],
+     "clauses": {
+      "one_code": false,
+      "partly": false,
+      "different": false
+     }
+    }
+   },
+   "part3": {
+    "run": "qwen35_9b_x51_11_p3",
+    "target": "qwen3.5-9b",
+    "layer": 12,
+    "cells": {
+     "1|mid|2": {
+      "start": 1,
+      "arm": "mid",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.025,
+       0.0,
+       0.059408887317303115
+      ],
+      "midpoint": [
+       0.06,
+       0.03124394379844962,
+       0.09090909090909091
+      ],
+      "far": [
+       0.42,
+       0.3691588785046729,
+       0.47029702970297027
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.435,
+       0.3571273291925466,
+       0.5036252012882447
+      ],
+      "not a slot": [
+       0.06,
+       0.02577224833232262,
+       0.0970873786407767
+      ],
+      "median_norm": 9.0243
+     },
+     "1|mid|4": {
+      "start": 1,
+      "arm": "mid",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "midpoint": [
+       0.05,
+       0.021505376344086023,
+       0.07339449541284404
+      ],
+      "far": [
+       0.375,
+       0.31666666666666665,
+       0.4252349876463637
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.016304347826086956
+      ],
+      "another slot": [
+       0.54,
+       0.49444444444444446,
+       0.5897435897435898
+      ],
+      "not a slot": [
+       0.03,
+       0.010526315789473684,
+       0.054945054945054944
+      ],
+      "median_norm": 18.0486
+     },
+     "1|mid_random|2": {
+      "start": 1,
+      "arm": "mid_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 9.0243
+     },
+     "1|mid_random|4": {
+      "start": 1,
+      "arm": "mid_random",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 18.0486
+     },
+     "1|full|2": {
+      "start": 1,
+      "arm": "full",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "midpoint": [
+       0.05,
+       0.021505376344086023,
+       0.07339449541284404
+      ],
+      "far": [
+       0.375,
+       0.31666666666666665,
+       0.4252349876463637
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.016304347826086956
+      ],
+      "another slot": [
+       0.54,
+       0.49444444444444446,
+       0.5897435897435898
+      ],
+      "not a slot": [
+       0.03,
+       0.010526315789473684,
+       0.054945054945054944
+      ],
+      "median_norm": 18.0486
+     },
+     "1|full_random|2": {
+      "start": 1,
+      "arm": "full_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 18.0486
+     },
+     "6|mid|2": {
+      "start": 6,
+      "arm": "mid",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.835,
+       0.7621359223300971,
+       0.8972618028375734
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.16,
+       0.09813084112149532,
+       0.23376885211562626
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 5.6728
+     },
+     "6|mid|4": {
+      "start": 6,
+      "arm": "mid",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.575,
+       0.5445544554455446,
+       0.6125061274509803
+      ],
+      "midpoint": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "far": [
+       0.415,
+       0.376541394335512,
+       0.4482758620689655
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 11.3455
+     },
+     "6|mid_random|2": {
+      "start": 6,
+      "arm": "mid_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 5.6728
+     },
+     "6|mid_random|4": {
+      "start": 6,
+      "arm": "mid_random",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.995,
+       0.9845360824742269,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 11.3455
+     },
+     "6|full|2": {
+      "start": 6,
+      "arm": "full",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.575,
+       0.5445544554455446,
+       0.6125061274509803
+      ],
+      "midpoint": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "far": [
+       0.415,
+       0.376541394335512,
+       0.4482758620689655
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 11.3455
+     },
+     "6|full_random|2": {
+      "start": 6,
+      "arm": "full_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.995,
+       0.9845360824742269,
+       1.0
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015463917525773196
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 11.3455
+     }
+    },
+    "none_original": {
+     "1": 1.0,
+     "6": 1.0
+    },
+    "rules": {
+     "2": {
+      "label": "none",
+      "text": "none of the three",
+      "holding": [],
+      "clauses": {
+       "metric": false,
+       "categories": false,
+       "first_rest": false
+      },
+      "mid": {
+       "1": 0.06,
+       "6": 0.0
+      },
+      "full_far": 0.395
+     },
+     "4": {
+      "label": "none",
+      "text": "none of the three",
+      "holding": [],
+      "clauses": {
+       "metric": false,
+       "categories": false,
+       "first_rest": false
+      },
+      "mid": {
+       "1": 0.05,
+       "6": 0.005
+      },
+      "full_far": 0.395
+     }
+    },
+    "rule": {
+     "label": "none",
+     "text": "none of the three",
+     "holding": [],
+     "clauses": {
+      "metric": false,
+      "categories": false,
+      "first_rest": false
+     },
+     "mid": {
+      "1": 0.06,
+      "6": 0.0
+     },
+     "full_far": 0.395
+    },
+    "status": {
+     "items": {
+      "1": {
+       "pool": 238,
+       "read": 128,
+       "eligible": 104,
+       "kept": 100
+      },
+      "6": {
+       "pool": 269,
+       "read": 120,
+       "eligible": 103,
+       "kept": 100
+      }
+     },
+     "unit": 7.998368263244629,
+     "mu_from": "results/x51_addr/qwen35_9b_x51_11_p1/S6"
+    },
+    "h_norm_median": 31.3884,
+    "means": {
+     "6": {
+      "distances": [
+       [
+        0.0,
+        8.1863,
+        8.6612,
+        8.9283,
+        9.3875,
+        9.8195
+       ],
+       [
+        8.1863,
+        0.0,
+        5.5557,
+        6.4457,
+        7.3068,
+        8.0326
+       ],
+       [
+        8.6612,
+        5.5557,
+        0.0,
+        2.8877,
+        4.2325,
+        5.369
+       ],
+       [
+        8.9283,
+        6.4457,
+        2.8877,
+        0.0,
+        1.7649,
+        3.3129
+       ],
+       [
+        9.3875,
+        7.3068,
+        4.2325,
+        1.7649,
+        0.0,
+        1.9967
+       ],
+       [
+        9.8195,
+        8.0326,
+        5.369,
+        3.3129,
+        1.9967,
+        0.0
+       ]
+      ],
+      "by_lag": {
+       "1": 4.078267932068947,
+       "2": 5.66305150331899,
+       "3": 7.201350168787396,
+       "4": 8.710046637380067,
+       "5": 9.819459194345853
+      },
+      "by_lag_over_lag1": {
+       "1": 1.0,
+       "2": 1.388592313611447,
+       "3": 1.765786429126072,
+       "4": 2.13572202279544,
+       "5": 2.4077523492588044
+      },
+      "spread": 0.4357716994398136,
+      "corr_distance_lag": 0.6984697852965275,
+      "pca": {
+       "shares": [
+        0.6185267106265394,
+        0.27396873512904696,
+        0.0868392727405013,
+        0.01772957992965941,
+        0.002935701574252782,
+        7.28681556562552e-32
+       ],
+       "cumulative": [
+        0.6185267106265394,
+        0.8924954457555864,
+        0.9793347184960877
+       ],
+       "pc1": [
+        -6.517539930444723,
+        -2.1795850335622347,
+        0.8625741400861415,
+        2.0148470768222753,
+        2.7118858543414666,
+        3.107817892757075
+       ],
+       "spearman_pc1_slot": 1.0,
+       "monotone": true
+      }
+     },
+     "8": {
+      "distances": [
+       [
+        0.0,
+        8.288,
+        8.5361,
+        8.7392,
+        9.1059,
+        9.3599,
+        9.7088,
+        10.0781
+       ],
+       [
+        8.288,
+        0.0,
+        5.6479,
+        6.4797,
+        7.2351,
+        7.7001,
+        8.1891,
+        8.8578
+       ],
+       [
+        8.5361,
+        5.6479,
+        0.0,
+        2.7712,
+        3.996,
+        4.7151,
+        5.4614,
+        6.429
+       ],
+       [
+        8.7392,
+        6.4797,
+        2.7712,
+        0.0,
+        1.648,
+        2.4949,
+        3.3975,
+        4.6763
+       ],
+       [
+        9.1059,
+        7.2351,
+        3.996,
+        1.648,
+        0.0,
+        1.1946,
+        2.1804,
+        3.629
+       ],
+       [
+        9.3599,
+        7.7001,
+        4.7151,
+        2.4949,
+        1.1946,
+        0.0,
+        1.2981,
+        2.8446
+       ],
+       [
+        9.7088,
+        8.1891,
+        5.4614,
+        3.3975,
+        2.1804,
+        1.2981,
+        0.0,
+        1.8593
+       ],
+       [
+        10.0781,
+        8.8578,
+        6.429,
+        4.6763,
+        3.629,
+        2.8446,
+        1.8593,
+        0.0
+       ]
+      ],
+      "by_lag": {
+       "1": 3.2438603201421485,
+       "2": 4.421954868411576,
+       "3": 5.543156270457976,
+       "4": 6.7359267090841115,
+       "5": 7.992707667885661,
+       "6": 9.28329293630771,
+       "7": 10.078130973955735
+      },
+      "by_lag_over_lag1": {
+       "1": 1.0,
+       "2": 1.363176719094305,
+       "3": 1.7088147217803356,
+       "4": 2.076515646268313,
+       "5": 2.463949393337446,
+       "6": 2.8618041531149863,
+       "7": 3.106832594294351
+      },
+      "spread": 0.5153152279828114,
+      "corr_distance_lag": 0.7084049719748503,
+      "pca": {
+       "shares": [
+        0.6000498728578262,
+        0.26493975294239497,
+        0.09898115695259216,
+        0.02723147084397202,
+        0.004967893357393409,
+        0.0023971089058244114,
+        0.0014327441399967676,
+        4.567860646482884e-32
+       ],
+       "cumulative": [
+        0.6000498728578262,
+        0.8649896258002212,
+        0.9639707827528133
+       ],
+       "pc1": [
+        -6.524998956309151,
+        -3.719983419119585,
+        -0.5566961845159311,
+        0.9015155383635092,
+        1.7733545435762816,
+        2.2652084279185276,
+        2.753259104925546,
+        3.1083409451608013
+       ],
+       "spearman_pc1_slot": 1.0,
+       "monotone": true
+      }
+     }
+    }
+   },
+   "labels": {
+    "1": "in_between",
+    "2": "in_between",
+    "3": "none"
+   },
+   "lacks": [],
+   "wording": {
+    "row": null,
+    "text": "no row of the wording table matches these labels; the wording is not fixed by the addendum",
+    "note": "In every case the sentence no longer says \"four directions\"; \"four\" becomes a note on the first construction."
+   }
+  },
+  {
+   "target": "muse-glimmer-30b",
+   "runs": {
+    "1": "muse30_x51_11_p1",
+    "2": "muse30_x51_11_p2",
+    "3": "muse30_x51_11_p3"
+   },
+   "present": {
+    "1": "muse30_x51_11_p1",
+    "2": "muse30_x51_11_p2",
+    "3": "muse30_x51_11_p3"
+   },
+   "part1": {
+    "run": "muse30_x51_11_p1",
+    "S": {
+     "3": {
+      "status": "tested",
+      "curve": {
+       "n": 91,
+       "entities": 7,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        0.989010989010989,
+        0.97,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.7692307692307693,
+        0.6338028169014085,
+        0.875
+       ],
+       "recall_moved": {
+        "P_k1": 0.033,
+        "P_k2": 0.0549,
+        "P_k3": 0.0659,
+        "P_k4": 0.0659,
+        "P_k5": 0.0549,
+        "P_k7": 0.0549,
+        "R_k1": 0.0659,
+        "R_k2": 0.1099,
+        "R_k3": 0.1099,
+        "R_k4": 0.0989,
+        "R_k5": 0.0879,
+        "R_k7": 0.0879,
+        "U": 0.0549,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0,
+        "shuf_k2": 0.011,
+        "shuf_k3": 0.022,
+        "shuf_k4": 0.0,
+        "shuf_k5": 0.0,
+        "shuf_k7": 0.0769,
+        "whole": 0.0769
+       },
+       "R": {
+        "1": [
+         0.43956043956043955,
+         0.35106382978723405,
+         0.535384331116038
+        ],
+        "2": [
+         0.978021978021978,
+         0.9259259259259259,
+         1.0
+        ],
+        "3": [
+         0.978021978021978,
+         0.9259259259259259,
+         1.0
+        ],
+        "4": [
+         0.989010989010989,
+         0.9629629629629629,
+         1.0
+        ],
+        "5": [
+         0.989010989010989,
+         0.9629629629629629,
+         1.0
+        ],
+        "7": [
+         0.989010989010989,
+         0.9629629629629629,
+         1.0
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.31868131868131866,
+         0.2054794520547945,
+         0.43209876543209874
+        ],
+        "2": [
+         0.7142857142857143,
+         0.5454545454545454,
+         0.864214214214214
+        ],
+        "3": [
+         0.8351648351648352,
+         0.7036935286935287,
+         0.9428652597402596
+        ],
+        "4": [
+         0.8351648351648352,
+         0.7036935286935287,
+         0.9428652597402596
+        ],
+        "5": [
+         0.8571428571428571,
+         0.7545279720279721,
+         0.9428652597402596
+        ],
+        "7": [
+         0.8791208791208791,
+         0.8048780487804879,
+         0.9468108642440218
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.03296703296703297,
+         0.009708737864077669,
+         0.05952380952380952
+        ],
+        "2": [
+         0.0989010989010989,
+         0.05747126436781609,
+         0.15789473684210525
+        ],
+        "3": [
+         0.2857142857142857,
+         0.21782178217821782,
+         0.36363636363636365
+        ],
+        "4": [
+         0.08791208791208792,
+         0.02631578947368421,
+         0.15730337078651685
+        ],
+        "5": [
+         0.24175824175824176,
+         0.1875,
+         0.32142857142857145
+        ],
+        "7": [
+         0.32967032967032966,
+         0.27522935779816515,
+         0.40625
+        ]
+       },
+       "select_R": {
+        "1": 0.5854,
+        "2": 0.9878,
+        "3": 0.9756,
+        "4": 0.9756,
+        "5": 0.9878,
+        "7": 0.9878
+       }
+      },
+      "d_star": {
+       "d_star": 2,
+       "own_only": 2,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": 3,
+       "own_only": 3,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 3,
+       "candidates": 1800,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         42,
+         51,
+         60
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 688,
+        "org_read_accuracy": {
+         "lookup": 0.9912790697674418,
+         "recall": 0.9418604651162791
+        },
+        "gate": 0.8,
+        "eligible": 595,
+        "pass": true
+       },
+       "quota_per_pair": 60,
+       "pairs": 373,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "position": 373,
+        "other": 74,
+        "identity": 148
+       },
+       "position_share_of_eligible": 0.6269,
+       "per_pair": {
+        "1-2": {
+         "read": 104,
+         "pairs": 63,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 104,
+         "pairs": 60,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 80,
+         "pairs": 63,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 200,
+         "pairs": 60,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 88,
+         "pairs": 64,
+         "candidates": 300,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 112,
+         "pairs": 63,
+         "candidates": 300,
+         "gave_up": false
+        }
+       },
+       "ordered_pairs_covered": 6,
+       "ordered_pairs": 6,
+       "missing_ordered_pairs": [],
+       "all_ordered_pairs": true,
+       "at_least_300": true,
+       "fit_scenes": 328,
+       "pairs_per_split": {
+        "train": 200,
+        "test": 91,
+        "select": 82
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 7
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 37,
+         "1->3": 39,
+         "2->1": 39,
+         "2->3": 17,
+         "3->1": 33,
+         "3->2": 35
+        },
+        "select": {
+         "1->2": 9,
+         "1->3": 9,
+         "2->1": 17,
+         "2->3": 14,
+         "3->1": 19,
+         "3->2": 14
+        },
+        "test": {
+         "1->2": 17,
+         "1->3": 12,
+         "2->1": 7,
+         "2->3": 29,
+         "3->1": 12,
+         "3->2": 14
+        }
+       }
+      },
+      "unit": {
+       "value": 73.7251205444336,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 124,
+        "best_dev_iia": 0.5854,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 24,
+        "best_dev_iia": 0.1098,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 74,
+        "best_dev_iia": 0.9878,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 24,
+        "best_dev_iia": 0.0854,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 74,
+        "best_dev_iia": 0.9878,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 74,
+        "best_dev_iia": 0.1463,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 49,
+        "best_dev_iia": 0.9756,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 24,
+        "best_dev_iia": 0.1098,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 49,
+        "best_dev_iia": 0.9878,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 24,
+        "best_dev_iia": 0.1585,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 49,
+        "best_dev_iia": 0.9878,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 124,
+        "best_dev_iia": 0.122,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "4": {
+      "status": "tested",
+      "curve": {
+       "n": 84,
+       "entities": 7,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        0.9880952380952381,
+        0.961038961038961,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.7380952380952381,
+        0.6813186813186813,
+        0.7857142857142857
+       ],
+       "recall_moved": {
+        "P_k1": 0.0119,
+        "P_k2": 0.0119,
+        "P_k3": 0.0119,
+        "P_k4": 0.0119,
+        "P_k5": 0.0,
+        "P_k7": 0.0,
+        "R_k1": 0.0,
+        "R_k2": 0.0,
+        "R_k3": 0.0238,
+        "R_k4": 0.0119,
+        "R_k5": 0.0119,
+        "R_k7": 0.0119,
+        "U": 0.0,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0,
+        "shuf_k2": 0.0,
+        "shuf_k3": 0.0238,
+        "shuf_k4": 0.0119,
+        "shuf_k5": 0.0238,
+        "shuf_k7": 0.0119,
+        "whole": 0.0
+       },
+       "R": {
+        "1": [
+         0.5238095238095238,
+         0.4489795918367347,
+         0.6097719353816913
+        ],
+        "2": [
+         0.8095238095238095,
+         0.7613636363636364,
+         0.881578947368421
+        ],
+        "3": [
+         0.9404761904761905,
+         0.9154929577464789,
+         0.9655172413793104
+        ],
+        "4": [
+         0.9404761904761905,
+         0.9154929577464789,
+         0.9655172413793104
+        ],
+        "5": [
+         0.9285714285714286,
+         0.8780487804878049,
+         0.9647058823529412
+        ],
+        "7": [
+         0.9166666666666666,
+         0.8607594936708861,
+         0.963855421686747
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.15476190476190477,
+         0.060240963855421686,
+         0.2535211267605634
+        ],
+        "2": [
+         0.44047619047619047,
+         0.3263157894736842,
+         0.5512820512820513
+        ],
+        "3": [
+         0.5357142857142857,
+         0.43818469101123597,
+         0.6363636363636364
+        ],
+        "4": [
+         0.6309523809523809,
+         0.5473684210526316,
+         0.717948717948718
+        ],
+        "5": [
+         0.8214285714285714,
+         0.7878787878787878,
+         0.8541666666666666
+        ],
+        "7": [
+         0.8214285714285714,
+         0.7662337662337663,
+         0.8666666666666667
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.17857142857142858,
+         0.07368421052631578,
+         0.3048780487804878
+        ],
+        "2": [
+         0.14285714285714285,
+         0.04285714285714286,
+         0.24719101123595505
+        ],
+        "3": [
+         0.21428571428571427,
+         0.1511627906976744,
+         0.2692307692307692
+        ],
+        "4": [
+         0.17857142857142858,
+         0.10989010989010989,
+         0.24691358024691357
+        ],
+        "5": [
+         0.3333333333333333,
+         0.20207446808510643,
+         0.486129385964912
+        ],
+        "7": [
+         0.2976190476190476,
+         0.2391304347826087,
+         0.3855421686746988
+        ]
+       },
+       "select_R": {
+        "1": 0.5417,
+        "2": 0.8472,
+        "3": 0.9444,
+        "4": 0.9444,
+        "5": 0.9306,
+        "7": 0.9306
+       }
+      },
+      "d_star": {
+       "d_star": 2,
+       "own_only": 2,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": 5,
+       "own_only": 5,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 4,
+       "candidates": 2400,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         42,
+         51,
+         60,
+         69
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 1016,
+        "org_read_accuracy": {
+         "lookup": 0.9419291338582677,
+         "recall": 0.9704724409448819
+        },
+        "gate": 0.8,
+        "eligible": 870,
+        "pass": true
+       },
+       "quota_per_pair": 30,
+       "pairs": 347,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "position": 347,
+        "other": 151,
+        "identity": 372
+       },
+       "position_share_of_eligible": 0.3989,
+       "per_pair": {
+        "1-2": {
+         "read": 56,
+         "pairs": 33,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 56,
+         "pairs": 35,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 72,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 48,
+         "pairs": 34,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 152,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 176,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 40,
+         "pairs": 32,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 48,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 200,
+         "gave_up": true
+        },
+        "4-1": {
+         "read": 48,
+         "pairs": 30,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 72,
+         "pairs": 35,
+         "candidates": 200,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 200,
+         "pairs": 28,
+         "candidates": 200,
+         "gave_up": false
+        }
+       },
+       "ordered_pairs_covered": 11,
+       "ordered_pairs": 12,
+       "missing_ordered_pairs": [
+        "3-4"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 510,
+       "pairs_per_split": {
+        "select": 72,
+        "train": 191,
+        "test": 84
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 7
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 16,
+         "1->3": 16,
+         "1->4": 20,
+         "2->1": 18,
+         "2->3": 20,
+         "2->4": 16,
+         "3->1": 15,
+         "3->2": 21,
+         "4->1": 14,
+         "4->2": 20,
+         "4->3": 15
+        },
+        "select": {
+         "1->2": 8,
+         "1->3": 11,
+         "1->4": 5,
+         "2->1": 5,
+         "2->3": 6,
+         "2->4": 6,
+         "3->1": 9,
+         "3->2": 3,
+         "4->1": 9,
+         "4->2": 9,
+         "4->3": 1
+        },
+        "test": {
+         "1->2": 9,
+         "1->3": 8,
+         "1->4": 5,
+         "2->1": 11,
+         "2->3": 4,
+         "2->4": 8,
+         "3->1": 8,
+         "3->2": 6,
+         "4->1": 7,
+         "4->2": 6,
+         "4->3": 12
+        }
+       }
+      },
+      "unit": {
+       "value": 76.35884094238281,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 99,
+        "best_dev_iia": 0.5556,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 149,
+        "best_dev_iia": 0.1667,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 49,
+        "best_dev_iia": 0.8472,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 24,
+        "best_dev_iia": 0.1389,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 199,
+        "best_dev_iia": 0.9444,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 99,
+        "best_dev_iia": 0.1389,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 174,
+        "best_dev_iia": 0.9444,
+        "stopped_at": 274,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 74,
+        "best_dev_iia": 0.1528,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 124,
+        "best_dev_iia": 0.9306,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 174,
+        "best_dev_iia": 0.125,
+        "stopped_at": 274,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 74,
+        "best_dev_iia": 0.9306,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 199,
+        "best_dev_iia": 0.2222,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "6": {
+      "status": "tested",
+      "curve": {
+       "n": 76,
+       "entities": 7,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.618421052631579,
+        0.5568181818181818,
+        0.6944444444444444
+       ],
+       "recall_moved": {
+        "P_k1": 0.0,
+        "P_k2": 0.0132,
+        "P_k3": 0.0132,
+        "P_k4": 0.0132,
+        "P_k5": 0.0132,
+        "P_k7": 0.0132,
+        "R_k1": 0.0132,
+        "R_k2": 0.0263,
+        "R_k3": 0.0132,
+        "R_k4": 0.0,
+        "R_k5": 0.0132,
+        "R_k7": 0.0395,
+        "U": 0.0132,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0263,
+        "shuf_k2": 0.0,
+        "shuf_k3": 0.0,
+        "shuf_k4": 0.0,
+        "shuf_k5": 0.0,
+        "shuf_k7": 0.0132,
+        "whole": 0.0263
+       },
+       "R": {
+        "1": [
+         0.35526315789473684,
+         0.25,
+         0.4594594594594595
+        ],
+        "2": [
+         0.5,
+         0.38461538461538464,
+         0.6461538461538462
+        ],
+        "3": [
+         0.6973684210526315,
+         0.5909090909090909,
+         0.8157894736842105
+        ],
+        "4": [
+         0.6973684210526315,
+         0.5857142857142857,
+         0.8142857142857143
+        ],
+        "5": [
+         0.7368421052631579,
+         0.6511627906976745,
+         0.8333333333333334
+        ],
+        "7": [
+         0.8421052631578947,
+         0.7469879518072289,
+         0.9333333333333333
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.2236842105263158,
+         0.1111111111111111,
+         0.34328358208955223
+        ],
+        "2": [
+         0.34210526315789475,
+         0.22580645161290322,
+         0.44871794871794873
+        ],
+        "3": [
+         0.34210526315789475,
+         0.22580645161290322,
+         0.44871794871794873
+        ],
+        "4": [
+         0.5394736842105263,
+         0.47368421052631576,
+         0.6119402985074627
+        ],
+        "5": [
+         0.5657894736842105,
+         0.5119047619047619,
+         0.6268656716417911
+        ],
+        "7": [
+         0.618421052631579,
+         0.5294117647058824,
+         0.7222222222222222
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.05263157894736842,
+         0.015625,
+         0.08235294117647059
+        ],
+        "2": [
+         0.06578947368421052,
+         0.025,
+         0.1095890410958904
+        ],
+        "3": [
+         0.11842105263157894,
+         0.0547945205479452,
+         0.18840579710144928
+        ],
+        "4": [
+         0.14473684210526316,
+         0.06944444444444445,
+         0.22666666666666666
+        ],
+        "5": [
+         0.05263157894736842,
+         0.0196078431372549,
+         0.075
+        ],
+        "7": [
+         0.10526315789473684,
+         0.02531645569620253,
+         0.2
+        ]
+       },
+       "select_R": {
+        "1": 0.3,
+        "2": 0.5167,
+        "3": 0.7,
+        "4": 0.7167,
+        "5": 0.7333,
+        "7": 0.7667
+       }
+      },
+      "d_star": {
+       "d_star": 7,
+       "own_only": 7,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 6,
+       "candidates": 3600,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         42,
+         51,
+         60,
+         69,
+         78,
+         87
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 1792,
+        "org_read_accuracy": {
+         "lookup": 0.9631696428571429,
+         "recall": 0.9754464285714286
+        },
+        "gate": 0.8,
+        "eligible": 1610,
+        "pass": true
+       },
+       "quota_per_pair": 12,
+       "pairs": 328,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "position": 328,
+        "other": 342,
+        "identity": 940
+       },
+       "position_share_of_eligible": 0.2037,
+       "per_pair": {
+        "1-2": {
+         "read": 32,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 32,
+         "pairs": 14,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 40,
+         "pairs": 13,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-5": {
+         "read": 48,
+         "pairs": 14,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "1-6": {
+         "read": 48,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 24,
+         "pairs": 16,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 72,
+         "pairs": 13,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 56,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-5": {
+         "read": 120,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "2-6": {
+         "read": 40,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 24,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 24,
+         "pairs": 15,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 120,
+         "pairs": 1,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-5": {
+         "read": 120,
+         "pairs": 1,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "3-6": {
+         "read": 120,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-1": {
+         "read": 24,
+         "pairs": 14,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 24,
+         "pairs": 14,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 56,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-5": {
+         "read": 120,
+         "pairs": 3,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "4-6": {
+         "read": 120,
+         "pairs": 3,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-1": {
+         "read": 24,
+         "pairs": 19,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-2": {
+         "read": 24,
+         "pairs": 16,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-3": {
+         "read": 48,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-4": {
+         "read": 120,
+         "pairs": 6,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "5-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        },
+        "6-1": {
+         "read": 24,
+         "pairs": 17,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-2": {
+         "read": 24,
+         "pairs": 13,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-3": {
+         "read": 48,
+         "pairs": 12,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-4": {
+         "read": 120,
+         "pairs": 10,
+         "candidates": 120,
+         "gave_up": false
+        },
+        "6-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 120,
+         "gave_up": true
+        }
+       },
+       "ordered_pairs_covered": 28,
+       "ordered_pairs": 30,
+       "missing_ordered_pairs": [
+        "5-6",
+        "6-5"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 943,
+       "pairs_per_split": {
+        "select": 60,
+        "train": 192,
+        "test": 76
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 7
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 11,
+         "1->3": 10,
+         "1->4": 7,
+         "1->5": 12,
+         "1->6": 6,
+         "2->1": 9,
+         "2->3": 6,
+         "2->4": 7,
+         "2->5": 7,
+         "2->6": 9,
+         "3->1": 12,
+         "3->2": 10,
+         "3->6": 5,
+         "4->1": 9,
+         "4->2": 6,
+         "4->3": 6,
+         "4->5": 1,
+         "4->6": 2,
+         "5->1": 11,
+         "5->2": 8,
+         "5->3": 6,
+         "5->4": 1,
+         "6->1": 13,
+         "6->2": 9,
+         "6->3": 4,
+         "6->4": 5
+        },
+        "select": {
+         "1->2": 3,
+         "1->3": 1,
+         "1->4": 2,
+         "1->5": 1,
+         "1->6": 1,
+         "2->1": 4,
+         "2->3": 4,
+         "2->4": 1,
+         "2->5": 3,
+         "3->1": 2,
+         "3->2": 3,
+         "3->6": 3,
+         "4->1": 2,
+         "4->2": 3,
+         "4->3": 6,
+         "5->1": 4,
+         "5->2": 1,
+         "5->3": 2,
+         "5->4": 3,
+         "6->1": 3,
+         "6->2": 1,
+         "6->3": 5,
+         "6->4": 2
+        },
+        "test": {
+         "1->2": 1,
+         "1->3": 3,
+         "1->4": 4,
+         "1->5": 1,
+         "1->6": 5,
+         "2->1": 3,
+         "2->3": 3,
+         "2->4": 4,
+         "2->5": 2,
+         "2->6": 3,
+         "3->1": 1,
+         "3->2": 2,
+         "3->4": 1,
+         "3->5": 1,
+         "3->6": 4,
+         "4->1": 3,
+         "4->2": 5,
+         "4->5": 2,
+         "4->6": 1,
+         "5->1": 4,
+         "5->2": 7,
+         "5->3": 4,
+         "5->4": 2,
+         "6->1": 1,
+         "6->2": 3,
+         "6->3": 3,
+         "6->4": 3
+        }
+       }
+      },
+      "unit": {
+       "value": 82.12759399414062,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 99,
+        "best_dev_iia": 0.3,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 149,
+        "best_dev_iia": 0.1667,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 149,
+        "best_dev_iia": 0.5167,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 49,
+        "best_dev_iia": 0.1333,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 249,
+        "best_dev_iia": 0.7,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 49,
+        "best_dev_iia": 0.1667,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 149,
+        "best_dev_iia": 0.7167,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 24,
+        "best_dev_iia": 0.1167,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 149,
+        "best_dev_iia": 0.7333,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 24,
+        "best_dev_iia": 0.05,
+        "stopped_at": 124,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 149,
+        "best_dev_iia": 0.7667,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 49,
+        "best_dev_iia": 0.1333,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     },
+     "8": {
+      "status": "tested",
+      "curve": {
+       "n": 82,
+       "entities": 7,
+       "ks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+       ],
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "none": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "U": [
+        0.5,
+        0.38571428571428573,
+        0.5925925925925926
+       ],
+       "recall_moved": {
+        "P_k1": 0.0,
+        "P_k2": 0.0,
+        "P_k3": 0.0,
+        "P_k4": 0.0366,
+        "P_k5": 0.0366,
+        "P_k7": 0.0488,
+        "R_k1": 0.0122,
+        "R_k2": 0.0366,
+        "R_k3": 0.0366,
+        "R_k4": 0.0366,
+        "R_k5": 0.0244,
+        "R_k7": 0.0122,
+        "U": 0.0488,
+        "none": 0.0,
+        "rand_k1": 0.0,
+        "rand_k2": 0.0,
+        "rand_k3": 0.0,
+        "rand_k4": 0.0,
+        "rand_k5": 0.0,
+        "rand_k7": 0.0,
+        "shuf_k1": 0.0122,
+        "shuf_k2": 0.0244,
+        "shuf_k3": 0.0244,
+        "shuf_k4": 0.0244,
+        "shuf_k5": 0.0244,
+        "shuf_k7": 0.0,
+        "whole": 0.061
+       },
+       "R": {
+        "1": [
+         0.2682926829268293,
+         0.15714285714285714,
+         0.34210526315789475
+        ],
+        "2": [
+         0.4268292682926829,
+         0.35384615384615387,
+         0.47368421052631576
+        ],
+        "3": [
+         0.5365853658536586,
+         0.4482758620689655,
+         0.6
+        ],
+        "4": [
+         0.5975609756097561,
+         0.4857142857142857,
+         0.6986301369863014
+        ],
+        "5": [
+         0.6707317073170732,
+         0.5625,
+         0.7282608695652174
+        ],
+        "7": [
+         0.7073170731707317,
+         0.6197183098591549,
+         0.7778023598820055
+        ]
+       },
+       "rand": {
+        "1": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "2": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "3": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "4": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "5": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "7": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "P": {
+        "1": [
+         0.12195121951219512,
+         0.02631578947368421,
+         0.20535714285714285
+        ],
+        "2": [
+         0.2073170731707317,
+         0.09722222222222222,
+         0.29347826086956524
+        ],
+        "3": [
+         0.2073170731707317,
+         0.11764705882352941,
+         0.27710843373493976
+        ],
+        "4": [
+         0.35365853658536583,
+         0.2244745659457813,
+         0.46464646464646464
+        ],
+        "5": [
+         0.4634146341463415,
+         0.3333333333333333,
+         0.5529411764705883
+        ],
+        "7": [
+         0.5365853658536586,
+         0.44642857142857145,
+         0.6
+        ]
+       },
+       "shuf": {
+        "1": [
+         0.08536585365853659,
+         0.029411764705882353,
+         0.1375
+        ],
+        "2": [
+         0.08536585365853659,
+         0.03125,
+         0.125
+        ],
+        "3": [
+         0.13414634146341464,
+         0.07317073170731707,
+         0.1780821917808219
+        ],
+        "4": [
+         0.12195121951219512,
+         0.05825242718446602,
+         0.21052631578947367
+        ],
+        "5": [
+         0.18292682926829268,
+         0.09859154929577464,
+         0.2625
+        ],
+        "7": [
+         0.15853658536585366,
+         0.06779661016949153,
+         0.2358490566037736
+        ]
+       },
+       "select_R": {
+        "1": 0.25,
+        "2": 0.4531,
+        "3": 0.5469,
+        "4": 0.5938,
+        "5": 0.625,
+        "7": 0.6562
+       }
+      },
+      "d_star": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "d_star_P": {
+       "d_star": null,
+       "own_only": null,
+       "random_blocked": [],
+       "max_k": 7
+      },
+      "pairs": {
+       "slots": 8,
+       "candidates": 4480,
+       "dropped": {},
+       "layout": {
+        "sentence_tokens": 9,
+        "slot_starts": [
+         42,
+         51,
+         60,
+         69,
+         78,
+         87,
+         96,
+         105
+        ],
+        "layouts_seen": 1
+       },
+       "gate": {
+        "candidates_read": 2408,
+        "org_read_accuracy": {
+         "lookup": 0.9642857142857143,
+         "recall": 0.9671926910299004
+        },
+        "gate": 0.8,
+        "eligible": 2153,
+        "pass": true
+       },
+       "quota_per_pair": 7,
+       "pairs": 315,
+       "topup_chunks": 0,
+       "whole_change_routes": {
+        "identity": 1387,
+        "position": 315,
+        "other": 451
+       },
+       "position_share_of_eligible": 0.1463,
+       "per_pair": {
+        "1-2": {
+         "read": 16,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-3": {
+         "read": 16,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-4": {
+         "read": 40,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-5": {
+         "read": 48,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-6": {
+         "read": 24,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-7": {
+         "read": 32,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "1-8": {
+         "read": 48,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-1": {
+         "read": 8,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-3": {
+         "read": 56,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-4": {
+         "read": 80,
+         "pairs": 3,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-5": {
+         "read": 56,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-6": {
+         "read": 48,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-7": {
+         "read": 48,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "2-8": {
+         "read": 32,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-1": {
+         "read": 16,
+         "pairs": 11,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-2": {
+         "read": 16,
+         "pairs": 13,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-4": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "3-6": {
+         "read": 80,
+         "pairs": 4,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-7": {
+         "read": 80,
+         "pairs": 6,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "3-8": {
+         "read": 40,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-1": {
+         "read": 8,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-2": {
+         "read": 16,
+         "pairs": 10,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-3": {
+         "read": 32,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "4-7": {
+         "read": 80,
+         "pairs": 2,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "4-8": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-1": {
+         "read": 16,
+         "pairs": 10,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-2": {
+         "read": 16,
+         "pairs": 12,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-3": {
+         "read": 16,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-4": {
+         "read": 80,
+         "pairs": 4,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "5-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "5-8": {
+         "read": 80,
+         "pairs": 2,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-1": {
+         "read": 16,
+         "pairs": 9,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-2": {
+         "read": 16,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-3": {
+         "read": 24,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-4": {
+         "read": 48,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "6-7": {
+         "read": 80,
+         "pairs": 1,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "6-8": {
+         "read": 80,
+         "pairs": 1,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-1": {
+         "read": 16,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-2": {
+         "read": 24,
+         "pairs": 8,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-3": {
+         "read": 24,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-4": {
+         "read": 80,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "7-5": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "7-6": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        },
+        "7-8": {
+         "read": 80,
+         "pairs": 3,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-1": {
+         "read": 16,
+         "pairs": 10,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-2": {
+         "read": 16,
+         "pairs": 11,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-3": {
+         "read": 16,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-4": {
+         "read": 56,
+         "pairs": 7,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-5": {
+         "read": 80,
+         "pairs": 3,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-6": {
+         "read": 80,
+         "pairs": 5,
+         "candidates": 80,
+         "gave_up": false
+        },
+        "8-7": {
+         "read": 48,
+         "pairs": 0,
+         "candidates": 80,
+         "gave_up": true
+        }
+       },
+       "ordered_pairs_covered": 45,
+       "ordered_pairs": 56,
+       "missing_ordered_pairs": [
+        "3-4",
+        "3-5",
+        "4-5",
+        "4-6",
+        "4-8",
+        "5-6",
+        "5-7",
+        "6-5",
+        "7-5",
+        "7-6",
+        "8-7"
+       ],
+       "all_ordered_pairs": false,
+       "at_least_300": true,
+       "fit_scenes": 1290,
+       "pairs_per_split": {
+        "train": 169,
+        "select": 64,
+        "test": 82
+       },
+       "entities_per_split": {
+        "train": 19,
+        "select": 6,
+        "test": 7
+       },
+       "moves_per_split": {
+        "train": {
+         "1->2": 7,
+         "1->3": 7,
+         "1->4": 4,
+         "1->5": 4,
+         "1->6": 4,
+         "1->7": 4,
+         "1->8": 5,
+         "2->1": 5,
+         "2->3": 2,
+         "2->4": 3,
+         "2->5": 4,
+         "2->6": 5,
+         "2->7": 3,
+         "2->8": 4,
+         "3->1": 6,
+         "3->2": 8,
+         "3->6": 1,
+         "3->7": 4,
+         "3->8": 2,
+         "4->1": 5,
+         "4->2": 7,
+         "4->3": 4,
+         "5->1": 4,
+         "5->2": 6,
+         "5->3": 4,
+         "6->1": 5,
+         "6->2": 5,
+         "6->3": 3,
+         "6->4": 3,
+         "6->7": 1,
+         "7->1": 4,
+         "7->2": 3,
+         "7->3": 5,
+         "7->4": 4,
+         "7->8": 2,
+         "8->1": 8,
+         "8->2": 2,
+         "8->3": 3,
+         "8->4": 5,
+         "8->5": 2,
+         "8->6": 2
+        },
+        "select": {
+         "1->3": 1,
+         "1->4": 2,
+         "1->5": 2,
+         "1->6": 2,
+         "1->7": 1,
+         "2->3": 1,
+         "2->5": 1,
+         "2->6": 2,
+         "2->7": 1,
+         "2->8": 1,
+         "3->1": 2,
+         "3->2": 1,
+         "3->6": 2,
+         "3->7": 1,
+         "3->8": 3,
+         "4->2": 2,
+         "4->3": 1,
+         "4->7": 1,
+         "5->1": 3,
+         "5->2": 3,
+         "5->3": 2,
+         "5->4": 3,
+         "5->8": 1,
+         "6->1": 2,
+         "6->2": 2,
+         "6->3": 2,
+         "6->4": 3,
+         "7->1": 2,
+         "7->2": 2,
+         "7->3": 1,
+         "7->4": 2,
+         "7->8": 1,
+         "8->2": 4,
+         "8->3": 1,
+         "8->4": 1,
+         "8->6": 2
+        },
+        "test": {
+         "1->3": 1,
+         "1->4": 1,
+         "1->5": 2,
+         "1->6": 2,
+         "1->7": 3,
+         "1->8": 3,
+         "2->1": 2,
+         "2->3": 4,
+         "2->5": 2,
+         "2->6": 1,
+         "2->7": 3,
+         "2->8": 2,
+         "3->1": 3,
+         "3->2": 4,
+         "3->6": 1,
+         "3->7": 1,
+         "3->8": 2,
+         "4->1": 2,
+         "4->2": 1,
+         "4->3": 4,
+         "4->7": 1,
+         "5->1": 3,
+         "5->2": 3,
+         "5->3": 1,
+         "5->4": 1,
+         "5->8": 1,
+         "6->1": 2,
+         "6->2": 1,
+         "6->3": 3,
+         "6->4": 1,
+         "6->8": 1,
+         "7->1": 2,
+         "7->2": 3,
+         "7->3": 1,
+         "7->4": 1,
+         "8->1": 2,
+         "8->2": 5,
+         "8->3": 3,
+         "8->4": 1,
+         "8->5": 1,
+         "8->6": 1
+        }
+       }
+      },
+      "unit": {
+       "value": 78.07846069335938,
+       "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+      },
+      "stops": {
+       "R_k1": {
+        "best_step": 49,
+        "best_dev_iia": 0.25,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k1": {
+        "best_step": 49,
+        "best_dev_iia": 0.0625,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k2": {
+        "best_step": 99,
+        "best_dev_iia": 0.4531,
+        "stopped_at": 199,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k2": {
+        "best_step": 124,
+        "best_dev_iia": 0.1875,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.5469,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k3": {
+        "best_step": 124,
+        "best_dev_iia": 0.1719,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k4": {
+        "best_step": 124,
+        "best_dev_iia": 0.5938,
+        "stopped_at": 224,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k4": {
+        "best_step": 74,
+        "best_dev_iia": 0.125,
+        "stopped_at": 174,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k5": {
+        "best_step": 199,
+        "best_dev_iia": 0.625,
+        "stopped_at": 299,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k5": {
+        "best_step": 49,
+        "best_dev_iia": 0.1562,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "R_k7": {
+        "best_step": 149,
+        "best_dev_iia": 0.6562,
+        "stopped_at": 249,
+        "micro": 8,
+        "oom_micro_tried": []
+       },
+       "shuf_k7": {
+        "best_step": 49,
+        "best_dev_iia": 0.1719,
+        "stopped_at": 149,
+        "micro": 8,
+        "oom_micro_tried": []
+       }
+      }
+     }
+    },
+    "target": "muse-glimmer-30b",
+    "layer": 26,
+    "rule": {
+     "label": "one_per_slot",
+     "text": "one dimension per slot",
+     "holding": [
+      "one_per_slot"
+     ],
+     "clauses": {
+      "ordinal": false,
+      "one_per_slot": true,
+      "growing": false
+     },
+     "not_found": [
+      8
+     ]
+    },
+    "d_star": {
+     "3": 2,
+     "4": 2,
+     "6": 7,
+     "8": null
+    }
+   },
+   "part2": {
+    "run": "muse30_x51_11_p2",
+    "target": "muse-glimmer-30b",
+    "layer": 26,
+    "S": {
+     "6": {
+      "status": "tested",
+      "cells": {
+       "n": 600,
+       "items": 120,
+       "entities": 7,
+       "table": {
+        "none": {
+         "whole": [
+          0.33166666666666667,
+          0.3044776119402985,
+          0.36179775280898874
+         ],
+         "U": [
+          0.33166666666666667,
+          0.3044776119402985,
+          0.36179775280898874
+         ],
+         "P": [
+          0.3233333333333333,
+          0.3,
+          0.3547619047619048
+         ],
+         "R": [
+          0.435,
+          0.416,
+          0.4564102564102564
+         ]
+        },
+        "U": {
+         "whole": [
+          0.04666666666666667,
+          0.032758620689655175,
+          0.06141732283464567
+         ],
+         "U": [
+          0.04666666666666667,
+          0.032758620689655175,
+          0.06141732283464567
+         ],
+         "P": [
+          0.056666666666666664,
+          0.03817965367965368,
+          0.07561026849764295
+         ],
+         "R": [
+          0.39,
+          0.36727272727272725,
+          0.4152804487179487
+         ]
+        },
+        "P": {
+         "whole": [
+          0.043333333333333335,
+          0.02903225806451613,
+          0.056453366058906
+         ],
+         "U": [
+          0.045,
+          0.02903225806451613,
+          0.05979381443298969
+         ],
+         "P": [
+          0.04833333333333333,
+          0.03359969465648855,
+          0.0630439678809244
+         ],
+         "R": [
+          0.395,
+          0.3757116724738676,
+          0.4148951083714456
+         ]
+        },
+        "R": {
+         "whole": [
+          0.058333333333333334,
+          0.04,
+          0.08000680272108834
+         ],
+         "U": [
+          0.058333333333333334,
+          0.04,
+          0.08000680272108834
+         ],
+         "P": [
+          0.06,
+          0.04036697247706422,
+          0.08214285714285714
+         ],
+         "R": [
+          0.075,
+          0.049586776859504134,
+          0.1
+         ]
+        }
+       },
+       "random": {
+        "whole": [
+         0.0033333333333333335,
+         0.0,
+         0.007017543859649123
+        ],
+        "U": [
+         0.005,
+         0.0017391304347826088,
+         0.007947019867549669
+        ],
+        "P": [
+         0.0033333333333333335,
+         0.0,
+         0.006993006993006993
+        ],
+        "R": [
+         0.005,
+         0.0,
+         0.01019108280254777
+        ]
+       },
+       "reach": {
+        "U": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "P": [
+         0.9748743718592964,
+         0.9523809523809522,
+         1.0054945054945055
+        ],
+        "R": [
+         1.3115577889447236,
+         1.1909090909090911,
+         1.4491525423728815
+        ]
+       },
+       "cuts": {
+        "U->P": [
+         0.8247422680412371,
+         0.7637362637362637,
+         0.8868810235958791
+        ],
+        "U->R": [
+         0.10344827586206895,
+         0.07739938080495357,
+         0.1330275229357798
+        ],
+        "P->U": [
+         0.864321608040201,
+         0.8163265306122449,
+         0.914572864321608
+        ],
+        "P->R": [
+         0.09195402298850575,
+         0.06329113924050633,
+         0.1123595505617978
+        ],
+        "R->U": [
+         0.8241206030150754,
+         0.7553648068669527,
+         0.8846153846153846
+        ],
+        "R->P": [
+         0.8144329896907216,
+         0.7419354838709677,
+         0.8797814207650273
+        ]
+       },
+       "self_removal_left": {
+        "U": [
+         0.1407035175879397,
+         0.09649122807017543,
+         0.18604651162790697
+        ],
+        "P": [
+         0.14948453608247422,
+         0.09952238674163258,
+         0.19760479041916168
+        ],
+        "R": [
+         0.17241379310344826,
+         0.10971786833855798,
+         0.23655913978494625
+        ]
+       },
+       "removal_alone_moves": {
+        "U": 0.2333,
+        "P": 0.2417,
+        "R": 0.375
+       },
+       "recall_moved": {
+        "none|whole": 0.0433,
+        "none|U": 0.0433,
+        "none|P": 0.0433,
+        "none|R": 0.085,
+        "U|whole": 0.0083,
+        "U|U": 0.0083,
+        "U|P": 0.01,
+        "U|R": 0.06,
+        "P|whole": 0.0067,
+        "P|U": 0.0067,
+        "P|P": 0.0117,
+        "P|R": 0.0667,
+        "R|whole": 0.0217,
+        "R|U": 0.0217,
+        "R|P": 0.0233,
+        "R|R": 0.0167
+       },
+       "median_norm": {
+        "whole": 135.862,
+        "U": 135.862,
+        "P": 135.0525,
+        "R": 107.5416
+       }
+      },
+      "rule": {
+       "label": "in_between",
+       "text": "in between (none of the three)",
+       "holding": [],
+       "clauses": {
+        "one_code": false,
+        "partly": false,
+        "different": false
+       }
+      },
+      "readouts": {
+       "working": {
+        "d_star": {
+         "d_star": 7,
+         "own_only": 7,
+         "random_blocked": [],
+         "max_k": 7
+        },
+        "k": 7,
+        "flag": null
+       },
+       "geometry": {
+        "d": 6656,
+        "ranks": {
+         "U": 5,
+         "P": 7,
+         "R": 7
+        },
+        "U-P": {
+         "mean_cos2": 0.784723,
+         "random_expectation": 0.001052,
+         "random_mean": 0.000981,
+         "random_max": 0.00171,
+         "angles_deg": [
+          3.112,
+          4.835,
+          6.057,
+          17.324,
+          79.459
+         ]
+        },
+        "U-R": {
+         "mean_cos2": 0.441311,
+         "random_expectation": 0.001052,
+         "random_mean": 0.000981,
+         "random_max": 0.00171,
+         "angles_deg": [
+          30.418,
+          38.848,
+          43.298,
+          57.2,
+          79.496
+         ]
+        },
+        "P-R": {
+         "mean_cos2": 0.338007,
+         "random_expectation": 0.001052,
+         "random_mean": 0.000992,
+         "random_max": 0.001436,
+         "angles_deg": [
+          28.696,
+          37.563,
+          42.861,
+          55.887,
+          73.704,
+          80.076,
+          84.87
+         ]
+        }
+       }
+      }
+     },
+     "3": {
+      "status": "tested",
+      "cells": {
+       "n": 240,
+       "items": 120,
+       "entities": 7,
+       "table": {
+        "none": {
+         "whole": [
+          0.7375,
+          0.6785645071982281,
+          0.8063063063063063
+         ],
+         "U": [
+          0.7375,
+          0.6785645071982281,
+          0.8063063063063063
+         ],
+         "P": [
+          0.7541666666666667,
+          0.7040816326530612,
+          0.8025210084033614
+         ],
+         "R": [
+          0.9166666666666666,
+          0.8877551020408163,
+          0.9438775510204082
+         ]
+        },
+        "U": {
+         "whole": [
+          0.14166666666666666,
+          0.09853876354788764,
+          0.18487394957983194
+         ],
+         "U": [
+          0.14166666666666666,
+          0.09853876354788764,
+          0.18487394957983194
+         ],
+         "P": [
+          0.13333333333333333,
+          0.0811965811965812,
+          0.18253968253968253
+         ],
+         "R": [
+          0.8625,
+          0.825,
+          0.9052631578947369
+         ]
+        },
+        "P": {
+         "whole": [
+          0.18333333333333332,
+          0.1346153846153846,
+          0.23046875
+         ],
+         "U": [
+          0.18333333333333332,
+          0.1346153846153846,
+          0.23046875
+         ],
+         "P": [
+          0.10833333333333334,
+          0.07480314960629922,
+          0.13983050847457626
+         ],
+         "R": [
+          0.8666666666666667,
+          0.8273381294964028,
+          0.9107142857142857
+         ]
+        },
+        "R": {
+         "whole": [
+          0.05416666666666667,
+          0.02458815493410479,
+          0.08653846153846154
+         ],
+         "U": [
+          0.05416666666666667,
+          0.02458815493410479,
+          0.08653846153846154
+         ],
+         "P": [
+          0.06666666666666667,
+          0.03103448275862069,
+          0.10576923076923077
+         ],
+         "R": [
+          0.2375,
+          0.19902912621359223,
+          0.26521739130434785
+         ]
+        }
+       },
+       "random": {
+        "whole": [
+         0.0125,
+         0.0,
+         0.02877697841726619
+        ],
+        "U": [
+         0.008333333333333333,
+         0.0,
+         0.0196078431372549
+        ],
+        "P": [
+         0.020833333333333332,
+         0.0035714285714285713,
+         0.046610169491525424
+        ],
+        "R": [
+         0.016666666666666666,
+         0.0058823529411764705,
+         0.02608695652173913
+        ]
+       },
+       "reach": {
+        "U": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "P": [
+         1.0225988700564972,
+         0.9924242424242425,
+         1.0602409638554215
+        ],
+        "R": [
+         1.2429378531073445,
+         1.1475409836065573,
+         1.3478260869565217
+        ]
+       },
+       "cuts": {
+        "U->P": [
+         0.8232044198895028,
+         0.7440476190476191,
+         0.8975609756097561
+        ],
+        "U->R": [
+         0.05909090909090897,
+         0.02824858757062143,
+         0.07929515418502198
+        ],
+        "P->U": [
+         0.7514124293785311,
+         0.6666666666666667,
+         0.8269230769230769
+        ],
+        "P->R": [
+         0.05454545454545445,
+         0.019990196078431555,
+         0.08370044052863435
+        ],
+        "R->U": [
+         0.9265536723163842,
+         0.8756476683937824,
+         0.968421052631579
+        ],
+        "R->P": [
+         0.9116022099447514,
+         0.8554216867469879,
+         0.9602053292857745
+        ]
+       },
+       "self_removal_left": {
+        "U": [
+         0.19209039548022597,
+         0.12298996153485318,
+         0.26946107784431134
+        ],
+        "P": [
+         0.143646408839779,
+         0.09433012536406232,
+         0.19354838709677422
+        ],
+        "R": [
+         0.2590909090909091,
+         0.2147239263803681,
+         0.29368203996282527
+        ]
+       },
+       "removal_alone_moves": {
+        "U": 0.2833,
+        "P": 0.2167,
+        "R": 0.475
+       },
+       "recall_moved": {
+        "none|whole": 0.1458,
+        "none|U": 0.1542,
+        "none|P": 0.1375,
+        "none|R": 0.175,
+        "U|whole": 0.0083,
+        "U|U": 0.0083,
+        "U|P": 0.0042,
+        "U|R": 0.15,
+        "P|whole": 0.0083,
+        "P|U": 0.0083,
+        "P|P": 0.0083,
+        "P|R": 0.1458,
+        "R|whole": 0.0125,
+        "R|U": 0.0125,
+        "R|P": 0.0083,
+        "R|R": 0.025
+       },
+       "median_norm": {
+        "whole": 165.1255,
+        "U": 165.1255,
+        "P": 160.8526,
+        "R": 129.8725
+       }
+      },
+      "rule": {
+       "label": "in_between",
+       "text": "in between (none of the three)",
+       "holding": [],
+       "clauses": {
+        "one_code": false,
+        "partly": false,
+        "different": false
+       }
+      },
+      "readouts": {
+       "working": {
+        "d_star": {
+         "d_star": 2,
+         "own_only": 2,
+         "random_blocked": [],
+         "max_k": 7
+        },
+        "k": 2,
+        "flag": null
+       },
+       "geometry": {
+        "d": 6656,
+        "ranks": {
+         "U": 2,
+         "P": 2,
+         "R": 2
+        },
+        "U-P": {
+         "mean_cos2": 0.954122,
+         "random_expectation": 0.0003,
+         "random_mean": 0.000254,
+         "random_max": 0.000729,
+         "angles_deg": [
+          3.791,
+          17.194
+         ]
+        },
+        "U-R": {
+         "mean_cos2": 0.623062,
+         "random_expectation": 0.0003,
+         "random_mean": 0.000254,
+         "random_max": 0.000729,
+         "angles_deg": [
+          35.889,
+          39.829
+         ]
+        },
+        "P-R": {
+         "mean_cos2": 0.600106,
+         "random_expectation": 0.0003,
+         "random_mean": 0.000254,
+         "random_max": 0.000729,
+         "angles_deg": [
+          36.661,
+          41.743
+         ]
+        }
+       }
+      }
+     }
+    },
+    "rule": {
+     "label": "in_between",
+     "text": "in between (none of the three)",
+     "holding": [],
+     "clauses": {
+      "one_code": false,
+      "partly": false,
+      "different": false
+     }
+    }
+   },
+   "part3": {
+    "run": "muse30_x51_11_p3",
+    "target": "muse-glimmer-30b",
+    "layer": 26,
+    "cells": {
+     "1|mid|2": {
+      "start": 1,
+      "arm": "mid",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.005,
+       0.0,
+       0.01744186046511628
+      ],
+      "midpoint": [
+       0.13,
+       0.08333333333333333,
+       0.17582417582417584
+      ],
+      "far": [
+       0.495,
+       0.3909052711993889,
+       0.5975609756097561
+      ],
+      "near": [
+       0.045,
+       0.015463917525773196,
+       0.07653176135318991
+      ],
+      "another slot": [
+       0.325,
+       0.2587681488203267,
+       0.3904761904761905
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 102.8024
+     },
+     "1|mid|4": {
+      "start": 1,
+      "arm": "mid",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.005,
+       0.0,
+       0.013888888888888888
+      ],
+      "midpoint": [
+       0.19,
+       0.15168539325842698,
+       0.22077922077922077
+      ],
+      "far": [
+       0.34,
+       0.27710221049487205,
+       0.4078985178463399
+      ],
+      "near": [
+       0.08,
+       0.03932584269662921,
+       0.12209625322997411
+      ],
+      "another slot": [
+       0.385,
+       0.31875,
+       0.45408163265306123
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 205.6047
+     },
+     "1|mid_random|2": {
+      "start": 1,
+      "arm": "mid_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.995,
+       0.9848484848484849,
+       1.0
+      ],
+      "midpoint": [
+       0.005,
+       0.0,
+       0.015151515151515152
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 102.8024
+     },
+     "1|mid_random|4": {
+      "start": 1,
+      "arm": "mid_random",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.965,
+       0.9285714285714286,
+       0.9942528735632183
+      ],
+      "midpoint": [
+       0.01,
+       0.0,
+       0.02127659574468085
+      ],
+      "far": [
+       0.015,
+       0.0,
+       0.02912621359223301
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015151515151515152
+      ],
+      "another slot": [
+       0.005,
+       0.0,
+       0.015151515151515152
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 205.6048
+     },
+     "1|full|2": {
+      "start": 1,
+      "arm": "full",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.005,
+       0.0,
+       0.013888888888888888
+      ],
+      "midpoint": [
+       0.19,
+       0.15168539325842698,
+       0.22077922077922077
+      ],
+      "far": [
+       0.34,
+       0.27710221049487205,
+       0.4078985178463399
+      ],
+      "near": [
+       0.08,
+       0.03932584269662921,
+       0.12209625322997411
+      ],
+      "another slot": [
+       0.385,
+       0.31875,
+       0.45408163265306123
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 205.6047
+     },
+     "1|full_random|2": {
+      "start": 1,
+      "arm": "full_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.96,
+       0.9158415841584159,
+       1.0
+      ],
+      "midpoint": [
+       0.01,
+       0.0,
+       0.022123893805309734
+      ],
+      "far": [
+       0.015,
+       0.0,
+       0.03571428571428571
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.015151515151515152
+      ],
+      "another slot": [
+       0.01,
+       0.0,
+       0.02531645569620253
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 205.6048
+     },
+     "6|mid|2": {
+      "start": 6,
+      "arm": "mid",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.745,
+       0.6875,
+       0.8028882575757575
+      ],
+      "midpoint": [
+       0.005,
+       0.0,
+       0.016483516483516484
+      ],
+      "far": [
+       0.22,
+       0.1694915254237288,
+       0.2727368220015277
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.03,
+       0.010309278350515464,
+       0.05188679245283019
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 69.0032
+     },
+     "6|mid|4": {
+      "start": 6,
+      "arm": "mid",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.385,
+       0.32989690721649484,
+       0.4409090909090909
+      ],
+      "midpoint": [
+       0.02,
+       0.005154639175257732,
+       0.03571428571428571
+      ],
+      "far": [
+       0.39,
+       0.36324786324786323,
+       0.4148936170212766
+      ],
+      "near": [
+       0.025,
+       0.008547008547008548,
+       0.047874162051879894
+      ],
+      "another slot": [
+       0.18,
+       0.11881033415841584,
+       0.23831911540969353
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 138.0063
+     },
+     "6|mid_random|2": {
+      "start": 6,
+      "arm": "mid_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.99,
+       0.9774774774774775,
+       1.0
+      ],
+      "midpoint": [
+       0.005,
+       0.0,
+       0.015789473684210527
+      ],
+      "far": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "near": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "another slot": [
+       0.005,
+       0.0,
+       0.014705882352941176
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 69.0032
+     },
+     "6|mid_random|4": {
+      "start": 6,
+      "arm": "mid_random",
+      "dose": 4,
+      "n": 200,
+      "original": [
+       0.96,
+       0.9330357142857143,
+       0.9845360824742269
+      ],
+      "midpoint": [
+       0.01,
+       0.0,
+       0.02358490566037736
+      ],
+      "far": [
+       0.005,
+       0.0,
+       0.016129032258064516
+      ],
+      "near": [
+       0.005,
+       0.0,
+       0.016666666666666666
+      ],
+      "another slot": [
+       0.02,
+       0.0,
+       0.039473684210526314
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 138.0063
+     },
+     "6|full|2": {
+      "start": 6,
+      "arm": "full",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.385,
+       0.32989690721649484,
+       0.4409090909090909
+      ],
+      "midpoint": [
+       0.02,
+       0.005154639175257732,
+       0.03571428571428571
+      ],
+      "far": [
+       0.39,
+       0.36324786324786323,
+       0.4148936170212766
+      ],
+      "near": [
+       0.025,
+       0.008547008547008548,
+       0.047874162051879894
+      ],
+      "another slot": [
+       0.18,
+       0.11881033415841584,
+       0.23831911540969353
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 138.0063
+     },
+     "6|full_random|2": {
+      "start": 6,
+      "arm": "full_random",
+      "dose": 2,
+      "n": 200,
+      "original": [
+       0.955,
+       0.9256198347107438,
+       0.9831460674157303
+      ],
+      "midpoint": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "far": [
+       0.01,
+       0.0,
+       0.02577319587628866
+      ],
+      "near": [
+       0.01,
+       0.0,
+       0.02359052111410594
+      ],
+      "another slot": [
+       0.025,
+       0.0,
+       0.048672566371681415
+      ],
+      "not a slot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_norm": 138.0063
+     }
+    },
+    "none_original": {
+     "1": 1.0,
+     "6": 1.0
+    },
+    "rules": {
+     "2": {
+      "label": "none",
+      "text": "none of the three",
+      "holding": [],
+      "clauses": {
+       "metric": false,
+       "categories": false,
+       "first_rest": false
+      },
+      "mid": {
+       "1": 0.13,
+       "6": 0.005
+      },
+      "full_far": 0.365
+     },
+     "4": {
+      "label": "none",
+      "text": "none of the three",
+      "holding": [],
+      "clauses": {
+       "metric": false,
+       "categories": false,
+       "first_rest": false
+      },
+      "mid": {
+       "1": 0.19,
+       "6": 0.02
+      },
+      "full_far": 0.365
+     }
+    },
+    "rule": {
+     "label": "none",
+     "text": "none of the three",
+     "holding": [],
+     "clauses": {
+      "metric": false,
+      "categories": false,
+      "first_rest": false
+     },
+     "mid": {
+      "1": 0.13,
+      "6": 0.005
+     },
+     "full_far": 0.365
+    },
+    "status": {
+     "items": {
+      "1": {
+       "pool": 238,
+       "read": 112,
+       "eligible": 102,
+       "kept": 100
+      },
+      "6": {
+       "pool": 269,
+       "read": 120,
+       "eligible": 107,
+       "kept": 100
+      }
+     },
+     "unit": 82.12759399414062,
+     "mu_from": "results/x51_addr/muse30_x51_11_p1/S6"
+    },
+    "h_norm_median": 359.7789,
+    "means": {
+     "6": {
+      "distances": [
+       [
+        0.0,
+        85.4219,
+        95.9703,
+        104.3352,
+        109.6345,
+        115.8583
+       ],
+       [
+        85.4219,
+        0.0,
+        55.9743,
+        67.504,
+        77.8248,
+        89.8049
+       ],
+       [
+        95.9703,
+        55.9743,
+        0.0,
+        36.2543,
+        51.8562,
+        67.931
+       ],
+       [
+        104.3352,
+        67.504,
+        36.2543,
+        0.0,
+        25.4554,
+        48.2015
+       ],
+       [
+        109.6345,
+        77.8248,
+        51.8562,
+        25.4554,
+        0.0,
+        30.5812
+       ],
+       [
+        115.8583,
+        89.8049,
+        67.931,
+        48.2015,
+        30.5812,
+        0.0
+       ]
+      ],
+      "by_lag": {
+       "1": 46.73740341455514,
+       "2": 65.88298000478409,
+       "3": 83.3636885438185,
+       "4": 99.71971397179914,
+       "5": 115.85829748894474
+      },
+      "by_lag_over_lag1": {
+       "1": 1.0,
+       "2": 1.4096414261701702,
+       "3": 1.7836611033863525,
+       "4": 2.133616903945161,
+       "5": 2.478920287062069
+      },
+      "spread": 0.3975393515399842,
+      "corr_distance_lag": 0.7756417784830826,
+      "pca": {
+       "shares": [
+        0.6446040423737801,
+        0.22821904732619896,
+        0.08815059322760063,
+        0.031965355853607415,
+        0.00706096121881298,
+        9.188935376152027e-32
+       ],
+       "cumulative": [
+        0.6446040423737801,
+        0.8728230896999791,
+        0.9609736829275798
+       ],
+       "pc1": [
+        -75.1639048062748,
+        -24.45177038212312,
+        5.176488544992614,
+        23.29753747273203,
+        32.60402262244675,
+        38.53762654822651
+       ],
+       "spearman_pc1_slot": 1.0,
+       "monotone": true
+      }
+     },
+     "8": {
+      "distances": [
+       [
+        0.0,
+        85.4438,
+        95.5401,
+        105.0854,
+        110.3767,
+        113.8732,
+        115.8111,
+        118.3973
+       ],
+       [
+        85.4438,
+        0.0,
+        57.1641,
+        67.345,
+        76.6458,
+        82.959,
+        89.7025,
+        97.123
+       ],
+       [
+        95.5401,
+        57.1641,
+        0.0,
+        37.4433,
+        49.9023,
+        58.3938,
+        65.8665,
+        77.4995
+       ],
+       [
+        105.0854,
+        67.345,
+        37.4433,
+        0.0,
+        23.7588,
+        35.1838,
+        45.7078,
+        61.2863
+       ],
+       [
+        110.3767,
+        76.6458,
+        49.9023,
+        23.7588,
+        0.0,
+        19.5813,
+        31.8963,
+        52.2597
+       ],
+       [
+        113.8732,
+        82.959,
+        58.3938,
+        35.1838,
+        19.5813,
+        0.0,
+        18.5169,
+        42.9335
+       ],
+       [
+        115.8111,
+        89.7025,
+        65.8665,
+        45.7078,
+        31.8963,
+        18.5169,
+        0.0,
+        30.8359
+       ],
+       [
+        118.3973,
+        97.123,
+        77.4995,
+        61.2863,
+        52.2597,
+        42.9335,
+        30.8359,
+        0.0
+       ]
+      ],
+      "by_lag": {
+       "1": 38.963446550657295,
+       "2": 53.80015805557105,
+       "3": 67.6184972413077,
+       "4": 80.12212787909388,
+       "5": 93.69168978851796,
+       "6": 106.46705320687225,
+       "7": 118.39725720704516
+      },
+      "by_lag_over_lag1": {
+       "1": 1.0,
+       "2": 1.3807853980685256,
+       "3": 1.7354341883846258,
+       "4": 2.056340877723053,
+       "5": 2.4046047791667298,
+       "6": 2.732485512246765,
+       "7": 3.038675160656388
+      },
+      "spread": 0.45911599053009416,
+      "corr_distance_lag": 0.759111229923409,
+      "pca": {
+       "shares": [
+        0.6224831454100092,
+        0.22103181035699077,
+        0.08441350048134777,
+        0.046045888835075835,
+        0.017399815192876585,
+        0.00573541691520838,
+        0.002890422808491426,
+        5.719205723422679e-32
+       ],
+       "cumulative": [
+        0.6224831454100092,
+        0.8435149557669999,
+        0.9279284562483476
+       ],
+       "pc1": [
+        -80.15799155808588,
+        -39.09443342636603,
+        -9.630193623690776,
+        11.169924569661019,
+        22.048604191273746,
+        28.8084118592635,
+        33.001425024599214,
+        33.854252963345196
+       ],
+       "spearman_pc1_slot": 1.0,
+       "monotone": true
+      }
+     }
+    }
+   },
+   "labels": {
+    "1": "one_per_slot",
+    "2": "in_between",
+    "3": "none"
+   },
+   "lacks": [],
+   "wording": {
+    "row": null,
+    "text": "no row of the wording table matches these labels; the wording is not fixed by the addendum",
+    "note": "In every case the sentence no longer says \"four directions\"; \"four\" becomes a note on the first construction."
+   }
+  },
+  {
+   "target": "qwen3.6-27b",
+   "runs": {
+    "2": "x51_11_p2_27b"
+   },
+   "present": {
+    "2": "x51_11_p2_27b"
+   },
+   "part1": null,
+   "part2": {
+    "run": "x51_11_p2_27b",
+    "target": "qwen3.6-27b",
+    "layer": 32,
+    "S": {
+     "6": {
+      "status": "tested",
+      "cells": {
+       "n": 600,
+       "items": 120,
+       "entities": 7,
+       "table": {
+        "none": {
+         "whole": [
+          0.31333333333333335,
+          0.27155963302752295,
+          0.356
+         ],
+         "U": [
+          0.31333333333333335,
+          0.27155963302752295,
+          0.356
+         ],
+         "P": [
+          0.22666666666666666,
+          0.20344827586206896,
+          0.24957264957264957
+         ],
+         "R": [
+          0.315,
+          0.29354838709677417,
+          0.3356521739130435
+         ]
+        },
+        "U": {
+         "whole": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "U": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "P": [
+          0.0016666666666666668,
+          0.0,
+          0.005405405405405406
+         ],
+         "R": [
+          0.305,
+          0.29310344827586204,
+          0.31724137931034485
+         ]
+        },
+        "P": {
+         "whole": [
+          0.028333333333333332,
+          0.017094017094017096,
+          0.04299115666767159
+         ],
+         "U": [
+          0.028333333333333332,
+          0.017094017094017096,
+          0.04299115666767159
+         ],
+         "P": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "R": [
+          0.31833333333333336,
+          0.3111111111111111,
+          0.3290909090909091
+         ]
+        },
+        "R": {
+         "whole": [
+          0.006666666666666667,
+          0.00261437908496732,
+          0.010526315789473684
+         ],
+         "U": [
+          0.006666666666666667,
+          0.00261437908496732,
+          0.010526315789473684
+         ],
+         "P": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "R": [
+          0.013333333333333334,
+          0.005172413793103448,
+          0.02258064516129032
+         ]
+        }
+       },
+       "random": {
+        "whole": [
+         0.0033333333333333335,
+         0.0,
+         0.008695652173913044
+        ],
+        "U": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "P": [
+         0.0033333333333333335,
+         0.0,
+         0.007079646017699115
+        ],
+        "R": [
+         0.0016666666666666668,
+         0.0,
+         0.005405405405405406
+        ]
+       },
+       "reach": {
+        "U": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "P": [
+         0.7234042553191489,
+         0.6702660908331012,
+         0.7777777777777779
+        ],
+        "R": [
+         1.0053191489361701,
+         0.9196428571428572,
+         1.0989583333333333
+        ]
+       },
+       "cuts": {
+        "U->P": [
+         0.9926470588235294,
+         0.9765625,
+         1.0
+        ],
+        "U->R": [
+         0.031746031746031744,
+         -0.021428571428571352,
+         0.0722222222222223
+        ],
+        "P->U": [
+         0.9095744680851063,
+         0.8724832214765101,
+         0.9417989417989417
+        ],
+        "P->R": [
+         -0.010582010582010692,
+         -0.07960469392169567,
+         0.042113237639553325
+        ],
+        "R->U": [
+         0.9787234042553191,
+         0.9666666666666667,
+         0.9911111111111112
+        ],
+        "R->P": [
+         1.0,
+         1.0,
+         1.0
+        ]
+       },
+       "self_removal_left": {
+        "U": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "P": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "R": [
+         0.04232804232804233,
+         0.017167381974248927,
+         0.07097019813328961
+        ]
+       },
+       "removal_alone_moves": {
+        "U": 0.0,
+        "P": 0.0,
+        "R": 0.075
+       },
+       "recall_moved": {
+        "none|whole": 0.055,
+        "none|U": 0.055,
+        "none|P": 0.0467,
+        "none|R": 0.0733,
+        "U|whole": 0.0083,
+        "U|U": 0.0083,
+        "U|P": 0.0083,
+        "U|R": 0.0683,
+        "P|whole": 0.015,
+        "P|U": 0.015,
+        "P|P": 0.0,
+        "P|R": 0.0617,
+        "R|whole": 0.01,
+        "R|U": 0.01,
+        "R|P": 0.0067,
+        "R|R": 0.0083
+       },
+       "median_norm": {
+        "whole": 42.8611,
+        "U": 42.861,
+        "P": 35.0979,
+        "R": 30.1268
+       }
+      },
+      "rule": {
+       "label": "in_between",
+       "text": "in between (none of the three)",
+       "holding": [],
+       "clauses": {
+        "one_code": false,
+        "partly": false,
+        "different": false
+       }
+      },
+      "readouts": {
+       "working": {
+        "d_star": {
+         "d_star": 2,
+         "own_only": 2,
+         "random_blocked": [],
+         "max_k": 7
+        },
+        "k": 2,
+        "flag": null
+       },
+       "geometry": {
+        "d": 5120,
+        "ranks": {
+         "U": 5,
+         "P": 2,
+         "R": 2
+        },
+        "U-P": {
+         "mean_cos2": 0.991736,
+         "random_expectation": 0.000977,
+         "random_mean": 0.000983,
+         "random_max": 0.001762,
+         "angles_deg": [
+          3.801,
+          6.324
+         ]
+        },
+        "U-R": {
+         "mean_cos2": 0.637955,
+         "random_expectation": 0.000977,
+         "random_mean": 0.000983,
+         "random_max": 0.001762,
+         "angles_deg": [
+          34.427,
+          39.493
+         ]
+        },
+        "P-R": {
+         "mean_cos2": 0.55263,
+         "random_expectation": 0.000391,
+         "random_mean": 0.000277,
+         "random_max": 0.00064,
+         "angles_deg": [
+          39.715,
+          44.224
+         ]
+        }
+       }
+      }
+     },
+     "3": {
+      "status": "missing"
+     }
+    },
+    "rule": {
+     "label": "in_between",
+     "text": "in between (none of the three)",
+     "holding": [],
+     "clauses": {
+      "one_code": false,
+      "partly": false,
+      "different": false
+     }
+    }
+   },
+   "part3": null,
+   "labels": {
+    "1": null,
+    "2": "in_between",
+    "3": null
+   },
+   "lacks": [
+    1,
+    3
+   ],
+   "wording": {
+    "row": null,
+    "text": "no row of the wording table matches these labels; the wording is not fixed by the addendum",
+    "note": "In every case the sentence no longer says \"four directions\"; \"four\" becomes a note on the first construction."
+   }
+  }
+ ]
+}
