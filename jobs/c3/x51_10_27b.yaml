@@ -1,0 +1,86 @@
+id: x51_10_27b
+title: "Batch 51.10 on the 27B (L32): does the intermediate pass through J-space? Read / write statistics per position (P1 the bridge word, P2 the question's pick token, P3 the last token) and per reader, at 17 layers: lens ranks and three bridge-entity probes (through his top-10 lens span / the full residual / outside it) from cached states; his J-part swap, the J++ part at gain 1 and 2, each with a matched random part, and the whole-state patch, one layer at a time; his knock-out and the J++-25 removal at P3"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.0
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_jread.py run --name x51_10_27b --why "Batch 51, test 51.10 (jobs/c3/batch51.yaml addendum_2; Q51.10): read / write per position and reader at 17 layers (every 4th layer L4-L60 plus L and L +- 2 (30, 32, 34)); main-test items of the qwen3.6-27b X0 run, write and remove arms on 49.1's locker-first items; sealed"
+question: >-
+  Does the bridge entity (the intermediate) pass through J-space where the second hop is made -- at the question's
+  pick token and at the last token -- for the lookup (in-context: entity -> its locker) and the recall (parametric:
+  entity -> fact)? Read: is it readable through his top-10 lens directions there before the answer forms; write: does
+  his J-part swap or the J++ part of the change move the answer as the whole state does?
+why_it_matters: >-
+  Neel: it is strange that the intermediate does not go through J-space. Our 'the lookup is blind to the J++ part' is
+  a statement about the bridge token; the workspace paper's claim and the latent two-hop literature (Yang et al. 2024;
+  Biran et al. 2024) put the bridge entity at the last token in the middle layers. Either the lookup's intermediate
+  passes through J-space at the question even though the bridge word's identity does not, or the in-context hop routes
+  around the lens end to end: the direct answer to the comment.
+hypotheses:
+  Q51.10: "Dan's answer in predictions/2026-10-28_dan.md (Q51.10: per reader and model, at the last token and at the pick token: (a) in J-space (read and write) / (b) readable, not used / (c) routes around J-space / (d) not represented); not committed when this spec was written, so the job is sealed: per-item outputs and cached states only, no label; scripts/x51_jread.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml addendum_2, 51.10), verbatim: "The intermediate is in J-space at the last
+  token" (read): the through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's
+  layer, while the full-residual probe >= 0.9 there. "Writable through J-space at the last token": at the layer of the
+  read peak (or the best layer), his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-
+  state patch switches at that layer, with the random part <= 0.10. "Readable, not used": read holds, write fails.
+  "Routes around J-space": read fails at every layer before the answer (through-the-lens probe < 0.5 while the full-
+  residual probe >= 0.9 at some layer), and write fails. "Not represented at the last token at all": the full-residual
+  probe < 0.5 at every layer before the answer -- then the P2 rows decide. Same clauses at P2. P1 reports the swap for
+  both readers beside 49.1's J(alpha, 0). As computed (fixed before any run; Dan may override before the verdict):
+  items = x47_cumulative.select of the main test's x0_necessity_27b_chat at L32 (chat; X0's gate 0.80 per reader on O
+  unedited and >= 150 eligible, asserted from its gate.json): 200 items (44 bridge entities) for the read statistics,
+  decided on 49.1's locker-first items (69, 34 bridge entities; the same items in the same order as 49.1), on which
+  the write and remove arms run. NOTE: the brief's '200 per model after the gate' counts every main-test item; the
+  locker-first items are fewer, so the probes train on every item (scenes held out) and are scored on the locker-first
+  rows (all rows beside). Positions per reader's prompt as read (X0's chat read: the digit's space token appended): P1
+  the bridge word (X0's position); P2 the last token over 'pick' in the question's "<Name>'s pick"; P3 the appended
+  space token (whose next token is the answer); in S, P2 and P3 counted from the end (O and S agree there, asserted).
+  Layers: every 4th layer L4-L60 plus L and L +- 2 (30, 32, 34): [4, 8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 40, 44,
+  48, 52, 56, 60]. Read: the lens rank = the rank of the bridge entity's token (O's on O, S's on S; the other entity
+  beside) among the letter tokens by his lens logits (x49_ladder.band_dictionaries: W_g = W_U[letters] x the final
+  norm's gain, J_l of the J++ lens), top-1 / top-5 shares over the locker-first O and S rows; the whole-vocabulary
+  readout's rank and whether its top token is a digit beside. Probes: one-hot ridge (x0_probe.ridge) per family
+  (domain), classes = that family's entities, chance = 1 / classes; rows = every item's O and S prompts (labels: O's
+  bridge, S's bridge); 5 folds by scene (a scene's O and S rows together, O's bridge spread round robin), the penalty
+  by leave-one-fold-out over the training folds; inputs: the projection of the state on the span of his top-10 lens
+  directions there (ablate.top_span_removal, the prompt's clean read's top-10 tokens protected; through the lens), the
+  full residual (readable at all), and the residual minus that projection (outside the lens); accuracy out of fold on
+  the locker-first rows. Answer digit's layer: per locker-first O prompt the layer from which O's answer is the plain
+  logit lens's top token at P3 (model.unembed of the block output) through the last layer; per reader the lower
+  median; 'before' = cached layers strictly below it; P2 uses P3's. Read peak = the layer before the answer with the
+  highest through-the-lens accuracy (ties: the earliest); the write clause is decided there (the best layer reported
+  beside, not deciding). Write arms, on O, one layer at a time at the position's block output (X0's AddRows): swap =
+  his J-part swap (jswap: h_O - J10(h_O) + J10(h_S), each state's own top-10 span, O's protected rows); swap_rand = a
+  random part of Delta = h_S - h_O at the swap's share of ||Delta||^2 (statement_positions.random_subspace_part, X0's
+  random basis seed 888 + layer; the share capped at 1, counted); jpp1 / jpp2 = h_O + 1 / 2 x X0's 25-atom signed OMP
+  part of Delta (x49_gain.lens_parts, 49.1's J(1,0) / J(2,0)); rand1 / rand2 = X0's random part at that share, gain 1
+  / 2; whole = h_O <- h_S. The passing arm's own random twin must be <= 0.10 (swap -> swap_rand, jpp1 -> rand1, jpp2
+  -> rand2); the whole patch switching nothing = write fails. Beside (not deciding): swap_rot = his own control
+  (jswap's swap_rot, the swap's change turned by the layer's Haar rotation, seed 888 + layer = ablate.rotation's
+  draw), and the write clause with swap_rot as the swap's twin. Switch = the top token is S's answer's first token;
+  'changed to another digit' (top token a digit other than O's and S's answers) reported separately. Plain-text loss
+  at P1 and P2 (-log p(O's next token), O's prompt cut after the position); none at P3. Labels per reader, model and
+  position (P3, P2): (d) if the full-residual probe < 0.5 at every layer before the answer; else (a) read and write;
+  (b) read, no write; (c) through-the-lens < 0.5 at every layer before the answer, full >= 0.9 at one of them, and no
+  write; else 'none of the four' (or 'writable, not readable'); no cached layer before the answer = undecided. Remove
+  (P3, on O, descriptive): his knock-out (top-10 span at P3 at every layer of the read peak +- 2) and the J++-25
+  removal at the peak layer (47.5's zeroing: the span of Delta's 25 OMP atoms at P3), each against a random subspace
+  part of the same share (seed 888 + layer); cost = kept(random) - kept(removal). The P3 read peak for the removal is
+  computed in the job by the read stage's code on the cached states (peak.json, no statistic printed); the read stage
+  re-derives it and checks the match. Point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over bridge
+  items (10,000, seed 0) beside. Code: scripts/x51_jread.py (position_rule, write_at, read_stats; verdict, view).
+controls:
+- "a random part of the same share beside every write arm (swap -> swap_rand, J++ part -> X0's random part at its share, gain 1 and 2); his own rotated control (swap_rot) beside the swap"
+- "the whole-state patch (h_O <- h_S) at every position and layer: the upper bound the write ratio is read against, at the read peak"
+- "the full-residual and outside-the-lens probes beside the through-the-lens probe; chance per family; per-variant (O / S) accuracy; scenes held out"
+- "the answer digit's layer at P3 (plain logit lens): the read must precede it; the whole-vocabulary lens top token a digit, by layer"
+- "O unedited (none) per reader; P1 at L against 49.1's stored J(1,0), J(2,0), R(1,0), R(2,0), J(1,1) on the same items, item by item"
+- "removal at P3 against a random subspace part of the same share (his knock-out over the band, the J++-25 removal at the peak)"
+- "plain-text loss at P1 and P2 under every arm; 'changed to another digit' separately from 'switched to S's answer'"
+n: '200 main-test items (44 bridge entities) read at 17 layers x 3 positions x 2 readers x O / S; 69 locker-first items (34 bridge entities, 49.1''s) decide and carry the write / remove arms; chat'
+seeds: [888, 0]
+notes: "Batch 51 addendum 2 (Dan 28 Oct 18:15), 51.10, speedup (after the 9B). Sealed: the run writes manifest (switches, lens record, inputs' sha256), plan (counts), gate (the source run's, asserted), cases (every item, positions, locker-first flag), clean.jsonl (the clean reads and protected rows), logit_lens.jsonl (P3, every layer: top token, ranks of O's and S's answers), states.npz (fp16 [items, reader, O/S, P1-P3, layer, d] states and top-10 projections, plus the lens ranks; 0.4-0.9 GB, GITIGNORED by results/x51_jread/.gitignore: pull it with rsync beside the run folder), peak.json (the P3 read peak per reader), outcomes (write reads), losses, norms (per item, reader, position and layer: ||Delta||, the shares of P_J Delta, its twin, the swap's change and its twin), removal and removal_norms; no label. After the pull (CPU, box or local, ~5-15 min): uv run python scripts/x51_jread.py read --name x51_10_27b (results/x51_jread/read-<run>-<UTC>/read.json: statistics, no label). After Dan's Q51.10 is committed (CPU, all three models): verdict (verdict.md / verdict.json: the labels per reader and position, every layer's numbers with CIs, the removal costs, P1 beside 49.1, the summary table; one figure per model jread_<model>.png: rows P1 / P2 / P3, columns layers, panels lookup / recall, heat = the through-the-lens probe, number = the swap's switch, dashed line = the answer layer, box = the read peak) and view (view.md: 5 rendered prompts per model with P1 / P2 / P3 marked, 10 random rows per arm (seed 0), the four dumbest-ways checks: the probe per variant and its unseen classes; the whole-vocabulary lens top token a digit by layer against the answer layer; switched to S's answer vs changed to another digit, per arm and layer; the ratio to the whole patch at the read peak vs at the best layer and the whole patch's max). Memory: everything under no_grad; per-item rows cloned to the CPU; one layer's J++ dictionary (lens.vectors) and his lazily cast W_g dictionary at a time (5 at once only for the removal band), d x d random bases per layer. Plan: results/x51_jread/plan-20261028T174417Z/. Estimate from results/jobq/ledger_sesterce-h100x2.jsonl (one H100): x51_1_27b ran 202.5 s wall for 6,624 reads plus greedy rows (~50 reads/s after the load); 51.10 here: 56,442 write reads + 37,536 shorter loss reads + 690 removal reads + 800 cache forwards recording every layer, 17 per-layer OMP / top-10 fits and random bases: about 0.6 h with the model load; 1.0 with margin (Dan: ~2 GPU-h). One job per model fits Dan's cost, so no split."
