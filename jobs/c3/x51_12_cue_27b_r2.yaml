@@ -1,0 +1,100 @@
+id: x51_12_cue_27b_r2
+title: "Batch 51.12 r2 (amendment 20:20) on the 27B (L32): is it the bridge or the answer that moves through the lens? Answer-direction control on 47.3's described bridge in locker scenes (the change at the cue token; lookup and recall, both decisive): first the lens-readout check of the answer word at the edited token, then without the J++ part / without it with the answer directions projected out / without the answer directions alone, each against a same-size random part"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_answer.py run --set cue --name x51_12_cue_27b_r2
+question: >-
+  Is it the bridge or the answer that moves through the lens? At the edited token, does removing the change's J++
+  part cost the reader's switches because it carries the bridge entity, or because it carries the answer (the lens
+  atoms of the answer words)? And is the answer word read there at all?
+why_it_matters: >-
+  Zach (19:30): at the description's last token of a never-named bridge the J++ lens reads the answer about as
+  strongly as the bridge (27B: answer top-1 ~65 %, bridge ~45 %); a lens-part effect there can be the answer
+  moving, not the bridge (Neel's confound). Dan's amendment (20:20): on E1 / 47.3 the answer directions are the
+  number words (digits are not in the letter dictionary, so a digit A was empty by construction), the readout
+  check says by measurement whether the answer word is read at the bridge word at all, and Z2 gains a
+  frequency-matched control because 'South', 'G', 'Port' are common word starts. On Z2 an 'answer' result
+  withdraws the (a') verdict; on E1 it changes the headline wording; either result goes on the slide.
+hypotheses:
+  Q51.12: "Dan's answer in predictions/2026-10-28_dan.md (Q51.12: entity / answer / mixed per set and model) is committed ('entity'); the run writes per-item outputs and the arm-1 agreement only; scripts/x51_answer.py verdict and view read the r2 runs."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml addendum_4, 51.12), verbatim: "Rules, fixed in advance (per model, per
+  reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond
+  random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1.
+  Else: mixed, report both shares." Amendment (addendum_4_amendment, Dan 20:20), verbatim: "Answer directions on
+  the main test and 47.3 are number words, not digits. For each item, A = the lens atoms of the number words of
+  both readers’ answers in O and S (“ six”, “ eight”, “six”, “Six” …; for the lookup the locker digits’ words; for
+  47.3 all four lockers’ words). Digits stay out of A (not in the dictionary). Report per item how many of the 25
+  OMP atoms are in A and the share of Δ's energy along A (norms.jsonl). With A empty by construction the test is
+  void; with number words it is real. Lens readout check at the bridge word (CPU, cached states), before the arms
+  are read: the rank of the recall’s answer word (“ six”) and of the lookup’s locker word in the J++ readout at
+  the bridge word at L, on O and S, against the rank of the bridge entity’s token. Report the share of items where
+  an answer word is in the top-10 / top-50. If the answer word is never near the top, the confound cannot apply to
+  E1 and we say so by measurement, not by construction; if it is, arms 2–3 decide. Z2 stays as designed, with two
+  additions: besides the same-size random control, a frequency-matched control (remove the same number of
+  unrelated letter atoms with similar readout norm / corpus frequency as the answer tokens), because “South”, “G”,
+  “Port” are common word starts; and restrict A to the first token of the full answer word where the tokenizer
+  splits it. Rules unchanged: arm 3 is read against its controls, not against zero. “Projected out” = the J++ part
+  minus its component along span(A): keep. The E1 lookup is reported beside the recall (its arm-1 loss is ~0, so
+  “can’t tell” is expected and fine). Verdict text must say which case held: “void by construction” is never a
+  verdict; either “the answer word is not read at the bridge word (lens rank > 50 on ≥ 90 % of items)” or an
+  arm-based “entity / answer / mixed”." As computed (fixed before any run; Dan may override before the verdict):
+  items = the stored 47.3 run x47_cue_27b's chosen scenes (x47_cue: C2 locker scenes with the asked pick described
+  by a one-token cue, cue competence >= 0.90, gate 0.80 per reader), rebuilt by x47_cue.scenes from its kept cues
+  and checked id by id: 300 items, 15 bridge entities, L32 (plan in
+  results/x51_answer/plan-20261028T194230Z/plan-cue-27b.json); the gate is the source run's, asserted from its
+  gate.json (failed = not tested). Delta = h_S - h_O at the edited token at L from the lookup's prompts (both
+  readers' prompts agree through the cue token). P_J Delta = X0's 25-atom signed OMP part over the J++
+  letter-token atoms at L (x0_necessity.fit, the stored runs' path). Answer directions A per item:
+  JLens.vectors(L, ids) (unit rows: the OMP dictionary's own rows; not the unembedding) of the number words of the
+  recall's O and S answers (legs) and the lookup's four lockers a, b, c, e (x47_cue's routes) (suite_v1.WORDS: 6
+  -> 'six'), each variant (as is, leading space, capitalised, both) kept where it is exactly one letter token (all
+  40 variants of 'zero'..'nine' are one token on this tokenizer); digits never in A (not in the letter
+  dictionary); |A| = 16-24 tokens per item (median 20.0; hist 16: 49, 20: 153, 24: 98); own answer word without a
+  letter token: 0; span(A) by SVD (rank tol 1e-6). Delta's 25 OMP atoms in A: not computable at plan time (needs
+  Delta at L; no states of these items are cached and no stored x0_atoms run fits them); the run reports every
+  item (norms.jsonl n_answer_atoms_in_25). Readout check, before the arms (amendment): the run records, from the
+  forwards that give Delta (no states are cached; readout.jsonl), per reader the rank (1 + tokens with a strictly
+  higher lens logit, full vocabulary) of its own answer word (the best of its A-style variant tokens) in the J++
+  readout at the edited token at L, O's answer on O's state and S's on S's (the lookup's state, shared by both
+  readers), and the bridge entity's rank; the verdict (CPU) computes the shares of items with the word in the top
+  10 / top 50 (O, S, either) and 'not read' = rank > 50 on both O and S; >= 90 % of items not read -> the verdict
+  for that reader is 'the answer word is not read at the bridge word (lens rank > 50 on X % of items)', the arms
+  reported beside; else the arm-based label (never 'void by construction'). Arms added at the edited token at L on
+  O (X0's AddRows), each against a random part of its own share (x6_routes.removal_arms: X0's random subspace,
+  seed 888 + L, one basis for all arms): arm 1 no_jpp = Delta - P_J Delta (as run; checked against the stored run
+  item by item, agreement.json); arm 2 no_jpp_A = Delta - (I - P_A) P_J Delta (projected out = the J++ part minus
+  its component along span(A), kept from r1); arm 3 no_A = Delta - P_A Delta; arm 4 no_A_rand = arm 3's random
+  twin (without a random part of A's share). Extra loss e_k = X0's excess (S_rand_k - S_k) / S_whole per reader;
+  read: X0's chat read (top token after the digit's space token); the lookup's switch follows the change (identity
+  b, position c or value e: x47_cue's FOLLOW), the recall's is S's legs. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7;
+  'arm 3 costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'arm 3 alone
+  costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Point estimates decide (EPS 1e-9 at the bars); e1 <= 0 or undefined ->
+  can't tell; cluster-bootstrap CIs over the bridge entity (10,000, seed 0), paired across arms (ratios on the
+  same draws). Decisive cells for Q51.12: both readers. Beside (descriptive): per item |A|, A's rank, how many of
+  Delta's 25 OMP atoms are in A and Delta's energy share along span(A) (norms.jsonl); the lens readout's top-1
+  class at the edited token on O and S (own answer / own bridge entity / neither); X0's validity bar per reader.
+  Code: scripts/x51_answer.py verdict (verdict.md / verdict.json) and view (view.md).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "the lens-readout check of the answer word at the edited token (rank > 50 on >= 90 % of items: not read), stated before the arms"
+- "arm 1 against the stored run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "O unedited and the whole change read with the same edits batch"
+n: '300 items (15 bridge entities) of x47_cue_27b at L32; 4800 reads'
+seeds: [888, 0]
+notes: >-
+  Batch 51 addendum 4 amendment (Dan 20:20), 51.12 r2, cue. Replaces x51_12_cue_27b (cancelled before it ran:
+  digit A, empty by construction). Q51.12's Dan line is committed ('entity'); the run still writes no verdict:
+  manifest (before any GPU work: model pin, switches, code, lens, the source run's files' sha256), plan (counts),
+  gate (the source run's, asserted), cases (with A's token ids and words), readout (lens top-1, the answer word's
+  and the bridge entity's ranks at the edited token on O and S), norms (per item ||Delta||, the shares of the
+  removed parts incl. share_A, |A|, rank, answer atoms among the 25), outcomes (every reader x O unedited and 7
+  arms: switched, top, route, p_org, p_alt, ld) and agreement.json. By hand (CPU): uv run python
+  scripts/x51_answer.py verdict and view. Estimate: unchanged from r1's spec (0.2 h, from the box ledger's x49_1 /
+  x50_z2 wall times; Dan's brief ~0.3 per model per set); r2 changes only A's tokens and adds the answer word's
+  rank to the readout (no extra forwards). No items, layers or reads differ from the source run.
