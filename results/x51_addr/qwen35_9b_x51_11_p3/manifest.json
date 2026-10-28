@@ -1,0 +1,163 @@
+{
+  "exp": "x51_addr",
+  "run": "qwen35_9b_x51_11_p3",
+  "why": "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 3 on qwen3.5-9b at L12; sealed",
+  "part": 3,
+  "test": "51.11",
+  "spec": "jobs/c3/batch51.yaml (addendum_3, 51.11)",
+  "question": "Q51.11 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T21:14:11Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "1cc52791d4293b3467a5f0d2797882f962f9d077",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "read": "X0's chat read (the top token after a digit's space token appended to O); edits added at the bridge word at L",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "31d15f59435fe45cd29f99b47b171e2cb6cd6ca1e2efbcd1afb28a363a960821",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/R.npz": "1f212802ae520713f742e8591e3cd45185614a9627e2e973fbe54c7d3af0cfda",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/cases.jsonl": "ca3e6f85c14b7e99dd94818be829ebe24d6040d7ea3a0bc231df0245ed07f76a",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/competence.jsonl": "94fd0c723423744b5adf3b4363c0ee1d1365f7a2940a6c2d27e182aab3a56a56",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/fit.npz": "f146cb628dec0043b622c7fe196b03096c040f475abe9869641940d3dff12cbc",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/fit_scenes.jsonl": "3da16c75576acf1961fb88e019a8a207aaf77dd943a3e43584661c5585455ce9",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/outcomes.jsonl": "464f6b06741ab15bcc5f8671b077dc05ee8d58273589713d2fc8977d32813829",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/pairs.json": "08ddd83fc81b5b10ad9fe52f7ff320626bdbe8fc7595da8f98a02ee796713239",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/reads.jsonl": "67b1c7ca8ae9c75ecde5c016deab77cb8704f0771ff3e3a8034d7bad804cb3ac",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/status.json": "c40a8e0a5ecd24ef131a8b6ed23be092a5490bca9979cb16d0930338f4431f3e",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/stops.json": "0ea03c682c6bf6cdcabacd0a2f6d1b4daf274169105499f1e80d717bfce9193e",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S3/train.jsonl": "96a2e99040ecc0f15b839e1859e01bf041ad8089ddfff96dc5828e1ea2d6d9df",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/R.npz": "e2feaa5bdd687b1a32af00f320b19a3a4d184eb656df81fbfb5a3cb3590bda1a",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/cases.jsonl": "e95ee17a718239198bb25a2abc43de67f4eabc6d8d6dd46e8968a72e10fcf2f4",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/competence.jsonl": "fd1e783be3194d8ae787e575350e5ad176c78aeed1ca235454f72c092f3e442c",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/fit.npz": "ce4568e252603862e96529917c9f9770788cfa9d3055d879f16bfea8bc3c1645",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/fit_scenes.jsonl": "fea4886e667c96ba86c80889b1109df04feb80cd9786d3f95818b9249cecc279",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/outcomes.jsonl": "d316c3af5f877fb9ac214212f0338c103e5f46f5baf3b282753cd39d00b0bcfa",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/pairs.json": "df5317e22cc6ab673ee1de86ec0ca4ff01248ac3d2242d71fd7e3a4dc3d60d70",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/reads.jsonl": "fbea7044be9d5c9d397a92f9bfd86b944ddd04bc417de3e1960a2b5405d5bae5",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/status.json": "739e3128fd76cbafaceb00faf93288b5ebe66f64993d2ddc49ec3febd65123ad",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/stops.json": "216653b0911fd6c8e269521e433748f0d3ef8e54613e2736615c9165870762d0",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S4/train.jsonl": "acb6ec9f0a158d2e0c1cbdf77849c700acf9abcdb3c1f8ed99686053e16e59e3",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/R.npz": "654d189af8169d03f9ecee76946f573da7af42c0053682ed63c6b94281abda13",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/cases.jsonl": "bd042ec76296d45d52e014b261aa8e999f553b1485b2acd5d5b625ae14279bfb",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/competence.jsonl": "5c367a2281919f6b04fd93436967be1169e25699afd6c027e9ce9fd3c0edbde5",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/fit.npz": "5e410791074f85ab46d752d24f78fedb152bd3177fd4bd78ba50d34dd63997f4",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/fit_scenes.jsonl": "47dd3b74c16959ad5c3d8881291abfbbffd522b62f9d1563353c1b7a9402806c",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/outcomes.jsonl": "73a6c62728ea7dec6ff8b3e50b4f3055252435436e97f13eecd63faa289bf334",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/pairs.json": "8bf602d5cd7348d4fefd70a6165fd356040a873d1a943a0473521b276a31b09e",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/reads.jsonl": "d918ecc9bce0e70c050a3ab2a85de9bf3ad44ee3b1b7f5fed8ef68fa5ac15bc2",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/status.json": "b901f58106e6d26c2efc8304856f8e75e7db4be11fd231cac72c71102443758d",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/stops.json": "0a4bcb792e9e4ee16a0c779c0c69af558729490524afa1f32b7adbd03ee7dd78",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S6/train.jsonl": "1931622e2e547171dd151e1a4b2d7cb608e4ece07301e862f50a5033fc6768a6",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/R.npz": "c8444885d685571b333c59e22b5368e8065f173cf53f6ba506bd562f419127c0",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/cases.jsonl": "a791f2d6a6cf4fbea43cb01761877a6207dc23b55ac46fc5ba04e1ce139f140d",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/competence.jsonl": "dac9fa1e7c4ec91449a08ee3d61410a143f890cb82ec8f75615b1395636c318d",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/fit.npz": "2d56c22507cf8f563fbdba557a2b3197e4da2e62ed57e3c92349b61ae05da54f",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/fit_scenes.jsonl": "0fb30bdeb11604618989c68a20078e11af51f1cb1d751604c9d96100da2b659d",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/outcomes.jsonl": "a254552e961ae151100a85e4f85391b889c0272f72ae96b71aa89b9b639f0511",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/pairs.json": "70ccfba87550a8c3cdd503b4cce29dc65c9cb031e51b3c8fc35d664346106e9d",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/reads.jsonl": "66372a90a8e583cab4947032fd4ba72725cdee6ed7f14ec3b74a231ac96810fa",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/status.json": "662c10fa603d24aed8cf908d74bd7e0c30e5a8c3d57021470207754de3cfeac7",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/stops.json": "42e9304d0fbea728fed07c9d97e1459f7239f67b072db7b426b5c745c77eaaa3",
+    "results/x51_addr/qwen35_9b_x51_11_p1/S8/train.jsonl": "830409b9450e5f4c5a9d3fcc1be6487b4b2ed337687868c6f6dd9b52163a4163"
+  },
+  "part1": "qwen35_9b_x51_11_p1",
+  "slots": [
+    6
+  ],
+  "ks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "pairs": {
+    "target": 360,
+    "min": 300,
+    "cap_per_ordered_pair": {
+      "3": 300,
+      "4": 200,
+      "6": 120,
+      "8": 80
+    },
+    "chunk": 8
+  },
+  "training": {
+    "method": "x51_das.train_fit (48.1's loop, early stopping on the select split's IIA every 25 steps, patience 4, micro-batch halved on CUDA OOM)",
+    "lr": 0.001,
+    "max_steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "target": "O's digit at slot j (the position answer) at the read position of O"
+  },
+  "bars": {
+    "own_iia": 0.8,
+    "random": 0.15,
+    "reach": 0.6,
+    "cut_one_code": 0.6,
+    "cut_partly": 0.3,
+    "different": 0.3,
+    "midpoint_works": 0.3,
+    "midpoint_none": 0.1,
+    "full_reach": 0.4
+  },
+  "doses": {
+    "swap": 2,
+    "midpoint": [
+      2,
+      4
+    ],
+    "midpoint_decisive": 2
+  },
+  "seeds": {
+    "scenes": 5110,
+    "split": 0,
+    "init": "5111 + 100 k (shuffled + 10)",
+    "shuffle": "5112 + k",
+    "random_R": "5113 + k",
+    "batches": "4803 + the R's seed",
+    "random_directions": 5114,
+    "random_subspaces": 5115,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "as_computed": "see scripts/x51_addr.py's docstring (repeated in the job specs)",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.11 answer",
+  "entity_split": {
+    "train": 19,
+    "select": 6,
+    "test": 7
+  },
+  "failed_slots": {},
+  "finished_utc": "2026-10-28T21:17:44Z"
+}
