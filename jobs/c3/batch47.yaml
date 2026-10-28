@@ -40,6 +40,13 @@ amendments:
     not_cut: ["47.0 (CPU)", "47.1", "47.4", "48.1 (9B)", "47.7(a)", "47.3"]
     after_the_freeze: "everything from 47.5 down that has not started by Wed 18:00 Paris, if it runs at all"
     new_scene_sets: "47.2, 47.3, 47.7 each get a competence report and 5 rendered prompts in the verify pack before their jobs are enqueued"
+  - id: 2
+    by: Dan, 28 Oct ~02:40
+    items:
+      - "Add 47.8 (layer anatomy of the switch), see tests."
+    queue_order: "47.1 -> 47.4 -> 48.1 (9B) -> 47.7(a) -> 47.8 (9B) -> 48.2 A -> 47.3 -> 47.8 (Muse) -> 47.2 (9B, Muse) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.8 (27B) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 47.7(b) -> 48.6"
+    not_cut_adds: ["47.8 (9B)"]
+    if_behind_at_12: "cut 47.2 (Muse) before 47.8 (Muse)"
 
 tests:
   - id: "47.0"
@@ -299,4 +306,58 @@ tests:
         answers >= 0.3 beyond random)? If no value appears question-last: "never the value" holds for a word value too
         (one line, no figure).
     question: Q47.7
+
+  - id: "47.8"
+    added_by: amendment 2 (Dan, 28 Oct ~02:40)
+    title: "Layer anatomy: which part of the bridge word carries the switch, layer by layer"
+    question_text: >-
+      As depth increases, what does a change at the bridge word move, and through which part: the lens-readable
+      identity, the identity outside the lens, the address, or nothing? The coarse version exists (Fig 6: 4-5 layers, J++
+      and position only; Q35.1 held on the 9B, failed on the 27B by 4 layers). This is the full sweep, with every part,
+      both readers, and the probes, so the around route can be seen forming.
+    scenes: >-
+      Routes scenes (another item moved; C0 sanity), locker-first, split by bridge entity into a fit half and a test half.
+      Per model: 9B every 2nd layer L2-L30, 200 test scenes; Muse every 4th layer L2-L50, 200 scenes; 27B every 4th layer
+      L4-L60, 150 scenes (after the freeze unless the queue is ahead).
+    per_layer_fit: >-
+      Fit half, cached states at the bridge word, one forward pass over the original prompts caching every layer: the
+      layer's J++ part (OMP K = 25 with the layer-l lens, per item); U_l: the address basis refit at l (x0_massmean's
+      layout-free class means of the slot; rank 4); I_l: identity outside J++ at l (item-pair mass-mean differences,
+      orthogonalised against the layer's J++ part, as at L); probes at l (x0_probe (a)(b)(c)): slot, answer digit, bridge
+      identity, entities held out.
+    arms: >-
+      Test half, the whole change Delta_l at the bridge word: whole; only-J++; only-U_l; only-I_l; without-J++;
+      without-U_l; without-I_l; each keep-only and without arm paired with a random part of the same share (random lens
+      atoms for J++, random subspace for U and I). Readers: lookup classified identity / position / value / original /
+      other; recall classified changed item / original item / the item at the target slot / other.
+    figure: >-
+      One column per model, x = layer as fraction of depth, 'not interpretable' shading where the whole change switches <
+      30% of a reader: (1) lookup under the whole change, stacked identity / position / value / original by layer; (2)
+      what carries each route: position share with only-U_l; identity share with only-J++; identity share with only-I_l;
+      thin lines = the random keep-only of the same share; (3) what each route needs: lookup extra loss without J++ /
+      without U_l / without I_l, by layer; (4) recall: switch under the whole change; extra loss without J++ and without
+      I_l; the share of recalls naming the slot item; (5) probes at the bridge word by layer: identity, slot, digit
+      (dotted), with the J++ share of U_l and of I_l beside.
+    rule: >-
+      Fixed in advance (per model; the rest is descriptive). Define l_J = the first layer from which the lookup's extra
+      loss without J++ stays <= 0.10; l_P = the first layer where the position share under the whole change is >= 0.20;
+      l_probe = the first layer where the slot probe is >= 0.80. (a) "Handoff": l_P >= l_J (the lookup stops needing the
+      lens part before or when it starts using the address); report l_P - l_J; Q35.1's failure on the 27B predicts a gap
+      of about 4 layers there. (b) "The address forms before it is used": l_probe <= l_P on every model; if the probe
+      reaches 0.80 only after l_P, the position route runs on a code the slot probe does not read, say so. (c) "Identity
+      leaves the lens": identity share with only-J++ is >= 0.5 at the earliest interpretable layer and <= 0.1 by L, while
+      identity with only-I_l rises to >= 0.3 by L, on >= 2 of 3 models; report the crossing layer. (d) "Never the value,
+      at any depth": value <= 0.05 at every interpretable layer. (e) The recall side: the layer window where the whole
+      change switches the recall >= 0.5, and whether without-J++ costs it >= 0.3 throughout that window (if the recall's
+      J++ dependence has its own onset layer, report it beside l_J).
+    what_it_adds: >-
+      One figure that shows the around route forming; it fixes Fig 6's "candidate" status: the rule-based readings
+      (a)-(d) replace "after the data".
+    dumbest_ways: >-
+      1) Per-layer refits on too few scenes make U_l and I_l noisy (fit half >= 150 scenes; report the refit's held-out
+      probe accuracy per layer). 2) Early layers switch nothing (the shading handles it; do not read extra loss where whole
+      < 30%). 3) The lens at early layers is poor (report the lens's held-out pass@10 per layer, as in the lens check,
+      beside row 2).
+    cost: "9B ~2.5 GPU-h; Muse ~3; 27B ~3. A CPU preview from the existing Fig 6 runs first, so the figure code is ready before the sweep lands."
+    question: Q47.8
 
