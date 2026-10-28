@@ -186,6 +186,16 @@ def test_answer_in_reads_only_its_own_block():
     assert A.answer_in("See **Q47.1** above.\n\nDan: z\n", "Q47.1") == ""  # a mention is not its block
 
 
+def test_answer_in_reads_per_model_lines_and_bullets():
+    # Dan's 28 Oct format: one line per model, or an empty 'Dan:' with the parts as bullets below it
+    per_model = "**Q47.1** x\n- (a) y\n\nDan (27B): out · 60%\nDan (9B): in · 65%\n\n**Q47.2** z\n\nDan:\n"
+    got = A.answer_in(per_model, "Q47.1")
+    assert got.startswith("out · 60%") and "Dan (9B): in · 65%" in got and "**Q47.2**" not in got
+    bullets = "**Q47.7** x\n- (a) option\n\nDan:\n- Part 1: (b) · 60%\n- Part 2: 0%\n\n**Q47.8** y\n"
+    assert A.answer_in(bullets, "Q47.7") == "- Part 1: (b) · 60%\n- Part 2: 0%"
+    assert A.answer_in("**Q47.7** x\n- (a) option\n\nDan:\n\n**Q47.8** y\n", "Q47.7") == ""  # options are not answers
+
+
 def test_require_answer_reads_the_committed_file(monkeypatch):
     seen = {}
 

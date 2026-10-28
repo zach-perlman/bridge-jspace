@@ -642,7 +642,7 @@ def dan_answer(rev: str = "HEAD") -> str:
     if f"**{QUESTION}**" not in text:
         return ""
     block = text.split(f"**{QUESTION}**", 1)[1].split("\n**Q", 1)[0]
-    mt = re.search(r"^Dan:(.*)$", block, re.M)
+    mt = re.search(r"^Dan(?: \([^)]*\))?:(.*(?:\n(?:Dan(?: \([^)]*\))?:|- ).*)*)", block, re.M)
     return mt.group(1).strip() if mt else ""
 
 

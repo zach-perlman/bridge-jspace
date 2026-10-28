@@ -99,7 +99,7 @@ def answer_in(text: str, question: str) -> str:
     question) in a predictions file's text; '' if none."""
     start = re.search(rf"^\*\*{re.escape(question)}\*\*", text, re.M)
     block = text[start.end() :].split("\n**Q", 1)[0] if start else ""
-    m = re.search(r"^Dan:(.*)$", block, re.M)
+    m = re.search(r"^Dan(?: \([^)]*\))?:(.*(?:\n(?:Dan(?: \([^)]*\))?:|- ).*)*)", block, re.M)
     return m.group(1).strip() if m else ""
 
 
