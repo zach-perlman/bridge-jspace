@@ -1,0 +1,75 @@
+id: x47_3_27b
+title: "Batch 47.3 on the 27B L32 (the old 45h): a computed bridge. The routes test (C2) with the asked pick described (\"Iris picked the one known for honey.\"), the change at the cue token; without J++ / U / U' refit on these scenes, each against a random part of its share; sealed"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+command: >-
+  BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x47_cue.py run --name x47_cue_27b
+question: >-
+  When the bridge must be recalled from a description ("the one known for honey"), does the lookup still go around the
+  lens, and does it ever take the value?
+why_it_matters: >-
+  Every routes and main-test scene so far names the bridge. The lens's own rule says flexible computation routes
+  through the J-space; a bridge the model must recall from a cue is where the lookup could need the lens part ((a'),
+  the more interesting outcome) or keep going around it ((a)). "Never the value" and a pointer at the cue token (U')
+  say whether the around route is the same one as for a named bridge.
+hypotheses:
+  Q47.3: "Dan's answer in predictions/2026-10-28_dan.md (Q47.3); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_cue.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.3, verbatim): (a) "the split holds for a recalled bridge": gap >= 0.3 and
+  lookup extra loss <= 0.10; (a') "a recalled bridge is handed through the lens": lookup extra loss >= 0.20 (then the
+  lens's rule, "flexible computation routes through the J-space", holds here and not for stated bridges; report it as
+  the more interesting outcome, not as a failure); (b) "never the value": value <= 0.05; (c) "a pointer at the cue
+  token": U' removal cuts position answers >= 0.30 beyond random. Report Zach's M->P numbers beside (toy suite: 12 / -2
+  / 0). Gate 0.80 per reader; a model that fails the gate is "not tested".
+  As computed (fixed before any run; Dan may override before it). Scenes: x6_routes' generator (animals, seed 2510,
+  700 scenes), its condition C2 only: three one-token items A, B, C, their locker sentences first, stated by name ("The
+  locker of the frog is 5."), then three pick sentences; the asked person's pick is a description, "<p> picked the one
+  known for <cue>." (the two other picks name B and C). O: the asked pick is A's cue. S: B's cue, and B's and C's
+  locker sentences trade places with B's digit -> e (not in O). Cues: one word per animal, the last word of the pick
+  sentence, one token on the model's tokenizer. Third-person sound verbs ("croaks", "barks", "quacks", "hoots") are two
+  or more tokens on both tokenizers (on the Qwens only hops / spins / trots / bites / climbs / talks / marches are
+  one), so every cue sits in the frame "known for <cue>" and each animal takes the first one-token word of its ordered
+  candidates (x47_cue.CUES; a sound or behaviour first where one is one token). On the Qwen tokenizer 22 animals: ant
+  colonies, bee honey, cat curiosity, chicken eggs, cow milk, dog loyalty, eagle soaring, elephant ivory, fox cunning,
+  frog ponds, goat climbing, horse racing, lion roaring, mouse cheese, owl wisdom, pig bacon, rabbit hopping, sheep wool,
+  spider webs, tick Lyme, turkey Thanksgiving, wolf packs (zebra dropped: not one token; 10 animals of the pool have
+  no one-word cue that names them alone). No cue names an animal, a slot, a number or a leg-count class; the pick
+  sentence holds no slot word (checked). Competence step, inside the job and recorded: per cue 10 unedited prompts (5
+  wordings x 2 people, seeded) asking which animal "the one known for <cue>" is (one word, 8 greedy tokens); a cue is
+  kept if the model names its animal in >= 9 of 10 (>= 0.90; its plural or its young / sex word counts); scenes use
+  the kept animals only; fewer than 3 kept animals or one leg count = "not tested (cue competence)". Gate: O's read
+  accuracy (X0's chat read, the top token after the digit's space) >= 0.80 for each reader over every generated scene,
+  never lowered; eligible: both readers say and read O's and S's answers right; the first 300 in scene order. The
+  change h_S - h_O at the cue token at L32, added on O. Arms: whole; without J++ (signed OMP, k = 25, over the
+  letter-token J++ atoms at L) and without a random part of its share (X0's random subspace, seed 888 + L); without U
+  (Alf of results/x0_probe/x0_probe_v4_27b, not refit) and its random part; without U' (P_cf refit on these scenes:
+  x7_pcf's centered rank-4 PCA of the cue token's S - O over pairs where A's locker sentence trades places with B's and
+  with C's, every digit kept, built from a seeded half of the generated scenes (seed 0, by scene); tested on the chosen
+  scenes of the other half) and its random part. Lookup routes: identity = b (B's digit in O), position = c (O's digit
+  at the slot that holds B's locker in S), value = e, original = a, other. Lookup switch = the lookup follows the
+  change (identity, position or value; S's own answer is the value, never seen from the lookup in routes runs; the
+  main test's switch, where identity and position coincide, is the closest reading); recall switch = the top token is
+  B's leg count. Extra loss = X0's excess (S_no_jpp_rand - S_no_jpp) / S_whole; gap = the recall's minus the lookup's,
+  on the same cluster-bootstrap draws. (a): gap >= 0.3 and lookup extra loss <= 0.10; (a'): lookup extra loss >= 0.20;
+  (b): the lookup's value share under the whole change <= 0.05; (c): on the test half's chosen scenes, the position
+  share without U''s random part minus the position share without U' >= 0.30 (shares of scenes). Point estimates
+  decide (EPS 1e-9); cluster bootstrap over the bridge item A (10,000 resamples, seed 0), 95% intervals beside; X0's
+  validity bar (S_whole >= 0.30 and >= 30 switches) per reader reported, not in the rule; an undefined extra loss (no
+  switch under the whole change) holds no clause. Zach's M->P numbers, our reading (no file prints the triple): the toy
+  suite's M->P points lost under the J++ top-10 knock-out minus under the rotated control at each model's C1 band
+  (27B L32-40: 12.9 - 1.0 = 12; 9B L12-16: 7.0 - 9.3 = -2; Muse L36-42: 0 - 0 = 0; rule.loss.MP -
+  rule.control_distance.MP in results/ablate_v2/c1_v2/full2_ko_v1.json, qwen35_9b_full2_ko_v1.json and
+  muse30_full2_ko_v1.json).
+  Scored by hand: scripts/x47_cue.py verdict.
+controls:
+- 'every removed part (J++ k = 25, U, U'') against a random part of its own share (X0''s random subspace, seed 888 + L)'
+- 'the recall on the identical patch (the gap)'
+- 'U'' fit on one half of the generated scenes, tested on the other half (no scene in both)'
+- 'the cue competence step (>= 0.90 per cue, unedited) and the read gate (0.80 per reader)'
+- 'descriptive: the elimination check (O with A''s cue swapped for the cue of a kept animal not in the scene; the share of lookups still answering A''s locker, i.e. finding A as the one item nobody else picked by name)'
+- 'descriptive: the share of O''s lookup replies (greedy) that name an animal instead of a digit'
+n: 'up to 300 eligible C2 scenes of 700 generated (plan check on the Qwen tokenizer: 700 scenes from 22 one-token cues before the competence step, 606 draws dropped for equal legs, none for tokenization or alignment; halves 350 / 350; 700 P_cf pairs; no slot word in any pick sentence); the competence step may keep fewer cues'
+seeds: [2510, 4703, 4704, 0, 888]
+notes: "Sealed: the run writes manifest, cues.json and cue_competence.jsonl, cases, competence, gate.json, pcf.npz / pcf_pairs.jsonl / pcf_fit.json, outcomes, norms, decoy.jsonl; no verdict. A missed gate or cue step exits 0 with gate.json / cues.json saying not tested. By hand after Dan's Q47.3 is committed (CPU): uv run python scripts/x47_cue.py verdict --runs x47_cue_27b qwen35_9b_x47_cue muse30_x47_cue (writes the table and the verify-pack view, 10 random scenes, seed 0). Seeds: 2510 scenes, 4703 the competence prompts' people, 4704 the elimination animal, 0 the halves and the bootstrap, 888 + L the random subspace. Estimate: x45k_27b_q2 (routes C0 + C2: 1,400 competence scenes, 600 read scenes, 13 arms) took 1,489 s on one H100; this job has 700 competence scenes (the competence pass dominates), 220 cue prompts in ~22 batched generations, 1,050 single forwards for P_cf's pairs (pcf_mats_27b_v2, x7_pcf's 2,000 such forwards plus a routes C0 + C2 run, took 1,534 s, 45 s more than x45k_27b_q2), 600 forwards for the change and 300 read scenes with 8 arms: about 0.55 x 1,489 = 820 s with the model load, 0.23 h; 0.3 with margin."
