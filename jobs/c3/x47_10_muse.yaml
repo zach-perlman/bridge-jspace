@@ -1,0 +1,80 @@
+id: x47_10_muse
+title: "Batch 47.10 on Muse (L26): report the address. Routes C0 scenes with a third reader, the report ('Was the locker of <p>'s pick listed first, second or third?'; the digit variant beside), question-last and question-first; the lens's rank of the ordinal at the bridge word, the slot probe; the change at L whole / without J++ (letter and digit atoms) / without random / without U / without random / only U / only random; SEALED until Q47.10"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.7
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_report.py run --name muse30_x47_report --why "batch 47, amendment 4, test 47.10 (jobs/c3/batch47.yaml; Q47.10, sealed): the report reader on routes C0 scenes at L26, question-last and question-first; the lens's ordinal rank at the bridge word, the slot probe's states, and the arms"
+question: >-
+  Gurnee et al.: information not normally in the J-space can be surfaced to it on demand. The address (the pointer U)
+  is not verbalizable (47.0). Does it become lens-readable, and lens-dependent, when the task is to report it: does
+  the lens rank the correct ordinal at the bridge word under the report prompt, and does the report lose its switches
+  without the J++ part (surfaced on demand), or does the report ignore J++ and need U (reported late, converted to a
+  word at the question)?
+why_it_matters: >-
+  The routes tests found a lookup route around the lens (a pointer U the lens cannot read). If a reader whose task is
+  to say the address pulls it into the J-space at the token, the J-space is where the model surfaces what it needs
+  to verbalize (the workspace reading); if the report reads the same pointer around the lens and converts it to a
+  word only at the question, the address stays outside the J-space even when it must be spoken: the same address,
+  two consumers. Muse is the model where the lookup's loss without J++ was largest among the three (the Muse
+  disagreement with Zach's zeroing), so its report is the sharpest test of "lens-dependent on demand".
+hypotheses:
+  Q47.10: "Dan's answer in predictions/2026-10-28_dan.md (Q47.10); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_report.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.10): "Surfaced on demand": under the report prompt the lens ranks the
+  correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of
+  its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported
+  late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1
+  without J++ but >= 0.3 without U; the address is converted to a word at the question, not at the token. As computed
+  (fixed by the agent before any run; Dan may override before the run): Scenes: the routes generator's C0 scenes
+  (x6_routes.scenes, seed 2510: three one-token animals, their three locker sentences first, then three picks; O: the
+  asked person picked A, S: picked B, same lockers and digits; the asked item's locker in slot 1, 2 or 3 at random,
+  the control of dumbest way 1), 500 generated, the first 200 eligible kept per order. Readers, four separate prompts
+  over the same context (dumbest way 3; asserted: in the question-last order the four prompts share every token
+  through the bridge word, and each reader's gate is computed on its own prompt): lookup "Which locker belongs to
+  <p>'s pick?" (digit), recall "How many legs does <p>'s pick have?" (digit), report "Was the locker of <p>'s pick
+  listed first, second or third?" (word; O's answer is A's slot's ordinal, S's is B's), report_digit "Was the locker
+  of <p>'s pick listed 1, 2 or 3?" (digit; beside: it neither gates nor selects items). Read: X0's chat read
+  (tasks_v2's prompt, thinking off, 'Answer:' prefilled; Muse's template puts 'Answer:' right after the assistant
+  header): a digit reader with the space token appended, the word reader right after 'Answer:' with its answer token
+  ' first' / ' second' / ' third' (one token in all four spellings on this tokenizer: plan, 28 Oct); switch = the top
+  token over the vocabulary is S's answer; right = O's. Two question orders, each with its own gate, items, change
+  and reads: question-last (the question after the context, as every routes test) and question-first (the question
+  and its instruction before the context, one user turn). Why both: in the question-last order the bridge word
+  precedes the question, so its state at L is one and the same under the four prompts (causal attention; asserted on
+  the ids) and the lens clause "under the report prompt vs the lookup prompt" cannot differ there; the question-first
+  order is where surfacing on demand can show at the bridge word. The rule is applied per order. The agent's
+  recommendation: Q47.10 is answered on the question-first order, the question-last order reported beside as the
+  routes scenes as written; Dan decides. Gate: per order, each gated reader's (lookup, recall, report) read accuracy
+  on its own unedited O prompts >= 0.80; the digit report's reported; an order where a gated reader fails is not
+  tested; the job runs the competence first and stops with "not tested" (gate.json written, exit 0) if no order
+  passes. Eligible: lookup, recall and report say and read O's and S's answers right. Change: h_S - h_O at the bridge
+  word at L on each reader's own prompt (the lookup's serves all four in the question-last order), added on O. Parts:
+  J++ = signed OMP, K = 25, over the J++ lens's letter-token atoms plus the ten digit tokens (the main test's
+  letter-only restriction lifted; the ordinal words' four spellings are letter atoms, present on all three models:
+  plan; the atoms picked per item in norms.jsonl); U = the 4 pointer directions (x0_massmean.subspaces Alf on
+  muse30b_x0_probe_v4's states, not refit); random parts: X0's random subspace (seed 888 + L) at the part's share.
+  Arms: none, whole, no_jpp, no_jpp_rand, no_alf, no_alf_rand, keep_alf, keep_alf_rand. Lens read: JLens.readout of
+  O's bridge-word state at L (full vocabulary, special tokens out), the rank of O's slot's ordinal (the best of its
+  four spellings) and of its slot digit; top-5 = rank <= 5; "the lens ranks ... in >= 0.4 of items" = the share of
+  the order's items with top-5 rank under that reader's prompt. "Loses x of its switches without P beyond random" =
+  X0's extra loss, Jdep - Rdep = (1 - S_noP / S_whole) - (1 - S_noP_rand / S_whole) over the order's items; the
+  "without U" clause the same way against U's random part. Points from counts decide (EPS 1e-9 at the bars);
+  cluster-bootstrap CIs over bridge items (10,000, seed 0) beside. A reader whose whole change switches fewer than 30
+  items (X0's VALID_N) has no interpretable loss: the order is not tested. Neither label: "neither". Control: the
+  slot probe (x0_probe (b), ridge, the locker sentence's index, entities held out, 5 folds) on the stored bridge-word
+  states per order and reader (the verdict stage). C0 sanity: Muse has no one-pick reference (x6_routes C0_REF); the
+  question-last lookup's whole-change switch rate is recorded, descriptive. Scored by hand after Q47.10 is committed:
+  scripts/x47_report.py verdict; view (10 random items per order, seed 0, the prompts as the model reads them, the
+  bridge marked, every arm's answer, the lens's top-20); figures.
+controls:
+- 'the slot probe (x0_probe (b), entities held out) on the bridge-word states under each prompt: the address is there in both (verdict stage, from states.npz)'
+- 'the report''s read accuracy per true slot of the asked item''s locker (gate.json): the report must track the slot, not say "first" (dumbest way 1)'
+- 'the dictionary''s ordinal atoms: the four spellings of first / second / third and the ten digits, present or absent (manifest; dumbest way 2), and the share of items whose 25 OMP atoms include one (norms.jsonl)'
+- 'readers are separate prompts over the same context: the question-last prompts share every token through the bridge word (asserted per item), each reader''s gate on its own prompt (dumbest way 3)'
+- 'every removed or kept part against a random part of the same share (no_jpp_rand, no_alf_rand, keep_alf_rand)'
+- 'the lookup and the recall read beside the report on the same items; the question-last lookup''s whole-change switch rate recorded (no Muse one-pick reference)'
+n: '500 C0 scenes generated per order (plan on the Muse tokenizer, 28 Oct: 500 items, 32 bridge entities, none dropped by the encoding; O bridge in slot 1 / 2 / 3: 158 / 171 / 171); the first 200 eligible per order'
+seeds: [0, 888, 2510]
+notes: "Batch 47, amendment 4 (Dan, 28 Oct ~03:00); queue position after 47.8 (9B): 47.10 (27B, Muse; 9B if its gate passes). SEALED: the job runs `run` only and writes manifest, plan, cases, competence, gate, outcomes, lens, norms, states.npz and 10 items' greedy texts per order; the log prints the counts and the gate, no switch rate. After Dan's Q47.10 is committed, by hand (CPU): uv run python scripts/x47_report.py verdict --runs qwen35_9b_x47_report x47_report_27b muse30_x47_report; view --name muse30_x47_report; figures --verdict <its folder>. Seeds: 0 the bootstrap and the examples, 888 + layer the random subspace, 2510 the routes scenes. warm_cusolver before the model loads (the 45k Muse cusolver failure). GPU estimate: the 27B's 2420 s (x47_10_27b.yaml, from x6_routes_r2 and x45p_27b in results/jobq/ledger_sesterce-h100x2.jsonl) scaled by Muse's x45p_muse / x45p_27b = 196 / 243 = 0.81 -> 1950 s = 0.54 GPU-h, rounded up to 0.7 (Dan's estimate ~1 GPU-h); a gate failure stops it after the competence, about 0.37 h."
