@@ -11,7 +11,7 @@ Readings (fixed in note 13), for the lens-part swap insert_k10:
   (else: none)
 and note 10's decomposition on the D-passage share (full / lens / rem / remfix / lensrand).
 
-python scripts/nn_mp_read.py NAME RUN [RUN ...]
+python scripts/nn_mp_read.py NAME RUN [RUN ...] [--relations cities companies films landmarks]   (note 13 addendum)
 """
 
 from __future__ import annotations
@@ -35,12 +35,12 @@ def boot(by: dict[str, list[float]]) -> list[float]:
     return [round(out[25], 1), round(out[974], 1)]
 
 
-def main(name: str, runs: list[str]) -> None:
+def main(name: str, runs: list[str], relations: list[str] | None = None) -> None:
     rows = []
     for i, run in enumerate(runs):
         for line in (ROOT / "results/nn_swap" / run / "rows.jsonl").read_text().splitlines():
             r = json.loads(line)
-            if r["family"] == "MP":
+            if r["family"] == "MP" and (not relations or r["rel"] in relations):
                 rows.append({**r, "key": f"{i}:{r['id']}"})  # one key per item and donor seed
     by = collections.defaultdict(dict)  # key -> cond -> cls
     bridge = {}
@@ -49,7 +49,7 @@ def main(name: str, runs: list[str]) -> None:
         bridge[r["key"]] = f"{r['rel']}:{r['x']}"
     conds = sorted({c for d in by.values() for c in d})
     share = {c: {k: round(100 * sum(d.get(c) == k for d in by.values() if c in d) / max(1, sum(c in d for d in by.values())), 1) for k in CLS} for c in conds}
-    out: dict = {"runs": runs, "n": len(by), "share": share, "vs_controls": {}}
+    out: dict = {"runs": runs, "relations": relations, "n": len(by), "share": share, "vs_controls": {}}
 
     def contrast(cond: str, ctl: str, cls: str) -> dict:
         b = collections.defaultdict(list)
@@ -98,4 +98,7 @@ def main(name: str, runs: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2:])
+    args = sys.argv[1:]
+    rels = args[args.index("--relations") + 1 :] if "--relations" in args else None
+    runs_ = args[1 : args.index("--relations")] if "--relations" in args else args[1:]
+    main(args[0], runs_, rels)
