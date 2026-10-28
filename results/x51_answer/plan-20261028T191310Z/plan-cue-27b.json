@@ -1,0 +1,177 @@
+{
+ "set": "cue",
+ "target": "qwen3.6-27b",
+ "layer": 32,
+ "run": "x51_12_cue_27b",
+ "spec": "x51_12_cue_27b",
+ "code": {
+  "sha": "d5c04c826a38f6b4b1a3d898eeea065c2bde2ea1",
+  "dirty": false
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 300,
+  "org_read_accuracy": {
+   "PP": 1.0,
+   "PM": 0.9985714285714286
+  },
+  "gate": 0.8
+ },
+ "counts": {
+  "source": "x47_cue_27b",
+  "items": 300,
+  "cues_kept": 15
+ },
+ "entities": 15,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 4800,
+ "delta_forwards": 600,
+ "A_tokens_per_item": {
+  "n": 300,
+  "min": 4,
+  "median": 5.0,
+  "max": 6,
+  "mean": 5.163,
+  "hist": {
+   "4": 49,
+   "5": 153,
+   "6": 98
+  }
+ },
+ "A_letter_tokens_per_item": {
+  "n": 300,
+  "min": 0,
+  "median": 0.0,
+  "max": 0,
+  "mean": 0.0,
+  "hist": {
+   "0": 300
+  }
+ },
+ "A_tokens_most_common": [
+  [
+   "4",
+   289
+  ],
+  [
+   "2",
+   265
+  ],
+  [
+   "8",
+   174
+  ],
+  [
+   "1",
+   157
+  ],
+  [
+   "7",
+   153
+  ],
+  [
+   "5",
+   146
+  ],
+  [
+   "6",
+   129
+  ],
+  [
+   "3",
+   122
+  ],
+  [
+   "9",
+   114
+  ]
+ ],
+ "answer_atoms_in_omp_25": "0 by construction: no answer token of these items is a letter token, and OMP's dictionary is the letter tokens",
+ "prompts": [
+  {
+   "key": "C2-0037",
+   "bridge": "spider -> eagle",
+   "A": [
+    "2",
+    "4",
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the spider is 4. The locker of the eagle is 9. The locker of the fox is 6. Grace picked the one known for⟦ webs⟧. Kate picked the fox. Max picked the eagle.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the spider is 4. The locker of the fox is 6. The locker of the eagle is 7. Grace picked the one known for⟦ soaring⟧. Kate picked the fox. Max picked the eagle.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the spider is 4. The locker of the eagle is 9. The locker of the fox is 6. Grace picked the one known for⟦ webs⟧. Kate picked the fox. Max picked the eagle.\nHow many legs does Grace's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the spider is 4. The locker of the fox is 6. The locker of the eagle is 7. Grace picked the one known for⟦ soaring⟧. Kate picked the fox. Max picked the eagle.\nHow many legs does Grace's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "C2-0254",
+   "bridge": "cat -> turkey",
+   "A": [
+    "2",
+    "3",
+    "4",
+    "6",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the turkey is 8. The locker of the cow is 6. The locker of the cat is 2. Ivan picked the one known for⟦ curiosity⟧. Kyle picked the cow. Oscar picked the turkey.\nWhich locker belongs to Ivan's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the cow is 6. The locker of the turkey is 3. The locker of the cat is 2. Ivan picked the one known for⟦ Thanksgiving⟧. Kyle picked the cow. Oscar picked the turkey.\nWhich locker belongs to Ivan's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the turkey is 8. The locker of the cow is 6. The locker of the cat is 2. Ivan picked the one known for⟦ curiosity⟧. Kyle picked the cow. Oscar picked the turkey.\nHow many legs does Ivan's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the cow is 6. The locker of the turkey is 3. The locker of the cat is 2. Ivan picked the one known for⟦ Thanksgiving⟧. Kyle picked the cow. Oscar picked the turkey.\nHow many legs does Ivan's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "C2-0399",
+   "bridge": "spider -> cat",
+   "A": [
+    "1",
+    "4",
+    "5",
+    "7",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the spider is 4. The locker of the cat is 7. The locker of the horse is 5. Hugo picked the one known for⟦ webs⟧. Eve picked the horse. Clara picked the cat.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the spider is 4. The locker of the horse is 5. The locker of the cat is 1. Hugo picked the one known for⟦ curiosity⟧. Eve picked the horse. Clara picked the cat.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the spider is 4. The locker of the cat is 7. The locker of the horse is 5. Hugo picked the one known for⟦ webs⟧. Eve picked the horse. Clara picked the cat.\nHow many legs does Hugo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the spider is 4. The locker of the horse is 5. The locker of the cat is 1. Hugo picked the one known for⟦ curiosity⟧. Eve picked the horse. Clara picked the cat.\nHow many legs does Hugo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "C2-0442",
+   "bridge": "horse -> eagle",
+   "A": [
+    "2",
+    "3",
+    "4",
+    "6",
+    "7",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the horse is 7. The locker of the eagle is 6. The locker of the lion is 8. Hugo picked the lion. Ruby picked the eagle. Eric picked the one known for⟦ racing⟧.\nWhich locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the horse is 7. The locker of the lion is 8. The locker of the eagle is 3. Hugo picked the lion. Ruby picked the eagle. Eric picked the one known for⟦ soaring⟧.\nWhich locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the horse is 7. The locker of the eagle is 6. The locker of the lion is 8. Hugo picked the lion. Ruby picked the eagle. Eric picked the one known for⟦ racing⟧.\nHow many legs does Eric's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the horse is 7. The locker of the lion is 8. The locker of the eagle is 3. Hugo picked the lion. Ruby picked the eagle. Eric picked the one known for⟦ soaring⟧.\nHow many legs does Eric's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "C2-0538",
+   "bridge": "owl -> wolf",
+   "A": [
+    "1",
+    "2",
+    "4",
+    "5",
+    "7"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the horse is 1. The locker of the wolf is 5. The locker of the owl is 7. Max picked the one known for⟦ wisdom⟧. Eve picked the wolf. Zoe picked the horse.\nWhich locker belongs to Max's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the wolf is 4. The locker of the horse is 1. The locker of the owl is 7. Max picked the one known for⟦ packs⟧. Eve picked the wolf. Zoe picked the horse.\nWhich locker belongs to Max's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the horse is 1. The locker of the wolf is 5. The locker of the owl is 7. Max picked the one known for⟦ wisdom⟧. Eve picked the wolf. Zoe picked the horse.\nHow many legs does Max's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the wolf is 4. The locker of the horse is 1. The locker of the owl is 7. Max picked the one known for⟦ packs⟧. Eve picked the wolf. Zoe picked the horse.\nHow many legs does Max's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}
