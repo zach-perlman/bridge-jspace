@@ -1,0 +1,56 @@
+{
+  "run": "nn_swap_sweep_final_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 9): qwen3.6-27b layer sweep, site final",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "8-15",
+    "16-23",
+    "24-31",
+    "32-40",
+    "41-48",
+    "49-56",
+    "57-62"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "site": "final",
+  "conditions": [
+    "insert_k10",
+    "insert_k10_rand"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 80,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer"
+  },
+  "git_commit": "366b601fbda693f1e121db811c181c648a384564",
+  "git_state": {
+    "head": "366b601fbda693f1e121db811c181c648a384564",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

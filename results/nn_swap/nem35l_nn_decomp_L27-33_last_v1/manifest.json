@@ -1,0 +1,60 @@
+{
+  "run": "nem35l_nn_decomp_L27-33_last_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 10): nemotron-3.5-lightning decomposition, site last, L27-33",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "bands": [
+    "27-33"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "nem35l_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM",
+    "PK"
+  ],
+  "site": "last",
+  "conditions": [
+    "full_insert",
+    "lens_insert",
+    "rem_insert",
+    "remfix_insert",
+    "lensrand_insert",
+    "full_latent",
+    "lens_latent",
+    "rem_latent",
+    "remfix_latent",
+    "lensrand_latent"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer"
+  },
+  "git_commit": "7b373e88e67f42303ebb615ff6b8c9b4a70b819b",
+  "git_state": {
+    "head": "7b373e88e67f42303ebb615ff6b8c9b4a70b819b",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}
