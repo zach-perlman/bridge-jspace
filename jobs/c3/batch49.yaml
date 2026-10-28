@@ -1,6 +1,6 @@
-# Batch 49 (Dan, 28 Oct). The brief (claude/bridge-jspace-batch49-brief-2026-10-28.md) is not in the repo yet; this file
-# records amendment 1 (Dan ~14:10) verbatim in substance, before the next enqueue. Tests 49.1-49.6 are defined in the
-# brief and are added here when it is committed. Every rule below is fixed in advance as written, before any run;
+# Batch 49 (Dan, 28 Oct): the last GPU-hours before the freeze. The brief (pasted 28 Oct ~14:35) and amendments 1
+# (~14:10, the queue by value; 49.7 and 49.8 added) and 2 (~14:20, corrections to 49.1 / 49.2 / 49.7) are recorded here
+# before the next enqueue. Every rule below is fixed in advance as written, before any run;
 # results sealed until predictions/2026-10-28_dan.md holds Dan's committed answer; batch-47 conventions throughout
 # (jobs/c3/batch47.yaml header). "Swap" = adding or exchanging a part of the state.
 
@@ -9,6 +9,24 @@ by: Dan, 28 Oct
 predictions: predictions/2026-10-28_dan.md
 models: {qwen3.5-9b: 12, qwen3.6-27b: 32, muse-glimmer-30b: 26}
 freeze: "Wed 28 Oct 20:00 Paris: anything from queue item 6 down that has not started by then runs labelled 'after the freeze'; Thursday takes what lands, no new designs"
+
+brief:
+  by: Dan, 28 Oct (pasted ~14:35)
+  thursday: >-
+    Thursday is for untangling the claims, finishing what landed, and the hand check; no new designs on Thursday.
+  morning: >-
+    47.5: the recall follows the J++ part in a conflict but does not need it at one layer (0.94-0.97 kept). 47.1: the
+    lookup's identity route is outside the lens on all three; on the 27B the lens copies are redundant (1-25 alone 0.25,
+    26-100 alone 0.05, together 0.55). 47.8: identity early, position only in the last window before the token stops
+    being read; the slot probe reads the address 8-16 layers earlier. 48.x: four mechanism hypotheses failed. The claim
+    the track can now defend: both readers read the same word through redundant codes; they differ in which code they
+    weight when the codes disagree, and the lens reads only one of them.
+  cpu_parallel: >-
+    README: superseded by the README v6 brief (Dan ~14:30): do the v6 restructure instead of trims. Predictions Q49.1-Q49.3
+    and Q49.6 appended before any result opens; 49.4 under Q47.8's rules; 49.5 has no question. Hand-check pack order:
+    main gap (4 models); order 86/19; routes 0.48/0.51/0.00; pointer removal 0.08 vs 0.54; 47.5 zeroing 0.97/1.00; 47.1
+    27B (0.12 vs 0.67; 0.25/0.05/0.55); 47.8 9B position 0.51 at L12, 0.00 at L10; 47.4 locker-after 0.93; 47.2 v12
+    0.70; 47.3 9B gap 0.32; then whatever of 49.x / 47.15 / 48.1 lands.
 
 amendments:
   - id: 1
@@ -73,6 +91,104 @@ amendments:
       brief). Q49.7: add P(the best head is necessary by the rule above), 9B; Muse; and P(distributed, no single head).
 
 tests:
+  - id: "49.1"
+    title: "The gain map: two readers, two weights"
+    models: ["qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b"]
+    est: "~0.5 GPU-h each"
+    question: >-
+      Is the difference between the readers a difference of weights on the same two parts, rather than two routes? If
+      so, each reader's switch should depend on the gain of its own part and barely on the other's.
+    design: >-
+      Main-test scenes, locker-first, both readers, at L. The change written as Delta(alpha, beta) = alpha P_J Delta +
+      beta (Delta - P_J Delta), alpha, beta in {0, 0.5, 1, 1.5, 2} (25 arms; (1,1) the whole change; (1,0) only J++;
+      (0,1) without J++). Random control: the same with a random part of J++'s share in place of P_J Delta, at the four
+      corners (0,1), (1,0), (2,0), (0,2). Amendment 2: the extra arm (0, 2, U removed from the rest): Delta' = 2 (Delta -
+      P_J Delta - U U^T Delta), a random part of U's share removed beside. Read: switch rate per cell per reader.
+    rules:
+      a: >-
+        "Weights, not routes": the recall's switch at (2,0) >= 0.5 and at (0,2, no U) >= 0.5, random corners <= 0.15;
+        the lookup's switch at (2,0) <= 0.10 and at (0,1) >= 0.6.
+      b: '"Routes": the recall''s switch at (0,2) <= 0.2 while (2,0) >= 0.5.'
+      a_prime: '"The rest moves the recall only through the address": (0,2) >= 0.5 but (0,2, no U) <= 0.2.'
+      c: '"Neither"; report the two heatmaps.'
+    figure: Two 5x5 heatmaps per model (recall, lookup), the whole change marked, random corners as insets.
+    dumbest_ways: >-
+      1) Gain 2 is off-manifold: report plain-text loss at the bridge word under (2,0), (0,2), (2,2) against (1,1); a
+      corner with loss > 2x (1,1)'s is descriptive. 2) The split depends on K = 25: repeat the four corners with K = 100
+      on the 9B. 3) The gate (unchanged scenes; assert).
+    prediction: Q49.1
+  - id: "49.2"
+    title: The removal ladder
+    models: ["qwen3.5-9b", "muse-glimmer-30b", "qwen3.6-27b: bridge-word rungs only"]
+    est: "~1 GPU-h each"
+    question: >-
+      47.5 removed the J++ part at one token and one layer and the recall kept 0.97; Zach's knock-out removes the top-10
+      lens directions at every token over a band and the recall breaks. Where between the two does "follows" become
+      "needs", and does the lookup ever need it?
+    design: >-
+      Locker-first clean scenes (the earlier mention exists) and locker-after clean scenes (it does not); on S; zeroing
+      (47.5's operation, per-layer lens and OMP), the random subspace of the same share beside each rung. Rungs: (1)
+      bridge word, L; (2) bridge word, L..L+3; (3) + the item's earlier mention, L..L+3; (4) + the question's tokens,
+      L..L+3; (5) every token, L..L+3; (6) every token, Zach's band (9B L12-16, Muse L23-29). Amendment 2: on rungs
+      (3)-(5) the removal at tokens other than the bridge word is the projection onto the span of the same 25 atoms (the
+      bridge item's lens identity wherever it appears), random of the same share per token; rung (6) uses Zach's top-10
+      per token via his code path. Both readers: share of S's answers kept.
+    rules:
+      second_copy: >-
+        "The second copy is the earlier mention": rung (3) costs the recall >= 0.3 more than rung (2) in locker-first
+        scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes.
+      only_everything: '"Needed only when everything goes": rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5.'
+      lookup: '"The lookup never needs it" if <= 0.1 beyond random at every rung.'
+    figure: >-
+      Kept share by rung, two readers, two orders, random beside; the subtitle states the two definitions of rungs (5)
+      and (6).
+    prediction: Q49.2
+  - id: "49.3"
+    title: "The locker-after link: pooled probe"
+    models: ["qwen3.5-9b", "muse-glimmer-30b"]
+    est: "~0.4 GPU-h each"
+    question: >-
+      3b and 47.4 put the lookup's link in the locker sentences, made before L; 48.3 found no "who picked it" at the
+      item or number token. Distributed over the sentence, or not a person mark at all?
+    design: >-
+      Locker-after clean scenes; states at L and L/2 at every token of the bridge item's locker sentence. Probes
+      (entities held out): (i) the picker (3 classes) per token and on the sentence mean; (ii) "this item was picked by
+      the asked person" (binary) per token and pooled; (iii) the picked item's identity on the sentence mean. Controls:
+      the same probes in locker-first scenes (must be chance for (i), (ii)); the other items' locker sentences.
+    rules:
+      distributed: '"Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6.'
+      flag: '"A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5.'
+      neither: >-
+        "Neither at the sentence": both at chance; the link is made elsewhere; D1's locker-after map is the evidence.
+        Rewrite the README's "no forward binding" line from the result.
+    prediction: Q49.3
+  - id: "49.4"
+    title: "The 27B's anatomy, reduced"
+    models: ["qwen3.6-27b"]
+    est: "~1.5 GPU-h"
+    design: "47.8's arms and rules; every 8th layer L8-L56 plus L30, L32, L34; 150 scenes."
+    question: >-
+      The 27B is the model where the lookup partly follows the lens (0.14; described bridge 0.39; redundant lens copies).
+      Read beside the 9B and Muse: a position window at all? identity in the lens longer?
+    prediction: "Q47.8's rules"
+  - id: "49.5"
+    title: Clean-checkout reruns of the headline cells, for Thursday
+    models: ["qwen3.5-9b"]
+    est: "~1 GPU-h"
+    design: >-
+      Fresh worktree at HEAD, same commands, run names clean_: the main test (x0_necessity, L12, chat), routes C2, the
+      pointer removal / only-U arms, 47.5's zeroing, 47.8's L10 and L12 rows. Row-for-row comparison with the runs of
+      record (as clean57). Output results/checks/clean49_9b.json and one line per cell in the hand-check pack.
+    prediction: none
+  - id: "49.6"
+    title: Report of slot 1, reworded
+    models: ["qwen3.6-27b", "qwen3.5-9b"]
+    est: "~0.1 GPU-h"
+    design: >-
+      The report reader with "In position 1, 2 or 3 of the list?" and "Which of the three locker sentences - the first,
+      the second or the third - gives the locker of Iris's pick?", unedited only: accuracy by true slot.
+    rule: "If slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop."
+    prediction: Q49.6
   - id: "49.7"
     title: Does the question's attention follow the written address?
     models: ["qwen3.5-9b (~0.5 GPU-h)", "muse-glimmer-30b (~0.5 GPU-h)", "qwen3.6-27b last"]
