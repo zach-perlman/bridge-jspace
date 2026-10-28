@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 1fa5f740 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at c1718c17 from the run files.
 
 ## Setup
 
@@ -96,7 +96,7 @@
 **Result.** Identity falls 0.05 [0.02, 0.08]<!-- src: figures/story/data.csv | 47.1: identity answers lost beyond random without lens directions 26-100 --> / 0.05 [0.03, 0.08]<!-- src: figures/story/data.csv | 47.1: identity answers lost beyond random without lens directions 26-100 --> / 0.02 [-0.00, 0.04]<!-- src: figures/story/data.csv | 47.1: identity answers lost beyond random without lens directions 26-100 -->: outside the lens on all three. On the 27B, directions 1-25 cost 0.25<!-- src: figures/story/data.csv | 47.1: identity answers lost beyond random without lens directions 1-25 -->, both slices together 0.55<!-- src: figures/story/data.csv | 47.1: identity answers lost beyond random without lens directions 1-100 -->: redundant copies.
 **Figure.**
 
-![The lookup's identity route lies outside the lens, not in directions 26-100](../../figures/story/fig05b_identity_outside.png)
+![Only the J++ part costs the recall; no single part costs the lookup](../../figures/story/fig05b_identity_outside.png)
 
 **Conclusion.** Adding only the J++ part gives no identity answers, so even the identity route runs mostly outside J++. Not shown: the identity code itself (pending).
 
@@ -139,7 +139,7 @@
 **Result.** A probe reads the address in 0.92<!-- src: docs/x0_numbers.json | v4_b_before_122b -->-0.99<!-- src: docs/x0_numbers.json | v4_b_before_27b --> of scenes (layout alone 0.53<!-- src: docs/x0_numbers.json | v4_b_layout_before_27b -->). Without it position answers drop to 0.08<!-- src: docs/x0_numbers.json | rt_C2_no_alf_position_9b --> / 0.06<!-- src: docs/x0_numbers.json | rt_C2_no_alf_position_27b --> / 0.27<!-- src: docs/x0_numbers.json | rt_C2_no_alf_position_muse --> (random 0.54<!-- src: docs/x0_numbers.json | rt_C2_no_alf_rand_position_9b --> / 0.25<!-- src: docs/x0_numbers.json | rt_C2_no_alf_rand_position_27b --> / 0.55<!-- src: docs/x0_numbers.json | rt_C2_no_alf_rand_position_muse -->); alone it gives 0.26<!-- src: docs/x0_numbers.json | rtk_C2_keep_alf_position_9b --> / 0.09<!-- src: docs/x0_numbers.json | rtk_C2_keep_alf_position_27b --> / 0.29<!-- src: docs/x0_numbers.json | rtk_C2_keep_alf_position_muse -->; the swap, at about a real change's size, sends 0.46<!-- src: figures/story/data.csv | lookup target share, mean over locker pairs, s = 2 --> / 0.25<!-- src: figures/story/data.csv | lookup target share, mean over locker pairs, s = 2 --> / 0.52<!-- src: figures/story/data.csv | lookup target share, mean over locker pairs, s = 2 --> of lookups to the target. After 50 neutral sentences (9B) position answers stay 0.57<!-- src: figures/story/data.csv | 47.16: position share with 50 neutral sentences --> and the swap still sends 0.35<!-- src: figures/story/data.csv | 47.16: the swap (fit with none) sends lookups to the target, 50 sentences -->, though the code shifts 0.71<!-- src: figures/story/data.csv | 47.16: the code's shift beta with 50 sentences --> positions.
 **Figure.**
 
-![One fixed vector written at the bridge sends the lookup to its locker](../../figures/story/fig07_writes.png)
+![The address carries the position route; swapping it moves the lookup](../../figures/story/fig07_writes.png)
 
 **Conclusion.** The address is causal and survives distance. Not shown: who reads it (E9).
 
@@ -196,7 +196,7 @@
 **Result.** Lookups switch in 65%<!-- src: docs/x0_numbers.json | lk_order_before_muse -->-89%<!-- src: docs/x0_numbers.json | lk_order_before_122b --> of locker-first scenes, 9%<!-- src: docs/x0_numbers.json | lk_order_after_27b -->-19%<!-- src: docs/x0_numbers.json | lk_order_after_9b --> otherwise. With the locker after, the copy carries 0.70<!-- src: docs/x0_numbers.json | x45q_c_9b --> / 0.74<!-- src: docs/x0_numbers.json | x45q_c_27b --> / 0.76<!-- src: docs/x0_numbers.json | x45q_c_muse --> of its lookup switches, the bridge-word change 0.17<!-- src: docs/x0_numbers.json | x45q_a_9b --> / 0.01<!-- src: docs/x0_numbers.json | x45q_a_27b --> / 0.01<!-- src: docs/x0_numbers.json | x45q_a_muse -->.
 **Figure.**
 
-![Lookups follow the change mostly when the locker sentence comes first](../../figures/story/fig03_order.png)
+![Locker after the pick: the link is made in the locker sentences](../../figures/story/fig03_order.png)
 
 **Conclusion.** The bridge word carries the link only when the locker came first. Not shown: what the locker sentence holds (pending).
 

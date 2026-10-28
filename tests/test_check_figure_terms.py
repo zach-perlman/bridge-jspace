@@ -124,3 +124,25 @@ def test_v6_style_catches_retired_words_and_missing_figures():
     texts = [(C.V6_FIGS[0], "without the pointer"), (C.V6_FIGS[0], "a write at the bridge"), ("fig99", "pointer")]
     assert [r for *_, r in C.v6_style(_v6_layout(), texts)] == ["pointer", "write"]
     assert [r for *_, r in C.v6_style({}, [])] == ["not drawn"] * len(C.V6_FIGS)
+
+
+def test_v6_style_allows_three_panels_only_where_listed():
+    lay = _v6_layout()
+    lay["fig07_writes"]["panels"] = 3
+    assert not C.v6_style(lay, [])
+    lay["fig07_writes"]["panels"] = 4
+    assert [r for *_, r in C.v6_style(lay, [])] == ["more than 3 panels"]
+
+
+def test_a_marked_inset_is_not_a_panel():
+    import matplotlib
+
+    matplotlib.use("Agg")
+    from matplotlib.figure import Figure
+
+    from scripts import story_style as S
+
+    fig = Figure()
+    fig.add_axes((0.1, 0.1, 0.8, 0.8))
+    S.inset(fig, (0.6, 0.6, 0.2, 0.2))
+    assert len([a for a in fig.axes if not getattr(a, S.INSET, False)]) == 1

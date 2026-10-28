@@ -73,6 +73,13 @@ def latest(path: Path, pattern: str):
     return json.loads(found[-1].read_text()) if found else None
 
 
+def newest(path: Path, pattern: str) -> Path:
+    """The file latest() reads (its path, for a data.csv source)."""
+    found = sorted(path.glob(pattern))
+    assert found, f"no {pattern} under {path}"
+    return found[-1]
+
+
 def s01_split(plt) -> None:
     """Supplementary to Fig. 1: per model, the lookup's and the recall's J++ extra loss in each setting, joined; the gap printed."""
     rows = [("main test\n(two people swap picks)", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}", {}),
@@ -170,7 +177,7 @@ def parts_cells() -> dict[str, dict[str, dict]]:
             v = latest(pins.RESULTS_DIR / "x0_parts" / run, "verdict-*/verdict.json")
             for r in (v or {}).get("rows", []):
                 if r["part"] in parts:
-                    c = cells.setdefault(r["part"], {"share": r["median_share"], "source": run})
+                    c = cells.setdefault(r["part"], {"share": r["median_share"], "source": run, "n": r.get("n")})
                     c["lookup" if r["reader"] == X.LOOKUP else "recall"] = r["excess"]
         run = XF.Run(MAIN_RUNS[m])
         layer = X.PREDICTED[{k: t for t, k, _ in S.MODELS}[m]]
@@ -179,7 +186,8 @@ def parts_cells() -> dict[str, dict[str, dict]]:
             key = ("chat", layer, X.LOOKUP, d, X.K_MAIN, "signed")
             if key in allc:
                 cells[d] = {"lookup": allc[key]["excess"], "recall": allc[("chat", layer, X.RECALL, d, X.K_MAIN, "signed")]["excess"],
-                            "share": run.share.get(("chat", layer, d, X.K_MAIN, "signed")), "source": MAIN_RUNS[m]}  # fmt: skip
+                            "share": run.share.get(("chat", layer, d, X.K_MAIN, "signed")), "source": MAIN_RUNS[m],
+                            "n": int(N[f"n_{m}"])}  # fmt: skip
         out[m] = cells
     return out
 
@@ -612,9 +620,10 @@ def split_cell(setting: str, target: str, m: str) -> dict:
     return out
 
 
-def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True) -> None:
-    """One row per model: the lookup's and the recall's dots joined, the gap at the right end (bold; its interval if
-    ci). gap_col False: the gap is recorded but not written (Fig. 1 writes its own columns)."""
+def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True, models=S.MODELS) -> None:
+    """One row per model (models: story_style.MODELS' entries): the lookup's and the recall's dots joined, the gap at the
+    right end (bold; its interval if ci). gap_col False: the gap is recorded but not written (Fig. 1 writes its own
+    columns)."""
     S.extra_axis(ax, label=False)
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
     if gap_col:  # inside the panel's top band, clear of a two-line panel title
@@ -622,7 +631,7 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True) ->
                 color=S.COL["muted"], clip_on=False)  # fmt: skip
     what = SETTINGS[setting][0].replace("\n", " ")  # data.csv's quantity text
     labels = []
-    for i, (target, m, name) in enumerate(S.MODELS):
+    for i, (target, m, name) in enumerate(models):
         c = split_cell(setting, target, m)
         labels.append((name if ci else SHORT[m]) + c["mark"])
         lk, rc, y = c["lk"], c["rc"], -i
@@ -651,49 +660,51 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True) ->
         S.record(fig_id, target, f"{what}: lookup extra loss", *lk, source=c["src"])
         S.record(fig_id, target, f"{what}: recall extra loss", *rc, source=c["src"].replace("lk", "rc"))
         S.record(fig_id, target, f"{what}: gap", *gap, source=SETTINGS[setting][3].format(m=m))
-    ax.set_ylim(-len(S.MODELS) + 0.45, 0.92 if gap_col else 0.55)
-    ax.set_yticks([-i for i in range(len(S.MODELS))], labels)
+    ax.set_ylim(-len(models) + 0.45, 0.92 if gap_col else 0.55)
+    ax.set_yticks([-i for i in range(len(models))], labels)
     ax.tick_params(axis="y", length=0)
     ax.grid(axis="x", color="#eeeeee")
 
 
+V6_MODELS = tuple(x for x in S.MODELS if x[1] != "122b")  # v6: 9B, 27B, Muse; the 122B in supplements only
+
+
 def f01_split(plt) -> None:
-    """The main test, fixed in advance on all four models: per model the lookup's and the recall's J++ extra loss; at
-    the right the gap with its interval, and beside it (after the data, docs/split_by_order.md) the gap in the scenes
-    whose locker sentence comes before the asked pick."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.0))
-    fig.subplots_adjust(left=0.215, right=0.585, top=0.645, bottom=0.185)
+    """E1 (v6): the main test, fixed in advance, per model (9B, 27B, Muse) the lookup's and the recall's J++ extra loss
+    with 95% intervals, joined; at the right the gap with its interval. The 122B is in s01 (every scene set), the other
+    settings in Fig. 1b (fig01b_settings), the split by sentence order in E10 (fig03_order, s03_order_extra_loss)."""
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.9))
+    fig.subplots_adjust(left=0.215, right=0.70, top=0.70, bottom=0.17)
     S.title(fig, "Recall follows the J++ part of the bridge; the lookup mostly does not",
-            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
-            "(same size). 0 = the reader does not need the J++ part; 1 = every switch needs it.\n"
-            "Main test (two people swap picks).")  # fmt: skip
-    split_rows(ax, "main", "fig01", ci=True, gap_col=False)
-    first = split_cell("main", *S.MODELS[0][:2])
+            "Extra loss: switches lost without the J++ part, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
+    split_rows(ax, "main", "fig01", ci=True, gap_col=False, models=V6_MODELS)
+    # the 122B is drawn in s01 only; its fig01 rows stay in data.csv because scripts/joint_figures.py (j1) reads them
+    for target, m, _ in S.MODELS:
+        if m == "122b":
+            c = split_cell("main", target, m)
+            S.record("fig01", target, "main test (two people swap picks): lookup extra loss", *c["lk"], source=c["src"])
+            S.record("fig01", target, "main test (two people swap picks): recall extra loss", *c["rc"],
+                     source=c["src"].replace("lk", "rc"))  # fmt: skip
+    first = split_cell("main", *V6_MODELS[0][:2])
     for v, name, col in ((first["lk"], "lookup", S.COL["lookup"]), (first["rc"], "recall", S.COL["recall"])):
         ax.text(v[0], 0.38, name, ha="center", va="bottom", weight="bold", color=col)
-    ax.set_ylim(-4.05, 0.55)  # room for the band's label under the last row
-    ax.text(-0.05, -3.68, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"])
+    ax.set_ylim(-3.05, 0.6)  # room for the band's label under the last row
+    ax.text(-0.05, -2.72, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
+            linespacing=1.0)  # fmt: skip
     ax.set_xlabel("extra loss without the J++ part")
-    # the two gap columns: the main test's (fixed in advance) and the locker-before scenes' (after the data, open mark)
-    tr, grey = blend(fig, ax), "#7a7a7a"
-    x_gap, x_ci, x_mark, x_bgap, x_bci = 0.600, 0.663, 0.790, 0.803, 0.858
-    ax.text(x_gap, 0.38, "gap", transform=tr, va="bottom", color=S.COL["muted"])
-    ax.text(x_mark - 0.008, 0.38, "gap, locker before\nthe pick", transform=tr, va="bottom", color=S.COL["muted"])
-    for i, (target, m, _) in enumerate(S.MODELS):
-        g, b = interval(f"contrast_{m}"), S.parse(N.get(f"sbo_swap_before_gap_{m}"))
+    # the gap (recall minus lookup) and its interval, fixed in advance
+    tr = blend(fig, ax)
+    x_gap, x_ci = 0.725, 0.79
+    ax.text(x_gap, 0.38, "gap: recall − lookup", transform=tr, va="bottom", color=S.COL["muted"])
+    ns = set()
+    for i, (_, m, _) in enumerate(V6_MODELS):
+        g = interval(f"contrast_{m}")
+        ns.add(N[f"n_{m}"])
         ax.text(x_gap, -i, f"{g[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2, weight="bold")
         ax.text(x_ci, -i, f"[{g[1]:.2f}, {g[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
-        if b is None:
-            ax.text(x_bgap, -i, "not run", transform=tr, va="center", color=S.COL["muted"])
-            continue
-        ax.plot([x_mark], [-i], "o", ms=7, mfc="white", mec=grey, mew=1.6, transform=tr, clip_on=False)
-        ax.text(x_bgap, -i, f"{b[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2)
-        ax.text(x_bci, -i, f"[{b[1]:.2f}, {b[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
-        S.record("fig01", target, "main test (two people swap picks), locker before the pick: gap", *b,
-                 n=int(N[f"sbo_swap_before_n_{m}"]), source=f"sbo_swap_before_gap_{m}")  # fmt: skip
-    sh, sl = S.status_handles(("fixed", "after"))
-    legend(fig, sh, sl, 0.80)
-    fig.text(0.01, 0.02, "Lines: 95% intervals, bootstrap over bridge items.", color=S.COL["muted"])
+    ax.text(0.0, 1.13, "main test (two people swap picks)", transform=ax.transAxes, fontsize=12, weight="bold",
+            va="bottom")  # fmt: skip
+    S.panel_tag(ax, "–".join(sorted(ns)) + " per model", "fixed")
     S.save(fig, "fig01_split")
 
 
@@ -963,14 +974,34 @@ def order_cells() -> dict[tuple[str, str, str], dict]:
     return out
 
 
-def f03_order(plt) -> None:
-    """(a) After the data: the lookups (open purple bars, 95% Wilson) and the recalls (grey dots) the whole change
-    switches in the main test, the original bridge's locker sentence before vs after the asked person's pick sentence.
-    (b) The recall's (and the lookup's, where it has at least 30 switches) extra loss without the J++ part, locker before
-    vs after the pick: the main test (after the data) and the clean one-pick scenes (45m, fixed in advance)."""
+def order_switches(target: str, m: str) -> dict[tuple[str, str], tuple[float, float, float, int, str]]:
+    """The main test's switches under the whole change at the layer fixed in advance, split by sentence order (after
+    the data): (before / after, lookup / recall) -> (share, Wilson lo, hi, n, source)."""
     from bridge_jspace.stats import wilson
     from scripts import x0_strata as ST
 
+    run, la = MAIN_RUNS[m], X.PREDICTED[target]
+    rows = [x for x in XF.Run(run).rows if x["rendering"] == "chat" and x["layer"] == la and x["arm"] == "whole"]
+    cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
+    src = f"results/x0_necessity/{run}/outcomes.jsonl"
+    out = {}
+    for order in ("before", "after"):
+        mine = [x for x in rows if ST.features(cases[x["scene"]])["org locker vs asked pick"] == order]
+        for w in (X.LOOKUP, X.RECALL):
+            got = [r["switched"] for r in mine if r["reader"] == w]
+            k, n = sum(got), len(got)
+            p, lo, hi = wilson(k, n)
+            out[(order, "lookup" if w == X.LOOKUP else "recall")] = (p, lo, hi, n, src)
+    return out
+
+
+def s03_order_split(plt) -> None:
+    """Supplementary to E10 (Fig. 3 until v6, all four models): (a) after the data: the lookups (open purple bars, 95%
+    Wilson) and the recalls (grey dots) the whole change switches in the main test, the original bridge's locker
+    sentence before vs after the asked person's pick sentence. (b) The recall's (and the lookup's, where it has at
+    least 30 switches) extra loss without the J++ part, locker before vs after the pick: the main test (after the data)
+    and the clean one-pick scenes (45m, fixed in advance); on the main test's locker-before rows the gap (recall minus
+    lookup, docs/split_by_order.md; Fig. 1's column until v6)."""
     h = 10.25
     fig = plt.figure(figsize=(S.WIDTH, h))
 
@@ -986,25 +1017,19 @@ def f03_order(plt) -> None:
     fig.text(0.01, at(1.05), "(a) Lookups the whole change switches (%), with 95% intervals; after the data", **head)
     xs, labels = [], []
     for i, (target, m, name) in enumerate(S.MODELS):
-        run, la = MAIN_RUNS[m], X.PREDICTED[target]
-        rows = [x for x in XF.Run(run).rows if x["rendering"] == "chat" and x["layer"] == la and x["arm"] == "whole"]
-        cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
+        sw = order_switches(target, m)
         for j, order in enumerate(("before", "after")):
-            mine = [x for x in rows if ST.features(cases[x["scene"]])["org locker vs asked pick"] == order]
-            src = f"results/x0_necessity/{run}/outcomes.jsonl"
             x = i * 3.6 + j * 1.3
-            for w in (X.LOOKUP, X.RECALL):
-                got = [r["switched"] for r in mine if r["reader"] == w]
-                k, n = sum(got), len(got)
-                p, lo, hi = (100 * t for t in wilson(k, n))
-                if w == X.LOOKUP:
+            for what in ("lookup", "recall"):
+                p, lo, hi, n, src = sw[(order, what)]
+                p, lo, hi = 100 * p, 100 * lo, 100 * hi
+                if what == "lookup":
                     ax.bar(x, p, width=0.72, fc="white", ec=S.COL["lookup"], lw=2)
                     ax.errorbar(x, p, yerr=[[p - lo], [hi - p]], color="#333333", capsize=3, lw=1)
                     ax.text(x, hi + 2, f"{p:.0f}%", ha="center", va="bottom", fontsize=S.FONT, weight="bold")
                 else:
                     ax.plot([x + 0.62], [p], "o", ms=6, color=S.COL["recall"], zorder=3)
-                what = "lookups" if w == X.LOOKUP else "recalls"
-                S.record("fig03", target, f"{what} switched by the whole change, locker sentence {order} the pick",
+                S.record("s03", target, f"{what}s switched by the whole change, locker sentence {order} the pick",
                          round(p / 100, 4), round(lo / 100, 4), round(hi / 100, 4), n, source=src)  # fmt: skip
             xs.append(x)
             labels.append(f"locker\n{order}\nthe pick")
@@ -1056,14 +1081,20 @@ def f03_order(plt) -> None:
             if c is None:
                 bx.text(0.4, yy, "not run", ha="center", va="center", color=S.COL["muted"])
                 continue
-            S.record("fig03", target, f"{what}: recall extra loss", *c["recall"], n=c["n"], source=c["src"])
-            S.record("fig03", target, f"{what}: lookup switches", c["switches"], n=c["n"], source=c["src"])
+            S.record("s03", target, f"{what}: recall extra loss", *c["recall"], n=c["n"], source=c["src"])
+            S.record("s03", target, f"{what}: lookup switches", c["switches"], n=c["n"], source=c["src"])
             S.dot(bx, 0, yy, c["recall"], S.COL["recall"], kind, size=9)
             if c["switches"] >= VALID_SWITCHES:
                 bx.plot([c["lookup"][0], c["recall"][0]], [yy, yy], color="#d6d6d6", lw=3.5, zorder=1,
                         solid_capstyle="butt")  # fmt: skip
                 S.dot(bx, 0, yy, c["lookup"], S.COL["lookup"], kind, size=9)
-                S.record("fig03", target, f"{what}: lookup extra loss", *c["lookup"], n=c["n"], source=c["src"])
+                S.record("s03", target, f"{what}: lookup extra loss", *c["lookup"], n=c["n"], source=c["src"])
+                gap = S.parse(N.get(f"sbo_swap_before_gap_{m}")) if (test, order) == ("main", "before") else None
+                if gap is not None:  # Fig. 1's locker-before gap column until v6
+                    bx.text((c["lookup"][0] + c["recall"][0]) / 2, yy + 0.2, f"gap {gap[0]:.2f}", ha="center",
+                            va="bottom", fontsize=S.FONT - 1, color="#444444")  # fmt: skip
+                    S.record("s03", target, "main test (two people swap picks), locker before the pick: gap", *gap,
+                             n=int(N[f"sbo_swap_before_n_{m}"]), source=f"sbo_swap_before_gap_{m}")  # fmt: skip
             else:
                 too_few.append((yy, c))
         if too_few:  # the lookup's counts at the panel's right: too few switches (k of n)
@@ -1082,6 +1113,137 @@ def f03_order(plt) -> None:
                 if not m:
                     bx.text(0.01, yy, textwrap.fill(label, 18), transform=blend(fig, bx), fontsize=S.FONT,
                             weight="bold", va="center", linespacing=1.0)  # fmt: skip
+    S.save(fig, "s03_order_split", supp=True)
+
+
+ORDER_SWEEP = (("bw", "the bridge-word change", "--", "o"), ("ls", "the copy into the locker sentences", "-", "o"))
+BLOCK = 1.3  # Fig. 3 (b): one block per model on one axis, each block the model's layers scaled to [0, 1]
+
+
+def f03_order(plt) -> None:
+    """E10 (v6), two panels, 9B / 27B / Muse. (a) After the data: the share of lookups (purple bars) and recalls (grey
+    dots) the whole change at the bridge word switches in the main test, the locker sentence before vs after the asked
+    pick, with 95% Wilson intervals. (b) 45q (clean scenes, the locker after the pick): the lookups switched by layer,
+    the bridge-word change (dashed) against the copy of the changed prompt's states into the locker sentences (solid);
+    the sweep after the data (open marks), the rule's arms fixed in advance (filled: at L the bridge-word change and the
+    copy, at L/2 the copy); one block per model on one axis, x = the layer index (ticks 0, L, the last layer swept).
+    The old Fig. 3 with the 122B and its extra-loss panel: figures/supp/s03_order_split; the old Fig. 3b stays
+    fig03b_layers until the README drops it."""
+    h = 8.15
+    fig = plt.figure(figsize=(S.WIDTH, h))
+
+    def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
+        return (left, 1 - bottom_in / h, width, (bottom_in - top_in) / h)
+
+    S.title(fig, "Locker after the pick: the link is made in the locker sentences",
+            "A: switches under the bridge-word change, by sentence order. B: locker after the pick, by layer.")  # fmt: skip
+    a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
+    b = fig.add_axes(box(0.11, 0.81, 5.0, 7.25))
+
+    # (a) the order split
+    w = 0.34
+    ns = []
+    for i, (target, m, _) in enumerate(V6_MODELS):
+        sw = order_switches(target, m)
+        for j, order in enumerate(("before", "after")):
+            x = i + (j - 0.5) * 0.42
+            p, lo, hi, n, src = sw[(order, "lookup")]
+            a.bar(x, p, width=w, color=S.COL["lookup"], zorder=2)
+            a.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
+            a.text(x, hi + 0.02, f"{p:.2f}", ha="center", va="bottom", fontsize=S.FONT - 1, color=S.COL["lookup"],
+                   weight="bold")  # fmt: skip
+            r = sw[(order, "recall")]
+            xr = x + w / 2 + 0.05  # the recall beside its lookup bar
+            a.plot([xr, xr], [r[1], r[2]], color=S.COL["recall"], lw=1.2, zorder=4)
+            a.plot([xr], [r[0]], "D", ms=5.5, color=S.COL["recall"], mec="white", mew=0.6, zorder=5)
+            a.text(x, -0.04, f"locker {order}\nthe pick", ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            for what in ("lookup", "recall"):
+                v0, v1, v2, nn, _ = sw[(order, what)]
+                S.record("fig03", target, f"{what}s switched by the whole change, locker sentence {order} the pick",
+                         round(v0, 4), round(v1, 4), round(v2, 4), nn, source=src)  # fmt: skip
+            ns.append(n)
+        a.text(i, -0.25, NAMES[m], ha="center", va="top", fontsize=S.FONT, weight="bold")
+    a.set_xlim(-0.6, len(V6_MODELS) - 0.4)
+    a.set_ylim(0, 1.05)
+    a.set_xticks([])
+    a.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
+    a.set_ylabel("share switched")
+    a.grid(axis="y", color="#eeeeee")
+    a.set_axisbelow(True)
+    a.set_title("A  The bridge word moves the lookup when the locker comes first", loc="left", fontsize=12,
+                weight="bold", pad=26)  # fmt: skip
+    S.panel_tag(a, f"{min(ns)}–{max(ns)} per bar", "after")
+
+    # (b) 45q: the link made in the locker sentences, by layer
+    b.set_title("B  Locker after the pick: lookups switched, by layer", loc="left", fontsize=12, weight="bold", pad=26)
+    q = LANDED.get("45q")
+    if not q:
+        S.empty(b, "not run")
+        S.save(fig, "fig03_order")
+        return
+    d = {k: pins.RESULTS_DIR / p for k, p in q.items()}
+    vsrc, ssrc = rel(d["verdict"] / "x45q.json"), rel(d["sweep"] / "sweep.json")
+    v = json.loads((d["verdict"] / "x45q.json").read_text())
+    sweep = json.loads((d["sweep"] / "sweep.json").read_text())["runs"]
+    by = {mod["model"]: mod for mod in v["models"] if mod["status"] != "pending"}
+    ticks, tick_labels, nq = [], [], []
+    for k, (target, m) in enumerate(Q_MODELS):
+        x0 = k * BLOCK
+        mod = by.get(target)
+        b.text(x0 + 0.5, -0.14, NAMES[m], transform=b.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT,
+               weight="bold")  # fmt: skip
+        if mod is None or mod["run"] not in sweep or "readers" not in mod:
+            b.text(x0 + 0.5, 0.5, "not run" if mod is None else "not tested", ha="center", color=S.COL["muted"])
+            continue
+        cells = sorted(sweep[mod["run"]]["cells"][X.LOOKUP], key=lambda c: c["layer"])
+        last = cells[-1]["layer"]
+
+        def at(layer: float) -> float:
+            return x0 + layer / last  # noqa: B023 (used inside this iteration only)
+
+        la, half = mod["layer"], mod["arm_layers"]["d"]
+        for xl, txt in ((half, "L/2"), (la, "L")):
+            b.axvline(at(xl), ymax=0.93, color="#555555", ls=":", lw=1.1, zorder=0)
+            b.text(at(xl), 0.95, txt, ha="center", va="bottom", fontsize=S.FONT - 1, color="#555555")
+        xs = [at(c["layer"]) for c in cells]
+        for arm, name, ls, mk in ORDER_SWEEP:
+            y = np.array([c[arm] for c in cells])
+            b.fill_between(xs, y[:, 1], y[:, 2], color=S.COL["lookup"], alpha=0.13, lw=0, zorder=1)
+            b.plot(xs, y[:, 0], color=S.COL["lookup"], ls=ls, lw=2.0, marker=mk, ms=4.5, mfc="white",
+                   mec=S.COL["lookup"], mew=1.2, zorder=2)  # fmt: skip
+            for c in cells:
+                S.record("fig03", target, f"45q, layer {c['layer']}: {name} (lookups switched)", *c[arm], n=c["n"],
+                         source=ssrc)  # fmt: skip
+        lk = mod["readers"][X.LOOKUP]
+        for arm, xl, what in (("a", la, "the bridge-word change at L"), ("c", la, "copy at L, every locker-sentence token"),
+                              ("d", half, "copy at L/2, every locker-sentence token")):  # fmt: skip
+            r = lk["rate"][arm]
+            b.plot([at(xl)] * 2, [r[1], r[2]], color="#1e1e1e", lw=1.4, zorder=5)
+            b.plot([at(xl)], [r[0]], "o", ms=8, color=S.COL["lookup"], mec="#1e1e1e", mew=1.0, zorder=6)
+            S.record("fig03", target, f"45q, the rule's arm {arm}: {what} (lookups switched)", *r, n=lk["n"],
+                     source=vsrc)  # fmt: skip
+        nq.append(str(mod["sanity"]["pass"]))
+        ticks += [at(0), at(la), at(last)]
+        tick_labels += ["0", str(la), str(last)]
+        if k == 0:  # the copy's line labelled on the first block (the dashed line: the legend)
+            peak = max(cells, key=lambda c: c["ls"][0])
+            b.text(at(peak["layer"]) + 0.05, peak["ls"][0] + 0.05, "copy into the\nlocker sentences", va="bottom",
+                   fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0)  # fmt: skip
+    b.set_xlim(-0.06, (len(Q_MODELS) - 1) * BLOCK + 1.06)
+    b.set_xticks(ticks, tick_labels)
+    b.set_ylim(-0.03, 1.05)
+    b.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
+    b.set_ylabel("share of lookups")
+    b.text(1.01, -0.045, "layer", transform=b.transAxes, ha="left", va="top")
+    b.grid(axis="y", color="#eeeeee")
+    b.set_axisbelow(True)
+    S.panel_tag(b, " / ".join(nq), "after")
+    hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["lookup"]),
+          plt.Line2D([], [], marker="D", ls="", color=S.COL["recall"], ms=5.5),
+          plt.Line2D([], [], color=S.COL["lookup"], ls="--", lw=2.0), plt.Line2D([], [], color=S.COL["lookup"], lw=2.0),
+          plt.Line2D([], [], marker="o", ls="", ms=8, color=S.COL["lookup"], mec="#1e1e1e")]  # fmt: skip
+    legend(fig, hs, ["lookup", "recall", "bridge-word change", "copy into the locker sentences",
+                     "the rule, fixed in advance"], 1 - 0.62 / h, ncol=3)  # fmt: skip
     S.save(fig, "fig03_order")
 
 
@@ -1758,91 +1920,205 @@ def f06_depth(plt) -> None:
     S.save(fig, "fig06_depth")
 
 
+ADDRESS_COL = "#a63d40"  # v6: the address's own hue (no other meaning on the README figures)
+SWAP_MARK = {"9b": ("o", "-"), "27b": ("s", "--"), "muse": ("^", ":")}  # Fig. 7 (c): one purple line per model
+
+
+def route_row(run: str, arm: str) -> dict:
+    """The routes test's C2 row of an arm (another item moved) from run's newest verdict."""
+    v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+    r = next((r for r in (v or {}).get("rows", []) if r["condition"] == "C2" and r["arm"] == arm), None)
+    assert r is not None, f"{run}: no C2 row for {arm}"
+    return r
+
+
+def hbar(ax, y: float, v, col: str, h: float, label: bool = True, ec=None) -> None:
+    """A horizontal share bar with its 95% whisker and, if label, its value at the right of the whisker."""
+    ax.barh(y, v[0], height=h, color=col, lw=0, zorder=2)
+    ax.plot([v[1], v[2]], [y, y], color="#1e1e1e" if ec is None else ec, lw=1.2, zorder=3, solid_capstyle="butt")
+    if label:
+        ax.text(max(v[0], v[2]) + 0.025, y, f"{v[0]:.2f}", va="center", fontsize=S.FONT,
+                color="#1e1e1e" if col != S.COL["control"] else S.COL["muted"])  # fmt: skip
+
+
 def f07_writes(plt) -> None:
-    """Batch 44: per model, the lookup's share sent to the written locker against the dose in units of a real pointer
-    change's size (each pair's s / s*), thin lines per locker pair, the thick line their mean, grey the random direction
-    (at s / the pairs' mean s*); below, the recall's changed answers under the strongest write: the target item, the third
-    item, other."""
-    fig = plt.figure(figsize=(S.WIDTH, 7.0))
-    grid = fig.add_gridspec(1, 4, left=0.13, right=0.99, top=0.75, bottom=0.47, wspace=0.14)
-    S.title(fig, "One fixed vector written at the bridge sends the lookup to its locker",
-            "Dose: × a real change's size. Thin: each locker pair; thick: their mean.\n"
-            f"{S.LOWERED} gate lowered to 0.75 after the data.")  # fmt: skip
-    bars = fig.add_axes((0.25, 0.10, 0.60, 0.23))
-    for i, (target, m, _) in enumerate(S.MODELS):
-        ax = fig.add_subplot(grid[0, i])
-        ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
+    """E6 (v6), three panels, 9B / 27B / Muse. (a) The locker probe at the bridge word, locker-first scenes (x0_probe
+    v4: the README's v4_b_before_<m>) against its layout baseline (v4_b_layout_before_<m>). (b) The routes test,
+    another item moved, at L: the position share without the address against without a random part (same size)
+    (rt_C2_no_alf_position_<m>, rt_C2_no_alf_rand_position_<m>) and with only the address against only a random part
+    (rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>). (c) The swap by dose (x × a real change's
+    size): the lookups sent to the target locker, all locker pairs pooled (the README's x8_t<s>_<m>, 95% band), and a
+    random vector of the same size; the mean over locker pairs (the 26 Oct line) is still recorded. The recall's
+    answers under the strongest swap: figures/supp/s07_recall_follows_swap."""
+    from scripts import x0_details as XD
+
+    h = 7.9
+    fig = plt.figure(figsize=(S.WIDTH, h))
+
+    def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
+        return (left, 1 - bottom_in / h, width, (bottom_in - top_in) / h)
+
+    S.title(fig, "The address carries the position route; swapping it moves the lookup",
+            "A: a probe reads the address. B: position answers without it, or with only it. C: the swap, by dose.")  # fmt: skip
+    a = fig.add_axes(box(0.10, 0.27, 1.6, 3.95))
+    b = fig.add_axes(box(0.63, 0.30, 1.6, 3.95))
+    c = fig.add_axes(box(0.155, 0.70, 5.15, 7.25))
+    names = [SHORT[m] for _, m, _ in V6_MODELS]
+
+    # (a) the probe against the layout alone
+    ns_a = []
+    for i, (target, m, _) in enumerate(V6_MODELS):
+        src, rows = XD.probe_v4_rows(m)
+        r = rows[(XD.PROBE_TARGETS["slot"], XD.PROBE_ORDERS["first"])]
+        for key, v in ((f"v4_b_before_{m}", r["probe"]), (f"v4_b_layout_before_{m}", r["layout"])):
+            assert N[key] == f"{v[0]:.2f}", (key, N[key], v)  # the README's number, from the same file
+        hbar(a, -i + 0.13, r["probe"], ADDRESS_COL, 0.42)
+        hbar(a, -i - 0.24, r["layout"], S.COL["control"], 0.16)
+        S.record("fig07", target, "the locker probe at the bridge word, locker-first scenes", *r["probe"], n=r["n"],
+                 source=src)  # fmt: skip
+        S.record("fig07", target, "the locker probe's layout baseline, locker-first scenes", *r["layout"], n=r["n"],
+                 source=src)  # fmt: skip
+        ns_a.append(str(r["n"]))
+    a.set_yticks([0, -1, -2], names)
+    a.set_ylim(-2.55, 0.5)
+    a.set_title("A  The probe names the locker", loc="left", fontsize=12, weight="bold", pad=26)
+
+    # (b) without the address / with only the address, each against its random part
+    ns_b = set()
+    ticks, labels = [], []
+    for i, (target, m, _) in enumerate(V6_MODELS):
+        run, keep = ROUTE_RUNS[m]
+        for j, (rn, arm, ctl, label, key) in enumerate(((run, "no_alf", "no_alf_rand", "without it", "rt_C2_no_alf"),
+                                                         (keep, "keep_alf", "keep_alf_rand", "only it", "rtk_C2_keep_alf"))):  # fmt: skip
+            y = -1.25 * i - 0.55 * j
+            got, rand = route_row(rn, arm), route_row(rn, ctl)
+            for k, row in ((f"{key}_position_{m}", got), (f"{key}_rand_position_{m}", rand)):
+                stated = S.parse(N[k])
+                assert stated is not None, k
+                assert stated[0] == round(row["share"]["position"][0], 2), (k, N[k])
+            hbar(b, y + 0.08, got["share"]["position"], S.COL["position"], 0.26)
+            hbar(b, y - 0.15, rand["share"]["position"], S.COL["control"], 0.10)
+            ns_b.add(got["n"])
+            ticks.append(y)
+            labels.append(f"{SHORT[m]}, {label}")
+            src = str(newest(pins.RESULTS_DIR / "x6_routes" / rn, "verdict-*/verdict.json").relative_to(S.REPO))
+            S.record("fig07", target, f"another item moved, {arm}: position share", *got["share"]["position"],
+                     n=got["n"], source=src)  # fmt: skip
+            S.record("fig07", target, f"another item moved, {ctl}: position share", *rand["share"]["position"],
+                     n=rand["n"], source=src)  # fmt: skip
+    b.set_yticks(ticks, labels)
+    b.set_ylim(ticks[-1] - 0.45, 0.5)
+    b.set_title("B  Position answers", loc="left", fontsize=12, weight="bold", pad=26)
+    for ax in (a, b):
+        ax.set_xlim(0, 1.18)
+        ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+        ax.spines["bottom"].set_bounds(0, 1)
+        ax.tick_params(axis="y", length=0)
+        ax.grid(axis="x", color="#eeeeee")
+        ax.set_axisbelow(True)
+    a.set_xlabel("share of scenes")
+    b.set_xlabel("share of lookups")
+    S.panel_tag(a, " / ".join(ns_a), "after")
+    S.panel_tag(b, "–".join(str(n) for n in sorted(ns_b)) + " per model", "fixed")
+
+    # (c) the swap by dose, pooled over the locker pairs, against a random vector of the same size
+    ends = []
+    for target, m, _ in V6_MODELS:
         root = pins.RESULTS_DIR / "x8_write" / X8_RUNS[m]
         v, rc = latest(root, "verdict-*/verdict.json"), latest(root, "recall-*/recall.json")
-        if v is None or rc is None:
-            S.empty(ax, "not run")
-            continue
-        s_star = rc["s_real"]
-        mean_star = sum(s_star.values()) / len(s_star)
-        by_s: dict[float, list[float]] = {}
-        for j in range(3):
-            for k in range(3):
-                if j == k:
-                    continue
-                pts = sorted(
-                    (c["s"], c["target"][0]) for c in v["cells"] if c["kind"] == "write" and c["pair"] == [j, k]
-                )
-                star = s_star[f"{min(j, k)}-{max(j, k)}"]
-                ax.plot([s / star for s, _ in pts], [100 * t for _, t in pts], color=S.COL["lookup"], lw=1, alpha=0.35)
-                for s, t in pts:
-                    by_s.setdefault(s, []).append(t)
-        mean = sorted((s, sum(t) / len(t)) for s, t in by_s.items())
-        ax.plot([s / mean_star for s, _ in mean], [100 * t for _, t in mean], color=S.COL["lookup"], lw=3, marker="o",
-                ms=5)  # fmt: skip
-        rand = sorted((c["s"], c["target"]) for c in v["cells"] if c["kind"] == "random" and c["pair"] is None)
-        ax.plot([s / mean_star for s, _ in rand], [100 * t[0] for _, t in rand], color="#9a9a9a", lw=2, marker="s",
-                ms=5)  # fmt: skip
-        for s, t in mean:
-            S.record("fig07", target, f"lookup target share, mean over locker pairs, s = {s:g}", round(t, 4),
+        assert v is not None, f"{X8_RUNS[m]}: no verdict"
+        assert rc is not None, f"{X8_RUNS[m]}: no recall stage"
+        src = str(newest(root, "verdict-*/verdict.json").relative_to(S.REPO))
+        mean_star = sum(rc["s_real"].values()) / len(rc["s_real"])
+        mk, ls = SWAP_MARK[m]
+        by_s: dict[float, list[float]] = {}  # the mean over locker pairs, as recorded since 26 Oct
+        for cell in v["cells"]:
+            if cell["kind"] == "write" and cell["pair"] is not None:
+                by_s.setdefault(cell["s"], []).append(cell["target"][0])
+        for s, t in sorted(by_s.items()):
+            S.record("fig07", target, f"lookup target share, mean over locker pairs, s = {s:g}", round(sum(t) / len(t), 4),
                      source=X8_RUNS[m])  # fmt: skip
             S.record("fig07", target, f"dose (s / mean s*), s = {s:g}", round(s / mean_star, 4), source=X8_RUNS[m])
-        for s, t in rand:
-            S.record("fig07", target, f"lookup target share, random direction, s = {s:g}", *t, source=X8_RUNS[m])
-        ax.axvline(1, color="#555555", lw=1, ls=":")
-        ax.set_ylim(0, 100)
-        ax.set_yticks(*PCT)
-        ax.set_xlim(0, 4.2)
-        ax.set_xticks([0, 1, 2, 3, 4])
-        ax.grid(axis="y", color="#eeeeee")
-        if i:
-            ax.tick_params(labelleft=False)
-        else:
-            ax.set_ylabel("lookups to the\nwritten locker (%)")
+        for kind, col in (("write", S.COL["lookup"]), ("random", S.COL["control"])):
+            pts = sorted((cell["s"], cell["target"], cell["n"]) for cell in v["cells"]
+                         if cell["kind"] == kind and cell["pair"] is None)  # fmt: skip
+            x = [s / mean_star for s, _, _ in pts]
+            y = np.array([t for _, t, _ in pts])
+            if kind == "write":
+                c.fill_between(x, y[:, 1], y[:, 2], color=col, alpha=0.15, lw=0, zorder=1)
+                c.plot(x, y[:, 0], color=col, ls=ls, lw=2.2, marker=mk, ms=6.5, zorder=3)
+                ends.append((x[-1], y[-1, 0], SHORT[m]))
+            else:
+                c.plot(x, y[:, 0], color=col, ls=ls, lw=1.6, marker=mk, ms=6, zorder=2)
+                c.vlines(x, y[:, 1], y[:, 2], color=col, lw=1.2, zorder=2)
+            for (s, t, n), xi in zip(pts, x, strict=True):
+                # the random rows keep their 26 Oct quantity (scripts/joint_figures.py's j3 reads it)
+                q = (f"swap: lookups to the target locker, pooled over locker pairs, dose {xi:.2f} (s = {s:g})"
+                     if kind == "write" else f"lookup target share, random direction, s = {s:g}")  # fmt: skip
+                S.record("fig07", target, q, *t, n=n, source=src)
+    for xe, ye, name in ends:  # Muse and the 27B end near the same share: Muse's label above its line
+        c.text(xe + 0.07, ye + (0.06 if name == "Muse" else -0.02), name, va="center", fontsize=S.FONT,
+               color=S.COL["lookup"], weight="bold")  # fmt: skip
+    c.axvline(1, color="#555555", lw=1, ls=":", zorder=0)
+    c.text(1.04, 0.97, "as large as\na real change", transform=c.get_xaxis_transform(), va="top", color="#555555",
+           linespacing=1.0)  # fmt: skip
+    c.text(2.2, 0.035, "random vector (same size)", va="bottom", color=S.COL["muted"])
+    c.set_xlim(0, 3.4)
+    c.set_xticks([0, 1, 2, 3])
+    c.set_ylim(0, 1)
+    c.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
+    c.grid(axis="y", color="#eeeeee")
+    c.set_xlabel("dose (× a real change's size)")
+    c.set_ylabel("lookups sent to\nthe target locker")
+    c.set_title("C  The swap, by dose", loc="left", fontsize=12, weight="bold", pad=26)
+    S.panel_tag(c, "600 per dose and model", "fixed")
+    hs = [plt.Rectangle((0, 0), 1, 1, color=ADDRESS_COL), plt.Rectangle((0, 0), 1, 1, color=S.COL["position"]),
+          plt.Line2D([], [], color=S.COL["lookup"], lw=2.2), plt.Rectangle((0, 0), 1, 0.4, color=S.COL["control"])]  # fmt: skip
+    legend(fig, hs, ["address", "position", "lookup (band: 95%)", "random or layout control"], 1 - 0.62 / h, ncol=4)
+    S.save(fig, "fig07_writes")
+
+
+def s07_recall_follows_swap(plt) -> None:
+    """Supplementary to E6 (Fig. 7's lower panel until v6; after the data): per model (the 122B included), the
+    recall's changed answers under the strongest swap (s = 4): the target locker's item, the third item, other."""
+    fig, bars = plt.subplots(figsize=(S.WIDTH, 4.2))
+    fig.subplots_adjust(left=0.21, right=0.80, top=0.68, bottom=0.22)
+    S.title(fig, "Under the strongest swap, a changed recall names the target's item",
+            "The recall's changed answers under the swap at its largest dose; after the data.")  # fmt: skip
+    third, other = "#d98cb3", "#8a8a8a"
+    for i, (target, m, _) in enumerate(S.MODELS):
+        rc = latest(pins.RESULTS_DIR / "x8_write" / X8_RUNS[m], "recall-*/recall.json")
+        if rc is None:
+            bars.text(0.5, -i, "not run", ha="center", va="center", color=S.COL["muted"])
+            continue
         got = rc["changed_by_item"].get("write|4", {})
         total = sum(got.values())
         left = 0.0
-        for item, col, label in (("target", S.COL["lookup"], "the written locker's item"), ("third", "#d98cb3", "the third item"),
-                                 ("other", "#c8c8c8", "other")):  # fmt: skip
+        for item, col, label in (("target", S.COL["lookup"], "the written locker's item"), ("third", third, "the third item"),
+                                 ("other", other, "other")):  # fmt: skip
             share = sum(
                 n for it, n in got.items() if (it == item if item != "other" else it not in ("target", "third"))
             )
             share = share / total if total else 0
             bars.barh(-i, share, left=left, height=0.6, color=col, edgecolor="white", lw=0.8)
             if share >= 0.1:
-                bars.text(left + share / 2, -i, f"{100 * share:.0f}%", ha="center", va="center", fontsize=S.FONT,
-                          color="white" if item == "target" else "#222222")  # fmt: skip
-            S.record("fig07", target, f"recall changed under the strongest write (s = 4): {label}", round(share, 4),
+                bars.text(left + share / 2, -i, f"{share:.2f}", ha="center", va="center", fontsize=S.FONT,
+                          color="white" if item != "third" else "#222222")  # fmt: skip
+            # the quantity keeps its 26 Oct wording (data.csv keys); the figure says "swap"
+            S.record("s07", target, f"recall changed under the strongest write (s = 4): {label}", round(share, 4),
                      n=total, source=X8_RUNS[m])  # fmt: skip
             left += share
-        bars.text(1.01, -i, f"{total} changed", va="center", fontsize=S.FONT, color=S.COL["muted"])
-    fig.text(0.56, 0.41, "dose (× a real change)", ha="center", va="center")  # one x label for the four panels
+        bars.text(1.02, -i, f"n {total} changed", va="center", fontsize=S.FONT, color=S.COL["muted"])
     bars.set_xlim(0, 1)
-    bars.set_xticks([0, 0.5, 1], ["0", "50", "100"])
-    bars.set_yticks([-i for i in range(4)], [name_of(m, m in LOWERED_M) for _, m, _ in S.MODELS])
+    bars.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+    bars.set_xlabel("share of the recall's changed answers")
+    bars.set_yticks([-i for i in range(len(S.MODELS))], [name_of(m, m in LOWERED_M) for _, m, _ in S.MODELS])
     bars.tick_params(axis="y", length=0)
-    bars.set_title("When the recall changed under the strongest write, it named:", fontsize=S.FONT, loc="left", x=-0.3)
-    bars.legend([plt.Rectangle((0, 0), 1, 1, color=c) for c in (S.COL["lookup"], "#d98cb3", "#c8c8c8")],
-                ["the written locker's item", "the third item", "other"], loc="upper left", bbox_to_anchor=(-0.3, -0.18),
-                ncol=3, frameon=False, handlelength=1.2)  # fmt: skip
-    legend(fig, [plt.Line2D([], [], color=S.COL["lookup"], lw=3), plt.Line2D([], [], color="#9a9a9a", lw=2, marker="s"),
-                 plt.Line2D([], [], color="#555555", ls=":")],
-           ["write", "random direction (same size)", "as large as a real change"], 0.84)  # fmt: skip
-    S.save(fig, "fig07_writes")
+    S.panel_tag(bars, None, "after")
+    legend(fig, [plt.Rectangle((0, 0), 1, 1, color=c) for c in (S.COL["lookup"], third, other)],
+           ["the target locker's item", "the third item", "other"], 0.80)  # fmt: skip
+    fig.text(0.01, 0.015, f"{S.LOWERED} gate lowered to 0.75 after the data.", color=S.COL["muted"])
+    S.save(fig, "s07_recall_follows_swap", supp=True)
 
 
 # Fig. 8 (a) (Dan, 27 Oct ~00:30; the layout of the 26 Oct Fig. 8b draft): 45a's sentence before the lockers, rows top
@@ -2487,9 +2763,9 @@ def scorecard_rows() -> list[dict]:
         ("Pointer", "only it gives position answers", v4["Only the pointer gives\nposition answers"],
          lambda m: "s05:another item moved, keep_alf: position share"),
         ("Pointer", "a write moves the lookup", v4["A write moves the lookup"],
-         lambda m: "fig07:lookup target share, mean over locker pairs, s = 4"),
+         lambda m: f"numbers:x8_t4_{m}"),  # v6: Fig. 7 drops the 122B; x8_t4 is every model's pooled swap share
         ("Pointer", "the recall follows the write", v4["The recall follows the write"],
-         lambda m: "fig07:recall changed under the strongest write (s = 4): the written locker's item"),
+         lambda m: "s07:recall changed under the strongest write (s = 4): the written locker's item"),
         ("Pointer", "counts mentions, not text position", v4["First-mentioned item,\nnot position in the text"],
          lambda m: "s08b:(c) neutral sentence B1: the code's shift in positions"),
         ("Pointer", "a pick sentence first moves the lookup to identity", pick_first,
@@ -2498,7 +2774,7 @@ def scorecard_rows() -> list[dict]:
         ("Pointer", "the pointer fit on simple scenes transfers", transfer, lambda m: f"numbers:tptr_pooled_{m}"),
         ("Limits", "identity outside J++ is specific", specific, lambda m: f"numbers:x45e_cut_{m}"),
         ("Limits", "the recall needs only the J++ part, locker after the pick", only_jpp,
-         lambda m: "fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"),
+         lambda m: "s03:(b) main test (two people swap picks), locker after the pick: recall extra loss"),
         ("Limits", "the recall reads the earlier mention, locker before the pick", earlier,
          lambda m: f"numbers:x45p_d23_{m}"),
         ("Limits", "the link sits in the locker sentences, clean one-pick scenes", link_clean,
@@ -2858,7 +3134,7 @@ def f06b_anatomy(plt) -> None:
 BATCH47 = {
     "fig01c_zeroing": ("story_b47a", "build_zero", "x47_zero/x47_5-*", None),
     "fig03d_depth_map": ("story_b47b", "build_e11", "x47_depthmap/depth-*", None),
-    "fig05b_identity_outside": ("story_b47a", "build_atoms", "x47_atoms/x47_1-*", None),
+    "fig05b_identity_outside": ("story_b47a", "build_identity", "x47_atoms/x47_1-*", None),  # E3 (v6)
     "fig05c_described_bridge": ("story_b47a", "build_cue", "x47_cue/x47_3-*",
                                 "A described bridge: the split holds on the 9B and Muse, not on the 27B"),
     "fig07c_probe_errors": ("story_b47a", "build_errors", "x47_errors/x47_13-*", None),
@@ -2962,6 +3238,8 @@ SUPP_FIGS = (
     s10b_all_scenes,
     s_batch47,
     s07b_lens_readout,
+    s07_recall_follows_swap,
+    s03_order_split,
 )
 
 

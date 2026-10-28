@@ -96,7 +96,7 @@
 **Result.** Identity falls {{d|e3_identity|9b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{d|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{d|e3_identity|muse|47.1: identity answers lost beyond random without lens directions 26-100}}: outside the lens on all three. On the 27B, directions 1-25 cost {{dp|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 1-25}}, both slices together {{dp|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 1-100}}: redundant copies.
 **Figure.**
 
-![The lookup's identity route lies outside the lens, not in directions 26-100](figures/story/fig05b_identity_outside.png)
+![Only the J++ part costs the recall; no single part costs the lookup](figures/story/fig05b_identity_outside.png)
 
 **Conclusion.** Adding only the J++ part gives no identity answers, so even the identity route runs mostly outside J++. Not shown: the identity code itself (pending).
 
@@ -139,7 +139,7 @@
 **Result.** A probe reads the address in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone {{num|v4_b_layout_before_27b}}). Without it position answers drop to {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_position_muse}} (random {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rt_C2_no_alf_rand_position_muse}}); alone it gives {{pt|rtk_C2_keep_alf_position_9b}} / {{pt|rtk_C2_keep_alf_position_27b}} / {{pt|rtk_C2_keep_alf_position_muse}}; the swap, at about a real change's size, sends {{dp|fig07|9b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|27b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|muse|lookup target share, mean over locker pairs, s = 2}} of lookups to the target. After 50 neutral sentences (9B) position answers stay {{dp|e6_distance|9b|47.16: position share with 50 neutral sentences}} and the swap still sends {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}}, though the code shifts {{dp|e6_distance|9b|47.16: the code's shift beta with 50 sentences}} positions.
 **Figure.**
 
-![One fixed vector written at the bridge sends the lookup to its locker](figures/story/fig07_writes.png)
+![The address carries the position route; swapping it moves the lookup](figures/story/fig07_writes.png)
 
 **Conclusion.** The address is causal and survives distance. Not shown: who reads it (E9).
 
@@ -196,7 +196,7 @@
 **Result.** Lookups switch in {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of locker-first scenes, {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise. With the locker after, the copy carries {{pt|x45q_c_9b}} / {{pt|x45q_c_27b}} / {{pt|x45q_c_muse}} of its lookup switches, the bridge-word change {{pt|x45q_a_9b}} / {{pt|x45q_a_27b}} / {{pt|x45q_a_muse}}.
 **Figure.**
 
-![Lookups follow the change mostly when the locker sentence comes first](figures/story/fig03_order.png)
+![Locker after the pick: the link is made in the locker sentences](figures/story/fig03_order.png)
 
 **Conclusion.** The bridge word carries the link only when the locker came first. Not shown: what the locker sentence holds (pending).
 

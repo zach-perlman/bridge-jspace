@@ -5,16 +5,11 @@ fig01,qwen3.5-9b,main test (two people swap picks): gap,0.53,0.42,0.61,,contrast
 fig01,qwen3.6-27b,main test (two people swap picks): lookup extra loss,0.14,0.08,0.2,,lk_excess_27b
 fig01,qwen3.6-27b,main test (two people swap picks): recall extra loss,0.74,0.66,0.8,,rc_excess_27b
 fig01,qwen3.6-27b,main test (two people swap picks): gap,0.6,0.5,0.69,,contrast_27b
-fig01,qwen3.5-122b-a10b,main test (two people swap picks): lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
-fig01,qwen3.5-122b-a10b,main test (two people swap picks): recall extra loss,0.32,0.22,0.41,,rc_excess_122b
-fig01,qwen3.5-122b-a10b,main test (two people swap picks): gap,0.32,0.2,0.43,,contrast_122b
 fig01,muse-glimmer-30b,main test (two people swap picks): lookup extra loss,-0.1,-0.15,-0.04,,lk_excess_muse
 fig01,muse-glimmer-30b,main test (two people swap picks): recall extra loss,0.75,0.61,0.87,,rc_excess_muse
 fig01,muse-glimmer-30b,main test (two people swap picks): gap,0.85,0.68,0.98,,contrast_muse
-fig01,qwen3.5-9b,"main test (two people swap picks), locker before the pick: gap",0.34,0.23,0.43,100,sbo_swap_before_gap_9b
-fig01,qwen3.6-27b,"main test (two people swap picks), locker before the pick: gap",0.52,0.4,0.65,101,sbo_swap_before_gap_27b
-fig01,qwen3.5-122b-a10b,"main test (two people swap picks), locker before the pick: gap",0.21,0.1,0.33,85,sbo_swap_before_gap_122b
-fig01,muse-glimmer-30b,"main test (two people swap picks), locker before the pick: gap",0.75,0.51,0.95,92,sbo_swap_before_gap_muse
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): recall extra loss,0.32,0.22,0.41,,rc_excess_122b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.05,-0.07,-0.03,,ld_lk_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.43,0.37,0.48,,ld_rc_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: gap",0.48,0.42,0.53,,ld_gap_9b
@@ -216,49 +211,99 @@ fig03,qwen3.6-27b,"lookups switched by the whole change, locker sentence before 
 fig03,qwen3.6-27b,"recalls switched by the whole change, locker sentence before the pick",0.7426,0.6495,0.8178,101,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 fig03,qwen3.6-27b,"lookups switched by the whole change, locker sentence after the pick",0.0909,0.0486,0.1638,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 fig03,qwen3.6-27b,"recalls switched by the whole change, locker sentence after the pick",0.7576,0.6646,0.8313,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
-fig03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence before the pick",0.8941,0.8109,0.9433,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
-fig03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence before the pick",0.9529,0.8852,0.9816,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
-fig03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence after the pick",0.113,0.0673,0.1838,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
-fig03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence after the pick",0.8957,0.8264,0.9393,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence before the pick",0.6522,0.5505,0.7416,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence before the pick",0.5109,0.4104,0.6105,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence after the pick",0.0926,0.0511,0.1621,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence after the pick",0.6481,0.5544,0.7317,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
-fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.35,0.2584269662921348,0.4320987654320988,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup switches",86,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.011627906976744207,-0.035406131479140374,0.07058823529411762,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6666666666666666,0.576923076923077,0.7580645161290321,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup switches",77,,,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.1428571428571429,0.07352941176470595,0.21951219512195108,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.19753086419753085,0.10144468904788113,0.2967075892857143,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup switches",76,,,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.013157894736842257,-0.08333333333333337,0.05882352941176461,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6808510638297873,0.4583333333333336,0.8823529411764707,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup switches",60,,,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.06666666666666665,-0.12244897959183676,-0.01724137931034497,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.21476510067114107,0.13281077157079646,0.2941176470588235,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup switches",150,,,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",-0.013333333333333308,-0.03311349749368854,0.0,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.537037037037037,0.4252801724137931,0.6250137665198237,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup switches",197,,,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.005076142131979711,0.0,0.017316642894677537,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.4285714285714286,0.2820422535211269,0.5999999999999999,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup switches",124,,,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.048387096774193505,0.014814814814814836,0.09615384615384626,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.6494845360824743,0.5652173913043479,0.7254901960784313,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: lookup switches",19,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.8133333333333334,0.7058823529411766,0.909090909090909,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: lookup switches",9,,,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.40776699029126207,0.25999038461538465,0.5447154471544715,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: lookup switches",13,,,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.7999999999999999,0.6491228070175438,0.9193548387096773,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: lookup switches",10,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
-fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.7901234567901234,0.6985627900266883,0.87501495215311,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: lookup switches",9,,,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8736842105263158,0.8137914131169709,0.9285714285714286,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8478260869565217,0.7339449541284403,0.933884297520661,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.5-9b,"45q, layer 0: the bridge-word change (lookups switched)",0.9950248756218906,0.9852216748768473,1.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 4: the bridge-word change (lookups switched)",0.9303482587064676,0.900497512437811,0.9580846161080979,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 8: the bridge-word change (lookups switched)",0.3582089552238806,0.29743589743589743,0.41624365482233505,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 12: the bridge-word change (lookups switched)",0.1691542288557214,0.12,0.22275074696064287,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 16: the bridge-word change (lookups switched)",0.024875621890547265,0.005154639175257732,0.04724642407864694,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 20: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 24: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 28: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 30: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 0: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 4: the copy into the locker sentences (lookups switched)",0.03482587064676617,0.011428571428571429,0.0625,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 8: the copy into the locker sentences (lookups switched)",0.48258706467661694,0.4267227011494253,0.5326644906776875,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 12: the copy into the locker sentences (lookups switched)",0.6965174129353234,0.6542540763571287,0.7351602685581244,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 16: the copy into the locker sentences (lookups switched)",0.5920398009950248,0.5343464036792945,0.6423083941605839,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 20: the copy into the locker sentences (lookups switched)",0.29850746268656714,0.242035648243271,0.3515981735159817,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 24: the copy into the locker sentences (lookups switched)",0.014925373134328358,0.0,0.038461538461538464,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 28: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, layer 30: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.5-9b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.1691542288557214,0.12,0.22275074696064287,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.5-9b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.6965174129353234,0.6542540763571287,0.7351602685581244,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.5-9b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.07462686567164178,0.046632124352331605,0.10358610602634506,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.6-27b,"45q, layer 0: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 4: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 8: the bridge-word change (lookups switched)",0.9826388888888888,0.9675511435467188,0.9962966379663797,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 12: the bridge-word change (lookups switched)",0.9479166666666666,0.9235880398671097,0.9706959706959707,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 16: the bridge-word change (lookups switched)",0.9270833333333334,0.8973384030418251,0.9551026949241235,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 20: the bridge-word change (lookups switched)",0.7083333333333334,0.647226033270451,0.77,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 24: the bridge-word change (lookups switched)",0.5659722222222222,0.49283564403854574,0.6388960481099655,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 28: the bridge-word change (lookups switched)",0.13194444444444445,0.09324614781776902,0.17479674796747968,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 32: the bridge-word change (lookups switched)",0.013888888888888888,0.003367003367003367,0.027131782945736434,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 36: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 40: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 44: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 48: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 52: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 56: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 60: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 62: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 0: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 4: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 8: the copy into the locker sentences (lookups switched)",0.006944444444444444,0.0,0.015528352589064456,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 12: the copy into the locker sentences (lookups switched)",0.027777777777777776,0.006556841315761277,0.052343541722207385,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 16: the copy into the locker sentences (lookups switched)",0.04861111111111111,0.016947364657083602,0.08591132409793814,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 20: the copy into the locker sentences (lookups switched)",0.18055555555555555,0.13541552947598254,0.22330177993527509,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 24: the copy into the locker sentences (lookups switched)",0.25,0.1875,0.3076923076923077,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 28: the copy into the locker sentences (lookups switched)",0.7847222222222222,0.7296123842686317,0.8352965383684338,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 32: the copy into the locker sentences (lookups switched)",0.7430555555555556,0.6848249027237354,0.7985611510791367,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 36: the copy into the locker sentences (lookups switched)",0.6493055555555556,0.5982110816814764,0.6966292134831461,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 40: the copy into the locker sentences (lookups switched)",0.6388888888888888,0.5813953488372093,0.6904043196225859,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 44: the copy into the locker sentences (lookups switched)",0.6736111111111112,0.6150182576943141,0.7263521766880887,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 48: the copy into the locker sentences (lookups switched)",0.4340277777777778,0.37096627565982404,0.4895530161691542,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 52: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 56: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 60: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, layer 62: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,qwen3.6-27b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.013888888888888888,0.003367003367003367,0.027131782945736434,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.6-27b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7430555555555556,0.6848249027237354,0.7985611510791367,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.6-27b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.04861111111111111,0.016947364657083602,0.08591132409793814,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,muse-glimmer-30b,"45q, layer 0: the bridge-word change (lookups switched)",1.0,1.0,1.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 4: the bridge-word change (lookups switched)",0.9365853658536586,0.8936170212765957,0.9701492537313433,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 8: the bridge-word change (lookups switched)",0.8048780487804879,0.7521358543417367,0.851063829787234,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 12: the bridge-word change (lookups switched)",0.3463414634146341,0.28435902797137813,0.4103791185581526,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 16: the bridge-word change (lookups switched)",0.13170731707317074,0.08461442786069652,0.18674864292334167,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 20: the bridge-word change (lookups switched)",0.1073170731707317,0.0674829392706969,0.1567594064652888,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 24: the bridge-word change (lookups switched)",0.014634146341463415,0.0,0.03056768558951965,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 28: the bridge-word change (lookups switched)",0.004878048780487805,0.0,0.018072289156626505,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 32: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 36: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 40: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 44: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 48: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 50: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 0: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 4: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 8: the copy into the locker sentences (lookups switched)",0.1951219512195122,0.13227513227513227,0.251282722513089,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 12: the copy into the locker sentences (lookups switched)",0.4146341463414634,0.3582887700534759,0.4689018396943733,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 16: the copy into the locker sentences (lookups switched)",0.7170731707317073,0.6649993654822335,0.7708362430167598,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 20: the copy into the locker sentences (lookups switched)",0.7560975609756098,0.701297354098184,0.8112268964189449,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 24: the copy into the locker sentences (lookups switched)",0.775609756097561,0.7197422465622954,0.8247863247863247,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 28: the copy into the locker sentences (lookups switched)",0.7121951219512195,0.6553623611922852,0.7692307692307693,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 32: the copy into the locker sentences (lookups switched)",0.35121951219512193,0.28415300546448086,0.4262316652286453,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 36: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 40: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 44: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 48: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, layer 50: the copy into the locker sentences (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03,muse-glimmer-30b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.00975609756097561,0.0,0.025,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,muse-glimmer-30b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7560975609756098,0.6979166666666666,0.807909604519774,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,muse-glimmer-30b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.47317073170731705,0.4128997940974605,0.5267868031358885,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03b,qwen3.5-9b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03b,qwen3.6-27b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03b,muse-glimmer-30b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L/2,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
@@ -914,50 +959,57 @@ fig06b,muse-glimmer-30b,layer 46: recall switch (whole change),0.0,0.0,0.0,200,r
 fig06b,muse-glimmer-30b,layer 50: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
 fig06b,muse-glimmer-30b,address formed: layer,6,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
 fig06b,muse-glimmer-30b,address used: layer,22,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
+fig07,qwen3.5-9b,"the locker probe at the bridge word, locker-first scenes",0.9683377308707124,0.9563252146517103,0.9795457449279851,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+fig07,qwen3.5-9b,"the locker probe's layout baseline, locker-first scenes",0.5303430079155673,0.5037591635338347,0.5562351008557457,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+fig07,qwen3.6-27b,"the locker probe at the bridge word, locker-first scenes",0.9894459102902374,0.9817905918057663,0.995907508979035,758,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+fig07,qwen3.6-27b,"the locker probe's layout baseline, locker-first scenes",0.5303430079155673,0.5037591635338347,0.5562351008557457,758,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+fig07,muse-glimmer-30b,"the locker probe at the bridge word, locker-first scenes",0.9665144596651446,0.9501556455939238,0.980365343893518,657,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
+fig07,muse-glimmer-30b,"the locker probe's layout baseline, locker-first scenes",0.5266362252663622,0.49382716049382713,0.5561879716816771,657,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
+fig07,qwen3.5-9b,"another item moved, no_alf: position share",0.08333333333333333,0.051118210862619806,0.11654192997832002,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+fig07,qwen3.5-9b,"another item moved, no_alf_rand: position share",0.5433333333333333,0.4883701485572062,0.594251461812044,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+fig07,qwen3.5-9b,"another item moved, keep_alf: position share",0.26,0.19767326960198547,0.3249231072555205,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+fig07,qwen3.5-9b,"another item moved, keep_alf_rand: position share",0.0,0.0,0.0,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+fig07,qwen3.6-27b,"another item moved, no_alf: position share",0.06,0.033669261421555,0.08841463414634146,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+fig07,qwen3.6-27b,"another item moved, no_alf_rand: position share",0.25333333333333335,0.1946564885496183,0.3104623506207216,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+fig07,qwen3.6-27b,"another item moved, keep_alf: position share",0.09,0.05821824408468244,0.12466239612188354,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+fig07,qwen3.6-27b,"another item moved, keep_alf_rand: position share",0.0033333333333333335,0.0,0.010309278350515464,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+fig07,muse-glimmer-30b,"another item moved, no_alf: position share",0.2733333333333333,0.22856875334403423,0.32191910543794106,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+fig07,muse-glimmer-30b,"another item moved, no_alf_rand: position share",0.5466666666666666,0.49808316430020283,0.5968272425249169,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+fig07,muse-glimmer-30b,"another item moved, keep_alf: position share",0.29333333333333333,0.2508140704043906,0.33574007220216606,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+fig07,muse-glimmer-30b,"another item moved, keep_alf_rand: position share",0.01,0.0,0.0271189725397451,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 fig07,qwen3.5-9b,"lookup target share, mean over locker pairs, s = 1",0.0185,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"dose (s / mean s*), s = 1",0.5299,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"lookup target share, mean over locker pairs, s = 2",0.4633,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"dose (s / mean s*), s = 2",1.0598,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"lookup target share, mean over locker pairs, s = 4",0.7363,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"dose (s / mean s*), s = 4",2.1196,,,,qwen35_9b_x8_write
-fig07,qwen3.5-9b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,,qwen35_9b_x8_write
-fig07,qwen3.5-9b,"lookup target share, random direction, s = 4",0.0,0.0,0.0,,qwen35_9b_x8_write
-fig07,qwen3.5-9b,recall changed under the strongest write (s = 4): the written locker's item,0.8008,,,256,qwen35_9b_x8_write
-fig07,qwen3.5-9b,recall changed under the strongest write (s = 4): the third item,0.1484,,,256,qwen35_9b_x8_write
-fig07,qwen3.5-9b,recall changed under the strongest write (s = 4): other,0.0508,,,256,qwen35_9b_x8_write
+fig07,qwen3.5-9b,"swap: lookups to the target locker, pooled over locker pairs, dose 0.53 (s = 1)",0.018333333333333333,0.008305647840531562,0.03076923076923077,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+fig07,qwen3.5-9b,"swap: lookups to the target locker, pooled over locker pairs, dose 1.06 (s = 2)",0.4583333333333333,0.42131109593199756,0.49691358024691357,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+fig07,qwen3.5-9b,"swap: lookups to the target locker, pooled over locker pairs, dose 2.12 (s = 4)",0.735,0.7024220146562268,0.7677319905968603,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+fig07,qwen3.5-9b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+fig07,qwen3.5-9b,"lookup target share, random direction, s = 4",0.0,0.0,0.0,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
 fig07,qwen3.6-27b,"lookup target share, mean over locker pairs, s = 1",0.0056,,,,x8_write_27b
 fig07,qwen3.6-27b,"dose (s / mean s*), s = 1",0.6818,,,,x8_write_27b
 fig07,qwen3.6-27b,"lookup target share, mean over locker pairs, s = 2",0.2496,,,,x8_write_27b
 fig07,qwen3.6-27b,"dose (s / mean s*), s = 2",1.3636,,,,x8_write_27b
 fig07,qwen3.6-27b,"lookup target share, mean over locker pairs, s = 4",0.5087,,,,x8_write_27b
 fig07,qwen3.6-27b,"dose (s / mean s*), s = 4",2.7273,,,,x8_write_27b
-fig07,qwen3.6-27b,"lookup target share, random direction, s = 1",0.0016666666666666668,0.0,0.005154639175257732,,x8_write_27b
-fig07,qwen3.6-27b,"lookup target share, random direction, s = 4",0.005,0.0,0.010714285714285714,,x8_write_27b
-fig07,qwen3.6-27b,recall changed under the strongest write (s = 4): the written locker's item,0.8088,,,68,x8_write_27b
-fig07,qwen3.6-27b,recall changed under the strongest write (s = 4): the third item,0.0882,,,68,x8_write_27b
-fig07,qwen3.6-27b,recall changed under the strongest write (s = 4): other,0.1029,,,68,x8_write_27b
-fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 1",0.0049,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 1",0.5279,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 2",0.5002,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 2",1.0558,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 4",0.6586,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 4",2.1116,,,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,"lookup target share, random direction, s = 4",0.0033333333333333335,0.0,0.008823789233007686,,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): the written locker's item,0.7873,,,268,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): the third item,0.1157,,,268,qwen35_122b_x8_write_g75
-fig07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): other,0.097,,,268,qwen35_122b_x8_write_g75
+fig07,qwen3.6-27b,"swap: lookups to the target locker, pooled over locker pairs, dose 0.68 (s = 1)",0.005,0.0,0.01032448377581121,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+fig07,qwen3.6-27b,"swap: lookups to the target locker, pooled over locker pairs, dose 1.36 (s = 2)",0.24166666666666667,0.1964841967138293,0.2903781720856463,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+fig07,qwen3.6-27b,"swap: lookups to the target locker, pooled over locker pairs, dose 2.73 (s = 4)",0.5,0.47202633814783346,0.5300360345753008,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+fig07,qwen3.6-27b,"lookup target share, random direction, s = 1",0.0016666666666666668,0.0,0.005154639175257732,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+fig07,qwen3.6-27b,"lookup target share, random direction, s = 4",0.005,0.0,0.010714285714285714,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
 fig07,muse-glimmer-30b,"lookup target share, mean over locker pairs, s = 1",0.0501,,,,muse30b_x8_write
 fig07,muse-glimmer-30b,"dose (s / mean s*), s = 1",0.6254,,,,muse30b_x8_write
 fig07,muse-glimmer-30b,"lookup target share, mean over locker pairs, s = 2",0.5158,,,,muse30b_x8_write
 fig07,muse-glimmer-30b,"dose (s / mean s*), s = 2",1.2507,,,,muse30b_x8_write
 fig07,muse-glimmer-30b,"lookup target share, mean over locker pairs, s = 4",0.5218,,,,muse30b_x8_write
 fig07,muse-glimmer-30b,"dose (s / mean s*), s = 4",2.5015,,,,muse30b_x8_write
-fig07,muse-glimmer-30b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,,muse30b_x8_write
-fig07,muse-glimmer-30b,"lookup target share, random direction, s = 4",0.006666666666666667,0.0,0.01584507042253521,,muse30b_x8_write
-fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the written locker's item,0.4375,,,64,muse30b_x8_write
-fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the third item,0.25,,,64,muse30b_x8_write
-fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): other,0.3125,,,64,muse30b_x8_write
+fig07,muse-glimmer-30b,"swap: lookups to the target locker, pooled over locker pairs, dose 0.63 (s = 1)",0.05,0.032142038007863694,0.07222222222222222,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+fig07,muse-glimmer-30b,"swap: lookups to the target locker, pooled over locker pairs, dose 1.25 (s = 2)",0.515,0.47641509433962265,0.5530617486720716,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+fig07,muse-glimmer-30b,"swap: lookups to the target locker, pooled over locker pairs, dose 2.50 (s = 4)",0.5216666666666666,0.5017123287671232,0.5444078947368421,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+fig07,muse-glimmer-30b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+fig07,muse-glimmer-30b,"lookup target share, random direction, s = 4",0.006666666666666667,0.0,0.01584507042253521,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
 fig07b_verbal,qwen3.5-9b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.05098144320771098,0.05098144320771098,0.057800012826919545,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.05900233564898372,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.22521910279989243,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
@@ -2248,18 +2300,39 @@ fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w30 switched",0.0,0
 fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: last layer with the bridge word >= 0.3",22,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
 fig03d_depth_map,qwen3.5-9b,"D2 clean, locker-after, recall: l_R",24,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
 fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: d switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
-fig05b,qwen3.5-9b,47.1: the rule's reading,(c) outside the lens,,,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.5-9b,"47.1: identity answers lost without directions 26-100 beyond random (routes test, lookup)",0.046666666666666634,0.017666289254964378,0.07796730376247142,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.5-9b,47.1: recall's extra loss without directions 26-100 (main test),0.025380710659898442,0.0,0.05670103092783496,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.5-9b,J++ part: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,200,qwen35_9b_x0_pcaeq
+fig05b,qwen3.5-9b,J++ part: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,200,qwen35_9b_x0_pcaeq
+fig05b,qwen3.6-27b,J++ part: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,200,x0_pcaeq_27b
+fig05b,qwen3.6-27b,J++ part: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,200,x0_pcaeq_27b
+fig05b,muse-glimmer-30b,J++ part: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,200,muse30b_x0_parts
+fig05b,muse-glimmer-30b,J++ part: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,200,muse30b_x0_parts
 fig05b,qwen3.5-9b,47.1: lookup's extra loss without directions 26-100 (main test),0.08490566037735847,0.01834862385321101,0.1515151515151515,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.6-27b,47.1: the rule's reading,(c) outside the lens,,,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.6-27b,"47.1: identity answers lost without directions 26-100 beyond random (routes test, lookup)",0.04999999999999993,0.025974025974025983,0.07571097409425481,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.6-27b,47.1: recall's extra loss without directions 26-100 (main test),0.05369127516778538,0.00908886158886154,0.09935430463576152,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.5-9b,47.1: recall's extra loss without directions 26-100 (main test),0.025380710659898442,0.0,0.05670103092783496,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05b,qwen3.6-27b,47.1: lookup's extra loss without directions 26-100 (main test),0.0,-0.06060606060606066,0.05405405405405406,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,muse-glimmer-30b,47.1: the rule's reading,(c) outside the lens,,,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,muse-glimmer-30b,"47.1: identity answers lost without directions 26-100 beyond random (routes test, lookup)",0.020000000000000018,-0.0033898305084745783,0.042763597663946,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,muse-glimmer-30b,47.1: recall's extra loss without directions 26-100 (main test),0.008547008547008517,-0.04854537486515639,0.08247422680412364,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.6-27b,47.1: recall's extra loss without directions 26-100 (main test),0.05369127516778538,0.00908886158886154,0.09935430463576152,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05b,muse-glimmer-30b,47.1: lookup's extra loss without directions 26-100 (main test),0.05714285714285716,0.013333333333333308,0.11290322580645162,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,muse-glimmer-30b,47.1: recall's extra loss without directions 26-100 (main test),0.008547008547008517,-0.04854537486515639,0.08247422680412364,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.5-9b,PCA directions (same size): lookup extra loss,0.08490566037735847,0.01869158878504673,0.15116279069767435,200,qwen35_9b_x0_pcaeq
+fig05b,qwen3.5-9b,PCA directions (same size): recall extra loss,0.13089005235602091,0.06321560093739526,0.19209582790091256,200,qwen35_9b_x0_pcaeq
+fig05b,qwen3.6-27b,PCA directions (same size): lookup extra loss,0.02083333333333326,0.0,0.045454545454545414,200,x0_pcaeq_27b
+fig05b,qwen3.6-27b,PCA directions (same size): recall extra loss,0.15753424657534243,0.07975348981950751,0.2267441860465116,200,x0_pcaeq_27b
+fig05b,muse-glimmer-30b,PCA directions (same size): lookup extra loss,0.06976744186046502,0.019995049504950405,0.12162162162162149,200,muse30b_x0_parts
+fig05b,muse-glimmer-30b,PCA directions (same size): recall extra loss,0.1785714285714285,0.08000000000000007,0.26016260162601634,200,muse30b_x0_parts
+fig05b,qwen3.5-9b,logit-lens directions: lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,200,qwen35_9b_x0_necessity
+fig05b,qwen3.5-9b,logit-lens directions: recall extra loss,0.0,0.0,0.0,200,qwen35_9b_x0_necessity
+fig05b,qwen3.6-27b,logit-lens directions: lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,200,x0_necessity_27b_chat
+fig05b,qwen3.6-27b,logit-lens directions: recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,200,x0_necessity_27b_chat
+fig05b,muse-glimmer-30b,logit-lens directions: lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,200,muse30b_x0_necessity
+fig05b,muse-glimmer-30b,logit-lens directions: recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,200,muse30b_x0_necessity
+fig05b,qwen3.5-9b,random lens directions: lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,200,qwen35_9b_x0_necessity
+fig05b,qwen3.5-9b,random lens directions: recall extra loss,0.0,0.0,0.0,200,qwen35_9b_x0_necessity
+fig05b,qwen3.6-27b,random lens directions: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,200,x0_necessity_27b_chat
+fig05b,qwen3.6-27b,random lens directions: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,200,x0_necessity_27b_chat
+fig05b,muse-glimmer-30b,random lens directions: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,200,muse30b_x0_necessity
+fig05b,muse-glimmer-30b,random lens directions: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,200,muse30b_x0_necessity
+fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05c,qwen3.5-9b,47.3: gap (recall's extra loss minus the lookup's),0.3184019370460047,0.19523319942551356,0.41488422564974836,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
 fig05c,qwen3.5-9b,47.3: recall's extra loss without the J++ part,0.3898305084745761,0.30901113088384097,0.4685990338164251,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
 fig05c,qwen3.5-9b,47.3: lookup's extra loss without the J++ part,0.0714285714285714,0.013113682631522504,0.1563981042654028,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
@@ -3318,6 +3391,73 @@ s07b_lens_readout,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions:
 s07b_lens_readout,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.0622436249256134,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 s07b_lens_readout,muse-glimmer-30b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06924905627965927,0.051669295877218246,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
 s07b_lens_readout,muse-glimmer-30b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",3.7461936473846436,0.051583431661129,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07,qwen3.5-9b,recall changed under the strongest write (s = 4): the written locker's item,0.8008,,,256,qwen35_9b_x8_write
+s07,qwen3.5-9b,recall changed under the strongest write (s = 4): the third item,0.1484,,,256,qwen35_9b_x8_write
+s07,qwen3.5-9b,recall changed under the strongest write (s = 4): other,0.0508,,,256,qwen35_9b_x8_write
+s07,qwen3.6-27b,recall changed under the strongest write (s = 4): the written locker's item,0.8088,,,68,x8_write_27b
+s07,qwen3.6-27b,recall changed under the strongest write (s = 4): the third item,0.0882,,,68,x8_write_27b
+s07,qwen3.6-27b,recall changed under the strongest write (s = 4): other,0.1029,,,68,x8_write_27b
+s07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): the written locker's item,0.7873,,,268,qwen35_122b_x8_write_g75
+s07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): the third item,0.1157,,,268,qwen35_122b_x8_write_g75
+s07,qwen3.5-122b-a10b,recall changed under the strongest write (s = 4): other,0.097,,,268,qwen35_122b_x8_write_g75
+s07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the written locker's item,0.4375,,,64,muse30b_x8_write
+s07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the third item,0.25,,,64,muse30b_x8_write
+s07,muse-glimmer-30b,recall changed under the strongest write (s = 4): other,0.3125,,,64,muse30b_x8_write
+s03,qwen3.5-9b,"lookups switched by the whole change, locker sentence before the pick",0.86,0.7786,0.9147,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+s03,qwen3.5-9b,"recalls switched by the whole change, locker sentence before the pick",1.0,0.963,1.0,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+s03,qwen3.5-9b,"lookups switched by the whole change, locker sentence after the pick",0.19,0.1251,0.2778,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+s03,qwen3.5-9b,"recalls switched by the whole change, locker sentence after the pick",0.97,0.9155,0.9897,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+s03,qwen3.6-27b,"lookups switched by the whole change, locker sentence before the pick",0.7624,0.6707,0.8348,101,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+s03,qwen3.6-27b,"recalls switched by the whole change, locker sentence before the pick",0.7426,0.6495,0.8178,101,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+s03,qwen3.6-27b,"lookups switched by the whole change, locker sentence after the pick",0.0909,0.0486,0.1638,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+s03,qwen3.6-27b,"recalls switched by the whole change, locker sentence after the pick",0.7576,0.6646,0.8313,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+s03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence before the pick",0.8941,0.8109,0.9433,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+s03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence before the pick",0.9529,0.8852,0.9816,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+s03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence after the pick",0.113,0.0673,0.1838,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+s03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence after the pick",0.8957,0.8264,0.9393,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+s03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence before the pick",0.6522,0.5505,0.7416,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+s03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence before the pick",0.5109,0.4104,0.6105,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+s03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence after the pick",0.0926,0.0511,0.1621,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+s03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence after the pick",0.6481,0.5544,0.7317,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+s03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.35,0.2584269662921348,0.4320987654320988,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup switches",86,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.011627906976744207,-0.035406131479140374,0.07058823529411762,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-9b,"main test (two people swap picks), locker before the pick: gap",0.34,0.23,0.43,100,sbo_swap_before_gap_9b
+s03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6666666666666666,0.576923076923077,0.7580645161290321,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup switches",77,,,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.1428571428571429,0.07352941176470595,0.21951219512195108,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.6-27b,"main test (two people swap picks), locker before the pick: gap",0.52,0.4,0.65,101,sbo_swap_before_gap_27b
+s03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.19753086419753085,0.10144468904788113,0.2967075892857143,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup switches",76,,,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.013157894736842257,-0.08333333333333337,0.05882352941176461,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-122b-a10b,"main test (two people swap picks), locker before the pick: gap",0.21,0.1,0.33,85,sbo_swap_before_gap_122b
+s03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6808510638297873,0.4583333333333336,0.8823529411764707,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup switches",60,,,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.06666666666666665,-0.12244897959183676,-0.01724137931034497,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,muse-glimmer-30b,"main test (two people swap picks), locker before the pick: gap",0.75,0.51,0.95,92,sbo_swap_before_gap_muse
+s03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.21476510067114107,0.13281077157079646,0.2941176470588235,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup switches",150,,,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",-0.013333333333333308,-0.03311349749368854,0.0,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.537037037037037,0.4252801724137931,0.6250137665198237,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup switches",197,,,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.005076142131979711,0.0,0.017316642894677537,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.4285714285714286,0.2820422535211269,0.5999999999999999,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup switches",124,,,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.048387096774193505,0.014814814814814836,0.09615384615384626,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.6494845360824743,0.5652173913043479,0.7254901960784313,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: lookup switches",19,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.8133333333333334,0.7058823529411766,0.909090909090909,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: lookup switches",9,,,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.40776699029126207,0.25999038461538465,0.5447154471544715,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: lookup switches",13,,,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.7999999999999999,0.6491228070175438,0.9193548387096773,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: lookup switches",10,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.7901234567901234,0.6985627900266883,0.87501495215311,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: lookup switches",9,,,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8736842105263158,0.8137914131169709,0.9285714285714286,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8478260869565217,0.7339449541284403,0.933884297520661,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 probe,qwen3.5-9b,probe.value.9b.locker-first,0.2704485488126649,0.23641684813179104,0.30677367551616386,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.majority.9b.locker-first,0.09894459102902374,0.07152844911222445,0.12922248194431957,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.chance.9b,0.1111,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json

@@ -43,6 +43,15 @@ EMPTY = {"facecolor": "none", "edgecolor": "#9a9a9a", "lw": 0.7}
 STATUS_GLYPH = {"fixed": "●", "after": "○"}
 STATUS_TEXT = {"fixed": "fixed in advance", "after": "after the data"}
 SUBTITLE = "story_subtitle"  # the attribute title() sets on the subtitle's Text
+INSET = "story_inset"  # the attribute inset() sets on a small inset axes (not counted as a panel by the v6 check)
+
+
+def inset(fig, rect: tuple[float, float, float, float]):
+    """v6: a small inset axes at rect (figure fraction), marked so scripts/check_figure_terms.py does not count it as a
+    panel."""
+    ax = fig.add_axes(rect)
+    setattr(ax, INSET, True)
+    return ax
 
 
 def setup():

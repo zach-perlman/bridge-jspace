@@ -70,7 +70,19 @@ JOINT_RETIRED = {
 # Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README figures restyled
 # for v6 so far (each joins V6_FIGS when it is): the title is the conclusion on one line with no digit (no numbers,
 # no model sizes); the subtitle one line; at most two panels; "swap" not "write", "address" not "pointer"
-V6_FIGS = ("fig05_routes", "fig06b_anatomy", "fig07b_verbal", "fig03d_depth_map", "fig15_mechanisms", "fig11_scorecard")
+V6_FIGS = (
+    "fig05_routes",
+    "fig06b_anatomy",
+    "fig07b_verbal",
+    "fig03d_depth_map",
+    "fig15_mechanisms",
+    "fig11_scorecard",
+    "fig07_writes",
+    "fig03_order",
+    "fig01_split",
+    "fig05b_identity_outside",
+)
+V6_PANELS = {"fig07_writes": 3}  # E6's probe, remove / add, swap: three panels (Dan's v6 card list)
 V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b"}
 
 
@@ -92,8 +104,9 @@ def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tupl
             out.append((name, title, "title over one line"))
         if "\n" in sub:
             out.append((name, sub, "subtitle over one line"))
-        if lay["panels"] > 2:
-            out.append((name, str(lay["panels"]), "more than two panels"))
+        if lay["panels"] > V6_PANELS.get(name, 2):
+            out.append((name, str(lay["panels"]), "more than two panels" if name not in V6_PANELS else
+                        f"more than {V6_PANELS[name]} panels"))  # fmt: skip
     out += [(where, text, term) for where, text in texts if where in V6_FIGS
             for term, rx in V6_RETIRED.items() if re.search(rx, text)]  # fmt: skip
     return out
@@ -181,7 +194,8 @@ def figure_texts(layout: dict[str, dict] | None = None) -> list[tuple[str, str]]
         texts.extend((stem, t.get_text()) for t in drawn)
         if layout is not None:
             sub = next((t.get_text() for t in drawn if getattr(t, S.SUBTITLE, False)), "")
-            layout[stem] = {"title": fig.get_suptitle(), "subtitle": sub, "panels": len(fig.axes)}
+            panels = [ax for ax in fig.axes if not getattr(ax, S.INSET, False)]  # a marked inset is not a panel
+            layout[stem] = {"title": fig.get_suptitle(), "subtitle": sub, "panels": len(panels)}
 
     saved = (Figure.savefig, S.OUT, S.SUPP, list(S.ROWS))
     with tempfile.TemporaryDirectory() as tmp, matplotlib.rc_context():

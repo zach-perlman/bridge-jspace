@@ -47,14 +47,14 @@ only it gives position answers,Qwen3.5-9B,ok,,"s05:another item moved, keep_alf:
 only it gives position answers,Qwen3.6-27B,x,,"s05:another item moved, keep_alf: position share"
 only it gives position answers,Qwen3.5-122B,ok,a,"s05:another item moved, keep_alf: position share"
 only it gives position answers,Muse Glimmer 30B,ok,,"s05:another item moved, keep_alf: position share"
-a write moves the lookup,Qwen3.5-9B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
-a write moves the lookup,Qwen3.6-27B,~,a,"fig07:lookup target share, mean over locker pairs, s = 4"
-a write moves the lookup,Qwen3.5-122B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
-a write moves the lookup,Muse Glimmer 30B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
-the recall follows the write,Qwen3.5-9B,ok,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
-the recall follows the write,Qwen3.6-27B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
-the recall follows the write,Qwen3.5-122B,ok,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
-the recall follows the write,Muse Glimmer 30B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
+a write moves the lookup,Qwen3.5-9B,ok,a,numbers:x8_t4_9b
+a write moves the lookup,Qwen3.6-27B,~,a,numbers:x8_t4_27b
+a write moves the lookup,Qwen3.5-122B,ok,a,numbers:x8_t4_122b
+a write moves the lookup,Muse Glimmer 30B,ok,a,numbers:x8_t4_muse
+the recall follows the write,Qwen3.5-9B,ok,a,s07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Qwen3.6-27B,~,a,s07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Qwen3.5-122B,ok,a,s07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Muse Glimmer 30B,~,a,s07:recall changed under the strongest write (s = 4): the written locker's item
 "counts mentions, not text position",Qwen3.5-9B,ok,,s08b:(c) neutral sentence B1: the code's shift in positions
 "counts mentions, not text position",Qwen3.6-27B,ok,a,s08b:(c) neutral sentence B1: the code's shift in positions
 "counts mentions, not text position",Qwen3.5-122B,ok,a,s08b:(c) neutral sentence B1: the code's shift in positions
@@ -75,10 +75,10 @@ identity outside J++ is specific,Qwen3.5-9B,~,,numbers:x45e_cut_9b
 identity outside J++ is specific,Qwen3.6-27B,~,,numbers:x45e_cut_27b
 identity outside J++ is specific,Qwen3.5-122B,-,,
 identity outside J++ is specific,Muse Glimmer 30B,x,,numbers:x45e_cut_muse
-"the recall needs only the J++ part, locker after the pick",Qwen3.5-9B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-"the recall needs only the J++ part, locker after the pick",Qwen3.6-27B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-"the recall needs only the J++ part, locker after the pick",Qwen3.5-122B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-"the recall needs only the J++ part, locker after the pick",Muse Glimmer 30B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Qwen3.5-9B,ok,,"s03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Qwen3.6-27B,ok,,"s03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Qwen3.5-122B,ok,,"s03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Muse Glimmer 30B,ok,,"s03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 "the recall reads the earlier mention, locker before the pick",Qwen3.5-9B,ok,,numbers:x45p_d23_9b
 "the recall reads the earlier mention, locker before the pick",Qwen3.6-27B,ok,,numbers:x45p_d23_27b
 "the recall reads the earlier mention, locker before the pick",Qwen3.5-122B,-,,

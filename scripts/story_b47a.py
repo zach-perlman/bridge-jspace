@@ -212,6 +212,118 @@ def build_atoms(verdict_dir: Path, out_name: str, title: str | None = None) -> s
     return out_name
 
 
+# E3 (v6): Fig. 2's parts and 47.1's directions 26-100 on one extra-loss axis; (key, row label, fixed in advance)
+E3_PARTS = (("jpp", "J++ part\n(lens directions 1–25)", False), ("26-100", "lens directions\n26–100", True),
+            ("pca_eq", "PCA directions\n(same size)", False), ("wu", "logit-lens\ndirections", True),
+            ("rand", "random lens\ndirections", True))  # fmt: skip
+E3_FALLS = (("1-25", "1–25"), ("26-100", "26–100"), ("1-100", "1–100"))  # the inset's rows (27B)
+E3_INSET_MODEL = "qwen3.6-27b"
+
+
+def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
+    """E3 (v6; Fig. 2 and 47.1 merged): one extra-loss axis, one group of rows per part of the change taken out at the
+    bridge word (the J++ part, lens directions 26-100, PCA directions of the J++ part's size, logit-lens and random lens
+    directions), one row per model (9B, 27B, Muse) with the lookup's and the recall's extra loss and their 95% intervals
+    (open: the parts runs on one-pick scenes, after the data; filled: the main test, fixed in advance). Inset: the 27B's
+    routes test, the lookup's identity answers lost beyond random without lens directions 1-25, 26-100 and both (47.1,
+    fixed in advance). The 122B's parts: figures/supp/s02_parts_all."""
+    src = verdict_dir / "x47_1.json"
+    v = json.loads(src.read_text())
+    by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
+    parts = F.parts_cells()
+    h = 6.9
+    plt = S.setup()
+    fig = plt.figure(figsize=(S.WIDTH, h))
+    S.title(fig, title or "Only the J++ part costs the recall; no single part costs the lookup",
+            "Extra loss without each part of the change, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
+    ax = fig.add_axes((0.30, 0.6 / h, 0.36, 1 - 1.45 / h - 0.6 / h))
+    S.extra_axis(ax, label=False)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
+    ax.grid(axis="x", color="#eeeeee")
+    ax.set_xlabel("extra loss")
+    ticks, labels, ns = [], [], set()
+    y = 0.0
+    tr = blended_transform_factory(fig.transFigure, ax.transData)
+    for key, label, fixed in E3_PARTS:
+        top = y
+        for target, m in TARGETS:
+            got: dict[str, tuple[tuple[float, float, float], int | None]] = {}
+            if key == "26-100":
+                readers = ((by.get(target) or {}).get("main") or {}).get("readers", {})
+                for w in (X.LOOKUP, X.RECALL):
+                    cell = readers.get(w, {}).get("26-100")
+                    ex = iv(cell["excess"]) if cell else None
+                    if cell and ex is not None:
+                        got[w] = (ex, cell.get("n"))
+                quant = {X.RECALL: "47.1: recall's extra loss without directions 26-100 (main test)",
+                         X.LOOKUP: "47.1: lookup's extra loss without directions 26-100 (main test)"}  # fmt: skip
+                cell_src = source
+            else:
+                c = parts[m].get(key) or {}
+                for w, r in ((X.LOOKUP, "lookup"), (X.RECALL, "recall")):
+                    if r in c:
+                        got[w] = ((c[r][0], c[r][1], c[r][2]), c.get("n"))
+                name = next(t for k, t in F.SPEC_PARTS if k == key)
+                quant = {X.RECALL: f"{name}: recall extra loss", X.LOOKUP: f"{name}: lookup extra loss"}
+                cell_src = c.get("source", "")
+            ticks.append(y)
+            labels.append(F.SHORT[m])
+            if not got:
+                status_text(ax, y, "not run")
+            for w, dy, col in ((X.LOOKUP, 0.15, S.COL["lookup"]), (X.RECALL, -0.15, S.COL["recall"])):
+                if w not in got:
+                    continue
+                val, n = got[w]
+                S.dot(ax, 0, y + dy, val, col, "fixed" if fixed else "after", size=7)
+                S.record(fid, target, quant[w], *val, n=n, source=cell_src)
+                if n:
+                    ns.add(int(n))
+            y -= 0.62
+        ax.text(0.01, (top + y + 0.62) / 2, label, transform=tr, va="center", fontsize=S.FONT, weight="bold",
+                linespacing=1.0)  # fmt: skip
+        y -= 0.42
+        ax.axhline(y + 0.21 + 0.0, color="#dddddd", lw=0.8, zorder=0)
+    ax.lines[-1].remove()  # no divider under the last group
+    ax.set_yticks(ticks, labels)
+    ax.tick_params(axis="y", length=0)
+    ax.set_ylim(y + 0.42 - 0.4, 0.45)
+    ax.text(-0.05, y + 0.42 - 0.33, "not needed", ha="center", va="bottom", color=S.COL["muted"], fontsize=S.FONT - 1)
+    n_txt = "–".join(str(n) for n in sorted(ns)) if ns else "–"
+    ax.text(1.0, 1.005, f"n {n_txt} per model · ● fixed in advance · ○ after the data", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
+    hs, ls = F.reader_handles(plt)
+    F.legend(fig, hs, ls, 1 - 0.62 / h, ncol=2)
+
+    # inset: the 27B's identity answers lost beyond random (routes test), without 1-25, 26-100 and both
+    ins = S.inset(fig, (0.79, 0.44, 0.19, 0.22))
+    falls = ((by.get(E3_INSET_MODEL) or {}).get("routes") or {}).get("falls", {})
+    n_routes = ((by.get(E3_INSET_MODEL) or {}).get("routes") or {}).get("n")
+    for i, (k, _) in enumerate(E3_FALLS):
+        f = iv((falls.get(k) or {}).get("identity"))
+        if f is None:
+            status_text(ins, -i, "not run")
+            continue
+        S.dot(ins, 0, -i, f, S.COL["identity"], size=7)
+        ins.text(f[2] + 0.04, -i, f"{f[0]:.2f}", va="center", fontsize=S.FONT - 1, color=S.COL["identity"])
+        S.record(fid, E3_INSET_MODEL, f"47.1: identity answers lost beyond random without lens directions {k}", *f,
+                 n=n_routes, source=source)  # fmt: skip
+    ins.set_xlim(-0.05, 1.0)
+    ins.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+    ins.axvline(0, color="#999999", lw=0.8, zorder=1)
+    ins.set_ylim(-len(E3_FALLS) + 0.4, 0.6)
+    ins.set_yticks([-i for i in range(len(E3_FALLS))], [name for _, name in E3_FALLS])
+    ins.tick_params(axis="y", length=0)
+    ins.grid(axis="x", color="#eeeeee")
+    ins.set_xlabel("identity answers lost\nbeyond random", fontsize=S.FONT - 1)
+    head = blended_transform_factory(fig.transFigure, ins.transAxes)
+    ins.text(0.705, 1.42, "The 27B's identity answers\nwithout lens directions", transform=head,
+             fontsize=S.FONT, weight="bold", va="bottom", linespacing=1.0)  # fmt: skip
+    ins.text(0.705, 1.06, f"routes test · n {n_routes}\n● fixed in advance", transform=head,
+             fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom", linespacing=1.1)  # fmt: skip
+    S.save(fig, out_name)
+    return out_name
+
+
 # ---- 47.5: one-layer zeroing ----------------------------------------------------------------------------------------
 
 ZERO_LABEL = {"followed, not needed at one layer": "followed", "needed": "needed",
