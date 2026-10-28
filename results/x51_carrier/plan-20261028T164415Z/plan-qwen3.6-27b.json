@@ -1,0 +1,73 @@
+{
+ "target": "qwen3.6-27b",
+ "z1_run": "x50_z1_27b",
+ "layer": 32,
+ "patched_layers": [
+  0,
+  32
+ ],
+ "n_patched": 33,
+ "items": 200,
+ "mismatches": [],
+ "strata": {
+  "fact-after": 103,
+  "fact-first": 97
+ },
+ "entities": {
+  "fact-first": 77,
+  "fact-after": 82,
+  "all": 116
+ },
+ "sets": {
+  "jsuite_v2_test_chat": 200
+ },
+ "only_last_token_changed": {
+  "fact-first": {
+   "K": 73,
+   "M": 73
+  },
+  "fact-after": {
+   "K": 66,
+   "M": 66
+  }
+ },
+ "window_items": 50,
+ "window_tokens": {
+  "min": 9,
+  "max": 25
+ },
+ "prompt_tokens": {
+  "min": 119,
+  "median": 262.5,
+  "max": 470
+ },
+ "read_arms": [
+  "none",
+  "whole_bL",
+  "no_jpp_bL",
+  "rand_bL",
+  "whole_emb"
+ ],
+ "loss_arms": [
+  "none",
+  "whole_1L",
+  "no_jpp_1L",
+  "rand_1L",
+  "whole_bL",
+  "no_jpp_bL",
+  "rand_bL",
+  "whole_emb"
+ ],
+ "stored_arms": [
+  "whole_1L",
+  "no_jpp_1L",
+  "rand_1L"
+ ],
+ "reads": 2050,
+ "loss_rows": 3200,
+ "forwards_for_states": 800,
+ "code": {
+  "sha": "033b2befba9c9f359a4240aa66e999cb7c9c7a60",
+  "dirty": true
+ }
+}

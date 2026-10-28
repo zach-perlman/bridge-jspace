@@ -1,0 +1,71 @@
+id: x51_7_27b
+title: "Batch 51.7 on the 27B (L32): Z1 on the full carrier. On Z1's passages (Zach's jsuite v2, named bridge), the bridge name's last token set to S's state at every block <= L (whole), minus the J++ part of each layer's change (layer l's own 25 atoms), minus a random part of the same share; both readers, both strata, plain-text loss per arm; Z1's one-layer arms beside from its stored rows; sealed"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_carrier.py run --name x51_7_27b
+question: >-
+  On Zach's passages the whole change at the bridge name's last token at one layer redirects only part of the lookups,
+  least where the bridge's fact sentence comes after the pointer sentence. With the change written at the name's last
+  token at every layer <= L (so later tokens read S's name below L too), do fact-after lookups rise by >= 0.3 (the
+  slice explanation), and on this full carrier does the lookup still go around the J++ part while the recall needs it?
+why_it_matters: >-
+  Z1 read the split at one layer at one token. The order and token-map results predict that later tokens read the name
+  below L; if so, the one-layer change is a slice of the carrier, and the split must be read on the whole carrier
+  before it counts for Zach's passages. If the lookup follows the lens once the carrier is whole, the one-layer split
+  was a slice artefact.
+hypotheses:
+  Q51.7: "Dan's answer in predictions/2026-10-28_dan.md (Q51.7); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x51_carrier.py verdict / view refuse until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.7, verbatim): (i) "The slice explanation": the whole before-L raises the
+  lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within
+  0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall
+  extra loss - lookup extra loss >= 0.3 and lookup <= 0.10 -> "the split holds on the full carrier"; lookup >= 0.20 ->
+  "the lookup follows the lens on the full carrier"; else in between. (iii) If fact-after lookups stay under 0.5 even
+  under whole before-L: "the link is made away from the bridge token" -- only then the window-patching read (the
+  bridge token at layers <= L plus the bridge's fact sentence), 50 items, descriptive.
+  As computed (fixed by the agent before any run; Dan may override before it). Items: Z1's chosen passages in Z1's
+  order (results/x50_zach/x50_z1_27b/gate.json: 200, 97 fact-first / 103 fact-after, all from jsuite_v2_test_chat),
+  rebuilt with x50_zach.z1_cases on the 27B tokenizer and equal to Z1's stored cases (ids, patch token, answer tokens,
+  S's entity, stratum; 0 mismatches at plan time); a mismatch fails the job. Z1's gate decides tested / not tested
+  (numbers descriptive only on a failed gate). Read: Z1's (his chat framing, no prefill; switch = the top token is the
+  other entity's answer's first token). Arms on O, per reader (the K and M passages differ before the patch token):
+  whole_bL = the patch token (the name's last token) set (SetRows, not added) to h_S,l at every block output l =
+  0..32; no_jpp_bL = set to h_S,l - P_J,l Delta_l, Delta_l = h_S,l - h_O,l from clean S and O forwards, P_J,l =
+  x0_necessity.fit(layer l's letter-token J++ atoms, Delta_l, 25, signed); rand_bL = set to h_S,l -
+  statement_positions.random_subspace_part(Delta_l, P_J,l Delta_l's share of ||Delta_l||^2, X0's random basis seed
+  888 + l). The input embedding is not edited in these three arms (the lens has no map there and the arms stay
+  matched); whole_emb (= whole_bL with S's token id at the patch token, 47.4's (b)) is read beside, descriptive. At L
+  the three before-L states equal Z1's one-layer states (h_O,L + its vector), so the difference from Z1's arms is what
+  later tokens read below L. Z1's one-layer arms (whole, no_jpp, no_jpp_rand at L32) are read from its stored outcomes,
+  not rerun; O unedited is read again and checked against Z1's stored none read. Shares per stratum (fact-first,
+  fact-after; all beside) with 95% cluster-bootstrap intervals over the original bridge entity (10,000 resamples, seed
+  0; every arm and both readers on the same draws). (i): rise = S_K(whole_bL) - S_K(whole_1L) on fact-after, clause at
+  >= 0.30; fact-first |S_K(whole_bL) - S_M(whole_bL)| <= 0.10 (the recall under the same arm); "the slice explanation"
+  iff both; Q51.7 (i) reads the rise clause. (ii): extra loss = X0's excess (S_rand_bL - S_no_jpp_bL) / S_whole_bL per
+  reader, gap = M's - K's on paired draws, labels as written, fact-first decisive, fact-after and all reported, Z1's
+  one-layer cells beside; an undefined extra loss (no switch under whole_bL) holds no clause ("can't tell"). (iii):
+  S_K(whole_bL) on fact-after < 0.50 -> "the link is made away from the bridge token" and the window read is
+  reported. The window read is cheap, so it is recorded in every run (not a separate stage) and the verdict reports it
+  only when (iii)'s condition holds: K reader, the first 50 fact-after passages in Z1's order, the patch token and
+  both bridges' fact sentences (O's bridge's and S's bridge's true-fact sentences in the K passage; a sentence before
+  the pointer has the same states in O and S, so patching it is a no-op) set to S's states at blocks 0..32;
+  S_K(window) beside S_K(whole_bL) on the same 50. Point estimates decide (EPS 1e-9 at the bars). Plain-text loss per
+  arm and reader (descriptive): -log p(O's own next token) at the patch token, O's prompt cut after it, under none,
+  Z1's three one-layer arms (recomputed: Z1 stored no loss), the three before-L arms and whole_emb; mean with
+  intervals and its ratio to the one-layer whole's.
+  Scored by hand after Q51.7 is committed: scripts/x51_carrier.py verdict.
+controls:
+- 'the J++ part of each layer''s change against a random part of its own share at the same layers (X0''s random subspace, seed 888 + l)'
+- 'the recall (M) on the same passages and the same counterfactual (the gap)'
+- 'Z1''s one-layer arms on the same passages (stored rows), and O unedited read again against Z1''s stored none read'
+- 'Z1''s read gate (0.80 per reader) and both readers right on O and S (its eligibility)'
+- 'the plain-text loss per arm (collateral damage at the patch token)'
+- 'whole_emb (the patch token''s id swapped too) beside whole_bL; the whole before-L split by whether only the name''s last token differs between O and S (descriptive)'
+n: '200 passages (Z1''s chosen: 97 fact-first, 77 entities; 103 fact-after, 82 entities; 116 bridge entities in all); 33 blocks (0..32); 2,050 reads, 3,200 loss rows; 50 window passages'
+seeds: [0, 888, 5001]
+notes: "Batch 51 (Dan, 28 Oct 17:10), 51.7 on the 27B, speedup box after the 9B (batch51.yaml queues). SEALED: the job runs `run` only and writes manifest, plan, cases, outcomes (none, whole_bL, no_jpp_bL, rand_bL, whole_emb; both readers), losses, window (rule iii, K reader, 50 fact-after passages) and norms (per passage, reader and block: ||Delta_l||, ||h_S,l||, the J++ part's share); the log prints counts, no switch. After Dan's Q51.7 is committed, by hand (CPU): uv run python scripts/x51_carrier.py verdict (both models; see x51_7_9b). Plan: results/x51_carrier/plan-20261028T164415Z/. Seeds: 0 the bootstrap and the view, 888 + l the random subspace, 5001 Z1's other-entity order. Memory: the patch token's clean states at 33 blocks for 200 passages x 2 readers x 2 prompts and the three arms' values are kept on the CPU (~1.4 GB); one lens dictionary and one random basis on the GPU at a time, the lens's cached J_l freed after each block (memory lessons of 28 Oct). Estimate from results/jobq/ledger_sesterce-h100x2.jsonl: x50_z1_27b took 1,024 s wall, most of it the competence step; x49_2_27b_h (574 items, ~5,700 reads, 4 forwards per item, OMP at 4 blocks) took 510 s wall at 68.2 GB peak; this job has 800 forwards recording 33 blocks, 33 lens dictionaries and OMP fits of 200 rows per reader, 800 read batches (4 + 1 rows) and 800 loss batches (7 + 1 rows) of ~260-token prompts, 50 window reads: about 0.25 h with the model load; 0.5 with margin (Dan: ~1 GPU-h)."
