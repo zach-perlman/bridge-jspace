@@ -1,0 +1,55 @@
+id: x47_12_muse
+title: "Batch 47.12 on Muse (L26): two definitions of the lens part on the main test's scenes: X0's arms (whole / without the part / without random) with the part as our 25 OMP atoms of the change and as Zach's top-10 lens directions (his code path, same lens file), both projected out of the change at the bridge token; the gap under each; SEALED until Q47.12"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_twodefs.py run --name muse30_x47_twodefs --why "batch 47, test 47.12 (jobs/c3/batch47.yaml amendment 4; Q47.12, sealed): the main test's scenes, the change at the bridge token at L26 without our 25 OMP atoms and without Zach's top-10 lens directions (ablate.top_span_removal on the change), each against a random part of its share; both readers"
+question: >-
+  Do our definition of the lens part (the 25 signed-OMP atoms of the change) and Zach's (the span of the 10 lens
+  directions with the highest lens logits, his knock-out's selection) give the same gap between the recall's and the
+  lookup's extra loss on the same scenes, token and layer?
+why_it_matters: >-
+  Our main test and Zach's zeroing disagree on Muse at mid depth (our gap 0.85; his +6.7). Two things differ at once:
+  the tool (OMP-25 on the change vs his top-10 at the token) and the operation (a conflict test on the change vs
+  zeroing the state). This test changes only the tool; with 47.5 (the operation) it splits the disagreement into the
+  two. Muse is the model where the disagreement lives.
+hypotheses:
+  Q47.12: "Dan's answer in predictions/2026-10-28_dan.md (Q47.12, per model: yes / no on the 9B; on Muse); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_twodefs.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.12), verbatim: ""Definitions agree" if the gap under (ii) is within 0.15
+  of (i) on both models. With 47.5 (operation: conflict vs zeroing) this splits the Muse disagreement into tool and
+  operation."
+  As computed (fixed before any run; Dan may override before the run): Items: the main test's scenes (two people swap
+  their picks; muse30b_x0_necessity, d1_topics_v3, chat), the 200 scenes its unedited run made eligible at L26,
+  rebuilt and aligned as x47_cumulative.select does for its "main" design (plan check: 200 of 200, none dropped);
+  eligibility is never recounted. The change Δ = h_S - h_O at the bridge token at L26, added on O, read by both
+  readers with X0's chat read (the digit's space token appended; switch = the top token is S's answer's first token).
+  Arms: whole; per definition no_part (Δ minus the part) and no_rand (Δ minus a random part of the part's share of
+  ||Δ||^2, X0's random subspace, seed 888 + L). The part: (i) omp25 = X0's existing arm, the 25-atom signed OMP fit of Δ
+  over the J++ lens's letter-token unit vectors at L (x0_necessity.fit); (ii) top10 = Zach's, Δ projected onto the span
+  of the 10 J++ directions with the highest lens logits of Δ, bridge_jspace.ablate.top_span_removal on Δ with his
+  LensDictionary over the same lens file and letter tokens (Wg = W_U[letters] x the final norm's gain, J_L; QR
+  projection) and his protection: the reader's clean top-10 tokens at the read position are never chosen (ablate_v2;
+  digits are not letter tokens, so they fall away), so (ii) is per reader while (i) is one part for both; descriptive
+  beside: top10_state, the 10 directions chosen at S's bridge-token state h_S (what the lens reads at that token in
+  the changed prompt), Δ projected onto their span. Reading: per definition X0's cells at L (switch rate per arm; Jdep
+  = 1 - S_no_part / S_whole; Rdep with the random part; extra loss = Jdep - Rdep; valid if S_whole >= 0.30 with >= 30
+  switches), and the gap = the recall's extra loss minus the lookup's (x0_figures.contrast: the same cluster-bootstrap
+  draws over bridge items for both readers, 10,000, seed 0). Q47.12 on this model: yes if |gap(top10) - gap(omp25)|
+  <= 0.15 (point estimates, EPS 1e-9); no otherwise; "can't tell" if a cell of either definition is invalid; the
+  definitions agree for the batch if yes on both models. Reported beside: each part's share of ||Δ||^2 per item and
+  its median; the atoms (ii) picks and how many of them are among (i)'s 25; how often the protection displaced a
+  top-10 atom; (ii')'s numbers; the rerun whole arm against the source run's stored one. Scored by hand after Dan's
+  Q47.12 is committed: scripts/x47_twodefs.py verdict.
+controls:
+- 'no_rand per definition: a random part of that part''s share of ||Δ||^2 (X0''s random subspace, seed 888 + L)'
+- 'the lookup on the identical patch (the gap is recall minus lookup; both cells must be valid)'
+- '(ii) without the protection is recorded per item (the atoms it would have chosen) to show how often the protection bites'
+- 'the rerun whole arm against the main-test run''s stored whole arm, item by item'
+- 'top10_state (descriptive): the same selection at S''s token state instead of on Δ'
+n: '200 main-test scenes (Muse''s main-test X0 run at L26, chat; 40 bridge items); plan check (CPU): 200 of 200, none dropped'
+seeds: [888, 0]
+notes: "Batch 47 amendment 4 (Dan, 28 Oct ~03:00); queue position after 47.8 (Muse) (batch47.yaml amendment 4 queue_order). SEALED: the run writes manifest, plan, cases, outcomes (every arm's top token, both readers, X0's dict / k / omp keys so x0_necessity.cells_of reads them) and shares.jsonl (per item and reader: each part's share, the atoms, the overlaps, the protection count), no verdict. By hand after Dan's Q47.12 is committed (CPU): uv run python scripts/x47_twodefs.py verdict (both runs) and view (10 random items, seed 0, the prompts as read with the bridge token marked, every arm's answer). Per item: 2 forwards (O, S at L), per reader one clean read (the protection) and one batch of 7 rows, the OMP (k = 25) and two top-10 selections. GPU estimate from results/jobq/ledger_sesterce-h100x2.jsonl: x45p_muse (2 forwards + 2 reads of 7 rows per item, 178 items) took 196 s = 0.94 s per item after 29 s setup; here 200 items x ~1.2 s (an extra read per reader) = 240 s + 30 s setup + the lens load (~60 s) = ~330 s = 0.09 h -> 0.1. Dan's estimate 0.6. BJ_TARGET=muse-glimmer-30b reads the main-test run results/x0_necessity/muse30b_x0_necessity (as x47_4_muse does)."

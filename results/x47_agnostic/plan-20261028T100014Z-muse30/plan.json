@@ -1,0 +1,801 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "seed": 4711,
+ "pools": {
+  "animals": {
+   "n": 32,
+   "items": [
+    "ant",
+    "bear",
+    "bee",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tick",
+    "tiger",
+    "turkey",
+    "wolf",
+    "zebra"
+   ],
+   "not_one_token_here": []
+  },
+  "fruits": {
+   "n": 20,
+   "items": [
+    "apple",
+    "avocado",
+    "banana",
+    "cherry",
+    "coconut",
+    "fig",
+    "grape",
+    "lemon",
+    "lime",
+    "mango",
+    "melon",
+    "olive",
+    "peach",
+    "pear",
+    "pineapple",
+    "plum",
+    "pumpkin",
+    "raspberry",
+    "strawberry",
+    "tomato"
+   ],
+   "not_one_token_here": [
+    "apricot",
+    "blackberry",
+    "blueberry",
+    "cranberry",
+    "grapefruit",
+    "kiwi",
+    "papaya",
+    "pomegranate",
+    "tangerine",
+    "watermelon"
+   ]
+  },
+  "names": {
+   "n": 59,
+   "items": [
+    "Adam",
+    "Alice",
+    "Amy",
+    "Anna",
+    "Ben",
+    "Beth",
+    "Carl",
+    "Clara",
+    "Dan",
+    "David",
+    "Diana",
+    "Ella",
+    "Emma",
+    "Eric",
+    "Eva",
+    "Eve",
+    "Finn",
+    "Fiona",
+    "Frank",
+    "Grace",
+    "Henry",
+    "Hugo",
+    "Iris",
+    "Ivan",
+    "Ivy",
+    "Jack",
+    "James",
+    "Julia",
+    "Kate",
+    "Kyle",
+    "Laura",
+    "Leo",
+    "Liam",
+    "Lily",
+    "Lucy",
+    "Luke",
+    "Maria",
+    "Mark",
+    "Max",
+    "Mia",
+    "Nina",
+    "Noah",
+    "Olivia",
+    "Oscar",
+    "Owen",
+    "Paul",
+    "Peter",
+    "Rose",
+    "Ruby",
+    "Ryan",
+    "Sam",
+    "Sara",
+    "Sean",
+    "Tara",
+    "Tom",
+    "Vera",
+    "Victor",
+    "Will",
+    "Zoe"
+   ],
+   "not_one_token_here": []
+  }
+ },
+ "facts": {
+  "fruits": {
+   "apple": "red",
+   "avocado": "green",
+   "banana": "yellow",
+   "cherry": "red",
+   "coconut": "brown",
+   "fig": "purple",
+   "grape": "purple",
+   "lemon": "yellow",
+   "lime": "green",
+   "mango": "orange",
+   "melon": "green",
+   "olive": "green",
+   "peach": "orange",
+   "pear": "green",
+   "pineapple": "yellow",
+   "plum": "purple",
+   "pumpkin": "orange",
+   "raspberry": "red",
+   "strawberry": "red",
+   "tomato": "red"
+  }
+ },
+ "single_token": {
+  "animals": {
+   "n": 38,
+   "kept_on_every_target": [
+    "ant",
+    "bear",
+    "bee",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tick",
+    "tiger",
+    "turkey",
+    "wolf"
+   ],
+   "n_kept": 31,
+   "not_one_token": {
+    "qwen3.5-9b": [
+     "giraffe",
+     "parrot",
+     "penguin",
+     "scorpion",
+     "swan",
+     "zebra"
+    ],
+    "muse-glimmer-30b": [
+     "beetle",
+     "giraffe",
+     "parrot",
+     "penguin",
+     "scorpion",
+     "swan"
+    ]
+   }
+  },
+  "fruits": {
+   "n": 30,
+   "kept_on_every_target": [
+    "apple",
+    "avocado",
+    "banana",
+    "cherry",
+    "coconut",
+    "fig",
+    "grape",
+    "lemon",
+    "lime",
+    "mango",
+    "olive",
+    "peach",
+    "pear",
+    "pineapple",
+    "plum",
+    "pumpkin",
+    "raspberry",
+    "strawberry",
+    "tomato"
+   ],
+   "n_kept": 19,
+   "not_one_token": {
+    "qwen3.5-9b": [
+     "apricot",
+     "blackberry",
+     "blueberry",
+     "cranberry",
+     "grapefruit",
+     "kiwi",
+     "melon",
+     "papaya",
+     "pomegranate",
+     "tangerine",
+     "watermelon"
+    ],
+    "muse-glimmer-30b": [
+     "apricot",
+     "blackberry",
+     "blueberry",
+     "cranberry",
+     "grapefruit",
+     "kiwi",
+     "papaya",
+     "pomegranate",
+     "tangerine",
+     "watermelon"
+    ]
+   }
+  },
+  "names": {
+   "n": 59,
+   "kept_on_every_target": [
+    "Adam",
+    "Alice",
+    "Amy",
+    "Anna",
+    "Ben",
+    "Beth",
+    "Carl",
+    "Clara",
+    "Dan",
+    "David",
+    "Diana",
+    "Ella",
+    "Emma",
+    "Eric",
+    "Eva",
+    "Eve",
+    "Finn",
+    "Fiona",
+    "Frank",
+    "Grace",
+    "Henry",
+    "Hugo",
+    "Iris",
+    "Ivan",
+    "Ivy",
+    "Jack",
+    "James",
+    "Julia",
+    "Kate",
+    "Kyle",
+    "Laura",
+    "Leo",
+    "Liam",
+    "Lily",
+    "Lucy",
+    "Luke",
+    "Maria",
+    "Mark",
+    "Max",
+    "Mia",
+    "Nina",
+    "Noah",
+    "Olivia",
+    "Oscar",
+    "Owen",
+    "Paul",
+    "Peter",
+    "Rose",
+    "Ruby",
+    "Ryan",
+    "Sam",
+    "Sara",
+    "Sean",
+    "Tara",
+    "Tom",
+    "Vera",
+    "Victor",
+    "Will",
+    "Zoe"
+   ],
+   "n_kept": 59,
+   "not_one_token": {
+    "qwen3.5-9b": [],
+    "muse-glimmer-30b": []
+   }
+  },
+  "colours": {
+   "n": 9,
+   "kept_on_every_target": [
+    "red",
+    "yellow",
+    "green",
+    "orange",
+    "purple",
+    "blue",
+    "black",
+    "brown",
+    "pink"
+   ],
+   "n_kept": 9,
+   "not_one_token": {
+    "qwen3.5-9b": [],
+    "muse-glimmer-30b": []
+   }
+  }
+ },
+ "cases": {
+  "animals": 700,
+  "fruits": 700,
+  "names": 700
+ },
+ "dropped": {
+  "animals: A and B share their fact": 486,
+  "fruits: A and B share their fact": 124
+ },
+ "recall": {
+  "animals": "How many legs does {p}'s pick have?",
+  "fruits": "What color is {p}'s pick?",
+  "names": "none: no clean one-token fact for a name; the recall is skipped"
+ },
+ "competence": "measured in the job (gate.json, printed first): O's read accuracy per reader and type, gate 0.80",
+ "examples": {
+  "animals": [
+   {
+    "scene": "animals-0067",
+    "O": "The locker of the turkey is 6. The locker of the fly is 4. The locker of the camel is 9. Liam picked the fly. Ben picked the turkey. Ivan picked the camel.",
+    "S": "The locker of the camel is 3. The locker of the fly is 4. The locker of the turkey is 6. Liam picked the camel. Ben picked the turkey. Ivan picked the camel.",
+    "expect": {
+     "identity": 9,
+     "position": 6,
+     "value": 3,
+     "original": 4
+    },
+    "pos": 72,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Liam's pick?",
+      "answers": [
+       "4",
+       "3"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the turkey is 6. The locker of the fly is 4. The locker of the camel is 9. Liam picked the⟦ fly⟧. Ben picked the turkey. Ivan picked the camel.\nWhich locker belongs to Liam's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "How many legs does Liam's pick have?",
+      "answers": [
+       "6",
+       "4"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the turkey is 6. The locker of the fly is 4. The locker of the camel is 9. Liam picked the⟦ fly⟧. Ben picked the turkey. Ivan picked the camel.\nHow many legs does Liam's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0444",
+    "O": "The locker of the chicken is 1. The locker of the spider is 2. The locker of the bee is 6. Finn picked the spider. Lily picked the bee. Carl picked the chicken.",
+    "S": "The locker of the chicken is 1. The locker of the bee is 9. The locker of the spider is 2. Finn picked the spider. Lily picked the bee. Carl picked the bee.",
+    "expect": {
+     "identity": 6,
+     "position": 2,
+     "value": 9,
+     "original": 1
+    },
+    "pos": 82,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Carl's pick?",
+      "answers": [
+       "1",
+       "9"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the chicken is 1. The locker of the spider is 2. The locker of the bee is 6. Finn picked the spider. Lily picked the bee. Carl picked the⟦ chicken⟧.\nWhich locker belongs to Carl's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "How many legs does Carl's pick have?",
+      "answers": [
+       "2",
+       "6"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the chicken is 1. The locker of the spider is 2. The locker of the bee is 6. Finn picked the spider. Lily picked the bee. Carl picked the⟦ chicken⟧.\nHow many legs does Carl's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0643",
+    "O": "The locker of the horse is 7. The locker of the fox is 1. The locker of the bee is 5. Eva picked the horse. Diana picked the fox. Fiona picked the bee.",
+    "S": "The locker of the fox is 8. The locker of the horse is 7. The locker of the bee is 5. Eva picked the horse. Diana picked the fox. Fiona picked the fox.",
+    "expect": {
+     "identity": 1,
+     "position": 7,
+     "value": 8,
+     "original": 5
+    },
+    "pos": 82,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Fiona's pick?",
+      "answers": [
+       "5",
+       "8"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the horse is 7. The locker of the fox is 1. The locker of the bee is 5. Eva picked the horse. Diana picked the fox. Fiona picked the⟦ bee⟧.\nWhich locker belongs to Fiona's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "How many legs does Fiona's pick have?",
+      "answers": [
+       "6",
+       "4"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the horse is 7. The locker of the fox is 1. The locker of the bee is 5. Eva picked the horse. Diana picked the fox. Fiona picked the⟦ bee⟧.\nHow many legs does Fiona's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0711",
+    "O": "The locker of the spider is 5. The locker of the butterfly is 4. The locker of the eagle is 7. Liam picked the eagle. Mia picked the butterfly. Frank picked the spider.",
+    "S": "The locker of the eagle is 7. The locker of the butterfly is 4. The locker of the spider is 1. Liam picked the eagle. Mia picked the spider. Frank picked the spider.",
+    "expect": {
+     "identity": 5,
+     "position": 7,
+     "value": 1,
+     "original": 4
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Mia's pick?",
+      "answers": [
+       "4",
+       "1"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the spider is 5. The locker of the butterfly is 4. The locker of the eagle is 7. Liam picked the eagle. Mia picked the⟦ butterfly⟧. Frank picked the spider.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "How many legs does Mia's pick have?",
+      "answers": [
+       "6",
+       "8"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the spider is 5. The locker of the butterfly is 4. The locker of the eagle is 7. Liam picked the eagle. Mia picked the⟦ butterfly⟧. Frank picked the spider.\nHow many legs does Mia's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0861",
+    "O": "The locker of the owl is 9. The locker of the wolf is 1. The locker of the spider is 4. Fiona picked the wolf. Dan picked the owl. Kyle picked the spider.",
+    "S": "The locker of the owl is 9. The locker of the spider is 2. The locker of the wolf is 1. Fiona picked the wolf. Dan picked the spider. Kyle picked the spider.",
+    "expect": {
+     "identity": 4,
+     "position": 1,
+     "value": 2,
+     "original": 9
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Dan's pick?",
+      "answers": [
+       "9",
+       "2"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the owl is 9. The locker of the wolf is 1. The locker of the spider is 4. Fiona picked the wolf. Dan picked the⟦ owl⟧. Kyle picked the spider.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "How many legs does Dan's pick have?",
+      "answers": [
+       "2",
+       "8"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the owl is 9. The locker of the wolf is 1. The locker of the spider is 4. Fiona picked the wolf. Dan picked the⟦ owl⟧. Kyle picked the spider.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   }
+  ],
+  "fruits": [
+   {
+    "scene": "fruits-0050",
+    "O": "The locker of the plum is 2. The locker of the tomato is 1. The locker of the melon is 9. James picked the melon. Sam picked the tomato. Tom picked the plum.",
+    "S": "The locker of the plum is 2. The locker of the melon is 6. The locker of the tomato is 1. James picked the melon. Sam picked the tomato. Tom picked the melon.",
+    "expect": {
+     "identity": 9,
+     "position": 1,
+     "value": 6,
+     "original": 2
+    },
+    "pos": 82,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Tom's pick?",
+      "answers": [
+       "2",
+       "6"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the plum is 2. The locker of the tomato is 1. The locker of the melon is 9. James picked the melon. Sam picked the tomato. Tom picked the⟦ plum⟧.\nWhich locker belongs to Tom's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "What color is Tom's pick?",
+      "answers": [
+       "purple",
+       "green"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the plum is 2. The locker of the tomato is 1. The locker of the melon is 9. James picked the melon. Sam picked the tomato. Tom picked the⟦ plum⟧.\nWhat color is Tom's pick? Answer with a single word and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0307",
+    "O": "The locker of the fig is 5. The locker of the pineapple is 1. The locker of the lime is 3. Owen picked the lime. Tara picked the pineapple. Liam picked the fig.",
+    "S": "The locker of the lime is 6. The locker of the pineapple is 1. The locker of the fig is 5. Owen picked the lime. Tara picked the lime. Liam picked the fig.",
+    "expect": {
+     "identity": 3,
+     "position": 5,
+     "value": 6,
+     "original": 1
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Tara's pick?",
+      "answers": [
+       "1",
+       "6"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the fig is 5. The locker of the pineapple is 1. The locker of the lime is 3. Owen picked the lime. Tara picked the⟦ pineapple⟧. Liam picked the fig.\nWhich locker belongs to Tara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "What color is Tara's pick?",
+      "answers": [
+       "yellow",
+       "green"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the fig is 5. The locker of the pineapple is 1. The locker of the lime is 3. Owen picked the lime. Tara picked the⟦ pineapple⟧. Liam picked the fig.\nWhat color is Tara's pick? Answer with a single word and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0458",
+    "O": "The locker of the lemon is 5. The locker of the banana is 3. The locker of the avocado is 6. Ben picked the lemon. Zoe picked the avocado. Kate picked the banana.",
+    "S": "The locker of the banana is 8. The locker of the lemon is 5. The locker of the avocado is 6. Ben picked the lemon. Zoe picked the banana. Kate picked the banana.",
+    "expect": {
+     "identity": 3,
+     "position": 5,
+     "value": 8,
+     "original": 6
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Zoe's pick?",
+      "answers": [
+       "6",
+       "8"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lemon is 5. The locker of the banana is 3. The locker of the avocado is 6. Ben picked the lemon. Zoe picked the⟦ avocado⟧. Kate picked the banana.\nWhich locker belongs to Zoe's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "What color is Zoe's pick?",
+      "answers": [
+       "green",
+       "yellow"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lemon is 5. The locker of the banana is 3. The locker of the avocado is 6. Ben picked the lemon. Zoe picked the⟦ avocado⟧. Kate picked the banana.\nWhat color is Zoe's pick? Answer with a single word and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0504",
+    "O": "The locker of the plum is 5. The locker of the cherry is 6. The locker of the grape is 2. Lily picked the grape. Eve picked the cherry. Rose picked the plum.",
+    "S": "The locker of the grape is 2. The locker of the cherry is 6. The locker of the plum is 3. Lily picked the grape. Eve picked the plum. Rose picked the plum.",
+    "expect": {
+     "identity": 5,
+     "position": 2,
+     "value": 3,
+     "original": 6
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Eve's pick?",
+      "answers": [
+       "6",
+       "3"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the plum is 5. The locker of the cherry is 6. The locker of the grape is 2. Lily picked the grape. Eve picked the⟦ cherry⟧. Rose picked the plum.\nWhich locker belongs to Eve's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "What color is Eve's pick?",
+      "answers": [
+       "red",
+       "purple"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the plum is 5. The locker of the cherry is 6. The locker of the grape is 2. Lily picked the grape. Eve picked the⟦ cherry⟧. Rose picked the plum.\nWhat color is Eve's pick? Answer with a single word and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0613",
+    "O": "The locker of the banana is 3. The locker of the pear is 1. The locker of the avocado is 7. Hugo picked the avocado. Zoe picked the banana. Finn picked the pear.",
+    "S": "The locker of the banana is 3. The locker of the avocado is 7. The locker of the pear is 2. Hugo picked the avocado. Zoe picked the pear. Finn picked the pear.",
+    "expect": {
+     "identity": 1,
+     "position": 7,
+     "value": 2,
+     "original": 3
+    },
+    "pos": 77,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Zoe's pick?",
+      "answers": [
+       "3",
+       "2"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the banana is 3. The locker of the pear is 1. The locker of the avocado is 7. Hugo picked the avocado. Zoe picked the⟦ banana⟧. Finn picked the pear.\nWhich locker belongs to Zoe's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     },
+     "recall": {
+      "question": "What color is Zoe's pick?",
+      "answers": [
+       "yellow",
+       "green"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the banana is 3. The locker of the pear is 1. The locker of the avocado is 7. Hugo picked the avocado. Zoe picked the⟦ banana⟧. Finn picked the pear.\nWhat color is Zoe's pick? Answer with a single word and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   }
+  ],
+  "names": [
+   {
+    "scene": "names-0042",
+    "O": "The locker of Fiona is 8. The locker of Frank is 7. The locker of Alice is 4. Will picked Fiona. Kate picked Alice. Kyle picked Frank.",
+    "S": "The locker of Fiona is 8. The locker of Alice is 2. The locker of Frank is 7. Will picked Alice. Kate picked Alice. Kyle picked Frank.",
+    "expect": {
+     "identity": 4,
+     "position": 7,
+     "value": 2,
+     "original": 8
+    },
+    "pos": 68,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Will's pick?",
+      "answers": [
+       "8",
+       "2"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of Fiona is 8. The locker of Frank is 7. The locker of Alice is 4. Will picked⟦ Fiona⟧. Kate picked Alice. Kyle picked Frank.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0266",
+    "O": "The locker of Olivia is 4. The locker of Ivan is 7. The locker of Alice is 8. Dan picked Alice. Maria picked Olivia. Kyle picked Ivan.",
+    "S": "The locker of Olivia is 4. The locker of Alice is 1. The locker of Ivan is 7. Dan picked Alice. Maria picked Alice. Kyle picked Ivan.",
+    "expect": {
+     "identity": 8,
+     "position": 7,
+     "value": 1,
+     "original": 4
+    },
+    "pos": 72,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Maria's pick?",
+      "answers": [
+       "4",
+       "1"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of Olivia is 4. The locker of Ivan is 7. The locker of Alice is 8. Dan picked Alice. Maria picked⟦ Olivia⟧. Kyle picked Ivan.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0395",
+    "O": "The locker of Liam is 5. The locker of Hugo is 4. The locker of Paul is 6. Luke picked Hugo. Beth picked Paul. Sara picked Liam.",
+    "S": "The locker of Hugo is 4. The locker of Liam is 7. The locker of Paul is 6. Luke picked Hugo. Beth picked Liam. Sara picked Liam.",
+    "expect": {
+     "identity": 5,
+     "position": 4,
+     "value": 7,
+     "original": 6
+    },
+    "pos": 72,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Beth's pick?",
+      "answers": [
+       "6",
+       "7"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of Liam is 5. The locker of Hugo is 4. The locker of Paul is 6. Luke picked Hugo. Beth picked⟦ Paul⟧. Sara picked Liam.\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0431",
+    "O": "The locker of Will is 6. The locker of Fiona is 1. The locker of Ella is 3. Diana picked Will. Mark picked Ella. Victor picked Fiona.",
+    "S": "The locker of Ella is 4. The locker of Fiona is 1. The locker of Will is 6. Diana picked Will. Mark picked Ella. Victor picked Ella.",
+    "expect": {
+     "identity": 3,
+     "position": 6,
+     "value": 4,
+     "original": 1
+    },
+    "pos": 76,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Victor's pick?",
+      "answers": [
+       "1",
+       "4"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of Will is 6. The locker of Fiona is 1. The locker of Ella is 3. Diana picked Will. Mark picked Ella. Victor picked⟦ Fiona⟧.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0524",
+    "O": "The locker of Paul is 6. The locker of Julia is 8. The locker of Maria is 5. Will picked Maria. Hugo picked Julia. Luke picked Paul.",
+    "S": "The locker of Maria is 5. The locker of Julia is 8. The locker of Paul is 2. Will picked Maria. Hugo picked Paul. Luke picked Paul.",
+    "expect": {
+     "identity": 6,
+     "position": 5,
+     "value": 2,
+     "original": 8
+    },
+    "pos": 72,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Hugo's pick?",
+      "answers": [
+       "8",
+       "2"
+      ],
+      "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of Paul is 6. The locker of Julia is 8. The locker of Maria is 5. Will picked Maria. Hugo picked⟦ Julia⟧. Luke picked Paul.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:"
+     }
+    }
+   }
+  ]
+ }
+}

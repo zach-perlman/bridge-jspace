@@ -1,0 +1,800 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "seed": 4711,
+ "pools": {
+  "animals": {
+   "n": 32,
+   "items": [
+    "ant",
+    "bear",
+    "bee",
+    "beetle",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tick",
+    "tiger",
+    "turkey",
+    "wolf"
+   ],
+   "not_one_token_here": []
+  },
+  "fruits": {
+   "n": 19,
+   "items": [
+    "apple",
+    "avocado",
+    "banana",
+    "cherry",
+    "coconut",
+    "fig",
+    "grape",
+    "lemon",
+    "lime",
+    "mango",
+    "olive",
+    "peach",
+    "pear",
+    "pineapple",
+    "plum",
+    "pumpkin",
+    "raspberry",
+    "strawberry",
+    "tomato"
+   ],
+   "not_one_token_here": [
+    "apricot",
+    "blackberry",
+    "blueberry",
+    "cranberry",
+    "grapefruit",
+    "kiwi",
+    "melon",
+    "papaya",
+    "pomegranate",
+    "tangerine",
+    "watermelon"
+   ]
+  },
+  "names": {
+   "n": 59,
+   "items": [
+    "Adam",
+    "Alice",
+    "Amy",
+    "Anna",
+    "Ben",
+    "Beth",
+    "Carl",
+    "Clara",
+    "Dan",
+    "David",
+    "Diana",
+    "Ella",
+    "Emma",
+    "Eric",
+    "Eva",
+    "Eve",
+    "Finn",
+    "Fiona",
+    "Frank",
+    "Grace",
+    "Henry",
+    "Hugo",
+    "Iris",
+    "Ivan",
+    "Ivy",
+    "Jack",
+    "James",
+    "Julia",
+    "Kate",
+    "Kyle",
+    "Laura",
+    "Leo",
+    "Liam",
+    "Lily",
+    "Lucy",
+    "Luke",
+    "Maria",
+    "Mark",
+    "Max",
+    "Mia",
+    "Nina",
+    "Noah",
+    "Olivia",
+    "Oscar",
+    "Owen",
+    "Paul",
+    "Peter",
+    "Rose",
+    "Ruby",
+    "Ryan",
+    "Sam",
+    "Sara",
+    "Sean",
+    "Tara",
+    "Tom",
+    "Vera",
+    "Victor",
+    "Will",
+    "Zoe"
+   ],
+   "not_one_token_here": []
+  }
+ },
+ "facts": {
+  "fruits": {
+   "apple": "red",
+   "avocado": "green",
+   "banana": "yellow",
+   "cherry": "red",
+   "coconut": "brown",
+   "fig": "purple",
+   "grape": "purple",
+   "lemon": "yellow",
+   "lime": "green",
+   "mango": "orange",
+   "olive": "green",
+   "peach": "orange",
+   "pear": "green",
+   "pineapple": "yellow",
+   "plum": "purple",
+   "pumpkin": "orange",
+   "raspberry": "red",
+   "strawberry": "red",
+   "tomato": "red"
+  }
+ },
+ "single_token": {
+  "animals": {
+   "n": 38,
+   "kept_on_every_target": [
+    "ant",
+    "bear",
+    "bee",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tick",
+    "tiger",
+    "turkey",
+    "wolf"
+   ],
+   "n_kept": 31,
+   "not_one_token": {
+    "qwen3.5-9b": [
+     "giraffe",
+     "parrot",
+     "penguin",
+     "scorpion",
+     "swan",
+     "zebra"
+    ],
+    "muse-glimmer-30b": [
+     "beetle",
+     "giraffe",
+     "parrot",
+     "penguin",
+     "scorpion",
+     "swan"
+    ]
+   }
+  },
+  "fruits": {
+   "n": 30,
+   "kept_on_every_target": [
+    "apple",
+    "avocado",
+    "banana",
+    "cherry",
+    "coconut",
+    "fig",
+    "grape",
+    "lemon",
+    "lime",
+    "mango",
+    "olive",
+    "peach",
+    "pear",
+    "pineapple",
+    "plum",
+    "pumpkin",
+    "raspberry",
+    "strawberry",
+    "tomato"
+   ],
+   "n_kept": 19,
+   "not_one_token": {
+    "qwen3.5-9b": [
+     "apricot",
+     "blackberry",
+     "blueberry",
+     "cranberry",
+     "grapefruit",
+     "kiwi",
+     "melon",
+     "papaya",
+     "pomegranate",
+     "tangerine",
+     "watermelon"
+    ],
+    "muse-glimmer-30b": [
+     "apricot",
+     "blackberry",
+     "blueberry",
+     "cranberry",
+     "grapefruit",
+     "kiwi",
+     "papaya",
+     "pomegranate",
+     "tangerine",
+     "watermelon"
+    ]
+   }
+  },
+  "names": {
+   "n": 59,
+   "kept_on_every_target": [
+    "Adam",
+    "Alice",
+    "Amy",
+    "Anna",
+    "Ben",
+    "Beth",
+    "Carl",
+    "Clara",
+    "Dan",
+    "David",
+    "Diana",
+    "Ella",
+    "Emma",
+    "Eric",
+    "Eva",
+    "Eve",
+    "Finn",
+    "Fiona",
+    "Frank",
+    "Grace",
+    "Henry",
+    "Hugo",
+    "Iris",
+    "Ivan",
+    "Ivy",
+    "Jack",
+    "James",
+    "Julia",
+    "Kate",
+    "Kyle",
+    "Laura",
+    "Leo",
+    "Liam",
+    "Lily",
+    "Lucy",
+    "Luke",
+    "Maria",
+    "Mark",
+    "Max",
+    "Mia",
+    "Nina",
+    "Noah",
+    "Olivia",
+    "Oscar",
+    "Owen",
+    "Paul",
+    "Peter",
+    "Rose",
+    "Ruby",
+    "Ryan",
+    "Sam",
+    "Sara",
+    "Sean",
+    "Tara",
+    "Tom",
+    "Vera",
+    "Victor",
+    "Will",
+    "Zoe"
+   ],
+   "n_kept": 59,
+   "not_one_token": {
+    "qwen3.5-9b": [],
+    "muse-glimmer-30b": []
+   }
+  },
+  "colours": {
+   "n": 9,
+   "kept_on_every_target": [
+    "red",
+    "yellow",
+    "green",
+    "orange",
+    "purple",
+    "blue",
+    "black",
+    "brown",
+    "pink"
+   ],
+   "n_kept": 9,
+   "not_one_token": {
+    "qwen3.5-9b": [],
+    "muse-glimmer-30b": []
+   }
+  }
+ },
+ "cases": {
+  "animals": 700,
+  "fruits": 700,
+  "names": 700
+ },
+ "dropped": {
+  "animals: A and B share their fact": 464,
+  "fruits: A and B share their fact": 116
+ },
+ "recall": {
+  "animals": "How many legs does {p}'s pick have?",
+  "fruits": "What color is {p}'s pick?",
+  "names": "none: no clean one-token fact for a name; the recall is skipped"
+ },
+ "competence": "measured in the job (gate.json, printed first): O's read accuracy per reader and type, gate 0.80",
+ "examples": {
+  "animals": [
+   {
+    "scene": "animals-0062",
+    "O": "The locker of the beetle is 9. The locker of the chicken is 6. The locker of the horse is 1. Laura picked the beetle. Liam picked the horse. Eric picked the chicken.",
+    "S": "The locker of the horse is 4. The locker of the chicken is 6. The locker of the beetle is 9. Laura picked the beetle. Liam picked the horse. Eric picked the horse.",
+    "expect": {
+     "identity": 1,
+     "position": 9,
+     "value": 4,
+     "original": 6
+    },
+    "pos": 43,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Eric's pick?",
+      "answers": [
+       "6",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the beetle is 9. The locker of the chicken is 6. The locker of the horse is 1. Laura picked the beetle. Liam picked the horse. Eric picked the⟦ chicken⟧.\nWhich locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "How many legs does Eric's pick have?",
+      "answers": [
+       "2",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the beetle is 9. The locker of the chicken is 6. The locker of the horse is 1. Laura picked the beetle. Liam picked the horse. Eric picked the⟦ chicken⟧.\nHow many legs does Eric's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0465",
+    "O": "The locker of the deer is 1. The locker of the beetle is 2. The locker of the dog is 3. Hugo picked the beetle. Olivia picked the dog. Emma picked the deer.",
+    "S": "The locker of the deer is 1. The locker of the dog is 3. The locker of the beetle is 7. Hugo picked the beetle. Olivia picked the dog. Emma picked the beetle.",
+    "expect": {
+     "identity": 2,
+     "position": 3,
+     "value": 7,
+     "original": 1
+    },
+    "pos": 43,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Emma's pick?",
+      "answers": [
+       "1",
+       "7"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the deer is 1. The locker of the beetle is 2. The locker of the dog is 3. Hugo picked the beetle. Olivia picked the dog. Emma picked the⟦ deer⟧.\nWhich locker belongs to Emma's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "How many legs does Emma's pick have?",
+      "answers": [
+       "4",
+       "6"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the deer is 1. The locker of the beetle is 2. The locker of the dog is 3. Hugo picked the beetle. Olivia picked the dog. Emma picked the⟦ deer⟧.\nHow many legs does Emma's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0672",
+    "O": "The locker of the spider is 9. The locker of the tiger is 4. The locker of the elephant is 2. Amy picked the tiger. Rose picked the elephant. Iris picked the spider.",
+    "S": "The locker of the spider is 9. The locker of the elephant is 8. The locker of the tiger is 4. Amy picked the tiger. Rose picked the elephant. Iris picked the elephant.",
+    "expect": {
+     "identity": 2,
+     "position": 4,
+     "value": 8,
+     "original": 9
+    },
+    "pos": 43,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Iris's pick?",
+      "answers": [
+       "9",
+       "8"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the spider is 9. The locker of the tiger is 4. The locker of the elephant is 2. Amy picked the tiger. Rose picked the elephant. Iris picked the⟦ spider⟧.\nWhich locker belongs to Iris's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "How many legs does Iris's pick have?",
+      "answers": [
+       "8",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the spider is 9. The locker of the tiger is 4. The locker of the elephant is 2. Amy picked the tiger. Rose picked the elephant. Iris picked the⟦ spider⟧.\nHow many legs does Iris's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0740",
+    "O": "The locker of the bear is 2. The locker of the crow is 5. The locker of the sheep is 4. Mark picked the bear. Lily picked the sheep. James picked the crow.",
+    "S": "The locker of the sheep is 1. The locker of the crow is 5. The locker of the bear is 2. Mark picked the bear. Lily picked the sheep. James picked the sheep.",
+    "expect": {
+     "identity": 4,
+     "position": 2,
+     "value": 1,
+     "original": 5
+    },
+    "pos": 43,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to James's pick?",
+      "answers": [
+       "5",
+       "1"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the bear is 2. The locker of the crow is 5. The locker of the sheep is 4. Mark picked the bear. Lily picked the sheep. James picked the⟦ crow⟧.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "How many legs does James's pick have?",
+      "answers": [
+       "2",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the bear is 2. The locker of the crow is 5. The locker of the sheep is 4. Mark picked the bear. Lily picked the sheep. James picked the⟦ crow⟧.\nHow many legs does James's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "animals-0887",
+    "O": "The locker of the turkey is 5. The locker of the fly is 6. The locker of the eagle is 8. Owen picked the turkey. Amy picked the eagle. Oscar picked the fly.",
+    "S": "The locker of the fly is 7. The locker of the turkey is 5. The locker of the eagle is 8. Owen picked the turkey. Amy picked the fly. Oscar picked the fly.",
+    "expect": {
+     "identity": 6,
+     "position": 5,
+     "value": 7,
+     "original": 8
+    },
+    "pos": 38,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Amy's pick?",
+      "answers": [
+       "8",
+       "7"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the turkey is 5. The locker of the fly is 6. The locker of the eagle is 8. Owen picked the turkey. Amy picked the⟦ eagle⟧. Oscar picked the fly.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "How many legs does Amy's pick have?",
+      "answers": [
+       "2",
+       "6"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the turkey is 5. The locker of the fly is 6. The locker of the eagle is 8. Owen picked the turkey. Amy picked the⟦ eagle⟧. Oscar picked the fly.\nHow many legs does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   }
+  ],
+  "fruits": [
+   {
+    "scene": "fruits-0046",
+    "O": "The locker of the banana is 4. The locker of the pumpkin is 8. The locker of the olive is 2. Jack picked the pumpkin. Grace picked the banana. Iris picked the olive.",
+    "S": "The locker of the olive is 2. The locker of the pumpkin is 8. The locker of the banana is 1. Jack picked the banana. Grace picked the banana. Iris picked the olive.",
+    "expect": {
+     "identity": 4,
+     "position": 2,
+     "value": 1,
+     "original": 8
+    },
+    "pos": 33,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Jack's pick?",
+      "answers": [
+       "8",
+       "1"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the banana is 4. The locker of the pumpkin is 8. The locker of the olive is 2. Jack picked the⟦ pumpkin⟧. Grace picked the banana. Iris picked the olive.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "What color is Jack's pick?",
+      "answers": [
+       "orange",
+       "yellow"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the banana is 4. The locker of the pumpkin is 8. The locker of the olive is 2. Jack picked the⟦ pumpkin⟧. Grace picked the banana. Iris picked the olive.\nWhat color is Jack's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0303",
+    "O": "The locker of the lemon is 5. The locker of the lime is 7. The locker of the fig is 6. Will picked the lime. David picked the fig. Carl picked the lemon.",
+    "S": "The locker of the lime is 7. The locker of the lemon is 2. The locker of the fig is 6. Will picked the lime. David picked the lemon. Carl picked the lemon.",
+    "expect": {
+     "identity": 5,
+     "position": 7,
+     "value": 2,
+     "original": 6
+    },
+    "pos": 38,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to David's pick?",
+      "answers": [
+       "6",
+       "2"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the lemon is 5. The locker of the lime is 7. The locker of the fig is 6. Will picked the lime. David picked the⟦ fig⟧. Carl picked the lemon.\nWhich locker belongs to David's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "What color is David's pick?",
+      "answers": [
+       "purple",
+       "yellow"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the lemon is 5. The locker of the lime is 7. The locker of the fig is 6. Will picked the lime. David picked the⟦ fig⟧. Carl picked the lemon.\nWhat color is David's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0457",
+    "O": "The locker of the fig is 5. The locker of the apple is 1. The locker of the lime is 8. Lily picked the fig. Lucy picked the apple. Ella picked the lime.",
+    "S": "The locker of the lime is 4. The locker of the apple is 1. The locker of the fig is 5. Lily picked the fig. Lucy picked the lime. Ella picked the lime.",
+    "expect": {
+     "identity": 8,
+     "position": 5,
+     "value": 4,
+     "original": 1
+    },
+    "pos": 38,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Lucy's pick?",
+      "answers": [
+       "1",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the fig is 5. The locker of the apple is 1. The locker of the lime is 8. Lily picked the fig. Lucy picked the⟦ apple⟧. Ella picked the lime.\nWhich locker belongs to Lucy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "What color is Lucy's pick?",
+      "answers": [
+       "red",
+       "green"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the fig is 5. The locker of the apple is 1. The locker of the lime is 8. Lily picked the fig. Lucy picked the⟦ apple⟧. Ella picked the lime.\nWhat color is Lucy's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0502",
+    "O": "The locker of the avocado is 7. The locker of the raspberry is 1. The locker of the banana is 8. Carl picked the avocado. Frank picked the banana. Kate picked the raspberry.",
+    "S": "The locker of the avocado is 7. The locker of the banana is 9. The locker of the raspberry is 1. Carl picked the banana. Frank picked the banana. Kate picked the raspberry.",
+    "expect": {
+     "identity": 8,
+     "position": 1,
+     "value": 9,
+     "original": 7
+    },
+    "pos": 33,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Carl's pick?",
+      "answers": [
+       "7",
+       "9"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the avocado is 7. The locker of the raspberry is 1. The locker of the banana is 8. Carl picked the⟦ avocado⟧. Frank picked the banana. Kate picked the raspberry.\nWhich locker belongs to Carl's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "What color is Carl's pick?",
+      "answers": [
+       "green",
+       "yellow"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the avocado is 7. The locker of the raspberry is 1. The locker of the banana is 8. Carl picked the⟦ avocado⟧. Frank picked the banana. Kate picked the raspberry.\nWhat color is Carl's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "fruits-0608",
+    "O": "The locker of the pumpkin is 8. The locker of the grape is 4. The locker of the olive is 6. Ryan picked the olive. Lucy picked the pumpkin. Alice picked the grape.",
+    "S": "The locker of the olive is 6. The locker of the grape is 4. The locker of the pumpkin is 9. Ryan picked the olive. Lucy picked the pumpkin. Alice picked the pumpkin.",
+    "expect": {
+     "identity": 8,
+     "position": 6,
+     "value": 9,
+     "original": 4
+    },
+    "pos": 43,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Alice's pick?",
+      "answers": [
+       "4",
+       "9"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the pumpkin is 8. The locker of the grape is 4. The locker of the olive is 6. Ryan picked the olive. Lucy picked the pumpkin. Alice picked the⟦ grape⟧.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     },
+     "recall": {
+      "question": "What color is Alice's pick?",
+      "answers": [
+       "purple",
+       "orange"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of the pumpkin is 8. The locker of the grape is 4. The locker of the olive is 6. Ryan picked the olive. Lucy picked the pumpkin. Alice picked the⟦ grape⟧.\nWhat color is Alice's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   }
+  ],
+  "names": [
+   {
+    "scene": "names-0042",
+    "O": "The locker of Fiona is 8. The locker of Frank is 7. The locker of Alice is 4. Will picked Fiona. Kate picked Alice. Kyle picked Frank.",
+    "S": "The locker of Fiona is 8. The locker of Alice is 2. The locker of Frank is 7. Will picked Alice. Kate picked Alice. Kyle picked Frank.",
+    "expect": {
+     "identity": 4,
+     "position": 7,
+     "value": 2,
+     "original": 8
+    },
+    "pos": 29,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Will's pick?",
+      "answers": [
+       "8",
+       "2"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of Fiona is 8. The locker of Frank is 7. The locker of Alice is 4. Will picked⟦ Fiona⟧. Kate picked Alice. Kyle picked Frank.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0266",
+    "O": "The locker of Olivia is 4. The locker of Ivan is 7. The locker of Alice is 8. Dan picked Alice. Maria picked Olivia. Kyle picked Ivan.",
+    "S": "The locker of Olivia is 4. The locker of Alice is 1. The locker of Ivan is 7. Dan picked Alice. Maria picked Alice. Kyle picked Ivan.",
+    "expect": {
+     "identity": 8,
+     "position": 7,
+     "value": 1,
+     "original": 4
+    },
+    "pos": 33,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Maria's pick?",
+      "answers": [
+       "4",
+       "1"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of Olivia is 4. The locker of Ivan is 7. The locker of Alice is 8. Dan picked Alice. Maria picked⟦ Olivia⟧. Kyle picked Ivan.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0395",
+    "O": "The locker of Liam is 5. The locker of Hugo is 4. The locker of Paul is 6. Luke picked Hugo. Beth picked Paul. Sara picked Liam.",
+    "S": "The locker of Hugo is 4. The locker of Liam is 7. The locker of Paul is 6. Luke picked Hugo. Beth picked Liam. Sara picked Liam.",
+    "expect": {
+     "identity": 5,
+     "position": 4,
+     "value": 7,
+     "original": 6
+    },
+    "pos": 33,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Beth's pick?",
+      "answers": [
+       "6",
+       "7"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of Liam is 5. The locker of Hugo is 4. The locker of Paul is 6. Luke picked Hugo. Beth picked⟦ Paul⟧. Sara picked Liam.\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0431",
+    "O": "The locker of Will is 6. The locker of Fiona is 1. The locker of Ella is 3. Diana picked Will. Mark picked Ella. Victor picked Fiona.",
+    "S": "The locker of Ella is 4. The locker of Fiona is 1. The locker of Will is 6. Diana picked Will. Mark picked Ella. Victor picked Ella.",
+    "expect": {
+     "identity": 3,
+     "position": 6,
+     "value": 4,
+     "original": 1
+    },
+    "pos": 37,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Victor's pick?",
+      "answers": [
+       "1",
+       "4"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of Will is 6. The locker of Fiona is 1. The locker of Ella is 3. Diana picked Will. Mark picked Ella. Victor picked⟦ Fiona⟧.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   },
+   {
+    "scene": "names-0524",
+    "O": "The locker of Paul is 6. The locker of Julia is 8. The locker of Maria is 5. Will picked Maria. Hugo picked Julia. Luke picked Paul.",
+    "S": "The locker of Maria is 5. The locker of Julia is 8. The locker of Paul is 2. Will picked Maria. Hugo picked Paul. Luke picked Paul.",
+    "expect": {
+     "identity": 6,
+     "position": 5,
+     "value": 2,
+     "original": 8
+    },
+    "pos": 33,
+    "readers": {
+     "lookup": {
+      "question": "Which locker belongs to Hugo's pick?",
+      "answers": [
+       "8",
+       "2"
+      ],
+      "prompt_O": "<|im_start|>user\nThe locker of Paul is 6. The locker of Julia is 8. The locker of Maria is 5. Will picked Maria. Hugo picked⟦ Julia⟧. Luke picked Paul.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+     }
+    }
+   }
+  ]
+ }
+}

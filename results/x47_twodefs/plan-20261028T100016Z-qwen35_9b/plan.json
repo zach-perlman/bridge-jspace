@@ -1,0 +1,37 @@
+{
+  "design": "main",
+  "source": "qwen35_9b_x0_necessity",
+  "alt": "cf",
+  "layer": 12,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+    "locker-after": 68,
+    "locker-first": 75,
+    "mixed": 57
+  },
+  "upstream": {
+    "False": 92,
+    "True": 108
+  },
+  "locker-first, prefix-identical": 15,
+  "pick_tokens": {
+    "5": 81,
+    "4": 118,
+    "6": 1
+  },
+  "target": "qwen3.5-9b",
+  "reads_per_reader": 8,
+  "arms": [
+    "none",
+    "whole",
+    "omp25:no_part",
+    "omp25:no_rand",
+    "top10:no_part",
+    "top10:no_rand",
+    "top10_state:no_part",
+    "top10_state:no_rand"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "design": "main",
+  "source": "muse30b_x0_necessity",
+  "alt": "cf",
+  "layer": 26,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+    "locker-after": 69,
+    "mixed": 63,
+    "locker-first": 68
+  },
+  "upstream": {
+    "False": 103,
+    "True": 97
+  },
+  "locker-first, prefix-identical": 16,
+  "pick_tokens": {
+    "5": 79,
+    "4": 117,
+    "6": 4
+  },
+  "target": "muse-glimmer-30b",
+  "reads_per_reader": 8,
+  "arms": [
+    "none",
+    "whole",
+    "omp25:no_part",
+    "omp25:no_rand",
+    "top10:no_part",
+    "top10:no_rand",
+    "top10_state:no_part",
+    "top10_state:no_rand"
+  ]
+}
