@@ -1,0 +1,161 @@
+"""nn_readout (Zach, 2026-10-28, prereg amendment 58 note 9): is a never-named bridge visible in the workspace where it
+would be computed? Descriptive, with note 9's fixed reading.
+
+Prompts (jsuite v3 rendering 0, the model's v3 competence and note 4's eligibility): never-named RM (the question
+describes the bridge; the passage never names it), MM (the same description, the bridge also named in passing), and
+RM's hop 1 alone ("Which novelist wrote Arrow of God?", same passage). Sites: the last token of the description in the
+question, and the last token of the prompt. At every 2nd layer, the J++ lens and the logit lens over two candidate sets,
+each candidate scored by the best of its first tokens (with and without a leading space): the relation's bridges (is the
+bridge X the top one?) and the relation's answers (is X's attribute the top one?). Chance: 1/k.
+Reading (note 9): "bridge visible" if X is the top bridge at >= 3x chance at some layer, before the layer where the
+attribute's top-1 rate first peaks.
+
+python scripts/nn_readout.py --name N --competence C [--set jsuite_v3_test_chat] [--every 2] [--batch 16]
+"""
+
+from __future__ import annotations
+
+import argparse
+import collections
+import json
+import re
+import statistics
+import subprocess
+import sys
+from pathlib import Path
+
+import torch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.lens import JLens  # noqa: E402
+from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from scripts import jswap as JS  # noqa: E402
+from scripts import suite_v1 as S  # noqa: E402
+from scripts import tasks_v2 as T  # noqa: E402
+from scripts.ablate_v2 import bridge_positions  # noqa: E402
+
+RES = pins.RESULTS_DIR / "nn_readout"
+
+
+@torch.no_grad()
+def main(a) -> None:
+    out_dir = RES / a.name
+    assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    model = load_model()
+    tok = model.tokenizer
+    lens = JLens(model, pins.FROZEN_LENS)
+    layers = sorted(la for la in (int(x) for x in lens.source_layers) if la % a.every == 0)
+    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
+                                                       "competence": a.competence, "layers": layers, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
+    items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
+    prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, ["RM", "MM"]) if p["family"] in ("RM", "MM")]
+    letters = model.letter_token_ids()
+    wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
+    row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
+    row_of[letters] = torch.arange(letters.numel(), device="cuda")
+
+    def cand_rows(vals: list[str]) -> list[list[int]]:
+        return [[int(row_of[t]) for t in {S.ids(tok, " " + v)[0], S.ids(tok, v)[0]} if int(row_of[t]) >= 0] for v in vals]
+
+    bridges_of = collections.defaultdict(set)
+    for it in items.values():
+        if it.get("module") == "facts" and it["word"] in ("PK", "PM", "RM", "MM"):
+            bridges_of[it["relation"]].add(it["bridge"])
+    jobs = []
+    for p in prompts:
+        it = items[p["id"]]
+        variants = [(p["family"], p["ids"])]
+        if p["family"] == "RM":  # hop 1 alone, same passage
+            q1 = it["steps"][0]["question"]
+            variants.append(("RM_hop1", S.ids(tok, T.render(tok, {**it, "_question": q1, "_kind": it["steps"][0]["kind"]}))))
+        bvals, avals = sorted(bridges_of[it["relation"]]), list(it["answer_vocab"])
+        brows, arows = cand_rows(bvals), cand_rows(avals)
+        if not all(brows) or not all(arows) or it["bridge"] not in bvals or it["real"] not in avals:
+            continue
+        for fam, ids in variants:
+            # the description's last token; hop 1 repeats its clause ("Which novelist wrote Arrow of God?")
+            desc = re.split(r" (?:who|that) ", it["start_desc"], maxsplit=1)[-1] if fam == "RM_hop1" else it["start_desc"]
+            pos = bridge_positions(tok, ids, desc)
+            if not pos:
+                continue
+            jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(it["real"]), "rel": it["relation"]})  # fmt: skip
+    if a.limit:  # a smoke: the first N prompts per family
+        per = collections.defaultdict(list)
+        for j in jobs:
+            per[j["family"]].append(j)
+        jobs = [j for v in per.values() for j in v[: a.limit]]
+    print(f"{len(jobs)} prompts; by family {dict(collections.Counter(j['family'] for j in jobs))}; layers {layers}", flush=True)
+    stats = collections.defaultdict(list)
+    by_len = collections.defaultdict(list)
+    for j in jobs:
+        by_len[len(j["ids"])].append(j)
+    for group in by_len.values():
+        for s in range(0, len(group), a.batch):
+            chunk = group[s : s + a.batch]
+            ids = torch.tensor([j["ids"] for j in chunk], device="cuda")
+            rec = {}
+
+            def hook_for(la):
+                def hook(_m, _a, out):
+                    h = out[0] if isinstance(out, tuple) else out
+                    rec[la] = h.float()
+
+                return hook
+
+            with _forward_hooks([(model.layers[la], hook_for(la)) for la in layers]):
+                model.hf(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=False, logits_to_keep=1)
+            for la in layers:
+                for site in ("desc_end", "final"):
+                    x = torch.stack([rec[la][b, j["sites"][site]] for b, j in enumerate(chunk)])
+                    for ln, M in (("jlens", lens.J(la)), ("logit", None)):
+                        lg = (x if M is None else x @ M.T) @ wg.T
+                        for b, j in enumerate(chunk):
+                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"])):
+                                cand = torch.stack([lg[b, r].max() for r in rws])
+                                rank = int((cand > cand[true]).sum()) + 1
+                                stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
+    summ = {}
+    for (fam, site, ln, what, la), xs in sorted(stats.items()):
+        summ[f"{fam}/{site}/{ln}/{what}/L{la}"] = {"n": len(xs), "top1": round(100 * sum(t for t, _, _ in xs) / len(xs), 1),
+                                                    "chance": round(100 * sum(c for _, _, c in xs) / len(xs), 1),
+                                                    "median_rank": statistics.median(r for _, r, _ in xs)}  # fmt: skip
+    # note 9's reading, per family and lens at the description's end
+    reading = {}
+    for fam in sorted({j["family"] for j in jobs}):
+        for ln in ("jlens", "logit"):
+            br = [(la, summ[f"{fam}/desc_end/{ln}/bridge/L{la}"]) for la in layers if f"{fam}/desc_end/{ln}/bridge/L{la}" in summ]
+            at = [(la, summ[f"{fam}/desc_end/{ln}/attr/L{la}"]) for la in layers if f"{fam}/desc_end/{ln}/attr/L{la}" in summ]
+            if not br or not at:
+                continue
+            peak = max(at, key=lambda z: z[1]["top1"])[0]
+            vis = [la for la, c in br if c["top1"] >= 3 * c["chance"] and la <= peak]
+            reading[f"{fam}/{ln}"] = {"bridge_visible_before_attr_peak": bool(vis), "layers": vis, "attr_peak_layer": peak,
+                                      "bridge_best": max(c["top1"] for _, c in br), "attr_best": max(c["top1"] for _, c in at)}  # fmt: skip
+    summ["reading"] = reading
+    (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
+    for fam in sorted({j["family"] for j in jobs}):
+        for site in ("desc_end", "final"):
+            line = f"{fam:8s} {site:8s}"
+            for la in layers:
+                cb, ca = summ.get(f"{fam}/{site}/jlens/bridge/L{la}"), summ.get(f"{fam}/{site}/jlens/attr/L{la}")
+                if cb and ca:
+                    line += f" L{la} {cb['top1']:.0f}/{ca['top1']:.0f}"
+            print(line + "   (J++ top-1 %: bridge / attribute)", flush=True)
+    print(json.dumps(reading, indent=1))
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--name", required=True)
+    ap.add_argument("--competence", required=True)
+    ap.add_argument("--set", default="jsuite_v3_test_chat")
+    ap.add_argument("--every", type=int, default=2)
+    ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--limit", type=int, default=0, help="first N prompts per family (a smoke)")
+    main(ap.parse_args())

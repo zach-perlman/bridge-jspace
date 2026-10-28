@@ -2331,3 +2331,79 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     (scripts/queues/h200_v3ko_1028.sh); the queues are unchanged apart from the variable.
 - **Already finished with QR:** the 9B's answer-only removal, position split (4 runs), swap and neutral-donor runs.
   They are kept; the two projections agree to float noise.
+
+#### Amendment 58 note 9 (Zach, 2026-10-28 ~08:00 UTC, before any run below; mechanics smokes of nn_swap, nn_readout and the hop contrast ran first on the 9B, 2 items per word, outputs unread): never-named bridges
+
+- **Why (Zach, 27-28 Oct; Neel's meeting):** the named-bridge results show how recall works once the model has an
+  entity in hand. The paper's claim (Gurnee et al. 2026) and Neel's skepticism concern bridges the model must compute.
+  v3's never-named start (RM) is that case: the question describes the bridge ("the novelist who wrote Arrow of God")
+  and the passage never names it.
+- **Seen when this was written:**
+  - The 3 models' v3 competence: RM 40 / 54 / 66%. 36-46% of RM successes come with hop 1 alone wrong.
+  - Clue-only questions right 74-82% (141 of 468 descriptions have a named clue).
+  - The removal matrix: RM - MM ≈ 0 in all 3.
+  - Every named-bridge port.
+  - Nothing on never-named readouts or swaps.
+- **Terms:** the "skip-the-bridge probes" are renamed **clue-only questions**. They are a behavioural test of whether
+  the shortcut is available, not trained probes.
+- **Models:** Qwen3.6-27B (L32-40), Qwen3.5-9B (L12-16), Lightning (L27-33); v3 rendering 0. Order: Lightning, the
+  27B, the 9B (most eligible items first). Then Muse, then SOCRATES and Bolt (Zach). Ministral's note-6 removal matrix
+  runs beside them (Zach: "if quick").
+- **Items and eligibility (Zach 5a):**
+  - Whole question right and both hops alone right: 112 / 135 / 196 RM items for 9B / 27B / Lightning (note 4's rule
+    for R).
+  - Every result is also split three ways (Zach 6a): clue-only question right (either of 2 wordings, Zach 8b), wrong,
+    and no named clue.
+- **Controls (Zach):** a control "passes" below 10 points throughout this note.
+- **1. Composition contrast (ablate_v2 --kinds clean step1 step2; Zach 9a-12a):**
+  - **Prompts:** RM's whole question and each hop alone, same passage. PM and MM are run the same way as references
+    (PM's hop 2 is the same "What was the nationality of X?").
+  - **Conditions:** paper10, paper10_rot, unembed10 at each model's band.
+  - **Reading:** "composition needs the workspace beyond the final recall" if loss(RM whole) - loss(RM hop 2) ≥ 10 with
+    the controls < 10. Hop 1's loss is reported beside it.
+- **2. Readout (scripts/nn_readout.py; Zach 13a-16a):**
+  - **Prompts and sites:** RM, MM and RM's hop 1 alone, read at the description's last token and at the final token,
+    every 2nd layer.
+  - **Lenses and candidates:** the J++ and logit lenses over the relation's bridges and its answers.
+  - **Reading:** "bridge visible" if X is the top bridge at ≥ 3x chance at some layer at or before the layer where the
+    attribute's top-1 rate peaks.
+- **3. Swap (scripts/nn_swap.py; Zach 17-22):**
+  - **Sites (Zach 17: a and b, plus the end of the question):**
+    - the description's last token (main);
+    - every description token;
+    - the question's "?" token;
+    - the prompt's last token.
+
+    exp11 and exp14 read latent bridges at the last token from mid-late layers (27B L32-48), and swaps there worked
+    only at L40-56.
+  - **Donor D:** another bridge of the relation with a different answer and an eligible RM prompt of its own.
+    - insert: D's slice from the neutral sentence;
+    - latent: D's slice at the end of D's own description in one of its RM prompts (a computed bridge).
+  - **Conditions:**
+    - the transplant at k = 10, with rotated, random-subspace and logit-lens controls;
+    - the dose at k = 30 and 100 (transplant and random-subspace; Zach: add);
+    - the paper's clamp (X's and D's J-lens name vectors' coordinates exchanged at every position), with a
+      norm-matched random-direction control.
+  - **Layers (Zach 20: add the sweep):**
+    - a sweep first, at the description's end and at the final token, on 80 items per word: windows of 4-8 layers
+      across depth, transplant and random-subspace only;
+    - then every condition at the band;
+    - then at each site's best window. The best window is the window other than the band with the largest RM
+      transplant, chosen by script.
+  - **References (Zach 21: add):** MM swapped at its description and PM at its mention, in the same jobs. The named
+    swap at the band is not rerun; the v3 port is the reference.
+  - **Reading:**
+    - transfer ≥ 20 with every control < 10 means "the computed bridge acts as a workspace entity";
+    - ≤ 5 means "it does not";
+    - in between is partial.
+    - Reported beside PM's transfer at the same layers and site.
+- **4. Trained linear probe for the bridge (Zach 7: is the bridge formed internally?):**
+  - **Data:** activations at the description's last token, at the band and at the sweep windows' centres.
+  - **Classifier:** a logistic regression over the relation's bridges.
+  - **Leave-one-description-out:** both of an entity's descriptions appear across the M, W and R prompts, so for
+    held-out description d the probe is trained only on prompts that use the other description (M and W starts, every
+    final, and RM hop-1 prompts), and tested on RM prompts that use d.
+  - **Use:** reported as the probe's top-1 accuracy (chance 1/k), and used to split the swap and contrast results into
+    "bridge decoded" vs "not decoded".
+  - **Order:** built and run after 1-3.
+- **Not in this note:** SOCRATES (note 10), Muse, Bolt (with k 30 and 100), rendering 1 (last).
