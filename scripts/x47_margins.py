@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from bridge_jspace.utils import git_state
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
@@ -178,7 +179,8 @@ def main() -> None:
     out = RESULTS / time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "test": "47.0b (jobs/c3/batch47.yaml)", "descriptive": True,
-         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "code": git_state(), "n_boot": a.n_boot,
+         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "code": git_state(), "switches": switches(),
+         "n_boot": a.n_boot,
          "seed": X.BOOT_SEED, "inputs": {d: {t: f"results/x0_necessity/{r}/outcomes.jsonl" for t, r in runs.items()}
                                          for d, runs in RUNS.items()},
          "margin": "logit(original answer) - logit(changed answer) = -ld on arm 'none' (unedited), chat, the layer fixed "
