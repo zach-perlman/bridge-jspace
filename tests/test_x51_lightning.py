@@ -203,6 +203,74 @@ def test_stage_run_without_the_gate_reads_nothing(tmp_path, monkeypatch):
     assert not (out / "step1_outcomes.jsonl").exists()
 
 
+# ---- batch 52: the prerequisite (gate on 60 scenes, the layer by the published rule) -------------------------------
+
+
+def test_prereq_layers_are_every_4th_with_lens_maps():
+    assert L6.LAYERS4 == (2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50) and set(L6.LAYERS4) <= set(L6.LAYERS)
+    assert L6.N_GATE == 60 and L6.PREREQ_RUN.startswith("nem35l_")
+
+
+def test_gate_first_reads_the_first_n_scenes_only():
+    cases = [_case(i) for i in range(10)]
+    comp = [{"scene": c["scene"], "rendering": "chat", "reader": w, "variant": v, "right": True,
+             "read_right": not (w == RC and i < 3), "cand_right": True}
+            for i, c in enumerate(cases) for w in X.READERS for v in ("org", "alt")]  # fmt: skip
+    g = L6.gate_first(cases, comp, n=5)  # recall right on 2 of the first 5
+    assert g["cases"] == 5 and g["org_accuracy"] == {LK: 1.0, RC: 0.4} and g["pass"] is False
+    assert L6.gate_first(cases[3:], comp, n=5)["pass"] is True  # all right from scene 3 on
+    assert L6.gate_first(cases[:4], comp[: 4 * 4], n=5)["pass"] is False  # fewer than n scenes
+
+
+def test_stage_prereq_writes_the_layer_and_no_step_2(tmp_path, monkeypatch):
+    from bridge_jspace import pins
+
+    _stage(monkeypatch, tmp_path, switch_min=0.0)
+    monkeypatch.setattr(L6, "N_GATE", 10)
+    out = L6.stage_prereq(f"{pins.RUN_PREFIX}x52_layer_test", "test", n_boot=50)
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["batch"] == 52 and m["layers"] == list(L6.LAYERS4) and m["question"] == L6.NO_PREDICTION
+    gate = json.loads((out / "gate.json").read_text())
+    assert gate["gate60"]["pass"] and gate["gate60"]["cases"] == 10 and len(gate["dev"]) == 6
+    rec = json.loads((out / "layer.json").read_text())
+    assert rec["layer"] == 2 and rec["label"] == "L2" and rec["passing_layers"] == list(L6.LAYERS4)
+    assert set(rec["rates_ci"]) == {str(la) for la in L6.LAYERS4} and rec["prediction"] == L6.NO_PREDICTION
+    rows = X.read_jsonl(out / "step1_outcomes.jsonl")
+    assert len(rows) == 6 * 2 * (1 + len(L6.LAYERS4)) and {r["scene"] for r in rows} == set(gate["dev"])
+    names = {p.name for p in out.iterdir()}
+    assert not names & {"step2_outcomes.jsonl", "step2.json", "verdict.md"} and "prereq.md" in names
+    assert "**Layer: L2**" in (out / "prereq.md").read_text()
+
+
+def test_stage_prereq_no_layer_and_failed_gate(tmp_path, monkeypatch):
+    from bridge_jspace import pins
+
+    _stage(monkeypatch, tmp_path, switch_min=1.01)
+    monkeypatch.setattr(L6, "N_GATE", 10)
+    rec = json.loads((L6.stage_prereq(f"{pins.RUN_PREFIX}x52_none", "t", n_boot=20) / "layer.json").read_text())
+    assert rec["layer"] is None and rec["label"] == L6.NO_LAYER and rec["status"] == "no layer passes"
+    _stage(monkeypatch, tmp_path / "g", gate_ok=False)
+    monkeypatch.setattr(L6, "N_GATE", 10)
+    out = L6.stage_prereq(f"{pins.RUN_PREFIX}x52_gate", "t", n_boot=20)
+    rec = json.loads((out / "layer.json").read_text())
+    assert rec["layer"] is None and rec["status"] == "prerequisite failed" and "60 main-test" in rec["label"]
+    assert not (out / "step1_outcomes.jsonl").exists()
+
+
+def test_committed_layer_refuses_until_committed(monkeypatch):
+    def fake(code: int, text: str):
+        return lambda *a, **k: SimpleNamespace(returncode=code, stdout=text)
+
+    monkeypatch.setattr(L6.subprocess, "run", fake(128, ""))
+    with pytest.raises(AssertionError, match="not committed"):
+        L6.committed_layer()
+    monkeypatch.setattr(L6.subprocess, "run", fake(0, json.dumps({"layer": None, "status": "no layer passes"})))
+    with pytest.raises(AssertionError, match="cancelled"):
+        L6.committed_layer()
+    monkeypatch.setattr(L6.subprocess, "run", fake(0, json.dumps({"layer": 14})))
+    assert L6.committed_layer() == 14
+
+
 # ---- the rule and the verdict on planted runs ----------------------------------------------------------------------
 
 SPLIT = {LK: {"whole": 0.5, "no_part": 0.5, "no_rand": 0.5}, RC: {"whole": 0.8, "no_part": 0.2, "no_rand": 0.8}}

@@ -30,8 +30,16 @@ over the bridge items (10,000, seed 0) beside; X0's validity bar per cell (S_who
 SEALED: the run writes per-item files, the step-1 layer pick (the procedure needs it) and no verdict; verdict and view
 refuse until predictions/2026-10-28_dan.md holds Dan's committed Q51.6 answer at HEAD.
 
+Batch 52 (jobs/c3/batch52.yaml, part C; Dan 29 Oct 00:25 / 00:30): the `prereq` stage fixes Lightning's layer for the
+coverage cells by the published rule before any scored run: the gate on 60 main-test scenes (the first 60 in scene
+order, X0's read and bar 0.80 per reader; X0's all-scene gate beside), then step 1 alone on the same 60 dev scenes
+(the 51.6 split, seed 0) at every 4th layer L2-L50, the layer = the earliest where both readers switch >= 0.3. It
+writes layer.json (the artefact the coverage specs read once it is committed) and no step 2, no verdict. Not a
+prediction: a design choice by the published rule (the batch 52 addendum).
+
 uv run python scripts/x51_lightning.py plan                                              # CPU, Lightning's tokenizer
 BJ_TARGET=nemotron-3.5-lightning uv run python scripts/x51_lightning.py run --name nem35l_x51_6   # GPU (sealed)
+BJ_TARGET=nemotron-3.5-lightning uv run python scripts/x51_lightning.py prereq --name nem35l_x52_layer  # GPU, batch 52
 uv run python scripts/x51_lightning.py verdict | view                                    # CPU, after Dan's Q51.6
 """
 
@@ -77,6 +85,19 @@ N_PROMPTS, N_ROWS, VIEW_SEED = 5, 10, 0  # the verify pack
 ARMS2 = ("none", "whole", "no_part", "no_rand")  # step 2's read order (X0's)
 NO_LAYER = "the bridge word does not redirect the lookup at any layer on Lightning"  # the brief's wording
 READER_NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
+# Batch 52 prerequisite (Dan's published rule, jobs/c3/batch52.yaml part C): every 4th layer; L2-L50 as batch 47's Muse
+# sweep (also 52 blocks) and a subset of 51.6's grid; the gate on 60 main-test scenes.
+LAYERS4 = tuple(range(2, 51, 4))
+N_GATE = 60
+PREREQ_RUN = "nem35l_x52_layer"
+PREREQ_RULE = ("Batch 52 prerequisite (jobs/c3/batch52.yaml part C, Dan's words): \"the gate passes on 60 main-test scenes; "
+               "the layer is fixed by the published rule (earliest layer where both readers switch >= 0.3, sweeping "
+               "every 4th layer)\". As computed: the gate = X0's (unedited org accuracy under X0's top-token read >= 0.80 "
+               "for both readers) on the first 60 main-test scenes in scene order; the sweep = the whole change at the "
+               "bridge word on 60 dev scenes (51.6's split: random.Random(0).sample of the eligible scenes) at L2, L6, ..., "
+               "L50; the layer = the earliest where both readers' switch rates are >= 0.3 (point estimates, EPS 1e-9); "
+               f"none: \"{NO_LAYER}\" and the column is cancelled")  # fmt: skip
+NO_PREDICTION = "no prediction: the layer is a design choice fixed by the published rule (batch 52 addendum)"
 RULE = ("Step 1 (dev, 60 scenes): the whole change's switch rate per reader by layer, every 2nd layer; the layer is the "
         "earliest where both readers switch >= 0.3. Step 2 (200 scenes disjoint from dev): the main test's three arms "
         "at that layer (whole / without J++ / without a random part of the same share). If no layer passes step 1: "
@@ -414,6 +435,143 @@ def stage_run(name: str, why: str) -> Path:
     return out
 
 
+# ---- batch 52: the prerequisite (the gate on 60 scenes and the layer, before any scored run) -------------------------
+
+
+def gate_first(cases: list[dict], comp: list[dict], n: int | None = None) -> dict:
+    """The prerequisite's gate: X0's gate (unedited org accuracy under the decisive read >= X0.GATE, both readers) on the
+    first n (N_GATE) cases in scene order; fewer than n cases fails."""
+    n = N_GATE if n is None else n
+    first = cases[:n]
+    right = {(r["scene"], r["rendering"], r["reader"], r["variant"]): r for r in comp}
+    acc = X.org_rate(right, first, RENDERING, "read_right")
+    return {"cases": len(first), "n_required": n, "scenes": [c["scene"] for c in first], "org_accuracy": acc,
+            "said_accuracy": X.org_rate(right, first, RENDERING, "right"), "bar": X.GATE,
+            "pass": len(first) == n and bool(acc) and all(a >= X.GATE for a in acc.values())}  # fmt: skip
+
+
+def layer_record(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
+    """layer.json's body from step 1's rows: the rates with cluster-bootstrap CIs, every passing layer, the pick."""
+    rates = step1_rates(rows)
+    layer = pick_layer(rates)
+    return {"status": "done" if layer is not None else "no layer passes", "layer": layer,
+            "label": f"L{layer}" if layer is not None else NO_LAYER, "passing_layers": passing_layers(rates),
+            "rates": {str(k): {READER_NAME[w]: v[w] for w in X.READERS} for k, v in rates.items()},
+            "rates_ci": {str(k): {READER_NAME[w]: v[w] for w in X.READERS}
+                         for k, v in step1_numbers(rows, n_boot).items()}}  # fmt: skip
+
+
+def committed_layer(run: str = PREREQ_RUN, rev: str = "HEAD") -> int:
+    """Lightning's layer for the batch 52 coverage cells: layer.json of the prerequisite run, as committed at `rev`
+    (refuses if it is not committed or no layer passed)."""
+    path = f"results/{EXP}/{run}/layer.json"
+    got = subprocess.run(["git", "show", f"{rev}:{path}"], cwd=pins.REPO_ROOT, capture_output=True, text=True)
+    assert got.returncode == 0, f"{path} is not committed at {rev}: the layer must be committed before any scored run"
+    rec = json.loads(got.stdout)
+    assert rec.get("layer") is not None, f"{path}: {rec.get('status')} ({rec.get('label')}); the column is cancelled"
+    return int(rec["layer"])
+
+
+def prereq_md(rec: dict, gate: dict) -> list[str]:
+    g60, g = gate["gate60"], gate["gate"]
+    lines = ["# Batch 52 prerequisite: Lightning's layer (dev set, the published rule)", "",
+             f"{NO_PREDICTION}. Model {TARGET}. UNVERIFIED.", "", f"Rule: {PREREQ_RULE}.", "",
+             f"Gate on the first {g60['cases']} main-test scenes: org accuracy {g60['org_accuracy']} (bar {g60['bar']}) "
+             f"-> **{'pass' if g60['pass'] else 'FAIL'}**. X0's gate on all {g.get('cases')} scenes (beside): "
+             f"{g.get('org_accuracy')}, pass {g.get('pass')}; eligible {gate['eligible']}; dev {len(gate['dev'])}, "
+             f"test (for the coverage runs) {len(gate['test'])}.", "", f"**Layer: {rec.get('label')}**", ""]  # fmt: skip
+    if rec.get("rates_ci"):
+        lines += [f"Every passing layer: {rec['passing_layers']}.", "",
+                  "| layer | lookup switch [CI] | recall switch [CI] | both >= 0.3 |", "|---|---|---|---|"]  # fmt: skip
+        for la, v in rec["rates_ci"].items():
+            both = all(v[w][0] >= SWITCH_MIN - EPS for w in ("lookup", "recall"))
+            lines.append(f"| L{la} | {fmt(v['lookup'])} | {fmt(v['recall'])} | {'yes' if both else ''} |")
+    return lines
+
+
+def stage_prereq(name: str, why: str, n_boot: int = X.N_BOOT) -> Path:
+    """Batch 52's prerequisite on Lightning: X0's competence on every main-test scene, the gate on the first 60, X0's
+    gate and eligibility, 51.6's dev / test split, then step 1 alone at every 4th layer on the dev scenes; writes
+    gate.json, step1_outcomes.jsonl, layer.json and prereq.md (no step 2, no verdict)."""
+    import torch
+
+    from bridge_jspace import chat
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+    from scripts import suite_split as SUITE
+    from scripts import x45s
+
+    pins.check_run_name(name)
+    assert pins.TARGET == TARGET, f"the prerequisite runs on {TARGET}, not {pins.TARGET}"
+    assert chat.FORMAT == "chat", "X0's chat prompts: run with BJ_FORMAT unset"
+    pins.check_lens_layers(LAYERS4)
+    preflight()
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    items = pins.DATA_DIR / "tasks_v2" / SET / "items.jsonl"
+    spec52 = pins.REPO_ROOT / "jobs" / "c3" / "batch52.yaml"
+    m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "switches": switches(), "code": pins.git_state(), "lens": X.lens_record(),
+         "batch": 52, "spec": "jobs/c3/batch52.yaml (part C, prerequisites for a new family)", "question": NO_PREDICTION,
+         "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p) for p in (items, spec52)},
+         "set": SET, "rendering": RENDERING, "alt": "cf", "layers": list(LAYERS4), "n_gate": N_GATE,
+         "n": {"dev": N_DEV, "test": N_TEST, "min": X.N_MIN}, "gate": X.GATE, "switch_min": SWITCH_MIN, "eps": EPS,
+         "rule": PREREQ_RULE,
+         "scenes": f"gate: the first {N_GATE} main-test scenes in scene order; sweep: X0's eligible scenes (scene order), "
+                   f"dev = random.Random({DEV_SEED}).sample of {N_DEV} (51.6's split); test = the first {N_TEST} "
+                   "eligible not in dev (recorded for the coverage runs, not read here)",
+         "step1": "Δ_l = h_S - h_O at the bridge word, every layer of LAYERS4 from one forward of O and one of S; the "
+                  "whole Δ_l added at l on O (AddRows); both readers; X0's chat read",
+         "kernel": {"repo": x45s.KERNEL_REPO, "expected": KERNEL_REVISION},
+         "seeds": {"dev_split": DEV_SEED, "bootstrap": X.BOOT_SEED, "set": 24}, "n_boot": n_boot,
+         "order": {**X.order_record(), "step1": f"per dev case and reader: the unedited row, then the whole change at "
+                   f"each layer of LAYERS4 in order, in batches of at most {SUITE.BATCH} rows"}}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    print("wrote", out / "manifest.json", flush=True)
+
+    model = load_model()
+    lens = JLens(model, "jpp")  # check_frozen: the file's sha256 is the pin
+    missing = [la for la in LAYERS4 if la not in lens.source_layers]
+    assert not missing, f"the J++ lens has no map at {missing}"
+    cases, counts = build(model.tokenizer)
+    ws = X.whitespace_mask(model)
+    digit_list = X.digit_ids(model.tokenizer)
+    X.DIGIT_IDS.update(digit_list)
+    digits = torch.tensor(digit_list, device=model.device)
+    with torch.no_grad():
+        comp = X.competence(model, cases, digits, ws)
+    g60 = gate_first(cases, comp)
+    n_items = X.N_ITEMS
+    X.N_ITEMS = len(cases)
+    try:
+        gate, eligible = X.gate_and_eligible(cases, comp)
+    finally:
+        X.N_ITEMS = n_items
+    dev, test = split_scenes(eligible[RENDERING]) if g60["pass"] else ([], [])
+    kernels = loaded_hub_kernels()
+    X.write_jsonl(out / "competence.jsonl", comp)
+    X.write_jsonl(out / "cases.jsonl", cases)
+    gate_blob = {"counts": counts, "gate60": g60, "gate": gate[RENDERING], "eligible": len(eligible[RENDERING]),
+                 "dev": [c["scene"] for c in dev], "test": [c["scene"] for c in test], "hub_kernels": kernels,
+                 "kernel_check": x45s.kernel_revision_check(kernels, KERNEL_REVISION)}  # fmt: skip
+    (out / "gate.json").write_text(json.dumps(gate_blob, indent=2) + "\n")
+    print(json.dumps({"gate60": g60["org_accuracy"], "gate": gate[RENDERING]["org_accuracy"]}), flush=True)
+    if not g60["pass"] or len(dev) < N_DEV:
+        why_not = ("the gate on the first 60 main-test scenes failed" if not g60["pass"]
+                   else f"{len(dev)} dev scenes, fewer than {N_DEV} (X0's gate or eligibility)")  # fmt: skip
+        rec = {"status": "prerequisite failed", "layer": None, "label": f"prerequisite failed: {why_not}"}
+    else:
+        with torch.no_grad():
+            rows1 = step1_reads(model, dev, LAYERS4, deltas(model, dev, LAYERS4), digits)
+        X.write_jsonl(out / "step1_outcomes.jsonl", rows1)
+        rec = layer_record(rows1, n_boot)
+    rec |= {"n_dev": len(dev), "layers": list(LAYERS4), "rule": PREREQ_RULE, "prediction": NO_PREDICTION}
+    (out / "layer.json").write_text(json.dumps(rec, indent=2) + "\n")
+    (out / "prereq.md").write_text("\n".join(prereq_md(rec, gate_blob)) + "\n")
+    print(f"wrote {out}: {rec['label']}", flush=True)
+    return out
+
+
 # ---- verdict and view (CPU, sealed) --------------------------------------------------------------------------------
 
 
@@ -605,17 +763,20 @@ def stage_view(run: str = RUN, decode=None) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "view"])
-    ap.add_argument("--name", default=RUN, help="run / verdict / view: the run (results/x51_lightning/<name>/)")
+    ap.add_argument("stage", choices=["plan", "run", "prereq", "verdict", "view"])
+    ap.add_argument("--name", default=None, help="run / prereq / verdict / view: results/x51_lightning/<name>/")
     ap.add_argument(
         "--why", default="batch 51, test 51.6 (jobs/c3/batch51.yaml; Q51.6): Lightning, the main test; sealed"
     )
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
+    a.name = a.name or (PREREQ_RUN if a.stage == "prereq" else RUN)
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         stage_run(a.name, a.why)
+    elif a.stage == "prereq":
+        stage_prereq(a.name, a.why, a.n_boot)
     elif a.stage == "verdict":
         stage_verdict(a.name, a.n_boot)
     else:
