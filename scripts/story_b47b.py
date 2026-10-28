@@ -228,6 +228,98 @@ def build_d1(verdict_dir: Path, out_name: str = "fig16_depth_map", title: str | 
     return save(fig, out_name, out_dir)
 
 
+E11_GROUPS = (("locker-first", "Locker before the pick"), ("locker-after", "Locker after the pick"))
+E11_PITCH = 2.35  # rows per token group: the lookup's row, the recall's, a gap
+
+
+def e11_scale(fig, x: float, y: float, reader: str, text: str) -> None:
+    """A 0-100% colour scale drawn as figure patches (no extra axes: a v6 figure has at most two panels)."""
+    cmap, w, hh, k = reader_cmap(reader), 0.13, 0.016, 40
+    for i in range(k):
+        fig.add_artist(Rectangle((x + w * i / k, y), w / k + 0.0005, hh, transform=fig.transFigure, lw=0,
+                                 color=cmap((i + 0.5) / k)))  # fmt: skip
+    fig.text(x - 0.006, y + hh / 2, "0", ha="right", va="center", fontsize=S.FONT - 1)
+    fig.text(x + w + 0.006, y + hh / 2, f"100% {text}", ha="left", va="center", fontsize=S.FONT - 1)
+
+
+def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str | None = None, *,
+              target: str = "qwen3.5-9b", design: str = "clean", out_dir: Path | None = None) -> str:  # fmt: skip
+    """E11 (v6): D1 + D2 (x47_depthmap's depth.json) on one model and design, one panel per sentence order (locker
+    before the pick; after it). Rows: each token group as a pair, the lookup's row (purple) over the recall's (grey);
+    then D1's margins (the bridge word at every layer <= l; D2's window, every layer >= l). A cell: answers switched
+    when that group alone takes the changed prompt's state at that layer. Outlined per reader: the last layer whose
+    bridge-word cell switches >= 30% (D1 (b)) and D2's l_R (the first layer from which the window switches <= 10%)."""
+    path = verdict_dir / "depth.json"
+    blob = json.loads(path.read_text())
+    m = next(x for x in blob["models"] if x["target"] == target and x["status"] == "tested")
+    src = rel(path)
+    layers = m["layers"]
+    cols = ["emb", *layers]
+    xs = [0.0] + [j + 0.35 for j in range(1, len(cols))]  # a gap after the input token's column
+    plt = S.setup()
+    h = 8.6
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
+    fig.subplots_adjust(left=0.265, right=0.985, top=1 - 1.45 / h, bottom=0.145, wspace=0.05)
+    S.title(fig, title or "Locker after the pick: the lookup leaves the bridge word early",
+            f"{NAME[target]}, {DESIGN_TEXT[design]}. A cell: switches when one token group takes the changed state.")  # fmt: skip
+    per_all = m["cells"][design]
+    have = set().union(*(per_all[g][w]["cells"] for g, _ in E11_GROUPS for w in ("lookup", "recall")))
+    groups = [g for g in D1_ROWS if any(a.startswith(f"g{g}@") for a in have)]
+    rows = [*groups, *(k for k, _ in D1_MARGINS)]
+    y_of = {g: -i * E11_PITCH - (0.8 if i >= len(groups) else 0.0) for i, g in enumerate(rows)}
+    for ax, (group, label) in zip(axes, E11_GROUPS, strict=True):
+        per = per_all[group]
+        for dy, w in ((0.0, "lookup"), (-1.0, "recall")):
+            c = per[w]["cells"]
+            cmap = reader_cmap(w)
+            for g in rows:
+                arms = [f"g{g}@{la}" if g in groups else (f"{g}{la}" if la != "emb" else None) for la in cols]
+                y0 = y_of[g] + dy
+                for x, arm in zip(xs, arms, strict=True):
+                    v = c.get(arm) if arm else None
+                    if v is not None:  # a cell not measured stays blank
+                        ax.add_patch(Rectangle((x - 0.5, y0 - 0.5), 1, 1, lw=0, color=cmap(v[0])))
+                        S.record(out_name, target, f"D1 {design}, {group}, {w}: {arm} switched", *v[:3], n=per[w]["n"],
+                                 source=src)  # fmt: skip
+            hot = [la for la in layers if f"gbridge@{la}" in c and c[f"gbridge@{la}"][0] >= HOT - 1e-9]
+            if hot and "bridge" in groups:
+                x = xs[cols.index(max(hot))]
+                ax.add_patch(Rectangle((x - 0.5, y_of["bridge"] + dy - 0.5), 1, 1, fill=False, ec="#111111", lw=1.6,
+                                       zorder=4))  # fmt: skip
+            if per[w].get("l_R") is not None:
+                x = xs[cols.index(per[w]["l_R"])]
+                ax.add_patch(Rectangle((x - 0.5, y_of["w"] + dy - 0.5), 1, 1, fill=False, ec="#111111", lw=1.6,
+                                       zorder=4))  # fmt: skip
+            S.record(out_name, target, f"D1 {design}, {group}, {w}: last layer with the bridge word >= 0.3",
+                     max(hot) if hot else None, source=src)  # fmt: skip
+            S.record(out_name, target, f"D2 {design}, {group}, {w}: l_R", per[w].get("l_R"), source=src)
+            if "d" in c:
+                S.record(out_name, target, f"D1 {design}, {group}, {w}: d switched", *c["d"][:3], n=per[w]["n"],
+                         source=src)  # fmt: skip
+        ax.set_title(label, fontsize=12, weight="bold", loc="left", pad=24)
+        S.panel_tag(ax, f"{per['lookup']['n']} / {per['recall']['n']}", "fixed")
+        jl = cols.index(m["layer"]) if m["layer"] in layers else None
+        step = 8 if max(layers) < 40 else 12
+        ticks = [(0, "in")] + [(j, str(la)) for j, la in enumerate(cols) if j and la % step == 0  # type: ignore[operator]
+                               and (jl is None or abs(j - jl) > 1)]  # fmt: skip
+        if jl is not None:
+            ticks.append((jl, "L"))
+        ax.set_xticks([xs[j] for j, _ in ticks], [t for _, t in ticks])
+        ax.set_xlim(-0.6, xs[-1] + 0.6)
+        ax.set_ylim(y_of[rows[-1]] - 1.7, 0.7)
+        ax.tick_params(length=0)
+        for s in ax.spines.values():
+            s.set_visible(False)
+    axes[0].set_yticks([y_of[g] - 0.5 for g in rows], [D1_ROWS[g] for g in groups] + [t for _, t in D1_MARGINS])
+    fig.supxlabel("layer at which the changed prompt's state is placed", x=0.61, y=0.09, fontsize=S.FONT)
+    e11_scale(fig, 0.06, 0.05, "lookup", "lookups switched (upper row)")
+    e11_scale(fig, 0.53, 0.05, "recall", "recalls switched (lower row)")
+    fig.text(0.01, 0.012, f"Outlined, per reader: the bridge word's last layer at ≥ {100 * HOT:.0f}%, and the first "
+             f"layer from which it is no longer read (≤ {100 * W_FLOOR:.0f}%).", fontsize=S.FONT - 1,
+             color=S.COL["muted"])  # fmt: skip
+    return save(fig, out_name, out_dir)
+
+
 # ---- 47.4: where the missing switches sit ----------------------------------------------------------------------------
 
 TERM_TEXT = {"before_L": "at the bridge word before L", "pick_other": "at the pick sentence's other tokens",
@@ -629,6 +721,107 @@ def build_47_0(verdict_dir: Path, out_name: str = "fig20_verbal", title: str | N
           Line2D([], [], marker="o", ls="", color=S.COL["identity"], ms=7.5),
           Rectangle((0, 0), 1, 0.6, color=S.COL["control"])]  # fmt: skip
     legend(fig, hs, ["pointer write", "identity change", "random draws (same size)"], y, ncol=3)
+    return save(fig, out_name, out_dir)
+
+
+JPP_COL = "#b23b3b"  # the J++ part (story_b48.JPP)
+
+
+def tag(ax, text: str) -> None:
+    """story_style.panel_tag's look for a tag it has no status for (here: descriptive)."""
+    ax.text(1.0, 1.015, text, transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT, color=S.COL["muted"],
+            zorder=8, bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})  # fmt: skip
+
+
+def build_e8(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_verbal", *,
+             out_dir: Path | None = None) -> str:  # fmt: skip
+    """E8 (v6): left, 47.0 (descriptive; x47_verbal's verbal.json): per model the share of the change that 25 lens
+    directions rebuild at L on the bridge word, for an address swap and an identity change, against 200 random draws of
+    the same size (grey: their mean to their 95th percentile); right, 47.10 on the 27B (fixed in advance; x47_report's
+    x47_10.json, question last): the report's switches lost beyond a random part without the address and without the
+    J++ part (95% intervals), and the share of items whose lens top five holds the right ordinal. The 9B and Muse fail
+    the report gate. 47.0's other two measures (rank, KL) are the supplement s07b_lens_readout."""
+    vpath, rpath = verbal_dir / "verbal.json", report_dir / "x47_10.json"
+    vblob, rblob = json.loads(vpath.read_text()), json.loads(rpath.read_text())
+    vsrc, rsrc = rel(vpath), rel(rpath)
+    plt = S.setup()
+    h = 4.7
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), gridspec_kw={"width_ratios": [1, 1]})
+    fig.subplots_adjust(left=0.075, right=0.985, top=1 - 1.55 / h, bottom=0.17, wspace=0.12)
+    S.title(fig, "The lens is blind to the address",
+            "Left: a swap through the lens, against random draws. Right: the lens while the model reports the address.")  # fmt: skip
+
+    # left: 47.0 (b), share rebuilt by 25 lens directions
+    ax = axes[0]
+    models = vblob["models"]
+    ys = {t: -i for i, (t, _, _) in enumerate(TARGETS) if t in models}
+    k = 25
+    for t, yy in ys.items():
+        b = models[t]["b"][f"all|{k}"]
+        S.record(out_name, t, f"47.0 (b) share rebuilt by {k} lens directions: random draws (mean; mean, 95th pct)",
+                 b["random_mean"], b["random_mean"], b["random_p95"], source=vsrc)  # fmt: skip
+        # random draws in the middle row: their mean (square) to their 95th percentile (whisker)
+        ax.plot([b["random_mean"], b["random_p95"]], [yy, yy], color=S.COL["control"], lw=2.2, zorder=2)
+        ax.plot([b["random_mean"]], [yy], "s", ms=7, color=S.COL["control"], zorder=3)
+        for dy, key, col in ((0.26, "pointer", POINTER_COL), (-0.26, "identity_mean", S.COL["identity"])):
+            ax.plot([b[key]], [yy + dy], "o", ms=7.5, color=col, zorder=3)
+            S.record(out_name, t, f"47.0 (b) share rebuilt by {k} lens directions: {key}", b[key], source=vsrc)
+        ax.text(max(b["pointer"], b["random_p95"]) + 0.03, yy + 0.26, f"{b['ratio']:.1f}× random", va="center",
+                fontsize=S.FONT - 1, color=POINTER_COL)  # fmt: skip
+        S.record(out_name, t, f"47.0 (b) share rebuilt by {k} lens directions: pointer / random mean", b["ratio"],
+                 source=vsrc)  # fmt: skip
+    ax.set_xlim(0, 1)
+    ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+    ax.set_ylim(-len(ys) + 0.45, 0.6)
+    ax.set_yticks(list(ys.values()), [SHORT[t] for t in ys])
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="x", color="#eeeeee")
+    ax.set_xlabel(f"share of the change rebuilt\nby the lens's top {k} directions")
+    ax.set_title("Through the lens", fontsize=12, weight="bold", loc="left", pad=22)
+    ns = sorted({models[t]["n_cases"] for t in ys})
+    tag(ax, f"n {ns[0] if len(ns) == 1 else '/'.join(map(str, ns))} per model · descriptive")
+
+    # right: 47.10 on the 27B, question last
+    ax = axes[1]
+    m = next(x for x in rblob["models"]
+             if x["status"] == "tested" and "report" in x["orders"]["last"].get("readers", {}))  # fmt: skip
+    o = m["orders"]["last"]
+    rd, lens = o["readers"]["report"], o["lens"]["report"]
+    rows = (("switches lost without the address", rd["alf"]["excess"], POINTER_COL,
+             "47.10: the report's extra loss without the address"),
+            ("switches lost without the J++ part", rd["jpp"]["excess"], JPP_COL,
+             "47.10: the report's extra loss without the J++ part"),
+            ("items whose lens top five holds the ordinal", lens["top5_ordinal"], "#555555",
+             "47.10: lens top-5 holds the right ordinal (report prompt)"))  # fmt: skip
+    for i, (label, v, col, quantity) in enumerate(rows):
+        y = -i * 1.0 - (0.4 if i == 2 else 0.0)
+        ax.barh(y, max(v[0], 0.0), height=0.4, color=col, zorder=2)
+        ax.plot([v[1], v[2]], [y, y], color="#1e1e1e", lw=1.2, zorder=3)
+        if v[0] == 0:
+            ax.plot([0, 0], [y - 0.2, y + 0.2], color=col, lw=3, zorder=3, solid_capstyle="butt")
+        ax.text(0, y + 0.27, label, ha="left", va="bottom", fontsize=S.FONT)
+        ax.text(max(v[2], v[0], 0.0) + 0.02, y, f"{v[0]:.2f}", va="center", fontsize=S.FONT, color="#1e1e1e")
+        S.record("e8_report", m["target"], quantity, *v, n=rd["n"] if i < 2 else lens["n"], source=rsrc)
+    ax.axhline(-1.6, color="#dddddd", lw=0.8)
+    ax.text(0.99, -0.05, "both beyond a random part", ha="right", va="bottom", fontsize=S.FONT - 1,
+            color=S.COL["muted"])  # fmt: skip
+    ax.set_xlim(0, 1)
+    ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+    ax.set_ylim(-2.85, 0.75)
+    ax.set_yticks([])
+    ax.spines["left"].set_visible(False)
+    ax.grid(axis="x", color="#eeeeee")
+    ax.set_xlabel("share of report switches / of items")
+    ax.set_title(f"{NAME[m['target']]}, asked for the position", fontsize=12, weight="bold", loc="left", pad=22)
+    S.panel_tag(ax, str(rd["n"]), "fixed")
+    gated = [SHORT[x["target"]] for x in rblob["models"] if x is not m and x["target"] in SHORT]
+    ax.text(0.99, -2.75, f"{' and '.join(gated)}: cannot report it (gate)", ha="right", va="bottom",
+            fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+    hs = [Line2D([], [], marker="o", ls="", color=POINTER_COL, ms=7.5),
+          Line2D([], [], marker="o", ls="", color=S.COL["identity"], ms=7.5),
+          Line2D([], [], marker="s", color=S.COL["control"], ms=7, lw=2.2), Rectangle((0, 0), 1, 0.6, color=JPP_COL)]  # fmt: skip
+    legend(fig, hs, ["address swap", "identity change", "random draws: mean, 95th pct", "J++ part"],
+           1 - 0.62 / h, ncol=4)  # fmt: skip
     return save(fig, out_name, out_dir)
 
 

@@ -70,7 +70,7 @@ JOINT_RETIRED = {
 # Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README figures restyled
 # for v6 so far (each joins V6_FIGS when it is): the title is the conclusion on one line with no digit (no numbers,
 # no model sizes); the subtitle one line; at most two panels; "swap" not "write", "address" not "pointer"
-V6_FIGS = ("fig05_routes", "fig06b_anatomy")
+V6_FIGS = ("fig05_routes", "fig06b_anatomy", "fig07b_verbal", "fig03d_depth_map", "fig15_mechanisms", "fig11_scorecard")
 V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b"}
 
 

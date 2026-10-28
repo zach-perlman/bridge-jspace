@@ -654,6 +654,127 @@ def build_second_route(verdict_dir: Path, out_name: str = "fig25_second_route", 
     return finish(fig, out_name)
 
 
+# ---- E15 (v6): the five failed mechanism tests in one panel ---------------------------------------------------------
+
+NEUTRAL = "#222222"  # a probe's or a head count's mark (not a reader)
+
+
+def mechanism_groups(dirs: dict[str, Path]) -> list[dict]:
+    """E15's rows from the five verdicts, each test's deciding number per model (the same fields the per-test builders
+    read): 48.2 B the recall's accuracy lost with the bridge word's late MLPs mean-replaced (rule >= 40); 48.3 the probe
+    for who picked the item at the locker sentence, locker after the pick (>= 85); 48.4 the heads passing the rest at
+    twice the J++ part, of five (>= 3); 48.5 recalls naming the swapped locker's item under (ii) (>= 30); 47.6 (b)
+    identity answers kept with the pick sentence blocked from the lockers (within 10 points of the whole change). Each
+    group: header, measure, rule text, per model [(value [v, lo, hi] in fractions, colour, dy, marker)], n, bar(s)."""
+    out = []
+    p = dirs["48.2"] / "x48_2.json"
+    b = {m["target"]: m for m in json.loads(p.read_text())["B"] if m["status"] == "tested"}
+    out.append({"test": "48.2", "src": rel(p), "header": "Late MLPs at the bridge word carry the recall",
+                "measure": "recall accuracy lost, those MLPs mean-replaced", "rule": "rule ≥ 40", "bar": 40,
+                "cells": {t: [(m["readers"]["recall"]["drop"]["bridge_late"], S.COL["recall"], 0.0, "o")]
+                          for t, m in b.items()},
+                "n": {t: m["readers"]["recall"]["n"] for t, m in b.items()},
+                "q": ["48.2 B, bridge_late: recall accuracy lost"]})  # fmt: skip
+    p = dirs["48.3"] / "x48_bind.json"
+    b = {m["target"]: m for m in json.loads(p.read_text())["models"] if m["status"] == "tested"}
+    out.append({"test": "48.3", "src": rel(p), "header": "A person mark at the locker sentence",
+                "measure": "probe for who picked it (● item word, ■ number; chance 33)", "rule": "rule ≥ 85",
+                "bar": 85, "cells": {t: [(m["probes"]["item"]["after"]["accuracy"], NEUTRAL, 0.17, "o"),
+                                         (m["probes"]["number"]["after"]["accuracy"], NEUTRAL, -0.17, "s")]
+                                     for t, m in b.items()},
+                "n": {t: m["probes"]["item"]["after"]["n"] for t, m in b.items()},
+                "q": ["48.3, probe at the item, locker after the pick (accuracy)",
+                      "48.3, probe at the number, locker after the pick (accuracy)"]})  # fmt: skip
+    p = dirs["48.4"] / "x48_heads.json"
+    b = {m["target"]: m for m in json.loads(p.read_text())["models"] if m["status"] == "tested"}
+    out.append({"test": "48.4", "src": rel(p), "header": "Copying heads pass the rest at twice the J++ part",
+                "measure": "heads that do, of the five that copy most (a count)", "rule": "rule ≥ 3 of 5", "bar": 60,
+                "cells": {t: [(m["heads_reading_rest"] / m["heads"], NEUTRAL, 0.0, "D")] for t, m in b.items()},
+                "n": {t: f"{m['heads']} heads" for t, m in b.items()},
+                "q": ["48.4: heads passing the rest at twice the J++ part, share of the five"]})  # fmt: skip
+    p = dirs["48.5"] / "x48_route2.json"
+    b = {m["target"]: m for m in json.loads(p.read_text())["models"]
+         if m["status"] == "tested" and m["readers"]["recall"]["informative"].get("n")}  # fmt: skip
+    out.append({"test": "48.5", "src": rel(p), "header": "The address is the recall's second route",
+                "measure": "recalls naming the item in the swap's target locker", "rule": "rule ≥ 30", "bar": 30,
+                "cells": {t: [(m["readers"]["recall"]["informative"]["share"]["write"]["slot_k"], S.COL["recall"],
+                               0.0, "o")] for t, m in b.items()},
+                "n": {t: m["readers"]["recall"]["informative"]["n"] for t, m in b.items()},
+                "q": ["48.5, (ii) (i) and the pointer write: recall names the written locker's item"]})  # fmt: skip
+    p = dirs["47.6"] / "verdict.json"
+    b = {t: r for t, r in json.loads(p.read_text())["b"].items() if r.get("status") == "tested"}
+    out.append({"test": "47.6", "src": rel(p), "header": "Blocking the pick sentence removes position only",
+                "measure": "identity answers kept with the block (bar: the whole change's, less 10 points)",
+                "rule": "rule: at the bar or above", "bar": None,
+                "cells": {t: [(r["b"]["lookup"]["rate"]["block/sentence/all|identity"], S.COL["identity"], 0.0, "o")]
+                          for t, r in b.items()},
+                "row_bar": {t: 100 * r["b"]["lookup"]["rate"]["none|identity"][0] - 10 for t, r in b.items()},
+                "n": {t: r["n"] for t, r in b.items()},
+                "q": ["47.6 (b) block/sentence/all: lookup identity share"]})  # fmt: skip
+    return out
+
+
+def build_mechanisms(dirs: dict[str, Path], out_name: str = "fig15_mechanisms", title: str | None = None) -> str:
+    """E15 (v6): one panel, one row group per failed mechanism test (48.2, 48.3, 48.4, 48.5, 47.6 (b)), one row per
+    tested model in the order 9B, 27B, Muse: the test's deciding number (percent, 95% whisker; 48.4 is a count of five
+    heads, no interval) against its rule's bar (dashed). The per-test figures are fig10b-e and fig09c."""
+    groups = mechanism_groups(dirs)
+    fid = fig_id(out_name)
+    plt = S.setup()
+    rows_n = sum(2 + len(g["cells"]) for g in groups)
+    h = 1.25 + 0.3 * rows_n + 0.55
+    fig, ax = plt.subplots(figsize=(S.WIDTH, h))
+    fig.subplots_adjust(left=0.1, right=0.86, top=1 - 1.0 / h, bottom=0.55 / h)
+    S.title(fig, title or "Every mechanism we proposed for the split failed its rule",
+            "Each test's deciding number per model against its rule's bar (dashed); whiskers: 95% intervals.")  # fmt: skip
+    y, ticks, labels = 0.0, [], []
+    for g in groups:
+        ax.text(0, y, g["header"], ha="left", va="center", weight="bold", fontsize=S.FONT + 0.5)
+        ax.text(100, y, g["rule"], ha="right", va="center", color="#111111", fontsize=S.FONT)
+        ax.text(0, y - 0.8, g["measure"], ha="left", va="center", color=S.COL["muted"], fontsize=S.FONT - 0.5)
+        y -= 1.8
+        top = y + 0.5
+        for target, short, _ in ORDER:
+            if target not in g["cells"]:
+                continue
+            ticks.append(y)
+            labels.append(short)
+            for (v, col, dy, mk), q in zip(g["cells"][target], g["q"], strict=True):
+                vv = pct(v)
+                if isinstance(v, list):
+                    ax.plot([vv[1], vv[2]], [y + dy] * 2, color=col, lw=1.6, zorder=2, solid_capstyle="butt")
+                ax.plot([vv[0]], [y + dy], mk, ms=7 if mk != "D" else 6.5, color=col, zorder=3)
+                text = f"{round(vv[0] / 20)} of 5" if g["test"] == "48.4" else f"{vv[0]:.0f}"
+                ax.text(max(vv[2], vv[0]) + 1.5, y + dy, text, va="center", fontsize=S.FONT - 1, color=col)
+                record(fid, target, q, v,
+                       n=g["n"][target] if isinstance(g["n"][target], int) else None, source=g["src"])  # fmt: skip
+            n = g["n"][target]
+            ax.text(1.005, y, f"n {n}", transform=ax.get_yaxis_transform(), va="center", fontsize=S.FONT - 1,
+                    color=S.COL["muted"])  # fmt: skip
+            if g["bar"] is None:
+                xb = g["row_bar"][target]
+                ax.plot([xb, xb], [y - 0.42, y + 0.42], color=BAR_COL, lw=1.2, ls=(0, (3, 2)), zorder=1)
+                record(fid, target, f"{g['test']}: the rule's bar (whole change's identity share less 0.10)",
+                       xb / 100, source=g["src"])  # fmt: skip
+            y -= 1
+        if g["bar"] is not None:
+            ax.plot([g["bar"]] * 2, [top, y + 0.5], color=BAR_COL, lw=1.2, ls=(0, (3, 2)), zorder=1)
+        y -= 0.5
+    ax.set_xlim(-1.5, 100)
+    ax.set_xticks([0, 50, 100], ["0", "50", "100"])
+    ax.set_xlabel("percent")
+    ax.set_ylim(y + 0.6, 0.6)
+    ax.set_yticks(ticks, labels)
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="x", color="#eeeeee")
+    ax.spines["left"].set_visible(False)
+    S.panel_tag(ax, None, "fixed")
+    return finish(fig, out_name)
+
+
+BAR_COL = "#111111"  # a rule's bar (story_b47b.BAR)
+
+
 # test id -> (the script whose verdict the figure reads, its builder, its README figure name)
 TESTS = {"48.1": ("scripts/x48_das.py", build_das, "fig21_das"),
          "48.2": ("scripts/x48_enrich.py", build_enrichment, "fig22_enrichment"),

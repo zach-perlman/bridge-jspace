@@ -2529,80 +2529,190 @@ def check_scorecard_keys(path: Path) -> None:
             assert ok, f"scorecard.csv: no data.csv row for {r['claim']!r} / {r['model']}: {key!r}"
 
 
-WRAP_SC = 50  # Fig. 11's claim labels: one line each where it fits (the label column is half the width)
+# Fig. 11 v6 (Dan's card list, 28 Oct): the README's claims table as a figure. Rows in the table's order (ids checked
+# against docs/README.template.md's "## Claims" table); per model a cell read off that table's Models and Grade columns
+# (agent's reading, UNVERIFIED), taken from the v5 cells (scorecard_rows, asserted against the verdicts) wherever a v6
+# row restates a v5 row; the 122B only where a v5 row covers it. Each cell's data.csv key is the number the claims
+# table quotes for that model, else the v5 row's.
+SC6_FIELDS: tuple[str, ...] = ("id", "claim", "model", "cell", "flag", "data.csv key", "hand-checked")
+SC6_SYMBOL = {**CELL_SYMBOL, "pending": ("…", "#8a8a8a")}
+SC6_MODELS = ("9b", "27b", "muse", "122b")  # v6: 9B, 27B, Muse; the 122B last, lighter
+TEMPLATE = S.REPO / "docs" / "README.template.md"
+
+
+def claims_table_ids(path: Path = TEMPLATE) -> list[str]:
+    """The first column of the template's "## Claims" table, in order."""
+    lines = path.read_text().split("## Claims", 1)[1].splitlines()
+    rows = []
+    for ln in lines:
+        if ln.startswith("|"):
+            rows.append(ln)
+        elif rows:
+            break
+    return [ln.split("|")[1].strip() for ln in rows[2:]]
+
+
+def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
+    """Fig. 11 v6's rows: (id, claim, model, cell, flag, data.csv key, hand-checked), four models per claim; v5_rows:
+    scorecard_rows()."""
+    v5 = {(r["claim"], r["model"]): (r["cell"], r["flag"]) for r in v5_rows}
+    name = {m: n for _, m, n in S.MODELS}
+
+    def was(claim: str, m: str) -> tuple[str, str]:
+        return v5[(claim, name[m])]
+
+    def cells(ok3: str = "ok", /, **over: str | tuple[str, str]) -> dict[str, tuple[str, str]]:
+        """ok3 on the 9B, 27B and Muse, '-' on the 122B, with per-model overrides (m=cell or (cell, flag))."""
+        out = {m: (ok3, "") for m in ("9b", "27b", "muse")} | {"122b": ("-", "")}
+        return out | {m: v if isinstance(v, tuple) else (v, "") for m, v in over.items()}
+
+    three = ("9b", "27b", "muse")
+    spec = (  # id, figure label, cells, data.csv key per model
+        ("1", "In a conflict the recall follows the J++ part",
+         cells(**{m: was("main test", m) for m in three}, **{"122b": "~"}), lambda m: f"numbers:contrast_{m}"),
+        ("2", "Lookup by identity or position, never the number",
+         {m: was("never the value", m) for m in SC6_MODELS}, lambda m: "s05:another item moved, whole: value share"),
+        ("3", "Locker before the pick: the bridge word redirects",
+         cells(**{m: was("the link sits in the locker sentences, clean one-pick scenes", m) for m in three},
+               **{"122b": ("~", "a")}),
+         lambda m: "numbers:lk_order_before_122b" if m == "122b" else f"numbers:x45q_c_{m}"),
+        ("4a", "The address can be removed; a swap moves the lookup", cells(**{"122b": ("ok", "a")}),
+         lambda m: "s05:another item moved, no_alf: position share" if m == "122b"
+         else f"numbers:rt_C2_no_alf_position_{m}"),
+        ("4b", "Adding only the address creates position answers",
+         {m: was("only it gives position answers", m) for m in SC6_MODELS},
+         lambda m: f"numbers:rtk_C2_keep_alf_position_{m}"),
+        ("5", "The recall follows the J++ part without needing it", cells(),
+         lambda m: "fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"),
+        ("6", "The lookup's identity code lies outside the lens", cells(),
+         lambda m: "e3_identity:47.1: identity answers lost beyond random without lens directions 26-100"),
+        ("7", "Identity early, position late; address formed first", cells(**{"27b": "pending"}),
+         lambda m: "fig06c:D4: the address's mean overlap over every pair of window layers"),
+        ("8", "The recall also reads the item's earlier mention",
+         cells(**{m: was("the recall reads the earlier mention, locker before the pick", m) for m in three}),
+         lambda m: f"numbers:x45p_d23_{m}"),
+        ("9a", "The address does not read out through the lens", cells(),
+         lambda m: "fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer"),
+        ("9b", "Asked to report the position, the lens stays blind", cells("-", **{"27b": "ok"}),
+         lambda m: "e8_report:47.10: the report's extra loss without the address"),
+        ("10", "Six lockers: one code per locker, no single shift", cells(**{"27b": "-"}),
+         lambda m: "fig09b:47.2: pairwise writes reaching 25% (dose 2)"),
+        ("11", "Lookups missed at L read the bridge word before L", cells(**{"27b": "-"}),
+         lambda m: "s03e_cumulative:47.4 main, locker-first, lookup: before_L"),
+        ("12", "A described bridge: the split holds", cells(**{"27b": "x"}),
+         lambda m: "fig05c:47.3: lookup's extra loss without the J++ part" if m == "27b"
+         else "fig05c:47.3: gap (recall's extra loss minus the lookup's)"),
+        ("13", "The address must be refit per text format", {m: was("refit per format", m) for m in SC6_MODELS},
+         lambda m: "fig09:(b) prose: lookup extra loss without the refit pointer"),
+        ("14", "The lookup's errors are not address errors", cells("-", **{"9b": "ok"}),
+         lambda m: "fig07c:47.13: wrong answers whose locker the address probe predicts"),
+        ("15", "Identity outside J++: only partly specific",
+         {m: was("identity outside J++ is specific", m) for m in SC6_MODELS}, lambda m: f"numbers:x45em_cut_{m}"),
+        ("✗", "The J++ part keys the attribute; late MLPs carry it", cells("x", **{"27b": "-"}),
+         lambda m: "fig10b:48.2 B, bridge_late: recall accuracy lost"),
+        ("✗", "A person mark at the locker sentence", cells("x", **{"27b": "-"}),
+         lambda m: "fig10c:48.3, probe at the item, locker after the pick (accuracy)"),
+        ("✗", "The copying heads pass the rest at twice the J++ part", cells("x", **{"27b": "-"}),
+         lambda m: "fig10d:48.4: the rule holds"),
+        ("✗", "The address is the recall's second route", cells("x"),
+         lambda m: "fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item"),
+        ("✗", "Blocking the pick sentence removes position only", cells("x", **{"27b": "-"}),
+         lambda m: "fig09c_formation:47.6 (b): the formation rule holds"),
+        ("✗", "The locker digit carries the hall question's address", cells("x", **{"27b": "-"}),
+         lambda m: "fig09d:47.14: hall probe at the locker digit"),
+        ("✗", "Map rules: one locker cell; the lookup stops first", cells("x", **{"27b": "-"}),
+         # Fig. 3d draws the 9B only: Muse's D1 numbers are in its verdict, not in data.csv
+         lambda m: "fig03d_depth_map:D1 clean, locker-first, lookup: last layer with the bridge word >= 0.3"
+         if m == "9b" else ""),
+        ("✗", "Positive control; 9B clean design; 27B strict bar", cells("x", **{"muse": "-"}),
+         lambda m: "numbers:x45m_before_gap_9b" if m == "9b" else "numbers:x4_D_elements_27b"),
+        ("…", "Pending: weights, the dereference, two sources",
+         {m: ("pending", "") for m in SC6_MODELS}, lambda m: ""),
+    )  # fmt: skip
+    assert [i for i, *_ in spec] == claims_table_ids(), "Fig. 11's rows are out of step with the README's claims table"
+    rows = []
+    for cid, claim, cl, key in spec:
+        for m in SC6_MODELS:
+            cell, flag = cl[m]
+            target = next(t for t, mm, _ in S.MODELS if mm == m)
+            rows.append({"id": cid, "claim": claim, "model": name[m], "target": target, "cell": cell, "flag": flag,
+                         "data.csv key": key(m) if cell not in ("-", "pending") else "",
+                         "hand-checked": "" if cid == "…" else "no"})  # fmt: skip
+    return rows
 
 
 def f11_scorecard(plt) -> None:
-    """figures/story/scorecard.csv (written here from scorecard_rows; rows of other models already in the file are kept,
-    so more models can be added as columns) drawn as the scorecard: rows = claims in story order, grouped; columns = the
-    file's models (ours first); a symbol per cell and a small 'a' for after the data."""
-    rows = scorecard_rows()
+    """Fig. 11 (v6): figures/story/claims_scorecard.csv, written here from scorecard_v6_rows, drawn as the claims
+    table's figure: one row per claim in the table's order, one column per model (9B, 27B, Muse; the 122B lighter,
+    last), a symbol per cell and a small 'a' for after the data, and a last column 'hand-checked'. figures/story/
+    scorecard.csv keeps v5's rows (scorecard_rows; rows of other models already in the file are kept): the joint
+    figures and the shared grid (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
+    v5_rows = scorecard_rows()
+    S.OUT.mkdir(parents=True, exist_ok=True)
     path = S.OUT / "scorecard.csv"
     ours = {name for _, _, name in S.MODELS}
     kept = []
     if path.exists():
         with path.open() as f:
             kept = [r for r in csv.DictReader(f) if r["model"] not in ours]
-    S.OUT.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(SC_FIELDS))
         w.writeheader()
-        w.writerows([{k: r[k] for k in SC_FIELDS} for r in rows] + kept)
-    with path.open() as f:
-        table = list(csv.DictReader(f))
-    claims = list(dict.fromkeys(r["claim"] for r in rows))  # story order
-    groups = {r["claim"]: r["group"] for r in rows}
-    unknown = {r["claim"] for r in table} - set(claims)
-    assert not unknown, f"scorecard.csv claims without a group in readme_story_figures.scorecard_rows: {unknown}"
-    models = list(dict.fromkeys([name for _, _, name in S.MODELS] + [r["model"] for r in table]))
-    cells = {(r["claim"], r["model"]): (r["cell"], r["flag"], r["data.csv key"]) for r in table}
-    target_of = {name: target for target, _, name in S.MODELS}
-
-    ys, y, last = {}, 0.0, None  # a heading row before each group; a two-line label gets a taller row
-    heads, half = [], {}
-    for claim in claims:
-        if groups[claim] != last:
-            heads.append((groups[claim], y))
-            y -= 1.0
-            last = groups[claim]
-        half[claim] = 0.75 if "\n" in textwrap.fill(claim, WRAP_SC) else 0.5
-        y -= half[claim] - 0.5
-        ys[claim] = y
-        y -= half[claim] + 0.5
-    h = 1.25 + 0.3 * (-y) + 0.45
+        w.writerows([{k: r[k] for k in SC_FIELDS} for r in v5_rows] + kept)
+    rows = scorecard_v6_rows(v5_rows)
+    with (S.OUT / "claims_scorecard.csv").open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(SC6_FIELDS))
+        w.writeheader()
+        w.writerows([{k: r[k] for k in SC6_FIELDS} for r in rows])
+    claims = list(dict.fromkeys((r["id"], r["claim"]) for r in rows))
+    by = {(r["id"], r["claim"], r["model"]): r for r in rows}
+    models = [next(n for _, mm, n in S.MODELS if mm == m) for m in SC6_MODELS]
+    short = dict(zip(models, ("9B", "27B", "Muse", "122B"), strict=True))
+    ys, y, breaks = {}, 0.0, []
+    for k, (cid, claim) in enumerate(claims):
+        if k and claims[k - 1][0] != cid and cid in ("✗", "…"):
+            breaks.append(y + 0.5 - 0.225)
+            y -= 0.45
+        ys[(cid, claim)] = y
+        y -= 1.0
+    h = 1.25 + 0.27 * (-y) + 0.35
     fig, ax = plt.subplots(figsize=(S.WIDTH, h))
-    fig.subplots_adjust(left=0.5, right=0.99, top=1 - 1.45 / h, bottom=0.42 / h)
-    S.title(fig, "What held where",
-            "✓ held   ~ partial   ✗ no   – not tested*   ○ pending;   a: after the data")  # fmt: skip
-    n_sw, n = N.get("nat_lk_whole_sw_muse"), N.get("nat_n_muse")
-    fig.text(0.01, 0.12 / h, f"*Not run or not counted; Muse, natural passages: the lookup has too few switches ({n_sw} of {n}).",
-             color=S.COL["muted"])  # fmt: skip
-    for j, name in enumerate(models):
-        ax.text(j, 0.55, textwrap.fill(name.replace("-", " "), 8), ha="center", va="bottom", fontsize=S.FONT, weight="bold",
-                linespacing=1.0)  # fmt: skip
-        for claim in claims:
-            got = cells.get((claim, name))
-            if got is None:
-                continue
-            cell, flag, key = got
-            sym, col = CELL_SYMBOL[cell]
-            ax.text(j, ys[claim], sym, ha="center", va="center", fontsize=S.FONT + 4, color=col, weight="bold")
-            if flag:
-                ax.text(j + 0.17, ys[claim] + 0.1, flag, ha="left", va="center", fontsize=S.FONT,
-                        color=S.COL["muted"])  # fmt: skip
-            src = ("after the data" if "a" in flag else "fixed") + (f"; {key}" if key else "")
-            S.record("fig11", target_of.get(name, name), claim, cell, source=src)
-    for k, claim in enumerate(claims):
+    fig.subplots_adjust(left=0.585, right=0.99, top=1 - 1.25 / h, bottom=0.3 / h)
+    S.title(fig, "The claims hold on most tested models; no mechanism test held",
+            "✓ held   ~ in part   ✗ failed   – not tested   … pending;   a: after the data. Rows: the claims table.")  # fmt: skip
+    cols = [*models, "hand-checked"]
+    xs = [0, 1, 2, 3.05, 4.55]
+    light = 0.45  # the 122B's column (supplements only in v6)
+    for x, c in zip(xs, cols, strict=True):
+        ax.text(x, 0.75, short.get(c, "hand-\nchecked"), ha="center", va="bottom", weight="bold", fontsize=S.FONT,
+                alpha=light if c == models[3] else 1.0)  # fmt: skip
+    for (cid, claim), yy in ys.items():
+        for x, name in zip(xs[:4], models, strict=True):
+            r = by[(cid, claim, name)]
+            sym, col = SC6_SYMBOL[r["cell"]]
+            alpha = light if name == models[3] else 1.0
+            ax.text(x, yy, sym, ha="center", va="center", fontsize=S.FONT + 3, color=col, weight="bold", alpha=alpha)
+            if r["flag"]:
+                ax.text(x + 0.2, yy + 0.12, r["flag"], ha="left", va="center", fontsize=S.FONT - 1,
+                        color=S.COL["muted"], alpha=alpha)  # fmt: skip
+            key = r["data.csv key"]
+            src = ("after the data" if "a" in r["flag"] else "fixed") + (f"; {key}" if key else "")
+            S.record("fig11", r["target"], f"{cid} {claim}", r["cell"], source=src)
+        hc = by[(cid, claim, models[0])]["hand-checked"]
+        ax.text(xs[4], yy, hc or "–", ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"])
+    for k, yy in enumerate(ys.values()):
         if k % 2 == 0:
-            ax.axhspan(ys[claim] - half[claim], ys[claim] + half[claim], color="#f6f6f6", lw=0, zorder=0)
+            ax.axhspan(yy - 0.5, yy + 0.5, color="#f6f6f6", lw=0, zorder=0)
+    for yb in breaks:
+        ax.axhline(yb, color="#bbbbbb", lw=0.8)
     tr = blend(fig, ax)
-    for group, gy in heads:
-        ax.text(0.01, gy - 0.1, group, transform=tr, fontsize=S.FONT + 1, weight="bold", va="center")
-    ax.set_xlim(-0.5, len(models) - 0.5)
+    for (cid, claim), yy in ys.items():
+        ax.text(0.012, yy, cid, transform=tr, ha="left", va="center", fontsize=S.FONT, weight="bold")
+        ax.text(0.06, yy, claim, transform=tr, ha="left", va="center", fontsize=S.FONT)
+    ax.set_xlim(-0.5, xs[-1] + 0.8)
     ax.set_ylim(y + 0.5, 0.5)
-    ax.set_yticks([ys[c] for c in claims], [textwrap.fill(c, WRAP_SC) for c in claims])
+    ax.set_yticks([])
     ax.set_xticks([])
-    ax.tick_params(axis="y", length=0)
     for side in ("top", "right", "bottom", "left"):
         ax.spines[side].set_visible(False)
     S.save(fig, "fig11_scorecard")
@@ -2632,10 +2742,18 @@ VERBAL_SUMMARY = S.REPO / "results" / "x47_verbal" / "summary-20261028T033646Z" 
 
 
 def f07b_verbal(plt) -> None:
-    """Fig. 7b: 47.0, read through the J++ lens a pointer write looks like a random draw of the same size."""
+    """Fig. 7b (E8, v6): 47.0's swap through the lens against random draws, beside 47.10's report on the 27B (its
+    numbers recorded under e8_report, the README's keys)."""
     from scripts import story_b47b as B47
 
-    B47.build_47_0(VERBAL_SUMMARY, "fig07b_verbal", out_dir=S.OUT)
+    B47.build_e8(VERBAL_SUMMARY, latest_verdict("x47_report/x47_10-*"), "fig07b_verbal", out_dir=S.OUT)
+
+
+def s07b_lens_readout(plt) -> None:
+    """Supplementary to Fig. 7b: 47.0's three measures (rank, share rebuilt, KL) on the three models."""
+    from scripts import story_b47b as B47
+
+    B47.build_47_0(VERBAL_SUMMARY, "s07b_lens_readout", out_dir=S.SUPP)
 
 
 def latest_verdict(pattern: str) -> Path:
@@ -2739,7 +2857,7 @@ def f06b_anatomy(plt) -> None:
 # A title is set where the builder's default, built from the verdict's labels, reads stronger than the data.
 BATCH47 = {
     "fig01c_zeroing": ("story_b47a", "build_zero", "x47_zero/x47_5-*", None),
-    "fig03d_depth_map": ("story_b47b", "build_d1", "x47_depthmap/depth-*", None),
+    "fig03d_depth_map": ("story_b47b", "build_e11", "x47_depthmap/depth-*", None),
     "fig05b_identity_outside": ("story_b47a", "build_atoms", "x47_atoms/x47_1-*", None),
     "fig05c_described_bridge": ("story_b47a", "build_cue", "x47_cue/x47_3-*",
                                 "A described bridge: the split holds on the 9B and Muse, not on the 27B"),
@@ -2783,7 +2901,7 @@ def batch47_figures(plt, figs: dict = BATCH47, supp: bool = False) -> None:
 
 def batch47_numbers() -> None:
     """Numbers the README cards quote from batch-47 verdicts that have no figure of their own (47.16 on the 9B, 47.7(a)
-    on the 27B, 47.10 on the 27B), recorded for data.csv with the verdict json as source."""
+    on the 27B), recorded for data.csv with the verdict json as source (47.10's: Fig. 7b records them, as e8_report)."""
     v = latest_verdict("x47_distance/x47_16-*") / "x47_16.json"
     m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
     src = str(v.relative_to(S.REPO))
@@ -2808,17 +2926,16 @@ def batch47_numbers() -> None:
     for r, name in (("ql", "question last"), ("qf", "question first")):
         S.record("e14_question_first", m["target"], f"47.7(a): value probe at the bridge word, {name}", *m["probe"][r]["probe"],
                  source=src)  # fmt: skip
-    v = latest_verdict("x47_report/x47_10-*") / "x47_10.json"
-    src = str(v.relative_to(S.REPO))
-    for m in json.loads(v.read_text())["models"]:
-        o = m.get("orders", {}).get("last")
-        if not o or "report" not in o.get("readers", {}):
-            continue
-        rd = o["readers"]["report"]
-        S.record("e8_report", m["target"], "47.10: the report's extra loss without the address", *rd["alf"]["excess"], source=src)
-        S.record("e8_report", m["target"], "47.10: the report's extra loss without the J++ part", *rd["jpp"]["excess"], source=src)
-        S.record("e8_report", m["target"], "47.10: lens top-5 holds the right ordinal (report prompt)",
-                 *o["lens"]["report"]["top5_ordinal"], source=src)  # fmt: skip
+
+
+def f15_mechanisms(plt) -> None:
+    """Fig. 15 (E15, v6): the five failed mechanism tests in one panel, from their newest verdicts."""
+    from scripts import story_b48 as B48
+
+    B48.build_mechanisms({"48.2": latest_verdict("x48_enrich/x48_2-*"), "48.3": latest_verdict("x48_bind/x48_bind-*"),
+                          "48.4": latest_verdict("x48_heads/x48_heads-*"),
+                          "48.5": latest_verdict("x48_route2/x48_route2-*"),
+                          "47.6": latest_verdict("x47_edges/x47_6-*")}, "fig15_mechanisms")  # fmt: skip
 
 
 def f_batch47(plt) -> None:
@@ -2832,7 +2949,7 @@ def s_batch47(plt) -> None:
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
-               f_batch47)  # fmt: skip
+               f_batch47, f15_mechanisms)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -2844,13 +2961,14 @@ SUPP_FIGS = (
     s10_removed_together,
     s10b_all_scenes,
     s_batch47,
+    s07b_lens_readout,
 )
 
 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03_order", "fig03b_layers",
                 "fig03c_earlier_mention",
                 "fig05_routes", "fig06_depth", "fig06b_anatomy", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
-                "fig09_transfer", "fig10_what_is_left", "fig11_scorecard", *BATCH47)  # fmt: skip
+                "fig09_transfer", "fig10_what_is_left", "fig11_scorecard", *BATCH47, "fig15_mechanisms")  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants", "supp/s04_routes_design",
@@ -2904,6 +3022,7 @@ def main(argv: list[str] | None = None) -> None:
     probe_rows()
     batch47_numbers()
     check_scorecard_keys(S.OUT / "scorecard.csv")
+    check_scorecard_keys(S.OUT / "claims_scorecard.csv")
     S.write_data()
     contact_sheet(plt, README_NAMES, sheet)
     if out is not None:

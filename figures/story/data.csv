@@ -958,27 +958,21 @@ fig07,muse-glimmer-30b,"lookup target share, random direction, s = 4",0.00666666
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the written locker's item,0.4375,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the third item,0.25,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): other,0.3125,,,64,muse30b_x8_write
-fig07b_verbal,qwen3.5-9b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",27.0,20.0,26.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.5-9b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",50.5,2220.0,2821.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.05098144320771098,0.05098144320771098,0.057800012826919545,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.05900233564898372,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.22521910279989243,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.5-9b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.13867651671171188,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.5-9b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.16010559350252151,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.6-27b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",30.0,22.0,30.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.6-27b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",13.5,5013.52490234375,6343.5,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: pointer / random mean,1.1573296465655873,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.6-27b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.04064532729797065,0.04064532729797065,0.0469822509214282,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.038332726806402206,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.20986421018838883,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.6-27b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06569457054138184,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,qwen3.6-27b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.34857507050037384,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,muse-glimmer-30b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",93.5,58.45000076293945,88.75,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,muse-glimmer-30b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",25.0,3636.449951171875,4909.25,192,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: pointer / random mean,0.9431029187041653,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,muse-glimmer-30b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.007224978362210095,0.007224978362210095,0.01038632080890238,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.0088062527065631,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.0622436249256134,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,muse-glimmer-30b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06924905627965927,0.051669295877218246,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
-fig07b_verbal,muse-glimmer-30b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",3.7461936473846436,0.051583431661129,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: pointer / random mean,1.2188621564078013,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+e8_report,qwen3.6-27b,47.10: the report's extra loss without the address,0.2767295597484277,0.21341015064562419,0.3395090845562544,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
+e8_report,qwen3.6-27b,47.10: the report's extra loss without the J++ part,0.06289308176100639,0.022058823529411797,0.108108108108108,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
+e8_report,qwen3.6-27b,47.10: lens top-5 holds the right ordinal (report prompt),0.0,0.0,0.0,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: identity share",0.5393,0.4672897196261682,0.6149535809018566,191,x6_routes/qwen35_9b_x6_routes_x45a
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: position share",0.4607,,,191,x6_routes/qwen35_9b_x6_routes_x45a
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.5759,0.515622573757764,0.6407766990291263,191,x6_routes/qwen35_9b_x6_routes_x45a
@@ -1156,94 +1150,110 @@ fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pai
 fig10,muse-glimmer-30b,share of the change: + wrong pair instead (scenes where it reached 0.9 of identity's share),0.3132,,,,muse30b_x6_routes_x45e_dom
 fig11,qwen3.5-9b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45i_nochat
 fig11,qwen3.6-27b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_x45i_nochat_27b
-fig11,qwen3.5-9b,main test,ok,,,,fixed; numbers:contrast_9b
-fig11,qwen3.5-9b,a tested cause for the 27B's loss with 100 directions,-,,,,fixed
-fig11,qwen3.5-9b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_9b
-fig11,qwen3.5-9b,clean one-pick scenes,x,,,,fixed; numbers:x45m_before_gap_9b
-fig11,qwen3.5-9b,logit difference,ok,,,,fixed; numbers:ld_gap_9b
-fig11,qwen3.5-9b,varied scenes,ok,,,,fixed; numbers:x0b_c_9b
-fig11,qwen3.5-9b,natural passages,ok,,,,after the data; numbers:natg75_gap_9b
-fig11,qwen3.5-9b,without the chat template,ok,,,,after the data; numbers:x45ig_gap_9b
-fig11,qwen3.5-9b,never the value,ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,qwen3.5-9b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
-fig11,qwen3.5-9b,the lookup needs it,ok,,,,"fixed; s05:another item moved, no_alf: position share"
-fig11,qwen3.5-9b,only it gives position answers,ok,,,,"fixed; s05:another item moved, keep_alf: position share"
-fig11,qwen3.5-9b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
-fig11,qwen3.5-9b,the recall follows the write,ok,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
-fig11,qwen3.5-9b,"counts mentions, not text position",ok,,,,fixed; s08b:(c) neutral sentence B1: the code's shift in positions
-fig11,qwen3.5-9b,a pick sentence first moves the lookup to identity,ok,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
-fig11,qwen3.5-9b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
-fig11,qwen3.5-9b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_9b
-fig11,qwen3.5-9b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_9b
-fig11,qwen3.5-9b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.5-9b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_9b
-fig11,qwen3.5-9b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_9b
-fig11,qwen3.6-27b,main test,~,,,,fixed; numbers:contrast_27b
-fig11,qwen3.6-27b,a tested cause for the 27B's loss with 100 directions,x,,,,fixed; fig02b:45k: identity answers' fall from 25 to 100 directions beyond the random part (another item moved)
-fig11,qwen3.6-27b,locker before the pick,~,,,,after the data; numbers:sbo_swap_before_gap_27b
-fig11,qwen3.6-27b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_27b
-fig11,qwen3.6-27b,logit difference,ok,,,,fixed; numbers:ld_gap_27b
-fig11,qwen3.6-27b,varied scenes,ok,,,,fixed; numbers:x0b_c_27b
-fig11,qwen3.6-27b,natural passages,~,,,,fixed; numbers:nat_gap_27b
-fig11,qwen3.6-27b,without the chat template,~,,,,after the data; numbers:x45ig_gap_27b
-fig11,qwen3.6-27b,never the value,ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,qwen3.6-27b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
-fig11,qwen3.6-27b,the lookup needs it,~,,,,"after the data; s05:another item moved, no_alf: position share"
-fig11,qwen3.6-27b,only it gives position answers,x,,,,"fixed; s05:another item moved, keep_alf: position share"
-fig11,qwen3.6-27b,a write moves the lookup,~,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
-fig11,qwen3.6-27b,the recall follows the write,~,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
-fig11,qwen3.6-27b,"counts mentions, not text position",ok,,,,after the data; s08b:(c) neutral sentence B1: the code's shift in positions
-fig11,qwen3.6-27b,a pick sentence first moves the lookup to identity,ok,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
-fig11,qwen3.6-27b,refit per format,x,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
-fig11,qwen3.6-27b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_27b
-fig11,qwen3.6-27b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_27b
-fig11,qwen3.6-27b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.6-27b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_27b
-fig11,qwen3.6-27b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_27b
-fig11,qwen3.5-122b-a10b,main test,ok,,,,fixed; numbers:contrast_122b
-fig11,qwen3.5-122b-a10b,a tested cause for the 27B's loss with 100 directions,-,,,,fixed
-fig11,qwen3.5-122b-a10b,locker before the pick,x,,,,after the data; numbers:sbo_swap_before_gap_122b
-fig11,qwen3.5-122b-a10b,clean one-pick scenes,-,,,,fixed
-fig11,qwen3.5-122b-a10b,logit difference,ok,,,,fixed; numbers:ld_gap_122b
-fig11,qwen3.5-122b-a10b,varied scenes,~,,,,fixed; numbers:x0b_c_122b
-fig11,qwen3.5-122b-a10b,natural passages,ok,,,,fixed; numbers:nat_gap_122b
-fig11,qwen3.5-122b-a10b,without the chat template,-,,,,fixed
-fig11,qwen3.5-122b-a10b,never the value,ok,,,,"after the data; s05:another item moved, whole: value share"
-fig11,qwen3.5-122b-a10b,never the value without the chat template,-,,,,fixed
-fig11,qwen3.5-122b-a10b,the lookup needs it,ok,,,,"after the data; s05:another item moved, no_alf: position share"
-fig11,qwen3.5-122b-a10b,only it gives position answers,ok,,,,"after the data; s05:another item moved, keep_alf: position share"
-fig11,qwen3.5-122b-a10b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
-fig11,qwen3.5-122b-a10b,the recall follows the write,ok,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
-fig11,qwen3.5-122b-a10b,"counts mentions, not text position",ok,,,,after the data; s08b:(c) neutral sentence B1: the code's shift in positions
-fig11,qwen3.5-122b-a10b,a pick sentence first moves the lookup to identity,-,,,,fixed
-fig11,qwen3.5-122b-a10b,refit per format,-,,,,fixed
-fig11,qwen3.5-122b-a10b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_122b
-fig11,qwen3.5-122b-a10b,identity outside J++ is specific,-,,,,fixed
-fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.5-122b-a10b,"the recall reads the earlier mention, locker before the pick",-,,,,fixed
-fig11,qwen3.5-122b-a10b,"the link sits in the locker sentences, clean one-pick scenes",-,,,,fixed
-fig11,muse-glimmer-30b,main test,ok,,,,fixed; numbers:contrast_muse
-fig11,muse-glimmer-30b,a tested cause for the 27B's loss with 100 directions,-,,,,fixed
-fig11,muse-glimmer-30b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_muse
-fig11,muse-glimmer-30b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_muse
-fig11,muse-glimmer-30b,logit difference,ok,,,,fixed; numbers:ld_gap_muse
-fig11,muse-glimmer-30b,varied scenes,ok,,,,fixed; numbers:x0b_c_muse
-fig11,muse-glimmer-30b,natural passages,-,,,,fixed; numbers:nat_lk_whole_sw_muse
-fig11,muse-glimmer-30b,without the chat template,-,,,,fixed
-fig11,muse-glimmer-30b,never the value,ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,muse-glimmer-30b,never the value without the chat template,-,,,,fixed
-fig11,muse-glimmer-30b,the lookup needs it,ok,,,,"fixed; s05:another item moved, no_alf: position share"
-fig11,muse-glimmer-30b,only it gives position answers,ok,,,,"fixed; s05:another item moved, keep_alf: position share"
-fig11,muse-glimmer-30b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
-fig11,muse-glimmer-30b,the recall follows the write,~,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
-fig11,muse-glimmer-30b,"counts mentions, not text position",ok,,,,after the data; s08b:(c) neutral sentence B1: the code's shift in positions
-fig11,muse-glimmer-30b,a pick sentence first moves the lookup to identity,~,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
-fig11,muse-glimmer-30b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
-fig11,muse-glimmer-30b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_muse
-fig11,muse-glimmer-30b,identity outside J++ is specific,x,,,,fixed; numbers:x45e_cut_muse
-fig11,muse-glimmer-30b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,muse-glimmer-30b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_muse
-fig11,muse-glimmer-30b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_muse
+fig11,qwen3.5-9b,1 In a conflict the recall follows the J++ part,ok,,,,fixed; numbers:contrast_9b
+fig11,qwen3.6-27b,1 In a conflict the recall follows the J++ part,~,,,,fixed; numbers:contrast_27b
+fig11,muse-glimmer-30b,1 In a conflict the recall follows the J++ part,ok,,,,fixed; numbers:contrast_muse
+fig11,qwen3.5-122b-a10b,1 In a conflict the recall follows the J++ part,~,,,,fixed; numbers:contrast_122b
+fig11,qwen3.5-9b,"2 Lookup by identity or position, never the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.6-27b,"2 Lookup by identity or position, never the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,muse-glimmer-30b,"2 Lookup by identity or position, never the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.5-122b-a10b,"2 Lookup by identity or position, never the number",ok,,,,"after the data; s05:another item moved, whole: value share"
+fig11,qwen3.5-9b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_9b
+fig11,qwen3.6-27b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_27b
+fig11,muse-glimmer-30b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_muse
+fig11,qwen3.5-122b-a10b,3 Locker before the pick: the bridge word redirects,~,,,,after the data; numbers:lk_order_before_122b
+fig11,qwen3.5-9b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_9b
+fig11,qwen3.6-27b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_27b
+fig11,muse-glimmer-30b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_muse
+fig11,qwen3.5-122b-a10b,4a The address can be removed; a swap moves the lookup,ok,,,,"after the data; s05:another item moved, no_alf: position share"
+fig11,qwen3.5-9b,4b Adding only the address creates position answers,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_9b
+fig11,qwen3.6-27b,4b Adding only the address creates position answers,x,,,,fixed; numbers:rtk_C2_keep_alf_position_27b
+fig11,muse-glimmer-30b,4b Adding only the address creates position answers,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_muse
+fig11,qwen3.5-122b-a10b,4b Adding only the address creates position answers,ok,,,,after the data; numbers:rtk_C2_keep_alf_position_122b
+fig11,qwen3.5-9b,5 The recall follows the J++ part without needing it,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,qwen3.6-27b,5 The recall follows the J++ part without needing it,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,muse-glimmer-30b,5 The recall follows the J++ part without needing it,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,qwen3.5-122b-a10b,5 The recall follows the J++ part without needing it,-,,,,fixed
+fig11,qwen3.5-9b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.6-27b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,muse-glimmer-30b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.5-122b-a10b,6 The lookup's identity code lies outside the lens,-,,,,fixed
+fig11,qwen3.5-9b,"7 Identity early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.6-27b,"7 Identity early, position late; address formed first",pending,,,,fixed
+fig11,muse-glimmer-30b,"7 Identity early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.5-122b-a10b,"7 Identity early, position late; address formed first",-,,,,fixed
+fig11,qwen3.5-9b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_9b
+fig11,qwen3.6-27b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_27b
+fig11,muse-glimmer-30b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_muse
+fig11,qwen3.5-122b-a10b,8 The recall also reads the item's earlier mention,-,,,,fixed
+fig11,qwen3.5-9b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,qwen3.6-27b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,muse-glimmer-30b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,qwen3.5-122b-a10b,9a The address does not read out through the lens,-,,,,fixed
+fig11,qwen3.5-9b,"9b Asked to report the position, the lens stays blind",-,,,,fixed
+fig11,qwen3.6-27b,"9b Asked to report the position, the lens stays blind",ok,,,,fixed; e8_report:47.10: the report's extra loss without the address
+fig11,muse-glimmer-30b,"9b Asked to report the position, the lens stays blind",-,,,,fixed
+fig11,qwen3.5-122b-a10b,"9b Asked to report the position, the lens stays blind",-,,,,fixed
+fig11,qwen3.5-9b,"10 Six lockers: one code per locker, no single shift",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.6-27b,"10 Six lockers: one code per locker, no single shift",-,,,,fixed
+fig11,muse-glimmer-30b,"10 Six lockers: one code per locker, no single shift",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.5-122b-a10b,"10 Six lockers: one code per locker, no single shift",-,,,,fixed
+fig11,qwen3.5-9b,11 Lookups missed at L read the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
+fig11,qwen3.6-27b,11 Lookups missed at L read the bridge word before L,-,,,,fixed
+fig11,muse-glimmer-30b,11 Lookups missed at L read the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
+fig11,qwen3.5-122b-a10b,11 Lookups missed at L read the bridge word before L,-,,,,fixed
+fig11,qwen3.5-9b,12 A described bridge: the split holds,ok,,,,fixed; fig05c:47.3: gap (recall's extra loss minus the lookup's)
+fig11,qwen3.6-27b,12 A described bridge: the split holds,x,,,,fixed; fig05c:47.3: lookup's extra loss without the J++ part
+fig11,muse-glimmer-30b,12 A described bridge: the split holds,ok,,,,fixed; fig05c:47.3: gap (recall's extra loss minus the lookup's)
+fig11,qwen3.5-122b-a10b,12 A described bridge: the split holds,-,,,,fixed
+fig11,qwen3.5-9b,13 The address must be refit per text format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,qwen3.6-27b,13 The address must be refit per text format,x,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,muse-glimmer-30b,13 The address must be refit per text format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,qwen3.5-122b-a10b,13 The address must be refit per text format,-,,,,fixed
+fig11,qwen3.5-9b,14 The lookup's errors are not address errors,ok,,,,fixed; fig07c:47.13: wrong answers whose locker the address probe predicts
+fig11,qwen3.6-27b,14 The lookup's errors are not address errors,-,,,,fixed
+fig11,muse-glimmer-30b,14 The lookup's errors are not address errors,-,,,,fixed
+fig11,qwen3.5-122b-a10b,14 The lookup's errors are not address errors,-,,,,fixed
+fig11,qwen3.5-9b,15 Identity outside J++: only partly specific,~,,,,fixed; numbers:x45em_cut_9b
+fig11,qwen3.6-27b,15 Identity outside J++: only partly specific,~,,,,fixed; numbers:x45em_cut_27b
+fig11,muse-glimmer-30b,15 Identity outside J++: only partly specific,x,,,,fixed; numbers:x45em_cut_muse
+fig11,qwen3.5-122b-a10b,15 Identity outside J++: only partly specific,-,,,,fixed
+fig11,qwen3.5-9b,✗ The J++ part keys the attribute; late MLPs carry it,x,,,,"fixed; fig10b:48.2 B, bridge_late: recall accuracy lost"
+fig11,qwen3.6-27b,✗ The J++ part keys the attribute; late MLPs carry it,-,,,,fixed
+fig11,muse-glimmer-30b,✗ The J++ part keys the attribute; late MLPs carry it,x,,,,"fixed; fig10b:48.2 B, bridge_late: recall accuracy lost"
+fig11,qwen3.5-122b-a10b,✗ The J++ part keys the attribute; late MLPs carry it,-,,,,fixed
+fig11,qwen3.5-9b,✗ A person mark at the locker sentence,x,,,,"fixed; fig10c:48.3, probe at the item, locker after the pick (accuracy)"
+fig11,qwen3.6-27b,✗ A person mark at the locker sentence,-,,,,fixed
+fig11,muse-glimmer-30b,✗ A person mark at the locker sentence,x,,,,"fixed; fig10c:48.3, probe at the item, locker after the pick (accuracy)"
+fig11,qwen3.5-122b-a10b,✗ A person mark at the locker sentence,-,,,,fixed
+fig11,qwen3.5-9b,✗ The copying heads pass the rest at twice the J++ part,x,,,,fixed; fig10d:48.4: the rule holds
+fig11,qwen3.6-27b,✗ The copying heads pass the rest at twice the J++ part,-,,,,fixed
+fig11,muse-glimmer-30b,✗ The copying heads pass the rest at twice the J++ part,x,,,,fixed; fig10d:48.4: the rule holds
+fig11,qwen3.5-122b-a10b,✗ The copying heads pass the rest at twice the J++ part,-,,,,fixed
+fig11,qwen3.5-9b,✗ The address is the recall's second route,x,,,,"fixed; fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item"
+fig11,qwen3.6-27b,✗ The address is the recall's second route,x,,,,"fixed; fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item"
+fig11,muse-glimmer-30b,✗ The address is the recall's second route,x,,,,"fixed; fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item"
+fig11,qwen3.5-122b-a10b,✗ The address is the recall's second route,-,,,,fixed
+fig11,qwen3.5-9b,✗ Blocking the pick sentence removes position only,x,,,,fixed; fig09c_formation:47.6 (b): the formation rule holds
+fig11,qwen3.6-27b,✗ Blocking the pick sentence removes position only,-,,,,fixed
+fig11,muse-glimmer-30b,✗ Blocking the pick sentence removes position only,x,,,,fixed; fig09c_formation:47.6 (b): the formation rule holds
+fig11,qwen3.5-122b-a10b,✗ Blocking the pick sentence removes position only,-,,,,fixed
+fig11,qwen3.5-9b,✗ The locker digit carries the hall question's address,x,,,,fixed; fig09d:47.14: hall probe at the locker digit
+fig11,qwen3.6-27b,✗ The locker digit carries the hall question's address,-,,,,fixed
+fig11,muse-glimmer-30b,✗ The locker digit carries the hall question's address,x,,,,fixed; fig09d:47.14: hall probe at the locker digit
+fig11,qwen3.5-122b-a10b,✗ The locker digit carries the hall question's address,-,,,,fixed
+fig11,qwen3.5-9b,✗ Map rules: one locker cell; the lookup stops first,x,,,,"fixed; fig03d_depth_map:D1 clean, locker-first, lookup: last layer with the bridge word >= 0.3"
+fig11,qwen3.6-27b,✗ Map rules: one locker cell; the lookup stops first,-,,,,fixed
+fig11,muse-glimmer-30b,✗ Map rules: one locker cell; the lookup stops first,x,,,,fixed
+fig11,qwen3.5-122b-a10b,✗ Map rules: one locker cell; the lookup stops first,-,,,,fixed
+fig11,qwen3.5-9b,✗ Positive control; 9B clean design; 27B strict bar,x,,,,fixed; numbers:x45m_before_gap_9b
+fig11,qwen3.6-27b,✗ Positive control; 9B clean design; 27B strict bar,x,,,,fixed; numbers:x4_D_elements_27b
+fig11,muse-glimmer-30b,✗ Positive control; 9B clean design; 27B strict bar,-,,,,fixed
+fig11,qwen3.5-122b-a10b,✗ Positive control; 9B clean design; 27B strict bar,-,,,,fixed
+fig11,qwen3.5-9b,"… Pending: weights, the dereference, two sources",pending,,,,fixed
+fig11,qwen3.6-27b,"… Pending: weights, the dereference, two sources",pending,,,,fixed
+fig11,muse-glimmer-30b,"… Pending: weights, the dereference, two sources",pending,,,,fixed
+fig11,qwen3.5-122b-a10b,"… Pending: weights, the dereference, two sources",pending,,,,fixed
 fig01c,qwen3.5-9b,47.5: the rule's reading (recall at L),"followed, not needed at one layer",,,,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept, random part minus J++ part taken out (L)",0.025000000000000022,0.005376344086021501,0.05294215037008183,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept at L, the J++ part's 25 directions taken out",0.975,0.9470578496299181,0.9946236559139785,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
@@ -1750,6 +1760,494 @@ fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-first, recall: w30 switched",0.006
 fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-first, recall: last layer with the bridge word >= 0.3",14,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
 fig03d_depth_map,qwen3.5-9b,"D2 clean, locker-first, recall: l_R",20,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
 fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-first, recall: d switched",1.0,1.0,1.0,151,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@emb switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@0 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@2 switched",0.963855421686747,0.9361702127659575,0.9873417721518988,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@4 switched",0.9096385542168675,0.8650306748466258,0.9480534795393285,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@6 switched",0.6807228915662651,0.6232876712328768,0.7358538454171055,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@8 switched",0.23493975903614459,0.17808039876640608,0.28994082840236685,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@10 switched",0.1927710843373494,0.1360544217687075,0.2571428571428571,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@12 switched",0.060240963855421686,0.022899672846237732,0.10059264634736331,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@14 switched",0.024096385542168676,0.0,0.05228853169174645,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@16 switched",0.012048192771084338,0.0,0.030001879699248092,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@18 switched",0.012048192771084338,0.0,0.030001879699248092,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gbridge@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gpick_rest@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gperson@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@6 switched",0.012048192771084338,0.0,0.029940119760479042,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@8 switched",0.0783132530120482,0.03597122302158273,0.12568384074941452,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@10 switched",0.04216867469879518,0.01282051282051282,0.07746478873239436,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@12 switched",0.09036144578313253,0.048777191825972316,0.1338623264875395,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@14 switched",0.012048192771084338,0.0,0.029940119760479042,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@16 switched",0.006024096385542169,0.0,0.020833333333333332,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@14 switched",0.04216867469879518,0.018072289156626505,0.06748673520145909,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@16 switched",0.04216867469879518,0.017750170183798503,0.06790123456790123,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@18 switched",0.10240963855421686,0.0661764705882353,0.14117813226985707,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@20 switched",0.03614457831325301,0.012987012987012988,0.06043956043956044,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@22 switched",0.04216867469879518,0.013333333333333334,0.07526881720430108,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_org_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@4 switched",0.012048192771084338,0.0,0.02857142857142857,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@6 switched",0.024096385542168676,0.005847953216374269,0.046511627906976744,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@8 switched",0.06626506024096386,0.033112582781456956,0.09756381168462844,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@10 switched",0.04216867469879518,0.018289911308203993,0.06557584037092232,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@12 switched",0.07228915662650602,0.03571428571428571,0.1111111111111111,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@14 switched",0.006024096385542169,0.0,0.0196078431372549,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@14 switched",0.024096385542168676,0.006172839506172839,0.043010752688172046,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@16 switched",0.018072289156626505,0.0,0.03608247422680412,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@18 switched",0.0963855421686747,0.06060606060606061,0.13218390804597702,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@20 switched",0.018072289156626505,0.0,0.037037037037037035,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@22 switched",0.018072289156626505,0.0,0.03636363636363636,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@24 switched",0.006024096385542169,0.0,0.0196078431372549,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_cf_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other1_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glk_other2_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@12 switched",0.006024096385542169,0.0,0.019867549668874173,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@16 switched",0.07228915662650602,0.03389544205222172,0.11258278145695365,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@18 switched",0.018072289156626505,0.0,0.03763694461351183,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@20 switched",0.12048192771084337,0.07602339181286549,0.16418176972281445,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@22 switched",0.09036144578313253,0.04137788543744657,0.13986013986013987,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@24 switched",0.27710843373493976,0.22435897435897437,0.32620320855614976,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@26 switched",0.25903614457831325,0.20895286227092386,0.30357142857142855,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@28 switched",0.25301204819277107,0.20245216184633363,0.30666871165644166,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: gquestion@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@16 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@18 switched",0.024096385542168676,0.005434782608695652,0.049689440993788817,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@20 switched",0.16265060240963855,0.09580838323353294,0.23500106837606835,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@22 switched",0.23493975903614459,0.16058168874470577,0.3167701863354037,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@24 switched",0.4578313253012048,0.37287884866111726,0.5524485183324962,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@26 switched",0.4879518072289157,0.4093559676393055,0.5750085616438354,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@28 switched",0.7108433734939759,0.6335403726708074,0.7837837837837838,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: glast@30 switched",0.9939759036144579,0.9790209790209791,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b0 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b2 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b4 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b6 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b8 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b10 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b12 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b14 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b16 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b18 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b20 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b22 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b24 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b26 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b28 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: b30 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w0 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w2 switched",0.963855421686747,0.9361702127659575,0.9873417721518988,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w4 switched",0.9156626506024096,0.8782594760312152,0.9512195121951219,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w6 switched",0.6746987951807228,0.6176470588235294,0.731431447746884,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w8 switched",0.22289156626506024,0.16666666666666666,0.27895042839657275,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w10 switched",0.19879518072289157,0.13970588235294118,0.2616279069767442,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w12 switched",0.05421686746987952,0.022556390977443608,0.08571428571428572,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w14 switched",0.024096385542168676,0.0,0.05228853169174645,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w16 switched",0.012048192771084338,0.0,0.030001879699248092,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w18 switched",0.012048192771084338,0.0,0.030001879699248092,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: w30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: last layer with the bridge word >= 0.3",6,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D2 clean, locker-after, lookup: l_R",12,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, lookup: d switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@emb switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@0 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@2 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@4 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@6 switched",0.9819277108433735,0.9597301905174279,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@8 switched",0.9698795180722891,0.9408602150537635,0.9940119760479041,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@10 switched",0.9759036144578314,0.9485714285714286,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@12 switched",0.9698795180722891,0.95,0.9920634920634921,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@14 switched",0.9698795180722891,0.95,0.9920634920634921,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@16 switched",0.9578313253012049,0.9322033898305084,0.981710088691796,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@18 switched",0.9397590361445783,0.908495581331124,0.9722222222222222,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@20 switched",0.6626506024096386,0.5687435787671232,0.7516790094885443,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@22 switched",0.6325301204819277,0.5393922369765066,0.7246434322521278,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gbridge@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@4 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@8 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@10 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@12 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@14 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@16 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@18 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@20 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@22 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gpick_rest@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gperson@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_org_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@4 switched",0.006024096385542169,0.0,0.02072538860103627,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@8 switched",0.012048192771084338,0.0,0.02857142857142857,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@10 switched",0.006024096385542169,0.0,0.01764705882352941,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@12 switched",0.006024096385542169,0.0,0.019867549668874173,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@14 switched",0.006024096385542169,0.0,0.01764705882352941,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_cf_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other1_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_item@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@18 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@20 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@22 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glk_other2_num@30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@8 switched",0.006024096385542169,0.0,0.0189873417721519,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@12 switched",0.006024096385542169,0.0,0.0189873417721519,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@16 switched",0.03614457831325301,0.013513513513513514,0.06060606060606061,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@18 switched",0.006024096385542169,0.0,0.01764705882352941,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@20 switched",0.018072289156626505,0.0,0.043478260869565216,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@22 switched",0.024096385542168676,0.0,0.050359712230215826,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@24 switched",0.09036144578313253,0.0364963503649635,0.14525383266207612,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@26 switched",0.06626506024096386,0.026845637583892617,0.10628276287388216,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@28 switched",0.04819277108433735,0.012658227848101266,0.08938964395897601,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: gquestion@30 switched",0.006024096385542169,0.0,0.019867549668874173,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@0 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@2 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@4 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@6 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@8 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@10 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@12 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@14 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@16 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@18 switched",0.024096385542168676,0.006024096385542169,0.0446927374301676,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@20 switched",0.1566265060240964,0.09523809523809523,0.23076923076923078,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@22 switched",0.21084337349397592,0.13259668508287292,0.2949649280575539,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@24 switched",0.9156626506024096,0.8690455665024631,0.960787052251068,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@26 switched",0.9216867469879518,0.8636363636363636,0.9710144927536232,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@28 switched",0.9156626506024096,0.8598116594483701,0.9625698379758958,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: glast@30 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b0 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b2 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b4 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b6 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b8 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b10 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b12 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b14 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b16 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b18 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b20 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b22 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b24 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b26 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b28 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: b30 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w0 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w2 switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w4 switched",0.9939759036144579,0.9823529411764705,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w6 switched",0.9819277108433735,0.9597301905174279,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w8 switched",0.9698795180722891,0.9408602150537635,0.9940119760479041,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w10 switched",0.9698795180722891,0.9408602150537635,0.9940119760479041,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w12 switched",0.9698795180722891,0.95,0.9920634920634921,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w14 switched",0.9698795180722891,0.95,0.9920634920634921,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w16 switched",0.9518072289156626,0.9271505932671081,0.9763779527559056,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w18 switched",0.9397590361445783,0.908495581331124,0.9722222222222222,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w20 switched",0.6506024096385542,0.5555555555555556,0.7423336121955754,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w22 switched",0.6265060240963856,0.5309262441135293,0.7219325609031491,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w24 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w26 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w28 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: w30 switched",0.0,0.0,0.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: last layer with the bridge word >= 0.3",22,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D2 clean, locker-after, recall: l_R",24,,,,results/x47_depthmap/depth-20261028T120525Z/depth.json
+fig03d_depth_map,qwen3.5-9b,"D1 clean, locker-after, recall: d switched",1.0,1.0,1.0,166,results/x47_depthmap/depth-20261028T120525Z/depth.json
 fig05b,qwen3.5-9b,47.1: the rule's reading,(c) outside the lens,,,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05b,qwen3.5-9b,"47.1: identity answers lost without directions 26-100 beyond random (routes test, lookup)",0.046666666666666634,0.017666289254964378,0.07796730376247142,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05b,qwen3.5-9b,47.1: recall's extra loss without directions 26-100 (main test),0.025380710659898442,0.0,0.05670103092783496,200,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
@@ -2166,6 +2664,21 @@ fig10e,muse-glimmer-30b,"48.5, (iv) (i) and a random direction (same size): reca
 fig10e,muse-glimmer-30b,"48.5, (iv) (i) and a random direction (same size): recall names original answer",0.5240384615384616,0.4039166971136281,0.6467398064027687,208,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
 fig10e,muse-glimmer-30b,"48.5, (iv) (i) and a random direction (same size): recall names other",0.11057692307692307,0.056338028169014086,0.168141592920354,208,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
 fig10e,muse-glimmer-30b,48.5: the rule holds,0,,,,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
+fig15,qwen3.5-9b,"48.2 B, bridge_late: recall accuracy lost",0.13,0.08333333333333337,0.19271205357142857,200,results/x48_enrich/x48_2-20261028T113111Z/x48_2.json
+fig15,muse-glimmer-30b,"48.2 B, bridge_late: recall accuracy lost",0.01,0.0,0.02857142857142858,200,results/x48_enrich/x48_2-20261028T113111Z/x48_2.json
+fig15,qwen3.5-9b,"48.3, probe at the item, locker after the pick (accuracy)",0.36466165413533835,0.3,0.4243546311513535,266,results/x48_bind/x48_bind-20261028T113120Z/x48_bind.json
+fig15,qwen3.5-9b,"48.3, probe at the number, locker after the pick (accuracy)",0.33458646616541354,0.27402135231316727,0.3930837768101919,266,results/x48_bind/x48_bind-20261028T113120Z/x48_bind.json
+fig15,muse-glimmer-30b,"48.3, probe at the item, locker after the pick (accuracy)",0.36330935251798563,0.3086410594570832,0.4172191139529573,278,results/x48_bind/x48_bind-20261028T113120Z/x48_bind.json
+fig15,muse-glimmer-30b,"48.3, probe at the number, locker after the pick (accuracy)",0.3920863309352518,0.3374485596707819,0.43661971830985913,278,results/x48_bind/x48_bind-20261028T113120Z/x48_bind.json
+fig15,qwen3.5-9b,"48.4: heads passing the rest at twice the J++ part, share of the five",0.0,,,,results/x48_heads/x48_heads-20261028T113126Z/x48_heads.json
+fig15,muse-glimmer-30b,"48.4: heads passing the rest at twice the J++ part, share of the five",0.2,,,,results/x48_heads/x48_heads-20261028T113126Z/x48_heads.json
+fig15,qwen3.5-9b,"48.5, (ii) (i) and the pointer write: recall names the written locker's item",0.09821428571428571,0.06312213756458493,0.15469777690081554,224,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
+fig15,qwen3.6-27b,"48.5, (ii) (i) and the pointer write: recall names the written locker's item",0.04430379746835443,0.021083544705136334,0.07420529207155477,316,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
+fig15,muse-glimmer-30b,"48.5, (ii) (i) and the pointer write: recall names the written locker's item",0.07211538461538461,0.034482758620689655,0.12272926634768737,208,results/x48_route2/x48_route2-20261028T113127Z/x48_route2.json
+fig15,qwen3.5-9b,47.6 (b) block/sentence/all: lookup identity share,0.21,0.17142857142857143,0.25089605734767023,300,results/x47_edges/x47_6-20261028T113107Z/verdict.json
+fig15,qwen3.5-9b,47.6: the rule's bar (whole change's identity share less 0.10),0.42666666666666664,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
+fig15,muse-glimmer-30b,47.6 (b) block/sentence/all: lookup identity share,0.16333333333333333,0.12972880730559913,0.20233463035019456,300,results/x47_edges/x47_6-20261028T113107Z/verdict.json
+fig15,muse-glimmer-30b,47.6: the rule's bar (whole change's identity share less 0.10),0.31333333333333335,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -2784,6 +3297,27 @@ s12,muse-glimmer-30b,"48.1, a random subspace: share inside the J++ part",0.0039
 s12,muse-glimmer-30b,"48.1, the lookup's subspace: overlap with the pointer (cos²)",0.245742,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
 s12,muse-glimmer-30b,"48.1, the lookup's subspace: share outside the J++ part, pointer and input-embedding directions",0.610851,0.5791246000000001,0.6330165555555556,,results/x48_das/verdict-20261028T134153Z/verdict.json
 s12,muse-glimmer-30b,"48.1, the lookup's subspace only: identity answers, another item moved",0.09,0.03636363636363636,0.1509433962264151,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s07b_lens_readout,qwen3.5-9b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",27.0,20.0,26.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",50.5,2220.0,2821.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.05098144320771098,0.05098144320771098,0.057800012826919545,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.05900233564898372,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.22521910279989243,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.13867651671171188,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.5-9b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.16010559350252151,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",30.0,22.0,30.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",13.5,5013.52490234375,6343.5,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.04064532729797065,0.04064532729797065,0.0469822509214282,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.038332726806402206,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.20986421018838883,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06569457054138184,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,qwen3.6-27b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.34857507050037384,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",93.5,58.45000076293945,88.75,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",25.0,3636.449951171875,4909.25,192,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.007224978362210095,0.007224978362210095,0.01038632080890238,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.0088062527065631,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.0622436249256134,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06924905627965927,0.051669295877218246,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+s07b_lens_readout,muse-glimmer-30b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",3.7461936473846436,0.051583431661129,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
 probe,qwen3.5-9b,probe.value.9b.locker-first,0.2704485488126649,0.23641684813179104,0.30677367551616386,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.majority.9b.locker-first,0.09894459102902374,0.07152844911222445,0.12922248194431957,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.chance.9b,0.1111,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
@@ -2878,9 +3412,6 @@ e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without l
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-100,0.016666666666666663,0.0,0.034130487779026136,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
-e8_report,qwen3.6-27b,47.10: the report's extra loss without the address,0.2767295597484277,0.21341015064562419,0.3395090845562544,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
-e8_report,qwen3.6-27b,47.10: the report's extra loss without the J++ part,0.06289308176100639,0.022058823529411797,0.108108108108108,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
-e8_report,qwen3.6-27b,47.10: lens top-5 holds the right ordinal (report prompt),0.0,0.0,0.0,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

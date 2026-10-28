@@ -21,6 +21,10 @@ Every README figure, as it is restyled for v6 (one experiment card E1–E16, one
 |---|---|---|---|---|
 | E5 | `fig05_routes` | The lookup follows identity or position, never the value | left: schematic (was Fig. 4, now `supp/s04_routes_design`); right: fixed in advance | x6_routes main runs (whole, without the address, its random part) |
 | E12 | `fig06b_anatomy` | The address forms early; the lookup goes by identity, then by position | fixed in advance (47.8) | x47_anatomy/x47_8-* |
+| E8 | `fig07b_verbal` | The lens is blind to the address | left: descriptive (47.0); right: fixed in advance (47.10, the 27B; the 9B and Muse fail the report gate); 47.0's rank and KL in `supp/s07b_lens_readout` | x47_verbal/summary-*, x47_report/x47_10-* |
+| E11 | `fig03d_depth_map` | Locker after the pick: the lookup leaves the bridge word early | fixed in advance (D1, D2); the 9B, both sentence orders, both readers as row pairs | x47_depthmap/depth-* |
+| E15 | `fig15_mechanisms` | Every mechanism we proposed for the split failed its rule | fixed in advance; one row group per test (48.2 B, 48.3, 48.4, 48.5, 47.6 (b)) against its rule's bar | x48_enrich, x48_bind, x48_heads, x48_route2, x47_edges |
+| Claims | `fig11_scorecard` | The claims hold on most tested models; no mechanism test held | per cell, the claims table's reading (agent's, UNVERIFIED); `figures/story/claims_scorecard.csv` (v5's `scorecard.csv` stays: the joint figures and the shared grid read its claim names) | claims_scorecard.csv |
 
 ## README v5 (27 Oct, after the overnight queue; draft, UNVERIFIED)
 
