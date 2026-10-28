@@ -1,0 +1,110 @@
+{
+  "exp": "x51_answer",
+  "run": "x51_12_z2_27b_r2",
+  "test": "51.12",
+  "set": "z2",
+  "set_text": "Z2 (Zach's never-named bridge, the description's last token)",
+  "spec": "jobs/c3/batch51.yaml (addendum_4 and addendum_4_amendment, 51.12); jobs/c3/x51_12_z2_27b_r2.yaml",
+  "question": "Q51.12 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T19:57:15Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "15938ce4d9798bc9986bebafcd95db9b81f53e19",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "inputs": {
+    "jobs/c3/batch51.yaml": "f2bdfe1a70369afba890164aa5181d576ffa18b82de9f36c192c3a559ee1e0d6",
+    "results/x50_zach/x50_z2_27b/manifest.json": "c0e3dcf8fe9a663d113309fa8e4e220933117f2d5b5746c9fc5f307d3e9c4dad",
+    "results/x50_zach/x50_z2_27b/gate.json": "7586b8d60b26f2560c8875a362d595fc3929f258431ed8fbb5a4236c3a08f5f4",
+    "results/x50_zach/x50_z2_27b/cases.jsonl": "91000d6cee652981fd78736401768885c702d879c5801dcb60985ab9067ee945",
+    "results/x50_zach/x50_z2_27b/outcomes.jsonl": "11db6b2f362046f0170f6e7ba3e1a0f7868f527cb4d1bca4a8ecc4b2b436bad8"
+  },
+  "source": "x50_z2_27b",
+  "layer": 32,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_jpp_A",
+    "no_jpp_A_rand",
+    "no_A",
+    "no_A_rand",
+    "no_F"
+  ],
+  "arm_text": {
+    "whole": "Δ = h_S - h_O at the edited token at L",
+    "no_jpp": "arm 1: Δ - P_J Δ (P_J Δ: X0's 25-atom signed OMP part over the J++ letter-token atoms at L)",
+    "no_jpp_A": "arm 2: Δ - (I - P_A) P_J Δ (the J++ part with the answer directions A projected out)",
+    "no_A": "arm 3: Δ - P_A Δ (the answer directions alone)",
+    "*_rand": "each arm's random twin: Δ minus X0's random subspace part of the removed part's share of ||Δ||^2 (seed 888 + L); no_A_rand is arm 4, 'without a random part of A's share'",
+    "no_F": "Z2 only: arm 3's frequency-matched control, Δ - P_F Δ (F: per atom of A one unrelated letter atom with its BPE id within a factor 2 and the closest J++ readout norm)"
+  },
+  "k": 25,
+  "omp": "signed",
+  "pairs": {
+    "1": [
+      "no_jpp",
+      "no_jpp_rand"
+    ],
+    "2": [
+      "no_jpp_A",
+      "no_jpp_A_rand"
+    ],
+    "3": [
+      "no_A",
+      "no_A_rand"
+    ],
+    "3f": [
+      "no_A",
+      "no_F"
+    ]
+  },
+  "answer_directions": "JLens.vectors(L, ids), unit rows, letter tokens only (the OMP dictionary; digits never in A); e1 / cue: the answers' number words (e1 both readers' O / S answers; cue the recall's O / S legs and the lookup's a, b, c, e), each variant (as is, leading space, capitalised, both) kept where it is one letter token; z2: the first token of each answer word and variant; span by SVD (float64, rank tol 1e-06)",
+  "projected_out": "(I - P_A) P_J Δ: the J++ part minus its component along span(A)",
+  "frequency_control": "no_F = Δ - P_F Δ; per atom a of A the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2.0 (widened by x2.0 until non-empty) and the closest log J++ readout norm ||(g * W_U[t]) J_L||, ties to the lower id; unrelated: its key equals no answer word / A token / bridge entity / edited token key of the set and (>= 3 characters) neither contains nor is contained in one; never twice in an item",
+  "read": "z2: x50_zach's (top token after the prompt, no prefill); e1 / cue: X0's chat read (top token after the digit's space token); 47.3's lookup switch = follows the change (identity / position / value)",
+  "delta": "z2: per reader from its own O / S prompts; e1 / cue: from the lookup's prompts",
+  "readout": "lens readout (JLens.readout) at the edited token on O and S, from the forwards that give Δ: top-1 over the vocabulary, class own answer / own bridge / neither; the readout check's ranks (each reader's own answer word, best A-style variant; the bridge entity's); shares in the verdict (CPU)",
+  "gate": "the source run's (asserted from its gate.json)",
+  "rule": "Per model, per reader: \"the lens effect is the entity\": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. \"The lens effect is the answer\": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed, report both shares. Amendment (Dan 20:20): before the arms, the lens readout check at the bridge word; the verdict says which case held, either 'the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)' or the arm-based entity / answer / mixed (never 'void by construction'). Z2: arm 3 is read against its controls (a same-size random part and a frequency-matched part), not against zero.",
+  "as_computed": "Extra loss of arm k = X0's excess = (S_rand_k - S_k) / S_whole per reader over the source run's items (switch: the set's own read; 47.3's lookup: follows the change, identity / position / value). e1, e2, e3 = arms 1, 2, 3; arm 4 (no_A_rand) is arm 3's random twin. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Z2: arm 3 against both its controls, e3 (vs no_A_rand) and e3f = (S_noF - S_noA) / S_whole (vs no_F); 'entity' needs max(e3, e3f) <= 0.10, 'answer' needs min(e3, e3f) >= 0.5 e1 (a label holds only against both controls). Point estimates decide (EPS 1e-9); e1 <= 0 or undefined (no switch under the whole change) -> can't tell; CIs from X0's cluster bootstrap over the bridge entity (10,000, seed 0), paired across arms (ratios on the same draws). Readout case first: per reader the rank (1 + tokens with a strictly higher lens logit, full vocabulary) of its own answer word (best of its A-style variant tokens) at the edited token at L, O's answer on O's state and S's on S's (z2: the reader's own state; e1 / cue: the lookup's, shared through the edited token); an item is 'not read' when it ranks > 50 on both; >= 90 % of items not read -> 'the answer word is not read at the bridge word', the arms reported beside; else the arm-based label. A: J++ unit atoms of letter tokens (the OMP dictionary); e1 / cue the answers' number words (suite_v1.WORDS: 6 -> 'six'), each of its variants (as is, leading space, capitalised, both) kept where it is one letter token; z2 the first token of each answer word and variant (where the tokenizer splits the full word, its first token only). Frequency-matched control F (z2): per atom a of A, the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2 (a BPE id is its merge rank, earlier = more frequent in the tokenizer's training corpus; the factor doubles until a candidate exists) and the closest log J++ readout norm ||(g * W_U[t]) J_L|| (ties: lower id); unrelated = its key (decode, stripped, lower-cased) equals no key of the set's answer words, A tokens, bridge entities' tokens / names or edited tokens, and (keys of >= 3 characters) neither contains nor is contained in one; never twice in one item. no_F = Δ - P_F Δ, P_F the projector on span(F). Decisive cells for Q51.12: Z2 both readers; E1 the recall (the lookup beside); 47.3 both readers. Projected out: (I - P_A) P_J Δ, P_A the orthogonal projector on the span of the item's answer atoms (the J++ part minus its component along span(A)).",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "order": {
+    "items": "the source run's item order",
+    "reads": "per item and reader: O unedited then the 8 arms in order, batches of at most 64 rows (BJ_SUITE_BATCH)"
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.12 answer",
+  "items": 166,
+  "frequency_control_summary": {
+    "letters": 242132,
+    "banned": 29960,
+    "median_abs_log_norm_ratio": 0.00029995500899794244
+  }
+}
