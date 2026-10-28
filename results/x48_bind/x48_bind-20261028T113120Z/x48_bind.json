@@ -1,0 +1,1805 @@
+{
+ "runs": [
+  "qwen35_9b_x48_bind",
+  "muse30_x48_bind"
+ ],
+ "dan": "(a) \u00b7 60%; (b) \u00b7 60%",
+ "verdict": {
+  "label": "does not hold",
+  "Q48.3": "no",
+  "recall_moves": {
+   "by_model": {
+    "qwen3.5-9b": false,
+    "muse-glimmer-30b": false
+   },
+   "answer": "no"
+  },
+  "models_holding": 0,
+  "models": 2,
+  "failed": [
+   "qwen35_9b_x48_bind",
+   "muse30_x48_bind"
+  ],
+  "pending": []
+ },
+ "models": [
+  {
+   "run": "qwen35_9b_x48_bind",
+   "target": "qwen3.5-9b",
+   "layer": 12,
+   "status": "tested",
+   "holds": false,
+   "tokens_holding": [],
+   "write": false,
+   "recall_moves": false,
+   "why": "item: probe after 0.365 < 0.85, before 0.331 <= 0.5; share 0.1881 > 2.0 x 0.0843; number: probe after 0.335 < 0.85, before 0.283 <= 0.5; share 0.1809 > 2.0 x 0.0843; lookup s = 1: target 0.000 < 0.3, random 0.000 <= 0.05; s = 2: target 0.000 < 0.3, random 0.014 <= 0.05; recall s = 1: target 0.000 < 0.3, random 0.000 <= 0.05; s = 2: target 0.000 < 0.3, random 0.000 <= 0.05",
+   "clauses": {
+    "tokens": {
+     "item": {
+      "probe": false,
+      "lens": false,
+      "holds": false,
+      "after": 0.36466165413533835,
+      "before": 0.33067729083665337,
+      "share": 0.18807000000000001,
+      "random_share": 0.08425892405211925,
+      "why": "probe after 0.365 < 0.85, before 0.331 <= 0.5; share 0.1881 > 2.0 x 0.0843"
+     },
+     "number": {
+      "probe": false,
+      "lens": false,
+      "holds": false,
+      "after": 0.33458646616541354,
+      "before": 0.28286852589641437,
+      "share": 0.180895,
+      "random_share": 0.08425892405211925,
+      "why": "probe after 0.335 < 0.85, before 0.283 <= 0.5; share 0.1809 > 2.0 x 0.0843"
+     }
+    },
+    "lookup": {
+     "holds": false,
+     "by_s": {
+      "1": {
+       "holds": false,
+       "write": 0.0,
+       "random": 0.0,
+       "why": "s = 1: target 0.000 < 0.3, random 0.000 <= 0.05"
+      },
+      "2": {
+       "holds": false,
+       "write": 0.0,
+       "random": 0.014285714285714285,
+       "why": "s = 2: target 0.000 < 0.3, random 0.014 <= 0.05"
+      }
+     }
+    },
+    "recall": {
+     "holds": false,
+     "by_s": {
+      "1": {
+       "holds": false,
+       "write": 0.0,
+       "random": 0.0,
+       "why": "s = 1: target 0.000 < 0.3, random 0.000 <= 0.05"
+      },
+      "2": {
+       "holds": false,
+       "write": 0.0,
+       "random": 0.0,
+       "why": "s = 2: target 0.000 < 0.3, random 0.000 <= 0.05"
+      }
+     }
+    }
+   },
+   "probes": {
+    "item": {
+     "penalties": {
+      "after": [
+       0.001,
+       0.1,
+       0.001,
+       0.001,
+       0.001
+      ],
+      "before": [
+       0.001,
+       0.001,
+       0.1,
+       0.001,
+       0.01
+      ]
+     },
+     "chance": 0.3333,
+     "after": {
+      "n": 266,
+      "entities": 37,
+      "names": 58,
+      "accuracy": [
+       0.36466165413533835,
+       0.3,
+       0.4243546311513535
+      ]
+     },
+     "before": {
+      "n": 251,
+      "entities": 44,
+      "names": 57,
+      "accuracy": [
+       0.33067729083665337,
+       0.2727272727272727,
+       0.391304347826087
+      ]
+     },
+     "after_all": {
+      "n": 933,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.40514469453376206,
+       0.3719196351214199,
+       0.44202087389141254
+      ]
+     },
+     "before_all": {
+      "n": 918,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.289760348583878,
+       0.25570045236637706,
+       0.32356033727761474
+      ]
+     },
+     "transfer": {
+      "n": 251,
+      "entities": 44,
+      "names": 57,
+      "accuracy": [
+       0.28286852589641437,
+       0.21672845373891,
+       0.3520028169014084
+      ]
+     },
+     "transfer_all": {
+      "n": 918,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.3137254901960784,
+       0.27191148320904995,
+       0.3543146490814884
+      ]
+     }
+    },
+    "number": {
+     "penalties": {
+      "after": [
+       10.0,
+       1.0,
+       0.1,
+       100.0,
+       1.0
+      ],
+      "before": [
+       100.0,
+       100.0,
+       0.1,
+       100.0,
+       0.001
+      ]
+     },
+     "chance": 0.3333,
+     "after": {
+      "n": 266,
+      "entities": 37,
+      "names": 58,
+      "accuracy": [
+       0.33458646616541354,
+       0.27402135231316727,
+       0.3930837768101919
+      ]
+     },
+     "before": {
+      "n": 251,
+      "entities": 44,
+      "names": 57,
+      "accuracy": [
+       0.28286852589641437,
+       0.21773880160454623,
+       0.3455289873579364
+      ]
+     },
+     "after_all": {
+      "n": 933,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.28938906752411575,
+       0.2525639931740614,
+       0.32599187991106565
+      ]
+     },
+     "before_all": {
+      "n": 918,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.275599128540305,
+       0.2430801916843299,
+       0.3092556607944893
+      ]
+     },
+     "transfer": {
+      "n": 251,
+      "entities": 44,
+      "names": 57,
+      "accuracy": [
+       0.350597609561753,
+       0.28,
+       0.41803869798234544
+      ]
+     },
+     "transfer_all": {
+      "n": 918,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.3311546840958606,
+       0.2934126707391488,
+       0.3680389857439094
+      ]
+     }
+    }
+   },
+   "rates": {
+    "lookup": {
+     "n": 70,
+     "same_attribute": 0,
+     "entities": 15,
+     "arms": {
+      "none": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "w1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "w2": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.9714285714285714,
+        0.9285714285714286,
+        1.0
+       ],
+       "other": [
+        0.02857142857142857,
+        0.0,
+        0.07142857142857142
+       ],
+       "right": [
+        0.9714285714285714,
+        0.9285714285714286,
+        1.0
+       ]
+      },
+      "r1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "r2": {
+       "target": [
+        0.014285714285714285,
+        0.0,
+        0.05714285714285714
+       ],
+       "original": [
+        0.9714285714285714,
+        0.9230769230769231,
+        1.0
+       ],
+       "other": [
+        0.014285714285714285,
+        0.0,
+        0.043478260869565216
+       ],
+       "right": [
+        0.9714285714285714,
+        0.9230769230769231,
+        1.0
+       ]
+      }
+     },
+     "write_minus_random": {
+      "1": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "2": [
+       -0.014285714285714285,
+       -0.05714285714285714,
+       0.0
+      ]
+     }
+    },
+    "recall": {
+     "n": 64,
+     "same_attribute": 6,
+     "entities": 13,
+     "arms": {
+      "none": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "w1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "w2": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "r1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "r2": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      }
+     },
+     "write_minus_random": {
+      "1": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "2": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   },
+   "contrasts": {
+    "fit_counts": {
+     "item": {
+      "Julia": 9,
+      "Kate": 15,
+      "Jack": 10,
+      "Eric": 14,
+      "Oscar": 14,
+      "Olivia": 10,
+      "James": 6,
+      "Adam": 7,
+      "Liam": 3,
+      "Nina": 8,
+      "Dan": 5,
+      "Diana": 9,
+      "Ivan": 12,
+      "Paul": 7,
+      "Carl": 11,
+      "Iris": 7,
+      "Clara": 8,
+      "Henry": 6,
+      "Ben": 7,
+      "Victor": 13,
+      "Fiona": 6,
+      "Tom": 6,
+      "Finn": 10,
+      "Ivy": 8,
+      "Sara": 11,
+      "Sean": 8,
+      "Beth": 8,
+      "Owen": 12,
+      "David": 10,
+      "Peter": 9,
+      "Mark": 9,
+      "Leo": 15,
+      "Anna": 5,
+      "Tara": 8,
+      "Noah": 6,
+      "Hugo": 5,
+      "Frank": 12,
+      "Lily": 7,
+      "Zoe": 4,
+      "Luke": 5,
+      "Rose": 6,
+      "Eva": 7,
+      "Ruby": 10,
+      "Emma": 8,
+      "Laura": 5,
+      "Ryan": 9,
+      "Mia": 13,
+      "Amy": 7,
+      "Vera": 8,
+      "Lucy": 4,
+      "Ella": 6,
+      "Max": 6,
+      "Maria": 5,
+      "Sam": 5,
+      "Kyle": 4,
+      "Grace": 5,
+      "Alice": 2,
+      "Will": 7,
+      "Eve": 4
+     },
+     "number": {
+      "Julia": 9,
+      "Kate": 15,
+      "Jack": 10,
+      "Eric": 14,
+      "Oscar": 14,
+      "Olivia": 10,
+      "James": 6,
+      "Adam": 7,
+      "Liam": 3,
+      "Nina": 8,
+      "Dan": 5,
+      "Diana": 9,
+      "Ivan": 12,
+      "Paul": 7,
+      "Carl": 11,
+      "Iris": 7,
+      "Clara": 8,
+      "Henry": 6,
+      "Ben": 7,
+      "Victor": 13,
+      "Fiona": 6,
+      "Tom": 6,
+      "Finn": 10,
+      "Ivy": 8,
+      "Sara": 11,
+      "Sean": 8,
+      "Beth": 8,
+      "Owen": 12,
+      "David": 10,
+      "Peter": 9,
+      "Mark": 9,
+      "Leo": 15,
+      "Anna": 5,
+      "Tara": 8,
+      "Noah": 6,
+      "Hugo": 5,
+      "Frank": 12,
+      "Lily": 7,
+      "Zoe": 4,
+      "Luke": 5,
+      "Rose": 6,
+      "Eva": 7,
+      "Ruby": 10,
+      "Emma": 8,
+      "Laura": 5,
+      "Ryan": 9,
+      "Mia": 13,
+      "Amy": 7,
+      "Vera": 8,
+      "Lucy": 4,
+      "Ella": 6,
+      "Max": 6,
+      "Maria": 5,
+      "Sam": 5,
+      "Kyle": 4,
+      "Grace": 5,
+      "Alice": 2,
+      "Will": 7,
+      "Eve": 4
+     }
+    },
+    "names_with_means": {
+     "item": [
+      "Adam",
+      "Amy",
+      "Anna",
+      "Ben",
+      "Beth",
+      "Carl",
+      "Clara",
+      "Dan",
+      "David",
+      "Diana",
+      "Ella",
+      "Emma",
+      "Eric",
+      "Eva",
+      "Eve",
+      "Finn",
+      "Fiona",
+      "Frank",
+      "Grace",
+      "Henry",
+      "Hugo",
+      "Iris",
+      "Ivan",
+      "Ivy",
+      "Jack",
+      "James",
+      "Julia",
+      "Kate",
+      "Kyle",
+      "Laura",
+      "Leo",
+      "Liam",
+      "Lily",
+      "Lucy",
+      "Luke",
+      "Maria",
+      "Mark",
+      "Max",
+      "Mia",
+      "Nina",
+      "Noah",
+      "Olivia",
+      "Oscar",
+      "Owen",
+      "Paul",
+      "Peter",
+      "Rose",
+      "Ruby",
+      "Ryan",
+      "Sam",
+      "Sara",
+      "Sean",
+      "Tara",
+      "Tom",
+      "Vera",
+      "Victor",
+      "Will",
+      "Zoe"
+     ],
+     "number": [
+      "Adam",
+      "Amy",
+      "Anna",
+      "Ben",
+      "Beth",
+      "Carl",
+      "Clara",
+      "Dan",
+      "David",
+      "Diana",
+      "Ella",
+      "Emma",
+      "Eric",
+      "Eva",
+      "Eve",
+      "Finn",
+      "Fiona",
+      "Frank",
+      "Grace",
+      "Henry",
+      "Hugo",
+      "Iris",
+      "Ivan",
+      "Ivy",
+      "Jack",
+      "James",
+      "Julia",
+      "Kate",
+      "Kyle",
+      "Laura",
+      "Leo",
+      "Liam",
+      "Lily",
+      "Lucy",
+      "Luke",
+      "Maria",
+      "Mark",
+      "Max",
+      "Mia",
+      "Nina",
+      "Noah",
+      "Olivia",
+      "Oscar",
+      "Owen",
+      "Paul",
+      "Peter",
+      "Rose",
+      "Ruby",
+      "Ryan",
+      "Sam",
+      "Sara",
+      "Sean",
+      "Tara",
+      "Tom",
+      "Vera",
+      "Victor",
+      "Will",
+      "Zoe"
+     ]
+    },
+    "writes": 94,
+    "no_mean": {
+     "the written person has fewer than 3 fit states": 2,
+     "the asked person has fewer than 3 fit states": 2
+    },
+    "random_dirs_share": {
+     "item": [
+      0.08196242153644562,
+      0.08303431421518326,
+      0.08125690370798111,
+      0.09062433242797852,
+      0.07867224514484406,
+      0.08517821133136749,
+      0.07517500966787338,
+      0.08400940150022507,
+      0.08696793764829636,
+      0.08322986960411072,
+      0.09132499247789383,
+      0.08162454515695572,
+      0.08182050287723541,
+      0.08377853780984879,
+      0.08900577574968338,
+      0.07753283530473709,
+      0.08963100612163544,
+      0.08460916578769684,
+      0.09081432968378067,
+      0.08492614328861237
+     ],
+     "number": [
+      0.08196242153644562,
+      0.08303431421518326,
+      0.08125690370798111,
+      0.09062433242797852,
+      0.07867224514484406,
+      0.08517821133136749,
+      0.07517500966787338,
+      0.08400940150022507,
+      0.08696793764829636,
+      0.08322986960411072,
+      0.09132499247789383,
+      0.08162454515695572,
+      0.08182050287723541,
+      0.08377853780984879,
+      0.08900577574968338,
+      0.07753283530473709,
+      0.08963100612163544,
+      0.08460916578769684,
+      0.09081432968378067,
+      0.08492614328861237
+     ]
+    }
+   },
+   "norms_median": {
+    "item": 7.735049999999999,
+    "number": 6.6771
+   },
+   "plan": {
+    "target": "qwen3.5-9b",
+    "layer": 12,
+    "runs": {
+     "main": {
+      "run": "qwen35_9b_x0_necessity",
+      "scenes_at_L": 200,
+      "groups": {
+       "after": 100,
+       "before": 100
+      }
+     },
+     "45m": {
+      "run": "qwen35_9b_x45m_fresh",
+      "scenes_at_L": 417,
+      "groups": {
+       "before": 151,
+       "after": 166,
+       "mixed": 100
+      }
+     }
+    },
+    "dropped": {},
+    "scenes": 617,
+    "entities": 46,
+    "halves": {
+     "A": [
+      "ant",
+      "bear",
+      "butterfly",
+      "camel",
+      "chicken",
+      "cow",
+      "crow",
+      "deer",
+      "dog",
+      "duck",
+      "epsilon",
+      "eta",
+      "fox",
+      "frog",
+      "gamma",
+      "goose",
+      "hydrogen",
+      "iota",
+      "nitrogen",
+      "owl",
+      "pig",
+      "spider",
+      "theta",
+      "tick",
+      "tiger",
+      "turkey",
+      "wolf"
+     ],
+     "B": [
+      "alpha",
+      "bee",
+      "beetle",
+      "beta",
+      "carbon",
+      "cat",
+      "delta",
+      "eagle",
+      "elephant",
+      "fly",
+      "goat",
+      "helium",
+      "horse",
+      "lion",
+      "lithium",
+      "mouse",
+      "oxygen",
+      "rabbit",
+      "sheep"
+     ]
+    },
+    "locker_after": {
+     "scenes": 266,
+     "A": 140,
+     "B": 126
+    },
+    "write_candidates_B": 98,
+    "write_dropped": {
+     "no other person's locker sentence after both picks": 67
+    },
+    "names": 59,
+    "strata": {
+     "after": 933,
+     "before": 918
+    },
+    "numbers": {
+     "digits": 333,
+     "words": 284
+    },
+    "exact": {
+     "item: one token": 2268,
+     "number: one token": 2268
+    }
+   }
+  },
+  {
+   "run": "muse30_x48_bind",
+   "target": "muse-glimmer-30b",
+   "layer": 26,
+   "status": "tested",
+   "holds": false,
+   "tokens_holding": [],
+   "write": false,
+   "recall_moves": false,
+   "why": "item: probe after 0.363 < 0.85, before 0.311 <= 0.5; share 0.1032 <= 2.0 x 0.0529; number: probe after 0.392 < 0.85, before 0.319 <= 0.5; share 0.1028 <= 2.0 x 0.0529; lookup s = 1: target 0.015 < 0.3, random 0.000 <= 0.05; s = 2: target 0.015 < 0.3, random 0.000 <= 0.05; recall s = 1: target 0.016 < 0.3, random 0.000 <= 0.05; s = 2: target 0.016 < 0.3, random 0.000 <= 0.05",
+   "clauses": {
+    "tokens": {
+     "item": {
+      "probe": false,
+      "lens": true,
+      "holds": false,
+      "after": 0.36330935251798563,
+      "before": 0.31063829787234043,
+      "share": 0.10319,
+      "random_share": 0.052894513495266436,
+      "why": "probe after 0.363 < 0.85, before 0.311 <= 0.5; share 0.1032 <= 2.0 x 0.0529"
+     },
+     "number": {
+      "probe": false,
+      "lens": true,
+      "holds": false,
+      "after": 0.3920863309352518,
+      "before": 0.3191489361702128,
+      "share": 0.102755,
+      "random_share": 0.052894513495266436,
+      "why": "probe after 0.392 < 0.85, before 0.319 <= 0.5; share 0.1028 <= 2.0 x 0.0529"
+     }
+    },
+    "lookup": {
+     "holds": false,
+     "by_s": {
+      "1": {
+       "holds": false,
+       "write": 0.014925373134328358,
+       "random": 0.0,
+       "why": "s = 1: target 0.015 < 0.3, random 0.000 <= 0.05"
+      },
+      "2": {
+       "holds": false,
+       "write": 0.014925373134328358,
+       "random": 0.0,
+       "why": "s = 2: target 0.015 < 0.3, random 0.000 <= 0.05"
+      }
+     }
+    },
+    "recall": {
+     "holds": false,
+     "by_s": {
+      "1": {
+       "holds": false,
+       "write": 0.01639344262295082,
+       "random": 0.0,
+       "why": "s = 1: target 0.016 < 0.3, random 0.000 <= 0.05"
+      },
+      "2": {
+       "holds": false,
+       "write": 0.01639344262295082,
+       "random": 0.0,
+       "why": "s = 2: target 0.016 < 0.3, random 0.000 <= 0.05"
+      }
+     }
+    }
+   },
+   "probes": {
+    "item": {
+     "penalties": {
+      "after": [
+       1.0,
+       0.001,
+       0.001,
+       0.1,
+       0.001
+      ],
+      "before": [
+       0.001,
+       0.01,
+       0.001,
+       10.0,
+       10.0
+      ]
+     },
+     "chance": 0.3333,
+     "after": {
+      "n": 278,
+      "entities": 40,
+      "names": 58,
+      "accuracy": [
+       0.36330935251798563,
+       0.3086410594570832,
+       0.4172191139529573
+      ]
+     },
+     "before": {
+      "n": 235,
+      "entities": 41,
+      "names": 55,
+      "accuracy": [
+       0.31063829787234043,
+       0.2470564420100024,
+       0.3802855174525413
+      ]
+     },
+     "after_all": {
+      "n": 948,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.3449367088607595,
+       0.30813719593691524,
+       0.386755244625763
+      ]
+     },
+     "before_all": {
+      "n": 879,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.32195676905574516,
+       0.2819659051273108,
+       0.3699444061444909
+      ]
+     },
+     "transfer": {
+      "n": 235,
+      "entities": 41,
+      "names": 55,
+      "accuracy": [
+       0.3276595744680851,
+       0.265993265993266,
+       0.398989898989899
+      ]
+     },
+     "transfer_all": {
+      "n": 879,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.30602957906712175,
+       0.2674507422912276,
+       0.3431173268033626
+      ]
+     }
+    },
+    "number": {
+     "penalties": {
+      "after": [
+       1.0,
+       0.1,
+       0.001,
+       0.01,
+       0.1
+      ],
+      "before": [
+       0.001,
+       100.0,
+       10.0,
+       10.0,
+       10.0
+      ]
+     },
+     "chance": 0.3333,
+     "after": {
+      "n": 278,
+      "entities": 40,
+      "names": 58,
+      "accuracy": [
+       0.3920863309352518,
+       0.3374485596707819,
+       0.43661971830985913
+      ]
+     },
+     "before": {
+      "n": 235,
+      "entities": 41,
+      "names": 55,
+      "accuracy": [
+       0.3191489361702128,
+       0.2521358543417367,
+       0.391304347826087
+      ]
+     },
+     "after_all": {
+      "n": 948,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.29430379746835444,
+       0.2649681175589984,
+       0.32651331873492806
+      ]
+     },
+     "before_all": {
+      "n": 879,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.32764505119453924,
+       0.28652386428982174,
+       0.3701530860670904
+      ]
+     },
+     "transfer": {
+      "n": 235,
+      "entities": 41,
+      "names": 55,
+      "accuracy": [
+       0.3404255319148936,
+       0.2872326786688489,
+       0.3990830830624923
+      ]
+     },
+     "transfer_all": {
+      "n": 879,
+      "entities": 46,
+      "names": 59,
+      "accuracy": [
+       0.29806598407281,
+       0.2657060973571254,
+       0.32878299904867603
+      ]
+     }
+    }
+   },
+   "rates": {
+    "lookup": {
+     "n": 67,
+     "same_attribute": 0,
+     "entities": 18,
+     "arms": {
+      "none": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "w1": {
+       "target": [
+        0.014925373134328358,
+        0.0,
+        0.05454545454545454
+       ],
+       "original": [
+        0.9850746268656716,
+        0.9454545454545454,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        0.9850746268656716,
+        0.9454545454545454,
+        1.0
+       ]
+      },
+      "w2": {
+       "target": [
+        0.014925373134328358,
+        0.0,
+        0.044444444444444446
+       ],
+       "original": [
+        0.9850746268656716,
+        0.9555555555555556,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        0.9850746268656716,
+        0.9555555555555556,
+        1.0
+       ]
+      },
+      "r1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "r2": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "right": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      }
+     },
+     "write_minus_random": {
+      "1": [
+       0.014925373134328358,
+       0.0,
+       0.05454545454545454
+      ],
+      "2": [
+       0.014925373134328358,
+       0.0,
+       0.044444444444444446
+      ]
+     }
+    },
+    "recall": {
+     "n": 61,
+     "same_attribute": 6,
+     "entities": 14,
+     "arms": {
+      "none": {
+       "target": [
+        0.01639344262295082,
+        0.0,
+        0.05357142857142857
+       ],
+       "original": [
+        0.9672131147540983,
+        0.9148936170212766,
+        1.0
+       ],
+       "other": [
+        0.01639344262295082,
+        0.0,
+        0.06
+       ],
+       "right": [
+        0.9672131147540983,
+        0.9148936170212766,
+        1.0
+       ]
+      },
+      "w1": {
+       "target": [
+        0.01639344262295082,
+        0.0,
+        0.05357142857142857
+       ],
+       "original": [
+        0.9508196721311475,
+        0.8392857142857143,
+        1.0
+       ],
+       "other": [
+        0.03278688524590164,
+        0.0,
+        0.10714285714285714
+       ],
+       "right": [
+        0.9508196721311475,
+        0.8392857142857143,
+        1.0
+       ]
+      },
+      "w2": {
+       "target": [
+        0.01639344262295082,
+        0.0,
+        0.05357142857142857
+       ],
+       "original": [
+        0.9344262295081968,
+        0.8181818181818182,
+        1.0
+       ],
+       "other": [
+        0.04918032786885246,
+        0.0,
+        0.13114754098360656
+       ],
+       "right": [
+        0.9344262295081968,
+        0.8181818181818182,
+        1.0
+       ]
+      },
+      "r1": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.9836065573770492,
+        0.9464285714285714,
+        1.0
+       ],
+       "other": [
+        0.01639344262295082,
+        0.0,
+        0.05357142857142857
+       ],
+       "right": [
+        0.9836065573770492,
+        0.9464285714285714,
+        1.0
+       ]
+      },
+      "r2": {
+       "target": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.9672131147540983,
+        0.8928571428571429,
+        1.0
+       ],
+       "other": [
+        0.03278688524590164,
+        0.0,
+        0.10714285714285714
+       ],
+       "right": [
+        0.9672131147540983,
+        0.8928571428571429,
+        1.0
+       ]
+      }
+     },
+     "write_minus_random": {
+      "1": [
+       0.01639344262295082,
+       0.0,
+       0.05357142857142857
+      ],
+      "2": [
+       0.01639344262295082,
+       0.0,
+       0.05357142857142857
+      ]
+     }
+    }
+   },
+   "contrasts": {
+    "fit_counts": {
+     "item": {
+      "Iris": 12,
+      "Alice": 4,
+      "David": 14,
+      "Eve": 11,
+      "Grace": 6,
+      "Adam": 9,
+      "Eric": 9,
+      "James": 7,
+      "Dan": 10,
+      "Diana": 5,
+      "Ivan": 17,
+      "Paul": 9,
+      "Kyle": 9,
+      "Mark": 12,
+      "Sean": 13,
+      "Maria": 5,
+      "Anna": 6,
+      "Mia": 10,
+      "Julia": 18,
+      "Ryan": 11,
+      "Emma": 8,
+      "Tom": 10,
+      "Finn": 7,
+      "Ivy": 11,
+      "Ben": 11,
+      "Sara": 9,
+      "Oscar": 8,
+      "Peter": 6,
+      "Beth": 2,
+      "Will": 16,
+      "Hugo": 7,
+      "Jack": 6,
+      "Lily": 7,
+      "Frank": 10,
+      "Ruby": 10,
+      "Laura": 13,
+      "Nina": 2,
+      "Victor": 11,
+      "Rose": 5,
+      "Kate": 8,
+      "Tara": 12,
+      "Vera": 9,
+      "Luke": 6,
+      "Lucy": 7,
+      "Henry": 6,
+      "Amy": 7,
+      "Owen": 8,
+      "Zoe": 4,
+      "Ella": 4,
+      "Carl": 8,
+      "Max": 5,
+      "Olivia": 7,
+      "Liam": 7,
+      "Clara": 4,
+      "Sam": 7,
+      "Noah": 13,
+      "Eva": 7,
+      "Fiona": 1,
+      "Leo": 2
+     },
+     "number": {
+      "Iris": 12,
+      "Alice": 4,
+      "David": 14,
+      "Eve": 11,
+      "Grace": 6,
+      "Adam": 9,
+      "Eric": 9,
+      "James": 7,
+      "Dan": 10,
+      "Diana": 5,
+      "Ivan": 17,
+      "Paul": 9,
+      "Kyle": 9,
+      "Mark": 12,
+      "Sean": 13,
+      "Maria": 5,
+      "Anna": 6,
+      "Mia": 10,
+      "Julia": 18,
+      "Ryan": 11,
+      "Emma": 8,
+      "Tom": 10,
+      "Finn": 7,
+      "Ivy": 11,
+      "Ben": 11,
+      "Sara": 9,
+      "Oscar": 8,
+      "Peter": 6,
+      "Beth": 2,
+      "Will": 16,
+      "Hugo": 7,
+      "Jack": 6,
+      "Lily": 7,
+      "Frank": 10,
+      "Ruby": 10,
+      "Laura": 13,
+      "Nina": 2,
+      "Victor": 11,
+      "Rose": 5,
+      "Kate": 8,
+      "Tara": 12,
+      "Vera": 9,
+      "Luke": 6,
+      "Lucy": 7,
+      "Henry": 6,
+      "Amy": 7,
+      "Owen": 8,
+      "Zoe": 4,
+      "Ella": 4,
+      "Carl": 8,
+      "Max": 5,
+      "Olivia": 7,
+      "Liam": 7,
+      "Clara": 4,
+      "Sam": 7,
+      "Noah": 13,
+      "Eva": 7,
+      "Fiona": 1,
+      "Leo": 2
+     }
+    },
+    "names_with_means": {
+     "item": [
+      "Adam",
+      "Alice",
+      "Amy",
+      "Anna",
+      "Ben",
+      "Carl",
+      "Clara",
+      "Dan",
+      "David",
+      "Diana",
+      "Ella",
+      "Emma",
+      "Eric",
+      "Eva",
+      "Eve",
+      "Finn",
+      "Frank",
+      "Grace",
+      "Henry",
+      "Hugo",
+      "Iris",
+      "Ivan",
+      "Ivy",
+      "Jack",
+      "James",
+      "Julia",
+      "Kate",
+      "Kyle",
+      "Laura",
+      "Liam",
+      "Lily",
+      "Lucy",
+      "Luke",
+      "Maria",
+      "Mark",
+      "Max",
+      "Mia",
+      "Noah",
+      "Olivia",
+      "Oscar",
+      "Owen",
+      "Paul",
+      "Peter",
+      "Rose",
+      "Ruby",
+      "Ryan",
+      "Sam",
+      "Sara",
+      "Sean",
+      "Tara",
+      "Tom",
+      "Vera",
+      "Victor",
+      "Will",
+      "Zoe"
+     ],
+     "number": [
+      "Adam",
+      "Alice",
+      "Amy",
+      "Anna",
+      "Ben",
+      "Carl",
+      "Clara",
+      "Dan",
+      "David",
+      "Diana",
+      "Ella",
+      "Emma",
+      "Eric",
+      "Eva",
+      "Eve",
+      "Finn",
+      "Frank",
+      "Grace",
+      "Henry",
+      "Hugo",
+      "Iris",
+      "Ivan",
+      "Ivy",
+      "Jack",
+      "James",
+      "Julia",
+      "Kate",
+      "Kyle",
+      "Laura",
+      "Liam",
+      "Lily",
+      "Lucy",
+      "Luke",
+      "Maria",
+      "Mark",
+      "Max",
+      "Mia",
+      "Noah",
+      "Olivia",
+      "Oscar",
+      "Owen",
+      "Paul",
+      "Peter",
+      "Rose",
+      "Ruby",
+      "Ryan",
+      "Sam",
+      "Sara",
+      "Sean",
+      "Tara",
+      "Tom",
+      "Vera",
+      "Victor",
+      "Will",
+      "Zoe"
+     ]
+    },
+    "writes": 88,
+    "no_mean": {
+     "the asked person has fewer than 3 fit states": 15,
+     "the written person has fewer than 3 fit states": 2
+    },
+    "random_dirs_share": {
+     "item": [
+      0.05256485939025879,
+      0.05175096541643143,
+      0.05736896023154259,
+      0.05207575112581253,
+      0.05161479860544205,
+      0.05472666025161743,
+      0.04832717031240463,
+      0.056501712650060654,
+      0.048847395926713943,
+      0.05342068150639534,
+      0.052291445434093475,
+      0.05309772863984108,
+      0.051287390291690826,
+      0.05332270637154579,
+      0.053318485617637634,
+      0.05200662091374397,
+      0.05520016700029373,
+      0.0530131459236145,
+      0.0537225678563118,
+      0.053431056439876556
+     ],
+     "number": [
+      0.05256485939025879,
+      0.05175096541643143,
+      0.05736896023154259,
+      0.05207575112581253,
+      0.05161479860544205,
+      0.05472666025161743,
+      0.04832717031240463,
+      0.056501712650060654,
+      0.048847395926713943,
+      0.05342068150639534,
+      0.052291445434093475,
+      0.05309772863984108,
+      0.051287390291690826,
+      0.05332270637154579,
+      0.053318485617637634,
+      0.05200662091374397,
+      0.05520016700029373,
+      0.0530131459236145,
+      0.0537225678563118,
+      0.053431056439876556
+     ]
+    }
+   },
+   "norms_median": {
+    "item": 87.8125,
+    "number": 79.946
+   },
+   "plan": {
+    "target": "muse-glimmer-30b",
+    "layer": 26,
+    "runs": {
+     "main": {
+      "run": "muse30b_x0_necessity",
+      "scenes_at_L": 200,
+      "groups": {
+       "after": 108,
+       "before": 92
+      }
+     },
+     "45m": {
+      "run": "muse30b_x45m_fresh",
+      "scenes_at_L": 409,
+      "groups": {
+       "before": 143,
+       "after": 170,
+       "mixed": 96
+      }
+     }
+    },
+    "dropped": {},
+    "scenes": 609,
+    "entities": 44,
+    "halves": {
+     "A": [
+      "bee",
+      "beta",
+      "butterfly",
+      "camel",
+      "cow",
+      "deer",
+      "duck",
+      "epsilon",
+      "fox",
+      "frog",
+      "gamma",
+      "horse",
+      "lion",
+      "lithium",
+      "mouse",
+      "nitrogen",
+      "owl",
+      "oxygen",
+      "pig",
+      "rabbit",
+      "tiger",
+      "turkey"
+     ],
+     "B": [
+      "alpha",
+      "ant",
+      "bear",
+      "carbon",
+      "cat",
+      "chicken",
+      "crow",
+      "delta",
+      "dog",
+      "eagle",
+      "elephant",
+      "eta",
+      "fly",
+      "goat",
+      "goose",
+      "helium",
+      "hydrogen",
+      "sheep",
+      "spider",
+      "theta",
+      "tick",
+      "wolf"
+     ]
+    },
+    "locker_after": {
+     "scenes": 278,
+     "A": 141,
+     "B": 137
+    },
+    "write_candidates_B": 105,
+    "write_dropped": {
+     "no other person's locker sentence after both picks": 72,
+     "the candidate sentence's tokens are not one token each": 3
+    },
+    "names": 59,
+    "strata": {
+     "after": 948,
+     "before": 879
+    },
+    "numbers": {
+     "digits": 314,
+     "words": 295
+    },
+    "exact": {
+     "item: one token": 2186,
+     "number: one token": 2236,
+     "item: not one token": 50
+    }
+   }
+  }
+ ]
+}

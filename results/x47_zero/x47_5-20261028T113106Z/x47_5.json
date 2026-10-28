@@ -1,0 +1,494 @@
+{
+ "dan": "needed \u00b7 70%; in between \u00b7 30%\nDan (Muse): needed \u00b7 75%; in between \u00b7 25%",
+ "batch": {
+  "verb": "follows / reads",
+  "needed_on": [],
+  "per_model": {
+   "qwen3.5-9b": "followed, not needed at one layer",
+   "qwen3.6-27b": "followed, not needed at one layer",
+   "muse-glimmer-30b": "followed, not needed at one layer"
+  }
+ },
+ "models": [
+  {
+   "target": "qwen3.5-9b",
+   "run": "qwen35_9b_x47_5",
+   "layer": 12,
+   "layers": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "neither (between the bars)",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L3": [
+       0.99,
+       0.9758454106280193,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "L..L+3": [
+       -0.010000000000000009,
+       -0.024154589371980673,
+       0.0
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.975,
+       0.9470578496299181,
+       0.9946236559139785
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       0.73,
+       0.6602847586751521,
+       0.7941211652124964
+      ],
+      "rand_L3": [
+       0.98,
+       0.9532163742690059,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.025000000000000022,
+       0.005376344086021501,
+       0.05294215037008183
+      ],
+      "L..L+3": [
+       0.25,
+       0.17499658469945348,
+       0.32352941176470595
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 600,
+    "org_accuracy": {
+     "PP": 0.95,
+     "PM": 0.8683
+    },
+    "said_accuracy": {
+     "PP": 0.95,
+     "PM": 0.87
+    },
+    "cand_accuracy": {
+     "PP": 0.9417,
+     "PM": 0.865
+    },
+    "pass": true,
+    "eligible": 408,
+    "enough": true,
+    "descriptive": false
+   },
+   "shares_median": {
+    "12": {
+     "share_hS_atoms": 0.0282625,
+     "share_delta_atoms": 0.2334365,
+     "share_hS_rand": 0.028565,
+     "k_rand": 110.0,
+     "norm_hS": 32.075199999999995,
+     "norm_delta": 16.3657
+    },
+    "13": {
+     "share_hS_atoms": 0.023549,
+     "share_delta_atoms": 0.198651,
+     "share_hS_rand": 0.023722,
+     "k_rand": 96.0,
+     "norm_hS": 35.1985,
+     "norm_delta": 17.75415
+    },
+    "14": {
+     "share_hS_atoms": 0.023432,
+     "share_delta_atoms": 0.2160445,
+     "share_hS_rand": 0.023614,
+     "k_rand": 77.5,
+     "norm_hS": 40.29535,
+     "norm_delta": 18.740299999999998
+    },
+    "15": {
+     "share_hS_atoms": 0.026677,
+     "share_delta_atoms": 0.198568,
+     "share_hS_rand": 0.026834,
+     "k_rand": 96.0,
+     "norm_hS": 41.73095,
+     "norm_delta": 20.531750000000002
+    }
+   }
+  },
+  {
+   "target": "qwen3.6-27b",
+   "run": "x47_5_27b",
+   "layer": 32,
+   "layers": [
+    32,
+    33,
+    34,
+    35
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "neither (between the bars)",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 44,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L3": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "L..L+3": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 44,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.97,
+       0.9385474860335196,
+       0.993867802498337
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       0.89,
+       0.8372093023255814,
+       0.9362745098039216
+      ],
+      "rand_L3": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.030000000000000027,
+       0.006132197501663062,
+       0.06145251396648044
+      ],
+      "L..L+3": [
+       0.10999999999999999,
+       0.06372549019607843,
+       0.16279069767441856
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 600,
+    "org_accuracy": {
+     "PP": 0.9967,
+     "PM": 0.9767
+    },
+    "said_accuracy": {
+     "PP": 0.9967,
+     "PM": 0.9767
+    },
+    "cand_accuracy": {
+     "PP": 0.9967,
+     "PM": 0.975
+    },
+    "pass": true,
+    "eligible": 569,
+    "enough": true,
+    "descriptive": false
+   },
+   "shares_median": {
+    "32": {
+     "share_hS_atoms": 0.0244205,
+     "share_delta_atoms": 0.155254,
+     "share_hS_rand": 0.024737,
+     "k_rand": 123.5,
+     "norm_hS": 84.32495,
+     "norm_delta": 49.491
+    },
+    "33": {
+     "share_hS_atoms": 0.0234915,
+     "share_delta_atoms": 0.15646949999999998,
+     "share_hS_rand": 0.0233605,
+     "k_rand": 127.0,
+     "norm_hS": 85.59909999999999,
+     "norm_delta": 48.86875
+    },
+    "34": {
+     "share_hS_atoms": 0.0218735,
+     "share_delta_atoms": 0.15899000000000002,
+     "share_hS_rand": 0.0218035,
+     "k_rand": 108.0,
+     "norm_hS": 90.58275,
+     "norm_delta": 50.5279
+    },
+    "35": {
+     "share_hS_atoms": 0.018523,
+     "share_delta_atoms": 0.1274045,
+     "share_hS_rand": 0.01837,
+     "k_rand": 94.0,
+     "norm_hS": 87.69445,
+     "norm_delta": 51.792950000000005
+    }
+   }
+  },
+  {
+   "target": "muse-glimmer-30b",
+   "run": "muse30_x47_5",
+   "layer": 26,
+   "layers": [
+    26,
+    27,
+    28,
+    29
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "followed, not needed at one layer",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L": [
+       0.995,
+       0.983957219251337,
+       1.0
+      ],
+      "zero_L3": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L3": [
+       0.995,
+       0.983957219251337,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       -0.0050000000000000044,
+       -0.016042780748663055,
+       0.0
+      ],
+      "L..L+3": [
+       -0.0050000000000000044,
+       -0.016042780748663055,
+       0.0
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.945,
+       0.8944435817805384,
+       0.9778767173519777
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       0.9,
+       0.8368394199785177,
+       0.9459483764339879
+      ],
+      "rand_L3": [
+       0.98,
+       0.9487179487179487,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.05500000000000005,
+       0.02212328264802233,
+       0.10555641821946164
+      ],
+      "L..L+3": [
+       0.07999999999999996,
+       0.04385877542461724,
+       0.1273885350318471
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 530,
+    "org_accuracy": {
+     "PP": 0.966,
+     "PM": 0.8906
+    },
+    "said_accuracy": {
+     "PP": 0.9698,
+     "PM": 0.8925
+    },
+    "cand_accuracy": {
+     "PP": 0.9642,
+     "PM": 0.8849
+    },
+    "pass": true,
+    "eligible": 395,
+    "enough": true,
+    "descriptive": false
+   },
+   "shares_median": {
+    "26": {
+     "share_hS_atoms": 0.0207175,
+     "share_delta_atoms": 0.141568,
+     "share_hS_rand": 0.0206,
+     "k_rand": 135.5,
+     "norm_hS": 344.28094999999996,
+     "norm_delta": 165.5346
+    },
+    "27": {
+     "share_hS_atoms": 0.0210855,
+     "share_delta_atoms": 0.13819550000000003,
+     "share_hS_rand": 0.0210285,
+     "k_rand": 145.0,
+     "norm_hS": 329.97325,
+     "norm_delta": 164.3834
+    },
+    "28": {
+     "share_hS_atoms": 0.020652999999999998,
+     "share_delta_atoms": 0.13957150000000001,
+     "share_hS_rand": 0.020525,
+     "k_rand": 134.5,
+     "norm_hS": 334.70265,
+     "norm_delta": 160.8596
+    },
+    "29": {
+     "share_hS_atoms": 0.0169355,
+     "share_delta_atoms": 0.1462565,
+     "share_hS_rand": 0.0169865,
+     "k_rand": 127.0,
+     "norm_hS": 357.4027,
+     "norm_delta": 154.01485
+    }
+   }
+  }
+ ]
+}

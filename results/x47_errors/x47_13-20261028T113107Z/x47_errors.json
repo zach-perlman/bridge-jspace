@@ -1,0 +1,1454 @@
+{
+ "runs": [
+  "qwen35_9b_x47_errors",
+  "x47_errors_27b",
+  "muse30_x47_errors"
+ ],
+ "dan": "65%",
+ "models": [
+  {
+   "run": "qwen35_9b_x47_errors",
+   "count": "results/x47_errors/qwen35_9b_x47_errors-20261028T014607Z",
+   "gpu": "results/x47_errors/qwen35_9b_x47_errors-gpu-20261028T055949Z",
+   "target": "qwen3.5-9b",
+   "source": {
+    "run": "x0b_generalize/qwen35_9b_x0b_v2",
+    "set": "x0b_v2",
+    "layer": 12,
+    "model": {
+     "target": "qwen3.5-9b",
+     "repo": "Qwen/Qwen3.5-9B",
+     "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+     "dtype": "bfloat16",
+     "attn": "sdpa",
+     "prompt_format": "chat"
+    },
+    "code": {
+     "sha": "0d209228bf20424531781c9be2d307e4aaea7e95",
+     "dirty": true
+    }
+   },
+   "layer": 12,
+   "plan": {
+    "scenes": 2255,
+    "right": 2155,
+    "wrong": 100,
+    "said_right_read_wrong_dropped": 3,
+    "wrong_with_a_slot": 91,
+    "wrong_with_a_probe": 100,
+    "wrong_entities": 40,
+    "wrong_by_format": {
+     "json": 29,
+     "prose": 35,
+     "table": 36
+    },
+    "wrong_by_order": {
+     "before": 54,
+     "after": 46
+    },
+    "wrong_by_lockers": {
+     "3": 24,
+     "5": 17,
+     "6": 22,
+     "7": 7,
+     "8": 9,
+     "9": 21
+    },
+    "tested": true
+   },
+   "groups": [
+    {
+     "format": "json",
+     "order": "after",
+     "right_scenes": 61,
+     "entities": 21,
+     "wrong_items": 8,
+     "probe": true,
+     "penalty": 0.1,
+     "cv_accuracy_right": 0.04918032786885246,
+     "classes": 9,
+     "majority_share": 0.16393442622950818
+    },
+    {
+     "format": "json",
+     "order": "before",
+     "right_scenes": 220,
+     "entities": 29,
+     "wrong_items": 21,
+     "probe": true,
+     "penalty": 0.001,
+     "cv_accuracy_right": 0.7181818181818181,
+     "classes": 9,
+     "majority_share": 0.2590909090909091
+    },
+    {
+     "format": "prose",
+     "order": "after",
+     "right_scenes": 234,
+     "entities": 48,
+     "wrong_items": 17,
+     "probe": true,
+     "penalty": 1.0,
+     "cv_accuracy_right": 0.3162393162393162,
+     "classes": 9,
+     "majority_share": 0.2948717948717949
+    },
+    {
+     "format": "prose",
+     "order": "before",
+     "right_scenes": 696,
+     "entities": 59,
+     "wrong_items": 18,
+     "probe": true,
+     "penalty": 0.1,
+     "cv_accuracy_right": 0.7025862068965517,
+     "classes": 9,
+     "majority_share": 0.34339080459770116
+    },
+    {
+     "format": "table",
+     "order": "after",
+     "right_scenes": 222,
+     "entities": 51,
+     "wrong_items": 21,
+     "probe": true,
+     "penalty": 10.0,
+     "cv_accuracy_right": 0.30180180180180183,
+     "classes": 9,
+     "majority_share": 0.24774774774774774
+    },
+    {
+     "format": "table",
+     "order": "before",
+     "right_scenes": 722,
+     "entities": 60,
+     "wrong_items": 15,
+     "probe": true,
+     "penalty": 0.1,
+     "cv_accuracy_right": 0.8130193905817175,
+     "classes": 9,
+     "majority_share": 0.2188365650969529
+    }
+   ],
+   "rates": {
+    "n": 100,
+    "n_slot": 91,
+    "n_probe": 100,
+    "entities": 40,
+    "chance": 0.19524999999999998,
+    "match": {
+     "probe": [
+      0.07,
+      0.02197802197802198,
+      0.125
+     ],
+     "majority": [
+      0.23,
+      0.1590855989804588,
+      0.3020833333333333
+     ],
+     "layout": [
+      0.16,
+      0.08139534883720931,
+      0.23728813559322035
+     ],
+     "structure": [
+      0.18,
+      0.10416666666666667,
+      0.25882615546218485
+     ]
+    },
+    "match_with_slot": {
+     "probe": [
+      0.07692307692307693,
+      0.023802521008403365,
+      0.13793103448275862
+     ],
+     "majority": [
+      0.25274725274725274,
+      0.1744186046511628,
+      0.3333333333333333
+     ],
+     "layout": [
+      0.17582417582417584,
+      0.08791208791208792,
+      0.2631578947368421
+     ],
+     "structure": [
+      0.1978021978021978,
+      0.11363636363636363,
+      0.2871287128712871
+     ]
+    },
+    "probe_gold": [
+     0.61,
+     0.5196078431372549,
+     0.6923076923076923
+    ],
+    "n_matched": 7,
+    "lens": {
+     "n": 71,
+     "right_all": [
+      0.971830985915493,
+      0.9253731343283582,
+      1.0
+     ],
+     "right_matched": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "n_matched_with_lens": 6
+    }
+   },
+   "rule": {
+    "status": "scored",
+    "holds": false,
+    "match_holds": false,
+    "lens_holds": true
+   },
+   "by_format": {
+    "json": {
+     "n": 29,
+     "n_slot": 26,
+     "n_probe": 29,
+     "entities": 18,
+     "chance": 0.2033388067870826,
+     "match": {
+      "probe": [
+       0.034482758620689655,
+       0.0,
+       0.11428571428571428
+      ],
+      "majority": [
+       0.3448275862068966,
+       0.14285714285714285,
+       0.5384615384615384
+      ],
+      "layout": [
+       0.3793103448275862,
+       0.15384615384615385,
+       0.5862068965517241
+      ],
+      "structure": [
+       0.3793103448275862,
+       0.17391304347826086,
+       0.5641025641025641
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.038461538461538464,
+       0.0,
+       0.14285714285714285
+      ],
+      "majority": [
+       0.38461538461538464,
+       0.16666666666666666,
+       0.5909090909090909
+      ],
+      "layout": [
+       0.4230769230769231,
+       0.18181818181818182,
+       0.6363636363636364
+      ],
+      "structure": [
+       0.4230769230769231,
+       0.21052631578947367,
+       0.6086956521739131
+      ]
+     },
+     "probe_gold": [
+      0.6896551724137931,
+      0.5555555555555556,
+      0.8333333333333334
+     ],
+     "n_matched": 1,
+     "lens": {
+      "n": 0,
+      "right_all": null,
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    },
+    "prose": {
+     "n": 35,
+     "n_slot": 30,
+     "n_probe": 35,
+     "entities": 22,
+     "chance": 0.2013265306122449,
+     "match": {
+      "probe": [
+       0.02857142857142857,
+       0.0,
+       0.1
+      ],
+      "majority": [
+       0.02857142857142857,
+       0.0,
+       0.1
+      ],
+      "layout": [
+       0.02857142857142857,
+       0.0,
+       0.1
+      ],
+      "structure": [
+       0.02857142857142857,
+       0.0,
+       0.1
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.03333333333333333,
+       0.0,
+       0.11538461538461539
+      ],
+      "majority": [
+       0.03333333333333333,
+       0.0,
+       0.11538461538461539
+      ],
+      "layout": [
+       0.03333333333333333,
+       0.0,
+       0.11538461538461539
+      ],
+      "structure": [
+       0.03333333333333333,
+       0.0,
+       0.11538461538461539
+      ]
+     },
+     "probe_gold": [
+      0.6,
+      0.4074074074074074,
+      0.7561140408701382
+     ],
+     "n_matched": 1,
+     "lens": {
+      "n": 35,
+      "right_all": [
+       0.9428571428571428,
+       0.8484848484848485,
+       1.0
+      ],
+      "right_matched": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "n_matched_with_lens": 1
+     }
+    },
+    "table": {
+     "n": 36,
+     "n_slot": 35,
+     "n_probe": 36,
+     "entities": 22,
+     "chance": 0.18282627865961198,
+     "match": {
+      "probe": [
+       0.1388888888888889,
+       0.046485200845665986,
+       0.2647058823529412
+      ],
+      "majority": [
+       0.3333333333333333,
+       0.20588235294117646,
+       0.4594594594594595
+      ],
+      "layout": [
+       0.1111111111111111,
+       0.0,
+       0.22857142857142856
+      ],
+      "structure": [
+       0.16666666666666666,
+       0.05714285714285714,
+       0.2857142857142857
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.14285714285714285,
+       0.046511627906976744,
+       0.2683161350844274
+      ],
+      "majority": [
+       0.34285714285714286,
+       0.21049571603427175,
+       0.4827586206896552
+      ],
+      "layout": [
+       0.11428571428571428,
+       0.0,
+       0.23529411764705882
+      ],
+      "structure": [
+       0.17142857142857143,
+       0.058823529411764705,
+       0.29411764705882354
+      ]
+     },
+     "probe_gold": [
+      0.5555555555555556,
+      0.37142857142857144,
+      0.725
+     ],
+     "n_matched": 5,
+     "lens": {
+      "n": 36,
+      "right_all": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "right_matched": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "n_matched_with_lens": 5
+     }
+    }
+   },
+   "by_order": {
+    "after": {
+     "n": 46,
+     "n_slot": 43,
+     "n_probe": 46,
+     "entities": 33,
+     "chance": 0.19353002070393374,
+     "match": {
+      "probe": [
+       0.15217391304347827,
+       0.044444444444444446,
+       0.2857142857142857
+      ],
+      "majority": [
+       0.13043478260869565,
+       0.045454545454545456,
+       0.22448979591836735
+      ],
+      "layout": [
+       0.08695652173913043,
+       0.021739130434782608,
+       0.16666666666666666
+      ],
+      "structure": [
+       0.10869565217391304,
+       0.024390243902439025,
+       0.2
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.16279069767441862,
+       0.047619047619047616,
+       0.3023431994362224
+      ],
+      "majority": [
+       0.13953488372093023,
+       0.04878048780487805,
+       0.23529411764705882
+      ],
+      "layout": [
+       0.09302325581395349,
+       0.023255813953488372,
+       0.17777777777777778
+      ],
+      "structure": [
+       0.11627906976744186,
+       0.02564102564102564,
+       0.21739130434782608
+      ]
+     },
+     "probe_gold": [
+      0.30434782608695654,
+      0.1590909090909091,
+      0.45652173913043476
+     ],
+     "n_matched": 7,
+     "lens": {
+      "n": 38,
+      "right_all": [
+       0.9736842105263158,
+       0.9117647058823529,
+       1.0
+      ],
+      "right_matched": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "n_matched_with_lens": 6
+     }
+    },
+    "before": {
+     "n": 54,
+     "n_slot": 48,
+     "n_probe": 54,
+     "entities": 29,
+     "chance": 0.1967151675485008,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.3148148148148148,
+       0.18518518518518517,
+       0.4545853269537474
+      ],
+      "layout": [
+       0.2222222222222222,
+       0.10256410256410256,
+       0.3469387755102041
+      ],
+      "structure": [
+       0.24074074074074073,
+       0.1315681622088007,
+       0.3584905660377358
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.3541666666666667,
+       0.20893967661691543,
+       0.5143073593073589
+      ],
+      "layout": [
+       0.25,
+       0.1111111111111111,
+       0.3958333333333333
+      ],
+      "structure": [
+       0.2708333333333333,
+       0.14538961038961043,
+       0.40816326530612246
+      ]
+     },
+     "probe_gold": [
+      0.8703703703703703,
+      0.7966023226616447,
+      0.9411764705882353
+     ],
+     "n_matched": 0,
+     "lens": {
+      "n": 33,
+      "right_all": [
+       0.9696969696969697,
+       0.8888888888888888,
+       1.0
+      ],
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    }
+   }
+  },
+  {
+   "run": "x47_errors_27b",
+   "count": "results/x47_errors/x47_errors_27b-20261028T014611Z",
+   "gpu": "results/x47_errors/x47_errors_27b-gpu-20261028T060617Z",
+   "target": "qwen3.6-27b",
+   "source": {
+    "run": "x0b_generalize/x0b_v2_27b",
+    "set": "x0b_v2",
+    "layer": 32,
+    "model": {
+     "target": "qwen3.6-27b",
+     "repo": "Qwen/Qwen3.6-27B",
+     "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+     "dtype": "bfloat16",
+     "attn": "sdpa",
+     "prompt_format": "chat"
+    },
+    "code": {
+     "sha": "0d209228bf20424531781c9be2d307e4aaea7e95",
+     "dirty": true
+    }
+   },
+   "layer": 32,
+   "plan": {
+    "scenes": 2258,
+    "right": 2253,
+    "wrong": 5,
+    "said_right_read_wrong_dropped": 0,
+    "wrong_with_a_slot": 5,
+    "wrong_with_a_probe": 5,
+    "wrong_entities": 5,
+    "wrong_by_format": {
+     "table": 3,
+     "json": 2
+    },
+    "wrong_by_order": {
+     "before": 4,
+     "after": 1
+    },
+    "wrong_by_lockers": {
+     "5": 1,
+     "6": 1,
+     "9": 3
+    },
+    "tested": false
+   },
+   "groups": [
+    {
+     "format": "json",
+     "order": "before",
+     "right_scenes": 239,
+     "entities": 29,
+     "wrong_items": 2,
+     "probe": true,
+     "penalty": 0.001,
+     "cv_accuracy_right": 0.7949790794979079,
+     "classes": 9,
+     "majority_share": 0.24267782426778242
+    },
+    {
+     "format": "table",
+     "order": "after",
+     "right_scenes": 243,
+     "entities": 51,
+     "wrong_items": 1,
+     "probe": true,
+     "penalty": 10.0,
+     "cv_accuracy_right": 0.205761316872428,
+     "classes": 9,
+     "majority_share": 0.24691358024691357
+    },
+    {
+     "format": "table",
+     "order": "before",
+     "right_scenes": 735,
+     "entities": 60,
+     "wrong_items": 2,
+     "probe": true,
+     "penalty": 0.001,
+     "cv_accuracy_right": 0.8857142857142857,
+     "classes": 9,
+     "majority_share": 0.2163265306122449
+    }
+   ],
+   "rates": {
+    "n": 5,
+    "n_slot": 5,
+    "n_probe": 5,
+    "entities": 5,
+    "chance": 0.13999999999999999,
+    "match": {
+     "probe": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "majority": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "layout": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "structure": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "match_with_slot": {
+     "probe": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "majority": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "layout": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "structure": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "probe_gold": [
+     0.2,
+     0.0,
+     0.6
+    ],
+    "n_matched": 0,
+    "lens": {
+     "n": 3,
+     "right_all": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "right_matched": null,
+     "n_matched_with_lens": 0
+    }
+   },
+   "rule": {
+    "status": "not tested",
+    "holds": false,
+    "why": "5 wrong items, fewer than 30"
+   },
+   "by_format": {
+    "json": {
+     "n": 2,
+     "n_slot": 2,
+     "n_probe": 2,
+     "entities": 2,
+     "chance": 0.1111111111111111,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "n_matched": 0,
+     "lens": {
+      "n": 0,
+      "right_all": null,
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    },
+    "table": {
+     "n": 3,
+     "n_slot": 3,
+     "n_probe": 3,
+     "entities": 3,
+     "chance": 0.15925925925925927,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.3333333333333333,
+      0.0,
+      1.0
+     ],
+     "n_matched": 0,
+     "lens": {
+      "n": 3,
+      "right_all": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    }
+   },
+   "by_order": {
+    "after": {
+     "n": 1,
+     "n_slot": 1,
+     "n_probe": 1,
+     "entities": 1,
+     "chance": 0.16666666666666666,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "n_matched": 0,
+     "lens": {
+      "n": 1,
+      "right_all": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    },
+    "before": {
+     "n": 4,
+     "n_slot": 4,
+     "n_probe": 4,
+     "entities": 4,
+     "chance": 0.13333333333333333,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.25,
+      0.0,
+      0.75
+     ],
+     "n_matched": 0,
+     "lens": {
+      "n": 2,
+      "right_all": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "right_matched": null,
+      "n_matched_with_lens": 0
+     }
+    }
+   }
+  },
+  {
+   "run": "muse30_x47_errors",
+   "count": "results/x47_errors/muse30_x47_errors-20261028T014612Z",
+   "gpu": null,
+   "target": "muse-glimmer-30b",
+   "source": {
+    "run": "x0b_generalize/muse30b_x0b_v2",
+    "set": "x0b_v2",
+    "layer": 26,
+    "model": {
+     "target": "muse-glimmer-30b",
+     "repo": "meta-models/Muse-Glimmer-30B",
+     "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+     "dtype": "bfloat16",
+     "attn": "sdpa",
+     "prompt_format": "chat"
+    },
+    "code": {
+     "sha": "672426205a74bddd2bb561ce862cadf888680bf6",
+     "dirty": true
+    }
+   },
+   "layer": 26,
+   "plan": {
+    "scenes": 2534,
+    "right": 2502,
+    "wrong": 32,
+    "said_right_read_wrong_dropped": 1,
+    "wrong_with_a_slot": 32,
+    "wrong_with_a_probe": 32,
+    "wrong_entities": 25,
+    "wrong_by_format": {
+     "prose": 22,
+     "json": 3,
+     "table": 7
+    },
+    "wrong_by_order": {
+     "after": 16,
+     "before": 16
+    },
+    "wrong_by_lockers": {
+     "3": 8,
+     "5": 4,
+     "6": 11,
+     "8": 3,
+     "9": 6
+    },
+    "tested": true
+   },
+   "groups": [
+    {
+     "format": "json",
+     "order": "after",
+     "right_scenes": 86,
+     "entities": 25,
+     "wrong_items": 1,
+     "probe": true,
+     "penalty": 10.0,
+     "cv_accuracy_right": 0.19767441860465115,
+     "classes": 9,
+     "majority_share": 0.19767441860465115
+    },
+    {
+     "format": "json",
+     "order": "before",
+     "right_scenes": 299,
+     "entities": 32,
+     "wrong_items": 2,
+     "probe": true,
+     "penalty": 0.01,
+     "cv_accuracy_right": 0.725752508361204,
+     "classes": 9,
+     "majority_share": 0.22742474916387959
+    },
+    {
+     "format": "prose",
+     "order": "after",
+     "right_scenes": 266,
+     "entities": 53,
+     "wrong_items": 15,
+     "probe": true,
+     "penalty": 1.0,
+     "cv_accuracy_right": 0.30451127819548873,
+     "classes": 9,
+     "majority_share": 0.3007518796992481
+    },
+    {
+     "format": "prose",
+     "order": "before",
+     "right_scenes": 776,
+     "entities": 63,
+     "wrong_items": 7,
+     "probe": true,
+     "penalty": 1.0,
+     "cv_accuracy_right": 0.7061855670103093,
+     "classes": 9,
+     "majority_share": 0.3479381443298969
+    },
+    {
+     "format": "table",
+     "order": "before",
+     "right_scenes": 790,
+     "entities": 63,
+     "wrong_items": 7,
+     "probe": true,
+     "penalty": 0.01,
+     "cv_accuracy_right": 0.8202531645569621,
+     "classes": 9,
+     "majority_share": 0.2189873417721519
+    }
+   ],
+   "rates": {
+    "n": 32,
+    "n_slot": 32,
+    "n_probe": 32,
+    "entities": 25,
+    "chance": 0.19817708333333334,
+    "match": {
+     "probe": [
+      0.0625,
+      0.0,
+      0.15625
+     ],
+     "majority": [
+      0.15625,
+      0.03225806451612903,
+      0.2926829268292683
+     ],
+     "layout": [
+      0.03125,
+      0.0,
+      0.09090909090909091
+     ],
+     "structure": [
+      0.03125,
+      0.0,
+      0.10344827586206896
+     ]
+    },
+    "match_with_slot": {
+     "probe": [
+      0.0625,
+      0.0,
+      0.15625
+     ],
+     "majority": [
+      0.15625,
+      0.03225806451612903,
+      0.2926829268292683
+     ],
+     "layout": [
+      0.03125,
+      0.0,
+      0.09090909090909091
+     ],
+     "structure": [
+      0.03125,
+      0.0,
+      0.10344827586206896
+     ]
+    },
+    "probe_gold": [
+     0.5,
+     0.3333333333333333,
+     0.6470588235294118
+    ],
+    "n_matched": 2,
+    "lens": null
+   },
+   "rule": {
+    "status": "pending",
+    "holds": false,
+    "match_holds": false,
+    "why": "no lens row (the gpu stage has not landed, or no matched item has one)"
+   },
+   "by_format": {
+    "json": {
+     "n": 3,
+     "n_slot": 3,
+     "n_probe": 3,
+     "entities": 3,
+     "chance": 0.12962962962962962,
+     "match": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.6666666666666666,
+       0.0,
+       1.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "majority": [
+       0.6666666666666666,
+       0.0,
+       1.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "n_matched": 0,
+     "lens": null
+    },
+    "prose": {
+     "n": 22,
+     "n_slot": 22,
+     "n_probe": 22,
+     "entities": 20,
+     "chance": 0.2200757575757576,
+     "match": {
+      "probe": [
+       0.045454545454545456,
+       0.0,
+       0.13043478260869565
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.045454545454545456,
+       0.0,
+       0.13043478260869565
+      ],
+      "majority": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.5,
+      0.3181818181818182,
+      0.6818181818181818
+     ],
+     "n_matched": 1,
+     "lens": null
+    },
+    "table": {
+     "n": 7,
+     "n_slot": 7,
+     "n_probe": 7,
+     "entities": 6,
+     "chance": 0.1587301587301587,
+     "match": {
+      "probe": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ],
+      "majority": [
+       0.42857142857142855,
+       0.14285714285714285,
+       0.7142857142857143
+      ],
+      "layout": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ],
+      "structure": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ],
+      "majority": [
+       0.42857142857142855,
+       0.14285714285714285,
+       0.7142857142857143
+      ],
+      "layout": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ],
+      "structure": [
+       0.14285714285714285,
+       0.0,
+       0.5
+      ]
+     },
+     "probe_gold": [
+      0.7142857142857143,
+      0.3333333333333333,
+      1.0
+     ],
+     "n_matched": 1,
+     "lens": null
+    }
+   },
+   "by_order": {
+    "after": {
+     "n": 16,
+     "n_slot": 16,
+     "n_probe": 16,
+     "entities": 15,
+     "chance": 0.19982638888888887,
+     "match": {
+      "probe": [
+       0.0625,
+       0.0,
+       0.2
+      ],
+      "majority": [
+       0.0625,
+       0.0,
+       0.2
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0625,
+       0.0,
+       0.2
+      ],
+      "majority": [
+       0.0625,
+       0.0,
+       0.2
+      ],
+      "layout": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "structure": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "probe_gold": [
+      0.3125,
+      0.125,
+      0.5294117647058824
+     ],
+     "n_matched": 1,
+     "lens": null
+    },
+    "before": {
+     "n": 16,
+     "n_slot": 16,
+     "n_probe": 16,
+     "entities": 12,
+     "chance": 0.19652777777777777,
+     "match": {
+      "probe": [
+       0.0625,
+       0.0,
+       0.2222222222222222
+      ],
+      "majority": [
+       0.25,
+       0.0,
+       0.45
+      ],
+      "layout": [
+       0.0625,
+       0.0,
+       0.15789473684210525
+      ],
+      "structure": [
+       0.0625,
+       0.0,
+       0.21428571428571427
+      ]
+     },
+     "match_with_slot": {
+      "probe": [
+       0.0625,
+       0.0,
+       0.2222222222222222
+      ],
+      "majority": [
+       0.25,
+       0.0,
+       0.45
+      ],
+      "layout": [
+       0.0625,
+       0.0,
+       0.15789473684210525
+      ],
+      "structure": [
+       0.0625,
+       0.0,
+       0.21428571428571427
+      ]
+     },
+     "probe_gold": [
+      0.6875,
+      0.42857142857142855,
+      0.8823529411764706
+     ],
+     "n_matched": 1,
+     "lens": null
+    }
+   }
+  }
+ ]
+}
