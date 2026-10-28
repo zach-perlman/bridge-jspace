@@ -1,0 +1,31 @@
+{
+  "run": "nem35b_jsuite_v3_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 10 addendum): Bolt v3 competence on RM and its references MM, PM (eligibility)",
+  "set": "jsuite_v3_test_chat",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "ebaa6aec2b999f7f90f139299cefba393a8163d4",
+  "git_state": {
+    "head": "ebaa6aec2b999f7f90f139299cefba393a8163d4",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T13:54:38Z"
+}
