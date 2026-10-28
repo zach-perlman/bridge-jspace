@@ -69,8 +69,8 @@ queue-archive:      ## move done / failed / cancelled records out of queue-statu
 queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains (QUEUE=a100|mats|helper|speedup|all)
 ifeq ($(QUEUE),all)
 	@echo "== mats ($(QUEUE_HOST_mats))"; JOBQ_HOST=$(QUEUE_HOST_mats) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_mats) || echo "(mats queue not set up yet or box gone)"
-	@echo "== helper ($(QUEUE_HOST_helper))"; JOBQ_HOST=$(QUEUE_HOST_helper) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_helper) || echo "(helper queue not set up yet or box gone)"
-	@echo "== speedup ($(QUEUE_HOST_speedup))"; JOBQ_HOST=$(QUEUE_HOST_speedup) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_speedup) || echo "(speedup queue not set up yet or box gone)"
+	@echo ""; echo "== helper ($(QUEUE_HOST_helper))"; JOBQ_HOST=$(QUEUE_HOST_helper) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_helper) || echo "(helper queue not set up yet or box gone)"
+	@echo ""; echo "== speedup ($(QUEUE_HOST_speedup))"; JOBQ_HOST=$(QUEUE_HOST_speedup) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_speedup) || echo "(speedup queue not set up yet or box gone)"
 else
 	$(JOBQ) stats --gpus $(QUEUE_GPUS_$(QUEUE))
 endif

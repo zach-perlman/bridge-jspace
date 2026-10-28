@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import re
 import shutil
@@ -771,23 +772,41 @@ def box_status(root: Path, as_json: bool = False) -> str:
     return "\n".join(lines or ["queue empty"]) + "\n"
 
 
-def schedule(running_left: list[float], pending: list[dict[str, Any]], done_ids: set[str], n_gpu: int) -> float:
-    """Hours until the queue drains: list scheduling on n_gpu workers, first in first out, a job starting once its
-    dependencies have finished (memory not modelled). running_left: hours left of each running job. Pure."""
+def timeline(
+    running_left: list[float], pending: list[dict[str, Any]], done_ids: set[str], n_gpu: int, running_ids=None
+) -> tuple[dict[str, tuple[float, float]], float, list[str]]:
+    """List scheduling on n_gpu workers, first in first out, a job starting once its dependencies have finished
+    (memory not modelled). running_left: hours left of each running job (running_ids: their ids, so pending jobs can
+    depend on them). Returns ({id: (start, end) hours from now}, hours until the queue drains, ids that cannot be
+    scheduled because a dependency is outside the queue: failed or unknown). Pure."""
+    running_ids = list(running_ids or [])
+    finish: dict[str, float] = dict(zip(running_ids, running_left, strict=False))
     free = sorted(running_left + [0.0] * max(0, n_gpu - len(running_left)))[:n_gpu] or [0.0]
-    finish: dict[str, float] = {}
+    spans: dict[str, tuple[float, float]] = {i: (0.0, h) for i, h in finish.items()}
     queue = list(pending)
     while queue:
-        ready = (i for i, r in enumerate(queue) if all(d in done_ids or d in finish for d in r.get("depends_on", [])))
-        idx = next(ready, None)
-        if idx is None:  # dependencies outside the queue (failed or unknown): count the rest as unscheduled
-            return max(free)
-        rec = queue.pop(idx)
         free.sort()
-        start = max(free[0], *(finish.get(d, 0.0) for d in rec.get("depends_on", [])), 0.0)
+        t = free[0]  # the next GPU to free; as the worker does, it takes the first job whose dependencies are done by then
+        deps = [r.get("depends_on", []) for r in queue]
+        ready = [i for i, ds in enumerate(deps) if all(d in done_ids or finish.get(d, math.inf) <= t + 1e-9 for d in ds)]
+        if ready:
+            idx, start = ready[0], t
+        else:  # nothing ready yet: the GPU idles until the earliest dependency (in the queue or running) finishes
+            known = [(max([finish[d] for d in ds if d not in done_ids] or [t]), i)
+                     for i, ds in enumerate(deps) if all(d in done_ids or d in finish for d in ds)]  # fmt: skip
+            if not known:  # dependencies outside the queue (failed or unknown): the rest stays unscheduled
+                return spans, max(free), [r["id"] for r in queue]
+            start, idx = min(known)
+        rec = queue.pop(idx)
         free[0] = start + float(rec.get("est_gpu_hours", 0.0))
         finish[rec["id"]] = free[0]
-    return max(free)
+        spans[rec["id"]] = (start, free[0])
+    return spans, max(free), []
+
+
+def schedule(running_left: list[float], pending: list[dict[str, Any]], done_ids: set[str], n_gpu: int) -> float:
+    """Hours until the queue drains (timeline's second value)."""
+    return timeline(running_left, pending, done_ids, n_gpu)[1]
 
 
 def box_stats(root: Path, hours: float = 24.0, n_gpu: int = 4) -> str:
@@ -800,31 +819,64 @@ def box_stats(root: Path, hours: float = 24.0, n_gpu: int = 4) -> str:
     done = [r for r in ledger if r.get("status") == "done"]
     failed = [r for r in ledger if r.get("status") == "failed"]
     used = sum(r.get("run_s") or 0 for r in ledger) / 3600
-    left = []
-    for rec in state["running"]:
-        el = (
-            (now_ - dt.datetime.fromisoformat(rec["started_at"])).total_seconds() / 3600 if rec.get("started_at") else 0
-        )
-        used += el
-        left.append(max(float(rec["est_gpu_hours"]) - el, 0.0))
     ratios = sorted(
         r["run_s"] / 3600 / float(r["est_gpu_hours"]) for r in done if r.get("run_s") and r.get("est_gpu_hours")
     )
     ratio = ratios[len(ratios) // 2] if ratios else 1.0
-    pend_h = sum(float(r["est_gpu_hours"]) for r in state["pending"])
+    # Two readings of every estimate: "typical" = estimate x the median actual / estimate of this box's done jobs,
+    # "estimate" = the spec's own number (the upper end). A running job past its typical time is given 5 min more.
+    run_ids, el_h, left_est, left_typ = [], [], [], []
+    for rec in state["running"]:
+        el = (now_ - dt.datetime.fromisoformat(rec["started_at"])).total_seconds() / 3600 if rec.get("started_at") else 0
+        used += el
+        est = float(rec["est_gpu_hours"])
+        run_ids.append(rec["id"])
+        el_h.append(el)
+        left_est.append(max(est - el, 1 / 12))
+        left_typ.append(max(est * ratio - el, 1 / 12))
     done_ids = {r["id"] for r in read_ledger(root) if r.get("status") == "done"}
-    raw = schedule(left, state["pending"], done_ids, n_gpu)
-    scaled = schedule([x * ratio for x in left], [{**r, "est_gpu_hours": float(r["est_gpu_hours"]) * ratio}
-                                                   for r in state["pending"]], done_ids, n_gpu)  # fmt: skip
-    eta = (now_ + dt.timedelta(hours=scaled)).strftime("%H:%M %Z")
-    lines = [
-        f"last {hours:g} h: {len(done)} done, {len(failed)} failed; GPU-hours used {used:.1f} (running jobs included)",
-        f"now: {len(state['running'])} running, {len(state['pending'])} pending",
-        f"left: running ~{sum(left):.1f} GPU-h by estimate, pending {pend_h:.1f} GPU-h by estimate "
-        f"(x {ratio:.2f} = the median actual / estimate of the done jobs: {sum(left) * ratio + pend_h * ratio:.1f} GPU-h)",
-        f"drains on {n_gpu} GPUs in ~{raw:.1f} h by the estimates, ~{scaled:.1f} h scaled (around {eta}); memory and "
-        "a GPU held by a long job are not modelled",
-    ]
+    pend = state["pending"]
+    span_est, drain_est, stuck = timeline(left_est, pend, done_ids, n_gpu, run_ids)
+    span_typ, drain_typ, _ = timeline(
+        left_typ, [{**r, "est_gpu_hours": float(r["est_gpu_hours"]) * ratio} for r in pend], done_ids, n_gpu, run_ids
+    )
+    gpu_h_est = sum(left_est) + sum(float(r["est_gpu_hours"]) for r in pend if r["id"] not in stuck)
+    gpu_h_typ = sum(left_typ) + sum(float(r["est_gpu_hours"]) * ratio for r in pend if r["id"] not in stuck)
+
+    def at(h: float) -> str:
+        return (now_ + dt.timedelta(hours=h)).astimezone(dt.timezone.utc).strftime("%H:%M")  # noqa: UP017 (the boxes run Python 3.10)
+
+    def hm(h: float) -> str:
+        m = round(h * 60)
+        return f"{m // 60}h{m % 60:02d}m"
+
+    lines = [f"now {at(0)} UTC · {n_gpu} GPU{'s' if n_gpu != 1 else ''} · {len(state['running'])} running, "
+             f"{len(pend)} pending"]  # fmt: skip
+    for i, rec in enumerate(state["running"]):
+        a, b = span_typ[rec["id"]][1], span_est[rec["id"]][1]
+        past = "  (past its typical time)" if el_h[i] > float(rec["est_gpu_hours"]) * ratio else ""
+        lines.append(f"  RUN   {rec['id']:<26} {hm(el_h[i])} so far, est {float(rec['est_gpu_hours']):.1f}h"
+                     f"   ends {at(min(a, b))}-{at(max(a, b))} UTC{past}")  # fmt: skip
+    for rec in pend:
+        if rec["id"] in stuck:
+            lines.append(f"  WAIT  {rec['id']:<26} blocked: a dependency failed or is not in this queue "
+                         f"({', '.join(rec.get('depends_on', []))})")  # fmt: skip
+            continue
+        (s1, e1), (s2, e2) = span_typ[rec["id"]], span_est[rec["id"]]
+        after = f", after {', '.join(rec['depends_on'])}" if rec.get("depends_on") else ""
+        lines.append(f"  WAIT  {rec['id']:<26} est {float(rec['est_gpu_hours']):.1f}h{after}"
+                     f"   starts {at(min(s1, s2))}-{at(max(s1, s2))}, ends {at(min(e1, e2))}-{at(max(e1, e2))} UTC")  # fmt: skip
+    if state["running"] or pend:
+        lo, hi = min(drain_typ, drain_est), max(drain_typ, drain_est)
+        lines += [
+            f"left:   {gpu_h_typ:.1f}-{gpu_h_est:.1f} GPU-h of work · {hm(lo)}-{hm(hi)} wall clock until the queue "
+            f"drains · done {at(lo)}-{at(hi)} UTC",
+            f"        (low end: estimates x {ratio:.2f}, the median actual / estimate of {len(ratios)} done jobs here; "
+            "high end: the specs' estimates; memory not modelled)",
+        ]
+    else:
+        lines.append("left:   nothing queued; this box is idle")
+    lines.append(f"last {hours:g} h: {len(done)} done, {len(failed)} failed; {used:.1f} GPU-h used (running included)")
     # only failures still in failed/ (box-archive moves the looked-at ones to archive/; the ledger keeps them all)
     open_ids = {json.loads(p.read_text())["id"] for p in jobs_in(root, "failed")}
     still = [r for r in failed if r["id"] in open_ids]

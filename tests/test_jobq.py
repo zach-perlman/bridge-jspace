@@ -309,6 +309,18 @@ def test_schedule_respects_dependencies_and_gpus():
     assert Q.schedule([], [{"id": "x", "est_gpu_hours": 1.0, "depends_on": ["gone"]}], set(), 2) == 0.0
 
 
+def test_timeline_lets_pending_jobs_wait_for_a_running_one():
+    """28 Oct: a pending job whose dependency was running counted as unschedulable, so the drain time was too short."""
+    from scripts import jobq as Q
+
+    pend = [{"id": "p2", "est_gpu_hours": 0.5, "depends_on": ["p1"]}, {"id": "z", "est_gpu_hours": 1.0},
+            {"id": "x", "est_gpu_hours": 1.0, "depends_on": ["gone"]}]  # fmt: skip
+    spans, drain, stuck = Q.timeline([2.0], pend, set(), 2, ["p1"])
+    assert spans["p1"] == (0.0, 2.0) and spans["z"] == (0.0, 1.0)  # z takes the free GPU at once
+    assert spans["p2"] == (2.0, 2.5)  # p2 starts when p1 ends
+    assert drain == 2.5 and stuck == ["x"]
+
+
 # ---------------------------------------------------------------- enqueue: run names are written once
 
 
