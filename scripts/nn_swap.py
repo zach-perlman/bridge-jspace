@@ -244,7 +244,7 @@ def main(a) -> None:
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, list(a.words)) if p["family"] in a.words]
+    prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, list(a.words), a.scene_words) if p["family"] in a.words]
     rm_by = collections.defaultdict(list)  # (relation, bridge) -> eligible RM prompts (latent donors)
     for p in prompts:
         if p["family"] == "RM":
@@ -332,6 +332,7 @@ if __name__ == "__main__":
     ap.add_argument("--sweep", nargs="+", default=None, help="layer windows, e.g. 4-8 8-12 (one run per window)")
     ap.add_argument("--sample-per-word", type=int, default=0)
     ap.add_argument("--sample-refs", type=int, default=0, help="note 10: cap every word but RM at N (seeded)")
+    ap.add_argument("--scene-words", nargs="+", default=None, help="note 10: eligibility words (default note 4's V3 scene words)")
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()

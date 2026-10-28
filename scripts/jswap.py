@@ -82,10 +82,12 @@ def table(it: dict) -> dict:
     return TB.REL2[it["relation"]]
 
 
-def v3_prompts(tok, set_name: str, comp: str, words) -> list[dict]:
-    """tasks_prompts for jsuite v3: every v3 word of the given list, eligibility by the scene rule over V3_SCENE."""
-    return tasks_prompts(tok, set_name, comp, [w for w in ALL_WORDS_V3 if w in set(words) | set(V3_SCENE)], 1000, ["clean"], "all",
-                         scene_words=V3_SCENE)
+def v3_prompts(tok, set_name: str, comp: str, words, scene: list[str] | None = None) -> list[dict]:
+    """tasks_prompts for jsuite v3: every v3 word of the given list, eligibility by the scene rule over V3_SCENE (or
+    the given scene words: note 10, a model with competence on RM only)."""
+    scene = scene or V3_SCENE
+    return tasks_prompts(tok, set_name, comp, [w for w in ALL_WORDS_V3 if w in set(words) | set(scene)], 1000, ["clean"], "all",
+                         scene_words=scene)
 CONDS = ("swap", "remove", "swap_rot", "swap_u", "swap_comp", "paste")
 ANS_CONDS = ("swap_ans", "swap_ans_u", "swap_ans_rot", "swap_noans")
 
