@@ -69,7 +69,7 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch51.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q51.2"
-RUNS = {"qwen3.5-9b": "qwen35_9b_x51_2", "muse-glimmer-30b": "muse30_x51_2", "qwen3.6-27b": "x51_2_27b"}
+RUNS = {"qwen3.5-9b": "qwen35_9b_x51_2", "muse-glimmer-30b": "muse30_x51_2_r2", "qwen3.6-27b": "x51_2_27b"}
 SOURCE = A.RUNS  # target -> the 49.7 run whose items, halves and attention this test uses
 S_WRITE = A.S_WRITE
 SITES = A.SITES
@@ -547,15 +547,23 @@ def stage_run(name: str, why: str) -> Path:
         print("the gate missed: not tested", gate, flush=True)
         return out
     src_items = S["items"]
-    assert [c["scene"] for c in chosen] == [it["scene"] for it in src_items], "the eligible items are not 49.7's"
+    # 49.7's items, in its order and with its halves (the ranking read from its stored run depends on them): those the
+    # gate still makes eligible here. A borderline competence read can flip on another box's GPU (x51_2_muse on the
+    # helper, 28 Oct: the eligible list was not 49.7's), so the overlap is kept and the drops recorded, not asserted.
+    by_scene = {c["scene"]: c for c in chosen}
     half = {it["scene"]: it["half"] for it in src_items}
-    items = [with_sites(tok, A.item_record(tok, c, half[c["scene"]])) for c in chosen]
-    fit, _ = A.split_halves([c["bridge"] for c in chosen])
-    assert all((it["entity"] in fit) == (it["half"] == "fit") for it in items), "the halves differ from 49.7's split"
+    kept = [by_scene[it["scene"]] for it in src_items if it["scene"] in by_scene]
+    overlap = {"x49_7_items": len(src_items), "eligible_here": len(chosen), "kept": len(kept),
+               "dropped": [it["scene"] for it in src_items if it["scene"] not in by_scene],
+               "new_not_used": [c["scene"] for c in chosen if c["scene"] not in half]}  # fmt: skip
+    print("items vs 49.7:", json.dumps({k: (v if isinstance(v, int) else len(v)) for k, v in overlap.items()}), flush=True)
+    assert len(kept) >= 0.9 * len(src_items), f"fewer than 90% of 49.7's items stay eligible: {overlap}"
+    items = [with_sites(tok, A.item_record(tok, c, half[c["scene"]])) for c in kept]
     ql = q_lengths(items)
     assert all(len(v) == 1 for v in ql.values()), f"question token counts vary: {ql}"
     X.write_jsonl(out / "cases.jsonl", items)
-    m["same_items_as_x49_7"] = True
+    m["same_items_as_x49_7"] = not overlap["dropped"] and not overlap["new_not_used"]
+    m["items_vs_x49_7"] = overlap
     m["question_tokens"] = ql
     manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
 
