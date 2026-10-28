@@ -1,0 +1,111 @@
+# Batch 51 (Dan, 28 Oct 17:10 Paris): seven tests across the three boxes, CPU items on the mats CPU. Recorded before any
+# code or run. Conventions of batch 47 (sealed until Q51.x, matched random parts, gate 0.80 per reader, cluster bootstrap
+# over bridge items 10,000 seed 0, verify pack per run). Dan's brief is kept verbatim below (brief:); the fields above
+# it only index it (run names, boxes, order) and add nothing to the design.
+
+batch: 51
+by: Dan, 28 Oct 17:10 Paris
+predictions: predictions/2026-10-28_dan.md (Q51.1-Q51.7)
+freeze: "Thursday ~16:00 Paris; anything landing after goes to the supplement with a 'landed after freeze' line"
+run_names: "x51_<test>_<model> with the live prefixes: 9B qwen35_9b_x51_<test>, 27B x51_<test>_27b, Muse muse30_x51_<test>, Lightning (51.6) per its pin"
+queues:
+  mats: "51.1 (9B -> 27B -> Muse) -> 51.3 (9B -> 27B -> Muse); CPU items of section 2 on this box's CPU"
+  speedup: "[Z2 as queued] -> 51.7 (9B -> 27B) -> 51.2 (9B -> Muse -> 27B) -> 51.6 only if idle after 02:00"
+  helper: "[49.2 Muse r5, Z3 as queued] -> 51.5 (9B -> 27B) -> 51.4 (9B -> Muse -> 27B)"
+  idle_rule: "a box that idles pulls the next unstarted model of the highest-ranked test from any column; rank 51.1, 51.7, 51.5, 51.3, 51.2, 51.4, 51.6"
+tests:
+  - {id: "51.1", title: "Dose curves with a matched random part at every dose", models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b], est: "~0.5 GPU-h each", box: mats}
+  - {id: "51.7", title: "Z1 on the full carrier: the change at the bridge token at every layer <= L", models: [qwen3.5-9b, qwen3.6-27b], est: "~1 GPU-h each", box: speedup}
+  - {id: "51.5", title: "The anatomy by depth on Zach's passages", models: [qwen3.5-9b, qwen3.6-27b], est: "~1 GPU-h each", box: helper}
+  - {id: "51.3", title: "DAS at scale", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~2 GPU-h each", box: mats}
+  - {id: "51.2", title: "Joint head ablation under the address swap", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~1 GPU-h each", box: speedup}
+  - {id: "51.4", title: "Does the address travel? The swap at the last token", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~0.5 GPU-h each", box: helper}
+  - {id: "51.6", title: "Optional: Lightning, the main test", models: [lightning], est: "~2 GPU-h", box: speedup, condition: "only if speedup idles after 02:00"}
+brief: |
+  # Batch 51 — launch instruction for the coder agent (Dan, 28 Oct 17:10 Paris)
+
+  Launch everything below now, in parallel on the three boxes, after what is already running on each (Z1 Muse, Z2 27B / Muse, Z3, 49.2 Muse r5 stay as queued). Freeze is Thursday ~16:00 Paris; anything that lands after it goes to the supplement with a "landed after freeze" line, not to the main page. Conventions of batch 47 throughout: results are pulled **sealed** and opened only after Dan's Q51.x lines are committed; matched random controls everywhere; gate 0.80 per reader; cluster bootstrap over bridge items (10k, seed 0); verify pack per run (5 rendered prompts per model, 10 random rows per arm, the rule and the verdict in `verdict.md`). "Swap" = adding or exchanging a part of the state. No new models except 51.6, no reruns of 49.x, no README edits from 51.x before opening. Do not share Z1 numbers with Zach before the formal opening.
+
+  ## 0. Do first (≤ 45 min, before any GPU job)
+
+  1. `jobs/c3/batch51.yaml` with the seven specs below; one run name per model per test (`x51_<test>_<model>`).
+  2. Append **Q51.1–Q51.7** to `predictions/2026-10-28_dan.md` as questions with options only (text in §3). Dan writes his lines; nothing opens before that.
+  3. Per-box queues (9B first in every test — it gives the early read):
+     - **mats:** 51.1 (9B → 27B → Muse) → 51.3 (9B → 27B → Muse)
+     - **speedup:** [Z2 as queued] → 51.7 (9B → 27B) → 51.2 (9B → Muse → 27B) → 51.6 only if idle after 02:00
+     - **helper:** [49.2 Muse r5, Z3 as queued] → 51.5 (9B → 27B) → 51.4 (9B → Muse → 27B)
+     If a box idles, pull the next unstarted model of the highest-ranked test from any column (rank order: 51.1, 51.7, 51.5, 51.3, 51.2, 51.4, 51.6).
+  4. CPU items of §2 run on the mats box CPU in the given order while GPUs are busy.
+  5. Status to Dan at 19:30, 23:00, Thu 08:00 and Thu 13:00: what is sealed, what is running, ETA, anything that failed a gate or OOMed and what you changed.
+
+  ## 1. The seven tests
+
+  ### 51.1 Dose curves with a matched random part at every dose — 9B, 27B, Muse (~0.5 GPU-h each)
+
+  - **Items, layer, operation:** 49.1's (main test, locker-first items, L = 12 / 32 / 26; Δ = h_S − h_O at the bridge word; J++ part = 25 OMP atoms; "the rest" = Δ minus the J++ part; the address U as in 49.1).
+  - **Arms:** α ∈ {0.5, 1, 1.5, 2, 3} at β = 0 (the J++ part alone, scaled), each with a random part of the same share at the same gain; β ∈ {0.25, 0.5, 0.75, 1, 1.5} at α = 0 (the rest alone), with and without the address, each with a random part of the same share. Plain-text loss at the bridge word per arm. Read both readers (lookup, recall) as in 49.1.
+  - **Rules, fixed in advance.** (i) "The lookup is blind to the J++ part": switch minus random ≤ 0.10 at every α whose plain-text loss stays under 2× the whole change's — on all three. (ii) "The recall reads the J++ part above its share": at the first α where the J++ part alone switches ≥ 0.3, J minus random ≥ 0.2 — per model. (iii) "Together only" (Muse): (1,1) from 49.1 ≥ 0.8 while the best single-part dose under the loss bar stays ≤ 0.3.
+  - **Output:** one figure, four curves per model (two readers × two parts), random dashed, the loss bar marked; a per-model, per-reader fit logit(switch) = a·α + b·β (+ c·αβ), report b/a and whether c is needed. The 49.1 heatmaps move to the supplement.
+
+  ### 51.7 Z1 on the full carrier: the change at the bridge token at every layer ≤ L — 9B, 27B (~1 GPU-h each)
+
+  - **Why:** on Zach's passages the whole change at one layer redirects 0.57 / 0.38 of lookups (fact-after items 0.36 / 0.11; fact-first 0.78 / 0.67). The order and token-map results predict it: with text after the bridge name, later tokens read the name below L. 47.4's before-L arm tests this and lets the split be read on the full carrier.
+  - **Items:** Z1's items and strata (fact-first / fact-after), same gate, same lens files, same layers.
+  - **Arms (as the ladder defines per-layer removal):** overwrite the bridge name's last token at every layer l ≤ L with h_S,l (**whole before-L**); with h_S,l minus the J++ part of Δ_l using layer l's own 25 atoms (**without J++ before-L**); with h_S,l minus a random part of Δ_l of the same share (**random before-L**). Δ_l from the clean S and O runs. Z1's one-layer arms sit beside from the stored rows, no rerun. Readers K (lookup) and M (recall). Plain-text loss per arm.
+  - **Rules, fixed in advance.** (i) "The slice explanation": the whole before-L raises the lookup's switch on fact-after items by ≥ 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra loss − lookup extra loss ≥ 0.3 and lookup ≤ 0.10 → "the split holds on the full carrier"; lookup ≥ 0.20 → "the lookup follows the lens on the full carrier"; else in between. (iii) If fact-after lookups stay under 0.5 even under whole before-L: "the link is made away from the bridge token" — only then the window-patching read (the bridge token at layers ≤ L plus the bridge's fact sentence), 50 items, descriptive.
+  - **Output:** one figure per model: stratum × reader, one-layer vs before-L, three arms.
+
+  ### 51.5 The anatomy by depth on Zach's passages — 9B, 27B (~1 GPU-h each)
+
+  - 47.8's sweep (every 2nd layer) on Z1's items, fact-first stratum first; the whole change at the bridge name's last token per layer; K and M readers; extra loss without J++ per layer (one-layer removal, the layer's own atoms); no slot probe (no slots); add the identity / position split per layer only if Z3 shows position answers.
+  - **Rule, fixed in advance:** "the same read window as ours" if the last layer where each reader's switch ≥ 0.3 lies within 4 layers of ours (9B: both readers to ~L16, the recall to L24; 27B: from 49.4). Report against Zach's swap window (L4–20, gone by L25).
+  - **Output:** one figure in the 6b layout, his passages beside our scenes.
+
+  ### 51.3 DAS at scale — 9B first, then Muse, 27B (~2 GPU-h each)
+
+  - **Method:** 48.1's custom DAS unchanged (orthonormal R, interchange h ← h_O + RRᵀΔ at the bridge word at L; same optimizer and early stopping on dev IIA).
+  - **Pairs:** identity — every locker-first scene where the whole change switches the given reader, pooled from the main test, the clean design and the routes scenes (target 300–600 pairs per reader; entities held out 60 / 20 / 20); address — routes position counterfactuals over all slot pairs (≥ 300 pairs).
+  - **k:** recall {4, 16, 64, 128}; lookup {4, 16}; address {2, 4, 8}.
+  - **Rules:** 48.1's and 49.8's unchanged, plus: "no low-dimensional recall subspace at this token and layer" if the recall's own-IIA < 0.5 at k = 128 with ≥ 300 pairs — a result, not a failure to converge.
+  - **Report:** own-IIA per k; cross-IIA (lookup subspace on the recall and back; address subspace on each reader); the lookup subspace's energy in U / W_E / J++ / outside; the address subspace's overlap with U and with 47.2's W.
+
+  ### 51.2 Joint head ablation under the address swap — 9B, Muse, 27B (~1 GPU-h each)
+
+  - **Items and arms:** 49.7's (the address swap μ_k − μ_j at 2×, locker-first scenes). Attention layers only; on the 9B note the DeltaNet layers in the report.
+  - **Ranking:** by each head's attention move under the swap, on a fit half; evaluate on the other half.
+  - **Ablation:** mean-ablate the head's output at the last token and at the question tokens; top k ∈ {1, 3, 5, 10}, all heads of the best layer, the top 10 across layers — each under the swap; control: a random set of k heads from the same layers.
+  - **Read:** the lookup's switch to the swapped-in slot; identity answers; the recall.
+  - **Rules, fixed in advance.** "A small set carries the dereference": some k ≤ 10 cuts the position switch by ≥ 0.5 of its swap value while identity answers and the recall move ≤ 0.10 and the random set cuts ≤ 0.15. "Distributed": all heads of the best layer cut < 0.3. CPU beside: per item, summed attention move vs switched (logistic fit, AUC).
+
+  ### 51.4 Does the address travel? The swap at the last token — 9B, Muse, 27B (~0.5 GPU-h each)
+
+  - **Items:** routes C0 scenes; layers L and L + 4.
+  - **Arms at the last token:** μ_k − μ_j with U fit at the bridge word (not refit), doses 1× and 2× as in the pointer swap; the same with U_last fit on the last token's states (fit half, evaluate on the other); random vectors of the same norm. Report the swap's norm relative to the last token's state norm at L.
+  - **Read:** lookup share answering slot k; the recall beside; the slot probe at the last token by layer from cached states.
+  - **Rules, fixed in advance.** "The code travels": the bridge-fit swap sends ≥ 0.3 of lookups to slot k (random ≤ 0.05). "Re-encoded on copy": bridge-fit ≤ 0.10 while last-token-fit ≥ 0.3. "Not at the last token": both ≤ 0.10 while the probe reads the slot there ≥ 0.8.
+
+  ### 51.6 Optional — Lightning, the main test (speedup, only if idle after 02:00; ~2 GPU-h)
+
+  - Step 1 (dev, 60 scenes): the whole change's switch rate per reader by layer, every 2nd layer; rule fixed in advance: pick the earliest layer where both readers switch ≥ 0.3. Step 2: the main test's three arms at that layer, 200 scenes. If no layer passes step 1: report "the bridge word does not redirect the lookup at any layer on Lightning", no step 2.
+
+  ## 2. CPU tonight (no GPU; in this order)
+
+  1. **Z1 table** from the stored outcomes (9B, 27B; Muse when it lands): reader × arm × stratum with cluster-bootstrap intervals over passages; per-relation split; the 9B's v2nb rows separate from v2. Keep it sealed with Z1.
+  2. **Route split of the lookup's J++ dependence** (all three, from the routes runs): extra loss without J++ on identity-route vs position-route items.
+  3. **The recall under the address swap by dose** (pointer-swap data): share of recalls that change and share naming the swapped-in slot's item at 1× / 2× / 4×.
+  4. **49.3 concatenation probe** (cached per-token states): all tokens of the locker sentence concatenated, ridge, entities held out; ≥ 0.85 vs chance decides the E10/E11 sentence.
+  5. **49.1 additive vs conjunctive fit** per model (feeds the 51.1 figure).
+
+  ## 3. Q51.x — questions for the predictions file (options only; Dan writes the answers)
+
+  - Q51.1: the lookup blind to the J++ part at every dose — 9B / 27B / Muse; the recall reads it above its share — per model; Muse "together only" — yes / no.
+  - Q51.2: a small set (k ≤ 10) / distributed — per model.
+  - Q51.3: a recall subspace found at ≤ 128 with ≥ 300 pairs — per model; the lookup subspace mostly address / mostly outside everything named; the learned address overlaps U ≥ 0.6 — yes / no.
+  - Q51.4: travels / re-encoded on copy / not at the last token — per model.
+  - Q51.5: the read window on his passages ends within 4 layers of ours — 9B / 27B.
+  - Q51.6: a layer passes step 1 on Lightning — yes / no; if yes, the split holds there — yes / no.
+  - Q51.7: the slice explanation (fact-after lookups rise ≥ 0.3 under before-L) — 9B / 27B; on the full carrier: split holds / lookup follows the lens / in between — 9B / 27B.
+
+  ## 4. Thursday
+
+  09:00–13:00 hand check of the A-claim numbers (main gap ×3, order, routes, address remove / swap, 47.5, 47.1 27B, 47.8 9B) through the dashboard, 10 items each, into VERIFIED.md, plus 49.5's row-for-row. 13:00 final pulls. 16:00 freeze: what is opened and checked goes on the page; the rest to the supplement, labelled. Friday: slides only.
