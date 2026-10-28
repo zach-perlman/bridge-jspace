@@ -1,0 +1,431 @@
+{
+ "L32-40/RM/none": {
+  "n": 134,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 134,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/PM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/RM/insert_k10_noansrel": {
+  "n": 134,
+  "kept": 85.8,
+  "donor": 5.2,
+  "third": 0.0,
+  "other": 9.0,
+  "n_third": 134,
+  "transfer": 5.2,
+  "ci": [
+   1.5,
+   9.3
+  ]
+ },
+ "L32-40/PM/insert_k10_noansrel": {
+  "n": 80,
+  "kept": 87.5,
+  "donor": 3.8,
+  "third": 0.0,
+  "other": 8.8,
+  "n_third": 80,
+  "transfer": 3.8,
+  "ci": [
+   0.0,
+   8.5
+  ]
+ },
+ "L32-40/RM/insert_k10_noansrelctl": {
+  "n": 134,
+  "kept": 65.7,
+  "donor": 25.4,
+  "third": 0.0,
+  "other": 9.0,
+  "n_third": 134,
+  "transfer": 25.4,
+  "ci": [
+   17.6,
+   33.6
+  ]
+ },
+ "L32-40/PM/insert_k10_noansrelctl": {
+  "n": 80,
+  "kept": 42.5,
+  "donor": 51.2,
+  "third": 0.0,
+  "other": 6.2,
+  "n_third": 80,
+  "transfer": 51.2,
+  "ci": [
+   38.5,
+   63.3
+  ]
+ },
+ "L32-40/RM/insert_k10_noansown": {
+  "n": 134,
+  "kept": 73.9,
+  "donor": 16.4,
+  "third": 0.0,
+  "other": 9.7,
+  "n_third": 134,
+  "transfer": 16.4,
+  "ci": [
+   10.3,
+   23.5
+  ]
+ },
+ "L32-40/PM/insert_k10_noansown": {
+  "n": 80,
+  "kept": 57.5,
+  "donor": 32.5,
+  "third": 0.0,
+  "other": 10.0,
+  "n_third": 80,
+  "transfer": 32.5,
+  "ci": [
+   22.6,
+   43.6
+  ]
+ },
+ "L32-40/RM/insert_k10_noansownctl": {
+  "n": 134,
+  "kept": 59.0,
+  "donor": 32.1,
+  "third": 0.0,
+  "other": 9.0,
+  "n_third": 134,
+  "transfer": 32.1,
+  "ci": [
+   23.1,
+   41.1
+  ]
+ },
+ "L32-40/PM/insert_k10_noansownctl": {
+  "n": 80,
+  "kept": 36.2,
+  "donor": 55.0,
+  "third": 0.0,
+  "other": 8.8,
+  "n_third": 80,
+  "transfer": 55.0,
+  "ci": [
+   43.9,
+   66.7
+  ]
+ },
+ "L32-40/RM/latent_k10_noansrel": {
+  "n": 134,
+  "kept": 89.6,
+  "donor": 2.2,
+  "third": 0.0,
+  "other": 8.2,
+  "n_third": 134,
+  "transfer": 2.2,
+  "ci": [
+   0.0,
+   5.0
+  ]
+ },
+ "L32-40/PM/latent_k10_noansrel": {
+  "n": 80,
+  "kept": 93.8,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 3.8,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   0.0,
+   6.3
+  ]
+ },
+ "L32-40/RM/latent_k10_noansrelctl": {
+  "n": 134,
+  "kept": 83.6,
+  "donor": 7.5,
+  "third": 0.0,
+  "other": 9.0,
+  "n_third": 134,
+  "transfer": 7.5,
+  "ci": [
+   3.0,
+   12.3
+  ]
+ },
+ "L32-40/PM/latent_k10_noansrelctl": {
+  "n": 80,
+  "kept": 70.0,
+  "donor": 18.8,
+  "third": 0.0,
+  "other": 11.2,
+  "n_third": 80,
+  "transfer": 18.8,
+  "ci": [
+   11.1,
+   28.2
+  ]
+ },
+ "L32-40/RM/latent_k10_noansown": {
+  "n": 134,
+  "kept": 85.8,
+  "donor": 6.7,
+  "third": 0.0,
+  "other": 7.5,
+  "n_third": 134,
+  "transfer": 6.7,
+  "ci": [
+   2.3,
+   12.0
+  ]
+ },
+ "L32-40/PM/latent_k10_noansown": {
+  "n": 80,
+  "kept": 77.5,
+  "donor": 10.0,
+  "third": 0.0,
+  "other": 12.5,
+  "n_third": 80,
+  "transfer": 10.0,
+  "ci": [
+   3.7,
+   18.1
+  ]
+ },
+ "L32-40/RM/latent_k10_noansownctl": {
+  "n": 134,
+  "kept": 75.4,
+  "donor": 10.4,
+  "third": 0.0,
+  "other": 14.2,
+  "n_third": 134,
+  "transfer": 10.4,
+  "ci": [
+   5.5,
+   16.1
+  ]
+ },
+ "L32-40/PM/latent_k10_noansownctl": {
+  "n": 80,
+  "kept": 52.5,
+  "donor": 27.5,
+  "third": 0.0,
+  "other": 20.0,
+  "n_third": 80,
+  "transfer": 27.5,
+  "ci": [
+   17.7,
+   39.2
+  ]
+ },
+ "L32-40/RM/remove_k10_noansrel": {
+  "n": 134,
+  "kept": 94.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 6.0,
+  "n_third": 134,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/PM/remove_k10_noansrel": {
+  "n": 80,
+  "kept": 96.2,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 2.5,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.8
+  ]
+ },
+ "L32-40/RM/remove_k10_noansown": {
+  "n": 134,
+  "kept": 89.6,
+  "donor": 3.0,
+  "third": 0.0,
+  "other": 7.5,
+  "n_third": 134,
+  "transfer": 3.0,
+  "ci": [
+   0.0,
+   7.5
+  ]
+ },
+ "L32-40/PM/remove_k10_noansown": {
+  "n": 80,
+  "kept": 87.5,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 10.0,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   0.0,
+   6.7
+  ]
+ },
+ "L32-40/MM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MM/insert_k10_noansrel": {
+  "n": 80,
+  "kept": 98.8,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.9
+  ]
+ },
+ "L32-40/MM/insert_k10_noansrelctl": {
+  "n": 80,
+  "kept": 92.5,
+  "donor": 7.5,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 7.5,
+  "ci": [
+   2.4,
+   13.8
+  ]
+ },
+ "L32-40/MM/insert_k10_noansown": {
+  "n": 80,
+  "kept": 95.0,
+  "donor": 5.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 5.0,
+  "ci": [
+   1.2,
+   10.4
+  ]
+ },
+ "L32-40/MM/insert_k10_noansownctl": {
+  "n": 80,
+  "kept": 91.2,
+  "donor": 8.8,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 8.8,
+  "ci": [
+   3.6,
+   15.2
+  ]
+ },
+ "L32-40/MM/latent_k10_noansrel": {
+  "n": 80,
+  "kept": 97.5,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.9
+  ]
+ },
+ "L32-40/MM/latent_k10_noansrelctl": {
+  "n": 80,
+  "kept": 95.0,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 2.5,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   0.0,
+   6.2
+  ]
+ },
+ "L32-40/MM/latent_k10_noansown": {
+  "n": 80,
+  "kept": 97.5,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.8
+  ]
+ },
+ "L32-40/MM/latent_k10_noansownctl": {
+  "n": 80,
+  "kept": 96.2,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   0.0,
+   6.2
+  ]
+ },
+ "L32-40/MM/remove_k10_noansrel": {
+  "n": 80,
+  "kept": 97.5,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.9
+  ]
+ },
+ "L32-40/MM/remove_k10_noansown": {
+  "n": 80,
+  "kept": 97.5,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 2.5,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}
