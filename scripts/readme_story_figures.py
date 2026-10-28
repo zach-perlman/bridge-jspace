@@ -1818,31 +1818,35 @@ MOVED_EDGE = "#1e1e1e"
 
 def routes_drawing(plt, ax, small: bool = False) -> None:
     """The routes test on ax (axis off, x and y 0-100): the original and the changed prompt as three lockers each.
-    Full: route labels over the original prompt's predicted lockers ("identity route → 3", ...), "value → 7" under the
-    moved sentence, a note on the move and the two pick sentences. Small (Fig. 5d): the boxes and their colours only."""
+    Full: route labels over the original prompt's predicted lockers (original answer, position route, identity
+    route), "value" under the moved sentence, a note on the move and the asked person's pick sentence. Small (Fig.
+    5d): the boxes and their colours only. Drawn on Fig. 0's items (Dan's Fig. 0 brief, 28 Oct ~22:40: one domain on
+    the main page; the routes test's own scenes are animals): the original prompt's lockers as in Fig. 0; the changed
+    prompt, the routes test's way: Eric picks oxygen, whose locker sentence trades places with helium's and gets a
+    new number."""
     ax.set_xlim(0, 100)
     ax.set_ylim(0, 100)
     ax.set_xticks([])  # no hidden tick labels left for the overlap checks
     ax.set_yticks([])
     ax.axis("off")
     fs = S.FONT - 2 if small else S.FONT
-    xs = (45, 67, 89) if small else (38, 62, 86)
-    w, h = (20, 34) if small else (21.5, 11)
-    rows = (("original prompt", 58 if small else 64, (("duck", "4"), ("rabbit", "3"), ("goose", "2")),
-             "Beth picked the goose."),
-            ("changed prompt", 6 if small else 30, (("rabbit", "7"), ("duck", "4"), ("goose", "2")),
-             "Beth picked the rabbit."))  # fmt: skip
+    xs = (45, 67, 89) if small else (37.5, 62, 86.5)
+    w, h = (20, 34) if small else (23.5, 11)  # full: room for a six-letter element at 11 pt
+    rows = (("original prompt", 58 if small else 64, (("carbon", "3"), ("helium", "5"), ("oxygen", "7")),
+             "Eric picked carbon."),
+            ("changed prompt", 6 if small else 30, (("carbon", "3"), ("oxygen", "4"), ("helium", "5")),
+             "Eric picked oxygen."))  # fmt: skip
     # (row, column) -> (route colour, label): the lockers each route predicts
-    fill = {(0, 0): (ROUTE_COL["position"], "position\nroute"), (0, 1): (ROUTE_COL["identity"], "identity\nroute"),
-            (1, 0): (ROUTE_COL["value"], "value")}  # fmt: skip
+    fill = {(0, 1): (ROUTE_COL["position"], "position\nroute"), (0, 2): (ROUTE_COL["identity"], "identity\nroute"),
+            (1, 1): (ROUTE_COL["value"], "value")}  # fmt: skip
     for r, (label, y, lockers, pick) in enumerate(rows):
         ax.text(0, y + h / 2, label.replace(" ", "\n"), fontsize=fs, weight="bold", va="center", linespacing=1.0)
         for c, (x, (item, digit)) in enumerate(zip(xs, lockers, strict=True)):
             col = fill.get((r, c), (None, ""))[0]
             if small and col == ROUTE_COL["value"]:  # Fig. 5d draws no value: its colour stays off the mark system
                 col = None
-            moved = (r, c) == (1, 0)
-            empty = (r, c) == (0, 2)  # the original answer
+            moved = (r, c) == (1, 1)
+            empty = (r, c) == (0, 0)  # the original answer
             # a light wash of the route's colour under the text, its full colour on the edge; the moved one dark
             face = to_rgba(col, 0.25) if col else ("white" if empty else "#f5f5f5")
             ax.add_patch(plt.Rectangle((x - w / 2, y), w, h, fc=face, zorder=2,
@@ -1856,11 +1860,12 @@ def routes_drawing(plt, ax, small: bool = False) -> None:
     y0, y1 = rows[0][1], rows[1][1]
     for (r, c), (col, text) in fill.items():
         above = r == 0
-        ax.text(xs[c], y0 + h + 9 if above else y1 - 8, text, ha="center", va="center", fontsize=fs, color=col,
+        # the value's label under the changed prompt's pick sentence, which ends under its box
+        ax.text(xs[c], y0 + h + 9 if above else y1 - 12, text, ha="center", va="center", fontsize=fs, color=col,
                 weight="bold", linespacing=1.0)  # fmt: skip
-    ax.text(xs[2], y0 + h + 9, "original\nanswer", ha="center", va="center", fontsize=fs, color="#7f7f7f",
+    ax.text(xs[0], y0 + h + 9, "original\nanswer", ha="center", va="center", fontsize=fs, color="#7f7f7f",
             weight="bold", linespacing=1.0)  # fmt: skip
-    ax.text(xs[0] + w / 2 + 3, y1 - 17, "the moved sentence:\nfirst place, new number", ha="left", va="center",
+    ax.text(xs[0] - w / 2, y1 - 22, "the moved sentence:\nhelium's place, new number", ha="left", va="center",
             fontsize=fs - 1, color=MOVED_EDGE, linespacing=1.05)  # fmt: skip
 
 
@@ -1870,9 +1875,10 @@ def f04_routes_design(plt) -> None:
     h = 4.6
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "Each route predicts a different locker",
-            "The change at 'goose' comes from the changed prompt's 'rabbit'; the lookup is asked on the original prompt.")  # fmt: skip
+            "The change at 'carbon' comes from the changed prompt's 'oxygen'; the lookup is asked on the original prompt.")  # fmt: skip
     routes_drawing(plt, fig.add_axes((0.12, 0.55 / h, 0.62, 1 - 1.35 / h)))
-    S.fit(fig, fig.text(0.01, 0.18 / h, ROUTES_DEFINED, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555"))
+    S.fit(fig, fig.text(0.01, 0.18 / h, ROUTES_DEFINED + "\nDrawn on Fig. 0's items; the routes test's own scenes are "
+                        "animals.", ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555"))  # fmt: skip
     S.save(fig, "s04_routes_design", supp=True)
 
 
