@@ -1,0 +1,38 @@
+id: x52_atoms_muse
+title: "Batch 52 A on Muse (L26): what is inside the top-25 atoms of the lens part? Forward only: Δ at the edited token at L for 50 random locker-first main-test items (seed 0) and 50 random Z2 passages (seed 0, per reader), the signed K = 25 OMP atoms over the J++ letter dictionary with coefficients and energy shares; no reads, no arms"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x52_atoms.py atoms --delta forward --sets e1,z2 --name muse30_x52_atoms_fwd
+question: >-
+  What do the 25 OMP atoms of the change decode to (the lens part), and is the answer word among them? Muse's lens
+  file is local to the boxes and its weights are gated, so its dictionary (and Z2's Δ on every model) needs the GPU.
+why_it_matters: >-
+  Dan (brief 29 Oct 00:30, part A): it turns "the J++ part" from a procedure into a thing with a name, and answers
+  "what is in the top-25 and is the answer in there?" (Zach's and the mentor's question).
+hypotheses:
+  none: "descriptive; no rule, no prediction (batch 52 part A)"
+decision_rule: >-
+  None: descriptive; the verdict line writes "descriptive; no rule". As computed: items E1 = x49_gain.select_items
+  (the locker-first items of muse30b_x0_necessity at L26: 68), 50 drawn by sorted(random.Random(0).sample(range(68),
+  50)); Z2 = x51_answer.z2_items (muse30_x50_z2's 157 passages, rebuilt and checked id by id), 50 drawn the same way.
+  Δ = h_S - h_O at the edited token at L26 (E1 the bridge word from the lookup's prompts; the recall's Δ computed
+  beside for the identity check; Z2 per reader K / M at the description's last token). Atoms: X0's signed OMP K = 25
+  over JLens.vectors(L, letters) (step for step exp04_brew_parts.signed_omp; asserted against x0_necessity.fit), per
+  atom its rank, token, final coefficient and the rebuilt energy it adds when it enters / ||Δ||^2. Classification and
+  tables run on the CPU afterwards (scripts/x52_atoms.py report).
+controls:
+- "the K = 25 share per item against X0's stored shares.jsonl (muse30b_x0_necessity, same items, same fit)"
+- "the answer atoms among the 25 against 51.12's norms.jsonl (muse30_x51_12_e1_r2) item by item"
+- "E1: max |Δ_lookup - Δ_recall| at the bridge word (the prompts agree through it)"
+n: "E1 50 of 68 locker-first items (26 bridge entities); Z2 50 of 157 passages (44 bridge entities) x 2 readers; 400 forwards"
+seeds: [0]
+notes: >-
+  Batch 52 part A (no Q-line, no seal: descriptive). Writes results/x52_atoms/muse30_x52_atoms_fwd/: manifest.json
+  (before the model loads: pin, switches, code, lens, items picked), items.jsonl, atoms.jsonl, deltas.npz (fp32, ~2.7
+  MB), checks.json. Estimate from the ledger: x51_12_e1_muse_r2 (200 Δ pairs + 3200 reads + K = 25 fits) took 0.062
+  h; this job is 200 Δ pairs (E1, both readers) + 200 (Z2) + four K = 25 fits and no reads: 0.1 h with the load.
