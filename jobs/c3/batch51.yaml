@@ -22,6 +22,7 @@ tests:
   - {id: "51.4", title: "Does the address travel? The swap at the last token", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~0.5 GPU-h each", box: helper}
   - {id: "51.10", title: "Does the intermediate pass through J-space? Read / write statistics per position, per reader", models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b], est: "9B ~1 GPU-h; 27B, Muse ~2 GPU-h each; read statistics ~30 min CPU per model", box: "speedup (9B -> 27B), helper (Muse)", added: "addendum 2, Dan 28 Oct 18:15"}
   - {id: "51.11", title: "What is the address, independent of how we built it? Dimension, agreement of methods, geometry", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "9B ~4.5 GPU-h (parts 1-3), Muse ~2.5 (parts 1-3), 27B ~1 (part 2 only); scene generation ~1 h CPU", box: "helper, after 51.5 and before 51.4; outranks 51.2 and 51.4; minimum if the night runs short: parts 1 and 2 on the 9B", added: "addendum 3, Dan 28 Oct 19:00"}
+  - {id: "51.12", title: "Is it the bridge or the answer that moves through the lens? Answer-direction control on Z2 and on the main test", models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b], est: "~0.3 GPU-h per model per set (Z2: 9B, 27B; main test E1: 9B, 27B, Muse; 47.3: 9B, 27B)", added: "addendum 4, Dan 28 Oct 19:50"}
   - {id: "51.6", title: "Optional: Lightning, the main test", models: [lightning], est: "~2 GPU-h", box: speedup, condition: "only if speedup idles after 02:00"}
 brief: |
   # Batch 51 — launch instruction for the coder agent (Dan, 28 Oct 17:10 Paris)
@@ -219,3 +220,33 @@ addendum_3: |
   ## Dumbest ways to be wrong, to check in the verify pack
 
   The 4- and 8-locker scenes must keep every locker sentence at the same token length (so slots are positions, not lengths); the DAS pairs must hold the answer digit fixed across the pair (a position counterfactual, not a value one); d* must be read on held-out entities, not on the fit half; the midpoint swap's norm must be reported (half of a full swap at 2× is one real change's size, so a null result could be a dose effect — add a 4× midpoint arm); the random R's IIA at k = 2 was 0.30 in 49.8, so the random bar is per k, not one number.
+addendum_4: |
+  Batch 51 — addendum 4 (Dan, 28 Oct 19:50): 51.12 Is it the bridge or the answer that moves through the lens? Answer-direction control on Z2 and on the main test
+
+  Why (from Zach, 19:30). At the description’s last token of a never-named bridge the J++ lens reads the answer about as strongly as the bridge (27B: answer top-1 ~65 %, bridge ~45 %). A lens-part effect at that token can be the answer moving, not the bridge (the confound Neel found in his replication). The same must be checked at our bridge word: if the lens reads the recall’s digit there, the recall’s loss without the J++ part could be the answer going, not the item.
+
+  Design (same items, same layers, ~0.3 GPU-h per model per set).
+
+  Answer directions A: the lens atoms of the answer tokens of O and S for each reader (Z2: the continent / country words, first token; main test: the digits of both readers’ answers, both prompts), plus their obvious variants (leading space, capitalised). Report |A| per item.
+  Arms, each against a same-size random part:
+  without the J++ part (as run);
+  without the J++ part with A projected out of it (remove only the lens directions that are not answer directions);
+  without A only (the answer directions alone, nothing else);
+  without a random part of A’s share.
+  Read, per reader: extra loss beyond random for each arm.
+  Lens readout at the edited token (CPU, cached states): share of items where the lens’s top-1 at that token is the answer, the bridge entity, or neither; on Z2 items and on main-test items, O and S, both readers’ answers.
+
+  Rules, fixed in advance (per model, per reader).
+
+  “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond random.
+  “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1.
+  Else: mixed, report both shares.
+  Apply to: Z2 (9B, 27B; both readers); the main test E1 (9B, 27B, Muse; the recall is the one at risk, the lookup beside); 47.3’s described bridge in locker scenes (9B, 27B).
+
+  What each outcome changes. On Z2: if “answer”, the (a′) verdict is withdrawn and Z2 is re-read as “the answer is already computed at the description’s last token”; our removal there is not a test of the bridge. On E1: if “answer”, the headline wording changes to “the recall’s answer, not the bridge’s identity, travels through the lens part” and the ladder / zeroing results are re-read accordingly; if “entity”, E1 stands and gets this control as its specificity line. Either result goes on the slide.
+
+  Beside: Zach’s three checks on his side (answer directions projected out of his swap, an answer-only swap, layer timing) are the same question with his operation; one figure, both operations, once both land. Also tell Zach the K-final point (his lookup items state a true fact; Z1b / Z2b with the P items are queued).
+
+  Q51.12 (options): entity / answer / mixed — Z2 9B, 27B; E1 recall 9B, 27B, Muse; 47.3 9B, 27B.
+
+  Dumbest ways to be wrong: the answer atoms must be taken from the lens’s letter/digit dictionary used by OMP, not from the unembedding; a digit’s atom may already be among the 25 OMP atoms of Δ (then arm 2 differs from arm 1 by construction; report how many of the 25 are answer atoms per item); for the lookup the digit is also in the prompt, so a lens read of the digit at the bridge word would itself be a finding (report it separately).
