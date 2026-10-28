@@ -2492,3 +2492,56 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     stated where they are reported.
 - **Readings script:** scripts/nn_decomp_read.py applies this note's fixed rule to each decomposition run (writes
   results/nn_swap/RUN/readings.json). It reproduces the 9B's and Lightning's readings already reported.
+
+#### Amendment 58 note 11 (Zach, 2026-10-28 ~18:45 UTC, before any run below; a mechanics smoke ran first on the 9B, 2 items per word: its rows were seen only as the scorers' mechanics check, n = 2, uninformative): bridge or answer; composition failures
+
+- **Why (Zach, 28 Oct, on the plan: bridge vs answer with the layer-timing sweep; failures with readout and repair; Bolt as overnight filler; the second-wording replication of notes 9-10 moved to the very end):**
+  - At the description's last token, where note 9 swaps the never-named bridge, the J++ lens also reads the answer:
+    - top-1 9B 44-50% (chance 3.4%), 27B 64-68%, Lightning 53-64%;
+    - the bridge's top-1 is 35-41 / 40-50 / 32-37% (chance 2.0%).
+  - So note 9's transfer could be the answer moved rather than the bridge: the paper's "smuggled-in answer" confound, and what Neel's own replication found (answer swaps dominate).
+  - paper10's lens part never picks the atoms of the model's own top-10 answer tokens. But other answer forms and nearby words can enter it, and atoms are not orthogonal.
+  - The paper does not explain multi-hop failures. The 9B / 27B / Lightning have 51 / 46 / 65 RM items whose hop 1 and hop 2 alone are right and whose whole question is wrong (cand2; hop 1 by its generated name, as eligibility).
+- **Seen when written:** notes 9-10's results, the readout above, and the counts of the composition split. Nothing from the conditions below.
+- **1. Bridge or answer (scripts/nn_swap.py, new conditions):**
+  - A is the span of the J++ atoms of every first token of every answer in v3: all relations, aliases too, with and without a leading space, as written and lowercased (477 tokens).
+  - C is the span of as many fixed random atoms (seed 6100).
+  - {src}_k10_noans: the transplant with no answer in it. Atoms are never chosen from A, and the change is projected off A. {src}_k10_noansctl: the same with C in place of A.
+  - {src}_ans: the answer alone, h_X + P(h_D - h_X) over X's and D's own answer atoms. {src}_ansctl: the same over as many of C's atoms.
+  - remove_k10_noans: the site's removal without its answer part.
+  - src: insert (D from the neutral sentence) and latent (D's own computed bridge).
+  - **Runs:** each model's band (9B L12-16, 27B L32-40, Lightning L27-33), at the description's last token; RM all eligible; MM and PM capped at 80 (seeded).
+    - Seed 0 (notes 9-10's donors): insert_k10 and latent_k10 (a determinism check against note 9's run), and the new conditions.
+    - Seeds 1 and 2 (new donors, --seed): insert and latent k10 with _rand, _rot and the new conditions; remove_k10, remove_k10_rot, remove_k10_noans.
+  - **Reading** (scripts/nn_ans_read.py; RM, per model and donor, rows pooled over the 3 seeds; not read if k10 < 10):
+    - "the bridge carries it" if noans >= 2/3 of k10;
+    - "the answer carries it" if noans <= 1/3 of k10 and noansctl >= 2/3 of k10;
+    - otherwise "mixed".
+    - The answer alone "suffices" if ans >= 2/3 of k10 with ansctl < 10. It is reported beside, not as a verdict on the bridge.
+    - Necessity without the answer: the kept share under remove_k10_noans, beside remove_k10 and remove_k10_rot.
+    - MM and PM are reported the same way.
+- **2. Timing (the paper's control; nn_swap --sweep, seed 0):**
+  - Windows: note 9's sweep windows (9B 4-7, 8-11, 12-16, 17-20, 21-24, 25-28; 27B 8-15, 16-23, 24-31, 32-40, 41-48, 49-56, 57-62; Lightning 6-10, 11-15, 16-20, 21-26, 27-33, 34-39, 40-45, 46-50).
+  - Conditions: insert_k10, insert_k10_noans, insert_ans, latent_k10, latent_k10_noans, latent_ans, insert_k10_rand.
+  - Items: RM and PM, 80 per word (seeded).
+  - **Reading:** each condition's onset is the first window with transfer >= 10. "The bridge acts before the answer" if noans's onset is at least one window earlier than ans's, per donor. (The paper: intermediate swaps act a median ~17% earlier in depth than answer swaps.)
+- **3. Composition failures:**
+  - **Items:** RM items with hop 1 and hop 2 alone right, split by the whole question into ok (112 / 135 / 196) and fail (51 / 46 / 65).
+  - **a. Readout** (nn_readout --items composition; per-item ranks written):
+    - What is read: the J++ lens and the logit lens, the bridge and the answer, at the description's end and the final token, every 2nd layer.
+    - Reading (scripts/nn_fail_read.py), at the description's end: each item's top-1 share over the band's read layers. "The bridge is missing in failures" if ok - fail >= 10 points with a 95% bootstrap interval over bridges above 0 (J++). The same is applied to the answer, with the logit lens reported beside.
+  - **b. Repair** (nn_swap --items fail; the band, the description's last token):
+    - Conditions:
+      - repair_k10: X's own lens part, from the neutral sentence about X;
+      - its controls, repair_k10_rand and repair_k10_rot;
+      - repair_k10_noans;
+      - repair_full (the whole neutral state; a ceiling);
+      - insert_k10: another bridge's lens part (entity-specific control).
+    - Fix rate: the share answering X's answer.
+    - Reading:
+      - "writing the bridge into the workspace repairs composition" if repair_k10 minus the largest of its controls (rand, rot, insert_k10's rate of X's answer) is >= 20 points with a 95% bootstrap interval over bridges above 0;
+      - "through the bridge, not the answer" if repair_k10_noans >= 2/3 of repair_k10.
+- **4. Bolt (overnight filler only, after 1-3, if both GPUs are free):**
+  - Note 9's sweep: insert_k10 and insert_k10_rand; RM, MM, PM at 80 per word; windows of 6 from L6 to L83; scene words RM MM PM (note 10 addendum).
+  - Reading: a window where PM's transfer is >= 20 with random < 10 is "a window where Bolt's lens part carries a named bridge". RM's transfer there is read by note 9's rule.
+- **Order:** 1 and 3a first (27B on GPU 0; 9B, then Lightning, on GPU 1), then 2, 3b, and 4 overnight. The second-wording replication of notes 9-10 comes at the very end (Zach).

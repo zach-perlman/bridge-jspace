@@ -29,11 +29,24 @@ jswap):
   rem_{src}         h_X + D - P_S D        (the remainder only)
   remfix_{src}      h_D - P_S h_D + P_S h_X_clean   (the remainder, the site's lens part held at its clean value)
   lensrand_{src}    h_X + P_R D, R a fixed random 20-dim subspace (control)
+  note 11, bridge or answer: A = the span of the J++ atoms of every form of every answer in the v3 set (all relations);
+  C = the span of as many fixed random atoms (control)
+  {src}_k{k}_noans     the transplant with no answer in it: atoms never chosen from A, and the change projected off A:
+                       h_X + (I - P_A)(Jk'(h_D) - Jk'(h_X))
+  {src}_k{k}_noansctl  the same with C in place of A
+  {src}_ans            the answer alone: h_X + P_{A_XD}(h_D - h_X), A_XD the span of X's and D's own answer atoms
+  {src}_ansctl         the same over as many fixed random atoms
+  remove_k{k}_noans    h_X - (I - P_A) Jk'(h_X)
+  note 11, composition failures (--items fail: RM items whose hop 1 and hop 2 alone are right, the whole wrong):
+  repair_k{k}          X's own lens part written in, from the neutral sentence about X: h_X - Jk(h_X) + Jk(h_Xn)
+  repair_k{k}_rand / _rot / _noans    as the transplant's controls, with X's neutral state as the donor
+  repair_full          h_Xn (the whole neutral state)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
-- third, 95% bootstrap over bridges (jswap.score), per word.
+- third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
 
 python scripts/nn_swap.py --name N --why W --band 12-16 --competence C [--words RM MM PM] [--site last|span]
-       [--ks 10] [--conds ...] [--sweep 4-8 8-12 ...] [--sample-per-word 0] [--batch 8] [--limit 0]
+       [--ks 10] [--conds ...] [--sweep 4-8 8-12 ...] [--sample-per-word 0] [--batch 8] [--limit 0] [--seed 0]
+       [--items eligible|fail]
 """
 
 from __future__ import annotations
@@ -65,6 +78,7 @@ from scripts.jswap_pointer import NEUTRAL  # noqa: E402
 RES = pins.RESULTS_DIR / "nn_swap"
 SEED_RAND = 5800  # + layer: the random k-dim subspaces
 SEED_NULL = 5900  # + layer: clamp_null's direction
+SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer atoms (noansctl, ansctl)
 
 
 def conds_for(ks: list[int]) -> list[str]:
@@ -83,8 +97,47 @@ def name_token(model, tok, name: str) -> int:
         return S.ids(tok, " " + name)[0]
 
 
+def answer_tokens(tok, items: dict) -> list[int]:
+    """Note 11: every first token of every answer in the v3 set (all relations, aliases too), with and without a leading
+    space, as written and lowercased."""
+    vals = {(w, it["kind"]) for it in items.values() if it.get("module") == "facts"
+            for v in {*it.get("answer_vocab", []), *(it.get("answer_aliases") or [])} for w in (v, v.lower())}  # fmt: skip
+    out = set()
+    for w, kind in vals:
+        out |= JS.forms(tok, w, kind) | {S.ids(tok, " " + w)[0], S.ids(tok, w)[0]}
+    return sorted(out)
+
+
+def build_prompt(tok, it: dict, set_name: str) -> dict:
+    """Note 11: one item's whole question as ablate_v2.tasks_prompts builds it (kind 'clean', the natural branch), for
+    items outside the eligible set; checked equal to tasks_prompts on eligible items in the smoke."""
+    from scripts.ablate_v2 import natural_vocab
+
+    q, ans, k = it["question"], it["answer"], it["kind"]
+    ids = S.ids(tok, T.render(tok, {**it, "_question": q, "_kind": k})) + (S.ids(tok, " ") if k == "digit" else [])
+    p = {"family": it["word"], "id": it["id"], "kind": "clean", "ids": ids, "tok": S.answer_token(tok, ans, k),
+         "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]}  # fmt: skip
+    vocab = it.get("answer_vocab") or natural_vocab(set_name)[(it["domain"], "answer")]
+    both = lambda v: {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k)}  # noqa: E731
+    ok2 = both(ans)
+    p["cands"] = sorted({S.answer_token(tok, v, k) for v in vocab} | {p["tok"]})
+    p["ok2"] = sorted(ok2)
+    p["cands2"] = sorted({t for v in vocab for t in both(v)} | ok2)
+    return p
+
+
+def composition_split(comp: str) -> dict[str, str]:
+    """Note 11: RM item id -> 'ok' (hop 1, hop 2 and the whole right) or 'fail' (both hops right, the whole wrong), from
+    the model's v3 competence run (cand2, hop 1 by its generated name, as eligibility)."""
+    parts: dict = collections.defaultdict(dict)
+    for line in (pins.RESULTS_DIR / "tasks_v2" / comp / "items.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        parts[r["id"]][r["part"]] = bool(r["correct"])
+    return {i: ("ok" if d.get("whole") else "fail") for i, d in parts.items() if ":RM-" in i and d.get("step1") and d.get("step2")}
+
+
 @torch.no_grad()
-def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str], tag: str, rows: list, t0: float) -> None:
+def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str], tag: str, rows: list, t0: float, ans_tok: list[int]) -> None:
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
@@ -95,6 +148,22 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
     rot = {la: rotation(d, JS.SEED_ROT + la) for la in band}
     rand = {la: rotation(d, SEED_RAND + la) for la in band}  # first k columns: an orthonormal random k-subspace
     null = {la: rotation(d, SEED_NULL + la)[:, 0] for la in band}
+    # note 11: the answer atoms A (every answer form in the set) and as many fixed random atoms C (control)
+    a_rows = torch.unique(row_of[torch.tensor(ans_tok, device="cuda")])
+    a_rows = a_rows[a_rows >= 0]
+    g = torch.Generator().manual_seed(SEED_CTL)
+    others = torch.tensor(sorted(set(range(letters.numel())) - set(a_rows.tolist())))
+    c_rows = others[torch.randperm(len(others), generator=g)[: len(a_rows)]].to("cuda")
+
+    def basis(D, rws: torch.Tensor) -> torch.Tensor:  # an orthonormal basis [d, r] of the atoms' span (rank-revealing)
+        U, sv, _ = torch.linalg.svd(D.atoms(rws).T.double(), full_matrices=False)
+        return U[:, sv > sv[0] * 1e-6].float()
+
+    qa, qc = {}, {}
+    if any(c.endswith(("_noans", "_noansctl")) for c in conds):
+        for la in band:
+            qa[la], qc[la] = basis(dic[la], a_rows), basis(dic[la], c_rows)
+        print(f"[{tag}] note 11: {len(a_rows)} answer atoms (rank {qa[band[0]].shape[1]}), control rank {qc[band[0]].shape[1]}", flush=True)
 
     def forward(ids, hook_fn, record=False):
         rec = {}
@@ -120,6 +189,8 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
     for j in jobs:
         need[("insert", j["d"], j["kind_"], j["format_"])] = j["neutral"]
         need[("latent", j["lat_id"])] = (j["lat_ids"], j["lat_pos"])
+        if "self_neutral" in j:  # note 11: X's own neutral state (repair_*)
+            need[("insert", j["x"], j["kind_"], j["format_"])] = j["self_neutral"]
     vec = {}
     by_len = collections.defaultdict(list)
     for key, (ids, _pos) in need.items():
@@ -156,6 +227,36 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             ins = torch.stack([vec[("insert", chunk[b]["d"], chunk[b]["kind_"], chunk[b]["format_"])] for b in bi.tolist()])  # [m, L, d]
             lat = torch.stack([vec[("latent", chunk[b]["lat_id"])] for b in bi.tolist()])
             groups = [((bi == b).nonzero().squeeze(1), prot[b]) for b in range(len(chunk)) if prot[b].numel()]
+            # note 11: atom choice also never from A (noans) or C (noansctl); X's and D's own answer atoms (ans), and as
+            # many of C's atoms (ansctl); X's own neutral state (repair_*)
+            groups_a = [((bi == b).nonzero().squeeze(1), torch.cat([prot[b], a_rows])) for b in range(len(chunk))]
+            groups_c = [((bi == b).nonzero().squeeze(1), torch.cat([prot[b], c_rows])) for b in range(len(chunk))]
+            own = [sorted({int(row_of[t]) for t in (*j["fx"], *j["fd"]) if int(row_of[t]) >= 0}) for j in chunk]
+            width = max(1, max(len(o) for o in own))
+            own_idx = torch.tensor([o + [0] * (width - len(o)) for o in own], device="cuda")[bi]
+            own_mask = torch.tensor([[1] * len(o) + [0] * (width - len(o)) for o in own], device="cuda")[bi]
+            ctl_idx = c_rows[:width][None].expand(len(chunk), -1)[bi]
+            selfv = torch.stack([vec[("insert", chunk[b]["x"], chunk[b]["kind_"], chunk[b]["format_"])] for b in bi.tolist()]) if any(
+                c.startswith("repair") for c in conds) else None  # fmt: skip
+
+            def note11(cond: str, la: int, li: int, hx: torch.Tensor) -> torch.Tensor:
+                src, rest = cond.split("_")[0], cond.split("_")[1:]
+                hd = None if src == "remove" else (ins if src == "insert" else lat if src == "latent" else selfv)[:, li]
+                if rest[0] in ("ans", "ansctl"):  # the answer alone (or as many random atoms)
+                    return hx + JS.span_proj(dic[la], hd - hx, own_idx if rest[0] == "ans" else ctl_idx, own_mask)
+                if rest[0] == "full":  # repair_full
+                    return hd
+                kk, suf = int(rest[0][1:]), (rest[1] if len(rest) > 1 else "")
+                if suf in ("noans", "noansctl"):
+                    G, Q = (groups_a, qa[la]) if suf == "noans" else (groups_c, qc[la])
+                    rx = top_span_removal(dic[la], hx, kk, protected=G)
+                    e = -rx if src == "remove" else top_span_removal(dic[la], hd, kk, protected=G) - rx
+                    return hx + e - (e @ Q) @ Q.T
+                if suf == "rand":  # repair_k_rand
+                    Q = rand[la][:, :kk]
+                    return hx - (hx @ Q) @ Q.T + (hd @ Q) @ Q.T
+                rx, rd = top_span_removal(dic[la], hx, kk, protected=groups), top_span_removal(dic[la], hd, kk, protected=groups)
+                return hx + (rd - rx) @ rot[la].T if suf == "rot" else hx - rx + rd  # repair_k / repair_k_rot
             # the clamp: X's and D's unit J-lens name vectors per item and layer; clean coordinates swapped
             clamp_atoms, clamp_pinv, clamp_tgt = {}, {}, {}
             if any(c.startswith("clamp") for c in conds):
@@ -178,6 +279,9 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         delta[:, 0] = 0  # position 0 (the attention sink) is never edited, as SwapClamp
                         delta[~ok_rows] = 0
                         return (h.float() + delta).to(h.dtype)
+                    if cond.startswith("repair") or cond.split("_")[-1] in ("noans", "noansctl", "ans", "ansctl"):  # note 11
+                        h[bi, xi] = note11(cond, la, li, h[bi, xi].float()).to(h.dtype)
+                        return h
                     if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand"):  # note 10: the paper's decomposition
                         kind, src = cond.split("_")
                         hx = h[bi, xi].float()
@@ -239,12 +343,19 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
                                                        "bands": [f"{b[0]}-{b[-1]}" for b in bands], "set": a.set, "competence": a.competence, "words": a.words,
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
-                                                       "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)", "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer"},
+                                                       "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",
+                                                                 "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer", "ctl": SEED_CTL},
+                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words,
                                                        "git_commit": commit, "git_state": pins.git_state(), "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ")}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
     prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, list(a.words), a.scene_words) if p["family"] in a.words]
+    targets = prompts
+    if a.items == "fail":  # note 11: RM items whose hops alone are right and the whole wrong; donors stay the eligible ones
+        split = composition_split(a.competence)
+        targets = [build_prompt(tok, items[i], a.set) for i, s in sorted(split.items()) if s == "fail" and items[i]["word"] in a.words]
+        print(f"note 11: {len(targets)} composition failures (both hops right, the whole wrong); {sum(s == 'ok' for s in split.values())} successes", flush=True)
     rm_by = collections.defaultdict(list)  # (relation, bridge) -> eligible RM prompts (latent donors)
     for p in prompts:
         if p["family"] == "RM":
@@ -253,7 +364,7 @@ def main(a) -> None:
             if pos:
                 rm_by[(it["relation"], it["bridge"])].append((p, pos[-1]))
     jobs = []
-    for p in prompts:
+    for p in targets:
         it = items[p["id"]]
         x, rel, kind = it["bridge"], it["relation"], it["kind"]
         t = JS.table(it)
@@ -272,7 +383,7 @@ def main(a) -> None:
             sites = pos if a.site == "span" else pos[-1:]
         if not sites:
             continue
-        rng = random.Random(p["id"])
+        rng = random.Random(p["id"] if not a.seed else f"{a.seed}:{p['id']}")  # note 11: --seed draws other donors
         ok_name = lambda e: not (e.lower().startswith(x.lower()) or x.lower().startswith(e.lower()))  # noqa: E731
         tx = name_token(model, tok, x)  # the clamp needs distinct name directions: no donor whose name token is X's
         donors = sorted(b for (r, b) in rm_by if r == rel and b != x and ans(b) != ax and ok_name(b) and name_token(model, tok, b) != tx)
@@ -290,6 +401,14 @@ def main(a) -> None:
         jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
                      "lat_id": lat_p["id"], "lat_ids": lat_p["ids"], "lat_pos": lat_pos, "tx": tx, "td": name_token(model, tok, dn),
                      "fx": JS.forms(tok, ax, kind), "fd": JS.forms(tok, ans(dn), kind), "ft": JS.forms(tok, at, kind), "ax": ax, "ad": ans(dn), "at": at})  # fmt: skip
+        if any(c.startswith("repair") for c in conds):  # note 11: X's own neutral sentence
+            stext = T.render(tok, {"framing": "chat", "context": NEUTRAL.format(x), "question": "Has anyone else heard about this?", "kind": kind, "format": it["format"]})
+            sids = S.ids(tok, stext)
+            spos = JS.spans(bridge_positions(tok, sids, x))
+            if not spos:
+                jobs.pop()
+                continue
+            jobs[-1]["self_neutral"] = (sids, spos[0])
     per = collections.defaultdict(list)
     for j in jobs:
         per[j["family"]].append(j)
@@ -305,8 +424,9 @@ def main(a) -> None:
           f"by relation {dict(collections.Counter(j['rel'] for j in jobs))}; bands {[f'{b[0]}-{b[-1]}' for b in bands]}; conditions {conds}", flush=True)  # fmt: skip
     lens = JLens(model, pins.FROZEN_LENS)
     rows, t0 = [], time.time()
+    ans_tok = answer_tokens(tok, items)
     for band in bands:
-        run_band(a, model, tok, lens, items, jobs, band, conds, f"L{band[0]}-{band[-1]}", rows, t0)
+        run_band(a, model, tok, lens, items, jobs, band, conds, f"L{band[0]}-{band[-1]}", rows, t0, ans_tok)
     (out_dir / "rows.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     summ = {}
     for tag in sorted({r["band"] for r in rows}):
@@ -335,6 +455,8 @@ if __name__ == "__main__":
     ap.add_argument("--scene-words", nargs="+", default=None, help="note 10: eligibility words (default note 4's V3 scene words)")
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--seed", type=int, default=0, help="note 11: 0 = notes 9-10's donors; s > 0 draws donors with random.Random('s:' + id)")
+    ap.add_argument("--items", choices=["eligible", "fail"], default="eligible", help="note 11: fail = composition failures (RM)")
     a = ap.parse_args()
     assert a.band or a.sweep, "--band or --sweep"
     main(a)

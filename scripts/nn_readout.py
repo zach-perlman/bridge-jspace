@@ -11,8 +11,11 @@ first token with another bridge of their relation (Qwen: people 25/63, landmarks
 true candidate (rank = the number of candidates scoring at least as high): the bridge read is conservative.
 Reading (note 9): "bridge visible" if X is the top bridge at >= 3x chance at some layer, before the layer where the
 attribute's top-1 rate first peaks.
+--items composition (note 11): instead, RM items whose hop 1 and hop 2 alone are right, as RM_ok (the whole right too)
+and RM_fail (the whole wrong), the same reads; per-item ranks are written to rows.jsonl (scripts/nn_fail_read.py).
 
 python scripts/nn_readout.py --name N --competence C [--set jsuite_v3_test_chat] [--every 2] [--batch 16]
+       [--items eligible|composition]
 """
 
 from __future__ import annotations
@@ -55,7 +58,13 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
                                                        "competence": a.competence, "layers": layers, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, ["RM", "MM"]) if p["family"] in ("RM", "MM")]
+    if a.items == "composition":  # note 11: successes vs failures among RM items whose hops alone are right
+        from scripts.nn_swap import build_prompt, composition_split
+
+        split = composition_split(a.competence)
+        prompts = [{**build_prompt(tok, items[i], a.set), "family": f"RM_{s}"} for i, s in sorted(split.items())]
+    else:
+        prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, ["RM", "MM"]) if p["family"] in ("RM", "MM")]
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
@@ -86,7 +95,7 @@ def main(a) -> None:
             if not pos:
                 continue
             jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
-                         "bx": bvals.index(it["bridge"]), "ax": avals.index(it["real"]), "rel": it["relation"]})  # fmt: skip
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(it["real"]), "rel": it["relation"], "bridge": it["bridge"]})  # fmt: skip
     if a.limit:  # a smoke: the first N prompts per family
         per = collections.defaultdict(list)
         for j in jobs:
@@ -94,6 +103,7 @@ def main(a) -> None:
         jobs = [j for v in per.values() for j in v[: a.limit]]
     print(f"{len(jobs)} prompts; by family {dict(collections.Counter(j['family'] for j in jobs))}; layers {layers}", flush=True)
     stats = collections.defaultdict(list)
+    item_rows = []
     by_len = collections.defaultdict(list)
     for j in jobs:
         by_len[len(j["ids"])].append(j)
@@ -123,6 +133,9 @@ def main(a) -> None:
                                 # conservative: a tie (bridges sharing a first token) counts against the true candidate
                                 rank = int((cand >= cand[true]).sum())
                                 stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
+                                if a.items == "composition":
+                                    item_rows.append({"id": j["id"], "family": j["family"], "rel": j["rel"], "bridge": j["bridge"], "site": site,
+                                                      "lens": ln, "what": what, "layer": la, "rank": rank, "k": len(rws)})  # fmt: skip
     summ = {}
     for (fam, site, ln, what, la), xs in sorted(stats.items()):
         summ[f"{fam}/{site}/{ln}/{what}/L{la}"] = {"n": len(xs), "top1": round(100 * sum(t for t, _, _ in xs) / len(xs), 1),
@@ -142,6 +155,8 @@ def main(a) -> None:
                                       "bridge_best": max(c["top1"] for _, c in br), "attr_best": max(c["top1"] for _, c in at)}  # fmt: skip
     summ["reading"] = reading
     (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
+    if item_rows:
+        (out_dir / "rows.jsonl").write_text("".join(json.dumps(r) + "\n" for r in item_rows))
     for fam in sorted({j["family"] for j in jobs}):
         for site in ("desc_end", "final"):
             line = f"{fam:8s} {site:8s}"
@@ -161,4 +176,5 @@ if __name__ == "__main__":
     ap.add_argument("--every", type=int, default=2)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0, help="first N prompts per family (a smoke)")
+    ap.add_argument("--items", choices=["eligible", "composition"], default="eligible", help="note 11: RM_ok vs RM_fail")
     main(ap.parse_args())
