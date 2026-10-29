@@ -447,6 +447,28 @@ decisions_1155: |
   (Option A, as sent by the coordinator: "the largest model's lookup loses nothing beyond random (0.00 at k = 25;
   -0.12 at k = 100, where the 27B loses 0.60), so the 27B's weakness is not a total-size trend; active parameters are
   not separated".)
+decisions_1210_received: "29 Oct ~12:16 Paris (Dan)"
+decisions_1210: |
+  Two decisions (Dan, 12:10):
+  1. 53.7 (the pointer in code): its question is the lookup's pointer, so use
+     a lookup-only gate (the lookup says and reads O and S right, >= 0.80) for
+     the address probe, the routes test and the monitor in the code and tool
+     formats. Decided now, before any 53.7 routes or probe result is opened;
+     label "adapted design: lookup-only gate; the recall is not part of this
+     test". The recall columns are reported descriptively. Rerun the 9B probe
+     verdict on CPU under this gate if its outcomes allow; else rerun.
+  2. 53.6 across models: record "does not hold as written (every model 'both')";
+     beside it, descriptive: "the recall moves under both levers on the 9B and
+     Lightning (0.25-0.30 each), barely on the 27B and Muse (<= 0.11), the same
+     split as the address swap's collateral". One flag: the 53.6 labels ignore
+     magnitude (a rule design issue, mine).
+decisions_1210_coordinator_note: >-
+  Disclosure (coordinator): before this decision the coordinator had pulled and read both 53.7 address-probe box
+  verdicts and reported them to Dan (~12:05-12:15): the 9B's code format failed X0's two-reader gate on the recall
+  (0.727; lookup 0.828) and its tool format passed; the 27B passed both formats (locker sentence, locker before the
+  pick: code 0.95, tool 0.99). No 53.7 routes or monitor result had been opened. The 53.7 jobs still pending at 12:16
+  use the two-reader gate and are cancelled and re-queued under the lookup-only gate; the two routes runs already
+  running finish under the old gate and are kept as run, superseded, not cited.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
