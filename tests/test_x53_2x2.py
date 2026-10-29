@@ -369,7 +369,8 @@ def test_qa_num_matches_the_stored_main_test(tok):
     E1 and the agreement check): the same scenes dropped and kept, the same ids and bridge positions."""
     from scripts import x45b_binding as B
 
-    src = X.RESULTS / B.MAIN_RUN.get(X.pins.TARGET, "-") / "cases.jsonl"
+    src = X.RESULTS / T2.main_runs().get(X.pins.TARGET, "-") / "cases.jsonl"
+    assert B.MAIN_RUN.items() <= T2.main_runs().items()  # x45b_binding's runs kept, the 122B's added
     if not src.exists():
         pytest.skip(f"no stored main test for {X.pins.TARGET}")
     stored = {c["scene"]: c for c in X.read_jsonl(src) if c["rendering"] == "chat"}

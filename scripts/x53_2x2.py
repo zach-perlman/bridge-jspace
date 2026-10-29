@@ -118,15 +118,28 @@ CELL_TEXT = {"qa_num": "(Q-after, number)", "qb_num": "(Q-before, number)", "qa_
 NUMBER_CELLS, WORD_CELLS = CELLS[:2], CELLS[2:]
 # Dan 10:20 (batch53.yaml decision_531_words): the number cells now, the word cells later in a run of their own
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "muse-glimmer-30b": "muse30_x53_2x2",
-        "nemotron-3.5-lightning": "nem35l_x53_2x2"}  # fmt: skip
+        "nemotron-3.5-lightning": "nem35l_x53_2x2", "qwen3.5-122b-a10b": "qwen35_122b_x53_2x2"}  # fmt: skip
+# the stored main test per model ((Q-after, number) is checked against it): x45b_binding.MAIN_RUN, and the 122B's X0 r2
+# at L33 (Dan 11:30, q122b_1130: 53.1 (Q-before, number) on the 122B); x45b_binding itself is left as it is
+MAIN_RUN_122B = {"qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}
+
+
+def main_runs() -> dict[str, str]:
+    from scripts import x45b_binding as B
+
+    return {**B.MAIN_RUN, **MAIN_RUN_122B}
+
+
 # Dan 11:10 (batch53.yaml next_1110): "Stop: the 53.1 word cells (the wording fails)"; Muse and Lightning have none
 WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2_words", "qwen3.6-27b": "x53_2x2_words_27b"}
 WORDS_STOPPED = "stopped (Dan 11:10: the wording fails)"
-# the verdict's models: the 9B and the 27B (Dan 10:20), Muse and Lightning's number cells (Dan 11:10, item 3)
-MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+# the verdict's models: the 9B and the 27B (Dan 10:20), Muse and Lightning's number cells (Dan 11:10, item 3), the 122B's
+# (Dan 11:30, item 3)
+MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "qwen3.5-122b-a10b", "muse-glimmer-30b", "nemotron-3.5-lightning")
 MODEL_SHORT = {
     "qwen3.5-9b": "9B",
     "qwen3.6-27b": "27B",
+    "qwen3.5-122b-a10b": "122B",
     "muse-glimmer-30b": "Muse",
     "nemotron-3.5-lightning": "Lightning",
 }
@@ -691,9 +704,7 @@ def run_cell(model, lens, cell: str, items: list[dict], layer: int, out: Path, w
                                  **row, "sw": row["switched"]})  # fmt: skip
     X.write_jsonl(out / "outcomes.jsonl", rows)
     if cell == "qa_num":  # the main test as is: arm 1 against the stored X0 run item by item, where one exists
-        from scripts import x45b_binding as B
-
-        src = X.RESULTS / B.MAIN_RUN.get(pins.TARGET, "-")
+        src = X.RESULTS / main_runs().get(pins.TARGET, "-")
         if (src / "outcomes.jsonl").exists():
             agree = A51.agreement("e1", rows, A51.stored_rows("e1", src, layer))
             (out / "agreement.json").write_text(json.dumps({"stored_run": src.name, **agree}, indent=1) + "\n")
