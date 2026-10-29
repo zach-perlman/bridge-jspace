@@ -1,0 +1,878 @@
+{
+ "run": "nem35l_x52_routes_x47_1",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "nem35l_x52_routes_x47_1",
+  "written_utc": "2026-10-29T01:05:16Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "nemotron-3.5-lightning",
+   "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+   "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat",
+   "kernels": "hub"
+  },
+  "switches": {
+   "target": "nemotron-3.5-lightning",
+   "BJ_DEVICE_MAP": "",
+   "BJ_PREDICTED_LAYER": "14",
+   "BJ_SUITE_BATCH": "16",
+   "BJ_TARGET": "nemotron-3.5-lightning",
+   "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+   "sha": "7680e973970cdae337e73df91b74f1da40ba3d3e",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "local",
+    "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+    "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+   ],
+   "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "layer": 14,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "identity": false,
+  "alf_from": "nem35l_x52_probe",
+  "c0_min": null,
+  "fixed_layer": 14,
+  "c0_reference": {
+   "run": null,
+   "lookup_switch": null,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "rendering": "chat",
+  "read": "chat (the top token after a space)",
+  "prepend": [],
+  "identity_controls": false,
+  "sealed": false,
+  "x45k": {
+   "ks": [
+    25,
+    100
+   ],
+   "other": false,
+   "other_k": null,
+   "arms": {
+    "jpp25": [
+     "no_jpp",
+     "no_jpp_rand"
+    ],
+    "jpp100": [
+     "no_jpp100",
+     "no_jpp100_rand"
+    ]
+   },
+   "omp": "signed (X.fit); the geometry over x0_parts.omp_atoms' first k picks at the largest k",
+   "partner_rule": "x0_parts.partners within the scene's condition: the first scene of a seeded order whose bridge pair shares no bridge with it",
+   "partner_seed": 0,
+   "geometry": "per item and k: ||P_span(atoms) U||_F^2 / rank(U) (U: the pointer directions) and ||P_span(atoms) u||^2 / ||u||^2 (u = mu_alt - mu_org, x0_massmean.entity_means; None where an entity has no class mean, the scene kept)",
+   "no_identity_mean": {
+    "C2": 0
+   }
+  },
+  "x47_1": {
+   "test": "47.1",
+   "spec": "jobs/c3/batch47.yaml",
+   "question": "Q47.1 (predictions/2026-10-28_dan.md)",
+   "k_keep": 25,
+   "k_all": 100,
+   "omp": "signed (X.fit); atoms in OMP order (x0_parts.omp_atoms), the first 25 being the k = 25 picks",
+   "parts": {
+    "jpp26_100": "P100 \u0394 - P25 \u0394 (X.fit at 100 minus at 25): atoms 26-100's span projected off atoms 1-25",
+    "ratoms75own": "\u0394's component in the span of 75 random letter-token lens atoms (outside the item's 100 OMP picks) projected off atoms 1-25",
+    "ratoms75": "ratoms75own scaled to jpp26_100's share of ||\u0394||^2 (alpha per item)"
+   },
+   "random_atoms_seed": "4701 and the scene id (x47_atoms.random_atoms)",
+   "random_parts": "X0's random subspace at each part's share of ||\u0394||^2, seed 888 + layer",
+   "sealed": "no verdict in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.1",
+   "arms": [
+    "no_jpp26_100",
+    "no_jpp26_100_rand",
+    "no_ratoms75",
+    "no_ratoms75_rand",
+    "no_ratoms75own",
+    "no_ratoms75own_rand"
+   ]
+  },
+  "items": {
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.43333333333333335,
+     0.37298902719853977,
+     0.4917531801723861
+    ],
+    "position": [
+     0.5633333333333334,
+     0.5037871667805879,
+     0.6245736623088
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0033333333333333335,
+     0.0,
+     0.010638297872340425
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7766666666666666,
+     0.7254885343968096,
+     0.8215488215488216
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.37,
+     0.31596091205211724,
+     0.4239159241050852
+    ],
+    "position": [
+     0.57,
+     0.5119443767267999,
+     0.6313868613138686
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.06,
+     0.026022304832713755,
+     0.10303088133240804
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.58,
+     0.4920622242507226,
+     0.6647411055930961
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.4066666666666667,
+     0.3482750358047813,
+     0.4671539892342812
+    ],
+    "position": [
+     0.47,
+     0.4085587218025991,
+     0.5322604364326375
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.12333333333333334,
+     0.09036144578313253,
+     0.16151202749140894
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7466666666666667,
+     0.6801344187213753,
+     0.8014705882352942
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_alf",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.30666666666666664,
+     0.26345405052518683,
+     0.3506512328251458
+    ],
+    "position": [
+     0.10333333333333333,
+     0.0702326468344775,
+     0.13804899826999273
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.59,
+     0.5328947368421053,
+     0.6490566037735849
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.6366666666666667,
+     0.568179607357623,
+     0.7025320938071502
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_alf_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.41333333333333333,
+     0.3464052287581699,
+     0.4767461111966733
+    ],
+    "position": [
+     0.5666666666666667,
+     0.49785722590396464,
+     0.6377383987761346
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.02,
+     0.006872852233676976,
+     0.03413048777902613
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7466666666666667,
+     0.6832051621192653,
+     0.8007918392319275
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp100",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.24,
+     0.19682142857142856,
+     0.28524590163934427
+    ],
+    "position": [
+     0.43333333333333335,
+     0.38235294117647056,
+     0.4851857330703484
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.32666666666666666,
+     0.27444438967753243,
+     0.3818770226537217
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.31,
+     0.22962907015777106,
+     0.3851357320217744
+    ]
+   },
+   "used": [
+    "identity",
+    "position",
+    "original"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp100_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.16,
+     0.10948767387412203,
+     0.20886184324605514
+    ],
+    "position": [
+     0.15,
+     0.10869413830689112,
+     0.1969114939114939
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.69,
+     0.6375384976388114,
+     0.7422696224147746
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.3566666666666667,
+     0.27402135231316727,
+     0.4364275160347896
+    ]
+   },
+   "used": [
+    "original"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp26_100",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.37,
+     0.31320630585898707,
+     0.4275624466918484
+    ],
+    "position": [
+     0.54,
+     0.48398576512455516,
+     0.5958904109589042
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.09,
+     0.05519424540976265,
+     0.1292517006802721
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7066666666666667,
+     0.630993214294559,
+     0.7721528349936334
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp26_100_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.4166666666666667,
+     0.35276502698343776,
+     0.48042935711974855
+    ],
+    "position": [
+     0.51,
+     0.44057515116613877,
+     0.5796736854350861
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.07333333333333333,
+     0.044444444444444446,
+     0.10852776927784577
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7533333333333333,
+     0.6889760487714955,
+     0.8071905268131349
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_ratoms75",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.4166666666666667,
+     0.35782545110921116,
+     0.47315756442440693
+    ],
+    "position": [
+     0.5733333333333334,
+     0.5168909429092013,
+     0.6328827165984698
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.01,
+     0.0,
+     0.02631578947368421
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7533333333333333,
+     0.683330745341615,
+     0.8141303770578863
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_ratoms75_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.4166666666666667,
+     0.35276502698343776,
+     0.48042935711974855
+    ],
+    "position": [
+     0.51,
+     0.44057515116613877,
+     0.5796736854350861
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.07333333333333333,
+     0.044444444444444446,
+     0.10852776927784577
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7533333333333333,
+     0.6889760487714955,
+     0.8071905268131349
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_ratoms75own",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.44333333333333336,
+     0.3787375415282392,
+     0.5081446574464676
+    ],
+    "position": [
+     0.5533333333333333,
+     0.4877176738141651,
+     0.6194976494504796
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0033333333333333335,
+     0.0,
+     0.010638297872340425
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7733333333333333,
+     0.7195111889237704,
+     0.8206121371725562
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  },
+  {
+   "condition": "C2",
+   "arm": "no_ratoms75own_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.43333333333333335,
+     0.3760327763640868,
+     0.4879523247629694
+    ],
+    "position": [
+     0.5633333333333334,
+     0.5078724778543307,
+     0.6216236030752159
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0033333333333333335,
+     0.0,
+     0.010638297872340425
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.77,
+     0.7174663504678888,
+     0.8156028368794326
+    ]
+   },
+   "used": [
+    "identity",
+    "position"
+   ],
+   "median_norm": 15.18335
+  }
+ ],
+ "extra": [],
+ "ctrl": [],
+ "x45k": {
+  "shares": {
+   "C2": {
+    "n": 300,
+    "entities": 30,
+    "arms": {
+     "whole": {
+      "identity": [
+       0.43333333333333335,
+       0.37298902719853977,
+       0.4917531801723861
+      ],
+      "position": [
+       0.5633333333333334,
+       0.5037871667805879,
+       0.6245736623088
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0033333333333333335,
+       0.0,
+       0.010638297872340425
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "no_jpp": {
+      "identity": [
+       0.37,
+       0.31596091205211724,
+       0.4239159241050852
+      ],
+      "position": [
+       0.57,
+       0.5119443767267999,
+       0.6313868613138686
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.06,
+       0.026022304832713755,
+       0.10303088133240804
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "no_jpp_rand": {
+      "identity": [
+       0.4066666666666667,
+       0.3482750358047813,
+       0.4671539892342812
+      ],
+      "position": [
+       0.47,
+       0.4085587218025991,
+       0.5322604364326375
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.12333333333333334,
+       0.09036144578313253,
+       0.16151202749140894
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "no_jpp100": {
+      "identity": [
+       0.24,
+       0.19682142857142856,
+       0.28524590163934427
+      ],
+      "position": [
+       0.43333333333333335,
+       0.38235294117647056,
+       0.4851857330703484
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.32666666666666666,
+       0.27444438967753243,
+       0.3818770226537217
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "no_jpp100_rand": {
+      "identity": [
+       0.16,
+       0.10948767387412203,
+       0.20886184324605514
+      ],
+      "position": [
+       0.15,
+       0.10869413830689112,
+       0.1969114939114939
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.69,
+       0.6375384976388114,
+       0.7422696224147746
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  "d": {
+   "identity": [
+    -0.11666666666666667,
+    -0.16723579217752196,
+    -0.0678466076696165
+   ],
+   "position": [
+    -0.18333333333333335,
+    -0.24825235109717878,
+    -0.11510478028726849
+   ]
+  },
+  "c0_loss": {},
+  "geometry": {
+   "C2": {
+    "jpp25": {
+     "U": {
+      "n": 300,
+      "of": 300,
+      "mean": 0.016252399999999997,
+      "median": 0.0159025
+     },
+     "id": {
+      "n": 300,
+      "of": 300,
+      "mean": 0.28601366000000006,
+      "median": 0.2857845
+     }
+    },
+    "jpp100": {
+     "U": {
+      "n": 300,
+      "of": 300,
+      "mean": 0.06036037,
+      "median": 0.0598505
+     },
+     "id": {
+      "n": 300,
+      "of": 300,
+      "mean": 0.4563512666666667,
+      "median": 0.460791
+     }
+    }
+   }
+  },
+  "cos2_U_jpp100_C2": 0.06036037,
+  "precondition": {
+   "c0_extra_loss_jpp100": NaN,
+   "holds": false
+  },
+  "clauses": {
+   "identity_falls": false,
+   "neither_falls": true,
+   "pointer": false
+  },
+  "tested": {
+   "d": true,
+   "cos2": true,
+   "precondition": false
+  }
+ }
+}
