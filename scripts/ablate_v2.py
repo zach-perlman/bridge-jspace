@@ -160,7 +160,7 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
                 S.ids(tok, " ") if k == "digit" else []
             )
             out.append({"family": it["word"], "id": it["id"], "kind": kind, "ids": ids, "tok": S.answer_token(tok, a, k),
-                        "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]})  # fmt: skip
+                        "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"], "desc": it.get("start_desc")})  # fmt: skip
             if "framing" in it:  # natural_v1 (2026-10-23): the read's candidates, its relation's answers (bridges for hop 1)
                 own = it["steps"][int(kind[4:]) - 1].get("cand_vocab") if kind.startswith("step") else it.get("answer_vocab")
                 vocab = own or natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]  # natural3: own
@@ -261,11 +261,15 @@ def question_start(tok, ids: list[int]) -> int:
     return next(i for i, s in enumerate(starts) if s + len(pieces[i]) > q_start)
 
 
-def outside_positions(mode: str, n: int, q0: int, bridge_pos: list[int]) -> list[int]:
+def outside_positions(mode: str, n: int, q0: int, bridge_pos: list[int], desc_pos: list[int] | None = None) -> list[int]:
     """Positions a removal leaves unedited under --positions: all (none), context (the question on), question (before
     it), final (every position but the last, the answer position; 2026-10-24) or bridge (every position but the
-    bridge's mentions; a prompt that never names its bridge, e.g. a recalled start, is left unedited; 2026-10-24)."""
+    bridge's mentions; a prompt that never names its bridge, e.g. a recalled start, is left unedited; 2026-10-24) or desc
+    (amendment 61 note 33: every position but the question's description of the bridge, start_desc; none found: unedited)."""
     keep = set(bridge_pos)
+    if mode == "desc":
+        d = set(desc_pos or [])
+        return [i for i in range(n) if i not in d]
     return {"all": [], "context": list(range(q0, n)), "question": list(range(q0)), "final": list(range(n - 1)),
             "bridge": [i for i in range(n) if i not in keep]}[mode]  # fmt: skip
 
@@ -451,7 +455,8 @@ def main(args) -> None:
     for p in prompts:
         p["skip"] = bridge_positions(tok, p["ids"], p["bridge"]) if p["bridge"] else []
         q0 = question_start(tok, p["ids"])
-        p["outside"] = outside_positions(args.positions, len(p["ids"]), q0, p["skip"])
+        dpos = bridge_positions(tok, p["ids"], p["desc"]) if args.positions == "desc" and p.get("desc") else []
+        p["outside"] = outside_positions(args.positions, len(p["ids"]), q0, p["skip"], dpos)
     print(len(prompts), "prompts;", len(bands), "bands;", len(args.conditions), "conditions", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -692,7 +697,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks-scene-words", nargs="*", default=None,
                     help="amendment 58 note 4 (v3): a scene passes when its items of these words are right; the compared words are kept on it")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
-    ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge"],
+    ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge", "desc"],
                     help="where to remove: every position, only before the question (the facts), only from the "
                          "question on (question, instruction, 'Answer:'; see question_start), only the last position, "
                          "or only the bridge's mentions (bridge_positions)")  # fmt: skip

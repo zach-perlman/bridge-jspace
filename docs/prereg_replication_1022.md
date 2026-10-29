@@ -3137,3 +3137,44 @@ Zach asked whether extending v4 adds confounds (e.g. linear entity -> country re
   - Items carry entity_reals, and the readout adds the target ctxreal (another scene entity's real attribute).
   - Reading 2 adds a within-scene condition: X's attribute's top-1 share must exceed ctxreal's by >= 5 points, interval above 0. Otherwise the reading is "scene-level association, not this identity".
   - Phrasing: a positive reading means the attribute reaches the bridge through the in-context binding; it may be carried from the passage's mention of X's name.
+
+#### Amendment 61 (Zach, 2026-10-29 ~20:50 UTC; after a four-agent red-team, before the rebuilt sets or these runs exist): rebuilt key and conflict sets; two knock-out tests
+- **Red-team findings that led here.**
+  - In the key set, X's country was the only one from its continent in 39% of scenes. On the 9B the lookup scored 79% there vs 68% with a shared continent.
+  - The conflict set's "based in" made companies a poor conflict (1% memory answers), and only 27% of false values were plausible (same continent).
+  - The knock-out band sits before the lookup's own answer forms at the final token (a timing confound).
+  - Neel's "steering the model to say / not say a token" hypothesis is untested on v4.
+- **The 9B runs already done on the first key and conflict sets** become pilots: they are reported as such, never pooled with the rebuilt sets. Those runs are the named key set's competence, controls and knock-out, and the conflict set's competence, controls and knock-out.
+
+##### Notes 29b and 30b: the rebuilt sets
+- **jsuite_v5kn2 / jsuite_v5kd2** (seed 5002): note 29 unchanged, except every scene has at least two distractor countries from X's continent (and one from its region where possible). Items record x_continent and n_same_continent; shortfalls are reported.
+- **jsuite_v5kc2** (seed 5102): note 30 unchanged, except:
+  - companies use "was founded in" (claim and question; table values checked for founding country);
+  - X's false value comes from the same continent as the truth (false_same_continent recorded, fallback random);
+  - descriptions with non-place cues to another country are dropped as well (leagues, prizes, "American aviator", ...).
+- Readings: notes 29, 30 and the amendment 60 addendum, unchanged.
+- Analysis-time strata, all sets, reported beside the readings:
+  - key: each model's own K0 colour prior (items whose colour equals the model's closed-book reply) excluded;
+  - per relation, plausibility, continent sharing;
+  - three-way answer labels (memory / X's passage value / other);
+  - candidates restricted to the scene's.
+
+##### Note 32: the knock-out where the lookup's answer forms (timing)
+- **Bands, by a rule on note 17's value swap at the final token (MP):**
+  - the forming band (primary): the window whose value-swap share is nearest 50%, i.e. 9B L25-28 (55.1), 27B L49-56 (45.1), Lightning L34-39 (21.3; L40-45 is 97.0);
+  - the formed band: the first window >= 90%, i.e. 9B L29-30, 27B L57-62, Lightning L40-45.
+- **Runs:** note 20's knock-out on v4 (paper10, paper10_rot, unembed10, paper10_pcasize, all positions, v4 gate) at both bands, 9B, 27B, Lightning. Scorer scripts/nn_ko_read.py; bridge-clustered intervals beside.
+- **Readings (forming band):**
+  - "The lookup needs the J-space where its own answer forms" (the main split is partly timing): MP's paper10 loss minus its paper10_rot loss >= 20 points with the interval above 0.
+  - "Timing does not explain the split": that difference < 10 with its upper end < 20.
+  - Unclear otherwise. MM and the formed band reported beside.
+
+##### Note 33: where the recall's need sits (description vs final token)
+- **Runs:** note 20's knock-out at the main band (9B L12-16, 27B L32-40, Lightning L27-33), with removal restricted to:
+  - desc: only the question's description of the bridge (start_desc's tokens; ablate_v2 --positions desc);
+  - final: only the last token (--positions final).
+  - Conditions paper10 and paper10_rot, v4 gate, 9B, 27B, Lightning.
+- **Readings (MM; loss net of paper10_rot, as a share of note 20's all-position MM loss net of its rotated):**
+  - "The need sits at the final token (saying)": final share >= 2/3 and desc share <= 1/3.
+  - "At the description": desc share >= 2/3 and final share <= 1/3.
+  - "Spread" otherwise. MP beside.
