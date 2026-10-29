@@ -179,3 +179,18 @@ def test_depth51_design_from_lightning(tmp_path, monkeypatch):
     out = D.stage_verdict(["nem35l_x52_depth51"], 10, design_from=True)
     text = (out / "verdict.md").read_text()
     assert out.name.startswith("x52_depth51-") and "design from the 9B / 27B spec" in text and ", Dan:" not in text
+
+
+def test_probe49_below_gate(tmp_path, monkeypatch):
+    """49.3: the 45m source is Lightning's below-gate run only with --below-gate; the verdict below gate reads the
+    below-gate run alone, x52_probe49_below-<UTC>/."""
+    from scripts import x49_probe as P
+
+    assert P.BELOW is False and LT not in P.COVERAGE_RUNS
+    monkeypatch.setattr(P, "BELOW", True)
+    monkeypatch.setattr(P, "RESULTS", tmp_path)
+    monkeypatch.setattr(P, "dan_answer", lambda: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    out = P.stage_verdict([P.BELOW_RUNS[LT]], 10, coverage=True)
+    assert out.name.startswith("x52_probe49_below-") and "below gate (exploratory)" in (out / "x49_3.md").read_text()
+    with pytest.raises(AssertionError, match=r"49\.3 runs on"):
+        P.stage_verdict([P.COVERAGE_RUNS["qwen3.6-27b"]], 10, coverage=True)

@@ -1,0 +1,38 @@
+id: x52_lightning_probe49_below
+title: "Batch 52, Dan's morning queue item 1: the pooled person probe (49.3) on Lightning at L14 and L7, BELOW GATE (exploratory) on the clean design's eligible items (x52_lightning_fresh_below; the clean gate fails, recall 0.751 < 0.80); the rule verbatim; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.15
+depends_on: [x52_lightning_fresh_below]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl &&
+  NOTE=$(uv run python -c "from scripts import x45b_binding as B; print(B.BELOW_GATE)") &&
+  uv run python scripts/x49_probe.py run --below-gate --name nem35l_x52_probe49_below --why "Batch 52, Dan's morning queue item 1: 49.3 on Lightning at L$L and L$L // 2, below gate; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x49_probe/nem35l_x52_probe49_below/coverage.txt &&
+  uv run python scripts/x49_probe.py verdict --coverage --below-gate --runs nem35l_x52_probe49_below
+question: >-
+  Below gate, on Lightning's clean scenes: is there a distributed person mark over the locker sentence (pooled probe),
+  a picked-flag, or neither?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: "not tested" on Lightning (clean
+  gate 0.751); Dan asks for it below gate, exploratory, hollow, never in the claims table or grades.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  49.3's rule verbatim (jobs/c3/batch49.yaml 49.3; scripts/x49_probe.py RULE; first scored in
+  results/x49_probe/x49_3-20261028T154604Z): "Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere. Controls: locker-first scenes must be at chance for (i), (ii); the other items' locker sentences beside. As computed: 49.3's text unchanged (the clean design's scenes,
+  48.3's scene_item; states at every token of each locker sentence and the sentence mean at L and L // 2; 48.3's ridge
+  probes, 5 folds, the sentence's item held out, seed 0; cluster bootstrap over the sentence's item) at Lightning's
+  committed L14 and L7, on the below-gate source x52_lightning_fresh_below. BELOW GATE (exploratory): Lightning's clean
+  one-pick gate fails (recall 0.751 < 0.80); eligible items only (x0_necessity --descriptive, dev scenes out); the source
+  gate numbers in the manifest; hollow, never in the claims table or grades. Verdict in the job (verdict --coverage
+  --below-gate: results/x49_probe/x52_probe49_below-<UTC>/, never the default x49_3-<UTC>/).
+controls:
+- "locker-first scenes (at chance expected for (i), (ii))"
+- "the other items' locker sentences beside; chance and the majority class"
+n: "the source run's eligible clean scenes at L14 (locker-after and locker-first)"
+seeds: [0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:45 Paris). Box: mats, depends_on x52_lightning_fresh_below (its run in mats' checkout; checked before loading). Code: x49_probe gains --below-gate (BELOW: the 45m source via x45b_binding.fresh_of(target, True); the verdict (with --coverage) reads x49_probe.BELOW_RUNS alone, x52_probe49_below-<UTC>/); default path unchanged (tested). Wallclock: x49_3_9b 155 s, x49_3_muse 180 s: est ~5 min, 0.15 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."

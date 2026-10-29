@@ -90,6 +90,8 @@ COVERAGE_RUNS = {"qwen3.6-27b": "x49_3_27b"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x49_probe/x49_3-20261028T154604Z"  # 49.3's rule first scored (the 9B and Muse)
 SOURCE = "45m"  # the clean design: x0_necessity --alt fresh (B.FRESH_RUN)
+BELOW = False  # batch 52, Dan's morning queue item 1: --below-gate (Lightning's 45m source below its gate, exploratory)
+BELOW_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_probe49_below"}
 RENDERING = "chat"
 STRATA = ("after", "before")  # the sentence after / before its picker's pick; the rule's scenes / the control
 POOLED = "mean"
@@ -177,7 +179,7 @@ def select(tok, target: str, layer: int) -> tuple[list[dict], dict]:
     sentence's tokens and keys, and the counts: scenes per group, drops, rows per stratum, keys."""
     from scripts import tasks_v2 as T
 
-    run = B.FRESH_RUN[target]
+    run = B.fresh_of(target, BELOW)
     src = X.RESULTS / run
     m = json.loads((src / "manifest.json").read_text())
     assert m["predicted"] == layer, f"{run}: layer {m['predicted']}, not {layer}"
@@ -304,12 +306,14 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "49.3 renders the runs' chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MODELS or target in COVERAGE_RUNS, f"49.3 runs on {[*MODELS, *COVERAGE_RUNS]}, not {target}"
+    assert target in MODELS or target in COVERAGE_RUNS or (BELOW and target in BELOW_RUNS), (
+        f"49.3 runs on {[*MODELS, *COVERAGE_RUNS]}, not {target}"
+    )
     layer = X.PREDICTED[target]
     layers = layers_of(layer)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    src = X.RESULTS / B.FRESH_RUN[target]
+    src = X.RESULTS / B.fresh_of(target, BELOW)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "model": pins.model_pin(), "switches": switches(), "code": git_state(), "test": TEST,
          "spec": f"jobs/c3/batch49.yaml ({TEST})", "question": f"{QUESTION} ({PREDICTIONS})",
@@ -322,6 +326,9 @@ def stage_run(name: str, why: str) -> Path:
          "probes": PROBE_TEXT, "rule": RULE, "chance_margin": CHANCE_MARGIN, "key_share": KEY_SHARE,
          "seeds": {"folds": W.SPLIT_SEED, "bootstrap": X.BOOT_SEED, "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
          "sealed": f"no probe in the run; closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if BELOW:  # batch 52, Dan's morning queue item 1: below gate, exploratory
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(src.name)},
+              "sealed": "none (below gate, exploratory): verdict --coverage --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -545,7 +552,7 @@ def model_label(by_layer: dict[str, dict]) -> str:
 def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "probe_rows.jsonl").exists():
-        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
+        target = {r: t for d in (RUNS, COVERAGE_RUNS, BELOW_RUNS) for t, r in d.items()}.get(run)
         assert target, f"no 49.3 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "label": "pending", "why": "no rows here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -567,17 +574,18 @@ def fmt(v: list | None) -> str:
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
     """49.3's verdict (sealed until Q49.3), or with coverage (batch 52 C) the same rule on the given coverage runs alone:
     no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_probe49-<UTC>/."""
-    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
+    answer = f"{B.BELOW_GATE if BELOW else NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [mm["target"] for mm in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    known = set(COVERAGE_RUNS) if coverage else set(MODELS)
+    known = (set(BELOW_RUNS) if BELOW else set(COVERAGE_RUNS)) if coverage else set(MODELS)
     assert set(targets) <= known, f"49.3 runs on {sorted(known)}, not {sorted(set(targets) - known)}"
     if not coverage:
         models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "label": "pending", "why": "no run given"}
                    for t in MODELS if t not in targets]  # fmt: skip
-    out = RESULTS / f"{'x52_probe49' if coverage else 'x49_3'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_probe49_below" if BELOW else "x52_probe49" if coverage else "x49_3"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 49.3: the locker-after link, a pooled probe over the locker sentence", "",
              f"Batch 49, test {TEST} (jobs/c3/batch49.yaml; {QUESTION}, Dan: {answer}). Clean-design scenes (45m), the "
@@ -665,7 +673,11 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=None, help="plan: write the counts and the prompts into this folder")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, Lightning's 45m source below its gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     if a.stage == "plan":
         stage_plan(a.out)
     elif a.stage == "run":
