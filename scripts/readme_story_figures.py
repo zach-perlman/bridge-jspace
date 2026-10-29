@@ -3944,6 +3944,12 @@ def cards_numbers() -> None:
         vals = list(v) if isinstance(v, (list, tuple)) else [v]
         S.record("cards", model, what, *vals[:3], n=n, source=rel(src))
 
+    # the 122B's L33 as a relative depth (Dan 11:55: "its later layer (L33, relative depth 0.69)"): its predicted layer
+    # in the r2 verdict over the pinned number of layers
+    p = R / "x0_necessity" / "qwen35_122b_x0_necessity_r2" / "verdict-20261024T171509Z" / "verdict.json"
+    la, nl = json.loads(p.read_text())["verdict"]["predicted"], pins.TARGETS["qwen3.5-122b-a10b"]["n_layers"]
+    S.record("cards", "qwen3.5-122b-a10b", "L as a relative depth (L / the number of layers)", round(la / nl, 4),
+             source=f"{rel(p)} (predicted layer {la}); src/bridge_jspace/pins.py (n_layers {nl})")  # fmt: skip
     # the conflict test at Lightning's layer (rule copied from the 9B; layer fixed by amendment 1)
     v = json.loads(LT_CONFLICT.read_text())
     rec(lt, "L: the layer fixed in advance", v["verdict"]["predicted"], LT_CONFLICT)
