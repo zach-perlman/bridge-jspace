@@ -53,6 +53,10 @@ from torch import nn
 
 MODES = ("value", "absent")
 FULL, LINEAR = "full_attention", "linear_attention"
+# NemotronH (batch 52, Lightning): blocks whose mixer is a MoE or an MLP mix no tokens; its Mamba-2 blocks are
+# "linear_attention" in its config (LINEAR here: a recurrent token mixer, not softmax attention)
+OTHER = "other"
+NO_TOKEN_MIXER = ("moe", "mlp")
 
 
 def decoder_layers(model: Any) -> nn.ModuleList:
@@ -63,23 +67,33 @@ def decoder_layers(model: Any) -> nn.ModuleList:
 
 
 def layer_kind(layer: nn.Module) -> str:
-    """FULL for a block with softmax attention (`self_attn`), LINEAR for a Gated DeltaNet block (`linear_attn`)."""
+    """FULL for a block with softmax attention (`self_attn`; NemotronH: `mixer` of block_type full_attention), LINEAR
+    for a Gated DeltaNet block (`linear_attn`) or NemotronH's Mamba-2 block, OTHER for NemotronH's MoE / MLP blocks."""
     if hasattr(layer, "linear_attn"):
         return LINEAR
     if hasattr(layer, "self_attn"):
         return FULL
+    if hasattr(layer, "mixer") and hasattr(layer, "block_type"):  # NemotronH
+        return {FULL: FULL, LINEAR: LINEAR}.get(layer.block_type, OTHER)
     raise TypeError(f"{type(layer).__name__}: neither self_attn nor linear_attn")
+
+
+def attention_module(layer: nn.Module) -> nn.Module:
+    """A softmax-attention block's attention module: `self_attn` (Qwen3.5, Muse, ...) or `mixer` (NemotronH)."""
+    assert layer_kind(layer) == FULL, f"{type(layer).__name__} is not a softmax-attention block"
+    return layer.self_attn if hasattr(layer, "self_attn") else layer.mixer
 
 
 def config_layer_kinds(config: Any) -> list[str]:
     """Layer kinds from a model config (a multimodal model's text config): LINEAR where layer_types says
-    "linear_attention" (a Gated DeltaNet: Qwen3.5, OLMo-Hybrid), FULL for every other type (softmax attention, full or
-    sliding-window); FULL everywhere when the config lists no layer_types (a dense model)."""
+    "linear_attention" (a Gated DeltaNet: Qwen3.5, OLMo-Hybrid; NemotronH's Mamba-2), OTHER for NemotronH's "moe" /
+    "mlp" blocks, FULL for every other type (softmax attention, full or sliding-window); FULL everywhere when the config
+    lists no layer_types (a dense model)."""
     cfg = config.get_text_config() if hasattr(config, "get_text_config") else config
     types = getattr(cfg, "layer_types", None)
     if types is None:
         return [FULL] * cfg.num_hidden_layers
-    return [LINEAR if t == LINEAR else FULL for t in types]
+    return [LINEAR if t == LINEAR else OTHER if t in NO_TOKEN_MIXER else FULL for t in types]
 
 
 def layer_kinds(model: Any) -> list[str]:

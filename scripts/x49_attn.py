@@ -59,7 +59,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
-from bridge_jspace.knockout import FULL, config_layer_kinds, decoder_layers, layer_kind
+from bridge_jspace.knockout import FULL, attention_module, config_layer_kinds, decoder_layers, layer_kind
 from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x6_routes as R
@@ -72,6 +72,11 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch49.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q49.7"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x49_7", "muse-glimmer-30b": "muse30_x49_7", "qwen3.6-27b": "x49_7_27b"}
+# batch 52 C coverage (key row 10): Lightning (NemotronH; attention blocks 5 / 12 / 19 / 26 / 33 / 42, those > L14
+# recorded); verdict --coverage reads it alone, 49.7's RUNS and own verdict unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_attn"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x49_attn/x49_7-20261028T154511Z"  # 49.7's rules first scored
 S_WRITE = 2.0
 SPLIT_SEED = 0
 SITES = ("last", "question")
@@ -464,6 +469,9 @@ def capture_queries(model, layers: list[int], q_positions: list[int], out: dict[
             if hasattr(module, "qk_norm"):  # Muse Glimmer
                 q = module.qk_norm(module.q_proj(hs).view(shape).transpose(1, 2)) * module.qk_scale_factor
                 k = module.qk_norm(module.k_proj(hs).view(shape).transpose(1, 2))
+            elif type(module).__name__ == "NemotronHAttention":  # batch 52: plain q / k projections, no norm, NoPE
+                q = module.q_proj(hs).view(shape).transpose(1, 2)
+                k = module.k_proj(hs).view(shape).transpose(1, 2)
             else:  # Qwen3.5: q_proj holds the query and its output gate
                 q, _gate = torch.chunk(module.q_proj(hs).view(b, t, -1, module.head_dim * 2), 2, dim=-1)
                 q = module.q_norm(q.reshape(shape)).transpose(1, 2)
@@ -489,7 +497,7 @@ def capture_queries(model, layers: list[int], q_positions: list[int], out: dict[
     handles = []
     for la in layers:
         assert layer_kind(blocks[la]) == FULL, f"layer {la} is not a softmax-attention layer"
-        handles.append(blocks[la].self_attn.register_forward_pre_hook(hook_for(la), with_kwargs=True))
+        handles.append(attention_module(blocks[la]).register_forward_pre_hook(hook_for(la), with_kwargs=True))
     try:
         yield
     finally:
@@ -501,7 +509,7 @@ def capture_queries(model, layers: list[int], q_positions: list[int], out: dict[
 def zero_head(model, layer: int, head: int, positions: list[int]):
     """While active, query head `head` of `layer` contributes nothing at `positions`: its slice of o_proj's input (the
     head's attention output, after Qwen3.5's / Muse's sigmoid gate) is zeroed there, in every row of the batch."""
-    attn: Any = decoder_layers(model)[layer].self_attn
+    attn: Any = attention_module(decoder_layers(model)[layer])
     hd = attn.head_dim
     pos = list(positions)
 
@@ -565,7 +573,7 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "49.7 reads chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"49.7 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"49.7 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -590,6 +598,13 @@ def stage_run(name: str, why: str) -> Path:
         "rules": RULES, "seeds": {"scenes": R.SEED, "random_vectors": W.RAND_SEED, "split": SPLIT_SEED,
                                   "bootstrap": X.BOOT_SEED, "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
         "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     manifest = out / "manifest.json"
     manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", manifest, flush=True)
@@ -747,7 +762,7 @@ def stage_run(name: str, why: str) -> Path:
         np.savez_compressed(out / "states.npz", j=np.array([it["j"] for it in items]), layers=np.array(st_layers),
                             **{f"last_L{la}": v["last"] for la, v in st.items()},
                             **{f"src_L{la}": v["src"] for la, v in st.items()})  # fmt: skip
-        attn: Any = decoder_layers(model)[best["layer"]].self_attn
+        attn: Any = attention_module(decoder_layers(model)[best["layer"]])
         w_q, w_k = head_qk_weights(attn, best["head"], n_heads, n_kv, hd)
         np.savez_compressed(out / "head_weights.npz", w_q=w_q.cpu().numpy(), w_k=w_k.cpu().numpy(),
                             layer=best["layer"], head=best["head"])  # fmt: skip
@@ -983,16 +998,19 @@ def figure(res: dict, path: Path) -> None:
     plt.close(fig)
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = sealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """49.7's verdict (sealed until Q49.7), or with coverage (batch 52) the same rules on the given runs, no seal guard,
+    "no prediction" in place of Dan's answer (x52_attn-<UTC>/)."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else sealed()
     res = [analyse(r, n_boot) for r in runs]
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    out = RESULTS / f"x49_7-{stamp}"
+    out = RESULTS / f"{'x52_attn' if coverage else 'x49_7'}-{stamp}"
     out.mkdir(parents=True)
     lines = [
         "# 49.7: does the question's attention follow the written address?",
         "",
-        f"Batch 49, test 49.7 (jobs/c3/batch49.yaml with amendment 2; {QUESTION}, Dan: {answer}). x8_write's items, "
+        f"Batch 49, test 49.7 (jobs/c3/batch49.yaml with amendment 2; "
+        f"{'batch 52 coverage, ' if coverage else QUESTION + ', Dan: '}{answer}). x8_write's items, "
         f"the swap s (mu_k - mu_j) at s = {S_WRITE} at the bridge word at L, a random vector of its norm; heads chosen "
         "on the fit half, read on the other; decisive site the last token, question tokens beside; cluster bootstrap "
         f"over bridge entities ({n_boot}, seed {X.BOOT_SEED}). UNVERIFIED.",
@@ -1119,6 +1137,7 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the runs")
     ap.add_argument("--why", default="batch 49, test 49.7 (jobs/c3/batch49.yaml; Q49.7)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1128,7 +1147,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(a.runs)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":
