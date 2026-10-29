@@ -104,3 +104,20 @@ amendment_2: |
 
   Reply with the updated coverage matrix (rows = tests, columns = 27B / Lightning
   / 9B / Muse: done / running / queued / not tested + reason) and the queue per box.
+overnight_rules_received: "29 Oct ~01:10 Paris"
+overnight_rules: |
+  Lightning gate: accepted. Mark it everywhere as "gate chosen after the 60-scene
+  pre-check was seen" (hollow mark; EXPERIMENTS.md and the matrix). Layer L14
+  stands.
+
+  Overnight, nobody is watching until ~09:00 Paris:
+  - keep all three boxes busy in the amendment 2 priority; an idle box takes the
+    next item;
+  - a failed job: retry once, then skip to the next item and log why;
+  - never change a gate, rule, layer or prompt set; no new instances;
+  - anything ambiguous: take the conservative option, write it under
+    "Flagged for Dan" at the top of EXPERIMENTS.md, and keep going;
+  - open verdicts as they land, but do not touch README claims overnight; README
+    edits wait for me.
+  By 09:00: the coverage matrix, the Flagged list, and one line per box on what
+  ran and what failed.
