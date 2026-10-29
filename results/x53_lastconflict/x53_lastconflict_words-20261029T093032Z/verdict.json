@@ -1,0 +1,868 @@
+{
+ "runs": [
+  "nem35l_x53_3b"
+ ],
+ "locker_runs": [
+  "nem35l_x53_3l"
+ ],
+ "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+ "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+ "rule_words": "\"copy bypasses the lens\" if at answer - 1 and - 2 the recall is \"through the lens\" and the lookup \"outside\" on >= 3 of 4 models; \"digits only\" if on words the lookup goes through the lens like the recall; else in between",
+ "across": {
+  "label": "pending (1 of 4 models)",
+  "per_model": {
+   "nemotron-3.5-lightning": {
+    "copy_bypasses": false,
+    "digits_only": true,
+    "complete": true,
+    "below_gate": true,
+    "labels": {
+     "lookup answer-1": "through",
+     "lookup answer-2": "through",
+     "recall answer-1": "through",
+     "recall answer-2": "through"
+    }
+   }
+  },
+  "copy_models": 0,
+  "digits_models": 0,
+  "models": 1
+ },
+ "models": [
+  {
+   "run": "nem35l_x53_3b",
+   "target": "nemotron-3.5-lightning",
+   "layers": {
+    "mode": "words",
+    "source_run": "nem35l_x52_jread",
+    "peak_file": "results/x51_jread/nem35l_x52_jread/peak.json",
+    "answer_from": "the plain logit lens at the last token of O, every layer: per passage the layer from which O's answer token is the top token through the last layer, the lower median over the passages (51.10's answer_layers, x51_jread.settle_layer)",
+    "readers": {
+     "lookup": {
+      "answer": 50,
+      "peak": 32,
+      "layers": [
+       49,
+       48,
+       47,
+       32
+      ],
+      "dropped": [],
+      "n": 129,
+      "never": 0,
+      "per_item": [
+       49,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       49,
+       50,
+       51,
+       49,
+       48,
+       50,
+       51,
+       50,
+       50,
+       49,
+       49,
+       49,
+       50,
+       50,
+       49,
+       49,
+       49,
+       48,
+       49,
+       50,
+       50,
+       49,
+       42,
+       50,
+       50,
+       50,
+       51,
+       50,
+       48,
+       49,
+       51,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       51,
+       50,
+       50,
+       50,
+       48,
+       48,
+       50,
+       48,
+       48,
+       50,
+       49,
+       49,
+       50,
+       49,
+       49,
+       49,
+       48,
+       48,
+       48,
+       48,
+       49,
+       48,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       50,
+       50,
+       49,
+       50,
+       49,
+       49,
+       50,
+       50,
+       49,
+       49,
+       49,
+       49,
+       49,
+       50,
+       50,
+       49,
+       49,
+       49,
+       50,
+       51,
+       51,
+       51,
+       51,
+       48,
+       50,
+       50,
+       50,
+       50,
+       51,
+       50,
+       51,
+       49,
+       49,
+       50,
+       50,
+       51,
+       50,
+       51,
+       50,
+       50,
+       51,
+       51,
+       50,
+       50,
+       51,
+       50,
+       50,
+       51,
+       50,
+       50,
+       51,
+       51,
+       50
+      ]
+     },
+     "recall": {
+      "answer": 50,
+      "peak": 36,
+      "layers": [
+       49,
+       48,
+       47,
+       36
+      ],
+      "dropped": [],
+      "n": 129,
+      "never": 0,
+      "per_item": [
+       50,
+       49,
+       48,
+       50,
+       50,
+       49,
+       49,
+       50,
+       49,
+       50,
+       49,
+       50,
+       50,
+       49,
+       50,
+       50,
+       51,
+       49,
+       49,
+       50,
+       51,
+       49,
+       51,
+       49,
+       51,
+       50,
+       50,
+       49,
+       50,
+       51,
+       49,
+       50,
+       48,
+       49,
+       51,
+       51,
+       49,
+       50,
+       49,
+       50,
+       50,
+       48,
+       50,
+       50,
+       49,
+       49,
+       50,
+       50,
+       48,
+       51,
+       48,
+       48,
+       51,
+       48,
+       51,
+       48,
+       48,
+       48,
+       48,
+       48,
+       48,
+       51,
+       48,
+       48,
+       51,
+       48,
+       49,
+       51,
+       48,
+       48,
+       49,
+       49,
+       48,
+       47,
+       48,
+       50,
+       51,
+       49,
+       49,
+       51,
+       51,
+       49,
+       48,
+       50,
+       50,
+       50,
+       51,
+       51,
+       49,
+       50,
+       50,
+       49,
+       50,
+       49,
+       51,
+       50,
+       50,
+       50,
+       50,
+       51,
+       49,
+       50,
+       51,
+       51,
+       50,
+       51,
+       50,
+       51,
+       50,
+       50,
+       51,
+       51,
+       50,
+       50,
+       49,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       51,
+       49,
+       51,
+       50,
+       50,
+       51,
+       50,
+       51
+      ]
+     }
+    }
+   },
+   "cells": [
+    {
+     "reader": "lookup",
+     "layer": 49,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "no_jpp": [
+       0.06201550387596899,
+       0.023076923076923078,
+       0.10833333333333334
+      ],
+      "no_rand": [
+       0.8837209302325582,
+       0.8270676691729323,
+       0.9344262295081968
+      ],
+      "jpp": [
+       0.8682170542635659,
+       0.8083333333333333,
+       0.9230769230769231
+      ]
+     },
+     "switches_whole": 129,
+     "excess": [
+      0.8217054263565892,
+      0.7518796992481203,
+      0.8855016357688112
+     ],
+     "rest_share": [
+      0.06201550387596899,
+      0.023076923076923078,
+      0.10833333333333334
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 48,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "no_jpp": [
+       0.031007751937984496,
+       0.007352941176470588,
+       0.06451612903225806
+      ],
+      "no_rand": [
+       0.8837209302325582,
+       0.829042288557214,
+       0.9338948543162211
+      ],
+      "jpp": [
+       0.8372093023255814,
+       0.7734375,
+       0.8955223880597015
+      ]
+     },
+     "switches_whole": 129,
+     "excess": [
+      0.8527131782945736,
+      0.7873886665806118,
+      0.9126984126984127
+     ],
+     "rest_share": [
+      0.031007751937984496,
+      0.007352941176470588,
+      0.06451612903225806
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 47,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.9922480620155039,
+       0.9758064516129032,
+       1.0
+      ],
+      "no_jpp": [
+       0.046511627906976744,
+       0.015151515151515152,
+       0.0873015873015873
+      ],
+      "no_rand": [
+       0.7984496124031008,
+       0.732746741786587,
+       0.860655737704918
+      ],
+      "jpp": [
+       0.7364341085271318,
+       0.6640625,
+       0.8064516129032258
+      ]
+     },
+     "switches_whole": 128,
+     "excess": [
+      0.7578125,
+      0.6842105263157895,
+      0.8292730194743808
+     ],
+     "rest_share": [
+      0.046875,
+      0.015267175572519083,
+      0.08730882864094533
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 32,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.4728682170542636,
+       0.38636363636363635,
+       0.5625
+      ],
+      "no_jpp": [
+       0.3953488372093023,
+       0.30597014925373134,
+       0.4883765311556896
+      ],
+      "no_rand": [
+       0.37209302325581395,
+       0.2857142857142857,
+       0.464
+      ],
+      "jpp": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "switches_whole": 61,
+     "excess": [
+      -0.04918032786885243,
+      -0.125,
+      0.017241379310344848
+     ],
+     "rest_share": [
+      0.8360655737704917,
+      0.7272727272727273,
+      0.9333333333333333
+     ],
+     "label": "outside",
+     "text": "computes outside the lens at the last token",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 49,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.9922480620155039,
+       0.9758064516129032,
+       1.0
+      ],
+      "no_jpp": [
+       0.031007751937984496,
+       0.007352941176470588,
+       0.06349206349206349
+      ],
+      "no_rand": [
+       0.8992248062015504,
+       0.8442622950819673,
+       0.946969696969697
+      ],
+      "jpp": [
+       0.9457364341085271,
+       0.9022556390977443,
+       0.984
+      ]
+     },
+     "switches_whole": 128,
+     "excess": [
+      0.875,
+      0.8125,
+      0.9328358208955224
+     ],
+     "rest_share": [
+      0.03125,
+      0.007352941176470588,
+      0.064
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 48,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.9922480620155039,
+       0.9758064516129032,
+       1.0
+      ],
+      "no_jpp": [
+       0.03875968992248062,
+       0.007751937984496124,
+       0.07692307692307693
+      ],
+      "no_rand": [
+       0.8992248062015504,
+       0.8461538461538461,
+       0.9461538461538461
+      ],
+      "jpp": [
+       0.9457364341085271,
+       0.9029850746268657,
+       0.9782608695652174
+      ]
+     },
+     "switches_whole": 128,
+     "excess": [
+      0.8671875000000001,
+      0.803415300546448,
+      0.9253731343283582
+     ],
+     "rest_share": [
+      0.0390625,
+      0.0078125,
+      0.07752105052125098
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 47,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "no_jpp": [
+       0.05426356589147287,
+       0.016525538544912618,
+       0.0960074074074073
+      ],
+      "no_rand": [
+       0.7984496124031008,
+       0.7230769230769231,
+       0.8686191216943879
+      ],
+      "jpp": [
+       0.937984496124031,
+       0.8925556261919899,
+       0.9767441860465116
+      ]
+     },
+     "switches_whole": 129,
+     "excess": [
+      0.7441860465116279,
+      0.6641776803007862,
+      0.8201438848920863
+     ],
+     "rest_share": [
+      0.05426356589147287,
+      0.016525538544912618,
+      0.0960074074074073
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 36,
+     "n": 129,
+     "entities": 100,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.26356589147286824,
+       0.18045112781954886,
+       0.34782608695652173
+      ],
+      "no_jpp": [
+       0.031007751937984496,
+       0.007462686567164179,
+       0.06299212598425197
+      ],
+      "no_rand": [
+       0.06976744186046512,
+       0.030534351145038167,
+       0.11538461538461539
+      ],
+      "jpp": [
+       0.06201550387596899,
+       0.02380483689538808,
+       0.10483870967741936
+      ]
+     },
+     "switches_whole": 34,
+     "excess": [
+      0.14705882352941174,
+      0.03568349753694584,
+      0.27272727272727276
+     ],
+     "rest_share": [
+      0.1176470588235294,
+      0.027027027027027032,
+      0.22727272727272724
+     ],
+     "label": "between",
+     "text": "in between",
+     "x0_valid": false,
+     "rest_equals_no_jpp": true
+    }
+   ],
+   "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_rand",
+    "jpp"
+   ],
+   "mode": "words",
+   "below_gate": "below gate (exploratory): Z1-P's gate on nemotron-3.5-lightning fails ({'K': 0.7939508506616257, 'M': 0.9224952741020794} < 0.80); its eligible passages only; hollow, rules verbatim, no prediction"
+  }
+ ],
+ "checks": [
+  {
+   "run": "nem35l_x53_3l",
+   "target": "nemotron-3.5-lightning",
+   "layers": {
+    "source_run": "nem35l_x52_jread",
+    "peak_file": "results/x51_jread/nem35l_x52_jread/peak.json",
+    "read_file": "results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json",
+    "mode": "ans13",
+    "readers": {
+     "lookup": {
+      "peak": 32,
+      "answer": 45,
+      "layers": [
+       44,
+       42
+      ]
+     }
+    }
+   },
+   "cells": [
+    {
+     "reader": "lookup",
+     "layer": 44,
+     "n": 59,
+     "entities": 30,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "no_jpp": [
+       0.7288135593220338,
+       0.6,
+       0.8518518518518519
+      ],
+      "no_rand": [
+       0.9152542372881356,
+       0.8490566037735849,
+       0.9772727272727273
+      ],
+      "jpp": [
+       0.0847457627118644,
+       0.021739130434782608,
+       0.14814814814814814
+      ],
+      "rest": [
+       0.7288135593220338,
+       0.6,
+       0.8518518518518519
+      ]
+     },
+     "switches_whole": 59,
+     "excess": [
+      0.18644067796610175,
+      0.08771929824561409,
+      0.28985507246376807
+     ],
+     "rest_share": [
+      0.7288135593220338,
+      0.6,
+      0.8518518518518519
+     ],
+     "label": "between",
+     "text": "in between",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 42,
+     "n": 59,
+     "entities": 30,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "no_jpp": [
+       0.7796610169491526,
+       0.6610093825665859,
+       0.8979591836734694
+      ],
+      "no_rand": [
+       0.9152542372881356,
+       0.8490566037735849,
+       0.9772727272727273
+      ],
+      "jpp": [
+       0.05084745762711865,
+       0.0,
+       0.1016949152542373
+      ],
+      "rest": [
+       0.7796610169491526,
+       0.6610093825665859,
+       0.8979591836734694
+      ]
+     },
+     "switches_whole": 59,
+     "excess": [
+      0.13559322033898302,
+      0.04761904761904756,
+      0.2222222222222222
+     ],
+     "rest_share": [
+      0.7796610169491526,
+      0.6610093825665859,
+      0.8979591836734694
+     ],
+     "label": "between",
+     "text": "in between",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    }
+   ],
+   "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_rand",
+    "jpp",
+    "rest"
+   ],
+   "mode": "ans13",
+   "below_gate": null
+  }
+ ]
+}
