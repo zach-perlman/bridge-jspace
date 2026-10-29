@@ -1533,6 +1533,14 @@ As of the matrix at 06:29 UTC (07:29 Paris).
   - The clean runs' own commit is marked dirty in the pack (90210687).
   - Source: docs/handcheck_clean49.md and results/checks/clean49_9b.json (point values, no intervals).
 
+## Run on one model only (one line each)
+
+Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
+
+- **One question, two instructions (49.6), the 27B.** Question last, slot 1 is read right on slot 1 read 0.68<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: slot 1 read 0.68 --> of scenes under the position wording and slot 1 read 0.99<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: slot 1 read 0.99 --> under the sentence wording, over the rule's 0.2: "recovers" (the rule's "drop"). The 9B ran but missed the gate (the matrix); Muse and Lightning not designed. No figure.
+- **The second hop's key token (47.15), the 27B.** With the fact placed after, the text-source condition loses 0.54 [0.43, 0.66]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.54 [0.43, 0.66] --> without the lens part and 0.39 [0.30, 0.49]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.39 [0.30, 0.49] --> without the address and identity parts: "neither<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: neither -->", like neither reader; the memory condition "can't tell". The 9B was never run; Muse and Lightning failed the gate. No figure.
+- **DAS for the address (49.8, DAS by position), the 9B only by design.** A learned 4-direction position subspace carries 0.94<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| k = 4: own-IIA 0.94 :: 0.94 --> of the position switches on held-out pairs, but holds only 0.247<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| U's energy in R_pos 0.247 :: 0.247 --> of our address's energy and moves the recall too (cross-IIA 0.44<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| the recall's cross-IIA 0.44 :: 0.44 -->): "(d) in between". Its figure: [the verdict folder](../../results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png).
+
 ## Withdrawn
 
 ### Does the split hold when Zach's bridge is described? (Z2, opened 28 Oct 17:27; withdrawn 21:18; Lightning's coverage run 29 Oct) <a id="z2"></a>

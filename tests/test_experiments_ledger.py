@@ -50,7 +50,8 @@ def test_the_ledger_sections_by_status():
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
     assert heads == ["## Flagged for Dan", "## README changes waiting for Dan", "## Coverage",
                      "## Changes a README claim (README must be updated)", "## Supports a README claim",
-                     "## Ledger only (opened, not in README)", "## Withdrawn", "## Running or sealed",
+                     "## Ledger only (opened, not in README)", "## Run on one model only (one line each)",
+                     "## Withdrawn", "## Running or sealed",
                      "## Figure checks"]  # fmt: skip
 
 
