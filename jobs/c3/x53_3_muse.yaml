@@ -1,0 +1,42 @@
+id: x53_3_muse
+title: "Batch 53.3 on Muse: the conflict test at the last token (P3) at 51.10's read-peak layer (lookup L32, recall L40) and the answer layer minus 2 (lookup L33, recall L44); arms whole / without the lens part / without a random part of its share / the lens part alone / the rest alone; 51.10's 68 locker-first items, both readers; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_lastconflict.py run --name muse30_x53_3 --why "Batch 53, test 53.3 (jobs/c3/batch53.yaml, Dan 29 Oct 09:30): the conflict test at the last token on Muse, at 51.10's read peak and the answer layer minus 2; no prediction" &&
+  uv run python scripts/x53_lastconflict.py verdict --runs muse30_x53_3
+question: >-
+  At the last token (the read position, whose next token is the answer), does each reader's change from O to S act on
+  the answer through the lens part (its 25 J++ atoms) or outside it, at 51.10's read-peak layer and two layers before
+  the answer layer?
+why_it_matters: >-
+  Batch 53 (Dan, 29 Oct 09:30), test 53.3, priority 3 (09:50 standing rules): the main conflict test reads the bridge
+  word; 53.3 asks the same question where the answer is read out.
+hypotheses:
+  none: "No prediction (batch 53: every rule fixed in Dan's brief before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (brief, 53.3): "9B, 27B, Muse, Lightning; at 51.10's read-peak layer and the
+  answer layer minus 2. The change = S's last-token state minus O's at that layer; the lens part = its 25 J++ atoms;
+  arms: whole; without the lens part; without a random part of the same share; the lens part alone; the rest alone.
+  Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond
+  random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random;
+  else in between." As computed: as jobs/c3/x53_3_9b.yaml (scripts/x53_lastconflict.py, unchanged), on Muse: layers
+  from results/x51_jread/muse30_x51_10/peak.json (read peak: lookup 32, recall 40) and the newest 51.10 read,
+  results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json (answer layer: lookup 35, recall 46; minus 2 = 33 /
+  44; our Muse J++ has source layers 0-50); items = 51.10's (x51_jread.select on muse30b_x0_necessity at L26), its 68
+  locker-first items (29 entities); the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole, the rest
+  alone's share = S_rest / S_whole, point estimates decide (EPS 1e-9), cluster-bootstrap CIs over bridge entities
+  (10,000, seed 0) beside; "the rest alone" is the same vector as "without the lens part" in this additive patch (read
+  separately). Verdict in the job: results/x53_lastconflict/x53_lastconflict-<UTC>/.
+controls:
+- "without a random part of the lens part's share (X0's random subspace, seed 888 + layer): the reference of the loss"
+- "O unedited (the floor) and the whole change (the ceiling) read on the same items"
+- "the rest alone read separately from 'without the lens part' (the same vector: the two reads must agree)"
+- "the source run's gate (X0: 0.80 per reader on O unedited, >= 150 eligible) asserted (PP 0.966, PM 0.891)"
+n: "51.10's 68 locker-first items (29 bridge entities) on Muse, 2 readers, 2 layers each (lookup L32 / L33, recall L40 / L44): 1,496 reads + 272 state forwards (plan: x53_lastconflict.py plan)"
+seeds: [888, 0]
+notes: "Batch 53, test 53.3 (Dan's brief 29 Oct 09:30; standing rules 09:50: priority 3). Box: mats (or any idle 80 GB GPU). Code: scripts/x53_lastconflict.py as committed with x53_3_9b (f55daae2). Writes results/x53_lastconflict/muse30_x53_3/ (manifest.json before the model loads, plan.json, cases.jsonl, norms.jsonl, outcomes.jsonl) and the verdict folder x53_lastconflict-<UTC>/. Cost (ledger): x51_10_muse_m ran 1,564 s for ~45,000 reads and 1,100 cached forwards on these items, x52_read_main_muse 86 s; here 272 forwards and 136 batched reads of 11 rows plus load and four J++ dictionaries: ~4 min; est 0.2. Memory: x51_10_muse_m peaked at 70 GB. Disk on the Mac before the spec: 185 GB free. UNVERIFIED; into EXPERIMENTS.md with a card and the figure."
