@@ -1,0 +1,32 @@
+id: x52_lightning_cumulative_clean_below_r
+title: "Batch 52, Dan's morning queue item 1: 47.4 (cumulative patches: lookups carried before L, E11) on Lightning, the clean design, BELOW GATE (exploratory) on the clean design's eligible items (x52_lightning_fresh_below; the clean gate fails, recall 0.751 < 0.80); rules verbatim; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl &&
+  NOTE=$(uv run python -c "from scripts import x45b_binding as B; print(B.BELOW_GATE)") &&
+  uv run python scripts/x47_cumulative.py run --below-gate --designs clean --name nem35l_x52_cumulative_clean_below --why "Batch 52, Dan's morning queue item 1: 47.4 on Lightning, the clean design, below gate; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x47_cumulative/nem35l_x52_cumulative_clean_below/coverage.txt &&
+  uv run python scripts/x47_cumulative.py verdict --designs clean --coverage --below-gate --runs nem35l_x52_cumulative_clean_below
+question: >-
+  Below gate, on Lightning's clean one-pick scenes: of the answers the change at L misses, how many are read before L at the bridge token, by the pick sentence's other tokens, or outside the pick sentence?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: the clean design was "not tested" on
+  Lightning (clean gate 0.751); Dan asks for it below gate, exploratory, hollow, never in the claims table or grades.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  47.4's rule verbatim (jobs/c3/x47_4_muse.yaml; first read in results/x47_cumulative/x47_4-20261028T113105Z): "Fixed in advance (jobs/c3/batch47.yaml, 47.4): descriptive, a decomposition, no bar. Per reader and order: (a)->(b) = read before L at the bridge token; (b)->(c) should be ~ 0 (the patch propagates; a non-zero difference is a bug, stop and report); (c)->(d) = carried by the pick sentence's other tokens; (d)->100% = carried outside the pick sentence. One table, one stacked figure." As computed: x47_4_muse.yaml's text unchanged (the arms (a)-(d) and b_blocks on O, X0's chat read, the order split; cluster bootstrap over bridge items) on the clean design only (--designs clean: the main design ran in nem35l_x52_cumulative, fill4) at L14. BELOW GATE (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80); eligible items only (the source x52_lightning_fresh_below, x0_necessity --descriptive, dev scenes out); the source gate numbers in the manifest; hollow, never in the claims table or grades. Verdict in the job (x52_*_below-<UTC>/, never the script's default folder).
+controls:
+- "each arm against its random twin as in the design"
+- "the main design's run beside (overnight, at its gate)"
+n: "the source run's eligible clean scenes at L14"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:45 Paris). Box: mats, depends_on x52_lightning_fresh_below (its run in mats' checkout; checked before loading). Code: x47_cumulative --below-gate (BELOW: sources() extends the clean source by x45b_binding.FRESH_BELOW; the verdict (with --coverage) writes x52_cumulative_below-<UTC>/); default path unchanged (tested). Wallclock: x47_4_9b 310 s, x47_4_muse 440 s (both designs): est ~5-10 min, 0.2 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."
+
+# Re-queued 29 Oct ~09:50 Paris (coordinator): the original id was cancelled before it started (batch 53's box plan, Dan 09:30); same command and run name; the fresh source run is committed (92037f19), so no depends_on.
