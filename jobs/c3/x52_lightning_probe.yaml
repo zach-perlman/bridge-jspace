@@ -1,0 +1,32 @@
+id: x52_lightning_probe
+title: "Batch 52 C coverage (Lightning lane mats GPU 0, step 1): the address states (x0_probe v4) at L14 on d1_topics_v4, the states the routes test fits the address on, and the descriptive probe fit; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x0_probe.py run --name nem35l_x52_probe --set d1_topics_v4 --layer $L &&
+  uv run python scripts/x0_probe.py fit --name nem35l_x52_probe &&
+  printf '%s\n' "no prediction: coverage run on an already-scored rule (batch 52 C; Lightning L14, its gate chosen after the 60-scene pre-check was seen: hollow)" > results/x0_probe/nem35l_x52_probe/coverage.txt
+question: >-
+  On Lightning at L14: the bridge word's states on d1_topics_v4 (locker-before and after), from which the address
+  (the mass-mean slot directions, x0_massmean.subspaces) is fit for the routes test; and the descriptive probe of the
+  locker sentence, the answer digit and the bridge identity.
+why_it_matters: >-
+  The routes test, the address swap, the lens readout and the anatomy on Lightning all use the address fit on these
+  states (x6_routes.STATES), as on the 9B, 27B and Muse (x0_probe_v4).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run; the probe is descriptive (Dan, 24 Oct evening), as on the other models."
+decision_rule: >-
+  Descriptive, as muse30b_x0_probe_v4 (jobs/c3/muse_g1.yaml: "uv run python scripts/x0_probe.py run --name {N} --set
+  d1_topics_v4 --layer 26"; "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule"): the same
+  set, the same folds and penalties, at Lightning's committed layer L14 (amendment 1) in place of 26. No rule; the
+  states feed the routes test.
+controls:
+- "the probe's folds held out by item (x0_probe's outer 5 / inner 4 folds), as on the other models"
+n: "d1_topics_v4's scenes on Lightning's tokenizer (Muse: 657 locker-first, 669 locker-after)"
+seeds: [0]
+notes: "Batch 52 C, amendment 3, lane mats GPU 0: THIS -> x52_lightning_routes -> x52_lightning_write -> x52_lightning_verbal -> (attention under the swap: needs a NemotronH port of x49_attn's attention capture, not written yet; flagged). The routes test reads results/x0_probe/nem35l_x52_probe/states.npz from the box's checkout (same box: depends_on). Lightning weights and lens are staged on mats (coordinator: sha ok). Wallclock: one forward per scene (~1,300 scenes) recording one layer, plus the CPU fit (nested CV, a few minutes); Lightning load ~3 min; est ~15 min, 0.3 GPU-h; opens before the freeze."

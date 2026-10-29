@@ -427,8 +427,13 @@ def geometry(n_boot: int = 0) -> Path:
     return out
 
 
-ROUTES_OF = {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
-             "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_g75", "muse-glimmer-30b": "muse30b_x6_routes"}  # fmt: skip
+ROUTES_OF = {
+    "qwen3.5-9b": "qwen35_9b_x6_routes",
+    "qwen3.6-27b": "x6_routes_27b",
+    "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_g75",
+    "muse-glimmer-30b": "muse30b_x6_routes",
+    "nemotron-3.5-lightning": "nem35l_x52_routes",
+}  # fmt: skip (Lightning: batch 52 C coverage)
 RECALL_CLASSES = ("target", "third", "original", "other")
 
 
@@ -501,9 +506,10 @@ def stage_recall(name: str) -> Path:
 
 
 KEEPONLY = {"qwen3.5-9b": "qwen35_9b_x6_routes_keeponly", "qwen3.6-27b": "x6_routes_keeponly_27b",
-            "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_keeponly_g75", "muse-glimmer-30b": "muse30b_x6_routes"}  # fmt: skip
+            "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_keeponly_g75", "muse-glimmer-30b": "muse30b_x6_routes",
+            "nemotron-3.5-lightning": "nem35l_x52_routes"}  # fmt: skip
 X8_RUN = {"qwen3.5-9b": "qwen35_9b_x8_write", "qwen3.6-27b": "x8_write_27b", "qwen3.5-122b-a10b": "qwen35_122b_x8_write_g75",
-          "muse-glimmer-30b": "muse30b_x8_write"}  # fmt: skip
+          "muse-glimmer-30b": "muse30b_x8_write", "nemotron-3.5-lightning": "nem35l_x52_write"}  # fmt: skip
 PAIRS = ((0, 1), (0, 2), (1, 2))
 # batch 43's routes runs with the label-free pointer (P_cf, --alf-from; their no_alf / keep_alf arms remove / keep it)
 PCF_ROUTES = {"qwen3.5-9b": "qwen35_9b_x6_routes_pcf", "qwen3.6-27b": "x6_routes_pcf_27b",

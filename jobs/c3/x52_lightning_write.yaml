@@ -1,0 +1,32 @@
+id: x52_lightning_write
+title: "Batch 52 C coverage (Lightning lane mats GPU 0, step 3; key row 4): the address swap by dose at L14 (mu_k - mu_j at the bridge word, s = 1 / 2 / 4, against a random vector of the same norm at s = 1 / 4), the routes test's eligible C2 scenes; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.4
+depends_on: [x52_lightning_routes]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x8_write.py run --name nem35l_x52_write &&
+  printf '%s\n' "no prediction: coverage run on an already-scored rule (batch 52 C; Lightning L14, hollow gate)" > results/x8_write/nem35l_x52_write/coverage.txt
+question: >-
+  On Lightning at L14: does writing the address of another locker (mu_k - mu_j) at the bridge word send the lookup to
+  that locker, by dose, beyond a random vector of the same norm?
+why_it_matters: >-
+  Row 4 of the coverage matrix (claim 6's swap; Fig. 7); its items feed the lens readout and attention under the swap.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x8_a_muse.yaml (batch 44): "Q44.1 at s = 1 the target share minus the random
+  direction's >= 0.15 with lower CI > 0; Q44.2 among writes that move the lookup to another locker target / (target +
+  third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; Q44.3 target
+  minus random >= 0.10 in each of the 6 (j, k) pairs ... Gate and eligibility as the routes test ... Cluster bootstrap
+  over bridge items, 10,000 resamples, seed 0." Lightning: mu and the address from nem35l_x52_probe (x6_routes.STATES),
+  L14 (amendment 1), gate 0.80 (no change; a failed gate = not tested). Verdict in the job (x8_write verdict).
+controls:
+- "a random vector of the write's norm at s = 1 and 4 (seed RAND_SEED), per (j, k)"
+- "the recall on the same writes (changed / target item: x8_write recall, CPU)"
+n: "the routes test's eligible C2 scenes (up to 300), 2 writes each (to each other locker), 3 doses + 2 random"
+seeds: [2510, 0]
+notes: "Batch 52 C, amendment 3, lane mats GPU 0: x52_lightning_routes -> THIS -> x52_lightning_verbal. Code: x8_write.ROUTES_OF / KEEPONLY / X8_RUN gain Lightning's runs. Wallclock (ledger): the 27B's x8_write ~0.2 h; est ~15 min, 0.4 GPU-h with margin; opens before the freeze."

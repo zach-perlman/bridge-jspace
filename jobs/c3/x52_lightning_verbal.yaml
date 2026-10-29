@@ -1,0 +1,36 @@
+id: x52_lightning_verbal
+title: "Batch 52 C coverage (Lightning lane mats GPU 0, step 4; key row 8): the lens readout with the item-change control (47.0) at L14: the address write h + 2 (mu_k - mu_j) read through the J++ lens against 200 random directions of its norm, an identity change of the same norm as the positive control; x8_write's first 100 eligible items; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.4
+depends_on: [x52_lightning_write]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x47_verbal.py run --name nem35l_x52_verbal &&
+  uv run python scripts/x47_verbal.py summary --runs nem35l_x52_verbal &&
+  printf '%s\n' "no prediction: coverage run on an already-scored rule (batch 52 C; Lightning L14, hollow gate)" > results/x47_verbal/nem35l_x52_verbal/coverage.txt
+question: >-
+  On Lightning at L14: is the address verbalizable through the J++ lens (ordinal / digit ranks, the share the lens
+  rebuilds, the KL), against random directions of the same norm, with an identity change as the positive control?
+why_it_matters: >-
+  Row 8 of the coverage matrix (claim 9: the lens cannot read the address; E8).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored (descriptive) rule."
+decision_rule: >-
+  Verbatim from jobs/c3/x47_0_verbal.yaml (descriptive, batch 47 47.0, operationalized in scripts/x47_verbal.py before
+  any run): "a case = one routes item and one write (both k != j); per readout the best rank (1 = top, whole
+  vocabulary) of the ordinal set and of the digits, the KL(h || h + write); statistic = the median over cases, null =
+  the same median with each of 200 random directions (seed 4701) scaled to each write's norm ... Per model "not
+  verbalizable" = k = 25 unrestricted ratio <= 2, ordinal statistic not (<= 20 and beyond the null), KL within the
+  null's 95th percentile; "partly verbalizable" = an ordinal or digit statistic <= 20 and beyond the null, or ratio >=
+  3; else "neither"." Lightning: x8_write's items (nem35l_x52_write), mu from nem35l_x52_probe, L14. The summary
+  (CPU, in the job) on Lightning's run alone (the 9B / 27B / Muse summary stays results/x47_verbal/summary-20261028T033646Z);
+  its sanity-swap line reads fig10 rows, which Lightning does not have (left out).
+controls:
+- "200 random directions of each write's norm (seed 4701): the null"
+- "the identity change (mu_alt - mu_org of the two items' class means, same norm): the positive control"
+n: "x8_write's first 100 eligible routes C2 items on Lightning, 2 writes each = 200 cases"
+seeds: [4701, 0]
+notes: "Batch 52 C, amendment 3, lane mats GPU 0: x52_lightning_write -> THIS -> attention under the swap (port needed). Code: x47_verbal.X8_RUN / RUN_NAME / NAME gain Lightning; the summary's model order is NAME's. Wallclock (ledger): x47_0_verbal ran the three models in 0.40 h; est ~15 min, 0.4 GPU-h; opens before the freeze."

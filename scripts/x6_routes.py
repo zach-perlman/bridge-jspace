@@ -138,8 +138,13 @@ C0_REF = {
     "qwen3.6-27b": ("x0_massmean_lf_27b", "whole"),
     "qwen3.5-122b-a10b": ("qwen35_122b_x0_massmean_grid", "whole"),
 }  # fmt: skip (Muse: none; its C0 gate is --c0-min)
-STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "qwen3.6-27b": "x0_probe_v4_27b",
-          "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0_probe_v4"}  # fmt: skip
+STATES = {
+    "qwen3.5-9b": "qwen35_9b_x0_probe_v4",
+    "qwen3.6-27b": "x0_probe_v4_27b",
+    "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4",
+    "muse-glimmer-30b": "muse30b_x0_probe_v4",
+    "nemotron-3.5-lightning": "nem35l_x52_probe",
+}  # fmt: skip (Lightning: batch 52 C coverage, at L14)
 NOTE = "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32)."
 LOOKUP_Q, RECALL_Q = "Which locker belongs to {p}'s pick?", "How many legs does {p}'s pick have?"
 # batch 45 (jobs/c3/batch45.yaml, fixed in advance)

@@ -1,0 +1,40 @@
+id: x52_lightning_routes
+title: "Batch 52 C coverage (Lightning lane mats GPU 0, step 2; key row 3): the routes test at L14 (C0 sanity swap, C1 same item moved, C2 another item moved; whole / without J++ / without the address / both off / the address kept alone, each against a random part of its share), the address fit on nem35l_x52_probe's states; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.8
+depends_on: [x52_lightning_probe]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x6_routes.py run --name nem35l_x52_routes --conditions C0,C1,C2 --bothoff --bothoff-ctrl --keeponly --c0-min 0.5 &&
+  printf '%s\n' "no prediction: coverage run on an already-scored rule (batch 52 C; Lightning L14, its main-test gate chosen after the 60-scene pre-check was seen: hollow)" > results/x6_routes/nem35l_x52_routes/coverage.txt
+question: >-
+  On Lightning at L14, which route does the lookup follow when another item's locker sentence moved and took a new
+  number (identity / position / value), does removing the address stop the position answers, and does the address
+  alone bring them back?
+why_it_matters: >-
+  Row 3 of the coverage matrix (claims 4, 6, 7 on the depth page); the routes scenes and the address also feed the
+  address swap, the lens readout, attention and the anatomy on Lightning.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x6_routes.yaml (Dan, 25 Oct ~01:50): "a route counts as used if its share is >=
+  0.20 with lower CI >= 0.10 (cluster bootstrap over the bridge item, 10,000 resamples, seed 0). ... The recall is a
+  control: C2 should follow B, C1 stay on A. Arms: whole; without the J++ part (k = 25); without a random part of its
+  share; without the pointer directions (Alf ...) and without a random part of their share. ... Gate: O's read
+  accuracy >= 0.80 per reader and condition; eligible as in X0; the first 300 per condition." The keep-only arms as
+  jobs/c3/x6_routes_keeponly.yaml (Dan, 25 Oct ~15:50). C0, verbatim from Muse's rule for a model with no one-pick
+  reference (jobs/c3/muse_g2.yaml, Dan 25 Oct ~23:00): "G2 the sanity swap's switch rate >= 0.50 per layer
+  (--c0-min)"; Lightning, like Muse, has no x0_massmean_lf reference run. The address (Alf) = x0_massmean.subspaces of
+  nem35l_x52_probe's states at L14 (Lightning's own fit, as each model's x0_probe_v4; not refit per condition). Layer:
+  the committed L14 (amendment 1). No gate change: a condition under 0.80 is not tested; cells under 30 switches left
+  out (amendment 3). Verdict in the job (x6_routes verdict, not sealed).
+controls:
+- "every removal against a random part of the same share of the change (X0's random subspace, seed 888 + layer)"
+- "C0, the sanity swap (Iris picks the other item, nothing moves): switch rate >= 0.50 (Muse's G2)"
+- "the recall on the same patches (C2 follows B, C1 stays on A)"
+n: "the first 300 eligible scenes per condition (C0, C1, C2; seed 2510, 700 generated per condition), as on every model"
+seeds: [2510, 888, 0]
+notes: "Batch 52 C, amendment 3, lane mats GPU 0: x52_lightning_probe -> THIS -> x52_lightning_write -> x52_lightning_verbal. Same box as the probe run (reads its states.npz; depends_on). Code: x6_routes.STATES gains Lightning's probe run. Wallclock (ledger): x6_routes_r2 (27B + 9B in parallel, C0-C2 with the both-off arms) 0.68 h; Muse's routes ran in its G2 lane; Lightning ~0.5x Muse's time per row; est ~30-45 min, 0.8 GPU-h with margin; opens before the freeze."

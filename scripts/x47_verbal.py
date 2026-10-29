@@ -72,10 +72,16 @@ ATOMS_LISTED = 5  # in verbal.md (all N_ATOMS_SHOWN in omp.jsonl)
 EXAMPLES, EXAMPLES_SEED = 10, 0
 ORDINAL = ("first", "second", "third", "1", "2", "3", "next", "last", "earlier", "later", "before", "after", "one",
            "two", "three")  # fmt: skip
-X8_RUN = {"qwen3.5-9b": "qwen35_9b_x8_write", "qwen3.6-27b": "x8_write_27b", "muse-glimmer-30b": "muse30b_x8_write"}
+X8_RUN = {
+    "qwen3.5-9b": "qwen35_9b_x8_write",
+    "qwen3.6-27b": "x8_write_27b",
+    "muse-glimmer-30b": "muse30b_x8_write",
+    "nemotron-3.5-lightning": "nem35l_x52_write",
+}  # fmt: skip (Lightning: batch 52 C coverage)
 RUN_NAME = {"qwen3.5-9b": "qwen35_9b_x47_verbal", "qwen3.6-27b": "x47_verbal_27b",
-            "muse-glimmer-30b": "muse30_x47_verbal"}  # fmt: skip
-NAME = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse Glimmer 30B"}
+            "muse-glimmer-30b": "muse30_x47_verbal", "nemotron-3.5-lightning": "nem35l_x52_verbal"}  # fmt: skip
+NAME = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse Glimmer 30B",
+        "nemotron-3.5-lightning": "Nemotron 3.5 Lightning"}  # fmt: skip
 RECON_RATIO_NOT, RECON_RATIO_PARTLY, TOP_RANK = 2.0, 3.0, 20
 LO_PCT, HI_PCT = 5.0, 95.0
 # the sanity swap (J++ and U removed together; x6_routes --bothoff, C0): figures/story/data.csv, fig10
@@ -510,7 +516,7 @@ def summary_lines(blob: dict) -> list[str]:
              row("(c) cases with KL beyond their own null", lambda r: fmt_ci(r["c"]["write"]["case_share_beyond"])),
              row("reading", lambda r: r["reading"]["label"])]  # fmt: skip
     sw = blob["sanity_swap"]
-    order = [t for t in ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b") if t in sw]
+    order = [t for t in (*NAME,) if t in sw]
     lines += ["", f"Over the models: **{blob['overall']}**.", "",
               "Sanity swap (the other reading of Neel's question, augmenting the lens with the pointer): with J++ and U "
               "removed together the lookup still switches in " + " / ".join(f"{sw[t]['part'][0]:.2f}" for t in order)
@@ -528,7 +534,7 @@ def summary_lines(blob: dict) -> list[str]:
 
 def draft_sentence(blob: dict) -> str:
     """One sentence from the numbers, worded by the overall reading (a draft; README claims are Dan's)."""
-    ms = [blob["models"][t] for t in ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b") if t in blob["models"]]
+    ms = [blob["models"][t] for t in (*NAME,) if t in blob["models"]]
     moved = " / ".join(f"{m['x8_lookup_at_s2']['target']:.2f}" for m in ms)
     ratio = " / ".join(f"{m['b'][f'all|{KS[0]}']['ratio']:.1f}x" for m in ms)
     ords = " / ".join(f"{m['a']['write|best_ordinal']['median']:.0f}" for m in ms)
