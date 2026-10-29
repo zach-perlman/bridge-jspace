@@ -2775,3 +2775,26 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - **Final cells** are reported descriptively.
   - **No separate positive check.** The donor path is note 17's, whose check passed (93.4% at final L29-30). The swap is asserted to move X's sentence in every prompt.
   - GPU0, after the Lightning note 15/17 job. A 2-item smoke runs first.
+
+##### Amendment 58 notes 15 addendum, 16 and 18: the 27B and Lightning (Zach delegated the overnight queue, 2026-10-29 ~03:45 UTC; before any 27B or Lightning result of these notes)
+- **Why.** Every model gets every number. The tests, arms, conditions and readings are exactly as written for the 9B. Only the cells change, chosen by fixed rules from each model's note 14 stage 1 (results/nn_swap/nn_cf_read/{,nem35l_}v4_stage1.json).
+- **Note 15 addendum (same-share control).** Cells = that model's note 15 cells: its MM stage-1 hits at sites last and final, minus its last window.
+  - 27B: final L49-56; last L16-23, L24-31, L32-40.
+  - Lightning: final L34-39, L40-45; last L6-10, L11-15, L16-20, L21-26.
+- **Note 16 (Dan's lens part).** Cells: site last, MP and MM, at the first two windows that are stage-1 hits for both words.
+  - 27B: L16-23, L24-31. Lightning: L6-10, L11-15.
+  - Positive check: final MM at the model's last window (27B L57-62; Lightning L46-50).
+- **Note 18 (position swap).** Windows as note 17 per model.
+  - 27B: last L8-15 … L32-40; span L0-7 … L32-40; final L41-48, L49-56, L57-62.
+  - Lightning: last L6-10 … L21-26; span L0-5 … L21-26; final L34-39, L40-45, L46-50.
+- **All three notes.** Donor seeds 0 and 1. A 2-item smoke for each note runs first.
+- **Queue.** scripts/queues/h200_rep_1029.sh.
+  - Lightning on GPU0, after the 9B's note 18 job.
+  - The 27B on GPU1, after its note 17 job.
+
+##### Amendment 58 note 14, Bolt addendum (Zach's plan: Bolt on Thursday, competence and readout, the map if time allows)
+- **Bolt** (88 layers; the J++ lens to L86; split over both GPUs).
+  - Map windows: L0-9, L10-19, L20-29, L30-39, L40-49, L50-59, L60-69, L70-78, L79-86.
+  - Everything else is as note 14 (competence MP MM, controls H1 RG RO, readout, stage-1 map).
+- **Order.** Smoke, competence, controls, readout, then the map in seed-major order: last, final, span. Stage 2 is left for Zach.
+- **Queue.** scripts/queues/h200_v4bolt_1029.sh. It starts once both GPUs are free.
