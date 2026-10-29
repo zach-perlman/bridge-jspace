@@ -1,0 +1,571 @@
+{
+ "exp": "x52_atoms",
+ "part": "52 A",
+ "verdict": "descriptive; no rule",
+ "written_utc": "2026-10-29T01:06:52Z",
+ "code": {
+  "sha": "10884f85a0d888843b1c5186a4231b21f53ff032",
+  "dirty": true
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "sources": {
+  "nemotron-3.5-lightning": {
+   "e1": "nem35l_x52_atoms_fwd"
+  }
+ },
+ "checks": {
+  "nemotron-3.5-lightning|nem35l_x52_atoms_fwd": {
+   "target": "nemotron-3.5-lightning",
+   "layer": 14,
+   "e1_delta": {
+    "max_abs_delta_lookup_minus_recall": 0.0,
+    "max_abs_delta": 4.703125,
+    "max_rel_norm_lookup_minus_recall": 0.0,
+    "median_rel_norm_lookup_minus_recall": 0.0
+   },
+   "letters": 124782,
+   "e1_PP_fit_max_abs_diff": 0.0,
+   "e1_x0_share_max_abs_gap": 5.000000000032756e-06,
+   "e1_x0_share_items": 50,
+   "e1_51_12_answer_atoms_items_agree": [
+    50,
+    50
+   ],
+   "e1_x0_atoms_same_25_items": [
+    0,
+    0
+   ],
+   "e1_recall_delta_atoms_in_common": {
+    "all_25": 50,
+    "items": 50,
+    "min": 25,
+    "median": 25.0
+   }
+  }
+ },
+ "summary": {
+  "nemotron-3.5-lightning": {
+   "e1": {
+    "PP": {
+     "n": 50,
+     "entities": 29,
+     "share_k25_median": 0.252607,
+     "atoms": {
+      "bridge": [
+       0.0368,
+       0.0306,
+       0.0426
+      ],
+      "new_bridge": [
+       0.04,
+       0.0323,
+       0.0472
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0032,
+       0.0007,
+       0.0067
+      ],
+      "function": [
+       0.012,
+       0.006,
+       0.0182
+      ],
+      "other": [
+       0.908,
+       0.896,
+       0.921
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0901,
+       0.0735,
+       0.1042
+      ],
+      "new_bridge": [
+       0.1107,
+       0.0893,
+       0.1312
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0037,
+       0.0006,
+       0.008
+      ],
+      "function": [
+       0.0086,
+       0.0041,
+       0.0131
+      ],
+      "other": [
+       0.7869,
+       0.7581,
+       0.818
+      ]
+     },
+     "items_with": {
+      "bridge": 41,
+      "new_bridge": 42,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 4,
+      "function": 13,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0022,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 7,
+        "energy": 0.0074,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 37,
+        "energy": 0.0805,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0011,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 1,
+        "energy": 0.0028,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0021,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 8,
+        "energy": 0.0106,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 37,
+        "energy": 0.0912,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 3,
+        "energy": 0.0045,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.7856
+     }
+    },
+    "PM": {
+     "n": 50,
+     "entities": 29,
+     "share_k25_median": 0.252607,
+     "atoms": {
+      "bridge": [
+       0.0368,
+       0.0306,
+       0.0426
+      ],
+      "new_bridge": [
+       0.04,
+       0.0323,
+       0.0472
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0032,
+       0.0007,
+       0.0067
+      ],
+      "function": [
+       0.012,
+       0.006,
+       0.0182
+      ],
+      "other": [
+       0.908,
+       0.896,
+       0.921
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0901,
+       0.0735,
+       0.1042
+      ],
+      "new_bridge": [
+       0.1107,
+       0.0893,
+       0.1312
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0037,
+       0.0006,
+       0.008
+      ],
+      "function": [
+       0.0086,
+       0.0041,
+       0.0131
+      ],
+      "other": [
+       0.7869,
+       0.7581,
+       0.818
+      ]
+     },
+     "items_with": {
+      "bridge": 41,
+      "new_bridge": 42,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 4,
+      "function": 13,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0022,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 7,
+        "energy": 0.0074,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 37,
+        "energy": 0.0805,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0011,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 1,
+        "energy": 0.0028,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0021,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 8,
+        "energy": 0.0106,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 37,
+        "energy": 0.0912,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 3,
+        "energy": 0.0045,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.7856
+     }
+    }
+   }
+  }
+ },
+ "chance": {
+  "nemotron-3.5-lightning": {
+   "e1": {
+    "bridge": 0.00078,
+    "new_bridge": 0.00086,
+    "scene_item": 7e-05,
+    "person": 0.00011,
+    "answer_own": 0.0,
+    "answer_other": 0.0,
+    "same_class": 0.00322,
+    "function": 0.01362,
+    "other": 0.98134
+   }
+  }
+ },
+ "hand": {
+  "qwen3.5-9b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 121,
+   "rate": 0.968,
+   "kappa": 0.8548,
+   "hand_classes": {
+    "bridge": 6,
+    "new_bridge": 7,
+    "other": 108,
+    "function": 4
+   },
+   "disagreements": {
+    "function -> other": [
+     "и",
+     "ни",
+     "مع",
+     "ein"
+    ]
+   }
+  },
+  "qwen3.6-27b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 119,
+   "rate": 0.952,
+   "kappa": 0.7339,
+   "hand_classes": {
+    "new_bridge": 5,
+    "bridge": 4,
+    "other": 111,
+    "function": 4,
+    "answer_other": 1
+   },
+   "disagreements": {
+    "function -> other": [
+     " Ты",
+     " və",
+     " 에서",
+     " των"
+    ],
+    "other -> function": [
+     ">i"
+    ],
+    "bridge -> other": [
+     "EEEE"
+    ]
+   }
+  },
+  "muse-glimmer-30b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 117,
+   "rate": 0.936,
+   "kappa": 0.7553,
+   "hand_classes": {
+    "new_bridge": 7,
+    "bridge": 8,
+    "other": 103,
+    "function": 5,
+    "same_class": 2
+   },
+   "disagreements": {
+    "function -> other": [
+     "We'll",
+     "』の",
+     "”等",
+     " επίσης",
+     "/other"
+    ],
+    "new_bridge -> other": [
+     " nitride"
+    ],
+    "same_class -> other": [
+     "Zn",
+     "铅"
+    ]
+   }
+  },
+  "qwen3.5-9b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3523,
+   "hand_classes": {
+    "answer_own": 3,
+    "other": 116,
+    "new_bridge": 1,
+    "function": 5
+   },
+   "disagreements": {
+    "answer_own -> other": [
+     "土耳其",
+     " jap",
+     " Suomen"
+    ],
+    "function -> other": [
+     " ся",
+     " Ihnen",
+     " gibi",
+     "和他的"
+    ]
+   }
+  },
+  "qwen3.6-27b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 123,
+   "rate": 0.984,
+   "kappa": 0.496,
+   "hand_classes": {
+    "other": 122,
+    "new_bridge": 1,
+    "same_class": 1,
+    "function": 1
+   },
+   "disagreements": {
+    "same_class -> other": [
+     "福州"
+    ],
+    "function -> other": [
+     " kerana"
+    ]
+   }
+  },
+  "muse-glimmer-30b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3451,
+   "hand_classes": {
+    "other": 120,
+    "function": 2,
+    "bridge": 1,
+    "answer_own": 2
+   },
+   "disagreements": {
+    "other -> function": [
+     "(SO",
+     "s",
+     "*M"
+    ],
+    "answer_own -> other": [
+     " russa",
+     " чеш"
+    ],
+    "function -> other": [
+     "sein"
+    ],
+    "other -> same_class": [
+     " Sebastian"
+    ]
+   }
+  }
+ },
+ "n_boot": 10000,
+ "boot_seed": 0,
+ "classes": {
+  "bridge": "the original bridge word",
+  "new_bridge": "the new bridge word",
+  "scene_item": "another item named in the scene",
+  "person": "a person's name in the scene",
+  "answer_own": "the reader's answer word",
+  "answer_other": "the other reader's answer word",
+  "same_class": "a same-class word not in the scene",
+  "function": "function words and punctuation",
+  "other": "other"
+ }
+}
