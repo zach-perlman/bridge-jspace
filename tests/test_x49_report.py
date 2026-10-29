@@ -139,7 +139,7 @@ def test_the_committed_predictions_file_has_the_q49_6_block():
     from bridge_jspace import pins
 
     text = (pins.REPO_ROOT / V.PREDICTIONS).read_text()
-    assert "**Q49.6**" in text and "slot 1 recovers" in text
+    assert "**Q49.6**" in text and "Slot 1 is reported right" in text
 
 
 # ---- the run stage on a fake model --------------------------------------------------------------------------------------

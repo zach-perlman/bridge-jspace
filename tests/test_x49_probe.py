@@ -242,7 +242,7 @@ def test_the_committed_predictions_file_has_the_q49_3_block():
     from bridge_jspace import pins
 
     text = (pins.REPO_ROOT / P.PREDICTIONS).read_text()
-    assert "**Q49.3**" in text and "distributed person mark" in text
+    assert "**Q49.3**" in text and "A person mark spread over the sentence" in text
 
 
 # ---- the run stage on a fake model ------------------------------------------------------------------------------------
