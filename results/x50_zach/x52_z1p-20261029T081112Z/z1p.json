@@ -1,0 +1,245 @@
+{
+ "runs": [
+  "qwen35_9b_x52_z1p"
+ ],
+ "dan": "no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)",
+ "models": [
+  {
+   "run": "qwen35_9b_x52_z1p",
+   "target": "qwen3.5-9b",
+   "layers": [
+    12
+   ],
+   "gate": {
+    "cases": 525,
+    "org_read_accuracy": {
+     "K": 0.8,
+     "M": 0.8438095238095238
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 231,
+    "over_zach_kept": {
+     "cases": 190,
+     "org_read_accuracy": {
+      "K": 0.9947368421052631,
+      "M": 0.8894736842105263
+     },
+     "pass": true,
+     "eligible": 110
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 94,
+       "no other entity with another answer": 3
+      },
+      "cases": 261
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 93,
+       "no other entity with another answer": 1
+      },
+      "cases": 264
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 112,
+     "jsuite_v2nb_test_chat": 88
+    },
+    "chosen_strata": {
+     "fact-after": 104,
+     "fact-first": 96
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "12": {
+     "n": 200,
+     "entities": 129,
+     "lookup": {
+      "n": 200,
+      "entities": 129,
+      "S_whole": [
+       0.315,
+       0.2546,
+       0.3824
+      ],
+      "S_no_part": [
+       0.28,
+       0.2224,
+       0.3459
+      ],
+      "S_no_rand": [
+       0.265,
+       0.2087,
+       0.3302
+      ],
+      "switched_whole": 63,
+      "valid": true,
+      "Jdep": [
+       0.11111111111111105,
+       0.0,
+       0.20895522388059695
+      ],
+      "Rdep": [
+       0.15873015873015872,
+       0.05263157894736836,
+       0.2615384615384616
+      ],
+      "excess": [
+       -0.04761904761904767,
+       -0.13043478260869545,
+       0.03389830508474567
+      ],
+      "label": "around"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 129,
+      "S_whole": [
+       0.815,
+       0.7554,
+       0.8627
+      ],
+      "S_no_part": [
+       0.26,
+       0.2041,
+       0.3249
+      ],
+      "S_no_rand": [
+       0.74,
+       0.6751,
+       0.7959
+      ],
+      "switched_whole": 163,
+      "valid": true,
+      "Jdep": [
+       0.6809815950920245,
+       0.6040235770940469,
+       0.754601226993865
+      ],
+      "Rdep": [
+       0.09202453987730053,
+       0.044303797468354444,
+       0.1428571428571428
+      ],
+      "excess": [
+       0.588957055214724,
+       0.505952380952381,
+       0.6730769230769231
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.6365761028337716,
+      0.5109704315318497,
+      0.7645673114883536
+     ],
+     "verdict": "the split holds on his passages",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 132,
+        "switch": 63,
+        "other": 5
+       },
+       "no_jpp": {
+        "original": 140,
+        "switch": 56,
+        "other": 4
+       },
+       "no_jpp_rand": {
+        "original": 144,
+        "switch": 53,
+        "other": 3
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 163,
+        "original": 31,
+        "other": 5,
+        "lure": 1
+       },
+       "no_jpp": {
+        "original": 143,
+        "switch": 52,
+        "other": 5
+       },
+       "no_jpp_rand": {
+        "original": 45,
+        "switch": 148,
+        "other": 6,
+        "lure": 1
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 96,
+        "whole_switch": [
+         0.6041666666666666,
+         0.4998809523809525,
+         0.7047744360902254
+        ]
+       },
+       "fact-after": {
+        "n": 104,
+        "whole_switch": [
+         0.04807692307692308,
+         0.01020408163265306,
+         0.09090909090909091
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 12.566666666666665,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L12-16",
+    "swap": null,
+    "full": {
+     "run": "qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 110,
+      "m_minus_k": [
+       0.3181818181818182,
+       0.18181818181818182,
+       0.4545639320029561
+      ]
+     },
+     "paper10_rot": {
+      "joined": 110,
+      "m_minus_k": [
+       -0.09090909090909091,
+       -0.15,
+       -0.038461538461538464
+      ]
+     }
+    }
+   }
+  }
+ ]
+}
