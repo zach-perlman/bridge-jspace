@@ -1,0 +1,33 @@
+id: x52_lightning_45p_below_q
+title: "Batch 52, Dan's morning queue item 1: the earlier mention (45p) on Lightning at L14, BELOW GATE (exploratory) on the clean design's eligible items (x52_lightning_fresh_below; the clean gate fails, recall 0.751 < 0.80); rules verbatim; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl &&
+  NOTE=$(uv run python -c "from scripts import x45b_binding as B; print(B.BELOW_GATE)") &&
+  uv run python scripts/x45p.py run --below-gate --name nem35l_x52_45p_below --why "Batch 52, Dan's morning queue item 1: 45p on Lightning at L$L, below gate; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x45p/nem35l_x52_45p_below/coverage.txt &&
+  uv run python scripts/x45p.py verdict --below-gate --runs nem35l_x52_45p_below
+question: >-
+  Below gate, on Lightning's clean one-pick scenes: does the recall read the item's earlier mention when its locker came first?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: "not tested" on Lightning (clean
+  gate 0.751); Dan asks for it below gate, exploratory, hollow, never in the claims table or grades.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  45p's rule verbatim (jobs/c3/batch45.yaml 45p; scripts/x45p.py RULE; first scored in results/x45p/x45p-20261027T012017Z): "the recall reads the earlier mention if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested". Read per model only (the 2-of-3 count is the design's, not re-scored). As computed: 45p's text unchanged (the 45m source run's items whose new item's locker sentence comes before the asked pick; the patched tokens exactly the item's name; a control locker item; X0's chat read; cluster bootstrap, 10,000, seed 0) at L14. BELOW GATE (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80); eligible items only (the source x52_lightning_fresh_below, x0_necessity --descriptive, dev scenes out); the source gate numbers in the manifest; hollow, never in the claims table or grades. Verdict in the job (x52_*_below-<UTC>/, never the script's default folder).
+controls:
+- "the control locker item's name patched the same way"
+- "the J++ part against a random part of its share"
+- "O alone (no edit) and the base edit"
+n: "the source run's eligible clean scenes whose new item's locker sentence comes first"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:10 Paris). Box: mats, depends_on x52_lightning_fresh_below (its run in mats' checkout; checked before loading). Code: x45p --below-gate (the source from x45b_binding.fresh_of(target, True); the verdict reads the below-gate run alone, x52_45p_below-<UTC>/, the batch line marked as not a re-score); default path unchanged (tested). Wallclock: x45p_9b 144 s, x45p_muse 196 s, x45p_27b 243 s: est ~5 min, 0.15 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."
+
+# Re-queued 29 Oct ~09:50 Paris (coordinator): the original id was cancelled before it started (batch 53's box plan, Dan 09:30); same command and run name; the fresh source run is committed (92037f19), so no depends_on.

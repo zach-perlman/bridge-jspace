@@ -1,0 +1,33 @@
+id: x52_lightning_ladder_below_q
+title: "Batch 52, Dan's morning queue item 1: the removal ladder (49.2) rungs 1-6 on Lightning at L14..17, rung 6 over Zach's Lightning band L27-33, BELOW GATE (exploratory) on the clean design's eligible items (x52_lightning_fresh_below; the clean gate fails, recall 0.751 < 0.80); rules verbatim; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl &&
+  NOTE=$(uv run python -c "from scripts import x45b_binding as B; print(B.BELOW_GATE)") &&
+  uv run python scripts/x49_ladder.py run --below-gate --coverage --band 27 33 --name nem35l_x52_ladder_below --why "Batch 52, Dan's morning queue item 1: 49.2 on Lightning, rungs 1-6, rung 6 at his band L27-33, below gate; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x49_ladder/nem35l_x52_ladder_below/coverage.txt &&
+  uv run python scripts/x49_ladder.py verdict --below-gate --name nem35l_x52_ladder_below
+question: >-
+  Below gate, on Lightning's clean one-pick scenes: is the second copy the earlier mention, is the J++ part needed only when everything goes, does the lookup never need it?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: "not tested" on Lightning (clean
+  gate 0.751); Dan asks for it below gate, exploratory, hollow, never in the claims table or grades.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  49.2's rules verbatim (jobs/c3/batch49.yaml 49.2; scripts/x49_ladder.py RULES; first scored in results/x49_ladder/x49_2-20261028T161612Z): "second_copy: the second copy is the earlier mention: rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes; only_everything: needed only when everything goes: rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5; lookup: the lookup never needs it: <= 0.1 beyond random at every rung". As computed: 49.2's text unchanged (rungs 1-5: the bridge's Delta_l's 25 OMP atoms projected out at the rung's tokens over L..L+3, each against a random part of its share; rung 6: Zach's top-10 removal at every token of each band layer; S read by X0's chat read, both readers; cluster bootstrap over bridge items, 10,000, seed 0) on Lightning at the committed L14 (L14..17), rung 6 over Zach's Lightning band L27-33 (x50_zach.BESIDE_BAND; --band 27 33, as the 27B's and Muse's coverage ladders used their bands). BELOW GATE (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80); eligible items only (the source x52_lightning_fresh_below, x0_necessity --descriptive, dev scenes out); the source gate numbers in the manifest; hollow, never in the claims table or grades. Verdict in the job (x52_*_below-<UTC>/, never the script's default folder).
+controls:
+- "each rung against a random part of its share (seed 888 + layer)"
+- "S unedited (kept ~1 by eligibility)"
+- "both readers, per order group (locker-first / locker-after)"
+n: "the source run's eligible clean scenes (both order groups)"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:10 Paris). Box: mats, depends_on x52_lightning_fresh_below (its run in mats' checkout; checked before loading). Code: x49_ladder --below-gate (BELOW: gate_of accepts the failed source gate; the source from x45b_binding.FRESH_BELOW; the verdict reads the run alone, x52_ladder_below-<UTC>/); default path unchanged (tested). Wallclock: x52_ladder_27b_a 1,443 s, x52_ladder_muse_r3 1,209 s, x49_2_9b 492 s: est ~15-25 min, 0.4 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."
+
+# Re-queued 29 Oct ~09:50 Paris (coordinator): the original id was cancelled before it started (batch 53's box plan, Dan 09:30); same command and run name; the fresh source run is committed (92037f19), so no depends_on.
