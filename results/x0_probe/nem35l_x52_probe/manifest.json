@@ -1,0 +1,53 @@
+{
+  "exp": "x0_probe",
+  "run": "nem35l_x52_probe",
+  "written_utc": "2026-10-29T00:22:24Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "source": null,
+  "source_code": null,
+  "set": "d1_topics_v4",
+  "layer": 14,
+  "x0_items": 0,
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "531ec23cffba343f490e69f17ef00569991a0983",
+    "dirty": true
+  },
+  "position": "the asked person's bridge word, org run, chat",
+  "folds": {
+    "outer": 5,
+    "inner": 4,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "targets": {
+    "answer digit": "answer",
+    "locker sentence": "locker_index",
+    "bridge identity": "entity"
+  }
+}
