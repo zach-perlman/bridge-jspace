@@ -8327,6 +8327,23 @@ e6_distance,nemotron-3.5-lightning,47.16: position share with 50 neutral sentenc
 e6_distance,nemotron-3.5-lightning,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
 e6_distance,nemotron-3.5-lightning,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.4798994974874372,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
 e6_distance,nemotron-3.5-lightning,47.16: the code's shift beta with 50 sentences,0.7730017893814615,0.7157488460932674,0.8264695920529247,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: the rule's reading,distance-robust address,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: routes scenes,279,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: position share with 0 neutral sentences,0.5376344086021505,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.5,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: position share with 5 neutral sentences,0.5412186379928315,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: slot probe with 5 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,"47.16: the swap (fit with none) sends lookups to the target, 5 sentences",0.5125448028673835,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: the code's shift beta with 5 sentences,0.32253447016007564,0.2969354542124037,0.3479023716275138,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: position share with 20 neutral sentences,0.5161290322580645,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: slot probe with 20 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,"47.16: the swap (fit with none) sends lookups to the target, 20 sentences",0.5197132616487455,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: the code's shift beta with 20 sentences,0.3874844000303246,0.36565001752535065,0.4082661798814716,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: position share with 50 neutral sentences,0.5125448028673835,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.5161290322580645,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,muse-glimmer-30b,47.16: the code's shift beta with 50 sentences,0.41744996755918923,0.3904057951173122,0.4427909943172652,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json

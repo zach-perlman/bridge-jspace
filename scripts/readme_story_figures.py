@@ -3678,10 +3678,12 @@ def batch47_numbers() -> None:
     """Numbers the README cards quote from batch-47 verdicts that have no figure of their own (47.16 on the 9B, 47.7(a)
     on the 27B), recorded for data.csv with the verdict json as source (47.10's: Fig. 7b records them, as e8_report)."""
     # 47.16: the 9B's verdict, then batch 52's coverage run on the 27B and Lightning (the coordinator, 29 Oct ~14:25:
-    # every opened result's cells in the address card); each tested model from the first verdict that holds it
+    # every opened result's cells in the address card), and Muse's r2 rerun (Dan 09:05, flagged 24; the same rule, no
+    # prediction); each tested model from the first verdict that holds it
     seen = set()
     for v in (latest_verdict("x47_distance/x47_16-*") / "x47_16.json",
-              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json"):  # fmt: skip
+              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json",
+              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T090323Z" / "x47_16.json"):  # fmt: skip
         src = str(v.relative_to(S.REPO))
         for m in json.loads(v.read_text())["models"]:
             if m["status"] != "tested" or m["target"] in seen:
