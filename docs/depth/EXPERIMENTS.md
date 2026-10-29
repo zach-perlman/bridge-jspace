@@ -745,7 +745,7 @@ New in this ledger:
 
 ### Does the address survive neutral sentences between the lockers and the picks? (the swap after neutral sentences, 47.16; the 27B's and Lightning's coverage runs 29 Oct) <a id="t47-16"></a>
 
-`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap after neutral sentences).*
+`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap with no / 50 neutral sentences: the 9B, 27B and Lightning; Muse's rerun not shown there, [Appendix B](#readme-changes)).*
 
 - **Question.** With 5, 20 or 50 neutral sentences between the lockers and the picks, does the address still carry position answers, and does the address swap still work?
 - **Why we asked.** An address read at the bridge word could be a short-range effect of the sentences next to it.
@@ -2074,7 +2074,7 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 
 ## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>
 
-Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (556d667b) applied all but two of these: one is still open (47.16 on the 27B and Lightning), one is not on the page as such (47.7 (c)). One line each, its status first:
+Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (556d667b) applied all but two of these; 47.16 on the 27B and Lightning followed in d5f208a3; 47.7 (c) is not on the page as such. One item is open: Muse's 47.16 rerun (new, last). One line each, its status first:
 
 - **Applied** (claim 8 reworded and graded B; the six-locker card and "Tested and dropped"). "In one minute" and claim 8: "one code per locker" is not what 51.11 supports on the 9B (d* 2/2/>7/2, in between; the methods agree only in part; midpoint swaps fail); reword and regrade claim 8 ([51.11](#t51-11)).
 - **Applied** (Lightning's layer and its rule in "How to read this page"; 51.11 under the six-locker card). Status line: 51.11 is opened, not sealed; add Lightning's layer L14 and its rule (amendment 1, Dan ~00:50: earliest passing layer at relative depth >= 0.25; tie-break the bridge word's lens readability) ([Lightning's layer](#lightning-layer)).
@@ -2094,7 +2094,8 @@ Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (55
 - **Applied** (Part V card (Lightning's column)). Part V, models: on Lightning Z1 is in between at L14 and Z3 in between at L14 (no position route at L27); coverage runs, no prediction ([Z1](#z1), [Z3](#z3)).
 - **Applied** (Part I card "Does the split hold in other texts?"). Part I card "Does the split hold in other texts?" and claim 1, models: Lightning's varied scenes hold pooled (gap 0.24 [0.17, 0.32], lookup 0.03; 42 of 57 cells, 1,105 scenes); its natural passages are not tested (gate). Lightning's carrier before L (51.7) as on the 9B and 27B ([varied scenes](#x0b), [51.7](#t51-7)).
 - **Applied** (claim 11). Claim 11, models: with the locker after, the 27B's lookups too are carried by the bridge word before L (1.00, main test) ([47.4](#t47-4)).
-- **Open** (the README shows the 9B only). E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
+- **Applied** (after the rebuild, d5f208a3: Part III card "Can the address be read, removed, added and swapped?", the swap with no / 50 neutral sentences on the 9B, 27B and Lightning). E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
+- **Open** (new, 29 Oct ~14:30). Part III address card, the neutral-sentences row: Muse shows "not run", but its rerun r2 (Dan, 09:05; a coverage run on the same rule, no prediction) gives 0.50 [0.46, 0.54]<!-- src: results/x47_distance/x52_distance-20261029T090323Z/x47_16.md \| muse-glimmer-30b :: 0.44 [0.39, 0.50] :: 0.50 [0.46, 0.54] --> with no sentences and a distance-robust address, as in the 47.16 card; Flagged 22 covers only its first run ([47.16](#t47-16)).
 - **Applied** ("Tested and dropped" and Part VI (one line each)). Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
 - **Applied** (Part V card, the routes test on his passages). Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
 - **Applied** (claim 2, the Part III refit card and Part VI's line on the lookup's errors). Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
