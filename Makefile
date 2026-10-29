@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: readme figures-kit install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -117,3 +117,11 @@ examples-render:    ## examples/<exp>/ from the latest examples runs; SEED=29 ad
 
 examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
 	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)
+
+figures-kit:        ## every figure-kit figure for both targets (presentation/, figures/readme/): FIG="p1 p5" for some
+	uv run python -m figures.kit.build $(FIG) --target slide
+	uv run python -m figures.kit.build $(FIG) --target readme
+
+readme: figures-kit ## the root README from docs/README.root.template.md (numbers and figures fill in)
+	uv run python scripts/readme_root.py build
+	uv run pytest -q tests/test_readme_sources.py
