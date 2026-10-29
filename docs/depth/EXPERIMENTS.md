@@ -4,7 +4,7 @@
 
 ## In one minute
 
-- **What it holds:** 48 test cards in the README's Parts I-VI on the 27B, Lightning, 9B and Muse, each tagged by how the README uses it; one check, one withdrawn card, three one-model rows. All UNVERIFIED.
+- **What it holds:** 49 test cards in the README's Parts I-VI on the 27B, Lightning, 9B and Muse, each tagged by how the README uses it; one check, one withdrawn card, two one-model rows, and batch 53's exploration-day cards. All UNVERIFIED.
 - **Lightning confirms the split, the routes and the address** (coverage runs at L14, no prediction): recall 0.34 [0.25, 0.44]<!-- src: results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md | 0.94 :: 0.34 [0.25, 0.44] -->, lookup 0.03 [-0.01, 0.08]<!-- src: results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md | 0.45 :: 0.03 [-0.01, 0.08] --> lost without the lens part ([conflict test](#lightning-conflict)); the address swap at dose 2 moves 0.50 [0.46, 0.54]<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md | 0.43 [0.38, 0.47] :: 0.50 [0.46, 0.54] --> of lookups ([swap](#swap)).
 - **The anatomy by depth breaks on the 27B's full grid:** its lookup needs the lens part until L40<!-- src: results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.md | qwen3.6-27b :: -12 (<= 2) :: 40 -->, after position answers begin at L28<!-- src: results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.md | qwen3.6-27b :: -12 (<= 2) :: 28 --> ([anatomy](#t47-8)).
 - **The swap's rule fixed in advance (dose 1) said no** on every model; the README's swap numbers are at dose 2 ([swap](#swap)).
@@ -757,6 +757,36 @@ New in this ledger:
 - **Caveats.**
   - One cell tested (the 27B, question last); every other cell failed its gate.
   - The report loses 0.28 without the address, just under the rule's 0.3.
+
+### Reworded, does the report read slot 1? (the report of slot 1 reworded, 49.6, opened 28 Oct; Lightning's coverage run 29 Oct) <a id="t49-6"></a>
+
+`ledger only` *Used in: not in the README (its Part VI "one question under two instructions" is another test).*
+
+- **Question.** Asked for the position of the asked item's locker, the report reads slot 1 badly ([47.10](#t47-10)); asked in other words, does it read slot 1?
+- **Why we asked.** If slot 1 stays unread under any wording, the report's gap is about slot 1 itself; if it recovers, it was the wording.
+- **Data.** The report prompt's scenes without a move, the original prompt only, question last: 500 scenes, 147 with the asked item in slot 1 on the 9B and the 27B, 168 on Lightning.
+- **Method.** Two new wordings of the report question: position (a digit: "Was the locker of <p>'s pick listed in position 1, 2 or 3 of the list?") and sentence (a word: "Which of the three locker sentences - the first, the second or the third - gives the locker of <p>'s pick?"); the share of scenes whose asked item sits in slot 1 that the report reads right, with the earlier report wording beside.
+
+![Reworded, the report reads slot 1 on every model tested](../../figures/ledger/ledger_report_slot1.png)
+*Question last: the share of slot-1 scenes the report reads right, under the earlier report wording (grey), the position wording (orange) and the sentence wording (dark); dashed: the rule's 0.2; whiskers 95%. Models: 9B (decides), 27B, Lightning (hollow: a coverage run with the 9B / 27B design; its gate set after the 60-scene pre-check); Muse grey (not designed: 9B / 27B only).*
+
+- **Rule, fixed in advance.** "if slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop." (results/x49_report/x49_6-20261028T154511Z/x49_6.md; Q49.6, Dan: 60%; Lightning a coverage run, no prediction)
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | slot 1 read right, the earlier report wording | 0.03 [0.01, 0.05]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.5-9b :: 47.10 report :: read :: 0.03 [0.01, 0.05] --> | 0.71 [0.63, 0.79]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: 47.10 report :: read :: 0.71 [0.63, 0.79] --> | not designed | 0.29 [0.22, 0.35]<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md \| nemotron-3.5-lightning :: 47.10 report :: read :: 0.29 [0.22, 0.35] --> |
+  | slot 1 read right, the position wording (bar 0.2) | 0.18 [0.11, 0.25]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.5-9b :: position :: read :: 0.18 [0.11, 0.25] --> | 0.68 [0.59, 0.76]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: position :: read :: 0.68 [0.59, 0.76] --> | | 0.29 [0.21, 0.37]<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md \| nemotron-3.5-lightning :: position :: read :: 0.29 [0.21, 0.37] --> |
+  | slot 1 read right, the sentence wording (bar 0.2) | 0.61 [0.51, 0.70]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.5-9b :: sentence :: read :: 0.61 [0.51, 0.70] --> | 0.99 [0.96, 1.00]<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: sentence :: read :: 0.99 [0.96, 1.00] --> | | 0.46 [0.37, 0.55]<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md \| nemotron-3.5-lightning :: sentence :: read :: 0.46 [0.37, 0.55] --> |
+  | the label | **recovers<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| ['sentence'] :: recovers -->** (decides: drop) | **recovers<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: recovers -->** | | **recovers<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md \| nemotron-3.5-lightning :: recovers -->** (no prediction) |
+
+- **Read.**
+  - Under the sentence wording the 9B reads slot 1 right on most slot-1 scenes, against almost none under the earlier wording; by the rule, slot 1 recovers and the test is dropped. The 27B and Lightning recover under both new wordings.
+- **Caveats.**
+  - On the 9B the position wording stays just under the bar (0.18); the recovery rests on the sentence wording.
+  - The coverage matrix names this row "One question, two instructions" and marks the 9B's cell as a gate miss; the verdict scores the 9B (Appendix A, flag 28).
+  - Lightning: a coverage run with the 9B / 27B design, no prediction.
 
 ### Do a few heads read the swapped address? (51.2, opened 28 Oct 20:04; Lightning's coverage run 29 Oct) <a id="t51-2"></a>
 
@@ -1736,7 +1766,6 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 
 Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
 
-- **One question, two instructions (49.6), the 27B and Lightning.** Question last, slot 1 is read right on slot 1 read 0.68<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: slot 1 read 0.68 --> of scenes under the position wording and slot 1 read 0.99<!-- src: results/x49_report/x49_6-20261028T154511Z/x49_6.md \| qwen3.6-27b :: slot 1 read 0.99 --> under the sentence wording, over the rule's 0.2: "recovers" (the rule's "drop"). The 9B ran but missed the gate (the matrix); Muse and Lightning not designed. No figure. Lightning (design from the 9B / 27B spec, coverage run, no prediction; question last): slot 1 is read right on 0.29 [0.21, 0.37]<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md | last :: position :: read :: 0.29 [0.21, 0.37] --> under the position wording and 0.46 [0.37, 0.55]<!-- src: results/x49_report/x52_report49-20261029T082508Z/x49_6.md | last :: sentence :: read :: 0.46 [0.37, 0.55] --> under the sentence wording, over 0.2: "recovers".
 - **The second hop's key token (47.15), the 27B.** With the fact placed after, the text-source condition loses 0.54 [0.43, 0.66]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.54 [0.43, 0.66] --> without the lens part and 0.39 [0.30, 0.49]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.39 [0.30, 0.49] --> without the address and identity parts: "neither<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: neither -->", like neither reader; the memory condition "can't tell". The 9B was never run; Muse and Lightning failed the gate. No figure.
 - **DAS for the address (49.8, DAS by position), the 9B only by design.** A learned 4-direction position subspace carries 0.94<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| k = 4: own-IIA 0.94 :: 0.94 --> of the position switches on held-out pairs, but holds only 0.247<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| U's energy in R_pos 0.247 :: 0.247 --> of our address's energy and moves the recall too (cross-IIA 0.44<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| the recall's cross-IIA 0.44 :: 0.44 -->): "(d) in between". Its figure: [the verdict folder](../../results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png).
 
@@ -1810,6 +1839,7 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 25. 47.6 / 48.2 / 48.4: the original designs were run on the 27B and Lightning as coverage. The coordinator reads them as not the "variants" Dan cancelled; Dan to confirm ([47.6](#t47-6)). Decided (Dan, 09:05): yes, the original designs as coverage, not the cancelled variants.
 26. 47.7 (a) on the 9B and Muse is missing: exit 1 on 28 Oct, never rerun; Dan decides. Decided (Dan, 09:05): rerun only after items 0-2 of the 08:55 queue. Muse's rerun (r2): not tested (gate 0.23<!-- src: results/x47_value/muse30_x47_7a_r2/gate.json | "PM": 0.23 :: 0.23 --> < 0.80): the question-first recall reads 0.23 and no group passed; the original run's exit 1 on 28 Oct was the same gate stop. The 9B's rerun (r2): not tested (gate 0.7957<!-- src: results/x47_value/qwen35_9b_x47_7a_r2/gate.json | "PM": 0.7957142857142857 :: 0.7957 --> < 0.80): its question-first recall missed the gate and no group passed. So 47.7 (a) is not tested on the 9B and Muse, by gate.
 27. Coverage matrix: cells the old builder marked "done" without outcomes are corrected (e7474964); the ledger's coverage table now mirrors the 06:29 matrix.
+28. The coverage matrix's row "One question, two instructions (49.6)" is 49.6, "the report of slot 1, reworded" (results/x49_report/x49_6-20261028T154511Z): the matrix marks the 9B "ran; the gate failed", but the verdict scores the 9B (slot 1 recovers under the sentence wording; it decides: drop), and Lightning has a coverage run (not "not designed"). The README's Part VI "One question under two instructions" is another test. The ledger's card follows the verdict ([49.6](#t49-6)); the matrix row needs a rename and fresh cells.
 
 ## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>
 
@@ -1985,6 +2015,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_attnblock.png | yes | no overlap | yes | yes | batch 53 (53.4), four slots: Lightning (hollow), the other three grey (not applicable) |
 | figures/ledger/ledger_jsuite.png | yes | no overlap (the grey notes wrapped) | yes | yes | batch 53 (53.1b), four slots: 9B and 27B with their missing cells as grey notes; Muse and Lightning grey (not designed) |
 | figures/ledger/ledger_last_conflict_words.png | yes | no overlap (a short grey note) | yes | yes | batch 53 (53.3b), four slots: Lightning below gate (hollow); the 9B running, the 27B and Muse queued (grey) |
+| figures/ledger/ledger_report_slot1.png | yes | no overlap | yes | yes | 49.6's card (was a one-line entry), four slots: 9B, 27B, Lightning (hollow); Muse grey (not designed) |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened) |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened) |

@@ -104,6 +104,7 @@ HEATMAP = (
     ("III", "t51-11", "What the address is", ("B part 2 only", "N not ported", "B in between", "B mixed")),
     ("III", "t47-0", "Lens readout of the swap", ("H lens blind", "H lens blind", "H lens blind", "H lens blind")),
     ("III", "t47-10", "Report prompt", ("F neither", "G below gate", "G below gate", "G below gate")),
+    ("III", "t49-6", "Report of slot 1, reworded", ("F recovers", "F recovers", "F recovers", "X not designed")),
     ("III", "t51-2", "A few heads take the swap", ("F distributed", "F distributed", "F distributed", "F distributed")),
     ("III", "t49-7", "Attention follows the swap", ("F neither", "F neither", "F neither", "F neither")),
     ("III", "t47-14", "Chained addresses", ("F no", "G below gate", "F no", "F no")),

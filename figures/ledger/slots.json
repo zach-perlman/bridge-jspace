@@ -168,6 +168,12 @@
   "Muse": "grey: not tested: gate (report 0.498 < 0.80)",
   "Lightning": "grey: not tested: gate (report 0.488 < 0.80)"
  },
+ "ledger_report_slot1": {
+  "9B": "data",
+  "27B": "data",
+  "Muse": "grey: not designed (9B / 27B only)",
+  "Lightning": "data"
+ },
  "ledger_routes": {
   "9B": "data",
   "27B": "data",

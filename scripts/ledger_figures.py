@@ -1590,11 +1590,34 @@ def last_conflict_words(plt) -> str:
                        rows, absent, "lost beyond random", xlim=(-0.2, 1.0), bars=((0.10, "--"), (0.30, ":")))
 
 
+SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
+         "qwen3.6-27b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
+         LT: R / "x49_report" / "x52_report49-20261029T082508Z" / "x49_6.json"}  # fmt: skip
+
+
+def report_slot1(plt) -> str:
+    """49.6 on four slots: question last, the share of scenes whose asked item sits in slot 1 that the report reads
+    right, under 47.10's report wording and the two new wordings (position, sentence); the rule's 0.2 dashed; Muse grey
+    (not designed); Lightning hollow (a coverage run with the 9B / 27B design)."""
+    rows = {}
+    for t, path in SLOT1.items():
+        (m,) = [m for m in load(path)["models"] if m["target"] == t and m["status"] == "tested"]
+        cells = m["orders"]["last"]["cells"]
+        hollow = t == LT
+        rows[t] = [("the earlier report wording", m["reference"]["report"]["1"]["read"], NULL, hollow),
+                   ("position wording (a digit)", cells["position"]["1"]["read"], ADDRESS, hollow),
+                   ("sentence wording (a word)", cells["sentence"]["1"]["read"], INK, hollow)]
+    return four_panels(plt, "ledger_report_slot1", "Reworded, the report reads slot 1 on every model tested",
+                       "Question last: scenes whose asked item is in slot 1, reported right; dashed: the rule's 0.2",
+                       rows, {"muse-glimmer-30b": "not designed\n(9B / 27B only)"}, "share reported right",
+                       bars=((0.2, "--"),))
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
