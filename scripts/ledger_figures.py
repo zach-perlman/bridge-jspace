@@ -1627,9 +1627,7 @@ def report_slot1(plt) -> str:
                        bars=((0.2, "--"),))
 
 
-TWOBYTWO = (R / "x53_2x2" / "x53_2x2-20261029T094632Z" / "verdict.json",  # 53.1: the 9B's number cells
-            R / "x53_2x2" / "x53_2x2-20261029T094940Z" / "verdict.json",  # the 27B's
-            R / "x53_2x2" / "x53_2x2-20261029T095122Z" / "verdict.json")  # fmt: skip  # the 9B again, the word relation
+TWOBYTWO = (R / "x53_2x2" / "x53_2x2-20261029T100414Z" / "verdict.json",)  # 53.1, the combined verdict (9B, 27B)
 TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "not tested\n(relation\n0.382 < 0.80)",
                   "qb_word": "not tested\n(relation\n0.382 < 0.80)"}  # fmt: skip
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
@@ -1639,8 +1637,8 @@ TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"),
 def twobytwo(plt) -> str:
     """53.1 on four slots: per cell of the 2x2 (question after / before the scene x number / word answer), the
     recall's switches lost without the lens part beyond random (arm 1) and its share kept with the answer directions
-    kept (arm 2 over arm 1), and the conflict test's lookup beside; a cell not tested or pending as a grey note; the
-    27B running; Muse grey (not designed); Lightning grey (not run: no new Lightning coverage)."""
+    kept (arm 2 over arm 1), and the conflict test's lookup beside (dashed: the cross-check's 0.10); a cell not tested
+    as a grey note; Muse grey (not designed); Lightning grey (not run: no new Lightning coverage)."""
     v = {m["target"]: m for p in TWOBYTWO for m in load(p) if m.get("status") != "pending" and m.get("cells")}
     rows = {}
     for t in ("qwen3.5-9b", "qwen3.6-27b"):
@@ -1650,7 +1648,7 @@ def twobytwo(plt) -> str:
     absent.update({t: "running" for t in ("qwen3.5-9b", "qwen3.6-27b") if t not in rows})
     return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
                        "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
-                       rows, absent, "share", xlim=(-0.2, 1.05))
+                       rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),))
 
 
 def _twobytwo_rows(m: dict) -> list:
