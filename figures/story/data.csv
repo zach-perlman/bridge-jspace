@@ -5097,6 +5097,63 @@ ledger_answer_map,muse-glimmer-30b,"Zach's, lookup: best top-5 share before the 
 ledger_answer_map,muse-glimmer-30b,"Zach's, lookup: answers changed by the write, gain 1",0.9681528662420382,0.9383540503974294,0.9935064935064936,157,results/x52_answer_map/x52-20261029T004559Z/verdict.json
 ledger_answer_map,muse-glimmer-30b,"Zach's, recall: best top-5 share before the answer layer (T L48)",0.9936305732484076,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
 ledger_answer_map,muse-glimmer-30b,"Zach's, recall: answers changed by the write, gain 1",0.9872611464968153,0.9671052631578947,1.0,157,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, whole: original share",0.01,0.0,0.021352313167259787,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, no_alf: identity share",0.36333333333333334,0.3238434163701068,0.40001461988304077,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, no_alf: position share",0.08333333333333333,0.051118210862619806,0.11654192997832002,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, no_alf: original share",0.5533333333333333,0.5014747099888407,0.6070175438596491,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, keep_alf: identity share",0.013333333333333334,0.0030959752321981426,0.0273972602739726,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, keep_alf: position share",0.26,0.19767326960198547,0.3249231072555205,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+ledger_routes,qwen3.5-9b,"another item moved, keep_alf: original share",0.7166666666666667,0.6526315789473685,0.7763588196773361,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, whole: identity share",0.6566666666666666,0.6028356438579583,0.7104377104377104,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, whole: position share",0.33666666666666667,0.2843442648624945,0.3906810035842294,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, whole: original share",0.0033333333333333335,0.0,0.010344827586206896,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, no_alf: identity share",0.7233333333333334,0.6835443037974683,0.767175572519084,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, no_alf: position share",0.06,0.033669261421555,0.08841463414634146,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, no_alf: original share",0.21333333333333335,0.17549668874172186,0.25077399380804954,300,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, keep_alf: identity share",0.03333333333333333,0.017241379310344827,0.04984423676012461,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, keep_alf: position share",0.09,0.05821824408468244,0.12466239612188354,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+ledger_routes,qwen3.6-27b,"another item moved, keep_alf: original share",0.8766666666666667,0.84,0.909722848977136,300,results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, whole: identity share",0.43666666666666665,0.38460960960960966,0.48837401181978657,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, whole: position share",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, whole: original share",0.02,0.004365867029622489,0.038063107595979556,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, no_alf: identity share",0.43333333333333335,0.3838018424198326,0.47839531807555064,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, no_alf: position share",0.2733333333333333,0.22856875334403423,0.32191910543794106,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, no_alf: original share",0.29333333333333333,0.2450130499627144,0.3487544483985765,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, keep_alf: identity share",0.04666666666666667,0.02464788732394366,0.07142857142857142,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, keep_alf: position share",0.29333333333333333,0.2508140704043906,0.33574007220216606,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,muse-glimmer-30b,"another item moved, keep_alf: original share",0.66,0.6056757198335994,0.7122819033886085,300,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, whole: identity share",0.44333333333333336,0.37883726553273006,0.5095093735778146,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, whole: position share",0.5533333333333333,0.48629900803023146,0.6186186186186187,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, whole: original share",0.0033333333333333335,0.0,0.010638297872340425,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, no_alf: identity share",0.31333333333333335,0.26744079563847,0.35933395453959693,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, no_alf: position share",0.10333333333333333,0.07257910613149471,0.13531415171592345,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, no_alf: original share",0.5833333333333334,0.5267827380952381,0.6428634528016153,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: identity share",0.07,0.04198473282442748,0.09717868338557993,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: position share",0.39666666666666667,0.3476533683401639,0.4509090909090909,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: original share",0.5333333333333333,0.4804261740283302,0.5848514557338086,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_six_lockers,qwen3.5-9b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,qwen3.5-9b,dose 2: given-slot swaps reaching 0.25 (of 30),18,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,qwen3.5-9b,the rule's label at dose 2,slot-specific,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,qwen3.6-27b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x52_six-20261029T004919Z/x47_2.json
+ledger_six_lockers,qwen3.6-27b,dose 2: given-slot swaps reaching 0.25 (of 30),13,,,,results/x47_six/x52_six-20261029T004919Z/x47_2.json
+ledger_six_lockers,qwen3.6-27b,the rule's label at dose 2,none of the three,,,,results/x47_six/x52_six-20261029T004919Z/x47_2.json
+ledger_six_lockers,muse-glimmer-30b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,muse-glimmer-30b,dose 2: given-slot swaps reaching 0.25 (of 30),21,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,muse-glimmer-30b,the rule's label at dose 2,slot-specific,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

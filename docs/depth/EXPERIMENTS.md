@@ -42,9 +42,9 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
 |---|---|---|---|---|
-| 1. Conflict test (main test, at L) | **done**: not confirmed (lookup 0.14 > 0.10; recall 0.74) | **queued**: x52_lightning_conflict, speedup first: 3 arms at all 13 swept layers, decided at L14 | **done**: confirmed | **done**: confirmed |
+| [1. Conflict test (main test, at L)](#lightning-conflict) | **done**: not confirmed (lookup 0.14 > 0.10; recall 0.74) | **queued**: x52_lightning_conflict, speedup first: 3 arms at all 13 swept layers, decided at L14 | **done**: confirmed | **done**: confirmed |
 | [2. Answer control (51.12 E1)](#t51-12) | **done**: recall: the entity | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done**: recall: the entity | **done**: answer word not read |
-| 3. Routes test (identity / position / value; no address; address alone) | **done**: 0.66 / 0.34 / 0.00; alone fails | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done** | **done** |
+| [3. Routes test (identity / position / value; no address; address alone)](#routes) | **done**: 0.66 / 0.34 / 0.00; alone fails | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done** | **done** |
 | 4. Address swap by dose (x8_write, s = 1 / 2 / 4) | **done**: 0.01 / 0.24 / 0.50 | **missing**: Lightning chain, spec in Dan's order (reads the committed L14); needs the routes test's items | **done**: 0.05 / 0.52 / 0.52 | **done**: 0.02 / 0.46 / 0.73 |
 | 5a. Order split (descriptive) | **done** | **missing**: CPU from the conflict test's outcomes once it lands | **done** | **done** |
 | 5b. Copy test (45q) | **done**: holds | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done**: holds | **done**: holds |
@@ -61,7 +61,7 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 | E3: identity route outside the lens (47.1 atom slices) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E6: the address probe (x0_probe v4) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E6: the swap after neutral sentences (47.16 distance) | **missing**: 27B gap: spec to write (mats) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| E7: six lockers, one code per slot (47.2) | **queued**: x47_2_27b on another (behind part B and the 27B ladder) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [E7: six lockers, one code per slot (47.2)](#six) | **queued**: x47_2_27b on another (behind part B and the 27B ladder) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E8: the report prompt (47.10) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E11: token by layer map (47.D1) | **queued**: x47_d1_27b on mats (run x47_depthmap_27b) | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
 | E11: lookups carried before L (47.4 cumulative) | **missing**: 27B gap: spec to write (mats) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -353,6 +353,37 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
   - Muse's step 6 ran at L23-29, outside Zach's band (rerun queued); the 27B's steps 3-6 are running.
   - Lightning: not tested, the clean one-pick design's gate fails there (recall 0.751).
 
+### Which route does the lookup take, and does the address carry the position route? (routes test; Lightning's coverage run opened 29 Oct 01:47) <a id="routes"></a>
+
+*Used in: README Part II and III cards on the routes test and the address (9B, 27B, Muse); Lightning not in the README yet. Story: identity and the address.*
+
+- **Question.** When another item's locker sentence moves and takes a new number, does the lookup follow the item's identity, its locker's position, or the number, and is the position route carried by the address?
+- **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads.
+- **Data.** Routes scenes, 300 per model (Lightning at L14, its gate chosen after the 60-scene pre-check was seen, ○).
+- **Method.** The change from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Arms: the whole change; without the address, against without a random part of its share; the address added by itself, against a random part. A sanity swap (two picks swap, no move) first.
+- **Rule, fixed in advance.** "A route counts as used if its share is >= 0.20 with lower CI >= 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference, so it takes Muse's rule (switch rate >= 0.50).
+
+![Every model's lookup takes identity or position, never the value](../../figures/ledger/ledger_routes.png)
+*The lookup's answers under the whole change, without the address, and with the address added by itself, per model: identity (blue), position (orange), value (none), the original answer (grey); routes scenes, 300 per model; the 9B's and 27B's "address alone" rows from their add-only runs.*
+
+- **Result.** (another item moved)
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | whole change: identity | 0.48 [0.43, 0.53]<!-- src: results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md \| 0.51 [0.46, 0.56] :: 0.48 [0.43, 0.53] --> | 0.66 [0.60, 0.71]<!-- src: results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.md \| 0.34 [0.28, 0.39] :: 0.66 [0.60, 0.71] --> | 0.44 [0.38, 0.49]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.54 [0.49, 0.60] :: 0.44 [0.38, 0.49] --> | 0.44 [0.38, 0.51]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.55 [0.49, 0.62] :: 0.44 [0.38, 0.51] --> |
+  | whole change: position | 0.51 [0.46, 0.56]<!-- src: results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md \| 0.48 [0.43, 0.53] :: 0.51 [0.46, 0.56] --> | 0.34 [0.28, 0.39]<!-- src: results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.md \| 0.66 [0.60, 0.71] :: 0.34 [0.28, 0.39] --> | 0.54 [0.49, 0.60]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.44 [0.38, 0.49] :: 0.54 [0.49, 0.60] --> | 0.55 [0.49, 0.62]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.44 [0.38, 0.51] :: 0.55 [0.49, 0.62] --> |
+  | position without the address | 0.08 [0.05, 0.12]<!-- src: results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md \| 0.55 [0.50, 0.61] :: 0.08 [0.05, 0.12] --> | 0.06 [0.03, 0.09]<!-- src: results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.md \| 0.21 [0.18, 0.25] :: 0.06 [0.03, 0.09] --> | 0.27 [0.23, 0.32]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.29 [0.25, 0.35] :: 0.27 [0.23, 0.32] --> | 0.10 [0.07, 0.14]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.58 [0.53, 0.64] :: 0.10 [0.07, 0.14] --> |
+  | the same without a random part | 0.54 [0.49, 0.59]<!-- src: results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md \| 0.06 [0.03, 0.08] :: 0.54 [0.49, 0.59] --> | 0.25 [0.19, 0.31]<!-- src: results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.md \| 0.70 [0.64, 0.76] :: 0.25 [0.19, 0.31] --> | 0.55 [0.50, 0.60]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.41 [0.36, 0.46] :: 0.55 [0.50, 0.60] --> | 0.56 [0.49, 0.63]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.42 [0.35, 0.48] :: 0.56 [0.49, 0.63] --> |
+  | position, the address alone | 0.26 [0.20, 0.32]<!-- src: results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.md \| 0.72 [0.65, 0.78] :: 0.26 [0.20, 0.32] --> | 0.09 [0.06, 0.12]<!-- src: results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.md \| 0.88 [0.84, 0.91] :: 0.09 [0.06, 0.12] --> | 0.29 [0.25, 0.34]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.66 [0.61, 0.71] :: 0.29 [0.25, 0.34] --> | 0.40 [0.35, 0.45]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.53 [0.48, 0.58] :: 0.40 [0.35, 0.45] --> |
+
+  Lightning's sanity swap switches 0.99<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | :: 0.99 --> of lookups (rule: at least 0.50); removing the lens part there costs the lookup -0.00 [-0.02, 0.01]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | 0.99 | :: -0.00 [-0.02, 0.01] --> beyond random, removing the address 0.54 [0.48, 0.61]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | alf | 300 | 0.99 | :: 0.54 [0.48, 0.61] -->; the value: 0.00 on every model.
+
+- **Read.**
+  - On all four models the lookup answers by the item's identity or its locker's position, never by the new number; removing the address takes the position route away beyond a random part of its share.
+- **Caveats.**
+  - Added by itself, the address brings position answers back on the 9B, Muse and Lightning, not on the 27B.
+  - Lightning's gate was chosen after the 60-scene pre-check was seen; its sanity swap uses Muse's rule.
+
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? (51.3, opened 28 Oct 20:46) <a id="t51-3"></a>
 
 *Used in: README Appendix (Fig. 14 link); planned Part II / III cards. Story: identity and the address.*
@@ -380,6 +411,34 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 - **Caveats.**
   - Few test entities (9 on the 9B's identity pairs).
   - (ii) and (iii) have no interval in the verdict's summary lines.
+
+### With six lockers, does each locker have its own code? (six lockers; the 27B's coverage run opened 29 Oct 01:49) <a id="six"></a>
+
+*Used in: README Part III card "Six lockers" and claims table row 8 (9B, Muse); the 27B not in the README yet. Story: the address.*
+
+- **Question.** With six locker sentences, is the address a line over slots (one shift steps the lookup one slot), a first-versus-rest marker, or one code per slot?
+- **Why we asked.** With three lockers a line and a first-versus-rest marker look the same.
+- **Data.** Six-locker scenes: the test half, 300 per model (9B, 27B, Muse), the other 300 fit the slot means.
+- **Method.** At the bridge word at L: one fixed shift (the mean step between neighbouring slot means) from each start slot, and swaps between given slots, each at doses 1 and 2, against a random vector of the same size; the slot means' first principal component beside.
+- **Rule, fixed in advance.** "Ordinal: the first PCA component is monotone in slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector <= 0.05; Categorical, first vs rest: v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within 0.10 of random; Slot-specific: pairwise writes reach >= 0.25 on most pairs but no single v does." Dose 2 decides.
+
+![One shift moves no lookup; pair swaps work on the 9B and Muse](../../figures/ledger/ledger_six_lockers.png)
+*At dose 2, per model: start slots from which one shift sends at least 0.25 of lookups one slot on (light, of 5; none anywhere), and slot pairs a given-slot swap reaches (dark, of 30); dashed: "most pairs"; the rule's label under each model. 300 test scenes per model.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | position share under the whole change | 0.32 [0.28, 0.37]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| qwen35_9b_x47_2 :: 0.32 [0.28, 0.37] --> | 0.25 [0.19, 0.31]<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.70 [0.64, 0.76] :: 0.25 [0.19, 0.31] --> | 0.37 [0.31, 0.43]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| muse30_x47_2 :: 0.37 [0.31, 0.43] --> | not run |
+  | first component monotone in slot (Spearman) | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 8.15, 5.59, 3.08 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 26.79, 16.42, 11.83 :: 1.00 --> | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 84.27, 58.15, 38.31 :: 1.00 --> | |
+  | given-slot swaps reaching 0.25 at dose 2 | 18 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.025 :: 18 of 30 --> | 13 of 30<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.004 :: 13 of 30 --> | 21 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.055 :: 21 of 30 --> | |
+  | the rule at dose 2 | **slot-specific** | **none of the three** | **slot-specific** | |
+
+- **Read.**
+  - No single shift moves the lookup on any model; given-slot swaps work on most pairs on the 9B and Muse, so each slot is its own target there; on the 27B neither the line nor the per-slot pattern holds.
+- **Caveats.**
+  - The 27B's shift writes move 0.00 at every start slot, though its slot means lie in order.
+  - A different test of the code's size (see [51.11](#t51-11)) does not find one dimension per slot on the 9B.
 
 ## Ledger only (opened, not in README)
 
@@ -636,4 +695,6 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_zach_routes.png | yes | no overlap | yes | yes | Muse's position share (0.06) is too narrow for its label |
 | figures/ledger/ledger_clean_reruns.png | yes | no overlap | yes | yes | |
 | figures/ledger/ledger_answer_map.png | yes | no overlap (after a wider left margin) | yes | yes | the per-layer maps stay in the verdict folder, linked from the caption |
+| figures/ledger/ledger_routes.png | yes | no overlap | yes | yes | four models; the value never appears, so its colour shows only in the key |
+| figures/ledger/ledger_six_lockers.png | yes | no overlap (after moving two labels) | yes | yes | the one-shift bars are zero on every model |
 | results/x50_zach/z2-20261028T162710Z/z2_beside.png | yes | no overlap | yes | yes | the verdict's own figure, not restyled; its title carries the test id and "UNVERIFIED" |

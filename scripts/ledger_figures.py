@@ -528,8 +528,96 @@ def answer_map(plt) -> str:
     return save(fig, "ledger_answer_map")
 
 
+# ---- the routes test on four models (Lightning's coverage run beside the others) ------------------------------------
+
+ROUTES = {  # model -> (the main run's verdict, the run holding "the address alone")
+    "qwen3.5-9b": (R / "x6_routes" / "qwen35_9b_x6_routes" / "verdict-20261025T104535Z" / "verdict.json",
+                   R / "x6_routes" / "qwen35_9b_x6_routes_keeponly" / "verdict-20261025T152603Z" / "verdict.json"),
+    "qwen3.6-27b": (R / "x6_routes" / "x6_routes_27b" / "verdict-20261025T105901Z" / "verdict.json",
+                    R / "x6_routes" / "x6_routes_keeponly_27b" / "verdict-20261025T153505Z" / "verdict.json"),
+    "muse-glimmer-30b": (R / "x6_routes" / "muse30b_x6_routes" / "verdict-20261026T004455Z" / "verdict.json",) * 2,
+    "nemotron-3.5-lightning": (R / "x6_routes" / "nem35l_x52_routes" / "verdict-20261029T004324Z" / "verdict.json",) * 2,
+}  # fmt: skip
+
+
+def routes(plt) -> str:
+    """Per model (9B, 27B, Muse, Lightning), the lookup's answer when another item's locker sentence moved and took a
+    new number: under the whole change, without the address, and with the address added by itself; identity, position,
+    value and the original answer, stacked."""
+    arms = (("whole", "whole change"), ("no_alf", "without the address"), ("keep_alf", "the address alone"))
+    rows = []
+    for t, (main, keep) in ROUTES.items():
+        for arm, lab in arms:
+            src = keep if arm == "keep_alf" else main
+            r = next(x for x in load(src)["rows"] if x["condition"] == "C2" and x["arm"] == arm)
+            rows.append((f"{SHORT[t]}, {lab}", r, t, arm, src))
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 0.42 * len(rows) + 1.9))
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.3, right=0.97, top=1 - 1.3 / h, bottom=0.65 / h)
+    S.title(fig, "Every model's lookup takes identity or position, never the value",
+            "The lookup's answer when another item's locker moved and took a new number; routes scenes, 300 each")  # fmt: skip
+    parts = (("identity", S.COL["identity"]), ("position", S.COL["position"]), ("value", S.COL["value"]),
+             ("original", S.COL["original"]))  # fmt: skip
+    for i, (_, r, t, arm, src) in enumerate(rows):
+        left = 0.0
+        for p, col in parts:
+            w = r["share"][p][0]
+            ax.barh(-i, w, left=left, color=col, height=0.62, edgecolor="white", lw=0.5)
+            if w >= 0.12:
+                ax.text(left + w / 2, -i, f"{w:.2f}", ha="center", va="center", fontsize=S.LABEL_PT - 1,
+                        color="white" if p == "identity" else "#222222")  # fmt: skip
+            left += w
+            S.record("ledger_routes", t, f"another item moved, {arm}: {p} share", *r["share"][p], n=r["n"],
+                     source=rel(src))  # fmt: skip
+    for b in (2.5, 5.5, 8.5):
+        ax.axhline(-b, color="#999999", lw=0.8)
+    rows_axis(ax, [r[0] for r in rows])
+    ax.set_xlim(0, 1.0)
+    ax.set_xlabel("share of the lookup's answers")
+    for k, (p, col) in enumerate(parts):
+        ax.text(0.25 * k, 1.03, p, color=col if p != "original" else "#777777", fontsize=S.LABEL_PT, weight="bold",
+                transform=ax.transAxes)  # fmt: skip
+    return save(fig, "ledger_routes")
+
+
+SIX = {"qwen3.5-9b": R / "x47_six" / "x47_2-20261028T113102Z" / "x47_2.json",
+       "qwen3.6-27b": R / "x47_six" / "x52_six-20261029T004919Z" / "x47_2.json",
+       "muse-glimmer-30b": R / "x47_six" / "x47_2-20261028T113102Z" / "x47_2.json"}  # fmt: skip
+
+
+def six_lockers(plt) -> str:
+    """Per model (9B, 27B, Muse), at dose 2: the share of start slots from which one fixed shift sends at least 0.25 of
+    lookups one slot on, and the share of given-slot swaps that reach 0.25; the rule's 'most pairs' as a dashed 0.5."""
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.7))
+    fig.subplots_adjust(left=0.1, right=0.78, top=0.74, bottom=0.14)
+    S.title(fig, "One shift moves no lookup; pair swaps work on the 9B and Muse",
+            "At dose 2: start slots where one shift works (of 5), and slot pairs a swap reaches (of 30)")  # fmt: skip
+    for i, (t, path) in enumerate(SIX.items()):
+        m = next(x for x in load(path)["models"] if x["target"] == t)
+        r = m["rules"]["2"]
+        shift, pairs = r["v_works_from"] / 5, r["pairs_reaching"] / r["pairs"]
+        ax.bar(i - 0.18, shift, width=0.34, color=ADDRESS, alpha=0.45, edgecolor=ADDRESS)
+        ax.bar(i + 0.18, pairs, width=0.34, color=ADDRESS, edgecolor=ADDRESS)
+        ax.text(i + 0.18, pairs + 0.03, f"{r['pairs_reaching']} of {r['pairs']}", ha="center", fontsize=S.LABEL_PT)
+        ax.text(i - 0.18, shift + 0.03, f"{r['v_works_from']} of 5", ha="center", fontsize=S.LABEL_PT)
+        S.record("ledger_six_lockers", t, "dose 2: start slots where one shift sends >= 0.25 one slot on (of 5)",
+                 r["v_works_from"], source=rel(path))  # fmt: skip
+        S.record("ledger_six_lockers", t, "dose 2: given-slot swaps reaching 0.25 (of 30)", r["pairs_reaching"],
+                 source=rel(path))  # fmt: skip
+        S.record("ledger_six_lockers", t, "the rule's label at dose 2", m["label"], source=rel(path))
+    ax.axhline(0.5, color="#555555", lw=0.9, ls="--")
+    ax.text(-0.48, 0.52, "most pairs", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
+    labels = [next(x for x in load(p)["models"] if x["target"] == t)["label"] for t, p in SIX.items()]
+    ax.set_xticks(range(3), [f"{SHORT[t]}\n{lab}" for t, lab in zip(SIX, labels, strict=True)])
+    ax.set_ylim(0, 1.0)
+    ax.set_ylabel("share")
+    ax.text(1.03, 0.75, "light: one shift\n(start slots)\n\ndark: swaps per pair\n(slot pairs)", transform=ax.transAxes,
+            fontsize=S.LABEL_PT, color=S.COL["muted"], va="center")  # fmt: skip
+    return save(fig, "ledger_six_lockers")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
-           clean_reruns, lightning_layers, answer_map)  # fmt: skip
+           clean_reruns, lightning_layers, answer_map, routes, six_lockers)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
