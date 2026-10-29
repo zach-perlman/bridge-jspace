@@ -5553,6 +5553,18 @@ ledger_value_formats,muse-glimmer-30b,"json, whole change: position share",0.213
 ledger_value_formats,muse-glimmer-30b,"json, whole change: value share",0.0,0.0,0.0,75,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
 ledger_value_formats,nemotron-3.5-lightning,"json, whole change: position share",0.35714285714285715,0.2711864406779661,0.43636363636363634,56,results/x47_value/x52_valuec-20261029T040037Z/x47_7c.json
 ledger_value_formats,nemotron-3.5-lightning,"json, whole change: value share",0.0,0.0,0.0,56,results/x47_value/x52_valuec-20261029T040037Z/x47_7c.json
+ledger_pooled_probe,qwen3.5-9b,"L6: who picked it, pooled over the locker sentence",0.2891566265060241,0.21965317919075145,0.3624182046979865,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,qwen3.5-9b,"L6: who picked it, best single token",0.3675,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,qwen3.5-9b,"L12: who picked it, pooled over the locker sentence",0.3192771084337349,0.26506024096385544,0.3719512195121951,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,qwen3.5-9b,"L12: who picked it, best single token",0.3795,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,qwen3.6-27b,"L16: who picked it, pooled over the locker sentence",0.3474576271186441,0.27199824561403513,0.42412746138427065,,results/x49_probe/x52_probe49-20261029T044135Z/x49_3.json
+ledger_pooled_probe,qwen3.6-27b,"L16: who picked it, best single token",0.3814,,,,results/x49_probe/x52_probe49-20261029T044135Z/x49_3.json
+ledger_pooled_probe,qwen3.6-27b,"L32: who picked it, pooled over the locker sentence",0.3601694915254237,0.30143376810644296,0.420792639218673,,results/x49_probe/x52_probe49-20261029T044135Z/x49_3.json
+ledger_pooled_probe,qwen3.6-27b,"L32: who picked it, best single token",0.4703,,,,results/x49_probe/x52_probe49-20261029T044135Z/x49_3.json
+ledger_pooled_probe,muse-glimmer-30b,"L13: who picked it, pooled over the locker sentence",0.24705882352941178,0.19672131147540983,0.29762131952017445,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,muse-glimmer-30b,"L13: who picked it, best single token",0.3118,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,muse-glimmer-30b,"L26: who picked it, pooled over the locker sentence",0.29411764705882354,0.23076923076923078,0.3630573248407643,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_pooled_probe,muse-glimmer-30b,"L26: who picked it, best single token",0.407,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

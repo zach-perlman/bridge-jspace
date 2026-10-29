@@ -63,13 +63,14 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 - Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
 - Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
 - E5, models: "never the value" holds on Lightning's JSON (its prose and tables not tested, gate) ([47.7 (c)](#t47-7c)).
+- Part VI, the person-mark line (README line 482): "(the pooled probe is running)" is stale. 49.3 landed on the 9B and Muse ("neither at the sentence") and on the 27B ("in between" at L32); "in between" does not contradict "did not hold", note it only ([49.3](#t49-3)). The copying heads (48.4) and the enrichment (48.2) fail on the 27B too ([48.4](#t48-4), [48.2](#t48-2)).
 - E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
 
 ## Coverage
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T000836Z/matrix.json, built 00:08 UTC 29 Oct; each cell's source is in that file). A linked test has a card below. Status words are the matrix's: done / partial / running / queued / missing / not tested (reason) / not designed. Lightning's gate (all cells): the main test's gate on all 516 scenes, ○ chosen after the 60-scene pre-check was seen; layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B; Lightning's Z2, 47.11, 47.5, x45d, 47.13 and 47.7 (c); the 27B's 48.1 DAS. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->). Lightning's second hop's key token (47.15) is **not tested**: no placement passed its gate. Lightning's 47.7 (a) is **not tested**: the question-first recall read right on 0.4357<!-- src: results/x47_value/nem35l_x52_value_a/gate.json \| "PM" :: 0.4357 --> of its prompts, under 0.80. Lightning's 51.12 cue r2 was cancelled before it started: its source, 47.3, failed the gate.
+As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B; Lightning's Z2, 47.11, 47.5, x45d, 47.13 and 47.7 (c); the 27B's 48.1 DAS, 49.3, 48.4 and 48.2. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->). Lightning's second hop's key token (47.15) is **not tested**: no placement passed its gate. Lightning's 47.7 (a) is **not tested**: the question-first recall read right on 0.4357<!-- src: results/x47_value/nem35l_x52_value_a/gate.json \| "PM" :: 0.4357 --> of its prompts, under 0.80. Lightning's 51.12 cue r2 was cancelled before it started: its source, 47.3, failed the gate.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -104,9 +105,9 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | One question, two instructions (49.6) | **done** | **missing**: Lightning, after the 10 key rows | **not tested**: ran; the gate failed (README: the others miss the gate) | **missing**: 9B / Muse gap: not run on Muse |
 | [Address refit per text format (x45d)](#x45d) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [The lookup's errors are not address errors (47.13)](#t47-13) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| Failed: copying heads pass the rest (48 heads) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Failed: copying heads pass the rest (48 heads)](#t48-4) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Failed: the address as the recall's second route (48 route2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Failed: the second hop's key token (47.15 source) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -114,7 +115,7 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | [Chained addresses (47.14)](#t47-14) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [What is left of the route; the value (47.7)](#t47-7c) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Gain map (49.1)](#t49-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| Pooled person probe (49.3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Pooled person probe (49.3)](#t49-3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | DAS by position (49.x das_pos) | **not designed**: 9B only by design | **not designed**: 9B only by design | **done** | **not designed**: 9B only by design |
 | [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | **partial**: 51.3 done; 48's DAS not run on the 27B (51.3 supersedes it) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Joint head ablation under the swap (51.2)](#t51-2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -942,6 +943,89 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
   - Lightning's column comes from a later verdict folder that re-reads the 27B with the same rows.
   - The refit is read on half the scenes (150 per kind).
 
+### Is the person mark spread over the locker sentence? (pooled person probe, 49.3; the 27B's coverage run 29 Oct) <a id="t49-3"></a>
+
+*Used in: README Part VI, "What did not hold" (a person mark at the locker sentence, where it says "the pooled probe is running"; 9B, Muse); the 27B not in the README yet. Story: what did not hold.*
+
+- **Question.** In locker-after scenes, is who picked an item readable from the item's whole locker sentence pooled, though no single token holds it, or as a flag "picked by the asked person"?
+- **Why we asked.** The single-token probe (48.3) reads chance; a mark spread over the sentence would escape it.
+- **Data.** Clean one-pick scenes, the lookup's original prompt; the rule reads locker-after scenes, locker-first ones are the control.
+- **Method.** Ridge probes (48.3's) on every token of each locker sentence and on the sentence mean, at L/2 and L: (i) which of the scene's three people picked the item; (ii) whether the asked person picked it.
+- **Rule, fixed in advance.** ""Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere." The 27B: a coverage run on this rule, no prediction.
+
+![No probe reads who picked an item at its locker sentence](../../figures/ledger/ledger_pooled_probe.png)
+*Per model and layer, locker-after scenes: the probe for which of three people picked the item, on the whole locker sentence (filled, whiskers 95%) and its best single token (hollow); dotted: chance; dashed: the rule's 0.85.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | (i) who picked it, pooled / best single token, at L/2 | L6: 0.29<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L6 :: (i) pooled 0.29 :: 0.29 --> / 0.37<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L6 :: per-token max 0.37 :: 0.37 --> | L16: 0.35<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L16 :: (i) pooled 0.35 :: 0.35 --> / 0.38<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L16 :: per-token max 0.38 :: 0.38 --> | L13: 0.25<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L13 :: (i) pooled 0.25 :: 0.25 --> / 0.31<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L13 :: per-token max 0.31 :: 0.31 --> | not run |
+  | the same at L (rule's bar: pooled >= 0.85) | L12: 0.32<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L12 :: (i) pooled 0.32 :: 0.32 --> / 0.38<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L12 :: per-token max 0.38 :: 0.38 --> | L32: 0.36<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L32 :: (i) pooled 0.36 :: 0.36 --> / 0.47<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L32 :: per-token max 0.47 :: 0.47 --> | L26: 0.29<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L26 :: (i) pooled 0.29 :: 0.29 --> / 0.41<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L26 :: per-token max 0.41 :: 0.41 --> | |
+  | (ii) picked by the asked person, pooled at L (chance 0.50) | 0.50<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L12 :: (ii) pooled 0.50 :: 0.50 --> | 0.50<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L32 :: (ii) pooled 0.50 :: 0.50 --> | 0.50<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L26 :: (ii) pooled 0.50 :: 0.50 --> | |
+  | the label at L/2; at L | neither<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L6 :: neither at the sentence (neither) :: neither -->; neither<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| qwen35_9b_x49_3 :: L12 :: neither at the sentence (neither) :: neither --> | neither<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L16 :: neither at the sentence (neither) :: neither -->; in between<!-- src: results/x49_probe/x52_probe49-20261029T044135Z/x49_3.md \| x49_3_27b :: L32 :: in between (between) :: in between --> | neither<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L13 :: neither at the sentence (neither) :: neither -->; neither<!-- src: results/x49_probe/x49_3-20261028T154604Z/x49_3.md \| muse30_x49_3 :: L26 :: neither at the sentence (neither) :: neither --> | |
+
+- **Read.**
+  - No probe reads who picked an item from its locker sentence, pooled or at one token, on any of the three models: the 9B and Muse sit at chance at both layers ("neither at the sentence"); the 27B's best token at L comes out "in between", far under 0.85; the picked-flag probe is at chance everywhere.
+- **Caveats.**
+  - "In between" at the 27B's L does not contradict "did not hold": neither reading fixed in advance holds there.
+  - The locker-first control is at chance on all three, as the rule requires.
+
+### Do the copying heads pass the rest of the change at twice the lens part? (copying heads, 48.4; the 27B's coverage run 29 Oct) <a id="t48-4"></a>
+
+*Used in: README Part VI, "What did not hold" (the copying heads pass the rest at twice the J++ part; 9B, Muse); the 27B not in the README yet. Story: what did not hold.*
+
+- **Question.** Do the five heads that copy most from the bridge word to the last token pass the rest of the change at least twice as strongly as the lens part?
+- **Why we asked.** The lookup follows the rest of the change; heads that copy the rest would be its path.
+- **Data.** Main-test items, locker first: 75<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| qwen35_9b_x48_heads :: 75 --> / 69<!-- src: results/x48_heads/x52_heads48-20261029T044138Z/x48_heads.md \| x48_heads_27b :: 69 --> / 68<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| muse30_x48_heads :: 68 --> (9B / 27B / Muse).
+- **Method.** For the five heads with the most attention from the last token to the bridge word, each part of the change (the lens part, the rest, the address, a random part) read through the head's output-value map; medians over items.
+- **Rule, fixed in advance.** "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold." The 27B: a coverage run on this rule, no prediction.
+
+![Every mechanism we proposed for the split failed its rule](../../figures/story/fig15_mechanisms.png)
+*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the third panel (heads that pass the rest, of the five that copy most); 9B and Muse (the README's figure); the 27B in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | heads that pass the rest at twice the lens part (of 5; bar: 3) | 0 of 5<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| qwen35_9b_x48_heads :: 75 :: 0 of 5 --> | 0 of 5<!-- src: results/x48_heads/x52_heads48-20261029T044138Z/x48_heads.md \| x48_heads_27b :: 69 :: 0 of 5 --> | 1 of 5<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| muse30_x48_heads :: 68 :: 1 of 5 --> | not run |
+  | heads with r(address) >= r(rest) | 4 of 5<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| qwen35_9b_x48_heads :: 75 :: 4 of 5 --> | 1 of 5<!-- src: results/x48_heads/x52_heads48-20261029T044138Z/x48_heads.md \| x48_heads_27b :: 69 :: 1 of 5 --> | 3 of 5<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| muse30_x48_heads :: 68 :: 3 of 5 --> | |
+  | the rule, per model | **no** | **no** (no prediction) | **no** | |
+
+- **Read.**
+  - On all three models at most one of the five heads that copy most passes the rest at twice the lens part; the rule fails.
+- **Caveats.**
+  - The 27B's verdict prints "0 of 1 models hold (both needed)": the across-models clause read on one model; the per-model label is the result.
+  - Five heads per model, chosen by attention from the last token to the bridge word.
+
+### Does the lens part key the item's attribute, and do late MLPs at the bridge word carry the recall? (enrichment, 48.2; the 27B's coverage run 29 Oct) <a id="t48-2"></a>
+
+*Used in: README Part VI, "What did not hold" (the J++ part keys the item's attribute at the bridge word; late MLPs there carry the recall; 9B, Muse); the 27B not in the README yet. Story: what did not hold.*
+
+- **Question.** (A) After L, does a probe for the item's attribute at the bridge word move with the lens part and not without it? (B) Does mean-ablating the bridge word's MLPs after L cost the recall its answer while the lookup keeps its own?
+- **Why we asked.** The recall could fetch the item's attribute at the bridge word, keyed by the lens part, through late MLPs.
+- **Data.** Main test, 200 per model for design B; the attribute probe on animal items, entities held out, for design A.
+- **Method.** (A) At every probed layer from L+4 where the attribute probe reads above twice chance: its move under the whole change, without the lens part and without a random part. (B) The bridge word's MLP writes mean-ablated at layers after L; controls: the asked person's token after L, and the bridge word up to L/2.
+- **Rule, fixed in advance.** A: "J++ keys the enrichment if, at every probed layer >= L + 4 where the legs probe (animals, entities held out) reads the attribute (held-out accuracy >= 2x chance), the probe moves >= 0.6 of the way under whole and under no_rand and <= 0.3 under no_jpp (the paired CI of no_rand - no_jpp excluding 0), on both models". B: "the recall's retrieval runs through the bridge token's late MLPs if recall accuracy falls >= 0.4 under bridge_late while lookup accuracy stays within 0.1, and both controls stay within 0.1 for both readers." The 27B: a coverage run on these rules, no prediction.
+
+![Every mechanism we proposed for the split failed its rule](../../figures/story/fig15_mechanisms.png)
+*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; design B is the first panel (recall accuracy lost with the late MLPs mean-replaced); 9B and Muse (the README's figure); the 27B in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | A: the lens part keys the attribute probe (layers after L+4) | does not hold at the bridge token<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| qwen35_9b_x48_2a :: does not hold at the bridge token --> | does not hold at the bridge token<!-- src: results/x48_enrich/x52_enrich-20261029T044139Z/x48_2.md \| x48_2a_27b :: does not hold at the bridge token --> | does not hold at the bridge token<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| muse30_x48_2a :: does not hold at the bridge token --> | not run |
+  | B: recall answers lost, the bridge word's MLPs after L mean-ablated (bar >= 0.4) | 0.13 [0.08, 0.19]<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| qwen35_9b_x48_2b :: 1.00 [1.00, 1.00] :: 0.13 [0.08, 0.19] --> | 0.03 [0.01, 0.06]<!-- src: results/x48_enrich/x52_enrich-20261029T044139Z/x48_2.md \| x48_2b_27b :: 1.00 [1.00, 1.00] :: 0.03 [0.01, 0.06] --> | 0.01 [0.00, 0.03]<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| muse30_x48_2b :: 1.00 [1.00, 1.00] :: 0.01 [0.00, 0.03] --> | |
+  | B: lookup answers lost the same way (bar: within 0.1) | 0.02 [0.00, 0.04]<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| qwen35_9b_x48_2b :: 0.13 [0.08, 0.19] :: 0.02 [0.00, 0.04] --> | 0.00 [0.00, 0.00]<!-- src: results/x48_enrich/x52_enrich-20261029T044139Z/x48_2.md \| x48_2b_27b :: 0.03 [0.01, 0.06] :: 0.00 [0.00, 0.00] --> | 0.00 [0.00, 0.00]<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| muse30_x48_2b :: 0.01 [0.00, 0.03] :: 0.00 [0.00, 0.00] --> | |
+  | the verdicts A / B | does not hold<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| Verdict A :: does not hold --> / does not hold<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| Verdict B :: does not hold --> | does not hold<!-- src: results/x48_enrich/x52_enrich-20261029T044139Z/x48_2.md \| Verdict A :: does not hold --> / does not hold<!-- src: results/x48_enrich/x52_enrich-20261029T044139Z/x48_2.md \| Verdict B :: does not hold --> | does not hold<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| Verdict A :: does not hold --> / does not hold<!-- src: results/x48_enrich/x48_2-20261028T113111Z/x48_2.md \| Verdict B :: does not hold --> | |
+
+- **Read.**
+  - On all three models neither holds: the lens part does not key the attribute probe at the bridge word, and the bridge word's late MLPs are not needed for the recall.
+- **Caveats.**
+  - Design B's early-MLP control moves answers on all three, so the controls do not stay within 0.1 either.
+  - The verdicts read that the recall survives because the attribute is fetched at the last token; that reading is the verdict's, not tested here.
+
 ## Ledger only (opened, not in README)
 
 ### Does each reader follow the lens part by weight, or by route? (gain map, 49.1; Lightning's coverage run 29 Oct) <a id="t49-1"></a>
@@ -1331,6 +1415,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/story/fig07c_probe_errors.png | yes | no overlap | yes | yes | reused; drawn by the README pass; its build folder is now pinned (Lightning's one-model 47.13 folder is newer) |
 | figures/ledger/ledger_value_formats.png | yes | no overlap (after fixing the x range) | yes | yes | untested formats marked in the panel |
 | figures/supp/s12_das_muse.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; its 27B panels say "not run" (the 27B is in the table) |
+| figures/ledger/ledger_pooled_probe.png | yes | no overlap (after a shorter subtitle) | yes | yes | the best token is the verdict's per-token maximum, no interval |
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
 | figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |

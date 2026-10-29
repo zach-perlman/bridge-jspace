@@ -1022,9 +1022,44 @@ def value_formats(plt) -> str:
     return save(fig, "ledger_value_formats")
 
 
+# ---- the pooled person probe (49.3) ---------------------------------------------------------------------------------
+
+POOLED = (R / "x49_probe" / "x49_3-20261028T154604Z" / "x49_3.json",
+          R / "x49_probe" / "x52_probe49-20261029T044135Z" / "x49_3.json")  # fmt: skip
+
+
+def pooled_probe(plt) -> str:
+    """Per model and layer, locker-after scenes: the probe for who picked the item, pooled over the locker sentence
+    (whisker 95%) and its best single token (hollow); chance dotted, the rule's 0.85 dashed."""
+    runs = {m["target"]: (m, path) for path in POOLED for m in load(path)["models"] if m["status"] == "tested"}
+    rows = [(t, la) for t in SHORT if t in runs for la in runs[t][0]["layers"]]
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 0.5 * len(rows) + 1.9))
+    fig.subplots_adjust(left=0.16, right=0.97, top=1 - 1.2 / fig.get_figheight(), bottom=0.75 / fig.get_figheight())
+    S.title(fig, "No probe reads who picked an item at its locker sentence",
+            "Locker-after scenes: who of three picked the item; filled: whole sentence, hollow: best token")  # fmt: skip
+    for i, (t, la) in enumerate(rows):
+        m, path = runs[t]
+        pooled = m["results"][str(la)]["probes"]["picker"]["mean"]["after"]["accuracy"]
+        best = m["rules"][str(la)]["i_token_max"]
+        whisker(ax, -i, pooled, INK)
+        ax.plot([best], [-i - 0.25], "o", mfc="white", mec=INK, mew=1.5, ms=6)
+        S.record("ledger_pooled_probe", t, f"L{la}: who picked it, pooled over the locker sentence", *pooled,
+                 source=rel(path))  # fmt: skip
+        S.record("ledger_pooled_probe", t, f"L{la}: who picked it, best single token", round(best, 4), source=rel(path))
+    rows_axis(ax, [f"{SHORT[t]} L{la}" for t, la in rows])
+    ax.set_ylim(-len(rows) + 0.3, 0.6)
+    ax.axvline(1 / 3, color="#999999", lw=0.9, ls=":")
+    ax.axvline(0.85, color="#555555", lw=0.9, ls="--")
+    ax.text(1 / 3 + 0.01, 0.45, "chance", fontsize=S.LABEL_PT, color=S.COL["muted"])
+    ax.text(0.86, 0.45, "rule's 0.85", fontsize=S.LABEL_PT, color=S.COL["muted"])
+    ax.set_xlim(0, 1.0)
+    ax.set_xlabel("probe accuracy")
+    return save(fig, "ledger_pooled_probe")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
            clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split, attention, distance, gain, agnostic, value_formats)  # fmt: skip
+           order_split, attention, distance, gain, agnostic, value_formats, pooled_probe)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
