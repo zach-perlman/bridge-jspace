@@ -1,0 +1,46 @@
+id: x52_lightning_answer_z2
+title: "Batch 52, Dan's morning brief (29 Oct) item 3: 51.12's answer-direction control on Zach's Z2 on Lightning at L14, on Lightning's Z2 run nem35l_x52_z2 (200 passages): arms without J++ / without J++ minus the answer atoms / without the answer atoms, each against a random part, arm 3 also against the frequency-matched control; the readout check first; 51.12's rules verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x50_zach/nem35l_x52_z2/outcomes.jsonl &&
+  NOTE="no prediction: coverage run on an already-scored rule (51.12; Dan's morning brief item 3, 29 Oct; Lightning L$L, hollow gate)" &&
+  uv run python scripts/x51_answer.py run --set z2 --name nem35l_x52_answer_z2 &&
+  printf '%s\n' "$NOTE" > results/x51_answer/nem35l_x52_answer_z2/coverage.txt &&
+  uv run python scripts/x51_answer.py verdict --set z2 --coverage
+question: >-
+  On Lightning, in Zach's Z2 passages (the bridge never named, only described): is what each reader follows in the lens
+  part at the description the bridge entity or the answer word?
+why_it_matters: >-
+  Dan's morning brief item 3: completes 51.12 Z2 on the second family (Lightning's Z2 ran overnight, nem35l_x52_z2).
+hypotheses:
+  none: "No prediction (Dan's morning brief: rules fixed, no Q-line)."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x51_12_z2_27b_r2.yaml (jobs/c3/batch51.yaml addendum_4, 51.12, and
+  addendum_4_amendment, Dan 20:20; first scored in results/x51_answer/x51_12-20261028T201842Z): "Rules, fixed in
+  advance (per model, per reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3
+  costs ≤ 0.10 beyond random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥
+  0.5 of arm 1. Else: mixed, report both shares." With the amendment's Z2 additions (the frequency-matched control
+  no_F beside the same-size random control; A restricted to the first token of a split answer word) and its readout
+  check first ("the answer word is not read at the bridge word (lens rank > 50 on ≥ 90 % of items)" decides before the
+  arms; never "void by construction"). As computed: x51_12_z2_27b_r2's text unchanged, with Lightning's source: items
+  = Lightning's Z2 run nem35l_x52_z2's 200 chosen passages (x50_zach Z2: his v2 sets, leak filter, description
+  competence >= 0.90, gate 0.80 per reader: passed, K 0.975 / M 0.947), rebuilt by x50_zach.encode and checked id by
+  id (rebuilt on CPU at spec time: 200 items, no drops), at L14 (x50_zach.LAYERS' first: the committed L; the Z2 run's
+  L27 not read here); e3 / e3f against both controls; point estimates decide, EPS 1e-9; cluster bootstrap over the
+  bridge entity, 10,000, seed 0. Cells under 30 switches left out (amendment 3). Verdict in the job (x51_answer.py
+  verdict --set z2 --coverage: results/x51_answer/x52_answer-<UTC>/, never the default x51_12-<UTC>/ prefix).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "arm 3 also against a frequency-matched part: |A| unrelated letter atoms, BPE id within a factor 2 and the closest J++ readout norm (no_F)"
+- "the lens-readout check of the answer word at the edited token (rank > 50 on >= 90 % of items: not read), stated before the arms"
+- "arm 1 against the stored run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "O unedited and the whole change read with the same edits batch"
+n: "200 items of nem35l_x52_z2 at L14 (103 main set, 97 second seed)"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning brief item 3 (coordinator 08:50 Paris). Box: mats (its second GPU; every box holds Lightning). Code: x51_answer.COVERAGE_RUNS['z2'] = Lightning's run and source_of('z2') reads x50_zach's RUNS with its COVERAGE_RUNS (lookups; the 9B / 27B sources unchanged). Wallclock: x51_12_z2_27b_r2 532 s, x51_12_z2_9b_r2 373 s: est ~6-10 min, 0.25 GPU-h. UNVERIFIED; results into EXPERIMENTS.md."

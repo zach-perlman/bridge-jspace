@@ -116,7 +116,8 @@ SPEC_IDS = {s: {t: f"x51_12_{s}_{TAGS[t]}_r2" for t in RUNS[s]} for s in SETS}
 # Batch 52 C coverage (jobs/c3/batch52.yaml, amendment 3): the same rules on Lightning, no Q-line; read by verdict
 # --coverage (RUNS and 51.12's own verdict unchanged)
 COVERAGE_RUNS = {"e1": {"nemotron-3.5-lightning": "nem35l_x52_answer"},
-                 "cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"}}  # cue: on 47.3's Lightning run  # fmt: skip
+                 "cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"},  # cue: on 47.3's Lightning run
+                 "z2": {"nemotron-3.5-lightning": "nem35l_x52_answer_z2"}}  # z2: on Lightning's Z2 run (morning brief 3)  # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x51_answer/x51_12-20261028T201842Z"  # 51.12's rules first scored (r2)
 
@@ -404,7 +405,9 @@ def source_of(set_name: str, target: str) -> Path:
     from scripts import x50_zach as Z
 
     if set_name == "z2":
-        return Z.RESULTS / Z.RUNS["z2"][target]
+        return (
+            Z.RESULTS / {**Z.RUNS["z2"], **Z.COVERAGE_RUNS.get("z2", {})}[target]
+        )  # batch 52: Lightning's nem35l_x52_z2
     if set_name == "e1":
         return X.RESULTS / B.MAIN_RUN[target]
     return CUE.RESULTS / {**CUE.RUNS, **CUE.COVERAGE_RUNS}[target]  # batch 52 C: Lightning's 47.3 run (nem35l_x52_cue)

@@ -485,10 +485,12 @@ def test_coverage_verdict_reads_the_coverage_runs_without_the_seal(tmp_path, mon
 
 
 def test_lightning_is_a_coverage_target_of_e1_and_cue():
-    assert set(A.COVERAGE_RUNS) == {"e1", "cue"} and A.COVERAGE_RUNS["e1"] == {
+    assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2"} and A.COVERAGE_RUNS["e1"] == {
         "nemotron-3.5-lightning": "nem35l_x52_answer"
     }
-    assert A.COVERAGE_RUNS["cue"] == {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"} and "z2" not in A.COVERAGE_RUNS
+    assert A.COVERAGE_RUNS["cue"] == {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"} and A.COVERAGE_RUNS["z2"] == {
+        "nemotron-3.5-lightning": "nem35l_x52_answer_z2"
+    }
     assert "nemotron-3.5-lightning" not in A.RUNS["e1"] and "nemotron-3.5-lightning" in A.runs_of("e1")
     assert A.all_runs(("e1",), coverage=True) == [("e1", "nemotron-3.5-lightning", "nem35l_x52_answer")]
 
