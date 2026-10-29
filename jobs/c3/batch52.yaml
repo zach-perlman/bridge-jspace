@@ -299,3 +299,28 @@ readme_update: |
   Keep "Unverified until hand-checked" in the Status line; I hand-check 09:00-13:00
   and will add VERIFIED.md. Commit in steps (tables and text → figures → "In one
   minute"), and send me a one-screen diff summary per step.
+
+decisions_0905_received: "29 Oct ~09:05 Paris (Dan)"
+decisions_0905: |
+  README patch: OK, commit it. Then apply the 08:55 README brief on top: E12
+  rewritten (not only flagged), claim 8 regraded, the 51.10 card, the
+  full-carrier and Z1 limits on claim 1, the last token on claim 12, Lightning
+  in claim 6 (no address 0.10 vs random 0.56; swap 0.50 at s = 2) and Lightning's
+  key numbers everywhere.
+
+  Flagged decisions:
+  - 20: the README cites the full reruns for every step (27B x52_ladder_27b_a,
+    Muse r3), Fig. 1d included, so no column mixes runs. "How we checked": reruns
+    agree within 0.02 on shared steps.
+  - 24: run Muse 47.16 r2 now (GPUs idle; completes distance robustness on all four).
+  - 25: yes, original designs as coverage, not the cancelled variants.
+  - 26: 47.7 (a) on 9B / Muse: rerun only after queue items 0-2 of 08:55.
+  - 3: 51.11 wording = claim 8 as in the 08:55 brief.
+
+  CPU now, two checks like the B 2x one:
+  (a) 51.10, the lens write at the last token: what does the model output
+      (the original digit, the new digit, the entity's name, a number word,
+      other), per model? Report shares.
+  (b) The address swap at s = 2: when the recall changes, what to (the
+      swapped-in item's answer, another, a non-answer), 9B and Lightning.
+  Both into EXPERIMENTS.md; tell me before either touches a README claim.
