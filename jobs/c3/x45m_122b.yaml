@@ -1,0 +1,35 @@
+id: x45m_122b
+title: "122B coverage, prerequisite of 49.2 and 45p (Dan 18:20, coverage_122b_1820 items 5-6): the clean one-pick design (45m) on Qwen3.5-122B-A10B (FP8) at L33. An added locker item that nobody picks becomes the asked pick (one token changes, no duplicate); J++ k = 25 signed, both readers, both sentence orders; every generated scene; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x0_necessity.py run --name qwen35_122b_x45m_fresh --set d1_topics_v3 --renderings chat --layers 33 --alt fresh --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --n-items 600 --coverage --why "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820): the clean one-pick design (45m) at L33, the item source of 49.2's ladder and 45p on the 122B; no prediction: coverage run on an already-scored rule"
+figures_command: BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_necessity.py figures --name qwen35_122b_x45m_fresh
+question: >-
+  On the 122B, in the clean one-pick design (one locker item that nobody picks is added among the locker sentences of
+  both prompts, and the asked person's pick changes from the bridge to it), does the split hold: in locker-before
+  scenes, does the recall need J++ (gap at least 0.3) while the lookup does not (extra loss at most 0.10)? Also the
+  item source (the read gate, the eligible scenes) for 49.2 and 45p on the 122B.
+why_it_matters: >-
+  49.2's ladder and 45p read the clean design's scenes (x49_ladder.SOURCES = the 45m run); the 122B has none. Dan
+  18:20 orders 49.2 and 45p on the 122B; this run is their input, run with its own gate (0.80, never lowered).
+hypotheses:
+  none: "No prediction (coverage_122b_1820): coverage run on an already-scored rule."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45m), verbatim from jobs/c3/x45m_27b_q2.yaml: "The split holds in the clean
+  design" if, on at least 2 of 3 models, in locker-before scenes the gap is at least 0.3 and the lookup's extra loss is
+  at most 0.10; report all scenes and locker-after beside it. Here the 122B alone (the cross-model "2 of 3" is not
+  re-scored; per-model numbers only); X0's verdict and the strata descriptive. The read gate 0.80 on the fresh org
+  prompts, all scenes; if it fails the run stops and 49.2 / 45p on the 122B are "not tested" (gates never lowered).
+controls:
+- "the random part of the same share of each scene's change (X0's random subspace, 888 + layer)"
+- "both readers on the identical patch"
+- "the valid-cell bar (S_whole >= 0.30 and >= 30 switches), per cell, reported"
+- "the read gate (0.80) on the fresh org prompts, all scenes"
+n: "every generated scene (--n-items 600), 2 readers"
+seeds: [24, 0, 888]
+notes: "Coverage, not hand-checked (Dan 18:20); UNVERIFIED; README untouched. Caveats: J++ fit on bf16 used on FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. Not on Dan's list as such: the input of his 49.2 and 45p; added so those can run on their own gates. Cost: competence on 600 scenes x 2 readers + 600 x 2 x 3 arms at one layer; the 27B's 45m took ~0.5 h on 1 GPU; the 122B ~0.6-0.8 h wall on 2 GPUs."
