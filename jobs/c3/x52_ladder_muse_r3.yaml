@@ -1,0 +1,37 @@
+id: x52_ladder_muse_r3
+title: "Batch 52 C coverage (tier 3, Muse, L26): the removal ladder's six rungs (49.2) with rung 6 inside Zach's Muse band L36-42 (49.2 ran it at L23-29, outside his band); clean one-pick scenes, on S, both readers, a random subspace of the same share beside every rung; no prediction (coverage run on an already-scored rule)"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x49_ladder.py run --name muse30_x52_ladder --band 36 42 --coverage --why "Batch 52 part C (jobs/c3/batch52.yaml), coverage: 49.2's removal ladder on Muse with rung 6 inside Zach's Muse band L36-42 (muse30_x49_2_r5 ran it at L23-29); the rules of jobs/c3/batch49.yaml 49.2 verbatim, first scored in results/x49_ladder/x49_2-20261028T161612Z; no prediction: coverage run on an already-scored rule"
+question: >-
+  On Muse Glimmer 30B, does the ladder's reading change when rung 6 (Zach's top-10 per token at every token) runs over
+  his own band L36-42 rather than L23-29? Rungs 1-5 repeat muse30_x49_2_r5 on the same items.
+why_it_matters: >-
+  The ladder card's caveat "Muse's sixth step ran outside Zach's layer band" and the 'needed only when everything goes'
+  rule read rung (6) on Muse at layers Zach never used; this puts rung 6 where his knock-out breaks the recall.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule; the verdict writes 'no prediction: coverage run on an already-scored rule' where the Q-line used to be."
+decision_rule: >-
+  The rules verbatim from jobs/c3/batch49.yaml 49.2 with amendment 2 (as in jobs/c3/x49_2_muse_r5.yaml; first scored in
+  results/x49_ladder/x49_2-20261028T161612Z): "The second copy is the earlier mention": rung (3) costs the recall >=
+  0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in
+  locker-after scenes. "Needed only when everything goes": rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5. "The
+  lookup never needs it" if <= 0.1 beyond random at every rung. As computed: exactly x49_2_muse_r5's as-computed text,
+  the one change being rung 6's band: L36-42 (Zach's Muse band, scripts/x50_zach.py BESIDE_BAND; amendment 57 note 1's
+  Muse runs at L36-42) in place of 49.2's L23-29 (coordinator for Dan, 29 Oct ~01:20). Same items (45m's eligible at
+  L26: 409 = 178 locker-first + 231 locker-after, 44 bridge items), L..L+3 = L26-29. Verdict (CPU, after the job):
+  uv run python scripts/x49_ladder.py verdict --coverage --runs qwen35_9b_x49_2 x52_ladder_27b muse30_x52_ladder
+  (or x49_2_27b if the 27B coverage run has not landed); muse30_x49_2_r5's row stays the 49.2 record.
+controls:
+- "beside every rung, a random subspace of the same share of each token's ||h_S||^2 (X0's random basis, seed 888 + l); for rung 6 the share his top-10 removal takes there"
+- "S unedited (reported)"
+- "the lookup on the identical removal (its own rule)"
+- "rungs 1-5 against the stored muse30_x49_2_r5 on the same items (same edits and seeds; agreement reported by hand)"
+n: "409 clean one-pick scenes (muse30b_x45m_fresh's eligible at L26, chat): 178 locker-first, 231 locker-after; 44 bridge items (as muse30_x49_2_r5)"
+seeds: [888, 0]
+notes: "Requeue of x52_ladder_muse behind part B's read / write jobs on mats (29 Oct ~00:55; cancelled before it ran; run name unchanged). Batch 52 part C, tier 3 (Muse), box mats once the 27B jobs there finish (the coordinator's order). Run name muse30_x52_ladder (Muse's live prefix). Same code path as muse30_x49_2_r5 (which fixed the 28 Oct OOMs: no_grad, cloned rows, LazyWgDictionary); peak 67.1 GB there with 7 band layers, the same 7 here; mem_gb 76. The run asserts the lens has maps at L36-42 before reading. Estimate: muse30_x49_2_r5 took 0.21 h on an HBM3 H100; x 1.5 for an H100 PCIe -> 0.32 h; est 0.5."
