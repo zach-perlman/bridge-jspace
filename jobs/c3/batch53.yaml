@@ -178,3 +178,21 @@ test_53_3b: |
   Also rerun 53.3's lookup on the locker scenes at its own answer - 1 and - 3
   (the same items), to check the asymmetry is not a layer choice.
   Priority: right after 53.1b / 53.1.
+
+decision_531_words_received: "29 Oct ~10:20 Paris (Dan, answer to the coordinator's question: no lexical relation passed the one-token rule; the 53.1 agent had proposed the number written as a word)"
+decision_531_words: |
+  Number cells now, words later, with one change.
+  Run now: (Q-after, number) and (Q-before, number), 9B then 27B. The
+  Q-before number cell is the clean position test.
+  Skip "number written as a word": with the question after the scene the
+  bridge word's state is identical whatever the answer's form, and 51.12
+  already used the number-word directions, so it repeats what we have.
+  Word cells: relax the token rule now, before any result, to the repo's
+  convention for words: multi-token answers read by their first token (as the
+  natural passages and Zach's sets). First tokens must be distinct across the
+  relation's answers and must not share a token with any spelling, initial or
+  symbol of the item. Try element state (gas / solid / liquid), animal class
+  (mammal / bird / ...), and any other relation that passes; pick by coverage
+  on the 9B (>= 150 scenes, accuracy >= 0.8), build the scenes, then run the
+  two word cells. If none passes, skip the word cells and say so in the card:
+  readability is covered by 51.12 on Zach's named passages and by 53.1b.
