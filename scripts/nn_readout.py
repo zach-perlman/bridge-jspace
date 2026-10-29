@@ -23,6 +23,9 @@ asked) for scenes whose MM is v4ok, read for X's remembered attribute; --items v
 set (families by word and description type; rows tagged known = named recall right, gated = v4_split), with one more priming
 target, the description's cue; --topk K writes the top-K tokens of each lens (full vocabulary and letter tokens) to topk.jsonl.
 Read by scripts/nn_bridge_read.py.
+Amendment 60 (notes 29-31): --items v4all --words W ... reads every item of those words, ungated (the knowledge-conflict
+set; its scorer gates); key-set items (set_kind "key", note 29) are read on MP for the unsaid key (X's country) among the
+countries (key_vocab) as well as the colour, and on MM for an absent country.
 
 python scripts/nn_readout.py --name N --competence C [--set jsuite_v3_test_chat] [--every 2] [--batch 16]
        [--items eligible|composition|v4] [--cv-h1 CV] [--priming]
@@ -57,7 +60,18 @@ RES = pins.RESULTS_DIR / "nn_readout"
 
 
 def priming_targets(it: dict, avals: list[str], said: str) -> dict | None:
-    """note 25: candidate indices of the other word's answer, an answer absent from the scene, another entity's value."""
+    """note 25: candidate indices of the other word's answer, an answer absent from the scene, another entity's value.
+    Note 29 (key sets): MP -> ("k", index) targets over key_vocab: the unsaid key and an absent country; MM -> an absent country
+    and another scene country over its own answer_vocab (the countries)."""
+    if it.get("set_kind") == "key":
+        keys = set(it["scene_keys"])
+        absent = [v for v in it["key_vocab"] if v not in keys | {it["key"]}]
+        rng = random.Random("third:" + it["id"])
+        if it["word"] == "MP":
+            return {"key": ("k", it["key_vocab"].index(it["key"])), "keythird": ("k", it["key_vocab"].index(rng.choice(absent)))}
+        others = [v for v in sorted(keys) if v != it["key"] and v in avals]
+        return {"third": avals.index(rng.choice([v for v in absent if v in avals])),
+                "ctx": avals.index(random.Random("ctx:" + it["id"]).choice(others))} if others else None
     pv, x, cue = it["passage_values"], it["bridge"], it.get("cue")
     other = it["real"] if it["word"] == "MP" else pv[x]
     thirds = [v for v in avals if v not in set(pv.values()) | {it["real"], said} | ({cue} if cue else set())]
@@ -68,6 +82,11 @@ def priming_targets(it: dict, avals: list[str], said: str) -> dict | None:
            "ctx": avals.index(random.Random("ctx:" + it["id"]).choice(ctxs))}  # fmt: skip
     if cue and cue in avals and cue not in (said, other):  # note 26 (c): the description's cue (cue-conflict items)
         out["cue"] = avals.index(cue)
+    er = it.get("entity_reals")  # amendment 60 addendum: another scene entity's real attribute (within-scene control)
+    if er:
+        reals = [er[e] for e in sorted(er) if e != x and er[e] in avals and er[e] not in (said, other, it["real"])]
+        if reals:
+            out["ctxreal"] = avals.index(random.Random("ctxreal:" + it["id"]).choice(reals))
     return out
 
 
@@ -114,6 +133,10 @@ def main(a) -> None:
         prompts = [{**build_prompt(tok, it, a.set), "family": f"{it['word']}_{it['cc_type']}",
                     "tags": {"known": bool(parts.get(i.replace(":MP-", ":MM-"), {}).get("step2")), "gated": split.get(i, "")}}
                    for i, it in sorted(items.items()) if it["word"] in ("MP", "MM")]  # fmt: skip
+    elif a.items == "v4all":  # amendment 60: every item of --words, ungated (the knowledge-conflict set's scorer gates)
+        from scripts.nn_swap import build_prompt
+
+        prompts = [{**build_prompt(tok, it, a.set), "family": it["word"]} for i, it in sorted(items.items()) if it["word"] in (a.words or [])]
     elif a.items == "composition":  # note 11: successes vs failures among RM items whose hops alone are right
         from scripts.nn_swap import build_prompt, composition_split
 
@@ -131,7 +154,7 @@ def main(a) -> None:
 
     bridges_of = collections.defaultdict(set)
     for it in items.values():
-        if it.get("module") == "facts" and it["word"] in ("PK", "PM", "RM", "MM", "MP"):
+        if it.get("module") == "facts" and (it["word"] in ("PK", "PM", "RM", "MM", "MP") or it.get("set_kind") in ("key", "kc")):
             bridges_of[it["relation"]].add(it["bridge"])
     jobs, nskip = [], 0
     for p in prompts:
@@ -142,6 +165,7 @@ def main(a) -> None:
             variants.append(("RM_hop1", S.ids(tok, T.render(tok, {**it, "_question": q1, "_kind": it["steps"][0]["kind"]}))))
         bvals, avals = sorted(bridges_of[it["relation"]]), list(it["answer_vocab"])
         brows, arows = cand_rows(bvals), cand_rows(avals)
+        krows = cand_rows(list(it["key_vocab"])) if it.get("key_vocab") else None
         # note 14: MP's answer is X's passage value; note 26: H1 / RG are read for X's remembered attribute
         true_a = it["real"] if it["word"] in ("H1", "RG") else it["answer"] if it.get("set_version") == "v4" else it["real"]
         if not all(brows) or not all(arows) or it["bridge"] not in bvals or true_a not in avals:
@@ -157,14 +181,14 @@ def main(a) -> None:
                 nskip += 1
                 continue
             jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
-                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"], "extra": ex, "tags": p.get("tags", {})})  # fmt: skip
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"], "extra": ex, "tags": p.get("tags", {}), "krows": krows})  # fmt: skip
     if a.limit:  # a smoke: the first N prompts per family
         per = collections.defaultdict(list)
         for j in jobs:
             per[j["family"]].append(j)
         jobs = [j for v in per.values() for j in v[: a.limit]]
     if a.priming:
-        assert a.items in ("v4", "v4ctl", "v4cc"), "--priming reads v4 items"
+        assert a.items in ("v4", "v4ctl", "v4cc", "v4all"), "--priming reads v4 items"
         print(f"note 25: {nskip} prompts without the extra targets skipped", flush=True)
     print(f"{len(jobs)} prompts; by family {dict(collections.Counter(j['family'] for j in jobs))}; layers {layers}", flush=True)
     stats = collections.defaultdict(list)
@@ -205,7 +229,8 @@ def main(a) -> None:
                                 topk_rows.append({"id": j["id"], "family": j["family"], "site": site, "lens": ln, "layer": la,
                                                   "top": [dec(t) for t in tv[b]], "top_letters": [dec(t) for t in tl[b]]})  # fmt: skip
                         for b, j in enumerate(chunk):
-                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"]), *((w, j["arows"], t) for w, t in j["extra"].items())):
+                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"]),
+                                                    *((w, j["krows"], t[1]) if isinstance(t, tuple) else (w, j["arows"], t) for w, t in j["extra"].items())):
                                 cand = torch.stack([lg[b, r].max() for r in rws])
                                 # conservative: a tie (bridges sharing a first token) counts against the true candidate
                                 rank = int((cand >= cand[true]).sum())
@@ -255,8 +280,9 @@ if __name__ == "__main__":
     ap.add_argument("--every", type=int, default=2)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0, help="first N prompts per family (a smoke)")
-    ap.add_argument("--items", choices=["eligible", "composition", "v4", "v4ctl", "v4cc"], default="eligible", help="note 11: RM_ok vs RM_fail; note 14: v4")
+    ap.add_argument("--items", choices=["eligible", "composition", "v4", "v4ctl", "v4cc", "v4all"], default="eligible", help="note 11: RM_ok vs RM_fail; note 14: v4")
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1")
+    ap.add_argument("--words", nargs="*", default=None, help="amendment 60: --items v4all's words")
     ap.add_argument("--topk", type=int, default=0, help="note 26: write each lens's top-K tokens per site and layer")
     ap.add_argument("--priming", action="store_true", help="note 25: the other word's answer, an absent answer, another entity's value")
     main(ap.parse_args())
