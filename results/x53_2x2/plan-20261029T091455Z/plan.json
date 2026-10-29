@@ -1,0 +1,334 @@
+{
+ "target": "qwen3.5-9b",
+ "set": "d1_topics_v3",
+ "relation_coverage": {
+  "animals/class": {
+   "scenes": 33,
+   "dropped_items": {
+    "frog": {
+     "word": "amphibian",
+     "why": [
+      "not one token"
+     ]
+    },
+    "tick": {
+     "word": "arachnid",
+     "why": [
+      "not one token"
+     ]
+    },
+    "dog": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "mouse": {
+     "word": "mammal",
+     "why": [
+      "not one token",
+      "'m' initial",
+      "'M' initial",
+      "' M' initial"
+     ]
+    },
+    "lion": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "sheep": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "fox": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "cat": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "deer": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "spider": {
+     "word": "arachnid",
+     "why": [
+      "not one token"
+     ]
+    },
+    "elephant": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "bear": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "horse": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "wolf": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "goat": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "camel": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "rabbit": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "cow": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "pig": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "tiger": {
+     "word": "mammal",
+     "why": [
+      "not one token"
+     ]
+    }
+   },
+   "admissible": false
+  },
+  "animals/young": {
+   "scenes": 0,
+   "dropped_items": {
+    "frog": {
+     "word": "tadpole",
+     "why": [
+      "not one token"
+     ]
+    },
+    "butterfly": {
+     "word": "caterpillar",
+     "why": [
+      "not one token"
+     ]
+    },
+    "eagle": {
+     "word": "eaglet",
+     "why": [
+      "not one token",
+      "'e' initial",
+      "' eag' prefix",
+      "'E' initial",
+      "' Eag' prefix"
+     ]
+    },
+    "goose": {
+     "word": "gosling",
+     "why": [
+      "not one token",
+      "'G' initial"
+     ]
+    },
+    "fly": {
+     "word": "maggot",
+     "why": [
+      "not one token"
+     ]
+    },
+    "duck": {
+     "word": "duckling",
+     "why": [
+      "not one token",
+      "'duck' key",
+      "' duck' key",
+      "'D' initial",
+      "'uck' part",
+      "' Duck' key"
+     ]
+    },
+    "horse": {
+     "word": "foal",
+     "why": [
+      "not one token"
+     ]
+    },
+    "chicken": {
+     "word": "chick",
+     "why": [
+      "'ch' prefix",
+      "'ick' part",
+      "' chick' prefix",
+      "'Ch' prefix",
+      "'ick' part",
+      "' Chick' prefix"
+     ]
+    },
+    "camel": {
+     "word": "calf",
+     "why": [
+      "'c' initial",
+      "'C' initial",
+      "' C' initial"
+     ]
+    },
+    "owl": {
+     "word": "owlet",
+     "why": [
+      "not one token",
+      "'ow' prefix",
+      "' ow' prefix",
+      "'O' initial",
+      "' Ow' prefix"
+     ]
+    },
+    "cow": {
+     "word": "calf",
+     "why": [
+      "'c' initial",
+      "'C' initial",
+      "' C' initial"
+     ]
+    },
+    "deer": {
+     "word": "fawn",
+     "why": [
+      "not one token"
+     ]
+    },
+    "pig": {
+     "word": "piglet",
+     "why": [
+      "not one token",
+      "'pig' key",
+      "' pig' key",
+      "'P' initial",
+      "' Pig' key"
+     ]
+    }
+   },
+   "admissible": false
+  },
+  "elements/state": {
+   "scenes": 107,
+   "dropped_items": {},
+   "admissible": false
+  },
+  "greek/vowel": {
+   "scenes": 0,
+   "dropped_items": {
+    "beta": {
+     "word": "consonant",
+     "why": [
+      "not one token"
+     ]
+    },
+    "delta": {
+     "word": "consonant",
+     "why": [
+      "not one token"
+     ]
+    },
+    "theta": {
+     "word": "consonant",
+     "why": [
+      "not one token"
+     ]
+    },
+    "gamma": {
+     "word": "consonant",
+     "why": [
+      "not one token"
+     ]
+    }
+   },
+   "admissible": false
+  },
+  "number word": {
+   "scenes": 600,
+   "dropped_items": {},
+   "admissible": true
+  },
+  "all lexical pooled": {
+   "scenes": 140,
+   "admissible": false
+  }
+ },
+ "relation": "number word",
+ "word_instruction": "Answer with the number written as a word and nothing else.",
+ "cells": {
+  "qa_num": {
+   "scenes": 600,
+   "cases": 600,
+   "dropped": {},
+   "domains": {
+    "animals": 200,
+    "elements": 200,
+    "greek": 200
+   }
+  },
+  "qb_num": {
+   "scenes": 600,
+   "cases": 600,
+   "dropped": {},
+   "domains": {
+    "animals": 200,
+    "elements": 200,
+    "greek": 200
+   }
+  },
+  "qa_word": {
+   "scenes": 600,
+   "cases": 600,
+   "dropped": {},
+   "domains": {
+    "animals": 200,
+    "elements": 200,
+    "greek": 200
+   }
+  },
+  "qb_word": {
+   "scenes": 600,
+   "cases": 600,
+   "dropped": {},
+   "domains": {
+    "animals": 200,
+    "elements": 200,
+    "greek": 200
+   }
+  }
+ }
+}

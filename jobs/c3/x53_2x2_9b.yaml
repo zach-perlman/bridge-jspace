@@ -1,0 +1,89 @@
+id: x53_2x2_9b
+title: "Batch 53.1 on the 9B (L12): the 2x2, question position x answer type, on our locker scenes. Four cells (Q-after / Q-before x number / word), each with the main gate, the conflict test at L, 51.12's arms with the readout check first and the atom inventory on 50 items; then the per-cell labels, the rule across cells and the cross-check (verdict into results/x53_2x2/x53_2x2-<UTC>/, one figure); no prediction"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.7
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_2x2.py run --name qwen35_9b_x53_2x2 &&
+  uv run python scripts/x53_2x2.py verdict
+question: >-
+  Does the bridge's lens part turn into the answer when the question is known at the bridge word (question before the
+  scene), when the answer is a word the lens can read (a letter token instead of a digit), both, or neither? And does
+  the lookup's pointer stay outside the lens in all four cells?
+why_it_matters: >-
+  Dan (batch 53 brief, 29 Oct 09:30): 53.1 is the top item. The main test reads 'entity' on 51.12 (the lens effect is
+  the bridge, not the answer) with the question after the scene and a digit answer; Zach's passages, where the bridge
+  is named before the question and the answers are words, read 'mixed'. The 2x2 separates the two differences on the
+  same scenes: question position and answer type.
+hypotheses:
+  none: "no prediction (batch 53: exploration day; every rule fixed in the brief before any run)"
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch53.yaml brief, 53.1), verbatim: "Cells: (Q-after, number) = the main test as is;
+  (Q-before, number): the same scenes with both questions placed before the scene ("Question: ... Scene: ..."), digits
+  kept; (Q-after, word) and (Q-before, word): the recall asks a relation with a one-token word answer instead of the
+  atomic number. Choose the relation on the 9B before any test: one-token answers, the 9B's accuracy >= 0.8, the
+  answer word must not share a token with any spelling, initial or symbol of the item (the atoms classifier's bridge
+  classes). Lookup questions unchanged. Per cell: the main gate; the conflict test at L; 51.12's arms with the readout
+  check first; the atom inventory (batch 52 A) on 50 items. Rule per cell: 51.12's labels (entity / answer / mixed /
+  answer word not read). Rule across cells: - "position": (Q-before, number) is answer or mixed and (Q-after, word) is
+  entity; - "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; - "both": each single
+  change gives mixed and (Q-before, word) gives answer; - "neither": all four entity. Cross-check, decisive for the
+  story: the conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the
+  question"); report per cell." 51.12's rule (jobs/c3/batch51.yaml addendum_4), verbatim: "“The lens effect is the
+  entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond random. “The lens effect is the
+  answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1. Else: mixed, report both shares."
+  with the amendment's readout check first (rank > 50 on both O and S for >= 90 % of items -> "the answer word is not
+  read at the bridge word"). As computed (scripts/x53_2x2.py docstring; fixed before any run): scenes = the main
+  test's (d1_topics_v3, alt cf: two people swap picks, 600 scenes, chat rendering, the assistant turn prefilled
+  'Answer:'); per cell X0's gate (O read accuracy >= 0.80 per reader over all 600 scenes; eligible = both readers say
+  and read O and S right; >= 150 eligible; the first 200 in scene order); a failed gate = "not tested (gate x <
+  0.80)", numbers descriptive only, never lowered. (Q-after, number) is byte for byte X0's main-test prompt (tested
+  against x0_necessity.scene_case). Q-before: user turn "Question: <q> <instruction>\n\nScene:\n<scene>", each
+  reader's question before the scene in its own prompt (conservative reading of "both questions": one question per
+  prompt, as 47.7 (a) and batch 52's question-first item; the newline after "Scene:" keeps the scene's tokens those of
+  Q-after, tested), so the readers' prompts differ before the bridge and each reader's Δ comes from its own O / S
+  prompts; Q-after: one Δ from the lookup's prompts (X0). Relation (the rule's choice on the 9B's tokenizer,
+  results/x53_2x2/plan-20261029T091455Z, before any run): candidates in order animals class (mammal / bird / insect /
+  ...), animals young (puppy, kitten, ...), elements state (gas / solid), Greek vowel / consonant, then the number
+  written as a word; admissible = every answer one token after a space, no token of any variant clashing with the
+  item's bridge classes (x52_atoms.entity_matcher spell=True), and >= 150 of the 600 scenes covered (X0's floor);
+  covered: 33 / 0 / 107 / 0 scenes, all lexical pooled 140 < 150; number word 600 -> the number word ("six" for 6).
+  The 9B's accuracy criterion = the (Q-after, word) recall's O read accuracy over all 600 scenes (relation.json),
+  measured in this run after every cell's gate and before any test; < 0.80 -> both word cells not tested. Word
+  instruction "Answer with the number written as a word and nothing else."; word read = the top token right after
+  'Answer:' (no space token) is the number word's first token after a space, lower-case or capitalised (" six" /
+  " Six", each one token); said = the first word of the greedy text, lower-cased. Conflict test at L12: whole /
+  without the J++ part (signed OMP K = 25 over the J++ letter atoms, x0_necessity.fit) / without a random part of its
+  share (X0's random basis, seed 888 + L); X0's excess = (S_rand - S_noJ++) / S_whole = 51.12's e1, X0's label per
+  reader beside. 51.12's arms on the same Δ (x51_answer.all_arms: no_jpp, no_jpp_A, no_A, each with its random twin;
+  A = the J++ atoms of the number words of both readers' O and S answers, 51.12's E1 construction, in all four
+  cells); readout check per reader at its Δ's state; label = x51_answer.rule + the readout case; the cell's label =
+  the recall's (51.12's decisive E1 reader), the lookup's beside. Atoms: x52_atoms.omp_atoms on 50 of the cell's items
+  (x52_atoms.pick, seed 0), classified by x52_atoms' E1 classifier (Q-after: the lookup's Δ in both views; Q-before:
+  each reader's own). Across cells: on the four cells' recall labels (51.12's keys); a pattern that needs a cell
+  without a label can't be read; none matching -> "none of the four patterns". Cross-check: the lookup's e1 (point
+  estimate) <= 0.10 in all four cells, CIs reported. Point estimates decide (EPS 1e-9); cluster bootstrap over the
+  bridge entity (10,000, seed 0).
+controls:
+- "a random part of the same share beside every removal (X0's random subspace, seed 888 + L)"
+- "the readout check (the answer word's lens rank at the edited token) before the arms, per cell and reader"
+- "(Q-after, number) against the stored main test qwen35_9b_x0_necessity item by item (agreement.json: none / whole / no_jpp / no_jpp_rand switches and arm 1's extra loss)"
+- "every cell's gate before any test; the relation's accuracy (qa_word's recall) checked before any arm is read"
+- "x52_atoms.omp_atoms asserted equal to x0_necessity.fit's part on the atom items"
+n: "per cell: 600 scenes for the gate; the first 200 eligible items (all four cells: 600 scenes build, none dropped on the 9B's tokenizer); atoms on 50 items; ~2,400 competence forwards and ~3,200-6,400 reads per cell"
+seeds: [888, 0]
+notes: >-
+  Batch 53, test 53.1 (Dan 09:30; standing rules 09:50: speedup runs 53.1b first, then 53.1). No prediction; every
+  result UNVERIFIED; nothing into the README. Writes results/x53_2x2/qwen35_9b_x53_2x2/ (manifest.json before the
+  model loads; relation.json; per cell <cell>/: gate.json, competence.jsonl, cases.jsonl, readout.jsonl, norms.jsonl,
+  atoms.jsonl, outcomes.jsonl; qa_num/agreement.json), then the verdict into results/x53_2x2/x53_2x2-<UTC>/
+  (verdict.md, verdict.json, x53_2x2.png: the ledger card's figure). Reading taken for Dan to veto (said in the
+  hand-off): the word answer is the number word, because no lexical relation covers 150 of the main test's scenes
+  (counts above); the word cells then change only what the recall outputs (a letter token, inside the lens's
+  dictionary, instead of a digit, outside it), not the relation. Estimate from the ledger (sesterce-h100x2):
+  x45m_9b_q2 (600 scenes' competence + Δ + one J++ arm set at L12) 480 s; x51_12_e1_9b_r2 (200 items, 7 arms x 2
+  readers) 123 s; x52_atoms_9b 138 s. Here 4 x 600-scene competence (~350 s each) + 4 x 200-item arms (~100 s each,
+  Q-before cells two Δ sources) + load ~ 2,000 s ~ 0.55 h; entered as 0.7 (wall ~35-40 min on 1x H100 80 GB).
