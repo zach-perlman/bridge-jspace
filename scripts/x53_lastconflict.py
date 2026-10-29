@@ -86,7 +86,8 @@ RULE = (f"per reader and layer: \"{LABELS['outside']}\" if the loss without the 
 # 53.3b (Dan 10:05, jobs/c3/batch53.yaml test_53_3b): the same test on word answers, Zach's named-bridge passages
 TEST_WORDS = "53.3b"
 WORD_SOURCE = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z1p_27b",
-               "nemotron-3.5-lightning": "nem35l_x52_z1p"}  # Z1-P's runs (x50_zach --part z1p): the chosen passages  # fmt: skip
+               "nemotron-3.5-lightning": "nem35l_x52_z1p",
+               "muse-glimmer-30b": "muse30_x53_z1p"}  # Z1-P's runs (x50_zach --part z1p): the chosen passages  # fmt: skip
 WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_3b", "qwen3.6-27b": "x53_3b_27b", "muse-glimmer-30b": "muse30_x53_3b",
              "nemotron-3.5-lightning": "nem35l_x53_3b"}  # fmt: skip
 WORD_SLOTS = {"K": X.LOOKUP, "M": X.RECALL}  # Z1-P's reader slots: K = the PP passage (the lookup), M = PM (the recall)
