@@ -13,6 +13,9 @@ last 12-16" ;;
   27b) export BJ_TARGET=qwen3.6-27b; P=; KB=32-40; KBATCH=32; CELLS="final 49-56
 last 24-31
 last 32-40" ;;
+  nem35l) export BJ_TARGET=nemotron-3.5-lightning; P=nem35l_; KB=27-33; KBATCH=16; CELLS="final 34-39
+final 40-45
+last 21-26" ;;
 esac
 W="Zach (2026-10-29, prereg amendment 58 note 24, $BJ_TARGET)"
 SET=jsuite_v4cc_test_chat

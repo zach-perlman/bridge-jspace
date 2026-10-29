@@ -2930,3 +2930,5 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - "The bridge is represented beyond what the lens reads": a read-out's held-out top-1 >= 2x the lens's and >= 50% at some used layer (9B L4-16), with the shuffled control below 2x chance.
   - "The person, not the description's words": held-out top-1 >= 50%.
 - **Run.** 9B first (qwen35_9b_nn_probe_v4_v2, GPU1). The 27B only if Zach asks. Queue: scripts/queues/h200_probe2_1029.sh.
+
+##### Amendment 58 note 24, Lightning addendum (Zach: "GPUs used optimally", 2026-10-29 ~16:30 UTC; before any Lightning note 24 run): note 24 exactly as on the 9B and 27B. Cells: final L34-39, L40-45 and last L21-26 (where note 15 found the lens part matters); knock-out band L27-33. Queue: scripts/queues/h200_cc_1029.sh nem35l, GPU1. Bolt waits for it.
