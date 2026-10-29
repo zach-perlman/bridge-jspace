@@ -1553,11 +1553,46 @@ def jsuite(plt) -> str:
                        rows, absent, "lost beyond random", xlim=(-0.3, 1.0))
 
 
+WORDS53 = R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093032Z" / "verdict.json"  # 53.3b, Lightning first
+WORDS53_WAITING = {"qwen3.5-9b": "running", "qwen3.6-27b": "queued", "muse-glimmer-30b": "queued"}
+
+
+def last_conflict_words(plt) -> str:
+    """53.3b on four slots: the last-token conflict test on Zach's word answers, per reader at its answer layer minus
+    1, 2, 3 and 51.10's read peak: switches lost without the lens part beyond a random part (invalid cells as a grey
+    note); the check on our locker scenes beside; a model below its gate hollow and labelled; models still running
+    grey."""
+    v = load(WORDS53)
+    rows, absent = {}, {}
+    for t in SLOT_MODELS:
+        ms = [m for m in v["models"] if m["target"] == t]
+        if not ms:
+            absent[t] = WORDS53_WAITING.get(t, "not run")
+            continue
+        m = ms[0]
+        below = bool(m.get("below_gate"))
+        if below:
+            below_gate("ledger_last_conflict_words", t)
+        rows[t] = []
+        for i, c in enumerate(sorted(m["cells"], key=lambda c: (c["reader"] != "lookup", -c["layer"]))):
+            col = LOOKUP if c["reader"] == "lookup" else INK
+            k = ("answer - 1", "answer - 2", "answer - 3", "read peak")[i % 4]
+            lab = f"words, {c['reader']}, {k}"
+            rows[t].append((lab, c["excess"] if c["x0_valid"] else f"L{c['layer']}: too few", col, below))
+        for chk in v.get("checks", []):
+            if chk["target"] == t:
+                for i, c in enumerate(sorted(chk["cells"], key=lambda c: -c["layer"])):
+                    rows[t].append((f"our locker scenes, lookup, answer - {(1, 3)[i]}", c["excess"], LOOKUP, t == LT))
+    return four_panels(plt, "ledger_last_conflict_words", "Below gate, Lightning's lookup goes through the lens on word answers",
+                       "Lost without the lens part beyond random at the last token; ○ below gate (exploratory)",
+                       rows, absent, "lost beyond random", xlim=(-0.2, 1.0), bars=((0.10, "--"), (0.30, ":")))
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite)  # fmt: skip
+           jsuite, last_conflict_words)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
