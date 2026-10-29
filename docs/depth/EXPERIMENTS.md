@@ -785,7 +785,7 @@ New in this ledger:
   - Under the sentence wording the 9B reads slot 1 right on most slot-1 scenes, against almost none under the earlier wording; by the rule, slot 1 recovers and the test is dropped. The 27B and Lightning recover under both new wordings.
 - **Caveats.**
   - On the 9B the position wording stays just under the bar (0.18); the recovery rests on the sentence wording.
-  - The coverage matrix names this row "One question, two instructions" and marks the 9B's cell as a gate miss; the verdict scores the 9B (Appendix A, flag 28).
+  - The 06:29 coverage matrix named this row "One question, two instructions" and marked the 9B's cell as a gate miss; the verdict scores the 9B. Fixed in the 09:45 matrix (fb9667eb; Appendix A, flag 28).
   - Lightning: a coverage run with the 9B / 27B design, no prediction.
 
 ### Do a few heads read the swapped address? (51.2, opened 28 Oct 20:04; Lightning's coverage run 29 Oct) <a id="t51-2"></a>
@@ -1838,8 +1838,8 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 24. Muse's 47.16 r2 is written but not queued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1), so it waits for Dan ([47.16](#t47-16)). Decided (Dan, 09:05): run Muse's 47.16 r2 now; enqueued on mats.
 25. 47.6 / 48.2 / 48.4: the original designs were run on the 27B and Lightning as coverage. The coordinator reads them as not the "variants" Dan cancelled; Dan to confirm ([47.6](#t47-6)). Decided (Dan, 09:05): yes, the original designs as coverage, not the cancelled variants.
 26. 47.7 (a) on the 9B and Muse is missing: exit 1 on 28 Oct, never rerun; Dan decides. Decided (Dan, 09:05): rerun only after items 0-2 of the 08:55 queue. Muse's rerun (r2): not tested (gate 0.23<!-- src: results/x47_value/muse30_x47_7a_r2/gate.json | "PM": 0.23 :: 0.23 --> < 0.80): the question-first recall reads 0.23 and no group passed; the original run's exit 1 on 28 Oct was the same gate stop. The 9B's rerun (r2): not tested (gate 0.7957<!-- src: results/x47_value/qwen35_9b_x47_7a_r2/gate.json | "PM": 0.7957142857142857 :: 0.7957 --> < 0.80): its question-first recall missed the gate and no group passed. So 47.7 (a) is not tested on the 9B and Muse, by gate.
-27. Coverage matrix: cells the old builder marked "done" without outcomes are corrected (e7474964); the ledger's coverage table now mirrors the 06:29 matrix.
-28. The coverage matrix's row "One question, two instructions (49.6)" is 49.6, "the report of slot 1, reworded" (results/x49_report/x49_6-20261028T154511Z): the matrix marks the 9B "ran; the gate failed", but the verdict scores the 9B (slot 1 recovers under the sentence wording; it decides: drop), and Lightning has a coverage run (not "not designed"). The README's Part VI "One question under two instructions" is another test. The ledger's card follows the verdict ([49.6](#t49-6)); the matrix row needs a rename and fresh cells.
+27. Coverage matrix: cells the old builder marked "done" without outcomes are corrected (e7474964); the ledger's coverage table now mirrors the 09:45 matrix (fb9667eb).
+28. The coverage matrix's row "One question, two instructions (49.6)" is 49.6, "the report of slot 1, reworded" (results/x49_report/x49_6-20261028T154511Z): the matrix marks the 9B "ran; the gate failed", but the verdict scores the 9B (slot 1 recovers under the sentence wording; it decides: drop), and Lightning has a coverage run (not "not designed"). The README's Part VI "One question under two instructions" is another test. The ledger's card follows the verdict ([49.6](#t49-6)); the matrix row needs a rename and fresh cells. Fixed (fb9667eb, scripts/x52_coverage.py): the matrix row is now "Report of slot 1, reworded (49.6)" with the 9B, 27B and Lightning done and Muse not designed (results/x52_coverage/matrix-20261029T094549Z); Appendix C follows it.
 
 ## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>
 
@@ -1874,9 +1874,9 @@ Dan lifted the overnight no-README rule at 08:55; the README pass is applying th
 
 ## Appendix C. Coverage table <a id="coverage"></a>
 
-Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T062909Z/matrix.json, built 06:29 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
+Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T094549Z/matrix.json, built 09:45 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 06:29 UTC (07:29 Paris); results opened since then (Z1-P, 51.12 on Zach's passages, Lightning's below-gate runs, 49.6 on Lightning, Muse's 47.16 rerun running) are in their cards and the heatmap, not yet in this table.
+As of the matrix at 09:45 UTC (10:45 Paris; fb9667eb: the 49.6 row renamed and its cells corrected, Muse's 47.16 rerun done, Lightning's 51.12 E1 verdict pinned). Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -1899,44 +1899,44 @@ As of the matrix at 06:29 UTC (07:29 Paris); results opened since then (Z1-P, 51
 | **Part III. The address** | | | | |
 | [E6: the address probe (x0_probe v4)](#probe) | ✓ | ✓ | ✓ | ✓ |
 | [4. Address swap by dose (x8_write, s = 1 / 2 / 4)](#swap) | ✓ <sup>18</sup> | ✓ <sup>19</sup> | ✓ <sup>20</sup> | ✓ <sup>21</sup> |
-| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ | – <sup>22</sup> |
+| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ | ✓ <sup>22</sup> |
 | [E7: six lockers, one code per slot (47.2)](#six) | ✓ | ✓ | ✓ | ✓ |
 | [What is the address: dimension, methods, geometry (51.11)](#t51-11) | ◐ <sup>23</sup> | – <sup>17</sup> | ✓ | ✓ |
 | [8. Lens readout with the item-change control (47.0)](#t47-0) | ✓ | ✓ | ✓ | ✓ |
 | [E8: the report prompt (47.10)](#t47-10) | ✓ | ○ <sup>24</sup> | ○ <sup>25</sup> | ○ <sup>26</sup> |
+| [Report of slot 1, reworded (49.6)](#t49-6) | ✓ | ✓ <sup>27</sup> | ✓ <sup>28</sup> | ✗ <sup>29</sup> |
 | [Joint head ablation under the swap (51.2)](#t51-2) | ✓ | ✓ | ✓ | ✓ |
-| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ <sup>27</sup> | ✓ | ✓ |
-| [Chained addresses (47.14)](#t47-14) | ✓ | ○ <sup>28</sup> | ✓ | ✓ |
+| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ <sup>30</sup> | ✓ | ✓ |
+| [Chained addresses (47.14)](#t47-14) | ✓ | ○ <sup>31</sup> | ✓ | ✓ |
 | **Part IV. Where and when** | | | | |
-| [5a. Order split (descriptive)](#order) | ✓ | ✓ <sup>29</sup> | ✓ | ✓ |
-| [5b. Copy test (45q)](#t45q) | ✓ <sup>30</sup> | ○ <sup>10</sup> | ✓ <sup>30</sup> | ✓ <sup>30</sup> |
-| [E11: token by layer map (47.D1)](#d1) | ✓ | ◐ <sup>31</sup> | ✓ | ✓ |
-| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ◐ <sup>32</sup> | ✓ | ✓ |
-| [6. Anatomy by layer (47.8)](#t47-8) | ✓ <sup>33</sup> | ✓ <sup>34</sup> | ✓ | ✓ |
-| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ <sup>35</sup> | ✓ <sup>36</sup> | ✓ | ✓ |
+| [5a. Order split (descriptive)](#order) | ✓ | ✓ <sup>32</sup> | ✓ | ✓ |
+| [5b. Copy test (45q)](#t45q) | ✓ <sup>33</sup> | ○ <sup>10</sup> | ✓ <sup>33</sup> | ✓ <sup>33</sup> |
+| [E11: token by layer map (47.D1)](#d1) | ✓ | ◐ <sup>34</sup> | ✓ | ✓ |
+| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ◐ <sup>35</sup> | ✓ | ✓ |
+| [6. Anatomy by layer (47.8)](#t47-8) | ✓ <sup>36</sup> | ✓ <sup>37</sup> | ✓ | ✓ |
+| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ <sup>38</sup> | ✓ <sup>39</sup> | ✓ | ✓ |
 | [The address at the last token (51.4)](#t51-4) | ✓ | ✓ | ✓ | ✓ |
 | [9. Last-token read / write (51.10)](#t51-10) | ✓ | ✓ | ✓ | ✓ |
 | **Part V. Other datasets** | | | | |
-| [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ <sup>37</sup> | ✓ | ✓ |
-| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✓ | ✗ <sup>38</sup> |
-| [Part V: Zach's passages Z3 (routes on his passages)](#z3) | ✓ <sup>39</sup> | ✓ <sup>40</sup> | ✓ | ✓ |
-| [Anatomy on Zach's passages (51.5)](#t51-5) | ✓ | ✗ <sup>41</sup> | ✓ | ✗ <sup>38</sup> |
+| [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ <sup>40</sup> | ✓ | ✓ |
+| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✓ | ✗ <sup>29</sup> |
+| [Part V: Zach's passages Z3 (routes on his passages)](#z3) | ✓ <sup>41</sup> | ✓ <sup>42</sup> | ✓ | ✓ |
+| [Anatomy on Zach's passages (51.5)](#t51-5) | ✓ | ✗ <sup>43</sup> | ✓ | ✗ <sup>29</sup> |
 | **Part VI. What did not hold** | | | | |
-| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>42</sup> | ✓ | ◐ <sup>43</sup> |
+| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>44</sup> | ✓ | ◐ <sup>45</sup> |
 | [Address refit per text format (x45d)](#x45d) | ✓ | ✓ | ✓ | ✓ |
-| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>44</sup> | ✓ | ✓ |
-| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>45</sup> | ◐ <sup>46</sup> | ✓ | ✓ |
-| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>47</sup> | ✓ | ✓ |
-| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>48</sup> | ✓ | ✓ |
-| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>49</sup> | ✓ | ✓ |
-| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>50</sup> | ✓ | ✓ |
-| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>51</sup> | ✓ | ✓ |
+| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>46</sup> | ✓ | ✓ |
+| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>47</sup> | ◐ <sup>48</sup> | ✓ | ✓ |
+| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
+| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>50</sup> | ✓ | ✓ |
+| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>51</sup> | ✓ | ✓ |
+| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>52</sup> | ✓ | ✓ |
+| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>53</sup> | ✓ | ✓ |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | ✓ | ✓ | ✓ | ✓ |
 | **Withdrawn, or run on one model only** | | | | |
-| One question, two instructions (49.6) | ✓ | ✗ <sup>41</sup> | ○ <sup>52</sup> | ✗ <sup>38</sup> |
-| Failed: the second hop's key token (47.15 source) | ✓ | ○ <sup>53</sup> | – <sup>54</sup> | ○ <sup>55</sup> |
-| DAS by position (49.x das_pos) | ✗ <sup>56</sup> | ✗ <sup>56</sup> | ✓ | ✗ <sup>56</sup> |
-| [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>41</sup> | ✓ | ✗ <sup>38</sup> |
+| Failed: the second hop's key token (47.15 source) | ✓ | ○ <sup>54</sup> | – <sup>55</sup> | ○ <sup>56</sup> |
+| DAS by position (49.x das_pos) | ✗ <sup>57</sup> | ✗ <sup>57</sup> | ✓ | ✗ <sup>57</sup> |
+| [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>43</sup> | ✓ | ✗ <sup>29</sup> |
 
 ✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested (including missing, running or queued), ✗ not designed for that model; a number points to the matrix's note for that cell, listed under the table.
 
@@ -1961,41 +1961,42 @@ As of the matrix at 06:29 UTC (07:29 Paris); results opened since then (Z1-P, 51
 19. target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69
 20. target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73
 21. target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52
-22. x47_16_muse_r2 written, not enqueued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already answers it); re-opening it under amendment 2 waits for Dan; x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)
+22. x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)
 23. part 2 only by design (parts 1, 3 not designed for the 27B)
 24. the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z)
 25. the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z)
 26. the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z)
-27. attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks)
-28. the cited verdict lists Lightning as not tested (the gate missed (see gate.json); results/x47_chain/x52_chain-20261029T023424Z)
-29. CPU from the conflict test's outcomes
-30. holds
-31. the main design only; the clean design (the decisive cell) not tested: gate fails
-32. the main design only; the clean design not tested: gate fails
-33. full grid
-34. every 4th layer L2-L50
-35. CPU from x47_anatomy_27b's cache
-36. CPU from Lightning's anatomy cache (on its box)
-37. Z1 done; Z2 done
-38. designed for the 9B and 27B (conservative, Dan 01:10)
-39. at L32 (X0's layer = the start of his band L32-40)
-40. at L14 and L27
-41. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
-42. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
-43. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
-44. count (CPU) then the verdict
-45. A and B
-46. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
-47. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
-48. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
-49. attention blocks after L14 (NemotronH port)
-50. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
-51. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
-52. ran; the gate failed (README: the others miss the gate)
-53. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
-54. the cited verdict lists 9B as pending (no run given; results/x47_source/x47_15-20261028T142722Z)
-55. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
-56. 9B only by design
+27. the 9B / 27B design; read per model, the action is the 9B's
+28. the deciding model
+29. designed for the 9B and 27B (conservative, Dan 01:10)
+30. attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks)
+31. the cited verdict lists Lightning as not tested (the gate missed (see gate.json); results/x47_chain/x52_chain-20261029T023424Z)
+32. CPU from the conflict test's outcomes
+33. holds
+34. the main design only; the clean design (the decisive cell) not tested: gate fails
+35. the main design only; the clean design not tested: gate fails
+36. full grid
+37. every 4th layer L2-L50
+38. CPU from x47_anatomy_27b's cache
+39. CPU from Lightning's anatomy cache (on its box)
+40. Z1 done; Z2 done
+41. at L32 (X0's layer = the start of his band L32-40)
+42. at L14 and L27
+43. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
+44. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
+45. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
+46. count (CPU) then the verdict
+47. A and B
+48. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
+49. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
+50. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
+51. attention blocks after L14 (NemotronH port)
+52. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
+53. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
+54. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
+55. the cited verdict lists 9B as pending (no run given; results/x47_source/x47_15-20261028T142722Z)
+56. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
+57. 9B only by design
 <!-- coverage:end -->
 
 ## Appendix D. Figure checks <a id="figure-checks"></a>

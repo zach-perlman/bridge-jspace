@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T062909Z" / "matrix.json"
+MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T094549Z" / "matrix.json"
 COLUMNS = (("qwen3.6-27b", "27B"), ("nemotron-3.5-lightning", "Lightning"), ("qwen3.5-9b", "9B"),
            ("muse-glimmer-30b", "Muse"))  # fmt: skip
 # the matrix's row -> the ledger card's anchor (rows without a card stay plain)
@@ -66,6 +66,7 @@ ANCHORS = {
     "Z1 on the full carrier (51.7)": "t51-7",
     "What is the address: dimension, methods, geometry (51.11)": "t51-11",
     "Answer-direction control on Zach's Z2 (51.12 Z2)": "z2",
+    "Report of slot 1, reworded (49.6)": "t49-6",
 }
 
 # The overview heatmap (Dan's restructure brief, 29 Oct 08:55): one row per test card in the ledger's (the README's)
