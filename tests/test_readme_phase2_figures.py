@@ -157,9 +157,12 @@ HOLD = {"whole": 50, "a1": 40, "a2": 10, "a3": 30, "a4": 25}  # loss 0.75 / 0.25
 FAIL = {"whole": 50, "a1": 40, "a2": 10, "a3": 15, "a4": 30}  # 0.75 vs 0.625: fails the random bar
 
 
+@pytest.mark.parametrize("lightning", [False, True])
 @pytest.mark.parametrize(("plants", "story"), [((HOLD, HOLD, FAIL), True), ((FAIL, FAIL, HOLD), False)])
-def test_fig3c_45p_on_planted_runs(tmp_path, monkeypatch, saved, plants, story):
+def test_fig3c_45p_on_planted_runs(tmp_path, monkeypatch, saved, plants, story, lightning):
     monkeypatch.setattr(P, "RESULTS", tmp_path / "x45p")
+    if not lightning:  # no below-gate run: Lightning keeps its slot, grey (Dan's figures brief, 29 Oct 10:00)
+        monkeypatch.setattr(F, "LT_45P", tmp_path / "missing" / "x45p.json")
     monkeypatch.setattr(P, "dan_answer", lambda: "yes · 65%")
     monkeypatch.setattr(P, "example_lines", lambda run: [])  # the planted cases hold no prompts
     names = ["p9", "p27", "pmuse"]
@@ -172,8 +175,17 @@ def test_fig3c_45p_on_planted_runs(tmp_path, monkeypatch, saved, plants, story):
     check(fig)
     assert fig["supp"] is not story
     assert ("rule not met" in fig["title"]) is not story
-    assert "not run" in fig["texts"]  # the 122B: no 45p run
+    # four model slots, in order (Dan's figures brief, 29 Oct 10:00): Lightning drawn below gate, or a grey label
+    titles = [t for t in fig["texts"] if t.split("\n")[0].split(" ")[0] in ("9B", "27B", "Muse", "Lightning")]
+    assert [t.split(" ")[0].split("\n")[0] for t in titles][:4] == ["9B", "27B", "Muse", "Lightning"], titles
     rows = [r for r in S.ROWS if r["figure"] == "fig03c"]
+    lt_rows = [r for r in rows if r["model"] == "nemotron-3.5-lightning"]
+    if lightning:
+        assert "Lightning ○\nbelow gate" in fig["texts"]
+        assert lt_rows and all(r["source"].endswith("x52_45p_below-20261029T090351Z/x45p.json") for r in lt_rows)
+    else:
+        assert "not tested: gate" in fig["texts"] and "Lightning" in fig["texts"]
+        assert not lt_rows
     loss = next(r for r in rows if r["model"] == "qwen3.5-9b" and r["quantity"].startswith("45p, a2: recall"))
     assert loss["value"] == pytest.approx(0.75)
 

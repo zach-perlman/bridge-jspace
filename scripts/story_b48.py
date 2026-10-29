@@ -857,7 +857,9 @@ def build_mechanisms(
     ax.tick_params(axis="y", length=0)
     ax.grid(axis="x", color="#eeeeee")
     ax.spines["left"].set_visible(False)
-    S.panel_tag(ax, None, "fixed")
+    # the marks' key in place of a lone status glyph (one panel holds rules fixed in advance and Lightning's hollow rows)
+    ax.text(1.0, 1.015, f"{S.STATUS_GLYPH['fixed']} fixed in advance    {S.STATUS_GLYPH['after']} Lightning",
+            transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
     fig.text(0.01, (bottom_in - 0.5) / h, "\n".join(caption), ha="left", va="top", fontsize=S.FONT - 1,
              color="#555555", linespacing=1.25)  # fmt: skip
     return finish(fig, out_name)

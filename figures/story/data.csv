@@ -319,6 +319,9 @@ fig03,muse-glimmer-30b,"45q, layer 50: the copy into the locker sentences (looku
 fig03,muse-glimmer-30b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.00975609756097561,0.0,0.025,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,muse-glimmer-30b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7560975609756098,0.6979166666666666,0.807909604519774,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,muse-glimmer-30b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.47317073170731705,0.4128997940974605,0.5267868031358885,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,nemotron-3.5-lightning,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.10429447852760736,0.060810810810810814,0.15079739442946985,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json
+fig03,nemotron-3.5-lightning,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7484662576687117,0.6853114478114478,0.8081415259636827,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json
+fig03,nemotron-3.5-lightning,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.12269938650306748,0.07389162561576355,0.18181818181818182,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json
 fig03b,qwen3.5-9b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03b,qwen3.6-27b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03b,muse-glimmer-30b,45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5),L/2,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
@@ -9356,6 +9359,32 @@ ledger_attnblock,nemotron-3.5-lightning,recall: (ii) block 26,0.0524,0.014,0.096
 ledger_attnblock,nemotron-3.5-lightning,"recall: (iii) blocks 19, 26",0.1414,0.089,0.199,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (iv) all after L,0.555,0.441,0.647,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (v) control,0.0052,-0.012,0.022,,
+ledger_jsuite,qwen3.5-9b,PP lookup: without the lens part,-0.04687499999999987,-0.13335365853658543,0.04687499999999989,,
+ledger_jsuite,qwen3.5-9b,PP lookup: answer directions only,-0.09375000000000008,-0.19999999999999996,-0.012496141975308765,,
+ledger_jsuite,qwen3.5-9b,PM recall: without the lens part,0.588957055214724,0.5093167701863354,0.6704596488840501,,
+ledger_jsuite,qwen3.5-9b,PM recall: answer directions only,0.25153374233128845,0.18518518518518523,0.3208978256863828,,
+ledger_jsuite,qwen3.6-27b,PP lookup: without the lens part,0.1551724137931035,0.06451612903225812,0.2558288610614191,,
+ledger_jsuite,qwen3.6-27b,PP lookup: answer directions only,0.03448275862068969,0.0,0.09259259259259267,,
+ledger_jsuite,qwen3.6-27b,PM recall: without the lens part,0.6269841269841269,0.5373103490810409,0.7166666666666667,,
+ledger_jsuite,qwen3.6-27b,PM recall: answer directions only,0.3174603174603175,0.2348993288590605,0.40741452991452987,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 1",0.5454545454545454,0.4444444444444444,0.6444444444444444,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 2",0.3728813559322034,0.22727272727272727,0.5263157894736842,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 3",0.16326530612244897,0.047619047619047596,0.2857142857142857,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, read peak",0.0263157894736842,-0.058823529411764726,0.12202743902438916,,
+ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 1",0.6481481481481481,0.5514018691588786,0.7452830188679245,,
+ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 2",0.49382716049382713,0.3677979048450458,0.619047619047619,,
+ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 3",0.4722222222222222,0.29411764705882354,0.6522157190635446,,
+ledger_last_conflict_words,qwen3.5-9b,"our locker scenes, lookup, answer - 1",0.19047619047619047,0.10909090909090909,0.2647058823529412,,
+ledger_last_conflict_words,qwen3.5-9b,"our locker scenes, lookup, answer - 3",0.05454545454545452,-0.02,0.12858294930875555,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 1",0.8217054263565892,0.7518796992481203,0.8855016357688112,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 2",0.8527131782945736,0.7873886665806118,0.9126984126984127,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 3",0.7578125,0.6842105263157895,0.8292730194743808,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, read peak",-0.04918032786885243,-0.125,0.017241379310344848,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 1",0.875,0.8125,0.9328358208955224,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 2",0.8671875000000001,0.803415300546448,0.9253731343283582,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 3",0.7441860465116279,0.6641776803007862,0.8201438848920863,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"our locker scenes, lookup, answer - 1",0.18644067796610175,0.08771929824561409,0.28985507246376807,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"our locker scenes, lookup, answer - 3",0.13559322033898302,0.04761904761904756,0.2222222222222222,,
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

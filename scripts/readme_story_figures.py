@@ -1395,8 +1395,42 @@ def f03_order(plt) -> None:
         mod = by.get(target)
         b.text(x0 + 0.5, -0.14, SHORT[m], transform=b.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT,
                weight="bold")  # fmt: skip
-        if m == "lightning":
-            b.text(x0 + 0.5, 0.5, LT_GATE, ha="center", color=S.COL["muted"])
+        if m == "lightning":  # below gate (its clean one-pick recall 0.751 < 0.80): the rule's arms only, hollow
+            if not LT_45Q.exists():
+                b.text(x0 + 0.5, 0.5, LT_GATE, ha="center", color=S.COL["muted"])
+                continue
+            lm = next(x for x in json.loads(LT_45Q.read_text())["models"] if x["model"] == target)
+            lk, la, half = lm["readers"][X.LOOKUP], lm["layer"], lm["arm_layers"]["d"]
+            last = max(LT_LAYERS_LAST, la)
+
+            def at_lt(layer: float) -> float:
+                return x0 + layer / last  # noqa: B023 (used inside this iteration only)
+
+            for xl, txt in ((half, "L/2"), (la, "L")):
+                b.axvline(at_lt(xl), ymax=0.93, color="#555555", ls=":", lw=1.1, zorder=0)
+                b.text(at_lt(xl), 0.95, txt, ha="center", va="bottom", fontsize=S.FONT - 1, color="#555555")
+            for arm, xl, what in (("a", la, "the bridge-word change at L"),
+                                  ("c", la, "copy at L, every locker-sentence token"),
+                                  ("d", half, "copy at L/2, every locker-sentence token")):  # fmt: skip
+                r = lk["rate"][arm]
+                b.plot([at_lt(xl)] * 2, [r[1], r[2]], color="#1e1e1e", lw=1.4, zorder=5)
+                b.plot(
+                    [at_lt(xl)],
+                    [r[0]],
+                    "o",
+                    ms=8,
+                    color=S.COL["lookup"],
+                    mfc="white",
+                    mec=S.COL["lookup"],
+                    mew=1.8,
+                    zorder=6,
+                )
+                S.record("fig03", target, f"45q, the rule's arm {arm}: {what} (lookups switched)", *r, n=lk["n"],
+                         source=rel(LT_45Q))  # fmt: skip
+            b.text(x0 + 0.5, 0.86, "below gate", ha="center", fontsize=S.FONT - 1, color=S.COL["muted"])
+            nq.append(str(lm["sanity"]["pass"]))
+            ticks += [at_lt(0), at_lt(la), at_lt(last)]
+            tick_labels += ["0", str(la), str(last)]
             continue
         if mod is None or mod["run"] not in sweep or "readers" not in mod:
             b.text(x0 + 0.5, 0.5, "not run" if mod is None else "not tested", ha="center", color=S.COL["muted"])
@@ -1454,7 +1488,17 @@ def f03_order(plt) -> None:
           plt.Line2D([], [], marker="o", ls="", ms=8, color=S.COL["lookup"], mec="#1e1e1e")]  # fmt: skip
     legend(fig, hs, ["lookup", "recall", "the change at the bridge word", "the change copied into the locker sentences",
                      "the rule, fixed in advance"], 1 - 0.62 / h, ncol=3)  # fmt: skip
-    fig.text(0.01, 0.1 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
+    lt_c = (
+        "C: Lightning below gate (its clean one-pick recall misses the gate), the rule's arms only, no layer sweep.\n"
+    )
+    fig.text(
+        0.01,
+        0.06 / h,
+        (lt_c if LT_45Q.exists() else "") + LT_NOTE,
+        color=S.COL["muted"],
+        fontsize=S.FONT - 1,
+        va="bottom",
+    )
     S.save(fig, "fig03_order")
 
 
@@ -1742,6 +1786,10 @@ P_ROWS = (("a1", "(1) without the J++ part\nat the bridge word"),
 # Lightning's 45p, below gate (exploratory: its clean one-pick recall 0.751 < 0.80): a fourth panel, hollow (Dan's
 # figures brief, 29 Oct 10:00: "fig03c_earlier_mention: + Lightning below gate once 45p lands")
 LT_45P = pins.RESULTS_DIR / "x45p" / "x52_45p_below-20261029T090351Z" / "x45p.json"
+# Lightning's 45q (the copy test), below gate as well: Fig. 3 (c)'s fourth block, the rule's arms only (no layer sweep
+# ran), on Lightning's sampled-layer axis (its conflict sweep's last layer)
+LT_45Q = pins.RESULTS_DIR / "x45b_binding" / "x52_45q_below-20261029T085135Z" / "x45q.json"
+LT_LAYERS_LAST = max(c["layer"] for c in json.loads(LT_CONFLICT.read_text())["cells"])
 
 
 def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
@@ -1766,16 +1814,19 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     for ax, (target, m, _) in zip(axes, (*CARD_MODELS, LT), strict=True):
         lt = m == "lightning"
         src = rel(LT_45P) if lt else rel(verdict_dir / "x45p.json")
-        ax.set_title(SHORT.get(m, LT[2]) + (" ○\nbelow gate" if lt else ""), fontsize=S.FONT, weight="bold")
+        mod = by.get(target)
+        below = lt and mod is not None and "readers" in mod  # Lightning's slot: its below-gate run, or grey
+        ax.set_title(SHORT.get(m, LT[2]) + (" ○\nbelow gate" if below else ""), fontsize=S.FONT, weight="bold")
         ax.set_xlim(-20, 100)
         ax.axvline(0, color="#999999", lw=0.8, zorder=1)
         ax.set_xticks(*PCT)
         ax.grid(axis="x", color="#eeeeee")
         ax.set_ylim(-len(P_ROWS) + 0.45, 0.55)
         ax.tick_params(axis="y", length=0)
-        mod = by.get(target)
         if mod is None or "readers" not in mod:
-            S.empty(ax, "not run" if mod is None or mod["status"] == "pending" else "not tested")
+            # Dan's figures brief (29 Oct 10:00): the slot stays, with a short grey label
+            grey = "not run" if mod is None or mod["status"] == "pending" else "not tested"
+            S.empty(ax, "not tested: gate" if lt else grey)
             continue
         rc, lk = mod["readers"]["recall"], mod["readers"]["lookup"]
         ax.text(-17, 0, f"{rc['hits']['a1']} of {rc['n']}\nrecalls switch", va="center", color=S.COL["muted"],
@@ -1795,7 +1846,9 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
         S.record("fig03c", target, "45p: the rule holds", int(bool(mod.get("holds"))), source=src)
     axes[0].set_yticks([-i for i in range(len(P_ROWS))], [r[1] for r in P_ROWS])
     fig.supxlabel("switches lost (%)", x=0.62, y=0.1, fontsize=S.FONT)
-    note = "Lightning below gate (its clean one-pick recall misses the 0.80 gate): descriptive only. " + LT_NOTE
+    note = ("9B, 27B, Muse: fixed in advance. "
+            + ("Lightning below gate (its clean one-pick recall misses the 0.80 gate): descriptive only. "
+               if "readers" in by.get(LT[0], {}) else "Lightning: not tested (gate). ") + LT_NOTE)  # fmt: skip
     fig.text(0.01, 0.01, "\n".join(textwrap.wrap(note, 112)), fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8)],

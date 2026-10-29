@@ -531,14 +531,14 @@ def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str
     blob = json.loads(path.read_text())
     by = {m["target"]: m for m in blob["models"]}
     srcs = dict.fromkeys(by, rel(path))
-    targets = TARGETS
+    # four model slots always (Dan's figures brief, 29 Oct 10:00): without the coverage file Lightning's slot is grey
+    targets = (*TARGETS, LT_ROW)
     if coverage is not None:
         for m in json.loads(coverage.read_text())["models"]:
             if m["status"] == "tested" and by.get(m["target"], {}).get("status") != "tested":
                 by[m["target"]], srcs[m["target"]] = m, rel(coverage)
-        targets = (*TARGETS, LT_ROW)
     plt = S.setup()
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 6.0 + 1.9 * (coverage is not None)), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 6.0 + 1.9), sharey=True)
     ns = ", ".join(f"{SHORT[t]} {by[t]['cells']['main']['lookup'][group]['n']} / "
                    f"{by[t]['cells']['clean']['lookup'][group]['n']}"
                    for t, _, _ in targets if t in by and by[t]["status"] == "tested")  # fmt: skip
@@ -547,7 +547,7 @@ def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str
                f"Answers (%) in scenes with the {ORDER_TEXT[group]}, by what switches them when more of the changed "
                f"prompt's states are placed; the rest is carried outside the pick sentence. Items (main / clean): "
                f"{ns or 'none'}. Descriptive, no bar; arms fixed in advance.{flag}", planted)  # fmt: skip
-    place(fig, y, 2, left=0.21, right=0.98, bottom=0.1 + 0.05 * (coverage is not None), wspace=0.14)
+    place(fig, y, 2, left=0.21, right=0.98, bottom=0.15, wspace=0.14)
     rows = [(t, w) for t, _, _ in targets for w in ("lookup", "recall")]
     ys = {r: -i - (i // 2) * 0.6 for i, r in enumerate(rows)}  # a gap between models
     for ax, design in zip(axes, ("main", "clean"), strict=True):
@@ -590,20 +590,20 @@ def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str
     axes[0].set_yticks(list(ys.values()), [f"{SHORT[t]} {w}" for t, w in ys])
     for lab, (_, w) in zip(axes[0].get_yticklabels(), ys, strict=True):
         lab.set_color(S.COL[w])
-    fig.supxlabel("answers (%)", x=0.575, y=0.01 + 0.06 * (coverage is not None), fontsize=S.FONT)
+    fig.supxlabel("answers (%)", x=0.575, y=0.07, fontsize=S.FONT)
     hs: list[tuple[Rectangle, ...]] = [(Rectangle((0, 0), 1, 1, color=TINT["lookup"][i]), Rectangle((0, 0), 1, 1, color=TINT["recall"][i]))
           for i in (0, 1, 3)]  # fmt: skip
     hs.append((Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["muted"], hatch="///"),))
     legend(fig, hs, [SEGMENTS[i][1] for i in (0, 1, 3, 4)], y, ncol=2,
            handler_map={tuple: HandlerTuple(ndivide=None, pad=0.0)})  # fmt: skip
-    if coverage is not None:  # Dan's figures brief (29 Oct 10:00): each model's status in one line
-        status = "; ".join(
-            f"{SHORT[t]}: " + ("not run" if t not in by or by[t]["status"] != "tested" else
-                               "main test only (clean: not tested, gate), hollow" if t == LT_ROW[0] else
-                               "both designs")
-            for t, _, _ in targets)  # fmt: skip
-        fig.text(0.01, 0.045, textwrap.fill(f"{status}. {LT_NOTE}", WRAP + 6), fontsize=S.FONT - 1,
-                 color=S.COL["muted"], va="top")  # fmt: skip
+    # Dan's figures brief (29 Oct 10:00): each model's status in one line
+    status = "; ".join(
+        f"{SHORT[t]}: " + ("not run" if t not in by or by[t]["status"] != "tested" else
+                           "main test only (clean: not tested, gate), hollow" if t == LT_ROW[0] else
+                           "both designs")
+        for t, _, _ in targets)  # fmt: skip
+    fig.text(0.01, 0.045, textwrap.fill(f"{status}. {LT_NOTE}", WRAP + 6), fontsize=S.FONT - 1,
+             color=S.COL["muted"], va="top")  # fmt: skip
     return save(fig, out_name, out_dir)
 
 

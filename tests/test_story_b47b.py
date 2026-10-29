@@ -243,15 +243,29 @@ def test_d1_map(tmp_path, monkeypatch, drawn):
     assert drawn["fig16b"][0] == "A title from the caller" and "not run" in drawn["fig16b"]
 
 
-def test_47_4_cumulative(tmp_path, monkeypatch, drawn):
+@pytest.mark.parametrize("coverage", [False, True])
+def test_47_4_cumulative(tmp_path, monkeypatch, drawn, coverage):
     v = planted_47_4(tmp_path / "v", monkeypatch)
-    name = B.build_47_4(v, "fig17", out_dir=tmp_path / "out")
+    kw = {} if coverage else {"coverage": None}  # default: the batch-52 coverage file (27B, Lightning)
+    name = B.build_47_4(v, "fig17", out_dir=tmp_path / "out", **kw)
     texts = check(name, tmp_path / "out", drawn, "x47_4.json")
-    assert texts[0] == "Lookups the change misses sit mostly at the bridge word before L (2 of 2 models)"
+    # planted 9B and 27B; with the coverage file Lightning's main test is drawn too (hollow)
+    assert (
+        texts[0]
+        == f"Lookups the change misses sit mostly at the bridge word before L (2 of {3 if coverage else 2} models)"
+    )
     rows = {(r["model"], r["quantity"]): r["value"] for r in S.ROWS}
     assert rows[("qwen3.5-9b", "47.4 main, locker-first, lookup: a")] == pytest.approx(0.2)
     assert rows[("qwen3.5-9b", "47.4 main, locker-first, lookup: outside")] == pytest.approx(0.3)
     assert "not run" in texts  # Muse
+    # four model slots, in order, always (Dan's figures brief, 29 Oct 10:00)
+    slots = list(dict.fromkeys(t.split(" ")[0] for t in texts if t.endswith((" lookup", " recall"))))
+    assert slots == ["9B", "27B", "Muse", "Lightning"], slots
+    lt_rows = [r for r in S.ROWS if r["model"] == "nemotron-3.5-lightning"]
+    if coverage:  # Lightning's clean design has no run past its gate: a grey slot
+        assert lt_rows and "not tested: gate" in texts
+    else:  # no coverage file: Lightning keeps its slot, grey
+        assert not lt_rows and texts.count("not run") >= 2 and "Lightning: not run" in said(texts)
     assert not any("BUG" in t for t in texts)
 
 

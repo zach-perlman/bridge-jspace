@@ -132,7 +132,11 @@ def test_j9_numbers_match_their_sources(drawn):
 
 def test_example_texts_are_quoted_from_their_sources():
     src = (J.REPO / "scripts" / "readme_story_figures.py").read_text()
-    assert all(s in src for s in (*J.DAN_SCENE[:2], "Iris picked the ", *(q for q, _, _ in J.DAN_QUESTIONS)))
+    # Fig. 0's running example (readme_story_figures.f00_setup): its lockers, the asked pick and both questions
+    assert all(s in src for s in (*J.DAN_SCENE[:2], *(q for q, _, _ in J.DAN_QUESTIONS)))
+    who, item = J.F.SETUP_PICKS["original"][J.F.SETUP_ASKED]
+    assert J.DAN_SCENE[2] == f"{who} picked {item}." and f'("{who}", "{item}")' in src
+    assert [(q, a) for q, a, _ in J.DAN_QUESTIONS] == [(q, a) for _, _, q, a, _, _ in J.F.SETUP_QUESTIONS]
     assert J.zach_texts()["question"] == "The composer who wrote The Magic Flute was of which nationality?"
 
 

@@ -61,12 +61,13 @@ ZACH_SENTENCES = {
     "recalled": "A reader asked a question about Mozart in the letters page.",
 }
 ZACH_DESCRIPTION, ZACH_BRIDGE = "The composer who wrote The Magic Flute", "Mozart"
-# our Fig. 0 (readme_story_figures.f00_setup): the original prompt's three sentences and the two questions
-DAN_SCENE = ("The locker of the frog is 5.", "The locker of the tick is 2.", "Iris picked the frog.")
-DAN_QUESTIONS = (
-    ("Which locker belongs to Iris's pick?", "5", "lookup"),
-    ("How many legs does Iris's pick have?", "4", "recalled"),
-)
+# our Fig. 0 (readme_story_figures.f00_setup): the running example's first two locker sentences, the asked pick and
+# the two questions with the original prompt's answers, read from Fig. 0's own constants (Fig. 0 moved to the carbon
+# example on 28 Oct ~22:40 and this copy was left on the frog example; read, the two cannot drift apart again)
+_ASKED = F.SETUP_PICKS["original"][F.SETUP_ASKED]
+DAN_SCENE = (*F.SETUP_LOCKERS[:2], f"{_ASKED[0]} picked {_ASKED[1]}.")
+DAN_BRIDGE = _ASKED[1]
+DAN_QUESTIONS = tuple((q, a, "lookup" if who == "Lookup" else "recalled") for who, _, q, a, _, _ in F.SETUP_QUESTIONS)
 
 
 # ---------------------------------------------------------------------------------------------------------- sources
@@ -203,13 +204,19 @@ def j0_setup(plt):
         answer(y, z["answer"], kind)
     ax.text(1, 47, "Locker scene (Dan): two questions", fontsize=S.FONT + 1, weight="bold", va="center")
     t = ax.text(3, 42.5, "“" + " ".join(DAN_SCENE) + "”", fontsize=S.FONT, va="center", style="italic")
-    highlight(ax, t, "frog")
+    highlight(ax, t, DAN_BRIDGE)
     for y, (q, a, kind) in zip((38, 33.5), DAN_QUESTIONS, strict=True):
         ax.text(3, y, q, fontsize=S.FONT, va="center")
         answer(y, a, kind)
     record("j0", "", "Zach's example (lookup / recalled items)", z["answer"],
            source=f"{ITEMS.relative_to(REPO)} | {', '.join(ZACH_ITEMS.values())}")  # fmt: skip
-    record("j0", "", "Dan's example", "5 / 4", source="scripts/readme_story_figures.py | f00_setup")
+    record(
+        "j0",
+        "",
+        "Dan's example",
+        " / ".join(a for _, a, _ in DAN_QUESTIONS),
+        source="scripts/readme_story_figures.py | f00_setup",
+    )
 
     # the tool strip: tokens across, layers up; the bridge's column marked; a key below
     ax.plot([1, 99], [30, 30], color="#dddddd", lw=1)
