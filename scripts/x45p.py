@@ -346,7 +346,7 @@ def edit_sets(add_rows, layer: int, pos: int, whole, base, new_pos: list[int], n
     return out
 
 
-def stage_run(name: str, why: str) -> Path:
+def stage_run(name: str, why: str, below: bool = False) -> Path:
     import torch
 
     from bridge_jspace import chat
@@ -359,8 +359,8 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "45p renders 45m's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUN_45M, f"45p runs on {sorted(RUN_45M)}, not {target}"
-    run_45m, layer = RUN_45M[target], X.PREDICTED[target]
+    assert below or target in RUN_45M, f"45p runs on {sorted(RUN_45M)}, not {target}"
+    run_45m, layer = (B.fresh_of(target, True) if below else RUN_45M[target]), X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / run_45m
@@ -383,6 +383,9 @@ def stage_run(name: str, why: str) -> Path:
          "seeds": {"bootstrap": X.BOOT_SEED, "examples": X.EXAMPLES_SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer",
                    "fresh_draws": X.FRESH_SEED}, "n_boot": X.N_BOOT,
          "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if below:  # batch 52, Dan's morning queue item 1: below gate, exploratory
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(run_45m)},
+              "sealed": "none (below gate, exploratory): verdict --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -539,7 +542,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending (not here / no outcomes), or its numbers per reader and the rule on the recall."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in RUNS.items()}.get(run) or ("nemotron-3.5-lightning" if "_below" in run else None)
         assert target, f"no 45p run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "holds": False,
                 "why": "the run has no manifest or outcomes here"}  # fmt: skip
@@ -602,17 +605,22 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, below: bool = False) -> Path:
+    """45p's verdict (sealed until Q45.13), or with below (batch 52, Dan's morning queue item 1) the below-gate runs
+    alone: the rule per model, no batch count, no seal, written to x52_45p_below-<UTC>/."""
+    answer = B.BELOW_GATE if below else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    assert set(targets) <= set(RUN_45M), f"45p runs on {sorted(RUN_45M)}, not {sorted(set(targets) - set(RUN_45M))}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
-               for t in RUN_45M if t not in targets]  # fmt: skip
+    known = set(B.FRESH_BELOW) if below else set(RUN_45M)
+    assert set(targets) <= known, f"45p runs on {sorted(known)}, not {sorted(set(targets) - known)}"
+    if not below:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
+                   for t in RUN_45M if t not in targets]  # fmt: skip
     v = batch_verdict(models)
-    out = RESULTS / f"x45p-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_45p_below" if below else "x45p"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 45p: does the recall read the item's earlier mention when its locker came first?", "",
              f"Batch 45, test 45p (jobs/c3/batch45.yaml; {QUESTION}, Dan: {answer}). 45m's scenes (only the bridge "
@@ -667,6 +675,10 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                      f"{m['shares_median']['control_jpp_share']}; checks: " + "; ".join(
                          f"{k}: {c['agree']} of {c['n']} agree (rerun {c['rerun']}, stored {c['stored']})"
                          for k, c in m["checks"].items()))  # fmt: skip
+    if below:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 below gate, ") for ln in lines]
+        lines.insert(2, "The batch line counts the given runs only (Lightning alone): not a re-score of 45p's 2 of 3.")
+        lines.insert(3, "")
     (out / "x45p.json").write_text(json.dumps({"runs": runs, "dan": answer, "verdict": v, "models": models}, indent=1)
                                    + "\n")  # fmt: skip
     (out / "x45p.md").write_text("\n".join(lines) + "\n")
@@ -688,14 +700,16 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict: the 45p runs (9B, 27B, Muse)")
     ap.add_argument("--why", default="batch 45, test 45p (jobs/c3/batch45.yaml; Q45.13)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict: batch 52, Lightning's clean design below its gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         assert a.name, "run needs --name"
-        stage_run(a.name, a.why)
+        stage_run(a.name, a.why, a.below_gate)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.below_gate)
 
 
 if __name__ == "__main__":

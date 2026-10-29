@@ -92,7 +92,11 @@ K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
 SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r5"}  # r1-r4 OOMed (28 Oct)
+RUNS = {
+    "qwen3.5-9b": "qwen35_9b_x49_2",
+    "qwen3.6-27b": "x49_2_27b",
+    "muse-glimmer-30b": "muse30_x49_2_r5",
+}  # r1-r4 OOMed (28 Oct)
 BAND = {"qwen3.5-9b": tuple(range(12, 17)), "muse-glimmer-30b": tuple(range(23, 30))}  # Zach's band; the 27B: none
 RUNGS = (1, 2, 3, 4, 5, 6)
 BRIDGE_RUNGS = (1, 2)  # the 27B's
@@ -204,9 +208,14 @@ def reader_record(tok, c: dict, src_item: dict, w: str) -> dict:
             "marked": x45p.marked(text + suffix, marks)}  # fmt: skip
 
 
+BELOW = (
+    False  # batch 52, Dan's morning queue item 1: --below-gate (Lightning's clean design below its gate, exploratory)
+)
+
+
 def gate_of(src: Path) -> dict:
     g = json.loads((src / "gate.json").read_text())["gate"].get(RENDERING, {})
-    assert g.get("pass"), f"{src.name}: its gate fixed in advance did not pass (chat)"
+    assert g.get("pass") or BELOW, f"{src.name}: its gate fixed in advance did not pass (chat)"
     return g
 
 
@@ -576,7 +585,8 @@ def stage_run(name: str, why: str, band_arg: tuple[int, int] | None = None, cove
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "49.2 renders X0's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in SOURCES, f"49.2 runs on {sorted(SOURCES)}, not {target}"
+    sources = {**SOURCES, **B.FRESH_BELOW} if BELOW else SOURCES  # below gate: Lightning's below-gate 45m run
+    assert target in sources, f"49.2 runs on {sorted(sources)}, not {target}"
     layer, band = X.PREDICTED[target], BAND.get(target, ())
     if band_arg is not None:
         assert band_arg[0] <= band_arg[1], f"--band {band_arg}: FIRST > LAST"
@@ -584,7 +594,7 @@ def stage_run(name: str, why: str, band_arg: tuple[int, int] | None = None, cove
     layers = tuple(range(layer, layer + SPAN))
     assert max(*layers, *band) <= pins.N_LAYERS - 2, f"L..L+3 {layers} / band {band}: past the last block read on"
     rungs = RUNGS if band else BRIDGE_RUNGS
-    run45 = SOURCES[target]
+    run45 = sources[target]
     src = X.RESULTS / run45
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -624,6 +634,9 @@ def stage_run(name: str, why: str, band_arg: tuple[int, int] | None = None, cove
         m |= {"spec": "jobs/c3/batch52.yaml (part C, coverage); rules verbatim from jobs/c3/batch49.yaml 49.2, first "
                       f"scored in {SCORED}", "question": NO_PREDICTION, "batch": 52,
               "sealed": f"none ({NO_PREDICTION}); the job writes no verdict, verdict --coverage after it lands"}  # fmt: skip
+    if BELOW:
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(run45)},
+              "sealed": "none (below gate, exploratory): verdict --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -758,8 +771,8 @@ def fmt(v) -> str:
 
 
 def verdict_lines(models: list[dict], answer: str, n_boot: int, coverage: bool = False) -> list[str]:
-    who = (f"batch 52 coverage, the rules of {SPEC} 49.2 verbatim, first scored in {SCORED}; {NO_PREDICTION}"
-           if coverage else f"{QUESTION}, Dan: {answer}")  # fmt: skip
+    who = (f"batch 52 coverage, the rules of {SPEC} 49.2 verbatim, first scored in {SCORED}; "
+           f"{B.BELOW_GATE if BELOW else NO_PREDICTION}" if coverage else f"{QUESTION}, Dan: {answer}")  # fmt: skip
     lines = ["# 49.2: the removal ladder" + (" (batch 52 coverage)" if coverage else ""), "",
              f"Batch 49, test 49.2 ({SPEC} and amendment 2; {who}). Clean design (45m), on S; "
              f"both readers, kept = S's answer read (X0's chat read). {COST}. Cluster bootstrap over the bridge items "
@@ -851,10 +864,11 @@ def example_lines(target: str, run: str, k: int = X.K_EXAMPLES, seed: int = X.EX
 def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
     """49.2's verdict (sealed until Dan's Q49.2), or with coverage (batch 52) the same rules on the given runs, no seal
     guard and "no prediction" in place of Dan's answer, written to x52_ladder-<UTC>/."""
-    answer = NO_PREDICTION if coverage else unsealed()
+    answer = (B.BELOW_GATE if BELOW else NO_PREDICTION) if coverage else unsealed()
     runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in MODELS]
-    out = RESULTS / f"{'x52_ladder' if coverage else 'x49_2'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    models = [model_result(t, runs[t], n_boot) for t in (runs if BELOW else MODELS)]  # below gate: the given runs
+    stem = "x52_ladder_below" if BELOW else "x52_ladder" if coverage else "x49_2"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot, coverage)
     (out / "x49_2.json").write_text(json.dumps({"dan": answer, "coverage": coverage, "rules": RULES, "cost": COST,
@@ -884,9 +898,19 @@ def main() -> None:
                     help="run: rung 6's band (inclusive) in place of BAND; all six rungs (batch 52 coverage)")  # fmt: skip
     ap.add_argument("--coverage", action="store_true",
                     help=f"run / verdict: batch 52 coverage ('{NO_PREDICTION}'); the verdict skips Q49.2's seal")  # fmt: skip
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict: batch 52, Lightning's clean design below its gate (exploratory); verdict reads "
+                         "--name alone")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     if a.stage == "plan":
         stage_plan()
+    elif a.stage == "verdict" and BELOW:
+        assert a.name, "verdict --below-gate needs --name (the below-gate run)"
+        target = json.loads((RESULTS / a.name / "manifest.json").read_text())["model"]["target"]
+        assert target in B.FRESH_BELOW, f"below gate: {sorted(B.FRESH_BELOW)}, not {target}"
+        stage_verdict({target: a.name}, n_boot=a.n_boot, coverage=True)
     elif a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, tuple(a.band) if a.band else None, a.coverage)
