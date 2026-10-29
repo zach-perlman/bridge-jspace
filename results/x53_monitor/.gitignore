@@ -1,2 +1,4 @@
 # batch 53, 53.2: the forward runs' fp16 states and J++ parts at B / T, O and S, every second layer (states_<set>_*.npy, ~0.15-0.8 GB per array): kept on the box and locally after the pull, not committed; cases_<set>.jsonl and manifest.json are committed
 */states_*.npy
+# the atoms stage's fixed J++ subspace atom vectors (fixed_atoms_<set>.npz, fp16, ~0.1-0.6 GB per run): kept locally after the pull; fixed_atom_ids.json is committed
+*/fixed_atoms_*.npz

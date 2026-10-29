@@ -1,0 +1,21 @@
+id: x53_monitor_atoms_muse
+title: "Batch 53, test 53.2 (Dan's 11:25 changes) on Muse-Glimmer-30B: the fixed J++ subspaces' atom vectors (the unit J++ lens vectors of the ~300-450 atoms per layer that some training fold's fixed subspace uses), for the CPU probes; no probe, no label"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.05
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_monitor.py atoms --name muse30_x53_monitor_atoms --source muse30_x53_monitor
+question: "Does a fixed J++ subspace (the k atoms most frequent on the training folds) decode (a)-(d) like the per-state J++ part? This job only provides the atoms' vectors (lens maps and W_U are not on the Mac); the probes run on CPU."
+why_it_matters: "Dan 11:25 (jobs/c3/batch53.yaml critic_1125), before scoring: 'Add a fixed J++ subspace (the k atoms most frequent on the training folds) and an energy-matched random subspace beside the current ones.' The per-state J++ part is fit to each state; a fixed subspace is what a monitor that reads J-space with a fixed dictionary would see."
+hypotheses:
+  none: "rule fixed in advance in jobs/c3/batch53.yaml (53.2; critic_1125 adds the arm, same rule with J++ replaced by the fixed subspace); no prediction"
+decision_rule: "Fixed in advance (jobs/c3/batch53.yaml brief 53.2, Dan 09:30), verbatim: \"Rule: “J-space blind to X” if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; “J-space carries X” if J++ >= 0.8 and >= 0.3 above random; else in between.\" critic_1125 (Dan 11:25), verbatim: \"53.2 changes, before scoring: headline targets (b) slot and (c) lookup digit; (a) and (d) are positive controls. Add a fixed J++ subspace (the k atoms most frequent on the training folds) and an energy-matched random subspace beside the current ones. Check one cell against sklearn.\" As computed (scripts/x53_monitor.py, CPU after this job): per training fold the k atoms (k = 25, 100) most frequent among the training rows' first k J++ OMP atoms (ties: the smaller token id), their span orthonormalised, the held-out rows projected on it unchanged; the same probes, folds, seeds and C as the other features; the same rule with the J++ entries replaced by the fixed subspace, reported beside the decisive per-state J++ labels. This job: for every atom some fold uses (results/x53_monitor/muse30_x53_monitor/fixed_atom_ids.json, computed on the Mac from the run's atoms), its unit J++ lens vector at that layer (lens.vectors: the rows of x0_necessity.dictionary('jpp'))."
+controls:
+- "the per-state J++ part (the decisive arm) and the random subspace of the same k beside it"
+- "an energy-matched random subspace (CPU only: dimension = the J++ part's median energy share x d)"
+n: "main 200 items and json 388 scenes (O / S, B / T lookup / T recall); 26 layers; 311-435 atoms per layer"
+seeds: [888, 0, 1, 2, 3, 4]
+notes: "Batch 53, 53.2, critic_1125. Loads the model and the J++ lens, computes ~0.5k unit lens vectors per layer (seconds), writes results/x53_monitor/muse30_x53_monitor_atoms/{manifest.json, fixed_atoms_main.npz, fixed_atoms_json.npz} (the npz gitignored, ~10-60 MB each: pull them into the main checkout). Reads only the committed fixed_atom_ids.json, not the states."

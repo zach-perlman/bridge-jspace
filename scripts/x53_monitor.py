@@ -434,6 +434,27 @@ FEATURE_TEXT = {"full": "the full residual (the block output)",
                    for k in KS},
                 **{f"pca{k}": f"PCA top-{k} of the training rows" for k in KS},
                 "chance": "the training folds' majority class"}  # fmt: skip
+# Dan 11:25 (jobs/c3/batch53.yaml critic_1125, before scoring): two more arms beside the current ones, each in its own
+# probe pass (same folds, same probe), and the same rule with J++ replaced by the fixed subspace:
+#   fix_k   a fixed J++ subspace per fold: the span of the k J++ letter atoms most frequent among the training rows'
+#           first-k OMP atoms (ties: the smaller token id), applied unchanged to the held-out rows (k = 25, 100)
+#   erand_k an energy-matched random subspace: its dimension r = round(the J++_k part's median share of the state's
+#           squared norm, over all rows of that layer and row set (label-free), x d), so a Haar subspace keeps that
+#           share in expectation (E ||P h||^2 = r / d ||h||^2); the first r columns of the same seeded frame as random_k.
+#           Rescaling a k-dimensional random part instead would change nothing: the probes standardise each feature.
+PASSES = {"base": (*FEATURES, "chance"), "erand": tuple(f"erand{k}" for k in KS), "fixed": tuple(f"fix{k}" for k in KS)}
+FEATURE_TEXT.update(
+    {
+        **{
+            f"fix{k}": f"a fixed J++ subspace: the span of the {k} J++ atoms most frequent on the training folds"
+            for k in KS
+        },
+        **{
+            f"erand{k}": f"a random subspace of the J++_{k} part's median energy share (dimension = share x d)"
+            for k in KS
+        },
+    }
+)
 C_REG, N_SEEDS, N_FOLDS = 1.0, 5, 5
 RAND_SEED_STEP = 1000
 LBFGS_MAXITER = 1000
@@ -533,80 +554,138 @@ def logistic(xtr: np.ndarray, ytr: np.ndarray, xte: np.ndarray, c: float = C_REG
     return classes[np.argmax(xte @ w + b, axis=1)]
 
 
-def fold_features(mats: dict[str, np.ndarray], rand_all: np.ndarray, tr: np.ndarray, te: np.ndarray) -> dict:
-    """Every feature's (train, test) matrices for one fold: full and J++_k standardised in the training span; random_k
-    and PCA_k (k-dimensional) standardised."""
-    feats = {"full": span_coords(*standardize(mats["h"][tr], mats["h"][te]))}
-    for k in KS:
-        feats[f"jpp{k}"] = span_coords(*standardize(mats[f"jpp{k}"][tr], mats[f"jpp{k}"][te]))
-    for k in KS:
-        feats[f"rand{k}"] = standardize(rand_all[tr, :k], rand_all[te, :k])
-    for k in KS:
-        feats[f"pca{k}"] = standardize(*pca_coords(mats["h"][tr], mats["h"][te], k))
+def fixed_atoms(atoms_rows: np.ndarray, k: int) -> np.ndarray:
+    """The k token ids most frequent among the rows' first k J++ atoms (atoms_rows [n, K_MAX], OMP order; ties: the
+    smaller id): the fixed J++ subspace's atoms for those (training) rows."""
+    ids, cnt = np.unique(atoms_rows[:, :k], return_counts=True)
+    return ids[np.lexsort((ids, -cnt))][:k]
+
+
+def erand_dims(jpp_share: dict[int, float], d: int) -> dict[int, int]:
+    """The energy-matched random subspace's dimension per k: round(J++_k's median share x d), at least 1, at most d."""
+    return {k: int(min(d, max(1, round(jpp_share[k] * d)))) for k in KS}
+
+
+def fold_features(pass_: str, ctx: dict, s: int, tr: np.ndarray, te: np.ndarray) -> dict:
+    """One pass's features for one fold, (train, test) each: full and J++_k standardised in the training span;
+    random_k, PCA_k and fix_k (k-dimensional) standardised; erand_k (r-dimensional) standardised in the training span."""
+    mats = ctx["mats"]
+    feats = {}
+    if pass_ == "base":
+        feats["full"] = span_coords(*standardize(mats["h"][tr], mats["h"][te]))
+        for k in KS:
+            feats[f"jpp{k}"] = span_coords(*standardize(mats[f"jpp{k}"][tr], mats[f"jpp{k}"][te]))
+        rand_all = ctx["proj"][s]
+        for k in KS:
+            feats[f"rand{k}"] = standardize(rand_all[tr, :k], rand_all[te, :k])
+        for k in KS:
+            feats[f"pca{k}"] = standardize(*pca_coords(mats["h"][tr], mats["h"][te], k))
+    elif pass_ == "erand":
+        rand_all = ctx["proj"][s]
+        for k in KS:
+            r = ctx["erand_dims"][k]
+            feats[f"erand{k}"] = span_coords(*standardize(rand_all[tr, :r], rand_all[te, :r]))
+    else:
+        assert pass_ == "fixed", pass_
+        for k in KS:
+            ids = fixed_atoms(ctx["atoms"][tr], k)
+            rows = [ctx["atom_row"][int(t)] for t in ids]  # KeyError: an atom the box did not save (stage atom-ids)
+            q, _ = np.linalg.qr(ctx["atom_vec"][rows].astype(np.float64).T)  # [d, k] orthonormal basis of their span
+            proj = mats["h"] @ q
+            feats[f"fix{k}"] = standardize(proj[tr], proj[te])
     return feats
 
 
-def probe_matrix(mats: dict[str, np.ndarray], frames: dict[int, np.ndarray], rows: dict[str, np.ndarray],
-                 cells: list[tuple[str, str]]) -> dict[str, np.ndarray]:  # fmt: skip
-    """One row set at one layer: per cell (position, target) and feature (and chance), per row [2, n_rows]: in how many
-    seeds its out-of-fold prediction is right, and in how many seeds it was held out (5-fold per seed: every seed)."""
+def probe_matrix(pass_: str, ctx: dict, rows: dict[str, np.ndarray], cells: list[tuple[str, str]]) -> dict:
+    """One pass on one row set at one layer: per cell (position, target) and feature (and, in the base pass, chance),
+    per row [2, n_rows]: in how many seeds its out-of-fold prediction is right, and in how many seeds it was held out
+    (5-fold per seed: every seed)."""
     n = len(rows["entity"])
     out = {}
     for grouping in sorted({GROUP_BY[t] for _, t in cells}):
         mine = [(p, t) for p, t in cells if GROUP_BY[t] == grouping]
         groups = rows[grouping]
-        right = {(p, t, f): np.zeros(n, np.float32) for p, t in mine for f in (*FEATURES, "chance")}
+        right = {(p, t, f): np.zeros(n, np.float32) for p, t in mine for f in PASSES[pass_]}
         tested = np.zeros(n, np.float32)
         for s in range(N_SEEDS):
             folds = fold_ids(groups, s)
-            rand_all = mats["h"] @ frames[s]
             for f in range(N_FOLDS):
                 te = folds == f
                 tr = ~te
                 tested[te] += 1
-                feats = fold_features(mats, rand_all, tr, te)
+                feats = fold_features(pass_, ctx, s, tr, te)
                 for p, t in mine:
                     y = rows[f"y_{t}"]
                     for name, (xtr, xte) in feats.items():
                         right[(p, t, name)][te] += logistic(xtr, y[tr], xte) == y[te]
-                    vals, cnt = np.unique(y[tr], return_counts=True)
-                    right[(p, t, "chance")][te] += y[te] == vals[np.argmax(cnt)]
+                    if pass_ == "base":
+                        vals, cnt = np.unique(y[tr], return_counts=True)
+                        right[(p, t, "chance")][te] += y[te] == vals[np.argmax(cnt)]
         out.update({"|".join(key): np.stack([a, tested]) for key, a in right.items()})
     return out
 
 
 def probe_layer(job: dict) -> dict:
-    """One layer of one run and dataset (a worker): every row set's probes."""
+    """One layer of one run and dataset (a worker): one pass's probes on every row set."""
     import torch
 
     torch.set_num_threads(1)  # the random frames' QR: one thread per worker (8 workers x all cores stalls the Mac)
     t0 = time.time()
-    li, la, rows = job["li"], job["layer"], job["rows"]
+    li, la, rows, pass_ = job["li"], job["layer"], job["rows"], job["pass"]
     arrs = {name: np.load(path, mmap_mode="r") for name, path in job["paths"].items()}
     n = len(rows["entity"])
     d = arrs["h"].shape[-1]
-    frames = {s: random_frame(d, la, s, K_MAX) for s in range(N_SEEDS)}
+    fixed = None
+    if pass_ == "fixed":
+        z = np.load(job["fixed_atoms"])
+        fixed = {"ids": z[f"ids_L{la}"], "vec": z[f"vec_L{la}"]}
     out: dict[str, np.ndarray] = {}
     for m in sorted(set(ROW_OF.values())):
         cells = [(p, t) for p in PROBE_POS for t in TARGETS if ROW_OF[(p, t)] == m]
-        mats = {name: np.asarray(a[li][:, :, m], dtype=np.float64).reshape(n, d) for name, a in arrs.items()}
-        out.update(probe_matrix(mats, frames, rows, cells))
-        # beside: each feature's share of the state's squared norm per row (J++ part; random subspace, probe seed 0)
+        mats = {name: np.asarray(a[li][:, :, m], dtype=np.float64).reshape(n, d)
+                for name, a in arrs.items() if name != "atoms"}  # fmt: skip
         sq = (mats["h"] ** 2).sum(1) + 1e-30
+        share = {k: (mats[f"jpp{k}"] ** 2).sum(1) / sq for k in KS}
+        ctx: dict[str, Any] = {"mats": mats}
+        if pass_ == "base":
+            ctx["proj"] = {s: mats["h"] @ random_frame(d, la, s, K_MAX) for s in range(N_SEEDS)}
+        elif pass_ == "erand":
+            ctx["erand_dims"] = erand_dims({k: float(np.median(share[k])) for k in KS}, d)
+            r_max = max(ctx["erand_dims"].values())
+            ctx["proj"] = {s: mats["h"] @ random_frame(d, la, s, r_max) for s in range(N_SEEDS)}
+        else:
+            assert fixed is not None
+            ctx["atoms"] = np.asarray(arrs["atoms"][li][:, :, m]).reshape(n, K_MAX)
+            ctx["atom_row"] = {int(t): i for i, t in enumerate(fixed["ids"])}
+            ctx["atom_vec"] = fixed["vec"]
+        out.update(probe_matrix(pass_, ctx, rows, cells))
         ones = np.ones(n, np.float32)
-        for k in KS:
-            out[f"{POS[m]}|share|jpp{k}"] = np.stack([(mats[f"jpp{k}"] ** 2).sum(1) / sq, ones]).astype(np.float32)
-            rand = ((mats["h"] @ frames[0][:, :k]) ** 2).sum(1) / sq
-            out[f"{POS[m]}|share|rand{k}"] = np.stack([rand, ones]).astype(np.float32)
+        if pass_ == "base":  # beside: each feature's share of the state's squared norm per row (probe seed 0)
+            for k in KS:
+                out[f"{POS[m]}|share|jpp{k}"] = np.stack([share[k], ones]).astype(np.float32)
+                rand = (ctx["proj"][0][:, :k] ** 2).sum(1) / sq
+                out[f"{POS[m]}|share|rand{k}"] = np.stack([rand, ones]).astype(np.float32)
+        elif pass_ == "erand":
+            for k in KS:
+                r = ctx["erand_dims"][k]
+                rand = (ctx["proj"][0][:, :r] ** 2).sum(1) / sq
+                out[f"{POS[m]}|share|erand{k}"] = np.stack([rand, ones]).astype(np.float32)
+                out[f"{POS[m]}|dim|erand{k}"] = np.stack([np.full(n, r, np.float32), ones])
     return {"li": li, "layer": la, "right": out, "seconds": time.time() - t0}
 
 
 def state_paths(run_dir: Path, s: str) -> dict[str, Path]:
-    return {"h": run_dir / f"states_{s}_h.npy", **{f"jpp{k}": run_dir / f"states_{s}_jpp{k}.npy" for k in KS}}
+    return {"h": run_dir / f"states_{s}_h.npy", **{f"jpp{k}": run_dir / f"states_{s}_jpp{k}.npy" for k in KS},
+            "atoms": run_dir / f"states_{s}_atoms.npy"}  # fmt: skip
 
 
-def stage_probe(name: str, states_root: Path, sets: tuple[str, ...] = SETS, workers: int = WORKERS) -> list[Path]:
-    """CPU: the probes of one run (per dataset, every layer in parallel) into cache/x53_monitor/<run>/<set>.npz."""
+def cache_file(name: str, s: str, pass_: str) -> Path:
+    return CACHE / name / (f"{s}.npz" if pass_ == "base" else f"{s}_{pass_}.npz")
+
+
+def stage_probe(name: str, states_root: Path, sets: tuple[str, ...] = SETS, workers: int = WORKERS,
+                pass_: str = "base") -> list[Path]:  # fmt: skip
+    """CPU: one pass of the probes of one run (per dataset, every layer in parallel) into cache/x53_monitor/<run>/."""
     import os
     from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -624,15 +703,21 @@ def stage_probe(name: str, states_root: Path, sets: tuple[str, ...] = SETS, work
         paths = {k: str(p) for k, p in state_paths(run_dir, s).items()}
         h = np.load(paths["h"], mmap_mode="r")
         assert h.shape[:4] == (len(layers), len(items), 2, len(POS)), f"{name} {s}: states {h.shape} vs the cases"
-        jobs = [{"li": li, "layer": la, "rows": rows, "paths": paths} for li, la in enumerate(layers)]
+        fixed = None
+        if pass_ == "fixed":
+            path = states_root / atoms_run(name) / f"fixed_atoms_{s}.npz"
+            assert path.exists(), f"{path}: the box's atoms stage (spec x53_monitor_atoms_*) has not been pulled"
+            fixed = str(path)
+        jobs = [{"li": li, "layer": la, "rows": rows, "paths": paths, "pass": pass_, "fixed_atoms": fixed}
+                for li, la in enumerate(layers)]  # fmt: skip
         got: dict[int, dict] = {}
         with ProcessPoolExecutor(max_workers=workers) as ex:
             futs = [ex.submit(probe_layer, j) for j in jobs]
-            for fut in progress(as_completed(futs), f"x53 probes {name} {s} (layer)", total=len(futs)):
+            for fut in progress(as_completed(futs), f"x53 probes {name} {s} {pass_} (layer)", total=len(futs)):
                 r = fut.result()
                 got[r["li"]] = r
         keys = sorted(got[0]["right"])
-        out = CACHE / name / f"{s}.npz"
+        out = cache_file(name, s, pass_)
         out.parent.mkdir(parents=True, exist_ok=True)
         np.savez(out, layers=np.array(layers), keys=np.array(keys),
                  right=np.stack([np.stack([got[li]["right"][k] for li in range(len(layers))]) for k in keys]),
@@ -641,6 +726,94 @@ def stage_probe(name: str, states_root: Path, sets: tuple[str, ...] = SETS, work
         print(f"wrote {out}: {len(keys)} cells x {len(layers)} layers x {len(rows['entity'])} rows", flush=True)
         written.append(out)
     return written
+
+
+def atoms_run(name: str) -> str:
+    """The atoms stage's run (the fixed J++ subspaces' atom vectors) for a forward run."""
+    return f"{name}_atoms"
+
+
+def needed_atom_ids(atoms: np.ndarray, rows: dict[str, np.ndarray]) -> list[int]:
+    """At one layer (atoms [n, 2, 3, K_MAX]): every token id that some fold's fixed J++ subspace uses (any row set,
+    grouping, seed, fold and k), i.e. exactly the atoms the fixed pass will look up."""
+    n2 = len(rows["entity"])
+    need: set[int] = set()
+    for m in sorted(set(ROW_OF.values())):
+        a = np.asarray(atoms[:, :, m]).reshape(n2, K_MAX)
+        for grouping in sorted({GROUP_BY[t] for (p, t), mm in ROW_OF.items() if mm == m}):
+            for s in range(N_SEEDS):
+                folds = fold_ids(rows[grouping], s)
+                for f in range(N_FOLDS):
+                    for k in KS:
+                        need.update(int(t) for t in fixed_atoms(a[folds != f], k))
+    return sorted(need)
+
+
+def stage_atom_ids(name: str, states_root: Path) -> Path:
+    """CPU: the token ids the fixed J++ subspaces need, per dataset and layer (the box computes their vectors):
+    results/x53_monitor/<run>/fixed_atom_ids.json."""
+    run_dir = states_root / name
+    layers = json.loads((run_dir / "manifest.json").read_text())["layers"]
+    blob: dict[str, Any] = {"run": name, "what": "per dataset and layer, every J++ atom (token id) some training fold's "
+                            "fixed J++ subspace uses (k = 25, 100; any row set, grouping, seed, fold)", "sets": {}}  # fmt: skip
+    for s in SETS:
+        rows = row_table(X.read_jsonl(run_dir / f"cases_{s}.jsonl"))
+        atoms = np.load(run_dir / f"states_{s}_atoms.npy", mmap_mode="r")
+        blob["sets"][s] = {str(la): needed_atom_ids(np.asarray(atoms[li]), rows) for li, la in enumerate(layers)}
+        sizes = [len(v) for v in blob["sets"][s].values()]
+        print(f"{name} {s}: {min(sizes)}-{max(sizes)} atoms per layer", flush=True)
+    out = RESULTS / name / "fixed_atom_ids.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(blob) + "\n")
+    print("wrote", out)
+    return out
+
+
+def stage_atoms(name: str, source: str) -> Path:
+    """GPU: the unit J++ lens vectors (x0_necessity.dictionary('jpp')'s rows) of the atoms in
+    results/x53_monitor/<source>/fixed_atom_ids.json, per dataset and layer, into results/x53_monitor/<name>/
+    fixed_atoms_<set>.npz (name = <source>_atoms; ids_L<l> int64, vec_L<l> fp16; gitignored)."""
+    import torch
+
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state
+
+    pins.check_run_name(name)
+    target = pins.TARGET
+    assert target in MODELS, f"x53_monitor runs on {MODELS}, not {target}"
+    assert source == RUNS[target], f"{source}: not {target}'s x53 run ({RUNS[target]})"
+    assert name == atoms_run(source), f"the atoms run is {atoms_run(source)}, not {name}"
+    src = RESULTS / source / "fixed_atom_ids.json"
+    need = json.loads(src.read_text())
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": EXP, "run": name, "stage": "atoms", "source": source, "prediction": NO_PREDICTION,
+         "spec": f"jobs/c3/batch53.yaml (53.2, critic_1125); jobs/c3/x53_monitor_atoms_{TAGS[target]}.yaml",
+         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "model": pins.model_pin(),
+         "switches": switches(), "code": git_state(), "lens": X.lens_record(),
+         "inputs": {str(src.relative_to(pins.REPO_ROOT)): X.sha256_of(src)},
+         "what": "unit J++ lens vectors of the fixed J++ subspaces' atoms (lens.vectors, as x0_necessity.dictionary)"}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    model = load_model()
+    lens = JLens(model, "jpp")
+    letters = set(model.letter_token_ids().tolist())
+    with torch.no_grad():
+        for s, per_layer in need["sets"].items():
+            blob = {}
+            for la, ids in per_layer.items():
+                assert set(ids) <= letters, f"{s} L{la}: an atom that is not a letter token"
+                vec = lens.vectors(int(la), torch.tensor(ids, device=model.device))
+                blob[f"ids_L{la}"] = np.array(ids, dtype=np.int64)
+                blob[f"vec_L{la}"] = vec.cpu().numpy().astype(np.float16)
+            np.savez(out / f"fixed_atoms_{s}.npz", **blob)
+            print(f"{s}: {len(per_layer)} layers, {sum(len(v) for v in per_layer.values())} atom vectors", flush=True)
+            lens._J_gpu.clear()
+            torch.cuda.empty_cache()
+    m["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    print("wrote", out, flush=True)
+    return out
 
 
 # ---- CPU: the rule, the figure, the verdict ------------------------------------------------------------------------
@@ -971,6 +1144,13 @@ def main() -> None:
     p.add_argument("--states-root", type=Path, default=RESULTS, help="where the run's states are (default results/)")
     p.add_argument("--sets", default=",".join(SETS))
     p.add_argument("--workers", type=int, default=WORKERS)
+    p.add_argument("--pass", dest="pass_", default="base", choices=tuple(PASSES))
+    p = sub.add_parser("atom-ids", help="CPU: the atoms the fixed J++ subspaces need (for the box's atoms stage)")
+    p.add_argument("--name", required=True)
+    p.add_argument("--states-root", type=Path, default=RESULTS)
+    p = sub.add_parser("atoms", help="GPU: the fixed J++ subspaces' atom vectors into results/x53_monitor/<run>_atoms/")
+    p.add_argument("--name", required=True, help="the atoms run: <source>_atoms")
+    p.add_argument("--source", required=True, help="the forward run whose fixed_atom_ids.json it reads")
     p = sub.add_parser("verdict", help="CPU: the rule, the figures, results/x53_monitor/x53_monitor-<UTC>/")
     p.add_argument("--states-root", type=Path, default=RESULTS)
     p.add_argument("--x52-root", type=Path, default=pins.RESULTS_DIR / "x52_answer_map")
@@ -981,7 +1161,11 @@ def main() -> None:
     elif a.cmd == "run":
         stage_run(a.name)
     elif a.cmd == "probe":
-        stage_probe(a.name, a.states_root, tuple(a.sets.split(",")), a.workers)
+        stage_probe(a.name, a.states_root, tuple(a.sets.split(",")), a.workers, a.pass_)
+    elif a.cmd == "atom-ids":
+        stage_atom_ids(a.name, a.states_root)
+    elif a.cmd == "atoms":
+        stage_atoms(a.name, a.source)
     elif a.cmd == "verdict":
         stage_verdict(a.states_root, a.x52_root, a.n_boot)
 

@@ -202,14 +202,64 @@ def test_probe_matrix_groupings():
     rows["y_b"] = rows["y_a"].copy()  # (b) := the entity's name: unseen classes on held-out entities
     rows["y_c"] = np.array([str(int(s)) for s in M.row_table(items)["y_b"]])  # (c) := the slot, planted
     mats = {"h": h, **{f"jpp{k}": h for k in M.KS}}
-    frames = {s: M.random_frame(d, 0, s, M.K_MAX) for s in range(M.N_SEEDS)}
-    out = M.probe_matrix(mats, frames, rows, [("B", "a"), ("B", "b"), ("B", "c")])
+    ctx = {"mats": mats, "proj": {s: h @ M.random_frame(d, 0, s, M.K_MAX) for s in range(M.N_SEEDS)}}
+    out = M.probe_matrix("base", ctx, rows, [("B", "a"), ("B", "b"), ("B", "c")])
     acc = {k: v[0].sum() / v[1].sum() for k, v in out.items()}
     assert acc["B|a|full"] > 0.9  # held-out scenes: every entity seen in training
     assert acc["B|b|full"] == 0.0  # held-out entities: never seen
     assert acc["B|c|full"] > 0.9
     assert (out["B|b|full"][1] == M.N_SEEDS).all()  # 5-fold per seed: every row held out once per seed
     assert (out["B|b|full"][0] <= out["B|b|full"][1]).all()
+
+
+def test_fixed_atoms_and_erand_dims():
+    rows = np.array([[5, 9, 2, 7], [9, 5, 3, 8], [2, 9, 4, 6]])
+    assert list(M.fixed_atoms(rows, 2)) == [9, 5]  # first 2 atoms: 9 x3, 5 x2, 2 x1
+    assert list(M.fixed_atoms(rows, 3)) == [9, 2, 5]  # 9 x3; 2 and 5 x2 (tie: the smaller id first)
+    assert M.erand_dims({25: 0.1, 100: 0.25}, 4096) == {25: 410, 100: 1024}
+    assert M.erand_dims({25: 0.0, 100: 2.0}, 64) == {25: 1, 100: 64}
+
+
+def synthetic_ctx(rng, n_items=30, d=24, n_tok=160):
+    ents = [f"e{i % 6}" for i in range(n_items)]
+    items = [{"scene": f"s{i}", "labels": {v: {"bridge": ents[i], "slot": i % 3, "n_slots": 3, "lookup": str(i % 4),
+                                              "recall": "0"} for v in VARIANTS}} for i in range(n_items)]  # fmt: skip
+    rows = M.row_table(items)
+    n = len(rows["entity"])
+    vec = rng.normal(size=(n_tok, d)).astype(np.float16)
+    atoms = np.stack([rng.permutation(np.arange(1000, 1000 + n_tok))[: M.K_MAX] for _ in range(n)])
+    return rows, atoms, {int(t): i for i, t in enumerate(range(1000, 1000 + n_tok))}, vec
+
+
+def test_fixed_pass_uses_only_the_needed_atoms():
+    """needed_atom_ids lists every atom the fixed pass looks up (a KeyError otherwise), on every fold."""
+    rng = np.random.default_rng(4)
+    rows, atoms_rows, _, vec = synthetic_ctx(rng, d=120)
+    n, d = len(rows["entity"]), vec.shape[1]
+    atoms = np.repeat(atoms_rows.reshape(n // 2, 2, 1, -1), 3, axis=2)  # [items, O/S, 3 row sets, K_MAX]
+    need = M.needed_atom_ids(atoms, rows)
+    assert len(need) < 160  # not every token: only the folds' top-k
+    h = rng.normal(size=(n, d))
+    ctx = {"mats": {"h": h}, "atoms": atoms_rows, "atom_row": {t: i for i, t in enumerate(need)},
+           "atom_vec": vec[[t - 1000 for t in need]]}  # fmt: skip
+    out = M.probe_matrix("fixed", ctx, rows, [("B", "b"), ("B", "a")])
+    assert set(out) == {f"B|{t}|fix{k}" for t in "ab" for k in M.KS}
+    assert all((v[1] == M.N_SEEDS).all() for v in out.values())
+
+
+def test_erand_pass_reads_a_planted_label():
+    rng = np.random.default_rng(5)
+    rows, *_ = synthetic_ctx(rng, d=24)
+    n, d = len(rows["entity"]), 24
+    slot = np.array([int(s) for s in rows["y_b"]])
+    h = rng.normal(size=(n, d)) * 0.2
+    h[np.arange(n), slot] += 5.0  # the slot written along 3 axes
+    frames = {s: M.random_frame(d, 0, s, 20) for s in range(M.N_SEEDS)}
+    ctx = {"mats": {"h": h}, "erand_dims": {k: 20 for k in M.KS}, "proj": {s: h @ frames[s] for s in frames}}
+    rows["y_c"] = rows["y_b"]
+    out = M.probe_matrix("erand", ctx, rows, [("B", "c")])
+    acc = out["B|c|erand25"][0].sum() / out["B|c|erand25"][1].sum()
+    assert acc > 0.9  # a 20-dimensional random subspace of 24 keeps the planted slot
 
 
 def test_lens_parts_cpu(monkeypatch):
