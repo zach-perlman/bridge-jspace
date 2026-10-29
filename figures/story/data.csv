@@ -5073,6 +5073,30 @@ ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L38, recall: swit
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L42, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L46, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L50, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"ours, lookup: best top-5 share before the answer layer (T L24)",0.695,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"ours, lookup: answers changed by the write, gain 1",0.01,0.0,0.023668639053254437,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"ours, recall: best top-5 share before the answer layer (T L28)",0.32,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"ours, recall: answers changed by the write, gain 1",0.37,0.2512071570849646,0.513090727473133,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"Zach's, lookup: best top-5 share before the answer layer (T L30)",1.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"Zach's, lookup: answers changed by the write, gain 1",0.6329113924050633,0.55,0.7151898734177216,158,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"Zach's, recall: best top-5 share before the answer layer (T L30)",1.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.5-9b,"Zach's, recall: answers changed by the write, gain 1",0.6139240506329114,0.5308578987150416,0.6938835534213684,158,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"ours, lookup: best top-5 share before the answer layer (T L0)",0.095,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"ours, lookup: answers changed by the write, gain 1",0.0,0.0,0.0,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"ours, recall: best top-5 share before the answer layer (T L46)",0.155,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"ours, recall: answers changed by the write, gain 2",0.2,0.12048035072226077,0.3142857142857143,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"Zach's, lookup: best top-5 share before the answer layer (T L62)",1.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"Zach's, lookup: answers changed by the write, gain 2",0.7951807228915663,0.727810650887574,0.8597560975609756,166,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"Zach's, recall: best top-5 share before the answer layer (T L60)",1.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,qwen3.6-27b,"Zach's, recall: answers changed by the write, gain 1",0.8554216867469879,0.7928994082840237,0.9135135135135135,166,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"ours, lookup: best top-5 share before the answer layer (T L34)",0.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"ours, lookup: answers changed by the write, gain 1",0.0,0.0,0.0,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"ours, recall: best top-5 share before the answer layer (T L36)",0.05,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"ours, recall: answers changed by the write, gain 1",0.7,0.5899581589958159,0.8383233532934131,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"Zach's, lookup: best top-5 share before the answer layer (T L48)",1.0,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"Zach's, lookup: answers changed by the write, gain 1",0.9681528662420382,0.9383540503974294,0.9935064935064936,157,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"Zach's, recall: best top-5 share before the answer layer (T L48)",0.9936305732484076,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
+ledger_answer_map,muse-glimmer-30b,"Zach's, recall: answers changed by the write, gain 1",0.9872611464968153,0.9671052631578947,1.0,157,results/x52_answer_map/x52-20261029T004559Z/verdict.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

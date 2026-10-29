@@ -75,7 +75,7 @@ def zero_band(ax, lo: float = -0.2, hi: float = 1.05) -> None:
 def answer_control(plt) -> str:
     """The recall's three arms per model (without the lens part; the same with the answer words' directions kept; the
     answer directions only), each beyond a random part; Zach's described bridge (Z2) beside in grey, withdrawn."""
-    arms =(("1", "without the lens part"), ("2", "lens part out, answer kept"), ("3", "answer directions only"))
+    arms = (("1", "without the lens part"), ("2", "lens part out, answer kept"), ("3", "answer directions only"))
     sources = [(ANSWER, m) for m in load(ANSWER)["models"] if m["set"] == "e1"]
     sources += [(ANSWER_LIGHTNING, m) for m in load(ANSWER_LIGHTNING)["models"] if m["set"] == "e1"]
     order = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
@@ -474,8 +474,62 @@ def lightning_layers(plt) -> str:
     return save(fig, "ledger_lightning_layers")
 
 
+# ---- where the answer is readable and usable (batch 52 B) -----------------------------------------------------------
+
+ANSWER_MAP = R / "x52_answer_map" / "x52-20261029T004559Z" / "verdict.json"
+
+
+def answer_map(plt) -> str:
+    """Per model, dataset (our main test, Zach's described passages) and reader: left, the best share of items with
+    the answer word in the lens's top 5 before the answer layer (the rule's 0.5 dashed); right, the answers changed by
+    writing the answer word's lens directions at that cell (the better of gains 1 and 2, whiskers 95%) with the random
+    part of the same gain in grey (the rule's 0.3 dashed); the combination at the right."""
+    v = load(ANSWER_MAP)
+    rows = []
+    for m in sorted(v["models"], key=lambda m: [t for t, _ in MODEL3].index(m["target"])):
+        for d, dname in (("main", "ours"), ("z2", "Zach's")):
+            for rd in ("lookup", "recall"):
+                rows.append((m, d, dname, rd))
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.36 * len(rows) + 1.9), sharey=True,
+                             gridspec_kw={"width_ratios": [1, 1.25]})  # fmt: skip
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.215, right=0.8, top=1 - 1.25 / h, bottom=0.75 / h, wspace=0.22)
+    S.title(fig, "On Zach's passages the answer is readable and usable; on ours rarely",
+            "Ours: our main test; Zach's: his described passages. Grey: a random part, same gain")  # fmt: skip
+    labels = []
+    for i, (m, d, dname, rd) in enumerate(rows):
+        t, col, y = m["target"], (LOOKUP if rd == "lookup" else INK), -i
+        r = m["maps"][d]["readers"][rd]
+        best = r["readable"]["best_before"]
+        axes[0].barh(y, best["top5"], color=col, height=0.6, alpha=0.85)
+        w = m["writes"][d][rd]["switch"]
+        g = "ans1" if w["ans1"][0] >= w["ans2"][0] else "ans2"
+        whisker(axes[1], y, w[g], col)
+        axes[1].plot([w["rand" + g[-1]][0]], [y], "o", color=NULL, ms=5)
+        combo = v["combinations"][f"{t}|{d}|{rd}"]["combination"]
+        axes[1].text(1.05, y, combo, va="center", fontsize=S.LABEL_PT, color="#222222", clip_on=False)
+        labels.append(f"{SHORT[t]}, {dname}, {rd}")
+        S.record("ledger_answer_map", t, f"{dname}, {rd}: best top-5 share before the answer layer "
+                 f"({best['group']} L{best['layer']})", best["top5"], source=rel(ANSWER_MAP))  # fmt: skip
+        S.record("ledger_answer_map", t, f"{dname}, {rd}: answers changed by the write, gain {g[-1]}", *w[g],
+                 n=m["writes"][d][rd]["n"], source=rel(ANSWER_MAP))  # fmt: skip
+    for ax, bar in ((axes[0], 0.5), (axes[1], 0.3)):
+        ax.axvline(bar, color="#555555", lw=0.9, ls="--")
+        ax.set_xlim(0, 1.0)
+        ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+        ax.grid(axis="x", color="#eeeeee")
+        for b in (3.5, 7.5):
+            ax.axhline(-b, color="#cccccc", lw=0.8)
+    axes[0].set_yticks([-i for i in range(len(rows))], labels)
+    axes[0].tick_params(axis="y", length=0)
+    axes[0].set_ylim(-len(rows) + 0.4, 0.6)
+    axes[0].set_xlabel("answer in the lens's top 5")
+    axes[1].set_xlabel("answers changed by writing it")
+    return save(fig, "ledger_answer_map")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
-           clean_reruns, lightning_layers)  # fmt: skip
+           clean_reruns, lightning_layers, answer_map)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

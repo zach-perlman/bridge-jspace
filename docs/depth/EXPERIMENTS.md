@@ -19,6 +19,7 @@ Each card's figure follows its rule; the checks made on every figure are listed 
 11. The previous ledger said Z1's order pattern replicates on the 9B and 27B; its verdict says it replicates on all three (Muse L26 too). Corrected in the Z1 card.
 12. Test suite (coordinator, 01:30): six figure-test failures are left for the README pass (they need figure rebuilds or a root-README decision; nothing changed overnight): test_story_b47a's routes-lens (on planted data Fig. 5d's "random" label overlaps the panel titles; the real figure has a ~5 px gap; fix: more headroom above the top row); test_readme_phase2_figures' Fig. 3c x2 (the test expects a 122B "not run" panel, which Fig. 3c dropped in b4211951, the README restructure); test_joint_figures' quoting (the root README's joint figures still quote the frog scene, which left readme_story_figures.py with the carbon Fig. 0, 884b0576; the root README is Zach and Dan's); test_figs_lens x2 (failing before tonight). Fixed: the x49 prediction-block tests follow Dan's rewording of Q49.3 and Q49.6 (970b39a1).
 13. Z1, Muse L26: the verdict labels the lookup "the lookup follows the lens here" (0.60 [0.38, 0.81]), but its lookup switches on 25 passages under the whole change, under the 30 that every other cell needs (z1.json: valid false). The ledger's figure leaves the cell out; the card shows the verdict's number and label.
+14. Batch 52 B on our scenes: the write cells of the 27B's lookup (the last token, L0) and Muse's lookup (the question, L14) were picked because nothing else was readable, and the whole change switches 0.00 there; their "not usable" is uninformative (cannot tell), not a negative. The card reports the verdict's labels with that caveat. B's proposal, writing at the most readable non-last-token cell, waits for Dan.
 
 ## README changes waiting for Dan
 
@@ -410,6 +411,35 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
   - The classifier was hand-checked on 5 items per model (blind on Muse's main test only) and misses non-English answer words.
   - On Zach's described passages the bridge names carry 0.02-0.03 and the descriptions' words dominate (see the report).
 
+### Where is the answer readable through the lens, and can it be written there? (batch 52 B, landed 29 Oct 01:46) <a id="b52-b"></a>
+
+*Used in: ledger only. Story: two readers.*
+
+- **Question.** For each reader, on our scenes and on Zach's described passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
+- **Why we asked.** The answer control found the answer word not read at our bridge word but read at Zach's description; where else is it readable, and is it used there?
+- **Data.** Our main test, 200 per model; Zach's described passages, 158 / 166 / 157.
+- **Method.** Read: the answer word's rank in the lens readout at the bridge word, its earlier mention, the question and the last token, every second layer before the answer layer. Write: at the most readable cell, the answer word's lens directions at one and two times a real change's size, against a random part and a frequency-matched part of the same size; the whole change at that cell as the reference.
+- **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
+
+![On Zach's passages the answer is readable and usable; on ours rarely](../../figures/ledger/ledger_answer_map.png)
+*Per model, dataset and reader: left, the best share of items with the answer word in the lens's top 5 before the answer layer (dashed: the rule's 0.5); right, the answers changed by writing its lens directions at that cell, the better of the two sizes (whiskers 95%), a random part of the same size in grey (dashed: the rule's 0.3); at the right, the rule's combination. Per-layer maps: [9B](../../results/x52_answer_map/x52-20261029T004559Z/map_9b.png), [27B](../../results/x52_answer_map/x52-20261029T004559Z/map_27b.png), [Muse](../../results/x52_answer_map/x52-20261029T004559Z/map_muse.png).*
+
+- **Result.** (the combination; answers changed by the write at one / two times a real change's size)
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | ours, lookup | **readable, not usable**: 0.01 [0.00, 0.02] / 0.01 [0.00, 0.02]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L24 0.69 :: 0.01 [0.00, 0.02] / 0.01 [0.00, 0.02] --> | **neither**: 0.00 [0.00, 0.00] / 0.00 [0.00, 0.00]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L0 0.10 :: 0.00 [0.00, 0.00] / 0.00 [0.00, 0.00] --> (cannot tell) | **neither**: 0.00 [0.00, 0.00] / 0.00 [0.00, 0.00]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L34 0.00 :: 0.00 [0.00, 0.00] / 0.00 [0.00, 0.00] --> (cannot tell) | not run |
+  | ours, recall | **usable, not readable**: 0.37 [0.25, 0.51] / 0.03 [0.01, 0.06]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L28 0.32 :: 0.37 [0.25, 0.51] / 0.03 [0.01, 0.06] --> | **neither**: 0.08 [0.04, 0.14] / 0.20 [0.12, 0.31]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L46 0.15 :: 0.08 [0.04, 0.14] / 0.20 [0.12, 0.31] --> | **usable, not readable**: 0.70 [0.59, 0.84] / 0.09 [0.03, 0.15]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L36 0.05 :: 0.70 [0.59, 0.84] / 0.09 [0.03, 0.15] --> |  |
+  | Zach's described, lookup | **readable and usable**: 0.63 [0.55, 0.72] / 0.55 [0.46, 0.64]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| ['E', 10] :: 0.63 [0.55, 0.72] / 0.55 [0.46, 0.64] --> | **readable and usable**: 0.17 [0.11, 0.23] / 0.80 [0.73, 0.86]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L62 1.00 :: 0.17 [0.11, 0.23] / 0.80 [0.73, 0.86] --> | **readable and usable**: 0.97 [0.94, 0.99] / 0.92 [0.87, 0.96]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L48 1.00 :: 0.97 [0.94, 0.99] / 0.92 [0.87, 0.96] --> |  |
+  | Zach's described, recall | **readable and usable**: 0.61 [0.53, 0.69] / 0.55 [0.46, 0.64]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| ['E', 16] :: 0.61 [0.53, 0.69] / 0.55 [0.46, 0.64] --> | **readable and usable**: 0.86 [0.79, 0.91] / 0.84 [0.78, 0.90]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L60 1.00 :: 0.86 [0.79, 0.91] / 0.84 [0.78, 0.90] --> | **readable and usable**: 0.99 [0.97, 1.00] / 0.85 [0.79, 0.91]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L48 0.99 :: 0.99 [0.97, 1.00] / 0.85 [0.79, 0.91] --> |  |
+
+- **Read.**
+  - On Zach's described passages the answer word is readable and writing it changes the answer, for both readers on all three models.
+  - On our scenes the recall's answer is never readable before the answer layer, yet writing it at the last token moves the 9B's and Muse's recall; the lookup's is readable only on the 9B, where writing it does nothing.
+- **Caveats.**
+  - The 27B's and Muse's lookup cells on our scenes were written where nothing was readable and where the whole change itself switches nothing, so their "not usable" cannot tell (see Flagged for Dan).
+  - Only the most readable cell was written; writing at the most readable cell other than the last token waits for Dan.
+
 ### At which layer does Lightning get the conflict test? (Lightning's layer, committed 29 Oct 01:02) <a id="lightning-layer"></a>
 
 *Used in: the Lightning conflict test; README Status line (waiting for Dan). Story: two readers.*
@@ -578,12 +608,6 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 
 Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-high ends of the queue's estimate); the Lightning lanes follow batch 52 amendment 3.
 
-### Where is the answer readable, and can it be written there? (batch 52 B, running) <a id="b52-b"></a>
-
-- **Question.** At the bridge word, the earlier mention, the question and the last token, every second layer: are the bridge entity and the answer word lens-readable, and does writing the answer's lens directions there move the answer?
-- **Status.** 12 jobs (read and write, 9B / 27B / Muse × main test / Zach's described passages); CPU plan `results/x52_answer_map/plan-20261028T234836Z`; the 9B's described-passage read has landed (`results/x52_answer_map/qwen35_9b_x52_read_z2`); the rest on mats and another. Rule fixed in advance in `jobs/c3/batch52.yaml` (B); no prediction.
-- **Where used.** Ledger only.
-
 ### Batch 52 C: the rest of the coverage grid (running) <a id="b52-c"></a>
 
 - **Question.** Fill the coverage table's missing cells on the 27B, Lightning, 9B and Muse.
@@ -611,4 +635,5 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png | yes | crowded | yes | in part | the verdict's own figure, not restyled; panel titles carry test ids (47.8, 51.5) |
 | figures/ledger/ledger_zach_routes.png | yes | no overlap | yes | yes | Muse's position share (0.06) is too narrow for its label |
 | figures/ledger/ledger_clean_reruns.png | yes | no overlap | yes | yes | |
+| figures/ledger/ledger_answer_map.png | yes | no overlap (after a wider left margin) | yes | yes | the per-layer maps stay in the verdict folder, linked from the caption |
 | results/x50_zach/z2-20261028T162710Z/z2_beside.png | yes | no overlap | yes | yes | the verdict's own figure, not restyled; its title carries the test id and "UNVERIFIED" |
