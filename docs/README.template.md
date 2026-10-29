@@ -492,12 +492,12 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 - **Question.** Can the address be read, removed, added and swapped?
 - **Why we asked.** If the bridge word stores where the item's locker sits, a probe should read it, removing it should cost position answers, adding it by itself should bring them back, and swapping it should send the lookup elsewhere.
-- **Data.** The probe: every topic scene, split by whether the item's locker sentence comes before or after the pick. Removing and adding: the routes scenes ({{dp|catalogue|9b|routes scenes: scenes used}} per model). The swap: routes scenes without a move, each swapped to both other lockers.
+- **Data.** The probe: every topic scene, split by whether the item's locker sentence comes before or after the pick. Removing and adding: the routes scenes ({{dp|catalogue|9b|routes scenes: scenes used}} per model). The swap: routes scenes without a move, each swapped to both other lockers. The distance test: the routes scenes with no, 5, 20 or 50 neutral sentences between the lockers and the picks ({{dp|e6_distance|9b|47.16: routes scenes}} / {{dp|e6_distance|27b|47.16: routes scenes}} / {{dp|e6_distance|nemotron-3.5-lightning|47.16: routes scenes}} on the 9B / 27B / Lightning; Muse and the 122B not run).
 - **Method.** At the bridge word at L:
   - the probe, held out by bridge entity: which locker sentence holds the item's locker, against the layout baseline; scenes with the locker after the pick are the control; the answer digit beside;
   - removing: the routes test without the address, against without a random part of its share; adding: only the address, against only a random part;
   - the swap: the difference between two lockers' mean address codes, at one, two and four times its size (s = 1, 2, 4), against a random vector of the same size; read: lookups sent to the swapped-in locker, and recalls that change.
-- **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The probe: none, descriptive, after the data. Lightning and the 122B: the same rules, copied, no prediction.
+- **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The distance test: "distance-robust: position share and probe within 0.1 of no neutral sentences at every distance, swap success within 0.15". The probe: none, descriptive, after the data. Lightning and the 122B (and the 27B's and Lightning's distance runs): the same rules, copied, no prediction.
 
 ![The address carries the position route; swapping it moves the lookup](figures/story/fig07_writes.png)
 *A: the probe at the bridge word, locker before the pick, against the layout baseline. B: position answers without the address and with only the address, against a random part of the same size (grey). C: lookups sent to the swapped-in locker by dose, against a random vector. Lightning hollow; 122B hollow in the removal, addition and swap panels (gate lowered to 0.75 after the data; FP8), filled in the probe panel.*
@@ -517,19 +517,20 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   | a random vector at s = 4 | {{dp|fig07|9b|lookup target share, random direction, s = 4}} | {{dp|fig07|27b|lookup target share, random direction, s = 4}} | {{dp|fig07|muse|lookup target share, random direction, s = 4}} | {{dp|fig07|nemotron-3.5-lightning|lookup target share, random direction, s = 4}} | {{dp|fig07|122b|lookup target share, random direction, s = 4}} ○ |
   | the swap at s = 2: recalls that change | {{dp|cards|9b|the address swap at s = 2: recalls that change}} | {{dp|cards|27b|the address swap at s = 2: recalls that change}} | {{dp|cards|muse|the address swap at s = 2: recalls that change}} | {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: recalls that change}} | {{dp|cards|122b|the address swap at s = 2: recalls that change}} ○ |
   | of those, naming the swapped-in item's answer | {{dp|cards|9b|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} | not checked | not checked | {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} | not checked |
-
-  With 50 neutral sentences between the lockers and the picks, the 9B's swap at s = 2 still sends {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} of lookups to the target.
+  | the swap with no / 50 neutral sentences between the lockers and the picks: lookups sent to the target | {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 0 sentences}} / {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} | {{dp|e6_distance|27b|47.16: the swap (fit with none) sends lookups to the target, 0 sentences}} / {{dp|e6_distance|27b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} | not run | {{dp|e6_distance|nemotron-3.5-lightning|47.16: the swap (fit with none) sends lookups to the target, 0 sentences}} / {{dp|e6_distance|nemotron-3.5-lightning|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} | not run |
+  | the distance rule | {{dp|e6_distance|9b|47.16: the rule's reading}} | {{dp|e6_distance|27b|47.16: the rule's reading}} | not run | {{dp|e6_distance|nemotron-3.5-lightning|47.16: the rule's reading}} | not run |
 
 - **Read.**
   - With its locker sentence before the pick, the bridge word holds which locker sentence the item's locker sits in, on all five models, far above the layout baseline; with the locker after the pick it does not.
   - Removing the address takes the position route away beyond a random part on every model; added by itself it brings position answers back on the 9B, Muse, Lightning and the 122B, not on the 27B.
-  - At about a real change's size a swap sends a quarter to a half of lookups to the swapped-in locker on every model; a random vector sends none.
+  - At about a real change's size a swap sends a quarter to a half of lookups to the swapped-in locker on every model, and after fifty neutral sentences about as many on the 9B, 27B and Lightning; a random vector sends none.
   - The address points to the item: the lookup always follows the swap, the recall sometimes, most on the 9B and Lightning.
 - **Caveats.**
   - The swap's rule fixed in advance was read at s = 1 and said no on every model. That was a design error: s = 1 is below a real change's size; the swap numbers above are read at s = 2, after the data.
   - The probe is descriptive, chosen after the data; the answer digit is read only weakly.
   - The 122B (FP8; MoE, ~10B active): its routes and swap runs had their gate lowered to 0.75 after the data (hollow ○, descriptive); its probe ran at its gate.
   - Lightning's gate was chosen after its pre-check (○); its probe reads the locker sentence less well than the others'.
+  - The distance test ran on the 9B, and on the 27B and Lightning as coverage runs (Lightning ○); Muse and the 122B not run.
   - Not shown: what reads the address.
 
 ### With six lockers, does each locker have its own code?

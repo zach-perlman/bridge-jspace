@@ -8276,6 +8276,8 @@ probe,muse-glimmer-30b,probe.slot.majority.muse.locker-after,0.3333333333333333,
 probe,muse-glimmer-30b,probe.slot.layout.muse.locker-after,0.3153961136023916,0.28079561653599433,0.3494255649952801,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
 probe,muse-glimmer-30b,probe.identity.muse.locker-after,0.9985052316890882,0.9945498495957537,1.0,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
 probe,muse-glimmer-30b,probe.identity.majority.muse.locker-after,0.07025411061285501,0.0,0.21559633027522937,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
+e6_distance,qwen3.5-9b,47.16: the rule's reading,distance-robust address,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: routes scenes,218,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
 e6_distance,qwen3.5-9b,47.16: position share with 0 neutral sentences,0.5458715596330275,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
 e6_distance,qwen3.5-9b,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
 e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.4243119266055046,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
@@ -8291,6 +8293,40 @@ e6_distance,qwen3.5-9b,47.16: position share with 50 neutral sentences,0.5688073
 e6_distance,qwen3.5-9b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
 e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.3532110091743119,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
 e6_distance,qwen3.5-9b,47.16: the code's shift beta with 50 sentences,0.7078419064239758,0.6671621102869182,0.7485178591901485,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: the rule's reading,distance-robust address,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: routes scenes,300,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: position share with 0 neutral sentences,0.3333333333333333,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.24166666666666667,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: position share with 5 neutral sentences,0.30666666666666664,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: slot probe with 5 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,"47.16: the swap (fit with none) sends lookups to the target, 5 sentences",0.2916666666666667,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: the code's shift beta with 5 sentences,0.41287445375845894,0.3919988463005468,0.43144592615162236,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: position share with 20 neutral sentences,0.31,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: slot probe with 20 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,"47.16: the swap (fit with none) sends lookups to the target, 20 sentences",0.255,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: the code's shift beta with 20 sentences,0.5116805849835206,0.4879300719203167,0.5327848783566653,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: position share with 50 neutral sentences,0.23666666666666666,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.205,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,qwen3.6-27b,47.16: the code's shift beta with 50 sentences,0.5249209670235195,0.5021132366273636,0.5461511194902964,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: the rule's reading,distance-robust address,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: routes scenes,199,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: position share with 0 neutral sentences,0.47738693467336685,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.5276381909547738,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: position share with 5 neutral sentences,0.45226130653266333,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: slot probe with 5 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,"47.16: the swap (fit with none) sends lookups to the target, 5 sentences",0.4849246231155779,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: the code's shift beta with 5 sentences,0.5498319002467075,0.5084882399337911,0.594484075173682,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: position share with 20 neutral sentences,0.41708542713567837,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: slot probe with 20 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,"47.16: the swap (fit with none) sends lookups to the target, 20 sentences",0.4899497487437186,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: the code's shift beta with 20 sentences,0.7081529128232172,0.6566769412389688,0.7595669146591709,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: position share with 50 neutral sentences,0.44221105527638194,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.4798994974874372,,,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+e6_distance,nemotron-3.5-lightning,47.16: the code's shift beta with 50 sentences,0.7730017893814615,0.7157488460932674,0.8264695920529247,,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json

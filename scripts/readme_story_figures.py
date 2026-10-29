@@ -3677,23 +3677,29 @@ def batch47_figures(plt, figs: dict = BATCH47, supp: bool = False) -> None:
 def batch47_numbers() -> None:
     """Numbers the README cards quote from batch-47 verdicts that have no figure of their own (47.16 on the 9B, 47.7(a)
     on the 27B), recorded for data.csv with the verdict json as source (47.10's: Fig. 7b records them, as e8_report)."""
-    v = latest_verdict("x47_distance/x47_16-*") / "x47_16.json"
-    m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
-    src = str(v.relative_to(S.REPO))
-    for k in ("0", "5", "20", "50"):
-        S.record(
-            "e6_distance",
-            m["target"],
-            f"47.16: position share with {k} neutral sentences",
-            m["position"][k],
-            source=src,
-        )
-        S.record("e6_distance", m["target"], f"47.16: slot probe with {k} neutral sentences", m["probe"][k], source=src)
-        S.record("e6_distance", m["target"], f"47.16: the swap (fit with none) sends lookups to the target, {k} sentences",
-                 m["swap_target"][k], source=src)  # fmt: skip
-        if k in m["betas"]:
-            S.record("e6_distance", m["target"], f"47.16: the code's shift beta with {k} sentences", *m["betas"][k]["beta"],
-                     source=src)  # fmt: skip
+    # 47.16: the 9B's verdict, then batch 52's coverage run on the 27B and Lightning (the coordinator, 29 Oct ~14:25:
+    # every opened result's cells in the address card); each tested model from the first verdict that holds it
+    seen = set()
+    for v in (latest_verdict("x47_distance/x47_16-*") / "x47_16.json",
+              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json"):  # fmt: skip
+        src = str(v.relative_to(S.REPO))
+        for m in json.loads(v.read_text())["models"]:
+            if m["status"] != "tested" or m["target"] in seen:
+                continue
+            seen.add(m["target"])
+            S.record("e6_distance", m["target"], "47.16: the rule's reading", m["label"], source=src)
+            S.record("e6_distance", m["target"], "47.16: routes scenes", m["items"]["chosen"], source=src)
+            for k in ("0", "5", "20", "50"):
+                S.record("e6_distance", m["target"], f"47.16: position share with {k} neutral sentences",
+                         m["position"][k], source=src)  # fmt: skip
+                S.record("e6_distance", m["target"], f"47.16: slot probe with {k} neutral sentences", m["probe"][k],
+                         source=src)  # fmt: skip
+                S.record("e6_distance", m["target"],
+                         f"47.16: the swap (fit with none) sends lookups to the target, {k} sentences",
+                         m["swap_target"][k], source=src)  # fmt: skip
+                if k in m["betas"]:
+                    S.record("e6_distance", m["target"], f"47.16: the code's shift beta with {k} sentences",
+                             *m["betas"][k]["beta"], source=src)  # fmt: skip
     # 47.1 and 47.4: the first verdicts, then batch 52's coverage folders (Lightning; the 27B's 47.4), by explicit path
     for v in (latest_verdict("x47_atoms/x47_1-*") / "x47_1.json",
               pins.RESULTS_DIR / "x47_atoms" / "x52_atoms47-20261029T011717Z" / "x47_1.json"):  # fmt: skip
