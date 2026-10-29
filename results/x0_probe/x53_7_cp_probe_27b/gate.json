@@ -1,0 +1,28 @@
+{
+ "cases": 800,
+ "org_read_accuracy": {
+  "PP": 0.9988
+ },
+ "bar": 0.8,
+ "pass": true,
+ "status": "passed",
+ "rule": "X0's main gate on CH2's one reader: the unedited base prompt's chat read right on >= 0.80 of the scenes (both domains pooled; per domain beside), before any state is kept; a failure is 'not tested (gate x < 0.80)'. code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; the 27B: CH2 100% on both domains, results/code_pointer_v1/code_competence_27b) is not re-applied",
+ "per_domain": {
+  "animals": {
+   "PP": 1.0
+  },
+  "months": {
+   "PP": 0.9975
+  }
+ },
+ "counts": {
+  "set": "code_pointer_v1/main CH2",
+  "cases": 800,
+  "entities": 19,
+  "domains": {
+   "animals": 400,
+   "months": 400
+  },
+  "dropped": {}
+ }
+}

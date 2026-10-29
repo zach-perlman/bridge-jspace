@@ -1,0 +1,179 @@
+{
+ "run": "x53_7_cp_probe_27b",
+ "manifest": {
+  "exp": "x0_probe",
+  "run": "x53_7_cp_probe_27b",
+  "written_utc": "2026-10-29T11:09:21Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "test": "53.7 add-on: code_pointer_v1's CH2 chains (Dan 11:25, critic_1125; descriptive)",
+  "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+  "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+  "rule": "none: descriptive, numbers only (Dan 11:25, critic_1125: 'code_pointer_v1 (CH2 chains) only if time remains: descriptive, the address probe and the monitor'); no label is computed or stated",
+  "source": null,
+  "source_code": null,
+  "set": "code_pointer_v1/main/CH2",
+  "layer": 32,
+  "x0_items": 0,
+  "format": "cp_ch2",
+  "format_text": "cp_ch2: code_pointer_v1's CH2 programs (data/code_pointer_v1/main/{animals,months}_CH2_e5f0.json, 400 scenes each): a dict line `lockers = {...}` of 5 keys, then a 2-variable target chain (x = \"mouse\"; h = x) and a distractor chain, then print(lockers[h]); suite_v1's chat prompt ('What does this Python code print?'). The bridge word = the target chain's head key; S = the item's dissoc source (another key heads the chain, its own dict). One reader (the lookup): the monitor's (d) is the key's recalled number (legs / month), read at the bridge word and at the lookup's last token (CH2 has no recall prompt; the recall slot repeats the lookup's prompt); the dict always precedes the chain, so the probe has no locker-after stratum",
+  "gate": "X0's main gate on CH2's one reader: the unedited base prompt's chat read right on >= 0.80 of the scenes (both domains pooled; per domain beside), before any state is kept; a failure is 'not tested (gate x < 0.80)'. code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; the 27B: CH2 100% on both domains, results/code_pointer_v1/code_competence_27b) is not re-applied",
+  "read": "the chat read: one forward of the prompt with a digit's space token appended, the top token",
+  "model": {
+   "target": "qwen3.6-27b",
+   "repo": "Qwen/Qwen3.6-27B",
+   "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "switches": {
+   "target": "qwen3.6-27b",
+   "BJ_DEVICE_MAP": "",
+   "BJ_SUITE_BATCH": "64",
+   "BJ_TARGET": "qwen3.6-27b",
+   "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+   "sha": "430d2f7c1dbfc88820823c63cc6d0b2ec072187f",
+   "dirty": true
+  },
+  "position": "the target chain's head key, base program",
+  "inputs": {
+   "data/code_pointer_v1/main/animals_CH2_e5f0.json": "fe618771a30c939579cc33f4c972bd59e09a546f2cd33a7cf3570bd56c85b0ce",
+   "data/code_pointer_v1/main/months_CH2_e5f0.json": "7ae199664c8d43e2cf5bdeb04231c7057aa97bd865c9876071f7dee888bb7ec8"
+  },
+  "folds": {
+   "outer": 5,
+   "inner": 4,
+   "penalties": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+   ]
+  },
+  "seeds": {
+   "bootstrap": 0
+  },
+  "targets": {
+   "answer digit": "answer",
+   "locker sentence": "locker_index",
+   "bridge identity": "entity"
+  },
+  "monitor_run": "x53_7_cp_monitor_27b",
+  "gate_pass": true,
+  "cases": 800,
+  "finished_utc": "2026-10-29T11:10:45Z"
+ },
+ "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+ "rows": [
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "answer digit",
+   "n": 800,
+   "entities": 19,
+   "classes": 10,
+   "chance": 0.1,
+   "penalties": [
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "probe": [
+    0.6425,
+    0.577316361498645,
+    0.7101652834763148
+   ],
+   "majority": [
+    0.1575,
+    0.13343108504398826,
+    0.1798069505856017
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.485,
+    0.4297317345383275,
+    0.5479461580962904
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "locker sentence",
+   "n": 800,
+   "entities": 19,
+   "classes": 5,
+   "chance": 0.2,
+   "penalties": [
+    1.0,
+    1.0,
+    0.1,
+    0.1,
+    1.0
+   ],
+   "probe": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "majority": [
+    0.1625,
+    0.13839806115221492,
+    0.18527348275482663
+   ],
+   "structure": [
+    0.14875,
+    0.129840282643214,
+    0.16685727715292933
+   ],
+   "layout": [
+    0.1625,
+    0.13839806115221492,
+    0.18527348275482663
+   ],
+   "best_baseline": "chance",
+   "probe_minus_best": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "bridge identity",
+   "n": 800,
+   "entities": 19,
+   "classes": 19,
+   "chance": 0.0526,
+   "penalties": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "probe": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "majority": [
+    0.10375,
+    0.0,
+    0.3047735618115055
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.89625,
+    0.6952264381884945,
+    1.0
+   ]
+  }
+ ]
+}
