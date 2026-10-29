@@ -110,7 +110,7 @@ verify-independent: ## the README's conflict-test and routes numbers recounted f
 verify-pack:        ## docs/verify_pack.md: how to review in 2 hours, the automatic checks, one section per tier-1 view
 	uv run python scripts/verify_checks.py
 	-uv run python scripts/verify_independent.py
-	uv run python scripts/verify_pack.py
+	uv run python scripts/verify_pack_tier1.py
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export

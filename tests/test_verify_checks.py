@@ -162,7 +162,7 @@ def test_targeted_picks_the_nearest_and_one_surprise_per_direction():
 
 # ---- the pack ---------------------------------------------------------------------------------------------------
 def test_the_pack_keeps_the_inspectors_section_and_quotes_the_readme():
-    from scripts import verify_pack as VP
+    from scripts import verify_pack_tier1 as VP
 
     old = f"# x\n\n{VP.INSPECTOR}\n\nRanks: 12 of 200 in the top 50 (planted).\n\n## a. main_swap\n\nold text\n"
     new = VP.build(old)

@@ -1,6 +1,6 @@
 """Automatic checks over every item of every tier-1 review view (Dan 29 Oct 11:45, jobs/c3/batch53.yaml
 verify_prep_1145 item 2), CPU only, read-only on results/. Results: review/verify_checks.json, summarised at the top of
-docs/verify_pack.md (scripts/verify_pack.py). A failure is a finding: it is listed with its file and line, never fixed
+docs/verify_pack.md (scripts/verify_pack_tier1.py). A failure is a finding: it is listed with its file and line, never fixed
 here, and no check is changed to pass.
 
 Per item (src/bridge_jspace/review/checks.py, over every item, not the sample):
