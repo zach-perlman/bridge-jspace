@@ -40,6 +40,8 @@ ANCHORS = {
     "Earlier mention (45p)": "t45p",
     "Split in other texts: natural passages (x5)": "x5",
     "Described bridge (47.3, and 51.12's cue r2)": "t47-3",
+    "E8: the report prompt (47.10)": "t47-10",
+    "Failed: the address as the recall's second route (48 route2)": "t48-5",
     "Pooled person probe (49.3)": "t49-3",
     "Failed: copying heads pass the rest (48 heads)": "t48-4",
     "Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)": "t48-2",

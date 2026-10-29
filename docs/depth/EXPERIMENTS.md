@@ -96,7 +96,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [E6: the address probe (x0_probe v4)](#probe) | **done** | **done** | **done** | **done** |
 | [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | **done** | **done** | **done** | **missing**: x47_16_muse_r2 written, not enqueued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already answers it); re-opening it under amendment 2 waits for Dan; x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged) |
 | [E7: six lockers, one code per slot (47.2)](#six) | **done** | **done** | **done** | **done** |
-| E8: the report prompt (47.10) | **done** | **not tested**: the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z) | **not tested**: the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z) | **not tested**: the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z) |
+| [E8: the report prompt (47.10)](#t47-10) | **done** | **not tested**: the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z) | **not tested**: the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z) | **not tested**: the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z) |
 | [E11: token by layer map (47.D1)](#d1) | **done** | **partial**: the main design only; the clean design (the decisive cell) not tested: gate fails | **done** | **done** |
 | [E11: lookups carried before L (47.4 cumulative)](#t47-4) | **done** | **partial**: the main design only; the clean design not tested: gate fails | **done** | **done** |
 | [E12: address persistence across depth (D4, CPU)](#t47-8) | **done**: CPU from x47_anatomy_27b's cache | **done**: CPU from Lightning's anatomy cache (on its box) | **done** | **done** |
@@ -109,7 +109,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | **done**: A and B | **partial**: A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate) | **done** | **done** |
 | [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too) | **done** | **done** |
 | [Failed: copying heads pass the rest (48 heads)](#t48-4) | **done** | **done**: attention blocks after L14 (NemotronH port) | **done** | **done** |
-| Failed: the address as the recall's second route (48 route2) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes) | **done** | **done** |
+| [Failed: the address as the recall's second route (48 route2)](#t48-5) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes) | **done** | **done** |
 | [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | **done** | **not tested**: the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks | **done** | **done** |
 | Failed: the second hop's key token (47.15 source) | **done** | **not tested**: its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule) | **missing**: the cited verdict lists 9B as pending (no run given; results/x47_source/x47_15-20261028T142722Z) | **not tested**: the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z) |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | **done** | **done** | **done** | **done** |
@@ -743,6 +743,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
   - Descriptive: the reading is the spec's, not a pre-registered claim.
   - The reading uses medians; per case, some readouts do move beyond their own null on the 9B and Muse.
 
+### Asked for the position, does the address surface in the lens? (the report prompt, 47.10, opened 28 Oct; Lightning's gate 29 Oct) <a id="t47-10"></a>
+
+*Used in: README Part III card "The lens is blind to the address" ("asked for the position, the 27B's lens top five hold the right ordinal in 0.00 of reports"; the 27B). Story: the address.*
+
+- **Question.** When the prompt asks which locker sentence holds the item (a report reader), does the lens at the bridge word show the right ordinal, and does the report need the lens part or the address?
+- **Why we asked.** The lens cannot read the address under the lookup's prompt; asked for it directly, the model might surface it into the lens.
+- **Data.** Routes scenes without a move, four readers as separate prompts over the same context, question last or first: the 27B, question last, 200<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 --> scenes. Every other cell failed its gate (the report reader below 0.80): the 9B, Muse, the 27B with the question first, and Lightning (its report right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 --> with the question last).
+- **Method.** At the bridge word at L: the lens readout's top five under the report prompt and under the lookup prompt; the report's switches lost without the lens part and without the address, each beyond a random part.
+- **Rule, fixed in advance.** ""Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U [...]"
+
+![The lens reads which item is at the bridge, not where its locker sits](../../figures/story/fig07b_verbal.png)
+*The README's figure for the same card (the lens readout of an address swap, 47.0); the report prompt's numbers are in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | lens top-5 holds the right ordinal, under the report prompt (bar >= 0.4) | not tested (gate) | 0.00 [0.00, 0.00]<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 :: 0.00 [0.00, 0.00] --> | not tested (gate) | not tested (gate) |
+  | the report: switches lost without the lens part, beyond random | | 0.06 [0.02, 0.11]<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 :: 0.06 [0.02, 0.11] --> | | |
+  | the report: switches lost without the address, beyond random | | 0.28 [0.21, 0.34]<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 :: 0.28 [0.21, 0.34] --> | | |
+  | the label (question last) | | **neither<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 :: neither -->** | | |
+
+- **Read.**
+  - Asked for the position, the 27B's lens never shows the right ordinal at the bridge word, and the report needs the address more than the lens part, but not by the 0.3 the rule asks: neither reading holds.
+- **Caveats.**
+  - One cell tested (the 27B, question last); every other cell failed its gate.
+  - The report loses 0.28 without the address, just under the rule's 0.3.
+
 ### Does the bridge word redirect the lookup only when its locker sentence came first? (the split by sentence order; Lightning's opened 29 Oct 01:54) <a id="order"></a>
 
 *Used in: README Part IV card "Sentence order: where the link is made" and claims table row 10 (9B, 27B, Muse); Lightning not in the README yet. Story: where and when.*
@@ -1083,6 +1111,33 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 - **Caveats.**
   - Lightning's column comes from a later verdict folder that re-reads the 27B with the same rows.
   - The refit is read on half the scenes (150 per kind).
+
+### Is the address the recall's second route? (the address as the recall's second route, 48 route2, opened 28 Oct) <a id="t48-5"></a>
+
+*Used in: README Part VI, "What did not hold" (the address is the recall's second route; 9B, 27B, Muse). Story: what did not hold.*
+
+- **Question.** Writing another slot's address at the bridge word, does the recall then name the item in that slot (slot k's item), as a second route besides the lens part?
+- **Why we asked.** The recall loses some switches without the address; the address might be a route into the recall too.
+- **Data.** Clean one-pick scenes with both items' lockers before the asked pick, informative writes: 224<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| qwen35_9b_x48_route2 :: 224 (34) :: 224 --> / 316<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| x48_route2_27b :: 316 (36) :: 316 --> / 208<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| muse30_x48_route2 :: 208 (36) :: 208 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
+- **Method.** At the bridge word at L: (i) the change without its lens part alone; (ii) the address of slot k written; (iii) the write alone; (iv) a random vector of the write's size; the recall's answer sorted by the attribute it matches.
+- **Rule, fixed in advance.** "the recall's second route is the address if under (ii) the recall names slot k's item in >= 0.3 of the informative writes with the random vector (iv) <= 0.05 (point estimates), on >= 2 of 3 models."
+
+![Every mechanism we proposed for the split failed its rule](../../figures/story/fig15_mechanisms.png)
+*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the fourth panel (recalls naming the item in the swap's target locker); 9B, 27B, Muse.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | (ii) the address written: recalls naming slot k's item (bar >= 0.3) | 0.10 [0.06, 0.15]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| qwen35_9b_x48_route2 :: 224 (34) :: 0.10 [0.06, 0.15] --> | 0.04 [0.02, 0.07]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| x48_route2_27b :: 316 (36) :: 0.04 [0.02, 0.07] --> | 0.07 [0.03, 0.12]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| muse30_x48_route2 :: 208 (36) :: 0.07 [0.03, 0.12] --> | not tested (gate) |
+  | (iv) a random vector of its size (bar <= 0.05) | 0.01 [0.00, 0.02]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| qwen35_9b_x48_route2 :: 224 (34) :: 0.01 [0.00, 0.02] --> | 0.02 [0.01, 0.04]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| x48_route2_27b :: 316 (36) :: 0.02 [0.01, 0.04] --> | 0.05 [0.02, 0.09]<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| muse30_x48_route2 :: 208 (36) :: 0.05 [0.02, 0.09] --> | |
+  | holds | **no<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| qwen35_9b_x48_route2 :: 224 (34) :: no -->** | **no<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| x48_route2_27b :: 316 (36) :: no -->** | **no<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| muse30_x48_route2 :: 208 (36) :: no -->** | |
+
+- **Read.**
+  - Writing another slot's address makes the recall name that slot's item in at most a tenth of writes on all three models: the address is not the recall's second route.
+- **Caveats.**
+  - Muse's random vector reaches 0.05, at the rule's bar.
+  - Clean scenes with both lockers first only.
 
 ### Is the person mark spread over the locker sentence? (pooled person probe, 49.3; the 27B's coverage run 29 Oct) <a id="t49-3"></a>
 
