@@ -195,8 +195,11 @@ def pools(tok) -> tuple[dict[str, int], list[str], list[str]]:
     return legs, animals, people
 
 
-def scenes(tok, n: int, seed: int = SEED, rendering: str = "chat") -> tuple[list[dict], collections.Counter]:
-    """n scenes per condition: O, S and the answers each route predicts; drops counted by reason."""
+def scenes(
+    tok, n: int, seed: int = SEED, rendering: str = "chat", fmt: str = "prose"
+) -> tuple[list[dict], collections.Counter]:
+    """n scenes per condition: O, S and the answers each route predicts; drops counted by reason. fmt (53.7): the
+    scenes' rendering, prose or x53_7's code / tool (the same generator and seed; a format drops its own scenes)."""
     legs, animals, people = pools(tok)
     rng = random.Random(seed)
     out, dropped = [], collections.Counter()
@@ -233,7 +236,7 @@ def scenes(tok, n: int, seed: int = SEED, rendering: str = "chat") -> tuple[list
                 s_pick, bridge = [(q, B if q == asked else x) for q, x in picks], B
                 expect = {"identity": b, "position": c, "value": e, "original": a}
             s = context(s_lock, s_pick)
-            case, why = encode(tok, o, s, asked, A, bridge, legs, expect, cond, f"{cond}-{i:04d}", rendering)
+            case, why = encode(tok, o, s, asked, A, bridge, legs, expect, cond, f"{cond}-{i:04d}", rendering, fmt)
             if case is None:
                 dropped[f"{cond}: {why}"] += 1
             elif sum(c_["condition"] == cond for c_ in out) < n:
@@ -253,9 +256,11 @@ def encode(
     cond: str,
     scene: str,
     rendering: str = "chat",
+    fmt: str = "prose",
 ):
     """Both readers' O and S prompts; the bridge one token at the same index in O and S (asserted). rendering: chat
-    (tasks_v2's prompt) or nochat (X0's prompt without the chat template, 45i)."""
+    (tasks_v2's prompt) or nochat (X0's prompt without the chat template, 45i). fmt (53.7, batch 53): prose (as
+    before), or the scene rendered as code or as tool output (scripts/x53_7.py; chat rendering only)."""
     from bridge_jspace.tokens import raw_encoding
     from scripts import statement_positions as SP
     from scripts import suite_v1 as S
@@ -267,10 +272,16 @@ def encode(
         ids, at = {}, {}
         for v, ctx, x in (("org", o, a_item), ("alt", s, bridge)):
             item = {"format": "prose", "kind": "digit", "context": ctx, "question": q.format(p=asked)}
-            text = X.render(tok, item, rendering, ctx)  # chat: tasks_v2.render(tok, item), as before
+            if fmt == "prose":
+                text = X.render(tok, item, rendering, ctx)  # chat: tasks_v2.render(tok, item), as before
+                sent = f"{asked} picked the {x}."
+                w0 = text.index(ctx) + ctx.index(sent) + sent.index(x)
+            else:  # 53.7: the scene as code or tool output, the bridge located in the rendered prompt
+                from scripts import x53_7 as F
+
+                assert rendering == "chat", f"--format {fmt}: chat rendering only"
+                text, w0 = F.text_and_bridge(tok, ctx, item["question"], "digit", fmt, asked, x)
             enc = raw_encoding(tok, text, offsets=True)
-            sent = f"{asked} picked the {x}."
-            w0 = text.index(ctx) + ctx.index(sent) + sent.index(x)
             ids[v], at[v] = list(enc["input_ids"]), SP.tokens_in(enc["offset_mapping"], w0, w0 + len(x))
         if len(ids["org"]) != len(ids["alt"]) or len(at["org"]) != 1 or at["org"] != at["alt"]:
             return None, "the bridge is not one token at the same index in O and S"
@@ -284,9 +295,12 @@ def encode(
         if readers[X.LOOKUP]["ids"][v][: pos + 1] != readers[X.RECALL]["ids"][v][: pos + 1]:
             return None, "the readers' prompts differ before the bridge"
     routes = {k: S.answer_token(tok, str(v), "digit") for k, v in expect.items() if k != "switch"}
-    return {"scene": scene, "condition": cond, "rendering": rendering, "domain": "animals", "bridge": a_item,
+    case = {"scene": scene, "condition": cond, "rendering": rendering, "domain": "animals", "bridge": a_item,
             "cf_bridge": bridge, "context": o, "cf_context": s, "pos": pos, "space": S.ids(tok, " "),
-            "expect": {k: int(v) for k, v in expect.items()}, "route_tokens": routes, "readers": readers}, ""  # fmt: skip
+            "expect": {k: int(v) for k, v in expect.items()}, "route_tokens": routes, "readers": readers}  # fmt: skip
+    if fmt != "prose":  # 53.7: the case records its format (prose cases unchanged)
+        case["format"] = fmt
+    return case, ""
 
 
 def classify(top: int, case: dict) -> str:
@@ -361,12 +375,16 @@ def prepend_cases(
 
 
 def stage_plan(
-    prepend: tuple[str, ...] = (), rendering: str = "chat", filler_tokens: tuple[int, int] = (10, 12)
+    prepend: tuple[str, ...] = (),
+    rendering: str = "chat",
+    filler_tokens: tuple[int, int] = (10, 12),
+    fmt: str = "prose",
 ) -> None:
     from scripts import statement_positions as SP
 
     tok = SP.load_tokenizer()
-    cases, dropped = scenes(tok, N_GEN, rendering=rendering)
+    assert fmt == "prose" or not prepend, "--format (53.7) is not a --prepend design"
+    cases, dropped = scenes(tok, N_GEN, rendering=rendering, fmt=fmt)
     if prepend:
         fillers = window_fillers(tok, *filler_tokens)
         cases, more = prepend_cases(tok, [c for c in cases if c["condition"] == "C2"], prepend, fillers)
@@ -696,6 +714,7 @@ def stage_run(
     jpp_ks: tuple[int, ...] = (),
     jpp_other: bool = False,
     atom_slices: bool = False,
+    fmt: str = "prose",
 ) -> Path:
     import torch
 
@@ -719,6 +738,7 @@ def stage_run(
     x45k = bool(jpp_ks or jpp_other)
     assert not x45k or (pointer and not prepend), "--jpp-ks / --jpp-other (45k): the pointer directions, no --prepend"
     assert not atom_slices or {X.K_MAIN, 100} <= set(jpp_ks), "--atom-slices (47.1) needs --jpp-ks 25 100"
+    assert fmt == "prose" or (rendering == "chat" and not prepend), "--format (53.7): chat rendering, no --prepend"
     if rendering != "chat":  # 45i: X0's digit read (amendment 3), the read X0's no-template runs use
         X.READ = "digit"
     target = pins.model_pin()["target"]
@@ -762,11 +782,16 @@ def stage_run(
         from scripts import x47_atoms as A
 
         m["x47_1"] = {**A.manifest_record(), "arms": [a for a in ARMS if a.startswith(("no_jpp26", "no_ratoms"))]}
+    if fmt != "prose":  # 53.7 (batch 53): the scenes rendered as code or tool output (scripts/x53_7.py)
+        from scripts import x53_7 as F
+
+        m["x53_7"] = {"format": fmt, "format_text": F.FORMAT_TEXT[fmt], "test": F.TEST, "prediction": F.NO_PREDICTION}
+        m["format"] = fmt
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     warm_cusolver()
     model = load_model()
     tok = model.tokenizer
-    cases, dropped = scenes(tok, N_GEN, rendering=rendering)
+    cases, dropped = scenes(tok, N_GEN, rendering=rendering, fmt=fmt)
     cases = [c for c in cases if c["condition"] in conds]
     if prepend:  # 45a: every base C2 scene in every variant; the variants' fillers recorded before any forward pass
         m["fillers"] = window_fillers(tok, *filler_tokens)
@@ -1679,6 +1704,8 @@ def main() -> None:
     ap.add_argument("--rendering", choices=RENDERINGS, default="chat",
                     help="run / plan: nochat = X0's prompt without the chat template, read by X0's digit rule (45i)")  # fmt: skip
     ap.add_argument("--sealed", action="store_true", help="run: no verdict after the run (batch 45: results closed)")
+    ap.add_argument("--format", choices=("prose", "code", "tool"), default="prose", dest="fmt",
+                    help="run / plan (53.7): the scenes as prose (default), Python code or tool output (scripts/x53_7.py)")  # fmt: skip
     ap.add_argument("--jpp-ks", nargs="+", type=int, default=[], choices=JPP_KS,
                     help="run: 45k's J++ removed at these atom counts, each against its random part (25: no_jpp)")  # fmt: skip
     ap.add_argument("--jpp-other", action="store_true", help=f"run: 45k's jpp_other at k = {JPP_OTHER_K}")
@@ -1691,7 +1718,7 @@ def main() -> None:
     a = ap.parse_args()
     prepend = tuple(v for v in a.prepend.split(",") if v)
     if a.stage == "plan":
-        stage_plan(prepend, a.rendering, tuple(a.filler_tokens))
+        stage_plan(prepend, a.rendering, tuple(a.filler_tokens), a.fmt)
         return
     if a.stage == "examples":
         stage_examples(a.name)
@@ -1726,6 +1753,7 @@ def main() -> None:
             jpp_ks=tuple(a.jpp_ks),
             jpp_other=a.jpp_other,
             atom_slices=a.atom_slices,
+            fmt=a.fmt,
         )
     if a.stage == "verdict" or not (a.smoke or a.sealed):
         stage_verdict(a.name, a.n_boot)

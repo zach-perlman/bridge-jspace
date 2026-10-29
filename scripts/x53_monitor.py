@@ -80,7 +80,9 @@ D_MODEL = {"qwen3.5-9b": 4096, "qwen3.6-27b": 5120, "muse-glimmer-30b": 6656, "n
 X52_READ = {"qwen3.5-9b": "qwen35_9b_x52_read_main", "qwen3.6-27b": "x52_read_main_27b",
             "muse-glimmer-30b": "muse30_x52_read_main", "nemotron-3.5-lightning": "nem35l_x52_read_main"}  # fmt: skip
 SETS = ("main", "json")
-SET_TEXT = {"main": "our main test (X0's scenes)", "json": "the varied scenes, JSON format (x0b_v2)"}
+SET_TEXT = {"main": "our main test (X0's scenes)", "json": "the varied scenes, JSON format (x0b_v2)",
+            # 53.7 (batch 53, scripts/x53_7.py): the main test's items rendered as code / tool output; never in SETS
+            "code": "the main test's scenes as Python code (53.7)", "tool": "the main test's scenes as tool output (53.7)"}  # fmt: skip
 JSON_SET, JSON_FORMAT = "x0b_v2", "json"
 VARIANTS = ("org", "alt")
 POS = ("B", "T_lookup", "T_recall")
@@ -185,7 +187,16 @@ def json_items(tok) -> tuple[list[dict], dict]:
     return out, kept
 
 
-BUILD = {"main": lambda tok, target: main_items(tok, target), "json": lambda tok, target: json_items(tok)}
+def x53_7_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
+    """53.7's datasets (code, tool): the main test's items rendered in the format (scripts/x53_7.py main_items)."""
+    from scripts import x53_7 as F
+
+    return F.main_items(tok, target, fmt)
+
+
+BUILD = {"main": lambda tok, target: main_items(tok, target), "json": lambda tok, target: json_items(tok),
+         "code": lambda tok, target: x53_7_items(tok, target, "code"),
+         "tool": lambda tok, target: x53_7_items(tok, target, "tool")}  # fmt: skip
 
 
 def layers_for(n_layers: int) -> tuple[int, ...]:
@@ -354,7 +365,9 @@ def manifest(name: str, target: str, extra: dict) -> dict:
             **extra}  # fmt: skip
 
 
-def stage_run(name: str) -> Path:
+def stage_run(name: str, sets_run: tuple[str, ...] = SETS, model=None, extra: dict | None = None) -> Path:
+    """sets_run, model, extra (53.7, scripts/x53_7.py): the datasets to record (default SETS, as before), an already
+    loaded model, and more manifest keys (53.7's gate)."""
     import torch
 
     from bridge_jspace import chat
@@ -363,6 +376,7 @@ def stage_run(name: str) -> Path:
 
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "x53 reads the sources' chat prompts: run with BJ_FORMAT unset"
+    assert set(sets_run) <= set(BUILD), f"datasets {sets_run}: of {tuple(BUILD)}"
     target = pins.TARGET
     assert target in MODELS, f"x53_monitor runs on {MODELS}, not {target}"
     n_layers = pins.TARGETS[target]["n_layers"]
@@ -370,16 +384,17 @@ def stage_run(name: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     inputs = [SPEC, pins.DATA_DIR / "tasks_v2" / JSON_SET / "items.jsonl"]
     m = manifest(name, target, {"inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p) for p in inputs},
-                                "layers_candidate": list(layers_for(n_layers)), "n_layers": n_layers})  # fmt: skip
+                                "layers_candidate": list(layers_for(n_layers)), "n_layers": n_layers,
+                                **({"sets_run": list(sets_run)} if sets_run != SETS else {}), **(extra or {})})  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
-    model = load_model()
+    model = model if model is not None else load_model()
     lens = JLens(model, "jpp")
     layers = tuple(la for la in layers_for(n_layers) if la in lens.source_layers)
     assert layers, "the J++ lens has no map at any candidate layer"
     sets: dict[str, Any] = {}
-    for s in SETS:
+    for s in sets_run:
         items, counts = BUILD[s](model.tokenizer, target)
         check_items(items)
         assert items, f"{s}: no items"

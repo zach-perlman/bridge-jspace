@@ -1,0 +1,52 @@
+id: x53_7_probe_27b
+title: "Batch 53, test 53.7 (the pointer in code and tool output) on the 27B (L32): the address probe (x0_probe v4, d1_topics_v4) with the scenes rendered as Python code and as tool output; the main gate per format first, then the states at the bridge word, then the verdict into results/x0_probe/x53_7_probe-<UTC>/; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_7.py probe-run --name x53_7_probe_27b &&
+  uv run python scripts/x53_7.py probe-verdict --names x53_7_probe_27b_code,x53_7_probe_27b_tool
+question: >-
+  With our locker scenes rendered as Python code and as a tool's output, does the bridge word at L32 still hold which
+  locker sentence holds the item's locker (and only weakly the answer digit), as in prose?
+why_it_matters: >-
+  Dan 11:10 (jobs/c3/batch53.yaml next_1110 item 2): "53.7 (the pointer in code and tool output): start now on any free
+  GPU, 27B then 9B." 09:50 priority 6: "53.7: the pointer in code and tool output (routes, address probe, monitor)."
+  Dan 11:25 (critic_1125) confirmed the reading: the locker scenes rendered as Python and as tool output, rules verbatim.
+hypotheses:
+  none: "no prediction (batch 53, 53.7; UNVERIFIED)"
+decision_rule: >-
+  The address probe's own: none, descriptive (x0_probe v4, added after the data, Dan 24 Oct). The reading stated beside,
+  verbatim: "(a) high in locker-before and at chance in locker-after -> the answer value is stored at the word, not in
+  J++ form; (b) high in locker-before with (a) at chance -> the word stores an address (a lookback-style pointer). In
+  locker-after scenes the locker sentence follows the word, so (a) and (b) cannot be read there from the locker sentence
+  itself: that stratum is the control by construction." Probes, folds, baselines and bootstrap as x0_probe (one-hot
+  ridge on standardised states, penalty by inner 4-fold CV; (a), (b) 5 folds by bridge entity, (c) by item; majority,
+  chance, structure and layout baselines; cluster bootstrap over entities, 10,000, seed 0), on every scene of the run
+  that aligns. Gate (53.7; the probe has none of its own): the main test's gate, X0's, per format over the probe's own
+  scenes: the unedited O prompt's chat read right on >= 0.80 for both readers; a failed format is "not tested (gate x <
+  0.80)": no states kept, no probe.
+controls:
+- "the locker-after stratum (the control by construction)"
+- "the bridge identity probe (positive control)"
+- "majority, chance, structure (pick index) and layout baselines, cross-validated"
+- "the prose v4 run of the same model beside (x0_probe_v4_27b), descriptive"
+n: "d1_topics_v4 (1,500 scenes): tool output keeps all 1,500 (46 bridge entities); code keeps 682 (Greek 500, animals 182, elements 0: an item name after a quote is one token for 22 of 32 animals, 1 of 6 elements, 8 of 8 Greek letters on the 27B tokenizer); plan: scripts/x53_7.py plan"
+seeds: [0]
+notes: >-
+  Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED; rule verbatim from the address probe (x0_probe v4). Renderings
+  (scripts/x53_7.py, fixed before any run): code = the scene as Python in the user turn (tasks_v2's code framing):
+  picks = {} and lockers = {}, then one assignment per statement in the scene's order (picks["Eva"] = "oxygen";
+  lockers["oxygen"] = 5; a number word stays a word), then the question and the digit instruction; tool = the scene's
+  text verbatim as the response of a declared tool (get_notes, the template's tools block) after the user's "Look up my
+  notes." and the assistant's call, then the question and the instruction in a new user turn; thinking off, "Answer:"
+  prefilled. Only the rendering changes; the probe targets read the prose statements, whose order both formats keep.
+  Layer: the model's L (L32). One forward per scene and reader of the O prompt with the digit's space appended: the
+  chat read (the gate) and, on the lookup's, the block output at the bridge word (x0_probe's state; causal). Writes
+  results/x0_probe/x53_7_probe_27b_{code,tool}/ (x0_probe's run layout + gate.json, reads.jsonl), then the verdict
+  (probe.json and probe.png per format, verdict.md / .json) into results/x0_probe/x53_7_probe-<UTC>/. Estimate: 4,364
+  forwards (code 682 x 2 at ~108 tokens, tool 1,500 x 2 at ~351 tokens) against x0_probe_27b's 600 in 121 s, plus the
+  CPU verdict (x0_probe.score, 9 cells x 2 formats, 10,000 resamples): ~20 min.
