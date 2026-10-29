@@ -145,7 +145,10 @@ def lens_file(model: str) -> Path:
 
 
 class Readout:
-    """One model's readout on the CPU: W_U (fp32), the final norm, the lens maps (fp32 per layer, a few kept)."""
+    """One model's readout on the CPU: W_U (bf16 as stored, used in fp32 a chunk at a time), the final norm, the lens
+    maps (fp32 per layer, a few kept)."""
+
+    CHUNK = 32768  # W_U rows converted to fp32 at a time (~0.7 GB for the 27B / Muse)
 
     def __init__(self, model: str):
         import torch
@@ -156,7 +159,7 @@ class Readout:
         self.model = model
         path, self.head = head_path(model)
         t = load_file(str(path))
-        self.w_u = t["lm_head.weight"].float()
+        self.w_u = t["lm_head.weight"]  # as stored (bf16): fp32 copies are made a chunk at a time (half the RAM)
         self.norm_w = t["norm.weight"]
         self.kind = self.head.get("norm_kind") or NORM_DEFAULT[model]
         self.eps = float(self.head.get("eps") or 1e-6)
@@ -194,7 +197,9 @@ class Readout:
         """Model.unembed on the CPU: [n, d] -> [n, vocab] fp32 logits (bf16-rounded as the GPU returns them)."""
         import torch
 
-        logits = (self.norm(x).float() @ self.w_u.T).to(torch.bfloat16).float()
+        y = self.norm(x).float()
+        logits = torch.cat([(y @ self.w_u[s : s + self.CHUNK].float().T).to(torch.bfloat16).float()
+                            for s in range(0, self.w_u.shape[0], self.CHUNK)], dim=1)  # fmt: skip
         if self.mult:
             logits = logits * float(self.mult)
         if self.cap:
@@ -209,7 +214,7 @@ class Readout:
         """X0's dictionary rows for these tokens: unit (g W_U[t]) J_l (JLens.vectors)."""
         import torch
 
-        rows = (self.w_u[torch.as_tensor(ids, dtype=torch.long)] * self.gain) @ self.J(layer)
+        rows = (self.w_u[torch.as_tensor(ids, dtype=torch.long)].float() * self.gain) @ self.J(layer)
         return torch.nn.functional.normalize(rows, dim=-1)
 
     def decode(self, t: int) -> str:
@@ -496,6 +501,34 @@ def check_51_12(st: dict, it: dict, model: str) -> list[dict]:
     return out
 
 
+def stored_share(it: dict, layer: int) -> float | None:
+    """The item's run's own J++ share (k 25, signed) of the change at L: X0's shares.jsonl, or the routes / 51.12 runs'
+    norms.jsonl share_jpp."""
+    run = it["run"]
+    for r in I.read_jsonl(f"{run}/shares.jsonl"):
+        if (r["scene"], r.get("dict"), r.get("k"), r.get("omp")) == (it["scene"], "jpp", 25, "signed") and \
+                r.get("layer", layer) == layer and r.get("rendering", "chat") == "chat":  # fmt: skip
+            return float(r["share"])
+    for r in I.read_jsonl(f"{run}/norms.jsonl"):
+        key = r.get("scene", r.get("key"))
+        if key == it["scene"] and r.get("condition") in (None, it["condition"]) and "share_jpp" in r:
+            return float(r["share_jpp"])
+    return None
+
+
+def check_share(st: dict, it: dict, model: str) -> list[dict]:
+    """At L and the bridge word: the states job's J++ share of the change vs the item's run's stored one."""
+    la = model_layer(model)
+    ref = stored_share(it, la) if it["layer"] == la else None
+    po = [int(x) for x in st["pos_O"]]
+    r = next((i for i, (a, _) in enumerate(st["pairs"]) if po[int(a)] == int(st["meta"]["pos"])), None)
+    if ref is None or r is None:
+        return []
+    mine = float(st["jpp_share"][r, la])
+    return [{"check": "J++ share of the change at L (the run's stored)", "panel": round(mine, 4), "stored": round(ref, 4),
+             "ok": abs(mine - ref) <= 0.02}]  # fmt: skip
+
+
 def check_x52(st: dict, it: dict, model: str) -> list[dict]:
     """At L and the bridge word: the panel's 25 atoms (the states job's fit) vs x52_atoms' for the same scene."""
     row = x52_rows(model).get(it["scene"])
@@ -722,7 +755,7 @@ def atoms_html(st, it, model, pos, layer) -> str:
 
 
 def checks_html(st, it, model) -> str:
-    rows = check_51_12(st, it, model) + check_x52(st, it, model)
+    rows = check_51_12(st, it, model) + check_x52(st, it, model) + check_share(st, it, model)
     if not rows:
         return "<div class='box mut'>Self-checks: no 51.12 or x52_atoms row for this item.</div>"
     trs = "".join(f"<tr><td>{E(r['check'])}</td><td>{r['panel']}</td><td>{r['stored']}</td>"
@@ -803,8 +836,11 @@ def rank_table(rows: list[dict]) -> list[dict]:
             share = {p: sum(x is not None and x <= TOP50 for x in xs) / n for p, xs in vals.items()}
             med = {p: float(np.median([x for x in xs if x is not None])) for p, xs in vals.items()}
             gap = share["rest"] - share["rand"]
+            # flag: the reading used (rest's share minus random's >= 0.20); flag_alt: the other reading of the sentence
+            # (the rest puts it in the top 50 on >= 20% of items, and more often than the random part)
             out.append({"model": m, "view": v, "condition": c, "kind": kind, "n": n, "top50": share, "median": med,
-                        "rest_minus_rand": gap, "flag": gap >= FLAG_GAP - 1e-9})  # fmt: skip
+                        "rest_minus_rand": gap, "flag": gap >= FLAG_GAP - 1e-9,
+                        "flag_alt": share["rest"] >= FLAG_GAP - 1e-9 and share["rest"] > share["rand"]})  # fmt: skip
     return out
 
 
@@ -848,6 +884,8 @@ def jread_rank_rows(model: str) -> list[dict]:
     layers = [int(x) for x in z["layers"]]
     li, p1 = layers.index(layer), JR.POS.index("P1")
     h = z["h"][:, 0, :, p1, li].astype(np.float32)  # [n, O/S, d]: the lookup's prompts
+    del z
+    gc.collect()
     cases = X.read_jsonl(src / "cases.jsonl")
     x = torch.tensor(h[:, 1] - h[:, 0])
     ro = readout(model)
@@ -888,6 +926,22 @@ def jread_rank_rows(model: str) -> list[dict]:
 SECTION = "## J-space rank checks (inspector)"
 
 
+def share_gaps(rows: list[dict]) -> dict[tuple[str, str], tuple[float, int]]:
+    """Per (model, test): the largest |J++ share - the run's stored share| and over how many items it was compared."""
+    got: dict[tuple[str, str], list[float]] = collections.defaultdict(list)
+    for r in rows:
+        if r.get("stored_share") is not None:
+            got[(r["model"], r["view"])].append(abs(float(r["share"]) - float(r["stored_share"])))
+    return {k: (max(v), len(v)) for k, v in sorted(got.items())}
+
+
+def with_stored_shares(rows: list[dict], model: str) -> list[dict]:
+    """51.10-state rows: the conflict test run's own stored share beside each (X0's shares.jsonl at L)."""
+    la = model_layer(model)
+    by = {it["scene"]: it for it in I.items("main_swap", model) if it["reader"] == "PP"}
+    return [{**r, "stored_share": stored_share(by[r["scene"]], la) if r["scene"] in by else None} for r in rows]
+
+
 def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> str:
     table = rank_table(rows)
     flags = [t for t in table if t["flag"]]
@@ -899,24 +953,36 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              "rest and of a random part of the same share; the share of items with it in the top 50 for each. Flag if the "
              "rest puts it in the top 50 on >= 20% of items more often than the random part does. The same for the answer "
              "words. No rule change: this is a check.\"", "",
+             "The per-item panel: \"Look into J-space\" on every card of `make review-serve` (the state, the change, its "
+             "J++ part, the rest, the random part and U at any saved token and layer; J++ and logit-lens top 30; typed and "
+             "listed tokens' ranks; a token x layer heatmap; the change's 25 atoms at L; self-checks against 51.12 and "
+             "x52_atoms; a free-text note per item, saved in review/marks.jsonl as kind \"jspace\").", "",
              "As computed (scripts/review_jspace.py rank-check): the readout is the J++ lens (JLens.readout) at L; the J++ "
              "part is X0's 25-atom signed OMP over the J++ letter-token atoms, the rest = Δ minus it, the random part X0's "
              "(seed 888 + L) at the J++ part's share; rank = 1 + tokens with a strictly larger logit, a word's best token "
              "(S's bridge: its one-token spellings and symbol, then also the first pieces of split spellings; an answer: "
              "its digit and its number word). Flag read as: (share in the top 50 under the rest) minus (under the random "
-             f"part) >= {FLAG_GAP:.2f}. Routes: per condition and over all. "
+             f"part) >= {FLAG_GAP:.2f} (the agent's reading of the sentence; to confirm). Beside it, column 'alt': the "
+             f"other reading, the rest's share >= {FLAG_GAP:.2f} and above the random part's. Routes: per condition and "
+             "over all. By construction the random part keeps share x Δ along Δ itself (statement_positions."
+             "random_subspace_part's docstring), so it carries whatever Δ's own direction reads as. "
              + (f"Sources: {'; '.join(f'{label.get(m, m)}: `{s}`' for m, s in sorted(sources.items()))}. " if sources else "")
              + note, "",
              f"**Flags: {len(flags)}**" + (": " + "; ".join(f"{label.get(t['model'], t['model'])} {t['view']} "
                                                              f"{t['condition']}, {t['kind']} (rest {t['top50']['rest']:.2f} vs "
-                                                             f"random {t['top50']['rand']:.2f})" for t in flags) if flags else "."),
+                                                             f"random {t['top50']['rand']:.2f})" for t in flags) if flags else ".")
+             + f" Under the other reading: {sum(t['flag_alt'] for t in table)}.", "",
+             "The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: "
+             + "; ".join(f"{label.get(m, m)} {v}: max |gap| {g:.4f} over {n}" for (m, v), (g, n) in share_gaps(rows).items())
+             + ".",
              "", "| model | test | condition | token | n | top 50: J++ part | rest | random part | rest - random | flag | "
-             "median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+             "alt | median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in table:
         s, md = t["top50"], t["median"]
         lines.append(f"| {label.get(t['model'], t['model'])} | {t['view']} | {t['condition']} | {t['kind']} | {t['n']} | "
                      f"{s['jpp']:.2f} | {s['rest']:.2f} | {s['rand']:.2f} | {t['rest_minus_rand']:+.2f} | "
-                     f"{'FLAG' if t['flag'] else ''} | {md['jpp']:.0f} / {md['rest']:.0f} / {md['rand']:.0f} |")  # fmt: skip
+                     f"{'FLAG' if t['flag'] else ''} | {'flag' if t['flag_alt'] else ''} | "
+                     f"{md['jpp']:.0f} / {md['rest']:.0f} / {md['rand']:.0f} |")  # fmt: skip
     return "\n".join(lines) + "\n"
 
 
@@ -941,7 +1007,13 @@ def stage_rank_check(from_jread: tuple[str, ...] = ()) -> str:
     for m in from_jread:
         if m in sources:
             continue
-        rows += jread_rank_rows(m)
+        kept = PANEL_CACHE / f"rank_rows_jread_{m}.jsonl"  # computed once (a CPU dictionary at L), then reused
+        if kept.exists():
+            got = [json.loads(line) for line in kept.read_text().splitlines() if line.strip()]
+        else:
+            got = jread_rank_rows(m)
+            write_text(kept, "".join(json.dumps(r) + "\n" for r in got))
+        rows += with_stored_shares(got, m)
         sources[m] = "51.10's cached states (results/x51_jread, CPU; conflict test only)"
         note = "Models read from 51.10's states: the conflict test only, until their states job lands. "
     text = rank_section(rows, sources, note)
@@ -979,9 +1051,12 @@ def stage_selfcheck() -> list[dict]:
                 st = states(m, v["id"], it["id"])
                 if st is None:
                     continue
-                for r in check_51_12(st, it, m) + check_x52(st, it, m):
+                for r in check_51_12(st, it, m) + check_x52(st, it, m) + check_share(st, it, m):
                     out.append({"view": v["id"], "item": it["id"], **r})
                     print(json.dumps(out[-1]))
+    n_ok = sum(bool(r["ok"]) for r in out)
+    print(f"self-checks: {n_ok} of {len(out)} equal")
+    write_text(PANEL_CACHE / "selfcheck.json", json.dumps({"equal": n_ok, "rows": out}, indent=1) + "\n")
     return out
 
 
