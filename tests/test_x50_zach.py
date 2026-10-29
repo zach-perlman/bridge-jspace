@@ -510,6 +510,6 @@ def test_lightning_coverage_reads_the_committed_layer_and_his_band(monkeypatch):
     lt = "nemotron-3.5-lightning"
     assert Z.LAYERS[lt] == (L6.committed_layer(), 27) and Z.BESIDE_BAND[lt] == "L27-33"
     assert (Z.pins.RESULTS_DIR / "ablate_v2" / Z.BESIDE[lt]["full"]).exists()
-    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z3"}
+    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z2", "z3"}
     monkeypatch.setattr(Z, "COVERAGE", True)
     assert Z.require_answer("z1") == Z.NO_PREDICTION

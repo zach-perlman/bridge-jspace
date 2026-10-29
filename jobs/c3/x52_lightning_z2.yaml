@@ -1,0 +1,43 @@
+id: x52_lightning_z2
+title: "Batch 52 C coverage (Lightning, amendment 2's full grid): Zach's Z2 on Lightning: our change-removal on his never-named-bridge passages (M-start; the description changed to another entity's; reader K the lookup, M the recall), whole / without J++ / without a random part, at X0's committed L14 and his band's start L27 (as Lightning's Z1 / Z3), his stored knock-out rows beside; rule unchanged; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L; hollow gate)" &&
+  uv run python scripts/x50_zach.py run --part z2 --name nem35l_x52_z2 &&
+  printf '%s\n' "$NOTE" > results/x50_zach/nem35l_x52_z2/coverage.txt &&
+  uv run python scripts/x50_zach.py verdict --part z2 --coverage
+question: >-
+  On Lightning, in Zach's passages where the bridge is never named (only described), does the recall need the lens part
+  of the change at the description and the lookup not (the split), or does the lookup follow the lens here?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning; completes Part V's Z1 / Z2 row (Z1 and Z3 ran on Lightning, Z2 did not).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule unchanged, verbatim from jobs/c3/x50_z2_muse_s.yaml (jobs/c3/batch50.yaml, Z2; first scored in
+  results/x50_zach/z2-20261028T162710Z): "per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10;
+  (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." As computed: x50_z2_muse_s's
+  text unchanged (his v2 facts module, jsuite_v2_test_chat then jsuite_v2nb_test_chat if short; his M-start scenes,
+  MK = our lookup (reader K), MM = our recall (reader M), the same question and answer; the leak filter; S = the
+  question describes another entity of the passage by one of its v2 descriptions ending at the same token index,
+  options seeded 5001; the description competence step, >= 0.90 per description over 10 prompts; the read gate 0.80 per
+  reader; arms whole / without J++ (signed OMP, k = 25) / without a random part of its share (seed 888 + L); cluster
+  bootstrap over the bridge entity, 10,000, seed 0; point estimates decide, EPS 1e-9) on Lightning's tokenizer. Layers:
+  Lightning's Z1 / Z3 design (jobs/c3/x52_lightning_zach.yaml, Muse's for a model whose X0 layer lies below his band):
+  X0's committed L14 (amendment 1) and his Lightning band's start L27 (of L27-33), both reported; his stored full and
+  question-only knock-out rows on Lightning (nem35l_jsuite_v2_test_chat_ko_cand2_v1, ..._posquestion_v1) beside. Cells
+  under 30 switches left out (amendment 3). Verdict in the job (verdict --coverage, results/x50_zach/x52_z2-<UTC>/).
+controls:
+- "the J++ part against a random part of its own share (X0's random subspace, seed 888 + L)"
+- "the recall (M) on the same passage and the same counterfactual (the gap)"
+- "the description competence step (>= 0.90 per description) and the read gate (0.80 per reader)"
+- "beside: Zach's stored per-item J++ top-10 knock-out on Lightning at L27-33, all positions and question-only (BESIDE), joined by item id; no rerun"
+n: "up to 200 eligible passages (his main set, the second seed only if short); the job may end below 200"
+seeds: [2601, 2701, 5001, 0, 888]
+notes: "Batch 52 C, amendment 2 (coordinator 03:10 Paris). Box: mats (Lightning's Z1 / Z3 ran there: its weights and his sets in the checkout). Code: x50_zach.COVERAGE_RUNS['z2'] = Lightning's run (a lookup; LAYERS / BESIDE / BESIDE_BAND already hold Lightning; the run asserts LAYERS' first layer is the committed L; batch 50's RUNS and own verdict unchanged). Checked on a planted run (Muse's Z2 relabelled): verdict --coverage passes. Retry once, then skip with the reason logged. Wallclock (ledger_sesterce-h100x2): x50_z2_muse_s 1,055 s (two layers), x52_lightning_zach 1,010 s (Z1 + Z3, two layers): est ~15-20 min, 0.4 GPU-h; opens before the freeze."
