@@ -1,6 +1,6 @@
 # The joint deck, slide by slide (Fri 30 Oct)
 
-From the deck skeleton brief (29 Oct ~23:45, Section 3), with the figure paths filled in. Figures: `uv run python scripts/deck_figures.py` → `figures/deck/` (2400 × 1350 px; captions and n per bar in [figures/deck/CAPTIONS.md](../../figures/deck/CAPTIONS.md)). Numbers on the slides are the figures' own (read from figures/story/data.csv, docs/breadth/data.csv, docs/shared/grid.csv); "pending hand-check" tags stay until VERIFIED.md says otherwise.
+From the deck skeleton brief (29 Oct ~23:45, Section 3), with the figure paths filled in. Figures: `uv run python scripts/deck_figures.py` → `figures/deck/` (2400 × 1350 px; captions and n per bar in [figures/deck/CAPTIONS.md](../../figures/deck/CAPTIONS.md)). Numbers on the slides are the figures' own (read from figures/story/data.csv, docs/breadth/data.csv, docs/shared/grid.csv); no "pending hand-check" labels on the figures (Dan, 29 Oct ~23:40).
 
 **Before the deck is built (the brief's own list):** Dan and Zach decide rows 1, 4, 5 and 9 of [conflicts_with_joint.md](conflicts_with_joint.md). The root README rewrite (the brief's Section 7: new "In one minute", renumbering, deleting the sentences that lost) waits for those decisions; it is not done.
 

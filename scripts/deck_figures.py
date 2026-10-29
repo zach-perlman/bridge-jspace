@@ -32,11 +32,10 @@ BREADTH = REPO / "docs/breadth/data.csv"
 GRID = REPO / "docs/shared/grid.csv"
 W, H, DPI = 16, 9, 150  # 2400 x 1350 px
 COL = {"recall": "#3a3a3a", "lookup": "#6a4bd6", "lens": "#14a08a", "address": "#e08a1e", "identity": "#2b7bba",
-       "random": "#9a9a9a", "band": "#efefef", "muted": "#666666", "tag": "#b8433a", "answer": "#b8433a"}  # fmt: skip
+       "random": "#9a9a9a", "band": "#efefef", "muted": "#666666", "answer": "#b8433a"}  # fmt: skip
 DAN = (("qwen3.5-9b", "9B"), ("qwen3.6-27b", "27B"), ("muse-glimmer-30b", "Muse"),
        ("nemotron-3.5-lightning", "Lightning ○"), ("qwen3.5-122b-a10b", "122B"))  # fmt: skip
 ZACH = (("q27", "27B"), ("q9", "9B"), ("nl", "Lightning"))
-PENDING = "pending hand-check"
 plt.rcParams.update({"font.size": 14, "axes.titlesize": 16, "axes.labelsize": 14, "xtick.labelsize": 13,
                      "ytick.labelsize": 14, "legend.fontsize": 13})  # fmt: skip
 CAPTIONS: list[str] = []
@@ -68,12 +67,9 @@ def num(r: dict, k: str = "value") -> float | None:
 S, B = story(), breadth()
 
 
-def head(fig, title: str, sub: str, pending: bool = False) -> None:
+def head(fig, title: str, sub: str) -> None:
     fig.text(0.015, 0.975, title, ha="left", va="top", fontsize=21, weight="bold")
     fig.text(0.015, 0.915, "\n".join(textwrap.wrap(sub, 150)), ha="left", va="top", fontsize=15, color=COL["muted"])
-    if pending:
-        fig.text(0.985, 0.85, PENDING, ha="right", va="top", fontsize=14, color=COL["tag"],
-                 bbox={"boxstyle": "round,pad=0.3", "fc": "white", "ec": COL["tag"]})  # fmt: skip
 
 
 def save(fig, name: str, caption: str) -> None:
@@ -108,7 +104,7 @@ def c1_controls() -> None:
     fig.subplots_adjust(top=0.74, bottom=0.14, left=0.08, right=0.98, wspace=0.35)
     head(fig, "No part of the same size costs recall as much as the lens part",
          "Left: Zach, the lens part removed over a band (recalled minus stated answers lost, points). Right: Dan, "
-         "removed from a one-layer patch (recall's switches lost beyond random).", pending=False)  # fmt: skip
+         "removed from a one-layer patch (recall's switches lost beyond random).")  # fmt: skip
     rows = (("mk", "lens part (J++ top 10)", COL["lens"], "o", False), ("pc", "PCA, same norm", COL["random"], "s", False),
             ("u", "logit-lens directions", COL["random"], "o", True), ("rot", "rotated", COL["random"], "D", False))  # fmt: skip
     ns = []
@@ -155,7 +151,7 @@ def c2_pointer() -> None:
     fig.subplots_adjust(top=0.74, bottom=0.14, left=0.27, right=0.97, wspace=0.45)
     head(fig, "The lens part says which entity it is: a pointer, from any context, not its fact",
          "Left: Zach, another entity's lens part written in (recall moved, points). Right: Dan, what the lens "
-         "part's 25 directions are (share of the rebuilt energy).", pending=True)  # fmt: skip
+         "part's 25 directions are (share of the rebuilt energy).")  # fmt: skip
     labels = ["from D's own passage", "from one neutral sentence", "  without D's own-word directions",
               "  neutral donor, rotated", "the probe's subspace (reads the fact)", "  the lens part, same relations"]  # fmt: skip
     for j, (m, name) in enumerate(ZACH):
@@ -212,7 +208,7 @@ def c3_address() -> None:
     fig.subplots_adjust(top=0.74, bottom=0.14, left=0.12, right=0.98, wspace=0.42)
     head(fig, "The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it",
          "(A) a probe at the bridge word; (B) the address swap by dose; (C) the lens's share rebuilt by 25 "
-         "directions.", pending=True)  # fmt: skip
+         "directions.")  # fmt: skip
     a = axs[0]
     rows = [(m, n, ("fig07", m)) for m, n in DAN]
     probe = "the locker probe at the bridge word, locker-first scenes"
@@ -299,7 +295,7 @@ def c4_readable() -> None:
     fig.subplots_adjust(top=0.74, bottom=0.24, left=0.08, right=0.98, wspace=0.3)
     head(fig, "Readable is not used: the lens reads the entity; the answer does not go through it",
          "Left: Dan, at the last token: a probe on the lens part, the lens swap, the whole-state patch. "
-         "Right: Zach, nine models: carried by a swap, needed.", pending=True)  # fmt: skip
+         "Right: Zach, nine models: carried by a swap, needed.")  # fmt: skip
     qs = (("51.10: recall, last token, read peak: the probe's accuracy on the lens part", "read (probe on the lens part)", COL["recall"]),
           ("51.10: recall, last token, read peak: the lens swap's switches", "lens swap: recalls switched", COL["lens"]),
           ("51.10: recall, last token, read peak: the whole-state patch's switches", "whole-state patch", COL["random"]))  # fmt: skip
@@ -350,7 +346,7 @@ def c9_breaks() -> None:
     fig.subplots_adjust(top=0.74, bottom=0.14, left=0.08, right=0.98, wspace=0.3)
     head(fig, "Where it breaks: the 27B with more directions; passages whose fact the model already knows",
          "Left: the lookup without 25 / 50 / 100 lens directions, beyond random. Right: Zach's named passages, "
-         "true facts (filled) vs made-up facts (open).", pending=True)  # fmt: skip
+         "true facts (filled) vs made-up facts (open).")  # fmt: skip
     for m, n, c in (("qwen3.6-27b", "27B", COL["lookup"]), ("qwen3.5-122b-a10b", "122B", "#b07a0a")):
         cells = [S[("fig02b", m, f"(a) main test, {k} directions: lookup extra loss")] for k in (25, 50, 100)]
         a.plot((25, 50, 100), [c_[0] for c_ in cells], "-o", color=c, ms=10, label=n)
