@@ -1,0 +1,247 @@
+{
+ "runs": [
+  "muse30_x53_z1p"
+ ],
+ "dan": "no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)",
+ "models": [
+  {
+   "run": "muse30_x53_z1p",
+   "target": "muse-glimmer-30b",
+   "layers": [
+    26
+   ],
+   "gate": {
+    "cases": 544,
+    "org_read_accuracy": {
+     "K": 0.78125,
+     "M": 0.8584558823529411
+    },
+    "gate": 0.8,
+    "pass": false,
+    "eligible": 240,
+    "over_zach_kept": {
+     "cases": 195,
+     "org_read_accuracy": {
+      "K": 0.9743589743589743,
+      "M": 0.882051282051282
+     },
+     "pass": true,
+     "eligible": 110
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 85,
+       "no other entity with another answer": 3
+      },
+      "cases": 270
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 83,
+       "no other entity with another answer": 1
+      },
+      "cases": 274
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 120,
+     "jsuite_v2nb_test_chat": 80
+    },
+    "chosen_strata": {
+     "fact-after": 102,
+     "fact-first": 98
+    }
+   },
+   "status": "not tested (gate; numbers descriptive only)",
+   "layer_results": {
+    "26": {
+     "n": 200,
+     "entities": 120,
+     "lookup": {
+      "n": 200,
+      "entities": 120,
+      "S_whole": [
+       0.125,
+       0.0861,
+       0.178
+      ],
+      "S_no_part": [
+       0.115,
+       0.0779,
+       0.1666
+      ],
+      "S_no_rand": [
+       0.12,
+       0.082,
+       0.1723
+      ],
+      "switched_whole": 25,
+      "valid": false,
+      "Jdep": [
+       0.07999999999999996,
+       0.0,
+       0.20833333333333326
+      ],
+      "Rdep": [
+       0.040000000000000036,
+       0.0,
+       0.13636363636363635
+      ],
+      "excess": [
+       0.039999999999999925,
+       0.0,
+       0.1428571428571428
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 120,
+      "S_whole": [
+       0.485,
+       0.4167,
+       0.5539
+      ],
+      "S_no_part": [
+       0.035,
+       0.0171,
+       0.0705
+      ],
+      "S_no_rand": [
+       0.43,
+       0.3633,
+       0.4993
+      ],
+      "switched_whole": 97,
+      "valid": true,
+      "Jdep": [
+       0.9278350515463918,
+       0.872093023255814,
+       0.9739158667419537
+      ],
+      "Rdep": [
+       0.11340206185567014,
+       0.03370786516853941,
+       0.19626168224299056
+      ],
+      "excess": [
+       0.8144329896907216,
+       0.7227722772277227,
+       0.9021739130434783
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.7744329896907217,
+      0.6346091065292097,
+      0.8901132404181185
+     ],
+     "verdict": "the split holds on his passages",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 199,
+        "switch": 1
+       },
+       "whole": {
+        "original": 165,
+        "switch": 25,
+        "other": 10
+       },
+       "no_jpp": {
+        "original": 168,
+        "switch": 23,
+        "other": 9
+       },
+       "no_jpp_rand": {
+        "original": 170,
+        "switch": 24,
+        "other": 6
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 97,
+        "original": 90,
+        "other": 11,
+        "lure": 2
+       },
+       "no_jpp": {
+        "original": 181,
+        "other": 11,
+        "switch": 7,
+        "lure": 1
+       },
+       "no_jpp_rand": {
+        "switch": 86,
+        "original": 97,
+        "other": 15,
+        "lure": 2
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 98,
+        "whole_switch": [
+         0.21428571428571427,
+         0.13,
+         0.30303030303030304
+        ]
+       },
+       "fact-after": {
+        "n": 102,
+        "whole_switch": [
+         0.0392156862745098,
+         0.009433962264150943,
+         0.0784313725490196
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 5.464285714285714,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L36-42",
+    "swap": null,
+    "full": {
+     "run": "muse30_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 110,
+      "m_minus_k": [
+       0.5181818181818182,
+       0.41818181818181815,
+       0.6186541565778853
+      ]
+     },
+     "paper10_rot": {
+      "joined": 110,
+      "m_minus_k": [
+       -0.00909090909090909,
+       -0.02830188679245283,
+       0.0
+      ]
+     }
+    }
+   }
+  }
+ ]
+}
