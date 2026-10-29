@@ -1528,9 +1528,10 @@ JSUITE_NOTES = {("z2p", "qwen3.5-9b"): "not tested\n(gate 0.757\n< 0.80)", ("z2p
 
 
 def jsuite(plt) -> str:
-    """53.1b on four slots: per model and cell of Zach's passages (PP the lookup, PM the recall, on the P passages;
-    MP and MM on the M passages), 51.12's arms: switches lost without the lens part beyond random, and without the
-    answer directions only beyond random; a cell not tested or pending as a grey note; Muse and Lightning grey."""
+    """53.1b on four slots: per model and cell of Zach's made-up-fact passages (PP the lookup and PM the recall on the
+    passages that name the bridge; MP the lookup and MM the recall on the passages that describe it), 51.12's arms:
+    switches lost without the lens part beyond random, and without the answer directions only beyond random; a cell not
+    tested or pending as a grey note; Muse and Lightning grey."""
     v = load(JSUITE)
     by = {(m["set"], m["target"]): m for m in v["models"] if m["status"] == "tested"}
     cells = (("z1p", "lookup", "PP lookup", LOOKUP), ("z1p", "recall", "PM recall", INK),
@@ -1547,8 +1548,8 @@ def jsuite(plt) -> str:
                 else:
                     rows[t].append((lab, m["readers"][rd]["extra"][arm], col, False))
     absent = {"muse-glimmer-30b": "not designed\n(9B / 27B only)", LT: "not designed\n(9B / 27B only)"}
-    return four_panels(plt, "ledger_jsuite", "On Zach's made-up passages both recalls read as mixed",
-                       "Switches lost beyond a random part, 51.12's arms on Zach's passages; whiskers 95%",
+    return four_panels(plt, "ledger_jsuite", "On Zach's named-bridge passages both recalls read as mixed",
+                       "Lost beyond random; P- named bridge, M- described; -P lookup, -M recall; whiskers 95%",
                        rows, absent, "lost beyond random", xlim=(-0.3, 1.0))
 
 

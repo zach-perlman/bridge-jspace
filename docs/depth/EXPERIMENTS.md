@@ -1523,17 +1523,17 @@ New in this ledger:
 
 Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every rule fixed before any run, no predictions, UNVERIFIED; each result gets a card and a figure here, and nothing goes into the README until the next day's verification. In Dan's priority order (53.1b first); the rules are quoted from the brief.
 
-### On Zach's made-up-fact passages, what do the answer control's arms say for each question-and-passage cell? (53.1b, the 9B and the 27B opened 29 Oct ~11:00; the 27B's two passage-without-the-fact cells to come) <a id="b53-1b"></a>
+### On Zach's made-up-fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00; the 27B's two described-bridge cells to come) <a id="b53-1b"></a>
 
 `ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
 
-- **Question.** On Zach's passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say for each cell of his design: the lookup's and the recall's question on the passage that states the fact (PP, PM) and on the one that leaves it out (MP, MM)?
+- **Question.** On Zach's passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say when the passage names the bridge (PP: the lookup reads the made-up value the passage states; PM: the recall answers from memory) and when it describes the bridge instead (MP: the lookup; MM: the recall)? In his codes the first letter is how the bridge enters, the second where the answer comes from; the made-up fact is stated in every cell, so PP against MP is a named against a described bridge, for the lookup.
 - **Why we asked.** Dan's priority 1 of 29 Oct 09:50 ("jsuite PP vs MP, 51.12's arms + readout"): on his passages the cells exist already, no new scenes.
-- **Data.** Zach's passages with made-up facts (Z1-P's items), 200 per cell where tested; the 9B at L12, the 27B at L32.
+- **Data.** Zach's passages with made-up facts: the named bridge (Z1-P's items) and the described bridge (Z2's design, the change at the description's last token); 200 per cell where tested; the 9B at L12, the 27B at L32.
 - **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
 
-![On Zach's made-up passages both recalls read as mixed](../../figures/ledger/ledger_jsuite.png)
-*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its passage-without-the-fact cells not tested: gate), 27B (those cells pending, rerun); Muse and Lightning grey (not designed: 9B / 27B only).*
+![On Zach's named-bridge passages both recalls read as mixed](../../figures/ledger/ledger_jsuite.png)
+*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its described-bridge cells not tested: gate), 27B (its described-bridge cells pending, rerun); Muse and Lightning grey (not designed: 9B / 27B only).*
 
 - **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md; no prediction)
 
@@ -1541,16 +1541,16 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | PP (lookup, fact stated): lost without the lens part, beyond random | -0.05 [-0.13, 0.05]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: -0.05 [-0.13, 0.05] --> | 0.16 [0.06, 0.26]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: 0.16 [0.06, 0.26] --> | not designed | not designed |
+  | PP (lookup, named bridge): lost without the lens part, beyond random | -0.05 [-0.13, 0.05]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: -0.05 [-0.13, 0.05] --> | 0.16 [0.06, 0.26]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: 0.16 [0.06, 0.26] --> | not designed | not designed |
   | PP: the label | **can't tell<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: can't tell -->** | **the answer word is not read at the bridge word<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: the answer word is not read at the bridge word -->** | | |
-  | PM (recall, fact stated): lost without the lens part, beyond random | 0.59 [0.51, 0.67]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: 0.59 [0.51, 0.67] --> | 0.63 [0.54, 0.72]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: 0.63 [0.54, 0.72] --> | | |
+  | PM (recall, named bridge): lost without the lens part, beyond random | 0.59 [0.51, 0.67]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: 0.59 [0.51, 0.67] --> | 0.63 [0.54, 0.72]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: 0.63 [0.54, 0.72] --> | | |
   | PM: the label | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: mixed -->** | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: mixed -->** | | |
-  | MP and MM (the passage without the fact) | not tested (gate 0.757<!-- src: results/x50_zach/qwen35_9b_x53_z2p/gate.json \| "K": 0.757396449704142 :: 0.757 --> < 0.80) | pending (rerun) | | |
+  | MP and MM (described bridge) | not tested (gate 0.757<!-- src: results/x50_zach/qwen35_9b_x53_z2p/gate.json \| "K": 0.757396449704142 :: 0.757 --> < 0.80) | pending (rerun) | | |
 
 - **Read.**
-  - With the fact stated, both recalls read as mixed: keeping the answer's directions keeps only part of the recall's loss, and the answer directions alone cost some of it; the 9B's lookup loses nothing beyond random (cannot tell), and the 27B's answer word is not read at the bridge word.
+  - On the named-bridge passages both recalls read as mixed: keeping the answer's directions keeps only part of the recall's loss, and the answer directions alone cost some of it; the 9B's lookup loses nothing beyond random (cannot tell), and the 27B's answer word is not read at the bridge word.
 - **Caveats.**
-  - The 9B's passages without the fact missed the gate (its lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's are rerunning after a disk-full restart.
+  - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's are rerunning after a disk-full restart.
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
 ### 53.1 (running) <a id="b53-1"></a>
