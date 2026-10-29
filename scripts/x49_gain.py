@@ -80,7 +80,9 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x49_1", "qwen3.6-27b": "x49_1_27b", "muse-glimm
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_gain"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x49_gain/x49_1-20261028T154510Z"  # 49.1's rule first scored (9B, 27B, Muse)
-SOURCES = B.MAIN_RUN  # target -> the main test's X0 run (chat, at X.PREDICTED)
+# target -> the main test's X0 run (chat, at X.PREDICTED); the 122B's r2 run at L33 for Dan's 18:20 coverage
+# (jobs/c3/batch53.yaml coverage_122b_1820), kept out of B.MAIN_RUN as x51_answer.E1_SOURCE_EXTRA does
+SOURCES = {**B.MAIN_RUN, "qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}
 K = X.K_MAIN  # 25
 K_WIDE = 100  # dumbest way 2
 WIDE_TARGETS = ("qwen3.5-9b",)

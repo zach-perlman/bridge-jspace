@@ -735,9 +735,9 @@ def forward_deltas(model, set_name: str, items: list[dict], layer: int) -> tuple
 
 def x0_shares(target: str, layer: int) -> dict[str, float]:
     """X0's stored K = 25 J++ share of ||Δ||^2 per scene at L (the source run's shares.jsonl)."""
-    from scripts import x45b_binding as B
+    from scripts import x49_gain as G
 
-    src = X.RESULTS / B.MAIN_RUN[target]
+    src = X.RESULTS / G.SOURCES[target]  # the E1 items' own run (B.MAIN_RUN plus the 122B's r2)
     return {r["scene"]: r["share"] for r in X.read_jsonl(src / "shares.jsonl")
             if r["rendering"] == "chat" and r["layer"] == layer and (r["dict"], r["k"], r["omp"]) == X.MAIN}  # fmt: skip
 

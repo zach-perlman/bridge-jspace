@@ -1,0 +1,39 @@
+id: x52_atoms_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 3): batch 52 A on Qwen3.5-122B-A10B (FP8, L33): what is inside the top-25 atoms of the lens part? Forward only: Δ at the bridge word at L33 for 50 random locker-first main-test items (seed 0) of its X0 r2 run; the signed K = 25 OMP atoms over the J++ letter dictionary with coefficients and energy shares; no reads, no arms. Z2 not run (no Z2 run on the 122B). No prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x52_atoms.py atoms --delta forward --sets e1 --name qwen35_122b_x52_atoms_fwd
+question: >-
+  On the 122B: what do the 25 OMP atoms of the bridge word's change decode to (the lens part), and is the answer word
+  among them?
+why_it_matters: >-
+  Dan 18:20 (jobs/c3/batch53.yaml coverage_122b_1820 item 3): 52 A at L33 on the largest model, beside the 9B, 27B,
+  Muse and Lightning; coverage, not hand-checked.
+hypotheses:
+  none: "descriptive; no rule, no prediction (batch 52 part A; coverage_122b_1820)"
+decision_rule: >-
+  None: descriptive; the verdict line writes "descriptive; no rule" (verbatim from jobs/c3/x52_atoms_27b.yaml). As
+  computed: items E1 = x49_gain.select_items (the locker-first items of qwen35_122b_x0_necessity_r2 at L33: 53, CPU
+  check on the 122B tokenizer), 50 drawn by sorted(random.Random(0).sample(range(53), 50)). Δ = h_S - h_O at the
+  bridge word at L33 (from the lookup's prompts; the recall's Δ computed beside for the identity check). Atoms: X0's
+  signed OMP K = 25 over JLens.vectors(L, letters) (step for step exp04_brew_parts.signed_omp; asserted against
+  x0_necessity.fit), per atom its rank, token, final coefficient and the rebuilt energy it adds when it enters /
+  ||Δ||^2. Classification and tables run on the CPU afterwards (scripts/x52_atoms.py report). Z2: not run, no Z2
+  (Zach's passages) run on the 122B.
+controls:
+- "the K = 25 share per item against X0's stored shares.jsonl (qwen35_122b_x0_necessity_r2, same items, same fit)"
+- "the answer atoms among the 25 against 51.12's norms.jsonl (qwen35_122b_x51_12_e1) item by item"
+- "E1: max |Δ_lookup - Δ_recall| at the bridge word (the prompts agree through it)"
+n: "E1 50 of 53 locker-first items (27 bridge entities in the group); 100 forwards"
+seeds: [0]
+notes: >-
+  Coverage, not hand-checked (Dan 18:20); UNVERIFIED; results into EXPERIMENTS.md and figures only, the README
+  untouched until after the 30 Oct check. Caveats: J++ fit on the bf16 weights used on the FP8 checkpoint; MoE (~10B
+  active); 2x H100 PCIe, BJ_DEVICE_MAP=auto. Code: x49_gain.SOURCES gains the 122B's X0 r2 run (kept out of
+  B.MAIN_RUN, as x51_answer.E1_SOURCE_EXTRA). Cost: the 122B load (~5-8 min) + 100 forwards + two K = 25 fits; 0.4
+  GPU-h on 2 GPUs with margin.
