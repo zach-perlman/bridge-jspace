@@ -121,3 +121,19 @@ def test_run_and_verdict_end_to_end_on_the_fake_model(tmp_path, monkeypatch):
     md = (v / "verdict.md").read_text()
     assert "UNVERIFIED" in md and "no prediction" in md and (v / "x53_identity_address.png").exists()
     assert (v / "examples.md").read_text().count("### C0-") == 10
+    assert IA.RULE_ACROSS in md and blob["across"]["label"].startswith(("pending", "does not hold", "holds"))
+
+
+def test_rule_across_models_uses_dans_moved_list():
+    """critic_1125: the moved models (9B, Lightning; Dan's list) give "both", the others "follows the lens identity"."""
+
+    def m(target: str, lab: str) -> dict:
+        return {"target": target, "label": lab}
+
+    assert IA.MOVED == ("qwen3.5-9b", "nemotron-3.5-lightning")
+    ok = [m("qwen3.5-9b", "both"), m("nemotron-3.5-lightning", "both"), m("qwen3.6-27b", "identity"),
+          m("muse-glimmer-30b", "identity")]  # fmt: skip
+    assert IA.across(ok)["label"].startswith("holds: ")
+    assert IA.across(ok[:2])["label"].startswith("pending (2 of 4 models")
+    assert IA.across([*ok[:3], m("muse-glimmer-30b", "both")])["label"] == "does not hold"
+    assert IA.across([m("qwen3.5-9b", "identity")])["label"] == "does not hold"  # broken before the others land

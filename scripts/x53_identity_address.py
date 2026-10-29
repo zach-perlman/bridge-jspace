@@ -63,7 +63,14 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch53.yaml"
 TEST = "53.6"
 NO_PREDICTION = "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)"
-RUNS = {"qwen3.5-9b": "qwen35_9b_x53_6", "nemotron-3.5-lightning": "nem35l_x53_6"}
+RUNS = {"qwen3.5-9b": "qwen35_9b_x53_6", "nemotron-3.5-lightning": "nem35l_x53_6",
+        # Dan 11:25 (jobs/c3/batch53.yaml critic_1125, order item 4): "53.6 on the 27B and Muse (same rule)"
+        "qwen3.6-27b": "x53_6_27b", "muse-glimmer-30b": "muse30_x53_6"}  # fmt: skip
+# the rule across models, verbatim (critic_1125); the "moved" models are Dan's list, verbatim
+RULE_ACROSS = ("\"the recall's pointer use tracks the swap's collateral\" if the models whose recall the address swap "
+               "moved (9B, Lightning) give \"both\" and the others give \"follows the lens identity\"")  # fmt: skip
+MOVED = ("qwen3.5-9b", "nemotron-3.5-lightning")  # Dan's list (critic_1125), verbatim
+ACROSS_LABEL = "the recall's pointer use tracks the swap's collateral"
 RENDERING = "chat"
 READER_NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 K = X.K_MAIN  # 25
@@ -348,15 +355,37 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
+def across(models: list[dict]) -> dict[str, Any]:
+    """The rule across models (critic_1125): the moved models (MOVED, Dan's list) "both", every other model run "follows
+    the lens identity"; with all four models: holds / does not hold; fewer: pending (unless already broken)."""
+    labels = {m["target"]: m["label"] for m in models}
+    want = {t: ("both" if t in MOVED else "identity") for t in RUNS}
+    broken = [t for t, lab in labels.items() if t in want and lab != want[t]]
+    missing = [t for t in RUNS if t not in labels]
+    if broken:
+        lab = "does not hold"
+    elif missing:
+        lab = f"pending ({len(labels)} of {len(RUNS)} models; missing {', '.join(missing)})"
+    else:
+        lab = f"holds: {ACROSS_LABEL}"
+    return {"label": lab, "per_model": {t: {"label": labels.get(t), "wanted": want[t]} for t in RUNS}, "broken": broken,
+            "moved": list(MOVED)}  # fmt: skip
+
+
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     models = [run_numbers(r, n_boot) for r in runs]
+    acr = across(models)
     out = RESULTS / f"x53_identity_address-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 53.6: the recall, lens identity vs address, in conflict", "",
              f"Batch 53, test 53.6 (jobs/c3/batch53.yaml; {NO_PREDICTION}). At the bridge word: the lens part toward B "
              f"(P_J of B's change, k = {K}) plus the address swap toward C's slot (s = {S_DOSE}, the probe run's pointer "
              "means); x6_routes' C0 scenes with three distinct legs counts. UNVERIFIED.", "", f"Rule (Dan's brief): {RULE}.",
-             "", "| model | layer | n | recall B | recall C | recall original | recall other | label |",
+             "", f"Rule across models (Dan 11:25, critic_1125, verbatim): {RULE_ACROSS}. As computed: the moved models are "
+             f"Dan's list ({', '.join(MOVED)}); every other model of the four is wanted at \"follows the lens identity\"; "
+             "a model with another label breaks it.", "", f"**Across models: {acr['label']}** (per model, label / wanted: "
+             + "; ".join(f"{t} {v['label']} / {v['wanted']}" for t, v in acr["per_model"].items()) + ").", "",
+             "| model | layer | n | recall B | recall C | recall original | recall other | label |",
              "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for mdl in models:
         b = mdl["cells"][X.RECALL]["both"]
@@ -379,7 +408,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     lines += ["", "Figure: x53_identity_address.png"]
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     (out / "verdict.json").write_text(json.dumps({"runs": runs, "question": NO_PREDICTION, "rule": RULE,
-                                                  "models": models}, indent=1) + "\n")  # fmt: skip
+                                                  "rule_across": RULE_ACROSS, "across": acr, "models": models},
+                                                 indent=1) + "\n")  # fmt: skip
     figure(models, out / "x53_identity_address.png")
     ex = ["# 53.6 examples (verify pack): the scene's roles, O and S_B, every arm's top token. UNVERIFIED.", ""]
     for mdl in models:
