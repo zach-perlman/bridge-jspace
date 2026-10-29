@@ -5,10 +5,12 @@
 
 ## In one minute
 
-- **The recall follows the part of the bridge word the lens reads; the lookup follows the rest** [A]. The recall has other copies, so it does not need that part at one layer [B].
-- **The lookup goes by which item it is or where its locker sits, never by the number** [A]; its "which item" runs outside the lens [B].
-- **Where the locker sits is an address:** readable early, used late, removable, swappable, one code per locker, invisible to the lens [A/B].
-- **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
+- **Four models, two families and a hybrid architecture:** Qwen3.5-9B and Qwen3.6-27B, Muse Glimmer 30B, and Nemotron 3.5 Lightning, a Mamba-attention hybrid (its marks hollow ○: its gate was chosen after a pre-check was seen).
+- **On all four, the two readers split the bridge word:** the recall follows the part the lens reads, the lookup the rest [A]; the recall does not need that part at one layer, it has other copies [B]. Of that part's directions the readable ones are the two bridge words, almost never the answer; most of its energy matches no word of the scene.
+- **On all four, the lookup goes by which item it is or where its locker sits, never by the number** [A]; its "which item" runs outside the lens [B]. Where the locker sits is an address: readable before it is used, removable, swappable, invisible to the lens [A/B]. A swap sends the lookup to the swapped-in locker, and some recalls to the swapped-in item.
+- **At the last token** the recall's item is readable through the lens on all four models, but not used there at a real change's size.
+- **Weaker on the 27B:** its lookup follows the lens part in part; adding the address alone brings no position answers back; swaps between given lockers miss on most pairs; on its full layer grid the lookup still needs the lens part after it takes up the address.
+- **Limits, withdrawn, failed:** on Zach's true-fact passages, and when every token before L changes, the lookup follows the lens part too; with made-up facts the split returns on the 9B. Withdrawn: the described bridge on Zach's passages; "one code per locker" is now "swaps between given lockers work; the code's size is open". Did not hold: four mechanism tests, a person mark at the locker sentence, blocking the pick sentence, on every model that ran them [✗].
 
 **Status.** Four models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family) and Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid); Qwen3.5-122B-A10B (FP8) on the first tests; 29 Oct 2026. Unverified until hand-checked. Built at {{head}} from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its numbers are marked ○ (hollow) everywhere: its gate was chosen after the 60-scene pre-check was seen. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it. Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
 
