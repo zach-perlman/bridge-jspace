@@ -122,6 +122,11 @@ COVERAGE_RUNS["z1p"] = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z
                         "nemotron-3.5-lightning": "nem35l_x52_z1p",
                         # batch 53.3b (coordinator 10:20): Muse's Z1-P, the source of 53.3b's Muse passages, at L26
                         "muse-glimmer-30b": "muse30_x53_z1p"}  # fmt: skip
+# the 122B's coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 6): Z1 and Z1-P at X0's L33 (Zach's 122B
+# band L39-45 lies above it; Muse's two-layer design: L33 and his band's start L39, Z1-P at L33 only)
+LAYERS["qwen3.5-122b-a10b"] = (33, 39)
+COVERAGE_RUNS["z1"]["qwen3.5-122b-a10b"] = "qwen35_122b_z1"
+COVERAGE_RUNS["z1p"]["qwen3.5-122b-a10b"] = "qwen35_122b_z1p"
 NO_PREDICTION_Z1P = ("no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/"
                      "z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)")  # fmt: skip
 # Batch 53, 53.1b (jobs/c3/batch53.yaml standing_rules_0950: "jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No
@@ -200,9 +205,11 @@ BESIDE = {
                          "question": "muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1"},
     "nemotron-3.5-lightning": {"full": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
                                "question": "nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1"},
+    "qwen3.5-122b-a10b": {"full": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+                          "question": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1"},
 }  # fmt: skip
 BESIDE_BAND = {"qwen3.5-9b": "L12-16", "qwen3.6-27b": "L32-40", "muse-glimmer-30b": "L36-42",
-               "nemotron-3.5-lightning": "L27-33"}  # fmt: skip
+               "nemotron-3.5-lightning": "L27-33", "qwen3.5-122b-a10b": "L39-45"}  # fmt: skip
 
 
 # ---- passages (CPU) -----------------------------------------------------------------------------------------------
