@@ -1,0 +1,35 @@
+{
+  "exp": "x47_errors",
+  "stage": "gpu",
+  "run": "nem35l_x52_errors",
+  "written_utc": "2026-10-29T03:47:32Z",
+  "why": "batch 47, test 47.13 (jobs/c3/batch47.yaml; Q47.13, sealed): the lens's top item",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "head": "e583621f47b98af51f7ca063d33cad15fa03effd",
+    "dirty_files": [],
+    "untracked_scripts": [],
+    "code_diff_sha256": null
+  },
+  "lens": "jpp",
+  "sources": {
+    "x0b": "x0b_generalize/nem35l_x52_x0b",
+    "named": "x0_probe/nem35l_x52_probe"
+  }
+}
