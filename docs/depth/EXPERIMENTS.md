@@ -1586,12 +1586,37 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's are rerunning after a disk-full restart.
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
-### 53.1 (running) <a id="b53-1"></a>
+### Does the lens effect follow the question's position or the answer's type? (53.1, the 9B's number cells opened 29 Oct ~11:45; its word cells and the 27B to come) <a id="b53-1"></a>
 
-- **Question.** Does the lens effect follow the question's position or the answer's type (number or word), on our locker scenes?
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** On our locker scenes, does the recall's lens effect (the item or its answer, by 51.12's arms) change when the question comes before the scene instead of after it, or when the recall's answer is a word instead of a number?
+- **Why we asked.** On Zach's passages the answer word is readable and usable through the lens ([52 B](#b52-b)); on our scenes it is not. His questions and answers differ from ours in two ways at once: where the question sits and what kind of answer it asks for.
+- **Data.** Our locker scenes (the main test), four cells: the question after the scene with a number answer (the main test as is), the question before the scene with a number answer, and the same two with a word answer: the animal's class (mammal, bird, insect, ...), the only relation that passed the 9B's coverage rule, on 191<!-- src: jobs/c3/x53_2x2_words_9b.yaml | Animal class passes coverage on the 9B :: 191 --> animal scenes, not the 600 of the number cells.
+- **Method.** Per cell: the main gate; the conflict test at L; 51.12's arms with the readout check first (without the lens part; without it but keeping the answer's directions; without the answer directions only, each beyond random); the inventory of the lens part's directions on 50 items.
+
+![With the question after the scene, the 9B's recall follows the entity](../../figures/ledger/ledger_twobytwo.png)
+*Per cell of the 2x2: the recall's switches lost without the lens part beyond random, the share of that loss kept with the answer's directions kept, and the conflict test's lookup; whiskers 95%; a cell not tested or pending as a grey note. Models: 9B (its question-before number cell not tested: gate; its word cells pending); 27B grey (running); Muse grey (not designed); Lightning grey (not run: the brief's "then Lightning if its gate passes" against Dan's 09:30 "stop adding Lightning coverage beyond what is queued").*
+
 - **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes.
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | question after, number: the recall's label | **the lens effect is the entity<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-after, number) :: the lens effect is the entity -->** | running | not designed | not run (no new Lightning coverage) |
+  | question after, number: recall lost without the lens part, beyond random / share kept with the answer kept / without the answer directions only | 0.50 [0.41, 0.57]<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-after, number) :: 0.50 [0.41, 0.57] --> / 0.95 [0.90, 0.99]<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-after, number) :: 0.95 [0.90, 0.99] --> / 0.00 [0.00, 0.00]<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-after, number) :: 0.00 [0.00, 0.00] --> | | | |
+  | question after, number: the conflict test's lookup, lost beyond random | -0.05 [-0.09, 0.00]<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-after, number) :: -0.05 [-0.09, 0.00] --> (around; its 51.12 label: can't tell) | | | |
+  | question before, number | not tested (gate 0.763<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-before, number) :: 0.7633 :: 0.763 --> < 0.80: the recall's read on the original prompts) | | | |
+  | question after / before, word (the animal's class) | pending (running) | | | |
+  | across cells; the cross-check (the lookup <= 0.10 in all four) | can't tell yet; can't tell yet | | | |
+
+- **Read.**
+  - With the question after the scene and a number answer (our main test), the 9B's recall follows the entity: keeping the answer's directions keeps almost all of its loss, and the answer directions alone cost nothing; the lookup loses nothing beyond random. The other three cells are not in yet: with the question before the scene the 9B's recall misses the gate.
+- **Caveats.**
+  - The word cells use the animal-class relation on 191 animal scenes, the only relation that passed the coverage rule (Dan's 10:20 decision: words read by their first token).
+  - The (question after, number) cell repeats our main test (the rerun agrees with the stored run on the recall's whole change, 200 of 200).
+  - Exploratory (batch 53): no prediction; UNVERIFIED.
 
 ### 53.2 (running) <a id="b53-2"></a>
 
@@ -2017,6 +2042,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_jsuite.png | yes | no overlap (the grey notes wrapped) | yes | yes | batch 53 (53.1b), four slots: 9B and 27B with their missing cells as grey notes; Muse and Lightning grey (not designed) |
 | figures/ledger/ledger_last_conflict_words.png | yes | no overlap (a short grey note) | yes | yes | batch 53 (53.3b), four slots: Lightning below gate (hollow); the 9B running, the 27B and Muse queued (grey) |
 | figures/ledger/ledger_report_slot1.png | yes | no overlap | yes | yes | 49.6's card (was a one-line entry), four slots: 9B, 27B, Lightning (hollow); Muse grey (not designed) |
+| figures/ledger/ledger_twobytwo.png | yes | no overlap (short row labels) | yes | yes | batch 53 (53.1), four slots: the 9B's number cell, its other cells as grey notes; 27B running, Muse not designed, Lightning not run (grey) |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened) |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened) |

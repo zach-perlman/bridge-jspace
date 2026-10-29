@@ -1613,11 +1613,42 @@ def report_slot1(plt) -> str:
                        bars=((0.2, "--"),))
 
 
+TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T094632Z" / "verdict.json"  # 53.1, the 9B's number cells first
+TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "pending", "qb_word": "pending"}
+TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
+                  ("qb_word", "Q before, word"))
+
+
+def twobytwo(plt) -> str:
+    """53.1 on four slots: per cell of the 2x2 (question after / before the scene x number / word answer), the
+    recall's switches lost without the lens part beyond random (arm 1) and its share kept with the answer directions
+    kept (arm 2 over arm 1), and the conflict test's lookup beside; a cell not tested or pending as a grey note; the
+    27B running; Muse grey (not designed); Lightning grey (not run: no new Lightning coverage)."""
+    v = {m["target"]: m for m in load(TWOBYTWO)}
+    rows = {"qwen3.5-9b": []}
+    m = v["qwen3.5-9b"]
+    for key, word in TWOBYTWO_CELLS:
+        c = m["cells"].get(key, {})
+        labs = (f"{word}: recall lost", f"{word}: recall kept", f"{word}: lookup lost")
+        if c.get("status") == "tested":
+            r = c["readers"]["recall"]
+            rows["qwen3.5-9b"] += [(labs[0], r["extra"]["1"], INK, False), (labs[1], r["share2"], INK, False),
+                                   (labs[2], c["lookup_extra"], LOOKUP, False)]
+        else:
+            rows["qwen3.5-9b"] += [(labs[0], TWOBYTWO_NOTES[key], INK, False), (labs[1], "", INK, False),
+                                   (labs[2], "", LOOKUP, False)]
+    absent = {"qwen3.6-27b": "running", "muse-glimmer-30b": "not designed",
+              LT: "not run (Dan:\nno new Lightning\ncoverage)"}  # fmt: skip
+    return four_panels(plt, "ledger_twobytwo", "With the question after the scene, the 9B's recall follows the entity",
+                       "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
+                       rows, absent, "share", xlim=(-0.2, 1.05))
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words, report_slot1)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1, twobytwo)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
