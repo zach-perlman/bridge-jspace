@@ -3771,6 +3771,19 @@ def card_numbers() -> None:
                           ("lookup", "the lookup never needs it")):  # fmt: skip
             label = ("yes" if rules[key] else "no") if key in rules else "not run (bridge-word steps only)"
             S.record("ladder_rules", m["target"], what, label, source=rel(v))
+    # the 27B's full ladder (coverage run x52_ladder_27b_a, 29 Oct), recorded beside the first run's rows (which stay)
+    # so the card's 27B column can be filled without changing Fig. 1d
+    v = pins.RESULTS_DIR / "x49_ladder" / "x52_ladder-20261029T012701Z" / "x49_2.json"
+    m = next(x for x in json.loads(v.read_text())["models"] if x["target"] == "qwen3.6-27b")
+    for key, what in (("second_copy", "the second copy is the earlier mention"),
+                      ("only_everything", "needed only when everything goes"),
+                      ("lookup", "the lookup never needs it")):  # fmt: skip
+        S.record("ladder_27b_full", m["target"], what, "yes" if m["rules"][key] else "no", source=rel(v))
+    for group, label in (("locker-first", "recall, locker before the pick"), ("locker-after", "recall, locker after the pick")):
+        cell = m["cells"]["recall"][group]
+        for r in ("2", "3", "5"):
+            S.record("ladder_27b_full", m["target"], f"rung {r}: {label}: answers lost beyond random",
+                     *[round(x, 4) for x in cell["cost"][r]], n=cell["n"], source=rel(v))  # fmt: skip
 
 
 CARD_MODELS = tuple(m for m in S.MODELS if m[1] != "122b")  # 9B, 27B, Muse

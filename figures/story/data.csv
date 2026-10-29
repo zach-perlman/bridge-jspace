@@ -4857,6 +4857,15 @@ ladder_rules,qwen3.6-27b,the lookup never needs it,not run (bridge-word steps on
 ladder_rules,muse-glimmer-30b,the second copy is the earlier mention,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
 ladder_rules,muse-glimmer-30b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
 ladder_rules,muse-glimmer-30b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,the second copy is the earlier mention,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,needed only when everything goes,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,the lookup never needs it,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0236,0.0068,0.0438,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1535,0.0917,0.2222,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1535,0.0902,0.2271,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 2: recall, locker after the pick: answers lost beyond random",0.2406,0.1691,0.3221,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 3: recall, locker after the pick: answers lost beyond random",0.3031,0.2242,0.3821,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_27b_full,qwen3.6-27b,"rung 5: recall, locker after the pick: answers lost beyond random",0.3344,0.2602,0.4091,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: without the lens part",0.4974619289340101,0.4108083976833977,0.5714285714285713,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: lens part out, answer kept",0.47208121827411165,0.38775223572575085,0.5478741620518799,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: answer directions only",0.0,0.0,0.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json

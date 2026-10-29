@@ -10,7 +10,7 @@
 - **Where the locker sits is an address:** readable early, used late, removable, swappable, one code per locker, invisible to the lens [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at {{head}} from the run files. Sealed and running: what the address is apart from how we built it (its size, whether other methods find it, its shape); results land here when opened. Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at {{head}} from the run files. Nemotron 3.5 Lightning (another family) ran since, at its own layer, on rules already fixed. Opened since and in the ledger, not yet here: what the address is apart from how we built it (its size, whether other methods find it, its shape). Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
 
 ## The question and the setup
 
@@ -146,20 +146,20 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 | # | Claim | Models | Grade | Key numbers | Hand-checked |
 |---|---|---|---|---|---|
-| 1 | The recall follows the lens part of the bridge word; the lookup follows the rest | 9B, 27B, Muse (and the 122B) | **A** (27B partial) | recall {{pt|rc_excess_9b}} / {{pt|rc_excess_27b}} / {{pt|rc_excess_muse}}; lookup {{pt|lk_excess_9b}} / {{pt|lk_excess_27b}} / {{pt|lk_excess_muse}} | no |
-| 2 | The recall does not need the lens part at one layer; it has other copies | 9B, 27B, Muse | **B** | kept {{dp|fig01c|9b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|27b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|muse|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} | no |
+| 1 | The recall follows the lens part of the bridge word; the lookup follows the rest | 9B, 27B, Muse, Lightning (and the 122B) | **A** (27B partial) | recall {{pt|rc_excess_9b}} / {{pt|rc_excess_27b}} / {{pt|rc_excess_muse}}; lookup {{pt|lk_excess_9b}} / {{pt|lk_excess_27b}} / {{pt|lk_excess_muse}} | no |
+| 2 | The recall does not need the lens part at one layer; it has other copies | 9B, 27B, Muse, Lightning | **B** | kept {{dp|fig01c|9b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|27b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|muse|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} | no |
 | 3 | The recall also reads the item's earlier mention | 9B, 27B, Muse | **B** | {{pt|x45p_d23_9b}}-{{pt|x45p_d23_muse}} | no |
 | 4 | The lookup goes by which item it is or where its locker sits, never by the number | 9B, 27B, Muse | **A** | 9B identity / position {{pt|rt_C2_whole_identity_9b}} / {{pt|rt_C2_whole_position_9b}}; value none anywhere | no |
-| 5 | The lookup's “which item” lives outside the lens | 9B, 27B, Muse | **B** | identity route without 26–100: {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}}; position route at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}} | no |
+| 5 | The lookup's “which item” lives outside the lens | 9B, 27B, Muse, Lightning | **B** | identity route without 26–100: {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}}; position route at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}} | no |
 | 6 | The address can be removed, and a swap redirects the lookup | 9B, 27B, Muse | **A** | without it {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_position_muse}} vs random {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rt_C2_no_alf_rand_position_muse}} | no |
 | 7 | Adding the address alone brings position answers back | 9B, Muse (27B fails) | **B** | {{pt|rtk_C2_keep_alf_position_9b}} / {{pt|rtk_C2_keep_alf_position_27b}} / {{pt|rtk_C2_keep_alf_position_muse}} | no |
-| 8 | With six lockers, every locker has its own code | 9B, Muse | **B** | | no |
-| 9 | The lens cannot read the address | 9B, 27B, Muse | **B** | share rebuilt {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} | no |
-| 10 | The bridge word redirects the lookup only when its locker sentence came first | 9B, 27B, Muse | **A** | locker first {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}}, after {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}}; copy {{pt|x45q_c_9b}} / {{pt|x45q_c_27b}} / {{pt|x45q_c_muse}} | no |
-| 11 | Lookups the change at L misses were read from the bridge word before L | 9B, Muse | **B** | carried before L {{dp|e11_before_l|9b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|muse|47.4: main, locker after the pick: lookups carried by the bridge word before L}} | no |
-| 12 | Identity route early, position route late; the address is readable before it is used | 9B, 27B, Muse | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
+| 8 | With six lockers, every locker has its own code | 9B, Muse, Lightning (27B: neither) | **B** | | no |
+| 9 | The lens cannot read the address | 9B, 27B, Muse, Lightning | **B** | share rebuilt {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} | no |
+| 10 | The bridge word redirects the lookup only when its locker sentence came first | 9B, 27B, Muse, Lightning | **A** | locker first {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}}, after {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}}; copy {{pt|x45q_c_9b}} / {{pt|x45q_c_27b}} / {{pt|x45q_c_muse}} | no |
+| 11 | Lookups the change at L misses were read from the bridge word before L | 9B, 27B, Muse, Lightning | **B** | carried before L {{dp|e11_before_l|9b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|muse|47.4: main, locker after the pick: lookups carried by the bridge word before L}} | no |
+| 12 | Identity route early, position route late; the address is readable before it is used | 9B, 27B (flag, E12), Muse, Lightning | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
 
-*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.* Weaker and failed results are in Part VI; pending tests under Status.
+*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.* Weaker and failed results are in Part VI; pending tests under Status. Lightning (Nemotron 3.5) ran since on the rules already fixed for the other models, with no prediction of its own; its numbers are in [the ledger](EXPERIMENTS.md), not in the key numbers.
 
 ## Part I. The two readers: lookup and recall
 
@@ -268,7 +268,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 - **Question.** Does the recall need the lens part, or only follow it?
 - **Why we asked.** The conflict test says the recall follows the lens part; following is not the same as needing it.
-- **Data.** Zeroing: main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} scenes. The ladder: clean one-pick scenes, {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}}; the 27B ran the first two steps only.
+- **Data.** Zeroing: main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} scenes. The ladder: clean one-pick scenes, {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}}; the 27B's first run had the first two steps; its full ladder, run since, fills its column.
 - **Method.** In the changed prompt's own run, nothing added, the lens part's directions are taken out, each step against a random part with the same share of the state:
   - zeroing, the ladder's first step: at the bridge word at L;
   - second step: at the bridge word over L to L+3;
@@ -284,12 +284,12 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   | zeroing: recall answers lost beyond random | {{d|fig01c|9b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|27b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|muse|47.5: recall's answers kept, random part minus J++ part taken out (L)}} |
   | zeroing: the rule | {{dp|fig01c|9b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|27b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|muse|47.5: the rule's reading (recall at L)}} |
   | recall, locker first, second step | {{d|fig01d|9b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker before the pick: answers lost beyond random}} |
-  | recall, locker first, third step | {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} | – | {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} |
+  | recall, locker first, third step | {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|ladder_27b_full|27b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} |
   | recall, locker after, second step | {{d|fig01d|9b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker after the pick: answers lost beyond random}} |
-  | recall, locker first, fifth step | {{d|fig01d|9b|rung 5: recall, locker before the pick: answers lost beyond random}} | – | {{d|fig01d|muse|rung 5: recall, locker before the pick: answers lost beyond random}} |
-  | (a) the second copy is the earlier mention | {{dp|ladder_rules|9b|the second copy is the earlier mention}} | {{dp|ladder_rules|27b|the second copy is the earlier mention}} | {{dp|ladder_rules|muse|the second copy is the earlier mention}} |
-  | (b) needed only when everything goes | {{dp|ladder_rules|9b|needed only when everything goes}} | {{dp|ladder_rules|27b|needed only when everything goes}} | {{dp|ladder_rules|muse|needed only when everything goes}} |
-  | (c) the lookup never needs it | {{dp|ladder_rules|9b|the lookup never needs it}} | {{dp|ladder_rules|27b|the lookup never needs it}} | {{dp|ladder_rules|muse|the lookup never needs it}} |
+  | recall, locker first, fifth step | {{d|fig01d|9b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|ladder_27b_full|27b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 5: recall, locker before the pick: answers lost beyond random}} |
+  | (a) the second copy is the earlier mention | {{dp|ladder_rules|9b|the second copy is the earlier mention}} | {{dp|ladder_27b_full|27b|the second copy is the earlier mention}} | {{dp|ladder_rules|muse|the second copy is the earlier mention}} |
+  | (b) needed only when everything goes | {{dp|ladder_rules|9b|needed only when everything goes}} | {{dp|ladder_27b_full|27b|needed only when everything goes}} | {{dp|ladder_rules|muse|needed only when everything goes}} |
+  | (c) the lookup never needs it | {{dp|ladder_rules|9b|the lookup never needs it}} | {{dp|ladder_27b_full|27b|the lookup never needs it}} | {{dp|ladder_rules|muse|the lookup never needs it}} |
 
 - **Read.**
   - At one layer the recall keeps nearly all its answers: it follows the lens part without needing it there.
@@ -380,6 +380,7 @@ The same routes by depth:
 - **Mechanics.** Removed or kept alone, against a random part; swapped (two slot means' difference) against a random vector of its size.
 - **Data.** Routes scenes, 300 items per model.
 - **Result.** A probe reads it in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes. Without it position answers drop to {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_position_muse}} (random {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rt_C2_no_alf_rand_position_muse}}); alone it gives {{pt|rtk_C2_keep_alf_position_9b}} / {{pt|rtk_C2_keep_alf_position_27b}} / {{pt|rtk_C2_keep_alf_position_muse}}; a swap at a real change's size moves {{dp|fig07|9b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|27b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|muse|lookup target share, mean over locker pairs, s = 2}} of lookups, {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} after 50 neutral sentences (9B).
+- **Note.** The swap's rule fixed in advance read it at one times the slot difference, below a real change's size, and said no on all three; the swap numbers above are at twice it.
 - **Figure.**
 
 ![The address carries the position route; swapping it moves the lookup](figures/story/fig07_writes.png)
@@ -390,7 +391,7 @@ The same routes by depth:
 
 - **Hypothesis.** The address is a line over slots (one shift steps the lookup one slot), first-vs-rest, or one code per slot. Fixed in advance.
 - **Mechanics.** Six-locker scenes: one shift per start slot and swaps between given slots, against a random direction.
-- **Data.** 300 items each, 9B and Muse.
+- **Data.** 300 items each, 9B and Muse; the 27B (neither reading) and Lightning (one code per slot) since.
 - **Result.** One code per slot on both: slot means lie in order, no single shift reaches the bar, given-slot swaps reach it on {{dp|fig09b|9b|47.2: pairwise writes reaching 25% (dose 2)}} and {{dp|fig09b|muse|47.2: pairwise writes reaching 25% (dose 2)}} of 30 pairs.
 - **Figure.**
 
@@ -430,20 +431,21 @@ The same routes by depth:
 
 - **Hypothesis.** Locker after the pick: one locker-sentence cell carries the lookup, which stops reading the bridge word before the recall. Fixed in advance.
 - **Mechanics.** The changed prompt's state placed into one token group at one layer, every other layer.
-- **Data.** Clean scenes, 9B and Muse.
+- **Data.** Clean scenes, 9B and Muse; since then the 27B (clean scenes and the main test) and Lightning (the main test only).
 - **Result.** Both fail: no single cell carries the locker-after lookup, which reads the bridge word early; both readers read it to about the same depth, then the question and last token carry the answer.
 - **Figure.**
 
 ![Locker after the pick: the lookup leaves the bridge word early](figures/story/fig03d_depth_map.png)
 
-- **Conclusion.** The link is spread over tokens and layers. Not shown: the 27B.
+- **Conclusion.** The link is spread over tokens and layers. The 27B and Lightning, run since, fail the same readings; the 27B's recall reads the bridge word up to the start of Zach's late band, as the 9B's.
 
 ### E12. The anatomy by depth <a id="e12-anatomy"></a>
 
 - **Hypothesis.** The lookup drops the J++ part by the time it takes up the address, which is readable earlier; never the value. Fixed in advance.
 - **Mechanics.** The change's parts per sampled layer against random parts, and a slot probe.
-- **Data.** Routes scenes split in halves; 9B, Muse, 27B (fewer layers).
+- **Data.** Routes scenes split in halves; 9B, Muse, 27B (fewer layers); Lightning since.
 - **Result.** Identity early, position in the last window, never the value; the probe reads the address 8 (9B) / 16 (Muse) layers before position starts; it settles late (mean overlap {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}}).
+- **Flag, for Dan.** The 27B's full grid (every fourth layer), run since, says no to the first reading: its lookup still needs the J++ part after it takes up the address. The 27B reading above comes from the reduced grid; the address is still readable before it is used, and never the value. Lightning reads as the 9B.
 - **Figure.**
 
 ![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
@@ -479,7 +481,7 @@ The same routes by depth:
 **What did not hold** (each rule fixed in advance; [the five mechanism tests on one page](figures/story/fig15_mechanisms.png)):
 
 - The J++ part keys the item's attribute at the bridge word; late MLPs there carry the recall → without the J++ part the attribute still moves part way; the MLPs are not needed.
-- A person mark at the locker sentence → a probe reads chance there; a person direction moves nothing (the pooled probe is running).
+- A person mark at the locker sentence → a probe reads chance there; a person direction moves nothing; pooled over the whole locker sentence, the probe stays at chance on the 9B and Muse and in between on the 27B, neither reading holding.
 - The copying heads pass the rest at twice the J++ part → about equal.
 - The address is the recall's second route → few recalls name the swapped slot's item.
 - Blocking the pick sentence from the lockers removes position answers only → identity answers and recall switches fall too.
