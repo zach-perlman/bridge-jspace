@@ -1,0 +1,44 @@
+id: x53_7_monitor_27b_l
+title: "Batch 53, test 53.7, adapted design: lookup-only gate; the recall is not part of this test, (the pointer in code and tool output) on the 27B, forwards: the monitor test (53.2) on the main test's items rendered as Python code and as tool output; the main gate per format first, then for each format that passes the states at the bridge word and the last token, every second layer, and their J++ parts (k = 25 / 100); sealed (the probes and the verdict run on CPU); no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_7.py monitor-run --name x53_7_monitor_27b_l
+question: >-
+  With the main test's scenes rendered as Python code and as tool output: what can a J-space readout decode compared
+  with the full state, (a) which item is the bridge, (b) its locker slot (the address), (c) the lookup's answer digit,
+  (d) the recall's answer, at the bridge word and the last token?
+why_it_matters: >-
+  Dan 11:10 (jobs/c3/batch53.yaml next_1110 item 2): "53.7 (the pointer in code and tool output): start now on any free
+  GPU, 27B then 9B." 09:50 priority 6: "53.7: the pointer in code and tool output (routes, address probe, monitor)."
+  Dan 11:25 (critic_1125) confirmed the reading: the locker scenes rendered as Python and as tool output, rules verbatim.
+hypotheses:
+  none: "no prediction (batch 53, 53.7; UNVERIFIED)"
+decision_rule: >-
+  53.2's, verbatim (jobs/c3/batch53.yaml brief 53.2, Dan 29 Oct 09:30): "Rule: “J-space blind to X” if the J++ probe is
+  within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; “J-space
+  carries X” if J++ >= 0.8 and >= 0.3 above random; else in between." As computed by scripts/x53_monitor.py (features,
+  probes, folds, seeds, CIs exactly as jobs/c3/x53_monitor_27b.yaml), per format. Gate (53.7, Dan 12:10, jobs/c3/batch53.yaml decisions_1210, decided before any 53.7 routes or probe result was opened): adapted design: lookup-only gate; the recall is not part of this test. Per format, the share of the main test's set's aligned scenes (d1_topics_v3) where the lookup says and reads O and S right (X0's competence) >= 0.80, before any state is recorded; a failed format is 'not tested (gate x < 0.80)': no states, no probe. Items: the first 200 lookup-eligible scenes of that set in the format (scene order, as X0 selects, by the lookup alone), datasets code_l / tool_l. The recall's rates are reported descriptively.
+controls:
+- "a random subspace of the same k (the brief's control)"
+- "PCA top-k fit on the training rows only"
+- "the full residual"
+- "the training folds' majority class (chance) per target"
+n: "the first 200 lookup-eligible scenes of the main test's set (d1_topics_v3) per format; aligned: tool 600 scenes, code 272 (no elements: an item name after a quote must be one token); every second layer; plan: scripts/x53_7.py plan"
+seeds: [888, 0, 1, 2, 3, 4]
+notes: >-
+  Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED; rule verbatim from the monitor (53.2). Pre-registered under the adapted design (adapted design: lookup-only gate; the recall is not part of this test; Dan 12:10 decisions_1210, 12:25 decisions_1225); supersedes x53_7_monitor_27b (two-reader gate, cancelled before it ran). Renderings
+  (scripts/x53_7.py, fixed before any run): code = the scene as Python in the user turn (tasks_v2's code framing):
+  picks = {} and lockers = {}, then one assignment per statement in the scene's order, then the question and the digit
+  instruction; tool = the scene's text verbatim as the response of a declared tool (get_notes) after the user's "Look
+  up my notes." and the assistant's call, then the question and the instruction in a new user turn. Same items, S,
+  labels, positions (B the bridge word, T the last token) and layers (every second layer) as 53.2's main dataset.
+  Writes results/x53_monitor/x53_7_monitor_27b_l/ (x53_monitor's run layout; datasets "code" and "tool"; states
+  gitignored; the gate and its reads in manifest.json / x53_7_gate_reads_<format>.jsonl). The CPU probes are too heavy
+  for the job (53.2 runs them on the Mac): after the pull, `uv run python scripts/x53_monitor.py probe --name
+  x53_7_monitor_27b_l --sets <code_l,tool_l: the datasets that passed>` then `uv run python scripts/x53_7.py monitor-verdict --names
+  x53_7_monitor_27b_l` -> results/x53_monitor/x53_7_monitor-<UTC>/. Estimate: the gate is now X0's competence (greedy 8 tokens and the read, O and S, both readers) over 872 scenes (code 272, tool 600; ~0.76 s per case on the 27B from the routes ledger, half on the 9B), then up to 400 items x 4 recorded forwards and the J++ OMP over up to 2,400 rows per layer: ~0.6 h.

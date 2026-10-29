@@ -83,7 +83,10 @@ SETS = ("main", "json")
 SET_TEXT = {"main": "our main test (X0's scenes)", "json": "the varied scenes, JSON format (x0b_v2)",
             # 53.7 (batch 53, scripts/x53_7.py): the main test's items rendered as code / tool output; never in SETS
             "code": "the main test's scenes as Python code (53.7)", "tool": "the main test's scenes as tool output (53.7)",
-            "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)"}  # fmt: skip
+            "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)",
+            # 53.7's adapted design (Dan 12:10): the first 200 lookup-eligible scenes of the main test's set per format
+            "code_l": "the main test's set as Python code, lookup-only gate (53.7)",
+            "tool_l": "the main test's set as tool output, lookup-only gate (53.7)"}  # fmt: skip
 JSON_SET, JSON_FORMAT = "x0b_v2", "json"
 VARIANTS = ("org", "alt")
 POS = ("B", "T_lookup", "T_recall")
@@ -205,10 +208,20 @@ def x53_7_cp_items(tok, target: str) -> tuple[list[dict], dict]:
     return F.cp_monitor_items(tok, target)
 
 
+def x53_7_eligible_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
+    """53.7's adapted design (Dan 12:10): the lookup-eligible scenes of the main test's set in the format
+    (scripts/x53_7.py eligible_items; only within its monitor-run)."""
+    from scripts import x53_7 as F
+
+    return F.eligible_items(tok, target, fmt)
+
+
 BUILD = {"main": lambda tok, target: main_items(tok, target), "json": lambda tok, target: json_items(tok),
          "code": lambda tok, target: x53_7_items(tok, target, "code"),
          "tool": lambda tok, target: x53_7_items(tok, target, "tool"),
-         "cp_ch2": lambda tok, target: x53_7_cp_items(tok, target)}  # fmt: skip
+         "cp_ch2": lambda tok, target: x53_7_cp_items(tok, target),
+         "code_l": lambda tok, target: x53_7_eligible_items(tok, target, "code"),
+         "tool_l": lambda tok, target: x53_7_eligible_items(tok, target, "tool")}  # fmt: skip
 
 
 def layers_for(n_layers: int) -> tuple[int, ...]:

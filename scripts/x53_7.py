@@ -86,6 +86,16 @@ GATE_BAR = 0.80  # the main gate (X0's), fixed; never lowered
 GATE_TEXT = ("X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= "
              "0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)")  # fmt: skip
 READ_TEXT = "the chat read: one forward of the prompt with a digit's space token appended, the top token"
+# Dan 12:10 (jobs/c3/batch53.yaml decisions_1210), before any 53.7 routes or probe result was opened: the lookup-only gate
+LOOKUP_GATE_DESIGN = "adapted design: lookup-only gate; the recall is not part of this test"
+LOOKUP_GATE_TEXT = ("Dan 12:10 (decisions_1210): the share of the test's own scenes in the format where the lookup says "
+                    "and reads O and S right (X0's competence: the greedy answer and the chat read) >= 0.80, before any "
+                    "state is kept; a failed format is 'not tested (gate x < 0.80)'; an item is eligible when the lookup "
+                    "is right on all four; the recall's rates are reported descriptively")  # fmt: skip
+HOLLOW = "gate changed after the data (hollow)"  # Dan 12:25 (decisions_1225): the 9B code probe under the new gate
+CAVEATS_1210B = ("tool output as prose (JSON is covered by x0b_v2), and the bridge ~250 tokens later in the tool format, "
+                 "not separated from the format (47.16's distance robustness beside). The probe only shows the address "
+                 "is readable; the routes test decides whether the lookup uses it.")  # fmt: skip
 PROBE_SET = "d1_topics_v4"  # x0_probe v4's set
 PICK = re.compile(r"^(\S+) picked (?:the )?(.+)\.$")
 LOCKER = re.compile(r"^The locker of (?:the )?(.+) is (\S+)\.$")
@@ -365,10 +375,60 @@ def gate_of(rows: list[dict], readers: tuple[str, ...] = X.READERS) -> dict:
             "status": "passed" if ok else not_tested(acc), "rule": GATE_TEXT}  # fmt: skip
 
 
-def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str = PROBE_SET) -> list[Path]:
-    """The address probe's forwards per format into results/x0_probe/<base>_<format>/ (x0_probe's run layout:
-    manifest.json, states.npz, items.jsonl; plus gate.json, reads.jsonl): every aligned scene of the set, the gate
-    first; states and items only if the format passes."""
+def lookup_gate(comp: list[dict], cases: list[dict]) -> tuple[dict, list[dict]]:
+    """53.7's adapted gate (Dan 12:10, decisions_1210): the share of scenes where the lookup says and reads O and S right
+    (X0's competence rows: the greedy answer and the chat read), passing iff >= GATE_BAR; the eligible cases (the lookup
+    right on all four, scene order). Beside (descriptive): every reader's said / read rates on O and S, and the share
+    where it is right on all four."""
+    right = {(r["scene"], r["reader"], r["variant"]): r for r in comp}
+    readers = [w for w in X.READERS if any(r["reader"] == w for r in comp)]
+
+    def ok(c: dict, w: str) -> bool:
+        return all(
+            right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"] for v in ("org", "alt")
+        )
+
+    rates = {w: {"says_and_reads_O_and_S": round(float(np.mean([ok(c, w) for c in cases])), 4) if cases else 0.0,
+                 **{f"{k}_{v}": round(float(np.mean([right[(c["scene"], w, v)][k] for c in cases])), 4) if cases else 0.0
+                    for k in ("right", "read_right") for v in ("org", "alt")}} for w in readers}  # fmt: skip
+    share = rates[X.LOOKUP]["says_and_reads_O_and_S"] if cases else 0.0
+    passed = bool(cases) and share >= GATE_BAR
+    eligible = [c for c in cases if ok(c, X.LOOKUP)]
+    return {"cases": len(cases), "lookup_right_share": share, "bar": GATE_BAR, "pass": passed,
+            "status": "passed" if passed else (not_tested({X.LOOKUP: share}) if cases else "not tested (no aligned scene)"),
+            "eligible": len(eligible), "design": LOOKUP_GATE_DESIGN, "rule": LOOKUP_GATE_TEXT,
+            "descriptive": {"rates": rates, "note": "the recall's rates are descriptive (not part of this test)"}}, eligible  # fmt: skip
+
+
+def competence(model, cases: list[dict]) -> list[dict]:
+    """X0's competence (x0_necessity.competence: per case, reader and O / S, the greedy answer and the chat read)."""
+    import torch
+
+    X.DIGIT_IDS.update(X.digit_ids(model.tokenizer))
+    digits = torch.tensor(X.digit_ids(model.tokenizer), device=model.device)
+    return X.competence(model, cases, digits, X.whitespace_mask(model))
+
+
+def lookup_states(model, cases: list[dict], layer: int) -> np.ndarray:
+    """x0_probe's state: the lookup's O prompt, the block output at the bridge word at the layer."""
+    import torch
+
+    from bridge_jspace.utils import progress
+
+    out = []
+    with torch.no_grad():
+        for c in progress(cases, f"53.7 states at L{layer} (case)"):
+            ids = torch.tensor([c["readers"][X.LOOKUP]["ids"]["org"]], device=model.device)
+            out.append(model.run(ids, record=(layer,))[1][layer][c["pos"]].float().cpu().numpy())
+    return np.stack(out)
+
+
+def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str = PROBE_SET,
+                    hollow: tuple[str, ...] = ()) -> list[Path]:  # fmt: skip
+    """The address probe per format into results/x0_probe/<base>_<format>/ (x0_probe's run layout: manifest.json,
+    states.npz, items.jsonl; plus gate.json, competence.jsonl): every aligned scene of the set; the lookup-only gate
+    first (X0's competence, both readers, the recall descriptive), then the states only if the format passes. hollow:
+    formats whose gate was changed after their data was seen (Dan 12:25: the 9B code probe), labelled so."""
     from bridge_jspace.data import sha256_of
     from bridge_jspace.model import load_model
     from bridge_jspace.run_switches import switches
@@ -376,6 +436,7 @@ def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str
     from scripts import x0_probe as P
 
     check_gate_bar()
+    assert set(hollow) <= set(formats), f"--hollow {hollow}: not among {formats}"
     target = pins.TARGET
     layer = X.PREDICTED[target]
     names = {f: f"{base}_{f}" for f in formats}
@@ -392,7 +453,8 @@ def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str
             "exp": P.EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "note": P.NOTE, "test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "source": None, "source_code": None,
             "set": set_name, "layer": layer, "x0_items": 0, "format": fmt, "format_text": FORMAT_TEXT[fmt],
-            "gate": GATE_TEXT, "read": READ_TEXT, "model": pins.model_pin(), "switches": switches(), "code": git_state(),
+            "gate": LOOKUP_GATE_TEXT, "gate_design": LOOKUP_GATE_DESIGN, "hollow": HOLLOW if fmt in hollow else None,
+            "read": READ_TEXT, "model": pins.model_pin(), "switches": switches(), "code": git_state(),
             "position": f"the asked person's bridge word, org run, {fmt}",
             "inputs": {str(items_file.relative_to(pins.REPO_ROOT)): sha256_of(items_file)},
             "folds": {"outer": P.K_OUTER, "inner": P.K_INNER, "penalties": list(P.RELS)},
@@ -400,13 +462,14 @@ def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str
         (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
         cases, counts = build_cases(model.tokenizer, set_name, fmt)
         print(json.dumps(counts), flush=True)
-        rows, h = read_org(model, cases, layer, f"{set_name} {fmt}")
-        gate = {**gate_of(rows), "counts": counts}
+        comp = competence(model, cases)
+        gate, _ = lookup_gate(comp, cases)
+        gate = {**gate, "counts": counts, "hollow": m["hollow"]}
         (out / "gate.json").write_text(json.dumps(gate, indent=1) + "\n")
-        X.write_jsonl(out / "reads.jsonl", rows)
-        print(f"{name}: gate {gate['org_read_accuracy']} -> {gate['status']}", flush=True)
+        X.write_jsonl(out / "competence.jsonl", comp)
+        print(f"{name}: lookup gate {gate['lookup_right_share']} -> {gate['status']}", flush=True)
         if gate["pass"]:
-            assert h is not None
+            h = lookup_states(model, cases, layer)
             h = h.astype(np.float16) if np.abs(h).max() < 6e4 else h  # x0_probe's storage
             np.savez_compressed(out / "states.npz", h=h, scene=np.array([c["scene"] for c in cases]))
             X.write_jsonl(out / "items.jsonl", [{**P.item_of(c, False), "context": c["context"]} for c in cases])
@@ -416,9 +479,41 @@ def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str
     return outs
 
 
+ELIGIBLE: dict[
+    str, list[dict]
+] = {}  # monitor-run: per format the lookup-eligible cases of the gate set (x53_monitor builds its items from them)
+
+
+def eligible_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
+    """x53_monitor's datasets code_l / tool_l (the adapted design): the first X.N_ITEMS lookup-eligible scenes of the main
+    test's set in the format (scene order, as X0 selects its items, by the lookup alone); O / S, labels and positions as
+    53.2's main. Only within monitor-run, which sets ELIGIBLE from its gate."""
+    from scripts import x53_monitor as M
+
+    assert fmt in ELIGIBLE, f"{fmt}: no eligible cases (x53_7 monitor-run sets them from its gate)"
+    out = []
+    for c in ELIGIBLE[fmt][: X.N_ITEMS]:
+        readers = {}
+        for w in X.READERS:
+            rd = c["readers"][w]
+            readers[w] = {"ids": rd["ids"], "suffix": c["space"], "question": rd["question"],
+                          "pos": {v: {"B": c["pos"], "T": len(rd["ids"][v]) + len(c["space"]) - 1} for v in M.VARIANTS},
+                          **{k: rd[k] for k in ("answer", "cf_answer", "tok_A", "tok_b")}}  # fmt: skip
+        lab = M.labels(c["context"], c["cf_context"], "prose", c["bridge"], c["cf_bridge"],
+                       (readers[X.LOOKUP]["answer"], readers[X.LOOKUP]["cf_answer"]),
+                       (readers[X.RECALL]["answer"], readers[X.RECALL]["cf_answer"]))  # fmt: skip
+        out.append({"set": f"{fmt}_l", "scene": c["scene"], "entity": c["bridge"], "cf_entity": c["cf_bridge"],
+                    "domain": c["domain"], "format": fmt, "context": c["context"], "cf_context": c["cf_context"],
+                    "labels": lab, "readers": readers})  # fmt: skip
+    return out, {"format": fmt, "items": len(out), "entities": len({it["entity"] for it in out}),
+                 "domains": dict(collections.Counter(it["domain"] for it in out)), "eligible": len(ELIGIBLE[fmt]),
+                 "selection": f"the first {X.N_ITEMS} lookup-eligible scenes of {main_set(target)} in scene order"}  # fmt: skip
+
+
 def stage_monitor_run(name: str, formats: tuple[str, ...] = FORMATS) -> Path:
-    """The gate per format over every aligned scene of the main test's set, then x53_monitor.stage_run (same model) on
-    the main test's items in each format that passes; the gate goes into the run's manifest (x53_7)."""
+    """The adapted design (Dan 12:10): per format the lookup-only gate over every aligned scene of the main test's set
+    (X0's competence, both readers, the recall descriptive), then x53_monitor.stage_run (same model) on datasets
+    <format>_l: the first X.N_ITEMS lookup-eligible scenes, for each format that passes; the gate in the manifest."""
     from bridge_jspace.model import load_model
     from scripts import x53_monitor as M
 
@@ -428,19 +523,24 @@ def stage_monitor_run(name: str, formats: tuple[str, ...] = FORMATS) -> Path:
     assert not (M.RESULTS / name).exists(), f"{name} exists"
     gate_set = main_set(target)
     model = load_model()
-    gates, reads = {}, {}
+    gates, comps = {}, {}
     for fmt in formats:
         cases, counts = build_cases(model.tokenizer, gate_set, fmt)
-        reads[fmt], _ = read_org(model, cases, None, f"{gate_set} {fmt}")
-        gates[fmt] = {**gate_of(reads[fmt]), "set": gate_set, "counts": counts}
-        print(f"{fmt}: gate {gates[fmt]['org_read_accuracy']} -> {gates[fmt]['status']}", flush=True)
+        comps[fmt] = competence(model, cases)
+        gate, ELIGIBLE[fmt] = lookup_gate(comps[fmt], cases)
+        gates[fmt] = {**gate, "set": gate_set, "counts": counts}
+        print(
+            f"{fmt}: lookup gate {gate['lookup_right_share']} ({gate['eligible']} eligible) -> {gate['status']}",
+            flush=True,
+        )
     passing = tuple(f for f in formats if gates[f]["pass"])
-    extra = {"x53_7": {"test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "formats": list(formats),
+    extra = {"x53_7": {"test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "design": LOOKUP_GATE_DESIGN,
+                       "formats": list(formats), "datasets": {f: f"{f}_l" for f in formats},
                        "format_text": {f: FORMAT_TEXT[f] for f in formats}, "gates": gates, "states_for": list(passing),
-                       "items": "the main test's items (x53_monitor main) rendered in the format; x53_7.main_items"}}  # fmt: skip
-    out = M.stage_run(name, sets_run=passing, model=model, extra=extra)
-    for fmt, rows in reads.items():
-        X.write_jsonl(out / f"x53_7_gate_reads_{fmt}.jsonl", rows)
+                       "items": f"the first {X.N_ITEMS} lookup-eligible scenes of {gate_set} per format (x53_7.eligible_items)"}}  # fmt: skip
+    out = M.stage_run(name, sets_run=tuple(f"{f}_l" for f in passing), model=model, extra=extra)
+    for fmt, rows in comps.items():
+        X.write_jsonl(out / f"x53_7_competence_{fmt}.jsonl", rows)
     return out
 
 
@@ -550,7 +650,11 @@ def routes_status(src: Path) -> dict[str, str]:
     assert m["gate"] == m["gate_fixed_in_advance"] == GATE_BAR, f"{src.name}: gate {m['gate']}, not {GATE_BAR}"
     assert (src / "gate.json").exists(), f"{src.name}: no gate.json (the run failed before its gate)"
     gate = json.loads((src / "gate.json").read_text())["gate"]
-    out = {c: "tested" if gate[c]["pass"] else not_tested(gate[c]["org_read_accuracy"]) for c in m["conditions"]}
+    if m.get("lookup_gate"):  # 53.7's adapted design (decisions_1210): the lookup's says-and-reads share
+        out = {c: "tested" if gate[c]["pass"] else not_tested({X.LOOKUP: gate[c]["lookup_right_share"]})
+               for c in m["conditions"]}  # fmt: skip
+    else:
+        out = {c: "tested" if gate[c]["pass"] else not_tested(gate[c]["org_read_accuracy"]) for c in m["conditions"]}
     c0 = json.loads((src / "c0_check.json").read_text()) if (src / "c0_check.json").exists() else None
     if c0 is not None and not c0["ok"]:
         rate = "no C0 rows" if c0["c0_lookup_switch"] != c0["c0_lookup_switch"] else f"{c0['c0_lookup_switch']:.3f}"
@@ -586,34 +690,51 @@ def stage_routes_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
                     cells[f"{cond}|{arm}"] = cell
         runs.append({"run": name, "model": m["model"]["target"], "format": m.get("format", "prose"),
                      "layer": m["layer"], "items": m.get("items"), "status": status, "gate": gate, "c0_check": c0,
-                     "cells": cells})  # fmt: skip
+                     "cells": cells, "design": m.get("gate_design", "the routes test's two-reader gate")})  # fmt: skip
     out = R.RESULTS / f"x53_7_routes-{utc()}"
     out.mkdir(parents=True, exist_ok=False)
     rule = f"a route counts as used if its share is >= {R.USED_SHARE} with lower CI >= {R.USED_LO}"
+    lookup = all(r["design"] == R.LOOKUP_GATE_DESIGN for r in runs)
+    gate_text = (f"{R.LOOKUP_GATE_DESIGN} (Dan 12:10, decisions_1210): per condition {R.LOOKUP_GATE_RULE}" if lookup
+                 else f"per condition, O's read accuracy >= {GATE_BAR} per reader (x6_routes' gate)")  # fmt: skip
     blob = {"test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED", "rule": rule,
+            "design": R.LOOKUP_GATE_DESIGN if lookup else "two-reader gate",
             "c0_rule": f"C0 must reproduce the one-pick lookup switch rate within {R.C0_TOL}, or the run stops",
-            "gate": f"per condition, O's read accuracy >= {GATE_BAR} per reader (x6_routes' gate)", "n_boot": n_boot,
-            "seed": X.BOOT_SEED, "format_text": FORMAT_TEXT, "runs": runs, "written_utc": utc()}  # fmt: skip
+            "gate": gate_text, "n_boot": n_boot, "seed": X.BOOT_SEED, "format_text": FORMAT_TEXT, "runs": runs,
+            "written_utc": utc()}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
     lines = [f"# {TEST}: the routes test in code and tool output", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
+             *([f"**{R.LOOKUP_GATE_DESIGN}.**", ""] if lookup else []),
              f'Rule (the routes test\'s, verbatim): "{rule[0].upper() + rule[1:]}." The C0 sanity swap must reproduce the '
-             f"one-pick lookup switch rate within {R.C0_TOL}, or the run stops. Gate per condition: O's read accuracy "
-             f">= {GATE_BAR} per reader; a failed condition is not tested. Cluster bootstrap over the bridge item "
-             f"({n_boot:,} resamples, seed {X.BOOT_SEED}). C1: identity = original (both a).", "",
+             f"one-pick lookup switch rate within {R.C0_TOL}, or the run stops (lookup-based, unchanged). Gate: "
+             f"{gate_text}; a failed condition is not tested. Cluster bootstrap over the bridge item "
+             f"({n_boot:,} resamples, seed {X.BOOT_SEED}). C1: identity = original (both a)."
+             + (" The recall's columns are descriptive (not part of this test)." if lookup else ""), "",
              *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
-             "| model | format | condition | status | gate (lookup / recall) |", "|---|---|---|---|---|"]  # fmt: skip
+             "| model | format | condition | status | gate | beside (descriptive) |", "|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
         for cond, st in r["status"].items():
-            acc = r["gate"]["gate"][cond]["org_read_accuracy"]
-            lines.append(f"| {MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | {cond} | {st} | "
-                         f"{acc.get(X.LOOKUP, float('nan')):.3f} / {acc.get(X.RECALL, float('nan')):.3f} |")  # fmt: skip
+            g = r["gate"]["gate"][cond]
+            if "lookup_right_share" in g:  # the adapted design: the lookup's share decides; the recall beside
+                d = g["descriptive"]
+                gate_txt = (
+                    f"lookup says and reads O and S right: {g['lookup_right_share']:.3f} ({g['eligible']} eligible)"
+                )
+                side = (f"recall the same: {d['recall_right_share']:.3f}; O read lookup / recall "
+                        f"{d['org_read_accuracy'][X.LOOKUP]:.3f} / {d['org_read_accuracy'][X.RECALL]:.3f}")  # fmt: skip
+            else:
+                acc = g["org_read_accuracy"]
+                gate_txt, side = f"O read lookup / recall {acc[X.LOOKUP]:.3f} / {acc[X.RECALL]:.3f}", ""
+            lines.append(
+                f"| {MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | {cond} | {st} | {gate_txt} | {side} |"
+            )
         if r["c0_check"]:
             c = r["c0_check"]
             lines.append(f"| | | C0 check | {'ok' if c['ok'] else 'failed: the run stops'} | lookup switch "
                          f"{c['c0_lookup_switch']:.3f} vs reference {c['reference']} |")  # fmt: skip
     lines += ["", "## Route shares of the lookup per arm (the rule's 'used' routes at the right)", "",
               "| model | format | condition | arm | n | identity | position | value | original | other | recall "
-              "follows S | used |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+              "follows S (descriptive) | used |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
         for key, c in r["cells"].items():
             cond, arm = key.split("|")
@@ -705,8 +826,11 @@ def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT, prefix: str = 
         src = P.RESULTS / name
         m = json.loads((src / "manifest.json").read_text())
         gate = json.loads((src / "gate.json").read_text())
+        hollow = m.get("hollow")  # Dan 12:25: a gate changed after the data
         rec: dict[str, Any] = {"run": name, "model": m["model"]["target"], "format": m["format"], "layer": m["layer"],
-                               "set": m["set"], "gate": gate, "status": gate["status"] if not gate["pass"] else "tested"}  # fmt: skip
+                               "set": m["set"], "gate": gate, "design": m.get("gate_design", "two-reader gate"),
+                               "hollow": hollow,
+                               "status": gate["status"] if not gate["pass"] else "tested" + (f", {hollow}" if hollow else "")}  # fmt: skip
         if gate["pass"]:
             z = np.load(src / "states.npz")
             h, scenes = z["h"].astype(np.float64), [str(s) for s in z["scene"]]
@@ -733,33 +857,46 @@ def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT, prefix: str = 
                 probe_bars(rows, out / name / "probe.png", f"{name}: {', '.join(strata)} only")
         rec["prose_v4"], rec["prose_v4_rows"] = prose_v4_rows(rec["model"]) if not cp else (None, [])
         runs.append(rec)
+    lookup = not cp and all(r["design"] == LOOKUP_GATE_DESIGN for r in runs)
+    gate_text = CP_GATE_TEXT if cp else f"{LOOKUP_GATE_DESIGN}: {LOOKUP_GATE_TEXT}" if lookup else GATE_TEXT
     blob = {"test": TEST if not cp else CP_TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED",
-            "reading": PROBE_READING if not cp else None,
+            "reading": PROBE_READING if not cp else None, "design": LOOKUP_GATE_DESIGN if lookup else None,
+            "caveats": CAVEATS_1210B if not cp else None,
             "rule": "none of its own (descriptive, x0_probe); the reading stated beside, verbatim" if not cp else CP_RULE,
-            "gate": GATE_TEXT if not cp else CP_GATE_TEXT, "n_boot": n_boot, "seed": X.BOOT_SEED,
+            "gate": gate_text, "n_boot": n_boot, "seed": X.BOOT_SEED,
             "format_text": FORMAT_TEXT if not cp else {"cp_ch2": CP_TEXT}, "runs": runs, "written_utc": utc()}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
     if cp:
         lines = [f"# {CP_TEST}: the address probe (descriptive, numbers only)", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
                  f"Rule: {CP_RULE}", "", f"Gate: {CP_GATE_TEXT}.", "", f"- {CP_TEXT}.", "",
-                 "| model | format | layer | aligned scenes | gate (lookup) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
+                 "| model | format | layer | aligned scenes | gate | beside (descriptive) | status |", "|---|---|---|---|---|---|---|"]  # fmt: skip
     else:
         lines = [f"# {TEST}: the address probe in code and tool output", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
+                 *([f"**{LOOKUP_GATE_DESIGN}.**", ""] if lookup else []),
                  "Rule: none of its own (x0_probe v4 is descriptive, added after the data). " + PROBE_READING, "",
-                 f"Gate (53.7): {GATE_TEXT}.", "", *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
-                 "| model | format | layer | aligned scenes | gate (lookup / recall) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
+                 f"Gate (53.7): {gate_text}.", "", f"Caveats (Dan 12:10b): {CAVEATS_1210B}", "",
+                 *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
+                 f"○ = {HOLLOW} (Dan 12:25, decisions_1225).", "",
+                 "| model | format | layer | aligned scenes | gate | beside (descriptive) | status |", "|---|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
-        acc = r["gate"]["org_read_accuracy"]
-        gate_txt = " / ".join(f"{acc[w]:.3f}" for w in X.READERS if w in acc) or "-"
-        lines.append(f"| {MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | L{r['layer']} | {r['gate']['cases']} | "
-                     f"{gate_txt} | {r['status']} |")  # fmt: skip
+        g = r["gate"]
+        if "lookup_right_share" in g:
+            gate_txt = f"lookup says and reads O and S right: {g['lookup_right_share']:.3f}"
+            side = "; ".join(f"{w} {v['says_and_reads_O_and_S']:.3f}, O read {v['read_right_org']:.3f}"
+                             for w, v in g["descriptive"]["rates"].items())  # fmt: skip
+        else:
+            acc = g["org_read_accuracy"]
+            gate_txt, side = "O read " + (" / ".join(f"{acc[w]:.3f}" for w in X.READERS if w in acc) or "-"), ""
+        mark = "○ " if r["hollow"] else ""
+        lines.append(f"| {mark}{MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | L{r['layer']} | {g['cases']} | "
+                     f"{gate_txt} | {side} | {r['status']} |")  # fmt: skip
     lines += ["", "## Probe accuracy (every scene of the run; folds by bridge entity for (a), (b), by item for (c))", "",
               "| model | format | locker vs pick | target | n | entities | classes | probe | majority | chance | structure "
               "| layout | probe - best baseline | prose v4 probe (beside) |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
         prose = {(p["stratum"], p["target"]): p["probe"] for p in r["prose_v4_rows"] if p["subset"] == "all"}
         for p in r.get("rows", []):
-            lines.append(f"| {MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | {p['stratum']} | {p['target']} | "
+            lines.append(f"| {'○ ' if r['hollow'] else ''}{MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | {p['stratum']} | {p['target']} | "
                          f"{p['n']} | {p['entities']} | {p['classes']} | {fmt_ci(p['probe'])} | {fmt_ci(p['majority'])} | "
                          f"{p['chance']:.2f} | {fmt_ci(p['structure']) if 'structure' in p else '-'} | "
                          f"{fmt_ci(p['layout']) if 'layout' in p else '-'} | {fmt_ci(p['probe_minus_best'])} "
@@ -792,36 +929,49 @@ def stage_monitor_verdict(names: list[str], n_boot: int = X.N_BOOT, states_root:
         m = json.loads((root / name / "manifest.json").read_text())
         target, x = m["model"]["target"], m["x53_7"]
         for fmt in x["formats"]:
-            g = x["gates"][fmt]
-            rec = {"run": name, "model": target, "format": fmt, "gate": {k: g[k] for k in ("cases", "org_read_accuracy", "pass", "status", "set")}}  # fmt: skip
+            g, ds = x["gates"][fmt], x.get("datasets", {}).get(fmt, fmt)  # the adapted design's datasets: <format>_l
+            rec = {"run": name, "model": target, "format": fmt, "dataset": ds,
+                   "design": x.get("design", "two-reader gate (superseded, decisions_1210)"), "gate": g}  # fmt: skip
             if g["pass"]:
-                pr = M.load_probes(name, fmt)
-                assert pr is not None, f"{name} {fmt}: no probes in {M.CACHE / name}: run x53_monitor.py probe first"
-                results.setdefault(target, {})[fmt] = M.summarize(pr, n_boot)
+                pr = M.load_probes(name, ds)
+                assert pr is not None, f"{name} {ds}: no probes in {M.CACHE / name}: run x53_monitor.py probe first"
+                results.setdefault(target, {})[ds] = M.summarize(pr, n_boot)
                 rec["status"] = "tested"
             else:
                 rec["status"] = g["status"]
             status.append(rec)
+    lookup = all(s["design"] == LOOKUP_GATE_DESIGN for s in status)
+    gate_text = f"{LOOKUP_GATE_DESIGN}: {LOOKUP_GATE_TEXT}" if lookup else GATE_TEXT
     out = M.RESULTS / f"x53_7_monitor-{utc()}"
     out.mkdir(parents=True, exist_ok=False)
     figs = []
-    for fmt in FORMATS:
-        if any(fmt in r for r in results.values()):
-            M.figure(results, fmt, out / f"x53_7_monitor_{fmt}.png")
-            figs.append(f"x53_7_monitor_{fmt}.png")
+    for ds in dict.fromkeys(ds for r in results.values() for ds in r):
+        M.figure(results, ds, out / f"x53_7_monitor_{ds}.png")
+        figs.append(f"x53_7_monitor_{ds}.png")
     blob = {"test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED", "rule": M.RULE,
-            "gate": GATE_TEXT, "format_text": FORMAT_TEXT, "runs": status, "figures": figs, "n_boot": n_boot,
-            "results": results, "written_utc": utc()}  # fmt: skip
+            "design": LOOKUP_GATE_DESIGN if lookup else "two-reader gate", "gate": gate_text,
+            "format_text": FORMAT_TEXT, "runs": status, "figures": figs, "n_boot": n_boot, "results": results,
+            "written_utc": utc()}  # fmt: skip
     (out / "x53_7_monitor.json").write_text(json.dumps(blob, indent=1) + "\n")
     lines = [f"# {TEST}: the monitor test (53.2) in code and tool output", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
-             f"Rule (53.2's, verbatim): {M.RULE}", "", f"Gate (53.7): {GATE_TEXT}.", "",
+             *([f"**{LOOKUP_GATE_DESIGN}.** Target (d), the recall's answer, is a positive control (critic_1125); the "
+                "gate's recall rates are descriptive.", ""] if lookup else []),
+             f"Rule (53.2's, verbatim): {M.RULE}", "", f"Gate (53.7): {gate_text}.", "",
              *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
-             "| model | format | gate set | gate (lookup / recall) | status |", "|---|---|---|---|---|"]  # fmt: skip
+             "| model | format | gate set | gate | beside (descriptive) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
     for s in status:
-        acc = s["gate"]["org_read_accuracy"]
-        lines.append(f"| {M.NAMES.get(s['model'], s['model'])} | {s['format']} | {s['gate']['set']} "
-                     f"({s['gate']['cases']} scenes) | {acc.get(X.LOOKUP, float('nan')):.3f} / "
-                     f"{acc.get(X.RECALL, float('nan')):.3f} | {s['status']} |")  # fmt: skip
+        g = s["gate"]
+        if "lookup_right_share" in g:
+            rates = g["descriptive"]["rates"]
+            gate_txt = f"lookup says and reads O and S right: {g['lookup_right_share']:.3f} ({g['eligible']} eligible)"
+            side = "; ".join(
+                f"{w} {r['says_and_reads_O_and_S']:.3f}, O read {r['read_right_org']:.3f}" for w, r in rates.items()
+            )
+        else:
+            acc = g["org_read_accuracy"]
+            gate_txt, side = " / ".join(f"{acc[w]:.3f}" for w in X.READERS if w in acc), ""
+        lines.append(f"| {M.NAMES.get(s['model'], s['model'])} | {s['format']} | {g['set']} ({g['cases']} scenes) | "
+                     f"{gate_txt} | {side} | {s['status']} |")  # fmt: skip
     lines += ["", "## Labels (53.2's rule per position, target and k; the arms beside where their passes ran)", "",
               "The decisive label is the per-state J++ part against a random subspace of the same k. Beside it (53.2, "
               "critic_1125): the same rule with the fixed J++ subspace (fixed) and with the energy-matched random "
@@ -1219,6 +1369,7 @@ def main() -> None:
     p = sub.add_parser("probe-run", help="GPU: the address probe's gate and states per format")
     p.add_argument("--name", required=True, help="the run's base name; one run per format, <name>_<format>")
     p.add_argument("--formats", default=",".join(FORMATS))
+    p.add_argument("--hollow", default="", help=f"formats labelled '{HOLLOW}' (Dan 12:25), comma-separated")
     p = sub.add_parser("monitor-run", help="GPU: the monitor's gate per format, then its states (x53_monitor)")
     p.add_argument("--name", required=True)
     p.add_argument("--formats", default=",".join(FORMATS))
@@ -1251,7 +1402,7 @@ def main() -> None:
     elif a.cmd == "cp-monitor-report":
         stage_cp_monitor_report(a.names.split(","), a.n_boot)
     elif a.cmd == "probe-run":
-        stage_probe_run(a.name, tuple(a.formats.split(",")))
+        stage_probe_run(a.name, tuple(a.formats.split(",")), hollow=tuple(f for f in a.hollow.split(",") if f))
     elif a.cmd == "monitor-run":
         stage_monitor_run(a.name, tuple(a.formats.split(",")))
     elif a.cmd == "routes-verdict":

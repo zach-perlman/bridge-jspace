@@ -171,6 +171,10 @@ Q45_9 = {"precondition": "can't tell: the main-test curve does not reproduce in 
 TARGET_27B, TARGET_9B = "qwen3.6-27b", "qwen3.5-9b"  # 45k: Q45.9 is scored on the 27B; the 9B is the identity clause's
 EPS = 1e-9  # thresholds on shares of counts: a share exactly at the bar counts as at the bar
 PICK = re.compile(r"(\w+) picked the (\w+)\.")
+# 53.7 (Dan 12:10, jobs/c3/batch53.yaml decisions_1210; decided before any 53.7 routes or probe result was opened)
+LOOKUP_GATE_DESIGN = "adapted design: lookup-only gate; the recall is not part of this test"
+LOOKUP_GATE_RULE = ("the lookup says and reads O and S right (X0's greedy answer and chat read, both prompts) on >= 0.80 "
+                    "of the scenes; an item is eligible when the lookup does; the recall's rates reported descriptively")  # fmt: skip
 MARK = "⟦{}⟧"  # the patch position in an example's prompt
 
 
@@ -400,6 +404,25 @@ def stage_plan(
     for cond in CONDITIONS:
         c = next(c for c in cases if c["condition"] == cond)
         print(cond, "O:", c["context"], "\n   S:", c["cf_context"], "\n   expect", c["expect"])
+
+
+def lookup_gate_cell(mine: list[dict], right: dict[tuple, dict], gate_min: float, two: dict) -> tuple[dict, list[dict]]:
+    """53.7's lookup-only gate for one condition (decisions_1210): the share of its cases where the lookup says and
+    reads O and S right (X0's competence rows keyed (scene, reader, variant)), passing iff >= gate_min (rounded to 4
+    places, as X0); the eligible cases are those; `two` (the two-reader gate's cell) and the recall's share beside."""
+
+    def ok(c: dict, w: str) -> bool:
+        return all(
+            right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"] for v in ("org", "alt")
+        )
+
+    eligible = [c for c in mine if ok(c, X.LOOKUP)]
+    share = {w: round(sum(ok(c, w) for c in mine) / len(mine), 4) for w in X.READERS}
+    cell = {"cases": len(mine), "lookup_right_share": share[X.LOOKUP], "pass": share[X.LOOKUP] >= gate_min,
+            "eligible": len(eligible), "design": LOOKUP_GATE_DESIGN,
+            "descriptive": {"org_read_accuracy": two["org_read_accuracy"], "recall_right_share": share[X.RECALL],
+                            "two_reader_pass": two["pass"], "two_reader_eligible": two["eligible"]}}  # fmt: skip
+    return cell, eligible
 
 
 def c0_reference(target: str) -> float | None:
@@ -715,7 +738,11 @@ def stage_run(
     jpp_other: bool = False,
     atom_slices: bool = False,
     fmt: str = "prose",
+    lookup_gate: bool = False,
 ) -> Path:
+    """lookup_gate (53.7, Dan 12:10, decisions_1210): per condition the gate is the share of scenes where the lookup
+    says and reads O and S right (>= the gate), and a scene is eligible when the lookup does (the recall's rates are
+    kept, descriptive); the C0 check (lookup-based) is unchanged. Default off: the two-reader gate, as before."""
     import torch
 
     from bridge_jspace.lens import JLens
@@ -787,6 +814,8 @@ def stage_run(
 
         m["x53_7"] = {"format": fmt, "format_text": F.FORMAT_TEXT[fmt], "test": F.TEST, "prediction": F.NO_PREDICTION}
         m["format"] = fmt
+    if lookup_gate:  # 53.7 (decisions_1210)
+        m.update({"lookup_gate": True, "gate_design": LOOKUP_GATE_DESIGN, "gate_rule": LOOKUP_GATE_RULE})
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     warm_cusolver()
     model = load_model()
@@ -812,6 +841,8 @@ def stage_run(
                                      for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
         gate[g] = {"cases": len(mine), "org_read_accuracy": acc, "pass": all(a >= gate_min for a in acc.values()),
                    "eligible": len(ok)}  # fmt: skip
+        if lookup_gate:  # 53.7 (decisions_1210): the lookup alone gates and selects; the two-reader numbers beside
+            gate[g], ok = lookup_gate_cell(mine, right, gate_min, gate[g])
         ok_by[g] = ok
     if prepend:  # paired: the first n base scenes eligible in every variant that passed its gate
         passed = [v for v in prepend if gate[v]["pass"]]
@@ -1706,6 +1737,8 @@ def main() -> None:
     ap.add_argument("--sealed", action="store_true", help="run: no verdict after the run (batch 45: results closed)")
     ap.add_argument("--format", choices=("prose", "code", "tool"), default="prose", dest="fmt",
                     help="run / plan (53.7): the scenes as prose (default), Python code or tool output (scripts/x53_7.py)")  # fmt: skip
+    ap.add_argument("--lookup-gate", action="store_true",
+                    help="run (53.7, Dan 12:10): gate and eligibility by the lookup alone (says and reads O and S right)")  # fmt: skip
     ap.add_argument("--jpp-ks", nargs="+", type=int, default=[], choices=JPP_KS,
                     help="run: 45k's J++ removed at these atom counts, each against its random part (25: no_jpp)")  # fmt: skip
     ap.add_argument("--jpp-other", action="store_true", help=f"run: 45k's jpp_other at k = {JPP_OTHER_K}")
@@ -1754,6 +1787,7 @@ def main() -> None:
             jpp_other=a.jpp_other,
             atom_slices=a.atom_slices,
             fmt=a.fmt,
+            lookup_gate=a.lookup_gate,
         )
     if a.stage == "verdict" or not (a.smoke or a.sealed):
         stage_verdict(a.name, a.n_boot)

@@ -372,3 +372,93 @@ def test_cp_monitor_report_has_no_label(tmp_path, monkeypatch):
     md = (out / "verdict.md").read_text()
     assert not any(lab in md for lab in ("J-space blind", "J-space carries", "in between"))
     assert (out / "x53_7_cp_monitor.png").exists()
+
+
+# ---- the adapted design (Dan 12:10, decisions_1210): the lookup-only gate ------------------------------------------
+
+
+def comp_rows(n: int, lookup_ok: int, recall_ok: int) -> list[dict]:
+    """X0 competence rows: the lookup right (said and read) on O and S in the first lookup_ok scenes, the recall in the
+    first recall_ok; the others wrong on S's read only."""
+    rows = []
+    for i in range(n):
+        for w, k in (("PP", lookup_ok), ("PM", recall_ok)):
+            for v in ("org", "alt"):
+                rows.append({"scene": f"s{i}", "reader": w, "variant": v, "right": True,
+                             "read_right": i < k or v == "org"})  # fmt: skip
+    return rows
+
+
+def test_lookup_gate_ignores_the_recall():
+    assert (
+        F.LOOKUP_GATE_DESIGN
+        == R.LOOKUP_GATE_DESIGN
+        == "adapted design: lookup-only gate; the recall is not part of this test"
+    )
+    cases = [{"scene": f"s{i}"} for i in range(10)]
+    g, eligible = F.lookup_gate(comp_rows(10, 8, 2), cases)
+    assert g["lookup_right_share"] == 0.8 and g["pass"] and g["eligible"] == 8 and len(eligible) == 8
+    assert g["descriptive"]["rates"]["PM"]["says_and_reads_O_and_S"] == 0.2  # the recall fails, descriptive only
+    g, _ = F.lookup_gate(comp_rows(10, 7, 10), cases)
+    assert not g["pass"] and g["status"] == "not tested (gate 0.700 < 0.80)"
+    right = {(r["scene"], r["reader"], r["variant"]): r for r in comp_rows(10, 9, 3)}
+    two = {"org_read_accuracy": {"PP": 1.0, "PM": 1.0}, "pass": True, "eligible": 3}
+    cell, ok = R.lookup_gate_cell(cases, right, 0.8, two)
+    assert cell["lookup_right_share"] == 0.9 and cell["pass"] and cell["eligible"] == len(ok) == 9
+    assert cell["descriptive"]["recall_right_share"] == 0.3 and cell["descriptive"]["two_reader_eligible"] == 3
+
+
+def test_routes_verdict_under_the_lookup_gate(tmp_path, monkeypatch):
+    monkeypatch.setattr(R, "RESULTS", tmp_path)
+    src = routes_run(tmp_path, "run_l")
+    m = json.loads((src / "manifest.json").read_text())
+    (src / "manifest.json").write_text(json.dumps({**m, "lookup_gate": True, "gate_design": R.LOOKUP_GATE_DESIGN}))
+    two = {"org_read_accuracy": {"PP": 0.95, "PM": 0.5}, "pass": False, "eligible": 10}
+    cells = {c: {"cases": 40, "lookup_right_share": 0.9 if c != "C1" else 0.75, "pass": c != "C1", "eligible": 36,
+                 "design": R.LOOKUP_GATE_DESIGN, "descriptive": {**two, "recall_right_share": 0.4,
+                                                                 "two_reader_pass": False, "two_reader_eligible": 10}}
+             for c in R.CONDITIONS}  # fmt: skip
+    (src / "gate.json").write_text(json.dumps({"gate": cells}))
+    assert F.routes_status(src) == {"C0": "tested", "C1": "not tested (gate 0.750 < 0.80)", "C2": "tested"}
+    out = F.stage_routes_verdict(["run_l"], n_boot=50)
+    md = (out / "verdict.md").read_text()
+    assert f"**{R.LOOKUP_GATE_DESIGN}.**" in md and "recall follows S (descriptive)" in md
+    assert "recall the same: 0.400" in md
+
+
+def test_probe_verdict_under_the_lookup_gate_marks_hollow(tmp_path, monkeypatch):
+    monkeypatch.setattr(P, "RESULTS", tmp_path)
+    for name, hollow in (("p_tool", None), ("p_code", F.HOLLOW)):
+        src = probe_run(tmp_path, name, True)
+        m = json.loads((src / "manifest.json").read_text())
+        (src / "manifest.json").write_text(json.dumps({**m, "gate_design": F.LOOKUP_GATE_DESIGN, "hollow": hollow}))
+        g, _ = F.lookup_gate(comp_rows(10, 9, 5), [{"scene": f"s{i}"} for i in range(10)])
+        (src / "gate.json").write_text(json.dumps(g))
+    out = F.stage_probe_verdict(["p_tool", "p_code"], n_boot=50)
+    runs = {r["run"]: r for r in json.loads((out / "verdict.json").read_text())["runs"]}
+    assert runs["p_tool"]["status"] == "tested" and runs["p_code"]["status"] == f"tested, {F.HOLLOW}"
+    md = (out / "verdict.md").read_text()
+    assert f"**{F.LOOKUP_GATE_DESIGN}.**" in md and F.CAVEATS_1210B in md
+    assert "| ○ Qwen3.6-27B | tool | L32 |" in md  # probe_run's manifest says tool; the hollow mark is the run's
+    assert "lookup says and reads O and S right: 0.900" in md
+
+
+def test_monitor_verdict_reads_the_lookup_datasets(tmp_path, monkeypatch):
+    monkeypatch.setattr(M, "RESULTS", tmp_path / "results")
+    monkeypatch.setattr(M, "CACHE", tmp_path / "cache")
+    run = tmp_path / "results" / "mon_l"
+    run.mkdir(parents=True)
+    g, _ = F.lookup_gate(comp_rows(10, 9, 4), [{"scene": f"s{i}"} for i in range(10)])
+    gates = {"code": {**g, "set": "d1_topics_v3"}, "tool": {**F.lookup_gate(comp_rows(10, 6, 9), [{"scene": f"s{i}"} for i in range(10)])[0], "set": "d1_topics_v3"}}  # fmt: skip
+    x = {"formats": ["code", "tool"], "datasets": {"code": "code_l", "tool": "tool_l"}, "gates": gates,
+         "design": F.LOOKUP_GATE_DESIGN}  # fmt: skip
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": "qwen3.6-27b"}, "x53_7": x}))
+    monitor_cache(tmp_path / "cache", "mon_l", "code_l", {"full": 0.9})
+    out = F.stage_monitor_verdict(["mon_l"], n_boot=50)
+    blob = json.loads((out / "x53_7_monitor.json").read_text())
+    assert {r["format"]: r["status"] for r in blob["runs"]} == {
+        "code": "tested",
+        "tool": "not tested (gate 0.600 < 0.80)",
+    }
+    assert "code_l" in blob["results"]["qwen3.6-27b"] and (out / "x53_7_monitor_code_l.png").exists()
+    assert f"**{F.LOOKUP_GATE_DESIGN}.**" in (out / "verdict.md").read_text()
