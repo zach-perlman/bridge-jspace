@@ -160,3 +160,21 @@ figures_brief_1000: |
   4. Batch 53 cards: figures with the same four slots when they land.
 
   Open every rebuilt PNG; update the Figure checks list. No number changes.
+
+test_53_3b_received: "29 Oct ~10:05 Paris (Dan)"
+test_53_3b: |
+  53.3b (Dan, 10:05; rule fixed now, no prediction): the last-token conflict
+  test on word answers. jsuite_v2_1_test_chat, named bridge: PP (the lookup
+  copies a made-up word from the passage, e.g. "Hungarian") and PM (the recall,
+  same answer vocabulary). 9B, 27B, then Muse, Lightning. Layers per reader:
+  its own answer layer minus 1, 2 and 3 (to rule out a layer-choice artefact),
+  plus 51.10's read peak. Arms as 53.3, without the redundant "rest alone":
+  whole; without the lens part; without a random part of the same share; the
+  lens part alone. 53.3's validity bar (S_whole >= 0.30, >= 30 switches).
+  Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses
+  the lens" if at answer - 1 and - 2 the recall is "through the lens" and the
+  lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup
+  goes through the lens like the recall; else in between.
+  Also rerun 53.3's lookup on the locker scenes at its own answer - 1 and - 3
+  (the same items), to check the asymmetry is not a layer choice.
+  Priority: right after 53.1b / 53.1.
