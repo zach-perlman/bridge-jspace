@@ -17,6 +17,8 @@ CASES = [
     ("x47_source", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_source", {LT}),
     ("x47_value", lambda M: M.stage_verdict("a", list(M.COVERAGE_RUNS["a"].values()), 10, coverage=True),
      "x52_valuea", {LT}),
+    ("x47_value", lambda M: M.stage_verdict("c", list(M.COVERAGE_RUNS["c"].values()), 10, coverage=True),
+     "x52_valuec", {LT}),
     ("x48_enrich", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS_A.values()), list(M.COVERAGE_RUNS_B.values()), 10,
                                              coverage=True), "x52_enrich", {Q27, LT}),
     ("x49_gain", lambda M: M.stage_verdict(None, 10, coverage=True), "x52_gain", {LT}),
@@ -103,3 +105,21 @@ def test_z3_coverage_verdict_on_the_27b(tmp_path, monkeypatch):
     out = Z.stage_verdict("z3", [Z.COVERAGE_RUNS["z3"][Q27]], 10)
     text = (out / "z3.md").read_text()
     assert out.name.startswith("x52_z3-") and Z.NO_PREDICTION in text and "Dan:" not in text and Q27 in text
+
+
+def test_lightning_z2_cue_and_value_c_lookups(tmp_path, monkeypatch):
+    """Lightning's Z2 (x50_zach), 51.12's cue set (x51_answer, on Lightning's 47.3 run) and 47.7 (c) (x47_value, on
+    fill5's 45d basis): lookups only, each read by its coverage verdict."""
+    from scripts import x47_value as V
+    from scripts import x50_zach as Z
+    from scripts import x51_answer as AN
+
+    assert Z.COVERAGE_RUNS["z2"] == {LT: "nem35l_x52_z2"} and LT not in Z.RUNS["z2"] and Z.LAYERS[LT] == (14, 27)
+    monkeypatch.setattr(Z, "RESULTS", tmp_path / "zach")
+    monkeypatch.setattr(Z, "COVERAGE", True)
+    out = Z.stage_verdict("z2", [Z.COVERAGE_RUNS["z2"][LT]], 10)
+    text = (out / "z2.md").read_text()
+    assert out.name.startswith("x52_z2-") and Z.NO_PREDICTION in text and "Dan:" not in text and LT in text
+    assert AN.runs_of("cue")[LT] == "nem35l_x52_cue_answer" and AN.source_of("cue", LT).name == "nem35l_x52_cue"
+    assert AN.source_of("cue", Q27).name == "x47_cue_27b"  # the design's sources unchanged
+    assert V.PCF_FIT[LT] == "x7_pcf/nem35l_x52_x45d_fit" and Q27 not in V.PCF_FIT
