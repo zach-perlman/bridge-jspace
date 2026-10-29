@@ -1,0 +1,41 @@
+id: x52_lightning_atoms47
+title: "Batch 52 C coverage (Lightning extra d): the identity route outside the lens (47.1: atoms 26-100 only, 1-25 kept, 75 random lens atoms, each against a random part of its share; routes C2 and the main test) and the 100-direction removal (the main test's J++ k curve 50 / 100 / 200) at L14; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  uv run python scripts/x6_routes.py run --name nem35l_x52_routes_x47_1 --conditions C2 --jpp-ks 25 100 --atom-slices &&
+  uv run python scripts/x0_necessity.py run --name nem35l_x52_x47_1_main --set d1_topics_v3 --renderings chat --layers $L --dicts jpp --curve-dicts jpp --curve-k 50 100 200 --no-nonneg --atom-slices --exclude-dev results/x51_lightning/nem35l_x52_layer_r2/gate.json --coverage --why "Batch 52 part C (amendment 3, extra d), coverage: 47.1's atom slices and the J++ k curve (50 / 100 / 200) on Lightning's main test at the committed L$L, the 60 dev scenes excluded; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x47_atoms.py verdict --coverage
+question: >-
+  On Lightning: does the lookup's identity route sit in lens atoms beyond the recall's 25 (47.1 (a)), is it a
+  continuum (b), or outside the lens (c)? And how much does each reader lose when 50 / 100 / 200 lens directions go (the
+  27B's open question: its lookup loses 0.60 beyond random at 100)?
+why_it_matters: >-
+  E3 (the lookup's identity route runs outside the lens) and the 100-direction removal (fig02b) on the second family;
+  amendment 3 extra d.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule verbatim from jobs/c3/x47_1_muse.yaml (jobs/c3/batch47.yaml 47.1; first scored in
+  results/x47_atoms/x47_1-20261028T113101Z): "On routes scenes, for identity answers; on the main test, for extra
+  loss: (a) "the lookup's identity route sits in lens atoms beyond the recall's 25": without 26-100, identity answers
+  fall >= 0.30 beyond the random part (paired CI excluding 0) and the recall's extra loss without 26-100 is <= 0.10, on
+  >= 2 of 3 models; (b) "continuum": both readers lose >= 0.20 beyond random without 26-100; (c) "outside the lens":
+  without 26-100, identity answers fall < 0.10 beyond random ... Report each slice's share of the change." Read per
+  model on Lightning alone ("on >= 2 of 3 models" not applicable). The k curve: X0's descriptive k curve (as
+  muse30b_x0_necessity's "--curve-k 50 100 200", jobs/c3/muse_g1.yaml), each k against a random part of its own share.
+  As computed: x47_1_muse's text at Lightning's committed L14: routes C2 scenes (seed 2510, gate 0.80; the address from
+  nem35l_x52_probe), the main test's first 200 eligible scenes not among the 60 dev scenes. Verdicts: x6_routes' and
+  x0_necessity's in the job, then x47_atoms verdict --coverage (x52_atoms47-<UTC>/).
+controls:
+- "every slice against a random part of its own share (X0's random subspace, seed 888 + L)"
+- "75 random lens atoms at the 26-100 slice's share and at their own (x47_atoms' controls)"
+n: "routes C2: the first 300 eligible scenes; main test: the 200 scenes of the conflict test's selection"
+seeds: [2510, 888, 0]
+notes: "Batch 52 C, amendment 3 extra d; any free Lightning box. Needs the probe run committed (checked; ffe50747). Code: x47_atoms.COVERAGE + verdict --coverage (the three models' verdict unchanged). Wallclock (ledger-based): x47_1_muse est 0.45; Lightning ~0.5x Muse's per-row time plus the k curve's 3 extra arms per reader; est ~20-30 min, 0.5 GPU-h; opens before the freeze."

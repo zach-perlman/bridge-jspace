@@ -470,3 +470,18 @@ def test_verdict_takes_re_queued_run_names(tmp_path, monkeypatch):
     out = A.stage_verdict(100, decode_for=lambda t: str, routes_runs={"qwen3.5-9b": "r2"})
     blob = json.loads((out / "x47_1.json").read_text())
     assert blob["models"][1]["runs"] == ["r2", A.MAIN_RUNS["qwen3.5-9b"]] and blob["batch"]["a_holds"] == "holds"
+
+
+def test_coverage_verdict_reads_lightning_alone_without_the_seal(tmp_path, monkeypatch):
+    """Batch 52 C: 47.1's rule on Lightning's two runs alone, no Q47.1 line needed, 'no prediction' in its place."""
+    from scripts import x47_atoms as AT
+
+    monkeypatch.setattr(AT, "RESULTS", tmp_path)
+    monkeypatch.setattr(AT, "require_answer", lambda q=None: (_ for _ in ()).throw(AssertionError("sealed")))
+    out = AT.stage_verdict(n_boot=10, coverage=True)
+    blob = json.loads((out / "x47_1.json").read_text())
+    assert out.name.startswith("x52_atoms47-") and blob["dan"] == AT.NO_PREDICTION
+    assert [m["target"] for m in blob["models"]] == ["nemotron-3.5-lightning"] and blob["models"][0][
+        "status"
+    ] == "pending"
+    assert "Dan:" not in (out / "x47_1.md").read_text()

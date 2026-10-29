@@ -79,6 +79,10 @@ ROUTES_RUNS = {"qwen3.6-27b": "x6_routes_x47_1_27b", "qwen3.5-9b": "qwen35_9b_x6
                "muse-glimmer-30b": "muse30_x6_routes_x47_1"}  # fmt: skip
 MAIN_RUNS = {"qwen3.6-27b": "x47_1_main_27b", "qwen3.5-9b": "qwen35_9b_x47_1_main",
              "muse-glimmer-30b": "muse30_x47_1_main"}  # fmt: skip
+# batch 52 C coverage (amendment 3, extra d): Lightning's runs, read by verdict --coverage alone (the three models'
+# verdict unchanged)
+COVERAGE = {"nemotron-3.5-lightning": ("nem35l_x52_routes_x47_1", "nem35l_x52_x47_1_main")}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 FALL_A, FALL_B, FALL_C = 0.30, 0.20, 0.10
 RECALL_A, RECALL_B = 0.10, 0.20
 MODELS_MIN = 2
@@ -531,16 +535,25 @@ def example_lines(target: str, routes_run: str, main_run: str, decode, k: int = 
 
 
 def stage_verdict(
-    n_boot: int = X.N_BOOT, decode_for=None, routes_runs: dict | None = None, main_runs: dict | None = None
+    n_boot: int = X.N_BOOT,
+    decode_for=None,
+    routes_runs: dict | None = None,
+    main_runs: dict | None = None,
+    coverage: bool = False,
 ) -> Path:
-    """The rule over the three models (runs: the specs' names unless given per target, e.g. a re-queued run)."""
-    answer = require_answer(QUESTION)
+    """The rule over the three models (runs: the specs' names unless given per target, e.g. a re-queued run); with
+    coverage (batch 52 C) the same rule on COVERAGE's runs alone, no seal, "no prediction" (x52_atoms47-<UTC>/)."""
+    answer = NO_PREDICTION if coverage else require_answer(QUESTION)
     rr, mr = {**ROUTES_RUNS, **(routes_runs or {})}, {**MAIN_RUNS, **(main_runs or {})}
-    models = [model_result(t, rr[t], mr[t], n_boot) for t in MODELS]
+    if coverage:
+        rr, mr = {t: r for t, (r, _) in COVERAGE.items()}, {t: m for t, (_, m) in COVERAGE.items()}
+    models = [model_result(t, rr[t], mr[t], n_boot) for t in (COVERAGE if coverage else MODELS)]
     batch = batch_rule(models)
-    out = RESULTS / f"x47_1-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_atoms47' if coverage else 'x47_1'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, batch, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ") for ln in lines]
     (out / "x47_1.json").write_text(json.dumps({"dan": answer, "batch": batch, "models": models}, indent=1) + "\n")
     (out / "x47_1.md").write_text("\n".join(lines) + "\n")
     items = item_rows(models)
@@ -575,9 +588,11 @@ def main() -> None:
                     help=f"x6_routes runs in place of the specs' {[ROUTES_RUNS[t] for t in MODELS]}")  # fmt: skip
     ap.add_argument("--main-runs", nargs=3, default=None, metavar=("27B", "9B", "MUSE"),
                     help=f"x0_necessity runs in place of the specs' {[MAIN_RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52's coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     stage_verdict(a.n_boot, routes_runs=dict(zip(MODELS, a.routes_runs, strict=True)) if a.routes_runs else None,
-                  main_runs=dict(zip(MODELS, a.main_runs, strict=True)) if a.main_runs else None)  # fmt: skip
+                  main_runs=dict(zip(MODELS, a.main_runs, strict=True)) if a.main_runs else None,
+                  coverage=a.coverage)  # fmt: skip
 
 
 if __name__ == "__main__":
