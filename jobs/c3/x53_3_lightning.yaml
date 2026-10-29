@@ -1,0 +1,46 @@
+id: x53_3_lightning
+title: "Batch 53.3 on nemotron-3.5-lightning: the conflict test at the last token (P3) at 51.10's read-peak layer (lookup L32, recall L36) and the answer layer minus 2 (lookup L43, recall L47); arms whole / without the lens part / without a random part of its share / the lens part alone / the rest alone; 51.10's 59 locker-first items (the main test at the committed L14), both readers; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x53_lastconflict.py run --name nem35l_x53_3 --why "Batch 53, test 53.3 (jobs/c3/batch53.yaml, Dan 29 Oct 09:30): the conflict test at the last token on Lightning (items: the main test at L$L, as 51.10's), at 51.10's read peak and the answer layer minus 2; no prediction" &&
+  uv run python scripts/x53_lastconflict.py verdict --runs nem35l_x53_3
+question: >-
+  At the last token (the read position, whose next token is the answer), does each reader's change from O to S act on
+  the answer through the lens part (its 25 J++ atoms) or outside it, at 51.10's read-peak layer and two layers before
+  the answer layer?
+why_it_matters: >-
+  Batch 53 (Dan, 29 Oct 09:30), test 53.3, priority 3 (09:50 standing rules): the main conflict test reads the bridge
+  word; 53.3 asks the same question where the answer is read out. Lightning is named in 53.3's model list (a batch 53
+  test, not batch 52 coverage).
+hypotheses:
+  none: "No prediction (batch 53: every rule fixed in Dan's brief before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (brief, 53.3): "9B, 27B, Muse, Lightning; at 51.10's read-peak layer and the
+  answer layer minus 2. The change = S's last-token state minus O's at that layer; the lens part = its 25 J++ atoms;
+  arms: whole; without the lens part; without a random part of the same share; the lens part alone; the rest alone.
+  Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond
+  random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random;
+  else in between." As computed: as jobs/c3/x53_3_9b.yaml (scripts/x53_lastconflict.py, unchanged), on Lightning:
+  layers from results/x51_jread/nem35l_x52_jread/peak.json (51.10's Lightning run; read peak: lookup 32, recall 36) and
+  the newest 51.10 read, results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json (answer layer: lookup 45,
+  recall 49; minus 2 = 43 / 47; our Lightning J++ has maps at L0-L50); items = 51.10's (x51_jread.select on
+  nem35l_x52_conflict at the committed L14, BJ_PREDICTED_LAYER from x51_lightning.py layer, as 51.10's Lightning run),
+  its 59 locker-first items (30 entities); the main test's gate passes there (PP 0.957, PM 0.816); the loss beyond
+  random = X0's excess (S_no_rand - S_no_jpp) / S_whole, the rest alone's share = S_rest / S_whole, point estimates
+  decide (EPS 1e-9), cluster-bootstrap CIs over bridge entities (10,000, seed 0) beside; "the rest alone" is the same
+  vector as "without the lens part" in this additive patch (read separately). Verdict in the job:
+  results/x53_lastconflict/x53_lastconflict-<UTC>/.
+controls:
+- "without a random part of the lens part's share (X0's random subspace, seed 888 + layer): the reference of the loss"
+- "O unedited (the floor) and the whole change (the ceiling) read on the same items"
+- "the rest alone read separately from 'without the lens part' (the same vector: the two reads must agree)"
+- "the source run's gate (X0: 0.80 per reader on O unedited, >= 150 eligible) asserted (PP 0.957, PM 0.816)"
+n: "51.10's 59 locker-first items (30 bridge entities) on Lightning, 2 readers, 2 layers each (lookup L32 / L43, recall L36 / L47): 1,298 reads + 236 state forwards (plan: x53_lastconflict.py plan)"
+seeds: [888, 0]
+notes: "Batch 53, test 53.3 (Dan's brief 29 Oct 09:30; standing rules 09:50: priority 3). Box: mats (or any idle 80 GB GPU). Code: scripts/x53_lastconflict.py as committed with x53_3_9b (f55daae2); the reads use the pinned HF-hub kernels as every Lightning run (no gradient; nothing from the dropped DAS ports). Writes results/x53_lastconflict/nem35l_x53_3/ (manifest.json before the model loads, plan.json, cases.jsonl, norms.jsonl, outcomes.jsonl) and the verdict folder x53_lastconflict-<UTC>/. Cost (ledger, results/jobq/ledger_sesterce-another.jsonl): x52_lightning_jread ran 525 s for ~37,000 reads and 900 cached forwards on these items; here 236 forwards and 118 batched reads of 11 rows plus load (~50-100 s) and four J++ dictionaries: ~4 min; est 0.2. Memory: x52_lightning_jread peaked at 63.5 GB. Disk on the Mac before the spec: 185 GB free. UNVERIFIED; into EXPERIMENTS.md with a card and the figure."
