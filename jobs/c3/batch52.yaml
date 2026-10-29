@@ -341,3 +341,18 @@ readme_additions_0915: |
     not hurt the recall (route2), but swapping it redirects part of it.
   - Z1-P on Lightning: "not tested (gate 0.794 < 0.80)", numbers descriptive with
     a hollow mark; no relabel. Same policy for every gate miss.
+
+lightning_attn_block_received: "29 Oct ~10:05 Paris (Dan)"
+lightning_attn_block: |
+  Lightning, rule fixed now, no prediction: does the lookup read the bridge
+  word through attention blocks 19 and 26? Main test, the whole change at L14.
+  Block attention from all later positions to the bridge word's position in:
+  (i) block 19 only; (ii) block 26 only; (iii) both; (iv) all attention blocks
+  after L14 (19 / 26 / 33 / 42); (v) control: both blocks, attention to a random
+  non-bridge token of the same sentence instead. Read: lookup switches kept vs
+  the whole change; recall beside.
+  Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6
+  of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone
+  cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the
+  Mamba state carries it); else in between. Use the NemotronH attention port
+  from 49.7 / 48.4. Priority: right after the Z1-P / 51.12 cells.
