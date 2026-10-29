@@ -1,0 +1,64 @@
+{
+  "exp": "x0_probe",
+  "run": "qwen35_9b_x53_7_probe_tool",
+  "written_utc": "2026-10-29T10:53:41Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "test": "53.7 (the pointer in code and tool output)",
+  "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+  "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+  "source": null,
+  "source_code": null,
+  "set": "d1_topics_v4",
+  "layer": 12,
+  "x0_items": 0,
+  "format": "tool",
+  "format_text": "the scene's text verbatim as the response of a declared tool (get_notes) in the model's chat template, after the user's 'Look up my notes.' and the assistant's call; the question and the instruction in a new user turn",
+  "gate": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+  "read": "the chat read: one forward of the prompt with a digit's space token appended, the top token",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "9955499611f6a206ce5d3d517d11fe2ce67ae651",
+    "dirty": true
+  },
+  "position": "the asked person's bridge word, org run, tool",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v4/items.jsonl": "d89e802bc78fd093c9361b7f135f7750f06f8f51aa468896fd1c2b01f5b46f4e"
+  },
+  "folds": {
+    "outer": 5,
+    "inner": 4,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "targets": {
+    "answer digit": "answer",
+    "locker sentence": "locker_index",
+    "bridge identity": "entity"
+  },
+  "gate_pass": true,
+  "cases": 1500,
+  "finished_utc": "2026-10-29T10:55:50Z"
+}

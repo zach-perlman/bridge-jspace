@@ -426,6 +426,27 @@ inspector_1145: |
 
   5. Tests: the rank computation matches the pipeline on 5 items per model;
      the panel never writes outside review/ and cache/.
+decisions_1155_received: "29 Oct ~12:08 Paris (Dan)"
+decisions_1155: |
+  Decisions (Dan, 11:55):
+  1. The 122B line: option A, plus one sentence: "its recall effect is the
+     smallest of the five (0.32) and mixed on varied scenes (0.15); we cannot
+     separate that from its later layer (L33, relative depth 0.69) or FP8."
+  2. 53.3, the two digit lookup cells (Muse L33 of 52, Lightning L43 of 52):
+     restore their own labels; my condition ("the last layers") does not hold
+     there. Caveat line: "near the reader's answer layer; the lens dictionary
+     has no digit atoms, but the recall's digits were captured under the same
+     conditions, so this asymmetry is unresolved."
+  3. 53.1 order dependence on the 27B (+0.11 [+0.01, +0.22]): record as the
+     rule says. Ledger card: "on the 27B the lookup leans more on the lens part
+     with the question first; one model, lower bound +0.01; the 9B's cell
+     missed its gate". Keep Muse and the 122B Q-before runs at the top of
+     their boxes. When they land, the across-models line: "order dependence on
+     n of 3 models".
+  4. 53.4 control placement: fine.
+  (Option A, as sent by the coordinator: "the largest model's lookup loses nothing beyond random (0.00 at k = 25;
+  -0.12 at k = 100, where the 27B loses 0.60), so the 27B's weakness is not a total-size trend; active parameters are
+  not separated".)
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim

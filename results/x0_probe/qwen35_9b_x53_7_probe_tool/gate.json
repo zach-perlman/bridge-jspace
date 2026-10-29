@@ -1,0 +1,24 @@
+{
+ "cases": 1500,
+ "org_read_accuracy": {
+  "PP": 0.9807,
+  "PM": 0.8147
+ },
+ "bar": 0.8,
+ "pass": true,
+ "status": "passed",
+ "rule": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+ "counts": {
+  "set": "d1_topics_v4",
+  "format": "tool",
+  "scenes": 1500,
+  "cases": 1500,
+  "entities": 46,
+  "domains": {
+   "elements": 500,
+   "greek": 500,
+   "animals": 500
+  },
+  "dropped": {}
+ }
+}

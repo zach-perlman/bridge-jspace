@@ -1,0 +1,26 @@
+{
+ "cases": 682,
+ "org_read_accuracy": {
+  "PP": 0.8284,
+  "PM": 0.7273
+ },
+ "bar": 0.8,
+ "pass": false,
+ "status": "not tested (gate 0.727 < 0.80)",
+ "rule": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+ "counts": {
+  "set": "d1_topics_v4",
+  "format": "code",
+  "scenes": 1500,
+  "cases": 682,
+  "entities": 29,
+  "domains": {
+   "greek": 500,
+   "animals": 182
+  },
+  "dropped": {
+   "animals: the bridge is not one token at one position in org and alt": 318,
+   "elements: the bridge is not one token at one position in org and alt": 500
+  }
+ }
+}

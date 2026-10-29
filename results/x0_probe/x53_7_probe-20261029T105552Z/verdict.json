@@ -1,0 +1,1046 @@
+{
+ "test": "53.7 (the pointer in code and tool output)",
+ "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+ "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+ "status": "UNVERIFIED",
+ "reading": "Pre-stated reading (Dan, x0_probe): (a) high in locker-before and at chance in locker-after -> the answer value is stored at the word, not in J++ form; (b) high in locker-before with (a) at chance -> the word stores an address (a lookback-style pointer). In locker-after scenes the locker sentence follows the word, so (a) and (b) cannot be read there from the locker sentence itself: that stratum is the control by construction.",
+ "rule": "none of its own (descriptive, x0_probe); the reading stated beside, verbatim",
+ "gate": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+ "n_boot": 10000,
+ "seed": 0,
+ "format_text": {
+  "code": "the scene as Python in the user turn (tasks_v2's code framing): picks = {} and lockers = {}, then one assignment per statement in the scene's order (picks[\"Eva\"] = \"oxygen\"; lockers[\"oxygen\"] = 5), then the question and the digit instruction",
+  "tool": "the scene's text verbatim as the response of a declared tool (get_notes) in the model's chat template, after the user's 'Look up my notes.' and the assistant's call; the question and the instruction in a new user turn"
+ },
+ "runs": [
+  {
+   "run": "qwen35_9b_x53_7_probe_code",
+   "model": "qwen3.5-9b",
+   "format": "code",
+   "layer": 12,
+   "set": "d1_topics_v4",
+   "gate": {
+    "cases": 682,
+    "org_read_accuracy": {
+     "PP": 0.8284,
+     "PM": 0.7273
+    },
+    "bar": 0.8,
+    "pass": false,
+    "status": "not tested (gate 0.727 < 0.80)",
+    "rule": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+    "counts": {
+     "set": "d1_topics_v4",
+     "format": "code",
+     "scenes": 1500,
+     "cases": 682,
+     "entities": 29,
+     "domains": {
+      "greek": 500,
+      "animals": 182
+     },
+     "dropped": {
+      "animals: the bridge is not one token at one position in org and alt": 318,
+      "elements: the bridge is not one token at one position in org and alt": 500
+     }
+    }
+   },
+   "status": "not tested (gate 0.727 < 0.80)",
+   "prose_v4": "results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json",
+   "prose_v4_rows": [
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "answer digit",
+     "n": 758,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.01,
+      0.01
+     ],
+     "probe": [
+      0.2704485488126649,
+      0.23641684813179104,
+      0.30677367551616386
+     ],
+     "majority": [
+      0.09894459102902374,
+      0.07152844911222445,
+      0.12922248194431957
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.15933743770155379,
+      0.12530573702067993,
+      0.19566256440505272
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "locker sentence",
+     "n": 758,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      0.9683377308707124,
+      0.9563252146517103,
+      0.9795457449279851
+     ],
+     "majority": [
+      0.3311345646437995,
+      0.30213270142180093,
+      0.36224731981400154
+     ],
+     "structure": [
+      0.3548812664907652,
+      0.3219168275039621,
+      0.3850454822610452
+     ],
+     "layout": [
+      0.5303430079155673,
+      0.5037591635338347,
+      0.5562351008557457
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.4379947229551451,
+      0.4087190590270337,
+      0.46845852971105695
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "bridge identity",
+     "n": 758,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.1,
+      0.1,
+      0.1,
+      0.01
+     ],
+     "probe": [
+      0.9986807387862797,
+      0.9953416149068323,
+      1.0
+     ],
+     "majority": [
+      0.06728232189973615,
+      0.0,
+      0.20901639344262296
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9313984168865436,
+      0.7883804759679535,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "answer digit",
+     "n": 742,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      100.0,
+      0.001,
+      100.0,
+      0.001,
+      100.0
+     ],
+     "probe": [
+      0.10377358490566038,
+      0.07969863683599243,
+      0.12555066079295155
+     ],
+     "majority": [
+      0.1347708894878706,
+      0.10564656433615652,
+      0.16133535439263796
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      -0.030997304582210228,
+      -0.05569637041265152,
+      -0.007703568529156278
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "locker sentence",
+     "n": 742,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      1.0,
+      10.0,
+      1.0,
+      1.0,
+      100.0
+     ],
+     "probe": [
+      0.33557951482479786,
+      0.3044057905299309,
+      0.36933366834170855
+     ],
+     "majority": [
+      0.3328840970350404,
+      0.302944818746032,
+      0.36349935594675825
+     ],
+     "structure": [
+      0.3692722371967655,
+      0.33648597845966266,
+      0.4006736889442369
+     ],
+     "layout": [
+      0.3557951482479784,
+      0.32512937415452153,
+      0.38596491228070173
+     ],
+     "best_baseline": "structure",
+     "probe_minus_best": [
+      -0.03369272237196763,
+      -0.07643405769951296,
+      0.012642100209871058
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "bridge identity",
+     "n": 742,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.01,
+      0.1,
+      0.01,
+      0.01
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06334231805929919,
+      0.0,
+      0.19974516355536145
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9366576819407009,
+      0.8002548364446381,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "answer digit",
+     "n": 1500,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.01,
+      0.1
+     ],
+     "probe": [
+      0.16866666666666666,
+      0.1507430682870589,
+      0.18836380016380017
+     ],
+     "majority": [
+      0.116,
+      0.09674919246189556,
+      0.13241626324613168
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.05266666666666665,
+      0.029914457285293444,
+      0.07708059868583955
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "locker sentence",
+     "n": 1500,
+     "entities": 46,
+     "classes": 6,
+     "chance": 0.1667,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      0.6486666666666666,
+      0.6258543345821004,
+      0.6719187590274955
+     ],
+     "majority": [
+      0.16666666666666666,
+      0.14987849948209103,
+      0.1831081200966758
+     ],
+     "structure": [
+      0.22066666666666668,
+      0.2023593262390727,
+      0.23857632155709685
+     ],
+     "layout": [
+      0.3293333333333333,
+      0.3095071990586857,
+      0.3487744959128065
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.3193333333333333,
+      0.28865345200530557,
+      0.35223059754465025
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "bridge identity",
+     "n": 1500,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06533333333333333,
+      0.0,
+      0.20545073375262055
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9346666666666666,
+      0.7945492662473794,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "run": "qwen35_9b_x53_7_probe_tool",
+   "model": "qwen3.5-9b",
+   "format": "tool",
+   "layer": 12,
+   "set": "d1_topics_v4",
+   "gate": {
+    "cases": 1500,
+    "org_read_accuracy": {
+     "PP": 0.9807,
+     "PM": 0.8147
+    },
+    "bar": 0.8,
+    "pass": true,
+    "status": "passed",
+    "rule": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+    "counts": {
+     "set": "d1_topics_v4",
+     "format": "tool",
+     "scenes": 1500,
+     "cases": 1500,
+     "entities": 46,
+     "domains": {
+      "elements": 500,
+      "greek": 500,
+      "animals": 500
+     },
+     "dropped": {}
+    }
+   },
+   "status": "tested",
+   "rows": [
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "answer digit",
+     "n": 758,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.01,
+      0.01,
+      0.1,
+      0.01,
+      0.1
+     ],
+     "probe": [
+      0.2638522427440633,
+      0.22549019607843138,
+      0.3036913720414774
+     ],
+     "majority": [
+      0.09894459102902374,
+      0.07152844911222445,
+      0.12922248194431957
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.15274113163295222,
+      0.11437908496732027,
+      0.19258026093036631
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "locker sentence",
+     "n": 758,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.1,
+      0.01
+     ],
+     "probe": [
+      0.9683377308707124,
+      0.9543724996405928,
+      0.9814191602316603
+     ],
+     "majority": [
+      0.3311345646437995,
+      0.30213270142180093,
+      0.36224731981400154
+     ],
+     "structure": [
+      0.3548812664907652,
+      0.3219168275039621,
+      0.3850454822610452
+     ],
+     "layout": [
+      0.5303430079155673,
+      0.5037591635338347,
+      0.5562351008557457
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.4379947229551451,
+      0.4059292677120926,
+      0.4706790052053209
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "bridge identity",
+     "n": 758,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.01,
+      0.1,
+      0.1,
+      0.01
+     ],
+     "probe": [
+      0.9986807387862797,
+      0.9953416149068323,
+      1.0
+     ],
+     "majority": [
+      0.06728232189973615,
+      0.0,
+      0.20901639344262296
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9313984168865436,
+      0.7883804759679535,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "answer digit",
+     "n": 742,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      100.0,
+      10.0,
+      100.0,
+      10.0,
+      100.0
+     ],
+     "probe": [
+      0.11185983827493262,
+      0.08875689157259123,
+      0.13565523554554562
+     ],
+     "majority": [
+      0.1347708894878706,
+      0.10564656433615652,
+      0.16133535439263796
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      -0.02291105121293799,
+      -0.05254821911146895,
+      0.006379840102725575
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "locker sentence",
+     "n": 742,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      1.0,
+      10.0,
+      10.0,
+      0.1,
+      100.0
+     ],
+     "probe": [
+      0.31266846361185985,
+      0.28230337078651685,
+      0.34146341463414637
+     ],
+     "majority": [
+      0.3328840970350404,
+      0.302944818746032,
+      0.36349935594675825
+     ],
+     "structure": [
+      0.3692722371967655,
+      0.33648597845966266,
+      0.4006736889442369
+     ],
+     "layout": [
+      0.3557951482479784,
+      0.32512937415452153,
+      0.38596491228070173
+     ],
+     "best_baseline": "structure",
+     "probe_minus_best": [
+      -0.05660377358490565,
+      -0.09645449806132093,
+      -0.015057333943495088
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "bridge identity",
+     "n": 742,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.01,
+      0.1,
+      0.01,
+      0.01
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06334231805929919,
+      0.0,
+      0.19974516355536145
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9366576819407009,
+      0.8002548364446381,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "answer digit",
+     "n": 1500,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.01,
+      0.1,
+      0.1,
+      0.01,
+      0.1
+     ],
+     "probe": [
+      0.166,
+      0.14801164085582372,
+      0.1849719084056045
+     ],
+     "majority": [
+      0.116,
+      0.09674919246189556,
+      0.13241626324613168
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.05,
+      0.024579989187840465,
+      0.0782779179477262
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "locker sentence",
+     "n": 1500,
+     "entities": 46,
+     "classes": 6,
+     "chance": 0.1667,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      1.0
+     ],
+     "probe": [
+      0.6293333333333333,
+      0.6107614796780957,
+      0.6494415331578867
+     ],
+     "majority": [
+      0.16666666666666666,
+      0.14987849948209103,
+      0.1831081200966758
+     ],
+     "structure": [
+      0.22066666666666668,
+      0.2023593262390727,
+      0.23857632155709685
+     ],
+     "layout": [
+      0.3293333333333333,
+      0.3095071990586857,
+      0.3487744959128065
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.3,
+      0.277627995662681,
+      0.32462230356525873
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "bridge identity",
+     "n": 1500,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06533333333333333,
+      0.0,
+      0.20545073375262055
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9346666666666666,
+      0.7945492662473794,
+      1.0
+     ]
+    }
+   ],
+   "prose_v4": "results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json",
+   "prose_v4_rows": [
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "answer digit",
+     "n": 758,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.01,
+      0.01
+     ],
+     "probe": [
+      0.2704485488126649,
+      0.23641684813179104,
+      0.30677367551616386
+     ],
+     "majority": [
+      0.09894459102902374,
+      0.07152844911222445,
+      0.12922248194431957
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.15933743770155379,
+      0.12530573702067993,
+      0.19566256440505272
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "locker sentence",
+     "n": 758,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      0.9683377308707124,
+      0.9563252146517103,
+      0.9795457449279851
+     ],
+     "majority": [
+      0.3311345646437995,
+      0.30213270142180093,
+      0.36224731981400154
+     ],
+     "structure": [
+      0.3548812664907652,
+      0.3219168275039621,
+      0.3850454822610452
+     ],
+     "layout": [
+      0.5303430079155673,
+      0.5037591635338347,
+      0.5562351008557457
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.4379947229551451,
+      0.4087190590270337,
+      0.46845852971105695
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "bridge identity",
+     "n": 758,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.1,
+      0.1,
+      0.1,
+      0.01
+     ],
+     "probe": [
+      0.9986807387862797,
+      0.9953416149068323,
+      1.0
+     ],
+     "majority": [
+      0.06728232189973615,
+      0.0,
+      0.20901639344262296
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9313984168865436,
+      0.7883804759679535,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "answer digit",
+     "n": 742,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      100.0,
+      0.001,
+      100.0,
+      0.001,
+      100.0
+     ],
+     "probe": [
+      0.10377358490566038,
+      0.07969863683599243,
+      0.12555066079295155
+     ],
+     "majority": [
+      0.1347708894878706,
+      0.10564656433615652,
+      0.16133535439263796
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      -0.030997304582210228,
+      -0.05569637041265152,
+      -0.007703568529156278
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "locker sentence",
+     "n": 742,
+     "entities": 46,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      1.0,
+      10.0,
+      1.0,
+      1.0,
+      100.0
+     ],
+     "probe": [
+      0.33557951482479786,
+      0.3044057905299309,
+      0.36933366834170855
+     ],
+     "majority": [
+      0.3328840970350404,
+      0.302944818746032,
+      0.36349935594675825
+     ],
+     "structure": [
+      0.3692722371967655,
+      0.33648597845966266,
+      0.4006736889442369
+     ],
+     "layout": [
+      0.3557951482479784,
+      0.32512937415452153,
+      0.38596491228070173
+     ],
+     "best_baseline": "structure",
+     "probe_minus_best": [
+      -0.03369272237196763,
+      -0.07643405769951296,
+      0.012642100209871058
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "after",
+     "target": "bridge identity",
+     "n": 742,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.01,
+      0.01,
+      0.1,
+      0.01,
+      0.01
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06334231805929919,
+      0.0,
+      0.19974516355536145
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9366576819407009,
+      0.8002548364446381,
+      1.0
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "answer digit",
+     "n": 1500,
+     "entities": 46,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.1,
+      0.01,
+      0.1,
+      0.01,
+      0.1
+     ],
+     "probe": [
+      0.16866666666666666,
+      0.1507430682870589,
+      0.18836380016380017
+     ],
+     "majority": [
+      0.116,
+      0.09674919246189556,
+      0.13241626324613168
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.05266666666666665,
+      0.029914457285293444,
+      0.07708059868583955
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "locker sentence",
+     "n": 1500,
+     "entities": 46,
+     "classes": 6,
+     "chance": 0.1667,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      0.6486666666666666,
+      0.6258543345821004,
+      0.6719187590274955
+     ],
+     "majority": [
+      0.16666666666666666,
+      0.14987849948209103,
+      0.1831081200966758
+     ],
+     "structure": [
+      0.22066666666666668,
+      0.2023593262390727,
+      0.23857632155709685
+     ],
+     "layout": [
+      0.3293333333333333,
+      0.3095071990586857,
+      0.3487744959128065
+     ],
+     "best_baseline": "layout",
+     "probe_minus_best": [
+      0.3193333333333333,
+      0.28865345200530557,
+      0.35223059754465025
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "both",
+     "target": "bridge identity",
+     "n": 1500,
+     "entities": 46,
+     "classes": 46,
+     "chance": 0.0217,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.06533333333333333,
+      0.0,
+      0.20545073375262055
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.9346666666666666,
+      0.7945492662473794,
+      1.0
+     ]
+    }
+   ]
+  }
+ ],
+ "written_utc": "20261029T105622Z"
+}
