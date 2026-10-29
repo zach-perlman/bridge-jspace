@@ -1,0 +1,80 @@
+{
+ "L25-28/MM/none": {
+  "n": 290,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L25-28/MM/full_cf": {
+  "n": 290,
+  "kept": 55.9,
+  "donor": 31.4,
+  "third": 5.5,
+  "other": 5.9,
+  "n_third": 290,
+  "transfer": 25.9,
+  "ci": [
+   20.0,
+   31.9
+  ]
+ },
+ "L25-28/MM/lens_cf": {
+  "n": 290,
+  "kept": 92.4,
+  "donor": 3.1,
+  "third": 1.0,
+  "other": 1.7,
+  "n_third": 290,
+  "transfer": 2.1,
+  "ci": [
+   0.0,
+   4.5
+  ]
+ },
+ "L25-28/MM/rem_cf": {
+  "n": 290,
+  "kept": 81.7,
+  "donor": 6.9,
+  "third": 5.2,
+  "other": 4.1,
+  "n_third": 290,
+  "transfer": 1.7,
+  "ci": [
+   -2.4,
+   5.8
+  ]
+ },
+ "L25-28/MM/remfix_cf": {
+  "n": 290,
+  "kept": 89.0,
+  "donor": 2.8,
+  "third": 1.7,
+  "other": 4.8,
+  "n_third": 290,
+  "transfer": 1.0,
+  "ci": [
+   -1.0,
+   3.1
+  ]
+ },
+ "L25-28/MM/lensrand_cf": {
+  "n": 290,
+  "kept": 99.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

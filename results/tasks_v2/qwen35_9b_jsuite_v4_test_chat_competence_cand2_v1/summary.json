@@ -1,0 +1,70 @@
+{
+  "seconds": 548,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.748,
+      "all_steps": 0.787,
+      "median_margin": 2.5,
+      "guess": 0.148,
+      "top_wrong": [
+        [
+          "Nor",
+          14
+        ],
+        [
+          "Spain",
+          13
+        ],
+        [
+          "Russia",
+          11
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.585,
+      "all_steps": 0.479,
+      "median_margin": 0.38,
+      "guess": 0.001,
+      "top_wrong": [
+        [
+          "United",
+          17
+        ],
+        [
+          "Canada",
+          13
+        ],
+        [
+          "South",
+          11
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.441,
+      "MM": 0.698
+    },
+    "companies": {
+      "MP": 0.856,
+      "MM": 0.694
+    },
+    "films": {
+      "MP": 0.854,
+      "MM": 0.146
+    },
+    "landmarks": {
+      "MP": 0.793,
+      "MM": 0.44
+    },
+    "people": {
+      "MP": 0.845,
+      "MM": 0.742
+    }
+  },
+  "pick": {}
+}

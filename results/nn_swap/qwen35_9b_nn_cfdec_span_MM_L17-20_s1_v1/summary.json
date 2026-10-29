@@ -1,0 +1,80 @@
+{
+ "L17-20/MM/none": {
+  "n": 290,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L17-20/MM/full_cf": {
+  "n": 290,
+  "kept": 35.9,
+  "donor": 40.7,
+  "third": 2.1,
+  "other": 16.2,
+  "n_third": 290,
+  "transfer": 38.6,
+  "ci": [
+   32.9,
+   44.9
+  ]
+ },
+ "L17-20/MM/lens_cf": {
+  "n": 290,
+  "kept": 83.1,
+  "donor": 4.5,
+  "third": 0.0,
+  "other": 11.7,
+  "n_third": 290,
+  "transfer": 4.5,
+  "ci": [
+   1.9,
+   7.6
+  ]
+ },
+ "L17-20/MM/rem_cf": {
+  "n": 290,
+  "kept": 49.7,
+  "donor": 28.3,
+  "third": 2.1,
+  "other": 15.5,
+  "n_third": 290,
+  "transfer": 26.2,
+  "ci": [
+   20.3,
+   32.3
+  ]
+ },
+ "L17-20/MM/remfix_cf": {
+  "n": 290,
+  "kept": 54.1,
+  "donor": 25.2,
+  "third": 2.4,
+  "other": 14.1,
+  "n_third": 290,
+  "transfer": 22.8,
+  "ci": [
+   16.9,
+   29.1
+  ]
+ },
+ "L17-20/MM/lensrand_cf": {
+  "n": 290,
+  "kept": 99.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}
