@@ -1,0 +1,43 @@
+id: x53_z1p_muse
+title: "Batch 53.3b's source on Muse: Z1-P on muse-glimmer-30b at L26 (Zach's named-bridge passages with made-up facts: the PP passage as the lookup, PM as the recall); whole / without J++ / without a random part at the pointer name's last token; Z1's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: Z1's rule (verbatim) applied to the P items on Muse, as the source of batch 53.3b's Muse passages (coordinator ~10:20)" &&
+  uv run python scripts/x50_zach.py run --part z1p --name muse30_x53_z1p &&
+  printf '%s\n' "$NOTE" > results/x50_zach/muse30_x53_z1p/coverage.txt &&
+  uv run python scripts/x50_zach.py verdict --part z1p --coverage --runs muse30_x53_z1p
+question: >-
+  On Muse, as Z1-P asked on the 9B, 27B and Lightning: on Zach's named-bridge passages with made-up facts, does the
+  split hold at the pointer name? And it supplies 53.3b's Muse passages (its chosen eligible passages).
+why_it_matters: >-
+  Batch 53.3b (Dan 10:05) reads Z1-P's passages on each model; Muse had no Z1-P run (coordinator ~10:20: spec the Muse
+  source and 53.3b on Muse depending on it, same box).
+hypotheses:
+  none: "No prediction (Z1's rule, fixed before any run; no Q-line)."
+decision_rule: >-
+  Verbatim from jobs/c3/x52_z1p_9b.yaml (Z1-P; Z1's rule, jobs/c3/batch50.yaml Z1; scripts/x50_zach.py RULE['z1'],
+  first scored on the K items in results/x50_zach/z1-20261028T161649Z): "Per model: gap >= 0.3 and lookup extra loss
+  <= 0.10 -> \"the split holds on his passages\"; lookup >= 0.20 -> \"the lookup follows the lens here\"; else in
+  between. Order split (after the gate, before the data): items where the bridge's fact sentence comes before the
+  pointer sentence vs after. \"The order pattern replicates\" if the lookup's switch under the whole change is >= 2x
+  higher fact-first than fact-after (both CIs), as in our 65-89 % vs 9-19 %. Hard-read stratum (v3 flag): the gap
+  within hard-read items within 0.15 of the easy items -> \"not a lookup-difficulty effect\"." As computed: Z1-P's
+  (jobs/c3/x52_z1p_9b.yaml, unchanged: X0's excess per reader, J++ signed OMP k = 25, the gate 0.80 per reader on O's
+  read, eligible = both readers say and read O's and S's answers right, the first 200 in passage order, his main set
+  then the second seed only if short, S = the pointer sentence names another entity, seeded order 5001; the lookup
+  reads PP, the recall PM), on Muse at L26 (X0's layer, the committed L only, as Z1-P on the other models; Z1 on Muse
+  also read L36, not here). Verdict in the job: x50_zach.py verdict --part z1p --coverage (results/x50_zach/x52_z1p-<UTC>/,
+  Z1-P's coverage prefix, never the default z1-<UTC>/).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + L)"
+- "the recall (PM) on the same passage and the same counterfactual (the gap)"
+- "the read gate (0.80 per reader) and O / S said and read right"
+- "Z1 on the K items (the same passages' true-fact rendering) beside: muse30_x50_z1"
+n: "up to 200 eligible passages (plan check on Muse's tokenizer, results/x50_zach/plan-20261029T091729Z: 270 aligned of 358 main-set passages, 274 more on the second seed)"
+seeds: [2601, 2701, 5001, 888, 0]
+notes: "Batch 53.3b's source (coordinator ~10:20: Muse needs its Z1-P source; spec it and 53.3b on Muse depending on it, on the same box). Code: x50_zach's COVERAGE_RUNS['z1p'] gains Muse (muse30_x53_z1p; RUNS and the other verdicts unchanged; tests/test_x50_zach.py updated). Run on the box that then runs x53_3b_muse (it depends on this job). Cost (ledger): x52_z1p_27b 1,054 s, x52_z1p_lightning 694 s, x50_z1_muse (Z1, two layers) ~25 min; one layer here: est ~15-20 min, 0.4 GPU-h. Memory: Muse peaks near 61-65 GB on such reads. Disk on the Mac before the spec: 147 GB free. UNVERIFIED; results into EXPERIMENTS.md."

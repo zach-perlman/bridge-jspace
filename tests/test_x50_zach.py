@@ -121,7 +121,7 @@ def test_z1p_reads_the_made_up_facts_of_the_p_passage(tok):
         first = k["context"].index(Z.pfact(rel, w, c["bridge"], k["answer"])) < ptr
         assert (c["stratum"] == "fact-first") == first
     assert Z.RULE["z1p"] == Z.RULE["z1"] and "z1p" not in Z.RUNS
-    assert set(Z.COVERAGE_RUNS["z1p"]) == {"qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning"}
+    assert set(Z.COVERAGE_RUNS["z1p"]) == {"qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning", "muse-glimmer-30b"}
 
 
 def test_z2p_reads_mp_with_the_made_up_facts_and_mm_beside(tok):

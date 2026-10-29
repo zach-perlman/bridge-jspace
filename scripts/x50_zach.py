@@ -119,7 +119,9 @@ NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 # Batch 52, Dan's morning brief (29 Oct, item 1; jobs/c3/x52_z1p_*.yaml): Z1-P on the 9B, 27B and Lightning, each at
 # its committed L only (9B L12, 27B L32, Lightning L14); rule fixed now (Z1's, verbatim), no prediction
 COVERAGE_RUNS["z1p"] = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z1p_27b",
-                        "nemotron-3.5-lightning": "nem35l_x52_z1p"}  # fmt: skip
+                        "nemotron-3.5-lightning": "nem35l_x52_z1p",
+                        # batch 53.3b (coordinator 10:20): Muse's Z1-P, the source of 53.3b's Muse passages, at L26
+                        "muse-glimmer-30b": "muse30_x53_z1p"}  # fmt: skip
 NO_PREDICTION_Z1P = ("no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/"
                      "z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)")  # fmt: skip
 # Batch 53, 53.1b (jobs/c3/batch53.yaml standing_rules_0950: "jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No
