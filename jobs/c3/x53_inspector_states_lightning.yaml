@@ -1,0 +1,43 @@
+id: x53_inspector_states_lightning
+title: "Batch 53, J-space inspector states (Dan 11:45, inspector_1145 item 1) on the Lightning: residual states O / S at every layer at the seed-29 review sample's tokens, the change's 25 atoms and random part per layer, the rank check's Δ and parts at L for every conflict / routes item; read-only, no rule"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/review_states.py run --name nem35l_review_states
+question: >-
+  None (inputs for the review dashboard's "Look into J-space" panel): the Lightning's residual states at the bridge word, the
+  locker-sentence mentions, the asked pick sentence, the question and the last token of each seed-29 sample item's O and
+  S prompts, every layer; and, at L14 and the bridge word, the J++ part / rest / random part of Δ for every item of the
+  conflict test and the routes test with the readouts' ranks of S's bridge word and the answers.
+why_it_matters: >-
+  Dan 11:45 (jobs/c3/batch53.yaml inspector_1145): tomorrow's hand check reads what the J-space readout shows on the
+  items he marks, with the experiments' own lens and OMP; item 3's automatic rank check needs Δ at L for every item.
+hypotheses:
+  none: "no prediction (a read-only state dump and a check; no rule)"
+decision_rule: >-
+  None: no verdict. Dan 11:45 (inspector_1145), verbatim: "States (GPU, once, small): for every item in the seed-29
+  review sample (all tier-1 views, all models incl. Lightning and the 122B), save the residual states, O and S, at
+  every layer, at these tokens: the bridge word; every item's mention in the locker sentences; the pick sentence; the
+  question's tokens; the last token. fp16 npz under cache/review_states/<model>/<view>/." Item 3 (a check, no rule
+  change) is scored on the CPU from rank_check.jsonl: "the rank of S's bridge token (and its variants) in the readout of
+  the J++ part, of the rest and of a random part of the same share; the share of items with it in the top 50 for each.
+  Flag if the rest puts it in the top 50 on >= 20% of items more often than the random part does. The same for the
+  answer words." As computed (scripts/review_states.py): the sample is docs/review_views.yaml's fixed_sample (seed 29)
+  for this model; the change's part = x52_atoms.omp_atoms (x0_necessity.fit step for step, K = 25, J++ letter atoms);
+  the random part = statement_positions.random_subspace_part at the part's share, basis seed 888 + layer (CPU QR at L).
+controls:
+- "the rank check's J++ share against the runs' stored shares (shares.jsonl / norms.jsonl), per item (checks.json)"
+- "omp_atoms against x0_necessity.fit at L (checks.json)"
+- "GPU calibration readouts (J++ and logit lens) of 5 items for the CPU panel's parity test (calib.jsonl)"
+n: "the fixed seed-29 sample's Lightning items (16 over 6 views); rank check: 200 conflict-test scenes + 900 routes scenes"
+seeds: [29, 888]
+notes: >-
+  Batch 53, inspector_1145 item 1 (and item 3's Δ). Writes results/review_states/nem35l_review_states/ (manifest
+  before the model, plan, checks, rank_check.jsonl, calib.jsonl) and cache/review_states/nemotron-3.5-lightning/ (states ~0.3 GB,
+  head ~0.7 GB, rank/*.npz; gitignored: pull with rsync -a <box>:bridge-jspace/cache/review_states/nemotron-3.5-lightning/
+  cache/review_states/nemotron-3.5-lightning/). Run only on an idle GPU. Estimate from the ledger: x52_lightning_atoms 46 s, x52_lightning_answermap 138 s; here ~2,230 forwards and 51 layers of OMP on ~290 rows (its local J++ lens must be on the box): ~6-8 min wall, entered as 0.15 GPU-h.
