@@ -1,0 +1,43 @@
+id: x53_2x2_words_27b
+title: "Batch 53.1 on the 27B (L32), the word cells: the recall asks the animal's class (the 9B's relation and accuracy check) on the animal scenes the relation answers; (Q-after, word) and (Q-before, word): per cell the main gate, the conflict test at L, 51.12's arms with the readout check first, the atom inventory on 50 items; then the verdict into results/x53_2x2/x53_2x2-<UTC>/ with one figure; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.5
+depends_on: [x53_2x2_words_9b]
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x53_2x2/qwen35_9b_x53_2x2_words/relation.json &&
+  uv run python scripts/x53_2x2.py run --cells word --name x53_2x2_words_27b &&
+  uv run python scripts/x53_2x2.py verdict
+question: >-
+  On the 27B: when the recall's answer is a word the lens can read (the animal's class), does the bridge's lens part
+  turn into the answer, with the question after the scene and before it? With the 27B's number cells, the rule across
+  cells and the cross-check.
+why_it_matters: >-
+  Dan (batch 53 brief and decision 10:20): the 2x2 on the 9B, then the 27B; the word cells separate answer readability
+  from question position.
+hypotheses:
+  none: "no prediction (batch 53: exploration day; every rule fixed in the brief before any run)"
+decision_rule: >-
+  As jobs/c3/x53_2x2_words_9b.yaml (the brief's 53.1, Dan's decision_531_words and 51.12's rule verbatim; the as-
+  computed text), on the 27B at L32. The relation is the 9B's ("Choose the relation on the 9B before any test"):
+  animal class, its accuracy check read from the 9B's word run (results/x53_2x2/qwen35_9b_x53_2x2_words/relation.json,
+  copied in by depends_on; the run asserts the same relation); if it failed on the 9B, both word cells here are "not
+  tested (the relation's 9B accuracy < 0.80)". The 27B's own recall accuracy on (Q-after, word) is reported beside
+  (relation.json here, descriptive). Per cell X0's gate (0.80 per reader over the cell's scenes, >= 150 eligible),
+  never lowered; the scenes the relation answers on the 27B's tokenizer (the same 191 as the 9B's: one tokenizer
+  family, checked by the run's build counts in gate.json).
+controls:
+- "a random part of the same share beside every removal (X0's random subspace, seed 888 + L)"
+- "the readout check before the arms, per cell and reader"
+- "the 9B's relation and accuracy check, asserted before the model loads"
+- "x52_atoms.omp_atoms asserted equal to x0_necessity.fit's part on the atom items"
+n: "per cell: the animal scenes the relation answers (191 on the 9B's tokenizer); eligible >= 150 needed; atoms on 50"
+seeds: [888, 0]
+notes: >-
+  Batch 53, test 53.1, the word cells on the 27B (after the 9B's word job; mats or speedup, whichever is free). No
+  prediction; UNVERIFIED; nothing into the README. Card note as the 9B's: element state (107), Greek vowel / consonant
+  (121), animal young (17) short of 150; mouse dropped; 191 scenes, not 600. Writes results/x53_2x2/x53_2x2_words_27b/
+  then the verdict over every model's runs. Estimate: the 9B's word cells ~0.15 h x 2.06 (x45m_27b_q2 989.6 s vs
+  x45m_9b_q2 479.7 s) ~ 0.3 h; entered as 0.5 (wall ~20-25 min on 1x H100 80 GB).

@@ -16,51 +16,56 @@ cell):
            question per prompt, as 47.7 (a) and batch 52's question-first item; one prompt holding both questions would
            need a new line after the scene saying which to answer). The readers' prompts now differ before the bridge
            word, so each reader's Δ comes from its own O / S prompts (47.7 (a)).
-  qa_word  (Q-after, word)    the recall asks for a one-token word answer instead of the number (RELATION below); its
-           question as in the main test, its instruction WORD_INSTRUCTION; read right after "Answer:" (no space token:
-           the word's token carries its own space, as suite_v1); lookup unchanged. One Δ from the lookup's prompts.
+  qa_word  (Q-after, word)    the recall asks a relation with a word answer instead of the number (RELATION below): its
+           question RELATION_Q (the person's pick described as in the main test), its instruction WORD_INSTRUCTION
+           (suite_v1's "Answer with a single word and nothing else."); read right after "Answer:" (no space token: the
+           word's first token carries its own space, as suite_v1); lookup unchanged. One Δ from the lookup's prompts.
+           Only the scenes the relation answers (both bridges) are built.
   qb_word  (Q-before, word)   both changes; per-reader Δ.
+The number cells and the word cells are separate runs (`run --cells number`, `run --cells word`; Dan 10:20, batch53.yaml
+decision_531_words: the number cells now, the word cells after the relation is picked; "number written as a word" is
+skipped).
 
-Dan 10:20 (batch53.yaml decision_531_words): the number cells run now, on their own (`run --cells number`); "number
-written as a word" is skipped, and the word cells' relation is re-chosen under the relaxed token rule in a run of its
-own (`run --cells word`); the paragraph below is the first proposal, kept until that change lands.
-
-Relation (the brief: chosen on the 9B before any test: one-token answers, the 9B's accuracy >= 0.8, the answer word
-shares no token with any spelling, initial or symbol of the item = x52_atoms' bridge classes). Candidates, fixed before
-any run, in order: lexical relations per domain (LEXICAL: animals' class and young, elements' state at room temperature,
-Greek letters' vowel / consonant), then the number written as a word ("six" for 6). A candidate is admissible when every
-answer it gives on the scenes is one token after a space, no token of any variant of the answer word (as is, leading
-space, capitalised, both) matches the item's bridge classes (x52_atoms.entity_matcher(spell=True): key, first token,
-symbol / character / translation alias, prefix, initial, part), and it covers >= X0's N_MIN (150) scenes (both bridges
-answered, the O and S answers' first tokens differ: X0's drop rule); the 9B's accuracy is the (Q-after, word) recall's
-org read accuracy over all its scenes (that cell's gate, measured in the run before any arm is read; < 0.80 = the word
-cells not tested). `plan` computes the table on the tokenizer: on these scenes no lexical candidate (nor all of them
-pooled) covers 150 scenes, so the rule picks the number word. Dumbest way this could be wrong: the number word is the
-same relation as the digit, so the word cells change only what the reader outputs (a letter token, inside the lens's
-dictionary, instead of a digit, outside it); the lens's answer directions A (51.12: the number words) are the same in
-all four cells.
+Relation (the brief: chosen on the 9B before any test; Dan's 10:20 decision relaxes the token rule before any result to
+the repo's convention for words): a word answer is read by its first token (the first token of " w" and of " W", as the
+natural passages and Zach's sets); the first tokens must be distinct across the relation's answers (else the relation is
+out) and no token of any variant of the answer word (as is, leading space, capitalised, both) may match the item's
+bridge classes (x52_atoms.entity_matcher(spell=True): key, first token, symbol / character / translation alias, prefix,
+initial, part; an item that clashes leaves the relation). Candidates, fixed before any run (LEXICAL, RELATION_Q):
+animal class (mammal / bird / insect / arachnid / amphibian), animal young (puppy, kitten, ...), element state (gas /
+solid; no element of the scenes is a liquid), Greek letter vowel / consonant. Pick (Dan): coverage on the 9B >= 150
+scenes (both bridges answered, the O and S answers' first tokens differ: X0's drop rule), the most covering one; then
+the 9B's accuracy >= 0.8 = the (Q-after, word) recall's O read accuracy over the relation's scenes, measured in the
+9B's word run after both word cells' gates and before any test (relation.json; < 0.80 = the word cells not tested, and
+the card says so: readability is covered by 51.12 on Zach's named passages and by 53.1b). On the 9B's tokenizer
+(`plan`): animal class 191 scenes (mouse out: " M", Mammal's first token, is its initial), element state 107, Greek 121,
+animal young 17: animal class. The 27B and Lightning take the 9B's relation and its accuracy check (the 9B's word run's
+relation.json).
 
 Per cell (the cell's own gate first; a failed gate = "not tested (gate x < 0.80)", numbers descriptive only, never
 lowered):
   gate     X0's competence and gate on the cell's prompts (unedited O and S, 8 greedy tokens and the decisive read; gate
            = O read accuracy >= 0.80 per reader over all scenes; eligible = both readers say and read O and S right; >=
            150 eligible; the first 200 in scene order; Lightning: its 60 dev scenes left out of the eligible ones after
-           the gate, as its main test nem35l_x52_conflict did, DEV_GATE). Word answers: said = the first word of the first line,
-           lower-cased, equal to the number word; read = the top token is the word's first token with a leading space,
-           lower-case or capitalised (" six" / " Six").
+           the gate, as its main test nem35l_x52_conflict did, DEV_GATE). Word answers: said = the first word of the
+           first line, lower-cased, the answer or its plural (x52_atoms.word_keys: "mammals"); read = the top token is
+           the answer's first token after a space, lower-case or capitalised (" mamm" / " M").
   conflict X0's test at L (9B L12, 27B L32, Lightning L14 = x51_lightning.py layer): Δ = h_S - h_O at the bridge word;
            arms whole / without the J++ part (signed OMP, K = 25, J++ letter atoms; x0_necessity.fit) / without a random
            part of its share (x6_routes.removal_arms over X0's random basis, seed 888 + L); X0's cell numbers (excess =
            extra loss beyond random, cluster bootstrap over the bridge entity, 10,000, seed 0) and label per reader.
   51.12    x51_answer's arms (the same forwards): the readout check first (the lens rank of each reader's own answer word,
            A-style variants, at the edited token on O and S; not read = rank > 50 on both), then arm 1 no_jpp, arm 2
-           no_jpp_A (A projected out of the J++ part), arm 3 no_A, each against its random twin; A = the number words of
-           both readers' O and S answers (51.12's E1 construction, all four cells). Label per reader: x51_answer.rule
+           no_jpp_A (A projected out of the J++ part), arm 3 no_A, each against its random twin; A = the J++ atoms of
+           both readers' O and S answers: a digit answer by its number word's one-token variants (51.12's E1
+           construction), a word answer by the first token of each variant (51.12's Z2 construction). Label per reader:
+           x51_answer.rule
            and the readout case (51.12's labels: entity / answer / mixed / answer word not read; e1 <= 0 = can't tell).
            The cell's label is the recall's (51.12's decisive E1 reader); the lookup's beside.
   atoms    batch 52 A's inventory on 50 of the cell's items (seed 0, x52_atoms.pick): the K = 25 OMP atoms of Δ
-           (x52_atoms.omp_atoms) classified by x52_atoms' classifier (E1 contexts; Q-after: the lookup's Δ in both
-           readers' views; Q-before: each reader's own Δ in its own view); descriptive.
+           (x52_atoms.omp_atoms) classified by x52_atoms' classifier (E1 contexts, a word answer's classes by
+           x52_atoms.word_answer_matcher; Q-after: the lookup's Δ in both readers' views; Q-before: each reader's own Δ
+           in its own view); descriptive.
 
 Rule across cells (verbatim, batch53.yaml): "position": (Q-before, number) is answer or mixed and (Q-after, word) is
 entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change
@@ -70,6 +75,7 @@ reported per cell. A cell not tested or with another label: the patterns that ne
 
 uv run python scripts/x53_2x2.py plan                                                   # CPU, BJ_TARGET's tokenizer
 BJ_TARGET=qwen3.5-9b uv run python scripts/x53_2x2.py run --cells number --name qwen35_9b_x53_2x2   # GPU
+BJ_TARGET=qwen3.5-9b uv run python scripts/x53_2x2.py run --cells word --name qwen35_9b_x53_2x2_words   # GPU
 uv run python scripts/x53_2x2.py verdict                                                # CPU, every model's run
 """
 
@@ -112,7 +118,7 @@ MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
 MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "nemotron-3.5-lightning": "Lightning"}
 # Lightning's main test (nem35l_x52_conflict) keeps the 60 scenes its layer was fixed on out of the selection
 DEV_GATE = {"nemotron-3.5-lightning": "results/x51_lightning/nem35l_x52_layer_r2/gate.json"}
-WORD_INSTRUCTION = "Answer with the number written as a word and nothing else."
+WORD_INSTRUCTION = "Answer with a single word and nothing else."  # suite_v1.INSTRUCTION (chat.QUESTION_INSTRUCTION)
 N_ATOMS = 50
 CROSS_MAX = 0.10  # the cross-check: the lookup's extra loss beyond random <= 0.10 in every cell
 GATE_TEXT = "not tested (gate {acc} < 0.80)"
@@ -142,12 +148,16 @@ LEXICAL = {
     "greek": {"vowel": {"alpha": "vowel", "epsilon": "vowel", "eta": "vowel", "iota": "vowel", "beta": "consonant",
                         "gamma": "consonant", "delta": "consonant", "zeta": "consonant", "theta": "consonant"}},
 }  # fmt: skip
-NUMBER_WORD = "number word"  # the last candidate: the item's number written as a word (suite_v1.WORDS)
+# the recall's question per candidate ({d}: the pick as the main test describes it, "Iris's pick"), fixed before any run
+RELATION_Q = {("animals", "class"): "What class of animal is {d}?",
+              ("animals", "young"): "What is the young of {d} called?",
+              ("elements", "state"): "What is the state of {d} at room temperature?",
+              ("greek", "vowel"): "Is {d} a vowel or a consonant?"}  # fmt: skip
 NINE_B = "qwen3.5-9b"
-# The rule's pick on the 9B's tokenizer (plan: no lexical candidate covers 150 scenes); the 9B's run asserts it again and
-# measures its accuracy (qa_word's recall gate, relation.json); the 27B and Lightning take the 9B's relation and its
-# accuracy check from the 9B's run (a relation that failed on the 9B leaves their word cells not tested).
-RELATION = NUMBER_WORD
+# The rule's pick on the 9B's tokenizer (`plan`: animal class 191 scenes, element state 107, Greek 121, animal young 17);
+# the 9B's word run asserts it again and measures its accuracy (qa_word's recall gate, relation.json); the 27B and
+# Lightning take the 9B's relation and its accuracy check from the 9B's word run.
+RELATION = ("animals", "class")
 
 
 def variants(w: str) -> tuple[str, ...]:
@@ -158,8 +168,10 @@ def ids(tok, text: str) -> list[int]:
     return list(tok(text, add_special_tokens=False).input_ids)
 
 
-def one_token(tok, word: str) -> bool:
-    return len(ids(tok, " " + word)) == 1
+def first_tokens(tok, word: str) -> list[int]:
+    """A word answer's read tokens: the first token of " w" and of " W" (the repo's convention for words: a multi-token
+    answer is read by its first token)."""
+    return list(dict.fromkeys(ids(tok, v)[0] for v in (" " + word, " " + word[:1].upper() + word[1:])))
 
 
 def clashes(tok, word: str, item: str, domain: str) -> list[tuple[str, str]]:
@@ -183,16 +195,70 @@ def number_word(digit: str) -> str:
     return A51.number_word(digit)
 
 
-def answer_of(candidate: tuple[str, str], domain: str, item: str, number: str) -> str | None:
-    """The candidate's answer word for an item of the domain (None where it gives none)."""
-    if candidate == (NUMBER_WORD, NUMBER_WORD):
-        return number_word(number)
-    dom, rel = candidate
-    return LEXICAL[dom][rel].get(item) if dom == domain else None
+def name_of(cand: tuple[str, str]) -> str:
+    return "/".join(cand)
 
 
 def candidates() -> list[tuple[str, str]]:
-    return [(d, r) for d, rels in LEXICAL.items() for r in rels] + [(NUMBER_WORD, NUMBER_WORD)]
+    return [(d, r) for d, rels in LEXICAL.items() for r in rels]
+
+
+def shared_first_tokens(tok, cand: tuple[str, str]) -> list[tuple[str, str]]:
+    """Pairs of the relation's distinct answers whose read tokens overlap (the rule: none)."""
+    answers = sorted(set(LEXICAL[cand[0]][cand[1]].values()))
+    reads = {a: set(first_tokens(tok, a)) for a in answers}
+    return [(a, b) for i, a in enumerate(answers) for b in answers[i + 1 :] if reads[a] & reads[b]]
+
+
+def admissible_answers(tok, cand: tuple[str, str]) -> tuple[dict[str, str], dict[str, Any]]:
+    """The relation's items whose answer clashes with none of the item's bridge classes, and the dropped ones with why."""
+    dom, rel = cand
+    ok, bad = {}, {}
+    for item, w in LEXICAL[dom][rel].items():
+        why = clashes(tok, w, item, dom)
+        if why:
+            bad[item] = {"word": w, "why": [f"{t!r} {v}" for t, v in why]}
+        else:
+            ok[item] = w
+    return ok, bad
+
+
+def scene_answers(tok, cand: tuple[str, str], rc: dict, ok: dict[str, str] | None = None) -> tuple[dict | None, str]:
+    """The recall item's O and S answers under the relation ({'O': w, 'S': w'}), or None and why: another domain, a
+    bridge the relation does not answer (or whose answer clashes), the same read token for O and S."""
+    if rc["domain"] != cand[0]:
+        return None, "the relation's domain is another"
+    ok = admissible_answers(tok, cand)[0] if ok is None else ok
+    o, s = ok.get(rc["bridge"]), ok.get(rc["cf_bridge"])
+    if o is None or s is None:
+        return None, "a bridge without an admissible answer under the relation"
+    if set(first_tokens(tok, o)) & set(first_tokens(tok, s)):
+        return None, "the O and S answers share a read token"
+    return {"O": o, "S": s}, ""
+
+
+def coverage(tok, pairs: list[dict]) -> dict:
+    """Per candidate: its answers' read tokens, the pairs of answers sharing one (the rule: none), the items dropped for
+    a clash, the scenes it covers and whether it is admissible (no shared read token, >= N_MIN scenes)."""
+    out: dict[str, Any] = {}
+    for cand in candidates():
+        ok, bad = admissible_answers(tok, cand)
+        shared = shared_first_tokens(tok, cand)
+        covered = [p[X.RECALL]["scene"] for p in pairs if scene_answers(tok, cand, p[X.RECALL], ok)[0] is not None]
+        reads = {
+            a: [tok.decode([t]) for t in first_tokens(tok, a)] for a in sorted(set(LEXICAL[cand[0]][cand[1]].values()))
+        }
+        out[name_of(cand)] = {"scenes": len(covered), "read_tokens": reads, "shared_first_tokens": shared,
+                              "dropped_items": bad, "admissible": not shared and len(covered) >= X.N_MIN}  # fmt: skip
+    return out
+
+
+def choose(cov: dict) -> str:
+    """The rule's pick on the tokenizer: the admissible candidate covering the most scenes (ties: the first in order);
+    'none' if none (the 9B's accuracy is checked in the word run as the (Q-after, word) recall gate)."""
+    best = max((c for c in candidates() if cov[name_of(c)]["admissible"]), key=lambda c: cov[name_of(c)]["scenes"],
+               default=None)  # fmt: skip
+    return name_of(best) if best else "none"
 
 
 def scene_pairs(set_name: str = SET) -> list[dict]:
@@ -204,47 +270,6 @@ def scene_pairs(set_name: str = SET) -> list[dict]:
         if it["word"] in X.READERS:
             by[it["scene"]][it["word"]] = it
     return [by[s] for s in sorted(by) if set(by[s]) == set(X.READERS)]
-
-
-def coverage(tok, pairs: list[dict]) -> dict:
-    """Per candidate: its admissible items (one token, no clash) and the scenes it covers (both bridges answered by
-    admissible items, the O and S answers' first tokens differ); pooled lexical coverage beside."""
-    out: dict[str, Any] = {}
-    pooled = set()
-    for cand in candidates():
-        name = "/".join(dict.fromkeys(cand))
-        bad: dict[str, Any] = {}
-        covered = []
-        for p in pairs:
-            rc = p[X.RECALL]
-            words = {}
-            for role, item, num in (("O", rc["bridge"], rc["answer"]), ("S", rc["cf_bridge"], rc["cf_answer"])):
-                w = answer_of(cand, rc["domain"], item, num)
-                if w is None:
-                    break
-                why = [] if one_token(tok, w) else ["not one token"]
-                why += [f"{t!r} {v}" for t, v in clashes(tok, w, item, rc["domain"])]
-                if why:
-                    bad[item] = {"word": w, "why": why}
-                    break
-                words[role] = w
-            if len(words) == 2 and ids(tok, " " + words["O"])[0] != ids(tok, " " + words["S"])[0]:
-                covered.append(rc["scene"])
-        if cand[0] != NUMBER_WORD:
-            pooled |= set(covered)
-        out[name] = {"scenes": len(covered), "dropped_items": bad, "admissible": len(covered) >= X.N_MIN}
-    out["all lexical pooled"] = {"scenes": len(pooled), "admissible": len(pooled) >= X.N_MIN}
-    return out
-
-
-def choose(cov: dict) -> str:
-    """The rule's choice on the tokenizer: the first admissible candidate in order (the 9B's accuracy is checked in the
-    run as the (Q-after, word) gate)."""
-    for cand in candidates():
-        name = "/".join(dict.fromkeys(cand))
-        if cov[name]["admissible"]:
-            return name
-    return "none"
 
 
 # ---- prompts and cases (tokenizer only) -----------------------------------------------------------------------------
@@ -284,33 +309,40 @@ def encode(tok, item: dict, context: str, bridge: str, kind: str, position: str)
 
 def targets(tok, answer: str, kind: str) -> list[int]:
     """The read's accepted tokens: a digit's token (X0) or the word's first token after a space, lower-case and
-    capitalised (each asserted one token)."""
+    capitalised (first_tokens: the repo's convention for words)."""
     from scripts import suite_v1 as S
 
     if kind == "digit":
         return [S.answer_token(tok, answer, "digit")]
-    out = []
-    for v in (" " + answer, " " + answer[:1].upper() + answer[1:]):
-        t = ids(tok, v)
-        assert len(t) == 1, f"{v!r} is not one token"
-        out.append(t[0])
-    return list(dict.fromkeys(out))
+    return first_tokens(tok, answer)
 
 
-def cell_case(tok, pair: dict, cell: str) -> tuple[dict | None, str | None]:
+def cell_case(tok, pair: dict, cell: str, ok: dict[str, str] | None = None) -> tuple[dict | None, str | None]:
     """One scene in one cell (x51_answer's item shape), or the reason it is dropped: per reader the bridge one token at
     one index in O and S, the O and S answers' read tokens disjoint; Q-after: the readers' prompts equal through the
-    bridge word (one Δ from the lookup's)."""
+    bridge word (one Δ from the lookup's). Word cells: the recall asks RELATION (RELATION_Q, WORD_INSTRUCTION) and its
+    answers are the relation's words (ok: its admissible answers, computed once by build); a scene the relation does
+    not answer is dropped."""
     from scripts import suite_v1 as S
 
     position, atype = CELL[cell]
     readers = {}
     lk = pair[X.LOOKUP]
+    words = None
+    if atype == "word":
+        words, why = scene_answers(tok, RELATION, pair[X.RECALL], ok)
+        if words is None:
+            return None, why
     for w in X.READERS:
         it = pair[w]
         kind = "word" if (atype == "word" and w == X.RECALL) else "digit"
-        ans = {"org": it["answer"], "alt": it["cf_answer"]}
-        said = {v: (number_word(a) if kind == "word" else a) for v, a in ans.items()}
+        if kind == "word":
+            assert words is not None
+            it = {**it, "question": RELATION_Q[RELATION].format(d=it["start_desc"])}
+            ans = {"org": words["O"], "alt": words["S"]}
+        else:
+            ans = {"org": it["answer"], "alt": it["cf_answer"]}
+        said = dict(ans)
         ids_o, p_o = encode(tok, it, it["context"], it["bridge"], kind, position)
         ids_s, p_s = encode(tok, it, it["cf_context"], it["cf_bridge"], kind, position)  # the main test's alt: cf
         if len(p_o) != 1 or p_s != p_o:
@@ -342,12 +374,13 @@ def cell_case(tok, pair: dict, cell: str) -> tuple[dict | None, str | None]:
 
 def build(tok, cell: str, pairs: list[dict] | None = None) -> tuple[list[dict], dict]:
     pairs = scene_pairs() if pairs is None else pairs
+    ok = admissible_answers(tok, RELATION)[0] if CELL[cell][1] == "word" else None
     cases, dropped = [], collections.Counter()
     for p in pairs:
         if any(p[X.LOOKUP][k] != p[X.RECALL][k] for k in ("context", "cf_context", "bridge", "cf_bridge")):
             dropped["the readers' scenes differ"] += 1
             continue
-        c, why = cell_case(tok, p, cell)
+        c, why = cell_case(tok, p, cell, ok)
         if c is None:
             dropped[why] += 1
         else:
@@ -370,7 +403,8 @@ def stage_plan() -> Path:
              f"Relation: {blob['relation']} (rule in the module docstring). Coverage per candidate (scenes of {len(pairs)}; "
              f"admissible needs >= {X.N_MIN}):", ""]  # fmt: skip
     for k, v in cov.items():
-        lines.append(f"- {k}: {v['scenes']} scenes, admissible {v['admissible']}"
+        lines.append(f"- {k}: {v['scenes']} scenes, admissible {v['admissible']}; read tokens {v['read_tokens']}; "
+                     f"answers sharing a read token {v['shared_first_tokens']}"
                      + (f"; dropped items {v['dropped_items']}" if v.get("dropped_items") else ""))  # fmt: skip
     for cell in CELLS:
         cases, counts = build(tok, cell, pairs)
@@ -395,6 +429,15 @@ def stage_plan() -> Path:
 def said_word(text: str) -> str | None:
     m = re.search(r"[^\W\d_]+", next((ln for ln in text.lower().split("\n") if ln.strip()), ""))
     return m.group(0) if m else None
+
+
+def said_right(said: str | None, gold: str, kind: str) -> bool:
+    """A digit said as itself (X0); a word said as the answer or its plural (x52_atoms.word_keys: 'mammals')."""
+    from scripts import x52_atoms as A52
+
+    if kind == "digit":
+        return said == gold
+    return said is not None and said in A52.word_keys(gold)
 
 
 def read_row(lg, rd: dict, digits) -> dict:
@@ -433,8 +476,38 @@ def competence(model, cases: list[dict], ws) -> list[dict]:
                     logits, _ = X.read_logits(model, rd["ids"][v], [{}], "chat", rd["suffix"], ws)
                     said = S.said(texts[i], "digit") if rd["kind"] == "digit" else said_word(texts[i])
                     rows.append({"scene": c["scene"], "reader": w, "variant": v, "greedy": texts[i], "said": said,
-                                 "right": said == gold, "read_right": int(logits[0].argmax()) in gold_set})  # fmt: skip
+                                 "right": said_right(said, gold, rd["kind"]),
+                                 "read_right": int(logits[0].argmax()) in gold_set})  # fmt: skip
     return rows
+
+
+def item_tokens(tok, it: dict) -> dict:
+    """x51_answer.item_tokens with each reader's own answer kind: a digit answer's words are its number word's one-token
+    variants (51.12's E1), a word answer's the first token of each variant (51.12's Z2); identical to x51_answer's on
+    the number cells (tested)."""
+    from scripts import suite_v1 as S
+    from scripts import x51_answer as A51
+
+    def word(rd: dict, x: str) -> str:
+        return A51.number_word(x) if rd["kind"] == "digit" else str(x)
+
+    def wids(rd: dict, ws: list[str]) -> list[int]:
+        return A51.word_ids(tok, ws, rd["kind"] == "digit")
+
+    a_ids: set[int] = set()
+    a_words: list[str] = []
+    for rd in it["readers"].values():
+        ws = [word(rd, x) for x in rd["words_A"]]
+        a_words += ws
+        a_ids |= set(wids(rd, ws))
+    a_words = list(dict.fromkeys(a_words))
+    field = {"org": "answer", "alt": "cf_answer"}
+    own_word = {v: {w: wids(rd, [word(rd, rd[f])]) for w, rd in it["readers"].items()} for v, f in field.items()}
+    own = {v: {w: sorted(set(A51.variant_ids(tok, [rd[f]])) | set(own_word[v][w])) for w, rd in it["readers"].items()}
+           for v, f in field.items()}  # fmt: skip
+    bridge = {"org": A51.variant_ids(tok, [it["entity"]]), "alt": A51.variant_ids(tok, [it["cf_entity"]])}
+    return {"A": sorted(a_ids), "A_words": a_words, "split_words": [w for w in a_words if len(S.ids(tok, w)) > 1],
+            "own": own, "own_word": own_word, "bridge": bridge}  # fmt: skip
 
 
 def c_name(cases: list[dict]) -> str:
@@ -526,7 +599,7 @@ def run_cell(model, lens, cell: str, items: list[dict], layer: int, out: Path, w
     from scripts.exp04_brew_parts import AddRows
 
     tok, dev = model.tokenizer, model.device
-    toks = [A51.item_tokens(tok, it) for it in items]
+    toks = [item_tokens(tok, it) for it in items]
     digit_list = X.digit_ids(tok)
     digits = torch.tensor(digit_list, device=dev)
     sources = sorted({rd["src"] for it in items for rd in it["readers"].values()})
@@ -631,16 +704,19 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
         from scripts import x45m
 
         cov = coverage(x45m.tokenizer(), pairs)
+        rel_name = name_of(RELATION)
         if target == NINE_B:
-            assert choose(cov) == RELATION, f"the relation rule picks {choose(cov)!r} on the 9B, not {RELATION!r}"
+            assert choose(cov) == rel_name, f"the relation rule picks {choose(cov)!r} on the 9B, not {rel_name!r}"
             nine = None
         else:  # the 9B's choice and accuracy check (its word run's relation.json; the job depends on the 9B's)
             path = RESULTS / WORD_RUNS[NINE_B] / "relation.json"
             assert path.exists(), f"{path}: the 9B's relation check is not here (run the 9B's word job first)"
             nine = json.loads(path.read_text())
+            assert nine["relation"] == rel_name, f"the 9B's relation is {nine['relation']!r}, not {rel_name!r}"
         word_ok = nine is None or bool(nine["passes"])
-        m |= {"relation": RELATION, "relation_coverage": cov,
-              "relation_9b": nine if nine is not None else "this run (relation.json)"}  # fmt: skip
+        m |= {"relation": rel_name, "relation_question": RELATION_Q[RELATION], "word_instruction": WORD_INSTRUCTION,
+              "relation_coverage": cov, "relation_9b": nine if nine is not None else "this run (relation.json)",
+              "decision": "jobs/c3/batch53.yaml decision_531_words (Dan 10:20)"}  # fmt: skip
     dev = dev_scenes(target)
     if dev:
         m["excluded_scenes"] = {"source": DEV_GATE[target], "scenes": sorted(dev)}
@@ -667,8 +743,8 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
         built[cell], gates[cell] = chosen, g
     if "qa_word" in gates and words:
         acc = gates["qa_word"]["org_read_accuracy"][X.RECALL]
-        rel = {"relation": RELATION, "model": target, "accuracy_recall_qa_word": acc, "bar": X.GATE,
-               "passes": acc >= X.GATE, "coverage": cov}  # fmt: skip
+        rel = {"relation": name_of(RELATION), "model": target, "accuracy_recall_qa_word": acc, "bar": X.GATE,
+               "passes": acc >= X.GATE, "scenes": gates["qa_word"]["cases"], "coverage": cov}  # fmt: skip
         (out / "relation.json").write_text(json.dumps(rel, indent=1) + "\n")
         word_ok = word_ok and (target != NINE_B or rel["passes"])
     for cell in cells:  # the gates as they stand once the relation is checked, before any test
@@ -729,6 +805,30 @@ def cell_result(run_dir: Path, cell: str, target: str, n_boot: int) -> dict:
             "agreement": json.loads((d / "agreement.json").read_text()) if (d / "agreement.json").exists() else None}  # fmt: skip
 
 
+def atom_context(tok, sc: dict, reader: str, vocab: dict[str, set[str]], kinds: dict[str, str]) -> dict:
+    """x52_atoms.e1_context with each reader's answers matched by their kind: a digit answer by number_matcher (its
+    number word, ordinal, digit), a word answer by word_answer_matcher (its keys, plural, first pieces); the answer kind
+    also holds the relation's words in a word cell. Identical to e1_context on the number cells (tested)."""
+    from scripts import x52_atoms as A52
+
+    def answers(w: str) -> dict:
+        a = sc["answers"][w]
+        return A52.number_matcher(a) if kinds[w] == "digit" else A52.word_answer_matcher(tok, a)
+
+    other = next(w for w in sc["answers"] if w != reader)
+    in_scene = {sc["bridge"], sc["new"], *sc["items"]}
+    dom = sc["domain"]
+    kind_keys = set(A52.NUMBER_KIND)
+    if "word" in kinds.values():
+        kind_keys |= A52.word_keys_all(sorted(set(LEXICAL[RELATION[0]][RELATION[1]].values())))
+    return {"bridge": A52.entity_matcher(tok, [sc["bridge"]], dom, spell=True),
+            "new_bridge": A52.entity_matcher(tok, [sc["new"]], dom, spell=True),
+            "scene_item": A52.entity_matcher(tok, sc["items"], dom), "person": A52.matcher(A52.word_keys_all(sc["persons"])),
+            "answer_own": answers(reader), "answer_other": answers(other),
+            "same_class": A52.entity_matcher(tok, sorted(vocab[dom] - in_scene), dom), "answer_kind": kind_keys,
+            "prompt_keys": A52.prompt_keys(sc["text"])}  # fmt: skip
+
+
 def atoms_summary(d: Path, target: str, n_boot: int) -> dict:
     """x52_atoms' classifier on the cell's atom lists: per view (Q-after: the lookup's Δ in both readers' views;
     Q-before: each reader's own Δ in its own view) the class shares (x52_atoms.summarise)."""
@@ -747,8 +847,9 @@ def atoms_summary(d: Path, target: str, n_boot: int) -> dict:
     after = CELL[d.name][0] == "after"
     for r in rows:
         sc = scenes[r["key"]]
+        kinds = {w: rd["kind"] for w, rd in cases[r["key"]]["readers"].items()}
         for view in X.READERS if after else (r["reader"],):
-            ctx = A52.e1_context(tok, sc, view, vocab)
+            ctx = atom_context(tok, sc, view, vocab, kinds)
             atoms = [{**a, **dict(zip(("class", "via", "detail"), A52.classify(a["token"], a["token_id"], ctx),
                                       strict=True))} for a in r["atoms"]]  # fmt: skip
             by_view[view].append({"entity": r["entity"], "share_k25": r["share_k25"], "atoms": atoms})
@@ -834,8 +935,15 @@ def verdict_lines(models: list[dict]) -> list[str]:
                   f"Rule across cells: **{mv['across']}**. Cross-check: **{mv['cross_check']['text']}**.", ""]  # fmt: skip
         if mv.get("relation_check"):
             rc = mv["relation_check"]
-            lines += [f"Relation check: the recall's O read accuracy on (Q-after, word) = {rc['accuracy_recall_this_model']}"
-                      f" (>= 0.80: {rc['passes']}).", ""]  # fmt: skip
+            cov = rc.get("coverage") or {}
+            short = ", ".join(f"{k} {v['scenes']}" for k, v in cov.items() if not v["admissible"])
+            dropped = sorted(cov.get(mv["relation"], {}).get("dropped_items", {}))
+            lines += [f"Word cells: relation {mv['relation']} (question '{RELATION_Q[RELATION]}'), on the {rc['scenes']} "
+                      f"scenes it answers, not 600 (Dan 10:20: coverage >= 150 on the 9B, then accuracy >= 0.80); "
+                      f"checked and short of 150 scenes: {short or '-'}; items dropped for a clash with their own "
+                      f"spelling, initial or symbol: {dropped or '-'}. The recall's O read accuracy on (Q-after, word) "
+                      f"= {rc['accuracy_recall_qa_word']} on {rc['model']} (>= 0.80: {rc['passes']}; the 9B's decides).",
+                      ""]  # fmt: skip
         lines += ["| cell | gate (O read acc. lookup / recall) | n | recall: 51.12 label | lookup: 51.12 label | "
                   "conflict test lookup: extra loss beyond random | recall: extra loss | recall e2/e1 | recall e3 | "
                   "recall answer word not read |", "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip

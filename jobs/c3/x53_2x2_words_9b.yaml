@@ -1,0 +1,67 @@
+id: x53_2x2_words_9b
+title: "Batch 53.1 on the 9B (L12), the word cells (Dan 10:20, decision_531_words): the recall asks the animal's class (mammal / bird / insect / arachnid / amphibian, read by its first token) on the 191 animal scenes the relation answers; (Q-after, word) and (Q-before, word), the relation's 9B accuracy (>= 0.80) checked after both gates and before any test; per cell the main gate, the conflict test at L, 51.12's arms with the readout check first, the atom inventory on 50 items; then the verdict (all four cells, the rule across cells, the cross-check) into results/x53_2x2/x53_2x2-<UTC>/ with one figure; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_2x2.py run --cells word --name qwen35_9b_x53_2x2_words &&
+  uv run python scripts/x53_2x2.py verdict
+question: >-
+  When the recall's answer is a word the lens can read (the animal's class) instead of a digit, does the bridge's lens
+  part turn into the answer, with the question after the scene and before it? With the number cells, the 2x2's rule
+  across cells (position / readability / both / neither) and the cross-check (the lookup's pointer outside the lens in
+  all four cells).
+why_it_matters: >-
+  Dan (batch 53 brief and decision 10:20): the word cells separate answer readability from question position; if no
+  relation passed they would be skipped (readability is covered by 51.12 on Zach's named passages and by 53.1b).
+  Animal class passes coverage on the 9B (191 scenes >= 150).
+hypotheses:
+  none: "no prediction (batch 53: exploration day; every rule fixed in the brief before any run)"
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch53.yaml brief, 53.1), verbatim as in jobs/c3/x53_2x2_9b.yaml (cells, per-cell rule,
+  rule across cells, cross-check). Dan's decision (batch53.yaml decision_531_words, 29 Oct ~10:20), verbatim: "Word
+  cells: relax the token rule now, before any result, to the repo's convention for words: multi-token answers read by
+  their first token (as the natural passages and Zach's sets). First tokens must be distinct across the relation's
+  answers and must not share a token with any spelling, initial or symbol of the item. Try element state (gas / solid
+  / liquid), animal class (mammal / bird / ...), and any other relation that passes; pick by coverage on the 9B (>= 150
+  scenes, accuracy >= 0.8), build the scenes, then run the two word cells. If none passes, skip the word cells and say
+  so in the card: readability is covered by 51.12 on Zach's named passages and by 53.1b." 51.12's rule verbatim as in
+  x53_2x2_9b.yaml. As computed (scripts/x53_2x2.py docstring; fixed before any run; the 9B's tokenizer,
+  results/x53_2x2/plan-20261029T093616Z): candidates animal class, animal young, element state (gas / solid: no
+  element of the scenes is a liquid), Greek vowel / consonant; read tokens = the first token of " w" and " W" (animal
+  class: mammal ' mamm' / ' M', bird ' bird' / ' Bird', insect ' insect' / ' In', arachnid ' ar' / ' Ar', amphibian '
+  amphib' / ' Amph'; no two answers share one); an item whose answer word shares a token with its spelling, initial or
+  symbol (x52_atoms' bridge classes) leaves the relation (animal class: mouse, ' M' its initial); coverage = scenes
+  with both bridges answered and different read tokens: animal class 191, element state 107, Greek 121, animal young
+  17 -> animal class (the only one >= 150). The word cells use those 191 animal scenes, not 600. The recall's question
+  "What class of animal is <person>'s pick?" with suite_v1's "Answer with a single word and nothing else."; read: the
+  top token right after 'Answer:' (no space token) is one of S's read tokens; said = the first word, the answer or its
+  plural. The relation's 9B accuracy = (Q-after, word)'s recall O read accuracy over the 191 scenes, written to
+  relation.json after both word cells' competence and before any test; < 0.80 -> both word cells "not tested (the
+  relation's 9B accuracy < 0.80)" and the card says the word cells were skipped. Per cell X0's gate (0.80 per reader
+  over the cell's 191 scenes; >= 150 eligible; the first 200 = all eligible), never lowered. A for 51.12's arms: the
+  recall's answers by the first token of each variant (51.12's Z2 construction), the lookup's lockers by their number
+  words (E1); the atom classifier's answer classes for a word by x52_atoms.word_answer_matcher. Conflict test, 51.12
+  arms, atoms, the cell's label (the recall's), the rule across cells and the cross-check as x53_2x2_9b.yaml.
+controls:
+- "a random part of the same share beside every removal (X0's random subspace, seed 888 + L)"
+- "the readout check (the answer word's lens rank at the edited token) before the arms, per cell and reader"
+- "the relation's 9B accuracy checked after both gates and before any test (relation.json)"
+- "the lookup's prompts identical to the number cells' (tested): only the recall's question, instruction and read change"
+- "x52_atoms.omp_atoms asserted equal to x0_necessity.fit's part on the atom items"
+n: "per cell: the 191 animal scenes the relation answers (the gate over all 191; eligible >= 150 needed); atoms on 50"
+seeds: [888, 0]
+notes: >-
+  Batch 53, test 53.1, the word cells (Dan 10:20; coordinator ~10:45: animal class only). No prediction; UNVERIFIED;
+  nothing into the README. Card note (verbatim into the verdict): element state (107), Greek vowel / consonant (121)
+  and animal young (17) were checked and fell short of 150 scenes; mouse was dropped (its initial ' M' clashes with
+  Mammal's first token); the word cells use 191 scenes, not 600, all of them animals (the number cells: 600 scenes,
+  three domains). Writes results/x53_2x2/qwen35_9b_x53_2x2_words/ (manifest with the relation table, relation.json,
+  qa_word/, qb_word/), then the verdict over both runs into results/x53_2x2/x53_2x2-<UTC>/. Independent of
+  x53_2x2_9b's run (the verdict reads whichever is there; both cells of a run 'pending' until it lands). Estimate from
+  the ledger (x45m_9b_q2 480 s for 600 scenes' competence + arms; x51_12_e1_9b_r2 123 s for 200 items' arms): 2 x 191
+  scenes' competence (~110 s each) + 2 x <= 191 items' arms (~100 s each) + load ~ 500 s ~ 0.15 h; entered as 0.25
+  (wall ~10-15 min on 1x H100 80 GB).

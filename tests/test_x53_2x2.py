@@ -32,8 +32,14 @@ def all_pairs():
 
 @pytest.fixture(scope="module")
 def pairs(tok, all_pairs):
-    """The scenes every cell builds on this tokenizer (Lightning's drops a bridge split in two)."""
-    return [p for p in all_pairs if all(T2.cell_case(tok, p, c)[0] is not None for c in T2.CELLS)]
+    """The scenes the number cells build on this tokenizer (Lightning's drops a bridge split in two)."""
+    return [p for p in all_pairs if all(T2.cell_case(tok, p, c)[0] is not None for c in T2.NUMBER_CELLS)]
+
+
+@pytest.fixture(scope="module")
+def word_pairs(tok):
+    """Scenes all four cells build (the word cells: the relation's domain, both bridges answered)."""
+    return _buildable(tok, 10)
 
 
 def _case(tok, p: dict, cell: str) -> dict:
@@ -103,15 +109,16 @@ def _context_ids(tok, ids: list[int], context: str) -> list[int]:
     return [ids[i] for i in _context_pos(tok, ids, context)]
 
 
-def test_q_before_keeps_the_scene_and_the_bridge_token(tok, pairs):
+def test_q_before_keeps_the_scene_and_the_bridge_token(tok, pairs, word_pairs):
     """Q-before vs Q-after per reader and prompt: the scene text once and unchanged, its tokens the same, the bridge the
     same token at the same offset from the scene's start; only the question block moved (and the 'Scene:' label)."""
-    for cell_b, cell_a in (("qb_num", "qa_num"), ("qb_word", "qa_word")):
-        for p in pairs[:10]:
+    for cell_b, cell_a, ps in (("qb_num", "qa_num", pairs[:10]), ("qb_word", "qa_word", word_pairs)):
+        for p in ps:
             a, b = _case(tok, p, cell_a), _case(tok, p, cell_b)
             for w in X.READERS:
                 ra, rb = a["readers"][w], b["readers"][w]
                 assert rb["src"] == w  # per-reader Δ: the readers' prompts differ before the bridge
+                assert ra["question"] == rb["question"]
                 for v, ctx in (("org", p[w]["context"]), ("alt", p[w]["cf_context"])):
                     ta, tb = tok.decode(ra["ids"][v]), tok.decode(rb["ids"][v])
                     assert ta.count(ctx) == 1 and tb.count(ctx) == 1
@@ -121,39 +128,79 @@ def test_q_before_keeps_the_scene_and_the_bridge_token(tok, pairs):
                     assert ca[:-1] == cb[:-1] and len(ca) == len(cb)
                     fa, fb = _context_pos(tok, ra["ids"][v], ctx)[0], _context_pos(tok, rb["ids"][v], ctx)[0]
                     assert ra["ids"][v][fa : ra["pos"] + 1] == rb["ids"][v][fb : rb["pos"] + 1]
+                    assert ra["pos"] - fa == rb["pos"] - fb  # the bridge at the same offset from the scene's start
+                    assert fb > fa  # the question block precedes the scene
+                    q = ra["question"]
                     q_block = tb[: tb.index("Scene:\n")]
-                    assert p[w]["question"] in q_block and ctx not in q_block
-                    assert ta.replace(f"{ctx}\n{p[w]['question']} ", "").count(p[w]["question"]) == 0
-                    ua = T2.user_content(p[w]["question"], ctx, ra["kind"], "after")
-                    ub = T2.user_content(p[w]["question"], ctx, rb["kind"], "before")
-                    q_and_instr = ua[len(ctx) + 1 :]
-                    assert ub == f"Question: {q_and_instr}\n\nScene:\n{ctx}"
-                    # the bridge at the same offset from the scene's first token
-                    first_a, first_b = _context_pos(tok, ra["ids"][v], ctx)[0], _context_pos(tok, rb["ids"][v], ctx)[0]
-                    assert ra["pos"] - first_a == rb["pos"] - first_b
-                    assert first_b > first_a  # the question block precedes the scene
+                    assert q in q_block and ctx not in q_block
+                    assert ta.replace(f"{ctx}\n{q} ", "").count(q) == 0
+                    ua = T2.user_content(q, ctx, ra["kind"], "after")
+                    ub = T2.user_content(q, ctx, rb["kind"], "before")
+                    assert ub == f"Question: {ua[len(ctx) + 1 :]}\n\nScene:\n{ctx}"
                 assert ra["set_A"] == rb["set_A"] and ra["set_b"] == rb["set_b"]
 
 
-def test_word_cells_change_only_the_recalls_answer(tok, pairs):
-    for p in pairs[:10]:
+def test_word_cells_change_only_the_recalls_question_and_answer(tok, word_pairs):
+    table = T2.LEXICAL[T2.RELATION[0]][T2.RELATION[1]]
+    for p in word_pairs:
         num, word = _case(tok, p, "qa_num"), _case(tok, p, "qa_word")
         assert word["readers"][LK]["ids"] == num["readers"][LK]["ids"]  # the lookup unchanged
         rw = word["readers"][RC]
+        assert p[RC]["domain"] == T2.RELATION[0]
         assert rw["kind"] == "word" and rw["suffix"] == []
-        assert rw["said_A"] == T2.number_word(p[RC]["answer"]) and rw["said_b"] == T2.number_word(p[RC]["cf_answer"])
-        assert rw["set_A"][0] == T2.ids(tok, " " + rw["said_A"])[0]
+        assert rw["question"] == T2.RELATION_Q[T2.RELATION].format(d=p[RC]["start_desc"])
+        assert (rw["said_A"], rw["said_b"]) == (table[p[RC]["bridge"]], table[p[RC]["cf_bridge"]])
+        assert (rw["answer"], rw["cf_answer"]) == (rw["said_A"], rw["said_b"])
+        assert (
+            rw["set_A"] == T2.first_tokens(tok, rw["said_A"]) and rw["set_A"][0] == T2.ids(tok, " " + rw["said_A"])[0]
+        )
         assert not set(rw["set_A"]) & set(rw["set_b"])
-        assert rw["words_A"] == [p[RC]["answer"], p[RC]["cf_answer"]]  # 51.12's A: the number words of the answers
+        assert rw["words_A"] == [rw["said_A"], rw["said_b"]]
         assert rw["ids"]["org"][: word["pos"] + 1] == word["readers"][LK]["ids"]["org"][: word["pos"] + 1]
-        assert T2.WORD_INSTRUCTION in tok.decode(rw["ids"]["org"])
+        text = tok.decode(rw["ids"]["org"])
+        assert T2.WORD_INSTRUCTION in text and "How many legs" not in text
+
+
+def test_word_cells_drop_the_scenes_the_relation_does_not_answer(tok):
+    pairs = T2.scene_pairs()
+    other = next(p for p in pairs if p[RC]["domain"] != T2.RELATION[0])
+    assert T2.cell_case(tok, other, "qa_word") == (None, "the relation's domain is another")
+    mouse = next(p for p in pairs if "mouse" in (p[RC]["bridge"], p[RC]["cf_bridge"]))
+    assert T2.cell_case(tok, mouse, "qb_word")[1] == "a bridge without an admissible answer under the relation"
+
+
+def test_item_tokens_and_atom_context_equal_51_12s_and_52s_on_the_number_cells(tok, pairs):
+    from scripts import x51_answer as A51
+    from scripts import x52_atoms as A52
+
+    vocab = {k: set(v) for k, v in A52.SAME_CLASS.items()}
+    for p in pairs[:10]:
+        for cell in T2.NUMBER_CELLS:
+            it = _case(tok, p, cell)
+            assert T2.item_tokens(tok, it) == A51.item_tokens(tok, it)
+            sc = A52.e1_scene(it)
+            kinds = {w: rd["kind"] for w, rd in it["readers"].items()}
+            for view in X.READERS:
+                assert T2.atom_context(tok, sc, view, vocab, kinds) == A52.e1_context(tok, sc, view, vocab)
+
+
+def test_item_tokens_on_a_word_cell(tok, word_pairs):
+    from scripts import x51_answer as A51
+
+    it = _case(tok, word_pairs[0], "qa_word")
+    tk = T2.item_tokens(tok, it)
+    rc, lk = it["readers"][RC], it["readers"][LK]
+    want = set(A51.word_ids(tok, [rc["answer"], rc["cf_answer"]], False))
+    want |= set(A51.word_ids(tok, [T2.number_word(lk["answer"]), T2.number_word(lk["cf_answer"])], True))
+    assert set(tk["A"]) == want
+    assert tk["own_word"]["org"][RC] == A51.word_ids(tok, [rc["answer"]], False)
 
 
 # ---- the relation ---------------------------------------------------------------------------------------------------
 
 
-def test_relation_rule_picks_the_number_word():
-    """The rule on the 9B's tokenizer (the brief: chosen on the 9B), whatever BJ_TARGET is."""
+def test_relation_rule_picks_animal_class():
+    """The relaxed rule (Dan 10:20) on the 9B's tokenizer (the brief: chosen on the 9B), whatever BJ_TARGET is."""
     from scripts import x52_atoms as A52
 
     try:
@@ -161,10 +208,18 @@ def test_relation_rule_picks_the_number_word():
     except Exception as e:
         pytest.skip(f"the 9B's tokenizer is not cached: {e}")
     cov = T2.coverage(tok9, T2.scene_pairs())
-    assert cov["all lexical pooled"]["scenes"] < X.N_MIN
-    assert all(not v["admissible"] for k, v in cov.items() if k not in (T2.NUMBER_WORD, "all lexical pooled"))
-    assert cov[T2.NUMBER_WORD]["scenes"] >= X.N_MIN
-    assert T2.choose(cov) == T2.RELATION == T2.NUMBER_WORD
+    assert {k: v["scenes"] for k, v in cov.items()} == {"animals/class": 191, "animals/young": 17,
+                                                        "elements/state": 107, "greek/vowel": 121}  # fmt: skip
+    assert [k for k, v in cov.items() if v["admissible"]] == ["animals/class"]
+    assert all(not v["shared_first_tokens"] for v in cov.values())
+    assert set(cov["animals/class"]["dropped_items"]) == {"mouse"}  # " M", Mammal's first token, is its initial
+    assert T2.choose(cov) == T2.name_of(T2.RELATION) == "animals/class"
+
+
+def test_said_right():
+    assert T2.said_right("mammals", "mammal", "word") and T2.said_right("bird", "bird", "word")
+    assert not T2.said_right("reptile", "mammal", "word") and not T2.said_right(None, "bird", "word")
+    assert T2.said_right("6", "6", "digit") and not T2.said_right("six", "6", "digit")
 
 
 def test_clashes_catch_spelling_initial_and_symbol(tok):
@@ -272,7 +327,8 @@ def _plant(tok, root, target: str, labels: dict[str, str], lookup_loss: float, n
 
     for runs in (T2.RUNS, T2.WORD_RUNS):  # the number cells' run and the word cells' run
         (root / runs[target]).mkdir(parents=True)
-        (root / runs[target] / "manifest.json").write_text(json.dumps({"layer": 12, "relation": T2.RELATION}))
+        m = {"layer": 12, "relation": T2.name_of(T2.RELATION) if runs is T2.WORD_RUNS else None}
+        (root / runs[target] / "manifest.json").write_text(json.dumps(m))
     pairs = _buildable(tok, n)
     for cell in T2.CELLS:
         d = root / (T2.RUNS if cell in T2.NUMBER_CELLS else T2.WORD_RUNS)[target] / cell
@@ -442,10 +498,11 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     monkeypatch.setattr(X, "N_ITEMS", chosen)
     monkeypatch.setattr(M, "load_model", lambda: fake)
     monkeypatch.setattr(L, "JLens", lambda model, name: FakeLens(model))
-    monkeypatch.setattr(T2, "choose", lambda cov: T2.RELATION)  # 24 scenes cover no candidate's 150
+    monkeypatch.setattr(T2, "choose", lambda cov: T2.name_of(T2.RELATION))  # 24 scenes cover no candidate's 150
     if pins.TARGET != T2.NINE_B:  # the 9B's relation check, as its word run leaves it
         (tmp_path / T2.WORD_RUNS[T2.NINE_B]).mkdir()
-        (tmp_path / T2.WORD_RUNS[T2.NINE_B] / "relation.json").write_text(json.dumps({"passes": True}))
+        nine = {"passes": True, "relation": T2.name_of(T2.RELATION)}
+        (tmp_path / T2.WORD_RUNS[T2.NINE_B] / "relation.json").write_text(json.dumps(nine))
     num = T2.stage_run(T2.RUNS[pins.TARGET], T2.NUMBER_CELLS)
     assert "relation_coverage" not in json.loads((num / "manifest.json").read_text())  # no relation in a number run
     out = T2.stage_run(T2.WORD_RUNS[pins.TARGET], T2.WORD_CELLS)
@@ -470,6 +527,8 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     assert json.loads((num / "manifest.json").read_text())["finished_utc"]
     mv = T2.model_verdict(pins.TARGET, 100)
     assert all(r["status"] == "tested" for r in mv["cells"].values())
+    text = "\n".join(T2.verdict_lines([mv]))
+    assert "Word cells: relation animals/class" in text and f"on the {n} scenes it answers" in text
 
 
 def test_verdict_planted_position_and_cross_check(tok, tmp_path, monkeypatch):
