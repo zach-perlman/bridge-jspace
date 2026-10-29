@@ -690,7 +690,8 @@ def stage_routes_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
                     cells[f"{cond}|{arm}"] = cell
         runs.append({"run": name, "model": m["model"]["target"], "format": m.get("format", "prose"),
                      "layer": m["layer"], "items": m.get("items"), "status": status, "gate": gate, "c0_check": c0,
-                     "cells": cells, "design": m.get("gate_design", "the routes test's two-reader gate")})  # fmt: skip
+                     "cells": cells, "design": m.get("gate_design", "the routes test's two-reader gate"),
+                     "u_from": m.get("alf_from")})  # fmt: skip
     out = R.RESULTS / f"x53_7_routes-{utc()}"
     out.mkdir(parents=True, exist_ok=False)
     rule = f"a route counts as used if its share is >= {R.USED_SHARE} with lower CI >= {R.USED_LO}"
@@ -711,6 +712,11 @@ def stage_routes_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
              f"({n_boot:,} resamples, seed {X.BOOT_SEED}). C1: identity = original (both a)."
              + (" The recall's columns are descriptive (not part of this test)." if lookup else ""), "",
              *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
+             "The address U (the 'address' arms) is carried over from prose, not refit on the code / tool scenes: "
+             "x0_massmean.subspaces' Alf (the layout-free mass-mean of the bridge word's states by locker slot) on the "
+             "model's prose probe states at L (x0_probe v4, d1_topics_v4; scripts/x6_routes.py stage_run, "
+             "MM.subspaces(STATES[target])), per run: "
+             + "; ".join(f"{MODEL_NAME.get(r['model'], r['model'])} {r['format']} {r['u_from']}" for r in runs) + ".", "",
              "| model | format | condition | status | gate | beside (descriptive) |", "|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
         for cond, st in r["status"].items():

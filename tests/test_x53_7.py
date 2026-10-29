@@ -102,7 +102,7 @@ def routes_run(root, name, gate_pass=None, c0_ok=True, c0_rate=0.9):
     src = root / name
     src.mkdir(parents=True)
     m = {"model": {"target": "qwen3.6-27b"}, "layer": 32, "conditions": list(R.CONDITIONS), "gate": 0.8,
-         "gate_fixed_in_advance": 0.8, "format": "code", "items": {}}  # fmt: skip
+         "gate_fixed_in_advance": 0.8, "format": "code", "items": {}, "alf_from": "x0_probe_v4_27b"}  # fmt: skip
     (src / "manifest.json").write_text(json.dumps(m))
     acc = {c: ({"PP": 0.95, "PM": 0.9} if gate_pass.get(c, True) else {"PP": 0.95, "PM": 0.7}) for c in R.CONDITIONS}
     (src / "gate.json").write_text(json.dumps({"gate": {c: {"org_read_accuracy": a, "pass": min(a.values()) >= 0.8}
@@ -424,6 +424,7 @@ def test_routes_verdict_under_the_lookup_gate(tmp_path, monkeypatch):
     md = (out / "verdict.md").read_text()
     assert f"**{R.LOOKUP_GATE_DESIGN}.**" in md and "recall follows S (descriptive)" in md
     assert "recall the same: 0.400" in md
+    assert "carried over from prose, not refit" in md and "Qwen3.6-27B code x0_probe_v4_27b" in md  # Dan 13:15: U
 
 
 def test_probe_verdict_under_the_lookup_gate_marks_hollow(tmp_path, monkeypatch):
