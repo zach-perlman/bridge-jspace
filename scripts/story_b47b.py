@@ -36,7 +36,10 @@ WRAP = 104  # subtitle characters per line at 11 pt across the 8.8 in column
 LINE = 0.19  # inches per subtitle or legend line
 TARGETS = tuple((t, m, name) for t, m, name in S.MODELS if m != "122b")  # batch 47 ran on the 9B, the 27B and Muse
 NAME = {t: name for t, _, name in S.MODELS}
-SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning"}
+SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning",
+         "qwen3.5-122b-a10b": "122B"}  # fmt: skip
+# the fifth slot (Dan 11:30, coordinator 12:15): the 122B, where a figure's test never ran on it a grey "not run"
+ROW_122B = ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B")
 # batch 52's fourth model (readme_story_figures.LT), drawn hollow: its gate was chosen after its pre-check was seen
 LT_ROW = ("nemotron-3.5-lightning", "lightning", "Nemotron 3.5 Lightning")
 NAME[LT_ROW[0]] = LT_ROW[2]
@@ -377,6 +380,7 @@ E11_FOUR_ROWS = (("bridge", "the bridge word"), ("locker", "a locker sentence (i
                  ("b", "bridge word, every layer up to l"), ("w", "bridge word, from l on"))  # fmt: skip
 E11_FOUR_PITCH, E11_BLOCK_GAP = 2.15, 3.7  # rows per group (lookup, recall, gap); room between two models' blocks
 E11_COLS = 16.0  # each model's columns (input token, then its sampled layers) spread over the same width
+E11_EMPTY = 2.6  # a slot with no map (the 122B: not run): its name and a grey label, no rows
 
 
 def e11_four(verdict_dir: Path, out_name: str, title: str | None, coverage: dict, out_dir: Path | None) -> str:
@@ -389,7 +393,7 @@ def e11_four(verdict_dir: Path, out_name: str, title: str | None, coverage: dict
     base = verdict_dir / "depth.json"
     blob = json.loads(base.read_text())
     slots = []
-    for t, m, name in (*TARGETS, LT_ROW):
+    for t, m, name in (*TARGETS, LT_ROW, ROW_122B):
         path, design = coverage.get(t, (base, "clean"))
         mod = next((x for x in json.loads(path.read_text())["models"] if x["target"] == t), None)
         if mod is None and path == base:
@@ -399,28 +403,33 @@ def e11_four(verdict_dir: Path, out_name: str, title: str | None, coverage: dict
     plt = S.setup()
     n_rows = len(E11_FOUR_ROWS)
     block = n_rows * E11_FOUR_PITCH
-    top_in, body_in, bottom_in = 1.2, 0.125 * (len(slots) * (block + E11_BLOCK_GAP)), 1.75
+    heights = [block if s[3] is not None else E11_EMPTY for s in slots]
+    span = sum(heights) + E11_BLOCK_GAP * (len(slots) - 1)
+    top_in, body_in, bottom_in = 1.2, 0.125 * (span + E11_BLOCK_GAP), 1.75
     h = top_in + body_in + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.3, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.05)
     S.title(fig, title or "Locker after the pick: the lookup leaves the bridge word early",
             "The whole changed state placed in one token group at one layer, on each model")  # fmt: skip
     ticks, labels, status = [], [], []
+    y_next = 0.0
     for k, (t, _m, name, mod, design, src) in enumerate(slots):
-        y0 = -k * (block + E11_BLOCK_GAP)
+        y0 = y_next
+        y_next -= heights[k] + E11_BLOCK_GAP
         y_of = {g: y0 - i * E11_FOUR_PITCH for i, (g, _) in enumerate(E11_FOUR_ROWS)}
         hollow = t == LT_ROW[0]
-        ticks += [y_of[g] - 0.5 for g, _ in E11_FOUR_ROWS]
-        labels += [lab for _, lab in E11_FOUR_ROWS]
+        if mod is not None:
+            ticks += [y_of[g] - 0.5 for g, _ in E11_FOUR_ROWS]
+            labels += [lab for _, lab in E11_FOUR_ROWS]
         what = f"{SHORT[t]}, {DESIGN_TEXT[design]}" if mod else SHORT[t]
         mark = f"  {S.STATUS_GLYPH['after']}" if hollow else ""
         short = {"clean": "clean one-pick scenes", "main": "main test"}[design]
         axes[0].text(-0.9, y0 + 1.15, (f"{SHORT[t]} · {short}" if mod else name) + mark, ha="left",
                      va="bottom", fontsize=S.FONT, weight="bold", clip_on=False, zorder=6)  # fmt: skip
-        if mod is None:
+        if mod is None:  # a compact slot: the name above, one grey label (no empty rows)
             why = "not tested: gate" if hollow else "not run"
             for ax in axes:
-                ax.text(E11_COLS / 2, y0 - block / 2 + 1, why, ha="center", va="center", color=S.COL["muted"])
+                ax.text(E11_COLS / 2, y0 - E11_EMPTY / 2 + 0.6, why, ha="center", va="center", color=S.COL["muted"])
             status.append(f"{SHORT[t]}: {why}")
             continue
         status.append(f"{what}" + (", hollow" if hollow else ""))
@@ -477,7 +486,7 @@ def e11_four(verdict_dir: Path, out_name: str, title: str | None, coverage: dict
     for ax, (_, label) in zip(axes, E11_GROUPS, strict=True):
         ax.set_title(label, fontsize=12, weight="bold", loc="left", pad=8)
         ax.set_xlim(-0.9, E11_COLS + 0.6)
-        ax.set_ylim(-len(slots) * (block + E11_BLOCK_GAP) + E11_BLOCK_GAP - 2.4, 2.4)
+        ax.set_ylim(-span - 2.4, 2.4)
         ax.set_xticks([0.0, E11_COLS], ["in", "last"])
         ax.tick_params(length=0)
         for s in ax.spines.values():

@@ -139,13 +139,19 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         srcs[F.LT[0]] = rel(lpath)
     plt = S.setup()
     rows = [(t, m) for t, m, _ in (*MODELS, F.LT) if t in models]
+    # the fifth slot (Dan 11:30, coordinator 12:15): the 122B, where 47.0 never ran, a grey "not run" row
+    grey = [(t, m) for t, m, _ in S.MODELS if m == "122b" and t not in models]
+    slots = rows + grey
     row_in, top_in, bottom_in = 0.85, 1.75, 0.95 + 0.75 * (lightning is not None)
-    h = top_in + row_in * len(rows) + bottom_in
+    h = top_in + row_in * len(slots) + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True, sharex=True)
     left = 0.235 if lightning is not None else 0.19  # "Nemotron 3.5 Lightning" is the longest row name
     fig.subplots_adjust(left=left, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
-    ys = {t: -i for i, (t, _) in enumerate(rows)}
+    ys = {t: -i for i, (t, _) in enumerate(slots)}
     a, b = axes
+    for t, _ in grey:
+        for ax in axes:
+            ax.text(1.4, ys[t], "not run", ha="left", va="center", color=S.COL["muted"], fontsize=S.FONT, zorder=4)
     n_rand, words, label_9b, raw, own = set(), set(), {}, {}, []
     for t, _m in rows:
         r, y = models[t], ys[t]
@@ -247,8 +253,8 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         ax.grid(axis="x", color="#eeeeee")
         ax.set_axisbelow(True)
         ax.tick_params(axis="y", length=0)
-    a.set_ylim(-len(rows) + 0.5, 0.5)
-    a.set_yticks(list(ys.values()), [F.NAMES[m] for _, m in rows])
+    a.set_ylim(-len(slots) + 0.5, 0.5)
+    a.set_yticks(list(ys.values()), [F.NAMES[m] for _, m in slots])
     # the 27B's report (47.10, question last): one caption sentence, not a panel
     m = next(x for x in rblob["models"]
              if x["status"] == "tested" and "report" in x["orders"]["last"].get("readers", {}))  # fmt: skip
@@ -269,6 +275,7 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         status = "9B, 27B, Muse: descriptive. Lightning: descriptive, dashed"
         status += "; its address swap's share rebuilt ends just past the strip" if lt_out else ""
         status += "; hatched: its own random range, where it sits off the strip." if own else "."
+        status += " 122B: not run." if grey else ""
         caption(fig, [status, F.LT_NOTE], 0.7)
     S.save(fig, out_name)
     return out_name

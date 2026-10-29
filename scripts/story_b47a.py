@@ -37,6 +37,9 @@ TARGETS = tuple((t, m) for t, m, _ in S.MODELS if m != "122b")  # 9B, 27B, Muse
 # its slot with a short grey label. Lightning's coverage verdicts (batch 52) are read by their explicit folders (a
 # newest-folder pattern would pick a one-model folder over the three models' verdict); its marks are hollow.
 SLOTS = (*TARGETS, F.LT[:2])
+# the fifth slot (Dan 11:30, coordinator 12:15): the 122B, after Lightning; where a test never ran on it, a grey "not run"
+SLOT_122B = ("qwen3.5-122b-a10b", "122b")
+SLOTS5 = (*SLOTS, SLOT_122B)
 SHORT = {**F.SHORT, F.LT[1]: F.LT[2]}
 LT_ZERO = F.pins.RESULTS_DIR / "x47_zero" / "x52_zero-20261029T032056Z"  # 47.5
 LT_ATOMS = F.pins.RESULTS_DIR / "x47_atoms" / "x52_atoms47-20261029T011717Z"  # 47.1
@@ -406,12 +409,17 @@ def build_routes_lens(
     lt_mod, lt_src = lightning_model(lightning, "x47_1.json")
     if lt_mod is not None:
         by[F.LT[0]], sources[F.LT[0]] = lt_mod, lt_src
-    models = [(t, m) for t, m in SLOTS if ((by.get(t) or {}).get("routes") or {}).get("falls")]
-    omitted = [SHORT[m] for t, m in SLOTS if (t, m) not in models]
+    models = [(t, m) for t, m in SLOTS5 if ((by.get(t) or {}).get("routes") or {}).get("falls")]
+    omitted = [SHORT[m] for t, m in SLOTS5 if (t, m) not in models]
     gap = 3.4  # rows from one model's identity row to the next's (two rows and room for the 27B's label)
-    ys = {t: -k * gap for k, (t, _) in enumerate(models)}
+    # every slot keeps its place, in order; a slot without a run holds its name and a grey "not run" (one row high)
+    ys, y = {}, 0.0
+    for t, m in SLOTS5:
+        ys[t] = y
+        y -= gap if (t, m) in models else 2.2
+    last = SLOTS5[-1][0]
     row_in, top_in, bottom_in = 0.34, 2.0, 0.85 + 0.2 * bool(omitted) + 0.45
-    body = (gap * (len(models) - 1) + 1 + 1.2) * row_in
+    body = (-ys[last] + 1 + 1.2) * row_in
     h = top_in + body + bottom_in
     plt = S.setup()
     fig, axes = plt.subplots(1, len(ROUTE_SLICES), figsize=(S.WIDTH, h), sharey=True, sharex=True)
@@ -491,9 +499,12 @@ def build_routes_lens(
     a0.set_yticks(ticks, [w for _ in models for _, w in SPLIT_ROUTES])
     for lab, i in zip(a0.get_yticklabels(), range(len(ticks)), strict=True):
         lab.set_color(S.MARK_COL["identity" if i % 2 == 0 else "address"])
-    a0.set_ylim(ys[models[-1][0]] - 1.6, 0.8)  # room above the top row for the "random" label
+    a0.set_ylim(ys[last] - 1.6, 0.8)  # room above the top row for the "random" label
     tr = blended_transform_factory(fig.transFigure, a0.transData)
-    for t, m in models:
+    for t, m in SLOTS5:
+        if (t, m) not in models:
+            for ax in axes:
+                ax.text(0.25, ys[t] - 0.5, "not run", ha="center", va="center", color=S.COL["muted"], zorder=5)
         a0.text(0.01, ys[t] - 0.5, F.NAMES[m].replace(" 30B", "\n30B").replace("3.5 L", "3.5\nL"), transform=tr,
                 ha="left", va="center", fontsize=S.FONT, weight="bold", linespacing=1.0)  # fmt: skip
     axes[1].set_xlabel("answers lost without the directions, beyond a random part (same size)")
@@ -545,6 +556,7 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, light
     sources = dict.fromkeys(by, F.rel(src))
     lt_mod, lt_src = lightning_model(lightning, "x47_5.json")
     by[F.LT[0]], sources[F.LT[0]] = lt_mod or {"status": "not run", "label": "not run"}, lt_src
+    by.setdefault(SLOT_122B[0], {"status": "not run", "label": "not run"})  # the fifth slot: 47.5 never ran on it
     grey = S.COL["control"]
     legend = ([Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8),
@@ -554,14 +566,14 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, light
         title or zero_title(v),
         "Main test; the J++ part's 25 directions, or a random part of the same size, taken out at the bridge word at "
         "one layer",
-        (1, 1), ROW_IN * len(SLOTS), legend=legend, wrap=False, bottom_in=BOTTOM_IN + 0.45)  # fmt: skip
-    row_panels((a, b), len(SLOTS))
+        (1, 1), ROW_IN * len(SLOTS5), legend=legend, wrap=False, bottom_in=BOTTOM_IN + 0.45)  # fmt: skip
+    row_panels((a, b), len(SLOTS5))
     for ax, name in ((a, "(a) recall"), (b, "(b) lookup")):
         share_axis(ax, "answers kept (share)")
         panel_title(ax, name)
         bar(ax, 0.8, "followed if above", side="left")
     rows, ns, lt_n, status = [], [], None, []
-    for i, (target, m) in enumerate(SLOTS):
+    for i, (target, m) in enumerate(SLOTS5):
         y, mod, source, lt = (
             -i,
             by.get(target, {"status": "pending", "label": "pending"}),
@@ -785,6 +797,9 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None, lightn
         by[F.LT[0]] = by_target(json.loads(lsrc.read_text())["models"])[F.LT[0]]
         sources[F.LT[0]] = F.rel(lsrc)
         shown.append(F.LT[:2])
+    if SLOT_122B[0] not in by:  # the fifth slot: the 122B never ran 47.2, a grey panel (it records nothing)
+        by[SLOT_122B[0]] = {"status": "not run"}
+        shown.append(SLOT_122B)
     # the shift vector is added at the bridge word: the mark system's diamond (Dan's 18:30 brief), not the removal dot
     legend = ([Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["lookup"], ms=7),
                Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["control"], ms=7)],
@@ -792,14 +807,20 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None, lightn
     fig, axes = frame(
         title or six_title(v),
         "Routes test with six lockers, held-out half; one shift vector added at the bridge word (twice a real change)",
-        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12,
-        bottom_in=1.15 + 0.2 * (len(shown) > 2) + 0.3 * bool(lightning_note), wrap=False)  # fmt: skip
+        tuple(0.5 if by[t].get("status") == "not run" else 1.0 for t, _ in shown), 2.3, legend=legend, left=0.12,
+        bottom_in=1.15 + 0.2 * (len(shown) > 2) + 0.3 * bool(lightning_note or any(by[t].get("status") == "not run" for t, _ in shown)), wrap=False)  # fmt: skip
     for ax, (target, m) in zip(axes, shown, strict=True):
-        mod, source, lt = by[target], sources[target], target == F.LT[0]
-        ax.set_title(F.name_of(m) if ax is axes[0] else F.SHORT[m], fontsize=S.FONT, weight="bold", loc="left")
+        mod, source, lt = by[target], sources.get(target, ""), target == F.LT[0]
+        # the model's full name on the first panel while three panels leave it room; short names from four on
+        full = ax is axes[0] and len(shown) <= 3
+        ax.set_title(F.name_of(m) if full else F.SHORT[m], fontsize=S.FONT, weight="bold", loc="left")
         ax.set_ylim(-0.04, 1.04)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
+        if mod["status"] == "not run":
+            S.empty(ax, "not run")
+            ax.set_xticks([])
+            continue
         if mod["status"] == "tested" and mod.get("interpretable"):
             S.panel_tag(ax, str(mod["n"]), "after" if lt else "fixed")
         S.record(fid, target, "47.2: the rule's reading (dose 2)", mod.get("label", mod["status"]), source=source)
@@ -848,8 +869,10 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None, lightn
                 f"{chr(10) if len(shown) > 2 else '; '}PCA axis ρ = {pca['spearman_pc1_slot']:.2f}",
                 transform=ax.transAxes, ha="left", va="top", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
     axes[0].set_ylabel("lookups moved one\nlocker on (share)")
-    if lightning_note:
-        fig.text(0.01, 0.1 / fig.get_figheight(), lightning_note, fontsize=S.FONT - 1, color=S.COL["muted"])
+    grey = [SHORT[m] for t, m in shown if by[t].get("status") == "not run"]
+    note = " ".join(x for x in (lightning_note, f"{', '.join(grey)}: not run." if grey else "") if x)
+    if note:
+        fig.text(0.01, 0.1 / fig.get_figheight(), note, fontsize=S.FONT - 1, color=S.COL["muted"])
     S.save(fig, out_name)
     return out_name
 
@@ -893,8 +916,8 @@ def build_errors(verdict_dir: Path, out_name: str, title: str | None = None, lig
         "Varied scenes, unedited, where the lookup answers wrong. (a) Wrong answers whose locker the address probe "
         "predicts (%); (b) of those, the lens's top item at the bridge word still the right item (%). 95% intervals, "
         "fixed in advance; a model with fewer than 30 wrong answers is not tested.",
-        (1, 1, 0.6), ROW_IN * len(SLOTS), legend=legend, bottom_in=BOTTOM_IN + 0.45)  # fmt: skip
-    row_panels((a, b, c), len(SLOTS))
+        (1, 1, 0.6), ROW_IN * len(SLOTS5), legend=legend, bottom_in=BOTTOM_IN + 0.45)  # fmt: skip
+    row_panels((a, b, c), len(SLOTS5))
     pct_axis(a, "wrong answers whose\nlocker it predicts (%)", lim=(-4, 106))
     panel_title(a, "(a) the address")
     bar(a, 50, "≥ 50")
@@ -903,7 +926,7 @@ def build_errors(verdict_dir: Path, out_name: str, title: str | None = None, lig
     bar(b, 80, "≥ 80", side="left")
     text_column(c, "reading")
     rows, status = [], []
-    for i, (target, m) in enumerate(SLOTS):
+    for i, (target, m) in enumerate(SLOTS5):
         y, mod, source, lt = -i, by.get(target), sources.get(target), m == F.LT[1]
         face = {"mfc": "white", "mew": 1.5} if lt else {}
         if mod is None:

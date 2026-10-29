@@ -130,6 +130,9 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
                 by[m["target"]], srcs[m["target"]] = m, F.rel(coverage)
         v = {**v, "models": list(by.values())}
     rows_m = shown(list(by.values())) + ([(F.LT[0], F.LT[1])] if F.LT[0] in by else [])
+    if coverage is not None and A.SLOT_122B[0] not in by:  # the fifth slot: 47.14 never ran on the 122B, a grey row
+        by[A.SLOT_122B[0]], srcs[A.SLOT_122B[0]] = {"status": "not run"}, ""
+        rows_m.append(A.SLOT_122B)
     pos = S.COL["position"]
     legend = ([handle(S.COL["recall"]), handle(pos), handle(GREY)],
               ["the whole change", "the hall address", "random part (same size)"])  # fmt: skip
@@ -138,7 +141,7 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
         "Which hall is the pick's locker in? The change at the bridge's locker digit, parts taken out or kept: hall "
         "answers by position (%), 95% intervals, fixed in advance.",
         (1, 0.8, 1.0), ROW_IN * len(rows_m), legend=legend,
-        **({"left": 0.235, "bottom_in": A.BOTTOM_IN + 0.3} if coverage is not None else {}))  # fmt: skip
+        **({"left": 0.235, "bottom_in": A.BOTTOM_IN + 0.5} if coverage is not None else {}))  # fmt: skip
     A.row_panels((a, b, c), len(rows_m))
     A.pct_axis(a, "hall answers\nby position (%)", lim=(-4, 106))
     panel_title(a, "(a) taken out")
@@ -149,6 +152,12 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
     labels = []
     for i, (target, m) in enumerate(rows_m):
         y, mod, source = -i, by[target], srcs[target]
+        if mod["status"] == "not run":  # a grey slot: its label only, nothing recorded
+            labels.append((m, ""))
+            reading(c, y, "not run", [])
+            for ax in (a, b):
+                A.status_text(ax, y, "not run")
+            continue
         if mod["status"] != "tested":
             labels.append((m, ""))
             S.record(fid, target, "47.14: status", mod["status"], source=source)
@@ -184,8 +193,9 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
     A.model_labels(a, labels)
     if coverage is not None:  # Dan's figures brief (29 Oct 10:00): each model's status in one line
         status = "; ".join(f"{SHORT.get(t, 'Lightning')}: " + ("tested, fixed in advance" if by[t]["status"] == "tested"
-                           else "not tested (gate)") for t, _ in rows_m)  # fmt: skip
-        fig.text(0.01, 0.012, status + ".", fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
+                           else by[t]["status"] if by[t]["status"] == "not run" else "not tested (gate)")
+                           for t, _ in rows_m)  # fmt: skip
+        fig.text(0.01, 0.012, textwrap.fill(status + ".", 118), fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
     S.save(fig, out_name)
     return out_name
 
