@@ -110,16 +110,26 @@ def chain_title(v: dict) -> str:
     return f"{probe}, {cut}" if k_cut in (0, n) else f"{probe}; {cut}"
 
 
-def build_chain(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
-    """47.14 (x47_chain verdict, x47_14.json): one row per model (9B, Muse). The three-step question (which hall is
+LT_CHAIN = S.REPO / "results" / "x47_chain" / "x52_chain-20261029T023424Z" / "x47_14.json"  # the 27B; Lightning (gate)
+
+
+def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, coverage: Path | None = LT_CHAIN) -> str:
+    """47.14 (x47_chain verdict, x47_14.json): one row per model (9B, Muse; with `coverage`, batch 52's folder by
+    explicit path: the 27B, and Lightning's slot, whose gate missed, so it keeps a grey row). The three-step question (which hall is
     the locker of the pick in?), the change at the digit of the bridge's locker sentence: (a) hall answers by position
     (%) under the whole change, without the hall address (U_num) and without a random part (same size); (b) with only
     the hall address or only the random part kept (the rule's bar at 15); (c) the reading: the hall probe beside its
     layout baseline, the cut beyond random against its bar (30) and only-the-address against 15."""
     src = verdict_dir / "x47_14.json"
     v = json.loads(src.read_text())
-    by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
-    rows_m = shown(v["models"])
+    by, fid = by_target(v["models"]), fig_id(out_name)
+    srcs = dict.fromkeys(by, F.rel(src))
+    if coverage is not None:  # a model the first verdict did not test, from its coverage run
+        for m in json.loads(coverage.read_text())["models"]:
+            if by.get(m["target"], {}).get("status") != "tested":
+                by[m["target"]], srcs[m["target"]] = m, F.rel(coverage)
+        v = {**v, "models": list(by.values())}
+    rows_m = shown(list(by.values())) + ([(F.LT[0], F.LT[1])] if F.LT[0] in by else [])
     pos = S.COL["position"]
     legend = ([handle(S.COL["recall"]), handle(pos), handle(GREY)],
               ["the whole change", "the hall address", "random part (same size)"])  # fmt: skip
@@ -127,7 +137,8 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None) -> s
         title or chain_title(v),
         "Which hall is the pick's locker in? The change at the bridge's locker digit, parts taken out or kept: hall "
         "answers by position (%), 95% intervals, fixed in advance.",
-        (1, 0.8, 1.0), ROW_IN * len(rows_m), legend=legend)  # fmt: skip
+        (1, 0.8, 1.0), ROW_IN * len(rows_m), legend=legend,
+        **({"left": 0.235, "bottom_in": A.BOTTOM_IN + 0.3} if coverage is not None else {}))  # fmt: skip
     A.row_panels((a, b, c), len(rows_m))
     A.pct_axis(a, "hall answers\nby position (%)", lim=(-4, 106))
     panel_title(a, "(a) taken out")
@@ -137,13 +148,19 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None) -> s
     A.text_column(c, "reading")
     labels = []
     for i, (target, m) in enumerate(rows_m):
-        y, mod = -i, by[target]
+        y, mod, source = -i, by[target], srcs[target]
         if mod["status"] != "tested":
             labels.append((m, ""))
             S.record(fid, target, "47.14: status", mod["status"], source=source)
-            reading(c, y, mod["status"], [])
+            gate = mod.get("gate") or {}
+            low = min((gate.get("org_read_accuracy") or {}).values(), default=None)
+            text = f"not tested: gate {low:.2f}" if mod["status"] == "not tested" and low is not None else mod["status"]
+            if low is not None:
+                S.record(fid, target, "47.14: the gate's lowest read accuracy on the original prompts", low,
+                         source=source)  # fmt: skip
+            reading(c, y, text, [])
             for ax in (a, b):
-                A.status_text(ax, y, mod["status"])
+                A.status_text(ax, y, text)
             continue
         h, p = mod["hall"], mod["probe"]
         labels.append((m, f"n = {h['n']}"))
@@ -165,6 +182,10 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None) -> s
                 [f"hall probe {pct(p['probe'][0])} (layout {pct(p['layout'][0])})",
                  f"cut beyond random {pct(cut[0])} (≥ 30)", f"only address {pct(h['keep_U_position'][0])} (≥ 15)"])  # fmt: skip
     A.model_labels(a, labels)
+    if coverage is not None:  # Dan's figures brief (29 Oct 10:00): each model's status in one line
+        status = "; ".join(f"{SHORT.get(t, 'Lightning')}: " + ("tested, fixed in advance" if by[t]["status"] == "tested"
+                           else "not tested (gate)") for t, _ in rows_m)  # fmt: skip
+        fig.text(0.01, 0.012, status + ".", fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
     S.save(fig, out_name)
     return out_name
 

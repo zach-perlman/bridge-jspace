@@ -36,7 +36,11 @@ WRAP = 104  # subtitle characters per line at 11 pt across the 8.8 in column
 LINE = 0.19  # inches per subtitle or legend line
 TARGETS = tuple((t, m, name) for t, m, name in S.MODELS if m != "122b")  # batch 47 ran on the 9B, the 27B and Muse
 NAME = {t: name for t, _, name in S.MODELS}
-SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse"}
+SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning"}
+# batch 52's fourth model (readme_story_figures.LT), drawn hollow: its gate was chosen after its pre-check was seen
+LT_ROW = ("nemotron-3.5-lightning", "lightning", "Nemotron 3.5 Lightning")
+NAME[LT_ROW[0]] = LT_ROW[2]
+LT_NOTE = "Hollow: Lightning's gate chosen after the 60-scene pre-check was seen."
 ROUTE_COL = {"position": S.COL["position"], "identity": S.COL["identity"], "value": S.COL["value"],
              "original": S.COL["original"], "other": S.COL["other"]}  # fmt: skip
 ROUTE_TEXT = {"position": "position", "identity": "identity", "value": "value", "original": "original answer",
@@ -256,7 +260,8 @@ def e11_scale(fig, x: float, y: float, reader: str, text: str) -> None:
 
 
 def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str | None = None, *,
-              target: str = "qwen3.5-9b", design: str = "clean", out_dir: Path | None = None) -> str:  # fmt: skip
+              target: str = "qwen3.5-9b", design: str = "clean", out_dir: Path | None = None,
+              coverage: dict | None = None, one_model: bool = False) -> str:  # fmt: skip
     """E11 (v6): D1 + D2 (x47_depthmap's depth.json) on one model and design, one panel per sentence order (locker
     before the pick; after it). Rows: each token group as a pair, the lookup's row (purple) over the recall's (grey);
     then D1's margins (the bridge word at every layer <= l; D2's window, every layer >= l), labelled in plain words
@@ -264,7 +269,11 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
     that layer. Outlined per reader: the last layer whose bridge-word cell switches >= 30% (D1 (b)) and D2's l_R (the
     first layer from which the window switches <= 10%). Locker before the pick: a dashed line after the lookup's last
     such layer (L16 on the 9B), 'the lookup reads the bridge word up to' it. The subtitle says what the map shows (Dan's
-    line); the model, the scenes and the cell go to the caption."""
+    line); the model, the scenes and the cell go to the caption. By default the four-model version (e11_four; Dan's
+    figures brief, 29 Oct 10:00): the 9B and Muse from verdict_dir, the others from coverage ({target: (depth.json,
+    design)}, default E11_COVERAGE); one_model: the single-model map above."""
+    if not one_model:
+        return e11_four(verdict_dir, out_name, title, E11_COVERAGE if coverage is None else coverage, out_dir)
     path = verdict_dir / "depth.json"
     blob = json.loads(path.read_text())
     m = next(x for x in blob["models"] if x["target"] == target and x["status"] == "tested")
@@ -354,6 +363,136 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
     return save(fig, out_name, out_dir)
 
 
+# Dan's figures brief (29 Oct 10:00): every per-model figure has four slots (9B, 27B, Muse, Lightning). E11's map on all
+# four, each in a compact block: the 27B's and Lightning's depth maps are batch 52 coverage folders, read by explicit
+# path (the newest depth-* folder holds the 9B and Muse only); Lightning has the main test only (no clean one-pick run
+# passed its gate), hollow
+E11_COVERAGE = {
+    "qwen3.6-27b": (S.REPO / "results" / "x47_depthmap" / "x52_depthmap-20261029T010426Z" / "depth.json", "clean"),
+    "nemotron-3.5-lightning": (S.REPO / "results" / "x47_depthmap" / "x52_depthmap-20261029T011452Z" / "depth.json",
+                               "main"),
+}  # fmt: skip
+E11_FOUR_ROWS = (("bridge", "the bridge word"), ("locker", "a locker sentence (its best cell)"),
+                 ("question", "the question"), ("last", "the last token"),
+                 ("b", "bridge word, every layer up to l"), ("w", "bridge word, from l on"))  # fmt: skip
+E11_FOUR_PITCH, E11_BLOCK_GAP = 2.15, 3.7  # rows per group (lookup, recall, gap); room between two models' blocks
+E11_COLS = 16.0  # each model's columns (input token, then its sampled layers) spread over the same width
+
+
+def e11_four(verdict_dir: Path, out_name: str, title: str | None, coverage: dict, out_dir: Path | None) -> str:
+    """E11 on four models (Dan's figures brief, 29 Oct 10:00): one panel per sentence order, one block per model (9B,
+    27B, Muse: clean one-pick scenes; Lightning: the main test, hollow). Per block: the bridge word, a locker sentence
+    (at each layer the best of its eight token groups: whether one locker cell carries the lookup), the question, the
+    last token, and D1's two margins; each a pair of rows, lookup over recall. Columns: the input token, then the
+    model's sampled layers, spread over one width; L ticked per block. Outlined per reader: the bridge word's last layer
+    at >= 30% (D1 (b)) and D2's l_R. Every cell of the drawn design is recorded, the locker rows' maxima beside them."""
+    base = verdict_dir / "depth.json"
+    blob = json.loads(base.read_text())
+    slots = []
+    for t, m, name in (*TARGETS, LT_ROW):
+        path, design = coverage.get(t, (base, "clean"))
+        mod = next((x for x in json.loads(path.read_text())["models"] if x["target"] == t), None)
+        if mod is None and path == base:
+            mod = next((x for x in blob["models"] if x["target"] == t), None)
+        ok = mod is not None and mod["status"] == "tested" and bool(mod["cells"].get(design, {}).get("locker-first"))
+        slots.append((t, m, name, mod if ok else None, design, rel(path)))
+    plt = S.setup()
+    n_rows = len(E11_FOUR_ROWS)
+    block = n_rows * E11_FOUR_PITCH
+    top_in, body_in, bottom_in = 1.2, 0.125 * (len(slots) * (block + E11_BLOCK_GAP)), 1.75
+    h = top_in + body_in + bottom_in
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
+    fig.subplots_adjust(left=0.3, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.05)
+    S.title(fig, title or "Locker after the pick: the lookup leaves the bridge word early",
+            "The whole changed state placed in one token group at one layer, on each model")  # fmt: skip
+    ticks, labels, status = [], [], []
+    for k, (t, _m, name, mod, design, src) in enumerate(slots):
+        y0 = -k * (block + E11_BLOCK_GAP)
+        y_of = {g: y0 - i * E11_FOUR_PITCH for i, (g, _) in enumerate(E11_FOUR_ROWS)}
+        hollow = t == LT_ROW[0]
+        ticks += [y_of[g] - 0.5 for g, _ in E11_FOUR_ROWS]
+        labels += [lab for _, lab in E11_FOUR_ROWS]
+        what = f"{SHORT[t]}, {DESIGN_TEXT[design]}" if mod else SHORT[t]
+        mark = f"  {S.STATUS_GLYPH['after']}" if hollow else ""
+        short = {"clean": "clean one-pick scenes", "main": "main test"}[design]
+        axes[0].text(-0.9, y0 + 1.15, (f"{SHORT[t]} · {short}" if mod else name) + mark, ha="left",
+                     va="bottom", fontsize=S.FONT, weight="bold", clip_on=False, zorder=6)  # fmt: skip
+        if mod is None:
+            why = "not tested: gate" if hollow else "not run"
+            for ax in axes:
+                ax.text(E11_COLS / 2, y0 - block / 2 + 1, why, ha="center", va="center", color=S.COL["muted"])
+            status.append(f"{SHORT[t]}: {why}")
+            continue
+        status.append(f"{what}" + (", hollow" if hollow else ""))
+        layers = mod["layers"]
+        cols = ["emb", *layers]
+        xs = [0.0] + [0.6 + (E11_COLS - 0.6) * (j - 1) / max(1, len(cols) - 2) for j in range(1, len(cols))]
+        wcell = (E11_COLS - 0.6) / max(1, len(cols) - 2)
+        for ax, (group, _) in zip(axes, E11_GROUPS, strict=True):
+            per = mod["cells"][design][group]
+            for dy, w in ((0.0, "lookup"), (-1.0, "recall")):
+                if w not in per:
+                    continue
+                c, n = per[w]["cells"], per[w]["n"]
+                cmap = reader_cmap(w)
+                for arm, v in c.items():  # every cell of this design, as the one-model figure recorded them
+                    S.record(out_name, t, f"D1 {design}, {group}, {w}: {arm} switched", *v[:3], n=n, source=src)
+                lk = [g for g in D1_ROWS if g.startswith("lk_") and any(a.startswith(f"g{g}@") for a in c)]
+                for g, _ in E11_FOUR_ROWS:
+                    for x, la in zip(xs, cols, strict=True):
+                        if g == "locker":
+                            vals = [c[f"g{x_}@{la}"] for x_ in lk if f"g{x_}@{la}" in c]
+                            v = max(vals, key=lambda u: u[0]) if vals else None
+                            if v is not None:
+                                S.record(out_name, t, f"D1 {design}, {group}, {w}: the best locker-sentence cell at "
+                                         f"layer {la} (max over the locker groups)", *v[:3], n=n, source=src)  # fmt: skip
+                        else:
+                            arm = f"g{g}@{la}" if g in ("bridge", "question", "last") else (
+                                f"{g}{la}" if la != "emb" else None)  # fmt: skip
+                            v = c.get(arm) if arm else None
+                        if v is None:
+                            continue
+                        yy = y_of[g] + dy
+                        ax.add_patch(Rectangle((x - wcell / 2, yy - 0.5), wcell, 1, lw=0, color=cmap(v[0])))
+                hot = [la for la in layers if f"gbridge@{la}" in c and c[f"gbridge@{la}"][0] >= HOT - 1e-9]
+                if hot:
+                    x = xs[cols.index(max(hot))]
+                    ax.add_patch(Rectangle((x - wcell / 2, y_of["bridge"] + dy - 0.5), wcell, 1, fill=False,
+                                           ec="#111111", lw=1.4, zorder=4, ls="--" if hollow else "-"))  # fmt: skip
+                if per[w].get("l_R") is not None and per[w]["l_R"] in cols:
+                    x = xs[cols.index(per[w]["l_R"])]
+                    ax.add_patch(Rectangle((x - wcell / 2, y_of["w"] + dy - 0.5), wcell, 1, fill=False, ec="#111111",
+                                           lw=1.4, zorder=4, ls="--" if hollow else "-"))  # fmt: skip
+                S.record(out_name, t, f"D1 {design}, {group}, {w}: last layer with the bridge word >= 0.3",
+                         max(hot) if hot else None, source=src)  # fmt: skip
+                S.record(out_name, t, f"D2 {design}, {group}, {w}: l_R", per[w].get("l_R"), source=src)
+            # L, per block: a tick under the block; its layers and n on the block's title line, right
+            if mod["layer"] in layers:
+                xl = xs[cols.index(mod["layer"])]
+                yb = y_of["w"] - 1.75
+                ax.plot([xl], [yb], "^", ms=5, color="#111111", mfc="white" if hollow else "#111111", zorder=5)
+                ax.text(xl + 0.3, yb, "L", va="center", fontsize=S.FONT - 1)
+            ax.text(E11_COLS + 0.6, y_of["w"] - 3.0, f"layers {layers[0]}–{layers[-1]}, n = {per['lookup']['n']}",
+                    ha="right", va="center", fontsize=S.FONT - 2, color=S.COL["muted"])  # fmt: skip
+    for ax, (_, label) in zip(axes, E11_GROUPS, strict=True):
+        ax.set_title(label, fontsize=12, weight="bold", loc="left", pad=8)
+        ax.set_xlim(-0.9, E11_COLS + 0.6)
+        ax.set_ylim(-len(slots) * (block + E11_BLOCK_GAP) + E11_BLOCK_GAP - 2.4, 2.4)
+        ax.set_xticks([0.0, E11_COLS], ["in", "last"])
+        ax.tick_params(length=0)
+        for s in ax.spines.values():
+            s.set_visible(False)
+    axes[0].set_yticks(ticks, labels, fontsize=S.FONT - 1)
+    fig.supxlabel("the input token, then the model's sampled layers, first to last", x=0.64, y=1.3 / h,
+                  fontsize=S.FONT - 1)  # fmt: skip
+    e11_scale(fig, 0.06, 0.98 / h, "lookup", "lookups switched (upper row)")
+    e11_scale(fig, 0.55, 0.98 / h, "recall", "recalls switched (lower row)")
+    line = (f"Outlined: the bridge word's last layer at ≥ {HOT:.1f}; the first layer from which it switches ≤ "
+            f"{W_FLOOR:.1f}. " + "; ".join(status) + ". " + LT_NOTE)  # fmt: skip
+    fig.text(0.01, 0.78 / h, textwrap.fill(line, WRAP + 8), fontsize=S.FONT - 1, color=S.COL["muted"], va="top")
+    return save(fig, out_name, out_dir)
+
+
 # ---- 47.4: where the missing switches sit ----------------------------------------------------------------------------
 
 TERM_TEXT = {"before_L": "at the bridge word before L", "pick_other": "at the pick sentence's other tokens",
@@ -376,28 +515,40 @@ def cumulative_title(blob: dict, group: str = "locker-first") -> str:
     return f"Lookups the change misses sit mostly {TERM_TEXT[top]} ({largest.count(top)} of {len(tested)} models)"
 
 
+LT_47_4 = S.REPO / "results" / "x47_cumulative" / "x52_cumulative-20261029T044453Z" / "x47_4.json"  # 27B + Lightning
+
+
 def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str | None = None, *,
-               group: str = "locker-first", out_dir: Path | None = None, planted: bool = False) -> str:  # fmt: skip
+               group: str = "locker-first", out_dir: Path | None = None, planted: bool = False,
+               coverage: Path | None = LT_47_4) -> str:  # fmt: skip
     """47.4 (x47_cumulative's x47_4.json): per design (main test; clean one-pick scenes) and model, the lookup's and the
     recall's items split by what switches them: the bridge-word change at L, then the bridge word at every layer <= L,
     then the pick sentence's other tokens; the rest is carried outside the pick sentence. (b)->(c), the propagation
-    check, is drawn in red only where it is not 0; a negative term is drawn at 0 and printed."""
+    check, is drawn in red only where it is not 0; a negative term is drawn at 0 and printed. coverage (batch 52, by
+    explicit path): fills a model the first verdict did not test (the 27B) and adds Lightning, hollow; a design with no
+    items on Lightning (the clean one: no run passed its gate) keeps its row, labelled."""
     path = verdict_dir / "x47_4.json"
     blob = json.loads(path.read_text())
-    src = rel(path)
     by = {m["target"]: m for m in blob["models"]}
+    srcs = dict.fromkeys(by, rel(path))
+    targets = TARGETS
+    if coverage is not None:
+        for m in json.loads(coverage.read_text())["models"]:
+            if m["status"] == "tested" and by.get(m["target"], {}).get("status") != "tested":
+                by[m["target"]], srcs[m["target"]] = m, rel(coverage)
+        targets = (*TARGETS, LT_ROW)
     plt = S.setup()
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 6.0), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 6.0 + 1.9 * (coverage is not None)), sharey=True)
     ns = ", ".join(f"{SHORT[t]} {by[t]['cells']['main']['lookup'][group]['n']} / "
                    f"{by[t]['cells']['clean']['lookup'][group]['n']}"
-                   for t, _, _ in TARGETS if t in by and by[t]["status"] == "tested")  # fmt: skip
+                   for t, _, _ in targets if t in by and by[t]["status"] == "tested")  # fmt: skip
     flag = " BUG FLAG in the verdict: not to be read." if blob.get("flags") else ""
-    y = header(fig, title or cumulative_title(blob, group),
+    y = header(fig, title or cumulative_title({"models": [by[t] for t, _, _ in targets if t in by]}, group),
                f"Answers (%) in scenes with the {ORDER_TEXT[group]}, by what switches them when more of the changed "
                f"prompt's states are placed; the rest is carried outside the pick sentence. Items (main / clean): "
                f"{ns or 'none'}. Descriptive, no bar; arms fixed in advance.{flag}", planted)  # fmt: skip
-    place(fig, y, 2, left=0.17, right=0.98, bottom=0.1, wspace=0.14)
-    rows = [(t, w) for t, _, _ in TARGETS for w in ("lookup", "recall")]
+    place(fig, y, 2, left=0.21, right=0.98, bottom=0.1 + 0.05 * (coverage is not None), wspace=0.14)
+    rows = [(t, w) for t, _, _ in targets for w in ("lookup", "recall")]
     ys = {r: -i - (i // 2) * 0.6 for i, r in enumerate(rows)}  # a gap between models
     for ax, design in zip(axes, ("main", "clean"), strict=True):
         ax.set_title(DESIGN_TEXT[design], fontsize=S.FONT, weight="bold")
@@ -412,21 +563,26 @@ def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str
             )
             if not c["n"]:
                 if w == "lookup":
-                    ax.text(2, yy - 0.5, "not run" if not m or m["status"] != "tested" else "no items", va="center",
-                            color=S.COL["muted"])  # fmt: skip
+                    why = "not run" if not m or m["status"] != "tested" else "no items"
+                    why = "not tested: gate" if t == LT_ROW[0] and why == "no items" else why
+                    ax.text(2, yy - 0.5, why, va="center", color=S.COL["muted"])
                 continue
+            hollow = t == LT_ROW[0]
             vals = {"a": c["rate"]["a"], **c["terms"]}
             left = 0.0
             for (k, _), col in zip(SEGMENTS, TINT[w], strict=True):
                 v = 100 * vals[k][0]
-                S.record(out_name, t, f"47.4 {design}, {group}, {w}: {k}", *vals[k][:3], n=c["n"], source=src)
+                S.record(out_name, t, f"47.4 {design}, {group}, {w}: {k}", *vals[k][:3], n=c["n"], source=srcs[t])
                 if k == "propagation" and abs(v) < 0.5:
                     continue
                 hatch = k == "outside"
-                ax.barh(yy, max(v, 0.0), left=left, height=0.72, color=col, ec=S.COL["muted"] if hatch else "white",
-                        lw=0.8, hatch="///" if hatch else None)  # fmt: skip
+                if hollow and not hatch:  # Lightning: the segment's colour as its edge, white inside
+                    ax.barh(yy, max(v, 0.0), left=left, height=0.72, fc="white", ec=col, lw=1.4)
+                else:
+                    ax.barh(yy, max(v, 0.0), left=left, height=0.72, color=col, lw=0.8, hatch="///" if hatch else None,
+                            ec=S.COL["muted"] if hatch else "white")  # fmt: skip
                 if v >= 9 or v < -0.5:
-                    dark = k == "a" or (k == "before_L" and w == "recall")
+                    dark = not hollow and (k == "a" or (k == "before_L" and w == "recall"))
                     ax.text(left + v / 2 if v >= 9 else left + 1, yy, f"{v:.0f}", ha="center" if v >= 9 else "left",
                             va="center", color="white" if dark else "#222222", fontsize=S.FONT,
                             bbox={"fc": "white", "ec": "none", "pad": 0.5} if hatch else None)  # fmt: skip
@@ -434,12 +590,20 @@ def build_47_4(verdict_dir: Path, out_name: str = "fig17_cumulative", title: str
     axes[0].set_yticks(list(ys.values()), [f"{SHORT[t]} {w}" for t, w in ys])
     for lab, (_, w) in zip(axes[0].get_yticklabels(), ys, strict=True):
         lab.set_color(S.COL[w])
-    fig.supxlabel("answers (%)", x=0.575, y=0.01, fontsize=S.FONT)
+    fig.supxlabel("answers (%)", x=0.575, y=0.01 + 0.06 * (coverage is not None), fontsize=S.FONT)
     hs: list[tuple[Rectangle, ...]] = [(Rectangle((0, 0), 1, 1, color=TINT["lookup"][i]), Rectangle((0, 0), 1, 1, color=TINT["recall"][i]))
           for i in (0, 1, 3)]  # fmt: skip
     hs.append((Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["muted"], hatch="///"),))
     legend(fig, hs, [SEGMENTS[i][1] for i in (0, 1, 3, 4)], y, ncol=2,
            handler_map={tuple: HandlerTuple(ndivide=None, pad=0.0)})  # fmt: skip
+    if coverage is not None:  # Dan's figures brief (29 Oct 10:00): each model's status in one line
+        status = "; ".join(
+            f"{SHORT[t]}: " + ("not run" if t not in by or by[t]["status"] != "tested" else
+                               "main test only (clean: not tested, gate), hollow" if t == LT_ROW[0] else
+                               "both designs")
+            for t, _, _ in targets)  # fmt: skip
+        fig.text(0.01, 0.045, textwrap.fill(f"{status}. {LT_NOTE}", WRAP + 6), fontsize=S.FONT - 1,
+                 color=S.COL["muted"], va="top")  # fmt: skip
     return save(fig, out_name, out_dir)
 
 

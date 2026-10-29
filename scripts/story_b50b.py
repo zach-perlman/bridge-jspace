@@ -85,24 +85,43 @@ def share_score(share: float, null: np.ndarray) -> dict:
     return {"z": float((share - m) / w), "w": w, "m": m, "band": ((lo - m) / w, (hi - m) / w)}
 
 
-def arrow(ax, y: float, z: float, col: str) -> None:
+def arrow(ax, y: float, z: float, col: str, hollow: bool = False) -> None:
     """One change as an arrow from 0 (what a random vector of the same size does) to its score z, the tip at z; an
-    arrow too short for a shaft is its head alone, centred on z."""
+    arrow too short for a shaft is its head alone, centred on z. hollow (Lightning, after the data): a dashed shaft and
+    an open head."""
     if abs(z) >= 0.6:
-        ax.annotate("", xy=(z, y), xytext=(0, y), zorder=3,
-                    arrowprops={"arrowstyle": "-|>,head_length=0.7,head_width=0.35", "color": col, "lw": 2.4,
-                                "shrinkA": 0, "shrinkB": 0})  # fmt: skip
+        props = {"arrowstyle": "-|>,head_length=0.7,head_width=0.35", "color": col, "lw": 2.4, "shrinkA": 0,
+                 "shrinkB": 0}  # fmt: skip
+        if hollow:
+            props |= {"facecolor": "white", "linestyle": (0, (3, 1.5)), "lw": 1.8}
+        ax.annotate("", xy=(z, y), xytext=(0, y), zorder=3, arrowprops=props)
     else:
-        ax.plot([z], [y], ">" if z >= 0 else "<", ms=9, color=col, zorder=4)
+        ax.plot([z], [y], ">" if z >= 0 else "<", ms=9, color=col, mfc="white" if hollow else col, mew=1.5, zorder=4)
 
 
 ARROW_DY = 0.13  # the swap's arrow above the row's centre, the item change's below
 BAND_EDGE = 0.25  # a row's own 95% range may sit at most this far off the drawn strip's +-1 (checked)
 
 
-def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_verbal") -> str:
+def own_band(ax, y: float, band: tuple[float, float], target: str, key: str, own: list) -> None:
+    """The strip's check: a row's own 95% range within BAND_EDGE of +-1 (asserted on the 9B, 27B and Muse). Lightning's,
+    where it misses, is drawn on its arrow's line as a thin hatched band of its own and listed in `own`."""
+    if all(abs(e - s) <= BAND_EDGE for e, s in zip(band, (-1, 1), strict=True)):
+        return
+    assert target == F.LT[0], (target, key, band)
+    ax.fill_between([band[0], band[1]], y - 0.055, y + 0.055, facecolor="none", edgecolor="#9a9a9a", hatch="////",
+                    lw=0.6, zorder=2)  # fmt: skip
+    own.append(key)
+
+
+LT_VERBAL = S.REPO / "results" / "x47_verbal" / "summary-20261029T005548Z"  # Lightning's 47.0 (batch 52 coverage)
+
+
+def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_verbal",
+                 lightning: Path | None = LT_VERBAL) -> str:  # fmt: skip
     """Fig. 7b (E8), Dan's round 3 (28 Oct 21:10): a before/after arrow plot, two panels, one row per model (9B, 27B,
-    Muse) holding both changes as arrows from 0 in z units: the address swap (orange) and, as the positive control, an
+    Muse, and Lightning from its own summary folder `lightning`, hollow: its gate was chosen after its pre-check was
+    seen) holding both changes as arrows from 0 in z units: the address swap (orange) and, as the positive control, an
     identity change (blue). One grey strip from -1 to +1 on each panel: the 95% range of the random vectors of the same
     norm (each row's own range is within BAND_EDGE of it, checked; z is centred on the random median). (1) Rank through
     the lens (47.0 (a), descriptive; rank_score): the swap's best-ranked position word (any of x47_verbal.ORDINAL), the
@@ -112,18 +131,25 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
     vpath, rpath = verbal_dir / "verbal.json", report_dir / "x47_10.json"
     vblob, rblob = json.loads(vpath.read_text()), json.loads(rpath.read_text())
     vsrc, rsrc = rel(vpath), rel(rpath)
-    models = vblob["models"]
+    models = dict(vblob["models"])
+    srcs = dict.fromkeys(models, vsrc)
+    if lightning is not None:
+        lpath = lightning / "verbal.json"
+        models[F.LT[0]] = json.loads(lpath.read_text())["models"][F.LT[0]]
+        srcs[F.LT[0]] = rel(lpath)
     plt = S.setup()
-    rows = [(t, m) for t, m, _ in MODELS if t in models]
-    row_in, top_in, bottom_in = 0.85, 1.75, 0.95
+    rows = [(t, m) for t, m, _ in (*MODELS, F.LT) if t in models]
+    row_in, top_in, bottom_in = 0.85, 1.75, 0.95 + 0.75 * (lightning is not None)
     h = top_in + row_in * len(rows) + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True, sharex=True)
-    fig.subplots_adjust(left=0.19, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
+    left = 0.235 if lightning is not None else 0.19  # "Nemotron 3.5 Lightning" is the longest row name
+    fig.subplots_adjust(left=left, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
     ys = {t: -i for i, (t, _) in enumerate(rows)}
     a, b = axes
-    n_rand, words, label_9b, raw = set(), set(), {}, {}
+    n_rand, words, label_9b, raw, own = set(), set(), {}, {}, []
     for t, _m in rows:
         r, y = models[t], ys[t]
+        hollow, vs = t == F.LT[0], srcs[t]
         nulls = verbal_nulls(S.REPO / r["run"])
         a_o, a_i = r["a"]["write|best_ordinal"], r["a"]["identity|alt_name"]
         bb = r["b"][f"all|{K}"]
@@ -146,12 +172,12 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         ):  # fmt: skip
             lo, hi = np.percentile(null, [2.5, 97.5])
             S.record(out_name, t, f"47.0 (a) {what} (median; null cut, null median)", v["median"], v["null_cut"],
-                     v["null_median_of_medians"], n=n, source=vsrc)  # fmt: skip
+                     v["null_median_of_medians"], n=n, source=vs)  # fmt: skip
             S.record(out_name, t, f"47.0 (a) {what}: the random draws' 95% range (2.5th, 97.5th percentile)",
                      float(np.median(null)), float(lo), float(hi), n=len(null), source=src_null)  # fmt: skip
             sc = rank_score(v["median"], null)
-            assert all(abs(e - s) <= BAND_EDGE for e, s in zip(sc["band"], (-1, 1), strict=True)), (t, key, sc)
-            arrow(a, y + dy, sc["z"], col)
+            own_band(a, y + dy, sc["band"], t, key, own)
+            arrow(a, y + dy, sc["z"], col, hollow)
             S.record(out_name, t, f"47.0 (a) {what}: half-width w of the random draws' band, (ln 97.5th - ln 2.5th "
                      "percentile) / 2", sc["w"], n=len(null), source=src_null)  # fmt: skip
             S.record(out_name, t, f"47.0 (a) {what}: z = (ln random median - ln median) / w (lo, hi: the random "
@@ -161,16 +187,16 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         lo, hi = np.percentile(nulls["share"], [2.5, 97.5])
         src_omp = rel(S.REPO / r["run"] / "omp.jsonl")
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: random draws (mean; mean, 95th pct)",
-                 bb["random_mean"], bb["random_mean"], bb["random_p95"], source=vsrc)  # fmt: skip
+                 bb["random_mean"], bb["random_mean"], bb["random_p95"], source=vs)  # fmt: skip
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: the random draws' 95% range",
                  float(nulls["share"].mean()), float(lo), float(hi), n=len(nulls["share"]), source=src_omp)  # fmt: skip
         raw[t] = {}
         for key, col, dy in (("pointer", ADDRESS, ARROW_DY), ("identity_mean", IDENTITY, -ARROW_DY)):
-            S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: {key}", bb[key], source=vsrc)
+            S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: {key}", bb[key], source=vs)
             # the same random draws for both changes: one median and band per model
             sc = share_score(bb[key], nulls["share"])
-            assert all(abs(e - s) <= BAND_EDGE for e, s in zip(sc["band"], (-1, 1), strict=True)), (t, key, sc)
-            arrow(b, y + dy, sc["z"], col)
+            own_band(b, y + dy, sc["band"], t, key, own)
+            arrow(b, y + dy, sc["z"], col, hollow)
             S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: {key}: z = (share - random median) "
                      "/ w, w half the random draws' 95% range (lo, hi: that range in z)", sc["z"], *sc["band"],
                      n=len(nulls["share"]), source=src_omp)  # fmt: skip
@@ -178,14 +204,17 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: the random draws' median",
                  raw[t]["pointer"][1], n=len(nulls["share"]), source=src_omp)  # fmt: skip
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: pointer / random mean", bb["ratio"],
-                 source=vsrc)  # fmt: skip
+                 source=vs)  # fmt: skip
     assert len(n_rand) == 1, n_rand
     assert len(words) == 1, words
     n_rand, ordinal = n_rand.pop(), words.pop()
-    # Dan's round 3: the swap's arrow ends inside the strip, the item change's far right, on both panels
+    # Dan's round 3: the swap's arrow ends inside the strip, the item change's far right, on both panels (the 9B, 27B
+    # and Muse; Lightning's share-rebuilt arrow ends just outside the strip, said in the caption)
     for t, _ in rows:
-        assert abs(raw[t]["pointer"][2]) < 1, (t, raw[t])
+        if t != F.LT[0]:
+            assert abs(raw[t]["pointer"][2]) < 1, (t, raw[t])
         assert raw[t]["identity_mean"][2] > 10, (t, raw[t])
+    lt_out = F.LT[0] in raw and abs(raw[F.LT[0]]["pointer"][2]) >= 1
     S.title(fig, "The lens reads which item is at the bridge, not where its locker sits",
             f"An address swap and an item change through the J++ lens, against {n_rand} random vectors of the same "
             "size")  # fmt: skip
@@ -234,7 +263,13 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
           Line2D([], [], color=IDENTITY, lw=2.4, marker=">", ms=8), Patch(fc=BAND_GREY, ec="none")]  # fmt: skip
     F.legend(fig, hs, ["address swap", "item change (the positive control)", "random vectors' 95%"], 1 - 0.74 / h,
              ncol=3)  # fmt: skip
-    # Dan (21:55): no caption; z and the strip are defined in the README's Setup, the 27B's report is E8's Result
+    # Dan (21:55): no caption; z and the strip are defined in the README's Setup, the 27B's report is E8's Result. Dan's
+    # figures brief (29 Oct 10:00): with Lightning, one caption line on each model's status
+    if F.LT[0] in raw:
+        status = "9B, 27B, Muse: descriptive. Lightning: descriptive, dashed"
+        status += "; its address swap's share rebuilt ends just past the strip" if lt_out else ""
+        status += "; hatched: its own random range, where it sits off the strip." if own else "."
+        caption(fig, [status, F.LT_NOTE], 0.7)
     S.save(fig, out_name)
     return out_name
 
@@ -316,23 +351,29 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     return out_name
 
 
-def build_refit(out_name: str = "fig09b_refit") -> str:
-    """Fig. 9b (Part IV): per model (9B, 27B, Muse), the lookup's extra loss on prose / JSON / table without the
-    address fit on simple scenes (hollow) and without the address refit on half of that format's scenes, measured on
-    the other half (filled; 45d, fixed in advance); the 0.10 band. A cell under X0's bar is omitted."""
+LT_X45D = S.REPO / "results" / "x0b_generalize" / "nem35l_x52_x45d" / "x45d-20261029T035250Z" / "verdict.json"
+
+
+def build_refit(out_name: str = "fig09b_refit", lightning: Path | None = LT_X45D) -> str:
+    """Fig. 9b (Part IV): per model (9B, 27B, Muse, and Lightning from its own verdict `lightning`, hollow: its gate
+    was chosen after its pre-check was seen), the lookup's extra loss on prose / JSON / table without the address fit
+    on simple scenes (open diamond) and without the address refit on half of that format's scenes, measured on the other
+    half (circle; 45d, fixed in advance); the 0.10 band. A cell under X0's bar is omitted."""
     plt = S.setup()
-    top_in, body_in, bottom_in = 1.55, 2.2, 1.35
+    top_in, body_in, bottom_in = 1.55, 2.2, 1.6
     h = top_in + body_in + bottom_in
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, h), sharey=True)
+    models = (*MODELS, F.LT) if lightning is not None else MODELS
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.12, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The address must be refit for each text format",
             "The lookup's extra loss without the address, beyond a random part, on varied scenes")  # fmt: skip
     omitted = []
     formats = [f for f in FORMATS if f[0] in ("prose", "json", "table")]
-    for k, (ax, (target, m, name)) in enumerate(zip(axes, MODELS, strict=True)):
+    for k, (ax, (target, m, name)) in enumerate(zip(axes, models, strict=True)):
         S.extra_axis(ax)
         ax.set_title(name if k == 0 else SHORT[m], fontsize=12, weight="bold", loc="left")
-        v, src = F.x45d_verdict(m)
+        lt = m == "lightning"
+        v, src = (json.loads(lightning.read_text()), rel(lightning)) if lt else F.x45d_verdict(m)
         rows_axis(ax, [lab for _, lab in formats], k == 0)
         ax.grid(axis="x", color="#eeeeee")
         if v is None:
@@ -347,19 +388,22 @@ def build_refit(out_name: str = "fig09b_refit") -> str:
             if not refit["valid"]:
                 omitted.append(f"{SHORT[m]} {LABEL[fmt]}, too few switches ({refit['switched_whole']})")
                 continue
-            for c, hollow, dy, what in ((refit, False, 0.16, "the refit pointer"),
-                                        (simple, True, -0.16, "the pointer fit on simple scenes")):  # fmt: skip
+            for c, simple_fit, dy, what in ((refit, False, 0.16, "the refit pointer"),
+                                            (simple, True, -0.16, "the pointer fit on simple scenes")):  # fmt: skip
                 e = c["excess"]
                 ax.plot([e[1], e[2]], [-i + dy] * 2, color=ADDRESS, lw=1.5, zorder=3, solid_capstyle="butt")
-                ax.plot([e[0]], [-i + dy], S.MARK["remove"], ms=7, color=ADDRESS, mfc="white" if hollow else ADDRESS,
-                        mew=1.5, zorder=4)  # fmt: skip
+                # the simple-scene fit: a diamond (open); the refit: a circle, filled except on Lightning (hollow)
+                ax.plot([e[0]], [-i + dy], "D" if simple_fit else S.MARK["remove"], ms=6.5 if simple_fit else 7,
+                        color=ADDRESS, mfc="white" if simple_fit or lt else ADDRESS, mew=1.5, zorder=4)  # fmt: skip
                 S.record("fig09b_refit", target, f"(b) {fmt}: lookup extra loss without {what}", *e, n=c["n"],
                          source=src)  # fmt: skip
     hs = [Line2D([], [], marker="o", ls="", color=ADDRESS, ms=7),
-          Line2D([], [], marker="o", ls="", color=ADDRESS, mfc="white", mec=ADDRESS, mew=1.5, ms=7),
+          Line2D([], [], marker="D", ls="", color=ADDRESS, mfc="white", mec=ADDRESS, mew=1.5, ms=6.5),
           Patch(fc=S.COL["band"], ec="none")]  # fmt: skip
     F.legend(fig, hs, ["refit on the format", "fit on simple scenes", "the 0.10 bar"], 1 - 0.74 / h, ncol=3)
-    lines = ["Hollow: the address fit on simple scenes, compared after the data; filled: refit, fixed in advance."]
+    lines = ["Diamond: the address fit on simple scenes, compared after the data; circle: refit, fixed in advance."]
+    if lightning is not None:
+        lines += ["9B, 27B, Muse: fixed in advance, ●. Lightning: the same rule, its circles hollow. " + F.LT_NOTE]
     lines += [f"Omitted: {'; '.join(omitted)}."] if omitted else []
     caption(fig, lines, bottom_in - 0.68)
     S.save(fig, out_name)
