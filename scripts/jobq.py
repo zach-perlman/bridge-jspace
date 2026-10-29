@@ -19,7 +19,9 @@ the total too (per GPU in peak_mem_gb_per_gpu). A worker's GPUs are its own: no 
 Box layout (~/jobq): repo.git, pending/ running/ done/ failed/ cancelled/ (one JSON per job), runs/<id>/log.txt
 (and runs/<id>/code/, the checkout, removed after the run), results/ (every job's new results dirs), ledger.jsonl,
 drafts/<id>.md, worker-gpu<N>.log, archive/<state>/ (finished records moved out of the listing by `archive`). Jobs
-read earlier jobs' results: results/ is copied into each checkout first.
+read earlier jobs' results: results/ is copied into each checkout first. A checkout with its .venv and that copy is
+~26 GB, so on a box with a small root disk runs/ is a symlink to the big disk (mats, 29 Oct: two parallel jobs filled
+the 97 GB root and both died).
 
     uv run python -m scripts.jobq validate jobs/d2/d2_ko_v1.yaml     # spec check, no box needed
     uv run python -m scripts.jobq enqueue jobs/d2/d2_ko_v1.yaml      # committed tree only; new ids and run names

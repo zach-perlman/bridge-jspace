@@ -1,0 +1,43 @@
+id: x53_1b_mp_27b_d
+title: "Batch 53, 53.1b source on qwen3.6-27b at L32: Zach's described-bridge passages with his made-up facts (jsuite v2: MP the lookup, MM the recall; x50_zach part z2p = Z2's design with the P final): description competence, the gate, eligibility, X0's three arms; no rule of its own (51.12's arms read it in x53_1b_jsuite_27b); no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.45
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x50_zach.py run --part z2p --name x53_z2p_27b
+question: >-
+  The source of 53.1b's MP cell: which of Zach's M-start passages with the P final (the question describes the bridge;
+  the passage states a made-up value for every entity) the 27B reads right, O and S, for both readers.
+why_it_matters: >-
+  Batch 53 (jobs/c3/batch53.yaml standing_rules_0950, Dan 29 Oct ~09:50), priority 1: "53.1b: jsuite PP vs MP, 51.12's
+  arms + readout, 9B then 27B. No new scenes needed." PP (the bridge named in the passage, before the question) is
+  Z1-P's lookup, already run (x52_z1p_27b, x52_answer_z1p_27b); MP (the bridge described in the question, so
+  the question is known at the bridge) needs this source run. Words in Zach's code: start + final, P / M / T starts, P /
+  K / M / A / N finals (scripts/jsuite_v2.py).
+hypotheses:
+  none: "No prediction (batch 53: rules fixed, no predictions; this run applies no rule)."
+decision_rule: >-
+  None of its own (x50_zach.RULE['z2p']: the source of 53.1b's 51.12 cells; x50_zach's verdict refuses part z2p). Design
+  as computed: Z2's text unchanged (jobs/c3/x50_z2_27b.yaml; scripts/x50_zach.py: S = the question describes another
+  entity of the passage of the same relation, by one of its descriptions, seeded order 5001, the description ending at
+  the same token index; the description competence step, 10 prompts per description, kept at >= 0.90; the gate 0.80
+  per reader on O's read; eligible = both readers say and read O's and S's answers right; the first 200 in passage
+  order, his main set, the second seed only if short; Δ = h_S - h_O at the description's last token per reader; X0's
+  arms whole / without J++ (signed OMP k = 25) / without a random part, seed 888 + L) with the P final in place of K:
+  the lookup reads Zach's MP item (its O and S answers are the made-up values the MP passage states for the bridge and
+  the other entity; the other entity's must differ from the bridge's), its question his q2P template with the
+  description (S: the same template with S's description; a passage whose question does not rebuild from its template
+  is dropped); the recall reads MM (true facts recalled) as Z2's recall does; the leak filter checks every answer of
+  both readers (the made-up and the true ones). Layer: L32, the committed L only.
+controls:
+- "the gate (0.80 per reader on O's read) and O / S said and read right by both readers"
+- "the description competence step (>= 0.90 of 10 prompts naming the entity)"
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + L), as Z2"
+n: "up to 200 eligible passages (plan check on the 27B tokenizer: 105 main-set + 121 second-seed passages with an aligned option before the competence step; Z2 on the 27B kept 166)"
+seeds: [2601, 2701, 5001, 888, 0]
+notes: "Batch 53, 53.1b, step 1 of 2 on the 27B (coordinator ~09:55 Paris: 9B then 27B, box speedup, after the 9B pair). Code: x50_zach gains part z2p (WORDS ('MP', 'MM'); Z2_LIKE / P_PARTS; question() takes q2P for a P final; the leak filter over both readers' answers; RUN_PARTS for the CLI, the default plan's PARTS unchanged; COVERAGE_RUNS['z2p'] for the 9B and 27B; no verdict); tested on the real passages (tests/test_x50_zach.py: 358 MP / MM pairs, every question rebuilds from its template, the answers per reader) and the fake-model run. Disk on the Mac 185 GB free. Wallclock: x52_z1p_27b 1,109 s (Z1-P, L32); Z2's competence step on top: est ~20-30 min, 0.45 GPU-h. Same code as the 9B spec (commit 1bff0437). UNVERIFIED."
+
+# Re-queued 29 Oct ~10:30 Paris (coordinator): the _m / original run died on ENOSPC (mats root disk full: each job checkout is ~26 GB on the 97 GB root; ~/jobq/runs now lives on /ephemeral); same command and run name (the dead run's partial dir never reached the box's results/).
