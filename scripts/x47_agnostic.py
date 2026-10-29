@@ -81,11 +81,12 @@ SEED, SPLIT_SEED, N_GEN, N_ITEMS = 4711, 4712, R.N_GEN, R.N_ITEMS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_agnostic", "muse-glimmer-30b": "muse30_x47_agnostic"}
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
 # verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
-COVERAGE_RUNS = {"qwen3.6-27b": "x47_agnostic_27b"}
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_agnostic_27b", "nemotron-3.5-lightning": "nem35l_x52_agnostic"}
 STORED_ANIMALS = {
     "qwen3.5-9b": "qwen35_9b_x6_routes_keeponly",
     "muse-glimmer-30b": "muse30b_x6_routes",
     "qwen3.6-27b": "x6_routes_keeponly_27b",  # batch 52 C
+    "nemotron-3.5-lightning": "nem35l_x52_routes",  # batch 52 C (its keep-only arms)
 }  # the stored routes runs
 ARMS = ("whole", "no_alf", "no_alf_rand", "keep_alf", "keep_alf_rand")
 REFIT_ARMS = ("no_refit", "no_refit_rand", "keep_refit", "keep_refit_rand")

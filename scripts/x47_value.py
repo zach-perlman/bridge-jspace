@@ -109,6 +109,9 @@ PCF_FIT = {"qwen3.5-9b": "x7_pcf/qwen35_9b_x45d_fit", "muse-glimmer-30b": "x7_pc
 RUNS = {"a": {"qwen3.5-9b": "qwen35_9b_x47_7a", "qwen3.6-27b": "x47_7a_27b", "muse-glimmer-30b": "muse30_x47_7a"},
         "c": {"qwen3.5-9b": "qwen35_9b_x47_7c", "qwen3.6-27b": "x47_7c_27b", "muse-glimmer-30b": "muse30_x47_7c"},
         "b": {"qwen3.5-9b": "qwen35_9b_x47_7b", "muse-glimmer-30b": "muse30_x47_7b"}}  # fmt: skip
+# batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"a": {"nemotron-3.5-lightning": "nem35l_x52_value_a"}}
 # the bars (jobs/c3/batch47.yaml, 47.7, fixed in advance)
 PREFETCH_VALUE, PREFETCH_PROBE, QL_VALUE, QL_PROBE = 0.15, 0.6, 0.05, 0.4
 JSPACE_FALL, JSPACE_LENS = 0.3, 0.4
@@ -553,6 +556,7 @@ ROUTES_RUN = {
     "qwen3.5-9b": "qwen35_9b_x6_routes",
     "qwen3.6-27b": "x6_routes_27b",
     "muse-glimmer-30b": "muse30b_x6_routes",
+    "nemotron-3.5-lightning": "nem35l_x52_routes",  # batch 52 C
 }
 
 
@@ -604,7 +608,7 @@ def stage_run(part: str, name: str, why: str, c0_min: float | None = None) -> Pa
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "47.7 renders chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS[part], f"47.7({part}) runs on {sorted(RUNS[part])}, not {target}"
+    assert target in RUNS[part] or target in COVERAGE_RUNS.get(part, {}), f"47.7({part}) does not run on {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)

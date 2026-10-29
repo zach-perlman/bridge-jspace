@@ -96,6 +96,9 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch47.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION, TEST = "Q47.10", "47.10"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_report", "qwen3.6-27b": "x47_report_27b", "muse-glimmer-30b": "muse30_x47_report"}
+# batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_report"}
 ORDERS = ("last", "first")
 ORDER_TEXT = {"last": "question-last: the question after the context (tasks_v2's prompt, as every routes test)",
               "first": "question-first: the question and its instruction before the context, one user turn"}  # fmt: skip
@@ -477,7 +480,7 @@ def stage_run(name: str, why: str, orders: tuple[str, ...] = ORDERS, n_gen: int 
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "47.10 reads chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"47.10 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"47.10 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)

@@ -1,0 +1,34 @@
+id: x52_lightning_fill2
+title: "Batch 52 C coverage (Lightning fillers, amendment 2's full grid, 2): 47.3 the described bridge and 47.10 the report prompt, on Lightning at the committed L14, each with its existing rule; one job; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L)";
+  uv run python scripts/x47_cue.py run --name nem35l_x52_cue; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_cue/nem35l_x52_cue/coverage.txt;
+  uv run python scripts/x47_report.py run --name nem35l_x52_report --why "Batch 52 C coverage: 47.10 on Lightning; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_report/nem35l_x52_report/coverage.txt;
+  echo "exit 47.3=$a 47.10=$b"; test $a -eq 0 -a $b -eq 0
+question: >-
+  On Lightning: with a described bridge ("the one known for honey"), does the split hold (47.3); asked for the
+  position, does the model report it, and does the lens read it (47.10)?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning (Part VI's described bridge; E8's report prompt).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B, 27B and Muse: 47.3 =
+  jobs/c3/x47_3_muse.yaml's decision_rule (results/x47_cue/x47_3-20261028T113104Z); 47.10 = jobs/c3/x47_10_muse.yaml's
+  (results/x47_report/x47_10-20261028T113109Z). As computed: each script's own computation on Lightning at L14 (its
+  scenes, gates, n and seeds; the address from nem35l_x52_probe). Cells under 30 switches left out (amendment 3).
+  Verdicts (CPU, after the job): each script's verdict with Lightning's run passed (its row under 'no prediction';
+  coverage.txt); multi-model clauses not re-scored (flagged).
+controls:
+- "each test's own matched random controls, unchanged"
+n: "each test's n on Lightning, as on Muse"
+seeds: [0, 888, 2510]
+notes: "Batch 52 C, amendment 2 full grid; any free Lightning box (speedup first). Code: x47_cue / x47_report COVERAGE_RUNS (run-stage targets; verdict lists unchanged). 47.3's Zach M->P column has no Lightning entry (reported as absent). Exit codes collected; retry once then skip. Wallclock (ledger, Muse ~2x Lightning per row): 47.3 0.21 h, 47.10 0.32 h on Muse -> est ~20-30 min, 0.6 GPU-h; opens before the freeze."

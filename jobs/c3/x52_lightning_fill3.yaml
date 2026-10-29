@@ -1,0 +1,37 @@
+id: x52_lightning_fill3
+title: "Batch 52 C coverage (Lightning fillers, amendment 2's full grid, 3): 47.11 the address for other kinds of item, 47.15 the second hop's key token, 47.7 (a) the value with the question first, on Lightning at the committed L14, each with its existing rule; one job; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.9
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz && test -f results/x6_routes/nem35l_x52_routes/gate.json &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L)";
+  uv run python scripts/x47_agnostic.py run --name nem35l_x52_agnostic --why "Batch 52 C coverage: 47.11 on Lightning; $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_agnostic/nem35l_x52_agnostic/coverage.txt;
+  uv run python scripts/x47_source.py run --name nem35l_x52_source --why "Batch 52 C coverage: 47.15 on Lightning; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_source/nem35l_x52_source/coverage.txt;
+  uv run python scripts/x47_value.py run --part a --name nem35l_x52_value_a --c0-min 0.5 --why "Batch 52 C coverage: 47.7 (a) on Lightning; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_value/nem35l_x52_value_a/coverage.txt;
+  echo "exit 47.11=$a 47.15=$b 47.7a=$c"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0
+question: >-
+  On Lightning: is the address the same for any kind of item (47.11); does the second hop's key token carry the
+  address (47.15); with the question first, is the value ever taken (47.7 a)?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning (Part VI's mechanism tests; 'what is left of the route').
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse (the 27B for 47.15 and 47.7):
+  47.11 = jobs/c3/x47_11_muse_r2.yaml's decision_rule (results/x47_agnostic/x47_11-20261028T143952Z); 47.15 =
+  jobs/c3/x47_15_muse_r2.yaml's (results/x47_source/x47_15-20261028T142722Z); 47.7 (a) = jobs/c3/x47_7a_muse.yaml's
+  (results/x47_value/x47_7a-20261028T131819Z; its C0 gate '--c0-min 0.5', Muse's rule for a model with no one-pick
+  reference, as Lightning's routes test). As computed: each script's own computation on Lightning at L14 (the address
+  from nem35l_x52_probe; 47.11's stored animal run and 47.7's routes run = nem35l_x52_routes). Cells under 30
+  switches left out (amendment 3). Verdicts (CPU, after the job): each script's verdict with Lightning's run passed
+  (its row under 'no prediction'; coverage.txt); multi-model clauses not re-scored (flagged).
+controls:
+- "each test's own matched random controls, unchanged"
+n: "each test's n on Lightning, as on Muse"
+seeds: [0, 888, 2510]
+notes: "Batch 52 C, amendment 2 full grid; any free Lightning box whose checkout has the probe and routes runs (both committed; checked). Code: x47_agnostic / x47_source / x47_value COVERAGE_RUNS, x47_agnostic.STORED_ANIMALS and x47_value.ROUTES_RUN gain Lightning's routes run. Exit codes collected; retry once then skip. Wallclock (ledger, Muse ~2x Lightning per row): 47.11 0.37 h, 47.15 0.44 h, 47.7a ~0.3 h on Muse -> est ~35-50 min, 0.9 GPU-h; opens before the freeze."

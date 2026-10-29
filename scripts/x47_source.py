@@ -123,6 +123,9 @@ LOOKUP_JPP_MAX, LOOKUP_UI_MIN = 0.10, 0.30  # "like a lookup": without J++ <= 0.
 RECALL_JPP_MIN, RECALL_UI_MAX = 0.30, 0.10  # "like a recall": without J++ >= 0.30, without U + I <= 0.10
 MODELS = ("qwen3.6-27b", "qwen3.5-9b", "muse-glimmer-30b")
 RUNS = {"qwen3.6-27b": "x47_15_27b", "qwen3.5-9b": "qwen35_9b_x47_15", "muse-glimmer-30b": "muse30_x47_15"}
+# batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_source"}
 MODELS_MIN = 2
 EPS = 1e-9  # a value exactly at a bar counts as at the bar
 N_PROMPTS = 5  # the plan's rendered prompts per condition
@@ -528,7 +531,7 @@ def stage_run(name: str, why: str, n_gen: int = R.N_GEN, n_items: int = R.N_ITEM
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "47.15 renders chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"47.15 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"47.15 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)

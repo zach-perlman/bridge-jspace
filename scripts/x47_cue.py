@@ -75,6 +75,9 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch47.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.3"
 RUNS = {"qwen3.6-27b": "x47_cue_27b", "qwen3.5-9b": "qwen35_9b_x47_cue", "muse-glimmer-30b": "muse30_x47_cue"}
+# batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cue"}
 
 FRAME = "{p} picked the one known for {cue}."
 # per animal, the cue candidates in order of preference (a sound or behaviour first where one exists); the first that
@@ -542,7 +545,7 @@ def stage_run(name: str) -> Path:
 
     pins.check_run_name(name)
     target = pins.TARGET
-    assert target in RUNS, f"47.3 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"47.3 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
