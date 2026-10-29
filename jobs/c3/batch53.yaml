@@ -375,6 +375,57 @@ verify_prep_1145: |
 
   6. For the write-up: make examples-render with the same seed, so the random
      examples shown after the summary are the ones I read.
+inspector_1145_received: "29 Oct ~11:52 Paris (Dan)"
+inspector_1145: |
+  Review dashboard: a J-space inspector (Dan, 11:45). Read-only, CPU for the
+  readout; one small GPU job for states. Part of the verification prep, ready
+  by ~17:00; the GPU part only on an idle GPU.
+
+  1. States (GPU, once, small): for every item in the seed-29 review sample
+     (all tier-1 views, all models incl. Lightning and the 122B), save the
+     residual states, O and S, at every layer, at these tokens: the bridge
+     word; every item's mention in the locker sentences; the pick sentence;
+     the question's tokens; the last token. fp16 npz under
+     cache/review_states/<model>/<view>/. Record the run in the views file.
+
+  2. Readout (CPU, on demand, in the dashboard): on each item's page a panel
+     "Look into J-space":
+     - choose: prompt (O / S), token, layer, and the vector: the state, the
+       change (S minus O), its J++ part (the 25 signed-OMP atoms as in the
+       experiments), the rest, a random part of the same share, the address
+       part (U);
+     - show: the J++ lens readout's top 30 tokens with logits, and the logit
+       lens beside it;
+     - a box for any tokens I type (e.g. " carbon", " Carbon", " oxygen", "C",
+       "O", " six", "6", the other items' names, "first", "second"): their
+       rank under the chosen vector, and a token x layer heatmap of that rank
+       for one chosen token;
+     - always listed with their ranks: both bridge words (and their spelling /
+       symbol variants), every item in the scene, both readers' answers (digit
+       and number word);
+     - the 25 atoms of the change at L for this item: decoded token, signed
+       coefficient, energy share, class (bridge / new bridge / answer / other).
+     Use the experiments' own lens and readout code (the same pinned lens file
+     and function), and add a self-check: at L and the bridge word, the
+     panel's answer-word rank equals the rank stored by 51.12 for that item;
+     the atoms equal x52_atoms' for the items they share.
+     One model loaded at a time; cache the lens and W_U per model; if a
+     readout takes over ~2 s, precompute the top 200 per (item, prompt, token,
+     layer, vector) and compute only typed tokens on demand.
+
+  3. Automatic check over every item of the conflict test and the routes test
+     (not only the sample), at L and the bridge word, results in
+     docs/verify_pack.md: the rank of S's bridge token (and its variants) in
+     the readout of the J++ part, of the rest and of a random part of the same
+     share; the share of items with it in the top 50 for each. Flag if the rest
+     puts it in the top 50 on >= 20% of items more often than the random part
+     does. The same for the answer words. No rule change: this is a check.
+
+  4. Marks: in the panel, a free-text note per item ("identity token in the
+     rest at L14", ...) saved to review/marks.jsonl beside the verdict.
+
+  5. Tests: the rank computation matches the pipeline on 5 items per model;
+     the panel never writes outside review/ and cache/.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
