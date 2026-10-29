@@ -801,30 +801,29 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True, mo
 
 
 V6_MODELS = tuple(x for x in S.MODELS if x[1] != "122b")  # v6: 9B, 27B, Muse; the 122B in supplements only
+# the 122B as the fifth model slot, after Lightning (Dan 11:30, q122b_1130: "the 122B as a fifth model where a verdict
+# exists ... grey slots elsewhere")
+B122 = next(x for x in S.MODELS if x[1] == "122b")
+B122_NOTE = "122B: FP8; MoE, ~10B active; L33 (the 27B's relative depth carried over)."
 
 
 def f01_split(plt) -> None:
     """E1 (v6): the main test, fixed in advance, per model (9B, 27B, Muse) the lookup's and the recall's J++ extra loss
     with 95% intervals, joined; at the right the gap with its interval. The 122B is in s01 (every scene set), the other
     settings in Fig. 1b (fig01b_settings), the split by sentence order in E10 (fig03_order, s03_order_extra_loss)."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.7))
-    fig.subplots_adjust(left=0.215, right=0.70, top=0.735, bottom=0.2)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.45))
+    fig.subplots_adjust(left=0.215, right=0.70, top=0.77, bottom=0.215)
     S.title(fig, "Recall follows the J++ part of the bridge; the lookup mostly does not",
             "Extra loss: switches lost without the J++ part, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
-    rows = (*V6_MODELS, LT)  # Lightning the fourth row (batch 52), its marks hollow
+    # Lightning the fourth row (batch 52), its marks hollow; the 122B the fifth (Dan 11:30), at its own gate, filled.
+    # split_rows records the 122B's fig01 rows as before (scripts/joint_figures.py's j1 reads them)
+    rows = (*V6_MODELS, LT, B122)
     split_rows(ax, "main", "fig01", ci=True, gap_col=False, models=rows)
-    # the 122B is drawn in s01 only; its fig01 rows stay in data.csv because scripts/joint_figures.py (j1) reads them
-    for target, m, _ in S.MODELS:
-        if m == "122b":
-            c = split_cell("main", target, m)
-            S.record("fig01", target, "main test (two people swap picks): lookup extra loss", *c["lk"], source=c["src"])
-            S.record("fig01", target, "main test (two people swap picks): recall extra loss", *c["rc"],
-                     source=c["src"].replace("lk", "rc"))  # fmt: skip
     first = split_cell("main", *V6_MODELS[0][:2])
     for v, name, col in ((first["lk"], "lookup", S.COL["lookup"]), (first["rc"], "recall", S.COL["recall"])):
         ax.text(v[0], 0.38, name, ha="center", va="bottom", weight="bold", color=col)
-    ax.set_ylim(-4.05, 0.6)  # room for the band's label under the last row
-    ax.text(-0.05, -3.72, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
+    ax.set_ylim(-len(rows) - 0.05, 0.6)  # room for the band's label under the last row
+    ax.text(-0.05, -len(rows) + 0.28, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
             linespacing=1.0)  # fmt: skip
     ax.set_xlabel("extra loss without the J++ part")
     # the gap (recall minus lookup) and its interval, fixed in advance
@@ -841,7 +840,7 @@ def f01_split(plt) -> None:
             ns.add(N[f"n_{m}"])
         ax.text(x_gap, -i, f"{g[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2, weight="bold")
         ax.text(x_ci, -i, f"[{g[1]:.2f}, {g[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
-    fig.text(0.01, 0.02, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
+    fig.text(0.01, 0.02, f"{B122_NOTE}\n{LT_NOTE}", color=S.COL["muted"], fontsize=S.FONT - 1, va="bottom")
     ax.text(0.0, 1.13, "main test (two people swap picks)", transform=ax.transAxes, fontsize=12, weight="bold",
             va="bottom")  # fmt: skip
     S.panel_tag(ax, "–".join(sorted(ns)) + " per model", "fixed")
@@ -1284,7 +1283,7 @@ def f03_order(plt) -> None:
     The old Fig. 3 with the 122B and its extra-loss panel: figures/supp/s03_order_split; the old Fig. 3b stays
     fig03b_layers until the README drops it. Lightning (batch 52, hollow): A from its conflict test at L14, B from its
     Z1 run (LT_Z1), C not tested (its clean one-pick scenes missed their gate)."""
-    h = 11.55
+    h = 11.85  # the bottom 0.3 in: the 122B's caption line (the panels keep their places from the top)
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
@@ -1295,12 +1294,13 @@ def f03_order(plt) -> None:
     a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
     zb = fig.add_axes(box(0.11, 0.86, 5.35, 6.75))  # four models: three-line order labels, two-line names
     b = fig.add_axes(box(0.11, 0.81, 8.3, 10.55))
-    long_name = {**NAMES, "lightning": "Nemotron 3.5\nLightning"}
+    # five groups across the panel: every name on at most two short lines
+    long_name = {**NAMES, "muse": "Muse\nGlimmer 30B", "lightning": "Nemotron 3.5\nLightning", "122b": "Qwen3.5-\n122B"}
 
     # (a) the order split
     w = 0.34
     ns = []
-    rows = (*V6_MODELS, LT)
+    rows = (*V6_MODELS, LT, B122)  # the 122B the fifth (Dan 11:30): its main run at L33, at its own gate
     hollow_bar = {"facecolor": "white", "edgecolor": S.COL["lookup"], "lw": 1.6}
     for i, (target, m, _) in enumerate(rows):
         sw, lt = order_switches(target, m), m == "lightning"
@@ -1316,7 +1316,9 @@ def f03_order(plt) -> None:
             a.plot([xr, xr], [r[1], r[2]], color=S.COL["recall"], lw=1.2, zorder=4)
             a.plot([xr], [r[0]], "D", ms=5.5, color=S.COL["recall"], zorder=5,
                    **({"mfc": "white", "mew": 1.2} if lt else {"mec": "white", "mew": 0.6}))  # fmt: skip
-            a.text(x, -0.04, f"locker\n{order}\nthe pick", ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            # "locker first" / "locker after" (the panel title says "the pick"): five groups leave no room for three lines
+            a.text(x, -0.04, f"locker\n{'first' if order == 'before' else 'after'}", ha="center", va="top",
+                   fontsize=S.FONT - 1, linespacing=1.0)  # fmt: skip
             if i == 0 and j == 0:  # Dan (21:50): the panel names its two marks, on its first pair
                 a.text(xr + 0.06, r[0], "recall", ha="left", va="center", fontsize=S.LABEL_PT, color=S.COL["recall"])
                 a.text(x, p / 2, "lookup", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT, color="white")
@@ -1365,6 +1367,10 @@ def f03_order(plt) -> None:
                      round(p, 4), round(lo, 4), round(hi, 4), strata[key]["n"], source=zsrc)  # fmt: skip
             zns.append(strata[key]["n"])
         zb.text(i, -0.36, long_name[m], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
+    # the 122B: Zach's passages never ran on it; its slot stays, grey
+    i_b = len(zmods)
+    zb.text(i_b, 0.5, "not run", ha="center", va="center", color=S.COL["muted"])
+    zb.text(i_b, -0.36, long_name["122b"], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
     zb.set_xlim(-0.6, len(rows) - 0.4)
     zb.set_ylim(0, 1.05)
     zb.set_xticks([])
@@ -1389,7 +1395,7 @@ def f03_order(plt) -> None:
     sweep = json.loads((d["sweep"] / "sweep.json").read_text())["runs"]
     by = {mod["model"]: mod for mod in v["models"] if mod["status"] != "pending"}
     ticks, tick_labels, nq = [], [], []
-    blocks = (*Q_MODELS, LT[:2])
+    blocks = (*Q_MODELS, LT[:2], B122[:2])  # the 122B: no 45q run, a grey "not run" block
     for k, (target, m) in enumerate(blocks):
         x0 = k * BLOCK
         mod = by.get(target)
@@ -1406,9 +1412,9 @@ def f03_order(plt) -> None:
             def at_lt(layer: float) -> float:
                 return x0 + layer / last  # noqa: B023 (used inside this iteration only)
 
-            for xl, txt in ((half, "L/2"), (la, "L")):
+            for xl, txt, ha in ((half, "L/2", "right"), (la, "L", "left")):  # L/2 and L close: labels apart
                 b.axvline(at_lt(xl), ymax=0.93, color="#555555", ls=":", lw=1.1, zorder=0)
-                b.text(at_lt(xl), 0.95, txt, ha="center", va="bottom", fontsize=S.FONT - 1, color="#555555")
+                b.text(at_lt(xl), 0.95, txt, ha=ha, va="bottom", fontsize=S.FONT - 1, color="#555555")
             for arm, xl, what in (("a", la, "the bridge-word change at L"),
                                   ("c", la, "copy at L, every locker-sentence token"),
                                   ("d", half, "copy at L/2, every locker-sentence token")):  # fmt: skip
@@ -1494,7 +1500,7 @@ def f03_order(plt) -> None:
     fig.text(
         0.01,
         0.06 / h,
-        (lt_c if LT_45Q.exists() else "") + LT_NOTE,
+        (lt_c if LT_45Q.exists() else "") + B122_NOTE + " B, C: not run on the 122B.\n" + LT_NOTE,
         color=S.COL["muted"],
         fontsize=S.FONT - 1,
         va="bottom",
@@ -1807,11 +1813,12 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     holds = label == "holds"
     default = "The recall reads the item's earlier mention when its locker came first" if holds else (
         "No sign the recall reads the earlier mention (rule not met)")  # fmt: skip
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 5.1), sharey=True)
+    # the 122B the fifth slot (Dan 11:30): no 45p run, a narrower grey panel
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 5.1), sharey=True, gridspec_kw={"width_ratios": [1, 1, 1, 1, 0.6]})
     fig.subplots_adjust(left=0.30, right=0.975, top=0.71, bottom=0.24, wspace=0.12)
     S.title(fig, title or default, "Clean one-pick scenes, the new item's locker before the pick: switches lost against "
             "arm (1)")  # fmt: skip
-    for ax, (target, m, _) in zip(axes, (*CARD_MODELS, LT), strict=True):
+    for ax, (target, m, _) in zip(axes, (*CARD_MODELS, LT, B122), strict=True):
         lt = m == "lightning"
         src = rel(LT_45P) if lt else rel(verdict_dir / "x45p.json")
         mod = by.get(target)
@@ -1827,6 +1834,10 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
             # Dan's figures brief (29 Oct 10:00): the slot stays, with a short grey label
             grey = "not run" if mod is None or mod["status"] == "pending" else "not tested"
             S.empty(ax, "not tested: gate" if lt else grey)
+            ax.set_xticks([])  # an empty slot draws no axis numbers (they would crowd its neighbour's) and no zero line
+            ax.grid(False)
+            for line in list(ax.lines):
+                line.remove()
             continue
         rc, lk = mod["readers"]["recall"], mod["readers"]["lookup"]
         ax.text(-17, 0, f"{rc['hits']['a1']} of {rc['n']}\nrecalls switch", va="center", color=S.COL["muted"],
@@ -1848,7 +1859,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     fig.supxlabel("switches lost (%)", x=0.62, y=0.1, fontsize=S.FONT)
     note = ("9B, 27B, Muse: fixed in advance. "
             + ("Lightning below gate (its clean one-pick recall misses the 0.80 gate): descriptive only. "
-               if "readers" in by.get(LT[0], {}) else "Lightning: not tested (gate). ") + LT_NOTE)  # fmt: skip
+               if "readers" in by.get(LT[0], {}) else "Lightning: not tested (gate). ") + "122B: not run. " + LT_NOTE)  # fmt: skip
     fig.text(0.01, 0.01, "\n".join(textwrap.wrap(note, 112)), fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8)],
@@ -3551,9 +3562,13 @@ def f06b_anatomy(plt) -> None:
     srcs[LT[0]] = rel(LT_ANATOMY)
     # four models: two rows of two, so each panel keeps the three models' width
     nrows, ncols, row_in, gap_in = (2, 2, 2.5, 0.95) if len(models) == 4 else (1, len(models), 2.6, 0.0)
-    h = 1.95 + nrows * row_in + gap_in + 1.45
+    # the bottom band: 1.45 in for the axis labels and the caption, 0.45 in more for the 122B's grey row (Dan 11:30:
+    # the fifth model slot; 47.8 never ran on it)
+    bottom_in = 1.9
+    h = 1.95 + nrows * row_in + gap_in + bottom_in
     fig, axes = plt.subplots(nrows, ncols, figsize=(S.WIDTH, h), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.45 / h, wspace=0.10, hspace=gap_in / row_in)
+    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=bottom_in / h, wspace=0.10,
+                        hspace=gap_in / row_in)  # fmt: skip
     S.title(fig, "The address forms early; identity route first, position route later",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
     values: list[float] = []
@@ -3655,6 +3670,9 @@ def f06b_anatomy(plt) -> None:
         fig.text(0.01, 0.35 / h, f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide).",
                  ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")  # fmt: skip
     fig.text(0.01, 0.1 / h, LT_NOTE, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")
+    # the 122B's slot: one grey row under the panels, as Fig. 1d's
+    fig.text(0.01, 0.85 / h, B122[2], ha="left", va="center", fontsize=12, weight="bold")
+    fig.text(0.5, 0.85 / h, "not run", ha="center", va="center", color=S.COL["muted"])
     S.save(fig, "fig06b_anatomy")
 
 
