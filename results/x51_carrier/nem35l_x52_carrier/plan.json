@@ -1,0 +1,70 @@
+{
+ "target": "nemotron-3.5-lightning",
+ "z1_run": "nem35l_x52_z1",
+ "layer": 14,
+ "patched_layers": [
+  0,
+  14
+ ],
+ "n_patched": 15,
+ "items": 200,
+ "mismatches": [],
+ "strata": {
+  "fact-after": 97,
+  "fact-first": 103
+ },
+ "entities": {
+  "fact-first": 87,
+  "fact-after": 80,
+  "all": 133
+ },
+ "sets": {
+  "jsuite_v2_test_chat": 197,
+  "jsuite_v2nb_test_chat": 3
+ },
+ "only_last_token_changed": {
+  "fact-first": {
+   "K": 64,
+   "M": 64
+  },
+  "fact-after": {
+   "K": 62,
+   "M": 62
+  }
+ },
+ "window_items": 50,
+ "window_tokens": {
+  "min": 9,
+  "max": 28
+ },
+ "prompt_tokens": {
+  "min": 121,
+  "median": 289.5,
+  "max": 424
+ },
+ "read_arms": [
+  "none",
+  "whole_bL",
+  "no_jpp_bL",
+  "rand_bL",
+  "whole_emb"
+ ],
+ "loss_arms": [
+  "none",
+  "whole_1L",
+  "no_jpp_1L",
+  "rand_1L",
+  "whole_bL",
+  "no_jpp_bL",
+  "rand_bL",
+  "whole_emb"
+ ],
+ "stored_arms": [
+  "whole_1L",
+  "no_jpp_1L",
+  "rand_1L"
+ ],
+ "reads": 2050,
+ "loss_rows": 3200,
+ "forwards_for_states": 800
+}
