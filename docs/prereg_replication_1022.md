@@ -3178,3 +3178,10 @@ Zach asked whether extending v4 adds confounds (e.g. linear entity -> country re
   - "The need sits at the final token (saying)": final share >= 2/3 and desc share <= 1/3.
   - "At the description": desc share >= 2/3 and final share <= 1/3.
   - "Spread" otherwise. MP beside.
+
+##### Amendment 61 addendum (Zach, 2026-10-29 ~21:25 UTC; before any run on jsuite_v5kn2 / v5kd2): a 3+3 continent split
+The first build of v5kn2 / v5kd2 (">= 2 same-continent distractors"; sha256 4c515e74... / e87e5d96..., never run) made X's continent the passage's majority continent in 91% of scenes, a passage-only guessing cue (~27% vs 1/6). v5kn2 / v5kd2 are rebuilt in place with a 3+3 split:
+- three countries from X's continent (X and two others);
+- three from one other continent, so no continent is a majority.
+- Where X's continent has too few countries in the vocabulary (Oceania: Australia only), use as many as exist, draw the rest so that no continent has more than three, and record "split_ok".
+- Readings: unchanged. Scenes with split_ok false are reported beside and left out of the primary reading.
