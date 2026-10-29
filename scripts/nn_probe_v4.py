@@ -5,7 +5,8 @@ trained read-out, and does it generalise to another description of the same pers
 Prompts: every v4 MP and MM item (the main question), the state at the description's last token at every 2nd layer.
 Split by description, two folds: for a bridge with >= 2 distinct descriptions in the set, the items using its second
 description (sorted) are held out and the rest train, then its first (note 23 addendum); every held-out item is scored once
-per fold it is held out in. Control: the same read-outs trained on permuted labels (seed 1). 95% bootstrap over bridges. Read-outs per layer, each scored top-1 among the item's relation's bridges (the readout's
+per fold it is held out in; extra sets (--extra-sets, new seeds of the same people and descriptions) only train, and their
+items with a held-out description are dropped (note 23 addendum 2). Control: the same read-outs trained on permuted labels (seed 1). 95% bootstrap over bridges. Read-outs per layer, each scored top-1 among the item's relation's bridges (the readout's
 candidates, chance 1/k):
   nc   nearest class mean (cosine, train-mean centred)
   lr   multinomial logistic regression over every bridge (standardised; Adam, weight decay, fixed steps, seed 0)
@@ -41,13 +42,17 @@ def states(a, model, tok, items, layers):
     from scripts.nn_swap import build_prompt
 
     jobs = []
-    for i, it in sorted(items.items()):
-        if it.get("set_version") != "v4" or it["word"] not in ("MP", "MM"):
-            continue
-        p = build_prompt(tok, it, a.set)
-        pos = bridge_positions(tok, p["ids"], it["start_desc"])
-        if pos:
-            jobs.append({"id": i, "ids": p["ids"], "pos": pos[-1], "bridge": it["bridge"], "rel": it["relation"], "desc": it["start_desc"], "word": it["word"]})
+    for set_name in [a.set, *a.extra_sets]:  # note 23 addendum 2: extra passage sets (new seeds) add training examples
+        its = items if set_name == a.set else {json.loads(l)["id"]: json.loads(l) for l in (JS.DATA / set_name / "items.jsonl").read_text().splitlines()}
+        for i, it in sorted(its.items()):
+            if it.get("set_version") != "v4" or it["word"] not in ("MP", "MM"):
+                continue
+            p = build_prompt(tok, it, set_name)
+            pos = bridge_positions(tok, p["ids"], it["start_desc"])
+            if pos:
+                jid = i if set_name == a.set else f"{set_name}|{i}"
+                jobs.append({"id": jid, "ids": p["ids"], "pos": pos[-1], "bridge": it["bridge"], "rel": it["relation"], "desc": it["start_desc"],
+                             "word": it["word"], "main": set_name == a.set})  # fmt: skip
     if a.limit:
         jobs = jobs[: a.limit]
     by_len = collections.defaultdict(list)
@@ -80,7 +85,7 @@ def main(a) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "set": a.set,
                                                        "competence": a.competence, "cv_h1": a.cv_h1, "readout": a.readout, "every": a.every,
-                                                       "steps": a.steps, "seed": 0, "limit": a.limit, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
+                                                       "steps": a.steps, "seed": 0, "limit": a.limit, "extra_sets": a.extra_sets, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
@@ -132,7 +137,7 @@ def main(a) -> None:
     folds = []
     for f in (1, 0):
         held = {b: sorted(d)[f] for b, d in descs.items() if len(d) >= 2}
-        folds.append(([j for j in jobs if held.get(j["bridge"]) != j["desc"]], [j for j in jobs if held.get(j["bridge"]) == j["desc"]]))
+        folds.append(([j for j in jobs if held.get(j["bridge"]) != j["desc"]], [j for j in jobs if j["main"] and held.get(j["bridge"]) == j["desc"]]))
     tested = [j for _, te in folds for j in te]
     chance = sum(1 / len(cands[j["rel"]]) for j in tested) / max(1, len(tested))
     print(f"{len(jobs)} prompts, {len(bridges)} bridges; folds train/test {[(len(tr), len(te)) for tr, te in folds]}; layers {layers}", flush=True)
@@ -198,4 +203,5 @@ if __name__ == "__main__":
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--steps", type=int, default=300)
     ap.add_argument("--limit", type=int, default=0, help="a smoke: the first N prompts")
+    ap.add_argument("--extra-sets", nargs="*", default=[], help="note 23 addendum 2: more v4 passage sets for training (held-out descriptions never trained on)")
     main(ap.parse_args())

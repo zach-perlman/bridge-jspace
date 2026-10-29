@@ -2920,3 +2920,13 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   2. **Shortcut-free answer.** Dan's rule (note 15) on conflict MM items only, at the decisive final cells. If it says "the lens part is the answer" on conflict items, the lens holding the answer is not an artefact of the description's association. Aligned items are reported beside.
   3. **Knock-out.** The memory-vs-lookup loss gap (note 20) on conflict items and on aligned items. "The recall's lens dependence survives the shortcut block" if the conflict gap is >= 10 points with an interval above 0.
 - **Queue.** scripts/queues/h200_cc_1029.sh, before Bolt. 9B on GPU1 beside the 27B chain; 27B on GPU1 after Lightning's last job. A smoke runs first.
+
+##### Amendment 58 note 23 addendum 2 (Zach, 2026-10-29 ~16:40 UTC; note 23's read-outs were read: data-starved, held-out top-1 below the lens): the read-out with more training data
+- **Why.** Note 23's read-outs had about 4 training examples per person, all from the person's other description. The J++ lens needs no training, so the comparison was not a ceiling.
+- **Data.** Five extra v4 passage sets from scripts/jsuite_v4.py, unchanged, seeds 4002-4006 (names jsuite_v4p4002 … jsuite_v4p4006): the same people and descriptions in new passages. That gives about 24 training examples per description.
+  - The extra sets only train. Their items with a held-out description are dropped.
+  - The test items, the gate, the folds, the shuffled-label control, the bootstrap and the lens comparison are note 23's, on the original set.
+- **Readings.** Note 23's, unchanged.
+  - "The bridge is represented beyond what the lens reads": a read-out's held-out top-1 >= 2x the lens's and >= 50% at some used layer (9B L4-16), with the shuffled control below 2x chance.
+  - "The person, not the description's words": held-out top-1 >= 50%.
+- **Run.** 9B first (qwen35_9b_nn_probe_v4_v2, GPU1). The 27B only if Zach asks. Queue: scripts/queues/h200_probe2_1029.sh.
