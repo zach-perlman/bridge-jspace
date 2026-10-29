@@ -137,31 +137,54 @@ LADDER_BARS = (("recall", "locker-first", INK, -0.27, "recall, locker before the
                ("recall", "locker-after", RECALL_AFTER, -0.01, "recall, locker after the pick"),
                ("lookup", "all", LOOKUP, 0.27, "lookup, every scene"))  # fmt: skip
 LADDER_BAR_W = 0.25
+# Lightning's ladder below its gate (exploratory, Dan's morning queue, 29 Oct; rung 6 in Zach's band L27-33), drawn as
+# a fourth panel, hollow; and the clean one-pick gate it fails (the recall's read accuracy on the original prompts)
+LT_LADDER_BELOW = S.REPO / "results" / "x49_ladder" / "x52_ladder_below-20261029T091146Z"
+LT_CLEAN_GATE = S.REPO / "results" / "x0_necessity" / "nem35l_x45s_smoke_clean" / "gate.json"
 
 
 def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: bool = False) -> str:
-    """Fig. 1d (E2), Dan's round 3 (28 Oct 21:10): one panel per model, one column per rung (49.2's six rungs; the 27B
-    ran rungs 1-2, its other columns greyed), each column the recall's bars (locker before the pick, dark; after it, a
-    lighter shade) and the lookup's (every scene, purple): the answers lost beyond a random part of the same share (pp)
-    when the J++ part's directions are taken out of the changed prompt's own state, with 95% whiskers; on each bar a
-    grey tick at what the random part itself costs that bar's group (kept with none minus kept with the random part).
-    Rung 6 (Zach's definition) stands apart from rungs 1-5 (ours); Muse's rung 6 is marked (†) and its band said in
-    the caption. lightning: a row under the rung labels saying Lightning was not tested (no ladder run: its gate)."""
+    """Fig. 1d (E2), Dan's round 3 (28 Oct 21:10): one panel per model, one column per rung (49.2's six rungs; a run
+    without some rungs has those columns greyed), each column the recall's bars (locker before the pick, dark; after
+    it, a lighter shade) and the lookup's (every scene, purple): the answers lost beyond a random part of the same
+    share (pp) when the J++ part's directions are taken out of the changed prompt's own state, with 95% whiskers; on
+    each bar a grey tick at what the random part itself costs that bar's group (kept with none minus kept with the
+    random part). Rung 6 (Zach's definition) stands apart from rungs 1-5 (ours); Muse's rung 6 is marked (†) and its
+    band said in the caption while it ran outside his band. lightning: a fourth panel from LT_LADDER_BELOW (below its
+    gate: white-faced bars with coloured edges, its n tag ○, a caption line), or, without that file, a row under the
+    rung labels saying Lightning was not tested (its gate)."""
     src_path = verdict_dir / "x49_2.json"
     v = json.loads(src_path.read_text())
     src, fid = rel(src_path), out_name.split("_")[0]
     by = {m["target"]: m for m in v["models"] if m.get("status") == "tested"}
+    srcs = dict.fromkeys(by, src)
+    panels = list(MODELS)
+    lt_below = lightning and (LT_LADDER_BELOW / "x49_2.json").exists()
+    if lt_below:
+        p = LT_LADDER_BELOW / "x49_2.json"
+        for m in json.loads(p.read_text())["models"]:
+            if m.get("status") == "tested" and m["target"] == F.LT[0]:
+                by[m["target"]], srcs[m["target"]] = m, rel(p)
+        panels.append((F.LT[0], F.LT[1], F.LT[2]))
+    lt_row = lightning and not lt_below  # the text row under the rung labels
     plt = S.setup()
-    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05 + 0.45 * lightning
-    h = top_in + 3 * panel_in + 2 * gap_in + bottom_in
-    fig, axes = plt.subplots(3, 1, figsize=(S.WIDTH, h), sharex=True)
+    n_p = len(panels)
+    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05 + 0.45 * lt_row + 0.4 * lt_below
+    h = top_in + n_p * panel_in + (n_p - 1) * gap_in + bottom_in
+    fig, axes = plt.subplots(n_p, 1, figsize=(S.WIDTH, h), sharex=True)
     fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
     S.title(fig, "Recall needs the J++ part once its other copies go; the lookup never",
             "The J++ part taken out of the changed prompt, rung by rung; answers lost beyond a random part")  # fmt: skip
     omitted, greyed = [], []
-    for k, (ax, (target, m, name)) in enumerate(zip(axes, MODELS, strict=True)):
+    for k, (ax, (target, m, name)) in enumerate(zip(axes, panels, strict=True)):
         mod = by.get(target)
-        model_label(ax, m, name, k == 0)
+        hollow = m == "lightning"
+        src = srcs.get(target, src)
+        if hollow:  # below its gate: the panel says so beside the model's name
+            ax.text(0.0, 1.03, f"{SHORT[m]}  {S.STATUS_GLYPH['after']} below gate", transform=ax.transAxes, ha="left",
+                    va="bottom", fontsize=12, weight="bold")  # fmt: skip
+        else:
+            model_label(ax, m, name, k == 0)
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
         ax.axhline(10, color="#555555", lw=1.0, ls=(0, (4, 3)), zorder=1)
         ax.text(0.6, 10.5, "10 pp", ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")
@@ -190,7 +213,8 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
                 S.record(fid, target, f"rung {r}: {label}: the random part's own cost (kept with none minus kept with "
                          "the random part)", round(own, 4), n=cell["n"], source=src)  # fmt: skip
                 x = RUNG_X[r] + dx
-                ax.bar(x, 100 * c[0], width=LADDER_BAR_W, color=col, lw=0, zorder=2)
+                face = {"facecolor": "white", "edgecolor": col, "lw": 1.4} if hollow else {"color": col, "lw": 0}
+                ax.bar(x, 100 * c[0], width=LADDER_BAR_W, zorder=2, **face)
                 ax.plot([x, x], [100 * c[1], 100 * c[2]], color="#1e1e1e", lw=1.1, zorder=3, solid_capstyle="butt")
                 ax.plot([x - LADDER_BAR_W * 0.55, x + LADDER_BAR_W * 0.55], [100 * own] * 2, color=NULL, lw=2.4,
                         zorder=4, solid_capstyle="butt", path_effects=[pe.withStroke(linewidth=3.6, foreground="white")])  # fmt: skip
@@ -206,8 +230,10 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
         lk = mod["cells"]["lookup"]["all"]["kept"]
         ends.append((100 * (lk["none"][0] - lk[f"rand{last}"][0]), "random (tick)", S.COL["muted"]))
         S.end_labels(ax, RUNG_X[last] + LADDER_BARS[-1][3] + LADDER_BAR_W / 2, ends, pad=0.08)
-        S.panel_tag(ax, str(mod["cells"]["recall"]["all"]["n"]), "fixed")
+        S.panel_tag(ax, str(mod["cells"]["recall"]["all"]["n"]), "after" if hollow else "fixed")
     axes[1].set_ylabel("answers lost beyond random (pp)")
+    if n_p == 4:  # the axis label between the middle two panels
+        axes[1].yaxis.set_label_coords(-0.06, -gap_in / panel_in / 2)
     axes[-1].set_xlim(0.58, RUNG_X[6] + 1.75)  # the end labels' room right of rung 6
     # half a point under the figures' 11 pt: six two-line labels across the column otherwise touch
     axes[-1].set_xticks(list(RUNG_X.values()), list(RUNGS.values()), fontsize=S.FONT - 0.5)
@@ -222,11 +248,17 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
     )
     line += f" Grey columns: not run ({'; '.join(greyed)})." if greyed else ""
     line += f" Omitted: {'; '.join(omitted)}." if omitted else ""
-    if lightning:  # no rung ran on Lightning: one row, its name and why, under the rung labels
+    lines = [line]
+    if lt_below:
+        gate = json.loads(LT_CLEAN_GATE.read_text())["gate"]["chat"]["org_accuracy"]["PM"]
+        band = by[F.LT[0]].get("band") or []
+        lines.append(f"Lightning hollow: below gate (its clean one-pick recall {gate:.3f} < 0.80), descriptive only"
+                     + (f"; rung 6 in his band (L{band[0]}–{band[-1]})." if band else ".") + " " + F.LT_NOTE)  # fmt: skip
+    if lt_row:  # no rung ran on Lightning: one row, its name and why, under the rung labels
         y = (bottom_in - 0.72) / h
         fig.text(0.01, y, F.LT[2], ha="left", va="top", fontsize=12, weight="bold")
         fig.text(0.5, y, F.LT_GATE, ha="center", va="top", color=S.COL["muted"])
-    caption(fig, [line], bottom_in - 0.75 - 0.45 * lightning)
+    caption(fig, lines, bottom_in - 0.75 - 0.45 * lt_row)
     S.save(fig, out_name)
     return out_name
 

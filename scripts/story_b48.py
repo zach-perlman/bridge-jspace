@@ -661,21 +661,23 @@ NEUTRAL = "#222222"  # a probe's or a head count's mark (not a reader)
 LIGHTNING = ("nemotron-3.5-lightning", "Lightning", "Nemotron 3.5 Lightning")
 FOUR = (*ORDER, LIGHTNING)  # E15's four model slots, always in this order (Dan's figures brief, 29 Oct 10:00)
 # batch 52's coverage folders beside the three models' verdicts, by explicit path (a newest-folder pattern would pick a
-# one-model folder): the 27B's 48.2 / 48.3 / 48.4 / 47.6, Lightning's 48.2 A (no B) / 48.4, and Lightning's 48.5 below
-# its gate (exploratory, drawn hollow and labelled); the first folder holding a model wins
+# one-model folder): the 27B's 48.2 / 48.3 / 48.4 / 47.6, Lightning's 48.2 A (no B) / 48.4, and Lightning's 48.3 and
+# 48.5 below its gate (exploratory, drawn hollow and labelled); the first folder holding a model wins
 MECH_EXTRA = {
     "48.2": (pins.RESULTS_DIR / "x48_enrich" / "x52_enrich-20261029T044514Z",),
-    "48.3": (pins.RESULTS_DIR / "x48_bind" / "x52_bind-20261029T023827Z",),
+    "48.3": (
+        pins.RESULTS_DIR / "x48_bind" / "x52_bind-20261029T023827Z",
+        pins.RESULTS_DIR / "x48_bind" / "x52_bind_below-20261029T090628Z",
+    ),
     "48.4": (pins.RESULTS_DIR / "x48_heads" / "x52_heads48-20261029T044514Z",),
     "48.5": (pins.RESULTS_DIR / "x48_route2" / "x52_route2_below-20261029T084835Z",),
     "47.6": (pins.RESULTS_DIR / "x47_edges" / "x52_edges-20261029T023820Z",),
 }
-BELOW_GATE = {("48.5", "nemotron-3.5-lightning")}  # (test, model) drawn from a below-gate folder
+BELOW_GATE = {("48.3", "nemotron-3.5-lightning"), ("48.5", "nemotron-3.5-lightning")}  # from a below-gate folder
 # a model without a result keeps its slot with a short grey label (the coverage matrix's reason,
 # results/x52_coverage/matrix-20261029T062909Z/matrix.json)
 MECH_MISSING = {
     ("48.2", "nemotron-3.5-lightning"): "not applicable: no MLP in NemotronH",
-    ("48.3", "nemotron-3.5-lightning"): "not tested: gate 0.751",
     ("47.6", "nemotron-3.5-lightning"): "not tested: knock-out not ported to NemotronH",
 }
 HOLLOW_MODELS = {"nemotron-3.5-lightning"}  # Lightning's gate was chosen after its 60-scene pre-check was seen
@@ -822,14 +824,14 @@ def build_mechanisms(
             hollow = target in HOLLOW_MODELS
             below = (g["test"], target) in BELOW_GATE
             src = g["src"][target]
-            for (v, col, dy, mk), q in zip(g["cells"][target], g["q"], strict=True):
+            for i, ((v, col, dy, mk), q) in enumerate(zip(g["cells"][target], g["q"], strict=True)):
                 vv = pct(v)
                 if isinstance(v, list):
                     ax.plot([vv[1], vv[2]], [y + dy] * 2, color=col, lw=1.6, zorder=2, solid_capstyle="butt")
                 face = {"mfc": "white", "mec": col, "mew": 1.5} if hollow else {"color": col}
                 ax.plot([vv[0]], [y + dy], mk, ms=7 if mk != "D" else 6.5, zorder=3, **face)
                 text = f"{round(vv[0] / 20)} of 5" if g["test"] == "48.4" else f"{vv[0]:.0f}"
-                text += "  below gate" if below else ""
+                text += "  below gate" if below and i == 0 else ""  # once per row
                 ax.text(max(vv[2], vv[0]) + 1.5, y + dy, text, va="center", fontsize=S.FONT - 1, color=col, zorder=4,
                         bbox=CLEAR if below else None)  # fmt: skip
                 record(fid, target, q, v,
