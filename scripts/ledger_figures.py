@@ -1741,7 +1741,7 @@ def bindid(plt) -> str:
                        rows, absent, "share of lookups")
 
 
-CODE_PROBE = R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json"  # 53.7 probe (the 9B; the 27B to come)
+CODE_PROBE = R / "x0_probe" / "x53_7_probe-20261029T130251Z" / "verdict.json"  # 53.7 probe, combined (9B, 27B)
 CODE_ROUTES = R / "x6_routes" / "x53_7_routes-20261029T122509Z" / "verdict.json"  # 53.7 routes, code + tool, 9B + 27B
 
 
@@ -1769,10 +1769,12 @@ def code_tool(plt) -> str:
             elif run["status"] != "tested":
                 gate = re.search(r"gate ([0-9.]+)", run["status"]).group(1)
                 rows.setdefault(t, []).append((lab, f"○ not tested\n(gate {gate})", ADDRESS, True))
+                rows[t].append((f"{fmt}, probe: the layout alone", "", NULL, True))  # keeps the row order per format
             else:
                 r = next(x for x in run["rows"] if x["subset"] == "all" and x["stratum"] == "before"
                          and x["target"] == "locker sentence")  # fmt: skip
                 rows.setdefault(t, []).append((lab, r["probe"], ADDRESS, bool(run.get("hollow"))))
+                rows[t].append((f"{fmt}, probe: the layout alone", r["layout"], NULL, bool(run.get("hollow"))))
     absent = {"muse-glimmer-30b": "not designed", LT: "not designed"}
     return four_panels(plt, "ledger_code_tool", "In code and tool output the address carries the position route",
                        "Another item moved: position answers by arm and format; probe: which locker sentence, first",
