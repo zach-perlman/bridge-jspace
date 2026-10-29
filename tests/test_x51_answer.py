@@ -486,13 +486,29 @@ def test_coverage_verdict_reads_the_coverage_runs_without_the_seal(tmp_path, mon
 
 def test_lightning_is_a_coverage_target_of_e1_and_cue():
     assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2", "z1k", "z1p", "z2p"} and A.COVERAGE_RUNS["e1"] == {
-        "nemotron-3.5-lightning": "nem35l_x52_answer"
-    }
+        "nemotron-3.5-lightning": "nem35l_x52_answer", "qwen3.5-122b-a10b": "qwen35_122b_x51_12_e1"
+    }  # fmt: skip
     assert A.COVERAGE_RUNS["cue"] == {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"} and A.COVERAGE_RUNS["z2"] == {
         "nemotron-3.5-lightning": "nem35l_x52_answer_z2"
     }
     assert "nemotron-3.5-lightning" not in A.RUNS["e1"] and "nemotron-3.5-lightning" in A.runs_of("e1")
-    assert A.all_runs(("e1",), coverage=True) == [("e1", "nemotron-3.5-lightning", "nem35l_x52_answer")]
+    assert A.all_runs(("e1",), coverage=True) == [("e1", "nemotron-3.5-lightning", "nem35l_x52_answer"),
+                                                  ("e1", "qwen3.5-122b-a10b", "qwen35_122b_x51_12_e1")]  # fmt: skip
+
+
+def test_the_122b_is_an_e1_coverage_target_on_its_x0_r2_run():
+    """Batch 53 (Dan 11:30, q122b_1130 item 3): 51.12 E1 on the 122B reads its X0 r2 run at L33; the other models' E1
+    sources (x45b_binding.MAIN_RUN) and 51.12's own runs are unchanged."""
+    from scripts import x45b_binding as B
+
+    t = "qwen3.5-122b-a10b"
+    assert A.source_of("e1", t) == X.RESULTS / "qwen35_122b_x0_necessity_r2" and A.layer_of("e1", t) == 33
+    for m, run in B.MAIN_RUN.items():
+        assert A.source_of("e1", m) == X.RESULTS / run
+    assert t not in A.RUNS["e1"] and A.runs_of("e1")[t] == "qwen35_122b_x51_12_e1"
+    assert A.COVERAGE_BATCH[("e1", t)] == 53 and A.COVERAGE_SPEC[("e1", t)] == "x51_12_e1_122b"
+    assert len(A.COVERAGE_BATCH) == len(A.COVERAGE_SPEC) == 1
+    assert "qwen3.5-122b-a10b" not in B.MAIN_RUN
 
 
 def test_sealed_until_dans_answer(tmp_path, monkeypatch):

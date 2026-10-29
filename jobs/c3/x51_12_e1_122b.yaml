@@ -1,0 +1,67 @@
+id: x51_12_e1_122b
+title: "Batch 51.12 E1 (the answer control, r2 + amendment 20:20) on the 122B (Qwen3.5-122B-A10B FP8, L33), Dan 11:30 (q122b_1130 item 3): on its main test qwen35_122b_x0_necessity_r2's 200 items, first the lens-readout check of the answer word at the bridge word, then without the J++ part / without it with the answer directions projected out / without the answer directions alone, each against a same-size random part; verdict --set e1 --coverage; 2x H100; no prediction"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl &&
+  uv run python scripts/x51_answer.py run --set e1 --name qwen35_122b_x51_12_e1 &&
+  uv run python scripts/x51_answer.py verdict --set e1 --coverage
+question: >-
+  On the 122B: is it the bridge or the answer that moves through the lens? At the bridge word at L33, does removing the
+  change's J++ part cost the recall's switches because it carries the bridge entity or because it carries the answer
+  (the lens atoms of the answer's number words)? And is the answer word read there at all?
+why_it_matters: >-
+  Dan 11:30 (batch53.yaml q122b_1130): the 122B gives the clean split (lookup 0.00 at L33, still 0.00 at k = 100); the
+  answer control says whether its recall's J++ dependence is the entity (as on the 9B, 27B and Muse) or the answer.
+hypotheses:
+  none: "no prediction: coverage run on an already-scored rule (51.12's rules first scored in results/x51_answer/x51_12-20261028T201842Z)"
+decision_rule: >-
+  Dan 11:30 (jobs/c3/batch53.yaml q122b_1130, item 3), verbatim: "If mats frees up today (2xH100; check the lens file
+  and the FP8 weights are on a box first): on the 122B, 53.1 (Q-before, number) with the paired difference, then 51.12
+  E1 (answer control). Rules verbatim, no prediction, UNVERIFIED. Priority: after 53.2, before 53.7." 51.12's rule,
+  fixed in advance (jobs/c3/batch51.yaml addendum_4, 51.12), verbatim: "Rules, fixed in advance (per model, per
+  reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond
+  random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1. Else:
+  mixed, report both shares." Amendment (addendum_4_amendment, Dan 20:20), verbatim: "Answer directions on the main
+  test and 47.3 are number words, not digits. For each item, A = the lens atoms of the number words of both readers’
+  answers in O and S (“ six”, “ eight”, “six”, “Six” …; for the lookup the locker digits’ words; for 47.3 all four
+  lockers’ words). Digits stay out of A (not in the dictionary). Report per item how many of the 25 OMP atoms are in A
+  and the share of Δ's energy along A (norms.jsonl). With A empty by construction the test is void; with number words
+  it is real. Lens readout check at the bridge word (CPU, cached states), before the arms are read: the rank of the
+  recall’s answer word (“ six”) and of the lookup’s locker word in the J++ readout at the bridge word at L, on O and S,
+  against the rank of the bridge entity’s token. Report the share of items where an answer word is in the top-10 /
+  top-50. If the answer word is never near the top, the confound cannot apply to E1 and we say so by measurement, not
+  by construction; if it is, arms 2–3 decide. [...] Rules unchanged: arm 3 is read against its controls, not against
+  zero. “Projected out” = the J++ part minus its component along span(A): keep. The E1 lookup is reported beside the
+  recall (its arm-1 loss is ~0, so “can’t tell” is expected and fine). Verdict text must say which case held: “void
+  by construction” is never a verdict; either “the answer word is not read at the bridge word (lens rank > 50 on ≥ 90
+  % of items)” or an arm-based “entity / answer / mixed”." (The elided sentences concern Z2 only.) As computed
+  (scripts/x51_answer.py, exactly as the 9B / 27B / Muse E1 runs and Lightning's coverage run): items = the 122B's X0
+  r2 run qwen35_122b_x0_necessity_r2 at L33 (the main test: d1_topics_v3, alt cf, chat; X0's gate 0.80 per reader:
+  lookup 0.9917, recall 0.85, 410 eligible), its 200 items rebuilt by x0_necessity.build_cases and checked id by id
+  (CPU plan, results/x51_answer/plan-20261029T103809Z: 200 items, 40 bridge entities; |A| median 16; Δ's 25 OMP
+  atoms in A: 0 on all 38 items of the stored x0_atoms run); the gate is the source run's (asserted). E1's source is
+  x51_answer.E1_SOURCE_EXTRA (x45b_binding.MAIN_RUN has no 122B entry and is left as it is). Arms, extra losses,
+  readout check, CIs (cluster bootstrap over the bridge entity, 10,000, seed 0) and the agreement of arm 1 with the
+  stored run item by item exactly as x51_12_e1_9b_r2. Decisive cell: the recall (the lookup beside). The verdict is
+  x51_answer.py verdict --set e1 --coverage (x52_answer-<UTC>/, beside Lightning's E1 coverage run).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "the lens-readout check of the answer word at the edited token (rank > 50 on >= 90 % of items: not read), stated before the arms"
+- "arm 1 against the stored run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "O unedited and the whole change read with the same edits batch"
+n: '200 items (40 bridge entities) of qwen35_122b_x0_necessity_r2 at L33; 3200 reads'
+seeds: [888, 0]
+notes: >-
+  Batch 53, the 122B's 51.12 E1 (Dan 11:30, q122b_1130 item 3: "then 51.12 E1 (answer control)"; after x53_2x2_122b).
+  No prediction (a coverage run on 51.12's already-scored rule); UNVERIFIED; nothing into the README. The source run
+  exists (results/x0_necessity/qwen35_122b_x0_necessity_r2, committed; the command checks it). x51_answer gains the
+  122B as an E1 coverage target (COVERAGE_RUNS, E1_SOURCE_EXTRA, COVERAGE_BATCH / COVERAGE_SPEC for its manifest);
+  its design sets, runs and verdicts are unchanged (tests/test_x51_answer.py). 2x H100 (BJ_DEVICE_MAP=auto,
+  BJ_SUITE_BATCH=16, mem 150 GB as the 122B's X0 r2). Estimate from the ledger: x51_12_e1_27b_r2 173.6 s on 1 GPU;
+  the 122B's forwards ~3x the 27B's on 2 GPUs, plus a ~5 min load: ~12-15 min wall x 2 GPUs ~ 0.4-0.5 GPU-h; entered
+  as 0.5.

@@ -131,7 +131,8 @@ SPEC_IDS["z2p"] = {"qwen3.5-9b": "x53_1b_jsuite_9b", "qwen3.6-27b": "x53_1b_jsui
 # Batch 52 C coverage (jobs/c3/batch52.yaml, amendment 3): the same rules on Lightning, no Q-line; read by verdict
 # --coverage (RUNS and 51.12's own verdict unchanged)
 COVERAGE_RUNS = {
-    "e1": {"nemotron-3.5-lightning": "nem35l_x52_answer"},
+    # the 122B: batch 53, Dan 11:30 (q122b_1130 item 3): 51.12 E1 on its X0 r2 run at L33 (E1_SOURCE_EXTRA)
+    "e1": {"nemotron-3.5-lightning": "nem35l_x52_answer", "qwen3.5-122b-a10b": "qwen35_122b_x51_12_e1"},
     "cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"},  # cue: on 47.3's Lightning run
     "z2": {"nemotron-3.5-lightning": "nem35l_x52_answer_z2"},  # z2: on Lightning's Z2 run (morning brief 3)
 }
@@ -433,6 +434,13 @@ def layer_of(set_name: str, target: str) -> int:
     return Z.LAYERS[target][0] if set_name in ZACH_SETS else X.PREDICTED[target]
 
 
+# E1's source run where x45b_binding.MAIN_RUN has none (the 122B: its X0 r2 run at L33, the main test; x45b_binding left
+# as it is); the batch and spec of such coverage runs
+E1_SOURCE_EXTRA = {"qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}
+COVERAGE_BATCH = {("e1", "qwen3.5-122b-a10b"): 53}
+COVERAGE_SPEC = {("e1", "qwen3.5-122b-a10b"): "x51_12_e1_122b"}
+
+
 def source_of(set_name: str, target: str) -> Path:
     from scripts import x45b_binding as B
     from scripts import x47_cue as CUE
@@ -442,7 +450,7 @@ def source_of(set_name: str, target: str) -> Path:
         part = Z1_SOURCE.get(set_name, set_name)
         return Z.RESULTS / {**Z.RUNS.get(part, {}), **Z.COVERAGE_RUNS.get(part, {})}[target]  # batch 52: Lightning's
     if set_name == "e1":
-        return X.RESULTS / B.MAIN_RUN[target]
+        return X.RESULTS / {**B.MAIN_RUN, **E1_SOURCE_EXTRA}[target]
     if BELOW:
         return CUE.RESULTS / CUE.BELOW_RUNS[target]
     return CUE.RESULTS / {**CUE.RUNS, **CUE.COVERAGE_RUNS}[target]  # batch 52 C: Lightning's 47.3 run (nem35l_x52_cue)
@@ -866,7 +874,7 @@ def manifest(name: str, set_name: str, target: str, layer: int, src: Path) -> di
     )
     return {"exp": EXP, "run": name, "test": "51.12", "set": set_name, "set_text": SET_TEXT[set_name],
             "spec": f"jobs/c3/batch51.yaml (addendum_4 and addendum_4_amendment, 51.12); "
-                    f"jobs/c3/{SPEC_IDS.get(set_name, {}).get(target, 'x52_lightning_answer')}.yaml",
+                    f"jobs/c3/{COVERAGE_SPEC.get((set_name, target)) or SPEC_IDS.get(set_name, {}).get(target, 'x52_lightning_answer')}.yaml",
             "question": f"{QUESTION} ({PREDICTIONS})", "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
             "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
@@ -945,7 +953,8 @@ def stage_run(name: str, set_name: str) -> Path:
         m |= {"question": NO_PREDICTION_JSUITE, "batch": 53, "test": "53.1b", "sealed": "none (53.1b); verdict --jsuite",
               "rules_first_scored": SCORED}  # fmt: skip
     elif target in COVERAGE_RUNS.get(set_name, {}):  # batch 52: no Q-line, opened when it lands
-        m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage); verdict --coverage",
+        batch = COVERAGE_BATCH.get((set_name, target), 52)
+        m |= {"question": NO_PREDICTION, "batch": batch, "sealed": f"none (batch {batch} coverage); verdict --coverage",
               "rules_first_scored": SCORED}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
