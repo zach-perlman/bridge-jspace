@@ -114,7 +114,7 @@ HEATMAP = (
     ("III", "b53-5", "Address, 27B position scenes", ("F differs", "X not designed", "H pattern holds",
                                                       "X not designed")),
     ("III", "t47-0", "Lens readout of the swap", ("H lens blind", "H lens blind", "H lens blind", "H lens blind")),
-    ("III", "b53-2", "Probes on the lens subspace", ("N running", "N running", "N running", "N running")),
+    ("III", "b53-2", "Probes on the lens subspace", ("B in between", "B in between", "H lens blind", "H lens blind")),
     ("III", "t47-10", "Report prompt", ("F neither", "G below gate", "G below gate", "G below gate")),
     ("III", "t49-6", "Report of slot 1, reworded", ("F recovers", "F recovers", "F recovers", "X not designed")),
     ("III", "t51-2", "A few heads take the swap", ("F distributed", "F distributed", "F distributed", "F distributed")),
@@ -157,7 +157,7 @@ HEATMAP = (
 # Dan 11:30 (q122b_1130): the 122B (FP8; MoE, ~10B active) as a fifth heatmap column where a verdict exists (the README
 # agent's mapping, 29 Oct); "not run" elsewhere. ° = its routes gate lowered to 0.75 after the data (0.797 < 0.80)
 HEATMAP_122B = {"lightning-conflict": "H confirmed", ("t51-12", "Item or answer, main test"): "H answer not read",
-                "b53-1": "H order-free", "b53-4": "X not designed",
+                "b53-1": "H order-free", "b53-4": "X not designed", "b53-2": "N running",
                 "x0b": "B mixed", "x5": "H holds",
                 "probe": "D readable",
                 "routes": "G below gate°", "swap": "G below gate°", "order": "D by order"}  # fmt: skip

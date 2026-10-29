@@ -1800,6 +1800,34 @@ def two_sources(plt) -> str:
                        rows, absent, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, ":"), (0.30, "--")))
 
 
+MONITOR = R / "x53_monitor" / "x53_monitor-20261029T124428Z" / "x53_monitor.json"  # 53.2, four models (the 122B running)
+
+
+def monitor(plt) -> str:
+    """53.2 on five slots: the locker slot at the last token, main test, at the layer where the full state peaks: the
+    probe on the lens part's coordinates (k = 25, 100), a random subspace of the same k, an energy-matched random
+    subspace, the full state; whiskers 95%; Lightning hollow; the 122B grey (running)."""
+    v = load(MONITOR)
+    rows = {}
+    for t in SLOT_MODELS:
+        acc = v["results"][t]["main"]["acc"]["T|b"]
+        full = acc["full"]["acc"]
+        i = full.index(max(full))  # the layer where the full state peaks (the verdict's at-one-layer table)
+
+        def at(key, i=i, acc=acc):
+            return [acc[key]["acc"][i], *acc[key]["ci"][i]]
+
+        hollow = t == LT
+        rows[t] = [("k = 25: lens part", at("jpp25"), JPP, hollow), ("k = 25: random", at("rand25"), NULL, hollow),
+                   ("k = 25: energy-matched random", at("erand25"), ADDRESS, hollow),
+                   ("k = 100: lens part", at("jpp100"), JPP, hollow), ("k = 100: random", at("rand100"), NULL, hollow),
+                   ("k = 100: energy-matched random", at("erand100"), ADDRESS, hollow),
+                   ("the full state", at("full"), INK, hollow)]  # fmt: skip
+    return four_panels(plt, "ledger_monitor", "The address is decodable but under-represented in the lens directions",
+                       "The locker slot at the last token, at the full state's best layer; orange: random, the lens part's energy",
+                       rows, {"qwen3.5-122b-a10b": "running"}, "probe accuracy")
+
+
 SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          "qwen3.6-27b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          LT: R / "x49_report" / "x52_report49-20261029T082508Z" / "x49_6.json"}  # fmt: skip
@@ -1889,7 +1917,7 @@ FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_car
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool, two_sources)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool, two_sources, monitor)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
