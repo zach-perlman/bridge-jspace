@@ -1,0 +1,580 @@
+{
+ "runs": [
+  "nem35l_x52_z3"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule",
+ "models": [
+  {
+   "run": "nem35l_x52_z3",
+   "target": "nemotron-3.5-lightning",
+   "layers": [
+    14,
+    27
+   ],
+   "gate": {
+    "cases": 88,
+    "org_read_accuracy": {
+     "K": 1.0
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 52,
+    "over_zach_kept": {
+     "cases": 18,
+     "org_read_accuracy": {
+      "K": 1.0
+     },
+     "pass": true,
+     "eligible": 14
+    },
+    "chosen": 52,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "a fact sentence comes after the pointer sentence": 141,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1,
+       "not three entities (level 1)": 179,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S)": 14,
+       "the three answers are not distinct": 2
+      },
+      "cases": 21
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "a fact sentence comes after the pointer sentence": 126,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S)": 21,
+       "not three entities (level 1)": 179,
+       "the three answers are not distinct": 5
+      },
+      "cases": 27
+     },
+     "jsuite_v2r2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "a fact sentence comes after the pointer sentence": 142,
+       "the three answers are not distinct": 5,
+       "not three entities (level 1)": 179,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S)": 11,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 2
+      },
+      "cases": 19
+     },
+     "jsuite_v2r3_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "a fact sentence comes after the pointer sentence": 133,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S)": 20,
+       "not three entities (level 1)": 179,
+       "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 4,
+       "the three answers are not distinct": 1
+      },
+      "cases": 21
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat",
+     "jsuite_v2r2_test_chat",
+     "jsuite_v2r3_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 16,
+     "jsuite_v2nb_test_chat": 13,
+     "jsuite_v2r2_test_chat": 11,
+     "jsuite_v2r3_test_chat": 12
+    },
+    "chosen_slot_aligned": 27,
+    "chosen_s0_right": 52
+   },
+   "status": "tested",
+   "layer_results": {
+    "14": {
+     "n": 52,
+     "entities": 47,
+     "shares": {
+      "C2": {
+       "none": {
+        "identity": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "whole": {
+        "identity": [
+         0.5192307692307693,
+         0.37493872549019613,
+         0.660377358490566
+        ],
+        "position": [
+         0.09615384615384616,
+         0.0196078431372549,
+         0.18518518518518517
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.38461538461538464,
+         0.25,
+         0.5283018867924528
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp": {
+        "identity": [
+         0.3269230769230769,
+         0.2,
+         0.46296296296296297
+        ],
+        "position": [
+         0.15384615384615385,
+         0.06,
+         0.25925925925925924
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.5192307692307693,
+         0.375,
+         0.660377358490566
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp_rand": {
+        "identity": [
+         0.4807692307692308,
+         0.3333333333333333,
+         0.6226415094339622
+        ],
+        "position": [
+         0.07692307692307693,
+         0.01851010101010102,
+         0.1568627450980392
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.4423076923076923,
+         0.3076923076923077,
+         0.5882352941176471
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      },
+      "C0": {
+       "none": {
+        "identity": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "whole": {
+        "identity": [
+         0.7115384615384616,
+         0.5740740740740741,
+         0.8333333333333334
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.28846153846153844,
+         0.16666666666666666,
+         0.42592592592592593
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp": {
+        "identity": [
+         0.6730769230769231,
+         0.5306122448979592,
+         0.8
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.3269230769230769,
+         0.2,
+         0.46938775510204084
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp_rand": {
+        "identity": [
+         0.6923076923076923,
+         0.5510204081632653,
+         0.8163265306122449
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.3076923076923077,
+         0.1836734693877551,
+         0.4489795918367347
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      }
+     },
+     "verdict": {
+      "clause": "in between (0.05 < position < 0.20: neither clause)",
+      "value_ok": true,
+      "position_ge_0_2": false,
+      "follow_up_45d": false
+     },
+     "slot_aligned": {
+      "n": 27,
+      "position": [
+       0.14814814814814814,
+       0.034482758620689655,
+       0.2962962962962963
+      ]
+     }
+    },
+    "27": {
+     "n": 52,
+     "entities": 47,
+     "shares": {
+      "C2": {
+       "none": {
+        "identity": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "whole": {
+        "identity": [
+         0.019230769230769232,
+         0.0,
+         0.057692307692307696
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.9807692307692307,
+         0.9423076923076923,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp": {
+        "identity": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp_rand": {
+        "identity": [
+         0.019230769230769232,
+         0.0,
+         0.057692307692307696
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.9807692307692307,
+         0.9423076923076923,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      },
+      "C0": {
+       "none": {
+        "identity": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "whole": {
+        "identity": [
+         0.019230769230769232,
+         0.0,
+         0.057692307692307696
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.9807692307692307,
+         0.9423076923076923,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp": {
+        "identity": [
+         0.019230769230769232,
+         0.0,
+         0.057692307692307696
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.9807692307692307,
+         0.9423076923076923,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "no_jpp_rand": {
+        "identity": [
+         0.019230769230769232,
+         0.0,
+         0.057692307692307696
+        ],
+        "position": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "value": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "original": [
+         0.9807692307692307,
+         0.9423076923076923,
+         1.0
+        ],
+        "other": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      }
+     },
+     "verdict": {
+      "clause": "no position route in his layout: the address is a property of listed layouts",
+      "value_ok": true,
+      "position_ge_0_2": false,
+      "follow_up_45d": false
+     },
+     "slot_aligned": {
+      "n": 27,
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

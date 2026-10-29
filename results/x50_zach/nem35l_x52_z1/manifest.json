@@ -1,0 +1,84 @@
+{
+  "exp": "x50_zach",
+  "run": "nem35l_x52_z1",
+  "part": "z1",
+  "test": "Z1",
+  "spec": "jobs/c3/batch50.yaml",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-29T01:17:36Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "bdf5a74214da5a8a7857cdf410fddbe6bc5be3a8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "inputs": {
+    "jobs/c3/batch50.yaml": "bcb685220e1bb8f48313b41b97bedb8398fbad624eed61cca256436a14f811b3",
+    "data/tasks_v2/jsuite_v2_test_chat/items.jsonl": "a45bdde20c8280a3483d3133f78294503dccc8ceaa4765e77d36334a0639784a",
+    "data/tasks_v2/jsuite_v2nb_test_chat/items.jsonl": "93dbd3de18dce737bac637cc89a406e9845ec885ac0543ea0983e234c229dde5"
+  },
+  "sets": [
+    "jsuite_v2_test_chat",
+    "jsuite_v2nb_test_chat"
+  ],
+  "words": [
+    "PK",
+    "PM"
+  ],
+  "layers": [
+    14,
+    27
+  ],
+  "n_items": 200,
+  "gate": 0.8,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "cf_seed": 5001,
+  "patch": "the last token of the pointer sentence's name",
+  "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
+  "desc_competence": null,
+  "rule": "Per model: gap >= 0.3 and lookup extra loss <= 0.10 -> \"the split holds on his passages\"; lookup >= 0.20 -> \"the lookup follows the lens here\"; else in between. Order split (after the gate, before the data): items where the bridge's fact sentence comes before the pointer sentence vs after. \"The order pattern replicates\" if the lookup's switch under the whole change is >= 2x higher fact-first than fact-after (both CIs), as in our 65-89 % vs 9-19 %. Hard-read stratum (v3 flag): the gap within hard-read items within 0.15 of the easy items -> \"not a lookup-difficulty effect\".",
+  "as_computed": "Extra loss = X0's excess = Jdep - Rdep = (S_no_jpp_rand - S_no_jpp) / S_whole per reader over the chosen passages (J++: signed OMP, k = 25); switch = the top token is the first token of the other entity's answer; gap = the M reader's extra loss minus the K reader's on the same cluster-bootstrap draws (over the original bridge entity, 10,000 resamples, seed 0, 95% intervals). Point estimates decide (EPS 1e-9); an undefined extra loss (no switch under the whole change) holds no clause (\"can't tell\"). X0's validity bar (S_whole >= 0.30 and >= 30 switches) per reader beside, not in the rule. Muse: the rule at L26 and at L36, both reported. Z1 order: the K reader's whole-change switch share, fact-first vs fact-after by the original bridge's fact sentence (K passage) against the pointer sentence; replicates iff fact-first >= 2 x fact-after (point estimates; each stratum's interval beside, and whether they separate). Hard-read: no flag in v2, so not tested.",
+  "beside": {
+    "full": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+    "question": "nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1"
+  },
+  "seeds": {
+    "cf_order": 5001,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q50.1 answer",
+  "batch": 52,
+  "items": 200
+}

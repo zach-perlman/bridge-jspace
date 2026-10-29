@@ -1,0 +1,291 @@
+{
+ "cases": 88,
+ "org_read_accuracy": {
+  "K": 1.0
+ },
+ "gate": 0.8,
+ "pass": true,
+ "eligible": 52,
+ "over_zach_kept": {
+  "cases": 18,
+  "org_read_accuracy": {
+   "K": 1.0
+  },
+  "pass": true,
+  "eligible": 14
+ },
+ "chosen": 52,
+ "counts": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 141,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 14,
+    "the three answers are not distinct": 2
+   },
+   "cases": 21
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 126,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 21,
+    "not three entities (level 1)": 179,
+    "the three answers are not distinct": 5
+   },
+   "cases": 27
+  },
+  "jsuite_v2r2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 142,
+    "the three answers are not distinct": 5,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 11,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 2
+   },
+   "cases": 19
+  },
+  "jsuite_v2r3_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 133,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 20,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 4,
+    "the three answers are not distinct": 1
+   },
+   "cases": 21
+  }
+ },
+ "sets_used": [
+  "jsuite_v2_test_chat",
+  "jsuite_v2nb_test_chat",
+  "jsuite_v2r2_test_chat",
+  "jsuite_v2r3_test_chat"
+ ],
+ "chosen_sets": {
+  "jsuite_v2_test_chat": 16,
+  "jsuite_v2nb_test_chat": 13,
+  "jsuite_v2r2_test_chat": 11,
+  "jsuite_v2r3_test_chat": 12
+ },
+ "order": [
+  [
+   "jsuite_v2_test_chat",
+   "j2:animals:P-L0-seahorse-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:P-L0-Barcelona-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:P-L0-Bruges-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:P-L0-Toronto-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:P-L0-Lacoste-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:P-L0-Volvo-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:P-L0-Bolivia-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-bouillabaisse-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-butter chicken-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-dosa-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:landmarks:P-L0-Saint Basil's Cathedral-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Argentina-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Italy-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Tunisia-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Turkey-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:P-L0-Mozart-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:P-L0-Chengdu-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:P-L0-Copenhagen-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:P-L0-Istanbul-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Ferrero-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Gucci-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Hyundai-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:P-L0-Bhutan-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:P-L0-Uruguay-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:dishes:P-L0-goulash-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:P-L0-Monaco-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Michelangelo-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Smetana-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Vivaldi-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Guadalajara-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Naples-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Shanghai-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Turin-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:countries:P-L0-Canada-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:dishes:P-L0-guacamole-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:landmarks:P-L0-the Sagrada Familia-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:languages:P-L0-Angola-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:languages:P-L0-Tunisia-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:languages:P-L0-Turkey-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:people:P-L0-Picasso-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Istanbul-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Lisbon-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Moscow-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Turin-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:companies:P-L0-Adidas-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:companies:P-L0-Carlsberg-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:countries:P-L0-Portugal-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:dishes:P-L0-paella-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:dishes:P-L0-tiramisu-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:landmarks:P-L0-Uluru-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Bach-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Mozart-0"
+  ]
+ ],
+ "chosen_slot_aligned": 27,
+ "chosen_s0_right": 52
+}
