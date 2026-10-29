@@ -462,6 +462,23 @@ decisions_1210: |
      Lightning (0.25-0.30 each), barely on the 27B and Muse (<= 0.11), the same
      split as the address swap's collateral". One flag: the 53.6 labels ignore
      magnitude (a rule design issue, mine).
+decisions_1210b_received: "29 Oct ~12:19 Paris (Dan, second message headed 12:10)"
+decisions_1210b: |
+  Decisions (Dan, 12:10):
+  1. 53.8: keep your construction (uncentered, dose 1x = ||Δ|| at the bridge
+     word, as in 52) as the pre-specified arm, rule unchanged. Add, now, before
+     any run: a centered arm (X's vector minus the mean over slots), same doses,
+     same controls (random of the same norm; Y's centered version), the same
+     rule thresholds reported for it beside. Report the slot-vector cosines and
+     the norm of the slot-specific part.
+  2. Verification pack: N = 10 per view across models, as you read it. Do not
+     add the 122B E1; one line in the pack: "the 122B's answer control landed
+     after the sample was fixed; not in the hand-check".
+  3. 53.7: noted. In the card, name both caveats: tool output as prose (JSON is
+     covered by x0b_v2), and the bridge ~250 tokens later in the tool format,
+     not separated from the format (47.16's distance robustness beside). The
+     probe only shows the address is readable; the routes test decides whether
+     the lookup uses it.
 decisions_1210_coordinator_note: >-
   Disclosure (coordinator): before this decision the coordinator had pulled and read both 53.7 address-probe box
   verdicts and reported them to Dan (~12:05-12:15): the 9B's code format failed X0's two-reader gate on the recall
