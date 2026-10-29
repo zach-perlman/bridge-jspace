@@ -1,0 +1,51 @@
+id: x53_1b_jsuite_27b
+title: "Batch 53, 53.1b on qwen3.6-27b at L32: jsuite PP vs MP, 51.12's arms with the readout check first on MP / MM (Zach's described bridge, made-up facts), PP / PM beside from the z1p run; without J++ / without J++ minus the answer atoms / without the answer atoms, each against a random part, arm 3 also against the frequency-matched control; 51.12's rules verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+depends_on: [x53_1b_mp_27b]
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x50_zach/x53_z2p_27b/outcomes.jsonl &&
+  uv run python scripts/x51_answer.py run --set z2p --name x53_answer_z2p_27b &&
+  uv run python scripts/x51_answer.py verdict --jsuite
+question: >-
+  Does what each reader follows in the lens part at the bridge depend on where the bridge comes from? PP: the passage
+  names the bridge before the question; MP: the question describes the bridge, so the question is known at the bridge
+  token. Both read a made-up value stated in the passage (a word answer).
+why_it_matters: >-
+  Batch 53 (jobs/c3/batch53.yaml standing_rules_0950, Dan 29 Oct ~09:50), priority 1: "53.1b: jsuite PP vs MP, 51.12's
+  arms + readout, 9B then 27B. No new scenes needed." 53.1 asks the same on our locker scenes (question position x
+  answer type); on Zach's passages the two starts give the question-position contrast with word answers and no new
+  scenes.
+hypotheses:
+  none: "No prediction (batch 53: rules fixed, no predictions)."
+decision_rule: >-
+  51.12's rules verbatim (jobs/c3/batch51.yaml addendum_4, 51.12; first scored in
+  results/x51_answer/x51_12-20261028T201842Z): "Rules, fixed in advance (per model, per reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1. Else: mixed, report both shares." With addendum_4_amendment (Dan 20:20) as for Z2 and the z1p cells: the readout
+  check first ("the answer word is not read at the bridge word (lens rank > 50 on ≥ 90 % of items)" decides before the
+  arms; never "void by construction"); A = the first token of each answer word and variant (letter tokens; a split
+  answer word keeps its first token); arm 3 against both its controls, the same-size random part and the
+  frequency-matched part (no_F), a label holding only against both. As computed: jobs/c3/x52_answer_z1p_27b.yaml's text
+  unchanged (e_k = X0's excess (S_rand_k - S_k) / S_whole per reader; arm 1 no_jpp, arm 2 no_jpp_A = Δ - (I - P_A) P_J
+  Δ, arm 3 no_A = Δ - P_A Δ, each against a random part of its share, seed 888 + L; point estimates decide, EPS 1e-9;
+  cluster bootstrap over the bridge entity, 10,000, seed 0) on MP / MM: items = the source run x53_z2p_27b's
+  chosen passages (x50_zach part z2p; its gate 0.80 per reader, failed = not tested), rebuilt by x50_zach.encode and
+  checked id by id; Δ per reader from its own O / S prompts at the description's last token; the read: x50_zach's (top
+  token after the prompt, no prefill = the other entity's answer's first token: MP the made-up value its passage states,
+  MM the true fact); L32. Per cell (PP, MP, PM, MM) 51.12's label; PP / PM are the existing z1p run
+  x52_answer_z1p_27b, read again with the same code. No rule across the cells (Dan gave none for 53.1b; 53.1's
+  across-cell rule is for the locker-scene 2x2 and is not applied here). Decisive cells: both readers. Cells under 30
+  switches left out (amendment 3). Verdict in the job: x51_answer.py verdict --jsuite
+  (results/x51_answer/x53_jsuite-<UTC>/, never the default x51_12-<UTC>/ prefix; the 9B cells from qwen35_9b_x53_answer_z2p when it is in
+  this checkout, else pending).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "arm 3 also against a frequency-matched part: |A| unrelated letter atoms, BPE id within a factor 2 and the closest J++ readout norm (no_F)"
+- "the lens-readout check of the answer word at the edited token (rank > 50 on >= 90 % of items: not read), stated before the arms"
+- "arm 1 against the source run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "PP / PM (the z1p run, the bridge named in the passage) beside MP / MM on the same model and layer"
+n: "the chosen passages of x53_z2p_27b (up to 200) at L32; PP / PM: 200 (x52_answer_z1p_27b)"
+seeds: [888, 0]
+notes: "Batch 53, 53.1b, step 2 of 2 on the 27B (coordinator ~09:55 Paris: 9B then 27B, box speedup), depends_on x53_1b_mp_27b (its source in this box's checkout; checked before loading). Code: x51_answer gains the set z2p (MP_SETS; read as Z2: each reader's own Δ, word answers, x50_zach's read and route, the frequency-matched control; source x50_zach's z2p run; COVERAGE_RUNS['z2p'] for the 9B and 27B) and verdict --jsuite (the z1p and z2p runs of the 9B and 27B, 51.12's labels per cell, a PP / MP / PM / MM table; x53_jsuite-<UTC>/); 51.12's design sets, the z1k / z1p cells and their verdicts unchanged; tested (tests/test_x51_answer.py: items rebuilt from a fake z2p source run, the verdict on the committed z1p runs with MP pending). Reading of 53.1b, flagged for the coordinator: PP / MP are Zach's word codes (start + final): PP = P start, P final; MP = M start, P final; the recall beside each (PM, MM), as in the z1p cells. Wallclock: x52_answer_z1p_27b 664 s, x51_12_z2_27b_r2 532 s: est ~10-15 min, 0.25 GPU-h. Same code as the 9B spec (commit 1bff0437). UNVERIFIED; results into EXPERIMENTS.md."
