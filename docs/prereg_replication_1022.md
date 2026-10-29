@@ -2901,3 +2901,22 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Clamp bands: L6-20 (where the bridge is used) and L27-33 (the breadth band).
   - Queue: scripts/queues/h200_rep3L_1029.sh.
 - **Bolt** waits for every one of these jobs.
+
+##### Amendment 58 note 24 (Zach, 2026-10-29 ~07:30 UTC; the set was generated and checked for format only, no model run): cue-conflict descriptions, to block the memory twin's shortcut (9B, 27B)
+- **Why.** A v4 description's own words can point at the memory twin's answer without the person ("wrote Things Fall Apart" -> Nigerian). The lookup is immune: its value is made up and bound to the name.
+- **Set: jsuite_v4cc** (scripts/jsuite_v4cc.py, seed 4101; data/tasks_v2/jsuite_v4cc_test_chat sha256 9f7fe7254c0793a9…, controls jsuite_v4ctlcc_test_chat 9033a001ca5184ad…).
+  - 50 people with an unambiguous nationality in v4's vocabulary. Each has two descriptions:
+    - conflict: the description's salient association is another nationality, the cue ("wrote A Passage to India": cue Indian, answer English);
+    - aligned: the association is the person's own ("wrote Howards End").
+  - Facts are well known and were checked by hand when written.
+  - v4's format otherwise: 6 people per scene, made-up values (never an entity's own nationality, never X's, never X's cue), two wordings. 198 scenes: 100 conflict, 98 aligned.
+  - Words: MP, MM, H1, RG, RO. New people carry their facts on the item (scripts/jswap.table, extra_facts).
+- **Runs per model** (9B, then the 27B):
+  - competence MP MM, and controls H1 RG RO;
+  - note 15's arms (own and rel) on MM at the model's decisive cells (9B final L21-24, L25-28, last L12-16; 27B final L49-56, last L24-31, L32-40), v4ok, donor seeds 0 and 1;
+  - note 20's knock-out at the breadth band.
+- **Readings (scripts/nn_cc_read.py, split by description type):**
+  1. **Behaviour.** MM accuracy on conflict vs aligned descriptions (among items whose closed-book hop 1 and hop 2 alone are right). Among conflict MM errors: the share answering the cue, against the share any one wrong nationality would get by chance (1/33). "The shortcut is taken" if the cue share is >= 3x chance with a bootstrap interval above it.
+  2. **Shortcut-free answer.** Dan's rule (note 15) on conflict MM items only, at the decisive final cells. If it says "the lens part is the answer" on conflict items, the lens holding the answer is not an artefact of the description's association. Aligned items are reported beside.
+  3. **Knock-out.** The memory-vs-lookup loss gap (note 20) on conflict items and on aligned items. "The recall's lens dependence survives the shortcut block" if the conflict gap is >= 10 points with an interval above 0.
+- **Queue.** scripts/queues/h200_cc_1029.sh, before Bolt. 9B on GPU1 beside the 27B chain; 27B on GPU1 after Lightning's last job. A smoke runs first.

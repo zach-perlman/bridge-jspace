@@ -78,7 +78,10 @@ def table(it: dict) -> dict:
             from scripts import jsuite_v3_tables as T3
 
             _T3.update(T3.tables())
-        return _T3[it["relation"]]
+        t = _T3[it["relation"]]
+        if it.get("extra_facts"):  # note 24 (jsuite_v4cc): people outside v3's tables carry their facts on the item
+            t = {**t, "facts": {**t["facts"], **{e: tuple(v) for e, v in it["extra_facts"].items()}}}
+        return t
     return TB.REL2[it["relation"]]
 
 
