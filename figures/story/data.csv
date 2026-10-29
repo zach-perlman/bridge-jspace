@@ -4812,6 +4812,16 @@ ledger_heads,muse-glimmer-30b,"last token, top 10: share of the swap's switch cu
 ledger_heads,muse-glimmer-30b,"last token, top 10: random sets' mean cut",0.0092,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
 ledger_heads,muse-glimmer-30b,"last token, best layer: share of the swap's switch cut",0.019607843137254877,-0.007246376811594018,0.04761904761904767,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
 ledger_heads,muse-glimmer-30b,"last token, best layer: random sets' mean cut",0.0523,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 1: share of the swap's switch cut",-0.016000000000000014,-0.040000000000000036,0.0,250,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 1: random sets' mean cut",-0.0048,,,,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 3: share of the swap's switch cut",-0.016000000000000014,-0.040000000000000036,0.0,250,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 3: random sets' mean cut",-0.0128,,,,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 5: share of the swap's switch cut",0.016000000000000014,-0.021428571428571574,0.05691056910569103,250,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 5: random sets' mean cut",-0.0112,,,,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 10: share of the swap's switch cut",0.040000000000000036,0.014703198797767237,0.07070707070707061,250,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, top 10: random sets' mean cut",0.0112,,,,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, best layer: share of the swap's switch cut",-0.008000000000000007,-0.06086956521739118,0.035211267605633756,250,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
+ledger_heads,nemotron-3.5-lightning,"last token, best layer: random sets' mean cut",0.0336,,,,results/x51_heads/x52_heads-20261029T015136Z/verdict.json
 ledger_full_carrier,qwen3.5-9b,"fact-first, lookup, one layer: switches lost beyond random",0.1923076923076923,0.10447761194029848,0.29546254801536487,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
 ledger_full_carrier,qwen3.5-9b,"fact-first, recall, one layer: switches lost beyond random",0.5308641975308642,0.4303797468354431,0.6352941176470589,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
 ledger_full_carrier,qwen3.5-9b,"fact-first, lookup, every layer to L: switches lost beyond random",0.10465116279069775,0.04544177732379977,0.17283950617283939,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
@@ -5437,6 +5447,66 @@ ledger_attention,muse-glimmer-30b,"best head L39:h1, last token: attention moved
 ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, pairs that switched",1.7785323858261108,1.7462258315425228,1.8121964629863436,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
 ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, pairs that did not",0.31194812059402466,0.23301540097165296,0.3936180711003679,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
 ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, a random vector (switched pairs)",-0.0009302759426645935,-0.005221614201605577,0.003060512713047193,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
+ledger_distance,qwen3.5-9b,0 neutral sentences: position under the whole change,0.5458715596330275,0.4750933908045977,0.6217648802619029,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,5 neutral sentences: position under the whole change,0.48623853211009177,0.43333333333333335,0.5400026737967915,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,20 neutral sentences: position under the whole change,0.5504587155963303,0.4754083929808358,0.6233183856502242,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,50 neutral sentences: position under the whole change,0.5688073394495413,0.5064921130371773,0.6302083333333334,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,0 neutral sentences: identity under the whole change,0.44495412844036697,0.37142857142857144,0.5128205128205128,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,5 neutral sentences: identity under the whole change,0.4908256880733945,0.436617930935869,0.5445050758301994,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,20 neutral sentences: identity under the whole change,0.4036697247706422,0.3317757009345794,0.4782608695652174,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,50 neutral sentences: identity under the whole change,0.38990825688073394,0.32954545454545453,0.45360950465174754,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,0 neutral sentences: the swap: lookups sent to the target,0.4243119266055046,0.37988625376020624,0.468327417173766,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,5 neutral sentences: the swap: lookups sent to the target,0.33256880733944955,0.2961158268698812,0.37055837563451777,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,20 neutral sentences: the swap: lookups sent to the target,0.3256880733944954,0.2857142857142857,0.36424025702257556,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.5-9b,50 neutral sentences: the swap: lookups sent to the target,0.3532110091743119,0.3101595816692615,0.398989898989899,218,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+ledger_distance,qwen3.6-27b,0 neutral sentences: position under the whole change,0.3333333333333333,0.2785234899328859,0.38869287299108973,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,5 neutral sentences: position under the whole change,0.30666666666666664,0.2614096095812901,0.3520006230529595,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,20 neutral sentences: position under the whole change,0.31,0.26148409893992935,0.3573670281103859,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,50 neutral sentences: position under the whole change,0.23666666666666666,0.1881918819188192,0.28481108553893364,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,0 neutral sentences: identity under the whole change,0.66,0.6060606060606061,0.7137809187279152,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,5 neutral sentences: identity under the whole change,0.6833333333333333,0.6405693950177936,0.7266899144060504,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,20 neutral sentences: identity under the whole change,0.68,0.6366776443885669,0.7250859106529209,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,50 neutral sentences: identity under the whole change,0.75,0.7047619047619048,0.7959183673469388,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,0 neutral sentences: the swap: lookups sent to the target,0.24166666666666667,0.20158549783549784,0.2846161048689138,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,5 neutral sentences: the swap: lookups sent to the target,0.2916666666666667,0.25186532614704255,0.3310810810810811,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,20 neutral sentences: the swap: lookups sent to the target,0.255,0.21117933733422864,0.3020495905642856,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,qwen3.6-27b,50 neutral sentences: the swap: lookups sent to the target,0.205,0.16559485530546625,0.24744113489847275,300,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,0 neutral sentences: position under the whole change,0.47738693467336685,0.39593908629441626,0.5588235294117647,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,5 neutral sentences: position under the whole change,0.45226130653266333,0.35436893203883496,0.5528465056285178,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,20 neutral sentences: position under the whole change,0.41708542713567837,0.33943787902348005,0.4975387135550475,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,50 neutral sentences: position under the whole change,0.44221105527638194,0.36416184971098264,0.5195530726256983,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,0 neutral sentences: identity under the whole change,0.5226130653266332,0.4411764705882353,0.6040609137055838,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,5 neutral sentences: identity under the whole change,0.542713567839196,0.4438495163131647,0.6392478657639092,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,20 neutral sentences: identity under the whole change,0.5678391959798995,0.48765201768933114,0.6463431478237435,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,50 neutral sentences: identity under the whole change,0.5477386934673367,0.4715868506493507,0.625,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,0 neutral sentences: the swap: lookups sent to the target,0.5276381909547738,0.4684452070081464,0.5863642313184197,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,5 neutral sentences: the swap: lookups sent to the target,0.4849246231155779,0.43611015981735163,0.5364077669902912,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,20 neutral sentences: the swap: lookups sent to the target,0.4899497487437186,0.4476411511860901,0.5315540367910067,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_distance,nemotron-3.5-lightning,50 neutral sentences: the swap: lookups sent to the target,0.4798994974874372,0.4292201010395414,0.5289876137512639,199,results/x47_distance/x52_distance-20261029T023426Z/x47_16.json
+ledger_gain,qwen3.5-9b,"recall J(2,0): switch rate",0.5466666666666666,0.420276435856146,0.6716476212686567,75,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.5-9b,"recall J(0,2)-U: switch rate",0.76,0.6567164179104478,0.8611217948717947,75,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.5-9b,"recall R(2,0): switch rate",0.24,0.14084507042253522,0.3424657534246575,75,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.5-9b,"lookup J(2,0): switch rate",0.02666666666666667,0.0,0.06896551724137931,75,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.5-9b,"lookup J(0,1): switch rate",0.9066666666666666,0.8243243243243243,0.971830985915493,75,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.5-9b,the rule's label,(c) neither,,,,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,"recall J(2,0): switch rate",0.2318840579710145,0.12698412698412698,0.346673469387755,69,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,"recall J(0,2)-U: switch rate",0.4492753623188406,0.3387096774193548,0.5616438356164384,69,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,"recall R(2,0): switch rate",0.014492753623188406,0.0,0.046875,69,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,"lookup J(2,0): switch rate",0.07246376811594203,0.017543859649122806,0.13043478260869565,69,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,"lookup J(0,1): switch rate",0.7971014492753623,0.6983942414174972,0.8961150918047468,69,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,qwen3.6-27b,the rule's label,(c) neither,,,,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,"recall J(2,0): switch rate",0.23529411764705882,0.10144468904788113,0.373134328358209,68,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,"recall J(0,2)-U: switch rate",0.20588235294117646,0.09090909090909091,0.34146341463414637,68,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,"recall R(2,0): switch rate",0.014705882352941176,0.0,0.05084745762711865,68,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,"lookup J(2,0): switch rate",0.0,0.0,0.0,68,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,"lookup J(0,1): switch rate",0.8088235294117647,0.7096774193548387,0.9091200466200462,68,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,muse-glimmer-30b,the rule's label,(c) neither,,,,results/x49_gain/x49_1-20261028T154510Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,"recall J(2,0): switch rate",0.6440677966101694,0.5079304029304029,0.7843137254901961,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,"recall J(0,2)-U: switch rate",0.7288135593220338,0.6041666666666666,0.8387096774193549,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,"recall R(2,0): switch rate",0.423728813559322,0.30612244897959184,0.5384615384615384,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,"lookup J(2,0): switch rate",0.1016949152542373,0.03508771929824561,0.18,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,"lookup J(0,1): switch rate",0.9322033898305084,0.8596491228070176,0.984375,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_gain,nemotron-3.5-lightning,the rule's label,(c) neither,,,,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

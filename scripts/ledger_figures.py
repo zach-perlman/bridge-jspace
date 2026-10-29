@@ -26,6 +26,7 @@ ANSWER_LIGHTNING = R / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.j
 ADDR = R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json"
 DAS = R / "x51_das" / "verdict-20261028T194630Z" / "verdict.json"
 HEADS = R / "x51_heads" / "x51_2-20261028T190358Z" / "verdict.json"
+HEADS_L = R / "x51_heads" / "x52_heads-20261029T015136Z" / "verdict.json"  # Lightning's coverage run
 CARRIER = R / "x51_carrier" / "x51_7-20261028T171646Z" / "verdict.json"
 CARRIER_L = R / "x51_carrier" / "x52_carrier-20261029T014338Z" / "verdict.json"  # Lightning's coverage run
 TRAVEL = R / "x51_travel" / "x51_4-20261028T173333Z" / "verdict.json"
@@ -218,19 +219,20 @@ def learned(plt) -> str:
 
 
 def heads(plt) -> str:
-    """Per model, the share of the address swap's switch cut by mean-ablating the top 1, 3, 5, 10 heads and every head
-    of the best layer at the last token; the mean of five random head sets of the same size beside (grey)."""
-    v = load(HEADS)
-    by = {r["target"]: r for r in v["results"]}
+    """Per model (9B, 27B, Muse, Lightning), the share of the address swap's switch cut by mean-ablating the top 1, 3,
+    5, 10 heads and every head of the best layer at the last token; the mean of five random head sets of the same size
+    beside (grey)."""
+    by = {r["target"]: (r, path) for path in (HEADS, HEADS_L) for r in load(path)["results"]}
     sets = ("top1", "top3", "top5", "top10", "best_layer")
     names = ("top 1", "top 3", "top 5", "top 10", "best layer")
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.5), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.2, wspace=0.12)
     S.title(fig, "No small set of heads carries the swapped address",
             "Share of the swap's switch cut by ablating heads at the last token; grey: random heads, same size")  # fmt: skip
-    for ax, (t, name) in zip(axes, MODEL3, strict=True):
-        ax.set_title(name, fontsize=12, weight="bold", loc="left")
-        site = by[t]["sites"]["last"]
+    for ax, t in zip(axes, SHORT, strict=True):
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        r, src = by[t]
+        site = r["sites"]["last"]
         for i, s in enumerate(sets):
             c = site["cells"][s]["cut"]
             ax.plot([i, i], [c[1], c[2]], color=ADDRESS, lw=1.6)
@@ -238,9 +240,9 @@ def heads(plt) -> str:
             rnd = site["random"][s]["cut_mean"]
             ax.plot([i + 0.25], [rnd], "o", color=NULL, ms=5)
             S.record("ledger_heads", t, f"last token, {names[i]}: share of the swap's switch cut", *c,
-                     n=site["cells"][s]["n"], source=rel(HEADS))  # fmt: skip
+                     n=site["cells"][s]["n"], source=rel(src))  # fmt: skip
             S.record("ledger_heads", t, f"last token, {names[i]}: random sets' mean cut", round(rnd, 4),
-                     source=rel(HEADS))  # fmt: skip
+                     source=rel(src))  # fmt: skip
         ax.axhline(0, color="#999999", lw=0.8)
         ax.axhline(0.5, color="#555555", lw=0.9, ls=":")
         ax.set_xticks(range(len(sets)), names, rotation=35, ha="right")
@@ -850,9 +852,85 @@ def attention(plt) -> str:
     return save(fig, "ledger_attention")
 
 
+# ---- the swap after neutral sentences (47.16) and the gain map (49.1) -----------------------------------------------
+
+DISTANCE = (R / "x47_distance" / "x47_16-20261028T131501Z" / "x47_16.json",
+            R / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json")  # fmt: skip
+GAIN = (R / "x49_gain" / "x49_1-20261028T154510Z" / "x49_1.json",
+        R / "x49_gain" / "x52_gain-20261029T021814Z" / "x49_1.json")  # fmt: skip
+
+
+def distance(plt) -> str:
+    """Per tested model, by the number of neutral sentences k before the picks: the position and identity shares of the
+    lookup under the whole change, and the address swap's share sent to the target (dose 2)."""
+    runs = [(m, path) for path in DISTANCE for m in load(path)["models"] if m["status"] == "tested"]
+    ks = ("0", "5", "20", "50")
+    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.6), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
+    S.title(fig, "The address survives fifty neutral sentences",
+            "Lookups under the whole change by route, and the swap's lookups sent to the target, by sentences added")  # fmt: skip
+    ident = S.MARK_COL["identity"]
+    for ax, (m, path) in zip(axes, runs, strict=True):
+        t = m["target"]
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        series = (("position under the whole change", ADDRESS, "o", "-",
+                   [m["cells"][k]["routes"]["whole"]["position"] for k in ks]),
+                  ("identity under the whole change", ident, "o", "-",
+                   [m["cells"][k]["routes"]["whole"]["identity"] for k in ks]),
+                  ("the swap: lookups sent to the target", ADDRESS, "^", "--",
+                   [m["cells"][k]["swap"]["write"] for k in ks]))  # fmt: skip
+        for lab, col, mk, ls, vals in series:
+            xs = range(len(ks))
+            ax.plot(xs, [v[0] for v in vals], ls, marker=mk, color=col, lw=1.6, ms=6)
+            for x, v in zip(xs, vals, strict=True):
+                ax.plot([x, x], [v[1], v[2]], color=col, lw=1.2)
+            for k, v in zip(ks, vals, strict=True):
+                S.record("ledger_distance", t, f"{k} neutral sentences: {lab}", *v, n=m["cells"][k]["n"],
+                         source=rel(path))  # fmt: skip
+        ax.set_xticks(range(len(ks)), ks)
+        ax.set_xlabel("neutral sentences added")
+        ax.set_ylim(0, 1.0)
+    axes[0].set_ylabel("share of lookups")
+    axes[-1].text(0.98, 0.97, "blue: identity\norange: position\ndashed: the swap", transform=axes[-1].transAxes,
+                  ha="right", va="top", fontsize=S.LABEL_PT, color=S.COL["muted"])  # fmt: skip
+    return save(fig, "ledger_distance")
+
+
+def gain(plt) -> str:
+    """Per model, the five cells the gain map's rule reads (recall at (2,0) and at (0,2) without the address, the
+    recall's random corner R(2,0), the lookup at (2,0) and at (0,1)), each with the rule's bar as a tick."""
+    runs = [(m, path) for path in GAIN for m in load(path)["models"]]
+    cells = (("recall", "J(2,0)", "recall,\nlens part x2", INK, 0.5),
+             ("recall", "J(0,2)-U", "recall, rest x2\nno address", INK, 0.5),
+             ("recall", "R(2,0)", "recall,\nrandom x2", NULL, 0.15),
+             ("lookup", "J(2,0)", "lookup,\nlens part x2", LOOKUP, 0.10),
+             ("lookup", "J(0,1)", "lookup,\nrest x1", LOOKUP, 0.6))  # fmt: skip
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.9))
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.7, bottom=0.25)
+    S.title(fig, "The gain map fits neither reading on any model",
+            "The five cells the rule reads, per model; ticks: the rule's bars")  # fmt: skip
+    w = 0.16
+    for i, (m, path) in enumerate(runs):
+        t = m["target"]
+        for j, (reader, arm, _lab, col, bar) in enumerate(cells):
+            v = m["readers"][reader]["rate"][arm]
+            x = i + (j - 2) * w
+            ax.bar(x, v[0], width=w * 0.9, color=col, alpha=0.85 if col != NULL else 1.0)
+            ax.plot([x, x], [v[1], v[2]], color="#222222", lw=1.0)
+            ax.plot([x - w * 0.45, x + w * 0.45], [bar, bar], color="#c0392b", lw=1.6)
+            S.record("ledger_gain", t, f"{reader} {arm}: switch rate", *v, n=m["n"], source=rel(path))
+        S.record("ledger_gain", t, "the rule's label", m["label"], source=rel(path))
+    ax.set_xticks(range(len(runs)), [f"{SHORT[m['target']]}\n{m['label']}" for m, _ in runs])
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("switch rate")
+    ax.text(0.0, -0.32, "per model, left to right: " + "; ".join(c[2].replace("\n", " ") for c in cells),
+            transform=ax.transAxes, fontsize=S.LABEL_PT - 1, color=S.COL["muted"])  # fmt: skip
+    return save(fig, "ledger_gain")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
            clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split, attention)  # fmt: skip
+           order_split, attention, distance, gain)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
