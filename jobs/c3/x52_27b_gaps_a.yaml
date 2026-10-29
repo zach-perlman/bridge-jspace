@@ -1,0 +1,38 @@
+id: x52_27b_gaps_a
+title: "Batch 52 C coverage (27B gaps outside the key rows, 1 of 3): 47.4 cumulative patches, 47.16 the swap after neutral sentences, 47.14 chained addresses, on Qwen3.6-27B at L32, each with its existing rule; one job, one GPU; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 1.1
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)";
+  uv run python scripts/x47_cumulative.py run --name x47_cumulative_27b --why "Batch 52 C coverage (amendment 2): 47.4 on the 27B at L32 (its spec x47_4_27b, never run); $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_cumulative/x47_cumulative_27b/coverage.txt;
+  uv run python scripts/x47_distance.py run --name x47_16_27b --why "Batch 52 C coverage (amendment 2): 47.16 on the 27B at L32; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_distance/x47_16_27b/coverage.txt;
+  uv run python scripts/x47_chain.py run --name x47_14_27b --why "Batch 52 C coverage (amendment 2): 47.14 on the 27B at L32; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_chain/x47_14_27b/coverage.txt;
+  echo "exit 47.4=$a 47.16=$b 47.14=$c"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0
+question: >-
+  On Qwen3.6-27B, the three batch-47 tests the 9B and Muse ran and the 27B never did: are the lookups the change at L
+  misses read from the bridge word before L (47.4); does the address swap survive 5 / 20 / 50 neutral sentences
+  (47.16); does a chained (hall -> locker) address behave as the locker address (47.14)?
+why_it_matters: >-
+  Amendment 2: the 27B (tier 1) fills every gap of the coverage matrix (rows E11 47.4, E6 47.16, chained addresses
+  47.14).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse: 47.4 = jobs/c3/x47_4_27b.yaml's
+  decision_rule (written for the 27B before batch 47 ran; results/x47_cumulative/x47_4-20261028T113105Z); 47.16 =
+  jobs/c3/x47_16_muse.yaml's (jobs/c3/batch47.yaml amendment 5; results/x47_distance/x47_16-20261028T131501Z); 47.14 =
+  jobs/c3/x47_14_muse.yaml's (amendment 5; results/x47_chain/x47_14-20261028T115841Z). As computed: each script's own
+  computation on the 27B (X0's L32, the 27B's runs as sources: x0_necessity_27b_chat / x45m_fresh_27b, the address
+  from x0_probe_v4_27b), the same seeds, gates and n. Verdicts (CPU, after the job): each script's verdict stage with
+  the 27B's run passed beside the 9B's and Muse's (the 27B's row read under 'no prediction', coverage.txt in its run
+  folder); the multi-model clauses ('on both' / 'on >= 2 of 3') are not re-scored with the 27B: they stay the 9B's and
+  Muse's (flagged).
+controls:
+- "each test's own matched random controls (random parts of the same share / random directions of the same norm), unchanged"
+n: "each test's n on the 27B (47.4: the main test's 200 and the 45m clean design's scenes; 47.16: x6_routes' C2 scenes per k; 47.14: its chain scenes)"
+seeds: [0, 888, 2510]
+notes: "Batch 52 C, amendment 2 (27B gaps), box mats (one GPU; gaps_b on the other). Code: none needed for 47.4 (its RUNS already lists the 27B), 47.16 and 47.14 (their run stages take any target with an address basis in x6_routes.STATES). One failure does not stop the others (exit codes collected; the job fails if any failed: retry once, then skip with the reason, Dan 01:10). Wallclock (ledger, Muse as the 27B's proxy): 47.4 0.11 h, 47.16 0.47 h, 47.14 0.12 h, plus three loads (~2 min each): est ~50-65 min, 1.1 GPU-h; opens before the freeze."

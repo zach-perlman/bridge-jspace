@@ -84,6 +84,9 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION, TEST = "Q49.3", "49.3"
 MODELS = ("qwen3.5-9b", "muse-glimmer-30b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x49_3", "muse-glimmer-30b": "muse30_x49_3"}
+# batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"qwen3.6-27b": "x49_3_27b"}
 SOURCE = "45m"  # the clean design: x0_necessity --alt fresh (B.FRESH_RUN)
 RENDERING = "chat"
 STRATA = ("after", "before")  # the sentence after / before its picker's pick; the rule's scenes / the control
@@ -299,7 +302,7 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "49.3 renders the runs' chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MODELS, f"49.3 runs on {MODELS}, not {target}"
+    assert target in MODELS or target in COVERAGE_RUNS, f"49.3 runs on {[*MODELS, *COVERAGE_RUNS]}, not {target}"
     layer = X.PREDICTED[target]
     layers = layers_of(layer)
     out = RESULTS / name

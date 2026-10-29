@@ -1,0 +1,38 @@
+id: x52_27b_gaps_b
+title: "Batch 52 C coverage (27B gaps outside the key rows, 2 of 3): 47.11 the address for other kinds of item, 47.6 (a) attention to the locker sentences and (b) the blocked pick sentence, 48.3 the person mark, on Qwen3.6-27B at L32, each with its existing rule; one job, one GPU; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 1.1
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)";
+  uv run python scripts/x47_agnostic.py run --name x47_agnostic_27b --why "Batch 52 C coverage (amendment 2): 47.11 on the 27B at L32; $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_agnostic/x47_agnostic_27b/coverage.txt;
+  uv run python scripts/x47_edges.py run --part b --name x47_6_b_27b --why "Batch 52 C coverage (amendment 2): 47.6 b on the 27B at L32; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_edges/x47_6_b_27b/coverage.txt;
+  uv run python scripts/x47_edges.py run --part a --name x47_6_a_27b --why "Batch 52 C coverage (amendment 2): 47.6 a (descriptive) on the 27B at L32; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_edges/x47_6_a_27b/coverage.txt;
+  uv run python scripts/x48_bind.py run --name x48_bind_27b --why "Batch 52 C coverage (amendment 2): 48.3 on the 27B at L32; $NOTE"; d=$?; [ $d -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_bind/x48_bind_27b/coverage.txt;
+  echo "exit 47.11=$a 47.6b=$b 47.6a=$c 48.3=$d"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0 -a $d -eq 0
+question: >-
+  On Qwen3.6-27B, four tests the 9B and Muse ran and the 27B never did: is the address the same for any kind of item
+  (47.11); does blocking the pick sentence from the lockers remove position answers only (47.6 b), and where does the
+  last token attend (47.6 a); does a person mark sit at the locker sentence (48.3)?
+why_it_matters: >-
+  Amendment 2: the 27B (tier 1) fills every gap; these are Part VI's mechanism tests ('what did not hold') on the depth page.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse: 47.11 = jobs/c3/x47_11_muse_r2.yaml's
+  decision_rule (amendment 4; results/x47_agnostic/x47_11-20261028T143952Z); 47.6 = jobs/c3/x47_6_b_muse.yaml's and
+  x47_6_a_muse.yaml's (47.6 a descriptive; results/x47_edges/x47_6-20261028T113107Z); 48.3 = jobs/c3/x48_3_muse.yaml's
+  (results/x48_bind/x48_bind-20261028T113120Z). As computed: each script's own computation on the 27B at L32 with its
+  sources (the routes scenes; the 27B's main and 45m runs; the address from x0_probe_v4_27b; 47.11's stored animal run
+  x6_routes_keeponly_27b; 47.6's position reference 0.34, x6_routes_27b's C2 whole-change position share). The 27B's
+  attention (47.6 a) uses x48_heads' Qwen3.5-family recomputation (the 27B is Qwen3.6, the same attention code as the
+  9B). Verdicts (CPU, after the job): each script's verdict with the 27B's run passed beside the others (its row under
+  'no prediction'; coverage.txt); the multi-model clauses stay the 9B's and Muse's (flagged).
+controls:
+- "each test's own matched random controls, unchanged (random parts of the same share; filler-sentence edges for 47.6 b; random directions for 48.3)"
+n: "each test's n on the 27B, as on Muse"
+seeds: [0, 888, 2510]
+notes: "Batch 52 C, amendment 2 (27B gaps), box mats (the other GPU). Code: x47_agnostic / x47_edges / x48_bind COVERAGE_RUNS (run-stage targets; the verdicts' model lists unchanged), x47_agnostic.STORED_ANIMALS and x47_edges.POSITION_REF gain the 27B. Exit codes collected; retry once then skip (Dan 01:10). Wallclock (ledger, Muse as proxy): 47.11 0.37 h, 47.6 b 0.17 h, 47.6 a ~0.2 h, 48.3 0.04 h, plus four loads: est ~55-70 min, 1.1 GPU-h; opens before the freeze."

@@ -79,9 +79,13 @@ TYPES = ("animals", "fruits", "names")
 REFERENCE, NEW_TYPES = "animals", ("fruits", "names")
 SEED, SPLIT_SEED, N_GEN, N_ITEMS = 4711, 4712, R.N_GEN, R.N_ITEMS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_agnostic", "muse-glimmer-30b": "muse30_x47_agnostic"}
+# batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_agnostic_27b"}
 STORED_ANIMALS = {
     "qwen3.5-9b": "qwen35_9b_x6_routes_keeponly",
     "muse-glimmer-30b": "muse30b_x6_routes",
+    "qwen3.6-27b": "x6_routes_keeponly_27b",  # batch 52 C
 }  # the stored routes runs
 ARMS = ("whole", "no_alf", "no_alf_rand", "keep_alf", "keep_alf_rand")
 REFIT_ARMS = ("no_refit", "no_refit_rand", "keep_refit", "keep_refit_rand")
@@ -405,7 +409,7 @@ def stage_run(name: str, why: str, types: tuple[str, ...] = TYPES, n: int = N_IT
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "47.11 renders chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"47.11 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"47.11 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)

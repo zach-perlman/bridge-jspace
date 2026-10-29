@@ -1,0 +1,36 @@
+id: x52_27b_gaps_c
+title: "Batch 52 C coverage (27B gaps outside the key rows, 3 of 3): 49.3 the pooled person probe, 48.4 the copying heads' OV share, 48.2 B the late MLPs, then 48.2 A the legs probes (long), on Qwen3.6-27B at L32, each with its existing rule; one job, one GPU; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 3.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)";
+  uv run python scripts/x49_probe.py run --name x49_3_27b --why "Batch 52 C coverage (amendment 2): 49.3 on the 27B at L32 (and L16); $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x49_probe/x49_3_27b/coverage.txt;
+  uv run python scripts/x48_heads.py run --name x48_heads_27b --why "Batch 52 C coverage (amendment 2): 48.4 on the 27B at L32; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_heads/x48_heads_27b/coverage.txt;
+  uv run python scripts/x48_enrich.py run_b --name x48_2b_27b --why "Batch 52 C coverage (amendment 2): 48.2 B on the 27B at L32; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_enrich/x48_2b_27b/coverage.txt;
+  uv run python scripts/x48_enrich.py run_a --name x48_2a_27b --why "Batch 52 C coverage (amendment 2): 48.2 A on the 27B at L32; $NOTE"; d=$?; [ $d -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_enrich/x48_2a_27b/coverage.txt;
+  echo "exit 49.3=$a 48.4=$b 48.2B=$c 48.2A=$d"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0 -a $d -eq 0
+question: >-
+  On Qwen3.6-27B, four tests the 9B and Muse ran and the 27B never did: does a pooled probe read the person at the
+  locker sentence (49.3); do the copying heads pass the rest at twice the J++ part (48.4); do the late MLPs at the
+  bridge token carry the recall (48.2 B); does the J++ part key the item's attribute (48.2 A legs probes)?
+why_it_matters: >-
+  Amendment 2: the 27B (tier 1) fills every gap; Part VI's mechanism tests on the depth page.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse: 49.3 = jobs/c3/x49_3_muse.yaml's
+  decision_rule (results/x49_probe/x49_3-20261028T154604Z); 48.4 = jobs/c3/x48_4_muse.yaml's
+  (results/x48_heads/x48_heads-20261028T113126Z); 48.2 = jobs/c3/x48_2a_muse.yaml's and x48_2b_muse.yaml's
+  (results/x48_enrich/x48_2-20261028T113111Z). As computed: each script's own computation on the 27B at L32 (49.3 also
+  at L/2 = 16, as Muse's L13 / L26) with the 27B's sources (x0_necessity_27b_chat, x45m_fresh_27b, x0_probe_v4_27b).
+  Verdicts (CPU, after the job): each script's verdict with the 27B's run passed beside (its row under 'no
+  prediction'; coverage.txt); the multi-model clauses stay the 9B's and Muse's (flagged).
+controls:
+- "each test's own matched random controls, unchanged"
+n: "each test's n on the 27B, as on Muse"
+seeds: [0, 888]
+notes: "Batch 52 C, amendment 2 (27B gaps), box another (after its Lightning lane). Order: the short ones first, 48.2 A last (Muse took 2.6 h, the 9B 1.1 h). Code: x49_probe / x48_heads COVERAGE_RUNS (x48_heads: the 27B's main and states runs through main_run_of / states_of), x48_enrich.MAIN_RUN gains the 27B (a lookup; its verdict reads RUNS_A / RUNS_B, unchanged). Exit codes collected; retry once then skip (Dan 01:10). Wallclock (ledger, Muse as proxy): 49.3 0.04 h, 48.4 0.02 h, 48.2 B 0.04 h, 48.2 A 2.6 h, plus loads: est ~3 h, 3.5 GPU-h; opens before the freeze if started by ~12:00 Paris."

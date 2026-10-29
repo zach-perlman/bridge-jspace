@@ -106,9 +106,13 @@ EPS = 1e-9  # a value exactly at a bar counts as at the bar
 DECISIVE_B, CONTROL_B = "block/sentence/all", "control/sentence/all"
 C_ARMS = ("block/all", "control/all")  # (c), dropped: descriptive arms of a --with-c run, never in a rule
 POSITION_REF = {"qwen3.5-9b": 0.51, "muse-glimmer-30b": 0.54}  # the routes runs' C2 whole-change position share
+POSITION_REF["qwen3.6-27b"] = 0.34  # batch 52 C: x6_routes_27b's C2 whole-change position share (reported beside)
 MODELS = ("muse-glimmer-30b", "qwen3.5-9b")
 RUNS = {"qwen3.5-9b": {"a": "qwen35_9b_x47_6_a", "b": "qwen35_9b_x47_6_b"},
         "muse-glimmer-30b": {"a": "muse30_x47_6_a", "b": "muse30_x47_6_b"}}  # fmt: skip
+# batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"qwen3.6-27b": {"a": "x47_6_a_27b", "b": "x47_6_b_27b"}}
 N_EXAMPLES = 10
 
 
@@ -553,7 +557,7 @@ def stage_run(part: str, name: str, why: str, with_c: bool = False) -> Path:
     assert part == "b" or not with_c, "--with-c is a part-b option"
     pins.check_run_name(name)
     target = pins.TARGET
-    assert target in RUNS, f"47.6 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"47.6 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)

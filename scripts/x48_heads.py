@@ -75,6 +75,20 @@ QUESTION = "Q48.4"
 MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "muse-glimmer-30b": "muse30b_x0_necessity"}
 STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0_probe_v4"}  # x6_routes.STATES
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_heads", "muse-glimmer-30b": "muse30_x48_heads"}
+# batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
+# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+COVERAGE_RUNS = {"qwen3.6-27b": "x48_heads_27b"}
+COVERAGE_SOURCES = {"qwen3.6-27b": ("x0_necessity_27b_chat", "x0_probe_v4_27b")}  # (main run, states run)
+
+
+def main_run_of(target: str) -> str:
+    return MAIN_RUN[target] if target in MAIN_RUN else COVERAGE_SOURCES[target][0]
+
+
+def states_of(target: str) -> str:
+    return STATES[target] if target in STATES else COVERAGE_SOURCES[target][1]
+
+
 RENDERING = "chat"
 PARTS = ("jpp", "rest", "address", "random")
 VARIANTS = ("ov", "ov_gain")
@@ -253,9 +267,9 @@ def stage_plan() -> dict:
 
     from scripts import x45m
 
-    assert pins.TARGET in MAIN_RUN, f"48.4 runs on {sorted(MAIN_RUN)}, not {pins.TARGET}"
+    assert pins.TARGET in MAIN_RUN or pins.TARGET in COVERAGE_SOURCES, f"48.4 does not run on {pins.TARGET}"
     layer = X.PREDICTED[pins.TARGET]
-    _items, counts = select(MAIN_RUN[pins.TARGET], layer, read_suffix(x45m.tokenizer()))
+    _items, counts = select(main_run_of(pins.TARGET), layer, read_suffix(x45m.tokenizer()))
     path = hf_hub_download(pins.MODEL_REPO, "config.json", revision=pins.MODEL_REVISION)  # the cache when present
     cfg = AutoConfig.from_pretrained(path).get_text_config()
     counts.update(target=pins.TARGET, **architecture(cfg, layer))
@@ -358,18 +372,18 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "48.4 reads the main run's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MAIN_RUN, f"48.4 runs on {sorted(MAIN_RUN)}, not {target}"
-    main_run, layer = MAIN_RUN[target], X.PREDICTED[target]
+    assert target in MAIN_RUN or target in COVERAGE_SOURCES, f"48.4 does not run on {target}"
+    main_run, layer = main_run_of(target), X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / main_run
-    states = pins.RESULTS_DIR / "x0_probe" / STATES[target] / "states.npz"
+    states = pins.RESULTS_DIR / "x0_probe" / states_of(target) / "states.npz"
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "test": "48.4",
          "spec": "jobs/c3/batch48.yaml (48.4)", "question": f"{QUESTION} ({PREDICTIONS})",
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
                     for p in (SPEC, src / "manifest.json", src / "cases.jsonl", src / "outcomes.jsonl", states)},
-         "main_run": main_run, "layer": layer, "states_run": STATES[target], "k": X.K_MAIN, "omp": "signed",
+         "main_run": main_run, "layer": layer, "states_run": states_of(target), "k": X.K_MAIN, "omp": "signed",
          "parts": {"jpp": "the J++ part of Delta (signed OMP, k = 25, J++ lens atoms at L, letter tokens)",
                    "rest": "Delta minus its J++ part", "address": "U U^T Delta, U = x0_massmean's Alf (4 pointer "
                    "directions on the x0_probe_v4 states; not refit)",
@@ -456,7 +470,7 @@ def stage_run(name: str, why: str) -> Path:
         share = part.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to(dev)
         rand = SP.random_subspace_part(x, share, basis).float()
-        u = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device=dev)
+        u = torch.tensor(MM.subspaces(states_of(target))[0]["Alf"], dtype=torch.float32, device=dev)
         assert u.shape[1] == N_U, f"U has {u.shape[1]} directions, not {N_U}"
         addr = (x @ u) @ u.T
         parts = {"jpp": part, "rest": x - part, "address": addr, "random": rand}
