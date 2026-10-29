@@ -1,6 +1,6 @@
 # Captions (the speaker notes)
 
-Built by `uv run python -m figures.kit.build --target slide` from figures/kit/specs.py.
+Built by `uv run python -m bridge_jspace.figkit.build --target readme` from src/bridge_jspace/figkit/specs.py.
 
 ## p0a_datasets
 

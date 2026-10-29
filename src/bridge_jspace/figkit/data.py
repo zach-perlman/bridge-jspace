@@ -9,7 +9,7 @@ import re
 from functools import cache
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[3]
 DAN = [("qwen3.5-9b", "Qwen 9B"), ("qwen3.6-27b", "Qwen 27B"), ("muse-glimmer-30b", "Muse 30B"),
        ("nemotron-3.5-lightning", "Lightning ○"), ("qwen3.5-122b-a10b", "Qwen 122B")]  # fmt: skip
 ZACH = [("q27", "Qwen 27B"), ("q9", "Qwen 9B"), ("nl", "Lightning"), ("ds", "DeepSeek"), ("mi", "Ministral"),

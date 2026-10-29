@@ -11,10 +11,10 @@ matplotlib.use("Agg")
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-from figures.kit import lint
-from figures.kit.data import NAMES, REPO
-from figures.kit.spec import Bars, Curves, Figure, Image, Multiples, Stacked
-from figures.kit.theme import Theme
+from bridge_jspace.figkit import lint
+from bridge_jspace.figkit.data import NAMES, REPO
+from bridge_jspace.figkit.spec import Bars, Curves, Figure, Image, Multiples, Stacked
+from bridge_jspace.figkit.theme import Theme
 
 
 def _setup(t: Theme) -> None:
@@ -210,6 +210,5 @@ def render(spec: Figure, t: Theme, out_dir, lint_on: bool = True) -> list[str]:
     if not problems:
         out_dir.mkdir(parents=True, exist_ok=True)
         fig.savefig(out_dir / f"{spec.id}.png", dpi=t.dpi, facecolor="white")
-        fig.savefig(out_dir / f"{spec.id}.svg", facecolor="white")
     plt.close(fig)
     return problems

@@ -1,8 +1,8 @@
 """Build figures from their specs for a target.
 
-uv run python -m figures.kit.build                    # every figure, for the slides -> presentation/
-uv run python -m figures.kit.build --target readme    # every figure, for the READMEs -> figures/readme/ (bold claim on top)
-uv run python -m figures.kit.build p1_c1_split p5a     # some figures (id or id prefix)
+uv run python -m bridge_jspace.figkit.build                    # every figure, for the slides -> figures/presentation/
+uv run python -m bridge_jspace.figkit.build --target readme    # every figure, for the READMEs -> figures/readme/ (bold claim on top)
+uv run python -m bridge_jspace.figkit.build p1_c1_split p5a     # some figures (id or id prefix)
 
 Writes <out>/CAPTIONS.md (claim + caption per figure: the speaker notes) and <out>/contact_sheet.png.
 """
@@ -15,12 +15,14 @@ import sys
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-from figures.kit.data import REPO
-from figures.kit.render import render
-from figures.kit.specs import SPECS
-from figures.kit.theme import THEMES
+from bridge_jspace.figkit.data import REPO
+from bridge_jspace.figkit.render import render
+from bridge_jspace.figkit.specs import SPECS
+from bridge_jspace.figkit.theme import THEMES
 
-OUT = {"slide": REPO / "presentation", "readme": REPO / "figures" / "readme"}
+OUT = {"slide": REPO / "figures" / "presentation", "readme": REPO / "figures" / "readme"}
+CAPTIONS = {"slide": REPO / "docs" / "slides" / "captions_presentation.md",
+            "readme": REPO / "docs" / "slides" / "captions_readme.md"}
 
 
 def contact_sheet(out, ids) -> None:
@@ -49,8 +51,8 @@ def main() -> int:
         bad += problems
         print(("LINT " if problems else "wrote ") + str(out / f"{i}.png"))
     specs = [SPECS[i]() for i in SPECS]
-    (out / "CAPTIONS.md").write_text("# Captions (the speaker notes)\n\nBuilt by `uv run python -m figures.kit.build "
-                                     f"--target {a.target}` from figures/kit/specs.py.\n"
+    CAPTIONS[a.target].write_text("# Captions (the speaker notes)\n\nBuilt by `uv run python -m bridge_jspace.figkit.build "
+                                     f"--target {a.target}` from src/bridge_jspace/figkit/specs.py.\n"
                                      + "".join(f"\n## {s.id}\n\n**{s.claim}** {s.caption}\n" for s in specs))  # fmt: skip
     contact_sheet(out, list(SPECS))
     if bad:

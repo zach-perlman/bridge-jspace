@@ -1,13 +1,13 @@
 """The deck's and the root README's figures as specs: data and words only. To change what a figure shows, edit its
-function here; to change how every figure looks, edit figures/kit/theme.py; to change a component, render.py.
+function here; to change how every figure looks, edit src/bridge_jspace/figkit/theme.py; to change a component, render.py.
 Each function returns a Figure; SPECS maps id -> function (order = the deck's)."""
 
 from __future__ import annotations
 
 import re
 
-from figures.kit import data as D
-from figures.kit.spec import Bars, Curves, Figure, Image, Line, Multiples, Rule, Series, Stacked
+from bridge_jspace.figkit import data as D
+from bridge_jspace.figkit.spec import Bars, Curves, Figure, Image, Line, Multiples, Rule, Series, Stacked
 
 NOT_NEEDED = Rule(0.10, "not needed")
 

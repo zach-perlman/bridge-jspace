@@ -1,6 +1,6 @@
 """The figure specs: what a figure shows, never how it looks. A Figure is a row of panels; a panel is one of five
 components (Bars, Multiples, Stacked, Curves, Image). Values are cells (value, lo, hi) read from the sources by
-figures/kit/data.py; colours are names resolved by the theme ("recall", "lens", "control", ...)."""
+src/bridge_jspace/figkit/data.py; colours are names resolved by the theme ("recall", "lens", "control", ...)."""
 
 from __future__ import annotations
 
