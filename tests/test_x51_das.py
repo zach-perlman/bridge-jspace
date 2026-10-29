@@ -544,3 +544,52 @@ def test_verdict_and_view_on_the_fake_run(fake_env, monkeypatch):
     assert text.count("#### ") == 10 and "⟦bridge:" in text and "⟦moved:" in text
     n_arms = len(Z.identity_arms()) + len(Q.arm_names(Z.KS_POS))
     assert text.count("random rows of") == n_arms
+
+
+def test_coverage_run_without_a_clean_source_and_its_verdict(fake_env, monkeypatch):
+    """Batch 52 (Lightning ports, coordinator 10:15 option A): a target without a clean-design run runs on the other
+    sources; its manifest carries the 'adapted design' label, and verdict --coverage reads it without the seal ('no
+    prediction', x52_das51-<UTC>/, the label in verdict.md); a design run is refused under --coverage."""
+    from bridge_jspace import pins
+
+    label = "adapted design: the clean one-pick source left out (test)"
+    monkeypatch.setattr(Z, "CLEAN_RUN", {})
+    monkeypatch.setattr(Z, "NO_CLEAN", {pins.TARGET: label})
+    monkeypatch.setattr(Z, "RUNS", {})
+    monkeypatch.setattr(Z, "COVERAGE_RUNS", {pins.TARGET: f"{fake_env.prefix}fake_51c"})
+    monkeypatch.setattr(Z, "dan_answer", lambda rev="HEAD": (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    out = Z.stage_run(f"{fake_env.prefix}fake_51c", "test", steps=1)
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["adapted"] == label and m["sources"]["clean"] == label
+    assert not any("fake_clean" in k for k in m["inputs"])
+    v_out = Z.stage_verdict([out.name], n_boot=50, coverage=True)
+    assert v_out.name.startswith("x52_das51-")
+    blob = json.loads((v_out / "verdict.json").read_text())
+    assert blob["dan"].startswith(Z.NO_PREDICTION)
+    md = (v_out / "verdict.md").read_text()
+    assert f"**{label}**" in md and "batch 52 coverage" in md and "Q51.3, Dan:" not in md
+    with pytest.raises(AssertionError, match=r"51\.3 coverage runs are"):
+        Z.stage_verdict(["qwen35_9b_x51_3"], n_boot=50, coverage=True)
+
+
+def test_pools_leave_the_clean_source_out_for_a_target_without_one(monkeypatch):
+    """pools() on a target absent from CLEAN_RUN: no clean pairs, the label in its info (the stored runs stubbed)."""
+    monkeypatch.setattr(Z, "CLEAN_RUN", {})
+    monkeypatch.setattr(Z, "NO_CLEAN", {"t": "adapted design (test)"})
+    monkeypatch.setattr(Z, "MAIN_RUN", {"t": "main"})
+    monkeypatch.setattr(Z, "ROUTES_RUN", {"t": "routes"})
+    monkeypatch.setattr(Z, "generated_scenes", lambda tok, n: [])
+    calls: list[str] = []
+
+    def x0_pool(tok, run, layer, alt, src):
+        calls.append(run)
+        return [{"src": src}], {"run": run}
+
+    monkeypatch.setattr(Z, "x0_pool", x0_pool)
+    monkeypatch.setattr(Z, "routes_pool", lambda tok, run, la, gen: ([{"src": "routes"}], {"last_stored_index": 1}))
+    monkeypatch.setattr(Q, "select_pairs", lambda tok, run, layer: ([], {"pairs": 0}))
+    monkeypatch.setattr(Z, "stored_routes", lambda run, layer, cond: (None, {}, {"C1-0003": {}}))
+    pl = Z.pools(None, "t", 14, 10)
+    assert calls == ["main"] and [p["src"] for p in pl["identity"]] == ["main", "routes"]
+    assert pl["info"]["clean"]["absent"] == "adapted design (test)"
+    assert pl["info"]["clean"]["per_reader"] == {"lookup": 0, "recall": 0}

@@ -93,8 +93,20 @@ ROUTES_RUN = {
     "qwen3.5-9b": "qwen35_9b_x6_routes",
     "muse-glimmer-30b": "muse30b_x6_routes",
     "qwen3.6-27b": "x6_routes_27b",
+    "nemotron-3.5-lightning": "nem35l_x52_routes",  # batch 52 C, at the committed L14
 }
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_3", "muse-glimmer-30b": "muse30_x51_3", "qwen3.6-27b": "x51_3_27b"}
+# Batch 52, Lightning ports (Dan's 08:55 queue item 3; jobs/c3/x52_lightning_das51.yaml): a coverage run (verdict
+# --coverage, no seal guard, 'no prediction', x52_das51-<UTC>/); RUNS and 51.3's own verdict unchanged. Lightning's clean
+# one-pick design has no run at L14 (its gate fails); its identity pool is the other two sources, both past their gates.
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_das51"}
+# the coordinator's label (29 Oct 10:15 Paris, option A), in the spec, coverage.txt and the verdict
+NO_CLEAN = {"nemotron-3.5-lightning": "adapted design: the clean one-pick source left out (its gate fails on Lightning, "
+                                      "recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); "
+                                      "pairs from the main test and routes C0 only (354 lookup / 350 recall, above the "
+                                      "300 bar)"}  # fmt: skip
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_das/verdict-20261028T194630Z"  # 51.3's rules first scored (the 9B, Muse, the 27B)
 KS = {LOOKUP: (4, 16), RECALL: (4, 16, 64, 128)}
 KS_POS = (2, 4, 8)
 K_POS_RULE = Q.K_RULE  # 49.8's rule reads k = 4
@@ -316,7 +328,11 @@ def pools(tok, target: str, layer: int, n_gen: int) -> dict[str, Any]:
     # the top-up candidates after them
     generated = generated_scenes(tok, max(n_gen, R.N_GEN))
     main, i_main = x0_pool(tok, MAIN_RUN[target], layer, "cf", "main")
-    clean, i_clean = x0_pool(tok, CLEAN_RUN[target], layer, "fresh", "clean")
+    if target in CLEAN_RUN:
+        clean, i_clean = x0_pool(tok, CLEAN_RUN[target], layer, "fresh", "clean")
+    else:  # batch 52: Lightning's clean design fails its gate (NO_CLEAN)
+        clean, i_clean = [], {"run": None, "alt": "fresh", "absent": NO_CLEAN[target], "counts": {"read": 0, "kept": 0},
+                              "per_reader": {READER_NAME[w]: 0 for w in X.READERS}}  # fmt: skip
     routes, i_routes = routes_pool(tok, ROUTES_RUN[target], layer, generated)
     address, i_address = Q.select_pairs(tok, ROUTES_RUN[target], layer)
     _, _, c1_whole = stored_routes(ROUTES_RUN[target], layer, "C1")
@@ -364,7 +380,7 @@ def stage_plan(out: Path | None = None, n_gen: int = N_TOPUP_GEN) -> dict:
     }
     lengths = {s: [len(p["readers"][LOOKUP]["ids"]["org"]) for p in ident if p["source"] == s] for s in SOURCES}
     blob: dict[str, Any] = {
-        "target": target, "layer": layer, "prefix": pins.RUN_PREFIX, "run_name": RUNS.get(target),
+        "target": target, "layer": layer, "prefix": pins.RUN_PREFIX, "run_name": {**RUNS, **COVERAGE_RUNS}.get(target),
         "sources": {k: pl["info"][k] for k in ("main", "clean", "routes")},
         "identity_from_stored": {k: v for k, v in i_fin.items() if k != "scene_ids"},
         "identity_short_of_300": {READER_NAME[w]: n for w, n in need.items()},
@@ -453,10 +469,14 @@ def w_record(target: str, layer: int) -> dict | str:
 
 def load_w(target: str, layer: int) -> tuple[np.ndarray, dict]:
     """W: 47.2's slot subspace (scripts/x47_six.py's fit on the six-locker fit half, results/x47_six/<run>/fit.npz "W"),
-    the run x47_six.RUNS[target]; not refit; its layer must be this test's. FileNotFoundError when the run is absent."""
+    the run x47_six.RUNS[target] (Lightning: its 47.2 coverage run, x47_six.COVERAGE_RUNS); not refit; its layer must be
+    this test's. FileNotFoundError when the run is absent."""
     from scripts import x47_six as SIX
 
-    src = SIX.RESULTS / SIX.RUNS[target]
+    run = SIX.RUNS.get(target) or SIX.COVERAGE_RUNS.get(target)
+    if run is None:
+        raise FileNotFoundError(f"no 47.2 run of {target}")
+    src = SIX.RESULTS / run
     if not (src / "fit.npz").exists():
         raise FileNotFoundError(str((src / "fit.npz").relative_to(pins.REPO_ROOT)))
     m = json.loads((src / "manifest.json").read_text())
@@ -769,7 +789,7 @@ def stage_run(name: str, why: str, steps: int = D.STEPS, micro: int = D.MICRO, n
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "51.3 reads X0's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"51.3 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.3 runs on {sorted({**RUNS, **COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -779,9 +799,10 @@ def stage_run(name: str, why: str, steps: int = D.STEPS, micro: int = D.MICRO, n
         w_np, w_info = load_w(target, layer)
     except FileNotFoundError as e:
         w_np, w_info = None, f"absent: {e} (no 47.2 run of {target}; every W read is None)"
-    srcs = [X.RESULTS / MAIN_RUN[target], X.RESULTS / CLEAN_RUN[target], R.RESULTS / ROUTES_RUN[target]]
-    files = [SPEC] + [s / f for s in srcs[:2] for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "gate.json")]
-    files += [srcs[2] / f for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "competence.jsonl", "gate.json")]
+    x0_srcs = [X.RESULTS / r for r in (MAIN_RUN[target], CLEAN_RUN.get(target)) if r]
+    files = [SPEC] + [s / f for s in x0_srcs for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "gate.json")]
+    files += [R.RESULTS / ROUTES_RUN[target] / f
+              for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "competence.jsonl", "gate.json")]  # fmt: skip
     if w_np is not None:
         files.append(pins.REPO_ROOT / w_info["file"])  # type: ignore[index]
     m: dict[str, Any] = {
@@ -789,7 +810,8 @@ def stage_run(name: str, why: str, steps: int = D.STEPS, micro: int = D.MICRO, n
         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
         "test": "51.3", "spec": "jobs/c3/batch51.yaml (51.3)", "question": f"{QUESTION} ({PREDICTIONS})",
         "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p) for p in files},
-        "layer": layer, "sources": {"main": MAIN_RUN[target], "clean": CLEAN_RUN[target], "routes": ROUTES_RUN[target]},
+        "layer": layer, "sources": {"main": MAIN_RUN[target], "clean": CLEAN_RUN.get(target) or NO_CLEAN[target],
+                                    "routes": ROUTES_RUN[target]}, "adapted": NO_CLEAN.get(target),
         "ks": {READER_NAME[w]: list(k) for w, k in KS.items()} | {"address": list(KS_POS)},
         "training": {"method": "x48_das.train_subspace's loop (x51_das.train_early reproduces it step for step) with "
                                "early stopping on dev IIA", "optimizer": "Adam", "lr": D.LR, "max_steps": steps,
@@ -826,6 +848,9 @@ def stage_run(name: str, why: str, steps: int = D.STEPS, micro: int = D.MICRO, n
     model = load_model()
     if (patched := D.torch_gdn(model.hf)) is not None:
         m["gdn_kernel"] = f"torch reference ({D.GDN_ENV}=torch; {patched}.torch_chunk_gated_delta_rule replaced)"
+        (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    if (record := D.torch_mamba(model.hf)) is not None:  # batch 52: NemotronH's Mamba-2 (x48_das.kernels_off)
+        m["mamba_kernel"] = record
         (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     for p in model.hf.parameters():  # the DAS gradient reaches R only; no weight gradients are stored
         p.requires_grad_(False)
@@ -1257,9 +1282,17 @@ def figure(mv: dict[str, Any], path: Path) -> None:
     plt.close(fig)
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
-    out = RESULTS / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """51.3's verdict (sealed until Q51.3), or with coverage (batch 52, Lightning ports) the same rules on the coverage
+    runs: no seal guard, "no prediction" in place of Dan's answer, each run's pool sources stated, x52_das51-<UTC>/."""
+    if coverage:
+        answer = f"{NO_PREDICTION}; rules first scored in {SCORED}"
+        names = set(COVERAGE_RUNS.values())
+        assert set(runs) <= names, f"51.3 coverage runs are {sorted(names)}, not {runs}"
+    else:
+        answer = unsealed()
+    stem = "x52_das51" if coverage else "verdict"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     models = []
     lines = ["# 51.3: DAS at scale", "",
@@ -1267,9 +1300,16 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
              "on pooled identity pairs and 49.8's on routes position pairs; k chosen on the select split, every number read "
              f"on the test entities' pairs; cluster bootstrap over bridge entities ({n_boot}, seed {X.BOOT_SEED}). UNVERIFIED.", "",
              f"As computed: {AS_COMPUTED}.", ""]  # fmt: skip
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ") for ln in lines]
     for run in runs:
         mv = model_verdict(RESULTS / run, n_boot)
         models.append(mv)
+        if coverage:
+            m = json.loads((RESULTS / run / "manifest.json").read_text())
+            lines += [*([f"**{m['adapted']}**", ""] if m.get("adapted") else []),
+                      f"Coverage run {run}: identity pool sources {json.dumps(m['sources'])}; DAS forward: "
+                      f"{m.get('mamba_kernel') or m.get('gdn_kernel') or 'as loaded'}.", ""]  # fmt: skip
         lines += verdict_lines(mv, answer)
         figure(mv, out / f"{run}.png")
         lines += [f"Figure: {run}.png", ""]
@@ -1354,15 +1394,17 @@ def main() -> None:
     ap.add_argument("--micro", type=int, default=D.MICRO)
     ap.add_argument("--n-gen", type=int, default=N_TOPUP_GEN)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs (default {list(COVERAGE_RUNS.values())}; '{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
-    runs = a.runs or list(RUNS.values())
+    runs = a.runs or list((COVERAGE_RUNS if a.coverage else RUNS).values())
     if a.stage == "plan":
         stage_plan(a.out, a.n_gen)
     elif a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, steps=a.steps, micro=a.micro, n_gen=a.n_gen)
     elif a.stage == "verdict":
-        stage_verdict(runs, a.n_boot)
+        stage_verdict(runs, a.n_boot, a.coverage)
     else:
         stage_view(runs)
 
