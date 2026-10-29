@@ -35,6 +35,7 @@ ANCHORS = {
     "Dose curves, a part alone (51.1)": "t51-1",
     "Split in other texts: varied scenes (x0b)": "x0b",
     "Gain map (49.1)": "t49-1",
+    "E6: the address probe (x0_probe v4)": "probe",
     "Pooled person probe (49.3)": "t49-3",
     "Failed: copying heads pass the rest (48 heads)": "t48-4",
     "Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)": "t48-2",

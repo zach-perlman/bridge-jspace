@@ -93,7 +93,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [Zeroing at one layer (47.5)](#t47-5) | **done** | **done**: L14 and L14..17; the 60 dev scenes kept out | **done** | **done** |
 | Earlier mention (45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
 | [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | **done** | **done** | **done** | **done** |
-| E6: the address probe (x0_probe v4) | **done** | **done** | **done** | **done** |
+| [E6: the address probe (x0_probe v4)](#probe) | **done** | **done** | **done** | **done** |
 | [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | **done** | **done** | **done** | **missing**: x47_16_muse_r2 written, not enqueued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already answers it); re-opening it under amendment 2 waits for Dan; x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged) |
 | [E7: six lockers, one code per slot (47.2)](#six) | **done** | **done** | **done** | **done** |
 | E8: the report prompt (47.10) | **done** | **not tested**: the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z) | **not tested**: the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z) | **not tested**: the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z) |
@@ -571,6 +571,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 - **Caveats.**
   - Few test entities (9 on the 9B's identity pairs).
   - (ii) and (iii) have no interval in the verdict's summary lines.
+
+### Is the address readable at the bridge word? (the address probe, x0_probe v4; Lightning's coverage run 29 Oct) <a id="probe"></a>
+
+*Used in: README Part III card "The address: probe, remove, add, swap" ("a probe reads it in 0.92-0.99 of scenes"; 9B, 27B, Muse); Lightning not in the README yet. Story: the address.*
+
+- **Question.** At the bridge word at L, can a probe read which locker sentence holds the item's locker, beyond what the layout of the scene gives away, and does it read the answer digit itself?
+- **Why we asked.** If the bridge word stores an address rather than the answer, the locker sentence should be readable and the digit should not.
+- **Data.** Every scene of the topic scenes, split by whether the item's locker sentence comes before or after the asked pick (see the table's n in the verdicts).
+- **Method.** Probes on the bridge word's state at L, cross-validated by bridge entity: the locker sentence's place, the answer digit and the bridge's identity; baselines: the majority class, the pick's sentence index, the visible layout.
+- **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
+
+![What the bridge's word holds on Lightning](../../results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.png)
+*Lightning at L14 (the verdict folder's figure): probe accuracy for the answer digit, the locker sentence and the bridge identity, locker before / after the pick / both, against chance (dashed), the majority class and two layout baselines; the other models' numbers in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | which locker sentence, locker before the pick (chance 0.20) | 0.97 [0.96, 0.98]<!-- src: results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md \| before :: locker sentence :: 758 :: 0.97 [0.96, 0.98] --> | 0.99 [0.98, 1.00]<!-- src: results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.md \| before :: locker sentence :: 758 :: 0.99 [0.98, 1.00] --> | 0.97 [0.95, 0.98]<!-- src: results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.md \| before :: locker sentence :: 657 :: 0.97 [0.95, 0.98] --> | 0.85 [0.81, 0.88]<!-- src: results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.md \| before :: locker sentence :: 636 :: 0.85 [0.81, 0.88] --> |
+  | the same from the layout alone (best baseline) | 0.53 [0.50, 0.56]<!-- src: results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md \| before :: locker sentence :: 758 :: 0.53 [0.50, 0.56] --> | 0.53 [0.50, 0.56]<!-- src: results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.md \| before :: locker sentence :: 758 :: 0.53 [0.50, 0.56] --> | 0.53 [0.49, 0.56]<!-- src: results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.md \| before :: locker sentence :: 657 :: 0.53 [0.49, 0.56] --> | 0.52 [0.49, 0.54]<!-- src: results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.md \| before :: locker sentence :: 636 :: 0.52 [0.49, 0.54] --> |
+  | which locker sentence, locker after the pick (the control) | 0.34 [0.30, 0.37]<!-- src: results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md \| after :: locker sentence :: 742 :: 0.34 [0.30, 0.37] --> | 0.34 [0.31, 0.37]<!-- src: results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.md \| after :: locker sentence :: 742 :: 0.34 [0.31, 0.37] --> | 0.34 [0.31, 0.37]<!-- src: results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.md \| after :: locker sentence :: 669 :: 0.34 [0.31, 0.37] --> | 0.36 [0.33, 0.39]<!-- src: results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.md \| after :: locker sentence :: 658 :: 0.36 [0.33, 0.39] --> |
+  | the answer digit, locker before (chance 0.11) | 0.27 [0.24, 0.31]<!-- src: results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md \| before :: answer digit :: 758 :: 0.27 [0.24, 0.31] --> | 0.40 [0.36, 0.44]<!-- src: results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.md \| before :: answer digit :: 758 :: 0.40 [0.36, 0.44] --> | 0.33 [0.28, 0.37]<!-- src: results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.md \| before :: answer digit :: 657 :: 0.33 [0.28, 0.37] --> | 0.25 [0.21, 0.28]<!-- src: results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.md \| before :: answer digit :: 636 :: 0.25 [0.21, 0.28] --> |
+
+- **Read.**
+  - With the locker before the pick, the bridge word holds which locker sentence the item's locker sits in, far above the layout baseline, on all four models; with the locker after, it does not (the control). The answer digit itself is read only weakly.
+- **Caveats.**
+  - Descriptive, chosen after the data.
+  - Lightning's probe reads the place less well than the other three.
 
 ### Does swapping the address send the lookup to the swapped-in locker? (address swap by dose; Lightning's coverage run opened 29 Oct 01:51) <a id="swap"></a>
 
