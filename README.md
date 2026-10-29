@@ -52,37 +52,62 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 - Medium-high on Qwen 9B and Qwen 27B (fixed in advance). Lightning is not counted: after the data, and its ceiling check failed. <!-- src: docs/breadth/data.csv | swap.nl.swap --> <!-- src: EXPERIMENTS.md | l.209 --> <!-- src: docs/prereg_replication_1022.md | l.1175-1176 -->
 - Dan's scenes are context only: the lookup answer never takes the moved number, but his lens part alone moves neither kind. <!-- src: figures/story/data.csv | another item moved, whole: value share --> <!-- src: figures/story/data.csv | rtk_C2_keep_jpp_recall_follows_s_9b; rtk_C2_keep_jpp_recall_follows_s_27b; rtk_C2_keep_jpp_recall_follows_s_muse; rtk_C2_keep_jpp_rand_recall_follows_s_9b; rtk_C2_keep_jpp_rand_recall_follows_s_27b; rtk_C2_keep_jpp_rand_recall_follows_s_muse -->
 
-## Finding 3. Lookup answers follow identity or an order signal, never the value
+## Depth track: three findings
 
-**In Dan's locker scenes the lookup answer follows the item's identity or its position, never the number; position comes from an order signal, four directions outside the lens (Qwen 9B, Muse 30B).** <!-- src: docs/README_v5_2026-10-28.md | four directions separating the positions -->
+*Dan's track, 29 Oct, at 138c671d<!-- src: docs/slides/depth_outline.md | at 138c671d --> (numbers from [the depth report](docs/depth/README.md) at that commit). Unverified until the 30 Oct hand-check; "pending hand-check" marks results from 29 Oct. Models in order: 9B / 27B / Muse / Lightning ○ / 122B; ○: Lightning's gate was chosen after its pre-check; the 122B is hollow where its gate was lowered after the data (routes, address, swap). The slide outline: [docs/slides/depth_outline.md](docs/slides/depth_outline.md).*
 
-- **Routes test** (fixed in advance, 4 models): another item's locker sentence moves and takes a new number, so identity, position and number predict different lockers. No answer follows the number; Qwen 27B leans on identity (66%), Qwen 9B and Muse 30B on position (51%, 54%). The lens part added alone gives no identity answers. <!-- src: figures/story/data.csv | another item moved, whole: value share; another item moved, whole: identity share; another item moved, whole: position share --> <!-- src: figures/story/data.csv | another item moved, keep_jpp: identity share --> So even the identity route runs mostly outside the lens part, but against a wrong-pair direction of the same size it is only partly specific: on the Qwens, not on Muse (fixed in advance). <!-- src: docs/README_v5_2026-10-28.md | so even the identity route runs mostly outside J++ --> <!-- src: docs/README_v5_2026-10-28.md | partly specific on the Qwens, not on Muse -->
+### D1. The lookup goes around the lens part of the bridge word; the recall goes through it
 
-![Lookup answers follow identity or position, never the number](figures/shared/j8_routes.png)
+![The conflict test, the lens part's atoms, parts of the same size](figures/slides/d1_split.png)
 
-- **A simple probe reads the order signal** at the bridge in 0.92-0.99 of scenes; the lens does not. <!-- src: docs/README_v5_2026-10-28.md | 0.92-0.99 of scenes (layout alone: 0.53) --> <!-- src: docs/README_v5_2026-10-28.md | A probe reads the pointer, the lens does not -->
-- **Removing it from the patch** leaves Qwen 9B answering by position in 0.08 of scenes and halves Muse 30B's; a random part does not (after the data; repeated in advance). <!-- src: figures/story/data.csv | another item moved, no_alf: position share; another item moved, no_alf_rand: position share -->
-- **Writing it in** sends the lookup answer to the written locker in about half of the writes (after the data). <!-- src: docs/x0_details.md | The pointer: removed, added alone, written -->
-- **A strong write also moves the recalled answer** to the item at the written position (about 4 in 5 on the Qwens, after the data): the signal points at an item's mention, not at a number. <!-- src: docs/README_v5_2026-10-28.md | about four in five recalls a strong write changes name the item at the target position -->
+- **The conflict test, main test at L.** Without the lens part, beyond a random part, the recall loses 0.50<!-- src: docs/x0_numbers.json | rc_excess_9b --> / 0.74<!-- src: docs/x0_numbers.json | rc_excess_27b --> / 0.75<!-- src: docs/x0_numbers.json | rc_excess_muse --> / 0.34 ○<!-- src: figures/story/data.csv | conflict: recall, switches lost beyond a random part --> / 0.32<!-- src: docs/x0_numbers.json | rc_excess_122b --> of its switches, the lookup −0.03<!-- src: docs/x0_numbers.json | lk_excess_9b --> / 0.14<!-- src: docs/x0_numbers.json | lk_excess_27b --> / −0.10<!-- src: docs/x0_numbers.json | lk_excess_muse --> / 0.03 ○<!-- src: figures/story/data.csv | conflict: lookup, switches lost beyond a random part --> / 0.00<!-- src: docs/x0_numbers.json | lk_excess_122b -->: confirmed on four models, not confirmed on the 27B (Lightning pending hand-check).
+- **The lens part is the two bridge words.** 0.09<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the original bridge word -->-0.19<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the new bridge word --> of its rebuilt energy on each bridge word, 0.00<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the reader's answer word --> on the answer word, 0.61<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in no scene word -->-0.79<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in no scene word --> on no scene word (four models; pending hand-check).
+- **No other part of the same size costs the recall as much:** same-size PCA directions 0.13<!-- src: figures/story/data.csv | PCA directions (same size): recall extra loss -->-0.21<!-- src: figures/story/data.csv | PCA directions (same size): recall extra loss -->, the logit lens's directions about 0<!-- src: figures/story/data.csv | logit-lens directions: recall extra loss -->, the lens part 0.26<!-- src: figures/story/data.csv | J++ part: recall extra loss -->-0.66<!-- src: figures/story/data.csv | J++ part: recall extra loss -->.
+- **The 122B's lookup loses nothing** at 25 or 100 lens directions (0.00<!-- src: docs/x0_numbers.json | lk_excess_k25_122b -->, −0.12<!-- src: docs/x0_numbers.json | lk_excess_k100_122b -->), where the 27B's loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b -->.
+- **The boring explanation:** the lens reads the bridge word; the lookup needs where the item's sentence sits, which is not a word. **Limits:** the 27B (in part); Zach's true-fact passages; fact-after lookups on the full carrier.
 
-![The position effect belongs to these four directions, not any four](figures/shared/j3_order_signal.png)
+![D1 example: one main-test item, both readers](figures/slides/ex_d1.png)
 
-**How sure.**
-- Medium for the order signal, on Qwen 9B and Muse 30B, in simple scenes.
-- Low for a second route through the item's identity outside the lens: not specific when tested in advance, partly lens-readable on Qwen 27B, and used by recalled answers too. <!-- src: predictions/2026-10-26_dan.md | **Q45.7** --> <!-- src: predictions/2026-10-26_dan.md | 0.07 / 0.18 of the lookups still switch, against 0.15 / 0.39 --> <!-- src: predictions/2026-10-26_dan.md | Size check (Dan ~01:00 --> <!-- src: figures/story/data.csv | (b) another item moved, no_jpp: identity share; (b) another item moved, no_jpp_rand: identity share --> <!-- src: docs/README_v5_2026-10-28.md | Recall's extra loss without identity (nothing else removed) -->
-- Main limits: weak on Qwen 27B <!-- src: figures/story/data.csv | another item moved, keep_alf: position share --> <!-- src: docs/x0_details.md | A refit pointer per format --> <!-- src: figures/story/data.csv | the sanity swap, lookup extra loss without the pointer; the sanity swap, recall extra loss without the pointer -->; it marks the first locker in a clean layout, and a pick sentence first gives identity <!-- src: docs/README_v5_2026-10-28.md | It marks the first locker in a clean layout --> <!-- src: docs/x0_details.md | What the prompt names first -->; refit per text format <!-- src: predictions/2026-10-26_dan.md | **Q42.1** -->; Zach's evidence rests on the swap of everything but the lens part, confirmed but after the data <!-- src: results/jswap/jswap_v2_v1/summary.json | PK/swap_comp; PK/swap --> <!-- src: docs/shared/zach_reply_2026-10-27.md | Complement swap on stated finals: confirmed -->.
+### D2. The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it
+
+![The address: probe, removal, swap; code and tool output; the lens readout and the trained probe](figures/slides/d2_address.png)
+
+- **The address (a pointer to the item's mention).** A probe at the bridge word reads which locker sentence holds the item's locker: 0.97<!-- src: figures/story/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.99 / 0.97 / 0.85 ○ / 0.92, against a layout baseline of 0.53<!-- src: figures/story/data.csv | the locker probe's layout baseline, locker-first scenes -->; in tool output 0.97-0.99<!-- src: figures/story/data.csv | code and tool output, tool: the locker probe at the bridge word, locker-first scenes -->, in code 0.95<!-- src: figures/story/data.csv | code and tool output, code: the locker probe at the bridge word, locker-first scenes --> on the 27B (pending hand-check).
+- **Without the address** position answers fall to 0.08<!-- src: figures/story/data.csv | another item moved, no_alf: position share -->, against 0.54<!-- src: figures/story/data.csv | another item moved, no_alf_rand: position share --> without a random part (the 9B).
+- **The swap** at about a real change's size sends 0.46<!-- src: figures/story/data.csv | lookup target share, mean over locker pairs, s = 2 --> / 0.25 / 0.52 / 0.50 ○ / 0.50 ○ of lookups to the swapped-in locker, a random vector 0.00<!-- src: figures/story/data.csv | lookup target share, random direction, s = 4 -->, and 0.20<!-- src: figures/story/data.csv | 47.16: the swap (fit with none) sends lookups to the target, 50 sentences -->-0.52 after 50 neutral sentences (pending hand-check).
+- **The lens cannot see it:** the swap's share rebuilt by 25 lens directions is 0.01<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer -->-0.06, as for a random vector; a probe on the lens part reads the address 0.60<!-- src: figures/story/data.csv | the address at the last token, main test, 25 lens directions: the J++ part -->-0.77 against 0.83<!-- src: figures/story/data.csv | the address at the last token, main test, 25 lens directions: a random part (same energy) -->-0.95 for random directions of the same energy, on four models: "the address is under-represented in the lens directions" (pending hand-check).
+- **It points to the item, not a number:** the swap also changes 0.21<!-- src: figures/story/data.csv | the address swap at s = 2: recalls that change --> / 0.27 ○ of recalls on the 9B and Lightning; on the 27B and Muse barely.
+- **The boring explanation:** the lookback pointer of Prakash et al. 2025<!-- src: docs/README_v5_2026-10-28.md | lookback pointers (Prakash et al. 2025) --> in a list layout; new here: the part the lens misses, and it survives in tool output and code. **Limits:** the swap's rule fixed in advance was read at s = 1 and said no<!-- src: docs/depth/README.md | read at s = 1 and said no on every model --> (a design error; numbers at s = 2); refit per format; added by itself it brings little back in code and tool output; the 27B's address is weak.
+
+![D2 example: one routes scene under the swap](figures/slides/ex_d2.png)
+
+### D3. Readable is not used: the lens reads the entity at the last token, and the answer does not go through it
+
+![At the last token: readable through the lens, not used](figures/story/fig17_jspace_last_token.png)
+
+- At the last token a probe on the lens part reads the recall's bridge entity 0.95<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part -->-0.98 on four models; the lens swap moves 0.00<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> / 0.01 / 0.01 / 0.14 ○ of recalls, the whole-state patch 0.95<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the whole-state patch's switches -->-1.00: "(b) readable, not used". Under the swap the model never says the entity's name.
+- Near the output the lens-part conflict test is decided by the dictionary (digits are not in it, words are); dropped reading: "the copy bypasses the lens" (pending hand-check).
+- **The boring explanation:** the answer was computed earlier, at the bridge word; the last-token copy is a by-product. For a monitor it still matters: a lens monitor at the last token sees the entity and cannot tell whether it is in use. **Limits:** at gain 2 the lens part moves part of Muse's and Lightning's recalls<!-- src: docs/depth/README.md | At twice the size, the J++ part moves part of Muse's and Lightning's recalls -->; one layer; locker-first scenes.
+
+![D3 example: one item at the last token](figures/slides/ex_d3.png)
+
+### Where it breaks (depth)
+
+![The 27B with more lens directions; Zach's named passages; the question's position](figures/slides/d4_limits.png)
+
+- The 27B's lookup loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b --> at 100 lens directions, the 122B's −0.12<!-- src: docs/x0_numbers.json | lk_excess_k100_122b -->.
+- On Zach's true-fact passages the 9B's and 27B's lookups follow the lens part (0.26<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part -->); with made-up facts the 9B's split holds and the 27B's is in between.
+- Question first minus last, paired: the 27B +0.11 [0.01, 0.22]<!-- src: figures/story/data.csv | the lookup, question before minus after (paired) --> ("order dependence", after the data), the 122B −0.05 [−0.17, 0.05]<!-- src: figures/story/data.csv | the lookup, question before minus after (paired) --> ("the CI includes 0"); pending hand-check.
+
+### How we checked (depth)
+
+![What holds on which model](figures/story/fig11_scorecard.png)
+
+- Independent recount 63 of 63<!-- src: docs/depth/README.md | matches 63 of 63 -->; automatic checks on 45,542 items<!-- src: docs/depth/README.md | 45,542 items read -->; rerun label agreement 393-400 of 400<!-- src: docs/depth/README.md | 393-400 of 400 items per arm -->; predictions: Brier 0.32 over 121 answers<!-- src: docs/depth/README.md | mean Brier 0.32 over 121 answers -->, worse than always answering 50%. Hand-check: 30 Oct ([VERIFIED.md](VERIFIED.md)).
+- Six readings dropped, each with its test: [the depth report's list](docs/depth/README.md#tested-and-dropped).
+- Every backup figure and the question it answers: [docs/slides/appendix.md](docs/slides/appendix.md).
 
 ![Four findings across five models](figures/shared/grid_front.png)
-
-### Where the link is made follows the order of mentions
-
-Dan; both parts fixed in advance, 3 of 3 models. <!-- src: predictions/2026-10-26_dan.md | **Q45.12**; **Q45.13** -->
-
-- **Locker after the pick:** copying the patched states into the locker sentences carries 70-76% of the lookup's switches, the patch at the bridge word 1-17%: the link sits on the item's later mention (lookbacks, Prakash et al. 2025). <!-- src: docs/README_v5_2026-10-28.md | carries 0.70 / 0.74 / 0.76 of its lookup switches, the bridge-word change 0.17 / 0.01 / 0.01 --> <!-- src: docs/README_v5_2026-10-28.md | lookback pointers (Prakash et al. 2025) -->
-- **Locker first:** the recalled answer reads the lens part at the item's earlier mention. Removing it there costs 25-49% more switches than a random part or another item's mention; the lookup does not move. <!-- src: docs/README_v5_2026-10-28.md | 0.25-0.42 more switches than a random part, 0.26-0.49 more than at another item -->
-- Zach's mention-only removal agrees from another angle: at middle layers the recalled answer needs the lens part at the bridge's mention (Finding 5).
-
-![Lookups link at the locker sentences; recalls read the earlier mention](figures/shared/j9_link.png)
 
 ## Finding 4. It holds across datasets and in two families; across models it is graded
 
