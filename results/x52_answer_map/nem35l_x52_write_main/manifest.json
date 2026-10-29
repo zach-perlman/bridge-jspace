@@ -1,0 +1,83 @@
+{
+  "exp": "x52_answer_map",
+  "run": "nem35l_x52_write_main",
+  "stage": "write",
+  "set": "main",
+  "set_text": "our scenes (the main test)",
+  "spec": "jobs/c3/batch52.yaml (brief B); jobs/c3/x52_write_main_lightning.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction",
+  "written_utc": "2026-10-29T00:57:49Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "8030b6e69fa57d09159539e49f7607322c371ed6",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "groups": {
+    "B": "the bridge word (X0's position, 51.10's P1)",
+    "E": "the bridge entity's last mention before the bridge word (its locker sentence), where there is one",
+    "Q": "the question's 'pick' token (51.10's P2)",
+    "T": "the appended space token (51.10's P3)"
+  },
+  "rank_sets": {
+    "bridge": "the bridge entity (51.12's: the first token of each variant of its name)",
+    "ans": "the reader's answer word (51.12's A-style tokens; decides)",
+    "ans_S": "S's answer word on O (a same-type distractor; baseline)",
+    "tokA": "the answer token as read (main: the digit)",
+    "bridge_whole": "the bridge entity, whole-word variants only (no fragment such as 'I' for 'Iota')",
+    "ans_whole": "the answer word, whole-word variants only (no fragment such as 'G' for 'Greece')"
+  },
+  "rule": {
+    "readable": "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.",
+    "usable": "“Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10.",
+    "combinations": "Report the four combinations per reader, per dataset."
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "Δ = h_S - h_O added at the cell (the whole state patched; the upper bound, beside)",
+    "ans1": "s u: u the unit sum of the J++ lens directions of S's answer word's tokens, s = ||Δ|| at the cell",
+    "ans2": "2 s u",
+    "rand1": "s u R^T (R: X0's random basis at the layer, seed 888 + layer): a random part of the same size",
+    "rand2": "2 s u R^T",
+    "freq1": "s u_F: F per answer token one unrelated letter token, BPE id within a factor 2, closest J++ readout norm",
+    "freq2": "2 s u_F"
+  },
+  "seeds": {
+    "random_rotation": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "read_run": "nem35l_x52_read_main",
+  "inputs": {
+    "jobs/c3/batch52.yaml": "65c644b23d25c40d6c593a1a8d5c10473cd99ec4b981392ec83fdfb11c6d894c",
+    "results/x52_answer_map/nem35l_x52_read_main/manifest.json": "e987ea1f5098879e322da942af0c8d381ba0f4eea7963293a2f7d87a2b38154d",
+    "results/x52_answer_map/nem35l_x52_read_main/cases.jsonl": "9f5f98b700f3eef9d0982efa1895fd65d5efdcb92a74ee9045d7f1de6046ce4a",
+    "results/x52_answer_map/nem35l_x52_read_main/ranks.npz": "59ebbf109aee205afc5c24c504cd5fc2dae4dc6ecbce1a592c4346f3a5c2d87c"
+  },
+  "cell_rule": "per reader the (group, layer) before the answer layer with the largest share of items whose answer word is in the J++ top-5 (ties: lower median rank, earlier layer, B < E < Q < T), point estimates",
+  "size": "s = ||h_S - h_O|| at the cell; below 0.001 x ||h_O|| (the position precedes the change): the bridge word's ||Δ|| at that layer (flagged)"
+}
