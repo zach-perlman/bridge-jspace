@@ -81,7 +81,8 @@ MAIN_RUNS = {"qwen3.6-27b": "x47_1_main_27b", "qwen3.5-9b": "qwen35_9b_x47_1_mai
              "muse-glimmer-30b": "muse30_x47_1_main"}  # fmt: skip
 # batch 52 C coverage (amendment 3, extra d): Lightning's runs, read by verdict --coverage alone (the three models'
 # verdict unchanged)
-COVERAGE = {"nemotron-3.5-lightning": ("nem35l_x52_routes_x47_1", "nem35l_x52_x47_1_main")}
+COVERAGE = {"nemotron-3.5-lightning": ("nem35l_x52_routes_x47_1", "nem35l_x52_x47_1_main"),
+            "qwen3.5-122b-a10b": ("qwen35_122b_routes_x47_1", "qwen35_122b_x47_1_main")}  # 122B: Dan 18:20
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 FALL_A, FALL_B, FALL_C = 0.30, 0.20, 0.10
 RECALL_A, RECALL_B = 0.10, 0.20

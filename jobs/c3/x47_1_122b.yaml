@@ -1,0 +1,39 @@
+id: x47_1_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 5): 47.1 on Qwen3.5-122B-A10B (FP8) at L33: does the lookup's identity route sit in lens atoms beyond the recall's 25? Routes C2 (gate 0.80, never lowered) and the main test, atom slices 1-25 / 26-100 / 1-100 against random parts of their share; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x0_probe/qwen35_122b_x0_probe_v4/states.npz &&
+  { uv run python scripts/x6_routes.py run --name qwen35_122b_routes_x47_1 --conditions C2 --jpp-ks 25 100 --atom-slices; R=$?;
+  uv run python scripts/x0_necessity.py run --name qwen35_122b_x47_1_main --set d1_topics_v3 --renderings chat --layers 33 --dicts jpp --curve-dicts jpp --curve-k 50 100 200 --no-nonneg --atom-slices --coverage --why "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 5): 47.1's atom slices and the J++ k curve (50 / 100 / 200) on the 122B's main test at L33; no prediction: coverage run on an already-scored rule" &&
+  if [ $R -eq 0 ]; then uv run python scripts/x47_atoms.py verdict --coverage; else echo "47.1 routes part: not tested (its gate, 0.80, not lowered; exit $R); the main-test slices stand alone, descriptive"; fi; }
+question: >-
+  On the 122B: does the lookup's identity route sit in lens atoms beyond the recall's 25 (47.1 (a)), is it a continuum
+  (b), or outside the lens (c)? And the main test's extra loss per atom slice and k.
+why_it_matters: >-
+  Dan 18:20: claim 5 ("the lookup's which item lives outside the lens") is "not run" on the 122B (fig11).
+hypotheses:
+  none: "No prediction (coverage_122b_1820): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule verbatim from jobs/c3/x47_1_muse.yaml (jobs/c3/batch47.yaml 47.1; first scored in
+  results/x47_atoms/x47_1-20261028T113101Z), as copied in jobs/c3/x52_lightning_atoms47.yaml: "On routes scenes, for
+  identity answers; on the main test, for extra loss: (a) "the lookup's identity route sits in lens atoms beyond the
+  recall's 25": without 26-100, identity answers fall >= 0.30 beyond the random part (paired CI excluding 0) and the
+  recall's extra loss without 26-100 is <= 0.10, on >= 2 of 3 models; (b) "continuum": both readers lose >= 0.20
+  beyond random without 26-100; (c) "outside the lens": without 26-100, identity answers fall < 0.10 beyond random ...
+  Report each slice's share of the change." Read on the 122B alone ("on >= 2 of 3 models" not applicable). As
+  computed: x47_1_muse's text at the 122B's L33: routes C2 scenes (seed 2510, gate 0.80 per reader, NOT lowered: the
+  122B's earlier routes runs passed only at 0.75 (recall 0.797), so if this gate fails the routes part is "not tested"
+  and no verdict line is written for it); the address from qwen35_122b_x0_probe_v4; the main test's first 200
+  eligible scenes. Verdicts: x6_routes' and x0_necessity's in the job, then x47_atoms verdict --coverage
+  (x52_atoms47-<UTC>/, beside Lightning's) only if the routes part ran.
+controls:
+- "every slice against a random part of its own share (X0's random subspace, seed 888 + L)"
+- "75 random lens atoms at the 26-100 slice's share and at their own (x47_atoms' controls)"
+n: "routes C2: the first 300 eligible scenes (if the gate passes); main test: the first 200 eligible scenes"
+seeds: [2510, 888, 0]
+notes: "Coverage, not hand-checked (Dan 18:20); UNVERIFIED; README untouched. Caveats: J++ fit on bf16 used on FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. Code: x47_atoms.COVERAGE gains the 122B. The routes gate is expected to be close (0.797 in x8_write's C2 cases at 0.75); a miss is 'not tested', no rerun. Cost: routes competence ~1,400 cases + 300 x 2 readers x ~10 arms, the main test 200 x 2 x ~10 arms x 1 layer + the k curve: ~0.5 h wall on 2 GPUs."
