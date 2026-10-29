@@ -1562,8 +1562,9 @@ def jsuite(plt) -> str:
 
 
 WORDS53 = (R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093032Z" / "verdict.json",  # 53.3b, Lightning
-           R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093354Z" / "verdict.json")  # fmt: skip  # the 9B
-WORDS53_WAITING = {"qwen3.6-27b": "queued", "muse-glimmer-30b": "queued"}
+           R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093354Z" / "verdict.json",  # the 9B
+           R / "x53_lastconflict" / "x53_lastconflict_words-20261029T095647Z" / "verdict.json")  # fmt: skip  # Muse
+WORDS53_WAITING = {"qwen3.6-27b": "running"}
 
 
 def last_conflict_words(plt) -> str:
