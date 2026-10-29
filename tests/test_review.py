@@ -170,7 +170,7 @@ def test_recount_equals_data_csv(view_id):
     assert not [r for r in rows if r["status"] == "mismatch"]
     matched = {r["model"] for r in rows if r["status"] == "match"}
     if view_id in ("main_swap", "single_change", "routes", "routes_early", "pointer_main"):  # views 1-4: every model
-        assert matched == set(MODELS)
+        assert matched == set(I.view(view_id)["runs"])  # main_swap and routes: Lightning too (29 Oct, tier 1)
     else:  # e.g. Muse's L34 sweep run has no data.csv number ("not tested")
         assert matched
 

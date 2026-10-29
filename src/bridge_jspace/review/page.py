@@ -453,6 +453,115 @@ def x45g_html(it: dict) -> str:
             "bridge's).</p>")  # fmt: skip
 
 
+# ------------------------------------------------- the verification read (Dan 29 Oct 11:45): what the model saw, the arms
+def seen_html(it: dict) -> str:
+    """The sampled reader's prompts decoded from the stored ids exactly as the model read them (chat template, thinking
+    off, "Answer:"), with the tokens the run appended at the read (a digit's space) and the change's token marked."""
+    c, m, w = it["case"], it["model"], it["reader"]
+    rd = c["readers"][w]
+    sfx = C.read_suffix(it)
+    at = c["pos"]
+    edit = (it.get("more") or {}).get("edit_at")  # 51.10: the edit is at the last token
+
+    def text(v: str) -> str:
+        ids = rd["ids"][v]
+        tk = C.tokenizer(m)
+        before, here, after = (tk.decode(ids[:at], skip_special_tokens=False), tk.decode([ids[at]], skip_special_tokens=False),
+                               tk.decode(ids[at + 1 :], skip_special_tokens=False))  # fmt: skip
+        tail = tk.decode(sfx, skip_special_tokens=False) if sfx else ""
+        return (f"{E(before)}<span class='tag pos' title='token {at}'>{E(here)}</span>{E(after)}"
+                + (f"<span class='tag st' title='appended at the read: {sfx}'>{E(tail.replace(' ', '␣'))}</span>" if sfx else ""))  # fmt: skip
+
+    where = (f"the change is added at the last token (the appended space, index {edit.get('org')})" if edit else
+             f"the change is added at the marked token ({at})")  # fmt: skip
+    sfx_note = (f"; grey: the token the run appended at the read ({E(repr(C.tokenizer(m).decode(sfx)))})" if sfx else
+                "; nothing appended: the read is the next token after the template")  # fmt: skip
+    return (f"<details open class='box'><summary><b>As the model saw it</b> ({I.READER_NAME[w]}; decoded from the stored ids "
+            f"with the pinned tokenizer; {where}{sfx_note})</summary><table><tr><th style='width:50%'>original prompt</th>"
+            f"<th>changed prompt</th></tr><tr><td class='prompt'>{text('org')}</td><td class='prompt'>{text('alt')}</td></tr>"
+            "</table></details>")  # fmt: skip
+
+
+def decisive_html(it: dict) -> str:
+    """The view's decisive arms side by side, per reader: each arm's top token (decoded; "not stored" where the run kept
+    only its label) and the pipeline's own label for it."""
+    v = I.view(it["view"])
+    labels = v.get("decisive") or list(next(iter(it["rows"].values())).keys())
+    m, w0 = it["model"], it["reader"]
+    head = "".join(f"<th>{E(arm_name(it, lb))}</th>" for lb in labels)
+    body = []
+    for w in sorted(I.READERS, key=lambda x: x != w0):
+        cells = []
+        for lb in labels:
+            r = it["rows"][w].get(lb)
+            if r is None:
+                cells.append("<td class='mut'>not in the run</td>")
+                continue
+            top = (
+                E(repr(C.top_text(m, r["top"]))) if r.get("top") is not None else "<span class='mut'>not stored</span>"
+            )
+            lab = stored_label(it, w, r)
+            plain = PLAIN.get(lab, lab) + (f" ({lab})" if lab in ("A", "b") else "")
+            sw = f" · switched {r['switched']}" if "switched" in r else ""
+            cells.append(
+                f"<td><code>{top}</code><br>{tag(plain, CLASS_COLOR.get(lab, 'st'))}<span class='mut'>{sw}</span></td>"
+            )
+        rd = it["case"]["readers"][w]
+        who = f"{I.READER_NAME[w]}<br><span class='mut'>{E(str(rd['answer']))} → {E(str(rd['cf_answer']))}</span>"
+        body.append(f"<tr class='{'me' if w == w0 else ''}'><td>{who}</td>{''.join(cells)}</tr>")
+    return (f"<div class='box wrap'><b>The decisive arms</b> <span class='mut'>(top token · the run's label; the answers are "
+            f"original → changed)</span><table class='grid'><tr><th>reader</th>{head}</tr>{''.join(body)}</table></div>")  # fmt: skip
+
+
+def flags_html(it: dict) -> str:
+    """The model's flags (the 122B's L33 rule, Lightning's ○) and the view's per-model flags (the 122B's g75)."""
+    v = I.view(it["view"])
+    got = [*I.spec()["models"][it["model"]].get("flags", []), *(v.get("model_flags") or {}).get(it["model"], [])]
+    return "<p>" + " ".join(tag(f, "oth") for f in got) + "</p>" if got else ""
+
+
+def facts_html(it: dict) -> str:
+    """Per view, what a reader needs to judge the item: E1 the answer word's lens rank at the bridge word; Z1-P the made-up
+    fact beside the true one; x8 the slot written to, its item and digit; 51.10 the read peak and the logit lens."""
+    c, more = it["case"], it.get("more") or {}
+    if it["kind"] == "x51_answer":
+        rk = more.get("answer_rank") or {}
+        parts = [f"{I.READER_NAME[w]}: O {E(str((rk.get('org') or {}).get(w, '–')))}, S {E(str((rk.get('alt') or {}).get(w, '–')))}"
+                 for w in I.READERS]  # fmt: skip
+        words = ", ".join(more.get("answer_words") or [])
+        return (f"<p>The answer word's rank in the lens readout at the bridge word (readout.jsonl; above 50 = outside the "
+                f"top 50): {'; '.join(parts)}. Number words used for the answer directions: {E(words)}.</p>")  # fmt: skip
+    if it["kind"] == "zach" and more.get("facts"):
+        f = more["facts"]
+        flag = (
+            tag("the true value appears in the lookup's passage", "fail")
+            if f["true_in_lookup_passage"]
+            else tag("the true value is absent from the lookup's passage", "pass")
+        )
+        same = tag("made-up = true", "fail") if str(f["made_up"]).lower() == str(f["true"]).lower() else ""
+        return (f"<p>Relation <b>{E(str(f['relation']))}</b> ({E(str(f['stratum']))}). Made-up fact in the lookup's passage: "
+                f"<b>{E(c['bridge'])} → {E(str(f['made_up']))}</b>; the true fact (the recall's answer, from memory): "
+                f"<b>{E(c['bridge'])} → {E(str(f['true']))}</b>. Changed: {E(c['cf_bridge'])} → {E(str(f['cf_made_up']))} "
+                f"(made up) / {E(str(f['cf_true']))} (true). {flag} {same}</p>")  # fmt: skip
+    if it["kind"] == "x8":
+        x8 = it["x8"]
+        items = [x for x, _ in C.LOCKER.findall(c["context"])]
+        digits = [d for _, d in C.LOCKER.findall(c["context"])]
+        if len(items) == 3:
+            return (f"<p>The swap writes slot <b>{x8['k']}</b> (swapped in: <b>{E(items[x8['k']])}</b>, locker "
+                    f"<b>{E(digits[x8['k']])}</b>) over the bridge's slot {x8['j']} ({E(items[x8['j']])}, locker "
+                    f"{E(digits[x8['j']])}) at s = {x8['s']:g}; a lookup that follows the swap answers "
+                    f"<b>{E(digits[x8['k']])}</b>.</p>")  # fmt: skip
+    if it["kind"] == "jread":
+        ll = more.get("logit_lens_top") or {}
+        dec = {v: (repr(C.top_text(it["model"], t)) if t is not None else "–") for v, t in ll.items()}
+        return (f"<p>Read peak (this reader): layer <b>{more.get('peak')}</b>; the arms act at the last token there. The plain "
+                f"logit lens's top token at the last token at that layer: O {E(dec.get('org', '–'))}, S "
+                f"{E(dec.get('alt', '–'))}. The J++ lens readout's top words per item are not stored by the run (see the "
+                f"inspector panel).</p>")  # fmt: skip
+    return ""
+
+
 def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     if it["kind"] == "x45b_sweep":
         return sweep_card(it, seed, mark)
@@ -471,6 +580,8 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
+    if I.view(it["view"]).get("tier") == 1:  # the verification read: what the model saw and the decisive arms first
+        parts.append(flags_html(it) + seen_html(it) + facts_html(it) + decisive_html(it))
     right = ("Second prompt of the routes case (not used by the write)" if x8 else
              "Changed prompt (the change is taken from here)")  # fmt: skip
     org, alt = marked(c["context"], c["cf_context"]), marked(c["cf_context"], c["context"])

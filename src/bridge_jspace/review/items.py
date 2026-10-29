@@ -81,10 +81,15 @@ def layer_of(v: dict, model: str, run: str) -> int:
 def run_flags(run: str, keys: set[str] | None = None) -> list[str]:
     """What stopped a run or voids its items: a read gate failed or too few eligible items (gate.json, per condition or
     rendering; keys: only these, e.g. a view's rendering; x5: one gate for the run), or the routes test's C0 check failed
-    (c0_check.json; x6_routes writes its outcomes before the check)."""
+    (c0_check.json; x6_routes writes its outcomes before the check). gate.json's "gate" is a per-condition dict, one
+    gate's record (x51_answer: its "pass" inside), or the bar itself (x50_zach: a number, its "pass" at the top)."""
     gate = read_json(f"{run}/gate.json")
     out = ["read gate failed"] if gate.get("pass") is False else []
-    for k, g in gate.get("gate", {}).items():
+    per = gate.get("gate")
+    if isinstance(per, dict) and "pass" in per:  # one gate for the run, not per condition
+        out += ["read gate failed"] if per["pass"] is False and not out else []
+        per = {}
+    for k, g in (per if isinstance(per, dict) else {}).items():
         if keys is not None and k not in keys:
             continue
         if isinstance(g, dict) and g.get("pass") is False:

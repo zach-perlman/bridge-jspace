@@ -33,6 +33,43 @@ def data_csv() -> tuple[dict[str, str], dict[str, str]]:
     return value, source
 
 
+@lru_cache(maxsize=1)
+def csv_rows() -> dict[tuple[str, str], list[dict]]:
+    """(model column, quantity) -> its figures/story/data.csv rows (any figure): the README's src comments name a
+    quantity and the model is the column."""
+    out: dict[tuple[str, str], list[dict]] = {}
+    with (I.REPO / "figures" / "story" / "data.csv").open() as f:
+        for r in csv.DictReader(f):
+            out.setdefault((r["model"], r["quantity"]), []).append(r)
+    return out
+
+
+def tolerance(text: str) -> float:
+    """Half a unit of the stored number's last decimal (2 decimals: 0.005; a full-precision float: ~0)."""
+    m = re.match(r"\s*[−-]?\d+(?:\.(\d+))?", text)
+    return 0.5 * 10 ** -len(m.group(1) or "") + 1e-9 if m else 0.0
+
+
+def compare_csv(value: float, model: str, quantity: str | None) -> dict:
+    """Against the data.csv row(s) of (model, quantity); all its rows (one quantity can sit in several figures) must
+    agree within each row's precision."""
+    rows = csv_rows().get((model, quantity or ""), [])
+    nums = [(r, first_number(r["value"])) for r in rows]
+    nums = [(r, x) for r, x in nums if x is not None]
+    if not nums:
+        return {"key": f"data.csv: {quantity}" if quantity else "", "data": "", "status": "no source"}
+    ok = all(abs(value - x) <= tolerance(r["value"]) for r, x in nums)
+    shown = sorted({r["value"] for r, _ in nums})
+    return {"key": f"data.csv: {quantity}", "data": " / ".join(shown), "status": "match" if ok else "mismatch",
+            "source": sorted({r["source"] for r, _ in nums})[0]}  # fmt: skip
+
+
+def compare_any(value: float, key: str | None, model: str, quantity: str | None) -> dict:
+    """x0_numbers.json's key (through data.csv's numbers rows) where it exists, else data.csv by (model, quantity)."""
+    got = compare(value, key)
+    return got if got["status"] != "no source" or not quantity else compare_csv(value, model, quantity)
+
+
 def first_number(text: str) -> float | None:
     m = re.match(r"\s*([−-]?\d+(?:\.\d+)?)", text)
     return float(m.group(1).replace("−", "-")) if m else None
@@ -156,13 +193,57 @@ def route_shares(v: dict, got: list[dict], e: dict, m: str, mk: str) -> list[dic
             src = f"{run.rsplit('/', 1)[0]}/{first['_run']}" if "_run" in first else run
             for route in ROUTES:
                 share = sum(I.route_class(it["rows"]["PP"][label], cond) == route for it in lk) / len(lk)
+                q = e["csv"].replace("<arm>", arm).replace("<route>", route) if e.get("csv") and cond == "C2" else None
                 out.append({"model": m, "quantity": f"{cond} {label}: {route}{tag}", "n": len(lk), "value": share,
-                            **compare(share, route_keys(cond, arm, route, mk, src))})  # fmt: skip
+                            **compare_any(share, route_keys(cond, arm, route, mk, src), m, q)})  # fmt: skip
             if rc:
                 share = switched([it["rows"]["PM"][label] for it in rc]) / len(rc)
                 out.append({"model": m, "quantity": f"{cond} {label}: recall follows S{tag}", "n": len(rc), "value": share,
                             **compare(share, route_keys(cond, arm, "recall_follows_s", mk, src))})  # fmt: skip
     return out
+
+
+TIER1_STATS = ("share_kept", "answer_rank_below", "x8_target_mean_pairs", "x8_recall_changed", "switch_share")
+E1_ARMS = {1: ("arm 1: without the lens part", "arm 1's random part"),
+           2: ("arm 2: without the lens part, its answer directions kept", "arm 2's random part")}  # fmt: skip
+
+
+def tier1_stat(got: list[dict], e: dict, m: str) -> dict:
+    """The tier-1 views' own headline numbers (Dan 29 Oct 11:45), each against data.csv by (model, quantity):
+    share_kept           51.12 E1: arm 2's extra loss / arm 1's (the recall's loss kept with the answer directions)
+    answer_rank_below    51.12 E1: the share of items whose answer word ranks below the lens's top N at the bridge
+                         word on both O and S (readout.jsonl variants org and alt; x51_answer's "not_read" =
+                         1 - top50_either)
+    x8_target_mean_pairs the swap: the lookup's target share per locker pair (j, k), then the mean over the pairs
+    x8_recall_changed    the swap: the share of recalls that change
+    switch_share         51.10: the share of a reader's items an arm switches"""
+    w = e.get("reader", "PP")
+    mine = [it for it in got if it["reader"] == w]
+    if e["stat"] == "share_kept":
+        ex = {a: extra_loss(got, w, {"whole": "whole", "part": p, "random": r})[0] for a, (p, r) in E1_ARMS.items()}
+        val, what = ex[2] / ex[1] if ex[1] else float("nan"), "share of arm 1's extra loss kept by arm 2"
+    elif e["stat"] == "answer_rank_below":
+        rk = [it["more"].get("answer_rank") or {} for it in mine]
+        pairs = [(o, s) for r in rk if (o := (r.get("org") or {}).get(w)) is not None
+                 and (s := (r.get("alt") or {}).get(w)) is not None]  # fmt: skip
+        val = sum(o > e["top"] and s > e["top"] for o, s in pairs) / len(pairs)
+        what = f"answer word below the lens's top {e['top']} on both O and S"
+        mine = pairs
+    elif e["stat"].startswith("x8_"):
+        mine = [it for it in mine if it["x8"]["kind"] == "write" and float(it["x8"]["s"]) == float(e["s"])]
+        if e["stat"] == "x8_target_mean_pairs":
+            pairs: dict = {}
+            for it in mine:
+                pairs.setdefault((it["x8"]["j"], it["x8"]["k"]), []).append(it["cls"] == "target")
+            val = sum(sum(x) / len(x) for x in pairs.values()) / len(pairs) if pairs else float("nan")
+            what = f"lookup target share, mean over {len(pairs)} locker pairs, s = {e['s']:g}"
+        else:
+            val, what = sum(it["cls"] == "changed" for it in mine) / len(mine), f"recalls that change, s = {e['s']:g}"
+    else:  # switch_share
+        rows = [it["rows"][w].get(e["arm"]) for it in mine]
+        val, what = switched(rows) / len(mine), f"switched by {e['arm']}"
+    return {"model": m, "quantity": f"{I.READER_NAME[w]}: {what}", "n": len(mine), "value": val,
+            **compare_csv(val, m, e["csv"])}  # fmt: skip
 
 
 def recount(view_id: str) -> list[dict]:
@@ -177,29 +258,30 @@ def recount(view_id: str) -> list[dict]:
         for e in entries if isinstance(entries, list) else []:
             if e["stat"] == "route_share":
                 out += route_shares(v, got, e, m, mk)
+            elif e["stat"] in TIER1_STATS:
+                out.append(tier1_stat(got, e, m))
+            elif "key" not in e and "csv" in e:  # an extra loss read against data.csv only
+                val, n = extra_loss(got, e["reader"], {"whole": e.get("whole", "whole"), **e})
+                out.append({"model": m, "quantity": f"{I.READER_NAME[e['reader']]} extra loss: {e['part']}", "n": n,
+                            "value": val, **compare_csv(val, m, e["csv"])})  # fmt: skip
             else:
                 out.append(one_part(got, e, m, mk, v))
         h = v.get("headline", {}) if isinstance(v.get("headline"), dict) else {}
         if h.get("stat") == "extra_loss":
             ex = {}
+            keys, qs = h.get("keys", {}), h.get("csv", {})
             for w in I.READERS:
-                if w not in h.get("keys", {}):
+                if w not in keys and w not in qs:
                     continue
                 ex[w], n = extra_loss(got, w, h)
-                key = h["keys"][w].replace("<m>", mk)
-                out.append(
-                    {
-                        "model": m,
-                        "quantity": f"{I.READER_NAME[w]} extra loss",
-                        "n": n,
-                        "value": ex[w],
-                        **compare(ex[w], key),
-                    }
-                )
-            if "gap" in h.get("keys", {}) and len(ex) == 2:
+                key = keys.get(w, "").replace("<m>", mk) or None
+                out.append({"model": m, "quantity": f"{I.READER_NAME[w]} extra loss", "n": n, "value": ex[w],
+                            **compare_any(ex[w], key, m, qs.get(w))})  # fmt: skip
+            if ("gap" in keys or "gap" in qs) and len(ex) == 2:
                 gap = ex["PM"] - ex["PP"]
+                key = keys.get("gap", "").replace("<m>", mk) or None
                 out.append({"model": m, "quantity": "gap (recall - lookup)", "n": out[-1]["n"], "value": gap,
-                            **compare(gap, h["keys"]["gap"].replace("<m>", mk))})  # fmt: skip
+                            **compare_any(gap, key, m, qs.get("gap"))})  # fmt: skip
         elif h.get("stat") == "order_switched":  # the lookups the whole change switches, by sentence order
             for o in ("before", "after"):
                 lk = [it for it in got if it["reader"] == "PP" and it["order"].get("original") == o]
@@ -208,6 +290,9 @@ def recount(view_id: str) -> list[dict]:
                     key = h["keys"][what].replace("<o>", o).replace("<m>", mk)
                     out.append({"model": m, "quantity": f"lookups switched, locker {o} the pick: {what}", "n": len(lk),
                                 "value": float(val), **compare(val, key)})  # fmt: skip
+                if h.get("csv") and lk:  # the share, as the README's Lightning numbers and fig03 / s03 store it
+                    out.append({"model": m, "quantity": f"lookups switched, locker {o} the pick: share", "n": len(lk),
+                                "value": k / len(lk), **compare_csv(k / len(lk), m, h["csv"].replace("<o>", o))})  # fmt: skip
         elif h.get("stat") == "route_share":
             out += route_shares(v, got, h, m, mk)
         elif h.get("stat") == "x8_target_minus_random":
