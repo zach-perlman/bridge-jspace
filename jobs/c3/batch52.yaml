@@ -121,3 +121,44 @@ overnight_rules: |
     edits wait for me.
   By 09:00: the coverage matrix, the Flagged list, and one line per box on what
   ran and what failed.
+amendment_3: |
+  Amendment 3 (Dan, 01:10): the full grid on Lightning tonight, in parallel.
+
+  1. Now, no GPU needed: stage Lightning on mats and another (weights
+     nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 rev a9904d24, lens sha256
+     3306b6e4...). Check free disk first; verify both sha. Report when ready.
+
+  2. Priority: Lightning key rows > 27B gaps outside the key rows > 9B / Muse gaps.
+     Running jobs are not stopped.
+
+  3. Lightning lanes, one per GPU as each frees up (L14; same gates; each rule
+     copied verbatim from the test's original spec; no predictions):
+     - speedup: conflict test (running) → answer control → order split (from the
+       conflict run) → ladder 1-6 (rung 6 in Zach's band L27-33)
+     - mats GPU 0: routes test (fits the address) → address swap by dose → lens
+       readout + item change → attention under the swap
+     - mats GPU 1: anatomy by layer → token map
+     - another: last token read / write → six lockers
+     Copy test stays "not tested".
+
+  4. After the key rows, extra Lightning tests in this order, on whichever GPU
+     is free:
+     a. other texts: varied scenes (prose / JSON / table) and natural passages
+     b. dose curves (each part alone, 0.5-3x, vs random)
+     c. batch 52 A (atoms of the lens part) and B (answer map) on Lightning
+     d. identity route outside the lens, and the 100-direction removal
+     e. Zach's named-bridge passages (Z1, Z3)
+     f. DAS subspaces, carrier before L, address at the last token, joint head
+        ablation, address size (51.11)
+
+  5. Lightning is a hybrid (NemotronH: Mamba plus a few attention layers). Before
+     any head or attention test, list its attention layers. Where a test needs
+     attention layers that don't exist in its window, report "not applicable:
+     no attention layer in L..L+k", do not move the window.
+
+  6. Agent C: write the Lightning specs for lanes 3-4 now, ahead of need, so no
+     GPU waits for a spec. Cells under 30 switches are left out. Every result
+     UNVERIFIED, into EXPERIMENTS.md; README untouched overnight.
+
+  At 02:00, in the status: per-GPU queue with expected empty time; if any GPU
+  will idle before 07:00, say which test from 4 goes there.
