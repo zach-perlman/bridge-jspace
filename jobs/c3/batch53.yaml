@@ -580,6 +580,34 @@ docs_1250: |
 
   At the end: a one-screen diff summary per document, and the list of claims
   whose grade changed.
+answers_1315_received: "29 Oct ~13:16 Paris (Dan)"
+answers_1315: |
+  Answers (Dan, 13:15):
+  - Rank check: no flag (the rest 0.00-0.02 vs random 0.52; the rule flags the
+    rest exceeding random). Card line: "what the lens can read about the item
+    sits in the J++ part; the rest reads nothing (0.00-0.02); the random part
+    reads the bridge because it keeps part of Δ itself".
+  - "How we checked", replace my lines with: per-item failures 4 (one check's
+    limit on hyphenated names); rerun label agreement 393-400 of 400 (near
+    ties); ladder reruns move shared steps by <= 0.02 (Flagged 20); clean-
+    checkout reruns of the 9B's headline cells reproduce 4 of 5 exactly
+    (49.5, with its two flags).
+  - 53.7 marks: the 27B probes and the 9B tool probe: "adapted design" only (they
+    pass either gate / were computed after the decision); the 9B code probe:
+    not tested (0.669). Card: say whether U was refit in code or carried over
+    from prose.
+  - 53.8: headline stays the uncentered arm ("no"). Add, CPU: cos^2 of the
+    centered slot vectors with U (the address). If high, the card says "the
+    centered arm re-finds the address; the identity code stays open".
+  - 53.4: recompute the span's cut on the scenes where the clean answer
+    survives the block (CPU); report beside 0.52.
+  - 53.1 wording: "a small order effect on the 27B (lower bound +0.01, of the
+    order of the 122B's rerun noise), none on the 122B".
+  - 53.2, fixed before the verdict: if J++ is >= 0.10 below the energy-matched
+    random while the full state is >= 0.8, the label is "the address is under-
+    represented in the lens directions" (stronger than blind), not an energy
+    artefact. If J++ is within 0.10 of the energy-matched random, "no different
+    from random directions of the same energy".
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
