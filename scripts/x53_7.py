@@ -1267,10 +1267,20 @@ def monitor_numbers_figure(results: dict, s: str, path: Path) -> None:
             ax.set_ylim(-0.02, 1.02)
             if j == 0:
                 ax.set_ylabel(f"{M.NAMES[t]}\n{'bridge word' if p == 'B' else 'last token'}", fontsize=9)
-    fig.suptitle(f"{CP_TEST}: probe accuracy by layer (numbers only, no label; full black, J++ purple, random grey, PCA "
-                 "green, beside where run: fixed J++ amber, energy-matched random red; k = 25 solid, 100 dashed; "
-                 "UNVERIFIED)", fontsize=9)  # fmt: skip
-    fig.tight_layout(rect=(0, 0, 1, 0.97))
+            if i == len(rows) - 1:
+                ax.set_xlabel("layer", fontsize=9)
+    names = {"full": "full residual", "jpp": "J++ part (per state)", "fix": "fixed J++ subspace", "rand": "random subspace",
+             "erand": "energy-matched random", "pca": "PCA top-k", "chance": "chance (majority)"}  # fmt: skip
+    from matplotlib.lines import Line2D
+
+    handles = [Line2D([], [], color=col[f], lw=1.6, ls=":" if f == "chance" else "-", label=names[f]) for f in names]
+    handles += [
+        Line2D([], [], color="#555555", ls=ls, label=f"k = {k}") for k, ls in zip(M.KS, ("-", "--"), strict=True)
+    ]
+    fig.legend(handles=handles, loc="upper center", ncol=5, fontsize=8, frameon=False, bbox_to_anchor=(0.5, 0.965))
+    fig.suptitle("53.7 add-on, code_pointer_v1's CH2 chains (Dan 11:25; descriptive): the monitor's probe accuracy by layer\n"
+                 "numbers only, no label; UNVERIFIED", fontsize=10, y=0.995)  # fmt: skip
+    fig.tight_layout(rect=(0, 0, 1, 1 - 1.3 / (2.3 * len(rows) + 1.2)))
     fig.savefig(path, dpi=110, facecolor="white")
     plt.close(fig)
 
