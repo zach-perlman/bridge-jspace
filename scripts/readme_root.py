@@ -53,7 +53,7 @@ def story() -> dict[tuple[str, str], float]:
 
 
 def build() -> str:
-    from figures.kit.specs import SPECS
+    from bridge_jspace.figkit.specs import SPECS
 
     B, X, S = breadth(), x0(), story()
 

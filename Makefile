@@ -118,9 +118,9 @@ examples-render:    ## examples/<exp>/ from the latest examples runs; SEED=29 ad
 examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
 	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)
 
-figures-kit:        ## every figure-kit figure for both targets (presentation/, figures/readme/): FIG="p1 p5" for some
-	uv run python -m figures.kit.build $(FIG) --target slide
-	uv run python -m figures.kit.build $(FIG) --target readme
+figures-kit:        ## every figure-kit figure for both targets (figures/presentation/, figures/readme/): FIG="p1 p5" for some
+	uv run python -m bridge_jspace.figkit.build $(FIG) --target slide
+	uv run python -m bridge_jspace.figkit.build $(FIG) --target readme
 
 readme: figures-kit ## the root README from docs/README.root.template.md (numbers and figures fill in)
 	uv run python scripts/readme_root.py build
