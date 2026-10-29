@@ -1,0 +1,55 @@
+{
+  "source": "x45m_fresh_27b",
+  "layer": 32,
+  "gate": {
+    "cases": 600,
+    "org_accuracy": {
+      "PP": 1,
+      "PM": 0.9833
+    },
+    "said_accuracy": {
+      "PP": 1,
+      "PM": 0.9833
+    },
+    "cand_accuracy": {
+      "PP": 0.9983,
+      "PM": 0.9817
+    },
+    "pass": true,
+    "eligible": 574,
+    "enough": true,
+    "descriptive": false
+  },
+  "items_at_L": 574,
+  "dropped": {},
+  "items": 574,
+  "entities": 46,
+  "orders": {
+    "locker-first": 254,
+    "locker-after": 320
+  },
+  "group45m": {
+    "locker-first / locker-before": 202,
+    "locker-after / locker-after": 236,
+    "locker-after / mixed": 84,
+    "locker-first / mixed": 52
+  },
+  "tokens_median": {
+    "lookup": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 31.0,
+      "5": 77.0,
+      "6": 77.0
+    },
+    "recall": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 33.0,
+      "5": 81.0,
+      "6": 81.0
+    }
+  }
+}

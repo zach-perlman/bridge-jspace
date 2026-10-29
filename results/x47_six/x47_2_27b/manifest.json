@@ -1,0 +1,70 @@
+{
+  "exp": "x47_six",
+  "run": "x47_2_27b",
+  "why": "batch 47, test 47.2 (jobs/c3/batch47.yaml; Q47.2): six-locker routes moves (the bridge's locker sentence moved from slot i to slot j, every ordered pair), the layout-free slot means fit on a held-out half, then on the other half the slot subspace and the old U removed against random parts, pairwise writes mu_t - mu_i, and the shift v = mean_k (mu_k+1 - mu_k) from every start slot; sealed",
+  "test": "47.2",
+  "spec": "jobs/c3/batch47.yaml (47.2)",
+  "question": "Q47.2 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T23:32:42Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "087ee4ddb4d37f4b98d84e2e82bbfececae831fe",
+    "dirty": true
+  },
+  "layer": 32,
+  "read": "X0's chat read (the top token after a digit's space token appended to O)",
+  "slots_try": [
+    6,
+    5
+  ],
+  "gate": 0.8,
+  "n": {
+    "candidates_per_pair": 40,
+    "per_pair": 20,
+    "c0_candidates": 150,
+    "c0": 100
+  },
+  "seeds": {
+    "scenes": 4702,
+    "split": 4721,
+    "random_directions": 4723,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "doses": [
+    1,
+    2
+  ],
+  "decisive_dose": 2,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the bridge word",
+    "no_slot": "(i) the whole change without its part in the slot subspace W (fit on the held-out half)",
+    "no_slot_rand": "(i) the whole change without a random part of W's share",
+    "no_U": "(iv) the whole change without its part in the old 4-d pointer basis U",
+    "no_U_rand": "(iv) the whole change without a random part of U's share",
+    "write": "(ii) s units along mu_t - mu_i (i: the bridge's slot in O; t: the target)",
+    "random": "a random direction of s units (the writes' control)",
+    "v": "(iii) s units along v = mean_k (mu_{k+1} - mu_k), target i + 1",
+    "vrev": "(iii) s units along -v, target i - 1",
+    "v12": "(dumbest way 2) s units along mu_2 - mu_1 as a shift, target i + 1",
+    "vno12": "(dumbest way 2) s units along v without the first step, target i + 1"
+  },
+  "U_from": "x0_probe_v4_27b",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.2 answer"
+}
