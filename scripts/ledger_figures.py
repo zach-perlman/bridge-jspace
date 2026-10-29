@@ -1706,9 +1706,9 @@ def report_slot1(plt) -> str:
                        bars=((0.2, "--"),))
 
 
-TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T104328Z" / "verdict.json"  # 53.1, combined (9B, 27B, Lightning)
-# Muse's box verdict, interim until the five-model verdict lands (a model the combined verdict has wins)
-TWOBYTWO_INTERIM = (R / "x53_2x2" / "x53_2x2-20261029T104153Z" / "verdict.json",)
+TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T113335Z" / "verdict.json"  # 53.1, the five-model verdict
+# box verdicts read where the combined verdict lacks a model (none since the five-model verdict)
+TWOBYTWO_INTERIM: tuple[Path, ...] = ()
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
                   ("qb_word", "Q before, word"))
 
@@ -1718,20 +1718,26 @@ def twobytwo(plt) -> str:
     recall's switches lost without the lens part beyond random (arm 1) and its share kept with the answer directions
     kept (arm 2 over arm 1), and the conflict test's lookup beside (dashed: the cross-check's 0.10); the lookup's
     paired difference, question before minus after (Dan 11:25); a cell not tested as a grey note with its own gate;
-    Lightning hollow (its gate set after the pre-check); a model still running grey."""
-    v = {m["target"]: m for m in load(TWOBYTWO)}
-    for m in (m for p in TWOBYTWO_INTERIM for m in load(p)):
+    Lightning hollow (its gate set after the pre-check); a model still running grey; the 122B as a fifth slot."""
+    v = {m["target"]: m for m in _twobytwo_models(TWOBYTWO)}
+    for m in (m for p in TWOBYTWO_INTERIM for m in _twobytwo_models(p)):
         if m.get("cells") and not v.get(m["target"], {}).get("cells"):
             v[m["target"]] = m
     rows, absent = {}, {}
-    for t in SLOT_MODELS:
+    for t in FIVE:
         if v.get(t, {}).get("cells"):
             rows[t] = _twobytwo_rows(v[t], hollow=t == LT)
         else:
             absent[t] = "running" if v.get(t, {}).get("status") == "pending" else "not run"
     return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
                        "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
-                       rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),))
+                       rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),), models=FIVE)
+
+
+def _twobytwo_models(path: Path) -> list[dict]:
+    """A 53.1 verdict's per-model entries: a list until 11:18 UTC, then {"models": [...], "across_models": ...}."""
+    data = load(path)
+    return data["models"] if isinstance(data, dict) else data
 
 
 def _twobytwo_note(c: dict) -> str:
@@ -1741,7 +1747,7 @@ def _twobytwo_note(c: dict) -> str:
         return "not run\n(stopped,\nDan 11:10)"
     if "relation" in status:
         return "not tested\n(relation\n0.382 < 0.80)"
-    return f"not tested\n(gate {c['gate']['org_read_accuracy']['PM']:.3f} < 0.80)"
+    return f"not tested\n(gate {c['gate']['org_read_accuracy']['PM']:.3f}\n< 0.80)"
 
 
 def _twobytwo_rows(m: dict, hollow: bool = False) -> list:
@@ -1757,7 +1763,7 @@ def _twobytwo_rows(m: dict, hollow: bool = False) -> list:
             out += [(labs[0], _twobytwo_note(c), INK, hollow), (labs[1], "", INK, hollow),
                     (labs[2], "", LOOKUP, hollow)]
     p = m.get("paired") or {}
-    out.append(("lookup, Q before minus after", p["diff"] if p.get("diff") else "can't tell\n(a cell not tested)",
+    out.append(("lookup, Q before minus after", p["diff"] if p.get("diff") else "can't tell\n(a cell\nnot tested)",
                 LOOKUP, hollow))
     return out
 
