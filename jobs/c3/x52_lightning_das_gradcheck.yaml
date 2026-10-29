@@ -1,0 +1,46 @@
+id: x52_lightning_das_gradcheck
+title: "Batch 52, Lightning ports (Dan's 08:55 GPU queue item 3), first step: DAS gradient check on nemotron-3.5-lightning at L14 through the torch (non-kernel) Mamba-2 path (BJ_DAS_MAMBA=torch) on 8 items: the torch path's forward vs the pinned kernels' (h at L14, the read's logits and top token, unedited and under the whole change), the DAS loss's gradient finite; a check of the method, no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_DAS_MAMBA=torch PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x48_das.py gradcheck --name nem35l_x52_das_gradcheck --why "Batch 52, Dan's 08:55 GPU queue item 3 (jobs/c3/batch52.yaml morning_queue): before any DAS on Lightning, the torch (non-kernel) Mamba-2 path's forward vs the pinned kernels' and the DAS loss's gradient on 8 items at L$L; no prediction: a check of the method"
+question: >-
+  Can DAS train through Nemotron 3.5 Lightning? With BJ_DAS_MAMBA=torch the DAS training forward runs NemotronH's Mamba-2
+  mixer (and the other HF-hub kernel forwards: RMSNorm, rotary) on transformers' torch reference, whose backward is
+  autograd's. On 8 items at the committed L14: does that path compute the same forward as the pinned kernels, and is
+  the DAS loss's gradient through it finite?
+why_it_matters: >-
+  Dan's 08:55 queue, item 3: "first a gradient check on 8 items (torch path vs kernel forward agree, grads finite), then
+  51.3, 48.1, 51.11 parts 1 and 3; 48.2 B ...". The DAS ports (jobs/c3/x52_lightning_das48.yaml, _das51.yaml,
+  _addr_p1.yaml, _addr_p3.yaml) depend on this job: a failed check (exit 1) blocks them, and the ledger then says "not
+  tested: no verified backward pass on NemotronH".
+hypotheses:
+  none: "No prediction: a check of the method (pass / fail on the bars below, fixed with this spec before the run)."
+decision_rule: >-
+  Fixed with this spec, before the run (bars chosen by the agent porting the code, 29 Oct ~10:00 Paris; the coordinator
+  may change them before enqueueing, never after): PASS iff all four hold, else FAIL (exit 1). Items: the first 8
+  train pairs of 48.1's Lightning pairs (x48_das.select_pairs on nem35l_x52_conflict at L14, in the stored run's scene
+  order), both readers' O prompts with the read's space token (16 rows, micro-batches of 8 as DAS). Kernels = the model
+  as loaded (pins: use_kernels, the HF-hub mamba-ssm and liger RMSNorm); torch = x48_das.kernels_off (every HF-hub
+  kernel forward back on its class's own torch code, asserted per object). (1) h at L14 at the bridge token of the O
+  and S prompts: relative L2 ||h_torch - h_kernel|| / ||h_kernel|| <= 0.02 for every item; (2) the read's logits
+  (unedited, and with the whole change Delta = h_S - h_O added at the bridge token at L14): relative L2 <= 0.05 for
+  every row; (3) the read's top token equal on both paths on >= 30 of the 32 reads; (4) the DAS loss (48.1's:
+  cross-entropy of S's first answer token at the read under h_O + R R^T Delta, R = an orthonormal [d, 16] random basis,
+  seed 5200) has a finite, nonzero gradient w.r.t. R on the torch path, and 20 steps of x48_das.train_subspace (k = 16,
+  the lookup's 8 rows, the runs' code path: batch_logits switches to the torch path while a gradient is recorded) give a
+  finite loss at every logged step. Beside, never a bar: max abs differences, seconds per micro-batch (forward +
+  backward) and peak memory on the torch path (the ports' cost and memory), and the kernels' own gradient (their
+  backward, which the switch avoids; run last, its failure ends nothing) vs the torch path's (cosine, relative L2).
+controls:
+- "the same 8 items, rows, R and targets on both paths (paired comparison); the kernel path is the pinned model every Lightning run used"
+- "CPU tests (tests/test_nemotronh_das.py, a tiny random NemotronH with Mamba-2, MoE and attention blocks, float64): kernels_off undoes a kernelize-style forward swap and restores it; the DAS edit's gradient through the torch path equals central finite differences (torch.autograd.gradcheck) at a Mamba-2 and a MoE block; grouped_mm experts give the eager loop's gradient; right padding leaves each row's read unchanged; train_subspace runs every training forward on the torch path"
+- "beside: the kernels' own backward vs the torch path's gradient (an independent implementation of the same derivative)"
+n: "8 items (the first 8 train pairs of 48.1's Lightning pairs), 2 readers: 16 rows, 32 reads per path; 2 micro-batches of 8 for the gradient; 20 training steps"
+seeds: [0, 5200, 4803]
+notes: "Batch 52, Dan's 08:55 GPU queue (jobs/c3/batch52.yaml morning_queue) item 3, lowest priority. Code: x48_das gains MAMBA_ENV (BJ_DAS_MAMBA), kernelized / kernels_off / das_forward_path / torch_mamba (batch_logits takes the torch path while a gradient is recorded; reads without a gradient keep the kernels, as every Lightning run) and the gradcheck stage; MAIN_RUN and COVERAGE_RUNS gain Lightning (48.1's pairs from nem35l_x52_conflict at L14, as 48.2 A). Writes results/x48_das/nem35l_x52_das_gradcheck/ manifest.json (before the model loads), gradcheck.json, gradcheck.md. Seeds: 0 the 48.1 split (whose train pairs are used), 5200 R, 4803 + 5200 train_subspace's batches. Known caveat (51.3's manifest, 'global_rng'; 48.1 leaves it unseeded): torch's orthogonal parametrisation completes R's basis with the global RNG, so two modules of one INIT_SEED start at the same R with differently oriented gradients w.r.t. their parameter; the check therefore compares gradients w.r.t. R itself. Cost (ledger, results/jobq/ledger_sesterce-speedup.jsonl / _h100x2): Lightning loads in ~50-100 s (x52_lightning_dose 149 s wall, x52_lightning_answer 138 s); here 2 x (16 state forwards + 32 reads) + 4 forward+backward micro-batches + 20 training steps; the torch Mamba path is 9-12x the kernels' forward (pins, amendment 42), guessed 1-3 s per micro-batch forward + backward: ~2-4 min of work; est 0.2 with margin. Memory: 62 GB at inference (45s smoke 62.5); the torch path's chunk scan materialises ~4 GB fp32 tensors per Mamba layer at 8 rows of <= 128 tokens; peak recorded (if it OOMs at 8 rows the job fails and the ports wait: their micro-batch would then be lowered by a new spec). Box: any of mats / speedup / another (all hold Lightning); the ports depend on it and must go to the same box."

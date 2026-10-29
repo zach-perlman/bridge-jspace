@@ -46,12 +46,17 @@ BJ_TARGET=qwen3.5-9b uv run python scripts/x48_das.py run --name qwen35_9b_x48_d
 BJ_TARGET=qwen3.5-9b uv run python scripts/x48_das.py run --name qwen35_9b_x47_d3 --layers 6 24 --depth   # D3
 uv run python scripts/x48_das.py verdict --runs qwen35_9b_x48_das muse30_x48_das       # CPU, after Dan's Q48.1
 uv run python scripts/x48_das.py depth --runs qwen35_9b_x48_das qwen35_9b_x47_d3       # CPU, after Dan's Q-depth
+
+Batch 52 (Lightning ports): BJ_DAS_MAMBA=torch runs every forward that records a gradient on transformers' torch
+reference (NemotronH's Mamba-2 and the other HF-hub kernel forwards; kernels_off); `gradcheck` checks that path first.
+BJ_TARGET=nemotron-3.5-lightning BJ_DAS_MAMBA=torch BJ_PREDICTED_LAYER=14 uv run python scripts/x48_das.py gradcheck
 """
 
 from __future__ import annotations
 
 import argparse
 import collections
+import contextlib
 import json
 import math
 import os
@@ -82,13 +87,23 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION, QUESTION_DEPTH = "Q48.1", "Q-depth"
 # the stored main-test runs the pairs come from (chat rendering, the generator's cf, the layer fixed in advance)
 MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "muse-glimmer-30b": "muse30b_x0_necessity",
-            "qwen3.6-27b": "x0_necessity_27b_chat"}  # fmt: skip
+            "qwen3.6-27b": "x0_necessity_27b_chat",
+            # batch 52 (Lightning ports): the main test at the committed L14 (the 60 dev scenes excluded), as 48.2 A's
+            "nemotron-3.5-lightning": "nem35l_x52_conflict"}  # fmt: skip
 # the 9B's runs are the r2 retries (BJ_DAS_GDN=torch): the first x48_1_9b failed in fla's backward (28 Oct)
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_das_r2", "muse-glimmer-30b": "muse30_x48_das", "qwen3.6-27b": "x48_das_27b"}
 DEPTH_RUNS = {"qwen3.5-9b": ["qwen35_9b_x48_das_r2", "qwen35_9b_x47_d3_r2"]}
 # batch 52 C coverage (amendment 2, the 27B gap; jobs/c3/x48_1_27b_r2.yaml): 48.1 named the 27B ("if time") and its run
-# never ran; read by verdict --coverage alone (48.1's own verdict, the 9B and Muse, unchanged)
-COVERAGE_RUNS = {"qwen3.6-27b": "x48_das_27b"}
+# never ran; read by verdict --coverage alone (48.1's own verdict, the 9B and Muse, unchanged). Lightning: batch 52's
+# ports (Dan's 08:55 queue item 3, jobs/c3/x52_lightning_das48.yaml; BJ_DAS_MAMBA=torch after the gradcheck)
+COVERAGE_RUNS = {"qwen3.6-27b": "x48_das_27b", "nemotron-3.5-lightning": "nem35l_x52_das"}
+GRADCHECK_RUN = "nem35l_x52_das_gradcheck"
+GC_ITEMS, GC_K, GC_STEPS, GC_SEED = 8, 16, 20, 5200
+# the check's bars (fixed with the spec, before the run; jobs/c3/x52_lightning_das_gradcheck.yaml): the torch path's
+# forward agrees with the kernels' (relative L2 of h at L at the bridge token, of the read's logits; the read's top
+# token on >= 30 of the 32 reads: 8 items x 2 readers, unedited and under the whole change), and the DAS loss's
+# gradient on the torch path is finite and nonzero
+GC_H_REL, GC_LOGIT_REL, GC_TOP_MIN = 0.02, 0.05, 30
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x48_das/verdict-20261028T134153Z"  # 48.1's rules first scored (the 9B and Muse)
 RENDERING = "chat"
@@ -161,6 +176,86 @@ def torch_gdn(hf) -> str | None:
     ns = sys.modules[type(gdn).__module__]
     vars(ns)["torch_chunk_gated_delta_rule"] = reference_chunk_rule(gdn)  # the GDN forward reads the module global
     return ns.__name__
+
+
+# Batch 52 (Lightning ports, Dan's 08:55 queue item 3): NemotronH's Mamba-2 mixer runs HF-hub kernels (mamba-ssm's conv1d
+# and chunk scan; pins: use_kernels) whose backward no run of ours has checked. With BJ_DAS_MAMBA=torch every forward
+# that records a gradient (the DAS training forward, batch_logits) runs transformers' torch reference instead, so the
+# backward is autograd's; reads without a gradient keep the pinned kernels. `gradcheck` compares the two paths first.
+MAMBA_ENV = "BJ_DAS_MAMBA"
+
+
+def _closure(f) -> dict[str, Any]:
+    return dict(zip(f.__code__.co_freevars, (c.cell_contents for c in f.__closure__ or ()), strict=True))
+
+
+def kernelized(hf) -> list:
+    """Every object whose forward an HF-hub kernel may replace (kernels.kernelize sets an instance `forward` on it), each
+    once: the kernel functions attached to a module (use_kernelized_func: NemotronH's Mamba-2 causal_conv1d_fn,
+    mamba_chunk_scan_combined, ...; its attention's rotary_pos_emb) and the kernel-layer modules (NemotronHRMSNorm)."""
+    out, seen = [], set()
+    for mod in hf.modules():
+        own = [mod] if hasattr(type(mod), "kernel_layer_name") else []
+        for obj in [*vars(mod).get("_kernel_funcs", {}).values(), *own]:
+            if id(obj) not in seen:
+                seen.add(id(obj))
+                out.append(obj)
+    return out
+
+
+def torch_reference_of(obj) -> str:
+    """What obj's own (class) forward runs, asserted to be transformers' torch code: a kernel function made by
+    use_kernel_func_from_hub_with_fallback must not resolve to an installed package (mamba_ssm, causal_conv1d)."""
+    fwd = type(obj).forward
+    func = _closure(fwd).get("func") if fwd.__closure__ else None  # kernels' Func module wraps a plain function
+    if func is None:
+        return f"{type(obj).__module__}.{type(obj).__name__}.forward"
+    inner = _closure(func) if func.__closure__ else {}
+    assert not inner.get("is_new_implementation", False), (
+        f"{type(obj).kernel_layer_name}: its fallback is {inner.get('implementation')}, not transformers' torch reference"
+    )
+    ref = inner.get("torch_function", func)
+    return f"{ref.__module__}.{ref.__name__}"
+
+
+@contextlib.contextmanager
+def kernels_off(hf):
+    """Within: every forward an HF-hub kernel replaced runs its own class forward again (transformers' torch reference,
+    asserted per object); the kernel forwards are put back on exit. Yields the replaced objects' torch references."""
+    saved, refs = [], []
+    for obj in kernelized(hf):
+        refs.append(torch_reference_of(obj))
+        if "forward" in vars(obj):
+            assert not hasattr(obj, "_hf_hook"), f"{type(obj).__name__}: an accelerate hook wraps forward; not handled"
+            saved.append((obj, vars(obj).pop("forward")))
+    try:
+        yield sorted(set(refs))
+    finally:
+        for obj, fwd in saved:
+            obj.forward = fwd
+
+
+def das_forward_path(hf):
+    """The path of a DAS forward: kernels_off(hf) with BJ_DAS_MAMBA=torch while a gradient is recorded, else as loaded."""
+    import torch
+
+    if os.environ.get(MAMBA_ENV, "") == "torch" and torch.is_grad_enabled():
+        return kernels_off(hf)
+    return contextlib.nullcontext()
+
+
+def torch_mamba(hf) -> str | None:
+    """With BJ_DAS_MAMBA=torch: the manifest's record of the switch (checked: the model has Mamba-2 mixers and every
+    kernel function falls back to transformers' torch code); None when the switch is off."""
+    if os.environ.get(MAMBA_ENV, "") != "torch":
+        return None
+    n = sum(type(m).__name__.endswith("Mamba2Mixer") for m in hf.modules())
+    assert n, f"{MAMBA_ENV}=torch: {type(hf).__name__} has no Mamba-2 mixer"
+    with kernels_off(hf) as refs:
+        pass
+    return (f"torch reference for the DAS training forward ({MAMBA_ENV}=torch): while a gradient is recorded the {n} "
+            f"Mamba-2 mixers and every other HF-hub kernel forward run transformers' torch code ({', '.join(refs)}; "
+            "autograd's backward); reads without a gradient keep the pinned kernels")  # fmt: skip
 
 
 def rebuild(tok, set_name: str, alt: str) -> list[dict]:
@@ -369,7 +464,8 @@ def padded(model, rows: list[list[int]]):
 
 def batch_logits(model, layer: int, rows: list[list[int]], positions: list[int], adds):
     """Logits [B, vocab] (fp32) at each row's last token of one forward of several prompts with gradient, adds[i]
-    [d] added to row i's block output at `layer`, position positions[i] (the DAS edit; gradient flows into adds)."""
+    [d] added to row i's block output at `layer`, position positions[i] (the DAS edit; gradient flows into adds). With
+    BJ_DAS_MAMBA=torch a forward recording a gradient runs the torch reference (das_forward_path)."""
     import torch
 
     from bridge_jspace.model import _forward_hooks
@@ -386,7 +482,7 @@ def batch_logits(model, layer: int, rows: list[list[int]], positions: list[int],
         h = h + add
         return (h, *out[1:]) if isinstance(out, tuple) else h
 
-    with _forward_hooks([(model.layers[layer], hook)]):
+    with _forward_hooks([(model.layers[layer], hook)]), das_forward_path(model.hf):
         logits = model.hf(input_ids=ids, attention_mask=mask, use_cache=False).logits
     return logits[b, last].float()
 
@@ -707,6 +803,9 @@ def stage_run(name: str, why: str, layers: tuple[int, ...] | None = None, depth:
     if (patched := torch_gdn(model.hf)) is not None:
         m["gdn_kernel"] = f"torch reference ({GDN_ENV}=torch; {patched}.torch_chunk_gated_delta_rule replaced)"
         (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    if (record := torch_mamba(model.hf)) is not None:
+        m["mamba_kernel"] = record
+        (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     for p in model.hf.parameters():  # the DAS gradient reaches R only; no weight gradients are stored
         p.requires_grad_(False)
     tok = model.tokenizer
@@ -762,6 +861,189 @@ def stage_run(name: str, why: str, layers: tuple[int, ...] | None = None, depth:
         X.write_jsonl(out / "routes.jsonl", r_rows)
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out, "(sealed: no verdict)", flush=True)
+    return out
+
+
+# ---- the torch path's check (GPU; batch 52, Lightning) ------------------------------------------------------------
+
+
+def rel_l2(a, b) -> float:
+    """||a - b|| / ||b|| (fp64)."""
+    return float((a.double() - b.double()).norm() / b.double().norm().clamp_min(1e-30))
+
+
+def stage_gradcheck(name: str, why: str, n_items: int = GC_ITEMS) -> Path:
+    """Before any DAS on a Mamba-2 model (Dan's 08:55 queue item 3): on the first n_items train pairs of 48.1's pairs
+    (both readers' O prompts, 2 x n_items rows), the kernels' forward and the torch path's (kernels_off) agree, and the
+    DAS loss's gradient through the torch path is finite. Read without a gradient on both paths: h at L at the bridge
+    token (O and S prompts), the read's logits unedited and under the whole change; then on the torch path the DAS loss
+    (48.1's: cross-entropy of S's first token at the read, h_O + R R^T Delta, R at k = GC_K, seed GC_SEED) and its
+    gradient, timed and with the peak memory, in micro-batches of MICRO; beside: the kernels' gradient (their backward,
+    if it runs) and 20 steps of train_subspace through batch_logits with the switch as the runs set it. Writes
+    gradcheck.json / gradcheck.md; exits nonzero if a bar fails (the ports depend on this job)."""
+    import torch
+
+    from bridge_jspace import chat
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state
+
+    pins.check_run_name(name)
+    assert chat.FORMAT == "chat", "the check reads X0's chat prompts: run with BJ_FORMAT unset"
+    assert os.environ.get(MAMBA_ENV) == "torch", f"run the check with {MAMBA_ENV}=torch, as the ports"
+    target = pins.TARGET
+    main_run, layer = MAIN_RUN[target], X.PREDICTED[target]
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    bars = {"h_rel_l2_max": GC_H_REL, "logit_rel_l2_max": GC_LOGIT_REL,
+            "top_token_agree_min": f"{GC_TOP_MIN} of {4 * n_items}", "gradient": "finite and nonzero (torch path)"}  # fmt: skip
+    m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "stage": "gradcheck",
+         "main_run": main_run, "layer": layer, "items": f"the first {n_items} train pairs of 48.1's pairs (select_pairs)",
+         "k": GC_K, "seed": GC_SEED, "micro_batch": MICRO, "bars": bars,
+         "spec": "jobs/c3/x52_lightning_das_gradcheck.yaml", "question": "no prediction: a check of the method"}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    model = load_model()
+    m["mamba_kernel"] = torch_mamba(model.hf)
+    m["experts_implementation"] = getattr(getattr(model.hf, "config", None), "_experts_implementation", None)
+    for p in model.hf.parameters():
+        p.requires_grad_(False)
+    dev = model.device
+    pairs, _ = select_pairs(model.tokenizer, main_run, layer)
+    items = [p for p in pairs if p["split"] == "train"][:n_items]
+    assert len(items) == n_items, f"{len(items)} train pairs, {n_items} wanted"
+    rows = [{"scene": it["scene"], "reader": w, "ids": it["readers"][w]["ids"]["org"] + it["space"], "pos": it["pos"],
+             "target": it["readers"][w]["tok_b"], "item": i} for i, it in enumerate(items) for w in X.READERS]  # fmt: skip
+
+    def states() -> dict[str, Any]:
+        with torch.no_grad():
+            h = {v: torch.stack([model.run(torch.tensor([it["readers"][X.LOOKUP]["ids"][v]], device=dev), record=(layer,))[1]
+                                 [layer][it["pos"]].float() for it in items]) for v in ("org", "alt")}  # fmt: skip
+        return h
+
+    def reads(delta) -> dict[str, Any]:
+        out_: dict[str, Any] = {}
+        with torch.no_grad():
+            for arm in ("none", "whole"):
+                lg = []
+                for s in range(0, len(rows), MICRO):
+                    ch = rows[s : s + MICRO]
+                    adds = torch.stack([delta[r["item"]] for r in ch]) * (arm == "whole")
+                    lg.append(batch_logits(model, layer, [r["ids"] for r in ch], [r["pos"] for r in ch], adds))
+                out_[arm] = torch.cat(lg)
+        return out_
+
+    def timed(fn):
+        torch.cuda.synchronize()
+        t0 = time.time()
+        val = fn()
+        torch.cuda.synchronize()
+        return val, time.time() - t0
+
+    h_k, t_hk = timed(states)  # the kernels (as loaded)
+    delta = (h_k["alt"] - h_k["org"]).to(dev)
+    lg_k, t_lk = timed(lambda: reads(delta))
+    with kernels_off(model.hf) as refs:
+        h_t, t_ht = timed(states)
+        lg_t, t_lt = timed(lambda: reads(delta))
+    fwd = {"h_O": [rel_l2(h_t["org"][i], h_k["org"][i]) for i in range(n_items)],
+           "h_S": [rel_l2(h_t["alt"][i], h_k["alt"][i]) for i in range(n_items)],
+           "h_max_abs": float(max((h_t[v] - h_k[v]).abs().max() for v in ("org", "alt"))),
+           "logits": {a: [rel_l2(lg_t[a][j], lg_k[a][j]) for j in range(len(rows))] for a in lg_k},
+           "logits_max_abs": {a: float((lg_t[a] - lg_k[a]).abs().max()) for a in lg_k},
+           "top_agree": {a: int((lg_t[a].argmax(-1) == lg_k[a].argmax(-1)).sum()) for a in lg_k},
+           "torch_references": refs,
+           "seconds": {"kernel_states": t_hk, "kernel_reads": t_lk, "torch_states": t_ht, "torch_reads": t_lt}}  # fmt: skip
+
+    def das_grad(path: str) -> dict[str, Any]:
+        """The DAS loss and its gradient w.r.t. R itself (a leaf: random_basis(d, GC_K, GC_SEED); not the orthogonal
+        parametrisation's `original`, whose basis is completed with the unseeded global RNG, so its gradient's
+        direction differs between two modules of one seed), over the rows in micro-batches of MICRO, on the given path;
+        seconds per micro-batch and the peak memory beside."""
+        r_leaf = random_basis(delta.shape[1], GC_K, GC_SEED).to(dev).requires_grad_()
+        tgt_all = torch.tensor([r["target"] for r in rows], device=dev)
+        torch.cuda.reset_peak_memory_stats()
+        ctx = kernels_off(model.hf) if path == "torch" else contextlib.nullcontext()
+        old = os.environ.pop(MAMBA_ENV)  # batch_logits must not switch on its own here: the path is set by ctx
+        loss_sum, secs = 0.0, []
+        try:
+            with ctx:
+                for s in range(0, len(rows), MICRO):
+                    ch = rows[s : s + MICRO]
+                    d_ch = torch.stack([delta[r["item"]] for r in ch]).float()
+                    adds = (d_ch @ r_leaf) @ r_leaf.T
+                    torch.cuda.synchronize()
+                    t0 = time.time()
+                    lg = batch_logits(model, layer, [r["ids"] for r in ch], [r["pos"] for r in ch], adds)
+                    loss = torch.nn.functional.cross_entropy(lg, tgt_all[s : s + len(ch)], reduction="sum") / len(rows)
+                    loss.backward()
+                    torch.cuda.synchronize()
+                    secs.append(time.time() - t0)
+                    loss_sum += float(loss.detach())
+        finally:
+            os.environ[MAMBA_ENV] = old
+        assert r_leaf.grad is not None, "no gradient reached R"
+        g = r_leaf.grad.flatten()
+        return {"loss": loss_sum, "grad": g.detach().double().cpu(), "finite": bool(torch.isfinite(g).all()),
+                "grad_norm": float(g.double().norm()), "seconds_per_micro_batch": secs,
+                "peak_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2)}  # fmt: skip
+
+    g_t = das_grad("torch")
+    tlog: list[dict] = []
+    lookup_rows = [{**r, "delta": delta[r["item"]].cpu()} for r in rows if r["reader"] == X.LOOKUP]
+    t0 = time.time()
+    train_subspace(
+        model, layer, lookup_rows, GC_K, GC_SEED, steps=GC_STEPS, log=tlog, desc="train_subspace (torch path)"
+    )
+    t_train = time.time() - t0
+    n_reads = 2 * len(rows)
+    ok = {"h": max(fwd["h_O"] + fwd["h_S"]) <= GC_H_REL + EPS,
+          "logits": max(fwd["logits"]["none"] + fwd["logits"]["whole"]) <= GC_LOGIT_REL + EPS,
+          "top": sum(fwd["top_agree"].values()) >= GC_TOP_MIN,
+          "gradient": g_t["finite"] and g_t["grad_norm"] > 0 and all(math.isfinite(r["loss"]) for r in tlog)}  # fmt: skip
+    res = {"pass": all(ok.values()), "checks": ok, "bars": bars, "n_items": n_items, "rows": len(rows), "reads": n_reads,
+           "layer": layer, "forward": fwd, "torch_grad": {k: v for k, v in g_t.items() if k != "grad"},
+           "kernel_grad": "not run yet", "train_subspace": {"steps": GC_STEPS, "log": tlog, "seconds": t_train,
+                                                            "seconds_per_step": t_train / GC_STEPS},
+           "scenes": [it["scene"] for it in items]}  # fmt: skip
+
+    def write() -> None:
+        (out / "gradcheck.json").write_text(json.dumps(res, indent=1) + "\n")
+        tg = res["torch_grad"]
+        lines = [f"# DAS gradient check on {target} at L{layer} ({name}): {'PASS' if res['pass'] else 'FAIL'}", "",
+                 f"{n_items} items (the first train pairs of 48.1's pairs from {main_run}), both readers: {len(rows)} "
+                 f"rows, {n_reads} reads per path. Kernels = the pinned HF-hub kernels as loaded; torch = kernels_off "
+                 f"(transformers' torch reference: {', '.join(refs)}). Bars fixed with the spec. UNVERIFIED.", "",
+                 "| check | value | bar | ok |", "|---|---|---|---|",
+                 f"| h at L (bridge token, O and S), relative L2, max over items | {max(fwd['h_O'] + fwd['h_S']):.2e} | "
+                 f"<= {GC_H_REL} | {ok['h']} |",
+                 f"| read logits (unedited, whole change), relative L2, max over rows | "
+                 f"{max(fwd['logits']['none'] + fwd['logits']['whole']):.2e} | <= {GC_LOGIT_REL} | {ok['logits']} |",
+                 f"| read top token, torch = kernels | {sum(fwd['top_agree'].values())} of {n_reads} | >= {GC_TOP_MIN} | "
+                 f"{ok['top']} |",
+                 f"| DAS loss gradient (torch path) | finite {tg['finite']}, norm {tg['grad_norm']:.3e} | finite, > 0 | "
+                 f"{ok['gradient']} |", "",
+                 f"Beside: h max abs diff {fwd['h_max_abs']:.3e}; logits max abs diff {fwd['logits_max_abs']}; torch "
+                 f"path {statistics.mean(tg['seconds_per_micro_batch']):.2f} s per micro-batch of {MICRO} (forward + "
+                 f"backward), peak {tg['peak_gb']} GB; train_subspace {GC_STEPS} steps in {t_train:.0f} s, loss log "
+                 f"{json.dumps(tlog)}; forward seconds {json.dumps(fwd['seconds'])}; the kernels' own gradient (their "
+                 f"backward, not used by the runs) vs the torch path's: {json.dumps(res['kernel_grad'])}."]  # fmt: skip
+        (out / "gradcheck.md").write_text("\n".join(lines) + "\n")
+        print("\n".join(lines), flush=True)
+
+    write()
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    try:  # last and beside, never a bar: the kernels' backward is what the switch avoids (a fault here ends nothing)
+        g_k = das_grad("kernel")
+        res["kernel_grad"] = {
+            "loss": g_k["loss"], "finite": g_k["finite"], "grad_norm": g_k["grad_norm"],
+            "cos_with_torch": float(torch.nn.functional.cosine_similarity(g_k["grad"], g_t["grad"], dim=0)),
+            "rel_l2_vs_torch": rel_l2(g_k["grad"], g_t["grad"]),
+            "seconds_per_micro_batch": g_k["seconds_per_micro_batch"], "peak_gb": g_k["peak_gb"]}  # fmt: skip
+    except Exception as e:
+        res["kernel_grad"] = {"error": f"{type(e).__name__}: {e}"[:500]}
+    write()
+    if not res["pass"]:
+        raise SystemExit(f"gradcheck FAILED: {ok}")
     return out
 
 
@@ -1115,7 +1397,7 @@ def stage_depth(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "depth"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "depth", "gradcheck"])
     ap.add_argument("--name", help="run: the run name (results/x48_das/<name>/)")
     ap.add_argument("--runs", nargs="+", default=None, help="verdict: the 48.1 runs; depth: 48.1's and the D3 runs")
     ap.add_argument("--why", default="batch 48, test 48.1 (jobs/c3/batch48.yaml; Q48.1)")
@@ -1127,7 +1409,7 @@ def main() -> None:
     ap.add_argument("--n-routes", type=int, default=N_ROUTES)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--coverage", action="store_true",
-                    help=f"verdict: batch 52 coverage runs (default {list(COVERAGE_RUNS.values())}; '{NO_PREDICTION}')")  # fmt: skip
+                    help=f"verdict: batch 52 coverage runs (default {COVERAGE_RUNS['qwen3.6-27b']}; any of {list(COVERAGE_RUNS.values())} by --runs; '{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1136,8 +1418,11 @@ def main() -> None:
         stage_run(a.name, a.why, layers=tuple(a.layers) if a.layers else None, depth=a.depth, steps=a.steps,
                   n_routes=a.n_routes)  # fmt: skip
     elif a.stage == "verdict":
-        default = list(COVERAGE_RUNS.values()) if a.coverage else [RUNS["qwen3.5-9b"], RUNS["muse-glimmer-30b"]]
+        # --coverage without --runs: the 27B's run, as before Lightning's (its job names its run)
+        default = [COVERAGE_RUNS["qwen3.6-27b"]] if a.coverage else [RUNS["qwen3.5-9b"], RUNS["muse-glimmer-30b"]]
         stage_verdict(a.runs or default, a.n_boot, a.coverage)
+    elif a.stage == "gradcheck":
+        stage_gradcheck(a.name or GRADCHECK_RUN, a.why)
     else:
         stage_depth(a.runs or DEPTH_RUNS["qwen3.5-9b"], a.n_boot)
 

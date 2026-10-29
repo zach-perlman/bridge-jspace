@@ -6,6 +6,7 @@ real ones). CPU, no real model."""
 from __future__ import annotations
 
 import json
+import os
 import re
 from types import SimpleNamespace
 from typing import Any
@@ -570,3 +571,27 @@ def test_torch_gdn_switch_puts_the_torch_reference_in_and_keeps_the_output(monke
     torch.testing.assert_close(after.detach(), before, rtol=1e-4, atol=1e-5)
     after.sum().backward()
     assert x.grad is not None and torch.isfinite(x.grad).all()
+
+
+def test_gradcheck_stage_on_the_fake_model(fake_env, monkeypatch):
+    """Batch 52 (Lightning ports): the gradcheck stage end to end on the fake model (no hub kernels there, so both paths
+    are one and every bar holds); the CUDA timers stubbed. It refuses without the switch, writes its files, passes."""
+    monkeypatch.setattr(torch.cuda, "synchronize", lambda: None)
+    monkeypatch.setattr(torch.cuda, "reset_peak_memory_stats", lambda: None)
+    monkeypatch.setattr(torch.cuda, "max_memory_allocated", lambda: 0)
+    monkeypatch.setattr(D, "torch_mamba", lambda _hf: "stub")
+    from bridge_jspace import pins
+
+    monkeypatch.setitem(X.PREDICTED, pins.TARGET, 2)  # an early layer: deep in the fake the read saturates (gradient 0)
+    monkeypatch.delenv(D.MAMBA_ENV, raising=False)
+    with pytest.raises(AssertionError, match="BJ_DAS_MAMBA=torch"):
+        D.stage_gradcheck(f"{fake_env.prefix}fake_gc0", "test")
+    monkeypatch.setenv(D.MAMBA_ENV, "torch")
+    out = D.stage_gradcheck(f"{fake_env.prefix}fake_gc", "test")
+    res = json.loads((out / "gradcheck.json").read_text())
+    assert res["pass"] and res["rows"] == 16 and res["reads"] == 32 and all(res["checks"].values())
+    assert res["kernel_grad"]["cos_with_torch"] > 0.999 and res["torch_grad"]["grad_norm"] > 0
+    assert len(res["train_subspace"]["log"]) == 2 and os.environ[D.MAMBA_ENV] == "torch"
+    assert "PASS" in (out / "gradcheck.md").read_text()
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["mamba_kernel"] == "stub" and m["stage"] == "gradcheck"

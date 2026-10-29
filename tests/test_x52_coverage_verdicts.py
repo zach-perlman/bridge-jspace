@@ -132,7 +132,8 @@ def test_das_coverage_verdict_reads_the_27b_alone(tmp_path, monkeypatch):
 
     from scripts import x48_das as D
 
-    assert D.COVERAGE_RUNS == {Q27: "x48_das_27b"} and D.RUNS[Q27] == "x48_das_27b"
+    assert D.COVERAGE_RUNS[Q27] == "x48_das_27b" and D.RUNS[Q27] == "x48_das_27b"
+    assert D.COVERAGE_RUNS["nemotron-3.5-lightning"] == "nem35l_x52_das"  # batch 52 Lightning ports (named by --runs)
     seen = []
     monkeypatch.setattr(D, "stage_verdict", lambda runs, n_boot, coverage=False: seen.append((runs, coverage)))
     for argv in (["verdict", "--coverage"], ["verdict"]):
