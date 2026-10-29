@@ -1,0 +1,57 @@
+id: x53_3b_9b
+title: "Batch 53.3b on the 9B: the last-token conflict test on word answers (Zach's named-bridge passages, jsuite_v2_1_test_chat: PP = the lookup copies a made-up word, PM = the recall) at each reader's own answer layer minus 1, 2, 3 and 51.10's read peak; arms whole / without the lens part / without a random part / the lens part alone; plus the check: 53.3's lookup on the locker scenes at its answer layer minus 1 and minus 3; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_lastconflict.py run-words --name qwen35_9b_x53_3b --why "Batch 53, test 53.3b (jobs/c3/batch53.yaml test_53_3b, Dan 10:05): the last-token conflict test on word answers on the 9B; no prediction" &&
+  uv run python scripts/x53_lastconflict.py run --mode ans13 --name qwen35_9b_x53_3l --why "Batch 53, test 53.3b's check (jobs/c3/batch53.yaml test_53_3b): 53.3's lookup on the locker scenes at its answer layer minus 1 and minus 3 on the 9B; no prediction" &&
+  uv run python scripts/x53_lastconflict.py verdict-words --runs qwen35_9b_x53_3b --locker-runs qwen35_9b_x53_3l
+question: >-
+  On word answers, does the last-token asymmetry of 53.3 hold: does the recall act through the lens part near its
+  answer layer while the lookup, which copies a made-up word from the passage, computes outside it? And is 53.3's
+  lookup label on the locker scenes the same one layer earlier and one later (not a layer choice)?
+why_it_matters: >-
+  Batch 53.3b (Dan, 29 Oct 10:05; priority right after 53.1b / 53.1): 53.3 found the lookup outside the lens at the
+  last token on Muse and Lightning, in between on the Qwens; words instead of digits test whether that is the copy.
+hypotheses:
+  none: "No prediction (batch 53: every rule fixed in Dan's brief before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (test_53_3b): "the last-token conflict test on word answers. jsuite_v2_1_test_chat,
+  named bridge: PP (the lookup copies a made-up word from the passage, e.g. "Hungarian") and PM (the recall, same
+  answer vocabulary). 9B, 27B, then Muse, Lightning. Layers per reader: its own answer layer minus 1, 2 and 3 (to rule
+  out a layer-choice artefact), plus 51.10's read peak. Arms as 53.3, without the redundant "rest alone": whole;
+  without the lens part; without a random part of the same share; the lens part alone. 53.3's validity bar (S_whole
+  >= 0.30, >= 30 switches). Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at
+  answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if
+  on words the lookup goes through the lens like the recall; else in between. Also rerun 53.3's lookup on the locker
+  scenes at its own answer - 1 and - 3 (the same items), to check the asymmetry is not a layer choice." 53.3's labels
+  (jobs/c3/x53_3_9b.yaml): "computes outside the lens at the last token" if the loss without the lens part is <= 0.10
+  beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond
+  random; else in between. As computed (scripts/x53_lastconflict.py run-words / verdict-words, fixed before the run):
+  passages = Z1-P's chosen passages on the 9B (results/x50_zach/qwen35_9b_x52_z1p, gate.json order: Zach's named-bridge
+  passages, S = the pointer sentence names another entity of the passage) of jsuite_v2_test_chat, whose PP and PM
+  items jsuite_v2_1_test_chat keeps unchanged (same ids, asserted): 112 passages (Z1-P's 88 of his second seed,
+  jsuite_v2nb, are left out: not the brief's set); Z1-P's gate passes on the 9B (K 0.800, M 0.844). Δ = h_S - h_O at the
+  last token (his open read: the top token after the prompt, no appended token); the answer layer per reader = the
+  plain logit lens at O's last token at every layer, per passage the layer from which O's answer token stays top
+  through the last layer, the lower median over the passages (51.10's settle rule); the read peak = 51.10's
+  (results/x51_jread/qwen35_9b_x51_10/peak.json: 24 / 24); a layer without a J++ map (the 9B's lens: L0-L30) is
+  dropped and named. The lens part = X0's 25-atom signed OMP over the letter-token J++ dictionary; the random part at
+  its share (seed 888 + layer); the rest alone = S_no_jpp / S_whole (the same vector). A cell under 53.3's validity
+  bar is "invalid" and counts for neither clause; per model a clause holds when it holds at answer - 1 and - 2 with
+  all four cells valid; "digits only" read as the lookup and the recall both "through the lens" at both layers on >=
+  3 of 4 models, as the first clause; fewer than 4 models run and a clause still reachable: "pending". The check:
+  53.3's run on the locker scenes (51.10's 75 locker-first items, 53.3's arms) for the lookup alone at its answer layer
+  (51.10's: 29) minus 1 and minus 3 (L28, L26). Verdict in the job: results/x53_lastconflict/x53_lastconflict_words-<UTC>/.
+controls:
+- "without a random part of the lens part's share (X0's random subspace, seed 888 + layer): the reference of the loss"
+- "O unedited (the floor) and the whole change (the ceiling) read on the same passages"
+- "53.3's validity bar per cell (S_whole >= 0.30, >= 30 switches)"
+- "the locker check: 53.3's lookup at answer - 1 and - 3 beside its answer - 2 (x53_3_9b)"
+n: "112 Z1-P passages of jsuite_v2_test_chat on the 9B (2 readers, 3-4 layers each: answer - 1, - 2, - 3 and the read peak) and 51.10's 75 locker-first items for the check (the lookup, 2 layers)"
+seeds: [888, 0]
+notes: "Batch 53.3b (Dan 10:05; coordinator ~10:10: spec it now, queued behind 53.1b / 53.1). Box: any GPU with 40 GB. Code: scripts/x53_lastconflict.py gains plan-words / run-words / verdict-words (Z1-P's passages, the answer layer from the plain logit lens, the arms without rest alone, the rule across readers) and run --mode ans13 (the check); 53.3's run and verdict unchanged (its committed labels recomputed equal); tests in tests/test_x53_lastconflict.py (the layers, the rule across readers on planted labels, the words run and verdict end to end on 51.10's fake model). Writes results/x53_lastconflict/qwen35_9b_x53_3b/ (manifest.json with the answer layers per reader and passage, cases.jsonl, norms.jsonl, outcomes.jsonl), qwen35_9b_x53_3l/ (the check), and the verdict folder x53_lastconflict_words-<UTC>/ (verdict.md, verdict.json, x53_lastconflict_words.png, examples.md = 10 random passages, seed 0). Cost (ledger): x52_z1p_9b read 200 such passages (2 readers x 3 arms at one layer, plus competence) in ~3 min; x53_3_9b (75 items, 2 layers, 6 arms) in ~2 min; here 448 forwards (224 recording every layer), 224 batched reads of 13-17 rows of 140-450 tokens, then the check (150 forwards, 75 reads of 9 rows), two loads: ~6 min; est 0.2. Disk on the Mac before the spec: 185 GB free. UNVERIFIED; into EXPERIMENTS.md with a card and the figure."

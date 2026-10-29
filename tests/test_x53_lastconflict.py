@@ -54,6 +54,114 @@ def test_the_real_51_10_files_give_the_briefs_layers():
         assert all(r["layers"][-1] == r["answer"] - 2 for r in lay.values())
 
 
+def test_ans13_mode_is_the_lookup_alone_at_answer_minus_1_and_3(tmp_path, monkeypatch):
+    from bridge_jspace import pins
+
+    monkeypatch.setattr(JR, "RESULTS", tmp_path / "x51_jread")
+    monkeypatch.setattr(pins, "REPO_ROOT", tmp_path)
+    plant_51_10(JR.RESULTS, LC.SOURCE_RUNS[pins.TARGET], {"lookup": 24, "recall": 27}, {"lookup": 29, "recall": 29})
+    lay = LC.layers_of(pins.TARGET, "ans13")
+    assert list(lay["readers"]) == ["lookup"] and lay["readers"]["lookup"]["layers"] == [28, 26]
+
+
+def test_word_layers_and_the_rule_across_readers():
+    assert LC.word_layers(20, 12, list(range(31))) == ([19, 18, 17, 12], [])
+    assert LC.word_layers(31, 24, list(range(31))) == ([30, 29, 28, 24], [])
+    assert LC.word_layers(32, 24, list(range(31))) == ([30, 29, 24], [31])
+    assert LC.word_layers(None, 24, list(range(31))) == ([24], [])
+
+    def model(target: str, lk: str, rc: str, valid: bool = True) -> dict:
+        cells = [{"reader": w, "layer": 20 - o, "label": lab, "x0_valid": valid}
+                 for w, lab in (("lookup", lk), ("recall", rc)) for o in (1, 2, 3)]  # fmt: skip
+        return {
+            "target": target,
+            "cells": cells,
+            "layers": {"readers": {"lookup": {"answer": 20}, "recall": {"answer": 20}}},
+        }
+
+    copy = [model(f"m{i}", "outside", "through") for i in range(3)]
+    assert LC.across_readers(copy)["label"] == "copy bypasses the lens"
+    assert LC.across_readers(copy[:2])["label"] == "pending (2 of 4 models)"
+    digits = [model(f"m{i}", "through", "through") for i in range(4)]
+    assert LC.across_readers(digits)["label"] == "digits only"
+    mixed = [*copy[:2], *(model(f"d{i}", "through", "through") for i in range(2))]
+    assert LC.across_readers(mixed)["label"] == "in between"
+    invalid = [model(f"m{i}", "outside", "through", valid=False) for i in range(4)]
+    assert LC.across_readers(invalid)["label"] == "in between" and not LC.across_readers(invalid)["copy_models"]
+
+
+def plant_z1p(root, run: str, n: int, data_dir) -> list[dict]:
+    """A planted Z1-P run: n passages (the order alternates the two sets; only jsuite_v2_test_chat's are read) and the
+    v2.1 item ids."""
+    items, ids = [], []
+    for i in range(n):
+        st = "jsuite_v2_test_chat" if i % 3 else "jsuite_v2nb_test_chat"
+        readers = {}
+        for s, q in (("K", "Which word?"), ("M", "Which word, recalled?")):
+            org = [1 + i % 7, 2, 3, 4, 20 + i % 5, 6, 7, 8 + (s == "M")]
+            alt = [*org[:4], 40 + i % 5, *org[5:]]
+            rid = f"j2:chat:facts:P{'P' if s == 'K' else 'M'}-L0-{i:05d}"
+            ids.append(rid)
+            readers[s] = {"id": rid, "question": q, "answer": "x", "cf_answer": "y", "context": "a passage",
+                          "ids": {"org": org, "alt": alt}, "tok_A": 5, "tok_b": 3, "pos": 4}  # fmt: skip
+        items.append({"set": st, "scene": f"P-L0-{i}", "bridge": f"e{i % 5}", "cf_bridge": f"f{i % 5}",
+                      "relation": "animals", "readers": readers})  # fmt: skip
+    (root / run).mkdir(parents=True)
+    X.write_jsonl(root / run / "cases.jsonl", items)
+    gate = {"org_read_accuracy": {"K": 0.9, "M": 0.9}, "pass": True, "eligible": n, "chosen": n,
+            "order": [[c["set"], c["scene"]] for c in items]}  # fmt: skip
+    (root / run / "gate.json").write_text(json.dumps(gate))
+    (data_dir / "tasks_v2" / "jsuite_v2_1_test_chat").mkdir(parents=True)
+    X.write_jsonl(data_dir / "tasks_v2" / "jsuite_v2_1_test_chat" / "items.jsonl", [{"id": r} for r in ids])
+    return [c for c in items if c["set"] == "jsuite_v2_test_chat"]
+
+
+def test_words_run_and_verdict_end_to_end_on_the_fake_model(tmp_path, monkeypatch):
+    from bridge_jspace import lens as LN
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+    from scripts import x50_zach as Z
+
+    fake = JFake()
+    setattr(fake, "decoded", [f"t{i}" for i in range(fake.unemb.shape[0])])  # noqa: B010
+    setattr(fake, "special_ids", frozenset())  # noqa: B010
+    monkeypatch.setattr(M, "load_model", lambda: fake)
+    monkeypatch.setattr(LN, "JLens", JLensFake)
+    monkeypatch.setattr(JR, "RESULTS", tmp_path / "x51_jread")
+    monkeypatch.setattr(LC, "RESULTS", tmp_path / "x53_lastconflict")
+    monkeypatch.setattr(Z, "RESULTS", tmp_path / "x50_zach")
+    monkeypatch.setattr(pins, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(pins, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(LC, "SPEC", tmp_path / "batch53.yaml")
+    LC.SPEC.write_text("")
+    monkeypatch.setattr(JR, "settle_layer", lambda tops, tok: 12)  # every passage settles at L12: answer layer 12
+    monkeypatch.setitem(LC.WORD_SOURCE, pins.TARGET, "fake_z1p")
+    plant_51_10(JR.RESULTS, LC.SOURCE_RUNS[pins.TARGET], {"lookup": 8, "recall": 10}, {"lookup": 30, "recall": 30})
+    used = plant_z1p(Z.RESULTS, "fake_z1p", 15, pins.DATA_DIR)
+    out = LC.stage_run_words(LC.WORD_RUNS[pins.TARGET], "test")
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["layers"]["readers"]["lookup"]["layers"] == [11, 10, 9, 8] and m["layers"]["readers"]["recall"][
+        "layers"
+    ] == [11, 10, 9]
+    assert m["arm_names"] == list(LC.ARMS_WORDS) and m["below_gate"] is None
+    rows = X.read_jsonl(out / "outcomes.jsonl")
+    keys = {(r["scene"], r["reader"], r["layer"], r["arm"]) for r in rows}
+    want = {(f"{c['set']}:{c['scene']}", LK, la, a) for c in used for la in (11, 10, 9, 8) for a in LC.ARMS_WORDS[1:]}
+    want |= {(f"{c['set']}:{c['scene']}", RC, la, a) for c in used for la in (11, 10, 9) for a in LC.ARMS_WORDS[1:]}
+    want |= {(f"{c['set']}:{c['scene']}", w, None, "none") for c in used for w in (LK, RC)}
+    assert keys == want
+    v = LC.stage_verdict_words([out.name], [], n_boot=50)
+    assert v.name.startswith("x53_lastconflict_words-") and v.parent == LC.RESULTS
+    blob = json.loads((v / "verdict.json").read_text())
+    assert blob["across"]["label"].startswith(("pending", "in between", "copy", "digits"))
+    assert {(c["reader"], c["layer"]) for c in blob["models"][0]["cells"]} == {
+        ("lookup", la) for la in (11, 10, 9, 8)
+    } | {("recall", la) for la in (11, 10, 9)}
+    md = (v / "verdict.md").read_text()
+    assert "53.3b" in md and "UNVERIFIED" in md and (v / "x53_lastconflict_words.png").exists()
+    assert (v / "examples.md").read_text().count("### jsuite_v2_test_chat:") == len(used)
+
+
 def test_arm_vectors_rest_is_the_change_without_its_lens_part():
     g = torch.Generator().manual_seed(0)
     delta, pj, rj = (torch.randn(3, 8, generator=g) for _ in range(3))
