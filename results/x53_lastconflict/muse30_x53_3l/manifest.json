@@ -1,0 +1,85 @@
+{
+  "exp": "x53_lastconflict",
+  "run": "muse30_x53_3l",
+  "why": "Batch 53, test 53.3b's check (jobs/c3/batch53.yaml test_53_3b): 53.3's lookup on the locker scenes at its answer layer minus 1 and minus 3 on Muse; no prediction",
+  "written_utc": "2026-10-29T09:55:50Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "3f7d800ef43a5003fabc620d4360a5d27691a50a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "53.3",
+  "spec": "jobs/c3/batch53.yaml (test_53_3b: the check)",
+  "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+  "mode": "ans13",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "7ee686f96a8197dd709a47776de2780f99d7dc2a9f1a6d18be8365a51de35fba",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/gate.json": "ac98e7cfb2848fb0ef228dc8bf7b123b7c3391c31473760bf3901c671ad3bbd9",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703",
+    "results/x51_jread/muse30_x51_10/peak.json": "c3a824757ea2acdc7638f8664da24a788a8c560b62b4667569470251b3bf1a95",
+    "results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json": "c1fcdced983a60710cb709ab57d0af57e5c53b3c566220c2791882af7c2155cf"
+  },
+  "source": "muse30b_x0_necessity",
+  "L": 26,
+  "layers": {
+    "source_run": "muse30_x51_10",
+    "peak_file": "results/x51_jread/muse30_x51_10/peak.json",
+    "read_file": "results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json",
+    "mode": "ans13",
+    "readers": {
+      "lookup": {
+        "peak": 32,
+        "answer": 35,
+        "layers": [
+          34,
+          32
+        ]
+      }
+    }
+  },
+  "k": 25,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change Δ = h_S - h_O at P3",
+    "no_jpp": "without the lens part: Δ - P_J Δ",
+    "no_rand": "without a random part of the same share: Δ - R Δ",
+    "jpp": "the lens part alone: P_J Δ",
+    "rest": "the rest alone: Δ - P_J Δ (the same vector as no_jpp)"
+  },
+  "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+  "as_computed": "the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole; the rest alone's share = S_rest / S_whole; S_arm = the share of the locker-first items switched (the top token is S's answer's first token); point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the original bridge entities (10000, seed 0, paired) beside; S_whole = 0: not tested",
+  "items_rule": "51.10's items (x51_jread.select), 49.1's locker-first ones (51.10's write arms)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "none (no prediction)"
+}

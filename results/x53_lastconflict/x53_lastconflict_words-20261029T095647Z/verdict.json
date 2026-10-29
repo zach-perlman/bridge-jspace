@@ -1,0 +1,850 @@
+{
+ "runs": [
+  "muse30_x53_3b"
+ ],
+ "locker_runs": [
+  "muse30_x53_3l"
+ ],
+ "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+ "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+ "rule_words": "\"copy bypasses the lens\" if at answer - 1 and - 2 the recall is \"through the lens\" and the lookup \"outside\" on >= 3 of 4 models; \"digits only\" if on words the lookup goes through the lens like the recall; else in between",
+ "across": {
+  "label": "pending (1 of 4 models)",
+  "per_model": {
+   "muse-glimmer-30b": {
+    "copy_bypasses": false,
+    "digits_only": true,
+    "complete": true,
+    "below_gate": true,
+    "labels": {
+     "lookup answer-1": "through",
+     "lookup answer-2": "through",
+     "recall answer-1": "through",
+     "recall answer-2": "through"
+    }
+   }
+  },
+  "copy_models": 0,
+  "digits_models": 0,
+  "models": 1
+ },
+ "models": [
+  {
+   "run": "muse30_x53_3b",
+   "target": "muse-glimmer-30b",
+   "layers": {
+    "mode": "words",
+    "source_run": "muse30_x51_10",
+    "peak_file": "results/x51_jread/muse30_x51_10/peak.json",
+    "answer_from": "the plain logit lens at the last token of O, every layer: per passage the layer from which O's answer token is the top token through the last layer, the lower median over the passages (51.10's answer_layers, x51_jread.settle_layer)",
+    "readers": {
+     "lookup": {
+      "answer": 49,
+      "peak": 32,
+      "layers": [
+       48,
+       47,
+       46,
+       32
+      ],
+      "dropped": [],
+      "n": 120,
+      "never": 2,
+      "per_item": [
+       49,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       48,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       49,
+       50,
+       50,
+       50,
+       50,
+       null,
+       50,
+       null,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       48,
+       50,
+       50,
+       49,
+       50,
+       49,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       50,
+       49,
+       49,
+       49,
+       48,
+       49,
+       49,
+       48,
+       50,
+       49,
+       49,
+       48,
+       48,
+       50,
+       49,
+       48,
+       49,
+       47,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       49,
+       48,
+       49,
+       49,
+       49,
+       50,
+       49,
+       50,
+       49,
+       50,
+       49,
+       48,
+       49,
+       50,
+       49,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       49,
+       49,
+       48,
+       49,
+       48,
+       50,
+       49,
+       50,
+       49,
+       49,
+       51,
+       49,
+       50,
+       49,
+       50,
+       49,
+       50,
+       50,
+       47,
+       49,
+       48,
+       50,
+       49,
+       49,
+       50,
+       49,
+       50,
+       49
+      ]
+     },
+     "recall": {
+      "answer": 49,
+      "peak": 40,
+      "layers": [
+       48,
+       47,
+       46,
+       40
+      ],
+      "dropped": [],
+      "n": 120,
+      "never": 0,
+      "per_item": [
+       49,
+       49,
+       49,
+       50,
+       49,
+       49,
+       49,
+       49,
+       50,
+       49,
+       49,
+       49,
+       50,
+       49,
+       49,
+       50,
+       48,
+       48,
+       50,
+       50,
+       49,
+       50,
+       50,
+       49,
+       50,
+       49,
+       49,
+       49,
+       47,
+       49,
+       49,
+       49,
+       49,
+       47,
+       49,
+       50,
+       48,
+       50,
+       50,
+       50,
+       49,
+       49,
+       47,
+       50,
+       50,
+       49,
+       50,
+       50,
+       47,
+       51,
+       50,
+       49,
+       49,
+       49,
+       50,
+       50,
+       47,
+       48,
+       49,
+       48,
+       48,
+       49,
+       47,
+       49,
+       49,
+       49,
+       47,
+       49,
+       48,
+       49,
+       48,
+       48,
+       50,
+       50,
+       50,
+       51,
+       49,
+       48,
+       50,
+       50,
+       50,
+       50,
+       50,
+       49,
+       50,
+       50,
+       48,
+       50,
+       50,
+       49,
+       49,
+       47,
+       47,
+       49,
+       48,
+       50,
+       50,
+       50,
+       49,
+       47,
+       48,
+       47,
+       47,
+       49,
+       49,
+       50,
+       50,
+       50,
+       50,
+       47,
+       47,
+       48,
+       47,
+       49,
+       47,
+       49,
+       47,
+       49,
+       50,
+       49
+      ]
+     }
+    }
+   },
+   "cells": [
+    {
+     "reader": "lookup",
+     "layer": 48,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.008333333333333333,
+       0.0,
+       0.02608695652173913
+      ],
+      "whole": [
+       0.9583333333333334,
+       0.92,
+       0.9914529914529915
+      ],
+      "no_jpp": [
+       0.075,
+       0.03225806451612903,
+       0.12605042016806722
+      ],
+      "no_rand": [
+       0.8333333333333334,
+       0.7622950819672131,
+       0.8991596638655462
+      ],
+      "jpp": [
+       0.6916666666666667,
+       0.6016260162601627,
+       0.7796649043694605
+      ]
+     },
+     "switches_whole": 115,
+     "excess": [
+      0.791304347826087,
+      0.7129629629629629,
+      0.865546218487395
+     ],
+     "rest_share": [
+      0.07826086956521738,
+      0.033891183592080903,
+      0.13159136047666317
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 47,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.008333333333333333,
+       0.0,
+       0.02608695652173913
+      ],
+      "whole": [
+       0.9666666666666667,
+       0.9322033898305084,
+       0.9920015873015873
+      ],
+      "no_jpp": [
+       0.16666666666666666,
+       0.10256410256410256,
+       0.23931623931623933
+      ],
+      "no_rand": [
+       0.8,
+       0.7213019443385437,
+       0.873015873015873
+      ],
+      "jpp": [
+       0.48333333333333334,
+       0.39637454618797907,
+       0.5703404017857139
+      ]
+     },
+     "switches_whole": 116,
+     "excess": [
+      0.6551724137931035,
+      0.5596330275229358,
+      0.744
+     ],
+     "rest_share": [
+      0.17241379310344826,
+      0.106548309879588,
+      0.2456140350877193
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 46,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.008333333333333333,
+       0.0,
+       0.02608695652173913
+      ],
+      "whole": [
+       0.9666666666666667,
+       0.9322033898305084,
+       0.9920015873015873
+      ],
+      "no_jpp": [
+       0.21666666666666667,
+       0.14515821226298942,
+       0.29411764705882354
+      ],
+      "no_rand": [
+       0.8583333333333333,
+       0.7931034482758621,
+       0.9186991869918699
+      ],
+      "jpp": [
+       0.3333333333333333,
+       0.24786324786324787,
+       0.423728813559322
+      ]
+     },
+     "switches_whole": 116,
+     "excess": [
+      0.6637931034482758,
+      0.5765765765765766,
+      0.7461567164179104
+     ],
+     "rest_share": [
+      0.22413793103448276,
+      0.1504424778761062,
+      0.30357142857142855
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 32,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.008333333333333333,
+       0.0,
+       0.02608695652173913
+      ],
+      "whole": [
+       0.26666666666666666,
+       0.19327731092436976,
+       0.34375
+      ],
+      "no_jpp": [
+       0.24166666666666667,
+       0.16932450756494435,
+       0.3170731707317073
+      ],
+      "no_rand": [
+       0.225,
+       0.1532258064516129,
+       0.3
+      ],
+      "jpp": [
+       0.008333333333333333,
+       0.0,
+       0.02608695652173913
+      ]
+     },
+     "switches_whole": 32,
+     "excess": [
+      -0.062499999999999986,
+      -0.16129032258064513,
+      0.0
+     ],
+     "rest_share": [
+      0.90625,
+      0.7916666666666666,
+      1.0
+     ],
+     "label": "outside",
+     "text": "computes outside the lens at the last token",
+     "x0_valid": false,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 48,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.95,
+       0.9083333333333333,
+       0.983739837398374
+      ],
+      "no_jpp": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "no_rand": [
+       0.7083333333333334,
+       0.624,
+       0.7903225806451613
+      ],
+      "jpp": [
+       0.7583333333333333,
+       0.6810344827586207,
+       0.831858407079646
+      ]
+     },
+     "switches_whole": 114,
+     "excess": [
+      0.7456140350877194,
+      0.6635514018691588,
+      0.8275862068965517
+     ],
+     "rest_share": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 47,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.95,
+       0.9083333333333333,
+       0.983739837398374
+      ],
+      "no_jpp": [
+       0.016666666666666666,
+       0.0,
+       0.04311281859070452
+      ],
+      "no_rand": [
+       0.65,
+       0.5555555555555556,
+       0.7398373983739838
+      ],
+      "jpp": [
+       0.5916666666666667,
+       0.5076923076923077,
+       0.6776859504132231
+      ]
+     },
+     "switches_whole": 114,
+     "excess": [
+      0.6666666666666666,
+      0.5714285714285714,
+      0.7586206896551725
+     ],
+     "rest_share": [
+      0.017543859649122806,
+      0.0,
+      0.04587155963302752
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 46,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.95,
+       0.9083333333333333,
+       0.983739837398374
+      ],
+      "no_jpp": [
+       0.016666666666666666,
+       0.0,
+       0.0423728813559322
+      ],
+      "no_rand": [
+       0.675,
+       0.5892857142857143,
+       0.7583333333333333
+      ],
+      "jpp": [
+       0.5666666666666667,
+       0.47655319940476193,
+       0.656
+      ]
+     },
+     "switches_whole": 114,
+     "excess": [
+      0.6929824561403509,
+      0.601851851851852,
+      0.7786885245901639
+     ],
+     "rest_share": [
+      0.017543859649122806,
+      0.0,
+      0.044642857142857144
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 40,
+     "n": 120,
+     "entities": 85,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.9,
+       0.8442566551361107,
+       0.9491632246118785
+      ],
+      "no_jpp": [
+       0.008333333333333333,
+       0.0,
+       0.02631578947368421
+      ],
+      "no_rand": [
+       0.7083333333333334,
+       0.6271186440677966,
+       0.7876106194690266
+      ],
+      "jpp": [
+       0.4,
+       0.3103448275862069,
+       0.4957983193277311
+      ]
+     },
+     "switches_whole": 108,
+     "excess": [
+      0.7777777777777778,
+      0.6972477064220183,
+      0.8557692307692307
+     ],
+     "rest_share": [
+      0.009259259259259259,
+      0.0,
+      0.0297029702970297
+     ],
+     "label": "through",
+     "text": "through the lens",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    }
+   ],
+   "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_rand",
+    "jpp"
+   ],
+   "mode": "words",
+   "below_gate": "below gate (exploratory): Z1-P's gate on muse-glimmer-30b fails ({'K': 0.78125, 'M': 0.8584558823529411} < 0.80); its eligible passages only; hollow, rules verbatim, no prediction"
+  }
+ ],
+ "checks": [
+  {
+   "run": "muse30_x53_3l",
+   "target": "muse-glimmer-30b",
+   "layers": {
+    "source_run": "muse30_x51_10",
+    "peak_file": "results/x51_jread/muse30_x51_10/peak.json",
+    "read_file": "results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json",
+    "mode": "ans13",
+    "readers": {
+     "lookup": {
+      "peak": 32,
+      "answer": 35,
+      "layers": [
+       34,
+       32
+      ]
+     }
+    }
+   },
+   "cells": [
+    {
+     "reader": "lookup",
+     "layer": 34,
+     "n": 68,
+     "entities": 29,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.9558823529411765,
+       0.9019607843137255,
+       1.0
+      ],
+      "no_jpp": [
+       0.9411764705882353,
+       0.8846153846153846,
+       0.9861111111111112
+      ],
+      "no_rand": [
+       0.9264705882352942,
+       0.8695652173913043,
+       0.9814814814814815
+      ],
+      "jpp": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "rest": [
+       0.9411764705882353,
+       0.8846153846153846,
+       0.9861111111111112
+      ]
+     },
+     "switches_whole": 65,
+     "excess": [
+      -0.01538461538461533,
+      -0.047619047619047616,
+      0.0
+     ],
+     "rest_share": [
+      0.9846153846153846,
+      0.9516129032258064,
+      1.0
+     ],
+     "label": "outside",
+     "text": "computes outside the lens at the last token",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 32,
+     "n": 68,
+     "entities": 29,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.8823529411764706,
+       0.821917808219178,
+       0.9482758620689655
+      ],
+      "no_jpp": [
+       0.8823529411764706,
+       0.821917808219178,
+       0.9482758620689655
+      ],
+      "no_rand": [
+       0.8823529411764706,
+       0.821917808219178,
+       0.9482758620689655
+      ],
+      "jpp": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "rest": [
+       0.8823529411764706,
+       0.821917808219178,
+       0.9482758620689655
+      ]
+     },
+     "switches_whole": 60,
+     "excess": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rest_share": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "label": "outside",
+     "text": "computes outside the lens at the last token",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    }
+   ],
+   "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_rand",
+    "jpp",
+    "rest"
+   ],
+   "mode": "ans13",
+   "below_gate": null
+  }
+ ]
+}
