@@ -77,11 +77,15 @@ X8_RUN = {
     "qwen3.6-27b": "x8_write_27b",
     "muse-glimmer-30b": "muse30b_x8_write",
     "nemotron-3.5-lightning": "nem35l_x52_write",
-}  # fmt: skip (Lightning: batch 52 C coverage)
+    "qwen3.5-122b-a10b": "qwen35_122b_x8_write_g75",
+}  # fmt: skip (Lightning: batch 52 C coverage; the 122B: Dan 18:20 / 18:45 coverage)
+# a model whose item source passed only the lookup's read: Dan 18:45 (jobs/c3/batch53.yaml decision_470_1845), fixed
+# before any 47.0 result on the 122B; written into the manifest and the summary's model line
+ADAPTED = {"qwen3.5-122b-a10b": "adapted design: lookup-only gate; the recall (0.797) is not part of this test"}
 RUN_NAME = {"qwen3.5-9b": "qwen35_9b_x47_verbal", "qwen3.6-27b": "x47_verbal_27b",
             "muse-glimmer-30b": "muse30_x47_verbal", "nemotron-3.5-lightning": "nem35l_x52_verbal"}  # fmt: skip
 NAME = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse Glimmer 30B",
-        "nemotron-3.5-lightning": "Nemotron 3.5 Lightning"}  # fmt: skip
+        "nemotron-3.5-lightning": "Nemotron 3.5 Lightning", "qwen3.5-122b-a10b": "Qwen3.5-122B"}  # fmt: skip
 RECON_RATIO_NOT, RECON_RATIO_PARTLY, TOP_RANK = 2.0, 3.0, 20
 LO_PCT, HI_PCT = 5.0, 95.0
 # the sanity swap (J++ and U removed together; x6_routes --bothoff, C0): figures/story/data.csv, fig10
@@ -284,6 +288,8 @@ def stage_run(name: str, n_items: int = N_ITEMS, n_rand: int = N_RAND) -> Path:
          "n_items": n_items, "n_rand": n_rand, "ks": list(KS), "id_max": ID_MAX, "seeds": {"random": RAND_SEED,
          "scenes": R.SEED, "examples": EXAMPLES_SEED, "bootstrap": X.BOOT_SEED}, "mu_from": R.STATES[target],
          "items_from": f"results/x8_write/{X8_RUN[target]}", "ordinal": list(ORDINAL)}  # fmt: skip
+    if target in ADAPTED:
+        m["design"] = ADAPTED[target]
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
@@ -571,7 +577,8 @@ def stage_summary(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
           f"test's original prompts (x8_write's items); null: {N_RAND} random directions of the same norm (seed "
           f"{RAND_SEED}); statistics are medians over cases against the null's medians (scripts/x47_verbal.py). "
           "UNVERIFIED.", "", *(summary_lines(blob) if models else ["No run landed."]),
-          *(["", f"Missing: {', '.join(missing)}."] if missing else [])]  # fmt: skip
+          *(["", f"Missing: {', '.join(missing)}."] if missing else []),
+          *[f"\n{NAME[t]}: {ADAPTED[t]}." for t in models if t in ADAPTED]]  # fmt: skip
     (out / "verbal.md").write_text("\n".join(md) + "\n")
     print("\n".join(md))
     print(out)

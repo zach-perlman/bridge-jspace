@@ -654,3 +654,14 @@ coverage_122b_1820: |
   results folder and the inspector / monitor states from all boxes to the Mac.
   Status at 23:00 and 08:00; write NIGHT.md with what ran and where results
   are.
+decision_470_1845_received: "29 Oct ~18:45 Paris (Dan, answer to the coordinator's question on 47.0's gate)"
+decision_470_1845: |
+  47.0 on the 122B: option (b). Lookup-only gate (the lookup reads O and S at
+  1.00), decided before any 47.0 result on the 122B; label "adapted design:
+  lookup-only gate; the recall (0.797) is not part of this test", not hollow.
+  Same rule as 47.0 otherwise. Queue it after 52 A.
+  45m added by you: fine, its own gate, never lowered.
+  Cron: wake every 2 hours, not every hour, and only to enqueue when the
+  buffer is < 2 or a job failed; one-line status in NIGHT.md per wake, no
+  messages to me until 08:00.
+  I'm stopping speedup and another in the console now.
