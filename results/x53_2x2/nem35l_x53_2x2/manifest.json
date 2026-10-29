@@ -1,0 +1,153 @@
+{
+  "exp": "x53_2x2",
+  "run": "nem35l_x53_2x2",
+  "test": "53.1",
+  "spec": "jobs/c3/batch53.yaml (brief, 53.1)",
+  "question": "no prediction (batch 53: exploration day, rules fixed in the brief)",
+  "written_utc": "2026-10-29T10:28:55Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "aca60ede687705265605e2349248c546c7ce3b55",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "inputs": {
+    "jobs/c3/batch53.yaml": "453da26fa690839bffe7261f70db768b066eff14d25645a637654292ed6cd0b2",
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b"
+  },
+  "set": "d1_topics_v3",
+  "layer": 14,
+  "cells": [
+    "qa_num",
+    "qb_num"
+  ],
+  "cell_text": {
+    "qa_num": "(Q-after, number)",
+    "qb_num": "(Q-before, number)",
+    "qa_word": "(Q-after, word)",
+    "qb_word": "(Q-before, word)"
+  },
+  "relation": null,
+  "word_instruction": "Answer with a single word and nothing else.",
+  "gate": 0.8,
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "k": 25,
+  "omp": "signed",
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_jpp_A",
+    "no_jpp_A_rand",
+    "no_A",
+    "no_A_rand"
+  ],
+  "atoms": {
+    "items": 50,
+    "seed": 0
+  },
+  "order": {
+    "cells": "every cell's competence and gate first (the relation's 9B accuracy = qa_word's recall gate), then each tested cell's Δ, readout, arms and atoms in CELLS order",
+    "reads": "per item and reader: O unedited then the arms in order, batches of at most 16 rows (BJ_SUITE_BATCH)"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "atoms": 0
+  },
+  "design": "scripts/x53_2x2.py docstring",
+  "verdict": "x53_2x2.py verdict (CPU)",
+  "excluded_scenes": {
+    "source": "results/x51_lightning/nem35l_x52_layer_r2/gate.json",
+    "scenes": [
+      "P2-L0-0000",
+      "P2-L0-0022",
+      "P2-L0-0051",
+      "P2-L0-0071",
+      "P2-L0-0074",
+      "P2-L0-0080",
+      "P2-L0-0085",
+      "P2-L0-0095",
+      "P2-L0-0096",
+      "P2-L0-0098",
+      "P2-L0-0100",
+      "P2-L0-0106",
+      "P2-L0-0147",
+      "P2-L0-0150",
+      "P2-L0-0155",
+      "P2-L0-0193",
+      "P2-L0-0202",
+      "P2-L0-0218",
+      "P2-L0-0221",
+      "P2-L0-0231",
+      "P2-L0-0237",
+      "P2-L0-0246",
+      "P2-L0-0254",
+      "P2-L0-0255",
+      "P2-L0-0270",
+      "P2-L0-0294",
+      "P2-L0-0297",
+      "P2-L0-0302",
+      "P2-L0-0306",
+      "P2-L0-0311",
+      "P2-L0-0317",
+      "P2-L0-0318",
+      "P2-L0-0344",
+      "P2-L0-0349",
+      "P2-L0-0375",
+      "P2-L0-0384",
+      "P2-L0-0391",
+      "P2-L0-0410",
+      "P2-L0-0425",
+      "P2-L0-0431",
+      "P2-L0-0434",
+      "P2-L0-0458",
+      "P2-L0-0473",
+      "P2-L0-0486",
+      "P2-L0-0488",
+      "P2-L0-0491",
+      "P2-L0-0505",
+      "P2-L0-0507",
+      "P2-L0-0508",
+      "P2-L0-0513",
+      "P2-L0-0529",
+      "P2-L0-0539",
+      "P2-L0-0542",
+      "P2-L0-0546",
+      "P2-L0-0559",
+      "P2-L0-0564",
+      "P2-L0-0576",
+      "P2-L0-0591",
+      "P2-L0-0596",
+      "P2-L0-0597"
+    ]
+  },
+  "finished_utc": "2026-10-29T10:37:15Z"
+}
