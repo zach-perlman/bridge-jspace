@@ -90,7 +90,9 @@ RENDERING = "chat"
 SPAN = Z.SPAN  # L..L+3
 K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
-SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
+# target -> its 45m run (the clean design); the 122B's for Dan's 18:20 coverage (jobs/c3/x45m_122b.yaml), kept out of
+# B.FRESH_RUN, which 45q's rule counts
+SOURCES = {**B.FRESH_RUN, "qwen3.5-122b-a10b": "qwen35_122b_x45m_fresh"}
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 RUNS = {
     "qwen3.5-9b": "qwen35_9b_x49_2",
@@ -866,7 +868,8 @@ def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, co
     guard and "no prediction" in place of Dan's answer, written to x52_ladder-<UTC>/."""
     answer = (B.BELOW_GATE if BELOW else NO_PREDICTION) if coverage else unsealed()
     runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in (runs if BELOW else MODELS)]  # below gate: the given runs
+    alone = BELOW or not set(runs) <= set(MODELS)  # below gate, or the 122B's coverage run: the given runs alone
+    models = [model_result(t, runs[t], n_boot) for t in (runs if alone else MODELS)]
     stem = "x52_ladder_below" if BELOW else "x52_ladder" if coverage else "x49_2"
     out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
@@ -914,6 +917,10 @@ def main() -> None:
     elif a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, tuple(a.band) if a.band else None, a.coverage)
+    elif a.stage == "verdict" and a.coverage and a.name:  # one coverage run alone (the 122B, Dan 18:20)
+        target = json.loads((RESULTS / a.name / "manifest.json").read_text())["model"]["target"]
+        assert target not in MODELS, f"{target}: verdict --coverage --runs reads the three design models together"
+        stage_verdict({target: a.name}, n_boot=a.n_boot, coverage=True)
     else:
         runs = dict(zip(MODELS, a.runs, strict=True)) if a.runs else None
         assert runs or not a.coverage, "verdict --coverage needs --runs (the coverage runs in place of 49.2's)"
