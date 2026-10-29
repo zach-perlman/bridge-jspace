@@ -1,0 +1,87 @@
+{
+  "exp": "x47_value",
+  "run": "qwen35_9b_x47_7a_r2",
+  "part": "a",
+  "why": "batch 47, test 47.7(a) (jobs/c3/batch47.yaml; Q47.7): the routes scenes with each reader's question before the context; routes shares under every arm question-first, the whole change question-last beside it, the lookup's O state at the bridge word in both renderings for the value probe and the lens's digit rank; sealed",
+  "written_utc": "2026-10-29T08:51:18Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "ce42c33af3215df67c334053e43b7ee536a8dd88",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "47.7(a)",
+  "spec": "jobs/c3/batch47.yaml (47.7, amendment 1)",
+  "question": "Q47.7 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 12,
+  "k": 25,
+  "omp": "signed",
+  "dictionary": "J++ lens atoms of the letter tokens and the digit tokens (the main test's letter-only restriction lifted)",
+  "arms": {
+    "qf": [
+      "whole",
+      "no_jpp",
+      "no_jpp_rand",
+      "no_alf",
+      "no_alf_rand"
+    ],
+    "ql": [
+      "whole"
+    ]
+  },
+  "gate": 0.8,
+  "gate_renderings": [
+    "qf"
+  ],
+  "n_per_group": 300,
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "pcf_from": null,
+  "random_part": "X0's random subspace, seed 888 + layer, at each part's share of ||change||^2",
+  "change": "h_S - h_O at the bridge word at L; question-first: per reader from its own prompts; question-last: from the lookup's prompt (the readers' prefixes equal), read by both",
+  "read": "the top token at the read step (a digit's space token appended; a word answer read right after 'Answer:')",
+  "probe_states": "the lookup's O state at the bridge word per rendering (states.npz; x0_probe's (a) at the verdict)",
+  "readout": "the lens vectors (unit=False) of the value pool's tokens at that state: the rank of O's answer",
+  "c0": {
+    "reference": 0.9863013698630136,
+    "tolerance": 0.1,
+    "c0_min": null,
+    "stop": "recorded in c0_check.json, the run does not stop (sealed); the verdict labels a failed model"
+  },
+  "rule": "prefetch on demand: question-first value share >= 0.15 and the value probe >= 0.6 (question-last <= 0.05 / <= 0.4), on >= 2 of 3 models; the prefetched value is in the J-space (read only if prefetch holds): without J++ (digits allowed) value answers fall >= 0.3 beyond random and the lens ranks the digit first in >= 0.4 of items; address regardless: value share <= 0.05 and the probe within 0.1 of question-last",
+  "seeds": {
+    "scenes": 2510,
+    "independence": 4707,
+    "move": 4708,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.7 answer",
+  "ql_competence_from": "qwen35_9b_x6_routes"
+}
