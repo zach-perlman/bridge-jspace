@@ -28,6 +28,17 @@ Design (Zach's answers, 29 Oct, and the addendum):
 
 python scripts/jsuite_v5key.py [--seed 5001] [--prefix v5k]  -> data/tasks_v2/jsuite_v5kn_test_chat (MP MM),
     jsuite_v5knctl_test_chat (H1 K0), jsuite_v5kd_test_chat (MP MM), jsuite_v5kdctl_test_chat (H1 K0)
+The rebuild (2026-10-29, after a red-team; the default build above is unchanged and reproduces byte for byte):
+python scripts/jsuite_v5key.py --seed 5002 --suffix 2 --same-continent 2  -> jsuite_v5kn2 / v5kn2ctl / v5kd2 / v5kd2ctl:
+    at least two of the five other countries from X's continent (as many as the pool holds; Oceania has Australia
+    alone) and one from X's region where the pool has one; items add x_continent, x_region, n_same_continent,
+    n_same_region, n_continent_available, n_region_available.
+The 3+3 rebuild (amendment 61 addendum, Zach; overwrites the --same-continent build of v5kn2 / v5kd2, never run):
+python scripts/jsuite_v5key.py --seed 5002 --suffix 2 --split33  -> the same four sets: three countries from X's continent
+    (X + two, one from X's region where possible) and three from one other continent drawn at random among those with
+    >= 3 eligible countries, so no continent is a majority; where X's continent has fewer (Oceania: Australia alone)
+    the rest come from further continents, none past three. Items add other_continent, n_other_continent and split_ok
+    (true only for an exact 3+3).
 """
 
 from __future__ import annotations
@@ -106,6 +117,33 @@ FLAG = {
     "Tanzania": ["Green", "Black", "Blue", *_YG], "Thailand": _RWB, "Turkey": _RW, "United States": _RWB,
     "Venezuela": [*_RWB, *_YG], "Vietnam": ["Red", *_YG],
 }  # fmt: skip
+# --same-continent (the rebuild, 2026-10-29, after a red-team): country -> continent and finer region (UN M49 sub-regions;
+# Russia in Europe, Turkey in Asia; the Americas split into North and South America, with M49's Latin America and the
+# Caribbean split into Central America, the Caribbean and South America; Oceania holds Australia alone)
+CONTINENT = {
+    **dict.fromkeys(["Denmark", "Finland", "Ireland", "Norway", "Sweden", "England", "Austria", "Belgium", "France", "Germany",
+                     "Netherlands", "Greece", "Italy", "Portugal", "Spain", "Czech Republic", "Hungary", "Poland", "Russia"], "Europe"),
+    **dict.fromkeys(["China", "Japan", "South Korea", "Taiwan", "Cambodia", "Indonesia", "Malaysia", "Thailand", "Vietnam", "India",
+                     "Israel", "Jordan", "Turkey"], "Asia"),
+    **dict.fromkeys(["Egypt", "Morocco", "Kenya", "Tanzania", "Nigeria", "South Africa"], "Africa"),
+    **dict.fromkeys(["United States", "Canada", "Mexico", "Jamaica"], "North America"),
+    **dict.fromkeys(["Argentina", "Brazil", "Chile", "Colombia", "Peru", "Venezuela"], "South America"),
+    "Australia": "Oceania",
+}  # fmt: skip
+REGION = {
+    **dict.fromkeys(["Denmark", "Finland", "Ireland", "Norway", "Sweden", "England"], "Northern Europe"),
+    **dict.fromkeys(["Austria", "Belgium", "France", "Germany", "Netherlands"], "Western Europe"),
+    **dict.fromkeys(["Greece", "Italy", "Portugal", "Spain"], "Southern Europe"),
+    **dict.fromkeys(["Czech Republic", "Hungary", "Poland", "Russia"], "Eastern Europe"),
+    **dict.fromkeys(["China", "Japan", "South Korea", "Taiwan"], "Eastern Asia"),
+    **dict.fromkeys(["Cambodia", "Indonesia", "Malaysia", "Thailand", "Vietnam"], "South-eastern Asia"),
+    "India": "Southern Asia", **dict.fromkeys(["Israel", "Jordan", "Turkey"], "Western Asia"),
+    **dict.fromkeys(["Egypt", "Morocco"], "Northern Africa"),
+    **dict.fromkeys(["Kenya", "Tanzania", "Nigeria", "South Africa"], "Sub-Saharan Africa"),
+    **dict.fromkeys(["United States", "Canada"], "Northern America"), "Mexico": "Central America", "Jamaica": "Caribbean",
+    **dict.fromkeys(["Argentina", "Brazil", "Chile", "Colombia", "Peru", "Venezuela"], "South America"),
+    "Australia": "Australia and New Zealand",
+}  # fmt: skip
 SAY = {"people": "Which country is {x} from?", "cities": "Which country is {x} in?",
        "companies": "Which country is {x} based in?", "landmarks": "Which country is {x} in?"}  # fmt: skip
 KEY_NAMED = {"people": "What colour badges will the delegation from {x}'s home country wear?",
@@ -169,6 +207,8 @@ def main(a) -> None:
     aliases = {c: sorted(aliases.get(c, set())) for c in countries}
     assert set(DEMONYM) == set(countries) and set(FLAG) == set(countries), (set(countries) ^ set(DEMONYM), set(countries) ^ set(FLAG))
     assert all(set(v) <= set(COLOURS) for v in FLAG.values())
+    assert set(CONTINENT) == set(countries) == set(REGION), set(countries) ^ set(CONTINENT) ^ set(REGION)
+    assert all(CONTINENT[c] == CONTINENT[d] for c in countries for d in countries if REGION[c] == REGION[d])
     strip_the = lambda s: s[4:] if s.startswith("the ") else s  # noqa: E731
     reveal = {c: sorted({c, *(strip_the(x) for x in aliases[c]), *DEMONYM[c]}) for c in countries}
     # hop 1 on a country (alts): the name and its aliases without a leading article (a bare "the" token would accept any
@@ -250,11 +290,42 @@ def main(a) -> None:
                     pool = [c for c in countries if c != key and c not in conflict[key] and not cue_in(q_text, [c])
                             and not (V4.stems(c) & (V4.stems(clause) | V4.stems(x)))]  # fmt: skip
                     others = None
-                    for _ in range(500):
-                        cand = rng.sample(pool, K - 1)
-                        if not any(b in conflict[a_] for a_, b in itertools.combinations(cand, 2)):
-                            others = cand
-                            break
+                    other_cont = None
+                    if a.split33:  # three from X's continent (X + two, one from X's region) + three from ONE other continent
+                        cont = [c for c in pool if CONTINENT[c] == CONTINENT[key]]
+                        reg = [c for c in cont if REGION[c] == REGION[key]]
+                        by_cont = collections.defaultdict(list)
+                        for c in pool:
+                            by_cont[CONTINENT[c]].append(c)
+                        elig = sorted(cn for cn, cs in by_cont.items() if cn != CONTINENT[key] and len(cs) >= 3)
+                        for _ in range(2000):
+                            oc = rng.choice(elig)
+                            chosen = rng.sample(reg, 1) if reg else []
+                            chosen += rng.sample([c for c in cont if c not in chosen], min(2, len(cont)) - len(chosen))
+                            chosen += rng.sample(by_cont[oc], 3)
+                            # X's continent short (Oceania): the rest from neither X's nor the other continent, none past three
+                            rest = [c for c in pool if CONTINENT[c] not in (CONTINENT[key], oc)]
+                            cand = chosen + rng.sample(rest, K - 1 - len(chosen))
+                            counts = collections.Counter(CONTINENT[c] for c in [key, *cand])
+                            if max(counts.values()) <= 3 and not any(b in conflict[a_] for a_, b in itertools.combinations(cand, 2)):
+                                others, other_cont = cand, oc
+                                break
+                    elif a.same_continent:  # >= N of the five from X's continent (as many as the pool holds), one from its region
+                        cont = [c for c in pool if CONTINENT[c] == CONTINENT[key]]
+                        reg = [c for c in cont if REGION[c] == REGION[key]]
+                        for _ in range(2000):
+                            chosen = rng.sample(reg, 1) if reg else []
+                            chosen += rng.sample([c for c in cont if c not in chosen], max(0, min(a.same_continent, len(cont)) - len(chosen)))
+                            cand = chosen + rng.sample([c for c in pool if c not in chosen], K - 1 - len(chosen))
+                            if not any(b in conflict[a_] for a_, b in itertools.combinations(cand, 2)):
+                                others = cand
+                                break
+                    else:
+                        for _ in range(500):
+                            cand = rng.sample(pool, K - 1)
+                            if not any(b in conflict[a_] for a_, b in itertools.combinations(cand, 2)):
+                                others = cand
+                                break
                     if others is None:
                         skipped["no country draw"] += 1
                         continue
@@ -294,6 +365,15 @@ def main(a) -> None:
                             "knobs": {"entities": K, "filler": N_FILLER}, "set_version": "v4", "set_kind": "key", "key": key,
                             "key_vocab": countries, "scene_keys": scene_keys, "key_colour": colour,
                             "flag_colour_match": colour in FLAG[key], "question_colours": bad_colours}  # fmt: skip
+                    if a.split33:
+                        n_oc = sum(CONTINENT[c] == other_cont for c in others)
+                        base.update({"other_continent": other_cont, "n_other_continent": n_oc,
+                                     "split_ok": sum(CONTINENT[c] == CONTINENT[key] for c in others) == 2 and n_oc == 3})  # fmt: skip
+                    if a.same_continent or a.split33:
+                        base.update({"x_continent": CONTINENT[key], "x_region": REGION[key],
+                                     "n_same_continent": sum(CONTINENT[c] == CONTINENT[key] for c in others),
+                                     "n_same_region": sum(REGION[c] == REGION[key] for c in others),
+                                     "n_continent_available": len(cont), "n_region_available": len(reg)})  # fmt: skip
                     say_n = SAY[rel].format(x=x)
                     say_step = {"question": say_n, "answer": key, "kind": "open", "source": "M", "alts": calts[key], "cand_vocab": countries}
                     direct = {"question": DIRECT.format(c=V3.disp(key)), "answer": colour, "kind": "open", "source": "P", "cand_vocab": COLOURS}
@@ -309,7 +389,7 @@ def main(a) -> None:
                          [hop1, {"question": mp_n, "answer": colour, "kind": "open", "source": "P", "cand_vocab": COLOURS}, direct],
                          [hop1, say_step], desc_cue, desc_own),
                     ):  # fmt: skip
-                        v = f"{a.prefix}{tag}"
+                        v = f"{a.prefix}{tag}{a.suffix}"
                         b2 = {**base, "start_desc": start_desc, "named": named, "desc_cue": cue, "desc_own_cue": own}
                         items[tag].append({**b2, "id": f"j3:chat:{v}:MP-w0-{uid}", "word": "MP", "final": "P", "final_source": "P",
                                            "control": "P", "scene": f"{v}:MP:{uid}", "question": q_mp, **col_item,
@@ -327,7 +407,7 @@ def main(a) -> None:
     assert len(ids) == len(set(ids)), "duplicate ids"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
     data = Path(a.data_dir)
-    dirs = {tag: data / f"jsuite_{a.prefix}{tag}_test_chat" for tag in items}
+    dirs = {tag: data / f"jsuite_{a.prefix}{tag.removesuffix('ctl')}{a.suffix}{'ctl' if tag.endswith('ctl') else ''}_test_chat" for tag in items}
     for d in dirs.values():
         assert not d.exists(), f"{d} exists; sets are written once"
     for d in dirs.values():
@@ -336,6 +416,16 @@ def main(a) -> None:
               "skipped": dict(skipped), "excluded_entities": excluded, "colours": COLOURS, "countries": countries,
               "nationality_to_country": NAT2C, "country_aliases": aliases, "country_first_token_conflicts": conflict_pairs,
               "flag_colours": FLAG, "tokenizers": list(TOKENIZERS)}  # fmt: skip
+    if a.split33:
+        mp = [it for it in items["n"] if it["word"] == "MP"]
+        common.update({"split33": True, "split_ok": dict(collections.Counter(str(it["split_ok"]) for it in mp)),
+                       "other_continent": dict(sorted(collections.Counter(it["other_continent"] for it in mp).items()))})  # fmt: skip
+    if a.same_continent or a.split33:  # the rebuild's additions (absent from the default build's manifest, which stays as it was)
+        mp = [it for it in items["n"] if it["word"] == "MP"]
+        common.update({"same_continent": a.same_continent or 2, "continent": CONTINENT, "region": REGION,
+                       "n_same_continent": dict(sorted(collections.Counter(it["n_same_continent"] for it in mp).items())),
+                       "scenes_short_of_same_continent": sum(it["n_same_continent"] < (a.same_continent or 2) for it in mp),
+                       "scenes_without_same_region": sum(it["n_same_region"] == 0 for it in mp)})  # fmt: skip
     for tag, xs in items.items():
         body = "".join(json.dumps(it, ensure_ascii=False) + "\n" for it in xs)
         (dirs[tag] / "items.jsonl").write_text(body)
@@ -358,4 +448,10 @@ if __name__ == "__main__":
     ap.add_argument("--seed", type=int, default=5001)
     ap.add_argument("--prefix", default="v5k")
     ap.add_argument("--data-dir", default=str(DATA))
+    ap.add_argument("--suffix", default="", help="after the set letter in set names and ids: 2 -> jsuite_v5kn2, j3:chat:v5kn2:...")
+    ap.add_argument("--same-continent", type=int, default=0,
+                    help="at least N of the five other countries from X's continent (as many as exist) and one from its region")
+    ap.add_argument("--split33", action="store_true",
+                    help="the six countries: three from X's continent (X + two, one from its region where possible) and three "
+                         "from one other continent (random among those with >= 3 eligible); no continent has more than three")
     main(ap.parse_args())
