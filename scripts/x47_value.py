@@ -105,13 +105,15 @@ N_GEN, N_ITEMS, CAP_FORMAT = R.N_GEN, R.N_ITEMS, 300
 SET_C, FORMATS = "x0b_v2", ("prose", "json", "table")
 INDEP_SEED, INDEP_PERMS, INDEP_P = 4707, 2000, 0.01  # dumbest way 2: slot vs digit, permutation chi-square
 MOVE_SEED = 4708  # (c): the third item u and the new number e per scene
-PCF_FIT = {"qwen3.5-9b": "x7_pcf/qwen35_9b_x45d_fit", "muse-glimmer-30b": "x7_pcf/muse30b_x45d_fit"}
+PCF_FIT = {"qwen3.5-9b": "x7_pcf/qwen35_9b_x45d_fit", "muse-glimmer-30b": "x7_pcf/muse30b_x45d_fit",
+           "nemotron-3.5-lightning": "x7_pcf/nem35l_x52_x45d_fit"}  # Lightning: batch 52 C, fill5's 45d fit  # fmt: skip
 RUNS = {"a": {"qwen3.5-9b": "qwen35_9b_x47_7a", "qwen3.6-27b": "x47_7a_27b", "muse-glimmer-30b": "muse30_x47_7a"},
         "c": {"qwen3.5-9b": "qwen35_9b_x47_7c", "qwen3.6-27b": "x47_7c_27b", "muse-glimmer-30b": "muse30_x47_7c"},
         "b": {"qwen3.5-9b": "qwen35_9b_x47_7b", "muse-glimmer-30b": "muse30_x47_7b"}}  # fmt: skip
 # batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
 # verdict's own model list is unchanged (verdict --coverage reads these runs alone)
-COVERAGE_RUNS = {"a": {"nemotron-3.5-lightning": "nem35l_x52_value_a"}}
+COVERAGE_RUNS = {"a": {"nemotron-3.5-lightning": "nem35l_x52_value_a"},
+                 "c": {"nemotron-3.5-lightning": "nem35l_x52_value_c"}}  # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = {"a": "results/x47_value/x47_7a-20261028T131819Z", "b": "jobs/c3/batch47.yaml (47.7 b)",
           "c": "results/x47_value/x47_7c-20261028T123632Z"}  # each part's rules first scored  # fmt: skip
@@ -1178,11 +1180,15 @@ def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, coverage: 
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
     known = set(COVERAGE_RUNS.get(part, {})) if coverage else set(RUNS[part])
     assert set(targets) <= known, f"47.7({part}) runs on {sorted(known)}"
+    pending_rule = lambda: ({r: {"tested": False} for r in RENDERINGS} if part == "b" else  # noqa: E731
+                            {f: rule_c(None) for f in FORMATS} if part == "c" else {})  # fmt: skip
+    for m in models:  # a given run not here yet (a coverage run before it lands) reads as pending, as the design's rows
+        if m["status"] == "pending":
+            m.setdefault("rule", pending_rule())
     for t in [] if coverage else RUNS[part]:
         if t not in targets:
             models.append({"run": f"({RUNS[part][t]})", "target": t, "status": "pending", "why": "no run given",
-                           "rule": {r: {"tested": False} for r in RENDERINGS} if part == "b" else
-                           {f: rule_c(None) for f in FORMATS} if part == "c" else {}})  # fmt: skip
+                           "rule": pending_rule()})  # fmt: skip
     v = batch_a(models) if part == "a" else batch_c(models) if part == "c" else batch_b(models)
     out = RESULTS / f"{'x52_value' if coverage else 'x47_7'}{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
