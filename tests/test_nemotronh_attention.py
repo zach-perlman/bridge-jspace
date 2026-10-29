@@ -91,3 +91,23 @@ def test_lightning_heads_read_lightnings_own_49_7_run():
 
     lt = "nemotron-3.5-lightning"
     assert lt not in HD.RUNS and HD.COVERAGE_RUNS[lt].startswith("nem35l_") and HD.SOURCE[lt] == A.COVERAGE_RUNS[lt]
+
+
+def test_x48_heads_capture_and_gain_on_nemotronh():
+    """Batch 52: 48.4's own capture (x48_heads.capture_last_attention) equals the model's eager attention on NemotronH,
+    and the block's input-norm gain is its plain pre-mixer weight."""
+    from scripts import x48_heads as H48
+
+    m = tiny()
+    ids = torch.randint(0, 64, (1, 8), generator=torch.Generator().manual_seed(3))
+    seen = {}
+    h = m.model.layers[3].mixer.register_forward_hook(lambda _m, _a, out: seen.__setitem__(3, out[1].detach()))
+    got: dict = {}
+    try:
+        with torch.no_grad(), H48.capture_last_attention(m, [3], 7, got):
+            m(ids)
+    finally:
+        h.remove()
+    assert torch.allclose(got[3].float(), seen[3][0][:, 7].float(), atol=1e-5)
+    blk = m.model.layers[3]
+    assert torch.equal(H48.input_gain(blk), blk.norm.weight.float())

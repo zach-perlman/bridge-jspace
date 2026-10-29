@@ -62,7 +62,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
-from bridge_jspace.knockout import FULL, config_layer_kinds, decoder_layers, layer_kind
+from bridge_jspace.knockout import FULL, attention_module, config_layer_kinds, decoder_layers, layer_kind
 from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
@@ -77,8 +77,11 @@ STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_heads", "muse-glimmer-30b": "muse30_x48_heads"}
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
 # verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
-COVERAGE_RUNS = {"qwen3.6-27b": "x48_heads_27b"}
-COVERAGE_SOURCES = {"qwen3.6-27b": ("x0_necessity_27b_chat", "x0_probe_v4_27b")}  # (main run, states run)
+COVERAGE_RUNS = {"qwen3.6-27b": "x48_heads_27b", "nemotron-3.5-lightning": "nem35l_x52_heads48"}
+COVERAGE_SOURCES = {
+    "qwen3.6-27b": ("x0_necessity_27b_chat", "x0_probe_v4_27b"),
+    "nemotron-3.5-lightning": ("nem35l_x52_conflict", "nem35l_x52_probe"),
+}  # (main run, states run)
 
 
 def main_run_of(target: str) -> str:
@@ -316,6 +319,9 @@ def capture_last_attention(model, layers: list[int], q_pos: int, out: dict[int, 
             if hasattr(module, "qk_norm"):  # Muse Glimmer
                 q = module.qk_norm(module.q_proj(hs).view(shape).transpose(1, 2)) * module.qk_scale_factor
                 k = module.qk_norm(module.k_proj(hs).view(shape).transpose(1, 2))
+            elif type(module).__name__ == "NemotronHAttention":  # batch 52: plain q / k projections, no norm, NoPE
+                q = module.q_proj(hs).view(shape).transpose(1, 2)
+                k = module.k_proj(hs).view(shape).transpose(1, 2)
             else:  # Qwen3.5: q_proj holds the query and its output gate
                 q, _gate = torch.chunk(module.q_proj(hs).view(b, t, -1, module.head_dim * 2), 2, dim=-1)
                 q = module.q_norm(q.reshape(shape)).transpose(1, 2)
@@ -339,7 +345,7 @@ def capture_last_attention(model, layers: list[int], q_pos: int, out: dict[int, 
     handles = []
     for la in layers:
         assert layer_kind(blocks[la]) == FULL, f"layer {la} is not a softmax-attention layer"
-        handles.append(blocks[la].self_attn.register_forward_pre_hook(hook_for(la), with_kwargs=True))
+        handles.append(attention_module(blocks[la]).register_forward_pre_hook(hook_for(la), with_kwargs=True))
     try:
         yield
     finally:
@@ -349,8 +355,9 @@ def capture_last_attention(model, layers: list[int], q_pos: int, out: dict[int, 
 
 def input_gain(block) -> Any:
     """The block's input RMSNorm gain per dimension, fp32: 1 + weight for the zero-centred norms of Qwen3.5
-    (Qwen3_5RMSNorm) and Muse Glimmer (MuseGlimmerTextCenteredRMSNorm); weight otherwise."""
-    norm = block.input_layernorm
+    (Qwen3_5RMSNorm) and Muse Glimmer (MuseGlimmerTextCenteredRMSNorm); weight otherwise (NemotronH's pre-mixer `norm`,
+    NemotronHRMSNorm: a plain weight, batch 52)."""
+    norm = block.input_layernorm if hasattr(block, "input_layernorm") else block.norm
     name = type(norm).__name__
     w = norm.weight.float()
     return 1.0 + w if ("Centered" in name or name.startswith("Qwen3_5")) else w
@@ -483,7 +490,7 @@ def stage_run(name: str, why: str) -> Path:
 
         r_all = {v: np.full((len(cand), n_heads, len(items), len(PARTS)), np.nan, dtype=np.float32) for v in VARIANTS}
         for li, la in enumerate(progress(cand, "48.4 W_OV (layer)")):
-            attn: Any = blocks[la].self_attn
+            attn: Any = attention_module(blocks[la])
             w_o, w_v = attn.o_proj.weight, attn.v_proj.weight
             assert tuple(w_o.shape) == (x.shape[1], n_heads * hd), w_o.shape
             assert tuple(w_v.shape) == (n_kv * hd, x.shape[1]), w_v.shape

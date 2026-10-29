@@ -81,6 +81,7 @@ MAIN_RUN = {
     "qwen3.5-9b": "qwen35_9b_x0_necessity",
     "muse-glimmer-30b": "muse30b_x0_necessity",
     "qwen3.6-27b": "x0_necessity_27b_chat",
+    "nemotron-3.5-lightning": "nem35l_x52_conflict",  # batch 52 C coverage: design A only (B needs a per-block MLP)
 }  # the 27B: batch 52 C coverage (amendment 2)
 RUNS_A = {"qwen3.5-9b": "qwen35_9b_x48_2a", "muse-glimmer-30b": "muse30_x48_2a"}
 RUNS_B = {"qwen3.5-9b": "qwen35_9b_x48_2b", "muse-glimmer-30b": "muse30_x48_2b"}

@@ -1,0 +1,38 @@
+id: x52_lightning_fill4
+title: "Batch 52 C coverage (Lightning fillers, amendment 2's full grid, 4): 47.4 cumulative patches (main-test design only), 48.4 the copying heads' OV share (on the attention port), then 48.2 A the legs probes (long), on Lightning at the committed L14, each with its existing rule; one job; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 1.8
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl && test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L; hollow gate)";
+  uv run python scripts/x47_cumulative.py run --designs main --name nem35l_x52_cumulative --why "Batch 52 C coverage: 47.4 on Lightning, the main design only (the clean design fails the gate); $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_cumulative/nem35l_x52_cumulative/coverage.txt;
+  uv run python scripts/x48_heads.py run --name nem35l_x52_heads48 --why "Batch 52 C coverage: 48.4 on Lightning (attention blocks after L: 19, 26, 33, 42); $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_heads/nem35l_x52_heads48/coverage.txt;
+  uv run python scripts/x48_enrich.py run_a --name nem35l_x52_enrich_a --why "Batch 52 C coverage: 48.2 A on Lightning; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x48_enrich/nem35l_x52_enrich_a/coverage.txt;
+  echo "exit 47.4=$a 48.4=$b 48.2A=$c"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0
+question: >-
+  On Lightning: are the lookups the change at L misses read from the bridge word before L (47.4, main design); do the
+  copying heads after L pass the rest at twice the J++ part (48.4); does the J++ part key the item's attribute (48.2 A)?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning (E11's 'carried before L', Part VI's mechanism tests).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse: 47.4 = jobs/c3/x47_4_muse.yaml's
+  decision_rule (results/x47_cumulative/x47_4-20261028T113105Z), read on the main design only (its clean design is not
+  tested on Lightning: gate 0.751, amendment 1); 48.4 = jobs/c3/x48_4_muse.yaml's (results/x48_heads/x48_heads-20261028T113126Z);
+  48.2 A = jobs/c3/x48_2a_muse.yaml's (results/x48_enrich/x48_2-20261028T113111Z). As computed: each script's own
+  computation on Lightning at L14 (the conflict run's items; the address from nem35l_x52_probe; 48.4's candidate heads
+  from the attention blocks after L14, the NemotronH port: plain q / k, NoPE, the mixer's v_proj / o_proj, the block's
+  pre-mixer norm gain). 48.2 B is not run: it ablates each block's MLP and NemotronH has none (its MoE blocks are
+  separate blocks): "not tested: port missing". Cells under 30 switches left out. Verdicts (CPU, after the job): each
+  script's verdict with Lightning's run passed (coverage.txt); multi-model clauses not re-scored (flagged).
+controls:
+- "each test's own matched random controls, unchanged"
+n: "each test's n on Lightning, as on Muse (47.4: the conflict run's 200 items, main design)"
+seeds: [0, 888]
+notes: "Batch 52 C, amendment 2 full grid; any free Lightning box (mats suits: 48.2 A is long). Code: x47_cumulative --designs (as x47_depthmap's), x48_heads' capture and OV on the NemotronH port (tested on the tiny NemotronH: capture equals the model's eager attention; input_gain = the plain pre-mixer weight) with Lightning's sources (COVERAGE_SOURCES), x48_enrich.MAIN_RUN gains Lightning's conflict run. Exit codes collected; retry once then skip. Wallclock (ledger, Muse ~2x Lightning per row): 47.4 0.11 h, 48.4 0.02 h, 48.2 A 2.6 h on Muse -> est ~1.5 h, 1.8 GPU-h; opens before the freeze."

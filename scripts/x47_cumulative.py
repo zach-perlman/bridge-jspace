@@ -449,6 +449,7 @@ def stage_run(name: str, why: str) -> Path:
                                        "reads": "per item and reader: the arms in ARMS order, one batch (BJ_SUITE_BATCH)",
                                        "batch": SUITE.BATCH},
          "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    m["designs"] = list(DESIGNS)  # batch 52 C: Lightning runs the main design only (--designs main)
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -891,6 +892,7 @@ def stage_figures(verdict_dir: Path) -> Path:
 
 
 def main() -> None:
+    global DESIGNS
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view", "figures"])
     ap.add_argument("--name", help="run: the run name (results/x47_cumulative/<name>/)")
@@ -898,7 +900,10 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the 47.4 runs")
     ap.add_argument("--verdict", type=Path, help="figures: the verdict folder (results/x47_cumulative/x47_4-<UTC>)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--designs", nargs="+", choices=list(DESIGNS), default=list(DESIGNS),
+                    help="run / verdict: these designs only (batch 52: Lightning's clean design fails the gate)")  # fmt: skip
     a = ap.parse_args()
+    DESIGNS = tuple(d for d in DESIGNS if d in a.designs)
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
