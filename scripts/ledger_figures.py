@@ -1474,8 +1474,8 @@ def subset27b(plt) -> str:
                        rows, absent, "share of lookups", bars=((0.10, ":"), (0.25, "--")))
 
 
-IDADDR = {LT: R / "x53_identity_address" / "x53_identity_address-20261029T090826Z" / "verdict.json",
-          "qwen3.5-9b": R / "x53_identity_address" / "x53_identity_address-20261029T091319Z" / "verdict.json"}
+IDADDR53 = R / "x53_identity_address" / "x53_identity_address-20261029T091645Z" / "verdict.json"  # the combined verdict
+IDADDR = {LT: IDADDR53, "qwen3.5-9b": IDADDR53}
 
 
 def identity_address(plt) -> str:
@@ -1553,8 +1553,9 @@ def jsuite(plt) -> str:
                        rows, absent, "lost beyond random", xlim=(-0.3, 1.0))
 
 
-WORDS53 = R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093032Z" / "verdict.json"  # 53.3b, Lightning first
-WORDS53_WAITING = {"qwen3.5-9b": "running", "qwen3.6-27b": "queued", "muse-glimmer-30b": "queued"}
+WORDS53 = (R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093032Z" / "verdict.json",  # 53.3b, Lightning
+           R / "x53_lastconflict" / "x53_lastconflict_words-20261029T093354Z" / "verdict.json")  # fmt: skip  # the 9B
+WORDS53_WAITING = {"qwen3.6-27b": "queued", "muse-glimmer-30b": "queued"}
 
 
 def last_conflict_words(plt) -> str:
@@ -1562,7 +1563,8 @@ def last_conflict_words(plt) -> str:
     1, 2, 3 and 51.10's read peak: switches lost without the lens part beyond a random part (invalid cells as a grey
     note); the check on our locker scenes beside; a model below its gate hollow and labelled; models still running
     grey."""
-    v = load(WORDS53)
+    vs = [load(p) for p in WORDS53]
+    v = {"models": [m for x in vs for m in x["models"]], "checks": [c for x in vs for c in x.get("checks", [])]}
     rows, absent = {}, {}
     for t in SLOT_MODELS:
         ms = [m for m in v["models"] if m["target"] == t]
@@ -1582,8 +1584,8 @@ def last_conflict_words(plt) -> str:
         for chk in v.get("checks", []):
             if chk["target"] == t:
                 for i, c in enumerate(sorted(chk["cells"], key=lambda c: -c["layer"])):
-                    rows[t].append((f"our locker scenes, lookup, answer - {(1, 3)[i]}", c["excess"], LOOKUP, t == LT))
-    return four_panels(plt, "ledger_last_conflict_words", "Below gate, Lightning's lookup goes through the lens on word answers",
+                    rows[t].append((f"our locker scenes, lookup, answer - {(1, 3)[i]}", c["excess"], LOOKUP, below))
+    return four_panels(plt, "ledger_last_conflict_words", "On word answers the lookup goes through the lens near the answer",
                        "Lost without the lens part beyond random at the last token; ○ below gate (exploratory)",
                        rows, absent, "lost beyond random", xlim=(-0.2, 1.0), bars=((0.10, "--"), (0.30, ":")))
 
