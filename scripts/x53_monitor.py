@@ -403,6 +403,549 @@ def stage_run(name: str) -> Path:
     return out
 
 
+# ---- CPU: probes -----------------------------------------------------------------------------------------------------
+# Per model, dataset, layer and row set (B; T lookup for (a)-(c); T recall for (d)): features full / J++_k / random_k /
+# PCA_k; multinomial logistic probes (sklearn's objective, C = 1.0 for all, standardised on the training rows), 5 seeds,
+# each holding out a random fifth of the groups (the row's bridge entity for (b) and (c), the scene for (a) and (d));
+# per row how often it was held out and predicted right (cache/x53_monitor/<run>/<set>.npz).
+# AMENDMENT (~11:00, before any x53 run, for CPU time only): the specs say 5 seeds x 5-fold CV; a dev timing on 52 B's
+# cached 9B main-test states (no J++ part; 59 s for 16 layers at one held-out fifth per seed, 6 workers) puts 5-fold
+# at ~2 h of wall time for the four models and both datasets, so each seed holds out one random fifth of the groups
+# (fold 0 of the same seeded fold assignment): 5x fewer fits. The rule, the features, C and the groupings unchanged.
+
+TARGETS = ("a", "b", "c", "d")
+TARGET_KEY = {"a": "bridge", "b": "slot", "c": "lookup", "d": "recall"}
+TARGET_TEXT = {"a": "(a) which item is the bridge", "b": "(b) the bridge item's locker slot (the address)",
+               "c": "(c) the lookup's answer digit", "d": "(d) the recall's answer"}  # fmt: skip
+TARGET_SHORT = {
+    "a": "(a) which item",
+    "b": "(b) its locker slot",
+    "c": "(c) lookup's digit",
+    "d": "(d) recall's answer",
+}
+GROUP_BY = {"a": "scene", "b": "entity", "c": "entity", "d": "scene"}
+GROUP_TEXT = {"entity": "held-out entities (folds grouped by the row's bridge entity)",
+              "scene": "held-out scenes (a held-out entity is an unseen class here; x0_probe's precedent): folds "
+                       "grouped by scene, a scene's O and S rows together"}  # fmt: skip
+PROBE_POS = ("B", "T")
+PROBE_POS_TEXT = {"B": "the bridge word", "T": "the last token (lookup's prompt for (a)-(c), recall's for (d))"}
+ROW_OF = {**{("B", t): 0 for t in TARGETS}, ("T", "a"): 1, ("T", "b"): 1, ("T", "c"): 1, ("T", "d"): 2}
+FEATURES = ("full", *(f"jpp{k}" for k in KS), *(f"rand{k}" for k in KS), *(f"pca{k}" for k in KS))
+FEATURE_TEXT = {"full": "the full residual (the block output)",
+                **{f"jpp{k}": f"the J++ lens part, k = {k} (X0's signed OMP of the state over the J++ letter atoms)"
+                   for k in KS},
+                **{f"rand{k}": f"a random {k}-dimensional subspace (Haar, seed 888 + layer + 1000 x probe seed)"
+                   for k in KS},
+                **{f"pca{k}": f"PCA top-{k} of the training rows" for k in KS},
+                "chance": "the training folds' majority class"}  # fmt: skip
+C_REG, N_SEEDS, N_FOLDS = 1.0, 5, 5
+RAND_SEED_STEP = 1000
+LBFGS_MAXITER = 1000
+LBFGS_GTOL, LBFGS_FTOL = 1e-3, 1e-7  # dev check (9B L12, one fold): same objective to 3 decimals and the same
+# held-out accuracy as scipy's defaults (1e-5 / 2.2e-9) on every target and feature, 1.3-3x fewer iterations
+BLIND_GAP, FULL_MIN, CARRY_MIN, CARRY_GAP = 0.10, 0.8, 0.8, 0.3
+EPS = 1e-9
+WORKERS = 8
+LABELS = ("J-space blind to X", "J-space carries X", "in between")
+
+
+def row_table(items: list[dict]) -> dict[str, np.ndarray]:
+    """Rows in (item, O / S) order (row 2 i + v): the row's bridge entity, its scene and the four targets' labels."""
+    ent, scene, y = [], [], {t: [] for t in TARGETS}
+    for it in items:
+        for v in VARIANTS:
+            lab = it["labels"][v]
+            ent.append(lab["bridge"])
+            scene.append(it["scene"])
+            for t in TARGETS:
+                y[t].append(str(lab[TARGET_KEY[t]]))
+    return {"entity": np.array(ent), "scene": np.array(scene), **{f"y_{t}": np.array(y[t]) for t in TARGETS}}
+
+
+def fold_ids(groups: np.ndarray, seed: int, k: int = N_FOLDS) -> np.ndarray:
+    """Each group to one of k folds (a seeded random order of the groups, dealt round-robin); per row its fold."""
+    uniq = np.unique(groups)
+    order = uniq[np.random.default_rng(seed).permutation(len(uniq))]
+    fold_of = {g: j % k for j, g in enumerate(order)}
+    return np.array([fold_of[g] for g in groups])
+
+
+def random_frame(d: int, layer: int, seed: int, k: int) -> np.ndarray:
+    """The first k columns of statement_positions.random_basis's Haar basis (QR of a d x d Gaussian, signs fixed), seed
+    888 + layer + 1000 x seed (seed 0: X0's random basis): QR's first k columns depend on the first k columns only."""
+    import torch
+
+    g = torch.Generator().manual_seed(X.SUBSPACE_SEED + layer + RAND_SEED_STEP * seed)
+    a = torch.randn(d, d, generator=g)[:, :k].double()
+    q, r = torch.linalg.qr(a)
+    return (q * torch.sign(torch.diagonal(r))).numpy()
+
+
+def standardize(tr: np.ndarray, te: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """sklearn's StandardScaler fit on the training rows (a constant column keeps scale 1)."""
+    mu, sd = tr.mean(0), tr.std(0)
+    sd = np.where(sd > 1e-12, sd, 1.0)
+    return (tr - mu) / sd, (te - mu) / sd
+
+
+def span_coords(tr: np.ndarray, te: np.ndarray, tol: float = 1e-10) -> tuple[np.ndarray, np.ndarray]:
+    """The rows in the training rows' span (Z = U S V^T: Z V = U S, Z_te V = Z_te Z^T U / S). An L2-penalised linear
+    model's weights lie in that span and ||V a|| = ||a||, so the fit there is the fit in the full space."""
+    w, u = np.linalg.eigh(tr @ tr.T)
+    keep = w > tol * max(float(w.max()), 1e-300)
+    u, s = u[:, keep], np.sqrt(w[keep])
+    return u * s, (te @ tr.T) @ (u / s)
+
+
+def pca_coords(tr: np.ndarray, te: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
+    """The rows' projections on the training rows' top-k principal directions (centred on the training rows)."""
+    mu = tr.mean(0)
+    a, b = tr - mu, te - mu
+    w, u = np.linalg.eigh(a @ a.T)
+    order = np.argsort(w)[::-1][:k]
+    w, u = w[order], u[:, order]
+    keep = w > 1e-10 * max(float(w.max()), 1e-300)
+    u, s = u[:, keep], np.sqrt(w[keep])
+    return u * s, (b @ a.T) @ (u / s)
+
+
+def logistic(xtr: np.ndarray, ytr: np.ndarray, xte: np.ndarray, c: float = C_REG) -> np.ndarray:
+    """Multinomial logistic regression, sklearn's objective: 0.5 ||W||^2 + c x the summed log-loss, the intercept not
+    penalised; scipy L-BFGS. The predicted labels of xte (a class absent from training is never predicted)."""
+    from scipy.optimize import minimize
+    from scipy.special import logsumexp
+
+    classes, y = np.unique(ytr, return_inverse=True)
+    if len(classes) == 1:
+        return np.full(len(xte), classes[0])
+    n, f = xtr.shape
+    k = len(classes)
+    onehot = np.eye(k)[y]
+
+    def fg(theta: np.ndarray) -> tuple[float, np.ndarray]:
+        w, b = theta[: f * k].reshape(f, k), theta[f * k :]
+        z = xtr @ w + b
+        lse = logsumexp(z, axis=1)
+        loss = float((lse - z[np.arange(n), y]).sum())
+        g = np.exp(z - lse[:, None]) - onehot
+        grad = np.concatenate([(c * (xtr.T @ g) + w).ravel(), c * g.sum(0)])
+        return c * loss + 0.5 * float((w * w).sum()), grad
+
+    res = minimize(fg, np.zeros(f * k + k), jac=True, method="L-BFGS-B",
+                   options={"maxiter": LBFGS_MAXITER, "gtol": LBFGS_GTOL, "ftol": LBFGS_FTOL})  # fmt: skip
+    w, b = res.x[: f * k].reshape(f, k), res.x[f * k :]
+    return classes[np.argmax(xte @ w + b, axis=1)]
+
+
+def fold_features(mats: dict[str, np.ndarray], rand_all: np.ndarray, tr: np.ndarray, te: np.ndarray) -> dict:
+    """Every feature's (train, test) matrices for one fold: full and J++_k standardised in the training span; random_k
+    and PCA_k (k-dimensional) standardised."""
+    feats = {"full": span_coords(*standardize(mats["h"][tr], mats["h"][te]))}
+    for k in KS:
+        feats[f"jpp{k}"] = span_coords(*standardize(mats[f"jpp{k}"][tr], mats[f"jpp{k}"][te]))
+    for k in KS:
+        feats[f"rand{k}"] = standardize(rand_all[tr, :k], rand_all[te, :k])
+    for k in KS:
+        feats[f"pca{k}"] = standardize(*pca_coords(mats["h"][tr], mats["h"][te], k))
+    return feats
+
+
+def probe_matrix(mats: dict[str, np.ndarray], frames: dict[int, np.ndarray], rows: dict[str, np.ndarray],
+                 cells: list[tuple[str, str]]) -> dict[str, np.ndarray]:  # fmt: skip
+    """One row set at one layer: per cell (position, target) and feature (and chance), per row [2, n_rows]: how many
+    seeds held it out and predicted it right, and how many seeds held it out (each seed holds out a random fifth of the
+    groups: fold 0 of fold_ids)."""
+    n = len(rows["entity"])
+    out = {}
+    for grouping in sorted({GROUP_BY[t] for _, t in cells}):
+        mine = [(p, t) for p, t in cells if GROUP_BY[t] == grouping]
+        groups = rows[grouping]
+        right = {(p, t, f): np.zeros(n, np.float32) for p, t in mine for f in (*FEATURES, "chance")}
+        tested = np.zeros(n, np.float32)
+        for s in range(N_SEEDS):
+            te = fold_ids(groups, s) == 0
+            tr = ~te
+            tested[te] += 1
+            feats = fold_features(mats, mats["h"] @ frames[s], tr, te)
+            for p, t in mine:
+                y = rows[f"y_{t}"]
+                for name, (xtr, xte) in feats.items():
+                    right[(p, t, name)][te] += logistic(xtr, y[tr], xte) == y[te]
+                vals, cnt = np.unique(y[tr], return_counts=True)
+                right[(p, t, "chance")][te] += y[te] == vals[np.argmax(cnt)]
+        out.update({"|".join(key): np.stack([a, tested]) for key, a in right.items()})
+    return out
+
+
+def probe_layer(job: dict) -> dict:
+    """One layer of one run and dataset (a worker): every row set's probes."""
+    import torch
+
+    torch.set_num_threads(1)  # the random frames' QR: one thread per worker (8 workers x all cores stalls the Mac)
+    t0 = time.time()
+    li, la, rows = job["li"], job["layer"], job["rows"]
+    arrs = {name: np.load(path, mmap_mode="r") for name, path in job["paths"].items()}
+    n = len(rows["entity"])
+    d = arrs["h"].shape[-1]
+    frames = {s: random_frame(d, la, s, K_MAX) for s in range(N_SEEDS)}
+    out: dict[str, np.ndarray] = {}
+    for m in sorted(set(ROW_OF.values())):
+        cells = [(p, t) for p in PROBE_POS for t in TARGETS if ROW_OF[(p, t)] == m]
+        mats = {name: np.asarray(a[li][:, :, m], dtype=np.float64).reshape(n, d) for name, a in arrs.items()}
+        out.update(probe_matrix(mats, frames, rows, cells))
+        # beside: each feature's share of the state's squared norm per row (J++ part; random subspace, probe seed 0)
+        sq = (mats["h"] ** 2).sum(1) + 1e-30
+        ones = np.ones(n, np.float32)
+        for k in KS:
+            out[f"{POS[m]}|share|jpp{k}"] = np.stack([(mats[f"jpp{k}"] ** 2).sum(1) / sq, ones]).astype(np.float32)
+            rand = ((mats["h"] @ frames[0][:, :k]) ** 2).sum(1) / sq
+            out[f"{POS[m]}|share|rand{k}"] = np.stack([rand, ones]).astype(np.float32)
+    return {"li": li, "layer": la, "right": out, "seconds": time.time() - t0}
+
+
+def state_paths(run_dir: Path, s: str) -> dict[str, Path]:
+    return {"h": run_dir / f"states_{s}_h.npy", **{f"jpp{k}": run_dir / f"states_{s}_jpp{k}.npy" for k in KS}}
+
+
+def stage_probe(name: str, states_root: Path, sets: tuple[str, ...] = SETS, workers: int = WORKERS) -> list[Path]:
+    """CPU: the probes of one run (per dataset, every layer in parallel) into cache/x53_monitor/<run>/<set>.npz."""
+    import os
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+
+    from bridge_jspace.utils import progress
+
+    for var in ("VECLIB_MAXIMUM_THREADS", "OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+        os.environ[var] = "1"  # one BLAS thread per worker (inherited by the spawned workers)
+    run_dir = states_root / name
+    m = json.loads((run_dir / "manifest.json").read_text())
+    layers = m["layers"]
+    written = []
+    for s in sets:
+        items = X.read_jsonl(run_dir / f"cases_{s}.jsonl")
+        rows = row_table(items)
+        paths = {k: str(p) for k, p in state_paths(run_dir, s).items()}
+        h = np.load(paths["h"], mmap_mode="r")
+        assert h.shape[:4] == (len(layers), len(items), 2, len(POS)), f"{name} {s}: states {h.shape} vs the cases"
+        jobs = [{"li": li, "layer": la, "rows": rows, "paths": paths} for li, la in enumerate(layers)]
+        got: dict[int, dict] = {}
+        with ProcessPoolExecutor(max_workers=workers) as ex:
+            futs = [ex.submit(probe_layer, j) for j in jobs]
+            for fut in progress(as_completed(futs), f"x53 probes {name} {s} (layer)", total=len(futs)):
+                r = fut.result()
+                got[r["li"]] = r
+        keys = sorted(got[0]["right"])
+        out = CACHE / name / f"{s}.npz"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        np.savez(out, layers=np.array(layers), keys=np.array(keys),
+                 right=np.stack([np.stack([got[li]["right"][k] for li in range(len(layers))]) for k in keys]),
+                 entity=rows["entity"], scene=rows["scene"],
+                 seconds=np.array([got[li]["seconds"] for li in range(len(layers))]))  # fmt: skip
+        print(f"wrote {out}: {len(keys)} cells x {len(layers)} layers x {len(rows['entity'])} rows", flush=True)
+        written.append(out)
+    return written
+
+
+# ---- CPU: the rule, the figure, the verdict ------------------------------------------------------------------------
+
+
+def rule_label(full: np.ndarray, jpp: np.ndarray, rand: np.ndarray) -> dict:
+    """53.2's rule on per-layer point estimates (EPS at the bars): blind iff |J++ - random| <= 0.10 at every layer and
+    full >= 0.8 at some layer; carries iff J++ >= 0.8 and J++ - random >= 0.3 at some layer; else in between."""
+    gap = jpp - rand
+    blind = bool(np.all(np.abs(gap) <= BLIND_GAP + EPS) and np.any(full >= FULL_MIN - EPS))
+    carry_at = np.flatnonzero((jpp >= CARRY_MIN - EPS) & (gap >= CARRY_GAP - EPS))
+    carries = bool(len(carry_at))
+    assert not (blind and carries)
+    label = LABELS[0] if blind else LABELS[1] if carries else LABELS[2]
+    return {"label": label, "full_max": float(full.max()), "jpp_max": float(jpp.max()),
+            "gap_max": float(gap.max()), "gap_abs_max": float(np.abs(gap).max()),
+            "carry_layers_idx": [int(i) for i in carry_at], "full_reaches_0.8": bool(np.any(full >= FULL_MIN - EPS))}  # fmt: skip
+
+
+def cluster_ci(num: np.ndarray, den: np.ndarray, clusters: np.ndarray, n_boot: int = X.N_BOOT,
+               seed: int = X.BOOT_SEED) -> np.ndarray:  # fmt: skip
+    """95% percentile CIs of sum(num) / sum(den) for each column of num, den [n_rows, m] (rows right / held out over
+    the seeds) from a cluster bootstrap over `clusters` (n_boot resamples, seed): [m, 2]."""
+    uniq, inv = np.unique(clusters, return_inverse=True)
+    sums, sizes = np.zeros((len(uniq), num.shape[1])), np.zeros((len(uniq), num.shape[1]))
+    np.add.at(sums, inv, num)
+    np.add.at(sizes, inv, den)
+    rng = np.random.default_rng(seed)
+    counts = np.stack([np.bincount(rng.integers(0, len(uniq), len(uniq)), minlength=len(uniq))
+                       for _ in range(n_boot)]).astype(float)  # fmt: skip
+    boot = (counts @ sums) / np.maximum(counts @ sizes, 1e-12)
+    return np.percentile(boot, [2.5, 97.5], axis=0).T
+
+
+def load_probes(name: str, s: str) -> dict | None:
+    path = CACHE / name / f"{s}.npz"
+    if not path.exists():
+        return None
+    z = np.load(path)
+    keys = [str(k) for k in z["keys"]]
+    return {"layers": [int(x) for x in z["layers"]], "right": dict(zip(keys, z["right"], strict=True)),
+            "entity": z["entity"], "scene": z["scene"], "seconds": float(z["seconds"].sum())}  # fmt: skip
+
+
+def summarize(pr: dict, n_boot: int) -> dict:
+    """Per cell (position, target), feature and layer: the accuracy (rows x seeds), its cluster-bootstrap CI over the
+    row's bridge entity; per cell and k the rule."""
+    shares = {k: [round(float(v), 4) for v in pr["right"][k][:, 0].mean(1)] for k in pr["right"]
+              if k.split("|")[1] == "share"}  # fmt: skip
+    keys = sorted(k for k in pr["right"] if k not in shares)
+    num = np.concatenate([pr["right"][k][:, 0].T for k in keys], axis=1)  # [n_rows, keys x layers]
+    den = np.concatenate([pr["right"][k][:, 1].T for k in keys], axis=1)
+    ci = cluster_ci(num, den, pr["entity"], n_boot)
+    n_l = len(pr["layers"])
+    acc: dict[str, dict] = collections.defaultdict(dict)
+    for j, k in enumerate(keys):
+        p, t, f = k.split("|")
+        vals = pr["right"][k][:, 0].sum(1) / pr["right"][k][:, 1].sum(1)
+        acc[f"{p}|{t}"][f] = {"acc": [round(float(v), 4) for v in vals],
+                              "ci": [[round(float(a), 4), round(float(b), 4)] for a, b in ci[j * n_l : (j + 1) * n_l]]}  # fmt: skip
+    rules = {}
+    for cell, feats in acc.items():
+        full = np.array(feats["full"]["acc"])
+        rules[cell] = {}
+        for k in KS:
+            r = rule_label(full, np.array(feats[f"jpp{k}"]["acc"]), np.array(feats[f"rand{k}"]["acc"]))
+            r["carry_layers"] = [pr["layers"][i] for i in r.pop("carry_layers_idx")]
+            rules[cell][f"k{k}"] = r
+    return {"layers": pr["layers"], "n_rows": len(pr["entity"]), "n_entities": len(set(pr["entity"])),
+            "n_scenes": len(set(pr["scene"])), "acc": dict(acc), "rules": rules, "norm_share": shares,
+            "cpu_seconds": pr["seconds"]}  # fmt: skip
+
+
+def x52_check(name: str, target: str, states_root: Path, x52_root: Path) -> dict | None:
+    """The main test's states against 52 B's cache (x52_answer_map read_main: [n, reader, O/S, B/E/Q/T, L, d]):
+    per layer the lowest cosine over rows at B and T (same items in the same order, asserted)."""
+    src = x52_root / X52_READ[target]
+    if not (src / "states.npz").exists():
+        return None
+    order = json.loads((src / "gate.json").read_text())["order"]
+    items = X.read_jsonl(states_root / name / "cases_main.jsonl")
+    assert [it["scene"] for it in items] == order, "x52's items differ from the main test's"
+    z = np.load(src / "states.npz")
+    old, old_layers = z["h"], [int(x) for x in z["layers"]]
+    h = np.load(states_root / name / "states_main_h.npy", mmap_mode="r")
+    m = json.loads((states_root / name / "manifest.json").read_text())
+    out = {}
+    for li, la in enumerate(m["layers"]):
+        if la not in old_layers:
+            continue
+        lo = old_layers.index(la)
+        pairs = {"B": (h[li][:, :, 0], old[:, 0, :, 0, lo]), "T_lookup": (h[li][:, :, 1], old[:, 0, :, 3, lo]),
+                 "T_recall": (h[li][:, :, 2], old[:, 1, :, 3, lo])}  # fmt: skip
+        out[la] = {}
+        for p, (a, b) in pairs.items():
+            a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+            cos = (a * b).sum(-1) / (np.linalg.norm(a, axis=-1) * np.linalg.norm(b, axis=-1) + 1e-30)
+            out[la][p] = round(float(cos.min()), 5)
+    return out
+
+
+def figure(results: dict, s: str, path: Path) -> None:
+    """Accuracy by layer, one panel per target (columns) per model x position (rows); four feature lines (J++, random,
+    PCA: k = 25 solid, k = 100 dashed; full; chance dotted)."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from scripts import story_style as SS
+
+    col = {"full": "#111111", "jpp": SS.COL["lookup"], "rand": "#9a9a9a", "pca": SS.COL["value"], "chance": "#cccccc"}
+    models = [t for t in MODELS if results.get(t, {}).get(s)]
+    rows = [(t, p) for t in models for p in PROBE_POS]
+    fig, axes = plt.subplots(len(rows), len(TARGETS), figsize=(13, 2.3 * len(rows) + 1.2), sharey=True, squeeze=False)
+    for i, (t, p) in enumerate(rows):
+        res = results[t][s]
+        layers = res["layers"]
+        for j, tg in enumerate(TARGETS):
+            ax = axes[i][j]
+            feats = res["acc"][f"{p}|{tg}"]
+            ax.plot(layers, feats["chance"]["acc"], ":", color=col["chance"], lw=1.2)
+            ax.plot(layers, feats["full"]["acc"], "-", color=col["full"], lw=1.8)
+            for k, ls in zip(KS, ("-", "--"), strict=True):
+                for fam in ("rand", "pca", "jpp"):
+                    ax.plot(layers, feats[f"{fam}{k}"]["acc"], ls, color=col[fam], lw=1.5 if fam == "jpp" else 1.1)
+            short = {"J-space blind to X": "blind", "J-space carries X": "carries", "in between": "between"}
+            lab = " / ".join(short[res["rules"][f"{p}|{tg}"][f"k{k}"]["label"]] for k in KS)
+            ax.set_title(f"{TARGET_SHORT[tg]}  [{lab}]", fontsize=8.5)
+            ax.axhline(0.8, color="#e0e0e0", lw=0.8, zorder=0)
+            ax.set_ylim(-0.02, 1.02)
+            ax.tick_params(labelsize=8)
+            if j == 0:
+                ax.set_ylabel(f"{NAMES[t]}\n{'bridge word' if p == 'B' else 'last token'}", fontsize=9)
+            if i == len(rows) - 1:
+                ax.set_xlabel("layer", fontsize=9)
+    handles = [plt.Line2D([], [], color=col["full"], lw=1.6, label="full residual"),
+               plt.Line2D([], [], color=col["jpp"], lw=1.4, label="J++ lens part"),
+               plt.Line2D([], [], color=col["rand"], lw=1.1, label="random subspace"),
+               plt.Line2D([], [], color=col["pca"], lw=1.1, label="PCA top-k"),
+               plt.Line2D([], [], color="#555555", ls="-", label="k = 25"),
+               plt.Line2D([], [], color="#555555", ls="--", label="k = 100"),
+               plt.Line2D([], [], color=col["chance"], ls=":", label="chance (majority)")]  # fmt: skip
+    fig.legend(handles=handles, loc="upper center", ncol=7, fontsize=8.5, frameon=False, bbox_to_anchor=(0.5, 1.0))
+    fig.suptitle(f"53.2, the monitor test: probe accuracy by layer, {SET_TEXT[s]} (held-out entities for (b), (c); "
+                 "held-out scenes for (a), (d); rule label per panel: k = 25 / 100; UNVERIFIED)", fontsize=10,
+                 y=1.0 - 0.35 / (2.3 * len(rows) + 1.2))  # fmt: skip
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.75 / (2.3 * len(rows) + 1.2)))
+    fig.savefig(path, dpi=110)
+    plt.close(fig)
+
+
+def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT) -> Path:
+    """CPU: per model and dataset the accuracies, CIs and the rule; one figure per dataset; verdict.md and the json."""
+    from bridge_jspace.utils import git_state
+
+    results: dict[str, dict] = {}
+    checks: dict[str, Any] = {}
+    for target in MODELS:
+        name = RUNS[target]
+        for s in SETS:
+            pr = load_probes(name, s)
+            if pr is None:
+                continue
+            results.setdefault(target, {})[s] = summarize(pr, n_boot)
+        if target in results and (states_root / name / "states_main_h.npy").exists():
+            checks[target] = x52_check(name, target, states_root, x52_root)
+    assert results, "no probes in cache/x53_monitor/: run the probe stage first"
+    out = RESULTS / f"x53_monitor-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir(parents=True, exist_ok=False)
+    figs = []
+    for s in SETS:
+        if any(s in r for r in results.values()):
+            path = out / f"x53_monitor_{s}.png"
+            figure(results, s, path)
+            figs.append(path.name)
+    blob = {"exp": EXP, "test": "53.2 (the monitor test)", "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_*.yaml",
+            "prediction": NO_PREDICTION, "status": "UNVERIFIED", "rule": RULE, "targets": TARGET_TEXT,
+            "groupings": {t: GROUP_TEXT[GROUP_BY[t]] for t in TARGETS}, "positions": PROBE_POS_TEXT,
+            "features": FEATURE_TEXT, "probe": {"C": C_REG, "seeds": N_SEEDS,
+                                                "held_out": f"per seed a random 1/{N_FOLDS} of the groups",
+                                                "amendment": "5-fold per seed -> one held-out fifth per seed (CPU "
+                                                              "time; before any x53 run; rule unchanged)",
+                                                "objective": "0.5 ||W||^2 + C x summed log-loss, intercept unpenalised",
+                                                "standardised": "training rows' mean and sd"},
+            "bootstrap": {"n": n_boot, "seed": X.BOOT_SEED, "cluster": "the row's bridge entity"},
+            "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks, "figures": figs,
+            "code": git_state(), "results": results,
+            "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}  # fmt: skip
+    (out / "x53_monitor.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
+    (out / "verdict.md").write_text("\n".join(verdict_lines(blob)) + "\n")
+    print(f"wrote {out}", flush=True)
+    return out
+
+
+def verdict_lines(blob: dict) -> list[str]:
+    res = blob["results"]
+    lines = ["# 53.2, the monitor test: what a J-space readout can decode vs the full state", "",
+             f"UNVERIFIED. {NO_PREDICTION}. Spec: {blob['spec']}.", "", f"Rule (verbatim): {RULE}", "",
+             "As computed: per model, dataset, position, target and k, on point estimates (accuracy over rows and "
+             f"{N_SEEDS} seeds, each holding out a random 1/{N_FOLDS} of the groups; amendment before any x53 run: the "
+             "specs' 5-fold per seed cut to one held-out fifth per seed for CPU time), over every cached layer "
+             "(every second layer from L0); logistic "
+             f"probes, C = {C_REG} for every feature (sklearn's objective, standardised features, scipy L-BFGS); "
+             "(b), (c) on held-out entities; (a), (d) on held-out scenes (a held-out entity is an unseen class there). "
+             f"CIs: cluster bootstrap over the bridge entity ({blob['bootstrap']['n']:,}, seed 0).", ""]  # fmt: skip
+    lines += ["## Labels", "", "| model | dataset | position | target | k = 25 | k = 100 | full max | J++25 max "
+              "(gap to random max) | J++100 max (gap max) |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if not r:
+                continue
+            for p in PROBE_POS:
+                for tg in TARGETS:
+                    ru = r["rules"][f"{p}|{tg}"]
+                    lines.append(f"| {NAMES[t]} | {s} (n {r['n_rows']} rows, {r['n_entities']} entities) | {p} | "
+                                 f"{TARGET_TEXT[tg]} | {ru['k25']['label']} | {ru['k100']['label']} | "
+                                 f"{ru['k25']['full_max']:.2f} | {ru['k25']['jpp_max']:.2f} ({ru['k25']['gap_max']:+.2f}) "
+                                 f"| {ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) |")  # fmt: skip
+    missing = [f"{NAMES[t]} {s}" for t in MODELS for s in SETS if not res.get(t, {}).get(s)]
+    lines += ["", f"Not yet probed (states not pulled): {', '.join(missing) or 'none'}.", ""]
+    lines += ["## The main test's states vs 52 B's cache (lowest cosine over rows, any layer)", ""]
+    for t, c in blob["x52_check_min_cosine"].items():
+        if c:
+            lo = min(v for la in c.values() for v in la.values())
+            lines.append(f"- {NAMES[t]}: {lo:.5f} over {len(c)} layers (B, T lookup, T recall)")
+        else:
+            lines.append(f"- {NAMES[t]}: 52 B's states not found locally")
+    lines += ["", "## Where each label is decided", "",
+              "carries: the first layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer of the largest "
+              "J++ - random gap. Accuracy [95% CI].", "",
+              "| model | dataset | position | target | k | label | layer | full | J++ | random | PCA | chance |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if not r:
+                continue
+            for p in PROBE_POS:
+                for tg in TARGETS:
+                    feats = r["acc"][f"{p}|{tg}"]
+                    for k in KS:
+                        ru = r["rules"][f"{p}|{tg}"][f"k{k}"]
+                        if ru["carry_layers"]:
+                            li = r["layers"].index(ru["carry_layers"][0])
+                        else:
+                            li = int(np.argmax(np.array(feats[f"jpp{k}"]["acc"]) - np.array(feats[f"rand{k}"]["acc"])))
+                        cell = [fmt_acc(feats[f], li) for f in ("full", f"jpp{k}", f"rand{k}", f"pca{k}", "chance")]
+                        lines.append(f"| {NAMES[t]} | {s} | {p} | {TARGET_SHORT[tg]} | {k} | {ru['label']} | "
+                                     f"L{r['layers'][li]} | " + " | ".join(cell) + " |")  # fmt: skip
+    lines += ["", "## Beside: each part's share of the state's squared norm (median over layers)", "",
+              "The J++ part is fit to each state (OMP picks the atoms that match it), the random subspace is fixed: "
+              "the shares say how much of the state each feature keeps.", "",
+              "| model | dataset | row set | J++25 | J++100 | random25 | random100 |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if not r or not r.get("norm_share"):
+                continue
+            for pos in POS:
+                vals = [r["norm_share"].get(f"{pos}|share|{f}") for f in ("jpp25", "jpp100", "rand25", "rand100")]
+                if all(v is not None for v in vals):
+                    lines.append(
+                        f"| {NAMES[t]} | {s} | {pos} | " + " | ".join(f"{np.median(v):.3f}" for v in vals) + " |"
+                    )
+    n_text = "; ".join(f"{NAMES[t]} {s} {r['n_rows']} rows ({r['n_scenes']} scenes, {r['n_entities']} bridge entities)"
+                       for t in MODELS for s, r in res.get(t, {}).items())  # fmt: skip
+    lines += ["", "## Report", "",
+              f"EXP x53_monitor (53.2) @ {blob['code'].get('sha', '?')[:8]} | models {', '.join(NAMES[t] for t in res)} | "
+              f"n: {n_text} | seeds: probe splits 0-4, random subspaces 888 + layer + 1000 x seed, bootstrap 0", "",
+              "Claim tested: a probe on the J++ lens part of the state decodes (a)-(d) as well as the full residual "
+              "(carries), or no better than a random subspace of the same size while the full residual decodes it "
+              "(blind).", "",
+              "Three dumbest ways this could be wrong:",
+              "1) The J++ part is fit to each state while the random subspace is fixed, so J++ keeps more of the state "
+              "(see the norm shares) and can beat random on energy alone, not because the lens is special. Checked "
+              "beside: PCA top-k (a fixed subspace that keeps the most variance) is drawn in every panel; a 'carries' "
+              "where PCA matches J++ is not lens-specific.",
+              "2) (a) and (d) are probed on held-out scenes, not entities (a held-out entity is an unseen class); the "
+              "probe can then read the bridge's identity and map it to the recall's answer, so (d) at the bridge word "
+              "is identity, not the answer computed. Not checked beyond the grouping; (b) and (c) are on held-out "
+              "entities.",
+              "3) One C for every feature: the full residual and J++ (fit in the training span, up to n_train "
+              "dimensions) and the k-dimensional random / PCA features are regularised differently in effect; a "
+              "low full-residual ceiling (e.g. the slot at the bridge word) can be the probe, not the state. Not "
+              "checked (the brief fixes the same regularisation).", "",
+              "For the human to verify: the rule from the per-layer accuracies in x53_monitor.json "
+              "(results[<model>][<set>]['acc']['<B|T>|<a-d>'][<feature>]); one cell end to end by rerunning "
+              "`scripts/x53_monitor.py probe --name <run> --states-root <dir with the pulled states>` (deterministic; "
+              "cache/x53_monitor/<run>/<set>.npz holds per row [right, held out] over the 5 seeds).", "",
+              "Status: UNVERIFIED (exploration day; nothing into the README).", "",
+              f"Figures: {', '.join(blob['figures'])} (accuracy by layer; columns the four targets, rows model x "
+              "position; full black, J++ purple, random grey, PCA green; k = 25 solid, k = 100 dashed; chance "
+              "dotted). Per-layer accuracies, CIs and chance: x53_monitor.json.", ""]  # fmt: skip
+    return lines
+
+
+def fmt_acc(feat: dict, li: int) -> str:
+    lo, hi = feat["ci"][li]
+    return f"{feat['acc'][li]:.2f} [{lo:.2f}, {hi:.2f}]"
+
+
 # ---- CLI ------------------------------------------------------------------------------------------------------------
 
 
@@ -412,11 +955,24 @@ def main() -> None:
     sub.add_parser("plan", help="CPU (tokenizer): items, labels, counts for BJ_TARGET")
     p = sub.add_parser("run", help="GPU: states and J++ parts")
     p.add_argument("--name", required=True)
+    p = sub.add_parser("probe", help="CPU: one run's probes into cache/x53_monitor/<run>/")
+    p.add_argument("--name", required=True)
+    p.add_argument("--states-root", type=Path, default=RESULTS, help="where the run's states are (default results/)")
+    p.add_argument("--sets", default=",".join(SETS))
+    p.add_argument("--workers", type=int, default=WORKERS)
+    p = sub.add_parser("verdict", help="CPU: the rule, the figures, results/x53_monitor/x53_monitor-<UTC>/")
+    p.add_argument("--states-root", type=Path, default=RESULTS)
+    p.add_argument("--x52-root", type=Path, default=pins.RESULTS_DIR / "x52_answer_map")
+    p.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.cmd == "plan":
         stage_plan()
     elif a.cmd == "run":
         stage_run(a.name)
+    elif a.cmd == "probe":
+        stage_probe(a.name, a.states_root, tuple(a.sets.split(",")), a.workers)
+    elif a.cmd == "verdict":
+        stage_verdict(a.states_root, a.x52_root, a.n_boot)
 
 
 if __name__ == "__main__":

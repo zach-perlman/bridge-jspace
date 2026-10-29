@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import x53_monitor as M
 
+VARIANTS = M.VARIANTS
 PROSE = "Amy picked lithium. The locker of lithium is eight. The locker of the frog is six. Owen picked frog."
 PROSE_S = "Amy picked frog. The locker of lithium is eight. The locker of the frog is six. Owen picked lithium."
 JSON = '[{"item": "owl", "locker": 4}, {"item": "cat", "locker": 7}, {"item": "fly", "locker": 5}]'
@@ -93,6 +94,122 @@ def test_forward_states_positions():
     assert reads[0]["PP_org"] == {"top": 3, "right": True}
     assert reads[0]["PM_alt"] == {"top": 4, "right": False}
     assert reads[0]["b_gap_org"] == 0.0
+
+
+def test_random_frame_is_x0s_basis():
+    from scripts import statement_positions as SP
+
+    for la, seed in ((4, 0), (6, 2)):
+        want = SP.random_basis(64, torch.Generator().manual_seed(888 + la + 1000 * seed))[:, :10].double().numpy()
+        assert np.allclose(M.random_frame(64, la, seed, 10), want, atol=1e-4)
+    assert not np.allclose(M.random_frame(64, 4, 0, 10), M.random_frame(64, 4, 1, 10))
+
+
+def test_fold_ids_keep_groups_together():
+    groups = np.array([f"e{i % 13}" for i in range(80)])
+    f0 = M.fold_ids(groups, 0)
+    assert set(f0) == set(range(M.N_FOLDS))
+    for g in set(groups):
+        assert len(set(f0[groups == g])) == 1
+    assert (M.fold_ids(groups, 0) == f0).all()
+    assert not (M.fold_ids(groups, 1) == f0).all()
+
+
+def test_span_coords_give_the_full_space_fit():
+    rng = np.random.default_rng(0)
+    xtr, xte = rng.normal(size=(30, 200)), rng.normal(size=(12, 200))
+    ytr = np.array(["p", "q", "r"])[rng.integers(0, 3, 30)]
+    ztr, zte = M.standardize(xtr, xte)
+    ctr, cte = M.span_coords(ztr, zte)
+    assert ctr.shape[1] <= 30
+    assert np.allclose(ctr @ ctr.T, ztr @ ztr.T, atol=1e-8)  # the training geometry is kept
+    assert np.allclose(cte @ ctr.T, zte @ ztr.T, atol=1e-8)
+    assert (M.logistic(ctr, ytr, cte) == M.logistic(ztr, ytr, zte)).all()
+
+
+def test_logistic_separates_and_gradient():
+    from scipy.optimize import check_grad
+
+    rng = np.random.default_rng(1)
+    x = rng.normal(size=(60, 5))
+    y = np.where(x[:, 0] > 0, "pos", "neg")
+    assert (M.logistic(x, y, x) == y).mean() > 0.95
+    assert (M.logistic(x, np.full(60, "only"), x[:3]) == "only").all()
+    # the gradient of the objective as written (re-derived here on a 3-class problem)
+    from scipy.special import logsumexp
+
+    y3 = rng.integers(0, 3, 60)
+    onehot = np.eye(3)[y3]
+
+    def f(theta):
+        w, b = theta[:15].reshape(5, 3), theta[15:]
+        z = x @ w + b
+        return 1.0 * float((logsumexp(z, axis=1) - z[np.arange(60), y3]).sum()) + 0.5 * float((w * w).sum())
+
+    def g(theta):
+        w, b = theta[:15].reshape(5, 3), theta[15:]
+        z = x @ w + b
+        p = np.exp(z - logsumexp(z, axis=1)[:, None]) - onehot
+        return np.concatenate([(x.T @ p + w).ravel(), p.sum(0)])
+
+    assert check_grad(f, g, rng.normal(size=18)) < 1e-4
+
+
+def test_rule_labels():
+    full_hi, full_lo = np.array([0.5, 0.9, 0.85]), np.array([0.5, 0.6, 0.7])
+    assert M.rule_label(full_hi, np.array([0.3, 0.4, 0.5]), np.array([0.25, 0.35, 0.41]))["label"] == M.LABELS[0]
+    assert M.rule_label(full_lo, np.array([0.3, 0.4, 0.5]), np.array([0.25, 0.35, 0.41]))["label"] == M.LABELS[2]
+    r = M.rule_label(full_hi, np.array([0.3, 0.85, 0.5]), np.array([0.25, 0.5, 0.41]))
+    assert r["label"] == M.LABELS[1]
+    assert r["carry_layers_idx"] == [1]
+    # J++ >= 0.8 but only 0.25 above random: in between; a gap of 0.11 at one layer breaks "blind"
+    assert M.rule_label(full_hi, np.array([0.3, 0.85, 0.5]), np.array([0.25, 0.6, 0.41]))["label"] == M.LABELS[2]
+    assert M.rule_label(full_hi, np.array([0.3, 0.4, 0.62]), np.array([0.25, 0.35, 0.51]))["label"] == M.LABELS[2]
+    # at the bars exactly (EPS): within 0.10 is blind; 0.8 and 0.3 carry
+    assert M.rule_label(full_hi, np.array([0.5, 0.6]), np.array([0.4, 0.5]))["label"] == M.LABELS[0]
+    assert M.rule_label(full_hi, np.array([0.8]), np.array([0.5]))["label"] == M.LABELS[1]
+
+
+def test_cluster_ci_brackets_the_mean():
+    rng = np.random.default_rng(2)
+    den = rng.integers(0, 3, (90, 3)).astype(float)
+    num = np.minimum(den, rng.integers(0, 3, (90, 3)))
+    clusters = np.array([f"e{i % 9}" for i in range(90)])
+    ci = M.cluster_ci(num, den, clusters, n_boot=2000)
+    acc = num.sum(0) / den.sum(0)
+    assert ci.shape == (3, 2)
+    assert (ci[:, 0] <= acc).all()
+    assert (acc <= ci[:, 1]).all()
+
+
+def test_probe_matrix_groupings():
+    """A label unique to each entity is unreadable on held-out entities (b) but readable on held-out scenes (a); a
+    planted shared label is read by the full residual."""
+    rng = np.random.default_rng(3)
+    n_items, d = 60, 40
+    ents = [f"e{i % 12}" for i in range(n_items)]
+    items = []
+    for i in range(n_items):
+        lab = {
+            v: {"bridge": ents[i], "slot": i % 3, "n_slots": 3, "lookup": str(i % 4), "recall": "0"} for v in VARIANTS
+        }
+        items.append({"scene": f"s{i}", "labels": lab})
+    rows = M.row_table(items)
+    ent_vec = {e: rng.normal(size=d) * 3 for e in sorted(set(ents))}
+    slot_vec = rng.normal(size=(3, d)) * 6
+    h = np.stack([ent_vec[e] + slot_vec[int(s)] + rng.normal(size=d) * 0.3
+                  for e, s in zip(rows["entity"], rows["y_b"], strict=True)])  # fmt: skip
+    rows["y_b"] = rows["y_a"].copy()  # (b) := the entity's name: unseen classes on held-out entities
+    rows["y_c"] = np.array([str(int(s)) for s in M.row_table(items)["y_b"]])  # (c) := the slot, planted
+    mats = {"h": h, **{f"jpp{k}": h for k in M.KS}}
+    frames = {s: M.random_frame(d, 0, s, M.K_MAX) for s in range(M.N_SEEDS)}
+    out = M.probe_matrix(mats, frames, rows, [("B", "a"), ("B", "b"), ("B", "c")])
+    acc = {k: v[0].sum() / v[1].sum() for k, v in out.items()}
+    assert acc["B|a|full"] > 0.9  # held-out scenes: every entity seen in training
+    assert acc["B|b|full"] == 0.0  # held-out entities: never seen
+    assert acc["B|c|full"] > 0.9
+    assert out["B|b|full"][1].sum() == pytest.approx(M.N_SEEDS * 2 * n_items / M.N_FOLDS, rel=0.25)
+    assert (out["B|b|full"][0] <= out["B|b|full"][1]).all()
 
 
 def test_lens_parts_cpu(monkeypatch):
