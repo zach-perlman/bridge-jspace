@@ -1,0 +1,767 @@
+{
+ "runs": [
+  "nem35l_x52_z1",
+  "qwen35_122b_z1"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule",
+ "models": [
+  {
+   "run": "nem35l_x52_z1",
+   "target": "nemotron-3.5-lightning",
+   "layers": [
+    14,
+    27
+   ],
+   "gate": {
+    "cases": 552,
+    "org_read_accuracy": {
+     "K": 0.9945652173913043,
+     "M": 0.9184782608695652
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 395,
+    "over_zach_kept": {
+     "cases": 212,
+     "org_read_accuracy": {
+      "K": 1.0,
+      "M": 0.9575471698113207
+     },
+     "pass": true,
+     "eligible": 157
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 80
+      },
+      "cases": 278
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 84
+      },
+      "cases": 274
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 197,
+     "jsuite_v2nb_test_chat": 3
+    },
+    "chosen_strata": {
+     "fact-after": 97,
+     "fact-first": 103
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "14": {
+     "n": 200,
+     "entities": 133,
+     "lookup": {
+      "n": 200,
+      "entities": 133,
+      "S_whole": [
+       0.55,
+       0.4808,
+       0.6174
+      ],
+      "S_no_part": [
+       0.36,
+       0.2967,
+       0.4286
+      ],
+      "S_no_rand": [
+       0.445,
+       0.3778,
+       0.5143
+      ],
+      "switched_whole": 110,
+      "valid": true,
+      "Jdep": [
+       0.34545454545454557,
+       0.2543859649122807,
+       0.4435024154589369
+      ],
+      "Rdep": [
+       0.19090909090909092,
+       0.11381651884700661,
+       0.27358738828202583
+      ],
+      "excess": [
+       0.15454545454545465,
+       0.06796116504854366,
+       0.24561403508771928
+      ],
+      "label": "mixed"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 133,
+      "S_whole": [
+       0.83,
+       0.7718,
+       0.8757
+      ],
+      "S_no_part": [
+       0.37,
+       0.3061,
+       0.4388
+      ],
+      "S_no_rand": [
+       0.765,
+       0.7016,
+       0.8184
+      ],
+      "switched_whole": 166,
+      "valid": true,
+      "Jdep": [
+       0.5542168674698795,
+       0.4787878787878789,
+       0.6309598214285713
+      ],
+      "Rdep": [
+       0.07831325301204817,
+       0.028735632183908063,
+       0.13219056862297318
+      ],
+      "excess": [
+       0.47590361445783136,
+       0.4049079754601227,
+       0.5510233070500926
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.3213581599123767,
+      0.2052578138847443,
+      0.43610132082958175
+     ],
+     "verdict": "in between",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 85,
+        "switch": 110,
+        "other": 5
+       },
+       "no_jpp": {
+        "other": 6,
+        "original": 122,
+        "switch": 72
+       },
+       "no_jpp_rand": {
+        "original": 105,
+        "switch": 89,
+        "other": 6
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "other": 5,
+        "original": 27,
+        "switch": 166,
+        "lure": 2
+       },
+       "no_jpp": {
+        "original": 108,
+        "lure": 8,
+        "other": 10,
+        "switch": 74
+       },
+       "no_jpp_rand": {
+        "original": 38,
+        "other": 7,
+        "switch": 153,
+        "lure": 2
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 103,
+        "whole_switch": [
+         0.7087378640776699,
+         0.6078431372549019,
+         0.803921568627451
+        ]
+       },
+       "fact-after": {
+        "n": 97,
+        "whole_switch": [
+         0.38144329896907214,
+         0.2736842105263158,
+         0.4857142857142857
+        ]
+       }
+      },
+      "replicates": false,
+      "ratio": 1.8580425085279455,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    },
+    "27": {
+     "n": 200,
+     "entities": 133,
+     "lookup": {
+      "n": 200,
+      "entities": 133,
+      "S_whole": [
+       0.005,
+       0.0009,
+       0.0278
+      ],
+      "S_no_part": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_rand": [
+       0.005,
+       0.0009,
+       0.0278
+      ],
+      "switched_whole": 1,
+      "valid": false,
+      "Jdep": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "Rdep": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "excess": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 133,
+      "S_whole": [
+       0.255,
+       0.1996,
+       0.3196
+      ],
+      "S_no_part": [
+       0.04,
+       0.0204,
+       0.0769
+      ],
+      "S_no_rand": [
+       0.195,
+       0.1461,
+       0.2554
+      ],
+      "switched_whole": 51,
+      "valid": false,
+      "Jdep": [
+       0.8431372549019608,
+       0.7333035714285714,
+       0.9375
+      ],
+      "Rdep": [
+       0.23529411764705876,
+       0.08108108108108114,
+       0.375
+      ],
+      "excess": [
+       0.607843137254902,
+       0.4642857142857143,
+       0.7647058823529411
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      -0.392156862745098,
+      -0.5357142857142857,
+      -0.23404255319148937
+     ],
+     "verdict": "the lookup follows the lens here",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "other": 1,
+        "original": 198,
+        "switch": 1
+       },
+       "no_jpp": {
+        "other": 1,
+        "original": 199
+       },
+       "no_jpp_rand": {
+        "other": 1,
+        "original": 198,
+        "switch": 1
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 128,
+        "switch": 51,
+        "lure": 6,
+        "other": 15
+       },
+       "no_jpp": {
+        "original": 179,
+        "lure": 3,
+        "switch": 8,
+        "other": 10
+       },
+       "no_jpp_rand": {
+        "original": 144,
+        "switch": 39,
+        "lure": 2,
+        "other": 15
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 103,
+        "whole_switch": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "fact-after": {
+        "n": 97,
+        "whole_switch": [
+         0.010309278350515464,
+         0.0,
+         0.03260869565217391
+        ]
+       }
+      },
+      "replicates": false,
+      "ratio": 0.0,
+      "separate": false
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L27-33",
+    "swap": null,
+    "full": {
+     "run": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 157,
+      "m_minus_k": [
+       0.6624203821656051,
+       0.5751633986928104,
+       0.7467532467532467
+      ]
+     },
+     "paper10_rot": {
+      "joined": 157,
+      "m_minus_k": [
+       0.03821656050955414,
+       0.006578947368421052,
+       0.0759493670886076
+      ]
+     }
+    }
+   }
+  },
+  {
+   "run": "qwen35_122b_z1",
+   "target": "qwen3.5-122b-a10b",
+   "layers": [
+    33,
+    39
+   ],
+   "gate": {
+    "cases": 270,
+    "org_read_accuracy": {
+     "K": 0.9592592592592593,
+     "M": 0.9074074074074074
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 229,
+    "over_zach_kept": {
+     "cases": 246,
+     "org_read_accuracy": {
+      "K": 0.9634146341463414,
+      "M": 0.9227642276422764
+     },
+     "pass": true,
+     "eligible": 211
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 88
+      },
+      "cases": 270
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 200
+    },
+    "chosen_strata": {
+     "fact-after": 99,
+     "fact-first": 101
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "33": {
+     "n": 200,
+     "entities": 115,
+     "lookup": {
+      "n": 200,
+      "entities": 115,
+      "S_whole": [
+       0.49,
+       0.4216,
+       0.5588
+      ],
+      "S_no_part": [
+       0.34,
+       0.2779,
+       0.4081
+      ],
+      "S_no_rand": [
+       0.4,
+       0.3346,
+       0.4692
+      ],
+      "switched_whole": 98,
+      "valid": true,
+      "Jdep": [
+       0.30612244897959173,
+       0.21818181818181825,
+       0.3979591836734694
+      ],
+      "Rdep": [
+       0.18367346938775508,
+       0.10637046307884851,
+       0.26530612244897955
+      ],
+      "excess": [
+       0.12244897959183665,
+       0.05102040816326536,
+       0.19811320754716977
+      ],
+      "label": "mixed"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 115,
+      "S_whole": [
+       0.74,
+       0.6751,
+       0.7959
+      ],
+      "S_no_part": [
+       0.355,
+       0.292,
+       0.4235
+      ],
+      "S_no_rand": [
+       0.66,
+       0.5919,
+       0.7221
+      ],
+      "switched_whole": 148,
+      "valid": true,
+      "Jdep": [
+       0.5202702702702703,
+       0.4370370370370371,
+       0.6026512746076386
+      ],
+      "Rdep": [
+       0.108108108108108,
+       0.06060606060606066,
+       0.1623417207792207
+      ],
+      "excess": [
+       0.4121621621621623,
+       0.33333333333333337,
+       0.49019924098671724
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.28971318257032563,
+      0.2000975934049434,
+      0.3818317514994994
+     ],
+     "verdict": "in between",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 102,
+        "switch": 98
+       },
+       "no_jpp": {
+        "original": 132,
+        "switch": 68
+       },
+       "no_jpp_rand": {
+        "original": 120,
+        "switch": 80
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 148,
+        "original": 51,
+        "lure": 1
+       },
+       "no_jpp": {
+        "original": 128,
+        "switch": 71,
+        "lure": 1
+       },
+       "no_jpp_rand": {
+        "original": 66,
+        "switch": 132,
+        "other": 1,
+        "lure": 1
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 101,
+        "whole_switch": [
+         0.7128712871287128,
+         0.6082474226804123,
+         0.8053097345132744
+        ]
+       },
+       "fact-after": {
+        "n": 99,
+        "whole_switch": [
+         0.26262626262626265,
+         0.17708333333333334,
+         0.35051546391752575
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 2.714394516374714,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    },
+    "39": {
+     "n": 200,
+     "entities": 115,
+     "lookup": {
+      "n": 200,
+      "entities": 115,
+      "S_whole": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_part": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_rand": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "switched_whole": 0,
+      "valid": false,
+      "Jdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "Rdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "excess": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 115,
+      "S_whole": [
+       0.25,
+       0.1951,
+       0.3143
+      ],
+      "S_no_part": [
+       0.035,
+       0.0171,
+       0.0705
+      ],
+      "S_no_rand": [
+       0.155,
+       0.1114,
+       0.2116
+      ],
+      "switched_whole": 50,
+      "valid": false,
+      "Jdep": [
+       0.86,
+       0.7567567567567568,
+       0.9487179487179487
+      ],
+      "Rdep": [
+       0.38,
+       0.24136334610472537,
+       0.5199999999999999
+      ],
+      "excess": [
+       0.48,
+       0.3421052631578948,
+       0.6136363636363636
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "verdict": "can't tell (no lookup switch under the whole change)",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 200
+       },
+       "no_jpp": {
+        "original": 200
+       },
+       "no_jpp_rand": {
+        "original": 200
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 50,
+        "original": 139,
+        "lure": 4,
+        "other": 7
+       },
+       "no_jpp": {
+        "original": 181,
+        "lure": 4,
+        "other": 8,
+        "switch": 7
+       },
+       "no_jpp_rand": {
+        "original": 159,
+        "switch": 31,
+        "lure": 3,
+        "other": 7
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 101,
+        "whole_switch": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "fact-after": {
+        "n": 99,
+        "whole_switch": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      },
+      "replicates": false,
+      "ratio": NaN,
+      "separate": false
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L39-45",
+    "swap": null,
+    "full": {
+     "run": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 184,
+      "m_minus_k": [
+       0.5,
+       0.42780748663101603,
+       0.5730337078651685
+      ]
+     },
+     "paper10_rot": {
+      "joined": 184,
+      "m_minus_k": [
+       0.005434782608695652,
+       0.0,
+       0.017241379310344827
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

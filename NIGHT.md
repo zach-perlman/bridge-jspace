@@ -34,3 +34,4 @@ Plan verbatim: [jobs/c3/batch53.yaml](jobs/c3/batch53.yaml) `coverage_122b_1820`
 - 21:49 wake: queue was empty; queued x47_1_122b (running), x50_z1_122b, x47_2_122b; night runs (8) + 53.2 into the ledger section 'The 122B coverage, night 29-30 Oct' (check_ledger 0 problems); conflict sweep: split only at L33, lookup 'through' at L13-L21.
 - 23:29 Dan asked to write the last two now: x45p_122b and x53_7_probe_122b queued (behind Z1 running, 47.2 pending); every item of Dan's 18:20 list is now queued or done.
 - 23:33 deck figures + outline committed (4f85f28e); queue: see make queue-status (Z1 then 47.2, 45p, 53.7).
+- 23:44 wake: running x47_2_122b; pending x45p_122b, x53_7_probe_122b; done x47_1_122b (routes part not tested: recall 0.797 < 0.80; main slices descriptive), x50_z1_122b (Z1 in between at L33, Z1-P split holds); pulled, ledger lines added.
