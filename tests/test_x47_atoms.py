@@ -486,6 +486,6 @@ def test_coverage_verdict_reads_lightning_alone_without_the_seal(tmp_path, monke
     here = all(
         (AT._run_dir(e, r) / "manifest.json").exists() for e, r in ((AT.R.EXP, routes_run), (AT.X.EXP, main_run))
     )
-    assert [m["target"] for m in blob["models"]] == ["nemotron-3.5-lightning"]
+    assert [m["target"] for m in blob["models"]] == list(AT.COVERAGE)  # Lightning, then the 122B (Dan 18:20)
     assert (blob["models"][0]["status"] == "pending") == (not here)
     assert "Dan:" not in (out / "x47_1.md").read_text()
