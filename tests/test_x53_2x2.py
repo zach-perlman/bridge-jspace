@@ -222,6 +222,17 @@ def test_said_right():
     assert T2.said_right("6", "6", "digit") and not T2.said_right("six", "6", "digit")
 
 
+def test_first_word_kind():
+    classes = {"mammal", "bird", "insect", "arachnid", "amphibian"}
+    kind = T2.first_word_kind
+    assert kind("mammals", "mammal", "cat", {"duck"}, classes) == "the class (right)"
+    assert kind("insect", "arachnid", "tick", {"duck"}, classes) == "another class word"
+    assert kind("cat", "mammal", "cat", {"duck"}, classes) == "the asked pick itself (the animal)"
+    assert kind("duck", "mammal", "cat", {"duck"}, classes) == "another animal of the scene"
+    assert kind("the", "mammal", "cat", {"duck"}, classes) == "other"
+    assert kind(None, "mammal", "cat", {"duck"}, classes) == "no word"
+
+
 def test_clashes_catch_spelling_initial_and_symbol(tok):
     assert T2.clashes(tok, "chick", "chicken", "animals")  # a prefix of the item
     assert T2.clashes(tok, "duckling", "duck", "animals")  # the item's word

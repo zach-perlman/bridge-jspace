@@ -1,0 +1,272 @@
+{
+ "run": "qwen35_9b_x53_2x2_words",
+ "target": "qwen3.5-9b",
+ "relation": "animals/class",
+ "cells": {
+  "qa_word": {
+   "prompts": 382,
+   "read_right": 145,
+   "said_right": 145,
+   "first_tokens": {
+    " In": 47,
+    " bird": 30,
+    " Bird": 30,
+    " tick": 21,
+    " M": 15,
+    " beetle": 13,
+    " Ar": 12,
+    " spider": 11,
+    " butterfly": 9,
+    " Sheep": 9,
+    " chicken": 9,
+    " ant": 8,
+    " Rabbit": 8,
+    " Pig": 8,
+    " eagle": 7,
+    " Lion": 7,
+    " Owl": 7,
+    " ar": 7,
+    " turkey": 6,
+    " camel": 6,
+    " lion": 5,
+    " dog": 5,
+    " deer": 5,
+    " Duck": 5,
+    " duck": 5,
+    " crow": 5,
+    " Bee": 5,
+    " tiger": 5,
+    " Wolf": 4,
+    " Frog": 4,
+    " wolf": 4,
+    " goose": 4,
+    " Amph": 3,
+    " Goat": 3,
+    " cat": 3,
+    " fly": 3,
+    " Cat": 3,
+    " goat": 3,
+    " Chicken": 3,
+    " Elephant": 3,
+    " cow": 3,
+    " Camel": 3,
+    " sheep": 2,
+    " Horse": 2,
+    " elephant": 2,
+    " Dog": 2,
+    " pig": 2,
+    " Cow": 2,
+    " frog": 2,
+    " bear": 2,
+    " Spider": 1,
+    " mamm": 1,
+    " horse": 1,
+    " fox": 1,
+    " Fox": 1,
+    " Crow": 1,
+    " owl": 1,
+    " Butterfly": 1,
+    " amphib": 1,
+    " bee": 1
+   },
+   "first_word_kinds": {
+    "the asked pick itself (the animal)": 236,
+    "the class (right)": 145,
+    "another class word": 1
+   },
+   "by_gold": {
+    "amphibian": {
+     "n": 10,
+     "read_wrong": 6
+    },
+    "arachnid": {
+     "n": 53,
+     "read_wrong": 34
+    },
+    "bird": {
+     "n": 112,
+     "read_wrong": 53
+    },
+    "insect": {
+     "n": 87,
+     "read_wrong": 39
+    },
+    "mammal": {
+     "n": 120,
+     "read_wrong": 105
+    }
+   }
+  },
+  "qb_word": {
+   "prompts": 382,
+   "read_right": 351,
+   "said_right": 351,
+   "first_tokens": {
+    " Bird": 111,
+    " M": 108,
+    " In": 95,
+    " Ar": 38,
+    " Amph": 10,
+    " Dog": 2,
+    " Bee": 2,
+    " Tick": 2,
+    " tick": 2,
+    " Pig": 2,
+    " deer": 1,
+    " Horse": 1,
+    " Lion": 1,
+    " bird": 1,
+    " Rabbit": 1,
+    " Cat": 1,
+    " Duck": 1,
+    " Chicken": 1,
+    " Bear": 1,
+    " Sheep": 1
+   },
+   "first_word_kinds": {
+    "the class (right)": 351,
+    "the asked pick itself (the animal)": 19,
+    "another class word": 12
+   },
+   "by_gold": {
+    "amphibian": {
+     "n": 10,
+     "read_wrong": 0
+    },
+    "arachnid": {
+     "n": 53,
+     "read_wrong": 15
+    },
+    "bird": {
+     "n": 112,
+     "read_wrong": 2
+    },
+    "insect": {
+     "n": 87,
+     "read_wrong": 2
+    },
+    "mammal": {
+     "n": 120,
+     "read_wrong": 12
+    }
+   }
+  }
+ },
+ "failures_shown": [
+  {
+   "cell": "qa_word",
+   "scene": "P2-L0-0222",
+   "variant": "org",
+   "gold": "insect",
+   "item": "ant",
+   "greedy": " ant\n",
+   "said": "ant",
+   "right": false,
+   "read_right": false,
+   "first_token": " ant",
+   "read_tokens": [
+    " insect",
+    " In"
+   ],
+   "kind": "the asked pick itself (the animal)",
+   "tail": " is 6. Clara picked the lion. The locker of the ant is 5.\nWhat class of animal is Noah's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "q_before": {
+    "greedy": " Insect\n",
+    "read_right": true,
+    "first_token": " In"
+   }
+  },
+  {
+   "cell": "qa_word",
+   "scene": "P2-L0-0240",
+   "variant": "org",
+   "gold": "mammal",
+   "item": "cat",
+   "greedy": " cat\n",
+   "said": "cat",
+   "right": false,
+   "read_right": false,
+   "first_token": " cat",
+   "read_tokens": [
+    " mamm",
+    " M"
+   ],
+   "kind": "the asked pick itself (the animal)",
+   "tail": " picked the cat. Hugo picked the goose. The locker of the cat is 5.\nWhat class of animal is Nina's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "q_before": {
+    "greedy": " Mammal\n",
+    "read_right": true,
+    "first_token": " M"
+   }
+  },
+  {
+   "cell": "qa_word",
+   "scene": "P2-L0-0504",
+   "variant": "alt",
+   "gold": "arachnid",
+   "item": "tick",
+   "greedy": " tick\n",
+   "said": "tick",
+   "right": false,
+   "read_right": false,
+   "first_token": " tick",
+   "read_tokens": [
+    " ar",
+    " Ar"
+   ],
+   "kind": "the asked pick itself (the animal)",
+   "tail": " is 9. Peter picked the crow. The locker of the crow is 5.\nWhat class of animal is Finn's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "q_before": {
+    "greedy": " Insect\n",
+    "read_right": false,
+    "first_token": " In"
+   }
+  },
+  {
+   "cell": "qa_word",
+   "scene": "P2-L0-0549",
+   "variant": "alt",
+   "gold": "insect",
+   "item": "bee",
+   "greedy": " Bee\n",
+   "said": "bee",
+   "right": false,
+   "read_right": false,
+   "first_token": " Bee",
+   "read_tokens": [
+    " insect",
+    " In"
+   ],
+   "kind": "the asked pick itself (the animal)",
+   "tail": " locker of the sheep is 9. Victor picked the sheep. Henry picked the camel.\nWhat class of animal is Noah's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "q_before": {
+    "greedy": " Bee\n",
+    "read_right": false,
+    "first_token": " Bee"
+   }
+  },
+  {
+   "cell": "qa_word",
+   "scene": "P2-L0-0576",
+   "variant": "org",
+   "gold": "mammal",
+   "item": "lion",
+   "greedy": " lion\n",
+   "said": "lion",
+   "right": false,
+   "read_right": false,
+   "first_token": " lion",
+   "read_tokens": [
+    " mamm",
+    " M"
+   ],
+   "kind": "the asked pick itself (the animal)",
+   "tail": " is 3. Victor picked the beetle. The locker of the lion is 7.\nWhat class of animal is Carl's pick? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "q_before": {
+    "greedy": " Mammal\n",
+    "read_right": true,
+    "first_token": " M"
+   }
+  }
+ ]
+}

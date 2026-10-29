@@ -1066,9 +1066,122 @@ def stage_verdict(n_boot: int = X.N_BOOT) -> Path:
     return out
 
 
+# ---- the word cells' answer-format diagnostic (CPU, descriptive; coordinator 29 Oct after the 9B word run) -----------
+
+N_SHOW_FAIL, DIAG_SEED, TAIL_TOKENS = 5, 0, 48
+
+
+def first_word_kind(said: str | None, gold: str, item: str, scene_items: set[str], classes: set[str]) -> str:
+    """What the recall's first word is: the gold class (or its plural), another class word, the asked pick itself (the
+    animal, not its class), another item of the scene, or something else."""
+    from scripts import x52_atoms as A52
+
+    if said is None:
+        return "no word"
+    if said in A52.word_keys(gold):
+        return "the class (right)"
+    if any(said in A52.word_keys(c) for c in classes):
+        return "another class word"
+    if said in A52.word_keys(item):
+        return "the asked pick itself (the animal)"
+    if any(said in A52.word_keys(x) for x in scene_items):
+        return "another animal of the scene"
+    return "other"
+
+
+def diag_rows(tok, cell: str, run_dir: Path) -> list[dict]:
+    """Per recall prompt (O and S) of one word cell: the stored greedy text and said word, the first token of the greedy
+    continuation (the read step's top token: greedy decoding takes it; re-encoded from the stored text), the gold class,
+    the asked pick, and the first word's kind; the cases rebuilt on the tokenizer and matched scene by scene."""
+    from scripts import x52_atoms as A52
+
+    comp = [r for r in X.read_jsonl(run_dir / cell / "competence.jsonl") if r["reader"] == X.RECALL]
+    cases, _ = build(tok, cell)
+    by = {c["scene"]: c for c in cases}
+    assert {r["scene"] for r in comp} == set(by), f"{cell}: the rebuilt scenes differ from the run's"
+    classes = set(LEXICAL[RELATION[0]][RELATION[1]].values())
+    out = []
+    for r in comp:
+        c = by[r["scene"]]
+        rd = c["readers"][X.RECALL]
+        v = r["variant"]
+        gold = rd["said_A"] if v == "org" else rd["said_b"]
+        item = c["entity"] if v == "org" else c["cf_entity"]
+        sc = A52.e1_scene(c)
+        scene_items = {sc["bridge"], sc["new"], *sc["items"]} - {item}
+        first = ids(tok, r["greedy"])[:1]
+        out.append({"cell": cell, "scene": r["scene"], "variant": v, "gold": gold, "item": item,
+                    "greedy": r["greedy"], "said": r["said"], "right": r["right"], "read_right": r["read_right"],
+                    "first_token": tok.decode(first) if first else "", "read_tokens": [tok.decode([t]) for t in
+                    (rd["set_A"] if v == "org" else rd["set_b"])],
+                    "kind": first_word_kind(r["said"], gold, item, scene_items, classes),
+                    "tail": tok.decode(rd["ids"][v][-TAIL_TOKENS:])})  # fmt: skip
+    return out
+
+
+def stage_diag_words(run: str) -> Path:
+    """The word cells' answer format on one run (Q-after vs Q-before): the first tokens the model produced, the kinds of
+    its first words, the failures by gold class, and N_SHOW_FAIL random (Q-after) failures (seed DIAG_SEED) with their
+    prompt tail; into results/x53_2x2/diag_words-<UTC>/ (note.md, diag.json). Descriptive; no rule."""
+    import random
+
+    from scripts import x45m
+
+    tok = x45m.tokenizer()
+    d = RESULTS / run
+    m = json.loads((d / "manifest.json").read_text())
+    assert m["model"]["target"] == pins.TARGET, f"{run} is {m['model']['target']}'s, BJ_TARGET is {pins.TARGET}"
+    rows = {cell: diag_rows(tok, cell, d) for cell in WORD_CELLS}
+    blob: dict[str, Any] = {"run": run, "target": pins.TARGET, "relation": m.get("relation"), "cells": {}}
+    lines = [f"# 53.1 word cells: what the recall answered ({MODEL_SHORT.get(pins.TARGET, pins.TARGET)}, {run}; "
+             "descriptive, UNVERIFIED)", "",
+             "CPU only, from the run's stored competence rows (8 greedy tokens per unedited O / S prompt, the said word "
+             "and the read); no rule, no rerun. The read step's top token is the greedy continuation's first token "
+             "(greedy decoding takes it; re-encoded here from the stored text). Prompts rebuilt on the tokenizer and "
+             "matched scene by scene. Descriptive context for the card only.", ""]  # fmt: skip
+    for cell, rs in rows.items():
+        n = len(rs)
+        tokens = collections.Counter(r["first_token"] for r in rs)
+        kinds = collections.Counter(r["kind"] for r in rs)
+        by_gold = {g: {"n": sum(r["gold"] == g for r in rs), "read_wrong": sum(r["gold"] == g and not r["read_right"]
+                                                                              for r in rs)}
+                   for g in sorted({r["gold"] for r in rs})}  # fmt: skip
+        blob["cells"][cell] = {"prompts": n, "read_right": sum(r["read_right"] for r in rs),
+                               "said_right": sum(r["right"] for r in rs), "first_tokens": dict(tokens.most_common()),
+                               "first_word_kinds": dict(kinds.most_common()), "by_gold": by_gold}  # fmt: skip
+        lines += [f"## {CELL_TEXT[cell]}: recall, {n} prompts (O and S of each scene)", "",
+                  f"Read right {blob['cells'][cell]['read_right']} / {n}; said right {blob['cells'][cell]['said_right']}"
+                  f" / {n}.", "", "First word's kind: " + "; ".join(f"{k} {v}" for k, v in kinds.most_common()) + ".",
+                  "", "Top first tokens: " + ", ".join(f"{t!r} {v}" for t, v in tokens.most_common(15)) + ".", "",
+                  "Read wrong by gold class: " + "; ".join(f"{g} {v['read_wrong']} / {v['n']}" for g, v in by_gold.items())
+                  + ".", ""]  # fmt: skip
+    fails = [r for r in rows["qa_word"] if not r["read_right"]]
+    pick = sorted(random.Random(DIAG_SEED).sample(range(len(fails)), min(N_SHOW_FAIL, len(fails))))
+    before = {(r["scene"], r["variant"]): r for r in rows["qb_word"]}
+    lines += [f"## {N_SHOW_FAIL} random (Q-after, word) failures (seed {DIAG_SEED}, of {len(fails)})", ""]
+    shown = []
+    for i in pick:
+        r = fails[i]
+        b = before.get((r["scene"], r["variant"]))
+        shown.append({**r, "q_before": {k: b[k] for k in ("greedy", "read_right", "first_token")} if b else None})
+        lines += [f"### {r['scene']} ({r['variant']}): asked pick {r['item']}, gold {r['gold']} (read tokens "
+                  f"{r['read_tokens']})", "", "Prompt tail:", "", "```", r["tail"], "```", "",
+                  f"(Q-after) greedy {r['greedy']!r}, first token {r['first_token']!r}, kind: {r['kind']}."
+                  + (f" Same scene (Q-before): greedy {b['greedy']!r}, read right {b['read_right']}." if b else ""),
+                  ""]  # fmt: skip
+    blob["failures_shown"] = shown
+    out = RESULTS / f"diag_words-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir(parents=True, exist_ok=False)
+    (out / "diag.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
+    (out / "note.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines), flush=True)
+    print("wrote", out, flush=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["plan", "run", "verdict"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "diag-words"])
     ap.add_argument("--name", help="run: the run name (results/x53_2x2/<name>/)")
     ap.add_argument("--cells", choices=("number", "word"), required=False,
                     help="run: the number cells (qa_num, qb_num) or the word cells (qa_word, qb_word), each a run of "
@@ -1081,6 +1194,8 @@ def main() -> None:
         assert a.name, "run needs --name"
         assert a.cells, "run needs --cells number|word"
         stage_run(a.name, NUMBER_CELLS if a.cells == "number" else WORD_CELLS)
+    elif a.stage == "diag-words":
+        stage_diag_words(a.name or WORD_RUNS[pins.TARGET])
     else:
         stage_verdict(a.n_boot)
 
