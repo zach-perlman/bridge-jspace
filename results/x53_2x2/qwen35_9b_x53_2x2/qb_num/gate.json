@@ -1,0 +1,31 @@
+{
+ "cases": 600,
+ "org_read_accuracy": {
+  "PP": 0.955,
+  "PM": 0.7633
+ },
+ "said_accuracy": {
+  "PP": 0.9583,
+  "PM": 0.7667
+ },
+ "gate": 0.8,
+ "pass": false,
+ "eligible": 345,
+ "min": 150,
+ "enough": true,
+ "tested": false,
+ "chosen": 0,
+ "order": [],
+ "counts": {
+  "scenes": 600,
+  "cases": 600,
+  "dropped": {},
+  "domains": {
+   "animals": 200,
+   "elements": 200,
+   "greek": 200
+  }
+ },
+ "status": "not tested (gate 0.76 < 0.80)",
+ "hub_kernels": {}
+}

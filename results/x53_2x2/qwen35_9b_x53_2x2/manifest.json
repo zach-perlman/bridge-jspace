@@ -1,0 +1,86 @@
+{
+  "exp": "x53_2x2",
+  "run": "qwen35_9b_x53_2x2",
+  "test": "53.1",
+  "spec": "jobs/c3/batch53.yaml (brief, 53.1)",
+  "question": "no prediction (batch 53: exploration day, rules fixed in the brief)",
+  "written_utc": "2026-10-29T09:34:45Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "d2d8fa9139daed22d012a651ee3c7fcce98ba0f8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "inputs": {
+    "jobs/c3/batch53.yaml": "7ee686f96a8197dd709a47776de2780f99d7dc2a9f1a6d18be8365a51de35fba",
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b"
+  },
+  "set": "d1_topics_v3",
+  "layer": 12,
+  "cells": [
+    "qa_num",
+    "qb_num"
+  ],
+  "cell_text": {
+    "qa_num": "(Q-after, number)",
+    "qb_num": "(Q-before, number)",
+    "qa_word": "(Q-after, word)",
+    "qb_word": "(Q-before, word)"
+  },
+  "relation": null,
+  "word_instruction": "Answer with the number written as a word and nothing else.",
+  "gate": 0.8,
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "k": 25,
+  "omp": "signed",
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_jpp_A",
+    "no_jpp_A_rand",
+    "no_A",
+    "no_A_rand"
+  ],
+  "atoms": {
+    "items": 50,
+    "seed": 0
+  },
+  "order": {
+    "cells": "every cell's competence and gate first (the relation's 9B accuracy = qa_word's recall gate), then each tested cell's Δ, readout, arms and atoms in CELLS order",
+    "reads": "per item and reader: O unedited then the arms in order, batches of at most 64 rows (BJ_SUITE_BATCH)"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "atoms": 0
+  },
+  "design": "scripts/x53_2x2.py docstring",
+  "verdict": "x53_2x2.py verdict (CPU)",
+  "finished_utc": "2026-10-29T09:46:26Z"
+}
