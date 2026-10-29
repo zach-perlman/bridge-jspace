@@ -1,0 +1,739 @@
+{
+ "dan": "no prediction: coverage run on an already-scored rule (rules first scored in results/x51_answer/x51_12-20261028T201842Z)",
+ "rule": "Per model, per reader: \"the lens effect is the entity\": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. \"The lens effect is the answer\": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed, report both shares. Amendment (Dan 20:20): before the arms, the lens readout check at the bridge word; the verdict says which case held, either 'the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)' or the arm-based entity / answer / mixed (never 'void by construction'). Z2: arm 3 is read against its controls (a same-size random part and a frequency-matched part), not against zero.",
+ "as_computed": "Extra loss of arm k = X0's excess = (S_rand_k - S_k) / S_whole per reader over the source run's items (switch: the set's own read; 47.3's lookup: follows the change, identity / position / value). e1, e2, e3 = arms 1, 2, 3; arm 4 (no_A_rand) is arm 3's random twin. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Z2: arm 3 against both its controls, e3 (vs no_A_rand) and e3f = (S_noF - S_noA) / S_whole (vs no_F); 'entity' needs max(e3, e3f) <= 0.10, 'answer' needs min(e3, e3f) >= 0.5 e1 (a label holds only against both controls). Point estimates decide (EPS 1e-9); e1 <= 0 or undefined (no switch under the whole change) -> can't tell; CIs from X0's cluster bootstrap over the bridge entity (10,000, seed 0), paired across arms (ratios on the same draws). Readout case first: per reader the rank (1 + tokens with a strictly higher lens logit, full vocabulary) of its own answer word (best of its A-style variant tokens) at the edited token at L, O's answer on O's state and S's on S's (z2: the reader's own state; e1 / cue: the lookup's, shared through the edited token); an item is 'not read' when it ranks > 50 on both; >= 90 % of items not read -> 'the answer word is not read at the bridge word', the arms reported beside; else the arm-based label. A: J++ unit atoms of letter tokens (the OMP dictionary); e1 / cue the answers' number words (suite_v1.WORDS: 6 -> 'six'), each of its variants (as is, leading space, capitalised, both) kept where it is one letter token; z2 the first token of each answer word and variant (where the tokenizer splits the full word, its first token only). Frequency-matched control F (z2): per atom a of A, the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2 (a BPE id is its merge rank, earlier = more frequent in the tokenizer's training corpus; the factor doubles until a candidate exists) and the closest log J++ readout norm ||(g * W_U[t]) J_L|| (ties: lower id); unrelated = its key (decode, stripped, lower-cased) equals no key of the set's answer words, A tokens, bridge entities' tokens / names or edited tokens, and (keys of >= 3 characters) neither contains nor is contained in one; never twice in one item. no_F = Δ - P_F Δ, P_F the projector on span(F). Decisive cells for Q51.12: Z2 both readers; E1 the recall (the lookup beside); 47.3 both readers. Projected out: (I - P_A) P_J Δ, P_A the orthogonal projector on the span of the item's answer atoms (the J++ part minus its component along span(A)).",
+ "labels": {
+  "entity": "the lens effect is the entity",
+  "answer": "the lens effect is the answer",
+  "mixed": "mixed",
+  "na": "can't tell (arm 1 has no extra loss beyond random)",
+  "not_read": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)"
+ },
+ "models": [
+  {
+   "set": "z2",
+   "target": "nemotron-3.5-lightning",
+   "run": "nem35l_x52_answer_z2",
+   "status": "tested",
+   "layer": 14,
+   "source": "nem35l_x52_z2",
+   "gate": {
+    "pass": true,
+    "chosen": 200,
+    "org_read_accuracy": {
+     "K": 0.9753086419753086,
+     "M": 0.9465020576131687
+    },
+    "gate": 0.8
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 124,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.325,
+       0.24725274725274726,
+       0.40099072724531337
+      ],
+      "no_jpp": [
+       0.08,
+       0.04020100502512563,
+       0.12376355492692125
+      ],
+      "no_jpp_rand": [
+       0.25,
+       0.18181818181818182,
+       0.3197969543147208
+      ],
+      "no_jpp_A": [
+       0.15,
+       0.08910631900886423,
+       0.21182266009852216
+      ],
+      "no_jpp_A_rand": [
+       0.25,
+       0.18,
+       0.3214330581478822
+      ],
+      "no_A": [
+       0.23,
+       0.16145833333333334,
+       0.3004932489343781
+      ],
+      "no_A_rand": [
+       0.325,
+       0.24623115577889448,
+       0.40218593689880705
+      ],
+      "no_F": [
+       0.33,
+       0.2512315270935961,
+       0.4083769633507853
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 65,
+      "no_jpp": 16,
+      "no_jpp_rand": 50,
+      "no_jpp_A": 30,
+      "no_jpp_A_rand": 50,
+      "no_A": 46,
+      "no_A_rand": 65,
+      "no_F": 66
+     },
+     "extra": {
+      "1": [
+       0.523076923076923,
+       0.3846153846153846,
+       0.6785714285714286
+      ],
+      "2": [
+       0.3076923076923077,
+       0.18055555555555558,
+       0.45000000000000007
+      ],
+      "3": [
+       0.2923076923076923,
+       0.1632377275234418,
+       0.43835616438356173
+      ],
+      "3f": [
+       0.3076923076923077,
+       0.18571428571428572,
+       0.4444444444444444
+      ]
+     },
+     "share2": [
+      0.5882352941176472,
+      0.39393939393939403,
+      0.7777777777777779
+     ],
+     "share3": [
+      0.5588235294117648,
+      0.303030303030303,
+      0.8965517241379307
+     ],
+     "share3f": [
+      0.5882352941176472,
+      0.3421052631578945,
+      0.9259259259259255
+     ],
+     "valid": true,
+     "label": "mixed",
+     "key": "mixed",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "K",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.11,
+       0.057291666666666664,
+       0.16915614236509757
+      ],
+      "top50_O": [
+       0.22,
+       0.15103920990566036,
+       0.29411764705882354
+      ],
+      "median_rank_O": 941.5,
+      "median_bridge_rank_O": 385.0,
+      "above_bridge_O": [
+       0.38,
+       0.2893401015228426,
+       0.472636815920398
+      ],
+      "top10_S": [
+       0.1,
+       0.05583756345177665,
+       0.14948453608247422
+      ],
+      "top50_S": [
+       0.27,
+       0.19576719576719576,
+       0.3465346534653465
+      ],
+      "median_rank_S": 422.5,
+      "median_bridge_rank_S": 309.0,
+      "above_bridge_S": [
+       0.405,
+       0.32653061224489793,
+       0.48484848484848486
+      ],
+      "top10_either": [
+       0.195,
+       0.12795452253705758,
+       0.26903553299492383
+      ],
+      "top50_either": [
+       0.425,
+       0.3439112103174603,
+       0.5076142131979695
+      ],
+      "not_read": [
+       0.575,
+       0.49238578680203043,
+       0.6560887896825396
+      ],
+      "case": "arms"
+     },
+     "arm_label": "mixed",
+     "arm_key": "mixed"
+    },
+    "recall": {
+     "n": 200,
+     "entities": 124,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.33,
+       0.25380710659898476,
+       0.4072440087145969
+      ],
+      "no_jpp": [
+       0.085,
+       0.043478260869565216,
+       0.12980769230769232
+      ],
+      "no_jpp_rand": [
+       0.245,
+       0.17837436446347338,
+       0.31455530938439624
+      ],
+      "no_jpp_A": [
+       0.175,
+       0.11363329238329238,
+       0.23923444976076555
+      ],
+      "no_jpp_A_rand": [
+       0.25,
+       0.1829756838905775,
+       0.3203929948436846
+      ],
+      "no_A": [
+       0.22,
+       0.15609756097560976,
+       0.2850467289719626
+      ],
+      "no_A_rand": [
+       0.345,
+       0.27040816326530615,
+       0.4207920792079208
+      ],
+      "no_F": [
+       0.35,
+       0.2727272727272727,
+       0.42857142857142855
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 66,
+      "no_jpp": 17,
+      "no_jpp_rand": 49,
+      "no_jpp_A": 35,
+      "no_jpp_A_rand": 50,
+      "no_A": 44,
+      "no_A_rand": 69,
+      "no_F": 70
+     },
+     "extra": {
+      "1": [
+       0.48484848484848475,
+       0.3623188405797101,
+       0.6154166666666664
+      ],
+      "2": [
+       0.2272727272727273,
+       0.0714285714285714,
+       0.3833333333333333
+      ],
+      "3": [
+       0.3787878787878787,
+       0.26086956521739124,
+       0.5192307692307692
+      ],
+      "3f": [
+       0.39393939393939387,
+       0.26470588235294124,
+       0.5416666666666666
+      ]
+     },
+     "share2": [
+      0.4687500000000001,
+      0.16129032258064513,
+      0.7437499999999976
+     ],
+     "share3": [
+      0.7812499999999999,
+      0.5000000000000001,
+      1.1818181818181814
+     ],
+     "share3f": [
+      0.8125,
+      0.5249999999999999,
+      1.233382352941176
+     ],
+     "valid": true,
+     "label": "mixed",
+     "key": "mixed",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "M",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.105,
+       0.05313434552564988,
+       0.1642512077294686
+      ],
+      "top50_O": [
+       0.205,
+       0.13917525773195877,
+       0.2763872554260664
+      ],
+      "median_rank_O": 950.0,
+      "median_bridge_rank_O": 399.5,
+      "above_bridge_O": [
+       0.37,
+       0.27860696517412936,
+       0.46296296296296297
+      ],
+      "top10_S": [
+       0.115,
+       0.06481481481481481,
+       0.17172111742424237
+      ],
+      "top50_S": [
+       0.28,
+       0.20707070707070707,
+       0.35555841924398623
+      ],
+      "median_rank_S": 437.0,
+      "median_bridge_rank_S": 370.0,
+      "above_bridge_S": [
+       0.4,
+       0.3197969543147208,
+       0.4801980198019802
+      ],
+      "top10_either": [
+       0.205,
+       0.135,
+       0.2823072972769857
+      ],
+      "top50_either": [
+       0.425,
+       0.34517766497461927,
+       0.5071090047393365
+      ],
+      "not_read": [
+       0.575,
+       0.4928909952606635,
+       0.6548223350253807
+      ],
+      "case": "arms"
+     },
+     "arm_label": "mixed",
+     "arm_key": "mixed"
+    }
+   },
+   "readout": {
+    "lookup's prompt, O": {
+     "answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "bridge": [
+      0.04,
+      0.009478672985781991,
+      0.07978785835580861
+     ],
+     "neither": [
+      0.96,
+      0.9202121416441914,
+      0.990521327014218
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 5769.5,
+      "recall": 5769.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 941.5,
+      "recall": 941.5
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "lookup's prompt, S": {
+     "answer": [
+      0.025,
+      0.0,
+      0.05670103092783505
+     ],
+     "bridge": [
+      0.095,
+      0.05102040816326531,
+      0.14356435643564355
+     ],
+     "neither": [
+      0.88,
+      0.8260869565217391,
+      0.9315789473684211
+     ],
+     "top1_is_lookup_answer": [
+      0.025,
+      0.0,
+      0.05670103092783505
+     ],
+     "top1_is_recall_answer": [
+      0.025,
+      0.0,
+      0.05670103092783505
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 4558.5,
+      "recall": 4558.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 422.5,
+      "recall": 422.5
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, O": {
+     "answer": [
+      0.005,
+      0.0,
+      0.015544041450777202
+     ],
+     "bridge": [
+      0.04,
+      0.01015228426395939,
+      0.07772020725388601
+     ],
+     "neither": [
+      0.955,
+      0.9174228739839331,
+      0.9852959110473458
+     ],
+     "top1_is_lookup_answer": [
+      0.005,
+      0.0,
+      0.015544041450777202
+     ],
+     "top1_is_recall_answer": [
+      0.005,
+      0.0,
+      0.015544041450777202
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 6924.5,
+      "recall": 6924.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 950.0,
+      "recall": 950.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, S": {
+     "answer": [
+      0.025,
+      0.0,
+      0.057692307692307696
+     ],
+     "bridge": [
+      0.075,
+      0.034482758620689655,
+      0.12135922330097088
+     ],
+     "neither": [
+      0.9,
+      0.8465340778263872,
+      0.9481907854727675
+     ],
+     "top1_is_lookup_answer": [
+      0.025,
+      0.0,
+      0.057692307692307696
+     ],
+     "top1_is_recall_answer": [
+      0.025,
+      0.0,
+      0.057692307692307696
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 3978.0,
+      "recall": 3978.0
+     },
+     "median_answer_word_rank": {
+      "lookup": 437.0,
+      "recall": 437.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    }
+   },
+   "atoms": {
+    "lookup": {
+     "A_tokens": {
+      "n": 200,
+      "min": 4,
+      "median": 4.0,
+      "max": 8,
+      "mean": 4.02,
+      "hist": {
+       "4": 199,
+       "8": 1
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 4,
+      "median": 4.0,
+      "max": 8,
+      "mean": 4.02,
+      "hist": {
+       "4": 199,
+       "8": 1
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 1,
+      "mean": 0.005,
+      "hist": {
+       "0": 199,
+       "1": 1
+      }
+     },
+     "items_with_an_answer_atom_in_25": 1,
+     "share_median": {
+      "share_jpp": 0.1742165,
+      "share_jpp_A": 0.168306,
+      "share_A": 0.0056135000000000004,
+      "share_A_in_jpp": 0.004693,
+      "share_F": 0.001587
+     },
+     "F_match": {
+      "pairs": 804,
+      "median_id_ratio": 1.136,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    },
+    "recall": {
+     "A_tokens": {
+      "n": 200,
+      "min": 4,
+      "median": 4.0,
+      "max": 8,
+      "mean": 4.02,
+      "hist": {
+       "4": 199,
+       "8": 1
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 4,
+      "median": 4.0,
+      "max": 8,
+      "mean": 4.02,
+      "hist": {
+       "4": 199,
+       "8": 1
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 1,
+      "mean": 0.005,
+      "hist": {
+       "0": 199,
+       "1": 1
+      }
+     },
+     "items_with_an_answer_atom_in_25": 1,
+     "share_median": {
+      "share_jpp": 0.174894,
+      "share_jpp_A": 0.1700355,
+      "share_A": 0.005568,
+      "share_A_in_jpp": 0.004612,
+      "share_F": 0.0016125
+     },
+     "F_match": {
+      "pairs": 804,
+      "median_id_ratio": 1.136,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    }
+   },
+   "agreement": {
+    "lookup": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 196,
+      "agree_top": 196,
+      "top_stored": 200,
+      "rerun": 65,
+      "stored": 67
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 196,
+      "agree_top": 196,
+      "top_stored": 200,
+      "rerun": 16,
+      "stored": 16
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 50,
+      "stored": 50
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.523076923076923,
+      "stored": 0.5074626865671641
+     }
+    },
+    "recall": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 197,
+      "agree_top": 197,
+      "top_stored": 200,
+      "rerun": 66,
+      "stored": 69
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 197,
+      "agree_top": 194,
+      "top_stored": 200,
+      "rerun": 17,
+      "stored": 16
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 195,
+      "top_stored": 200,
+      "rerun": 49,
+      "stored": 51
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.48484848484848475,
+      "stored": 0.5072463768115942
+     }
+    }
+   }
+  }
+ ],
+ "per_cell": {
+  "z2|nemotron-3.5-lightning|lookup": "mixed",
+  "z2|nemotron-3.5-lightning|recall": "mixed"
+ }
+}

@@ -1,0 +1,233 @@
+{
+ "runs": [
+  "x52_z1p_27b"
+ ],
+ "dan": "no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)",
+ "models": [
+  {
+   "run": "x52_z1p_27b",
+   "target": "qwen3.6-27b",
+   "layers": [
+    32
+   ],
+   "gate": {
+    "cases": 261,
+    "org_read_accuracy": {
+     "K": 0.9885057471264368,
+     "M": 0.9003831417624522
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 207,
+    "over_zach_kept": {
+     "cases": 247,
+     "org_read_accuracy": {
+      "K": 1.0,
+      "M": 0.9271255060728745
+     },
+     "pass": true,
+     "eligible": 207
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 94,
+       "no other entity with another answer": 3
+      },
+      "cases": 261
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 200
+    },
+    "chosen_strata": {
+     "fact-after": 102,
+     "fact-first": 98
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "32": {
+     "n": 200,
+     "entities": 118,
+     "lookup": {
+      "n": 200,
+      "entities": 118,
+      "S_whole": [
+       0.3,
+       0.2407,
+       0.3668
+      ],
+      "S_no_part": [
+       0.22,
+       0.1682,
+       0.2824
+      ],
+      "S_no_rand": [
+       0.265,
+       0.2087,
+       0.3302
+      ],
+      "switched_whole": 60,
+      "valid": true,
+      "Jdep": [
+       0.2666666666666666,
+       0.1388782051282051,
+       0.4032258064516129
+      ],
+      "Rdep": [
+       0.11666666666666659,
+       0.02941176470588236,
+       0.21054484803558163
+      ],
+      "excess": [
+       0.15000000000000002,
+       0.06349206349206349,
+       0.24528301886792458
+      ],
+      "label": "mixed"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 118,
+      "S_whole": [
+       0.64,
+       0.5714,
+       0.7033
+      ],
+      "S_no_part": [
+       0.2,
+       0.1505,
+       0.2609
+      ],
+      "S_no_rand": [
+       0.595,
+       0.5258,
+       0.6606
+      ],
+      "switched_whole": 128,
+      "valid": true,
+      "Jdep": [
+       0.6875,
+       0.6016949152542372,
+       0.7699115044247787
+      ],
+      "Rdep": [
+       0.07031250000000011,
+       0.013694002221399536,
+       0.13207547169811318
+      ],
+      "excess": [
+       0.6171874999999999,
+       0.5294117647058825,
+       0.7024849229394684
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.46718749999999987,
+      0.35802008086772,
+      0.5796824200718477
+     ],
+     "verdict": "in between",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 138,
+        "switch": 60,
+        "other": 2
+       },
+       "no_jpp": {
+        "original": 152,
+        "switch": 44,
+        "other": 4
+       },
+       "no_jpp_rand": {
+        "original": 144,
+        "switch": 53,
+        "other": 3
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 128,
+        "original": 69,
+        "other": 3
+       },
+       "no_jpp": {
+        "original": 157,
+        "switch": 40,
+        "other": 2,
+        "lure": 1
+       },
+       "no_jpp_rand": {
+        "switch": 119,
+        "original": 78,
+        "other": 3
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 98,
+        "whole_switch": [
+         0.5612244897959183,
+         0.44565217391304346,
+         0.6701030927835051
+        ]
+       },
+       "fact-after": {
+        "n": 102,
+        "whole_switch": [
+         0.049019607843137254,
+         0.01,
+         0.09375
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 11.448979591836734,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L32-40",
+    "swap": null,
+    "full": {
+     "run": "jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 200,
+      "m_minus_k": [
+       0.44,
+       0.36097183806889616,
+       0.5217444326617179
+      ]
+     },
+     "paper10_rot": {
+      "joined": 200,
+      "m_minus_k": [
+       -0.005,
+       -0.023474178403755867,
+       0.010416666666666666
+      ]
+     }
+    }
+   }
+  }
+ ]
+}
