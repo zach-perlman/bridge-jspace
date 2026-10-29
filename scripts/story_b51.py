@@ -29,7 +29,8 @@ from scripts.story_b50 import INK, LOOKUP, MODELS, NULL, SHORT, caption, rel
 
 ADDRESS = S.MARK_COL["address"]
 LABEL_PT = S.LABEL_PT
-NAME = {t: name for t, _, name in MODELS}
+NAME = {t: name for t, _, name in MODELS} | {"nemotron-3.5-lightning": "Nemotron 3.5 Lightning"}
+LT_ROW = ("nemotron-3.5-lightning", "lightning")  # batch 52: the fourth row, hollow (its gate chosen after the data)
 
 
 def whisker_line(ax, xs, vals, col: str, marker: str, dx: float = 0.0, ls: str = "-", hollow: bool = False,
@@ -72,8 +73,10 @@ def shaded_any(blob: dict) -> bool:
     return any(not m["loss"]["under_bar"][arm] for m in blob["models"] if m["status"] == "tested" for arm in arms)
 
 
-def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
-    """Fig. 16 (51.1, fixed in advance), one row per model (9B, 27B, Muse). A: the J++ part added by itself at dose α
+def build_dose(verdict_dir: Path, out_name: str = "fig16_dose", lightning: Path | None = None,
+               lightning_note: str = "") -> str:  # fmt: skip
+    """Fig. 16 (51.1, fixed in advance), one row per model (9B, 27B, Muse; Lightning from its own verdict folder
+    `lightning`, hollow, with `lightning_note` in the caption). A: the J++ part added by itself at dose α
     (× its size in the change): the recall's and the lookup's switches minus those of a random part of the same share
     at the same dose (paired 95% CIs); the random part is the grey band at zero, the lookup's 0.10 bar dotted; a ring
     at the first dose where the J++ part switches >= 0.3 of recalls, where rule (ii) is read. B: the rest of the
@@ -83,12 +86,22 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
     passes twice the whole change's would be shaded; the caption says how many."""
     vpath = verdict_dir / "verdict.json"
     blob = json.loads(vpath.read_text())
-    src = rel(vpath)
     alphas, betas = [float(a) for a in blob["alphas"]], [float(b) for b in blob["betas"]]
     tested = {m["target"]: m for m in blob["models"] if m["status"] == "tested"}
+    srcs = dict.fromkeys(tested, rel(vpath))
     rows = [(t, m) for t, m, _ in MODELS if t in tested]
+    shade = shaded_any(blob)
+    if lightning is not None:
+        lpath = lightning / "verdict.json"
+        lblob = json.loads(lpath.read_text())
+        assert (lblob["alphas"], lblob["betas"]) == (blob["alphas"], blob["betas"]), lpath
+        tested |= {m["target"]: m for m in lblob["models"] if m["status"] == "tested" and m["target"] == LT_ROW[0]}
+        srcs[LT_ROW[0]] = rel(lpath)
+        rows += [LT_ROW] if LT_ROW[0] in tested else []
+        shade = shade or shaded_any(lblob)
     plt = S.setup()
-    top_in, row_in, gap_in, bottom_in = 1.75, 1.75, 0.7, 0.75 + 0.3 * bool(shaded_any(blob))
+    top_in, row_in, gap_in = 1.75, 1.75, 0.7
+    bottom_in = 0.75 + 0.3 * bool(shade) + 0.3 * bool(lightning_note and LT_ROW in rows)
     h = top_in + len(rows) * row_in + (len(rows) - 1) * gap_in + bottom_in
     fig, axes = plt.subplots(len(rows), 2, figsize=(S.WIDTH, h), squeeze=False,
                              gridspec_kw={"width_ratios": [1, 1], "hspace": gap_in / row_in})  # fmt: skip
@@ -101,7 +114,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
          "lookups switched, with and without the address")  # fmt: skip
     shaded: list[str] = []
     for r, (target, m) in enumerate(rows):
-        mod = tested[target]
+        mod, src, hollow = tested[target], srcs[target], target == LT_ROW[0]
         n, rd, loss = mod["n"], mod["readers"], mod["loss"]
         a, b = axes[r]
         # ---- A: the J++ part by itself, beyond its random twin
@@ -118,7 +131,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
                 a.axvspan(x - 0.2, x + 0.2, **S.NI_SHADE)
                 shaded.append(f"{SHORT[m]} α = {key(x)}")
         for w, col, dx in (("recall", INK, -0.035), ("lookup", LOOKUP, 0.035)):
-            whisker_line(a, alphas, diffs[w], col, S.MARK["add"], dx=dx)
+            whisker_line(a, alphas, diffs[w], col, S.MARK["add"], dx=dx, hollow=hollow)
             for x, v in zip(alphas, diffs[w], strict=True):
                 S.record(out_name, target, f"51.1 A: {w} switches with the J++ part by itself at dose {key(x)}, minus a "
                          "random part (same size) at the same dose", *v, n=n, source=src)  # fmt: skip
@@ -150,7 +163,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
         ends = []
         for suffix, label, col, mk, dx in series:
             vals = [lk[f"J(0,{key(x)}){suffix}"] for x in betas]
-            whisker_line(b, betas, vals, col, mk, dx=dx)
+            whisker_line(b, betas, vals, col, mk, dx=dx, hollow=hollow)
             ends.append((vals[-1][0], label, col))
             what = {"": "the rest by itself", "-U": "the rest by itself without the address",
                     "-RU": "the rest by itself without a random part of the address's share"}[suffix]  # fmt: skip
@@ -171,14 +184,16 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
         S.record(out_name, target, "51.1: doses whose plain-text loss passes 2x the whole change's",
                  sum(not ok for ok in loss["under_bar"].values()), source=src)  # fmt: skip
         for ax in (a, b):
-            n_tag(ax, f"n = {n}  ●")
+            n_tag(ax, f"n = {n}  {'○' if hollow else '●'}")
         a.text(0.0, 1.03, NAME[target], transform=a.transAxes, ha="left", va="bottom", fontsize=12, weight="bold")
         if r == len(rows) - 1:
             a.set_xlabel("dose of the J++ part (×)", loc="left")
             b.set_xlabel("dose of the rest (×)", loc="left")
     # Dan (21:55): definitions live in the README's Setup; one caption line only where this figure needs it
-    if shaded:
-        caption(fig, [f"Shaded: plain-text loss over twice the whole change's ({', '.join(shaded)})."], bottom_in - 0.6)
+    lines = [f"Shaded: plain-text loss over twice the whole change's ({', '.join(shaded)})."] if shaded else []
+    lines += [lightning_note] if lightning_note and LT_ROW in rows else []
+    if lines:
+        caption(fig, lines, bottom_in - 0.6)
     S.save(fig, out_name)
     return out_name
 

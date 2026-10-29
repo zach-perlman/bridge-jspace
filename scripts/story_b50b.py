@@ -257,28 +257,34 @@ def rows_axis(ax, labels: list[str], first: bool) -> None:
 
 
 def build_transfer(out_name: str = "fig09a_transfer") -> str:
-    """Fig. 9a: per model (9B, 27B, Muse), the recall's and the lookup's extra loss without the J++ part by text
-    format: simple scenes (docs/x0_numbers.json), prose / JSON / table (varied scenes) and natural passages with the
-    fact first (run files, readme_story_figures.transfer_cells); the 0.10 band. A cell whose whole change switches
-    fewer than 30 lookups is omitted and listed in the caption; the 9B's natural run had its gate lowered after the data
-    (hollow, the figure's one meaning of hollow)."""
+    """Fig. 9a: per model (9B, 27B, Muse, Lightning), the recall's and the lookup's extra loss without the J++ part by
+    text format: simple scenes (docs/x0_numbers.json), prose / JSON / table (varied scenes) and natural passages with
+    the fact first (run files, readme_story_figures.transfer_cells; Lightning's from its X0b verdict,
+    readme_story_figures.lightning_transfer); the 0.10 band. A cell whose whole change switches fewer than 30 lookups is
+    omitted and listed in the caption; hollow: the 9B's natural run had its gate lowered after the data, and every
+    Lightning cell (its gate chosen after the pre-check was seen)."""
     plt = S.setup()
-    top_in, body_in, bottom_in = 1.55, 3.3, 1.05
+    top_in, body_in, bottom_in = 1.55, 3.3, 1.25
     h = top_in + body_in + bottom_in
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, h), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.16, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The split carries over to other texts",
             "Extra loss without the J++ part, beyond a random part (same size), by text format")  # fmt: skip
     omitted: list[tuple[str, str]] = []
-    for k, (ax, (target, m, name)) in enumerate(zip(axes, MODELS, strict=True)):
+    for k, (ax, (target, m, name)) in enumerate(zip(axes, (*MODELS, F.LT), strict=True)):
         S.extra_axis(ax)
         ax.set_title(name if k == 0 else SHORT[m], fontsize=12, weight="bold", loc="left")
-        cells = {w: F.transfer_cells(target, w) for w in (F.X.RECALL, F.X.LOOKUP)}
+        lt = m == "lightning"
+        cells = {w: F.lightning_transfer(w) if lt else F.transfer_cells(target, w) for w in (F.X.RECALL, F.X.LOOKUP)}
         for i, (sc, _) in enumerate(FORMATS):
             sw = cells[F.X.LOOKUP].get((sc, "switched"))
-            after = sc == "natural" and bool(cells[F.X.LOOKUP].get(("x5", "after")))
+            after = lt or (sc == "natural" and bool(cells[F.X.LOOKUP].get(("x5", "after"))))
             for w, col, dy, word in ((F.X.RECALL, INK, 0.16, "recall"), (F.X.LOOKUP, LOOKUP, -0.16, "lookup")):
                 v = cells[w].get((sc, "jpp"))
+                if v is None and lt:  # Lightning's empty rows say why in the panel
+                    if w == F.X.RECALL:
+                        ax.text(0.4, -i, cells[w][(sc, "why")], ha="center", va="center", color=S.COL["muted"])
+                    continue
                 if v is None:
                     omitted.append(("not run", f"{SHORT[m]} {LABEL[sc]} {word}"))
                     continue
@@ -305,8 +311,7 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     # Dan (21:55): one caption line, the omitted cells; hollow (a gate lowered after the data) is in the README's Setup
     why = {r: [c for rr, c in omitted if rr == r] for r, _ in omitted}
     line = "; ".join(f"omitted, {r}: {', '.join(cs)}" for r, cs in why.items())
-    if line:
-        caption(fig, [line[0].upper() + line[1:] + "."], bottom_in - 0.62)
+    caption(fig, [line[0].upper() + line[1:] + "." if line else "", F.LT_NOTE], bottom_in - 0.62)
     S.save(fig, out_name)
     return out_name
 

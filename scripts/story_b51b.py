@@ -331,19 +331,29 @@ def build_grids(verdict_dir: Path, prefix: str = "s17_jspace_grid") -> list[str]
 # ---- the main page: the last token only (fig17) ---------------------------------------------------------------------
 
 
-def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token") -> str:
+LT_ROW = ("nemotron-3.5-lightning", "lightning")
+
+
+def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token", lightning: Path | None = None,
+                     lightning_note: str = "") -> str:  # fmt: skip
     """Fig. 17 (see the module docstring): per reader one panel, per model the probe's accuracy on the lens part of the
-    last token's state and the lens swap's switches over the whole-state patch's, both at the verdict's read peak."""
+    last token's state and the lens swap's switches over the whole-state patch's, both at the verdict's read peak.
+    Lightning (batch 52) from its own verdict folder `lightning`, after the data: its read bar hatched, its swap bar's
+    edge dashed (filled vs open already tells read from swap here), `lightning_note` in the caption."""
     data = model_data(verdict_dir)
     rows = [(t, k) for t, k, _ in MODELS if t in data]
+    if lightning is not None:
+        data[LT_ROW[0]] = model_data(lightning)[LT_ROW[0]]
+        rows.append(LT_ROW)
     plt = S.setup()
-    top_in, ax_in, bottom_in = 1.25, 2.3, 1.25
+    four = LT_ROW in rows  # four models: the bars spread to their gap, the model's layer under its name
+    top_in, ax_in, bottom_in = 1.25, 2.3, 1.25 + 0.45 * four
     h = top_in + ax_in + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.075, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.06)
     S.title(fig, TITLE, "The last token, at the layer before the answer where the lens reads the entity best",
             limit=100)  # fmt: skip
-    bw, dx = 0.34, 0.19
+    bw, dx = (0.36, 0.215) if four else (0.34, 0.19)
     for ax, (w, col) in zip(axes, READERS, strict=True):
         ax.text(0.0, 1.03, w, transform=ax.transAxes, ha="left", va="bottom", fontsize=12, weight="bold", color=col)
         ticks, labels, chances = [], [], []
@@ -358,8 +368,12 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
             wv = ratio_ci(d["outcomes"], w, la, sw, wh)
             chance = c["thru"]["chance_lf"]
             chances.append(chance)
-            ax.bar(i - dx, rv[0], width=bw, color=col, lw=0, zorder=2)
-            ax.bar(i + dx, wv[0], width=bw, facecolor="white", edgecolor=col, lw=1.4, zorder=2)
+            if key == LT_ROW[1]:  # after the data
+                ax.bar(i - dx, rv[0], width=bw, facecolor="white", edgecolor=col, hatch="////", lw=1.4, zorder=2)
+                ax.bar(i + dx, wv[0], width=bw, facecolor="white", edgecolor=col, lw=1.4, ls=(0, (3, 2)), zorder=2)
+            else:
+                ax.bar(i - dx, rv[0], width=bw, color=col, lw=0, zorder=2)
+                ax.bar(i + dx, wv[0], width=bw, facecolor="white", edgecolor=col, lw=1.4, zorder=2)
             for x, v in ((i - dx, rv), (i + dx, wv)):
                 ax.plot([x, x], [v[1], v[2]], color="#8c8c8c", lw=1.3, zorder=3, solid_capstyle="butt")
                 ax.text(x, max(v[2], v[0]) + 0.025, f"{v[0]:.2f}", ha="center", va="bottom", fontsize=S.LABEL_PT,
@@ -368,7 +382,7 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
                     lw=1.5, zorder=4)  # fmt: skip
             ticks += [i - dx, i + dx]
             labels += ["read", "swap"]
-            ax.text(i, -0.12, f"{SHORT[key]} · L{la}", transform=blended_transform_factory(ax.transData, ax.transAxes),
+            ax.text(i, -0.12, f"{SHORT[key]}{chr(10) if four else ' · '}L{la}", transform=blended_transform_factory(ax.transData, ax.transAxes),
                     ha="center", va="top", fontsize=S.FONT, weight="bold")  # fmt: skip
             S.record(out_name, t, f"51.10: {w}, last token, read peak layer {la}: the probe's accuracy on the lens part "
                      "of the state, locker-first rows", *rv, n=c["thru"]["n_lf"], source=d["src_r"])  # fmt: skip
@@ -387,11 +401,14 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
-        ax.text(1.0, 1.02, f"n = {', '.join(str(data[t]['m']['n']) for t, _ in rows)}  ●", transform=ax.transAxes,
-                ha="right", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+        ns = [str(data[t]["m"]["n"]) for t, k in rows if k != LT_ROW[1]]
+        tag = f"n = {', '.join(ns)}  ●" + (f";  {data[LT_ROW[0]]['m']['n']}  ○" if LT_ROW in rows else "")
+        ax.text(1.0, 1.02, tag, transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT - 1,
+                color=S.COL["muted"])  # fmt: skip
     axes[0].set_ylabel("share")
-    caption(fig, ["Read: a probe's accuracy on the lens part of the last token's state (dotted: chance). Swap: the lens "
-                  "swap's switches as a share of the whole-state patch's at the same layer. Whiskers: 95% intervals."],
-            0.48)  # fmt: skip
+    lines = ["Read: a probe's accuracy on the lens part of the last token's state (dotted: chance). Swap: the lens "
+             "swap's switches as a share of the whole-state patch's at the same layer. Whiskers: 95% intervals."]  # fmt: skip
+    lines += [lightning_note] if lightning_note and LT_ROW in rows else []
+    caption(fig, lines, 0.48 + 0.25 * four)
     S.save(fig, out_name)
     return out_name

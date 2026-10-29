@@ -30,7 +30,7 @@ from scripts import readme_story_figures as F
 from scripts import story_style as S
 
 MODELS = tuple((t, m, name) for t, m, name in S.MODELS if m != "122b")  # 9B, 27B, Muse
-SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse"}
+SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse", "lightning": "Lightning"}
 INK, LOOKUP, NULL = S.MARK_COL["recall"], S.MARK_COL["lookup"], S.MARK_COL["null"]
 RECALL_AFTER = "#9a9a9a"  # the recall's lighter shade (locker after the pick): a grey, so no new hue
 CAPTION = "#555555"
@@ -130,20 +130,20 @@ LADDER_BARS = (("recall", "locker-first", INK, -0.27, "recall, locker before the
 LADDER_BAR_W = 0.25
 
 
-def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
+def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: bool = False) -> str:
     """Fig. 1d (E2), Dan's round 3 (28 Oct 21:10): one panel per model, one column per rung (49.2's six rungs; the 27B
     ran rungs 1-2, its other columns greyed), each column the recall's bars (locker before the pick, dark; after it, a
     lighter shade) and the lookup's (every scene, purple): the answers lost beyond a random part of the same share (pp)
     when the J++ part's directions are taken out of the changed prompt's own state, with 95% whiskers; on each bar a
     grey tick at what the random part itself costs that bar's group (kept with none minus kept with the random part).
     Rung 6 (Zach's definition) stands apart from rungs 1-5 (ours); Muse's rung 6 is marked (†) and its band said in
-    the caption."""
+    the caption. lightning: a row under the rung labels saying Lightning was not tested (no ladder run: its gate)."""
     src_path = verdict_dir / "x49_2.json"
     v = json.loads(src_path.read_text())
     src, fid = rel(src_path), out_name.split("_")[0]
     by = {m["target"]: m for m in v["models"] if m.get("status") == "tested"}
     plt = S.setup()
-    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05
+    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05 + 0.45 * lightning
     h = top_in + 3 * panel_in + 2 * gap_in + bottom_in
     fig, axes = plt.subplots(3, 1, figsize=(S.WIDTH, h), sharex=True)
     fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
@@ -210,7 +210,11 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
     # Dan (21:55): one caption line; L to L+3 and the rungs' meanings are in the README's Setup
     line = MUSE_DAGGER + "." + (f" Grey columns: not run ({'; '.join(greyed)})." if greyed else "")
     line += f" Omitted: {'; '.join(omitted)}." if omitted else ""
-    caption(fig, [line], bottom_in - 0.75)
+    if lightning:  # no rung ran on Lightning: one row, its name and why, under the rung labels
+        y = (bottom_in - 0.72) / h
+        fig.text(0.01, y, F.LT[2], ha="left", va="top", fontsize=12, weight="bold")
+        fig.text(0.5, y, F.LT_GATE, ha="center", va="top", color=S.COL["muted"])
+    caption(fig, [line], bottom_in - 0.75 - 0.45 * lightning)
     S.save(fig, out_name)
     return out_name
 
@@ -218,10 +222,12 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
 # ---- fig12: the 2 x 2 ----------------------------------------------------------------------------------------------
 
 
-def n_tag(ax, text: str) -> None:
-    """story_style.panel_tag's look ("n = ..." and the status glyph), in the cell's bottom right under the zero line."""
-    ax.text(0.995, 0.03, f"n = {text}  {S.STATUS_GLYPH['fixed']}", transform=ax.transAxes, ha="right", va="bottom",
-            fontsize=S.FONT - 1, color=S.COL["muted"], zorder=8)  # fmt: skip
+def n_tag(ax, text: str, after: str = "") -> None:
+    """story_style.panel_tag's look ("n = ..." and the status glyph), in the cell's bottom right under the zero line;
+    after: an n drawn after the data (Lightning's), with the open glyph."""
+    tail = f";  {after}  {S.STATUS_GLYPH['after']}" if after else ""
+    ax.text(0.995, 0.03, f"n = {text}  {S.STATUS_GLYPH['fixed']}{tail}", transform=ax.transAxes, ha="right",
+            va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"], zorder=8)  # fmt: skip
 
 
 def main_random_gap(target: str, m: str) -> tuple[float, str]:
@@ -246,29 +252,59 @@ def main_random_gap(target: str, m: str) -> tuple[float, str]:
     return rdep[F.X.RECALL] - rdep[F.X.LOOKUP], str(path.relative_to(S.REPO))
 
 
-def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two") -> str:
+def lightning_main_gap() -> tuple[tuple, float, int, str, str]:
+    """Lightning's main-test cell: the gap of its split by sentence order (all rows; Fig. 1's), the control (each
+    reader's dependence on the random part at L14, recall minus lookup) from its conflict verdict, n, both sources."""
+    c = json.loads(F.LT_SPLIT.read_text())["cells"][f"{F.LT[0]}|swap"]["cells"]["all"]
+    v = json.loads(F.LT_CONFLICT.read_text())
+    rdep = {x["reader"]: x["Rdep"][0] for x in v["cells"]
+            if x["layer"] == F.LT_L and (x["dict"], x["k"], x["omp"]) == F.X.MAIN}  # fmt: skip
+    return tuple(c["gap"]), rdep[F.X.RECALL] - rdep[F.X.LOOKUP], c["n"], rel(F.LT_SPLIT), rel(F.LT_CONFLICT)
+
+
+def build_two_by_two(
+    ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two", lightning: bool = False
+) -> str:
     """Fig. 12: recall minus lookup in four cells, our operation / Zach's x our scenes / his passages, one mark for
     every cell and one scale (Dan's round 3, 28 Oct 21:10): our main-test gap (docs/x0_numbers.json, Fig. 1's); rung 6
     of the ladder on our clean scenes (recall's cost minus the lookup's, every scene; two separate estimates, so no
     joint interval); Z1's gap on his passages (a lookup with fewer than 30 switches is omitted); his stored M - K rows
     on the same passage ids. In every cell a grey tick: the same operation with a random part of the same size (his:
-    his rotated directions), recall minus lookup. The units differ by row (said in the subtitle and the row labels)."""
+    his rotated directions), recall minus lookup. The units differ by row (said in the subtitle and the row labels).
+    lightning: Lightning the fourth column, hollow, from its coverage folders (readme_story_figures.LT_*); the ladder
+    did not run on it (its gate), so its (1, 0) cell is empty."""
     lad_path, z1_path = ladder_dir / "x49_2.json", z1_dir / "z1.json"
     lad = {m["target"]: m for m in json.loads(lad_path.read_text())["models"] if m.get("status") == "tested"}
     z1 = {m["target"]: m for m in json.loads(z1_path.read_text())["models"] if m.get("status") == "tested"}
+    z1_src = dict.fromkeys(z1, rel(z1_path))
+    columns = MODELS
+    if lightning:
+        z1 |= {m["target"]: m for m in json.loads(F.LT_Z1.read_text())["models"]
+               if m.get("status") == "tested" and m["target"] == F.LT[0]}  # fmt: skip
+        z1_src[F.LT[0]] = rel(F.LT_Z1)
+        columns = (*MODELS, F.LT)
     fid = out_name.split("_")[0]
     omitted = []
     cells: dict[tuple[int, int], list] = {(0, 0): [], (0, 1): [], (1, 0): [], (1, 1): []}  # (i, v, control)
     ns: dict[tuple[int, int], list[str]] = {k: [] for k in cells}
+    lt_n: dict[tuple[int, int], str] = {}
     control = "the control (a random part of the same size instead), recall minus lookup"
-    for i, (target, m, _) in enumerate(MODELS):
+    for i, (target, m, _) in enumerate(columns):
+        lt = m == "lightning"
         # (0, 0) our removal on our scenes: the main test's gap (Fig. 1)
-        v = F.interval(f"contrast_{m}")
-        S.record(fid, target, "our removal, our scenes (main test): gap", *v, n=200, source=f"contrast_{m}")
-        ctl, src = main_random_gap(target, m)
-        S.record(fid, target, f"our removal, our scenes (main test): {control}", round(ctl, 4), n=200, source=src)
+        if lt:
+            v, ctl, n0, gsrc, src = lightning_main_gap()
+            v = tuple(round(x, 4) for x in v)
+            S.record(fid, target, "our removal, our scenes (main test): gap", *v, n=n0, source=gsrc)
+            S.record(fid, target, f"our removal, our scenes (main test): {control}", round(ctl, 4), n=n0, source=src)
+            lt_n[(0, 0)] = str(n0)
+        else:
+            v = F.interval(f"contrast_{m}")
+            S.record(fid, target, "our removal, our scenes (main test): gap", *v, n=200, source=f"contrast_{m}")
+            ctl, src = main_random_gap(target, m)
+            S.record(fid, target, f"our removal, our scenes (main test): {control}", round(ctl, 4), n=200, source=src)
+            ns[(0, 0)].append("200")
         cells[(0, 0)].append((i, v, ctl))
-        ns[(0, 0)].append("200")
         # (0, 1) our removal on his passages: Z1's gap at our layer
         mod = z1.get(target)
         lr = mod["layer_results"][str(mod["layers"][0])] if mod else None
@@ -277,20 +313,25 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         else:
             sw = lr["lookup"]["switched_whole"]
             S.record(fid, target, "our removal, his passages: lookup switches under the whole change", sw, n=lr["n"],
-                     source=rel(z1_path))  # fmt: skip
+                     source=z1_src[target])  # fmt: skip
             if sw < VALID_SWITCHES:
                 omitted.append(f"{SHORT[m]} too few switches")
             else:
                 v = tuple(round(x, 4) for x in lr["gap"])
                 ctl = lr["recall"]["Rdep"][0] - lr["lookup"]["Rdep"][0]
-                S.record(fid, target, "our removal, his passages: gap", *v, n=lr["n"], source=rel(z1_path))
+                S.record(fid, target, "our removal, his passages: gap", *v, n=lr["n"], source=z1_src[target])
                 S.record(fid, target, f"our removal, his passages: {control}", round(ctl, 4), n=lr["n"],
-                         source=rel(z1_path))  # fmt: skip
+                         source=z1_src[target])  # fmt: skip
                 cells[(0, 1)].append((i, v, ctl))
-                ns[(0, 1)].append(str(lr["n"]))
+                if lt:
+                    lt_n[(0, 1)] = str(lr["n"])
+                else:
+                    ns[(0, 1)].append(str(lr["n"]))
         # (1, 0) Zach's operation on our scenes: rung 6 of the ladder, recall's cost minus the lookup's (every scene)
         mod = lad.get(target)
-        if mod is None or 6 not in mod["rungs"]:
+        if lt:
+            omitted.append(f"{SHORT[m]} {F.LT_GATE}")
+        elif mod is None or 6 not in mod["rungs"]:
             omitted.append(f"{SHORT[m]} not run")
         else:
             rc, lk = (mod["cells"][w]["all"]["cost"]["6"][0] for w in ("recall", "lookup"))
@@ -311,15 +352,19 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
             continue
         rot, mk = full["paper10_rot"], full["paper10"]
         S.record(fid, target, "Zach's operation, his passages: his rotated-direction control, recall minus lookup",
-                 *[round(x, 4) for x in rot["m_minus_k"]], n=rot["joined"], source=rel(z1_path))  # fmt: skip
+                 *[round(x, 4) for x in rot["m_minus_k"]], n=rot["joined"], source=z1_src[target])  # fmt: skip
         S.record(fid, target, "Zach's operation, his passages: his stored recall minus lookup",
-                 *[round(x, 4) for x in mk["m_minus_k"]], n=mk["joined"], source=rel(z1_path))  # fmt: skip
+                 *[round(x, 4) for x in mk["m_minus_k"]], n=mk["joined"], source=z1_src[target])  # fmt: skip
         cells[(1, 1)].append((i, tuple(mk["m_minus_k"]), rot["m_minus_k"][0]))
-        ns[(1, 1)].append(str(mk["joined"]))
+        if lt:
+            lt_n[(1, 1)] = str(mk["joined"])
+        else:
+            ns[(1, 1)].append(str(mk["joined"]))
 
     # Dan (21:55): one caption line, Muse's dagger and the empty cells; the grey tick's meaning is the legend's and the
     # README's Setup, the K items and the two scopes are E1's card and Zach's report
     lines = [MUSE_DAGGER + ". Empty cells: " + ("; ".join(omitted) if omitted else "none") + "."]
+    lines += [F.LT_NOTE] if lightning else []
     plt = S.setup()
     cell_in, gap_in, top_in = 1.75, 0.62, 1.85
     bottom_in = 0.55 + 0.19 * len(caption_lines(lines))
@@ -335,21 +380,21 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
             ax.bar(i, v[0], width=0.5, fc="none", ec="#9a9a9a", lw=0.9, zorder=2)
             ax.plot([i - 0.3, i + 0.3], [ctl] * 2, color=NULL, lw=2.6, solid_capstyle="butt", zorder=3,
                     path_effects=[pe.withStroke(linewidth=3.8, foreground="white")])  # fmt: skip
-            mark(ax, i, v, INK, "remove", ms=8.5)
+            mark(ax, i, v, INK, "remove", ms=8.5, hollow=columns[i][1] == "lightning")
             ax.text(i + 0.3, v[0], f"{v[0]:.2f}", ha="left", va="center", fontsize=S.FONT - 1, color="#333333",
                     zorder=5)  # fmt: skip
-            if (r, c) == (1, 0) and MODELS[i][1] == "muse":  # the caption line's dagger
+            if (r, c) == (1, 0) and columns[i][1] == "muse":  # the caption line's dagger
                 ax.text(i, max(v[0], ctl) + 0.12, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
         if items:  # Dan (21:50): each cell names its grey tick, under the first one
             i, _, ctl = items[0]
             ax.text(i, ctl - 0.05, "rotated" if (r, c) == (1, 1) else "random", ha="center", va="top",
                     fontsize=S.LABEL_PT, color=S.COL["muted"], zorder=5)  # fmt: skip
         n = ns[(r, c)]
-        n_tag(ax, f"{n[0]} per model" if len(n) == 3 and len(set(n)) == 1 else ", ".join(n))
+        n_tag(ax, f"{n[0]} per model" if len(n) == 3 and len(set(n)) == 1 else ", ".join(n), lt_n.get((r, c), ""))
     for ax in axes.flat:
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
-        ax.set_xlim(-0.55, 2.75)
-        ax.set_xticks(range(3), [SHORT[m] for _, m, _ in MODELS])
+        ax.set_xlim(-0.55, len(columns) - 0.25)
+        ax.set_xticks(range(len(columns)), [SHORT[m] for _, m, _ in columns])
         ax.tick_params(axis="x", length=0)
         ax.set_ylim(-0.36, 1.05)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])

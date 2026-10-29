@@ -519,7 +519,7 @@ def transfer_cells(target: str, reader: str = X.LOOKUP) -> dict[tuple[str, str],
 # README v4 (Dan, 26 Oct ~16:45; docs/figure_plan.md): one claim per figure, in story order, figures/story/figNN_*.png.
 # The 26 Oct files (fig0_setup.png ... fig11_order.png) are in figures/archive/; the detail panels go to figures/supp/.
 
-NAMES = {m: name for _, m, name in S.MODELS}
+NAMES = {m: name for _, m, name in S.MODELS} | {"lightning": "Nemotron 3.5 Lightning"}
 LOWERED_M = {"122b"}  # the 122B's routes, writes and pointer runs: gate lowered to 0.75 after the data
 
 
@@ -665,6 +665,58 @@ SETTINGS = {  # the scene sets' names as docs/glossary.md words them (a newline:
     "natural": ("natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}"),
 }  # fmt: skip
 AFTER_SETTING = {("single", "9b"), ("single", "27b")}  # one-change scenes on the 9B and 27B: after the data
+# Batch 52 (Dan 29 Oct ~08:55): Nemotron 3.5 Lightning is the fourth model; its marks are hollow everywhere (its gate
+# was chosen after the 60-scene pre-check was seen), its layer is L14 (amendment 1). Its coverage verdicts hold
+# Lightning alone, so they are read by path, never through a newest-folder pattern that the three models' runs use.
+LT = ("nemotron-3.5-lightning", "lightning", "Lightning")
+LT_L = 14
+LT_NOTE = "Hollow marks: Lightning's gate chosen after the 60-scene pre-check was seen."
+LT_SPLIT = pins.RESULTS_DIR / "x0_composition" / "split-by-order-20261029T005451Z" / "split.json"
+LT_X0B = pins.RESULTS_DIR / "x0b_generalize" / "nem35l_x52_x0b" / "verdict-20261029T014520Z" / "verdict.json"
+LT_GATE = "not tested (gate)"
+LT_DOSE = pins.RESULTS_DIR / "x51_dose" / "x52_dose-20261029T011635Z"
+LT_ROUTES = pins.RESULTS_DIR / "x6_routes" / "nem35l_x52_routes" / "verdict-20261029T004324Z" / "verdict.json"
+LT_PROBE = pins.RESULTS_DIR / "x0_probe" / "nem35l_x52_probe" / "probe-20261029T002432Z" / "probe.json"
+LT_JREAD = pins.RESULTS_DIR / "x51_jread" / "x52_jread-20261029T005707Z"
+LT_ANATOMY = pins.RESULTS_DIR / "x47_anatomy" / "x52_anatomy-20261029T010517Z" / "x47_8.json"
+LT_SIX = pins.RESULTS_DIR / "x47_six" / "x52_six-20261029T011006Z"
+LT_CONFLICT = pins.RESULTS_DIR / "x0_necessity" / "nem35l_x52_conflict" / "verdict-20261029T001612Z" / "verdict.json"
+LT_Z1 = pins.RESULTS_DIR / "x50_zach" / "x52_z1-20261029T013035Z" / "z1.json"
+LT_SWAP = pins.RESULTS_DIR / "x8_write" / "nem35l_x52_write" / "verdict-20261029T005021Z" / "verdict.json"
+SHORT["lightning"] = "Lightning"
+
+
+def lightning_cell(setting: str) -> dict:
+    """split_cell's dict for Lightning: the main test from its split by sentence order ('all' rows of the conflict
+    test at L14), the varied scenes from its X0b verdict; the other settings were not tested (the clean one-pick
+    designs and the natural passages failed their gates)."""
+    out = {"lk": None, "rc": None, "gap": None, "src": "", "mark": "", "kind": "after", "note": "not run"}
+    if setting == "main":
+        c = json.loads(LT_SPLIT.read_text())["cells"][f"{LT[0]}|swap"]["cells"]["all"]
+        out.update(lk=tuple(c["lookup"]), rc=tuple(c["recall"]), gap=tuple(c["gap"]), src=rel(LT_SPLIT))
+    elif setting == "varied":
+        v = json.loads(LT_X0B.read_text())
+        cell = {c["reader"]: tuple(c["excess"]) for c in v["cells"] if c["layer"] == LT_L and c["dict"] == "jpp"
+                and c["k"] == X.K_MAIN and c["omp"] == "signed"}  # fmt: skip
+        out.update(lk=cell[X.LOOKUP], rc=cell[X.RECALL], gap=tuple(v["contrast"][str(LT_L)]), src=rel(LT_X0B))
+    elif setting in ("natural", "clean"):
+        out["note"] = LT_GATE
+    return out
+
+
+def lightning_transfer(reader: str) -> dict[tuple[str, str], tuple | str | None]:
+    """transfer_cells' dict for Lightning: prose / JSON / table from its X0b verdict's format strata (L14, J++ k=25
+    signed); (scenes, "why") where a row has no cell: no run on the pointer directions' own simple scenes, and its
+    natural passages failed their gate."""
+    out: dict = {("simple", "why"): "not run", ("natural", "why"): LT_GATE}
+    for s in json.loads(LT_X0B.read_text())["strata"]:
+        if s["feature"] == "format" and s["reader"] == reader:
+            out[(s["value"], "jpp")] = tuple(s["excess"])
+            out[(s["value"], "switched")] = (s["switched_whole"], s["n"])
+            out[(s["value"], "src")] = rel(LT_X0B)
+    return out
+
+
 GAP_BAR, LOOKUP_BAR = 0.30, 0.10  # 45m's rule (batch45.yaml): the split holds if gap >= 0.3 and lookup <= 0.10
 VALID_SWITCHES = 30  # X0's validity bar: a lookup extra loss is drawn only on at least 30 switches
 
@@ -679,6 +731,8 @@ def blend(fig, ax):
 def split_cell(setting: str, target: str, m: str) -> dict:
     """lk / rc / gap as (v, lo, hi), kind (fixed / after), mark (the degree sign), src; lk None where the lookup switches
     too rarely (Muse's natural passages)."""
+    if m == "lightning":
+        return lightning_cell(setting)
     _, lk_k, rc_k, gap_k = SETTINGS[setting]
     if setting == "varied":
         lk, rc = x0b_cell(target, X.LOOKUP), x0b_cell(target, X.RECALL)
@@ -715,7 +769,7 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True, mo
         labels.append((name if ci else SHORT[m]) + c["mark"])
         lk, rc, y = c["lk"], c["rc"], -i
         if rc is None:
-            ax.text(0.4, y, "not run", ha="center", va="center", color=S.COL["muted"])
+            ax.text(0.4, y, c.get("note", "not run"), ha="center", va="center", color=S.COL["muted"])
             continue
         if lk is None:
             S.dot(ax, 0, y, rc, S.COL["recall"], c["kind"])
@@ -738,7 +792,8 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True, mo
                     color=S.COL["muted"], clip_on=False)  # fmt: skip
         S.record(fig_id, target, f"{what}: lookup extra loss", *lk, source=c["src"])
         S.record(fig_id, target, f"{what}: recall extra loss", *rc, source=c["src"].replace("lk", "rc"))
-        S.record(fig_id, target, f"{what}: gap", *gap, source=SETTINGS[setting][3].format(m=m))
+        S.record(fig_id, target, f"{what}: gap", *gap,
+                 source=c["src"] if m == "lightning" else SETTINGS[setting][3].format(m=m))  # fmt: skip
     ax.set_ylim(-len(models) + 0.45, 0.92 if gap_col else 0.55)
     ax.set_yticks([-i for i in range(len(models))], labels)
     ax.tick_params(axis="y", length=0)
@@ -752,11 +807,12 @@ def f01_split(plt) -> None:
     """E1 (v6): the main test, fixed in advance, per model (9B, 27B, Muse) the lookup's and the recall's J++ extra loss
     with 95% intervals, joined; at the right the gap with its interval. The 122B is in s01 (every scene set), the other
     settings in Fig. 1b (fig01b_settings), the split by sentence order in E10 (fig03_order, s03_order_extra_loss)."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.9))
-    fig.subplots_adjust(left=0.215, right=0.70, top=0.70, bottom=0.17)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.7))
+    fig.subplots_adjust(left=0.215, right=0.70, top=0.735, bottom=0.2)
     S.title(fig, "Recall follows the J++ part of the bridge; the lookup mostly does not",
             "Extra loss: switches lost without the J++ part, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
-    split_rows(ax, "main", "fig01", ci=True, gap_col=False, models=V6_MODELS)
+    rows = (*V6_MODELS, LT)  # Lightning the fourth row (batch 52), its marks hollow
+    split_rows(ax, "main", "fig01", ci=True, gap_col=False, models=rows)
     # the 122B is drawn in s01 only; its fig01 rows stay in data.csv because scripts/joint_figures.py (j1) reads them
     for target, m, _ in S.MODELS:
         if m == "122b":
@@ -767,8 +823,8 @@ def f01_split(plt) -> None:
     first = split_cell("main", *V6_MODELS[0][:2])
     for v, name, col in ((first["lk"], "lookup", S.COL["lookup"]), (first["rc"], "recall", S.COL["recall"])):
         ax.text(v[0], 0.38, name, ha="center", va="bottom", weight="bold", color=col)
-    ax.set_ylim(-3.05, 0.6)  # room for the band's label under the last row
-    ax.text(-0.05, -2.72, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
+    ax.set_ylim(-4.05, 0.6)  # room for the band's label under the last row
+    ax.text(-0.05, -3.72, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
             linespacing=1.0)  # fmt: skip
     ax.set_xlabel("extra loss without the J++ part")
     # the gap (recall minus lookup) and its interval, fixed in advance
@@ -776,11 +832,16 @@ def f01_split(plt) -> None:
     x_gap, x_ci = 0.725, 0.79
     ax.text(x_gap, 0.38, "gap: recall − lookup", transform=tr, va="bottom", color=S.COL["muted"])
     ns = set()
-    for i, (_, m, _) in enumerate(V6_MODELS):
-        g = interval(f"contrast_{m}")
-        ns.add(N[f"n_{m}"])
+    for i, (_, m, _) in enumerate(rows):
+        if m == "lightning":
+            g = lightning_cell("main")["gap"]
+            ns.add(str(json.loads(LT_SPLIT.read_text())["cells"][f"{LT[0]}|swap"]["cells"]["all"]["n"]))
+        else:
+            g = interval(f"contrast_{m}")
+            ns.add(N[f"n_{m}"])
         ax.text(x_gap, -i, f"{g[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2, weight="bold")
         ax.text(x_ci, -i, f"[{g[1]:.2f}, {g[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
+    fig.text(0.01, 0.02, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
     ax.text(0.0, 1.13, "main test (two people swap picks)", transform=ax.transAxes, fontsize=12, weight="bold",
             va="bottom")  # fmt: skip
     S.panel_tag(ax, "–".join(sorted(ns)) + " per model", "fixed")
@@ -1063,11 +1124,15 @@ def order_cells() -> dict[tuple[str, str, str], dict]:
 
 def order_switches(target: str, m: str) -> dict[tuple[str, str], tuple[float, float, float, int, str]]:
     """The main test's switches under the whole change at the layer fixed in advance, split by sentence order (after
-    the data): (before / after, lookup / recall) -> (share, Wilson lo, hi, n, source)."""
+    the data): (before / after, lookup / recall) -> (share, Wilson lo, hi, n, source). Lightning: its conflict test
+    (the run its split by sentence order reads) at L14."""
     from bridge_jspace.stats import wilson
     from scripts import x0_strata as ST
 
-    run, la = MAIN_RUNS[m], X.PREDICTED[target]
+    if m == "lightning":
+        run, la = json.loads(LT_SPLIT.read_text())["manifest"]["inputs"][f"{LT[0]}|swap"].split("/")[1], LT_L
+    else:
+        run, la = MAIN_RUNS[m], X.PREDICTED[target]
     rows = [x for x in XF.Run(run).rows if x["rendering"] == "chat" and x["layer"] == la and x["arm"] == "whole"]
     cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
     src = f"results/x0_necessity/{run}/outcomes.jsonl"
@@ -1217,8 +1282,9 @@ def f03_order(plt) -> None:
     the sweep after the data (open marks), the rule's arms fixed in advance (filled: at L the bridge-word change and the
     copy, at L/2 the copy); one block per model on one axis, x = the layer index (ticks 0, L, the last layer swept).
     The old Fig. 3 with the 122B and its extra-loss panel: figures/supp/s03_order_split; the old Fig. 3b stays
-    fig03b_layers until the README drops it."""
-    h = 10.8
+    fig03b_layers until the README drops it. Lightning (batch 52, hollow): A from its conflict test at L14, B from its
+    Z1 run (LT_Z1), C not tested (its clean one-pick scenes missed their gate)."""
+    h = 11.55
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
@@ -1227,26 +1293,30 @@ def f03_order(plt) -> None:
     S.title(fig, "Locker after the pick: the link is made in the locker sentences",
             "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer.")  # fmt: skip
     a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
-    zb = fig.add_axes(box(0.11, 0.86, 5.0, 6.4))
-    b = fig.add_axes(box(0.11, 0.81, 7.65, 9.9))
+    zb = fig.add_axes(box(0.11, 0.86, 5.35, 6.75))  # four models: three-line order labels, two-line names
+    b = fig.add_axes(box(0.11, 0.81, 8.3, 10.55))
+    long_name = {**NAMES, "lightning": "Nemotron 3.5\nLightning"}
 
     # (a) the order split
     w = 0.34
     ns = []
-    for i, (target, m, _) in enumerate(V6_MODELS):
-        sw = order_switches(target, m)
+    rows = (*V6_MODELS, LT)
+    hollow_bar = {"facecolor": "white", "edgecolor": S.COL["lookup"], "lw": 1.6}
+    for i, (target, m, _) in enumerate(rows):
+        sw, lt = order_switches(target, m), m == "lightning"
         for j, order in enumerate(("before", "after")):
             x = i + (j - 0.5) * 0.42
             p, lo, hi, n, src = sw[(order, "lookup")]
-            a.bar(x, p, width=w, color=S.COL["lookup"], zorder=2)
+            a.bar(x, p, width=w, zorder=2, **(hollow_bar if lt else {"color": S.COL["lookup"]}))
             a.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
             a.text(x, hi + 0.02, f"{p:.2f}", ha="center", va="bottom", fontsize=S.FONT - 1, color=S.COL["lookup"],
                    weight="bold")  # fmt: skip
             r = sw[(order, "recall")]
             xr = x + w / 2 + 0.05  # the recall beside its lookup bar
             a.plot([xr, xr], [r[1], r[2]], color=S.COL["recall"], lw=1.2, zorder=4)
-            a.plot([xr], [r[0]], "D", ms=5.5, color=S.COL["recall"], mec="white", mew=0.6, zorder=5)
-            a.text(x, -0.04, f"locker {order}\nthe pick", ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            a.plot([xr], [r[0]], "D", ms=5.5, color=S.COL["recall"], zorder=5,
+                   **({"mfc": "white", "mew": 1.2} if lt else {"mec": "white", "mew": 0.6}))  # fmt: skip
+            a.text(x, -0.04, f"locker\n{order}\nthe pick", ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
             if i == 0 and j == 0:  # Dan (21:50): the panel names its two marks, on its first pair
                 a.text(xr + 0.06, r[0], "recall", ha="left", va="center", fontsize=S.LABEL_PT, color=S.COL["recall"])
                 a.text(x, p / 2, "lookup", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT, color="white")
@@ -1255,8 +1325,8 @@ def f03_order(plt) -> None:
                 S.record("fig03", target, f"{what}s switched by the whole change, locker sentence {order} the pick",
                          round(v0, 4), round(v1, 4), round(v2, 4), nn, source=src)  # fmt: skip
             ns.append(n)
-        a.text(i, -0.25, NAMES[m], ha="center", va="top", fontsize=S.FONT, weight="bold")
-    a.set_xlim(-0.6, len(V6_MODELS) - 0.4)
+        a.text(i, -0.33, long_name[m], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
+    a.set_xlim(-0.6, len(rows) - 0.4)
     a.set_ylim(0, 1.05)
     a.set_xticks([])
     a.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
@@ -1270,17 +1340,21 @@ def f03_order(plt) -> None:
     # (b) Z1 on Zach's passages (the order split fixed after the gate, before the data): the lookup's switch under the
     # whole change, the bridge's fact sentence before vs after the sentence that names the bridge, at our layer
     zdir = latest_verdict("x50_zach/z1-*")
-    zsrc = rel(zdir / "z1.json")
     zns = []
-    for i, mod in enumerate(sorted((x for x in json.loads((zdir / "z1.json").read_text())["models"]
-                                    if x["status"] == "tested"), key=lambda x: [t for t, _, _ in V6_MODELS].index(x["target"]))):  # fmt: skip
+    zmods = sorted((x for x in json.loads((zdir / "z1.json").read_text())["models"] if x["status"] == "tested"),
+                   key=lambda x: [t for t, _, _ in V6_MODELS].index(x["target"]))  # fmt: skip
+    zmods = [(mod, rel(zdir / "z1.json")) for mod in zmods]
+    zmods += [(mod, rel(LT_Z1)) for mod in json.loads(LT_Z1.read_text())["models"]
+              if mod["status"] == "tested" and mod["target"] == LT[0]]  # fmt: skip
+    for i, (mod, zsrc) in enumerate(zmods):
         target, la = mod["target"], str(mod["layers"][0])  # our layer (the Muse's L36 has no lookup switch)
-        m = next(k for t, k, _ in S.MODELS if t == target)
+        m = next(k for t, k, _ in rows if t == target)
+        lt = m == "lightning"
         strata = mod["layer_results"][la]["order"]["strata"]
         for j, (key, label) in enumerate((("fact-first", "fact\nfirst"), ("fact-after", "fact\nafter"))):
             x = i + (j - 0.5) * 0.42
             p, lo, hi = strata[key]["whole_switch"]
-            zb.bar(x, p, width=w, color=S.COL["lookup"], zorder=2)
+            zb.bar(x, p, width=w, zorder=2, **(hollow_bar if lt else {"color": S.COL["lookup"]}))
             zb.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
             zb.text(x, hi + 0.02, f"{p:.2f}", ha="center", va="bottom", fontsize=S.FONT - 1, color=S.COL["lookup"],
                     weight="bold")  # fmt: skip
@@ -1290,8 +1364,8 @@ def f03_order(plt) -> None:
             S.record("fig03", target, f"Zach's passages, L{la}: lookups switched by the whole change, {key}",
                      round(p, 4), round(lo, 4), round(hi, 4), strata[key]["n"], source=zsrc)  # fmt: skip
             zns.append(strata[key]["n"])
-        zb.text(i, -0.36, NAMES[m], ha="center", va="top", fontsize=S.FONT, weight="bold")
-    zb.set_xlim(-0.6, len(V6_MODELS) - 0.4)
+        zb.text(i, -0.36, long_name[m], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
+    zb.set_xlim(-0.6, len(rows) - 0.4)
     zb.set_ylim(0, 1.05)
     zb.set_xticks([])
     zb.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
@@ -1315,11 +1389,15 @@ def f03_order(plt) -> None:
     sweep = json.loads((d["sweep"] / "sweep.json").read_text())["runs"]
     by = {mod["model"]: mod for mod in v["models"] if mod["status"] != "pending"}
     ticks, tick_labels, nq = [], [], []
-    for k, (target, m) in enumerate(Q_MODELS):
+    blocks = (*Q_MODELS, LT[:2])
+    for k, (target, m) in enumerate(blocks):
         x0 = k * BLOCK
         mod = by.get(target)
         b.text(x0 + 0.5, -0.14, SHORT[m], transform=b.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT,
                weight="bold")  # fmt: skip
+        if m == "lightning":
+            b.text(x0 + 0.5, 0.5, LT_GATE, ha="center", color=S.COL["muted"])
+            continue
         if mod is None or mod["run"] not in sweep or "readers" not in mod:
             b.text(x0 + 0.5, 0.5, "not run" if mod is None else "not tested", ha="center", color=S.COL["muted"])
             continue
@@ -1361,7 +1439,7 @@ def f03_order(plt) -> None:
             b.text(at(cells[0]["layer"]) + 0.02, 0.45, "change at the\nbridge word", va="center", ha="left",
                    fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0, zorder=4,
                    bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})  # fmt: skip
-    b.set_xlim(-0.06, (len(Q_MODELS) - 1) * BLOCK + 1.06)
+    b.set_xlim(-0.06, (len(blocks) - 1) * BLOCK + 1.06)
     b.set_xticks(ticks, tick_labels)
     b.set_ylim(-0.03, 1.05)
     b.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
@@ -1376,6 +1454,7 @@ def f03_order(plt) -> None:
           plt.Line2D([], [], marker="o", ls="", ms=8, color=S.COL["lookup"], mec="#1e1e1e")]  # fmt: skip
     legend(fig, hs, ["lookup", "recall", "the change at the bridge word", "the change copied into the locker sentences",
                      "the rule, fixed in advance"], 1 - 0.62 / h, ncol=3)  # fmt: skip
+    fig.text(0.01, 0.1 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
     S.save(fig, "fig03_order")
 
 
@@ -1901,22 +1980,25 @@ def f05_routes(plt) -> None:
     identity / position share with its 95% interval, the original answer empty; under the second row a thin light grey
     bar for the position answers without a random part of the same size; the value's share (0.00 on every row) in the
     legend, not as a box per row (v6 iteration 2). Under the plot, the three routes defined in one line (Dan's Fig. 4 /
-    5 brief). The 122B and the keep-only arms are in s05."""
+    5 brief). The 122B and the keep-only arms are in s05. Lightning (batch 52) the fourth block, at L14, its bars
+    hollow (outlined)."""
     # Dan (21:55): no line under the plot; the routes are defined once, in the README's Setup
-    h, cap = 5.45, 0.05
+    h, cap, lt_in = 6.85, 0.05, 1.08  # lt_in: Lightning's block
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "The lookup takes the identity route or the position route, never the value",
             "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.",
             limit=80)  # fmt: skip
-    left_ax = fig.add_axes((0.01, (0.22 + cap) / h, 0.40, 3.75 / h))
+    left_ax = fig.add_axes((0.01, (0.22 + cap + lt_in + 0.3) / h, 0.40, 3.75 / h))
     routes_drawing(plt, left_ax)
     left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
-    ax = fig.add_axes((0.625, (0.54 + cap) / h, 0.355, 3.24 / h))
+    ax = fig.add_axes((0.625, (0.54 + cap + 0.3) / h, 0.355, (3.24 + lt_in) / h))
     models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # v6: the 122B in supplements only
     gap, y, ticks, labels, ns, values = 2.75, 0.0, [], [], [], []
-    for target, m in models:
-        run = ROUTE_RUNS[m][0]
-        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+    for target, m in (*models, LT[:2]):
+        lt = m == "lightning"
+        run = rel(LT_ROUTES) if lt else ROUTE_RUNS[m][0]
+        v = json.loads(LT_ROUTES.read_text()) if lt else latest(pins.RESULTS_DIR / "x6_routes" / run,
+                                                                 "verdict-*/verdict.json")  # fmt: skip
         rows = {r["arm"]: r for r in (v or {}).get("rows", []) if r["condition"] == "C2"}
         ax.text(-0.02, y + 0.62, NAMES[m], transform=ax.get_yaxis_transform(), ha="right", va="center",
                 fontsize=S.FONT, weight="bold")  # fmt: skip
@@ -1933,12 +2015,15 @@ def f05_routes(plt) -> None:
             left = 0.0
             for route in ("identity", "position"):
                 sh = r["share"][route]
-                ax.barh(yi, sh[0], left=left, height=0.62, color=ROUTE_COL[route], lw=0)
+                fill = (
+                    {"fc": "white", "ec": ROUTE_COL[route], "lw": 1.6} if lt else {"color": ROUTE_COL[route], "lw": 0}
+                )
+                ax.barh(yi, sh[0], left=left, height=0.62, **fill)
                 ax.plot([left + sh[1], left + sh[2]], [yi - 0.2, yi - 0.2], color="#1e1e1e", lw=1.2,
                         solid_capstyle="butt")  # fmt: skip
                 if sh[0] >= 0.15:
                     ax.text(left + sh[0] / 2, yi + 0.06, f"{sh[0]:.2f}", ha="center", va="center", fontsize=S.FONT,
-                            color="white" if route == "identity" else "#222222")  # fmt: skip
+                            color="white" if route == "identity" and not lt else "#222222")  # fmt: skip
                 left += sh[0]
             ax.barh(yi, 1 - left, left=left, height=0.62, **S.EMPTY)  # the original answer (and other)
             for route, _ in ROUTES:
@@ -1949,7 +2034,8 @@ def f05_routes(plt) -> None:
             if rr is not None:
                 pos = rr["share"]["position"]
                 yc = yi - 0.48
-                ax.barh(yc, pos[0], height=0.16, color=S.COL["control"], lw=0)
+                ax.barh(yc, pos[0], height=0.16, **({"fc": "white", "ec": "#9a9a9a", "lw": 1.0} if lt
+                                                    else {"color": S.COL["control"], "lw": 0}))  # fmt: skip
                 ax.plot([pos[1], pos[2]], [yc, yc], color="#7a7a7a", lw=1.0, solid_capstyle="butt")
                 ax.text(pos[2] + 0.02, yc, f"{pos[0]:.2f}", va="center", fontsize=S.FONT, color=S.COL["muted"])
                 S.record("fig05", target, f"another item moved, {rand}: position share", *pos, n=rr["n"], source=run)
@@ -1961,8 +2047,13 @@ def f05_routes(plt) -> None:
     ax.set_yticks(ticks, labels)
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("share of lookups")
-    ax.text(-0.5, 1.09, "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold", va="bottom")
+    ax.text(-0.5, 1 + 0.29 / (3.24 + lt_in), "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold",
+            va="bottom")  # fmt: skip
+    lt_n = ns.pop()  # Lightning's n beside its own block, with its open glyph
     S.panel_tag(ax, ", ".join(ns), "fixed")
+    ax.text(1.0, y + gap + 0.62, f"n = {lt_n}  {S.STATUS_GLYPH['after']}", ha="right", va="center",
+            transform=ax.get_yaxis_transform(), fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
+    fig.text(0.01, 0.12 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
     top = max(values, default=0.0)
     value_label = "value: 0.00 in every row" if top < 0.005 else f"value: at most {top:.2f}"
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["position"]),
@@ -2052,7 +2143,7 @@ def f06_depth(plt) -> None:
 
 
 ADDRESS_COL = "#a63d40"  # v6: the address's own hue (no other meaning on the README figures)
-SWAP_MARK = {"9b": ("o", "-"), "27b": ("s", "--"), "muse": ("^", ":")}  # Fig. 7 (c): one purple line per model
+SWAP_MARK = {"9b": ("o", "-"), "27b": ("s", "--"), "muse": ("^", ":"), "lightning": ("D", "-.")}  # Fig. 7 (c)
 
 
 def route_row(run: str, arm: str) -> dict:
@@ -2080,10 +2171,12 @@ def f07_writes(plt) -> None:
     (rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>). (c) The swap by dose (x × a real change's
     size): the lookups sent to the target locker, all locker pairs pooled (the README's x8_t<s>_<m>, 95% band), and a
     random vector of the same size; the mean over locker pairs (the 26 Oct line) is still recorded. The recall's
-    answers under the strongest swap: figures/supp/s07_recall_follows_swap."""
+    answers under the strongest swap: figures/supp/s07_recall_follows_swap. Lightning (batch 52, hollow) in each panel
+    from its coverage folders (LT_PROBE, LT_ROUTES, LT_SWAP); its swap has no recall stage, so its real change's dose
+    s* is the recall stage's formula on the run's manifest norms (scripts/x8_write.py)."""
     from scripts import x0_details as XD
 
-    h = 8.25
+    h = 9.2
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
@@ -2091,24 +2184,32 @@ def f07_writes(plt) -> None:
 
     S.title(fig, "The address carries the position route; swapping it moves the lookup",
             "A: a probe at the bridge word. B: without the address, or with only the address, at L. C: the swap, by dose.")  # fmt: skip
-    a = fig.add_axes(box(0.185, 0.21, 2.1, 4.3))
-    b = fig.add_axes(box(0.675, 0.27, 2.1, 4.3))
-    c = fig.add_axes(box(0.155, 0.70, 5.5, 7.6))
+    a = fig.add_axes(box(0.185, 0.21, 2.1, 5.0))
+    b = fig.add_axes(box(0.675, 0.27, 2.1, 5.0))
+    c = fig.add_axes(box(0.155, 0.70, 6.2, 8.3))
     head = {"fontsize": 12, "weight": "bold", "va": "bottom", "linespacing": 1.05}
     fig.text(0.01, 1 - 1.78 / h, "A  A probe reads the address", **head)
     # B's claim on two lines, from the left edge of its row labels
     fig.text(0.44, 1 - 1.78 / h, "B  Without the address, position answers go;\n      with only the address, they come back",
              **head)  # fmt: skip
-    names = [NAMES[m] for _, m, _ in V6_MODELS]  # the first panel names the models in full; "9B" after
+    names = [NAMES[m] for _, m, _ in V6_MODELS] + ["Nemotron 3.5\nLightning"]  # in full here; "9B" after
 
     # (a) the probe against the layout alone
     ns_a = []
-    for i, (target, m, _) in enumerate(V6_MODELS):
-        src, rows = XD.probe_v4_rows(m)
+    for i, (target, m, _) in enumerate((*V6_MODELS, LT)):
+        lt = m == "lightning"
+        if lt:
+            src = rel(LT_PROBE)
+            rows = {(r["target"], r["stratum"]): r for r in json.loads(LT_PROBE.read_text())["rows"]
+                    if r["subset"] == "all"}  # fmt: skip
+        else:
+            src, rows = XD.probe_v4_rows(m)
         r = rows[(XD.PROBE_TARGETS["slot"], XD.PROBE_ORDERS["first"])]
-        for key, v in ((f"v4_b_before_{m}", r["probe"]), (f"v4_b_layout_before_{m}", r["layout"])):
+        for key, v in () if lt else ((f"v4_b_before_{m}", r["probe"]), (f"v4_b_layout_before_{m}", r["layout"])):
             assert N[key] == f"{v[0]:.2f}", (key, N[key], v)  # the README's number, from the same file
         hbar(a, -i + 0.13, r["probe"], ADDRESS_COL, 0.42)
+        if lt:  # hollow
+            a.patches[-1].set(facecolor="white", edgecolor=ADDRESS_COL, lw=1.6)
         hbar(a, -i - 0.24, r["layout"], "white", 0.16, ec="#7a7a7a")
         # the layout baseline: hatched, so light grey stays the random part's alone
         a.patches[-1].set(edgecolor="#9a9a9a", hatch="////", lw=0.6)
@@ -2121,25 +2222,31 @@ def f07_writes(plt) -> None:
             a.text(0.03, -i + 0.13, "probe", va="center", fontsize=S.LABEL_PT, color="white", zorder=4)
             a.text(max(r["layout"][0], r["layout"][2]) + 0.27, -i - 0.24, "layout", va="center", fontsize=S.LABEL_PT,
                    color=S.COL["muted"])  # fmt: skip
-    a.set_yticks([0, -1, -2], names)
-    a.set_ylim(-2.55, 0.5)
+    a.set_yticks([0, -1, -2, -3], names)
+    a.set_ylim(-3.55, 0.5)
 
     # (b) without the address / with only the address, each against its random part
     ns_b = []
     ticks, labels = [], []
-    for i, (target, m, _) in enumerate(V6_MODELS):
-        run, keep = ROUTE_RUNS[m]
+    lt_rows = {r["arm"]: r for r in json.loads(LT_ROUTES.read_text())["rows"] if r["condition"] == "C2"}
+    for i, (target, m, _) in enumerate((*V6_MODELS, LT)):
+        lt = m == "lightning"
+        run, keep = (None, None) if lt else ROUTE_RUNS[m]
         for j, (rn, arm, ctl, label, key) in enumerate(
                 ((run, "no_alf", "no_alf_rand", "without the address", "rt_C2_no_alf"),
                  (keep, "keep_alf", "keep_alf_rand", "only the address", "rtk_C2_keep_alf"))):  # fmt: skip
             y = -1.25 * i - 0.55 * j
-            got, rand = route_row(rn, arm), route_row(rn, ctl)
-            for k, row in ((f"{key}_position_{m}", got), (f"{key}_rand_position_{m}", rand)):
+            got, rand = (lt_rows[arm], lt_rows[ctl]) if lt else (route_row(rn, arm), route_row(rn, ctl))
+            for k, row in () if lt else ((f"{key}_position_{m}", got), (f"{key}_rand_position_{m}", rand)):
                 stated = S.parse(N[k])
                 assert stated is not None, k
                 assert stated[0] == round(row["share"]["position"][0], 2), (k, N[k])
             hbar(b, y + 0.08, got["share"]["position"], S.COL["position"], 0.26)
+            if lt:  # hollow
+                b.patches[-1].set(facecolor="white", edgecolor=S.COL["position"], lw=1.6)
             hbar(b, y - 0.15, rand["share"]["position"], S.COL["control"], 0.10)
+            if lt:
+                b.patches[-1].set(facecolor="white", edgecolor="#9a9a9a", lw=1.0)
             if i == 0 and j == 0:  # Dan (21:50): the panel names its two bars, on its first row
                 gp, rp = got["share"]["position"], rand["share"]["position"]
                 b.text(max(gp[0], gp[2]) + 0.22, y + 0.08, "position answers", va="center", fontsize=S.LABEL_PT,
@@ -2150,7 +2257,8 @@ def f07_writes(plt) -> None:
                 ns_b.append(str(got["n"]))
             ticks.append(y)
             labels.append(f"{SHORT[m]} · {label}")
-            src = str(newest(pins.RESULTS_DIR / "x6_routes" / rn, "verdict-*/verdict.json").relative_to(S.REPO))
+            src = rel(LT_ROUTES) if lt else str(newest(pins.RESULTS_DIR / "x6_routes" / rn,
+                                                        "verdict-*/verdict.json").relative_to(S.REPO))  # fmt: skip
             S.record("fig07", target, f"another item moved, {arm}: position share", *got["share"]["position"],
                      n=got["n"], source=src)  # fmt: skip
             S.record("fig07", target, f"another item moved, {ctl}: position share", *rand["share"]["position"],
@@ -2167,17 +2275,27 @@ def f07_writes(plt) -> None:
     a.set_xlabel("share of scenes")
     b.set_xlabel("position answers (share)")
     S.panel_tag(a, ", ".join(ns_a), "after")
-    S.panel_tag(b, ", ".join(ns_b), "fixed")
+    S.panel_tag(b, f"{', '.join(ns_b[:-1])}  {S.STATUS_GLYPH['fixed']};  {ns_b[-1]}", "after")  # Lightning: open
 
     # (c) the swap by dose, pooled over the locker pairs, against a random vector of the same size
     ends = []
-    for target, m, _ in V6_MODELS:
-        root = pins.RESULTS_DIR / "x8_write" / X8_RUNS[m]
-        v, rc = latest(root, "verdict-*/verdict.json"), latest(root, "recall-*/recall.json")
-        assert v is not None, f"{X8_RUNS[m]}: no verdict"
-        assert rc is not None, f"{X8_RUNS[m]}: no recall stage"
-        src = str(newest(root, "verdict-*/verdict.json").relative_to(S.REPO))
-        mean_star = sum(rc["s_real"].values()) / len(rc["s_real"])
+    for target, m, _ in (*V6_MODELS, LT):
+        lt = m == "lightning"
+        if lt:
+            v, run_name, src = json.loads(LT_SWAP.read_text()), rel(LT_SWAP), rel(LT_SWAP)
+            norms = v["manifest"]["norms"]  # scripts/x8_write.py's recall stage: s* = median ||U U^T Delta|| / step
+            s_real = {pair: norms["median_U_UT_delta_C2"] / step for pair, step in norms["step"].items()}
+        else:
+            root = pins.RESULTS_DIR / "x8_write" / X8_RUNS[m]
+            v, rc = latest(root, "verdict-*/verdict.json"), latest(root, "recall-*/recall.json")
+            assert v is not None, f"{X8_RUNS[m]}: no verdict"
+            assert rc is not None, f"{X8_RUNS[m]}: no recall stage"
+            run_name, src, s_real = (
+                X8_RUNS[m],
+                str(newest(root, "verdict-*/verdict.json").relative_to(S.REPO)),
+                rc["s_real"],
+            )
+        mean_star = sum(s_real.values()) / len(s_real)
         mk, ls = SWAP_MARK[m]
         by_s: dict[float, list[float]] = {}  # the mean over locker pairs, as recorded since 26 Oct
         for cell in v["cells"]:
@@ -2185,27 +2303,30 @@ def f07_writes(plt) -> None:
                 by_s.setdefault(cell["s"], []).append(cell["target"][0])
         for s, t in sorted(by_s.items()):
             S.record("fig07", target, f"lookup target share, mean over locker pairs, s = {s:g}", round(sum(t) / len(t), 4),
-                     source=X8_RUNS[m])  # fmt: skip
-            S.record("fig07", target, f"dose (s / mean s*), s = {s:g}", round(s / mean_star, 4), source=X8_RUNS[m])
+                     source=run_name)  # fmt: skip
+            S.record("fig07", target, f"dose (s / mean s*), s = {s:g}", round(s / mean_star, 4), source=run_name)
         for kind, col in (("write", S.COL["lookup"]), ("random", S.COL["control"])):
             pts = sorted((cell["s"], cell["target"], cell["n"]) for cell in v["cells"]
                          if cell["kind"] == kind and cell["pair"] is None)  # fmt: skip
             x = [s / mean_star for s, _, _ in pts]
             y = np.array([t for _, t, _ in pts])
+            hollow = {"mfc": "white", "mew": 1.5} if lt else {}
             if kind == "write":
                 c.fill_between(x, y[:, 1], y[:, 2], color=col, alpha=0.15, lw=0, zorder=1)
-                c.plot(x, y[:, 0], color=col, ls=ls, lw=2.2, marker=mk, ms=6.5, zorder=3)
+                c.plot(x, y[:, 0], color=col, ls=ls, lw=2.2, marker=mk, ms=6.5, zorder=3, **hollow)
                 ends.append((x[-1], y[-1, 0], SHORT[m]))
             else:
-                c.plot(x, y[:, 0], color=col, ls=ls, lw=1.6, marker=mk, ms=6, zorder=2)
+                c.plot(x, y[:, 0], color=col, ls=ls, lw=1.6, marker=mk, ms=6, zorder=2, **hollow)
                 c.vlines(x, y[:, 1], y[:, 2], color=col, lw=1.2, zorder=2)
             for (s, t, n), xi in zip(pts, x, strict=True):
                 # the random rows keep their 26 Oct quantity (scripts/joint_figures.py's j3 reads it)
                 q = (f"swap: lookups to the target locker, pooled over locker pairs, dose {xi:.2f} (s = {s:g})"
                      if kind == "write" else f"lookup target share, random direction, s = {s:g}")  # fmt: skip
                 S.record("fig07", target, q, *t, n=n, source=src)
-    for xe, ye, name in ends:  # Muse and the 27B end near the same share: Muse's label above its line
-        c.text(xe + 0.07, ye + (0.06 if name == "Muse" else -0.02), name, va="center", fontsize=S.FONT,
+    for xe, ye, name in ends:  # Muse and the 27B end near the same share: Muse's label above its line; Lightning's
+        # last point sits on the 9B's line: its label under it
+        dy = {"Muse": 0.06, "Lightning": -0.085}.get(name, -0.02)
+        c.text(xe + 0.07, ye + dy, name, va="center", fontsize=S.FONT,
                color=S.COL["lookup"], weight="bold")  # fmt: skip
     c.axvline(1, color="#555555", lw=1, ls=":", zorder=0)
     c.text(1.04, 0.97, "as large as\na real change", transform=c.get_xaxis_transform(), va="top", color="#555555",
@@ -2225,6 +2346,7 @@ def f07_writes(plt) -> None:
           plt.Rectangle((0, 0), 1, 0.4, fc="white", ec="#9a9a9a", hatch="////", lw=0.6)]  # fmt: skip
     legend(fig, hs, ["address (probe)", "position answers", "lookup", "a random part (same size)", "layout baseline"],
            1 - 0.62 / h, ncol=3)  # fmt: skip
+    fig.text(0.01, 0.12 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
     S.save(fig, "fig07_writes")
 
 
@@ -3350,26 +3472,36 @@ def f06b_anatomy(plt) -> None:
     three vertical marks: the layer where the locker probe first reaches 0.8 (rules l_probe: the address is formed),
     where position answers start (l_P: the address is used) and L. One panel per model, x = the layer itself (0 to
     the model's depth), so a reduced grid (the 27B's, 49.4) shows in the bars' spacing; one style for every model (Dan's
-    round 3, 28 Oct 21:10). The full sweep (parts, probes) is the verdict folder's x47_anatomy.png."""
+    round 3, 28 Oct 21:10). The full sweep (parts, probes) is the verdict folder's x47_anatomy.png. Lightning (batch
+    52) the fourth panel from its own verdict (LT_ANATOMY), its marks hollow: bars outlined, the recall's open."""
     vdir = latest_verdict("x47_anatomy/x47_8-*")
-    src = str((vdir / "x47_8.json").relative_to(S.REPO))
+    srcs = dict.fromkeys(ANATOMY_ORDER, str((vdir / "x47_8.json").relative_to(S.REPO)))
     tested = {
         m["target"]: m for m in json.loads((vdir / "x47_8.json").read_text())["models"] if m["status"] == "tested"
     }
     models = [tested[t] for t in ANATOMY_ORDER if t in tested]
     assert 0 < len(models) <= 3, f"v6 (Dan's 18:30 brief): 9B, 27B, Muse at most, got {list(tested)}"
-    h = 5.75
-    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.2 / h, wspace=0.10)
+    models += [
+        m for m in json.loads(LT_ANATOMY.read_text())["models"] if m["status"] == "tested" and m["target"] == LT[0]
+    ]
+    srcs[LT[0]] = rel(LT_ANATOMY)
+    # four models: two rows of two, so each panel keeps the three models' width
+    nrows, ncols, row_in, gap_in = (2, 2, 2.5, 0.95) if len(models) == 4 else (1, len(models), 2.6, 0.0)
+    h = 1.95 + nrows * row_in + gap_in + 1.45
+    fig, axes = plt.subplots(nrows, ncols, figsize=(S.WIDTH, h), sharey=True, squeeze=False)
+    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.45 / h, wspace=0.10, hspace=gap_in / row_in)
     S.title(fig, "The address forms early; identity route first, position route later",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
     values: list[float] = []
     at_l: list[str] = []
-    for ax, m in zip(axes[0], models, strict=True):
+    for ax, m in zip(axes.flat, models, strict=True):
         layers, target, rules, depth = m["layers"], m["target"], m["rules"], m["n_layers"]
+        src, lt = srcs[target], target == LT[0]
         cells = [m["cells"][str(la)] for la in layers]
-        name = next(lab for t, _, lab in S.MODELS if t == target)
-        short = SHORT[next(k for t, k, _ in S.MODELS if t == target)]  # full name in the first panel, short after
+        name = next(lab for t, _, lab in (*S.MODELS, LT) if t == target)
+        short = SHORT[
+            next(k for t, k, _ in (*S.MODELS, LT) if t == target)
+        ]  # full name in the first panel, short after
         x = np.array(layers, dtype=float)
         w = 0.85 * min(b - a for a, b in itertools.pairwise(layers))  # bar width: the grid's finest step
         ni = [c["lookup"]["switch"]["whole"][0] < S.NI_SWITCH - 1e-9 for c in cells]
@@ -3384,12 +3516,14 @@ def f06b_anatomy(plt) -> None:
         bottom = np.zeros(len(layers))
         for rt in ("identity", "position"):
             sh = np.array([c["lookup"]["share"]["whole"][rt] for c in cells])
-            ax.bar(x, sh[:, 0], bottom=bottom, width=w, zorder=2, color=S.COL[rt])
+            fill = {"facecolor": "white", "edgecolor": S.COL[rt], "lw": 1.2} if lt else {"color": S.COL[rt]}
+            ax.bar(x, sh[:, 0], bottom=bottom, width=w, zorder=2, **fill)
             off = (-0.22 if rt == "identity" else 0.22) * w
             ax.vlines(x + off, bottom + sh[:, 1], bottom + sh[:, 2], color="#1e1e1e", lw=0.9, zorder=3)
             bottom += sh[:, 0]
         # the original answer (and other): filled light grey (Dan, 21:35), the hatch drawn again over the shaded bars
-        ax.bar(x, 1 - bottom, bottom=bottom, width=w, zorder=2, **S.ORIGINAL)
+        ax.bar(x, 1 - bottom, bottom=bottom, width=w, zorder=2, **(S.ORIGINAL | {"facecolor": "white"} if lt
+                                                                  else S.ORIGINAL))  # fmt: skip
         if first is not None:
             S.hatch_over(ax, [(layers[first] - w / 2, depth)])
         for la, c in zip(layers, cells, strict=True):
@@ -3399,7 +3533,8 @@ def f06b_anatomy(plt) -> None:
         values += [c["lookup"]["share"]["whole"]["value"][0] for c in cells]  # recorded above; shown in the legend
         rc = np.array([c["recall"]["switch"]["whole"] for c in cells])
         ax.fill_between(x, rc[:, 1], rc[:, 2], color=S.COL["recall"], alpha=0.18, lw=0, zorder=4)
-        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5)
+        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5,
+                **({"mfc": "white", "mew": 1.2} if lt else {}))  # fmt: skip
         # Dan (21:50): every panel names its line and its first bar: "recall" right of the line where it falls through
         # one half, "identity route" inside the first (all-identity) bar
         k = next((i for i, v in enumerate(rc[:, 0]) if v < 0.8), len(layers) - 1)
@@ -3410,7 +3545,7 @@ def f06b_anatomy(plt) -> None:
         j = next((i for i, c in enumerate(cells) if c["lookup"]["share"]["whole"]["identity"][0] >= 0.9
                   and all(abs(x[i] - v) > w for v in marks)), 0)  # fmt: skip
         ax.text(x[j], 0.5, "identity route", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT,
-                color="white", zorder=7)  # fmt: skip
+                color=S.COL["identity"] if lt else "white", zorder=7)  # fmt: skip
         for la, c in zip(layers, cells, strict=True):
             S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *c["recall"]["switch"]["whole"],
                      n=c["recall"]["n"], source=src)  # fmt: skip
@@ -3434,11 +3569,12 @@ def f06b_anatomy(plt) -> None:
                 fontsize=12, weight="bold")  # fmt: skip
         # n per layer (the caption says so), above the frame beside the model's name: inside, its white patch would
         # cover the tops of the bars
-        S.panel_tag(ax, str(cells[0]["lookup"]["n"]), "fixed")
+        S.panel_tag(ax, str(cells[0]["lookup"]["n"]), "after" if lt else "fixed")
         ax.set_ylim(0, 1.0)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.spines[["top", "right"]].set_visible(False)
-    axes[0, 0].set_ylabel("share of lookups / recalls")
+    for ax in axes[:, 0]:
+        ax.set_ylabel("share of lookups / recalls")
     top = max(values, default=0.0)
     hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=S.COL["position"]),
           plt.Rectangle((0, 0), 1, 1, **S.ORIGINAL),
@@ -3452,8 +3588,9 @@ def f06b_anatomy(plt) -> None:
            ncol=3)  # fmt: skip
     # Dan (21:55): one caption line, where two marks coincide; the sampled grid shows in the bars' spacing
     if at_l:
-        fig.text(0.01, 0.1 / h, f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide).",
+        fig.text(0.01, 0.35 / h, f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide).",
                  ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")  # fmt: skip
+    fig.text(0.01, 0.1 / h, LT_NOTE, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")
     S.save(fig, "fig06b_anatomy")
 
 
@@ -3483,6 +3620,8 @@ BATCH47 = {
     "fig10d_heads": ("story_b48", "build_heads", "x48_heads/x48_heads-*", None),
     "fig10e_second_route": ("story_b48", "build_second_route", "x48_route2/x48_route2-*", None),
 }  # fmt: skip
+# Lightning's panel (batch 52): its coverage verdict by path, beside the pattern's newest three-model verdict
+BATCH47_LIGHTNING = {"fig09b_six_lockers": {"lightning": LT_SIX, "lightning_note": LT_NOTE}}
 BATCH47_SUPP = {
     "s03e_cumulative": ("story_b47b", "build_47_4", "x47_cumulative/x47_4-*", None),
     "s12_das_muse": ("story_b48", "build_das", "x48_das/verdict-*", None),
@@ -3498,6 +3637,7 @@ def batch47_figures(plt, figs: dict = BATCH47, supp: bool = False) -> None:
     for name, (module, builder, pattern, title) in figs.items():
         build = getattr(importlib.import_module(f"scripts.{module}"), builder)
         kw = {"out_dir": out_dir} if module == "story_b47b" else {}
+        kw |= BATCH47_LIGHTNING.get(name, {})
         if module != "story_b47b" and supp:
             saved, S.OUT = S.OUT, out_dir  # story_b47a / story_b48 save through story_style.save into S.OUT
             try:
@@ -3667,7 +3807,7 @@ def f00b_marks(plt) -> None:
 def f01d_ladder(plt) -> None:
     from scripts import story_b50 as B50
 
-    B50.build_ladder(latest_verdict(LADDER_VERDICT), "fig01d_ladder")
+    B50.build_ladder(latest_verdict(LADDER_VERDICT), "fig01d_ladder", lightning=True)
 
 
 def f09a_transfer(plt) -> None:
@@ -3698,7 +3838,7 @@ def f14_learned(plt) -> None:
 def f12_two_by_two(plt) -> None:
     from scripts import story_b50 as B50
 
-    B50.build_two_by_two(latest_verdict(LADDER_VERDICT), latest_verdict(Z1_VERDICT), "fig12_two_by_two")
+    B50.build_two_by_two(latest_verdict(LADDER_VERDICT), latest_verdict(Z1_VERDICT), "fig12_two_by_two", lightning=True)
 
 
 def s_batch47(plt) -> None:
@@ -3708,7 +3848,7 @@ def s_batch47(plt) -> None:
 def f16_dose(plt) -> None:
     from scripts import story_b51 as B51
 
-    B51.build_dose(latest_verdict("x51_dose/x51_1-*"), "fig16_dose")
+    B51.build_dose(latest_verdict("x51_dose/x51_1-*"), "fig16_dose", LT_DOSE, LT_NOTE)
 
 
 def s14_learned_sizes(plt) -> None:
@@ -3724,7 +3864,9 @@ JREAD_VERDICT = "x51_jread/x51_10-*"
 def f17_jspace_last_token(plt) -> None:
     from scripts import story_b51b as B51B
 
-    B51B.build_last_token(latest_verdict(JREAD_VERDICT), "fig17_jspace_last_token")
+    B51B.build_last_token(latest_verdict(JREAD_VERDICT), "fig17_jspace_last_token", LT_JREAD,
+                          "Lightning: read bars hatched, swap bars dashed: its gate chosen after the 60-scene pre-check "
+                          "was seen.")  # fmt: skip
 
 
 def s17_jspace_grids(plt) -> None:

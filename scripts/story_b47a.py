@@ -645,15 +645,23 @@ def six_title(v: dict) -> str:
     return "Six lockers: the order code differs by model"
 
 
-def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
+def build_six(verdict_dir: Path, out_name: str, title: str | None = None, lightning: Path | None = None,
+              lightning_note: str = "") -> str:  # fmt: skip
     """47.2 (x47_six verdict, x47_2.json): one panel per model in the verdict (9B, 27B, Muse order). At the decisive
     dose (2) the shift vector from each start locker k: lookups sent to locker k + 1 (%), filled, and the random
     direction (same size) on the same scenes, grey; the rule's bar at 25; under each panel the reading, the pairwise
-    writes reaching 25 and the first PCA axis's Spearman with the locker."""
+    writes reaching 25 and the first PCA axis's Spearman with the locker. Lightning (batch 52) the last panel from its
+    own verdict folder `lightning`, its marks hollow, `lightning_note` under the panels; the title stays the verdict's."""
     src = verdict_dir / "x47_2.json"
     v = json.loads(src.read_text())
-    by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
+    by, fid = by_target(v["models"]), fig_id(out_name)
+    sources = dict.fromkeys(by, F.rel(src))
     shown = [(t, m) for t, m in TARGETS if t in by]
+    if lightning is not None:
+        lsrc = lightning / "x47_2.json"
+        by[F.LT[0]] = by_target(json.loads(lsrc.read_text())["models"])[F.LT[0]]
+        sources[F.LT[0]] = F.rel(lsrc)
+        shown.append(F.LT[:2])
     # the shift vector is added at the bridge word: the mark system's diamond (Dan's 18:30 brief), not the removal dot
     legend = ([Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["lookup"], ms=7),
                Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["control"], ms=7)],
@@ -661,15 +669,16 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
     fig, axes = frame(
         title or six_title(v),
         "Routes test with six lockers, held-out half; one shift vector added at the bridge word (twice a real change)",
-        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12, bottom_in=1.15, wrap=False)  # fmt: skip
+        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12,
+        bottom_in=1.15 + 0.2 * (len(shown) > 2) + 0.3 * bool(lightning_note), wrap=False)  # fmt: skip
     for ax, (target, m) in zip(axes, shown, strict=True):
-        mod = by[target]
+        mod, source, lt = by[target], sources[target], target == F.LT[0]
         ax.set_title(F.name_of(m) if ax is axes[0] else F.SHORT[m], fontsize=S.FONT, weight="bold", loc="left")
         ax.set_ylim(-0.04, 1.04)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
         if mod["status"] == "tested" and mod.get("interpretable"):
-            S.panel_tag(ax, str(mod["n"]), "fixed")
+            S.panel_tag(ax, str(mod["n"]), "after" if lt else "fixed")
         S.record(fid, target, "47.2: the rule's reading (dose 2)", mod.get("label", mod["status"]), source=source)
         if mod["status"] != "tested" or not mod["interpretable"]:
             S.empty(ax, "pending" if mod["status"] == "pending" else SIX_LABEL.get(mod.get("label", ""), "not tested"))
@@ -698,7 +707,8 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                 if r is None:
                     continue
                 ax.plot([k + dx] * 2, [r[1], r[2]], color=col, lw=1.6, zorder=2)
-                ax.plot([k + dx], [r[0]], S.MARK["add"], ms=7, color=col, zorder=3)
+                ax.plot([k + dx], [r[0]], S.MARK["add"], ms=7, color=col, zorder=3,
+                        **({"mfc": "white", "mew": 1.5} if lt else {}))  # fmt: skip
                 S.record(fid, target, f"47.2: lookups sent one locker on from the {ORD[k]} locker, {what}, dose 2",
                          *cell[key], n=cell["n"], source=source)  # fmt: skip
                 if k == starts[-1]:
@@ -711,10 +721,12 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
         S.record(fid, target, "47.2: Spearman of the first PCA axis with the locker", pca["spearman_pc1_slot"],
                  source=source)  # fmt: skip
         # Dan (21:55): one line under each panel, the evidence for "its own code" (the reading is the title's)
-        ax.text(0.0, -0.36, f"pairs moved ≥ 0.25: {rule['pairs_reaching']} of {rule['pairs']}; PCA axis ρ = "
-                f"{pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
-                fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+        ax.text(0.0, -0.36, f"pairs moved ≥ 0.25: {rule['pairs_reaching']} of {rule['pairs']}"
+                f"{chr(10) if len(shown) > 2 else '; '}PCA axis ρ = {pca['spearman_pc1_slot']:.2f}",
+                transform=ax.transAxes, ha="left", va="top", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
     axes[0].set_ylabel("lookups moved one\nlocker on (share)")
+    if lightning_note:
+        fig.text(0.01, 0.1 / fig.get_figheight(), lightning_note, fontsize=S.FONT - 1, color=S.COL["muted"])
     S.save(fig, out_name)
     return out_name
 
