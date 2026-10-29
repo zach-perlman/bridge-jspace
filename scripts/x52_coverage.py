@@ -42,8 +42,7 @@ LT_GATE = ("Lightning's gate: the main test's gate on all 516 scenes (lookup 0.9
 CLEAN = "the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)"
 CLEAN_SRC = "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
 # specs written overnight but deliberately not enqueued (held for Dan): without this the cell would read "queued"
-HELD = {"x47_16_muse_r2": "Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already "
-                          "answers it); re-opening it under amendment 2 waits for Dan"}  # fmt: skip
+HELD: dict[str, str] = {}  # x47_16_muse_r2 was held until Dan's 09:05 decision 24 (run it now; enqueued on mats)
 NO_KO = "the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks"
 NO_DAS = ("DAS trains through the model's backward, unverified through NemotronH's Mamba-2 kernels; its recall half "
           "needs the clean design (gate fails)")  # fmt: skip
