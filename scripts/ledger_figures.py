@@ -1282,12 +1282,17 @@ def coverage_map(plt) -> str:
 # ---- batch 53 (exploration day, Dan 29 Oct 09:30) -------------------------------------------------------------------
 
 LASTCONFLICT = R / "x53_lastconflict" / "x53_lastconflict-20261029T090326Z" / "verdict.json"  # 53.3, four models
+# Dan 11:25 (critic_1125): at the answer layer minus 1 / 2 the lens is close to the output and the letter-token dictionary
+# decides "through" vs "outside": those cells are "uninformative near the output (dictionary)"; read-peak cells keep labels
+UNINFORMATIVE_BELOW_ANSWER = (1, 2)
 
 
 def last_conflict(plt) -> str:
     """53.3, per model (four slots), reader and layer (51.10's read peak, the answer layer minus 2): the switches lost
     without the lens part of the last token's change beyond a random part (bars 0.10 and 0.30), and the rest alone's
-    switches as a share of the whole change's (bar 0.7); the rule's label at the right; Lightning hollow."""
+    switches as a share of the whole change's (bar 0.7); the rule's label at the right; Lightning hollow. A cell one or
+    two layers below the answer layer (and not the read peak) is grey and labelled uninformative near the output
+    (dictionary) (Dan, 11:25), its numbers descriptive."""
     v = load(LASTCONFLICT)
     by = {m["target"]: m for m in v["models"]}
     rows = []
@@ -1297,18 +1302,23 @@ def last_conflict(plt) -> str:
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.3 * len(rows) + 1.9), sharey=True)
     h = fig.get_figheight()
     fig.subplots_adjust(left=0.25, right=0.8, top=1 - 1.25 / h, bottom=1.0 / h, wspace=0.12)
-    S.title(fig, "Near the answer, three of four recalls go through the lens part",
-            "The change at the last token; whiskers 95%; dashed / dotted: the rule's bars; ○ hollow: Lightning")  # fmt: skip
+    S.title(fig, "At the read peak no lookup goes through the lens part",
+            "The change at the last token; grey: uninformative near the output; ○ hollow: Lightning")  # fmt: skip
     labels = [f"{SHORT[t]}{' ○' if t == LT else ''} {c['reader']}, L{c['layer']}" for t, c in rows]
     for i, (t, c) in enumerate(rows):
-        col = LOOKUP if c["reader"] == "lookup" else INK
+        lay = by[t]["layers"]["readers"][c["reader"]]
+        uninformative = c["layer"] != lay["peak"] and lay["answer"] - c["layer"] in UNINFORMATIVE_BELOW_ANSWER
+        col = NULL if uninformative else LOOKUP if c["reader"] == "lookup" else INK
         whisker(axes[0], -i, c["excess"], col, hollow=t == LT)
         whisker(axes[1], -i, c["rest_share"], col, hollow=t == LT)
         if i and t != rows[i - 1][0]:
             for ax in axes:
                 ax.axhline(-i + 0.5, color="#dddddd", lw=0.8)
         short = {"computes outside the lens at the last token": "outside the lens"}.get(c["text"], c["text"])
-        axes[1].text(1.08, -i, short, va="center", fontsize=S.LABEL_PT - 1, color=col, clip_on=False)
+        if uninformative:
+            short = "uninformative"
+        axes[1].text(1.08, -i, short, va="center", fontsize=S.LABEL_PT - 1, color=GREY if uninformative else col,
+                     clip_on=False)
         S.record("ledger_last_conflict", t, f"{c['reader']} L{c['layer']}: switches lost without the lens part beyond "
                  "random (last token)", *c["excess"], n=c["n"], source=rel(LASTCONFLICT))  # fmt: skip
         S.record("ledger_last_conflict", t, f"{c['reader']} L{c['layer']}: the rest alone, share of the whole change",
@@ -1330,7 +1340,7 @@ def last_conflict(plt) -> str:
 
 
 def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, xlabel: str, xlim=(-0.05, 1.05),
-                bars: tuple = (), height: float | None = None) -> str:
+                bars: tuple = (), height: float | None = None, left: float = 0.37) -> str:
     """One panel per model slot (9B, 27B, Muse, Lightning). rows: model -> [(row label, (v, lo, hi), colour, hollow)];
     absent: model -> its grey label. Row labels (the union, in first-seen order) on the left panel; each (x, style)
     in bars is drawn on every data panel. Every plotted value is recorded for figures/story/data.csv."""
@@ -1341,7 +1351,7 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
                 labels.append(lab)
     fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, height or 0.42 * len(labels) + 2.1), sharey=True)
     h = fig.get_figheight()
-    fig.subplots_adjust(left=0.37, right=0.985, top=1 - 1.3 / h, bottom=0.75 / h, wspace=0.12)
+    fig.subplots_adjust(left=left, right=0.985, top=1 - 1.3 / h, bottom=0.75 / h, wspace=0.12)
     S.title(fig, title, sub)
     for ax, t in zip(axes, SLOT_MODELS, strict=True):
         if t in absent:
@@ -1514,13 +1524,16 @@ def identity_address(plt) -> str:
 
 
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
+# the follow-up's first run (the span; its control placement superseded by Dan 11:25, rerun pending)
+ATTNSPAN = R / "x53_attnblock" / "x53_attnspan-20261029T102727Z" / "verdict.json"
 
 
 def attnblock(plt) -> str:
     """53.4 on four slots: Lightning, the share of the whole change's lookup switches cut by blocking the bridge word in
     attention block 19, 26, both, every attention block after L, and the control (both blocks, another token); the
-    recall beside; the rule's 0.6, 0.3 and 0.15 bars; the other three grey (a Lightning test)."""
-    v = load(ATTNBLOCK)
+    recall beside; the rule's 0.6, 0.3 and 0.15 bars; the other three grey (a Lightning test). The follow-up's first
+    run beside: the span from the bridge word to the scene's end, and the control span (95 scenes where it fits)."""
+    v, sp = load(ATTNBLOCK), load(ATTNSPAN)
     arms = (("b19", "(i) block 19"), ("b26", "(ii) block 26"), ("both", "(iii) blocks 19, 26"),
             ("after", "(iv) all after L"), ("control", "(v) control"))
     rows = {LT: []}
@@ -1528,6 +1541,9 @@ def attnblock(plt) -> str:
         r = v["readers"][reader]
         for k, lab in arms:
             rows[LT].append((f"{reader}: {lab}", [r["cut"][k], *r["cut_ci"][k]], col, True))
+        q = sp["readers"][reader]
+        for k, lab in (("span", "span, first run"), ("span_ctrl", "control span, first run")):
+            rows[LT].append((f"{reader}: {lab}", [q["cut"][k], *q["cut_ci"][k]], col, True))
     absent = {t: "not applicable\n(Lightning test)" for t in SLOT_MODELS[:3]}
     return four_panels(plt, "ledger_attnblock", "Two attention blocks carry a third of Lightning's lookup switch",
                        "Share of the whole change's switches cut by blocking the bridge word; dashed: 0.6, dotted: 0.3",
@@ -1569,15 +1585,26 @@ WORDS53 = R / "x53_lastconflict" / "x53_lastconflict_words-20261029T100850Z" / "
 
 def _words53_kinds(layer: int, answer: int, peak: int) -> list[str]:
     """The rows a cell belongs to: its distance below the answer layer (1-3) and/or 51.10's read peak (the 27B's
-    lookup read peak L60 is also its answer layer minus 3)."""
-    return ([f"answer - {answer - layer}"] if 1 <= answer - layer <= 3 else []) + (["read peak"] if layer == peak else [])
+    lookup read peak L60 is also its answer layer minus 3); a read-peak cell keeps its label (Dan, 11:25), so it never
+    sits in an uninformative row (the 27B's locker-scene L60 is its read peak and its answer - 1)."""
+    kinds = [f"answer - {answer - layer}"] if 1 <= answer - layer <= 3 else []
+    if layer == peak:
+        kinds = [k for k in kinds if answer - layer not in UNINFORMATIVE_BELOW_ANSWER] + ["read peak"]
+    return kinds
+
+
+def _words53_row(prefix: str, kind: str) -> tuple[str, bool]:
+    """A row label and whether the row is uninformative near the output (answer - 1 / - 2; Dan, 11:25)."""
+    un = kind in [f"answer - {k}" for k in UNINFORMATIVE_BELOW_ANSWER]
+    return f"{prefix}, {kind}" + (": uninformative" if un else ""), un
 
 
 def last_conflict_words(plt) -> str:
     """53.3b on four slots (the joint verdict): the last-token conflict test on Zach's word answers, per reader at its
     answer layer minus 1, 2, 3 and 51.10's read peak, switches lost without the lens part beyond a random part; the
     check on our locker scenes at the lookup's answer layer minus 1 and 3; a cell under 53.3's validity bar as a grey
-    note; a model below its gate hollow and labelled."""
+    note; a model below its gate hollow and labelled; the answer - 1 / - 2 rows grey and labelled uninformative near
+    the output (Dan, 11:25), their numbers descriptive."""
     v = load(WORDS53)
     rows = {}
     for t in SLOT_MODELS:
@@ -1591,17 +1618,19 @@ def last_conflict_words(plt) -> str:
             cells = {c["layer"]: c for c in m["cells"] if c["reader"] == rd}
             for k in ("answer - 1", "answer - 2", "answer - 3", "read peak"):
                 for c in (c for c in cells.values() if k in _words53_kinds(c["layer"], lay["answer"], lay["peak"])):
-                    col = LOOKUP if rd == "lookup" else INK
-                    rows[t].append((f"words, {rd}, {k}", c["excess"] if c["x0_valid"] else f"L{c['layer']}: invalid",
-                                    col, below))
+                    lab, un = _words53_row(f"words, {rd}", k)
+                    col = NULL if un else LOOKUP if rd == "lookup" else INK
+                    rows[t].append((lab, c["excess"] if c["x0_valid"] else f"L{c['layer']}: invalid", col, below))
         (chk,) = [c for c in v["checks"] if c["target"] == t]
-        ans = chk["layers"]["readers"]["lookup"]["answer"]
-        for c in sorted(chk["cells"], key=lambda c: -c["layer"]):
-            lab = f"our locker scenes, lookup, answer - {ans - c['layer']}"
-            rows[t].append((lab, c["excess"] if c["x0_valid"] else f"L{c['layer']}: invalid", LOOKUP, below))
-    return four_panels(plt, "ledger_last_conflict_words", "On word answers the lookup goes through the lens near the answer",
-                       "Lost without the lens part beyond random at the last token; ○ below gate (exploratory)",
-                       rows, {}, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, "--"), (0.30, ":")))
+        lay = chk["layers"]["readers"]["lookup"]
+        for k in ("answer - 1", "answer - 3", "read peak"):
+            for c in (c for c in chk["cells"] if k in _words53_kinds(c["layer"], lay["answer"], lay["peak"])):
+                lab, un = _words53_row("locker, lookup", k)
+                rows[t].append((lab, c["excess"] if c["x0_valid"] else f"L{c['layer']}: invalid",
+                                NULL if un else LOOKUP, below))
+    return four_panels(plt, "ledger_last_conflict_words", "Near the output the test is uninformative; read peaks differ",
+                       "Lost without the lens part beyond random, last token; grey: uninformative; ○ below gate",
+                       rows, {}, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, "--"), (0.30, ":")), left=0.41)
 
 
 SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
@@ -1644,7 +1673,8 @@ def twobytwo(plt) -> str:
     for t in ("qwen3.5-9b", "qwen3.6-27b"):
         if t in v:
             rows[t] = _twobytwo_rows(v[t])
-    absent = {"muse-glimmer-30b": "not designed", LT: "not run (Dan:\nno new Lightning\ncoverage)"}
+    absent = {"muse-glimmer-30b": "not designed\n(Q-before, number:\nDan 11:10 list)",
+              LT: "not run\n(Q-before, number:\nif its gate passes)"}
     absent.update({t: "running" for t in ("qwen3.5-9b", "qwen3.6-27b") if t not in rows})
     return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
                        "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
