@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "scenes": 358,
+    "cases": 87,
+    "dropped": {
+      "no alt entity fits (own fact sentence; both answers differ; one token at one position)": 115,
+      "two answer values share a first token": 156
+    },
+    "by_relation": {
+      "animals": 4,
+      "countries": 47,
+      "languages": 36
+    }
+  },
+  "org_read_accuracy": {
+    "PP": 0.7701149425287356,
+    "PM": 0.896551724137931
+  },
+  "pass": false,
+  "eligible": 36
+}

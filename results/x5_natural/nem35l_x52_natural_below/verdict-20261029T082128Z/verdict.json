@@ -1,0 +1,168 @@
+{
+ "run": "nem35l_x52_natural_below",
+ "manifest": {
+  "exp": "x5_natural",
+  "run": "nem35l_x52_natural_below",
+  "written_utc": "2026-10-29T08:17:29Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+   "target": "nemotron-3.5-lightning",
+   "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+   "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat",
+   "kernels": "hub"
+  },
+  "switches": {
+   "target": "nemotron-3.5-lightning",
+   "BJ_DEVICE_MAP": "",
+   "BJ_PREDICTED_LAYER": "14",
+   "BJ_SUITE_BATCH": "16",
+   "BJ_TARGET": "nemotron-3.5-lightning",
+   "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+   "sha": "c37f7eb39bb119c698e1c2ae8d742f7f9a2ca517",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "local",
+    "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+    "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+   ],
+   "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+   "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 14,
+  "k": 25,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "below_gate": "below gate (exploratory): the read gate fails (0.80 per reader on O; Lightning's natural passages: the lookup reads 0.77, results/x5_natural/nem35l_x52_natural/gate.json); the eligible passages only; hollow, never in the claims table or grades; the rule verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "items": 36
+ },
+ "main": {
+  "n": 36,
+  "entities": 27,
+  "excess": {
+   "PP": [
+    -0.07692307692307698,
+    -0.2727272727272726,
+    0.0
+   ],
+   "PM": [
+    0.48571428571428577,
+    0.30555555555555547,
+    0.6666666666666667
+   ]
+  },
+  "gap": [
+   0.5626373626373627,
+   0.3513513513513514,
+   0.8214333976833976
+  ]
+ },
+ "label": "holds",
+ "subsets": {
+  "relation=countries": {
+   "n": 19,
+   "entities": 14,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.44444444444444453,
+     0.21052631578947367,
+     0.7
+    ]
+   },
+   "gap": [
+    0.44444444444444453,
+    0.21052631578947367,
+    0.7
+   ]
+  },
+  "relation=languages": {
+   "n": 16,
+   "entities": 14,
+   "excess": {
+    "PP": [
+     -0.16666666666666663,
+     -0.5,
+     0.0
+    ],
+    "PM": [
+     0.5625,
+     0.2857142857142857,
+     0.8125
+    ]
+   },
+   "gap": [
+    0.7291666666666666,
+    0.3809523809523808,
+    1.0980392156862746
+   ]
+  },
+  "half=A": {
+   "n": 19,
+   "entities": 14,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.6666666666666666,
+     0.4285714285714286,
+     0.8888888888888888
+    ]
+   },
+   "gap": [
+    0.6666666666666666,
+    0.4285714285714286,
+    0.8888888888888888
+   ]
+  },
+  "half=B": {
+   "n": 17,
+   "entities": 13,
+   "excess": {
+    "PP": [
+     -0.16666666666666663,
+     -0.6000000000000001,
+     0.0
+    ],
+    "PM": [
+     0.2941176470588235,
+     0.0625,
+     0.5625
+    ]
+   },
+   "gap": [
+    0.4607843137254901,
+    0.125,
+    1.011764705882353
+   ]
+  }
+ },
+ "lure": {
+  "whole": 0.0,
+  "no_part": 0.08333333333333333,
+  "no_rand": 0.0
+ }
+}
