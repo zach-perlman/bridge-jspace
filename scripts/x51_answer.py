@@ -131,6 +131,10 @@ COVERAGE_RUNS = {
 for _s in ("z1k", "z1p"):
     COVERAGE_RUNS[_s] = {"qwen3.5-9b": f"qwen35_9b_x52_answer_{_s}", "qwen3.6-27b": f"x52_answer_{_s}_27b",
                          "nemotron-3.5-lightning": f"nem35l_x52_answer_{_s}"}  # fmt: skip
+# Batch 52, Dan's morning queue (29 Oct) item 1: 51.12's cue set on Lightning below 47.3's gate (exploratory, hollow):
+# --below-gate reads the below-gate 47.3 run (x47_cue.BELOW_RUNS) and writes these runs
+BELOW = False
+BELOW_RUNS = {"cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer_below"}}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x51_answer/x51_12-20261028T201842Z"  # 51.12's rules first scored (r2)
 
@@ -423,6 +427,8 @@ def source_of(set_name: str, target: str) -> Path:
         return Z.RESULTS / {**Z.RUNS.get(part, {}), **Z.COVERAGE_RUNS.get(part, {})}[target]  # batch 52: Lightning's
     if set_name == "e1":
         return X.RESULTS / B.MAIN_RUN[target]
+    if BELOW:
+        return CUE.RESULTS / CUE.BELOW_RUNS[target]
     return CUE.RESULTS / {**CUE.RUNS, **CUE.COVERAGE_RUNS}[target]  # batch 52 C: Lightning's 47.3 run (nem35l_x52_cue)
 
 
@@ -538,8 +544,9 @@ def cue_items(tok, target: str) -> tuple[list[dict], dict, dict]:
             assert c["readers"][w]["ids"] == old[s]["readers"][w]["ids"], f"{s}: {w}'s ids changed since {src.name}"
         routes = [str(c["expect"][k]) for k in ("identity", "position")]  # a (original) and e (value) are O's / S's
         items.append(unit("cue", c, s, c["bridge"], c["cf_bridge"], {X.LOOKUP: routes}))
-    g = {"pass": bool(gate["pass"]) and cues["status"] == "ok", "chosen": gate["chosen"],
-         "org_read_accuracy": gate["org_read_accuracy"], "gate": gate["gate"]}  # fmt: skip
+    g = {"pass": (bool(gate["pass"]) or BELOW) and cues["status"] == "ok", "chosen": gate["chosen"],
+         "org_read_accuracy": gate["org_read_accuracy"], "gate": gate["gate"],
+         **({"below_gate": True, "source_gate_pass": bool(gate["pass"])} if BELOW else {})}  # fmt: skip
     return items, g, {"source": src.name, "items": len(items), "cues_kept": len(cues["kept"])}
 
 
@@ -901,12 +908,20 @@ def stage_run(name: str, set_name: str) -> Path:
 
     pins.check_run_name(name)
     target = pins.TARGET
-    assert target in runs_of(set_name), f"51.12 {set_name} runs on {sorted(runs_of(set_name))}, not {target}"
+    if BELOW:
+        assert target in BELOW_RUNS.get(set_name, {}), f"below gate: {BELOW_RUNS}, not {set_name} / {target}"
+    else:
+        assert target in runs_of(set_name), f"51.12 {set_name} runs on {sorted(runs_of(set_name))}, not {target}"
     layer, src = layer_of(set_name, target), source_of(set_name, target)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, set_name, target, layer, src)
-    if target in COVERAGE_RUNS.get(set_name, {}):  # batch 52: no Q-line, opened when it lands
+    if BELOW:  # batch 52, Dan's morning queue item 1
+        from scripts import x47_cue as CUE
+
+        m |= {"question": CUE.BELOW_GATE, "below_gate": CUE.BELOW_GATE, "batch": 52, "rules_first_scored": SCORED,
+              "sealed": "none (below gate, exploratory); verdict --coverage --below-gate"}  # fmt: skip
+    elif target in COVERAGE_RUNS.get(set_name, {}):  # batch 52: no Q-line, opened when it lands
         m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage); verdict --coverage",
               "rules_first_scored": SCORED}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
@@ -1277,16 +1292,20 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
 
 
 def all_runs(sets: tuple[str, ...] = SETS, coverage: bool = False) -> list[tuple[str, str, str]]:
-    runs = COVERAGE_RUNS if coverage else RUNS
+    runs = BELOW_RUNS if BELOW else COVERAGE_RUNS if coverage else RUNS
     return [(s, t, r) for s in sets for t, r in runs.get(s, {}).items()]
 
 
 def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS, coverage: bool = False) -> Path:
     """51.12's verdict (sealed until Q51.12), or with coverage (batch 52) the same rules on COVERAGE_RUNS, no seal
     guard, "no prediction" in place of Dan's answer, written to x52_answer-<UTC>/."""
-    answer = f"{NO_PREDICTION} (rules first scored in {SCORED})" if coverage else unsealed()
+    if BELOW:
+        from scripts import x47_cue as CUE
+    answer = (f"{CUE.BELOW_GATE if BELOW else NO_PREDICTION} (rules first scored in {SCORED})" if coverage
+              else unsealed())  # fmt: skip
     models = [model_result(s, t, r, n_boot) for s, t, r in all_runs(sets, coverage)]
-    out = RESULTS / f"{'x52_answer' if coverage else 'x51_12'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_answer_below" if BELOW else "x52_answer" if coverage else "x51_12"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
     if coverage:
@@ -1365,7 +1384,11 @@ def main() -> None:
     ap.add_argument("--plan-dir", help="plan: the folder to write into (default a new plan-<UTC>/)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52's coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, the cue set on Lightning below 47.3's gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     if a.stage == "plan":
         assert a.set, "plan needs --set"
         stage_plan(a.set, a.plan_dir)

@@ -80,6 +80,13 @@ RUNS = {"qwen3.6-27b": "x47_cue_27b", "qwen3.5-9b": "qwen35_9b_x47_cue", "muse-g
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cue"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_cue/x47_3-20261028T113104Z"  # 47.3's rule first scored (27B, 9B, Muse)
+# Batch 52, Dan's morning queue (29 Oct) item 1: 47.3 on Lightning below its own gate (exploratory, hollow): --below-gate
+# reads the eligible scenes although the gate fails; the run and its verdict carry BELOW_GATE
+BELOW = False
+BELOW_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cue_below"}
+BELOW_GATE = ("below gate (exploratory): Lightning's 47.3 gate fails (O's lookup read 0.72 < 0.80, "
+              "results/x47_cue/nem35l_x52_cue/gate.json); eligible scenes only; hollow, never in the claims table or "
+              "grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)")  # fmt: skip
 
 FRAME = "{p} picked the one known for {cue}."
 # per animal, the cue candidates in order of preference (a sound or behaviour first where one exists); the first that
@@ -548,10 +555,14 @@ def stage_run(name: str) -> Path:
     pins.check_run_name(name)
     target = pins.TARGET
     assert target in RUNS or target in COVERAGE_RUNS, f"47.3 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
+    assert not BELOW or target in BELOW_RUNS, f"below gate: {sorted(BELOW_RUNS)}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, target, layer)
+    if BELOW:
+        m |= {"question": BELOW_GATE, "below_gate": BELOW_GATE, "batch": 52,
+              "sealed": "none (below gate, exploratory): verdict --coverage --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -585,7 +596,7 @@ def stage_run(name: str) -> Path:
     X.write_jsonl(out / "competence.jsonl", comp)
     X.write_jsonl(out / "cases.jsonl", cases)
     (out / "gate.json").write_text(json.dumps(gate, indent=1) + "\n")
-    if not gate["pass"] or not chosen:
+    if (not gate["pass"] and not BELOW) or not chosen:  # below gate (batch 52): the eligible scenes, labelled
         print(f"not tested (gate): {gate['org_read_accuracy']} (bar {GATE}), eligible {gate['eligible']}", flush=True)
         return out
 
@@ -711,7 +722,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending, not tested (cue competence or gate), or its numbers and the rule's clauses."""
     src = RESULTS / run
     if not (src / "manifest.json").exists():
-        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
+        target = {r: t for d in (RUNS, COVERAGE_RUNS, BELOW_RUNS) for t, r in d.items()}.get(run)
         return {"run": run, "target": target, "status": "pending", "why": "no run here"}
     m = json.loads((src / "manifest.json").read_text())
     base = {"run": run, "target": m["model"]["target"], "layer": m["layer"]}
@@ -725,9 +736,11 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
         return {**base, "status": "pending", "why": "no gate.json yet"}
     gate = json.loads((src / "gate.json").read_text())
     base["gate"] = gate
-    if not gate["pass"] or not gate.get("chosen"):
+    if not gate.get("chosen") or (not gate["pass"] and not m.get("below_gate")):
         return {**base, "status": "not tested", "why": f"gate: O's read accuracy {gate['org_read_accuracy']} (bar "
                 f"{GATE}), eligible {gate['eligible']}"}  # fmt: skip
+    if not gate["pass"]:
+        base["below_gate"] = m["below_gate"]  # batch 52: read below the gate, exploratory (the verdict says so)
     rows = X.read_jsonl(src / "outcomes.jsonl")
     if not rows:
         return {**base, "status": "pending", "why": "the gate passed but outcomes.jsonl has no rows yet"}
@@ -820,14 +833,15 @@ def view(run: str, decode=None, k: int = N_VIEW, seed: int = VIEW_SEED) -> list[
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode=None, coverage: bool = False) -> Path:
     """47.3's verdict (sealed until Q47.3), or with coverage (batch 52 C) the same rule on the given coverage runs
     alone: no seal guard, "no prediction" in place of Dan's answer, written to x52_cue-<UTC>/."""
-    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
+    answer = f"{BELOW_GATE if BELOW else NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [mm["target"] for mm in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
     if coverage:
         assert set(targets) <= set(COVERAGE_RUNS), f"47.3 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
-    out = RESULTS / f"{'x52_cue' if coverage else 'x47_3'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_cue_below" if BELOW else "x52_cue" if coverage else "x47_3"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     yn = lambda b: "yes" if b else "no"  # noqa: E731
     lines = ["# 47.3: a computed bridge, the routes test with a described item (UNVERIFIED)", "",
@@ -918,7 +932,11 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--coverage", action="store_true",
                     help=f"verdict: batch 52 coverage runs (default {list(COVERAGE_RUNS.values())}; '{NO_PREDICTION}')")  # fmt: skip
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, Lightning below its 47.3 gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":

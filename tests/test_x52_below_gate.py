@@ -86,3 +86,29 @@ def test_bind_and_route2_below_gate(tmp_path, monkeypatch):
     out = R2.stage_verdict(["nem35l_x52_route2_below"], 10, below=True)
     text = (out / f"{R2.EXP}.md").read_text()
     assert out.name.startswith("x52_route2_below-") and "below gate (exploratory)" in text and ", Dan:" not in text
+
+
+def test_cue_and_answer_cue_below_gate(tmp_path, monkeypatch):
+    """47.3 below its own gate: a failed gate reads 'not tested' unless the run was made --below-gate (its manifest
+    says so); 51.12's cue set below gate reads the below-gate 47.3 run and writes its own below-gate runs."""
+    import json
+
+    from scripts import x47_cue as CUE
+    from scripts import x51_answer as AN
+
+    assert CUE.BELOW is False and AN.BELOW is False
+    run = tmp_path / "r"
+    run.mkdir()
+    (run / "cues.json").write_text(json.dumps({"status": "ok"}))
+    gate = {"pass": False, "chosen": 300, "org_read_accuracy": {"PP": 0.72}, "eligible": 301}
+    (run / "gate.json").write_text(json.dumps(gate))
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": LT}, "layer": 14}))
+    monkeypatch.setattr(CUE, "RESULTS", tmp_path)
+    assert CUE.model_result("r", 10)["status"] == "not tested"
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": LT}, "layer": 14, "below_gate": CUE.BELOW_GATE}))
+    got = CUE.model_result("r", 10)
+    assert got["status"] == "pending" and got.get("below_gate") == CUE.BELOW_GATE  # no outcomes yet, but read below
+    assert AN.source_of("cue", LT).name == "nem35l_x52_cue"  # default unchanged
+    monkeypatch.setattr(AN, "BELOW", True)
+    assert AN.source_of("cue", LT).name == CUE.BELOW_RUNS[LT]
+    assert AN.all_runs(("cue",), coverage=True) == [("cue", LT, "nem35l_x52_cue_answer_below")]
