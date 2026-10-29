@@ -935,14 +935,21 @@ def gain(plt) -> str:
 # ---- other kinds of item (47.11) ------------------------------------------------------------------------------------
 
 AGNOSTIC = (R / "x47_agnostic" / "x47_11-20261028T143952Z" / "x47_11.json",
-            R / "x47_agnostic" / "x52_agnostic-20261029T023820Z" / "x47_11.json")  # fmt: skip
+            R / "x47_agnostic" / "x52_agnostic-20261029T023820Z" / "x47_11.json",
+            R / "x47_agnostic" / "x52_agnostic-20261029T031638Z" / "x47_11.json")  # fmt: skip
 
 
 def agnostic(plt) -> str:
     """Per model, position answers lost without the address beyond a random part of its share, by kind of item: the
     address fit on animal scenes (filled) and refit per kind on a fit half (hollow); the rule's 0.3 dashed."""
-    runs = {m["target"]: (m, path) for path in AGNOSTIC for m in load(path)["models"] if m["status"] == "tested"}
-    models = [t for t in ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b") if t in runs]
+    # the last folder re-reads the 27B with the same rows and adds Lightning; the first folder per model wins, so the
+    # 27B keeps its first source (as the card cites it)
+    runs: dict = {}
+    for path in AGNOSTIC:
+        for m in load(path)["models"]:
+            if m["status"] == "tested":
+                runs.setdefault(m["target"], (m, path))
+    models = [t for t in SHORT if t in runs]
     kinds = ("animals", "fruits", "names")
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.16, wspace=0.12)
@@ -967,7 +974,7 @@ def agnostic(plt) -> str:
         ax.axhline(0.3, color="#555555", lw=0.9, ls="--")
         ax.set_xticks(range(len(kinds)), kinds)
         ax.set_xlim(-0.5, len(kinds) - 0.5)
-        ax.set_ylim(0, 0.7)
+        ax.set_ylim(0, 0.75)
     axes[0].set_ylabel("position answers lost")
     axes[0].text(-0.45, 0.31, "rule's 0.3", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
     return save(fig, "ledger_agnostic")

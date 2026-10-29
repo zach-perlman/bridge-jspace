@@ -29,7 +29,12 @@ Each card's figure follows its rule; the checks made on every figure are listed 
 19. Token map on Lightning: the run's in-job verdict crashed (KeyError) because x47_depthmap.LEAD, the margin of D1 rule (b), had no Lightning entry. The coordinator added LEAD = 4 (as Muse, one sampling step) after the run and ran the verdict on CPU (092f5579). The margin was set after the data, but (b)'s answer does not depend on it: Lightning's lead is 0 ([token map](#d1)).
 20. Ladder reruns: the 27B's full ladder (x52_ladder_27b_a) and Muse's rerun (muse30_x52_ladder) redo every step on the same scene counts, and the steps shared with the first runs move by up to 0.02 (the 27B's locker-after step 2: 0.24 [0.17, 0.32] against 0.26 [0.19, 0.34]; Muse's step 5, all scenes: 0.19 against 0.21). No label changes. The README's 27B and Muse ladder numbers come from the first runs; the ledger's 27B column now comes from the full ladder ([ladder](#t49-2)).
 21. Fixed here: the README figure build (scripts/readme_story_figures.py) read the newest D4 folder for Fig. 6c; the 27B's one-model run (persistence-20261029T013614Z, 709b3de6) became the newest and the build stopped at the scorecard check (no 9B / Muse D4 rows). Fig. 6c's folder is now pinned to persistence-20261028T115530Z; the README figures are unchanged. Any other build on danorel since 709b3de6 hits the same stop.
-22. Muse's 47.16 (the swap after neutral sentences): the coverage matrix and scripts/x52_coverage.py mark it done from x47_16-20261028T131501Z, but that verdict lists Muse as "pending (no run given)", and muse30_x47_16 holds no outcomes (cases, gate and manifest only; its gate passed). Muse has no 47.16 result ([47.16](#t47-16)).
+22. Muse's 47.16 (the swap after neutral sentences): the coverage matrix and scripts/x52_coverage.py mark it done from x47_16-20261028T131501Z, but that verdict lists Muse as "pending (no run given)", and muse30_x47_16 holds no outcomes (cases, gate and manifest only; its gate passed). Muse has no 47.16 result ([47.16](#t47-16)). The coverage matrix's builder now checks a done cell against what it cites (e7474964).
+23. 47.13 on Lightning: the verdict header prints "Q47.13, Dan: 65%", but this is a coverage run with no prediction; x47_errors has no --coverage flag ([47.13](#t47-13)).
+24. Muse's 47.16 r2 is written but not queued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1), so it waits for Dan ([47.16](#t47-16)).
+25. 47.6 / 48.2 / 48.4: the original designs were run on the 27B and Lightning as coverage. The coordinator reads them as not the "variants" Dan cancelled; Dan to confirm ([47.6](#t47-6)).
+26. 47.7 (a) on the 9B and Muse is missing: exit 1 on 28 Oct, never rerun; Dan decides.
+27. Coverage matrix: cells the old builder marked "done" without outcomes are corrected (e7474964); the ledger's coverage table still mirrors the 00:08 matrix.
 
 ## README changes waiting for Dan
 
@@ -56,13 +61,14 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 - E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
 - Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
 - Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
+- Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
 - E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
 
 ## Coverage
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T000836Z/matrix.json, built 00:08 UTC 29 Oct; each cell's source is in that file). A linked test has a card below. Status words are the matrix's: done / partial / running / queued / missing / not tested (reason) / not designed. Lightning's gate (all cells): the main test's gate on all 516 scenes, ○ chosen after the 60-scene pre-check was seen; layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->).
+As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B; Lightning's Z2, 47.11, 47.5, x45d and 47.13. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->). Lightning's second hop's key token (47.15) is **not tested**: no placement passed its gate. Lightning's 47.7 (a) is **not tested**: the question-first recall read right on 0.4357<!-- src: results/x47_value/nem35l_x52_value_a/gate.json \| "PM" :: 0.4357 --> of its prompts, under 0.80. Lightning's 51.12 cue r2 was cancelled before it started: its source, 47.3, failed the gate.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -81,7 +87,7 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | [Split in other texts: varied scenes (x0b)](#x0b) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Split in other texts: natural passages (x5) | **done** | **missing**: Lightning, after the 10 key rows | **done**: gate lowered after the data | **done** |
 | [Dose curves, a part alone (51.1)](#t51-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| Zeroing at one layer (47.5) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Zeroing at one layer (47.5)](#t47-5) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Earlier mention (45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
 | [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E6: the address probe (x0_probe v4) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -95,8 +101,8 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | [Part V: Zach's passages Z3 (routes on his passages)](#z3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Described bridge (47.3, and 51.12's cue r2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **partial**: 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design) |
 | One question, two instructions (49.6) | **done** | **missing**: Lightning, after the 10 key rows | **not tested**: ran; the gate failed (README: the others miss the gate) | **missing**: 9B / Muse gap: not run on Muse |
-| Address refit per text format (x45d) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| The lookup's errors are not address errors (47.13) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Address refit per text format (x45d)](#x45d) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [The lookup's errors are not address errors (47.13)](#t47-13) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Failed: copying heads pass the rest (48 heads) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -417,6 +423,34 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 - **Caveats.**
   - The reruns redraw every step: shared steps move by up to 0.02 against the first runs (Flagged 20); Muse's column keeps the first run, as the README.
   - Lightning: not tested, the clean one-pick design's gate fails there (recall 0.751).
+
+### Does the recall need the lens part, or only follow it? (zeroing at one layer, 47.5; Lightning's coverage run 29 Oct) <a id="t47-5"></a>
+
+*Used in: README Part I card "Does the recall need the lens part, or only follow it?" (Fig. 1c; 9B, 27B, Muse); Lightning not in the README yet. Story: two readers.*
+
+- **Question.** Taking the lens part out of the changed prompt's own state at the bridge word, does the recall lose the changed answer (needed) or keep it (followed)?
+- **Why we asked.** The conflict test removes the lens part from the change; zeroing it in the changed prompt's own state asks whether the recall needs it there.
+- **Data.** Main test, 200 per model.
+- **Method.** In the changed prompt's state at the bridge word: its projection on the change's 25 lens directions removed at L (and at L to L+3), against a random subspace of the same share of the state.
+- **Rule, fixed in advance.** ""followed, not needed at one layer" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm; "needed" if it loses >= 0.30 beyond random. The lookup reported beside." Lightning: a coverage run on this rule, no prediction.
+
+![Taking the J++ part out of the changed prompt's state leaves the recall's answers in place](../../figures/story/fig01c_zeroing.png)
+*Answers kept with the lens part's 25 directions (dark for the recall, purple for the lookup) or a random part of the same size (grey) taken out of the changed prompt's state at the bridge word at L; dashed: the rule's 0.80; 200 scenes per model; 9B, 27B, Muse (the README's figure); Lightning in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | recall: answers kept, the lens part zeroed at L (bar >= 0.80) | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.97 [0.95, 0.99] --> | 0.97 [0.94, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.97 [0.94, 0.99] --> | 0.94 [0.89, 0.98]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.94 [0.89, 0.98] --> | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.97 [0.95, 0.99] --> |
+  | recall: lost beyond a random part, at L (bar for needed >= 0.30) | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.03 [0.01, 0.05] --> | 0.03 [0.01, 0.06]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.03 [0.01, 0.06] --> | 0.06 [0.02, 0.11]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.06 [0.02, 0.11] --> | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.03 [0.01, 0.05] --> |
+  | recall: lost beyond a random part, at L to L+3 (descriptive) | 0.25 [0.17, 0.32]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.5-9b :: recall :: 0.25 [0.17, 0.32] --> | 0.11 [0.06, 0.16]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.6-27b :: recall :: 0.11 [0.06, 0.16] --> | 0.08 [0.04, 0.13]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse-glimmer-30b :: recall :: 0.08 [0.04, 0.13] --> | 0.18 [0.12, 0.24]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nemotron-3.5-lightning :: recall :: 0.18 [0.12, 0.24] --> |
+  | the rule | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: followed, not needed at one layer -->** (no prediction) |
+
+- **Read.**
+  - Zeroing the lens part in the changed prompt's own state at L costs the recall at most 0.06 of its answers beyond random on all four models: the recall follows the lens part but does not need it at one layer.
+- **Caveats.**
+  - Over L to L+3 the recall loses more (0.08 to 0.25 beyond random), between the bars (descriptive).
+  - The lookup keeps its answers in every arm on all four.
 
 ### Does the lookup's identity route run outside the lens, or in lens directions beyond the recall's 25? (identity route outside the lens, 47.1; Lightning's coverage run 29 Oct) <a id="t47-1"></a>
 
@@ -739,6 +773,62 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
   - Only cells that pass the gate count; about a quarter of Lightning's and Muse's cells fail it.
   - Muse's scene count is 1,388 here and 1,389 in the README (Flagged 6).
 
+### Must the address be refit for each text format? (address refit per format, x45d; Lightning's coverage run 29 Oct) <a id="x45d"></a>
+
+*Used in: README Part VI, weaker results ("The address must be refit per text format"; 9B, 27B, Muse); Lightning not in the README yet. Story: other datasets.*
+
+- **Question.** On varied scenes (prose, JSON, tables), does an address refit on each format's own scenes carry the lookup's position answers, where the address fit on simple scenes does little?
+- **Why we asked.** The address was fit on one template; in other formats the code may sit elsewhere.
+- **Data.** The held-out half of the varied scenes per format, the bridge items not used for the fit; Lightning prose / JSON / table: 191<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 191 --> / 40<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 40 --> / 187<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 187 --> (the other models' n in the verdicts).
+- **Method.** The address refit per format on one half (rank 4) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on simple scenes beside.
+- **Rule, fixed in advance.** ""Pointer elsewhere" if the refit basis gives a lookup extra loss of at least 0.2, with lower CI above 0.1, in 2 of 3 formats; "No linear pointer found" if all three formats are below 0.1 (point estimate); otherwise neither." Added after the first results (Dan, 26 Oct ~21:20): a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: a coverage run, no prediction.
+
+![The address must be refit for each text format](../../figures/story/fig09b_refit.png)
+*The lookup's extra loss without the address beyond a random part, by format: refit on the format (filled) and fit on simple scenes (hollow); grey: the 0.10 bar; 9B, 27B, Muse (the README's figure); Lightning in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | prose: lookup lost without the refit address, beyond random | 0.24 [0.16, 0.32]<!-- src: results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 223 :: 0.24 [0.16, 0.32] --> | 0.08 [0.04, 0.13]<!-- src: results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 383 :: 0.08 [0.04, 0.13] --> | 0.23 [0.16, 0.31]<!-- src: results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 270 :: 0.23 [0.16, 0.31] --> | 0.16 [0.11, 0.21]<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 191 :: 0.16 [0.11, 0.21] --> |
+  | json: lookup lost without the refit address, beyond random | 0.24 [0.16, 0.30]<!-- src: results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 70 :: 0.24 [0.16, 0.30] --> | 0.09 [0.05, 0.12]<!-- src: results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 143 :: 0.09 [0.05, 0.12] --> | 0.38 [0.16, 0.65]<!-- src: results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 89 :: 0.38 [0.16, 0.65] --> (29 switches: does not count) | 0.26 [0.20, 0.40]<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 40 :: 0.26 [0.20, 0.40] --> |
+  | table: lookup lost without the refit address, beyond random | 0.18 [0.13, 0.24]<!-- src: results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 138 :: 0.18 [0.13, 0.24] --> | 0.13 [0.09, 0.17]<!-- src: results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 322 :: 0.13 [0.09, 0.17] --> | 0.47 [0.34, 0.60]<!-- src: results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 238 :: 0.47 [0.34, 0.60] --> | 0.25 [0.19, 0.32]<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 187 :: 0.25 [0.19, 0.32] --> |
+  | the outcome | **pointer elsewhere<!-- src: results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.md \| Outcome :: pointer elsewhere -->** | **neither<!-- src: results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.md \| Outcome :: neither -->** | **pointer elsewhere<!-- src: results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.md \| Outcome :: pointer elsewhere -->** | **pointer elsewhere<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| Outcome :: pointer elsewhere -->** (no prediction) |
+
+- **Read.**
+  - Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning (pointer elsewhere); on the 27B it stays under 0.2 in every format (neither).
+- **Caveats.**
+  - The 30-switch bar was set after the first results; it drops Muse's JSON (29 switches).
+  - Lightning's JSON rests on 40 scenes from 4 bridge items.
+
+### Are the lookup's errors address errors? (the address probe on the lookup's errors, 47.13; Lightning's coverage run 29 Oct) <a id="t47-13"></a>
+
+*Used in: README Part VI, weaker results ("The lookup's errors are not address errors", 9B); Lightning not in the README yet. Story: the address.*
+
+- **Question.** Where the lookup answers wrong on unedited varied scenes, does the address probe read the slot of the wrong answer, while the lens still names the right item?
+- **Why we asked.** If the address carries the position route, some of the lookup's errors could come from a wrong address.
+- **Data.** Unedited varied scenes where the lookup answers wrong (see the table).
+- **Method.** A slot probe trained on the scenes the lookup gets right (per format and locker order, the wrong item's entity held out), read on the wrong ones against the wrong answer's slot; the lens's top item at the bridge word beside.
+- **Rule, fixed in advance.** ""The address predicts the error" if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; the layout baseline beside), and the lens's top item at the bridge word is still the right item in >= 0.8 of those." Lightning: a coverage run on this rule, no prediction.
+
+![The address probe does not predict the lookup's errors](../../figures/story/fig07c_probe_errors.png)
+*(a) Wrong answers whose locker the address probe predicts, against the most common locker and the layout baseline; (b) of those, the lens's top item at the bridge word still the right item; dashed: the rule's bars; 9B, 27B, Muse (the README's figure); Lightning in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | the lookup's wrong answers, with a probe | 100<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 100 (91 / 100; 40) :: 100 --> | 5<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 5 (5 / 5; 5) :: 5 --> | 32<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 32 (32 / 32; 25) :: 32 --> | 105<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 105 (100 / 105; 40) :: 105 --> |
+  | the probe matches the wrong answer's slot (bar >= 0.5) | 0.07 [0.02, 0.12]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 0.07 [0.02, 0.12] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 0.00 [0.00, 0.00] --> | 0.06 [0.00, 0.16]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 0.06 [0.00, 0.16] --> | 0.05 [0.01, 0.09]<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 0.05 [0.01, 0.09] --> |
+  | chance | 0.20<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 100 (91 / 100; 40) :: 0.20 --> | 0.14<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 5 (5 / 5; 5) :: 0.14 --> | 0.20<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 32 (32 / 32; 25) :: 0.20 --> | 0.19<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 105 (100 / 105; 40) :: 0.19 --> |
+  | the rule | **no** | not tested (5 errors, under 30) | pending (no lens read): no | **no** (no prediction) |
+
+- **Read.**
+  - On the 9B and Lightning the probe matches the wrong answer's slot in under a tenth of errors, below chance: the lookup's errors are not address errors. The 27B makes too few errors to test, and Muse's lens read never landed.
+- **Caveats.**
+  - Lightning's verdict header prints "Q47.13, Dan: 65%", but this is a coverage run with no prediction (Flagged 23).
+  - Errors are few: about 100 per model over 40 bridge items.
+
 ### Is the person who picked an item marked at its locker sentence? (person mark, 48.3; the 27B's coverage run 29 Oct) <a id="t48-3"></a>
 
 *Used in: README Part VI, "What did not hold" (a person mark at the locker sentence; 9B, Muse); the 27B not in the README yet. Story: what did not hold.*
@@ -795,32 +885,32 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
   - Part (c), blocking the question's reads, was dropped before any run.
   - The control (edges to the filler sentence) stays within 0.10 of no block on all three.
 
-### Is the address the same for any kind of item? (other kinds of item, 47.11; the 27B's coverage run 29 Oct) <a id="t47-11"></a>
+### Is the address the same for any kind of item? (other kinds of item, 47.11; the 27B's and Lightning's coverage runs 29 Oct) <a id="t47-11"></a>
 
 *Used in: README Part VI, "What did not hold" (the address is the same for any kind of item; 9B, Muse); the 27B not in the README yet. Story: what did not hold.*
 
 - **Question.** With fruits or names as the items instead of animals, does the address fit on animal scenes still carry the lookup's position answers?
 - **Why we asked.** An address, not an animal code, should work for any kind of item.
-- **Data.** Routes scenes (another item moved) with animals, fruits and names as the items, matched digits, people and slots: 300 per kind per model (9B / 27B / Muse).
+- **Data.** Routes scenes (another item moved) with animals, fruits and names as the items, matched digits, people and slots: 300 per kind per model (9B / 27B / Muse / Lightning).
 - **Method.** At the bridge word at L: the address fit on animal scenes, not refit, taken out of the change against a random part of its share, and kept alone; where that fails, the address refit per kind on a fit half and read on the other half.
-- **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B: a coverage run on this rule, no prediction.
+- **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B and Lightning: coverage runs on this rule, no prediction.
 
 ![The animal-fit address does not carry over to other items as ruled](../../figures/ledger/ledger_agnostic.png)
-*Per model, position answers lost without the address beyond a random part of its share, by kind of item: the address fit on animals (filled) and refit per kind (hollow); dashed: the rule's 0.3; whiskers 95%; 300 scenes per kind (150 for the refit's read).*
+*Per model, position answers lost without the address beyond a random part of its share, by kind of item: the address fit on animals (filled) and refit per kind (hollow); dashed: the rule's 0.3; whiskers 95%; 300 scenes per kind (150 for the refit's read); 9B, 27B, Muse, Lightning.*
 
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | position lost without the animal-fit address, beyond random: animals / fruits / names (bar >= 0.3) | 0.44 [0.39, 0.48]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: animals :: 0.44 [0.39, 0.48] --> / 0.56 [0.51, 0.61]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: 0.56 [0.51, 0.61] --> / 0.54 [0.48, 0.60]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: 0.54 [0.48, 0.60] --> | 0.22 [0.18, 0.26]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: animals :: 0.22 [0.18, 0.26] --> / 0.27 [0.21, 0.34]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: 0.27 [0.21, 0.34] --> / 0.29 [0.25, 0.34]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: 0.29 [0.25, 0.34] --> | 0.28 [0.23, 0.32]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: animals :: 0.28 [0.23, 0.32] --> / 0.39 [0.33, 0.46]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: 0.39 [0.33, 0.46] --> / 0.25 [0.20, 0.30]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: 0.25 [0.20, 0.30] --> | pending |
-  | only the address kept, position: fruits / names (bar >= 0.15) | 0.35 [0.30, 0.40]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: 0.35 [0.30, 0.40] --> / 0.35 [0.30, 0.41]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: 0.35 [0.30, 0.41] --> | 0.08 [0.04, 0.11]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: 0.08 [0.04, 0.11] --> / 0.14 [0.10, 0.18]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: 0.14 [0.10, 0.18] --> | 0.29 [0.24, 0.35]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: 0.29 [0.24, 0.35] --> / 0.27 [0.21, 0.32]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: 0.27 [0.21, 0.32] --> | |
-  | label: fruits / names | slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: slot x type --> / slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: slot x type --> | neither U nor the refit<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: neither U nor the refit --> / slot x type<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: slot x type --> | slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: slot x type --> / slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: slot x type --> | |
-  | the rule | **no<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| Q47.11 per model :: no -->** | **no<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| Q47.11 per model :: no -->** (no prediction) | **no<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| Q47.11 per model :: no -->** | |
+  | position lost without the animal-fit address, beyond random: animals / fruits / names (bar >= 0.3) | 0.44 [0.39, 0.48]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: animals :: 0.44 [0.39, 0.48] --> / 0.56 [0.51, 0.61]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: 0.56 [0.51, 0.61] --> / 0.54 [0.48, 0.60]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: 0.54 [0.48, 0.60] --> | 0.22 [0.18, 0.26]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: animals :: 0.22 [0.18, 0.26] --> / 0.27 [0.21, 0.34]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: 0.27 [0.21, 0.34] --> / 0.29 [0.25, 0.34]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: 0.29 [0.25, 0.34] --> | 0.28 [0.23, 0.32]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: animals :: 0.28 [0.23, 0.32] --> / 0.39 [0.33, 0.46]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: 0.39 [0.33, 0.46] --> / 0.25 [0.20, 0.30]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: 0.25 [0.20, 0.30] --> | 0.45 [0.38, 0.51]<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: animals :: 0.45 [0.38, 0.51] --> / 0.61 [0.52, 0.70]<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: fruits :: 0.61 [0.52, 0.70] --> / 0.48 [0.43, 0.54]<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: names :: 0.48 [0.43, 0.54] --> |
+  | only the address kept, position: fruits / names (bar >= 0.15) | 0.35 [0.30, 0.40]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: 0.35 [0.30, 0.40] --> / 0.35 [0.30, 0.41]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: 0.35 [0.30, 0.41] --> | 0.08 [0.04, 0.11]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: 0.08 [0.04, 0.11] --> / 0.14 [0.10, 0.18]<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: 0.14 [0.10, 0.18] --> | 0.29 [0.24, 0.35]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: 0.29 [0.24, 0.35] --> / 0.27 [0.21, 0.32]<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: 0.27 [0.21, 0.32] --> | 0.54 [0.48, 0.59]<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: fruits :: 0.54 [0.48, 0.59] --> / 0.41 [0.35, 0.47]<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: names :: 0.41 [0.35, 0.47] --> |
+  | label: fruits / names | slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: fruits :: slot x type --> / slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| qwen3.5-9b :: names :: slot x type --> | neither U nor the refit<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: fruits :: neither U nor the refit --> / slot x type<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| qwen3.6-27b :: names :: slot x type --> | slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: fruits :: slot x type --> / slot x type<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| muse-glimmer-30b :: names :: slot x type --> | slot x type<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: fruits :: slot x type --> / an address (U transfers)<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| nemotron-3.5-lightning :: names :: an address (U transfers) --> |
+  | the rule | **no<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| Q47.11 per model :: no -->** | **no<!-- src: results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.md \| Q47.11 per model :: no -->** (no prediction) | **no<!-- src: results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md \| Q47.11 per model :: no -->** | **no<!-- src: results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.md \| Q47.11 per model :: no -->** (no prediction) |
 
 - **Read.**
-  - On all three models the animal-fit address does not carry over as the rule asks: on the 9B it cuts fruits and names more than animals, on Muse names fall short, and on the 27B it cuts no kind by 0.3 and kept alone gives few position answers. Refit per kind, it passes for names on all three and for fruits on the 9B and Muse.
+  - On all three models the animal-fit address does not carry over as the rule asks: on the 9B it cuts fruits and names more than animals, on Muse names fall short, and on the 27B it cuts no kind by 0.3 and kept alone gives few position answers. Refit per kind, it passes for names on all three and for fruits on the 9B and Muse. On Lightning the rule also says no, though its names take the animal-fit address as it is (an address); its fruits need the refit.
 - **Caveats.**
-  - Lightning's run has no outcomes in the coverage folder yet (pending).
+  - Lightning's column comes from a later verdict folder that re-reads the 27B with the same rows.
   - The refit is read on half the scenes (150 per kind).
 
 ## Ledger only (opened, not in README)
@@ -1109,13 +1199,13 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 
 ## Withdrawn
 
-### Does the split hold when Zach's bridge is described? (Z2, opened 28 Oct 17:27; withdrawn 21:18) <a id="z2"></a>
+### Does the split hold when Zach's bridge is described? (Z2, opened 28 Oct 17:27; withdrawn 21:18; Lightning's coverage run 29 Oct) <a id="z2"></a>
 
 *Used in: README Part VI, Withdrawn. Story: other datasets.*
 
 - **Question.** On Zach's passages with a described (never named) bridge, does the lookup let go of the lens part?
 - **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
-- **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for).
+- **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for) / 200<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 200 (124) :: 200 --> (Lightning, at L14; L27 beside).
 - **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
 - **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
 
@@ -1124,16 +1214,16 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 
 - **Result.**
 
-  | | 9B | 27B | Muse (L26) | Lightning |
+  | | 9B | 27B | Muse (L26) | Lightning (L14) |
   |---|---|---|---|---|
-  | lookup: switches lost beyond a random part | 0.54 [0.43, 0.66]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| qwen35_9b_x50_z2 :: 0.54 [0.43, 0.66] --> | 0.69 [0.52, 0.87]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| x50_z2_27b :: 0.69 [0.52, 0.87] --> | 0.67 [0.00, 1.00]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| muse30_x50_z2 :: 0.67 [0.00, 1.00] --> | not run |
-  | the rule (before withdrawal) | (a') through the lens | (a') through the lens | (a') through the lens | |
+  | lookup: switches lost beyond a random part | 0.54 [0.43, 0.66]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| qwen35_9b_x50_z2 :: 0.54 [0.43, 0.66] --> | 0.69 [0.52, 0.87]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| x50_z2_27b :: 0.69 [0.52, 0.87] --> | 0.67 [0.00, 1.00]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| muse30_x50_z2 :: 0.67 [0.00, 1.00] --> | 0.51 [0.38, 0.63]<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 0.51 [0.40, 0.62] :: 0.51 [0.38, 0.63] --> |
+  | the rule (before withdrawal) | (a') through the lens | (a') through the lens | (a') through the lens | (a') through the lens (no prediction) |
 
 - **Read.**
   - Withdrawn: at the description's last token the lens part moves the answer, so removing it is not a test of the bridge.
 - **Caveats.**
-  - Muse's lookup switches under the whole change on 0.02 of passages.
-  - n below the 200 aimed for.
+  - Muse's lookup switches under the whole change on 0.02 of passages; Lightning's L27 cell rests on 15<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| L27: routes :: "original": 184, "switch": 15 :: 15 --> lookup switches (under 30) and is not valid.
+  - n below the 200 aimed for on the first three models. Lightning's run reads the design the README withdrew (Part VI) and stands under the same withdrawal.
 
 ## Running or sealed
 
@@ -1178,8 +1268,11 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_gain.png | yes | no overlap | yes | yes | the rule's bars as red ticks; Muse's lookup cell at zero shows no bar |
 | figures/story/fig09d_chain.png | yes | no overlap | yes | yes | reused; drawn by the README pass; 9B and Muse |
 | figures/supp/s03e_cumulative.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; 9B and Muse; its 27B rows read "not run" |
-| figures/ledger/ledger_agnostic.png | yes | no overlap | yes | yes | the 27B's fruits refit falls below the animal fit |
+| figures/ledger/ledger_agnostic.png | yes | no overlap | yes | yes | the 27B's fruits refit falls below the animal fit; Lightning added, re-opened |
 | figures/story/fig15_mechanisms.png | yes | no overlap | yes | yes | reused; drawn by the README pass; a stray grey dot sits at the top right (a README figure, left as is) |
+| figures/story/fig01c_zeroing.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
+| figures/story/fig09b_refit.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
+| figures/story/fig07c_probe_errors.png | yes | no overlap | yes | yes | reused; drawn by the README pass; its build folder is now pinned (Lightning's one-model 47.13 folder is newer) |
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
 | figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |

@@ -3467,7 +3467,9 @@ BATCH47 = {
     "fig05d_routes_lens": ("story_b47a", "build_routes_lens", "x47_atoms/x47_1-*", None),  # E3 (Dan ~20:30)
     "fig05c_described_bridge": ("story_b47a", "build_cue", "x47_cue/x47_3-*",
                                 "A described bridge: the split holds on two of the three models"),
-    "fig07c_probe_errors": ("story_b47a", "build_errors", "x47_errors/x47_13-*", None),
+    # pinned: Lightning's 47.13 coverage verdict (x47_13-20261029T035254Z, one model) is newer and would replace the
+    # three models' panels
+    "fig07c_probe_errors": ("story_b47a", "build_errors", "x47_errors/x47_13-20261028T113107Z", None),
     "fig09b_six_lockers": ("story_b47a", "build_six", "x47_six/x47_2-*", None),
     "fig09c_formation": ("story_b47b", "build_47_6", "x47_edges/x47_6-*",
                          "Blocking the pick sentence from the lockers removes most switches, not only position"),
