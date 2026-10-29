@@ -1621,7 +1621,8 @@ def report_slot1(plt) -> str:
                        bars=((0.2, "--"),))
 
 
-TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T094632Z" / "verdict.json"  # 53.1, the 9B's number cells first
+TWOBYTWO = (R / "x53_2x2" / "x53_2x2-20261029T094632Z" / "verdict.json",  # 53.1: the 9B's number cells
+            R / "x53_2x2" / "x53_2x2-20261029T094940Z" / "verdict.json")  # fmt: skip  # the 27B's
 TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "pending", "qb_word": "pending"}
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
                   ("qb_word", "Q before, word"))
@@ -1632,24 +1633,31 @@ def twobytwo(plt) -> str:
     recall's switches lost without the lens part beyond random (arm 1) and its share kept with the answer directions
     kept (arm 2 over arm 1), and the conflict test's lookup beside; a cell not tested or pending as a grey note; the
     27B running; Muse grey (not designed); Lightning grey (not run: no new Lightning coverage)."""
-    v = {m["target"]: m for m in load(TWOBYTWO)}
-    rows = {"qwen3.5-9b": []}
-    m = v["qwen3.5-9b"]
+    v = {m["target"]: m for p in TWOBYTWO for m in load(p) if m.get("status") != "pending" and m.get("cells")}
+    rows = {}
+    for t in ("qwen3.5-9b", "qwen3.6-27b"):
+        if t in v:
+            rows[t] = _twobytwo_rows(v[t])
+    absent = {"muse-glimmer-30b": "not designed", LT: "not run (Dan:\nno new Lightning\ncoverage)"}
+    absent.update({t: "running" for t in ("qwen3.5-9b", "qwen3.6-27b") if t not in rows})
+    return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
+                       "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
+                       rows, absent, "share", xlim=(-0.2, 1.05))
+
+
+def _twobytwo_rows(m: dict) -> list:
+    out = []
     for key, word in TWOBYTWO_CELLS:
         c = m["cells"].get(key, {})
         labs = (f"{word}: recall lost", f"{word}: recall kept", f"{word}: lookup lost")
         if c.get("status") == "tested":
             r = c["readers"]["recall"]
-            rows["qwen3.5-9b"] += [(labs[0], r["extra"]["1"], INK, False), (labs[1], r["share2"], INK, False),
-                                   (labs[2], c["lookup_extra"], LOOKUP, False)]
+            out += [(labs[0], r["extra"]["1"], INK, False), (labs[1], r["share2"], INK, False),
+                    (labs[2], c["lookup_extra"], LOOKUP, False)]
         else:
-            rows["qwen3.5-9b"] += [(labs[0], TWOBYTWO_NOTES[key], INK, False), (labs[1], "", INK, False),
-                                   (labs[2], "", LOOKUP, False)]
-    absent = {"qwen3.6-27b": "running", "muse-glimmer-30b": "not designed",
-              LT: "not run (Dan:\nno new Lightning\ncoverage)"}  # fmt: skip
-    return four_panels(plt, "ledger_twobytwo", "With the question after the scene, the 9B's recall follows the entity",
-                       "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
-                       rows, absent, "share", xlim=(-0.2, 1.05))
+            note = TWOBYTWO_NOTES[key] if m["target"] == "qwen3.5-9b" else "pending"
+            out += [(labs[0], note, INK, False), (labs[1], "", INK, False), (labs[2], "", LOOKUP, False)]
+    return out
 
 
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
