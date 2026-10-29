@@ -1495,13 +1495,13 @@ def subset27b(plt) -> str:
                        rows, absent, "share of lookups", bars=((0.10, ":"), (0.25, "--")))
 
 
-IDADDR53 = R / "x53_identity_address" / "x53_identity_address-20261029T091645Z" / "verdict.json"  # the combined verdict
-IDADDR = {LT: IDADDR53, "qwen3.5-9b": IDADDR53}
+IDADDR53 = R / "x53_identity_address" / "x53_identity_address-20261029T105132Z" / "verdict.json"  # joint, four models
+IDADDR = {t: IDADDR53 for t in SLOT_MODELS}
 
 
 def identity_address(plt) -> str:
     """53.6 on four slots: the recall under the lens part toward item B plus the address swap toward item C's slot:
-    the shares answering B's, C's and the original answer, with each part alone beside; 27B and Muse grey."""
+    the shares answering B's, C's and the original answer, with each part alone beside; Lightning hollow."""
     rows = {}
     for t, path in IDADDR.items():
         if not path.exists():
@@ -1514,25 +1514,25 @@ def identity_address(plt) -> str:
                    ("both: the original", c["both"]["original"], NULL, hollow),
                    ("lens part alone: B's", c["lens"]["B"], JPP, hollow),
                    ("address alone: C's", c["addr"]["C"], ADDRESS, hollow)]
-    absent = {"qwen3.6-27b": "not designed\n(9B / Lightning only)", "muse-glimmer-30b": "not designed\n(9B / Lightning only)"}
+    absent = {}
     for t in IDADDR:
         if t not in rows:
             absent[t] = "running"
-    return four_panels(plt, "ledger_identity_address", "Pulled two ways, the recall follows both the lens and the address",
+    return four_panels(plt, "ledger_identity_address", "Every recall follows both; on the 27B and Muse it mostly stays put",
                        "The recall's answers; teal: item B (the lens part), orange: item C (the address); whiskers 95%",
                        rows, absent, "share of recalls")
 
 
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
-# the follow-up's first run (the span; its control placement superseded by Dan 11:25, rerun pending)
-ATTNSPAN = R / "x53_attnblock" / "x53_attnspan-20261029T102727Z" / "verdict.json"
+# the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded)
+ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T105304Z" / "verdict.json"
 
 
 def attnblock(plt) -> str:
     """53.4 on four slots: Lightning, the share of the whole change's lookup switches cut by blocking the bridge word in
     attention block 19, 26, both, every attention block after L, and the control (both blocks, another token); the
-    recall beside; the rule's 0.6, 0.3 and 0.15 bars; the other three grey (a Lightning test). The follow-up's first
-    run beside: the span from the bridge word to the scene's end, and the control span (95 scenes where it fits)."""
+    recall beside; the rule's 0.6, 0.3 and 0.15 bars; the other three grey (a Lightning test). The follow-up beside:
+    the span from the bridge word to the scene's end, and Dan's 11:25 control span (83 scenes where it fits)."""
     v, sp = load(ATTNBLOCK), load(ATTNSPAN)
     arms = (("b19", "(i) block 19"), ("b26", "(ii) block 26"), ("both", "(iii) blocks 19, 26"),
             ("after", "(iv) all after L"), ("control", "(v) control"))
@@ -1542,7 +1542,7 @@ def attnblock(plt) -> str:
         for k, lab in arms:
             rows[LT].append((f"{reader}: {lab}", [r["cut"][k], *r["cut_ci"][k]], col, True))
         q = sp["readers"][reader]
-        for k, lab in (("span", "span, first run"), ("span_ctrl", "control span, first run")):
+        for k, lab in (("span", "follow-up: span"), ("span_ctrl", "follow-up: control span")):
             rows[LT].append((f"{reader}: {lab}", [q["cut"][k], *q["cut_ci"][k]], col, True))
     absent = {t: "not applicable\n(Lightning test)" for t in SLOT_MODELS[:3]}
     return four_panels(plt, "ledger_attnblock", "Two attention blocks carry a third of Lightning's lookup switch",
@@ -1657,6 +1657,8 @@ def report_slot1(plt) -> str:
 
 
 TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T104328Z" / "verdict.json"  # 53.1, combined (9B, 27B, Lightning)
+# Muse's box verdict, interim until the five-model verdict lands (a model the combined verdict has wins)
+TWOBYTWO_INTERIM = (R / "x53_2x2" / "x53_2x2-20261029T104153Z" / "verdict.json",)
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
                   ("qb_word", "Q before, word"))
 
@@ -1668,6 +1670,9 @@ def twobytwo(plt) -> str:
     paired difference, question before minus after (Dan 11:25); a cell not tested as a grey note with its own gate;
     Lightning hollow (its gate set after the pre-check); a model still running grey."""
     v = {m["target"]: m for m in load(TWOBYTWO)}
+    for m in (m for p in TWOBYTWO_INTERIM for m in load(p)):
+        if m.get("cells") and not v.get(m["target"], {}).get("cells"):
+            v[m["target"]] = m
     rows, absent = {}, {}
     for t in SLOT_MODELS:
         if v.get(t, {}).get("cells"):
