@@ -2932,3 +2932,32 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
 - **Run.** 9B first (qwen35_9b_nn_probe_v4_v2, GPU1). The 27B only if Zach asks. Queue: scripts/queues/h200_probe2_1029.sh.
 
 ##### Amendment 58 note 24, Lightning addendum (Zach: "GPUs used optimally", 2026-10-29 ~16:30 UTC; before any Lightning note 24 run): note 24 exactly as on the 9B and 27B. Cells: final L34-39, L40-45 and last L21-26 (where note 15 found the lens part matters); knock-out band L27-33. Queue: scripts/queues/h200_cc_1029.sh nem35l, GPU1. Bolt waits for it.
+
+##### Amendment 58 note 25 (Zach, 2026-10-29 ~17:30 UTC; before any run of it): priming at the bridge, from Dan's guess
+- **Why.** Dan (29 Oct): a famous name brings its best-known attribute into the lens before any question (Aristotle -> Greek). Then "the J-space at the bridge holds the answer" could be the person's association rather than what the model will say.
+- **Looked at before writing this (feasibility only).** Note 14's v4 readout on the 9B, description's end, J++ top-1:
+  - MM (the answer is X's remembered attribute): 37-44% at L8-16 (chance 3.4).
+  - MP (the answer is X's made-up passage value): 2-4% at every layer.
+  - X's remembered attribute on MP prompts has never been read.
+- **Test.** v4's lookup (MP) and its recall twin (MM) share the passage and the description. Only the question's frame differs:
+  - MP: "Which nationality is the actor cast as the person who wrote Things Fall Apart in the new film?"
+  - MM: "Which nationality was the person who wrote Things Fall Apart?"
+  - On MP the model will say X's passage value, not X's remembered attribute.
+- **Run.** scripts/nn_readout.py --items v4 --priming: note 14's readout (J++ and logit lens, every 2nd layer, the relation's answers as candidates, ties against the target), with three more targets per prompt:
+  - other: on MP, X's remembered attribute; on MM, X's passage value;
+  - third: an answer of the relation that appears nowhere in the scene (random.Random('third:' + id)), the chance control;
+  - ctx: another entity's passage value (random.Random('ctx:' + id)).
+- **Windows** (stage 1's hits for both words): description's end 9B L4-16, 27B L16-40, Lightning L6-26; final token 9B L21-30, 27B L49-62, Lightning L34-50. Even layers.
+- **Statistic** (scripts/nn_priming_read.py). Per prompt and target, the share of window layers where the target is top-1.
+  - Primary set: scenes whose MP and MM are both v4ok (paired). J++ lens.
+  - rho = (MP other - MP third) / (MM attr - MM third) at the description's end.
+  - Cluster bootstrap over bridges, 2000 draws.
+- **Readings.**
+  - Positive check: MM attr - MM third >= 10 points, interval above 0. Otherwise void.
+  - "The bridge shows the person's attribute, whatever will be said": rho >= 0.7.
+  - "The bridge shows what will be said": rho <= 0.3.
+  - "Mixed" between; "unclear" if rho's interval holds both 0.3 and 0.7.
+  - Final token: "the end shows what will be said" if MP attr (the passage value) - MP other >= 20 points.
+  - Descriptive: the logit lens; all v4ok prompts unpaired; MM's other (X's passage value on recall prompts); ctx.
+- **Order.** 9B now on GPU1 beside Bolt (it fits in the free memory); smoke of 8 prompts per family first. The 27B (GPU0) and Lightning (GPU1) after Bolt. Queue: scripts/queues/h200_prime_1029.sh.
+- **Question order (Dan's 27B result, question first).** Not tested here. Every v4 prompt puts the passage first; results are scoped to that order.

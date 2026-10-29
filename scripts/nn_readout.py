@@ -15,9 +15,12 @@ attribute's top-1 rate first peaks.
 being the item's own (MP: X's passage value).
 --items composition (note 11): instead, RM items whose hop 1 and hop 2 alone are right, as RM_ok (the whole right too)
 and RM_fail (the whole wrong), the same reads; per-item ranks are written to rows.jsonl (scripts/nn_fail_read.py).
+--priming (note 25, with --items v4): three more answer reads per prompt: "other" (MP: X's remembered attribute; MM: X's
+passage value), "third" (an answer of the relation that appears nowhere in the scene) and "ctx" (another entity's passage
+value). Read by scripts/nn_priming_read.py.
 
 python scripts/nn_readout.py --name N --competence C [--set jsuite_v3_test_chat] [--every 2] [--batch 16]
-       [--items eligible|composition]
+       [--items eligible|composition|v4] [--cv-h1 CV] [--priming]
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import random
 import re
 import statistics
 import subprocess
@@ -47,6 +51,18 @@ from scripts.ablate_v2 import bridge_positions  # noqa: E402
 RES = pins.RESULTS_DIR / "nn_readout"
 
 
+def priming_targets(it: dict, avals: list[str], said: str) -> dict | None:
+    """note 25: candidate indices of the other word's answer, an answer absent from the scene, another entity's value."""
+    pv, x = it["passage_values"], it["bridge"]
+    other = it["real"] if it["word"] == "MP" else pv[x]
+    thirds = [v for v in avals if v not in set(pv.values()) | {it["real"], said}]
+    ctxs = [pv[e] for e in sorted(pv) if e != x and pv[e] not in (said, other)]
+    if other not in avals or other == said or not thirds or not ctxs:
+        return None
+    return {"other": avals.index(other), "third": avals.index(random.Random("third:" + it["id"]).choice(thirds)),
+            "ctx": avals.index(random.Random("ctx:" + it["id"]).choice(ctxs))}  # fmt: skip
+
+
 @torch.no_grad()
 def main(a) -> None:
     out_dir = RES / a.name
@@ -58,7 +74,7 @@ def main(a) -> None:
     lens = JLens(model, pins.FROZEN_LENS)
     layers = sorted(la for la in (int(x) for x in lens.source_layers) if la % a.every == 0)
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
-                                                       "competence": a.competence, "layers": layers, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
+                                                       "competence": a.competence, "layers": layers, "items": a.items, "priming": a.priming, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
     if a.items == "v4":  # note 14: v4's gate, successes vs failures, the lookup (MP) and its recall twin (MM)
         from scripts.nn_swap import build_prompt, v4_split
@@ -84,7 +100,7 @@ def main(a) -> None:
     for it in items.values():
         if it.get("module") == "facts" and it["word"] in ("PK", "PM", "RM", "MM", "MP"):
             bridges_of[it["relation"]].add(it["bridge"])
-    jobs = []
+    jobs, nskip = [], 0
     for p in prompts:
         it = items[p["id"]]
         variants = [(p["family"], p["ids"])]
@@ -102,13 +118,20 @@ def main(a) -> None:
             pos = bridge_positions(tok, ids, desc)
             if not pos:
                 continue
+            ex = priming_targets(it, avals, true_a) if a.priming else {}
+            if ex is None:
+                nskip += 1
+                continue
             jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
-                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"]})  # fmt: skip
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"], "extra": ex})  # fmt: skip
     if a.limit:  # a smoke: the first N prompts per family
         per = collections.defaultdict(list)
         for j in jobs:
             per[j["family"]].append(j)
         jobs = [j for v in per.values() for j in v[: a.limit]]
+    if a.priming:
+        assert a.items == "v4", "--priming reads v4 items"
+        print(f"note 25: {nskip} prompts without the extra targets skipped", flush=True)
     print(f"{len(jobs)} prompts; by family {dict(collections.Counter(j['family'] for j in jobs))}; layers {layers}", flush=True)
     stats = collections.defaultdict(list)
     item_rows = []
@@ -136,7 +159,7 @@ def main(a) -> None:
                     for ln, M in (("jlens", lens.J(la)), ("logit", None)):
                         lg = (x if M is None else x @ M.T) @ wg.T
                         for b, j in enumerate(chunk):
-                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"])):
+                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"]), *((w, j["arows"], t) for w, t in j["extra"].items())):
                                 cand = torch.stack([lg[b, r].max() for r in rws])
                                 # conservative: a tie (bridges sharing a first token) counts against the true candidate
                                 rank = int((cand >= cand[true]).sum())
@@ -186,4 +209,5 @@ if __name__ == "__main__":
     ap.add_argument("--limit", type=int, default=0, help="first N prompts per family (a smoke)")
     ap.add_argument("--items", choices=["eligible", "composition", "v4"], default="eligible", help="note 11: RM_ok vs RM_fail; note 14: v4")
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1")
+    ap.add_argument("--priming", action="store_true", help="note 25: the other word's answer, an absent answer, another entity's value")
     main(ap.parse_args())
