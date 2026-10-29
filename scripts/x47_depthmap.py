@@ -112,6 +112,7 @@ LEAD = {
     "qwen3.5-9b": 2,
     "qwen3.6-27b": 4,
     "muse-glimmer-30b": 4,
+    "nemotron-3.5-lightning": 4,  # batch 52 coverage: as Muse (one sampling step, STEP above)
 }  # D1 (b): the lookup's bridge mass ends this many layers earlier
 EPS = 1e-9
 READER_NAME = C.READER_NAME
