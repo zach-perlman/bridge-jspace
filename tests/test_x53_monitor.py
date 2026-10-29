@@ -176,6 +176,22 @@ def test_rule_labels():
     assert M.rule_label(full_hi, np.array([0.8]), np.array([0.5]))["label"] == M.LABELS[1]
 
 
+def test_energy_rule():
+    """Dan 13:15: J++ >= 0.10 below the energy-matched random where full >= 0.8 -> under-represented; within 0.10 at
+    every layer -> no different; else in between (J++ well above e-random included)."""
+    full = np.array([0.5, 0.9, 0.85])
+    assert M.energy_label(full, np.array([0.4, 0.6, 0.7]), np.array([0.45, 0.72, 0.75]))["label"] == M.ENERGY_LABELS[0]
+    # the 0.10 gap only where full < 0.8: not under-represented; not within 0.10 everywhere: in between
+    assert M.energy_label(full, np.array([0.2, 0.6, 0.7]), np.array([0.35, 0.65, 0.72]))["label"] == M.ENERGY_LABELS[2]
+    assert M.energy_label(full, np.array([0.4, 0.6, 0.7]), np.array([0.45, 0.65, 0.75]))["label"] == M.ENERGY_LABELS[1]
+    assert M.energy_label(full, np.array([0.4, 0.9, 0.9]), np.array([0.2, 0.6, 0.7]))["label"] == M.ENERGY_LABELS[2]
+    # exactly at the bar (EPS): under-represented first
+    assert M.energy_label(full[:2], np.array([0.5, 0.6]), np.array([0.5, 0.7]))["label"] == M.ENERGY_LABELS[0]
+    assert M.label_text(M.ENERGY_LABELS[0], "b") == "the address is under-represented in the lens directions"
+    assert M.label_text(M.ENERGY_LABELS[0], "c").endswith("is under-represented in the lens directions")
+    assert M.label_text(M.ENERGY_LABELS[1], "b") == M.ENERGY_LABELS[1]
+
+
 def test_cluster_ci_brackets_the_mean():
     rng = np.random.default_rng(2)
     den = rng.integers(0, 3, (90, 3)).astype(float)

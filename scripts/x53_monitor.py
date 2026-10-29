@@ -551,12 +551,14 @@ ADDITIONS_1140 = (
 
 
 def label_text(label: str, target: str) -> str:
-    """The verdict's wording of a label for a target (Dan 11:40 for the 'random reads it too' case)."""
-    if label != LABELS[3]:
-        return label
-    if target == "b":
-        return ADDRESS_MANY
-    return f"{TARGET_TEXT[target].split(') ', 1)[1]} is linearly decodable from many subspaces, J++ included"
+    """The verdict's wording of a label for a target (Dan 11:40 for the 'random reads it too' case; Dan 13:15 for the
+    energy rule's 'under-represented', 'the address' being the slot: other targets named the same way, flagged)."""
+    what = TARGET_TEXT[target].split(") ", 1)[1]
+    if label == LABELS[3]:
+        return ADDRESS_MANY if target == "b" else f"{what} is linearly decodable from many subspaces, J++ included"
+    if label == "under-represented in the lens directions":
+        return f"{'the address' if target == 'b' else what} is under-represented in the lens directions"
+    return label
 
 
 def row_table(items: list[dict]) -> dict[str, np.ndarray]:
@@ -978,8 +980,30 @@ def load_probes(name: str, s: str) -> dict | None:
 RULE_ARMS = {  # label -> (the J++ entry, the random entry): the decisive arm first, then the arms beside
     "": ("jpp", "rand"),  # the brief's: the per-state J++ part vs a random subspace of the same k
     "fixed_": ("fix", "rand"),  # critic_1125: the same rule with J++ replaced by the fixed J++ subspace
-    "erand_": ("jpp", "erand"),  # beside (the agent's choice): the per-state J++ part vs the energy-matched random
+    "erand_": ("jpp", "erand"),  # answers_1315: Dan's energy rule, the per-state J++ part vs the energy-matched random
 }
+# Dan 13:15 (jobs/c3/batch53.yaml answers_1315), verbatim; its labels on the per-state J++ part vs the energy-matched
+# random subspace, beside the decisive ones (the 11:40 wording on the fixed-k random stays as it is)
+ANSWERS_1315 = ('53.2, fixed before the verdict: if J++ is >= 0.10 below the energy-matched random while the full state '
+                'is >= 0.8, the label is "the address is under-represented in the lens directions" (stronger than '
+                'blind), not an energy artefact. If J++ is within 0.10 of the energy-matched random, "no different '
+                'from random directions of the same energy".')  # fmt: skip
+ENERGY_LABELS = ("under-represented in the lens directions", "no different from random directions of the same energy",
+                 "in between")  # fmt: skip
+ENERGY_GAP = 0.10
+
+
+def energy_label(full: np.ndarray, jpp: np.ndarray, erand: np.ndarray) -> dict:
+    """Dan 13:15's rule (EPS at the bars), as read here (flagged): under-represented iff at some layer where the full
+    state is >= 0.8, J++ is >= 0.10 below the energy-matched random; no different iff |J++ - e-random| <= 0.10 at every
+    layer (the 'within 0.10' of 53.2's blind); under-represented first where both hold at the bar; else in between."""
+    gap = erand - jpp
+    under_at = np.flatnonzero((full >= FULL_MIN - EPS) & (gap >= ENERGY_GAP - EPS))
+    same = bool(np.all(np.abs(gap) <= ENERGY_GAP + EPS))
+    label = ENERGY_LABELS[0] if len(under_at) else ENERGY_LABELS[1] if same else ENERGY_LABELS[2]
+    return {"label": label, "full_max": float(full.max()), "jpp_max": float(jpp.max()), "rand_max": float(erand.max()),
+            "gap_max": float((jpp - erand).max()), "below_max": float(gap.max()), "under_layers_idx": [int(i) for i in under_at],
+            "full_reaches_0.8": bool(np.any(full >= FULL_MIN - EPS))}  # fmt: skip
 
 
 def summarize(pr: dict, n_boot: int) -> dict:
@@ -1006,8 +1030,11 @@ def summarize(pr: dict, n_boot: int) -> dict:
             for k in KS:
                 if f"{j_arm}{k}" not in feats or f"{r_arm}{k}" not in feats:
                     continue
-                r = rule_label(full, np.array(feats[f"{j_arm}{k}"]["acc"]), np.array(feats[f"{r_arm}{k}"]["acc"]))
-                r["carry_layers"] = [pr["layers"][i] for i in r.pop("carry_layers_idx")]
+                fn = energy_label if tag == "erand_" else rule_label
+                r = fn(full, np.array(feats[f"{j_arm}{k}"]["acc"]), np.array(feats[f"{r_arm}{k}"]["acc"]))
+                for key in ("carry_layers_idx", "under_layers_idx"):
+                    if key in r:
+                        r[key.replace("_idx", "")] = [pr["layers"][i] for i in r.pop(key)]
                 rules[cell][f"{tag}k{k}"] = r
     return {"layers": pr["layers"], "n_rows": len(pr["entity"]), "n_entities": len(set(pr["entity"])),
             "n_scenes": len(set(pr["scene"])), "acc": dict(acc), "rules": rules, "norm_share": shares,
@@ -1143,6 +1170,7 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out
             "models": list(models), "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks,
             "figures": figs,
             "code": git_state(), "critic_1125": CRITIC_1125, "additions_1140": ADDITIONS_1140,
+            "answers_1315": ANSWERS_1315, "energy_labels": list(ENERGY_LABELS),
             "random_reads_it_too_wording": {"b": ADDRESS_MANY, "other targets": "<X> is linearly decodable from many "
                                             "subspaces, J++ included (the agent's generalisation)"},
             "lens_readout_monitor": "cited, unchanged: 47.0, results/x47_verbal/summary-20261028T033646Z (9B, 27B, "
@@ -1171,14 +1199,24 @@ def verdict_lines(blob: dict) -> list[str]:
              f"Dan's changes before scoring (jobs/c3/batch53.yaml critic_1125, verbatim): \"{CRITIC_1125}\"", "",
              "So: the headline targets are (b) and (c); (a) and (d) are positive controls (their rule outcome below, "
              "under their own heading). The decisive label is the brief's (the per-state J++ part vs a random subspace "
-             "of the same k). Beside it, the same rule verbatim with: (i) the J++ entries replaced by the fixed J++ "
+             "of the same k). Beside it: (i) the same rule verbatim with the J++ entries replaced by the fixed J++ "
              "subspace (fix_k: per training fold the span of the k atoms most frequent among the training rows' first "
              "k OMP atoms, ties the smaller token id; the held-out rows projected on it unchanged) against the same "
-             "random_k; (ii) the agent's choice, flagged: the per-state J++ part against the energy-matched random "
-             "subspace (erand_k: dimension r = round(the J++_k part's median share of ||h||^2 at that layer and row "
-             "set, over all rows, label-free, x d), the first r columns of the random_k frame; a Haar r-dimensional "
-             "subspace keeps r / d of ||h||^2 in expectation; rescaling a k-dimensional part instead would change "
-             "nothing, the probes standardise every feature).", ""]  # fmt: skip
+             "random_k; (ii) Dan's 13:15 energy rule (below) on the per-state J++ part against the energy-matched "
+             "random subspace (erand_k: dimension r = round(the J++_k part's median share of ||h||^2 at that layer "
+             "and row set, over all rows, label-free, x d), the first r columns of the random_k frame; a Haar "
+             "r-dimensional subspace keeps r / d of ||h||^2 in expectation; rescaling a k-dimensional part instead "
+             "would change nothing, the probes standardise every feature).", "",
+             f"Dan 13:15, fixed before the verdict (jobs/c3/batch53.yaml answers_1315, verbatim): \"{ANSWERS_1315}\"",
+             "",
+             "Applied beside the decisive labels, on the per-state J++ part vs the energy-matched random: 'under-"
+             "represented in the lens directions' if at some layer where the full state is >= 0.8 J++ is >= 0.10 "
+             "below the energy-matched random (the agent's reading of 'while', flagged); 'no different from random "
+             "directions of the same energy' if J++ is within 0.10 of it at every layer (as 53.2's 'within 0.10', "
+             "flagged); else in between; where both hold exactly at the bar, under-represented. 'The address' is "
+             "Dan's word for the slot; for the other targets the same thresholds with the target named ('<X> is "
+             "under-represented in the lens directions'), flagged. The 11:40 labels on the fixed-k random stay as "
+             "they are.", ""]  # fmt: skip
     lines += [f"Dan's wording, fixed before the verdict (jobs/c3/batch53.yaml additions_1140 item 2, verbatim): "
               f"\"{ADDITIONS_1140}\"", "",
               "Applied: 'J-space blind to X' only if J++ is within 0.10 of random at every layer AND the random "
@@ -1198,7 +1236,10 @@ def verdict_lines(blob: dict) -> list[str]:
               "At a glance, the headline targets' decisive labels (k = 25 / 100; blind = 'J-space blind to X', carries "
               "= 'J-space carries X', many = random reads it too: Dan's sentence for the slot, 'decodable from many "
               "subspaces, J++ included' for the digit; between = in between). Full wording and the arms beside in "
-              "the tables below.", "", *glance_table(res), ""]  # fmt: skip
+              "the tables below.", "", *glance_table(res), "",
+              "Beside, Dan 13:15's energy rule on the same cells (per-state J++ vs the energy-matched random; under = "
+              "'under-represented in the lens directions', same energy = 'no different from random directions of the "
+              "same energy', between = in between):", "", *glance_table(res, "erand_"), ""]  # fmt: skip
     for title, targets in (("### Headline: (b) the bridge's locker slot and (c) the lookup's answer digit", HEADLINE),
                            ("### Positive controls: (a) which item is the bridge and (d) the recall's answer",
                             CONTROLS)):  # fmt: skip
@@ -1285,7 +1326,7 @@ def fmt_acc(feat: dict, li: int) -> str:
 def label_table(res: dict, targets: tuple[str, ...]) -> list[str]:
     """Per model, dataset, position and target: the decisive labels (k = 25 / 100), the arms beside, the maxima."""
     lines = ["| model | dataset | position | target | k | decisive: J++ (per state) vs random | beside: fixed J++ vs "
-             "random | beside: J++ vs energy-matched random | full / J++ / fixed / random / e-random / PCA max | notes |",
+             "random | beside: J++ vs energy-matched random (Dan 13:15) | full / J++ / fixed / random / e-random / PCA max | notes |",
              "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in MODELS:
         for s in SETS:
@@ -1310,9 +1351,10 @@ def label_table(res: dict, targets: tuple[str, ...]) -> list[str]:
     return lines
 
 
-def glance_table(res: dict) -> list[str]:
-    """One row per model and dataset: the headline targets' decisive labels per position, k = 25 / 100."""
-    short = {LABELS[0]: "blind", LABELS[1]: "carries", LABELS[2]: "between", LABELS[3]: "many"}
+def glance_table(res: dict, tag: str = "") -> list[str]:
+    """One row per model and dataset: the headline targets' labels per position, k = 25 / 100 (tag: RULE_ARMS's)."""
+    short = {LABELS[0]: "blind", LABELS[1]: "carries", LABELS[2]: "between", LABELS[3]: "many",
+             ENERGY_LABELS[0]: "under", ENERGY_LABELS[1]: "same energy", ENERGY_LABELS[2]: "between"}  # fmt: skip
     cols = [(p, t) for t in HEADLINE for p in PROBE_POS]
     lines = ["| model | dataset | " + " | ".join(f"{TARGET_SHORT[t]} at {'B' if p == 'B' else 'T'}" for p, t in cols)
              + " |", "|---|---|" + "---|" * len(cols)]  # fmt: skip
@@ -1320,7 +1362,9 @@ def glance_table(res: dict) -> list[str]:
         for s in SETS:
             r = res.get(t, {}).get(s)
             if r:
-                cells = [" / ".join(short[r["rules"][f"{p}|{tg}"][f"k{k}"]["label"]] for k in KS) for p, tg in cols]
+                ru = {(p, tg): r["rules"][f"{p}|{tg}"] for p, tg in cols}
+                cells = [" / ".join(short[ru[c][f"{tag}k{k}"]["label"]] if f"{tag}k{k}" in ru[c] else "not run"
+                                    for k in KS) for c in cols]  # fmt: skip
                 lines.append(f"| {NAMES[t]} | {s} | " + " | ".join(cells) + " |")
     return lines
 
