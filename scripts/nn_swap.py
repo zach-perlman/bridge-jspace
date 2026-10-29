@@ -65,6 +65,9 @@ jswap):
   note 18 (--position-swap, v4): the donor prompt keeps the question; X's fact sentence trades places with another
   entity Z's (X keeps its value); donor class = Z's value (the position route), kept = X's value; cf_ok = the donor prompt
   answered with X's value
+  note 19 (--resample, v4): the donor is another passage's own question (same word and relation, a person absent from
+  X's passage); classes: kept = X's answer, donor = the new person's remembered attribute, third = any other value of
+  X's passage, xmem = X's remembered attribute (MP) / passage value (MM)
   jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
@@ -525,7 +528,7 @@ def main(a) -> None:
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
                                                        "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",
                                                                  "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer", "ctl": SEED_CTL},
-                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap, "position_swap": a.position_swap,
+                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap, "position_swap": a.position_swap, "resample": a.resample,
                                                        "git_commit": commit, "git_state": pins.git_state(), "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ")}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -595,6 +598,15 @@ def main(a) -> None:
                     continue
                 dn, desc_d = x, desc_x
                 cf_ids = S.ids(tok, T.render(tok, {**it, "context": ctx2, "_question": it["question"], "_kind": kind}))
+            elif a.resample:  # note 19: the donor is another passage's own question, about a person absent from X's passage
+                pool = sorted(i for i, o in items.items() if o.get("set_version") == "v4" and o["word"] == it["word"] and o["relation"] == rel
+                              and o["scene"] != it["scene"] and o["bridge"] not in it["entities"] and o["bridge"] in t["facts"]
+                              and mem(o["bridge"]) not in set(pv.values()) | {mem(x)} and ok_name(o["bridge"]))  # fmt: skip
+                if not pool:
+                    continue
+                od = items[rng.choice(pool)]
+                dn, desc_d = od["bridge"], od["start_desc"]
+                cf_ids = S.ids(tok, T.render(tok, {**od, "_question": od["question"], "_kind": od["kind"]}))
             elif a.position_swap:  # note 18: the same question about X; X's fact sentence trades places with Z's
                 ctx = it["context"]
                 zs = sorted(e for e in it["entities"] if e != x and pv[e] not in (xv, mem(x)) and ctx.count(e) == 1)
@@ -633,12 +645,17 @@ def main(a) -> None:
                 ax, ad, at, am = (xv, vnew, mem(x), xv) if lookup else (mem(x), vnew, xv, mem(x))
             if a.position_swap:  # note 18: donor = Z's value (the value at X's new slot in the original passage: the position route)
                 ax, ad, at, am = (xv, zval, mem(x), xv) if lookup else (mem(x), zval, xv, mem(x))
+            if a.resample:  # note 19: donor = the new person's remembered attribute; third = another value of X's passage (set below)
+                ax, ad, at, am = (xv, mem(dn), xv, mem(x)) if lookup else (mem(x), mem(dn), xv, xv)
             jid = f"{p['id']}|{dn}"
             jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
                          "lat_id": f"none:{p['id']}", "lat_ids": nids, "lat_pos": npos[0], "tx": tx, "td": name_token(model, tok, dn),
                          "cf": [(("cf", jid, si), (cf_ids, cp)) for si, cp in enumerate(cf_pos)], "jid": jid,
                          "fx": JS.forms(tok, ax, kind), "fd": JS.forms(tok, ad, kind), "ft": JS.forms(tok, at, kind), "fm": JS.forms(tok, am, kind),
                          "ax": ax, "ad": ad, "at": at})  # fmt: skip
+            if a.resample:  # note 19: third = any other value of X's passage
+                jobs[-1]["ft"] = set().union(*(JS.forms(tok, v, kind) for v in pv.values() if v != xv))
+                jobs[-1]["at"] = "another passage value"
             continue
         if it.get("final") == "P":  # note 13: an in-context second hop (jsuite_v3mp); D is another entity of the passage
             pv, mem = it["passage_values"], (lambda e, t=t: t["facts"][e][0] if e in t["facts"] else None)
@@ -735,6 +752,7 @@ if __name__ == "__main__":
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1 (closed-book hop 1)")
     ap.add_argument("--value-swap", action="store_true", help="note 17: the donor prompt keeps the question about X and gives X another passage value")
     ap.add_argument("--position-swap", action="store_true", help="note 18: the donor prompt keeps the question; X's fact sentence trades places with Z's")
+    ap.add_argument("--resample", action="store_true", help="note 19: the donor is another passage's own question, about a person absent from X's passage")
     a = ap.parse_args()
     assert a.band or a.sweep, "--band or --sweep"
     main(a)

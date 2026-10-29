@@ -2798,3 +2798,30 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Everything else is as note 14 (competence MP MM, controls H1 RG RO, readout, stage-1 map).
 - **Order.** Smoke, competence, controls, readout, then the map in seed-major order: last, final, span. Stage 2 is left for Zach.
 - **Queue.** scripts/queues/h200_v4bolt_1029.sh. It starts once both GPUs are free.
+
+##### Amendment 58 notes 19 and 20 (Zach, 2026-10-29 ~04:45 UTC; before any result): ablating the bridge on v4 (9B)
+- **Note 19: resample ablation (nn_swap --resample).**
+  - **Donor.** The donor prompt is another v4 passage's own question, seeded per item, with:
+    - the same word and relation;
+    - a different scene;
+    - a bridge absent from X's passage, whose remembered attribute is neither one of X's passage values nor X's own.
+  - **Patch.** Its states at the description (last token, or every description token right-aligned) are pasted into X's run over a band. The description then points at someone who is not in the passage.
+  - **Classes:**
+    - kept: X's answer;
+    - donor: the new person's remembered attribute;
+    - third: any other value of X's passage;
+    - xmem: X's remembered attribute (MP) or X's passage value (MM);
+    - other.
+  - **Cells.** Last L4-7, L8-11, L12-16; span L0-3, L4-7, L8-11, L12-16; final L21-24, L25-28 (descriptive). Donor seeds 0 and 1; full_cf and lensrand_cf; all pairs.
+  - **Readings, MP:**
+    - "the lookup depends on the bridge state" at a description cell where note 14's person swap moved >= 20%, if X's answer falls by >= 20 points against no patch (lensrand_cf < 10%);
+    - where the answers go: the class shares;
+    - "they scatter into the passage" if "third" is the largest class after kept.
+  - **MM (reported).** The share following the new person (the donor class), expected like the person swap.
+- **Note 20: our headline removal test (ablate_v2 knock-out) on v4.**
+  - **Prompts.** MP and MM on the 9B, kind clean, each item judged on its own (--tasks-per-word, level all), then v4's gate (--tasks-v4-h1).
+  - **Removal.** At every token over the breadth band L12-16, under conditions paper10, paper10_rot, unembed10 and paper10_pcasize, read cand2.
+  - **Reading.** The gap = MM's accuracy loss minus MP's under paper10, in points, with a 95% bootstrap over items.
+    - "Recall needs the lens part more than the lookup (the headline replicates on v4)" if the gap is >= 10 with an interval above 0, and paper10_rot's gap is <= 1/3 of it.
+    - Each word's losses and the controls are reported beside.
+- **Queue.** scripts/queues/h200_abl_1029.sh. GPU1, beside the 27B chain, after Lightning's stage 2. A smoke of each runs first.

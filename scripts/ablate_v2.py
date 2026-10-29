@@ -419,6 +419,12 @@ def main(args) -> None:
             args.tasks_per_word,
             args.tasks_scene_words,
         )
+        if args.tasks_v4_h1:  # amendment 58 note 20: v4's gate (scripts/nn_swap.v4_split): H1 closed-book right, guess wrong
+            from scripts.nn_swap import v4_split
+
+            v4ok = {i for i, s in v4_split(args.tasks_competence, args.tasks_v4_h1, args.tasks).items() if s == "ok"}
+            prompts = [p for p in prompts if p["id"] in v4ok]
+            print(f"note 20: v4's gate keeps {len(prompts)} prompts", flush=True)
         if args.sample_per_word:  # 2026-10-26 (amendment 49): a seeded random subset of each word's items, not the first n
             import random
 
@@ -682,6 +688,7 @@ if __name__ == "__main__":
         "--tasks-strata", nargs="+", default=["core"], help="tasks_v2 strata (core, secondary: planets 3-step)"
     )
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
+    ap.add_argument("--tasks-v4-h1", default=None, help="note 20: v4's H1 competence_variants run; keep v4_split's ok items only")
     ap.add_argument("--tasks-scene-words", nargs="*", default=None,
                     help="amendment 58 note 4 (v3): a scene passes when its items of these words are right; the compared words are kept on it")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
