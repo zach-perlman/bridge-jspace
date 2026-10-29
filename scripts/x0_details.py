@@ -899,7 +899,10 @@ def tier0_numbers(num: Numbers) -> None:
     """The batch-45 brief's Tier 0 (Dan 26 Oct ~18:30; after the data, descriptive): T0.2 the split by sentence order
     (scripts/x0_split_by_order.py: sbo_<design>_<all|before|after>_<lk|rc|gap|lksw>_<m>); T0.3 the extra loss on p_alt
     (prob_<lk|rc|gap>_<m>); T0.4 a share of the change three ways (share_<median|mean|pooled>_<part>_<m>)."""
-    found = sorted((pins.RESULTS_DIR / "x0_composition").glob("split-by-order-*/split.json"))
+    # batch 52's coverage runs write single-model splits into the same folder pattern (Lightning's
+    # split-by-order-20261029T005451Z); Tier 0's numbers come from the newest split that holds the 9B's cells
+    found = [p for p in sorted((pins.RESULTS_DIR / "x0_composition").glob("split-by-order-*/split.json"))
+             if "qwen3.5-9b|swap" in json.loads(p.read_text())["cells"]]  # fmt: skip
     if found:
         src = str(found[-1].relative_to(pins.REPO_ROOT))
         for key, v in json.loads(found[-1].read_text())["cells"].items():
