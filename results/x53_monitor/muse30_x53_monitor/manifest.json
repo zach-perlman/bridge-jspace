@@ -1,0 +1,199 @@
+{
+  "exp": "x53_monitor",
+  "run": "muse30_x53_monitor",
+  "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_muse.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch53.yaml (53.2); no prediction",
+  "written_utc": "2026-10-29T09:59:49Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "e4409237451c7628bb94345fda13060ddea65f69",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "sets": {
+    "main": "our main test (X0's scenes)",
+    "json": "the varied scenes, JSON format (x0b_v2)"
+  },
+  "positions": {
+    "B": "the bridge word (X0's position; the readers' prompts agree through it: read on the lookup's prompt)",
+    "T_lookup": "the lookup prompt's last token (the appended space token, before the answer)",
+    "T_recall": "the recall prompt's last token (the appended space token, before the answer)"
+  },
+  "ks": [
+    25,
+    100
+  ],
+  "rule": "\"J-space blind to X\" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; \"J-space carries X\" if J++ >= 0.8 and >= 0.3 above random; else in between.",
+  "jpp_part": "X0's signed OMP over the J++ letter-token atoms (x0_necessity.dictionary('jpp')), the least-squares fit on the first k chosen atoms, applied to the state itself",
+  "storage": "states_<set>_{h,jpp25,jpp100}.npy fp16 [L, n, O/S, B/T lookup/T recall, d] (gitignored); states_<set>_atoms.npy int32 token ids of the 100 chosen atoms (committed)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "7ee686f96a8197dd709a47776de2780f99d7dc2a9f1a6d18be8365a51de35fba",
+    "data/tasks_v2/x0b_v2/items.jsonl": "3d327acdaebb68b531d6c49c03b4fb38c8002402d423ab94ec118877a12f87f3"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "n_layers": 52,
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "sets_done": {
+    "main": {
+      "items": 200,
+      "entities": 40,
+      "counts": {
+        "design": "main",
+        "source": "muse30b_x0_necessity",
+        "alt": "cf",
+        "layer": 26,
+        "items_at_L": 200,
+        "dropped": {},
+        "items": 200,
+        "entities": 40,
+        "groups": {
+          "locker-after": 69,
+          "mixed": 63,
+          "locker-first": 68
+        },
+        "upstream": {
+          "False": 103,
+          "True": 97
+        },
+        "locker-first, prefix-identical": 16,
+        "pick_tokens": {
+          "5": 79,
+          "4": 117,
+          "6": 4
+        },
+        "positions_dropped": {},
+        "items_read": 200,
+        "entities_read": 40,
+        "families": {
+          "elements": 86,
+          "greek": 46,
+          "animals": 68
+        },
+        "classes_per_family": {
+          "animals": 31,
+          "elements": 6,
+          "greek": 7
+        },
+        "items_locker_first": 68,
+        "entities_locker_first": 29
+      },
+      "b_gap_max": 0.0,
+      "b_gap_over_tol": 0
+    },
+    "json": {
+      "items": 388,
+      "entities": 33,
+      "counts": {
+        "json_cases": 388,
+        "json_entities": 33,
+        "json_domains": {
+          "greek": 183,
+          "animals": 80,
+          "elements": 61,
+          "shapes": 37,
+          "planets": 27
+        },
+        "json_levels": {
+          "0": 100,
+          "1": 139,
+          "2": 149
+        },
+        "x0b_counts": {
+          "scenes": 4410,
+          "cases": 2535,
+          "dropped": {
+            "animals: no other pick with a different locker and memory number": 9,
+            "animals: the bridge is not one token at one position in org and alt": 237,
+            "elements: the bridge is not one token at one position in org and alt": 200,
+            "greek: the bridge is not one token at one position in org and alt": 81,
+            "instruments: no other pick with a different locker and memory number": 49,
+            "instruments: the bridge is not one token at one position in org and alt": 266,
+            "planets: the bridge is not one token at one position in org and alt": 234,
+            "shapes: the bridge is not one token at one position in org and alt": 368,
+            "vehicles: the bridge is not one token at one position in org and alt": 431
+          }
+        }
+      },
+      "b_gap_max": 0.06241808086633682,
+      "b_gap_over_tol": 24
+    }
+  },
+  "hub_kernels": {},
+  "finished_utc": "2026-10-29T10:21:39Z"
+}

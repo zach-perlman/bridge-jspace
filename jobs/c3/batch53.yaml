@@ -214,6 +214,57 @@ next_1110: |
      attention after the Mamba state spreads it" if the span cuts the
      lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4.
   Stop: the 53.1 word cells (the wording fails), 53.6 dose maps.
+critic_1125_received: "29 Oct ~11:27 Paris (Dan)"
+critic_1125: |
+  Critic answers + next steps (Dan, 11:25). Rules fixed now, no predictions,
+  UNVERIFIED, ledger only.
+
+  Answers:
+  - 53.1 cross-check: "does not hold" once a tested cell exceeds 0.10 is the
+    correct reading of "in all four cells"; record that the evaluation logic
+    was clarified after the data. On the 27B it adds nothing: its Q-after cell
+    is the main test (0.14, already failing). Add the paired difference
+    (Q-before minus Q-after) with its cluster-bootstrap CI, 27B now (CPU),
+    Muse and Lightning when they land. Wording: "order dependence" only if
+    that CI excludes 0.
+  - 53.3 / 53.3b near the answer: at answer -1 / -2 the layers are the last
+    ones, where the lens is close to the output and the letter-token
+    dictionary decides "through" vs "outside" (digits have no atoms). Label
+    these cells "uninformative near the output (dictionary)" in the cards;
+    keep the read-peak cells.
+  - Gates at 0.76-0.79: keep "not tested"; one caveat line: on the harder
+    variants the eligible items are the easier ones.
+  - 53.2 changes, before scoring: headline targets (b) slot and (c) lookup
+    digit; (a) and (d) are positive controls. Add a fixed J++ subspace (the k
+    atoms most frequent on the training folds) and an energy-matched random
+    subspace beside the current ones. Check one cell against sklearn.
+  - 53.7: your reading is right (the locker scenes rendered as Python and as
+    tool output, the routes test, the address probe and the monitor, rules
+    verbatim). code_pointer_v1 (CH2 chains) only if time remains:
+    descriptive, the address probe and the monitor.
+  - 53.4 follow-up: fix the control span in the spec now (same length, same
+    distance to the question, inside the scene, not touching the bridge's
+    sentence), one placement.
+
+  Order for the rest of the day:
+  1. 53.2 with the changes above.
+  2. 53.1 (Q-before, number) on Muse / Lightning + the paired differences.
+  3. 53.7 on the 27B, then the 9B.
+  4. 53.6 on the 27B and Muse (same rule). Across models: "the recall's
+     pointer use tracks the swap's collateral" if the models whose recall the
+     address swap moved (9B, Lightning) give "both" and the others give
+     "follows the lens identity".
+  5. 53.4 follow-up (span).
+  6. Stretch, 53.8, a binding-ID test for the lookup's identity code (9B,
+     then Muse): at L, take the state at item X's mention in its locker
+     sentence minus X's token embedding (mean over scenes, X fixed by slot),
+     add it at the bridge word at 1x / 2x the size of a real identity change,
+     against a random vector of the same norm and against the same with
+     another item Y's mention. Read: lookups sent to X's locker. Rule:
+     "a shared identity code" if X's share minus random >= 0.25 at 2x and
+     minus Y's version >= 0.15; "no" if <= 0.05; else in between.
+  Every result after ~21:00 goes in as "after the day, not verified
+  tomorrow" unless the hand-check pack can include it.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
