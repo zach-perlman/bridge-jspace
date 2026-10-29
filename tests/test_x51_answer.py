@@ -485,7 +485,7 @@ def test_coverage_verdict_reads_the_coverage_runs_without_the_seal(tmp_path, mon
 
 
 def test_lightning_is_a_coverage_target_of_e1_and_cue():
-    assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2", "z1k", "z1p"} and A.COVERAGE_RUNS["e1"] == {
+    assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2", "z1k", "z1p", "z2p"} and A.COVERAGE_RUNS["e1"] == {
         "nemotron-3.5-lightning": "nem35l_x52_answer"
     }
     assert A.COVERAGE_RUNS["cue"] == {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"} and A.COVERAGE_RUNS["z2"] == {
@@ -558,3 +558,89 @@ def test_zachs_named_passages_k_and_p_are_coverage_sets():
     assert A.source_of("z1k", "nemotron-3.5-lightning").name == Z.COVERAGE_RUNS["z1"]["nemotron-3.5-lightning"]
     assert A.source_of("z1p", "qwen3.6-27b").name == Z.COVERAGE_RUNS["z1p"]["qwen3.6-27b"]
     assert A.source_of("z2", "qwen3.5-9b").name == Z.RUNS["z2"]["qwen3.5-9b"]  # unchanged
+
+
+# ---- batch 53, 53.1b: PP vs MP -------------------------------------------------------------------------------------
+
+
+def test_z2p_is_53_1b_mp_set_read_like_z2():
+    """53.1b: MP / MM (x50_zach part z2p) read like Z2 (each reader's own Δ at the description's last token, word
+    answers, the frequency-matched control), 9B and 27B at the committed L; PP / PM are the z1p runs."""
+    from scripts import x50_zach as Z
+
+    assert "z2p" in A.ZACH_SETS and "z2p" in A.FREQ_SETS and "z2p" not in A.NUMBER_SETS and "z2p" not in A.RUNS
+    assert "z2p" in A.ALL_SETS and "z2p" not in A.SETS and A.DECISIVE["z2p"] == ("lookup", "recall")
+    assert set(A.COVERAGE_RUNS["z2p"]) == set(A.JSUITE["targets"]) == {"qwen3.5-9b", "qwen3.6-27b"}
+    for t in A.JSUITE["targets"]:
+        assert A.layer_of("z2p", t) == Z.LAYERS[t][0] == X.PREDICTED[t]
+        assert A.source_of("z2p", t).name == Z.COVERAGE_RUNS["z2p"][t]
+        assert A.COVERAGE_RUNS["z1p"][t] in [r for s, tt, r in A.jsuite_runs() if (s, tt) == ("z1p", t)]
+    assert [s for s, _, _ in A.jsuite_runs()] == ["z1p", "z1p", "z2p", "z2p"]
+    assert A.JSUITE["cells"] == {"z1p": {"K": "PP", "M": "PM"}, "z2p": {"K": "MP", "M": "MM"}}
+    assert Z.WORDS["z1p"] == ("PP", "PM") and Z.WORDS["z2p"] == ("MP", "MM")
+
+
+def test_z2p_items_rebuild_from_a_z2p_source_run(tmp_path, monkeypatch):
+    """The z2p items are the source run's chosen passages, rebuilt by x50_zach.encode (part z2p) and checked id by id;
+    the lookup's answers are the MP passage's made-up values, the recall's the true facts."""
+    from bridge_jspace import lens as L
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+    from scripts import x45m
+    from scripts import x50_zach as Z
+    from tests.test_x47_cue import FakeLens, FakeModel
+
+    try:
+        tok = x45m.tokenizer()
+    except Exception:
+        pytest.skip("target tokenizer not cached")
+    monkeypatch.setattr(M, "load_model", lambda: FakeModel(tok, n_layers=40))
+    monkeypatch.setattr(L, "JLens", FakeLens)
+    monkeypatch.setattr(Z, "RESULTS", tmp_path)
+    monkeypatch.setattr(Z, "N_ITEMS", 3)
+    real_load = Z.load_pairs
+    monkeypatch.setattr(Z, "load_pairs", lambda s, p: (real_load(s, p)[0][:40], {}))
+    monkeypatch.setattr(Z, "desc_competence", lambda model, prompts: [
+        {**{k: q[k] for k in ("relation", "entity", "desc", "template", "instruction")}, "greedy": q["entity"],
+         "right": True} for q in prompts])  # fmt: skip
+    monkeypatch.setattr(Z, "competence", lambda model, cases, ws: [
+        {"scene": c["scene"], "set": c["set"], "reader": w, "variant": v, "greedy": "x", "right": True,
+         "read_right": True, "top": 0} for c in cases for w in Z.READERS for v in ("org", "alt")])  # fmt: skip
+    src = Z.stage_run(f"{pins.RUN_PREFIX}fake_x53_z2p", "z2p")
+    assert json.loads((src / "manifest.json").read_text())["question"] == Z.NO_PREDICTION_Z2P
+    monkeypatch.setattr(A, "source_of", lambda s, t: src)
+    items, gate, counts = A.BUILD["z2p"](tok, pins.TARGET)
+    assert gate["pass"] and len(items) == counts["items"] == 3
+    stored = {(c["set"], c["scene"]): c for c in X.read_jsonl(src / "cases.jsonl")}
+    for it in items:
+        old = stored[tuple(it["key"].split("|"))]
+        assert it["set"] == "z2p" and (it["desc"], it["cf_desc"]) == (old["desc"], old["cf_desc"])
+        k, m = it["readers"]["K"], it["readers"]["M"]
+        assert k["src"] == "K" and m["src"] == "M" and k["suffix"] == m["suffix"] == []
+        ctx, rel, w = old["readers"]["K"]["context"], old["relation"], old["wording"]
+        assert k["answer"] == Z.lure(rel, w, old["bridge"], ctx)
+        assert k["cf_answer"] == Z.lure(rel, w, old["cf_bridge"], ctx)
+        assert m["answer"] == Z.fact(rel, old["bridge"]) and m["cf_answer"] == Z.fact(rel, old["cf_bridge"])
+        assert A.item_tokens(tok, it)["A"]  # word answers: first tokens of each answer word and variant
+
+
+def test_jsuite_verdict_puts_pp_beside_mp_without_a_q_line(tmp_path, monkeypatch):
+    """53.1b's verdict: 51.12's rules on the z1p runs (PP / PM) and the z2p runs (MP / MM), 9B and 27B, into
+    x53_jsuite-<UTC>/; no Q-line; a run not here yet is 'pending'."""
+    real = A.RESULTS
+    monkeypatch.setattr(A, "RESULTS", tmp_path)
+    for t in A.JSUITE["targets"]:
+        run = A.COVERAGE_RUNS["z1p"][t]
+        if not (real / run / "manifest.json").exists():
+            pytest.skip(f"{run} is not in this checkout")
+        (tmp_path / run).symlink_to(real / run)
+    out = A.stage_verdict(n_boot=100, jsuite=True)
+    assert out.name.startswith("x53_jsuite-") and out.parent == tmp_path
+    blob = json.loads((out / "verdict.json").read_text())
+    text = (out / "verdict.md").read_text()
+    assert blob["dan"].startswith(A.NO_PREDICTION_JSUITE) and "Dan:" not in text and "batch 53, 53.1b" in text
+    for t in A.JSUITE["targets"]:
+        cells = blob["jsuite_cells"][t]
+        assert cells["MP"] == cells["MM"] == "pending"
+        assert cells["PP"] == f"{blob['per_cell'][f'z1p|{t}|lookup']} (n 200)"
+    assert "| qwen3.5-9b | " in text and "PP (lookup) | MP (lookup)" in text

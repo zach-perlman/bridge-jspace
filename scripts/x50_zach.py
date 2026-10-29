@@ -122,6 +122,18 @@ COVERAGE_RUNS["z1p"] = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z
                         "nemotron-3.5-lightning": "nem35l_x52_z1p"}  # fmt: skip
 NO_PREDICTION_Z1P = ("no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/"
                      "z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)")  # fmt: skip
+# Batch 53, 53.1b (jobs/c3/batch53.yaml standing_rules_0950: "jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No
+# new scenes"): MP = his M-start passages (the question describes the bridge) with the P final (the made-up values the
+# passage states), read as Z2 reads its K passages; MM the recall beside, as Z1-P pairs PP with PM. This part is only the
+# source of 51.12's arms (x51_answer --set z2p): no rule of its own, no verdict here.
+Z2_LIKE = ("z2", "z2p")  # Z2's design: the described bridge, the change at the description's last token
+P_PARTS = ("z1p", "z2p")  # the lookup reads P: the made-up values its passage states
+RUN_PARTS = (*PARTS, "z2p")
+WORDS["z2p"] = ("MP", "MM")
+QUESTION["z2p"] = "53.1b's source (no Q-line: batch 53)"
+COVERAGE_RUNS["z2p"] = {"qwen3.5-9b": "qwen35_9b_x53_z2p", "qwen3.6-27b": "x53_z2p_27b"}
+NO_PREDICTION_Z2P = "no prediction: 53.1b's source run (batch 53; 51.12's rule is applied by x51_answer --set z2p)"
+NO_PREDICTION_OF = {"z1p": NO_PREDICTION_Z1P, "z2p": NO_PREDICTION_Z2P}
 COVERAGE = False  # set by verdict --coverage
 Z3_CONDS = {"C2": "alt", "C0": "alt0"}  # condition -> its source prompt; C2 the test, C0 the name alone (descriptive)
 ROUTES = ("identity", "position", "value", "original", "other")  # x6_routes.ROUTES
@@ -153,6 +165,7 @@ RULE = {
            "listed layouts."),
 }  # fmt: skip
 RULE["z1p"] = RULE["z1"]  # Z1-P: Z1's rule, verbatim (Dan's morning brief)
+RULE["z2p"] = "none of its own: the source of 53.1b's 51.12 cells (x51_answer --set z2p; 51.12's rule verbatim)"
 AS_COMPUTED_Z3 = (
     "Shares = the lookup's (K) route under the whole change in C2 over the chosen passages (x6_routes.classify on the top "
     "token: identity b, position c, value e, original a, else other), cluster bootstrap over the original bridge entity "
@@ -272,7 +285,10 @@ def descriptions(rel: str, e: str) -> list[tuple[str, str]]:
 
 
 def question(item: dict, d: str) -> str:
-    return tables().REL2[item["relation"]]["q2M"][item["wording"]].format(d=d, D=cap(d))
+    """The item's hop-2 question about the entity described by d: the true relation's (q2M) for K / M finals, the
+    made-up relation's (q2P) for a P final (jsuite_v2.facts_items)."""
+    key = "q2P" if item["word"].endswith("P") else "q2M"
+    return tables().REL2[item["relation"]][key][item["wording"]].format(d=d, D=cap(d))
 
 
 def alts(rel: str, e: str) -> list[str]:
@@ -307,7 +323,7 @@ def pairs(items: list[dict], part: str) -> tuple[list[dict], collections.Counter
             continue
         k, m = p[LOOKUP], p[RECALL]
         same = ("bridge", "entities", "wording", "relation", "start_desc") + (
-            () if part == "z1p" else ("question", "answer")
+            () if part in P_PARTS else ("question", "answer")
         )
         if any(k[f] != m[f] for f in same):
             why["the K and M items differ in question, answer, bridge or entities"] += 1
@@ -357,9 +373,10 @@ def encode(tok, part: str, p: dict, e: str, d_e: str | None = None) -> tuple[dic
     for r in READERS:
         it = p[r]
         ctx, q = it["context"], it["question"]
-        # O's and S's answers: the true facts (K / M), or Z1-P's lookup (P): the made-up values its passage states
+        # O's and S's answers: the true facts (K / M), or a P lookup (Z1-P, 53.1b's MP): the made-up values its passage
+        # states
         real = it["answer"]
-        cf_ans = lure(rel, w, e, ctx) if part == "z1p" and r == LOOKUP else fact(rel, e)
+        cf_ans = lure(rel, w, e, ctx) if part in P_PARTS and r == LOOKUP else fact(rel, e)
         if cf_ans is None:
             return None, "the P passage states no made-up value for the other entity"
         if part in Z1_LIKE:
@@ -369,8 +386,10 @@ def encode(tok, part: str, p: dict, e: str, d_e: str | None = None) -> tuple[dic
             ids_s, at_s = span_tokens(tok, render(tok, it, cf_ctx, q), cf_ctx, cf_sent, e)
         else:
             assert d_e is not None
-            cf_ctx, cf_q = ctx, question(it, d_e)
             d_o = it["start_desc"]
+            if part == "z2p" and question(it, d_o) != q:  # S's question is O's template with S's description
+                return None, "the question does not rebuild from its template"
+            cf_ctx, cf_q = ctx, question(it, d_e)
             ids_o, at_o = span_tokens(tok, render(tok, it, ctx, q), ctx, "", d_o if d_o in q else cap(d_o), q)
             ids_s, at_s = span_tokens(tok, render(tok, it, ctx, cf_q), ctx, "", d_e if d_e in cf_q else cap(d_e), cf_q)
         if len(ids_o) != len(ids_s) or not at_o or not at_s or at_o[-1] != at_s[-1]:
@@ -442,14 +461,16 @@ def z1_cases(tok, ps: list[dict], part: str = "z1") -> tuple[list[dict], collect
     return out, why
 
 
-def z2_options(tok, ps: list[dict]) -> tuple[list[tuple[dict, list[dict]]], collections.Counter]:
-    """Z2: per passage every aligning, non-leaking (other entity, description) option in the seeded entity order (the
-    competence step picks among them); drops counted by reason."""
+def z2_options(tok, ps: list[dict], part: str = "z2") -> tuple[list[tuple[dict, list[dict]]], collections.Counter]:
+    """Z2 (and 53.1b's MP / MM): per passage every aligning, non-leaking (other entity, description) option in the
+    seeded entity order (the competence step picks among them); drops counted by reason. The leak filter checks every
+    answer of both readers (on Z2 one answer: K and M share it; on MP / MM the made-up and the true one)."""
     out, why = [], collections.Counter()
     for p in ps:
         k = p[LOOKUP]
         rel = k["relation"]
-        if leaks(k["start_desc"], [k["answer"]]):
+        answers = sorted({p[r]["answer"] for r in READERS})
+        if leaks(k["start_desc"], answers):
             why["leak: O's description holds the answer"] += 1
             continue
         cands = others(p)
@@ -458,11 +479,12 @@ def z2_options(tok, ps: list[dict]) -> tuple[list[tuple[dict, list[dict]]], coll
             continue
         opts, leaked, reasons = [], 0, []
         for e in cands:
+            made_up = lure(rel, k["wording"], e, k["context"]) if part in P_PARTS else None
             for d, _ in descriptions(rel, e):
-                if leaks(d, [k["answer"], fact(rel, e)]):
+                if leaks(d, [*answers, fact(rel, e), *([made_up] if made_up else [])]):
                     leaked += 1
                     continue
-                c, r = encode(tok, "z2", p, e, d)
+                c, r = encode(tok, part, p, e, d)
                 if c is None:
                     reasons.append(r)
                 else:
@@ -689,7 +711,7 @@ def plan_one(tok, part: str) -> dict:
                       "relations": dict(collections.Counter(c["relation"] for c in cases)),
                       "lure_found": sum(c["readers"][RECALL]["lure"] is not None for c in cases)}  # fmt: skip
         else:
-            opts, drop = z2_options(tok, ps)
+            opts, drop = z2_options(tok, ps, part)
             cases = [o[0] for _, o in opts]  # before the competence step: each passage's first option
             out[s] = {"passages": len(ps), "pair_drops": dict(why), "with_options": len(opts), "drops": dict(drop),
                       "options": sum(len(o) for _, o in opts), "descriptions": len(z2_descs(opts)),
@@ -855,7 +877,7 @@ def manifest(name: str, part: str, target: str, layers: tuple[int, ...]) -> dict
          "patch": "the last token of the pointer sentence's name" if part in (*Z1_LIKE, "z3") else "the description's last token",
          "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
          "desc_competence": {"templates": list(DESC_TEMPLATES), "instructions": list(DESC_INSTRUCTIONS),
-                             "bar": DESC_BAR, "tokens": DESC_GEN_TOKENS} if part == "z2" else None,
+                             "bar": DESC_BAR, "tokens": DESC_GEN_TOKENS} if part in Z2_LIKE else None,
          "rule": RULE[part], "as_computed": AS_COMPUTED_Z3 if part == "z3" else AS_COMPUTED, "beside": BESIDE.get(target),
          "seeds": {"cf_order": CF_SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer", "bootstrap": X.BOOT_SEED,
                    "view": VIEW_SEED},
@@ -873,7 +895,7 @@ def build(tok, model, part: str, set_name: str, out: Path) -> tuple[list[dict], 
     if part in (*Z1_LIKE, "z3"):
         cases, drop = z1_cases(tok, ps, part) if part in Z1_LIKE else z3_cases(tok, ps)
         return cases, {"passages": len(ps), "pair_drops": dict(why), "drops": dict(drop), "cases": len(cases)}
-    opts, drop = z2_options(tok, ps)
+    opts, drop = z2_options(tok, ps, part)
     prompts = desc_prompts(tok, z2_descs(opts))
     rows = desc_competence(model, prompts)
     with (out / "desc_competence.jsonl").open("a") as f:
@@ -899,14 +921,15 @@ def stage_run(name: str, part: str) -> Path:
     pins.check_run_name(name)
     target = pins.TARGET
     assert target in LAYERS, f"batch 50 runs on {sorted(LAYERS)}, not {target}"
-    layers = LAYERS[target][:1] if part == "z1p" else LAYERS[target]  # Z1-P: the committed L only (Dan: "at L")
+    # Z1-P, 53.1b's MP: the committed L only (Dan: "at L")
+    layers = LAYERS[target][:1] if part in P_PARTS else LAYERS[target]
     if target in COVERAGE_RUNS.get(part, {}):  # Lightning: X0's layer is the committed one (BJ_PREDICTED_LAYER)
         assert layers[0] == X.PREDICTED[target], f"{target}: LAYERS {layers} do not start at the committed L"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, part, target, layers)
     if target in COVERAGE_RUNS.get(part, {}):
-        m |= {"question": NO_PREDICTION_Z1P if part == "z1p" else NO_PREDICTION, "batch": 52}
+        m |= {"question": NO_PREDICTION_OF.get(part, NO_PREDICTION), "batch": 53 if part == "z2p" else 52}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -1020,6 +1043,7 @@ def dan_answer(question: str, rev: str = "HEAD") -> str:
 
 
 def require_answer(part: str) -> str:
+    assert part != "z2p", "53.1b's MP source has no rule of its own: x51_answer verdict --jsuite"
     if COVERAGE:  # batch 52 C: no Q-line for coverage runs
         return NO_PREDICTION_Z1P if part == "z1p" else NO_PREDICTION
     assert part != "z1p", "Z1-P has no Q-line: verdict --coverage"
@@ -1461,7 +1485,7 @@ def stage_view(part: str, runs: list[str], decode=None) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view"])
-    ap.add_argument("--part", choices=PARTS)
+    ap.add_argument("--part", choices=RUN_PARTS)
     ap.add_argument("--name", help="run: the run name (results/x50_zach/<name>/)")
     ap.add_argument("--runs", nargs="+", help="verdict / view: the runs (default: the part's models)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)

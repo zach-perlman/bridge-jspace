@@ -11,6 +11,9 @@ unchanged):
        lookup's prompts (both readers' prompts agree through it); 9B L12, 27B L32, Muse L26. Items: the stored X0 run's
        (x45b_binding.MAIN_RUN, the runs 49.1 / 48.1 used) chat items at L, rebuilt by x0_necessity.build_cases and
        checked id by id.
+  z1k / z1p / z2p (batch 52 / 53 coverage sets, read as z2): Zach's named bridge with true facts (Z1's PK / PM), with
+       made-up facts (Z1-P's PP / PM), and his described bridge with made-up facts (53.1b's MP / MM, x50_zach --part
+       z2p); verdict --jsuite puts PP beside MP (9B, 27B).
   cue  47.3's described bridge in locker scenes (x47_cue): the change at the cue token, one Δ from the lookup's
        prompts; 9B L12, 27B L32. Items: the stored run's chosen scenes (x47_cue.RUNS), rebuilt by x47_cue.scenes from its
        kept cues and checked id by id; the lookup's switch is x47_cue's (it follows the change: identity, position or
@@ -103,12 +106,17 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q51.12"
 SETS = ("z2", "e1", "cue")  # 51.12's design sets
 NAMED_SETS = ("z1k", "z1p")  # batch 52, Dan's morning brief item 2 (coverage runs only)
-ALL_SETS = SETS + NAMED_SETS
-ZACH_SETS = ("z2", "z1k", "z1p")  # Zach's passages: each reader's own Δ at the patch token, word answers, his read
+MP_SETS = ("z2p",)  # batch 53, 53.1b: Zach's described bridge with his made-up facts (MP / MM; coverage runs only)
+ALL_SETS = SETS + NAMED_SETS + MP_SETS
+# Zach's passages: each reader's own Δ at the patch token, word answers, his read
+ZACH_SETS = ("z2", "z1k", "z1p", "z2p")
 Z1_SOURCE = {"z1k": "z1", "z1p": "z1p"}  # x50_zach part each Z1 set rebuilds from (K: Z1's PK / PM; P: Z1-P's PP / PM)
+Z2_SOURCE = {"z2": "z2", "z2p": "z2p"}  # x50_zach part each Z2-design set rebuilds from (K: Z2's MK / MM; P: MP / MM)
 SET_TEXT = {"z2": "Z2 (Zach's never-named bridge, the description's last token)",
             "z1k": "Zach's named bridge, true facts (Z1's K passages; the pointer name's last token)",
             "z1p": "Zach's named bridge, made-up facts (Z1-P's P passages; the pointer name's last token)",
+            "z2p": "Zach's described bridge, made-up facts (MP / MM passages: Z2's design with the lookup reading P; the "
+                   "description's last token)",
             "e1": "the main test E1 (the bridge word)", "cue": "47.3's described bridge (the cue token, locker scenes)"}  # fmt: skip
 # r2 (amendment 20:20): new run names; the r1 runs (digit A, no frequency control) stay as records
 RUNS = {
@@ -119,6 +127,7 @@ RUNS = {
 }  # fmt: skip
 TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}
 SPEC_IDS = {s: {t: f"x51_12_{s}_{TAGS[t]}_r2" for t in RUNS.get(s, {})} for s in SETS}
+SPEC_IDS["z2p"] = {"qwen3.5-9b": "x53_1b_jsuite_9b", "qwen3.6-27b": "x53_1b_jsuite_27b"}  # batch 53, 53.1b
 # Batch 52 C coverage (jobs/c3/batch52.yaml, amendment 3): the same rules on Lightning, no Q-line; read by verdict
 # --coverage (RUNS and 51.12's own verdict unchanged)
 COVERAGE_RUNS = {
@@ -131,6 +140,12 @@ COVERAGE_RUNS = {
 for _s in ("z1k", "z1p"):
     COVERAGE_RUNS[_s] = {"qwen3.5-9b": f"qwen35_9b_x52_answer_{_s}", "qwen3.6-27b": f"x52_answer_{_s}_27b",
                          "nemotron-3.5-lightning": f"nem35l_x52_answer_{_s}"}  # fmt: skip
+# Batch 53, 53.1b (jobs/c3/batch53.yaml standing_rules_0950: "jsuite PP vs MP, 51.12's arms + readout, 9B then 27B"):
+# PP = the z1p runs above (Z1-P's lookup), MP = these (z2p's lookup); rules verbatim, no prediction; verdict --jsuite
+COVERAGE_RUNS["z2p"] = {"qwen3.5-9b": "qwen35_9b_x53_answer_z2p", "qwen3.6-27b": "x53_answer_z2p_27b"}
+JSUITE = {"sets": ("z1p", "z2p"), "targets": ("qwen3.5-9b", "qwen3.6-27b"),
+          "cells": {"z1p": {"K": "PP", "M": "PM"}, "z2p": {"K": "MP", "M": "MM"}}}  # fmt: skip
+NO_PREDICTION_JSUITE = "no prediction (batch 53, 53.1b: 51.12's rules verbatim)"
 # Batch 52, Dan's morning queue (29 Oct) item 1: 51.12's cue set on Lightning below 47.3's gate (exploratory, hollow):
 # --below-gate reads the below-gate 47.3 run (x47_cue.BELOW_RUNS) and writes these runs
 BELOW = False
@@ -146,8 +161,9 @@ def runs_of(set_name: str) -> dict[str, str]:
 
 ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_jpp_A", "no_jpp_A_rand", "no_A", "no_A_rand")
 F_ARM = "no_F"
-FREQ_SETS = ("z2", "z1k", "z1p")  # the amendment's frequency-matched control: Z2, and Zach's named passages (word
-# answers too: the amendment's reason, common word starts, applies; a label then needs both controls: conservative)
+# the amendment's frequency-matched control: Z2, and Zach's other passages (word answers too: the amendment's reason,
+# common word starts, applies; a label then needs both controls: conservative)
+FREQ_SETS = ("z2", "z1k", "z1p", "z2p")
 NUMBER_SETS = ("e1", "cue")  # A = the answers' number words
 PAIRS = {1: ("no_jpp", "no_jpp_rand"), 2: ("no_jpp_A", "no_jpp_A_rand"), 3: ("no_A", "no_A_rand")}
 PAIR_F = ("no_A", F_ARM)  # arm 3 against its frequency-matched control
@@ -455,37 +471,41 @@ def unit(set_name: str, c: dict, key: str, entity: str, cf_entity: str, extra_wo
         out["expect"] = c["expect"]
     if set_name in ZACH_SETS:
         out["source_set"] = c["set"]
-    if set_name == "z2":
+    if set_name in Z2_SOURCE:
         out["desc"], out["cf_desc"] = c["desc"], c["cf_desc"]
     if set_name in Z1_SOURCE:
         out["stratum"] = c.get("stratum")
     return out
 
 
-def z2_items(tok, target: str) -> tuple[list[dict], dict, dict]:
+def z2_items(tok, target: str, set_name: str = "z2") -> tuple[list[dict], dict, dict]:
+    """Zach's described-bridge passages (z2: Z2's run, MK / MM; z2p: 53.1b's MP / MM run): the source run's chosen
+    passages rebuilt by x50_zach.encode (its part) and checked id by id."""
     from scripts import x50_zach as Z
 
-    src = source_of("z2", target)
+    part = Z2_SOURCE[set_name]
+    src = source_of(set_name, target)
     gate = json.loads((src / "gate.json").read_text())
     m = json.loads((src / "manifest.json").read_text())
     assert m["model"]["target"] == target, f"{src.name} is not {target}'s"
-    assert layer_of("z2", target) in m["layers"], f"{src.name} has no L{layer_of('z2', target)}"
+    assert m.get("part", "z2") == part, f"{src.name} is a {m.get('part')} run, not {part}"
+    assert layer_of(set_name, target) in m["layers"], f"{src.name} has no L{layer_of(set_name, target)}"
     stored = {(c["set"], c["scene"]): c for c in X.read_jsonl(src / "cases.jsonl")}
     passages = {}
     for s in sorted({s for s, _ in gate["order"]}):
-        ps, _ = Z.load_pairs(s, "z2")
+        ps, _ = Z.load_pairs(s, part)
         passages.update({(s, p[Z.LOOKUP]["scene"]): p for p in ps})
     items, drops = [], collections.Counter()
     for s, scene in gate["order"]:
         old = stored[(s, scene)]
-        c, why = Z.encode(tok, "z2", passages[(s, scene)], old["cf_bridge"], old["cf_desc"])
+        c, why = Z.encode(tok, part, passages[(s, scene)], old["cf_bridge"], old["cf_desc"])
         assert c is not None, f"{s} {scene}: does not rebuild ({why})"
         c["set"] = s
         for w in Z.READERS:
             assert c["readers"][w]["ids"] == old["readers"][w]["ids"], f"{scene}: {w}'s ids changed since {src.name}"
             assert c["readers"][w]["pos"] == old["readers"][w]["pos"], f"{scene}: {w}'s patch token moved"
         c["desc"], c["cf_desc"] = old["desc"], old["cf_desc"]
-        items.append(unit("z2", c, f"{s}|{scene}", c["bridge"], c["cf_bridge"], {}))
+        items.append(unit(set_name, c, f"{s}|{scene}", c["bridge"], c["cf_bridge"], {}))
     g = {"pass": bool(gate["pass"]), "chosen": gate["chosen"], "org_read_accuracy": gate["org_read_accuracy"],
          "gate": gate["gate"]}  # fmt: skip
     return items, g, {"source": src.name, "items": len(items), "drops": dict(drops),
@@ -584,7 +604,7 @@ def z1_items(tok, target: str, set_name: str) -> tuple[list[dict], dict, dict]:
 
 
 BUILD = {"z2": z2_items, "e1": e1_items, "cue": cue_items, "z1k": lambda tok, t: z1_items(tok, t, "z1k"),
-         "z1p": lambda tok, t: z1_items(tok, t, "z1p")}  # fmt: skip
+         "z1p": lambda tok, t: z1_items(tok, t, "z1p"), "z2p": lambda tok, t: z2_items(tok, t, "z2p")}  # fmt: skip
 
 
 def item_tokens(tok, it: dict) -> dict:
@@ -921,6 +941,9 @@ def stage_run(name: str, set_name: str) -> Path:
 
         m |= {"question": CUE.BELOW_GATE, "below_gate": CUE.BELOW_GATE, "batch": 52, "rules_first_scored": SCORED,
               "sealed": "none (below gate, exploratory); verdict --coverage --below-gate"}  # fmt: skip
+    elif set_name in MP_SETS:  # batch 53, 53.1b: no Q-line, opened when it lands
+        m |= {"question": NO_PREDICTION_JSUITE, "batch": 53, "test": "53.1b", "sealed": "none (53.1b); verdict --jsuite",
+              "rules_first_scored": SCORED}  # fmt: skip
     elif target in COVERAGE_RUNS.get(set_name, {}):  # batch 52: no Q-line, opened when it lands
         m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage); verdict --coverage",
               "rules_first_scored": SCORED}  # fmt: skip
@@ -1220,7 +1243,7 @@ def fmt(v) -> str:
 
 
 DECISIVE = {"z2": ("lookup", "recall"), "e1": ("recall",), "cue": ("lookup", "recall"), "z1k": ("lookup", "recall"),
-            "z1p": ("lookup", "recall")}  # fmt: skip
+            "z1p": ("lookup", "recall"), "z2p": ("lookup", "recall")}  # fmt: skip
 
 
 def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
@@ -1296,19 +1319,62 @@ def all_runs(sets: tuple[str, ...] = SETS, coverage: bool = False) -> list[tuple
     return [(s, t, r) for s in sets for t, r in runs.get(s, {}).items()]
 
 
-def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS, coverage: bool = False) -> Path:
+def jsuite_runs() -> list[tuple[str, str, str]]:
+    """53.1b's cells: PP / PM (the z1p runs) and MP / MM (the z2p runs) on the 9B and the 27B."""
+    return [(s, t, COVERAGE_RUNS[s][t]) for s in JSUITE["sets"] for t in JSUITE["targets"]]
+
+
+def jsuite_cells(models: list[dict]) -> dict[str, dict[str, str]]:
+    """Per model, each of 53.1b's four cells' 51.12 label (with n), or why it has none."""
+    by = {(m["set"], m["target"]): m for m in models}
+    out: dict[str, dict[str, str]] = {}
+    for t in JSUITE["targets"]:
+        out[t] = {}
+        for s in JSUITE["sets"]:
+            m = by.get((s, t))
+            for w, code in JSUITE["cells"][s].items():
+                if m is None or m["status"] != "tested":
+                    out[t][code] = m["status"] if m else "missing"
+                else:
+                    r = m["readers"][READER_NAME[w]]
+                    out[t][code] = f"{r['label']} (n {r['n']})"
+    return out
+
+
+def jsuite_lines(cells: dict[str, dict[str, str]]) -> list[str]:
+    lines = ["## 53.1b: PP vs MP on Zach's passages (51.12's label per cell; the recall beside)", "",
+             "PP = P start (the passage names the bridge), P final (the made-up value stated); MP = M start (the "
+             "question describes the bridge), P final. PM / MM = the same passages' recall (M final).", "",
+             "| model | PP (lookup) | MP (lookup) | PM (recall) | MM (recall) |", "|---|---|---|---|---|"]  # fmt: skip
+    for t, c in cells.items():
+        lines.append(f"| {t} | {c['PP']} | {c['MP']} | {c['PM']} | {c['MM']} |")
+    return [*lines, ""]
+
+
+def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS, coverage: bool = False,
+                  jsuite: bool = False) -> Path:  # fmt: skip
     """51.12's verdict (sealed until Q51.12), or with coverage (batch 52) the same rules on COVERAGE_RUNS, no seal
-    guard, "no prediction" in place of Dan's answer, written to x52_answer-<UTC>/."""
+    guard, "no prediction" in place of Dan's answer, written to x52_answer-<UTC>/; with jsuite (batch 53, 53.1b) the
+    same rules on PP / PM and MP / MM (9B, 27B), written to x53_jsuite-<UTC>/."""
     if BELOW:
         from scripts import x47_cue as CUE
-    answer = (f"{CUE.BELOW_GATE if BELOW else NO_PREDICTION} (rules first scored in {SCORED})" if coverage
-              else unsealed())  # fmt: skip
-    models = [model_result(s, t, r, n_boot) for s, t, r in all_runs(sets, coverage)]
-    stem = "x52_answer_below" if BELOW else "x52_answer" if coverage else "x51_12"
+    if jsuite:
+        answer = f"{NO_PREDICTION_JSUITE} (rules first scored in {SCORED})"
+        models = [model_result(s, t, r, n_boot) for s, t, r in jsuite_runs()]
+        stem = "x53_jsuite"
+    else:
+        answer = (f"{CUE.BELOW_GATE if BELOW else NO_PREDICTION} (rules first scored in {SCORED})" if coverage
+                  else unsealed())  # fmt: skip
+        models = [model_result(s, t, r, n_boot) for s, t, r in all_runs(sets, coverage)]
+        stem = "x52_answer_below" if BELOW else "x52_answer" if coverage else "x51_12"
     out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
-    if coverage:
+    if jsuite:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 53, 53.1b, ")
+        cells = jsuite_cells(models)
+        lines[3:3] = ["", *jsuite_lines(cells)]
+    elif coverage:
         lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ")
     per = {f"{m['set']}|{m['target']}|{w}": r["label"] for m in models if m["status"] == "tested"
            for w, r in m["readers"].items()}  # fmt: skip
@@ -1319,6 +1385,7 @@ def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS, coverage
         "labels": LABELS,
         "models": models,
         "per_cell": per,
+        **({"jsuite_cells": cells, "status": "UNVERIFIED"} if jsuite else {}),
     }
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False, default=float) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
@@ -1386,6 +1453,8 @@ def main() -> None:
     ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52's coverage runs ('{NO_PREDICTION}')")
     ap.add_argument("--below-gate", action="store_true",
                     help="run / verdict (with --coverage): batch 52, the cue set on Lightning below 47.3's gate (exploratory)")  # fmt: skip
+    ap.add_argument("--jsuite", action="store_true",
+                    help="verdict: batch 53, 53.1b (PP / PM from z1p, MP / MM from z2p; 9B and 27B) -> x53_jsuite-<UTC>/")  # fmt: skip
     a = ap.parse_args()
     global BELOW
     BELOW = a.below_gate
@@ -1399,7 +1468,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view((a.set,) if a.set else SETS)
     else:
-        stage_verdict(a.n_boot, (a.set,) if a.set else SETS, a.coverage)
+        stage_verdict(a.n_boot, (a.set,) if a.set else SETS, a.coverage, a.jsuite)
 
 
 if __name__ == "__main__":

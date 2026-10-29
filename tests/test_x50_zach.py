@@ -124,6 +124,39 @@ def test_z1p_reads_the_made_up_facts_of_the_p_passage(tok):
     assert set(Z.COVERAGE_RUNS["z1p"]) == {"qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning"}
 
 
+def test_z2p_reads_mp_with_the_made_up_facts_and_mm_beside(tok):
+    """53.1b (batch 53): Z2's design on his M-start passages with the P final: the lookup reads MP (the question
+    describes the bridge; O's and S's answers are the made-up values its passage states), the recall MM (true facts);
+    S's question is each reader's own template (q2P / q2M) with S's description; the leak filter checks every answer of
+    both readers; the committed L only; no rule of its own (x51_answer reads it)."""
+    ps, why = Z.load_pairs(Z.SETS[0], "z2p")
+    assert not why and len(ps) == 358 and all(p[Z.LOOKUP]["word"] == "MP" and p[Z.RECALL]["word"] == "MM" for p in ps)
+    for p in ps:
+        for r in Z.READERS:
+            assert Z.question(p[r], p[r]["start_desc"]) == p[r]["question"]
+    opts, _ = Z.z2_options(tok, ps[:80], "z2p")
+    assert len(opts) >= 10
+    for p, cs in opts:
+        for c in cs:
+            k, m = c["readers"][Z.LOOKUP], c["readers"][Z.RECALL]
+            rel, w = c["relation"], c["wording"]
+            assert k["answer"] == p[Z.LOOKUP]["answer"] == Z.lure(rel, w, c["bridge"], k["context"])
+            assert k["cf_answer"] == Z.lure(rel, w, c["cf_bridge"], k["context"]) != k["answer"]
+            assert m["answer"] == Z.fact(rel, c["bridge"]) and m["cf_answer"] == Z.fact(rel, c["cf_bridge"])
+            assert k["cf_question"] == Z.question(p[Z.LOOKUP], c["cf_desc"]) != k["question"]
+            assert m["cf_question"] == Z.question(p[Z.RECALL], c["cf_desc"]) != m["question"]
+            assert not Z.leaks(c["cf_desc"], [k["answer"], k["cf_answer"], m["answer"], m["cf_answer"]])
+            for rd in (k, m):
+                org, alt, pos = rd["ids"]["org"], rd["ids"]["alt"], rd["pos"]
+                changed = [i for i, (a, b) in enumerate(zip(org, alt, strict=True)) if a != b]
+                assert changed and all(rd["span"][0] <= i <= pos for i in changed) and rd["tok_A"] != rd["tok_b"]
+            assert k["lure"] is None and m["lure"] is not None
+    assert "z2p" not in Z.RUNS and set(Z.COVERAGE_RUNS["z2p"]) == {"qwen3.5-9b", "qwen3.6-27b"}
+    assert "z2p" not in Z.PARTS and "z2p" in Z.RUN_PARTS  # the default plan's parts unchanged
+    with pytest.raises(AssertionError, match="no rule of its own"):
+        Z.require_answer("z2p")
+
+
 def test_z2_counterfactual_changes_only_the_description(tok):
     ps, _ = Z.load_pairs(Z.SETS[0], "z2")
     opts, _ = Z.z2_options(tok, ps[:80])
@@ -274,7 +307,7 @@ def test_verdict_and_view_are_sealed_then_written(tmp_path, monkeypatch):
 # ---- the run stage on a fake model (CPU) --------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("part", ["z1", "z2"])
+@pytest.mark.parametrize("part", ["z1", "z2", "z2p"])
 def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch, part):
     import torch
 
@@ -302,7 +335,9 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch, part):
     assert (
         m["items"] == 3 and m["layers"] == list(Z.LAYERS[pins.TARGET]) and "sealed" in m and m["rule"] == Z.RULE[part]
     )
-    assert gate["chosen"] == 3 and gate["sets_used"] == [Z.SETS[0]] and not gate["pass"]  # 3 of 4 read right: < 0.80
+    planted = sum(i % 4 != 3 for i in range(gate["cases"])) / gate["cases"]  # 3 of 4 read right (z2p: few cases)
+    assert gate["chosen"] == 3 and gate["sets_used"] == [Z.SETS[0]] and gate["pass"] == (planted >= Z.GATE)
+    assert part == "z2p" or not gate["pass"]
     assert not any(p.name.startswith(("verdict", "z1", "z2")) for p in out.iterdir())  # sealed
     rows = X.read_jsonl(out / "outcomes.jsonl")
     assert len(rows) == 3 * len(Z.READERS) * (1 + len(Z.ARMS)) * len(Z.LAYERS[pins.TARGET])
@@ -316,7 +351,7 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch, part):
     assert whole.positions == [rd["pos"]] and edits[0] == {}
     h = {v: fake.run(torch.tensor([rd["ids"][v]]), record=(la,))[1][la] for v in ("org", "alt")}
     assert torch.allclose(whole.delta[0], h["alt"][rd["pos"]] - h["org"][rd["pos"]], atol=1e-5)
-    if part == "z2":
+    if part in Z.Z2_LIKE:
         assert (out / "desc_competence.jsonl").exists()
 
 
@@ -533,6 +568,6 @@ def test_lightning_coverage_reads_the_committed_layer_and_his_band(monkeypatch):
     lt = "nemotron-3.5-lightning"
     assert Z.LAYERS[lt] == (L6.committed_layer(), 27) and Z.BESIDE_BAND[lt] == "L27-33"
     assert (Z.pins.RESULTS_DIR / "ablate_v2" / Z.BESIDE[lt]["full"]).exists()
-    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z2", "z3", "z1p"}
+    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z2", "z3", "z1p", "z2p"}
     monkeypatch.setattr(Z, "COVERAGE", True)
     assert Z.require_answer("z1") == Z.NO_PREDICTION
