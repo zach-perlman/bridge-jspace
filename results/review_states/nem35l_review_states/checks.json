@@ -1,0 +1,32 @@
+{
+ "target": "nemotron-3.5-lightning",
+ "layer": 14,
+ "load_s": 34.5,
+ "head": {
+  "norm_class": "NemotronHRMSNorm",
+  "norm_kind": "weight_after_cast",
+  "lm_head_dtype": "torch.bfloat16",
+  "vocab": 131072,
+  "d": 2688
+ },
+ "max_abs_state": 1296.0,
+ "stored_dtype": "float16",
+ "omp_atoms_vs_fit_max_abs_diff_at_L": 0.0,
+ "arms": {
+  "rows": 22,
+  "mismatches": []
+ },
+ "rank_share_vs_stored": {
+  "main_swap": {
+   "n": 200,
+   "max_abs_gap": 4.975442886356873e-06
+  },
+  "routes": {
+   "n": 900,
+   "max_abs_gap": 4.999871253963395e-06
+  }
+ },
+ "sample_items": 16,
+ "change_rows": 293,
+ "seconds": 164.1
+}
