@@ -495,8 +495,25 @@ def test_verdict_on_a_planted_run(tok, tmp_path, monkeypatch):
     text = (out / "verdict.md").read_text()
     assert "Rule across cells:" in text and '"position": (Q-before, number) is answer or mixed' in text
     blob = json.loads((out / "verdict.json").read_text())
-    assert [m["target"] for m in blob] == list(T2.MODEL_ORDER)
-    assert blob[1]["status"] == "pending"
+    assert [m["target"] for m in blob["models"]] == list(T2.MODEL_ORDER)
+    assert blob["models"][1]["status"] == "pending"
+    assert blob["across_models"]["text"].startswith("order dependence on 0 of 3 models (27B: pending; Muse: pending")
+    assert "## Across models (Dan 11:55, over the 27B, Muse, 122B)" in text
+
+
+def test_across_models_counts_the_cis_that_exclude_0():
+    def model(t: str, holds, diff=(0.11, 0.01, 0.22), status="tested") -> dict:
+        cells = {c: {"status": "tested"} for c in T2.NUMBER_CELLS}
+        if status != "tested":
+            cells["qb_num"] = {"status": status}
+        return {"target": t, "status": "run", "cells": cells, "paired": {"holds": holds, "diff": list(diff)}}
+
+    models = [model("qwen3.6-27b", True), model("muse-glimmer-30b", None, status="not tested (gate 0.72 < 0.80)"),
+              model("qwen3.5-122b-a10b", False, (0.02, -0.05, 0.09)), model("qwen3.5-9b", True)]  # fmt: skip
+    r = T2.across_models(models)  # the 9B is not one of Dan's three
+    assert r["n"] == 1 and r["of"] == 3
+    assert r["text"] == ("order dependence on 1 of 3 models (27B: order dependence (+0.11 [+0.01, +0.22]); Muse: can't "
+                         "tell (not tested (gate 0.72 < 0.80)); 122B: the CI includes 0 (+0.02 [-0.05, +0.09]))")  # fmt: skip
 
 
 class FakeModel:

@@ -1080,6 +1080,7 @@ def verdict_lines(models: list[dict]) -> list[str]:
             lines += [f"## {name}: pending (no run {mv['run']} here)", ""]
             continue
         lines += [f"## {name} ({mv['run']}, L{mv['layer']}; relation for the word cells: {mv['relation']})", "",
+                  *([MODEL_FLAGS[mv["target"]] + ".", ""] if mv["target"] in MODEL_FLAGS else []),
                   f"Across the number cells (Dan 11:10): **{mv['position']['text']}**.", "",
                   f"Paired difference (Dan 11:25): **{mv['paired']['text']}**.", "",
                   f"Rule across cells (the brief's): **{mv['across']}**. Cross-check: **{mv['cross_check']['text']}**.",
@@ -1144,13 +1145,45 @@ def title_of(models: list[dict]) -> str:
     parts = []
     for mv in models:
         h = mv.get("position", {}).get("holds", "pending") if mv["status"] == "run" else "pending"
-        mark = {True: "holds", False: "no", None: "?"}.get(h, "pending")  # type: ignore[call-overload]
+        mark = {True: "yes", False: "no", None: "?"}.get(h, "pending")  # type: ignore[call-overload]
         parts.append(f"{MODEL_SHORT.get(mv['target'], mv['target'])} {mark}")
-    t = "Lookup <= 0.10 in both number cells: " + ", ".join(parts)
+    t = "Both number cells <= 0.10: " + ", ".join(parts)
     return t if len(t) <= 70 else t[:67] + "..."
 
 
-def figure(models: list[dict], path: Path) -> None:
+# Dan 11:55 (batch53.yaml decisions_1155, item 3): "When they land, the across-models line: "order dependence on n of 3
+# models"" -- the three models whose Q-before run Dan named: the 27B, Muse and the 122B
+ACROSS_MODELS = ("qwen3.6-27b", "muse-glimmer-30b", "qwen3.5-122b-a10b")
+# per-model flags written beside the verdict (the coordinator, from Dan 11:30 / 11:55)
+MODEL_FLAGS = {"qwen3.5-122b-a10b": "flags: L33 carried over (X0.md's rule for the 122B; relative depth 0.69); FP8 "
+                                    "weights (Qwen3.5-122B-A10B-FP8, MoE, ~10B active); the J++ lens fit in bf16"}  # fmt: skip
+
+
+def across_models(models: list[dict]) -> dict:
+    """Dan 11:55's line over ACROSS_MODELS: n = the models whose paired difference (Dan 11:25) excludes 0; each model's
+    case beside (order dependence / the CI includes 0 / can't tell, with why / pending)."""
+    by = {m["target"]: m for m in models}
+    per, n = {}, 0
+    for t in ACROSS_MODELS:
+        mv = by.get(t)
+        if not mv or mv["status"] != "run":
+            per[t] = "pending"
+            continue
+        p = mv["paired"]
+        if p["holds"]:
+            n += 1
+            per[t] = f"order dependence ({p['diff'][0]:+.2f} [{p['diff'][1]:+.2f}, {p['diff'][2]:+.2f}])"
+        elif p["holds"] is False:
+            per[t] = f"the CI includes 0 ({p['diff'][0]:+.2f} [{p['diff'][1]:+.2f}, {p['diff'][2]:+.2f}])"
+        else:
+            g = next((mv["cells"][c] for c in NUMBER_CELLS if mv["cells"][c].get("status") != "tested"), {})
+            per[t] = f"can't tell ({g.get('status', 'a number cell not tested')})"
+    text = f"order dependence on {n} of {len(ACROSS_MODELS)} models (" + "; ".join(
+        f"{MODEL_SHORT[t]}: {v}" for t, v in per.items()) + ")"  # fmt: skip
+    return {"n": n, "of": len(ACROSS_MODELS), "per_model": per, "text": text}
+
+
+def figure(models: list[dict], path: Path, extra: str = "") -> None:
     """One figure for the ledger card: per model a panel, per cell a row; the recall's three extra losses (arm 1
     without the J++ part, arm 2 with the answer directions kept, arm 3 the answer directions alone) and the lookup's arm
     1 (the cross-check, its <= 0.10 band shaded) as dots with 95% CIs; the cell's 51.12 label at the right."""
@@ -1205,7 +1238,8 @@ def figure(models: list[dict], path: Path) -> None:
     SS.title(
         fig,
         title_of(run),
-        "Title: Dan 11:10's rule (? = can't tell). Shaded: <= 0.10. Right: the recall's 51.12 label. UNVERIFIED.",
+        (f"{extra} " if extra else "")
+        + "? = can't tell; shaded: <= 0.10; right: the recall's 51.12 label. UNVERIFIED.",
     )
     fig.tight_layout(rect=(0, 0.12 / nrows, 1, 1 - 0.1 / nrows))
     fig.savefig(path, dpi=100)
@@ -1214,12 +1248,18 @@ def figure(models: list[dict], path: Path) -> None:
 
 def stage_verdict(n_boot: int = X.N_BOOT) -> Path:
     models = [model_verdict(t, n_boot) for t in MODEL_ORDER]
+    across_m = across_models(models)
     out = RESULTS / f"x53_2x2-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True, exist_ok=False)
-    (out / "verdict.json").write_text(json.dumps(models, indent=1, default=float) + "\n")
-    (out / "verdict.md").write_text("\n".join(verdict_lines(models)) + "\n")
-    figure(models, out / "x53_2x2.png")
-    print("\n".join(verdict_lines(models)[:40]), flush=True)
+    (out / "verdict.json").write_text(json.dumps({"models": models, "across_models": across_m}, indent=1,
+                                                 default=float) + "\n")  # fmt: skip
+    lines = verdict_lines(models)
+    at = lines.index("Status: UNVERIFIED until a human adds it to VERIFIED.md.")
+    lines[at:at] = [f"## Across models (Dan 11:55, over the {', '.join(MODEL_SHORT[t] for t in ACROSS_MODELS)})", "",
+                    f"**{across_m['text']}**.", ""]  # fmt: skip
+    (out / "verdict.md").write_text("\n".join(lines) + "\n")
+    figure(models, out / "x53_2x2.png", f"{across_m['text'].split(' (')[0].capitalize()} (Dan 11:55).")
+    print("\n".join(lines[:40]), flush=True)
     print("wrote", out, flush=True)
     return out
 
