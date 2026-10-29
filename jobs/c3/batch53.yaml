@@ -479,6 +479,12 @@ decisions_1210b: |
      not separated from the format (47.16's distance robustness beside). The
      probe only shows the address is readable; the routes test decides whether
      the lookup uses it.
+decisions_1225_received: "29 Oct ~12:27 Paris (Dan, answer to the coordinator's disclosure)"
+decisions_1225: |
+  Agreed on both. 53.7: the 9B code probe under the lookup-only gate is
+  "gate changed after the data (hollow)"; routes and monitor stay
+  pre-registered. For stopping jobs, kill by PID or an exact pattern that
+  can't match your own shell (no bare pkill on the ssh line).
 decisions_1210_coordinator_note: >-
   Disclosure (coordinator): before this decision the coordinator had pulled and read both 53.7 address-probe box
   verdicts and reported them to Dan (~12:05-12:15): the 9B's code format failed X0's two-reader gate on the recall
