@@ -32,7 +32,9 @@ the 97 GB root and both died).
 from __future__ import annotations
 
 import argparse
+import contextlib
 import datetime as dt
+import fcntl
 import json
 import math
 import os
@@ -574,6 +576,15 @@ def draft_row(rec: dict[str, Any]) -> str:
     return f"{date} | {job} | {rec['question']} | {result} | {wandb} | UNVERIFIED; verdict: (human)"
 
 
+@contextlib.contextmanager
+def repo_lock(root: Path):
+    """Serialises the workers' worktree calls on the shared repo.git: on 29 Oct a `worktree add` failed (exit 128) while
+    the other mats worker was removing and pruning its finished job's checkout."""
+    with open(root / ".repo.lock", "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        yield
+
+
 def run_job(path: Path, root: Path, gpus: int | list[int]) -> dict[str, Any]:
     """Runs the job on the first `gpus` (the spec's count) of the worker's GPUs."""
     rec = json.loads(path.read_text())
@@ -599,13 +610,14 @@ def run_job(path: Path, root: Path, gpus: int | list[int]) -> dict[str, Any]:
     figures_exit, figures_s = None, None
     try:
         repo = root / "repo.git"
-        if code.exists():
-            subprocess.run(["git", "-C", str(repo), "worktree", "remove", "--force", str(code)], check=False)
-            shutil.rmtree(code, ignore_errors=True)
-        subprocess.run(["git", "-C", str(repo), "worktree", "prune"], check=False)
-        subprocess.run(
-            ["git", "-C", str(repo), "worktree", "add", "--detach", "-q", str(code), rec["commit"]], check=True
-        )
+        with repo_lock(root):
+            if code.exists():
+                subprocess.run(["git", "-C", str(repo), "worktree", "remove", "--force", str(code)], check=False)
+                shutil.rmtree(code, ignore_errors=True)
+            subprocess.run(["git", "-C", str(repo), "worktree", "prune"], check=False)
+            subprocess.run(
+                ["git", "-C", str(repo), "worktree", "add", "--detach", "-q", str(code), rec["commit"]], check=True
+            )
         main = main_repo()
         if (main / ".env").exists():
             shutil.copy(main / ".env", code / ".env")
@@ -669,7 +681,8 @@ def run_job(path: Path, root: Path, gpus: int | list[int]) -> dict[str, Any]:
     write_json_atomic(path, rec)
     os.replace(path, root / rec["status"] / path.name)
     if code.exists():
-        subprocess.run(["git", "-C", str(root / "repo.git"), "worktree", "remove", "--force", str(code)], check=False)
+        with repo_lock(root):
+            subprocess.run(["git", "-C", str(root / "repo.git"), "worktree", "remove", "--force", str(code)], check=False)
     return rec
 
 

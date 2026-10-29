@@ -52,6 +52,28 @@ def test_validate_multi_gpu_jobs_must_split_the_model():
     assert jobq.validate(spec(gpus=0)) == ["'gpus' must be >= 1"]
 
 
+def test_repo_lock_makes_a_second_worker_wait(tmp_path):
+    import threading
+    import time
+
+    order = []
+    held = threading.Event()
+
+    def second():
+        held.wait()
+        with jobq.repo_lock(tmp_path):
+            order.append("second")
+
+    t = threading.Thread(target=second)
+    t.start()
+    with jobq.repo_lock(tmp_path):
+        held.set()
+        time.sleep(0.3)  # the second worker is blocked on the lock meanwhile
+        order.append("first")
+    t.join(timeout=5)
+    assert order == ["first", "second"]
+
+
 def test_gpu_list_and_tag():
     assert jobq.gpu_list(0) == [0] and jobq.gpu_list("0,1") == [0, 1] and jobq.gpu_list([2, 3]) == [2, 3]
     assert jobq.gpu_tag([0, 1]) == "0-1" and jobq.gpu_tag([3]) == "3"
