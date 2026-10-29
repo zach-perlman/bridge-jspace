@@ -2995,3 +2995,38 @@ One readout job per model (scripts/nn_readout.py; J++ and logit lens; every 2nd 
 - **Note 26 on Muse** with those windows.
 - **Note 17's value swap** at site last over Muse's description windows (stage 1 last hits for MP), donor seeds 0 1.
 - Two GPUs, a Muse process on each. Readings: each note's own.
+
+##### Amendment 59 note 26 addendum (Zach, 2026-10-29 ~19:20 UTC; before any of note 26's top-20 dumps was read; a smoke's file was checked for format only): the analysis plan for (a)
+- **Unit.** One top-20 list per item x site x lens x variant x even layer. Primary: J++, the letter-token variant, inside note 25's windows (description end and final; Muse by note 28's rule). Families: MP_ok, MP_fail, MM_ok, MM_fail, H1_mmok, RG_mmok; cue-conflict MP/MM.
+- **Normalisation.** Decode; NFKC; note a leading space; strip non-word characters at both ends ("(N" -> N); casefold; script of the first letter; concept key = fold minus a trailing "s" / "'s".
+- **Word match.** Token t matches word W if fold(t) is W or its plural or possessive; or t is the tokenizer's first token of " W" / "W" (lowercase too) with >= 3 letters; or t starts a word, has >= 4 letters and is a prefix of W. Tokens of 1-2 letters never match a word.
+- **Categories** (first match wins, in this order):
+  1. JUNK (no letter)
+  2. FUNC (NLTK English stopwords)
+  3. REAL (X's remembered attribute and its country/adjective aliases)
+  4. PV_X (X's passage value)
+  5. CUE (the cue, conflict items only)
+  6. CTX_VAL (other entities' values)
+  7. CLASS (other answers of the relation)
+  8. BRIDGE (X's name words, >= 3 letters, not in the description)
+  9. CTX_NAME (other entities' names)
+  10. OCC (people: the description noun and a fixed synonym list, only when absent from the prompt)
+  11. KNOW (content words >= 4 letters of X's other description, absent from the prompt)
+  12. DESC (content words of the description)
+  13. FRAME (question words outside the description, plus a fixed relation-type list)
+  14. PASSAGE (other content words of the passage)
+  15. CODE (code-like tokens)
+  16. NONLATIN (matched to REAL / PV_X / CTX / CLASS by translated country and nationality names in 15 locales via babel; a match takes that category, flagged translated; unmatched = NONLATIN_OTHER)
+  17. OTHER
+- **Metrics.** Mean over items, cluster bootstrap over bridges (2000, seed 0): share of the top-20 per category; presence (in the top-20) by layer and anywhere in the window; first layer present.
+- **Controls.** C1, shuffled item: this item's list scored against another bridge's REAL / BRIDGE / OCC / KNOW lists, same relation, different REAL. C2: the logit lens. C3: H1 vs MM. C4: MP vs MM paired by scene.
+- **Readings** (description end, window, J++ letters):
+  1. "Attribute cloud at the bridge": presence of REAL minus C1 >= 0.20, of OCC or KNOW minus C1 >= 0.15, and BRIDGE presence below REAL's.
+  2. "Name first, then attributes": on items with both, the median first layer of BRIDGE is >= 4 layers before REAL's.
+  3. "Class priming, not this person": REAL presence < 3x the mean per-value presence of CLASS.
+  4. "Multilingual noise floor": NONLATIN_OTHER + CODE >= 0.3 of the list while translated content < 0.05 (reported as the lens's floor, not content).
+  5. Token-level priming: REAL presence on MP and MM within +-0.10 (paired); PV_X at C1's level at the description end; PV_X ahead of REAL on MP at the final token.
+  - Descriptive: success vs failure (REAL / BRIDGE on MM_fail vs MM_ok), cue vs REAL on conflict items, H1 vs MM, every variant and lens.
+- **Hand check.** Blind, before reading the classifier's output: 5 items x 3 models x 2 sites, OTHER / NONLATIN_OTHER tokens labelled "about X" or not. If done by a model rather than a person, flagged as weaker evidence. Kappa per category.
+- **Slides** (rules, not cherry-picked): stacked category shares per model and site (MP, MM, H1); presence-by-layer lines (REAL, BRIDGE, PV_X, OCC/KNOW, FRAME) with C1 dashed; a token wall for the first item per relation by id.
+- Scorer: scripts/nn_topk_read.py.
