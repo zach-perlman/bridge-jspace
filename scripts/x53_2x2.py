@@ -21,6 +21,10 @@ cell):
            the word's token carries its own space, as suite_v1); lookup unchanged. One Δ from the lookup's prompts.
   qb_word  (Q-before, word)   both changes; per-reader Δ.
 
+Dan 10:20 (batch53.yaml decision_531_words): the number cells run now, on their own (`run --cells number`); "number
+written as a word" is skipped, and the word cells' relation is re-chosen under the relaxed token rule in a run of its
+own (`run --cells word`); the paragraph below is the first proposal, kept until that change lands.
+
 Relation (the brief: chosen on the 9B before any test: one-token answers, the 9B's accuracy >= 0.8, the answer word
 shares no token with any spelling, initial or symbol of the item = x52_atoms' bridge classes). Candidates, fixed before
 any run, in order: lexical relations per domain (LEXICAL: animals' class and young, elements' state at room temperature,
@@ -65,7 +69,7 @@ conflict test's lookup loses <= 0.10 beyond random in all four cells ("the point
 reported per cell. A cell not tested or with another label: the patterns that need it can't be read.
 
 uv run python scripts/x53_2x2.py plan                                                   # CPU, BJ_TARGET's tokenizer
-BJ_TARGET=qwen3.5-9b uv run python scripts/x53_2x2.py run --name qwen35_9b_x53_2x2        # GPU
+BJ_TARGET=qwen3.5-9b uv run python scripts/x53_2x2.py run --cells number --name qwen35_9b_x53_2x2   # GPU
 uv run python scripts/x53_2x2.py verdict                                                # CPU, every model's run
 """
 
@@ -99,7 +103,11 @@ CELL = {"qa_num": ("after", "number"), "qb_num": ("before", "number"), "qa_word"
         "qb_word": ("before", "word")}  # fmt: skip
 CELL_TEXT = {"qa_num": "(Q-after, number)", "qb_num": "(Q-before, number)", "qa_word": "(Q-after, word)",
              "qb_word": "(Q-before, word)"}  # fmt: skip
+NUMBER_CELLS, WORD_CELLS = CELLS[:2], CELLS[2:]
+# Dan 10:20 (batch53.yaml decision_531_words): the number cells now, the word cells later in a run of their own
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "nemotron-3.5-lightning": "nem35l_x53_2x2"}
+WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2_words", "qwen3.6-27b": "x53_2x2_words_27b",
+             "nemotron-3.5-lightning": "nem35l_x53_2x2_words"}  # fmt: skip
 MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
 MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "nemotron-3.5-lightning": "Lightning"}
 # Lightning's main test (nem35l_x52_conflict) keeps the 60 scenes its layer was fixed on out of the selection
@@ -479,7 +487,7 @@ def gate_status(g: dict) -> str:
     return f"not tested ({g['eligible']} eligible < {g['min']})"
 
 
-def manifest(name: str, target: str, layer: int, cells: tuple[str, ...], relation: str) -> dict:
+def manifest(name: str, target: str, layer: int, cells: tuple[str, ...], relation: str | None) -> dict:
     from bridge_jspace.run_switches import switches
     from bridge_jspace.utils import git_state
     from scripts import suite_split as SUITE
@@ -612,24 +620,27 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
     target = pins.TARGET
     assert target in RUNS, f"53.1 runs on {sorted(RUNS)}, not {target}"
     layer = X.PREDICTED[target]
+    words = [c for c in cells if CELL[c][1] == "word"]
+    assert not words or set(cells) <= set(WORD_CELLS), "the word cells run on their own (a run of their own name)"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    from scripts import x45m
-
-    tok0 = x45m.tokenizer()
     pairs = scene_pairs()
-    cov = coverage(tok0, pairs)
-    if target == NINE_B:
-        assert choose(cov) == RELATION, f"the relation rule picks {choose(cov)!r} on the 9B, not {RELATION!r}"
-        nine = None
-    else:  # the 9B's choice and accuracy check (its run's relation.json; the job depends on the 9B's)
-        path = RESULTS / RUNS[NINE_B] / "relation.json"
-        assert path.exists(), f"{path}: the 9B's relation check is not here (run the 9B's job first)"
-        nine = json.loads(path.read_text())
-    word_ok = nine is None or bool(nine["passes"])
-    m = manifest(name, target, layer, cells, RELATION)
-    m["relation_coverage"] = cov
-    m["relation_9b"] = nine if nine is not None else "this run (relation.json)"
+    m = manifest(name, target, layer, cells, None)
+    word_ok, cov = True, None
+    if words:
+        from scripts import x45m
+
+        cov = coverage(x45m.tokenizer(), pairs)
+        if target == NINE_B:
+            assert choose(cov) == RELATION, f"the relation rule picks {choose(cov)!r} on the 9B, not {RELATION!r}"
+            nine = None
+        else:  # the 9B's choice and accuracy check (its word run's relation.json; the job depends on the 9B's)
+            path = RESULTS / WORD_RUNS[NINE_B] / "relation.json"
+            assert path.exists(), f"{path}: the 9B's relation check is not here (run the 9B's word job first)"
+            nine = json.loads(path.read_text())
+        word_ok = nine is None or bool(nine["passes"])
+        m |= {"relation": RELATION, "relation_coverage": cov,
+              "relation_9b": nine if nine is not None else "this run (relation.json)"}  # fmt: skip
     dev = dev_scenes(target)
     if dev:
         m["excluded_scenes"] = {"source": DEV_GATE[target], "scenes": sorted(dev)}
@@ -654,7 +665,7 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
         X.write_jsonl(out / cell / "competence.jsonl", comp)
         print(cell, json.dumps({k: v for k, v in g.items() if k != "order"}), flush=True)
         built[cell], gates[cell] = chosen, g
-    if "qa_word" in gates:
+    if "qa_word" in gates and words:
         acc = gates["qa_word"]["org_read_accuracy"][X.RECALL]
         rel = {"relation": RELATION, "model": target, "accuracy_recall_qa_word": acc, "bar": X.GATE,
                "passes": acc >= X.GATE, "coverage": cov}  # fmt: skip
@@ -775,16 +786,20 @@ def cross_check(cells: dict[str, dict]) -> dict:
 
 
 def model_verdict(target: str, n_boot: int) -> dict:
-    run = RUNS[target]
-    d = RESULTS / run
-    if not (d / "manifest.json").exists():
-        return {"target": target, "run": run, "status": "pending"}
-    m = json.loads((d / "manifest.json").read_text())
-    cells = {c: cell_result(d, c, target, n_boot) for c in CELLS}
+    """One model: the number cells from its number run, the word cells from its word run (each 'pending' while its run
+    is not here)."""
+    run, wrun = RUNS[target], WORD_RUNS[target]
+    d, dw = RESULTS / run, RESULTS / wrun
+    if not (d / "manifest.json").exists() and not (dw / "manifest.json").exists():
+        return {"target": target, "run": run, "word_run": wrun, "status": "pending"}
+    m = json.loads(((d if (d / "manifest.json").exists() else dw) / "manifest.json").read_text())
+    cells = {c: cell_result(d if c in NUMBER_CELLS else dw, c, target, n_boot) for c in CELLS}
     labels = {c: r.get("label") for c, r in cells.items()}
-    rel = json.loads((d / "relation.json").read_text()) if (d / "relation.json").exists() else None
-    return {"target": target, "run": run, "status": "run", "layer": m["layer"], "relation": m["relation"],
-            "relation_check": rel, "cells": cells, "across": across(labels), "cross_check": cross_check(cells)}  # fmt: skip
+    rel = json.loads((dw / "relation.json").read_text()) if (dw / "relation.json").exists() else None
+    wm = json.loads((dw / "manifest.json").read_text()) if (dw / "manifest.json").exists() else {}
+    return {"target": target, "run": run, "word_run": wrun, "status": "run", "layer": m["layer"],
+            "relation": wm.get("relation"), "relation_check": rel, "cells": cells, "across": across(labels),
+            "cross_check": cross_check(cells)}  # fmt: skip
 
 
 def fmt(v) -> str:
@@ -934,14 +949,17 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("stage", choices=["plan", "run", "verdict"])
     ap.add_argument("--name", help="run: the run name (results/x53_2x2/<name>/)")
-    ap.add_argument("--cells", nargs="+", choices=CELLS, default=list(CELLS))
+    ap.add_argument("--cells", choices=("number", "word"), required=False,
+                    help="run: the number cells (qa_num, qb_num) or the word cells (qa_word, qb_word), each a run of "
+                         "its own (Dan 10:20)")  # fmt: skip
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         assert a.name, "run needs --name"
-        stage_run(a.name, tuple(a.cells))
+        assert a.cells, "run needs --cells number|word"
+        stage_run(a.name, NUMBER_CELLS if a.cells == "number" else WORD_CELLS)
     else:
         stage_verdict(a.n_boot)
 

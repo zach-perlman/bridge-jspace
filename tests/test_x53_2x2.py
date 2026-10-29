@@ -270,12 +270,12 @@ def _plant(tok, root, target: str, labels: dict[str, str], lookup_loss: float, n
     label and the lookup the wanted arm-1 extra loss, readout ranks (read), atom lists."""
     import json
 
-    run = root / T2.RUNS[target]
-    run.mkdir(parents=True)
-    (run / "manifest.json").write_text(json.dumps({"layer": 12, "relation": T2.RELATION}))
+    for runs in (T2.RUNS, T2.WORD_RUNS):  # the number cells' run and the word cells' run
+        (root / runs[target]).mkdir(parents=True)
+        (root / runs[target] / "manifest.json").write_text(json.dumps({"layer": 12, "relation": T2.RELATION}))
     pairs = _buildable(tok, n)
     for cell in T2.CELLS:
-        d = run / cell
+        d = root / (T2.RUNS if cell in T2.NUMBER_CELLS else T2.WORD_RUNS)[target] / cell
         d.mkdir()
         items = [_case(tok, p, cell) for p in pairs]
         tested = labels[cell] != "untested"
@@ -443,11 +443,16 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     monkeypatch.setattr(M, "load_model", lambda: fake)
     monkeypatch.setattr(L, "JLens", lambda model, name: FakeLens(model))
     monkeypatch.setattr(T2, "choose", lambda cov: T2.RELATION)  # 24 scenes cover no candidate's 150
-    if pins.TARGET != T2.NINE_B:  # the 9B's relation check, as its run leaves it
-        (tmp_path / T2.RUNS[T2.NINE_B]).mkdir()
-        (tmp_path / T2.RUNS[T2.NINE_B] / "relation.json").write_text(json.dumps({"passes": True}))
-    out = T2.stage_run(T2.RUNS[pins.TARGET], T2.CELLS)
+    if pins.TARGET != T2.NINE_B:  # the 9B's relation check, as its word run leaves it
+        (tmp_path / T2.WORD_RUNS[T2.NINE_B]).mkdir()
+        (tmp_path / T2.WORD_RUNS[T2.NINE_B] / "relation.json").write_text(json.dumps({"passes": True}))
+    num = T2.stage_run(T2.RUNS[pins.TARGET], T2.NUMBER_CELLS)
+    assert "relation_coverage" not in json.loads((num / "manifest.json").read_text())  # no relation in a number run
+    out = T2.stage_run(T2.WORD_RUNS[pins.TARGET], T2.WORD_CELLS)
+    with pytest.raises(AssertionError):
+        T2.stage_run(T2.RUNS[pins.TARGET] + "_mixed", T2.CELLS)  # the word cells run on their own
     for cell in T2.CELLS:
+        out = num if cell in T2.NUMBER_CELLS else T2.RESULTS / T2.WORD_RUNS[pins.TARGET]
         g = json.loads((out / cell / "gate.json").read_text())
         assert g["tested"] and g["chosen"] == chosen and g["org_read_accuracy"] == {LK: 1.0, RC: 1.0}, (cell, g)
         for f in ("competence.jsonl", "cases.jsonl", "readout.jsonl", "norms.jsonl", "atoms.jsonl", "outcomes.jsonl"):
@@ -459,9 +464,10 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
         atoms = X.read_jsonl(out / cell / "atoms.jsonl")
         assert len(atoms) == chosen * (1 if T2.CELL[cell][0] == "after" else 2)
         assert all(len(a["atoms"]) == X.K_MAIN for a in atoms)
+    words = T2.RESULTS / T2.WORD_RUNS[pins.TARGET]
     if pins.TARGET == T2.NINE_B:
-        assert json.loads((out / "relation.json").read_text())["passes"] is True
-    assert json.loads((out / "manifest.json").read_text())["finished_utc"]
+        assert json.loads((words / "relation.json").read_text())["passes"] is True
+    assert json.loads((num / "manifest.json").read_text())["finished_utc"]
     mv = T2.model_verdict(pins.TARGET, 100)
     assert all(r["status"] == "tested" for r in mv["cells"].values())
 

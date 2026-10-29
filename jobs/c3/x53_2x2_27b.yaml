@@ -1,0 +1,44 @@
+id: x53_2x2_27b
+title: "Batch 53.1 on the 27B (L32), the number cells (Dan 10:20): (Q-after, number) = the main test as is and (Q-before, number) = each reader's question before the scene; per cell the main gate, the conflict test at L, 51.12's arms with the readout check first and the atom inventory on 50 items; then the verdict into results/x53_2x2/x53_2x2-<UTC>/ with one figure; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_2x2.py run --cells number --name x53_2x2_27b &&
+  uv run python scripts/x53_2x2.py verdict
+question: >-
+  On the 27B: does the bridge's lens part turn into the answer when the question is known at the bridge word (question
+  before the scene)? 51.12's label with the question after the scene and before it, same scenes, digits kept; and does
+  the lookup's pointer stay outside the lens in both?
+why_it_matters: >-
+  Dan (batch 53 brief and decision 10:20): number cells on the 9B, then the 27B; the Q-before number cell is the clean
+  position test. The 27B's main test reads 'entity' on 51.12 (e1 0.74, e2/e1 0.93).
+hypotheses:
+  none: "no prediction (batch 53: exploration day; every rule fixed in the brief before any run)"
+decision_rule: >-
+  As jobs/c3/x53_2x2_9b.yaml (the brief's 53.1 and Dan's decision_531_words verbatim, 51.12's rule verbatim, the
+  as-computed text), on the 27B at L32 (x0_necessity.PREDICTED): per cell X0's gate (0.80 per reader over all 600
+  scenes, >= 150 eligible, the first 200), a failed gate = "not tested (gate x < 0.80)", never lowered; the conflict
+  test at L32 (whole / without the J++ part / without a random part of its share, seed 888 + L); 51.12's arms with the
+  readout check first (A = the number words of both readers' answers); the cell's label = the recall's 51.12 label;
+  atoms on 50 items (seed 0). (Q-after, number) is byte for byte the 27B's main-test prompt, checked item by item
+  against the stored x0_necessity_27b_chat at L32 (agreement.json). Cross-check: the lookup's e1 <= 0.10 in every
+  cell. Independent of the 9B's runs (no relation in a number run).
+controls:
+- "a random part of the same share beside every removal (X0's random subspace, seed 888 + L)"
+- "the readout check before the arms, per cell and reader"
+- "(Q-after, number) against the stored main test x0_necessity_27b_chat item by item (agreement.json)"
+- "both cells' gates before any test"
+- "x52_atoms.omp_atoms asserted equal to x0_necessity.fit's part on the atom items"
+n: "per cell: 600 scenes for the gate (all build on the 27B's tokenizer: results/x53_2x2/plan-20261029T091543Z); the first 200 eligible items; atoms on 50"
+seeds: [888, 0]
+notes: >-
+  Batch 53, test 53.1, the number cells on the 27B (Dan 10:20: 9B then 27B; speedup). No prediction; UNVERIFIED;
+  nothing into the README. Writes results/x53_2x2/x53_2x2_27b/ (qa_num/, qb_num/), then the verdict into
+  results/x53_2x2/x53_2x2-<UTC>/. Enqueue after x53_2x2_9b (the brief's order; no depends_on so a 9B failure does not
+  block it). Estimate from the ledger (sesterce-h100x2): x45m_27b_q2 989.6 s vs x45m_9b_q2 479.7 s (x2.06); the 9B's
+  number cells ~0.3 h -> ~0.65 h; entered as 0.8 (wall ~40-45 min on 1x H100 80 GB, mem 76 GB as the 27B's other
+  speedup jobs).
