@@ -1,0 +1,660 @@
+{
+ "runs": [
+  "qwen35_9b_x53_8c"
+ ],
+ "question": "no prediction (batch 53: the rule fixed in Dan's text, 29 Oct 11:25, before any run)",
+ "rule_verbatim": "Stretch, 53.8, a binding-ID test for the lookup's identity code (9B, then Muse): at L, take the state at item X's mention in its locker sentence minus X's token embedding (mean over scenes, X fixed by slot), add it at the bridge word at 1x / 2x the size of a real identity change, against a random vector of the same norm and against the same with another item Y's mention. Read: lookups sent to X's locker. Rule: \"a shared identity code\" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; \"no\" if <= 0.05; else in between.",
+ "rule": "at 2x, point estimates (EPS 1e-09): \"a shared identity code\" if X - random >= 0.25 and X - Y >= 0.15; \"no\" if X - random <= 0.05 (Dan's \"<= 0.05\" read as X's share minus random's at 2x); else \"in between\"; a failed gate: \"not tested (gate x < 0.80)\"",
+ "centered_verbatim": "53.8: keep your construction (uncentered, dose 1x = ||\u0394|| at the bridge word, as in 52) as the pre-specified arm, rule unchanged. Add, now, before any run: a centered arm (X's vector minus the mean over slots), same doses, same controls (random of the same norm; Y's centered version), the same rule thresholds reported for it beside. Report the slot-vector cosines and the norm of the slot-specific part.",
+ "headline": "uncentered",
+ "design": {
+  "scenes": "x6_routes.scenes (seed 2510, 1000 per condition, prefix-stable), the C0 scenes in generator order; test pool = C0 scenes 1-700 (the routes runs'), X0's competence, gate and eligibility there, the first 300 eligible; mean pool = C0 scenes 701-1000 (held out: no test scene's own state enters a vector)",
+  "x_vector": "per locker slot k: mean over the mean-pool scenes of (the block output at L at the k-th locker sentence's item word in O's chat lookup prompt) - (that token's input-embedding row, raw); X = the item at slot k (X fixed by slot); the item word is one token (the generator's rule, asserted)",
+  "x_and_y": "per test scene the two items other than the bridge item A take turns as X and Y (X = slot k, Y = the remaining slot k'); both assignments pooled",
+  "dose": "the size of a real identity change = ||\u0394||, \u0394 = h_{S_B} - h_O at the bridge word at L (C0: Iris's pick A -> B, nothing else), per scene: x52_answer_map's ans1 / ans2 (s = ||\u0394||); 1x and 2x",
+  "controls": "a random Gaussian direction per scene (seed 5308) at the same norm; Y's version = slot k''s vector at the same norm",
+  "centered": "Dan 12:10 (decisions_1210b item 1, before any run): a second arm with c~_k = c_k - (c_0 + c_1 + c_2) / 3 (the slot-specific part) in place of c_k, the same doses (d ||\u0394||), the same random arm (same norm) and Y's centered version as controls, its own label by the same thresholds, beside; the headline is the uncentered arm's",
+  "read": "X0's chat read, both readers; the lookup's top token classed by locker slot (the slot's digit token) or other; X's share = the lookup's top token is X's locker digit",
+  "collateral": "the clean answers kept: the lookup's (A's locker) and the recall's (A's legs) top token unchanged",
+  "ci": "cluster bootstrap over the bridge item A (10,000 draws, seed 0), arms paired"
+ },
+ "models": [
+  {
+   "run": "qwen35_9b_x53_8c",
+   "target": "qwen3.5-9b",
+   "layer": 12,
+   "gate": {
+    "c0_generated": 1000,
+    "test_pool": 700,
+    "mean_pool": 300,
+    "org_read_accuracy": {
+     "PP": 1.0,
+     "PM": 0.9071428571428571
+    },
+    "pass": true,
+    "gate_min": 0.8,
+    "eligible": 572,
+    "used": 300,
+    "generator_dropped": {
+     "A and B have the same number of legs": 551
+    }
+   },
+   "status": "tested",
+   "label": "no",
+   "text": "no",
+   "headline": "uncentered",
+   "variants": {
+    "uncentered": {
+     "cells": {
+      "1": {
+       "n": 600,
+       "scenes": 300,
+       "entities": 31,
+       "X": [
+        0.0016666666666666668,
+        0.0,
+        0.005525116715255547
+       ],
+       "Y": [
+        0.0016666666666666668,
+        0.0,
+        0.005525116715255547
+       ],
+       "R": [
+        0.0016666666666666668,
+        0.0,
+        0.005525116715255547
+       ],
+       "X_minus_R": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "X_minus_Y": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "roles": {
+        "X": {
+         "X": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "Y": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "original": [
+          0.9966666666666667,
+          0.988949766569489,
+          1.0
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "Y": {
+         "X": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "Y": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "original": [
+          0.9966666666666667,
+          0.988949766569489,
+          1.0
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "R": {
+         "X": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "Y": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "original": [
+          0.9966666666666667,
+          0.988949766569489,
+          1.0
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        }
+       }
+      },
+      "2": {
+       "n": 600,
+       "scenes": 300,
+       "entities": 31,
+       "X": [
+        0.018333333333333333,
+        0.0070173389080177085,
+        0.03157943650948933
+       ],
+       "Y": [
+        0.013333333333333334,
+        0.005016722408026756,
+        0.023026315789473683
+       ],
+       "R": [
+        0.018333333333333333,
+        0.00844523500773501,
+        0.029209621993127148
+       ],
+       "X_minus_R": [
+        0.0,
+        -0.014241636528028932,
+        0.014184397163120567
+       ],
+       "X_minus_Y": [
+        0.004999999999999999,
+        -0.0017301038062283725,
+        0.012153836382113807
+       ],
+       "roles": {
+        "X": {
+         "X": [
+          0.018333333333333333,
+          0.0070173389080177085,
+          0.03157943650948933
+         ],
+         "Y": [
+          0.013333333333333334,
+          0.005016722408026756,
+          0.023026315789473683
+         ],
+         "original": [
+          0.9683333333333334,
+          0.9462019822433193,
+          0.9871803977272727
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "Y": {
+         "X": [
+          0.013333333333333334,
+          0.005016722408026756,
+          0.023026315789473683
+         ],
+         "Y": [
+          0.018333333333333333,
+          0.0070173389080177085,
+          0.03157943650948933
+         ],
+         "original": [
+          0.9683333333333334,
+          0.9462019822433193,
+          0.9871803977272727
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "R": {
+         "X": [
+          0.018333333333333333,
+          0.00844523500773501,
+          0.029209621993127148
+         ],
+         "Y": [
+          0.018333333333333333,
+          0.00844523500773501,
+          0.029209621993127148
+         ],
+         "original": [
+          0.9566666666666667,
+          0.9358100359533846,
+          0.9767441860465116
+         ],
+         "other": [
+          0.006666666666666667,
+          0.0,
+          0.01618254318497035
+         ]
+        }
+       }
+      }
+     },
+     "label": "no",
+     "text": "no",
+     "per_slot": {
+      "0": {
+       "n": 209,
+       "X": 0.0096,
+       "Y": 0.0096,
+       "R": 0.0048
+      },
+      "1": {
+       "n": 191,
+       "X": 0.0366,
+       "Y": 0.0157,
+       "R": 0.0209
+      },
+      "2": {
+       "n": 200,
+       "X": 0.01,
+       "Y": 0.015,
+       "R": 0.03
+      }
+     }
+    },
+    "centered": {
+     "cells": {
+      "1": {
+       "n": 600,
+       "scenes": 300,
+       "entities": 31,
+       "X": [
+        0.01,
+        0.001639344262295082,
+        0.021021385463133032
+       ],
+       "Y": [
+        0.0016666666666666668,
+        0.0,
+        0.005525116715255547
+       ],
+       "R": [
+        0.0016666666666666668,
+        0.0,
+        0.005525116715255547
+       ],
+       "X_minus_R": [
+        0.008333333333333333,
+        0.0016129032258064516,
+        0.017544560282495368
+       ],
+       "X_minus_Y": [
+        0.008333333333333333,
+        0.0016129032258064516,
+        0.017544560282495368
+       ],
+       "roles": {
+        "X": {
+         "X": [
+          0.01,
+          0.001639344262295082,
+          0.021021385463133032
+         ],
+         "Y": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "original": [
+          0.9883333333333333,
+          0.9745454545454545,
+          0.9983606557377049
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "Y": {
+         "X": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "Y": [
+          0.01,
+          0.001639344262295082,
+          0.021021385463133032
+         ],
+         "original": [
+          0.9883333333333333,
+          0.9745454545454545,
+          0.9983606557377049
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        },
+        "R": {
+         "X": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "Y": [
+          0.0016666666666666668,
+          0.0,
+          0.005525116715255547
+         ],
+         "original": [
+          0.9966666666666667,
+          0.988949766569489,
+          1.0
+         ],
+         "other": [
+          0.0,
+          0.0,
+          0.0
+         ]
+        }
+       }
+      },
+      "2": {
+       "n": 600,
+       "scenes": 300,
+       "entities": 31,
+       "X": [
+        0.24666666666666667,
+        0.2050887578155991,
+        0.2887601696216133
+       ],
+       "Y": [
+        0.12,
+        0.08922558922558922,
+        0.14779978687394218
+       ],
+       "R": [
+        0.018333333333333333,
+        0.00844523500773501,
+        0.029209621993127148
+       ],
+       "X_minus_R": [
+        0.22833333333333333,
+        0.18835559360730594,
+        0.2691029900332226
+       ],
+       "X_minus_Y": [
+        0.12666666666666668,
+        0.0804080513784461,
+        0.17231034482758617
+       ],
+       "roles": {
+        "X": {
+         "X": [
+          0.24666666666666667,
+          0.2050887578155991,
+          0.2887601696216133
+         ],
+         "Y": [
+          0.12,
+          0.08922558922558922,
+          0.14779978687394218
+         ],
+         "original": [
+          0.63,
+          0.5764521124291474,
+          0.6869766791608729
+         ],
+         "other": [
+          0.0033333333333333335,
+          0.0,
+          0.008091271592485174
+         ]
+        },
+        "Y": {
+         "X": [
+          0.12,
+          0.08922558922558922,
+          0.14779978687394218
+         ],
+         "Y": [
+          0.24666666666666667,
+          0.2050887578155991,
+          0.2887601696216133
+         ],
+         "original": [
+          0.63,
+          0.5764521124291474,
+          0.6869766791608729
+         ],
+         "other": [
+          0.0033333333333333335,
+          0.0,
+          0.008091271592485174
+         ]
+        },
+        "R": {
+         "X": [
+          0.018333333333333333,
+          0.00844523500773501,
+          0.029209621993127148
+         ],
+         "Y": [
+          0.018333333333333333,
+          0.00844523500773501,
+          0.029209621993127148
+         ],
+         "original": [
+          0.9566666666666667,
+          0.9358100359533846,
+          0.9767441860465116
+         ],
+         "other": [
+          0.006666666666666667,
+          0.0,
+          0.01618254318497035
+         ]
+        }
+       }
+      }
+     },
+     "label": "between",
+     "text": "in between",
+     "per_slot": {
+      "0": {
+       "n": 209,
+       "X": 0.1292,
+       "Y": 0.134,
+       "R": 0.0048
+      },
+      "1": {
+       "n": 191,
+       "X": 0.2775,
+       "Y": 0.1047,
+       "R": 0.0209
+      },
+      "2": {
+       "n": 200,
+       "X": 0.34,
+       "Y": 0.12,
+       "R": 0.03
+      }
+     }
+    }
+   },
+   "collateral": {
+    "none": {
+     "lookup": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "recall": [
+      0.9933333333333333,
+      0.9822695035460993,
+      1.0
+     ],
+     "n": 300
+    },
+    "whole": {
+     "lookup": [
+      0.0033333333333333335,
+      0.0,
+      0.010869565217391304
+     ],
+     "recall": [
+      0.006666666666666667,
+      0.0,
+      0.016000641025641017
+     ],
+     "n": 300
+    },
+    "code_x1": {
+     "lookup": [
+      0.9966666666666667,
+      0.988949766569489,
+      1.0
+     ],
+     "recall": [
+      0.995,
+      0.9836956521739131,
+      1.0
+     ],
+     "n": 600
+    },
+    "rand_x1": {
+     "lookup": [
+      0.9966666666666667,
+      0.988949766569489,
+      1.0
+     ],
+     "recall": [
+      0.9866666666666667,
+      0.96875,
+      1.0
+     ],
+     "n": 300
+    },
+    "ccode_x1": {
+     "lookup": [
+      0.9883333333333333,
+      0.9745454545454545,
+      0.9983606557377049
+     ],
+     "recall": [
+      0.925,
+      0.8860521840315074,
+      0.9567670527182509
+     ],
+     "n": 600
+    },
+    "code_x2": {
+     "lookup": [
+      0.9683333333333334,
+      0.9462019822433193,
+      0.9871803977272727
+     ],
+     "recall": [
+      0.96,
+      0.9298239330417735,
+      0.9844367039659715
+     ],
+     "n": 600
+    },
+    "rand_x2": {
+     "lookup": [
+      0.9566666666666667,
+      0.9358100359533846,
+      0.9767441860465116
+     ],
+     "recall": [
+      0.8166666666666667,
+      0.7670250896057348,
+      0.8605341246290801
+     ],
+     "n": 300
+    },
+    "ccode_x2": {
+     "lookup": [
+      0.63,
+      0.5764521124291474,
+      0.6869766791608729
+     ],
+     "recall": [
+      0.64,
+      0.5791363878594094,
+      0.696429997717937
+     ],
+     "n": 600
+    },
+    "whole_lookup_to_B": [
+     0.9933333333333333,
+     0.9830508474576272,
+     1.0
+    ]
+   },
+   "norms_median": {
+    "norm_delta": 16.4939,
+    "norm_U_delta": 6.4457,
+    "cos_delta_codes_b_minus_a": 0.0515
+   },
+   "geometry": {
+    "norm": [
+     34.163,
+     33.648,
+     31.867
+    ],
+    "cos": {
+     "0-1": 0.8907,
+     "0-2": 0.8656,
+     "1-2": 0.9743
+    },
+    "slot_specific_norm": [
+     10.752,
+     5.982,
+     7.155
+    ],
+    "slot_specific_share": [
+     0.3147,
+     0.1778,
+     0.2245
+    ],
+    "cos_centered": {
+     "0-1": -0.779,
+     "0-2": -0.8516,
+     "1-2": 0.3347
+    },
+    "diff_over_norm": {
+     "0-1": 0.4643,
+     "0-2": 0.5052,
+     "1-2": 0.227
+    },
+    "cos_diff_vs_pointer_means": {
+     "0-1": 0.0822,
+     "0-2": 0.019,
+     "1-2": 0.1556
+    },
+    "n_mean": 300,
+    "mention_state_norm": [
+     36.752,
+     35.871,
+     34.408
+    ],
+    "embedding_norm": [
+     0.943,
+     0.943,
+     0.943
+    ]
+   },
+   "mean_pool_used": 300,
+   "pointer_refs": "qwen35_9b_x0_probe_v4"
+  }
+ ]
+}
