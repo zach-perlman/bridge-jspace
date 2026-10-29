@@ -1,0 +1,55 @@
+{
+  "source": "qwen35_122b_x45m_fresh",
+  "layer": 33,
+  "gate": {
+    "cases": 600,
+    "org_accuracy": {
+      "PP": 0.9883,
+      "PM": 0.8433
+    },
+    "said_accuracy": {
+      "PP": 0.9933,
+      "PM": 0.845
+    },
+    "cand_accuracy": {
+      "PP": 0.9883,
+      "PM": 0.8433
+    },
+    "pass": true,
+    "eligible": 435,
+    "enough": true,
+    "descriptive": false
+  },
+  "items_at_L": 435,
+  "dropped": {},
+  "items": 435,
+  "entities": 44,
+  "orders": {
+    "locker-after": 269,
+    "locker-first": 166
+  },
+  "group45m": {
+    "locker-after / locker-after": 211,
+    "locker-after / mixed": 58,
+    "locker-first / locker-before": 134,
+    "locker-first / mixed": 32
+  },
+  "tokens_median": {
+    "lookup": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 31.0,
+      "5": 77.0,
+      "6": 77.0
+    },
+    "recall": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 33.0,
+      "5": 80.0,
+      "6": 80.0
+    }
+  }
+}

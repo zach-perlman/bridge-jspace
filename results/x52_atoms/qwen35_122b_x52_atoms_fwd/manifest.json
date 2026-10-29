@@ -1,0 +1,134 @@
+{
+ "exp": "x52_atoms",
+ "run": "qwen35_122b_x52_atoms_fwd",
+ "part": "52 A",
+ "spec": "jobs/c3/batch52.yaml (brief, part A)",
+ "written_utc": "2026-10-29T17:56:59Z",
+ "model": {
+  "target": "qwen3.5-122b-a10b",
+  "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+  "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat"
+ },
+ "switches": {
+  "target": "qwen3.5-122b-a10b",
+  "BJ_DEVICE_MAP": "auto",
+  "BJ_SUITE_BATCH": "16",
+  "BJ_TARGET": "qwen3.5-122b-a10b",
+  "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+ },
+ "code": {
+  "sha": "0a8cd56d344ff60c785c8490653cc002611c4ae6",
+  "dirty": true
+ },
+ "lens": {
+  "name": "jpp",
+  "source": [
+   "neuronpedia/jacobian-lens",
+   "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+   "e166deb5ad540932100ef803c8c9bcc2a5453694"
+  ],
+  "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+ },
+ "layer": 33,
+ "k": 25,
+ "omp": "signed (exp04_brew_parts.signed_omp step for step; checked against x0_necessity.fit)",
+ "dictionary": "J++ letter-token atoms at L (JLens.vectors(L, letters), unit rows)",
+ "delta": "one forward of each O / S prompt",
+ "share": "per atom: the rebuilt energy it adds when it enters, / ||Δ||^2 (non-negative; sums to the part's share)",
+ "sets": {
+  "e1": {
+   "text": "the main test (E1), the bridge word",
+   "design": "main",
+   "source": "qwen35_122b_x0_necessity_r2",
+   "alt": "cf",
+   "layer": 33,
+   "items_at_L": 200,
+   "dropped": {},
+   "items": 200,
+   "entities": 40,
+   "groups": {
+    "locker-after": 82,
+    "mixed": 65,
+    "locker-first": 53
+   },
+   "upstream": {
+    "False": 117,
+    "True": 83
+   },
+   "locker-first, prefix-identical": 14,
+   "pick_tokens": {
+    "5": 63,
+    "4": 133,
+    "6": 4
+   },
+   "group": "locker-first",
+   "items_in_group": 53,
+   "entities_in_group": 27,
+   "pool": 53,
+   "picked": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+   ]
+  }
+ },
+ "seeds": {
+  "items": 0
+ },
+ "n_items": 50,
+ "inputs": {
+  "jobs/c3/batch52.yaml": "70fe7ff47951006f69ba340f79efd25e7614b3f84f9dbf53d484b64c2f8056a6"
+ },
+ "verdict": "descriptive; no rule",
+ "states_root": "/ephemeral/jobq_runs/x52_atoms_122b/code/results/x51_jread"
+}

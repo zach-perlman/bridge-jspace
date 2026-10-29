@@ -1,0 +1,334 @@
+{
+ "dan": "no prediction: coverage run on an already-scored rule; rule first scored in results/x47_zero/x47_5-20261028T113106Z; the README verb counts the given runs only, not re-scored",
+ "batch": {
+  "verb": "follows / reads",
+  "needed_on": [],
+  "per_model": {
+   "nemotron-3.5-lightning": "followed, not needed at one layer",
+   "qwen3.5-122b-a10b": "followed, not needed at one layer"
+  }
+ },
+ "models": [
+  {
+   "target": "nemotron-3.5-lightning",
+   "run": "nem35l_x52_zero",
+   "layer": 14,
+   "layers": [
+    14,
+    15,
+    16,
+    17
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "neither (between the bars)",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 37,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.995,
+       0.9832402234636871,
+       1.0
+      ],
+      "rand_L": [
+       0.99,
+       0.9664804469273743,
+       1.0
+      ],
+      "zero_L3": [
+       0.99,
+       0.9748743718592965,
+       1.0
+      ],
+      "rand_L3": [
+       0.99,
+       0.9664804469273743,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       -0.0050000000000000044,
+       -0.016759776536312776,
+       0.0
+      ],
+      "L..L+3": [
+       0.0,
+       -0.014424818840579766,
+       0.014218009478673022
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 37,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.975,
+       0.9540229885057471,
+       0.9936315810690962
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       0.815,
+       0.75,
+       0.8727299001576457
+      ],
+      "rand_L3": [
+       0.99,
+       0.973681312311616,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.025000000000000022,
+       0.006368418930903814,
+       0.04597701149425293
+      ],
+      "L..L+3": [
+       0.17500000000000004,
+       0.11666666666666659,
+       0.23926625114214847
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 516,
+    "org_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8159
+    },
+    "said_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8178
+    },
+    "cand_accuracy": {
+     "PP": 0.9554,
+     "PM": 0.814
+    },
+    "pass": true,
+    "eligible": 315,
+    "enough": true,
+    "descriptive": false,
+    "excluded": 60
+   },
+   "shares_median": {
+    "14": {
+     "share_hS_atoms": 0.066454,
+     "share_delta_atoms": 0.2698755,
+     "share_hS_rand": 0.0664825,
+     "k_rand": 163.0,
+     "norm_hS": 17.9683,
+     "norm_delta": 13.950099999999999
+    },
+    "15": {
+     "share_hS_atoms": 0.05793,
+     "share_delta_atoms": 0.223709,
+     "share_hS_rand": 0.057869000000000004,
+     "k_rand": 146.0,
+     "norm_hS": 19.935200000000002,
+     "norm_delta": 15.1845
+    },
+    "16": {
+     "share_hS_atoms": 0.056957499999999994,
+     "share_delta_atoms": 0.23426550000000002,
+     "share_hS_rand": 0.0566425,
+     "k_rand": 165.0,
+     "norm_hS": 22.6687,
+     "norm_delta": 16.749200000000002
+    },
+    "17": {
+     "share_hS_atoms": 0.051995,
+     "share_delta_atoms": 0.2000255,
+     "share_hS_rand": 0.0522325,
+     "k_rand": 153.0,
+     "norm_hS": 25.50565,
+     "norm_delta": 19.0807
+    }
+   }
+  },
+  {
+   "target": "qwen3.5-122b-a10b",
+   "run": "qwen35_122b_x47_5",
+   "layer": 33,
+   "layers": [
+    33,
+    34,
+    35,
+    36
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "followed, not needed at one layer",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "rand_L3": [
+       0.995,
+       0.9826589595375722,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "L..L+3": [
+       -0.0050000000000000044,
+       -0.017341040462427793,
+       0.0
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 40,
+     "kept": {
+      "none": [
+       0.99,
+       0.9740932642487047,
+       1.0
+      ],
+      "zero_L": [
+       0.955,
+       0.9069767441860465,
+       0.9865470852017937
+      ],
+      "rand_L": [
+       0.99,
+       0.9768518518518519,
+       1.0
+      ],
+      "zero_L3": [
+       0.89,
+       0.823943661971831,
+       0.9357798165137615
+      ],
+      "rand_L3": [
+       0.975,
+       0.9505494505494505,
+       0.9941528967768257
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.03500000000000003,
+       0.0,
+       0.08654166666666664
+      ],
+      "L..L+3": [
+       0.08499999999999996,
+       0.04137931034482767,
+       0.14383561643835618
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 600,
+    "org_accuracy": {
+     "PP": 0.9917,
+     "PM": 0.85
+    },
+    "said_accuracy": {
+     "PP": 0.99,
+     "PM": 0.8533
+    },
+    "cand_accuracy": {
+     "PP": 0.9917,
+     "PM": 0.845
+    },
+    "pass": true,
+    "eligible": 410,
+    "enough": true,
+    "descriptive": false
+   },
+   "shares_median": {
+    "33": {
+     "share_hS_atoms": 0.061189,
+     "share_delta_atoms": 0.2522045,
+     "share_hS_rand": 0.0609575,
+     "k_rand": 211.5,
+     "norm_hS": 5.6696,
+     "norm_delta": 3.7531499999999998
+    },
+    "34": {
+     "share_hS_atoms": 0.033446500000000004,
+     "share_delta_atoms": 0.213528,
+     "share_hS_rand": 0.0339555,
+     "k_rand": 94.0,
+     "norm_hS": 6.9762,
+     "norm_delta": 3.7499000000000002
+    },
+    "35": {
+     "share_hS_atoms": 0.0431715,
+     "share_delta_atoms": 0.206208,
+     "share_hS_rand": 0.043164,
+     "k_rand": 137.5,
+     "norm_hS": 6.3424,
+     "norm_delta": 4.01935
+    },
+    "36": {
+     "share_hS_atoms": 0.052794999999999995,
+     "share_delta_atoms": 0.204428,
+     "share_hS_rand": 0.05285,
+     "k_rand": 150.5,
+     "norm_hS": 5.9906500000000005,
+     "norm_delta": 4.1861999999999995
+    }
+   }
+  }
+ ]
+}

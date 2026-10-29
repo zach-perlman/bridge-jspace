@@ -1,0 +1,107 @@
+{
+  "exp": "x0_necessity",
+  "run": "qwen35_122b_x53c_conflict",
+  "why": "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 1): the conflict test, X0's three arms at every 4th layer (L1-L45, as Lightning's sweep), decided at L33 (X0's layer for the 122B); descriptive sweep: does the split hold at relative depth 0.25-0.50 too; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-29T17:22:59Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "149e32e657ff084c2247fef12c90fefd21450ac6",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    1,
+    5,
+    9,
+    13,
+    17,
+    21,
+    25,
+    29,
+    33,
+    37,
+    41,
+    45
+  ],
+  "predicted": 33,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp"
+  ],
+  "k": 25,
+  "k_of": {},
+  "k_curve": {
+    "dicts": [
+      "jpp"
+    ],
+    "k": []
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": false,
+  "nonneg_arm": false,
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per dictionary, k, fit: no_part, no_rand; with --atom-slices 47.1's parts after J++'s), in batches of at most 16 rows (BJ_SUITE_BATCH)",
+    "batch": 16
+  },
+  "atom_slices": false,
+  "coverage": {
+    "batch": 52,
+    "question": "no prediction: coverage run on an already-scored rule",
+    "spec": "jobs/c3/batch52.yaml (part C)"
+  },
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

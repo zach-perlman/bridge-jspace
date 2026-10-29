@@ -1,0 +1,28 @@
+{
+ "target": "qwen3.5-122b-a10b",
+ "layer": 33,
+ "e1_delta": {
+  "max_abs_delta_lookup_minus_recall": 0.078125,
+  "max_abs_delta": 0.8134765625,
+  "max_rel_norm_lookup_minus_recall": 0.1440059095621109,
+  "median_rel_norm_lookup_minus_recall": 0.0
+ },
+ "letters": 242132,
+ "e1_PP_fit_max_abs_diff": 0.0,
+ "e1_x0_share_max_abs_gap": 5.000000000032756e-06,
+ "e1_x0_share_items": 50,
+ "e1_51_12_answer_atoms_items_agree": [
+  50,
+  50
+ ],
+ "e1_x0_atoms_same_25_items": [
+  7,
+  7
+ ],
+ "e1_recall_delta_atoms_in_common": {
+  "all_25": 45,
+  "items": 50,
+  "min": 1,
+  "median": 25.0
+ }
+}

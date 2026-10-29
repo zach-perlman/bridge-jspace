@@ -1,0 +1,28 @@
+{
+  "design": "main",
+  "source": "qwen35_122b_x0_necessity_r2",
+  "alt": "cf",
+  "layer": 33,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+    "locker-after": 82,
+    "mixed": 65,
+    "locker-first": 53
+  },
+  "upstream": {
+    "False": 117,
+    "True": 83
+  },
+  "locker-first, prefix-identical": 14,
+  "pick_tokens": {
+    "5": 63,
+    "4": 133,
+    "6": 4
+  },
+  "group": "locker-first",
+  "items_in_group": 53,
+  "entities_in_group": 27
+}
