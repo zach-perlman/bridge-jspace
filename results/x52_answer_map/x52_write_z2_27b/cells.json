@@ -1,0 +1,37 @@
+{
+ "cells": {
+  "lookup": [
+   "T",
+   58
+  ],
+  "recall": [
+   "T",
+   60
+  ]
+ },
+ "from": "x52_read_z2_27b",
+ "answer": {
+  "lookup": {
+   "layer": 63,
+   "n": 166,
+   "never": 0,
+   "quartiles": [
+    63.0,
+    63.0,
+    63.0
+   ],
+   "settle_layer": 63
+  },
+  "recall": {
+   "layer": 63,
+   "n": 166,
+   "never": 0,
+   "quartiles": [
+    63.0,
+    63.0,
+    63.0
+   ],
+   "settle_layer": 63
+  }
+ }
+}

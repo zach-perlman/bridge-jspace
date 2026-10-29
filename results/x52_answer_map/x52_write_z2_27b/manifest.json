@@ -1,0 +1,81 @@
+{
+  "exp": "x52_answer_map",
+  "run": "x52_write_z2_27b",
+  "stage": "write",
+  "set": "z2",
+  "set_text": "his passages (Z2, never-named bridge)",
+  "spec": "jobs/c3/batch52.yaml (brief B); jobs/c3/x52_write_z2_27b.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction",
+  "written_utc": "2026-10-29T00:25:28Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "24cf6a0888598a61c660b853f68b31546b001dee",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "groups": {
+    "B": "the description's last token in the question (his edit site)",
+    "E": "the bridge entity's last mention in the passage before the question",
+    "Q": "the question's closing '?'",
+    "T": "the prompt's last token (no prefill)"
+  },
+  "rank_sets": {
+    "bridge": "the bridge entity (51.12's: the first token of each variant of its name)",
+    "ans": "the reader's answer word (51.12's A-style tokens; decides)",
+    "ans_S": "S's answer word on O (a same-type distractor; baseline)",
+    "tokA": "the answer token as read (main: the digit)",
+    "bridge_whole": "the bridge entity, whole-word variants only (no fragment such as 'I' for 'Iota')",
+    "ans_whole": "the answer word, whole-word variants only (no fragment such as 'G' for 'Greece')"
+  },
+  "rule": {
+    "readable": "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.",
+    "usable": "“Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10.",
+    "combinations": "Report the four combinations per reader, per dataset."
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "Δ = h_S - h_O added at the cell (the whole state patched; the upper bound, beside)",
+    "ans1": "s u: u the unit sum of the J++ lens directions of S's answer word's tokens, s = ||Δ|| at the cell",
+    "ans2": "2 s u",
+    "rand1": "s u R^T (R: X0's random basis at the layer, seed 888 + layer): a random part of the same size",
+    "rand2": "2 s u R^T",
+    "freq1": "s u_F: F per answer token one unrelated letter token, BPE id within a factor 2, closest J++ readout norm",
+    "freq2": "2 s u_F"
+  },
+  "seeds": {
+    "random_rotation": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "read_run": "x52_read_z2_27b",
+  "inputs": {
+    "jobs/c3/batch52.yaml": "870bb1c048ca545a55b199e9822bfbba4ece1c84ce378d17355dc3cca5dadae8",
+    "results/x52_answer_map/x52_read_z2_27b/manifest.json": "2bb60e4f4c2047e2e28cdeabe1aa3823d2808efc5ce43c3c126c1258560a3728",
+    "results/x52_answer_map/x52_read_z2_27b/cases.jsonl": "09b27c48aa532dc753aaed5fbd659e9f2d0e5c0a0a2919914307312ddc4575a4",
+    "results/x52_answer_map/x52_read_z2_27b/ranks.npz": "05069bdc9743cb26dd0545fe9ca7b0c6a213c44c7c779fd142f870cf7be5deae"
+  },
+  "cell_rule": "per reader the (group, layer) before the answer layer with the largest share of items whose answer word is in the J++ top-5 (ties: lower median rank, earlier layer, B < E < Q < T), point estimates",
+  "size": "s = ||h_S - h_O|| at the cell; below 0.001 x ||h_O|| (the position precedes the change): the bridge word's ||Δ|| at that layer (flagged)"
+}
