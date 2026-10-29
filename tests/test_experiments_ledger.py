@@ -1,10 +1,25 @@
-"""docs/depth/EXPERIMENTS.md (Dan, 29 Oct ~01:10): every cited path exists, every entry has a unique anchor and the
-five fields in order, every internal link resolves; the checker catches each failure."""
+"""docs/depth/EXPERIMENTS.md (Dan, 29 Oct ~01:10; cards since 01:15): every cited path exists, every entry has a unique
+anchor and the README Part I card fields in order (a running stub: Question, Status, Where used), every internal link
+resolves, every number's source comment resolves on one line of its file, the coverage table is the matrix; the checker
+catches each failure."""
 
 from scripts import check_ledger as L
 
 REQUIRED = ("t49-2", "t49-5", "t51-1", "t51-2", "t51-3", "t51-4", "t51-5", "t51-7", "t51-10", "t51-11", "t51-12", "z1",
-            "z2", "z3", "lightning-layer")  # fmt: skip
+            "z2", "z3", "lightning-layer", "lightning-conflict", "b52-a")  # fmt: skip
+CARD = """### A test (1.1, opened x) <a id="a"></a>
+
+- **Question.** q?
+- **Why we asked.** w.
+- **Data.** d.
+- **Method.** m.
+- **Rule, fixed in advance.** "r."
+- **Result.** 0.53<!-- src: docs/handcheck_clean49.md | Main test gap :: 0.53 -->
+- **Read.**
+  - r.
+- **Caveats.**
+  - c.
+"""
 
 
 def test_the_ledger_is_well_formed():
@@ -29,12 +44,17 @@ def test_the_ledger_sections_by_status():
                      "## Ledger only (opened, not in README)", "## Withdrawn", "## Running or sealed"]  # fmt: skip
 
 
-def test_the_checker_catches_failures(tmp_path):
-    good = ("### A test (1.1, opened x) <a id=\"a\"></a>\n\n- Question: q?\n- Verdict (rule): v.\n- Key numbers, from "
-            "`docs/depth/EXPERIMENTS.md`: 1.\n- Where used: ledger only.\n- Caveats: none.\n")  # fmt: skip
-    assert not L.problems(good)
-    assert L.problems(good.replace("docs/depth/EXPERIMENTS.md", "results/no_such_folder/verdict.md"))
-    assert L.problems(good.replace(' <a id="a"></a>', ""))
-    assert L.problems(good + good)  # a duplicate anchor
-    assert L.problems(good.replace("- Caveats: none.\n", ""))
-    assert L.problems(good + "See [b](#b).\n")
+def test_the_checker_catches_failures():
+    assert not L.problems(CARD)
+    assert L.problems(CARD.replace("docs/handcheck_clean49.md", "results/no_such_folder/verdict.md"))
+    assert L.problems(CARD.replace(' <a id="a"></a>', ""))
+    assert L.problems(CARD + CARD)  # a duplicate anchor
+    assert L.problems(CARD.replace("- **Caveats.**\n", ""))
+    assert L.problems(CARD + "See [b](#b).\n")
+    assert L.problems(CARD.replace("0.53<!--", "0.54<!--"))  # the shown number is not the source's
+    assert L.problems(CARD.replace(":: 0.53 -->", ":: 0.99 -->"))  # the source's number is not in the file
+
+
+def test_a_running_stub_needs_only_its_status():
+    stub = '### Later (1.2, running) <a id="b"></a>\n\n- **Question.** q?\n- **Status.** s.\n- **Where used.** w.\n'
+    assert not L.problems(stub)
