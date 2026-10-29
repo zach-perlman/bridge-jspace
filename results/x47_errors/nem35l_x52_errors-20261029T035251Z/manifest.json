@@ -1,0 +1,83 @@
+{
+  "exp": "x47_errors",
+  "stage": "count",
+  "run": "nem35l_x52_errors",
+  "written_utc": "2026-10-29T03:52:51Z",
+  "why": "batch 47, test 47.13 (jobs/c3/batch47.yaml; Q47.13, sealed)",
+  "source": {
+    "run": "x0b_generalize/nem35l_x52_x0b",
+    "set": "x0b_v2",
+    "layer": 14,
+    "model": {
+      "target": "nemotron-3.5-lightning",
+      "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+      "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+      "dtype": "bfloat16",
+      "attn": "sdpa",
+      "prompt_format": "chat",
+      "kernels": "hub"
+    },
+    "code": {
+      "sha": "563ac703484c27e7d868b7fc0298ff832082fbe3",
+      "dirty": true
+    }
+  },
+  "named_source": {
+    "run": "x0_probe/nem35l_x52_probe",
+    "why_not": "x0_probe stores the states of every scene but no read of the lookup; `gpu` reads it there (v4_reads.jsonl)"
+  },
+  "substitution": "the data source is the varied-scene run (x0b_v2), the one local source with a stored read and a stored bridge-word state for every scene, wrong ones included; the agent's choice, stated before any count; Dan may override",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": null,
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "head": "a15384718de9912ab4825eb61fccba5f0289b505",
+    "dirty_files": [],
+    "untracked_scripts": [],
+    "code_diff_sha256": null
+  },
+  "position": "the asked person's bridge word, org run, chat",
+  "probe": {
+    "target": "the bridge's locker statement ordinal (x0b probe (b))",
+    "groups": "format x locker order",
+    "training": "the scenes the lookup reads right, the wrong item's bridge entity held out",
+    "penalty": "entity-held-out CV on the training scenes (x0_probe.select_penalty)",
+    "folds": {
+      "outer": 5,
+      "inner": 4,
+      "penalties": [
+        0.001,
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ]
+    }
+  },
+  "rule": "\"The address predicts the error\" if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; the layout baseline beside), and the lens's top item at the bridge word is still the right item in >= 0.8 of those",
+  "bars": {
+    "match": 0.5,
+    "lens": 0.8,
+    "n_min": 30
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "n_boot": 10000,
+  "sealed": "per-item rows and counts only; no match rate until predictions/2026-10-28_dan.md holds Dan's Q47.13 answer"
+}
