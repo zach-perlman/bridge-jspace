@@ -14,6 +14,10 @@ CARD = """### A test (1.1, opened x) <a id="a"></a>
 - **Data.** d.
 - **Method.** m.
 - **Rule, fixed in advance.** "r."
+
+![a figure](../../figures/story/fig01_split.png)
+*What is plotted.*
+
 - **Result.** 0.53<!-- src: docs/handcheck_clean49.md | Main test gap :: 0.53 -->
 - **Read.**
   - r.
@@ -41,7 +45,8 @@ def test_the_ledger_sections_by_status():
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
     assert heads == ["## Flagged for Dan", "## README changes waiting for Dan", "## Coverage",
                      "## Changes a README claim (README must be updated)", "## Supports a README claim",
-                     "## Ledger only (opened, not in README)", "## Withdrawn", "## Running or sealed"]  # fmt: skip
+                     "## Ledger only (opened, not in README)", "## Withdrawn", "## Running or sealed",
+                     "## Figure checks"]  # fmt: skip
 
 
 def test_the_checker_catches_failures():
@@ -53,6 +58,9 @@ def test_the_checker_catches_failures():
     assert L.problems(CARD + "See [b](#b).\n")
     assert L.problems(CARD.replace("0.53<!--", "0.54<!--"))  # the shown number is not the source's
     assert L.problems(CARD.replace(":: 0.53 -->", ":: 0.99 -->"))  # the source's number is not in the file
+    assert L.problems(CARD.replace("![a figure](../../figures/story/fig01_split.png)\n", ""))  # no figure
+    assert L.problems(CARD.replace("fig01_split", "no_such_figure"))  # the figure's file is missing
+    assert L.problems(CARD.replace("*What is plotted.*\n", ""))  # no caption
 
 
 def test_a_running_stub_needs_only_its_status():

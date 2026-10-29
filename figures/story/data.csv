@@ -4690,6 +4690,389 @@ ladder_rules,qwen3.6-27b,the lookup never needs it,not run (bridge-word steps on
 ladder_rules,muse-glimmer-30b,the second copy is the earlier mention,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
 ladder_rules,muse-glimmer-30b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
 ladder_rules,muse-glimmer-30b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: without the lens part",0.4974619289340101,0.4108083976833977,0.5714285714285713,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: lens part out, answer kept",0.47208121827411165,0.38775223572575085,0.5478741620518799,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: answer directions only",0.0,0.0,0.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"main test, recall, switches lost beyond random: without the lens part",0.7399999999999999,0.6646706586826348,0.8021420586724674,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"main test, recall, switches lost beyond random: lens part out, answer kept",0.6866666666666666,0.5886524822695035,0.7672992540587977,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"main test, recall, switches lost beyond random: answer directions only",0.02666666666666669,0.006329113924050556,0.05369127516778516,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,muse-glimmer-30b,"main test, recall, switches lost beyond random: without the lens part",0.7627118644067796,0.6236527514231498,0.88,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,muse-glimmer-30b,"main test, recall, switches lost beyond random: lens part out, answer kept",0.711864406779661,0.5555555555555555,0.8404293863706445,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,muse-glimmer-30b,"main test, recall, switches lost beyond random: answer directions only",-0.00847457627118645,-0.048545374865156615,0.029126213592232997,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,nemotron-3.5-lightning,"main test, recall, switches lost beyond random: without the lens part",0.3421052631578947,0.24752350235023493,0.44285714285714284,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+ledger_answer_control,nemotron-3.5-lightning,"main test, recall, switches lost beyond random: lens part out, answer kept",0.31578947368421056,0.2376223948361686,0.3958431603773584,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+ledger_answer_control,nemotron-3.5-lightning,"main test, recall, switches lost beyond random: answer directions only",0.0,-0.01570680628272237,0.012931034482758674,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+ledger_answer_control,qwen3.5-9b,"Zach's described bridge, recall: without the lens part",0.6981132075471697,0.5652173913043478,0.8222222222222222,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.5-9b,"Zach's described bridge, recall: lens part out, answer kept",0.2264150943396226,0.12901157981803135,0.33333333333333337,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.5-9b,"Zach's described bridge, recall: answer directions only",0.5471698113207546,0.3928396358543417,0.6956521739130435,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"Zach's described bridge, recall: without the lens part",0.6129032258064516,0.44436274509803925,0.781283967391304,166,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"Zach's described bridge, recall: lens part out, answer kept",0.03225806451612899,-0.12,0.1785714285714285,166,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_answer_control,qwen3.6-27b,"Zach's described bridge, recall: answer directions only",0.41935483870967744,0.24,0.6,166,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 1",0.6,0.4599583333333334,0.7066666666666667,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 2",0.98,0.9354838709677419,1.0,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 3",0.96,0.8863636363636364,1.0,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 4",0.98,0.9354838709677419,1.0,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 5",0.98,0.9166666666666666,1.0,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 3 lockers: learned code's own-IIA at k = 7",0.98,0.9354838709677419,1.0,50,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 1",0.625,0.5087719298245614,0.8035714285714286,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 2",0.9107142857142857,0.7872340425531915,0.9859154929577465,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 3",0.8928571428571429,0.7659574468085106,0.971830985915493,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 4",0.9464285714285714,0.8703703703703703,1.0,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 5",0.9464285714285714,0.8703703703703703,1.0,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 4 lockers: learned code's own-IIA at k = 7",0.9821428571428571,0.9361702127659575,1.0,56,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 1",0.3333333333333333,0.23076923076923078,0.45652173913043476,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 2",0.7142857142857143,0.5909090909090909,0.8666666666666667,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 3",0.7857142857142857,0.6923076923076923,0.9,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 4",0.7380952380952381,0.625,0.8666666666666667,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 5",0.7142857142857143,0.6111111111111112,0.8076923076923077,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 6 lockers: learned code's own-IIA at k = 7",0.7857142857142857,0.631578947368421,0.9333333333333333,42,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 1",0.5614035087719298,0.37209302325581395,0.6956521739130435,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 2",0.8245614035087719,0.6976744186046512,0.90625,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 3",0.8596491228070176,0.6976744186046512,0.967741935483871,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 4",0.8947368421052632,0.7636363636363637,0.9841269841269841,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 5",0.8771929824561403,0.7209302325581395,0.971830985915493,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 1, 8 lockers: learned code's own-IIA at k = 7",0.8947368421052632,0.7636363636363637,0.9841269841269841,57,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 3, dose 2, from slot 1: midpoint swap: lands on the midpoint slot",0.06,0.03124394379844962,0.09090909090909091,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 3, dose 2, from slot 1: full swap: lands on its target",0.375,0.31666666666666665,0.4252349876463637,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 3, dose 2, from slot 6: midpoint swap: lands on the midpoint slot",0.0,0.0,0.0,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,qwen3.5-9b,"part 3, dose 2, from slot 6: full swap: lands on its target",0.415,0.376541394335512,0.4482758620689655,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 1",0.43956043956043955,0.35106382978723405,0.535384331116038,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 2",0.978021978021978,0.9259259259259259,1.0,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 3",0.978021978021978,0.9259259259259259,1.0,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 4",0.989010989010989,0.9629629629629629,1.0,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 5",0.989010989010989,0.9629629629629629,1.0,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 3 lockers: learned code's own-IIA at k = 7",0.989010989010989,0.9629629629629629,1.0,91,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 1",0.5238095238095238,0.4489795918367347,0.6097719353816913,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 2",0.8095238095238095,0.7613636363636364,0.881578947368421,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 3",0.9404761904761905,0.9154929577464789,0.9655172413793104,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 4",0.9404761904761905,0.9154929577464789,0.9655172413793104,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 5",0.9285714285714286,0.8780487804878049,0.9647058823529412,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 4 lockers: learned code's own-IIA at k = 7",0.9166666666666666,0.8607594936708861,0.963855421686747,84,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 1",0.35526315789473684,0.25,0.4594594594594595,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 2",0.5,0.38461538461538464,0.6461538461538462,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 3",0.6973684210526315,0.5909090909090909,0.8157894736842105,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 4",0.6973684210526315,0.5857142857142857,0.8142857142857143,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 5",0.7368421052631579,0.6511627906976745,0.8333333333333334,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 6 lockers: learned code's own-IIA at k = 7",0.8421052631578947,0.7469879518072289,0.9333333333333333,76,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 1",0.2682926829268293,0.15714285714285714,0.34210526315789475,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 2",0.4268292682926829,0.35384615384615387,0.47368421052631576,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 3",0.5365853658536586,0.4482758620689655,0.6,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 4",0.5975609756097561,0.4857142857142857,0.6986301369863014,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 5",0.6707317073170732,0.5625,0.7282608695652174,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 1, 8 lockers: learned code's own-IIA at k = 7",0.7073170731707317,0.6197183098591549,0.7778023598820055,82,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 3, dose 2, from slot 1: midpoint swap: lands on the midpoint slot",0.13,0.08333333333333333,0.17582417582417584,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 3, dose 2, from slot 1: full swap: lands on its target",0.34,0.27710221049487205,0.4078985178463399,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 3, dose 2, from slot 6: midpoint swap: lands on the midpoint slot",0.005,0.0,0.016483516483516484,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_address_shape,muse-glimmer-30b,"part 3, dose 2, from slot 6: full swap: lands on its target",0.39,0.36324786324786323,0.4148936170212766,200,results/x51_addr/verdict-20261028T215138Z/verdict.json
+ledger_learned,qwen3.5-9b,recall: test own-IIA at k = 4,0.5333333333333333,0.25882352941176473,0.7471264367816092,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.5-9b,recall: test own-IIA at k = 16,0.8,0.6666666666666666,0.8909090909090909,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.5-9b,recall: test own-IIA at k = 64,0.9111111111111111,0.8028169014084507,0.984,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.5-9b,recall: test own-IIA at k = 128,0.9555555555555556,0.9078896761133604,0.9896907216494846,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.5-9b,lookup: test own-IIA at k = 4,0.7777777777777778,0.6224433106575964,0.9066694915254236,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.5-9b,lookup: test own-IIA at k = 16,0.9111111111111111,0.8409008563899869,0.963855421686747,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,recall: test own-IIA at k = 4,0.2898550724637681,0.11764705882352941,0.49122807017543857,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,recall: test own-IIA at k = 16,0.6811594202898551,0.5373134328358209,0.8253968253968254,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,recall: test own-IIA at k = 64,0.8405797101449275,0.7796610169491526,0.9041095890410958,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,recall: test own-IIA at k = 128,0.7971014492753623,0.6716417910447762,0.9135802469135802,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,lookup: test own-IIA at k = 4,0.5714285714285714,0.44680851063829785,0.6896551724137931,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,qwen3.6-27b,lookup: test own-IIA at k = 16,0.9285714285714286,0.8775510204081632,0.978021978021978,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,recall: test own-IIA at k = 4,0.37254901960784315,0.125,0.6923076923076923,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,recall: test own-IIA at k = 16,0.6470588235294118,0.42592592592592593,0.9024390243902439,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,recall: test own-IIA at k = 64,0.6862745098039216,0.421875,0.9411764705882353,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,recall: test own-IIA at k = 128,0.803921568627451,0.6428571428571429,0.9643013784461151,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,lookup: test own-IIA at k = 4,0.71,0.47619047619047616,0.9054054054054054,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_learned,muse-glimmer-30b,lookup: test own-IIA at k = 16,0.93,0.8181818181818182,1.0,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 1: share of the swap's switch cut",-0.0067567567567568005,-0.045454545454545414,0.024691358024691357,330,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 1: random sets' mean cut",0.0054,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 3: share of the swap's switch cut",0.0067567567567568005,-0.03597284334694407,0.04054054054054057,330,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 3: random sets' mean cut",-0.0027,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 5: share of the swap's switch cut",-0.0067567567567568005,-0.0546875,0.0357142857142857,330,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 5: random sets' mean cut",-0.0027,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 10: share of the swap's switch cut",0.0067567567567568005,-0.06522094344984376,0.06040268456375841,330,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, top 10: random sets' mean cut",-0.0284,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, best layer: share of the swap's switch cut",0.027027027027027077,0.007575757575757458,0.04444444444444451,330,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.5-9b,"last token, best layer: random sets' mean cut",0.0203,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 1: share of the swap's switch cut",0.0,-0.06521739130434767,0.05633802816901412,300,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 1: random sets' mean cut",-0.0152,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 3: share of the swap's switch cut",0.0454545454545455,0.0,0.08536585365853655,300,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 3: random sets' mean cut",-0.0121,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 5: share of the swap's switch cut",0.2272727272727272,0.10769230769230775,0.33783783783783783,300,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 5: random sets' mean cut",0.0121,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 10: share of the swap's switch cut",0.2121212121212121,0.04760044642857139,0.368421052631579,300,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, top 10: random sets' mean cut",0.0515,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, best layer: share of the swap's switch cut",-0.060606060606060615,-0.28260869565217384,0.09525075987841937,300,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,qwen3.6-27b,"last token, best layer: random sets' mean cut",-0.1424,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 1: share of the swap's switch cut",0.045751633986928046,0.0073529411764705595,0.08609271523178808,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 1: random sets' mean cut",0.0,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 3: share of the swap's switch cut",0.06535947712418293,0.020266869218211518,0.11475409836065575,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 3: random sets' mean cut",0.0052,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 5: share of the swap's switch cut",0.1830065359477123,0.09523144453312041,0.2742883275261324,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 5: random sets' mean cut",0.0288,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 10: share of the swap's switch cut",0.20915032679738557,0.11111111111111105,0.3125188253012047,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, top 10: random sets' mean cut",0.0092,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, best layer: share of the swap's switch cut",0.019607843137254877,-0.007246376811594018,0.04761904761904767,284,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_heads,muse-glimmer-30b,"last token, best layer: random sets' mean cut",0.0523,,,,results/x51_heads/x51_2-20261028T190358Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-first, lookup, one layer: switches lost beyond random",0.1923076923076923,0.10447761194029848,0.29546254801536487,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-first, recall, one layer: switches lost beyond random",0.5308641975308642,0.4303797468354431,0.6352941176470589,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-first, lookup, every layer to L: switches lost beyond random",0.10465116279069775,0.04544177732379977,0.17283950617283939,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-first, recall, every layer to L: switches lost beyond random",0.4137931034482759,0.3076923076923078,0.5164927768860353,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-after, lookup, one layer: switches lost beyond random",0.41666666666666674,0.2499999999999999,0.5945945945945946,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-after, recall, one layer: switches lost beyond random",0.7435897435897435,0.6341463414634146,0.8452380952380952,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-after, lookup, every layer to L: switches lost beyond random",0.5111111111111111,0.40909090909090906,0.6122448979591837,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.5-9b,"fact-after, recall, every layer to L: switches lost beyond random",0.6551724137931034,0.550561797752809,0.7500000000000001,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-first, lookup, one layer: switches lost beyond random",0.2615384615384616,0.16000000000000003,0.3731343283582089,97,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-first, recall, one layer: switches lost beyond random",0.44262295081967207,0.3035714285714286,0.5740740740740741,97,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-first, lookup, every layer to L: switches lost beyond random",0.1558441558441559,0.07042253521126762,0.2535263821736389,97,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-first, recall, every layer to L: switches lost beyond random",0.2784810126582279,0.18071870816599725,0.37681159420289856,97,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-after, lookup, one layer: switches lost beyond random",0.36363636363636365,0.08333333333333326,0.7500000000000001,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-after, recall, one layer: switches lost beyond random",0.7076923076923075,0.5844155844155846,0.8275862068965517,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-after, lookup, every layer to L: switches lost beyond random",0.5116279069767442,0.41758241758241754,0.6091954022988505,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_full_carrier,qwen3.6-27b,"fact-after, recall, every layer to L: switches lost beyond random",0.6091954022988506,0.5000000000000001,0.7129066478076375,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"bridge-fit swap at L+4, dose 2: lookups sent to the target",0.0,0.0,0.0,600,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 0",0.31,0.25949367088607594,0.3647098569157392,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 1",0.2833333333333333,0.23745819397993312,0.33203270755597014,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 2",0.2866666666666667,0.2394810611240257,0.33673557051686653,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 3",0.2833333333333333,0.2425249169435216,0.32954545454545453,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 4",0.2866666666666667,0.2459546925566343,0.3333333333333333,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 5",0.37333333333333335,0.33221448071891707,0.41754385964912283,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 6",0.3566666666666667,0.2980132450331126,0.4188679245283019,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 7",0.2733333333333333,0.23263687015503876,0.31716680153449617,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 8",0.2733333333333333,0.23170642300264646,0.3202620193985067,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 9",0.41333333333333333,0.3612884827670796,0.46931435627117896,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 10",0.4866666666666667,0.44518272425249167,0.5315985130111525,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 11",0.41333333333333333,0.3527505319856364,0.47970882141707316,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 12",0.5533333333333333,0.4965980570310316,0.6060606060606061,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 13",0.63,0.58203125,0.6721325046140484,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 14",0.7833333333333333,0.713836225201723,0.8383838383838383,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 15",0.8933333333333333,0.8345844805676162,0.9420289855072463,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 16",0.93,0.8859934853420195,0.9632369805720453,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 17",0.99,0.9740719332048812,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 18",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 19",0.9966666666666667,0.9895470383275261,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 20",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 21",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 22",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 23",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 24",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 25",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 26",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 27",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 28",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 29",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 30",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.5-9b,"slot probe at the last token, layer 31",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"bridge-fit swap at L+4, dose 2: lookups sent to the target",0.0033333333333333335,0.0,0.010344827586206896,600,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 0",0.3233333333333333,0.2724458204334365,0.3736654804270463,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 1",0.33666666666666667,0.27710843373493976,0.39308230318802867,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 2",0.35,0.2932072158365262,0.4090909090909091,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 3",0.29,0.23899313263041067,0.34035274356103024,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 4",0.26,0.2087902837902838,0.3125,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 5",0.26,0.2099622160713501,0.3120567375886525,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 6",0.26666666666666666,0.2152766280353201,0.32129993489968633,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 7",0.27666666666666667,0.22641509433962265,0.3284684708424464,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 8",0.2866666666666667,0.2327027646750524,0.3429606617537369,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 9",0.26666666666666666,0.21222969298979422,0.3222591362126246,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 10",0.2733333333333333,0.22121066433566436,0.3284132841328413,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 11",0.25,0.20440251572327045,0.2968763331911263,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 12",0.2633333333333333,0.21575342465753425,0.3106087662337662,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 13",0.27,0.21942130506121418,0.32298243367270707,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 14",0.30333333333333334,0.2559706852368968,0.35227373827240377,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 15",0.29,0.23809523809523808,0.3416370106761566,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 16",0.30666666666666664,0.2564935064935065,0.3574010651878492,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 17",0.30333333333333334,0.25080360332771906,0.3553459119496855,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 18",0.29,0.2389064911632356,0.3412468795629033,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 19",0.35,0.2874617737003058,0.41304347826086957,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 20",0.3466666666666667,0.28735632183908044,0.4075650323823797,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 21",0.33,0.2659923705136471,0.39144766107885376,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 22",0.34,0.2781456953642384,0.39857713460916305,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 23",0.31333333333333335,0.2589876341738111,0.36666666666666664,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 24",0.30666666666666664,0.24642727743271223,0.3710247349823322,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 25",0.37666666666666665,0.3157894736842105,0.43823720397249805,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 26",0.5166666666666667,0.45454545454545453,0.5782778216873907,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 27",0.55,0.49836065573770494,0.6022349621534465,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 28",0.6666666666666666,0.6118881118881119,0.7178574227496641,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 29",0.7766666666666666,0.726962457337884,0.8256904708627689,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 30",0.8066666666666666,0.7571428571428571,0.856655574516496,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 31",0.76,0.7132867132867133,0.8078291814946619,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 32",0.8466666666666667,0.8029726209535181,0.8874211371918962,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 33",0.99,0.9782608695652174,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 34",0.9966666666666667,0.9893238434163701,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 35",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 36",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 37",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 38",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 39",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 40",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 41",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 42",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 43",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 44",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 45",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 46",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 47",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 48",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 49",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 50",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 51",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 52",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 53",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 54",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 55",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 56",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 57",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 58",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 59",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 60",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 61",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 62",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,qwen3.6-27b,"slot probe at the last token, layer 63",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"bridge-fit swap at L+4, dose 2: lookups sent to the target",0.4533333333333333,0.4308510638297872,0.47635135135135137,600,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 0",0.24,0.18927015085335275,0.29179356221037417,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 1",0.27,0.2222222222222222,0.32116848745589016,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 2",0.29,0.24590027776264908,0.334646061423597,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 3",0.25333333333333335,0.20392156862745098,0.3038461538461538,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 4",0.26,0.2061057136247976,0.31656920665541355,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 5",0.27666666666666667,0.22506728181468666,0.32601880877742945,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 6",0.24666666666666667,0.1950461651625936,0.2983628796543398,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 7",0.24666666666666667,0.20201936584386915,0.2919259869106674,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 8",0.27666666666666667,0.23367697594501718,0.32180120025951553,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 9",0.2866666666666667,0.2431608339925886,0.32764505119453924,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 10",0.30333333333333334,0.2634695608782435,0.3458904109589041,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 11",0.27,0.22049565415831565,0.32069289160880304,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 12",0.31333333333333335,0.2736148669411837,0.35274000310324954,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 13",0.2866666666666667,0.24573231219811756,0.3310122186646577,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 14",0.31,0.2759618336232477,0.34782608695652173,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 15",0.30333333333333334,0.25190698331919703,0.3566707048458149,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 16",0.43,0.3705172751616485,0.4884631147540983,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 17",0.5733333333333334,0.5183801111908178,0.6326530612244898,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 18",0.6466666666666666,0.6,0.6950819672131148,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 19",0.6033333333333334,0.5531914893617021,0.6527790880503145,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 20",0.71,0.6586320893329415,0.756668918918919,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 21",0.79,0.735593220338983,0.8402561457223997,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 22",0.8166666666666667,0.772332867292493,0.8610169491525423,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 23",0.7933333333333333,0.7481474519632414,0.8364348429838138,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 24",0.8866666666666667,0.8555555555555555,0.9180897351456001,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 25",0.9733333333333334,0.9551706544686841,0.989010989010989,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 26",0.9866666666666667,0.9722222222222222,0.9969512195121951,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 27",0.9766666666666667,0.9570301999327957,0.993103448275862,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 28",0.9966666666666667,0.9888475836431226,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 29",0.9966666666666667,0.9896551724137931,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 30",0.9933333333333333,0.9839743589743589,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 31",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 32",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 33",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 34",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 35",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 36",1.0,1.0,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 37",0.9966666666666667,0.9893983535072551,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 38",0.9966666666666667,0.9893983535072551,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 39",0.9933333333333333,0.9833873200442967,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 40",0.9933333333333333,0.9833873200442967,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 41",0.9933333333333333,0.9833873200442967,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 42",0.9933333333333333,0.9833873200442967,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 43",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 44",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 45",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 46",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 47",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 48",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 49",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 50",0.9933333333333333,0.9831081081081081,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_last_token_address,muse-glimmer-30b,"slot probe at the last token, layer 51",0.9866666666666667,0.9691109740078812,1.0,300,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, lookup: switches lost beyond random",0.26315789473684215,0.1759137426900585,0.3571428571428572,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, lookup: switches lost beyond random",0.2763157894736843,0.17948717948717952,0.381578947368421,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, lookup: switches lost beyond random",0.6,0.3793103448275863,0.8148148148148149,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, recall: switches lost beyond random",0.6352201257861635,0.5555555555555557,0.7115384615384615,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, recall: switches lost beyond random",0.5793650793650794,0.49193548387096764,0.663553525913339,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, recall: switches lost beyond random",0.8118811881188119,0.72,0.9047619047619048,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_routes,qwen3.5-9b,"L12, whole change: identity share",0.43333333333333335,0.2982456140350877,0.5645161290322581,60,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,qwen3.5-9b,"L12, whole change: position share",0.1,0.01818181818181818,0.1935483870967742,60,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,qwen3.5-9b,"L12, whole change: value share",0.0,0.0,0.0,60,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,qwen3.5-9b,"L12, whole change: original share",0.4666666666666667,0.3333333333333333,0.6071428571428571,60,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L26, whole change: identity share",0.1875,0.08,0.3076923076923077,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L26, whole change: position share",0.0625,0.0,0.14,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L26, whole change: value share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L26, whole change: original share",0.75,0.6274509803921569,0.8696345975948185,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L36, whole change: identity share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L36, whole change: position share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L36, whole change: value share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,muse-glimmer-30b,"L36, whole change: original share",1.0,1.0,1.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_clean_reruns,qwen3.5-9b,"Main test gap (recall extra loss minus lookup extra loss), L12, chat: record / clean",0.526,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Main test gap (recall extra loss minus lookup extra loss), L12, chat: clean rerun",0.526,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: identity share: record / clean",0.48,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: identity share: clean rerun",0.48,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: position share: record / clean",0.51,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: position share: clean rerun",0.51,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: value share: record / clean",0.0,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: value share: clean rerun",0.0,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Pointer directions removed: position share: record / clean,0.0833,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Pointer directions removed: position share: clean rerun,0.0833,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,A random part of their size removed: position share: record / clean,0.5433,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,A random part of their size removed: position share: clean rerun,0.5433,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Only the pointer directions added (only-U): position share: record / clean,0.26,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Only the pointer directions added (only-U): position share: clean rerun,0.26,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Only a random part of their size added: position share: record / clean,0.0,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,Only a random part of their size added: position share: clean rerun,0.0,,,300,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"47.5: recall answers kept, J++ atoms zeroed at L12: record / clean",0.975,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"47.5: recall answers kept, J++ atoms zeroed at L12: clean rerun",0.975,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"47.5: recall answers kept, random subspace zeroed at L12: record / clean",1.0,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,"47.5: recall answers kept, random subspace zeroed at L12: clean rerun",1.0,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,47.8: position share under the whole change at L10: record / clean,0.02,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,47.8: position share under the whole change at L10: clean rerun,0.015,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,47.8: position share under the whole change at L12: record / clean,0.51,,,200,results/checks/clean49_9b.json
+ledger_clean_reruns,qwen3.5-9b,47.8: position share under the whole change at L12: clean rerun,0.515,,,200,results/checks/clean49_9b.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L2: lookup switch rate",0.9833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L6: lookup switch rate",0.8667,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L10: lookup switch rate",0.7833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L14: lookup switch rate",0.5833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L18: lookup switch rate",0.5167,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L22: lookup switch rate",0.3167,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L26: lookup switch rate",0.0167,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L30: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L34: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L38: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L42: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L46: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L50: lookup switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L2: recall switch rate",0.9667,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L6: recall switch rate",0.9833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L10: recall switch rate",0.9833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L14: recall switch rate",0.9833,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L18: recall switch rate",0.9667,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L22: recall switch rate",0.8,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L26: recall switch rate",0.4,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L30: recall switch rate",0.3667,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L34: recall switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L38: recall switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L42: recall switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L46: recall switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"layer sweep, L50: recall switch rate",0.0,,,60,results/x51_lightning/nem35l_x52_layer_r2/layer.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L2, lookup: switches lost beyond random",0.0,-0.014285714285714235,0.015306122448979664,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L6, lookup: switches lost beyond random",0.3116883116883117,0.24087591240875916,0.38620689655172413,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L10, lookup: switches lost beyond random",0.16083916083916083,0.089884039181792,0.23622155403651468,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L14, lookup: switches lost beyond random",0.033333333333333326,-0.012345679012345623,0.08108108108108103,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L18, lookup: switches lost beyond random",-0.06172839506172845,-0.12643678160919536,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L22, lookup: switches lost beyond random",0.05882352941176483,-0.028571428571428473,0.14754098360655743,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L26, lookup: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L30, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L34, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L38, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L42, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L46, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L50, lookup: switches lost beyond random",nan,nan,nan,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L2, recall: switches lost beyond random",-0.01025641025641022,-0.026315789473684292,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L6, recall: switches lost beyond random",0.2731958762886598,0.20245216184633358,0.3505747126436781,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L10, recall: switches lost beyond random",0.30102040816326536,0.22222222222222232,0.3827226162332545,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L14, recall: switches lost beyond random",0.34391534391534384,0.2499999999999999,0.44171779141104295,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L18, recall: switches lost beyond random",0.28729281767955805,0.2198952879581152,0.3529411764705882,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L22, recall: switches lost beyond random",0.33544303797468356,0.25,0.41781077489265994,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L26, recall: switches lost beyond random",0.53,0.4152502398464982,0.65001213592233,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L30, recall: switches lost beyond random",0.5888888888888889,0.4854333238149628,0.7011494252873564,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L34, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L38, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L42, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L46, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L50, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

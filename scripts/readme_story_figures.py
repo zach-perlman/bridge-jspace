@@ -3817,6 +3817,10 @@ def main(argv: list[str] | None = None) -> None:
     probe_rows()
     batch47_numbers()
     card_numbers()
+    if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/ledger/, their rows into data.csv
+        from scripts import ledger_figures as LF
+
+        LF.build_all(plt)
     check_scorecard_keys(S.OUT / "scorecard.csv")
     check_scorecard_keys(S.OUT / "claims_scorecard.csv")
     S.write_data()

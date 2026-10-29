@@ -8,6 +8,7 @@ well formed:
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
+- every card has one figure, after its rule and before its result, with an italic caption and its file present;
 - the coverage table equals scripts/ledger_coverage.py's output (the committed matrix).
 
 Exit 1 with one line per problem.
@@ -59,6 +60,25 @@ def source_problems(text: str, repo: Path = REPO) -> list[str]:
     return out
 
 
+def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
+    """A card's one figure (Dan 01:15): after its rule and before its result, its file present (the link is written
+    from docs/depth/), an italic caption on the next line."""
+    lines = body.splitlines()
+    imgs = [i for i, line in enumerate(lines) if re.match(r"^!\[[^\]]+\]\([^)]+\)", line)]
+    if len(imgs) != 1:
+        return [f"{len(imgs)} figures in: {head}"]
+    i = imgs[0]
+    rule = next(k for k, line in enumerate(lines) if line.startswith("- **Rule, fixed in advance.**"))
+    result = next(k for k, line in enumerate(lines) if line.startswith("- **Result.**"))
+    out = [] if rule < i < result else [f"the figure is not between the rule and the result in: {head}"]
+    target = re.match(r"^!\[[^\]]+\]\(([^)]+)\)", lines[i]).group(1)  # type: ignore[union-attr]
+    if not (LEDGER.parent / target).resolve().exists():
+        out.append(f"figure file missing: {target}")
+    if i + 1 >= len(lines) or not re.fullmatch(r"\*[^*].*\*", lines[i + 1].strip()):
+        out.append(f"no italic caption under the figure in: {head}")
+    return out
+
+
 def problems(text: str, repo: Path = REPO) -> list[str]:
     out = [f"missing path: {p}" for p in cited_paths(text) if not (repo / p).exists()]
     anchors = []
@@ -72,6 +92,8 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
         found = re.findall(r"^- \*\*(" + "|".join(re.escape(f) for f in want) + r")\.\*\*", body, re.M)
         if found != list(want):
             out.append(f"fields {found} in: {head}")
+        if want is FIELDS:
+            out += figure_problems(head, body, repo)
     out += [f"duplicate anchor: {a}" for a in sorted({a for a in anchors if anchors.count(a) > 1})]
     links = set(re.findall(r"\]\(#([a-z0-9-]+)\)", text))
     out += [f"link to a missing anchor: #{a}" for a in sorted(links - set(anchors))]
