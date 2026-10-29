@@ -1,0 +1,4881 @@
+{
+ "runs_a": [
+  "x48_2a_27b"
+ ],
+ "runs_b": [
+  "x48_2b_27b"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule; rules first scored in results/x48_enrich/x48_2-20261028T113111Z; the batch labels cover the given runs only, not re-scored",
+ "verdict": {
+  "A": "does not hold",
+  "B": "does not hold"
+ },
+ "A": [
+  {
+   "run": "x48_2a_27b",
+   "target": "qwen3.6-27b",
+   "layer": 32,
+   "status": "tested",
+   "branch": "bridge",
+   "branch_why": "the bridge token's animals probe reads the attribute (held-out >= 2x chance) at layers [32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 63]",
+   "holds": false,
+   "label": "does not hold at the bridge token",
+   "why": "the bridge token; layers in the rule [36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 63]: L36 fails; L38 fails; L40 fails; L42 fails; L44 fails; L46 fails; L48 fails; L50 fails; L52 fails; L54 fails; L56 fails; L58 fails; L60 fails; L62 fails; L63 fails",
+   "layers_in_rule": [
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62,
+    63
+   ],
+   "tables": {
+    "bridge": {
+     "32": {
+      "readable": true,
+      "in_rule": false,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 68,
+       "entities": 30,
+       "whole": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "no_jpp": [
+        0.6402749756721844,
+        0.6054398432868948,
+        0.6733007807123694
+       ],
+       "no_rand": [
+        0.8144272273934849,
+        0.7898344461484671,
+        0.8388123558062202
+       ],
+       "diff": [
+        0.17415225172130055,
+        0.14530056607617786,
+        0.20239682183802513
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "34": {
+      "readable": true,
+      "in_rule": false,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 68,
+       "entities": 30,
+       "whole": [
+        0.9890789270707998,
+        0.9831069681274394,
+        0.9940132834531875
+       ],
+       "no_jpp": [
+        0.5748124331356725,
+        0.522115454337266,
+        0.6271742770079288
+       ],
+       "no_rand": [
+        0.8023433683673707,
+        0.7690958656669267,
+        0.8348191183157302
+       ],
+       "diff": [
+        0.2275309352316982,
+        0.17576733314781207,
+        0.2815014430066173
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "36": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 67,
+       "entities": 30,
+       "whole": [
+        0.9658078533431551,
+        0.9506941972991605,
+        0.9793160735171829
+       ],
+       "no_jpp": [
+        0.5653521408508142,
+        0.5061460980895146,
+        0.6198169734131067
+       ],
+       "no_rand": [
+        0.7914619358536531,
+        0.764445748131446,
+        0.8207224636341321
+       ],
+       "diff": [
+        0.2261097950028389,
+        0.17556233776191926,
+        0.281903423600013
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "38": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 66,
+       "entities": 30,
+       "whole": [
+        0.9653738613363363,
+        0.9508737292580176,
+        0.9783964180029764
+       ],
+       "no_jpp": [
+        0.5607220821964107,
+        0.5083441107659279,
+        0.6091054883081486
+       ],
+       "no_rand": [
+        0.7954693596857362,
+        0.76803451224221,
+        0.8250834479452441
+       ],
+       "diff": [
+        0.23474727748932545,
+        0.1893901896888636,
+        0.2838291871850693
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "40": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 68,
+       "entities": 30,
+       "whole": [
+        0.960147538300002,
+        0.9444205871802939,
+        0.9744436833149002
+       ],
+       "no_jpp": [
+        0.5592907212453687,
+        0.5058695964344532,
+        0.6104911994288308
+       ],
+       "no_rand": [
+        0.805006225760551,
+        0.7760422443186471,
+        0.8360085091763281
+       ],
+       "diff": [
+        0.24571550451518231,
+        0.19284434562641367,
+        0.3040868567627604
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "42": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 67,
+       "entities": 30,
+       "whole": [
+        0.9578793124867424,
+        0.94089553089898,
+        0.9729696392901239
+       ],
+       "no_jpp": [
+        0.5626130268175719,
+        0.5142613191092067,
+        0.608814170558488
+       ],
+       "no_rand": [
+        0.8158400315450688,
+        0.7880539195476904,
+        0.842893025738823
+       ],
+       "diff": [
+        0.25322700472749693,
+        0.2071434950303126,
+        0.30501042899589187
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "44": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 69,
+       "entities": 30,
+       "whole": [
+        0.9351889748333404,
+        0.8972882571185418,
+        0.9621585429407398
+       ],
+       "no_jpp": [
+        0.534586094375329,
+        0.4873101950357116,
+        0.5796180250265643
+       ],
+       "no_rand": [
+        0.8151524427513087,
+        0.7771722609375924,
+        0.848943972399245
+       ],
+       "diff": [
+        0.2805663483759797,
+        0.2406509991781488,
+        0.3253205059880659
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "46": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 67,
+       "entities": 30,
+       "whole": [
+        0.9545742434200886,
+        0.9343624534000565,
+        0.9734649694452113
+       ],
+       "no_jpp": [
+        0.5639401919725937,
+        0.5107462148787746,
+        0.6153337659342327
+       ],
+       "no_rand": [
+        0.8461935289470188,
+        0.8211003405832066,
+        0.870248999475212
+       ],
+       "diff": [
+        0.2822533369744251,
+        0.22957729668411075,
+        0.33897785676647896
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "48": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 69,
+       "entities": 30,
+       "whole": [
+        0.935424619445036,
+        0.9019263007264475,
+        0.9631515394778021
+       ],
+       "no_jpp": [
+        0.5085004646187251,
+        0.4594107130841142,
+        0.5615241586747198
+       ],
+       "no_rand": [
+        0.8393357637418676,
+        0.8048719274214126,
+        0.8709290233904508
+       ],
+       "diff": [
+        0.33083529912314247,
+        0.28400649475131456,
+        0.3777746698828518
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "50": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 69,
+       "entities": 30,
+       "whole": [
+        0.9535375681973154,
+        0.9353220807731102,
+        0.9701750423971355
+       ],
+       "no_jpp": [
+        0.4617579228262695,
+        0.4058472882698584,
+        0.5168092813727095
+       ],
+       "no_rand": [
+        0.8603051312963006,
+        0.8248286998025437,
+        0.8922597998603379
+       ],
+       "diff": [
+        0.3985472084700311,
+        0.3320786318824204,
+        0.46468353987637073
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "52": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.9725188875685463,
+        0.9625279546284413,
+        0.9814286935462109
+       ],
+       "no_jpp": [
+        0.3572613600171755,
+        0.3100876937854646,
+        0.40579616010996084
+       ],
+       "no_rand": [
+        0.9172736386511525,
+        0.9019344835924653,
+        0.9322321029319238
+       ],
+       "diff": [
+        0.560012278633977,
+        0.5131156321010866,
+        0.6062716856660398
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "54": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.9771383807320759,
+        0.970712889973679,
+        0.9839649938614802
+       ],
+       "no_jpp": [
+        0.34476431518211603,
+        0.29800962082578913,
+        0.3917506670632293
+       ],
+       "no_rand": [
+        0.9348431542625784,
+        0.9200866252507612,
+        0.9491288477451315
+       ],
+       "diff": [
+        0.5900788390804623,
+        0.5462876807689423,
+        0.6363983612912061
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "56": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.975617238482159,
+        0.9687246665757012,
+        0.9823135632192772
+       ],
+       "no_jpp": [
+        0.3318378626833856,
+        0.2851423882276261,
+        0.3814608129825393
+       ],
+       "no_rand": [
+        0.936136208084055,
+        0.9232898891510243,
+        0.9488319221282004
+       ],
+       "diff": [
+        0.6042983454006694,
+        0.5566700935854969,
+        0.6495346706719344
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "58": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.9751162057766534,
+        0.9672174814924935,
+        0.9825920948638761
+       ],
+       "no_jpp": [
+        0.3352270878753576,
+        0.2878761147117422,
+        0.3868909473059431
+       ],
+       "no_rand": [
+        0.9308110738544412,
+        0.9170716120368383,
+        0.9445172933960145
+       ],
+       "diff": [
+        0.5955839859790836,
+        0.5477926839890155,
+        0.6407145420613236
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "60": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.9731092277433256,
+        0.9634000871600682,
+        0.9823230927422835
+       ],
+       "no_jpp": [
+        0.3348248051432559,
+        0.28251700322704987,
+        0.3914960904878788
+       ],
+       "no_rand": [
+        0.9252489305233448,
+        0.9099463860473294,
+        0.940633622450023
+       ],
+       "diff": [
+        0.5904241253800888,
+        0.5392262360116286,
+        0.6379840860525108
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "62": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 69,
+       "entities": 30,
+       "whole": [
+        0.9722453401366913,
+        0.961890269281543,
+        0.9821904855121778
+       ],
+       "no_jpp": [
+        0.33146564921219074,
+        0.2810889423262907,
+        0.38578617554585404
+       ],
+       "no_rand": [
+        0.9251955629484475,
+        0.9095823010422692,
+        0.940129251908532
+       ],
+       "diff": [
+        0.5937299137362568,
+        0.5434878086418984,
+        0.6421819982559798
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "63": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.9715882506667077,
+        0.9603293318664133,
+        0.9822382697159828
+       ],
+       "no_jpp": [
+        0.3258008795767826,
+        0.2807521618949007,
+        0.3742365171627121
+       ],
+       "no_rand": [
+        0.9219063025904092,
+        0.9017619690766032,
+        0.9415961678010336
+       ],
+       "diff": [
+        0.5961054230136266,
+        0.5526614686562765,
+        0.6382409520049075
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     }
+    },
+    "last": {
+     "32": {
+      "readable": false,
+      "in_rule": false,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 49,
+       "entities": 27,
+       "whole": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "no_jpp": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "no_rand": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "diff": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": false
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "34": {
+      "readable": true,
+      "in_rule": false,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 65,
+       "entities": 29,
+       "whole": [
+        0.36360905250768205,
+        0.29114780365291776,
+        0.44341561371713833
+       ],
+       "no_jpp": [
+        0.1575541454911822,
+        0.1084902959720653,
+        0.20323830131641604
+       ],
+       "no_rand": [
+        0.31411258894369115,
+        0.2452157403369887,
+        0.3893077558631973
+       ],
+       "diff": [
+        0.15655844345250894,
+        0.10441413547309185,
+        0.2183880138026471
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "36": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.49948325121363696,
+        0.40612148008608107,
+        0.5887467647872773
+       ],
+       "no_jpp": [
+        0.3178480573029688,
+        0.2468335562590654,
+        0.3818293082607047
+       ],
+       "no_rand": [
+        0.45043481947766023,
+        0.3721660115720067,
+        0.5227913017731607
+       ],
+       "diff": [
+        0.13258676217469145,
+        0.09979429119177437,
+        0.17023655686176575
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "38": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5099437880706028,
+        0.4158730813468445,
+        0.5987762444597386
+       ],
+       "no_jpp": [
+        0.3157061339166157,
+        0.2421056424118678,
+        0.38141360819913933
+       ],
+       "no_rand": [
+        0.45520945251046335,
+        0.3782133637884805,
+        0.5257878608178969
+       ],
+       "diff": [
+        0.13950331859384763,
+        0.10572915552492224,
+        0.17807372212847206
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "40": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5282624611993154,
+        0.4159583195706957,
+        0.6282522774482832
+       ],
+       "no_jpp": [
+        0.295969975225314,
+        0.21614822440283138,
+        0.3699583674552907
+       ],
+       "no_rand": [
+        0.46593615473462263,
+        0.3717209230183736,
+        0.548350553040839
+       ],
+       "diff": [
+        0.16996617950930865,
+        0.1221119381493356,
+        0.22420584874607802
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "42": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5377895559025511,
+        0.4246149337003478,
+        0.6379188144838522
+       ],
+       "no_jpp": [
+        0.30721041516988373,
+        0.22613330374461366,
+        0.38222844025125824
+       ],
+       "no_rand": [
+        0.4868058760237115,
+        0.38752004998989337,
+        0.5752676295099287
+       ],
+       "diff": [
+        0.17959546085382777,
+        0.12901038614212154,
+        0.2359575541925518
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "44": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5354885087988825,
+        0.420993722159353,
+        0.6359224570430212
+       ],
+       "no_jpp": [
+        0.31013952989292837,
+        0.225628963537399,
+        0.38694303402336694
+       ],
+       "no_rand": [
+        0.48879078318666436,
+        0.3836961888957579,
+        0.5814624316184249
+       ],
+       "diff": [
+        0.178651253293736,
+        0.12804306529754467,
+        0.23433081328081648
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "46": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5361686119985678,
+        0.41982170179905426,
+        0.6379224803335006
+       ],
+       "no_jpp": [
+        0.31769796444826315,
+        0.23054292850296995,
+        0.39882222281085616
+       ],
+       "no_rand": [
+        0.4935164354050396,
+        0.3841092045536339,
+        0.5931064412835657
+       ],
+       "diff": [
+        0.17581847095677644,
+        0.12562199645279395,
+        0.23077408842983493
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "48": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.553255630786159,
+        0.4357662581551907,
+        0.6565967798881597
+       ],
+       "no_jpp": [
+        0.32155533605558245,
+        0.23224009440269575,
+        0.40731962334926936
+       ],
+       "no_rand": [
+        0.5078152478594035,
+        0.39579281443529574,
+        0.6101831300268616
+       ],
+       "diff": [
+        0.186259911803821,
+        0.134198770390662,
+        0.24035788334579766
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "50": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.5700030937506355,
+        0.45664974873284,
+        0.6704131849863971
+       ],
+       "no_jpp": [
+        0.3267805623930788,
+        0.23965641042267138,
+        0.4117248023571299
+       ],
+       "no_rand": [
+        0.5195445459391054,
+        0.412187563849109,
+        0.6161373370630373
+       ],
+       "diff": [
+        0.19276398354602658,
+        0.14057295549307666,
+        0.2470200656537186
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": false,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "52": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.6003132189771669,
+        0.4909781161279497,
+        0.6987671510605339
+       ],
+       "no_jpp": [
+        0.3183653033872326,
+        0.22840267956331398,
+        0.40776513902863437
+       ],
+       "no_rand": [
+        0.5464729644682081,
+        0.44028864235332044,
+        0.6438486368193335
+       ],
+       "diff": [
+        0.22810766108097552,
+        0.17501482778166047,
+        0.2841083763333824
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "54": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.6087148144625782,
+        0.501889580949443,
+        0.704750447758886
+       ],
+       "no_jpp": [
+        0.3239828717907376,
+        0.23255291120828644,
+        0.41510848303564596
+       ],
+       "no_rand": [
+        0.5524835938256758,
+        0.4482795716065866,
+        0.6487671958870598
+       ],
+       "diff": [
+        0.2285007220349382,
+        0.17727857353467444,
+        0.28320454469338574
+       ]
+      },
+      "rule": {
+       "holds": false,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": false,
+        "no_jpp <= 0.3": false,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "56": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.7066493230719367,
+        0.6271420267305048,
+        0.782590122448559
+       ],
+       "no_jpp": [
+        0.28757173212841586,
+        0.20763240786736406,
+        0.3720910482547088
+       ],
+       "no_rand": [
+        0.6891678365705971,
+        0.6088224181627546,
+        0.7673764219249962
+       ],
+       "diff": [
+        0.40159610444218125,
+        0.33603536724217564,
+        0.4728617928656164
+       ]
+      },
+      "rule": {
+       "holds": true,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "58": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.7081636544978694,
+        0.6290822793183588,
+        0.784201611292405
+       ],
+       "no_jpp": [
+        0.2843379573444501,
+        0.20359485404076147,
+        0.3717143677557107
+       ],
+       "no_rand": [
+        0.692597625638423,
+        0.6135279505501683,
+        0.7710678800747902
+       ],
+       "diff": [
+        0.40825966829397287,
+        0.3417840997439933,
+        0.47917180067157705
+       ]
+      },
+      "rule": {
+       "holds": true,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "60": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.7079227523974991,
+        0.6274948539786597,
+        0.7850956784677482
+       ],
+       "no_jpp": [
+        0.2806371966141802,
+        0.1951351215087193,
+        0.3738574948090742
+       ],
+       "no_rand": [
+        0.6931724174033832,
+        0.6125902628038578,
+        0.7744181141292821
+       ],
+       "diff": [
+        0.412535220789203,
+        0.34242572525811754,
+        0.487182639759663
+       ]
+      },
+      "rule": {
+       "holds": true,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "62": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.7138318107585412,
+        0.6328832142107689,
+        0.7910236183403732
+       ],
+       "no_jpp": [
+        0.29458680805537446,
+        0.20637629093208948,
+        0.3923992780895084
+       ],
+       "no_rand": [
+        0.7007754381053811,
+        0.6201304588963976,
+        0.7815000481243528
+       ],
+       "diff": [
+        0.40618863005000666,
+        0.3349634949399732,
+        0.4805743505770438
+       ]
+      },
+      "rule": {
+       "holds": true,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     },
+     "63": {
+      "readable": true,
+      "in_rule": true,
+      "rule_domain": {
+       "n": 70,
+       "n_read": 70,
+       "entities": 30,
+       "whole": [
+        0.7105364753425,
+        0.6312566699145526,
+        0.7871959995073526
+       ],
+       "no_jpp": [
+        0.2927983920777791,
+        0.20546834853071902,
+        0.38873931742525525
+       ],
+       "no_rand": [
+        0.6974020417373618,
+        0.6178553874756701,
+        0.7770971943026029
+       ],
+       "diff": [
+        0.4046036496595827,
+        0.3337762961630678,
+        0.4791947504218462
+       ]
+      },
+      "rule": {
+       "holds": true,
+       "checks": {
+        "whole >= 0.6": true,
+        "no_rand >= 0.6": true,
+        "no_jpp <= 0.3": true,
+        "CI(no_rand - no_jpp) > 0": true
+       }
+      },
+      "by_domain": {
+       "elements": {
+        "n": 69,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       },
+       "greek": {
+        "n": 61,
+        "n_read": 0,
+        "entities": 0,
+        "whole": [
+         null,
+         null,
+         null
+        ],
+        "no_jpp": [
+         null,
+         null,
+         null
+        ],
+        "no_rand": [
+         null,
+         null,
+         null
+        ],
+        "diff": [
+         null,
+         null,
+         null
+        ]
+       }
+      }
+     }
+    }
+   },
+   "accuracy": [
+    {
+     "position": "bridge",
+     "layer": 32,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.755,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "bridge",
+     "layer": 32,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 32,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 34,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.745,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "bridge",
+     "layer": 34,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 34,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 36,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.775,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "bridge",
+     "layer": 36,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 36,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 38,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.775,
+     "readable": true,
+     "penalty": 0.001
+    },
+    {
+     "position": "bridge",
+     "layer": 38,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 38,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 40,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.775,
+     "readable": true,
+     "penalty": 0.001
+    },
+    {
+     "position": "bridge",
+     "layer": 40,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 40,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 42,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.785,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "bridge",
+     "layer": 42,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 42,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 44,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.79,
+     "readable": true,
+     "penalty": 0.001
+    },
+    {
+     "position": "bridge",
+     "layer": 44,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 44,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 46,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.77,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "bridge",
+     "layer": 46,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 46,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 48,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.805,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "bridge",
+     "layer": 48,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 48,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 50,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.69,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "bridge",
+     "layer": 50,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 50,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 52,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.865,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "bridge",
+     "layer": 52,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 52,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 54,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.855,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "bridge",
+     "layer": 54,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 54,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 56,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.865,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "bridge",
+     "layer": 56,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 56,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 58,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.865,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "bridge",
+     "layer": 58,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 58,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 60,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.84,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "bridge",
+     "layer": 60,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 60,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 62,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.825,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "bridge",
+     "layer": 62,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 62,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 63,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.845,
+     "readable": true,
+     "penalty": 0.001
+    },
+    {
+     "position": "bridge",
+     "layer": 63,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "bridge",
+     "layer": 63,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 32,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.44,
+     "readable": false,
+     "penalty": 0.01
+    },
+    {
+     "position": "last",
+     "layer": 32,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 32,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 34,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.605,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 34,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 34,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 36,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.805,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 36,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 36,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 38,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.81,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 38,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 38,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 40,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.895,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 40,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 40,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 42,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.93,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 42,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 42,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 44,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.93,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 44,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 44,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 46,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.93,
+     "readable": true,
+     "penalty": 1.0
+    },
+    {
+     "position": "last",
+     "layer": 46,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 46,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 48,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.925,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 48,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 48,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 50,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.95,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 50,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 50,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 52,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.95,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 52,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 52,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 54,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.95,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 54,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 54,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 56,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.975,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "last",
+     "layer": 56,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 56,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 58,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.99,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 58,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 58,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 60,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.99,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 60,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 60,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 62,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.995,
+     "readable": true,
+     "penalty": 0.1
+    },
+    {
+     "position": "last",
+     "layer": 62,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 62,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 63,
+     "domain": "animals",
+     "n": 200,
+     "entities": 32,
+     "classes": 4,
+     "one_entity_per_class": false,
+     "chance": 0.25,
+     "held_out": 0.995,
+     "readable": true,
+     "penalty": 0.01
+    },
+    {
+     "position": "last",
+     "layer": 63,
+     "domain": "elements",
+     "n": 200,
+     "entities": 6,
+     "classes": 6,
+     "one_entity_per_class": true,
+     "chance": 0.1667,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    },
+    {
+     "position": "last",
+     "layer": 63,
+     "domain": "greek",
+     "n": 200,
+     "entities": 8,
+     "classes": 8,
+     "one_entity_per_class": true,
+     "chance": 0.125,
+     "held_out": 0.0,
+     "readable": false,
+     "penalty": 100.0
+    }
+   ],
+   "plan": {
+    "main_run": "x0_necessity_27b_chat",
+    "set": "d1_topics_v3",
+    "layer": 32,
+    "items": 200,
+    "entities": 44,
+    "domains": {
+     "animals": 70,
+     "elements": 69,
+     "greek": 61
+    },
+    "person_tokens": {
+     "1": 184,
+     "2": 16
+    },
+    "training_scenes": {
+     "animals": {
+      "scenes": 200,
+      "entities": 32,
+      "classes": [
+       "2",
+       "4",
+       "6",
+       "8"
+      ]
+     },
+     "elements": {
+      "scenes": 200,
+      "entities": 6,
+      "classes": [
+       "1",
+       "2",
+       "3",
+       "6",
+       "7",
+       "8"
+      ]
+     },
+     "greek": {
+      "scenes": 200,
+      "entities": 8,
+      "classes": [
+       "1",
+       "2",
+       "3",
+       "4",
+       "5",
+       "7",
+       "8",
+       "9"
+      ]
+     }
+    },
+    "probe_layers": [
+     32,
+     34,
+     36,
+     38,
+     40,
+     42,
+     44,
+     46,
+     48,
+     50,
+     52,
+     54,
+     56,
+     58,
+     60,
+     62,
+     63
+    ]
+   },
+   "checks": {
+    "lookup whole vs the main run's stored": {
+     "n": 200,
+     "agree": 200,
+     "rerun": 86,
+     "stored": 86
+    },
+    "lookup no_jpp vs the main run's stored": {
+     "n": 200,
+     "agree": 199,
+     "rerun": 70,
+     "stored": 71
+    },
+    "recall whole vs the main run's stored": {
+     "n": 200,
+     "agree": 200,
+     "rerun": 150,
+     "stored": 150
+    },
+    "recall no_jpp vs the main run's stored": {
+     "n": 200,
+     "agree": 197,
+     "rerun": 32,
+     "stored": 35
+    }
+   }
+  }
+ ],
+ "B": [
+  {
+   "run": "x48_2b_27b",
+   "target": "qwen3.6-27b",
+   "layer": 32,
+   "status": "tested",
+   "holds": false,
+   "checks": {
+    "recall falls >= 0.4 (bridge_late)": false,
+    "lookup within 0.1 (bridge_late)": true,
+    "recall within 0.1 (person_late)": true,
+    "lookup within 0.1 (person_late)": true,
+    "recall within 0.1 (bridge_early)": false,
+    "lookup within 0.1 (bridge_early)": false
+   },
+   "why": "recall falls >= 0.4 (bridge_late): no, lookup within 0.1 (bridge_late): yes, recall within 0.1 (person_late): yes, lookup within 0.1 (person_late): yes, recall within 0.1 (bridge_early): no, lookup within 0.1 (bridge_early): no; the recall survives: the attribute is fetched at the last token (design A at the last token covers it)",
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 44,
+     "hits": {
+      "none": 200,
+      "bridge_late": 200,
+      "person_late": 200,
+      "bridge_early": 137
+     },
+     "accuracy": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "bridge_late": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "person_late": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "bridge_early": [
+       0.685,
+       0.6080402010050251,
+       0.7634435086604163
+      ]
+     },
+     "drop": {
+      "bridge_late": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person_late": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "bridge_early": [
+       0.315,
+       0.23655649133958367,
+       0.3919597989949749
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 44,
+     "hits": {
+      "none": 200,
+      "bridge_late": 194,
+      "person_late": 200,
+      "bridge_early": 144
+     },
+     "accuracy": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "bridge_late": [
+       0.97,
+       0.941960152116402,
+       0.993422127622979
+      ],
+      "person_late": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "bridge_early": [
+       0.72,
+       0.6012648520618157,
+       0.8097425470905225
+      ]
+     },
+     "drop": {
+      "bridge_late": [
+       0.03,
+       0.00657787237702095,
+       0.05803984788359784
+      ],
+      "person_late": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "bridge_early": [
+       0.28,
+       0.1902574529094774,
+       0.3987351479381844
+      ]
+     }
+    }
+   },
+   "module_counts": {
+    "bridge_late": 31,
+    "person_late": 31,
+    "bridge_early": 17
+   },
+   "hooked": {
+    "module": {
+     "mlp": 64
+    },
+    "mlp_class": [
+     "Qwen3_5MLP"
+    ],
+    "hooked_class": [
+     "Qwen3_5MLP"
+    ],
+    "block_kinds": {
+     "linear_attention": 48,
+     "full_attention": 16
+    },
+    "kinds": [
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention",
+     "linear_attention",
+     "linear_attention",
+     "linear_attention",
+     "full_attention"
+    ]
+   },
+   "plan": {
+    "main_run": "x0_necessity_27b_chat",
+    "set": "d1_topics_v3",
+    "layer": 32,
+    "items": 200,
+    "entities": 44,
+    "domains": {
+     "animals": 70,
+     "elements": 69,
+     "greek": 61
+    },
+    "person_tokens": {
+     "1": 184,
+     "2": 16
+    },
+    "training_scenes": {
+     "animals": {
+      "scenes": 200,
+      "entities": 32,
+      "classes": [
+       "2",
+       "4",
+       "6",
+       "8"
+      ]
+     },
+     "elements": {
+      "scenes": 200,
+      "entities": 6,
+      "classes": [
+       "1",
+       "2",
+       "3",
+       "6",
+       "7",
+       "8"
+      ]
+     },
+     "greek": {
+      "scenes": 200,
+      "entities": 8,
+      "classes": [
+       "1",
+       "2",
+       "3",
+       "4",
+       "5",
+       "7",
+       "8",
+       "9"
+      ]
+     }
+    },
+    "arm_layers": {
+     "bridge_late": [
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+     ],
+     "person_late": [
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+     ],
+     "bridge_early": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+     ]
+    }
+   }
+  }
+ ]
+}
