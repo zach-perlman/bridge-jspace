@@ -1,0 +1,39 @@
+id: x53_7_probe_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 6): 53.7's address probe, adapted design: lookup-only gate; the recall is not part of this test, on Qwen3.5-122B-A10B (FP8) at L33: the scenes rendered as Python code and as tool output; the gate per format first, then the states at the bridge word, then the verdict; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_7.py probe-run --name qwen35_122b_x53_7_probe --formats code,tool &&
+  uv run python scripts/x53_7.py probe-verdict --names qwen35_122b_x53_7_probe_code,qwen35_122b_x53_7_probe_tool
+question: >-
+  On the 122B, with our locker scenes rendered as Python code and as a tool's output, does the bridge word at L33 still
+  hold which locker sentence holds the item's locker (and only weakly the answer digit), as in prose?
+why_it_matters: >-
+  Dan 18:20 item 6 ("53.7 code probe (lookup-only gate)"): the address in code and tool output was run on the 9B and
+  27B; the 122B is the scale point. Tool output run beside code (same job, same rule).
+hypotheses:
+  none: "No prediction (coverage_122b_1820): coverage run on an already-scored rule."
+decision_rule: >-
+  Verbatim from jobs/c3/x53_7_probe_27b_l.yaml. The address probe's own: none, descriptive (x0_probe v4, added after
+  the data, Dan 24 Oct). The reading stated beside, verbatim: "(a) high in locker-before and at chance in locker-after
+  -> the answer value is stored at the word, not in J++ form; (b) high in locker-before with (a) at chance -> the word
+  stores an address (a lookback-style pointer). In locker-after scenes the locker sentence follows the word, so (a) and
+  (b) cannot be read there from the locker sentence itself: that stratum is the control by construction." Probes,
+  folds, baselines and bootstrap as x0_probe (one-hot ridge on standardised states, penalty by inner 4-fold CV; (a),
+  (b) 5 folds by bridge entity, (c) by item; majority, chance, structure and layout baselines; cluster bootstrap over
+  entities, 10,000, seed 0), on every scene of the run that aligns. Gate (53.7, Dan 12:10, decisions_1210; for the
+  122B Dan 18:20 "lookup-only gate"): adapted design: lookup-only gate; the recall is not part of this test. Per format,
+  the share of the probe's own scenes where the lookup says and reads O and S right (X0's competence) >= 0.80, before
+  any state is kept; a failed format is 'not tested (gate x < 0.80)': no states, no probe. Never lowered.
+controls:
+- "the locker-after stratum (the control by construction)"
+- "the bridge identity probe (positive control)"
+- "majority, chance, structure (pick index) and layout baselines, cross-validated"
+- "the prose v4 run of the 122B beside (qwen35_122b_x0_probe_v4), descriptive"
+n: "d1_topics_v4 (1,500 scenes): code keeps 682 (Greek 500, animals 182; 29 bridge entities), tool output all 1,500 (plan on the 122B tokenizer, scripts/x53_7.py plan)"
+seeds: [0]
+notes: "Coverage, not hand-checked (Dan 18:20); UNVERIFIED; README untouched. Caveats: FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. No code change (x0_probe already knows the 122B). Cost: the 27B's both formats 0.6 h on 1 GPU (x53_7_probe_27b_l, 36 min); the 122B ~0.5 h wall on 2."
