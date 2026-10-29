@@ -1285,6 +1285,9 @@ LASTCONFLICT = R / "x53_lastconflict" / "x53_lastconflict-20261029T090326Z" / "v
 # Dan 11:25 (critic_1125): at the answer layer minus 1 / 2 the lens is close to the output and the letter-token dictionary
 # decides "through" vs "outside": those cells are "uninformative near the output (dictionary)"; read-peak cells keep labels
 UNINFORMATIVE_BELOW_ANSWER = (1, 2)
+# Dan 11:55 (decisions_1155): 53.3's digit lookup cells on Muse (L33 of 52) and Lightning (L43 of 52) keep their own
+# labels ("the last layers" does not hold there)
+LABEL_KEPT_53_3 = {("muse-glimmer-30b", "lookup", 33), ("nemotron-3.5-lightning", "lookup", 43)}
 
 
 def last_conflict(plt) -> str:
@@ -1292,7 +1295,7 @@ def last_conflict(plt) -> str:
     without the lens part of the last token's change beyond a random part (bars 0.10 and 0.30), and the rest alone's
     switches as a share of the whole change's (bar 0.7); the rule's label at the right; Lightning hollow. A cell one or
     two layers below the answer layer (and not the read peak) is grey and labelled uninformative near the output
-    (dictionary) (Dan, 11:25), its numbers descriptive."""
+    (dictionary) (Dan, 11:25), its numbers descriptive, except Muse's and Lightning's digit lookups (Dan, 11:55)."""
     v = load(LASTCONFLICT)
     by = {m["target"]: m for m in v["models"]}
     rows = []
@@ -1307,7 +1310,8 @@ def last_conflict(plt) -> str:
     labels = [f"{SHORT[t]}{' ○' if t == LT else ''} {c['reader']}, L{c['layer']}" for t, c in rows]
     for i, (t, c) in enumerate(rows):
         lay = by[t]["layers"]["readers"][c["reader"]]
-        uninformative = c["layer"] != lay["peak"] and lay["answer"] - c["layer"] in UNINFORMATIVE_BELOW_ANSWER
+        uninformative = (c["layer"] != lay["peak"] and lay["answer"] - c["layer"] in UNINFORMATIVE_BELOW_ANSWER
+                         and (t, c["reader"], c["layer"]) not in LABEL_KEPT_53_3)
         col = NULL if uninformative else LOOKUP if c["reader"] == "lookup" else INK
         whisker(axes[0], -i, c["excess"], col, hollow=t == LT)
         whisker(axes[1], -i, c["rest_share"], col, hollow=t == LT)
