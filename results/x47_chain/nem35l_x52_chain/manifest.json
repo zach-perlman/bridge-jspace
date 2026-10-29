@@ -1,0 +1,89 @@
+{
+  "exp": "x47_chain",
+  "run": "nem35l_x52_chain",
+  "why": "Batch 52 C coverage: 47.14 on Lightning; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14; its main-test gate chosen after the 60-scene pre-check was seen: hollow)",
+  "test": "47.14",
+  "spec": "jobs/c3/batch47.yaml (47.14)",
+  "question": "Q47.14 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-29T01:54:12Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a2feb63db58cf95ea9199bf5b06afe4013a9eae8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "layer": 14,
+  "read": {
+    "locker": "X0's chat read (the top token after a digit's space token appended to 'Answer:')",
+    "hall": "the top token right after 'Answer:' (X0's word read; the answer token ' B')"
+  },
+  "hall_instruction": "Answer with a single letter and nothing else.",
+  "gate": 0.8,
+  "n": {
+    "candidates": 500,
+    "items": 300
+  },
+  "seeds": {
+    "scenes": 4714,
+    "split": 4715,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the key token (the bridge's locker digit)",
+    "no_U": "the whole change without its part in U_num (the hall-slot means refit at the key token)",
+    "no_U_rand": "the whole change without a random part of U_num's share",
+    "keep_U": "only the U_num part of the change",
+    "keep_U_rand": "only a random part of U_num's share",
+    "no_jpp": "the whole change without its J++ part (k = 25, signed; letter and digit atoms)",
+    "no_jpp_rand": "the whole change without a random part of J++'s share"
+  },
+  "k": 25,
+  "omp": "signed",
+  "jpp_atoms": "the layer's J++ lens over the letter tokens and the ten digit tokens",
+  "key_token": "the digit token of the bridge's locker sentence (one token, the same index in O and S)",
+  "U_num": "x0_massmean's layout-free hall-slot class means at the key token, fit on the fit half (O and S states, labelled by the hall slot of the bridge number's sentence; layout group = the locker slot); rank 2",
+  "split": "by bridge entity (seed 4715), the test half's entities unseen by the fit",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.14 answer",
+  "gate_result": {
+    "cases": 500,
+    "org_read_accuracy": {
+      "PP": 0.988,
+      "PPP": 0.736
+    },
+    "org_said_accuracy": {
+      "PP": 0.986,
+      "PPP": 0.732
+    },
+    "gate": 0.8,
+    "pass": false,
+    "eligible": 263
+  },
+  "tested": false
+}
