@@ -240,20 +240,12 @@ def x53_7_cp_items(tok, target: str) -> tuple[list[dict], dict]:
     return F.cp_monitor_items(tok, target)
 
 
-def x53_7_eligible_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
-    """53.7's adapted design (Dan 12:10): the lookup-eligible scenes of the main test's set in the format
-    (scripts/x53_7.py eligible_items; only within its monitor-run)."""
-    from scripts import x53_7 as F
-
-    return F.eligible_items(tok, target, fmt)
-
-
+# 53.7's lookup-only datasets (code_l, tool_l) are not here: their items come from the run's own gate, so
+# scripts/x53_7.py monitor-run passes them to stage_run (prebuilt)
 BUILD = {"main": lambda tok, target: main_items(tok, target), "json": lambda tok, target: json_items(tok),
          "code": lambda tok, target: x53_7_items(tok, target, "code"),
          "tool": lambda tok, target: x53_7_items(tok, target, "tool"),
-         "cp_ch2": lambda tok, target: x53_7_cp_items(tok, target),
-         "code_l": lambda tok, target: x53_7_eligible_items(tok, target, "code"),
-         "tool_l": lambda tok, target: x53_7_eligible_items(tok, target, "tool")}  # fmt: skip
+         "cp_ch2": lambda tok, target: x53_7_cp_items(tok, target)}  # fmt: skip
 
 
 def layers_for(n_layers: int) -> tuple[int, ...]:
@@ -422,9 +414,11 @@ def manifest(name: str, target: str, extra: dict) -> dict:
             **extra}  # fmt: skip
 
 
-def stage_run(name: str, sets_run: tuple[str, ...] = SETS, model=None, extra: dict | None = None) -> Path:
+def stage_run(name: str, sets_run: tuple[str, ...] = SETS, model=None, extra: dict | None = None,
+              prebuilt: dict[str, tuple[list[dict], dict]] | None = None) -> Path:  # fmt: skip
     """sets_run, model, extra (53.7, scripts/x53_7.py): the datasets to record (default SETS, as before), an already
-    loaded model, and more manifest keys (53.7's gate)."""
+    loaded model, and more manifest keys (53.7's gate). prebuilt: a dataset's (items, counts) built by the caller (53.7's
+    lookup-eligible items: they come from its gate, so they are passed in, not rebuilt through BUILD)."""
     import torch
 
     from bridge_jspace import chat
@@ -433,7 +427,8 @@ def stage_run(name: str, sets_run: tuple[str, ...] = SETS, model=None, extra: di
 
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "x53 reads the sources' chat prompts: run with BJ_FORMAT unset"
-    assert set(sets_run) <= set(BUILD), f"datasets {sets_run}: of {tuple(BUILD)}"
+    prebuilt = prebuilt or {}
+    assert set(sets_run) <= set(BUILD) | set(prebuilt), f"datasets {sets_run}: of {(*BUILD, *prebuilt)}"
     target = pins.TARGET
     assert target in MODELS, f"x53_monitor runs on {MODELS}, not {target}"
     n_layers = pins.TARGETS[target]["n_layers"]
@@ -452,7 +447,7 @@ def stage_run(name: str, sets_run: tuple[str, ...] = SETS, model=None, extra: di
     assert layers, "the J++ lens has no map at any candidate layer"
     sets: dict[str, Any] = {}
     for s in sets_run:
-        items, counts = BUILD[s](model.tokenizer, target)
+        items, counts = prebuilt[s] if s in prebuilt else BUILD[s](model.tokenizer, target)
         check_items(items)
         assert items, f"{s}: no items"
         with torch.no_grad():

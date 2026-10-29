@@ -479,20 +479,16 @@ def stage_probe_run(base: str, formats: tuple[str, ...] = FORMATS, set_name: str
     return outs
 
 
-ELIGIBLE: dict[
-    str, list[dict]
-] = {}  # monitor-run: per format the lookup-eligible cases of the gate set (x53_monitor builds its items from them)
-
-
-def eligible_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
-    """x53_monitor's datasets code_l / tool_l (the adapted design): the first X.N_ITEMS lookup-eligible scenes of the main
-    test's set in the format (scene order, as X0 selects its items, by the lookup alone); O / S, labels and positions as
-    53.2's main. Only within monitor-run, which sets ELIGIBLE from its gate."""
+def eligible_items(target: str, fmt: str, eligible: list[dict]) -> tuple[list[dict], dict]:
+    """x53_monitor's datasets code_l / tool_l (the adapted design) from the gate's lookup-eligible cases (scene order):
+    the first X.N_ITEMS, as X0 selects its items, by the lookup alone; O / S, labels and positions as 53.2's main.
+    monitor-run passes the result to x53_monitor.stage_run (prebuilt): the cases are an argument, never module state
+    (a job runs this file as __main__, and x53_monitor imports scripts.x53_7 as another module)."""
     from scripts import x53_monitor as M
 
-    assert fmt in ELIGIBLE, f"{fmt}: no eligible cases (x53_7 monitor-run sets them from its gate)"
+    assert eligible, f"{fmt}: no lookup-eligible case"
     out = []
-    for c in ELIGIBLE[fmt][: X.N_ITEMS]:
+    for c in eligible[: X.N_ITEMS]:
         readers = {}
         for w in X.READERS:
             rd = c["readers"][w]
@@ -506,7 +502,7 @@ def eligible_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
                     "domain": c["domain"], "format": fmt, "context": c["context"], "cf_context": c["cf_context"],
                     "labels": lab, "readers": readers})  # fmt: skip
     return out, {"format": fmt, "items": len(out), "entities": len({it["entity"] for it in out}),
-                 "domains": dict(collections.Counter(it["domain"] for it in out)), "eligible": len(ELIGIBLE[fmt]),
+                 "domains": dict(collections.Counter(it["domain"] for it in out)), "eligible": len(eligible),
                  "selection": f"the first {X.N_ITEMS} lookup-eligible scenes of {main_set(target)} in scene order"}  # fmt: skip
 
 
@@ -523,11 +519,11 @@ def stage_monitor_run(name: str, formats: tuple[str, ...] = FORMATS) -> Path:
     assert not (M.RESULTS / name).exists(), f"{name} exists"
     gate_set = main_set(target)
     model = load_model()
-    gates, comps = {}, {}
+    gates, comps, eligible = {}, {}, {}
     for fmt in formats:
         cases, counts = build_cases(model.tokenizer, gate_set, fmt)
         comps[fmt] = competence(model, cases)
-        gate, ELIGIBLE[fmt] = lookup_gate(comps[fmt], cases)
+        gate, eligible[fmt] = lookup_gate(comps[fmt], cases)
         gates[fmt] = {**gate, "set": gate_set, "counts": counts}
         print(
             f"{fmt}: lookup gate {gate['lookup_right_share']} ({gate['eligible']} eligible) -> {gate['status']}",
@@ -538,7 +534,9 @@ def stage_monitor_run(name: str, formats: tuple[str, ...] = FORMATS) -> Path:
                        "formats": list(formats), "datasets": {f: f"{f}_l" for f in formats},
                        "format_text": {f: FORMAT_TEXT[f] for f in formats}, "gates": gates, "states_for": list(passing),
                        "items": f"the first {X.N_ITEMS} lookup-eligible scenes of {gate_set} per format (x53_7.eligible_items)"}}  # fmt: skip
-    out = M.stage_run(name, sets_run=tuple(f"{f}_l" for f in passing), model=model, extra=extra)
+    # the gate's eligible cases go to the forwards as an argument (prebuilt), never through module state
+    prebuilt = {f"{f}_l": eligible_items(target, f, eligible[f]) for f in passing}
+    out = M.stage_run(name, sets_run=tuple(prebuilt), model=model, extra=extra, prebuilt=prebuilt)
     for fmt, rows in comps.items():
         X.write_jsonl(out / f"x53_7_competence_{fmt}.jsonl", rows)
     return out

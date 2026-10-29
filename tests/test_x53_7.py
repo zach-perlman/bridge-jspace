@@ -3,6 +3,7 @@ test's rule verbatim on planted data; a failed gate gives "not tested"."""
 
 import inspect
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -463,3 +464,64 @@ def test_monitor_verdict_reads_the_lookup_datasets(tmp_path, monkeypatch):
     }
     assert "code_l" in blob["results"]["qwen3.6-27b"] and (out / "x53_7_monitor_code_l.png").exists()
     assert f"**{F.LOOKUP_GATE_DESIGN}.**" in (out / "verdict.md").read_text()
+
+
+def test_monitor_run_end_to_end_as_the_job_runs_it(tmp_path, monkeypatch):
+    """x53_7.py monitor-run executed as the job runs it (the script as __main__, via runpy) on a fake model: the gate's
+    eligible scenes must reach x53_monitor's forwards (x53_7_monitor_27b_l failed there: the gate wrote them into
+    __main__'s module state while x53_monitor imported scripts.x53_7 afresh)."""
+    import runpy
+    import sys
+
+    import torch
+
+    from bridge_jspace import pins
+    from scripts import tasks_v2 as T
+
+    if pins.TARGET != "qwen3.6-27b":
+        pytest.skip("run names and the main test's set are the 27B's")
+    tok = tokenizer("qwen3.6-27b")
+    d, letters = 96, torch.arange(1000, 1300)
+
+    class FakeModel:
+        tokenizer, device = tok, "cpu"
+
+        def letter_token_ids(self):
+            return letters
+
+        def run(self, ids, record=()):
+            g = torch.Generator().manual_seed(int(ids.sum()) % 2**31)
+            return torch.randn(len(tok), generator=g), {la: torch.randn(ids.shape[1], d, generator=g) for la in record}
+
+    class FakeLens:
+        source_layers = (0, 2)
+
+        def __init__(self, model, kind):
+            self._J_gpu = {}
+
+        def vectors(self, layer, ids):
+            v = torch.randn(len(ids), d, generator=torch.Generator().manual_seed(layer))
+            return v / v.norm(dim=1, keepdim=True)
+
+    def fake_competence(model, cases, digits, ws):  # the lookup right on every scene, the recall on none
+        return [{"scene": c["scene"], "rendering": "chat", "reader": w, "variant": v, "right": w == "PP",
+                 "read_right": w == "PP"} for c in cases for w in c["readers"] for v in ("org", "alt")]  # fmt: skip
+
+    load = T.load
+    monkeypatch.setattr(T, "load", lambda s: [it for it in load(s) if it["scene"] < "P2-L0-0012"])  # 12 scenes
+    monkeypatch.setattr("bridge_jspace.model.load_model", lambda: FakeModel())
+    monkeypatch.setattr("bridge_jspace.lens.JLens", FakeLens)
+    monkeypatch.setattr(X, "competence", fake_competence)
+    monkeypatch.setattr(X, "whitespace_mask", lambda model: None)
+    monkeypatch.setattr(X, "N_ITEMS", 4)
+    monkeypatch.setattr(M, "RESULTS", tmp_path / "x53_monitor")
+    script = Path(F.__file__)
+    monkeypatch.setattr(sys, "argv", [str(script), "monitor-run", "--name", "x53_7_monitor_e2e"])
+    runpy.run_path(str(script), run_name="__main__")
+    run = tmp_path / "x53_monitor" / "x53_7_monitor_e2e"
+    m = json.loads((run / "manifest.json").read_text())
+    assert set(m["sets_done"]) == {"code_l", "tool_l"} and m["layers"] == [0, 2]
+    for ds in ("code_l", "tool_l"):
+        items = [json.loads(x) for x in (run / f"cases_{ds}.jsonl").read_text().splitlines()]
+        assert len(items) == 4 and np.load(run / f"states_{ds}_h.npy").shape == (2, 4, 2, 3, d)
+    assert m["x53_7"]["gates"]["code"]["lookup_right_share"] == 1.0
