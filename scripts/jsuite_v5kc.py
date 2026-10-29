@@ -43,8 +43,21 @@ words and "N" for named ones; final "M" / final_source "M" (the answer is the re
 conflict words, "K" on the true-control words. Control items carry their scene's fields (passage_values, false_value)
 though their context is empty, as v4's.
 
-python scripts/jsuite_v5kc.py [--seed 5101] [--name jsuite_v5kc]  -> data/tasks_v2/jsuite_v5kc_test_chat (CN CA DN DA TN TD)
-                                                                     and data/tasks_v2/jsuite_v5kcctl_test_chat (H1 H2)
+--variant kc2 (Zach approved after a red-team, 29 Oct; a new set, jsuite_v5kc2, ids "j3:chat:v5kc2:...", seed 5102;
+the default variant kc is unchanged and rebuilds jsuite_v5kc byte for byte):
+  1. companies: "The club's notes say <E> was founded in <country>." / "Which country was <E> founded in?" (every
+     company's table country checked as its founding country; none dropped; borderline cases are in FOUNDED_NOTES);
+  2. X's false value is drawn first, from the values on the same continent as X's true value (CONTINENT; people
+     through DEMONYM), falling back to any other value when the vocabulary has none ("false_same_continent" false);
+     the other five entities then avoid both X's true and false values;
+  3. the cue check also drops descriptions with a non-place cue to another country: REDTEAM_CUES, the red-team's list
+     (scratch/redteam_items/a_lex.py EXTRA, copied here) without "Nobel" (international) and its null "World Cup";
+     desc_cues lists every cue matched, desc_own_cue whether any of them is X's own country's;
+  4. set_variant "kc2" and false_same_continent (None on T words) on every item; everything else as kc.
+
+python scripts/jsuite_v5kc.py [--variant kc] [--seed 5101] [--name jsuite_v5kc]
+    -> data/tasks_v2/jsuite_v5kc_test_chat (CN CA DN DA TN TD) and data/tasks_v2/jsuite_v5kcctl_test_chat (H1 H2)
+python scripts/jsuite_v5kc.py --variant kc2   (seed 5102, name jsuite_v5kc2)
 """
 
 from __future__ import annotations
@@ -74,6 +87,52 @@ CLAIM = {"people": "The club's notes say {e} was {a}.", "cities": "The club's no
          "companies": "The club's notes say {e} is based in {a}.", "landmarks": "The club's notes say {e} stands in {a}."}  # fmt: skip
 QUESTION = {"people": "Which nationality was {d}?", "cities": "Which country is {d} in?",
             "companies": "Which country is {d} based in?", "landmarks": "Which country does {d} stand in?"}  # fmt: skip
+CLAIM_KC2 = {**CLAIM, "companies": "The club's notes say {e} was founded in {a}."}
+QUESTION_KC2 = {**QUESTION, "companies": "Which country was {d} founded in?"}
+# kc2's companies: the table's country is each company's founding country (checked by hand, 29 Oct). Borderline, kept:
+FOUNDED_NOTES = {
+    "Red Bull": "Red Bull GmbH was founded in Austria (1984, Mateschitz with a Thai partner); the drink adapts Thailand's Krating Daeng",
+    "Samsung": "founded 1938 in Daegu, Korea under Japanese rule (present-day South Korea)",
+    "Hyundai": "founded 1947 in Seoul, before the South Korean state (1948)",
+    "Nokia": "founded 1865 in the Grand Duchy of Finland (Russian Empire)",
+    "Tata": "founded 1868 in Bombay, British India",
+    "Gazprom": "formed 1989 from the Soviet gas ministry in Moscow; a Russian joint-stock company from 1993",
+    "Corona": "a brand of Grupo Modelo, founded 1925 in Mexico City (now owned by AB InBev)",
+}  # fmt: skip
+CONTINENT = {  # every country in the four vocabularies (people: their DEMONYM country); Turkey as Asia (UN geoscheme)
+    **{c: "Europe" for c in ("United Kingdom", "Ireland", "France", "Germany", "Italy", "Spain", "Portugal", "Netherlands",
+                             "Belgium", "Denmark", "Sweden", "Norway", "Finland", "Poland", "Czech Republic", "Austria",
+                             "Hungary", "Greece", "Russia")},
+    **{c: "Asia" for c in ("China", "Japan", "South Korea", "Taiwan", "India", "Thailand", "Vietnam", "Cambodia", "Malaysia",
+                           "Indonesia", "Israel", "Jordan", "Turkey")},
+    **{c: "Africa" for c in ("Egypt", "Morocco", "Nigeria", "Kenya", "South Africa", "Tanzania")},
+    **{c: "North America" for c in ("United States", "Canada", "Mexico", "Jamaica")},
+    **{c: "South America" for c in ("Argentina", "Brazil", "Chile", "Colombia", "Peru", "Venezuela")},
+    "Australia": "Oceania",
+}  # fmt: skip
+# the red-team's extra cues (scratch/redteam_items/a_lex.py, EXTRA, 29 Oct), copied; "Nobel" left out (international)
+REDTEAM_CUES = {
+    "Tokyo": "Japan", "Osaka": "Japan", "Seoul": "South Korea", "Delhi": "India", "New Delhi": "India", "Calcutta": "India",
+    "Kolkata": "India", "Bengal": "India", "Bengali": "India", "Cairo": "Egypt", "Nile": "Egypt", "Pharaoh": "Egypt",
+    "Lagos": "Nigeria", "Mecca": "Saudi Arabia", "Toronto": "Canada", "Quebec": "Canada", "Ottawa": "Canada", "NHL": "Canada",
+    "Mexico City": "Mexico", "Aztec": "Mexico", "Maya": "Mexico", "Mayan": "Mexico", "Inca": "Peru", "Cuzco": "Peru",
+    "Cusco": "Peru", "Santiago": "Chile", "Bogota": "Colombia", "Escobar": "Colombia", "Caracas": "Venezuela",
+    "Havana": "Cuba", "Canberra": "Australia", "Melbourne": "Australia", "Wellington": "New Zealand", "Beijing": "China",
+    "Peking": "China", "Hong Kong": "China", "Taipei": "Taiwan", "Hollywood": "United States", "Disney": "United States",
+    "Harvard": "United States", "Facebook": "United States", "FBI": "United States", "Confederate": "United States",
+    "Washington": "United States", "Academy Award": "United States", "Academy Awards": "United States",
+    "Oscar": "United States", "Humphrey Bogart": "United States", "Indiana Jones": "United States",
+    "iPhone": "United States", "iPhones": "United States", "Premier League": "United Kingdom",
+    "Jaguar Land Rover": "United Kingdom", "King William IV": "United Kingdom", "Allied": "United Kingdom",
+    "Sight and Sound": "United Kingdom", "Byzantine": "Turkey", "Ottoman": "Turkey", "Ballon d'Or": "France",
+    "Palme d'Or": "France", "Interpol": "France", "Catholic": "Vatican City", "Pope": "Vatican City", "Inquisition": "Spain",
+    "Columbus": "Italy", "Pizarro": "Spain", "Alexander the Great": "Greece", "Eureka": "Greece", "Herod": "Israel",
+    "Muslim": "Saudi Arabia", "Kafka": "Czech Republic", "Hiram Bingham": "United States", "Ulysses": "Greece",
+    "Hamlet": "Denmark", "Carmen": "Spain", "Magic Flute": "Austria", "Sound of Music": "Austria",
+    "Truth and Reconciliation": "South Africa", "Salt March": "India", "Analects": "China", "Kong": "United States",
+    "Tintin": "Belgium", "Tango": "Argentina", "mariachi": "Mexico", "Galaxy": "South Korea", "Vishnu": "India",
+    "Buddha": "India", "Buddhist": "India",
+}  # fmt: skip
 PLURAL_X = {"the Petronas Towers", "the Nazca Lines"}  # landmark names that take a plural verb
 ACCORDING = "According to the passage, "
 
@@ -220,6 +279,15 @@ def lexicons(table: list[dict]) -> tuple[dict, dict]:
     return base, ext
 
 
+def redteam_lexicon(ext: dict) -> dict:
+    """kc2: the extended lexicon plus REDTEAM_CUES (kind 'cue'; a term already present keeps its entry)."""
+    full = dict(ext)
+    for term, c in REDTEAM_CUES.items():
+        assert full.get(term, (c, "cue"))[0] == c, (term, full[term], c)
+        full.setdefault(term, (c, "cue"))
+    return full
+
+
 def cues(text: str, lex: dict) -> list[tuple[str, str, str]]:
     """Every lexicon term in the text: (term, country, kind), in text order."""
     hits = []
@@ -234,13 +302,13 @@ def lower1(q: str) -> str:
     return q[0].lower() + q[1:]
 
 
-def question(rel: str, d: str, plural: bool) -> str:
-    q = QUESTION[rel].format(d=d)
+def question(rel: str, d: str, plural: bool, tpl: dict = QUESTION) -> str:
+    q = tpl[rel].format(d=d)
     return q.replace("Which country does ", "Which country do ", 1) if plural else q
 
 
-def claim(rel: str, e: str, a: str) -> str:
-    s = CLAIM[rel].format(e=e, a=V3.disp(a))
+def claim(rel: str, e: str, a: str, tpl: dict = CLAIM) -> str:
+    s = tpl[rel].format(e=e, a=V3.disp(a))
     return s.replace(" stands in ", " stand in ", 1) if e in PLURAL_X else s
 
 
@@ -249,12 +317,16 @@ def sha256(p: Path) -> str:
 
 
 def main(a) -> None:
+    kc2 = a.variant == "kc2"
+    tag = "v5kc2" if kc2 else "v5kc"
+    CL, QU = (CLAIM_KC2, QUESTION_KC2) if kc2 else (CLAIM, QUESTION)
     rng = random.Random(a.seed)
     tabs = T3.tables()
     table = json.loads((ROOT / "data" / "v3_bridges.json").read_text())
     alias_of = {r["answer"]: r.get("answer_aliases") or [] for r in table}
     rows = {(r["relation"], r["bridge"]): r for r in table}
     base_lex, ext_lex = lexicons(table)
+    lex = redteam_lexicon(ext_lex) if kc2 else ext_lex
     # v4's filler: the same banned words, the same deck
     strip = lambda e: e[4:] if e.startswith("the ") else e  # noqa: E731
     banned = {strip(b) for t in tabs.values() for b in t["facts"]} | {v[0] for t in tabs.values() for v in t["facts"].values()}
@@ -273,6 +345,8 @@ def main(a) -> None:
         noun = "person" if rel == "people" else t["noun"]
         vocab = sorted({v[0] for v in t["facts"].values()})
         real = {b: t["facts"][b][0] for b in t["facts"]}
+        cty = (lambda v: DEMONYM[v]) if rel == "people" else (lambda v: v)  # noqa: E731
+        assert all(cty(v) in CONTINENT for v in vocab), rel
         bridges = sorted(b for (r, b) in rows if r == rel)
         desc_of = {b: [f"the {noun} {V4.PRON[rel]} {d['clause']}" for d in rows[(rel, b)]["descriptions"]] for b in bridges}
         clause_of = {b: [d["clause"] for d in rows[(rel, b)]["descriptions"]] for b in bridges}
@@ -288,10 +362,11 @@ def main(a) -> None:
                     skipped["X shares a stem with its description"] += 1
                     rec["dropped"] = "stem"
                     continue
-                hits = cues(clause, ext_lex)
+                hits = cues(clause, lex)
                 rec["cues"] = [[tm, c, kd, tm in base_lex] for tm, c, kd in hits]
                 other_base = [h for h in hits if h[1] != own and h[0] in base_lex]
-                other_ext = [h for h in hits if h[1] != own]
+                other_ext = [h for h in hits if h[1] != own and h[0] in ext_lex]
+                other_rt = [h for h in hits if h[1] != own]
                 if other_base:
                     skipped["description names another country (base lexicon)"] += 1
                     rec["dropped"] = "cue_base"
@@ -300,13 +375,25 @@ def main(a) -> None:
                     skipped["description names another country (extended lexicon only)"] += 1
                     rec["dropped"] = "cue_extended"
                     continue
+                if other_rt:
+                    skipped["description has a non-place cue to another country (red-team list only)"] += 1
+                    rec["dropped"] = "cue_redteam"
+                    continue
                 has_own = any(kd == "name" for _, _, kd in hits)
                 place_cue = next((tm for tm, _, kd in hits if kd == "place"), None)
                 for rep in range(REPS):
-                    ok = [b for b in bridges if b != x and real[b] != real_x and not (V4.stems(clause) & V4.stems(b))
+                    false_same = None
+                    if kc2:  # the false value first, from X's continent; the others then avoid it
+                        same = [v for v in vocab if v != real_x and CONTINENT[cty(v)] == CONTINENT[own]]
+                        false = rng.choice(same or [v for v in vocab if v != real_x])
+                        false_same = bool(same)
+                        excl = {real_x, false}
+                    else:
+                        excl = {real_x}
+                    ok = [b for b in bridges if b != x and real[b] not in excl and not (V4.stems(clause) & V4.stems(b))
                           and not (V4.stems(x) & V4.stems(b))]  # fmt: skip
                     others = None
-                    for _ in range(500):  # five others with distinct true values, none X's
+                    for _ in range(500):  # five others with distinct true values, none X's (kc2: nor X's false value)
                         cand = rng.sample(ok, K - 1)
                         if len({real[b] for b in cand}) == K - 1:
                             others = cand
@@ -315,7 +402,9 @@ def main(a) -> None:
                         skipped["no distractor draw"] += 1
                         continue
                     taken = {real[b] for b in others}
-                    false = rng.choice([v for v in vocab if v != real_x and v not in taken])
+                    if not kc2:
+                        false = rng.choice([v for v in vocab if v != real_x and v not in taken])
+                    assert false != real_x and false not in taken
                     for _ in range(50):  # filler free of description words
                         para = deck.deal(N_FILLER)
                         if not (V4.stems(" ".join(para)) & V4.stems(clause)):
@@ -332,19 +421,19 @@ def main(a) -> None:
                     lay_seed = rng.random()  # the layout, shared by the conflict and the true-control passage
                     vals_c = {e: (false if e == x else real[e]) for e in order}
                     vals_t = {e: real[e] for e in order}
-                    ctx_c = V4.splice(random.Random(lay_seed), genre, [claim(rel, e, vals_c[e]) for e in order], para)
-                    ctx_t = V4.splice(random.Random(lay_seed), genre, [claim(rel, e, vals_t[e]) for e in order], para)
+                    ctx_c = V4.splice(random.Random(lay_seed), genre, [claim(rel, e, vals_c[e], CL) for e in order], para)
+                    ctx_t = V4.splice(random.Random(lay_seed), genre, [claim(rel, e, vals_t[e], CL) for e in order], para)
                     # checks: each entity once; X's true value (and aliases) absent from the conflict passage; the false
                     # value once; the true control differs only in X's claim
                     assert all(count(ctx_c, e) == 1 for e in order), (x, ctx_c)
                     assert count(ctx_c, real_x) == 0 and not any(count(ctx_c, al) for al in alias_of[real_x]), (x, ctx_c)
                     assert count(ctx_c, false) == 1 and count(ctx_t, false) == 0 and count(ctx_t, real_x) == 1, (x, false)
-                    assert ctx_t == ctx_c.replace(claim(rel, x, false), claim(rel, x, real_x)), x
-                    assert ctx_c.count(claim(rel, x, false)) == 1
+                    assert ctx_t == ctx_c.replace(claim(rel, x, false, CL), claim(rel, x, real_x, CL)), x
+                    assert ctx_c.count(claim(rel, x, false, CL)) == 1
                     plural = x in PLURAL_X
-                    q_named = question(rel, x, plural)
-                    q_desc = question(rel, desc, False)
-                    q_guess = question(rel, t["unknown"], False)
+                    q_named = question(rel, x, plural, QU)
+                    q_desc = question(rel, desc, False, QU)
+                    q_guess = question(rel, t["unknown"], False, QU)
                     q1 = t["q1M"][1].format(noun=noun, rel=clause)
                     alts = sorted({x, *rows[(rel, x)].get("bridge_alts", [])})
                     uid = f"{k:05d}"
@@ -358,8 +447,11 @@ def main(a) -> None:
                             "knobs": {"entities": K, "filler": N_FILLER}, "set_version": "v4", "set_kind": "kc",
                             "false_value": false, "frame": "plain", "named": False, "true_control": False,
                             "desc_has_own": has_own, "desc_place_cue": place_cue, "desc_cues": [h[0] for h in hits],
-                            "scene": f"v5kc:{uid}", "final": "M", "final_source": "M", "answer": real_x,
+                            "scene": f"{tag}:{uid}", "final": "M", "final_source": "M", "answer": real_x,
                             "answer_aliases": alias_of.get(real_x, []), "memory_answer": real_x}  # fmt: skip
+                    if kc2:
+                        base.update({"set_variant": "kc2", "false_same_continent": false_same,
+                                     "desc_own_cue": any(c == own for _, c, _ in hits)})  # fmt: skip
                     hop1 = {"question": q1, "answer": x, "kind": "open", "source": "M", "alts": alts}
                     step_named = {"question": q_named, "answer": real_x, "kind": "open", "source": "M", "cand_vocab": vocab}
                     for word in ("CN", "CA", "DN", "DA", "TN", "TD"):
@@ -370,16 +462,17 @@ def main(a) -> None:
                         g = q_guess
                         if according:
                             q, g = ACCORDING + lower1(q), ACCORDING + lower1(g)
-                        items.append({**base, "id": f"j3:chat:v5kc:{word}-w0-{uid}", "word": word, "start": "N" if named else "M",
+                        items.append({**base, "id": f"j3:chat:{tag}:{word}-w0-{uid}", "word": word, "start": "N" if named else "M",
                                       "control": "K" if tc else "C", "context": ctx_t if tc else ctx_c,
                                       "passage_values": vals_t if tc else vals_c, "false_value": None if tc else false,
                                       "frame": "according" if according else "plain", "named": named, "true_control": tc,
                                       "start_desc": x if named else desc, "question": q, "answer_in_passage": tc,
-                                      "steps": [step_named] if named else [hop1, step_named], "guess_question": g})  # fmt: skip
+                                      "steps": [step_named] if named else [hop1, step_named], "guess_question": g,
+                                      **({"false_same_continent": None if tc else false_same} if kc2 else {})})  # fmt: skip
                     ctrl = {**base, "context": "", "answer_in_passage": False, "steps": [], "guess_question": None}
-                    items.append({**ctrl, "id": f"j3:chat:v5kc:H1-w0-{uid}", "word": "H1", "final": "B", "final_source": "M",
+                    items.append({**ctrl, "id": f"j3:chat:{tag}:H1-w0-{uid}", "word": "H1", "final": "B", "final_source": "M",
                                   "control": "H1", "question": q1, "answer": x, "answer_aliases": alts, "answer_vocab": bridges})  # fmt: skip
-                    items.append({**ctrl, "id": f"j3:chat:v5kc:H2-w0-{uid}", "word": "H2", "start": "N", "control": "H2",
+                    items.append({**ctrl, "id": f"j3:chat:{tag}:H2-w0-{uid}", "word": "H2", "start": "N", "control": "H2",
                                   "named": True, "start_desc": x, "question": q_named})  # fmt: skip
                     k += 1
     ids = [it["id"] for it in items]
@@ -396,16 +489,21 @@ def main(a) -> None:
     dirty = subprocess.run(["git", "status", "--porcelain", "scripts/jsuite_v5kc.py"], capture_output=True, text=True,
                            cwd=ROOT).stdout.strip()  # fmt: skip
     drops = collections.Counter((r["relation"], r["dropped"]) for r in desc_log)
-    man = {"set": out.name, "ctl_set": ctl.name, "seed": a.seed, "reps": REPS, "n": len(items), "scenes": k,
-           "git_commit": commit, "script": "scripts/jsuite_v5kc.py", "script_uncommitted": bool(dirty),
-           "script_sha256": sha256(Path(__file__)),
+    cn = [it for it in items if it["word"] == "CN"]
+    man = {"set": out.name, "ctl_set": ctl.name, "variant": a.variant, "id_tag": tag, "seed": a.seed, "reps": REPS,
+           "n": len(items), "scenes": k, "git_commit": commit, "script": "scripts/jsuite_v5kc.py",
+           "script_uncommitted": bool(dirty), "script_sha256": sha256(Path(__file__)),
            "words": dict(collections.Counter(it["word"] for it in items)), "skipped": dict(skipped),
-           "relations": dict(collections.Counter(it["relation"] for it in items if it["word"] == "CN")),
+           "relations": dict(collections.Counter(it["relation"] for it in cn)),
            "descriptions": {f"{r}:{d}": n for (r, d), n in sorted(drops.items(), key=str)},
            "dropped_descriptions": [{k2: r[k2] for k2 in ("relation", "bridge", "desc", "dropped", "cues")}
-                                    for r in desc_log if r["dropped"] in ("cue_base", "cue_extended")],
-           "lexicon_sizes": {"base": len(base_lex), "extended": len(ext_lex)},
+                                    for r in desc_log if r["dropped"] in ("cue_base", "cue_extended", "cue_redteam")],
+           "lexicon_sizes": {"base": len(base_lex), "extended": len(ext_lex), "used": len(lex)},
            "sha256": {out.name: sha256(out / "items.jsonl"), ctl.name: sha256(ctl / "items.jsonl")}}  # fmt: skip
+    if kc2:
+        man["false_same_continent"] = {r: dict(collections.Counter(it["false_same_continent"] for it in cn if it["relation"] == r))
+                                       for r in RELS}  # fmt: skip
+        man["founded_notes"] = FOUNDED_NOTES
     (out / "manifest.json").write_text(json.dumps(man, indent=2, ensure_ascii=False) + "\n")
     (ctl / "manifest.json").write_text(json.dumps(man, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps({k2: v for k2, v in man.items() if k2 != "dropped_descriptions"}, indent=1, ensure_ascii=False))
@@ -415,7 +513,11 @@ def main(a) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--seed", type=int, default=5101)
-    ap.add_argument("--name", default="jsuite_v5kc")
+    ap.add_argument("--variant", choices=("kc", "kc2"), default="kc", help="kc: jsuite_v5kc as first built; kc2: the rebuild")
+    ap.add_argument("--seed", type=int, default=None, help="default 5101 (kc), 5102 (kc2)")
+    ap.add_argument("--name", default=None, help="default jsuite_v5kc (kc), jsuite_v5kc2 (kc2)")
     ap.add_argument("--data", default=str(DATA), help="output root (default data/tasks_v2; a scratch dir for dry runs)")
-    main(ap.parse_args())
+    args = ap.parse_args()
+    args.seed = args.seed if args.seed is not None else {"kc": 5101, "kc2": 5102}[args.variant]
+    args.name = args.name or {"kc": "jsuite_v5kc", "kc2": "jsuite_v5kc2"}[args.variant]
+    main(args)
