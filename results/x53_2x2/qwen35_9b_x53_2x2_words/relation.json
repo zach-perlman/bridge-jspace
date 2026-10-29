@@ -1,0 +1,238 @@
+{
+ "relation": "animals/class",
+ "model": "qwen3.5-9b",
+ "accuracy_recall_qa_word": 0.3822,
+ "bar": 0.8,
+ "passes": false,
+ "scenes": 191,
+ "coverage": {
+  "animals/class": {
+   "scenes": 191,
+   "read_tokens": {
+    "amphibian": [
+     " amphib",
+     " Amph"
+    ],
+    "arachnid": [
+     " ar",
+     " Ar"
+    ],
+    "bird": [
+     " bird",
+     " Bird"
+    ],
+    "insect": [
+     " insect",
+     " In"
+    ],
+    "mammal": [
+     " mamm",
+     " M"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {
+    "mouse": {
+     "word": "mammal",
+     "why": [
+      "'m' initial",
+      "'M' initial",
+      "' M' initial"
+     ]
+    }
+   },
+   "admissible": true
+  },
+  "animals/young": {
+   "scenes": 17,
+   "read_tokens": {
+    "calf": [
+     " calf",
+     " C"
+    ],
+    "caterpillar": [
+     " cater",
+     " Cater"
+    ],
+    "chick": [
+     " chick",
+     " Chick"
+    ],
+    "cub": [
+     " cub",
+     " Cub"
+    ],
+    "cygnet": [
+     " cy",
+     " Cy"
+    ],
+    "duckling": [
+     " duck",
+     " Duck"
+    ],
+    "eaglet": [
+     " eag",
+     " Eag"
+    ],
+    "fawn": [
+     " f",
+     " F"
+    ],
+    "foal": [
+     " fo",
+     " Fo"
+    ],
+    "gosling": [
+     " gos",
+     " Gos"
+    ],
+    "kid": [
+     " kid",
+     " Kid"
+    ],
+    "kit": [
+     " kit",
+     " Kit"
+    ],
+    "kitten": [
+     " kitten",
+     " K"
+    ],
+    "lamb": [
+     " lamb",
+     " Lamb"
+    ],
+    "maggot": [
+     " mag",
+     " Mag"
+    ],
+    "owlet": [
+     " ow",
+     " Ow"
+    ],
+    "piglet": [
+     " pig",
+     " Pig"
+    ],
+    "pup": [
+     " pup",
+     " Pup"
+    ],
+    "puppy": [
+     " puppy",
+     " Puppy"
+    ],
+    "tadpole": [
+     " tad",
+     " Tad"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {
+    "cow": {
+     "word": "calf",
+     "why": [
+      "'c' initial",
+      "'C' initial",
+      "' C' initial"
+     ]
+    },
+    "camel": {
+     "word": "calf",
+     "why": [
+      "'c' initial",
+      "'C' initial",
+      "' C' initial"
+     ]
+    },
+    "goose": {
+     "word": "gosling",
+     "why": [
+      "'G' initial"
+     ]
+    },
+    "chicken": {
+     "word": "chick",
+     "why": [
+      "'ch' prefix",
+      "'ick' part",
+      "' chick' prefix",
+      "'Ch' prefix",
+      "'ick' part",
+      "' Chick' prefix"
+     ]
+    },
+    "duck": {
+     "word": "duckling",
+     "why": [
+      "'duck' key",
+      "' duck' key",
+      "'D' initial",
+      "'uck' part",
+      "' Duck' key"
+     ]
+    },
+    "pig": {
+     "word": "piglet",
+     "why": [
+      "'pig' key",
+      "' pig' key",
+      "'P' initial",
+      "' Pig' key"
+     ]
+    },
+    "owl": {
+     "word": "owlet",
+     "why": [
+      "'ow' prefix",
+      "' ow' prefix",
+      "'O' initial",
+      "' Ow' prefix"
+     ]
+    },
+    "eagle": {
+     "word": "eaglet",
+     "why": [
+      "'e' initial",
+      "' eag' prefix",
+      "'E' initial",
+      "' Eag' prefix"
+     ]
+    }
+   },
+   "admissible": false
+  },
+  "elements/state": {
+   "scenes": 107,
+   "read_tokens": {
+    "gas": [
+     " gas",
+     " Gas"
+    ],
+    "solid": [
+     " solid",
+     " Solid"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {},
+   "admissible": false
+  },
+  "greek/vowel": {
+   "scenes": 121,
+   "read_tokens": {
+    "consonant": [
+     " conson",
+     " Con"
+    ],
+    "vowel": [
+     " vowel",
+     " V"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {},
+   "admissible": false
+  }
+ }
+}
