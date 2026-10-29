@@ -5154,6 +5154,9 @@ ledger_six_lockers,qwen3.6-27b,the rule's label at dose 2,none of the three,,,,r
 ledger_six_lockers,muse-glimmer-30b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,muse-glimmer-30b,dose 2: given-slot swaps reaching 0.25 (of 30),21,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,muse-glimmer-30b,the rule's label at dose 2,slot-specific,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_six_lockers,nemotron-3.5-lightning,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x52_six-20261029T011006Z/x47_2.json
+ledger_six_lockers,nemotron-3.5-lightning,dose 2: given-slot swaps reaching 0.25 (of 30),21,,,,results/x47_six/x52_six-20261029T011006Z/x47_2.json
+ledger_six_lockers,nemotron-3.5-lightning,the rule's label at dose 2,slot-specific,,,,results/x47_six/x52_six-20261029T011006Z/x47_2.json
 ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the original bridge word',0.1108,0.0906,0.13,50,results/x52_atoms/report-20261029T000125Z/tables.json
 ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the new bridge word',0.1098,0.0928,0.1245,50,results/x52_atoms/report-20261029T000125Z/tables.json
 ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'another item named in the scene',0.0006,0.0,0.002,50,results/x52_atoms/report-20261029T000125Z/tables.json

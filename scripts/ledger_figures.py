@@ -582,15 +582,17 @@ def routes(plt) -> str:
 
 SIX = {"qwen3.5-9b": R / "x47_six" / "x47_2-20261028T113102Z" / "x47_2.json",
        "qwen3.6-27b": R / "x47_six" / "x52_six-20261029T004919Z" / "x47_2.json",
-       "muse-glimmer-30b": R / "x47_six" / "x47_2-20261028T113102Z" / "x47_2.json"}  # fmt: skip
+       "muse-glimmer-30b": R / "x47_six" / "x47_2-20261028T113102Z" / "x47_2.json",
+       "nemotron-3.5-lightning": R / "x47_six" / "x52_six-20261029T011006Z" / "x47_2.json"}  # fmt: skip
 
 
 def six_lockers(plt) -> str:
-    """Per model (9B, 27B, Muse), at dose 2: the share of start slots from which one fixed shift sends at least 0.25 of
-    lookups one slot on, and the share of given-slot swaps that reach 0.25; the rule's 'most pairs' as a dashed 0.5."""
+    """Per model (9B, 27B, Muse, Lightning), at dose 2: the share of start slots from which one fixed shift sends at
+    least 0.25 of lookups one slot on, and the share of given-slot swaps that reach 0.25; the rule's 'most pairs' as a
+    dashed 0.5."""
     fig, ax = plt.subplots(figsize=(S.WIDTH, 3.7))
     fig.subplots_adjust(left=0.1, right=0.78, top=0.74, bottom=0.14)
-    S.title(fig, "One shift moves no lookup; pair swaps work on the 9B and Muse",
+    S.title(fig, "One shift moves no lookup; pair swaps work on 9B, Muse and Lightning",
             "At dose 2: start slots where one shift works (of 5), and slot pairs a swap reaches (of 30)")  # fmt: skip
     for i, (t, path) in enumerate(SIX.items()):
         m = next(x for x in load(path)["models"] if x["target"] == t)
@@ -608,7 +610,7 @@ def six_lockers(plt) -> str:
     ax.axhline(0.5, color="#555555", lw=0.9, ls="--")
     ax.text(-0.48, 0.52, "most pairs", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
     labels = [next(x for x in load(p)["models"] if x["target"] == t)["label"] for t, p in SIX.items()]
-    ax.set_xticks(range(3), [f"{SHORT[t]}\n{lab}" for t, lab in zip(SIX, labels, strict=True)])
+    ax.set_xticks(range(len(SIX)), [f"{SHORT[t]}\n{lab}" for t, lab in zip(SIX, labels, strict=True)])
     ax.set_ylim(0, 1.0)
     ax.set_ylabel("share")
     ax.text(1.03, 0.75, "light: one shift\n(start slots)\n\ndark: swaps per pair\n(slot pairs)", transform=ax.transAxes,
