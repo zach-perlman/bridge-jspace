@@ -190,3 +190,24 @@ morning_brief: |
   CPU now: batch 52 B, why the recall write moves 0.37 / 0.70 / 0.65 at 1x but
   0.03 / 0.09 / 0.01 at 2x: what the model outputs at 2x (original, target,
   other). Keep B out of the README.
+
+morning_queue_received: "29 Oct ~08:55 Paris (Dan). Items 4 (named vs unnamed atoms) and 5 (question-first scenes) of morning_brief are not in this order: kept, after item 3, flagged for Dan"
+morning_queue: |
+  GPU queue (Dan, 08:55). Order:
+  0. Keep first: Z1-P, then 51.12 on Zach's named passages K and P (from 08:30).
+  1. Lightning, below-gate exploratory (gate 0.751 < 0.80 reported, eligible
+     items only, hollow marks, never in the claims table or grades; rules
+     verbatim, no prediction): copy test (45q), ladder 1-6 (rung 6 at L27-33),
+     earlier mention (45p), person mark (48.3), route2, pooled probe (49.3),
+     D1 clean design, 47.4 clean design; then described bridge 47.3 and 51.12
+     cue (gate 0.72); natural passages last.
+  2. Lightning, design from the 9B / 27B specs (L14, Zach's band L27-33): 51.12
+     Z2, 51.5, 49.6.
+  3. Lightning ports, lowest priority: DAS through the torch (non-kernel) Mamba
+     path: first a gradient check on 8 items (torch path vs kernel forward agree,
+     grads finite), then 51.3, 48.1, 51.11 parts 1 and 3; 48.2 B with the MoE
+     block outputs in place of MLPs, labelled "adapted design". Skip 47.6 (an
+     attention-edge knock-out is not the same test in a Mamba model; mark "not
+     applicable: Mamba-2 state carries the edge").
+  Use all four GPUs. Anything that lands after ~13:00 goes to EXPERIMENTS.md
+  only, not the README.
