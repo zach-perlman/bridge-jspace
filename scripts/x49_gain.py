@@ -75,6 +75,11 @@ RENDERING = "chat"
 GROUP = "locker-first"
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x49_1", "qwen3.6-27b": "x49_1_27b", "muse-glimmer-30b": "muse30_x49_1"}
+# batch 52 C coverage (amendment 2: the full grid on Lightning): read by verdict --coverage alone (RUNS / MODELS and the
+# design's own verdict unchanged)
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_gain"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x49_gain/x49_1-20261028T154510Z"  # 49.1's rule first scored (9B, 27B, Muse)
 SOURCES = B.MAIN_RUN  # target -> the main test's X0 run (chat, at X.PREDICTED)
 K = X.K_MAIN  # 25
 K_WIDE = 100  # dumbest way 2
@@ -635,15 +640,24 @@ def example_lines(m: dict, decode, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, decode_for=None) -> Path:
+def stage_verdict(
+    runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, decode_for=None, coverage: bool = False
+) -> Path:
+    """49.1's verdict (sealed until Q49.1) over MODELS, or with coverage (batch 52 C) the same rule on the given coverage
+    runs (target -> run, default COVERAGE_RUNS) alone: no seal guard, "no prediction" in place of Dan's answer, written to
+    x52_gain-<UTC>/."""
     from scripts import x47_atoms as A
 
-    answer = unsealed()
-    runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in MODELS]
-    out = RESULTS / f"x49_1-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else unsealed()
+    runs = runs or (COVERAGE_RUNS if coverage else RUNS)
+    if coverage:
+        assert set(runs) <= set(COVERAGE_RUNS), f"49.1 coverage runs on {sorted(COVERAGE_RUNS)}, not {sorted(runs)}"
+    models = [model_result(t, runs[t], n_boot) for t in (runs if coverage else MODELS)]
+    out = RESULTS / f"{'x52_gain' if coverage else 'x49_1'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     blob = {"dan": answer, "rule": RULE, "labels": LABELS, "gains": list(GAINS), "corners": [list(c) for c in CORNERS],
             "rand_rule_corners": [list(c) for c in RAND_RULE_CORNERS], "models": models,
             "per_model": {m["target"]: m["label"] for m in models}}  # fmt: skip
@@ -668,6 +682,8 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs {COVERAGE_RUNS} ('{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -675,7 +691,8 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     else:
-        stage_verdict(dict(zip(MODELS, a.runs, strict=True)) if a.runs else None, n_boot=a.n_boot)
+        assert not (a.coverage and a.runs), "verdict --coverage reads COVERAGE_RUNS (no --runs)"
+        stage_verdict(dict(zip(MODELS, a.runs, strict=True)) if a.runs else None, n_boot=a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

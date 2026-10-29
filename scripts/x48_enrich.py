@@ -85,6 +85,12 @@ MAIN_RUN = {
 }  # the 27B: batch 52 C coverage (amendment 2)
 RUNS_A = {"qwen3.5-9b": "qwen35_9b_x48_2a", "muse-glimmer-30b": "muse30_x48_2a"}
 RUNS_B = {"qwen3.5-9b": "qwen35_9b_x48_2b", "muse-glimmer-30b": "muse30_x48_2b"}
+# batch 52 C coverage (amendments 2-3): the 27B's and Lightning's runs, read by verdict --coverage alone (RUNS_A / RUNS_B
+# and the design's own verdict unchanged); Lightning has no B (no per-block MLP)
+COVERAGE_RUNS_A = {"qwen3.6-27b": "x48_2a_27b", "nemotron-3.5-lightning": "nem35l_x52_enrich_a"}
+COVERAGE_RUNS_B = {"qwen3.6-27b": "x48_2b_27b"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x48_enrich/x48_2-20261028T113111Z"  # 48.2's rules first scored (the 9B and Muse)
 RENDERING = "chat"
 READER_NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 # design A
@@ -774,7 +780,7 @@ def rule_a_layer(num: dict[str, Any]) -> dict[str, Any]:
 def model_result_a(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
     if not (src / "probe.json").exists():
-        target = {r: t for t, r in RUNS_A.items()}.get(run)
+        target = {r: t for t, r in {**RUNS_A, **COVERAGE_RUNS_A}.items()}.get(run)
         assert target, f"no 48.2A run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS_A.values())}"
         return {"run": run, "target": target, "status": "pending", "holds": False, "why": "no probe.json here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -870,7 +876,7 @@ def rule_b(recall: dict[str, Any], lookup: dict[str, Any]) -> dict[str, Any]:
 def model_result_b(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
     if not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS_B.items()}.get(run)
+        target = {r: t for t, r in {**RUNS_B, **COVERAGE_RUNS_B}.items()}.get(run)
         assert target, f"no 48.2B run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS_B.values())}"
         return {"run": run, "target": target, "status": "pending", "holds": False, "why": "no outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -900,10 +906,14 @@ def fmt(v: list) -> str:
     return f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]".replace("-", "−")
 
 
-def with_pending(models: list[dict], runs: dict[str, str], design: str) -> list[dict]:
+def with_pending(models: list[dict], runs: dict[str, str], design: str, coverage: bool = False) -> list[dict]:
+    """The given models plus a pending row per design model not given; with coverage (batch 52 C) `runs` is the
+    coverage map and no pending rows are added."""
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
     assert set(targets) <= set(runs), f"48.2{design} runs on {sorted(runs)}, not {sorted(set(targets) - set(runs))}"
+    if coverage:
+        return models
     return models + [{"run": f"({runs[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
                      for t in runs if t not in targets]  # fmt: skip
 
@@ -967,13 +977,17 @@ def example_lines_b(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED
     return lines
 
 
-def stage_verdict(runs_a: list[str], runs_b: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs_a: list[str], runs_b: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """48.2's verdict (sealed until Q48.2), or with coverage (batch 52 C) the same rules on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_enrich-<UTC>/."""
+    answer = (f"{NO_PREDICTION}; rules first scored in {SCORED}; the batch labels cover the given runs only, not "
+              "re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
-    a = with_pending([model_result_a(r, n_boot) for r in runs_a], RUNS_A, "A")
-    b = with_pending([model_result_b(r, n_boot) for r in runs_b], RUNS_B, "B")
+    runs_of_a, runs_of_b = (COVERAGE_RUNS_A, COVERAGE_RUNS_B) if coverage else (RUNS_A, RUNS_B)
+    a = with_pending([model_result_a(r, n_boot) for r in runs_a], runs_of_a, "A", coverage)
+    b = with_pending([model_result_b(r, n_boot) for r in runs_b], runs_of_b, "B", coverage)
     v = {"A": batch_label(a), "B": batch_label(b)}
-    out = RESULTS / f"x48_2-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_enrich' if coverage else 'x48_2'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 48.2: why the recall reads J++ — attribute enrichment at the bridge token", "",
              f"Batch 48, test 48.2 (jobs/c3/batch48.yaml; {QUESTION}, Dan: {answer}). The main test's items and arms at "
@@ -1061,6 +1075,8 @@ def stage_verdict(runs_a: list[str], runs_b: list[str], n_boot: int = X.N_BOOT) 
             lines.append(f"- {m['target']} ({m['run']}, L{m['layer']}): modules ablated per arm {m['module_counts']}; "
                          f"hooked {m['hooked']['module']} (classes {m['hooked']['hooked_class']}, blocks "
                          f"{m['hooked']['block_kinds']}); person tokens {m['plan']['person_tokens']}.")  # fmt: skip
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x48_2.json").write_text(json.dumps({"runs_a": runs_a, "runs_b": runs_b, "dan": answer, "verdict": v,
                                                 "A": a, "B": b}, indent=1) + "\n")  # fmt: skip
     (out / "x48_2.md").write_text("\n".join(lines) + "\n")
@@ -1086,6 +1102,8 @@ def main() -> None:
     ap.add_argument("--runs-b", nargs="*", default=list(RUNS_B.values()), help="verdict: the design B runs")
     ap.add_argument("--why", default="batch 48, test 48.2 (jobs/c3/batch48.yaml; Q48.2)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs given by --runs-a / --runs-b ('{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1099,7 +1117,7 @@ def main() -> None:
         assert a.name, "analyse_a needs --name"
         analyse_a(a.name)
     else:
-        stage_verdict(a.runs_a, a.runs_b, a.n_boot)
+        stage_verdict(a.runs_a, a.runs_b, a.n_boot, a.coverage)
 
 
 if __name__ == "__main__":

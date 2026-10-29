@@ -110,8 +110,11 @@ RUNS = {"a": {"qwen3.5-9b": "qwen35_9b_x47_7a", "qwen3.6-27b": "x47_7a_27b", "mu
         "c": {"qwen3.5-9b": "qwen35_9b_x47_7c", "qwen3.6-27b": "x47_7c_27b", "muse-glimmer-30b": "muse30_x47_7c"},
         "b": {"qwen3.5-9b": "qwen35_9b_x47_7b", "muse-glimmer-30b": "muse30_x47_7b"}}  # fmt: skip
 # batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"a": {"nemotron-3.5-lightning": "nem35l_x52_value_a"}}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = {"a": "results/x47_value/x47_7a-20261028T131819Z", "b": "jobs/c3/batch47.yaml (47.7 b)",
+          "c": "results/x47_value/x47_7c-20261028T123632Z"}  # each part's rules first scored  # fmt: skip
 # the bars (jobs/c3/batch47.yaml, 47.7, fixed in advance)
 PREFETCH_VALUE, PREFETCH_PROBE, QL_VALUE, QL_PROBE = 0.15, 0.6, 0.05, 0.4
 JSPACE_FALL, JSPACE_LENS = 0.3, 0.4
@@ -953,7 +956,7 @@ def model_result(part: str, run: str, n_boot: int = X.N_BOOT) -> dict:
     """One model's run: pending (not here), not tested (the gate or C0), or its numbers and the part's rule."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS[part].items()}.get(run)
+        target = {r: t for t, r in {**RUNS[part], **COVERAGE_RUNS.get(part, {})}.items()}.get(run)
         assert target, (
             f"no 47.7({part}) run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS[part].values())}"
         )
@@ -1162,23 +1165,30 @@ def report_c(models: list[dict], v: dict, answer: str, n_boot: int) -> list[str]
     return lines
 
 
-def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT) -> Path:
+def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.7's verdict per part (sealed until Q47.7), or with coverage (batch 52 C) the same rules on the given coverage
+    runs alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to
+    x52_value<part>-<UTC>/."""
     assert part in PARTS, part
-    answer = dan_answer()
+    answer = (f"{NO_PREDICTION}; rules first scored in {SCORED[part]}; the {MODELS_MIN}-of-3 labels cover the given "
+              "runs only, not re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(part, r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    assert set(targets) <= set(RUNS[part]), f"47.7({part}) runs on {sorted(RUNS[part])}"
-    for t in RUNS[part]:
+    known = set(COVERAGE_RUNS.get(part, {})) if coverage else set(RUNS[part])
+    assert set(targets) <= known, f"47.7({part}) runs on {sorted(known)}"
+    for t in [] if coverage else RUNS[part]:
         if t not in targets:
             models.append({"run": f"({RUNS[part][t]})", "target": t, "status": "pending", "why": "no run given",
                            "rule": {r: {"tested": False} for r in RENDERINGS} if part == "b" else
                            {f: rule_c(None) for f in FORMATS} if part == "c" else {}})  # fmt: skip
     v = batch_a(models) if part == "a" else batch_c(models) if part == "c" else batch_b(models)
-    out = RESULTS / f"x47_7{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_value' if coverage else 'x47_7'}{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = report_c(models, v, answer, n_boot) if part == "c" else report_a(part, models, v, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / f"x47_7{part}.json").write_text(json.dumps({"part": part, "runs": runs, "dan": answer, "verdict": v, "models": models},
                                                       indent=1, ensure_ascii=False) + "\n")  # fmt: skip
     (out / f"x47_7{part}.md").write_text("\n".join(lines) + "\n")
@@ -1204,6 +1214,7 @@ def main() -> None:
         "--c0-min", type=float, default=None, help="run: a descriptive C0 gate (Muse: 0.5), else the reference"
     )
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.part)
@@ -1211,7 +1222,8 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.part, a.name, a.why, a.c0_min)
     else:
-        stage_verdict(a.part, a.runs or list(RUNS[a.part].values()), a.n_boot)
+        default = COVERAGE_RUNS.get(a.part, {}) if a.coverage else RUNS[a.part]
+        stage_verdict(a.part, a.runs or list(default.values()), a.n_boot, a.coverage)
 
 
 if __name__ == "__main__":

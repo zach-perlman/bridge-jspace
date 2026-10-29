@@ -124,8 +124,10 @@ RECALL_JPP_MIN, RECALL_UI_MAX = 0.30, 0.10  # "like a recall": without J++ >= 0.
 MODELS = ("qwen3.6-27b", "qwen3.5-9b", "muse-glimmer-30b")
 RUNS = {"qwen3.6-27b": "x47_15_27b", "qwen3.5-9b": "qwen35_9b_x47_15", "muse-glimmer-30b": "muse30_x47_15"}
 # batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_source"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_source/x47_15-20261028T142722Z"  # 47.15's rules first scored (27B, 9B, Muse)
 MODELS_MIN = 2
 EPS = 1e-9  # a value exactly at a bar counts as at the bar
 N_PROMPTS = 5  # the plan's rendered prompts per condition
@@ -787,7 +789,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     placement and condition, the rule on the decisive placement, the no-instruction check and the preference."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 47.15 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "the run has no manifest or outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -938,19 +940,26 @@ def example_lines(run: str, decode, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLE
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode_for=None) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode_for=None, coverage: bool = False) -> Path:
+    """47.15's verdict (sealed until Q47.15), or with coverage (batch 52 C) the same rules on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_source-<UTC>/."""
+    answer = (f"{NO_PREDICTION}; rules first scored in {SCORED}; the batch count covers the given runs only, not "
+              "re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    assert set(targets) <= set(RUNS), f"47.15 runs on {sorted(RUNS)}, not {sorted(set(targets) - set(RUNS))}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
-               for t in MODELS if t not in targets]  # fmt: skip
+    known = set(COVERAGE_RUNS) if coverage else set(RUNS)
+    assert set(targets) <= known, f"47.15 runs on {sorted(known)}, not {sorted(set(targets) - known)}"
+    if not coverage:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
+                   for t in MODELS if t not in targets]  # fmt: skip
     batch = batch_rule(models)
-    out = RESULTS / f"x47_15-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_source' if coverage else 'x47_15'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, batch, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_15.json").write_text(json.dumps({"runs": runs, "dan": answer, "batch": batch, "models": models}, indent=1)
                                      + "\n")  # fmt: skip
     (out / "x47_15.md").write_text("\n".join(lines) + "\n")
@@ -976,6 +985,7 @@ def main() -> None:
     ap.add_argument("--n-items", type=int, default=R.N_ITEMS)
     ap.add_argument("--condition", default=CONDITION, choices=("C0", "C2"))
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.out, a.n_gen, a.condition)
@@ -986,7 +996,7 @@ def main() -> None:
         assert a.name, "competence needs --name"
         stage_competence(a.name)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

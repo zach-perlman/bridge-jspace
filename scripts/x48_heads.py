@@ -76,8 +76,10 @@ MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "muse-glimmer-30b": "muse30b
 STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0_probe_v4"}  # x6_routes.STATES
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_heads", "muse-glimmer-30b": "muse30_x48_heads"}
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"qwen3.6-27b": "x48_heads_27b", "nemotron-3.5-lightning": "nem35l_x52_heads48"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x48_heads/x48_heads-20261028T113126Z"  # 48.4's rule first scored (the 9B and Muse)
 COVERAGE_SOURCES = {
     "qwen3.6-27b": ("x0_necessity_27b_chat", "x0_probe_v4_27b"),
     "nemotron-3.5-lightning": ("nem35l_x52_conflict", "nem35l_x52_probe"),
@@ -524,7 +526,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One run: pending (not here), or per head and variant the medians (with CIs) and the rule (variant ov)."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "r_items.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 48.4 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "holds": False,
                 "why": "the run has no manifest or r_items here"}  # fmt: skip
@@ -575,18 +577,24 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """48.4's verdict (sealed until Q48.4), or with coverage (batch 52 C) the same rule on the given coverage runs alone:
+    no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_heads48-<UTC>/."""
+    answer = (f"{NO_PREDICTION}; rule first scored in {SCORED}; the both-models count covers the given runs only, "
+              "not re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    assert set(targets) <= set(MAIN_RUN), f"48.4 runs on {sorted(MAIN_RUN)}, not {sorted(set(targets) - set(MAIN_RUN))}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
-               for t in MAIN_RUN if t not in targets]  # fmt: skip
+    known = set(COVERAGE_RUNS) if coverage else set(MAIN_RUN)
+    assert set(targets) <= known, f"48.4 runs on {sorted(known)}, not {sorted(set(targets) - known)}"
+    if not coverage:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
+                   for t in MAIN_RUN if t not in targets]  # fmt: skip
     v = batch_verdict(models)
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    out = next(p for p in (RESULTS / f"x48_heads-{stamp}{s}" for s in ("", *(f"-{i}" for i in range(2, 100))))
+    stem = "x52_heads48" if coverage else "x48_heads"
+    out = next(p for p in (RESULTS / f"{stem}-{stamp}{s}" for s in ("", *(f"-{i}" for i in range(2, 100))))
                if not p.exists())  # a second verdict within the same second gets its own folder (never overwritten)  # fmt: skip
     out.mkdir(parents=True)
     lines = ["# 48.4: what the copying heads transmit", "",
@@ -622,6 +630,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                 lines.append(f"| {m['target']} | L{h_['layer']}:h{h_['head']:02d} | {h_['mean_mass']:.3f} | "
                              f"{h_['recall_mean_mass']:.3f} | " + " | ".join(fmt(h_[variant][p]) for p in PARTS)
                              + f" | {'yes' if verdict else 'no'} |")  # fmt: skip
+    if coverage:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ")
     lines += ["", "Items and layers (descriptive):", ""]
     for m in models:
         if m["status"] == "pending":
@@ -654,6 +664,7 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict: the 48.4 runs (9B, Muse)")
     ap.add_argument("--why", default="batch 48, test 48.4 (jobs/c3/batch48.yaml; Q48.4)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -661,7 +672,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.coverage)
 
 
 if __name__ == "__main__":

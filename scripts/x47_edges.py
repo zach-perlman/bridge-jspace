@@ -111,8 +111,10 @@ MODELS = ("muse-glimmer-30b", "qwen3.5-9b")
 RUNS = {"qwen3.5-9b": {"a": "qwen35_9b_x47_6_a", "b": "qwen35_9b_x47_6_b"},
         "muse-glimmer-30b": {"a": "muse30_x47_6_a", "b": "muse30_x47_6_b"}}  # fmt: skip
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"qwen3.6-27b": {"a": "x47_6_a_27b", "b": "x47_6_b_27b"}}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_edges/x47_6-20261028T113107Z"  # 47.6's rule first scored (the 9B and Muse)
 N_EXAMPLES = 10
 
 
@@ -874,18 +876,25 @@ def fmt(v: list) -> str:
     return "-" if v[0] is None or np.isnan(v[0]) else f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"
 
 
-def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X.N_BOOT) -> Path:
-    answer = require_answer()
-    runs = runs or RUNS
-    res = {t: b_result(runs[t]["b"], n_boot) for t in MODELS}
-    ares = {t: a_result(runs[t]["a"], n_boot) for t in MODELS}
+def stage_verdict(
+    runs: dict[str, dict[str, str]] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False
+) -> Path:
+    """47.6's verdict over MODELS (sealed until Q47.6), or with coverage (batch 52 C) the same rule on the coverage runs
+    (target -> {"a", "b"}, default COVERAGE_RUNS) alone: "no prediction" in place of Dan's answer, written to
+    x52_edges-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else require_answer()
+    runs = runs or (COVERAGE_RUNS if coverage else RUNS)
+    models = list(runs) if coverage else list(MODELS)
+    assert not coverage or set(models) <= set(COVERAGE_RUNS), f"47.6 coverage runs on {sorted(COVERAGE_RUNS)}"
+    res = {t: b_result(runs[t]["b"], n_boot) for t in models}
+    ares = {t: a_result(runs[t]["a"], n_boot) for t in models}
     for t, r in res.items():
         assert r["status"] != "tested" or r["target"] == t, f"{r['run']} is a {r['target']} run, not {t}'s"
     tested = {t: r for t, r in res.items() if r["status"] == "tested"}
     held = [t for t, r in tested.items() if r["formation"]["holds"]]
-    verdict = {"formation": {"held_on": held, "holds": len(held) == len(MODELS),
-                             "not_tested_or_pending": [t for t in MODELS if t not in tested]}}  # fmt: skip
-    out = RESULTS / f"x47_6-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    verdict = {"formation": {"held_on": held, "holds": len(held) == len(models),
+                             "not_tested_or_pending": [t for t in models if t not in tested]}}  # fmt: skip
+    out = RESULTS / f"{'x52_edges' if coverage else 'x47_6'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     yn = lambda b: "yes" if b else "no"  # noqa: E731
     lines = ["# 47.6: where is the pointer formed? (edge knock-outs)", "",
@@ -896,7 +905,9 @@ def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X
              f"**Formation** (block/sentence/all: the pick sentence cannot read the locker sentences at 0..L, both "
              f"forwards that form the change): {'holds' if verdict['formation']['holds'] else 'does not hold'} (holds on "
              f"{', '.join(verdict['formation']['held_on']) or 'none'}).", ""]  # fmt: skip
-    for t in MODELS:
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
+    for t in models:
         r = res[t]
         if r["status"] != "tested":
             lines += [f"## {t}: {r['status']} ({r.get('why', '')})", ""]
@@ -941,7 +952,7 @@ def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X
                   + "".join(f"; (c) {w} {a} {e['edges']}" for w, v in r["edges_item0"].get("c", {}).items() for a, e in v.items())
                   + ".", ""]  # fmt: skip
     lines += ["## (a) attention from the last token to the locker sentences (descriptive)", ""]
-    for t in MODELS:
+    for t in models:
         a = ares[t]
         if a["status"] != "tested":
             lines += [f"{t}: {a['status']}.", ""]
@@ -1110,6 +1121,8 @@ def main() -> None:
     ap.add_argument("--why", default="batch 47, test 47.6 (jobs/c3/batch47.yaml; Q47.6, sealed)")
     ap.add_argument("--n-gen", type=int, default=R.N_GEN, help="plan: scenes generated per condition")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs {COVERAGE_RUNS} ('{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.n_gen, a.with_c)
@@ -1118,7 +1131,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.part, a.name, a.why, a.with_c)
     elif a.stage == "verdict":
-        stage_verdict(n_boot=a.n_boot)
+        stage_verdict(n_boot=a.n_boot, coverage=a.coverage)
     elif a.stage == "view":
         assert a.name, "view needs --name"
         stage_view(a.name)

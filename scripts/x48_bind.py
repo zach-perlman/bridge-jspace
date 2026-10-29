@@ -84,8 +84,10 @@ QUESTION = "Q48.3"
 MODELS = ("qwen3.5-9b", "muse-glimmer-30b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_bind", "muse-glimmer-30b": "muse30_x48_bind"}
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"qwen3.6-27b": "x48_bind_27b"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x48_bind/x48_bind-20261028T113120Z"  # 48.3's rule first scored (the 9B and Muse)
 SOURCES = {"main": B.MAIN_RUN, "45m": B.FRESH_RUN}  # item source -> the x0_necessity run per target
 RENDERING = "chat"
 TOKENS = ("item", "number")
@@ -693,7 +695,7 @@ def rule(tokens: dict[str, dict], lookup: dict[str, Any], recall: dict[str, Any]
 def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 48.3 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {
             "run": run,
@@ -771,17 +773,22 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """48.3's verdict (sealed until Q48.3), or with coverage (batch 52 C) the same rule on the given coverage runs alone:
+    no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_bind-<UTC>/."""
+    answer = (f"{NO_PREDICTION}; rule first scored in {SCORED}; the all-models count covers the given runs only, "
+              "not re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    assert set(targets) <= set(MODELS), f"48.3 runs on {MODELS}, not {sorted(set(targets) - set(MODELS))}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
-               for t in MODELS if t not in targets]  # fmt: skip
+    known = set(COVERAGE_RUNS) if coverage else set(MODELS)
+    assert set(targets) <= known, f"48.3 runs on {sorted(known)}, not {sorted(set(targets) - known)}"
+    if not coverage:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
+                   for t in MODELS if t not in targets]  # fmt: skip
     v = batch_verdict(models)
-    out = RESULTS / f"x48_bind-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_bind' if coverage else 'x48_bind'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 48.3: forward binding at the locker sentence, outside the lens?", "",
              f"Batch 48, test 48.3 (jobs/c3/batch48.yaml; {QUESTION}, Dan: {answer}). Probe = which of the scene's three "
@@ -859,6 +866,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                      f"{p['locker_after']}; write candidates in B {p['write_candidates_B']} (dropped {p['write_dropped'] or 'none'}; "
                      f"no mean {c['no_mean'] or 'none'}); written {c['writes']}; {p['names']} names, names with means "
                      f"{ {t: len(v) for t, v in c['names_with_means'].items()} }; strata {p['strata']}; numbers {p['numbers']}.")  # fmt: skip
+    if coverage:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ")
     (out / "x48_bind.json").write_text(json.dumps({"runs": runs, "dan": answer, "verdict": v, "models": models}, indent=1,
                                                   default=str) + "\n")  # fmt: skip
     (out / "x48_bind.md").write_text("\n".join(lines) + "\n")
@@ -880,6 +889,7 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict: the 48.3 runs (9B, Muse)")
     ap.add_argument("--why", default="batch 48, test 48.3 (jobs/c3/batch48.yaml; Q48.3)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -887,7 +897,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.coverage)
 
 
 if __name__ == "__main__":
