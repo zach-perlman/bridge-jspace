@@ -1,0 +1,42 @@
+id: x53_3_27b
+title: "Batch 53.3 on the 27B: the conflict test at the last token (P3) at 51.10's read-peak layer (lookup L60, recall L56) and the answer layer minus 2 (L59 both); arms whole / without the lens part / without a random part of its share / the lens part alone / the rest alone; 51.10's 69 locker-first items, both readers; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_lastconflict.py run --name x53_3_27b --why "Batch 53, test 53.3 (jobs/c3/batch53.yaml, Dan 29 Oct 09:30): the conflict test at the last token on the 27B, at 51.10's read peak and the answer layer minus 2; no prediction" &&
+  uv run python scripts/x53_lastconflict.py verdict --runs x53_3_27b
+question: >-
+  At the last token (the read position, whose next token is the answer), does each reader's change from O to S act on
+  the answer through the lens part (its 25 J++ atoms) or outside it, at 51.10's read-peak layer and two layers before
+  the answer layer?
+why_it_matters: >-
+  Batch 53 (Dan, 29 Oct 09:30), test 53.3, priority 3 (09:50 standing rules): the main conflict test reads the bridge
+  word; 53.3 asks the same question where the answer is read out.
+hypotheses:
+  none: "No prediction (batch 53: every rule fixed in Dan's brief before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (brief, 53.3): "9B, 27B, Muse, Lightning; at 51.10's read-peak layer and the
+  answer layer minus 2. The change = S's last-token state minus O's at that layer; the lens part = its 25 J++ atoms;
+  arms: whole; without the lens part; without a random part of the same share; the lens part alone; the rest alone.
+  Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond
+  random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random;
+  else in between." As computed: as jobs/c3/x53_3_9b.yaml (scripts/x53_lastconflict.py, unchanged), on the 27B:
+  layers from results/x51_jread/x51_10_27b/peak.json (read peak: lookup 60, recall 56) and the newest 51.10 read,
+  results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json (answer layer: lookup 61, recall 61; minus 2 = 59; the
+  J++ lens has maps at L0-L62); items = 51.10's (x51_jread.select on x0_necessity_27b_chat at L32), its 69 locker-first
+  items (34 entities); the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole, the rest alone's share =
+  S_rest / S_whole, point estimates decide (EPS 1e-9), cluster-bootstrap CIs over bridge entities (10,000, seed 0)
+  beside; "the rest alone" is the same vector as "without the lens part" in this additive patch (read separately).
+  Verdict in the job: results/x53_lastconflict/x53_lastconflict-<UTC>/.
+controls:
+- "without a random part of the lens part's share (X0's random subspace, seed 888 + layer): the reference of the loss"
+- "O unedited (the floor) and the whole change (the ceiling) read on the same items"
+- "the rest alone read separately from 'without the lens part' (the same vector: the two reads must agree)"
+- "the source run's gate (X0: 0.80 per reader on O unedited, >= 150 eligible) asserted (PP 0.997, PM 0.977)"
+n: "51.10's 69 locker-first items (34 bridge entities) on the 27B, 2 readers, 3 layers (lookup L60 / L59, recall L56 / L59): 1,518 reads + 276 state forwards (plan: x53_lastconflict.py plan)"
+seeds: [888, 0]
+notes: "Batch 53, test 53.3 (Dan's brief 29 Oct 09:30; standing rules 09:50: priority 3). Box: mats (or any idle 80 GB GPU, as the 9B's went to speedup). Code: scripts/x53_lastconflict.py as committed with x53_3_9b (f55daae2). Writes results/x53_lastconflict/x53_3_27b/ (manifest.json before the model loads, plan.json, cases.jsonl, norms.jsonl, outcomes.jsonl) and the verdict folder x53_lastconflict-<UTC>/. Cost (ledger, results/jobq/ledger_sesterce-h100x2.jsonl): x51_10_27b ran 1,396 s for ~50,000 reads and 1,100 cached forwards on these items, x52_read_main_27b 106 s; here 276 forwards and 138 batched reads of 11 rows plus load and three J++ dictionaries: ~4 min; est 0.2. Memory: x51_10_27b peaked at 65 GB. Disk on the Mac before the spec: 185 GB free. UNVERIFIED; into EXPERIMENTS.md with a card and the figure."
