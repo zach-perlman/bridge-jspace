@@ -2753,3 +2753,25 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Site span: L0-5, L6-10, L11-15, L16-20, L21-26.
   - Site final: L34-39, L40-45, and L46-50, which is the positive check (>= 50% moved to the new value).
 - **Queue.** scripts/queues/h200_n15n17L_1029.sh on GPU0, after the 9B's note 17 job, beside the 27B's stage 2. A 2-item smoke of each note runs first.
+
+##### Amendment 58 note 17, 27B addendum, and note 18 (Zach, 2026-10-29 ~03:40 UTC; before any 27B note 17 or note 18 result; the 9B's note 17 result had been read: "the person, not the value" at all 7 description cells)
+- **Note 17 on the 27B.** The value swap exactly as note 17 (MP cf_ok pairs; MM all pairs). Cells use the 27B's note 14 windows:
+  - Site last: L8-15, L16-23, L24-31, L32-40.
+  - Site span: L0-7, L8-15, L16-23, L24-31, L32-40.
+  - Site final: L41-48, L49-56, and L57-62, which is the positive check (>= 50% moved to the new value).
+  - Donor seeds 0 and 1. GPU1, after the 27B's note 15 job.
+- **Note 18 (9B): the person or its position?**
+  - **Why.** The value swap shows the description carries no looked-up value. What it carries could be the person, or the person's slot in the passage. Dan finds a slot code (his "address") that his lookups use.
+  - **Donor (nn_swap --position-swap).** The same prompt and question about X. Only the passage changes: X's fact sentence trades places with another entity Z's (seeded). X keeps its value but sits in Z's old slot.
+    - Pasting the donor's description-end state into the original run moves the answer to Z's value only if that state carries a slot: in the original passage, X's new slot holds Z.
+    - Z's value is never X's value or X's remembered attribute.
+    - Classes: donor = Z's value (the position route); kept = X's value (the person); MP third = X's remembered attribute.
+    - cf_ok = the donor prompt is answered with X's value.
+  - **Cells.** As note 17 on the 9B: last L4-7, L8-11, L12-16; span L0-3, L4-7, L8-11, L12-16; final L21-24, L25-28, L29-30. Donor seeds 0 and 1. Conditions full_cf and lensrand_cf. MP cf_ok pairs; MM all pairs, as a control.
+  - **Readings, per description cell (MP):**
+    - "the position, not the person": >= 20% moved to Z's value, lensrand_cf < 10%, and an interval above 0;
+    - "the person, not its position": < 5% moved to Z's value at a cell where note 14's person swap moved >= 20%;
+    - otherwise "partly".
+  - **Final cells** are reported descriptively.
+  - **No separate positive check.** The donor path is note 17's, whose check passed (93.4% at final L29-30). The swap is asserted to move X's sentence in every prompt.
+  - GPU0, after the Lightning note 15/17 job. A 2-item smoke runs first.

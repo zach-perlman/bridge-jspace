@@ -62,6 +62,9 @@ jswap):
   note 17 (--value-swap, v4): the donor prompt keeps the question about X and gives X another passage value (same
   vowel start, not in the passage, not X's real attribute); classes: donor = the new value; MP third = X's remembered
   attribute, MM third = X's old passage value
+  note 18 (--position-swap, v4): the donor prompt keeps the question; X's fact sentence trades places with another
+  entity Z's (X keeps its value); donor class = Z's value (the position route), kept = X's value; cf_ok = the donor prompt
+  answered with X's value
   jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
@@ -118,6 +121,15 @@ def random_subspace_part(delta: torch.Tensor, share: torch.Tensor, basis: torch.
     k = (cum - share.float()[:, None]).abs().argmin(dim=-1)
     keep = torch.arange(basis.shape[1], device=delta.device)[None, :] < k[:, None]
     return (coef * keep) @ basis.T
+
+
+def fact_span(ctx: str, name: str) -> tuple[int, int]:
+    """Note 18: [start, end) of the sentence (or bullet line) that mentions name in a v4 passage (prose; checked on all
+    10488 entity sentences: each holds its own value and no other entity)."""
+    i = ctx.find(name)
+    s = max(ctx.rfind(". ", 0, i) + 2, ctx.rfind("\n", 0, i) + 1, 0)
+    ends = [j for j in (ctx.find(". ", i), ctx.find(".\n", i)) if j >= 0] + [len(ctx) - 1 if ctx.endswith(".") else len(ctx)]
+    return s, min(ends) + 1
 
 
 def conds_for(ks: list[int]) -> list[str]:
@@ -289,7 +301,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                 if key[0] == "cf" and key[2] == 0:  # note 14: does the model answer the counterfactual prompt with D's answer?
                     j = job_of[key[1]]
                     c2 = torch.tensor(j["cands2"], device=lg_d.device)
-                    cf_ok[key[1]] = int(c2[lg_d[b, c2].argmax()]) in j["fd"]
+                    cf_ok[key[1]] = int(c2[lg_d[b, c2].argmax()]) in j["fx" if a.position_swap else "fd"]  # note 18: X's value, moved
     print(f"[{tag}] {len(vec)} donor residuals, {time.time() - t0:.0f}s", flush=True)
 
     def classify(lg, j):
@@ -513,7 +525,7 @@ def main(a) -> None:
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
                                                        "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",
                                                                  "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer", "ctl": SEED_CTL},
-                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap,
+                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap, "position_swap": a.position_swap,
                                                        "git_commit": commit, "git_state": pins.git_state(), "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ")}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -583,6 +595,19 @@ def main(a) -> None:
                     continue
                 dn, desc_d = x, desc_x
                 cf_ids = S.ids(tok, T.render(tok, {**it, "context": ctx2, "_question": it["question"], "_kind": kind}))
+            elif a.position_swap:  # note 18: the same question about X; X's fact sentence trades places with Z's
+                ctx = it["context"]
+                zs = sorted(e for e in it["entities"] if e != x and pv[e] not in (xv, mem(x)) and ctx.count(e) == 1)
+                if ctx.count(x) != 1 or not zs:
+                    continue
+                zn = rng.choice(zs)
+                (s1, e1), (s2, e2) = sorted((fact_span(ctx, x), fact_span(ctx, zn)))
+                if e1 > s2:
+                    continue
+                ctx2 = ctx[:s1] + ctx[s2:e2] + ctx[e1:s2] + ctx[s1:e1] + ctx[e2:]
+                assert sorted(ctx2) == sorted(ctx) and ctx2 != ctx, it["id"]
+                dn, desc_d, zval = x, desc_x, pv[zn]
+                cf_ids = S.ids(tok, T.render(tok, {**it, "context": ctx2, "_question": it["question"], "_kind": kind}))
             else:
                 cf_ids = S.ids(tok, T.render(tok, {**it, "_question": it["question"].replace(desc_x, desc_d), "_kind": kind}))
             cf_desc = bridge_positions(tok, cf_ids, desc_d)
@@ -606,6 +631,8 @@ def main(a) -> None:
             ax, ad, at, am = (xv, pv[dn], mem(dn), mem(x)) if lookup else (mem(x), mem(dn), pv[dn], xv)
             if a.value_swap:  # note 17: donor = X's new passage value; MP third = X's remembered attribute, MM third = X's old value
                 ax, ad, at, am = (xv, vnew, mem(x), xv) if lookup else (mem(x), vnew, xv, mem(x))
+            if a.position_swap:  # note 18: donor = Z's value (the value at X's new slot in the original passage: the position route)
+                ax, ad, at, am = (xv, zval, mem(x), xv) if lookup else (mem(x), zval, xv, mem(x))
             jid = f"{p['id']}|{dn}"
             jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
                          "lat_id": f"none:{p['id']}", "lat_ids": nids, "lat_pos": npos[0], "tx": tx, "td": name_token(model, tok, dn),
@@ -707,6 +734,7 @@ if __name__ == "__main__":
                     help="note 11: fail = composition failures (RM); note 14: v4ok / v4fail = v4's gate")  # fmt: skip
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1 (closed-book hop 1)")
     ap.add_argument("--value-swap", action="store_true", help="note 17: the donor prompt keeps the question about X and gives X another passage value")
+    ap.add_argument("--position-swap", action="store_true", help="note 18: the donor prompt keeps the question; X's fact sentence trades places with Z's")
     a = ap.parse_args()
     assert a.band or a.sweep, "--band or --sweep"
     main(a)
