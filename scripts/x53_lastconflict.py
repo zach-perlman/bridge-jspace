@@ -477,10 +477,12 @@ def across_readers(models: list[dict]) -> dict[str, Any]:
         digits = complete and all(good[("recall", o)]["label"] == "through" and good[("lookup", o)]["label"] == "through"
                                   for o in ACROSS_OFFSETS)  # fmt: skip
         per[mdl["target"]] = {"copy_bypasses": copy, "digits_only": digits, "complete": complete,
+                              "below_gate": bool(mdl.get("below_gate")),
                               "labels": {f"{w} answer-{o}": (None if v is None else v["label"] if v["x0_valid"] else "invalid")
                                          for (w, o), v in cells.items()}}  # fmt: skip
-    n_copy = sum(v["copy_bypasses"] for v in per.values())
-    n_digits = sum(v["digits_only"] for v in per.values())
+    # a model below its source's gate is reported (hollow) and never counted toward a clause (the 09:50 standing rules)
+    n_copy = sum(v["copy_bypasses"] and not v["below_gate"] for v in per.values())
+    n_digits = sum(v["digits_only"] and not v["below_gate"] for v in per.values())
     missing = N_MODELS_WORDS - len(per)
     if n_copy >= ACROSS_MIN:
         lab = "copy bypasses the lens"

@@ -90,6 +90,20 @@ def test_word_layers_and_the_rule_across_readers():
     assert LC.across_readers(invalid)["label"] == "in between" and not LC.across_readers(invalid)["copy_models"]
 
 
+def test_a_model_below_gate_never_counts_toward_a_clause():
+    def model(target: str, below: bool) -> dict:
+        cells = [{"reader": w, "layer": 20 - o, "label": lab, "x0_valid": True}
+                 for w, lab in (("lookup", "outside"), ("recall", "through")) for o in (1, 2, 3)]  # fmt: skip
+        return {"target": target, "cells": cells, "below_gate": "below gate (test)" if below else None,
+                "layers": {"readers": {"lookup": {"answer": 20}, "recall": {"answer": 20}}}}  # fmt: skip
+
+    two_and_below = [model("a", False), model("b", False), model("c", True)]
+    res = LC.across_readers(two_and_below)
+    assert res["copy_models"] == 2 and res["per_model"]["c"]["copy_bypasses"] and res["per_model"]["c"]["below_gate"]
+    assert res["label"] == "pending (3 of 4 models)"
+    assert LC.across_readers([*two_and_below, model("d", False)])["label"] == "copy bypasses the lens"
+
+
 def plant_z1p(root, run: str, n: int, data_dir) -> list[dict]:
     """A planted Z1-P run: n passages (the order alternates the two sets; only jsuite_v2_test_chat's are read) and the
     v2.1 item ids."""
