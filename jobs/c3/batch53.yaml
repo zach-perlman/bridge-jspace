@@ -485,6 +485,12 @@ decisions_1225: |
   "gate changed after the data (hollow)"; routes and monitor stay
   pre-registered. For stopping jobs, kill by PID or an exact pattern that
   can't match your own shell (no bare pkill on the ssh line).
+fallback_1220_received: "29 Oct ~12:22 Paris (Dan: 'Так' to the coordinator's fallback list)"
+fallback_1220: |
+  Так (Dan approving, verbatim, the coordinator's list): "53.2 монітор на 122B (mats, 2 GPU). 53.6 на 122B.
+  53.3 на 122B. 53.8 на 27B, після 9B і Muse. Lightning не додаю: ти зупинив нове покриття для нього."
+  All on already-fixed rules, no new rules, no prediction; queued after the day's ordered items so GPUs do not idle
+  after ~15:00.
 decisions_1210_coordinator_note: >-
   Disclosure (coordinator): before this decision the coordinator had pulled and read both 53.7 address-probe box
   verdicts and reported them to Dan (~12:05-12:15): the 9B's code format failed X0's two-reader gate on the recall
