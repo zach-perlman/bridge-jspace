@@ -1,0 +1,116 @@
+{
+  "exp": "x48_route2",
+  "run": "nem35l_x52_route2_below",
+  "why": "Batch 52, Dan's morning queue item 1: 48.5 on Lightning at L14, below gate; below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "written_utc": "2026-10-29T08:47:28Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "ce42c33af3215df67c334053e43b7ee536a8dd88",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "48.5",
+  "spec": "jobs/c3/batch48.yaml (48.5)",
+  "question": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/nem35l_x52_fresh/manifest.json": "84e3d46112390ddb9718f309fe434db360874ec98f4f694578da4815258ee975",
+    "results/x0_necessity/nem35l_x52_fresh/cases.jsonl": "59f432ff6eaa3da35f9c7ae1ba98c87e1045be95ef5903fa14e6712e1aae6482",
+    "results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl": "e1b25a7a744947e8b03031fc434056d3350cb1795ab9c88d520f0119b79e648f"
+  },
+  "run_45m": "nem35l_x52_fresh",
+  "layer": 14,
+  "k": 25,
+  "omp": "signed",
+  "s": 2.0,
+  "mu_from": "nem35l_x52_probe",
+  "step_norms": {
+    "0-1": 3.3432,
+    "0-2": 4.0213,
+    "0-3": 4.653,
+    "1-0": 3.3432,
+    "1-2": 1.7801,
+    "1-3": 3.0071,
+    "2-0": 4.0213,
+    "2-1": 1.7801,
+    "2-3": 1.7453,
+    "3-0": 4.653,
+    "3-1": 3.0071,
+    "3-2": 1.7453
+  },
+  "write_norms": {
+    "0-1": 6.6864,
+    "0-2": 8.0426,
+    "0-3": 9.306,
+    "1-0": 6.6864,
+    "1-2": 3.5602,
+    "1-3": 6.0142,
+    "2-0": 8.0426,
+    "2-1": 3.5602,
+    "2-3": 3.4906,
+    "3-0": 9.306,
+    "3-1": 6.0142,
+    "3-2": 3.4906
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "h_S - h_O at the bridge token (45m's whole arm, rerun)",
+    "a1": "(i) the change minus its J++ part (k = 25, signed)",
+    "w<k>": "(ii) a1 plus s (mu_k - mu_j), s = 2",
+    "p<k>": "(iii) the write alone",
+    "r<k>": "(iv) a1 plus a random vector of the write's norm"
+  },
+  "write_position": "the bridge token of O's prompt (c['pos']), every arm, at L",
+  "slots": "each other slot k of the four (three writes per scene; j = the asked item's locker slot in O)",
+  "items_rule": "45p's items (the new item's locker before the asked pick; O and S the same but for the bridge word) whose original item's locker is before the asked pick too",
+  "informative": "slot k's item is neither the original nor the changed item and its attribute differs from both of theirs; the rule counts informative writes, all writes reported beside",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the recall's top token classified by the attribute it matches (slot k's item / original / changed / other, first match); the lookup's by locker number",
+  "rule": "the recall's second route is the address if under (ii) the recall names slot k's item in >= 0.3 of the informative writes with the random vector (iv) <= 0.05 (point estimates), on >= 2 of 3 models",
+  "decisive_reader": "PM",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_directions": 4401,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "none (below gate, exploratory): verdict --below-gate",
+  "below_gate": {
+    "note": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+    "source_gate": {
+      "cases": 559,
+      "org_accuracy": {
+        "PP": 0.9642,
+        "PM": 0.7513
+      },
+      "pass": false,
+      "eligible": 342,
+      "enough": true,
+      "descriptive": true
+    }
+  }
+}
