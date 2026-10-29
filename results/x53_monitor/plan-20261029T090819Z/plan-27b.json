@@ -1,0 +1,183 @@
+{
+ "target": "qwen3.6-27b",
+ "run": "x53_monitor_27b",
+ "layers": [
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20,
+  22,
+  24,
+  26,
+  28,
+  30,
+  32,
+  34,
+  36,
+  38,
+  40,
+  42,
+  44,
+  46,
+  48,
+  50,
+  52,
+  54,
+  56,
+  58,
+  60,
+  62
+ ],
+ "main": {
+  "items": 200,
+  "entities": 44,
+  "forwards": 800,
+  "rows_per_position": 400,
+  "slots": {
+   "2": 125,
+   "0": 145,
+   "1": 130
+  },
+  "lookup": {
+   "5": 45,
+   "2": 49,
+   "7": 41,
+   "4": 38,
+   "3": 54,
+   "1": 38,
+   "6": 49,
+   "8": 45,
+   "9": 41
+  },
+  "recall": {
+   "4": 71,
+   "8": 53,
+   "3": 44,
+   "2": 67,
+   "1": 37,
+   "6": 49,
+   "9": 18,
+   "7": 47,
+   "5": 14
+  },
+  "bridges": 45,
+  "counts": {
+   "design": "main",
+   "source": "x0_necessity_27b_chat",
+   "alt": "cf",
+   "layer": 32,
+   "items_at_L": 200,
+   "dropped": {},
+   "items": 200,
+   "entities": 44,
+   "groups": {
+    "locker-first": 69,
+    "locker-after": 61,
+    "mixed": 70
+   },
+   "upstream": {
+    "True": 97,
+    "False": 103
+   },
+   "locker-first, prefix-identical": 16,
+   "pick_tokens": {
+    "5": 76,
+    "4": 119,
+    "6": 5
+   },
+   "positions_dropped": {},
+   "items_read": 200,
+   "entities_read": 44,
+   "families": {
+    "animals": 70,
+    "elements": 69,
+    "greek": 61
+   },
+   "classes_per_family": {
+    "animals": 31,
+    "elements": 6,
+    "greek": 8
+   },
+   "items_locker_first": 69,
+   "entities_locker_first": 34
+  },
+  "mb_per_array_fp16": 375
+ },
+ "json": {
+  "items": 310,
+  "entities": 30,
+  "forwards": 1240,
+  "rows_per_position": 620,
+  "slots": {
+   "2": 125,
+   "0": 114,
+   "1": 114,
+   "5": 71,
+   "3": 59,
+   "4": 64,
+   "7": 23,
+   "6": 30,
+   "8": 20
+  },
+  "lookup": {
+   "2": 60,
+   "1": 78,
+   "9": 57,
+   "5": 78,
+   "3": 53,
+   "6": 75,
+   "8": 81,
+   "7": 66,
+   "4": 72
+  },
+  "recall": {
+   "7": 40,
+   "3": 89,
+   "6": 46,
+   "2": 79,
+   "9": 51,
+   "5": 37,
+   "8": 75,
+   "4": 154,
+   "1": 49
+  },
+  "bridges": 32,
+  "counts": {
+   "json_cases": 310,
+   "json_entities": 30,
+   "json_domains": {
+    "greek": 188,
+    "animals": 85,
+    "shapes": 37
+   },
+   "json_levels": {
+    "0": 83,
+    "1": 109,
+    "2": 118
+   },
+   "x0b_counts": {
+    "scenes": 4410,
+    "cases": 2258,
+    "dropped": {
+     "animals: no other pick with a different locker and memory number": 9,
+     "animals: the bridge is not one token at one position in org and alt": 215,
+     "elements: the bridge is not one token at one position in org and alt": 365,
+     "greek: the bridge is not one token at one position in org and alt": 60,
+     "instruments: no other pick with a different locker and memory number": 49,
+     "instruments: the bridge is not one token at one position in org and alt": 266,
+     "planets: the bridge is not one token at one position in org and alt": 261,
+     "shapes: the bridge is not one token at one position in org and alt": 496,
+     "vehicles: the bridge is not one token at one position in org and alt": 431
+    }
+   }
+  },
+  "mb_per_array_fp16": 581
+ }
+}
