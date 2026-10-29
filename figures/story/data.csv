@@ -5329,6 +5329,38 @@ ledger_described,qwen3.6-27b,L32: our gap (recall minus lookup extra loss),-0.11
 ledger_described,qwen3.6-27b,"Zach's knock-out, recall minus lookup",0.44594594594594594,0.32,0.5652173913043478,,results/x50_zach/z2-20261028T162710Z/z2.json
 ledger_described,muse-glimmer-30b,L26: our gap (recall minus lookup extra loss),-0.16666666666666674,-0.7499999999999999,0.6071428571428572,,results/x50_zach/z2-20261028T162710Z/z2.json
 ledger_described,muse-glimmer-30b,"Zach's knock-out, recall minus lookup",0.6,0.4827586206896552,0.711864406779661,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_address_swap,qwen3.5-9b,dose 1: lookups sent to the target,0.018333333333333333,0.008305647840531562,0.03076923076923077,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.5-9b,dose 1: recalls changed,0.04,,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.5-9b,dose 2: lookups sent to the target,0.4583333333333333,0.42131109593199756,0.49691358024691357,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.5-9b,dose 2: recalls changed,0.215,,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.5-9b,dose 4: lookups sent to the target,0.735,0.7024220146562268,0.7677319905968603,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.5-9b,dose 4: recalls changed,0.4266666666666667,,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 1: lookups sent to the target,0.005,0.0,0.01032448377581121,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 1: recalls changed,0.006666666666666667,,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 2: lookups sent to the target,0.24166666666666667,0.1964841967138293,0.2903781720856463,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 2: recalls changed,0.043333333333333335,,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 4: lookups sent to the target,0.5,0.47202633814783346,0.5300360345753008,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,qwen3.6-27b,dose 4: recalls changed,0.11333333333333333,,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 1: lookups sent to the target,0.05,0.032142038007863694,0.07222222222222222,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 1: recalls changed,0.006666666666666667,,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 2: lookups sent to the target,0.515,0.47641509433962265,0.5530617486720716,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 2: recalls changed,0.058333333333333334,,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 4: lookups sent to the target,0.5216666666666666,0.5017123287671232,0.5444078947368421,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,muse-glimmer-30b,dose 4: recalls changed,0.10666666666666667,,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 1: lookups sent to the target,0.025,0.011784016636957814,0.04067953546767104,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 1: recalls changed,0.02,,,,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 2: lookups sent to the target,0.5033333333333333,0.4610165950616118,0.544478664061306,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 2: recalls changed,0.2733333333333333,,,,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 4: lookups sent to the target,0.6866666666666666,0.6553563503803889,0.7145312865098526,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,nemotron-3.5-lightning,dose 4: recalls changed,0.3983333333333333,,,,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_order_split,qwen3.5-9b,locker before the pick: lookups switched,0.86,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,qwen3.5-9b,locker after the pick: lookups switched,0.19,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,qwen3.6-27b,locker before the pick: lookups switched,0.7624,,,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,qwen3.6-27b,locker after the pick: lookups switched,0.0909,,,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,muse-glimmer-30b,locker before the pick: lookups switched,0.6522,,,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,muse-glimmer-30b,locker after the pick: lookups switched,0.0926,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,nemotron-3.5-lightning,locker before the pick: lookups switched,0.8588,,,85,results/x0_composition/split-by-order-20261029T005451Z/split.json
+ledger_order_split,nemotron-3.5-lightning,locker after the pick: lookups switched,0.1478,,,115,results/x0_composition/split-by-order-20261029T005451Z/split.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

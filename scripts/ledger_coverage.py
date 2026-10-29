@@ -21,6 +21,8 @@ ANCHORS = {
     "1. Conflict test (main test, at L)": "lightning-conflict",
     "2. Answer control (51.12 E1)": "t51-12",
     "3. Routes test (identity / position / value; no address; address alone)": "routes",
+    "4. Address swap by dose (x8_write, s = 1 / 2 / 4)": "swap",
+    "5a. Order split (descriptive)": "order",
     "E7: six lockers, one code per slot (47.2)": "six",
     "7. Ladder (49.2, rungs 1-6)": "t49-2",
     "9. Last-token read / write (51.10)": "t51-10",

@@ -732,8 +732,77 @@ def described(plt) -> str:
     return save(fig, "ledger_described")
 
 
+# ---- the address swap by dose and the split by sentence order, four models (Lightning's coverage runs) ---------------
+
+SWAP = {
+    "qwen3.5-9b": R / "x8_write" / "qwen35_9b_x8_write" / "verdict-20261026T110254Z" / "verdict.json",
+    "qwen3.6-27b": R / "x8_write" / "x8_write_27b" / "verdict-20261026T125548Z" / "verdict.json",
+    "muse-glimmer-30b": R / "x8_write" / "muse30b_x8_write" / "verdict-20261026T141141Z" / "verdict.json",
+    "nemotron-3.5-lightning": R / "x8_write" / "nem35l_x52_write" / "verdict-20261029T005021Z" / "verdict.json",
+}
+ORDER = {"three": R / "x0_composition" / "split-by-order-20261026T173323Z" / "split.json",
+         "nemotron-3.5-lightning": R / "x0_composition" / "split-by-order-20261029T005451Z" / "split.json"}  # fmt: skip
+
+
+def address_swap(plt) -> str:
+    """Per model, the share of lookups sent to the swapped-in locker by the address swap at doses 1, 2 and 4 (whiskers
+    95%), a random vector of the same size dashed, and the recalls changed by the same swap (the collateral) in grey."""
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.5), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
+    S.title(fig, "Swapping the address sends the lookup to the swapped-in locker",
+            "Lookups sent to the target by dose (orange); dashed: a random vector; grey: recalls changed")  # fmt: skip
+    for ax, (t, path) in zip(axes, SWAP.items(), strict=True):
+        cells = {(c["kind"], c["s"]): c for c in load(path)["cells"] if c["pair"] is None}
+        doses = sorted(s for k, s in cells if k == "write")
+        tgt = [cells[("write", s)]["target"] for s in doses]
+        ax.plot(doses, [x[0] for x in tgt], "-^", color=ADDRESS, ms=6, lw=1.8)
+        for s, x in zip(doses, tgt, strict=True):
+            ax.plot([s, s], [x[1], x[2]], color=ADDRESS, lw=1.2)
+            S.record("ledger_address_swap", t, f"dose {s:g}: lookups sent to the target", *x, n=cells[("write", s)]["n"],
+                     source=rel(path))  # fmt: skip
+            S.record("ledger_address_swap", t, f"dose {s:g}: recalls changed", cells[("write", s)]["recall_changed"],
+                     source=rel(path))  # fmt: skip
+        rd = sorted(s for k, s in cells if k == "random")
+        ax.plot(rd, [cells[("random", s)]["target"][0] for s in rd], "--", color=NULL, lw=1.3)
+        ax.plot(doses, [cells[("write", s)]["recall_changed"] for s in doses], "-o", color="#8c8c8c", ms=4, lw=1.2)
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        ax.set_xscale("log", base=2)
+        ax.set_xticks([1, 2, 4], ["1", "2", "4"])
+        ax.set_ylim(-0.02, 1.0)
+        ax.set_xlabel("dose")
+    axes[0].set_ylabel("share")
+    return save(fig, "ledger_address_swap")
+
+
+def order_split(plt) -> str:
+    """Per model, the share of lookups the whole change switches on the main test, split by whether the item's locker
+    sentence came before the asked pick or after it."""
+    cells = {}
+    for t, _ in (*MODEL3, ("nemotron-3.5-lightning", "")):
+        path = ORDER["nemotron-3.5-lightning" if t == "nemotron-3.5-lightning" else "three"]
+        cells[t] = (load(path)["cells"][f"{t}|swap"]["cells"], path)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.4))
+    fig.subplots_adjust(left=0.1, right=0.8, top=0.72, bottom=0.16)
+    S.title(fig, "The bridge word switches the lookup when its locker came first",
+            "Main test: lookups switched by the whole change, by where the item's locker sentence sits")  # fmt: skip
+    for i, (t, (c, path)) in enumerate(cells.items()):
+        for dx, grp, col in ((-0.18, "before", LOOKUP), (0.18, "after", "#c9bdf0")):
+            v = c[grp]["lookup_switch"]
+            ax.bar(i + dx, v, width=0.34, color=col, edgecolor=LOOKUP)
+            ax.text(i + dx, v + 0.02, f"n {c[grp]['n']}", ha="center", fontsize=S.LABEL_PT - 1, color=S.COL["muted"])
+            S.record("ledger_order_split", t, f"locker {grp} the pick: lookups switched", round(v, 4), n=c[grp]["n"],
+                     source=rel(path))  # fmt: skip
+    ax.set_xticks(range(len(cells)), [SHORT[t] for t in cells])
+    ax.set_ylim(0, 1.0)
+    ax.set_ylabel("lookups switched")
+    ax.text(1.02, 0.7, "dark: locker before\nthe pick\n\nlight: locker after\nthe pick", transform=ax.transAxes,
+            fontsize=S.LABEL_PT, color=S.COL["muted"], va="center")  # fmt: skip
+    return save(fig, "ledger_order_split")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
-           clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described)  # fmt: skip
+           clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
+           order_split)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

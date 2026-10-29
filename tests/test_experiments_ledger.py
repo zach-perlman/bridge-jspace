@@ -6,7 +6,8 @@ catches each failure."""
 from scripts import check_ledger as L
 
 REQUIRED = ("t49-2", "t49-5", "t51-1", "t51-2", "t51-3", "t51-4", "t51-5", "t51-7", "t51-10", "t51-11", "t51-12", "z1",
-            "z2", "z3", "lightning-layer", "lightning-conflict", "b52-a", "b52-b", "routes", "six")  # fmt: skip
+            "z2", "z3", "lightning-layer", "lightning-conflict", "b52-a", "b52-b", "routes", "six", "swap",
+            "order")  # fmt: skip
 CARD = """### A test (1.1, opened x) <a id="a"></a>
 
 - **Question.** q?
