@@ -804,8 +804,21 @@ def prepend_card(it: dict, seed: int, mark: dict | None) -> str:
     return "".join(parts)
 
 
+def fixed_note(v: dict, p: dict) -> str:
+    """The page's line for the fixed sample (views file fixed_sample, at its seed), or "" for a random sample."""
+    fs = I.spec().get("fixed_sample") or {}
+    if fs.get("seed") != p["seed"] or v["id"] not in (fs.get("views") or {}) or p["mode"] != "uniform":
+        return ""
+    return (f"<p class='mut'><b>The fixed sample</b> (seed {p['seed']}, {len(fs['views'][v['id']])} items across the "
+            "models: 6 random by model x reader + 4 targeted, each with its reason; docs/review_views.yaml fixed_sample, "
+            "never re-drawn).")  # fmt: skip
+
+
 def controls(v: dict, p: dict, server: bool) -> str:
     facet_names = list(v.get("filters", {}).get("facets", {}))
+    fixed = fixed_note(v, p)
+    if fixed and not server:
+        return fixed + " Marks are kept in this browser; use “download marks”.</p>"
     if not server:
         return (f"<p class='mut'>Static export: seed {p['seed']}, N = {p['n']} per model, {p['mode']}"
                 + "".join(f", {k} {p[k]}" for k in ("reader", "condition", "s", "kind", "order", "group", *facet_names)
@@ -837,7 +850,8 @@ def controls(v: dict, p: dict, server: bool) -> str:
         extra += sel(name, ["all", *values])
     sup = (f"<label><span><input type='checkbox' name='superseded' value='1' {'checked' if p.get('superseded') else ''}>"
            "superseded runs</span></label>") if v.get("superseded") else ""  # fmt: skip
-    return (f"<form class='ctl box' method='get' action='/view'><input type='hidden' name='view' value='{E(v['id'])}'>"
+    head = fixed + " The filters below do not apply to it; another seed gives a random sample.</p>" if fixed else ""
+    return head + (f"<form class='ctl box' method='get' action='/view'><input type='hidden' name='view' value='{E(v['id'])}'>"
             f"<label>seed<input name='seed' type='number' value='{p['seed']}' style='width:6em'></label>"
             f"<label>N<input name='n' type='number' value='{p['n']}' style='width:5em'></label>"
             + sel("mode", ["uniform", "stratified"]) + sel("model", models) + sel("reader", ["all", *I.READERS]) + extra
