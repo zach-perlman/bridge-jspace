@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T094549Z" / "matrix.json"
+MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T110130Z" / "matrix.json"
 COLUMNS = (("qwen3.6-27b", "27B"), ("nemotron-3.5-lightning", "Lightning"), ("qwen3.5-9b", "9B"),
            ("muse-glimmer-30b", "Muse"))  # fmt: skip
 # the matrix's row -> the ledger card's anchor (rows without a card stay plain)

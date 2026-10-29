@@ -1726,7 +1726,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - The 27B's check at L58 is invalid (whole change 0.29<!-- src: results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md \| qwen3.6-27b :: lookup :: 58 (answer L61 - 3) :: 0.29 --> < 0.30), so its locker label rests on L60 alone.
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
-### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? (53.4, opened 29 Oct ~10:40; follow-up with Dan's 11:25 control 12:53) <a id="b53-4"></a>
+### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? (53.4, opened 29 Oct ~10:40; follow-up with Dan's 11:25 control 11:53) <a id="b53-4"></a>
 
 `ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
 
@@ -1798,7 +1798,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - In the first condition, removing a random part of the address's share also leaves few position answers (0.07 [0.03, 0.11]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md | Without a random part of the address's share, C1 keeps :: 0.07 [0.03, 0.11] --> on the 27B), so there the removal clause cannot tell the address from a random part.
   - CPU on existing outcomes; exploratory (batch 53); no prediction; UNVERIFIED.
 
-### When the lens part points the recall to one item and the address to another, which does it follow? (53.6, opened 29 Oct ~10:35-10:45; joint four-model verdict 12:51) <a id="b53-6"></a>
+### When the lens part points the recall to one item and the address to another, which does it follow? (53.6, opened 29 Oct ~10:35-10:45; joint four-model verdict 11:51) <a id="b53-6"></a>
 
 `ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
 
@@ -1952,9 +1952,9 @@ Dan lifted the overnight no-README rule at 08:55; the README pass is applying th
 
 ## Appendix C. Coverage table <a id="coverage"></a>
 
-Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T094549Z/matrix.json, built 09:45 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
+Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T110130Z/matrix.json, built 11:01 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 09:45 UTC (10:45 Paris; fb9667eb: the 49.6 row renamed and its cells corrected, Muse's 47.16 rerun done, Lightning's 51.12 E1 verdict pinned). Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
+As of the matrix at 11:01 UTC (12:01 Paris; b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -1972,49 +1972,49 @@ As of the matrix at 09:45 UTC (10:45 Paris; fb9667eb: the 49.6 row renamed and i
 | **Part II. Identity** | | | | |
 | [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | ✓ | ✓ | ✓ | ✓ |
 | [3. Routes test (identity / position / value; no address; address alone)](#routes) | ✓ <sup>12</sup> | ✓ | ✓ | ✓ |
-| [What is left of the route; the value (47.7)](#t47-7c) | ✓ | ◐ <sup>13</sup> | – <sup>14</sup> | – <sup>15</sup> |
-| [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | ✓ <sup>16</sup> | – <sup>17</sup> | ✓ | ✓ |
+| [What is left of the route; the value (47.7)](#t47-7c) | ✓ | ◐ <sup>13</sup> | ○ <sup>14</sup> | ○ <sup>14</sup> |
+| [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | ✓ <sup>15</sup> | – <sup>16</sup> | ✓ | ✓ |
 | **Part III. The address** | | | | |
 | [E6: the address probe (x0_probe v4)](#probe) | ✓ | ✓ | ✓ | ✓ |
-| [4. Address swap by dose (x8_write, s = 1 / 2 / 4)](#swap) | ✓ <sup>18</sup> | ✓ <sup>19</sup> | ✓ <sup>20</sup> | ✓ <sup>21</sup> |
-| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ | ✓ <sup>22</sup> |
+| [4. Address swap by dose (x8_write, s = 1 / 2 / 4)](#swap) | ✓ <sup>17</sup> | ✓ <sup>18</sup> | ✓ <sup>19</sup> | ✓ <sup>20</sup> |
+| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ | ✓ <sup>21</sup> |
 | [E7: six lockers, one code per slot (47.2)](#six) | ✓ | ✓ | ✓ | ✓ |
-| [What is the address: dimension, methods, geometry (51.11)](#t51-11) | ◐ <sup>23</sup> | – <sup>17</sup> | ✓ | ✓ |
+| [What is the address: dimension, methods, geometry (51.11)](#t51-11) | ◐ <sup>22</sup> | – <sup>16</sup> | ✓ | ✓ |
 | [8. Lens readout with the item-change control (47.0)](#t47-0) | ✓ | ✓ | ✓ | ✓ |
-| [E8: the report prompt (47.10)](#t47-10) | ✓ | ○ <sup>24</sup> | ○ <sup>25</sup> | ○ <sup>26</sup> |
-| [Report of slot 1, reworded (49.6)](#t49-6) | ✓ | ✓ <sup>27</sup> | ✓ <sup>28</sup> | ✗ <sup>29</sup> |
+| [E8: the report prompt (47.10)](#t47-10) | ✓ | ○ <sup>23</sup> | ○ <sup>24</sup> | ○ <sup>25</sup> |
+| [Report of slot 1, reworded (49.6)](#t49-6) | ✓ | ✓ <sup>26</sup> | ✓ <sup>27</sup> | ✗ <sup>28</sup> |
 | [Joint head ablation under the swap (51.2)](#t51-2) | ✓ | ✓ | ✓ | ✓ |
-| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ <sup>30</sup> | ✓ | ✓ |
-| [Chained addresses (47.14)](#t47-14) | ✓ | ○ <sup>31</sup> | ✓ | ✓ |
+| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ <sup>29</sup> | ✓ | ✓ |
+| [Chained addresses (47.14)](#t47-14) | ✓ | ○ <sup>30</sup> | ✓ | ✓ |
 | **Part IV. Where and when** | | | | |
-| [5a. Order split (descriptive)](#order) | ✓ | ✓ <sup>32</sup> | ✓ | ✓ |
-| [5b. Copy test (45q)](#t45q) | ✓ <sup>33</sup> | ○ <sup>10</sup> | ✓ <sup>33</sup> | ✓ <sup>33</sup> |
-| [E11: token by layer map (47.D1)](#d1) | ✓ | ◐ <sup>34</sup> | ✓ | ✓ |
-| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ◐ <sup>35</sup> | ✓ | ✓ |
-| [6. Anatomy by layer (47.8)](#t47-8) | ✓ <sup>36</sup> | ✓ <sup>37</sup> | ✓ | ✓ |
-| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ <sup>38</sup> | ✓ <sup>39</sup> | ✓ | ✓ |
+| [5a. Order split (descriptive)](#order) | ✓ | ✓ <sup>31</sup> | ✓ | ✓ |
+| [5b. Copy test (45q)](#t45q) | ✓ <sup>32</sup> | ○ <sup>10</sup> | ✓ <sup>32</sup> | ✓ <sup>32</sup> |
+| [E11: token by layer map (47.D1)](#d1) | ✓ | ◐ <sup>33</sup> | ✓ | ✓ |
+| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ◐ <sup>34</sup> | ✓ | ✓ |
+| [6. Anatomy by layer (47.8)](#t47-8) | ✓ <sup>35</sup> | ✓ <sup>36</sup> | ✓ | ✓ |
+| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ <sup>37</sup> | ✓ <sup>38</sup> | ✓ | ✓ |
 | [The address at the last token (51.4)](#t51-4) | ✓ | ✓ | ✓ | ✓ |
 | [9. Last-token read / write (51.10)](#t51-10) | ✓ | ✓ | ✓ | ✓ |
 | **Part V. Other datasets** | | | | |
-| [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ <sup>40</sup> | ✓ | ✓ |
-| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✓ | ✗ <sup>29</sup> |
-| [Part V: Zach's passages Z3 (routes on his passages)](#z3) | ✓ <sup>41</sup> | ✓ <sup>42</sup> | ✓ | ✓ |
-| [Anatomy on Zach's passages (51.5)](#t51-5) | ✓ | ✗ <sup>43</sup> | ✓ | ✗ <sup>29</sup> |
+| [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ <sup>39</sup> | ✓ | ✓ |
+| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✓ | ✗ <sup>28</sup> |
+| [Part V: Zach's passages Z3 (routes on his passages)](#z3) | ✓ <sup>40</sup> | ✓ <sup>41</sup> | ✓ | ✓ |
+| [Anatomy on Zach's passages (51.5)](#t51-5) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
 | **Part VI. What did not hold** | | | | |
-| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>44</sup> | ✓ | ◐ <sup>45</sup> |
+| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>43</sup> | ✓ | ◐ <sup>44</sup> |
 | [Address refit per text format (x45d)](#x45d) | ✓ | ✓ | ✓ | ✓ |
-| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>46</sup> | ✓ | ✓ |
-| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>47</sup> | ◐ <sup>48</sup> | ✓ | ✓ |
-| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
-| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>50</sup> | ✓ | ✓ |
-| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>51</sup> | ✓ | ✓ |
-| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>52</sup> | ✓ | ✓ |
-| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>53</sup> | ✓ | ✓ |
+| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>45</sup> | ✓ | ✓ |
+| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>46</sup> | ◐ <sup>47</sup> | ✓ | ✓ |
+| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>48</sup> | ✓ | ✓ |
+| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
+| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>50</sup> | ✓ | ✓ |
+| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>51</sup> | ✓ | ✓ |
+| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>52</sup> | ✓ | ✓ |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | ✓ | ✓ | ✓ | ✓ |
 | **Withdrawn, or run on one model only** | | | | |
-| Failed: the second hop's key token (47.15 source) | ✓ | ○ <sup>54</sup> | – <sup>55</sup> | ○ <sup>56</sup> |
-| DAS by position (49.x das_pos) | ✗ <sup>57</sup> | ✗ <sup>57</sup> | ✓ | ✗ <sup>57</sup> |
-| [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>43</sup> | ✓ | ✗ <sup>29</sup> |
+| Failed: the second hop's key token (47.15 source) | ✓ | ○ <sup>14</sup> | ○ <sup>14</sup> | ○ <sup>53</sup> |
+| DAS by position (49.x das_pos) | ✗ <sup>54</sup> | ✗ <sup>54</sup> | ✓ | ✗ <sup>54</sup> |
+| [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
 
 ✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested (including missing, running or queued), ✗ not designed for that model; a number points to the matrix's note for that cell, listed under the table.
 
@@ -2031,50 +2031,47 @@ As of the matrix at 09:45 UTC (10:45 Paris; fb9667eb: the 49.6 row renamed and i
 11. rung 6 in Zach's L36-42 (49.2 ran it at L23-29)
 12. 0.66 / 0.34 / 0.00; alone fails
 13. (a) not tested (its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)); (c) done
-14. the cited verdict lists 9B as pending (the run has no manifest or outcomes here; results/x47_value/x47_7a-20261028T131819Z)
-15. the cited verdict lists Muse as pending (the run has no manifest or outcomes here; results/x47_value/x47_7a-20261028T131819Z)
-16. 51.3 done; 48.1 done
-17. DAS trains through the model's backward, unverified through NemotronH's Mamba-2 kernels; its recall half needs the clean design (gate fails)
-18. target share at s = 1 / 2 / 4: 0.01 / 0.24 / 0.50
-19. target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69
-20. target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73
-21. target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52
-22. x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)
-23. part 2 only by design (parts 1, 3 not designed for the 27B)
-24. the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z)
-25. the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z)
-26. the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z)
-27. the 9B / 27B design; read per model, the action is the 9B's
-28. the deciding model
-29. designed for the 9B and 27B (conservative, Dan 01:10)
-30. attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks)
-31. the cited verdict lists Lightning as not tested (the gate missed (see gate.json); results/x47_chain/x52_chain-20261029T023424Z)
-32. CPU from the conflict test's outcomes
-33. holds
-34. the main design only; the clean design (the decisive cell) not tested: gate fails
-35. the main design only; the clean design not tested: gate fails
-36. full grid
-37. every 4th layer L2-L50
-38. CPU from x47_anatomy_27b's cache
-39. CPU from Lightning's anatomy cache (on its box)
-40. Z1 done; Z2 done
-41. at L32 (X0's layer = the start of his band L32-40)
-42. at L14 and L27
-43. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
-44. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
-45. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
-46. count (CPU) then the verdict
-47. A and B
-48. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
-49. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
-50. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
-51. attention blocks after L14 (NemotronH port)
-52. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
-53. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
-54. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
-55. the cited verdict lists 9B as pending (no run given; results/x47_source/x47_15-20261028T142722Z)
-56. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
-57. 9B only by design
+14. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
+15. 51.3 done; 48.1 done
+16. DAS trains through the model's backward, unverified through NemotronH's Mamba-2 kernels; its recall half needs the clean design (gate fails)
+17. target share at s = 1 / 2 / 4: 0.01 / 0.24 / 0.50
+18. target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69
+19. target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73
+20. target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52
+21. x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)
+22. part 2 only by design (parts 1, 3 not designed for the 27B)
+23. the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z)
+24. the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z)
+25. the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z)
+26. the 9B / 27B design; read per model, the action is the 9B's
+27. the deciding model
+28. designed for the 9B and 27B (conservative, Dan 01:10)
+29. attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks)
+30. the cited verdict lists Lightning as not tested (the gate missed (see gate.json); results/x47_chain/x52_chain-20261029T023424Z)
+31. CPU from the conflict test's outcomes
+32. holds
+33. the main design only; the clean design (the decisive cell) not tested: gate fails
+34. the main design only; the clean design not tested: gate fails
+35. full grid
+36. every 4th layer L2-L50
+37. CPU from x47_anatomy_27b's cache
+38. CPU from Lightning's anatomy cache (on its box)
+39. Z1 done; Z2 done
+40. at L32 (X0's layer = the start of his band L32-40)
+41. at L14 and L27
+42. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
+43. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
+44. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
+45. count (CPU) then the verdict
+46. A and B
+47. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
+48. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
+49. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
+50. attention blocks after L14 (NemotronH port)
+51. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
+52. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
+53. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
+54. 9B only by design
 <!-- coverage:end -->
 
 ## Appendix D. Figure checks <a id="figure-checks"></a>
