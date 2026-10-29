@@ -27,6 +27,7 @@ ADDR = R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json"
 DAS = R / "x51_das" / "verdict-20261028T194630Z" / "verdict.json"
 HEADS = R / "x51_heads" / "x51_2-20261028T190358Z" / "verdict.json"
 CARRIER = R / "x51_carrier" / "x51_7-20261028T171646Z" / "verdict.json"
+CARRIER_L = R / "x51_carrier" / "x52_carrier-20261029T014338Z" / "verdict.json"  # Lightning's coverage run
 TRAVEL = R / "x51_travel" / "x51_4-20261028T173333Z" / "verdict.json"
 TRAVEL_L = R / "x51_travel" / "x52_travel-20261029T012517Z" / "verdict.json"  # Lightning's coverage run
 Z1 = R / "x50_zach" / "z1-20261028T161649Z" / "z1.json"
@@ -253,16 +254,17 @@ def heads(plt) -> str:
 
 
 def full_carrier(plt) -> str:
-    """Per model (9B, 27B), lookups and recalls lost without the lens part beyond a random part, fact first and fact
-    after, the change at one layer (hollow) and at every layer up to L (filled)."""
-    v = load(CARRIER)
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 3.9), sharey=True)
-    fig.subplots_adjust(left=0.25, right=0.98, top=0.72, bottom=0.15, wspace=0.1)
+    """Per model (9B, 27B, Lightning), lookups and recalls lost without the lens part beyond a random part, fact first
+    and fact after, the change at one layer (hollow) and at every layer up to L (filled)."""
+    runs = [(m, CARRIER) for m in load(CARRIER)["models"]] + [(m, CARRIER_L) for m in load(CARRIER_L)["models"]]
+    names = {**dict(MODEL3), "nemotron-3.5-lightning": "Lightning"}
+    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.9), sharey=True)
+    fig.subplots_adjust(left=0.18, right=0.98, top=0.72, bottom=0.15, wspace=0.1)
     S.title(fig, "Over every layer up to L, fact-after lookups follow the lens part",
             "Switches lost without the lens part, beyond a random part; hollow: one layer, filled: every layer to L")  # fmt: skip
     labels = ["fact first", "fact after"]
-    for ax, m in zip(axes, v["models"], strict=True):
-        ax.set_title(dict(MODEL3)[m["target"]], fontsize=12, weight="bold", loc="left")
+    for ax, (m, src) in zip(axes, runs, strict=True):
+        ax.set_title(names[m["target"]], fontsize=12, weight="bold", loc="left")
         for i, g in enumerate(("fact-first", "fact-after")):
             grp = m["groups"][g]
             for carrier, dy, hollow in (("one", 0.18, True), ("before", 0.0, False)):
@@ -271,11 +273,11 @@ def full_carrier(plt) -> str:
                     if grp[carrier][reader]["valid"]:
                         whisker(ax, -i + dy + ddy, e, col, hollow=hollow)
                     else:  # under 30 switches under the whole change: left out (the README figures' convention)
-                        ax.text(0.12, -i + dy + ddy, "one layer: under 30 switches", color=col, va="center",
+                        ax.text(0.12, -i + dy + ddy, "under 30 switches", color=col, va="center",
                                 fontsize=S.LABEL_PT - 1)  # fmt: skip
                     S.record("ledger_full_carrier", m["target"], f"{g}, {reader}, "
                              f"{'one layer' if carrier == 'one' else 'every layer to L'}: switches lost beyond random",
-                             *e, n=grp[carrier][reader]["n"], source=rel(CARRIER))  # fmt: skip
+                             *e, n=grp[carrier][reader]["n"], source=rel(src))  # fmt: skip
         rows_axis(ax, labels)
         ax.set_ylim(-1.6, 0.5)
         zero_band(ax, -0.2, 1.0)

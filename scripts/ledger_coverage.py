@@ -33,6 +33,7 @@ ANCHORS = {
     "10. Attention under the swap (49.7)": "t49-7",
     "E12: address persistence across depth (D4, CPU)": "t47-8",
     "Dose curves, a part alone (51.1)": "t51-1",
+    "Split in other texts: varied scenes (x0b)": "x0b",
     "Part V: Zach's passages Z1 / Z2 (x50)": "z1",
     "Part V: Zach's passages Z3 (routes on his passages)": "z3",
     "Learned subspaces (48 DAS; 51.3 DAS at scale)": "t51-3",
