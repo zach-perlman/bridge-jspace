@@ -58,7 +58,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ### D1. The lookup goes around the lens part of the bridge word; the recall goes through it
 
-![The conflict test, the lens part's atoms, parts of the same size](figures/slides/d1_split.png)
+![No part of the same size costs recall as much as the lens part](figures/deck/c1_controls.png)
 
 - **The conflict test, main test at L.** Without the lens part, beyond a random part, the recall loses 0.50<!-- src: docs/x0_numbers.json | rc_excess_9b --> / 0.74<!-- src: docs/x0_numbers.json | rc_excess_27b --> / 0.75<!-- src: docs/x0_numbers.json | rc_excess_muse --> / 0.34 ○<!-- src: figures/story/data.csv | conflict: recall, switches lost beyond a random part --> / 0.32<!-- src: docs/x0_numbers.json | rc_excess_122b --> of its switches, the lookup −0.03<!-- src: docs/x0_numbers.json | lk_excess_9b --> / 0.14<!-- src: docs/x0_numbers.json | lk_excess_27b --> / −0.10<!-- src: docs/x0_numbers.json | lk_excess_muse --> / 0.03 ○<!-- src: figures/story/data.csv | conflict: lookup, switches lost beyond a random part --> / 0.00<!-- src: docs/x0_numbers.json | lk_excess_122b -->: confirmed on four models, not confirmed on the 27B (Lightning pending hand-check).
 - **The lens part is the two bridge words.** 0.09<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the original bridge word -->-0.19<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the new bridge word --> of its rebuilt energy on each bridge word, 0.00<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in the reader's answer word --> on the answer word, 0.61<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in no scene word -->-0.79<!-- src: figures/story/data.csv | 52 A: share of the rebuilt energy in no scene word --> on no scene word (four models; pending hand-check).
@@ -70,7 +70,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ### D2. The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it
 
-![The address: probe, removal, swap; code and tool output; the lens readout and the trained probe](figures/slides/d2_address.png)
+![The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it](figures/deck/c3_address.png)
 
 - **The address (a pointer to the item's mention).** A probe at the bridge word reads which locker sentence holds the item's locker: 0.97<!-- src: figures/story/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.99 / 0.97 / 0.85 ○ / 0.92, against a layout baseline of 0.53<!-- src: figures/story/data.csv | the locker probe's layout baseline, locker-first scenes -->; in tool output 0.97-0.99<!-- src: figures/story/data.csv | code and tool output, tool: the locker probe at the bridge word, locker-first scenes -->, in code 0.95<!-- src: figures/story/data.csv | code and tool output, code: the locker probe at the bridge word, locker-first scenes --> on the 27B (pending hand-check).
 - **Without the address** position answers fall to 0.08<!-- src: figures/story/data.csv | another item moved, no_alf: position share -->, against 0.54<!-- src: figures/story/data.csv | another item moved, no_alf_rand: position share --> without a random part (the 9B).
@@ -83,7 +83,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ### D3. Readable is not used: the lens reads the entity at the last token, and the answer does not go through it
 
-![At the last token: readable through the lens, not used](figures/story/fig17_jspace_last_token.png)
+![Readable is not used: the lens reads the entity; the answer does not go through it](figures/deck/c4_readable.png)
 
 - At the last token a probe on the lens part reads the recall's bridge entity 0.95<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part -->-0.98 on four models; the lens swap moves 0.00<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> / 0.01 / 0.01 / 0.14 ○ of recalls, the whole-state patch 0.95<!-- src: figures/story/data.csv | 51.10: recall, last token, read peak: the whole-state patch's switches -->-1.00: "(b) readable, not used". Under the swap the model never says the entity's name.
 - Near the output the lens-part conflict test is decided by the dictionary (digits are not in it, words are); dropped reading: "the copy bypasses the lens" (pending hand-check).
@@ -93,7 +93,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ### Where it breaks (depth)
 
-![The 27B with more lens directions; Zach's named passages; the question's position](figures/slides/d4_limits.png)
+![Where it breaks: the 27B with more directions; passages whose fact the model already knows](figures/deck/c9_breaks.png)
 
 - The 27B's lookup loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b --> at 100 lens directions, the 122B's −0.12<!-- src: docs/x0_numbers.json | lk_excess_k100_122b -->.
 - On Zach's true-fact passages the 9B's and 27B's lookups follow the lens part (0.26<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part -->); with made-up facts the 9B's split holds and the 27B's is in between.
