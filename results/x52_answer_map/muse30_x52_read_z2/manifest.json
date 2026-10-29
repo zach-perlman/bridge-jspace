@@ -1,0 +1,138 @@
+{
+  "exp": "x52_answer_map",
+  "run": "muse30_x52_read_z2",
+  "stage": "read",
+  "set": "z2",
+  "set_text": "his passages (Z2, never-named bridge)",
+  "spec": "jobs/c3/batch52.yaml (brief B); jobs/c3/x52_read_z2_muse.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction",
+  "written_utc": "2026-10-29T00:33:12Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "24cf6a0888598a61c660b853f68b31546b001dee",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "groups": {
+    "B": "the description's last token in the question (his edit site)",
+    "E": "the bridge entity's last mention in the passage before the question",
+    "Q": "the question's closing '?'",
+    "T": "the prompt's last token (no prefill)"
+  },
+  "rank_sets": {
+    "bridge": "the bridge entity (51.12's: the first token of each variant of its name)",
+    "ans": "the reader's answer word (51.12's A-style tokens; decides)",
+    "ans_S": "S's answer word on O (a same-type distractor; baseline)",
+    "tokA": "the answer token as read (main: the digit)",
+    "bridge_whole": "the bridge entity, whole-word variants only (no fragment such as 'I' for 'Iota')",
+    "ans_whole": "the answer word, whole-word variants only (no fragment such as 'G' for 'Greece')"
+  },
+  "rule": {
+    "readable": "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.",
+    "usable": "“Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10.",
+    "combinations": "Report the four combinations per reader, per dataset."
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "Δ = h_S - h_O added at the cell (the whole state patched; the upper bound, beside)",
+    "ans1": "s u: u the unit sum of the J++ lens directions of S's answer word's tokens, s = ||Δ|| at the cell",
+    "ans2": "2 s u",
+    "rand1": "s u R^T (R: X0's random basis at the layer, seed 888 + layer): a random part of the same size",
+    "rand2": "2 s u R^T",
+    "freq1": "s u_F: F per answer token one unrelated letter token, BPE id within a factor 2, closest J++ readout norm",
+    "freq2": "2 s u_F"
+  },
+  "seeds": {
+    "random_rotation": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "inputs": {
+    "jobs/c3/batch52.yaml": "870bb1c048ca545a55b199e9822bfbba4ece1c84ce378d17355dc3cca5dadae8",
+    "results/x50_zach/muse30_x50_z2/manifest.json": "d3f9653a6956b32ffad793d5c08a6741dd71124dc8b99f7fbae1ff29d843e182",
+    "results/x50_zach/muse30_x50_z2/gate.json": "5de67729488c2f9de3b4e3d013f0b4a33b2293c6d871d4448af59a48e2717e25",
+    "results/x50_zach/muse30_x50_z2/cases.jsonl": "151bf4a139a51100321922731a511b74bb800fe890a836d388e3c13172759967",
+    "results/x50_zach/muse30_x50_z2/outcomes.jsonl": "21bc4679ace219aaad64569476258dade72b769550d75cf726e45a0423926d3b"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "n_layers": 52,
+  "storage": "states.npz: fp16 block outputs at B / E / Q / T, O and S, the cached layers (gitignored); ranks.npz: the ranks (committed)",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "items": 157
+}

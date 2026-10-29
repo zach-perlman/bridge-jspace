@@ -1,0 +1,37 @@
+{
+ "cells": {
+  "lookup": [
+   "Q",
+   14
+  ],
+  "recall": [
+   "T",
+   36
+  ]
+ },
+ "from": "muse30_x52_read_main",
+ "answer": {
+  "lookup": {
+   "layer": 35,
+   "n": 200,
+   "never": 0,
+   "quartiles": [
+    35.0,
+    35.0,
+    36.0
+   ],
+   "settle_layer": 35
+  },
+  "recall": {
+   "layer": 46,
+   "n": 200,
+   "never": 0,
+   "quartiles": [
+    46.0,
+    46.0,
+    47.0
+   ],
+   "settle_layer": 46
+  }
+ }
+}

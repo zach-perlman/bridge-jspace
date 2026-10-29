@@ -1,0 +1,138 @@
+{
+  "exp": "x52_answer_map",
+  "run": "muse30_x52_read_main",
+  "stage": "read",
+  "set": "main",
+  "set_text": "our scenes (the main test)",
+  "spec": "jobs/c3/batch52.yaml (brief B); jobs/c3/x52_read_main_muse.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction",
+  "written_utc": "2026-10-29T00:30:55Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "24cf6a0888598a61c660b853f68b31546b001dee",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "groups": {
+    "B": "the bridge word (X0's position, 51.10's P1)",
+    "E": "the bridge entity's last mention before the bridge word (its locker sentence), where there is one",
+    "Q": "the question's 'pick' token (51.10's P2)",
+    "T": "the appended space token (51.10's P3)"
+  },
+  "rank_sets": {
+    "bridge": "the bridge entity (51.12's: the first token of each variant of its name)",
+    "ans": "the reader's answer word (51.12's A-style tokens; decides)",
+    "ans_S": "S's answer word on O (a same-type distractor; baseline)",
+    "tokA": "the answer token as read (main: the digit)",
+    "bridge_whole": "the bridge entity, whole-word variants only (no fragment such as 'I' for 'Iota')",
+    "ans_whole": "the answer word, whole-word variants only (no fragment such as 'G' for 'Greece')"
+  },
+  "rule": {
+    "readable": "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.",
+    "usable": "“Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10.",
+    "combinations": "Report the four combinations per reader, per dataset."
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "Δ = h_S - h_O added at the cell (the whole state patched; the upper bound, beside)",
+    "ans1": "s u: u the unit sum of the J++ lens directions of S's answer word's tokens, s = ||Δ|| at the cell",
+    "ans2": "2 s u",
+    "rand1": "s u R^T (R: X0's random basis at the layer, seed 888 + layer): a random part of the same size",
+    "rand2": "2 s u R^T",
+    "freq1": "s u_F: F per answer token one unrelated letter token, BPE id within a factor 2, closest J++ readout norm",
+    "freq2": "2 s u_F"
+  },
+  "seeds": {
+    "random_rotation": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "inputs": {
+    "jobs/c3/batch52.yaml": "870bb1c048ca545a55b199e9822bfbba4ece1c84ce378d17355dc3cca5dadae8",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/gate.json": "ac98e7cfb2848fb0ef228dc8bf7b123b7c3391c31473760bf3901c671ad3bbd9",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "n_layers": 52,
+  "storage": "states.npz: fp16 block outputs at B / E / Q / T, O and S, the cached layers (gitignored); ranks.npz: the ranks (committed)",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "items": 200
+}
