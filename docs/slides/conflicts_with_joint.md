@@ -1,6 +1,6 @@
 # Root README (joint parts) vs the depth report: conflicts to decide
 
-Sentences in the root README's joint parts (README.md at the commit that adds this file) that the depth report (docs/depth/README.md at 138c671d) or its ledger now contradicts or supersedes. Not resolved here: Dan and Zach decide. The root README's depth section ("Depth track: three findings") replaced the old Finding 3 and "Where the link is made follows the order of mentions" (Dan's track only); everything else is untouched.
+Sentences in the root README's joint parts (README.md at the commit that adds this file) that the depth report (docs/depth/README.md at 138c671d) or its ledger now contradicts or supersedes. **Resolved 30 Oct (Dan: "так", the brief's recommendations) in the rewritten root README:** rows 1-2 (the sentences dropped; the dose card's line in C1), 3 (hand-check 30 Oct), 4-5 (five models; the 122B: Zach's by probability, Dan's confirmed, both said), 6 (Dan's "did not hold" lines replaced by the depth report's dropped readings), 7 (the pending-test line dropped), 8 (grid_dan dropped), 9 (the address swap under C3 as a nuance, not a route). Zach checks his sentences (placeholders in the README). The root README's depth section ("Depth track: three findings") replaced the old Finding 3 and "Where the link is made follows the order of mentions" (Dan's track only); everything else is untouched.
 
 | # | Root README (line, as of this commit) | The depth report | Card that decides |
 |---|---|---|---|

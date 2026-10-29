@@ -42,9 +42,9 @@ def main() -> int:
             v = round(float(num.replace("−", "-")), 2)
             n += 1
             if src == "figures/story/data.csv":
-                ok = any(abs(v - x) < 0.006 for x in by_q.get(key, ()))
+                ok = any(abs(v - x) < 0.006 for k in key.split("; ") for x in by_q.get(k, ()))
             elif src == "docs/x0_numbers.json":
-                raw = re.findall(r"[−-]?\d+\.\d+", str(x0.get(key, "")))
+                raw = [x for k in key.split("; ") for x in re.findall(r"[−-]?\d+\.\d+", str(x0.get(k, "")))]
                 ok = any(abs(v - round(float(x.replace("−", "-")), 2)) < 0.006 for x in raw)
             else:
                 continue
