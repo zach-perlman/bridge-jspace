@@ -197,8 +197,8 @@ def rows() -> list[tuple[str, str, dict]]:
             LT: c("not tested", CLEAN, CLEAN_SRC),
             "qwen3.5-9b": done("results/x49_ladder/x49_2-20261028T161612Z"),
             "muse-glimmer-30b": track(("x52_ladder_muse", "x52_ladder_muse_r2", "x52_ladder_muse_r3"),
-                                      "x49_ladder/x52_ladder_muse*", "x49_ladder/x52_ladder-*",
-                                      "rung 6 in Zach's L36-42 (49.2 ran it at L23-29)", mention="x52_ladder_muse")}),
+                                      "x49_ladder/muse30_x52_ladder", "x49_ladder/x52_ladder-*",
+                                      "rung 6 in Zach's L36-42 (49.2 ran it at L23-29)")}),
         ("8. Lens readout with the item-change control (47.0)", "47.0 (descriptive)", {
             "qwen3.6-27b": done("results/x47_verbal/summary-20261028T033646Z"),
             LT: track("x52_lightning_verbal", "x47_verbal/nem35l_x52_verbal", "x47_verbal/summary-*"),
@@ -233,7 +233,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "muse-glimmer-30b": done("results/x51_dose/x51_1-20261028T170335Z")}),
         ("Zeroing at one layer (47.5)", "jobs/c3/batch47.yaml 47.5", {
             "qwen3.6-27b": done("results/x47_zero/x47_5-20261028T113106Z"),
-            LT: c("missing", "no spec: the main design, runnable on Lightning; not among fillers 1-15 (flagged)"),
+            LT: track("x52_lightning_zero", "x47_zero/nem35l_x52_zero", "x47_zero/x52_zero-*",
+                      "L14 and L14..17; the 60 dev scenes kept out"),
             "qwen3.5-9b": done("results/x47_zero/x47_5-20261028T113106Z"),
             "muse-glimmer-30b": done("results/x47_zero/x47_5-20261028T113106Z")}),
         ("Earlier mention (45p)", "jobs/c3/batch45.yaml 45p", {
@@ -292,8 +293,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x50_zach/z1-20261028T161649Z", "results/x50_zach/z2-20261028T162710Z"),
             "muse-glimmer-30b": done("results/x50_zach/z1-20261028T161649Z", "results/x50_zach/z2-20261028T162710Z")}),
         ("Part V: Zach's passages Z3 (routes on his passages)", "x50_zach z3", {
-            "qwen3.6-27b": c("missing", "no spec: Z3 was designed for the 9B and Muse (x50_zach RUNS['z3']); not among "
-                             "the 27B gaps a-c (flagged)"),
+            "qwen3.6-27b": track("x52_27b_z3", "x50_zach/x50_z3_27b", "x50_zach/x52_z3-*",
+                                 "at L32 (X0's layer = the start of his band L32-40)"),
             LT: track("x52_lightning_zach", "x50_zach/nem35l_x52_z3", "x50_zach/x52_z3-*", "at L14 and L27"),
             "qwen3.5-9b": done("results/x50_zach/z3-20261028T163053Z"), "muse-glimmer-30b": done("results/x50_zach/z3-20261028T163053Z")}),
         ("Described bridge (47.3, and 51.12's cue r2)", "jobs/c3/batch47.yaml 47.3", {
