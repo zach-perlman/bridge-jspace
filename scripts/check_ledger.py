@@ -94,7 +94,9 @@ def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
 
 
 SLOTS = REPO / "figures" / "ledger" / "slots.json"
-COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning")
+COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning", "122B")
+# the 122B (Dan 11:30) has a slot only in the figures of cards where it has a verdict: a not-run 122B column needs none
+SLOT_OPTIONAL = ("122B",)
 # a cell that says the model has no result here (Dan's grey labels, the tables' words for a missing cell)
 NO_RESULT = ("not ", "running", "pending", "dropped", "read pending", "see the readme", "–", "no outcomes")
 
@@ -147,6 +149,8 @@ def slot_problems(head: str, body: str, slots: dict | None = None) -> list[str]:
         have = slots[name].get(model, "")
         if status == "number" and have not in ("data", "below gate"):
             out.append(f"{name}: the table has {model}'s numbers but the figure shows {have or 'no slot'}")
+        if status == "none" and not have and model in SLOT_OPTIONAL:
+            continue
         if status == "none" and not have.startswith("grey"):
             out.append(f"{name}: the table has no number for {model} but the figure shows {have or 'no slot'}, "
                        f"not a grey slot")  # fmt: skip

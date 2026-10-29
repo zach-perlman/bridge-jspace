@@ -136,6 +136,19 @@ HEATMAP = (
 )  # fmt: skip
 
 
+# Dan 11:30 (q122b_1130): the 122B (FP8; MoE, ~10B active) as a fifth heatmap column where a verdict exists (the README
+# agent's mapping, 29 Oct); "not run" elsewhere. ° = its routes gate lowered to 0.75 after the data (0.797 < 0.80)
+HEATMAP_122B = {"lightning-conflict": "H confirmed", "x0b": "B mixed", "x5": "H holds", "probe": "D readable",
+                "routes": "G below gate°", "swap": "G below gate°", "order": "D by order"}  # fmt: skip
+
+
+def heatmap_122b(anchor: str) -> tuple[str, str]:
+    """The 122B's (code, words) for a heatmap row."""
+    cell = HEATMAP_122B.get(anchor, "N not run")
+    assert cell[0] in VERDICT_CODES, cell
+    return cell[0], cell[2:]
+
+
 def heatmap_cells() -> list[tuple[str, str, str, list[tuple[str, str]]]]:
     """(part, anchor, row label, [(code, words) per column 27B / Lightning / 9B / Muse]) in HEATMAP's order."""
     out = []

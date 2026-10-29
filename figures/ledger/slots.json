@@ -3,7 +3,8 @@
   "9B": "data",
   "27B": "data",
   "Muse": "data",
-  "Lightning": "data"
+  "Lightning": "data",
+  "122B": "data"
  },
  "ledger_address_shape": {
   "9B": "data",
@@ -15,7 +16,8 @@
   "9B": "data",
   "27B": "data",
   "Muse": "data",
-  "Lightning": "data"
+  "Lightning": "data",
+  "122B": "below gate"
  },
  "ledger_agnostic": {
   "9B": "data",
@@ -142,13 +144,15 @@
   "9B": "grey: L fixed in advance; conflict test in the README",
   "27B": "grey: L fixed in advance; conflict test in the README",
   "Muse": "grey: L fixed in advance; conflict test in the README",
-  "Lightning": "data"
+  "Lightning": "data",
+  "122B": "data"
  },
  "ledger_order_split": {
   "9B": "data",
   "27B": "data",
   "Muse": "data",
-  "Lightning": "data"
+  "Lightning": "data",
+  "122B": "data"
  },
  "ledger_pooled_probe": {
   "9B": "data",
@@ -178,7 +182,8 @@
   "9B": "data",
   "27B": "data",
   "Muse": "data",
-  "Lightning": "data"
+  "Lightning": "data",
+  "122B": "below gate"
  },
  "ledger_six_lockers": {
   "9B": "data",

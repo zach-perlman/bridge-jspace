@@ -19,7 +19,8 @@ OUT = S.REPO / "figures" / "ledger"
 R = S.REPO / "results"
 INK, LOOKUP, JPP, ADDRESS, NULL = (S.MARK_COL[k] for k in ("recall", "lookup", "jpp", "address", "null"))
 MODEL3 = (("qwen3.5-9b", "Qwen3.5-9B"), ("qwen3.6-27b", "Qwen3.6-27B"), ("muse-glimmer-30b", "Muse Glimmer 30B"))
-SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning"}
+SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning",
+         "qwen3.5-122b-a10b": "122B"}  # fmt: skip
 
 ANSWER = R / "x51_answer" / "x51_12-20261028T201842Z" / "verdict.json"
 ANSWER_LIGHTNING = R / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.json"
@@ -38,6 +39,7 @@ Z3_L = R / "x50_zach" / "x52_z3-20261029T013329Z" / "z3.json"  # Lightning's cov
 CLEAN = R / "checks" / "clean49_9b.json"
 LAYER = R / "x51_lightning" / "nem35l_x52_layer_r2" / "layer.json"
 CONFLICT = R / "x0_necessity" / "nem35l_x52_conflict" / "verdict-20261029T001612Z" / "verdict.json"
+CONFLICT_122B = R / "x0_necessity" / "qwen35_122b_x0_necessity_r2" / "verdict-20261024T171509Z" / "verdict.json"
 MAIN = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}  # docs/x0_numbers.json's suffixes
 
 
@@ -55,6 +57,10 @@ def load(p: Path) -> dict:
 # below_gate() registered); scripts/check_ledger.py checks them against the card's table.
 SLOT_MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
 LT = "nemotron-3.5-lightning"
+# Dan 11:30 (q122b_1130): the 122B (FP8; MoE, ~10B active) as a fifth slot, only in the figures of cards where it has a
+# verdict; the other figures keep four slots (a not-run 122B needs none)
+B122 = "qwen3.5-122b-a10b"
+FIVE = (*SLOT_MODELS, B122)
 SLOTS_FILE = OUT / "slots.json"
 _SLOTS: dict[str, dict[str, str]] = {}
 GREY = "#9a9a9a"
@@ -90,7 +96,7 @@ def slots_of(name: str) -> dict[str, str]:
     have = {r["model"] for r in S.ROWS if r["figure"] == name}
     reg = _SLOTS.get(name, {})
     out = {}
-    for t in SLOT_MODELS:
+    for t in FIVE:
         if SHORT[t] in reg:
             out[SHORT[t]] = reg[SHORT[t]]
         elif t in have:
@@ -548,13 +554,16 @@ def clean_reruns(plt) -> str:
 def lightning_layers(plt) -> str:
     """Top: the whole change's switch rate per swept layer for both readers (60 dev scenes), the relative depth 0.25
     line, L14 marked. Bottom: the conflict test at every swept layer (200 scenes): each reader's switches lost without
-    the lens part beyond a random part; cells under 30 switches greyed."""
+    the lens part beyond a random part; cells under 30 switches greyed. Third panel: the 122B's conflict test at its
+    swept layers (L24-L36; its L33), the fifth model (Dan 11:30)."""
     lay, ver = load(LAYER), load(CONFLICT)
     layers = sorted(int(k) for k in lay["rates"])
-    fig, axes = plt.subplots(2, 1, figsize=(S.WIDTH, 5.8), sharex=True)
-    fig.subplots_adjust(left=0.1, right=0.86, top=0.85, bottom=0.13, hspace=0.25)
+    fig, axes = plt.subplots(3, 1, figsize=(S.WIDTH, 8.2), gridspec_kw={"height_ratios": (1, 1, 0.85)})
+    axes[0].sharex(axes[1])
+    axes[0].tick_params(labelbottom=False)
+    fig.subplots_adjust(left=0.1, right=0.86, top=0.89, bottom=0.1, hspace=0.42)
     S.title(fig, "On Lightning the recall follows the lens part; the lookup does not",
-            "Top: switches by the whole change per layer; bottom: switches lost beyond a random part")  # fmt: skip
+            "Top: switches per layer; middle: lost beyond a random part; bottom: the same on the 122B")  # fmt: skip
     ax = axes[0]
     for reader, col in (("lookup", LOOKUP), ("recall", INK)):
         ax.plot(layers, [lay["rates"][str(la)][reader] for la in layers], "-o", color=col, ms=4, lw=1.6)
@@ -593,6 +602,28 @@ def lightning_layers(plt) -> str:
     axes[1].set_xlim(0, 52)
     axes[1].text(53, 0.10, "lookup bar 0.10", fontsize=S.LABEL_PT, color=LOOKUP, va="center")
     axes[1].set_xticks(layers)
+    ax = axes[2]
+    v122 = load(CONFLICT_122B)
+    cells = [c for c in v122["cells"] if c["dict"] == "jpp" and c["k"] == 25 and c["omp"] == "signed"
+             and c["rendering"] == "chat"]  # fmt: skip
+    for reader, col, dx in (("PP", LOOKUP, -0.25), ("PM", INK, 0.25)):
+        for c in sorted((c for c in cells if c["reader"] == reader), key=lambda c: c["layer"]):
+            ax.plot([c["layer"] + dx] * 2, [c["excess"][1], c["excess"][2]], color=col, lw=1.6)
+            ax.plot([c["layer"] + dx], [c["excess"][0]], "s", color=col, ms=5.5)
+            S.record("ledger_lightning_layers", B122, f"conflict test, L{c['layer']}, "
+                     f"{'lookup' if reader == 'PP' else 'recall'}: switches lost beyond random",
+                     *c["excess"], n=c["n"], source=rel(CONFLICT_122B))  # fmt: skip
+    ax.axhline(0, color="#999999", lw=0.8)
+    ax.axhline(0.10, color=LOOKUP, lw=0.8, ls="--")
+    ax.axvline(33, color="#222222", lw=1.0)
+    ax.set_xlim(22.5, 37.5)
+    ax.set_xticks(sorted({c["layer"] for c in cells}))
+    ax.set_ylim(-0.2, 0.9)
+    ax.set_ylabel("lost beyond random")
+    ax.set_xlabel("the 122B's layer (of 48)")
+    ax.text(33.3, 0.78, "L33 (its L)", fontsize=S.LABEL_PT)
+    ax.set_title("122B (FP8; MoE, ~10B active): the conflict test per layer", fontsize=S.LABEL_PT, weight="bold",
+                 loc="left")
     for t in SLOT_MODELS[:3]:
         grey("ledger_lightning_layers", t, "L fixed in advance; conflict test in the README")
     fig.text(0.1, 0.008, "9B, 27B, Muse: their layer was fixed in advance (L12 / L32 / L26); their conflict test is the "
@@ -673,20 +704,25 @@ ROUTES = {  # model -> (the main run's verdict, the run holding "the address alo
                     R / "x6_routes" / "x6_routes_keeponly_27b" / "verdict-20261025T153505Z" / "verdict.json"),
     "muse-glimmer-30b": (R / "x6_routes" / "muse30b_x6_routes" / "verdict-20261026T004455Z" / "verdict.json",) * 2,
     "nemotron-3.5-lightning": (R / "x6_routes" / "nem35l_x52_routes" / "verdict-20261029T004324Z" / "verdict.json",) * 2,
+    # the 122B: its 0.80 run failed the gate (recall 0.797); the g75 runs lowered it to 0.75 after the data: below gate
+    B122: (R / "x6_routes" / "qwen35_122b_x6_routes_g75" / "verdict-20261025T134214Z" / "verdict.json",
+           R / "x6_routes" / "qwen35_122b_x6_routes_keeponly_g75" / "verdict-20261025T202506Z" / "verdict.json"),
 }  # fmt: skip
 
 
 def routes(plt) -> str:
-    """Per model (9B, 27B, Muse, Lightning), the lookup's answer when another item's locker sentence moved and took a
-    new number: under the whole change, without the address, and with the address added by itself; identity, position,
-    value and the original answer, stacked."""
+    """Per model (9B, 27B, Muse, Lightning, the 122B), the lookup's answer when another item's locker sentence moved
+    and took a new number: under the whole change, without the address, and with the address added by itself; identity,
+    position, value and the original answer, stacked; the 122B below its gate (○, faded)."""
     arms = (("whole", "whole change"), ("no_alf", "without the address"), ("keep_alf", "the address alone"))
     rows = []
     for t, (main, keep) in ROUTES.items():
+        if t == B122:
+            below_gate("ledger_routes", t)
         for arm, lab in arms:
             src = keep if arm == "keep_alf" else main
             r = next(x for x in load(src)["rows"] if x["condition"] == "C2" and x["arm"] == arm)
-            rows.append((f"{SHORT[t]}, {lab}", r, t, arm, src))
+            rows.append((f"{SHORT[t]}{' ○' if t == B122 else ''}, {lab}", r, t, arm, src))
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.42 * len(rows) + 1.9))
     h = fig.get_figheight()
     fig.subplots_adjust(left=0.3, right=0.97, top=1 - 1.3 / h, bottom=0.65 / h)
@@ -698,15 +734,15 @@ def routes(plt) -> str:
         left = 0.0
         for p, col in parts:
             w = r["share"][p][0]
-            ax.barh(-i, w, left=left, color=col, height=0.62, edgecolor="white", lw=0.5)
+            ax.barh(-i, w, left=left, color=col, height=0.62, edgecolor="white", lw=0.5, alpha=0.45 if t == B122 else 1)
             if w >= 0.12:
                 ax.text(left + w / 2, -i, f"{w:.2f}", ha="center", va="center", fontsize=S.LABEL_PT - 1,
                         color="white" if p == "identity" else "#222222")  # fmt: skip
             left += w
             S.record("ledger_routes", t, f"another item moved, {arm}: {p} share", *r["share"][p], n=r["n"],
                      source=rel(src))  # fmt: skip
-    for b in (2.5, 5.5, 8.5):
-        ax.axhline(-b, color="#999999", lw=0.8)
+    for b in range(1, len(ROUTES)):
+        ax.axhline(-(3 * b - 0.5), color="#999999", lw=0.8)
     rows_axis(ax, [r[0] for r in rows])
     ax.set_xlim(0, 1.0)
     ax.set_xlabel("share of the lookup's answers")
@@ -892,6 +928,7 @@ SWAP = {
     "qwen3.6-27b": R / "x8_write" / "x8_write_27b" / "verdict-20261026T125548Z" / "verdict.json",
     "muse-glimmer-30b": R / "x8_write" / "muse30b_x8_write" / "verdict-20261026T141141Z" / "verdict.json",
     "nemotron-3.5-lightning": R / "x8_write" / "nem35l_x52_write" / "verdict-20261029T005021Z" / "verdict.json",
+    B122: R / "x8_write" / "qwen35_122b_x8_write_g75" / "verdict-20261026T125705Z" / "verdict.json",  # g75: below gate
 }
 ORDER = {"three": R / "x0_composition" / "split-by-order-20261026T173323Z" / "split.json",
          "nemotron-3.5-lightning": R / "x0_composition" / "split-by-order-20261029T005451Z" / "split.json"}  # fmt: skip
@@ -899,8 +936,9 @@ ORDER = {"three": R / "x0_composition" / "split-by-order-20261026T173323Z" / "sp
 
 def address_swap(plt) -> str:
     """Per model, the share of lookups sent to the swapped-in locker by the address swap at doses 1, 2 and 4 (whiskers
-    95%), a random vector of the same size dashed, and the recalls changed by the same swap (the collateral) in grey."""
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.5), sharey=True)
+    95%), a random vector of the same size dashed, and the recalls changed by the same swap (the collateral) in grey;
+    the 122B's g75 run below its gate (hollow ○)."""
+    fig, axes = plt.subplots(1, len(SWAP), figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
     S.title(fig, "Swapping the address sends the lookup to the swapped-in locker",
             "Lookups sent to the target by dose (orange); dashed: a random vector; grey: recalls changed")  # fmt: skip
@@ -908,7 +946,10 @@ def address_swap(plt) -> str:
         cells = {(c["kind"], c["s"]): c for c in load(path)["cells"] if c["pair"] is None}
         doses = sorted(s for k, s in cells if k == "write")
         tgt = [cells[("write", s)]["target"] for s in doses]
-        ax.plot(doses, [x[0] for x in tgt], "-^", color=ADDRESS, ms=6, lw=1.8)
+        below = t == B122
+        if below:
+            below_gate("ledger_address_swap", t)
+        ax.plot(doses, [x[0] for x in tgt], "-^", color=ADDRESS, ms=6, lw=1.8, mfc="white" if below else ADDRESS)
         for s, x in zip(doses, tgt, strict=True):
             ax.plot([s, s], [x[1], x[2]], color=ADDRESS, lw=1.2)
             S.record("ledger_address_swap", t, f"dose {s:g}: lookups sent to the target", *x, n=cells[("write", s)]["n"],
@@ -918,7 +959,7 @@ def address_swap(plt) -> str:
         rd = sorted(s for k, s in cells if k == "random")
         ax.plot(rd, [cells[("random", s)]["target"][0] for s in rd], "--", color=NULL, lw=1.3)
         ax.plot(doses, [cells[("write", s)]["recall_changed"] for s in doses], "-o", color="#8c8c8c", ms=4, lw=1.2)
-        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        ax.set_title(SHORT[t] + (" ○" if t in (LT, B122) else ""), fontsize=12, weight="bold", loc="left")
         ax.set_xscale("log", base=2)
         ax.set_xticks([1, 2, 4], ["1", "2", "4"])
         ax.set_ylim(-0.02, 1.0)
@@ -931,7 +972,7 @@ def order_split(plt) -> str:
     """Per model, the share of lookups the whole change switches on the main test, split by whether the item's locker
     sentence came before the asked pick or after it."""
     cells = {}
-    for t, _ in (*MODEL3, ("nemotron-3.5-lightning", "")):
+    for t, _ in (*MODEL3, ("nemotron-3.5-lightning", ""), (B122, "")):
         path = ORDER["nemotron-3.5-lightning" if t == "nemotron-3.5-lightning" else "three"]
         cells[t] = (load(path)["cells"][f"{t}|swap"]["cells"], path)
     fig, ax = plt.subplots(figsize=(S.WIDTH, 3.4))
@@ -1215,12 +1256,12 @@ PART_NAME = {"I": "I. Two readers", "II": "II. Identity", "III": "III. The addre
 
 def coverage_map(plt) -> str:
     """One row per test card in the README's order (scripts/ledger_coverage.py's HEATMAP), one column per model (27B,
-    Lightning, 9B, Muse), each cell coloured by the card's verdict and labelled with its words; Parts I-VI in the left
-    gutter. No number is drawn (every cell is a verdict word)."""
+    Lightning, 9B, Muse, and the 122B where it has a verdict), each cell coloured by the card's verdict and labelled with
+    its words; Parts I-VI in the left gutter. No number is drawn (every cell is a verdict word)."""
     from scripts import ledger_coverage as LC
 
     rows = LC.heatmap_cells()
-    cols = [name for _, name in LC.COLUMNS]
+    cols = [name for _, name in LC.COLUMNS] + ["122B"]
     gap = 0.45  # rows of white space between Parts
     ys, y, last = [], 0.0, None
     for part, *_ in rows:
@@ -1240,9 +1281,9 @@ def coverage_map(plt) -> str:
     ax.set_xlim(0, len(cols))
     ax.set_ylim(n_rows, 0)
     ax.axis("off")
-    for (part, _, label, cells), yy in zip(rows, ys, strict=True):
+    for (part, anchor, label, cells), yy in zip(rows, ys, strict=True):
         ax.text(-0.06, yy + 0.5, label, ha="right", va="center", fontsize=S.FONT - 1, color="#222222")
-        for j, (code, words) in enumerate(cells):
+        for j, (code, words) in enumerate([*cells, LC.heatmap_122b(anchor)]):
             hatch = "////" if code == "G" else None
             ax.add_patch(plt.Rectangle((j + 0.03, yy + 0.06), 0.94, 0.88, facecolor=VERDICT_FILL[code],
                                        edgecolor="#c8c8c8" if code in "GNX" else "none", lw=0.6, hatch=hatch))  # fmt: skip
@@ -1344,20 +1385,21 @@ def last_conflict(plt) -> str:
 
 
 def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, xlabel: str, xlim=(-0.05, 1.05),
-                bars: tuple = (), height: float | None = None, left: float = 0.37) -> str:
-    """One panel per model slot (9B, 27B, Muse, Lightning). rows: model -> [(row label, (v, lo, hi), colour, hollow)];
+                bars: tuple = (), height: float | None = None, left: float = 0.37,
+                models: tuple = SLOT_MODELS) -> str:
+    """One panel per model slot (9B, 27B, Muse, Lightning; models=FIVE adds the 122B). rows: model -> [(row label, (v, lo, hi), colour, hollow)];
     absent: model -> its grey label. Row labels (the union, in first-seen order) on the left panel; each (x, style)
     in bars is drawn on every data panel. Every plotted value is recorded for figures/story/data.csv."""
     labels: list[str] = []
-    for t in SLOT_MODELS:
+    for t in models:
         for lab, *_ in rows.get(t, []):
             if lab not in labels:
                 labels.append(lab)
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, height or 0.42 * len(labels) + 2.1), sharey=True)
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, height or 0.42 * len(labels) + 2.1), sharey=True)
     h = fig.get_figheight()
     fig.subplots_adjust(left=left, right=0.985, top=1 - 1.3 / h, bottom=0.75 / h, wspace=0.12)
     S.title(fig, title, sub)
-    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+    for ax, t in zip(axes, models, strict=True):
         if t in absent:
             rows_axis(ax, labels)
             grey_panel(name, t, absent[t], ax)
@@ -1365,7 +1407,8 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
         # the hollow mark on every hollow panel: Lightning (its gate set after the pre-check) and any model registered
         # below gate for this figure (Dan's figures brief, 10:00: below-gate panels hollow and labelled alike)
         hollow_panel = t == LT or _SLOTS.get(name, {}).get(SHORT[t]) == "below gate"
-        ax.set_title(SHORT[t] + (" ○" if hollow_panel else ""), fontsize=12, weight="bold", loc="left")
+        ax.set_title(SHORT[t] + (" ○" if hollow_panel else ""), fontsize=12 if len(models) == 4 else 10.5, weight="bold",
+                     loc="left")
         for lab, v, col, hollow in rows[t]:
             if isinstance(v, str):  # a cell this model does not have (not tested, pending): a grey note in its row
                 ax.text(xlim[0] + 0.03, -labels.index(lab), v, color=GREY, va="center", fontsize=S.LABEL_PT - 1)
@@ -1389,12 +1432,14 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
 PROBE = {"qwen3.5-9b": R / "x0_probe" / "qwen35_9b_x0_probe_v4" / "probe-20261024T172340Z" / "probe.json",
          "qwen3.6-27b": R / "x0_probe" / "x0_probe_v4_27b" / "probe-20261024T172424Z" / "probe.json",
          "muse-glimmer-30b": R / "x0_probe" / "muse30b_x0_probe_v4" / "probe-20261026T000115Z" / "probe.json",
-         LT: R / "x0_probe" / "nem35l_x52_probe" / "probe-20261029T002432Z" / "probe.json"}  # fmt: skip
+         LT: R / "x0_probe" / "nem35l_x52_probe" / "probe-20261029T002432Z" / "probe.json",
+         B122: R / "x0_probe" / "qwen35_122b_x0_probe_v4" / "probe-20261024T230718Z" / "probe.json"}  # fmt: skip
 
 
 def address_probe(plt) -> str:
     """The address probe (x0_probe v4) at each model's L: which locker sentence (locker first; locker after, the
-    control), with the layout-only baseline beside, and the answer digit; four models, Lightning hollow."""
+    control), with the layout-only baseline beside, and the answer digit; five models (the 122B, Dan 11:30),
+    Lightning hollow."""
     rows = {}
     for t, path in PROBE.items():
         by = {(r["stratum"], r["target"]): r for r in load(path)["rows"] if r["subset"] == "all"}
@@ -1403,9 +1448,9 @@ def address_probe(plt) -> str:
                    ("the same, layout alone", by[("before", "locker sentence")]["layout"], NULL, False),
                    ("locker sentence, locker after", by[("after", "locker sentence")]["probe"], ADDRESS, True),
                    ("answer digit, locker first", by[("before", "answer digit")]["probe"], INK, hollow)]  # fmt: skip
-    return four_panels(plt, "ledger_address_probe", "A probe reads the address at the bridge word on all four models",
+    return four_panels(plt, "ledger_address_probe", "A probe reads the address at the bridge word on all five models",
                        "Held-out probe accuracy at each model's L; grey: the layout alone; chance 0.20 (dotted)",
-                       rows, {}, "probe accuracy", xlim=(0, 1.05), bars=((0.2, ":"),))
+                       rows, {}, "probe accuracy", xlim=(0, 1.05), bars=((0.2, ":"),), models=FIVE)
 
 
 CUMUL = {"qwen3.5-9b": R / "x47_cumulative" / "x47_4-20261028T113105Z" / "x47_4.json",
