@@ -342,7 +342,7 @@ def read_org(
     rows, states = [], []
     with torch.no_grad():
         for c in progress(cases, f"53.7 O reads{' and states' if layer is not None else ''} {what} (case)"):
-            for w in X.READERS:
+            for w in (w for w in X.READERS if w in c["readers"]):  # code_pointer_v1's CH2: the lookup only
                 rd = c["readers"][w]
                 rec = (layer,) if layer is not None and w == X.LOOKUP else ()
                 ids = torch.tensor([rd["ids"]["org"] + c["space"]], device=model.device)
@@ -354,12 +354,13 @@ def read_org(
     return rows, (np.stack(states) if states else None)
 
 
-def gate_of(rows: list[dict]) -> dict:
+def gate_of(rows: list[dict], readers: tuple[str, ...] = X.READERS) -> dict:
     """X0's gate (x0_necessity.gate_and_eligible's pass): per reader the share of O prompts read right (rounded to 4
-    places as X0's org_rate), passing iff both are >= GATE_BAR."""
-    acc = {w: round(float(np.mean([r["read_right"] for r in rows if r["reader"] == w])), 4) for w in X.READERS
+    places as X0's org_rate), passing iff every reader's is >= GATE_BAR (readers: code_pointer_v1's CH2 has the lookup
+    only)."""
+    acc = {w: round(float(np.mean([r["read_right"] for r in rows if r["reader"] == w])), 4) for w in readers
            if any(r["reader"] == w for r in rows)}  # fmt: skip
-    ok = len(acc) == len(X.READERS) and all(a >= GATE_BAR for a in acc.values())
+    ok = len(acc) == len(readers) and all(a >= GATE_BAR for a in acc.values())
     return {"cases": len({r["scene"] for r in rows}), "org_read_accuracy": acc, "bar": GATE_BAR, "pass": ok,
             "status": "passed" if ok else not_tested(acc), "rule": GATE_TEXT}  # fmt: skip
 
@@ -616,12 +617,14 @@ def prose_v4_rows(target: str) -> tuple[str | None, list[dict]]:
     return str(found[-1].relative_to(pins.REPO_ROOT)), json.loads(found[-1].read_text())["rows"]
 
 
-def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
+def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT, prefix: str = "x53_7_probe") -> Path:
     """The address probe per run (model x format): the gate, then x0_probe.score per stratum and target (every scene of
-    the run), Dan's reading verbatim, the prose v4 run beside; results/x0_probe/x53_7_probe-<UTC>/."""
+    the run; the strata it has), Dan's reading verbatim, the prose v4 run beside; results/x0_probe/<prefix>-<UTC>/.
+    prefix x53_7_cp_probe: code_pointer_v1's CH2 runs, numbers only (no reading, no prose run beside)."""
     from scripts import x0_probe as P
 
-    out = P.RESULTS / f"x53_7_probe-{utc()}"
+    cp = prefix != "x53_7_probe"  # code_pointer_v1 CH2: descriptive, numbers only (Dan, critic_1125)
+    out = P.RESULTS / f"{prefix}-{utc()}"
     out.mkdir(parents=True, exist_ok=False)
     runs = []
     for name in names:
@@ -636,9 +639,12 @@ def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
             items = X.read_jsonl(src / "items.jsonl")
             assert [it["scene"] for it in items] == scenes, f"{name}: items.jsonl and states.npz disagree"
             for it in items:
-                it["layout"] = P.layout(it["context"], it["pick_index"])
+                if "layout" not in it:  # prose scenes; CH2's items carry their own (every entry precedes the chain)
+                    it["layout"] = P.layout(it["context"], it["pick_index"])
+            orders = {it["order"] for it in items}
+            strata = [s for s in P.STRATA if s in orders or (s == "both" and len(orders) > 1)]
             rows = []
-            for stratum in P.STRATA:
+            for stratum in strata:
                 idx = [i for i, it in enumerate(items) if stratum == "both" or it["order"] == stratum]
                 for target in P.TARGETS:
                     rows.append({"subset": "all", "stratum": stratum, "target": target,
@@ -647,21 +653,32 @@ def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
             (out / name).mkdir()
             (out / name / "probe.json").write_text(json.dumps({"run": name, "manifest": m, "note": P.NOTE, "rows": rows},
                                                               indent=1) + "\n")  # fmt: skip
-            P.figures(out / name)
-        rec["prose_v4"], rec["prose_v4_rows"] = prose_v4_rows(rec["model"])
+            if strata == list(P.STRATA):
+                P.figures(out / name)
+            else:
+                probe_bars(rows, out / name / "probe.png", f"{name}: {', '.join(strata)} only")
+        rec["prose_v4"], rec["prose_v4_rows"] = prose_v4_rows(rec["model"]) if not cp else (None, [])
         runs.append(rec)
-    blob = {"test": TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED", "reading": PROBE_READING,
-            "rule": "none of its own (descriptive, x0_probe); the reading stated beside, verbatim", "gate": GATE_TEXT,
-            "n_boot": n_boot, "seed": X.BOOT_SEED, "format_text": FORMAT_TEXT, "runs": runs, "written_utc": utc()}  # fmt: skip
+    blob = {"test": TEST if not cp else CP_TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED",
+            "reading": PROBE_READING if not cp else None,
+            "rule": "none of its own (descriptive, x0_probe); the reading stated beside, verbatim" if not cp else CP_RULE,
+            "gate": GATE_TEXT if not cp else CP_GATE_TEXT, "n_boot": n_boot, "seed": X.BOOT_SEED,
+            "format_text": FORMAT_TEXT if not cp else {"cp_ch2": CP_TEXT}, "runs": runs, "written_utc": utc()}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
-    lines = [f"# {TEST}: the address probe in code and tool output", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
-             "Rule: none of its own (x0_probe v4 is descriptive, added after the data). " + PROBE_READING, "",
-             f"Gate (53.7): {GATE_TEXT}.", "", *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
-             "| model | format | layer | aligned scenes | gate (lookup / recall) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
+    if cp:
+        lines = [f"# {CP_TEST}: the address probe (descriptive, numbers only)", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
+                 f"Rule: {CP_RULE}", "", f"Gate: {CP_GATE_TEXT}.", "", f"- {CP_TEXT}.", "",
+                 "| model | format | layer | aligned scenes | gate (lookup) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
+    else:
+        lines = [f"# {TEST}: the address probe in code and tool output", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
+                 "Rule: none of its own (x0_probe v4 is descriptive, added after the data). " + PROBE_READING, "",
+                 f"Gate (53.7): {GATE_TEXT}.", "", *(f"- {f}: {t}." for f, t in FORMAT_TEXT.items()), "",
+                 "| model | format | layer | aligned scenes | gate (lookup / recall) | status |", "|---|---|---|---|---|---|"]  # fmt: skip
     for r in runs:
         acc = r["gate"]["org_read_accuracy"]
+        gate_txt = " / ".join(f"{acc[w]:.3f}" for w in X.READERS if w in acc) or "-"
         lines.append(f"| {MODEL_NAME.get(r['model'], r['model'])} | {r['format']} | L{r['layer']} | {r['gate']['cases']} | "
-                     f"{acc.get(X.LOOKUP, float('nan')):.3f} / {acc.get(X.RECALL, float('nan')):.3f} | {r['status']} |")  # fmt: skip
+                     f"{gate_txt} | {r['status']} |")  # fmt: skip
     lines += ["", "## Probe accuracy (every scene of the run; folds by bridge entity for (a), (b), by item for (c))", "",
               "| model | format | locker vs pick | target | n | entities | classes | probe | majority | chance | structure "
               "| layout | probe - best baseline | prose v4 probe (beside) |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -673,10 +690,16 @@ def stage_probe_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
                          f"{p['chance']:.2f} | {fmt_ci(p['structure']) if 'structure' in p else '-'} | "
                          f"{fmt_ci(p['layout']) if 'layout' in p else '-'} | {fmt_ci(p['probe_minus_best'])} "
                          f"({p['best_baseline']}) | {fmt_ci(prose[(p['stratum'], p['target'])]) if (p['stratum'], p['target']) in prose else '-'} |")  # fmt: skip
-    lines += report_lines("x0_probe (53.7 address probe)", runs, "probe (b), which locker sentence, locker before the "
-                          "pick, against the best baseline (layout / pick index / majority); the locker-after stratum "
-                          "is the control", "verdict.json: runs[].rows (stratum 'before', target 'locker sentence'); "
-                          "rerun x0_probe.score on results/x0_probe/<run>/{states.npz, items.jsonl}")  # fmt: skip
+    if cp:
+        lines += report_lines("x0_probe (code_pointer_v1 CH2, descriptive)", runs, "numbers only (no rule, no label): "
+                              "probe (b), the key's dict slot, against the best baseline; there is no locker-after "
+                              "stratum (the dict always comes first), so no control by construction", "verdict.json: "
+                              "runs[].rows; rerun x0_probe.score on results/x0_probe/<run>/{states.npz, items.jsonl}")  # fmt: skip
+    else:
+        lines += report_lines("x0_probe (53.7 address probe)", runs, "probe (b), which locker sentence, locker before "
+                              "the pick, against the best baseline (layout / pick index / majority); the locker-after "
+                              "stratum is the control", "verdict.json: runs[].rows (stratum 'before', target 'locker "
+                              "sentence'); rerun x0_probe.score on results/x0_probe/<run>/{states.npz, items.jsonl}")  # fmt: skip
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print(f"wrote {out}", flush=True)
     return out
@@ -771,6 +794,313 @@ def report_lines(exp: str, runs: list[dict], headline: str, verify: str) -> list
             f"For the human to verify: {verify}.", "", "Status: UNVERIFIED (batch 53, exploration; nothing into the README)."]  # fmt: skip
 
 
+# ---- code_pointer_v1's CH2 chains (Dan 11:25, critic_1125: "only if time remains: descriptive, the address probe and
+# the monitor"): no rule, no label, numbers only --------------------------------------------------------------------
+
+CP_TEST = "53.7 add-on: code_pointer_v1's CH2 chains (Dan 11:25, critic_1125; descriptive)"
+CP_SET, CP_FAMILY, CP_LEVEL, CP_DOMAINS = "main", "CH2", "e5f0", ("animals", "months")
+CP_MONITOR_PER_DOMAIN = 100  # the monitor's items: the first 100 aligned scenes per domain (200, as 53.2's main)
+CP_FORMAT = "cp_ch2"
+CP_TEXT = ("cp_ch2: code_pointer_v1's CH2 programs (data/code_pointer_v1/main/{animals,months}_CH2_e5f0.json, 400 "
+           "scenes each): a dict line `lockers = {...}` of 5 keys, then a 2-variable target chain (x = \"mouse\"; h = x) "
+           "and a distractor chain, then print(lockers[h]); suite_v1's chat prompt ('What does this Python code print?'). "
+           "The bridge word = the target chain's head key; S = the item's dissoc source (another key heads the chain, its "
+           "own dict). One reader (the lookup): the monitor's (d) is the key's recalled number (legs / month), read at "
+           "the bridge word and at the lookup's last token (CH2 has no recall prompt; the recall slot repeats the "
+           "lookup's prompt); the dict always precedes the chain, so the probe has no locker-after stratum")  # fmt: skip
+CP_RULE = ("none: descriptive, numbers only (Dan 11:25, critic_1125: 'code_pointer_v1 (CH2 chains) only if time "
+           "remains: descriptive, the address probe and the monitor'); no label is computed or stated")  # fmt: skip
+CP_GATE_TEXT = ("X0's main gate on CH2's one reader: the unedited base prompt's chat read right on >= 0.80 of the "
+                "scenes (both domains pooled; per domain beside), before any state is kept; a failure is 'not tested "
+                "(gate x < 0.80)'. code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; "
+                "the 27B: CH2 100% on both domains, results/code_pointer_v1/code_competence_27b) is not re-applied")  # fmt: skip
+
+
+def cp_items() -> list[dict]:
+    from scripts import code_pointer_v1 as CP
+
+    return [it for d in CP_DOMAINS for it in CP.load_file(CP.DATA / CP_SET / f"{d}_{CP_FAMILY}_{CP_LEVEL}.json")]
+
+
+def cp_bridge(tok, context: str, question: str, code: dict) -> tuple[list[int], list[int]]:
+    """A CH2 program's chat prompt (suite_v1.render, as code_pointer_v1's competence) and the token positions of the
+    target chain's head key (`x = "mouse"`: the key's characters)."""
+    from bridge_jspace.tokens import raw_encoding
+    from scripts import statement_positions as SP
+    from scripts import suite_v1 as S
+
+    text = S.render(tok, context, question)
+    head = code["heads"]["target"]
+    line = "\n" + f'{code["vars"]["target"][0]} = "{head}"' + "\n"
+    assert text.count(context) == 1, "the program is not once in the prompt"
+    assert context.count(line) == 1, f"{line!r} is not once in the program"
+    w0 = text.index(context) + context.index(line) + line.rindex(head)
+    enc = raw_encoding(tok, text, offsets=True)
+    return list(enc["input_ids"]), SP.tokens_in(enc["offset_mapping"], w0, w0 + len(head))
+
+
+def cp_case(tok, it: dict) -> tuple[dict | None, str | None]:
+    """One CH2 scene: O = the base program, S = its dissoc source; the head key one token in each; distinct answers."""
+    from scripts import code_pointer_v1 as CP
+    from scripts import suite_v1 as S
+
+    src = it["sources"]["dissoc"]
+    bridge, cf = it["code"]["heads"]["target"], src["code"]["heads"]["target"]
+    assert bridge == it["query"], it["id"]
+    assert it["entities"][it["slots"]["query"]] == bridge, it["id"]
+    assert cf == src["query"], it["id"]
+    assert src["entities"][src["query_slot"]] == cf, it["id"]
+    ids_o, p_o = cp_bridge(tok, it["context"], it["question"], it["code"])
+    ids_s, p_s = cp_bridge(tok, src["context"], src["question"], src["code"])
+    if len(p_o) != 1 or len(p_s) != 1:
+        return None, "the head key is not one token in O and S"
+    tok_a, tok_b = (S.answer_token(tok, a, "digit") for a in (it["answer"], src["answer"]))
+    if tok_a == tok_b:
+        return None, "the O and S answers share their first token"
+    lines = it["code"]["lines"]
+    rd = {"id": it["id"], "question": it["question"], "answer": it["answer"], "cf_answer": src["answer"],
+          "ids": {"org": ids_o, "alt": ids_s}, "tok_A": tok_a, "tok_b": tok_b}  # fmt: skip
+    return {"scene": it["id"], "rendering": "chat", "format": CP_FORMAT, "domain": it["domain"], "bridge": bridge,
+            "cf_bridge": cf, "context": it["context"], "cf_context": src["context"], "pos": p_o[0], "cf_pos": p_s[0],
+            "space": S.ids(tok, " "), "readers": {X.LOOKUP: rd},
+            "cp": {"slot": it["slots"]["query"], "cf_slot": src["query_slot"], "n_slots": it["n_entities"],
+                   "recall": str(it["recalled"][bridge]), "cf_recall": str(CP.rec(it["domain"], cf)),
+                   "head_line": lines.index(f'{it["code"]["vars"]["target"][0]} = "{bridge}"'),
+                   "n_lines": len(lines)}}, None  # fmt: skip
+
+
+def cp_cases(tok) -> tuple[list[dict], dict]:
+    cases, dropped = [], collections.Counter()
+    for it in cp_items():
+        c, why = cp_case(tok, it)
+        if c is None:
+            dropped[f"{it['domain']}: {why}"] += 1
+        else:
+            cases.append(c)
+    return cases, {"set": f"code_pointer_v1/{CP_SET} {CP_FAMILY}", "cases": len(cases),
+                   "entities": len({c["bridge"] for c in cases}),
+                   "domains": dict(collections.Counter(c["domain"] for c in cases)), "dropped": dict(sorted(dropped.items()))}  # fmt: skip
+
+
+def cp_probe_item(c: dict) -> dict:
+    """x0_probe's item for a CH2 scene: (a) the printed digit, (b) the key's dict slot, (c) the key; the dict precedes
+    the chain ("before"); pick_index = the head line's place among the chain lines; layout = every entry before."""
+    n = c["cp"]["n_slots"]
+    return {"scene": c["scene"], "entity": c["bridge"], "domain": c["domain"], "x0": False, "order": "before",
+            "answer": c["readers"][X.LOOKUP]["answer"], "locker_form": "digit", "pick_index": c["cp"]["head_line"],
+            "locker_index": c["cp"]["slot"], "sentences": n + c["cp"]["n_lines"], "pos": c["pos"], "layout": f"{n}/{n}",
+            "context": c["context"]}  # fmt: skip
+
+
+def cp_monitor_items(tok, target: str) -> tuple[list[dict], dict]:
+    """x53_monitor's dataset cp_ch2: the first CP_MONITOR_PER_DOMAIN aligned CH2 scenes per domain; O / S rows with
+    their own labels; the recall slot repeats the lookup (CH2 has one reader), so T recall = T lookup."""
+    from scripts import x53_monitor as M
+
+    cases, counts = cp_cases(tok)
+    out = []
+    for d in CP_DOMAINS:
+        for c in [c for c in cases if c["domain"] == d][:CP_MONITOR_PER_DOMAIN]:
+            rd = c["readers"][X.LOOKUP]
+            pos = {"org": c["pos"], "alt": c["cf_pos"]}
+            reader = {"ids": rd["ids"], "suffix": c["space"], "question": rd["question"],
+                      "pos": {v: {"B": pos[v], "T": len(rd["ids"][v]) + len(c["space"]) - 1} for v in M.VARIANTS},
+                      **{k: rd[k] for k in ("answer", "cf_answer", "tok_A", "tok_b")}}  # fmt: skip
+            lab = {"org": {"bridge": c["bridge"], "slot": c["cp"]["slot"], "n_slots": c["cp"]["n_slots"],
+                           "lookup": rd["answer"], "recall": c["cp"]["recall"]},
+                   "alt": {"bridge": c["cf_bridge"], "slot": c["cp"]["cf_slot"], "n_slots": c["cp"]["n_slots"],
+                           "lookup": rd["cf_answer"], "recall": c["cp"]["cf_recall"]}}  # fmt: skip
+            out.append({"set": CP_FORMAT, "scene": c["scene"], "entity": c["bridge"], "cf_entity": c["cf_bridge"],
+                        "domain": d, "format": CP_FORMAT, "context": c["context"], "cf_context": c["cf_context"],
+                        "labels": lab, "readers": {X.LOOKUP: reader, X.RECALL: dict(reader)},
+                        "one_reader": True})  # fmt: skip
+    return out, {**counts, "monitor_items": len(out), "per_domain": CP_MONITOR_PER_DOMAIN,
+                 "monitor_entities": len({it["entity"] for it in out}), "target": target}  # fmt: skip
+
+
+def stage_cp_run(probe_name: str, monitor_name: str) -> tuple[Path, Path]:
+    """GPU: CH2's gate (the base read) with the lookup's state at the head key at L on every aligned scene (the address
+    probe: results/x0_probe/<probe_name>/), then, if the gate passes, x53_monitor.stage_run on cp_ch2 (same model)."""
+    from bridge_jspace.data import sha256_of
+    from bridge_jspace.model import load_model
+    from bridge_jspace.run_switches import switches
+    from bridge_jspace.utils import git_state
+    from scripts import code_pointer_v1 as CP
+    from scripts import x0_probe as P
+    from scripts import x53_monitor as M
+
+    check_gate_bar()
+    target = pins.TARGET
+    layer = X.PREDICTED[target]
+    for n, root in ((probe_name, P.RESULTS), (monitor_name, M.RESULTS)):
+        pins.check_run_name(n)
+        assert not (root / n).exists(), f"{n} exists"
+    files = [CP.DATA / CP_SET / f"{d}_{CP_FAMILY}_{CP_LEVEL}.json" for d in CP_DOMAINS]
+    out = P.RESULTS / probe_name
+    out.mkdir(parents=True, exist_ok=False)
+    m: dict[str, Any] = {
+        "exp": P.EXP, "run": probe_name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "note": P.NOTE, "test": CP_TEST, "spec": SPEC, "prediction": NO_PREDICTION, "rule": CP_RULE, "source": None,
+        "source_code": None, "set": f"code_pointer_v1/{CP_SET}/{CP_FAMILY}", "layer": layer, "x0_items": 0,
+        "format": CP_FORMAT, "format_text": CP_TEXT, "gate": CP_GATE_TEXT, "read": READ_TEXT, "model": pins.model_pin(),
+        "switches": switches(), "code": git_state(), "position": "the target chain's head key, base program",
+        "inputs": {str(f.relative_to(pins.REPO_ROOT)): sha256_of(f) for f in files},
+        "folds": {"outer": P.K_OUTER, "inner": P.K_INNER, "penalties": list(P.RELS)},
+        "seeds": {"bootstrap": X.BOOT_SEED}, "targets": dict(P.TARGETS), "monitor_run": monitor_name}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    model = load_model()
+    cases, counts = cp_cases(model.tokenizer)
+    print(json.dumps(counts), flush=True)
+    rows, h = read_org(model, cases, layer, "code_pointer_v1 CH2")
+    by_domain = {d: gate_of([r for r, c in zip(rows, cases, strict=True) if c["domain"] == d], (X.LOOKUP,))
+                 ["org_read_accuracy"] for d in CP_DOMAINS}  # fmt: skip
+    gate = {**gate_of(rows, (X.LOOKUP,)), "rule": CP_GATE_TEXT, "per_domain": by_domain, "counts": counts}
+    (out / "gate.json").write_text(json.dumps(gate, indent=1) + "\n")
+    X.write_jsonl(out / "reads.jsonl", rows)
+    print(f"{probe_name}: gate {gate['org_read_accuracy']} (per domain {by_domain}) -> {gate['status']}", flush=True)
+    if gate["pass"]:
+        assert h is not None
+        h = h.astype(np.float16) if np.abs(h).max() < 6e4 else h
+        np.savez_compressed(out / "states.npz", h=h, scene=np.array([c["scene"] for c in cases]))
+        X.write_jsonl(out / "items.jsonl", [cp_probe_item(c) for c in cases])
+    m.update({"gate_pass": gate["pass"], "cases": len(cases), "finished_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    gate_m = {k: gate[k] for k in ("cases", "org_read_accuracy", "pass", "status", "per_domain")}
+    extra = {"x53_7": {"test": CP_TEST, "spec": SPEC, "prediction": NO_PREDICTION, "rule": CP_RULE, "descriptive": True,
+                       "formats": [CP_FORMAT], "format_text": {CP_FORMAT: CP_TEXT},
+                       "gates": {CP_FORMAT: {**gate_m, "set": f"code_pointer_v1/{CP_SET} {CP_FAMILY} (every aligned scene)"}},
+                       "states_for": [CP_FORMAT] if gate["pass"] else [], "probe_run": probe_name,
+                       "items": f"the first {CP_MONITOR_PER_DOMAIN} aligned scenes per domain (x53_7.cp_monitor_items)"}}  # fmt: skip
+    mon = M.stage_run(monitor_name, sets_run=(CP_FORMAT,) if gate["pass"] else (), model=model, extra=extra)
+    return out, mon
+
+
+def probe_bars(rows: list[dict], path: Path, title: str) -> None:
+    """The probe and its baselines per target (and stratum present): bars with 95% CIs."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, len({r["target"] for r in rows}), figsize=(11, 3.8), sharey=True, squeeze=False)
+    for ax, target in zip(axes[0], dict.fromkeys(r["target"] for r in rows), strict=True):
+        mine = [r for r in rows if r["target"] == target]
+        for j, r in enumerate(mine):
+            for k, (key, col) in enumerate((("probe", "#4a6fa5"), ("majority", "#bdbdbd"), ("structure", "#c27c0e"),
+                                            ("layout", "#7a4ea3"))):  # fmt: skip
+                if key in r:
+                    v = r[key]
+                    ax.bar(j + 0.2 * k - 0.3, v[0], 0.18, color=col, yerr=[[v[0] - v[1]], [v[2] - v[0]]], capsize=2,
+                           label=key if j == 0 else None)  # fmt: skip
+            ax.plot([j - 0.4, j + 0.4], [r["chance"]] * 2, color="black", lw=1, ls="--")
+        ax.set_xticks(range(len(mine)), [f"{r['stratum']} (n {r['n']})" for r in mine])
+        ax.set_title(target, fontsize=10)
+        ax.set_ylim(0, 1.05)
+    axes[0][0].set_ylabel("cross-validated accuracy")
+    axes[0][0].legend(fontsize=8, frameon=False)
+    fig.suptitle(f"{title} (dashed: chance; descriptive; UNVERIFIED)", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path, dpi=130, facecolor="white")
+    plt.close(fig)
+
+
+def monitor_numbers_figure(results: dict, s: str, path: Path) -> None:
+    """53.2's panels without any label: accuracy by layer per target (columns) and model x position (rows); full,
+    J++_k, random_k, PCA_k (k = 25 solid, 100 dashed), chance dotted."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from scripts import x53_monitor as M
+
+    col = {"full": "#111111", "jpp": "#6a4bd6", "rand": "#9a9a9a", "pca": "#009e73", "chance": "#cccccc"}
+    rows = [(t, p) for t in M.MODELS if s in results.get(t, {}) for p in M.PROBE_POS]
+    fig, axes = plt.subplots(len(rows), len(M.TARGETS), figsize=(13, 2.3 * len(rows) + 1.2), sharey=True, squeeze=False)
+    for i, (t, p) in enumerate(rows):
+        res = results[t][s]
+        for j, tg in enumerate(M.TARGETS):
+            ax, feats = axes[i][j], res["acc"][f"{p}|{tg}"]
+            ax.plot(res["layers"], feats["chance"]["acc"], ":", color=col["chance"])
+            ax.plot(res["layers"], feats["full"]["acc"], "-", color=col["full"], lw=1.8)
+            for k, ls in zip(M.KS, ("-", "--"), strict=True):
+                for fam in ("rand", "pca", "jpp"):
+                    if f"{fam}{k}" in feats:
+                        ax.plot(res["layers"], feats[f"{fam}{k}"]["acc"], ls, color=col[fam], lw=1.4)
+            ax.set_title(M.TARGET_SHORT[tg], fontsize=8.5)
+            ax.set_ylim(-0.02, 1.02)
+            if j == 0:
+                ax.set_ylabel(f"{M.NAMES[t]}\n{'bridge word' if p == 'B' else 'last token'}", fontsize=9)
+    fig.suptitle(f"{CP_TEST}: probe accuracy by layer (numbers only, no label; full black, J++ purple, random grey, PCA "
+                 "green; k = 25 solid, 100 dashed; UNVERIFIED)", fontsize=9)  # fmt: skip
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.savefig(path, dpi=110, facecolor="white")
+    plt.close(fig)
+
+
+def stage_cp_monitor_report(names: list[str], n_boot: int = X.N_BOOT) -> Path:
+    """CH2's monitor numbers (x53_monitor.summarize: per-layer accuracies and CIs), no label;
+    results/x53_monitor/x53_7_cp_monitor-<UTC>/."""
+    from scripts import x53_monitor as M
+
+    results: dict[str, dict] = {}
+    status = []
+    for name in names:
+        m = json.loads((M.RESULTS / name / "manifest.json").read_text())
+        target, g = m["model"]["target"], m["x53_7"]["gates"][CP_FORMAT]
+        rec = {
+            "run": name,
+            "model": target,
+            "format": CP_FORMAT,
+            "gate": g,
+            "status": "tested" if g["pass"] else g["status"],
+        }
+        if g["pass"]:
+            pr = M.load_probes(name, CP_FORMAT)
+            assert pr is not None, f"{name}: no probes in {M.CACHE / name}: run x53_monitor.py probe first"
+            summ = M.summarize(pr, n_boot)
+            summ.pop("rules")  # numbers only (Dan: descriptive); the rule is not applied to CH2
+            results.setdefault(target, {})[CP_FORMAT] = summ
+        status.append(rec)
+    out = M.RESULTS / f"x53_7_cp_monitor-{utc()}"
+    out.mkdir(parents=True, exist_ok=False)
+    figs = []
+    if results:
+        monitor_numbers_figure(results, CP_FORMAT, out / "x53_7_cp_monitor.png")
+        figs.append("x53_7_cp_monitor.png")
+    blob = {"test": CP_TEST, "spec": SPEC, "prediction": NO_PREDICTION, "status": "UNVERIFIED", "rule": CP_RULE,
+            "gate": CP_GATE_TEXT, "format_text": {CP_FORMAT: CP_TEXT}, "runs": status, "figures": figs,
+            "n_boot": n_boot, "results": results, "written_utc": utc()}  # fmt: skip
+    (out / "x53_7_cp_monitor.json").write_text(json.dumps(blob, indent=1) + "\n")
+    lines = [f"# {CP_TEST}: the monitor (53.2's probes; numbers only)", "", f"{NO_PREDICTION}. Spec: {SPEC}.", "",
+             f"Rule: {CP_RULE}.", "", f"Gate: {CP_GATE_TEXT}.", "", f"- {CP_TEXT}.", "",
+             "| model | gate (lookup; per domain) | status |", "|---|---|---|"]  # fmt: skip
+    for s in status:
+        lines.append(f"| {M.NAMES.get(s['model'], s['model'])} | {s['gate']['org_read_accuracy']} "
+                     f"{s['gate'].get('per_domain', '')} | {s['status']} |")  # fmt: skip
+    lines += ["", "## Best layer per cell (accuracy [95% CI]; no label)", "",
+              "| model | position | target | full (layer) | J++25 | random25 | J++100 | random100 | PCA25 | chance |",
+              "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t, per in results.items():
+        r = per[CP_FORMAT]
+        for p in M.PROBE_POS:
+            for tg in M.TARGETS:
+                f = r["acc"][f"{p}|{tg}"]
+                li = int(np.argmax(f["full"]["acc"]))
+                best = lambda key, f=f: M.fmt_acc(f[key], int(np.argmax(f[key]["acc"])))  # noqa: E731
+                lines.append(f"| {M.NAMES[t]} | {p} | {M.TARGET_SHORT[tg]} | {M.fmt_acc(f['full'], li)} (L{r['layers'][li]}) | "
+                             + " | ".join(best(k) for k in ("jpp25", "rand25", "jpp100", "rand100", "pca25", "chance")) + " |")  # fmt: skip
+    lines += ["", "Each column's best layer (full: the layer named). (d) at the last token is read on the lookup's prompt "
+              "(CH2 has no recall prompt).", ""]  # fmt: skip
+    lines += report_lines("x53_monitor (code_pointer_v1 CH2, descriptive)", status, "numbers only: per target and "
+                          "position the J++ probe beside the random subspace and the full residual, no label",
+                          "x53_7_cp_monitor.json: results[<model>]['cp_ch2']['acc']; the probes in "
+                          "cache/x53_monitor/<run>/cp_ch2.npz (x53_monitor.py probe)")  # fmt: skip
+    (out / "verdict.md").write_text("\n".join(lines) + "\n")
+    print(f"wrote {out}", flush=True)
+    return out
+
+
 # ---- plan (tokenizer only) ----------------------------------------------------------------------------------------
 
 
@@ -808,13 +1138,30 @@ def main() -> None:
     p = sub.add_parser("monitor-run", help="GPU: the monitor's gate per format, then its states (x53_monitor)")
     p.add_argument("--name", required=True)
     p.add_argument("--formats", default=",".join(FORMATS))
-    for cmd in ("routes-verdict", "probe-verdict", "monitor-verdict"):
-        p = sub.add_parser(cmd, help="CPU: the verdict into results/<exp>/x53_7_<test>-<UTC>/")
+    for cmd in ("routes-verdict", "probe-verdict", "monitor-verdict", "cp-probe-report", "cp-monitor-report"):
+        p = sub.add_parser(cmd, help="CPU: the verdict (cp-*: numbers only) into results/<exp>/x53_7_<test>-<UTC>/")
         p.add_argument("--names", required=True, help="the runs, comma-separated")
         p.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    sub.add_parser("cp-plan", help="tokenizer only: code_pointer_v1 CH2's aligned scenes and monitor items")
+    p = sub.add_parser("cp-run", help="GPU: CH2's gate and probe states, then its monitor states (descriptive)")
+    p.add_argument("--probe-name", required=True)
+    p.add_argument("--monitor-name", required=True)
     a = ap.parse_args()
     if a.cmd == "plan":
         stage_plan()
+    elif a.cmd == "cp-plan":
+        from scripts import x45m
+
+        tok = x45m.tokenizer()
+        cases, _ = cp_cases(tok)
+        _, item_counts = cp_monitor_items(tok, pins.TARGET)
+        print(json.dumps({**item_counts, "prompt_tokens": len(cases[0]["readers"][X.LOOKUP]["ids"]["org"])}, indent=1))
+    elif a.cmd == "cp-run":
+        stage_cp_run(a.probe_name, a.monitor_name)
+    elif a.cmd == "cp-probe-report":
+        stage_probe_verdict(a.names.split(","), a.n_boot, prefix="x53_7_cp_probe")
+    elif a.cmd == "cp-monitor-report":
+        stage_cp_monitor_report(a.names.split(","), a.n_boot)
     elif a.cmd == "probe-run":
         stage_probe_run(a.name, tuple(a.formats.split(",")))
     elif a.cmd == "monitor-run":

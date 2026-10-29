@@ -253,3 +253,69 @@ def test_gate_of_is_x0s_gate():
     assert g["org_read_accuracy"] == {"PP": 0.8, "PM": 0.7} and not g["pass"]
     assert g["status"] == "not tested (gate 0.700 < 0.80)"
     assert F.gate_of([{**r, "read_right": True} for r in rows])["pass"]
+    one = F.gate_of([r for r in rows if r["reader"] == X.LOOKUP], (X.LOOKUP,))  # CH2: the lookup only
+    assert one["org_read_accuracy"] == {"PP": 0.8} and one["pass"]
+
+
+# ---- code_pointer_v1's CH2 (descriptive add-on) ----------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("target", TARGETS)
+def test_cp_cases_keep_the_head_key_aligned(target):
+    tok = tokenizer(target)
+    items = F.cp_items()
+    for it in [*items[:15], *items[-15:]]:  # both domains
+        c, why = F.cp_case(tok, it)
+        assert c is not None, why
+        rd = c["readers"][X.LOOKUP]
+        assert decoded(tok, rd["ids"]["org"], c["pos"]) == c["bridge"] == it["query"]
+        assert decoded(tok, rd["ids"]["alt"], c["cf_pos"]) == c["cf_bridge"]
+        assert tok.decode(rd["ids"]["org"][c["pos"] - 4 : c["pos"]]).endswith(' = "')  # the head line, not the dict
+        p = F.cp_probe_item(c)
+        assert it["entities"][p["locker_index"]] == c["bridge"] and p["order"] == "before"
+        assert str(it["digits"][p["locker_index"]]) == p["answer"] == it["answer"]
+
+
+def test_cp_monitor_items_pass_the_monitors_checks(monkeypatch):
+    tok = tokenizer("qwen3.6-27b")
+    monkeypatch.setattr(F, "CP_MONITOR_PER_DOMAIN", 3)
+    items, counts = F.cp_monitor_items(tok, "qwen3.6-27b")
+    assert len(items) == 6 and counts["cases"] == 800
+    M.check_items(items)
+    for it in items:
+        assert it["readers"]["PM"] == it["readers"]["PP"]  # one reader: the recall slot repeats the lookup
+        assert it["labels"]["org"]["recall"] != "" and it["labels"]["alt"]["bridge"] == it["cf_entity"]
+
+
+def test_cp_probe_report_is_numbers_only(tmp_path, monkeypatch):
+    monkeypatch.setattr(P, "RESULTS", tmp_path)
+    src = probe_run(tmp_path, "cp_pass", True)
+    items = [json.loads(x) for x in (src / "items.jsonl").read_text().splitlines()]
+    write_jsonl(src / "items.jsonl", [{**it, "order": "before", "layout": "5/5"} for it in items])
+    probe_run(tmp_path, "cp_fail", False)
+    out = F.stage_probe_verdict(["cp_pass", "cp_fail"], n_boot=50, prefix="x53_7_cp_probe")
+    assert out.name.startswith("x53_7_cp_probe-")
+    runs = {r["run"]: r for r in json.loads((out / "verdict.json").read_text())["runs"]}
+    assert {r["stratum"] for r in runs["cp_pass"]["rows"]} == {"before"}  # the only order CH2 has
+    assert runs["cp_fail"]["status"].startswith("not tested (gate")
+    md = (out / "verdict.md").read_text()
+    assert F.CP_RULE in md and F.PROBE_READING not in md and (out / "cp_pass" / "probe.png").exists()
+
+
+def test_cp_monitor_report_has_no_label(tmp_path, monkeypatch):
+    monkeypatch.setattr(M, "RESULTS", tmp_path / "results")
+    monkeypatch.setattr(M, "CACHE", tmp_path / "cache")
+    for name, ok in (("cp_27b", True), ("cp_9b", False)):
+        (tmp_path / "results" / name).mkdir(parents=True)
+        g = {"cases": 800, "org_read_accuracy": {"PP": 0.95 if ok else 0.6}, "pass": ok,
+             "status": "passed" if ok else F.not_tested({"PP": 0.6}), "per_domain": {}}  # fmt: skip
+        (tmp_path / "results" / name / "manifest.json").write_text(json.dumps(
+            {"model": {"target": "qwen3.6-27b" if ok else "qwen3.5-9b"}, "x53_7": {"gates": {F.CP_FORMAT: g}}}))  # fmt: skip
+    monitor_cache(tmp_path / "cache", "cp_27b", F.CP_FORMAT, {"full": 0.9, "jpp25": 0.85, "rand25": 0.3})
+    out = F.stage_cp_monitor_report(["cp_27b", "cp_9b"], n_boot=50)
+    blob = json.loads((out / "x53_7_cp_monitor.json").read_text())
+    assert "rules" not in blob["results"]["qwen3.6-27b"][F.CP_FORMAT]
+    assert [r["status"] for r in blob["runs"]] == ["tested", "not tested (gate 0.600 < 0.80)"]
+    md = (out / "verdict.md").read_text()
+    assert not any(lab in md for lab in ("J-space blind", "J-space carries", "in between"))
+    assert (out / "x53_7_cp_monitor.png").exists()

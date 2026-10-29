@@ -82,7 +82,8 @@ X52_READ = {"qwen3.5-9b": "qwen35_9b_x52_read_main", "qwen3.6-27b": "x52_read_ma
 SETS = ("main", "json")
 SET_TEXT = {"main": "our main test (X0's scenes)", "json": "the varied scenes, JSON format (x0b_v2)",
             # 53.7 (batch 53, scripts/x53_7.py): the main test's items rendered as code / tool output; never in SETS
-            "code": "the main test's scenes as Python code (53.7)", "tool": "the main test's scenes as tool output (53.7)"}  # fmt: skip
+            "code": "the main test's scenes as Python code (53.7)", "tool": "the main test's scenes as tool output (53.7)",
+            "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)"}  # fmt: skip
 JSON_SET, JSON_FORMAT = "x0b_v2", "json"
 VARIANTS = ("org", "alt")
 POS = ("B", "T_lookup", "T_recall")
@@ -197,9 +198,17 @@ def x53_7_items(tok, target: str, fmt: str) -> tuple[list[dict], dict]:
     return F.main_items(tok, target, fmt)
 
 
+def x53_7_cp_items(tok, target: str) -> tuple[list[dict], dict]:
+    """53.7's add-on cp_ch2 (Dan 11:25: descriptive): code_pointer_v1's CH2 programs (scripts/x53_7.py)."""
+    from scripts import x53_7 as F
+
+    return F.cp_monitor_items(tok, target)
+
+
 BUILD = {"main": lambda tok, target: main_items(tok, target), "json": lambda tok, target: json_items(tok),
          "code": lambda tok, target: x53_7_items(tok, target, "code"),
-         "tool": lambda tok, target: x53_7_items(tok, target, "tool")}  # fmt: skip
+         "tool": lambda tok, target: x53_7_items(tok, target, "tool"),
+         "cp_ch2": lambda tok, target: x53_7_cp_items(tok, target)}  # fmt: skip
 
 
 def layers_for(n_layers: int) -> tuple[int, ...]:

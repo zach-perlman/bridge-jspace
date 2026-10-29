@@ -1,0 +1,51 @@
+id: x53_7_cp_27b
+title: "Batch 53, 53.7 add-on (Dan 11:25, critic_1125; descriptive, numbers only) on the 27B: code_pointer_v1's CH2 chains, the address probe at L32 (the target chain's head key) and the monitor's forwards (53.2's states, every second layer); X0's main gate on CH2's one reader first; the probe's numbers into results/x0_probe/x53_7_cp_probe-<UTC>/; no rule, no label, no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_7.py cp-run --probe-name x53_7_cp_probe_27b --monitor-name x53_7_cp_monitor_27b &&
+  uv run python scripts/x53_7.py cp-probe-report --names x53_7_cp_probe_27b
+question: >-
+  Descriptive: in code_pointer_v1's CH2 programs (a dict of 5 keys, then x = "<key>"; h = x; print(lockers[h])), what
+  can a probe read at the target chain's head key at L32 (the printed digit, the key's dict slot, the key), and what can
+  53.2's monitor features decode from the states (full residual, J++ part, random and PCA subspaces)? Numbers only.
+why_it_matters: >-
+  Dan 11:25 (jobs/c3/batch53.yaml critic_1125): "53.7: your reading is right (...). code_pointer_v1 (CH2 chains) only
+  if time remains: descriptive, the address probe and the monitor." Programs where the pointer is literal: a slot read
+  at the head key, beside the prose and the rendered locker scenes.
+hypotheses:
+  none: "no prediction (batch 53, 53.7 add-on; descriptive; UNVERIFIED)"
+decision_rule: >-
+  None: descriptive, numbers only (Dan 11:25: "descriptive"); no label is computed or stated, as below-gate runs are
+  reported. Gate (as 53.7): X0's main gate on CH2's one reader (the lookup, "What does this Python code print?"): the
+  unedited base prompt's chat read right on >= 0.80 of the scenes (both domains pooled; per domain beside), computed
+  before any state is kept; a failure is "not tested (gate x < 0.80)": no states, no probe, no monitor forwards.
+  code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; the 27B scored CH2 100% on
+  both domains, results/code_pointer_v1/code_competence_27b) is reported, not re-applied. The probe: x0_probe's
+  probes, folds, baselines and bootstrap (x0_probe.score) on every aligned scene. The monitor: x53_monitor's features,
+  probes, folds and seeds (as 53.2) on its dataset cp_ch2.
+controls:
+- "majority, chance, structure (the head line's place) and layout baselines for the probe, cross-validated (the dict always comes first: no locker-after stratum, so no control by construction)"
+- "the bridge identity probe (positive control)"
+- "53.2's random subspace of the same k, PCA top-k and the full residual for the monitor"
+n: "code_pointer_v1 main CH2: 800 scenes (animals 400, months 400; 19 keys), all aligned on the 27B tokenizer (the head key one token in O and S); the probe on all 800 base programs; the monitor on the first 100 per domain (200 items, O = the base, S = its dissoc source); 95-token prompts; plan: scripts/x53_7.py cp-plan"
+seeds: [0, 888, 1, 2, 3, 4]
+notes: >-
+  Batch 53, 53.7 add-on (Dan 11:25, critic_1125); no prediction; UNVERIFIED; descriptive: numbers only, no rule, no
+  label. Gate: if CH2 fails X0's main gate, the probe and the monitor are "not tested" (no states kept, no monitor
+  forwards). Bridge word = the target chain's head key (`x = "mouse"`): where the program names the item after the
+  dict, as the asked pick sentence names it after the lockers. Probe targets: (a) the printed digit, (b) the key's
+  slot in the dict, (c) the key. Monitor: O = the base program, S = its dissoc source (another key heads the chain,
+  its own dict), labels per row; CH2 has one reader, so the recall slot repeats the lookup's prompt: the monitor's (d)
+  (the key's recalled number: legs / month) is read at the bridge word and at the lookup's last token. Layers: L32
+  (probe), every second layer (monitor). Writes results/x0_probe/x53_7_cp_probe_27b/ (x0_probe's layout + gate.json,
+  reads.jsonl), results/x53_monitor/x53_7_cp_monitor_27b/ (dataset cp_ch2; states gitignored; the gate in its
+  manifest), then the probe's numbers into results/x0_probe/x53_7_cp_probe-<UTC>/. The monitor's CPU probes run on the
+  Mac after the pull: `x53_monitor.py probe --name x53_7_cp_monitor_27b --sets cp_ch2`, then `x53_7.py
+  cp-monitor-report --names x53_7_cp_monitor_27b` -> results/x53_monitor/x53_7_cp_monitor-<UTC>/. Queue last (after
+  everything else today). Estimate: 800 recorded reads plus 800 monitor forwards at 32 layers and the J++ OMP over
+  1,200 rows x 32 layers, against 53.2's 27B budget for its main set (800 forwards, 0.3 h with JSON): ~0.3 h.
