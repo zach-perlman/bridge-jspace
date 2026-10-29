@@ -1,0 +1,37 @@
+id: x52_lightning_dose
+title: "Batch 52 C coverage (Lightning extra b): the dose curves (51.1) at L14: the J++ part alone at alpha 0.5..3 and the rest alone at beta 0.25..1.5 (with and without the address), each with its random twin of the same share at the same gain; the conflict run's locker-first items; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl && test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  uv run python scripts/x51_dose.py run --name nem35l_x52_dose --why "Batch 52 part C (jobs/c3/batch52.yaml amendment 3, extra b), coverage: 51.1's dose curves on Lightning at the committed L$L, the conflict run's locker-first items, U from nem35l_x52_probe; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x51_dose.py verdict --coverage
+question: >-
+  On Lightning: added by itself, does the J++ part move the recall more than a random part of its size, and the
+  lookup no more (51.1's (i), (ii)); does the rest by itself move the lookup, and how much of that goes with the address?
+why_it_matters: >-
+  'Does each part, added by itself, move its reader?' (Part I, Fig. 16) on the second family.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x51_1_muse.yaml (jobs/c3/batch51.yaml 51.1; first scored in
+  results/x51_dose/x51_1-20261028T170335Z): (i) "The lookup is blind to the J++ part": switch minus random <= 0.10 at
+  every alpha whose plain-text loss stays under 2x the whole change's -- on all three. (ii) "The recall reads the J++
+  part above its share": at the first alpha where the J++ part alone switches >= 0.3, J minus random >= 0.2 -- per
+  model. (iii) "Together only" (Muse). As computed: x51_1_muse's text with Lightning's source: the main test's
+  eligible items of nem35l_x52_conflict at L14, locker-first only (x49_gain.select_items); U = x47_atoms.pointer_basis
+  (the address fit on nem35l_x52_probe's states, never refit); 49.1 never ran on Lightning, so its J(1,1) check and
+  the fit's grid cells from 49.1 are left out (J(1,1) is read from this run's own whole arm); (i)'s "on all three" read
+  on Lightning alone; (iii) is Muse's and not read. Verdict in the job (verdict --coverage, x52_dose-<UTC>/).
+controls:
+- "every dose's random twin of the same share at the same gain (X0's random subspace, seed 888 + L)"
+- "the rest without a random part of the address's share (R_U)"
+- "the plain-text loss bar per dose (2x the whole change's)"
+n: "the conflict run's locker-first main-test items at L14 (Muse: 68)"
+seeds: [888, 0]
+notes: "Batch 52 C, amendment 3 extra b; any free Lightning box. Needs the conflict run and the probe run committed (both checked). Code: x51_dose.COVERAGE_RUNS + verdict --coverage; x49_numbers / the run accept a model without a 49.1 run; summary reads the models given (51.1's RUNS and own verdict unchanged). Wallclock (ledger): x51_1_muse 0.05 h; est ~5-10 min, 0.2 GPU-h."

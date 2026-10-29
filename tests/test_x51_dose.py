@@ -357,3 +357,13 @@ def test_run_names_pass_the_prefix_check():
     from bridge_jspace import pins
 
     assert D.RUNS[pins.TARGET].startswith(pins.RUN_PREFIX)
+
+
+def test_lightning_coverage_has_no_49_1_run_and_its_summary_reads_alone():
+    """Batch 52 C: Lightning is a coverage run outside 51.1's RUNS; 49.1 never ran there (no J(1,1) beside); the
+    summary reads the models given, rule (iii) stays Muse's."""
+    lt = "nemotron-3.5-lightning"
+    assert lt not in D.RUNS and D.COVERAGE_RUNS[lt].startswith("nem35l_") and lt not in D.X49_RUNS
+    assert D.x49_numbers(None, [], []) is None
+    s = D.summary([{"target": lt, "status": "pending"}])
+    assert s["i"] == {lt: "pending"} and s["iii_muse"].startswith("not this run's model")

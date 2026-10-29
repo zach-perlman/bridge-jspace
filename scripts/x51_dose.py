@@ -70,6 +70,11 @@ QUESTION = "Q51.1"
 MODELS = G.MODELS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_1", "qwen3.6-27b": "x51_1_27b", "muse-glimmer-30b": "muse30_x51_1"}
 X49_RUNS = G.RUNS  # 49.1's runs of record: the (1,1) value of rule (iii), the J(1,1) check, the fit's grid cells
+# batch 52 C coverage (amendment 3, extra b): Lightning, where 49.1 never ran (no J(1,1) beside; rule (iii) is Muse's);
+# verdict --coverage reads it alone, 51.1's RUNS and own verdict unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_dose"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_dose/x51_1-20261028T170335Z"  # 51.1's rules first scored
 ALPHAS = (0.5, 1.0, 1.5, 2.0, 3.0)
 BETAS = (0.25, 0.5, 0.75, 1.0, 1.5)
 LOSS_BAR = 2.0  # x the whole change's mean plain-text loss
@@ -272,7 +277,8 @@ def stage_run(name: str, why: str) -> Path:
     target = pins.TARGET
     assert target in G.SOURCES, f"51.1 runs on {sorted(G.SOURCES)}, not {target}"
     layer, source = X.PREDICTED[target], G.SOURCES[target]
-    src, x49 = X.RESULTS / source, G.RESULTS / X49_RUNS[target]
+    src = X.RESULTS / source
+    x49 = G.RESULTS / X49_RUNS[target] if target in X49_RUNS else src / "no-49.1-run"  # Lightning: none (missing files)
     u, u_info = G.pointer_basis(target)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -285,7 +291,7 @@ def stage_run(name: str, why: str) -> Path:
          "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "test": "51.1",
          "spec": "jobs/c3/batch51.yaml (51.1)", "question": f"{QUESTION} ({PREDICTIONS})",
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p) for p in inputs},
-         "source": source, "x49_run": X49_RUNS[target], "layer": layer, "rendering": G.RENDERING, "group": G.GROUP,
+         "source": source, "x49_run": X49_RUNS.get(target), "layer": layer, "rendering": G.RENDERING, "group": G.GROUP,
          "k": G.K, "alphas": list(ALPHAS), "betas": list(BETAS), "arms": names, "arm_text": ARM_TEXT,
          "pointer": u_info,
          "items_rule": "49.1's: the source X0 run's scenes at L (chat outcomes: the items its unedited run made "
@@ -307,6 +313,13 @@ def stage_run(name: str, why: str) -> Path:
                             f"most {SUITE.BATCH} rows (BJ_SUITE_BATCH); then the loss: O's lookup prompt cut after the "
                             "bridge word under the same arms", "batch": SUITE.BATCH},
          "sealed": f"no verdict in the job; results closed until {PREDICTIONS} holds Dan's {QUESTION}"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -531,6 +544,8 @@ def x49_numbers(x49_run: str, scenes: list[str], rows: list[dict]) -> dict | Non
     """49.1's run of record on this model: its J(1,1) rate per reader (rule iii), per reader the item-level agreement
     of the cells both runs read (the reproduction check), and its outcome rows (the fit's grid cells); None if absent
     or on other items."""
+    if not x49_run:  # no 49.1 run on this model (batch 52's Lightning)
+        return None
     src = G.RESULTS / x49_run
     if not (src / "outcomes.jsonl").exists():
         return None
@@ -586,7 +601,7 @@ def model_result(target: str, run: str, n_boot: int = X.N_BOOT) -> dict:
     pts = {w: {a: v[0] for a, v in readers[w]["rate"].items()} for w in readers}
     loss = loss_numbers(X.read_jsonl(src / "losses.jsonl"), names, n_boot)
     scenes = list(dict.fromkeys(r["scene"] for r in rows))
-    x49 = x49_numbers(m.get("x49_run", X49_RUNS[target]), scenes, rows)
+    x49 = x49_numbers(m.get("x49_run", X49_RUNS.get(target)), scenes, rows)
     whole49 = {w: (x49 or {}).get(w, {}).get("whole") for w in readers}
     rules = {"i": rule_blind(pts["lookup"], loss["under_bar"]),
              "ii": {w: rule_above(pts[w], loss["under_bar"]) for w in readers},
@@ -607,10 +622,12 @@ def model_result(target: str, run: str, n_boot: int = X.N_BOOT) -> dict:
 def summary(models: list[dict]) -> dict:
     """Q51.1's three parts: (i) per model and on all three; (ii) per model (the recall); (iii) Muse's recall."""
     tested = {m["target"]: m for m in models if m["status"] == "tested"}
-    i = {t: (tested[t]["rules"]["i"]["label"] if t in tested else m_status(models, t)) for t in MODELS}
-    ii = {t: (tested[t]["rules"]["ii"]["recall"]["label"] if t in tested else m_status(models, t)) for t in MODELS}
+    targets = [m["target"] for m in models]  # MODELS in 51.1's verdict; the coverage models in batch 52's
+    i = {t: (tested[t]["rules"]["i"]["label"] if t in tested else m_status(models, t)) for t in targets}
+    ii = {t: (tested[t]["rules"]["ii"]["recall"]["label"] if t in tested else m_status(models, t)) for t in targets}
     mu = tested.get(TOGETHER_MODEL)
-    iii = mu["rules"]["iii"][TOGETHER_READER]["label"] if mu else m_status(models, TOGETHER_MODEL)
+    iii = (mu["rules"]["iii"][TOGETHER_READER]["label"] if mu else m_status(models, TOGETHER_MODEL)
+           if TOGETHER_MODEL in targets else "not this run's model (rule (iii) is Muse's)")  # fmt: skip
     all3 = "yes" if all(v == "yes" for v in i.values()) else "no" if any(v == "no" for v in i.values()) else "undecided"
     return {"i": i, "i_all_three": all3, "ii": ii, "iii_muse": iii}
 
@@ -747,13 +764,17 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
-    runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in MODELS]
-    out = RESULTS / f"x51_1-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """51.1's verdict (sealed until Q51.1), or with coverage (batch 52) the same rules on COVERAGE_RUNS alone, no seal
+    guard, "no prediction" in place of Dan's answer, written to x52_dose-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else unsealed()
+    runs = runs or (COVERAGE_RUNS if coverage else RUNS)
+    models = [model_result(t, runs[t], n_boot) for t in (runs if coverage else MODELS)]
+    out = RESULTS / f"{'x52_dose' if coverage else 'x51_1'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ") for ln in lines]
     blob = {"dan": answer, "rule": RULE, "alphas": list(ALPHAS), "betas": list(BETAS), "loss_bar": LOSS_BAR,
             "summary": summary(models), "models": models}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
@@ -838,6 +859,7 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict / view: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     runs: dict[str, str] | None = {str(t): str(r) for t, r in zip(MODELS, a.runs, strict=True)} if a.runs else None
     if a.stage == "plan":
@@ -848,7 +870,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(runs)
     else:
-        stage_verdict(runs, n_boot=a.n_boot)
+        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":
