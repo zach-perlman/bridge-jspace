@@ -1238,9 +1238,9 @@ def verdict_lines(blob: dict) -> list[str]:
     for title, targets in (("### Headline: (b) the bridge's locker slot and (c) the lookup's answer digit", HEADLINE),
                            ("### Positive controls: (a) which item is the bridge and (d) the recall's answer",
                             CONTROLS)):  # fmt: skip
-        lines += [title, "", *label_table(res, targets), "", "Where each decisive label is decided (carries: the "
-                  "first layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer of the largest J++ - "
-                  "random gap). Accuracy [95% CI].", "", *decided_table(res, targets), ""]  # fmt: skip
+        lines += [title, "", *label_table(res, targets), "", "Each decisive label at one layer (carries: the first "
+                  "layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer where the full residual peaks). "
+                  "Accuracy [95% CI].", "", *decided_table(res, targets), ""]  # fmt: skip
     models = blob.get("models", MAIN_MODELS)
     missing = [f"{NAMES[t]} {s}" for t in models for s in SETS if not res.get(t, {}).get(s)]
     missing += [f"{NAMES[t]} {s} ({', '.join(p for p in PASSES if p not in r.get('passes', PASSES))} pass)"
@@ -1379,11 +1379,11 @@ def decided_table(res: dict, targets: tuple[str, ...]) -> list[str]:
                         ru = r["rules"][f"{p}|{tg}"][f"k{k}"]
                         if ru["carry_layers"]:
                             li = r["layers"].index(ru["carry_layers"][0])
-                        else:
-                            li = int(np.argmax(np.array(feats[f"jpp{k}"]["acc"]) - np.array(feats[f"rand{k}"]["acc"])))
+                        else:  # where the full residual peaks (the first such layer)
+                            li = int(np.argmax(np.array(feats["full"]["acc"])))
                         cell = [fmt_acc(feats[f], li) if f in feats else "-"
                                 for f in ("full", f"jpp{k}", f"rand{k}", f"fix{k}", f"erand{k}", f"pca{k}", "chance")]  # fmt: skip
-                        lines.append(f"| {NAMES[t]} | {s} | {p} | {TARGET_SHORT[tg]} | {k} | {ru['label']} | "
+                        lines.append(f"| {NAMES[t]} | {s} | {p} | {TARGET_SHORT[tg]} | {k} | {label_text(ru['label'], tg)} | "
                                      f"L{r['layers'][li]} | " + " | ".join(cell) + " |")  # fmt: skip
     return lines
 
