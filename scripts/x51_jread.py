@@ -110,12 +110,17 @@ QUESTION = "Q51.10"
 MODELS = G.MODELS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_10", "qwen3.6-27b": "x51_10_27b", "muse-glimmer-30b": "muse30_x51_10"}
 STATES_FILE = "states.npz"
-N_LAYERS = {"qwen3.5-9b": 32, "qwen3.6-27b": 64, "muse-glimmer-30b": 52}
+N_LAYERS = {"qwen3.5-9b": 32, "qwen3.6-27b": 64, "muse-glimmer-30b": 52, "nemotron-3.5-lightning": 52}
 LAYERS = {
     "qwen3.5-9b": tuple(range(2, 31, 2)),  # every 2nd from L2; the brief's L38 is past the 9B's last layer (31)
     "qwen3.6-27b": tuple(sorted({*range(4, 61, 4), 30, 32, 34})),  # every 4th from L4, plus L and L +- 2 (L = 32)
     "muse-glimmer-30b": tuple(sorted({*range(4, 49, 4), 24, 26, 28})),  # every 4th from L4, plus L and L +- 2 (L = 26)
+    # batch 52 C coverage: Muse's 52-block grid with Lightning's committed L = 14 (every 4th from L4, plus L and L +- 2)
+    "nemotron-3.5-lightning": tuple(sorted({*range(4, 49, 4), 12, 14, 16})),
 }
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_jread"}  # batch 52: verdict --coverage; RUNS unchanged
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_jread/x51_10-20261028T190608Z"  # 51.10's rules first scored
 POS = ("P1", "P2", "P3")
 POS_TEXT = {"P1": "the bridge word", "P2": "the question's \"pick\" token", "P3": "the last token (the read's appended "
             "space token, before the answer)"}  # fmt: skip
@@ -791,7 +796,9 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "51.10 renders X0's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"51.10 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.10 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
+    if target in COVERAGE_RUNS:  # Lightning: its fixed layer is the committed one (BJ_PREDICTED_LAYER), in the grid
+        assert X.PREDICTED[target] in LAYERS[target], f"L{X.PREDICTED[target]} is not in {LAYERS[target]}"
     layers, source, n_layers = LAYERS[target], G.SOURCES[target], N_LAYERS[target]
     assert pins.TARGETS[target]["n_layers"] == n_layers, "the model's layer count changed"
     src = X.RESULTS / source
@@ -818,6 +825,13 @@ def stage_run(name: str, why: str) -> Path:
                    "examples": X.EXAMPLES_SEED, "folds": "x0_probe.folds round robin by O's bridge (deterministic)"},
          "n_boot": X.N_BOOT, "storage": f"{STATES_FILE}: fp16 states and projections, gitignored (> 50 MB)",
          "sealed": f"no label in the job; results closed until {PREDICTIONS} holds Dan's {QUESTION}"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; read and verdict --coverage after the run
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -997,6 +1011,8 @@ def switch_rates(rows: list[dict], reader: str, n_boot: int) -> dict:
 def x49_beside(target: str, rows: list[dict], L: int) -> dict | None:
     """P1 at L against 49.1's stored rows on the same items: its J(1,0), J(2,0), R(1,0), R(2,0), J(1,1) and our jpp1,
     jpp2, rand1, rand2, whole (rates and item agreement), per reader."""
+    if target not in G.RUNS:  # batch 52's Lightning: 49.1 never ran there, nothing to set beside
+        return None
     src = G.RESULTS / G.RUNS[target] / "outcomes.jsonl"
     if not src.exists():
         return None
@@ -1213,13 +1229,17 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
-    runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in MODELS]
-    out = RESULTS / f"x51_10-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """51.10's verdict (sealed until Q51.10), or with coverage (batch 52) the same rules on COVERAGE_RUNS, no seal
+    guard, "no prediction" in place of Dan's answer, written to x52_jread-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else unsealed()
+    runs = runs or (COVERAGE_RUNS if coverage else RUNS)
+    models = [model_result(t, runs[t], n_boot) for t in (runs if coverage else MODELS)]
+    out = RESULTS / f"{'x52_jread' if coverage else 'x51_10'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ")
     labels = {m["target"]: {w: {p: m["rules"][w][p]["label"] for p in ("P3", "P2")} for w in m["rules"]}
               for m in models if m["status"] == "tested"}  # fmt: skip
     slim = [{k: v for k, v in m.items() if k != "read"} for m in models]
@@ -1347,6 +1367,7 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict / view: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     runs: dict[str, str] | None = {str(t): str(r) for t, r in zip(MODELS, a.runs, strict=True)} if a.runs else None
     if a.stage == "plan":
@@ -1360,7 +1381,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(runs, n_boot=a.n_boot)
     else:
-        stage_verdict(runs, n_boot=a.n_boot)
+        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

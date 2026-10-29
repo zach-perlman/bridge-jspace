@@ -84,6 +84,9 @@ SPEC = "jobs/c3/batch47.yaml (47.2)"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.2"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2", "qwen3.6-27b": "x47_2_27b"}
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_six"}  # batch 52 C: verdict --coverage; RUNS unchanged
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_six/x47_2-20261028T113102Z"  # 47.2's rules first scored (the 9B and Muse)
 SLOTS_TRY = (6, 5)  # six slots; five if six fail the gate (Dan: "drop to five and say so")
 SEED, SPLIT_SEED, RAND_SEED = 4702, 4721, 4723
 N_CAND, N_PER_PAIR, N_C0_CAND, N_C0 = 40, 20, 150, 100
@@ -586,6 +589,13 @@ def stage_run(name: str, why: str) -> Path:
                          "examples": X.EXAMPLES_SEED},
                "doses": list(DOSES), "decisive_dose": DECISIVE, "arms": ARM_TEXT, "U_from": R.STATES[target],
                "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     R.warm_cusolver()
     model = load_model()
@@ -1011,15 +1021,19 @@ def report_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.2's verdict (sealed until Q47.2), or with coverage (batch 52) the same rules on the given runs, no seal guard,
+    "no prediction" in place of Dan's answer, written to x52_six-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    out = RESULTS / f"x47_2-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_six' if coverage else 'x47_2'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = report_lines(models, answer, n_boot)
+    if coverage:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ")
     (out / "x47_2.json").write_text(
         json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str) + "\n"
     )
@@ -1101,6 +1115,7 @@ def main() -> None:
     ap.add_argument("--why", default="batch 47, test 47.2 (jobs/c3/batch47.yaml; Q47.2)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--out", default=None, help="plan: results/x47_six/plan-<stamp>/ (one folder for every target)")
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(Path(a.out) if a.out else None)
@@ -1108,7 +1123,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.coverage)
     else:
         stage_examples(a.runs)
 

@@ -1,0 +1,38 @@
+id: x52_lightning_six
+title: "Batch 52 C coverage (Lightning lane another; E7, outside the key rows): six lockers, one code per slot (47.2) on Lightning at L14: routes moves at six slots (five if six fail the gate), the slot means fit on a held-out half, the slot subspace and the old U removed against random parts, pairwise writes and the shift v; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.6
+depends_on: [x52_lightning_jread]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  uv run python scripts/x47_six.py run --name nem35l_x52_six --why "Batch 52 part C (jobs/c3/batch52.yaml amendment 3), coverage: 47.2's six-locker test on Lightning at the committed L$L, the old U from nem35l_x52_probe; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x47_six.py verdict --coverage --runs nem35l_x52_six
+question: >-
+  On Lightning, with six lockers: is the address a line over slots (ordinal), first vs rest (categorical), or one code
+  per slot (47.2's three labels)?
+why_it_matters: >-
+  E7 / claim 8 on the depth page (one code per locker, on the 9B and Muse).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x47_2_muse.yaml (jobs/c3/batch47.yaml 47.2; first scored in
+  results/x47_six/x47_2-20261028T113102Z): ""Ordinal": the first PCA component of the slot means is monotone in slot
+  (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector <=
+  0.05; "Categorical, first vs rest": v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within
+  0.10 of random; "Slot-specific": pairwise writes reach >= 0.25 on most pairs but no single v does. Dumbest ways: (1)
+  position share near 0 under the whole change -> "not interpretable" (the whole-change routes split reported first);
+  (2) mu_2 - mu_1 reported separately and v fit without it; (3) letters A-H if digits run out." As computed:
+  x47_2_muse's text (scripts/x47_six.py, its scenes, fallback to five slots by its competence gate, gate 0.80) at
+  Lightning's committed L14 (amendment 1), the old U from nem35l_x52_probe (x6_routes.STATES). Cells under 30
+  switches left out (amendment 3). Verdict in the job (verdict --coverage on Lightning's run).
+controls:
+- "every removal and write against a random part / a random vector of the same share / norm (seed RAND_SEED)"
+- "C0 (the sanity swap at six slots), reported beside the one-pick reference where there is one (none on Lightning)"
+- "the fit half and the test half of the moves disjoint (split seed)"
+n: "about 300 fit and 300 test scenes (20 eligible per ordered pair of 30) and 100 C0, as on Muse"
+seeds: [4702, 4721, 4723, 0]
+notes: "Batch 52 C, amendment 3, lane another: x52_lightning_jread -> THIS. Needs nem35l_x52_probe's states.npz in the box's checkout (the probe ran on speedup: pull and commit results/x0_probe/nem35l_x52_probe before this job starts; the command checks the file first). Code: x47_six.COVERAGE_RUNS + verdict --coverage (47.2's RUNS and own verdict unchanged). Wallclock (ledger): x47_2_muse 0.38 h, x47_2_9b 0.25 h; est ~25 min, 0.6 GPU-h; opens before the freeze."

@@ -1,0 +1,45 @@
+id: x52_lightning_jread
+title: "Batch 52 C coverage (Lightning lane another; key row 9): the last-token read / write (51.10) on Lightning: lens readout and probes per layer at the bridge word / the pick token / the last token, his swap and the J++ part written at the read peak against random parts; Muse's grid around L14 (every 4th from L4 plus L and L +- 2); the conflict run's 200 items; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl &&
+  uv run python scripts/x51_jread.py run --name nem35l_x52_jread --why "Batch 52 part C (jobs/c3/batch52.yaml amendment 3), coverage: 51.10's read / write per position and reader on Lightning at 13 layers (every 4th from L4 plus L and L +- 2 around the committed L$L), the conflict run's items; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x51_jread.py read --name nem35l_x52_jread &&
+  uv run python scripts/x51_jread.py verdict --coverage
+question: >-
+  On Lightning: is the intermediate (the bridge entity) in J-space at the last token / the pick token (readable through
+  the lens and writable through it), readable but not used, routed around J-space, or not represented (51.10's four
+  labels)?
+why_it_matters: >-
+  Row 9 of the coverage matrix (Fig. 17: the last token's read vs the lens swap).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x51_10_muse_m.yaml (jobs/c3/batch51.yaml addendum_2, 51.10; first scored in
+  results/x51_jread/x51_10-20261028T190608Z): ""The intermediate is in J-space at the last token" (read): the
+  through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the
+  full-residual probe >= 0.9 there. "Writable through J-space at the last token": at the layer of the read peak (or
+  the best layer), his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole- state patch
+  switches at that layer, with the random part <= 0.10. "Readable, not used": read holds, write fails. "Routes around
+  J-space": read fails at every layer before the answer (through-the-lens probe < 0.5 while the full- residual probe
+  >= 0.9 at some layer), and write fails. "Not represented at the last token at all": the full-residual probe < 0.5 at
+  every layer before the answer -- then the P2 rows decide. Same clauses at P2. P1 reports the swap for both readers
+  beside 49.1's J(alpha, 0)." As computed: x51_10_muse_m's text with Lightning's source: items = x47_cumulative.select
+  of the conflict run nem35l_x52_conflict at L14 (X0's gate 0.80 per reader on all scenes, chosen after the 60-scene
+  pre-check was seen: hollow), decided on its locker-first items; layers = Muse's 52-block grid around L (every 4th
+  from L4 to L48, plus L14 and L12 / L16: 13 layers); 49.1 never ran on Lightning, so P1's 49.1 comparison is left
+  out. Cells under 30 switches left out (amendment 3). The run, the read statistics (CPU) and the coverage verdict in
+  the job.
+controls:
+- "the random part of each write's share (X0's random subspace, seed 888 + layer) and his rotated swap (swap_rot)"
+- "the whole-state patch at the same position and layer (the write's reference)"
+- "probes on held-out items (x0_probe's folds); the full-residual probe beside the through-the-lens one"
+n: "the conflict run's 200 main-test items read at 13 layers x 3 positions x 2 readers x O / S; its locker-first items decide and carry the write / remove arms"
+seeds: [0, 888]
+notes: "Batch 52 C, amendment 3, lane another: THIS -> x52_lightning_six. Needs the conflict run's results in the box's checkout (committed in dacab82d; the command checks outcomes.jsonl first). Code: x51_jread.LAYERS / N_LAYERS gain Lightning, COVERAGE_RUNS + verdict --coverage (51.10's RUNS and own verdict unchanged), x49_beside skips a model 49.1 never ran on. Wallclock (ledger): x51_10_muse_m 0.43 h, x51_10_27b 0.39 h on H100 PCIe; Lightning ~0.5x Muse's time per row plus the read stage (CPU, minutes); est ~30 min, 0.6 GPU-h; opens before the freeze."

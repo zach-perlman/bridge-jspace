@@ -90,8 +90,13 @@ def test_layers_fixed_in_advance():
     assert J.LAYERS["qwen3.5-9b"] == tuple(range(2, 31, 2)) and max(J.LAYERS["qwen3.5-9b"]) < J.N_LAYERS["qwen3.5-9b"]
     assert J.LAYERS["qwen3.6-27b"] == (4, 8, 12, 16, 20, 24, 28, 30, 32, 34, 36, 40, 44, 48, 52, 56, 60)
     assert J.LAYERS["muse-glimmer-30b"] == (4, 8, 12, 16, 20, 24, 26, 28, 32, 36, 40, 44, 48)
+    # batch 52: Lightning on Muse's grid around its committed L14 (every 4th from L4, plus L and L +- 2)
+    assert J.LAYERS["nemotron-3.5-lightning"] == (4, 8, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48)
+    from scripts import x51_lightning as L6
+
     for t, la in J.LAYERS.items():
-        assert X.PREDICTED[t] in la and J.N_LAYERS[t] == J.pins.TARGETS[t]["n_layers"]
+        fixed = L6.committed_layer() if t == L6.TARGET else X.PREDICTED[t]
+        assert fixed in la and J.N_LAYERS[t] == J.pins.TARGETS[t]["n_layers"]
     assert len(J.write_names((2, 4))) == 3 * 2 * 8 and len(J.loss_names((2, 4))) == 2 * 2 * 8
 
 
@@ -387,6 +392,14 @@ def test_stage_run_read_verdict_view_end_to_end(tmp_path, monkeypatch):
     text = (view / "view.md").read_text()
     assert "Dumbest ways to be wrong" in text and "changed to another digit" in text and "not at the max" in text
     assert all(f"### {a}: " in text for a in (*J.WRITE_ARMS, *J.REMOVE_ARMS[1:]))
+    # batch 52: the same run read as a coverage run: no Q51.10 line needed, 'no prediction' in its place
+    monkeypatch.setattr(J, "dan_answer", lambda rev="HEAD": "")
+    monkeypatch.setattr(J, "COVERAGE_RUNS", {pins.TARGET: run})
+    cv = J.stage_verdict(n_boot=20, coverage=True)
+    assert cv.name.startswith("x52_jread-") and json.loads((cv / "verdict.json").read_text())["dan"].startswith(
+        J.NO_PREDICTION
+    )
+    assert "Dan:" not in (cv / "verdict.md").read_text() and "batch 52 coverage" in (cv / "verdict.md").read_text()
 
 
 def test_stage_run_without_the_gate_writes_no_outcomes(tmp_path, monkeypatch):

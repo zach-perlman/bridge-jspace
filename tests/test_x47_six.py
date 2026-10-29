@@ -475,6 +475,18 @@ def test_verdict_and_examples_on_the_fake_run(fake_run, monkeypatch):
     assert sum(line.startswith("### ") for line in ex) == 10 and any("⟦" in line for line in ex)
 
 
+def test_coverage_verdict_on_the_fake_run_needs_no_seal(fake_run, monkeypatch):
+    """Batch 52: the same rules, no Q47.2 line needed, 'no prediction' in its place, x52_six-<UTC>/."""
+    monkeypatch.setattr(Q, "dan_answer", lambda rev="HEAD": "")
+    with pytest.raises(AssertionError, match="sealed"):
+        Q.stage_verdict([fake_run.name], n_boot=20)
+    out = Q.stage_verdict([fake_run.name], n_boot=20, coverage=True)
+    md = (out / "x47_2.md").read_text()
+    assert out.name.startswith("x52_six-") and Q.NO_PREDICTION in md and "Dan: no prediction" not in md
+    assert json.loads((out / "x47_2.json").read_text())["dan"].startswith(Q.NO_PREDICTION)
+    assert "nemotron-3.5-lightning" not in Q.RUNS and Q.COVERAGE_RUNS["nemotron-3.5-lightning"].startswith("nem35l_")
+
+
 def test_plan_prompts_mark_the_bridge_and_the_move(fake_run):
     """The plan's rendered prompts (fake tokenizer): the bridge token in ⟦bridge:…⟧, the locker sentences at slots i
     and j in ⟦move:…⟧, and the aggregated plan.md lists every model's scenes."""
