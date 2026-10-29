@@ -76,7 +76,21 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x53_monitor", "qwen3.6-27b": "x53_monitor_27b",
 TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "nemotron-3.5-lightning": "lightning"}
 NAMES = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse-Glimmer-30B",
          "nemotron-3.5-lightning": "Nemotron-3.5-Lightning"}  # fmt: skip
-D_MODEL = {"qwen3.5-9b": 4096, "qwen3.6-27b": 5120, "muse-glimmer-30b": 6656, "nemotron-3.5-lightning": 2688}  # plan
+# Dan 12:20 (jobs/c3/batch53.yaml fallback_1220): a coverage run on the 122B, same rule, no prediction; its main test is
+# the X0 r2 run at L33 (as scripts/x53_2x2.py, Dan 11:30 q122b_1130); reported as an addendum to the four models
+MODELS = (*MODELS, "qwen3.5-122b-a10b")
+COVERAGE_MODELS = ("qwen3.5-122b-a10b",)
+RUNS["qwen3.5-122b-a10b"] = "qwen35_122b_x53_monitor"
+TAGS["qwen3.5-122b-a10b"] = "122b"
+NAMES["qwen3.5-122b-a10b"] = "Qwen3.5-122B-A10B"
+MAIN_RUN_EXTRA = {"qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}  # not in x45b_binding.MAIN_RUN
+D_MODEL = {
+    "qwen3.5-9b": 4096,
+    "qwen3.6-27b": 5120,
+    "muse-glimmer-30b": 6656,
+    "nemotron-3.5-lightning": 2688,
+    "qwen3.5-122b-a10b": 3072,
+}  # plan (fmt: skip)
 X52_READ = {"qwen3.5-9b": "qwen35_9b_x52_read_main", "qwen3.6-27b": "x52_read_main_27b",
             "muse-glimmer-30b": "muse30_x52_read_main", "nemotron-3.5-lightning": "nem35l_x52_read_main"}  # fmt: skip
 SETS = ("main", "json")
@@ -141,11 +155,29 @@ def labels(context: str, cf_context: str, fmt: str, bridge: str, cf_bridge: str,
     return out
 
 
-def main_items(tok, target: str) -> tuple[list[dict], dict]:
-    """main: 51.10's items (x51_jread.select: every item of the X0 run at L, positions P1 / P3 in O and S)."""
+def main_select(tok, target: str) -> tuple[list[dict], dict]:
+    """x51_jread.select (every item of the target's X0 run at L with P1 / P2 / P3); for the 122B, whose X0 run is not in
+    x45b_binding.MAIN_RUN, the same steps on MAIN_RUN_EXTRA's run (x47_cumulative.select, x51_jread.item_positions)."""
     from scripts import x51_jread as J
 
-    items, counts = J.select(tok, target)
+    if target not in MAIN_RUN_EXTRA:
+        return J.select(tok, target)
+    from scripts import x47_cumulative as C
+    from scripts import x49_gain as G
+
+    items, counts = C.select(tok, "main", MAIN_RUN_EXTRA[target], X.PREDICTED[target])
+    out, dropped = [], collections.Counter()
+    for it in items:
+        try:
+            out.append({**it, "jpos": J.item_positions(tok, it), "lf": it["group"] == G.GROUP})
+        except J.Dropped as e:
+            dropped[str(e)] += 1
+    return out, {**counts, "positions_dropped": dict(dropped), "items_read": len(out)}
+
+
+def main_items(tok, target: str) -> tuple[list[dict], dict]:
+    """main: 51.10's items (x51_jread.select: every item of the X0 run at L, positions P1 / P3 in O and S)."""
+    items, counts = main_select(tok, target)
     out = []
     for it in items:
         readers = {}
@@ -810,9 +842,9 @@ def needed_atom_ids(atoms: np.ndarray, rows: dict[str, np.ndarray]) -> list[int]
     return sorted(need)
 
 
-def stage_atom_ids(name: str, states_root: Path) -> Path:
+def stage_atom_ids(name: str, states_root: Path, out: Path | None = None) -> Path:
     """CPU: the token ids the fixed J++ subspaces need, per dataset and layer (the box computes their vectors):
-    results/x53_monitor/<run>/fixed_atom_ids.json."""
+    results/x53_monitor/<run>/fixed_atom_ids.json (or `out`: the 122B's atoms job computes them on the box)."""
     run_dir = states_root / name
     layers = json.loads((run_dir / "manifest.json").read_text())["layers"]
     blob: dict[str, Any] = {"run": name, "what": "per dataset and layer, every J++ atom (token id) some training fold's "
@@ -823,17 +855,18 @@ def stage_atom_ids(name: str, states_root: Path) -> Path:
         blob["sets"][s] = {str(la): needed_atom_ids(np.asarray(atoms[li]), rows) for li, la in enumerate(layers)}
         sizes = [len(v) for v in blob["sets"][s].values()]
         print(f"{name} {s}: {min(sizes)}-{max(sizes)} atoms per layer", flush=True)
-    out = RESULTS / name / "fixed_atom_ids.json"
+    out = out or RESULTS / name / "fixed_atom_ids.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(blob) + "\n")
     print("wrote", out)
     return out
 
 
-def stage_atoms(name: str, source: str) -> Path:
+def stage_atoms(name: str, source: str, ids_here: bool = False) -> Path:
     """GPU: the unit J++ lens vectors (x0_necessity.dictionary('jpp')'s rows) of the atoms in
     results/x53_monitor/<source>/fixed_atom_ids.json, per dataset and layer, into results/x53_monitor/<name>/
-    fixed_atoms_<set>.npz (name = <source>_atoms; ids_L<l> int64, vec_L<l> fp16; gitignored)."""
+    fixed_atoms_<set>.npz (name = <source>_atoms; ids_L<l> int64, vec_L<l> fp16; gitignored). ids_here (the 122B):
+    compute the ids first from the source run's states on this box (stage atom-ids' code) into <name>/."""
     import torch
 
     from bridge_jspace.lens import JLens
@@ -845,10 +878,14 @@ def stage_atoms(name: str, source: str) -> Path:
     assert target in MODELS, f"x53_monitor runs on {MODELS}, not {target}"
     assert source == RUNS[target], f"{source}: not {target}'s x53 run ({RUNS[target]})"
     assert name == atoms_run(source), f"the atoms run is {atoms_run(source)}, not {name}"
-    src = RESULTS / source / "fixed_atom_ids.json"
-    need = json.loads(src.read_text())
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
+    src = (
+        stage_atom_ids(source, RESULTS, out / "fixed_atom_ids.json")
+        if ids_here
+        else RESULTS / source / "fixed_atom_ids.json"
+    )
+    need = json.loads(src.read_text())
     m = {"exp": EXP, "run": name, "stage": "atoms", "source": source, "prediction": NO_PREDICTION,
          "spec": f"jobs/c3/batch53.yaml (53.2, critic_1125); jobs/c3/x53_monitor_atoms_{TAGS[target]}.yaml",
          "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "model": pins.model_pin(),
@@ -980,6 +1017,8 @@ def summarize(pr: dict, n_boot: int) -> dict:
 def x52_check(name: str, target: str, states_root: Path, x52_root: Path) -> dict | None:
     """The main test's states against 52 B's cache (x52_answer_map read_main: [n, reader, O/S, B/E/Q/T, L, d]):
     per layer the lowest cosine over rows at B and T (same items in the same order, asserted)."""
+    if target not in X52_READ:  # the 122B: 52 B did not read it
+        return None
     src = x52_root / X52_READ[target]
     if not (src / "states.npz").exists():
         return None
@@ -1064,13 +1103,18 @@ def figure(results: dict, s: str, path: Path) -> None:
     plt.close(fig)
 
 
-def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out_root: Path = RESULTS) -> Path:
-    """CPU: per model and dataset the accuracies, CIs and the rule; one figure per dataset; verdict.md and the json."""
+MAIN_MODELS = tuple(t for t in MODELS if t not in COVERAGE_MODELS)
+
+
+def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out_root: Path = RESULTS,
+                  models: tuple[str, ...] = MAIN_MODELS, prefix: str = "x53_monitor") -> Path:  # fmt: skip
+    """CPU: per model and dataset the accuracies, CIs and the rule; one figure per dataset; verdict.md and the json
+    into <out_root>/<prefix>-<UTC>/ (the 122B's addendum: models=COVERAGE_MODELS, prefix x53_monitor_122b)."""
     from bridge_jspace.utils import git_state
 
     results: dict[str, dict] = {}
     checks: dict[str, Any] = {}
-    for target in MODELS:
+    for target in models:
         name = RUNS[target]
         for s in SETS:
             pr = load_probes(name, s)
@@ -1080,7 +1124,7 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out
         if target in results and (states_root / name / "states_main_h.npy").exists():
             checks[target] = x52_check(name, target, states_root, x52_root)
     assert results, "no probes in cache/x53_monitor/: run the probe stage first"
-    out = out_root / f"x53_monitor-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = out_root / f"{prefix}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True, exist_ok=False)
     figs = []
     for s in SETS:
@@ -1096,7 +1140,8 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out
                                                 "objective": "0.5 ||W||^2 + C x summed log-loss, intercept unpenalised",
                                                 "standardised": "training rows' mean and sd"},
             "bootstrap": {"n": n_boot, "seed": X.BOOT_SEED, "cluster": "the row's bridge entity"},
-            "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks, "figures": figs,
+            "models": list(models), "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks,
+            "figures": figs,
             "code": git_state(), "critic_1125": CRITIC_1125, "additions_1140": ADDITIONS_1140,
             "random_reads_it_too_wording": {"b": ADDRESS_MANY, "other targets": "<X> is linearly decodable from many "
                                             "subspaces, J++ included (the agent's generalisation)"},
@@ -1156,9 +1201,10 @@ def verdict_lines(blob: dict) -> list[str]:
         lines += [title, "", *label_table(res, targets), "", "Where each decisive label is decided (carries: the "
                   "first layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer of the largest J++ - "
                   "random gap). Accuracy [95% CI].", "", *decided_table(res, targets), ""]  # fmt: skip
-    missing = [f"{NAMES[t]} {s}" for t in MODELS for s in SETS if not res.get(t, {}).get(s)]
+    models = blob.get("models", MAIN_MODELS)
+    missing = [f"{NAMES[t]} {s}" for t in models for s in SETS if not res.get(t, {}).get(s)]
     missing += [f"{NAMES[t]} {s} ({', '.join(p for p in PASSES if p not in r.get('passes', PASSES))} pass)"
-                for t in MODELS for s, r in res.get(t, {}).items() if set(r.get("passes", PASSES)) != set(PASSES)]  # fmt: skip
+                for t in models for s, r in res.get(t, {}).items() if set(r.get("passes", PASSES)) != set(PASSES)]  # fmt: skip
     lines += ["", f"Not yet probed (states not pulled): {', '.join(missing) or 'none'}.", ""]
     lines += ["## The main test's states vs 52 B's cache (lowest cosine over rows, any layer)", ""]
     for t, c in blob["x52_check_min_cosine"].items():
@@ -1317,11 +1363,15 @@ def main() -> None:
     p = sub.add_parser("atoms", help="GPU: the fixed J++ subspaces' atom vectors into results/x53_monitor/<run>_atoms/")
     p.add_argument("--name", required=True, help="the atoms run: <source>_atoms")
     p.add_argument("--source", required=True, help="the forward run whose fixed_atom_ids.json it reads")
+    p.add_argument("--ids-here", action="store_true", help="compute the ids from the source run's states on this box")
     p = sub.add_parser("verdict", help="CPU: the rule, the figures, results/x53_monitor/x53_monitor-<UTC>/")
     p.add_argument("--states-root", type=Path, default=RESULTS)
     p.add_argument("--x52-root", type=Path, default=pins.RESULTS_DIR / "x52_answer_map")
     p.add_argument("--n-boot", type=int, default=X.N_BOOT)
     p.add_argument("--out-root", type=Path, default=RESULTS, help="a dry run's folder (default results/x53_monitor)")
+    p.add_argument("--models", default="", help="comma-separated targets (default: the four; the 122B's addendum: "
+                   "qwen3.5-122b-a10b with --prefix x53_monitor_122b)")  # fmt: skip
+    p.add_argument("--prefix", default="x53_monitor", help="the verdict folder's prefix")
     a = ap.parse_args()
     if a.cmd == "plan":
         stage_plan()
@@ -1332,9 +1382,10 @@ def main() -> None:
     elif a.cmd == "atom-ids":
         stage_atom_ids(a.name, a.states_root)
     elif a.cmd == "atoms":
-        stage_atoms(a.name, a.source)
+        stage_atoms(a.name, a.source, a.ids_here)
     elif a.cmd == "verdict":
-        stage_verdict(a.states_root, a.x52_root, a.n_boot, a.out_root)
+        models = tuple(a.models.split(",")) if a.models else MAIN_MODELS
+        stage_verdict(a.states_root, a.x52_root, a.n_boot, a.out_root, models, a.prefix)
 
 
 if __name__ == "__main__":

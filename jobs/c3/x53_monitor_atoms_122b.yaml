@@ -1,0 +1,20 @@
+id: x53_monitor_atoms_122b
+title: "Batch 53, test 53.2 coverage on Qwen3.5-122B-A10B (FP8, 2x H100): the fixed J++ subspaces' atom vectors; the atom ids computed on the box from x53_monitor_122b's states (the same code as the Mac's atom-ids step), then their unit J++ lens vectors; no probe, no label"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.4
+depends_on: [x53_monitor_122b]
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_monitor.py atoms --name qwen35_122b_x53_monitor_atoms --source qwen35_122b_x53_monitor --ids-here
+question: "The vectors the fixed J++ subspace arm needs on the 122B (the lens maps and W_U are on the box only)."
+why_it_matters: "critic_1125's fixed J++ subspace, on the 122B's coverage run (fallback_1220); the four models' atoms jobs computed the ids on the Mac, here they are computed on the box so the job runs right after the forwards."
+hypotheses:
+  none: "rule fixed in advance in jobs/c3/batch53.yaml (53.2, critic_1125, additions_1140); coverage run, no prediction"
+decision_rule: "As jobs/c3/x53_monitor_122b.yaml (53.2's rule verbatim, critic_1125, additions_1140). This job: per dataset and layer, every J++ atom (token id) some training fold's fixed J++ subspace uses (x53_monitor.needed_atom_ids over every row set, grouping, seed, fold and k = 25 / 100, from the forward run's states_<set>_atoms.npy and cases), written to results/x53_monitor/qwen35_122b_x53_monitor_atoms/fixed_atom_ids.json; then each atom's unit J++ lens vector at that layer (lens.vectors: the rows of x0_necessity.dictionary('jpp')) into fixed_atoms_<set>.npz."
+controls:
+- "the per-state J++ part (the decisive arm) and the random subspace of the same k beside it"
+n: "main 200 items and json 310 scenes (O / S, B / T lookup / T recall); 24 layers; ~300-450 atoms per layer (the four models: 263-449)"
+seeds: [0, 1, 2, 3, 4]
+notes: "Depends on x53_monitor_122b (reads its states on the same box). Loads the 122B and the J++ lens (as x53_monitor_122b), computes ~0.5k unit lens vectors per layer (seconds), writes results/x53_monitor/qwen35_122b_x53_monitor_atoms/{manifest.json, fixed_atom_ids.json, fixed_atoms_main.npz, fixed_atoms_json.npz} (npz gitignored, ~5-15 MB each). Estimate: the load (~10 min) and seconds of work, ~0.2 h wall x 2 GPUs. Flags as x53_monitor_122b (L33 the 27B's relative depth carried over; J++ fit on the bf16 weights)."
