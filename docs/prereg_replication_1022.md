@@ -2742,3 +2742,14 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
      - otherwise "partly".
 - **MM (reported).** The share moved to the new passage value. Expected about 0: the recall's answer comes from memory.
 - **Queue.** scripts/queues/h200_n17_1029.sh. GPU0, beside the 27B. A 2-item smoke runs first.
+
+##### Amendment 58 notes 15 and 17, Lightning addendum (Zach, 2026-10-29 ~02:20 UTC; before any Lightning note 15 or 17 result; the 9B's note 15 results and its first note 17 smoke had been read)
+- **Why.** A second family for tonight's two key tests. Lightning's v4 map has the 9B's shape: the description tokens are used L0-26, then the final token from L27-33.
+- **Note 15 on Lightning.** Arms, answer sets and Dan's rule exactly as note 15.
+  - Cells: every MM stage-1 hit at sites last and final minus Lightning's last window (46-50). Read from results/nn_swap/nn_cf_read/nem35l_v4_stage1.json: last L6-10, L11-15, L16-20, L21-26; final L34-39, L40-45.
+  - Donor seeds 0 and 1.
+- **Note 17 on Lightning.** The value swap exactly as note 17. Readings as note 17 with Lightning's windows:
+  - Site last: L6-10, L11-15, L16-20, L21-26.
+  - Site span: L0-5, L6-10, L11-15, L16-20, L21-26.
+  - Site final: L34-39, L40-45, and L46-50, which is the positive check (>= 50% moved to the new value).
+- **Queue.** scripts/queues/h200_n15n17L_1029.sh on GPU0, after the 9B's note 17 job, beside the 27B's stage 2. A 2-item smoke of each note runs first.
