@@ -1,0 +1,145 @@
+{
+  "exp": "x51_dose",
+  "run": "nem35l_x52_dose",
+  "why": "Batch 52 part C (jobs/c3/batch52.yaml amendment 3, extra b), coverage: 51.1's dose curves on Lightning at the committed L14, the conflict run's locker-first items, U from nem35l_x52_probe; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-29T01:15:02Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "bdf5a74214da5a8a7857cdf410fddbe6bc5be3a8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "51.1",
+  "spec": "jobs/c3/batch51.yaml (51.1)",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "f2bdfe1a70369afba890164aa5181d576ffa18b82de9f36c192c3a559ee1e0d6",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/gate.json": "76d7fcb1cde22f163687c5e9e57fa434600536eac441af5deca7b388d9d204ca",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde"
+  },
+  "source": "nem35l_x52_conflict",
+  "x49_run": null,
+  "layer": 14,
+  "rendering": "chat",
+  "group": "locker-first",
+  "k": 25,
+  "alphas": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "betas": [
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.5
+  ],
+  "arms": [
+    "J(0,0)",
+    "J(1,1)",
+    "J(0.5,0)",
+    "R(0.5,0)",
+    "J(1,0)",
+    "R(1,0)",
+    "J(1.5,0)",
+    "R(1.5,0)",
+    "J(2,0)",
+    "R(2,0)",
+    "J(3,0)",
+    "R(3,0)",
+    "J(0,0.25)",
+    "R(0,0.25)",
+    "J(0,0.5)",
+    "R(0,0.5)",
+    "J(0,0.75)",
+    "R(0,0.75)",
+    "J(0,1)",
+    "R(0,1)",
+    "J(0,1.5)",
+    "R(0,1.5)",
+    "J(0,0.25)-U",
+    "J(0,0.25)-RU",
+    "J(0,0.5)-U",
+    "J(0,0.5)-RU",
+    "J(0,0.75)-U",
+    "J(0,0.75)-RU",
+    "J(0,1)-U",
+    "J(0,1)-RU",
+    "J(0,1.5)-U",
+    "J(0,1.5)-RU"
+  ],
+  "arm_text": {
+    "J(α,0)": "α P_J Δ, the change's 25-atom signed OMP J++ part alone at gain α",
+    "R(α,0)": "α R Δ, R Δ a random subspace's part of Δ at P_J Δ's share of ||Δ||^2 (seed 888 + L)",
+    "J(0,β)": "β (Δ - P_J Δ), the rest alone at gain β (with the address)",
+    "R(0,β)": "β (Δ - R Δ), the random complement at the rest's share",
+    "J(0,β)-U": "β (Δ - P_J Δ - U U^T Δ), the rest without the address (49.1's J(0,2)-U at gain β)",
+    "J(0,β)-RU": "β (Δ - P_J Δ - R_U Δ), R_U Δ a random part at U U^T Δ's share (same random basis)",
+    "J(1,1)": "Δ, the whole change (X0's whole arm; 49.1's J(1,1))",
+    "J(0,0)": "O unedited"
+  },
+  "pointer": {
+    "states_run": "nem35l_x52_probe",
+    "rank": 4,
+    "how": "x47_atoms.pointer_basis (x0_massmean.subspaces' Alf on the probe run's states), not refit"
+  },
+  "items_rule": "49.1's: the source X0 run's scenes at L (chat outcomes: the items its unedited run made eligible), rebuilt by x47_cumulative.select (ids and bridge position checked against the run's), x45m.group_of locker-first only",
+  "parts": {
+    "P_J": "x0_necessity.fit(J++ letter-token atoms at L, Δ, 25, signed)",
+    "R": "statement_positions.random_subspace_part(Δ, P_J Δ's share of ||Δ||^2, random basis seed 888 + L)",
+    "U": "U U^T Δ",
+    "R_U": "random_subspace_part at U U^T Δ's share, same basis"
+  },
+  "edit": "AddRows: the arm's vector added at the bridge word's block output at L, on O",
+  "read": "X0's chat read: O's prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "loss": "-log p(O's token after the bridge word) at the bridge word, from O's lookup prompt cut after the bridge word, under each arm; the bar: mean loss <= 2 x J(1,1)'s",
+  "gate": "the source run's (X0: 0.8 per reader on O unedited, >= 150 eligible); asserted",
+  "rule": {
+    "i": "\"the lookup is blind to the J++ part\": switch minus random <= 0.10 at every α whose plain-text loss stays under 2x the whole change's -- on all three",
+    "ii": "\"the recall reads the J++ part above its share\": at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2 -- per model",
+    "iii": "\"together only\" (Muse): (1,1) from 49.1 >= 0.8 while the best single-part dose under the loss bar stays <= 0.3"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "the source run's scene order (locker-first only)",
+    "reads": "per item and reader: O's prompt under the 32 arms in arm order, batches of at most 16 rows (BJ_SUITE_BATCH); then the loss: O's lookup prompt cut after the bridge word under the same arms",
+    "batch": 16
+  },
+  "sealed": "none (batch 52 coverage)",
+  "batch": 52,
+  "rules_first_scored": "results/x51_dose/x51_1-20261028T170335Z"
+}
