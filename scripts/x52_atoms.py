@@ -820,13 +820,13 @@ def stage_atoms(name: str, delta: str, sets: tuple[str, ...], states_root: Path 
         decoded = model.decoded
         dev = model.device
     else:
+        assert states_root is not None, "--delta states needs --states-root"
         deltas["e1"], checks["e1_delta"] = states_deltas(built["e1"][0], target, layer, Path(states_root))
         letters, dic, decoded = cpu_dictionary(tok, target, layer)
         dev = torch.device("cpu")
     checks["letters"] = len(letters)
-    np.savez(
-        out / "deltas.npz", **{f"{s}_{w}": v.astype(np.float32) for s, per in deltas.items() for w, v in per.items()}
-    )
+    arrays: dict[str, Any] = {f"{s}_{w}": v.astype(np.float32) for s, per in deltas.items() for w, v in per.items()}
+    np.savez(out / "deltas.npz", **arrays)
     lt = letters.tolist()
     rows = []
     for s in sets:
@@ -954,7 +954,7 @@ def summarise(recs: list[dict], n_boot: int = X.N_BOOT) -> dict:
     out: dict[str, Any] = {"n": len(recs), "entities": len(set(ents)),
                            "share_k25_median": float(np.median([r["share_k25"] for r in recs]))}  # fmt: skip
     for kind in ("atoms", "energy"):
-        series = {c: [v[kind][c] for v in vals] for c in CLASSES}
+        series: dict[str, Any] = {c: [v[kind][c] for v in vals] for c in CLASSES}  # per-item shares (floats)
         boot = X.resampled_rates(series, ents, n_boot, X.BOOT_SEED)
         out[kind] = {c: [round(float(np.mean(series[c])), 4), *(round(b, 4) for b in X.interval(boot[c]))]
                      for c in CLASSES}  # fmt: skip
@@ -1138,6 +1138,7 @@ def figure(summary: dict, examples: dict, path: Path) -> None:
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
 
     plt.rcParams["font.family"] = ["DejaVu Sans", "Arial Unicode MS", "PingFang SC", "Hiragino Sans GB"]
     fig = plt.figure(figsize=(17, 6.2))
@@ -1164,7 +1165,7 @@ def figure(summary: dict, examples: dict, path: Path) -> None:
         ax.grid(axis="y", color="#e6e5e0", linewidth=0.6)
         ax.set_axisbelow(True)
     panels[0][1].set_ylabel("share of the rebuilt energy (mean over 50 items)")
-    handles = [plt.Rectangle((0, 0), 1, 1, color=COLOR[c]) for c in CLASSES]
+    handles = [Rectangle((0, 0), 1, 1, color=COLOR[c]) for c in CLASSES]
     fig.legend(handles, [FIG_LABEL[c] for c in CLASSES], loc="lower center", ncol=5, fontsize=8, frameon=False)
     ax = fig.add_subplot(gs[2])
     ax.axis("off")
