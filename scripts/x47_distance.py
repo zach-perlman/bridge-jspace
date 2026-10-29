@@ -80,6 +80,9 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x47_16", "muse-glimmer-30b": "muse30_x47_16"}
 # batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, x52_lightning_fill1.yaml): read by verdict
 # --coverage alone (RUNS and the design's own verdict unchanged)
 COVERAGE_RUNS = {"qwen3.6-27b": "x47_16_27b", "nemotron-3.5-lightning": "nem35l_x52_distance"}
+# Muse (jobs/c3/x47_16_muse_r2.yaml): x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; exit 143, no
+# outcomes in muse30_x47_16); its r2 under a new run name, read as coverage (RUNS['muse-glimmer-30b'] unchanged)
+COVERAGE_RUNS["muse-glimmer-30b"] = "muse30_x47_16_r2"
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_distance/x47_16-20261028T131501Z"  # 47.16's rule first scored (the 9B and Muse)
 KS = (0, 5, 20, 50)
@@ -589,7 +592,7 @@ def routes_reference(target: str) -> dict | None:
 def model_result(run: str, n_boot: int = X.N_BOOT) -> dict:
     src = RESULTS / run
     if not (src / "manifest.json").exists():
-        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
+        target = {r: t for d in (RUNS, COVERAGE_RUNS) for t, r in d.items()}.get(run)  # Muse in both (r2)
         assert target, f"no 47.16 run {run!r} here, and it is not one of the specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "no manifest here"}
     m = json.loads((src / "manifest.json").read_text())

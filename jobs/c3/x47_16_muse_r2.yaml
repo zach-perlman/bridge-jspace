@@ -1,0 +1,48 @@
+id: x47_16_muse_r2
+title: "Batch 47.16 on Muse (L26), r2 for batch 52 C coverage (new run name muse30_x47_16_r2): does the address survive distance? Routes C2 scenes with k = 0 / 5 / 20 / 50 neutral sentences between the lockers and the picks; the gate per k (stop at the first failure); the whole change, without U vs random, x8's pointer swap at s = 2 vs random, the slot probe and the code's shift beta at the bridge word; design and rule exactly as x47_16_muse; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.2
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: 9B = Muse in the full grid; 47.16's rule first scored on the 9B)" &&
+  uv run python scripts/x47_distance.py run --name muse30_x47_16_r2 --why "batch 47, test 47.16 (jobs/c3/batch47.yaml, amendment 5) on Muse, batch 52 C coverage (x47_16_muse r2: the first run was cancelled mid-run, no outcomes): x6_routes' C2 scenes with k neutral filler sentences between the locker sentences and the pick sentences, k = 0, 5, 20, 50 (the gate recomputed per k, stop at the first failure); at the bridge word: the whole change, without U against random, x8's pointer swap at s = 2 against a random direction, O's states for the slot probe and the code's shift beta; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x47_distance/muse30_x47_16_r2/coverage.txt &&
+  uv run python scripts/x47_distance.py verdict --coverage --runs muse30_x47_16_r2
+question: >-
+  Does the address at the bridge word survive distance from the locker sentences on Muse: as k neutral sentences
+  separate the lockers from the picks, do the position share under the whole change, the slot probe and the pointer
+  swap's success stay (distance-robust), does the lookup move from position to identity while still answering (address
+  near, identity far), or does the model stop answering (breaks at k)? And does the code's shift beta stay <= 0.25?
+why_it_matters: >-
+  Amendment 2: the full grid (9B = Muse); the depth page's "E6: the swap after neutral sentences (47.16)" row on Muse,
+  which the matrix wrongly marked done (x47_16_muse never produced outcomes).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule (47.16 first scored on the 9B, results/x47_distance/x47_16-20261028T131501Z, Muse pending there)."
+decision_rule: >-
+  Exactly as jobs/c3/x47_16_muse.yaml, verbatim: "Fixed in advance (jobs/c3/batch47.yaml, 47.16): "Distance-robust
+  address": position share and the probe within 0.10 of k = 0 at every k, swap success within 0.15. "Address near,
+  identity far": position share falls >= 0.20 and identity rises by as much by k = 50 while accuracy stays >= 0.8.
+  "Breaks": accuracy falls below the gate at some k (report the k; the test stops there). Also a check of Fig 8c at
+  scale: the code's shift beta across k stays <= 0.25 (counts mentions, not tokens)." AS COMPUTED: x47_16_muse.yaml's
+  text unchanged (x6_routes' C2 scenes, seed 2510, the first 420 C2 candidates; the 60-sentence filler pool, seed 4716
+  per scene, nested blocks of k = 0 / 5 / 20 / 50; the gate per k, 0.80 per reader, stop at the first failure; the first
+  300 base scenes eligible at every passed k; arms none / whole / without U vs a random part of U's share (seed 888 +
+  L) / x8_write's pointer swap at s = 2 for both other slots vs a random direction of the same norm (seed 4717); the
+  routes and swap classifications; O's bridge-word states per k; the probe (x0_probe (b), 5 folds by bridge entity);
+  beta (x8 order's B2 convention); point estimates decide, EPS 1e-9; cluster bootstrap over bridge items, 10,000, seed
+  0; the first label that applies: breaks at k / distance-robust address / address near, identity far / none of the
+  three; Fig 8c holds if mean beta <= 0.25 at every k > 0) at Muse's L26, U and mu from muse30b_x0_probe_v4
+  (x6_routes.STATES). Verdict in the job (x47_distance.py verdict --coverage: Muse's r2 alone, 'no prediction',
+  results/x47_distance/x52_distance-<UTC>/).
+controls:
+- "without U against a random part of the same share of the change (X0's random subspace, seed 888 + L), per k"
+- "the pointer swap at s = 2 against a random direction of the same norm (one per scene and target, seed 4717), per k"
+- "the gate per k on every candidate (O read accuracy >= 0.80 per reader), the stop rule; lookup and recall accuracy unedited reported per k"
+- "the slot probe against chance, the majority class and the layout baseline, entities held out, per k"
+- "the same base scenes at every k (paired); k = 0 against the routes run's C2 cell (descriptive); the recall's kept share under every arm (collateral)"
+n: "plan check on the Muse tokenizer (28 Oct): 420 base C2 scenes (32 bridge animals), none dropped at any k; 300 jointly eligible base scenes chosen if the gates pass"
+seeds: [2510, 4716, 4717, 888, 0]
+notes: "Batch 52 C, amendment 2 (coordinator 03:55 Paris). FLAG FOR DAN: Dan cancelled x47_16_muse on 28 Oct ~14:10 (jobs/c3/batch49.yaml amendment 1: 'Cancel x47_16_muse (distance; low value, the 9B already answers it) to free its GPU'; cancelled: '47.16 Muse'); the job's exit 143 at 1,738 s is that cancel, and muse30_x47_16 holds only cases / competence / gate / manifest. This r2 re-opens the cell under amendment 2's full grid (9B = Muse); enqueue only if amendment 2 is read as overriding that cancel. New run name muse30_x47_16_r2 (the old folder exists); x47_distance.COVERAGE_RUNS gains Muse's r2 (RUNS and 47.16's own verdict unchanged). Box: speedup (jobq stats 02:50 UTC: drains 03:00-03:46 UTC, before mats 03:47-04:59; Muse-Glimmer-30B and its J++ lens are in speedup's HF cache /ephemeral/hf, x52_atoms_muse ran there at 23:50 UTC). Run fix only: PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True (memory: x45a_muse peaked 77.2 GB; if it dies of memory at k = 50, rerun with BJ_SUITE_BATCH=4, as x47_16_muse's notes say: results unchanged). Wallclock: x47_16_9b 1,519 s; x47_16_muse's estimate ~0.9 h + load, est 1.2 GPU-h. Retry once, then skip with the reason logged."

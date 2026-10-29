@@ -29,7 +29,7 @@ CASES = [
      {Q27, LT}),
     ("x47_chain", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_chain", {Q27, LT}),
     ("x47_distance", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_distance",
-     {Q27, LT}),
+     {Q27, LT, "muse-glimmer-30b"}),
     ("x47_cumulative", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_cumulative",
      {Q27, LT}),
 ]  # fmt: skip
@@ -51,7 +51,7 @@ def test_coverage_verdict_reads_the_coverage_runs_alone(tmp_path, monkeypatch, s
     assert M.NO_PREDICTION in text and ", Dan:" not in text
     named = {t for t in (LT, Q27, "qwen3.5-9b", "muse-glimmer-30b") if f"| {t} " in text or f"## {t}" in text
              or f"{t}:" in text}  # fmt: skip
-    assert targets <= named and "qwen3.5-9b" not in named and "muse-glimmer-30b" not in named, named
+    assert targets <= named and not ({"qwen3.5-9b", "muse-glimmer-30b"} - targets) & named, named
 
 
 @pytest.mark.parametrize("script", DESIGN_RUNS_REFUSED)
