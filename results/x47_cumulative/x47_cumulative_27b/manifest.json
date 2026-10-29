@@ -1,0 +1,83 @@
+{
+  "exp": "x47_cumulative",
+  "run": "x47_cumulative_27b",
+  "why": "Batch 52 C coverage (amendment 2): 47.4 on the 27B at L32 (its spec x47_4_27b, never run); no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)",
+  "written_utc": "2026-10-29T01:26:28Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "caf22ddb24f51d45415fb8a35747ae4cbc03852f",
+    "dirty": true
+  },
+  "test": "47.4",
+  "spec": "jobs/c3/batch47.yaml (47.4)",
+  "question": "Q47.4 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x0_necessity/x45m_fresh_27b/manifest.json": "81532062c323053fd4c50fd77b1177d0d7fd34c166a6b18ccc7f63e1f1d53b22",
+    "results/x0_necessity/x45m_fresh_27b/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl": "cae7973b9d0aa8fed9a2e47dfc3a1db711b21d7472f30d79208857d80808542e"
+  },
+  "sources": {
+    "main": "x0_necessity_27b_chat",
+    "clean": "x45m_fresh_27b"
+  },
+  "layer": 32,
+  "n_layers": 64,
+  "arms": {
+    "none": "O unedited",
+    "a": "(a) h_S - h_O added at the bridge token at L (X0's whole arm)",
+    "b": "(b) the bridge token swapped at every layer <= L (block outputs 0..L, and its input embedding)",
+    "c": "(c) the bridge token swapped at every layer (block outputs 0..n_layers - 1, and its input embedding)",
+    "d": "(d) every token of the asked pick sentence swapped at every layer (and the bridge's input embedding)",
+    "b_blocks": "(b) on O's own tokens: block outputs 0..L only, no embedding swap (descriptive)",
+    "S": "S read on S (unedited)"
+  },
+  "prompts": {
+    "org": "O",
+    "swap": "O with S's token at the bridge (its input embedding swapped)",
+    "alt": "S"
+  },
+  "states": "set (SetRows), from one unedited forward of S (every layer) and O (layer L) on the lookup's prompts",
+  "items_rule": "each source run's scenes at L (chat), the items its unedited run made eligible; O and S the same length, changed only at the bridge (clean) or the bridge and one other pick token (main); the asked pick sentence at the same positions with the same ids but the bridge's; the readers' prompts equal through the last patched token; else dropped and counted (plan.json)",
+  "groups": "x45m.group_of: locker-first (both locker sentences before the asked pick), locker-after, mixed",
+  "terms": {
+    "before_L": "read before L at the bridge token, (a)->(b)",
+    "propagation": "(b)->(c), should be ~0",
+    "pick_other": "carried by the pick sentence's other tokens, (c)->(d)",
+    "outside": "carried outside the pick sentence, (d)->100%"
+  },
+  "bug_check": {
+    "read": 0.02,
+    "state": 0.05
+  },
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "per design (main, clean), the source run's scene order",
+    "reads": "per item and reader: the arms in ARMS order, one batch (BJ_SUITE_BATCH)",
+    "batch": 64
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.4 answer"
+}
