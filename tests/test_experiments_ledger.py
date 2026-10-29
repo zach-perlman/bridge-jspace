@@ -1,7 +1,7 @@
-"""docs/depth/EXPERIMENTS.md (Dan, 29 Oct ~01:10; cards since 01:15): every cited path exists, every entry has a unique
-anchor and the README Part I card fields in order (a running stub: Question, Status, Where used), every internal link
-resolves, every number's source comment resolves on one line of its file, the coverage table is the matrix; the checker
-catches each failure."""
+"""docs/depth/EXPERIMENTS.md (Dan, 29 Oct ~01:10; cards since 01:15; in the README's order since 08:55): every cited
+path exists, every entry has a unique anchor, its status tag and the README Part I card fields in order with the figure
+right after Method (a running stub: Question, Status, Where used), every internal link resolves, every number's source
+comment resolves on one line of its file, the coverage table is the matrix; the checker catches each failure."""
 
 from scripts import check_ledger as L
 
@@ -14,15 +14,17 @@ REQUIRED = ("t49-2", "t49-5", "t51-1", "t51-2", "t51-3", "t51-4", "t51-5", "t51-
             "t45p", "x5", "t47-3", "t47-10", "t48-5")  # fmt: skip
 CARD = """### A test (1.1, opened x) <a id="a"></a>
 
+`in README` `below gate: Lightning` *Used in: README Part I card.*
+
 - **Question.** q?
 - **Why we asked.** w.
 - **Data.** d.
 - **Method.** m.
-- **Rule, fixed in advance.** "r."
 
 ![a figure](../../figures/story/fig01_split.png)
 *What is plotted.*
 
+- **Rule, fixed in advance.** "r."
 - **Result.** 0.53<!-- src: docs/handcheck_clean49.md | Main test gap :: 0.53 -->
 - **Read.**
   - r.
@@ -46,13 +48,21 @@ def test_the_coverage_table_is_the_matrix():
     assert L.coverage_problems("no table here")
 
 
-def test_the_ledger_sections_by_status():
+def test_the_ledger_follows_the_readme_order():
+    """Dan's restructure brief (29 Oct 08:55): In one minute, How to read, the README's Parts I-VI (and How we checked),
+    Withdrawn, Run on one model only, then the Appendix."""
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
-    assert heads == ["## Flagged for Dan", "## README changes waiting for Dan", "## Coverage",
-                     "## Changes a README claim (README must be updated)", "## Supports a README claim",
-                     "## Ledger only (opened, not in README)", "## Run on one model only (one line each)",
+    assert heads == ["## In one minute", "## How to read",
+                     "## Part I. The two readers: lookup and recall",
+                     "## Part II. Identity: which item the lookup reads",
+                     "## Part III. The address: where the item's locker sits",
+                     "## Part IV. Where and when the link is made", "## Part V. Other datasets and operations",
+                     "## Part VI. What did not hold", "## How we checked", "## Run on one model only (one line each)",
                      "## Withdrawn", "## Running or sealed",
-                     "## Figure checks"]  # fmt: skip
+                     '## Appendix A. Flagged for Dan <a id="flagged"></a>',
+                     '## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>',
+                     '## Appendix C. Coverage table <a id="coverage"></a>',
+                     '## Appendix D. Figure checks <a id="figure-checks"></a>']  # fmt: skip
 
 
 def test_the_checker_catches_failures():
@@ -67,6 +77,12 @@ def test_the_checker_catches_failures():
     assert L.problems(CARD.replace("![a figure](../../figures/story/fig01_split.png)\n", ""))  # no figure
     assert L.problems(CARD.replace("fig01_split", "no_such_figure"))  # the figure's file is missing
     assert L.problems(CARD.replace("*What is plotted.*\n", ""))  # no caption
+    assert L.problems(CARD.replace("`in README` ", ""))  # no status tag
+    assert L.problems(CARD.replace("`in README`", "`in the README`"))  # not one of the tags
+    moved = CARD.replace("![a figure](../../figures/story/fig01_split.png)\n*What is plotted.*\n\n", "")
+    moved = moved.replace("- **Result.**", "\n![a figure](../../figures/story/fig01_split.png)\n*What is plotted.*\n\n- **Result.**")
+    assert L.problems(moved)  # the figure after the rule, not right after Method
+    assert not L.problems(CARD + "See [the flags](#flagged).\n## Flags <a id=\"flagged\"></a>\n")  # a section anchor
 
 
 def test_a_running_stub_needs_only_its_status():

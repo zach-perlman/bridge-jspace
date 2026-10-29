@@ -5,10 +5,13 @@ well formed:
 - every entry (a '### ' heading) carries a unique stable anchor, and every internal link resolves;
 - every card has the README Part I fields in order (Question, Why we asked, Data, Method, Rule fixed in advance,
   Result, Read, Caveats); an entry still running ('running)' in its heading) is a stub: Question, Status, Where used;
+- every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README`, `changes README` or
+  `ledger only`, then optionally `below gate: <models>`, then optionally the italic "Used in" text;
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
-- every card has one figure, after its rule and before its result, with an italic caption and its file present;
+- every card has one figure, right after its Method (before its rule; Dan's restructure brief, 29 Oct 08:55), with an
+  italic caption and its file present; internal links resolve to any <a id> on the page (cards and the Appendix);
 - the coverage table equals scripts/ledger_coverage.py's output (the committed matrix).
 
 Exit 1 with one line per problem.
@@ -30,6 +33,9 @@ STUB_FIELDS = ("Question", "Status", "Where used")
 # a repo path: a top-level folder of the checkout followed by a path
 PATH = re.compile(r"\b((?:results|docs|jobs|scripts|figures|tests|data)/[\w./-]*[\w/])")
 ANCHOR = re.compile(r'<a id="([a-z0-9-]+)"></a>\s*$')
+# the status tag line under a card's heading (Dan, 29 Oct 08:55)
+TAGS = ("in README", "changes README", "ledger only")
+TAG_LINE = re.compile(r"^`(" + "|".join(TAGS) + r")`(?: `below gate: [^`]+`)?(?: \*Used in: [^*]+\*)?$")
 SRC = re.compile(r"<!-- src: ([^|\\]+?) \\?\| (.+?) -->")
 
 
@@ -61,16 +67,16 @@ def source_problems(text: str, repo: Path = REPO) -> list[str]:
 
 
 def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
-    """A card's one figure (Dan 01:15): after its rule and before its result, its file present (the link is written
-    from docs/depth/), an italic caption on the next line."""
+    """A card's one figure (Dan 01:15): right after its Method, before its rule (Dan, 29 Oct 08:55), its file present
+    (the link is written from docs/depth/), an italic caption on the next line."""
     lines = body.splitlines()
     imgs = [i for i, line in enumerate(lines) if re.match(r"^!\[[^\]]+\]\([^)]+\)", line)]
     if len(imgs) != 1:
         return [f"{len(imgs)} figures in: {head}"]
     i = imgs[0]
+    method = next(k for k, line in enumerate(lines) if line.startswith("- **Method.**"))
     rule = next(k for k, line in enumerate(lines) if line.startswith("- **Rule, fixed in advance.**"))
-    result = next(k for k, line in enumerate(lines) if line.startswith("- **Result.**"))
-    out = [] if rule < i < result else [f"the figure is not between the rule and the result in: {head}"]
+    out = [] if method < i < rule else [f"the figure is not right after the method in: {head}"]
     target = re.match(r"^!\[[^\]]+\]\(([^)]+)\)", lines[i]).group(1)  # type: ignore[union-attr]
     if not (LEDGER.parent / target).resolve().exists():
         out.append(f"figure file missing: {target}")
@@ -93,10 +99,14 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
         if found != list(want):
             out.append(f"fields {found} in: {head}")
         if want is FIELDS:
+            first = next((line for line in body.splitlines() if line.strip()), "")
+            if not TAG_LINE.match(first):
+                out.append(f"no status tag line under the heading of: {head}")
             out += figure_problems(head, body, repo)
-    out += [f"duplicate anchor: {a}" for a in sorted({a for a in anchors if anchors.count(a) > 1})]
+    every = re.findall(r'<a id="([a-z0-9-]+)"></a>', text)
+    out += [f"duplicate anchor: {a}" for a in sorted({a for a in every if every.count(a) > 1})]
     links = set(re.findall(r"\]\(#([a-z0-9-]+)\)", text))
-    out += [f"link to a missing anchor: #{a}" for a in sorted(links - set(anchors))]
+    out += [f"link to a missing anchor: #{a}" for a in sorted(links - set(every))]
     return out + source_problems(text, repo)
 
 
