@@ -1,0 +1,3069 @@
+{
+ "exp": "x47_verbal",
+ "test": "47.0",
+ "descriptive": true,
+ "code": {
+  "sha": "531ec23cffba343f490e69f17ef00569991a0983",
+  "dirty": true
+ },
+ "runs": [
+  "nem35l_x52_verbal"
+ ],
+ "missing": [],
+ "models": {
+  "nemotron-3.5-lightning": {
+   "run": "results/x47_verbal/nem35l_x52_verbal",
+   "target": "nemotron-3.5-lightning",
+   "layer": 14,
+   "n_cases": 200,
+   "n_items": 100,
+   "n_identity_cases": 200,
+   "read_check": {
+    "items": 100,
+    "same_top_as_x8": 100
+   },
+   "a": {
+    "write|best_ordinal": {
+     "median": 219.5,
+     "null_median_of_medians": 191.5,
+     "null_pct": 5.0,
+     "null_cut": 49.42499923706055,
+     "beyond": false,
+     "case_share_beyond": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "case_null_cut_median": 51.375
+    },
+    "write|best_digits": {
+     "median": 1343.0,
+     "null_median_of_medians": 1357.25,
+     "null_pct": 5.0,
+     "null_cut": 664.4500122070312,
+     "beyond": false,
+     "case_share_beyond": [
+      0.02,
+      0.004761904761904762,
+      0.04
+     ],
+     "case_null_cut_median": 666.800048828125
+    },
+    "write|target_digit": {
+     "median": 4982.0,
+     "null_median_of_medians": 5008.0,
+     "null_pct": 5.0,
+     "null_cut": 2713.875,
+     "beyond": false,
+     "case_share_beyond": [
+      0.005,
+      0.0,
+      0.014154312668463563
+     ],
+     "case_null_cut_median": 2631.10009765625
+    },
+    "write|alt_name": {
+     "median": 6448.5,
+     "null_median_of_medians": 6758.75,
+     "null_pct": 5.0,
+     "null_cut": 4844.14990234375,
+     "beyond": false,
+     "case_share_beyond": [
+      0.045,
+      0.01485148514851485,
+      0.0761904761904762
+     ],
+     "case_null_cut_median": 3126.14990234375
+    },
+    "identity|alt_name": {
+     "median": 19.0,
+     "null_median_of_medians": 6758.75,
+     "null_pct": 5.0,
+     "null_cut": 4844.14990234375,
+     "beyond": true,
+     "case_share_beyond": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "case_null_cut_median": 3126.14990234375
+    },
+    "identity|best_ordinal": {
+     "median": 126.0,
+     "null_median_of_medians": 191.5,
+     "null_pct": 5.0,
+     "null_cut": 49.42499923706055,
+     "beyond": false,
+     "case_share_beyond": [
+      0.02,
+      0.0,
+      0.052083333333333336
+     ],
+     "case_null_cut_median": 51.375
+    },
+    "h alone|best_ordinal median": 195.5,
+    "h alone|best_digits median": 1264.0
+   },
+   "c": {
+    "identity": {
+     "median": 2.455418586730957,
+     "null_median_of_medians": 0.06410914659500122,
+     "null_pct": 95.0,
+     "null_cut": 0.42941316962242126,
+     "beyond": true,
+     "case_share_beyond": [
+      0.805,
+      0.7325581395348837,
+      0.8733354430379746
+     ],
+     "case_null_cut_median": 0.6896367073059082
+    },
+    "write": {
+     "median": 0.034371765330433846,
+     "null_median_of_medians": 0.06410914659500122,
+     "null_pct": 95.0,
+     "null_cut": 0.42941316962242126,
+     "beyond": false,
+     "case_share_beyond": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "case_null_cut_median": 0.6896367073059082
+    }
+   },
+   "x8_lookup_at_s2": {
+    "target": 0.5,
+    "original": 0.435,
+    "third": 0.065,
+    "other": 0.0
+   },
+   "b": {
+    "all|25": {
+     "write_mean": 0.03096131794154644,
+     "U_mean": 0.044577636290341616,
+     "identity_mean": 0.13292972207069398,
+     "random_mean": 0.030900454046204687,
+     "random_p95": 0.03963220622390508,
+     "pointer": 0.044577636290341616,
+     "ratio": 1.4426207531994766,
+     "identity_ratio": 4.301869541202451,
+     "n": {
+      "write": 6,
+      "U": 8,
+      "identity": 50,
+      "random": 200
+     }
+    },
+    "all|100": {
+     "write_mean": 0.044487884268164635,
+     "U_mean": 0.062248478876426816,
+     "identity_mean": 0.1736924296617508,
+     "random_mean": 0.04412494364194572,
+     "random_p95": 0.05492248032242059,
+     "pointer": 0.062248478876426816,
+     "ratio": 1.410732201304222,
+     "identity_ratio": 3.9363773712933794,
+     "n": {
+      "write": 6,
+      "U": 8,
+      "identity": 50,
+      "random": 200
+     }
+    },
+    "letters|25": {
+     "write_mean": 0.028583526611328125,
+     "U_mean": 0.041995735373348,
+     "identity_mean": 0.12569857522845268,
+     "random_mean": 0.028739354638382793,
+     "random_p95": 0.03757532332092521,
+     "pointer": 0.041995735373348,
+     "ratio": 1.4612622970058162,
+     "identity_ratio": 4.373743836981509,
+     "n": {
+      "write": 6,
+      "U": 8,
+      "identity": 50,
+      "random": 200
+     }
+    },
+    "letters|100": {
+     "write_mean": 0.03662244975566864,
+     "U_mean": 0.05161881702952087,
+     "identity_mean": 0.1478893454372883,
+     "random_mean": 0.03629249276593328,
+     "random_p95": 0.046332302503287785,
+     "pointer": 0.05161881702952087,
+     "ratio": 1.4223001258809638,
+     "identity_ratio": 4.074929390799736,
+     "n": {
+      "write": 6,
+      "U": 8,
+      "identity": 50,
+      "random": 200
+     }
+    }
+   },
+   "b_atoms": {
+    "U0+": [
+     [
+      ".",
+      0.0932
+     ],
+     [
+      " infine",
+      0.0925
+     ],
+     [
+      "장으로",
+      0.0576
+     ],
+     [
+      " ​",
+      0.0319
+     ],
+     [
+      " Noord",
+      0.0309
+     ],
+     [
+      " التابعة",
+      0.0295
+     ],
+     [
+      "rena",
+      0.0288
+     ],
+     [
+      " gly",
+      0.0278
+     ],
+     [
+      "’S",
+      0.0269
+     ],
+     [
+      " イ",
+      0.0267
+     ],
+     [
+      " والز",
+      0.0248
+     ],
+     [
+      "frey",
+      0.0247
+     ],
+     [
+      "-*",
+      0.0232
+     ],
+     [
+      "fors",
+      0.0232
+     ],
+     [
+      " sermon",
+      0.0232
+     ]
+    ],
+    "U0-": [
+     [
+      " وال",
+      0.0921
+     ],
+     [
+      ".W",
+      0.0744
+     ],
+     [
+      "ovar",
+      0.0613
+     ],
+     [
+      " s",
+      0.0559
+     ],
+     [
+      "乗",
+      0.0542
+     ],
+     [
+      " Alek",
+      0.0492
+     ],
+     [
+      "Profile",
+      0.045
+     ],
+     [
+      " 베이",
+      0.0448
+     ],
+     [
+      "MD",
+      0.0386
+     ],
+     [
+      "oju",
+      0.0339
+     ],
+     [
+      " ao",
+      0.0339
+     ],
+     [
+      "/The",
+      0.0306
+     ],
+     [
+      " unas",
+      0.0292
+     ],
+     [
+      " lb",
+      0.029
+     ],
+     [
+      "』",
+      0.0283
+     ]
+    ],
+    "U1+": [
+     [
+      "/S",
+      0.0859
+     ],
+     [
+      " hermana",
+      0.0642
+     ],
+     [
+      " ​",
+      0.0581
+     ],
+     [
+      " המפ",
+      0.0496
+     ],
+     [
+      "lund",
+      0.0475
+     ],
+     [
+      "Jones",
+      0.0444
+     ],
+     [
+      "))\n\n\n",
+      0.0415
+     ],
+     [
+      " categorical",
+      0.0364
+     ],
+     [
+      " jealousy",
+      0.0333
+     ],
+     [
+      " الوص",
+      0.0331
+     ],
+     [
+      " vad",
+      0.0324
+     ],
+     [
+      " uit",
+      0.028
+     ],
+     [
+      " accred",
+      0.0274
+     ],
+     [
+      " uz",
+      0.0263
+     ],
+     [
+      " coli",
+      0.0261
+     ]
+    ],
+    "U1-": [
+     [
+      ".",
+      0.0875
+     ],
+     [
+      " ألك",
+      0.0725
+     ],
+     [
+      "Album",
+      0.0424
+     ],
+     [
+      " mais",
+      0.0392
+     ],
+     [
+      " infin",
+      0.0341
+     ],
+     [
+      "\r",
+      0.0338
+     ],
+     [
+      "/The",
+      0.0336
+     ],
+     [
+      "´s",
+      0.0333
+     ],
+     [
+      "の主人公",
+      0.0333
+     ],
+     [
+      "tero",
+      0.0325
+     ],
+     [
+      " initializing",
+      0.0314
+     ],
+     [
+      "ハン",
+      0.0309
+     ],
+     [
+      "�",
+      0.0264
+     ],
+     [
+      "aming",
+      0.0219
+     ],
+     [
+      " رحل",
+      0.0202
+     ]
+    ],
+    "U2+": [
+     [
+      "Tick",
+      0.0782
+     ],
+     [
+      "/S",
+      0.062
+     ],
+     [
+      "lund",
+      0.0593
+     ],
+     [
+      "imon",
+      0.0578
+     ],
+     [
+      " fy",
+      0.056
+     ],
+     [
+      " 월",
+      0.0533
+     ],
+     [
+      ",true",
+      0.0526
+     ],
+     [
+      "-af",
+      0.0517
+     ],
+     [
+      "?!",
+      0.0499
+     ],
+     [
+      "-P",
+      0.0443
+     ],
+     [
+      " […]",
+      0.0417
+     ],
+     [
+      " اسمها",
+      0.0412
+     ],
+     [
+      " ​",
+      0.0381
+     ],
+     [
+      " cb",
+      0.037
+     ],
+     [
+      " 애",
+      0.0358
+     ]
+    ],
+    "U2-": [
+     [
+      "´s",
+      0.085
+     ],
+     [
+      " �",
+      0.0645
+     ],
+     [
+      "，",
+      0.0543
+     ],
+     [
+      "дро",
+      0.0537
+     ],
+     [
+      " GSH",
+      0.0531
+     ],
+     [
+      " 삼",
+      0.0431
+     ],
+     [
+      " lli",
+      0.0417
+     ],
+     [
+      " Hamiltonian",
+      0.0415
+     ],
+     [
+      "/W",
+      0.0407
+     ],
+     [
+      " blessing",
+      0.0388
+     ],
+     [
+      "佐",
+      0.0378
+     ],
+     [
+      " عالية",
+      0.0373
+     ],
+     [
+      " sedimentation",
+      0.0369
+     ],
+     [
+      " Reims",
+      0.0367
+     ],
+     [
+      "ostra",
+      0.0363
+     ]
+    ],
+    "U3+": [
+     [
+      " הז",
+      0.1756
+     ],
+     [
+      "aga",
+      0.1262
+     ],
+     [
+      ",F",
+      0.0897
+     ],
+     [
+      "RF",
+      0.088
+     ],
+     [
+      " longitudinal",
+      0.0769
+     ],
+     [
+      " NFL",
+      0.0696
+     ],
+     [
+      " vaga",
+      0.0655
+     ],
+     [
+      " וי",
+      0.0648
+     ],
+     [
+      "�",
+      0.062
+     ],
+     [
+      "/M",
+      0.0574
+     ],
+     [
+      " neu",
+      0.0523
+     ],
+     [
+      "´s",
+      0.0493
+     ],
+     [
+      " Gaga",
+      0.0431
+     ],
+     [
+      "_lst",
+      0.0393
+     ],
+     [
+      " pronounced",
+      0.0383
+     ]
+    ],
+    "U3-": [
+     [
+      "dera",
+      0.0837
+     ],
+     [
+      ".\n",
+      0.0824
+     ],
+     [
+      "，",
+      0.0822
+     ],
+     [
+      " وص",
+      0.081
+     ],
+     [
+      "Chan",
+      0.0807
+     ],
+     [
+      " carbonyl",
+      0.0783
+     ],
+     [
+      " Rostock",
+      0.0739
+     ],
+     [
+      "osen",
+      0.0716
+     ],
+     [
+      " κ",
+      0.069
+     ],
+     [
+      " alk",
+      0.0685
+     ],
+     [
+      " الحس",
+      0.0646
+     ],
+     [
+      "OA",
+      0.0557
+     ],
+     [
+      "bern",
+      0.0542
+     ],
+     [
+      " […",
+      0.0532
+     ],
+     [
+      " Parad",
+      0.0524
+     ]
+    ],
+    "mu1-mu0": [
+     [
+      "/S",
+      0.0707
+     ],
+     [
+      " التابعة",
+      0.0604
+     ],
+     [
+      "lund",
+      0.0496
+     ],
+     [
+      " ​",
+      0.0482
+     ],
+     [
+      ".accept",
+      0.0427
+     ],
+     [
+      " המפ",
+      0.042
+     ],
+     [
+      "))\n\n\n",
+      0.0391
+     ],
+     [
+      " cruz",
+      0.0367
+     ],
+     [
+      "催",
+      0.0357
+     ],
+     [
+      " ij",
+      0.0315
+     ],
+     [
+      "Jones",
+      0.0308
+     ],
+     [
+      " ech",
+      0.0273
+     ],
+     [
+      " الوص",
+      0.026
+     ],
+     [
+      " Mayotte",
+      0.0258
+     ],
+     [
+      " ky",
+      0.0256
+     ]
+    ],
+    "mu2-mu0": [
+     [
+      " 청",
+      0.0608
+     ],
+     [
+      " ​",
+      0.0525
+     ],
+     [
+      " التابعة",
+      0.052
+     ],
+     [
+      " Munster",
+      0.039
+     ],
+     [
+      " Kec",
+      0.0389
+     ],
+     [
+      "lund",
+      0.0368
+     ],
+     [
+      "’S",
+      0.0352
+     ],
+     [
+      " tercera",
+      0.0349
+     ],
+     [
+      " ;;\n",
+      0.0335
+     ],
+     [
+      "wan",
+      0.0334
+     ],
+     [
+      "),",
+      0.0329
+     ],
+     [
+      "催",
+      0.0297
+     ],
+     [
+      "/R",
+      0.0288
+     ],
+     [
+      " والز",
+      0.0272
+     ],
+     [
+      " iso",
+      0.0272
+     ]
+    ],
+    "mu0-mu1": [
+     [
+      " ألك",
+      0.0762
+     ],
+     [
+      " �",
+      0.064
+     ],
+     [
+      ".\n\n",
+      0.0567
+     ],
+     [
+      "，《",
+      0.0525
+     ],
+     [
+      " mais",
+      0.0445
+     ],
+     [
+      "Profile",
+      0.0444
+     ],
+     [
+      "/The",
+      0.0426
+     ],
+     [
+      "uak",
+      0.0364
+     ],
+     [
+      "ahn",
+      0.0348
+     ],
+     [
+      "tero",
+      0.0345
+     ],
+     [
+      "Album",
+      0.0343
+     ],
+     [
+      " embar",
+      0.0302
+     ],
+     [
+      " initializing",
+      0.0302
+     ],
+     [
+      "の主人公",
+      0.0284
+     ],
+     [
+      " لب",
+      0.0277
+     ]
+    ],
+    "mu2-mu1": [
+     [
+      "….",
+      0.0999
+     ],
+     [
+      " Hé",
+      0.0605
+     ],
+     [
+      "osen",
+      0.058
+     ],
+     [
+      "，",
+      0.0574
+     ],
+     [
+      "�",
+      0.0555
+     ],
+     [
+      " canonical",
+      0.0466
+     ],
+     [
+      " �",
+      0.0457
+     ],
+     [
+      " kal",
+      0.0451
+     ],
+     [
+      " principio",
+      0.0424
+     ],
+     [
+      " Noord",
+      0.0395
+     ],
+     [
+      "Isa",
+      0.0314
+     ],
+     [
+      "Template",
+      0.0307
+     ],
+     [
+      "감이",
+      0.0282
+     ],
+     [
+      "/K",
+      0.0276
+     ],
+     [
+      " shader",
+      0.0268
+     ]
+    ],
+    "mu0-mu2": [
+     [
+      ".\n\n",
+      0.0694
+     ],
+     [
+      " אל",
+      0.0628
+     ],
+     [
+      " mais",
+      0.0529
+     ],
+     [
+      " initializing",
+      0.0454
+     ],
+     [
+      " Nixon",
+      0.0423
+     ],
+     [
+      " �",
+      0.0418
+     ],
+     [
+      "/The",
+      0.0383
+     ],
+     [
+      "fc",
+      0.0382
+     ],
+     [
+      " 주인공",
+      0.0379
+     ],
+     [
+      "Profile",
+      0.0304
+     ],
+     [
+      "Mail",
+      0.0286
+     ],
+     [
+      "rik",
+      0.0271
+     ],
+     [
+      "_var",
+      0.027
+     ],
+     [
+      "\r",
+      0.0266
+     ],
+     [
+      "「」",
+      0.026
+     ]
+    ],
+    "mu1-mu2": [
+     [
+      " accuse",
+      0.0875
+     ],
+     [
+      "乗",
+      0.0776
+     ],
+     [
+      " اضطراب",
+      0.0583
+     ],
+     [
+      ",B",
+      0.0558
+     ],
+     [
+      "Tick",
+      0.0482
+     ],
+     [
+      " ''\n",
+      0.047
+     ],
+     [
+      "-M",
+      0.0446
+     ],
+     [
+      " ―",
+      0.0409
+     ],
+     [
+      "_profile",
+      0.0404
+     ],
+     [
+      " regina",
+      0.0398
+     ],
+     [
+      "/F",
+      0.0386
+     ],
+     [
+      " fib",
+      0.0379
+     ],
+     [
+      "oju",
+      0.0377
+     ],
+     [
+      " fy",
+      0.0358
+     ],
+     [
+      " Soviet",
+      0.034
+     ]
+    ]
+   },
+   "direction": {
+    "null_p5_best_ordinal": 13.900000000000002,
+    "null_p5_best_digits": 319.3500000000001,
+    "vectors": [
+     {
+      "name": "U0+",
+      "kind": "U",
+      "best_ordinal": 150,
+      "best_ordinal_tok": " one",
+      "best_digits": 434,
+      "best_digits_tok": "2",
+      "top": [
+       " sund",
+       " ",
+       " tent",
+       " Limoges",
+       " ,",
+       " N",
+       " lin",
+       " Garland",
+       " min",
+       " at",
+       " [",
+       " Calv",
+       " Marion",
+       " Carmel",
+       " Cres",
+       " arms",
+       " lantern",
+       " twelve",
+       " eighty",
+       " Springfield"
+      ]
+     },
+     {
+      "name": "U0-",
+      "kind": "U",
+      "best_ordinal": 18671,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 126129,
+      "best_digits_tok": "0",
+      "top": [
+       " sovjet",
+       " sowjet",
+       " sowjetischen",
+       " 소련",
+       "oviet",
+       " amerikan",
+       "俄罗斯",
+       " soviet",
+       " molekul",
+       " demokrat",
+       " britische",
+       " Soviets",
+       " l�",
+       " automatisch",
+       " россий",
+       "iekt",
+       " mächt",
+       " Milliarden",
+       "�c",
+       "ể"
+      ]
+     },
+     {
+      "name": "U1+",
+      "kind": "U",
+      "best_ordinal": 41354,
+      "best_ordinal_tok": "third",
+      "best_digits": 127250,
+      "best_digits_tok": "2",
+      "top": [
+       " britische",
+       " Kategorie",
+       " regionale",
+       " kategor",
+       "ी",
+       " ört",
+       "澳",
+       " khu",
+       "ijd",
+       " kategori",
+       "地域",
+       " kulture",
+       " катего",
+       "-Jones",
+       " ausländ",
+       " Gujarat",
+       " Freundschaft",
+       " Schwester",
+       "alisco",
+       " gesellschaft"
+      ]
+     },
+     {
+      "name": "U1-",
+      "kind": "U",
+      "best_ordinal": 79,
+      "best_ordinal_tok": " first",
+      "best_digits": 925,
+      "best_digits_tok": "4",
+      "top": [
+       " Tra",
+       " Val",
+       " Vol",
+       " Lim",
+       " Pol",
+       " Equ",
+       " Capitol",
+       " Vars",
+       " myself",
+       " Left",
+       " Sing",
+       " Presidential",
+       " Lib",
+       " Vale",
+       "chal",
+       " Lux",
+       " Var",
+       " Lincoln",
+       " Vin",
+       " bun"
+      ]
+     },
+     {
+      "name": "U2+",
+      "kind": "U",
+      "best_ordinal": 6776,
+      "best_ordinal_tok": "next",
+      "best_digits": 4259,
+      "best_digits_tok": "0",
+      "top": [
+       " @",
+       "Tick",
+       " \"@",
+       "/@",
+       ":@",
+       ",@",
+       " (@",
+       "@",
+       " tick",
+       "tick",
+       "@@",
+       " '@",
+       " @@",
+       "@\"",
+       "(@",
+       "@\",",
+       " ticks",
+       " Dig",
+       " Fry",
+       "ocrine"
+      ]
+     },
+     {
+      "name": "U2-",
+      "kind": "U",
+      "best_ordinal": 6350,
+      "best_ordinal_tok": "Last",
+      "best_digits": 93538,
+      "best_digits_tok": "3",
+      "top": [
+       " Leopoldo",
+       " César",
+       "amento",
+       " Nueva",
+       " Monaco",
+       " Eindhoven",
+       "amentos",
+       " Léopold",
+       " Nouveau",
+       " Jérôme",
+       " Cura",
+       " Giacomo",
+       " Salvatore",
+       " Senna",
+       " Stéph",
+       " Gio",
+       " Kemal",
+       " Bảo",
+       " Kaisers",
+       " Nouvelle"
+      ]
+     },
+     {
+      "name": "U3+",
+      "kind": "U",
+      "best_ordinal": 939,
+      "best_ordinal_tok": " last",
+      "best_digits": 31131,
+      "best_digits_tok": "3",
+      "top": [
+       " Dragon",
+       " RF",
+       " dragon",
+       " Wag",
+       "Dragon",
+       " Saga",
+       " FM",
+       " Lilly",
+       " NFL",
+       " LF",
+       " wag",
+       " UFO",
+       " lag",
+       " Wagner",
+       " Gaga",
+       " Fly",
+       " 드래곤",
+       " Flying",
+       " nurse",
+       "RF"
+      ]
+     },
+     {
+      "name": "U3-",
+      "kind": "U",
+      "best_ordinal": 38393,
+      "best_ordinal_tok": "later",
+      "best_digits": 46819,
+      "best_digits_tok": "0",
+      "top": [
+       " κ",
+       " Berlín",
+       "Berlin",
+       " Berlino",
+       "kappa",
+       " Berliner",
+       " Kapelle",
+       "κ",
+       " Socket",
+       "Socket",
+       " Berth",
+       "stylesheet",
+       " Karlsruhe",
+       "Charl",
+       " Kanal",
+       ".socket",
+       "资本",
+       "ρθ",
+       "德国",
+       "socket"
+      ]
+     },
+     {
+      "name": "mu1-mu0",
+      "kind": "write",
+      "best_ordinal": 3336,
+      "best_ordinal_tok": "after",
+      "best_digits": 35145,
+      "best_digits_tok": "2",
+      "top": [
+       " @",
+       " Mayotte",
+       ":@",
+       ",@",
+       "@",
+       " Malawi",
+       " Sisters",
+       "@@",
+       " \"@",
+       " Fiji",
+       " subtropical",
+       " Duffy",
+       "xy",
+       " Coastal",
+       "/@",
+       " '@",
+       " Suffolk",
+       "@v",
+       " Gujarat",
+       "@\","
+      ]
+     },
+     {
+      "name": "mu2-mu0",
+      "kind": "write",
+      "best_ordinal": 629,
+      "best_ordinal_tok": " third",
+      "best_digits": 4258,
+      "best_digits_tok": "2",
+      "top": [
+       " Mayotte",
+       " Munster",
+       " Kec",
+       " Galway",
+       " @",
+       " Calabria",
+       " Kana",
+       " Guardia",
+       " Messina",
+       " Castillo",
+       " Chapelle",
+       " “*",
+       " Duffy",
+       " sulph",
+       " sund",
+       " Andal",
+       " Carmel",
+       " Kerk",
+       " Jas",
+       " Santo"
+      ]
+     },
+     {
+      "name": "mu0-mu1",
+      "kind": "write",
+      "best_ordinal": 4795,
+      "best_ordinal_tok": " earlier",
+      "best_digits": 52095,
+      "best_digits_tok": "0",
+      "top": [
+       "ék",
+       "éma",
+       " Capitol",
+       "Insert",
+       " Insert",
+       " Kapital",
+       "anium",
+       " Napoléon",
+       " Presidential",
+       "ník",
+       "Capital",
+       " Vinci",
+       " WPF",
+       " Bitcoin",
+       "thood",
+       "asteel",
+       "vek",
+       "uclear",
+       " skiing",
+       " Capital"
+      ]
+     },
+     {
+      "name": "mu2-mu1",
+      "kind": "write",
+      "best_ordinal": 1704,
+      "best_ordinal_tok": " Third",
+      "best_digits": 2091,
+      "best_digits_tok": "2",
+      "top": [
+       " Calabria",
+       " Breda",
+       " Brabant",
+       " Reno",
+       " Rohan",
+       " Kappa",
+       " κ",
+       " Chapelle",
+       " Kessel",
+       "κ",
+       " Oss",
+       " Cura",
+       " Opus",
+       " Eindhoven",
+       " Kalk",
+       " Chevalier",
+       " Leopoldo",
+       " Templ",
+       " Geb",
+       " Léopold"
+      ]
+     },
+     {
+      "name": "mu0-mu2",
+      "kind": "write",
+      "best_ordinal": 8241,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 98924,
+      "best_digits_tok": "0",
+      "top": [
+       " Nixon",
+       " soviet",
+       "oviet",
+       " Soviet",
+       " WWE",
+       " amerikan",
+       " sovjet",
+       " Soviets",
+       " MLB",
+       " Amerikan",
+       " sovi",
+       "érique",
+       " السوفي",
+       " nucléaire",
+       " amerik",
+       " NASCAR",
+       "vek",
+       "niku",
+       "Tick",
+       " Barack"
+      ]
+     },
+     {
+      "name": "mu1-mu2",
+      "kind": "write",
+      "best_ordinal": 19477,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 118693,
+      "best_digits_tok": "0",
+      "top": [
+       " sowjetischen",
+       " sowjet",
+       "oviet",
+       "Tick",
+       " Soviet",
+       " soviet",
+       " FBI",
+       " 소련",
+       " USSR",
+       " Soviets",
+       " sovjet",
+       "tick",
+       "Ticks",
+       " tick",
+       " soviétique",
+       " KGB",
+       " Sowjet",
+       " السوفي",
+       "ysku",
+       " Judy"
+      ]
+     },
+     {
+      "name": "id rabbit->owl",
+      "kind": "identity",
+      "best_ordinal": 26541,
+      "best_ordinal_tok": " Three",
+      "best_digits": 52523,
+      "best_digits_tok": "3",
+      "top": [
+       " owl",
+       " Ow",
+       "owl",
+       "OW",
+       " Gw",
+       " pw",
+       " Ew",
+       "�",
+       "wm",
+       "WM",
+       " Shaw",
+       " ow",
+       " Melo",
+       " PW",
+       "PW",
+       " Kow",
+       " Watson",
+       " CW",
+       "tf",
+       " UNESCO"
+      ]
+     },
+     {
+      "name": "id frog->turkey",
+      "kind": "identity",
+      "best_ordinal": 1292,
+      "best_ordinal_tok": " Last",
+      "best_digits": 21332,
+      "best_digits_tok": "0",
+      "top": [
+       " turkey",
+       " Turkey",
+       " Turks",
+       " Turkish",
+       "Tur",
+       " Turk",
+       " tur",
+       " Tur",
+       " Ankara",
+       " Türkiye",
+       "tur",
+       " turret",
+       " Istanbul",
+       " Turquía",
+       " Thanksgiving",
+       " Turquie",
+       " التركية",
+       " التركي",
+       " Turbo",
+       "トル"
+      ]
+     },
+     {
+      "name": "id spider->deer",
+      "kind": "identity",
+      "best_ordinal": 7991,
+      "best_ordinal_tok": " Last",
+      "best_digits": 11718,
+      "best_digits_tok": "3",
+      "top": [
+       " Deer",
+       " deer",
+       " Yen",
+       " Bail",
+       " bov",
+       " bovine",
+       " Ayr",
+       "cev",
+       " Dane",
+       " Bale",
+       " Ghe",
+       " cattle",
+       " Lille",
+       " Dau",
+       " Louisville",
+       " Verona",
+       " Jeanne",
+       " Lev",
+       " beef",
+       " Rooney"
+      ]
+     },
+     {
+      "name": "id spider->cat",
+      "kind": "identity",
+      "best_ordinal": 23797,
+      "best_ordinal_tok": "Later",
+      "best_digits": 88361,
+      "best_digits_tok": "9",
+      "top": [
+       "CAT",
+       "_cat",
+       " 고양",
+       " gato",
+       "Cat",
+       " Cats",
+       "qat",
+       "cats",
+       " CAT",
+       "�",
+       "ikat",
+       " qat",
+       " Cat",
+       "icat",
+       ".cat",
+       "akat",
+       "ukat",
+       "kat",
+       "cat",
+       " Catarina"
+      ]
+     },
+     {
+      "name": "id crow->elephant",
+      "kind": "identity",
+      "best_ordinal": 16819,
+      "best_ordinal_tok": " Three",
+      "best_digits": 104060,
+      "best_digits_tok": "9",
+      "top": [
+       " elephant",
+       " Ele",
+       " elephants",
+       " Einstein",
+       " epsilon",
+       " Mercedes",
+       " Jefferson",
+       "Ele",
+       " Delta",
+       " Hotel",
+       " Diesel",
+       " Alfa",
+       " calf",
+       " Boliv",
+       " phi",
+       " Santa",
+       " Albert",
+       " Elsa",
+       " Tesla",
+       " Ella"
+      ]
+     },
+     {
+      "name": "id camel->ant",
+      "kind": "identity",
+      "best_ordinal": 64039,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 112397,
+      "best_digits_tok": "0",
+      "top": [
+       " Nit",
+       "rikt",
+       " nanot",
+       "inkt",
+       "estä",
+       "Tick",
+       "tick",
+       "Ticks",
+       "Txt",
+       "יקט",
+       "retto",
+       "ynyt",
+       "että",
+       " molekul",
+       "्त",
+       "ción",
+       "ynt",
+       "ॉ",
+       "icción",
+       "意大利"
+      ]
+     },
+     {
+      "name": "id owl->tiger",
+      "kind": "identity",
+      "best_ordinal": 23569,
+      "best_ordinal_tok": " Third",
+      "best_digits": 104667,
+      "best_digits_tok": "0",
+      "top": [
+       " Tiger",
+       " Tigers",
+       " tiger",
+       " tig",
+       " Tig",
+       " Jaguar",
+       " Jung",
+       "igers",
+       " Kaiser",
+       " Zig",
+       " Leverkusen",
+       " Tyson",
+       " Jungle",
+       "TX",
+       " Titan",
+       " Jagu",
+       " MIT",
+       " Vij",
+       " Rex",
+       " Zür"
+      ]
+     },
+     {
+      "name": "id eagle->rabbit",
+      "kind": "identity",
+      "best_ordinal": 6940,
+      "best_ordinal_tok": "after",
+      "best_digits": 67889,
+      "best_digits_tok": "2",
+      "top": [
+       " Rabbit",
+       " rabbit",
+       "rabbit",
+       " rabbits",
+       "Rab",
+       " Bunny",
+       "bbit",
+       " Rab",
+       " RR",
+       "RR",
+       " rabb",
+       "(dt",
+       " LR",
+       "inette",
+       "(rs",
+       " RH",
+       " RP",
+       " Cookie",
+       " Rosario",
+       " rectal"
+      ]
+     },
+     {
+      "name": "id bear->butterfly",
+      "kind": "identity",
+      "best_ordinal": 9048,
+      "best_ordinal_tok": " Second",
+      "best_digits": 60730,
+      "best_digits_tok": "2",
+      "top": [
+       " Butterfly",
+       " butterfly",
+       " Dutch",
+       " Hollande",
+       " Holland",
+       " Netherlands",
+       " niederländ",
+       " Hutchinson",
+       " butter",
+       " Strasbourg",
+       " flutter",
+       " Montpellier",
+       " Flutter",
+       " Chapelle",
+       " Virginie",
+       " Nathalie",
+       " propylene",
+       " Françoise",
+       " Sprite",
+       " Stéph"
+      ]
+     },
+     {
+      "name": "id ant->bear",
+      "kind": "identity",
+      "best_ordinal": 1191,
+      "best_ordinal_tok": " three",
+      "best_digits": 2147,
+      "best_digits_tok": "7",
+      "top": [
+       " Bears",
+       " Bear",
+       " bear",
+       " bears",
+       " Cubs",
+       "熊",
+       " cub",
+       " bearing",
+       " gri",
+       " Gri",
+       " BM",
+       " Bryant",
+       " MB",
+       " lion",
+       " Barl",
+       " bearings",
+       " polar",
+       " Bulls",
+       " Eberhard",
+       " Lion"
+      ]
+     },
+     {
+      "name": "id eagle->spider",
+      "kind": "identity",
+      "best_ordinal": 14744,
+      "best_ordinal_tok": "after",
+      "best_digits": 107058,
+      "best_digits_tok": "4",
+      "top": [
+       " spider",
+       " Spider",
+       "Spider",
+       "jsp",
+       " SPD",
+       " Craw",
+       " crawl",
+       " crawling",
+       "Spinner",
+       " crawled",
+       " ASP",
+       " Html",
+       " craw",
+       " SPSS",
+       " SSH",
+       " Tub",
+       " spinner",
+       " Osnabrück",
+       " Sprite",
+       ".jsp"
+      ]
+     },
+     {
+      "name": "id tiger->fly",
+      "kind": "identity",
+      "best_ordinal": 3476,
+      "best_ordinal_tok": "2",
+      "best_digits": 1992,
+      "best_digits_tok": "4",
+      "top": [
+       "Fly",
+       " Fly",
+       " Flyers",
+       "fly",
+       " flies",
+       " fly",
+       " FL",
+       "FL",
+       "flies",
+       " Flying",
+       " flew",
+       " Flynn",
+       "RF",
+       " flown",
+       "Flight",
+       " Flu",
+       "�",
+       "Fil",
+       "Flor",
+       " Fry"
+      ]
+     },
+     {
+      "name": "id butterfly->deer",
+      "kind": "identity",
+      "best_ordinal": 55456,
+      "best_ordinal_tok": "3",
+      "best_digits": 55456,
+      "best_digits_tok": "3",
+      "top": [
+       " deer",
+       "鹿",
+       " Deer",
+       " JD",
+       " Duisburg",
+       " Jord",
+       " Nj",
+       " Kad",
+       " Jad",
+       "jd",
+       "Td",
+       " Jh",
+       " Ked",
+       " Sede",
+       " Gür",
+       " kad",
+       " Jeho",
+       "Ken",
+       " Jur",
+       "jek"
+      ]
+     },
+     {
+      "name": "id lion->eagle",
+      "kind": "identity",
+      "best_ordinal": 5394,
+      "best_ordinal_tok": " Second",
+      "best_digits": 15428,
+      "best_digits_tok": "4",
+      "top": [
+       " Eagle",
+       " Eagles",
+       " eagle",
+       " Eag",
+       " EGF",
+       "�",
+       " feathers",
+       " Δε",
+       " Aerospace",
+       " PGE",
+       " Egg",
+       " Eph",
+       " Duck",
+       " GSE",
+       " EE",
+       " eggs",
+       " UE",
+       " feather",
+       " Hawks",
+       " Flying"
+      ]
+     },
+     {
+      "name": "id turkey->horse",
+      "kind": "identity",
+      "best_ordinal": 8611,
+      "best_ordinal_tok": "One",
+      "best_digits": 5813,
+      "best_digits_tok": "5",
+      "top": [
+       " Horse",
+       " Horses",
+       "hors",
+       "horse",
+       " horse",
+       " Hors",
+       "馬",
+       " horses",
+       " Pferd",
+       " Pferde",
+       " Pfer",
+       " chevaux",
+       " hors",
+       " cheval",
+       " caballos",
+       "Hor",
+       " лоша",
+       "HR",
+       " cavallo",
+       "_ds"
+      ]
+     },
+     {
+      "name": "id cow->eagle",
+      "kind": "identity",
+      "best_ordinal": 3011,
+      "best_ordinal_tok": " last",
+      "best_digits": 18307,
+      "best_digits_tok": "6",
+      "top": [
+       " Eagle",
+       " eagle",
+       " Eagles",
+       " Zeppelin",
+       " Eclipse",
+       " Apollo",
+       " Eag",
+       " Zeus",
+       " Hawks",
+       "agles",
+       " Jena",
+       " Hawk",
+       " Falcon",
+       " Eintracht",
+       " Merlin",
+       " Hermes",
+       " Orion",
+       " Emirates",
+       " EK",
+       " Zel"
+      ]
+     },
+     {
+      "name": "id fly->wolf",
+      "kind": "identity",
+      "best_ordinal": 3216,
+      "best_ordinal_tok": " third",
+      "best_digits": 92875,
+      "best_digits_tok": "2",
+      "top": [
+       " wolf",
+       " Wolf",
+       " Wolff",
+       " Wolves",
+       " wolves",
+       "Wolf",
+       " Württemberg",
+       " Wolfgang",
+       " wol",
+       " Wald",
+       " Hoh",
+       " Wolver",
+       " Wolfe",
+       " Wolfsburg",
+       " Wolverhampton",
+       " Kak",
+       " Herzog",
+       " Bismarck",
+       " loup",
+       " Wol"
+      ]
+     },
+     {
+      "name": "id lion->turkey",
+      "kind": "identity",
+      "best_ordinal": 3609,
+      "best_ordinal_tok": " Second",
+      "best_digits": 24852,
+      "best_digits_tok": "4",
+      "top": [
+       " turkey",
+       " Turks",
+       " Turk",
+       " Turkey",
+       "Tur",
+       " Turkish",
+       " Tur",
+       " tur",
+       " DT",
+       " Turbo",
+       "tur",
+       " Thanksgiving",
+       " UT",
+       " Turquía",
+       " TP",
+       " Türk",
+       " Tartu",
+       " NT",
+       "DT",
+       "TPS"
+      ]
+     },
+     {
+      "name": "id crow->horse",
+      "kind": "identity",
+      "best_ordinal": 2920,
+      "best_ordinal_tok": " One",
+      "best_digits": 12752,
+      "best_digits_tok": "5",
+      "top": [
+       " Horse",
+       " Horses",
+       " horse",
+       " horses",
+       "horse",
+       "hors",
+       " Pfer",
+       " Pferde",
+       "馬",
+       " chevaux",
+       " Pferd",
+       " Mercedes",
+       " cheval",
+       " Hors",
+       " Hip",
+       " Hotel",
+       " лоша",
+       " HP",
+       " caballos",
+       " hors"
+      ]
+     },
+     {
+      "name": "id tick->dog",
+      "kind": "identity",
+      "best_ordinal": 7214,
+      "best_ordinal_tok": "one",
+      "best_digits": 6448,
+      "best_digits_tok": "5",
+      "top": [
+       " Dogs",
+       " Dog",
+       "Dog",
+       " canine",
+       "SD",
+       " sd",
+       " dogs",
+       "sd",
+       "dog",
+       " MGM",
+       "WD",
+       " Ford",
+       "Ford",
+       " SD",
+       "DO",
+       "edo",
+       " Hog",
+       " Detroit",
+       " Jordan",
+       "PDO"
+      ]
+     },
+     {
+      "name": "id spider->mouse",
+      "kind": "identity",
+      "best_ordinal": 10667,
+      "best_ordinal_tok": " Last",
+      "best_digits": 59893,
+      "best_digits_tok": "9",
+      "top": [
+       " Mouse",
+       "Mouse",
+       "-mouse",
+       "mouse",
+       ".mouse",
+       " Mice",
+       " mouse",
+       " souris",
+       "(Mouse",
+       ".Mouse",
+       " mice",
+       " murine",
+       " Maud",
+       "varepsilon",
+       "MX",
+       " chol",
+       " Lucy",
+       "\\varepsilon",
+       " 쥐",
+       "choline"
+      ]
+     },
+     {
+      "name": "id eagle->cow",
+      "kind": "identity",
+      "best_ordinal": 21200,
+      "best_ordinal_tok": "next",
+      "best_digits": 48504,
+      "best_digits_tok": "9",
+      "top": [
+       "Cow",
+       " Cow",
+       "牛",
+       " cows",
+       " cow",
+       "CM",
+       "CV",
+       " bovine",
+       " Cathy",
+       " Cindy",
+       "atterson",
+       "Crop",
+       " postpartum",
+       "-CO",
+       "Cash",
+       " CM",
+       "NC",
+       "农",
+       "inette",
+       " CMOS"
+      ]
+     },
+     {
+      "name": "id deer->crow",
+      "kind": "identity",
+      "best_ordinal": 6659,
+      "best_ordinal_tok": "Before",
+      "best_digits": 4332,
+      "best_digits_tok": "6",
+      "top": [
+       " crow",
+       " Crow",
+       " Crowley",
+       "crow",
+       " Crosby",
+       " Gag",
+       "KC",
+       " CSC",
+       " Cock",
+       " Raven",
+       "CB",
+       " KC",
+       " Cyrus",
+       " Copp",
+       "cb",
+       "cock",
+       " Cork",
+       "kc",
+       "Corm",
+       "py"
+      ]
+     },
+     {
+      "name": "id ant->lion",
+      "kind": "identity",
+      "best_ordinal": 1493,
+      "best_ordinal_tok": " Last",
+      "best_digits": 4143,
+      "best_digits_tok": "6",
+      "top": [
+       " Lion",
+       " lion",
+       " Lions",
+       " lions",
+       "lion",
+       " Löwen",
+       " Lionel",
+       " Sion",
+       " Hilton",
+       " Leo",
+       " RL",
+       " Lyon",
+       " Crown",
+       " LG",
+       " Leon",
+       " Leone",
+       " Claudius",
+       " Riley",
+       " Crowley",
+       " Harl"
+      ]
+     },
+     {
+      "name": "id ant->chicken",
+      "kind": "identity",
+      "best_ordinal": 787,
+      "best_ordinal_tok": " First",
+      "best_digits": 16847,
+      "best_digits_tok": "6",
+      "top": [
+       " Chicken",
+       " chicken",
+       " poultry",
+       " Poul",
+       " Chick",
+       " chickens",
+       " Kawasaki",
+       " Kingston",
+       " JC",
+       " Chloe",
+       " Feather",
+       " Chandler",
+       " Clarkson",
+       " Hens",
+       " Chong",
+       " Joshua",
+       " Kelley",
+       " Chester",
+       " KC",
+       " PSV"
+      ]
+     },
+     {
+      "name": "id tick->bee",
+      "kind": "identity",
+      "best_ordinal": 3569,
+      "best_ordinal_tok": "3",
+      "best_digits": 2790,
+      "best_digits_tok": "7",
+      "top": [
+       " Bee",
+       " Leone",
+       " bee",
+       " Belle",
+       "bee",
+       " bees",
+       " Bea",
+       " OE",
+       " GSE",
+       " Watson",
+       " Amelia",
+       "OE",
+       " Greene",
+       " Blue",
+       " Bree",
+       "EE",
+       " BF",
+       "SOE",
+       " EA",
+       " EE"
+      ]
+     },
+     {
+      "name": "id sheep->eagle",
+      "kind": "identity",
+      "best_ordinal": 2743,
+      "best_ordinal_tok": " last",
+      "best_digits": 9412,
+      "best_digits_tok": "6",
+      "top": [
+       " Eagle",
+       " eagle",
+       " Eagles",
+       " Eag",
+       " Juno",
+       " Vance",
+       " Aero",
+       " Apollo",
+       " Aure",
+       " Fidel",
+       " Vega",
+       " Thunder",
+       " Vigo",
+       " Vinci",
+       " Lion",
+       " Electro",
+       " Leonardo",
+       " Vidal",
+       " Galileo",
+       " Cadillac"
+      ]
+     },
+     {
+      "name": "id lion->tick",
+      "kind": "identity",
+      "best_ordinal": 64413,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 111669,
+      "best_digits_tok": "0",
+      "top": [
+       "Tick",
+       "(tick",
+       "tick",
+       "Ticks",
+       " tick",
+       " ticks",
+       "tik",
+       " Ники",
+       " Tik",
+       " tik",
+       "ukt",
+       " PCT",
+       "rikt",
+       " Indones",
+       "/CT",
+       "ikko",
+       "<dd",
+       " cuk",
+       " Pkt",
+       "uksi"
+      ]
+     },
+     {
+      "name": "id chicken->tick",
+      "kind": "identity",
+      "best_ordinal": 74236,
+      "best_ordinal_tok": "later",
+      "best_digits": 105655,
+      "best_digits_tok": "8",
+      "top": [
+       "Tick",
+       "(tick",
+       "tick",
+       "Ticks",
+       " tick",
+       " ticks",
+       " Loki",
+       " Timo",
+       " Punkt",
+       " Takt",
+       " MTT",
+       "tik",
+       "inkt",
+       " nok",
+       " Sankt",
+       " Sok",
+       "ekt",
+       " Тим",
+       " Ники",
+       " Vik"
+      ]
+     },
+     {
+      "name": "id spider->fly",
+      "kind": "identity",
+      "best_ordinal": 6015,
+      "best_ordinal_tok": "Next",
+      "best_digits": 5739,
+      "best_digits_tok": "9",
+      "top": [
+       "Fly",
+       " Fly",
+       "fly",
+       "FL",
+       "BF",
+       " fly",
+       " fy",
+       " Flynn",
+       " flies",
+       " FL",
+       " Flyers",
+       "NY",
+       "Bol",
+       " FY",
+       " Fry",
+       "FI",
+       " BF",
+       " Levy",
+       "CF",
+       "GF"
+      ]
+     },
+     {
+      "name": "id tick->lion",
+      "kind": "identity",
+      "best_ordinal": 1212,
+      "best_ordinal_tok": " three",
+      "best_digits": 3593,
+      "best_digits_tok": "3",
+      "top": [
+       " Lion",
+       " lion",
+       " lions",
+       " Leone",
+       " Lions",
+       " Leon",
+       "lion",
+       " Lionel",
+       " Leonardo",
+       " Leo",
+       "Leon",
+       " bron",
+       " Lyon",
+       " Sion",
+       " Lorenzo",
+       " Orion",
+       " Reina",
+       " Léon",
+       " RL",
+       " Rosa"
+      ]
+     },
+     {
+      "name": "id wolf->bee",
+      "kind": "identity",
+      "best_ordinal": 53349,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 73181,
+      "best_digits_tok": "6",
+      "top": [
+       " Bee",
+       " bee",
+       "bee",
+       " EE",
+       " bees",
+       "EE",
+       "EEE",
+       " BCE",
+       " Honey",
+       " GSE",
+       " Bree",
+       " ee",
+       " Tee",
+       " 테이",
+       " honey",
+       "SEE",
+       " Breast",
+       " alfabet",
+       "ビー",
+       " Bernad"
+      ]
+     },
+     {
+      "name": "id spider->elephant",
+      "kind": "identity",
+      "best_ordinal": 3282,
+      "best_ordinal_tok": " Last",
+      "best_digits": 23009,
+      "best_digits_tok": "9",
+      "top": [
+       " elephant",
+       " Ele",
+       " elephants",
+       " Eleanor",
+       " Eleon",
+       "cev",
+       "Ele",
+       " Yen",
+       " Elton",
+       " mah",
+       " calf",
+       " Guevara",
+       " Giang",
+       " Bolton",
+       " Ernest",
+       "Bol",
+       " Mah",
+       " chol",
+       "Mah",
+       " Jefferson"
+      ]
+     },
+     {
+      "name": "id cat->spider",
+      "kind": "identity",
+      "best_ordinal": 1364,
+      "best_ordinal_tok": " first",
+      "best_digits": 8657,
+      "best_digits_tok": "4",
+      "top": [
+       " Spider",
+       " spider",
+       "Spider",
+       " SPD",
+       " SPI",
+       " Spiegel",
+       " Eberhard",
+       " Berlin",
+       "SPD",
+       " SP",
+       " Schwarz",
+       " crawling",
+       " craw",
+       " Wagner",
+       " Eisen",
+       " Brandenburg",
+       " Kran",
+       " Schwe",
+       " crawl",
+       " Germany"
+      ]
+     },
+     {
+      "name": "id ant->pig",
+      "kind": "identity",
+      "best_ordinal": 2235,
+      "best_ordinal_tok": " after",
+      "best_digits": 3724,
+      "best_digits_tok": "5",
+      "top": [
+       " Pig",
+       " pig",
+       " pigs",
+       " Hog",
+       " hog",
+       " pork",
+       " porcine",
+       " swine",
+       " KG",
+       "KG",
+       " Hogan",
+       " PW",
+       " Pill",
+       " Kawasaki",
+       " PZ",
+       " PG",
+       " Zhu",
+       " Tiger",
+       " Grac",
+       " Tig"
+      ]
+     },
+     {
+      "name": "id tiger->turkey",
+      "kind": "identity",
+      "best_ordinal": 1432,
+      "best_ordinal_tok": " Second",
+      "best_digits": 2668,
+      "best_digits_tok": "2",
+      "top": [
+       " turkey",
+       " poultry",
+       " Poul",
+       " Turkey",
+       " Thanksgiving",
+       " poul",
+       " Northampton",
+       " Turks",
+       " chicken",
+       " Delaware",
+       " tur",
+       " chickens",
+       " feather",
+       " feathers",
+       " Joey",
+       " Chick",
+       " hens",
+       " Uruguay",
+       " UT",
+       " York"
+      ]
+     },
+     {
+      "name": "id camel->tick",
+      "kind": "identity",
+      "best_ordinal": 66732,
+      "best_ordinal_tok": " Earlier",
+      "best_digits": 115419,
+      "best_digits_tok": "0",
+      "top": [
+       "Tick",
+       "tick",
+       "(tick",
+       "Ticks",
+       " tick",
+       "tik",
+       " ticks",
+       "rikt",
+       "ktor",
+       "inkt",
+       "יקט",
+       " molekul",
+       "oč",
+       " Österreich",
+       " Ники",
+       "ekt",
+       "uksi",
+       "etik",
+       "ktion",
+       "Txt"
+      ]
+     },
+     {
+      "name": "id crow->cow",
+      "kind": "identity",
+      "best_ordinal": 30712,
+      "best_ordinal_tok": " One",
+      "best_digits": 49069,
+      "best_digits_tok": "9",
+      "top": [
+       " cows",
+       " bovine",
+       "牛",
+       " Cow",
+       "Cow",
+       " calf",
+       " cattle",
+       " cow",
+       " calves",
+       " Nurse",
+       " dairy",
+       " Holstein",
+       " beef",
+       " Farmer",
+       " Tex",
+       "Texas",
+       " Milk",
+       " Woman",
+       " Lact",
+       " Texas"
+      ]
+     },
+     {
+      "name": "id eagle->butterfly",
+      "kind": "identity",
+      "best_ordinal": 3178,
+      "best_ordinal_tok": "after",
+      "best_digits": 80967,
+      "best_digits_tok": "2",
+      "top": [
+       " Butterfly",
+       " butterfly",
+       " butter",
+       " Butter",
+       " polypropylene",
+       "(dt",
+       " BB",
+       " BT",
+       " dt",
+       " DT",
+       "BT",
+       "propylene",
+       "BB",
+       "DT",
+       "dt",
+       "inette",
+       " Barth",
+       " propylene",
+       "/CT",
+       "<dt"
+      ]
+     },
+     {
+      "name": "id duck->cow",
+      "kind": "identity",
+      "best_ordinal": 7496,
+      "best_ordinal_tok": "Before",
+      "best_digits": 34875,
+      "best_digits_tok": "9",
+      "top": [
+       "Cow",
+       " Cow",
+       "牛",
+       " cow",
+       " cows",
+       " bovine",
+       " Cowboys",
+       " CG",
+       "CG",
+       " bov",
+       " cattle",
+       " Corb",
+       " Cory",
+       "CM",
+       " CMS",
+       " CM",
+       " Cly",
+       " Claudia",
+       " Mori",
+       " calf"
+      ]
+     },
+     {
+      "name": "id owl->goat",
+      "kind": "identity",
+      "best_ordinal": 29916,
+      "best_ordinal_tok": "Second",
+      "best_digits": 99068,
+      "best_digits_tok": "4",
+      "top": [
+       " goat",
+       " goats",
+       " Boliv",
+       "Beta",
+       " Beta",
+       " Gamma",
+       " Dak",
+       "Justin",
+       " Jefferson",
+       " Justin",
+       " Bolívar",
+       "epsilon",
+       " methane",
+       " carbonate",
+       " Alfa",
+       "Gamma",
+       " Kent",
+       " Beaumont",
+       " Alpha",
+       " Hait"
+      ]
+     },
+     {
+      "name": "id tick->fox",
+      "kind": "identity",
+      "best_ordinal": 1525,
+      "best_ordinal_tok": " First",
+      "best_digits": 3125,
+      "best_digits_tok": "5",
+      "top": [
+       " Fox",
+       "Fox",
+       " fox",
+       " FOX",
+       " Phoenix",
+       " Falcon",
+       "Pho",
+       " Rosa",
+       " Falcons",
+       "fox",
+       "FO",
+       " xo",
+       " Leone",
+       " Rox",
+       "Fal",
+       " FO",
+       " VF",
+       " XV",
+       " FX",
+       " FS"
+      ]
+     },
+     {
+      "name": "id rabbit->fly",
+      "kind": "identity",
+      "best_ordinal": 13457,
+      "best_ordinal_tok": "one",
+      "best_digits": 18330,
+      "best_digits_tok": "4",
+      "top": [
+       "Fly",
+       " Fly",
+       " Flyers",
+       "fly",
+       " fly",
+       " flies",
+       " Flynn",
+       " flown",
+       " Flying",
+       "flies",
+       " flew",
+       " flyg",
+       "CF",
+       "FL",
+       "EF",
+       " flying",
+       " CF",
+       "�",
+       "Fuel",
+       "xyl"
+      ]
+     },
+     {
+      "name": "id bee->horse",
+      "kind": "identity",
+      "best_ordinal": 661,
+      "best_ordinal_tok": " three",
+      "best_digits": 5610,
+      "best_digits_tok": "5",
+      "top": [
+       " horse",
+       " Horse",
+       " horses",
+       " Horses",
+       "hors",
+       "horse",
+       " Hors",
+       "馬",
+       " hors",
+       " chevaux",
+       "Hor",
+       " HR",
+       " Pfer",
+       "HR",
+       " chari",
+       " cheval",
+       " Pferde",
+       " Hip",
+       " hip",
+       " polo"
+      ]
+     },
+     {
+      "name": "id ant->elephant",
+      "kind": "identity",
+      "best_ordinal": 1083,
+      "best_ordinal_tok": " three",
+      "best_digits": 7026,
+      "best_digits_tok": "3",
+      "top": [
+       " Ele",
+       " elephant",
+       " elephants",
+       "Ele",
+       " XV",
+       " Lion",
+       " Eleanor",
+       " PSV",
+       " ele",
+       " balloon",
+       " Jefferson",
+       " Columbia",
+       " Charleston",
+       " Eagle",
+       " Shelby",
+       " Edison",
+       " Everton",
+       " lion",
+       " EC",
+       " Eu"
+      ]
+     },
+     {
+      "name": "id dog->duck",
+      "kind": "identity",
+      "best_ordinal": 1058,
+      "best_ordinal_tok": " Third",
+      "best_digits": 4909,
+      "best_digits_tok": "3",
+      "top": [
+       " Duck",
+       " duck",
+       " Anjou",
+       " XV",
+       " Dubois",
+       " Montpellier",
+       " Loire",
+       " Duf",
+       " Raven",
+       " Orange",
+       " Marie",
+       " Valenc",
+       " Chick",
+       " Poul",
+       " Cres",
+       " Orleans",
+       " waterm",
+       " Zuk",
+       " Roux",
+       " Champagne"
+      ]
+     },
+     {
+      "name": "id goat->crow",
+      "kind": "identity",
+      "best_ordinal": 2113,
+      "best_ordinal_tok": "2",
+      "best_digits": 1318,
+      "best_digits_tok": "6",
+      "top": [
+       " Crow",
+       " Crowley",
+       " crow",
+       " CCR",
+       " CSC",
+       "crow",
+       " CW",
+       " Cork",
+       " Cym",
+       " Starr",
+       " CCL",
+       " CSP",
+       " Craw",
+       " CDR",
+       "SCC",
+       "DC",
+       " Cary",
+       " Crawford",
+       " PCC",
+       " Cros"
+      ]
+     },
+     {
+      "name": "id tick->sheep",
+      "kind": "identity",
+      "best_ordinal": 1344,
+      "best_ordinal_tok": " after",
+      "best_digits": 3724,
+      "best_digits_tok": "7",
+      "top": [
+       " sheep",
+       " Shepherd",
+       " shepherd",
+       " Shepard",
+       " WS",
+       "�",
+       " Leah",
+       "WS",
+       " Sheikh",
+       " lamb",
+       " Rhys",
+       " Rohan",
+       " Salmon",
+       " Jeanne",
+       " SBS",
+       "ws",
+       " Sheridan",
+       " Sisters",
+       " rasp",
+       " wool"
+      ]
+     },
+     {
+      "name": "id deer->spider",
+      "kind": "identity",
+      "best_ordinal": 34428,
+      "best_ordinal_tok": "before",
+      "best_digits": 55191,
+      "best_digits_tok": "6",
+      "top": [
+       " Spider",
+       "Spider",
+       " spider",
+       " crawl",
+       " Craw",
+       " crawling",
+       " craw",
+       " crawled",
+       " Snake",
+       " Socket",
+       " Sprite",
+       "Wizard",
+       "Spinner",
+       "Socket",
+       " Blob",
+       " Parser",
+       "Parser",
+       " Wizard",
+       " Sas",
+       "Sprite"
+      ]
+     },
+     {
+      "name": "id deer->turkey",
+      "kind": "identity",
+      "best_ordinal": 2737,
+      "best_ordinal_tok": " Two",
+      "best_digits": 18810,
+      "best_digits_tok": "0",
+      "top": [
+       " turkey",
+       " Turkey",
+       " Turkish",
+       "Tur",
+       " PY",
+       " Turks",
+       " tur",
+       " Turbo",
+       " Turk",
+       " poul",
+       " Turquía",
+       " Pyram",
+       " Zolt",
+       " poultry",
+       " Tur",
+       " Ankara",
+       " UT",
+       "tur",
+       " Thanksgiving",
+       " TU"
+      ]
+     }
+    ]
+   },
+   "reading": {
+    "label": "not verbalizable",
+    "named": {
+     "ordinal": false,
+     "digits": false
+    },
+    "kl_beyond_null": false,
+    "why": "ordinal median rank 220 (null 5th pct 49); digits 1343 (null 664); reconstruction at k = 25 1.44x the null; KL median 0.0344 (null 95th pct 0.429)"
+   }
+  }
+ },
+ "sanity_swap": {
+  "qwen3.5-9b": {
+   "part": [
+    0.44966442953020136,
+    0.40549595987740317,
+    0.4895123106060607
+   ],
+   "source": "qwen35_9b_x6_routes_bothoff",
+   "random": [
+    0.8791946308724832,
+    0.8363636363636363,
+    0.9177236864921103
+   ]
+  },
+  "qwen3.6-27b": {
+   "part": [
+    0.5272108843537415,
+    0.4784133562715045,
+    0.5746031746031747
+   ],
+   "source": "x6_routes_bothoff_27b",
+   "random": [
+    0.9353741496598639,
+    0.8973369671349638,
+    0.970150489275477
+   ]
+  },
+  "qwen3.5-122b-a10b": {
+   "part": [
+    0.5,
+    0.4486682249075473,
+    0.5476206695212145
+   ],
+   "source": "qwen35_122b_x6_routes_bothoff_g75",
+   "random": [
+    0.85,
+    0.8096774193548387,
+    0.8888888888888888
+   ]
+  },
+  "muse-glimmer-30b": {
+   "part": [
+    0.7391304347826086,
+    0.6816475578995644,
+    0.7947761194029851
+   ],
+   "source": "muse30b_x6_routes",
+   "random": [
+    1.0474308300395256,
+    1.0039058700145915,
+    1.0909090909090908
+   ]
+  }
+ },
+ "overall": "not verbalizable"
+}
