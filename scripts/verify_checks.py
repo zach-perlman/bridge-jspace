@@ -1,4 +1,4 @@
-"""Automatic checks over every item of every tier-1 review view (Dan 29 Oct 11:45, jobs/c3/batch53.yaml
+"""Automatic checks over every item of every tier-1 (and tier-2) review view (Dan 29 Oct 11:45, jobs/c3/batch53.yaml
 verify_prep_1145 item 2), CPU only, read-only on results/. Results: review/verify_checks.json, summarised at the top of
 docs/verify_pack.md (scripts/verify_pack_tier1.py). A failure is a finding: it is listed with its file and line, never fixed
 here, and no check is changed to pass.
@@ -150,7 +150,7 @@ def gate_joined(v: dict, m: str, run: str, items: list[dict]) -> list[dict]:
     g = I.read_json(f"{run}/gate.json")
     src_scenes = {it["scene"] for it in I.items("main_swap", m)}
     got = {it["scene"] for it in items}
-    src = g.get("source")
+    src = g.get("source") or I.read_json(f"{run}/plan.json").get("source")  # 53.3 stores it in plan.json
     same_src = src == I.view("main_swap")["runs"][m][0].split("/")[-1]
     if v["kind"] == "x51_answer":
         order = set(g.get("order") or [])
@@ -179,7 +179,9 @@ def gate_x8(v: dict, m: str, items: list[dict]) -> list[dict]:
 # ------------------------------------------------------------------------------------------------------- duplicates
 KEYS = {"x0": ("scene", "rendering", "layer", "reader", "dict", "k", "omp", "arm"), "routes": ("scene", "condition", "reader", "arm"),
         "x8": ("scene", "reader", "kind", "j", "k", "s"), "x51_answer": ("scene", "reader", "arm"),
-        "zach": ("set", "scene", "layer", "reader", "arm"), "jread": ("scene", "reader", "pos", "layer", "arm")}  # fmt: skip
+        "zach": ("set", "scene", "layer", "reader", "arm"), "jread": ("scene", "reader", "pos", "layer", "arm"),
+        "lastconflict": ("scene", "reader", "layer", "arm"), "identity_address": ("scene", "reader", "arm"),
+        "x5": ("scene", "rendering", "layer", "reader", "dict", "k", "omp", "arm")}  # fmt: skip
 
 
 def duplicates(v: dict, items: list[dict]) -> dict:
@@ -277,7 +279,8 @@ def label_crosscheck(m: str, items: list[dict]) -> list[dict]:
     detail = "; ".join(f"{a}: {agree[a]} of {n[a]} agree" for a in E1_PAIRS if n[a])
     ex = [d for a in ("unedited", "whole") for d in diff[a][:3]]
     return [{"check": "labels against the 51.12 E1 rerun (top token stored)", "status": PASS if exact else FAIL,
-             "detail": detail + (f"; unedited / whole disagreements: {ex}" if ex else "")}]  # fmt: skip
+             "detail": detail + (f"; unedited / whole disagreements: {ex}" if ex else ""),
+             "counts": {a: {"agree": agree[a], "n": n[a]} for a in E1_PAIRS if n[a]}}]  # fmt: skip
 
 
 # ---------------------------------------------------------------------------------------------------------- runner
@@ -302,7 +305,7 @@ def check_view(v: dict) -> dict:
                 elif st == C.NA:
                     na[name] += 1
         run = items[0]["run"]
-        if v["kind"] == "x0":
+        if v["kind"] == "x0" and "/x0_necessity/" in run:
             runc = gate_x0(run, items) + (
                 conflict_shares(v, m, items) + label_crosscheck(m, items) if v["id"] == "main_swap" else []
             )
@@ -310,12 +313,13 @@ def check_view(v: dict) -> dict:
             runc = gate_routes(run, items)
         elif v["kind"] == "zach":
             runc = gate_zach(run, items) + zach_facts(items)
-        elif v["kind"] in ("x51_answer", "jread"):
+        elif v["kind"] in ("x51_answer", "jread", "lastconflict"):
             runc = gate_joined(v, m, run, items)
         elif v["kind"] == "x8":
             runc = gate_x8(v, m, items)
-        else:
-            runc = []
+        else:  # varied scenes (a gate per cell), natural passages, 53.6: not recomputed here
+            runc = [{"check": "gate and eligibility", "status": NA,
+                     "detail": f"not recomputed for this kind ({v['kind']}; tier 2): the run's gate.json as stored"}]  # fmt: skip
         dup = duplicates(v, items)
         runc.append({"check": "duplicates", "status": FAIL if any(dup.values()) else PASS,
                      "detail": "; ".join(f"{k}: {x}" for k, x in dup.items() if x) or "none (item ids, outcome keys, prompts)"})  # fmt: skip
@@ -332,7 +336,7 @@ def main() -> None:
     ap.add_argument("--views", nargs="*", default=None)
     ap.add_argument("--out", type=Path, default=OUT)
     a = ap.parse_args()
-    views = [v for v in I.spec()["views"] if v.get("tier") == 1 and (not a.views or v["id"] in a.views)]
+    views = [v for v in I.spec()["views"] if v.get("tier") in (1, 2) and (not a.views or v["id"] in a.views)]
     t = time.time()
     res = {"generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "commit": git_commit(), "views": {}}
     for v in views:
@@ -342,9 +346,40 @@ def main() -> None:
         rf = sum(c["status"] == FAIL for x in r["models"].values() for c in x.get("run_checks", []))
         print(f"{v['id']}: {sum(x['n'] for x in r['models'].values())} items, item-check failures {nf}, run-check failures "
               f"{rf}, recount {r['recount']['match']} match / {len(r['recount']['mismatch'])} mismatch ({time.time() - t:.0f}s)")  # fmt: skip
+    res["summary"] = summarize(res, {v["id"]: v.get("tier") for v in views})
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(res, indent=1, default=str) + "\n")
-    print(f"wrote {a.out}")
+    print(f"wrote {a.out}: {json.dumps(res['summary']['tier1'])}")
+
+
+def summarize(res: dict, tiers: dict[str, int]) -> dict:
+    """The citable totals (stable keys): per tier, the views, items, per-item check failures (by check), run-check
+    failures (by check), the headline recount (match / mismatch); and the X0 labels against the 51.12 E1 rerun, per
+    model and arm (agree of n). The README cites summary.tier1.*, and summary.e1_label_agreement."""
+    out: dict = {}
+    for tier in sorted(set(tiers.values())):
+        vids = [vid for vid, t in tiers.items() if t == tier]
+        by_item, by_run = collections.Counter(), collections.Counter()
+        items = match = mismatch = 0
+        for vid in vids:
+            r = res["views"][vid]
+            for x in r["models"].values():
+                items += x.get("n", 0)
+                by_item.update(x.get("item_fail", {}))
+                by_run.update(c["check"] for c in x.get("run_checks", []) if c["status"] == FAIL)
+            match += r["recount"]["match"]
+            mismatch += len(r["recount"]["mismatch"])
+        out[f"tier{tier}"] = {"views": vids, "items": items, "item_check_failures": sum(by_item.values()),
+                              "item_check_failures_by_check": dict(by_item), "run_check_failures": sum(by_run.values()),
+                              "run_check_failures_by_check": dict(by_run),
+                              "recount": {"match": match, "mismatch": mismatch, "numbers": match + mismatch}}  # fmt: skip
+    agree = {}
+    for m, x in (res["views"].get("main_swap") or {}).get("models", {}).items():
+        c = next((c for c in x.get("run_checks", []) if c["check"].startswith("labels against the 51.12 E1")), None)
+        if c and c.get("counts"):
+            agree[m] = c["counts"]
+    out["e1_label_agreement"] = agree
+    return out
 
 
 def git_commit() -> str:

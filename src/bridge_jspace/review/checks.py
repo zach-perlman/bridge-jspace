@@ -196,6 +196,15 @@ def check_class(it: dict) -> tuple[str, str]:
                 wrong.append(f"{label}: top {_strip(piece(m, r['top']))!r} -> {derived}, stored {r['role']} "
                              f"(switched {r['switched']})")  # fmt: skip
         return (FAIL if wrong else PASS), "; ".join(wrong[:4]) or f"{len(topped)} rows agree"
+    if it["kind"] == "identity_address":  # 53.6: the role whose answer token the top token is (digit / legs per reader)
+        tok = "tok_digit" if w == "PP" else "tok_legs"
+        roles = c.get("roles") or {}
+        bad = []
+        for label, r in rows.items():
+            derived = next((k for k, x in roles.items() if x.get(tok) == r["top"]), "other")
+            if derived != r["class"]:
+                bad.append(f"{label}: top {_strip(piece(m, r['top']))!r} -> {derived}, stored {r['class']}")
+        return (FAIL if bad else PASS), "; ".join(bad[:4]) or f"{len(rows)} rows agree"
     bad = []
     if it["kind"] == "routes":
         rd = c["readers"][w]

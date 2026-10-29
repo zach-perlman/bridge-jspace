@@ -240,6 +240,24 @@ kinds:
       item is not stored (read.json holds its rates per layer); the inspector panel computes it.
     classes: {b: changed answer (it switched), A: original answer, other: another token}
     eligible: the locker-first items of the X0 run (cases.jsonl group), the swap grid's items.
+  lastconflict:  # 53.3, the conflict test at the last token (scripts/x53_lastconflict.py); cards and checks as jread
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, plan.json, manifest.json]
+    prompts: "cases.jsonl as 51.10's (the same items and design); the edit at the last token (jpos P3)."
+    outcomes: >-
+      per (scene, reader, layer, arm): top, top_text, switched, role, p_org, p_alt, ld. Layers: each reader's 51.10 read
+      peak and the answer layer minus 2 (manifest layers); arms none, whole, no_jpp, no_rand, jpp (the lens part alone),
+      rest (the rest alone).
+    classes: {b: changed answer (it switched), A: original answer, other: another token}
+    eligible: "51.10's locker-first items (plan.json source: the X0 run)."
+  identity_address:  # 53.6 (scripts/x53_identity_address.py)
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, gate.json, manifest.json]
+    prompts: >-
+      cases.jsonl per scene: routes-like C0 cases (context / cf_context, bridge / cf_bridge, pos, readers as routes) and
+      roles: original (the bridge), B (the lens part's target item), C (the address's target slot's item), each with its
+      locker digit and legs and their token ids.
+    outcomes: "per (scene, reader, arm none / lens / addr / both / both_rand): top, top_text, class."
+    classes: {original: the original item's answer, B: the lens part's item's answer, C: the address target's answer, other: another token}
+    eligible: the run's gate.json (C's legs differ from A's and B's; both readers read O right), the first 300.
 
 views:
   # ---------------------------------------------------------------- Tier 1 (Dan 29 Oct 11:45): read tomorrow, order a-g
@@ -563,6 +581,78 @@ views:
       qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
       muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
       nemotron-3.5-lightning: [results/x0_necessity/nem35l_x52_conflict]
+
+  # ---------------------------------------------------------------- Tier 2 (Dan 11:45: only once tier 1 is done)
+  # h last_conflict (53.3 at the read peak) · i identity_address (53.6) · j natural · k varied_scenes. No fixed sample:
+  # their items are not in the inspector's states job (coordinator's default, 29 Oct ~12:45); any seed gives a random one.
+  - id: last_conflict
+    title: "h. 53.3: the conflict test at the last token, at 51.10's read peak (ledger only)"
+    status: phase1
+    tier: 2
+    order: h
+    kind: lastconflict
+    readme: "not in the README: docs/depth/EXPERIMENTS.md, 'At the last token, does each reader compute its answer through the lens part or outside it? (53.3)'"
+    claim: >-
+      Ledger only (no prediction; UNVERIFIED). Rule fixed in advance (Dan 29 Oct 09:30): per reader, "computes outside
+      the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches
+      >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between. At the read peak:
+      the recall outside the lens on the 9B and 27B, in between on Muse, through the lens on Lightning.
+    sources: []
+    filters:
+      layer: run  # each reader's read peak (the run's manifest)
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without its random part: no_rand
+        only the J++ part: jpp
+        only the rest: rest
+    headline:
+      - {stat: extra_loss_at_peak, reader: PP, part: without J++, random: without its random part,
+         csv: "lookup L<layer>: switches lost without the lens part beyond random (last token)"}
+      - {stat: extra_loss_at_peak, reader: PM, part: without J++, random: without its random part,
+         csv: "recall L<layer>: switches lost without the lens part beyond random (last token)"}
+    ledger_quotes: ["The recall: at its read-peak layer it computes outside the lens part"]  # docs/depth/EXPERIMENTS.md lines containing these, quoted whole in the pack
+    decisive: ["unedited", "whole", "without J++", "without its random part", "only the rest"]
+    runs:
+      qwen3.5-9b: [results/x53_lastconflict/qwen35_9b_x53_3]
+      qwen3.6-27b: [results/x53_lastconflict/x53_3_27b]
+      muse-glimmer-30b: [results/x53_lastconflict/muse30_x53_3]
+      nemotron-3.5-lightning: [results/x53_lastconflict/nem35l_x53_3]
+    notes: >-
+      Verdict: results/x53_lastconflict/x53_lastconflict-20261029T090326Z (four models). Each run also reads two
+      layers before the answer layer; the view shows the read peak only. Here the rest alone and the change without the
+      lens part are the same arm (the ledger's caveat).
+
+  - id: identity_address
+    title: "i. 53.6: the lens part toward one item, the address toward another (ledger only)"
+    status: phase1
+    tier: 2
+    order: i
+    kind: identity_address
+    readme: "not in the README: docs/depth/EXPERIMENTS.md, 'When the lens part points the recall to one item and the address to another, which does it follow? (53.6)'"
+    claim: >-
+      Ledger only (no prediction; UNVERIFIED). At the bridge word at L, the lens identity toward item B, the address swap
+      toward item C's slot (s = 2), both together, and a random part of both's size; each reader's answer is classed as
+      the original item's, B's, C's or other (the run's class, re-derived on each card from the role tokens).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        "lens identity toward B": lens
+        "address swap toward C (s = 2)": addr
+        both: both
+        "both's random part": both_rand
+    ledger_quotes: ["Pulled two ways, the recall goes to the lens part's item"]  # docs/depth/EXPERIMENTS.md lines containing these, quoted whole in the pack
+    runs:
+      qwen3.5-9b: [results/x53_identity_address/qwen35_9b_x53_6]
+      qwen3.6-27b: [results/x53_identity_address/x53_6_27b]
+      muse-glimmer-30b: [results/x53_identity_address/muse30_x53_6]
+      nemotron-3.5-lightning: [results/x53_identity_address/nem35l_x53_6]
+    notes: "Runs not landed yet show as not run yet (the 27B and Muse runs were specced on 29 Oct ~11:25)."
 
   # ---------------------------------------------------------------- earlier views (before 29 Oct; not tier 1)
 
@@ -1005,24 +1095,50 @@ views:
       muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
 
   - id: varied_scenes
-    title: Varied scenes (formats and levels)
-    status: later
-    kind: x0b
-    readme: "Section 1 'It holds in every setting', Fig. 1b panel 'Varied scenes'; scorecard row 'The split in varied scenes'"
-    claim: "The gap shrinks outside simple scenes; Muse's stays the largest."
-    sources: [x0b_c_<m>]
+    title: "k. Varied scenes: prose, JSON and tables (the split in other texts)"
+    status: phase1
+    tier: 2
+    order: k
+    kind: x0
+    readme: "docs/depth/README.md, Part I 'Does the split hold in other texts?' (varied rows), Fig. 9a"
+    claim: >-
+      In prose, JSON and tables the recall follows the lens part and the lookup does not, on all four models (pooled over
+      the formats; rule fixed in advance: holds if the lookup loses at most 0.10 beyond random, upper bound at most 0.20,
+      and the gap is at least 0.20, lower bound at least 0.10).
+    sources: [x0b_lk_excess_<m>, x0b_c_<m>]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+               keys: {PP: x0b_lk_excess_<m>, PM: x0b_rc_excess_<m>, gap: x0b_c_<m>},
+               csv: {PP: "varied: lookup, switches lost beyond a random part", gap: "varied: the gap"}}
+    readme_quotes: ["In prose, JSON and tables the recall follows the lens part"]  # docs/depth/README.md lines containing these, quoted whole in the pack
+    decisive: ["unedited", "whole", "without J++", "without its random part"]
     runs:
       qwen3.5-9b: [results/x0b_generalize/qwen35_9b_x0b_v2]
       qwen3.6-27b: [results/x0b_generalize/x0b_v2_27b]
       qwen3.5-122b-a10b: [results/x0b_generalize/qwen35_122b_x0b_v2]
       muse-glimmer-30b: [results/x0b_generalize/muse30b_x0b_v2]
+      nemotron-3.5-lightning: [results/x0b_generalize/nem35l_x52_x0b]
+    notes: "The item set: every item a cell's gate let through (x0b_generalize.gate_cells), all formats pooled."
 
   - id: natural
-    title: Natural passages
-    status: phase2
+    title: "j. Natural passages (the split in natural text)"
+    status: phase1
+    tier: 2
+    order: j
     kind: x5
-    readme: "Section 1, Fig. 1b panel 'Natural passages'; Section 2 the 27B's natural passages; Section 6 gates missed"
-    claim: "The gap in natural passages; the 9B's at gate 0.75 after the data; Muse's lookup barely switches."
+    readme: "docs/depth/README.md, Part I 'Does the split hold in other texts?' (natural rows), Fig. 9a"
+    claim: >-
+      In natural passages the recall follows the lens part on all four models; the 27B's lookup follows it too, so there
+      the split is mixed. The 9B's gate was lowered to 0.75 after the data; Lightning's passages miss the gate
+      (descriptive only).
     sources: [natg75_gap_9b, nat_gap_27b, nat_gap_122b, nat_gap_muse, nat_rc_excess_muse, nat_lk_excess_muse]
     filters:
       rendering: chat
@@ -1034,14 +1150,23 @@ views:
         without J++: [no_part, jpp, 25, signed]
         without its random part: [no_rand, jpp, 25, signed]
     headline:
-      - {stat: extra_loss, reader: PP, part: without J++, random: without its random part, key: "nat_lk_excess_<m>|natg75_lk_excess_<m>"}
-      - {stat: extra_loss, reader: PM, part: without J++, random: without its random part, key: "nat_rc_excess_<m>|natg75_rc_excess_<m>"}
-      - {stat: gap, part: without J++, random: without its random part, key: "nat_gap_<m>|natg75_gap_<m>"}
+      - {stat: extra_loss, reader: PP, part: without J++, random: without its random part, key: "nat_lk_excess_<m>|natg75_lk_excess_<m>",
+         csv: "natural (below gate): lookup, switches lost beyond a random part"}
+      - {stat: extra_loss, reader: PM, part: without J++, random: without its random part, key: "nat_rc_excess_<m>|natg75_rc_excess_<m>",
+         csv: "natural (below gate): recall, switches lost beyond a random part"}
+      - {stat: gap, part: without J++, random: without its random part, key: "nat_gap_<m>|natg75_gap_<m>",
+         csv: "natural (below gate): the gap"}
+    readme_quotes: ["In natural passages the recall follows it on all four"]  # docs/depth/README.md lines containing these, quoted whole in the pack
+    decisive: ["unedited", "whole", "without J++", "without its random part"]
     runs:
       qwen3.5-9b: [results/x5_natural/qwen35_9b_x5_natural_g75, results/x5_natural/qwen35_9b_x5_natural]
       qwen3.6-27b: [results/x5_natural/x5_natural_27b]
       qwen3.5-122b-a10b: [results/x5_natural/qwen35_122b_x5_natural]
       muse-glimmer-30b: [results/x5_natural/muse30b_x5_natural]
+      nemotron-3.5-lightning: [results/x5_natural/nem35l_x52_natural_below]
+    model_flags:
+      qwen3.5-9b: ["° gate lowered to 0.75 after the data (its run at 0.80 stopped at the gate)"]
+      nemotron-3.5-lightning: ["below gate: descriptive only (nem35l_x52_natural stopped at the gate)"]
     notes: >-
       The 9B: its run at the fixed gate (qwen35_9b_x5_natural, lookup 0.78 < 0.80) stopped before any change and backs
       Section 4's 'not tested'; the dashboard shows its rerun at gate 0.75 (after the data, descriptive).

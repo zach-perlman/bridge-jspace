@@ -200,6 +200,8 @@ def stored_label(it: dict, w: str, r: dict) -> str:
         return I.route_class(r, it["condition"]) if w == "PP" else ("follows S" if r["switched"] else "stays")
     if it["kind"] == "x8":
         return r.get("class") or ("changed" if r.get("changed") else "unchanged")
+    if it["kind"] == "identity_address":  # 53.6: whose answer the top token is (original / B / C / other)
+        return r["class"]
     return I.whole_class(r, it["case"], w)
 
 

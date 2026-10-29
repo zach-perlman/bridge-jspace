@@ -158,7 +158,7 @@ def one_part(got: list[dict], e: dict, m: str, mk: str, v: dict | None = None) -
         val = extra_loss(pool, "PM", h)[0] - extra_loss(pool, "PP", h)[0]
         n = sum(it["reader"] == "PP" for it in pool)
         return {"model": m, "quantity": f"gap (recall - lookup): {e['part']}", "n": n, "value": val,
-                **compare(val, e["key"].replace("<m>", mk))}  # fmt: skip
+                **compare_any(val, e["key"].replace("<m>", mk), m, e.get("csv"))}  # fmt: skip
     w = e["reader"]
     n = sum(it["reader"] == w for it in pool)
     h = {"whole": "whole", "part": e["part"], "random": e.get("random")}
@@ -173,7 +173,8 @@ def one_part(got: list[dict], e: dict, m: str, mk: str, v: dict | None = None) -
     name = f"{e.get('condition', '')} {I.READER_NAME[w]} {what}: {e['part']}" + (
         f" − {e['minus_part']}" if "minus_part" in e else ""
     )
-    return {"model": m, "quantity": name.strip(), "n": n, "value": val, **compare(val, e["key"].replace("<m>", mk))}
+    return {"model": m, "quantity": name.strip(), "n": n, "value": val,
+            **compare_any(val, e["key"].replace("<m>", mk), m, e.get("csv"))}  # fmt: skip
 
 
 def route_shares(v: dict, got: list[dict], e: dict, m: str, mk: str) -> list[dict]:
@@ -203,7 +204,8 @@ def route_shares(v: dict, got: list[dict], e: dict, m: str, mk: str) -> list[dic
     return out
 
 
-TIER1_STATS = ("share_kept", "answer_rank_below", "x8_target_mean_pairs", "x8_recall_changed", "switch_share")
+TIER1_STATS = ("share_kept", "answer_rank_below", "x8_target_mean_pairs", "x8_recall_changed", "switch_share",
+               "extra_loss_at_peak")  # fmt: skip
 E1_ARMS = {1: ("arm 1: without the lens part", "arm 1's random part"),
            2: ("arm 2: without the lens part, its answer directions kept", "arm 2's random part")}  # fmt: skip
 
@@ -239,6 +241,12 @@ def tier1_stat(got: list[dict], e: dict, m: str) -> dict:
             what = f"lookup target share, mean over {len(pairs)} locker pairs, s = {e['s']:g}"
         else:
             val, what = sum(it["cls"] == "changed" for it in mine) / len(mine), f"recalls that change, s = {e['s']:g}"
+    elif e["stat"] == "extra_loss_at_peak":  # 53.3: the layer is the reader's read peak, named in data.csv's quantity
+        val = extra_loss(got, w, {"whole": "whole", "part": e["part"], "random": e["random"]})[0]
+        layer = mine[0]["layer"]
+        what = f"extra loss at the read peak, L{layer}: {e['part']}"
+        return {"model": m, "quantity": f"{I.READER_NAME[w]}: {what}", "n": len(mine), "value": val,
+                **compare_csv(val, m, e["csv"].replace("<layer>", str(layer)))}  # fmt: skip
     else:  # switch_share
         rows = [it["rows"][w].get(e["arm"]) for it in mine]
         val, what = switched(rows) / len(mine), f"switched by {e['arm']}"

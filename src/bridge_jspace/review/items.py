@@ -797,9 +797,62 @@ def jread_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item
     return out
 
 
+# ------------------------------------------------------- 53.3: the conflict test at the last token (x53_lastconflict)
+def lastconflict_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x53_lastconflict (53.3): the change at the last token, at each reader's 51.10 read peak (manifest layers), with
+    the arms none / whole / without the lens part / without a random part / the lens part alone / the rest alone, on
+    51.10's locker-first items. The case is the run's own (51.10's design: the bridge word is "pos", the edit at the
+    last token, jpos P3); shown and checked as 51.10's (kind jread)."""
+    if not in_set:
+        return []
+    lay = (read_json(f"{run}/manifest.json").get("layers") or {}).get("readers", {})
+    peak = {"PP": (lay.get("lookup") or {}).get("peak"), "PM": (lay.get("recall") or {}).get("peak")}
+    cases = {c["scene"]: {**c, "bridge": c["entity"]} for c in read_jsonl(f"{run}/cases.jsonl")}
+    idx = {(r["scene"], r["reader"], r["arm"]): r for r in read_jsonl(f"{run}/outcomes.jsonl")
+           if r["arm"] == "none" or r["layer"] == peak.get(r["reader"])}  # fmt: skip
+    out = []
+    for scene in sorted({k[0] for k in idx if k[2] == "whole"}):
+        case = cases.get(scene)
+        rows = {w: {label: idx.get((scene, w, arm)) for label, arm in v["filters"]["arms"].items()} for w in READERS}
+        for w in v["filters"].get("readers", READERS):
+            whole = rows[w].get("whole")
+            if whole is None:
+                continue
+            more = {"peak": peak[w], "edit_at": (case or {}).get("jpos", {}).get(w, {}).get("P3")}
+            it = _item(v, model, run, peak[w], scene, w, None, case, rows, {}, whole["role"], "in set", more=more)
+            out.append({**it, "kind": "jread"})
+    return out
+
+
+# ----------------------------------------- 53.6: the lens part toward B against the address toward C (x53_identity_address)
+def identity_address_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x53_identity_address (53.6): routes-like scenes (C0 cases with roles A, B, C); at the bridge word at L, the lens
+    identity toward B, the address swap toward C's slot (s = 2), both, and a random part of both's size. The stored
+    class per row (original / B / C / other) is the run's; the case is the run's own."""
+    if not in_set:
+        return []
+    m = read_json(f"{run}/manifest.json")
+    cases = {c["scene"]: c for c in read_jsonl(f"{run}/cases.jsonl")}
+    idx = {(r["scene"], r["reader"], r["arm"]): r for r in read_jsonl(f"{run}/outcomes.jsonl")}
+    norms = {r["scene"]: r for r in read_jsonl(f"{run}/norms.jsonl")}
+    layer = int(m.get("layer") or m.get("L") or spec()["models"][model]["layer"])
+    out = []
+    for scene in sorted({k[0] for k in idx if k[2] == "none"}):
+        rows = {w: {label: idx.get((scene, w, arm)) for label, arm in v["filters"]["arms"].items()} for w in READERS}
+        nm = norms.get(scene, {})
+        sh = {"lens": nm["share_lens"]} if "share_lens" in nm else {}
+        both = next((label for label, arm in v["filters"]["arms"].items() if arm == "both"), None)
+        for w in v["filters"].get("readers", READERS):
+            r = rows[w].get(both)
+            out.append(_item(v, model, run, layer, scene, w, None, cases.get(scene), rows, sh, r["class"] if r else "-",
+                             "in set", more={"roles": (cases.get(scene) or {}).get("roles")}))  # fmt: skip
+    return out
+
+
 LOADERS = {"x0": x0_items, "x5": x0_items, "massmean": massmean_items, "x8": x8_items, "x0_parts": x0_parts_items,
            "x45b_sweep": sweep_items, "x45a_prepend": prepend_items, "x45d": x45d_items, "x45g": x45g_items,
-           "x51_answer": x51_answer_items, "zach": zach_items, "jread": jread_items}  # fmt: skip
+           "x51_answer": x51_answer_items, "zach": zach_items, "jread": jread_items, "lastconflict": lastconflict_items,
+           "identity_address": identity_address_items}  # fmt: skip
 
 
 @lru_cache(maxsize=256)

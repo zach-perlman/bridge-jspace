@@ -93,6 +93,22 @@ def test_duplicates_and_shares(repo):
     assert got[0]["status"] == "fail" and "beyond 0.01: 1" in got[0]["detail"]
 
 
+def test_summary_totals_per_tier_and_the_e1_agreement():
+    lab = {"check": "labels against the 51.12 E1 rerun (top token stored)", "status": "fail",
+           "counts": {"whole": {"agree": 393, "n": 400}}}  # fmt: skip
+    res = {"views": {
+        "main_swap": {"models": {"m": {"n": 400, "item_fail": {}, "run_checks": [lab]}}, "recount": {"match": 3, "mismatch": []}},
+        "z1p": {"models": {"m": {"n": 400, "item_fail": {"only the scene's words differ": 4}, "run_checks": []}},
+                "recount": {"match": 3, "mismatch": [{"q": 1}]}},
+        "natural": {"models": {"m": {"n": 60, "item_fail": {}, "run_checks": []}}, "recount": {"match": 2, "mismatch": []}}}}  # fmt: skip
+    s = VC.summarize(res, {"main_swap": 1, "z1p": 1, "natural": 2})
+    assert (
+        s["tier1"]["items"] == 800 and s["tier1"]["item_check_failures"] == 4 and s["tier1"]["run_check_failures"] == 1
+    )
+    assert s["tier1"]["recount"] == {"match": 6, "mismatch": 1, "numbers": 7} and s["tier2"]["items"] == 60
+    assert s["e1_label_agreement"] == {"m": {"whole": {"agree": 393, "n": 400}}}
+
+
 def test_zach_facts_fail_where_planted():
     def it(scene, made, true, there):
         return {"scene": scene, "reader": "PP", "more": {"facts": {"made_up": made, "true": true, "true_in_lookup_passage": there,
@@ -118,6 +134,18 @@ def test_word_in_matches_whole_words_only():
 
 
 # ---- the fixed sample -------------------------------------------------------------------------------------------
+def test_the_stored_sample_is_what_a_fresh_draw_gives_and_loads():
+    """No re-rolls: the views file's fixed sample (seed 29) equals a fresh draw on the repo's runs, item by item, and
+    every item still loads (a loader change that moved an item would fail here, not silently tomorrow)."""
+    fs = I.spec()["fixed_sample"]
+    assert fs["seed"] == 29 and fs["n_per_view"] == 10
+    for v in F.tier1():
+        stored = fs["views"][v["id"]]
+        assert [e["item"] for e in F.draw(v, 29)] == [e["item"] for e in stored], v["id"]
+        got = F.samples(v, 29, list(I.spec()["models"]))
+        assert sum(len(x) for x in got.values()) == len(stored) == 10
+
+
 def test_strata_cover_every_model_and_balance_the_readers():
     models = ["a", "b", "c", "d", "e"]
     s = F.strata(models, 29, "v")
