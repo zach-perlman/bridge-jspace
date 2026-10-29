@@ -2049,8 +2049,8 @@ ROUTE_RUNS = {"9b": ("qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly"),
 
 
 # the 122B (FP8; MoE, ~10B active; L33), Figs. 5 and 7's fifth slot (Dan 11:30, the coordinator 12:15): its routes and
-# swap runs ran at the gate lowered to 0.75 after the data (their 0.80 routes run missed it on the recall), marked °;
-# each file by its explicit path
+# swap runs ran at the gate lowered to 0.75 after the data (their 0.80 routes run missed it on the recall), drawn
+# hollow as Lightning's (Dan 12:50: hollow replaces the °); each file by its explicit path
 Q122 = ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B")
 Q122_ROUTES = pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_g75" / "verdict-20261025T134214Z" / "verdict.json"
 Q122_KEEP = (pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_keeponly_g75" / "verdict-20261025T202506Z"
@@ -2059,7 +2059,8 @@ Q122_PROBE = pins.RESULTS_DIR / "x0_probe" / "qwen35_122b_x0_probe_v4" / "probe-
 Q122_SWAP = pins.RESULTS_DIR / "x8_write" / "qwen35_122b_x8_write_g75" / "verdict-20261026T125705Z" / "verdict.json"
 Q122_RECALL = pins.RESULTS_DIR / "x8_write" / "qwen35_122b_x8_write_g75" / "recall-20261026T125802Z" / "recall.json"
 Q122_NOTE = (
-    "122B° (FP8; MoE, ~10B active; L33, the 27B's relative depth carried over): gate lowered to 0.75 after the data."
+    "122B hollow: gate lowered to 0.75 after the data (FP8; MoE, ~10B active; L33, the 27B's relative depth carried "
+    "over)."
 )
 
 
@@ -2069,8 +2070,8 @@ def f05_routes(plt) -> None:
     position share with its 95% interval, the original answer empty; under the second row a thin light grey bar for
     the position answers without a random part of the same size; the value's share (0.00 on every row) in the legend,
     not as a box per row (v6 iteration 2). Blocks: 9B, 27B, Muse; Lightning (batch 52) the fourth, at L14, its bars
-    hollow (outlined); the 122B the fifth (Q122_ROUTES, its gate lowered after the data: ° on its name and n). The
-    keep-only arms are in s05."""
+    hollow (outlined); the 122B the fifth (Q122_ROUTES, its gate lowered after the data: hollow too). The keep-only
+    arms are in s05."""
     # Dan (21:55): no line under the plot; the routes are defined once, in the README's Setup
     h, cap, lt_in, q_in = 7.93 + 0.3, 0.35, 1.08, 1.08  # lt_in, q_in: Lightning's and the 122B's blocks
     fig = plt.figure(figsize=(S.WIDTH, h))
@@ -2086,13 +2087,14 @@ def f05_routes(plt) -> None:
     gap, y, ticks, labels, ns, values, block_y = 2.75, 0.0, [], [], {}, [], {}
     for target, m in (*models, LT[:2], Q122[:2]):
         lt, q = m == "lightning", m == "122b"
+        hollow = lt or q
         path = LT_ROUTES if lt else Q122_ROUTES if q else None
         run = rel(path) if path else ROUTE_RUNS[m][0]
         v = json.loads(path.read_text()) if path else latest(pins.RESULTS_DIR / "x6_routes" / run,
                                                               "verdict-*/verdict.json")  # fmt: skip
         rows = {r["arm"]: r for r in (v or {}).get("rows", []) if r["condition"] == "C2"}
         block_y[m] = y
-        ax.text(-0.02, y + 0.62, name_of(m, lowered=q), transform=ax.get_yaxis_transform(), ha="right", va="center",
+        ax.text(-0.02, y + 0.62, name_of(m), transform=ax.get_yaxis_transform(), ha="right", va="center",
                 fontsize=S.FONT, weight="bold")  # fmt: skip
         for i, (arm, label, rand) in enumerate(ROUTE_ROWS):
             yi = y - i
@@ -2108,14 +2110,15 @@ def f05_routes(plt) -> None:
             for route in ("identity", "position"):
                 sh = r["share"][route]
                 fill = (
-                    {"fc": "white", "ec": ROUTE_COL[route], "lw": 1.6} if lt else {"color": ROUTE_COL[route], "lw": 0}
-                )
+                    {"fc": "white", "ec": ROUTE_COL[route], "lw": 1.6} if hollow
+                    else {"color": ROUTE_COL[route], "lw": 0}
+                )  # fmt: skip
                 ax.barh(yi, sh[0], left=left, height=0.62, **fill)
                 ax.plot([left + sh[1], left + sh[2]], [yi - 0.2, yi - 0.2], color="#1e1e1e", lw=1.2,
                         solid_capstyle="butt")  # fmt: skip
                 if sh[0] >= 0.15:
                     ax.text(left + sh[0] / 2, yi + 0.06, f"{sh[0]:.2f}", ha="center", va="center", fontsize=S.FONT,
-                            color="white" if route == "identity" and not lt else "#222222")  # fmt: skip
+                            color="white" if route == "identity" and not hollow else "#222222")  # fmt: skip
                 left += sh[0]
             ax.barh(yi, 1 - left, left=left, height=0.62, **S.EMPTY)  # the original answer (and other)
             for route, _ in ROUTES:
@@ -2126,7 +2129,7 @@ def f05_routes(plt) -> None:
             if rr is not None:
                 pos = rr["share"]["position"]
                 yc = yi - 0.48
-                ax.barh(yc, pos[0], height=0.16, **({"fc": "white", "ec": "#9a9a9a", "lw": 1.0} if lt
+                ax.barh(yc, pos[0], height=0.16, **({"fc": "white", "ec": "#9a9a9a", "lw": 1.0} if hollow
                                                     else {"color": S.COL["control"], "lw": 0}))  # fmt: skip
                 ax.plot([pos[1], pos[2]], [yc, yc], color="#7a7a7a", lw=1.0, solid_capstyle="butt")
                 ax.text(pos[2] + 0.02, yc, f"{pos[0]:.2f}", va="center", fontsize=S.FONT, color=S.COL["muted"])
@@ -2142,9 +2145,9 @@ def f05_routes(plt) -> None:
     ax.text(-0.5, 1 + 0.29 / ax_in, "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold",
             va="bottom")  # fmt: skip
     S.panel_tag(ax, ", ".join(ns[m] for _, m in models), "fixed")
-    # Lightning's n with its open glyph, the 122B's with its gate's °, each beside its own block
-    for m, glyph in (("lightning", S.STATUS_GLYPH["after"]), ("122b", S.STATUS_GLYPH["fixed"] + S.LOWERED)):
-        ax.text(1.0, block_y[m] + 0.62, f"n = {ns[m]}  {glyph}", ha="right", va="center",
+    # Lightning's and the 122B's n, each with the open glyph, beside its own block
+    for m in ("lightning", "122b"):
+        ax.text(1.0, block_y[m] + 0.62, f"n = {ns[m]}  {S.STATUS_GLYPH['after']}", ha="right", va="center",
                 transform=ax.get_yaxis_transform(), fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
     fig.text(0.01, 0.08 / h, f"{LT_NOTE}\n{Q122_NOTE}", color=S.COL["muted"], fontsize=S.FONT - 1, va="bottom",
              linespacing=1.3)  # fmt: skip
@@ -2250,7 +2253,7 @@ B_STEP, B_DY = (2.1, 1.0), (0.25, -0.27)
 # Fig. 7 (c): each model's end label (dx, dy, ha) beside its last point; the 9B's, the 122B's and Lightning's end close
 # together: the 9B's above its point, the 122B's under its own, Lightning's up and to the left of its point
 END_LABEL = {"Muse": (0.07, 0.06, "left"), "Lightning": (-0.07, 0.06, "right"), "9B": (0.07, 0.03, "left"),
-             "122B" + S.LOWERED: (0.07, -0.05, "left")}  # fmt: skip
+             "122B": (0.07, -0.05, "left")}  # fmt: skip
 
 
 def route_row(run: str, arm: str) -> dict:
@@ -2281,8 +2284,8 @@ def f07_writes(plt) -> None:
     answers under the strongest swap: figures/supp/s07_recall_follows_swap. Lightning (batch 52, hollow) in each panel
     from its coverage folders (LT_PROBE, LT_ROUTES, LT_SWAP); its swap has no recall stage, so its real change's dose
     s* is the recall stage's formula on the run's manifest norms (scripts/x8_write.py). The 122B the fifth slot in
-    each panel (Q122_PROBE, Q122_ROUTES / Q122_KEEP, Q122_SWAP with its recall stage Q122_RECALL), filled, its routes
-    and swap runs marked ° (their gate lowered to 0.75 after the data)."""
+    each panel (Q122_PROBE, Q122_ROUTES / Q122_KEEP, Q122_SWAP with its recall stage Q122_RECALL): its probe filled
+    (run at its gate), its routes and swap runs hollow as Lightning's (their gate lowered to 0.75 after the data)."""
     from scripts import x0_details as XD
 
     h = 11.3
@@ -2358,10 +2361,10 @@ def f07_writes(plt) -> None:
                 assert stated is not None, k
                 assert stated[0] == round(row["share"]["position"][0], 2), (k, N[k])
             hbar(b, y + B_DY[0], got["share"]["position"], S.COL["position"], 0.3)
-            if lt:  # hollow
+            if lt or q:  # hollow
                 b.patches[-1].set(facecolor="white", edgecolor=S.COL["position"], lw=1.6)
             hbar(b, y + B_DY[1], rand["share"]["position"], S.COL["control"], 0.12)
-            if lt:
+            if lt or q:
                 b.patches[-1].set(facecolor="white", edgecolor="#9a9a9a", lw=1.0)
             if i == 0 and j == 0:  # Dan (21:50): the panel names its two bars, on its first row
                 gp, rp = got["share"]["position"], rand["share"]["position"]
@@ -2372,7 +2375,7 @@ def f07_writes(plt) -> None:
             if j == 0:
                 ns_b.append(str(got["n"]))
             ticks.append(y)
-            labels.append(f"{SHORT[m]}{S.LOWERED if q else ''} · {label}")
+            labels.append(f"{SHORT[m]} · {label}")
             src = (rel(LT_ROUTES) if lt else rel(Q122_KEEP if j else Q122_ROUTES) if q
                    else str(newest(pins.RESULTS_DIR / "x6_routes" / rn, "verdict-*/verdict.json").relative_to(S.REPO)))  # fmt: skip
             S.record("fig07", target, f"another item moved, {arm}: position share", *got["share"]["position"],
@@ -2391,9 +2394,8 @@ def f07_writes(plt) -> None:
     a.set_xlabel("share of scenes")
     b.set_xlabel("position answers (share)")
     S.panel_tag(a, ", ".join(ns_a), "after")
-    # Lightning: open; the 122B: its n marked ° (gate lowered after the data), its rule fixed in advance
-    S.panel_tag(b, f"{', '.join(ns_b[:3])}  {S.STATUS_GLYPH['fixed']};  {ns_b[3]}  {S.STATUS_GLYPH['after']};  "
-                   f"{ns_b[4]}{S.LOWERED}", "fixed")  # fmt: skip
+    # Lightning and the 122B (gate lowered after the data): open
+    S.panel_tag(b, f"{', '.join(ns_b[:3])}  {S.STATUS_GLYPH['fixed']};  {ns_b[3]}, {ns_b[4]}", "after")
 
     # (c) the swap by dose, pooled over the locker pairs, against a random vector of the same size
     ends = []
@@ -2431,11 +2433,11 @@ def f07_writes(plt) -> None:
                          if cell["kind"] == kind and cell["pair"] is None)  # fmt: skip
             x = [s / mean_star for s, _, _ in pts]
             y = np.array([t for _, t, _ in pts])
-            hollow = {"mfc": "white", "mew": 1.5} if lt else {}
+            hollow = {"mfc": "white", "mew": 1.5} if lt or m == "122b" else {}
             if kind == "write":
                 c.fill_between(x, y[:, 1], y[:, 2], color=col, alpha=0.15, lw=0, zorder=1)
                 c.plot(x, y[:, 0], color=col, ls=ls, lw=2.2, marker=mk, ms=6.5, zorder=3, **hollow)
-                ends.append((x[-1], y[-1, 0], SHORT[m] + (S.LOWERED if m == "122b" else "")))
+                ends.append((x[-1], y[-1, 0], SHORT[m]))
             else:
                 c.plot(x, y[:, 0], color=col, ls=ls, lw=1.6, marker=mk, ms=6, zorder=2, **hollow)
                 c.vlines(x, y[:, 1], y[:, 2], color=col, lw=1.2, zorder=2)
@@ -3199,81 +3201,89 @@ def check_scorecard_keys(path: Path) -> None:
             assert ok, f"scorecard.csv: no data.csv row for {r['claim']!r} / {r['model']}: {key!r}"
 
 
-# Fig. 11 v6 (Dan's card list, 28 Oct): the README's claims table as a figure. Rows in the table's order (ids checked
-# against docs/README.template.md's "## Claims" table); per model a cell read off that table's Models and Grade columns
-# (agent's reading, UNVERIFIED), taken from the v5 cells (scorecard_rows, asserted against the verdicts) wherever a v6
-# row restates a v5 row; the 122B only where a v5 row covers it. Each cell's data.csv key is the number the claims
-# table quotes for that model, else the v5 row's.
-SC6_FIELDS: tuple[str, ...] = ("id", "group", "claim", "was", "model", "cell", "flag", "data.csv key", "hand-checked")
-SC6_SYMBOL = {**CELL_SYMBOL, "pending": ("…", "#8a8a8a")}
-SC6_MODELS = ("9b", "27b", "muse")  # v6 iteration 2: the three README models only (the 122B in supplements)
-# Dan's plain findings (28 Oct 21:20): Fig. 11 and the README's claims table hold his twelve sentences, in his order,
-# under three groups (the figure's margin headers), numbered 1-12 on the page only; "was" is the claims-table row each
-# rewrites (one to one: no row split or merged) and gives its cells (scorecard_v6_rows). Two of his words differ, for
-# the page's lint: "the change" for "the edit" (11: "edit" is banned on the page) and "identity route ... position
-# route" for "identity ... position" (12: bare "identity" is banned on the figures).
-FINDINGS = (
-    ("Two readers, one word", "The recall follows the lens part of the bridge word; the lookup follows the rest", "1"),
-    ("Two readers, one word", "The recall does not need the lens part at one layer; it has other copies", "5"),
-    ("Two readers, one word", "The recall also reads the item's earlier mention", "8"),
-    ("What the lookup reads", "The lookup goes by which item it is or where its locker sits, never by the number", "2"),
-    ("What the lookup reads", "The lookup's “which item” lives outside the lens", "6"),
-    ("What the lookup reads", "The address can be removed, and a swap redirects the lookup", "4a"),
-    ("What the lookup reads", "Adding the address alone brings position answers back", "4b"),
-    ("What the lookup reads",
-     "With six lockers, swaps between given lockers work on most pairs; the code's size is not settled", "10"),
-    ("What the lookup reads", "The lens cannot read the address", "9a"),
-    ("Where and when the link is made",
-     "The bridge word redirects the lookup only when its locker sentence came first", "3"),
-    ("Where and when the link is made", "Lookups the change at L misses were read from the bridge word before L", "11"),
-    ("Where and when the link is made",
-     "The address is readable before the lookup uses it, and the lookup never reads the value", "7"),
-)  # fmt: skip
-# Fig. 12's rows (Dan's figures brief, ~18:30): off the main figure until the reruns on Zach's P items land (Dan
-# 21:20); kept in the supplement version (s11_scorecard_all), in their own group
-FIG11_SUPP = (("2×2", "Both operations, both datasets: one direction"),
-              ("Z1", "Our removal on Zach's passages: the split, by degree"))  # fmt: skip
-FIG11_SUPP_GROUP = "On Zach's passages (Fig. 12)"
-# Dan's caption: "a: the order split was fixed after the data": the finding that rests on the sentence-order split
-# (claims-table row 3; E10: "order split post hoc") carries "a" on every model; no cell's mark changes
-FIG11_AFTER = {"3"}
+# Fig. 11 (Dan's restructure, 29 Oct 12:50): the README's scorecard, right under "In one minute". Rows: the claims
+# table's rows in order, their sentences read from docs/README.template.md; columns: the five models; per cell one
+# word (CLAIM_WORD), read off the claims table's Models column and its cards (agent's reading, UNVERIFIED). Hollow:
+# Lightning everywhere (its gate chosen after its pre-check) and the 122B where its gate was lowered after the data
+# (routes, address, swap: claims 4, 6, 7)
+F11_MODELS = ("9b", "27b", "muse", "lightning", "122b")
+F11_TARGET = {m: t for t, m, _ in S.MODELS} | {LT[1]: LT[0]}
+CLAIM_WORD = {"holds": "#2f7d4f", "in part": "#b07a0a", "fails": "#b8433a", "below gate": "#7a7a7a",
+              "not run": "#8a8a8a"}  # fmt: skip
 TEMPLATE = S.REPO / "docs" / "README.template.md"
 
 
-def two_by_two_cells() -> tuple[dict, dict, dict]:
-    """Fig. 11's 2 x 2 and Z1 rows (agent's reading of Fig. 12, after the data, UNVERIFIED). 2 x 2, per model over its
-    four cells (our gap, the ladder's rung 6 on our scenes, Z1's gap, his stored M - K): ok if every cell is present
-    and above zero (an interval's lower end; rung 6's point beyond 0.10); ~ if those present hold but one is missing
-    (not run, too few switches, the Muse's rung 6 outside his band); x if a present cell does not hold. Z1 (marked
-    "degree", Dan): the rule's own reading per model (the split holds -> ok, in between -> ~, the lookup follows the lens
-    -> x), with the flag 'degree'. Returns (2 x 2 cells, Z1 cells, Z1's data.csv key per model)."""
-    lad = {m["target"]: m for m in json.loads((latest_verdict(LADDER_VERDICT) / "x49_2.json").read_text())["models"]}
-    z1v = {m["target"]: m for m in json.loads((latest_verdict(Z1_VERDICT) / "z1.json").read_text())["models"]}
-    two, z1, key = {"122b": ("-", "")}, {"122b": ("-", "")}, {"122b": ""}
-    for target, m, _ in S.MODELS:
-        if m == "122b":
-            continue
-        zm = z1v.get(target, {})
-        lr = zm.get("layer_results", {}).get(str(zm.get("layers", [None])[0]))
-        z_ok = None if lr is None or lr["lookup"]["switched_whole"] < VALID_SWITCHES else lr["gap"][1] > 0
-        ld = lad.get(target, {})
-        r6 = None
-        if 6 in ld.get("rungs", []) and m != "muse":  # the Muse's rung 6 is hollow (placed outside his band)
-            rc, lk = (ld["cells"][w]["all"]["cost"]["6"][0] for w in ("recall", "lookup"))
-            r6 = rc - lk > LOOKUP_BAR
-        his = zm.get("beside", {}).get("full")
-        # the Z1 cell is hollow in Fig. 12 only because a variant reruns tonight: it counts as present; the Muse's rung
-        # 6 is hollow because it ran outside his band: it counts as missing
-        his_ok = None if his is None else his["paper10"]["m_minus_k"][1] > 0
-        cells4 = [interval(f"contrast_{m}")[1] > 0, r6, z_ok, his_ok]
-        held = [c for c in cells4 if c is not None]
-        two[m] = ("x" if not all(held) else "ok" if len(held) == 4 else "~", "a")
-        verdict = (lr or {}).get("verdict", "")
-        z1[m] = ("ok" if verdict.startswith("the split holds") else "x" if "follows the lens" in verdict else
-                 "-" if not verdict else "~", "degree")  # fmt: skip
-        key[m] = ("fig12:our removal, his passages: gap" if z_ok is not None
-                  else "fig12:our removal, his passages: lookup switches under the whole change")  # fmt: skip
-    return two, z1, key
+def claim_cells(*words: str, hollow_122b: bool = False) -> dict[str, tuple[str, str]]:
+    """One claim's cells, {model: (word, flag)}, from five words in F11_MODELS' order: Lightning's flag 'hollow', the
+    122B's too if hollow_122b."""
+    flags = ("", "", "", "hollow", "hollow" if hollow_122b else "")
+    return dict(zip(F11_MODELS, zip(words, flags, strict=True), strict=True))
+
+
+CLAIM_CELLS = {
+    1: claim_cells("holds", "in part", "holds", "holds", "holds"),
+    2: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    3: claim_cells("holds", "holds", "holds", "below gate", "not run"),
+    4: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+    5: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    6: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+    7: claim_cells("holds", "fails", "holds", "holds", "holds", hollow_122b=True),
+    8: claim_cells("holds", "fails", "holds", "holds", "not run"),
+    9: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    10: claim_cells("holds", "holds", "holds", "holds", "in part"),  # the 122B: its order split only, the copy not run
+    11: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    12: claim_cells("holds", "holds", "holds", "holds", "not run"),
+}
+# Dan's three groups (28 Oct 21:20), over the claims' numbers
+CLAIM_GROUPS = (("Two readers, one word", (1, 2, 3)), ("What the lookup reads", (4, 5, 6, 7, 8, 9)),
+                ("Where and when the link is made", (10, 11, 12)))  # fmt: skip
+
+
+def per(*keys: str, models: tuple[str, ...] = ("9b", "27b", "muse")) -> dict[str, tuple[str, ...]]:
+    """{model: keys with {m} filled in} for each of models."""
+    return {m: tuple(k.format(m=m) for k in keys) for m in models}
+
+
+# each cell's numbers: the claims table's key numbers for that model, "numbers:<x0_numbers key>" or
+# "<figure>:<quantity>" (a figures/story/data.csv row of that model); none for a "not run" cell
+CLAIM_KEYS = {
+    1: per("numbers:rc_excess_{m}", "numbers:lk_excess_{m}", models=("9b", "27b", "muse", "122b"))
+    | {"lightning": ("cards:conflict: recall, switches lost beyond a random part",
+                     "cards:conflict: lookup, switches lost beyond a random part")},
+    2: per("fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out")
+    | {"lightning": ("cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",)},
+    3: per("numbers:x45p_d23_{m}") | {"lightning": ("cards:45p (below gate): recall, loss in (2) minus (3)",)},
+    4: per("numbers:rt_C2_whole_identity_{m}", "numbers:rt_C2_whole_position_{m}")
+    | {"lightning": ("fig05:another item moved, whole: identity share", "fig05:another item moved, whole: position share"),
+       "122b": ("numbers:rtg_C2_whole_identity_122b", "numbers:rtg_C2_whole_position_122b")},
+    5: per("fig05d:47.1: identity route: answers lost beyond random without lens directions 26-100")
+    | {"lightning": ("e3_identity:47.1: identity answers lost beyond random without lens directions 26-100",)},
+    6: per("numbers:rt_C2_no_alf_position_{m}", "numbers:rt_C2_no_alf_rand_position_{m}",
+           "fig07:lookup target share, mean over locker pairs, s = 2")
+    | {"lightning": ("fig05:another item moved, no_alf: position share",
+                     "fig05:another item moved, no_alf_rand: position share",
+                     "fig07:lookup target share, mean over locker pairs, s = 2"),
+       "122b": ("numbers:rtg_C2_no_alf_position_122b", "numbers:rtg_C2_no_alf_rand_position_122b", "numbers:x8_t2_122b")},
+    7: per("numbers:rtk_C2_keep_alf_position_{m}", "numbers:rtk_C2_keep_alf_rand_position_{m}",
+           models=("9b", "27b", "muse", "122b"))
+    | {"lightning": ("fig07:another item moved, keep_alf: position share",
+                     "fig07:another item moved, keep_alf_rand: position share")},
+    8: per("fig09b:47.2: pairwise writes reaching 25% (dose 2)", models=("9b", "muse", "lightning"))
+    | {"27b": ("cards:47.2: pairwise writes reaching 25% (dose 2)",)},
+    9: per("fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer")
+    | {"lightning": ("cards:47.0 (b) share rebuilt by 25 lens directions: pointer",)},
+    10: per("numbers:lk_order_before_{m}", "numbers:lk_order_after_{m}", "numbers:x45q_c_{m}")
+    | {"lightning": ("fig03:lookups switched by the whole change, locker sentence before the pick",
+                     "fig03:lookups switched by the whole change, locker sentence after the pick",
+                     "fig03:45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)"),
+       "122b": ("numbers:lk_order_before_122b", "numbers:lk_order_after_122b")},
+    11: per("e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L",
+            models=("9b", "27b", "muse", "lightning")),
+    12: per("cards:47.8: the address readable from", "cards:47.8: the first layer of the position route",
+            models=("9b", "muse", "lightning"))
+    | {"27b": ("cards:47.8 (full grid): the address readable from",
+               "cards:47.8 (full grid): the first layer of the position route")},
+}  # fmt: skip
 
 
 def claims_table(path: Path = TEMPLATE) -> list[tuple[str, str]]:
@@ -3288,136 +3298,24 @@ def claims_table(path: Path = TEMPLATE) -> list[tuple[str, str]]:
     return [(ln.split("|")[1].strip(), ln.split("|")[2].strip()) for ln in rows[2:]]
 
 
-def anatomy_cell(target: str) -> tuple[str, str]:
-    """Finding 12 on a model from 47.8's verdict (x47_8.json, the one Fig. 6b draws): 'ok' where its rules read as on
-    the 9B and Muse, whose cells are 'ok' (a: identity before position, b: the address readable before it is used,
-    d: never the value, all held; c failed on all three), else 'pending'. The 27B's rows are 49.4's reduced grid."""
-    v = json.loads((latest_verdict("x47_anatomy/x47_8-*") / "x47_8.json").read_text())
-    rules = {m["target"]: m["rules"] for m in v["models"] if m["status"] == "tested"}
-
-    def read(r: dict) -> tuple:
-        return tuple(r[k]["holds"] for k in ("a", "b", "c", "d"))
-
-    assert read(rules["qwen3.5-9b"]) == read(rules["muse-glimmer-30b"]) == (True, True, False, True), rules
-    return ("ok", "") if target in rules and read(rules[target]) == read(rules["qwen3.5-9b"]) else ("pending", "")
-
-
-def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
-    """Fig. 11's rows (Dan's plain findings, 21:20): (id, group, claim, was, model, cell, flag, data.csv key,
-    hand-checked) for the 9B, 27B and Muse; FINDINGS' twelve sentences (id 1-12, each with the cells of the claims-table
-    row it rewrites, 'was'), then FIG11_SUPP's two rows (the supplement version). v5_rows: scorecard_rows()."""
-    v5 = {(r["claim"], r["model"]): (r["cell"], r["flag"]) for r in v5_rows}
-    name = {m: n for _, m, n in S.MODELS}
-
-    def was(claim: str, m: str) -> tuple[str, str]:
-        return v5[(claim, name[m])]
-
-    def cells(ok3: str = "ok", /, **over: str | tuple[str, str]) -> dict[str, tuple[str, str]]:
-        """ok3 on the 9B, 27B and Muse, '-' on the 122B, with per-model overrides (m=cell or (cell, flag))."""
-        out = {m: (ok3, "") for m in ("9b", "27b", "muse")} | {"122b": ("-", "")}
-        return out | {m: v if isinstance(v, tuple) else (v, "") for m, v in over.items()}
-
-    three = ("9b", "27b", "muse")
-    two, z1, z1_key = two_by_two_cells()
-    spec = (  # id, figure label, cells, data.csv key per model
-        ("1", "In a conflict the recall follows the J++ part",
-         cells(**{m: was("main test", m) for m in three}, **{"122b": "~"}), lambda m: f"numbers:contrast_{m}"),
-        ("2×2", "Both operations, both datasets: one direction", two,
-         lambda m: "fig12:our removal, our scenes (main test): gap"),
-        ("Z1", "Our removal on Zach's passages: the split", z1, lambda m: z1_key[m]),
-        ("2", "Lookup by identity route or position route, never the value",
-         {m: was("never the value", m) for m in SC6_MODELS}, lambda m: "s05:another item moved, whole: value share"),
-        ("3", "Locker before the pick: the bridge word redirects",
-         cells(**{m: was("the link sits in the locker sentences, clean one-pick scenes", m) for m in three},
-               **{"122b": ("~", "a")}),
-         lambda m: "numbers:lk_order_before_122b" if m == "122b" else f"numbers:x45q_c_{m}"),
-        ("4a", "The address can be removed; a swap moves the lookup", cells(**{"122b": ("ok", "a")}),
-         lambda m: "s05:another item moved, no_alf: position share" if m == "122b"
-         else f"numbers:rt_C2_no_alf_position_{m}"),
-        ("4b", "Adding only the address creates position answers",
-         {m: was("only it gives position answers", m) for m in SC6_MODELS},
-         lambda m: f"numbers:rtk_C2_keep_alf_position_{m}"),
-        ("5", "The recall follows, but does not need, the J++ part", cells(),
-         lambda m: "fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"),
-        ("6", "The lookup's identity route runs outside the lens", cells(),
-         lambda m: "e3_identity:47.1: identity answers lost beyond random without lens directions 26-100"),
-        # the 27B from 49.4's reduced grid in 47.8's verdict (Dan's caption, 21:20: "The 27B's row 12 is from a
-        # reduced layer grid"); it was pending until that grid landed
-        ("7", "Identity route early, position late; address formed first", cells(**{"27b": anatomy_cell("qwen3.6-27b")}),
-         lambda m: "fig06b:address formed: layer" if m == "27b"
-         else "fig06c:D4: the address's mean overlap over every pair of window layers"),
-        ("8", "The recall also reads the item's earlier mention",
-         cells(**{m: was("the recall reads the earlier mention, locker before the pick", m) for m in three}),
-         lambda m: f"numbers:x45p_d23_{m}"),
-        ("9a", "The address does not read out through the lens", cells(),
-         lambda m: "fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer"),
-        ("9b", "Asked to report the position, the lens stays blind", cells("-", **{"27b": "ok"}),
-         lambda m: "e8_report:47.10: the report's extra loss without the address"),
-        ("10", "Six lockers: one code per locker, no single shift", cells(**{"27b": "-"}),
-         lambda m: "fig09b:47.2: pairwise writes reaching 25% (dose 2)"),
-        ("11", "Lookups missed at L read the bridge word before L", cells(**{"27b": "-"}),
-         lambda m: "s03e_cumulative:47.4 main, locker-first, lookup: before_L"),
-        ("12", "A described bridge: the split holds", cells(**{"27b": "x"}),
-         lambda m: "fig05c:47.3: lookup's extra loss without the J++ part" if m == "27b"
-         else "fig05c:47.3: gap (recall's extra loss minus the lookup's)"),
-        ("13", "The address must be refit per text format", {m: was("refit per format", m) for m in SC6_MODELS},
-         lambda m: "fig09:(b) prose: lookup extra loss without the refit pointer"),
-        ("14", "The lookup's errors are not address errors", cells("-", **{"9b": "ok"}),
-         lambda m: "fig07c:47.13: wrong answers whose locker the address probe predicts"),
-        ("15", "Identity outside J++: only partly specific",
-         {m: was("identity outside J++ is specific", m) for m in SC6_MODELS}, lambda m: f"numbers:x45em_cut_{m}"),
-        ("✗", "The J++ part keys the attribute; late MLPs carry it", cells("x", **{"27b": "-"}),
-         lambda m: "fig10b:48.2 B, bridge_late: recall accuracy lost"),
-        ("✗", "A person mark at the locker sentence", cells("x", **{"27b": "-"}),
-         lambda m: "fig10c:48.3, probe at the item, locker after the pick (accuracy)"),
-        ("✗", "The copying heads pass the rest at twice the J++ part", cells("x", **{"27b": "-"}),
-         lambda m: "fig10d:48.4: the rule holds"),
-        ("✗", "The address is the recall's second route", cells("x"),
-         lambda m: "fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item"),
-        ("✗", "Blocking the pick sentence removes position only", cells("x", **{"27b": "-"}),
-         lambda m: "fig09c_formation:47.6 (b): the formation rule holds"),
-        ("✗", "The locker digit carries the hall question's address", cells("x", **{"27b": "-"}),
-         lambda m: "fig09d:47.14: hall probe at the locker digit"),
-        ("✗", "Map rules: one locker cell; the lookup stops first", cells("x", **{"27b": "-"}),
-         # Fig. 3d draws the 9B only: Muse's D1 numbers are in its verdict, not in data.csv
-         lambda m: "fig03d_depth_map:D1 clean, locker-first, lookup: last layer with the bridge word >= 0.3"
-         if m == "9b" else ""),
-        ("✗", "Positive control; 9B clean design; 27B strict bar", cells("x", **{"muse": "-"}),
-         lambda m: "numbers:x45m_before_gap_9b" if m == "9b" else "numbers:x4_D_elements_27b"),
-        ("…", "Pending: weights, the dereference, two sources",
-         {m: ("pending", "") for m in SC6_MODELS}, lambda m: ""),
-    )  # fmt: skip
-    # Dan 21:20: the README's claims table holds his sentences, numbered 1-12 in his order, word for word
-    table = claims_table()
-    assert table == [(str(k), claim) for k, (_, claim, _) in enumerate(FINDINGS, 1)], \
-        f"the README's claims table is out of step with Fig. 11's findings: {table}"  # fmt: skip
-    by_id = {cid: (cl, key) for cid, _, cl, key in spec}
-    assert len({was for *_, was in FINDINGS}) == len(FINDINGS), "a claims-table row rewritten twice"
-    assert all(was in by_id for *_, was in FINDINGS), [was for *_, was in FINDINGS if was not in by_id]
-    order = [(str(k), group, claim, was) for k, (group, claim, was) in enumerate(FINDINGS, 1)]
-    order += [(cid, FIG11_SUPP_GROUP, claim, cid) for cid, claim in FIG11_SUPP]
-    rows = []
-    for cid, group, claim, was in order:
-        cl, key = by_id[was]
-        for m in SC6_MODELS:
-            cell, flag = cl[m]
-            if was in FIG11_AFTER:
-                assert flag in ("", "a"), (was, m, flag)
-                flag = "a"
-            target = next(t for t, mm, _ in S.MODELS if mm == m)
-            rows.append({"id": cid, "group": group, "claim": claim, "was": was, "model": name[m], "target": target,
-                         "cell": cell, "flag": flag, "data.csv key": key(m) if cell not in ("-", "pending") else "",
-                         "hand-checked": "no"})  # fmt: skip
-    return rows
+def check_claim_cells() -> None:
+    """Every key of every fig11 cell names a row that exists: an x0_numbers key, or a recorded (figure, quantity) of
+    that cell's model; run after every figure and card has recorded its rows."""
+    recorded = {(r["figure"], r["model"], r["quantity"]) for r in S.ROWS}
+    for n, keys in CLAIM_KEYS.items():
+        for m, ks in keys.items():
+            for k in ks:
+                fig_id, quantity = k.split(":", 1)
+                ok = quantity in N if fig_id == "numbers" else (fig_id, F11_TARGET[m], quantity) in recorded
+                assert ok, f"fig11, claim {n} / {m}: no data.csv row for {k!r}"
 
 
 def f11_scorecard(plt) -> None:
-    """Fig. 11 (Dan's plain findings, 28 Oct 21:20): figures/story/claims_scorecard.csv, written here from
-    scorecard_v6_rows, drawn as the README's findings list: FINDINGS' twelve sentences in Dan's order under their three
-    margin headers, one column per model (9B, 27B, Muse), a symbol per cell, 'a' as a small superscript, no id column
-    and no words in the cells; the supplement version (figures/supp/s11_scorecard_all) adds Fig. 12's two rows.
-    figures/story/scorecard.csv keeps v5's rows (scorecard_rows; rows of other models already in the file are kept):
-    the joint figures and the shared grid (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
+    """Fig. 11, the README's scorecard (Dan, 29 Oct 12:50): the claims table's rows (CLAIM_CELLS, sentences from the
+    template, checked one to one) by the five models, each cell a box with its word; recorded as fig11 rows "claim
+    <n>: <word>" with the cell's numbers (CLAIM_KEYS) as the source. figures/story/scorecard.csv keeps v5's rows
+    (scorecard_rows; rows of other models already in the file are kept): the joint figures and the shared grid
+    (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
     v5_rows = scorecard_rows()
     S.OUT.mkdir(parents=True, exist_ok=True)
     path = S.OUT / "scorecard.csv"
@@ -3430,90 +3328,87 @@ def f11_scorecard(plt) -> None:
         w = csv.DictWriter(f, fieldnames=list(SC_FIELDS))
         w.writeheader()
         w.writerows([{k: r[k] for k in SC_FIELDS} for r in v5_rows] + kept)
-    rows = scorecard_v6_rows(v5_rows)
-    with (S.OUT / "claims_scorecard.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(SC6_FIELDS))
-        w.writeheader()
-        w.writerows([{k: r[k] for k in SC6_FIELDS} for r in rows])
-    for r in rows:
-        key = r["data.csv key"]
-        src = ("after the data" if r["flag"] == "a" else "fixed") + (f"; {key}" if key else "")
-        main = r["group"] != FIG11_SUPP_GROUP
-        S.record("fig11" if main else "s11", r["target"], f"{r['id']} {r['claim']}", r["cell"], source=src)
-    main = [r for r in rows if r["group"] != FIG11_SUPP_GROUP]
-    # Dan 21:20: the main version's cells are held / in part / failed / not run only
-    assert all(r["cell"] in ("ok", "~", "x", "-") for r in main), [r for r in main if r["cell"] == "pending"]
-    draw_findings(plt, main, "fig11_scorecard")
-    draw_findings(plt, rows, "s11_scorecard_all", supp=True)
+    table = dict(claims_table())
+    assert list(table) == [str(n) for n in CLAIM_CELLS], f"the claims table is out of step with Fig. 11: {table}"
+    assert [n for _, ns in CLAIM_GROUPS for n in ns] == list(CLAIM_CELLS), CLAIM_GROUPS
+    for n, cells in CLAIM_CELLS.items():
+        assert tuple(cells) == F11_MODELS, (n, cells)
+        for m, (word, _) in cells.items():
+            keys = CLAIM_KEYS[n].get(m, ())
+            assert word in CLAIM_WORD, (n, m, word)
+            assert (word == "not run") == (not keys), (n, m, word, keys)
+            if keys:
+                S.record("fig11", F11_TARGET[m], f"claim {n}: {word}", word, source="; ".join(keys))
+    draw_scorecard(plt, table)
 
 
-# Fig. 11's layout in inches (Dan's plain findings, 21:20): the margin headers, the sentences, the model columns
-F11_HEAD_X, F11_TEXT_X, F11_CELL_X = 0.12, 1.74, (7.3, 7.85, 8.4)
-F11_WRAP = 62  # sentence characters per line at 11 pt between F11_TEXT_X and the first model column
-F11_CAPTION_WRAP = 112  # caption characters per line at 10 pt
-F11_LINE, F11_ROW, F11_GROUP_GAP = 0.21, 0.31, 0.16  # inches: a wrapped line, a one-line row, the gap between groups
-F11_HEAD_WRAP = {"Two readers, one word": "Two readers,\none word", "What the lookup reads": "What the\nlookup reads",
-                 "Where and when the link is made": "Where and when\nthe link is made",
-                 FIG11_SUPP_GROUP: "On Zach's\npassages\n(Fig. 12)"}  # fmt: skip
+# Fig. 11's layout in inches: the sentences' left edge and wrap, the model columns, a wrapped line, a row's padding,
+# a group's header row, a box's height per line of its word ("below gate" takes two lines in a box this wide)
+F11_TEXT_X, F11_WRAP = 0.12, 44
+F11_COL_X, F11_BOX_W = (4.3, 5.24, 6.18, 7.12, 8.06), 0.86
+F11_LINE, F11_PAD, F11_HEAD = 0.2, 0.16, 0.36
+F11_BOX_H = {1: 0.3, 2: 0.46}
 
 
-def draw_findings(plt, rows: list[dict], name: str, supp: bool = False) -> None:
-    """Fig. 11's drawing: per finding (rows' id order) its sentence, wrapped, and a symbol per model; its group's
-    header once in the left margin with a thin bracket over the group's rows; light shading on every other row; Dan's
-    caption under it (the supplement adds a line on Fig. 12's rows)."""
-    models = [next(n for _, mm, n in S.MODELS if mm == m) for m in SC6_MODELS]
-    by = {(r["id"], r["model"]): r for r in rows}
-    found = list(dict.fromkeys((r["id"], r["group"], r["claim"]) for r in rows))
-    layout, y, last = [], 0.0, None  # (id, group, lines, top y, bottom y) in inches below the column heads
-    for cid, group, claim in found:
-        if last is not None and group != last:
-            y += F11_GROUP_GAP
-        lines = textwrap.wrap(claim, F11_WRAP)
-        height = F11_ROW + F11_LINE * (len(lines) - 1)
-        layout.append((cid, group, lines, y, y + height))
-        y, last = y + height, group
-    # Dan's caption, with "fixed before" for his "written before" (the figures' lint retires "write" and its forms)
-    caption = ["By the rule fixed before each run; a: the order split was fixed after the data. The 27B's row 12 "
-               "is from a reduced layer grid."]  # fmt: skip
-    if supp:
-        caption.append("The last two rows (Fig. 12; there a: read after the data) stay off the main page until the "
-                       "reruns on Zach's P items land.")  # fmt: skip
-    caption = [w for ln in caption for w in textwrap.wrap(ln, F11_CAPTION_WRAP)]
-    top_in, heads_in, bottom_in = 0.95, 0.35, 0.35 + 0.19 * len(caption)
+def cell_label(word: str) -> str:
+    """A cell's word as drawn in its box: "below gate" on two lines."""
+    return word.replace(" ", "\n") if word == "below gate" else word
+
+
+def draw_scorecard(plt, table: dict[str, str]) -> None:
+    """Fig. 11's drawing: per group its header, then per claim its sentence (wrapped) and one box per model with its
+    word: filled for a cell fixed in advance, white with a coloured edge for a hollow one, light grey for "not run";
+    light shading on every other row; the caption under it."""
+    layout, y = [], 0.0  # (kind, text, top y, bottom y, claim) in inches below the column heads
+    for group, ns in CLAIM_GROUPS:
+        layout.append(("group", group, y, y + F11_HEAD, None))
+        y += F11_HEAD
+        for n in ns:
+            lines = textwrap.wrap(table[str(n)], F11_WRAP)
+            box = max(F11_BOX_H[len(cell_label(w).splitlines())] for w, _ in CLAIM_CELLS[n].values())
+            height = max(F11_LINE * len(lines) + F11_PAD, box + 0.1)
+            layout.append(("claim", "\n".join(lines), y, y + height, n))
+            y += height
+    caption = ("Hollow: Lightning (gate chosen after its pre-check) and the 122B where its gate was lowered after the "
+               "data (FP8).")  # fmt: skip
+    top_in, heads_in, bottom_in = 0.95, 0.32, 0.45
     h = top_in + heads_in + y + bottom_in
     fig = plt.figure(figsize=(S.WIDTH, h))
-    S.title(fig, "Twelve findings on three models", "✓ held  ·  ~ in part  ·  ✗ failed  ·  – not run")
+    S.title(fig, "What holds on which model",
+            "Rows: the README's claims, in its order. Each box: the claim on that model.")  # fmt: skip
     ax = fig.add_axes((0.0, bottom_in / h, 1.0, (heads_in + y) / h))
     ax.set_xlim(0, S.WIDTH)
     ax.set_ylim(y, -heads_in)  # y in inches, down the page
     ax.axis("off")
-    for x, model in zip(F11_CELL_X, models, strict=True):
-        ax.text(x, -0.08, SHORT[next(m for _, m, n in S.MODELS if n == model)], ha="center", va="bottom",
-                weight="bold", fontsize=S.FONT)  # fmt: skip
-    for k, (cid, _group, lines, y0, y1) in enumerate(layout):
-        if k % 2 == 0:
-            ax.add_patch(plt.Rectangle((F11_TEXT_X - 0.08, y0), S.WIDTH - 0.06 - F11_TEXT_X + 0.08, y1 - y0,
-                                       color="#f6f6f6", lw=0, zorder=0))  # fmt: skip
-        ax.text(F11_TEXT_X, (y0 + y1) / 2, "\n".join(lines), ha="left", va="center", fontsize=S.FONT,
-                linespacing=1.15)  # fmt: skip
-        for x, model in zip(F11_CELL_X, models, strict=True):
-            r = by[(cid, model)]
-            sym, col = SC6_SYMBOL[r["cell"]]
-            ax.text(x, (y0 + y1) / 2, sym, ha="center", va="center", fontsize=S.FONT + 3, color=col, weight="bold")
-            if r["flag"] == "a":  # Dan: "a" only as a small superscript, explained once in the caption
-                ax.text(x + 0.12, (y0 + y1) / 2 - 0.07, "a", ha="left", va="center", fontsize=S.FONT - 2,
-                        color=S.COL["muted"])  # fmt: skip
+    for x, m in zip(F11_COL_X, F11_MODELS, strict=True):
+        ax.text(x, -0.08, SHORT[m], ha="center", va="bottom", weight="bold", fontsize=S.FONT)
+    k = 0
+    for kind, text, y0, y1, n in layout:
+        if kind == "group":
+            ax.text(F11_TEXT_X, y1 - 0.06, text, ha="left", va="bottom", fontsize=S.FONT, weight="bold",
+                    color="#444444")  # fmt: skip
+            ax.plot([F11_TEXT_X, S.WIDTH - 0.1], [y1 - 0.02] * 2, color="#9a9a9a", lw=0.8)
+            continue
+        if k % 2 == 1:
+            ax.add_patch(plt.Rectangle((0.04, y0), S.WIDTH - 0.08, y1 - y0, color="#f6f6f6", lw=0, zorder=0))
+        k += 1
+        mid = (y0 + y1) / 2
+        ax.text(F11_TEXT_X, mid, text, ha="left", va="center", fontsize=S.FONT, linespacing=1.15)
+        for x, m in zip(F11_COL_X, F11_MODELS, strict=True):
+            word, flag = CLAIM_CELLS[n][m]
+            label = cell_label(word)
+            col, bh = CLAIM_WORD[word], F11_BOX_H[len(label.splitlines())]
+            if word == "not run":
+                box, ink, weight = {"fc": "#eeeeee", "ec": "none"}, col, "normal"
+            elif flag == "hollow":
+                box, ink, weight = {"fc": "white", "ec": col, "lw": 1.6}, col, "bold"
             else:
-                assert r["flag"] in ("", "degree"), r  # no other flag; "degree" is said in the supplement's label
-    for group in dict.fromkeys(g for _, g, *_ in layout):
-        ys = [(y0, y1) for _, g, _, y0, y1 in layout if g == group]
-        top, bot = ys[0][0] + 0.04, ys[-1][1] - 0.04
-        ax.text(F11_HEAD_X, top + 0.02, F11_HEAD_WRAP[group], ha="left", va="top", fontsize=S.FONT - 0.5,
-                weight="bold", color="#444444", linespacing=1.1)  # fmt: skip
-        ax.plot([F11_TEXT_X - 0.16] * 2, [top, bot], color="#9a9a9a", lw=1.0)
-    fig.text(0.01, 0.1 / h, "\n".join(caption), ha="left", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"],
-             linespacing=1.3)  # fmt: skip
-    S.save(fig, name, supp=supp)
+                box, ink, weight = {"fc": col, "ec": col, "lw": 1.6}, "white", "bold"
+            ax.add_patch(plt.Rectangle((x - F11_BOX_W / 2, mid - bh / 2), F11_BOX_W, bh, zorder=2, **box))
+            ax.text(x, mid, label, ha="center", va="center", fontsize=S.FONT, color=ink, weight=weight, zorder=3,
+                    linespacing=1.05)  # fmt: skip
+    fig.text(0.01, 0.12 / h, caption, ha="left", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"])
+    S.save(fig, "fig11_scorecard")
 
 
 def probe_rows() -> None:
@@ -4376,7 +4271,7 @@ SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_
               "supp/s03e_cumulative", "supp/s04_routes_design", "supp/s05_routes_all_arms", "supp/s07_recall_follows_swap",
               "supp/s07b_lens_readout", "supp/s08_first_sentence_and_label_free",
               "supp/s08b_pointer_moves_and_neutral_sentence", "supp/s10_removed_together_bars", "supp/s10b_what_is_left_all_scenes",
-              "supp/s12_das_muse", "supp/s11_scorecard_all", "supp/s14_learned_sizes",
+              "supp/s12_das_muse", "supp/s14_learned_sizes",
               "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
               "x0_necessity/detail_qwen35_9b_x0_necessity_chat", "x0_necessity/kmatch", "x0_necessity/kcurve",
               "x0_necessity/share", "x0_necessity/asked_first", "status_2026-10-24/f6_digits")  # fmt: skip
@@ -4432,7 +4327,7 @@ def main(argv: list[str] | None = None) -> None:
 
         LF.build_all(plt)
     check_scorecard_keys(S.OUT / "scorecard.csv")
-    check_scorecard_keys(S.OUT / "claims_scorecard.csv")
+    check_claim_cells()
     S.write_data()
     contact_sheet(plt, README_NAMES, sheet)
     if out is not None:

@@ -202,14 +202,16 @@ KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
     "position, a random part removed",
     "C  A swap sends the lookup to the swapped-in locker",
     "lookups answering the\nswapped-in locker (share)",
-    # Dan's plain findings (28 Oct 21:20), Fig. 11's row 7 in his words
+    # Dan's plain findings (28 Oct 21:20), the claims table's row 7 (and Fig. 11's) in his words
     "Adding the address alone brings position answers back",
 }
 
 
 def banned(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
-    """(where, text, rule) for each text that matches a banned variant, the allowed strings left out."""
-    return [(where, text, rule) for where, text in texts if text not in KEPT
+    """(where, text, rule) for each text that matches a banned variant, the allowed strings left out (compared with
+    their whitespace collapsed: a figure may wrap a kept string at any space)."""
+    kept = {" ".join(k.split()) for k in KEPT}
+    return [(where, text, rule) for where, text in texts if " ".join(text.split()) not in kept
             for rule, rx in BANNED.items() if re.search(rx, text)]  # fmt: skip
 
 
@@ -235,7 +237,8 @@ def test_the_matcher_catches_each_banned_variant(text):
      "° gate lowered to 0.75 after the data", "random part (same size)", "random direction (same size)",
      "random lens directions", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
      "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches lost (%)",
-     "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's", *KEPT],
+     "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
+     "Adding the address alone brings position\nanswers back", *KEPT],
 )  # fmt: skip
 def test_the_matcher_passes_the_canonical_strings(text):
     assert not banned([("example", text)]), banned([("example", text)])
