@@ -335,34 +335,69 @@ def last_token_address(plt) -> str:
 # ---- Zach's named passages (Z1) beside our main test ----------------------------------------------------------------
 
 
+Z1_L = R / "x50_zach" / "x52_z1-20261029T013035Z" / "z1.json"  # Lightning's coverage run (L14 decides)
+# Z1-P: Zach's named passages with made-up facts (Dan's morning brief, 29 Oct); Lightning's missed its gate
+Z1P = {"qwen3.5-9b": R / "x50_zach" / "x52_z1p-20261029T081112Z" / "z1p.json",
+       "qwen3.6-27b": R / "x50_zach" / "x52_z1p-20261029T081323Z" / "z1p.json",
+       "nemotron-3.5-lightning": R / "x50_zach" / "x52_z1p-20261029T080731Z" / "z1p.json"}  # fmt: skip
+
+
+def _zach_cell(path: Path, target: str, reader: str) -> dict:
+    (m,) = [m for m in load(path)["models"] if m["target"] == target]
+    return m["layer_results"][str(m["layers"][0])][reader]
+
+
 def zach_named(plt) -> str:
-    """Per model, each reader's switches lost without the lens part beyond a random part: our main test (X0's numbers)
-    and Zach's named-bridge passages (Z1, at L)."""
+    """Per model (9B, 27B, Muse, Lightning), each reader's switches lost without the lens part beyond a random part:
+    our main test (X0's numbers; Lightning's conflict test at L14), Zach's named passages with true facts (Z1, at L)
+    and with made-up facts (Z1-P; Muse not run). Lightning hollow (its gate set after the 60-scene pre-check; its
+    made-up-fact run also below that run's gate, numbers descriptive only)."""
     numbers = S.numbers()
-    v = load(Z1)
-    by = {m["target"]: m for m in v["models"]}
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 3.6), sharey=True)
-    fig.subplots_adjust(left=0.2, right=0.98, top=0.72, bottom=0.16, wspace=0.1)
-    S.title(fig, "On Zach's named passages the lookup follows the lens part too",
-            "Lost beyond a random part; hollow: our main test, filled: his passages; grey: 0.10 bar")  # fmt: skip
-    for ax, (reader, col, key) in zip(axes, (("lookup", LOOKUP, "lk"), ("recall", INK, "rc")), strict=True):
+    lt = "nemotron-3.5-lightning"
+    conflict = {c["reader"]: c for c in load(CONFLICT)["cells"]
+                if c["dict"] == "jpp" and c["k"] == 25 and c["rendering"] == "chat" and c["layer"] == 14}  # fmt: skip
+    models = [t for t, _ in MODEL3] + [lt]
+    sets = (("our main test", "ours"), ("his, true facts", "true"), ("his, made-up facts", "made"))
+    n_rows = len(models) * len(sets)
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.27 * n_rows + 1.9), sharey=True)
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.325, right=0.98, top=1 - 1.2 / h, bottom=0.55 / h, wspace=0.08)
+    S.title(fig, "Zach's lookups follow the lens part with true facts, less with made-up",
+            "Lost beyond a random part, at L; grey: the lookup's 0.10 bar; whiskers 95%; ○ hollow: Lightning")  # fmt: skip
+    labels = []
+    for t in models:
+        tag = SHORT[t] + (" ○" if t == lt else "")
+        labels += [f"{tag}, {lab}" if not (t == lt and k == "made") else f"{tag}, made-up, below gate" for lab, k in sets]
+    for ax, (reader, col, key, pp) in zip(axes, (("lookup", LOOKUP, "lk", "PP"), ("recall", INK, "rc", "PM")),
+                                          strict=True):  # fmt: skip
         ax.set_title(reader, fontsize=12, weight="bold", loc="left", color=col)
-        for i, (t, _) in enumerate(MODEL3):
-            ours = S.parse(numbers[f"{key}_excess_{MAIN[t]}"])
-            lr = by[t]["layer_results"]
-            cell = lr[str(by[t]["layers"][0]) if "layers" in by[t] else next(iter(lr))][reader]
-            his = cell["excess"]
-            whisker(ax, -i + 0.15, ours, col, hollow=True)
-            if cell["valid"]:
-                whisker(ax, -i - 0.15, his, col)
-            else:  # under 30 switches under the whole change: left out (the README figures' convention)
-                ax.text(0.2, -i - 0.15, "his passages: under 30 switches", color=col, va="center",
-                        fontsize=S.LABEL_PT - 1)  # fmt: skip
-            S.record("ledger_zach_named", t, f"Zach's named passages, {reader}: switches lost beyond random", *his,
-                     source=rel(Z1))  # fmt: skip
-        rows_axis(ax, [SHORT[t] for t, _ in MODEL3])
+        for i, t in enumerate(models):
+            hollow = t == lt
+            y0 = -i * len(sets)
+            ours = conflict[pp]["excess"] if t == lt else S.parse(numbers[f"{key}_excess_{MAIN[t]}"])
+            whisker(ax, y0, ours, col, hollow=hollow)
+            if t == lt:
+                S.record("ledger_zach_named", t, f"our main test (L14), {reader}: switches lost beyond random", *ours,
+                         source=rel(CONFLICT))  # fmt: skip
+            for j, (_, k) in enumerate(sets[1:], start=1):
+                path = (Z1_L if t == lt else Z1) if k == "true" else Z1P.get(t)
+                if path is None:
+                    ax.text(-0.2, y0 - j, "not run", color=S.COL["muted"], va="center", fontsize=S.LABEL_PT - 1)
+                    continue
+                cell = _zach_cell(path, t, reader)
+                if cell["valid"]:
+                    whisker(ax, y0 - j, cell["excess"], col, hollow=hollow)
+                else:  # under 30 switches under the whole change: left out (the README figures' convention)
+                    ax.text(-0.2, y0 - j, "under 30 switches", color=col, va="center", fontsize=S.LABEL_PT - 1)
+                what = "true facts" if k == "true" else "made-up facts"
+                S.record("ledger_zach_named", t, f"Zach's named passages, {what}, {reader}: switches lost beyond "
+                         "random", *cell["excess"], source=rel(path))  # fmt: skip
+            if i:
+                ax.axhline(y0 + 0.5, color="#dddddd", lw=0.8)
+        rows_axis(ax, labels)
         zero_band(ax, -0.25, 1.0)
         ax.axvspan(-0.25, 0.10, color=S.COL["band"], lw=0, zorder=0)
+        ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         ax.set_xlabel("switches lost beyond random")
     return save(fig, "ledger_zach_named")
 
@@ -632,13 +667,17 @@ def six_lockers(plt) -> str:
 # ---- restyled from verdict folders: the lens part's atoms (52 A), the read window (51.5), the described bridge (Z2) --
 
 ATOMS = R / "x52_atoms" / "report-20261029T000125Z" / "tables.json"
+ATOMS_L = R / "x52_atoms" / "report-20261029T010648Z" / "tables.json"  # Lightning's run (our scenes only)
 DEPTH = R / "x51_depth" / "x51_5-20261028T181100Z" / "x51_5.json"
 Z2 = R / "x50_zach" / "z2-20261028T162710Z" / "z2.json"
+Z2_L = R / "x50_zach" / "x52_z2-20261029T025625Z" / "z2.json"  # Lightning's coverage run (L14 decides)
+LIGHTNING_HOLLOW = "○ Lightning: gate set after its 60-scene pre-check (hollow)"
 
 
 def atoms(plt) -> str:
     """Per model and view, the share of the lens part's rebuilt energy in each word class: our main test (the recall's
-    view) and Zach's described passages (each reader's own change); stacked."""
+    view) and Zach's described passages (each reader's own change); stacked. Lightning: our scenes only (its row
+    label carries ○, its gate set after the 60-scene pre-check)."""
     v = load(ATOMS)
     groups = (("bridge", "the original bridge word", S.COL["identity"]),
               ("new_bridge", "the new bridge word", ADDRESS),
@@ -652,6 +691,8 @@ def atoms(plt) -> str:
         for key, view, lab in (("e1", "PM", "our scenes, recall"), ("z2", "K", "Zach's described, lookup"),
                                ("z2", "M", "Zach's described, recall")):  # fmt: skip
             rows.append((f"{SHORT[t]}, {lab}", s[key][view]["energy"], s[key][view]["n"], t, f"{key} {view}"))
+    sl = load(ATOMS_L)["summary"]["nemotron-3.5-lightning"]["e1"]["PM"]
+    rows.append(("Lightning ○, our scenes, recall", sl["energy"], sl["n"], "nemotron-3.5-lightning", "e1 PM"))
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.42 * len(rows) + 2.0))
     h = fig.get_figheight()
     fig.subplots_adjust(left=0.3, right=0.97, top=1 - 1.45 / h, bottom=0.65 / h)
@@ -666,9 +707,10 @@ def atoms(plt) -> str:
                 ax.text(left + w / 2, -i, f"{w:.2f}", ha="center", va="center", fontsize=S.LABEL_PT - 1,
                         color="white" if key in ("bridge",) else "#222222")  # fmt: skip
             left += w
+        src = ATOMS_L if t == "nemotron-3.5-lightning" else ATOMS
         for k, x in energy.items():
-            S.record("ledger_atoms", t, f"{tag}: rebuilt energy in '{v['classes'][k]}'", *x, n=n, source=rel(ATOMS))
-    for b in (2.5, 5.5):
+            S.record("ledger_atoms", t, f"{tag}: rebuilt energy in '{v['classes'][k]}'", *x, n=n, source=rel(src))
+    for b in (2.5, 5.5, 8.5):
         ax.axhline(-b, color="#999999", lw=0.8)
     rows_axis(ax, [r[0] for r in rows])
     ax.set_xlim(0, 1.0)
@@ -714,29 +756,31 @@ def read_window(plt) -> str:
 def described(plt) -> str:
     """Per model, on Zach's described passages: our gap (the recall's switches lost beyond random minus the lookup's)
     where both readers switch enough to tell, and Zach's knock-out (the recall's loss minus the lookup's under his top-10
-    lens directions) beside, with his rotated-direction control in grey."""
-    v = load(Z2)
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.4))
-    fig.subplots_adjust(left=0.22, right=0.97, top=0.7, bottom=0.17)
+    lens directions) beside, with his rotated-direction control in grey. Lightning (its coverage run, L14) hollow: its
+    gate was set after the 60-scene pre-check."""
+    models = [(m, Z2) for m in load(Z2)["models"]] + [(m, Z2_L) for m in load(Z2_L)["models"]]
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.0))
+    fig.subplots_adjust(left=0.22, right=0.97, top=0.74, bottom=0.15)
     S.title(fig, "Zach's knock-out hits the recall more; our gap is unclear (withdrawn)",
-            "Recall's loss minus the lookup's, Zach's described passages; whiskers 95%")  # fmt: skip
+            "Recall's loss minus the lookup's, Zach's described passages; whiskers 95%; ○ hollow: Lightning")  # fmt: skip
     labels = []
-    for i, m in enumerate(v["models"]):
+    for i, (m, path) in enumerate(models):
+        hollow = m["target"] == "nemotron-3.5-lightning"
         la = str(m["layers"][0])
         r = m["layer_results"][la]
         ok = r["lookup"]["valid"] and r["recall"]["valid"]
         if ok:
-            whisker(ax, -i + 0.15, r["gap"], INK)
+            whisker(ax, -i + 0.15, r["gap"], INK, hollow=hollow)
         else:
             ax.text(-0.45, -i + 0.15, "our gap: the lookup switches too rarely to tell", fontsize=S.LABEL_PT - 1,
                     color=S.COL["muted"], va="center")  # fmt: skip
         his, rot = m["beside"]["full"]["paper10"]["m_minus_k"], m["beside"]["full"]["paper10_rot"]["m_minus_k"]
-        whisker(ax, -i - 0.15, his, JPP)
+        whisker(ax, -i - 0.15, his, JPP, hollow=hollow)
         ax.plot([rot[0]], [-i - 0.15], "o", color=NULL, ms=5)
-        labels.append(f"{SHORT[m['target']]} (L{la})")
+        labels.append(f"{SHORT[m['target']]}{' ○' if hollow else ''} (L{la})")
         S.record("ledger_described", m["target"], f"L{la}: our gap (recall minus lookup extra loss)", *r["gap"],
-                 source=rel(Z2))  # fmt: skip
-        S.record("ledger_described", m["target"], "Zach's knock-out, recall minus lookup", *his, source=rel(Z2))
+                 source=rel(path))  # fmt: skip
+        S.record("ledger_described", m["target"], "Zach's knock-out, recall minus lookup", *his, source=rel(path))
     rows_axis(ax, labels)
     zero_band(ax, -0.8, 1.0)
     ax.set_xlabel("recall's loss minus the lookup's")

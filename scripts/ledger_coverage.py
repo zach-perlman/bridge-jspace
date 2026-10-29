@@ -79,7 +79,8 @@ HEATMAP_LEFT_OUT = ("lightning-layer", "t49-5", "z2", "b52-c")
 HEATMAP = (
     ("I", "lightning-conflict", "Conflict test, main test", ("B not confirmed", "H confirmed", "H confirmed", "H confirmed")),
     ("I", "t51-12", "Item or answer, main test", ("H the entity", "H answer not read", "H the entity", "H answer not read")),
-    ("I", "t51-12", "Item or answer, Zach's passages", ("B mixed", "B mixed", "N running", "N not run")),
+    ("I", "t51-12", "Item or answer, his true facts", ("B mixed", "B mixed", "B mixed", "N not run")),
+    ("I", "t51-12", "Item or answer, his made-up facts", ("B mixed", "G below gate", "B mixed", "N not run")),
     ("I", "x0b", "Split in prose, JSON, tables", ("H holds", "H holds", "H holds", "H holds")),
     ("I", "x5", "Split in natural passages", ("B mixed", "G below gate", "H holds°", "H holds")),
     ("I", "t51-1", "Each part added by itself", ("B (i) no", "B (ii) no", "H (i), (ii) yes", "H (i), (ii) yes")),
