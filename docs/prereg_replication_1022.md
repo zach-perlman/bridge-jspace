@@ -3185,3 +3185,6 @@ The first build of v5kn2 / v5kd2 (">= 2 same-continent distractors"; sha256 4c51
 - three from one other continent, so no continent is a majority.
 - Where X's continent has too few countries in the vocabulary (Oceania: Australia only), use as many as exist, draw the rest so that no continent has more than three, and record "split_ok".
 - Readings: unchanged. Scenes with split_ok false are reported beside and left out of the primary reading.
+
+##### Amendment 61 note 33 addendum (Zach's position-split test, 2026-10-29 ~21:55 UTC; after the 9B's desc / final runs, before any mention run): the bridge's mention
+The 9B's description-only and final-only runs account for about a third and none of the main band's recall need ("spread"). To complete the split: the same knock-out restricted to the bridge's mentions in the passage (ablate_v2 --positions bridge: the bridge name's tokens, where v4 names X in its fact sentence). Main band, paper10 and paper10_rot, v4 gate, 9B, 27B, Lightning. Descriptive: the mention's share beside the description's and the final token's.
