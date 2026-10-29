@@ -80,9 +80,15 @@ def below_gate(name: str, model: str) -> None:
     _SLOTS.setdefault(name, {})[SHORT[model]] = "below gate"
 
 
+def title_size(ax) -> float:
+    """A panel title's font size by the panel's width (five panels beside long row labels need a smaller one)."""
+    width = ax.get_position().width
+    return 12 if width >= 0.16 else 10.5 if width >= 0.125 else 9.5
+
+
 def grey_panel(name: str, model: str, label: str, ax) -> None:
     """A whole panel for a model without a result: its name as the title, the grey label in the middle, no axes."""
-    ax.set_title(SHORT[model], fontsize=12, weight="bold", loc="left", color=GREY)
+    ax.set_title(SHORT[model], fontsize=title_size(ax), weight="bold", loc="left", color=GREY)
     # tick_params, not set_ticks: the panel may share an axis with the data panels
     ax.tick_params(left=False, labelleft=False, bottom=False, labelbottom=False)
     ax.set_xlabel("")
@@ -90,6 +96,13 @@ def grey_panel(name: str, model: str, label: str, ax) -> None:
     for side in ax.spines.values():
         side.set_visible(False)
     grey(name, model, label, ax, 0.5, 0.5, ha="center", transform=ax.transAxes, wrap=True)
+
+
+def note_slot(fig, name: str, model: str = "qwen3.5-122b-a10b", label: str = "not run") -> None:
+    """A model's grey slot on a one-axis figure (rows or stacks, no panel per model): registered as grey and named in a
+    grey line at the figure's bottom left (Dan 12:50: a grey labelled slot where a model did not run)."""
+    grey(name, model, label)
+    fig.text(0.005, 0.006, f"{SHORT[model]}: {label}", ha="left", va="bottom", color=GREY, fontsize=S.LABEL_PT - 1)
 
 
 def slots_of(name: str) -> dict[str, str]:
@@ -246,6 +259,7 @@ def address_shape(plt) -> str:
             ax.set_ylabel("share of lookups")
             ax.text(-0.36, 0.86, "dark: the midpoint swap, on the midpoint\nlight: the full swap, on its target",
                     fontsize=S.LABEL_PT, color=S.COL["muted"])  # fmt: skip
+    note_slot(fig, "ledger_address_shape")
     return save(fig, "ledger_address_shape")
 
 
@@ -257,7 +271,7 @@ def learned(plt) -> str:
     the lookup; a random subspace of the same size dashed."""
     v = load(DAS)
     by = {m["target"]: m for m in v["models"]}
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.93, top=0.72, bottom=0.17, wspace=0.3)
     S.title(fig, "Learned subspaces carry each reader's item switch; random ones none",
             "Switches carried by a learned subspace of size k on held-out entities; dashed: random subspace")  # fmt: skip
@@ -283,6 +297,7 @@ def learned(plt) -> str:
         ax.set_xlabel("subspace size k")
         S.end_labels(ax, 128, items, pad=8)
     axes[0].set_ylabel("switches carried")
+    grey_panel("ledger_learned", B122, "not run", axes[4])
     return save(fig, "ledger_learned")
 
 
@@ -296,11 +311,11 @@ def heads(plt) -> str:
     by = {r["target"]: (r, path) for path in (HEADS, HEADS_L) for r in load(path)["results"]}
     sets = ("top1", "top3", "top5", "top10", "best_layer")
     names = ("top 1", "top 3", "top 5", "top 10", "best layer")
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.5), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.2, wspace=0.12)
     S.title(fig, "No small set of heads carries the swapped address",
             "Share of the swap's switch cut by ablating heads at the last token; grey: random heads, same size")  # fmt: skip
-    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+    for ax, t in zip(axes[:4], SLOT_MODELS, strict=True):
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         r, src = by[t]
         site = r["sites"]["last"]
@@ -320,6 +335,7 @@ def heads(plt) -> str:
         ax.set_ylim(-0.45, 0.6)
     axes[0].set_ylabel("share of the switch cut")
     axes[0].text(4.4, 0.52, "rule's bar 0.5", fontsize=S.LABEL_PT, color=S.COL["muted"], ha="right")
+    grey_panel("ledger_heads", B122, "not run", axes[4])
     return save(fig, "ledger_heads")
 
 
@@ -331,12 +347,12 @@ def full_carrier(plt) -> str:
     and fact after, the change at one layer (hollow) and at every layer up to L (filled)."""
     runs = [(m, CARRIER) for m in load(CARRIER)["models"]] + [(m, CARRIER_L) for m in load(CARRIER_L)["models"]]
     by = {m["target"]: (m, src) for m, src in runs}
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.9), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 3.9), sharey=True)
     fig.subplots_adjust(left=0.18, right=0.98, top=0.72, bottom=0.15, wspace=0.1)
     S.title(fig, "Over every layer up to L, fact-after lookups follow the lens part",
             "Switches lost without the lens part, beyond a random part; hollow: one layer, filled: every layer to L")  # fmt: skip
     labels = ["fact first", "fact after"]
-    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+    for ax, t in zip(axes[:4], SLOT_MODELS, strict=True):
         if t not in by:
             rows_axis(ax, labels)
             ax.set_ylim(-1.6, 0.5)
@@ -365,6 +381,7 @@ def full_carrier(plt) -> str:
     fig.text(0.58, 0.03, "switches lost beyond random", ha="center", fontsize=S.FONT)
     axes[1].text(0.55, 0.32, "lookup", color=LOOKUP, fontsize=S.LABEL_PT)
     axes[1].text(0.55, -0.18, "recall", color=INK, fontsize=S.LABEL_PT)
+    grey_panel("ledger_full_carrier", B122, "not run", axes[4])
     return save(fig, "ledger_full_carrier")
 
 
@@ -378,13 +395,13 @@ def last_token_address(plt) -> str:
     by = {m["target"]: (m, TRAVEL) for m in load(TRAVEL)["models"]}
     by.update({m["target"]: (m, TRAVEL_L) for m in load(TRAVEL_L)["models"]})
     models = [*MODEL3, ("nemotron-3.5-lightning", "Lightning")]
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
     S.title(fig, "The bridge word's code works at the last token only on Muse",
             "Slot probe's accuracy at the last token by layer; dashed: majority slot; text: the swap at L+4")  # fmt: skip
-    for ax, (t, name) in zip(axes, models, strict=True):
+    for ax, (t, name) in zip(axes[:4], models, strict=True):
         m, src = by[t]
-        ax.set_title(name, fontsize=12, weight="bold", loc="left")
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         layers = sorted(int(k) for k in m["probe"])
         acc = [m["probe"][str(la)]["acc"] for la in layers]
         ax.fill_between(layers, [a[1] for a in acc], [a[2] for a in acc], color=ADDRESS, alpha=0.18, lw=0)
@@ -404,6 +421,7 @@ def last_token_address(plt) -> str:
         ax.set_ylim(0, 1.05)
         ax.set_xlabel("layer")
     axes[0].set_ylabel("probe accuracy")
+    grey_panel("ledger_last_token_address", B122, "not run", axes[4])
     return save(fig, "ledger_last_token_address")
 
 
@@ -482,6 +500,7 @@ def zach_named(plt) -> str:
         ax.axvspan(-0.25, 0.10, color=S.COL["band"], lw=0, zorder=0)
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         ax.set_xlabel("switches lost beyond random")
+    note_slot(fig, "ledger_zach_named")
     return save(fig, "ledger_zach_named")
 
 
@@ -518,6 +537,7 @@ def zach_routes(plt) -> str:
     rows_axis(ax, [r[0] for r in rows])
     ax.set_xlim(0, 1.0)
     ax.set_xlabel("share of the lookup's answers")
+    note_slot(fig, "ledger_zach_routes")
     return save(fig, "ledger_zach_routes")
 
 
@@ -548,6 +568,7 @@ def clean_reruns(plt) -> str:
     ax.text(1.05, 0.5, "filled: the same\non every row\n\nhollow: the depth\nanatomy's cells,\n38 of 11,988 rows\ndiffer",
             transform=ax.transAxes, ha="left", va="center",
             fontsize=S.LABEL_PT, color=S.COL["muted"])  # fmt: skip
+    note_slot(fig, "ledger_clean_reruns")
     return save(fig, "ledger_clean_reruns")
 
 
@@ -695,6 +716,7 @@ def answer_map(plt) -> str:
     axes[0].set_ylim(-len(rows) + 0.4, 0.6)
     axes[0].set_xlabel("answer in the lens's top 5")
     axes[1].set_xlabel("answers changed by writing it")
+    note_slot(fig, "ledger_answer_map")
     return save(fig, "ledger_answer_map")
 
 
@@ -785,7 +807,8 @@ def six_lockers(plt) -> str:
     ax.axhline(0.5, color="#555555", lw=0.9, ls="--")
     ax.text(-0.48, 0.52, "most pairs", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
     labels = [next(x for x in load(p)["models"] if x["target"] == t)["label"] for t, p in SIX.items()]
-    ax.set_xticks(range(len(SIX)), [f"{SHORT[t]}\n{lab}" for t, lab in zip(SIX, labels, strict=True)])
+    ax.set_xticks(range(len(SIX) + 1), [f"{SHORT[t]}\n{lab}" for t, lab in zip(SIX, labels, strict=True)] + ["122B"])
+    grey("ledger_six_lockers", B122, "not run", ax, len(SIX), 0.05, ha="center")
     ax.set_ylim(0, 1.0)
     ax.set_ylabel("share")
     ax.text(1.03, 0.75, "light: one shift\n(start slots)\n\ndark: swaps per pair\n(slot pairs)", transform=ax.transAxes,
@@ -848,6 +871,7 @@ def atoms(plt) -> str:
     for k, (_, lab, col) in enumerate(groups):
         ax.text(0.2 * k, 1.02 + 0.045 * (k % 2), lab, color=col if col != S.COL["original"] else "#777777",
                 fontsize=S.LABEL_PT - 1, weight="bold", transform=ax.transAxes)  # fmt: skip
+    note_slot(fig, "ledger_atoms")
     return save(fig, "ledger_atoms")
 
 
@@ -856,11 +880,11 @@ def read_window(plt) -> str:
     Zach's named passages (solid, band 95%) and on our routes scenes (dashed); 0.3 dotted, the window's end."""
     by = {m["target"]: (m, path) for path in (DEPTH, DEPTH_L) for m in load(path)["models"]
           if m.get("status", "tested") == "tested"}  # fmt: skip
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.0), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 4.0), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.74, bottom=0.3, wspace=0.12)
     S.title(fig, "The 9B and Lightning read his passages over our layers; the 27B not",
             "Answers switched by the whole change at one layer; solid: his passages, dashed: our scenes")  # fmt: skip
-    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+    for ax, t in zip(axes[:4], SLOT_MODELS, strict=True):
         if t not in by:
             grey_panel("ledger_read_window", t, "not designed\n(9B / 27B only)", ax)
             continue
@@ -885,6 +909,7 @@ def read_window(plt) -> str:
     axes[0].set_ylabel("switched")
     axes[0].text(0.03, 0.08, "lookup", color=LOOKUP, transform=axes[0].transAxes, fontsize=S.LABEL_PT)
     axes[0].text(0.03, 0.18, "recall", color=INK, transform=axes[0].transAxes, fontsize=S.LABEL_PT)
+    grey_panel("ledger_read_window", B122, "not run", axes[4])
     return save(fig, "ledger_read_window")
 
 
@@ -921,6 +946,7 @@ def described(plt) -> str:
     ax.set_xlabel("recall's loss minus the lookup's")
     ax.text(-0.78, 0.0, "dark: our removal\nteal: his knock-out\ngrey: his rotated control", fontsize=S.LABEL_PT,
             color=S.COL["muted"], va="center")  # fmt: skip
+    note_slot(fig, "ledger_described")
     return save(fig, "ledger_described")
 
 
@@ -1031,7 +1057,8 @@ def attention(plt) -> str:
                      source=rel(path))  # fmt: skip
     ax.axhline(0.30, color="#555555", lw=0.9, ls="--")
     ax.axhline(0.10, color="#555555", lw=0.9, ls=":")
-    ax.set_xticks(range(len(models)), ticks)
+    ax.set_xticks(range(len(models) + 1), [*ticks, "122B"])
+    grey("ledger_attention", B122, "not run", ax, len(models), 0.1, ha="center")
     ax.set_ylim(-0.05, 2.0)
     ax.set_ylabel("attention moved")
     ax.text(1.03, 0.62, "dark: pairs that switched\nlight: pairs that did not\ngrey: a random vector\n\n"
@@ -1055,12 +1082,12 @@ def distance(plt) -> str:
     runs = [(m, path) for path in DISTANCE for m in load(path)["models"] if m["status"] == "tested"]
     by = {m["target"]: (m, path) for m, path in runs}
     ks = ("0", "5", "20", "50")
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
     S.title(fig, "The address survives fifty neutral sentences",
             "Lookups under the whole change by route, and the swap's lookups sent to the target, by sentences added")  # fmt: skip
     ident = S.MARK_COL["identity"]
-    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+    for ax, t in zip(axes[:4], SLOT_MODELS, strict=True):
         if t not in by:
             grey_panel("ledger_distance", t, "no outcomes\n(rerun running)", ax)
             continue
@@ -1084,8 +1111,9 @@ def distance(plt) -> str:
         ax.set_xlabel("sentences added")
         ax.set_ylim(0, 1.0)
     axes[0].set_ylabel("share of lookups")
-    axes[-1].text(0.98, 0.97, "blue: identity\norange: position\ndashed: the swap", transform=axes[-1].transAxes,
+    axes[3].text(0.98, 0.97, "blue: identity\norange: position\ndashed: the swap", transform=axes[-1].transAxes,
                   ha="right", va="top", fontsize=S.LABEL_PT, color=S.COL["muted"])  # fmt: skip
+    grey_panel("ledger_distance", B122, "not run", axes[4])
     return save(fig, "ledger_distance")
 
 
@@ -1113,7 +1141,9 @@ def gain(plt) -> str:
             ax.plot([x - w * 0.45, x + w * 0.45], [bar, bar], color="#c0392b", lw=1.6)
             S.record("ledger_gain", t, f"{reader} {arm}: switch rate", *v, n=m["n"], source=rel(path))
         S.record("ledger_gain", t, "the rule's label", m["label"], source=rel(path))
-    ax.set_xticks(range(len(runs)), [f"{SHORT[m['target']]}\n{m['label']}" for m, _ in runs])
+    ax.set_xticks(range(len(runs) + 1), [f"{SHORT[m['target']]}\n{m['label']}" for m, _ in runs] + ["122B"])
+    grey("ledger_gain", B122, "not run", ax, len(runs), 0.05, ha="center")
+    ax.set_xlim(-0.6, len(runs) + 0.5)
     ax.set_ylim(0, 1.05)
     ax.set_ylabel("switch rate")
     ax.text(0.0, -0.32, "per model, left to right: " + "; ".join(c[2].replace("\n", " ") for c in cells),
@@ -1140,11 +1170,11 @@ def agnostic(plt) -> str:
                 runs.setdefault(m["target"], (m, path))
     models = [t for t in SLOT_MODELS if t in runs]
     kinds = ("animals", "fruits", "names")
-    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.5), sharey=True)
+    fig, axes = plt.subplots(1, len(models) + 1, figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.16, wspace=0.12)
     S.title(fig, "The animal-fit address does not carry over to other items as ruled",
             "Position answers lost without the address, beyond random; filled: fit on animals, hollow: refit per kind")  # fmt: skip
-    for ax, t in zip(axes, models, strict=True):
+    for ax, t in zip(axes[: len(models)], models, strict=True):
         m, path = runs[t]
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         for i, kind in enumerate(kinds):
@@ -1166,6 +1196,7 @@ def agnostic(plt) -> str:
         ax.set_ylim(0, 0.75)
     axes[0].set_ylabel("position answers lost")
     axes[0].text(-0.45, 0.31, "rule's 0.3", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
+    grey_panel("ledger_agnostic", B122, "not run", axes[-1])
     return save(fig, "ledger_agnostic")
 
 
@@ -1183,17 +1214,17 @@ def value_formats(plt) -> str:
     fmts = ("prose", "json", "table")
     parts = (("identity", S.COL["identity"]), ("position", S.COL["position"]), ("value", S.COL["value"]),
              ("original", S.COL["original"]), ("other", "#e6e6e6"))  # fmt: skip
-    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.6), sharey=True)
+    fig, axes = plt.subplots(1, len(models) + 1, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.14, wspace=0.1)
     S.title(fig, "In prose, JSON and tables the lookup never takes the value",
             "The lookup's answer under the whole change, by text format; blue identity, orange position, grey original")  # fmt: skip
-    for ax, t in zip(axes, models, strict=True):
+    for ax, t in zip(axes[: len(models)], models, strict=True):
         m, path = runs[t]
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         for i, f in enumerate(fmts):
             c = m["cells"][f]
             if c is None or "arms" not in c:
-                ax.text(i, 0.5, "not tested\n(gate)", ha="center", va="center", fontsize=S.LABEL_PT - 1,
+                ax.text(i, 0.5, "not\ntested\n(gate)", ha="center", va="center", fontsize=S.LABEL_PT - 2,
                         color=S.COL["muted"])  # fmt: skip
                 continue
             whole, bottom = c["arms"]["whole"], 0.0
@@ -1208,6 +1239,7 @@ def value_formats(plt) -> str:
         ax.set_xlim(-0.5, len(fmts) - 0.5)
         ax.set_ylim(0, 1.0)
     axes[0].set_ylabel("share of the lookup's answers")
+    grey_panel("ledger_value_formats", B122, "not run", axes[-1])
     return save(fig, "ledger_value_formats")
 
 
@@ -1245,6 +1277,7 @@ def pooled_probe(plt) -> str:
     ax.text(0.86, 0.45, "rule's 0.85", fontsize=S.LABEL_PT, color=S.COL["muted"])
     ax.set_xlim(0, 1.0)
     ax.set_xlabel("probe accuracy")
+    note_slot(fig, "ledger_pooled_probe")
     return save(fig, "ledger_pooled_probe")
 
 
@@ -1381,6 +1414,7 @@ def last_conflict(plt) -> str:
     axes[1].axvline(0.7, color="#555555", lw=0.8, ls="--")
     axes[1].set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
     axes[1].set_xlabel("the rest alone,\nshare of the whole change")
+    note_slot(fig, "ledger_last_conflict")
     return save(fig, "ledger_last_conflict")
 
 
@@ -1389,10 +1423,12 @@ def last_conflict(plt) -> str:
 
 def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, xlabel: str, xlim=(-0.05, 1.05),
                 bars: tuple = (), height: float | None = None, left: float = 0.37,
-                models: tuple = SLOT_MODELS) -> str:
-    """One panel per model slot (9B, 27B, Muse, Lightning; models=FIVE adds the 122B). rows: model -> [(row label, (v, lo, hi), colour, hollow)];
+                models: tuple = FIVE) -> str:
+    """One panel per model slot (9B, 27B, Muse, Lightning, the 122B; Dan 12:50); a model with neither rows nor a label
+    in absent gets the grey "not run" slot. rows: model -> [(row label, (v, lo, hi), colour, hollow)];
     absent: model -> its grey label. Row labels (the union, in first-seen order) on the left panel; each (x, style)
     in bars is drawn on every data panel. Every plotted value is recorded for figures/story/data.csv."""
+    absent = {**{t: "not run" for t in models if t not in rows}, **absent}
     labels: list[str] = []
     for t in models:
         for lab, *_ in rows.get(t, []):
@@ -1410,8 +1446,7 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
         # the hollow mark on every hollow panel: Lightning (its gate set after the pre-check) and any model registered
         # below gate for this figure (Dan's figures brief, 10:00: below-gate panels hollow and labelled alike)
         hollow_panel = t == LT or _SLOTS.get(name, {}).get(SHORT[t]) == "below gate"
-        ax.set_title(SHORT[t] + (" ○" if hollow_panel else ""), fontsize=12 if len(models) == 4 else 10.5, weight="bold",
-                     loc="left")
+        ax.set_title(SHORT[t] + (" ○" if hollow_panel else ""), fontsize=title_size(ax), weight="bold", loc="left")
         for lab, v, col, hollow in rows[t]:
             if isinstance(v, str):  # a cell this model does not have (not tested, pending): a grey note in its row
                 ax.text(xlim[0] + 0.03, -labels.index(lab), v, color=GREY, va="center", fontsize=S.LABEL_PT - 1)
@@ -1596,7 +1631,7 @@ def attnblock(plt) -> str:
         q = sp["readers"][reader]
         for k, lab in (("span", "follow-up: span"), ("span_ctrl", "follow-up: control span")):
             rows[LT].append((f"{reader}: {lab}", [q["cut"][k], *q["cut_ci"][k]], col, True))
-    absent = {t: "not applicable\n(Lightning test)" for t in SLOT_MODELS[:3]}
+    absent = {t: "not applicable\n(Lightning test)" for t in (*SLOT_MODELS[:3], B122)}
     return four_panels(plt, "ledger_attnblock", "Two attention blocks carry a third of Lightning's lookup switch",
                        "Share of the whole change's switches cut by blocking the bridge word; dashed: 0.6, dotted: 0.3",
                        rows, absent, "switches cut", xlim=(-0.1, 1.05), bars=((0.6, "--"), (0.3, ":")))
@@ -1733,7 +1768,7 @@ def twobytwo(plt) -> str:
             absent[t] = "running" if v.get(t, {}).get("status") == "pending" else "not run"
     return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
                        "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
-                       rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),), models=FIVE)
+                       rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),))
 
 
 def _twobytwo_models(path: Path) -> list[dict]:

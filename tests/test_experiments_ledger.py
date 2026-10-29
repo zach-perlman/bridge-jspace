@@ -188,16 +188,17 @@ def test_the_figure_shows_every_model_of_its_table():
     assert not L.slot_problems(*L.entries(readme)[0], {})
 
 
-def test_the_122b_needs_a_slot_only_where_it_has_numbers():
-    """Dan 11:30: the 122B is a fifth column; a not-run 122B needs no slot in a four-slot figure, a 122B number needs
-    the 122B's data in the figure."""
+def test_the_122b_is_checked_like_the_other_models():
+    """Dan 12:50: five slots in every per-model figure; a not-run 122B column needs the 122B's grey slot, a 122B number
+    its data."""
     good = {"ledger_x": {"9B": "data", "27B": "data", "Muse": "grey: not designed", "Lightning": "below gate"}}
     five = (SLOT_CARD.replace("| Lightning |\n  |---|---|---|---|---|", "| Lightning | 122B |\n  |---|---|---|---|---|---|")
             .replace("| ○ 0.40 |", "| ○ 0.40 | not run |").replace("below gate |\n", "below gate | |\n"))  # fmt: skip
     head, body = L.entries(five)[0]
     assert L.table_columns(body)["122B"] == "none"
-    assert not L.slot_problems(head, body, good)
+    assert L.slot_problems(head, body, good)  # no 122B slot
+    assert not L.slot_problems(head, body, {"ledger_x": {**good["ledger_x"], "122B": "grey: not run"}})
     with_number = five.replace("| ○ 0.40 | not run |", "| ○ 0.40 | 0.50 [0.40, 0.60] |")
     head, body = L.entries(with_number)[0]
-    assert L.slot_problems(head, body, good)  # the 122B's number, no 122B slot
+    assert L.slot_problems(head, body, {"ledger_x": {**good["ledger_x"], "122B": "grey: not run"}})
     assert not L.slot_problems(head, body, {"ledger_x": {**good["ledger_x"], "122B": "data"}})

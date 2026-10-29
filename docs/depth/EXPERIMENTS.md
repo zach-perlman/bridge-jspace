@@ -40,7 +40,7 @@ New in this ledger:
 - **Method.** The conflict test at the bridge word at each of 13 swept layers (L2 to L50), decided at L14: without the lens part, against without a random part of the same share.
 
 ![On Lightning the recall follows the lens part; the lookup does not](../../figures/ledger/ledger_lightning_layers.png)
-*Top: share switched by the whole change per swept layer (60 dev scenes); dashed: the pick rule's 0.3; dotted: relative depth 0.25; solid line: L14. Middle: switches lost without the lens part beyond a random part per layer (200 scenes), lookup purple, recall dark; dashed: the lookup's 0.10 bar; grey: under 30 switches, cannot tell; whiskers 95%. Bottom: the 122B's conflict test at L24 to L36 (its L33), squares. Models: Lightning; the 122B; 9B, 27B, Muse grey (their layer fixed in advance; their conflict test is the README's).*
+*Top: share switched by the whole change per swept layer (60 dev scenes); dashed: the pick rule's 0.3; dotted: relative depth 0.25; solid line: L14. Middle: switches lost without the lens part beyond a random part per layer (200 scenes), lookup purple, recall dark; dashed: the lookup's 0.10 bar; grey: under 30 switches, cannot tell; whiskers 95%. Bottom: the 122B's conflict test at L24 to L36 (its L33), squares. Models: Lightning; the 122B; 9B, 27B, Muse grey (their layer fixed in advance; their conflict test is the README's). The 122B: FP8.*
 
 - **Rule, fixed in advance.** The main test's: "confirmed if the lookup loses at most 0.10 beyond random and the recall loses at least 0.30 of its switches without the lens part; killed if the lookup loses at least 0.20 or the recall under 0.20." Coverage run on an already-scored rule: no prediction.
 
@@ -76,7 +76,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: (1) without the lens part; (2) without the lens part but keeping its directions for both readers' answer words (number words); (3) without those answer directions only; each against a random part of its share; the lens's rank of the answer word at the bridge word first.
 
 ![The recall's loss without the lens part is the item, not its answer](../../figures/ledger/ledger_answer_control.png)
-*The recall's switches lost beyond a random part under the three arms, main test at L (200 per model; Lightning at L14; the 122B at L33); grey: Zach's described bridge (9B, 27B), withdrawn; whiskers 95%.*
+*The recall's switches lost beyond a random part under the three arms, main test at L (200 per model; Lightning at L14; the 122B at L33); grey: Zach's described bridge (9B, 27B), withdrawn; whiskers 95%. The 122B: FP8.*
 
 - **Rule, fixed in advance.** (Amended 20:20, before opening.) "The lens effect is the entity: arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. The lens effect is the answer: arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed." First: "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)".
 
@@ -110,7 +110,7 @@ New in this ledger:
 - **Method.** The whole change at the bridge word at every 4th layer (L2 to L50); each reader's switch rate; the bridge word's lens readability recorded as the tie-break.
 
 ![Lightning's layer sweep and the conflict test by layer](../../figures/ledger/ledger_lightning_layers.png)
-*The same figure as the conflict test's card; its top panel is this sweep: share switched by the whole change per layer (60 dev scenes); dashed: 0.3; dotted: relative depth 0.25; solid: L14. The bottom panel is the 122B's conflict test per layer (its L33). Models: Lightning; the 122B; 9B, 27B, Muse grey (their layer fixed in advance; their conflict test is the README's).*
+*The same figure as the conflict test's card; its top panel is this sweep: share switched by the whole change per layer (60 dev scenes); dashed: 0.3; dotted: relative depth 0.25; solid: L14. The bottom panel is the 122B's conflict test per layer (its L33). Models: Lightning; the 122B; 9B, 27B, Muse grey (their layer fixed in advance; their conflict test is the README's). The 122B: FP8.*
 
 - **Rule, fixed in advance.** Batch 52 amendment 1 (Dan ~00:50, before the sweep): "earliest layer passing the gate at relative depth ≥ 0.25; tie-break = highest lens readability of the bridge word." Passing = both readers switch on at least 0.3 (the published rule). ○ Gate chosen after the 60-scene pre-check was seen.
 
@@ -320,7 +320,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: the lens part times α plus the rest times β, α and β from 0 to 2; the rest also without the address; random parts of the lens part's share at the same gains.
 
 ![The gain map fits neither reading on any model](../../figures/ledger/ledger_gain.png)
-*Per model, the five cells the rule reads, each with the rule's bar as a red tick: the recall with the lens part alone at twice its size, with the rest at twice its size without the address, and with a random part at the lens part's share (grey); the lookup with the lens part alone at twice its size and with the rest alone; whiskers 95%.*
+*Per model, the five cells the rule reads, each with the rule's bar as a red tick: the recall with the lens part alone at twice its size, with the rest at twice its size without the address, and with a random part at the lens part's share (grey); the lookup with the lens part alone at twice its size and with the rest alone; whiskers 95%. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "(a) "weights, not routes": the recall's switch at (2,0) >= 0.5 and at (0,2, no U) >= 0.5, random corners <= 0.15; the lookup's switch at (2,0) <= 0.10 and at (0,1) >= 0.6. (b) "routes": the recall's switch at (0,2) <= 0.2 while (2,0) >= 0.5. (a') "the rest moves the recall only through the address": (0,2) >= 0.5 but (0,2, no U) <= 0.2. (c) "neither": report the two heatmaps." Lightning: a coverage run on this rule, no prediction.
 
@@ -352,7 +352,7 @@ New in this ledger:
 - **Method.** Distributed alignment search per reader at k = 1, 4, 16, 64 directions; k chosen on the select split; own and cross interchange accuracy (IIA) on the test entities' pairs, against random and shuffled-target subspaces; the subspaces' energy inside the lens part, the address and the embedding directions.
 
 ![Neither reader has a learned subspace of its own](../../figures/ledger/ledger_das48.png)
-*Held-out switches carried by each reader's learned subspace at the size k the rule chose (lookup purple, recall dark); dashed: the rule's 0.7; whiskers 95%. Models: 9B, 27B, Muse; Lightning grey (dropped: DAS port). The README's supplementary figure for Muse: [s12](../../figures/supp/s12_das_muse.png).*
+*Held-out switches carried by each reader's learned subspace at the size k the rule chose (lookup purple, recall dark); dashed: the rule's 0.7; whiskers 95%. Models: 9B, 27B, Muse; Lightning grey (dropped: DAS port). The README's supplementary figure for Muse: [s12](../../figures/supp/s12_das_muse.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "(a) "two readers, two subspaces": own-IIA >= 0.7 at some k <= 16 for both readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA). (b) "the recall's subspace is the lens's part": R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2. (c) "the address is part of the lookup's subspace": ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d). (d) "a third identity code": R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read." The 27B: a coverage run on this rule, no prediction.
 
@@ -380,7 +380,7 @@ New in this ledger:
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 
 ![The lens part holds the two bridge words, almost never the answer](../../figures/ledger/ledger_atoms.png)
-*Share of the lens part's rebuilt energy by what each of its 25 directions decodes to, per model: our main test (the recall's view) and Zach's described passages (each reader's own change); 50 items each; Lightning ○ (our scenes only; its gate set after the 60-scene pre-check). The report's own figure, with examples: [the verdict folder](../../results/x52_atoms/report-20261029T000125Z/fig_atoms.png).*
+*Share of the lens part's rebuilt energy by what each of its 25 directions decodes to, per model: our main test (the recall's view) and Zach's described passages (each reader's own change); 50 items each; Lightning ○ (our scenes only; its gate set after the 60-scene pre-check). The report's own figure, with examples: [the verdict folder](../../results/x52_atoms/report-20261029T000125Z/fig_atoms.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
 
@@ -409,7 +409,7 @@ New in this ledger:
 - **Method.** Read: the answer word's rank in the lens readout at the bridge word, its earlier mention, the question and the last token, every second layer before the answer layer. Write: at the most readable cell, the answer word's lens directions at one and two times a real change's size, against a random part and a frequency-matched part of the same size; the whole change at that cell as the reference.
 
 ![On Zach's passages the answer is readable and usable; on ours rarely](../../figures/ledger/ledger_answer_map.png)
-*Per model, dataset and reader: left, the best share of items with the answer word in the lens's top 5 before the answer layer (dashed: the rule's 0.5); right, the answers changed by writing its lens directions at that cell, the better of the two sizes (whiskers 95%), a random part of the same size in grey (dashed: the rule's 0.3); at the right, the rule's combination. Per-layer maps: [9B](../../results/x52_answer_map/x52-20261029T004559Z/map_9b.png), [27B](../../results/x52_answer_map/x52-20261029T004559Z/map_27b.png), [Muse](../../results/x52_answer_map/x52-20261029T004559Z/map_muse.png). Models: 9B, 27B, Muse; Lightning hollow (our scenes; on Zach's passages grey: read pending).*
+*Per model, dataset and reader: left, the best share of items with the answer word in the lens's top 5 before the answer layer (dashed: the rule's 0.5); right, the answers changed by writing its lens directions at that cell, the better of the two sizes (whiskers 95%), a random part of the same size in grey (dashed: the rule's 0.3); at the right, the rule's combination. Per-layer maps: [9B](../../results/x52_answer_map/x52-20261029T004559Z/map_9b.png), [27B](../../results/x52_answer_map/x52-20261029T004559Z/map_27b.png), [Muse](../../results/x52_answer_map/x52-20261029T004559Z/map_muse.png). Models: 9B, 27B, Muse; Lightning hollow (our scenes; on Zach's passages grey: read pending). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
 
@@ -475,7 +475,7 @@ New in this ledger:
 - **Method.** The change from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Arms: the whole change; without the address, against without a random part of its share; the address added by itself, against a random part. A sanity swap (two picks swap, no move) first.
 
 ![Every model's lookup takes identity or position, never the value](../../figures/ledger/ledger_routes.png)
-*The lookup's answers under the whole change, without the address, and with the address added by itself, per model: identity (blue), position (orange), value (none), the original answer (grey); routes scenes, 300 per model; the 9B's and 27B's "address alone" rows from their add-only runs. With the 122B as a fifth row group, faded (○: below its gate, its g75 runs).*
+*The lookup's answers under the whole change, without the address, and with the address added by itself, per model: identity (blue), position (orange), value (none), the original answer (grey); routes scenes, 300 per model; the 9B's and 27B's "address alone" rows from their add-only runs. With the 122B as a fifth row group, faded (○: below its gate, its g75 runs). The 122B: FP8.*
 
 - **Rule, fixed in advance.** "A route counts as used if its share is >= 0.20 with lower CI >= 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference, so it takes Muse's rule (switch rate >= 0.50).
 
@@ -508,7 +508,7 @@ New in this ledger:
 - **Method.** The routes test's whole change at the bridge word at L, per format; the lookup's answer sorted into identity, position, value and original; the per-format refit address taken out against a random part (9B, Muse, Lightning).
 
 ![In prose, JSON and tables the lookup never takes the value](../../figures/ledger/ledger_value_formats.png)
-*Per model and format, the lookup's answer under the whole change: identity (blue), position (orange), value (green, a sliver on the 9B's prose), original (grey), other (light); formats whose gate failed marked "not tested".*
+*Per model and format, the lookup's answer under the whole change: identity (blue), position (orange), value (green, a sliver on the 9B's prose), original (grey), other (light); formats whose gate failed marked "not tested". The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's removal cuts it >= 0.3 beyond random." Lightning: a coverage run on this rule, no prediction.
 
@@ -538,7 +538,7 @@ New in this ledger:
 - **Method.** Distributed alignment search: a subspace trained to carry the switch, its own interchange accuracy on test pairs, against a random subspace and a shuffled-target subspace of the same size.
 
 ![Learned subspaces carry each reader's item switch; random ones none](../../figures/ledger/ledger_learned.png)
-*Share of item switches carried by a learned subspace of k directions on held-out test pairs (recall 90 / 69 / 51, lookup 90 / 98 / 100), recall dark, lookup purple; dashed: a random subspace of the same size; whiskers 95%. Models: 9B, 27B, Muse; Lightning grey (dropped: DAS port).*
+*Share of item switches carried by a learned subspace of k directions on held-out test pairs (recall 90 / 69 / 51, lookup 90 / 98 / 100), recall dark, lookup purple; dashed: a random subspace of the same size; whiskers 95%. Models: 9B, 27B, Muse; Lightning grey (dropped: DAS port). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Q51.3 (i) 'found' = >= 300 recall pairs and test own-IIA >= 0.5 at some k <= 128; (ii) the lookup subspace (R_lookup at its chosen k) on the test pairs: the share of R R^T Delta inside U, the J++-25 atoms, the W_E-25 atoms and outside their union, each part >= 0.5 named 'mostly' (descriptive; the parts overlap); (iii) U's energy in R_pos at k = 4 = ||R_pos^T U||_F^2 / rank U >= 0.6" (verdict.md, as computed)
 
@@ -599,7 +599,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: the difference of two slot means, at one, two and four times its size; control: a random vector of the same size. Read: the lookup's answer (target locker, original, the third), and whether the recall's answer changes (the collateral).
 
 ![Swapping the address sends the lookup to the swapped-in locker](../../figures/ledger/ledger_address_swap.png)
-*Per model, the share of lookups sent to the swapped-in locker at doses 1, 2 and 4 (orange triangles, whiskers 95%), a random vector of the same size (dashed), and the recalls changed by the same swap (grey). 600 swaps per model. With the 122B as a fifth panel (○: below its gate, its g75 run).*
+*Per model, the share of lookups sent to the swapped-in locker at doses 1, 2 and 4 (orange triangles, whiskers 95%), a random vector of the same size (dashed), and the recalls changed by the same swap (grey). 600 swaps per model. With the 122B as a fifth panel (○: below its gate, its g75 run). The 122B: FP8.*
 
 - **Rule, fixed in advance.** "at s = 1 the target share minus the random direction's >= 0.15 with lower CI > 0; [...] among writes that move the lookup to another locker target / (target + third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; [...] target minus random >= 0.10 in each of the 6 (j, k) pairs" (jobs/c3/x8_a_9b.yaml; each over the 9B, the 27B, the 122B and Muse). Lightning: a coverage run on that rule, no prediction.
 
@@ -633,7 +633,7 @@ New in this ledger:
 - **Method.** At each distance, at the bridge word at L: the routes test's whole change, and without the address against a random part of its share; the address swap at dose 2 against a random vector of its size; a slot probe beside.
 
 ![The address survives fifty neutral sentences](../../figures/ledger/ledger_distance.png)
-*Per model, by the number of neutral sentences added: lookups under the whole change by route (identity blue, position orange) and the swap's lookups sent to the target (dashed); whiskers 95%; 218 / 300 / 279 / 199 scenes. Models: 9B, 27B, Muse (its rerun r2), Lightning.*
+*Per model, by the number of neutral sentences added: lookups under the whole change by route (identity blue, position orange) and the swap's lookups sent to the target (dashed); whiskers 95%; 218 / 300 / 279 / 199 scenes. Models: 9B, 27B, Muse (its rerun r2), Lightning. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "breaks = the gate failed at some k (the test stops there); distance-robust = position share and probe within 0.1 of k = 0 at every k, swap success within 0.15; address near, identity far = position falls >= 0.2 and identity rises >= 0.2 by k = 50 with accuracy >= 0.8". The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -661,7 +661,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: one fixed shift (the mean step between neighbouring slot means) from each start slot, and swaps between given slots, each at doses 1 and 2, against a random vector of the same size; the slot means' first principal component beside.
 
 ![One shift moves no lookup; pair swaps work on 9B, Muse and Lightning](../../figures/ledger/ledger_six_lockers.png)
-*At dose 2, per model: start slots from which one shift sends at least 0.25 of lookups one slot on (light, of 5; none anywhere), and slot pairs a given-slot swap reaches (dark, of 30); dashed: "most pairs"; the rule's label under each model. 300 test scenes per model; 9B, 27B, Muse, Lightning.*
+*At dose 2, per model: start slots from which one shift sends at least 0.25 of lookups one slot on (light, of 5; none anywhere), and slot pairs a given-slot swap reaches (dark, of 30); dashed: "most pairs"; the rule's label under each model. 300 test scenes per model; 9B, 27B, Muse, Lightning. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Ordinal: the first PCA component is monotone in slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector <= 0.05; Categorical, first vs rest: v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within 0.10 of random; Slot-specific: pairwise writes reach >= 0.25 on most pairs but no single v does." Dose 2 decides. The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -690,7 +690,7 @@ New in this ledger:
 - **Method.** Part 1: the smallest learned subspace dimension d* that carries the position switch, per number of lockers, against random subspaces. Part 2: the address swap through our code, a probe's code and a learned code, each with the others removed, against a random direction. Part 3: swaps to the midpoint between two slots, against a random vector of the same norm.
 
 ![Muse's code grows with the lockers, the 9B's does not; midpoints fail](../../figures/ledger/ledger_address_shape.png)
-*Top: share of position switches carried by a learned code of k directions, one line per number of lockers (held-out entities, 42 to 91 test pairs per line); dashed: a random code of the same size. Bottom: at dose 2, the midpoint swap's share landing on the midpoint slot (dark) and the full swap's share landing on its target (light), from slot 1 and slot 6, 200 items each; whiskers 95%. 9B and Muse. Models: 9B and Muse; 27B grey (part 2 only, in the table); Lightning grey (not tested: DAS port dropped).*
+*Top: share of position switches carried by a learned code of k directions, one line per number of lockers (held-out entities, 42 to 91 test pairs per line); dashed: a random code of the same size. Bottom: at dose 2, the midpoint swap's share landing on the midpoint slot (dark) and the full swap's share landing on its target (light), from slot 1 and slot 6, 200 items each; whiskers 95%. 9B and Muse. Models: 9B and Muse; 27B grey (part 2 only, in the table); Lightning grey (not tested: DAS port dropped). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** Part 1: "One dimension per slot: d*(S) ≥ S − 2 for every S and d*(8) ≥ 5"; "An ordinal (low-dimensional) code: d*(S) ≤ 2 for every S up to 8"; else in between. Part 2: "One code, three bases: every projected swap reaches ≥ 0.6 of the whole swap's effect, and each cross-removal cuts the other's swap by ≥ 0.6." Part 3: "Categories: midpoint swaps send < 0.1 to the midpoint slot while the full swaps reach ≥ 0.4 of the target"; "A metric order: midpoint swaps send ≥ 0.3 of lookups to the midpoint slot, from both ends." (jobs/c3/batch51.yaml, addendum 3)
 
@@ -751,7 +751,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: the lens readout's top five under the report prompt and under the lookup prompt; the report's switches lost without the lens part and without the address, each beyond a random part.
 
 ![Asked for the position, the 27B's lens still does not show it](../../figures/ledger/ledger_report47.png)
-*The 27B, question last: the lens top five holding the right ordinal under the report prompt (dashed: the rule's 0.4), and the report's switches lost without the lens part and without the address, beyond random; whiskers 95%. Models: the 27B; 9B, Muse and Lightning grey (not tested: the report reader below its gate, 0.568 / 0.498 / 0.488 < 0.80).*
+*The 27B, question last: the lens top five holding the right ordinal under the report prompt (dashed: the rule's 0.4), and the report's switches lost without the lens part and without the address, beyond random; whiskers 95%. Models: the 27B; 9B, Muse and Lightning grey (not tested: the report reader below its gate, 0.568 / 0.498 / 0.488 < 0.80). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** ""Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U [...]"
 
@@ -780,7 +780,7 @@ New in this ledger:
 - **Method.** Two new wordings of the report question: position (a digit: "Was the locker of <p>'s pick listed in position 1, 2 or 3 of the list?") and sentence (a word: "Which of the three locker sentences - the first, the second or the third - gives the locker of <p>'s pick?"); the share of scenes whose asked item sits in slot 1 that the report reads right, with the earlier report wording beside.
 
 ![Reworded, the report reads slot 1 on every model tested](../../figures/ledger/ledger_report_slot1.png)
-*Question last: the share of slot-1 scenes the report reads right, under the earlier report wording (grey), the position wording (orange) and the sentence wording (dark); dashed: the rule's 0.2; whiskers 95%. Models: 9B (decides), 27B, Lightning (hollow: a coverage run with the 9B / 27B design; its gate set after the 60-scene pre-check); Muse grey (not designed: 9B / 27B only).*
+*Question last: the share of slot-1 scenes the report reads right, under the earlier report wording (grey), the position wording (orange) and the sentence wording (dark); dashed: the rule's 0.2; whiskers 95%. Models: 9B (decides), 27B, Lightning (hollow: a coverage run with the 9B / 27B design; its gate set after the 60-scene pre-check); Muse grey (not designed: 9B / 27B only). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "if slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop." (results/x49_report/x49_6-20261028T154511Z/x49_6.md; Q49.6, Dan: 60%; Lightning a coverage run, no prediction)
 
@@ -810,7 +810,7 @@ New in this ledger:
 - **Method.** Heads ranked by their attention move on the fit half, mean-ablated together on the read half at the last token (and the question tokens), against random head sets of the same size in the same layers.
 
 ![No small set of heads carries the swapped address](../../figures/ledger/ledger_heads.png)
-*Share of the swap's switch cut by mean-ablating the top 1 to 10 heads and every head of the best layer at the last token (orange, whiskers 95%), beside the mean of five random head sets of the same size (grey); dotted: the rule's 0.5 bar; read pairs 330 / 300 / 284 / 250 (9B, 27B, Muse, Lightning).*
+*Share of the swap's switch cut by mean-ablating the top 1 to 10 heads and every head of the best layer at the last token (orange, whiskers 95%), beside the mean of five random head sets of the same size (grey); dotted: the rule's 0.5 bar; read pairs 330 / 300 / 284 / 250 (9B, 27B, Muse, Lightning). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "small_set: some top-k set, k in {1, 3, 5, 10}, cuts >= 0.5 while the identity answers (...) change <= 0.10 and the recall's answer changes <= 0.10 (...), and the matched random sets of k heads (same layers) cut <= 0.15 (mean over the draws). distributed: every head of the best layer together cuts < 0.3." Lightning: a coverage run on this rule, no prediction.
 
@@ -838,7 +838,7 @@ New in this ledger:
 - **Method.** At every full-attention layer after L, every head: the attention mass moved from the original locker to the swapped-in one at the last token (the question tokens beside), on switched and non-switched pairs and under a random vector of the swap's size; the best head zeroed as a necessity check.
 
 ![Heads move with the swap even where the lookup did not switch](../../figures/ledger/ledger_attention.png)
-*Per model, the best head at the last token (chosen on the fit half): attention moved to the swapped-in locker on read pairs where the lookup switched (dark), where it did not (light), and under a random vector of the swap's size (grey); whiskers 95%; dashed and dotted: the rule's 0.30 and 0.10.*
+*Per model, the best head at the last token (chosen on the fit half): attention moved to the swapped-in locker on read pairs where the lookup switched (dark), where it did not (light), and under a random vector of the swap's size (grey); whiskers 95%; dashed and dotted: the rule's 0.30 and 0.10. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "follows: on read-half pairs where the lookup switched to slot k's locker under the swap, >= 1 of the five candidate heads has mean move >= 0.30 (cluster-bootstrap CI excluding 0), its mean move under the random vector on the same pairs <= 0.05, and its mean move on the non-switched swap pairs <= 0.10. elsewhere: the lookup switches to slot k on >= 0.3 of the read-half swap pairs and no recorded head [...] reaches a mean move of 0.15 on the switched pairs. distributed: the summed mean move over the five candidate heads, or over every head of the best head's layer, is >= 0.30 while no single candidate head reaches 0.30." Lightning: a coverage run on this rule, no prediction.
 
@@ -900,7 +900,7 @@ New in this ledger:
 - **Method.** The conflict test's cells, split by sentence order: the lookup's switch under the whole change, and each reader's switches lost without the lens part beyond a random part.
 
 ![The bridge word switches the lookup when its locker came first](../../figures/ledger/ledger_order_split.png)
-*Per model, lookups switched by the whole change at the bridge word, locker sentence before the asked pick (dark) or after it (light); n per bar; the 122B the fifth pair.*
+*Per model, lookups switched by the whole change at the bridge word, locker sentence before the asked pick (dark) or after it (light); n per bar; the 122B the fifth pair. The 122B: FP8.*
 
 - **Rule, fixed in advance.** None: the split was read after the data (descriptive); Lightning's is a coverage run, no prediction.
 
@@ -995,7 +995,7 @@ New in this ledger:
 - **Method.** Four arms on the original prompt: (a) the change at the bridge word at L; (b) the bridge word replaced at every layer up to L; (c) at every layer; (d) the whole asked pick sentence at every layer. The lookups (a) leaves unswitched split into before L (b minus a), the pick sentence's other tokens (d minus c) and outside the pick sentence (1 minus d).
 
 ![Lookups the change misses are read at the bridge word before L](../../figures/ledger/ledger_cumulative.png)
-*Main design: the locker-first lookups the change at L leaves unswitched, and the locker-after lookups carried by the bridge word before L; whiskers 95%. Models: 9B, 27B, Muse, Lightning (Lightning hollow (its gate set after the 60-scene pre-check); its clean design below gate, exploratory, hollow). The README's supplementary figure with every placement: [s03e](../../figures/supp/s03e_cumulative.png).*
+*Main design: the locker-first lookups the change at L leaves unswitched, and the locker-after lookups carried by the bridge word before L; whiskers 95%. Models: 9B, 27B, Muse, Lightning (Lightning hollow (its gate set after the 60-scene pre-check); its clean design below gate, exploratory, hollow). The README's supplementary figure with every placement: [s03e](../../figures/supp/s03e_cumulative.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** None: descriptive, no bar; the verdict reads which part is largest in locker-first scenes. The 27B and Lightning: coverage runs, no prediction.
 
@@ -1062,7 +1062,7 @@ New in this ledger:
 - **Method.** The address swap added at the last token at L and L+4, at doses 1 and 2, with the bridge word's means and with last-token means; each against a random vector of its norm; a slot probe at the last token beside.
 
 ![The bridge word's code works at the last token only on Muse](../../figures/ledger/ledger_last_token_address.png)
-*The slot probe's held-out accuracy at the last token by layer (band 95%), routes scenes, 300 per model (9B, 27B, Muse, Lightning); dashed: the majority slot; dotted: L and L+4; text: the bridge-fit swap's share sent to the target at L+4, dose 2.*
+*The slot probe's held-out accuracy at the last token by layer (band 95%), routes scenes, 300 per model (9B, 27B, Muse, Lightning); dashed: the majority slot; dotted: L and L+4; text: the bridge-fit swap's share sent to the target at L+4, dose 2. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "The code travels: the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). Re-encoded on copy: bridge-fit <= 0.10 while last-token-fit >= 0.3. Not at the last token: both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between." Lightning: a coverage run on this rule, no prediction.
 
@@ -1124,7 +1124,7 @@ New in this ledger:
 - **Method.** The conflict test at the bridge name's last token at L: without the lens part, against without a random part; each reader gets its own change.
 
 ![On Zach's named passages the lookup follows the lens part too](../../figures/ledger/ledger_zach_named.png)
-*Switches lost without the lens part beyond a random part, per reader and model: our main test, Zach's named passages with true facts and with made-up facts (200 each), all at L; grey band: the lookup's 0.10 bar; whiskers 95%; Lightning hollow (its gate set after the 60-scene pre-check). Models: 9B, 27B (made-up facts at gate); Muse, Lightning (made-up facts below gate: hollow ○, descriptive only; Muse's lookup there under 30 switches).*
+*Switches lost without the lens part beyond a random part, per reader and model: our main test, Zach's named passages with true facts and with made-up facts (200 each), all at L; grey band: the lookup's 0.10 bar; whiskers 95%; Lightning hollow (its gate set after the 60-scene pre-check). Models: 9B, 27B (made-up facts at gate); Muse, Lightning (made-up facts below gate: hollow ○, descriptive only; Muse's lookup there under 30 switches). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Per model: gap >= 0.3 and lookup extra loss <= 0.10 → the split holds on his passages; lookup >= 0.20 → the lookup follows the lens here; else in between. The order pattern replicates if the lookup's switch under the whole change is >= 2x higher fact-first than fact-after (both CIs)." Lightning: a coverage run on this rule, no prediction.
 
@@ -1161,7 +1161,7 @@ New in this ledger:
 - **Method.** The change at the bridge name's last token at every block output up to L; the conflict test on it: without the lens part, against without a random part of the same share; the one-layer change beside.
 
 ![Over every layer up to L, fact-after lookups follow the lens part](../../figures/ledger/ledger_full_carrier.png)
-*Lookups (purple) and recalls (dark) lost without the lens part beyond a random part, fact first and fact after; hollow: the change at one layer, filled: at every layer up to L. Zach's named passages, 200 per model (9B, 27B, Lightning). Grey band: the lookup's 0.10 bar; whiskers 95%. Models: 9B, 27B, Lightning; Muse grey (not designed: 9B / 27B only).*
+*Lookups (purple) and recalls (dark) lost without the lens part beyond a random part, fact first and fact after; hollow: the change at one layer, filled: at every layer up to L. Zach's named passages, 200 per model (9B, 27B, Lightning). Grey band: the lookup's 0.10 bar; whiskers 95%. Models: 9B, 27B, Lightning; Muse grey (not designed: 9B / 27B only). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "(i) "The slice explanation": the whole before-L raises the lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra loss - lookup extra loss >= 0.3 and lookup <= 0.10 -> "the split holds on the full carrier"; lookup >= 0.20 -> "the lookup follows the lens on the full carrier"; else in between." (verdict.md) Lightning: a coverage run on this rule, no prediction.
 
@@ -1192,7 +1192,7 @@ New in this ledger:
 - **Method.** The routes test: the change comes from a passage where another item's fact sentence moved and took a new value; the lookup's answer is sorted into identity, position, value or original.
 
 ![On Zach's passages the lookup rarely takes the position route](../../figures/ledger/ledger_zach_routes.png)
-*The lookup's answer under the whole change on Zach's scattered-fact passages: identity (blue), position (orange), value (none), original (grey); n per row; all four models.*
+*The lookup's answer under the whole change on Zach's scattered-fact passages: identity (blue), position (orange), value (none), original (grey); n per row; all four models. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Value <= 0.05; if position >= 0.2: the address exists in scattered-fact passages; if position <= 0.05: no position route in his layout." The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -1221,7 +1221,7 @@ New in this ledger:
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 
 ![On the 9B his passages are read over our layers; on the 27B not](../../figures/ledger/ledger_read_window.png)
-*Share of each reader's answers switched by the whole change at one layer at a time: Zach's named passages (solid, band 95%, 200 per model) and our routes scenes (dashed); dotted: 0.3, where a window ends; the ends under each panel. The verdict's own figure: [the verdict folder](../../results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png). Models: 9B, 27B, Lightning (the 9B / 27B design; its gate set after the 60-scene pre-check); Muse grey (not designed: 9B / 27B only).*
+*Share of each reader's answers switched by the whole change at one layer at a time: Zach's named passages (solid, band 95%, 200 per model) and our routes scenes (dashed); dotted: 0.3, where a window ends; the ends under each panel. The verdict's own figure: [the verdict folder](../../results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png). Models: 9B, 27B, Lightning (the 9B / 27B design; its gate set after the 60-scene pre-check); Muse grey (not designed: 9B / 27B only). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
 
@@ -1400,7 +1400,7 @@ New in this ledger:
 - **Method.** Ridge probes (48.3's) on every token of each locker sentence and on the sentence mean, at L/2 and L: (i) which of the scene's three people picked the item; (ii) whether the asked person picked it.
 
 ![No probe reads who picked an item at its locker sentence](../../figures/ledger/ledger_pooled_probe.png)
-*Per model and layer, locker-after scenes: the probe for which of three people picked the item, on the whole locker sentence (filled, whiskers 95%) and its best single token (hollow); dotted: chance; dashed: the rule's 0.85. Models: 9B, 27B, Muse; Lightning hollow ○, below its gate (exploratory).*
+*Per model and layer, locker-after scenes: the probe for which of three people picked the item, on the whole locker sentence (filled, whiskers 95%) and its best single token (hollow); dotted: chance; dashed: the rule's 0.85. Models: 9B, 27B, Muse; Lightning hollow ○, below its gate (exploratory). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** ""Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere." The 27B: a coverage run on this rule, no prediction.
 
@@ -1516,7 +1516,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: the address fit on animal scenes, not refit, taken out of the change against a random part of its share, and kept alone; where that fails, the address refit per kind on a fit half and read on the other half.
 
 ![The animal-fit address does not carry over to other items as ruled](../../figures/ledger/ledger_agnostic.png)
-*Per model, position answers lost without the address beyond a random part of its share, by kind of item: the address fit on animals (filled) and refit per kind (hollow); dashed: the rule's 0.3; whiskers 95%; 300 scenes per kind (150 for the refit's read); 9B, 27B, Muse, Lightning.*
+*Per model, position answers lost without the address beyond a random part of its share, by kind of item: the address fit on animals (filled) and refit per kind (hollow); dashed: the rule's 0.3; whiskers 95%; 300 scenes per kind (150 for the refit's read); 9B, 27B, Muse, Lightning. The 122B grey (not run).*
 
 - **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -1547,7 +1547,7 @@ New in this ledger:
 - **Method.** The same five commands in a fresh checkout; the stored per-item answers compared row by row.
 
 ![The 9B's headline cells reproduce from a clean checkout](../../figures/ledger/ledger_clean_reruns.png)
-*The 9B's 12 headline cells: the run of record (x) against the clean-checkout rerun (y); dashed: the identity line; hollow: the depth anatomy's two cells. Models: the 9B only, by design (27B, Muse, Lightning not run).*
+*The 9B's 12 headline cells: the run of record (x) against the clean-checkout rerun (y); dashed: the identity line; hollow: the depth anatomy's two cells. Models: the 9B only, by design (27B, Muse, Lightning not run). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** None: descriptive, no prediction.
 
@@ -1579,7 +1579,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
 
 ![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/ledger/ledger_jsuite.png)
-*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its described-bridge cells not tested: gate), 27B (all four cells); Muse and Lightning grey (not designed: 9B / 27B only).*
+*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its described-bridge cells not tested: gate), 27B (all four cells); Muse and Lightning grey (not designed: 9B / 27B only). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md; no prediction)
 
@@ -1668,7 +1668,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** The change at the last token (the changed prompt's last-token state minus the original's) at 51.10's read-peak layer and two layers before the answer layer, per reader; the lens part = its 25 J++ directions; arms: the whole change, without the lens part, without a random part of the same share, the lens part alone, the rest alone.
 
 ![At the read peak no lookup goes through the lens part](../../figures/ledger/ledger_last_conflict.png)
-*Per model, reader and layer, the last token's change: switches lost without the lens part beyond a random part (dashed: the rule's 0.10; dotted: 0.30) and the rest alone's switches as a share of the whole change's (dashed: 0.7); the rule's label at the right, except the cells two layers before the answer: grey, labelled uninformative near the output (dictionary) (Dan, 11:25), numbers descriptive, but Muse's and Lightning's lookups keep their labels (Dan, 11:55); whiskers 95%. All four models tested (9B, 27B, Muse, Lightning; Lightning's gate set after its 60-scene pre-check, hollow). The verdict's own figure: [the verdict folder](../../results/x53_lastconflict/x53_lastconflict-20261029T090326Z/x53_lastconflict.png).*
+*Per model, reader and layer, the last token's change: switches lost without the lens part beyond a random part (dashed: the rule's 0.10; dotted: 0.30) and the rest alone's switches as a share of the whole change's (dashed: 0.7); the rule's label at the right, except the cells two layers before the answer: grey, labelled uninformative near the output (dictionary) (Dan, 11:25), numbers descriptive, but Muse's and Lightning's lookups keep their labels (Dan, 11:55); whiskers 95%. All four models tested (9B, 27B, Muse, Lightning; Lightning's gate set after its 60-scene pre-check, hollow). The verdict's own figure: [the verdict folder](../../results/x53_lastconflict/x53_lastconflict-20261029T090326Z/x53_lastconflict.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
 
@@ -1701,7 +1701,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** 53.3's conflict test at the last token, per reader at its own answer layer minus 1, 2 and 3 and at 51.10's read peak: the whole change, without the lens part, without a random part of the same share, the lens part alone; and 53.3's lookup again on our locker scenes at its answer layer minus 1 and 3. A cell under 53.3's validity bar (whole change >= 0.30, >= 30 switches) is invalid and counts for neither clause.
 
 ![Near the output the test is uninformative; read peaks differ](../../figures/ledger/ledger_last_conflict_words.png)
-*Switches lost without the lens part beyond a random part at the last token, per reader and layer (dashed: the rule's 0.10; dotted: 0.30); the check on our locker scenes below (rows "locker"); whiskers 95%. Grey points and rows marked "uninformative": the cells at answer - 1 and - 2, uninformative near the output (dictionary) (Dan, 11:25), numbers descriptive; a grey note marks a cell under 53.3's validity bar. The 27B's lookup read peak is its answer layer minus 3 (L60), shown in both rows; on the locker scenes a read-peak cell sits in the read-peak row (the 27B's L60 is also its answer - 1). Models: the 9B and the 27B at their gates; Muse and Lightning below their gates on these passages (hollow ○, exploratory). The verdict's own figure, every arm: [x53_lastconflict_words.png](../../results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/x53_lastconflict_words.png).*
+*Switches lost without the lens part beyond a random part at the last token, per reader and layer (dashed: the rule's 0.10; dotted: 0.30); the check on our locker scenes below (rows "locker"); whiskers 95%. Grey points and rows marked "uninformative": the cells at answer - 1 and - 2, uninformative near the output (dictionary) (Dan, 11:25), numbers descriptive; a grey note marks a cell under 53.3's validity bar. The 27B's lookup read peak is its answer layer minus 3 (L60), shown in both rows; on the locker scenes a read-peak cell sits in the read-peak row (the 27B's L60 is also its answer - 1). Models: the 9B and the 27B at their gates; Muse and Lightning below their gates on these passages (hollow ○, exploratory). The verdict's own figure, every arm: [x53_lastconflict_words.png](../../results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/x53_lastconflict_words.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup goes through the lens like the recall; else in between." (jobs/c3/batch53.yaml, test_53_3b, Dan ~10:05; no prediction)
 
@@ -1740,7 +1740,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** The whole change at the bridge word at L14, with attention from every later position to the bridge word's position blocked in (i) block 19, (ii) block 26, (iii) both, (iv) every attention block after L14 (19, 26, 33, 42), and (v) the control: both blocks, attention to a random other token of the same sentence; the share of the whole change's lookup switches cut; the recall beside. The follow-up: in blocks 19 and 26 every position after the scene's last token cannot attend to the span from the bridge word to the scene's end (median 9 tokens on the rule's scenes); the control: a span of the same length ending at the last token before the bridge's sentence, one placement: Dan's 11:25 control (approved 11:55).
 
 ![Two attention blocks carry a third of Lightning's lookup switch](../../figures/ledger/ledger_attnblock.png)
-*The share of the whole change's switches cut by each block, lookup (purple) and recall (dark); dashed: the rule's 0.6; dotted: 0.3; whiskers 95%; the follow-up beside (the span and the control span, Dan's 11:25 control). Models: Lightning (hollow: its gate set after the 60-scene pre-check); 9B, 27B and Muse grey (not applicable: a Lightning test).*
+*The share of the whole change's switches cut by each block, lookup (purple) and recall (dark); dashed: the rule's 0.6; dotted: 0.3; whiskers 95%; the follow-up beside (the span and the control span, Dan's 11:25 control). Models: Lightning (hollow: its gate set after the 60-scene pre-check); 9B, 27B and Muse grey (not applicable: a Lightning test). The 122B grey (not applicable: a Lightning test).*
 
 - **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05; no prediction) Follow-up (span): "the pointer is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4. (jobs/c3/batch53.yaml, next_1110, Dan 11:10; no prediction)
 
@@ -1748,7 +1748,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 
   | | 9B | 27B | Muse | Lightning | 122B |
   |---|---|---|---|---|---|
-  | lookup switches cut: (i) block 19 / (ii) block 26 | not applicable | not applicable | not applicable | 0.114 [0.039, 0.189]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (i) block 19 only: S 0.390 :: 0.114 [0.039, 0.189] --> / 0.136 [0.060, 0.216]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (ii) block 26 only: S 0.380 :: 0.136 [0.060, 0.216] --> | not run |
+  | lookup switches cut: (i) block 19 / (ii) block 26 | not applicable | not applicable | not applicable | 0.114 [0.039, 0.189]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (i) block 19 only: S 0.390 :: 0.114 [0.039, 0.189] --> / 0.136 [0.060, 0.216]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (ii) block 26 only: S 0.380 :: 0.136 [0.060, 0.216] --> | not applicable |
   | lookup: (iii) both blocks / (iv) every attention block after L / (v) control | | | | 0.341 [0.253, 0.420]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (iii) blocks 19 and 26: S 0.290 :: 0.341 [0.253, 0.420] --> / 0.352 [0.272, 0.423]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.285 :: 0.352 [0.272, 0.423] --> / 0.000 [-0.056, 0.054]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| random non-bridge token of the bridge :: 0.000 [-0.056, 0.054] --> | |
   | the clean answer kept, (iii) / (iv) | | | | 0.770<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (iii) blocks 19 and 26: S 0.290 :: 0.770 --> / 0.760<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.285 :: 0.760 --> | |
   | recall (beside): (iv) every attention block after L | | | | 0.555 [0.441, 0.647]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.425 :: 0.555 [0.441, 0.647] --> | |
@@ -1780,7 +1780,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** On existing outcomes (CPU): position answers without the address against without a random part of its share; the address alone against a random part alone; the address swap at dose 2.
 
 ![On its position scenes the 27B's address brings fewer answers back](../../figures/ledger/ledger_subset27b.png)
-*On each model's position-route scenes, the lookup's position share without the address, without a random part of its share, with the address alone, with a random part alone, and the swap at dose 2 (to the target); dotted / dashed: the rule's 0.10 / 0.25; whiskers 95%. Models: 27B and the 9B beside; Muse and Lightning grey (not designed: 9B / 27B only). The verdict's own figure: [the verdict folder](../../results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png).*
+*On each model's position-route scenes, the lookup's position share without the address, without a random part of its share, with the address alone, with a random part alone, and the swap at dose 2 (to the target); dotted / dashed: the rule's 0.10 / 0.25; whiskers 95%. Models: 27B and the 9B beside; Muse and Lightning grey (not designed: 9B / 27B only). The verdict's own figure: [the verdict folder](../../results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
 
@@ -1812,7 +1812,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** At the bridge word: the lens part of the change toward item B plus the address swap toward item C's slot (dose 2); read the recall's answer: B's, C's or the original; each part alone beside, and the lens part with a random direction of the address's norm.
 
 ![Every recall follows both; on the 27B and Muse it mostly stays put](../../figures/ledger/ledger_identity_address.png)
-*The recall's answers under both parts together (B's answer teal, C's orange, the original grey) and under each part alone; whiskers 95%. Models: 9B, 27B, Muse, Lightning (hollow: its gate set after the 60-scene pre-check). The verdict's own figure: [x53_identity_address.png](../../results/x53_identity_address/x53_identity_address-20261029T105132Z/x53_identity_address.png).*
+*The recall's answers under both parts together (B's answer teal, C's orange, the original grey) and under each part alone; whiskers 95%. Models: 9B, 27B, Muse, Lightning (hollow: its gate set after the 60-scene pre-check). The verdict's own figure: [x53_identity_address.png](../../results/x53_identity_address/x53_identity_address-20261029T105132Z/x53_identity_address.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction) Across models: "the recall's pointer use tracks the swap's collateral" if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity". (jobs/c3/batch53.yaml, critic_1125, Dan 11:25; no prediction)
 
@@ -1861,7 +1861,7 @@ Rows of the coverage matrix whose result exists on one model only, by design or 
 - **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
 
 ![Zach's knock-out hits the recall more; our gap is unclear](../../figures/ledger/ledger_described.png)
-*The recall's loss minus the lookup's on Zach's described passages: our removal (dark, where the lookup switches enough to tell; whiskers 95%) and his knock-out of the top-10 lens directions (teal), with his rotated-direction control (grey); Lightning at L14, hollow (its gate set after the 60-scene pre-check). The verdict's own figure: [the verdict folder](../../results/x50_zach/z2-20261028T162710Z/z2_beside.png).*
+*The recall's loss minus the lookup's on Zach's described passages: our removal (dark, where the lookup switches enough to tell; whiskers 95%) and his knock-out of the top-10 lens directions (teal), with his rotated-direction control (grey); Lightning at L14, hollow (its gate set after the 60-scene pre-check). The verdict's own figure: [the verdict folder](../../results/x50_zach/z2-20261028T162710Z/z2_beside.png). The 122B grey (not run).*
 
 - **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
 
@@ -2085,54 +2085,54 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figure | page width | labels | axes in words | finding visible | note |
 |---|---|---|---|---|---|
 | figures/ledger/ledger_coverage_map.png | yes (tall: 49 rows) | no overlap; the hatched cells' words sit on a white patch | yes | yes | the overview (29 Oct morning); no number drawn, each cell a verdict word from its card (scripts/ledger_coverage.py's HEATMAP); the 122B as a fifth column (Dan 11:30; HEATMAP_122B, not run where it has no verdict); re-opened |
-| figures/ledger/ledger_last_conflict.png | yes | no overlap (the grey label shortened to "uninformative" to stay inside the page) | yes | yes | batch 53 (53.3), four models from the combined verdict (x53_lastconflict-20261029T090326Z), Lightning hollow; the cells two layers before the answer grey and labelled uninformative (Dan 11:25) except Muse's L33 and Lightning's L43 lookups (Dan 11:55, own labels); the 27B's lookup L60 (read peak and answer - 1) keeps its label; new title |
-| figures/ledger/ledger_address_probe.png | yes | no overlap (short row labels; the panel titles smaller with five panels) | yes | yes | five slots (the 122B, Dan 11:30), replaces Lightning's verdict-folder probe.png on the address-probe card; one layer per model (each model's L) |
-| figures/ledger/ledger_cumulative.png | yes | no overlap | yes | yes | four slots, replaces the README's s03e on the 47.4 card: 27B full, Lightning's main design, its clean design below gate (hollow) |
-| figures/ledger/ledger_das48.png | yes | no overlap | yes | yes | four slots, replaces the README's s12 (Muse only) on the 48.1 card; Lightning grey (dropped: DAS port) |
-| figures/ledger/ledger_report47.png | yes | no overlap (row labels on the grey 9B panel) | yes | yes | four slots, the 47.10 card's own figure (it no longer reuses fig07b); 9B, Muse, Lightning grey with their gate |
-| figures/ledger/ledger_subset27b.png | yes | no overlap | yes | yes | four slots, replaces the verdict's figure on the 53.5 card; Muse and Lightning grey (not designed) |
-| figures/ledger/ledger_identity_address.png | yes | no overlap | yes | yes | batch 53 (53.6, joint verdict 105132Z), four slots: the 9B, the 27B and Muse solid, Lightning hollow; new title (all four both; the 27B and Muse mostly keep the original) |
-| figures/ledger/ledger_attnblock.png | yes | no overlap | yes | yes | batch 53 (53.4), four slots: Lightning (hollow), the other three grey (not applicable); the follow-up with Dan's 11:25 control (x53_attnspan_c-20261029T105304Z: span, control span) under each reader |
-| figures/ledger/ledger_jsuite.png | yes | no overlap (the grey notes wrapped) | yes | yes | batch 53 (53.1b), four slots: 9B and 27B with their missing cells as grey notes; Muse and Lightning grey (not designed) |
-| figures/ledger/ledger_last_conflict_words.png | yes | no overlap (wider left margin for the ": uninformative" row labels) | yes | yes | batch 53 (53.3b, joint verdict 100850Z), four slots: the 9B and the 27B solid; Muse and Lightning below gate (hollow, ○ in the panel title); answer - 1 / - 2 rows grey and labelled uninformative (Dan 11:25); invalid cells as grey notes; the 27B's word lookup L60 in the answer - 3 and read-peak rows, its locker L60 in the read-peak row only; new title |
-| figures/ledger/ledger_report_slot1.png | yes | no overlap | yes | yes | 49.6's card (was a one-line entry), four slots: 9B, 27B, Lightning (hollow); Muse grey (not designed) |
-| figures/ledger/ledger_twobytwo.png | yes | no overlap (short row labels; the grey notes touch the dashed 0.10 line, still legible; Lightning's gate note reaches the panel edge, inside the page; the panel titles smaller with five panels) | yes | yes | batch 53 (53.1, the five-model verdict 113335Z), five slots: the 9B, the 27B, Muse, Lightning (hollow) and the 122B, each untested cell a grey note with its own gate; the last row the lookup's paired difference (the 27B and the 122B); the cross-check's 0.10 dashed |
+| figures/ledger/ledger_last_conflict.png | yes | no overlap (the grey label shortened to "uninformative" to stay inside the page) | yes | yes | batch 53 (53.3), four models from the combined verdict (x53_lastconflict-20261029T090326Z), Lightning hollow; the cells two layers before the answer grey and labelled uninformative (Dan 11:25) except Muse's L33 and Lightning's L43 lookups (Dan 11:55, own labels); the 27B's lookup L60 (read peak and answer - 1) keeps its label; new title; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_address_probe.png | yes | no overlap (short row labels; the panel titles smaller with five panels) | yes | yes | five slots (the 122B, Dan 11:30), replaces Lightning's verdict-folder probe.png on the address-probe card; one layer per model (each model's L); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_cumulative.png | yes | no overlap | yes | yes | four slots, replaces the README's s03e on the 47.4 card: 27B full, Lightning's main design, its clean design below gate (hollow); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_das48.png | yes | no overlap | yes | yes | four slots, replaces the README's s12 (Muse only) on the 48.1 card; Lightning grey (dropped: DAS port); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_report47.png | yes | no overlap (row labels on the grey 9B panel) | yes | yes | four slots, the 47.10 card's own figure (it no longer reuses fig07b); 9B, Muse, Lightning grey with their gate; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_subset27b.png | yes | no overlap | yes | yes | four slots, replaces the verdict's figure on the 53.5 card; Muse and Lightning grey (not designed); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_identity_address.png | yes | no overlap | yes | yes | batch 53 (53.6, joint verdict 105132Z), four slots: the 9B, the 27B and Muse solid, Lightning hollow; new title (all four both; the 27B and Muse mostly keep the original); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_attnblock.png | yes | no overlap | yes | yes | batch 53 (53.4), four slots: Lightning (hollow), the other three grey (not applicable); the follow-up with Dan's 11:25 control (x53_attnspan_c-20261029T105304Z: span, control span) under each reader; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_jsuite.png | yes | no overlap (the grey notes wrapped) | yes | yes | batch 53 (53.1b), four slots: 9B and 27B with their missing cells as grey notes; Muse and Lightning grey (not designed); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_last_conflict_words.png | yes | no overlap (wider left margin for the ": uninformative" row labels) | yes | yes | batch 53 (53.3b, joint verdict 100850Z), four slots: the 9B and the 27B solid; Muse and Lightning below gate (hollow, ○ in the panel title); answer - 1 / - 2 rows grey and labelled uninformative (Dan 11:25); invalid cells as grey notes; the 27B's word lookup L60 in the answer - 3 and read-peak rows, its locker L60 in the read-peak row only; new title; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_report_slot1.png | yes | no overlap | yes | yes | 49.6's card (was a one-line entry), four slots: 9B, 27B, Lightning (hollow); Muse grey (not designed); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_twobytwo.png | yes | no overlap (short row labels; the grey notes touch the dashed 0.10 line, still legible; Lightning's gate note reaches the panel edge, inside the page; the panel titles smaller with five panels) | yes | yes | batch 53 (53.1, the five-model verdict 113335Z), five slots: the 9B, the 27B, Muse, Lightning (hollow) and the 122B, each untested cell a grey note with its own gate; the last row the lookup's paired difference (the 27B and the 122B); the cross-check's 0.10 dashed; five slots (Dan 12:50), opened |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
-| figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_last_token_address.png | yes | no overlap | yes | yes | L and L+4 are unlabelled dotted lines (the caption names them); Lightning added 29 Oct, re-opened; title now names Muse only |
+| figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_last_token_address.png | yes | no overlap | yes | yes | L and L+4 are unlabelled dotted lines (the caption names them); Lightning added 29 Oct, re-opened; title now names Muse only; five slots (Dan 12:50), opened |
 | figures/story/fig17_jspace_last_token.png | yes | no overlap | yes | yes | reused; drawn by the README pass; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
-| figures/ledger/ledger_zach_named.png | yes | no overlap | yes | yes | Muse's lookup on his passages is left out (25 switches, under 30); Lightning (hollow) and the made-up-fact rows added 29 Oct morning, re-opened; the longest row label touches the left edge |
-| figures/ledger/ledger_answer_control.png | yes | no overlap | yes | yes | Lightning and the 122B (its E1, x52_answer-20261029T112359Z, Dan 11:30) as blocks beside the three models; re-opened |
-| figures/ledger/ledger_lightning_layers.png | yes | no overlap (after moving two labels; the 122B panel's name as its title) | yes | yes | top: 60 dev scenes; middle: 200 scenes; bottom: the 122B's conflict test at L24-L36 (Dan 11:30); the other three models' slots as one grey line under the figure (Dan's figures brief, 10:00; re-opened) |
+| figures/ledger/ledger_zach_named.png | yes | no overlap | yes | yes | Muse's lookup on his passages is left out (25 switches, under 30); Lightning (hollow) and the made-up-fact rows added 29 Oct morning, re-opened; the longest row label touches the left edge; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_answer_control.png | yes | no overlap | yes | yes | Lightning and the 122B (its E1, x52_answer-20261029T112359Z, Dan 11:30) as blocks beside the three models; re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_lightning_layers.png | yes | no overlap (after moving two labels; the 122B panel's name as its title) | yes | yes | top: 60 dev scenes; middle: 200 scenes; bottom: the 122B's conflict test at L24-L36 (Dan 11:30); the other three models' slots as one grey line under the figure (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
 | figures/story/fig16_dose.png | yes | no overlap | yes | yes | reused; its labels say "J++ part"; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
 | figures/story/fig01d_ladder.png | yes | no overlap | yes | yes | reused; its labels say "J++ part"; Lightning below gate, hollow; each model's full run: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
-| figures/ledger/ledger_learned.png | yes | no overlap (after a wider right margin) | yes | yes | four slots (Lightning grey: dropped) (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_atoms.png | yes | no overlap (a two-row key) | yes | yes | restyled from the report's figure (which kept the test ids); the key's two greys are close; Lightning's row added 29 Oct morning (our scenes only), re-opened |
-| figures/ledger/ledger_heads.png | yes | no overlap | yes | yes | per-head effects are not stored, so the sets (top 1 to 10, best layer) stand in for "per head sorted"; Lightning added 29 Oct, re-opened |
-| figures/ledger/ledger_read_window.png | yes | no overlap (window ends moved under the axes) | yes | yes | restyled from the verdict's figure (which kept the test ids); four slots: Lightning added (51.5's coverage run), Muse grey; new title (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_zach_routes.png | yes | no overlap | yes | yes | Muse's position share (0.06) is too narrow for its label; the 27B and Lightning added 29 Oct, re-opened |
-| figures/ledger/ledger_clean_reruns.png | yes | no overlap | yes | yes | the other three models registered grey (9B only by design, the caption) (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_answer_map.png | yes | no overlap (after a wider left margin) | yes | yes | the per-layer maps stay in the verdict folder, linked from the caption; Lightning added (our scenes, hollow; Zach's passages grey: read pending); wider left margin (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_routes.png | yes | no overlap | yes | yes | five models, the 122B faded and ○ (its g75 runs, below gate); the value never appears, so its colour shows only in the key |
-| figures/ledger/ledger_six_lockers.png | yes | no overlap (after moving two labels) | yes | yes | the one-shift bars are zero on every model; Lightning added 29 Oct, re-opened |
-| figures/ledger/ledger_described.png | yes | no overlap | yes | yes | restyled from the verdict's figure (which kept the test id); our gap drawn only where the lookup switches enough; Lightning added 29 Oct morning (hollow), re-opened |
-| figures/ledger/ledger_address_swap.png | yes | no overlap | yes | yes | five panels, the 122B hollow ○ (its g75 run, below gate); all 600 swaps pooled per dose; the random vector's dashed line sits at 0.00 to 0.01 |
-| figures/ledger/ledger_order_split.png | yes | no overlap | yes | yes | five models (the 122B from the same split); only the lookup's switch share is drawn; the extra losses stay in the card's table (locker after: under 30 switches) |
-| figures/ledger/ledger_attention.png | yes | no overlap | yes | yes | best head per model only; the random bars are near zero and thin |
+| figures/ledger/ledger_learned.png | yes | no overlap (after a wider right margin) | yes | yes | four slots (Lightning grey: dropped) (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_atoms.png | yes | no overlap (a two-row key) | yes | yes | restyled from the report's figure (which kept the test ids); the key's two greys are close; Lightning's row added 29 Oct morning (our scenes only), re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_heads.png | yes | no overlap | yes | yes | per-head effects are not stored, so the sets (top 1 to 10, best layer) stand in for "per head sorted"; Lightning added 29 Oct, re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_read_window.png | yes | no overlap (window ends moved under the axes) | yes | yes | restyled from the verdict's figure (which kept the test ids); four slots: Lightning added (51.5's coverage run), Muse grey; new title (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_zach_routes.png | yes | no overlap | yes | yes | Muse's position share (0.06) is too narrow for its label; the 27B and Lightning added 29 Oct, re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_clean_reruns.png | yes | no overlap | yes | yes | the other three models registered grey (9B only by design, the caption) (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_answer_map.png | yes | no overlap (after a wider left margin) | yes | yes | the per-layer maps stay in the verdict folder, linked from the caption; Lightning added (our scenes, hollow; Zach's passages grey: read pending); wider left margin (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_routes.png | yes | no overlap | yes | yes | five models, the 122B faded and ○ (its g75 runs, below gate); the value never appears, so its colour shows only in the key; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_six_lockers.png | yes | no overlap (after moving two labels) | yes | yes | the one-shift bars are zero on every model; Lightning added 29 Oct, re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_described.png | yes | no overlap | yes | yes | restyled from the verdict's figure (which kept the test id); our gap drawn only where the lookup switches enough; Lightning added 29 Oct morning (hollow), re-opened; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_address_swap.png | yes | no overlap | yes | yes | five panels, the 122B hollow ○ (its g75 run, below gate); all 600 swaps pooled per dose; the random vector's dashed line sits at 0.00 to 0.01; five slots (Dan 12:50), opened |
+| figures/ledger/ledger_order_split.png | yes | no overlap | yes | yes | five models (the 122B from the same split); only the lookup's switch share is drawn; the extra losses stay in the card's table (locker after: under 30 switches); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_attention.png | yes | no overlap | yes | yes | best head per model only; the random bars are near zero and thin; five slots (Dan 12:50), opened |
 | figures/story/fig09a_transfer.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
-| figures/ledger/ledger_distance.png | yes | no overlap | yes | yes | Muse has no outcomes, so three panels; four slots: Muse's rerun r2 added; x label shortened (Dan's figures brief, 10:00; re-opened) |
-| figures/ledger/ledger_gain.png | yes | no overlap | yes | yes | the rule's bars as red ticks; Muse's lookup cell at zero shows no bar |
+| figures/ledger/ledger_distance.png | yes | no overlap | yes | yes | Muse has no outcomes, so three panels; four slots: Muse's rerun r2 added; x label shortened (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
+| figures/ledger/ledger_gain.png | yes | no overlap | yes | yes | the rule's bars as red ticks; Muse's lookup cell at zero shows no bar; five slots (Dan 12:50), opened |
 | figures/story/fig09d_chain.png | yes | no overlap | yes | yes | reused; drawn by the README pass; 9B and Muse; 27B added; Lightning grey (not tested: gate): rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
 | figures/supp/s03e_cumulative.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; 9B and Muse; its 27B rows read "not run"; Lightning's main test (clean: not tested there); the 47.4 card now shows ledger_cumulative and links this: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
-| figures/ledger/ledger_agnostic.png | yes | no overlap | yes | yes | the 27B's fruits refit falls below the animal fit; Lightning added, re-opened |
+| figures/ledger/ledger_agnostic.png | yes | no overlap | yes | yes | the 27B's fruits refit falls below the animal fit; Lightning added, re-opened; five slots (Dan 12:50), opened |
 | figures/story/fig15_mechanisms.png | yes | no overlap | yes | yes | reused; drawn by the README pass; a stray grey dot sits at the top right (a README figure, left as is); 27B in every panel; Lightning drawn, below gate or grey per panel: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
 | figures/story/fig01c_zeroing.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models; Lightning drawn, hollow: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
 | figures/story/fig09b_refit.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models; Lightning drawn, hollow: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
 | figures/story/fig07c_probe_errors.png | yes | no overlap | yes | yes | reused; drawn by the README pass; its build folder is now pinned (Lightning's one-model 47.13 folder is newer); Lightning drawn, hollow; the 27B: too few errors: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
-| figures/ledger/ledger_value_formats.png | yes | no overlap (after fixing the x range) | yes | yes | untested formats marked in the panel |
+| figures/ledger/ledger_value_formats.png | yes | no overlap (after fixing the x range) | yes | yes | untested formats marked in the panel; five slots (Dan 12:50), opened |
 | figures/supp/s12_das_muse.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; its 27B panels say "not run" (the 27B is in the table) |
-| figures/ledger/ledger_pooled_probe.png | yes | no overlap (after a shorter subtitle) | yes | yes | the best token is the verdict's per-token maximum, no interval; Lightning added below gate (hollow, labelled); wider left margin (Dan's figures brief, 10:00; re-opened) |
+| figures/ledger/ledger_pooled_probe.png | yes | no overlap (after a shorter subtitle) | yes | yes | the best token is the verdict's per-token maximum, no interval; Lightning added below gate (hollow, labelled); wider left margin (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
 | figures/story/fig03_order.png | yes | no overlap | yes | yes | reused; the README's figure; three models |
 | figures/story/fig03c_earlier_mention.png | yes | no overlap | yes | yes | reused; the README's figure (restyled earlier tonight); three models; Lightning below gate, hollow: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
 | figures/story/fig05c_described_bridge.png | yes | no overlap | yes | yes | reused; the README's figure; three models; Lightning below gate, hollow: rebuilt by the README pass with four model slots (22a5ebfc..a229cfc6); re-opened 29 Oct ~11:30 |
