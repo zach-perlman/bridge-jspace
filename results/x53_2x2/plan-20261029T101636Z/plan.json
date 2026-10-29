@@ -1,0 +1,277 @@
+{
+ "target": "muse-glimmer-30b",
+ "set": "d1_topics_v3",
+ "relation_coverage": {
+  "animals/class": {
+   "scenes": 191,
+   "read_tokens": {
+    "amphibian": [
+     " amphib",
+     " Amph"
+    ],
+    "arachnid": [
+     " ara",
+     " Ara"
+    ],
+    "bird": [
+     " bird",
+     " Bird"
+    ],
+    "insect": [
+     " insect",
+     " Insect"
+    ],
+    "mammal": [
+     " mamm",
+     " Mamm"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {
+    "mouse": {
+     "word": "mammal",
+     "why": [
+      "'m' initial",
+      "'M' initial"
+     ]
+    }
+   },
+   "admissible": true
+  },
+  "animals/young": {
+   "scenes": 19,
+   "read_tokens": {
+    "calf": [
+     " calf",
+     " Cal"
+    ],
+    "caterpillar": [
+     " cater",
+     " Cater"
+    ],
+    "chick": [
+     " chick",
+     " Chick"
+    ],
+    "cub": [
+     " cub",
+     " Cub"
+    ],
+    "cygnet": [
+     " c",
+     " C"
+    ],
+    "duckling": [
+     " duck",
+     " Duck"
+    ],
+    "eaglet": [
+     " e",
+     " E"
+    ],
+    "fawn": [
+     " f",
+     " F"
+    ],
+    "foal": [
+     " fo",
+     " Fo"
+    ],
+    "gosling": [
+     " gos",
+     " Gos"
+    ],
+    "kid": [
+     " kid",
+     " Kid"
+    ],
+    "kit": [
+     " kit",
+     " Kit"
+    ],
+    "kitten": [
+     " kit",
+     " Kit"
+    ],
+    "lamb": [
+     " lamb",
+     " Lamb"
+    ],
+    "maggot": [
+     " mag",
+     " Mag"
+    ],
+    "owlet": [
+     " ow",
+     " Ow"
+    ],
+    "piglet": [
+     " pig",
+     " Pig"
+    ],
+    "pup": [
+     " pup",
+     " Pup"
+    ],
+    "puppy": [
+     " puppy",
+     " Pup"
+    ],
+    "tadpole": [
+     " tad",
+     " Tad"
+    ]
+   },
+   "shared_first_tokens": [
+    [
+     "kit",
+     "kitten"
+    ],
+    [
+     "pup",
+     "puppy"
+    ]
+   ],
+   "dropped_items": {
+    "goose": {
+     "word": "gosling",
+     "why": [
+      "'G' initial"
+     ]
+    },
+    "chicken": {
+     "word": "chick",
+     "why": [
+      "'ch' prefix",
+      "'ick' part",
+      "' chick' prefix",
+      "'Ch' prefix",
+      "'ick' part",
+      "' Chick' prefix"
+     ]
+    },
+    "duck": {
+     "word": "duckling",
+     "why": [
+      "'duck' key",
+      "' duck' key",
+      "'Duck' key",
+      "' Duck' key"
+     ]
+    },
+    "pig": {
+     "word": "piglet",
+     "why": [
+      "'pig' key",
+      "' pig' key",
+      "'P' initial",
+      "' Pig' key"
+     ]
+    },
+    "owl": {
+     "word": "owlet",
+     "why": [
+      "'ow' prefix",
+      "' ow' prefix",
+      "'Ow' prefix",
+      "' Ow' prefix"
+     ]
+    },
+    "eagle": {
+     "word": "eaglet",
+     "why": [
+      "'e' initial",
+      "' e' initial",
+      "'E' initial",
+      "' E' initial"
+     ]
+    }
+   },
+   "admissible": false
+  },
+  "elements/state": {
+   "scenes": 107,
+   "read_tokens": {
+    "gas": [
+     " gas",
+     " Gas"
+    ],
+    "solid": [
+     " solid",
+     " Solid"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {},
+   "admissible": false
+  },
+  "greek/vowel": {
+   "scenes": 121,
+   "read_tokens": {
+    "consonant": [
+     " conson",
+     " Con"
+    ],
+    "vowel": [
+     " vowel",
+     " V"
+    ]
+   },
+   "shared_first_tokens": [],
+   "dropped_items": {},
+   "admissible": false
+  }
+ },
+ "relation": "animals/class",
+ "word_instruction": "Answer with a single word and nothing else.",
+ "cells": {
+  "qa_num": {
+   "scenes": 600,
+   "cases": 530,
+   "dropped": {
+    "the bridge is not one token at one position in O and S": 70
+   },
+   "domains": {
+    "animals": 176,
+    "elements": 200,
+    "greek": 154
+   }
+  },
+  "qb_num": {
+   "scenes": 600,
+   "cases": 530,
+   "dropped": {
+    "the bridge is not one token at one position in O and S": 70
+   },
+   "domains": {
+    "animals": 176,
+    "elements": 200,
+    "greek": 154
+   }
+  },
+  "qa_word": {
+   "scenes": 600,
+   "cases": 168,
+   "dropped": {
+    "the relation's domain is another": 400,
+    "a bridge without an admissible answer under the relation": 9,
+    "the bridge is not one token at one position in O and S": 23
+   },
+   "domains": {
+    "animals": 168
+   }
+  },
+  "qb_word": {
+   "scenes": 600,
+   "cases": 168,
+   "dropped": {
+    "the relation's domain is another": 400,
+    "a bridge without an admissible answer under the relation": 9,
+    "the bridge is not one token at one position in O and S": 23
+   },
+   "domains": {
+    "animals": 168
+   }
+  }
+ }
+}

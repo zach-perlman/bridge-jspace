@@ -67,6 +67,11 @@ lowered):
            x52_atoms.word_answer_matcher; Q-after: the lookup's Δ in both readers' views; Q-before: each reader's own Δ
            in its own view); descriptive.
 
+Dan 11:10 (batch53.yaml next_1110): "53.1 (Q-before, number) on Muse, and on Lightning if its gate passes ... Rule: the
+conflict test's, verbatim; across: "the pointer does not depend on the question's position" if the lookup loses <= 0.10
+in both cells on a model" (position_rule, per model, beside the brief's rule; Muse at L26, Lightning at its committed
+L14 without its 60 dev scenes); "Stop: the 53.1 word cells (the wording fails)" (Muse and Lightning have no word run).
+
 Rule across cells (verbatim, batch53.yaml): "position": (Q-before, number) is answer or mixed and (Q-after, word) is
 entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change
 gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the
@@ -112,13 +117,24 @@ CELL_TEXT = {"qa_num": "(Q-after, number)", "qb_num": "(Q-before, number)", "qa_
              "qb_word": "(Q-before, word)"}  # fmt: skip
 NUMBER_CELLS, WORD_CELLS = CELLS[:2], CELLS[2:]
 # Dan 10:20 (batch53.yaml decision_531_words): the number cells now, the word cells later in a run of their own
-RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "nemotron-3.5-lightning": "nem35l_x53_2x2"}
-WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2_words", "qwen3.6-27b": "x53_2x2_words_27b",
-             "nemotron-3.5-lightning": "nem35l_x53_2x2_words"}  # fmt: skip
-# the verdict's models: Dan's 53.1 decision (10:20) names the 9B and the 27B, and batch 53 stops adding Lightning
-# coverage; the run stage still takes Lightning (RUNS, DEV_GATE) should it be asked for
-MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b")
-MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "nemotron-3.5-lightning": "Lightning"}
+RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "muse-glimmer-30b": "muse30_x53_2x2",
+        "nemotron-3.5-lightning": "nem35l_x53_2x2"}  # fmt: skip
+# Dan 11:10 (batch53.yaml next_1110): "Stop: the 53.1 word cells (the wording fails)"; Muse and Lightning have none
+WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2_words", "qwen3.6-27b": "x53_2x2_words_27b"}
+WORDS_STOPPED = "stopped (Dan 11:10: the wording fails)"
+# the verdict's models: the 9B and the 27B (Dan 10:20), Muse and Lightning's number cells (Dan 11:10, item 3)
+MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+MODEL_SHORT = {
+    "qwen3.5-9b": "9B",
+    "qwen3.6-27b": "27B",
+    "muse-glimmer-30b": "Muse",
+    "nemotron-3.5-lightning": "Lightning",
+}
+# Dan 11:10's rule across the number cells, per model (verbatim in POSITION_RULE_TEXT)
+POSITION_HOLDS = "the pointer does not depend on the question's position"
+POSITION_RULE_TEXT = ('Dan 11:10 (batch53.yaml next_1110, item 3), verbatim: "Rule: the conflict test\'s, verbatim; '
+                      'across: "the pointer does not depend on the question\'s position" if the lookup loses <= 0.10 in '
+                      'both cells on a model."')  # fmt: skip
 # Lightning's main test (nem35l_x52_conflict) keeps the 60 scenes its layer was fixed on out of the selection
 DEV_GATE = {"nemotron-3.5-lightning": "results/x51_lightning/nem35l_x52_layer_r2/gate.json"}
 WORD_INSTRUCTION = "Answer with a single word and nothing else."  # suite_v1.INSTRUCTION (chat.QUESTION_INSTRUCTION)
@@ -698,6 +714,7 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
     layer = X.PREDICTED[target]
     words = [c for c in cells if CELL[c][1] == "word"]
     assert not words or set(cells) <= set(WORD_CELLS), "the word cells run on their own (a run of their own name)"
+    assert not words or target in WORD_RUNS, f"{target}: the word cells are {WORDS_STOPPED}"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     pairs = scene_pairs()
@@ -918,18 +935,41 @@ def cross_check(cells: dict[str, dict]) -> dict:
 def model_verdict(target: str, n_boot: int) -> dict:
     """One model: the number cells from its number run, the word cells from its word run (each 'pending' while its run
     is not here)."""
-    run, wrun = RUNS[target], WORD_RUNS[target]
-    d, dw = RESULTS / run, RESULTS / wrun
-    if not (d / "manifest.json").exists() and not (dw / "manifest.json").exists():
+    run, wrun = RUNS[target], WORD_RUNS.get(target)
+    d = RESULTS / run
+    dw = RESULTS / wrun if wrun else None
+    if not (d / "manifest.json").exists() and not (dw and (dw / "manifest.json").exists()):
         return {"target": target, "run": run, "word_run": wrun, "status": "pending"}
-    m = json.loads(((d if (d / "manifest.json").exists() else dw) / "manifest.json").read_text())
-    cells = {c: cell_result(d if c in NUMBER_CELLS else dw, c, target, n_boot) for c in CELLS}
+    m = json.loads(((d if (d / "manifest.json").exists() else dw) / "manifest.json").read_text())  # type: ignore[operator]
+    cells = {c: cell_result(d, c, target, n_boot) for c in NUMBER_CELLS}
+    for c in WORD_CELLS:  # no word run for Muse and Lightning (Dan 11:10: the word cells stopped)
+        cells[c] = cell_result(dw, c, target, n_boot) if dw else {"cell": c, "status": WORDS_STOPPED, "label": None}
     labels = {c: r.get("label") for c, r in cells.items()}
-    rel = json.loads((dw / "relation.json").read_text()) if (dw / "relation.json").exists() else None
-    wm = json.loads((dw / "manifest.json").read_text()) if (dw / "manifest.json").exists() else {}
+    rel = json.loads((dw / "relation.json").read_text()) if dw and (dw / "relation.json").exists() else None
+    wm = json.loads((dw / "manifest.json").read_text()) if dw and (dw / "manifest.json").exists() else {}
     return {"target": target, "run": run, "word_run": wrun, "status": "run", "layer": m["layer"],
             "relation": wm.get("relation"), "relation_check": rel, "cells": cells, "across": across(labels),
-            "cross_check": cross_check(cells)}  # fmt: skip
+            "cross_check": cross_check(cells), "position": position_rule(cells)}  # fmt: skip
+
+
+def position_rule(cells: dict[str, dict]) -> dict:
+    """Dan 11:10 across the two number cells of a model: the pointer does not depend on the question's position if the
+    conflict test's lookup loses <= 0.10 beyond random (point estimates, X0's excess) in both; does not hold as soon as
+    a tested number cell is above 0.10 (naming it: 'both' fails whatever the other gives); can't tell while a number
+    cell is untested and none is above."""
+    per: dict[str, float | None] = {c: (cells[c]["lookup_extra"][0] if cells[c].get("status") == "tested" else None)
+                                    for c in NUMBER_CELLS}  # fmt: skip
+    known = {c: v for c, v in per.items() if v is not None and not math.isnan(v)}
+    above = [c for c, v in known.items() if v > CROSS_MAX + EPS]
+    if above:
+        holds, text = False, "does not hold: the lookup loses > 0.10 beyond random in " + ", ".join(
+            f"{CELL_TEXT[c]} ({known[c]:.2f})" for c in above)  # fmt: skip
+    elif len(known) == len(per):
+        holds, text = True, f"{POSITION_HOLDS} (lookup <= 0.10 beyond random in both number cells)"
+    else:
+        untested = [CELL_TEXT[c] for c in NUMBER_CELLS if c not in known]
+        holds, text = None, f"can't tell: {', '.join(untested)} not tested"
+    return {"per_cell": per, "holds": holds, "above": above, "text": text}
 
 
 def diag_lines(word_run: str) -> list[str]:
@@ -965,7 +1005,10 @@ def verdict_lines(models: list[dict]) -> list[str]:
     lines = ["# 53.1: the 2x2, question position x answer type (UNVERIFIED; no prediction)", "",
              "Batch 53, test 53.1 (jobs/c3/batch53.yaml). The brief's 53.1, verbatim:", "", "```", brief_53_1(), "```",
              "",
-             f"51.12's rule (x51_answer): {A51.RULE}", "",
+             f"51.12's rule (x51_answer): {A51.RULE}", "", POSITION_RULE_TEXT + " As computed: the conflict test's "
+             "lookup extra loss beyond random (X0's excess, point estimate) in (Q-after, number) and (Q-before, number); "
+             "'does not hold' names a tested cell above 0.10; 'can't tell' while a cell is untested and none is above. "
+             "Kept apart from the brief's rule across cells.", "",
              "As computed: see scripts/x53_2x2.py's docstring (cells, relation, gate, conflict test, 51.12 arms, "
              "atoms). The cell's label is the recall's 51.12 label (51.12's decisive E1 reader); the lookup's beside. "
              f"Cluster bootstrap over the bridge entity ({X.N_BOOT}, seed {X.BOOT_SEED}).", ""]  # fmt: skip
@@ -975,7 +1018,9 @@ def verdict_lines(models: list[dict]) -> list[str]:
             lines += [f"## {name}: pending (no run {mv['run']} here)", ""]
             continue
         lines += [f"## {name} ({mv['run']}, L{mv['layer']}; relation for the word cells: {mv['relation']})", "",
-                  f"Rule across cells: **{mv['across']}**. Cross-check: **{mv['cross_check']['text']}**.", ""]  # fmt: skip
+                  f"Across the number cells (Dan 11:10): **{mv['position']['text']}**.", "",
+                  f"Rule across cells (the brief's): **{mv['across']}**. Cross-check: **{mv['cross_check']['text']}**.",
+                  ""]  # fmt: skip
         if mv.get("relation_check"):
             rc = mv["relation_check"]
             cov = rc.get("coverage") or {}
@@ -987,7 +1032,7 @@ def verdict_lines(models: list[dict]) -> list[str]:
                       f"spelling, initial or symbol: {dropped or '-'}. The recall's O read accuracy on (Q-after, word) "
                       f"= {rc['accuracy_recall_qa_word']} on {rc['model']} (>= 0.80: {rc['passes']}; the 9B's decides).",
                       ""]  # fmt: skip
-        lines += diag_lines(mv["word_run"])
+        lines += diag_lines(mv["word_run"]) if mv["word_run"] else []
         lines += ["| cell | gate (O read acc. lookup / recall) | n | recall: 51.12 label | lookup: 51.12 label | "
                   "conflict test lookup: extra loss beyond random | recall: extra loss | recall e2/e1 | recall e3 | "
                   "recall answer word not read |", "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -1031,13 +1076,14 @@ def verdict_lines(models: list[dict]) -> list[str]:
 
 
 def title_of(models: list[dict]) -> str:
-    """The figure's title (<= 70 characters): the rule across cells per model, 'can't tell' without its reasons (the
-    verdict lists them)."""
+    """The figure's title (<= 70 characters): Dan 11:10's rule across the number cells per model (holds / no / ? =
+    can't tell / pending); the brief's rule across cells and the reasons are in the verdict."""
     parts = []
     for mv in models:
-        a = mv.get("across", "pending")
-        parts.append(f"{MODEL_SHORT.get(mv['target'], mv['target'])} {a.split(':')[0]}")
-    t = "53.1 across cells: " + "; ".join(parts)
+        h = mv.get("position", {}).get("holds", "pending") if mv["status"] == "run" else "pending"
+        mark = {True: "holds", False: "no", None: "?"}.get(h, "pending")  # type: ignore[call-overload]
+        parts.append(f"{MODEL_SHORT.get(mv['target'], mv['target'])} {mark}")
+    t = "Lookup <= 0.10 in both number cells: " + ", ".join(parts)
     return t if len(t) <= 70 else t[:67] + "..."
 
 
@@ -1049,12 +1095,17 @@ def figure(models: list[dict], path: Path) -> None:
 
     plt = SS.setup()
     run = [m for m in models if m["status"] == "run"] or models[:1]
-    fig, axes = plt.subplots(1, len(run), figsize=(SS.WIDTH, 1.2 + 0.75 * len(CELLS)), squeeze=False, sharey=True)
+    ncols = min(len(run), 2)  # two panels a row (four models: 2 x 2)
+    nrows = math.ceil(len(run) / ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(SS.WIDTH, (0.9 + 0.75 * len(CELLS)) * nrows + 0.9), squeeze=False,
+                             sharey=True)  # fmt: skip
+    for ax in axes.flat[len(run) :]:
+        ax.set_visible(False)
     marks = (("recall", "1", SS.COL["recall"], "o", "recall: without the J++ part"),
              ("recall", "2", SS.COL["recall"], "D", "recall: the J++ part, answer directions kept"),
              ("recall", "3", SS.COL["control"], "s", "recall: the answer directions alone"),
              ("lookup", "1", SS.COL["lookup"], "o", "lookup: without the J++ part (cross-check)"))  # fmt: skip
-    for ax, mv in zip(axes[0], run, strict=True):
+    for ax, mv in zip(axes.flat[: len(run)], run, strict=True):
         ax.axvspan(-0.2, CROSS_MAX, color=SS.COL["band"], zorder=0)
         ax.axvline(0, color="#999999", lw=0.8)
         ax.set_xlim(*SS.XLIM)
@@ -1090,9 +1141,9 @@ def figure(models: list[dict], path: Path) -> None:
     SS.title(
         fig,
         title_of(run),
-        "Shaded: the lookup's 'not needed' band (<= 0.10). Right: the recall's 51.12 label. UNVERIFIED.",
+        "Title: Dan 11:10's rule. Shaded: <= 0.10. Right: the recall's 51.12 label. UNVERIFIED.",
     )
-    fig.tight_layout(rect=(0, 0.12, 1, 0.9))
+    fig.tight_layout(rect=(0, 0.12 / nrows, 1, 1 - 0.1 / nrows))
     fig.savefig(path, dpi=100)
     plt.close(fig)
 

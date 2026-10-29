@@ -12,10 +12,11 @@ N_PAIRS = 40  # scenes checked against the main test's own builder (the full 600
 
 
 def _tok():
-    from scripts import statement_positions as SP
+    """The target's tokenizer as a run loads it (x45m.tokenizer: with Muse's chat-template edits off the box)."""
+    from scripts import x45m
 
     try:
-        return SP.load_tokenizer()
+        return x45m.tokenizer()
     except Exception as e:
         pytest.skip(f"target tokenizer not cached: {e}")
 
@@ -342,6 +343,48 @@ def test_open_patterns():
     assert T2.across(labels).endswith("(patterns the labelled cells leave open: readability, neither)")
 
 
+def test_position_rule():
+    """Dan 11:10 across the two number cells: holds iff both lookups <= 0.10; a tested cell above names itself; an
+    untested cell with none above: can't tell. The word cells never enter."""
+
+    def cells(qa, qb, words="x"):
+        out = {}
+        for c, v in (("qa_num", qa), ("qb_num", qb)):
+            out[c] = {"status": "tested", "lookup_extra": [v, v - 0.05, v + 0.05]} if v is not None else {"status": "n"}
+        return out | {c: {"status": "tested", "lookup_extra": [0.9, 0.8, 1.0]} for c in T2.WORD_CELLS}
+
+    assert T2.position_rule(cells(0.05, 0.10))["holds"] is True
+    assert T2.position_rule(cells(0.05, 0.10))["text"].startswith(T2.POSITION_HOLDS)
+    r = T2.position_rule(cells(0.14, 0.22))  # the 27B's numbers
+    assert r["holds"] is False and r["above"] == ["qa_num", "qb_num"]
+    assert r["text"] == ("does not hold: the lookup loses > 0.10 beyond random in (Q-after, number) (0.14), "
+                         "(Q-before, number) (0.22)")  # fmt: skip
+    r = T2.position_rule(cells(-0.05, None))  # the 9B's: Q-before not tested
+    assert r["holds"] is None and r["text"] == "can't tell: (Q-before, number) not tested"
+    assert T2.position_rule(cells(0.3, None))["holds"] is False
+
+
+def test_qa_num_matches_the_stored_main_test(tok):
+    """On this target's tokenizer, (Q-after, number) rebuilds the stored main test's chat cases (the source of 51.12's
+    E1 and the agreement check): the same scenes dropped and kept, the same ids and bridge positions."""
+    from scripts import x45b_binding as B
+
+    src = X.RESULTS / B.MAIN_RUN.get(X.pins.TARGET, "-") / "cases.jsonl"
+    if not src.exists():
+        pytest.skip(f"no stored main test for {X.pins.TARGET}")
+    stored = {c["scene"]: c for c in X.read_jsonl(src) if c["rendering"] == "chat"}
+    pairs = T2.scene_pairs()[:N_PAIRS]
+    for p in pairs:
+        mine, _ = T2.cell_case(tok, p, "qa_num")
+        old = stored.get(p[LK]["scene"])
+        assert (mine is None) == (old is None), p[LK]["scene"]
+        if mine is None or old is None:
+            continue
+        assert mine["pos"] == old["pos"]
+        for w in X.READERS:
+            assert mine["readers"][w]["ids"] == old["readers"][w]["ids"], (p[LK]["scene"], w)
+
+
 # ---- the verdict on a planted run (CPU, end to end) -----------------------------------------------------------------
 
 
@@ -530,10 +573,15 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
         (tmp_path / T2.WORD_RUNS[T2.NINE_B] / "relation.json").write_text(json.dumps(nine))
     num = T2.stage_run(T2.RUNS[pins.TARGET], T2.NUMBER_CELLS)
     assert "relation_coverage" not in json.loads((num / "manifest.json").read_text())  # no relation in a number run
-    out = T2.stage_run(T2.WORD_RUNS[pins.TARGET], T2.WORD_CELLS)
+    has_words = pins.TARGET in T2.WORD_RUNS
+    if has_words:
+        T2.stage_run(T2.WORD_RUNS[pins.TARGET], T2.WORD_CELLS)
+    else:  # Muse and Lightning: the word cells stopped (Dan 11:10)
+        with pytest.raises(AssertionError):
+            T2.stage_run(T2.RUNS[pins.TARGET] + "_words", T2.WORD_CELLS)
     with pytest.raises(AssertionError):
         T2.stage_run(T2.RUNS[pins.TARGET] + "_mixed", T2.CELLS)  # the word cells run on their own
-    for cell in T2.CELLS:
+    for cell in T2.CELLS if has_words else T2.NUMBER_CELLS:
         out = num if cell in T2.NUMBER_CELLS else T2.RESULTS / T2.WORD_RUNS[pins.TARGET]
         g = json.loads((out / cell / "gate.json").read_text())
         assert g["tested"] and g["chosen"] == chosen and g["org_read_accuracy"] == {LK: 1.0, RC: 1.0}, (cell, g)
@@ -546,14 +594,20 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
         atoms = X.read_jsonl(out / cell / "atoms.jsonl")
         assert len(atoms) == chosen * (1 if T2.CELL[cell][0] == "after" else 2)
         assert all(len(a["atoms"]) == X.K_MAIN for a in atoms)
-    words = T2.RESULTS / T2.WORD_RUNS[pins.TARGET]
     if pins.TARGET == T2.NINE_B:
+        words = T2.RESULTS / T2.WORD_RUNS[pins.TARGET]
         assert json.loads((words / "relation.json").read_text())["passes"] is True
     assert json.loads((num / "manifest.json").read_text())["finished_utc"]
     mv = T2.model_verdict(pins.TARGET, 100)
-    assert all(r["status"] == "tested" for r in mv["cells"].values())
+    assert all(mv["cells"][c]["status"] == "tested" for c in T2.NUMBER_CELLS)
+    assert mv["position"]["holds"] is True  # the fake lookup never loses beyond random
     text = "\n".join(T2.verdict_lines([mv]))
-    assert "Word cells: relation animals/class" in text and f"on the {n} scenes it answers" in text
+    assert f"Across the number cells (Dan 11:10): **{T2.POSITION_HOLDS}" in text
+    if has_words:
+        assert all(mv["cells"][c]["status"] == "tested" for c in T2.WORD_CELLS)
+        assert "Word cells: relation animals/class" in text and f"on the {n} scenes it answers" in text
+    else:
+        assert all(mv["cells"][c]["status"] == T2.WORDS_STOPPED for c in T2.WORD_CELLS)
 
 
 def test_verdict_planted_position_and_cross_check(tok, tmp_path, monkeypatch):

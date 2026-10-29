@@ -1,0 +1,45 @@
+id: x53_2x2_lightning
+title: "Batch 53.1 (Q-before, number) on Lightning (its committed L = x51_lightning.py layer, L14), Dan 11:10 item 3, if its gate passes: the number cells, (Q-after, number) = its main test as is (the 60 dev scenes kept out) and (Q-before, number); per cell the main gate (a failed gate = not tested, never lowered), the conflict test at L, 51.12's arms with the readout check first, the atom inventory on 50 items; across: 'the pointer does not depend on the question's position' if the lookup loses <= 0.10 in both cells; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x53_2x2.py run --cells number --name nem35l_x53_2x2 &&
+  uv run python scripts/x53_2x2.py verdict
+question: >-
+  On Lightning: does the conflict test's lookup lose more than 0.10 beyond random when each reader's question is placed
+  before the scene, as the 27B's did (0.22 with the question first, 0.14 after)? Only where the cell's own gate passes.
+why_it_matters: >-
+  Dan 11:10 (batch53.yaml next_1110, item 3): the 27B's lookup lost 0.22 with the question first; Lightning (a hybrid
+  Mamba / attention model) tells whether the pointer's independence of the question's position holds outside the
+  transformer families.
+hypotheses:
+  none: "no prediction (batch 53: exploration day; rules fixed by Dan 11:10 before any run)"
+decision_rule: >-
+  As jobs/c3/x53_2x2_muse.yaml (Dan 11:10 item 3 and the conflict test's rule verbatim; the as-computed text), on
+  Lightning at its committed layer (BJ_PREDICTED_LAYER from scripts/x51_lightning.py layer: L14; batch 52 C's rule).
+  "If its gate passes": each cell's own gate decides (X0's, 0.80 per reader over the 516 scenes that build on
+  Lightning's tokenizer, the same 516 as its stored main test nem35l_x52_conflict, checked by tests/test_x53_2x2.py;
+  results/x53_2x2/plan-20261029T093733Z); eligible after the gate without the 60 dev scenes its layer was fixed on
+  (results/x51_lightning/nem35l_x52_layer_r2/gate.json, as nem35l_x52_conflict's --exclude-dev), >= 150, the first 200;
+  a failed gate = "not tested (gate x < 0.80)", never lowered, no below-gate run. (Q-after, number) checked item by
+  item against nem35l_x52_conflict at L (agreement.json). BJ_SUITE_BATCH=16 as Lightning's main test (its numerics
+  depend on batch composition). Across (Dan 11:10) as the Muse spec.
+controls:
+- "a random part of the same share beside every removal (X0's random subspace, seed 888 + L)"
+- "the readout check before the arms, per cell and reader"
+- "(Q-after, number) against the stored nem35l_x52_conflict item by item (agreement.json)"
+- "both cells' gates before any test"
+n: "per cell: 516 scenes for the gate; the first 200 eligible (dev scenes out); atoms on 50"
+seeds: [888, 0]
+notes: >-
+  Batch 53, 53.1 (Q-before, number) on Lightning (Dan 11:10, item 3: "53.1 (Q-before, number) on Muse, and on
+  Lightning if its gate passes"; "Stop: the 53.1 word cells (the wording fails)"). No prediction; UNVERIFIED; nothing
+  into the README. Writes results/x53_2x2/nem35l_x53_2x2/ (qa_num/, qb_num/), then the verdict over every model's runs.
+  To speedup or mats GPU 1, whichever is free. Estimate from the ledger (sesterce-speedup): x52_lightning_conflict
+  622.8 s (516 scenes' competence + 13 layers of J++ arms), x52_lightning_answer 137.6 s (51.12's arms on 200 items):
+  2 x 516-scene competence (~450 s each) + 2 x 200-item arms (~140 s each) + load ~ 1,300 s ~ 0.35 h; entered as 0.5.
