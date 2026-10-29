@@ -48,6 +48,30 @@ def test_the_coverage_table_is_the_matrix():
     assert L.coverage_problems("no table here")
 
 
+def test_the_coverage_table_is_symbols_with_footnotes():
+    """Dan's restructure brief (29 Oct 08:55): every matrix row once, in the README's order; each cell one symbol of the
+    legend (✓ ◐ ○ – ✗) and at most one footnote number; every number listed under the table; no status words in a
+    cell."""
+    import json
+    import re
+
+    from scripts import ledger_coverage as LC
+
+    out = LC.table()
+    rows = [line for line in out.splitlines() if line.startswith("| ") and not line.startswith("| **")][1:]  # no header
+    m = json.loads(LC.MATRIX.read_text())
+    assert len(rows) == len(m["rows"])
+    notes = {int(n) for n in re.findall(r"(?m)^(\d+)\. ", out)}
+    for row in rows:
+        for c in row.strip("| ").split(" | ")[1:]:
+            assert re.fullmatch(r"[✓◐○–✗](?: <sup>(\d+)</sup>)?", c), c
+            for n in re.findall(r"<sup>(\d+)</sup>", c):
+                assert int(n) in notes
+    assert notes == set(range(1, len(notes) + 1))
+    parts = [line for line in out.splitlines() if line.startswith("| **Part")]
+    assert [p.split(".")[0] for p in parts] == [f"| **Part {r}" for r in ("I", "II", "III", "IV", "V", "VI")]
+
+
 def test_the_overview_heatmap_follows_the_cards():
     """The heatmap's rows (scripts/ledger_coverage.py's HEATMAP): every card in Parts I-VI, in the ledger's order, its
     Part as in the ledger; nothing else but the cards it leaves out on purpose; every cell a known verdict code. The

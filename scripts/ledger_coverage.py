@@ -1,8 +1,10 @@
 """ledger_coverage: the coverage table of docs/depth/EXPERIMENTS.md (Dan, 29 Oct 01:15), generated from the committed
-coverage matrix (scripts/x52_coverage.py's matrix.json): rows = the matrix's tests in its order, columns = 27B /
-Lightning / 9B / Muse, each cell the matrix's status and note verbatim (the Lightning gate sentence, said once above
-the table, left out of the cells). A row whose test has a ledger card links to it. scripts/check_ledger.py checks that
-the table in the document equals this output, so the table cannot drift from the matrix.
+coverage matrix (scripts/x52_coverage.py's matrix.json): rows = the matrix's tests in the README's order (Dan's
+restructure brief, 29 Oct 08:55) under their Part, columns = 27B / Lightning / 9B / Muse, each cell the matrix's status
+as a symbol (✓ done, ◐ partial, ○ below gate, – not tested, ✗ not designed) and its note verbatim as a numbered
+footnote under the table (the Lightning gate sentence, said once above the table, left out). A row whose test has a
+ledger card links to it. scripts/check_ledger.py checks that the table in the document equals this output, so the
+table cannot drift from the matrix. Also the overview heatmap's data (HEATMAP; drawn by scripts/ledger_figures.py).
 
 uv run python scripts/ledger_coverage.py            # prints the table
 """
@@ -142,23 +144,79 @@ def heatmap_cells() -> list[tuple[str, str, str, list[tuple[str, str]]]]:
     return out
 
 
-def cell(c: dict, gate: str) -> str:
+# Dan's restructure brief (29 Oct 08:55): the table's cells are symbols, the matrix's notes numbered footnotes under it
+SYMBOL = {"done": "✓", "partial": "◐", "below gate": "○", "not tested": "–", "missing": "–", "running": "–",
+          "queued": "–", "not designed": "✗"}  # fmt: skip
+LEGEND = ("✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested "
+          "(including missing, running or queued), ✗ not designed for that model; a number points to the matrix's note "
+          "for that cell, listed under the table.")  # fmt: skip
+PART_TITLE = {"I": "Part I. The two readers", "II": "Part II. Identity", "III": "Part III. The address",
+              "IV": "Part IV. Where and when", "V": "Part V. Other datasets", "VI": "Part VI. What did not hold",
+              None: "Withdrawn, or run on one model only"}  # fmt: skip
+# not-tested cells whose matrix note does not name the gate, but whose card does (47.10: the report reader below 0.80
+# in the cited verdict; the card's "not tested (gate x < 0.80)")
+GATE_FROM_CARD = {("E8: the report prompt (47.10)", t) for t in ("qwen3.5-9b", "muse-glimmer-30b",
+                                                                 "nemotron-3.5-lightning")}  # fmt: skip
+
+
+def note_of(c: dict, gate: str) -> str:
+    """The matrix's note for a cell, without the Lightning gate sentence (said once above the table) or a repeated
+    status word."""
     note = c["note"].replace("; " + gate, "").replace(gate, "").strip()
-    status = c["status"]
-    if note.startswith(status + ":"):
-        note = note[len(status) + 1 :].strip()
-    text = f"**{status}**" + (f": {note}" if note else "")
-    return text.replace("|", "/")
+    if note.startswith(c["status"] + ":"):
+        note = note[len(c["status"]) + 1 :].strip()
+    return note.replace("|", "/")
+
+
+def status_of(c: dict, note: str, row: str = "", target: str = "") -> str:
+    """The cell's symbol class: the matrix's status, with a not-tested cell whose reason is the gate read as below gate
+    (DAS's note names the gate second, after the missing port: not tested)."""
+    if c["status"] == "not tested" and (("gate" in note and not note.startswith("DAS"))
+                                        or (row, target) in GATE_FROM_CARD):  # fmt: skip
+        return "below gate"
+    return c["status"]
+
+
+def ordered_rows(m: dict) -> list[tuple[str | None, dict]]:
+    """The matrix's rows in the README's order: by their card's place in HEATMAP (the ledger's order), rows without a
+    card shown there (withdrawn, or no card) last, in the matrix's order."""
+    first = {}
+    for i, (part, anchor, _, _) in enumerate(HEATMAP):
+        first.setdefault(anchor, (i, part))
+    keyed = []
+    for j, r in enumerate(m["rows"]):
+        i, part = first.get(ANCHORS.get(r["row"], ""), (len(HEATMAP), None))
+        keyed.append((i, j, part, r))
+    return [(part, r) for _, _, part, r in sorted(keyed, key=lambda k: (k[0], k[1]))]
 
 
 def table(matrix: Path = MATRIX) -> str:
+    """The coverage table: one row per matrix row in the README's order under its Part, each cell a symbol and, where the
+    matrix has a note, a footnote number; the notes numbered under the table (one number per distinct note)."""
     m = json.loads(matrix.read_text())
+    gate = m["lightning_gate"]
+    notes: dict[str, int] = {}
     lines = ["| test | " + " | ".join(name for _, name in COLUMNS) + " |", "|---" * (len(COLUMNS) + 1) + "|"]
-    for r in m["rows"]:
+    last = "start"
+    for part, r in ordered_rows(m):
+        if part != last:
+            lines.append(f"| **{PART_TITLE[part]}** |" + " |" * len(COLUMNS))
+            last = part
         name = r["row"].replace("|", "/")
         if r["row"] in ANCHORS:
             name = f"[{name}](#{ANCHORS[r['row']]})"
-        lines.append(f"| {name} | " + " | ".join(cell(r["cells"][k], m["lightning_gate"]) for k, _ in COLUMNS) + " |")
+        cells = []
+        for k, _ in COLUMNS:
+            c = r["cells"][k]
+            note = note_of(c, gate)
+            sym = SYMBOL[status_of(c, note, r["row"], k)]
+            if note:
+                cells.append(f"{sym} <sup>{notes.setdefault(note, len(notes) + 1)}</sup>")
+            else:
+                cells.append(sym)
+        lines.append(f"| {name} | " + " | ".join(cells) + " |")
+    lines += ["", LEGEND, ""]
+    lines += [f"{i}. {note}" for note, i in notes.items()]
     return "\n".join(lines)
 
 
