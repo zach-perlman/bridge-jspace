@@ -30,14 +30,15 @@ from scripts.story_b50 import caption
 R = S.REPO / "results"
 # 53.7: the newest verdict first; a (model, format) cell is taken from the first verdict that holds it, so a verdict
 # under the lookup-only gate (decisions_1210) wins over the earlier two-reader one. The 27B's probe ran before 12:10
-# under X0's gate on both readers; its lookup-only rerun is still running, and only the combined verdicts are cited
-# (coordinator, 29 Oct ~13:40: "the 27B probe is still running ... mark it 'running'"), so its cells read "running"
-# until the 53.7 agent's combined probe verdict covers it ("adapted design" then, Dan 13:15, answers_1315 item 4). The
-# routes test's combined verdict over both models and both formats (122509Z) replaces 115759Z and 120413Z
-PROBES_537 = (R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json",)
+# under X0's gate on both readers; only the combined verdicts are cited (coordinator, 29 Oct): the probe's final one
+# over every lookup-gate run (130251Z, the 27B's lookup-only reruns included: "adapted design", Dan 13:15,
+# answers_1315 item 4; it replaces 115640Z), the routes test's over both models and both formats (122509Z, which
+# replaces 115759Z and 120413Z), and the lens monitor's over the 9B so far (130113Z; the 27B's running)
+PROBES_537 = (R / "x0_probe" / "x53_7_probe-20261029T130251Z" / "verdict.json",)
 ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T122509Z" / "verdict.json",)
-# cells without a combined verdict yet: the 27B's probe in both formats
-RUNNING_537 = {"probe": {("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")}, "routes": set()}
+MONITOR_537 = R / "x53_monitor" / "x53_7_monitor-20261029T130113Z" / "x53_7_monitor.json"
+# cells without a combined verdict yet
+RUNNING_537 = {"probe": set(), "routes": set()}
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
 # the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded); the
 # verdict rewritten at Dan's 13:15 (answers_1315) with the scenes where the clean answer survives the span block beside
@@ -216,8 +217,7 @@ def build_code_tool(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Path, .
     S.panel_tag(b, ", ".join(ns_b), "fixed")
     caption(fig, ["Adapted design: a lookup-only gate (the lookup says and reads both prompts right on at least 0.80 of "
                   "the scenes); the recall is not part of this test. The 9B's code probe: that gate set after the data "
-                  f"({S.STATUS_GLYPH['after']}). The 27B's probe under the lookup-only gate and the lens monitor: "
-                  "running.",
+                  f"({S.STATUS_GLYPH['after']}). The lens monitor: in the card (the 27B's running).",
                   "Tool output: the scene as a tool's reply in prose, its bridge word about 250 tokens later than in a "
                   "prose prompt. B: another item moved; the address removed or added is the one fit on prose, carried "
                   "over; grey: a random part of the same size. Muse, Lightning and the 122B: not run."], 1.6)  # fmt: skip
@@ -355,6 +355,22 @@ def record_card_numbers(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Pat
         man = R / "x6_routes" / run["run"] / "manifest.json"
         S.record("cards", t, f"53.7, {fmt}: the routes test's address, fit on (the prose probe run)",
                  json.loads(man.read_text())["alf_from"], source=rel(man))  # fmt: skip
+    # the lens monitor in code and tool output (53.2's rule; the energy-matched arm beside, Dan 13:15): per run its
+    # status, and for a tested format the address at the last token with 25 and 100 lens directions
+    mon = json.loads(MONITOR_537.read_text())
+    for run in mon["runs"]:
+        t, fmt = run["model"], run["format"]
+        S.record("cards", t, f"53.7, {fmt}: the lens monitor's status", run["status"], source=rel(MONITOR_537))
+        res = mon["results"].get(t, {}).get(f"{fmt}_l")
+        if run["status"] != "tested" or not res:
+            continue
+        rule = res["rules"]["T|b"]
+        for k in ("k25", "k100"):
+            n = k[1:]
+            S.record("cards", t, f"53.7, {fmt}: the lens monitor, the address at the last token, {n} lens directions: "
+                     "the rule's label", rule[k]["label"], source=rel(MONITOR_537))  # fmt: skip
+            S.record("cards", t, f"53.7, {fmt}: the lens monitor, the address at the last token, {n} lens directions: "
+                     "the energy rule's label", rule[f"erand_{k}"]["label"], source=rel(MONITOR_537))  # fmt: skip
     v, sp = json.loads(blocks.read_text()), json.loads(span.read_text())
     lk = v["readers"]["lookup"]
     S.record("cards", LT, "53.4: scenes, bridge entities", f"{lk['n']} scenes, {lk['entities']} bridge entities",

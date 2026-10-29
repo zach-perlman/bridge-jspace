@@ -2,7 +2,7 @@
 (backs bullet 2): lens identity vs address (53.6) ... Part I: the order cell (53.1, 27B vs 122B)").
 
   fig19_identity_address  53.6: the recall under the lens part toward item B plus the address swap toward item C's
-                          locker, and under each part alone: the shares answering B's, C's, the original or another
+                          locker, and under each part by itself: the shares answering B's, C's, the original or another
                           answer, one group per model (9B, 27B, Muse, Lightning, 122B). Lightning hatched: its gate was
                           chosen after its 60-scene pre-check was seen; a model without a run keeps its slot, grey.
   fig20_order_cell        53.1's number cells: the conflict test's switches lost without the lens part beyond random,
@@ -50,7 +50,7 @@ def by_target(verdicts: tuple[Path, ...]) -> dict[str, tuple[dict, Path]]:
 
 
 # fig19: the recall's answers per arm (x53_identity_address's PM cells), drawn top to bottom in each model's group
-ARMS = (("both", "both parts"), ("lens", "the lens part alone"), ("addr", "the address alone"))
+ARMS = (("both", "both parts"), ("lens", "the lens part by itself"), ("addr", "the address by itself"))
 ANSWERS = (
     ("B", "B's answer", {"color": B_COL}),
     ("C", "C's answer", {"color": C_COL}),
@@ -189,7 +189,7 @@ def build_order_cell(verdict: Path, out_name: str = "fig20_order_cell") -> str:
             ax2.plot([d[1], d[2]], [yp, yp], color=S.MARK_COL["lookup"], lw=1.6, zorder=2, solid_capstyle="butt")
             ax2.plot([d[0]], [yp], "o", color=S.MARK_COL["lookup"], ms=7, mfc="white" if after else S.MARK_COL["lookup"],
                      mec=S.MARK_COL["lookup"], mew=1.6, zorder=3)  # fmt: skip
-            word = "order dependence" if p["holds"] else "interval includes 0"
+            word = "order effect" if p["holds"] else "interval includes 0"
             ax2.text(d[0], yp + 0.4, word, fontsize=S.FONT - 1, color=S.COL["muted"], ha="center", va="bottom")
             S.record(out_name, t, "the lookup, question before minus after (paired)", round(d[0], 4), round(d[1], 4),
                      round(d[2], 4), n=p["n"], source=src)  # fmt: skip
