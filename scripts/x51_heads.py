@@ -56,7 +56,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
-from bridge_jspace.knockout import decoder_layers
+from bridge_jspace.knockout import attention_module, decoder_layers
 from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x6_routes as R
@@ -70,7 +70,12 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch51.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q51.2"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_2", "muse-glimmer-30b": "muse30_x51_2_r2", "qwen3.6-27b": "x51_2_27b"}
-SOURCE = A.RUNS  # target -> the 49.7 run whose items, halves and attention this test uses
+# batch 52 C coverage (amendment 3, after the attention port): Lightning, on its own 49.7 coverage run; verdict
+# --coverage reads it alone, 51.2's RUNS and own verdict unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_heads"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_heads/x51_2-20261028T190358Z"  # 51.2's rules first scored
+SOURCE = {**A.RUNS, **A.COVERAGE_RUNS}  # target -> the 49.7 run whose items, halves and attention this test uses
 S_WRITE = A.S_WRITE
 SITES = A.SITES
 DECISIVE = A.DECISIVE
@@ -433,7 +438,7 @@ def capture_o_inputs(model, layers: list[int], positions: list[int], out: dict[i
 
         return hook
 
-    handles = [blocks[la].self_attn.o_proj.register_forward_pre_hook(hook_for(la)) for la in layers]
+    handles = [attention_module(blocks[la]).o_proj.register_forward_pre_hook(hook_for(la)) for la in layers]
     try:
         yield
     finally:
@@ -451,7 +456,7 @@ def mean_heads(model, heads: dict[int, list[int]], positions: list[int], means: 
     pos = list(positions)
 
     def hook_for(la: int, hs: list[int]):
-        hd = blocks[la].self_attn.head_dim
+        hd = attention_module(blocks[la]).head_dim
         cols = torch.tensor([c for h in hs for c in range(h * hd, (h + 1) * hd)])
         value = means[la][:, cols.to(means[la].device)]
 
@@ -466,7 +471,9 @@ def mean_heads(model, heads: dict[int, list[int]], positions: list[int], means: 
 
         return hook
 
-    handles = [blocks[la].self_attn.o_proj.register_forward_pre_hook(hook_for(la, hs)) for la, hs in heads.items()]
+    handles = [
+        attention_module(blocks[la]).o_proj.register_forward_pre_hook(hook_for(la, hs)) for la, hs in heads.items()
+    ]
     try:
         yield
     finally:
@@ -490,7 +497,7 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "51.2 reads chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"51.2 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.2 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -525,6 +532,13 @@ def stage_run(name: str, why: str) -> Path:
         "seeds": {"scenes": R.SEED, "split": A.SPLIT_SEED, "heads": HEAD_SEED, "bootstrap": X.BOOT_SEED,
                   "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
         "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     manifest = out / "manifest.json"
     manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", manifest, flush=True)
@@ -556,7 +570,9 @@ def stage_run(name: str, why: str) -> Path:
     overlap = {"x49_7_items": len(src_items), "eligible_here": len(chosen), "kept": len(kept),
                "dropped": [it["scene"] for it in src_items if it["scene"] not in by_scene],
                "new_not_used": [c["scene"] for c in chosen if c["scene"] not in half]}  # fmt: skip
-    print("items vs 49.7:", json.dumps({k: (v if isinstance(v, int) else len(v)) for k, v in overlap.items()}), flush=True)
+    print(
+        "items vs 49.7:", json.dumps({k: (v if isinstance(v, int) else len(v)) for k, v in overlap.items()}), flush=True
+    )
     assert len(kept) >= 0.9 * len(src_items), f"fewer than 90% of 49.7's items stay eligible: {overlap}"
     items = [with_sites(tok, A.item_record(tok, c, half[c["scene"]])) for c in kept]
     ql = q_lengths(items)
@@ -746,14 +762,17 @@ def figure(res: dict, path: Path) -> None:
     plt.close(fig)
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = sealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """51.2's verdict (sealed until Q51.2), or with coverage (batch 52) the same rules on the given runs, no seal guard,
+    "no prediction" in place of Dan's answer (x52_heads-<UTC>/)."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else sealed()
     res = [analyse(r, n_boot) for r in runs]
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    out = RESULTS / f"x51_2-{stamp}"
+    out = RESULTS / f"{'x52_heads' if coverage else 'x51_2'}-{stamp}"
     out.mkdir(parents=True)
     lines = ["# 51.2: joint head ablation under the address swap", "",
-             f"Batch 51, test 51.2 (jobs/c3/batch51.yaml; {QUESTION}, Dan: {answer}). 49.7's items and swap (s = {S_WRITE} "
+             f"Batch 51, test 51.2 (jobs/c3/batch51.yaml; {'batch 52 coverage, ' if coverage else QUESTION + ', Dan: '}"
+             f"{answer}). 49.7's items and swap (s = {S_WRITE} "
              "(mu_k - mu_j) at the bridge word at L); heads ranked by their attention move at the last token on the fit "
              "half (49.7's stored attention), mean-ablated on the read half at the last token / the question tokens; "
              f"random sets of the same size in the same layers ({N_DRAWS} draws, seed {HEAD_SEED}). Decisive site "
@@ -869,6 +888,7 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the runs")
     ap.add_argument("--why", default="batch 51, test 51.2 (jobs/c3/batch51.yaml; Q51.2)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -878,7 +898,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(a.runs)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

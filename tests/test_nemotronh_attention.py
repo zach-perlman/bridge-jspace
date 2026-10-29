@@ -83,3 +83,11 @@ def test_lightning_attention_is_a_coverage_run():
     """Batch 52: 49.7 on Lightning is a coverage run (verdict --coverage), outside 49.7's RUNS."""
     lt = "nemotron-3.5-lightning"
     assert lt not in A.RUNS and A.COVERAGE_RUNS[lt].startswith("nem35l_") and A.SCORED.startswith("results/x49_attn/")
+
+
+def test_lightning_heads_read_lightnings_own_49_7_run():
+    """Batch 52: 51.2 on Lightning reads its 49.7 coverage run (attention.npz, items, halves), outside 51.2's RUNS."""
+    from scripts import x51_heads as HD
+
+    lt = "nemotron-3.5-lightning"
+    assert lt not in HD.RUNS and HD.COVERAGE_RUNS[lt].startswith("nem35l_") and HD.SOURCE[lt] == A.COVERAGE_RUNS[lt]
