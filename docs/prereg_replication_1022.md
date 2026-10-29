@@ -3030,3 +3030,93 @@ One readout job per model (scripts/nn_readout.py; J++ and logit lens; every 2nd 
 - **Hand check.** Blind, before reading the classifier's output: 5 items x 3 models x 2 sites, OTHER / NONLATIN_OTHER tokens labelled "about X" or not. If done by a model rather than a person, flagged as weaker evidence. Kappa per category.
 - **Slides** (rules, not cherry-picked): stacked category shares per model and site (MP, MM, H1); presence-by-layer lines (REAL, BRIDGE, PV_X, OCC/KNOW, FRAME) with C1 dashed; a token wall for the first item per relation by id.
 - Scorer: scripts/nn_topk_read.py.
+
+#### Amendment 60 (Zach, 2026-10-29 ~20:30 UTC; before any of it is built or run): three v4-family sets
+Zach's design choices, 29 Oct (multiple choice; each listed below where it applies). The cue-conflict readout (note 26 (c), 9B) found that the description's own words drive the J-space at the description's end (cue 86% vs the person's attribute 3% on descriptions without the cue word). These sets vary where the bridge comes from and what the hidden step is used for.
+
+**Common to notes 29-31.**
+- Built from scripts/jsuite_v4.py's pieces: data/v3_bridges.json entities with two descriptions each; v4's filler genres and splice; stem filter; X's position rotated.
+- About 600 scenes per set; seeds 5001 (note 29), 5101 (note 30), 5201 (note 31). Passage first, one chat turn, test split.
+- Item data stays out of the public repo, like v3 and v4.
+- Models: 9B, 27B, Lightning.
+- Per set and model:
+  - competence (cand2; hop 1 by generation where hop 1 names an entity);
+  - controls (competence_variants on the set's ctl set);
+  - note 20's knock-out at the model's band (paper10, paper10_rot, unembed10, paper10_pcasize);
+  - the readout with note 25's priming targets and note 26's top-20 dump, at the bridge site and the final token, in note 25's windows.
+- A smoke runs first. Scorer: scripts/nn_v5_read.py.
+
+##### Note 29: the remembered attribute as a key (jsuite_v5kn named, jsuite_v5kd described)
+- **Entities and attribute.** People (nationality, as its country), cities, companies, landmarks (country). Films are dropped.
+- **Passage.** Six lines "The delegation from <country> will wear <colour> badges."
+  - The countries are X's country plus five other distinct countries; the colours come from a fixed list with distinct first tokens.
+  - Filler as v4. No entity is named in the passage.
+- **Words.**
+  - MP, the key lookup:
+    - named: "What colour badges will the delegation from <X>'s home country wear?" (cities: "...from the country where <X> is", companies: "...where <X> is based", landmarks: "...where <X> stands");
+    - described: the same with X's description.
+  - MM, the say-twin: "Which country is <X> from?" (described: X's description; wording per type). Answer: the country.
+  - Steps:
+    - named MP: [the say question, the direct key lookup "...from <country>..."];
+    - named MM: [the say question, the say question];
+    - described MP: [description -> entity, the named MP question, the direct key lookup];
+    - described MM: [description -> entity, the named say question].
+  - Guess: the same question about "an unnamed figure" (chance 1/6 for MP).
+  - Controls set: H1 closed-book (named: the say question with no passage; described: description -> entity).
+- **Gate:** v4_split (H1 right, step 2 right, guess wrong; ok / fail by the whole).
+- **Readings** (knock-out on gated-ok items; bootstrap over items, 2000):
+  1. "A remembered word that is used, not said, needs the J-space":
+     - MP's paper10 loss minus the direct key lookup's (MP's last step, its own knock-out rows) >= 15 points, its interval above 0;
+     - the same contrast under paper10_rot below 5;
+     - MP's loss >= half of MM's.
+     - "Goes around": that contrast < 10 with its interval's upper end < 15.
+     - Mixed otherwise.
+  2. MM - MP gap, as note 20.
+  3. Priming.
+     - At the name (named) or the description's end (described): the country's top-1 share among the countries on MP vs MM; rho = (MP key - MP third) / (MM attr - MM third) as note 25.
+     - At MP's final token (descriptive): "the key shows before the value" if the country's top-1 share is >= 10 points above its third at a final-window layer before the first layer where the colour's share passes 50%.
+- Named is primary. Described is secondary, read only where >= 100 items are gated ok per word.
+
+##### Note 30: a true knowledge conflict (jsuite_v5kc)
+- **Entities.** The same four country-type relations.
+- **Descriptions.** v4's, kept only if no word names a country, nationality or city other than X's own (a fixed lexicon; the cue check).
+- **Passage.**
+  - Six attributed claims: "The club's notes say <E> was <value>." (people; others "...say <E> is in <country>").
+  - X's value is false: a random other value of the relation's vocabulary, never X's true value or another value in the scene. The other five are true. Filler as v4.
+- **Words.**
+  - CN: plain, named ("Which nationality was <X>?"); CA: "According to the passage, ..." named; DN / DA: the same, described.
+  - TN / TD: the same scene with X's claim true (plain question): the no-conflict control.
+  - Steps: [description -> entity (described only), the named question], with the passage.
+  - Controls set: H1 (closed-book description -> entity) and H2 (closed-book named recall).
+- **Labels.** Each answer is passage (X's false value), memory (the true value) or other.
+- **Eligibility.**
+  - Scenes whose closed-book H2 is right (described: and H1).
+  - The knock-out keeps every item of a scene whose control T is right (ablate_v2 --tasks-scene-words); the scorer restricts to the eligible scenes.
+- **Readings.**
+  1. Behaviour: passage share, plain vs "According to", named and described (paired by scene).
+  2. Knock-out: paper10's passage-share shift minus rotated's and minus unembed10's, bootstrap over bridges. "The knock-out pushes answers to the passage" if >= 10 points with the interval above 0.
+  3. The bridge by outcome (plain words, eligible).
+     - Top-1 shares at the bridge site of the true value, the false value and an absent value (third), on passage-wins vs memory-wins.
+     - "Memory channel": the true value's share on passage-wins within 10 points of memory-wins, and the false value's <= third + 3.
+     - "Current belief": the false value's share on passage-wins >= third + 10.
+     - "Memory strength": the true value's share lower on passage-wins by >= 10 points.
+     - Beside (descriptive): AUC of memory-wins vs passage-wins from the bridge score (true minus false share), J++ and logit lens, against the closed-book H2 margin.
+  4. Framing: plain vs "According to": the change in the bridge's true-value share (paired) beside the behaviour change.
+  5. Final token: per-layer AUC onset (descriptive).
+
+##### Note 31: the bridge from the context (jsuite_v5al)
+- **Passage.** v4's (six people, made-up values for the relation) plus one binding sentence per person: "<E> goes by the codename <C>."
+  - Codenames are invented two-syllable pseudo-words from a fixed syllable list, not real words or names. No stem shared with a scene entity; distinct first tokens. Unused codenames serve the guess.
+- **Words.** v4's MP and MM with the description replaced by "the person codenamed <C>":
+  - MP: "Which nationality is the actor cast as the person codenamed <C> in the new film?";
+  - MM: "Which nationality was the person codenamed <C>?".
+  - Steps: [hop 1 "Which person is codenamed <C>?" with the passage, v4's named hop 2].
+  - Guess: an unused codename.
+  - Controls set: H1 = hop 1 with the passage (the codename exists only there).
+- **Gate:** v4_split.
+- **Readings.**
+  1. Split: the MM - MP knock-out gap >= 10 points, its interval above 0 (note 20).
+  2. "Identity carries the attribute into the J-space": at the codename's last token, in the window, X's remembered attribute's top-1 share minus third >= 10 points with its interval above 0 (MP and MM pooled, paired as note 25).
+     - rho_alias = (MP remembered - third) / (MM attr - third) beside.
+     - Descriptive beside: v4 MM's description-end share, and the final token.
+  3. The top-20 dump read by note 26's plan.
