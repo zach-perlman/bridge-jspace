@@ -31,6 +31,10 @@ the two kernel functions it calls (causal_conv1d_fn and torch_chunk_gated_delta_
 when installed, else transformers' torch reference) wrapped to change their inputs; per-token values, beta and g are
 ordinary inputs of both paths. Only full, uncached forwards (prefill) are supported.
 
+NemotronH (batch 52, Lightning): its softmax-attention blocks only (the module is the block's `mixer`, called with
+hidden_states and attention_mask as keywords; NoPE, no output gate, so the mask edit is the whole knock-out). Its Mamba-2
+blocks are not ported (knock_out refuses them), and its MoE / MLP blocks mix no tokens (refused too).
+
 Models: Qwen3.5 (Qwen3_5GatedDeltaNet) and OLMo-Hybrid (OlmoHybridGatedDeltaNet, 23 Oct). A layer's kind comes from
 the config's layer_types (layer_kinds; checked against the block's modules). Both DeltaNets build mixed_qkv as
 [queries, keys, values] before the same conv and call the same two kernels by the same module-level names; they differ
@@ -201,7 +205,8 @@ def knock_out(
         assert all(0 <= la < len(blocks) for la in ls), f"row {row}: layer outside 0..{len(blocks) - 1}"
         if head_sets[row] is not None:
             assert all(kinds[la] == FULL for la in ls), f"row {row}: heads apply to full attention only"
-            n_heads = blocks[next(iter(ls))].self_attn.config.num_attention_heads if ls else 0
+            attn: Any = attention_module(blocks[next(iter(ls))]) if ls else None
+            n_heads = attn.config.num_attention_heads if ls else 0
             assert all(0 <= h < n_heads for h in head_sets[row] or []), f"row {row}: head outside 0..{n_heads - 1}"
     masks = _Masks(src, dst)
     handles = []
@@ -212,8 +217,12 @@ def knock_out(
                 continue
             if kinds[la] == FULL:
                 hook = _attention_hook(rows, masks, {r: head_sets[r] for r in rows})
-                handles.append(block.self_attn.register_forward_pre_hook(hook, with_kwargs=True))
+                handles.append(attention_module(block).register_forward_pre_hook(hook, with_kwargs=True))
             else:
+                assert hasattr(block, "linear_attn"), (
+                    f"layer {la}: knock_out supports Gated DeltaNet and softmax attention, not {type(block).__name__}'s "
+                    f"{getattr(block, 'block_type', kinds[la])} block"
+                )
                 gdn = block.linear_attn
                 seen: dict[str, torch.Tensor] = {}
                 if norm_log is not None:

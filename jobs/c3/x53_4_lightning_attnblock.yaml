@@ -1,0 +1,50 @@
+id: x53_4_lightning_attnblock
+title: "Batch 53, 53.4 on nemotron-3.5-lightning at L14: does the lookup read the bridge word through attention blocks 19 and 26? The whole change at the bridge word on the conflict test's items; attention from every later position to the bridge word blocked in (i) block 19, (ii) block 26, (iii) both, (iv) every attention block after L14 (19 / 26 / 33 / 42); (v) control: both blocks, a random non-bridge token of the bridge's sentence instead; the rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x53_attnblock.py run --name nem35l_x53_attnblock &&
+  uv run python scripts/x53_attnblock.py verdict --name nem35l_x53_attnblock
+question: >-
+  Does Lightning's lookup read the bridge word through attention blocks 19 and 26, through one of them, or not through
+  attention at the bridge at all (the Mamba state carrying it)?
+why_it_matters: >-
+  Dan, 29 Oct ~10:05 (jobs/c3/batch52.yaml lightning_attn_block, recorded in 2622685e), kept unchanged as 53.4 in
+  jobs/c3/batch53.yaml ("53.4 Lightning attention blocks 19 / 26 (the spec sent at 09:20, unchanged)"; priority 5 in
+  standing_rules_0950). Lightning is the one model whose token mixing is mostly Mamba-2; its six attention blocks are
+  5 / 12 / 19 / 26 / 33 / 42, four of them after the committed L14.
+hypotheses:
+  none: "No prediction (Dan: the rule fixed now, no prediction)."
+decision_rule: >-
+  Dan's rule, verbatim (jobs/c3/batch52.yaml lightning_attn_block; scripts/x53_attnblock.py RULE): Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between. As computed (scripts/x53_attnblock.py AS_COMPUTED): cut(x) = 1 - S_x / S_whole on the lookup, S_x = the share of items whose
+  lookup switches under the whole change with arm x's block, S_whole = the same with no block, all in this run's
+  forwards (one batch per item and reader: the six arms, each clean and with the whole change); point estimates decide,
+  EPS 1e-9 at the bars, '< 0.3' strict; the clauses checked in the rule's order, the first that holds is the label and
+  any other that also holds is listed beside it (flagged for Dan: the rule does not say which wins); S_whole = 0: not
+  tested; X0's validity (S_whole >= 0.30 and >= 30 switched) reported, not a gate (the rule has none). Items: the
+  conflict test's (x0_necessity nem35l_x52_conflict: X0's main test, chat, the 60 dev scenes already excluded) items at
+  L14, in its order, rebuilt and checked id by id (200 items, 37 bridge entities: CPU plan at spec time). The whole
+  change Δ = h_alt - h_org at the bridge word (one token) at block 14's output, added there on the org prompt. Read:
+  X0's chat read (the org prompt with a digit's space token appended; switch = the top token is the alt answer's first
+  token). Blocking: knockout.knock_out (47.6's mechanics, x47_edges.forward, uncached, mode value) ported to NemotronH's
+  attention blocks (its mixer: the query -> key logits to the source at -inf in every head, each blocked query's
+  softmax renormalised over the keys it still reads; Mamba-2 and MoE blocks untouched); destinations every position
+  after the source. Control source: a random non-bridge token of the bridge's sentence (X0's bind_bridge statement,
+  the asked pick sentence: tokens overlapping it, the bridge word's excluded), one per scene, random.Random keyed by
+  seed 5346 and the scene. Beside: the recall's numbers (no label), each arm's clean answer kept (collateral damage),
+  the edges per arm, the whole change's switches vs the conflict run's stored ones (Lightning's numerics depend on
+  batch composition: descriptive), 10 random examples (seed 0). Cluster-bootstrap CIs over the bridge entity (10,000,
+  seed 0, paired across arms) beside the points. Verdict in the job: results/x53_attnblock/x53_attnblock-<UTC>/.
+controls:
+- "(v) the same two blocks with the source moved to a random non-bridge token of the bridge's sentence (cut <= 0.15 needed for 'read through two blocks')"
+- "the no-block whole change in the same batch (S_whole)"
+- "each arm without the patch: the clean answer kept (collateral damage)"
+- "the recall beside, under the same arms"
+n: "the conflict test's 200 items at L14 (37 bridge entities)"
+seeds: [5346, 0]
+notes: "Batch 53, 53.4 (coordinator ~09:55 Paris: priority 2 for this agent; box another, after 47.7 (a) Muse). Code: scripts/x53_attnblock.py (plan / run / verdict; manifest before the forwards); knockout.knock_out gains NemotronH's attention blocks (attention_module: the block's mixer; Mamba-2 / MoE / MLP blocks refused with an assertion); tested on a tiny NemotronH (tests/test_x53_attnblock.py: the masked edge has zero weight and the other weights renormalise exactly as 47.6's at the first knocked block, sdpa = eager under the knock-out, an unknocked row of x47_edges.forward's batch = the plain forward, the rule's clauses and order, the control's draw). CPU plan on Lightning's tokenizer and config: 200 items, attention blocks after L14 = 19 / 26 / 33 / 42, the bridge's sentence 4-6 tokens, the control's source before the bridge in 146 items. Disk on the Mac 185 GB free. Wallclock: 200 items x (2 forwards for Δ + 2 readers x one 12-row forward); Lightning's conflict run's reads at 13 layers took longer: est ~10-15 min with the load, 0.2 GPU-h. UNVERIFIED; results into EXPERIMENTS.md."
