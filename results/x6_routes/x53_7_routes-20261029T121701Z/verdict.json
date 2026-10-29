@@ -1,0 +1,1152 @@
+{
+ "test": "53.7 (the pointer in code and tool output)",
+ "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+ "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+ "status": "UNVERIFIED",
+ "rule": "a route counts as used if its share is >= 0.2 with lower CI >= 0.1",
+ "design": "adapted design: lookup-only gate; the recall is not part of this test",
+ "c0_rule": "C0 must reproduce the one-pick lookup switch rate within 0.1, or the run stops",
+ "gate": "adapted design: lookup-only gate; the recall is not part of this test (Dan 12:10, decisions_1210): per condition the lookup says and reads O and S right (X0's greedy answer and chat read, both prompts) on >= 0.80 of the scenes; an item is eligible when the lookup does; the recall's rates reported descriptively",
+ "n_boot": 10000,
+ "seed": 0,
+ "format_text": {
+  "code": "the scene as Python in the user turn (tasks_v2's code framing): picks = {} and lockers = {}, then one assignment per statement in the scene's order (picks[\"Eva\"] = \"oxygen\"; lockers[\"oxygen\"] = 5), then the question and the digit instruction",
+  "tool": "the scene's text verbatim as the response of a declared tool (get_notes) in the model's chat template, after the user's 'Look up my notes.' and the assistant's call; the question and the instruction in a new user turn"
+ },
+ "runs": [
+  {
+   "run": "qwen35_9b_x53_7_routes_tool_l",
+   "model": "qwen3.5-9b",
+   "format": "tool",
+   "layer": 12,
+   "items": {
+    "C0": 300,
+    "C1": 300,
+    "C2": 300
+   },
+   "status": {
+    "C0": "tested",
+    "C1": "tested",
+    "C2": "tested"
+   },
+   "gate": {
+    "dropped": {
+     "A and B have the same number of legs": 357
+    },
+    "gate": {
+     "C0": {
+      "cases": 700,
+      "lookup_right_share": 1.0,
+      "pass": true,
+      "eligible": 700,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+       "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9157142857142857
+       },
+       "recall_right_share": 0.8514,
+       "two_reader_pass": true,
+       "two_reader_eligible": 596
+      }
+     },
+     "C1": {
+      "cases": 700,
+      "lookup_right_share": 1.0,
+      "pass": true,
+      "eligible": 700,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+       "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9157142857142857
+       },
+       "recall_right_share": 0.8786,
+       "two_reader_pass": true,
+       "two_reader_eligible": 615
+      }
+     },
+     "C2": {
+      "cases": 700,
+      "lookup_right_share": 0.9986,
+      "pass": true,
+      "eligible": 699,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+       "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9157142857142857
+       },
+       "recall_right_share": 0.8486,
+       "two_reader_pass": true,
+       "two_reader_eligible": 594
+      }
+     }
+    }
+   },
+   "c0_check": {
+    "c0_lookup_switch": 0.9966666666666667,
+    "reference": 0.9863013698630136,
+    "c0_min": null,
+    "ok": true
+   },
+   "cells": {
+    "C0|whole": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0033333333333333335,
+       0.0,
+       0.011278195488721804
+      ],
+      "other": [
+       0.9966666666666667,
+       0.9887218045112782,
+       1.0
+      ],
+      "recall_follows_s": [
+       0.9066666666666666,
+       0.8729598531324456,
+       0.9377052016563616
+      ]
+     },
+     "used": []
+    },
+    "C0|no_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.25,
+       0.2013888888888889,
+       0.29721571416617854
+      ],
+      "other": [
+       0.75,
+       0.7027842858338215,
+       0.7986111111111112
+      ],
+      "recall_follows_s": [
+       0.8666666666666667,
+       0.8308267837266883,
+       0.9020287989037988
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C0|no_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0033333333333333335,
+       0.0,
+       0.011278195488721804
+      ],
+      "other": [
+       0.9966666666666667,
+       0.9887218045112782,
+       1.0
+      ],
+      "recall_follows_s": [
+       0.9033333333333333,
+       0.8683274021352313,
+       0.9373089733542319
+      ]
+     },
+     "used": []
+    },
+    "C0|keep_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.9166666666666666,
+       0.8781362007168458,
+       0.9523844849512504
+      ],
+      "other": [
+       0.08333333333333333,
+       0.047615515048749474,
+       0.12186379928315412
+      ],
+      "recall_follows_s": [
+       0.10333333333333333,
+       0.06176379811183733,
+       0.15200067567567566
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C0|keep_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.05333333333333334,
+       0.021739130434782608,
+       0.09163771144928477
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C0|no_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.01,
+       0.0,
+       0.022900763358778626
+      ],
+      "other": [
+       0.99,
+       0.9770992366412213,
+       1.0
+      ],
+      "recall_follows_s": [
+       0.82,
+       0.7708333333333334,
+       0.8708516843232947
+      ]
+     },
+     "used": []
+    },
+    "C0|no_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.01,
+       0.0,
+       0.022900763358778626
+      ],
+      "other": [
+       0.99,
+       0.9770992366412213,
+       1.0
+      ],
+      "recall_follows_s": [
+       0.8866666666666667,
+       0.8533323353293414,
+       0.9192982456140351
+      ]
+     },
+     "used": []
+    },
+    "C0|keep_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.13,
+       0.07394166133162612,
+       0.19878780819954112
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C0|keep_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.07,
+       0.03333333333333333,
+       0.11409395973154363
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C1|whole": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.48333333333333334,
+       0.40972110215053764,
+       0.5542180349304193
+      ],
+      "position": [
+       0.5033333333333333,
+       0.42913278453829634,
+       0.5796215519591563
+      ],
+      "value": [
+       0.0033333333333333335,
+       0.0,
+       0.01079136690647482
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.01,
+       0.0,
+       0.02181818181818182
+      ],
+      "recall_follows_s": [
+       0.8133333333333334,
+       0.723404255319149,
+       0.8859060402684564
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C1|no_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.99,
+       0.9779405965856374,
+       1.0
+      ],
+      "position": [
+       0.01,
+       0.0,
+       0.022059403414362584
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.9166666666666666,
+       0.8297802581095222,
+       0.9764309764309764
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C1|no_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.94,
+       0.9145569620253164,
+       0.9642857142857143
+      ],
+      "position": [
+       0.056666666666666664,
+       0.03236222158766419,
+       0.08239700374531835
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.0033333333333333335,
+       0.0,
+       0.011152416356877323
+      ],
+      "recall_follows_s": [
+       0.9,
+       0.8120300751879699,
+       0.9626871995952441
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C1|keep_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.8266666666666667,
+       0.7785234899328859,
+       0.8737871734403233
+      ],
+      "position": [
+       0.16333333333333333,
+       0.11612903225806452,
+       0.21268686330253495
+      ],
+      "value": [
+       0.0033333333333333335,
+       0.0,
+       0.01079136690647482
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.006666666666666667,
+       0.0,
+       0.01639344262295082
+      ],
+      "recall_follows_s": [
+       0.8733333333333333,
+       0.7854970425160028,
+       0.9407671236016871
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C1|keep_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.99,
+       0.9781818181818182,
+       1.0
+      ],
+      "position": [
+       0.01,
+       0.0,
+       0.02181818181818182
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.9166666666666666,
+       0.834530551234688,
+       0.975609756097561
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C1|no_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.5433333333333333,
+       0.47101449275362317,
+       0.6127822713349029
+      ],
+      "position": [
+       0.43666666666666665,
+       0.3685800604229607,
+       0.5069456585081584
+      ],
+      "value": [
+       0.0033333333333333335,
+       0.0,
+       0.01079136690647482
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.016666666666666666,
+       0.0037313432835820895,
+       0.030201342281879196
+      ],
+      "recall_follows_s": [
+       0.8233333333333334,
+       0.7335526161975124,
+       0.8966567882472138
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C1|no_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.5433333333333333,
+       0.46785714285714286,
+       0.6160471759205869
+      ],
+      "position": [
+       0.44333333333333336,
+       0.3715252976190476,
+       0.5154639175257731
+      ],
+      "value": [
+       0.0033333333333333335,
+       0.0,
+       0.01079136690647482
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.01,
+       0.0,
+       0.02160633106030216
+      ],
+      "recall_follows_s": [
+       0.8233333333333334,
+       0.7341365623192132,
+       0.8960597601323408
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C1|keep_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.9166666666666666,
+       0.8356631382316313,
+       0.9740271765271765
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C1|keep_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.9233333333333333,
+       0.8408287968615696,
+       0.9810725552050473
+      ]
+     },
+     "used": [
+      "identity"
+     ]
+    },
+    "C2|whole": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.49666666666666665,
+       0.45394736842105265,
+       0.5418211143695014
+      ],
+      "position": [
+       0.46,
+       0.4137905377668309,
+       0.5053022531251188
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.043333333333333335,
+       0.02280130293159609,
+       0.06472491909385113
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.8133333333333334,
+       0.7639751552795031,
+       0.8618421052631579
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C2|no_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.37333333333333335,
+       0.3198650103980986,
+       0.43046469861937364
+      ],
+      "position": [
+       0.08666666666666667,
+       0.05454545454545454,
+       0.12130201765447667
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.54,
+       0.47955276068011454,
+       0.5969584629565619
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.7966666666666666,
+       0.7429444693237797,
+       0.8501745422751178
+      ]
+     },
+     "used": [
+      "identity",
+      "original"
+     ]
+    },
+    "C2|no_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.44333333333333336,
+       0.39805825242718446,
+       0.49462555568220673
+      ],
+      "position": [
+       0.48,
+       0.4242394764768306,
+       0.5309749771132133
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.07666666666666666,
+       0.046052631578947366,
+       0.10784313725490197
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.79,
+       0.7388535031847133,
+       0.8436482084690554
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C2|keep_alf": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0033333333333333335,
+       0.0,
+       0.010309278350515464
+      ],
+      "position": [
+       0.08333333333333333,
+       0.050166961973558674,
+       0.12012987012987013
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.91,
+       0.8694267515923567,
+       0.9457651408830832
+      ],
+      "other": [
+       0.0033333333333333335,
+       0.0,
+       0.010830324909747292
+      ],
+      "recall_follows_s": [
+       0.08,
+       0.041663575667655786,
+       0.1254487100862668
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C2|keep_alf_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.06,
+       0.02318840579710145,
+       0.10545454545454545
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C2|no_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.39,
+       0.3478221910550101,
+       0.43558282208588955
+      ],
+      "position": [
+       0.52,
+       0.46808510638297873,
+       0.5700333513143426
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.09,
+       0.05537459283387622,
+       0.1269233746130031
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.5533333333333333,
+       0.4878027385537013,
+       0.6229029424681598
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C2|no_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.41333333333333333,
+       0.3684210526315789,
+       0.4666666666666667
+      ],
+      "position": [
+       0.43666666666666665,
+       0.3832736717617437,
+       0.48639481472347246
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       0.15,
+       0.10703363914373089,
+       0.19310344827586207
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.75,
+       0.6913172489695505,
+       0.8100463841450557
+      ]
+     },
+     "used": [
+      "identity",
+      "position"
+     ]
+    },
+    "C2|keep_jpp": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.12333333333333334,
+       0.06734006734006734,
+       0.19172932330827067
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    },
+    "C2|keep_jpp_rand": {
+     "n": 300,
+     "entities": 32,
+     "share": {
+      "identity": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "position": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "value": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "original": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "recall_follows_s": [
+       0.08,
+       0.03834784698464757,
+       0.13074204946996468
+      ]
+     },
+     "used": [
+      "original"
+     ]
+    }
+   },
+   "design": "adapted design: lookup-only gate; the recall is not part of this test"
+  }
+ ],
+ "written_utc": "20261029T121701Z"
+}

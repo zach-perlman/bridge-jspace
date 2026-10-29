@@ -1,0 +1,55 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 357
+  },
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "lookup_right_share": 1.0,
+      "pass": true,
+      "eligible": 700,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 1.0,
+          "PM": 0.9157142857142857
+        },
+        "recall_right_share": 0.8514,
+        "two_reader_pass": true,
+        "two_reader_eligible": 596
+      }
+    },
+    "C1": {
+      "cases": 700,
+      "lookup_right_share": 1.0,
+      "pass": true,
+      "eligible": 700,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 1.0,
+          "PM": 0.9157142857142857
+        },
+        "recall_right_share": 0.8786,
+        "two_reader_pass": true,
+        "two_reader_eligible": 615
+      }
+    },
+    "C2": {
+      "cases": 700,
+      "lookup_right_share": 0.9986,
+      "pass": true,
+      "eligible": 699,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 1.0,
+          "PM": 0.9157142857142857
+        },
+        "recall_right_share": 0.8486,
+        "two_reader_pass": true,
+        "two_reader_eligible": 594
+      }
+    }
+  }
+}
