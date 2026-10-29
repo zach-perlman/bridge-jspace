@@ -481,7 +481,11 @@ def test_coverage_verdict_reads_lightning_alone_without_the_seal(tmp_path, monke
     out = AT.stage_verdict(n_boot=10, coverage=True)
     blob = json.loads((out / "x47_1.json").read_text())
     assert out.name.startswith("x52_atoms47-") and blob["dan"] == AT.NO_PREDICTION
-    assert [m["target"] for m in blob["models"]] == ["nemotron-3.5-lightning"] and blob["models"][0][
-        "status"
-    ] == "pending"
+    # the runs as this checkout holds them: pending until both of Lightning's runs are here (they landed 29 Oct)
+    routes_run, main_run = AT.COVERAGE["nemotron-3.5-lightning"]
+    here = all(
+        (AT._run_dir(e, r) / "manifest.json").exists() for e, r in ((AT.R.EXP, routes_run), (AT.X.EXP, main_run))
+    )
+    assert [m["target"] for m in blob["models"]] == ["nemotron-3.5-lightning"]
+    assert (blob["models"][0]["status"] == "pending") == (not here)
     assert "Dan:" not in (out / "x47_1.md").read_text()
