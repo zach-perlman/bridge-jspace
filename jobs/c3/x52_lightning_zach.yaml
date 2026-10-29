@@ -1,0 +1,41 @@
+id: x52_lightning_zach
+title: "Batch 52 C coverage (Lightning extra e): Zach's named-bridge passages on Lightning: Z1 (our change-removal: whole / without J++ / without a random part, both readers) and Z3 (the routes test on his passages), at X0's committed L14 and his band's start L27 (Muse's design), both reported; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x50_zach.py run --part z1 --name nem35l_x52_z1 &&
+  uv run python scripts/x50_zach.py verdict --part z1 --coverage &&
+  uv run python scripts/x50_zach.py run --part z3 --name nem35l_x52_z3 &&
+  uv run python scripts/x50_zach.py verdict --part z3 --coverage
+question: >-
+  On Lightning, on Zach's named-bridge passages: does the split hold (Z1: gap >= 0.3, lookup <= 0.10), does the order
+  pattern replicate, and does the lookup take a position route in his layout (Z3)?
+why_it_matters: >-
+  Part V of the depth page (our removal on his passages; Fig. 12) on the second family; amendment 3 extra e.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x50_z1_muse.yaml and jobs/c3/x50_z3_muse.yaml (jobs/c3/batch50.yaml; first scored in
+  results/x50_zach/z1-20261028T161649Z and z3-20261028T163053Z). Z1: "per model, gap >= 0.3 and lookup extra loss <=
+  0.10 -> "the split holds on his passages"; lookup >= 0.20 -> "the lookup follows the lens here"; else in between.
+  Order split ...: "The order pattern replicates" if the lookup's switch under the whole change is >= 2x higher
+  fact-first than fact-after (both CIs)". Z3: "Value <= 0.05; report identity / position shares. If position >= 0.2:
+  the address exists in scattered-fact passages; ... If position <= 0.05: "no position route in his layout"". As
+  computed: the two specs' texts on Lightning's tokenizer (his v2 sets, the same seeds, the gate 0.80 per reader, up to
+  200 passages); layers: Muse's design for a model whose X0 layer lies below Zach's band ("Muse: the rule at L26 and at
+  L36, both reported"): X0's committed L14 (amendment 1) and the start of his Lightning band L27 (of L27-33), both
+  reported; his stored knock-out rows on Lightning (nem35l_jsuite_v2_test_chat_ko_cand2_v1, his band) beside. The Z3
+  follow-up (a label-free address basis) is not in this job (due only if position >= 0.2). Cells under 30 switches
+  left out (amendment 3). Verdicts in the job (verdict --coverage, x52_z1-<UTC>/ and x52_z3-<UTC>/).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + layer)"
+- "his question-only and full knock-out rows beside (BESIDE)"
+- "Z3's C0 (the name change alone) beside"
+n: "up to 200 eligible passages per part (his main set, the second seed only if short; Z3 over four sets)"
+seeds: [2601, 2701, 5001, 888, 0]
+notes: "Batch 52 C, amendment 3 extra e; any free Lightning box (no dependency on other Lightning runs). Code: x50_zach.LAYERS / BESIDE / BESIDE_BAND gain Lightning, COVERAGE_RUNS + verdict --coverage (batch 50's RUNS and own verdicts unchanged); the run asserts LAYERS' first layer is the committed L. FLAG for Dan: L27 is added beside L14 by Muse's precedent (two layers when X0's L lies below his band); the conservative reading of 'never change a layer' is that L14 decides and L27 is reported beside, as the spec says. Wallclock (ledger): x50_z1_muse 0.25 h, x50_z3_muse 0.08 h; est ~25 min, 0.6 GPU-h; opens before the freeze."

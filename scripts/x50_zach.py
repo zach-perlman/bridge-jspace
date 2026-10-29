@@ -103,6 +103,13 @@ LAYERS = {"qwen3.5-9b": (12,), "qwen3.6-27b": (32,), "muse-glimmer-30b": (26, 36
 RUNS = {p: {"qwen3.5-9b": f"qwen35_9b_x50_{p}", "qwen3.6-27b": f"x50_{p}_27b", "muse-glimmer-30b": f"muse30_x50_{p}"}
         for p in PARTS if p != "z3"}  # fmt: skip
 RUNS["z3"] = {"qwen3.5-9b": "qwen35_9b_x50_z3", "muse-glimmer-30b": "muse30_x50_z3"}  # batch50.yaml: Z3 on 9B and Muse
+# batch 52 C coverage (amendment 3, extra e): Lightning, Z1 and Z3; Muse's design for a model whose X0 layer lies below
+# Zach's band: X0's layer (the committed L14) and his band's start (L27, of L27-33), both reported. Read by verdict
+# --coverage; RUNS and batch 50's own verdicts unchanged
+LAYERS["nemotron-3.5-lightning"] = (14, 27)  # 14 = results/x51_lightning/nem35l_x52_layer_r2/layer.json (asserted)
+COVERAGE_RUNS = {"z1": {"nemotron-3.5-lightning": "nem35l_x52_z1"}, "z3": {"nemotron-3.5-lightning": "nem35l_x52_z3"}}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+COVERAGE = False  # set by verdict --coverage
 Z3_CONDS = {"C2": "alt", "C0": "alt0"}  # condition -> its source prompt; C2 the test, C0 the name alone (descriptive)
 ROUTES = ("identity", "position", "value", "original", "other")  # x6_routes.ROUTES
 VALUE_MAX, POSITION_YES, POSITION_NO = 0.05, 0.20, 0.05
@@ -162,8 +169,11 @@ BESIDE = {
     "qwen3.6-27b": {"full": "jsuite_v2_test_chat_ko_cand2_v1", "question": "jsuite_v2_test_chat_ko_cand2_posquestion_v1"},
     "muse-glimmer-30b": {"full": "muse30_jsuite_v2_test_chat_ko_cand2_v1",
                          "question": "muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1"},
+    "nemotron-3.5-lightning": {"full": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+                               "question": "nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1"},
 }  # fmt: skip
-BESIDE_BAND = {"qwen3.5-9b": "L12-16", "qwen3.6-27b": "L32-40", "muse-glimmer-30b": "L36-42"}
+BESIDE_BAND = {"qwen3.5-9b": "L12-16", "qwen3.6-27b": "L32-40", "muse-glimmer-30b": "L36-42",
+               "nemotron-3.5-lightning": "L27-33"}  # fmt: skip
 
 
 # ---- passages (CPU) -----------------------------------------------------------------------------------------------
@@ -854,9 +864,13 @@ def stage_run(name: str, part: str) -> Path:
     target = pins.TARGET
     assert target in LAYERS, f"batch 50 runs on {sorted(LAYERS)}, not {target}"
     layers = LAYERS[target]
+    if target in COVERAGE_RUNS.get(part, {}):  # Lightning: X0's layer is the committed one (BJ_PREDICTED_LAYER)
+        assert layers[0] == X.PREDICTED[target], f"{target}: LAYERS {layers} do not start at the committed L"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, part, target, layers)
+    if target in COVERAGE_RUNS.get(part, {}):
+        m |= {"question": NO_PREDICTION, "batch": 52}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -970,6 +984,8 @@ def dan_answer(question: str, rev: str = "HEAD") -> str:
 
 
 def require_answer(part: str) -> str:
+    if COVERAGE:  # batch 52 C: no Q-line for coverage runs
+        return NO_PREDICTION
     answer = dan_answer(QUESTION[part])
     assert answer, (
         f"sealed: {PREDICTIONS} has no committed answer to {QUESTION[part]} (its 'Dan:' line is empty at HEAD)"
@@ -1128,7 +1144,7 @@ def model_result(part: str, run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     if not (src / "manifest.json").exists():
         return {
             "run": run,
-            "target": {r: t for t, r in RUNS[part].items()}.get(run),
+            "target": {r: t for t, r in {**RUNS[part], **COVERAGE_RUNS.get(part, {})}.items()}.get(run),
             "status": "pending",
             "why": "no run here",
         }
@@ -1276,7 +1292,7 @@ def figure_z3(models: list[dict], path: Path) -> None:
 def stage_verdict_z3(runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Path:
     answer = require_answer("z3")
     models = [model_result("z3", r, n_boot) for r in runs]
-    out = RESULTS / f"z3-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_' if COVERAGE else ''}z3-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# Batch 50 Z3: the routes test on Zach's passages (UNVERIFIED)", "",
              f"{QUESTION['z3']} (Dan: {answer}). Items: his level-0 P-start K passages, all three facts before the pointer, "
@@ -1315,6 +1331,7 @@ def stage_verdict_z3(runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Pa
     (out / "z3.json").write_text(
         json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str) + "\n"
     )
+    lines = [ln.replace(f"(Dan: {answer})", f"(batch 52 coverage: {answer})") for ln in lines] if COVERAGE else lines
     (out / "z3.md").write_text("\n".join(lines) + "\n")
     figure_z3(models, out / "z3_routes.png")
     ex = [
@@ -1335,7 +1352,7 @@ def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, decode=Non
         return stage_verdict_z3(runs, n_boot, decode)
     answer = require_answer(part)
     models = [model_result(part, r, n_boot) for r in runs]
-    out = RESULTS / f"{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_' if COVERAGE else ''}{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = [f"# Batch 50 {part.upper()}: our change-removal on Zach's passages (UNVERIFIED)", "",
              f"{QUESTION[part]} (Dan: {answer}). Items: {SETS[0]} (and {SETS[1]} only if short), words {WORDS[part]}, "
@@ -1376,6 +1393,7 @@ def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, decode=Non
     (out / f"{part}.json").write_text(
         json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str) + "\n"
     )
+    lines = [ln.replace(f"(Dan: {answer})", f"(batch 52 coverage: {answer})") for ln in lines] if COVERAGE else lines
     (out / f"{part}.md").write_text("\n".join(lines) + "\n")
     figure(part, models, out / f"{part}_beside.png")
     ex = [f"# Batch 50 {part.upper()} view (verify pack): prompts exactly as the model reads them; ⟦…⟧ the patch token. "
@@ -1410,12 +1428,15 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", help="verdict / view: the runs (default: the part's models)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--plan-dir", help="plan: the folder to write into (one per model, the same folder)")
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.plan_dir, (a.part,) if a.part else PARTS)
         return
     assert a.part, f"{a.stage} needs --part"
-    runs = a.runs or list(RUNS[a.part].values())
+    global COVERAGE
+    COVERAGE = a.coverage
+    runs = a.runs or list((COVERAGE_RUNS if a.coverage else RUNS).get(a.part, {}).values())
     if a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.part)

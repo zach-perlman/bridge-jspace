@@ -500,3 +500,16 @@ def test_z3_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     for edits, v in zip(reads[:2], ("alt", "alt0"), strict=True):
         assert edits[0] == {} and edits[1][la].positions == [rd["pos"]]
         assert torch.allclose(edits[1][la].delta[0], h[v][rd["pos"]] - h["org"][rd["pos"]], atol=1e-5)
+
+
+def test_lightning_coverage_reads_the_committed_layer_and_his_band(monkeypatch):
+    """Batch 52 C: Lightning's Z1 / Z3 at X0's committed L14 and his band's start L27 (Muse's design), his stored
+    knock-out rows beside, outside batch 50's RUNS; the coverage verdict needs no Q-line."""
+    from scripts import x51_lightning as L6
+
+    lt = "nemotron-3.5-lightning"
+    assert Z.LAYERS[lt] == (L6.committed_layer(), 27) and Z.BESIDE_BAND[lt] == "L27-33"
+    assert (Z.pins.RESULTS_DIR / "ablate_v2" / Z.BESIDE[lt]["full"]).exists()
+    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z3"}
+    monkeypatch.setattr(Z, "COVERAGE", True)
+    assert Z.require_answer("z1") == Z.NO_PREDICTION
