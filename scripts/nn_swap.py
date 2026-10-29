@@ -70,6 +70,8 @@ jswap):
   note 19 (--resample, v4): the donor is another passage's own question (same word and relation, a person absent from
   X's passage); classes: kept = X's answer, donor = the new person's remembered attribute, third = any other value of
   X's passage, xmem = X's remembered attribute (MP) / passage value (MM)
+  note 21 addendum: lensnp_cf / remnp_cf / lensshrnp_cf / remshrnp_cf, the top-10 part and its same-share twin without the
+  skip rule (no clean top-10 output token excluded)
   note 21 (--report, v4): the job's prompt is the item's hop-1 question over the same passage ('Which person wrote X?'),
   the donor the same with D's description clause; sites at the clause; classes the passage's names (kept X, donor D,
   third another entity)
@@ -116,7 +118,7 @@ SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer at
 
 
 N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl", "lensshr", "remshr",
-       "remkeepoth", "noaoth", "noaothctl")  # note 15 (+ addenda; oth: two other answers of the relation)
+       "remkeepoth", "noaoth", "noaothctl", "lensshrnp", "remshrnp")  # note 15 (+ addenda; oth: two other answers; np: no skip rule)
 N16 = ("jpp", "jpprand", "nojpp", "nojpprand")  # note 16's arm kinds
 
 
@@ -462,13 +464,14 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         elif kind0 == "remrand":  # arms 1 and 2's random twin
                             Q = rand[la][:, :20]
                             new = hx + dl - (dl @ Q) @ Q.T
-                        elif kind0 in ("lensshr", "remshr"):  # note 15 addendum: S's random twin of the same share (Dan's control)
-                            _, cx = top_span_removal(dic[la], hx, 10, protected=groups, return_chosen=True)
-                            _, cd = top_span_removal(dic[la], cfv[:, li], 10, protected=groups, return_chosen=True)
+                        elif kind0 in ("lensshr", "remshr", "lensshrnp", "remshrnp"):  # note 15 addendum: S's same-share random twin
+                            pg = None if kind0.endswith("np") else groups  # note 21 addendum: np, the top-10 without the skip rule
+                            _, cx = top_span_removal(dic[la], hx, 10, protected=pg, return_chosen=True)
+                            _, cd = top_span_removal(dic[la], cfv[:, li], 10, protected=pg, return_chosen=True)
                             Q = torch.linalg.qr(dic[la].atoms(torch.cat([cx, cd], dim=1)).transpose(1, 2).double())[0].float()
                             ps = (Q @ (Q.transpose(1, 2) @ dl.unsqueeze(2))).squeeze(2)
                             rp = random_subspace_part(dl, ps.norm(dim=-1) ** 2 / (dl.norm(dim=-1) ** 2).clamp_min(1e-30), rot[la])
-                            new = hx + rp if kind0 == "lensshr" else hx + dl - rp
+                            new = hx + rp if kind0.startswith("lensshr") else hx + dl - rp
                         else:
                             idx, msk = ans_sets[kind0.removeprefix("remkeep").removeprefix("noa")]
                             if kind0.startswith("noa"):  # arm 3: without the answer directions only (or C's)
@@ -481,7 +484,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                                 new = hx + dl - (ps - JS.span_proj(dic[la], ps, idx, msk))
                         h[bi, xi] = new.to(h.dtype)
                         return h
-                    if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand"):  # note 10: the paper's decomposition
+                    if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand", "lensnp", "remnp"):  # note 10 (np: note 21 addendum)
                         kind, src = cond.split("_")
                         hx = h[bi, xi].float()
                         hd = (ins if src == "insert" else lat if src == "latent" else cfv)[:, li]  # note 14: cf, the counterfactual prompt
@@ -491,13 +494,14 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                             if kind == "lensrand":  # control: a fixed random 20-dim subspace
                                 Q = rand[la][:, :20][None].expand(hx.shape[0], -1, -1)
                             else:  # the union of X's and D's top-10 J++ atoms at the site (one subspace for every cell)
-                                _, cx = top_span_removal(dic[la], hx, 10, protected=groups, return_chosen=True)
-                                _, cd = top_span_removal(dic[la], hd, 10, protected=groups, return_chosen=True)
+                                pg = None if kind.endswith("np") else groups  # np: without the skip rule (note 21 addendum)
+                                _, cx = top_span_removal(dic[la], hx, 10, protected=pg, return_chosen=True)
+                                _, cd = top_span_removal(dic[la], hd, 10, protected=pg, return_chosen=True)
                                 Q = torch.linalg.qr(dic[la].atoms(torch.cat([cx, cd], dim=1)).transpose(1, 2).double())[0].float()
                             proj = lambda v, Q=Q: (Q @ (Q.transpose(1, 2) @ v.unsqueeze(2))).squeeze(2)  # noqa: E731
-                            if kind in ("lens", "lensrand"):
+                            if kind in ("lens", "lensrand", "lensnp"):
                                 new = hx + proj(hd - hx)
-                            elif kind == "rem":
+                            elif kind in ("rem", "remnp"):
                                 new = hx + (hd - hx) - proj(hd - hx)
                             else:  # remfix: the remainder, with the site's lens part held at its clean value
                                 hc = rec[la][bi, xi]

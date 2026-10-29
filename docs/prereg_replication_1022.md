@@ -2875,3 +2875,16 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     - "the bridge is represented beyond what the lens reads" if a read-out's held-out top-1 is >= 2x the lens's and >= 50% at some used layer;
     - "the person, not the description's words" if the held-out top-1 is >= 50% (the description is new to the read-out).
 - **Queue.** scripts/queues/h200_rep2_1029.sh. 9B on GPU1 after the 9B ablations; 27B on GPU0 after the 27B note 15 addendum 2. A smoke of each note runs first.
+
+##### Amendment 58 notes 21 and 23 addendum (Zach, 2026-10-29 ~06:00 UTC; before any note 21-23 result; the queued jobs were stopped before they ran)
+- **Note 21: a second lens-part definition, applied the same way to both questions.**
+  - Note 10's top-10 part excludes the clean answer's top-10 output tokens (the "skip rule"). For the report question those tokens are the names, so it cannot carry the name.
+  - Added: the top-10 part without the skip rule (lensnp_cf, remnp_cf) and its same-share random twin (lensshrnp_cf, remshrnp_cf). They run for the report question and, at the same cells, for the lookup. The lookup now runs at every report cell with Dan's part and the np part, paired within its runs.
+  - Reading per definition (Dan's part; np part): need = (twin − removal) / full. "The report needs it" if >= 1/3; "the use does not" if < 1/3; "dissociation" if both hold at a cell.
+  - The skip-rule top-10 is reported as a footnote.
+- **Note 23: the read-out, with two fixes.**
+  - Two folds: hold out each bridge's second description (sorted), then its first. Accuracy is pooled over both folds.
+  - A shuffled-label control: the same read-outs trained on permuted labels (seed 1); expected at chance.
+  - 95% bootstrap intervals over bridges, gated items.
+  - Readings unchanged, now read on the pooled folds. "Beyond the lens" also requires the shuffled control's top-1 to be below 2x chance.
+- **Queue.** scripts/queues/h200_rep3_1029.sh replaces h200_rep2_1029.sh. Its jobs were stopped while waiting, before any run; logs renamed *.relaunched.log.

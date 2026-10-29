@@ -3,8 +3,9 @@ trained read-out, and does it generalise to another description of the same pers
 (note 14); v3's leave-one-description-out probe is scripts/nn_probe.py (note 9).
 
 Prompts: every v4 MP and MM item (the main question), the state at the description's last token at every 2nd layer.
-Split by description: for a bridge with >= 2 distinct descriptions in the set, the items using its second description (sorted)
-are held out; the rest train. Read-outs per layer, each scored top-1 among the item's relation's bridges (the readout's
+Split by description, two folds: for a bridge with >= 2 distinct descriptions in the set, the items using its second
+description (sorted) are held out and the rest train, then its first (note 23 addendum); every held-out item is scored once
+per fold it is held out in. Control: the same read-outs trained on permuted labels (seed 1). 95% bootstrap over bridges. Read-outs per layer, each scored top-1 among the item's relation's bridges (the readout's
 candidates, chance 1/k):
   nc   nearest class mean (cosine, train-mean centred)
   lr   multinomial logistic regression over every bridge (standardised; Adam, weight decay, fixed steps, seed 0)
@@ -91,28 +92,22 @@ def main(a) -> None:
     descs = collections.defaultdict(set)
     for j in jobs:
         descs[j["bridge"]].add(j["desc"])
-    held = {b: sorted(d)[1] for b, d in descs.items() if len(d) >= 2}
-    test = [j for j in jobs if held.get(j["bridge"]) == j["desc"]]
-    train = [j for j in jobs if held.get(j["bridge"]) != j["desc"]]
     bridges = sorted({j["bridge"] for j in jobs})
     bi = {b: k for k, b in enumerate(bridges)}
     cands = collections.defaultdict(set)
     for j in jobs:
         cands[j["rel"]].add(bi[j["bridge"]])
-    print(f"{len(jobs)} prompts, {len(train)} train / {len(test)} held-out (another description), {len(bridges)} bridges; layers {layers}", flush=True)
-    assert test and train, "no held-out description: nothing to score"
-    X_tr = torch.stack([st[j["id"]] for j in train]).float().cuda()  # [n, L, d]
-    X_te = torch.stack([st[j["id"]] for j in test]).float().cuda()
-    y_tr = torch.tensor([bi[j["bridge"]] for j in train], device="cuda")
-    y_te = torch.tensor([bi[j["bridge"]] for j in test], device="cuda")
-    mask = torch.full((len(test), len(bridges)), float("-inf"), device="cuda")
-    for r, j in enumerate(test):
-        mask[r, sorted(cands[j["rel"]])] = 0.0
-    chance = sum(1 / len(cands[j["rel"]]) for j in test) / len(test)
-    gated = torch.tensor([j["id"] in ok for j in test], device="cuda")
-    rows, summ = [], {"n_train": len(train), "n_test": len(test), "n_test_gated": int(gated.sum()), "chance": round(100 * chance, 1), "layers": {}}
-    for li, la in enumerate(layers):
-        xtr, xte = X_tr[:, li], X_te[:, li]
+
+    def fit_eval(train, test, li, shuffle):  # per-item hits (nc, lr) on test at layer index li
+        xtr = torch.stack([st[j["id"]][li] for j in train]).float().cuda()
+        xte = torch.stack([st[j["id"]][li] for j in test]).float().cuda()
+        y_tr = torch.tensor([bi[j["bridge"]] for j in train], device="cuda")
+        if shuffle:  # the shuffled-label control: train labels permuted (seed 1)
+            y_tr = y_tr[torch.randperm(len(y_tr), generator=torch.Generator().manual_seed(1)).cuda()]
+        y_te = torch.tensor([bi[j["bridge"]] for j in test], device="cuda")
+        mask = torch.full((len(test), len(bridges)), float("-inf"), device="cuda")
+        for r, j in enumerate(test):
+            mask[r, sorted(cands[j["rel"]])] = 0.0
         mu, sd = xtr.mean(0), xtr.std(0) + 1e-4
         ctr, cte = xtr - mu, xte - mu  # nearest class mean (cosine, centred)
         means = torch.zeros(len(bridges), ctr.shape[1], device="cuda").index_add_(0, y_tr, ctr)
@@ -131,17 +126,53 @@ def main(a) -> None:
                 opt.step()
         with torch.no_grad():
             lr = (zte @ W + bvec + mask).argmax(-1)
+        return (nc == y_te).tolist(), (lr == y_te).tolist()
+
+    # two folds: hold out each bridge's second description (sorted), then its first; every bridge with >= 2 descriptions
+    folds = []
+    for f in (1, 0):
+        held = {b: sorted(d)[f] for b, d in descs.items() if len(d) >= 2}
+        folds.append(([j for j in jobs if held.get(j["bridge"]) != j["desc"]], [j for j in jobs if held.get(j["bridge"]) == j["desc"]]))
+    tested = [j for _, te in folds for j in te]
+    chance = sum(1 / len(cands[j["rel"]]) for j in tested) / max(1, len(tested))
+    print(f"{len(jobs)} prompts, {len(bridges)} bridges; folds train/test {[(len(tr), len(te)) for tr, te in folds]}; layers {layers}", flush=True)
+    assert tested, "no held-out description: nothing to score"
+
+    def boot(hits_by_bridge):
+        rng, keys, out = __import__("random").Random(0), sorted(hits_by_bridge), []
+        for _ in range(1000):
+            xs = [h for k in (rng.choice(keys) for _ in keys) for h in hits_by_bridge[k]]
+            out.append(100 * sum(xs) / len(xs))
+        out.sort()
+        return [round(out[25], 1), round(out[974], 1)]
+
+    rows, summ = [], {"folds": [(len(tr), len(te)) for tr, te in folds], "n_test": len(tested),
+                      "n_test_gated": sum(j["id"] in ok for j in tested), "chance": round(100 * chance, 1), "layers": {}}  # fmt: skip
+    for li, la in enumerate(layers):
+        hits = collections.defaultdict(list)  # (readout, control) -> [(job, hit)]
+        for tr, te in folds:
+            for shuffle in (False, True):
+                nch, lrh = fit_eval(tr, te, li, shuffle)
+                hits[("nc", shuffle)] += list(zip(te, nch))
+                hits[("lr", shuffle)] += list(zip(te, lrh))
         rec = {}
-        for nm_, pred in (("nc", nc), ("lr", lr)):
-            hit = (pred == y_te).float()
-            rec[nm_] = {"all": round(100 * float(hit.mean()), 1), "gated": round(100 * float(hit[gated].mean()), 1) if bool(gated.any()) else None}
+        for (nm_, shuffle), hs in sorted(hits.items()):
+            key = nm_ + ("_shuffled" if shuffle else "")
+            g = [h for j, h in hs if j["id"] in ok]
+            byb = collections.defaultdict(list)
+            for j, h in hs:
+                if j["id"] in ok:
+                    byb[j["bridge"]].append(h)
+            rec[key] = {"all": round(100 * sum(h for _, h in hs) / len(hs), 1), "gated": round(100 * sum(g) / len(g), 1) if g else None,
+                        "gated_ci": boot(byb) if byb else None}  # fmt: skip
+            if not shuffle:
+                for j, h in hs:
+                    rows.append({"id": j["id"], "word": j["word"], "rel": j["rel"], "bridge": j["bridge"], "layer": la, "readout": nm_,
+                                 "gated": j["id"] in ok, "hit": bool(h)})  # fmt: skip
         summ["layers"][f"L{la}"] = rec
-        for r, j in enumerate(test):
-            rows.append({"id": j["id"], "word": j["word"], "rel": j["rel"], "bridge": j["bridge"], "layer": la, "gated": bool(gated[r]),
-                         "nc_hit": bool(nc[r] == y_te[r]), "lr_hit": bool(lr[r] == y_te[r])})  # fmt: skip
-        print(f"L{la:2d}  nc {rec['nc']['all']:5.1f} (gated {rec['nc']['gated']})  lr {rec['lr']['all']:5.1f} (gated {rec['lr']['gated']})  chance {100 * chance:.1f}", flush=True)
+        print(f"L{la:2d}  " + "  ".join(f"{k} {v['gated']} {v['gated_ci']}" for k, v in rec.items()) + f"  chance {100 * chance:.1f}", flush=True)
     if a.readout:  # the lens's top-1 on the same held-out gated items (the readout's per-item rows)
-        test_ok = {j["id"] for r, j in enumerate(test) if bool(gated[r])}
+        test_ok = {j["id"] for j in tested if j["id"] in ok}
         lens = collections.defaultdict(list)
         for line in (pins.RESULTS_DIR / "nn_readout" / a.readout / "rows.jsonl").read_text().splitlines():
             r = json.loads(line)
