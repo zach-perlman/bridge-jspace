@@ -405,12 +405,18 @@ Z1_L = R / "x50_zach" / "x52_z1-20261029T013035Z" / "z1.json"  # Lightning's cov
 # Z1-P: Zach's named passages with made-up facts (Dan's morning brief, 29 Oct); Lightning's missed its gate
 Z1P = {"qwen3.5-9b": R / "x50_zach" / "x52_z1p-20261029T081112Z" / "z1p.json",
        "qwen3.6-27b": R / "x50_zach" / "x52_z1p-20261029T081323Z" / "z1p.json",
-       "nemotron-3.5-lightning": R / "x50_zach" / "x52_z1p-20261029T080731Z" / "z1p.json"}  # fmt: skip
+       "nemotron-3.5-lightning": R / "x50_zach" / "x52_z1p-20261029T080731Z" / "z1p.json",
+       "muse-glimmer-30b": R / "x50_zach" / "x52_z1p-20261029T094820Z" / "z1p.json"}  # fmt: skip
 
 
 def _zach_cell(path: Path, target: str, reader: str) -> dict:
     (m,) = [m for m in load(path)["models"] if m["target"] == target]
     return m["layer_results"][str(m["layers"][0])][reader]
+
+
+def _below_gate(path: Path, target: str) -> bool:
+    (m,) = [m for m in load(path)["models"] if m["target"] == target]
+    return str(m.get("status", "")).startswith("not tested")
 
 
 def zach_named(plt) -> str:
@@ -429,11 +435,12 @@ def zach_named(plt) -> str:
     h = fig.get_figheight()
     fig.subplots_adjust(left=0.325, right=0.98, top=1 - 1.2 / h, bottom=0.55 / h, wspace=0.08)
     S.title(fig, "Zach's lookups follow the lens part with true facts, less with made-up",
-            "Lost beyond a random part, at L; grey: the lookup's 0.10 bar; whiskers 95%; ○ hollow: Lightning")  # fmt: skip
+            "Lost beyond random, at L; grey: the lookup's 0.10 bar; whiskers 95%; ○ hollow: Lightning, below gate")  # fmt: skip
     labels = []
     for t in models:
         tag = SHORT[t] + (" ○" if t == lt else "")
-        labels += [f"{tag}, {lab}" if not (t == lt and k == "made") else f"{tag}, made-up, below gate" for lab, k in sets]
+        below = t in Z1P and _below_gate(Z1P[t], t)
+        labels += [f"{tag}, {lab}" if not (below and k == "made") else f"{tag}, made-up, below gate" for lab, k in sets]
     for ax, (reader, col, key, pp) in zip(axes, (("lookup", LOOKUP, "lk", "PP"), ("recall", INK, "rc", "PM")),
                                           strict=True):  # fmt: skip
         ax.set_title(reader, fontsize=12, weight="bold", loc="left", color=col)
@@ -451,8 +458,9 @@ def zach_named(plt) -> str:
                     ax.text(-0.2, y0 - j, "not run", color=S.COL["muted"], va="center", fontsize=S.LABEL_PT - 1)
                     continue
                 cell = _zach_cell(path, t, reader)
+                below = k == "made" and _below_gate(path, t)
                 if cell["valid"]:
-                    whisker(ax, y0 - j, cell["excess"], col, hollow=hollow)
+                    whisker(ax, y0 - j, cell["excess"], col, hollow=hollow or below)
                 else:  # under 30 switches under the whole change: left out (the README figures' convention)
                     ax.text(-0.2, y0 - j, "under 30 switches", color=col, va="center", fontsize=S.LABEL_PT - 1)
                 what = "true facts" if k == "true" else "made-up facts"
