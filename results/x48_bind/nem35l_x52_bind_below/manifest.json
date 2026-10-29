@@ -1,0 +1,100 @@
+{
+  "exp": "x48_bind",
+  "run": "nem35l_x52_bind_below",
+  "why": "Batch 52, Dan's morning queue item 1: 48.3 on Lightning at L14, the 45m half below gate; below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "written_utc": "2026-10-29T09:04:45Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "28e7d4dea591dad9e4531cbf90111677e570ebfc",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "48.3",
+  "spec": "jobs/c3/batch48.yaml (48.3)",
+  "question": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde",
+    "results/x0_necessity/nem35l_x52_fresh/manifest.json": "84e3d46112390ddb9718f309fe434db360874ec98f4f694578da4815258ee975",
+    "results/x0_necessity/nem35l_x52_fresh/cases.jsonl": "59f432ff6eaa3da35f9c7ae1ba98c87e1045be95ef5903fa14e6712e1aae6482",
+    "results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl": "e1b25a7a744947e8b03031fc434056d3350cb1795ab9c88d520f0119b79e648f"
+  },
+  "sources": {
+    "main": "nem35l_x52_conflict",
+    "45m": "nem35l_x52_fresh"
+  },
+  "layer": 14,
+  "arms": {
+    "none": "O unedited",
+    "w1": "s = 1 (mu_Iris - mu_Jack) at the written sentence's item and number tokens",
+    "w2": "s = 2 (mu_Iris - mu_Jack)",
+    "r1": "a random vector of the s = 1 write's norm, per token",
+    "r2": "a random vector of the s = 2 write's norm, per token"
+  },
+  "s": [
+    1.0,
+    2.0
+  ],
+  "tokens": [
+    "item",
+    "number"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "random_dirs": 20,
+  "items_rule": "the scenes of both runs' chat outcomes at L; groups: main by x0_strata's org locker vs asked pick, 45m by x45m.group_of; the write on locker-after scenes of half B with a candidate",
+  "means": "per picker name and token, the mean state over the after sentences of half A (MIN_FIT states)",
+  "write": "at the written sentence's item and number tokens, s * (mu_asked - mu_picker) per token; random: a Gaussian vector of the same norm per token (seed RAND_SEED, drawn in item order)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token classified",
+  "rule": "forward binding at the locker sentence, outside the lens: probe >= 0.85 in locker-after and <= 0.5 in locker-first; the person contrast's J++ share (k = 25) <= 2x a random direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05); on both models",
+  "seeds": {
+    "split": 0,
+    "random": 4803,
+    "random_dirs": "4803 + layer",
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "none (below gate, exploratory): verdict --below-gate",
+  "below_gate": {
+    "note": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+    "source_gate": {
+      "cases": 559,
+      "org_accuracy": {
+        "PP": 0.9642,
+        "PM": 0.7513
+      },
+      "pass": false,
+      "eligible": 342,
+      "enough": true,
+      "descriptive": true
+    }
+  }
+}

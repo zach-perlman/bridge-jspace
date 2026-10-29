@@ -1,0 +1,259 @@
+{
+ "runs": [
+  "nem35l_x52_45p_below"
+ ],
+ "dan": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+ "verdict": {
+  "label": "does not hold",
+  "Q45.13": "(b) no",
+  "models_holding": 1,
+  "models": 1,
+  "tested": [
+   "nem35l_x52_45p_below"
+  ],
+  "not_tested": [],
+  "pending": []
+ },
+ "models": [
+  {
+   "run": "nem35l_x52_45p_below",
+   "target": "nemotron-3.5-lightning",
+   "layer": 14,
+   "run_45m": "nem35l_x52_fresh",
+   "status": "tested",
+   "holds": true,
+   "over_random": true,
+   "over_control": true,
+   "why": "loss_2 - loss_3 = 0.225 >= 0.2; loss_2 - loss_4 = 0.213 >= 0.15 (base-edit recall switches 89)",
+   "readers": {
+    "lookup": {
+     "n": 119,
+     "entities": 39,
+     "hits": {
+      "none": 0,
+      "whole": 96,
+      "a1": 94,
+      "a2": 95,
+      "a3": 94,
+      "a4": 96,
+      "o2": 0
+     },
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.8067226890756303,
+       0.7517218841559612,
+       0.8623853211009175
+      ],
+      "a1": [
+       0.7899159663865546,
+       0.7313392713850104,
+       0.8547008547008547
+      ],
+      "a2": [
+       0.7983193277310925,
+       0.7421875,
+       0.8598130841121495
+      ],
+      "a3": [
+       0.7899159663865546,
+       0.7313392713850104,
+       0.8547008547008547
+      ],
+      "a4": [
+       0.8067226890756303,
+       0.75,
+       0.8677685950413223
+      ],
+      "o2": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "loss": {
+      "a2": [
+       -0.010638297872340496,
+       -0.034482758620689724,
+       0.0
+      ],
+      "a3": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "a4": [
+       -0.02127659574468077,
+       -0.05102040816326525,
+       0.0
+      ]
+     },
+     "diff": {
+      "2-3": [
+       -0.010638297872340496,
+       -0.034482758620689724,
+       0.0
+      ],
+      "2-4": [
+       0.010638297872340274,
+       0.0,
+       0.03296930342384895
+      ]
+     }
+    },
+    "recall": {
+     "n": 119,
+     "entities": 39,
+     "hits": {
+      "none": 1,
+      "whole": 110,
+      "a1": 89,
+      "a2": 70,
+      "a3": 90,
+      "a4": 89,
+      "o2": 0
+     },
+     "rate": {
+      "none": [
+       0.008403361344537815,
+       0.0,
+       0.028846153846153848
+      ],
+      "whole": [
+       0.9243697478991597,
+       0.8804324600520252,
+       0.9640352004110996
+      ],
+      "a1": [
+       0.7478991596638656,
+       0.6756756756756757,
+       0.822227414330218
+      ],
+      "a2": [
+       0.5882352941176471,
+       0.5214285714285715,
+       0.6635535259133389
+      ],
+      "a3": [
+       0.7563025210084033,
+       0.6751552547770701,
+       0.8365384615384616
+      ],
+      "a4": [
+       0.7478991596638656,
+       0.6805555555555556,
+       0.8214285714285714
+      ],
+      "o2": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "loss": {
+      "a2": [
+       0.2134831460674157,
+       0.14117647058823524,
+       0.28
+      ],
+      "a3": [
+       -0.011235955056179803,
+       -0.04597701149425282,
+       0.025974025974025983
+      ],
+      "a4": [
+       0.0,
+       -0.07058823529411762,
+       0.06666666666666665
+      ]
+     },
+     "diff": {
+      "2-3": [
+       0.2247191011235955,
+       0.14583333333333337,
+       0.29670329670329665
+      ],
+      "2-4": [
+       0.2134831460674157,
+       0.13978494623655913,
+       0.2891566265060239
+      ]
+     }
+    }
+   },
+   "o_alone": {
+    "none": {
+     "n": 119,
+     "both_right": 116,
+     "both_right_share": 0.9747899159663865,
+     "lookup_right": 118,
+     "recall_right": 117
+    },
+    "o2": {
+     "n": 119,
+     "both_right": 116,
+     "both_right_share": 0.9747899159663865,
+     "lookup_right": 118,
+     "recall_right": 117
+    }
+   },
+   "checks": {
+    "lookup whole vs 45m's stored whole": {
+     "n": 119,
+     "agree": 118,
+     "rerun": 96,
+     "stored": 95
+    },
+    "lookup a1 vs 45m's stored no_part": {
+     "n": 119,
+     "agree": 118,
+     "rerun": 94,
+     "stored": 95
+    },
+    "recall whole vs 45m's stored whole": {
+     "n": 119,
+     "agree": 114,
+     "rerun": 110,
+     "stored": 109
+    },
+    "recall a1 vs 45m's stored no_part": {
+     "n": 119,
+     "agree": 115,
+     "rerun": 89,
+     "stored": 91
+    }
+   },
+   "shares_median": {
+    "whole_jpp_share": 0.25894,
+    "new_jpp_share": 0.19998,
+    "new_rand_share": 0.19877,
+    "control_jpp_share": 0.17938
+   },
+   "plan": {
+    "run_45m": "nem35l_x52_fresh",
+    "layer": 14,
+    "items_at_L": 295,
+    "alt locker vs asked pick": {
+     "after": 176,
+     "before": 119
+    },
+    "dropped": {},
+    "items": 119,
+    "entities": 39,
+    "tokens": {
+     "new 1, control 1": 110,
+     "new 1, control 2": 9
+    },
+    "control": {
+     "after the new item, before the asked pick": 66,
+     "before the new item, before the asked pick": 49,
+     "after the new item, after the asked pick": 4
+    }
+   }
+  }
+ ]
+}

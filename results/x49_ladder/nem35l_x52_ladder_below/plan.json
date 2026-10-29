@@ -1,0 +1,56 @@
+{
+  "source": "nem35l_x52_fresh",
+  "layer": 14,
+  "gate": {
+    "cases": 559,
+    "org_accuracy": {
+      "PP": 0.9642,
+      "PM": 0.7513
+    },
+    "said_accuracy": {
+      "PP": 0.9624,
+      "PM": 0.7531
+    },
+    "cand_accuracy": {
+      "PP": 0.9642,
+      "PM": 0.7478
+    },
+    "pass": false,
+    "eligible": 342,
+    "enough": true,
+    "descriptive": true,
+    "excluded": 47
+  },
+  "items_at_L": 295,
+  "dropped": {},
+  "items": 295,
+  "entities": 41,
+  "orders": {
+    "locker-after": 176,
+    "locker-first": 119
+  },
+  "group45m": {
+    "locker-after / locker-after": 133,
+    "locker-first / mixed": 30,
+    "locker-first / locker-before": 89,
+    "locker-after / mixed": 43
+  },
+  "tokens_median": {
+    "lookup": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 30.0,
+      "5": 82.0,
+      "6": 82.0
+    },
+    "recall": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 32.0,
+      "5": 84.0,
+      "6": 84.0
+    }
+  }
+}

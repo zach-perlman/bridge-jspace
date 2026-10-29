@@ -1,0 +1,98 @@
+{
+  "target": "nemotron-3.5-lightning",
+  "layer": 14,
+  "runs": {
+    "main": {
+      "run": "nem35l_x52_conflict",
+      "scenes_at_L": 200,
+      "groups": {
+        "after": 115,
+        "before": 85
+      }
+    },
+    "45m": {
+      "run": "nem35l_x52_fresh",
+      "scenes_at_L": 295,
+      "groups": {
+        "after": 133,
+        "mixed": 73,
+        "before": 89
+      }
+    }
+  },
+  "dropped": {},
+  "scenes": 495,
+  "entities": 42,
+  "halves": {
+    "A": [
+      "alpha",
+      "bear",
+      "bee",
+      "beta",
+      "carbon",
+      "cat",
+      "chicken",
+      "dog",
+      "duck",
+      "elephant",
+      "epsilon",
+      "fly",
+      "helium",
+      "hydrogen",
+      "lion",
+      "mouse",
+      "nitrogen",
+      "owl",
+      "pig",
+      "rabbit",
+      "spider",
+      "turkey",
+      "wolf"
+    ],
+    "B": [
+      "ant",
+      "butterfly",
+      "camel",
+      "cow",
+      "crow",
+      "deer",
+      "delta",
+      "eagle",
+      "eta",
+      "fox",
+      "frog",
+      "gamma",
+      "goat",
+      "lithium",
+      "oxygen",
+      "sheep",
+      "theta",
+      "tick",
+      "tiger"
+    ]
+  },
+  "locker_after": {
+    "scenes": 248,
+    "A": 132,
+    "B": 116
+  },
+  "write_candidates_B": 78,
+  "write_dropped": {
+    "no other person's locker sentence after both picks": 67,
+    "the candidate sentence's tokens are not one token each": 5
+  },
+  "names": 59,
+  "strata": {
+    "before": 692,
+    "after": 793
+  },
+  "numbers": {
+    "words": 259,
+    "digits": 236
+  },
+  "exact": {
+    "item: one token": 1706,
+    "number: one token": 1780,
+    "item: not one token": 74
+  }
+}
