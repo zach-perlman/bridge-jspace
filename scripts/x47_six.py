@@ -84,7 +84,8 @@ SPEC = "jobs/c3/batch47.yaml (47.2)"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.2"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2", "qwen3.6-27b": "x47_2_27b"}
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_six"}  # batch 52 C: verdict --coverage; RUNS unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_six",
+                 "qwen3.5-122b-a10b": "qwen35_122b_x47_2"}  # batch 52 C, the 122B Dan 18:20: verdict --coverage # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_six/x47_2-20261028T113102Z"  # 47.2's rules first scored (the 9B and Muse)
 SLOTS_TRY = (6, 5)  # six slots; five if six fail the gate (Dan: "drop to five and say so")
