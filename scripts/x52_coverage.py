@@ -86,6 +86,17 @@ def names(folder: Path, mention: str) -> bool:
     return any(mention in f.read_text(errors="ignore") for f in folder.iterdir() if f.suffix in (".json", ".md"))
 
 
+# what a run writes before its GPU results (a job killed or failed after its gate leaves only these)
+SETUP_FILES = {"manifest.json", "plan.json", "cases.jsonl", "competence.jsonl", "gate.json", "coverage.txt",
+               "status.json", "cues.json", "items.jsonl"}  # fmt: skip
+
+
+def landed(run_dir: Path) -> bool:
+    """A run folder that holds results, not only its setup files (SETUP_FILES): any other file (outcomes, states,
+    reads, ablations) or a result subfolder (verdict-*, probe-*, x45d-*)."""
+    return any(p.is_dir() or p.name not in SETUP_FILES for p in run_dir.iterdir())
+
+
 def track(specs: str | tuple[str, ...] | None, run: str | None, verdict: str | None, note: str = "",
           mention: str | None = None, done_as: str = "done", gate_fail: bool = False) -> dict:  # fmt: skip
     """A coverage cell. `run`: '<exp>/<run folder glob>' under results/; `verdict`: '<exp>/<folder glob>' ('{run}' is the
@@ -106,12 +117,22 @@ def track(specs: str | tuple[str, ...] | None, run: str | None, verdict: str | N
         key = mention or (run_dir.name if run_dir is not None else None)
         found = [p for p in sorted(RES.glob(pat)) if p.is_dir() and key and ("{run}" in verdict or names(p, key))]
         if found:
-            return c(done_as, note, rel(found[-1]), *([rel(run_dir)] if run_dir is not None else []))
-    elif run_dir is not None:
+            return c(
+                done_as, note, rel(found[-1]), *([rel(run_dir)] if run_dir is not None and landed(run_dir) else [])
+            )
+    elif run_dir is not None and landed(run_dir):
         return c(done_as, note, rel(run_dir))
-    if run_dir is not None:
+    if run_dir is not None and landed(run_dir):
         return c("partial", "the run landed; its coverage verdict is not written yet" + (f"; {note}" if note else ""),
                  rel(run_dir), *spec_paths)  # fmt: skip
+    if run_dir is not None:  # a folder without outcomes: a job in progress, or one killed / failed
+        bad = next((f"{s} {LEDGER[s].get('status')} (exit {LEDGER[s].get('exit_code')}, {LEDGER[s]['ledger']})"
+                    for s in reversed(specs) if LEDGER.get(s, {}).get("status") not in (None, "done")), None)  # fmt: skip
+        if bad:
+            return c("missing", f"the run folder holds no outcomes; {bad}" + (f"; {note}" if note else ""),
+                     rel(run_dir), *spec_paths)  # fmt: skip
+        return c("running", "the run folder holds no outcomes yet" + (f"; {note}" if note else ""), rel(run_dir),
+                 *spec_paths)  # fmt: skip
     for s in reversed(specs):
         e = LEDGER.get(s)
         if e and e.get("status") not in (None, "done"):
@@ -269,9 +290,11 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.6-27b": track("x52_27b_gaps_a", "x47_distance/x47_16_27b", "x47_distance/x52_distance-*"),
             LT: track("x52_lightning_fill1", "x47_distance/nem35l_x52_distance", "x47_distance/x52_distance-*"),
             "qwen3.5-9b": done("results/x47_distance/x47_16-20261028T131501Z"),
-            "muse-glimmer-30b": done("results/x47_distance/x47_16-20261028T131501Z")}),
+            "muse-glimmer-30b": track("x47_16_muse_r2", "x47_distance/muse30_x47_16_r2",
+                                      "x47_distance/x52_distance-*", "x47_16_muse was cancelled by Dan mid-run (batch 49 "
+                                      "amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)")}),
         ("E7: six lockers, one code per slot (47.2)", "jobs/c3/batch47.yaml 47.2", {
-            "qwen3.6-27b": track(("x47_2_27b", "x47_2_27b_r2", "x47_2_27b_r3", "x47_2_27b_r4"), "x47_six/x47_2_27b",
+            "qwen3.6-27b": track(("x47_2_27b", "x47_2_27b_r2", "x47_2_27b_r3", "x47_2_27b_r4"), "x47_six/x47_2_27b*",
                                  "x47_six/x52_six-*"),
             LT: track("x52_lightning_six", "x47_six/nem35l_x52_six", "x47_six/x52_six-*"),
             "qwen3.5-9b": done("results/x47_six/x47_2-20261028T113102Z"),
@@ -461,10 +484,42 @@ def md_lines(stamp: str, head: str) -> list[str]:
     return lines
 
 
+def entries(obj, target: str) -> list[dict]:
+    """Every dict in a verdict's JSON that names `target` and carries a status (a model row)."""
+    if isinstance(obj, dict):
+        own = [obj] if obj.get("target") == target and isinstance(obj.get("status"), str) else []
+        return own + [e for v in obj.values() for e in entries(v, target)]
+    if isinstance(obj, list):
+        return [e for v in obj for e in entries(v, target)]
+    return []
+
+
+def audit(cell: dict, target: str) -> dict:
+    """A done / partial cell checked against what it cites: a verdict whose model row for this column is pending or not
+    tested (the model's run never produced outcomes), or a run folder without results, is not done."""
+    if cell["status"] not in ("done", "partial"):
+        return cell
+    for s in cell["sources"]:
+        p = pins.REPO_ROOT / s
+        if not p.is_dir():
+            continue
+        if (p / "manifest.json").exists() and not landed(p):
+            return c("missing", f"the cited run folder holds no results ({s}); was: {cell['note'] or cell['status']}",
+                     *cell["sources"])  # fmt: skip
+        rows_ = [e for f in p.glob("*.json") for e in entries(json.loads(f.read_text()), target)]
+        if rows_ and not any(e["status"] in ("tested", "done") for e in rows_):
+            st = sorted({e["status"] for e in rows_})
+            why = "; ".join(sorted({str(e.get("why")) for e in rows_ if e.get("why")}))
+            new = "not tested" if st == ["not tested"] else "missing"
+            return c(new, f"the cited verdict lists {SHORT[target]} as {' / '.join(st)} ({why + '; ' if why else ''}{s})"
+                     + (f"; was: {cell['note']}" if cell["note"] else ""), *cell["sources"])  # fmt: skip
+    return cell
+
+
 def build() -> list[tuple[str, str, dict]]:
     global LEDGER, ROWS
     LEDGER = ledger()
-    ROWS = rows()
+    ROWS = [(row, rule, {m: audit(cell, m) for m, cell in cells.items()}) for row, rule, cells in rows()]
     for row, _, cells in ROWS:
         assert set(cells) == set(MODELS), f"{row}: cells for {sorted(cells)}"
     return ROWS
