@@ -1,0 +1,7226 @@
+{
+ "dan": "no prediction: coverage run on an already-scored rule; rules first scored in results/x51_jread/x51_10-20261028T190608Z",
+ "rule": {
+  "read": "through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there",
+  "write": "at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10",
+  "a": "in J-space: read holds and write holds",
+  "b": "readable, not used: read holds, write fails",
+  "c": "routes around J-space: through-the-lens < 0.5 at every layer before the answer while the full residual >= 0.9 at some layer, and write fails",
+  "d": "not represented: the full-residual probe < 0.5 at every layer before the answer"
+ },
+ "labels": {
+  "nemotron-3.5-lightning": {
+   "lookup": {
+    "P3": "none of the four",
+    "P2": "none of the four"
+   },
+   "recall": {
+    "P3": "(b) readable, not used",
+    "P2": "none of the four (writable, not readable)"
+   }
+  }
+ },
+ "models": [
+  {
+   "target": "nemotron-3.5-lightning",
+   "run": "nem35l_x52_jread",
+   "status": "tested",
+   "L": 14,
+   "layers": [
+    4,
+    8,
+    12,
+    14,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48
+   ],
+   "n": 59,
+   "n_read": 200,
+   "answer": {
+    "lookup": {
+     "layer": 45,
+     "n": 59,
+     "never": 0,
+     "S_layer": 45,
+     "quartiles": [
+      39.0,
+      45.0,
+      49.0
+     ]
+    },
+    "recall": {
+     "layer": 49,
+     "n": 59,
+     "never": 0,
+     "S_layer": 48,
+     "quartiles": [
+      48.0,
+      49.0,
+      49.0
+     ]
+    }
+   },
+   "rules": {
+    "lookup": {
+     "P3": {
+      "answer_layer": 45,
+      "layers_before": [
+       4,
+       8,
+       12,
+       14,
+       16,
+       20,
+       24,
+       28,
+       32,
+       36,
+       40,
+       44
+      ],
+      "first_readable": null,
+      "first_readable_before_answer": null,
+      "read": false,
+      "write": false,
+      "peak": 32,
+      "at_peak": {
+       "whole": 0.8983050847457628,
+       "arms": {
+        "swap": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": 0.0,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": 0.0,
+         "ok": false
+        },
+        "jpp2": {
+         "switch": 0.0,
+         "twin": 0.01694915254237288,
+         "ratio": 0.0,
+         "ok": false
+        }
+       },
+       "holds": false
+      },
+      "routes_clause": false,
+      "write_with_his_rotated_control": false,
+      "not_represented_clause": false,
+      "label": "none of the four",
+      "best_layer": 48,
+      "at_best": {
+       "whole": 1.0,
+       "arms": {
+        "swap": {
+         "switch": 0.0847457627118644,
+         "twin": 0.0,
+         "ratio": 0.0847457627118644,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.4576271186440678,
+         "twin": 0.03389830508474576,
+         "ratio": 0.4576271186440678,
+         "ok": false
+        },
+        "jpp2": {
+         "switch": 0.9661016949152542,
+         "twin": 0.6779661016949152,
+         "ratio": 0.9661016949152542,
+         "ok": false
+        }
+       },
+       "holds": false
+      },
+      "whole_max": 1.0
+     },
+     "P2": {
+      "answer_layer": 45,
+      "layers_before": [
+       4,
+       8,
+       12,
+       14,
+       16,
+       20,
+       24,
+       28,
+       32,
+       36,
+       40,
+       44
+      ],
+      "first_readable": null,
+      "first_readable_before_answer": null,
+      "read": false,
+      "write": false,
+      "peak": 44,
+      "at_peak": {
+       "whole": 0.0,
+       "arms": {
+        "swap": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        },
+        "jpp2": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        }
+       },
+       "holds": false
+      },
+      "routes_clause": false,
+      "write_with_his_rotated_control": false,
+      "not_represented_clause": false,
+      "label": "none of the four",
+      "best_layer": 4,
+      "at_best": {
+       "whole": 0.0,
+       "arms": {
+        "swap": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        },
+        "jpp2": {
+         "switch": 0.0,
+         "twin": 0.0,
+         "ratio": null,
+         "ok": false
+        }
+       },
+       "holds": false
+      },
+      "whole_max": 0.01694915254237288
+     }
+    },
+    "recall": {
+     "P3": {
+      "answer_layer": 49,
+      "layers_before": [
+       4,
+       8,
+       12,
+       14,
+       16,
+       20,
+       24,
+       28,
+       32,
+       36,
+       40,
+       44,
+       48
+      ],
+      "first_readable": 36,
+      "first_readable_before_answer": 36,
+      "read": true,
+      "write": false,
+      "peak": 36,
+      "at_peak": {
+       "whole": 0.9661016949152542,
+       "arms": {
+        "swap": {
+         "switch": 0.13559322033898305,
+         "twin": 0.03389830508474576,
+         "ratio": 0.14035087719298245,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.15254237288135594,
+         "twin": 0.03389830508474576,
+         "ratio": 0.15789473684210528,
+         "ok": false
+        },
+        "jpp2": {
+         "switch": 0.559322033898305,
+         "twin": 0.1864406779661017,
+         "ratio": 0.5789473684210525,
+         "ok": false
+        }
+       },
+       "holds": false
+      },
+      "routes_clause": false,
+      "write_with_his_rotated_control": false,
+      "not_represented_clause": false,
+      "label": "(b) readable, not used",
+      "best_layer": 48,
+      "at_best": {
+       "whole": 1.0,
+       "arms": {
+        "swap": {
+         "switch": 0.2542372881355932,
+         "twin": 0.01694915254237288,
+         "ratio": 0.2542372881355932,
+         "ok": false
+        },
+        "jpp1": {
+         "switch": 0.5254237288135594,
+         "twin": 0.03389830508474576,
+         "ratio": 0.5254237288135594,
+         "ok": true
+        },
+        "jpp2": {
+         "switch": 0.8983050847457628,
+         "twin": 0.2033898305084746,
+         "ratio": 0.8983050847457628,
+         "ok": false
+        }
+       },
+       "holds": true
+      },
+      "whole_max": 1.0
+     },
+     "P2": {
+      "answer_layer": 49,
+      "layers_before": [
+       4,
+       8,
+       12,
+       14,
+       16,
+       20,
+       24,
+       28,
+       32,
+       36,
+       40,
+       44,
+       48
+      ],
+      "first_readable": null,
+      "first_readable_before_answer": null,
+      "read": false,
+      "write": true,
+      "peak": 48,
+      "at_peak": {
+       "whole": 0.01694915254237288,
+       "arms": {
+        "swap": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        },
+        "jpp1": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        },
+        "jpp2": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        }
+       },
+       "holds": true
+      },
+      "routes_clause": false,
+      "write_with_his_rotated_control": true,
+      "not_represented_clause": false,
+      "label": "none of the four (writable, not readable)",
+      "best_layer": 4,
+      "at_best": {
+       "whole": 0.01694915254237288,
+       "arms": {
+        "swap": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        },
+        "jpp1": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        },
+        "jpp2": {
+         "switch": 0.01694915254237288,
+         "twin": 0.01694915254237288,
+         "ratio": 1.0,
+         "ok": true
+        }
+       },
+       "holds": true
+      },
+      "whole_max": 0.01694915254237288
+     }
+    }
+   },
+   "readers": {
+    "lookup": {
+     "switch": {
+      "None|None|none": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|4|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.13559322033898305,
+        0.06060606060606061,
+        0.2222222222222222
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.7796610169491526
+      },
+      "P1|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.0500158227848099
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.9830508474576272,
+        0.9444444444444444,
+        1.0
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.0
+      },
+      "P1|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.6949152542372882,
+        0.5535714285714286,
+        0.8225806451612904
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.2711864406779661
+      },
+      "P1|4|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|8|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.05172413793103448,
+        0.2545454545454545
+       ],
+       "other_digit": 0.0,
+       "kept": 0.847457627118644
+      },
+      "P1|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.0500158227848099
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|8|jpp2": {
+       "n": 59,
+       "switch": [
+        0.9661016949152542,
+        0.9117483660130719,
+        1.0
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.01694915254237288
+      },
+      "P1|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.3898305084745763,
+        0.2727272727272727,
+        0.5208333333333334
+       ],
+       "other_digit": 0.0,
+       "kept": 0.6101694915254238
+      },
+      "P1|8|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|12|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.1076923076923077
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9491525423728814
+      },
+      "P1|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.3220338983050847,
+        0.19298245614035087,
+        0.45454545454545453
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.6610169491525424
+      },
+      "P1|12|whole": {
+       "n": 59,
+       "switch": [
+        0.9830508474576272,
+        0.9411764705882353,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.01694915254237288
+      },
+      "P1|14|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.1111111111111111
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9491525423728814
+      },
+      "P1|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.1016949152542373,
+        0.03508771929824561,
+        0.18
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.8813559322033898
+      },
+      "P1|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.3050847457627119,
+        0.17857142857142858,
+        0.42105263157894735
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.6779661016949152
+      },
+      "P1|14|whole": {
+       "n": 59,
+       "switch": [
+        0.9830508474576272,
+        0.9411764705882353,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.01694915254237288
+      },
+      "P1|16|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.13559322033898305,
+        0.05660377358490566,
+        0.22580645161290322
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.847457627118644
+      },
+      "P1|16|whole": {
+       "n": 59,
+       "switch": [
+        0.9830508474576272,
+        0.9411764705882353,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.01694915254237288
+      },
+      "P1|20|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.11864406779661017,
+        0.041666666666666664,
+        0.18840579710144928
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.864406779661017
+      },
+      "P1|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.1694915254237288,
+        0.078125,
+        0.2698412698412698
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.7966101694915254
+      },
+      "P1|20|whole": {
+       "n": 59,
+       "switch": [
+        0.8305084745762712,
+        0.7446808510638298,
+        0.9107142857142857
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.06779661016949153
+      },
+      "P1|24|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.11864406779661017,
+        0.04081632653061224,
+        0.19696969696969696
+       ],
+       "other_digit": 0.06779661016949153,
+       "kept": 0.8135593220338984
+      },
+      "P1|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.06779661016949153,
+        0.01639344262295082,
+        0.13043478260869565
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9152542372881356
+      },
+      "P1|24|whole": {
+       "n": 59,
+       "switch": [
+        0.6101694915254238,
+        0.4888888888888889,
+        0.712126400996264
+       ],
+       "other_digit": 0.15254237288135594,
+       "kept": 0.23728813559322035
+      },
+      "P1|28|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|28|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|32|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|36|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|40|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|44|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P1|48|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|4|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|8|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|20|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|24|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|28|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|32|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|36|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|40|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|44|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|48|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|4|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|8|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|12|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|14|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|16|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|20|whole": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|24|whole": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08929716117216101
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P3|28|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|whole": {
+       "n": 59,
+       "switch": [
+        0.864406779661017,
+        0.7910447761194029,
+        0.9344262295081968
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.1016949152542373
+      },
+      "P3|32|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|32|whole": {
+       "n": 59,
+       "switch": [
+        0.8983050847457628,
+        0.8135593220338984,
+        0.9655172413793104
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.06779661016949153
+      },
+      "P3|36|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08928571428571429
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P3|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.4067796610169492,
+        0.3030126849894292,
+        0.5178571428571429
+       ],
+       "other_digit": 0.0,
+       "kept": 0.5932203389830508
+      },
+      "P3|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.0847457627118644,
+        0.016129032258064516,
+        0.18
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9152542372881356
+      },
+      "P3|36|whole": {
+       "n": 59,
+       "switch": [
+        0.9661016949152542,
+        0.9137931034482759,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.03389830508474576
+      },
+      "P3|40|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.3050847457627119,
+        0.16666666666666666,
+        0.4411764705882353
+       ],
+       "other_digit": 0.0,
+       "kept": 0.6949152542372882
+      },
+      "P3|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.3389830508474576,
+        0.22972972972972974,
+        0.45454545454545453
+       ],
+       "other_digit": 0.0,
+       "kept": 0.6610169491525424
+      },
+      "P3|40|whole": {
+       "n": 59,
+       "switch": [
+        0.9830508474576272,
+        0.9473684210526315,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.01694915254237288
+      },
+      "P3|44|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0847457627118644,
+        0.021739130434782608,
+        0.14814814814814814
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9152542372881356
+      },
+      "P3|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.06
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.8135593220338984,
+        0.7213114754098361,
+        0.9047619047619048
+       ],
+       "other_digit": 0.0,
+       "kept": 0.1864406779661017
+      },
+      "P3|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.3559322033898305,
+        0.2549019607843137,
+        0.4520547945205479
+       ],
+       "other_digit": 0.0,
+       "kept": 0.6440677966101694
+      },
+      "P3|44|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P3|48|swap": {
+       "n": 59,
+       "switch": [
+        0.0847457627118644,
+        0.023795681063122937,
+        0.14516129032258066
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9152542372881356
+      },
+      "P3|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.4576271186440678,
+        0.32786885245901637,
+        0.5846153846153846
+       ],
+       "other_digit": 0.0,
+       "kept": 0.5423728813559322
+      },
+      "P3|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08333333333333333
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P3|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.9661016949152542,
+        0.9253731343283582,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.03389830508474576
+      },
+      "P3|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.6779661016949152,
+        0.5535619300911855,
+        0.7966101694915254
+       ],
+       "other_digit": 0.0,
+       "kept": 0.3220338983050847
+      },
+      "P3|48|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      }
+     },
+     "loss": {
+      "P1|None|none": 3.7912476271186435,
+      "P1|4|swap": 3.780196271186441,
+      "P1|4|swap_rand": 3.796121016949153,
+      "P1|4|swap_rot": 3.796716101694915,
+      "P1|4|jpp1": 3.832240508474576,
+      "P1|4|rand1": 3.802026610169491,
+      "P1|4|jpp2": 3.8359667796610166,
+      "P1|4|rand2": 3.8496727118644065,
+      "P1|4|whole": 3.806808305084746,
+      "P1|8|swap": 3.7988938983050846,
+      "P1|8|swap_rand": 3.802609830508475,
+      "P1|8|swap_rot": 3.7996311864406778,
+      "P1|8|jpp1": 3.753224576271186,
+      "P1|8|rand1": 3.774542881355933,
+      "P1|8|jpp2": 3.831713389830508,
+      "P1|8|rand2": 3.760784745762712,
+      "P1|8|whole": 3.8185655932203386,
+      "P1|12|swap": 3.770577118644068,
+      "P1|12|swap_rand": 3.7802944067796616,
+      "P1|12|swap_rot": 3.804210847457627,
+      "P1|12|jpp1": 3.753801525423729,
+      "P1|12|rand1": 3.7702527118644067,
+      "P1|12|jpp2": 3.7500991525423735,
+      "P1|12|rand2": 3.754242881355932,
+      "P1|12|whole": 3.8467215254237286,
+      "P1|14|swap": 3.7896505084745757,
+      "P1|14|swap_rand": 3.7864911864406783,
+      "P1|14|swap_rot": 3.797947288135593,
+      "P1|14|jpp1": 3.7623357627118645,
+      "P1|14|rand1": 3.781674915254238,
+      "P1|14|jpp2": 3.8060105084745763,
+      "P1|14|rand2": 3.7761864406779657,
+      "P1|14|whole": 3.8309103389830512,
+      "P1|16|swap": 3.78262406779661,
+      "P1|16|swap_rand": 3.7910371186440677,
+      "P1|16|swap_rot": 3.7867049152542376,
+      "P1|16|jpp1": 3.771511525423729,
+      "P1|16|rand1": 3.7806861016949154,
+      "P1|16|jpp2": 3.778489491525424,
+      "P1|16|rand2": 3.798446271186441,
+      "P1|16|whole": 3.832195762711865,
+      "P1|20|swap": 3.7957991525423727,
+      "P1|20|swap_rand": 3.7931738983050853,
+      "P1|20|swap_rot": 3.799212711864407,
+      "P1|20|jpp1": 3.784445254237288,
+      "P1|20|rand1": 3.8014811864406783,
+      "P1|20|jpp2": 3.804699152542373,
+      "P1|20|rand2": 3.8254286440677965,
+      "P1|20|whole": 3.8336696610169487,
+      "P1|24|swap": 3.7893438983050847,
+      "P1|24|swap_rand": 3.7925854237288137,
+      "P1|24|swap_rot": 3.796882711864407,
+      "P1|24|jpp1": 3.7859455932203385,
+      "P1|24|rand1": 3.7940338983050848,
+      "P1|24|jpp2": 3.750297966101695,
+      "P1|24|rand2": 3.7958361016949156,
+      "P1|24|whole": 3.791234237288136,
+      "P1|28|swap": 3.8138583050847457,
+      "P1|28|swap_rand": 3.789659322033898,
+      "P1|28|swap_rot": 3.7924398305084748,
+      "P1|28|jpp1": 3.8049652542372883,
+      "P1|28|rand1": 3.7821006779661026,
+      "P1|28|jpp2": 3.7807511864406775,
+      "P1|28|rand2": 3.7452249152542367,
+      "P1|28|whole": 3.778559322033898,
+      "P1|32|swap": 3.789028474576271,
+      "P1|32|swap_rand": 3.787513898305085,
+      "P1|32|swap_rot": 3.8009145762711865,
+      "P1|32|jpp1": 3.7834547457627123,
+      "P1|32|rand1": 3.779943050847458,
+      "P1|32|jpp2": 3.7062393220338987,
+      "P1|32|rand2": 3.72488186440678,
+      "P1|32|whole": 3.7706910169491525,
+      "P1|36|swap": 3.7677369491525425,
+      "P1|36|swap_rand": 3.8059918644067796,
+      "P1|36|swap_rot": 3.825840677966102,
+      "P1|36|jpp1": 3.79292,
+      "P1|36|rand1": 3.794996440677966,
+      "P1|36|jpp2": 3.7855610169491523,
+      "P1|36|rand2": 3.7835108474576264,
+      "P1|36|whole": 3.7566784745762716,
+      "P1|40|swap": 3.77164,
+      "P1|40|swap_rand": 3.7904527118644076,
+      "P1|40|swap_rot": 3.7939184745762713,
+      "P1|40|jpp1": 3.787107457627119,
+      "P1|40|rand1": 3.7793398305084747,
+      "P1|40|jpp2": 3.7776557627118645,
+      "P1|40|rand2": 3.754401525423729,
+      "P1|40|whole": 3.749078983050847,
+      "P1|44|swap": 3.809327118644068,
+      "P1|44|swap_rand": 3.762508983050848,
+      "P1|44|swap_rot": 3.7864732203389835,
+      "P1|44|jpp1": 3.8046094915254236,
+      "P1|44|rand1": 3.7428445762711866,
+      "P1|44|jpp2": 3.8239771186440676,
+      "P1|44|rand2": 3.683484745762712,
+      "P1|44|whole": 3.77498406779661,
+      "P1|48|swap": 3.858624745762712,
+      "P1|48|swap_rand": 3.776958813559322,
+      "P1|48|swap_rot": 3.7960184745762717,
+      "P1|48|jpp1": 3.7873005084745763,
+      "P1|48|rand1": 3.7838210169491524,
+      "P1|48|jpp2": 3.851685254237288,
+      "P1|48|rand2": 3.77746220338983,
+      "P1|48|whole": 3.7943347457627117,
+      "P2|None|none": 0.7318354237288137,
+      "P2|4|swap": 0.729953559322034,
+      "P2|4|swap_rand": 0.7294445762711864,
+      "P2|4|swap_rot": 0.7311671186440677,
+      "P2|4|jpp1": 0.7321005084745764,
+      "P2|4|rand1": 0.7274405084745762,
+      "P2|4|jpp2": 0.7345086440677966,
+      "P2|4|rand2": 0.7228538983050847,
+      "P2|4|whole": 0.7358872881355933,
+      "P2|8|swap": 0.7312874576271187,
+      "P2|8|swap_rand": 0.7271696610169494,
+      "P2|8|swap_rot": 0.7283415254237289,
+      "P2|8|jpp1": 0.7337196610169491,
+      "P2|8|rand1": 0.7307862711864406,
+      "P2|8|jpp2": 0.7368001694915254,
+      "P2|8|rand2": 0.734346779661017,
+      "P2|8|whole": 0.7339528813559323,
+      "P2|12|swap": 0.7331674576271185,
+      "P2|12|swap_rand": 0.7298010169491524,
+      "P2|12|swap_rot": 0.7322423728813561,
+      "P2|12|jpp1": 0.7302247457627119,
+      "P2|12|rand1": 0.7371715254237289,
+      "P2|12|jpp2": 0.7306572881355932,
+      "P2|12|rand2": 0.7348496610169492,
+      "P2|12|whole": 0.7309405084745763,
+      "P2|14|swap": 0.7284001694915255,
+      "P2|14|swap_rand": 0.7368708474576271,
+      "P2|14|swap_rot": 0.7338369491525424,
+      "P2|14|jpp1": 0.7281454237288135,
+      "P2|14|rand1": 0.7406959322033898,
+      "P2|14|jpp2": 0.7317628813559321,
+      "P2|14|rand2": 0.7336913559322034,
+      "P2|14|whole": 0.7349245762711865,
+      "P2|16|swap": 0.7318291525423729,
+      "P2|16|swap_rand": 0.7314269491525424,
+      "P2|16|swap_rot": 0.7374133898305084,
+      "P2|16|jpp1": 0.7304394915254238,
+      "P2|16|rand1": 0.728844406779661,
+      "P2|16|jpp2": 0.7272928813559322,
+      "P2|16|rand2": 0.7301422033898305,
+      "P2|16|whole": 0.7293610169491526,
+      "P2|20|swap": 0.731658813559322,
+      "P2|20|swap_rand": 0.73454,
+      "P2|20|swap_rot": 0.7306989830508475,
+      "P2|20|jpp1": 0.7251162711864406,
+      "P2|20|rand1": 0.7286613559322034,
+      "P2|20|jpp2": 0.7365738983050849,
+      "P2|20|rand2": 0.7295222033898306,
+      "P2|20|whole": 0.7206859322033898,
+      "P2|24|swap": 0.7319098305084746,
+      "P2|24|swap_rand": 0.7295067796610168,
+      "P2|24|swap_rot": 0.7363859322033899,
+      "P2|24|jpp1": 0.7374725423728813,
+      "P2|24|rand1": 0.7328681355932204,
+      "P2|24|jpp2": 0.7377798305084746,
+      "P2|24|rand2": 0.7360181355932204,
+      "P2|24|whole": 0.730064406779661,
+      "P2|28|swap": 0.7347294915254238,
+      "P2|28|swap_rand": 0.726428813559322,
+      "P2|28|swap_rot": 0.7329189830508474,
+      "P2|28|jpp1": 0.7295838983050846,
+      "P2|28|rand1": 0.726095593220339,
+      "P2|28|jpp2": 0.7414310169491526,
+      "P2|28|rand2": 0.7386037288135593,
+      "P2|28|whole": 0.7235971186440678,
+      "P2|32|swap": 0.7364252542372881,
+      "P2|32|swap_rand": 0.7327057627118645,
+      "P2|32|swap_rot": 0.7301003389830508,
+      "P2|32|jpp1": 0.7337413559322034,
+      "P2|32|rand1": 0.732632372881356,
+      "P2|32|jpp2": 0.7355822033898306,
+      "P2|32|rand2": 0.728442033898305,
+      "P2|32|whole": 0.7227952542372881,
+      "P2|36|swap": 0.7302886440677966,
+      "P2|36|swap_rand": 0.7315366101694917,
+      "P2|36|swap_rot": 0.730041186440678,
+      "P2|36|jpp1": 0.725851186440678,
+      "P2|36|rand1": 0.7307601694915252,
+      "P2|36|jpp2": 0.7184632203389829,
+      "P2|36|rand2": 0.736774406779661,
+      "P2|36|whole": 0.7193506779661016,
+      "P2|40|swap": 0.7336015254237288,
+      "P2|40|swap_rand": 0.7277735593220339,
+      "P2|40|swap_rot": 0.7228849152542371,
+      "P2|40|jpp1": 0.7340227118644067,
+      "P2|40|rand1": 0.7317794915254239,
+      "P2|40|jpp2": 0.7313983050847457,
+      "P2|40|rand2": 0.7231118644067795,
+      "P2|40|whole": 0.7214315254237288,
+      "P2|44|swap": 0.729664406779661,
+      "P2|44|swap_rand": 0.7363625423728815,
+      "P2|44|swap_rot": 0.7266959322033898,
+      "P2|44|jpp1": 0.73321593220339,
+      "P2|44|rand1": 0.7299044067796611,
+      "P2|44|jpp2": 0.7246423728813559,
+      "P2|44|rand2": 0.7350349152542374,
+      "P2|44|whole": 0.7186857627118644,
+      "P2|48|swap": 0.7570061016949152,
+      "P2|48|swap_rand": 0.7324637288135593,
+      "P2|48|swap_rot": 0.7279313559322035,
+      "P2|48|jpp1": 0.7275855932203389,
+      "P2|48|rand1": 0.726716440677966,
+      "P2|48|jpp2": 0.7263862711864406,
+      "P2|48|rand2": 0.7286979661016948,
+      "P2|48|whole": 0.7249844067796611
+     }
+    },
+    "recall": {
+     "switch": {
+      "None|None|none": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|4|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.2033898305084746,
+        0.1044776119402985,
+        0.3207715633423178
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.7796610169491526
+      },
+      "P1|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.10714285714285714
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P1|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.9661016949152542,
+        0.9230769230769231,
+        1.0
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.0
+      },
+      "P1|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.6949152542372882,
+        0.56,
+        0.8235294117647058
+       ],
+       "other_digit": 0.06779661016949153,
+       "kept": 0.23728813559322035
+      },
+      "P1|4|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|8|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.288135593220339,
+        0.16326530612244897,
+        0.40298507462686567
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.6949152542372882
+      },
+      "P1|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9491525423728814
+      },
+      "P1|8|jpp2": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.4406779661016949,
+        0.3064516129032258,
+        0.5714285714285714
+       ],
+       "other_digit": 0.05084745762711865,
+       "kept": 0.5084745762711864
+      },
+      "P1|8|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|12|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P1|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.13559322033898305,
+        0.046511627906976744,
+        0.21875
+       ],
+       "other_digit": 0.05084745762711865,
+       "kept": 0.8135593220338984
+      },
+      "P1|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.10714285714285714
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.6271186440677966,
+        0.5068493150684932,
+        0.7600217391304345
+       ],
+       "other_digit": 0.15254237288135594,
+       "kept": 0.22033898305084745
+      },
+      "P1|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.3050847457627119,
+        0.18518518518518517,
+        0.4264705882352941
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.6610169491525424
+      },
+      "P1|12|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|14|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.1016949152542373,
+        0.030303030303030304,
+        0.1791044776119403
+       ],
+       "other_digit": 0.05084745762711865,
+       "kept": 0.847457627118644
+      },
+      "P1|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.13043478260869565
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9152542372881356
+      },
+      "P1|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.6271186440677966,
+        0.5,
+        0.7592592592592593
+       ],
+       "other_digit": 0.13559322033898305,
+       "kept": 0.23728813559322035
+      },
+      "P1|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.423728813559322,
+        0.30612244897959184,
+        0.5384615384615384
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.4915254237288136
+      },
+      "P1|14|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|16|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P1|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.06521739130434782,
+        0.23529411764705882
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.7627118644067796
+      },
+      "P1|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9491525423728814
+      },
+      "P1|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.4067796610169492,
+        0.2916666666666667,
+        0.5283086253369271
+       ],
+       "other_digit": 0.22033898305084745,
+       "kept": 0.3728813559322034
+      },
+      "P1|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.07017543859649122,
+        0.24528301886792453
+       ],
+       "other_digit": 0.06779661016949153,
+       "kept": 0.7796610169491526
+      },
+      "P1|16|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P1|20|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.1864406779661017,
+        0.09433962264150944,
+        0.2807017543859649
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.7288135593220338
+      },
+      "P1|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.5423728813559322,
+        0.4264705882352941,
+        0.6610169491525424
+       ],
+       "other_digit": 0.1864406779661017,
+       "kept": 0.2711864406779661
+      },
+      "P1|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.13559322033898305,
+        0.05172413793103448,
+        0.23333333333333334
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.8305084745762712
+      },
+      "P1|20|whole": {
+       "n": 59,
+       "switch": [
+        0.7457627118644068,
+        0.64,
+        0.8448275862068966
+       ],
+       "other_digit": 0.13559322033898305,
+       "kept": 0.11864406779661017
+      },
+      "P1|24|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.0847457627118644,
+        0.017241379310344827,
+        0.16666666666666666
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.8813559322033898
+      },
+      "P1|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.3898305084745763,
+        0.2727272727272727,
+        0.5098039215686274
+       ],
+       "other_digit": 0.15254237288135594,
+       "kept": 0.4576271186440678
+      },
+      "P1|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.1044776119402985
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9152542372881356
+      },
+      "P1|24|whole": {
+       "n": 59,
+       "switch": [
+        0.5084745762711864,
+        0.37735849056603776,
+        0.6279235880398669
+       ],
+       "other_digit": 0.13559322033898305,
+       "kept": 0.3559322033898305
+      },
+      "P1|28|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P1|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.1016949152542373,
+        0.030303030303030304,
+        0.1791044776119403
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.864406779661017
+      },
+      "P1|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9322033898305084
+      },
+      "P1|28|whole": {
+       "n": 59,
+       "switch": [
+        0.06779661016949153,
+        0.01818181818181818,
+        0.11842105263157894
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.8305084745762712
+      },
+      "P1|32|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.04838709677419355
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P1|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P1|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P1|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.09375
+       ],
+       "other_digit": 0.05084745762711865,
+       "kept": 0.8983050847457628
+      },
+      "P1|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.12281376518218613
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9152542372881356
+      },
+      "P1|32|whole": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.09375
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.847457627118644
+      },
+      "P1|36|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|36|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|40|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|44|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P1|48|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P2|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|4|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|8|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|12|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|14|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P2|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|16|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|20|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|24|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|28|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|32|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|36|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|40|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|44|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P2|48|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|4|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|8|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|12|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|14|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|14|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|16|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|20|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|rand2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|24|whole": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|28|swap": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|28|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|28|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|28|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|28|jpp2": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|28|rand2": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9322033898305084
+      },
+      "P3|28|whole": {
+       "n": 59,
+       "switch": [
+        0.711864406779661,
+        0.5882352941176471,
+        0.8421052631578947
+       ],
+       "other_digit": 0.13559322033898305,
+       "kept": 0.15254237288135594
+      },
+      "P3|32|swap": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|32|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|32|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.0,
+       "kept": 1.0
+      },
+      "P3|32|jpp1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|32|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P3|32|jpp2": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.0651998597475456,
+        0.26
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.7457627118644068
+      },
+      "P3|32|rand2": {
+       "n": 59,
+       "switch": [
+        0.06779661016949153,
+        0.01694915254237288,
+        0.12962962962962962
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.8983050847457628
+      },
+      "P3|32|whole": {
+       "n": 59,
+       "switch": [
+        0.847457627118644,
+        0.7384615384615385,
+        0.9402985074626866
+       ],
+       "other_digit": 0.11864406779661017,
+       "kept": 0.03389830508474576
+      },
+      "P3|36|swap": {
+       "n": 59,
+       "switch": [
+        0.13559322033898305,
+        0.04918032786885246,
+        0.25
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.7796610169491526
+      },
+      "P3|36|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P3|36|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|36|jpp1": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.07407407407407407,
+        0.25
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.7457627118644068
+      },
+      "P3|36|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.07547169811320754
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9661016949152542
+      },
+      "P3|36|jpp2": {
+       "n": 59,
+       "switch": [
+        0.559322033898305,
+        0.42028985507246375,
+        0.7090909090909091
+       ],
+       "other_digit": 0.288135593220339,
+       "kept": 0.15254237288135594
+      },
+      "P3|36|rand2": {
+       "n": 59,
+       "switch": [
+        0.1864406779661017,
+        0.1016949152542373,
+        0.2857142857142857
+       ],
+       "other_digit": 0.2033898305084746,
+       "kept": 0.6101694915254238
+      },
+      "P3|36|whole": {
+       "n": 59,
+       "switch": [
+        0.9661016949152542,
+        0.9166666666666666,
+        1.0
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.01694915254237288
+      },
+      "P3|40|swap": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.11864406779661017
+       ],
+       "other_digit": 0.05084745762711865,
+       "kept": 0.8983050847457628
+      },
+      "P3|40|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9830508474576272
+      },
+      "P3|40|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9491525423728814
+      },
+      "P3|40|jpp1": {
+       "n": 59,
+       "switch": [
+        0.15254237288135594,
+        0.06847573717204553,
+        0.24242424242424243
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.7627118644067796
+      },
+      "P3|40|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.0625
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.8983050847457628
+      },
+      "P3|40|jpp2": {
+       "n": 59,
+       "switch": [
+        0.4745762711864407,
+        0.3382352941176471,
+        0.625
+       ],
+       "other_digit": 0.288135593220339,
+       "kept": 0.23728813559322035
+      },
+      "P3|40|rand2": {
+       "n": 59,
+       "switch": [
+        0.23728813559322035,
+        0.11764705882352941,
+        0.39215686274509803
+       ],
+       "other_digit": 0.1694915254237288,
+       "kept": 0.5932203389830508
+      },
+      "P3|40|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P3|44|swap": {
+       "n": 59,
+       "switch": [
+        0.05084745762711865,
+        0.0,
+        0.1044776119402985
+       ],
+       "other_digit": 0.11864406779661017,
+       "kept": 0.8305084745762712
+      },
+      "P3|44|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9661016949152542
+      },
+      "P3|44|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|44|jpp1": {
+       "n": 59,
+       "switch": [
+        0.1016949152542373,
+        0.03508771929824561,
+        0.18334183673469373
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.7966101694915254
+      },
+      "P3|44|rand1": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.03389830508474576,
+       "kept": 0.9491525423728814
+      },
+      "P3|44|jpp2": {
+       "n": 59,
+       "switch": [
+        0.4576271186440678,
+        0.31880607315389925,
+        0.603448275862069
+       ],
+       "other_digit": 0.3050847457627119,
+       "kept": 0.23728813559322035
+      },
+      "P3|44|rand2": {
+       "n": 59,
+       "switch": [
+        0.2033898305084746,
+        0.1052435192458759,
+        0.3064516129032258
+       ],
+       "other_digit": 0.11864406779661017,
+       "kept": 0.6779661016949152
+      },
+      "P3|44|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      },
+      "P3|48|swap": {
+       "n": 59,
+       "switch": [
+        0.2542372881355932,
+        0.13043478260869565,
+        0.39655172413793105
+       ],
+       "other_digit": 0.13559322033898305,
+       "kept": 0.6101694915254238
+      },
+      "P3|48|swap_rand": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|48|swap_rot": {
+       "n": 59,
+       "switch": [
+        0.01694915254237288,
+        0.0,
+        0.05357142857142857
+       ],
+       "other_digit": 0.0,
+       "kept": 0.9830508474576272
+      },
+      "P3|48|jpp1": {
+       "n": 59,
+       "switch": [
+        0.5254237288135594,
+        0.38028169014084506,
+        0.6730769230769231
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.3728813559322034
+      },
+      "P3|48|rand1": {
+       "n": 59,
+       "switch": [
+        0.03389830508474576,
+        0.0,
+        0.08697559115179225
+       ],
+       "other_digit": 0.01694915254237288,
+       "kept": 0.9491525423728814
+      },
+      "P3|48|jpp2": {
+       "n": 59,
+       "switch": [
+        0.8983050847457628,
+        0.8076923076923077,
+        0.9714285714285714
+       ],
+       "other_digit": 0.1016949152542373,
+       "kept": 0.0
+      },
+      "P3|48|rand2": {
+       "n": 59,
+       "switch": [
+        0.2033898305084746,
+        0.10526315789473684,
+        0.32558139534883723
+       ],
+       "other_digit": 0.0847457627118644,
+       "kept": 0.711864406779661
+      },
+      "P3|48|whole": {
+       "n": 59,
+       "switch": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "other_digit": 0.0,
+       "kept": 0.0
+      }
+     },
+     "loss": {
+      "P1|None|none": 3.7912476271186435,
+      "P1|4|swap": 3.780196271186441,
+      "P1|4|swap_rand": 3.796121016949153,
+      "P1|4|swap_rot": 3.796716101694915,
+      "P1|4|jpp1": 3.832240508474576,
+      "P1|4|rand1": 3.802026610169491,
+      "P1|4|jpp2": 3.8359667796610166,
+      "P1|4|rand2": 3.8496727118644065,
+      "P1|4|whole": 3.806808305084746,
+      "P1|8|swap": 3.7988938983050846,
+      "P1|8|swap_rand": 3.802609830508475,
+      "P1|8|swap_rot": 3.7996311864406778,
+      "P1|8|jpp1": 3.753224576271186,
+      "P1|8|rand1": 3.774542881355933,
+      "P1|8|jpp2": 3.831713389830508,
+      "P1|8|rand2": 3.760784745762712,
+      "P1|8|whole": 3.8185655932203386,
+      "P1|12|swap": 3.770577118644068,
+      "P1|12|swap_rand": 3.7802944067796616,
+      "P1|12|swap_rot": 3.804210847457627,
+      "P1|12|jpp1": 3.753801525423729,
+      "P1|12|rand1": 3.7702527118644067,
+      "P1|12|jpp2": 3.7500991525423735,
+      "P1|12|rand2": 3.754242881355932,
+      "P1|12|whole": 3.8467215254237286,
+      "P1|14|swap": 3.7896505084745757,
+      "P1|14|swap_rand": 3.7864911864406783,
+      "P1|14|swap_rot": 3.797947288135593,
+      "P1|14|jpp1": 3.7623357627118645,
+      "P1|14|rand1": 3.781674915254238,
+      "P1|14|jpp2": 3.8060105084745763,
+      "P1|14|rand2": 3.7761864406779657,
+      "P1|14|whole": 3.8309103389830512,
+      "P1|16|swap": 3.78262406779661,
+      "P1|16|swap_rand": 3.7910371186440677,
+      "P1|16|swap_rot": 3.7867049152542376,
+      "P1|16|jpp1": 3.771511525423729,
+      "P1|16|rand1": 3.7806861016949154,
+      "P1|16|jpp2": 3.778489491525424,
+      "P1|16|rand2": 3.798446271186441,
+      "P1|16|whole": 3.832195762711865,
+      "P1|20|swap": 3.7957991525423727,
+      "P1|20|swap_rand": 3.7931738983050853,
+      "P1|20|swap_rot": 3.799212711864407,
+      "P1|20|jpp1": 3.784445254237288,
+      "P1|20|rand1": 3.8014811864406783,
+      "P1|20|jpp2": 3.804699152542373,
+      "P1|20|rand2": 3.8254286440677965,
+      "P1|20|whole": 3.8336696610169487,
+      "P1|24|swap": 3.7893438983050847,
+      "P1|24|swap_rand": 3.7925854237288137,
+      "P1|24|swap_rot": 3.796882711864407,
+      "P1|24|jpp1": 3.7859455932203385,
+      "P1|24|rand1": 3.7940338983050848,
+      "P1|24|jpp2": 3.750297966101695,
+      "P1|24|rand2": 3.7958361016949156,
+      "P1|24|whole": 3.791234237288136,
+      "P1|28|swap": 3.8138583050847457,
+      "P1|28|swap_rand": 3.789659322033898,
+      "P1|28|swap_rot": 3.7924398305084748,
+      "P1|28|jpp1": 3.8049652542372883,
+      "P1|28|rand1": 3.7821006779661026,
+      "P1|28|jpp2": 3.7807511864406775,
+      "P1|28|rand2": 3.7452249152542367,
+      "P1|28|whole": 3.778559322033898,
+      "P1|32|swap": 3.789028474576271,
+      "P1|32|swap_rand": 3.787513898305085,
+      "P1|32|swap_rot": 3.8009145762711865,
+      "P1|32|jpp1": 3.7834547457627123,
+      "P1|32|rand1": 3.779943050847458,
+      "P1|32|jpp2": 3.7062393220338987,
+      "P1|32|rand2": 3.72488186440678,
+      "P1|32|whole": 3.7706910169491525,
+      "P1|36|swap": 3.7677369491525425,
+      "P1|36|swap_rand": 3.8059918644067796,
+      "P1|36|swap_rot": 3.825840677966102,
+      "P1|36|jpp1": 3.79292,
+      "P1|36|rand1": 3.794996440677966,
+      "P1|36|jpp2": 3.7855610169491523,
+      "P1|36|rand2": 3.7835108474576264,
+      "P1|36|whole": 3.7566784745762716,
+      "P1|40|swap": 3.77164,
+      "P1|40|swap_rand": 3.7904527118644076,
+      "P1|40|swap_rot": 3.7939184745762713,
+      "P1|40|jpp1": 3.787107457627119,
+      "P1|40|rand1": 3.7793398305084747,
+      "P1|40|jpp2": 3.7776557627118645,
+      "P1|40|rand2": 3.754401525423729,
+      "P1|40|whole": 3.749078983050847,
+      "P1|44|swap": 3.809327118644068,
+      "P1|44|swap_rand": 3.762508983050848,
+      "P1|44|swap_rot": 3.7864732203389835,
+      "P1|44|jpp1": 3.8046094915254236,
+      "P1|44|rand1": 3.7428445762711866,
+      "P1|44|jpp2": 3.8239771186440676,
+      "P1|44|rand2": 3.683484745762712,
+      "P1|44|whole": 3.77498406779661,
+      "P1|48|swap": 3.858624745762712,
+      "P1|48|swap_rand": 3.776958813559322,
+      "P1|48|swap_rot": 3.7960184745762717,
+      "P1|48|jpp1": 3.7873005084745763,
+      "P1|48|rand1": 3.7838210169491524,
+      "P1|48|jpp2": 3.851685254237288,
+      "P1|48|rand2": 3.77746220338983,
+      "P1|48|whole": 3.7943347457627117,
+      "P2|None|none": 0.5465050847457628,
+      "P2|4|swap": 0.5488525423728814,
+      "P2|4|swap_rand": 0.5502877966101695,
+      "P2|4|swap_rot": 0.5443818644067796,
+      "P2|4|jpp1": 0.5439789830508475,
+      "P2|4|rand1": 0.547144406779661,
+      "P2|4|jpp2": 0.54612,
+      "P2|4|rand2": 0.547008305084746,
+      "P2|4|whole": 0.5376515254237288,
+      "P2|8|swap": 0.5450730508474576,
+      "P2|8|swap_rand": 0.5499466101694916,
+      "P2|8|swap_rot": 0.5494045762711864,
+      "P2|8|jpp1": 0.5491569491525423,
+      "P2|8|rand1": 0.5411294915254238,
+      "P2|8|jpp2": 0.553194406779661,
+      "P2|8|rand2": 0.5407930508474577,
+      "P2|8|whole": 0.5341322033898306,
+      "P2|12|swap": 0.5512920338983051,
+      "P2|12|swap_rand": 0.5471974576271186,
+      "P2|12|swap_rot": 0.5476106779661017,
+      "P2|12|jpp1": 0.5487911864406779,
+      "P2|12|rand1": 0.5405215254237289,
+      "P2|12|jpp2": 0.5381913559322035,
+      "P2|12|rand2": 0.5449150847457627,
+      "P2|12|whole": 0.5366552542372882,
+      "P2|14|swap": 0.5460435593220339,
+      "P2|14|swap_rand": 0.5535674576271187,
+      "P2|14|swap_rot": 0.5474054237288135,
+      "P2|14|jpp1": 0.5480308474576272,
+      "P2|14|rand1": 0.549566779661017,
+      "P2|14|jpp2": 0.5376096610169492,
+      "P2|14|rand2": 0.5469979661016949,
+      "P2|14|whole": 0.5357137288135593,
+      "P2|16|swap": 0.5415316949152542,
+      "P2|16|swap_rand": 0.5427411864406779,
+      "P2|16|swap_rot": 0.545516779661017,
+      "P2|16|jpp1": 0.5411383050847457,
+      "P2|16|rand1": 0.5448250847457627,
+      "P2|16|jpp2": 0.5474855932203391,
+      "P2|16|rand2": 0.5389130508474576,
+      "P2|16|whole": 0.5364376271186441,
+      "P2|20|swap": 0.5490806779661017,
+      "P2|20|swap_rand": 0.5471555932203389,
+      "P2|20|swap_rot": 0.5485155932203389,
+      "P2|20|jpp1": 0.5424613559322035,
+      "P2|20|rand1": 0.5425445762711865,
+      "P2|20|jpp2": 0.5540037288135593,
+      "P2|20|rand2": 0.5428620338983051,
+      "P2|20|whole": 0.5362423728813559,
+      "P2|24|swap": 0.5462808474576272,
+      "P2|24|swap_rand": 0.5404413559322033,
+      "P2|24|swap_rot": 0.5491215254237288,
+      "P2|24|jpp1": 0.5446252542372881,
+      "P2|24|rand1": 0.5318489830508474,
+      "P2|24|jpp2": 0.5486874576271187,
+      "P2|24|rand2": 0.536528813559322,
+      "P2|24|whole": 0.5337328813559322,
+      "P2|28|swap": 0.5380825423728813,
+      "P2|28|swap_rand": 0.5458513559322034,
+      "P2|28|swap_rot": 0.5477877966101695,
+      "P2|28|jpp1": 0.5337757627118644,
+      "P2|28|rand1": 0.5428186440677966,
+      "P2|28|jpp2": 0.5293622033898305,
+      "P2|28|rand2": 0.5361605084745763,
+      "P2|28|whole": 0.5285518644067797,
+      "P2|32|swap": 0.5377654237288136,
+      "P2|32|swap_rand": 0.5444355932203391,
+      "P2|32|swap_rot": 0.5465108474576271,
+      "P2|32|jpp1": 0.5447249152542372,
+      "P2|32|rand1": 0.5441149152542374,
+      "P2|32|jpp2": 0.5335510169491525,
+      "P2|32|rand2": 0.5458037288135594,
+      "P2|32|whole": 0.5235233898305086,
+      "P2|36|swap": 0.5429877966101695,
+      "P2|36|swap_rand": 0.5428694915254237,
+      "P2|36|swap_rot": 0.5477081355932203,
+      "P2|36|jpp1": 0.5371489830508474,
+      "P2|36|rand1": 0.5490106779661017,
+      "P2|36|jpp2": 0.5344259322033897,
+      "P2|36|rand2": 0.5496825423728813,
+      "P2|36|whole": 0.5223,
+      "P2|40|swap": 0.5538161016949152,
+      "P2|40|swap_rand": 0.5391464406779661,
+      "P2|40|swap_rot": 0.5494347457627118,
+      "P2|40|jpp1": 0.5336530508474577,
+      "P2|40|rand1": 0.5402952542372881,
+      "P2|40|jpp2": 0.524817966101695,
+      "P2|40|rand2": 0.5385505084745763,
+      "P2|40|whole": 0.5174655932203389,
+      "P2|44|swap": 0.5568252542372881,
+      "P2|44|swap_rand": 0.5322498305084745,
+      "P2|44|swap_rot": 0.5535613559322035,
+      "P2|44|jpp1": 0.5365927118644068,
+      "P2|44|rand1": 0.5384998305084746,
+      "P2|44|jpp2": 0.5289396610169491,
+      "P2|44|rand2": 0.5375435593220339,
+      "P2|44|whole": 0.5113113559322033,
+      "P2|48|swap": 0.5574774576271186,
+      "P2|48|swap_rand": 0.5413437288135594,
+      "P2|48|swap_rot": 0.5371093220338983,
+      "P2|48|jpp1": 0.5329945762711864,
+      "P2|48|rand1": 0.5366520338983051,
+      "P2|48|jpp2": 0.5292283050847458,
+      "P2|48|rand2": 0.5346294915254237,
+      "P2|48|whole": 0.514185593220339
+     }
+    }
+   },
+   "removal": {
+    "lookup": {
+     "peak": 32,
+     "band": [
+      30,
+      31,
+      32,
+      33,
+      34
+     ],
+     "n": 59,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "ko": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "ko_rand": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "jrm": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "jrm_rand": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "cost_ko": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "cost_jrm": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "recall": {
+     "peak": 36,
+     "band": [
+      34,
+      35,
+      36,
+      37,
+      38
+     ],
+     "n": 59,
+     "kept": {
+      "none": [
+       0.9830508474576272,
+       0.9464285714285714,
+       1.0
+      ],
+      "ko": [
+       0.864406779661017,
+       0.7719298245614035,
+       0.9523809523809523
+      ],
+      "ko_rand": [
+       0.9152542372881356,
+       0.8194128787878788,
+       1.0
+      ],
+      "jrm": [
+       0.9491525423728814,
+       0.8813559322033898,
+       1.0
+      ],
+      "jrm_rand": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "cost_ko": [
+      0.05084745762711862,
+      -0.07017543859649122,
+      0.16666666666666663
+     ],
+     "cost_jrm": [
+      0.05084745762711862,
+      0.0,
+      0.11864406779661019
+     ]
+    }
+   },
+   "x49": null,
+   "shares_median": {
+    "P1": {
+     "share_J": 0.186593,
+     "share_J_rand": 0.186763,
+     "share_swap": 0.058137,
+     "share_swap_rand": 0.058188
+    },
+    "P2": {
+     "share_J": 0.108321,
+     "share_J_rand": 0.10831199999999999,
+     "share_swap": 0.08695449999999999,
+     "share_swap_rand": 0.0871205
+    },
+    "P3": {
+     "share_J": 0.1001745,
+     "share_J_rand": 0.1000415,
+     "share_swap": 0.086314,
+     "share_swap_rand": 0.085925
+    }
+   },
+   "swap_share_capped": [
+    111,
+    4602
+   ],
+   "gate": {
+    "cases": 516,
+    "org_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8159
+    },
+    "said_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8178
+    },
+    "cand_accuracy": {
+     "PP": 0.9554,
+     "PM": 0.814
+    },
+    "pass": true,
+    "eligible": 315,
+    "enough": true,
+    "descriptive": false,
+    "excluded": 60
+   },
+   "read_folder_peaks": {
+    "lookup": 32,
+    "recall": 36
+   },
+   "peak_matches_run": true
+  }
+ ]
+}

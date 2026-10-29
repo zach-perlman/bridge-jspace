@@ -1,0 +1,132 @@
+{
+  "exp": "x51_jread",
+  "run": "nem35l_x52_jread",
+  "why": "Batch 52 part C (jobs/c3/batch52.yaml amendment 3), coverage: 51.10's read / write per position and reader on Lightning at 13 layers (every 4th from L4 plus L and L +- 2 around the committed L14), the conflict run's items; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-29T00:48:27Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "fcde64282485fef65153fcccd941e652cb3e4f4b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "51.10",
+  "spec": "jobs/c3/batch51.yaml (addendum_2: 51.10)",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "f2bdfe1a70369afba890164aa5181d576ffa18b82de9f36c192c3a559ee1e0d6",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/gate.json": "76d7fcb1cde22f163687c5e9e57fa434600536eac441af5deca7b388d9d204ca",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde"
+  },
+  "source": "nem35l_x52_conflict",
+  "L": 14,
+  "layers": [
+    4,
+    8,
+    12,
+    14,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48
+  ],
+  "n_layers": 52,
+  "positions": {
+    "P1": "the bridge word",
+    "P2": "the question's \"pick\" token",
+    "P3": "the last token (the read's appended space token, before the answer)"
+  },
+  "rendering": "chat",
+  "k": 25,
+  "k_top": 10,
+  "band_half": 2,
+  "write_arms": [
+    "swap",
+    "swap_rand",
+    "swap_rot",
+    "jpp1",
+    "rand1",
+    "jpp2",
+    "rand2",
+    "whole"
+  ],
+  "remove_arms": [
+    "none",
+    "ko",
+    "ko_rand",
+    "jrm",
+    "jrm_rand"
+  ],
+  "arm_text": {
+    "swap": "his J-part swap: h_O - J10(h_O) + J10(h_S), J10 the projection on the state's own top-10 lens directions (O's protected rows; jswap's swap)",
+    "swap_rand": "a random part of Δ = h_S - h_O at the swap's share of ||Δ||^2 (capped at 1; seed 888 + layer)",
+    "swap_rot": "his own control (jswap's swap_rot): h_O + (J10(h_S) - J10(h_O)) R^T, R the layer's random orthogonal matrix (seed 888 + layer): the swap's change at its own size in a random direction",
+    "jpp1": "h_O + P_J Δ, the change's 25-atom signed OMP J++ part (49.1's J(1,0))",
+    "rand1": "h_O + R Δ, X0's random part of Δ at P_J Δ's share (49.1's R(1,0))",
+    "jpp2": "h_O + 2 P_J Δ (49.1's J(2,0))",
+    "rand2": "h_O + 2 R Δ (49.1's R(2,0))",
+    "whole": "h_O <- h_S (Δ added; the whole state patched)",
+    "ko": "his knock-out at P3: the top-10 lens span removed at every layer of the band (peak +- 2)",
+    "ko_rand": "a random subspace part of the share his removal takes, at P3, every band layer",
+    "jrm": "at the peak layer, P3's state minus its projection on Δ's 25 OMP atoms there (47.5's zeroing)",
+    "jrm_rand": "a random subspace of the same share of ||h_O||^2 (47.5's random)"
+  },
+  "inputs_text": {
+    "thru": "the projection on his top-10 span (through the lens)",
+    "full": "the full residual (readable at all)",
+    "out": "the residual minus that projection (outside the lens)"
+  },
+  "rule": {
+    "read": "through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there",
+    "write": "at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10",
+    "a": "in J-space: read holds and write holds",
+    "b": "readable, not used: read holds, write fails",
+    "c": "routes around J-space: through-the-lens < 0.5 at every layer before the answer while the full residual >= 0.9 at some layer, and write fails",
+    "d": "not represented: the full-residual probe < 0.5 at every layer before the answer"
+  },
+  "items_rule": "every item of the source X0 run at L (x47_cumulative.select, as 49.1) for the read statistics (probes need the rows), decided on 49.1's locker-first items; write and remove arms on the locker-first items only",
+  "lens_dictionary": "his read directions: x49_ladder.band_dictionaries (LensDictionary over W_g = W_U[letters] x the final norm's gain and J_l of the J++ lens, rows cast on demand), letter tokens; protected rows = the prompt's clean read's top-10 (x47_twodefs.protected_rows)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token; kept = O's",
+  "gate": "the source run's (X0: 0.8 per reader on O unedited, >= 150 eligible); asserted",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0,
+    "folds": "x0_probe.folds round robin by O's bridge (deterministic)"
+  },
+  "n_boot": 10000,
+  "storage": "states.npz: fp16 states and projections, gitignored (> 50 MB)",
+  "sealed": "none (batch 52 coverage)",
+  "batch": 52,
+  "rules_first_scored": "results/x51_jread/x51_10-20261028T190608Z"
+}
