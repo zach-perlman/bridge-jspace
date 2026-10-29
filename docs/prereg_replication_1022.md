@@ -2709,3 +2709,16 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
      - else "mixed".
   3. Reported beside: the mean share of ||Δ||² that J holds.
 - **Scorer.** scripts/nn_cf_read.py (note16).
+
+##### Amendment 58 note 15 addendum (Zach, 2026-10-29 ~00:50 UTC; before any addendum result; note 15's first cell, final MM L21-24 seed 0, had been read: "answer")
+- **Why.** Note 10's random control is a fixed random 20-dim subspace, which holds a tiny share of the change. Dan's control is a random part holding the same share of the change as the lens part. For "the recall needs the lens part", his is the right null (Zach: adopt it).
+- **Arms (scripts/nn_swap.py), at note 15's 9B cells (MM at final L21-24, L25-28 and last L4-7, L8-11, L12-16), donor seeds 0 and 1, cf_ok pairs:**
+  - full_cf, lens_cf, rem_cf (note 10);
+  - lensshr_cf = h_X + Rs;
+  - remshr_cf = h_X + Δ − Rs.
+  - Here Rs is Δ's projection on the first k columns of rotation(d, 888 + layer), k per row chosen so it holds P_S Δ's share of ||Δ||² (Dan's random_subspace_part).
+- **Reading (scripts/nn_cf_read.py, note15a).**
+  - need = (remshr − rem) / full, with a 95% cluster bootstrap over bridges.
+  - "Needed beyond a same-share random part" if need >= 0.30 and its interval is above 0. "Not needed beyond it" if need < 0.10. Otherwise "weak".
+  - Reported beside: alone = (lens − lensshr) / full.
+- **9B only.** A 2-item smoke runs first in the same queue (scripts/queues/h200_n15a_1029.sh).

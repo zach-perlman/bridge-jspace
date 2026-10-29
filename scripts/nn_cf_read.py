@@ -140,6 +140,15 @@ def main(name: str, runs: list[str], all_pairs: bool) -> None:
         for A in ("own", "rel"):
             if all(c in conds for c in ("full_cf", "rem_cf", "remrand_cf", f"remkeep{A}_cf", f"noa{A}_cf", f"noa{A}ctl_cf")):
                 rec[f"note15_{A}"] = note15(bb, list(ranks[(site, word, band)].values()), A)
+        if all(c in conds for c in ("full_cf", "lens_cf", "rem_cf", "lensshr_cf", "remshr_cf")):  # note 15 addendum
+            def frac(arm: str, twin: str):
+                return lambda ds: None if share_of(ds, "full_cf") <= 0 else (share_of(ds, twin) - share_of(ds, arm)) / share_of(ds, "full_cf")
+
+            need, alone = boot_stat(bb, frac("rem_cf", "remshr_cf")), boot_stat(bb, frac("lensshr_cf", "lens_cf"))
+            p = need[0]
+            rec["note15a"] = {"need_beyond_same_share": need, "alone_beyond_same_share": alone,
+                              "verdict": "can't tell" if p is None else "needed beyond a same-share random part" if p >= 0.30 and need[1][0] > 0
+                              else "not needed beyond it" if p < 0.10 else "weak"}  # fmt: skip
         if all(c in conds for c in ("full_cf", "jpp_cf", "jpprand_cf", "nojpp_cf", "nojpprand_cf")):
             rec["note16"] = note16(bb, jsh[(site, word, band)])
         out["cells"][f"{site}/{word}/{band}"] = rec
@@ -148,7 +157,7 @@ def main(name: str, runs: list[str], all_pairs: bool) -> None:
             line += f"  full-rand CI {rec['full_minus_rand_ci']}  {'<-- LIVES HERE' if rec['bridge_lives_here'] else ''}"
         if "decomposition" in rec:
             line += f"  decomposition {rec['decomposition']}"
-        for k in ("note15_own", "note15_rel", "note16"):
+        for k in ("note15_own", "note15_rel", "note15a", "note16"):
             if k in rec:
                 line += f"\n    {k}: {json.dumps(rec[k])}"
         print(line)

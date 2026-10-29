@@ -52,6 +52,8 @@ jswap):
   remrand_cf        h_X + Δ - P_R Δ                  (arms 1 and 2's random twin)
   remkeep{own,rel}_cf   h_X + Δ - (I - P_A) P_S Δ    (arm 2: without the lens part, its answer component kept)
   noa{own,rel}_cf   h_X + Δ - P_A Δ                  (arm 3: without the answer directions only); noa{own,rel}ctl_cf with C
+  note 15 addendum: lensshr_cf h_X + Rs, remshr_cf h_X + Δ - Rs, Rs = Δ's random part holding P_S Δ's share of ||Δ||²
+  (Dan's random_subspace_part over rotation(d, 888 + layer))
   the "none" rows carry the readout check: the lens rank (over the letter tokens) of X's answer at h_X and D's at h_D,
   at the site and the band's first layer
   note 16 (v4, cf only; Dan's lens part): J = the signed OMP fit, 25 atoms, of Δ over the unit J++ vectors of the letter
@@ -98,7 +100,7 @@ SEED_NULL = 5900  # + layer: clamp_null's direction
 SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer atoms (noansctl, ansctl)
 
 
-N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl")  # note 15's arm kinds
+N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl", "lensshr", "remshr")  # note 15 (+ addendum)
 N16 = ("jpp", "jpprand", "nojpp", "nojpprand")  # note 16's arm kinds
 
 
@@ -425,6 +427,13 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         elif kind0 == "remrand":  # arms 1 and 2's random twin
                             Q = rand[la][:, :20]
                             new = hx + dl - (dl @ Q) @ Q.T
+                        elif kind0 in ("lensshr", "remshr"):  # note 15 addendum: S's random twin of the same share (Dan's control)
+                            _, cx = top_span_removal(dic[la], hx, 10, protected=groups, return_chosen=True)
+                            _, cd = top_span_removal(dic[la], cfv[:, li], 10, protected=groups, return_chosen=True)
+                            Q = torch.linalg.qr(dic[la].atoms(torch.cat([cx, cd], dim=1)).transpose(1, 2).double())[0].float()
+                            ps = (Q @ (Q.transpose(1, 2) @ dl.unsqueeze(2))).squeeze(2)
+                            rp = random_subspace_part(dl, ps.norm(dim=-1) ** 2 / (dl.norm(dim=-1) ** 2).clamp_min(1e-30), rot[la])
+                            new = hx + rp if kind0 == "lensshr" else hx + dl - rp
                         else:
                             idx, msk = ans_sets[kind0.removeprefix("remkeep").removeprefix("noa")]
                             if kind0.startswith("noa"):  # arm 3: without the answer directions only (or C's)
