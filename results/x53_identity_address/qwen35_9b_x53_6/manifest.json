@@ -1,0 +1,68 @@
+{
+  "exp": "x53_identity_address",
+  "run": "qwen35_9b_x53_6",
+  "why": "Batch 53, test 53.6 (jobs/c3/batch53.yaml, Dan 29 Oct 09:30): the recall, lens identity toward B vs the address swap toward C's slot (s = 2) at the bridge word at L12 on the 9B; no prediction",
+  "written_utc": "2026-10-29T09:07:19Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "aa594db421e3bf47c75bf9459ec0a52a90360734",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "53.6",
+  "spec": "jobs/c3/batch53.yaml (53.6)",
+  "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "e33e30e1563b137295a8d9bcfd9ccb3a78bdb97f9e6cc56199a11d6f4adf8b4f"
+  },
+  "layer": 12,
+  "k": 25,
+  "s": 2,
+  "arms": {
+    "none": "O unedited",
+    "lens": "the lens part toward B: P_J (h_{S_B} - h_O)",
+    "addr": "the address swap toward C's slot: 2 (mu_{j_C} - mu_{j_A})",
+    "both": "lens + addr (the rule's arm)",
+    "both_rand": "lens + a random direction of addr's norm (beside)"
+  },
+  "classes": [
+    "B",
+    "C",
+    "original",
+    "other"
+  ],
+  "rule": "on the recall under lens + address: \"the recall follows the lens identity\" if B's share >= 2x C's; \"follows the address\" if C's >= 2x B's; else \"both\"",
+  "mu_from": "qwen35_9b_x0_probe_v4",
+  "n_items": 300,
+  "scenes": "x6_routes.scenes (seed 2510, 1400 per condition), the C0 pairs (S_B: Iris picked B) whose three items have distinct legs counts; on these X0's competence and X0's gate (O's read accuracy >= 0.80 per reader); the first 300 eligible in generator order",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 5306,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "sealed": "none (no prediction)"
+}

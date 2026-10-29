@@ -1,0 +1,185 @@
+{
+ "prediction": "no prediction (Dan, 29 Oct ~10:05: the rule fixed then, before any run)",
+ "rule": "\"read through two blocks\" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; \"one block\" if (i) or (ii) alone cuts >= 0.6; \"not through attention at the bridge\" if (iv) cuts < 0.3 (the Mamba state carries it); else in between.",
+ "as_computed": "cut(x) = 1 - S_x / S_whole on the lookup, S_x = the share of items whose lookup switches under the whole change with arm x's block, S_whole = the same with no block (arm none), all in this run's forwards; point estimates decide, EPS 1e-09 at the bars ('< 0.3' strict). The clauses are checked in the rule's order and the first that holds is the label; any other clause that also holds is listed beside it (flagged for Dan: the rule does not say which wins). S_whole = 0: not tested. X0's validity (S_whole >= 0.30 and >= 30 items switched) is reported, not a gate (the rule has none).",
+ "run": "nem35l_x53_attnblock",
+ "layer": 14,
+ "arm_layers": {
+  "b19": [
+   19
+  ],
+  "b26": [
+   26
+  ],
+  "both": [
+   19,
+   26
+  ],
+  "after": [
+   19,
+   26,
+   33,
+   42
+  ],
+  "control": [
+   19,
+   26
+  ]
+ },
+ "label": {
+  "label": "in between",
+  "clauses": {
+   "read through two blocks": false,
+   "one block": false,
+   "not through attention at the bridge": false
+  },
+  "also": []
+ },
+ "readers": {
+  "lookup": {
+   "n": 200,
+   "entities": 37,
+   "switched": {
+    "none": 88,
+    "b19": 78,
+    "b26": 76,
+    "both": 58,
+    "after": 57,
+    "control": 88
+   },
+   "S": {
+    "none": 0.44,
+    "b19": 0.39,
+    "b26": 0.38,
+    "both": 0.29,
+    "after": 0.285,
+    "control": 0.44
+   },
+   "cut": {
+    "b19": 0.1136,
+    "b26": 0.1364,
+    "both": 0.3409,
+    "after": 0.3523,
+    "control": 0.0
+   },
+   "cut_ci": {
+    "b19": [
+     0.039,
+     0.189
+    ],
+    "b26": [
+     0.06,
+     0.216
+    ],
+    "both": [
+     0.253,
+     0.42
+    ],
+    "after": [
+     0.272,
+     0.423
+    ],
+    "control": [
+     -0.056,
+     0.054
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "b19": 0.955,
+    "b26": 0.91,
+    "both": 0.77,
+    "after": 0.76,
+    "control": 0.995
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "b19": 47.0,
+    "b26": 47.0,
+    "both": 94.0,
+    "after": 188.0,
+    "control": 94.0
+   }
+  },
+  "recall": {
+   "n": 200,
+   "entities": 37,
+   "switched": {
+    "none": 191,
+    "b19": 181,
+    "b26": 181,
+    "both": 164,
+    "after": 85,
+    "control": 190
+   },
+   "S": {
+    "none": 0.955,
+    "b19": 0.905,
+    "b26": 0.905,
+    "both": 0.82,
+    "after": 0.425,
+    "control": 0.95
+   },
+   "cut": {
+    "b19": 0.0524,
+    "b26": 0.0524,
+    "both": 0.1414,
+    "after": 0.555,
+    "control": 0.0052
+   },
+   "cut_ci": {
+    "b19": [
+     0.021,
+     0.083
+    ],
+    "b26": [
+     0.014,
+     0.096
+    ],
+    "both": [
+     0.089,
+     0.199
+    ],
+    "after": [
+     0.441,
+     0.647
+    ],
+    "control": [
+     -0.012,
+     0.022
+    ]
+   },
+   "clean_kept": {
+    "none": 0.995,
+    "b19": 0.95,
+    "b26": 0.97,
+    "both": 0.86,
+    "after": 0.55,
+    "control": 0.995
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "b19": 49.0,
+    "b26": 49.0,
+    "both": 98.0,
+    "after": 196.0,
+    "control": 100.0
+   }
+  }
+ },
+ "agreement": {
+  "PP": {
+   "agree": 0.98,
+   "this_run": 88,
+   "stored": 90,
+   "n": 200
+  },
+  "PM": {
+   "agree": 0.98,
+   "this_run": 191,
+   "stored": 189,
+   "n": 200
+  }
+ },
+ "status": "UNVERIFIED"
+}
