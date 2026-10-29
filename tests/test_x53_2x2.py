@@ -26,14 +26,31 @@ def tok():
 
 
 @pytest.fixture(scope="module")
-def pairs():
+def all_pairs():
     return T2.scene_pairs()[:N_PAIRS]
+
+
+@pytest.fixture(scope="module")
+def pairs(tok, all_pairs):
+    """The scenes every cell builds on this tokenizer (Lightning's drops a bridge split in two)."""
+    return [p for p in all_pairs if all(T2.cell_case(tok, p, c)[0] is not None for c in T2.CELLS)]
 
 
 def _case(tok, p: dict, cell: str) -> dict:
     c, why = T2.cell_case(tok, p, cell)
     assert c is not None, why
     return c
+
+
+def _buildable(tok, n: int) -> list[dict]:
+    """The first n scenes every cell builds on this tokenizer."""
+    out = []
+    for p in T2.scene_pairs():
+        if all(T2.cell_case(tok, p, c)[0] is not None for c in T2.CELLS):
+            out.append(p)
+        if len(out) == n:
+            return out
+    raise AssertionError(f"fewer than {n} scenes build")
 
 
 # ---- prompts --------------------------------------------------------------------------------------------------------
@@ -50,13 +67,15 @@ def test_user_content_moves_only_the_question():
         T2.user_content(q, ctx, "digit", "middle")
 
 
-def test_qa_num_is_the_main_test_byte_for_byte(tok, pairs):
-    """(Q-after, number) = x0_necessity's chat cases: the same ids for both readers in O and S, the same bridge position
-    and read tokens, one Δ from the lookup's prompts."""
-    for p in pairs:
-        ref, why = X.scene_case(tok, p, "chat")
-        assert ref is not None, why
-        mine = _case(tok, p, "qa_num")
+def test_qa_num_is_the_main_test_byte_for_byte(tok, all_pairs):
+    """(Q-after, number) = x0_necessity's chat cases: the same scenes dropped, the same ids for both readers in O and S,
+    the same bridge position and read tokens, one Δ from the lookup's prompts."""
+    for p in all_pairs:
+        ref, _ = X.scene_case(tok, p, "chat")
+        mine, _ = T2.cell_case(tok, p, "qa_num")
+        assert (ref is None) == (mine is None), p[LK]["scene"]
+        if ref is None or mine is None:
+            continue
         assert mine["pos"] == ref["pos"]
         for w in X.READERS:
             assert mine["readers"][w]["ids"] == ref["readers"][w]["ids"], (p[LK]["scene"], w)
@@ -96,8 +115,12 @@ def test_q_before_keeps_the_scene_and_the_bridge_token(tok, pairs):
                 for v, ctx in (("org", p[w]["context"]), ("alt", p[w]["cf_context"])):
                     ta, tb = tok.decode(ra["ids"][v]), tok.decode(rb["ids"][v])
                     assert ta.count(ctx) == 1 and tb.count(ctx) == 1
-                    assert _context_ids(tok, ra["ids"][v], ctx) == _context_ids(tok, rb["ids"][v], ctx)
-                    assert ra["ids"][v][ra["pos"]] == rb["ids"][v][rb["pos"]]
+                    ca, cb = _context_ids(tok, ra["ids"][v], ctx), _context_ids(tok, rb["ids"][v], ctx)
+                    # the scene's tokens the same; only its last one may merge with what follows it (Lightning's
+                    # tokenizer joins the final '.' with Q-after's newline), never a token up to the bridge
+                    assert ca[:-1] == cb[:-1] and len(ca) == len(cb)
+                    fa, fb = _context_pos(tok, ra["ids"][v], ctx)[0], _context_pos(tok, rb["ids"][v], ctx)[0]
+                    assert ra["ids"][v][fa : ra["pos"] + 1] == rb["ids"][v][fb : rb["pos"] + 1]
                     q_block = tb[: tb.index("Scene:\n")]
                     assert p[w]["question"] in q_block and ctx not in q_block
                     assert ta.replace(f"{ctx}\n{p[w]['question']} ", "").count(p[w]["question"]) == 0
@@ -129,8 +152,15 @@ def test_word_cells_change_only_the_recalls_answer(tok, pairs):
 # ---- the relation ---------------------------------------------------------------------------------------------------
 
 
-def test_relation_rule_picks_the_number_word(tok):
-    cov = T2.coverage(tok, T2.scene_pairs())
+def test_relation_rule_picks_the_number_word():
+    """The rule on the 9B's tokenizer (the brief: chosen on the 9B), whatever BJ_TARGET is."""
+    from scripts import x52_atoms as A52
+
+    try:
+        tok9 = A52.tokenizer_of(T2.NINE_B)
+    except Exception as e:
+        pytest.skip(f"the 9B's tokenizer is not cached: {e}")
+    cov = T2.coverage(tok9, T2.scene_pairs())
     assert cov["all lexical pooled"]["scenes"] < X.N_MIN
     assert all(not v["admissible"] for k, v in cov.items() if k not in (T2.NUMBER_WORD, "all lexical pooled"))
     assert cov[T2.NUMBER_WORD]["scenes"] >= X.N_MIN
@@ -192,6 +222,15 @@ def test_gate_of_is_x0s_gate():
     assert T2.gate_status(g) == "not tested (gate 0.79 < 0.80)"
     g, chosen = T2.gate_of(cases[:160], _comp(scenes[:160], 0.85))
     assert g["pass"] and not g["enough"] and T2.gate_status(g).startswith("not tested (136 eligible")
+    dev = set(scenes[:60])  # Lightning: the dev scenes leave the selection after the gate, as in X0
+    g, chosen = T2.gate_of(cases, _comp(scenes, 0.9), dev)
+    assert g["org_read_accuracy"] == {LK: 0.9, RC: 0.9} and g["eligible"] == 270 and g["excluded"] == 60
+    assert g["tested"] and [c["scene"] for c in chosen] == scenes[60 : 60 + X.N_ITEMS]
+
+
+def test_dev_scenes():
+    assert T2.dev_scenes("qwen3.5-9b") == set()
+    assert len(T2.dev_scenes("nemotron-3.5-lightning")) == 60
 
 
 @pytest.mark.parametrize(
@@ -234,7 +273,7 @@ def _plant(tok, root, target: str, labels: dict[str, str], lookup_loss: float, n
     run = root / T2.RUNS[target]
     run.mkdir(parents=True)
     (run / "manifest.json").write_text(json.dumps({"layer": 12, "relation": T2.RELATION}))
-    pairs = T2.scene_pairs()[:n]
+    pairs = _buildable(tok, n)
     for cell in T2.CELLS:
         d = run / cell
         d.mkdir()
@@ -393,7 +432,7 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     if pins.TARGET not in T2.RUNS:
         pytest.skip(f"53.1 does not run on {pins.TARGET}")
     n, chosen = 24, 20
-    pairs = T2.scene_pairs()[:n]
+    pairs = _buildable(tok, n)
     fake = FakeModel(tok)
     for cell in T2.CELLS:
         fake.learn([_case(tok, p, cell) for p in pairs])

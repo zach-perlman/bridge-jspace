@@ -40,7 +40,8 @@ Per cell (the cell's own gate first; a failed gate = "not tested (gate x < 0.80)
 lowered):
   gate     X0's competence and gate on the cell's prompts (unedited O and S, 8 greedy tokens and the decisive read; gate
            = O read accuracy >= 0.80 per reader over all scenes; eligible = both readers say and read O and S right; >=
-           150 eligible; the first 200 in scene order). Word answers: said = the first word of the first line,
+           150 eligible; the first 200 in scene order; Lightning: its 60 dev scenes left out of the eligible ones after
+           the gate, as its main test nem35l_x52_conflict did, DEV_GATE). Word answers: said = the first word of the first line,
            lower-cased, equal to the number word; read = the top token is the word's first token with a leading space,
            lower-case or capitalised (" six" / " Six").
   conflict X0's test at L (9B L12, 27B L32, Lightning L14 = x51_lightning.py layer): Δ = h_S - h_O at the bridge word;
@@ -101,6 +102,8 @@ CELL_TEXT = {"qa_num": "(Q-after, number)", "qb_num": "(Q-before, number)", "qa_
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "nemotron-3.5-lightning": "nem35l_x53_2x2"}
 MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
 MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "nemotron-3.5-lightning": "Lightning"}
+# Lightning's main test (nem35l_x52_conflict) keeps the 60 scenes its layer was fixed on out of the selection
+DEV_GATE = {"nemotron-3.5-lightning": "results/x51_lightning/nem35l_x52_layer_r2/gate.json"}
 WORD_INSTRUCTION = "Answer with the number written as a word and nothing else."
 N_ATOMS = 50
 CROSS_MAX = 0.10  # the cross-check: the lookup's extra loss beyond random <= 0.10 in every cell
@@ -430,9 +433,23 @@ def c_name(cases: list[dict]) -> str:
     return cases[0]["cell"] if cases else "-"
 
 
-def gate_of(cases: list[dict], comp: list[dict]) -> tuple[dict, list[dict]]:
+def dev_scenes(target: str) -> set[str]:
+    """The scenes a target's layer was fixed on, kept out of the selection as its main test keeps them (Lightning: the
+    60 dev scenes of nem35l_x52_layer_r2, x0_necessity --exclude-dev); none elsewhere."""
+    path = DEV_GATE.get(target)
+    if path is None:
+        return set()
+    dev = set(json.loads((pins.REPO_ROOT / path).read_text())["dev"])
+    assert dev, f"{path}: no dev scenes"
+    return dev
+
+
+def gate_of(
+    cases: list[dict], comp: list[dict], exclude: set[str] | frozenset[str] = frozenset()
+) -> tuple[dict, list[dict]]:
     """X0's gate on one cell: O read accuracy >= GATE per reader over all cases (said accuracy beside); eligible = both
-    readers said and read O and S right; >= N_MIN eligible; the first N_ITEMS in scene order."""
+    readers said and read O and S right, the excluded (dev) scenes left out after the gate, as X0 does; >= N_MIN
+    eligible; the first N_ITEMS in scene order."""
     right = {(r["scene"], r["reader"], r["variant"]): r for r in comp}
     acc = {w: round(float(np.mean([right[(c["scene"], w, "org")]["read_right"] for c in cases])), 4) if cases else 0.0
            for w in X.READERS}  # fmt: skip
@@ -442,6 +459,9 @@ def gate_of(cases: list[dict], comp: list[dict]) -> tuple[dict, list[dict]]:
                                   for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
     g = {"cases": len(cases), "org_read_accuracy": acc, "said_accuracy": said, "gate": X.GATE,
          "pass": bool(cases) and all(a >= X.GATE for a in acc.values()), "eligible": len(ok), "min": X.N_MIN}  # fmt: skip
+    if exclude:
+        g["excluded"] = sum(c["scene"] in exclude for c in ok)
+        ok = [c for c in ok if c["scene"] not in exclude]
     g["enough"] = len(ok) >= X.N_MIN
     g["tested"] = g["pass"] and g["enough"]
     chosen = ok[: X.N_ITEMS] if g["tested"] else []
@@ -610,6 +630,9 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
     m = manifest(name, target, layer, cells, RELATION)
     m["relation_coverage"] = cov
     m["relation_9b"] = nine if nine is not None else "this run (relation.json)"
+    dev = dev_scenes(target)
+    if dev:
+        m["excluded_scenes"] = {"source": DEV_GATE[target], "scenes": sorted(dev)}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -625,7 +648,7 @@ def stage_run(name: str, cells: tuple[str, ...]) -> Path:
         (out / cell).mkdir()
         cases, counts = build(tok, cell, pairs)
         comp = competence(model, cases, ws)
-        g, chosen = gate_of(cases, comp)
+        g, chosen = gate_of(cases, comp, dev)
         g["counts"], g["status"] = counts, gate_status(g)
         g["hub_kernels"] = loaded_hub_kernels()
         X.write_jsonl(out / cell / "competence.jsonl", comp)
