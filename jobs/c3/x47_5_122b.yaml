@@ -1,0 +1,41 @@
+id: x47_5_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 5): 47.5 zeroing on Qwen3.5-122B-A10B (FP8) at L33: on S, the bridge word's state without its projection on Δ's 25 OMP atoms at L33 (and L33..36, per-layer lens), against a random subspace of the same share; main-test scenes, both readers; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (Dan 18:20, coverage_122b_1820; the 122B at L33, FP8)" &&
+  uv run python scripts/x47_zero.py run --name qwen35_122b_x47_5 --why "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 5): 47.5, on S the bridge word's state without its projection on Δ's 25 OMP atoms at L33 and L33..36, against a random subspace of the same share; main-test scenes; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x47_zero/qwen35_122b_x47_5/coverage.txt &&
+  uv run python scripts/x47_zero.py verdict --coverage
+question: >-
+  On the 122B: does the recall follow the J++ part at one layer, or need it? Zeroing the change's 25 OMP atoms on the
+  changed prompt at L33, against a random part of the same share: how much of S's answers does each reader keep?
+why_it_matters: >-
+  Dan 18:20: the depth page's "Zeroing at one layer (47.5)" row on the largest model (claim 2: "the recall does not
+  need the lens part at one layer; it has other copies", 122B "not run").
+hypotheses:
+  none: "No prediction (coverage_122b_1820): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule unchanged, verbatim from jobs/c3/x47_5_muse.yaml (jobs/c3/batch47.yaml, 47.5; first scored in
+  results/x47_zero/x47_5-20261028T113106Z), as copied in jobs/c3/x52_lightning_zero.yaml: "Followed, not needed at one
+  layer" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm; "needed" if it
+  loses >= 0.30 beyond random. The lookup reported beside. Design, verbatim: "On S (the changed prompt), at the bridge
+  token at L: project out the 25 OMP atoms of Delta from h_S; the random subspace of the same share; also the same over
+  L..L+3 with the per-layer lens (OMP per layer). Both readers. Measure: share of S's answers kept." As computed:
+  x47_5_muse.yaml's text unchanged (X0's read gate 0.80 per reader, >= 150 eligible; both readers say and read O's and
+  S's answers right; the first 200 eligible in scene order; signed OMP over the J++ lens's letter-token atoms; random
+  basis seed 888 + l; point estimates decide; cluster bootstrap over bridge items, 10,000, seed 0) on the 122B at L33
+  (X0's PREDICTED) and L33..36. No dev scenes (the 122B's L33 was predicted, not fit on dev scenes). The README-verb
+  clause ("needed on all three") is cross-model: not re-scored. Gate never lowered: a miss is "not tested". Verdict in
+  the job (verdict --coverage, results/x47_zero/x52_zero-<UTC>/, Lightning's run beside).
+controls:
+- "the random subspace of the same share of ||h_S||^2 (seed 888 + l)"
+- "both readers on the same edit"
+- "X0's read gate (0.80 per reader) and eligibility"
+n: "the first 200 eligible main-test scenes (d1_topics_v3, chat), both readers"
+seeds: [888, 0]
+notes: "Coverage, not hand-checked (Dan 18:20); UNVERIFIED; the README untouched until after the 30 Oct check. Caveats: J++ fit on bf16 used on FP8; MoE (~10B active); 2x H100, BJ_DEVICE_MAP=auto. Code: x47_zero.COVERAGE_RUNS gains the 122B. Cost: competence on the main test's scenes + 200 x 2 readers x (whole, zero, random) x 5 settings; the 122B reads ~49k/h on this box: ~0.5 h wall x 2 GPUs, est 1.2 with margin."

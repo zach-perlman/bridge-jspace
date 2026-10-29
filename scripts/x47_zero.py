@@ -78,7 +78,8 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x47_5", "qwen3.6-27b": "x47_5_27b", "muse-glimm
 # batch 52 C coverage (amendment 2: the full grid on Lightning; jobs/c3/x52_lightning_zero.yaml): read by verdict
 # --coverage alone (MODELS / RUNS and the design's own verdict unchanged); the run takes --exclude-dev (Lightning's 60
 # dev scenes, which chose its layer, stay out of the items, as in its conflict run)
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_zero"}
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_zero",
+                 "qwen3.5-122b-a10b": "qwen35_122b_x47_5"}  # Dan 18:20 (batch53.yaml coverage_122b_1820) # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_zero/x47_5-20261028T113106Z"  # 47.5's rule first scored (9B, 27B, Muse)
 KEEP_FOLLOWED, NEAR, NEEDED = 0.80, 0.10, 0.30
