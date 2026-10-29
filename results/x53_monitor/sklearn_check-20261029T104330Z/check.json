@@ -1,0 +1,75 @@
+{
+ "what": "53.2's probe (scipy L-BFGS in the training span) vs sklearn LogisticRegression (full space), same folds (5 seeds x 5-fold), C = 1.0, standardised features",
+ "run": "qwen35_9b_x53_monitor",
+ "cells": [
+  {
+   "set": "main",
+   "position": "T",
+   "target": "c",
+   "layer": 20,
+   "feature": "full",
+   "rows": 400,
+   "acc_scipy_span": 0.8985,
+   "acc_sklearn_full": 0.8995,
+   "diff": -0.0010000000000000009,
+   "predictions_agree": 0.999,
+   "per_seed_scipy": [
+    0.9075,
+    0.895,
+    0.89,
+    0.9025,
+    0.8975
+   ],
+   "per_seed_sklearn": [
+    0.9075,
+    0.8975,
+    0.89,
+    0.9025,
+    0.9
+   ],
+   "sklearn": "1.9.1",
+   "sklearn_settings": {
+    "C": 1.0,
+    "max_iter": 20000,
+    "tol": 1e-08,
+    "solver": "lbfgs (default)",
+    "penalty": "l2"
+   }
+  },
+  {
+   "set": "main",
+   "position": "B",
+   "target": "b",
+   "layer": 16,
+   "feature": "jpp25",
+   "rows": 400,
+   "acc_scipy_span": 0.6125,
+   "acc_sklearn_full": 0.6135,
+   "diff": -0.0010000000000000009,
+   "predictions_agree": 0.999,
+   "per_seed_scipy": [
+    0.605,
+    0.6175,
+    0.6175,
+    0.59,
+    0.6325
+   ],
+   "per_seed_sklearn": [
+    0.605,
+    0.6175,
+    0.62,
+    0.59,
+    0.635
+   ],
+   "sklearn": "1.9.1",
+   "sklearn_settings": {
+    "C": 1.0,
+    "max_iter": 20000,
+    "tol": 1e-08,
+    "solver": "lbfgs (default)",
+    "penalty": "l2"
+   }
+  }
+ ],
+ "seconds": 97.0
+}
