@@ -196,3 +196,26 @@ decision_531_words: |
   on the 9B (>= 150 scenes, accuracy >= 0.8), build the scenes, then run the
   two word cells. If none passes, skip the word cells and say so in the card:
   readability is covered by 51.12 on Zach's named passages and by 53.1b.
+
+next_1110_received: "29 Oct ~11:12 Paris (Dan)"
+next_1110: |
+  Next, in this order (Dan, 11:10; rules fixed now, no predictions, UNVERIFIED):
+  1. 53.2 (monitor): finish; it is the scope answer.
+  2. 53.7 (the pointer in code and tool output): start now on any free GPU,
+     27B then 9B.
+  3. 53.1 (Q-before, number) on Muse, and on Lightning if its gate passes:
+     the 27B's lookup lost 0.22 with the question first (0.14 after). Rule:
+     the conflict test's, verbatim; across: "the pointer does not depend on
+     the question's position" if the lookup loses <= 0.10 in both cells on a
+     model.
+  4. 53.4 follow-up (Lightning): block attention in blocks 19 + 26 to the
+     whole span from the bridge word to the end of the scene, vs a control
+     span of the same length elsewhere. Rule: "the pointer is read by
+     attention after the Mamba state spreads it" if the span cuts the
+     lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4.
+  Stop: the 53.1 word cells (the wording fails), 53.6 dose maps.
+next_1110_reading_537: >-
+  Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
+  code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
+  on scenes rendered as code and as tool output; no new rule. The coordinator's below-gate (Q-before, number) 9B filler
+  (asked of the 53.1 agent ~11:15) is dropped: it is not on this list.
