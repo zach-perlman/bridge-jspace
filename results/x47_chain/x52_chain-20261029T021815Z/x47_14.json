@@ -1,0 +1,39 @@
+{
+ "runs": [
+  "x47_14_27b",
+  "nem35l_x52_chain"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule; rule first scored in results/x47_chain/x47_14-20261028T115841Z",
+ "models": [
+  {
+   "run": "x47_14_27b",
+   "target": "qwen3.6-27b",
+   "status": "pending",
+   "holds": false,
+   "why": "no manifest here"
+  },
+  {
+   "run": "nem35l_x52_chain",
+   "target": "nemotron-3.5-lightning",
+   "layer": 14,
+   "gate": {
+    "dropped": {},
+    "cases": 500,
+    "org_read_accuracy": {
+     "PP": 0.988,
+     "PPP": 0.736
+    },
+    "org_said_accuracy": {
+     "PP": 0.986,
+     "PPP": 0.732
+    },
+    "gate": 0.8,
+    "pass": false,
+    "eligible": 263
+   },
+   "status": "not tested",
+   "holds": false,
+   "why": "the gate missed (see gate.json)"
+  }
+ ]
+}
