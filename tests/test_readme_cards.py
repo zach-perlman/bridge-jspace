@@ -1,7 +1,7 @@
 """The depth README's cards (Dan's restructure brief, 28 Oct 22:20): every card heading is a question; every card has
 the eight bullet fields in order (Question, Why we asked, Data, Method, Rule fixed in advance, Result, Read, Caveats),
-its Question bullet repeats the heading, its Read has two to four bullets and no number, and its figure comes after the
-fields with an italic caption; a page figure belongs to exactly one card (a second figure in a card needs its own
+its Question bullet repeats the heading, its Read has two to four bullets and no number, and its figure comes between
+the Rule and the Result with an italic caption (Dan, 29 Oct 12:50); a page figure belongs to exactly one card (a second figure in a card needs its own
 sentence); the page's figures are the contact sheet's (readme_story_figures.README_NAMES); no internal id in the body
 (scripts/check_figure_terms.py's README_IDS); and the claims table (rewritten last) keeps its twelve graded rows.
 
@@ -18,9 +18,8 @@ REPO = Path(__file__).resolve().parents[1]
 PAGE = REPO / "docs" / "depth" / "README.md"
 FIELDS = ("Question", "Why we asked", "Data", "Method", "Rule, fixed in advance", "Result", "Read", "Caveats")
 GRADES = {"A", "B"}
-# Parts II-VI pending, Dan 22:20 restructure in progress: the parts held to the card template so far (the final check
-# of the restructure removes this list and holds every part)
-CONVERTED = ("Part I.",)
+# Dan 29 Oct 12:50 (docs_1250): Parts I-V hold cards; Part VI keeps one-line links to the ledger, no card
+CONVERTED = ("Part I.", "Part II.", "Part III.", "Part IV.", "Part V.")
 IMAGE = re.compile(r"^!\[[^\]]+\]\(([^)]+)\)", re.M)
 
 
@@ -85,13 +84,15 @@ def test_read_has_two_to_four_bullets_without_numbers():
             assert not re.search(r"\d", re.sub(r"\b\d+B\b", "", b)), (head, b)
 
 
-def test_figure_after_the_fields_with_a_caption():
+def test_figure_after_the_method_with_a_caption():
+    # Dan 29 Oct 12:50 (docs_1250): "Question / Why we asked / Data / Method / Rule / one figure after Method / Result";
+    # the figure sits between the Rule and the Result
     for head, body in cards(text()).items():
         lines = body.splitlines()
-        last = max(i for _, i in fields(body))
+        idx = dict(fields(body))
         imgs = [i for i, line in enumerate(lines) if IMAGE.match(line)]
         assert imgs, f"{head}: no figure"
-        assert all(i > last for i in imgs), f"{head}: a figure before the end of the fields"
+        assert all(idx["Rule, fixed in advance"] < i < idx["Result"] for i in imgs), f"{head}: a figure outside Rule-Result"
         for i in imgs:
             cap = lines[i + 1] if i + 1 < len(lines) else ""
             assert re.fullmatch(r"\*[^*].*\*", cap.strip()), f"{head}: no italic caption under {lines[i]}"
