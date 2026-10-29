@@ -81,7 +81,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [3. Routes test (identity / position / value; no address; address alone)](#routes) | **done**: 0.66 / 0.34 / 0.00; alone fails | **done** | **done** | **done** |
 | [4. Address swap by dose (x8_write, s = 1 / 2 / 4)](#swap) | **done**: target share at s = 1 / 2 / 4: 0.01 / 0.24 / 0.50 | **done**: target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69 | **done**: target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73 | **done**: target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52 |
 | [5a. Order split (descriptive)](#order) | **done** | **done**: CPU from the conflict test's outcomes | **done** | **done** |
-| 5b. Copy test (45q) | **done**: holds | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done**: holds | **done**: holds |
+| [5b. Copy test (45q)](#t45q) | **done**: holds | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done**: holds | **done**: holds |
 | [6. Anatomy by layer (47.8)](#t47-8) | **done**: full grid | **done**: every 4th layer L2-L50 | **done** | **done** |
 | [7. Ladder (49.2, rungs 1-6)](#t49-2) | **done**: rungs 1-6, rung 6 at Zach's L32-40 | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done**: rung 6 in Zach's L36-42 (49.2 ran it at L23-29) |
 | [8. Lens readout with the item-change control (47.0)](#t47-0) | **done** | **done** | **done** | **done** |
@@ -91,7 +91,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | Split in other texts: natural passages (x5) | **done** | **not tested**: its gate failed ({'PP': 0.7701149425287356, 'PM': 0.896551724137931}, eligible 36); no lowered rerun (the spec's rule) | **done**: gate lowered after the data | **done** |
 | [Dose curves, a part alone (51.1)](#t51-1) | **done** | **done** | **done** | **done** |
 | [Zeroing at one layer (47.5)](#t47-5) | **done** | **done**: L14 and L14..17; the 60 dev scenes kept out | **done** | **done** |
-| Earlier mention (45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
+| [Earlier mention (45p)](#t45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
 | [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | **done** | **done** | **done** | **done** |
 | [E6: the address probe (x0_probe v4)](#probe) | **done** | **done** | **done** | **done** |
 | [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | **done** | **done** | **done** | **missing**: x47_16_muse_r2 written, not enqueued: Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already answers it); re-opening it under amendment 2 waits for Dan; x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged) |
@@ -455,6 +455,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
   - Over L to L+3 the recall loses more (0.08 to 0.25 beyond random), between the bars (descriptive).
   - The lookup keeps its answers in every arm on all four.
 
+### Does the recall also read the item's earlier mention? (the earlier mention, 45p, opened 27 Oct) <a id="t45p"></a>
+
+*Used in: README Part I card "Does the recall also read the item's earlier mention?" (Fig. 3c; 9B, 27B, Muse). Story: two readers.*
+
+- **Question.** When the new item's locker sentence comes before the asked pick, does the recall also read the item's lens part at that earlier mention, beyond the bridge word?
+- **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
+- **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: 186<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 186 --> / 254<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 254 --> / 178<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 178 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
+- **Method.** On the original prompt, the switch loss loss_k = 1 - S_k / S_1 under: (1) the base edit, the whole change at the bridge word minus its lens part; (2) (1), and the new item's tokens in its locker sentence without their own lens part; (3) (1), and the same tokens without a random part of the same share; (4) (1), and another item's tokens without their own lens part.
+- **Rule, fixed in advance.** "the recall reads the earlier mention if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested."
+
+![The recall also reads the item at its earlier mention](../../figures/story/fig03c_earlier_mention.png)
+*The README's figure: recall and lookup switches lost against arm (1), per arm, clean one-pick scenes with the locker first; whiskers 95%; 9B, 27B, Muse.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | recalls switched by the base edit (1) | 0.74 [0.66, 0.82]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 0.74 [0.66, 0.82] --> | 0.30 [0.23, 0.37]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 0.30 [0.23, 0.37] --> | 0.31 [0.21, 0.40]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 0.31 [0.21, 0.40] --> | not tested (gate) |
+  | extra loss at the earlier mention: (2) minus (3) (bar >= 0.2) | 0.25 [0.16, 0.34]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 0.25 [0.16, 0.34] --> | 0.41 [0.32, 0.53]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 0.41 [0.32, 0.53] --> | 0.42 [0.26, 0.63]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 0.42 [0.26, 0.63] --> | |
+  | (2) minus (4) (bar >= 0.15) | 0.26 [0.18, 0.35]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 0.26 [0.18, 0.35] --> | 0.49 [0.38, 0.64]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 0.49 [0.38, 0.64] --> | 0.49 [0.31, 0.69]<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 0.49 [0.31, 0.69] --> | |
+  | holds | **yes<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 186 :: yes -->** | **yes<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 254 :: yes -->** | **yes<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 178 :: yes -->** | |
+
+- **Read.**
+  - On all three models the recall loses more switches when the lens part also goes at the item's earlier mention than when a random part or another item's lens part goes: the recall reads the earlier mention too.
+- **Caveats.**
+  - The base edit switches few recalls on the 27B and Muse (75 and 55 switches), so the losses rest on few switches there.
+  - Only scenes with the locker first; after the pick there is no earlier mention.
+
 ### Does the lookup's identity route run outside the lens, or in lens directions beyond the recall's 25? (identity route outside the lens, 47.1; Lightning's coverage run 29 Oct) <a id="t47-1"></a>
 
 *Used in: README Part II card "The lookup's identity route runs outside the lens" (9B, 27B, Muse); Lightning not in the README yet. Story: identity.*
@@ -745,6 +773,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 - **Caveats.**
   - Locker after, the whole change switches 0.09 to 0.19 of 99 to 115 lookups, under the 30 switches a cell needs; the lookup's loss there is not usable (the split's own note: measurable only where switches are many).
   - Descriptive: the split was chosen after the data.
+
+### When the locker comes after the pick, is the link made in the locker sentences? (the copy test, 45q, opened 27 Oct) <a id="t45q"></a>
+
+*Used in: README Part IV card "Sentence order: where the link is made" ("the copy carries 0.70 / 0.74 / 0.76"; 9B, 27B, Muse). Story: where and when.*
+
+- **Question.** In clean scenes whose locker sentence comes after the asked pick, does copying the changed prompt's states into the locker sentences switch the lookup, while the change at the bridge word does not?
+- **Why we asked.** With the locker after the pick the bridge word cannot point back; the link must be made where the locker sentence is read.
+- **Data.** Clean one-pick scenes (only the bridge token differs), locker after the pick: 201<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: 201 / 0 / 201 / 201 :: 201 --> / 288<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: 288 / 0 / 288 / 288 :: 288 --> / 205<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: 205 / 0 / 205 / 205 :: 205 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
+- **Method.** On the original prompt: (a) the change at the bridge word at L; (c) the changed prompt's states copied into every locker-sentence token at L; (d) the same at L/2; each read as a share of the lookups the changed prompt itself switches.
+- **Rule, fixed in advance.** ""the link is made in the locker sentences" if (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models."
+
+![Locker after the pick: the link is made in the locker sentences](../../figures/story/fig03_order.png)
+*The README's figure: (A) lookups switched by the bridge-word change by sentence order, (B) Zach's passages by fact order, (C) locker after the pick, by layer: the change at the bridge word (dashed) and the change copied into the locker sentences (solid); 9B, 27B, Muse.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | (a) lookups switched by the change at the bridge word at L (bar <= 0.25) | 0.17 [0.12, 0.22]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: 0.17 [0.12, 0.22] --> | 0.01 [0.00, 0.03]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: 0.01 [0.00, 0.03] --> | 0.01 [0.00, 0.03]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: 0.01 [0.00, 0.03] --> | not tested (gate) |
+  | (c) the changed states copied into the locker sentences at L, share of S's switches (bar >= 0.5) | 0.70 [0.65, 0.74]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: 0.70 [0.65, 0.74] --> | 0.74 [0.68, 0.80]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: 0.74 [0.68, 0.80] --> | 0.76 [0.70, 0.81]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: 0.76 [0.70, 0.81] --> | |
+  | (d) the same at L/2 | 0.07 [0.05, 0.10]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: 0.07 [0.05, 0.10] --> | 0.05 [0.02, 0.09]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: 0.05 [0.02, 0.09] --> | 0.47 [0.41, 0.53]<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: 0.47 [0.41, 0.53] --> | |
+  | holds | **yes<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: tested (holds) :: yes -->** | **yes<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: tested (holds) :: yes -->** | **yes<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: tested (holds) :: yes -->** | |
+
+- **Read.**
+  - With the locker after the pick, copying the changed states into the locker sentences at L carries about three quarters of the lookup's switches on all three models, while the change at the bridge word carries almost none: the link is made in the locker sentences.
+- **Caveats.**
+  - At L/2 the copy carries little on the 9B and 27B and about half on Muse.
+  - Clean scenes only; the main test's locker-after lookups are in the order-split card.
 
 ### Which token and layer carry each reader's switch, and when does the bridge word stop being read? (token-by-layer map and window patching, D1 / D2; the 27B's and Lightning's coverage runs 29 Oct) <a id="d1"></a>
 
