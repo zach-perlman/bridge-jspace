@@ -406,7 +406,7 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.6-27b": track("x52_27b_gaps_b", "x47_edges/x47_6_b_27b", "x47_edges/x52_edges-*"),
             LT: c("not tested", NO_KO, "src/bridge_jspace/knockout.py"),
             "qwen3.5-9b": done("results/x47_edges/x47_6-20261028T113107Z"), "muse-glimmer-30b": done("results/x47_edges/x47_6-20261028T113107Z")}),
-        ("Failed: the second hop's key token (47.15 source)", "jobs/c3/batch47.yaml 47.15", {
+        ("One question, two sources (47.15)", "jobs/c3/batch47.yaml 47.15", {
             "qwen3.6-27b": done("results/x47_source/x47_15-20261028T142722Z"),
             LT: track("x52_lightning_fill3", "x47_source/nem35l_x52_source", "x47_source/x52_source-*", gate_fail=True),
             # the r2 rerun (the original 47.15 verdict lists the 9B as pending) missed its gate
