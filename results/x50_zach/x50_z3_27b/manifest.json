@@ -1,0 +1,102 @@
+{
+  "exp": "x50_zach",
+  "run": "x50_z3_27b",
+  "part": "z3",
+  "test": "Z3",
+  "spec": "jobs/c3/batch50.yaml",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-29T02:37:16Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "4ebd51e1d6dbd17725e6aa6d05afb4b176228196",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "inputs": {
+    "jobs/c3/batch50.yaml": "bcb685220e1bb8f48313b41b97bedb8398fbad624eed61cca256436a14f811b3",
+    "data/tasks_v2/jsuite_v2_test_chat/items.jsonl": "a45bdde20c8280a3483d3133f78294503dccc8ceaa4765e77d36334a0639784a",
+    "data/tasks_v2/jsuite_v2nb_test_chat/items.jsonl": "93dbd3de18dce737bac637cc89a406e9845ec885ac0543ea0983e234c229dde5",
+    "data/tasks_v2/jsuite_v2r2_test_chat/items.jsonl": "0ab29512cfc41adb027cf58ecb76b00a10bf5025552f38183a9197fb8ecae4a6",
+    "data/tasks_v2/jsuite_v2r3_test_chat/items.jsonl": "4b1036fcc82a0db0e8e959da3fd480048abd8865bc732fa420de7f44cf9c932f"
+  },
+  "sets": [
+    "jsuite_v2_test_chat",
+    "jsuite_v2nb_test_chat",
+    "jsuite_v2r2_test_chat",
+    "jsuite_v2r3_test_chat"
+  ],
+  "words": [
+    "PK",
+    "PM"
+  ],
+  "layers": [
+    32
+  ],
+  "n_items": 200,
+  "gate": 0.8,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "cf_seed": 5001,
+  "patch": "the last token of the pointer sentence's name",
+  "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
+  "desc_competence": null,
+  "rule": "Value <= 0.05; report identity / position shares. If position >= 0.2: the address exists in scattered-fact passages; then and only then fit a label-free address basis on a held-out half (as 45d) and run without / only it vs random. If position <= 0.05: \"no position route in his layout\": the address is a property of listed layouts.",
+  "as_computed": "Shares = the lookup's (K) route under the whole change in C2 over the chosen passages (x6_routes.classify on the top token: identity b, position c, value e, original a, else other), cluster bootstrap over the original bridge entity (10,000 resamples, seed 0, 95% intervals). Point estimates decide (EPS 1e-9): position >= 0.20 -> \"the address exists in scattered-fact passages\" (Q50.3 yes); position <= 0.05 -> \"no position route in his layout\"; else in between (neither clause). The value check (value <= 0.05) is reported beside the clause and does not change it. Muse: L26 and L36, both reported. Beside, descriptive: the shares under no_jpp / no_jpp_rand, C0's shares (identity = b: the name change alone), and the position share within the passages whose moved sentence keeps C's token span. The 45d follow-up (a label-free address basis) is not in this job: it is due only if position >= 0.2.",
+  "beside": null,
+  "seeds": {
+    "cf_order": 5001,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q50.3 answer",
+  "readers": [
+    "K"
+  ],
+  "conditions": {
+    "C2": "alt",
+    "C0": "alt0"
+  },
+  "routes": [
+    "identity",
+    "position",
+    "value",
+    "original",
+    "other"
+  ],
+  "eligible": "O and S (C2) said and read right (a and e); S0's competence recorded, not gated",
+  "bars": {
+    "value_max": 0.05,
+    "position_yes": 0.2,
+    "position_no": 0.05
+  },
+  "batch": 52,
+  "items": 81
+}
