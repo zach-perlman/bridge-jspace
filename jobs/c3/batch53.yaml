@@ -116,3 +116,47 @@ standing_rules_0950: |
   README agent: carry on, figures at ~11:45 are fine.
   Status at 11:00, 13:00 and 17:00: one screen, which rules have opened, what
   is running per box, anything idle.
+
+figures_brief_1000_received: "29 Oct ~10:00 Paris (Dan)"
+figures_brief_1000: |
+  Figures in EXPERIMENTS.md (Dan, 10:00): some figures show fewer models than
+  their card's table. Fix by 13:00; after the README figures (shared builders),
+  never at the cost of an idle GPU.
+
+  Rule for every per-model figure:
+  - Four model slots, always, in the tables' order: 9B, 27B, Muse, Lightning.
+  - A model without a result keeps its slot with a short grey label instead of
+    data: "not designed (9B / 27B only)", "not tested: gate 0.751", "not
+    applicable: no MLP in NemotronH", "dropped: DAS port". Never drop a model
+    silently.
+  - Below-gate results are plotted, hollow ○, labelled "below gate".
+  - The caption says each model's status in one line.
+  - Add a check to check_ledger.py: if a card's table has a number in a model's
+    column, that model must appear with data in the card's figure; if the
+    column says not run / not tested, the figure must show the grey slot.
+
+  1. Stale README figures (built 00:47, before the overnight runs). Rebuild with
+     readme_story_figures.py so the README and the ledger share them:
+     fig01c_zeroing (+ Lightning, 47.5), fig05d_routes_lens (+ Lightning, 47.1),
+     fig07b_verbal (+ Lightning, 47.0), fig03d_depth_map (+ 27B, + Lightning's
+     main design), fig05c_described_bridge (+ Lightning below gate, 0.72, and
+     its cue: answer word not read), fig09b_refit (+ Lightning, x45d),
+     fig07c_probe_errors (+ Lightning, 47.13), fig09d_chain (+ 27B; Lightning
+     grey "not tested: gate"), fig03c_earlier_mention (+ Lightning below gate
+     once 45p lands, grey until then), fig15_mechanisms (+ 27B and Lightning in
+     every panel; grey where not tested).
+  2. Borrowed figures: replace with ledger figures on four slots:
+     48.1 (s12_das_muse is Muse only): 9B, 27B, Muse; Lightning grey "dropped:
+     DAS port"; 47.4 (s03e_cumulative): + 27B full, Lightning main design (+ the
+     clean design below gate if it lands); the address probe (Lightning-only
+     probe.png): accuracy by layer, four models; 47.10: its own figure (27B run;
+     9B / Muse / Lightning grey "not tested", with the reason). It must not
+     reuse fig07b, which is a different test.
+  3. Ledger figures with real gaps: keep the data, add the grey slots:
+     address_shape (27B: part 2 only; Lightning: not tested), learned (Lightning:
+     dropped), full_carrier (Muse: not designed), zach_named (Muse Z1-P: not
+     run), read_window (Muse: not designed), clean_reruns (9B only by design: one
+     line in the caption), answer_map (Lightning, Zach's passages: read pending).
+  4. Batch 53 cards: figures with the same four slots when they land.
+
+  Open every rebuilt PNG; update the Figure checks list. No number changes.
