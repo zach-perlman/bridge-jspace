@@ -409,7 +409,8 @@ def rows() -> list[tuple[str, str, dict]]:
         ("Failed: the second hop's key token (47.15 source)", "jobs/c3/batch47.yaml 47.15", {
             "qwen3.6-27b": done("results/x47_source/x47_15-20261028T142722Z"),
             LT: track("x52_lightning_fill3", "x47_source/nem35l_x52_source", "x47_source/x52_source-*", gate_fail=True),
-            "qwen3.5-9b": done("results/x47_source/x47_15-20261028T142722Z"),
+            # the r2 rerun (the original 47.15 verdict lists the 9B as pending) missed its gate
+            "qwen3.5-9b": track("x47_15_9b_r2", "x47_source/qwen35_9b_x47_15_r2", None, gate_fail=True),
             "muse-glimmer-30b": done("results/x47_source/x47_15-20261028T142722Z")}),
         ("Failed: the address is the same for any kind of item (47.11 agnostic)", "jobs/c3/batch47.yaml 47.11", {
             "qwen3.6-27b": track("x52_27b_gaps_b", "x47_agnostic/x47_agnostic_27b", "x47_agnostic/x52_agnostic-*"),
@@ -425,7 +426,9 @@ def rows() -> list[tuple[str, str, dict]]:
             LT: parts(**{"(a)": track("x52_lightning_fill3", "x47_value/nem35l_x52_value_a", "x47_value/x52_valuea-*",
                                       gate_fail=True),
                          "(c)": track("x52_lightning_value_c", "x47_value/nem35l_x52_value_c", "x47_value/x52_valuec-*")}),
-            "qwen3.5-9b": done("results/x47_value/x47_7a-20261028T131819Z"), "muse-glimmer-30b": done("results/x47_value/x47_7a-20261028T131819Z")}),
+            # (a) on the 9B and Muse: the r2 reruns (flag 26; the original verdict lists both as pending) missed their gates
+            "qwen3.5-9b": track(("x47_7a_9b_r2", "x47_7a_9b_r2_q"), "x47_value/qwen35_9b_x47_7a_r2", None, gate_fail=True),
+            "muse-glimmer-30b": track("x47_7a_muse_r2", "x47_value/muse30_x47_7a_r2", None, gate_fail=True)}),
         ("Gain map (49.1)", "jobs/c3/batch49.yaml 49.1", {
             "qwen3.6-27b": done("results/x49_gain/x49_1-20261028T154510Z"),
             LT: track("x52_lightning_fill1", "x49_gain/nem35l_x52_gain", "x49_gain/x52_gain-*"),
