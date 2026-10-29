@@ -151,6 +151,9 @@ V6_FIGS += ("fig03c_earlier_mention",)
 V6_PANELS["fig03c_earlier_mention"] = 3
 # Dan's README brief (29 Oct 08:55, decision 7): the new Part I card "What do the lens part's 25 directions stand for?"
 V6_FIGS += ("fig18_atoms",)
+# the coordinator (29 Oct ~13:50; Dan's 12:50 restructure, docs_1250): the monitor card's figure, five model slots
+V6_FIGS += ("fig23_monitor",)
+MARK_FIGS += ("fig23_monitor",)
 # Dan's README brief (29 Oct 08:55, decision 1) and figures brief (10:00): Lightning is the fourth model slot, so the
 # figures with one panel per model gain a panel (Fig. 16: two columns by four rows)
 V6_PANELS |= {"fig01d_ladder": 4, "fig06b_anatomy": 4, "fig09a_transfer": 5, "fig09b_refit": 4, "fig16_dose": 8,
