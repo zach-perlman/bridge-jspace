@@ -2888,3 +2888,16 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - 95% bootstrap intervals over bridges, gated items.
   - Readings unchanged, now read on the pooled folds. "Beyond the lens" also requires the shuffled control's top-1 to be below 2x chance.
 - **Queue.** scripts/queues/h200_rep3_1029.sh replaces h200_rep2_1029.sh. Its jobs were stopped while waiting, before any run; logs renamed *.relaunched.log.
+
+##### Amendment 58 notes 19-23 on every model before Bolt (Zach, 2026-10-29 ~06:20 UTC: "Lightning before Bolt; Bolt only if everything else has all its results"; before any 27B or Lightning result of these notes)
+- **Notes 19-20 on the 27B and Lightning,** exactly as on the 9B.
+  - Knock-out band: the model's breadth band (27B L32-40; Lightning L27-33).
+  - Resample sites and bands:
+    - 27B: last L8-15 … L32-40; span L0-7 … L32-40; final L41-48, L49-56.
+    - Lightning: last L6-10 … L21-26; span L0-5 … L21-26; final L34-39, L40-45.
+  - Queue: scripts/queues/h200_ablX_1029.sh.
+- **Notes 21-23 (with their addendum) on Lightning,** exactly as on the 9B.
+  - Report cells: last L6-10, L11-15, L16-20, L21-26.
+  - Clamp bands: L6-20 (where the bridge is used) and L27-33 (the breadth band).
+  - Queue: scripts/queues/h200_rep3L_1029.sh.
+- **Bolt** waits for every one of these jobs.
