@@ -1721,7 +1721,7 @@ def last_conflict_words(plt) -> str:
                        rows, {}, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, "--"), (0.30, ":")), left=0.41)
 
 
-BINDID = R / "x53_bindid" / "x53_bindid-20261029T121515Z" / "verdict.json"  # 53.8: the 9B and Muse (the 27B running)
+BINDID = R / "x53_bindid" / "x53_bindid-20261029T122650Z" / "verdict.json"  # 53.8: the 9B, the 27B and Muse
 
 
 def bindid(plt) -> str:
@@ -1735,7 +1735,7 @@ def bindid(plt) -> str:
             cell = m["variants"][var]["cells"]["2"]
             for k, arm, col in (("X", "X's vector", ADDRESS), ("Y", "Y's version", JPP), ("R", "random", NULL)):
                 rows[m["target"]].append((f"{lab}: {arm}", cell[k], col, False))
-    absent = {"qwen3.6-27b": "running", LT: "not designed"}
+    absent = {LT: "not designed"}
     return four_panels(plt, "ledger_bindid", "Centered, the code moves lookups beyond random; raw, little or none",
                        "Lookups sent to X's locker at 2x; orange: X's vector, teal: Y's version, grey: random",
                        rows, absent, "share of lookups")

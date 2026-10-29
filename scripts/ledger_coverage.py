@@ -105,7 +105,7 @@ HEATMAP = (
                                                      "H both routes")),
     ("II", "t47-7c", "Never the value, by format", ("B incomplete", "B incomplete", "B incomplete", "B incomplete")),
     ("II", "t51-3", "Learned subspaces at scale", ("B (iii) no", "N not ported", "B (iii) no", "B (iii) no")),
-    ("II", "b53-8", "Shared identity code", ("N running", "X not designed", "F no", "B in between")),
+    ("II", "b53-8", "Shared identity code", ("F no", "X not designed", "F no", "B in between")),
     ("III", "probe", "Address probe", ("D readable", "D readable", "D readable", "D readable")),
     ("III", "swap", "Address swap, rule at dose 1", ("F no", "F no", "F no", "F no")),
     ("III", "t47-16", "Swap after neutral sentences", ("H robust", "H robust", "H robust", "H robust")),
