@@ -1739,6 +1739,11 @@ P_ROWS = (("a1", "(1) without the J++ part\nat the bridge word"),
           ("a4", "(4) (1), and as in (2) at\nanother item's mention"))  # fmt: skip
 
 
+# Lightning's 45p, below gate (exploratory: its clean one-pick recall 0.751 < 0.80): a fourth panel, hollow (Dan's
+# figures brief, 29 Oct 10:00: "fig03c_earlier_mention: + Lightning below gate once 45p lands")
+LT_45P = pins.RESULTS_DIR / "x45p" / "x52_45p_below-20261029T090351Z" / "x45p.json"
+
+
 def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     """45p (results/x45p/x45p-*, fixed in advance): clean one-pick scenes whose new item's locker sentence comes before
     the asked pick; one panel per model (9B, 27B, Muse: no 122B run), one row per arm (Fig. 2's style): the recall's
@@ -1748,17 +1753,20 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     Returns the saved name."""
     v = json.loads((verdict_dir / "x45p.json").read_text())
     by = {m["target"]: m for m in v["models"]}
+    if LT_45P.exists():
+        by |= {m["target"]: m for m in json.loads(LT_45P.read_text())["models"] if m["target"] == LT[0]}
     label = v["verdict"]["label"]
     holds = label == "holds"
     default = "The recall reads the item's earlier mention when its locker came first" if holds else (
         "No sign the recall reads the earlier mention (rule not met)")  # fmt: skip
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 4.6), sharey=True)
-    fig.subplots_adjust(left=0.30, right=0.975, top=0.72, bottom=0.14, wspace=0.12)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 5.1), sharey=True)
+    fig.subplots_adjust(left=0.30, right=0.975, top=0.71, bottom=0.24, wspace=0.12)
     S.title(fig, title or default, "Clean one-pick scenes, the new item's locker before the pick: switches lost against "
             "arm (1)")  # fmt: skip
-    src = rel(verdict_dir / "x45p.json")
-    for ax, (target, m, _) in zip(axes, CARD_MODELS, strict=True):
-        ax.set_title(name_of(m), fontsize=S.FONT, weight="bold")
+    for ax, (target, m, _) in zip(axes, (*CARD_MODELS, LT), strict=True):
+        lt = m == "lightning"
+        src = rel(LT_45P) if lt else rel(verdict_dir / "x45p.json")
+        ax.set_title(SHORT.get(m, LT[2]) + (" ○\nbelow gate" if lt else ""), fontsize=S.FONT, weight="bold")
         ax.set_xlim(-20, 100)
         ax.axvline(0, color="#999999", lw=0.8, zorder=1)
         ax.set_xticks(*PCT)
@@ -1778,15 +1786,17 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
             if r[0] is None or r[0] != r[0]:  # nan: (1) switches no recall
                 continue
             # both readers fixed in advance: filled, told apart by colour only (Dan 27 Oct ~11:20)
-            S.dot(ax, 0, -i + 0.15, tuple(100 * x for x in r), S.COL["recall"], "fixed", size=8)
+            S.dot(ax, 0, -i + 0.15, tuple(100 * x for x in r), S.COL["recall"], "after" if lt else "fixed", size=8)
             q = lk["loss"][arm]
             if q[0] == q[0]:
-                S.dot(ax, 0, -i - 0.15, tuple(100 * x for x in q), S.COL["lookup"], "fixed", size=8)
+                S.dot(ax, 0, -i - 0.15, tuple(100 * x for x in q), S.COL["lookup"], "after" if lt else "fixed", size=8)
                 S.record("fig03c", target, f"45p, {arm}: lookup switches lost against (1)", *q, n=lk["n"], source=src)
             S.record("fig03c", target, f"45p, {arm}: recall switches lost against (1)", *r, n=rc["n"], source=src)
         S.record("fig03c", target, "45p: the rule holds", int(bool(mod.get("holds"))), source=src)
     axes[0].set_yticks([-i for i in range(len(P_ROWS))], [r[1] for r in P_ROWS])
-    fig.supxlabel("switches lost (%)", x=0.62, y=0.01, fontsize=S.FONT)
+    fig.supxlabel("switches lost (%)", x=0.62, y=0.1, fontsize=S.FONT)
+    note = "Lightning below gate (its clean one-pick recall misses the 0.80 gate): descriptive only. " + LT_NOTE
+    fig.text(0.01, 0.01, "\n".join(textwrap.wrap(note, 112)), fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8)],
            ["recall", "lookup"], 0.83)  # fmt: skip
@@ -4059,6 +4069,11 @@ def cards_numbers() -> None:
     rec(m["target"], "51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2)",
         m["part3"]["rule"]["mid"]["1"], p)  # fmt: skip
     rec(m["target"], "51.11 part 3: full swaps reaching their target (dose 2)", m["part3"]["rule"]["full_far"], p)
+    # Lightning's 45p below gate (exploratory; descriptive only, no rule label on the page)
+    m = next(x for x in json.loads(LT_45P.read_text())["models"] if x["target"] == lt)
+    rc = m["readers"]["recall"]
+    for k, what in (("2-3", "(2) minus (3)"), ("2-4", "(2) minus (4)")):
+        rec(lt, f"45p (below gate): recall, loss in {what}", rc["diff"][k], LT_45P, rc["n"])
     # Lightning: the lens and the address (47.0), the lookup's errors (47.13), the refit address (45d)
     p = X52["verbal"]
     b = json.loads(p.read_text())["models"][lt]["b"]["all|25"]

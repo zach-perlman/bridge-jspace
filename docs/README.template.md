@@ -298,7 +298,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 - **Question.** Does the recall need the lens part, or only follow it?
 - **Why we asked.** The conflict test says the recall follows the lens part; following is not the same as needing it.
-- **Data.** Zeroing: main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} / {{dp|catalogue|nemotron-3.5-lightning|main test: scenes used}} scenes. The ladder: clean one-pick scenes, {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}}, every step from the full reruns (the 27B's first run had the first two steps; Muse's sixth step ran again inside Zach's layer band); Lightning has no clean one-pick run that passed its gate.
+- **Data.** Zeroing: main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} / {{dp|catalogue|nemotron-3.5-lightning|main test: scenes used}} scenes. The ladder: clean one-pick scenes, {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}}, every step from the full reruns (the 27B's first run had the first two steps; Muse's sixth step ran again inside Zach's layer band); Lightning's ladder ran below gate (its clean one-pick recall misses the gate): descriptive only, no rule label.
 - **Method.** In the changed prompt's own run, nothing added, the lens part's directions are taken out, each step against a random part with the same share of the state:
   - zeroing, the ladder's first step: at the bridge word at L;
   - second step: at the bridge word over L to L+3;
@@ -313,11 +313,11 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   |---|---|---|---|---|
   | zeroing: recall answers lost beyond random | {{d|fig01c|9b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|27b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|muse|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|cards|nemotron-3.5-lightning|47.5: recall's answers lost beyond random (L)}} |
   | zeroing: the rule | {{dp|fig01c|9b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|27b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|muse|47.5: the rule's reading (recall at L)}} | {{dp|cards|nemotron-3.5-lightning|47.5: the rule's reading (recall at L)}} |
-  | recall, locker first, second step | {{d|fig01d|9b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker before the pick: answers lost beyond random}} | not tested (gate) |
-  | recall, locker first, third step | {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} | not tested (gate) |
-  | recall, locker after, second step | {{d|fig01d|9b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker after the pick: answers lost beyond random}} | not tested (gate) |
-  | recall, locker first, fifth step | {{d|fig01d|9b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 5: recall, locker before the pick: answers lost beyond random}} | not tested (gate) |
-  | recall, locker first, sixth step (Zach's definition) | {{d|fig01d|9b|rung 6: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 6: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 6: recall, locker before the pick: answers lost beyond random}} | not tested (gate) |
+  | recall, locker first, second step | {{d|fig01d|9b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|nemotron-3.5-lightning|rung 2: recall, locker before the pick: answers lost beyond random}} below gate |
+  | recall, locker first, third step | {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|nemotron-3.5-lightning|rung 3: recall, locker before the pick: answers lost beyond random}} below gate |
+  | recall, locker after, second step | {{d|fig01d|9b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|nemotron-3.5-lightning|rung 2: recall, locker after the pick: answers lost beyond random}} below gate |
+  | recall, locker first, fifth step | {{d|fig01d|9b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 5: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|nemotron-3.5-lightning|rung 5: recall, locker before the pick: answers lost beyond random}} below gate |
+  | recall, locker first, sixth step (Zach's definition) | {{d|fig01d|9b|rung 6: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 6: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 6: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|nemotron-3.5-lightning|rung 6: recall, locker before the pick: answers lost beyond random}} below gate |
   | (a) the second copy is the earlier mention | {{dp|ladder_rules|9b|the second copy is the earlier mention}} | {{dp|ladder_rules|27b|the second copy is the earlier mention}} | {{dp|ladder_rules|muse|the second copy is the earlier mention}} | not tested (gate) |
   | (b) needed only when everything goes | {{dp|ladder_rules|9b|needed only when everything goes}} | {{dp|ladder_rules|27b|needed only when everything goes}} | {{dp|ladder_rules|muse|needed only when everything goes}} | not tested (gate) |
   | (c) the lookup never needs it | {{dp|ladder_rules|9b|the lookup never needs it}} | {{dp|ladder_rules|27b|the lookup never needs it}} | {{dp|ladder_rules|muse|the lookup never needs it}} | not tested (gate) |
@@ -329,16 +329,16 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - The lookup never needs the lens part.
 - **Caveats.**
   - Rule (b) fails on every model: the recall's loss grows step by step rather than appearing only when everything goes.
-  - Lightning: zeroing only; its ladder is not tested (gate).
+  - Lightning's ladder is below gate: its steps are shown, its rules are not tested.
 
 ![Recall needs the lens part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
-*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs.*
+*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow.*
 
 ### Does the recall also read the item's earlier mention?
 
 - **Question.** Does the recall also read the item's earlier mention?
 - **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
-- **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: {{num|x45p_n_9b}} / {{num|x45p_n_27b}} / {{num|x45p_n_muse}}.
+- **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: {{num|x45p_n_9b}} / {{num|x45p_n_27b}} / {{num|x45p_n_muse}}; Lightning below gate (its clean one-pick recall misses the gate), descriptive only.
 - **Method.** At L, on the original prompt:
   - (1) the change without its lens part at the bridge word, as in the conflict test;
   - (2) (1), and the new item's tokens in its locker sentence without their own lens part;
@@ -347,16 +347,16 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Rule, fixed in advance.** "The recall reads the earlier mention if its switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least two of three models; a model whose (1) switches fewer than 30 recalls is not tested." A loss is one minus the switches under the arm over those under (1).
 - **Result.**
 
-  | | 9B | 27B | Muse | Lightning ○ |
+  | | 9B | 27B | Muse | Lightning ○ below gate |
   |---|---|---|---|---|
-  | recalls switched under (1) | {{dp|fig03c|9b|45p, (1): recalls switched}} | {{dp|fig03c|27b|45p, (1): recalls switched}} | {{dp|fig03c|muse|45p, (1): recalls switched}} | not tested (gate) |
-  | recall: loss in (2) minus (3) | {{num|x45p_d23_9b}} | {{num|x45p_d23_27b}} | {{num|x45p_d23_muse}} | not tested (gate) |
-  | recall: loss in (2) minus (4) | {{num|x45p_d24_9b}} | {{num|x45p_d24_27b}} | {{num|x45p_d24_muse}} | not tested (gate) |
-  | lookup: loss in (2) | {{d|fig03c|9b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|27b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|muse|45p, a2: lookup switches lost against (1)}} | not tested (gate) |
+  | recalls switched under (1) | {{dp|fig03c|9b|45p, (1): recalls switched}} | {{dp|fig03c|27b|45p, (1): recalls switched}} | {{dp|fig03c|muse|45p, (1): recalls switched}} | {{dp|fig03c|nemotron-3.5-lightning|45p, (1): recalls switched}} |
+  | recall: loss in (2) minus (3) | {{num|x45p_d23_9b}} | {{num|x45p_d23_27b}} | {{num|x45p_d23_muse}} | {{d|cards|nemotron-3.5-lightning|45p (below gate): recall, loss in (2) minus (3)}} |
+  | recall: loss in (2) minus (4) | {{num|x45p_d24_9b}} | {{num|x45p_d24_27b}} | {{num|x45p_d24_muse}} | {{d|cards|nemotron-3.5-lightning|45p (below gate): recall, loss in (2) minus (4)}} |
+  | lookup: loss in (2) | {{d|fig03c|9b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|27b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|muse|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|nemotron-3.5-lightning|45p, a2: lookup switches lost against (1)}} |
 
-  The rule holds on {{num|x45p_held}} models.
+  The rule holds on {{num|x45p_held}} models; Lightning is not tested (gate), its numbers descriptive only.
 - **Read.**
-  - The recall reads the item's lens part at its earlier mention as well as at the bridge word, on all three models.
+  - The recall reads the item's lens part at its earlier mention as well as at the bridge word, on all three models; Lightning's numbers, below gate, point the same way.
   - The same removal at another item's mention costs nothing, so the effect belongs to the item.
   - The lookup does not read the earlier mention this way.
 - **Caveats.**
@@ -365,7 +365,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Zeroing finds a weaker second copy on Muse (previous card): the two operations disagree in size there.
 
 ![The recall reads the item's earlier mention when its locker came first](figures/story/fig03c_earlier_mention.png)
-*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse.*
+*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse; Lightning below gate, hollow.*
 
 ## Part II. Identity: which item the lookup reads
 
@@ -435,7 +435,7 @@ The same routes by depth:
 - **Hypothesis.** Through the J++ lens an address swap looks like a random draw. Descriptive.
 - **Mechanics.** The swap against 200 random draws: any position word's best rank and the share rebuilt; an identity change as control.
 - **Data.** 200 cases per model.
-- **Result.** The lens rebuilds {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: pointer}} ○ of the swap, as for random draws (Lightning's random draws: {{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: random draws (mean)}}). Asked for the position, the 27B's lens top five hold the right ordinal in {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} of reports, yet it loses {{dp|e8_report|27b|47.10: the report's extra loss without the address}} without the address.
+- **Result.** The lens rebuilds {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: pointer}} ○ of the swap: as for random draws on the 9B, 27B and Muse; on Lightning a little more than its random draws ({{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: random draws (mean)}}), still a small share. Asked for the position, the 27B's lens top five hold the right ordinal in {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} of reports, yet it loses {{dp|e8_report|27b|47.10: the report's extra loss without the address}} without the address.
 - **Figure.**
 
 ![The lens reads which item is at the bridge, not where its locker sits](figures/story/fig07b_verbal.png)
@@ -541,7 +541,7 @@ The same routes by depth:
 
 **Weaker results.**
 
-- **A described bridge** ("the one known for honey"; rule fixed in advance): the split holds on the 9B and Muse (gap {{dp|fig05c|9b|47.3: gap (recall's extra loss minus the lookup's)}} / {{dp|fig05c|muse|47.3: gap (recall's extra loss minus the lookup's)}}); on the 27B the lookup follows the lens too ({{dp|fig05c|27b|47.3: lookup's extra loss without the J++ part}}). Few bridge items ([figure](figures/story/fig05c_described_bridge.png); its example is another scene from the same set). Answer control: the answer word is not read at the bridge word on {{dp|cue_answer|9b|the described bridge in locker scenes, recall: items whose answer word ranks below the lens's top 50 at the changed token}} / {{dp|cue_answer|27b|the described bridge in locker scenes, recall: items whose answer word ranks below the lens's top 50 at the changed token}} of items (9B / 27B, 300 each); the arms beside say the item.
+- **A described bridge** ("the one known for honey"; rule fixed in advance): the split holds on the 9B and Muse (gap {{dp|fig05c|9b|47.3: gap (recall's extra loss minus the lookup's)}} / {{dp|fig05c|muse|47.3: gap (recall's extra loss minus the lookup's)}}); on the 27B the lookup follows the lens too ({{dp|fig05c|27b|47.3: lookup's extra loss without the J++ part}}). Lightning is not tested (gate {{dp|fig05c|nemotron-3.5-lightning|47.3: the gate (the lookup's read accuracy on the original prompts)}} < 0.80); descriptive only ○: gap {{d|fig05c|nemotron-3.5-lightning|47.3: gap (recall's extra loss minus the lookup's)}}, lookup {{dp|fig05c|nemotron-3.5-lightning|47.3: lookup's extra loss without the J++ part}}, and the answer word is not read at the changed token on {{dp|fig05c|nemotron-3.5-lightning|47.3 below gate, recall: items whose answer word ranks below the lens's top 50 at the changed token}} of items. Few bridge items ([figure](figures/story/fig05c_described_bridge.png); its example is another scene from the same set). Answer control: the answer word is not read at the bridge word on {{dp|cue_answer|9b|the described bridge in locker scenes, recall: items whose answer word ranks below the lens's top 50 at the changed token}} / {{dp|cue_answer|27b|the described bridge in locker scenes, recall: items whose answer word ranks below the lens's top 50 at the changed token}} of items (9B / 27B, 300 each); the arms beside say the item.
 
 - **One question under two instructions** ("from the passage" / "from what you know"; 27B only, the others miss the gate): both instructions lose most switches without the J++ part and many without the address and the outside identity. With no instruction the 27B answers from the passage.
 - **The address must be refit per text format:** fit on simple scenes it costs the lookup {{num|tptr_varied_range}} in varied scenes; refit it reaches {{pt|x45d_table_9b}}-{{pt|x45d_prose_9b}} (9B) and {{pt|x45d_prose_muse}}-{{pt|x45d_table_muse}} (Muse), {{dp|cards|nemotron-3.5-lightning|45d: the refit address, lookup switches lost beyond random: prose}}-{{dp|cards|nemotron-3.5-lightning|45d: the refit address, lookup switches lost beyond random: json}} on Lightning ○, at most {{pt|x45d_table_27b}} on the 27B ([figure](figures/story/fig09b_refit.png)).
@@ -552,7 +552,7 @@ The same routes by depth:
 
 - **The described bridge on Zach's passages.** At the token the change is made at, the lens ranks the answer word above the bridge entity on the 9B (median {{dp|withdrawn_z2|9b|Zach's described passages, lookup: the answer word's median lens rank at the changed token (original prompt), rounded}} against {{dp|withdrawn_z2|9b|Zach's described passages, lookup: the bridge entity's median lens rank at the changed token (original prompt), rounded}}) and level with it on the 27B ({{dp|withdrawn_z2|27b|Zach's described passages, lookup: the answer word's median lens rank at the changed token (original prompt), rounded}} against {{dp|withdrawn_z2|27b|Zach's described passages, lookup: the bridge entity's median lens rank at the changed token (original prompt), rounded}}). Taking out the answer directions alone costs {{dp|withdrawn_z2|9b|Zach's described passages, lookup: switches lost beyond a random part without the answer directions only}} / {{dp|withdrawn_z2|9b|Zach's described passages, recall: switches lost beyond a random part without the answer directions only}} (9B, lookup / recall) and {{dp|withdrawn_z2|27b|Zach's described passages, lookup: switches lost beyond a random part without the answer directions only}} / {{dp|withdrawn_z2|27b|Zach's described passages, recall: switches lost beyond a random part without the answer directions only}} (27B) of the switches beyond a random part, and about as much beyond a frequency-matched part; the verdict is "answer" or "mixed" in all four cells. Any reading of these passages as "the recall follows the item" is withdrawn.
 
-**What did not hold** (each rule fixed in advance; [the five mechanism tests on one page](figures/story/fig15_mechanisms.png)):
+**What did not hold** (each rule fixed in advance; [the five mechanism tests on one page](figures/story/fig15_mechanisms.png), now with the 27B and Lightning wherever they ran; none holds on any model):
 
 - The J++ part keys the item's attribute at the bridge word; late MLPs there carry the recall → without the J++ part the attribute still moves part way; the MLPs are not needed.
 - A person mark at the locker sentence → a probe reads chance there; a person direction moves nothing; pooled over the whole locker sentence, the probe stays at chance on the 9B and Muse and in between on the 27B, neither reading holding.

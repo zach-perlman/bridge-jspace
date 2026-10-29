@@ -601,7 +601,7 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, light
     model_labels(a, rows)
     for ax in (a, b):
         n_tag(ax, ns, lt_n)
-    status_caption(fig, ["The rule's reading (recall at L): " + "; ".join(status) + ".", F.LT_NOTE])
+    status_caption(fig, ["The rule, recall at L: " + "; ".join(status) + ".", F.LT_NOTE])
     S.save(fig, out_name)
     return out_name
 

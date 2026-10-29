@@ -113,8 +113,10 @@ V6_PANELS = {"fig07_writes": 3,
 # Dan's figures brief (28 Oct ~18:30) §1 and §5.1: a cell that was not run, failed its gate or had too few switches is
 # left out and listed in one caption line under the plot; these words never stand inside a frame (a text drawn in an
 # axes) of a main-page figure
-FRAME_RETIRED = {"cannot report": r"(?i)\bcannot report\b", "not run": r"(?i)\bnot run\b",
-                 "not tested": r"(?i)\bnot tested\b"}  # fmt: skip
+FRAME_RETIRED = {"cannot report": r"(?i)\bcannot report\b"}
+# Dan's figures brief (29 Oct 10:00): every per-model figure keeps four model slots; a model without a result keeps
+# its slot with a short grey label ("not tested: gate 0.751", "not run", ...), so "not run" / "not tested" may now
+# stand inside a frame
 # §1, colour = who or what: the figures drawn in the mark system use story_style.MARK_COL's hues and greys only
 MARK_FIGS = ("fig00b_marks", "fig01d_ladder", "fig12_two_by_two", "fig03_order", "fig07b_verbal", "fig09a_transfer",
              "fig09b_refit", "fig13_attention", "fig14_learned", "fig05d_routes_lens")  # fmt: skip
@@ -149,6 +151,10 @@ V6_FIGS += ("fig03c_earlier_mention",)
 V6_PANELS["fig03c_earlier_mention"] = 3
 # Dan's README brief (29 Oct 08:55, decision 7): the new Part I card "What do the lens part's 25 directions stand for?"
 V6_FIGS += ("fig18_atoms",)
+# Dan's README brief (29 Oct 08:55, decision 1) and figures brief (10:00): Lightning is the fourth model slot, so the
+# figures with one panel per model gain a panel (Fig. 16: two columns by four rows)
+V6_PANELS |= {"fig01d_ladder": 4, "fig06b_anatomy": 4, "fig09a_transfer": 4, "fig09b_refit": 4, "fig16_dose": 8,
+              "fig03c_earlier_mention": 4, "fig09b_six_lockers": 3}  # fmt: skip
 # The same brief, §6: no internal ids in the README body (prose, headings, captions): batch test ids (47.x, 49.x,
 # 51.x), Zach's test names (Z1-Z3), scene-set codes (C0-C2, P2-L0), run names (x0_necessity), the ladder's "rung 6",
 # "batch", "amendment". Ids live only in the Appendix's "where things live" line and in source comments.

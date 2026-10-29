@@ -200,10 +200,16 @@ def test_a_marked_inset_is_not_a_panel():
 # Dan's figures brief (28 Oct ~18:30): no cell status inside a frame; the mark system's hues only
 
 
-@pytest.mark.parametrize("text", ["cannot report (gate)", "not run", "Not tested", "27B: not run"])
+@pytest.mark.parametrize("text", ["cannot report (gate)", "27B: cannot report"])
 def test_frame_style_catches_a_status_inside_a_frame(text):
     hits = C.frame_style({"fig01d_ladder": {"in_frame": [text]}}, ["fig01d_ladder"])
     assert [r for *_, r in hits] and all(r.endswith("inside a frame") for *_, r in hits), hits
+
+
+# Dan's figures brief (29 Oct 10:00): a model without a result keeps its slot with a short grey label
+@pytest.mark.parametrize("text", ["not run", "not tested: gate 0.751", "Lightning: not tested (gate)"])
+def test_frame_style_allows_a_grey_model_slot(text):
+    assert not C.frame_style({"fig01d_ladder": {"in_frame": [text]}}, ["fig01d_ladder"])
 
 
 def test_frame_style_leaves_other_words_and_other_pages_alone():
