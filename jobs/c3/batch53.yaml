@@ -613,3 +613,44 @@ next_1110_reading_537: >-
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
   on scenes rendered as code and as tool output; no new rule. The coordinator's below-gate (Q-before, number) 9B filler
   (asked of the 53.1 agent ~11:15) is dropped: it is not on this list.
+decisions_1810_received: "29 Oct ~18:15 Paris (Dan, via the critic)"
+decisions_1810: |
+  Decisions (Dan, 18:10):
+  1. 53.8: "not high" (cos^2 with U at most 0.046). Card wording: "the centered
+     arm moves lookups in between (X 0.25, Y 0.12, random 0.02) and its vector
+     lies mostly outside the address U, consistent with 51.3 (the lookup's code
+     mostly outside U); the uncentered pre-specified arm says no".
+  2. The rank check: give the range, per model: "the rest puts the new bridge
+     word in the lens's top 50 on 0.00-0.14 of items (9B / 27B <= 0.02, 122B
+     0.05, Lightning 0.14), against ~0.5 for a random part and ~0.8 for the J++
+     part" (fill each model's J++ and random values from the check).
+  3. fig11, Lightning, claim 10: "holds ○", footnote "the order split is
+     descriptive; the copy test only below gate (0.751)".
+  4. Before any box stops: pull every results folder, the inspector states
+     (cache/review_states) and the monitor states to the Mac; list what was
+     pulled. Then the boxes can stop.
+coverage_122b_1820_received: "29 Oct ~18:20 Paris (Dan); ~18:35 Dan: 'not overnight-only, queue now, nothing blocks us'"
+coverage_122b_1820: |
+  122B coverage overnight (Dan, 18:20), only with usage credits on. Box: mats
+  (2x H100) only; the 1x H100 boxes cannot hold the 122B in FP8, stop them
+  after pulling their results. Optional second 160+ GB box if I rent one.
+  Rules verbatim from each test's spec, no predictions, UNVERIFIED, results
+  into EXPERIMENTS.md and figures as "coverage, not hand-checked"; the README
+  is untouched until after tomorrow's check.
+  Order:
+  1. The conflict test on the 122B at every 4th layer (as Lightning's sweep),
+     the three arms at each; L33 stays the decided layer; the sweep is
+     descriptive and answers "does the split hold at relative depth
+     0.25-0.50 too".
+  2. 47.0 (the lens readout of an address swap) at L33.
+  3. 52 A (atoms of the lens part) at L33.
+  4. 53.2's verdict for the 122B (CPU, states on the Mac).
+  5. 51.1 dose curves; 47.5 zeroing; 49.2 ladder (rung 6 in Zach's band
+     L39-45); 47.1 identity outside the lens.
+  6. Z1 and Z1-P on Zach's passages; 47.2 six lockers; 45p earlier mention;
+     53.7 code probe (lookup-only gate).
+  Each spec copies its 27B spec with the 122B's L33, FP8, device_map auto;
+  gates never lowered (a miss is "not tested"). Before launching: pull every
+  results folder and the inspector / monitor states from all boxes to the Mac.
+  Status at 23:00 and 08:00; write NIGHT.md with what ran and where results
+  are.
