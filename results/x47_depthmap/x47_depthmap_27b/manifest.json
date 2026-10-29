@@ -1,0 +1,111 @@
+{
+  "exp": "x47_depthmap",
+  "run": "x47_depthmap_27b",
+  "why": "batch 47, amendment 3 (jobs/c3/batch47.yaml; D1 + D2, Q-depth, sealed): the token x layer map and window patching on the main test's and the clean design's items at L32",
+  "written_utc": "2026-10-28T23:30:30Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "087ee4ddb4d37f4b98d84e2e82bbfececae831fe",
+    "dirty": true
+  },
+  "test": "D1+D2 (batch 47, amendment 3)",
+  "spec": "jobs/c3/batch47.yaml (D1, D2)",
+  "question": "Q-depth (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x0_necessity/x45m_fresh_27b/manifest.json": "81532062c323053fd4c50fd77b1177d0d7fd34c166a6b18ccc7f63e1f1d53b22",
+    "results/x0_necessity/x45m_fresh_27b/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl": "cae7973b9d0aa8fed9a2e47dfc3a1db711b21d7472f30d79208857d80808542e"
+  },
+  "sources": {
+    "main": "x0_necessity_27b_chat",
+    "clean": "x45m_fresh_27b"
+  },
+  "layer": 32,
+  "n_layers": 64,
+  "layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60,
+    62
+  ],
+  "step": 4,
+  "token_groups": {
+    "bridge": "the bridge word",
+    "pick_rest": "the rest of the asked pick sentence",
+    "person": "the asked person's token",
+    "question": "the question tokens (to the end of the prompt)",
+    "last": "the last token (the read position)",
+    "lk_org_item": "the item token(s) of O's bridge's locker sentence",
+    "lk_org_num": "the number token(s) of O's bridge's locker sentence",
+    "lk_cf_item": "the item token(s) of S's bridge's locker sentence",
+    "lk_cf_num": "the number token(s) of S's bridge's locker sentence",
+    "lk_other1_item": "the item token(s) of the first other item's locker sentence",
+    "lk_other1_num": "the number token(s) of the first other item's locker sentence",
+    "lk_other2_item": "the item token(s) of the second other item's locker sentence",
+    "lk_other2_num": "the number token(s) of the second other item's locker sentence"
+  },
+  "arms": {
+    "none": "O unedited",
+    "a": "(a) h_S - h_O added at the bridge word at L (47.4's (a), X0's whole arm)",
+    "d": "the whole asked pick sentence swapped at every layer (47.4's (d); margin)",
+    "S": "S read on S (unedited)",
+    "b<l>": "the bridge swapped at every layer <= l (47.4's (b); margin)",
+    "w<l>": "D2: S's state at the bridge at every block output >= l (the complement of b)",
+    "g<group>@<l>": "D1 cell: S's state placed at the group's tokens at block output l",
+    "gbridge@emb": "D1 cell: O's prompt with S's bridge token, no state placed"
+  },
+  "late_band_start": 52,
+  "prompts": {
+    "org": "O",
+    "swap": "O with S's token at the bridge (its input embedding swapped)",
+    "alt": "S"
+  },
+  "states": "set (SetRows) from one unedited forward of S per reader (every layer; the space token appended) and of O (layer L); the readers' prompts differ from the question on",
+  "items_rule": "x47_cumulative's items (main test: its 200, mixed scenes in 'all' only; clean design: the locker-first and locker-after scenes, its mixed left out), its asserts; each reader's token groups by character overlap (x47_depthmap.token_groups)",
+  "groups": "x45m.group_of: locker-first (both locker sentences before the asked pick), locker-after, mixed",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "state_check": "47.4's: under b32 on O's tokens the bridge's state after L is S's on prefix-identical items (relative distance <= 0.05)",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "per design (main, clean), the source run's scene order",
+    "reads": "per item and reader: the arms in arm_names order, batches of BJ_SUITE_BATCH",
+    "batch": 64
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q-depth answer"
+}

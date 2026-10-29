@@ -1,0 +1,64 @@
+{
+  "main": {
+    "design": "main",
+    "source": "x0_necessity_27b_chat",
+    "alt": "cf",
+    "layer": 32,
+    "items_at_L": 200,
+    "dropped": {},
+    "items": 200,
+    "entities": 44,
+    "groups": {
+      "locker-first": 69,
+      "locker-after": 61,
+      "mixed": 70
+    },
+    "upstream": {
+      "True": 97,
+      "False": 103
+    },
+    "locker-first, prefix-identical": 16,
+    "pick_tokens": {
+      "5": 76,
+      "4": 119,
+      "6": 5
+    },
+    "mixed_left_out": 0,
+    "token_groups": {
+      "11": 200
+    },
+    "locker_roles": {
+      "3": 200
+    }
+  },
+  "clean": {
+    "design": "clean",
+    "source": "x45m_fresh_27b",
+    "alt": "fresh",
+    "layer": 32,
+    "items_at_L": 574,
+    "dropped": {},
+    "items": 438,
+    "entities": 43,
+    "groups": {
+      "locker-first": 202,
+      "locker-after": 236
+    },
+    "upstream": {
+      "False": 574
+    },
+    "locker-first, prefix-identical": 202,
+    "pick_tokens": {
+      "5": 217,
+      "4": 347,
+      "6": 10
+    },
+    "mixed_left_out": 136,
+    "token_groups": {
+      "13": 438
+    },
+    "locker_roles": {
+      "4": 438
+    }
+  }
+}
