@@ -1,0 +1,30 @@
+{
+  "slots": 6,
+  "gates": {
+    "6": {
+      "dropped": {
+        "C0: the bridge and the switched item have as many legs": 90
+      },
+      "M": {
+        "cases": 1200,
+        "org_read_accuracy": {
+          "PP": 0.9991666666666666,
+          "PM": 0.9958333333333333
+        },
+        "gate": 0.8,
+        "eligible": 1186,
+        "pass": true
+      },
+      "C0": {
+        "cases": 150,
+        "org_read_accuracy": {
+          "PP": 1.0,
+          "PM": 0.9933333333333333
+        },
+        "gate": 0.8,
+        "eligible": 147,
+        "pass": true
+      }
+    }
+  }
+}
