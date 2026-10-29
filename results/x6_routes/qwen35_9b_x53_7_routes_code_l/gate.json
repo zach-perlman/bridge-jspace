@@ -1,0 +1,58 @@
+{
+  "dropped": {
+    "C0: the bridge is not one token at the same index in O and S": 1156,
+    "C1: the bridge is not one token at the same index in O and S": 692,
+    "C2: the bridge is not one token at the same index in O and S": 1156,
+    "A and B have the same number of legs": 1080
+  },
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "lookup_right_share": 0.9914,
+      "pass": true,
+      "eligible": 694,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9985714285714286,
+          "PM": 0.6742857142857143
+        },
+        "recall_right_share": 0.48,
+        "two_reader_pass": false,
+        "two_reader_eligible": 332
+      }
+    },
+    "C1": {
+      "cases": 700,
+      "lookup_right_share": 0.9929,
+      "pass": true,
+      "eligible": 695,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9971428571428571,
+          "PM": 0.69
+        },
+        "recall_right_share": 0.5157,
+        "two_reader_pass": false,
+        "two_reader_eligible": 360
+      }
+    },
+    "C2": {
+      "cases": 700,
+      "lookup_right_share": 0.9957,
+      "pass": true,
+      "eligible": 697,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9985714285714286,
+          "PM": 0.6742857142857143
+        },
+        "recall_right_share": 0.4529,
+        "two_reader_pass": false,
+        "two_reader_eligible": 317
+      }
+    }
+  }
+}
