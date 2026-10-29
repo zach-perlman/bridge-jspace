@@ -363,7 +363,9 @@ def stage_run(name: str, why: str, below: bool = False) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "45p renders 45m's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert below or target in RUN_45M, f"45p runs on {sorted(RUN_45M)}, not {target}"
+    assert below or target in {**RUN_45M, **COVERAGE_45M}, (
+        f"45p runs on {sorted({**RUN_45M, **COVERAGE_45M})}, not {target}"
+    )
     run_45m, layer = (B.fresh_of(target, True) if below else {**RUN_45M, **COVERAGE_45M}[target]), X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -390,6 +392,8 @@ def stage_run(name: str, why: str, below: bool = False) -> Path:
     if below:  # batch 52, Dan's morning queue item 1: below gate, exploratory
         m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(run_45m)},
               "sealed": "none (below gate, exploratory): verdict --below-gate"}  # fmt: skip
+    elif target in COVERAGE_45M:  # the 122B's coverage (Dan 18:20): no Q-line, verdict --coverage
+        m |= {"question": NO_PREDICTION, "sealed": "none (coverage): verdict --coverage"}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
