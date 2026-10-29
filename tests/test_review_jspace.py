@@ -234,6 +234,20 @@ def test_the_dashboards_verdicts_skip_jspace_notes(tmp_path, monkeypatch):
     assert "## J-space notes" in out and "rest at L14" in out
 
 
+def test_the_rank_section_replaces_the_packs_reserved_block_only(tmp_path, monkeypatch):
+    (tmp_path / "docs").mkdir()
+    pack = tmp_path / "docs" / "verify_pack.md"
+    pack.write_text(f"# Verification pack\n\n## Automatic checks\n\nx\n\n{J.SECTION}\n\n_Reserved for the inspector._\n\n"
+                    "## a. main_swap\n\nkept\n")  # fmt: skip
+    monkeypatch.setattr(J, "REPO", tmp_path)
+    for _ in range(2):  # twice: the second run replaces the first
+        J.put_section(J.SECTION + "\n\nnumbers\n")
+    text = pack.read_text()
+    assert text.count(J.SECTION) == 1 and "numbers" in text and "_Reserved" not in text
+    assert text.index("## Automatic checks") < text.index(J.SECTION) < text.index("## a. main_swap") and "kept" in text
+    assert (tmp_path / "docs" / "verify_pack_jspace.md").read_text() == J.SECTION + "\n\nnumbers\n"
+
+
 def test_every_card_of_a_served_view_links_to_its_panel():
     from scripts import review as R
 

@@ -18,6 +18,7 @@ the J++ part's share (stored), and the address part U (the routes test's pointer
 
 uv run python scripts/review_jspace.py rank-check            # item 3: docs/verify_pack_jspace.md + its verify_pack section
 uv run python scripts/review_jspace.py selfcheck              # 51.12's answer-word ranks and x52_atoms' atoms, sample items
+uv run python scripts/review_jspace.py arms                   # the states jobs' re-read decisive arms vs the stored labels
 uv run python scripts/review_jspace.py rank-check --from-jread  # item 3 on the conflict test from 51.10's cached states
 """
 
@@ -291,6 +292,8 @@ def vector(st: dict, model: str, prompt: str, pos: int, layer: int, kind: str):
         return None, f"no change at position {pos} (O and S do not align there)"
     a, b = pairs[r]
     x = torch.tensor(st["h_S"][b, layer].astype(np.float32) - st["h_O"][a, layer].astype(np.float32))
+    if float(x.norm()) == 0.0:
+        return None, f"no change at position {pos}: O and S agree up to this token"
     if kind == "change":
         return x, ""
     if kind == "rand":
@@ -804,15 +807,18 @@ def rank_table(rows: list[dict]) -> list[dict]:
 
 
 def latest_rank_rows() -> tuple[list[dict], dict[str, str]]:
-    """Every model's newest states run's rank_check.jsonl (results/review_states/<run>/)."""
+    """Every model's states run's rank_check.jsonl: the run the views file records (jspace_states: {model: run dir}),
+    else the model's newest under results/review_states/."""
     runs: dict[str, tuple[str, Path]] = {}
+    pinned = I.spec().get("jspace_states") or {}
     for d in sorted((REPO / "results" / "review_states").glob("*/manifest.json")):
         m = json.loads(d.read_text())
         f = d.parent / "rank_check.jsonl"
-        if f.exists():
-            key = m["model"]["target"]
-            if key not in runs or m["written_utc"] > runs[key][0]:
-                runs[key] = (m["written_utc"], f)
+        key = m["model"]["target"]
+        if not f.exists() or (key in pinned and str(d.parent.relative_to(REPO)) != pinned[key]):
+            continue
+        if key not in runs or m["written_utc"] > runs[key][0]:
+            runs[key] = (m["written_utc"], f)
     rows = []
     for model, (_, f) in runs.items():
         rows += [{**json.loads(line), "model": model} for line in f.read_text().splitlines() if line.strip()]
@@ -921,7 +927,7 @@ def put_section(text: str) -> None:
     if SECTION in old:
         a = old.index(SECTION)
         nxt = old.find("\n## ", a + len(SECTION))
-        new = old[:a] + text + (old[nxt + 1 :] if nxt >= 0 else "")
+        new = old[:a] + text.rstrip("\n") + "\n" + (("\n" + old[nxt + 1 :]) if nxt >= 0 else "")
     else:
         new = old.rstrip("\n") + "\n\n" + text
     pack.write_text(new)
@@ -940,6 +946,21 @@ def stage_rank_check(from_jread: tuple[str, ...] = ()) -> str:
     put_section(text)
     print(text)
     return text
+
+
+def stage_arms() -> dict:
+    """The states jobs' re-read decisive arms (arms.jsonl): per model and view, rows, labels that agree with the stored
+    ones, and every disagreement."""
+    out: dict[str, Any] = {}
+    for f in sorted((REPO / "results" / "review_states").glob("*/arms.jsonl")):
+        rows = [json.loads(line) for line in f.read_text().splitlines() if line.strip()]
+        run = str(f.parent.relative_to(REPO))
+        by = collections.Counter((r["view"], r["match"]) for r in rows)
+        out[run] = {"rows": len(rows), "by_view": {f"{v} {m}": n for (v, m), n in sorted(by.items(), key=str)},
+                    "mismatches": [f"{r['item']} {r['arm']}: stored {r['stored']}, re-read top {r['top']} "
+                                   f"{r['top_text']!r} {r['role']} {r['route']}" for r in rows if r["match"] is False]}  # fmt: skip
+    print(json.dumps(out, indent=1, ensure_ascii=False))
+    return out
 
 
 def stage_selfcheck() -> list[dict]:
@@ -964,7 +985,7 @@ def stage_selfcheck() -> list[dict]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["rank-check", "selfcheck", "page"])
+    ap.add_argument("stage", choices=["rank-check", "selfcheck", "arms", "page"])
     ap.add_argument("--from-jread", default="", help="rank-check: models to read from 51.10's states (comma-separated)")
     ap.add_argument("--view")
     ap.add_argument("--item")
@@ -973,6 +994,8 @@ def main() -> None:
         stage_rank_check(tuple(m for m in a.from_jread.split(",") if m))
     elif a.stage == "selfcheck":
         stage_selfcheck()
+    elif a.stage == "arms":
+        stage_arms()
     else:
         print(page({"view": a.view, "item": a.item}))
 
