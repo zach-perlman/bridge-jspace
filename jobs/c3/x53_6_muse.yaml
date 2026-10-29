@@ -1,0 +1,46 @@
+id: x53_6_muse
+title: "Batch 53.6 on Muse (L26), Dan 11:25: the recall, lens identity vs address, in conflict. At the bridge word: the lens part toward item B (25 J++ atoms of B's change) plus the address swap toward item C's slot (s = 2, the probe run's pointer means); the recall's answer classed B / C / original; x6_routes' C0 scenes with three distinct legs counts; 53.6's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_identity_address.py run --name muse30_x53_6 --why "Batch 53, test 53.6 on Muse (Dan 11:25, jobs/c3/batch53.yaml critic_1125: same rule): the recall, lens identity toward B vs the address swap toward C's slot (s = 2) at the bridge word at L26; no prediction" &&
+  uv run python scripts/x53_identity_address.py verdict --runs muse30_x53_6
+question: >-
+  When the bridge word carries two conflicting signals, the lens part of B's identity and an address pointing at C's
+  locker slot, which does Muse's recall follow: B's attribute (the lens identity), C's (the address), or both?
+why_it_matters: >-
+  Dan 11:25 (jobs/c3/batch53.yaml critic_1125, order item 4): "53.6 on the 27B and Muse (same rule). Across models:
+  "the recall's pointer use tracks the swap's collateral" if the models whose recall the address swap moved (9B,
+  Lightning) give "both" and the others give "follows the lens identity"." The 9B and Lightning gave "both"
+  (results/x53_identity_address/x53_identity_address-20261029T091645Z).
+hypotheses:
+  none: "No prediction (Dan 11:25: the rules fixed then, before any run)."
+decision_rule: >-
+  53.6's rule verbatim (jobs/c3/batch53.yaml brief, 53.6): "At the bridge word: the lens part toward item B plus the
+  address swap toward item C's slot (s = 2). Read: the recall answers B's, C's or the original. Rule: "the recall
+  follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." Across models
+  (critic_1125, verbatim): ""the recall's pointer use tracks the swap's collateral" if the models whose recall the
+  address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity"." As computed: as
+  jobs/c3/x53_6_9b.yaml (scripts/x53_identity_address.py, unchanged design), on Muse at L26 (X0's layer): x6_routes' C0
+  pairs (seed 2510, 1,400 per condition) with three distinct legs counts (457 of 1,400 on Muse's tokenizer), X0's
+  competence and X0's gate (0.80 per reader on O) on these, the first 300 eligible (fewer if fewer are eligible: n
+  reported); the lens part = P_J (h_{S_B} - h_O), 25 signed-OMP atoms of our Muse J++ at L26; the address swap = 2
+  (mu_{j_C} - mu_{j_A}), mu = x0_massmean.pointer_means(muse30b_x0_probe_v4) (x8_write's means, not refit; checked on
+  CPU); the rule on the recall under both, the clauses in the brief's order, "neither (no B or C answers)" when both
+  shares are 0 (accepted 10:40); CIs over the original bridge item (10,000, seed 0) beside. Across models: the moved
+  models are Dan's list verbatim (the 9B and Lightning), the others (the 27B, Muse) wanted at "follows the lens
+  identity"; with all four models "holds" or "does not hold", before that "pending" unless already broken
+  (x53_identity_address.across). Verdict in the job (Muse alone): results/x53_identity_address/x53_identity_address-<UTC>/;
+  the joint four-model verdict by hand on CPU.
+controls:
+- "the lens part alone (B's identity, no address) and the address alone (no lens part): what each signal does by itself"
+- "the lens part plus a random direction of the address's norm (seeded): the address's effect beyond its size"
+- "O unedited (the floor); the lookup read on every arm beside (B's / C's / A's locker digit)"
+- "X0's gate on the scenes read (0.80 per reader on O) and X0's eligibility (both readers right on O and S_B)"
+n: "up to the first 300 eligible of 457 C0 scenes with three distinct legs counts (x6_routes' generator, 1,400 per condition, seed 2510); 5 arms x 2 readers"
+seeds: [2510, 5306, 888, 0]
+notes: "Dan 11:25 (critic_1125), order item 4; coordinator: Muse on one H100. Code: scripts/x53_identity_address.py as committed with x53_6_27b (RUNS gains Muse; the run unchanged since a8c1a516). Writes results/x53_identity_address/muse30_x53_6/ and the verdict folder x53_identity_address-<UTC>/. Cost (ledger): x53_6_9b 364 s run, x53_6_lightning 290 s; Muse (3B active, 52 blocks) ~2x the 9B: ~12-15 min; est 0.3. Memory: Muse's reads peak near 58-62 GB (x52_write_main_muse 59.8). Disk on the Mac before the spec: 124 GB free. UNVERIFIED; into EXPERIMENTS.md."
