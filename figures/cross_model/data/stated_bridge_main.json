@@ -316,5 +316,106 @@
   "extra": {
    "control": "random recalls"
   }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens-readable part",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.2
+  ],
+  "n": 167,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 83.0,
+  "what": "lookups switched, the rest",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   76.1732591557969,
+   87.62853150877191
+  ],
+  "n": 167,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "rest",
+   "ci_from": "results/d1_verdict/gemma4itf_d1_topics2_parts_20261023-123032/verdict.json"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, same-share random part",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 167,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random lookups"
+  }
+ },
+ {
+  "value": 40.0,
+  "what": "recalls switched, lens-readable part",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   32.0,
+   47.0
+  ],
+  "n": 167,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 15.568862275449103,
+  "what": "recalls switched, the rest",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   10.851495315803454,
+   21.834688845431277
+  ],
+  "n": 167,
+  "source": "results/d1_verdict/gemma4itf_d1_topics2_parts_20261023-123032/verdict.json",
+  "extra": {
+   "key": "recall.not_jspace"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "recalls switched, same-share random part",
+  "finding": "f2",
+  "model": "gemma",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 167,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random recalls"
+  }
  }
 ]

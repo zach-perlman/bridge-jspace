@@ -44,6 +44,7 @@ from scripts.figs import stated_bridge as SB
 STEM = "lens_push_depth"
 F = "f7"
 MAIN_ORDER = ("main rule, draw 2", "main rule", "amended rule")  # the README table's order for finding 7
+MAIN_PANELS = 4  # common.frame's limit for a MAIN figure
 FULL_SETTINGS = ("main rule", "amended rule", "main rule, draw 2", "amended rule, draw 2")
 CONTROL = SB.CONTROL
 NUM = SB.NUM
@@ -52,7 +53,7 @@ RECALL = re.compile(rf"recall switched {NUM}% \[{NUM}, {NUM}\]")
 RANDOM = re.compile(rf"random push on lookups {NUM}%")
 SUBSET = {"word": "w", "sentence": "s"}
 MOVED = 5.0  # a lookup point whose Wilson lower bound is above this % is labelled (an exception: the lookup moved)
-XLIM, XTICKS, YMAX = (12.0, 82.0), (20, 40, 60), 128.0  # room above 100% for the test point's label
+XLIM, XTICKS, YMAX = (12.0, 82.0), (20, 40, 60), 145.0  # room above 100% for the test point's label, on two lines
 
 TITLE = "A lens push writes recall, not the lookup"
 SUBTITLE = "% switched when the stated bridge is pushed toward another animal, by depth"
@@ -203,7 +204,11 @@ def draw_panel(ax, cv: Curve, *, random_line: bool, placed: list) -> None:
 
     # the line's one label: at its top, on two lines where they fit, else one; else lower down
     SB.place(ax, [(1, "\n", 6, "left"), (1, "\n", -6, "right"), (1, ": ", 6, "left"), (1, ": ", -6, "right"),
-                  (0.6, "\n", 6, "left"), (0.6, "\n", -6, "right")], make, placed, required=True)  # fmt: skip
+                  (0.6, "\n", 6, "left"), (0.6, "\n", -6, "right"),
+                  # lower still, for a panel whose curve fills its top on both sides of the line (the 27B's scene set 2
+                  # in the FULL figure)
+                  (0.45, "\n", 6, "left"), (0.45, "\n", -6, "right"), (0.3, "\n", 6, "left"), (0.3, "\n", -6, "right")],
+             make, placed, required=True)  # fmt: skip
 
 
 def moved(cv: Curve) -> list[C.Number]:
@@ -289,7 +294,7 @@ def invalid(b: RB.Book, shown: set[str]) -> list[str]:
     return out
 
 
-def caption(b: RB.Book, curves: list[Curve], rule: bool) -> str:
+def caption(b: RB.Book, curves: list[Curve], rule: bool, more: list[Curve] | None = None) -> str:
     rnd = "Random push: 0% at every layer." if random_is_zero(curves) else ""
     if rule:  # early_push_where's rule v2 and its amendment v2.1 (v21_min_layer: 31% of the depth on every model)
         first = ("Rule: test point = the valid cell moving most recalls (≥ 30%); holds if lookups ≤ 10%; amended: "
@@ -300,6 +305,8 @@ def caption(b: RB.Book, curves: list[Curve], rule: bool) -> str:
     bad = invalid(b, {cv.model for cv in curves})
     if bad:
         second.append(f"No valid test point: {', '.join(bad)}.")
+    if more:  # MAIN's fifth and later models: named in a few words, drawn in the FULL figure
+        second.append(f"{', '.join(C.MODEL[cv.model].short for cv in more)}: full figure.")
     second.append(SB.untested(b, f=F))
     return first + "\n" + " ".join(x for x in second if x)
 
@@ -321,10 +328,12 @@ def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
                 break
     if not curves:
         raise ValueError("finding 7: no valid test point to draw")
-    if len(curves) > 4:
-        raise ValueError("finding 7: more than 4 models with a test point; MAIN has at most 4 panels")
+    # a MAIN figure has at most four panels (common.frame): with more models holding a test point (five since the
+    # 23 Oct evening grid), MAIN draws the first four in the README's model order and names the rest in its caption;
+    # the FULL figure draws every test point
+    curves, more = curves[:MAIN_PANELS], curves[MAIN_PANELS:]
     random_line = not random_is_zero(curves)
-    fr = C.frame("main", TITLE, SUBTITLE, how=how(curves, random_line), caption=caption(b, curves, rule=False),
+    fr = C.frame("main", TITLE, SUBTITLE, how=how(curves, random_line), caption=caption(b, curves, rule=False, more=more),
                  nrows=1, ncols=len(curves), left=0.075, wspace=0.1, sharex=True, sharey=True)  # fmt: skip
     SB.shift(fr, top=48)
     placed: list = []

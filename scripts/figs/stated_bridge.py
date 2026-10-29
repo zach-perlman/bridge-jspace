@@ -206,7 +206,8 @@ def free(ax, t, avoid: list) -> bool:
         return False
     if any(p.get_height() > 0 and bb.overlaps(p.get_window_extent(r)) for p in ax.patches):
         return False
-    return not any(bb.overlaps(o.get_window_extent(r)) for o in avoid if o is not t)
+    # both boxes grown by 2 px, as plot_style.overlaps (the save's check) grows each text: a gap under 4 px is a touch
+    return not any(bb.overlaps(o.get_window_extent(r).padded(2)) for o in avoid if o is not t)
 
 
 def place(ax, cands: list, make, placed: list, *, required: bool = False):
@@ -265,7 +266,10 @@ def draw_panel(ax, bars: Bars, *, ticks: tuple[str, ...], label: tuple[str, ...]
                 len(shown) == 2 and abs(tops[FAMS[0]] - tops[FAMS[1]]) <= ALIGN
             )
             strong = part == "lens" and not pale
-            texts.append(ax.annotate(f"{RD.r0(num.value)}%", (x, both if together else tops[fam]), xytext=(0, 4),
+            # two labels at one height sit side by side over bars 2 DX apart, narrower than two bold values in a
+            # four-panel row: the second family's label goes one line up, so the pair never overlaps
+            lift = C.NOTE * 1.25 if together and len(shown) == 2 and fam == FAMS[1] else 0
+            texts.append(ax.annotate(f"{RD.r0(num.value)}%", (x, both if together else tops[fam]), xytext=(0, 4 + lift),
                                      textcoords="offset points", ha="center", va="bottom", fontsize=C.NOTE,
                                      color=C.INK if strong else C.CAPTION_INK,
                                      fontweight="bold" if strong else "normal", gid="value", zorder=4))  # fmt: skip
@@ -320,7 +324,8 @@ def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
     shift(fr, top=30, bottom=C.LABEL * 1.8)
     numbers: list[C.Number] = [x.parts["lookups"]["lens"] for x in fails]  # the caption's numbers
     for ax, bars in zip(fr.axes, shown, strict=True):
-        texts = draw_panel(ax, bars, ticks=("lens part", "random", "rest"), label=FAMS, random_values=True)
+        # "lens part" on two lines: on one it runs into "random" in a four-panel row
+        texts = draw_panel(ax, bars, ticks=("lens\npart", "random", "rest"), label=FAMS, random_values=True)
         head(ax, C.MODEL[bars.model].name, SHOWN_WORD.get(bars.word, bars.word), right_size=C.LABEL)
         numbers += bars.numbers()
         if ax is fr.axes[0]:
