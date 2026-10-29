@@ -310,7 +310,10 @@ def test_dev_scenes():
         (("entity", "entity", "entity", "mixed"), "none of the four patterns"),
         (("entity", "not_read", "entity", "entity"), "none of the four patterns"),
         (("entity", "na", "mixed", "answer"), "none of the four patterns"),
-        (("entity", None, "entity", "entity"), "can't tell: (Q-before, number) without a label"),
+        (
+            ("entity", None, "entity", "entity"),
+            "can't tell: (Q-before, number) without a label (patterns the labelled cells leave open: position, neither)",
+        ),
     ],
 )
 def test_across_cells(labels, want):
@@ -326,6 +329,17 @@ def test_cross_check():
     assert T2.cross_check(bad)["holds"] is False
     missing = {**good, "qa_word": {"status": "not tested (gate 0.70 < 0.80)"}}
     assert T2.cross_check(missing)["holds"] is None
+    above_and_missing = {**missing, "qb_num": {"status": "tested", "lookup_extra": [0.22, 0.15, 0.31]}}
+    r = T2.cross_check(above_and_missing)  # "all four <= 0.10" fails whatever the untested cell gives
+    assert r["holds"] is False and r["above"] == ["qb_num"] and "(Q-before, number) (0.22)" in r["text"]
+
+
+def test_open_patterns():
+    labels = {"qa_num": "entity", "qb_num": "entity", "qa_word": None, "qb_word": None}
+    assert T2.open_patterns(labels) == ["readability", "neither"]  # position and both need qb_num answer / mixed
+    assert T2.open_patterns({c: None for c in T2.CELLS}) == list(T2.PATTERNS)
+    assert T2.open_patterns({"qa_num": "entity", "qb_num": None, "qa_word": None, "qb_word": None}) == list(T2.PATTERNS)
+    assert T2.across(labels).endswith("(patterns the labelled cells leave open: readability, neither)")
 
 
 # ---- the verdict on a planted run (CPU, end to end) -----------------------------------------------------------------
@@ -392,7 +406,7 @@ def test_verdict_on_a_planted_run(tok, tmp_path, monkeypatch):
     got = {c: r["label"] for c, r in mv["cells"].items()}
     assert got == {"qa_num": "entity", "qb_num": "answer", "qa_word": "entity", "qb_word": None}
     assert mv["cells"]["qb_word"]["status"] == "not tested (gate 0.70 < 0.80)"
-    assert mv["across"] == "can't tell: (Q-before, word) without a label"
+    assert mv["across"].startswith("can't tell: (Q-before, word) without a label")
     assert mv["cross_check"]["holds"] is None
     assert mv["cells"]["qa_num"]["readers"]["lookup"]["conflict"]["excess"][0] == pytest.approx(0.0)
     assert mv["cells"]["qa_num"]["atoms"]["lookup"]["n"] == T2.N_ATOMS  # Q-after: the lookup's Δ in both views

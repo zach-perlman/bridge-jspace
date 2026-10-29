@@ -87,6 +87,7 @@ import json
 import math
 import re
 import sys
+import textwrap
 import time
 from pathlib import Path
 from typing import Any
@@ -865,7 +866,9 @@ def across(labels: dict[str, str | None]) -> str:
     am = ("answer", "mixed")
     if any(v is None for v in (qa_n, qb_n, qa_w, qb_w)):
         missing = [CELL_TEXT[c] for c in CELLS if labels.get(c) is None]
-        return f"can't tell: {', '.join(missing)} without a label"
+        still = open_patterns(labels)
+        return (f"can't tell: {', '.join(missing)} without a label (patterns the labelled cells leave open: "
+                f"{', '.join(still) or 'none'})")  # fmt: skip
     if qb_n in am and qa_w == "entity":
         return "position"
     if qa_w in am and qb_n == "entity":
@@ -877,15 +880,39 @@ def across(labels: dict[str, str | None]) -> str:
     return "none of the four patterns"
 
 
+PATTERNS = ("position", "readability", "both", "neither")
+LABEL_KEYS = ("entity", "answer", "mixed", "not_read", "na")
+
+
+def open_patterns(labels: dict[str, str | None]) -> list[str]:
+    """The patterns of the rule across cells that some labelling of the unlabelled cells would still give (every
+    completion over 51.12's keys, the rule's own order); descriptive, beside a "can't tell"."""
+    import itertools
+
+    missing = [c for c in CELLS if labels.get(c) is None]
+    found = set()
+    for fill in itertools.product(LABEL_KEYS, repeat=len(missing)):
+        found.add(across({**labels, **dict(zip(missing, fill, strict=True))}))
+    return [p for p in PATTERNS if p in found]
+
+
 def cross_check(cells: dict[str, dict]) -> dict:
-    """The lookup's extra loss beyond random (the conflict test, arm 1) <= CROSS_MAX in all four cells."""
+    """The lookup's extra loss beyond random (the conflict test, arm 1) <= CROSS_MAX in all four cells (point
+    estimates): holds when all four are at or below it; does not hold as soon as a tested cell is above it (the "all
+    four" fails whatever the untested cells give); else can't tell."""
     per: dict[str, float | None] = {c: (r["lookup_extra"][0] if r.get("status") == "tested" else None)
                                     for c, r in cells.items()}  # fmt: skip
-    known = [v for v in per.values() if v is not None and not math.isnan(v)]
-    held = all(v <= CROSS_MAX + EPS for v in known) if len(known) == len(per) else None
-    return {"per_cell": per, "holds": held,
-            "text": ("the pointer does not depend on the question (lookup <= 0.10 beyond random in all four cells)"
-                     if held else "does not hold" if held is False else "can't tell (a cell without numbers)")}  # fmt: skip
+    known = {c: v for c, v in per.items() if v is not None and not math.isnan(v)}
+    above = [c for c, v in known.items() if v > CROSS_MAX + EPS]
+    held = False if above else (True if len(known) == len(per) else None)
+    if held:
+        text = "the pointer does not depend on the question (lookup <= 0.10 beyond random in all four cells)"
+    elif held is False:
+        text = "does not hold: the lookup loses > 0.10 beyond random in " + ", ".join(
+            f"{CELL_TEXT[c]} ({known[c]:.2f})" for c in above)  # fmt: skip
+    else:
+        text = "can't tell (a cell without numbers; the tested ones <= 0.10)"
+    return {"per_cell": per, "holds": held, "above": above, "text": text}
 
 
 def model_verdict(target: str, n_boot: int) -> dict:
@@ -903,6 +930,20 @@ def model_verdict(target: str, n_boot: int) -> dict:
     return {"target": target, "run": run, "word_run": wrun, "status": "run", "layer": m["layer"],
             "relation": wm.get("relation"), "relation_check": rel, "cells": cells, "across": across(labels),
             "cross_check": cross_check(cells)}  # fmt: skip
+
+
+def diag_lines(word_run: str) -> list[str]:
+    """The newest word-cell diagnostic of this word run (diag_words-<UTC>/diag.json), as one descriptive line."""
+    found = sorted(p for p in RESULTS.glob("diag_words-*/diag.json") if json.loads(p.read_text())["run"] == word_run)
+    if not found:
+        return []
+    blob = json.loads(found[-1].read_text())
+    parts = []
+    for cell, c in blob["cells"].items():
+        kinds = "; ".join(f"{k} {v}" for k, v in c["first_word_kinds"].items())
+        parts.append(f"{CELL_TEXT[cell]} {kinds} (of {c['prompts']} recall prompts)")
+    return [f"Descriptive context (results/{EXP}/{found[-1].parent.name}, CPU, no rule): what the recall's first word "
+            "was: " + " | ".join(parts) + ".", ""]  # fmt: skip
 
 
 def fmt(v) -> str:
@@ -946,6 +987,7 @@ def verdict_lines(models: list[dict]) -> list[str]:
                       f"spelling, initial or symbol: {dropped or '-'}. The recall's O read accuracy on (Q-after, word) "
                       f"= {rc['accuracy_recall_qa_word']} on {rc['model']} (>= 0.80: {rc['passes']}; the 9B's decides).",
                       ""]  # fmt: skip
+        lines += diag_lines(mv["word_run"])
         lines += ["| cell | gate (O read acc. lookup / recall) | n | recall: 51.12 label | lookup: 51.12 label | "
                   "conflict test lookup: extra loss beyond random | recall: extra loss | recall e2/e1 | recall e3 | "
                   "recall answer word not read |", "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -1029,7 +1071,8 @@ def figure(models: list[dict], path: Path) -> None:
         for y, c in enumerate(CELLS):
             r = mv["cells"][c]
             if r["status"] != "tested":
-                ax.text(0.4, y, r["status"], va="center", ha="center", fontsize=SS.LABEL_PT, color=SS.COL["muted"])
+                status = textwrap.fill(r["status"], 34 if len(run) > 1 else 60)  # fits a panel of two
+                ax.text(0.45, y, status, va="center", ha="center", fontsize=SS.LABEL_PT - 1, color=SS.COL["muted"])
                 continue
             for j, (w, k, col, mk, _) in enumerate(marks):
                 v = r["readers"][w]["extra"][k]
