@@ -186,10 +186,10 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   | recall: switches lost, not net of random | {{num|rc_jdep_9b}} | {{num|rc_jdep_27b}} | {{num|rc_jdep_muse}} | {{dp|cards|nemotron-3.5-lightning|conflict: recall, switches lost, not net of random}} | {{num|rc_jdep_122b}} |
   | lookup: switches lost beyond a random part | {{num|lk_excess_9b}} | {{num|lk_excess_27b}} | {{num|lk_excess_muse}} | {{d|cards|nemotron-3.5-lightning|conflict: lookup, switches lost beyond a random part}} | {{num|lk_excess_122b}} |
   | the rule | {{num|verdict_9b}} | {{num|verdict_27b}} | {{num|verdict_muse}} | {{dp|cards|nemotron-3.5-lightning|conflict: the rule}} | {{num|verdict_122b}} |
-  | recall: share of its loss kept with the answer directions kept | {{d|conflict_answer|9b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|27b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|muse|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | not run |
-  | recall: switches lost beyond random without the answer directions only | {{d|conflict_answer|9b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|27b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|muse|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: switches lost beyond random without the answer words' directions only}} | not run |
-  | recall: answer word outside the lens's top 50 at the bridge word | {{d|conflict_answer|9b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|27b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|muse|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | not run |
-  | the specificity rule | {{dp|conflict_answer|9b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|27b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|muse|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|nemotron-3.5-lightning|main test, recall: the rule's label (page words)}} | not run |
+  | recall: share of its loss kept with the answer directions kept | {{d|conflict_answer|9b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|27b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|muse|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|122b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} |
+  | recall: switches lost beyond random without the answer directions only | {{d|conflict_answer|9b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|27b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|muse|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|122b|main test, recall: switches lost beyond random without the answer words' directions only}} |
+  | recall: answer word outside the lens's top 50 at the bridge word | {{d|conflict_answer|9b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|27b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|muse|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|nemotron-3.5-lightning|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|122b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} |
+  | the specificity rule | {{dp|conflict_answer|9b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|27b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|muse|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|nemotron-3.5-lightning|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|122b|main test, recall: the rule's label (page words)}} |
 
 - **Read.**
   - The recall follows the part of the bridge word the lens reads; the lookup follows the rest, fully on the 9B, Muse, Lightning and the 122B, mostly on the 27B.
@@ -197,11 +197,11 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Caveats.**
   - Following is not needing: a part is taken out of an added change at one layer (see "Does the recall need the lens part, or only follow it?").
   - The 27B's lookup misses its bar, and loses {{pt|lk_excess_k100_27b}} beyond random when 100 lens directions go (an open question).
-  - On Muse and Lightning the answer word is almost never near the top of the lens readout, so the rule's first case decides there.
+  - On Muse, Lightning and the 122B the answer word is almost never near the top of the lens readout, so the rule's first case decides there.
   - Two limits, on Zach's passages (Part V): on the full carrier (every token before L), fact-after lookups follow the lens part ({{dp|cards|nemotron-3.5-lightning|51.7: fact-after lookups, full carrier: switches lost beyond a random part}} ○ to {{dp|cards|27b|51.7: fact-after lookups, full carrier: switches lost beyond a random part}} lost beyond random); on his true-fact passages the 9B's and 27B's lookups follow it at L ({{dp|cards|9b|Z1: lookup, switches lost beyond a random part}} / {{dp|cards|27b|Z1: lookup, switches lost beyond a random part}}). On his made-up-fact passages the split holds on the 9B and is in between on the 27B; Lightning is not tested there (gate).
 
 ![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/story/fig01_split.png)
-*Switches lost without the lens part beyond a random part, per reader and model, main test at L; whiskers: {{q|95%}} intervals; grey band: the lookup's 0.10 bar.*
+*Switches lost without the lens part beyond a random part, per reader and model, main test at L (the 122B's L33: the 27B's relative depth carried over); whiskers: {{q|95%}} intervals; grey band: the lookup's 0.10 bar.*
 
 ### What do the lens part's 25 directions stand for?
 
@@ -229,7 +229,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Descriptive: no rule was fixed in advance; one set (the main test) per model.
 
 ![The lens part's directions: the bridge words, almost never the answer](figures/story/fig18_atoms.png)
-*The lens part's rebuilt energy at the bridge word, split by the kind of lens word each of its 25 directions is; main test at L; Lightning hatched (○).*
+*The lens part's rebuilt energy at the bridge word, split by the kind of lens word each of its 25 directions is; main test at L; Lightning hatched (○); 122B not run.*
 
 ### Does the split hold in other texts?
 
@@ -257,7 +257,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - The 9B's natural run had its gate lowered after the data; Lightning's misses its gate, so its natural numbers are descriptive only.
 
 ![The split carries over to other texts](figures/story/fig09a_transfer.png)
-*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
+*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; the 122B fifth; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
 
 ### Does each part, added by itself, move its reader?
 
@@ -294,7 +294,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - One layer, and only scenes whose lockers come first.
 
 ![By itself the lens part moves the recall; the rest moves the lookup](figures/story/fig16_dose.png)
-*Left: switches with the lens part alone minus a random part of the same size, by dose; rings mark the dose rule (ii) reads. Right: lookups switched by the rest alone, without the address, and without a random part. Rows: 9B, 27B, Muse, Lightning (hollow).*
+*Left: switches with the lens part alone minus a random part of the same size, by dose; rings mark the dose rule (ii) reads. Right: lookups switched by the rest alone, without the address, and without a random part. Rows: 9B, 27B, Muse, Lightning (hollow); 122B not run.*
 
 ### Does the recall need the lens part, or only follow it?
 
@@ -334,7 +334,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Lightning's ladder is below gate: its steps are shown, its rules are not tested.
 
 ![Recall needs the lens part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
-*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow.*
+*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow; 122B not run.*
 
 ### Does the recall also read the item's earlier mention?
 
@@ -367,7 +367,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Zeroing finds a weaker second copy on Muse (previous card): the two operations disagree in size there.
 
 ![The recall reads the item's earlier mention when its locker came first](figures/story/fig03c_earlier_mention.png)
-*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse; Lightning below gate, hollow.*
+*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse; Lightning below gate, hollow; 122B not run.*
 
 ## Part II. Identity: which item the lookup reads
 
@@ -394,7 +394,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Figure.**
 
 ![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
-*The design is drawn on the setup figure's items; the routes test's own scenes are animals.*
+*The design is drawn on the setup figure's items; the routes test's own scenes are animals. The 122B° fifth: its gate lowered to 0.75 after the data.*
 
 The same routes by depth:
 
@@ -523,7 +523,7 @@ The same routes by depth:
   - The output classes are descriptive (CPU check of the stored runs).
 
 ![The recall's entity at the last token: readable through the lens, not used](figures/story/fig17_jspace_last_token.png)
-*At the last token, per reader and model: the probe's accuracy on the lens part of the state (read) and the lens swap's switches as a share of the whole-state patch's (swap), both at the layer where the read peaks; Lightning hollow.*
+*At the last token, per reader and model: the probe's accuracy on the lens part of the state (read) and the lens swap's switches as a share of the whole-state patch's (swap), both at the layer where the read peaks; Lightning hollow; 122B not run.*
 
 ## Part V. Other datasets and operations
 

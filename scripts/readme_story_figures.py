@@ -3877,9 +3877,12 @@ def card_numbers() -> None:
              if c["layer"] == LT_L and c["reader"] == "PM"), source=rel(v))  # fmt: skip
     # the answer control: 51.12's opened verdict (9B / 27B / Muse) and Lightning's coverage run (x52_answer, set e1)
     lt_answer = pins.RESULTS_DIR / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.json"
-    for v in (latest_verdict("x51_answer/x51_12-*") / "verdict.json", lt_answer):
+    # the 122B's coverage run (Dan 11:30, item 3), read for the 122B only (the same folder repeats Lightning's e1)
+    q122_answer = pins.RESULTS_DIR / "x51_answer" / "x52_answer-20261029T112359Z" / "verdict.json"
+    for v, only in ((latest_verdict("x51_answer/x51_12-*") / "verdict.json", None), (lt_answer, None),
+                    (q122_answer, "qwen3.5-122b-a10b")):  # fmt: skip
         for m in json.loads(v.read_text())["models"]:
-            if m["set"] != "e1":
+            if m["set"] != "e1" or (only and m["target"] != only):
                 continue
             rc = m["readers"]["recall"]
             S.record("conflict_answer", m["target"], "main test, recall: share of its loss kept when the lens part keeps "

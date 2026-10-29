@@ -12,7 +12,7 @@
 - **Weaker on the 27B:** its lookup follows the lens part in part; adding the address alone brings no position answers back; swaps between given lockers miss on most pairs; on its full layer grid the lookup still needs the lens part after it takes up the address.
 - **Limits, withdrawn, failed:** on Zach's true-fact passages, and when every token before L changes, the lookup follows the lens part too; with made-up facts the split returns on the 9B. Withdrawn: the described bridge on Zach's passages; "one code per locker" is now "swaps between given lockers work; the code's size is open". Did not hold: four mechanism tests, a person mark at the locker sentence, blocking the pick sentence, on every model that ran them [✗].
 
-**Status.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid), and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) as the fifth where it ran (the first tests only; grey "not run" elsewhere); 29 Oct 2026. Unverified until hand-checked. Built at 1398b98e from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its numbers are marked ○ (hollow) everywhere: its gate was chosen after the 60-scene pre-check was seen. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it. The largest model's lookup loses nothing beyond random (0.00<!-- src: docs/x0_numbers.json | lk_excess_k25_122b --> with 25 lens directions; −0.12<!-- src: docs/x0_numbers.json | lk_excess_k100_122b --> with 100, where the 27B loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b -->), so the 27B's weakness is not a total-size trend; active parameters are not separated; its recall effect is the smallest of the five (0.32<!-- src: docs/x0_numbers.json | rc_excess_122b -->) and mixed on varied scenes (0.15<!-- src: docs/x0_numbers.json | x0b_c_122b -->); we cannot separate that from its later layer (L33<!-- src: docs/x0_numbers.json | layer_122b -->, relative depth 0.69<!-- src: figures/story/data.csv | L as a relative depth (L / the number of layers) -->) or FP8. Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
+**Status.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid), and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) as the fifth where it ran (the first tests only; grey "not run" elsewhere); 29 Oct 2026. Unverified until hand-checked. Built at 32c467c7 from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its numbers are marked ○ (hollow) everywhere: its gate was chosen after the 60-scene pre-check was seen. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it. The largest model's lookup loses nothing beyond random (0.00<!-- src: docs/x0_numbers.json | lk_excess_k25_122b --> with 25 lens directions; −0.12<!-- src: docs/x0_numbers.json | lk_excess_k100_122b --> with 100, where the 27B loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b -->), so the 27B's weakness is not a total-size trend; active parameters are not separated; its recall effect is the smallest of the five (0.32<!-- src: docs/x0_numbers.json | rc_excess_122b -->) and mixed on varied scenes (0.15<!-- src: docs/x0_numbers.json | x0b_c_122b -->); we cannot separate that from its later layer (L33<!-- src: docs/x0_numbers.json | layer_122b -->, relative depth 0.69<!-- src: figures/story/data.csv | L as a relative depth (L / the number of layers) -->) or FP8. Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
 
 ## The question and the setup
 
@@ -186,10 +186,10 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   | recall: switches lost, not net of random | 0.53<!-- src: docs/x0_numbers.json \| rc_jdep_9b --> | 0.77<!-- src: docs/x0_numbers.json \| rc_jdep_27b --> | 0.72<!-- src: docs/x0_numbers.json \| rc_jdep_muse --> | 0.41<!-- src: figures/story/data.csv \| conflict: recall, switches lost, not net of random --> | 0.40<!-- src: docs/x0_numbers.json \| rc_jdep_122b --> |
   | lookup: switches lost beyond a random part | −0.03 [−0.08, 0.03]<!-- src: docs/x0_numbers.json \| lk_excess_9b --> | 0.14 [0.08, 0.20]<!-- src: docs/x0_numbers.json \| lk_excess_27b --> | −0.10 [−0.15, −0.04]<!-- src: docs/x0_numbers.json \| lk_excess_muse --> | 0.03 [-0.01, 0.08]<!-- src: figures/story/data.csv \| conflict: lookup, switches lost beyond a random part --> | 0.00 [−0.06, 0.06]<!-- src: docs/x0_numbers.json \| lk_excess_122b --> |
   | the rule | confirmed<!-- src: docs/x0_numbers.json \| verdict_9b --> | not confirmed<!-- src: docs/x0_numbers.json \| verdict_27b --> | confirmed<!-- src: docs/x0_numbers.json \| verdict_muse --> | confirmed<!-- src: figures/story/data.csv \| conflict: the rule --> | confirmed<!-- src: docs/x0_numbers.json \| verdict_122b --> |
-  | recall: share of its loss kept with the answer directions kept | 0.95 [0.90, 0.99]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.93 [0.85, 0.99]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.93 [0.85, 1.00]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.92 [0.83, 1.03]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | not run |
-  | recall: switches lost beyond random without the answer directions only | 0.00 [0.00, 0.00]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | 0.03 [0.01, 0.05]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | -0.01 [-0.05, 0.03]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | 0.00 [-0.02, 0.01]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | not run |
-  | recall: answer word outside the lens's top 50 at the bridge word | 0.56 [0.47, 0.66]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.79 [0.72, 0.86]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.99 [0.98, 1.00]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.95 [0.90, 0.99]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | not run |
-  | the specificity rule | the item<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the item<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the answer word is not read<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the answer word is not read<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | not run |
+  | recall: share of its loss kept with the answer directions kept | 0.95 [0.90, 0.99]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.93 [0.85, 0.99]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.93 [0.85, 1.00]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.92 [0.83, 1.03]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> | 0.98 [0.86, 1.18]<!-- src: figures/story/data.csv \| main test, recall: share of its loss kept when the lens part keeps the answer words' directions --> |
+  | recall: switches lost beyond random without the answer directions only | 0.00 [0.00, 0.00]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | 0.03 [0.01, 0.05]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | -0.01 [-0.05, 0.03]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | 0.00 [-0.02, 0.01]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> | 0.01 [-0.01, 0.04]<!-- src: figures/story/data.csv \| main test, recall: switches lost beyond random without the answer words' directions only --> |
+  | recall: answer word outside the lens's top 50 at the bridge word | 0.56 [0.47, 0.66]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.79 [0.72, 0.86]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.99 [0.98, 1.00]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 0.95 [0.90, 0.99]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> | 1.00 [1.00, 1.00]<!-- src: figures/story/data.csv \| main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word --> |
+  | the specificity rule | the item<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the item<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the answer word is not read<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the answer word is not read<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> | the answer word is not read<!-- src: figures/story/data.csv \| main test, recall: the rule's label (page words) --> |
 
 - **Read.**
   - The recall follows the part of the bridge word the lens reads; the lookup follows the rest, fully on the 9B, Muse, Lightning and the 122B, mostly on the 27B.
@@ -197,11 +197,11 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Caveats.**
   - Following is not needing: a part is taken out of an added change at one layer (see "Does the recall need the lens part, or only follow it?").
   - The 27B's lookup misses its bar, and loses 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b --> beyond random when 100 lens directions go (an open question).
-  - On Muse and Lightning the answer word is almost never near the top of the lens readout, so the rule's first case decides there.
+  - On Muse, Lightning and the 122B the answer word is almost never near the top of the lens readout, so the rule's first case decides there.
   - Two limits, on Zach's passages (Part V): on the full carrier (every token before L), fact-after lookups follow the lens part (0.41<!-- src: figures/story/data.csv | 51.7: fact-after lookups, full carrier: switches lost beyond a random part --> ○ to 0.51<!-- src: figures/story/data.csv | 51.7: fact-after lookups, full carrier: switches lost beyond a random part --> lost beyond random); on his true-fact passages the 9B's and 27B's lookups follow it at L (0.26<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: figures/story/data.csv | Z1: lookup, switches lost beyond a random part -->). On his made-up-fact passages the split holds on the 9B and is in between on the 27B; Lightning is not tested there (gate).
 
 ![The recall follows the lens part of the bridge word; the lookup mostly does not](../../figures/story/fig01_split.png)
-*Switches lost without the lens part beyond a random part, per reader and model, main test at L; whiskers: 95% intervals; grey band: the lookup's 0.10 bar.*
+*Switches lost without the lens part beyond a random part, per reader and model, main test at L (the 122B's L33: the 27B's relative depth carried over); whiskers: 95% intervals; grey band: the lookup's 0.10 bar.*
 
 ### What do the lens part's 25 directions stand for?
 
@@ -229,7 +229,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Descriptive: no rule was fixed in advance; one set (the main test) per model.
 
 ![The lens part's directions: the bridge words, almost never the answer](../../figures/story/fig18_atoms.png)
-*The lens part's rebuilt energy at the bridge word, split by the kind of lens word each of its 25 directions is; main test at L; Lightning hatched (○).*
+*The lens part's rebuilt energy at the bridge word, split by the kind of lens word each of its 25 directions is; main test at L; Lightning hatched (○); 122B not run.*
 
 ### Does the split hold in other texts?
 
@@ -257,7 +257,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - The 9B's natural run had its gate lowered after the data; Lightning's misses its gate, so its natural numbers are descriptive only.
 
 ![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
-*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
+*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; the 122B fifth; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
 
 ### Does each part, added by itself, move its reader?
 
@@ -294,7 +294,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - One layer, and only scenes whose lockers come first.
 
 ![By itself the lens part moves the recall; the rest moves the lookup](../../figures/story/fig16_dose.png)
-*Left: switches with the lens part alone minus a random part of the same size, by dose; rings mark the dose rule (ii) reads. Right: lookups switched by the rest alone, without the address, and without a random part. Rows: 9B, 27B, Muse, Lightning (hollow).*
+*Left: switches with the lens part alone minus a random part of the same size, by dose; rings mark the dose rule (ii) reads. Right: lookups switched by the rest alone, without the address, and without a random part. Rows: 9B, 27B, Muse, Lightning (hollow); 122B not run.*
 
 ### Does the recall need the lens part, or only follow it?
 
@@ -334,7 +334,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Lightning's ladder is below gate: its steps are shown, its rules are not tested.
 
 ![Recall needs the lens part once its other copies go; the lookup never](../../figures/story/fig01d_ladder.png)
-*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow.*
+*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow; 122B not run.*
 
 ### Does the recall also read the item's earlier mention?
 
@@ -367,7 +367,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Zeroing finds a weaker second copy on Muse (previous card): the two operations disagree in size there.
 
 ![The recall reads the item's earlier mention when its locker came first](../../figures/story/fig03c_earlier_mention.png)
-*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: 95% intervals; 9B, 27B, Muse; Lightning below gate, hollow.*
+*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: 95% intervals; 9B, 27B, Muse; Lightning below gate, hollow; 122B not run.*
 
 ## Part II. Identity: which item the lookup reads
 
@@ -394,7 +394,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Figure.**
 
 ![The lookup takes the identity route or the position route, never the value](../../figures/story/fig05_routes.png)
-*The design is drawn on the setup figure's items; the routes test's own scenes are animals.*
+*The design is drawn on the setup figure's items; the routes test's own scenes are animals. The 122B° fifth: its gate lowered to 0.75 after the data.*
 
 The same routes by depth:
 
@@ -523,7 +523,7 @@ The same routes by depth:
   - The output classes are descriptive (CPU check of the stored runs).
 
 ![The recall's entity at the last token: readable through the lens, not used](../../figures/story/fig17_jspace_last_token.png)
-*At the last token, per reader and model: the probe's accuracy on the lens part of the state (read) and the lens swap's switches as a share of the whole-state patch's (swap), both at the layer where the read peaks; Lightning hollow.*
+*At the last token, per reader and model: the probe's accuracy on the lens part of the state (read) and the lens swap's switches as a share of the whole-state patch's (swap), both at the layer where the read peaks; Lightning hollow; 122B not run.*
 
 ## Part V. Other datasets and operations
 

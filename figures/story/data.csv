@@ -13,6 +13,7 @@ fig01,nemotron-3.5-lightning,main test (two people swap picks): recall extra los
 fig01,nemotron-3.5-lightning,main test (two people swap picks): gap,0.3105820105820105,0.1953345470789945,0.4243886120339609,,results/x0_composition/split-by-order-20261029T005451Z/split.json
 fig01,qwen3.5-122b-a10b,main test (two people swap picks): lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
 fig01,qwen3.5-122b-a10b,main test (two people swap picks): recall extra loss,0.32,0.22,0.41,,rc_excess_122b
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): gap,0.32,0.2,0.43,,contrast_122b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.05,-0.07,-0.03,,ld_lk_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.43,0.37,0.48,,ld_rc_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: gap",0.48,0.42,0.53,,ld_gap_9b
@@ -222,6 +223,10 @@ fig03,nemotron-3.5-lightning,"lookups switched by the whole change, locker sente
 fig03,nemotron-3.5-lightning,"recalls switched by the whole change, locker sentence before the pick",1.0,0.9568,1.0,85,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
 fig03,nemotron-3.5-lightning,"lookups switched by the whole change, locker sentence after the pick",0.1478,0.0944,0.224,115,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
 fig03,nemotron-3.5-lightning,"recalls switched by the whole change, locker sentence after the pick",0.9043,0.8368,0.9457,115,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
+fig03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence before the pick",0.8941,0.8109,0.9433,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence before the pick",0.9529,0.8852,0.9816,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig03,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence after the pick",0.113,0.0673,0.1838,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig03,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence after the pick",0.8957,0.8264,0.9393,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 fig03,qwen3.5-9b,"Zach's passages, L12: lookups switched by the whole change, fact-first",0.78,0.6809,0.8641,100,results/x50_zach/z1-20261028T161649Z/z1.json
 fig03,qwen3.5-9b,"Zach's passages, L12: lookups switched by the whole change, fact-after",0.36,0.2653,0.4554,100,results/x50_zach/z1-20261028T161649Z/z1.json
 fig03,qwen3.6-27b,"Zach's passages, L32: lookups switched by the whole change, fact-first",0.6701,0.5652,0.7629,97,results/x50_zach/z1-20261028T161649Z/z1.json
@@ -770,6 +775,17 @@ fig05,nemotron-3.5-lightning,"another item moved, no_alf: value share",0.0,0.0,0
 fig05,nemotron-3.5-lightning,"another item moved, no_alf: original share",0.5833333333333334,0.5267827380952381,0.6428634528016153,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 fig05,nemotron-3.5-lightning,"another item moved, no_alf: other share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 fig05,nemotron-3.5-lightning,"another item moved, no_alf_rand: position share",0.56,0.489959165521145,0.6329996392496392,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, whole: identity share",0.6133333333333333,0.5602821979855772,0.6677978079894592,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, whole: position share",0.38333333333333336,0.32786885245901637,0.4384858044164038,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, whole: original share",0.0033333333333333335,0.0,0.01060070671378092,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, whole: other share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf: identity share",0.62,0.5679001322751323,0.6689655172413793,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf: position share",0.04666666666666667,0.02422145328719723,0.0731754402486109,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf: original share",0.3333333333333333,0.2830754716981132,0.3870967741935484,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf: other share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig05,qwen3.5-122b-a10b,"another item moved, no_alf_rand: position share",0.36,0.30711455079490885,0.41044891284319146,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
 fig06,qwen3.5-9b,layer 6: lookup J++ extra loss,0.6163522012578616,0.5294117647058824,0.6951219512195121,200,qwen35_9b_x0_necessity
 fig06,qwen3.5-9b,layer 8: lookup J++ extra loss,0.3700787401574802,0.2950790187522113,0.44852941176470595,200,qwen35_9b_x0_necessity
 fig06,qwen3.5-9b,layer 10: lookup J++ extra loss,0.26086956521739124,0.18811669628501307,0.32999999999999985,200,qwen35_9b_x0_necessity
@@ -1122,6 +1138,8 @@ fig07,muse-glimmer-30b,"the locker probe at the bridge word, locker-first scenes
 fig07,muse-glimmer-30b,"the locker probe's layout baseline, locker-first scenes",0.5266362252663622,0.49382716049382713,0.5561879716816771,657,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
 fig07,nemotron-3.5-lightning,"the locker probe at the bridge word, locker-first scenes",0.8490566037735849,0.8122795163584637,0.8825405844155844,636,results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.json
 fig07,nemotron-3.5-lightning,"the locker probe's layout baseline, locker-first scenes",0.5172955974842768,0.4893983535072551,0.5427463788696393,636,results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.json
+fig07,qwen3.5-122b-a10b,"the locker probe at the bridge word, locker-first scenes",0.9182058047493403,0.8957702697383312,0.9401610198889916,758,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+fig07,qwen3.5-122b-a10b,"the locker probe's layout baseline, locker-first scenes",0.5303430079155673,0.5037591635338347,0.5562351008557457,758,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
 fig07,qwen3.5-9b,"another item moved, no_alf: position share",0.08333333333333333,0.051118210862619806,0.11654192997832002,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
 fig07,qwen3.5-9b,"another item moved, no_alf_rand: position share",0.5433333333333333,0.4883701485572062,0.594251461812044,300,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
 fig07,qwen3.5-9b,"another item moved, keep_alf: position share",0.26,0.19767326960198547,0.3249231072555205,300,results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.json
@@ -1138,6 +1156,10 @@ fig07,nemotron-3.5-lightning,"another item moved, no_alf: position share",0.1033
 fig07,nemotron-3.5-lightning,"another item moved, no_alf_rand: position share",0.56,0.489959165521145,0.6329996392496392,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 fig07,nemotron-3.5-lightning,"another item moved, keep_alf: position share",0.39666666666666667,0.3476533683401639,0.4509090909090909,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 fig07,nemotron-3.5-lightning,"another item moved, keep_alf_rand: position share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+fig07,qwen3.5-122b-a10b,"another item moved, no_alf: position share",0.04666666666666667,0.02422145328719723,0.0731754402486109,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig07,qwen3.5-122b-a10b,"another item moved, no_alf_rand: position share",0.36,0.30711455079490885,0.41044891284319146,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+fig07,qwen3.5-122b-a10b,"another item moved, keep_alf: position share",0.20666666666666667,0.1624203821656051,0.25847529689842036,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
+fig07,qwen3.5-122b-a10b,"another item moved, keep_alf_rand: position share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
 fig07,qwen3.5-9b,"lookup target share, mean over locker pairs, s = 1",0.0185,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"dose (s / mean s*), s = 1",0.5299,,,,qwen35_9b_x8_write
 fig07,qwen3.5-9b,"lookup target share, mean over locker pairs, s = 2",0.4633,,,,qwen35_9b_x8_write
@@ -1182,6 +1204,17 @@ fig07,nemotron-3.5-lightning,"swap: lookups to the target locker, pooled over lo
 fig07,nemotron-3.5-lightning,"swap: lookups to the target locker, pooled over locker pairs, dose 1.86 (s = 4)",0.6866666666666666,0.6553563503803889,0.7145312865098526,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
 fig07,nemotron-3.5-lightning,"lookup target share, random direction, s = 1",0.0,0.0,0.0,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
 fig07,nemotron-3.5-lightning,"lookup target share, random direction, s = 4",0.0,0.0,0.0,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 1",0.0049,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 1",0.5279,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 2",0.5002,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 2",1.0558,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"lookup target share, mean over locker pairs, s = 4",0.6586,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"dose (s / mean s*), s = 4",2.1116,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"swap: lookups to the target locker, pooled over locker pairs, dose 0.53 (s = 1)",0.005,0.0,0.010714525086173876,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"swap: lookups to the target locker, pooled over locker pairs, dose 1.06 (s = 2)",0.49833333333333335,0.4580835998809834,0.5401933476491355,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"swap: lookups to the target locker, pooled over locker pairs, dose 2.11 (s = 4)",0.6583333333333333,0.6305083413282166,0.688088152284571,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+fig07,qwen3.5-122b-a10b,"lookup target share, random direction, s = 4",0.0033333333333333335,0.0,0.008823789233007686,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
 fig07b_verbal,qwen3.5-9b,47.0 (a) position words the swap's best rank is taken over,15,,,,results/x47_verbal/qwen35_9b_x47_verbal/manifest.json
 fig07b_verbal,qwen3.5-9b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",27.0,20.0,26.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig07b_verbal,qwen3.5-9b,"47.0 (a) best ordinal word's rank, h + pointer write: the random draws' 95% range (2.5th, 97.5th percentile)",26.0,19.0,36.0,200,results/x47_verbal/qwen35_9b_x47_verbal/null.npz
@@ -6243,6 +6276,8 @@ fig12,nemotron-3.5-lightning,"our removal, his passages: gap",0.3214,0.2053,0.43
 fig12,nemotron-3.5-lightning,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.1126,,,200,results/x50_zach/x52_z1-20261029T013035Z/z1.json
 fig12,nemotron-3.5-lightning,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0382,0.0066,0.0759,157,results/x50_zach/x52_z1-20261029T013035Z/z1.json
 fig12,nemotron-3.5-lightning,"Zach's operation, his passages: his stored recall minus lookup",0.6624,0.5752,0.7468,157,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+fig12,qwen3.5-122b-a10b,"our removal, our scenes (main test): gap",0.32,0.2,0.43,200,contrast_122b
+fig12,qwen3.5-122b-a10b,"our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup",-0.1207,,,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 fig09a,qwen3.5-9b,recall extra loss without the J++ part: simple,0.06,0.0,0.12,,ss_jpp_rc_excess_9b
 fig09a,qwen3.5-9b,lookup extra loss without the J++ part: simple,0.0,0.0,0.0,,ss_jpp_lk_excess_9b
 fig09a,qwen3.5-9b,recall extra loss without the J++ part: prose,0.2397,0.145,0.3507,465,results/x0b_generalize/qwen35_9b_x0b_v2_ptr/outcomes.jsonl
@@ -6279,6 +6314,16 @@ fig09a,nemotron-3.5-lightning,recall extra loss without the J++ part: json,0.347
 fig09a,nemotron-3.5-lightning,lookup extra loss without the J++ part: json,0.0,-0.0542,0.0526,197,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
 fig09a,nemotron-3.5-lightning,recall extra loss without the J++ part: table,0.2869,0.2101,0.37,483,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
 fig09a,nemotron-3.5-lightning,lookup extra loss without the J++ part: table,0.0385,0.0077,0.0651,483,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
+fig09a,qwen3.5-122b-a10b,recall extra loss without the J++ part: simple,0.1,0.02,0.18,,ss_jpp_rc_excess_122b
+fig09a,qwen3.5-122b-a10b,lookup extra loss without the J++ part: simple,0.0,0.0,0.0,,ss_jpp_lk_excess_122b
+fig09a,qwen3.5-122b-a10b,recall extra loss without the J++ part: prose,0.1633,0.1295,0.2087,691,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,lookup extra loss without the J++ part: prose,-0.0059,-0.0257,0.0116,691,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,recall extra loss without the J++ part: json,0.1036,0.0457,0.16,221,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,lookup extra loss without the J++ part: json,-0.0058,-0.0408,0.0276,221,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,recall extra loss without the J++ part: table,0.1231,0.0862,0.1656,640,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,lookup extra loss without the J++ part: table,-0.0242,-0.0367,-0.0089,640,results/x0b_generalize/qwen35_122b_x0b_v2_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,recall extra loss without the J++ part: natural,0.1429,0.0364,0.2542,57,results/x5_natural/qwen35_122b_x5_natural_ptr/outcomes.jsonl
+fig09a,qwen3.5-122b-a10b,lookup extra loss without the J++ part: natural,-0.0435,-0.1304,0.0417,57,results/x5_natural/qwen35_122b_x5_natural_ptr/outcomes.jsonl
 fig09b_refit,qwen3.5-9b,(b) prose: lookup switches with the whole change,167,,,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
 fig09b_refit,qwen3.5-9b,(b) prose: lookup extra loss without the refit pointer,0.23952095808383245,0.16042654626172936,0.31818181818181823,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
 fig09b_refit,qwen3.5-9b,(b) prose: lookup extra loss without the pointer fit on simple scenes,0.17365269461077848,0.11728395061728392,0.23529411764705888,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
@@ -8093,6 +8138,10 @@ conflict_answer,nemotron-3.5-lightning,"main test, recall: share of its loss kep
 conflict_answer,nemotron-3.5-lightning,"main test, recall: switches lost beyond random without the answer words' directions only",0.0,-0.01570680628272237,0.012931034482758674,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
 conflict_answer,nemotron-3.5-lightning,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.955,0.9049773755656109,0.9905660377358491,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
 conflict_answer,nemotron-3.5-lightning,"main test, recall: the rule's label (page words)",the answer word is not read,,,,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+conflict_answer,qwen3.5-122b-a10b,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.98,0.8591549295774649,1.1785714285714295,200,results/x51_answer/x52_answer-20261029T112359Z/verdict.json
+conflict_answer,qwen3.5-122b-a10b,"main test, recall: switches lost beyond random without the answer words' directions only",0.01081081081081082,-0.011363636363636465,0.04255319148936165,200,results/x51_answer/x52_answer-20261029T112359Z/verdict.json
+conflict_answer,qwen3.5-122b-a10b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",1.0,1.0,1.0,200,results/x51_answer/x52_answer-20261029T112359Z/verdict.json
+conflict_answer,qwen3.5-122b-a10b,"main test, recall: the rule's label (page words)",the answer word is not read,,,,results/x51_answer/x52_answer-20261029T112359Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: the answer word's median lens rank at the changed token (original prompt), rounded",47,,,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: the bridge entity's median lens rank at the changed token (original prompt), rounded",177,,,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: items whose answer word ranks below the lens's top 50 at the changed token",0.22151898734177214,0.15625,0.2948717948717949,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
@@ -8803,6 +8852,16 @@ ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L38, recall: swit
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L42, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L46, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_lightning_layers,nemotron-3.5-lightning,"conflict test, L50, recall: switches lost beyond random",0.0,0.0,0.0,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L24, lookup: switches lost beyond random",0.42168674698795183,0.32351809954751126,0.5027041959086158,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L27, lookup: switches lost beyond random",0.5620915032679737,0.4672878045043664,0.6405254289215685,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L30, lookup: switches lost beyond random",0.25984251968503935,0.1788545296167247,0.3307692307692308,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L33, lookup: switches lost beyond random",0.0,-0.061855670103092786,0.06382978723404253,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L36, lookup: switches lost beyond random",-0.016949152542372947,-0.09615384615384603,0.05769230769230782,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L24, recall: switches lost beyond random",0.4739583333333335,0.36892859602010597,0.5645988392698917,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L27, recall: switches lost beyond random",0.745945945945946,0.6493482264004652,0.8205128205128205,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L30, recall: switches lost beyond random",0.4540540540540541,0.35761589403973515,0.5513313123008939,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L33, recall: switches lost beyond random",0.3152173913043478,0.2191673801369863,0.41011596081820795,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
+ledger_lightning_layers,qwen3.5-122b-a10b,"conflict test, L36, recall: switches lost beyond random",0.3701298701298702,0.27819247316151346,0.46153846153846156,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.json
 ledger_answer_map,qwen3.5-9b,"ours, lookup: best top-5 share before the answer layer (T L24)",0.695,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
 ledger_answer_map,qwen3.5-9b,"ours, lookup: answers changed by the write, gain 1",0.01,0.0,0.023668639053254437,200,results/x52_answer_map/x52-20261029T004559Z/verdict.json
 ledger_answer_map,qwen3.5-9b,"ours, recall: best top-5 share before the answer layer (T L28)",0.32,,,,results/x52_answer_map/x52-20261029T004559Z/verdict.json
@@ -8879,6 +8938,18 @@ ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: identity sha
 ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: position share",0.39666666666666667,0.3476533683401639,0.4509090909090909,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
 ledger_routes,nemotron-3.5-lightning,"another item moved, keep_alf: original share",0.5333333333333333,0.4804261740283302,0.5848514557338086,300,results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, whole: identity share",0.6133333333333333,0.5602821979855772,0.6677978079894592,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, whole: position share",0.38333333333333336,0.32786885245901637,0.4384858044164038,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, whole: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, whole: original share",0.0033333333333333335,0.0,0.01060070671378092,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, no_alf: identity share",0.62,0.5679001322751323,0.6689655172413793,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, no_alf: position share",0.04666666666666667,0.02422145328719723,0.0731754402486109,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, no_alf: original share",0.3333333333333333,0.2830754716981132,0.3870967741935484,300,results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, keep_alf: identity share",0.013333333333333334,0.00303951367781155,0.0273047541595563,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, keep_alf: position share",0.20666666666666667,0.1624203821656051,0.25847529689842036,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
+ledger_routes,qwen3.5-122b-a10b,"another item moved, keep_alf: original share",0.78,0.722007722007722,0.8285734349919743,300,results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.json
 ledger_six_lockers,qwen3.5-9b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,qwen3.5-9b,dose 2: given-slot swaps reaching 0.25 (of 30),18,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,qwen3.5-9b,the rule's label at dose 2,slot-specific,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
@@ -9127,6 +9198,12 @@ ledger_address_swap,nemotron-3.5-lightning,dose 2: lookups sent to the target,0.
 ledger_address_swap,nemotron-3.5-lightning,dose 2: recalls changed,0.2733333333333333,,,,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
 ledger_address_swap,nemotron-3.5-lightning,dose 4: lookups sent to the target,0.6866666666666666,0.6553563503803889,0.7145312865098526,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
 ledger_address_swap,nemotron-3.5-lightning,dose 4: recalls changed,0.3983333333333333,,,,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 1: lookups sent to the target,0.005,0.0,0.010714525086173876,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 1: recalls changed,0.03166666666666667,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 2: lookups sent to the target,0.49833333333333335,0.4580835998809834,0.5401933476491355,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 2: recalls changed,0.22666666666666666,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 4: lookups sent to the target,0.6583333333333333,0.6305083413282166,0.688088152284571,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+ledger_address_swap,qwen3.5-122b-a10b,dose 4: recalls changed,0.44666666666666666,,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
 ledger_order_split,qwen3.5-9b,locker before the pick: lookups switched,0.86,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
 ledger_order_split,qwen3.5-9b,locker after the pick: lookups switched,0.19,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
 ledger_order_split,qwen3.6-27b,locker before the pick: lookups switched,0.7624,,,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
@@ -9135,6 +9212,8 @@ ledger_order_split,muse-glimmer-30b,locker before the pick: lookups switched,0.6
 ledger_order_split,muse-glimmer-30b,locker after the pick: lookups switched,0.0926,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
 ledger_order_split,nemotron-3.5-lightning,locker before the pick: lookups switched,0.8588,,,85,results/x0_composition/split-by-order-20261029T005451Z/split.json
 ledger_order_split,nemotron-3.5-lightning,locker after the pick: lookups switched,0.1478,,,115,results/x0_composition/split-by-order-20261029T005451Z/split.json
+ledger_order_split,qwen3.5-122b-a10b,locker before the pick: lookups switched,0.8941,,,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+ledger_order_split,qwen3.5-122b-a10b,locker after the pick: lookups switched,0.113,,,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
 ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, pairs that switched",1.301247239112854,1.2373820425073305,1.3697777633606387,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
 ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, pairs that did not",0.19633686542510986,0.1538539160983891,0.24728672422750878,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
 ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, a random vector (switched pairs)",0.0037796860560774803,0.00019191665519942828,0.007716789434633783,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
@@ -9317,6 +9396,10 @@ ledger_address_probe,nemotron-3.5-lightning,"locker sentence, locker first",0.84
 ledger_address_probe,nemotron-3.5-lightning,"the same, layout alone",0.5172955974842768,0.4893983535072551,0.5427463788696393,,
 ledger_address_probe,nemotron-3.5-lightning,"locker sentence, locker after",0.35714285714285715,0.33187134502923976,0.3862344775696999,,
 ledger_address_probe,nemotron-3.5-lightning,"answer digit, locker first",0.25,0.21329069688153468,0.2849250128820546,,
+ledger_address_probe,qwen3.5-122b-a10b,"locker sentence, locker first",0.9182058047493403,0.8957702697383312,0.9401610198889916,,
+ledger_address_probe,qwen3.5-122b-a10b,"the same, layout alone",0.5303430079155673,0.5037591635338347,0.5562351008557457,,
+ledger_address_probe,qwen3.5-122b-a10b,"locker sentence, locker after",0.3288409703504043,0.30536398668584686,0.3529432448084719,,
+ledger_address_probe,qwen3.5-122b-a10b,"answer digit, locker first",0.24802110817941952,0.21170511623080118,0.28477040085328575,,
 ledger_cumulative,qwen3.5-9b,locker first: missed at L,0.040000000000000036,0.0,0.08571428571428574,,
 ledger_cumulative,qwen3.5-9b,locker after: carried before L,0.9264705882352942,0.8490566037735849,0.9772791113381001,,
 ledger_cumulative,qwen3.6-27b,locker first: missed at L,0.04347826086956519,0.0,0.08824460163812349,,
