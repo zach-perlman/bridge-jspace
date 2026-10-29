@@ -1656,9 +1656,7 @@ def report_slot1(plt) -> str:
                        bars=((0.2, "--"),))
 
 
-TWOBYTWO = (R / "x53_2x2" / "x53_2x2-20261029T100414Z" / "verdict.json",)  # 53.1, the combined verdict (9B, 27B)
-TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "not tested\n(relation\n0.382 < 0.80)",
-                  "qb_word": "not tested\n(relation\n0.382 < 0.80)"}  # fmt: skip
+TWOBYTWO = R / "x53_2x2" / "x53_2x2-20261029T104328Z" / "verdict.json"  # 53.1, combined (9B, 27B, Lightning)
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
                   ("qb_word", "Q before, word"))
 
@@ -1666,33 +1664,46 @@ TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"),
 def twobytwo(plt) -> str:
     """53.1 on four slots: per cell of the 2x2 (question after / before the scene x number / word answer), the
     recall's switches lost without the lens part beyond random (arm 1) and its share kept with the answer directions
-    kept (arm 2 over arm 1), and the conflict test's lookup beside (dashed: the cross-check's 0.10); a cell not tested
-    as a grey note; Muse grey (not designed); Lightning grey (not run: no new Lightning coverage)."""
-    v = {m["target"]: m for p in TWOBYTWO for m in load(p) if m.get("status") != "pending" and m.get("cells")}
-    rows = {}
-    for t in ("qwen3.5-9b", "qwen3.6-27b"):
-        if t in v:
-            rows[t] = _twobytwo_rows(v[t])
-    absent = {"muse-glimmer-30b": "not designed\n(Q-before, number:\nDan 11:10 list)",
-              LT: "not run\n(Q-before, number:\nif its gate passes)"}
-    absent.update({t: "running" for t in ("qwen3.5-9b", "qwen3.6-27b") if t not in rows})
+    kept (arm 2 over arm 1), and the conflict test's lookup beside (dashed: the cross-check's 0.10); the lookup's
+    paired difference, question before minus after (Dan 11:25); a cell not tested as a grey note with its own gate;
+    Lightning hollow (its gate set after the pre-check); a model still running grey."""
+    v = {m["target"]: m for m in load(TWOBYTWO)}
+    rows, absent = {}, {}
+    for t in SLOT_MODELS:
+        if v.get(t, {}).get("cells"):
+            rows[t] = _twobytwo_rows(v[t], hollow=t == LT)
+        else:
+            absent[t] = "running" if v.get(t, {}).get("status") == "pending" else "not run"
     return four_panels(plt, "ledger_twobytwo", "With a number answer the recall follows the entity",
                        "Lost: without the lens part, beyond random; kept: share kept with the answer directions kept",
                        rows, absent, "share", xlim=(-0.2, 1.05), bars=((0.10, "--"),))
 
 
-def _twobytwo_rows(m: dict) -> list:
+def _twobytwo_note(c: dict) -> str:
+    """A cell without numbers: stopped (Dan 11:10), the word relation's 9B accuracy, or its own gate."""
+    status = c.get("status") or ""
+    if status.startswith("stopped"):
+        return "not run\n(stopped,\nDan 11:10)"
+    if "relation" in status:
+        return "not tested\n(relation\n0.382 < 0.80)"
+    return f"not tested\n(gate {c['gate']['org_read_accuracy']['PM']:.3f} < 0.80)"
+
+
+def _twobytwo_rows(m: dict, hollow: bool = False) -> list:
     out = []
     for key, word in TWOBYTWO_CELLS:
         c = m["cells"].get(key, {})
         labs = (f"{word}: recall lost", f"{word}: recall kept", f"{word}: lookup lost")
         if c.get("status") == "tested":
             r = c["readers"]["recall"]
-            out += [(labs[0], r["extra"]["1"], INK, False), (labs[1], r["share2"], INK, False),
-                    (labs[2], c["lookup_extra"], LOOKUP, False)]
+            out += [(labs[0], r["extra"]["1"], INK, hollow), (labs[1], r["share2"], INK, hollow),
+                    (labs[2], c["lookup_extra"], LOOKUP, hollow)]
         else:
-            note = TWOBYTWO_NOTES[key] if m["target"] == "qwen3.5-9b" or key.endswith("word") else "pending"
-            out += [(labs[0], note, INK, False), (labs[1], "", INK, False), (labs[2], "", LOOKUP, False)]
+            out += [(labs[0], _twobytwo_note(c), INK, hollow), (labs[1], "", INK, hollow),
+                    (labs[2], "", LOOKUP, hollow)]
+    p = m.get("paired") or {}
+    out.append(("lookup, Q before minus after", p["diff"] if p.get("diff") else "can't tell\n(a cell not tested)",
+                LOOKUP, hollow))
     return out
 
 
