@@ -2,6 +2,7 @@
 
 python scripts/nn_v5_read.py key PREFIX     note 29: jsuite_v5kn (named, primary) and jsuite_v5kd (described)
 python scripts/nn_v5_read.py kc PREFIX      note 30: jsuite_v5kc
+python scripts/nn_v5_read.py key2 PREFIX / kc2 PREFIX   amendment 61 notes 29b / 30b: the rebuilt sets (jsuite_v5kn2, v5kd2, v5kc2)
 python scripts/nn_v5_read.py alias PREFIX   note 31: jsuite_v5al
 Writes results/ablate_v2/nn_v5_read/{PREFIX}{set}.json and prints the readings. Windows: note 25's (scripts.nn_priming_read).
 """
@@ -71,9 +72,9 @@ def per_layer(run, ids, site, what, lens="jlens"):
     return {la: round(100 * sum(v) / len(v), 1) for la, v in sorted(acc.items())}
 
 
-def key(P):
+def key(P, tags=(("v5kn", "step2"), ("v5kd", "step3"))):
     win, out = windows(P), {}
-    for tag, step in (("v5kn", "step2"), ("v5kd", "step3")):
+    for tag, step in tags:
         s = f"jsuite_{tag}_test_chat"
         items = items_of(s)
         run = f"{P}{s}_ko_cand2_v1"
@@ -136,8 +137,8 @@ def key(P):
     return out
 
 
-def kc(P):
-    win, s = windows(P), "jsuite_v5kc_test_chat"
+def kc(P, tag="v5kc"):
+    win, s = windows(P), f"jsuite_{tag}_test_chat"
     items = items_of(s)
     norm = lambda x: (x or "").strip().lower()  # noqa: E731
     comp = collections.defaultdict(dict)
@@ -145,14 +146,14 @@ def kc(P):
         r = json.loads(line)
         comp[r["id"]][r["part"]] = r
     cv = {}
-    for line in (RES / "competence_variants" / f"{P}jsuite_v5kcctl_cv_v1" / "rows.jsonl").open():
+    for line in (RES / "competence_variants" / f"{P}jsuite_{tag}ctl_cv_v1" / "rows.jsonl").open():
         r = json.loads(line)
         cv[r["id"]] = r
 
     def known(i):
         suf = i.split(":")[-1].split("-", 1)[1]
-        h2 = cv.get(f"j3:chat:v5kc:H2-{suf}", {}).get("correct_cand2")
-        h1 = cv.get(f"j3:chat:v5kc:H1-{suf}", {}).get("correct_cand2")
+        h2 = cv.get(f"j3:chat:{tag}:H2-{suf}", {}).get("correct_cand2")
+        h1 = cv.get(f"j3:chat:{tag}:H1-{suf}", {}).get("correct_cand2")
         return bool(h2) and (items[i]["named"] or bool(h1))
 
     def label(i):
@@ -202,7 +203,7 @@ def kc(P):
                     d = mean([x for v in by.values() for x in v])
                     ci = boot_ci(by, lambda us: mean(us))
                     out["knockout"][f"paper10_minus_{ctl}"] = {"d": round(d, 1), "ci": ci, "met": bool(ci) and d >= 10 and ci[0] > 0}
-    val, fam = readout(f"{P}nn_readout_v5kc_v1", win)
+    val, fam = readout(f"{P}nn_readout_{tag}_v1", win)
     if val:
         for w in ("CN", "DN", "CA", "DA"):
             for lens in ("jlens", "logit"):
@@ -276,7 +277,8 @@ def alias(P):
 
 if __name__ == "__main__":
     which, P = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ""
-    res = {"key": key, "kc": kc, "alias": alias}[which](P)
+    res = {"key": key, "kc": kc, "alias": alias, "key2": lambda P: key(P, (("v5kn2", "step2"), ("v5kd2", "step3"))),
+           "kc2": lambda P: kc(P, "v5kc2")}[which](P)
     d = RES / "ablate_v2" / "nn_v5_read"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{P}{which}.json").write_text(json.dumps(res, indent=1) + "\n")
