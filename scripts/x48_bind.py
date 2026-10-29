@@ -89,6 +89,14 @@ COVERAGE_RUNS = {"qwen3.6-27b": "x48_bind_27b"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x48_bind/x48_bind-20261028T113120Z"  # 48.3's rule first scored (the 9B and Muse)
 SOURCES = {"main": B.MAIN_RUN, "45m": B.FRESH_RUN}  # item source -> the x0_necessity run per target
+BELOW = False  # batch 52, Dan's morning queue item 1: --below-gate (Lightning's 45m source below its gate, exploratory)
+
+
+def sources() -> dict[str, dict[str, str]]:
+    """SOURCES, or with BELOW the 45m source extended by Lightning's below-gate run (x45b_binding.FRESH_BELOW)."""
+    return {**SOURCES, "45m": {**B.FRESH_RUN, **B.FRESH_BELOW}} if BELOW else SOURCES
+
+
 RENDERING = "chat"
 TOKENS = ("item", "number")
 S_LIST = (1.0, 2.0)
@@ -258,7 +266,7 @@ def select(tok, target: str, layer: int) -> tuple[list[dict], dict]:
     from scripts import tasks_v2 as T
 
     out, counts = [], {"target": target, "layer": layer, "runs": {}, "dropped": collections.Counter()}
-    for source, runs in SOURCES.items():
+    for source, runs in sources().items():
         run = runs[target]
         src = X.RESULTS / run
         m = json.loads((src / "manifest.json").read_text())
@@ -377,11 +385,13 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "48.3 renders the runs' chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MODELS or target in COVERAGE_RUNS, f"48.3 runs on {[*MODELS, *COVERAGE_RUNS]}, not {target}"
+    assert target in MODELS or target in COVERAGE_RUNS or (BELOW and target in B.FRESH_BELOW), (
+        f"48.3 runs on {[*MODELS, *COVERAGE_RUNS]}, not {target}"
+    )
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    runs = {src: X.RESULTS / r[target] for src, r in SOURCES.items()}
+    runs = {src: X.RESULTS / r[target] for src, r in sources().items()}
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "test": "48.3",
          "spec": "jobs/c3/batch48.yaml (48.3)", "question": f"{QUESTION} ({PREDICTIONS})",
@@ -399,6 +409,9 @@ def stage_run(name: str, why: str) -> Path:
          "seeds": {"split": SPLIT_SEED, "random": RAND_SEED, "random_dirs": f"{RAND_SEED} + layer", "bootstrap": X.BOOT_SEED,
                    "examples": X.EXAMPLES_SEED, "fresh_draws": X.FRESH_SEED}, "n_boot": X.N_BOOT,
          "sealed": f"no probe, rates or verdict in the run; closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if BELOW:  # batch 52, Dan's morning queue item 1: below gate, exploratory
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(runs["45m"].name)},
+              "sealed": "none (below gate, exploratory): verdict --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -776,19 +789,20 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
     """48.3's verdict (sealed until Q48.3), or with coverage (batch 52 C) the same rule on the given coverage runs alone:
     no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_bind-<UTC>/."""
-    answer = (f"{NO_PREDICTION}; rule first scored in {SCORED}; the all-models count covers the given runs only, "
-              "not re-scored") if coverage else dan_answer()  # fmt: skip
+    answer = (f"{B.BELOW_GATE if BELOW else NO_PREDICTION}; rule first scored in {SCORED}; the all-models count "
+              "covers the given runs only, not re-scored") if coverage else dan_answer()  # fmt: skip
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    known = set(COVERAGE_RUNS) if coverage else set(MODELS)
+    known = (set(B.FRESH_BELOW) if BELOW else set(COVERAGE_RUNS)) if coverage else set(MODELS)
     assert set(targets) <= known, f"48.3 runs on {sorted(known)}, not {sorted(set(targets) - known)}"
     if not coverage:
         models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
                    for t in MODELS if t not in targets]  # fmt: skip
     v = batch_verdict(models)
-    out = RESULTS / f"{'x52_bind' if coverage else 'x48_bind'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_bind_below" if BELOW else "x52_bind" if coverage else "x48_bind"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 48.3: forward binding at the locker sentence, outside the lens?", "",
              f"Batch 48, test 48.3 (jobs/c3/batch48.yaml; {QUESTION}, Dan: {answer}). Probe = which of the scene's three "
@@ -890,7 +904,11 @@ def main() -> None:
     ap.add_argument("--why", default="batch 48, test 48.3 (jobs/c3/batch48.yaml; Q48.3)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, Lightning's 45m source below its gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":

@@ -62,3 +62,27 @@ def test_45p_below_gate_verdict(tmp_path, monkeypatch):
     assert "qwen3.5-9b" not in text
     with pytest.raises(AssertionError, match="45p runs on"):
         P.stage_verdict([P.RUNS["qwen3.5-9b"]], 10, below=True)
+
+
+def test_bind_and_route2_below_gate(tmp_path, monkeypatch):
+    """48.3 and 48.5: the 45m source extended by Lightning's below-gate run only with --below-gate; the below-gate
+    verdicts read Lightning alone, no seal, x52_bind_below-<UTC>/ and x52_route2_below-<UTC>/."""
+    from scripts import x45b_binding as B
+    from scripts import x48_bind as BD
+    from scripts import x48_route2 as R2
+
+    assert BD.BELOW is False and BD.sources() is BD.SOURCES and LT not in BD.SOURCES["45m"]
+    monkeypatch.setattr(BD, "BELOW", True)
+    assert BD.sources()["45m"][LT] == B.FRESH_BELOW[LT] and BD.sources()["main"] is B.MAIN_RUN
+    monkeypatch.setattr(BD, "RESULTS", tmp_path)
+    monkeypatch.setattr(BD, "dan_answer", lambda: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    monkeypatch.setattr(
+        BD, "model_result", lambda r, n: {"run": r, "target": LT, "status": "pending", "holds": False, "why": "x"}
+    )
+    out = BD.stage_verdict(["nem35l_x52_bind_below"], 10, coverage=True)
+    assert out.name.startswith("x52_bind_below-") and "below gate (exploratory)" in (out / "x48_bind.md").read_text()
+    monkeypatch.setattr(R2, "RESULTS", tmp_path)
+    monkeypatch.setattr(R2, "dan_answer", lambda: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    out = R2.stage_verdict(["nem35l_x52_route2_below"], 10, below=True)
+    text = (out / f"{R2.EXP}.md").read_text()
+    assert out.name.startswith("x52_route2_below-") and "below gate (exploratory)" in text and ", Dan:" not in text
