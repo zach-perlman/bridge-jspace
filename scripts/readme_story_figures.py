@@ -4219,6 +4219,24 @@ def f18_atoms(plt) -> None:
     B52.build_atoms(tuple(p.parent for p in X52["atoms"]), "fig18_atoms")
 
 
+# Dan's restructure brief (29 Oct 12:50, docs_1250): Part I's new cards, the lens part against the address (53.6's joint
+# verdict; its 122B run queued, fallback_1220) and the order cell (53.1's combined verdict, the 122B included)
+X53_IDADDR = pins.RESULTS_DIR / "x53_identity_address" / "x53_identity_address-20261029T105132Z" / "verdict.json"
+X53_2X2 = pins.RESULTS_DIR / "x53_2x2" / "x53_2x2-20261029T113335Z" / "verdict.json"
+
+
+def f19_identity_address(plt) -> None:
+    from scripts import story_b53 as B53
+
+    B53.build_identity_address((X53_IDADDR,), "fig19_identity_address", {"qwen3.5-122b-a10b": "not run yet: queued"})
+
+
+def f20_order_cell(plt) -> None:
+    from scripts import story_b53 as B53
+
+    B53.build_order_cell(X53_2X2, "fig20_order_cell")
+
+
 def s17_jspace_grids(plt) -> None:
     from scripts import story_b51b as B51B
 
@@ -4322,6 +4340,9 @@ def main(argv: list[str] | None = None) -> None:
     card_numbers()
     ladder_agreement()
     cards_numbers()
+    from scripts import story_b53 as B53
+
+    B53.record_card_numbers(X53_IDADDR, X53_2X2)
     if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/ledger/, their rows into data.csv
         from scripts import ledger_figures as LF
 
