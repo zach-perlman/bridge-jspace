@@ -112,3 +112,52 @@ def test_cue_and_answer_cue_below_gate(tmp_path, monkeypatch):
     monkeypatch.setattr(AN, "BELOW", True)
     assert AN.source_of("cue", LT).name == CUE.BELOW_RUNS[LT]
     assert AN.all_runs(("cue",), coverage=True) == [("cue", LT, "nem35l_x52_cue_answer_below")]
+
+
+def test_natural_below_gate_verdict_carries_the_note(tmp_path, monkeypatch):
+    """x5_natural --below-gate: the run's manifest carries BELOW_GATE and the verdict prints it first."""
+    import json
+
+    from scripts import x0_necessity as X
+    from scripts import x5_natural as N
+
+    run = tmp_path / "r"
+    run.mkdir()
+    (run / "manifest.json").write_text(
+        json.dumps({"model": {"target": LT}, "layer": 14, "rule": "r", "below_gate": N.BELOW_GATE})
+    )
+    rows = [
+        {
+            "scene": f"s{i}",
+            "entity": f"e{i % 3}",
+            "relation": "countries",
+            "half": "A",
+            "reader": w,
+            "arm": a,
+            "dict": "jpp",
+            "switched": int(a == "whole" or (w == X.RECALL and a == "no_rand")),
+            "lure_alt": 0,
+        }
+        for i in range(6)
+        for w in X.READERS
+        for a in ("whole", "no_part", "no_rand")
+    ]
+    X.write_jsonl(run / "outcomes.jsonl", rows)
+    monkeypatch.setattr(N, "RESULTS", tmp_path)
+    out = N.stage_verdict("r", 10)
+    assert N.BELOW_GATE in (out / "verdict.md").read_text()
+
+
+def test_report49_design_from_lightning(tmp_path, monkeypatch):
+    """49.6 on Lightning with the 9B / 27B spec's design: its run and its 47.10 reference looked up; the verdict
+    --design-from reads it alone, no seal, x52_report49-<UTC>/; the design's verdict unchanged."""
+    from scripts import x49_report as R
+
+    assert (
+        R.DESIGN_RUNS == {LT: "nem35l_x52_report49"} and LT not in R.MODELS and R.REFERENCE[LT] == "nem35l_x52_report"
+    )
+    monkeypatch.setattr(R, "RESULTS", tmp_path)
+    monkeypatch.setattr(R, "dan_answer", lambda: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    out = R.stage_verdict(["nem35l_x52_report49"], 10, design_from=True)
+    text = (out / "x49_6.md").read_text()
+    assert out.name.startswith("x52_report49-") and "design from the 9B / 27B spec" in text and ", Dan:" not in text

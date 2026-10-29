@@ -1,0 +1,36 @@
+id: x52_lightning_natural_below
+title: "Batch 52, Dan's morning queue item 1 (last): natural passages (x5) on Lightning at L14, BELOW GATE (exploratory): the read gate fails (the lookup reads 0.77 < 0.80 on 87 cases, 36 eligible at the overnight run), the eligible passages only; the rule verbatim; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  NOTE=$(uv run python -c "from scripts import x5_natural as N; print(N.BELOW_GATE)") &&
+  uv run python scripts/x5_natural.py run --below-gate --name nem35l_x52_natural_below &&
+  printf '%s\n' "$NOTE" > results/x5_natural/nem35l_x52_natural_below/coverage.txt
+question: >-
+  Below gate, in natural passages on Lightning: is the gap (the recall's extra loss minus the lookup's) at least 0.30?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: "natural passages last", below gate,
+  exploratory, hollow, never in the claims table or grades.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  The rule as the depth page's card quotes it, fixed in advance (scripts/x5_natural.py, Dan 25 Oct ~00:20, spec
+  jobs/c3/x5_natural.yaml; scored on the 27B and Muse): natural passages: "holds if the gap is at least 0.30 with its
+  lower bound at least 0.15; fails at 0.10 or below; otherwise mixed." As computed: x5_natural.py run as the overnight
+  nem35l_x52_natural (its set, X0's arms at the bridge's word, the cand2 read, cluster bootstrap over bridge entities)
+  at Lightning's committed L14. BELOW GATE (exploratory): the read gate (0.80 per reader on O) fails (the lookup 0.77,
+  results/x5_natural/nem35l_x52_natural/gate.json); the run reads the eligible passages only (--below-gate; the gate
+  numbers in gate.json, the note in the manifest and the verdict); 36 eligible at the overnight run: a small n, cells
+  under 30 switches left out (amendment 3); hollow, never in the claims table or grades. The run writes its verdict
+  (results/x5_natural/nem35l_x52_natural_below/verdict-<UTC>/, inside the below-gate run's own folder).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + L)"
+- "the recall's lure (the passage's value for the edited bridge), a separate outcome"
+n: "the eligible passages (36 of 87 at the overnight run)"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1, last (coordinator 09:30 Paris). Box: another. Code: x5_natural gains --below-gate (the run continues on the eligible passages although the gate fails; manifest below_gate; the verdict prints the note first; default unchanged: a failed gate still stops). Wallclock: x52_lightning_natural failed at its gate after 242 s (competence only); with the reads on 36 passages: est ~6-8 min, 0.15 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."

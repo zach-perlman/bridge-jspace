@@ -1,0 +1,38 @@
+id: x52_lightning_report49
+title: "Batch 52, Dan's morning queue item 2: 49.6 (one question, two instructions: the report of slot 1, reworded) on Lightning, DESIGN FROM THE 9B / 27B SPEC: 47.10's C0 scenes (Lightning's 47.10 run nem35l_x52_report as the reference), O only, question-last; 49.6's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x47_report/nem35l_x52_report/competence.jsonl &&
+  uv run python scripts/x49_report.py run --name nem35l_x52_report49 --why "Batch 52, Dan's morning queue item 2: 49.6 on Lightning, design from the 9B / 27B spec; no prediction" &&
+  printf '%s\n' "design from the 9B / 27B spec (jobs/c3/x49_6_9b_h.yaml / x49_6_27b_h.yaml); no prediction (Dan's morning queue, 29 Oct)" > results/x49_report/nem35l_x52_report49/coverage.txt &&
+  uv run python scripts/x49_report.py verdict --design-from --runs nem35l_x52_report49
+question: >-
+  On Lightning: with the report reworded twice, is slot 1 read right above 0.2 (it recovers) or does it stay at or
+  below 0.2 under both wordings?
+why_it_matters: >-
+  Dan's morning queue item 2: Lightning, design from the 9B / 27B specs (51.12 Z2, 51.5, 49.6); 49.6 was "not
+  designed" for Lightning.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction)."
+decision_rule: >-
+  49.6's rule verbatim (jobs/c3/batch49.yaml 49.6; scripts/x49_report.py; first scored in
+  results/x49_report/x49_6-20261028T154511Z): "If slot 1 stays <= 0.2 on the 9B under both wordings, keep as an
+  appendix curiosity; if it recovers, drop." As computed: x49_6_9b_h.yaml's text unchanged (47.10's scenes: the routes
+  generator's C0 scenes, seed 2510, 500 generated, the same drops; O only; the two new wordings, position (digit) and
+  sentence (word); question-last; the decisive read = the top token is the answer token; said and candidate beside;
+  cluster bootstrap over bridge items, 10,000, seed 0; 47.10's own wordings read from its competence.jsonl beside: here
+  Lightning's 47.10 run nem35l_x52_report) on Lightning; slot 1's label per model ('stays' / 'recovers'), the action
+  (the 9B's) not re-scored. DESIGN FROM THE 9B / 27B SPEC (Dan's morning queue item 2). Verdict in the job
+  (x49_report.py verdict --design-from: results/x49_report/x52_report49-<UTC>/, never the default x49_6-<UTC>/).
+controls:
+- "47.10's own two wordings on the same scenes (Lightning's 47.10 competence), beside"
+- "said and candidate reads beside the decisive read"
+n: "47.10's C0 scenes on Lightning (500 generated, the same drops)"
+seeds: [2510, 0]
+notes: "Batch 52, Dan's morning queue item 2 (coordinator 09:30 Paris). Box: another. Code: x49_report gains DESIGN_RUNS (Lightning), REFERENCE[Lightning] = nem35l_x52_report and verdict --design-from (no seal, 'design from the 9B / 27B spec', per model, x52_report49-<UTC>/); MODELS / RUNS and 49.6's verdict unchanged (tested). No gate in 49.6 (the design's). Wallclock: x49_6_9b_h 306 s, x49_6_27b_h 362 s: est ~5-8 min, 0.15 GPU-h. UNVERIFIED; into EXPERIMENTS.md."

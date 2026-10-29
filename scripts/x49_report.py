@@ -72,6 +72,12 @@ QUESTION, TEST = "Q49.6", "49.6"
 MODELS = ("qwen3.6-27b", "qwen3.5-9b")
 RUNS = {"qwen3.6-27b": "x49_6_27b", "qwen3.5-9b": "qwen35_9b_x49_6"}
 REFERENCE = {"qwen3.6-27b": "x47_report_27b", "qwen3.5-9b": "qwen35_9b_x47_report"}  # 47.10's runs (competence)
+# Batch 52, Dan's morning queue (29 Oct) item 2: 49.6 on Lightning, the design from the 9B / 27B spec; read by
+# verdict --design-from alone (MODELS / RUNS and 49.6's own verdict unchanged)
+DESIGN_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_report49"}
+REFERENCE["nemotron-3.5-lightning"] = "nem35l_x52_report"  # Lightning's 47.10 run (fill2; its competence.jsonl)
+DESIGN_NOTE = ("design from the 9B / 27B spec (jobs/c3/x49_6_9b_h.yaml / x49_6_27b_h.yaml), 49.6's rule verbatim, read "
+               "per model (the action is the 9B's: not re-scored); no prediction (Dan's morning queue, 29 Oct)")  # fmt: skip
 WORDINGS = ("position", "sentence")
 QUESTIONS = {"position": "Was the locker of {p}'s pick listed in position 1, 2 or 3 of the list?",
              "sentence": "Which of the three locker sentences - the first, the second or the third - gives the "
@@ -191,7 +197,7 @@ def stage_run(name: str, why: str, orders: tuple[str, ...] = ORDERS, n_gen: int 
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "49.6 reads chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MODELS, f"49.6 runs on {MODELS}, not {target}"
+    assert target in MODELS or target in DESIGN_RUNS, f"49.6 runs on {[*MODELS, *DESIGN_RUNS]}, not {target}"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -209,6 +215,8 @@ def stage_run(name: str, why: str, orders: tuple[str, ...] = ORDERS, n_gen: int 
                  "curiosity; above 0.2 under either: drop",
          "seeds": {"scenes": R.SEED, "bootstrap": X.BOOT_SEED, "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
          "sealed": f"no rates in the run; closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in DESIGN_RUNS:  # batch 52: no Q-line
+        m |= {"question": DESIGN_NOTE, "batch": 52, "sealed": "none: verdict --design-from"}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -309,6 +317,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
     if not (src / "outcomes.jsonl").exists():
         target = {r: t for t, r in RUNS.items()}.get(run)
+        target = target or {r: t for t, r in DESIGN_RUNS.items()}.get(run)
         assert target, f"no 49.6 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "no outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -340,16 +349,21 @@ def fmt(v: list | None) -> str:
     return f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]".replace("-", "−")
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, design_from: bool = False) -> Path:
+    """49.6's verdict (sealed until Q49.6), or with design_from (batch 52, Dan's morning queue item 2) the runs made with
+    the design taken from the 9B / 27B spec, alone: no seal, the label per model, x52_report49-<UTC>/."""
+    answer = DESIGN_NOTE if design_from else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [mm["target"] for mm in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"} for t in MODELS
-               if t not in targets]  # fmt: skip
+    if design_from:
+        assert set(targets) <= set(DESIGN_RUNS), f"49.6 --design-from runs on {sorted(DESIGN_RUNS)}, not {targets}"
+    else:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"} for t in MODELS
+                   if t not in targets]  # fmt: skip
     v = decide(models)
-    out = RESULTS / f"x49_6-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_report49' if design_from else 'x49_6'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 49.6: the report of slot 1, reworded", "",
              f"Batch 49, test {TEST} (jobs/c3/batch49.yaml; {QUESTION}, Dan: {answer}). 47.10's C0 scenes, O only; two "
@@ -392,6 +406,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                 for s in SLOTS:
                     lines.append(f"| {mm['target']} | {o} | {w} | {s} | "
                                  + " | ".join(str(conf[s][p]) for p in SLOTS) + " |")  # fmt: skip
+    if design_from:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52, ") for ln in lines]
     (out / "x49_6.json").write_text(json.dumps({"runs": runs, "dan": answer, "verdict": v, "models": models},
                                                indent=1, default=str) + "\n")  # fmt: skip
     (out / "x49_6.md").write_text("\n".join(lines) + "\n")
@@ -442,6 +458,8 @@ def main() -> None:
     ap.add_argument("--n-gen", type=int, default=Q.N_GEN)
     ap.add_argument("--out", type=Path, default=None, help="plan: write the counts and the prompts into this folder")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--design-from", action="store_true",
+                    help="verdict: batch 52, the runs made with the 9B / 27B spec's design (DESIGN_RUNS: Lightning)")  # fmt: skip
     a = ap.parse_args()
     orders = tuple(o for o in a.orders.split(",") if o)
     assert set(orders) <= set(Q.ORDERS), f"--orders {orders}: of {Q.ORDERS}"
@@ -452,7 +470,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, orders, a.n_gen)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.design_from)
     else:
         assert a.name, "view needs --name"
         stage_view(a.name)

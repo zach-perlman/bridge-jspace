@@ -194,7 +194,14 @@ def stage_plan() -> None:
         )
 
 
-def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False, alf_from: str | None = None) -> Path:
+BELOW_GATE = ("below gate (exploratory): the read gate fails (0.80 per reader on O; Lightning's natural passages: the "
+              "lookup reads 0.77, results/x5_natural/nem35l_x52_natural/gate.json); the eligible passages only; hollow, "
+              "never in the claims table or grades; the rule verbatim, no prediction (Dan's morning queue, 29 Oct)")  # fmt: skip
+
+
+def stage_run(
+    name: str, gate_min: float = X.GATE, pointer: bool = False, alf_from: str | None = None, below: bool = False
+) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -214,6 +221,8 @@ def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False, alf_fr
          "gate": gate_min, "gate_fixed_in_advance": X.GATE, "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
          "rule": f"gap >= {HOLD_GAP} with lower CI >= {HOLD_LO} holds; <= {FAIL_GAP} fails; otherwise mixed",
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
+    if below:  # batch 52, Dan's morning queue item 1: the eligible passages although the gate fails
+        m["below_gate"] = BELOW_GATE
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, "jpp")
@@ -247,7 +256,7 @@ def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False, alf_fr
     }
     (out / "gate.json").write_text(json.dumps(gate, indent=2) + "\n")
     print(json.dumps(gate, indent=2), flush=True)
-    if not gate["pass"] or not ok:
+    if (not gate["pass"] and not below) or not ok:
         raise SystemExit(f"gate failed or no eligible items: {gate}")
     cases = ok
     letters = model.letter_token_ids()
@@ -342,7 +351,8 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     out.mkdir()
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
     main = gap(rows, n_boot)
-    lines = [f"# Natural passages: {name}", "", f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, {main['n']} items, "
+    lines = [f"# Natural passages: {name}", "", *([f"**{m['below_gate']}**", ""] if m.get("below_gate") else []),
+             f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, {main['n']} items, "
              f"{main['entities']} bridge entities. Bootstrap over bridge entities ({n_boot} resamples). UNVERIFIED.", "",
              f"## Rule: {label(main['gap']).upper()} (gap {ci(main['gap'])})", "", f"Rule: {m['rule']}.", "",
              f"Lookup excess {ci(main['excess'][X.LOOKUP])}; recall excess {ci(main['excess'][X.RECALL])}.", "",
@@ -377,12 +387,14 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--pointer", action="store_true", help="run: also the pointer directions as a part (T)")
     ap.add_argument("--alf-from", default=None, help="run, with --pointer: the basis from results/<path>/pcf.npz")
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run: batch 52, read the eligible passages although the gate fails (labelled below gate)")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name, a.gate, a.pointer, a.alf_from)
+        stage_run(a.name, a.gate, a.pointer, a.alf_from, a.below_gate)
     stage_verdict(a.name, a.n_boot)
 
 
