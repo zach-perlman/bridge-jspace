@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import math
 import sys
+import textwrap
 from pathlib import Path
 from typing import Any
 
@@ -657,27 +658,64 @@ def build_second_route(verdict_dir: Path, out_name: str = "fig25_second_route", 
 # ---- E15 (v6): the five failed mechanism tests in one panel ---------------------------------------------------------
 
 NEUTRAL = "#222222"  # a probe's or a head count's mark (not a reader)
+LIGHTNING = ("nemotron-3.5-lightning", "Lightning", "Nemotron 3.5 Lightning")
+FOUR = (*ORDER, LIGHTNING)  # E15's four model slots, always in this order (Dan's figures brief, 29 Oct 10:00)
+# batch 52's coverage folders beside the three models' verdicts, by explicit path (a newest-folder pattern would pick a
+# one-model folder): the 27B's 48.2 / 48.3 / 48.4 / 47.6, Lightning's 48.2 A (no B) / 48.4, and Lightning's 48.5 below
+# its gate (exploratory, drawn hollow and labelled); the first folder holding a model wins
+MECH_EXTRA = {
+    "48.2": (pins.RESULTS_DIR / "x48_enrich" / "x52_enrich-20261029T044514Z",),
+    "48.3": (pins.RESULTS_DIR / "x48_bind" / "x52_bind-20261029T023827Z",),
+    "48.4": (pins.RESULTS_DIR / "x48_heads" / "x52_heads48-20261029T044514Z",),
+    "48.5": (pins.RESULTS_DIR / "x48_route2" / "x52_route2_below-20261029T084835Z",),
+    "47.6": (pins.RESULTS_DIR / "x47_edges" / "x52_edges-20261029T023820Z",),
+}
+BELOW_GATE = {("48.5", "nemotron-3.5-lightning")}  # (test, model) drawn from a below-gate folder
+# a model without a result keeps its slot with a short grey label (the coverage matrix's reason,
+# results/x52_coverage/matrix-20261029T062909Z/matrix.json)
+MECH_MISSING = {
+    ("48.2", "nemotron-3.5-lightning"): "not applicable: no MLP in NemotronH",
+    ("48.3", "nemotron-3.5-lightning"): "not tested: gate 0.751",
+    ("47.6", "nemotron-3.5-lightning"): "not tested: knock-out not ported to NemotronH",
+}
+HOLLOW_MODELS = {"nemotron-3.5-lightning"}  # Lightning's gate was chosen after its 60-scene pre-check was seen
+CLEAR = {"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"}  # a label drawn over a rule's dashed bar
 
 
-def mechanism_groups(dirs: dict[str, Path]) -> list[dict]:
+def mechanism_groups(dirs: dict[str, Path], extra: dict[str, tuple[Path, ...]] | None = None) -> list[dict]:
     """E15's rows from the five verdicts, each test's deciding number per model (the same fields the per-test builders
     read): 48.2 B the recall's accuracy lost with the bridge word's late MLPs mean-replaced (rule >= 40); 48.3 the probe
     for who picked the item at the locker sentence, locker after the pick (>= 85); 48.4 the heads passing the rest at
     twice the J++ part, of five (>= 3); 48.5 recalls naming the swapped locker's item under (ii) (>= 30); 47.6 (b)
     identity answers kept with the pick sentence blocked from the lockers (within 10 points of the whole change). Each
-    group: header, measure, rule text, per model [(value [v, lo, hi] in fractions, colour, dy, marker)], n, bar(s)."""
+    group: header, measure, rule text, per model [(value [v, lo, hi] in fractions, colour, dy, marker)], n, bar(s),
+    and each model's source file. extra: per test, more verdict folders (the coverage runs) read after dirs[test], the
+    first folder holding a model winning."""
+    extra = MECH_EXTRA if extra is None else extra
+
+    def folders(test: str, name: str) -> list[Path]:
+        return [d / name for d in (dirs[test], *extra.get(test, ()))]
+
+    def models(test: str, name: str, rows) -> tuple[dict, dict]:
+        """{target: model} over the test's folders (rows(blob) -> [(target, model)]), and {target: source}."""
+        by, src = {}, {}
+        for p in folders(test, name):
+            for t, m in rows(json.loads(p.read_text())):
+                if t not in by:
+                    by[t], src[t] = m, rel(p)
+        return by, src
+
     out = []
-    p = dirs["48.2"] / "x48_2.json"
-    b = {m["target"]: m for m in json.loads(p.read_text())["B"] if m["status"] == "tested"}
-    out.append({"test": "48.2", "src": rel(p), "header": "Late MLPs at the bridge word carry the recall",
+    b, srcs = models("48.2", "x48_2.json", lambda v: [(m["target"], m) for m in v["B"] if m["status"] == "tested"])
+    out.append({"test": "48.2", "src": srcs, "header": "Late MLPs at the bridge word carry the recall",
                 "measure": "recall accuracy lost, those MLPs mean-replaced", "rule": "rule ≥ 40", "bar": 40,
                 "cells": {t: [(m["readers"]["recall"]["drop"]["bridge_late"], S.COL["recall"], 0.0, "o")]
                           for t, m in b.items()},
                 "n": {t: m["readers"]["recall"]["n"] for t, m in b.items()},
                 "q": ["48.2 B, bridge_late: recall accuracy lost"]})  # fmt: skip
-    p = dirs["48.3"] / "x48_bind.json"
-    b = {m["target"]: m for m in json.loads(p.read_text())["models"] if m["status"] == "tested"}
-    out.append({"test": "48.3", "src": rel(p), "header": "A person mark at the locker sentence",
+    tested = lambda v: [(m["target"], m) for m in v["models"] if m["status"] == "tested"]  # noqa: E731
+    b, srcs = models("48.3", "x48_bind.json", tested)
+    out.append({"test": "48.3", "src": srcs, "header": "A person mark at the locker sentence",
                 "measure": "probe for who picked it (● item word, ■ number; chance 33)", "rule": "rule ≥ 85",
                 "bar": 85, "cells": {t: [(m["probes"]["item"]["after"]["accuracy"], NEUTRAL, 0.17, "o"),
                                          (m["probes"]["number"]["after"]["accuracy"], NEUTRAL, -0.17, "s")]
@@ -685,25 +723,25 @@ def mechanism_groups(dirs: dict[str, Path]) -> list[dict]:
                 "n": {t: m["probes"]["item"]["after"]["n"] for t, m in b.items()},
                 "q": ["48.3, probe at the item, locker after the pick (accuracy)",
                       "48.3, probe at the number, locker after the pick (accuracy)"]})  # fmt: skip
-    p = dirs["48.4"] / "x48_heads.json"
-    b = {m["target"]: m for m in json.loads(p.read_text())["models"] if m["status"] == "tested"}
-    out.append({"test": "48.4", "src": rel(p), "header": "Copying heads pass the rest at twice the J++ part",
+    b, srcs = models("48.4", "x48_heads.json", tested)
+    out.append({"test": "48.4", "src": srcs, "header": "Copying heads pass the rest at twice the J++ part",
                 "measure": "heads that do, of the five that copy most (a count)", "rule": "rule ≥ 3 of 5", "bar": 60,
                 "cells": {t: [(m["heads_reading_rest"] / m["heads"], NEUTRAL, 0.0, "D")] for t, m in b.items()},
                 "n": {t: f"{m['heads']} heads" for t, m in b.items()},
                 "q": ["48.4: heads passing the rest at twice the J++ part, share of the five"]})  # fmt: skip
-    p = dirs["48.5"] / "x48_route2.json"
-    b = {m["target"]: m for m in json.loads(p.read_text())["models"]
-         if m["status"] == "tested" and m["readers"]["recall"]["informative"].get("n")}  # fmt: skip
-    out.append({"test": "48.5", "src": rel(p), "header": "The address is the recall's second route",
+    b, srcs = models("48.5", "x48_route2.json", lambda v: [
+        (m["target"], m) for m in v["models"]
+        if m["status"] == "tested" and m["readers"]["recall"]["informative"].get("n")])  # fmt: skip
+    out.append({"test": "48.5", "src": srcs, "header": "The address is the recall's second route",
                 "measure": "recalls naming the item in the swap's target locker", "rule": "rule ≥ 30", "bar": 30,
                 "cells": {t: [(m["readers"]["recall"]["informative"]["share"]["write"]["slot_k"], S.COL["recall"],
                                0.0, "o")] for t, m in b.items()},
                 "n": {t: m["readers"]["recall"]["informative"]["n"] for t, m in b.items()},
                 "q": ["48.5, (ii) (i) and the pointer write: recall names the written locker's item"]})  # fmt: skip
-    p = dirs["47.6"] / "verdict.json"
-    b = {t: r for t, r in json.loads(p.read_text())["b"].items() if r.get("status") == "tested"}
-    out.append({"test": "47.6", "src": rel(p), "header": "Blocking the pick sentence removes position only",
+    b, srcs = models(
+        "47.6", "verdict.json", lambda v: [(t, r) for t, r in v["b"].items() if r.get("status") == "tested"]
+    )
+    out.append({"test": "47.6", "src": srcs, "header": "Blocking the pick sentence removes position only",
                 "measure": "identity answers kept with the block (bar: the whole change's, less 10 points)",
                 "rule": "rule: at the bar or above", "bar": None,
                 "cells": {t: [(r["b"]["lookup"]["rate"]["block/sentence/all|identity"], S.COL["identity"], 0.0, "o")]
@@ -714,17 +752,56 @@ def mechanism_groups(dirs: dict[str, Path]) -> list[dict]:
     return out
 
 
-def build_mechanisms(dirs: dict[str, Path], out_name: str = "fig15_mechanisms", title: str | None = None) -> str:
+MECH_SHORT = {"48.2": "late MLPs", "48.3": "person mark", "48.4": "copying heads", "48.5": "second route",
+              "47.6": "blocking"}  # fmt: skip
+
+
+def mechanism_status(groups: list[dict]) -> list[str]:
+    """The caption's status lines: the models with every test drawn in one line, then one line per other model naming
+    each test's state (drawn, below gate, or its grey label)."""
+    full, lines = [], []
+    for target, short, _ in FOUR:
+        states = []
+        for g in groups:
+            if target in g["cells"]:
+                states.append((g["test"], "below gate" if (g["test"], target) in BELOW_GATE else "drawn"))
+            else:
+                states.append((g["test"], MECH_MISSING.get((g["test"], target), "not run")))
+        if all(s == "drawn" for _, s in states):
+            full.append(short)
+            continue
+        drawn = [MECH_SHORT[t] for t, s in states if s == "drawn"]
+        rest = [f"{MECH_SHORT[t]} {s}" for t, s in states if s != "drawn"]
+        lines.append(f"{short}: " + "; ".join(([", ".join(drawn) + " drawn"] if drawn else []) + rest) + ".")
+    return ([f"{name_list(full)}: every test drawn."] if full else []) + lines
+
+
+def build_mechanisms(
+    dirs: dict[str, Path],
+    out_name: str = "fig15_mechanisms",
+    title: str | None = None,
+    lightning_note: str | None = None,
+) -> str:
     """E15 (v6): one panel, one row group per failed mechanism test (48.2, 48.3, 48.4, 48.5, 47.6 (b)), one row per
-    tested model in the order 9B, 27B, Muse: the test's deciding number (percent, 95% whisker; 48.4 is a count of five
-    heads, no interval) against its rule's bar (dashed). The per-test figures are fig10b-e and fig09c."""
+    model in four slots, always 9B, 27B, Muse, Lightning (Dan's figures brief, 29 Oct 10:00): the test's deciding
+    number (percent, 95% whisker; 48.4 is a count of five heads, no interval) against its rule's bar (dashed); a model
+    without a result keeps its row with a short grey label (MECH_MISSING); Lightning's marks hollow, a below-gate
+    result (BELOW_GATE) labelled so; the caption says each model's status and `lightning_note`. dirs: the three models'
+    verdict folders; the coverage folders come from MECH_EXTRA; lightning_note None: readme_story_figures.LT_NOTE. The
+    per-test figures are fig10b-e and fig09c."""
+    if lightning_note is None:
+        from scripts import readme_story_figures as F  # the README builder imports this module, not the reverse
+
+        lightning_note = F.LT_NOTE
     groups = mechanism_groups(dirs)
     fid = fig_id(out_name)
     plt = S.setup()
-    rows_n = sum(2 + len(g["cells"]) for g in groups)
-    h = 1.25 + 0.3 * rows_n + 0.55
+    caption = [w for line in [*mechanism_status(groups), lightning_note] if line for w in textwrap.wrap(line, 118)]
+    rows_n = sum(2 + len(FOUR) for _ in groups)
+    bottom_in = 0.6 + 0.2 * len(caption)
+    h = 1.25 + 0.3 * rows_n + bottom_in
     fig, ax = plt.subplots(figsize=(S.WIDTH, h))
-    fig.subplots_adjust(left=0.1, right=0.86, top=1 - 1.0 / h, bottom=0.55 / h)
+    fig.subplots_adjust(left=0.1, right=0.86, top=1 - 1.0 / h, bottom=bottom_in / h)
     S.title(fig, title or "Every mechanism we proposed for the split failed its rule",
             "Each test's deciding number per model against its rule's bar (dashed); whiskers: 95% intervals.")  # fmt: skip
     y, ticks, labels = 0.0, [], []
@@ -734,28 +811,38 @@ def build_mechanisms(dirs: dict[str, Path], out_name: str = "fig15_mechanisms", 
         ax.text(0, y - 0.8, g["measure"], ha="left", va="center", color=S.COL["muted"], fontsize=S.FONT - 0.5)
         y -= 1.8
         top = y + 0.5
-        for target, short, _ in ORDER:
-            if target not in g["cells"]:
-                continue
+        for target, short, _ in FOUR:
             ticks.append(y)
             labels.append(short)
+            if target not in g["cells"]:  # the model's slot stays, with its reason in grey
+                ax.text(0.5, y, MECH_MISSING.get((g["test"], target), "not run"), va="center", fontsize=S.FONT - 1,
+                        color=S.COL["muted"], zorder=4, bbox=CLEAR)  # fmt: skip
+                y -= 1
+                continue
+            hollow = target in HOLLOW_MODELS
+            below = (g["test"], target) in BELOW_GATE
+            src = g["src"][target]
             for (v, col, dy, mk), q in zip(g["cells"][target], g["q"], strict=True):
                 vv = pct(v)
                 if isinstance(v, list):
                     ax.plot([vv[1], vv[2]], [y + dy] * 2, color=col, lw=1.6, zorder=2, solid_capstyle="butt")
-                ax.plot([vv[0]], [y + dy], mk, ms=7 if mk != "D" else 6.5, color=col, zorder=3)
+                face = {"mfc": "white", "mec": col, "mew": 1.5} if hollow else {"color": col}
+                ax.plot([vv[0]], [y + dy], mk, ms=7 if mk != "D" else 6.5, zorder=3, **face)
                 text = f"{round(vv[0] / 20)} of 5" if g["test"] == "48.4" else f"{vv[0]:.0f}"
-                ax.text(max(vv[2], vv[0]) + 1.5, y + dy, text, va="center", fontsize=S.FONT - 1, color=col)
+                text += "  below gate" if below else ""
+                ax.text(max(vv[2], vv[0]) + 1.5, y + dy, text, va="center", fontsize=S.FONT - 1, color=col, zorder=4,
+                        bbox=CLEAR if below else None)  # fmt: skip
                 record(fid, target, q, v,
-                       n=g["n"][target] if isinstance(g["n"][target], int) else None, source=g["src"])  # fmt: skip
+                       n=g["n"][target] if isinstance(g["n"][target], int) else None, source=src)  # fmt: skip
             n = g["n"][target]
-            ax.text(1.005, y, f"n {n}", transform=ax.get_yaxis_transform(), va="center", fontsize=S.FONT - 1,
+            glyph = f"  {S.STATUS_GLYPH['after']}" if hollow else ""
+            ax.text(1.005, y, f"n {n}{glyph}", transform=ax.get_yaxis_transform(), va="center", fontsize=S.FONT - 1,
                     color=S.COL["muted"])  # fmt: skip
             if g["bar"] is None:
                 xb = g["row_bar"][target]
                 ax.plot([xb, xb], [y - 0.42, y + 0.42], color=BAR_COL, lw=1.2, ls=(0, (3, 2)), zorder=1)
                 record(fid, target, f"{g['test']}: the rule's bar (whole change's identity share less 0.10)",
-                       xb / 100, source=g["src"])  # fmt: skip
+                       xb / 100, source=src)  # fmt: skip
             y -= 1
         if g["bar"] is not None:
             ax.plot([g["bar"]] * 2, [top, y + 0.5], color=BAR_COL, lw=1.2, ls=(0, (3, 2)), zorder=1)
@@ -769,6 +856,8 @@ def build_mechanisms(dirs: dict[str, Path], out_name: str = "fig15_mechanisms", 
     ax.grid(axis="x", color="#eeeeee")
     ax.spines["left"].set_visible(False)
     S.panel_tag(ax, None, "fixed")
+    fig.text(0.01, (bottom_in - 0.5) / h, "\n".join(caption), ha="left", va="top", fontsize=S.FONT - 1,
+             color="#555555", linespacing=1.25)  # fmt: skip
     return finish(fig, out_name)
 
 
