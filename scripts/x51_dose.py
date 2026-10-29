@@ -72,7 +72,8 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x51_1", "qwen3.6-27b": "x51_1_27b", "muse-glimm
 X49_RUNS = G.RUNS  # 49.1's runs of record: the (1,1) value of rule (iii), the J(1,1) check, the fit's grid cells
 # batch 52 C coverage (amendment 3, extra b): Lightning, where 49.1 never ran (no J(1,1) beside; rule (iii) is Muse's);
 # verdict --coverage reads it alone, 51.1's RUNS and own verdict unchanged
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_dose"}
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_dose",
+                 "qwen3.5-122b-a10b": "qwen35_122b_x51_1"}  # Dan 18:20 (batch53.yaml coverage_122b_1820) # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x51_dose/x51_1-20261028T170335Z"  # 51.1's rules first scored
 ALPHAS = (0.5, 1.0, 1.5, 2.0, 3.0)
