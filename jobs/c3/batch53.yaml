@@ -1,0 +1,83 @@
+# Batch 53 (Dan, 29 Oct 09:30 Paris): exploration day. Recorded verbatim before any code or run.
+id: batch53
+received: "29 Oct ~09:30 Paris (Dan); recorded by the coordinator ~10:20"
+notes: >-
+  Every rule fixed in the brief, before any run; no predictions; UNVERIFIED; results into
+  docs/depth/EXPERIMENTS.md with a card and a figure each; nothing into the README until the next day's
+  verification. Verdicts go to x53_* folders (never a script's default prefix: README figure builders read the
+  newest default folder).
+brief: |
+  Batch 53 (Dan, 29 Oct 09:30): exploration day. Every rule below is fixed now,
+  before any run; no predictions; UNVERIFIED; results into EXPERIMENTS.md with a
+  card and a figure each. README: nothing from batch 53 until tomorrow's
+  verification. Stop adding Lightning coverage beyond what is queued; let queued
+  jobs finish. Finish first: 51.12 K / P on the 9B (Zach's missing cell).
+
+  53.1 (top) The 2x2: question position x answer type, our locker scenes.
+    Models: 9B, then 27B, then Lightning if its gate passes.
+    Cells: (Q-after, number) = the main test as is; (Q-before, number): the same
+    scenes with both questions placed before the scene ("Question: ... Scene:
+    ..."), digits kept; (Q-after, word) and (Q-before, word): the recall asks a
+    relation with a one-token word answer instead of the atomic number. Choose the
+    relation on the 9B before any test: one-token answers, the 9B's accuracy
+    >= 0.8, the answer word must not share a token with any spelling, initial or
+    symbol of the item (the atoms classifier's bridge classes). Lookup questions
+    unchanged.
+    Per cell: the main gate; the conflict test at L; 51.12's arms with the readout
+    check first; the atom inventory (batch 52 A) on 50 items.
+    Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read).
+    Rule across cells:
+    - "position": (Q-before, number) is answer or mixed and (Q-after, word) is
+      entity;
+    - "readability": (Q-after, word) is answer or mixed and (Q-before, number)
+      is entity;
+    - "both": each single change gives mixed and (Q-before, word) gives answer;
+    - "neither": all four entity.
+    Cross-check, decisive for the story: the conflict test's lookup loses <= 0.10
+    beyond random in all four cells ("the pointer does not depend on the
+    question"); report per cell.
+
+  53.2 The monitor test: what a J-space readout can decode vs the full state.
+    CPU on cached states where they exist; forwards only where missing. Main
+    test and the JSON varied scenes; 9B, 27B, Muse, Lightning.
+    Targets: (a) which item is the bridge; (b) the bridge item's locker slot
+    (the address); (c) the lookup's answer digit; (d) the recall's answer.
+    Features at the bridge word and the last token, every 2nd layer: full
+    residual; the J++ lens subspace of dimension k (k = 25, 100); a random
+    subspace of the same k; PCA top-k. Logistic probes, held-out entities,
+    same regularisation, 5 seeds.
+    Rule: "J-space blind to X" if the J++ probe is within 0.10 of the random
+    subspace at every layer while the full residual reaches >= 0.8 at some layer;
+    "J-space carries X" if J++ >= 0.8 and >= 0.3 above random; else in between.
+    One figure: accuracy by layer, one panel per target, four feature lines.
+
+  53.3 The conflict test at the last token.
+    9B, 27B, Muse, Lightning; at 51.10's read-peak layer and the answer layer
+    minus 2. The change = S's last-token state minus O's at that layer; the lens
+    part = its 25 J++ atoms; arms: whole; without the lens part; without a random
+    part of the same share; the lens part alone; the rest alone.
+    Rule per reader: "computes outside the lens at the last token" if the loss
+    without the lens part is <= 0.10 beyond random and the rest alone switches
+    >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond
+    random; else in between.
+
+  53.4 Lightning attention blocks 19 / 26 (the spec sent at 09:20, unchanged).
+
+  53.5 The 27B on its position-route scenes (CPU, existing outcomes).
+    Keep the scenes where the 27B's lookup goes by position under the whole
+    change; recompute on them: position without the address vs random, the
+    address alone, the swap at s = 2. Rule: "same mechanism, used less" if
+    the address alone brings >= 0.25 of position answers back and its removal
+    leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same
+    subset on the 9B beside.
+
+  53.6 (if a GPU idles) The recall: lens identity vs address, in conflict.
+    9B, Lightning. At the bridge word: the lens part toward item B plus the
+    address swap toward item C's slot (s = 2). Read: the recall answers B's,
+    C's or the original. Rule: "the recall follows the lens identity" if B's
+    share >= 2x C's; "follows the address" if C's >= 2x B's; else both.
+
+  Boxes: speedup = 53.1 (9B, then 27B); mats GPU 0 = 53.3; mats GPU 1 = 53.2
+  forwards, then 53.6; another = 51.12 9B K / P, 53.4, then queued Lightning.
+  CPU: 53.5, 53.2 probes. Everything launched by 11:00; at 13:00 and 17:00 a
+  one-screen status with which rules have opened.
