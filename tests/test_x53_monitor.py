@@ -165,6 +165,12 @@ def test_rule_labels():
     # J++ >= 0.8 but only 0.25 above random: in between; a gap of 0.11 at one layer breaks "blind"
     assert M.rule_label(full_hi, np.array([0.3, 0.85, 0.5]), np.array([0.25, 0.6, 0.41]))["label"] == M.LABELS[2]
     assert M.rule_label(full_hi, np.array([0.3, 0.4, 0.62]), np.array([0.25, 0.35, 0.51]))["label"] == M.LABELS[2]
+    # Dan 11:40: within 0.10 everywhere and full >= 0.8, but random reaches 0.8 too: never blind
+    many = M.rule_label(full_hi, np.array([0.5, 0.86, 0.9]), np.array([0.45, 0.8, 0.85]))
+    assert many["label"] == M.LABELS[3]
+    assert M.label_text(many["label"], "b") == M.ADDRESS_MANY
+    assert "decodable from many subspaces" in M.label_text(many["label"], "c")
+    assert M.label_text(M.LABELS[0], "b") == M.LABELS[0]
     # at the bars exactly (EPS): within 0.10 is blind; 0.8 and 0.3 carry
     assert M.rule_label(full_hi, np.array([0.5, 0.6]), np.array([0.4, 0.5]))["label"] == M.LABELS[0]
     assert M.rule_label(full_hi, np.array([0.8]), np.array([0.5]))["label"] == M.LABELS[1]

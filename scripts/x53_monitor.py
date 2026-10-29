@@ -93,6 +93,9 @@ KS = (25, 100)
 K_MAX = max(KS)
 OMP_CHUNK = 256  # rows per OMP batch on the GPU
 TOL_B = 0.02  # the recall's B state vs the lookup's: max relative difference reported (same prefix, kernels may differ)
+CRITIC_1125 = ("53.2 changes, before scoring: headline targets (b) slot and (c) lookup digit; (a) and (d) are positive "
+               "controls. Add a fixed J++ subspace (the k atoms most frequent on the training folds) and an "
+               "energy-matched random subspace beside the current ones. Check one cell against sklearn.")  # fmt: skip
 RULE = ('"J-space blind to X" if the J++ probe is within 0.10 of the random subspace at every layer while the full '
         'residual reaches >= 0.8 at some layer; "J-space carries X" if J++ >= 0.8 and >= 0.3 above random; else in '
         "between.")  # fmt: skip
@@ -435,6 +438,7 @@ TARGET_SHORT = {
     "d": "(d) recall's answer",
 }
 GROUP_BY = {"a": "scene", "b": "entity", "c": "entity", "d": "scene"}
+HEADLINE, CONTROLS = ("b", "c"), ("a", "d")  # critic_1125: headline (b) slot and (c) lookup digit; (a), (d) controls
 GROUP_TEXT = {"entity": "held-out entities (folds grouped by the row's bridge entity)",
               "scene": "held-out scenes (a held-out entity is an unseen class here; x0_probe's precedent): folds "
                        "grouped by scene, a scene's O and S rows together"}  # fmt: skip
@@ -478,7 +482,27 @@ LBFGS_GTOL, LBFGS_FTOL = 1e-3, 1e-7  # dev check (9B L12, one fold): same object
 BLIND_GAP, FULL_MIN, CARRY_MIN, CARRY_GAP = 0.10, 0.8, 0.8, 0.3
 EPS = 1e-9
 WORKERS = 8
-LABELS = ("J-space blind to X", "J-space carries X", "in between")
+LABELS = ("J-space blind to X", "J-space carries X", "in between", "random reads it too")
+# Dan 11:40 (jobs/c3/batch53.yaml additions_1140 item 2), verbatim: the wording where the random subspace also decodes
+# the slot; for the other targets the agent writes the same case as "X is linearly decodable from many subspaces, J++
+# included" (the lens-readout clause is 47.0's, which is about the address only)
+ADDRESS_MANY = "the address is linearly decodable from many subspaces, J++ included; the lens readout does not show it"
+ADDITIONS_1140 = (
+    'report two monitors separately. (a) The lens readout (top words): cite 47.0, unchanged. (b) The trained probe on '
+    'J++ coordinates vs random vs full. If the random subspace also decodes the slot ("random reads it too"), the '
+    'wording is: "the address is linearly decodable from many subspaces, J++ included; the lens readout does not show '
+    'it" — not "J-space is blind". Only "J-space blind" if J++ is within 0.10 of random AND random is under 0.8 while '
+    "the full state is >= 0.8."
+)  # fmt: skip
+
+
+def label_text(label: str, target: str) -> str:
+    """The verdict's wording of a label for a target (Dan 11:40 for the 'random reads it too' case)."""
+    if label != LABELS[3]:
+        return label
+    if target == "b":
+        return ADDRESS_MANY
+    return f"{TARGET_TEXT[target].split(') ', 1)[1]} is linearly decodable from many subspaces, J++ included"
 
 
 def row_table(items: list[dict]) -> dict[str, np.ndarray]:
@@ -835,17 +859,22 @@ def stage_atoms(name: str, source: str) -> Path:
 
 
 def rule_label(full: np.ndarray, jpp: np.ndarray, rand: np.ndarray) -> dict:
-    """53.2's rule on per-layer point estimates (EPS at the bars): blind iff |J++ - random| <= 0.10 at every layer and
-    full >= 0.8 at some layer; carries iff J++ >= 0.8 and J++ - random >= 0.3 at some layer; else in between."""
+    """53.2's rule on per-layer point estimates (EPS at the bars), with Dan's 11:40 wording (additions_1140 item 2):
+    blind iff |J++ - random| <= 0.10 at every layer AND random is under 0.8 (at every layer) while full >= 0.8 at some
+    layer; where J++ is within 0.10 of random everywhere and full >= 0.8 but random reaches 0.8 ("random reads it
+    too"): LABELS[3], never "blind"; carries iff J++ >= 0.8 and J++ - random >= 0.3 at some layer; else in between."""
     gap = jpp - rand
-    blind = bool(np.all(np.abs(gap) <= BLIND_GAP + EPS) and np.any(full >= FULL_MIN - EPS))
+    within = bool(np.all(np.abs(gap) <= BLIND_GAP + EPS))
+    full_ok = bool(np.any(full >= FULL_MIN - EPS))
+    rand_hi = bool(np.any(rand >= FULL_MIN - EPS))
     carry_at = np.flatnonzero((jpp >= CARRY_MIN - EPS) & (gap >= CARRY_GAP - EPS))
     carries = bool(len(carry_at))
-    assert not (blind and carries)
-    label = LABELS[0] if blind else LABELS[1] if carries else LABELS[2]
-    return {"label": label, "full_max": float(full.max()), "jpp_max": float(jpp.max()),
+    blind, many = within and full_ok and not rand_hi, within and full_ok and rand_hi
+    assert not ((blind or many) and carries)
+    label = LABELS[0] if blind else LABELS[3] if many else LABELS[1] if carries else LABELS[2]
+    return {"label": label, "full_max": float(full.max()), "jpp_max": float(jpp.max()), "rand_max": float(rand.max()),
             "gap_max": float(gap.max()), "gap_abs_max": float(np.abs(gap).max()),
-            "carry_layers_idx": [int(i) for i in carry_at], "full_reaches_0.8": bool(np.any(full >= FULL_MIN - EPS))}  # fmt: skip
+            "carry_layers_idx": [int(i) for i in carry_at], "full_reaches_0.8": full_ok}  # fmt: skip
 
 
 def cluster_ci(num: np.ndarray, den: np.ndarray, clusters: np.ndarray, n_boot: int = X.N_BOOT,
@@ -864,20 +893,41 @@ def cluster_ci(num: np.ndarray, den: np.ndarray, clusters: np.ndarray, n_boot: i
 
 
 def load_probes(name: str, s: str) -> dict | None:
-    path = CACHE / name / f"{s}.npz"
+    """The base pass's probes and any other pass's (erand, fixed) merged; None without the base pass."""
+    path = cache_file(name, s, "base")
     if not path.exists():
         return None
-    z = np.load(path)
-    keys = [str(k) for k in z["keys"]]
-    return {"layers": [int(x) for x in z["layers"]], "right": dict(zip(keys, z["right"], strict=True)),
-            "entity": z["entity"], "scene": z["scene"], "seconds": float(z["seconds"].sum())}  # fmt: skip
+    out: dict[str, Any] = {"right": {}, "seconds": 0.0, "passes": []}
+    for pass_ in PASSES:
+        p = cache_file(name, s, pass_)
+        if not p.exists():
+            continue
+        z = np.load(p)
+        keys = [str(k) for k in z["keys"]]
+        layers = [int(x) for x in z["layers"]]
+        if pass_ == "base":
+            out.update({"layers": layers, "entity": z["entity"], "scene": z["scene"]})
+        else:
+            assert layers == out["layers"], f"{p}: layers differ from the base pass"
+            assert (z["entity"] == out["entity"]).all(), f"{p}: rows differ from the base pass"
+        out["right"].update(dict(zip(keys, z["right"], strict=True)))
+        out["seconds"] += float(z["seconds"].sum())
+        out["passes"].append(pass_)
+    return out
+
+
+RULE_ARMS = {  # label -> (the J++ entry, the random entry): the decisive arm first, then the arms beside
+    "": ("jpp", "rand"),  # the brief's: the per-state J++ part vs a random subspace of the same k
+    "fixed_": ("fix", "rand"),  # critic_1125: the same rule with J++ replaced by the fixed J++ subspace
+    "erand_": ("jpp", "erand"),  # beside (the agent's choice): the per-state J++ part vs the energy-matched random
+}
 
 
 def summarize(pr: dict, n_boot: int) -> dict:
     """Per cell (position, target), feature and layer: the accuracy (rows x seeds), its cluster-bootstrap CI over the
-    row's bridge entity; per cell and k the rule."""
+    row's bridge entity; per cell and k the rule (decisive) and its arms beside (RULE_ARMS) where they ran."""
     shares = {k: [round(float(v), 4) for v in pr["right"][k][:, 0].mean(1)] for k in pr["right"]
-              if k.split("|")[1] == "share"}  # fmt: skip
+              if k.split("|")[1] in ("share", "dim")}  # fmt: skip
     keys = sorted(k for k in pr["right"] if k not in shares)
     num = np.concatenate([pr["right"][k][:, 0].T for k in keys], axis=1)  # [n_rows, keys x layers]
     den = np.concatenate([pr["right"][k][:, 1].T for k in keys], axis=1)
@@ -893,13 +943,16 @@ def summarize(pr: dict, n_boot: int) -> dict:
     for cell, feats in acc.items():
         full = np.array(feats["full"]["acc"])
         rules[cell] = {}
-        for k in KS:
-            r = rule_label(full, np.array(feats[f"jpp{k}"]["acc"]), np.array(feats[f"rand{k}"]["acc"]))
-            r["carry_layers"] = [pr["layers"][i] for i in r.pop("carry_layers_idx")]
-            rules[cell][f"k{k}"] = r
+        for tag, (j_arm, r_arm) in RULE_ARMS.items():
+            for k in KS:
+                if f"{j_arm}{k}" not in feats or f"{r_arm}{k}" not in feats:
+                    continue
+                r = rule_label(full, np.array(feats[f"{j_arm}{k}"]["acc"]), np.array(feats[f"{r_arm}{k}"]["acc"]))
+                r["carry_layers"] = [pr["layers"][i] for i in r.pop("carry_layers_idx")]
+                rules[cell][f"{tag}k{k}"] = r
     return {"layers": pr["layers"], "n_rows": len(pr["entity"]), "n_entities": len(set(pr["entity"])),
             "n_scenes": len(set(pr["scene"])), "acc": dict(acc), "rules": rules, "norm_share": shares,
-            "cpu_seconds": pr["seconds"]}  # fmt: skip
+            "passes": pr["passes"], "cpu_seconds": pr["seconds"]}  # fmt: skip
 
 
 def x52_check(name: str, target: str, states_root: Path, x52_root: Path) -> dict | None:
@@ -940,24 +993,28 @@ def figure(results: dict, s: str, path: Path) -> None:
 
     from scripts import story_style as SS
 
-    col = {"full": "#111111", "jpp": SS.COL["lookup"], "rand": "#9a9a9a", "pca": SS.COL["value"], "chance": "#cccccc"}
+    col = {"full": "#111111", "jpp": SS.COL["lookup"], "fix": "#c0a8f0", "rand": "#a8a8a8", "erand": "#5a5a5a",
+           "pca": SS.COL["value"], "chance": "#cccccc"}  # fmt: skip
     models = [t for t in MODELS if results.get(t, {}).get(s)]
     rows = [(t, p) for t in models for p in PROBE_POS]
-    fig, axes = plt.subplots(len(rows), len(TARGETS), figsize=(13, 2.3 * len(rows) + 1.2), sharey=True, squeeze=False)
+    order = (*HEADLINE, *CONTROLS)
+    fig, axes = plt.subplots(len(rows), len(order), figsize=(13, 2.3 * len(rows) + 1.2), sharey=True, squeeze=False)
     for i, (t, p) in enumerate(rows):
         res = results[t][s]
         layers = res["layers"]
-        for j, tg in enumerate(TARGETS):
+        for j, tg in enumerate(order):
             ax = axes[i][j]
             feats = res["acc"][f"{p}|{tg}"]
             ax.plot(layers, feats["chance"]["acc"], ":", color=col["chance"], lw=1.2)
             ax.plot(layers, feats["full"]["acc"], "-", color=col["full"], lw=1.8)
             for k, ls in zip(KS, ("-", "--"), strict=True):
-                for fam in ("rand", "pca", "jpp"):
-                    ax.plot(layers, feats[f"{fam}{k}"]["acc"], ls, color=col[fam], lw=1.5 if fam == "jpp" else 1.1)
-            short = {"J-space blind to X": "blind", "J-space carries X": "carries", "in between": "between"}
+                for fam in ("rand", "erand", "pca", "fix", "jpp"):
+                    if f"{fam}{k}" in feats:
+                        ax.plot(layers, feats[f"{fam}{k}"]["acc"], ls, color=col[fam], lw=1.5 if fam == "jpp" else 1.0)
+            short = {LABELS[0]: "blind", LABELS[1]: "carries", LABELS[2]: "between", LABELS[3]: "many"}
             lab = " / ".join(short[res["rules"][f"{p}|{tg}"][f"k{k}"]["label"]] for k in KS)
-            ax.set_title(f"{TARGET_SHORT[tg]}  [{lab}]", fontsize=8.5)
+            role = "" if tg in HEADLINE else " (control)"
+            ax.set_title(f"{TARGET_SHORT[tg]}{role} [{lab}]", fontsize=8)
             ax.axhline(0.8, color="#e0e0e0", lw=0.8, zorder=0)
             ax.set_ylim(-0.02, 1.02)
             ax.tick_params(labelsize=8)
@@ -966,22 +1023,26 @@ def figure(results: dict, s: str, path: Path) -> None:
             if i == len(rows) - 1:
                 ax.set_xlabel("layer", fontsize=9)
     handles = [plt.Line2D([], [], color=col["full"], lw=1.6, label="full residual"),
-               plt.Line2D([], [], color=col["jpp"], lw=1.4, label="J++ lens part"),
+               plt.Line2D([], [], color=col["jpp"], lw=1.4, label="J++ part (per state)"),
+               plt.Line2D([], [], color=col["fix"], lw=1.1, label="fixed J++ subspace"),
                plt.Line2D([], [], color=col["rand"], lw=1.1, label="random subspace"),
+               plt.Line2D([], [], color=col["erand"], lw=1.1, label="energy-matched random"),
                plt.Line2D([], [], color=col["pca"], lw=1.1, label="PCA top-k"),
                plt.Line2D([], [], color="#555555", ls="-", label="k = 25"),
                plt.Line2D([], [], color="#555555", ls="--", label="k = 100"),
                plt.Line2D([], [], color=col["chance"], ls=":", label="chance (majority)")]  # fmt: skip
-    fig.legend(handles=handles, loc="upper center", ncol=7, fontsize=8.5, frameon=False, bbox_to_anchor=(0.5, 1.0))
-    fig.suptitle(f"53.2, the monitor test: probe accuracy by layer, {SET_TEXT[s]} (held-out entities for (b), (c); "
-                 "held-out scenes for (a), (d); rule label per panel: k = 25 / 100; UNVERIFIED)", fontsize=10,
-                 y=1.0 - 0.35 / (2.3 * len(rows) + 1.2))  # fmt: skip
-    fig.tight_layout(rect=(0, 0, 1, 1 - 0.75 / (2.3 * len(rows) + 1.2)))
+    fig.legend(handles=handles, loc="upper center", ncol=9, fontsize=8, frameon=False, bbox_to_anchor=(0.5, 1.0))
+    height = 2.3 * len(rows) + 1.2
+    fig.suptitle(f"53.2, the monitor test (trained probes): accuracy by layer, {SET_TEXT[s]}. UNVERIFIED\n"
+                 "Headline (b), (c) on held-out entities; positive controls (a), (d) on held-out scenes. Panel label: "
+                 "the decisive rule (per-state J++ vs random), k = 25 / 100; 'many' = random reads it too",
+                 fontsize=9.5, y=1.0 - 0.3 / height)  # fmt: skip
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.95 / height))
     fig.savefig(path, dpi=110)
     plt.close(fig)
 
 
-def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT) -> Path:
+def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out_root: Path = RESULTS) -> Path:
     """CPU: per model and dataset the accuracies, CIs and the rule; one figure per dataset; verdict.md and the json."""
     from bridge_jspace.utils import git_state
 
@@ -997,7 +1058,7 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT) -> 
         if target in results and (states_root / name / "states_main_h.npy").exists():
             checks[target] = x52_check(name, target, states_root, x52_root)
     assert results, "no probes in cache/x53_monitor/: run the probe stage first"
-    out = RESULTS / f"x53_monitor-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = out_root / f"x53_monitor-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True, exist_ok=False)
     figs = []
     for s in SETS:
@@ -1014,7 +1075,15 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT) -> 
                                                 "standardised": "training rows' mean and sd"},
             "bootstrap": {"n": n_boot, "seed": X.BOOT_SEED, "cluster": "the row's bridge entity"},
             "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks, "figures": figs,
-            "code": git_state(), "results": results,
+            "code": git_state(), "critic_1125": CRITIC_1125, "additions_1140": ADDITIONS_1140,
+            "random_reads_it_too_wording": {"b": ADDRESS_MANY, "other targets": "<X> is linearly decodable from many "
+                                            "subspaces, J++ included (the agent's generalisation)"},
+            "lens_readout_monitor": "cited, unchanged: 47.0, results/x47_verbal/summary-20261028T033646Z (9B, 27B, "
+                                    "Muse) and summary-20261029T005548Z (Lightning): not verbalizable",
+            "headline_targets": list(HEADLINE),
+            "positive_controls": list(CONTROLS),
+            "rule_arms": {tag or "decisive": {"J++ entry": j, "random entry": r} for tag, (j, r) in RULE_ARMS.items()},
+            "sklearn_check": sklearn_note(), "results": results,
             "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}  # fmt: skip
     (out / "x53_monitor.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
     (out / "verdict.md").write_text("\n".join(verdict_lines(blob)) + "\n")
@@ -1031,38 +1100,43 @@ def verdict_lines(blob: dict) -> list[str]:
              "every cached layer (every second layer from L0); logistic "
              f"probes, C = {C_REG} for every feature (sklearn's objective, standardised features, scipy L-BFGS); "
              "(b), (c) on held-out entities; (a), (d) on held-out scenes (a held-out entity is an unseen class there). "
-             f"CIs: cluster bootstrap over the bridge entity ({blob['bootstrap']['n']:,}, seed 0).", ""]  # fmt: skip
-    lines += ["## Labels", "",
-              "Notes column (beside the rule, not part of it): 'random reads it too' = blind by the rule while J++ "
-              "itself reaches >= 0.8 (the random subspace decodes X as well, so the label says J++ adds nothing over "
-              "a random subspace, not that J++ cannot read X); 'full < 0.8' = the full residual never reaches 0.8, so "
-              "neither 'blind' nor 'carries' can open.", "",
-              "| model | dataset | position | target | k = 25 | k = 100 | full max | J++25 max (gap to random max) | "
-              "J++100 max (gap max) | PCA25 / PCA100 max | notes |",
-              "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    for t in MODELS:
-        for s in SETS:
-            r = res.get(t, {}).get(s)
-            if not r:
-                continue
-            for p in PROBE_POS:
-                for tg in TARGETS:
-                    ru = r["rules"][f"{p}|{tg}"]
-                    feats = r["acc"][f"{p}|{tg}"]
-                    pca = " / ".join(f"{max(feats[f'pca{k}']['acc']):.2f}" for k in KS)
-                    notes = [
-                        f"k = {k}: random reads it too"
-                        for k in KS
-                        if ru[f"k{k}"]["label"] == LABELS[0] and ru[f"k{k}"]["jpp_max"] >= CARRY_MIN - EPS
-                    ]
-                    if not ru["k25"]["full_reaches_0.8"]:
-                        notes.append("full < 0.8")
-                    lines.append(f"| {NAMES[t]} | {s} (n {r['n_rows']} rows, {r['n_entities']} entities) | {p} | "
-                                 f"{TARGET_TEXT[tg]} | {ru['k25']['label']} | {ru['k100']['label']} | "
-                                 f"{ru['k25']['full_max']:.2f} | {ru['k25']['jpp_max']:.2f} ({ru['k25']['gap_max']:+.2f}) "
-                                 f"| {ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) | {pca} | "
-                                 f"{'; '.join(notes)} |")  # fmt: skip
+             f"CIs: cluster bootstrap over the bridge entity ({blob['bootstrap']['n']:,}, seed 0).", "",
+             f"Dan's changes before scoring (jobs/c3/batch53.yaml critic_1125, verbatim): \"{CRITIC_1125}\"", "",
+             "So: the headline targets are (b) and (c); (a) and (d) are positive controls (their rule outcome below, "
+             "under their own heading). The decisive label is the brief's (the per-state J++ part vs a random subspace "
+             "of the same k). Beside it, the same rule verbatim with: (i) the J++ entries replaced by the fixed J++ "
+             "subspace (fix_k: per training fold the span of the k atoms most frequent among the training rows' first "
+             "k OMP atoms, ties the smaller token id; the held-out rows projected on it unchanged) against the same "
+             "random_k; (ii) the agent's choice, flagged: the per-state J++ part against the energy-matched random "
+             "subspace (erand_k: dimension r = round(the J++_k part's median share of ||h||^2 at that layer and row "
+             "set, over all rows, label-free, x d), the first r columns of the random_k frame; a Haar r-dimensional "
+             "subspace keeps r / d of ||h||^2 in expectation; rescaling a k-dimensional part instead would change "
+             "nothing, the probes standardise every feature).", ""]  # fmt: skip
+    lines += [f"Dan's wording, fixed before the verdict (jobs/c3/batch53.yaml additions_1140 item 2, verbatim): "
+              f"\"{ADDITIONS_1140}\"", "",
+              "Applied: 'J-space blind to X' only if J++ is within 0.10 of random at every layer AND the random "
+              "subspace stays under 0.8 at every layer (the agent's reading of 'random is under 0.8', flagged) while "
+              "the full state reaches >= 0.8 at some layer. Where J++ is within 0.10 of random everywhere and the full "
+              f"state reaches 0.8 but so does random ('random reads it too'), the slot's label is Dan's sentence: "
+              f"\"{ADDRESS_MANY}\"; for the other targets the agent writes '<X> is linearly decodable from many "
+              "subspaces, J++ included' (the lens-readout clause is 47.0's, which is about the address). 'carries' "
+              "and 'in between' as in the brief. Notes column: 'random reads it too' where that case opens; 'full < "
+              "0.8' where the full residual never reaches 0.8 (then neither 'blind' nor 'carries' can open).", "",
+              "## Monitor (a): the lens readout (top words)", "",
+              "Cited, unchanged: 47.0 ('is the pointer verbalizable?'; results/x47_verbal/summary-20261028T033646Z/"
+              "verbal.md for Qwen3.5-9B, Qwen3.6-27B and Muse Glimmer 30B; results/x47_verbal/summary-20261029T005548Z/"
+              "verbal.md for Nemotron 3.5 Lightning): read 'not verbalizable' on all four models. No new numbers "
+              "here.", "",
+              "## Monitor (b): the trained probe on J++ coordinates vs random vs full", ""]  # fmt: skip
+    for title, targets in (("### Headline: (b) the bridge's locker slot and (c) the lookup's answer digit", HEADLINE),
+                           ("### Positive controls: (a) which item is the bridge and (d) the recall's answer",
+                            CONTROLS)):  # fmt: skip
+        lines += [title, "", *label_table(res, targets), "", "Where each decisive label is decided (carries: the "
+                  "first layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer of the largest J++ - "
+                  "random gap). Accuracy [95% CI].", "", *decided_table(res, targets), ""]  # fmt: skip
     missing = [f"{NAMES[t]} {s}" for t in MODELS for s in SETS if not res.get(t, {}).get(s)]
+    missing += [f"{NAMES[t]} {s} ({', '.join(p for p in PASSES if p not in r.get('passes', PASSES))} pass)"
+                for t in MODELS for s, r in res.get(t, {}).items() if set(r.get("passes", PASSES)) != set(PASSES)]  # fmt: skip
     lines += ["", f"Not yet probed (states not pulled): {', '.join(missing) or 'none'}.", ""]
     lines += ["## The main test's states vs 52 B's cache (lowest cosine over rows, any layer)", ""]
     for t, c in blob["x52_check_min_cosine"].items():
@@ -1071,56 +1145,44 @@ def verdict_lines(blob: dict) -> list[str]:
             lines.append(f"- {NAMES[t]}: {lo:.5f} over {len(c)} layers (B, T lookup, T recall)")
         else:
             lines.append(f"- {NAMES[t]}: 52 B's states not found locally")
-    lines += ["", "## Where each label is decided", "",
-              "carries: the first layer with J++ >= 0.8 and J++ - random >= 0.3; otherwise the layer of the largest "
-              "J++ - random gap. Accuracy [95% CI].", "",
-              "| model | dataset | position | target | k | label | layer | full | J++ | random | PCA | chance |",
-              "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    for t in MODELS:
-        for s in SETS:
-            r = res.get(t, {}).get(s)
-            if not r:
-                continue
-            for p in PROBE_POS:
-                for tg in TARGETS:
-                    feats = r["acc"][f"{p}|{tg}"]
-                    for k in KS:
-                        ru = r["rules"][f"{p}|{tg}"][f"k{k}"]
-                        if ru["carry_layers"]:
-                            li = r["layers"].index(ru["carry_layers"][0])
-                        else:
-                            li = int(np.argmax(np.array(feats[f"jpp{k}"]["acc"]) - np.array(feats[f"rand{k}"]["acc"])))
-                        cell = [fmt_acc(feats[f], li) for f in ("full", f"jpp{k}", f"rand{k}", f"pca{k}", "chance")]
-                        lines.append(f"| {NAMES[t]} | {s} | {p} | {TARGET_SHORT[tg]} | {k} | {ru['label']} | "
-                                     f"L{r['layers'][li]} | " + " | ".join(cell) + " |")  # fmt: skip
     lines += ["", "## Beside: each part's share of the state's squared norm (median over layers)", "",
               "The J++ part is fit to each state (OMP picks the atoms that match it), the random subspace is fixed: "
-              "the shares say how much of the state each feature keeps.", "",
-              "| model | dataset | row set | J++25 | J++100 | random25 | random100 |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+              "the shares say how much of the state each feature keeps. The energy-matched random subspace's share "
+              "and dimension (median over layers) beside.", "",
+              "| model | dataset | row set | J++25 | J++100 | random25 | random100 | e-random25 (dim) | e-random100 (dim) |",
+              "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in MODELS:
         for s in SETS:
             r = res.get(t, {}).get(s)
             if not r or not r.get("norm_share"):
                 continue
+            sh = r["norm_share"]
             for pos in POS:
-                vals = [r["norm_share"].get(f"{pos}|share|{f}") for f in ("jpp25", "jpp100", "rand25", "rand100")]
-                if all(v is not None for v in vals):
-                    lines.append(
-                        f"| {NAMES[t]} | {s} | {pos} | " + " | ".join(f"{np.median(v):.3f}" for v in vals) + " |"
-                    )
+                vals = [sh.get(f"{pos}|share|{f}") for f in ("jpp25", "jpp100", "rand25", "rand100")]
+                if not all(v is not None for v in vals):
+                    continue
+                er = [f"{np.median(sh[f'{pos}|share|erand{k}']):.3f} ({int(np.median(sh[f'{pos}|dim|erand{k}']))})"
+                      if f"{pos}|share|erand{k}" in sh else "-" for k in KS]  # fmt: skip
+                lines.append(f"| {NAMES[t]} | {s} | {pos} | " + " | ".join(f"{np.median(v):.3f}" for v in vals)
+                             + " | " + " | ".join(er) + " |")  # fmt: skip
+    sk = blob.get("sklearn_check")
+    if sk:
+        lines += ["", "## The probe against sklearn (critic_1125: one cell)", "",
+                  f"{sk['path']}: {sk['text']}"]  # fmt: skip
     n_text = "; ".join(f"{NAMES[t]} {s} {r['n_rows']} rows ({r['n_scenes']} scenes, {r['n_entities']} bridge entities)"
                        for t in MODELS for s, r in res.get(t, {}).items())  # fmt: skip
     lines += ["", "## Report", "",
               f"EXP x53_monitor (53.2) @ {blob['code'].get('sha', '?')[:8]} | models {', '.join(NAMES[t] for t in res)} | "
               f"n: {n_text} | seeds: probe splits 0-4, random subspaces 888 + layer + 1000 x seed, bootstrap 0", "",
-              "Claim tested: a probe on the J++ lens part of the state decodes (a)-(d) as well as the full residual "
-              "(carries), or no better than a random subspace of the same size while the full residual decodes it "
-              "(blind).", "",
+              "Claim tested (monitor (b)): a trained probe on the J++ lens part of the state decodes the bridge's "
+              "slot (b) and the lookup's digit (c) well above a random subspace of the same size (carries), or no "
+              "better than it while the full residual decodes them and the random subspace does not (blind); (a) "
+              "and (d) are positive controls.", "",
               "Three dumbest ways this could be wrong:",
               "1) The J++ part is fit to each state while the random subspace is fixed, so J++ keeps more of the state "
               "(see the norm shares) and can beat random on energy alone, not because the lens is special. Checked "
-              "beside: PCA top-k (a fixed subspace that keeps the most variance) is drawn in every panel; a 'carries' "
-              "where PCA matches J++ is not lens-specific.",
+              "beside (critic_1125): the energy-matched random subspace (same median energy share) and the fixed J++ "
+              "subspace (no per-state fit) each get the same rule; PCA top-k is drawn in every panel.",
               "2) (a) and (d) are probed on held-out scenes, not entities (a held-out entity is an unseen class); the "
               "probe can then read the bridge's identity and map it to the recall's answer, so (d) at the bridge word "
               "is identity, not the answer computed. Not checked beyond the grouping; (b) and (c) are on held-out "
@@ -1128,21 +1190,88 @@ def verdict_lines(blob: dict) -> list[str]:
               "3) One C for every feature: the full residual and J++ (fit in the training span, up to n_train "
               "dimensions) and the k-dimensional random / PCA features are regularised differently in effect; a "
               "low full-residual ceiling (e.g. the slot at the bridge word) can be the probe, not the state. Not "
-              "checked (the brief fixes the same regularisation).", "",
+              "checked (the brief fixes the same regularisation); the solver itself is checked against sklearn on "
+              "one cell (above).", "",
               "For the human to verify: the rule from the per-layer accuracies in x53_monitor.json "
               "(results[<model>][<set>]['acc']['<B|T>|<a-d>'][<feature>]); one cell end to end by rerunning "
               "`scripts/x53_monitor.py probe --name <run> --states-root <dir with the pulled states>` (deterministic; "
               "cache/x53_monitor/<run>/<set>.npz holds per row [right, held out] over the 5 seeds).", "",
               "Status: UNVERIFIED (exploration day; nothing into the README).", "",
-              f"Figures: {', '.join(blob['figures'])} (accuracy by layer; columns the four targets, rows model x "
-              "position; full black, J++ purple, random grey, PCA green; k = 25 solid, k = 100 dashed; chance "
-              "dotted). Per-layer accuracies, CIs and chance: x53_monitor.json.", ""]  # fmt: skip
+              f"Figures: {', '.join(blob['figures'])} (accuracy by layer; columns the headline (b), (c) then the "
+              "positive controls (a), (d), rows model x position; full black, J++ per state purple, fixed J++ light "
+              "purple, random light grey, energy-matched random dark grey, PCA green; k = 25 solid, k = 100 dashed; "
+              "chance dotted; panel label = the decisive rule per k). Per-layer accuracies, CIs and chance: "
+              "x53_monitor.json.", ""]  # fmt: skip
     return lines
 
 
 def fmt_acc(feat: dict, li: int) -> str:
     lo, hi = feat["ci"][li]
     return f"{feat['acc'][li]:.2f} [{lo:.2f}, {hi:.2f}]"
+
+
+def label_table(res: dict, targets: tuple[str, ...]) -> list[str]:
+    """Per model, dataset, position and target: the decisive labels (k = 25 / 100), the arms beside, the maxima."""
+    lines = ["| model | dataset | position | target | k | decisive: J++ (per state) vs random | beside: fixed J++ vs "
+             "random | beside: J++ vs energy-matched random | full / J++ / fixed / random / e-random / PCA max | notes |",
+             "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if not r:
+                continue
+            for p in PROBE_POS:
+                for tg in targets:
+                    ru, feats = r["rules"][f"{p}|{tg}"], r["acc"][f"{p}|{tg}"]
+                    for k in KS:
+                        lab = {tag: label_text(ru[f"{tag}k{k}"]["label"], tg) if f"{tag}k{k}" in ru else "not run"
+                               for tag in RULE_ARMS}  # fmt: skip
+                        notes = [f"{tag.rstrip('_') or 'decisive'}: random reads it too" for tag in RULE_ARMS
+                                 if f"{tag}k{k}" in ru and ru[f"{tag}k{k}"]["label"] == LABELS[3]]  # fmt: skip
+                        if not ru["k25"]["full_reaches_0.8"]:
+                            notes.append("full < 0.8")
+                        mx = " / ".join(f"{max(feats[f]['acc']):.2f}" if f in feats else "-"
+                                        for f in ("full", f"jpp{k}", f"fix{k}", f"rand{k}", f"erand{k}", f"pca{k}"))  # fmt: skip
+                        lines.append(f"| {NAMES[t]} | {s} ({r['n_rows']} rows, {r['n_entities']} bridges) | {p} | "
+                                     f"{TARGET_SHORT[tg]} | {k} | {lab['']} | {lab['fixed_']} | {lab['erand_']} | "
+                                     f"{mx} | {'; '.join(notes)} |")  # fmt: skip
+    return lines
+
+
+def decided_table(res: dict, targets: tuple[str, ...]) -> list[str]:
+    lines = ["| model | dataset | position | target | k | decisive label | layer | full | J++ | random | fixed J++ | "
+             "e-random | PCA | chance |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if not r:
+                continue
+            for p in PROBE_POS:
+                for tg in targets:
+                    feats = r["acc"][f"{p}|{tg}"]
+                    for k in KS:
+                        ru = r["rules"][f"{p}|{tg}"][f"k{k}"]
+                        if ru["carry_layers"]:
+                            li = r["layers"].index(ru["carry_layers"][0])
+                        else:
+                            li = int(np.argmax(np.array(feats[f"jpp{k}"]["acc"]) - np.array(feats[f"rand{k}"]["acc"])))
+                        cell = [fmt_acc(feats[f], li) if f in feats else "-"
+                                for f in ("full", f"jpp{k}", f"rand{k}", f"fix{k}", f"erand{k}", f"pca{k}", "chance")]  # fmt: skip
+                        lines.append(f"| {NAMES[t]} | {s} | {p} | {TARGET_SHORT[tg]} | {k} | {ru['label']} | "
+                                     f"L{r['layers'][li]} | " + " | ".join(cell) + " |")  # fmt: skip
+    return lines
+
+
+def sklearn_note() -> dict | None:
+    """The newest committed sklearn check (scripts/x53_sklearn_check.py), for the verdict."""
+    runs = sorted(RESULTS.glob("sklearn_check-*/check.json"))
+    if not runs:
+        return None
+    blob = json.loads(runs[-1].read_text())
+    text = "; ".join(f"{c['position']}, ({c['target']}), L{c['layer']}, {c['feature']}: ours {c['acc_scipy_span']:.4f} "
+                     f"vs sklearn {c['acc_sklearn_full']:.4f} (diff {c['diff']:+.4f}; predictions agree "
+                     f"{c['predictions_agree']:.3f})" for c in blob["cells"])  # fmt: skip
+    return {"path": str(runs[-1].parent.relative_to(pins.REPO_ROOT)), "text": f"{blob['run']} main test, " + text}
 
 
 # ---- CLI ------------------------------------------------------------------------------------------------------------
@@ -1170,6 +1299,7 @@ def main() -> None:
     p.add_argument("--states-root", type=Path, default=RESULTS)
     p.add_argument("--x52-root", type=Path, default=pins.RESULTS_DIR / "x52_answer_map")
     p.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    p.add_argument("--out-root", type=Path, default=RESULTS, help="a dry run's folder (default results/x53_monitor)")
     a = ap.parse_args()
     if a.cmd == "plan":
         stage_plan()
@@ -1182,7 +1312,7 @@ def main() -> None:
     elif a.cmd == "atoms":
         stage_atoms(a.name, a.source)
     elif a.cmd == "verdict":
-        stage_verdict(a.states_root, a.x52_root, a.n_boot)
+        stage_verdict(a.states_root, a.x52_root, a.n_boot, a.out_root)
 
 
 if __name__ == "__main__":
