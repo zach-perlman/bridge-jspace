@@ -1,0 +1,49 @@
+{
+  "target": "nemotron-3.5-lightning",
+  "layers": [
+    7,
+    14
+  ],
+  "run": "nem35l_x52_fresh",
+  "scenes_at_L": 295,
+  "dropped": {},
+  "scenes": 295,
+  "entities": 41,
+  "groups": {
+    "after": 133,
+    "mixed": 73,
+    "before": 89
+  },
+  "rows": 885,
+  "rows_by_stratum": {
+    "before": 415,
+    "after": 470
+  },
+  "rule_cell_rows": {
+    "after (locker-after scenes)": 133,
+    "before (locker-first scenes)": 89
+  },
+  "tokens": 7029,
+  "keys": {
+    "w:The": 885,
+    "w:locker": 885,
+    "w:of": 885,
+    "item": 885,
+    "w:is": 885,
+    "number": 885,
+    "w:.": 885,
+    "w:space": 423,
+    "w:the": 354,
+    "item_pre": 57
+  },
+  "keys_in_rule": [
+    "item",
+    "number",
+    "w:.",
+    "w:The",
+    "w:is",
+    "w:locker",
+    "w:of"
+  ],
+  "names": 59
+}
