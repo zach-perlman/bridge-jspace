@@ -167,12 +167,20 @@ class Readout:
         self.cap = self.head.get("final_logit_softcapping")
         gain = pins.TARGETS[model]["norm_gain"]
         self.gain = (1.0 + self.norm_w.float()) if gain == "one_plus_weight" else self.norm_w.float()
-        self.blob = torch.load(lens_file(model), map_location="cpu", weights_only=True, mmap=True)
-        self.lens_layers = [int(x) for x in self.blob["source_layers"]]
+        try:
+            self.blob = torch.load(lens_file(model), map_location="cpu", weights_only=True, mmap=True)
+            self.lens_layers = [int(x) for x in self.blob["source_layers"]]
+            self.no_lens = ""
+        except Exception as e:  # no lens file here: the logit lens, atoms and shares still work
+            self.blob, self.lens_layers = None, []
+            self.no_lens = (
+                f"{model}'s pinned J++ lens is not on this machine ({type(e).__name__}): J++ readouts skipped"
+            )
         self.tok = RS.hf_tokenizer(model)
         self._J: collections.OrderedDict = collections.OrderedDict()
 
     def J(self, layer: int):
+        assert self.blob is not None, self.no_lens
         if layer not in self._J:
             self._J[layer] = self.blob["J"][layer].float()
             while len(self._J) > 4:
@@ -307,6 +315,8 @@ def vector(st: dict, model: str, prompt: str, pos: int, layer: int, kind: str):
         ids = st["atoms_ids"][r, layer]
         if (ids < 0).any():
             return None, f"no J++ map at layer {layer}"
+        if readout(model).no_lens:  # the atoms' lens vectors need J_l
+            return None, readout(model).no_lens
         part = torch.tensor(st["atoms_coef"][r, layer].astype(np.float32)) @ readout(model).atom_rows(
             layer, ids.tolist()
         )
@@ -483,6 +493,8 @@ def check_51_12(st: dict, it: dict, model: str) -> list[dict]:
     if not c or not rd:
         return []
     ro = readout(model)
+    if ro.no_lens:
+        return [{"check": "51.12 answer-word rank", "panel": None, "stored": None, "ok": None, "skipped": ro.no_lens}]
     out = []
     pos = int(st["meta"]["pos"])
     for v, prompt in (("org", "O"), ("alt", "S")):
@@ -668,7 +680,8 @@ def page(q: dict[str, str], server: bool = True) -> str:
             f"<label>tokens (one per line, as typed; #id for an id)<textarea name='tokens' rows='3' cols='28'>{E(typed)}</textarea></label>"
             f"<label>heatmap token<input name='heat' value='{E(q.get('heat', ''))}' size='12' placeholder='e.g.  carbon'></label>"
             "<button>show</button></form>")  # fmt: skip
-    body = [head, form]
+    body = [head, form] + ([f"<div class='box bad'>{E(ro.no_lens)}; the logit lens, the atoms and the shares are shown.</div>"]
+                           if ro.no_lens else [])  # fmt: skip
     v, why = vector(st, model, prompt, pos, layer, kind)
     if v is None:
         body.append(f"<div class='box bad'>{E(why)}</div>")
@@ -758,8 +771,15 @@ def checks_html(st, it, model) -> str:
     rows = check_51_12(st, it, model) + check_x52(st, it, model) + check_share(st, it, model)
     if not rows:
         return "<div class='box mut'>Self-checks: no 51.12 or x52_atoms row for this item.</div>"
-    trs = "".join(f"<tr><td>{E(r['check'])}</td><td>{r['panel']}</td><td>{r['stored']}</td>"
-                  f"<td class='{'ok' if r['ok'] else 'bad'}'>{'equal' if r['ok'] else 'DIFFERS'}</td></tr>" for r in rows)  # fmt: skip
+
+    def verdict(r: dict) -> str:
+        if r["ok"] is None:
+            return f"<td class='mut'>skipped: {E(r.get('skipped', ''))}</td>"
+        return f"<td class='{'ok' if r['ok'] else 'bad'}'>{'equal' if r['ok'] else 'DIFFERS'}</td>"
+
+    trs = "".join(
+        f"<tr><td>{E(r['check'])}</td><td>{r['panel']}</td><td>{r['stored']}</td>{verdict(r)}</tr>" for r in rows
+    )
     return f"<div class='box'><h3>Self-checks</h3><table><tr><th>check</th><th>panel</th><th>stored</th><th></th></tr>{trs}</table></div>"
 
 
@@ -922,6 +942,8 @@ def jread_rank_rows(model: str) -> list[dict]:
 
 
 SECTION = "## J-space rank checks (inspector)"
+# beside the views file's model flags: the 122B's J++ was fit on its bf16 weights (pins.py, the 122B's entry)
+EXTRA_FLAGS = {"qwen3.5-122b-a10b": ["its J++ lens was fit on the bf16 weights; the runs read FP8 activations"]}
 
 
 def share_gaps(rows: list[dict]) -> dict[tuple[str, str], tuple[float, int]]:
@@ -975,7 +997,11 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              "",
              "The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: "
              + "; ".join(f"{label.get(m, m)} {v}: max |gap| {g:.4f} over {n}" for (m, v), (g, n) in share_gaps(rows).items())
-             + ".",
+             + ".", "",
+             "Model flags (docs/review_views.yaml models; the 122B's lens note from src/bridge_jspace/pins.py): "
+             + "; ".join(f"{label.get(m, m)}: " + "; ".join([*I.spec()["models"][m].get("flags", []), *EXTRA_FLAGS.get(m, [])])
+                         for m in sorted({r["model"] for r in rows})
+                         if I.spec()["models"][m].get("flags") or EXTRA_FLAGS.get(m)) + ".",
              "", "| model | test | condition | token | n | top 50: J++ part | rest | random part | rest - random | flag | "
              "median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in table:
@@ -1054,9 +1080,12 @@ def stage_selfcheck() -> list[dict]:
                 for r in check_51_12(st, it, m) + check_x52(st, it, m) + check_share(st, it, m):
                     out.append({"view": v["id"], "item": it["id"], **r})
                     print(json.dumps(out[-1]))
-    n_ok = sum(bool(r["ok"]) for r in out)
-    print(f"self-checks: {n_ok} of {len(out)} equal")
-    write_text(PANEL_CACHE / "selfcheck.json", json.dumps({"equal": n_ok, "rows": out}, indent=1) + "\n")
+    n_ok = sum(r["ok"] is True for r in out)
+    n_skip = sum(r["ok"] is None for r in out)
+    print(f"self-checks: {n_ok} of {len(out) - n_skip} equal; {n_skip} skipped (no lens on this machine)")
+    write_text(
+        PANEL_CACHE / "selfcheck.json", json.dumps({"equal": n_ok, "skipped": n_skip, "rows": out}, indent=1) + "\n"
+    )
     return out
 
 
