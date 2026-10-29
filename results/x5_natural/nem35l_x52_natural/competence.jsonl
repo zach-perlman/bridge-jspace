@@ -1,0 +1,348 @@
+{"scene": "j2:animals:P-L0-ant-0", "reader": "PP", "variant": "org", "greedy": "bird house", "said": "bird", "right": false, "read": "bird", "read_right": false}
+{"scene": "j2:animals:P-L0-ant-0", "reader": "PP", "variant": "alt", "greedy": "bird house", "said": "bird", "right": true, "read": "bird", "read_right": true}
+{"scene": "j2:animals:P-L0-ant-0", "reader": "PM", "variant": "org", "greedy": "insect", "said": "insect", "right": true, "read": "insect", "read_right": true}
+{"scene": "j2:animals:P-L0-ant-0", "reader": "PM", "variant": "alt", "greedy": "fish", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L0-salmon-0", "reader": "PP", "variant": "org", "greedy": "insect house", "said": "insect", "right": true, "read": "insect", "read_right": true}
+{"scene": "j2:animals:P-L0-salmon-0", "reader": "PP", "variant": "alt", "greedy": "bird house", "said": "bird", "right": true, "read": "bird", "read_right": true}
+{"scene": "j2:animals:P-L0-salmon-0", "reader": "PM", "variant": "org", "greedy": "fish", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L0-salmon-0", "reader": "PM", "variant": "alt", "greedy": "insect", "said": "insect", "right": true, "read": "insect", "read_right": true}
+{"scene": "j2:animals:P-L1-butterfly-0", "reader": "PP", "variant": "org", "greedy": "fish house", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L1-butterfly-0", "reader": "PP", "variant": "alt", "greedy": "insect house", "said": "insect", "right": true, "read": "insect", "read_right": true}
+{"scene": "j2:animals:P-L1-butterfly-0", "reader": "PM", "variant": "org", "greedy": "Insects", "said": null, "right": false, "read": "insect", "read_right": true}
+{"scene": "j2:animals:P-L1-butterfly-0", "reader": "PM", "variant": "alt", "greedy": "fish", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L1-salmon-0", "reader": "PP", "variant": "org", "greedy": "amphibian house", "said": "amphibian", "right": true, "read": "amphibian", "read_right": true}
+{"scene": "j2:animals:P-L1-salmon-0", "reader": "PP", "variant": "alt", "greedy": "fish house", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L1-salmon-0", "reader": "PM", "variant": "org", "greedy": "fish", "said": "fish", "right": true, "read": "fish", "read_right": true}
+{"scene": "j2:animals:P-L1-salmon-0", "reader": "PM", "variant": "alt", "greedy": "Insects", "said": null, "right": false, "read": "insect", "read_right": true}
+{"scene": "j2:countries:P-L0-Bolivia-0", "reader": "PP", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Bolivia-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Bolivia-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Bolivia-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Botswana-0", "reader": "PP", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Botswana-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Botswana-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Botswana-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Brazil-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Brazil-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Brazil-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Brazil-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Canada-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L0-Canada-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Canada-0", "reader": "PM", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Canada-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L0-Croatia-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Croatia-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": false, "read": "South America", "read_right": false}
+{"scene": "j2:countries:P-L0-Croatia-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Croatia-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Cuba-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Cuba-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Cuba-0", "reader": "PM", "variant": "org", "greedy": "Cuba is in North America.", "said": "North America", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L0-Cuba-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Finland-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Finland-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Finland-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Finland-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-France-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L0-France-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L0-France-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-France-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Ghana-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L0-Ghana-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L0-Ghana-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Ghana-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Greece-0", "reader": "PP", "variant": "org", "greedy": "South America", "said": "South America", "right": false, "read": "South America", "read_right": false}
+{"scene": "j2:countries:P-L0-Greece-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Greece-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Greece-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Iceland-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L0-Iceland-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Iceland-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Iceland-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Italy-0", "reader": "PP", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Italy-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Italy-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": false, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Italy-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Kenya-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Kenya-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Kenya-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Kenya-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Laos-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": false, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L0-Laos-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Laos-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Laos-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": false, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L0-Mexico-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Mexico-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Mexico-0", "reader": "PM", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L0-Mexico-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Nigeria-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Nigeria-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Nigeria-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Nigeria-0", "reader": "PM", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Paraguay-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Paraguay-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Paraguay-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Paraguay-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Portugal-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L0-Portugal-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Portugal-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Portugal-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Spain-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Spain-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Spain-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Spain-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Sweden-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Sweden-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Sweden-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Sweden-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Thailand-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L0-Thailand-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Thailand-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Thailand-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L0-Uzbekistan-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Uzbekistan-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L0-Uzbekistan-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Uzbekistan-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Vietnam-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L0-Vietnam-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L0-Vietnam-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L0-Vietnam-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Bolivia-0", "reader": "PP", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-Bolivia-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Bolivia-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Bolivia-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Botswana-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Botswana-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Botswana-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Botswana-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Brazil-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Brazil-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Brazil-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Brazil-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Canada-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Canada-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-Canada-0", "reader": "PM", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-Canada-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Croatia-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Croatia-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Croatia-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Croatia-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Cuba-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Cuba-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Cuba-0", "reader": "PM", "variant": "org", "greedy": "Cuba is in the continent of North", "said": null, "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Cuba-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Finland-0", "reader": "PP", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Finland-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Finland-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": false, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Finland-0", "reader": "PM", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-France-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-France-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-France-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-France-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Ghana-0", "reader": "PP", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Ghana-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-Ghana-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": false, "read": "South America", "read_right": false}
+{"scene": "j2:countries:P-L1-Ghana-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Greece-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Greece-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Greece-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Greece-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Iceland-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Iceland-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Iceland-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Iceland-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Italy-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Italy-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Italy-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Italy-0", "reader": "PM", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Kenya-0", "reader": "PP", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Kenya-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Kenya-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Kenya-0", "reader": "PM", "variant": "alt", "greedy": "Iceland is in Europe.", "said": "Europe", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Laos-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Laos-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Laos-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Laos-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Mexico-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Mexico-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Mexico-0", "reader": "PM", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Mexico-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Nigeria-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": false, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Nigeria-0", "reader": "PP", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Nigeria-0", "reader": "PM", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Nigeria-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Paraguay-0", "reader": "PP", "variant": "org", "greedy": "North America", "said": "North America", "right": true, "read": "North America", "read_right": true}
+{"scene": "j2:countries:P-L1-Paraguay-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Paraguay-0", "reader": "PM", "variant": "org", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Paraguay-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Poland-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Poland-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Poland-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Poland-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Portugal-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Portugal-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Portugal-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Portugal-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Spain-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Asia", "read_right": false}
+{"scene": "j2:countries:P-L1-Spain-0", "reader": "PP", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Spain-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Spain-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Sweden-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Sweden-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:countries:P-L1-Sweden-0", "reader": "PM", "variant": "org", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Sweden-0", "reader": "PM", "variant": "alt", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Thailand-0", "reader": "PP", "variant": "org", "greedy": "Asia", "said": "Asia", "right": false, "read": "Europe", "read_right": false}
+{"scene": "j2:countries:P-L1-Thailand-0", "reader": "PP", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Thailand-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Thailand-0", "reader": "PM", "variant": "alt", "greedy": "Europe", "said": "Europe", "right": true, "read": "Europe", "read_right": true}
+{"scene": "j2:countries:P-L1-Uzbekistan-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Uzbekistan-0", "reader": "PP", "variant": "alt", "greedy": "North America", "said": "North America", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Uzbekistan-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Asia", "read_right": true}
+{"scene": "j2:countries:P-L1-Uzbekistan-0", "reader": "PM", "variant": "alt", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Vietnam-0", "reader": "PP", "variant": "org", "greedy": "Africa", "said": "Africa", "right": true, "read": "Africa", "read_right": true}
+{"scene": "j2:countries:P-L1-Vietnam-0", "reader": "PP", "variant": "alt", "greedy": "South America", "said": "South America", "right": false, "read": "South America", "read_right": false}
+{"scene": "j2:countries:P-L1-Vietnam-0", "reader": "PM", "variant": "org", "greedy": "Asia", "said": "Asia", "right": true, "read": "Africa", "read_right": false}
+{"scene": "j2:countries:P-L1-Vietnam-0", "reader": "PM", "variant": "alt", "greedy": "South America", "said": "South America", "right": true, "read": "South America", "read_right": true}
+{"scene": "j2:languages:P-L0-Angola-0", "reader": "PP", "variant": "org", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Angola-0", "reader": "PP", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-Angola-0", "reader": "PM", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Angola-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Argentina-0", "reader": "PP", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Argentina-0", "reader": "PP", "variant": "alt", "greedy": "Greek", "said": "Greek", "right": false, "read": "Greek", "read_right": false}
+{"scene": "j2:languages:P-L0-Argentina-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Argentina-0", "reader": "PM", "variant": "alt", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L0-Austria-0", "reader": "PP", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Austria-0", "reader": "PP", "variant": "alt", "greedy": "Persian", "said": "Persian", "right": true, "read": "Persian", "read_right": true}
+{"scene": "j2:languages:P-L0-Austria-0", "reader": "PM", "variant": "org", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-Austria-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Chile-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L0-Chile-0", "reader": "PP", "variant": "alt", "greedy": "Swedish", "said": "Swedish", "right": false, "read": "Swedish", "read_right": false}
+{"scene": "j2:languages:P-L0-Chile-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Chile-0", "reader": "PM", "variant": "alt", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L0-Cuba-0", "reader": "PP", "variant": "org", "greedy": "Polish", "said": "Polish", "right": true, "read": "Polish", "read_right": true}
+{"scene": "j2:languages:P-L0-Cuba-0", "reader": "PP", "variant": "alt", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L0-Cuba-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Cuba-0", "reader": "PM", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-France-0", "reader": "PP", "variant": "org", "greedy": "French", "said": "French", "right": false, "read": "French", "read_right": false}
+{"scene": "j2:languages:P-L0-France-0", "reader": "PP", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-France-0", "reader": "PM", "variant": "org", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-France-0", "reader": "PM", "variant": "alt", "greedy": "Turkish", "said": "Turkish", "right": true, "read": "Turkish", "read_right": true}
+{"scene": "j2:languages:P-L0-Ghana-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L0-Ghana-0", "reader": "PP", "variant": "alt", "greedy": "Polish", "said": "Polish", "right": true, "read": "Polish", "read_right": true}
+{"scene": "j2:languages:P-L0-Ghana-0", "reader": "PM", "variant": "org", "greedy": "English", "said": "English", "right": true, "read": "English", "read_right": true}
+{"scene": "j2:languages:P-L0-Ghana-0", "reader": "PM", "variant": "alt", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Greece-0", "reader": "PP", "variant": "org", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Greece-0", "reader": "PP", "variant": "alt", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Greece-0", "reader": "PM", "variant": "org", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L0-Greece-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Hungary-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": false, "read": "Hungarian", "read_right": false}
+{"scene": "j2:languages:P-L0-Hungary-0", "reader": "PP", "variant": "alt", "greedy": "Persian", "said": "Persian", "right": true, "read": "Persian", "read_right": true}
+{"scene": "j2:languages:P-L0-Hungary-0", "reader": "PM", "variant": "org", "greedy": "Hungarian", "said": "Hungarian", "right": true, "read": "Hungarian", "read_right": true}
+{"scene": "j2:languages:P-L0-Hungary-0", "reader": "PM", "variant": "alt", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Israel-0", "reader": "PP", "variant": "org", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-Israel-0", "reader": "PP", "variant": "alt", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L0-Israel-0", "reader": "PM", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L0-Israel-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Italy-0", "reader": "PP", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L0-Italy-0", "reader": "PP", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": false, "read": "Hebrew", "read_right": false}
+{"scene": "j2:languages:P-L0-Italy-0", "reader": "PM", "variant": "org", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L0-Italy-0", "reader": "PM", "variant": "alt", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Mexico-0", "reader": "PP", "variant": "org", "greedy": "English", "said": "English", "right": false, "read": "English", "read_right": false}
+{"scene": "j2:languages:P-L0-Mexico-0", "reader": "PP", "variant": "alt", "greedy": "Persian", "said": "Persian", "right": true, "read": "Persian", "read_right": true}
+{"scene": "j2:languages:P-L0-Mexico-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Mexico-0", "reader": "PM", "variant": "alt", "greedy": "Wolof", "said": null, "right": false, "read": "Portuguese", "read_right": false}
+{"scene": "j2:languages:P-L0-Portugal-0", "reader": "PP", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": false, "read": "Portuguese", "read_right": false}
+{"scene": "j2:languages:P-L0-Portugal-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Portugal-0", "reader": "PM", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Portugal-0", "reader": "PM", "variant": "alt", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Senegal-0", "reader": "PP", "variant": "org", "greedy": "English", "said": "English", "right": true, "read": "English", "read_right": true}
+{"scene": "j2:languages:P-L0-Senegal-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Senegal-0", "reader": "PM", "variant": "org", "greedy": "English", "said": "English", "right": false, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Senegal-0", "reader": "PM", "variant": "alt", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L0-Sweden-0", "reader": "PP", "variant": "org", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L0-Sweden-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L0-Sweden-0", "reader": "PM", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L0-Sweden-0", "reader": "PM", "variant": "alt", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L0-Tunisia-0", "reader": "PP", "variant": "org", "greedy": "Polish", "said": "Polish", "right": true, "read": "Polish", "read_right": true}
+{"scene": "j2:languages:P-L0-Tunisia-0", "reader": "PP", "variant": "alt", "greedy": "English", "said": "English", "right": true, "read": "English", "read_right": true}
+{"scene": "j2:languages:P-L0-Tunisia-0", "reader": "PM", "variant": "org", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L0-Tunisia-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Turkey-0", "reader": "PP", "variant": "org", "greedy": "Italian", "said": "Italian", "right": true, "read": "Turkish", "read_right": false}
+{"scene": "j2:languages:P-L0-Turkey-0", "reader": "PP", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L0-Turkey-0", "reader": "PM", "variant": "org", "greedy": "Turkish", "said": "Turkish", "right": true, "read": "Turkish", "read_right": true}
+{"scene": "j2:languages:P-L0-Turkey-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Uruguay-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L0-Uruguay-0", "reader": "PP", "variant": "alt", "greedy": "Dutch", "said": "Dutch", "right": true, "read": "Dutch", "read_right": true}
+{"scene": "j2:languages:P-L0-Uruguay-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L0-Uruguay-0", "reader": "PM", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Angola-0", "reader": "PP", "variant": "org", "greedy": "Polish", "said": "Polish", "right": true, "read": "Polish", "read_right": true}
+{"scene": "j2:languages:P-L1-Angola-0", "reader": "PP", "variant": "alt", "greedy": "English", "said": "English", "right": true, "read": "French", "read_right": false}
+{"scene": "j2:languages:P-L1-Angola-0", "reader": "PM", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L1-Angola-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Argentina-0", "reader": "PP", "variant": "org", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L1-Argentina-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": false, "read": "French", "read_right": false}
+{"scene": "j2:languages:P-L1-Argentina-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Argentina-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Austria-0", "reader": "PP", "variant": "org", "greedy": "English", "said": "English", "right": true, "read": "English", "read_right": true}
+{"scene": "j2:languages:P-L1-Austria-0", "reader": "PP", "variant": "alt", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L1-Austria-0", "reader": "PM", "variant": "org", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L1-Austria-0", "reader": "PM", "variant": "alt", "greedy": "Hungarian", "said": "Hungarian", "right": true, "read": "Hungarian", "read_right": true}
+{"scene": "j2:languages:P-L1-Chile-0", "reader": "PP", "variant": "org", "greedy": "Greek", "said": "Greek", "right": false, "read": "Greek", "read_right": false}
+{"scene": "j2:languages:P-L1-Chile-0", "reader": "PP", "variant": "alt", "greedy": "Greek", "said": "Greek", "right": false, "read": "Greek", "read_right": false}
+{"scene": "j2:languages:P-L1-Chile-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Chile-0", "reader": "PM", "variant": "alt", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L1-Cuba-0", "reader": "PP", "variant": "org", "greedy": "Hungarian", "said": "Hungarian", "right": true, "read": "Hungarian", "read_right": true}
+{"scene": "j2:languages:P-L1-Cuba-0", "reader": "PP", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": false, "read": "Hebrew", "read_right": false}
+{"scene": "j2:languages:P-L1-Cuba-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Cuba-0", "reader": "PM", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-France-0", "reader": "PP", "variant": "org", "greedy": "French", "said": "French", "right": false, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L1-France-0", "reader": "PP", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-France-0", "reader": "PM", "variant": "org", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-France-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Ghana-0", "reader": "PP", "variant": "org", "greedy": "Persian", "said": "Persian", "right": true, "read": "Persian", "read_right": true}
+{"scene": "j2:languages:P-L1-Ghana-0", "reader": "PP", "variant": "alt", "greedy": "English", "said": "English", "right": true, "read": "Persian", "read_right": false}
+{"scene": "j2:languages:P-L1-Ghana-0", "reader": "PM", "variant": "org", "greedy": "English", "said": "English", "right": true, "read": "Persian", "read_right": false}
+{"scene": "j2:languages:P-L1-Ghana-0", "reader": "PM", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L1-Greece-0", "reader": "PP", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Greece-0", "reader": "PP", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": false, "read": "Hebrew", "read_right": false}
+{"scene": "j2:languages:P-L1-Greece-0", "reader": "PM", "variant": "org", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L1-Greece-0", "reader": "PM", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L1-Hungary-0", "reader": "PP", "variant": "org", "greedy": "Mandarin", "said": "Mandarin", "right": true, "read": "Mandarin", "read_right": true}
+{"scene": "j2:languages:P-L1-Hungary-0", "reader": "PP", "variant": "alt", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L1-Hungary-0", "reader": "PM", "variant": "org", "greedy": "Hungarian", "said": "Hungarian", "right": true, "read": "Hungarian", "read_right": true}
+{"scene": "j2:languages:P-L1-Hungary-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Israel-0", "reader": "PP", "variant": "org", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Israel-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": false, "read": "French", "read_right": false}
+{"scene": "j2:languages:P-L1-Israel-0", "reader": "PM", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Israel-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Italy-0", "reader": "PP", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Italy-0", "reader": "PP", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Italy-0", "reader": "PM", "variant": "org", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L1-Italy-0", "reader": "PM", "variant": "alt", "greedy": "German", "said": "German", "right": true, "read": "German", "read_right": true}
+{"scene": "j2:languages:P-L1-Mexico-0", "reader": "PP", "variant": "org", "greedy": "Greek", "said": "Greek", "right": true, "read": "Greek", "read_right": true}
+{"scene": "j2:languages:P-L1-Mexico-0", "reader": "PP", "variant": "alt", "greedy": "Italian", "said": "Italian", "right": false, "read": "Italian", "read_right": false}
+{"scene": "j2:languages:P-L1-Mexico-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Mexico-0", "reader": "PM", "variant": "alt", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L1-Portugal-0", "reader": "PP", "variant": "org", "greedy": "Polish", "said": "Polish", "right": true, "read": "Polish", "read_right": true}
+{"scene": "j2:languages:P-L1-Portugal-0", "reader": "PP", "variant": "alt", "greedy": "Mandarin", "said": "Mandarin", "right": true, "read": "Mandarin", "read_right": true}
+{"scene": "j2:languages:P-L1-Portugal-0", "reader": "PM", "variant": "org", "greedy": "Portuguese", "said": "Portuguese", "right": true, "read": "Portuguese", "read_right": true}
+{"scene": "j2:languages:P-L1-Portugal-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Senegal-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L1-Senegal-0", "reader": "PP", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Senegal-0", "reader": "PM", "variant": "org", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Senegal-0", "reader": "PM", "variant": "alt", "greedy": "Hungarian", "said": "Hungarian", "right": true, "read": "Hungarian", "read_right": true}
+{"scene": "j2:languages:P-L1-Sweden-0", "reader": "PP", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": false, "read": "Swedish", "read_right": false}
+{"scene": "j2:languages:P-L1-Sweden-0", "reader": "PP", "variant": "alt", "greedy": "Italian", "said": "Italian", "right": true, "read": "Hebrew", "read_right": false}
+{"scene": "j2:languages:P-L1-Sweden-0", "reader": "PM", "variant": "org", "greedy": "Swedish", "said": "Swedish", "right": true, "read": "Swedish", "read_right": true}
+{"scene": "j2:languages:P-L1-Sweden-0", "reader": "PM", "variant": "alt", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Tunisia-0", "reader": "PP", "variant": "org", "greedy": "Turkish", "said": "Turkish", "right": true, "read": "Turkish", "read_right": true}
+{"scene": "j2:languages:P-L1-Tunisia-0", "reader": "PP", "variant": "alt", "greedy": "English", "said": "English", "right": true, "read": "English", "read_right": true}
+{"scene": "j2:languages:P-L1-Tunisia-0", "reader": "PM", "variant": "org", "greedy": "Tunisian", "said": null, "right": false, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L1-Tunisia-0", "reader": "PM", "variant": "alt", "greedy": "English", "said": "English", "right": false, "read": "French", "read_right": true}
+{"scene": "j2:languages:P-L1-Turkey-0", "reader": "PP", "variant": "org", "greedy": "Arabic", "said": "Arabic", "right": true, "read": "Arabic", "read_right": true}
+{"scene": "j2:languages:P-L1-Turkey-0", "reader": "PP", "variant": "alt", "greedy": "Turkish", "said": "Turkish", "right": true, "read": "Turkish", "read_right": true}
+{"scene": "j2:languages:P-L1-Turkey-0", "reader": "PM", "variant": "org", "greedy": "Turkish", "said": "Turkish", "right": true, "read": "Turkish", "read_right": true}
+{"scene": "j2:languages:P-L1-Turkey-0", "reader": "PM", "variant": "alt", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Uruguay-0", "reader": "PP", "variant": "org", "greedy": "Hebrew", "said": "Hebrew", "right": true, "read": "Hebrew", "read_right": true}
+{"scene": "j2:languages:P-L1-Uruguay-0", "reader": "PP", "variant": "alt", "greedy": "Italian", "said": "Italian", "right": true, "read": "Italian", "read_right": true}
+{"scene": "j2:languages:P-L1-Uruguay-0", "reader": "PM", "variant": "org", "greedy": "Spanish", "said": "Spanish", "right": true, "read": "Spanish", "read_right": true}
+{"scene": "j2:languages:P-L1-Uruguay-0", "reader": "PM", "variant": "alt", "greedy": "French", "said": "French", "right": true, "read": "French", "read_right": true}

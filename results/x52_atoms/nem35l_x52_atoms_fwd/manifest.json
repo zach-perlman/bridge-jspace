@@ -1,0 +1,136 @@
+{
+ "exp": "x52_atoms",
+ "run": "nem35l_x52_atoms_fwd",
+ "part": "52 A",
+ "spec": "jobs/c3/batch52.yaml (brief, part A)",
+ "written_utc": "2026-10-29T00:59:46Z",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat",
+  "kernels": "hub"
+ },
+ "switches": {
+  "target": "nemotron-3.5-lightning",
+  "BJ_DEVICE_MAP": "",
+  "BJ_PREDICTED_LAYER": "14",
+  "BJ_SUITE_BATCH": "64",
+  "BJ_TARGET": "nemotron-3.5-lightning",
+  "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+ },
+ "code": {
+  "sha": "8030b6e69fa57d09159539e49f7607322c371ed6",
+  "dirty": true
+ },
+ "lens": {
+  "name": "jpp",
+  "source": [
+   "local",
+   "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+   "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  ],
+  "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+ },
+ "layer": 14,
+ "k": 25,
+ "omp": "signed (exp04_brew_parts.signed_omp step for step; checked against x0_necessity.fit)",
+ "dictionary": "J++ letter-token atoms at L (JLens.vectors(L, letters), unit rows)",
+ "delta": "one forward of each O / S prompt",
+ "share": "per atom: the rebuilt energy it adds when it enters, / ||Δ||^2 (non-negative; sums to the part's share)",
+ "sets": {
+  "e1": {
+   "text": "the main test (E1), the bridge word",
+   "design": "main",
+   "source": "nem35l_x52_conflict",
+   "alt": "cf",
+   "layer": 14,
+   "items_at_L": 200,
+   "dropped": {},
+   "items": 200,
+   "entities": 37,
+   "groups": {
+    "locker-after": 79,
+    "mixed": 62,
+    "locker-first": 59
+   },
+   "upstream": {
+    "False": 111,
+    "True": 89
+   },
+   "locker-first, prefix-identical": 16,
+   "pick_tokens": {
+    "5": 77,
+    "4": 115,
+    "6": 8
+   },
+   "group": "locker-first",
+   "items_in_group": 59,
+   "entities_in_group": 30,
+   "pool": 59,
+   "picked": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    30,
+    31,
+    32,
+    34,
+    35,
+    37,
+    38,
+    39,
+    40,
+    41,
+    43,
+    45,
+    46,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58
+   ]
+  }
+ },
+ "seeds": {
+  "items": 0
+ },
+ "n_items": 50,
+ "inputs": {
+  "jobs/c3/batch52.yaml": "65c644b23d25c40d6c593a1a8d5c10473cd99ec4b981392ec83fdfb11c6d894c"
+ },
+ "verdict": "descriptive; no rule",
+ "states_root": "/home/sesterce/jobq/runs/x52_lightning_atoms/code/results/x51_jread"
+}

@@ -1,0 +1,50 @@
+{
+  "exp": "x5_natural",
+  "run": "nem35l_x52_natural",
+  "written_utc": "2026-10-29T01:01:11Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "563ac703484c27e7d868b7fc0298ff832082fbe3",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+    "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 14,
+  "k": 25,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}
