@@ -1,0 +1,602 @@
+{
+ "dan": "below gate (exploratory): Lightning's 47.3 gate fails (O's lookup read 0.72 < 0.80, results/x47_cue/nem35l_x52_cue/gate.json); eligible scenes only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct) (rules first scored in results/x51_answer/x51_12-20261028T201842Z)",
+ "rule": "Per model, per reader: \"the lens effect is the entity\": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. \"The lens effect is the answer\": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed, report both shares. Amendment (Dan 20:20): before the arms, the lens readout check at the bridge word; the verdict says which case held, either 'the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)' or the arm-based entity / answer / mixed (never 'void by construction'). Z2: arm 3 is read against its controls (a same-size random part and a frequency-matched part), not against zero.",
+ "as_computed": "Extra loss of arm k = X0's excess = (S_rand_k - S_k) / S_whole per reader over the source run's items (switch: the set's own read; 47.3's lookup: follows the change, identity / position / value). e1, e2, e3 = arms 1, 2, 3; arm 4 (no_A_rand) is arm 3's random twin. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Z2: arm 3 against both its controls, e3 (vs no_A_rand) and e3f = (S_noF - S_noA) / S_whole (vs no_F); 'entity' needs max(e3, e3f) <= 0.10, 'answer' needs min(e3, e3f) >= 0.5 e1 (a label holds only against both controls). Point estimates decide (EPS 1e-9); e1 <= 0 or undefined (no switch under the whole change) -> can't tell; CIs from X0's cluster bootstrap over the bridge entity (10,000, seed 0), paired across arms (ratios on the same draws). Readout case first: per reader the rank (1 + tokens with a strictly higher lens logit, full vocabulary) of its own answer word (best of its A-style variant tokens) at the edited token at L, O's answer on O's state and S's on S's (z2: the reader's own state; e1 / cue: the lookup's, shared through the edited token); an item is 'not read' when it ranks > 50 on both; >= 90 % of items not read -> 'the answer word is not read at the bridge word', the arms reported beside; else the arm-based label. A: J++ unit atoms of letter tokens (the OMP dictionary); e1 / cue the answers' number words (suite_v1.WORDS: 6 -> 'six'), each of its variants (as is, leading space, capitalised, both) kept where it is one letter token; z2 the first token of each answer word and variant (where the tokenizer splits the full word, its first token only). Frequency-matched control F (z2): per atom a of A, the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2 (a BPE id is its merge rank, earlier = more frequent in the tokenizer's training corpus; the factor doubles until a candidate exists) and the closest log J++ readout norm ||(g * W_U[t]) J_L|| (ties: lower id); unrelated = its key (decode, stripped, lower-cased) equals no key of the set's answer words, A tokens, bridge entities' tokens / names or edited tokens, and (keys of >= 3 characters) neither contains nor is contained in one; never twice in one item. no_F = Δ - P_F Δ, P_F the projector on span(F). Decisive cells for Q51.12: Z2 both readers; E1 the recall (the lookup beside); 47.3 both readers. Projected out: (I - P_A) P_J Δ, P_A the orthogonal projector on the span of the item's answer atoms (the J++ part minus its component along span(A)).",
+ "labels": {
+  "entity": "the lens effect is the entity",
+  "answer": "the lens effect is the answer",
+  "mixed": "mixed",
+  "na": "can't tell (arm 1 has no extra loss beyond random)",
+  "not_read": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)"
+ },
+ "models": [
+  {
+   "set": "cue",
+   "target": "nemotron-3.5-lightning",
+   "run": "nem35l_x52_cue_answer_below",
+   "status": "tested",
+   "layer": 14,
+   "source": "nem35l_x52_cue_below",
+   "gate": {
+    "pass": true,
+    "chosen": 300,
+    "org_read_accuracy": {
+     "PP": 0.7228571428571429,
+     "PM": 0.87
+    },
+    "gate": 0.8,
+    "below_gate": true,
+    "source_gate_pass": false
+   },
+   "readers": {
+    "lookup": {
+     "n": 300,
+     "entities": 16,
+     "rate": {
+      "none": [
+       0.006666666666666667,
+       0.0,
+       0.018693049065420537
+      ],
+      "whole": [
+       0.8066666666666666,
+       0.747054552111301,
+       0.8571428571428571
+      ],
+      "no_jpp": [
+       0.51,
+       0.45588235294117646,
+       0.5925925925925926
+      ],
+      "no_jpp_rand": [
+       0.6433333333333333,
+       0.5917806051673313,
+       0.7096774193548387
+      ],
+      "no_jpp_A": [
+       0.53,
+       0.47350964126085227,
+       0.6080418986826022
+      ],
+      "no_jpp_A_rand": [
+       0.65,
+       0.6012648520618157,
+       0.7179515418502203
+      ],
+      "no_A": [
+       0.8,
+       0.7351598173515982,
+       0.8614274328369814
+      ],
+      "no_A_rand": [
+       0.8033333333333333,
+       0.7418297682709448,
+       0.8617042899152395
+      ]
+     },
+     "hits": {
+      "none": 2,
+      "whole": 242,
+      "no_jpp": 153,
+      "no_jpp_rand": 193,
+      "no_jpp_A": 159,
+      "no_jpp_A_rand": 195,
+      "no_A": 240,
+      "no_A_rand": 241
+     },
+     "extra": {
+      "1": [
+       0.16528925619834708,
+       0.09848386716910035,
+       0.21675040324338457
+      ],
+      "2": [
+       0.1487603305785124,
+       0.09090909090909083,
+       0.2056978303901651
+      ],
+      "3": [
+       0.004132231404958635,
+       -0.012765957446808418,
+       0.024630541871921152
+      ]
+     },
+     "share2": [
+      0.9000000000000001,
+      0.6666666666666669,
+      1.275862068965517
+     ],
+     "share3": [
+      0.024999999999999748,
+      -0.09090909090909083,
+      0.15000000000000024
+     ],
+     "share3f": null,
+     "valid": true,
+     "label": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)",
+     "key": "not_read",
+     "clauses": {
+      "entity": true,
+      "answer": false
+     },
+     "check": {
+      "source": "PP",
+      "n": 300,
+      "missing": 0,
+      "top10_O": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_O": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_rank_O": 15180.0,
+      "median_bridge_rank_O": 5.0,
+      "above_bridge_O": [
+       0.01,
+       0.0,
+       0.04013489906832297
+      ],
+      "top10_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_rank_S": 23568.5,
+      "median_bridge_rank_S": 5.0,
+      "above_bridge_S": [
+       0.006666666666666667,
+       0.0,
+       0.015873015873015872
+      ],
+      "top10_either": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_either": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not_read": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "case": "not_read"
+     },
+     "arm_label": "the lens effect is the entity",
+     "arm_key": "entity"
+    },
+    "recall": {
+     "n": 300,
+     "entities": 16,
+     "rate": {
+      "none": [
+       0.0033333333333333335,
+       0.0,
+       0.008620689655172414
+      ],
+      "whole": [
+       0.88,
+       0.8465116279069768,
+       0.9003215434083601
+      ],
+      "no_jpp": [
+       0.29,
+       0.20131959624533882,
+       0.40754756619628985
+      ],
+      "no_jpp_rand": [
+       0.71,
+       0.6343582337715765,
+       0.78125
+      ],
+      "no_jpp_A": [
+       0.31666666666666665,
+       0.22580288324293463,
+       0.4337422607095046
+      ],
+      "no_jpp_A_rand": [
+       0.7533333333333333,
+       0.6995052535664456,
+       0.805757141859328
+      ],
+      "no_A": [
+       0.8666666666666667,
+       0.8202764976958525,
+       0.8935075408462505
+      ],
+      "no_A_rand": [
+       0.8666666666666667,
+       0.8245614035087719,
+       0.8931452993813522
+      ]
+     },
+     "hits": {
+      "none": 1,
+      "whole": 264,
+      "no_jpp": 87,
+      "no_jpp_rand": 213,
+      "no_jpp_A": 95,
+      "no_jpp_A_rand": 226,
+      "no_A": 260,
+      "no_A_rand": 260
+     },
+     "extra": {
+      "1": [
+       0.47727272727272724,
+       0.37125206600373917,
+       0.5700483091787439
+      ],
+      "2": [
+       0.4962121212121212,
+       0.3846153846153847,
+       0.5800017793594305
+      ],
+      "3": [
+       0.0,
+       -0.020942408376963373,
+       0.023150839793281607
+      ]
+     },
+     "share2": [
+      1.0396825396825398,
+      0.9382716049382718,
+      1.1653558107868096
+     ],
+     "share3": [
+      0.0,
+      -0.04918538757336566,
+      0.04895276292335115
+     ],
+     "share3f": null,
+     "valid": true,
+     "label": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)",
+     "key": "not_read",
+     "clauses": {
+      "entity": true,
+      "answer": false
+     },
+     "check": {
+      "source": "PP",
+      "n": 300,
+      "missing": 0,
+      "top10_O": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_O": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_rank_O": 13418.0,
+      "median_bridge_rank_O": 5.0,
+      "above_bridge_O": [
+       0.01,
+       0.0,
+       0.04013489906832297
+      ],
+      "top10_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "median_rank_S": 15731.0,
+      "median_bridge_rank_S": 5.0,
+      "above_bridge_S": [
+       0.006666666666666667,
+       0.0,
+       0.015873015873015872
+      ],
+      "top10_either": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_either": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "not_read": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "case": "not_read"
+     },
+     "arm_label": "the lens effect is the entity",
+     "arm_key": "entity"
+    }
+   },
+   "readout": {
+    "lookup's prompt, O": {
+     "answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "bridge": [
+      0.15333333333333332,
+      0.0,
+      0.4196986205517789
+     ],
+     "neither": [
+      0.8466666666666667,
+      0.5803013794482207,
+      1.0
+     ],
+     "top1_is_recall_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "recall": 56299.5,
+      "lookup": 66770.0
+     },
+     "median_answer_word_rank": {
+      "recall": 13418.0,
+      "lookup": 15180.0
+     },
+     "top_digit_is_answer": {
+      "recall": [
+       0.11333333333333333,
+       0.014387199917485369,
+       0.2873599137931034
+      ],
+      "lookup": [
+       0.08,
+       0.05164287354562156,
+       0.11250100482315112
+      ]
+     },
+     "n": 300
+    },
+    "lookup's prompt, S": {
+     "answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "bridge": [
+      0.14666666666666667,
+      0.10344604829368262,
+      0.19742489270386265
+     ],
+     "neither": [
+      0.8533333333333334,
+      0.8025751072961373,
+      0.8965539517063174
+     ],
+     "top1_is_recall_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "recall": 67543.5,
+      "lookup": 75609.5
+     },
+     "median_answer_word_rank": {
+      "recall": 15731.0,
+      "lookup": 23568.5
+     },
+     "top_digit_is_answer": {
+      "recall": [
+       0.11,
+       0.07185546035001819,
+       0.14157353087401808
+      ],
+      "lookup": [
+       0.10666666666666667,
+       0.05952380952380952,
+       0.16199564937157584
+      ]
+     },
+     "n": 300
+    }
+   },
+   "atoms": {
+    "lookup": {
+     "A_tokens": {
+      "n": 300,
+      "min": 13,
+      "median": 19.0,
+      "max": 24,
+      "mean": 18.843,
+      "hist": {
+       "13": 2,
+       "14": 16,
+       "15": 26,
+       "16": 18,
+       "17": 11,
+       "18": 65,
+       "19": 64,
+       "20": 12,
+       "21": 11,
+       "22": 46,
+       "23": 27,
+       "24": 2
+      }
+     },
+     "A_rank": {
+      "n": 300,
+      "min": 13,
+      "median": 19.0,
+      "max": 24,
+      "mean": 18.843,
+      "hist": {
+       "13": 2,
+       "14": 16,
+       "15": 26,
+       "16": 18,
+       "17": 11,
+       "18": 65,
+       "19": 64,
+       "20": 12,
+       "21": 11,
+       "22": 46,
+       "23": 27,
+       "24": 2
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 300,
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "mean": 0.0,
+      "hist": {
+       "0": 300
+      }
+     },
+     "items_with_an_answer_atom_in_25": 0,
+     "share_median": {
+      "share_jpp": 0.25604499999999997,
+      "share_jpp_A": 0.24651849999999997,
+      "share_A": 0.0144295,
+      "share_A_in_jpp": 0.0095815
+     }
+    }
+   },
+   "agreement": {
+    "recall": {
+     "none": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 1,
+      "stored": 1
+     },
+     "whole": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 264,
+      "stored": 264
+     },
+     "no_jpp": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 87,
+      "stored": 87
+     },
+     "no_jpp_rand": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 213,
+      "stored": 213
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.47727272727272724,
+      "stored": 0.47727272727272724
+     }
+    },
+    "lookup": {
+     "none": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 2,
+      "stored": 2
+     },
+     "whole": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 242,
+      "stored": 242
+     },
+     "no_jpp": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 153,
+      "stored": 153
+     },
+     "no_jpp_rand": {
+      "n": 300,
+      "matched": 300,
+      "agree_switch": 300,
+      "agree_top": 300,
+      "top_stored": 300,
+      "rerun": 193,
+      "stored": 193
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.16528925619834708,
+      "stored": 0.16528925619834708
+     }
+    }
+   }
+  }
+ ],
+ "per_cell": {
+  "cue|nemotron-3.5-lightning|lookup": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)",
+  "cue|nemotron-3.5-lightning|recall": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)"
+ }
+}

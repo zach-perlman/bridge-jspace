@@ -1,0 +1,165 @@
+{
+  "exp": "x0_necessity",
+  "run": "nem35l_x52_fresh",
+  "why": "Batch 52, Dan's morning queue item 1: the clean one-pick design (45m) on Lightning at L14, below gate, eligible items only (--descriptive), dev scenes out; below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80; results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; no prediction (Dan's morning queue, 29 Oct)",
+  "written_utc": "2026-10-29T08:25:34Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "f0bcc519cf2f5bb60c60b150530744a9cc139f1b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    14
+  ],
+  "predicted": 14,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp"
+  ],
+  "k": 25,
+  "k_of": {},
+  "k_curve": {
+    "dicts": [
+      "jpp"
+    ],
+    "k": []
+  },
+  "n": {
+    "items": 600,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": true,
+  "alt": "fresh",
+  "curve_all_layers": false,
+  "readout": false,
+  "nonneg_arm": false,
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per dictionary, k, fit: no_part, no_rand; with --atom-slices 47.1's parts after J++'s), in batches of at most 16 rows (BJ_SUITE_BATCH)",
+    "batch": 16
+  },
+  "fresh": {
+    "seed": 4513,
+    "design": "jobs/c3/batch45.yaml, 45m",
+    "draws": "x0_necessity.fresh_pair"
+  },
+  "atom_slices": false,
+  "coverage": {
+    "batch": 52,
+    "question": "no prediction: coverage run on an already-scored rule",
+    "spec": "jobs/c3/batch52.yaml (part C)"
+  },
+  "excluded_scenes": [
+    "P2-L0-0000",
+    "P2-L0-0022",
+    "P2-L0-0051",
+    "P2-L0-0071",
+    "P2-L0-0074",
+    "P2-L0-0080",
+    "P2-L0-0085",
+    "P2-L0-0095",
+    "P2-L0-0096",
+    "P2-L0-0098",
+    "P2-L0-0100",
+    "P2-L0-0106",
+    "P2-L0-0147",
+    "P2-L0-0150",
+    "P2-L0-0155",
+    "P2-L0-0193",
+    "P2-L0-0202",
+    "P2-L0-0218",
+    "P2-L0-0221",
+    "P2-L0-0231",
+    "P2-L0-0237",
+    "P2-L0-0246",
+    "P2-L0-0254",
+    "P2-L0-0255",
+    "P2-L0-0270",
+    "P2-L0-0294",
+    "P2-L0-0297",
+    "P2-L0-0302",
+    "P2-L0-0306",
+    "P2-L0-0311",
+    "P2-L0-0317",
+    "P2-L0-0318",
+    "P2-L0-0344",
+    "P2-L0-0349",
+    "P2-L0-0375",
+    "P2-L0-0384",
+    "P2-L0-0391",
+    "P2-L0-0410",
+    "P2-L0-0425",
+    "P2-L0-0431",
+    "P2-L0-0434",
+    "P2-L0-0458",
+    "P2-L0-0473",
+    "P2-L0-0486",
+    "P2-L0-0488",
+    "P2-L0-0491",
+    "P2-L0-0505",
+    "P2-L0-0507",
+    "P2-L0-0508",
+    "P2-L0-0513",
+    "P2-L0-0529",
+    "P2-L0-0539",
+    "P2-L0-0542",
+    "P2-L0-0546",
+    "P2-L0-0559",
+    "P2-L0-0564",
+    "P2-L0-0576",
+    "P2-L0-0591",
+    "P2-L0-0596",
+    "P2-L0-0597"
+  ],
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

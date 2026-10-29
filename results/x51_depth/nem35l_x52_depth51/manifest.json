@@ -1,0 +1,117 @@
+{
+  "exp": "x51_depth",
+  "run": "nem35l_x52_depth51",
+  "why": "Batch 52, Dan's morning queue item 2: 51.5 on Lightning, design from the 9B / 27B spec; no prediction",
+  "test": "51.5",
+  "spec": "jobs/c3/batch51.yaml (51.5)",
+  "question": "design from the 9B / 27B spec (jobs/c3/x51_5_9b.yaml / x51_5_27b.yaml), 51.5's rule verbatim; Zach's Lightning band L27-33 (x50_zach.BESIDE_BAND) beside the script's fixed swap window; no prediction (Dan's morning queue, 29 Oct)",
+  "written_utc": "2026-10-29T08:26:00Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a16ef8ca1f2828c8dbbe19d3ca1cd8acb9a7fe8c",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "inputs": {
+    "jobs/c3/batch51.yaml": "f2bdfe1a70369afba890164aa5181d576ffa18b82de9f36c192c3a559ee1e0d6",
+    "results/x50_zach/nem35l_x52_z1/gate.json": "fdccd27028a34e63e25df7f82d7d8965e6f1ebeb67fbeb7230706d9ad406b884",
+    "results/x50_zach/nem35l_x52_z1/cases.jsonl": "41cdfb041fb20292762c38643338b80181c2c1f1570d8adbb2fdebf89033c4a2",
+    "results/x47_anatomy/nem35l_x52_anatomy/outcomes.jsonl": "fcb04024e66e7ea51897e38af9b656ce0f4fe39cff40f9e1699e453a4f6a242c"
+  },
+  "z1": {
+    "run": "nem35l_x52_z1",
+    "pass": true,
+    "org_read_accuracy": {
+      "K": 0.9945652173913043,
+      "M": 0.9184782608695652
+    },
+    "cases": 552,
+    "eligible": 395,
+    "chosen": 200,
+    "sets": {
+      "jsuite_v2_test_chat": 197,
+      "jsuite_v2nb_test_chat": 3
+    },
+    "strata": {
+      "fact-first": 103,
+      "fact-after": 97
+    }
+  },
+  "layers": [
+    2,
+    6,
+    10,
+    14,
+    18,
+    22,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "n_layers": 52,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_jpp_ratoms"
+  ],
+  "strata_order": [
+    "fact-first",
+    "fact-after"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "patch": "the last token of the pointer sentence's name (Z1)",
+  "read": "Z1's: the top token after the prompt (his chat framing, no prefill) against S's answer's first token",
+  "rule": "\"The same read window as ours\" if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours (9B: both readers to ~L16, the recall to L24; 27B: from 49.4). Report against Zach's swap window (L4-20, gone by L25).",
+  "as_computed": "Items: Z1's chosen passages on the model (its gate.json order joined to its cases.jsonl; Z1's gate, alignment, strata, readers K = lookup and M = recall), re-aligned on the tokenizer before the run. Sweep: 9B L2-L30 every 2nd (47.8's 9B grid), 27B L4-L60 every 2nd (47.8's 27B span at step 2). Delta_l = h_S - h_O at the pointer name's last token per reader, added at layer l alone on O. Arms: whole; no_jpp (minus the signed-OMP J++ part, k = 25, the layer's own letter-token atoms); no_jpp_ratoms (minus a random part of the same share from random lens atoms, seed 777 + l, 47.8's control); no_jpp_rand (minus a random part of the same share in X0's random subspace, seed 888 + l, Z1's control). Switch = Z1's read (top token = the first token of S's answer). Per layer and reader: the whole change's switch share; extra loss without J++ = X0's excess against no_jpp_ratoms (Z1's no_jpp_rand beside); cluster bootstrap over the original bridge entity (10,000, seed 0). Window end = the last sampled layer whose switch share (point estimate) >= 0.30 (EPS 1e-9); None if no layer reaches it. Ours = the same function on the stored 47.8 runs (9B qwen35_9b_x47_anatomy, 27B x49_4_anatomy_27b; C2 test half; lookup switch = identity + position + value, recall = the changed item): 9B lookup L16, recall L14; 27B lookup L40, recall L32 (27B grid every 8th with L30-34). Per model: the same read window iff, for both readers, his window end exists and |his - ours| <= 4; decided on all of Z1's items (both strata pooled), each stratum's window end beside (a run that stopped after fact-first: the rule on fact-first alone, labelled partial). Z1's gate failed -> not tested (numbers descriptive). Zach's swap window beside, descriptive: each reader's first and last layer >= 0.3 against L4-L20, and whether the switch is < 0.3 at every sampled layer >= L25. The identity / position split (--split) runs only when the job's command carries the flag (off in the spec).",
+  "reference": {
+    "ours": "nem35l_x52_anatomy",
+    "lookup": 22,
+    "recall": 22
+  },
+  "split": false,
+  "seeds": {
+    "random_atoms": "777 + layer",
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "sealed": "none: verdict --design-from",
+  "batch": 52,
+  "items": 200,
+  "strata_done": [
+    "fact-first",
+    "fact-after"
+  ],
+  "complete": true,
+  "split_gate": null
+}
