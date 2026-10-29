@@ -49,11 +49,51 @@ def load(p: Path) -> dict:
     return json.loads(p.read_text())
 
 
+# Dan's figures brief (29 Oct 10:00): four model slots on every per-model figure, in the tables' order; a model without
+# a result keeps its slot with a short grey label; below-gate results hollow, labelled "below gate". Each figure's slots
+# go to figures/ledger/slots.json ("data" where the figure records a number for the model, else what grey() or
+# below_gate() registered); scripts/check_ledger.py checks them against the card's table.
+SLOT_MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+LT = "nemotron-3.5-lightning"
+SLOTS_FILE = OUT / "slots.json"
+_SLOTS: dict[str, dict[str, str]] = {}
+GREY = "#9a9a9a"
+
+
+def grey(name: str, model: str, label: str, ax=None, x: float = 0.0, y: float = 0.0, **kw) -> None:
+    """A model's empty slot: registered as grey with its label, and drawn at (x, y) on ax when given."""
+    _SLOTS.setdefault(name, {})[SHORT[model]] = f"grey: {label}"
+    if ax is not None:
+        ax.text(x, y, label, color=GREY, va="center", fontsize=kw.pop("fontsize", S.LABEL_PT - 1), **kw)
+
+
+def below_gate(name: str, model: str) -> None:
+    """A model plotted below its gate (hollow ○, labelled "below gate")."""
+    _SLOTS.setdefault(name, {})[SHORT[model]] = "below gate"
+
+
+def slots_of(name: str) -> dict[str, str]:
+    """The figure's four slots: what grey() / below_gate() registered, else "data" where the figure recorded a number
+    for the model (S.record), else missing."""
+    have = {r["model"] for r in S.ROWS if r["figure"] == name}
+    reg = _SLOTS.get(name, {})
+    out = {}
+    for t in SLOT_MODELS:
+        if SHORT[t] in reg:
+            out[SHORT[t]] = reg[SHORT[t]]
+        elif t in have:
+            out[SHORT[t]] = "data"
+    return out
+
+
 def save(fig, name: str) -> str:
     OUT.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT / f"{name}.svg", facecolor="white")
     fig.savefig(OUT / f"{name}.png", dpi=200, facecolor="white")
     S.plt.close(fig)
+    every = json.loads(SLOTS_FILE.read_text()) if SLOTS_FILE.exists() else {}
+    every[name] = slots_of(name)
+    SLOTS_FILE.write_text(json.dumps(dict(sorted(every.items())), indent=1, ensure_ascii=False) + "\n")
     return name
 
 
@@ -1178,28 +1218,32 @@ def coverage_map(plt) -> str:
 
 # ---- batch 53 (exploration day, Dan 29 Oct 09:30) -------------------------------------------------------------------
 
-LASTCONFLICT = R / "x53_lastconflict" / "x53_lastconflict-20261029T085443Z" / "verdict.json"  # 53.3, the 9B first
+LASTCONFLICT = R / "x53_lastconflict" / "x53_lastconflict-20261029T090326Z" / "verdict.json"  # 53.3, four models
 
 
 def last_conflict(plt) -> str:
-    """53.3, per model, reader and layer (51.10's read peak, the answer layer minus 2): the switches lost without the
-    lens part of the last token's change beyond a random part (bars 0.10 and 0.30), and the rest alone's switches as a
-    share of the whole change's (bar 0.7); the rule's label at the right."""
+    """53.3, per model (four slots), reader and layer (51.10's read peak, the answer layer minus 2): the switches lost
+    without the lens part of the last token's change beyond a random part (bars 0.10 and 0.30), and the rest alone's
+    switches as a share of the whole change's (bar 0.7); the rule's label at the right; Lightning hollow."""
     v = load(LASTCONFLICT)
+    by = {m["target"]: m for m in v["models"]}
     rows = []
-    for m in v["models"]:
-        for c in sorted(m["cells"], key=lambda c: (c["reader"] != "lookup", c["layer"])):
-            rows.append((m["target"], c))
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.42 * len(rows) + 1.9), sharey=True)
+    for t in SLOT_MODELS:
+        for c in sorted(by[t]["cells"], key=lambda c: (c["reader"] != "lookup", c["layer"])):
+            rows.append((t, c))
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.3 * len(rows) + 1.9), sharey=True)
     h = fig.get_figheight()
-    fig.subplots_adjust(left=0.17, right=0.8, top=1 - 1.25 / h, bottom=1.0 / h, wspace=0.12)
-    S.title(fig, "At the last token the 9B's recall computes outside the lens part",
-            "The change at the last token, 75 locker-first scenes; whiskers 95%; dashed / dotted: the rule's bars")  # fmt: skip
-    labels = [f"{SHORT[t]} {c['reader']}, L{c['layer']}" for t, c in rows]
+    fig.subplots_adjust(left=0.25, right=0.8, top=1 - 1.25 / h, bottom=1.0 / h, wspace=0.12)
+    S.title(fig, "Near the answer, three of four recalls go through the lens part",
+            "The change at the last token; whiskers 95%; dashed / dotted: the rule's bars; ○ hollow: Lightning")  # fmt: skip
+    labels = [f"{SHORT[t]}{' ○' if t == LT else ''} {c['reader']}, L{c['layer']}" for t, c in rows]
     for i, (t, c) in enumerate(rows):
         col = LOOKUP if c["reader"] == "lookup" else INK
-        whisker(axes[0], -i, c["excess"], col)
-        whisker(axes[1], -i, c["rest_share"], col)
+        whisker(axes[0], -i, c["excess"], col, hollow=t == LT)
+        whisker(axes[1], -i, c["rest_share"], col, hollow=t == LT)
+        if i and t != rows[i - 1][0]:
+            for ax in axes:
+                ax.axhline(-i + 0.5, color="#dddddd", lw=0.8)
         short = {"computes outside the lens at the last token": "outside the lens"}.get(c["text"], c["text"])
         axes[1].text(1.08, -i, short, va="center", fontsize=S.LABEL_PT - 1, color=col, clip_on=False)
         S.record("ledger_last_conflict", t, f"{c['reader']} L{c['layer']}: switches lost without the lens part beyond "
