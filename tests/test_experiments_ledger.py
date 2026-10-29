@@ -48,6 +48,31 @@ def test_the_coverage_table_is_the_matrix():
     assert L.coverage_problems("no table here")
 
 
+def test_the_overview_heatmap_follows_the_cards():
+    """The heatmap's rows (scripts/ledger_coverage.py's HEATMAP): every card in Parts I-VI, in the ledger's order, its
+    Part as in the ledger; nothing else but the cards it leaves out on purpose; every cell a known verdict code. The
+    figure sits under "In one minute", before "How to read"."""
+    import re
+
+    from scripts import ledger_coverage as LC
+
+    text = L.LEDGER.read_text()
+    parts = re.split(r"(?m)^## ", text)
+    in_part = {}
+    for p in parts:
+        m = re.match(r"Part (I|II|III|IV|V|VI)\. ", p)
+        for a in re.findall(r'^### .*<a id="([a-z0-9-]+)"></a>', p, re.M):
+            in_part[a] = m.group(1) if m else None
+    cards = [a for a in in_part if in_part[a]]
+    rows = LC.heatmap_cells()
+    shown = list(dict.fromkeys(a for _, a, _, _ in rows))
+    assert shown == [a for a in cards if a not in LC.HEATMAP_LEFT_OUT]
+    assert all(in_part[a] == part for part, a, _, _ in rows)
+    assert all(a in in_part for a in LC.HEATMAP_LEFT_OUT)
+    top = text.split("## How to read")[0]
+    assert "](../../figures/ledger/ledger_coverage_map.png)" in top.split("## In one minute")[1]
+
+
 def test_the_ledger_follows_the_readme_order():
     """Dan's restructure brief (29 Oct 08:55): In one minute, How to read, the README's Parts I-VI (and How we checked),
     Withdrawn, Run on one model only, then the Appendix."""

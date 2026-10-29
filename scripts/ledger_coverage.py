@@ -66,6 +66,80 @@ ANCHORS = {
     "Answer-direction control on Zach's Z2 (51.12 Z2)": "z2",
 }
 
+# The overview heatmap (Dan's restructure brief, 29 Oct 08:55): one row per test card in the ledger's (the README's)
+# order, columns 27B / Lightning / 9B / Muse. Each cell is the card's verdict, shortened: H the hypothesis the card asks
+# about (its rule's main one) holds, B in between or holds in part, F fails, D descriptive (no rule), N not tested
+# (not run, not ported, running), X not designed for that model, G below the model's gate (Dan, 09:15: "not tested
+# (gate x < 0.80)", any numbers descriptive only). The words after the code are what the cell shows; each is the card's
+# own label or a shortening of it. Left out: Lightning's layer pick (a prerequisite, not a test), the 9B's clean reruns
+# (How we checked), the withdrawn card and the running stub; the three one-model rows have no card.
+VERDICT_CODES = {"H": "holds", "B": "in between or in part", "F": "fails", "D": "descriptive, no rule",
+                 "N": "not tested", "X": "not designed", "G": "below gate"}  # fmt: skip
+HEATMAP_LEFT_OUT = ("lightning-layer", "t49-5", "z2", "b52-c")
+HEATMAP = (
+    ("I", "lightning-conflict", "Conflict test, main test", ("B not confirmed", "H confirmed", "H confirmed", "H confirmed")),
+    ("I", "t51-12", "Item or answer, main test", ("H the entity", "H answer not read", "H the entity", "H answer not read")),
+    ("I", "t51-12", "Item or answer, Zach's passages", ("B mixed", "B mixed", "N running", "N not run")),
+    ("I", "x0b", "Split in prose, JSON, tables", ("H holds", "H holds", "H holds", "H holds")),
+    ("I", "x5", "Split in natural passages", ("B mixed", "G below gate", "H holds°", "H holds")),
+    ("I", "t51-1", "Each part added by itself", ("B (i) no", "B (ii) no", "H (i), (ii) yes", "H (i), (ii) yes")),
+    ("I", "t47-5", "Zeroing at one layer", ("H not needed", "H not needed", "H not needed", "H not needed")),
+    ("I", "t49-2", "Ladder: other copies taken out", ("B (a), (b) no", "G below gate", "B (b) no", "B (a), (b) no")),
+    ("I", "t45p", "The item's earlier mention", ("H yes", "G below gate", "H yes", "H yes")),
+    ("I", "t49-1", "Gain map: weight or route", ("F neither", "F neither", "F neither", "F neither")),
+    ("I", "t48-1", "Two learned subspaces", ("F no", "N not ported", "F no", "F no")),
+    ("I", "b52-a", "Inside the lens part", ("D bridge words", "D bridge words", "D bridge words", "D bridge words")),
+    ("I", "b52-b", "Answer readable, usable", ("D descriptive", "D ours only", "D descriptive", "D descriptive")),
+    ("II", "t47-1", "Identity route outside the lens", ("H outside", "H outside", "H outside", "H outside")),
+    ("II", "routes", "Routes test and the address", ("B adding: no", "H both routes", "H both routes", "H both routes")),
+    ("II", "t47-7c", "Never the value, by format", ("B incomplete", "B incomplete", "B incomplete", "B incomplete")),
+    ("II", "t51-3", "Learned subspaces at scale", ("B (iii) no", "N not ported", "B (iii) no", "B (iii) no")),
+    ("III", "probe", "Address probe", ("D readable", "D readable", "D readable", "D readable")),
+    ("III", "swap", "Address swap, rule at dose 1", ("F no", "F no", "F no", "F no")),
+    ("III", "t47-16", "Swap after neutral sentences", ("H robust", "H robust", "H robust", "N running")),
+    ("III", "six", "Six lockers, own code each", ("F none of three", "H own code", "H own code", "H own code")),
+    ("III", "t51-11", "What the address is", ("B part 2 only", "N not ported", "B in between", "B mixed")),
+    ("III", "t47-0", "Lens readout of the swap", ("H lens blind", "H lens blind", "H lens blind", "H lens blind")),
+    ("III", "t47-10", "Report prompt", ("F neither", "G below gate", "G below gate", "G below gate")),
+    ("III", "t51-2", "A few heads take the swap", ("F distributed", "F distributed", "F distributed", "F distributed")),
+    ("III", "t49-7", "Attention follows the swap", ("F neither", "F neither", "F neither", "F neither")),
+    ("III", "t47-14", "Chained addresses", ("F no", "G below gate", "F no", "F no")),
+    ("IV", "order", "Split by sentence order", ("D by order", "D by order", "D by order", "D by order")),
+    ("IV", "t45q", "Copy test, locker after", ("H yes", "G below gate", "H yes", "H yes")),
+    ("IV", "d1", "Token-by-layer map", ("F (a)-(c) no", "F (a)-(c) no", "F (a)-(c) no", "F (a)-(c) no")),
+    ("IV", "t47-4", "Lookups read before L", ("D before L", "D before L", "D before L", "D before L")),
+    ("IV", "t47-8", "Anatomy by depth, handoff", ("F (a) no", "H (a) yes", "H (a) yes", "H (a) yes")),
+    ("IV", "t51-4", "Address at the last token", ("F not there", "B in between", "F not there", "H travels")),
+    ("IV", "t51-10", "Entity at the last token", ("B read, not used", "B read, not used", "B read, not used",
+                                                  "B read, not used")),
+    ("V", "z1", "Zach's passages, true facts", ("F lookup follows", "B in between", "F lookup follows",
+                                                "F follows, few")),
+    ("V", "z1", "Zach's passages, made-up facts", ("B in between", "G below gate", "H holds", "N not run")),
+    ("V", "t51-7", "Full carrier up to L", ("B in between", "B in between", "B in between", "X not designed")),
+    ("V", "z3", "Position route, his passages", ("F no position", "B in between", "B in between", "B in between")),
+    ("V", "t51-5", "Read window, his passages", ("F not the same", "X not designed", "H same window", "X not designed")),
+    ("VI", "t47-3", "Described bridge", ("F through lens", "G below gate", "H holds", "H holds")),
+    ("VI", "x45d", "Address refit per format", ("B neither", "H refit works", "H refit works", "H refit works")),
+    ("VI", "t47-13", "Errors are address errors", ("N 5 errors", "F no", "F no", "F no")),
+    ("VI", "t48-2", "Lens part keys the attribute", ("F no", "F no", "F no", "F no")),
+    ("VI", "t48-3", "Person mark at the locker", ("F no", "G below gate", "F no", "F no")),
+    ("VI", "t49-3", "Pooled person probe", ("B in between", "G below gate", "F neither", "F neither")),
+    ("VI", "t48-4", "Copying heads pass the rest", ("F no", "F no", "F no", "F no")),
+    ("VI", "t48-5", "Address as the recall's route", ("F no", "G below gate", "F no", "F no")),
+    ("VI", "t47-6", "Blocking the pick sentence", ("F no", "N not ported", "F no", "F no")),
+    ("VI", "t47-11", "Same address, any item", ("F no", "F no", "F no", "F no")),
+)  # fmt: skip
+
+
+def heatmap_cells() -> list[tuple[str, str, str, list[tuple[str, str]]]]:
+    """(part, anchor, row label, [(code, words) per column 27B / Lightning / 9B / Muse]) in HEATMAP's order."""
+    out = []
+    for part, anchor, label, cells in HEATMAP:
+        parsed = [(c[0], c[2:]) for c in cells]
+        assert len(parsed) == len(COLUMNS) and all(code in VERDICT_CODES for code, _ in parsed), (label, cells)
+        out.append((part, anchor, label, parsed))
+    return out
+
 
 def cell(c: dict, gate: str) -> str:
     note = c["note"].replace("; " + gate, "").replace(gate, "").strip()

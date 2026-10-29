@@ -1057,9 +1057,84 @@ def pooled_probe(plt) -> str:
     return save(fig, "ledger_pooled_probe")
 
 
-FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
-           clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split, attention, distance, gain, agnostic, value_formats, pooled_probe)  # fmt: skip
+# ---- the overview: coverage as a heatmap (Dan's restructure brief, 29 Oct 08:55) ------------------------------------
+
+# fills by verdict; light tints so the cell words (dark ink) stay readable; the words carry the verdict too
+VERDICT_FILL = {"H": "#a9d9b2", "B": "#f4d48c", "F": "#eda59d", "D": "#c9d6e7", "N": "#efefef", "X": "#efefef",
+                "G": "#ffffff"}  # fmt: skip
+PART_NAME = {"I": "I. Two readers", "II": "II. Identity", "III": "III. The address", "IV": "IV. Where, when",
+             "V": "V. Other data", "VI": "VI. Did not hold"}  # fmt: skip
+
+
+def coverage_map(plt) -> str:
+    """One row per test card in the README's order (scripts/ledger_coverage.py's HEATMAP), one column per model (27B,
+    Lightning, 9B, Muse), each cell coloured by the card's verdict and labelled with its words; Parts I-VI in the left
+    gutter. No number is drawn (every cell is a verdict word)."""
+    from scripts import ledger_coverage as LC
+
+    rows = LC.heatmap_cells()
+    cols = [name for _, name in LC.COLUMNS]
+    gap = 0.45  # rows of white space between Parts
+    ys, y, last = [], 0.0, None
+    for part, *_ in rows:
+        if last is not None and part != last:
+            y += gap
+        ys.append(y)
+        y += 1
+        last = part
+    n_rows = y
+    row_in = 0.235
+    top_in, bottom_in = 1.55, 0.1
+    fig = plt.figure(figsize=(S.WIDTH, n_rows * row_in + top_in + bottom_in))
+    h = fig.get_figheight()
+    ax = fig.add_axes((0.415, bottom_in / h, 0.575, (n_rows * row_in) / h))
+    S.title(fig, "Which test ran on which model, and what its rule said",
+            "One row per card, in the README's order; each cell names the card's verdict")  # fmt: skip
+    ax.set_xlim(0, len(cols))
+    ax.set_ylim(n_rows, 0)
+    ax.axis("off")
+    for (part, _, label, cells), yy in zip(rows, ys, strict=True):
+        ax.text(-0.06, yy + 0.5, label, ha="right", va="center", fontsize=S.FONT - 1, color="#222222")
+        for j, (code, words) in enumerate(cells):
+            hatch = "////" if code == "G" else None
+            ax.add_patch(plt.Rectangle((j + 0.03, yy + 0.06), 0.94, 0.88, facecolor=VERDICT_FILL[code],
+                                       edgecolor="#c8c8c8" if code in "GNX" else "none", lw=0.6, hatch=hatch))  # fmt: skip
+            muted = code in "GNX"
+            ax.text(j + 0.5, yy + 0.5, words, ha="center", va="center", fontsize=S.FONT - 1.5,
+                    color=S.COL["muted"] if muted else "#1a1a1a",
+                    bbox={"boxstyle": "square,pad=0.05", "fc": "white", "ec": "none"} if code == "G" else None)  # fmt: skip
+    # Parts in the left gutter: a bracket and the Part's name, rotated
+    for part in PART_NAME:
+        idx = [i for i, r in enumerate(rows) if r[0] == part]
+        y0, y1 = ys[idx[0]] + 0.1, ys[idx[-1]] + 0.9
+        x = -2.62
+        ax.plot([x + 0.06, x, x, x + 0.06], [y0, y0, y1, y1], color="#9a9a9a", lw=0.8, clip_on=False)
+        ax.text(x - 0.06, (y0 + y1) / 2, PART_NAME[part], rotation=90, ha="right", va="center",
+                fontsize=S.FONT - 1.5, color=S.COL["muted"], clip_on=False)  # fmt: skip
+    for j, name in enumerate(cols):
+        ax.text(j + 0.5, -0.35, name + (" ○" if name == "Lightning" else ""), ha="center", va="bottom",
+                fontsize=S.FONT, weight="bold", color="#222222")  # fmt: skip
+    # the key: one swatch per verdict colour, two lines
+    key = [("H", "holds"), ("B", "in between or in part"), ("F", "fails"), ("D", "descriptive, no rule"),
+           ("N", "not tested or not designed"), ("G", "below the gate")]  # fmt: skip
+    kx, ky = 0.01, 1 - 0.78 / h
+    for i, (code, text) in enumerate(key):
+        cx = kx + (i % 3) * 0.25
+        cy = ky - (i // 3) * (0.26 / h)
+        fig.patches.append(plt.Rectangle((cx, cy - 0.06 / h), 0.022, 0.15 / h, transform=fig.transFigure,
+                                         facecolor=VERDICT_FILL[code], edgecolor="#c8c8c8" if code in "GNX" else "none",
+                                         lw=0.6, hatch="////" if code == "G" else None))  # fmt: skip
+        fig.text(cx + 0.03, cy + 0.015 / h, text, ha="left", va="center", fontsize=S.FONT - 1, color="#333333")
+    fig.text(kx + 0.75, ky + 0.015 / h, "○ Lightning: gate set after\n   its 60-scene pre-check", ha="left",
+             va="center", fontsize=S.FONT - 1.5, color=S.COL["muted"])  # fmt: skip
+    fig.text(kx + 0.75, ky - 0.26 / h + 0.015 / h, "° gate lowered after the data", ha="left", va="center",
+             fontsize=S.FONT - 1.5, color=S.COL["muted"])  # fmt: skip
+    return save(fig, "ledger_coverage_map")
+
+
+FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
+           zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
+           address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
@@ -1067,4 +1142,8 @@ def build_all(plt) -> list[str]:
 
 
 if __name__ == "__main__":
-    print(build_all(S.setup()))
+    import sys
+
+    plt = S.setup()
+    names = sys.argv[1:]
+    print([f(plt) for f in FIGURES if not names or f.__name__ in names])
