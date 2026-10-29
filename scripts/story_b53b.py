@@ -40,8 +40,10 @@ ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T120413Z" / "verdict.json"
 RUNNING_537 = {"probe": {("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")},
                "routes": {("qwen3.5-9b", "tool"), ("qwen3.6-27b", "tool")}}  # fmt: skip
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
-# the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded)
-ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T105304Z" / "verdict.json"
+# the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded); the
+# verdict rewritten at Dan's 13:15 (answers_1315) with the scenes where the clean answer survives the span block beside
+# the label (the rest identical to x53_attnspan_c-20261029T105304Z)
+ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T121412Z" / "verdict.json"
 
 LT = "nemotron-3.5-lightning"
 MODELS = (("qwen3.5-9b", "9B"), ("qwen3.6-27b", "27B"), ("muse-glimmer-30b", "Muse"), (LT, "Lightning"),
@@ -382,3 +384,13 @@ def record_card_numbers(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Pat
              nc["cut"]["span"], *nc["cut_ci"]["span"], n=nc["n"], source=rel(span))  # fmt: skip
     S.record("cards", LT, "53.4 span: share of the scenes without a control whose lookup switches",
              nc["S"]["none"], n=nc["n"], source=rel(span))  # fmt: skip
+    # Dan 13:15 (answers_1315): descriptive, beside the label (computed on every rule scene)
+    sv = sp["clean_survives_span"]
+    sl2 = sv["lookup"]
+    S.record("cards", LT, "53.4 span: the rule's scenes where the lookup's clean answer survives the span block",
+             f"{sv['scenes']} of {sv['of']}", n=sv["scenes"], source=rel(span))  # fmt: skip
+    S.record("cards", LT, "53.4 span: bridge entities, the scenes where the clean answer survives",
+             sl2["entities"], source=rel(span))  # fmt: skip
+    for k, lab in (("span", "the span"), ("span_ctrl", "the control span")):
+        S.record("cards", LT, f"53.4 span, the scenes where the clean answer survives: lookup switches cut by {lab}",
+                 sl2["cut"][k], *sl2["cut_ci"][k], n=sl2["n"], source=rel(span))  # fmt: skip
