@@ -30,3 +30,4 @@ Plan verbatim: [jobs/c3/batch53.yaml](jobs/c3/batch53.yaml) `coverage_122b_1820`
 - 18:3x items 3, 5 (51.1, 47.5) queued. Helper agents for the remaining specs stopped on the spend limit; specs written in the main session.
 - 18:3x x45m_122b (input of 49.2 / 45p) and x49_2_122b queued.
 - 18:45 Dan: 47.0 option (b), lookup-only gate; x47_0_122b queued and moved right after 52 A (pending file renamed on the box). speedup and another stopped by Dan. Wakes every 2 h (21:13, 23:13, 01:13, 03:13, 05:13, 07:13): enqueue only if buffer < 2 or a job failed; one line here per wake.
+- 21:00 queue on mats empty since 20:29 (all 8 jobs exit 0; pulled and committed 138c671d, not yet in the ledger); deck brief done (7b68b910); next 122B specs (47.1, Z1/Z1-P, 47.2, 45p, 53.7) at the next wake.
