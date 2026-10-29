@@ -33,7 +33,7 @@ New in this ledger:
 
 ### Does the conflict test hold on Lightning? (Lightning conflict test, opened 29 Oct 01:16 UTC) <a id="lightning-conflict"></a>
 
-`changes README` *Used in: not in the README yet (waiting for Dan).*
+`in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (Lightning's and the 122B's columns).*
 
 - **Question.** On Nemotron 3.5 Lightning, at its committed layer L14, does the recall follow the lens part while the lookup goes around it?
 - **Why we asked.** A fourth model, of another family, under the main test's rule unchanged. The 122B (FP8; MoE, ~10B active) beside: the largest model, its conflict test from its r2 run (24 Oct; Dan 11:30, the 122B as a fifth model).
@@ -70,7 +70,7 @@ New in this ledger:
 
 ### Is it the bridge item or its answer that moves through the lens? (51.12, opened 28 Oct 21:18) <a id="t51-12"></a>
 
-`in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (specificity); README Part VI, Withdrawn (Z2).*
+`in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (the specificity rows); README "Tested and dropped" ("The described bridge on Zach's passages").*
 
 - **Question.** On the main test, is the recall's loss without the lens part about the bridge item or about its answer word?
 - **Why we asked.** At a described bridge the lens reads the answer about as well as the item; the same could hold at our bridge word.
@@ -104,7 +104,7 @@ New in this ledger:
 
 ### At which layer does Lightning get the conflict test? (Lightning's layer, committed 29 Oct 01:02) <a id="lightning-layer"></a>
 
-`ledger only` *Used in: the Lightning conflict test; README Status line (waiting for Dan).*
+`in README` *Used in: README "The question and the setup" (Lightning's layer).*
 
 - **Question.** At which layer does Nemotron 3.5 Lightning get the conflict test?
 - **Why we asked.** A new model needs its layer L fixed before any scored run.
@@ -132,7 +132,7 @@ New in this ledger:
 
 ### Does the split hold in prose, JSON and tables? (varied scenes, x0b; Lightning's coverage run 29 Oct) <a id="x0b"></a>
 
-`in README` *Used in: README Part I card "Does the split hold in other texts?" and Fig. 9a (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part I card "Does the split hold in other texts?" (the varied scenes).*
 
 - **Question.** In scenes written as prose, JSON or a table, at three nesting levels and in several domains, does the lookup let go of the lens part while the recall follows it?
 - **Why we asked.** The main test is one template; the split could belong to that layout rather than to the two readers.
@@ -162,7 +162,7 @@ New in this ledger:
 
 ### Does the split hold in natural passages? (natural passages, x5, opened 25-26 Oct; Lightning's gate 29 Oct) <a id="x5"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the split hold in other texts?" (9B, 27B, Muse).*
+`in README` `below gate: Lightning` *Used in: README Part I card "Does the split hold in other texts?" (the natural passages).*
 
 - **Question.** In natural passages, where a fact sentence names the bridge, does the lookup let go of the lens part while the recall follows it?
 - **Why we asked.** Our scenes are templates; natural passages test the split outside them.
@@ -193,7 +193,7 @@ New in this ledger:
 
 ### Does each part, added by itself, move its reader? (51.1, opened 28 Oct 18:03; Lightning's coverage run 29 Oct) <a id="t51-1"></a>
 
-`in README` *Used in: README Part I card of the same name (Fig. 16).*
+`ledger only` *Used in: README Part I, a one-line link to this card (the dose curves).*
 
 - **Question.** Added by itself at a dose, does the lens part move the recall more than a random part of its share, and leave the lookup?
 - **Why we asked.** The conflict test takes a part away; a reader that follows a part should also move when only that part is added.
@@ -223,7 +223,7 @@ New in this ledger:
 
 ### Does the recall need the lens part, or only follow it? (zeroing at one layer, 47.5; Lightning's coverage run 29 Oct) <a id="t47-5"></a>
 
-`in README` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (Fig. 1c; 9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (zeroing).*
 
 - **Question.** Taking the lens part out of the changed prompt's own state at the bridge word, does the recall lose the changed answer (needed) or keep it (followed)?
 - **Why we asked.** The conflict test removes the lens part from the change; zeroing it in the changed prompt's own state asks whether the recall needs it there.
@@ -252,7 +252,7 @@ New in this ledger:
 
 ### Does the recall need the lens part once its other copies are gone? (49.2, opened 28 Oct 17:16) <a id="t49-2"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (Fig. 1d); claims table row 2.*
+`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (the ladder).*
 
 - **Question.** Taking the lens part out of the changed prompt step by step (more layers, the earlier mention, the question, every token), when does the recall start to need it, and does the lookup ever?
 - **Why we asked.** At one layer the recall barely needs the lens part; it may have copies elsewhere.
@@ -284,7 +284,7 @@ New in this ledger:
 
 ### Does the recall also read the item's earlier mention? (the earlier mention, 45p, opened 27 Oct) <a id="t45p"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall also read the item's earlier mention?" (Fig. 3c; 9B, 27B, Muse).*
+`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall also read the item's earlier mention?".*
 
 - **Question.** When the new item's locker sentence comes before the asked pick, does the recall also read the item's lens part at that earlier mention, beyond the bridge word?
 - **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
@@ -314,7 +314,7 @@ New in this ledger:
 
 ### When the lens part points the recall to one item and the address to another, which does it follow? (53.6, opened 29 Oct ~10:35-10:45; joint four-model verdict 11:51) <a id="b53-6"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`in README` *Used in: README Part I card "When the lens part points the recall to one item and the address to another, which does it follow?".*
 
 - **Question.** When the lens part of the change points the recall to one item and the address points it to another, which does the recall follow?
 - **Why we asked.** The address swap redirects part of the recall ([swap](#swap)); the lens part carries the item's identity to the recall. Set against each other, the two show which the recall weights.
@@ -347,7 +347,7 @@ New in this ledger:
 
 ### Does the lens effect follow the question's position or the answer's type? (53.1, five models, combined verdict 29 Oct; the word cells not tested) <a id="b53-1"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`in README` *Used in: README Part I card "Does asking the question before the scene change how the lookup uses the lens part?"; README "Tested and dropped" ("The question's position decides item or answer").*
 
 - **Question.** On our locker scenes, does the recall's lens effect (the item or its answer, by 51.12's arms) change when the question comes before the scene instead of after it, or when the recall's answer is a word instead of a number?
 - **Why we asked.** On Zach's passages the answer word is readable and usable through the lens ([52 B](#b52-b)); on our scenes it is not. His questions and answers differ from ours in two ways at once: where the question sits and what kind of answer it asks for.
@@ -394,7 +394,7 @@ New in this ledger:
 
 ### Does each reader follow the lens part by weight, or by route? (gain map, 49.1; Lightning's coverage run 29 Oct) <a id="t49-1"></a>
 
-`ledger only`
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** Scaling the lens part and the rest of the change separately, does the recall move with either part at enough gain (weights), or only with one of them (routes), and does the lookup ignore the lens part?
 - **Why we asked.** Removing a part shows what a reader needs; adding each part at several gains shows whether it reads that part at all.
@@ -426,7 +426,7 @@ New in this ledger:
 
 ### Do the two readers read two separate learned subspaces? (DAS at the bridge word, 48.1; the 27B's coverage run 29 Oct) <a id="t48-1"></a>
 
-`ledger only` *Used in: the README's supplementary Fig. S12; 9B, Muse.*
+`ledger only` *Used in: README Appendix A, a figure link ("Muse's learned subspaces", figures/supp/s12_das_muse.png).*
 
 - **Question.** At the bridge word at L, does each reader's switch run through its own small learned subspace, the recall's inside the lens part and the lookup's holding the address or a third identity code?
 - **Why we asked.** Our parts are hand-built; a subspace trained for each reader tests the two-reader picture without that choice.
@@ -454,7 +454,7 @@ New in this ledger:
 
 ### What is inside the lens part's 25 directions? (batch 52 A, landed 29 Oct 01:01; Lightning's 01:06) <a id="b52-a"></a>
 
-`ledger only`
+`in README` *Used in: README Part I card "What do the lens part's 25 directions stand for?".*
 
 - **Question.** Which words do the 25 lens directions of the change stand for: the two bridge items, the answer words, or other words?
 - **Why we asked.** The answer control tests the answer words only; the rest of the lens part was never looked at.
@@ -483,7 +483,7 @@ New in this ledger:
 
 ### Where is the answer readable through the lens, and can it be written there? (batch 52 B, landed 29 Oct 01:46; Lightning's main set 29 Oct) <a id="b52-b"></a>
 
-`ledger only`
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** For each reader, on our scenes and on Zach's described passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
 - **Why we asked.** The answer control found the answer word not read at our bridge word but read at Zach's description; where else is it readable, and is it used there?
@@ -518,7 +518,7 @@ New in this ledger:
 
 ### Does the lookup's identity route run outside the lens, or in lens directions beyond the recall's 25? (identity route outside the lens, 47.1; Lightning's coverage run 29 Oct) <a id="t47-1"></a>
 
-`in README` *Used in: README Part II card "The lookup's identity route runs outside the lens" (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part II card "Does the lookup's identity route run outside the lens?".*
 
 - **Question.** The lookup barely needs the lens part's 25 directions; does its identity route sit in the next 75 lens directions, or outside the lens altogether?
 - **Why we asked.** On the 27B, taking out 100 lens directions cut identity answers far more than a random part, so "outside the lens" might only mean "outside the recall's 25".
@@ -549,7 +549,7 @@ New in this ledger:
 
 ### Which route does the lookup take, and does the address carry the position route? (routes test; Lightning's coverage run opened 29 Oct 01:47) <a id="routes"></a>
 
-`in README` `below gate: 122B` *Used in: README Part II and III cards on the routes test and the address (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` `below gate: 122B` *Used in: README Part II card "Which route does the lookup take: the item's identity, its locker's position, or the number?"; README Part III card "Can the address be read, removed, added and swapped?" (removing and adding the address).*
 
 - **Question.** When another item's locker sentence moves and takes a new number, does the lookup follow the item's identity, its locker's position, or the number, and is the position route carried by the address?
 - **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads.
@@ -582,7 +582,7 @@ New in this ledger:
 
 ### Does the lookup never take the value, in prose, JSON and tables too? (never the value by format, 47.7 (c); Lightning's coverage run 29 Oct) <a id="t47-7c"></a>
 
-`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part II card "Identity, position, never the value" ("the value never, in any format"; 9B, 27B, Muse); Lightning not in the README yet.*
+`ledger only` `below gate: 9B, Muse, Lightning` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** In varied scenes (prose, JSON, tables) where another item moved and took a new number, does the lookup's answer ever follow the number (the value route)?
 - **Why we asked.** On simple scenes the lookup never takes the value; "in any format" needs the formats.
@@ -612,7 +612,7 @@ New in this ledger:
 
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? (51.3, opened 28 Oct 20:46) <a id="t51-3"></a>
 
-`in README` *Used in: README Appendix (Fig. 14 link); planned Part II / III cards.*
+`ledger only` *Used in: README Appendix A, a figure link ("learned subspaces", figures/story/fig14_learned.png).*
 
 - **Question.** Does a learned (DAS) subspace of at most 128 directions carry the recall's identity switch, where does the lookup's learned subspace lie, and does the learned 4-direction address overlap ours?
 - **Why we asked.** Our parts are hand-built (lens directions, slot means); a trained subspace tests them without that choice.
@@ -641,7 +641,7 @@ New in this ledger:
 
 ### Is the item's identity at its locker sentence the code the lookup reads at the bridge word? (53.8, a binding-ID test; the 9B, the 27B and Muse, 29 Oct) <a id="b53-8"></a>
 
-`ledger only` *Used in: not in the README.*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** Is the item's identity at its mention in its locker sentence a code the lookup reads at the bridge word: added there, does it send lookups to that item's locker?
 - **Why we asked.** The lookup reads an identity code outside the lens part beside the address ([47.1](#t47-1), [routes](#routes)); a binding-ID code would be one vector shared by the item's mention and the bridge word.
@@ -681,7 +681,7 @@ New in this ledger:
 
 ### Is the address readable at the bridge word? (the address probe, x0_probe v4; Lightning's coverage run 29 Oct) <a id="probe"></a>
 
-`in README` *Used in: README Part III card "The address: probe, remove, add, swap" ("a probe reads it in 0.92-0.99 of scenes"; 9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the probe).*
 
 - **Question.** At the bridge word at L, can a probe read which locker sentence holds the item's locker, beyond what the layout of the scene gives away, and does it read the answer digit itself?
 - **Why we asked.** If the bridge word stores an address rather than the answer, the locker sentence should be readable and the digit should not.
@@ -711,7 +711,7 @@ New in this ledger:
 
 ### Does swapping the address send the lookup to the swapped-in locker? (address swap by dose; Lightning's coverage run opened 29 Oct 01:51) <a id="swap"></a>
 
-`in README` `below gate: 122B` *Used in: README Part III card "The address: probe, remove, add, swap" (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` `below gate: 122B` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap).*
 
 - **Question.** Adding the difference between two slots' address codes at the bridge word, does the lookup go to the locker of the slot swapped in, and how much does the recall change with it?
 - **Why we asked.** Removing the address stops position answers; a swap tests whether the address is read as a pointer to a place.
@@ -745,7 +745,7 @@ New in this ledger:
 
 ### Does the address survive neutral sentences between the lockers and the picks? (the swap after neutral sentences, 47.16; the 27B's and Lightning's coverage runs 29 Oct) <a id="t47-16"></a>
 
-`in README` *Used in: README Part III card "The address: probe, remove, add, swap" ("0.35 after 50 neutral sentences", 9B); the 27B and Lightning not in the README yet.*
+`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap after neutral sentences).*
 
 - **Question.** With 5, 20 or 50 neutral sentences between the lockers and the picks, does the address still carry position answers, and does the address swap still work?
 - **Why we asked.** An address read at the bridge word could be a short-range effect of the sentences next to it.
@@ -773,7 +773,7 @@ New in this ledger:
 
 ### With six lockers, does each locker have its own code? (six lockers; the 27B's coverage run opened 29 Oct 01:49, Lightning's 29 Oct) <a id="six"></a>
 
-`in README` *Used in: README Part III card "Six lockers" and claims table row 8 (9B, Muse); the 27B and Lightning not in the README yet.*
+`in README` *Used in: README Part III card "With six lockers, does each locker have its own code?".*
 
 - **Question.** With six locker sentences, is the address a line over slots (one shift steps the lookup one slot), a first-versus-rest marker, or one code per slot?
 - **Why we asked.** With three lockers a line and a first-versus-rest marker look the same.
@@ -802,7 +802,7 @@ New in this ledger:
 
 ### What is the address, independent of how we built it? (51.11, opened 28 Oct 22:51) <a id="t51-11"></a>
 
-`changes README` *Used in: README "In one minute", claims table row 8, Status line (waiting for Dan).*
+`in README` *Used in: README Part III card "With six lockers, does each locker have its own code?" (the held-out code); README "Tested and dropped" ("One code per locker").*
 
 - **Question.** Is the address one code per locker, one shared code, or an order line, by methods that do not use our construction?
 - **Why we asked.** Our address was built from means of four slots; its size and shape could be an artefact of that build.
@@ -831,7 +831,7 @@ New in this ledger:
 
 ### On the scenes where the 27B's lookup goes by position, does the address work as on the 9B? (53.5, opened 29 Oct ~10:00; CPU, existing outcomes) <a id="b53-5"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** On the scenes where the 27B's lookup goes by position, does the address work as it does on the 9B?
 - **Why we asked.** Added by itself, the 27B's address brings few position answers back overall ([routes](#routes)); the 27B takes the position route less often, so its address could be the same mechanism, used less.
@@ -863,7 +863,7 @@ New in this ledger:
 
 ### Can the lens read the address? (lens readout of an address swap, 47.0; Lightning's coverage run 29 Oct) <a id="t47-0"></a>
 
-`in README` *Used in: README Part III card "The lens is blind to the address" (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part III card "Can the lens read the address?" (the lens readout of the swap).*
 
 - **Question.** Read through the lens, does an address swap at a real change's size show up as a position word, get rebuilt by the lens's own directions, or move the lens's readout more than a random vector of the same size?
 - **Why we asked.** Neel's question: is the pointer verbalizable? A lens monitor would have to see it.
@@ -895,7 +895,7 @@ New in this ledger:
 
 ### What can a probe on the lens subspace decode, against the full state? (53.2, the monitor test; four models, 29 Oct; the 122B to come) <a id="b53-2"></a>
 
-`ledger only` *Used in: the README's use follows its 12:50 rebuild.*
+`in README` *Used in: README Part III card "Can a monitor on the lens part read the address where the lookup uses it?".*
 
 - **Question.** What can a probe on the lens subspace decode, against the full state: the bridge item's locker slot (the address) and the lookup's answer digit, with which item and the recall's answer as positive controls?
 - **Why we asked.** The lens readout does not show the address ([47.0](#t47-0)); a trained probe on the lens part's coordinates asks whether the address is there but not verbalized, or absent from the lens directions.
@@ -933,7 +933,7 @@ New in this ledger:
 
 ### Asked for the position, does the address surface in the lens? (the report prompt, 47.10, opened 28 Oct; Lightning's gate 29 Oct) <a id="t47-10"></a>
 
-`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part III card "The lens is blind to the address" ("asked for the position, the 27B's lens top five hold the right ordinal in 0.00 of reports"; the 27B).*
+`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part III card "Can the lens read the address?" (the report prompt).*
 
 - **Question.** When the prompt asks which locker sentence holds the item (a report reader), does the lens at the bridge word show the right ordinal, and does the report need the lens part or the address?
 - **Why we asked.** The lens cannot read the address under the lookup's prompt; asked for it directly, the model might surface it into the lens.
@@ -962,7 +962,7 @@ New in this ledger:
 
 ### Reworded, does the report read slot 1? (the report of slot 1 reworded, 49.6, opened 28 Oct; Lightning's coverage run 29 Oct) <a id="t49-6"></a>
 
-`ledger only` *Used in: not in the README (its Part VI "one question under two instructions" is another test).*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** Asked for the position of the asked item's locker, the report reads slot 1 badly ([47.10](#t47-10)); asked in other words, does it read slot 1?
 - **Why we asked.** If slot 1 stays unread under any wording, the report's gap is about slot 1 itself; if it recovers, it was the wording.
@@ -992,7 +992,7 @@ New in this ledger:
 
 ### Do a few heads read the swapped address? (51.2, opened 28 Oct 20:04; Lightning's coverage run 29 Oct) <a id="t51-2"></a>
 
-`ledger only` *Used in: planned Part III ("who reads it").*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** Does a small set of attention heads carry the address swap's effect at the last token, or is it spread over heads?
 - **Why we asked.** Attention follows the swapped address; a few heads could be the readers.
@@ -1020,7 +1020,7 @@ New in this ledger:
 
 ### Do attention heads follow the swapped address to its locker? (attention under the swap, 49.7; Lightning's coverage run 29 Oct) <a id="t49-7"></a>
 
-`ledger only`
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** When the address swap sends the lookup to another locker, does some attention head at the last token move its weight to that locker on the pairs that switched, and only there?
 - **Why we asked.** A head that reads the address should move with the swap where the lookup switches and stay put where it does not.
@@ -1051,7 +1051,7 @@ New in this ledger:
 
 ### Does the second hop, hall to locker, run through an address too? (chained addresses, 47.14; the 27B's coverage run 29 Oct) <a id="t47-14"></a>
 
-`ledger only` `below gate: Lightning`
+`in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("the second hop's key token").*
 
 - **Question.** With hall sentences before the locker sentences, is the hall of the pick's locker read through an address at the locker digit, as the locker is read through one at the bridge word?
 - **Why we asked.** If the address is a general pointer, the next hop (locker to hall) should use one too.
@@ -1080,7 +1080,7 @@ New in this ledger:
 
 ### Must the address be refit for each text format? (address refit per format, x45d; Lightning's coverage run 29 Oct) <a id="x45d"></a>
 
-`in README` *Used in: README Part VI, weaker results ("The address must be refit per text format"; 9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part III card "Must the address be refit for each text format?".*
 
 - **Question.** On varied scenes (prose, JSON, tables), does an address refit on each format's own scenes carry the lookup's position answers, where the address fit on simple scenes does little?
 - **Why we asked.** The address was fit on one template; in other formats the code may sit elsewhere.
@@ -1109,7 +1109,7 @@ New in this ledger:
 
 ### Does the address carry over to code and tool output? (53.7, adapted design; the 9B and the 27B, code and tool output, 29 Oct) <a id="b53-7"></a>
 
-`ledger only` *Used in: the README's Part III card on code and tool output follows its 12:50 rebuild; adapted design: lookup-only gate, the recall is not part of this test.*
+`in README` *Used in: README Part III card "Is the address readable, and used, in Python code and tool output?"; adapted design: lookup-only gate, the recall is not part of this test.*
 
 - **Question.** Does the address carry over to code and tool output: does a probe read it at the bridge word, and does the routes test find the lookup using it, when the scene is rendered as Python or as a tool's response?
 - **Why we asked.** The address is found in prose, JSON and tables ([probe](#probe), [routes](#routes), [refit](#x45d)); code and tool output are where a pointer would matter in practice.
@@ -1153,7 +1153,7 @@ New in this ledger:
 
 ### Does the bridge word redirect the lookup only when its locker sentence came first? (the split by sentence order; Lightning's opened 29 Oct 01:54) <a id="order"></a>
 
-`in README` *Used in: README Part IV card "Sentence order: where the link is made" and claims table row 10 (9B, 27B, Muse); Lightning not in the README yet.*
+`in README` *Used in: README Part IV card "Does the bridge word redirect the lookup only when its locker sentence came first?" (the split).*
 
 - **Question.** On the main test, does the change at the bridge word switch the lookup when the item's locker sentence came before the asked pick, and when it came after?
 - **Why we asked.** The bridge word can only point back: if the locker sentence comes after it, the link must be made elsewhere.
@@ -1185,7 +1185,7 @@ New in this ledger:
 
 ### When the locker comes after the pick, is the link made in the locker sentences? (the copy test, 45q, opened 27 Oct) <a id="t45q"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Sentence order: where the link is made" ("the copy carries 0.70 / 0.74 / 0.76"; 9B, 27B, Muse).*
+`in README` `below gate: Lightning` *Used in: README Part IV card "Does the bridge word redirect the lookup only when its locker sentence came first?" (the copy).*
 
 - **Question.** In clean scenes whose locker sentence comes after the asked pick, does copying the changed prompt's states into the locker sentences switch the lookup, while the change at the bridge word does not?
 - **Why we asked.** With the locker after the pick the bridge word cannot point back; the link must be made where the locker sentence is read.
@@ -1215,7 +1215,7 @@ New in this ledger:
 
 ### Which token and layer carry each reader's switch, and when does the bridge word stop being read? (token-by-layer map and window patching, D1 / D2; the 27B's and Lightning's coverage runs 29 Oct) <a id="d1"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Token by token, layer by layer" (9B, Muse); the 27B and Lightning not in the README yet.*
+`in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?".*
 
 - **Question.** With the changed prompt's state placed in one token group at one layer, which cell switches each reader, and after which layer does nothing downstream read the bridge word?
 - **Why we asked.** With the locker sentence after the pick the bridge word cannot point back; the map says where the link sits instead.
@@ -1248,7 +1248,7 @@ New in this ledger:
 
 ### When the change at L misses a lookup, where is the rest read? (cumulative patches, 47.4; the 27B's and Lightning's coverage runs 29 Oct) <a id="t47-4"></a>
 
-`in README` `below gate: Lightning` *Used in: README claims table row 11 (9B, Muse); the 27B not in the README yet.*
+`in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?" (the cumulative patches).*
 
 - **Question.** When the change at the bridge word at L leaves a lookup unswitched, is the rest read from the bridge word before L, from the pick sentence's other tokens, or from outside the pick sentence?
 - **Why we asked.** The conflict test changes one layer; the lookups it misses may read the bridge word earlier.
@@ -1279,7 +1279,7 @@ New in this ledger:
 
 ### Does the lookup drop the lens part before it takes up the address? (anatomy by layer, 47.8; Lightning's coverage run and the 27B's full grid 29 Oct) <a id="t47-8"></a>
 
-`changes README` *Used in: README Part IV card "The anatomy by depth" (9B, 27B, Muse): the 27B's full grid contradicts its rule (a) (Flagged, top); Lightning not in the README yet.*
+`in README` *Used in: README Part IV card "Does the lookup drop the lens part before it takes up the address?".*
 
 - **Question.** Layer by layer, when does the lookup stop needing the lens part, when does it start using the address, when is the address readable, and is the value ever used?
 - **Why we asked.** At L the lookup takes an identity route and a position route; depth says which comes first and whether the address is written before it is read.
@@ -1315,7 +1315,7 @@ New in this ledger:
 
 ### Does the address travel to the last token? (51.4, opened 28 Oct 18:36; Lightning's coverage run 29 Oct) <a id="t51-4"></a>
 
-`changes README` *Used in: README claims table row 12 (waiting for Dan).*
+`in README` *Used in: README claims table, claim 12 (whether the address travels to the last token).*
 
 - **Question.** Does the address swap work at the last token, with the bridge word's slot means or with means refit there?
 - **Why we asked.** The answer is read at the last token; the address could be copied there or re-encoded.
@@ -1344,7 +1344,7 @@ New in this ledger:
 
 ### Is the recall's bridge entity read through the lens at the last token? (51.10, opened 28 Oct 20:06; Lightning's coverage run 29 Oct) <a id="t51-10"></a>
 
-`changes README` *Used in: README new card, Part IV (waiting for Dan).*
+`in README` *Used in: README Part IV card "At the last token, is the bridge entity in the lens part of the state, and does the model use it there?".*
 
 - **Question.** At the last token and at the question's pick token, is the bridge entity readable through the lens, and does writing it through the lens move the answer?
 - **Why we asked.** The bridge word's lens part is followed by the recall; the answer is computed later, at the last token.
@@ -1375,7 +1375,7 @@ New in this ledger:
 
 ### At the last token, does each reader compute its answer through the lens part or outside it? (53.3, opened 29 Oct ~10:00-10:25, four models) <a id="b53-3"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`in README` *Used in: README "Tested and dropped" ("The copy bypasses the lens"), the reading dropped (its link goes to 53.3b).*
 
 - **Question.** At the last token, does each reader compute its answer through the lens part of the last token's change, or outside it?
 - **Why we asked.** At the last token the recall's bridge entity is readable through the lens, yet writing it there does not move the answer ([51.10](#t51-10)); the conflict test at that token asks which part of the change each reader follows there.
@@ -1408,7 +1408,7 @@ New in this ledger:
 
 ### Does the last-token conflict test change when the answers are words? (53.3b, four models, joint verdict 29 Oct) <a id="b53-3b"></a>
 
-`ledger only` `below gate: Muse, Lightning` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`in README` `below gate: Muse, Lightning` *Used in: README "Tested and dropped" ("The copy bypasses the lens").*
 
 - **Question.** At the last token, does the lookup compute its answer through the lens part when the answer is a word the passage states, as the recall does, or outside it as with digits?
 - **Why we asked.** On our locker scenes (digit answers) the lookup computes outside the lens part at the last token on two models while the recall goes through it near the answer ([53.3](#b53-3)); the asymmetry could belong to digits or to copying. (53.3's near-answer recall cells are now labelled uninformative near the output, Dan 11:25; its Muse and Lightning digit lookups keep their labels, Dan 11:55.)
@@ -1447,7 +1447,7 @@ New in this ledger:
 
 ### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? (53.4, opened 29 Oct ~10:40; follow-up with Dan's 11:25 control 11:53) <a id="b53-4"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`in README` *Used in: README Part IV card "On Lightning, does the lookup read the bridge word through its attention blocks?".*
 
 - **Question.** On Lightning, does the lookup read the bridge word through its attention blocks 19 and 26?
 - **Why we asked.** Lightning's attention heads move with the address swap in blocks 19 and 26 ([attention under the swap](#t49-7)); its other blocks are Mamba-2 state, so the bridge word could reach the lookup through two attention blocks.
@@ -1491,7 +1491,7 @@ New in this ledger:
 
 ### Does the split hold on Zach's passages with a named bridge? (Z1, opened 28 Oct 17:17; Lightning's coverage run 29 Oct) <a id="z1"></a>
 
-`changes README` *Used in: README Part V (Fig. 12's "his passages" cells); the wording about reruns waits for Dan.*
+`in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (his named passages and the recheck); README "Tested and dropped" ("The lookup follows the lens part on Zach's passages").*
 
 - **Question.** On Zach's passages with a named bridge, does the lookup let go of the lens part while the recall follows it?
 - **Why we asked.** Our scenes are short lists; his passages scatter the facts in prose.
@@ -1531,7 +1531,7 @@ New in this ledger:
 
 ### On Zach's made-up-fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00-12:15) <a id="b53-1b"></a>
 
-`ledger only` *Used in: batch 53; the README's use follows its 12:50 rebuild (Dan 12:50: results enter marked unverified).*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** On Zach's passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say when the passage names the bridge (PP: the lookup reads the made-up value the passage states; PM: the recall answers from memory) and when it describes the bridge instead (MP: the lookup; MM: the recall)? In his codes the first letter is how the bridge enters, the second where the answer comes from; the made-up fact is stated in every cell, so PP against MP is a named against a described bridge, for the lookup.
 - **Why we asked.** Dan's priority 1 of 29 Oct 09:50 ("jsuite PP vs MP, 51.12's arms + readout"): on his passages the cells exist already, no new scenes.
@@ -1566,7 +1566,7 @@ New in this ledger:
 
 ### Does the split survive when the bridge is changed at every layer up to L? (51.7, opened 28 Oct 18:21; Lightning's coverage run 29 Oct) <a id="t51-7"></a>
 
-`changes README` *Used in: README claims table row 1, its limit (waiting for Dan).*
+`in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (the full carrier).*
 
 - **Question.** On Zach's named-bridge passages, does changing the bridge token at every layer up to L (the full carrier) explain the one-layer result, and does the split hold there?
 - **Why we asked.** At one layer his fact-after lookups barely switch; the link may be carried by the bridge token over several layers.
@@ -1597,7 +1597,7 @@ New in this ledger:
 
 ### Does the lookup take a position route on Zach's passages? (Z3, opened 28 Oct 17:31; the 27B's and Lightning's coverage runs 29 Oct) <a id="z3"></a>
 
-`ledger only` *Used in: planned Part V.*
+`in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (the routes test on his passages).*
 
 - **Question.** On Zach's passages with scattered facts, does the lookup take a position route besides the identity route?
 - **Why we asked.** The address codes where a locker sentence sits in a list; his passages have no list.
@@ -1626,7 +1626,7 @@ New in this ledger:
 
 ### Does Zach's read window match ours? (51.5, opened 28 Oct 19:14) <a id="t51-5"></a>
 
-`ledger only` *Used in: planned Part V.*
+`ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** On Zach's named-bridge passages, does each reader's read window end within 4 layers of ours?
 - **Why we asked.** His swap works up to about L20; ours up to L16 on the 9B; the windows decide where the two operations can be compared.
@@ -1657,7 +1657,7 @@ New in this ledger:
 
 ### Does the split hold for a described bridge? (described bridge, 47.3, opened 28 Oct; Lightning's gate 29 Oct) <a id="t47-3"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, weaker results ("A described bridge"; 9B, 27B, Muse).*
+`in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("A described bridge in our scenes").*
 
 - **Question.** When the asked pick describes the item instead of naming it ("picked the one known for honey"), does the lookup still let go of the lens part at the description's word while the recall follows it?
 - **Why we asked.** A described bridge must be computed first; the computed item could travel through the lens.
@@ -1692,7 +1692,7 @@ New in this ledger:
 
 ### Under one question with two instructions, does the lens part follow the source or the question? (one question, two sources, 47.15; the 27B) <a id="t47-15"></a>
 
-`ledger only` `below gate: 9B, Muse, Lightning` *Used in: README Part VI, "One question under two instructions", as a one-line link (its 12:50 rebuild).*
+`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part VI, one line with a link ("One question under two instructions").*
 
 - **Question.** When one question asks for the answer "from the passage" or "from what you know", does each part of the change follow the source of the answer or the question?
 - **Why we asked.** The lookup answers from the passage and the recall from memory: the split could follow the source, or the question the reader is asked.
@@ -1720,7 +1720,7 @@ New in this ledger:
 
 ### Are the lookup's errors address errors? (the address probe on the lookup's errors, 47.13; Lightning's coverage run 29 Oct) <a id="t47-13"></a>
 
-`in README` *Used in: README Part VI, weaker results ("The lookup's errors are not address errors", 9B); Lightning not in the README yet.*
+`in README` *Used in: README Part VI, one line with a link ("The lookup's errors are not address errors").*
 
 - **Question.** Where the lookup answers wrong on unedited varied scenes, does the address probe read the slot of the wrong answer, while the lens still names the right item?
 - **Why we asked.** If the address carries the position route, some of the lookup's errors could come from a wrong address.
@@ -1749,7 +1749,7 @@ New in this ledger:
 
 ### Does the lens part key the item's attribute, and do late MLPs at the bridge word carry the recall? (enrichment, 48.2; the 27B's and Lightning's coverage runs 29 Oct) <a id="t48-2"></a>
 
-`in README` *Used in: README Part VI, "What did not hold" (the J++ part keys the item's attribute at the bridge word; late MLPs there carry the recall; 9B, Muse); the 27B not in the README yet.*
+`in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 - **Question.** (A) After L, does a probe for the item's attribute at the bridge word move with the lens part and not without it? (B) Does mean-ablating the bridge word's MLPs after L cost the recall its answer while the lookup keeps its own?
 - **Why we asked.** The recall could fetch the item's attribute at the bridge word, keyed by the lens part, through late MLPs.
@@ -1778,7 +1778,7 @@ New in this ledger:
 
 ### Is the person who picked an item marked at its locker sentence? (person mark, 48.3; the 27B's coverage run 29 Oct) <a id="t48-3"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, "What did not hold" (a person mark at the locker sentence; 9B, Muse); the 27B not in the README yet.*
+`in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 - **Question.** Is the person who picked an item written into the item's locker sentence, readable by a probe there, outside the lens, and able to move the lookup when written?
 - **Why we asked.** A forward binding at the locker sentence would let the lookup find the pick's locker without reading the bridge word through the lens.
@@ -1807,7 +1807,7 @@ New in this ledger:
 
 ### Is the person mark spread over the locker sentence? (pooled person probe, 49.3; the 27B's coverage run 29 Oct) <a id="t49-3"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, "What did not hold" (a person mark at the locker sentence, where it says "the pooled probe is running"; 9B, Muse); the 27B not in the README yet.*
+`ledger only` `below gate: Lightning` *Used in: not in the README (its 12:50 rebuild).*
 
 - **Question.** In locker-after scenes, is who picked an item readable from the item's whole locker sentence pooled, though no single token holds it, or as a flag "picked by the asked person"?
 - **Why we asked.** The single-token probe (48.3) reads chance; a mark spread over the sentence would escape it.
@@ -1837,7 +1837,7 @@ New in this ledger:
 
 ### Do the copying heads pass the rest of the change at twice the lens part? (copying heads, 48.4; the 27B's and Lightning's coverage runs 29 Oct) <a id="t48-4"></a>
 
-`in README` *Used in: README Part VI, "What did not hold" (the copying heads pass the rest at twice the J++ part; 9B, Muse); the 27B not in the README yet.*
+`in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 - **Question.** Do the five heads that copy most from the bridge word to the last token pass the rest of the change at least twice as strongly as the lens part?
 - **Why we asked.** The lookup follows the rest of the change; heads that copy the rest would be its path.
@@ -1865,7 +1865,7 @@ New in this ledger:
 
 ### Is the address the recall's second route? (the address as the recall's second route, 48 route2, opened 28 Oct) <a id="t48-5"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, "What did not hold" (the address is the recall's second route; 9B, 27B, Muse).*
+`in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 - **Question.** Writing another slot's address at the bridge word, does the recall then name the item in that slot (slot k's item), as a second route besides the lens part?
 - **Why we asked.** The recall loses some switches without the address; the address might be a route into the recall too.
@@ -1894,7 +1894,7 @@ New in this ledger:
 
 ### Is the address formed by the pick sentence reading the lockers? (blocking the pick sentence, 47.6; the 27B's coverage run 29 Oct) <a id="t47-6"></a>
 
-`in README` *Used in: README Part VI, "What did not hold" (blocking the pick sentence; 9B, Muse); the 27B not in the README yet.*
+`in README` *Used in: README Part VI, one line with a link ("Blocking the pick sentence from the lockers").*
 
 - **Question.** Blocking the pick sentence from reading the locker sentences at every layer up to L, are only position answers lost, with identity answers and the recall's switch kept?
 - **Why we asked.** If the pick token forms the address by reading the lockers, blocking those reads should remove position answers alone.
@@ -1923,7 +1923,7 @@ New in this ledger:
 
 ### Is the address the same for any kind of item? (other kinds of item, 47.11; the 27B's and Lightning's coverage runs 29 Oct) <a id="t47-11"></a>
 
-`in README` *Used in: README Part VI, "What did not hold" (the address is the same for any kind of item; 9B, Muse); the 27B not in the README yet.*
+`in README` *Used in: README Part VI, one line with a link ("the address for other kinds of item").*
 
 - **Question.** With fruits or names as the items instead of animals, does the address fit on animal scenes still carry the lookup's position answers?
 - **Why we asked.** An address, not an animal code, should work for any kind of item.
@@ -1964,7 +1964,7 @@ The README's Part VI "Also failed" line (Dan 12:50: its cards move here); each w
 
 ### Do the 9B's headline runs reproduce from a clean checkout? (49.5, landed 28 Oct 17:11) <a id="t49-5"></a>
 
-`ledger only` *Used in: a candidate for "How we checked".*
+`in README` *Used in: README "How we checked" ("Clean-checkout reruns").*
 
 - **Question.** Run again from one committed, clean tree, do the 9B's headline runs give the same stored answers?
 - **Why we asked.** Every run of record ran from a dirty tree.
@@ -2000,7 +2000,7 @@ Rows of the coverage matrix whose result exists on one model only, by design or 
 
 ### Does the split hold when Zach's bridge is described? (Z2, opened 28 Oct 17:27; withdrawn 21:18; Lightning's coverage run 29 Oct) <a id="z2"></a>
 
-`in README` *Used in: README Part VI, Withdrawn.*
+`in README` *Used in: README "Tested and dropped" ("The described bridge on Zach's passages").*
 
 - **Question.** On Zach's passages with a described (never named) bridge, does the lookup let go of the lens part?
 - **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
@@ -2074,34 +2074,34 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 
 ## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>
 
-Dan lifted the overnight no-README rule at 08:55; the README pass is applying these (batch 52's readme_update brief). One line each:
+Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (556d667b) applied all but two of these: one is still open (47.16 on the 27B and Lightning), one is not on the page as such (47.7 (c)). One line each, its status first:
 
-- "In one minute" and claim 8: "one code per locker" is not what 51.11 supports on the 9B (d* 2/2/>7/2, in between; the methods agree only in part; midpoint swaps fail); reword and regrade claim 8 ([51.11](#t51-11)).
-- Status line: 51.11 is opened, not sealed; add Lightning's layer L14 and its rule (amendment 1, Dan ~00:50: earliest passing layer at relative depth >= 0.25; tie-break the bridge word's lens readability) ([Lightning's layer](#lightning-layer)).
-- Part V: replace "reruns with made-up-fact passages are queued" by the truth: Z1 ran the true-fact K passages; the made-up-fact rerun (Z1-P) has since run: the 9B's split holds, the 27B's is in between, Lightning not tested (gate) ([Z1](#z1)).
-- New card, Part IV next to the address at the last token: the recall's entity at the last token is readable but not used, all three models; figure figures/story/fig17_jspace_last_token.png ([51.10](#t51-10)).
-- Claim 1: add the full-carrier limit (fact-after lookups follow the lens, 0.51 on the 9B and 27B) ([51.7](#t51-7)).
-- Claim 12: add the last-token result (the address is not at the last token on the 9B and 27B; it travels on Muse) ([51.4](#t51-4)).
-- Claim 1, models: the conflict test is confirmed on Lightning at L14 (coverage run, no prediction; gate chosen after the 60-scene pre-check was seen) ([Lightning's conflict test](#lightning-conflict)).
-- E6: say the rule fixed in advance was at s = 1 and said no (below a real change's size); the swap numbers are at s = 2; Lightning moves 0.50 at s = 2 (coverage run, no prediction) ([address swap](#swap)).
-- E10 and claim 10, models: Lightning splits the same way (locker first 0.86 of lookups switch, after 0.15; descriptive, coverage run) ([order split](#order)).
-- E11: "Not shown: the 27B" is out of date: the 27B's map fails D1 (a), (b), (c) on both designs and passes D2 (the recall's read-out layer L52 at the start of Zach's late band), as the 9B; Lightning's main-design map fails D1 too ([token map](#d1)).
-- E7 and claim 8, models: Lightning is slot-specific at dose 2, as the 9B and Muse (coverage run, no prediction) ([six lockers](#six)).
-- E3 and the dose card, models: Lightning's identity route runs outside the lens ((c)); its lookup is blind to the lens part, its recall misses rule (ii) at 0.19 against 0.2 (coverage runs, no prediction) ([47.1](#t47-1), [51.1](#t51-1)).
-- Ladder card (Part I, "Does the recall need the lens part, or only follow it?"): the 27B column "not run (bridge-word steps only)" can now be filled from the full ladder (x52_ladder_27b_a, n 574): (a) no, (b) no, (c) yes; note that Muse's step 6 ran inside Zach's band (L36-42) with the same labels; Fig. 1d's grey 27B columns too ([ladder](#t49-2)).
-- Claim 12 and the 51.4 card, models: Lightning is in between at L14 and L18 (the slot not yet readable at the last token; coverage run, no prediction) ([51.4](#t51-4)).
-- E12: the 27B's rule (a) is no on its full grid (l_J L40 after l_P L28); E12's reading and Fig. 6b's 27B panel come from the reduced grid. Restate (a) as holding on the 9B and Muse (and Lightning), not on the 27B; add the 27B's D4 overlap (0.256, mixed) beside 0.28 / 0.21 ([47.8](#t47-8)).
-- Part V, models: on Lightning Z1 is in between at L14 and Z3 in between at L14 (no position route at L27); coverage runs, no prediction ([Z1](#z1), [Z3](#z3)).
-- Part I card "Does the split hold in other texts?" and claim 1, models: Lightning's varied scenes hold pooled (gap 0.24 [0.17, 0.32], lookup 0.03; 42 of 57 cells, 1,105 scenes); its natural passages are not tested (gate). Lightning's carrier before L (51.7) as on the 9B and 27B ([varied scenes](#x0b), [51.7](#t51-7)).
-- Claim 11, models: with the locker after, the 27B's lookups too are carried by the bridge word before L (1.00, main test) ([47.4](#t47-4)).
-- E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
-- Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
-- Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
-- Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
-- E5, models: "never the value" holds on Lightning's JSON (its prose and tables not tested, gate) ([47.7 (c)](#t47-7c)).
-- Part VI, the person-mark line (README line 482): "(the pooled probe is running)" is stale. 49.3 landed on the 9B and Muse ("neither at the sentence") and on the 27B ("in between" at L32); "in between" does not contradict "did not hold", note it only ([49.3](#t49-3)). The copying heads (48.4) and the enrichment (48.2) fail on the 27B too ([48.4](#t48-4), [48.2](#t48-2)).
-- Part VI and claim 11, Lightning: the copying heads (48.4) and the attribute probe (48.2 A) do not hold; with the locker after, its lookups are carried by the bridge word before L (0.92, main test) ([48.4](#t48-4), [48.2](#t48-2), [47.4](#t47-4)).
-- E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
+- **Applied** (claim 8 reworded and graded B; the six-locker card and "Tested and dropped"). "In one minute" and claim 8: "one code per locker" is not what 51.11 supports on the 9B (d* 2/2/>7/2, in between; the methods agree only in part; midpoint swaps fail); reword and regrade claim 8 ([51.11](#t51-11)).
+- **Applied** (Lightning's layer and its rule in "How to read this page"; 51.11 under the six-locker card). Status line: 51.11 is opened, not sealed; add Lightning's layer L14 and its rule (amendment 1, Dan ~00:50: earliest passing layer at relative depth >= 0.25; tie-break the bridge word's lens readability) ([Lightning's layer](#lightning-layer)).
+- **Applied** (Part V card, made-up facts and the recheck). Part V: replace "reruns with made-up-fact passages are queued" by the truth: Z1 ran the true-fact K passages; the made-up-fact rerun (Z1-P) has since run: the 9B's split holds, the 27B's is in between, Lightning not tested (gate) ([Z1](#z1)).
+- **Applied** (Part IV card "At the last token, is the bridge entity in the lens part of the state, and does the model use it there?"). New card, Part IV next to the address at the last token: the recall's entity at the last token is readable but not used, all three models; figure figures/story/fig17_jspace_last_token.png ([51.10](#t51-10)).
+- **Applied** (claim 1's limits). Claim 1: add the full-carrier limit (fact-after lookups follow the lens, 0.51 on the 9B and 27B) ([51.7](#t51-7)).
+- **Applied** (claim 12). Claim 12: add the last-token result (the address is not at the last token on the 9B and 27B; it travels on Muse) ([51.4](#t51-4)).
+- **Applied** (claim 1 and the Part I conflict card). Claim 1, models: the conflict test is confirmed on Lightning at L14 (coverage run, no prediction; gate chosen after the 60-scene pre-check was seen) ([Lightning's conflict test](#lightning-conflict)).
+- **Applied** (Part III card "Can the address be read, removed, added and swapped?" (the rule at s = 1 said no; the swap read at s = 2)). E6: say the rule fixed in advance was at s = 1 and said no (below a real change's size); the swap numbers are at s = 2; Lightning moves 0.50 at s = 2 (coverage run, no prediction) ([address swap](#swap)).
+- **Applied** (claim 10 and the Part IV order card). E10 and claim 10, models: Lightning splits the same way (locker first 0.86 of lookups switch, after 0.15; descriptive, coverage run) ([order split](#order)).
+- **Applied** (Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?" (the 27B's column)). E11: "Not shown: the 27B" is out of date: the 27B's map fails D1 (a), (b), (c) on both designs and passes D2 (the recall's read-out layer L52 at the start of Zach's late band), as the 9B; Lightning's main-design map fails D1 too ([token map](#d1)).
+- **Applied** (claim 8 (Lightning ○)). E7 and claim 8, models: Lightning is slot-specific at dose 2, as the 9B and Muse (coverage run, no prediction) ([six lockers](#six)).
+- **Applied** (claim 5 and the Part II identity card; the dose card is ledger only now (a one-line link)). E3 and the dose card, models: Lightning's identity route runs outside the lens ((c)); its lookup is blind to the lens part, its recall misses rule (ii) at 0.19 against 0.2 (coverage runs, no prediction) ([47.1](#t47-1), [51.1](#t51-1)).
+- **Applied** (the Part I ladder card (the 27B's full ladder)). Ladder card (Part I, "Does the recall need the lens part, or only follow it?"): the 27B column "not run (bridge-word steps only)" can now be filled from the full ladder (x52_ladder_27b_a, n 574): (a) no, (b) no, (c) yes; note that Muse's step 6 ran inside Zach's band (L36-42) with the same labels; Fig. 1d's grey 27B columns too ([ladder](#t49-2)).
+- **Applied** (claim 12 (Lightning in between ○)). Claim 12 and the 51.4 card, models: Lightning is in between at L14 and L18 (the slot not yet readable at the last token; coverage run, no prediction) ([51.4](#t51-4)).
+- **Applied** (claim 12 ("the handoff from the lens part depends on the layer grid") and the Part IV card "Does the lookup drop the lens part before it takes up the address?"). E12: the 27B's rule (a) is no on its full grid (l_J L40 after l_P L28); E12's reading and Fig. 6b's 27B panel come from the reduced grid. Restate (a) as holding on the 9B and Muse (and Lightning), not on the 27B; add the 27B's D4 overlap (0.256, mixed) beside 0.28 / 0.21 ([47.8](#t47-8)).
+- **Applied** (Part V card (Lightning's column)). Part V, models: on Lightning Z1 is in between at L14 and Z3 in between at L14 (no position route at L27); coverage runs, no prediction ([Z1](#z1), [Z3](#z3)).
+- **Applied** (Part I card "Does the split hold in other texts?"). Part I card "Does the split hold in other texts?" and claim 1, models: Lightning's varied scenes hold pooled (gap 0.24 [0.17, 0.32], lookup 0.03; 42 of 57 cells, 1,105 scenes); its natural passages are not tested (gate). Lightning's carrier before L (51.7) as on the 9B and 27B ([varied scenes](#x0b), [51.7](#t51-7)).
+- **Applied** (claim 11). Claim 11, models: with the locker after, the 27B's lookups too are carried by the bridge word before L (1.00, main test) ([47.4](#t47-4)).
+- **Open** (the README shows the 9B only). E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
+- **Applied** ("Tested and dropped" and Part VI (one line each)). Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
+- **Applied** (Part V card, the routes test on his passages). Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
+- **Applied** (claim 2, the Part III refit card and Part VI's line on the lookup's errors). Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
+- **Not on the page** (claim 4 reads "value none anywhere" (Lightning included); 47.7 (c) is ledger only). E5, models: "never the value" holds on Lightning's JSON (its prose and tables not tested, gate) ([47.7 (c)](#t47-7c)).
+- **Applied** (the line is gone; the person mark is one of "Four mechanisms for the split" under "Tested and dropped"). Part VI, the person-mark line (README line 482): "(the pooled probe is running)" is stale. 49.3 landed on the 9B and Muse ("neither at the sentence") and on the 27B ("in between" at L32); "in between" does not contradict "did not hold", note it only ([49.3](#t49-3)). The copying heads (48.4) and the enrichment (48.2) fail on the 27B too ([48.4](#t48-4), [48.2](#t48-2)).
+- **Applied** (claim 11 and "Tested and dropped"). Part VI and claim 11, Lightning: the copying heads (48.4) and the attribute probe (48.2 A) do not hold; with the locker after, its lookups are carried by the bridge word before L (0.92, main test) ([48.4](#t48-4), [48.2](#t48-2), [47.4](#t47-4)).
+- **Applied** (claims 9 and 12 and the Part III and IV cards). E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
 
 ## Appendix C. Coverage table <a id="coverage"></a>
 
