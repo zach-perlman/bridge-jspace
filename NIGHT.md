@@ -12,7 +12,7 @@ Plan verbatim: [jobs/c3/batch53.yaml](jobs/c3/batch53.yaml) `coverage_122b_1820`
 | # | Test | Job | Status | Results |
 |---|---|---|---|---|
 | 1 | conflict test, every 4th layer L1-L45, decided at L33 | x53c_conflict_sweep_122b | running (started 18:22) | results/x0_necessity/qwen35_122b_x53c_conflict/ |
-| 2 | 47.0 lens readout of an address swap | — | held: question to Dan (its items come from the 122B's x8_write run, gated at 0.75; recall read 0.797 < 0.80, lookup 1.00) | — |
+| 2 | 47.0 lens readout of an address swap; adapted design: lookup-only gate (Dan 18:45; the recall 0.797 not part of this test; not hollow) | x47_0_122b | queued right after 52 A | results/x47_verbal/qwen35_122b_x47_verbal/ + summary-<UTC>/ |
 | 3 | 52 A atoms of the lens part (E1 only; Z2 not run: no Z2 run on the 122B) | x52_atoms_122b | queued | results/x52_atoms/qwen35_122b_x52_atoms_fwd/ |
 | 4 | 53.2 verdict for the 122B (CPU, Mac) | probe passes base / erand / fixed running on the Mac | running | cache/x53_monitor/qwen35_122b_x53_monitor/, then verdict --models qwen3.5-122b-a10b --prefix x53_monitor_122b |
 | 5 | 51.1 dose curves | x51_1_122b | queued | results/x51_dose/qwen35_122b_x51_1/ + x52_dose-<UTC>/ |
@@ -28,3 +28,5 @@ Plan verbatim: [jobs/c3/batch53.yaml](jobs/c3/batch53.yaml) `coverage_122b_1820`
 - 18:22 item 1 started on mats.
 - 18:2x Dan 18:10 decisions 1-3 committed (c7ca2e86): 53.8 card, rank check range (ledger + depth README), fig11 footnote.
 - 18:3x items 3, 5 (51.1, 47.5) queued. Helper agents for the remaining specs stopped on the spend limit; specs written in the main session.
+- 18:3x x45m_122b (input of 49.2 / 45p) and x49_2_122b queued.
+- 18:45 Dan: 47.0 option (b), lookup-only gate; x47_0_122b queued and moved right after 52 A (pending file renamed on the box). speedup and another stopped by Dan. Wakes every 2 h (21:13, 23:13, 01:13, 03:13, 05:13, 07:13): enqueue only if buffer < 2 or a job failed; one line here per wake.
