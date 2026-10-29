@@ -10,6 +10,7 @@ entities, 10,000 resamples, seed 0. Also the lookup's switch rate under the whol
 measurable only where the locker comes first).
 
 uv run python scripts/x0_split_by_order.py          # results/x0_composition/split-by-order-<stamp>/, docs/split_by_order.md
+uv run python scripts/x0_split_by_order.py --targets nemotron-3.5-lightning --no-docs   # batch 52 C: Lightning alone
 """
 
 from __future__ import annotations
@@ -34,6 +35,16 @@ from scripts import x0_strata as ST
 DESIGN = {"two people swap": "swap", "only the asked pick": "one",
           "only the asked pick (replication, fresh scenes)": "fresh"}  # fmt: skip
 GROUPS = ("all", "before", "after")
+
+
+def coverage_runs() -> dict:
+    """Batch 52 C (amendment 3, key row 5): Lightning's conflict run at its committed layer (layer.json at HEAD), the
+    main test only (its one-pick and fresh designs never ran there); C.RUNS' shape (layer, [(design, dir)], None)."""
+    from scripts import x51_lightning as L6
+
+    return {L6.TARGET: (L6.committed_layer(), [("two people swap", "x0_necessity/nem35l_x52_conflict")], None)}
+
+
 ARMS = ("whole", "no_part", "no_rand")
 
 
@@ -75,7 +86,14 @@ def group_cells(
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--targets", nargs="+", default=None, help="these models only (default: x0_composition.RUNS')")
+    ap.add_argument("--no-docs", action="store_true", help="do not rewrite docs/split_by_order.md (batch 52 coverage)")
     a = ap.parse_args()
+    runs = dict(C.RUNS)
+    if a.targets and any(t not in runs for t in a.targets):
+        runs |= coverage_runs()
+    runs = {t: v for t, v in runs.items() if not a.targets or t in a.targets}
+    assert runs, f"no runs for {a.targets}"
     out = C.RESULTS / f"split-by-order-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     ci = lambda v: "–" if v[0] != v[0] else f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
@@ -89,8 +107,8 @@ def main() -> None:
              "| model | design | locker vs pick | n | lookup switch | lookup extra loss | recall extra loss | gap |",
              "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     blob = {}
-    for target, (layer, runs, _) in C.RUNS.items():
-        for design, d in runs:
+    for target, (layer, designs, _) in runs.items():
+        for design, d in designs:
             src = pins.RESULTS_DIR / d
             if not (src / "outcomes.jsonl").exists():
                 continue
@@ -104,9 +122,10 @@ def main() -> None:
          "n_boot": a.n_boot, "inputs": {k: v["run"] for k, v in blob.items()}, "note": "Dan 26 Oct ~18:30, T0.2"}  # fmt: skip
     (out / "split.json").write_text(json.dumps({"manifest": m, "cells": blob}, indent=1) + "\n")
     (out / "split.md").write_text("\n".join(lines) + "\n")
-    (pins.REPO_ROOT / "docs" / "split_by_order.md").write_text(
-        "\n".join(lines) + f"\n\nSource: {out.relative_to(pins.REPO_ROOT)}.\n"
-    )
+    if not a.no_docs:
+        (pins.REPO_ROOT / "docs" / "split_by_order.md").write_text(
+            "\n".join(lines) + f"\n\nSource: {out.relative_to(pins.REPO_ROOT)}.\n"
+        )
     print("\n".join(lines))
 
 
