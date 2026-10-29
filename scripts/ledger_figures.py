@@ -1622,8 +1622,10 @@ def report_slot1(plt) -> str:
 
 
 TWOBYTWO = (R / "x53_2x2" / "x53_2x2-20261029T094632Z" / "verdict.json",  # 53.1: the 9B's number cells
-            R / "x53_2x2" / "x53_2x2-20261029T094940Z" / "verdict.json")  # fmt: skip  # the 27B's
-TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "pending", "qb_word": "pending"}
+            R / "x53_2x2" / "x53_2x2-20261029T094940Z" / "verdict.json",  # the 27B's
+            R / "x53_2x2" / "x53_2x2-20261029T095122Z" / "verdict.json")  # fmt: skip  # the 9B again, the word relation
+TWOBYTWO_NOTES = {"qb_num": "not tested\n(gate 0.763 < 0.80)", "qa_word": "not tested\n(relation\n0.382 < 0.80)",
+                  "qb_word": "not tested\n(relation\n0.382 < 0.80)"}  # fmt: skip
 TWOBYTWO_CELLS = (("qa_num", "Q after, number"), ("qb_num", "Q before, number"), ("qa_word", "Q after, word"),
                   ("qb_word", "Q before, word"))
 
@@ -1655,7 +1657,7 @@ def _twobytwo_rows(m: dict) -> list:
             out += [(labs[0], r["extra"]["1"], INK, False), (labs[1], r["share2"], INK, False),
                     (labs[2], c["lookup_extra"], LOOKUP, False)]
         else:
-            note = TWOBYTWO_NOTES[key] if m["target"] == "qwen3.5-9b" else "pending"
+            note = TWOBYTWO_NOTES[key] if m["target"] == "qwen3.5-9b" or key.endswith("word") else "pending"
             out += [(labs[0], note, INK, False), (labs[1], "", INK, False), (labs[2], "", LOOKUP, False)]
     return out
 

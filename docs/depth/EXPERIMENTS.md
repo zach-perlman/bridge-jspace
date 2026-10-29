@@ -1586,7 +1586,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's passed their gate and are running.
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
-### Does the lens effect follow the question's position or the answer's type? (53.1, the 9B's and the 27B's number cells opened 29 Oct ~11:45-12:00; the word cells to come) <a id="b53-1"></a>
+### Does the lens effect follow the question's position or the answer's type? (53.1, the 9B's and the 27B's number cells opened 29 Oct ~11:45-12:00; the word cells not tested) <a id="b53-1"></a>
 
 `ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
 
@@ -1596,7 +1596,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Method.** Per cell: the main gate; the conflict test at L; 51.12's arms with the readout check first (without the lens part; without it but keeping the answer's directions; without the answer directions only, each beyond random); the inventory of the lens part's directions on 50 items.
 
 ![With a number answer the recall follows the entity](../../figures/ledger/ledger_twobytwo.png)
-*Per cell of the 2x2: the recall's switches lost without the lens part beyond random, the share of that loss kept with the answer's directions kept, and the conflict test's lookup; whiskers 95%; a cell not tested or pending as a grey note. Models: 9B (its question-before number cell not tested: gate; its word cells pending), 27B (its word cells pending); Muse grey (not designed); Lightning grey (not run: the brief's "then Lightning if its gate passes" against Dan's 09:30 "stop adding Lightning coverage beyond what is queued").*
+*Per cell of the 2x2: the recall's switches lost without the lens part beyond random, the share of that loss kept with the answer's directions kept, and the conflict test's lookup; whiskers 95%; a cell not tested or pending as a grey note. Models: 9B (its question-before number cell not tested: gate), 27B; both models' word cells not tested (the relation's 9B accuracy 0.382 < 0.80); Muse grey (not designed); Lightning grey (not run: the brief's "then Lightning if its gate passes" against Dan's 09:30 "stop adding Lightning coverage beyond what is queued").*
 
 - **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes.
 
@@ -1610,14 +1610,16 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   | question before, number: the recall's label | not tested (gate 0.763<!-- src: results/x53_2x2/x53_2x2-20261029T094632Z/verdict.md \| (Q-before, number) :: 0.7633 :: 0.763 --> < 0.80: the recall's read on the original prompts) | **the lens effect is the entity<!-- src: results/x53_2x2/x53_2x2-20261029T094940Z/verdict.md \| (Q-before, number) :: the lens effect is the entity -->** | | |
   | question before, number: recall lost / kept / answer directions only | | 0.56 [0.46, 0.65]<!-- src: results/x53_2x2/x53_2x2-20261029T094940Z/verdict.md \| (Q-before, number) :: 0.56 [0.46, 0.65] --> / 0.91 [0.81, 0.98]<!-- src: results/x53_2x2/x53_2x2-20261029T094940Z/verdict.md \| (Q-before, number) :: 0.91 [0.81, 0.98] --> / 0.01 [0.00, 0.02]<!-- src: results/x53_2x2/x53_2x2-20261029T094940Z/verdict.md \| (Q-before, number) :: 0.01 [0.00, 0.02] --> | | |
   | question before, number: the conflict test's lookup, lost beyond random | | 0.22 [0.15, 0.31]<!-- src: results/x53_2x2/x53_2x2-20261029T094940Z/verdict.md \| (Q-before, number) :: 0.22 [0.15, 0.31] --> (through; its 51.12 label: the answer word is not read at the bridge word) | | |
-  | question after / before, word (the animal's class) | pending (running) | pending | | |
-  | across cells; the cross-check (the lookup <= 0.10 in all four) | can't tell yet; can't tell yet | can't tell yet; can't tell yet | | |
+  | question after / before, word (the animal's class) | not tested (the relation's 9B accuracy 0.382<!-- src: results/x53_2x2/qwen35_9b_x53_2x2_words/relation.json \| accuracy_recall_qa_word :: 0.382 --> < 0.80) | not tested (the same rule: the relation is chosen on the 9B) | | |
+  | the word cells' gates beside (descriptive): question after / before, lookup / recall read on the original prompts | 0.9476<!-- src: results/x53_2x2/x53_2x2-20261029T095122Z/verdict.md \| (Q-after, word) :: 0.9476 --> / 0.3822<!-- src: results/x53_2x2/x53_2x2-20261029T095122Z/verdict.md \| (Q-after, word) :: 0.3822 -->; 0.9686<!-- src: results/x53_2x2/x53_2x2-20261029T095122Z/verdict.md \| (Q-before, word) :: 0.9686 --> / 0.9162<!-- src: results/x53_2x2/x53_2x2-20261029T095122Z/verdict.md \| (Q-before, word) :: 0.9162 --> | | | |
+  | across cells; the cross-check (the lookup <= 0.10 in all four) | **can't tell<!-- src: results/x53_2x2/x53_2x2-20261029T095122Z/verdict.md \| Rule across cells :: can't tell -->** (no label in three cells); can't tell (a cell without numbers) | waiting for its word job and the combined verdict | | |
 
 - **Read.**
   - With a number answer the recall follows the entity wherever the question sits: on the 9B with the question after the scene, on the 27B with it after and before; keeping the answer's directions keeps almost all of the recall's loss, and the answer directions alone cost little.
-  - The conflict test's lookup loses nothing beyond random on the 9B; on the 27B it loses some with the question after the scene and more with it before. The word cells are not in yet, and with the question before the scene the 9B's recall misses the gate.
+  - The conflict test's lookup loses nothing beyond random on the 9B; on the 27B it loses some with the question after the scene and more with it before. The word cells are not tested: the animal-class relation's recall reads too few of the 9B's answers with the question after the scene (Dan's 10:20 rule); with the question before the scene the 9B's recall misses the number cell's gate.
 - **Caveats.**
-  - The word cells use the animal-class relation on 191 animal scenes, the only relation that passed the coverage rule (Dan's 10:20 decision: words read by their first token).
+  - The word cells used the animal-class relation on 191 animal scenes, the only relation that passed the coverage rule (Dan's 10:20 decision: words read by their first token); it then missed the accuracy bar, so neither word cell is tested.
+  - Beside the word cells' gates (descriptive): the 9B's recall reads the animal's class on 0.3822 of scenes with the question after the scene and 0.9162 with it before; a CPU check of that gap is running and its note is not in yet.
   - The (question after, number) cell repeats our main test (the rerun agrees with the stored run on the recall's whole change, 200 of 200).
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
