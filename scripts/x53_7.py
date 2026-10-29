@@ -766,7 +766,7 @@ def routes_figure(blob: dict, path: Path) -> None:
 
     runs = blob["runs"]
     conds = ("C1", "C2")
-    fig, axes = plt.subplots(len(runs), 2, figsize=(12, 2.9 * len(runs) + 1.0), squeeze=False, sharex=True)
+    fig, axes = plt.subplots(len(runs), 2, figsize=(13, 2.9 * len(runs) + 1.0), squeeze=False, sharex=True)
     for i, r in enumerate(runs):
         for j, cond in enumerate(conds):
             ax = axes[i][j]
@@ -783,7 +783,8 @@ def routes_figure(blob: dict, path: Path) -> None:
                     v = r["cells"][f"{cond}|{arm}"]["share"][rt][0]
                     ax.barh(y, v, left=left, color=SS.COL[rt], edgecolor="white", lw=0.5)
                     left += v
-            ax.set_yticks(range(len(arms)), [ARM_TEXT[a] for a in arms], fontsize=7.5)
+            # the arm names once per row (left panel): long labels on both panels squeeze the left one off the figure
+            ax.set_yticks(range(len(arms)), [ARM_TEXT[a] for a in arms] if j == 0 else [""] * len(arms), fontsize=7.5)
             ax.invert_yaxis()
             ax.set_xlim(0, 1)
     for ax in axes[-1]:
@@ -795,6 +796,7 @@ def routes_figure(blob: dict, path: Path) -> None:
     fig.suptitle(f"{TEST}: which route the lookup takes, per format (rule: {blob['rule']}; UNVERIFIED)", fontsize=10,
                  y=1.0 - 0.3 / (2.9 * len(runs) + 1.0))  # fmt: skip
     fig.tight_layout(rect=(0, 0, 1, 1 - 0.7 / (2.9 * len(runs) + 1.0)))
+    fig.subplots_adjust(left=0.2)  # room for the longest arm name
     fig.savefig(path, dpi=130, facecolor="white")
     plt.close(fig)
 
