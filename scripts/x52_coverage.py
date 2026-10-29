@@ -217,7 +217,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "muse-glimmer-30b": done("results/x0_necessity/muse30b_x0_necessity/verdict-20261026T001148Z", note="confirmed")}),
         ("2. Answer control (51.12 E1)", "jobs/c3/batch51.yaml 51.12 r2", {
             "qwen3.6-27b": done("results/x51_answer/x51_12-20261028T201842Z", note="recall: the entity"),
-            LT: track("x52_lightning_answer", "x51_answer/nem35l_x52_answer", "x51_answer/x52_answer-*"),
+            # pinned: later x52_answer-* verdicts (other sets) also name this run but list its E1 cell as pending
+            LT: track("x52_lightning_answer", "x51_answer/nem35l_x52_answer", "x51_answer/x52_answer-20261029T002056Z"),
             "qwen3.5-9b": done("results/x51_answer/x51_12-20261028T201842Z", note="recall: the entity"),
             "muse-glimmer-30b": done("results/x51_answer/x51_12-20261028T201842Z", note="answer word not read")}),
         ("3. Routes test (identity / position / value; no address; address alone)", "x6_routes (E5/E6)", {
@@ -365,10 +366,11 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x47_cue/x47_3-20261028T113104Z", "results/x51_answer/x51_12-20261028T201842Z"),
             "muse-glimmer-30b": c("partial", "47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)",
                                   "results/x47_cue/x47_3-20261028T113104Z")}),
-        ("One question, two instructions (49.6)", "jobs/c3/batch49.yaml 49.6", {
-            "qwen3.6-27b": done("results/x49_report/x49_6-20261028T154511Z"), LT: c("not designed", NOT_DESIGNED_LT),
-            "qwen3.5-9b": c("not tested", "ran; the gate failed (README: the others miss the gate)",
-                            "results/x49_report/x49_6-20261028T154511Z"),
+        ("Report of slot 1, reworded (49.6)", "jobs/c3/batch49.yaml 49.6", {
+            "qwen3.6-27b": done("results/x49_report/x49_6-20261028T154511Z"),
+            LT: track("x52_lightning_report49", "x49_report/nem35l_x52_report49", "x49_report/x52_report49-*",
+                      "the 9B / 27B design; read per model, the action is the 9B's"),
+            "qwen3.5-9b": done("results/x49_report/x49_6-20261028T154511Z", note="the deciding model"),
             "muse-glimmer-30b": c("not designed", NOT_DESIGNED_MUSE)}),
         ("Address refit per text format (x45d)", "x45d", {
             "qwen3.6-27b": done("results/x0b_generalize/x45d_27b"),
