@@ -14,7 +14,7 @@ Plan verbatim: [jobs/c3/batch53.yaml](jobs/c3/batch53.yaml) `coverage_122b_1820`
 | 1 | conflict test, every 4th layer L1-L45, decided at L33 | x53c_conflict_sweep_122b | running (started 18:22) | results/x0_necessity/qwen35_122b_x53c_conflict/ |
 | 2 | 47.0 lens readout of an address swap; adapted design: lookup-only gate (Dan 18:45; the recall 0.797 not part of this test; not hollow) | x47_0_122b | queued right after 52 A | results/x47_verbal/qwen35_122b_x47_verbal/ + summary-<UTC>/ |
 | 3 | 52 A atoms of the lens part (E1 only; Z2 not run: no Z2 run on the 122B) | x52_atoms_122b | queued | results/x52_atoms/qwen35_122b_x52_atoms_fwd/ |
-| 4 | 53.2 verdict for the 122B (CPU, Mac) | probe passes base / erand / fixed running on the Mac | running | cache/x53_monitor/qwen35_122b_x53_monitor/, then verdict --models qwen3.5-122b-a10b --prefix x53_monitor_122b |
+| 4 | 53.2 verdict for the 122B (CPU, Mac) | probes (cache/x53_monitor/qwen35_122b_x53_monitor/) + verdict | done 18:52, de7354c7; ledger 53.2 addendum | results/x53_monitor/x53_monitor_122b-20261029T175223Z/ |
 | 5 | 51.1 dose curves | x51_1_122b | queued | results/x51_dose/qwen35_122b_x51_1/ + x52_dose-<UTC>/ |
 | 5 | 47.5 zeroing | x47_5_122b | queued | results/x47_zero/qwen35_122b_x47_5/ + x52_zero-<UTC>/ |
 | 5 (input) | 45m clean one-pick design, the item source of 49.2 and 45p (none on the 122B yet; its own gate 0.80) | x45m_122b | queued | results/x0_necessity/qwen35_122b_x45m_fresh/ |
