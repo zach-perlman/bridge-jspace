@@ -204,6 +204,8 @@ def kc(P, tag="v5kc"):
                     ci = boot_ci(by, lambda us: mean(us))
                     out["knockout"][f"paper10_minus_{ctl}"] = {"d": round(d, 1), "ci": ci, "met": bool(ci) and d >= 10 and ci[0] > 0}
     val, fam = readout(f"{P}nn_readout_{tag}_v1", win)
+    if not val:  # the 9B v5kc2 v1 readout wrote no per-item rows (nn_readout bug, fixed a89b138d): use its v2 rows-only rerun
+        val, fam = readout(f"{P}nn_readout_{tag}_v2", win)
     if val:
         for w in ("CN", "DN", "CA", "DA"):
             for lens in ("jlens", "logit"):
