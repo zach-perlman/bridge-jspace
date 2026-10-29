@@ -149,6 +149,12 @@ def main(a) -> None:
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
     row_of[letters] = torch.arange(letters.numel(), device="cuda")
 
+    def pad_idx(rws):  # 2026-10-29 (speed): candidates x their rows, padded with each candidate's first row (max unchanged)
+        if not rws:
+            return None
+        width = max(len(r) for r in rws)
+        return torch.tensor([r + [r[0]] * (width - len(r)) for r in rws], device="cuda")
+
     def cand_rows(vals: list[str]) -> list[list[int]]:
         return [[int(row_of[t]) for t in {S.ids(tok, " " + v)[0], S.ids(tok, v)[0]} if int(row_of[t]) >= 0] for v in vals]
 
@@ -181,7 +187,8 @@ def main(a) -> None:
                 nskip += 1
                 continue
             jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
-                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"], "extra": ex, "tags": p.get("tags", {}), "krows": krows})  # fmt: skip
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"], "extra": ex, "tags": p.get("tags", {}), "krows": krows,
+                         "idx": {"b": pad_idx(brows), "a": pad_idx(arows), "k": pad_idx(krows) if krows else None}})  # fmt: skip
     if a.limit:  # a smoke: the first N prompts per family
         per = collections.defaultdict(list)
         for j in jobs:
@@ -229,11 +236,15 @@ def main(a) -> None:
                                 topk_rows.append({"id": j["id"], "family": j["family"], "site": site, "lens": ln, "layer": la,
                                                   "top": [dec(t) for t in tv[b]], "top_letters": [dec(t) for t in tl[b]]})  # fmt: skip
                         for b, j in enumerate(chunk):
-                            for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"]),
-                                                    *((w, j["krows"], t[1]) if isinstance(t, tuple) else (w, j["arows"], t) for w, t in j["extra"].items())):
-                                cand = torch.stack([lg[b, r].max() for r in rws])
-                                # conservative: a tie (bridges sharing a first token) counts against the true candidate
-                                rank = int((cand >= cand[true]).sum())
+                            # 2026-10-29 (speed, same ranks): each candidate set scored in one gather (a candidate's best first
+                            # token), all of the item's ranks moved to the CPU at once
+                            vals = {k_: lg[b][t_].max(-1).values for k_, t_ in j["idx"].items() if t_ is not None}
+                            tgts = [("bridge", "b", j["bx"]), ("attr", "a", j["ax"]),
+                                    *((w, "k", t[1]) if isinstance(t, tuple) else (w, "a", t) for w, t in j["extra"].items())]
+                            # conservative: a tie (bridges sharing a first token) counts against the true candidate
+                            ranks = torch.stack([(vals[s_] >= vals[s_][t_]).sum() for _, s_, t_ in tgts]).tolist()
+                            for (what, s_, true), rank in zip(tgts, ranks, strict=True):
+                                rws = j["brows"] if s_ == "b" else j["krows"] if s_ == "k" else j["arows"]
                                 stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
                                 if a.items in ("composition", "v4", "v4ctl", "v4cc", "v4all"):  # amendment 60: v4all too (fixed 2026-10-29 after the 9B v5kc2 readout wrote no rows)
                                     item_rows.append({"id": j["id"], "family": j["family"], "rel": j["rel"], "bridge": j["bridge"], "site": site,
