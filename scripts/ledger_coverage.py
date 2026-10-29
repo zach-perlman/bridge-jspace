@@ -120,7 +120,7 @@ HEATMAP = (
     ("V", "z1", "Zach's passages, made-up facts", ("B in between", "G below gate", "H holds", "N not run")),
     ("V", "t51-7", "Full carrier up to L", ("B in between", "B in between", "B in between", "X not designed")),
     ("V", "z3", "Position route, his passages", ("F no position", "B in between", "B in between", "B in between")),
-    ("V", "t51-5", "Read window, his passages", ("F not the same", "X not designed", "H same window", "X not designed")),
+    ("V", "t51-5", "Read window, his passages", ("F not the same", "H same window", "H same window", "X not designed")),
     ("VI", "t47-3", "Described bridge", ("F through lens", "G below gate", "H holds", "H holds")),
     ("VI", "x45d", "Address refit per format", ("B neither", "H refit works", "H refit works", "H refit works")),
     ("VI", "t47-13", "Errors are address errors", ("N 5 errors", "F no", "F no", "F no")),

@@ -53,9 +53,12 @@ New in this ledger:
   | lookup: switches under the whole change | | | | 0.45<!-- src: results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md \| 0.03 [-0.01, 0.08] :: 0.45 --> |
   | the rule | | | | **confirmed** (lookup around, recall through) |
 
+  On the clean one-pick scenes Lightning misses the gate (recall 0.751<!-- src: results/x0_necessity/nem35l_x52_fresh/coverage.txt | (recall 0.751 :: 0.751 --> < 0.80), so it is not tested there; the below-gate run on the eligible scenes (295 at L14; the source of Lightning's below-gate runs) is descriptive only, hollow ○: recall ○ 0.39 [0.33, 0.45]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PM | 295 :: 0.39 [0.33, 0.45] -->, lookup ○ 0.03 [-0.02, 0.08]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PP | 295 :: 0.03 [-0.02, 0.08] --> lost beyond a random part, the pattern the rule calls confirmed.
+
 - **Read.**
   - At L14 the recall follows the lens part and the lookup does not; the same split stands at L18 and L22.
 - **Caveats.**
+  - The clean one-pick numbers are below gate, exploratory: never in claims or grades (Dan, 09:15 and 09:50).
   - The gate was chosen after the 60-scene pre-check had failed (accepted by Dan 01:10).
   - From L26 on the lookup switches on 0.02 of scenes or fewer, so those layers cannot tell.
 
@@ -129,7 +132,7 @@ New in this ledger:
 - **Method.** The conflict test unchanged, at L: without the lens part (25 directions), against without a random part of the same share; pooled over the cells.
 
 ![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
-*Switches lost without the lens part beyond a random part, by text format, for the recall (dark) and the lookup (purple); grey band: the lookup's 0.10 bar. 9B, 27B, Muse (the README's figure); Lightning's strata: [its verdict figure](../../results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/x0b_strata.png).*
+*Switches lost without the lens part beyond a random part, by text format, for the recall (dark) and the lookup (purple); grey band: the lookup's 0.10 bar. 9B, 27B, Muse and Lightning (hollow: its gate set after the 60-scene pre-check; the README's figure); Lightning's strata: [its verdict figure](../../results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/x0b_strata.png).*
 
 - **Rule, fixed in advance.** "Holds iff lookup excess <= 0.1 (upper CI <= 0.2) and C >= 0.2 (lower CI >= 0.1); fails iff lookup excess >= 0.2 or C's upper CI < 0.1." (C: the recall's extra loss minus the lookup's.) Lightning: a coverage run on this rule, no prediction.
 
@@ -158,7 +161,7 @@ New in this ledger:
 - **Method.** The conflict test unchanged, at L: without the lens part, against without a random part of its share; the gap is the recall's loss minus the lookup's.
 
 ![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
-*The README's figure: switches lost without the lens part beyond a random part, by text format; the bottom row is the natural passages (fact first; hollow: the 9B's lowered gate); grey band: the lookup's 0.10 bar; 9B, 27B, Muse.*
+*The README's figure: switches lost without the lens part beyond a random part, by text format; the bottom row is the natural passages (fact first; hollow: the 9B's lowered gate); grey band: the lookup's 0.10 bar; 9B, 27B, Muse and Lightning (hollow: its gate set after the 60-scene pre-check; its natural passages not tested: gate).*
 
 - **Rule, fixed in advance.** "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed."
 
@@ -188,7 +191,7 @@ New in this ledger:
 - **Method.** At the bridge word at L: the lens part alone at doses 0.5 to 3, against a random part of the same share at the same dose; the rest alone at doses 0.25 to 1.5, with and without the address.
 
 ![By itself the lens part moves the recall; the rest moves the lookup](../../figures/story/fig16_dose.png)
-*Left: switches with the lens part alone minus a random part of the same size, by dose; rings: the dose rule (ii) reads; dotted: the lookup's 0.10 bar. Right: lookups switched by the rest alone, without the address, and without a random part of the address's share. 75 / 69 / 68 scenes; whiskers 95%. Lightning is not drawn here (the README's figure); its own curves: [the verdict folder](../../results/x51_dose/x52_dose-20261029T011635Z/dose_curves.png).*
+*Left: switches with the lens part alone minus a random part of the same size, by dose; rings: the dose rule (ii) reads; dotted: the lookup's 0.10 bar. Right: lookups switched by the rest alone, without the address, and without a random part of the address's share. 75 / 69 / 68 / 59 scenes; whiskers 95%; Lightning in the bottom row (hollow: its gate set after the 60-scene pre-check; the README's figure); its own curves: [the verdict folder](../../results/x51_dose/x52_dose-20261029T011635Z/dose_curves.png).*
 
 - **Rule, fixed in advance.** "(i) the lookup is blind to the J++ part: switch minus random <= 0.10 at every α whose plain-text loss stays under 2x the whole change's, on all three. (ii) the recall reads the J++ part above its share: at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2, per model. (iii) together only (Muse): (1,1) >= 0.8 while the best single-part dose under the loss bar stays <= 0.3."
 
@@ -974,7 +977,7 @@ New in this ledger:
 - **Method.** At each sampled layer, the whole change and its parts (the lens part; the address part refit at that layer; the identity outside the lens), each added alone or taken out, against random parts of the same share; a slot probe at the bridge word. A layer counts only where the whole change switches 0.30 or more. D4: the angles between the address subspaces (and the identity subspaces) refit at every pair of layers in the probe's window.
 
 ![The address forms early; identity route first, position route later](../../figures/story/fig06b_anatomy.png)
-*Per sampled layer, the lookup's answers under the whole change at that layer (identity blue, position orange, the original grey) and the recall's switches (line); dashed: the slot probe reaches 0.8; solid: position answers begin; hatched: too few switches to read. 9B, 27B, Muse; the 27B panel is the reduced grid behind README E12. Their own figures: [the 27B's full grid](../../results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_anatomy.png), [Lightning](../../results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_anatomy.png).*
+*Per sampled layer, the lookup's answers under the whole change at that layer (identity blue, position orange, the original grey) and the recall's switches (line); dashed: the slot probe reaches 0.8; solid: position answers begin; hatched: too few switches to read. 9B, 27B, Muse and Lightning (hollow: its gate set after the 60-scene pre-check); the 27B panel is still the reduced grid behind README E12. Their own figures: [the 27B's full grid](../../results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_anatomy.png), [Lightning](../../results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_anatomy.png).*
 
 - **Rule, fixed in advance.** "Define l_J = the first layer from which the lookup's extra loss without J++ stays <= 0.10; l_P = the first layer where the position share under the whole change is >= 0.20; l_probe = the first layer where the slot probe is >= 0.80. (a) "Handoff": l_P >= l_J [...] (b) "The address forms before it is used": l_probe <= l_P on every model [...] (c) "Identity leaves the lens": identity share with only-J++ is >= 0.5 at the earliest interpretable layer and <= 0.1 by L, while identity with only-I_l rises to >= 0.3 by L, on >= 2 of 3 models [...] (d) "Never the value, at any depth": value <= 0.05 at every interpretable layer." D4: "persistent if the mean cos^2 of the principal angles >= 0.5 across the window where the slot probe is >= 0.8; re-encoded if it drops below 0.2 between adjacent sampled layers." The 27B's full grid and Lightning: coverage runs on this rule, no prediction.
 
@@ -1039,7 +1042,7 @@ New in this ledger:
 - **Method.** Read: a probe on the lens part of the state, layer by layer, against the full state and chance. Write: at the read peak, Zach's swap or the lens part of the change (gain up to 2), against a random part and his rotated control; the whole-state patch as reference.
 
 ![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/story/fig17_jspace_last_token.png)
-*Read: a probe's accuracy on the lens part of the last token's state (dotted: chance); swap: the lens swap's switches as a share of the whole-state patch's at the same layer; 75 / 69 / 68 locker-first scenes; whiskers 95%.*
+*Read: a probe's accuracy on the lens part of the last token's state (dotted: chance); swap: the lens swap's switches as a share of the whole-state patch's at the same layer; 75 / 69 / 68 / 59 locker-first scenes; whiskers 95%; Lightning hatched (hollow: its gate set after the 60-scene pre-check).*
 
 - **Rule, fixed in advance.** "read: through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there. write: at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10."
 
@@ -1164,7 +1167,7 @@ New in this ledger:
 
 - **Question.** On Zach's named-bridge passages, does each reader's read window end within 4 layers of ours?
 - **Why we asked.** His swap works up to about L20; ours up to L16 on the 9B; the windows decide where the two operations can be compared.
-- **Data.** Z1's passages, 200 per model (9B, 27B).
+- **Data.** Z1's passages, 200 per model (9B, 27B; Lightning: a coverage run with the design taken from the 9B / 27B spec, adapted to its layers, no prediction).
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 
 ![On the 9B his passages are read over our layers; on the 27B not](../../figures/ledger/ledger_read_window.png)
@@ -1176,13 +1179,14 @@ New in this ledger:
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | lookup | L14 / L16 (-2)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| qwen35_9b_x51_5 :: L14 / L16 (-2) --> | L34 / L40 (-6)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| x51_5_27b :: L34 / L40 (-6) --> | not designed | not run |
-  | recall | L18 / L14 (4)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| qwen35_9b_x51_5 :: L18 / L14 (4) --> | L34 / L32 (2)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| x51_5_27b :: L34 / L32 (2) --> | | |
-  | the rule | **the same window** | **not the same** | | |
+  | lookup | L14 / L16 (-2)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| qwen35_9b_x51_5 :: L14 / L16 (-2) --> | L34 / L40 (-6)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| x51_5_27b :: L34 / L40 (-6) --> | not designed | L18 / L22 (-4)<!-- src: results/x51_depth/x52_depth51-20261029T083500Z/verdict.md \| nem35l_x52_depth51 :: L18 / L22 (-4) --> |
+  | recall | L18 / L14 (4)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| qwen35_9b_x51_5 :: L18 / L14 (4) --> | L34 / L32 (2)<!-- src: results/x51_depth/x51_5-20261028T181100Z/verdict.md \| x51_5_27b :: L34 / L32 (2) --> | | L22 / L22 (0)<!-- src: results/x51_depth/x52_depth51-20261029T083500Z/verdict.md \| nem35l_x52_depth51 :: L22 / L22 (0) --> |
+  | the rule | **the same window** | **not the same** | | **the same read window as ours<!-- src: results/x51_depth/x52_depth51-20261029T083500Z/verdict.md \| nem35l_x52_depth51 :: the same read window as ours -->** (no prediction) |
 
 - **Read.**
   - On the 9B his passages are read over the same layers as our scenes; on the 27B the lookup's window ends 6 layers earlier.
 - **Caveats.**
+  - Lightning's run uses the 9B / 27B design (adapted design, coverage run); its own window from its anatomy run (L22 for both readers).
   - Our 27B window comes from a coarser grid (every 8th layer with L30-34).
   - Layer ends carry no interval.
 
@@ -1206,14 +1210,17 @@ New in this ledger:
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | lookup: switches lost beyond a random part | 0.07 [0.01, 0.16]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.07 [0.01, 0.16] --> | 0.39 [0.32, 0.45]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.39 [0.32, 0.45] --> | -0.02 [-0.12, 0.08]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: -0.02 [-0.12, 0.08] --> | not tested (gate 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> < 0.80) |
-  | recall: the same | 0.39 [0.31, 0.47]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.39 [0.31, 0.47] --> | 0.48 [0.37, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.48 [0.37, 0.60] --> | 0.33 [0.12, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.33 [0.12, 0.60] --> | |
-  | the gap | 0.32 [0.20, 0.41]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.32 [0.20, 0.41] --> | 0.09 [-0.02, 0.20]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.09 [-0.02, 0.20] --> | 0.36 [0.06, 0.66]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.36 [0.06, 0.66] --> | |
-  | the rule | **the split holds** | **handed through the lens** | **the split holds** | |
+  | lookup: switches lost beyond a random part | 0.07 [0.01, 0.16]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.07 [0.01, 0.16] --> | 0.39 [0.32, 0.45]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.39 [0.32, 0.45] --> | -0.02 [-0.12, 0.08]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: -0.02 [-0.12, 0.08] --> | ○ 0.17 [0.10, 0.22]<!-- src: results/x47_cue/x52_cue_below-20261029T083221Z/x47_3.md \| nem35l_x52_cue_below :: 0.17 [0.10, 0.22] --> |
+  | recall: the same | 0.39 [0.31, 0.47]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.39 [0.31, 0.47] --> | 0.48 [0.37, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.48 [0.37, 0.60] --> | 0.33 [0.12, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.33 [0.12, 0.60] --> | ○ 0.48 [0.37, 0.57]<!-- src: results/x47_cue/x52_cue_below-20261029T083221Z/x47_3.md \| nem35l_x52_cue_below :: 0.48 [0.37, 0.57] --> |
+  | the gap | 0.32 [0.20, 0.41]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.32 [0.20, 0.41] --> | 0.09 [-0.02, 0.20]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.09 [-0.02, 0.20] --> | 0.36 [0.06, 0.66]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.36 [0.06, 0.66] --> | ○ 0.31 [0.21, 0.42]<!-- src: results/x47_cue/x52_cue_below-20261029T083221Z/x47_3.md \| nem35l_x52_cue_below :: 0.31 [0.21, 0.42] --> |
+  | the rule | **the split holds** | **handed through the lens** | **the split holds** | not tested (gate 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> < 0.80); below gate, descriptive only: (a) no, (a') no |
+
+  Lightning, below its gate (exploratory, hollow ○): the answer control (51.12's arms on these scenes) finds the answer word not read at the bridge word for either reader, on 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x52_answer_below-20261029T083454Z/verdict.md | cue :: nemotron-3.5-lightning :: recall :: 1.00 [1.00, 1.00] --> of items (the arms beside say the entity).
 
 - **Read.**
   - For a described bridge the split holds on the 9B and Muse; on the 27B the lookup follows the lens part too (the bridge is handed through the lens there). The lookup never takes the value, and no pointer sits at the description's word.
 - **Caveats.**
+  - Lightning's columns are below its gate (the lookup right on 0.72): exploratory, hollow ○, never in claims or grades.
   - Few bridge items (9 to 15).
   - Muse's recall loss is wide.
 
@@ -1506,6 +1513,66 @@ New in this ledger:
   - The clean runs' own commit is marked dirty in the pack (90210687).
   - Source: docs/handcheck_clean49.md and results/checks/clean49_9b.json (point values, no intervals).
 
+## Batch 53: exploration day (running)
+
+Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every rule fixed before any run, no predictions, UNVERIFIED; each result gets a card and a figure here, and nothing goes into the README until the next day's verification. In Dan's priority order (53.1b first); the rules are quoted from the brief.
+
+### 53.1b (running) <a id="b53-1b"></a>
+
+- **Question.** As Dan listed it: "jsuite PP vs MP, 51.12's arms + readout" (Zach's passages, no new scenes); the question in plain words waits for its spec.
+- **Rule, fixed in advance.** Priority 1 (Dan, 09:50): "53.1b: jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No new scenes needed: start it on speedup now." Its labels are 51.12's (entity / answer / mixed / answer word not read).
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.1 (running) <a id="b53-1"></a>
+
+- **Question.** Does the lens effect follow the question's position or the answer's type (number or word), on our locker scenes?
+- **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes.
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.2 (running) <a id="b53-2"></a>
+
+- **Question.** What can a probe on the lens subspace decode, against the full state: which item, its locker slot, the lookup's answer, the recall's answer?
+- **Rule, fixed in advance.** ""J-space blind to X" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; "J-space carries X" if J++ >= 0.8 and >= 0.3 above random; else in between." Main test and the JSON varied scenes; 9B, 27B, Muse, Lightning.
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.3 (running) <a id="b53-3"></a>
+
+- **Question.** At the last token, does each reader compute its answer through the lens part or outside it?
+- **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between." 9B, 27B, Muse, Lightning, at 51.10's read-peak layer and the answer layer minus 2.
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.4 (running) <a id="b53-4"></a>
+
+- **Question.** On Lightning, does the lookup read the bridge word through attention blocks 19 and 26?
+- **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05 on 29 Oct; unchanged in batch 53)
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.5 (running) <a id="b53-5"></a>
+
+- **Question.** On the scenes where the 27B's lookup goes by position, does the address work as on the 9B?
+- **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." CPU, existing outcomes.
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.6 (running) <a id="b53-6"></a>
+
+- **Question.** When the lens part points the recall to one item and the address to another, which does the recall follow?
+- **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." 9B, Lightning, at the bridge word (the lens part toward item B plus the address swap toward item C's slot, s = 2).
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
+### 53.7 (running) <a id="b53-7"></a>
+
+- **Question.** Does the address carry over to code and tool output (routes, address probe, monitor)?
+- **Rule, fixed in advance.** Priority 6 (Dan, 09:50): "53.7: the pointer in code and tool output (routes, address probe, monitor)." No rule in the brief yet.
+- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
+- **Where used.** This ledger only (README: not before the next day's verification).
+
 ## Run on one model only (one line each)
 
 Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
@@ -1752,11 +1819,11 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn |
 | figures/ledger/ledger_last_token_address.png | yes | no overlap | yes | yes | L and L+4 are unlabelled dotted lines (the caption names them); Lightning added 29 Oct, re-opened; title now names Muse only |
-| figures/story/fig17_jspace_last_token.png | yes | no overlap | yes | yes | reused; drawn by the README pass |
+| figures/story/fig17_jspace_last_token.png | yes | no overlap | yes | yes | reused; drawn by the README pass; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
 | figures/ledger/ledger_zach_named.png | yes | no overlap | yes | yes | Muse's lookup on his passages is left out (25 switches, under 30); Lightning (hollow) and the made-up-fact rows added 29 Oct morning, re-opened; the longest row label touches the left edge |
 | figures/ledger/ledger_answer_control.png | yes | no overlap | yes | yes | Lightning column included |
 | figures/ledger/ledger_lightning_layers.png | yes | no overlap (after moving two labels) | yes | yes | top: 60 dev scenes; bottom: 200 scenes |
-| figures/story/fig16_dose.png | yes | no overlap | yes | yes | reused; its labels say "J++ part" |
+| figures/story/fig16_dose.png | yes | no overlap | yes | yes | reused; its labels say "J++ part"; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
 | figures/story/fig01d_ladder.png | yes | no overlap | yes | yes | reused; its labels say "J++ part" |
 | figures/ledger/ledger_learned.png | yes | no overlap (after a wider right margin) | yes | yes | |
 | figures/ledger/ledger_atoms.png | yes | no overlap (a two-row key) | yes | yes | restyled from the report's figure (which kept the test ids); the key's two greys are close; Lightning's row added 29 Oct morning (our scenes only), re-opened |
@@ -1771,7 +1838,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_address_swap.png | yes | no overlap | yes | yes | all 600 swaps pooled per dose; the random vector's dashed line sits at 0.00 to 0.01 |
 | figures/ledger/ledger_order_split.png | yes | no overlap | yes | yes | only the lookup's switch share is drawn; the extra losses stay in the card's table (locker after: under 30 switches) |
 | figures/ledger/ledger_attention.png | yes | no overlap | yes | yes | best head per model only; the random bars are near zero and thin |
-| figures/story/fig09a_transfer.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
+| figures/story/fig09a_transfer.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
 | figures/ledger/ledger_distance.png | yes | no overlap | yes | yes | Muse has no outcomes, so three panels |
 | figures/ledger/ledger_gain.png | yes | no overlap | yes | yes | the rule's bars as red ticks; Muse's lookup cell at zero shows no bar |
 | figures/story/fig09d_chain.png | yes | no overlap | yes | yes | reused; drawn by the README pass; 9B and Muse |
@@ -1801,5 +1868,5 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | results/x52_atoms/report-20261029T000125Z/fig_atoms.png | yes (wide) | no overlap | yes | yes | caption link; the report's figure; its panels name the test sets (E1, Z2) |
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
-| figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |
+| figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models; Lightning drawn since the README rebuild (fea01179), hollow; re-opened 29 Oct ~10:50 |
 | figures/story/fig05d_routes_lens.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |

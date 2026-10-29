@@ -4,7 +4,8 @@ well formed:
 - every repo path it cites exists in the checkout;
 - every entry (a '### ' heading) carries a unique stable anchor, and every internal link resolves;
 - every card has the README Part I fields in order (Question, Why we asked, Data, Method, Rule fixed in advance,
-  Result, Read, Caveats); an entry still running ('running)' in its heading) is a stub: Question, Status, Where used;
+  Result, Read, Caveats); an entry still running ('running)' in its heading) is a stub: Question, Status, Where used
+  (batch 53's stubs quote their rule between the question and the status);
 - every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README`, `changes README` or
   `ledger only`, then optionally `below gate: <models>`, then optionally the italic "Used in" text;
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
@@ -30,6 +31,8 @@ sys.path.insert(0, str(REPO))
 LEDGER = REPO / "docs" / "depth" / "EXPERIMENTS.md"
 FIELDS = ("Question", "Why we asked", "Data", "Method", "Rule, fixed in advance", "Result", "Read", "Caveats")
 STUB_FIELDS = ("Question", "Status", "Where used")
+# batch 53's stubs (Dan, 29 Oct 09:30) quote their rule, fixed before any run, between the question and the status
+STUB_RULE_FIELDS = ("Question", "Rule, fixed in advance", "Status", "Where used")
 # a repo path: a top-level folder of the checkout followed by a path
 PATH = re.compile(r"\b((?:results|docs|jobs|scripts|figures|tests|data)/[\w./-]*[\w/])")
 ANCHOR = re.compile(r'<a id="([a-z0-9-]+)"></a>\s*$')
@@ -94,9 +97,11 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
             out.append(f"no anchor: {head}")
         else:
             anchors.append(m.group(1))
-        want = STUB_FIELDS if re.search(r"\brunning\)", head) else FIELDS
-        found = re.findall(r"^- \*\*(" + "|".join(re.escape(f) for f in want) + r")\.\*\*", body, re.M)
-        if found != list(want):
+        stub = bool(re.search(r"\brunning\)", head))
+        want = STUB_FIELDS if stub else FIELDS
+        names = STUB_RULE_FIELDS if stub else FIELDS
+        found = re.findall(r"^- \*\*(" + "|".join(re.escape(f) for f in names) + r")\.\*\*", body, re.M)
+        if found != list(want) and not (stub and found == list(STUB_RULE_FIELDS)):
             out.append(f"fields {found} in: {head}")
         if want is FIELDS:
             first = next((line for line in body.splitlines() if line.strip()), "")

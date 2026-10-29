@@ -106,7 +106,8 @@ def test_the_ledger_follows_the_readme_order():
                      "## Part II. Identity: which item the lookup reads",
                      "## Part III. The address: where the item's locker sits",
                      "## Part IV. Where and when the link is made", "## Part V. Other datasets and operations",
-                     "## Part VI. What did not hold", "## How we checked", "## Run on one model only (one line each)",
+                     "## Part VI. What did not hold", "## How we checked", "## Batch 53: exploration day (running)",
+                     "## Run on one model only (one line each)",
                      "## Withdrawn", "## Running or sealed",
                      '## Appendix A. Flagged for Dan <a id="flagged"></a>',
                      '## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>',
@@ -137,3 +138,8 @@ def test_the_checker_catches_failures():
 def test_a_running_stub_needs_only_its_status():
     stub = '### Later (1.2, running) <a id="b"></a>\n\n- **Question.** q?\n- **Status.** s.\n- **Where used.** w.\n'
     assert not L.problems(stub)
+    # batch 53's stubs quote their rule fixed before the run; out of order or a card field in a stub fails
+    ruled = stub.replace("- **Status.**", '- **Rule, fixed in advance.** "r."\n- **Status.**')
+    assert not L.problems(ruled)
+    assert L.problems(stub.replace("- **Status.**", '- **Status.** s.\n- **Rule, fixed in advance.** "r."\n- **X.**'))
+    assert L.problems(stub.replace("- **Where used.** w.\n", '- **Where used.** w.\n- **Rule, fixed in advance.** r.\n'))
