@@ -19,6 +19,7 @@ the J++ part's share (stored), and the address part U (the routes test's pointer
 uv run python scripts/review_jspace.py rank-check            # item 3: docs/verify_pack_jspace.md + its verify_pack section
 uv run python scripts/review_jspace.py selfcheck              # 51.12's answer-word ranks and x52_atoms' atoms, sample items
 uv run python scripts/review_jspace.py arms                   # the states jobs' re-read decisive arms vs the stored labels
+uv run python scripts/review_jspace.py calib                  # the CPU readout vs the jobs' GPU calibration readouts
 uv run python scripts/review_jspace.py rank-check --from-jread  # item 3 on the conflict test from 51.10's cached states
 """
 
@@ -1002,6 +1003,7 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              + "; ".join(f"{label.get(m, m)}: " + "; ".join([*I.spec()["models"][m].get("flags", []), *EXTRA_FLAGS.get(m, [])])
                          for m in sorted({r["model"] for r in rows})
                          if I.spec()["models"][m].get("flags") or EXTRA_FLAGS.get(m)) + ".",
+             *(["", checks] if (checks := checks_paragraph()) else []),
              "", "| model | test | condition | token | n | top 50: J++ part | rest | random part | rest - random | flag | "
              "median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in table:
@@ -1063,6 +1065,82 @@ def stage_arms() -> dict:
     return out
 
 
+def stage_calib() -> dict:
+    """The CPU readout against every GPU calibration readout of the states jobs (calib.jsonl: the J++ and logit-lens
+    ranks of each readout's top 10 tokens), one model at a time -> cache/review_jspace/calib.json."""
+    import torch
+
+    out: dict[str, Any] = {}
+    for f in sorted((REPO / "results" / "review_states").glob("*/calib.jsonl")):
+        model = json.loads((f.parent / "manifest.json").read_text())["model"]["target"]
+        ro = readout(model)
+        if ro.no_lens:
+            out[model] = {"skipped": ro.no_lens}
+            continue
+        n = exact = near = 0
+        for r in (json.loads(line) for line in f.read_text().splitlines() if line.strip()):
+            st = states(model, r["view"], r["item"])
+            if st is None:
+                continue
+            kind = "state" if r["vector"].startswith("state") else r["vector"]
+            v, _ = vector(st, model, "S" if r["vector"] == "state_S" else "O", int(st["meta"]["pos"]), r["layer"], kind)
+            if v is None:
+                continue
+            x = torch.as_tensor(v)[None]
+            lg = (ro.lens(x, r["layer"]) if r["lens"] == "jpp" else ro.unembed(x))[0]
+            for t, theirs in r["ranks"].items():
+                mine = int((lg > lg[int(t)]).sum()) + 1
+                n += 1
+                exact += mine == theirs
+                near += abs(mine - theirs) <= 2
+        out[model] = {"run": str(f.parent.relative_to(REPO)), "ranks": n, "exact": exact, "within_2": near}
+        print(model, json.dumps(out[model]), flush=True)
+    write_text(PANEL_CACHE / "calib.json", json.dumps(out, indent=1) + "\n")
+    return out
+
+
+def checks_paragraph() -> str:
+    """What the panel's own checks found, from their stored outputs (the jobs' arms.jsonl, cache/review_jspace/
+    selfcheck.json and calib.json): '' where none has been run."""
+    label = {m: I.spec()["models"][m]["label"] for m in I.spec()["models"]}
+    parts = []
+    arms = []
+    for f in sorted((REPO / "results" / "review_states").glob("*/arms.jsonl")):
+        model = json.loads((f.parent / "manifest.json").read_text())["model"]["target"]
+        rows = [json.loads(line) for line in f.read_text().splitlines() if line.strip()]
+        bad = [r for r in rows if r["match"] is False]
+        arms.append(f"{label.get(model, model)} {len(bad)} of {sum(r['match'] is not None for r in rows)} compared"
+                    + (" (" + "; ".join(f"{r['item'].split('|', 2)[2]} {r['arm']}: stored {r['stored']['role']}, re-read "
+                                        f"{r['role']}" for r in bad) + ")" if bad else ""))  # fmt: skip
+    if arms:
+        parts.append("The states jobs re-read the sample's decisive arms with X0's code (arms.jsonl) and compared each "
+                     "label with the stored one; disagreements: " + "; ".join(arms) + ".")  # fmt: skip
+    cal = PANEL_CACHE / "calib.json"
+    if cal.exists():
+        c = json.loads(cal.read_text())
+        parts.append("The panel's CPU readout against the jobs' GPU readouts (calib.jsonl, the ranks of each readout's top "
+                     "10 tokens, J++ and logit lens): " + "; ".join(
+                         f"{label.get(m, m)} {x['exact']} of {x['ranks']} exact, {x['within_2']} within 2 places"
+                         if "ranks" in x else f"{label.get(m, m)} skipped ({x['skipped']})" for m, x in c.items()) + ".")  # fmt: skip
+    sc = PANEL_CACHE / "selfcheck.json"
+    if sc.exists():
+        rows = json.loads(sc.read_text())["rows"]
+        by: dict[str, list[dict]] = collections.defaultdict(list)
+        for r in rows:
+            by[r["check"].split(" on ")[0]].append(r)
+        txt = []
+        for check, rs in by.items():
+            done = [r for r in rs if r["ok"] is not None]
+            uneq = [r for r in done if not r["ok"]]
+            txt.append(f"{check}: {len(done) - len(uneq)} of {len(done)} equal"
+                       + (" (" + "; ".join(f"{r['item'].split('|')[0]} {r['item'].split('|')[2]}: {r['panel']} vs "
+                                           f"{r['stored']}" for r in uneq) + ")" if uneq else "")
+                       + (f", {len(rs) - len(done)} skipped" if len(rs) > len(done) else ""))  # fmt: skip
+        parts.append("Self-checks on the sample's items with states (the panel's own: at L and the bridge word): "
+                     + "; ".join(txt) + ".")  # fmt: skip
+    return " ".join(parts)
+
+
 def stage_selfcheck() -> list[dict]:
     """51.12's and x52_atoms' checks on every sample item with states."""
     from scripts import review_states as RS
@@ -1091,7 +1169,7 @@ def stage_selfcheck() -> list[dict]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["rank-check", "selfcheck", "arms", "page"])
+    ap.add_argument("stage", choices=["rank-check", "selfcheck", "arms", "calib", "page"])
     ap.add_argument("--from-jread", default="", help="rank-check: models to read from 51.10's states (comma-separated)")
     ap.add_argument("--view")
     ap.add_argument("--item")
@@ -1102,6 +1180,8 @@ def main() -> None:
         stage_selfcheck()
     elif a.stage == "arms":
         stage_arms()
+    elif a.stage == "calib":
+        stage_calib()
     else:
         print(page({"view": a.view, "item": a.item}))
 
