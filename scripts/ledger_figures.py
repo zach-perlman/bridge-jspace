@@ -1742,7 +1742,7 @@ def bindid(plt) -> str:
 
 
 CODE_PROBE = R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json"  # 53.7 probe (the 9B; the 27B to come)
-CODE_ROUTES = R / "x6_routes" / "x53_7_routes-20261029T120413Z" / "verdict.json"  # 53.7 routes in code, 9B + 27B
+CODE_ROUTES = R / "x6_routes" / "x53_7_routes-20261029T122509Z" / "verdict.json"  # 53.7 routes, code + tool, 9B + 27B
 
 
 def code_tool(plt) -> str:
@@ -1751,14 +1751,14 @@ def code_tool(plt) -> str:
     probe (which locker sentence, locker first) in code and tool output, a cell not tested or to come as a grey note;
     Muse and Lightning grey (not designed), the 122B grey (not run)."""
     rows: dict[str, list] = {}
-    arms = (("C2|whole", "code, routes: position, whole change", ADDRESS),
-            ("C2|no_alf", "code, routes: position without the address", ADDRESS),
-            ("C2|no_alf_rand", "code, routes: the same, random part out", NULL),
-            ("C2|keep_alf", "code, routes: position, the address alone", ADDRESS))  # fmt: skip
-    for run in load(CODE_ROUTES)["runs"]:
-        rows.setdefault(run["model"], [])
+    arms = (("C2|whole", "position, whole change", ADDRESS), ("C2|no_alf", "position without the address", ADDRESS),
+            ("C2|no_alf_rand", "the same, random part out", NULL),
+            ("C2|keep_alf", "position, the address alone", ADDRESS))  # fmt: skip
+    runs = {(run["model"], run["format"]): run for run in load(CODE_ROUTES)["runs"]}
+    for (model, fmt), run in sorted(runs.items(), key=lambda kv: (kv[0][0], kv[0][1] != "code")):
+        rows.setdefault(model, [])
         for key, lab, col in arms:
-            rows[run["model"]].append((lab, run["cells"][key]["share"]["position"], col, False))
+            rows[model].append((f"{fmt}, routes: {lab}", run["cells"][key]["share"]["position"], col, False))
     probes = {(run["model"], run["format"]): run for run in load(CODE_PROBE)["runs"]}
     for t in ("qwen3.5-9b", "qwen3.6-27b"):
         for fmt in ("code", "tool"):
@@ -1774,8 +1774,8 @@ def code_tool(plt) -> str:
                          and x["target"] == "locker sentence")  # fmt: skip
                 rows.setdefault(t, []).append((lab, r["probe"], ADDRESS, bool(run.get("hollow"))))
     absent = {"muse-glimmer-30b": "not designed", LT: "not designed"}
-    return four_panels(plt, "ledger_code_tool", "In code the address carries the position route; alone it adds none",
-                       "Code, another item moved: position answers by arm; probe: which locker sentence, locker first",
+    return four_panels(plt, "ledger_code_tool", "In code and tool output the address carries the position route",
+                       "Another item moved: position answers by arm and format; probe: which locker sentence, first",
                        rows, absent, "share", left=0.4)
 
 
