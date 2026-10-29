@@ -1,0 +1,42 @@
+{
+  "design": "main",
+  "source": "muse30b_x0_necessity",
+  "alt": "cf",
+  "layer": 26,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+    "locker-after": 69,
+    "mixed": 63,
+    "locker-first": 68
+  },
+  "upstream": {
+    "False": 103,
+    "True": 97
+  },
+  "locker-first, prefix-identical": 16,
+  "pick_tokens": {
+    "5": 79,
+    "4": 117,
+    "6": 4
+  },
+  "positions_dropped": {},
+  "items_read": 200,
+  "entities_read": 40,
+  "families": {
+    "elements": 86,
+    "greek": 46,
+    "animals": 68
+  },
+  "classes_per_family": {
+    "animals": 31,
+    "elements": 6,
+    "greek": 7
+  },
+  "items_locker_first": 68,
+  "entities_locker_first": 29,
+  "items_used": 68,
+  "entities_used": 29
+}
