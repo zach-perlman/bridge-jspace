@@ -1,0 +1,229 @@
+{
+ "runs": [
+  "nem35l_x52_45q_below"
+ ],
+ "rule": "45b's, unchanged: \"the link is made in the locker sentences\" if (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models.",
+ "verdict": {
+  "label": "below gate (exploratory): per model only, no batch count",
+  "q45_12": "none (no prediction)",
+  "models_holding": 1,
+  "models_tested": 1,
+  "models": 1,
+  "missing": [],
+  "not_tested": []
+ },
+ "models": [
+  {
+   "run": "nem35l_x52_45q_below",
+   "model": "nemotron-3.5-lightning",
+   "main_run": "nem35l_x52_fresh",
+   "layer": 14,
+   "arm_layers": {
+    "a": 14,
+    "b_half": 7,
+    "b_quarter": 3,
+    "c": 14,
+    "d": 7
+   },
+   "plan": {
+    "main_run": "nem35l_x52_fresh",
+    "layer": 14,
+    "main_items": 295,
+    "locker_after": 163,
+    "dropped": {},
+    "align": {
+     "token": 163
+    },
+    "items": 163,
+    "entities": 36,
+    "source": "45m",
+    "new item's locker vs asked pick": {
+     "after": 133,
+     "before": 30
+    },
+    "locker_sentences": {
+     "4": 163
+    }
+   },
+   "sanity": {
+    "items": 163,
+    "pass": 163,
+    "dropped": 0
+   },
+   "readers": {
+    "PP": {
+     "n": 163,
+     "entities": 36,
+     "S_switched": 163,
+     "hits": {
+      "none": 0,
+      "a": 17,
+      "b_half": 113,
+      "b_quarter": 158,
+      "c": 122,
+      "d": 20,
+      "S": 163
+     },
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "a": [
+       0.10429447852760736,
+       0.060810810810810814,
+       0.15079739442946985
+      ],
+      "b_half": [
+       0.6932515337423313,
+       0.6276577402787967,
+       0.7608695652173914
+      ],
+      "b_quarter": [
+       0.9693251533742331,
+       0.9421476729012614,
+       0.9924812030075187
+      ],
+      "c": [
+       0.7484662576687117,
+       0.6853114478114478,
+       0.8081415259636827
+      ],
+      "d": [
+       0.12269938650306748,
+       0.07389162561576355,
+       0.18181818181818182
+      ],
+      "S": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "hits_of_S": {
+      "c": 122,
+      "d": 20
+     },
+     "of_S": {
+      "c": [
+       0.7484662576687117,
+       0.6853114478114478,
+       0.8081415259636827
+      ],
+      "d": [
+       0.12269938650306748,
+       0.07389162561576355,
+       0.18181818181818182
+      ]
+     }
+    },
+    "PM": {
+     "n": 163,
+     "entities": 36,
+     "S_switched": 163,
+     "hits": {
+      "none": 0,
+      "a": 146,
+      "b_half": 156,
+      "b_quarter": 159,
+      "c": 2,
+      "d": 0,
+      "S": 163
+     },
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "a": [
+       0.8957055214723927,
+       0.8372093023255814,
+       0.9417488570401192
+      ],
+      "b_half": [
+       0.9570552147239264,
+       0.9205279199277544,
+       0.9867549668874173
+      ],
+      "b_quarter": [
+       0.9754601226993865,
+       0.9441332107290329,
+       1.0
+      ],
+      "c": [
+       0.012269938650306749,
+       0.0,
+       0.026595744680851064
+      ],
+      "d": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "S": [
+       1.0,
+       1.0,
+       1.0
+      ]
+     },
+     "hits_of_S": {
+      "c": 2,
+      "d": 0
+     },
+     "of_S": {
+      "c": [
+       0.012269938650306749,
+       0.0,
+       0.026595744680851064
+      ],
+      "d": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   },
+   "rule": {
+    "verdict": "holds",
+    "holds": true,
+    "c_at_least_half_of_S": true,
+    "d_at_least_half_of_S": false,
+    "a_at_most_0.25": true
+   },
+   "checks": {
+    "PP a vs stored whole at L14": {
+     "n": 163,
+     "agree": 161,
+     "rerun": 17,
+     "stored": 15
+    },
+    "PP S vs stored S read": {
+     "n": 163,
+     "agree": 163,
+     "rerun": 163,
+     "stored": 163
+    },
+    "PM a vs stored whole at L14": {
+     "n": 163,
+     "agree": 159,
+     "rerun": 146,
+     "stored": 148
+    },
+    "PM S vs stored S read": {
+     "n": 163,
+     "agree": 163,
+     "rerun": 163,
+     "stored": 163
+    }
+   },
+   "status": "tested",
+   "holds": true,
+   "why": "holds"
+  }
+ ],
+ "n_boot": 10000,
+ "seed": 0
+}

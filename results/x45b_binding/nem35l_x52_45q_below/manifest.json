@@ -1,0 +1,117 @@
+{
+  "exp": "x45b_binding",
+  "run": "nem35l_x52_45q_below",
+  "why": "Batch 52, Dan's morning queue item 1: 45q on Lightning at L14, below gate; below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "written_utc": "2026-10-29T08:47:07Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "ce42c33af3215df67c334053e43b7ee536a8dd88",
+    "dirty": true
+  },
+  "test": "45q",
+  "spec": "jobs/c3/batch45.yaml (45q)",
+  "question": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "f6636d5a91ef40ac6d34a725bd966136d7a7a5377a8a6f0c4e9d3b428a2b9ca9",
+    "results/x0_necessity/nem35l_x52_fresh/manifest.json": "84e3d46112390ddb9718f309fe434db360874ec98f4f694578da4815258ee975",
+    "results/x0_necessity/nem35l_x52_fresh/cases.jsonl": "59f432ff6eaa3da35f9c7ae1ba98c87e1045be95ef5903fa14e6712e1aae6482",
+    "results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl": "e1b25a7a744947e8b03031fc434056d3350cb1795ab9c88d520f0119b79e648f",
+    "results/x0_necessity/nem35l_x52_fresh/competence.jsonl": "94bdde13c65977dd9bbaaa7b6ce79cd3a36220061df3344e82f41e4df4ddfa31"
+  },
+  "source": "45m",
+  "main_run": "nem35l_x52_fresh",
+  "layer": 14,
+  "arm_layers": {
+    "a": 14,
+    "b_half": 7,
+    "b_quarter": 3,
+    "c": 14,
+    "d": 7
+  },
+  "sweep_layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    50
+  ],
+  "last_layer": "n_layers - 2 = 50 (q_sweep_layers)",
+  "arms": {
+    "none": "O unedited",
+    "a": "the bridge-word change at L",
+    "b_half": "the bridge-word change at L/2",
+    "b_quarter": "the bridge-word change at L/4",
+    "c": "S patched into O at every locker-sentence token, at L",
+    "d": "S patched into O at every locker-sentence token, at L/2",
+    "c_nojpp": "the same copy without each token's J++ part (signed OMP, k = 25)",
+    "c_norand": "the same copy without a random part of each token's J++ share",
+    "bw<l>": "the bridge-word change, at layer l",
+    "ls<l>": "S patched into O at every locker-sentence token, at layer l",
+    "li<l>": "only the item's tokens inside the locker sentences, at layer l",
+    "lr<l>": "only the rest of each locker sentence (not the item, the value or the final token), at layer l",
+    "lv<l>": "only the value token(s), at layer l",
+    "lf<l>": "only the sentence-final token, at layer l",
+    "S": "S read on S (unedited)"
+  },
+  "families": {
+    "45b": "45b's arms (rule)",
+    "45n": "45n's link arms at L (reported, not in the rule)",
+    "sweep": "the sweep (descriptive)",
+    "-": "O unedited / S read on S"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at each token's J++ share",
+  "roles": "item / rest / value / final tokens of every locker sentence by character overlap (role_positions, rest=True); rest = the tokens overlapping none of the other three",
+  "items_rule": "nem35l_x52_fresh's scenes at L (chat) whose org bridge's locker sentence comes after the asked pick (x0_strata); locker sentences aligned as 45b; same_after_bridge asserted, failures dropped and counted (x45b_binding.select, source 45m)",
+  "locker_sentences": "every 'The locker of <thing> is <n>.' sentence of the context, the added one included",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "rule": "45b's, unchanged: \"the link is made in the locker sentences\" if (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models.",
+  "decisive_reader": "PP",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "none (below gate, exploratory): q-verdict --below-gate",
+  "below_gate": {
+    "note": "below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)",
+    "source_gate": {
+      "cases": 559,
+      "org_accuracy": {
+        "PP": 0.9642,
+        "PM": 0.7513
+      },
+      "pass": false,
+      "eligible": 342,
+      "enough": true,
+      "descriptive": true
+    }
+  }
+}
