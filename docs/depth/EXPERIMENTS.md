@@ -41,13 +41,14 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 - E10 and claim 10, models: Lightning splits the same way (locker first 0.86 of lookups switch, after 0.15; descriptive, coverage run) ([order split](#order)).
 - E11: "Not shown: the 27B" is out of date: the 27B's map fails D1 (a), (b), (c) on both designs and passes D2 (the recall's read-out layer L52 at the start of Zach's late band), as the 9B; Lightning's main-design map fails D1 too ([token map](#d1)).
 - E7 and claim 8, models: Lightning is slot-specific at dose 2, as the 9B and Muse (coverage run, no prediction) ([six lockers](#six)).
+- E3 and the dose card, models: Lightning's identity route runs outside the lens ((c)); its lookup is blind to the lens part, its recall misses rule (ii) at 0.19 against 0.2 (coverage runs, no prediction) ([47.1](#t47-1), [51.1](#t51-1)).
 - E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
 
 ## Coverage
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T000836Z/matrix.json, built 00:08 UTC 29 Oct; each cell's source is in that file). A linked test has a card below. Status words are the matrix's: done / partial / running / queued / missing / not tested (reason) / not designed. Lightning's gate (all cells): the main test's gate on all 516 scenes, ○ chosen after the 60-scene pre-check was seen; layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers and the token map (main design). Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun.
+As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves and the identity route outside the lens. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -68,7 +69,7 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | [Dose curves, a part alone (51.1)](#t51-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Zeroing at one layer (47.5) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Earlier mention (45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
-| E3: identity route outside the lens (47.1 atom slices) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E6: the address probe (x0_probe v4) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | E6: the swap after neutral sentences (47.16 distance) | **missing**: 27B gap: spec to write (mats) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [E7: six lockers, one code per slot (47.2)](#six) | **queued**: x47_2_27b on another (behind part B and the 27B ladder) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
@@ -307,30 +308,31 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
   - The gate was chosen after the 60-scene pre-check had failed (accepted by Dan 01:10).
   - From L26 on the lookup switches on 0.02 of scenes or fewer, so those layers cannot tell.
 
-### Does each part, added by itself, move its reader? (51.1, opened 28 Oct 18:03) <a id="t51-1"></a>
+### Does each part, added by itself, move its reader? (51.1, opened 28 Oct 18:03; Lightning's coverage run 29 Oct) <a id="t51-1"></a>
 
 *Used in: README Part I card of the same name (Fig. 16). Story: two readers.*
 
 - **Question.** Added by itself at a dose, does the lens part move the recall more than a random part of its share, and leave the lookup?
 - **Why we asked.** The conflict test takes a part away; a reader that follows a part should also move when only that part is added.
-- **Data.** Main test, the scenes whose locker sentences come first: 75 / 69 / 68.
+- **Data.** Main test, the scenes whose locker sentences come first: 75 / 69 / 68 / 59<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| nem35l_x52_dose :: 59 --> (9B / 27B / Muse / Lightning; Lightning at L14, a coverage run on the same rule, no prediction).
 - **Method.** At the bridge word at L: the lens part alone at doses 0.5 to 3, against a random part of the same share at the same dose; the rest alone at doses 0.25 to 1.5, with and without the address.
 - **Rule, fixed in advance.** "(i) the lookup is blind to the J++ part: switch minus random <= 0.10 at every α whose plain-text loss stays under 2x the whole change's, on all three. (ii) the recall reads the J++ part above its share: at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2, per model. (iii) together only (Muse): (1,1) >= 0.8 while the best single-part dose under the loss bar stays <= 0.3."
 
 ![By itself the lens part moves the recall; the rest moves the lookup](../../figures/story/fig16_dose.png)
-*Left: switches with the lens part alone minus a random part of the same size, by dose; rings: the dose rule (ii) reads; dotted: the lookup's 0.10 bar. Right: lookups switched by the rest alone, without the address, and without a random part of the address's share. 75 / 69 / 68 scenes; whiskers 95%.*
+*Left: switches with the lens part alone minus a random part of the same size, by dose; rings: the dose rule (ii) reads; dotted: the lookup's 0.10 bar. Right: lookups switched by the rest alone, without the address, and without a random part of the address's share. 75 / 69 / 68 scenes; whiskers 95%. Lightning is not drawn here (the README's figure); its own curves: [the verdict folder](../../results/x51_dose/x52_dose-20261029T011635Z/dose_curves.png).*
 
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | recall: lens part alone minus random, dose 1.5 | 0.31 [0.20, 0.42]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.31 [0.20, 0.42] --> | 0.12 [0.05, 0.19]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.12 [0.05, 0.19] --> | 0.13 [0.04, 0.24]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.13 [0.04, 0.24] --> | not run |
-  | recall: the same at dose 3 | -0.05 [-0.16, 0.05]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.05 [-0.16, 0.05] --> | 0.42 [0.28, 0.54]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.42 [0.28, 0.54] --> | 0.22 [0.07, 0.37]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.22 [0.07, 0.37] --> | |
-  | lookup: lens part alone minus random, dose 3 | -0.63 [-0.72, -0.52]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.63 [-0.72, -0.52] --> | 0.13 [0.00, 0.26]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.13 [0.00, 0.26] --> | -0.22 [-0.32, -0.13]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.22 [-0.32, -0.13] --> | |
-  | rule (i) / (ii) | yes / yes | **no** / yes | yes / yes; (iii) no | |
+  | recall: lens part alone minus random, dose 1.5 | 0.31 [0.20, 0.42]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.31 [0.20, 0.42] --> | 0.12 [0.05, 0.19]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.12 [0.05, 0.19] --> | 0.13 [0.04, 0.24]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.13 [0.04, 0.24] --> | 0.19 [0.08, 0.31]<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.19 [0.08, 0.31] --> |
+  | recall: the same at dose 3 | -0.05 [-0.16, 0.05]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.05 [-0.16, 0.05] --> | 0.42 [0.28, 0.54]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.42 [0.28, 0.54] --> | 0.22 [0.07, 0.37]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.22 [0.07, 0.37] --> | -0.10 [-0.21, 0.00]<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| J(3,0) - R(3,0) :: -0.10 [-0.21, 0.00] --> |
+  | lookup: lens part alone minus random, dose 3 | -0.63 [-0.72, -0.52]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.63 [-0.72, -0.52] --> | 0.13 [0.00, 0.26]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: 0.13 [0.00, 0.26] --> | -0.22 [-0.32, -0.13]<!-- src: results/x51_dose/x51_1-20261028T170335Z/verdict.md \| J(3,0) - R(3,0) :: -0.22 [-0.32, -0.13] --> | -0.46 [-0.64, -0.28]<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| J(3,0) - R(3,0) :: -0.46 [-0.64, -0.28] --> |
+  | rule (i) / (ii) | yes / yes | **no** / yes | yes / yes; (iii) no | yes<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| lookup blind :: yes --> / **no** (first dose 1.5<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| nem35l_x52_dose :: **no** (1.5) :: 1.5 -->: 0.19<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| J(1.5,0) - R(1.5,0) :: 0.19 --> against 0.2); (iii) is Muse's rule, not read; no prediction |
 
 - **Read.**
   - Added by itself, the lens part moves the recall more than a random part on all three models, and the 9B's and Muse's lookups no more than random; the 27B's lookup moves at the highest dose.
+  - Lightning's lookup is blind to the lens part as on the 9B and Muse; its recall misses rule (ii)'s bar by a hair at the first dose that switches 0.3 of recalls.
 - **Caveats.**
   - At high doses random parts switch readers too (the 9B's random part at dose 3 switches most lookups).
   - Scenes with the lockers first only.
@@ -362,6 +364,36 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 - **Caveats.**
   - Muse's step 6 ran at L23-29, outside Zach's band (rerun queued); the 27B's steps 3-6 are running.
   - Lightning: not tested, the clean one-pick design's gate fails there (recall 0.751).
+
+### Does the lookup's identity route run outside the lens, or in lens directions beyond the recall's 25? (identity route outside the lens, 47.1; Lightning's coverage run 29 Oct) <a id="t47-1"></a>
+
+*Used in: README Part II card "The lookup's identity route runs outside the lens" (9B, 27B, Muse); Lightning not in the README yet. Story: identity.*
+
+- **Question.** The lookup barely needs the lens part's 25 directions; does its identity route sit in the next 75 lens directions, or outside the lens altogether?
+- **Why we asked.** On the 27B, taking out 100 lens directions cut identity answers far more than a random part, so "outside the lens" might only mean "outside the recall's 25".
+- **Data.** Routes scenes (another item moved), 300 per model, for identity answers; the main test, 200 per model, for the readers' switches.
+- **Method.** The change's 100 best lens directions in order; directions 1-25, 26-100 or all 100 taken out at the bridge word at L, each against a random part of the same share.
+- **Rule, fixed in advance.** "(a) "the lookup's identity route sits in lens atoms beyond the recall's 25": without 26-100, identity answers fall >= 0.30 beyond the random part (paired CI excluding 0) and the recall's extra loss without 26-100 is <= 0.10, on >= 2 of 3 models; (b) "continuum": both readers lose >= 0.20 beyond random without 26-100; (c) "outside the lens": without 26-100, identity answers fall < 0.10 beyond random." Lightning: a coverage run on this rule, no prediction.
+
+![The lookup's identity route runs outside the lens; the position route never touches it](../../figures/story/fig05d_routes_lens.png)
+*Per model, identity-route and position-route answers lost without lens directions 1-25, 26-100 and both, beyond a random part of the same size (grey: what the random part itself costs; light band: the 0.10 bar); 300 routes scenes per model. 9B, 27B, Muse; Lightning's numbers in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | identity answers lost without lens directions 1-25, beyond random | 0.06 [0.02, 0.09]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.5-9b :: 1-25 :: 0.06 [0.02, 0.09] --> | 0.25 [0.21, 0.29]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.6-27b :: 1-25 :: 0.25 [0.21, 0.29] --> | 0.00 [-0.02, 0.02]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| muse-glimmer-30b :: 1-25 :: 0.00 [-0.02, 0.02] --> | 0.04 [0.01, 0.06]<!-- src: results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.md \| nemotron-3.5-lightning :: 1-25 :: 0.04 [0.01, 0.06] --> |
+  | the same without directions 26-100 | 0.05 [0.02, 0.08]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.5-9b :: 26-100 :: 0.05 [0.02, 0.08] --> | 0.05 [0.03, 0.08]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.6-27b :: 26-100 :: 0.05 [0.03, 0.08] --> | 0.02 [-0.00, 0.04]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| muse-glimmer-30b :: 26-100 :: 0.02 [-0.00, 0.04] --> | 0.05 [0.01, 0.08]<!-- src: results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.md \| nemotron-3.5-lightning :: 26-100 :: 0.05 [0.01, 0.08] --> |
+  | the same without directions 1-100 | 0.09 [0.05, 0.13]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.5-9b :: 1-100 :: 0.09 [0.05, 0.13] --> | 0.55 [0.50, 0.60]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen3.6-27b :: 1-100 :: 0.55 [0.50, 0.60] --> | 0.02 [0.00, 0.03]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| muse-glimmer-30b :: 1-100 :: 0.02 [0.00, 0.03] --> | -0.08 [-0.12, -0.04]<!-- src: results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.md \| nemotron-3.5-lightning :: 1-100 :: -0.08 [-0.12, -0.04] --> |
+  | recall: switches lost without 26-100, beyond random (main test) | 0.03 [0.00, 0.06]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen35_9b_x47_1_main :: 0.03 [0.00, 0.06] --> | 0.05 [0.01, 0.10]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| x47_1_main_27b :: 0.05 [0.01, 0.10] --> | 0.01 [-0.05, 0.08]<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| muse30_x47_1_main :: 0.01 [-0.05, 0.08] --> | 0.01 [-0.02, 0.04]<!-- src: results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.md \| nem35l_x52_x47_1_main :: 0.01 [-0.02, 0.04] --> |
+  | the rule's label | **(c) outside the lens<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| qwen35_9b_x47_1_main :: (c) outside the lens -->** | **(c) outside the lens<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| x47_1_main_27b :: (c) outside the lens -->** | **(c) outside the lens<!-- src: results/x47_atoms/x47_1-20261028T113101Z/x47_1.md \| muse30_x47_1_main :: (c) outside the lens -->** | **(c) outside the lens<!-- src: results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.md \| nem35l_x52_x47_1_main :: (c) outside the lens -->** (no prediction) |
+
+- **Read.**
+  - On all four models the lookup's identity answers survive the loss of lens directions 26-100 (under 0.10 beyond random): its identity route runs outside the lens, not in the lens beyond the recall's 25.
+  - Only the 27B loses identity answers to directions 1-25 or to all 100 (redundant copies); on Lightning taking out all 100 costs less than a random part of their share.
+- **Caveats.**
+  - Lightning's verdict prints "(a) for the batch: does not hold (0 of 1 models; at least 2 needed)": that applies the across-models clause to one model and is not a result; the per-model label is the result.
+  - Identity is read on routes scenes, the recall's switches on the main test: two scene sets.
 
 ### Which route does the lookup take, and does the address carry the position route? (routes test; Lightning's coverage run opened 29 Oct 01:47) <a id="routes"></a>
 
@@ -868,3 +900,4 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
 | figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |
+| figures/story/fig05d_routes_lens.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |

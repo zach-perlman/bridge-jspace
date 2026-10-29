@@ -26,6 +26,7 @@ ANCHORS = {
     "6. Anatomy by layer (47.8)": "t47-8",
     "8. Lens readout with the item-change control (47.0)": "t47-0",
     "E11: token by layer map (47.D1)": "d1",
+    "E3: identity route outside the lens (47.1 atom slices)": "t47-1",
     "E7: six lockers, one code per slot (47.2)": "six",
     "7. Ladder (49.2, rungs 1-6)": "t49-2",
     "9. Last-token read / write (51.10)": "t51-10",
