@@ -1,0 +1,54 @@
+id: x53_4b_lightning_attnspan_c
+title: "Batch 53, 53.4 follow-up on nemotron-3.5-lightning at L14 with the control fixed by Dan at 11:25: attention in blocks 19 + 26 blocked from the positions after the scene to the span from the bridge word to the scene's end, vs a control of the same length ending just before the bridge's sentence (one placement; the coordinator's reading, flagged to Dan); the rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x53_attnblock.py run-span --placement c --name nem35l_x53_attnspan_c --why "Batch 53, 53.4 follow-up (Dan 11:10) with the control span fixed by Dan at 11:25 (jobs/c3/batch53.yaml critic_1125): the control ends just before the bridge's sentence; no prediction" &&
+  uv run python scripts/x53_attnblock.py verdict-span --name nem35l_x53_attnspan_c
+question: >-
+  As jobs/c3/x53_4b_lightning_attnspan.yaml, with Dan's control (11:25): is the pointer read by attention from the
+  positions the Mamba-2 state has spread it to? The span from the bridge word to the scene's end blocked from the
+  question and the read in blocks 19 and 26, against a control of the same length placed nearer the question without
+  touching the bridge's sentence.
+why_it_matters: >-
+  Dan 11:25 (jobs/c3/batch53.yaml critic_1125): "fix the control span in the spec now (same length, same distance to the
+  question, inside the scene, not touching the bridge's sentence), one placement". The first run
+  (nem35l_x53_attnspan, x53_attnspan-20261029T102727Z: in between, span 0.53 / control 0.00) stays as run, its control
+  placement superseded.
+hypotheses:
+  none: "No prediction (Batch 53, 53.4 follow-up, Dan 11:10; the control fixed by Dan 11:25, before this run)."
+decision_rule: >-
+  Verbatim (jobs/c3/batch53.yaml next_1110, item 4): "53.4 follow-up (Lightning): block attention in blocks 19 + 26 to
+  the whole span from the bridge word to the end of the scene, vs a control span of the same length elsewhere. Rule:
+  "the pointer is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6
+  and the control by <= 0.15; else as 53.4." The control (Dan, critic_1125, verbatim): "fix the control span in the
+  spec now (same length, same distance to the question, inside the scene, not touching the bridge's sentence), one
+  placement." As computed, the coordinator's reading (flagged to Dan; he can correct it, a rerun is ~6 min): one
+  deterministic placement, as many tokens as the span, inside the scene, ending at the last token before the bridge's
+  sentence (X0's bind_bridge statement) begins: the placement nearest the question that does not touch that sentence
+  (the span reaches the scene's end, so the span's own distance to the question cannot be matched exactly without
+  overlapping it); its distance to the question = the span's + the span's length + the bridge sentence's part before
+  the bridge word, reported per scene and as medians in the verdict (plan, Lightning's tokenizer: the span's end 1 token
+  before the question's first token, the control's end 12); a scene where it does not fit inside the scene (from the
+  scene's first token, never position 0) is dropped from the rule and counted (plan: 83 of 200 kept, 35 bridge entities,
+  span 2-18 tokens, median 9; 117 dropped); its span arm is read beside; no seeded start. The rest as
+  jobs/c3/x53_4b_lightning_attnspan.yaml: the span arm's destinations every position after the scene's last token (the
+  question and the read), the same for the control; cut(x) = 1 - S_x / S_whole on the lookup (53.4's); "else as 53.4":
+  "not through attention at the bridge" if the span cuts < 0.3, else "in between"; point estimates decide, EPS 1e-9;
+  cluster-bootstrap CIs over the bridge entities (10,000, seed 0, paired) beside; S_whole = 0: not tested. Beside: the
+  span on the kept / all / dropped scenes with the counts and median span lengths next to the label; 53.4's (iii) rerun
+  and its committed (iii) / (v); the clean answer kept per arm (collateral). Verdict in the job:
+  results/x53_attnblock/x53_attnspan_c-<UTC>/ (a new folder; the first run's x53_attnspan-* stays).
+controls:
+- "the control span (Dan 11:25): the same length, ending just before the bridge's sentence, the same destinations"
+- "the clean answer kept under each block (collateral damage), as 53.4"
+- "53.4's (iii), the bridge word alone in blocks 19 and 26, rerun on the same forwards"
+- "the recall's numbers beside (no label)"
+n: "53.4's 200 items; the rule on the 83 where the control fits (35 bridge entities; span 2-18 tokens, median 9); the span arm on all 200 beside; 2 readers"
+seeds: [0]
+notes: "Batch 53, 53.4 follow-up (Dan 11:10); the control fixed by Dan 11:25 (critic_1125; Dan ranks it 5th); no prediction; UNVERIFIED. New run name nem35l_x53_attnspan_c and verdict folder x53_attnspan_c-<UTC>; the first run (nem35l_x53_attnspan) stays as run, its verdict 'first run, control placement superseded'. Code: scripts/x53_attnblock.py gains --placement c (control_before_sentence: deterministic; the manifest and the verdict name the placement and the flagged reading; the distances to the question per scene) on top of a05dda53 / 2d1d937e; tests in tests/test_x53_attnblock.py (placement c deterministic, never the bridge's sentence, the span or the question, the lengths equal, over 500 random scene geometries; the verdict for both placements). Box: speedup or another, whichever is free. Cost: the first run took ~6 min of GPU (x53_4b_lightning_attnspan; 53.4: 94 s run + 58 s setup); est 0.1. Memory: 53.4 peaked at 61.9 GB. Disk on the Mac before the spec: 125 GB free."

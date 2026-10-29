@@ -100,16 +100,40 @@ SPAN_CONTROL = (
     "scene where no such span fits is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the "
     "scene's last token: the question and the read), so the two arms differ only in the keys blocked"
 )
-AS_COMPUTED_SPAN = (
-    "cut(x) = 1 - S_x / S_whole on the lookup (53.4's), S_x = the share of the scenes kept whose lookup switches under "
-    "the whole change with arm x's block, S_whole = the same with no block, all in this run's forwards; point estimates "
-    f'decide, EPS {EPS} at the bars. "else as 53.4": 53.4\'s labels applied to the span arm: its (iv) clause "not '
-    'through attention at the bridge" if the span cuts < 0.3 (the Mamba state carries it), else "in between" (the '
-    "per-block clauses (i) / (ii) have no span arm). The span's destinations are every position after the scene's last "
-    "token (knock_out needs disjoint sources and destinations, so attention inside the span is as is), the same for the "
-    f"control. {SPAN_CONTROL}. S_whole = 0: not tested; X0's validity reported, not a gate. 53.4's (iii) and (v) from "
-    "its committed verdict beside, and (iii) rerun here"
+# Dan 11:25 (jobs/c3/batch53.yaml critic_1125): "fix the control span in the spec now (same length, same distance to
+# the question, inside the scene, not touching the bridge's sentence), one placement". Placement "c" (the coordinator's
+# reading, flagged to Dan): the control ends at the last token before the bridge's sentence begins (the placement
+# nearest the question that does not touch that sentence; exactly the span's distance cannot be had, the span reaching
+# the scene's end); the seeded start of the first run (placement "seeded", nem35l_x53_attnspan) is superseded.
+SPAN_PLACEMENTS = ("seeded", "c")
+RUN_SPAN_C = "nem35l_x53_attnspan_c"
+SPAN_CONTROL_C = (
+    "the control span (Dan 11:25; the coordinator's reading, flagged to Dan): as many tokens as the bridge-to-scene-end "
+    "span, inside the scene, ending at the last token before the bridge's sentence (X0's bind_bridge statement) begins: "
+    "one deterministic placement, the nearest to the question that does not touch the bridge's sentence (the span "
+    "itself reaches the scene's end, so the span's own distance to the question cannot be matched); its distance to the "
+    "question is the span's plus the span's length plus the bridge sentence's part before the bridge word (reported per "
+    "scene); a scene where it does not fit inside the scene (from its first token, never position 0) is dropped from "
+    "the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the "
+    "scene's last token: the question and the read), so the two arms differ only in the keys blocked"
 )
+CONTROL_TEXT = {"seeded": SPAN_CONTROL, "c": SPAN_CONTROL_C}
+
+
+def as_computed_span(placement: str = "seeded") -> str:
+    return (
+        "cut(x) = 1 - S_x / S_whole on the lookup (53.4's), S_x = the share of the scenes kept whose lookup switches "
+        "under the whole change with arm x's block, S_whole = the same with no block, all in this run's forwards; point "
+        f'estimates decide, EPS {EPS} at the bars. "else as 53.4": 53.4\'s labels applied to the span arm: its (iv) '
+        'clause "not through attention at the bridge" if the span cuts < 0.3 (the Mamba state carries it), else "in '
+        "between\" (the per-block clauses (i) / (ii) have no span arm). The span's destinations are every position after "
+        "the scene's last token (knock_out needs disjoint sources and destinations, so attention inside the span is as "
+        f"is), the same for the control. {CONTROL_TEXT[placement]}. S_whole = 0: not tested; X0's validity reported, not "
+        "a gate. 53.4's (iii) and (v) from its committed verdict beside, and (iii) rerun here"
+    )
+
+
+AS_COMPUTED_SPAN = as_computed_span("seeded")
 AS_COMPUTED = (
     "cut(x) = 1 - S_x / S_whole on the lookup, S_x = the share of items whose lookup switches under the whole change "
     "with arm x's block, S_whole = the same with no block (arm none), all in this run's forwards; point estimates "
@@ -183,6 +207,15 @@ def control_span(scene_id: str, starts: list[int], n: int, seed: int = SPAN_SEED
     """The control span: n tokens from a start drawn per scene among those that fit."""
     s = random.Random(f"x53_attnspan|{seed}|{scene_id}").choice(sorted(starts))
     return list(range(s, s + n))
+
+
+def control_before_sentence(sentence_first: int, scene_first: int, n: int) -> list[int] | None:
+    """Placement "c" (Dan 11:25): the n tokens ending at the last token before the bridge's sentence begins, if they lie
+    inside the scene (and not at position 0); else None."""
+    start = sentence_first - n
+    if n < 1 or start < max(scene_first, 1):
+        return None
+    return list(range(start, sentence_first))
 
 
 def span_knock(arm: str, sets: dict[str, list[int]], it: dict, length: int) -> tuple | None:
@@ -298,14 +331,15 @@ def scene_tokens(tok, item: dict) -> tuple[list[int], tuple[int, int], list[int]
     return list(enc["input_ids"]), (min(scene), max(scene)), question
 
 
-def build_span_items(tok, target: str = TARGET) -> tuple[list[dict], dict]:
+def build_span_items(tok, target: str = TARGET, placement: str = "seeded") -> tuple[list[dict], dict]:
     """53.4's items (build_items, its order) with the follow-up's spans: the bridge-to-scene-end span and the control
-    span (span_positions / control_span); where no control fits, span_control is None: the scene is dropped from the
-    rule (counted) and its span arm read beside. Both readers' prompts are asserted identical through the scene's last
-    token (so one mask serves both)."""
+    span (placement "seeded": span_positions / control_span, the first run; "c": control_before_sentence, Dan 11:25);
+    where no control fits, span_control is None: the scene is dropped from the rule (counted) and its span arm read
+    beside. Both readers' prompts are asserted identical through the scene's last token (so one mask serves both)."""
     from scripts import tasks_v2 as T
     from scripts import x45b_binding as B
 
+    assert placement in SPAN_PLACEMENTS, f"placement {placement!r}, not one of {SPAN_PLACEMENTS}"
     its, counts = build_items(tok, target)
     m = json.loads((X.RESULTS / B.MAIN_RUN[target] / "manifest.json").read_text())
     by_id = {it["id"]: it for it in T.load(m["set"])}
@@ -315,15 +349,26 @@ def build_span_items(tok, target: str = TARGET) -> tuple[list[dict], dict]:
         assert ids == it["readers"][X.LOOKUP]["ids"]["org"], f"{it['scene']}: the rebuilt prompt differs"
         for w in X.READERS:
             assert it["readers"][w]["ids"]["org"][: scene[1] + 1] == ids[: scene[1] + 1], f"{it['scene']}: {w} differs"
-        sp = span_positions(it["pos"], scene, question)
         span = list(range(it["pos"], scene[1] + 1))
-        dropped += sp is None
-        out.append({**it, "scene_first": scene[0], "scene_end": scene[1], "question_tokens": [min(question), max(question)],
-                    "span": span, "span_control": None if sp is None else control_span(it["scene"], sp["starts"], len(span)),
-                    "control_starts": 0 if sp is None else len(sp["starts"])})  # fmt: skip
+        if placement == "seeded":
+            sp = span_positions(it["pos"], scene, question)
+            ctrl, starts = (
+                (None, 0) if sp is None else (control_span(it["scene"], sp["starts"], len(span)), len(sp["starts"]))
+            )
+        else:
+            ctrl, starts = control_before_sentence(min(it["sentence"]), scene[0], len(span)), 1
+            if ctrl is not None:
+                assert not set(ctrl) & (set(it["sentence"]) | set(span) | set(question)), (
+                    f"{it['scene']}: control overlaps"
+                )
+        dropped += ctrl is None
+        q0 = min(question)
+        out.append({**it, "scene_first": scene[0], "scene_end": scene[1], "question_tokens": [q0, max(question)],
+                    "span": span, "span_control": ctrl, "control_starts": 0 if ctrl is None else starts,
+                    "span_to_question": q0 - scene[1], "control_to_question": None if ctrl is None else q0 - ctrl[-1]})  # fmt: skip
     kept = [it for it in out if it["span_control"] is not None]
     lengths = [len(it["span"]) for it in kept]
-    counts = {**counts, "span_items_in_rule": len(kept), "span_dropped_no_control_fits": dropped,
+    counts = {**counts, "control_placement": placement, "span_items_in_rule": len(kept), "span_dropped_no_control_fits": dropped,
               "span_entities_in_rule": len({it["bridge"] for it in kept}),
               "span_tokens_in_rule": [min(lengths), int(np.median(lengths)), max(lengths)] if lengths else None,
               "span_tokens_all": [min(len(it["span"]) for it in out), int(np.median([len(it["span"]) for it in out])),
@@ -546,12 +591,16 @@ def stage_verdict(name: str = RUN, n_boot: int = X.N_BOOT) -> Path:
 # ---- the 53.4 follow-up: the bridge-to-scene-end span (Dan 11:10) ---------------------------------------------------
 
 
-def stage_plan_span() -> dict:
+def stage_plan_span(placement: str = "seeded") -> dict:
     from scripts import x45m
 
     assert pins.TARGET == TARGET, f"BJ_TARGET={pins.TARGET}, not {TARGET}"
     tok = x45m.tokenizer()
-    its, counts = build_span_items(tok)
+    its, counts = build_span_items(tok, placement=placement)
+    kept = [it for it in its if it["span_control"] is not None]
+    if kept:
+        counts["to_question_median"] = {"span": float(np.median([it["span_to_question"] for it in kept])),
+                                        "control": float(np.median([it["control_to_question"] for it in kept]))}  # fmt: skip
     print(json.dumps(counts, indent=1))
     for it in [x for x in its if x["span_control"] is not None][:3]:
         ids = it["readers"][X.LOOKUP]["ids"]["org"]
@@ -560,7 +609,7 @@ def stage_plan_span() -> dict:
     return counts
 
 
-def stage_run_span(name: str, why: str) -> Path:
+def stage_run_span(name: str, why: str, placement: str = "seeded") -> Path:
     import torch
 
     from bridge_jspace.knockout import layer_kinds
@@ -577,13 +626,23 @@ def stage_run_span(name: str, why: str) -> Path:
     tok = model.tokenizer
     layer = X.PREDICTED[TARGET]
     sets = arm_layers(layer_kinds(model), layer)
-    its, counts = build_span_items(tok)
-    m = {**manifest(name, why, sets, counts), "test": "53.4 follow-up (Dan 11:10)",
-         "spec": "jobs/c3/batch53.yaml (next_1110, item 4); jobs/c3/x53_4b_lightning_attnspan.yaml",
+    its, counts = build_span_items(tok, placement=placement)
+    spec = (
+        "jobs/c3/x53_4b_lightning_attnspan.yaml"
+        if placement == "seeded"
+        else "jobs/c3/x53_4b_lightning_attnspan_c.yaml"
+    )
+    m = {**manifest(name, why, sets, counts),
+         "test": "53.4 follow-up (Dan 11:10" + ("; the control fixed by Dan 11:25)" if placement == "c" else ")"),
+         "spec": "jobs/c3/batch53.yaml (next_1110, item 4" + ("; critic_1125" if placement == "c" else "") + f"); {spec}",
          "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "switches": switches(), "code": git_state(),
-         "arms": list(SPAN_ARMS), "arm_text": SPAN_TEXT, "control": SPAN_CONTROL, "rule": RULE_SPAN,
-         "as_computed": AS_COMPUTED_SPAN, "rule_53_4": RULE,
-         "seeds": {"span_control": f"random.Random('x53_attnspan|{SPAN_SEED}|<scene>')", "bootstrap": X.BOOT_SEED},
+         "arms": list(SPAN_ARMS), "arm_text": {**SPAN_TEXT, "span_ctrl": SPAN_TEXT["span_ctrl"] if placement == "seeded"
+                                                else "the control: blocks 19 and 26, the same destinations, the same "
+                                                "number of tokens ending just before the bridge's sentence"},
+         "control_placement": placement, "control": CONTROL_TEXT[placement], "rule": RULE_SPAN,
+         "as_computed": as_computed_span(placement), "rule_53_4": RULE,
+         "seeds": {"span_control": f"random.Random('x53_attnspan|{SPAN_SEED}|<scene>')" if placement == "seeded"
+                   else "none (one deterministic placement)", "bootstrap": X.BOOT_SEED},
          "order": {"items": "the conflict run's item order (53.4's)",
                    "rows": "per item and reader one forward: arm-major (none, both, span, span_ctrl where a control "
                            "fits), clean then whole"}}  # fmt: skip
@@ -596,6 +655,8 @@ def stage_run_span(name: str, why: str) -> Path:
             f.write(json.dumps({"scene": it["scene"], "entity": it["bridge"], "pos": it["pos"], "scene_first": it["scene_first"],
                                 "scene_end": it["scene_end"], "span": it["span"], "span_control": it["span_control"],
                                 "control_starts": it["control_starts"], "in_rule": it["span_control"] is not None,
+                                "span_to_question": it["span_to_question"], "control_to_question": it["control_to_question"],
+                                "sentence_first": min(it["sentence"]),
                                 "span_text": tok.decode([ids[p] for p in it["span"]]),
                                 "control_text": None if it["span_control"] is None else tok.decode([ids[p] for p in it["span_control"]]),
                                 "stored_whole": it["stored_whole"]}) + "\n")  # fmt: skip
@@ -649,9 +710,19 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
     lk = nums[X.LOOKUP]
     lab = label_span(lk["cut"]["span"], lk["cut"]["span_ctrl"])
     prior = committed_53_4()
-    out = RESULTS / f"x53_attnspan-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    placement = m.get("control_placement", "seeded")
+    stem = "x53_attnspan" if placement == "seeded" else f"x53_attnspan_{placement}"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     c = m["items"]
+    ctrl_items = [it for it in items if it["in_rule"] and it.get("control_to_question") is not None]
+    dist = ({"span": float(np.median([it["span_to_question"] for it in ctrl_items])),
+             "control": float(np.median([it["control_to_question"] for it in ctrl_items]))} if ctrl_items else None)  # fmt: skip
+    placement_line = (f"Control placement: {placement} ({CONTROL_TEXT[placement]})" + (
+        f". Distance to the question's first token (tokens, median over the rule's scenes): the span's end "
+        f"{dist['span']}, the control's end {dist['control']}" if dist else "")
+        + (". The coordinator's reading of Dan's 11:25 wording (flagged to Dan; he can correct it, a rerun is ~6 min)"
+           if placement == "c" else ""))  # fmt: skip
     # the selection beside the label (coordinator 11:40): the rule's scenes vs those without a control, their span
     # lengths (from items.jsonl), and the span arm's cut on the rule's scenes and on every scene
     med = {k: float(np.median(v)) if v else None for k, v in
@@ -663,10 +734,10 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
            "span_cut_all": [beside_all[X.LOOKUP]["cut"]["span"], beside_all[X.LOOKUP]["cut_ci"]["span"]]}  # fmt: skip
     lines = [f"x53_attnspan: the 53.4 follow-up on Lightning (L{m['layer']}; run {name}); Batch 53, 53.4 follow-up (Dan "
              f"11:10); {NO_PREDICTION}; UNVERIFIED", "", f"Rule (verbatim): {RULE_SPAN}", f"53.4's rule (for \"else as "
-             f"53.4\"): {RULE}", f"As computed: {AS_COMPUTED_SPAN}", "",
+             f"53.4\"): {RULE}", f"As computed: {as_computed_span(placement)}", "", placement_line, "",
              f"Label (lookup): {lab} — decided on the {len(in_rule)} scenes where a control span fits (median span "
-             f"{med['rule']} tokens); {len(rest)} scenes without one (median span {med['dropped']} tokens; the bridge word "
-             f"early) dropped from the rule. The span arm's cut: {fmt(lk['cut']['span'], lk['cut_ci']['span'])} on the "
+             f"{med['rule']} tokens); {len(rest)} scenes without one (median span {med['dropped']} tokens) dropped from "
+             f"the rule. The span arm's cut: {fmt(lk['cut']['span'], lk['cut_ci']['span'])} on the "
              f"{len(in_rule)}, {fmt(beside_all[X.LOOKUP]['cut']['span'], beside_all[X.LOOKUP]['cut_ci']['span'])} on all "
              f"{len(items)} (median span {med['all']} tokens)" + (
                  f", {fmt(beside_rest[X.LOOKUP]['cut']['span'], beside_rest[X.LOOKUP]['cut_ci']['span'])} on the {len(rest)}"
@@ -707,8 +778,8 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
         tops = ", ".join(f"{a} {by[(it['scene'], a)]['top_text']!r}{'*' if by[(it['scene'], a)]['switched'] else ''}"
                          for a in SPAN_ARMS)  # fmt: skip
         lines.append(f"- {it['scene']}: span {it['span_text']!r}; control {it['control_text']!r}; {tops}")
-    blob = {"prediction": NO_PREDICTION, "rule": RULE_SPAN, "rule_53_4": RULE, "as_computed": AS_COMPUTED_SPAN,
-            "control": SPAN_CONTROL, "run": name, "layer": m["layer"], "arm_layers": m["arm_layers"], "label": lab,
+    blob = {"prediction": NO_PREDICTION, "rule": RULE_SPAN, "rule_53_4": RULE, "as_computed": as_computed_span(placement),
+            "control": CONTROL_TEXT[placement], "control_placement": placement, "to_question_median": dist, "run": name, "layer": m["layer"], "arm_layers": m["arm_layers"], "label": lab,
             "items": c, "readers": {("lookup" if w == X.LOOKUP else "recall"): v for w, v in nums.items()},
             "beside_all": {("lookup" if w == X.LOOKUP else "recall"): v for w, v in beside_all.items()},
             "beside_no_control": None if beside_rest is None else {("lookup" if w == X.LOOKUP else "recall"): v
@@ -725,6 +796,12 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "plan-span", "run-span", "verdict-span"])
     ap.add_argument("--name", default=None, help=f"the run (default {RUN}; the span stages {RUN_SPAN})")
+    ap.add_argument(
+        "--placement",
+        choices=SPAN_PLACEMENTS,
+        default="seeded",
+        help="plan-span / run-span: the control span's placement (seeded: the first run; c: Dan 11:25)",
+    )
     ap.add_argument("--why", default="53.4, Dan 29 Oct ~10:05 (lightning_attn_block): does the lookup read the "
                     "bridge word through attention blocks 19 and 26? Rule fixed then, no prediction")  # fmt: skip
     a = ap.parse_args()
@@ -737,9 +814,9 @@ def main() -> None:
     elif a.stage == "verdict":
         stage_verdict(name)
     elif a.stage == "plan-span":
-        stage_plan_span()
+        stage_plan_span(a.placement)
     elif a.stage == "run-span":
-        stage_run_span(name, a.why)
+        stage_run_span(name, a.why, a.placement)
     else:
         stage_verdict_span(name)
 

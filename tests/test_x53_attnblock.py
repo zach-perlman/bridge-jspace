@@ -297,7 +297,8 @@ def test_span_mask_on_nemotronh_zeroes_every_span_edge():
         )  # the queries up to the scene's end as is
 
 
-def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
+@pytest.mark.parametrize("placement", ["seeded", "c"])
+def test_span_verdict_on_planted_reads(tmp_path, monkeypatch, placement):
     import json
 
     monkeypatch.setattr(AB, "RESULTS", tmp_path)
@@ -307,7 +308,7 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
               "span_dropped_no_control_fits": 10, "span_entities_in_rule": 5, "span_tokens_in_rule": [2, 8, 15],
               "span_tokens_all": [2, 12, 30]}  # fmt: skip
     (run / "manifest.json").write_text(json.dumps({"layer": 14, "arm_layers": AB.arm_layers(LIGHTNING_LIKE, 14),
-                                                   "items": counts}))  # fmt: skip
+                                                   "items": counts, "control_placement": placement}))  # fmt: skip
     # the rule's 20 scenes: 10 switch with no block, the span keeps 3 (cut 0.7), the control 9 (cut 0.1)
     keep = {"none": 10, "both": 6, "span": 3, "span_ctrl": 9}
     rows, items = [], []
@@ -320,6 +321,8 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
                 "span": list(range(10 if ok else 20)),
                 "span_text": " beta. ...",
                 "control_text": "Eve" if ok else None,
+                "span_to_question": 1,
+                "control_to_question": 12 if ok else None,
             }
         )
         for w in ("PP", "PM"):
@@ -332,7 +335,10 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
     AB.X.write_jsonl(run / "items.jsonl", items)
     out = AB.stage_verdict_span(n_boot=200)
     blob = json.loads((out / "verdict.json").read_text())
-    assert out.name.startswith("x53_attnspan-") and blob["label"] == AB.SPAN_LABEL
+    stem = "x53_attnspan-" if placement == "seeded" else "x53_attnspan_c-"
+    assert out.name.startswith(stem) and blob["label"] == AB.SPAN_LABEL and blob["control_placement"] == placement
+    assert blob["to_question_median"] == {"span": 1.0, "control": 12.0}
+    assert ("flagged to Dan" in (out / "verdict.md").read_text()) == (placement == "c")
     assert blob["readers"]["lookup"]["n"] == 20 and blob["readers"]["lookup"]["cut"]["span"] == pytest.approx(0.7)
     assert (
         blob["readers"]["lookup"]["cut"]["span_ctrl"] == pytest.approx(0.1) and blob["beside_all"]["lookup"]["n"] == 30
@@ -347,3 +353,37 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
     }
     label_line = next(ln for ln in text.splitlines() if ln.startswith("Label (lookup)"))
     assert "on the 20" in label_line and "on all 30" in label_line and "median span 10.0 tokens" in label_line
+
+
+def test_placement_c_ends_just_before_the_bridge_sentence():
+    """Dan 11:25 (placement c): the control ends at the last token before the bridge's sentence; deterministic; never the
+    sentence, the span or the question; the span's length; None when it does not fit inside the scene."""
+    # scene 8..40; the bridge's sentence 26..31 with the bridge word at 30; the span 30..40 (11 tokens)
+    ctrl = AB.control_before_sentence(26, 8, 11)
+    assert ctrl == list(range(15, 26)) and ctrl == AB.control_before_sentence(26, 8, 11)
+    assert not set(ctrl) & set(range(26, 41)) and len(ctrl) == 11
+    assert AB.control_before_sentence(26, 16, 11) is None  # would start before the scene
+    assert AB.control_before_sentence(11, 0, 11) is None  # would reach position 0
+    assert AB.control_before_sentence(12, 0, 11) == list(range(1, 12))
+
+
+def test_placement_c_over_random_scenes():
+    import random as rnd
+
+    g = rnd.Random(1)
+    fits = 0
+    for _ in range(500):
+        first = g.randint(1, 20)
+        last = first + g.randint(8, 60)
+        s0 = g.randint(first, last - 2)
+        pos = g.randint(s0, min(s0 + 5, last))
+        question = list(range(last + 2, last + 8))
+        n = last - pos + 1
+        ctrl = AB.control_before_sentence(s0, first, n)
+        if ctrl is None:
+            assert s0 - n < max(first, 1)
+            continue
+        fits += 1
+        assert len(ctrl) == n and ctrl[-1] == s0 - 1 and ctrl[0] >= first
+        assert not set(ctrl) & set(range(s0, last + 1)) and not set(ctrl) & set(question)
+    assert fits > 50
