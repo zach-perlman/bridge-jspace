@@ -1,0 +1,83 @@
+{
+  "exp": "x53_bindid",
+  "run": "x53_8c_27b",
+  "why": "Batch 53, test 53.8 on the 27B (jobs/c3/batch53.yaml critic_1125 item 6, Dan 29 Oct 11:25; fallback_1220, Dan 12:22: after the 9B and Muse; with the centered arm of decisions_1210b item 1, Dan 12:10): a binding-ID test for the lookup's identity code at L32, the mention's slot code (uncentered, the headline; centered, beside) added at the bridge word at 1x / 2x a real identity change against random and Y's version; no prediction",
+  "written_utc": "2026-10-29T12:12:51Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "4e209c5b0b4e5d9b012d3e2dd1753bc7d8bd1a57",
+    "dirty": true
+  },
+  "test": "53.8",
+  "spec": "jobs/c3/batch53.yaml (critic_1125, item 6)",
+  "question": "no prediction (batch 53: the rule fixed in Dan's text, 29 Oct 11:25, before any run)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "64364e93a2034bb1a71d02e16b0ada00ed57aa66083e2f57e9024bbba1571db1"
+  },
+  "layer": 32,
+  "doses": [
+    1,
+    2
+  ],
+  "rule_verbatim": "Stretch, 53.8, a binding-ID test for the lookup's identity code (9B, then Muse): at L, take the state at item X's mention in its locker sentence minus X's token embedding (mean over scenes, X fixed by slot), add it at the bridge word at 1x / 2x the size of a real identity change, against a random vector of the same norm and against the same with another item Y's mention. Read: lookups sent to X's locker. Rule: \"a shared identity code\" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; \"no\" if <= 0.05; else in between.",
+  "rule": "at 2x, point estimates (EPS 1e-09): \"a shared identity code\" if X - random >= 0.25 and X - Y >= 0.15; \"no\" if X - random <= 0.05 (Dan's \"<= 0.05\" read as X's share minus random's at 2x); else \"in between\"; a failed gate: \"not tested (gate x < 0.80)\"",
+  "design": {
+    "scenes": "x6_routes.scenes (seed 2510, 1000 per condition, prefix-stable), the C0 scenes in generator order; test pool = C0 scenes 1-700 (the routes runs'), X0's competence, gate and eligibility there, the first 300 eligible; mean pool = C0 scenes 701-1000 (held out: no test scene's own state enters a vector)",
+    "x_vector": "per locker slot k: mean over the mean-pool scenes of (the block output at L at the k-th locker sentence's item word in O's chat lookup prompt) - (that token's input-embedding row, raw); X = the item at slot k (X fixed by slot); the item word is one token (the generator's rule, asserted)",
+    "x_and_y": "per test scene the two items other than the bridge item A take turns as X and Y (X = slot k, Y = the remaining slot k'); both assignments pooled",
+    "dose": "the size of a real identity change = ||Δ||, Δ = h_{S_B} - h_O at the bridge word at L (C0: Iris's pick A -> B, nothing else), per scene: x52_answer_map's ans1 / ans2 (s = ||Δ||); 1x and 2x",
+    "controls": "a random Gaussian direction per scene (seed 5308) at the same norm; Y's version = slot k''s vector at the same norm",
+    "centered": "Dan 12:10 (decisions_1210b item 1, before any run): a second arm with c~_k = c_k - (c_0 + c_1 + c_2) / 3 (the slot-specific part) in place of c_k, the same doses (d ||Δ||), the same random arm (same norm) and Y's centered version as controls, its own label by the same thresholds, beside; the headline is the uncentered arm's",
+    "read": "X0's chat read, both readers; the lookup's top token classed by locker slot (the slot's digit token) or other; X's share = the lookup's top token is X's locker digit",
+    "collateral": "the clean answers kept: the lookup's (A's locker) and the recall's (A's legs) top token unchanged",
+    "ci": "cluster bootstrap over the bridge item A (10,000 draws, seed 0), arms paired"
+  },
+  "arms": [
+    "none",
+    "whole",
+    "code1_x1",
+    "code2_x1",
+    "rand_x1",
+    "ccode1_x1",
+    "ccode2_x1",
+    "code1_x2",
+    "code2_x2",
+    "rand_x2",
+    "ccode1_x2",
+    "ccode2_x2"
+  ],
+  "centered_verbatim": "53.8: keep your construction (uncentered, dose 1x = ||Δ|| at the bridge word, as in 52) as the pre-specified arm, rule unchanged. Add, now, before any run: a centered arm (X's vector minus the mean over slots), same doses, same controls (random of the same norm; Y's centered version), the same rule thresholds reported for it beside. Report the slot-vector cosines and the norm of the slot-specific part.",
+  "variants": {
+    "uncentered": "pre-specified, uncentered c_k (headline)",
+    "centered": "centered c_k - mean over slots (Dan 12:10, beside)"
+  },
+  "headline": "uncentered",
+  "n": {
+    "items": 300,
+    "test_pool": 700,
+    "mean_pool": 300,
+    "gen_per_condition": 1000
+  },
+  "gate_min": 0.8,
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 5308,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "sealed": "none (no prediction)"
+}

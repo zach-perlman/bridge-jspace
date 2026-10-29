@@ -1,0 +1,16 @@
+{
+  "c0_generated": 1000,
+  "test_pool": 700,
+  "mean_pool": 300,
+  "org_read_accuracy": {
+    "PP": 0.9985714285714286,
+    "PM": 0.9971428571428571
+  },
+  "pass": true,
+  "gate_min": 0.8,
+  "eligible": 692,
+  "used": 300,
+  "generator_dropped": {
+    "A and B have the same number of legs": 551
+  }
+}
