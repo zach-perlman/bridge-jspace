@@ -1,0 +1,35 @@
+id: x52_lightning_fresh_below
+title: "Batch 52, Dan's morning queue item 1 (source): Lightning's clean one-pick design (45m: x0_necessity --alt fresh) at L14, BELOW GATE (exploratory): the clean gate fails (recall 0.751 < 0.80), the run reads the eligible items only (x0_necessity --descriptive), the 60 dev scenes kept out; the item source of the below-gate copy test, ladder, earlier mention, 48.3, route2, 49.3, D1 clean and 47.4 clean; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  NOTE="below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80; results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims table or grades; no prediction (Dan's morning queue, 29 Oct)" &&
+  uv run python scripts/x0_necessity.py run --name nem35l_x52_fresh --set d1_topics_v3 --renderings chat --layers $L --alt fresh --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --n-items 600 --descriptive --exclude-dev results/x51_lightning/nem35l_x52_layer_r2/gate.json --coverage --why "Batch 52, Dan's morning queue item 1: the clean one-pick design (45m) on Lightning at L$L, below gate, eligible items only (--descriptive), dev scenes out; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x0_necessity/nem35l_x52_fresh/coverage.txt
+question: >-
+  Source run: the clean one-pick design's items, changes and X0 arms on Lightning at L14 (eligible items only; the gate
+  fails), for the below-gate exploratory tests of Dan's morning queue item 1.
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: every clean-design test on Lightning
+  was "not tested" (gate 0.751); Dan asks for them below gate, exploratory, hollow, on the eligible items.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  The source run applies no rule of its own here. Design verbatim from jobs/c3/x45m_muse.yaml (batch 45, 45m: the
+  clean one-pick design, the asked pick changes from the bridge to an added locker item nobody picks; x0_necessity
+  --alt fresh, d1_topics_v3, chat, J++ k = 25 signed, --n-items 600) at Lightning's committed L14 (amendment 1).
+  BELOW GATE: X0's read gate (0.80 per reader on O unedited) fails on Lightning's clean design (recall 0.751 on 559
+  scenes; 342 eligible), so the run uses x0_necessity's existing --descriptive mode (amendment 3: the items each reader
+  gets right, labelled descriptive; the gate numbers recorded in gate.json); the 60 dev scenes that chose L14 are kept
+  out (--exclude-dev). Downstream tests read this run as their item source and carry "below gate (exploratory)".
+controls:
+- "X0's random subspace of the J++ part's share (seed 888 + L), as every X0 run"
+- "the read gate recorded (failed: below gate), eligibility as X0's"
+n: "the eligible clean one-pick scenes at L14 outside the 60 dev scenes (up to 600; ~280 expected: 342 eligible on all scenes at the smoke run)"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:05 Paris). Box: mats. Code: none for this job (x0_necessity's existing --descriptive, --exclude-dev and --coverage); the downstream scripts read it through a separate below-gate lookup (x45b_binding.FRESH_RUN, which 45q's rule counts, stays the three design models). The downstream below-gate specs depend on this job on their box (or read the pulled run). Wallclock: x45m_muse_q2 788 s, x45m_27b_q2 990 s; Lightning's conflict run 623 s for 13 layers: est ~10-15 min, 0.3 GPU-h. Hollow marks; UNVERIFIED; results into EXPERIMENTS.md (after ~13:00 only there)."
