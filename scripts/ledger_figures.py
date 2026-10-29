@@ -1342,6 +1342,9 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
             continue
         ax.set_title(SHORT[t] + (" ○" if t == LT else ""), fontsize=12, weight="bold", loc="left")
         for lab, v, col, hollow in rows[t]:
+            if isinstance(v, str):  # a cell this model does not have (not tested, pending): a grey note in its row
+                ax.text(xlim[0] + 0.03, -labels.index(lab), v, color=GREY, va="center", fontsize=S.LABEL_PT - 1)
+                continue
             whisker(ax, -labels.index(lab), v, col, hollow=hollow)
             S.record(name, t, lab, *v)
         rows_axis(ax, labels)
@@ -1351,7 +1354,7 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         for x, ls in bars:
             ax.axvline(x, color="#555555", lw=0.8, ls=ls)
-        ax.set_xlabel(xlabel, fontsize=S.LABEL_PT)
+    fig.text(0.68, 0.012, xlabel, ha="center", va="bottom", fontsize=S.LABEL_PT)  # one x label for the row of panels
     # the row labels on the left panel, also when that panel is a grey slot
     axes[0].tick_params(axis="y", labelleft=True)
     axes[0].set_yticks([-i for i in range(len(labels))], labels, fontsize=S.LABEL_PT)
@@ -1520,10 +1523,40 @@ def attnblock(plt) -> str:
                        rows, absent, "switches cut", xlim=(-0.1, 1.05), bars=((0.6, "--"), (0.3, ":")))
 
 
+JSUITE = R / "x51_answer" / "x53_jsuite-20261029T092753Z" / "verdict.json"  # 53.1b, the 9B and the 27B so far
+JSUITE_NOTES = {("z2p", "qwen3.5-9b"): "not tested\n(gate 0.757\n< 0.80)", ("z2p", "qwen3.6-27b"): "pending\n(rerun)"}
+
+
+def jsuite(plt) -> str:
+    """53.1b on four slots: per model and cell of Zach's passages (PP the lookup, PM the recall, on the P passages;
+    MP and MM on the M passages), 51.12's arms: switches lost without the lens part beyond random, and without the
+    answer directions only beyond random; a cell not tested or pending as a grey note; Muse and Lightning grey."""
+    v = load(JSUITE)
+    by = {(m["set"], m["target"]): m for m in v["models"] if m["status"] == "tested"}
+    cells = (("z1p", "lookup", "PP lookup", LOOKUP), ("z1p", "recall", "PM recall", INK),
+             ("z2p", "lookup", "MP lookup", LOOKUP), ("z2p", "recall", "MM recall", INK))
+    rows = {}
+    for t in ("qwen3.5-9b", "qwen3.6-27b"):
+        rows[t] = []
+        for st, rd, word, col in cells:
+            m = by.get((st, t))
+            for arm, what in (("1", "without the lens part"), ("3", "answer directions only")):
+                lab = f"{word}: {what}"
+                if m is None:
+                    rows[t].append((lab, JSUITE_NOTES[(st, t)] if arm == "1" else "", col, False))
+                else:
+                    rows[t].append((lab, m["readers"][rd]["extra"][arm], col, False))
+    absent = {"muse-glimmer-30b": "not designed\n(9B / 27B only)", LT: "not designed\n(9B / 27B only)"}
+    return four_panels(plt, "ledger_jsuite", "On Zach's made-up passages both recalls read as mixed",
+                       "Switches lost beyond a random part, 51.12's arms on Zach's passages; whiskers 95%",
+                       rows, absent, "lost beyond random", xlim=(-0.3, 1.0))
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
-           last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock)  # fmt: skip
+           last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
+           jsuite)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

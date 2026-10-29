@@ -1523,12 +1523,35 @@ New in this ledger:
 
 Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every rule fixed before any run, no predictions, UNVERIFIED; each result gets a card and a figure here, and nothing goes into the README until the next day's verification. In Dan's priority order (53.1b first); the rules are quoted from the brief.
 
-### 53.1b (running) <a id="b53-1b"></a>
+### On Zach's made-up-fact passages, what do the answer control's arms say for each question-and-passage cell? (53.1b, the 9B and the 27B opened 29 Oct ~11:00; the 27B's two passage-without-the-fact cells to come) <a id="b53-1b"></a>
 
-- **Question.** As Dan listed it: "jsuite PP vs MP, 51.12's arms + readout" (Zach's passages, no new scenes); the question in plain words waits for its spec.
-- **Rule, fixed in advance.** Priority 1 (Dan, 09:50): "53.1b: jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No new scenes needed: start it on speedup now." Its labels are 51.12's (entity / answer / mixed / answer word not read).
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** On Zach's passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say for each cell of his design: the lookup's and the recall's question on the passage that states the fact (PP, PM) and on the one that leaves it out (MP, MM)?
+- **Why we asked.** Dan's priority 1 of 29 Oct 09:50 ("jsuite PP vs MP, 51.12's arms + readout"): on his passages the cells exist already, no new scenes.
+- **Data.** Zach's passages with made-up facts (Z1-P's items), 200 per cell where tested; the 9B at L12, the 27B at L32.
+- **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
+
+![On Zach's made-up passages both recalls read as mixed](../../figures/ledger/ledger_jsuite.png)
+*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its passage-without-the-fact cells not tested: gate), 27B (those cells pending, rerun); Muse and Lightning grey (not designed: 9B / 27B only).*
+
+- **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md; no prediction)
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | PP (lookup, fact stated): lost without the lens part, beyond random | -0.05 [-0.13, 0.05]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: -0.05 [-0.13, 0.05] --> | 0.16 [0.06, 0.26]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: 0.16 [0.06, 0.26] --> | not designed | not designed |
+  | PP: the label | **can't tell<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: can't tell -->** | **the answer word is not read at the bridge word<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: the answer word is not read at the bridge word -->** | | |
+  | PM (recall, fact stated): lost without the lens part, beyond random | 0.59 [0.51, 0.67]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: 0.59 [0.51, 0.67] --> | 0.63 [0.54, 0.72]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: 0.63 [0.54, 0.72] --> | | |
+  | PM: the label | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: mixed -->** | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: mixed -->** | | |
+  | MP and MM (the passage without the fact) | not tested (gate 0.757<!-- src: results/x50_zach/qwen35_9b_x53_z2p/gate.json \| "K": 0.757396449704142 :: 0.757 --> < 0.80) | pending (rerun) | | |
+
+- **Read.**
+  - With the fact stated, both recalls read as mixed: keeping the answer's directions keeps only part of the recall's loss, and the answer directions alone cost some of it; the 9B's lookup loses nothing beyond random (cannot tell), and the 27B's answer word is not read at the bridge word.
+- **Caveats.**
+  - The 9B's passages without the fact missed the gate (its lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's are rerunning after a disk-full restart.
+  - Exploratory (batch 53): no prediction; UNVERIFIED.
 
 ### 53.1 (running) <a id="b53-1"></a>
 
@@ -1922,6 +1945,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_subset27b.png | yes | no overlap | yes | yes | four slots, replaces the verdict's figure on the 53.5 card; Muse and Lightning grey (not designed) |
 | figures/ledger/ledger_identity_address.png | yes | no overlap | yes | yes | batch 53 (53.6), four slots: the 9B and Lightning (hollow); 27B and Muse grey; from the two per-model verdicts |
 | figures/ledger/ledger_attnblock.png | yes | no overlap | yes | yes | batch 53 (53.4), four slots: Lightning (hollow), the other three grey (not applicable) |
+| figures/ledger/ledger_jsuite.png | yes | no overlap (the grey notes wrapped) | yes | yes | batch 53 (53.1b), four slots: 9B and 27B with their missing cells as grey notes; Muse and Lightning grey (not designed) |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened) |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened) |
