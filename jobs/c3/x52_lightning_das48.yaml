@@ -1,0 +1,54 @@
+id: x52_lightning_das48
+title: "Batch 52, Lightning ports (Dan's 08:55 GPU queue item 3): 48.1 on nemotron-3.5-lightning at L14, DAS through the torch (non-kernel) Mamba-2 path (BJ_DAS_MAMBA=torch, after x52_lightning_das_gradcheck): R_lookup and R_recall (k = 1, 4, 16, 64) on the main test's locker-first pairs; own-IIA, cross-IIA, energy inside J++-25 / U / W_E-25, routes read; random and shuffled-target baselines; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 3.2
+depends_on: [x52_lightning_das_gradcheck]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_DAS_MAMBA=torch PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52, Lightning ports, Dan's 08:55 GPU queue item 3: 48.1 on Lightning at L$L, DAS through the torch Mamba-2 path, BJ_DAS_MAMBA=torch, after x52_lightning_das_gradcheck)" &&
+  uv run python scripts/x48_das.py run --name nem35l_x52_das --why "batch 48, test 48.1 (jobs/c3/batch48.yaml) on Lightning, batch 52 (Dan's 08:55 GPU queue item 3; BJ_DAS_MAMBA=torch): DAS at the bridge word at L$L on the main test's locker-first pairs the whole change switches; one R per reader and k, random and shuffled-target baselines; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x48_das/nem35l_x52_das/coverage.txt &&
+  uv run python scripts/x48_das.py verdict --coverage --runs nem35l_x52_das
+question: >-
+  At the bridge word at L14 of Nemotron 3.5 Lightning, is there a low-dimensional subspace of the change that mediates
+  the lookup, one that mediates the recall, are they disjoint (own-IIA high, cross-IIA low), and where do they sit
+  against the lens (J++-25), the pointer directions U and the input-embedding part W_E-25?
+why_it_matters: >-
+  Dan's 08:55 queue, item 3: "then 51.3, 48.1, 51.11 parts 1 and 3". 48.1 is done on the 9B, Muse and the 27B; Lightning
+  is the second family (hybrid Mamba-2 / attention / MoE), its DAS cell "not tested" until a backward through NemotronH
+  was checked (x52_lightning_das_gradcheck, on which this job depends).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  Verbatim from jobs/c3/x48_1_9b.yaml (first scored on the 9B and Muse in results/x48_das/verdict-20261028T134153Z;
+  the 27B's coverage run jobs/c3/x48_1_27b_r2.yaml reads it the same way): "Fixed in advance (jobs/c3/batch48.yaml,
+  48.1): (a) two readers, two subspaces: own-IIA >= 0.7 at some k <= 16 for both readers and cross-IIA <= 0.25 in both
+  directions (paired CI excluding overlap with own-IIA); (b) the recall's subspace is the lens's part: R_recall's energy
+  inside J++-25 >= 0.5 (random R <= 0.15), R_lookup's <= 0.2; (c) the address is part of the lookup's subspace:
+  ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d); (d) a third identity code: R_lookup's energy outside (J++-25 u U u
+  W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read.
+  Fallback: if own-IIA stays < 0.5 at k = 64 for the lookup, "no low-dimensional mediator at this token and layer"."
+  As computed: x48_1_9b.yaml's paragraph verbatim (x48_das.AS_COMPUTED), with Lightning's inputs in place of the 9B's:
+  the stored main-test run nem35l_x52_conflict (chat, the committed L14, the 60 dev scenes excluded; the run 48.2 A's
+  Lightning cell read), U = x0_massmean.subspaces' Alf on nem35l_x52_probe (rank 4), the J++ atoms of our Lightning lens
+  (sha 3306b6e4). Plan check (CPU, Lightning's tokenizer, x48_das.py plan): 59 locker-first pairs of 200 scenes at L14
+  (141 not locker-first), 30 bridge entities split 18 / 6 / 6; lookup pairs 37 / 7 / 14, recall 37 / 8 / 14
+  (train / select / test). The only change from the 9B / Muse / 27B runs is the run fix BJ_DAS_MAMBA=torch: every
+  forward that records a gradient (the DAS training forward) runs NemotronH's Mamba-2 mixer and the other HF-hub kernel
+  forwards on transformers' torch reference (x48_das.kernels_off; checked first by x52_lightning_das_gradcheck); every
+  read without a gradient (the states, the IIA reads, the routes read) keeps the pinned kernels as every Lightning run.
+  No rule, layer, prompt set or gate changes. Verdict in the job (x48_das.py verdict --coverage --runs nem35l_x52_das:
+  'no prediction', results/x48_das/x52_das-<UTC>/, never the default verdict-<UTC>/).
+controls:
+- "untrained random R of the same k (seed 4802 + k)"
+- "R trained on shuffled targets (seed 4801 + k + reader): must sit at the random R"
+- "the whole change and O unedited reread on the select and test pairs (IIA / S_whole reported)"
+- "cross-IIA: R_lookup read by the recall, R_recall read by the lookup"
+- "the read position: both readers' prompts identical through the bridge token (asserted per pair)"
+- "the torch path's forward against the kernels' and its gradient: x52_lightning_das_gradcheck (this job depends on it)"
+n: "plan check on Lightning (CPU, the stored run): 59 locker-first pairs of 200 scenes at L14 (30 bridge entities, 18 / 6 / 6); lookup pairs 58 (37 / 7 / 14), recall 59 (37 / 8 / 14)"
+seeds: [0, 48, 4801, 4802, 4803, 2510]
+notes: "Batch 52, Dan's 08:55 GPU queue (jobs/c3/batch52.yaml morning_queue) item 3, lowest priority; depends_on x52_lightning_das_gradcheck (same box: jobq reads dependencies from the box's own ledger; a failed check blocks this job). Run name nem35l_x52_das = x48_das.COVERAGE_RUNS['nemotron-3.5-lightning'] (x48_das.RUNS, 48.1's own verdict, unchanged). 48.1 reads only the main test, whose gate passes on Lightning (lookup 0.957, recall 0.816, nem35l_x52_layer_r2): no below-gate part. For scripts/x52_coverage.py (not touched here): the Lightning cell can be track('x52_lightning_das48', 'x48_das/nem35l_x52_das', 'x48_das/x52_das-*') (track filters the folders that name the run, so the 27B's x52_das-20261029T040955Z is unaffected). Cost: 16 trainings x 300 steps x 2 micro-batches of 8 (37 training rows per reader, batch 16) = 9,600 forward + backward micro-batches on the torch path. No ledger row has a torch-path NemotronH backward yet (the gradcheck measures it: gradcheck.md, seconds per micro-batch); arithmetic: the torch chunk scan materialises [8, 1, 128, 128, 64, 128] fp32 products (~4.3 GB) per Mamba-2 layer, ~12 ms forward on all 23 Mamba-2 layers and ~30 ms backward on the 16 after L14, plus attention and grouped-mm MoE: ~1.0 s per micro-batch (the 9B's torch GDN 0.18 s, Muse 0.32 s, the 27B ~0.55 s): ~2.7 h; reads with the kernels (states 118 forwards; 22 held-out pairs x 2 readers x 22 arms; routes 160 competence scenes and 100 x 2 x 10 reads) ~0.1 h; load 0.05 h: ~2.9 h, est 3.2. Re-estimate from the gradcheck's seconds per micro-batch before enqueueing; if it is above ~1.2 s this job ends after the 16:00 freeze from any start after ~12:00. Memory: 62 GB at inference; the torch path adds ~4-9 GB transient per Mamba-2 layer (the gradcheck records the peak at micro-batches of 8; x48_das has no OOM retry). Seeds: 0 the split, bootstrap and examples; 48 R's init (+ 100 k + reader; shuffled + 10); 4801 the shuffled targets; 4802 the random R; 4803 the training batches; 2510 x6_routes' scenes. Hollow / coverage mark as the 27B's; UNVERIFIED."
