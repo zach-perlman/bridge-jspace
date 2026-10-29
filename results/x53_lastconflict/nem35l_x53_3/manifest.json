@@ -1,0 +1,93 @@
+{
+  "exp": "x53_lastconflict",
+  "run": "nem35l_x53_3",
+  "why": "Batch 53, test 53.3 (jobs/c3/batch53.yaml, Dan 29 Oct 09:30): the conflict test at the last token on Lightning (items: the main test at L14, as 51.10's), at 51.10's read peak and the answer layer minus 2; no prediction",
+  "written_utc": "2026-10-29T09:00:55Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "23375fa6788eddc9315c505a221aa588fa2c8356",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "53.3",
+  "spec": "jobs/c3/batch53.yaml (53.3)",
+  "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "e33e30e1563b137295a8d9bcfd9ccb3a78bdb97f9e6cc56199a11d6f4adf8b4f",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/gate.json": "76d7fcb1cde22f163687c5e9e57fa434600536eac441af5deca7b388d9d204ca",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde",
+    "results/x51_jread/nem35l_x52_jread/peak.json": "f116fe7f5d86fcefc99e1c76a63d45362032b364f4da1e84e33e7bfd9e7ef0c4",
+    "results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json": "2253c6e8a057dd80cd5562363365900f818093b67463d273ffa1079d0f984156"
+  },
+  "source": "nem35l_x52_conflict",
+  "L": 14,
+  "layers": {
+    "source_run": "nem35l_x52_jread",
+    "peak_file": "results/x51_jread/nem35l_x52_jread/peak.json",
+    "read_file": "results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json",
+    "readers": {
+      "lookup": {
+        "peak": 32,
+        "answer": 45,
+        "layers": [
+          32,
+          43
+        ]
+      },
+      "recall": {
+        "peak": 36,
+        "answer": 49,
+        "layers": [
+          36,
+          47
+        ]
+      }
+    }
+  },
+  "k": 25,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change Δ = h_S - h_O at P3",
+    "no_jpp": "without the lens part: Δ - P_J Δ",
+    "no_rand": "without a random part of the same share: Δ - R Δ",
+    "jpp": "the lens part alone: P_J Δ",
+    "rest": "the rest alone: Δ - P_J Δ (the same vector as no_jpp)"
+  },
+  "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+  "as_computed": "the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole; the rest alone's share = S_rest / S_whole; S_arm = the share of the locker-first items switched (the top token is S's answer's first token); point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the original bridge entities (10000, seed 0, paired) beside; S_whole = 0: not tested",
+  "items_rule": "51.10's items (x51_jread.select), 49.1's locker-first ones (51.10's write arms)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "none (no prediction)"
+}
