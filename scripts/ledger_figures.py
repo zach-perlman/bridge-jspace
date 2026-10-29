@@ -33,6 +33,8 @@ TRAVEL = R / "x51_travel" / "x51_4-20261028T173333Z" / "verdict.json"
 TRAVEL_L = R / "x51_travel" / "x52_travel-20261029T012517Z" / "verdict.json"  # Lightning's coverage run
 Z1 = R / "x50_zach" / "z1-20261028T161649Z" / "z1.json"
 Z3 = R / "x50_zach" / "z3-20261028T163053Z" / "z3.json"
+Z3_27B = R / "x50_zach" / "x52_z3-20261029T024151Z" / "z3.json"  # the 27B's coverage run (L32)
+Z3_L = R / "x50_zach" / "x52_z3-20261029T013329Z" / "z3.json"  # Lightning's coverage run (L14, L27)
 CLEAN = R / "checks" / "clean49_9b.json"
 LAYER = R / "x51_lightning" / "nem35l_x52_layer_r2" / "layer.json"
 CONFLICT = R / "x0_necessity" / "nem35l_x52_conflict" / "verdict-20261029T001612Z" / "verdict.json"
@@ -370,19 +372,21 @@ def zach_named(plt) -> str:
 
 def zach_routes(plt) -> str:
     """The lookup's answer under the whole change on Zach's scattered-fact passages: identity, position, value, the
-    original answer, stacked, per model and layer."""
-    v = load(Z3)
+    original answer, stacked, per model and layer (9B and Muse from the first run, the 27B and Lightning from their
+    coverage runs)."""
+    by = {m["target"]: (m, path) for path in (Z3, Z3_27B, Z3_L) for m in load(path)["models"] if m["layer_results"]}
     rows = []
-    for m in v["models"]:
+    for t in (t for t in SHORT if t in by):
+        m, path = by[t]
         for la, lr in m["layer_results"].items():
-            rows.append((f"{SHORT[m['target']]} L{la}", lr["shares"]["C2"]["whole"], lr["n"], m["target"], la))
+            rows.append((f"{SHORT[t]} L{la}", lr["shares"]["C2"]["whole"], lr["n"], t, la, path))
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.55 * len(rows) + 1.7))
     fig.subplots_adjust(left=0.16, right=0.88, top=1 - 1.15 / fig.get_figheight(), bottom=0.65 / fig.get_figheight())
     S.title(fig, "On Zach's passages the lookup rarely takes the position route",
             "The lookup's answer under the whole change, share of passages")  # fmt: skip
     parts = (("identity", S.COL["identity"]), ("position", S.COL["position"]), ("value", S.COL["value"]),
              ("original", S.COL["original"]))  # fmt: skip
-    for i, (_, sh, n, t, la) in enumerate(rows):
+    for i, (_, sh, n, t, la, path) in enumerate(rows):
         left = 0.0
         for p, col in parts:
             w = sh[p][0]
@@ -391,7 +395,7 @@ def zach_routes(plt) -> str:
                 ax.text(left + w / 2, -i, f"{p}\n{w:.2f}", ha="center", va="center", fontsize=S.LABEL_PT - 1,
                         color="white" if p in ("identity", "value") else "#222222")  # fmt: skip
             left += w
-            S.record("ledger_zach_routes", t, f"L{la}, whole change: {p} share", *sh[p], n=n, source=rel(Z3))
+            S.record("ledger_zach_routes", t, f"L{la}, whole change: {p} share", *sh[p], n=n, source=rel(path))
         ax.text(1.01, -i, f"n = {n}", va="center", fontsize=S.LABEL_PT, color=S.COL["muted"])
     rows_axis(ax, [r[0] for r in rows])
     ax.set_xlim(0, 1.0)
@@ -928,9 +932,50 @@ def gain(plt) -> str:
     return save(fig, "ledger_gain")
 
 
+# ---- other kinds of item (47.11) ------------------------------------------------------------------------------------
+
+AGNOSTIC = (R / "x47_agnostic" / "x47_11-20261028T143952Z" / "x47_11.json",
+            R / "x47_agnostic" / "x52_agnostic-20261029T023820Z" / "x47_11.json")  # fmt: skip
+
+
+def agnostic(plt) -> str:
+    """Per model, position answers lost without the address beyond a random part of its share, by kind of item: the
+    address fit on animal scenes (filled) and refit per kind on a fit half (hollow); the rule's 0.3 dashed."""
+    runs = {m["target"]: (m, path) for path in AGNOSTIC for m in load(path)["models"] if m["status"] == "tested"}
+    models = [t for t in ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b") if t in runs]
+    kinds = ("animals", "fruits", "names")
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.5), sharey=True)
+    fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.16, wspace=0.12)
+    S.title(fig, "The animal-fit address does not carry over to other items as ruled",
+            "Position answers lost without the address, beyond random; filled: fit on animals, hollow: refit per kind")  # fmt: skip
+    for ax, t in zip(axes, models, strict=True):
+        m, path = runs[t]
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        for i, kind in enumerate(kinds):
+            lab = m["labels"].get(kind)
+            v = m["labels"]["fruits"]["fall_animals"] if kind == "animals" else lab["fall"]
+            ax.plot([i - 0.1, i - 0.1], [v[1], v[2]], color=ADDRESS, lw=1.6)
+            ax.plot([i - 0.1], [v[0]], "o", color=ADDRESS, ms=7)
+            S.record("ledger_agnostic", t, f"{kind}: position lost without the animal-fit address, beyond random", *v,
+                     source=rel(path))  # fmt: skip
+            if kind != "animals":
+                r = lab["refit"]["fall"]
+                ax.plot([i + 0.1, i + 0.1], [r[1], r[2]], color=ADDRESS, lw=1.2)
+                ax.plot([i + 0.1], [r[0]], "o", mfc="white", mec=ADDRESS, mew=1.5, ms=7)
+                S.record("ledger_agnostic", t, f"{kind}: position lost without the refit address, beyond random", *r,
+                         n=lab["refit"]["n"], source=rel(path))  # fmt: skip
+        ax.axhline(0.3, color="#555555", lw=0.9, ls="--")
+        ax.set_xticks(range(len(kinds)), kinds)
+        ax.set_xlim(-0.5, len(kinds) - 0.5)
+        ax.set_ylim(0, 0.7)
+    axes[0].set_ylabel("position answers lost")
+    axes[0].text(-0.45, 0.31, "rule's 0.3", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
+    return save(fig, "ledger_agnostic")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
            clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split, attention, distance, gain)  # fmt: skip
+           order_split, attention, distance, gain, agnostic)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

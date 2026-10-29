@@ -5060,6 +5060,10 @@ ledger_zach_routes,qwen3.5-9b,"L12, whole change: identity share",0.433333333333
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: position share",0.1,0.01818181818181818,0.1935483870967742,60,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: value share",0.0,0.0,0.0,60,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: original share",0.4666666666666667,0.3333333333333333,0.6071428571428571,60,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,qwen3.6-27b,"L32, whole change: identity share",0.4691358024691358,0.34998493975903616,0.5862068965517241,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
+ledger_zach_routes,qwen3.6-27b,"L32, whole change: position share",0.037037037037037035,0.0,0.08641975308641975,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
+ledger_zach_routes,qwen3.6-27b,"L32, whole change: value share",0.0,0.0,0.0,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
+ledger_zach_routes,qwen3.6-27b,"L32, whole change: original share",0.49382716049382713,0.3764705882352941,0.6133333333333333,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
 ledger_zach_routes,muse-glimmer-30b,"L26, whole change: identity share",0.1875,0.08,0.3076923076923077,48,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,muse-glimmer-30b,"L26, whole change: position share",0.0625,0.0,0.14,48,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,muse-glimmer-30b,"L26, whole change: value share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
@@ -5068,6 +5072,14 @@ ledger_zach_routes,muse-glimmer-30b,"L36, whole change: identity share",0.0,0.0,
 ledger_zach_routes,muse-glimmer-30b,"L36, whole change: position share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,muse-glimmer-30b,"L36, whole change: value share",0.0,0.0,0.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,muse-glimmer-30b,"L36, whole change: original share",1.0,1.0,1.0,48,results/x50_zach/z3-20261028T163053Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L14, whole change: identity share",0.5192307692307693,0.37493872549019613,0.660377358490566,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L14, whole change: position share",0.09615384615384616,0.0196078431372549,0.18518518518518517,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L14, whole change: value share",0.0,0.0,0.0,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L14, whole change: original share",0.38461538461538464,0.25,0.5283018867924528,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L27, whole change: identity share",0.019230769230769232,0.0,0.057692307692307696,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L27, whole change: position share",0.0,0.0,0.0,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L27, whole change: value share",0.0,0.0,0.0,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+ledger_zach_routes,nemotron-3.5-lightning,"L27, whole change: original share",0.9807692307692307,0.9423076923076923,1.0,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
 ledger_clean_reruns,qwen3.5-9b,"Main test gap (recall extra loss minus lookup extra loss), L12, chat: record / clean",0.526,,,200,results/checks/clean49_9b.json
 ledger_clean_reruns,qwen3.5-9b,"Main test gap (recall extra loss minus lookup extra loss), L12, chat: clean rerun",0.526,,,200,results/checks/clean49_9b.json
 ledger_clean_reruns,qwen3.5-9b,"Routes, another item moved, whole change: identity share: record / clean",0.48,,,300,results/checks/clean49_9b.json
@@ -5507,6 +5519,21 @@ ledger_gain,nemotron-3.5-lightning,"recall R(2,0): switch rate",0.42372881355932
 ledger_gain,nemotron-3.5-lightning,"lookup J(2,0): switch rate",0.1016949152542373,0.03508771929824561,0.18,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
 ledger_gain,nemotron-3.5-lightning,"lookup J(0,1): switch rate",0.9322033898305084,0.8596491228070176,0.984375,59,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
 ledger_gain,nemotron-3.5-lightning,the rule's label,(c) neither,,,,results/x49_gain/x52_gain-20261029T021814Z/x49_1.json
+ledger_agnostic,qwen3.5-9b,"animals: position lost without the animal-fit address, beyond random",0.43666666666666665,0.39245283018867927,0.4788273615635179,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,qwen3.5-9b,"fruits: position lost without the animal-fit address, beyond random",0.5599999999999999,0.5082494724882324,0.6114864864864865,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,qwen3.5-9b,"fruits: position lost without the refit address, beyond random",0.49333333333333335,0.41025641025641024,0.5838519738213349,150,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,qwen3.5-9b,"names: position lost without the animal-fit address, beyond random",0.5433333333333332,0.48484848484848486,0.6006825938566553,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,qwen3.5-9b,"names: position lost without the refit address, beyond random",0.47333333333333333,0.3846153846153846,0.5616438356164384,150,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,qwen3.6-27b,"animals: position lost without the animal-fit address, beyond random",0.22000000000000003,0.18113207547169813,0.26048047582994927,,results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.json
+ledger_agnostic,qwen3.6-27b,"fruits: position lost without the animal-fit address, beyond random",0.2733333333333333,0.21016949152542375,0.3373161798370113,,results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.json
+ledger_agnostic,qwen3.6-27b,"fruits: position lost without the refit address, beyond random",0.13333333333333333,0.0844155844155844,0.18181818181818182,150,results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.json
+ledger_agnostic,qwen3.6-27b,"names: position lost without the animal-fit address, beyond random",0.29333333333333333,0.24825174825174826,0.3375806418579884,,results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.json
+ledger_agnostic,qwen3.6-27b,"names: position lost without the refit address, beyond random",0.32666666666666666,0.2550335570469799,0.3959731543624161,150,results/x47_agnostic/x52_agnostic-20261029T023820Z/x47_11.json
+ledger_agnostic,muse-glimmer-30b,"animals: position lost without the animal-fit address, beyond random",0.2766666666666667,0.22847477720546153,0.32407769097222217,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,muse-glimmer-30b,"fruits: position lost without the animal-fit address, beyond random",0.39333333333333337,0.32954325229034526,0.45608108108108103,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,muse-glimmer-30b,"fruits: position lost without the refit address, beyond random",0.4600000000000001,0.380595363888522,0.5333333333333334,150,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,muse-glimmer-30b,"names: position lost without the animal-fit address, beyond random",0.24666666666666665,0.19661016949152543,0.298015744095964,,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
+ledger_agnostic,muse-glimmer-30b,"names: position lost without the refit address, beyond random",0.3866666666666667,0.3093525179856116,0.4666666666666666,150,results/x47_agnostic/x47_11-20261028T143952Z/x47_11.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
