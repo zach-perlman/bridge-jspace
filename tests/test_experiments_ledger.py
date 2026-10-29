@@ -106,7 +106,7 @@ def test_the_ledger_follows_the_readme_order():
                      "## Part II. Identity: which item the lookup reads",
                      "## Part III. The address: where the item's locker sits",
                      "## Part IV. Where and when the link is made", "## Part V. Other datasets and operations",
-                     "## Part VI. What did not hold", "## How we checked", "## Batch 53: exploration day (running)",
+                     "## Part VI. What did not hold", "## How we checked",
                      "## Run on one model only (one line each)",
                      "## Withdrawn", "## Running or sealed",
                      '## Appendix A. Flagged for Dan <a id="flagged"></a>',

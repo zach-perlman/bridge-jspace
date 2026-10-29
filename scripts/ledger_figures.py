@@ -399,7 +399,7 @@ def last_token_address(plt) -> str:
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
     S.title(fig, "The bridge word's code works at the last token only on Muse",
             "Slot probe's accuracy at the last token by layer; dashed: majority slot; text: the swap at L+4")  # fmt: skip
-    for ax, (t, name) in zip(axes[:4], models, strict=True):
+    for ax, (t, _name) in zip(axes[:4], models, strict=True):
         m, src = by[t]
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         layers = sorted(int(k) for k in m["probe"])
@@ -1720,6 +1720,26 @@ def last_conflict_words(plt) -> str:
                        rows, {}, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, "--"), (0.30, ":")), left=0.41)
 
 
+BINDID = R / "x53_bindid" / "x53_bindid-20261029T115942Z" / "verdict.json"  # 53.8: the 9B (Muse, the 27B running)
+
+
+def bindid(plt) -> str:
+    """53.8 on five slots: lookups sent to X's locker at 2x under X's vector, Y's version and a random vector of the
+    same norm, the pre-specified (uncentered) arm and the centered arm beside (Dan 12:10); the 27B and Muse grey
+    (running), Lightning grey (not designed), the 122B grey (not run)."""
+    rows = {}
+    for m in load(BINDID)["models"]:
+        rows[m["target"]] = []
+        for var, lab in (("uncentered", "pre-specified"), ("centered", "centered")):
+            cell = m["variants"][var]["cells"]["2"]
+            for k, arm, col in (("X", "X's vector", ADDRESS), ("Y", "Y's version", JPP), ("R", "random", NULL)):
+                rows[m["target"]].append((f"{lab}: {arm}", cell[k], col, False))
+    absent = {"qwen3.6-27b": "running", "muse-glimmer-30b": "running", LT: "not designed"}
+    return four_panels(plt, "ledger_bindid", "The centered code moves some lookups; the raw code moves none",
+                       "Lookups sent to X's locker at 2x; orange: X's vector, teal: Y's version, grey: random",
+                       rows, absent, "share of lookups")
+
+
 SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          "qwen3.6-27b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          LT: R / "x49_report" / "x52_report49-20261029T082508Z" / "x49_6.json"}  # fmt: skip
@@ -1809,7 +1829,7 @@ FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_car
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words, report_slot1, twobytwo)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1, twobytwo, bindid)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
