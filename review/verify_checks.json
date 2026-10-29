@@ -1,0 +1,3536 @@
+{
+ "generated_utc": "2026-10-29T11:14:55Z",
+ "commit": "11e50528",
+ "views": {
+  "main_swap": {
+   "title": "a. Conflict test: which part of the bridge word each reader follows",
+   "order": "a",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/qwen35_9b_x0_necessity"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9500, PM 0.8683 vs bar 0.8 (gate.json: {'PP': 0.95, 'PM': 0.8683}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 408 (gate.json 408); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "the random part's share matches the lens part's",
+       "status": "pass",
+       "detail": "200 scenes at L12 (of 200): max |share - rand_share| 0.00106, mean 0.00016; beyond 0.01: 0"
+      },
+      {
+       "check": "labels against the 51.12 E1 rerun (top token stored)",
+       "status": "fail",
+       "detail": "unedited: 400 of 400 agree; whole: 399 of 400 agree; without J++: 396 of 400 agree; without its random part: 398 of 400 agree; unedited / whole disagreements: [\"P2-L0-0216|PP: X0 A / E1 b (E1 top '3')\"]"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/x0_necessity_27b_chat"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9967, PM 0.9767 vs bar 0.8 (gate.json: {'PP': 0.9967, 'PM': 0.9767}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 569 (gate.json 569); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "the random part's share matches the lens part's",
+       "status": "pass",
+       "detail": "200 scenes at L32 (of 200): max |share - rand_share| 0.00101, mean 0.00016; beyond 0.01: 0"
+      },
+      {
+       "check": "labels against the 51.12 E1 rerun (top token stored)",
+       "status": "pass",
+       "detail": "unedited: 400 of 400 agree; whole: 400 of 400 agree; without J++: 400 of 400 agree; without its random part: 400 of 400 agree"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.5-122b-a10b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/qwen35_122b_x0_necessity_r2"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9917, PM 0.8500 vs bar 0.8 (gate.json: {'PP': 0.9917, 'PM': 0.85}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 410 (gate.json 410); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "the random part's share matches the lens part's",
+       "status": "pass",
+       "detail": "200 scenes at L33 (of 200): max |share - rand_share| 0.00142, mean 0.00024; beyond 0.01: 0"
+      },
+      {
+       "check": "labels against the 51.12 E1 rerun (top token stored)",
+       "status": "n/a",
+       "detail": "no E1 run for this model"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/muse30b_x0_necessity"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9660, PM 0.8906 vs bar 0.8 (gate.json: {'PP': 0.966, 'PM': 0.8906}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 395 (gate.json 395); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "the random part's share matches the lens part's",
+       "status": "pass",
+       "detail": "200 scenes at L26 (of 200): max |share - rand_share| 0.00107, mean 0.00011; beyond 0.01: 0"
+      },
+      {
+       "check": "labels against the 51.12 E1 rerun (top token stored)",
+       "status": "fail",
+       "detail": "unedited: 397 of 400 agree; whole: 398 of 400 agree; without J++: 398 of 400 agree; without its random part: 399 of 400 agree; unedited / whole disagreements: [\"P2-L0-0009|PM: X0 other / E1 A (E1 top '8')\", \"P2-L0-0173|PM: X0 A / E1 other (E1 top '19')\", \"P2-L0-0194|PM: X0 other / E1 A (E1 top '8')\", \"P2-L0-0032|PM: X0 A / E1 b (E1 top '7')\", \"P2-L0-0185|PM: X0 other / E1 A (E1 top '5')\"]"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/nem35l_x52_conflict"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9574, PM 0.8159 vs bar 0.8 (gate.json: {'PP': 0.9574, 'PM': 0.8159}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 315 (gate.json 315); excluded 60 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "the random part's share matches the lens part's",
+       "status": "pass",
+       "detail": "200 scenes at L14 (of 200): max |share - rand_share| 0.00147, mean 0.00027; beyond 0.01: 0"
+      },
+      {
+       "check": "labels against the 51.12 E1 rerun (top token stored)",
+       "status": "fail",
+       "detail": "unedited: 398 of 400 agree; whole: 393 of 400 agree; without J++: 394 of 400 agree; without its random part: 397 of 400 agree; unedited / whole disagreements: [\"P2-L0-0284|PP: X0 A / E1 other (E1 top '5')\", \"P2-L0-0356|PP: X0 other / E1 A (E1 top '2')\", \"P2-L0-0067|PM: X0 other / E1 b (E1 top '2')\", \"P2-L0-0128|PP: X0 b / E1 A (E1 top '2')\", \"P2-L0-0156|PP: X0 A / E1 other (E1 top '8')\"]"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 15,
+    "mismatch": [],
+    "no_source": 0,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": -0.02857142857142857,
+      "key": "lk_excess_9b",
+      "data": "\u22120.03 [\u22120.08, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.49746192893401014,
+      "key": "rc_excess_9b",
+      "data": "0.50 [0.41, 0.57]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.5260333575054387,
+      "key": "contrast_9b",
+      "data": "0.53 [0.42, 0.61]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": 0.13953488372093023,
+      "key": "lk_excess_27b",
+      "data": "0.14 [0.08, 0.20]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.74,
+      "key": "rc_excess_27b",
+      "data": "0.74 [0.66, 0.80]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.6004651162790697,
+      "key": "contrast_27b",
+      "data": "0.60 [0.50, 0.69]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": 0.0,
+      "key": "lk_excess_122b",
+      "data": "0.00 [\u22120.06, 0.06]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.31521739130434784,
+      "key": "rc_excess_122b",
+      "data": "0.32 [0.22, 0.41]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.31521739130434784,
+      "key": "contrast_122b",
+      "data": "0.32 [0.20, 0.43]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": -0.1,
+      "key": "lk_excess_muse",
+      "data": "\u22120.10 [\u22120.15, \u22120.04]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.7521367521367521,
+      "key": "rc_excess_muse",
+      "data": "0.75 [0.61, 0.87]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.8521367521367521,
+      "key": "contrast_muse",
+      "data": "0.85 [0.68, 0.98]",
+      "status": "match"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": 0.03333333333333333,
+      "key": "data.csv: conflict: lookup, switches lost beyond a random part",
+      "data": "0.033333333333333326",
+      "status": "match",
+      "source": "results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.3439153439153439,
+      "key": "data.csv: conflict: recall, switches lost beyond a random part",
+      "data": "0.34391534391534384",
+      "status": "match",
+      "source": "results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.31058201058201057,
+      "key": "data.csv: main test (two people swap picks): gap",
+      "data": "0.3105820105820105",
+      "status": "match",
+      "source": "results/x0_composition/split-by-order-20261029T005451Z/split.json"
+     }
+    ]
+   }
+  },
+  "answer_control": {
+   "title": "b. Answer control (51.12 E1): is the lens part the item or its answer?",
+   "order": "b",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 400,
+     "runs": [
+      "results/x51_answer/qwen35_9b_x51_12_e1_r2"
+     ],
+     "item_fail": {},
+     "item_na": {},
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's",
+       "status": "pass",
+       "detail": "source qwen35_9b_x0_necessity (view a's run: True); items = its 200 items: True; = gate.json order: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 400,
+     "runs": [
+      "results/x51_answer/x51_12_e1_27b_r2"
+     ],
+     "item_fail": {},
+     "item_na": {},
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's",
+       "status": "pass",
+       "detail": "source x0_necessity_27b_chat (view a's run: True); items = its 200 items: True; = gate.json order: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.5-122b-a10b": {
+     "n": 0,
+     "not_landed": [
+      [
+       "results/x51_answer/qwen35_122b_x51_12_e1",
+       "not run yet"
+      ]
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 400,
+     "runs": [
+      "results/x51_answer/muse30_x51_12_e1_r2"
+     ],
+     "item_fail": {},
+     "item_na": {},
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's",
+       "status": "pass",
+       "detail": "source muse30b_x0_necessity (view a's run: True); items = its 200 items: True; = gate.json order: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 400,
+     "runs": [
+      "results/x51_answer/nem35l_x52_answer"
+     ],
+     "item_fail": {},
+     "item_na": {},
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's",
+       "status": "pass",
+       "detail": "source nem35l_x52_conflict (view a's run: True); items = its 200 items: True; = gate.json order: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 12,
+    "mismatch": [],
+    "no_source": 0,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall: share of arm 1's extra loss kept by arm 2",
+      "n": 200,
+      "value": 0.9489795918367347,
+      "key": "data.csv: main test, recall: share of its loss kept when the lens part keeps the answer words' directions",
+      "data": "0.9489795918367347",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall extra loss: arm 3: without the answer directions only",
+      "n": 200,
+      "value": 0.0,
+      "key": "data.csv: main test, recall: switches lost beyond random without the answer words' directions only",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall: answer word below the lens's top 50 on both O and S",
+      "n": 200,
+      "value": 0.565,
+      "key": "data.csv: main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",
+      "data": "0.565",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall: share of arm 1's extra loss kept by arm 2",
+      "n": 200,
+      "value": 0.9279279279279279,
+      "key": "data.csv: main test, recall: share of its loss kept when the lens part keeps the answer words' directions",
+      "data": "0.927927927927928",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall extra loss: arm 3: without the answer directions only",
+      "n": 200,
+      "value": 0.02666666666666667,
+      "key": "data.csv: main test, recall: switches lost beyond random without the answer words' directions only",
+      "data": "0.02666666666666669",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall: answer word below the lens's top 50 on both O and S",
+      "n": 200,
+      "value": 0.79,
+      "key": "data.csv: main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",
+      "data": "0.79",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall: share of arm 1's extra loss kept by arm 2",
+      "n": 200,
+      "value": 0.9333333333333333,
+      "key": "data.csv: main test, recall: share of its loss kept when the lens part keeps the answer words' directions",
+      "data": "0.9333333333333333",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall extra loss: arm 3: without the answer directions only",
+      "n": 200,
+      "value": -0.00847457627118644,
+      "key": "data.csv: main test, recall: switches lost beyond random without the answer words' directions only",
+      "data": "-0.00847457627118645",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall: answer word below the lens's top 50 on both O and S",
+      "n": 200,
+      "value": 0.995,
+      "key": "data.csv: main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",
+      "data": "0.995",
+      "status": "match",
+      "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall: share of arm 1's extra loss kept by arm 2",
+      "n": 200,
+      "value": 0.923076923076923,
+      "key": "data.csv: main test, recall: share of its loss kept when the lens part keeps the answer words' directions",
+      "data": "0.9230769230769234",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T002056Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall extra loss: arm 3: without the answer directions only",
+      "n": 200,
+      "value": 0.0,
+      "key": "data.csv: main test, recall: switches lost beyond random without the answer words' directions only",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T002056Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall: answer word below the lens's top 50 on both O and S",
+      "n": 200,
+      "value": 0.955,
+      "key": "data.csv: main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",
+      "data": "0.955",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T002056Z/verdict.json"
+     }
+    ]
+   }
+  },
+  "routes": {
+   "title": "c. Routes test and address removal: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)",
+   "order": "c",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 1800,
+     "runs": [
+      "results/x6_routes/qwen35_9b_x6_routes"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 600,
+      "probabilities agree with the label": 300
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "C0: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.9071 vs bar 0.8"
+      },
+      {
+       "check": "C0: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 572 (gate.json 572); the first 300 = the item set: True"
+      },
+      {
+       "check": "C1: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.9071 vs bar 0.8"
+      },
+      {
+       "check": "C1: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 607 (gate.json 607); the first 300 = the item set: True"
+      },
+      {
+       "check": "C2: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.9071 vs bar 0.8"
+      },
+      {
+       "check": "C2: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 573 (gate.json 573); the first 300 = the item set: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 1800,
+     "runs": [
+      "results/x6_routes/x6_routes_27b"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 600,
+      "probabilities agree with the label": 300
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "C0: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9986, PM 0.9971 vs bar 0.8"
+      },
+      {
+       "check": "C0: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 692 (gate.json 692); the first 300 = the item set: True"
+      },
+      {
+       "check": "C1: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9986, PM 0.9971 vs bar 0.8"
+      },
+      {
+       "check": "C1: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 693 (gate.json 693); the first 300 = the item set: True"
+      },
+      {
+       "check": "C2: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9986, PM 0.9971 vs bar 0.8"
+      },
+      {
+       "check": "C2: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 693 (gate.json 693); the first 300 = the item set: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.5-122b-a10b": {
+     "n": 1800,
+     "runs": [
+      "results/x6_routes/qwen35_122b_x6_routes_g75"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 600,
+      "probabilities agree with the label": 300
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "C0: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.7971 vs bar 0.75 (fixed in advance 0.8: lowered after the data)"
+      },
+      {
+       "check": "C0: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 479 (gate.json 479); the first 300 = the item set: True"
+      },
+      {
+       "check": "C1: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.7971 vs bar 0.75 (fixed in advance 0.8: lowered after the data)"
+      },
+      {
+       "check": "C1: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 512 (gate.json 512); the first 300 = the item set: True"
+      },
+      {
+       "check": "C2: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.7971 vs bar 0.75 (fixed in advance 0.8: lowered after the data)"
+      },
+      {
+       "check": "C2: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 484 (gate.json 484); the first 300 = the item set: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 1800,
+     "runs": [
+      "results/x6_routes/muse30b_x6_routes"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 1800,
+      "probabilities agree with the label": 300
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "C0: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9857, PM 0.9400 vs bar 0.8"
+      },
+      {
+       "check": "C0: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 580 (gate.json 580); the first 300 = the item set: True"
+      },
+      {
+       "check": "C1: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9857, PM 0.9400 vs bar 0.8"
+      },
+      {
+       "check": "C1: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 599 (gate.json 599); the first 300 = the item set: True"
+      },
+      {
+       "check": "C2: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9857, PM 0.9400 vs bar 0.8"
+      },
+      {
+       "check": "C2: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 578 (gate.json 578); the first 300 = the item set: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 1800,
+     "runs": [
+      "results/x6_routes/nem35l_x52_routes"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 1800,
+      "probabilities agree with the label": 300
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "C0: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.8714 vs bar 0.8"
+      },
+      {
+       "check": "C0: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 530 (gate.json 530); the first 300 = the item set: True"
+      },
+      {
+       "check": "C1: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.8714 vs bar 0.8"
+      },
+      {
+       "check": "C1: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 561 (gate.json 561); the first 300 = the item set: True"
+      },
+      {
+       "check": "C2: gate recomputed",
+       "status": "pass",
+       "detail": "org read accuracy PP 1.0000, PM 0.8714 vs bar 0.8"
+      },
+      {
+       "check": "C2: eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 528 (gate.json 528); the first 300 = the item set: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 160,
+    "mismatch": [],
+    "no_source": 20,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: identity",
+      "n": 300,
+      "value": 0.48,
+      "key": "rt_C2_whole_identity_9b",
+      "data": "0.48 [0.43, 0.53]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: position",
+      "n": 300,
+      "value": 0.51,
+      "key": "rt_C2_whole_position_9b",
+      "data": "0.51 [0.46, 0.56]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_whole_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: original",
+      "n": 300,
+      "value": 0.01,
+      "key": "rt_C2_whole_original_9b",
+      "data": "0.01 [0.00, 0.02]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, whole: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 whole: recall follows S",
+      "n": 300,
+      "value": 0.8266666666666667,
+      "key": "rt_C2_whole_recall_follows_s_9b",
+      "data": "0.83 [0.77, 0.88]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: identity",
+      "n": 300,
+      "value": 0.36333333333333334,
+      "key": "rt_C2_no_alf_identity_9b",
+      "data": "0.36 [0.32, 0.40]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: position",
+      "n": 300,
+      "value": 0.08333333333333333,
+      "key": "rt_C2_no_alf_position_9b",
+      "data": "0.08 [0.05, 0.12]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: original",
+      "n": 300,
+      "value": 0.5533333333333333,
+      "key": "rt_C2_no_alf_original_9b",
+      "data": "0.55 [0.50, 0.61]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer directions: recall follows S",
+      "n": 300,
+      "value": 0.7466666666666667,
+      "key": "rt_C2_no_alf_recall_follows_s_9b",
+      "data": "0.75 [0.66, 0.84]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: identity",
+      "n": 300,
+      "value": 0.4,
+      "key": "rt_C2_no_alf_rand_identity_9b",
+      "data": "0.40 [0.36, 0.45]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: position",
+      "n": 300,
+      "value": 0.5433333333333333,
+      "key": "rt_C2_no_alf_rand_position_9b",
+      "data": "0.54 [0.49, 0.59]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_rand_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: original",
+      "n": 300,
+      "value": 0.056666666666666664,
+      "key": "rt_C2_no_alf_rand_original_9b",
+      "data": "0.06 [0.03, 0.08]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 without the pointer's random part: recall follows S",
+      "n": 300,
+      "value": 0.77,
+      "key": "rt_C2_no_alf_rand_recall_follows_s_9b",
+      "data": "0.77 [0.72, 0.82]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: identity",
+      "n": 300,
+      "value": 0.013333333333333334,
+      "key": "rtk_C2_keep_alf_identity_9b",
+      "data": "0.01 [0.00, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: position",
+      "n": 300,
+      "value": 0.26,
+      "key": "rtk_C2_keep_alf_position_9b",
+      "data": "0.26 [0.20, 0.32]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: original",
+      "n": 300,
+      "value": 0.7166666666666667,
+      "key": "rtk_C2_keep_alf_original_9b",
+      "data": "0.72 [0.65, 0.78]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: other",
+      "n": 300,
+      "value": 0.01,
+      "key": "data.csv: another item moved, keep_alf: other share",
+      "data": "0.01",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes_keeponly"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the pointer part: recall follows S",
+      "n": 300,
+      "value": 0.08,
+      "key": "rtk_C2_keep_alf_recall_follows_s_9b",
+      "data": "0.08 [0.04, 0.12]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_identity_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_position_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "rtk_C2_keep_alf_rand_original_9b",
+      "data": "1.00 [1.00, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes_keeponly"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only a random part of its size: recall follows S",
+      "n": 300,
+      "value": 0.016666666666666666,
+      "key": "rtk_C2_keep_alf_rand_recall_follows_s_9b",
+      "data": "0.02 [0.00, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_identity_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_position_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_value_9b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "rtk_C2_keep_jpp_original_9b",
+      "data": "1.00 [1.00, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_9b_x6_routes_keeponly"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "C2 only the J++ part: recall follows S",
+      "n": 300,
+      "value": 0.07,
+      "key": "rtk_C2_keep_jpp_recall_follows_s_9b",
+      "data": "0.07 [0.03, 0.12]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: identity",
+      "n": 300,
+      "value": 0.6566666666666666,
+      "key": "rt_C2_whole_identity_27b",
+      "data": "0.66 [0.60, 0.71]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: position",
+      "n": 300,
+      "value": 0.33666666666666667,
+      "key": "rt_C2_whole_position_27b",
+      "data": "0.34 [0.28, 0.39]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_whole_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: original",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "rt_C2_whole_original_27b",
+      "data": "0.00 [0.00, 0.01]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: other",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "data.csv: another item moved, whole: other share",
+      "data": "0.0033333333333333335",
+      "status": "match",
+      "source": "x6_routes_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 whole: recall follows S",
+      "n": 300,
+      "value": 0.4666666666666667,
+      "key": "rt_C2_whole_recall_follows_s_27b",
+      "data": "0.47 [0.37, 0.57]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: identity",
+      "n": 300,
+      "value": 0.7233333333333334,
+      "key": "rt_C2_no_alf_identity_27b",
+      "data": "0.72 [0.68, 0.77]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: position",
+      "n": 300,
+      "value": 0.06,
+      "key": "rt_C2_no_alf_position_27b",
+      "data": "0.06 [0.03, 0.09]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: original",
+      "n": 300,
+      "value": 0.21333333333333335,
+      "key": "rt_C2_no_alf_original_27b",
+      "data": "0.21 [0.18, 0.25]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: other",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "data.csv: another item moved, no_alf: other share",
+      "data": "0.0033333333333333335",
+      "status": "match",
+      "source": "x6_routes_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer directions: recall follows S",
+      "n": 300,
+      "value": 0.30666666666666664,
+      "key": "rt_C2_no_alf_recall_follows_s_27b",
+      "data": "0.31 [0.21, 0.41]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: identity",
+      "n": 300,
+      "value": 0.6966666666666667,
+      "key": "rt_C2_no_alf_rand_identity_27b",
+      "data": "0.70 [0.64, 0.76]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: position",
+      "n": 300,
+      "value": 0.25333333333333335,
+      "key": "rt_C2_no_alf_rand_position_27b",
+      "data": "0.25 [0.19, 0.31]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_rand_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: original",
+      "n": 300,
+      "value": 0.04666666666666667,
+      "key": "rt_C2_no_alf_rand_original_27b",
+      "data": "0.05 [0.02, 0.07]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: other",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "data.csv: another item moved, no_alf_rand: other share",
+      "data": "0.0033333333333333335",
+      "status": "match",
+      "source": "x6_routes_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 without the pointer's random part: recall follows S",
+      "n": 300,
+      "value": 0.3566666666666667,
+      "key": "rt_C2_no_alf_rand_recall_follows_s_27b",
+      "data": "0.36 [0.26, 0.46]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: identity",
+      "n": 300,
+      "value": 0.03333333333333333,
+      "key": "rtk_C2_keep_alf_identity_27b",
+      "data": "0.03 [0.02, 0.05]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: position",
+      "n": 300,
+      "value": 0.09,
+      "key": "rtk_C2_keep_alf_position_27b",
+      "data": "0.09 [0.06, 0.12]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: original",
+      "n": 300,
+      "value": 0.8766666666666667,
+      "key": "rtk_C2_keep_alf_original_27b",
+      "data": "0.88 [0.84, 0.91]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "x6_routes_keeponly_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the pointer part: recall follows S",
+      "n": 300,
+      "value": 0.013333333333333334,
+      "key": "rtk_C2_keep_alf_recall_follows_s_27b",
+      "data": "0.01 [0.00, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_identity_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: position",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "rtk_C2_keep_alf_rand_position_27b",
+      "data": "0.00 [0.00, 0.01]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: original",
+      "n": 300,
+      "value": 0.9966666666666667,
+      "key": "rtk_C2_keep_alf_rand_original_27b",
+      "data": "1.00 [0.99, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "x6_routes_keeponly_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only a random part of its size: recall follows S",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_recall_follows_s_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_identity_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: position",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "rtk_C2_keep_jpp_position_27b",
+      "data": "0.00 [0.00, 0.01]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_value_27b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: original",
+      "n": 300,
+      "value": 0.9966666666666667,
+      "key": "rtk_C2_keep_jpp_original_27b",
+      "data": "1.00 [0.99, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "x6_routes_keeponly_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "C2 only the J++ part: recall follows S",
+      "n": 300,
+      "value": 0.016666666666666666,
+      "key": "rtk_C2_keep_jpp_recall_follows_s_27b",
+      "data": "0.02 [0.00, 0.04]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: identity",
+      "n": 300,
+      "value": 0.6133333333333333,
+      "key": "rtg_C2_whole_identity_122b",
+      "data": "0.61 [0.56, 0.67]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: position",
+      "n": 300,
+      "value": 0.38333333333333336,
+      "key": "rtg_C2_whole_position_122b",
+      "data": "0.38 [0.33, 0.44]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtg_C2_whole_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: original",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "rtg_C2_whole_original_122b",
+      "data": "0.00 [0.00, 0.01]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, whole: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 whole: recall follows S",
+      "n": 300,
+      "value": 0.7933333333333333,
+      "key": "rtg_C2_whole_recall_follows_s_122b",
+      "data": "0.79 [0.73, 0.85]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: identity",
+      "n": 300,
+      "value": 0.62,
+      "key": "rtg_C2_no_alf_identity_122b",
+      "data": "0.62 [0.57, 0.67]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: position",
+      "n": 300,
+      "value": 0.04666666666666667,
+      "key": "rtg_C2_no_alf_position_122b",
+      "data": "0.05 [0.02, 0.07]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtg_C2_no_alf_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: original",
+      "n": 300,
+      "value": 0.3333333333333333,
+      "key": "rtg_C2_no_alf_original_122b",
+      "data": "0.33 [0.28, 0.39]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer directions: recall follows S",
+      "n": 300,
+      "value": 0.6533333333333333,
+      "key": "rtg_C2_no_alf_recall_follows_s_122b",
+      "data": "0.65 [0.56, 0.76]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: identity",
+      "n": 300,
+      "value": 0.6133333333333333,
+      "key": "rtg_C2_no_alf_rand_identity_122b",
+      "data": "0.61 [0.56, 0.67]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: position",
+      "n": 300,
+      "value": 0.36,
+      "key": "rtg_C2_no_alf_rand_position_122b",
+      "data": "0.36 [0.31, 0.41]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtg_C2_no_alf_rand_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: original",
+      "n": 300,
+      "value": 0.02666666666666667,
+      "key": "rtg_C2_no_alf_rand_original_122b",
+      "data": "0.03 [0.01, 0.04]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 without the pointer's random part: recall follows S",
+      "n": 300,
+      "value": 0.7333333333333333,
+      "key": "rtg_C2_no_alf_rand_recall_follows_s_122b",
+      "data": "0.73 [0.66, 0.81]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: identity",
+      "n": 300,
+      "value": 0.013333333333333334,
+      "key": "rtk_C2_keep_alf_identity_122b",
+      "data": "0.01 [0.00, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: position",
+      "n": 300,
+      "value": 0.20666666666666667,
+      "key": "rtk_C2_keep_alf_position_122b",
+      "data": "0.21 [0.16, 0.26]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: original",
+      "n": 300,
+      "value": 0.78,
+      "key": "rtk_C2_keep_alf_original_122b",
+      "data": "0.78 [0.72, 0.83]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_keeponly_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the pointer part: recall follows S",
+      "n": 300,
+      "value": 0.07666666666666666,
+      "key": "rtk_C2_keep_alf_recall_follows_s_122b",
+      "data": "0.08 [0.04, 0.12]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_identity_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_position_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_alf_rand_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "rtk_C2_keep_alf_rand_original_122b",
+      "data": "1.00 [1.00, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_keeponly_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only a random part of its size: recall follows S",
+      "n": 300,
+      "value": 0.03333333333333333,
+      "key": "rtk_C2_keep_alf_rand_recall_follows_s_122b",
+      "data": "0.03 [0.01, 0.06]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_identity_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_position_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rtk_C2_keep_jpp_value_122b",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "rtk_C2_keep_jpp_original_122b",
+      "data": "1.00 [1.00, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "qwen35_122b_x6_routes_keeponly_g75"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "C2 only the J++ part: recall follows S",
+      "n": 300,
+      "value": 0.10333333333333333,
+      "key": "rtk_C2_keep_jpp_recall_follows_s_122b",
+      "data": "0.10 [0.06, 0.17]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: identity",
+      "n": 300,
+      "value": 0.43666666666666665,
+      "key": "rt_C2_whole_identity_muse",
+      "data": "0.44 [0.38, 0.49]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: position",
+      "n": 300,
+      "value": 0.5433333333333333,
+      "key": "rt_C2_whole_position_muse",
+      "data": "0.54 [0.49, 0.60]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_whole_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: original",
+      "n": 300,
+      "value": 0.02,
+      "key": "rt_C2_whole_original_muse",
+      "data": "0.02 [0.00, 0.04]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, whole: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 whole: recall follows S",
+      "n": 300,
+      "value": 0.21333333333333335,
+      "key": "rt_C2_whole_recall_follows_s_muse",
+      "data": "0.21 [0.15, 0.29]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: identity",
+      "n": 300,
+      "value": 0.43333333333333335,
+      "key": "rt_C2_no_alf_identity_muse",
+      "data": "0.43 [0.38, 0.48]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: position",
+      "n": 300,
+      "value": 0.2733333333333333,
+      "key": "rt_C2_no_alf_position_muse",
+      "data": "0.27 [0.23, 0.32]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: original",
+      "n": 300,
+      "value": 0.29333333333333333,
+      "key": "rt_C2_no_alf_original_muse",
+      "data": "0.29 [0.25, 0.35]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer directions: recall follows S",
+      "n": 300,
+      "value": 0.20333333333333334,
+      "key": "rt_C2_no_alf_recall_follows_s_muse",
+      "data": "0.20 [0.14, 0.28]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: identity",
+      "n": 300,
+      "value": 0.41333333333333333,
+      "key": "rt_C2_no_alf_rand_identity_muse",
+      "data": "0.41 [0.36, 0.46]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: position",
+      "n": 300,
+      "value": 0.5466666666666666,
+      "key": "rt_C2_no_alf_rand_position_muse",
+      "data": "0.55 [0.50, 0.60]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_no_alf_rand_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: original",
+      "n": 300,
+      "value": 0.04,
+      "key": "rt_C2_no_alf_rand_original_muse",
+      "data": "0.04 [0.02, 0.06]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 without the pointer's random part: recall follows S",
+      "n": 300,
+      "value": 0.21,
+      "key": "rt_C2_no_alf_rand_recall_follows_s_muse",
+      "data": "0.21 [0.15, 0.29]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: identity",
+      "n": 300,
+      "value": 0.04666666666666667,
+      "key": "rt_C2_keep_alf_identity_muse",
+      "data": "0.05 [0.02, 0.07]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: position",
+      "n": 300,
+      "value": 0.29333333333333333,
+      "key": "rt_C2_keep_alf_position_muse",
+      "data": "0.29 [0.25, 0.34]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_alf_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: original",
+      "n": 300,
+      "value": 0.66,
+      "key": "rt_C2_keep_alf_original_muse",
+      "data": "0.66 [0.61, 0.71]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the pointer part: recall follows S",
+      "n": 300,
+      "value": 0.006666666666666667,
+      "key": "rt_C2_keep_alf_recall_follows_s_muse",
+      "data": "0.01 [0.00, 0.02]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_alf_rand_identity_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: position",
+      "n": 300,
+      "value": 0.01,
+      "key": "rt_C2_keep_alf_rand_position_muse",
+      "data": "0.01 [0.00, 0.03]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_alf_rand_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: original",
+      "n": 300,
+      "value": 0.99,
+      "key": "rt_C2_keep_alf_rand_original_muse",
+      "data": "0.99 [0.97, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only a random part of its size: recall follows S",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "rt_C2_keep_alf_rand_recall_follows_s_muse",
+      "data": "0.00 [0.00, 0.01]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_jpp_identity_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_jpp_position_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "rt_C2_keep_jpp_value_muse",
+      "data": "0.00 [0.00, 0.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "rt_C2_keep_jpp_original_muse",
+      "data": "1.00 [1.00, 1.00]",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "muse30b_x6_routes"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "C2 only the J++ part: recall follows S",
+      "n": 300,
+      "value": 0.016666666666666666,
+      "key": "rt_C2_keep_jpp_recall_follows_s_muse",
+      "data": "0.02 [0.00, 0.04]",
+      "status": "match"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: identity",
+      "n": 300,
+      "value": 0.44333333333333336,
+      "key": "data.csv: another item moved, whole: identity share",
+      "data": "0.44333333333333336",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: position",
+      "n": 300,
+      "value": 0.5533333333333333,
+      "key": "data.csv: another item moved, whole: position share",
+      "data": "0.5533333333333333",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, whole: value share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: original",
+      "n": 300,
+      "value": 0.0033333333333333335,
+      "key": "data.csv: another item moved, whole: original share",
+      "data": "0.0033333333333333335",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, whole: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 whole: recall follows S",
+      "n": 300,
+      "value": 0.7766666666666666,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: identity",
+      "n": 300,
+      "value": 0.31333333333333335,
+      "key": "data.csv: another item moved, no_alf: identity share",
+      "data": "0.31333333333333335",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: position",
+      "n": 300,
+      "value": 0.10333333333333333,
+      "key": "data.csv: another item moved, no_alf: position share",
+      "data": "0.10333333333333333",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf: value share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: original",
+      "n": 300,
+      "value": 0.5833333333333334,
+      "key": "data.csv: another item moved, no_alf: original share",
+      "data": "0.5833333333333334",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf: other share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer directions: recall follows S",
+      "n": 300,
+      "value": 0.6366666666666667,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: identity",
+      "n": 300,
+      "value": 0.42,
+      "key": "data.csv: another item moved, no_alf_rand: identity share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: position",
+      "n": 300,
+      "value": 0.56,
+      "key": "data.csv: another item moved, no_alf_rand: position share",
+      "data": "0.56",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf_rand: value share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: original",
+      "n": 300,
+      "value": 0.02,
+      "key": "data.csv: another item moved, no_alf_rand: original share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, no_alf_rand: other share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 without the pointer's random part: recall follows S",
+      "n": 300,
+      "value": 0.7466666666666667,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: identity",
+      "n": 300,
+      "value": 0.07,
+      "key": "data.csv: another item moved, keep_alf: identity share",
+      "data": "0.07",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: position",
+      "n": 300,
+      "value": 0.39666666666666667,
+      "key": "data.csv: another item moved, keep_alf: position share",
+      "data": "0.39666666666666667",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf: value share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: original",
+      "n": 300,
+      "value": 0.5333333333333333,
+      "key": "data.csv: another item moved, keep_alf: original share",
+      "data": "0.5333333333333333",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf: other share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the pointer part: recall follows S",
+      "n": 300,
+      "value": 0.09,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: identity share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: position share",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: value share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "data.csv: another item moved, keep_alf_rand: original share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_alf_rand: other share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only a random part of its size: recall follows S",
+      "n": 300,
+      "value": 0.006666666666666667,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: identity",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: identity share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: position",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: position share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: value",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: value share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: original",
+      "n": 300,
+      "value": 1.0,
+      "key": "data.csv: another item moved, keep_jpp: original share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: other",
+      "n": 300,
+      "value": 0.0,
+      "key": "data.csv: another item moved, keep_jpp: other share",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "C2 only the J++ part: recall follows S",
+      "n": 300,
+      "value": 0.016666666666666666,
+      "key": "",
+      "data": "",
+      "status": "no source"
+     }
+    ]
+   }
+  },
+  "x8_writes": {
+   "title": "d. The address swap at s = 2: h + s (mu_k - mu_j) at the bridge word",
+   "order": "d",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 6000,
+     "runs": [
+      "results/x8_write/qwen35_9b_x8_write"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 6000
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the routes run's C2 items",
+       "status": "pass",
+       "detail": "cases from qwen35_9b_x6_routes (view c's run: True); 300 scenes, routes C2 300; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 6000,
+     "runs": [
+      "results/x8_write/x8_write_27b"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 6000
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the routes run's C2 items",
+       "status": "pass",
+       "detail": "cases from x6_routes_27b (view c's run: True); 300 scenes, routes C2 300; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.5-122b-a10b": {
+     "n": 6000,
+     "runs": [
+      "results/x8_write/qwen35_122b_x8_write_g75"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 6000
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the routes run's C2 items",
+       "status": "pass",
+       "detail": "cases from qwen35_122b_x6_routes_g75 (view c's run: True); 300 scenes, routes C2 300; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 6000,
+     "runs": [
+      "results/x8_write/muse30b_x8_write"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 6000
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the routes run's C2 items",
+       "status": "pass",
+       "detail": "cases from muse30b_x6_routes (view c's run: True); 300 scenes, routes C2 300; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 6000,
+     "runs": [
+      "results/x8_write/nem35l_x52_write"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 6000
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the routes run's C2 items",
+       "status": "pass",
+       "detail": "cases from nem35l_x52_routes (view c's run: True); 300 scenes, routes C2 300; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 8,
+    "mismatch": [],
+    "no_source": 2,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookup: lookup target share, mean over 6 locker pairs, s = 2",
+      "n": 600,
+      "value": 0.46325712320335977,
+      "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
+      "data": "0.4633",
+      "status": "match",
+      "source": "qwen35_9b_x8_write"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall: recalls that change, s = 2",
+      "n": 600,
+      "value": 0.215,
+      "key": "data.csv: the address swap at s = 2: recalls that change",
+      "data": "0.215",
+      "status": "match",
+      "source": "results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookup: lookup target share, mean over 6 locker pairs, s = 2",
+      "n": 600,
+      "value": 0.24955747882714174,
+      "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
+      "data": "0.2496",
+      "status": "match",
+      "source": "x8_write_27b"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall: recalls that change, s = 2",
+      "n": 600,
+      "value": 0.043333333333333335,
+      "key": "data.csv: the address swap at s = 2: recalls that change",
+      "data": "0.043333333333333335",
+      "status": "match",
+      "source": "results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookup: lookup target share, mean over 6 locker pairs, s = 2",
+      "n": 600,
+      "value": 0.5002406490649065,
+      "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "recall: recalls that change, s = 2",
+      "n": 600,
+      "value": 0.22666666666666666,
+      "key": "data.csv: the address swap at s = 2: recalls that change",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookup: lookup target share, mean over 6 locker pairs, s = 2",
+      "n": 600,
+      "value": 0.5157885788578858,
+      "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
+      "data": "0.5158",
+      "status": "match",
+      "source": "muse30b_x8_write"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall: recalls that change, s = 2",
+      "n": 600,
+      "value": 0.058333333333333334,
+      "key": "data.csv: the address swap at s = 2: recalls that change",
+      "data": "0.058333333333333334",
+      "status": "match",
+      "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookup: lookup target share, mean over 6 locker pairs, s = 2",
+      "n": 600,
+      "value": 0.4996781433102188,
+      "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
+      "data": "0.4997",
+      "status": "match",
+      "source": "results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall: recalls that change, s = 2",
+      "n": 600,
+      "value": 0.2733333333333333,
+      "key": "data.csv: the address swap at s = 2: recalls that change",
+      "data": "0.2733333333333333",
+      "status": "match",
+      "source": "results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json"
+     }
+    ]
+   }
+  },
+  "z1p": {
+   "title": "e. Zach's made-up-fact passages (Z1-P) on the 9B",
+   "order": "e",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 400,
+     "runs": [
+      "results/x50_zach/qwen35_9b_x52_z1p"
+     ],
+     "item_fail": {
+      "only the scene's words differ": 4
+     },
+     "item_na": {
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [
+      {
+       "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:landmarks:P-L1-Mont Saint-Michel-0|PP",
+       "check": "only the scene's words differ",
+       "detail": "4 tokens differ; outside the changed words: [77]",
+       "where": "results/x50_zach/qwen35_9b_x52_z1p/outcomes.jsonl:665"
+      },
+      {
+       "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:landmarks:P-L1-Mont Saint-Michel-0|PM",
+       "check": "only the scene's words differ",
+       "detail": "4 tokens differ; outside the changed words: [77]",
+       "where": "results/x50_zach/qwen35_9b_x52_z1p/outcomes.jsonl:669"
+      },
+      {
+       "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:landmarks:P-L0-Christ the Redeemer-0|PP",
+       "check": "only the scene's words differ",
+       "detail": "4 tokens differ; outside the changed words: [78, 79]",
+       "where": "results/x50_zach/qwen35_9b_x52_z1p/outcomes.jsonl:1553"
+      },
+      {
+       "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:landmarks:P-L0-Christ the Redeemer-0|PM",
+       "check": "only the scene's words differ",
+       "detail": "4 tokens differ; outside the changed words: [78, 79]",
+       "where": "results/x50_zach/qwen35_9b_x52_z1p/outcomes.jsonl:1557"
+      }
+     ],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "the lookup's (K) org read accuracy 0.8000 vs bar 0.8; recall (M) 0.8438 (gate.json {'K': 0.8, 'M': 0.8438095238095238}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set",
+       "status": "pass",
+       "detail": "eligible 231 (gate.json 231); items = gate.json order: True; every item eligible: True (200 items; chosen 200 by set / stratum, gate.json)"
+      },
+      {
+       "check": "Z1-P: the made-up value differs from the true one",
+       "status": "pass",
+       "detail": "0 of 200 passages give the made-up value = the true one"
+      },
+      {
+       "check": "Z1-P: the true value is absent from the lookup's passage",
+       "status": "fail",
+       "detail": "60 of 200 lookup passages (original) contain the original bridge's true value: ['jsuite_v2_test_chat/j2:cities:P-L0-Moscow-0', 'jsuite_v2_test_chat/j2:cities:P-L1-Moscow-0', 'jsuite_v2_test_chat/j2:cities:P-L1-Toronto-0', 'jsuite_v2_test_chat/j2:companies:P-L1-Adidas-0', 'jsuite_v2_test_chat/j2:companies:P-L1-Gucci-0']"
+      },
+      {
+       "check": "Z1-P (beside, not Dan's check): the changed bridge's true value in the changed lookup passage",
+       "status": "info",
+       "detail": "48 of 200 (the made-up values are drawn from the relation's own answer words, so another passage entity's made-up value can be the changed bridge's true one)"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 3,
+    "mismatch": [],
+    "no_source": 0,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookup extra loss",
+      "n": 200,
+      "value": -0.047619047619047616,
+      "key": "data.csv: Z1-P: lookup, switches lost beyond a random part",
+      "data": "-0.04761904761904767",
+      "status": "match",
+      "source": "results/x50_zach/x52_z1p-20261029T081112Z/z1p.json"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall extra loss",
+      "n": 200,
+      "value": 0.588957055214724,
+      "key": "data.csv: Z1-P: recall, switches lost beyond a random part",
+      "data": "0.588957055214724",
+      "status": "match",
+      "source": "results/x50_zach/x52_z1p-20261029T081112Z/z1p.json"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "gap (recall - lookup)",
+      "n": 200,
+      "value": 0.6365761028337715,
+      "key": "data.csv: Z1-P: the gap",
+      "data": "0.6365761028337716",
+      "status": "match",
+      "source": "results/x50_zach/x52_z1p-20261029T081112Z/z1p.json"
+     }
+    ]
+   }
+  },
+  "last_token": {
+   "title": "f. 51.10: the recall's bridge entity at the last token, readable through the lens, not used",
+   "order": "f",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 150,
+     "runs": [
+      "results/x51_jread/qwen35_9b_x51_10"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 150
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's locker-first items",
+       "status": "pass",
+       "detail": "source qwen35_9b_x0_necessity (view a's run: True); 75 items; locker-first re-derived from the X0 cases (both bridges' locker sentences before the asked pick): 75; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 138,
+     "runs": [
+      "results/x51_jread/x51_10_27b"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 138
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's locker-first items",
+       "status": "pass",
+       "detail": "source x0_necessity_27b_chat (view a's run: True); 69 items; locker-first re-derived from the X0 cases (both bridges' locker sentences before the asked pick): 69; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 136,
+     "runs": [
+      "results/x51_jread/muse30_x51_10"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 136
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's locker-first items",
+       "status": "pass",
+       "detail": "source muse30b_x0_necessity (view a's run: True); 68 items; locker-first re-derived from the X0 cases (both bridges' locker sentences before the asked pick): 68; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 118,
+     "runs": [
+      "results/x51_jread/nem35l_x52_jread"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 118
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's locker-first items",
+       "status": "pass",
+       "detail": "source nem35l_x52_conflict (view a's run: True); 59 items; locker-first re-derived from the X0 cases (both bridges' locker sentences before the asked pick): 59; equal: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 16,
+    "mismatch": [],
+    "no_source": 0,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall: switched by lens swap",
+      "n": 75,
+      "value": 0.0,
+      "key": "data.csv: 51.10: recall, last token, read peak: the lens swap's switches",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "recall: switched by whole-state patch",
+      "n": 75,
+      "value": 0.9466666666666667,
+      "key": "data.csv: 51.10: recall, last token, read peak: the whole-state patch's switches",
+      "data": "0.9466666666666667",
+      "status": "match",
+      "source": "results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookup: switched by lens swap",
+      "n": 75,
+      "value": 0.0,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the lens swap's switches",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookup: switched by whole-state patch",
+      "n": 75,
+      "value": 0.68,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the whole-state patch's switches",
+      "data": "0.68",
+      "status": "match",
+      "source": "results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall: switched by lens swap",
+      "n": 69,
+      "value": 0.014492753623188406,
+      "key": "data.csv: 51.10: recall, last token, read peak: the lens swap's switches",
+      "data": "0.014492753623188406",
+      "status": "match",
+      "source": "results/x51_jread/x51_10_27b/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "recall: switched by whole-state patch",
+      "n": 69,
+      "value": 0.9710144927536232,
+      "key": "data.csv: 51.10: recall, last token, read peak: the whole-state patch's switches",
+      "data": "0.9710144927536232",
+      "status": "match",
+      "source": "results/x51_jread/x51_10_27b/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookup: switched by lens swap",
+      "n": 69,
+      "value": 0.0,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the lens swap's switches",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_jread/x51_10_27b/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookup: switched by whole-state patch",
+      "n": 69,
+      "value": 0.43478260869565216,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the whole-state patch's switches",
+      "data": "0.43478260869565216",
+      "status": "match",
+      "source": "results/x51_jread/x51_10_27b/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall: switched by lens swap",
+      "n": 68,
+      "value": 0.014705882352941176,
+      "key": "data.csv: 51.10: recall, last token, read peak: the lens swap's switches",
+      "data": "0.014705882352941176",
+      "status": "match",
+      "source": "results/x51_jread/muse30_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "recall: switched by whole-state patch",
+      "n": 68,
+      "value": 1.0,
+      "key": "data.csv: 51.10: recall, last token, read peak: the whole-state patch's switches",
+      "data": "1.0",
+      "status": "match",
+      "source": "results/x51_jread/muse30_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookup: switched by lens swap",
+      "n": 68,
+      "value": 0.0,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the lens swap's switches",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_jread/muse30_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookup: switched by whole-state patch",
+      "n": 68,
+      "value": 0.8823529411764706,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the whole-state patch's switches",
+      "data": "0.8823529411764706",
+      "status": "match",
+      "source": "results/x51_jread/muse30_x51_10/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall: switched by lens swap",
+      "n": 59,
+      "value": 0.13559322033898305,
+      "key": "data.csv: 51.10: recall, last token, read peak: the lens swap's switches",
+      "data": "0.13559322033898305",
+      "status": "match",
+      "source": "results/x51_jread/nem35l_x52_jread/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "recall: switched by whole-state patch",
+      "n": 59,
+      "value": 0.9661016949152542,
+      "key": "data.csv: 51.10: recall, last token, read peak: the whole-state patch's switches",
+      "data": "0.9661016949152542",
+      "status": "match",
+      "source": "results/x51_jread/nem35l_x52_jread/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookup: switched by lens swap",
+      "n": 59,
+      "value": 0.0,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the lens swap's switches",
+      "data": "0.0",
+      "status": "match",
+      "source": "results/x51_jread/nem35l_x52_jread/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookup: switched by whole-state patch",
+      "n": 59,
+      "value": 0.8983050847457628,
+      "key": "data.csv: 51.10: lookup, last token, read peak: the whole-state patch's switches",
+      "data": "0.8983050847457628",
+      "status": "match",
+      "source": "results/x51_jread/nem35l_x52_jread/outcomes.jsonl"
+     }
+    ]
+   }
+  },
+  "sentence_order": {
+   "title": "g. Sentence order: lookups switch when the locker sentence came first",
+   "order": "g",
+   "models": {
+    "qwen3.5-9b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/qwen35_9b_x0_necessity"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9500, PM 0.8683 vs bar 0.8 (gate.json: {'PP': 0.95, 'PM': 0.8683}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 408 (gate.json 408); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.6-27b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/x0_necessity_27b_chat"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9967, PM 0.9767 vs bar 0.8 (gate.json: {'PP': 0.9967, 'PM': 0.9767}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 569 (gate.json 569); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "qwen3.5-122b-a10b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/qwen35_122b_x0_necessity_r2"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9917, PM 0.8500 vs bar 0.8 (gate.json: {'PP': 0.9917, 'PM': 0.85}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 410 (gate.json 410); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "muse-glimmer-30b": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/muse30b_x0_necessity"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "label from the top token": 400,
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9660, PM 0.8906 vs bar 0.8 (gate.json: {'PP': 0.966, 'PM': 0.8906}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 395 (gate.json 395); excluded 0 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "n": 400,
+     "runs": [
+      "results/x0_necessity/nem35l_x52_conflict"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "second run has the same prompts": 400
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate recomputed from competence.jsonl",
+       "status": "pass",
+       "detail": "org read accuracy PP 0.9574, PM 0.8159 vs bar 0.8 (gate.json: {'PP': 0.9574, 'PM': 0.8159}, pass True)"
+      },
+      {
+       "check": "eligibility and the item set recomputed",
+       "status": "pass",
+       "detail": "eligible 315 (gate.json 315); excluded 60 dev scenes; the first 200 = the item set: True (200 items; only in the recount [], only in the items [])"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
+     ]
+    }
+   },
+   "recount": {
+    "match": 26,
+    "mismatch": [],
+    "no_source": 4,
+    "rows": [
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker before the pick: k",
+      "n": 100,
+      "value": 86.0,
+      "key": "lk_order_before_9b_k",
+      "data": "86",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker before the pick: n",
+      "n": 100,
+      "value": 100.0,
+      "key": "lk_order_before_9b_n",
+      "data": "100",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker before the pick: share",
+      "n": 100,
+      "value": 0.86,
+      "key": "data.csv: lookups switched by the whole change, locker sentence before the pick",
+      "data": "0.86",
+      "status": "match",
+      "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker after the pick: k",
+      "n": 100,
+      "value": 19.0,
+      "key": "lk_order_after_9b_k",
+      "data": "19",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker after the pick: n",
+      "n": 100,
+      "value": 100.0,
+      "key": "lk_order_after_9b_n",
+      "data": "100",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-9b",
+      "quantity": "lookups switched, locker after the pick: share",
+      "n": 100,
+      "value": 0.19,
+      "key": "data.csv: lookups switched by the whole change, locker sentence after the pick",
+      "data": "0.19",
+      "status": "match",
+      "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker before the pick: k",
+      "n": 101,
+      "value": 77.0,
+      "key": "lk_order_before_27b_k",
+      "data": "77",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker before the pick: n",
+      "n": 101,
+      "value": 101.0,
+      "key": "lk_order_before_27b_n",
+      "data": "101",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker before the pick: share",
+      "n": 101,
+      "value": 0.7623762376237624,
+      "key": "data.csv: lookups switched by the whole change, locker sentence before the pick",
+      "data": "0.7624",
+      "status": "match",
+      "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker after the pick: k",
+      "n": 99,
+      "value": 9.0,
+      "key": "lk_order_after_27b_k",
+      "data": "9",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker after the pick: n",
+      "n": 99,
+      "value": 99.0,
+      "key": "lk_order_after_27b_n",
+      "data": "99",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.6-27b",
+      "quantity": "lookups switched, locker after the pick: share",
+      "n": 99,
+      "value": 0.09090909090909091,
+      "key": "data.csv: lookups switched by the whole change, locker sentence after the pick",
+      "data": "0.0909",
+      "status": "match",
+      "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker before the pick: k",
+      "n": 85,
+      "value": 76.0,
+      "key": "lk_order_before_122b_k",
+      "data": "76",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker before the pick: n",
+      "n": 85,
+      "value": 85.0,
+      "key": "lk_order_before_122b_n",
+      "data": "85",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker before the pick: share",
+      "n": 85,
+      "value": 0.8941176470588236,
+      "key": "data.csv: lookups switched by the whole change, locker sentence before the pick",
+      "data": "0.8941",
+      "status": "match",
+      "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker after the pick: k",
+      "n": 115,
+      "value": 13.0,
+      "key": "lk_order_after_122b_k",
+      "data": "13",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker after the pick: n",
+      "n": 115,
+      "value": 115.0,
+      "key": "lk_order_after_122b_n",
+      "data": "115",
+      "status": "match"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "lookups switched, locker after the pick: share",
+      "n": 115,
+      "value": 0.11304347826086956,
+      "key": "data.csv: lookups switched by the whole change, locker sentence after the pick",
+      "data": "0.113",
+      "status": "match",
+      "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker before the pick: k",
+      "n": 92,
+      "value": 60.0,
+      "key": "lk_order_before_muse_k",
+      "data": "60",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker before the pick: n",
+      "n": 92,
+      "value": 92.0,
+      "key": "lk_order_before_muse_n",
+      "data": "92",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker before the pick: share",
+      "n": 92,
+      "value": 0.6521739130434783,
+      "key": "data.csv: lookups switched by the whole change, locker sentence before the pick",
+      "data": "0.6522",
+      "status": "match",
+      "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker after the pick: k",
+      "n": 108,
+      "value": 10.0,
+      "key": "lk_order_after_muse_k",
+      "data": "10",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker after the pick: n",
+      "n": 108,
+      "value": 108.0,
+      "key": "lk_order_after_muse_n",
+      "data": "108",
+      "status": "match"
+     },
+     {
+      "model": "muse-glimmer-30b",
+      "quantity": "lookups switched, locker after the pick: share",
+      "n": 108,
+      "value": 0.09259259259259259,
+      "key": "data.csv: lookups switched by the whole change, locker sentence after the pick",
+      "data": "0.0926",
+      "status": "match",
+      "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker before the pick: k",
+      "n": 85,
+      "value": 73.0,
+      "key": "lk_order_before_lightning_k",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker before the pick: n",
+      "n": 85,
+      "value": 85.0,
+      "key": "lk_order_before_lightning_n",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker before the pick: share",
+      "n": 85,
+      "value": 0.8588235294117647,
+      "key": "data.csv: lookups switched by the whole change, locker sentence before the pick",
+      "data": "0.8588",
+      "status": "match",
+      "source": "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker after the pick: k",
+      "n": 115,
+      "value": 17.0,
+      "key": "lk_order_after_lightning_k",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker after the pick: n",
+      "n": 115,
+      "value": 115.0,
+      "key": "lk_order_after_lightning_n",
+      "data": "",
+      "status": "no source"
+     },
+     {
+      "model": "nemotron-3.5-lightning",
+      "quantity": "lookups switched, locker after the pick: share",
+      "n": 115,
+      "value": 0.14782608695652175,
+      "key": "data.csv: lookups switched by the whole change, locker sentence after the pick",
+      "data": "0.1478",
+      "status": "match",
+      "source": "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl"
+     }
+    ]
+   }
+  }
+ }
+}
