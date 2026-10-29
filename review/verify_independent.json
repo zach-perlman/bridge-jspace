@@ -1,0 +1,1215 @@
+{
+ "what": "An independent recount of the README's conflict-test and routes numbers (Dan 29 Oct 11:40 / 11:45, jobs/c3/batch53.yaml\nadditions_1140 item 1 and verify_prep_1145 item 2), written from scratch: standard library only, no import of the\npipeline's scoring code (scripts/x0_necessity.py, scripts/x6_routes.py, ...) or of the review code\n(src/bridge_jspace/review/). It reads the raw per-item files and the README, and reports every difference.",
+ "models": {
+  "9b": {
+   "conflict": {
+    "run": "results/x0_necessity/qwen35_9b_x0_necessity",
+    "layer": 12,
+    "items": {
+     "recomputed": 200,
+     "in outcomes": 200,
+     "same": true
+    },
+    "lookup": {
+     "n": 200,
+     "whole": 105,
+     "no_part": 82,
+     "no_rand": 79,
+     "value": -0.02857142857142857
+    },
+    "recall": {
+     "n": 200,
+     "whole": 197,
+     "no_part": 92,
+     "no_rand": 190,
+     "value": 0.49746192893401014
+    },
+    "gap": 0.5260333575054387
+   },
+   "routes": {
+    "runs": [
+     "results/x6_routes/qwen35_9b_x6_routes",
+     "results/x6_routes/qwen35_9b_x6_routes_keeponly"
+    ],
+    "items": {
+     "recomputed": 300,
+     "in outcomes": 300,
+     "same": true
+    },
+    "route label from the top token agrees with the stored label": {
+     "agree": 1500
+    },
+    "shares": {
+     "whole": {
+      "n": 300,
+      "identity": 0.48,
+      "position": 0.51,
+      "value": 0.0,
+      "original": 0.01,
+      "other": 0.0
+     },
+     "no_alf": {
+      "n": 300,
+      "identity": 0.36333333333333334,
+      "position": 0.08333333333333333,
+      "value": 0.0,
+      "original": 0.5533333333333333,
+      "other": 0.0
+     },
+     "no_alf_rand": {
+      "n": 300,
+      "identity": 0.4,
+      "position": 0.5433333333333333,
+      "value": 0.0,
+      "original": 0.056666666666666664,
+      "other": 0.0
+     },
+     "keep_alf": {
+      "n": 300,
+      "identity": 0.013333333333333334,
+      "position": 0.26,
+      "value": 0.0,
+      "original": 0.7166666666666667,
+      "other": 0.01
+     },
+     "keep_alf_rand": {
+      "n": 300,
+      "identity": 0.0,
+      "position": 0.0,
+      "value": 0.0,
+      "original": 1.0,
+      "other": 0.0
+     }
+    }
+   }
+  },
+  "27b": {
+   "conflict": {
+    "run": "results/x0_necessity/x0_necessity_27b_chat",
+    "layer": 32,
+    "items": {
+     "recomputed": 200,
+     "in outcomes": 200,
+     "same": true
+    },
+    "lookup": {
+     "n": 200,
+     "whole": 86,
+     "no_part": 71,
+     "no_rand": 83,
+     "value": 0.13953488372093023
+    },
+    "recall": {
+     "n": 200,
+     "whole": 150,
+     "no_part": 35,
+     "no_rand": 146,
+     "value": 0.74
+    },
+    "gap": 0.6004651162790697
+   },
+   "routes": {
+    "runs": [
+     "results/x6_routes/x6_routes_27b",
+     "results/x6_routes/x6_routes_keeponly_27b"
+    ],
+    "items": {
+     "recomputed": 300,
+     "in outcomes": 300,
+     "same": true
+    },
+    "route label from the top token agrees with the stored label": {
+     "agree": 1500
+    },
+    "shares": {
+     "whole": {
+      "n": 300,
+      "identity": 0.6566666666666666,
+      "position": 0.33666666666666667,
+      "value": 0.0,
+      "original": 0.0033333333333333335,
+      "other": 0.0033333333333333335
+     },
+     "no_alf": {
+      "n": 300,
+      "identity": 0.7233333333333334,
+      "position": 0.06,
+      "value": 0.0,
+      "original": 0.21333333333333335,
+      "other": 0.0033333333333333335
+     },
+     "no_alf_rand": {
+      "n": 300,
+      "identity": 0.6966666666666667,
+      "position": 0.25333333333333335,
+      "value": 0.0,
+      "original": 0.04666666666666667,
+      "other": 0.0033333333333333335
+     },
+     "keep_alf": {
+      "n": 300,
+      "identity": 0.03333333333333333,
+      "position": 0.09,
+      "value": 0.0,
+      "original": 0.8766666666666667,
+      "other": 0.0
+     },
+     "keep_alf_rand": {
+      "n": 300,
+      "identity": 0.0,
+      "position": 0.0033333333333333335,
+      "value": 0.0,
+      "original": 0.9966666666666667,
+      "other": 0.0
+     }
+    }
+   }
+  },
+  "122b": {
+   "conflict": {
+    "run": "results/x0_necessity/qwen35_122b_x0_necessity_r2",
+    "layer": 33,
+    "items": {
+     "recomputed": 200,
+     "in outcomes": 200,
+     "same": true
+    },
+    "lookup": {
+     "n": 200,
+     "whole": 89,
+     "no_part": 71,
+     "no_rand": 71,
+     "value": 0.0
+    },
+    "recall": {
+     "n": 200,
+     "whole": 184,
+     "no_part": 111,
+     "no_rand": 169,
+     "value": 0.31521739130434784
+    },
+    "gap": 0.31521739130434784
+   },
+   "routes": {
+    "runs": [
+     "results/x6_routes/qwen35_122b_x6_routes_g75",
+     "results/x6_routes/qwen35_122b_x6_routes_keeponly_g75"
+    ],
+    "items": {
+     "recomputed": 300,
+     "in outcomes": 300,
+     "same": true
+    },
+    "route label from the top token agrees with the stored label": {
+     "agree": 1500
+    },
+    "shares": {
+     "whole": {
+      "n": 300,
+      "identity": 0.6133333333333333,
+      "position": 0.38333333333333336,
+      "value": 0.0,
+      "original": 0.0033333333333333335,
+      "other": 0.0
+     },
+     "no_alf": {
+      "n": 300,
+      "identity": 0.62,
+      "position": 0.04666666666666667,
+      "value": 0.0,
+      "original": 0.3333333333333333,
+      "other": 0.0
+     },
+     "no_alf_rand": {
+      "n": 300,
+      "identity": 0.6133333333333333,
+      "position": 0.36,
+      "value": 0.0,
+      "original": 0.02666666666666667,
+      "other": 0.0
+     },
+     "keep_alf": {
+      "n": 300,
+      "identity": 0.013333333333333334,
+      "position": 0.20666666666666667,
+      "value": 0.0,
+      "original": 0.78,
+      "other": 0.0
+     },
+     "keep_alf_rand": {
+      "n": 300,
+      "identity": 0.0,
+      "position": 0.0,
+      "value": 0.0,
+      "original": 1.0,
+      "other": 0.0
+     }
+    }
+   }
+  },
+  "muse": {
+   "conflict": {
+    "run": "results/x0_necessity/muse30b_x0_necessity",
+    "layer": 26,
+    "items": {
+     "recomputed": 200,
+     "in outcomes": 200,
+     "same": true
+    },
+    "lookup": {
+     "n": 200,
+     "whole": 70,
+     "no_part": 69,
+     "no_rand": 62,
+     "value": -0.1
+    },
+    "recall": {
+     "n": 200,
+     "whole": 117,
+     "no_part": 33,
+     "no_rand": 121,
+     "value": 0.7521367521367521
+    },
+    "gap": 0.8521367521367521
+   },
+   "routes": {
+    "runs": [
+     "results/x6_routes/muse30b_x6_routes"
+    ],
+    "items": {
+     "recomputed": 300,
+     "in outcomes": 300,
+     "same": true
+    },
+    "route label from the top token agrees with the stored label": {
+     "agree": 1500
+    },
+    "shares": {
+     "whole": {
+      "n": 300,
+      "identity": 0.43666666666666665,
+      "position": 0.5433333333333333,
+      "value": 0.0,
+      "original": 0.02,
+      "other": 0.0
+     },
+     "no_alf": {
+      "n": 300,
+      "identity": 0.43333333333333335,
+      "position": 0.2733333333333333,
+      "value": 0.0,
+      "original": 0.29333333333333333,
+      "other": 0.0
+     },
+     "no_alf_rand": {
+      "n": 300,
+      "identity": 0.41333333333333333,
+      "position": 0.5466666666666666,
+      "value": 0.0,
+      "original": 0.04,
+      "other": 0.0
+     },
+     "keep_alf": {
+      "n": 300,
+      "identity": 0.04666666666666667,
+      "position": 0.29333333333333333,
+      "value": 0.0,
+      "original": 0.66,
+      "other": 0.0
+     },
+     "keep_alf_rand": {
+      "n": 300,
+      "identity": 0.0,
+      "position": 0.01,
+      "value": 0.0,
+      "original": 0.99,
+      "other": 0.0
+     }
+    }
+   }
+  },
+  "lightning": {
+   "conflict": {
+    "run": "results/x0_necessity/nem35l_x52_conflict",
+    "layer": 14,
+    "items": {
+     "recomputed": 200,
+     "in outcomes": 200,
+     "same": true
+    },
+    "lookup": {
+     "n": 200,
+     "whole": 90,
+     "no_part": 73,
+     "no_rand": 76,
+     "value": 0.03333333333333333
+    },
+    "recall": {
+     "n": 200,
+     "whole": 189,
+     "no_part": 112,
+     "no_rand": 177,
+     "value": 0.3439153439153439
+    },
+    "gap": 0.31058201058201057
+   },
+   "routes": {
+    "runs": [
+     "results/x6_routes/nem35l_x52_routes"
+    ],
+    "items": {
+     "recomputed": 300,
+     "in outcomes": 300,
+     "same": true
+    },
+    "route label from the top token agrees with the stored label": {
+     "agree": 1500
+    },
+    "shares": {
+     "whole": {
+      "n": 300,
+      "identity": 0.44333333333333336,
+      "position": 0.5533333333333333,
+      "value": 0.0,
+      "original": 0.0033333333333333335,
+      "other": 0.0
+     },
+     "no_alf": {
+      "n": 300,
+      "identity": 0.31333333333333335,
+      "position": 0.10333333333333333,
+      "value": 0.0,
+      "original": 0.5833333333333334,
+      "other": 0.0
+     },
+     "no_alf_rand": {
+      "n": 300,
+      "identity": 0.42,
+      "position": 0.56,
+      "value": 0.0,
+      "original": 0.02,
+      "other": 0.0
+     },
+     "keep_alf": {
+      "n": 300,
+      "identity": 0.07,
+      "position": 0.39666666666666667,
+      "value": 0.0,
+      "original": 0.5333333333333333,
+      "other": 0.0
+     },
+     "keep_alf_rand": {
+      "n": 300,
+      "identity": 0.0,
+      "position": 0.0,
+      "value": 0.0,
+      "original": 1.0,
+      "other": 0.0
+     }
+    }
+   }
+  }
+ },
+ "rows": [
+  {
+   "model": "9b",
+   "quantity": "conflict: lookup, switches lost beyond a random part",
+   "value": -0.02857142857142857,
+   "readme": [
+    "\u22120.03",
+    "\u22120.03"
+   ],
+   "source": "\u22120.03 [\u22120.08, 0.03]",
+   "ref": "x0_numbers.json lk_excess_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "conflict: recall, switches lost beyond a random part",
+   "value": 0.49746192893401014,
+   "readme": [
+    "0.50",
+    "0.50"
+   ],
+   "source": "0.50 [0.41, 0.57]",
+   "ref": "x0_numbers.json rc_excess_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "conflict: the gap (recall - lookup)",
+   "value": 0.5260333575054387,
+   "readme": [],
+   "source": "0.53 [0.42, 0.61]",
+   "ref": "x0_numbers.json contrast_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, whole: identity share",
+   "value": 0.48,
+   "readme": [
+    "0.48",
+    "0.48"
+   ],
+   "source": "0.48 [0.43, 0.53]",
+   "ref": "x0_numbers.json rt_C2_whole_identity_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, whole: position share",
+   "value": 0.51,
+   "readme": [
+    "0.51",
+    "0.51"
+   ],
+   "source": "0.51 [0.46, 0.56]",
+   "ref": "x0_numbers.json rt_C2_whole_position_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, no_alf: identity share",
+   "value": 0.36333333333333334,
+   "readme": [],
+   "source": "0.36 [0.32, 0.40]",
+   "ref": "x0_numbers.json rt_C2_no_alf_identity_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, no_alf: position share",
+   "value": 0.08333333333333333,
+   "readme": [
+    "0.08",
+    "0.08"
+   ],
+   "source": "0.08 [0.05, 0.12]",
+   "ref": "x0_numbers.json rt_C2_no_alf_position_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, no_alf_rand: identity share",
+   "value": 0.4,
+   "readme": [],
+   "source": "0.40 [0.36, 0.45]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_identity_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, no_alf_rand: position share",
+   "value": 0.5433333333333333,
+   "readme": [
+    "0.54",
+    "0.54"
+   ],
+   "source": "0.54 [0.49, 0.59]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_position_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, keep_alf: identity share",
+   "value": 0.013333333333333334,
+   "readme": [],
+   "source": "0.01 [0.00, 0.03]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_identity_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, keep_alf: position share",
+   "value": 0.26,
+   "readme": [
+    "0.26",
+    "0.26"
+   ],
+   "source": "0.26 [0.20, 0.32]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_position_9b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, keep_alf_rand: identity share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_identity_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "9b",
+   "quantity": "routes C2, keep_alf_rand: position share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_position_9b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "conflict: lookup, switches lost beyond a random part",
+   "value": 0.13953488372093023,
+   "readme": [
+    "0.14",
+    "0.14"
+   ],
+   "source": "0.14 [0.08, 0.20]",
+   "ref": "x0_numbers.json lk_excess_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "conflict: recall, switches lost beyond a random part",
+   "value": 0.74,
+   "readme": [
+    "0.74",
+    "0.74"
+   ],
+   "source": "0.74 [0.66, 0.80]",
+   "ref": "x0_numbers.json rc_excess_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "conflict: the gap (recall - lookup)",
+   "value": 0.6004651162790697,
+   "readme": [],
+   "source": "0.60 [0.50, 0.69]",
+   "ref": "x0_numbers.json contrast_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, whole: identity share",
+   "value": 0.6566666666666666,
+   "readme": [
+    "0.66"
+   ],
+   "source": "0.66 [0.60, 0.71]",
+   "ref": "x0_numbers.json rt_C2_whole_identity_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, whole: position share",
+   "value": 0.33666666666666667,
+   "readme": [
+    "0.34"
+   ],
+   "source": "0.34 [0.28, 0.39]",
+   "ref": "x0_numbers.json rt_C2_whole_position_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, no_alf: identity share",
+   "value": 0.7233333333333334,
+   "readme": [],
+   "source": "0.72 [0.68, 0.77]",
+   "ref": "x0_numbers.json rt_C2_no_alf_identity_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, no_alf: position share",
+   "value": 0.06,
+   "readme": [
+    "0.06",
+    "0.06"
+   ],
+   "source": "0.06 [0.03, 0.09]",
+   "ref": "x0_numbers.json rt_C2_no_alf_position_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, no_alf_rand: identity share",
+   "value": 0.6966666666666667,
+   "readme": [],
+   "source": "0.70 [0.64, 0.76]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_identity_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, no_alf_rand: position share",
+   "value": 0.25333333333333335,
+   "readme": [
+    "0.25",
+    "0.25"
+   ],
+   "source": "0.25 [0.19, 0.31]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_position_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, keep_alf: identity share",
+   "value": 0.03333333333333333,
+   "readme": [],
+   "source": "0.03 [0.02, 0.05]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_identity_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, keep_alf: position share",
+   "value": 0.09,
+   "readme": [
+    "0.09",
+    "0.09"
+   ],
+   "source": "0.09 [0.06, 0.12]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_position_27b",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, keep_alf_rand: identity share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_identity_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "27b",
+   "quantity": "routes C2, keep_alf_rand: position share",
+   "value": 0.0033333333333333335,
+   "readme": [],
+   "source": "0.00 [0.00, 0.01]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_position_27b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "conflict: lookup, switches lost beyond a random part",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [\u22120.06, 0.06]",
+   "ref": "x0_numbers.json lk_excess_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "conflict: recall, switches lost beyond a random part",
+   "value": 0.31521739130434784,
+   "readme": [],
+   "source": "0.32 [0.22, 0.41]",
+   "ref": "x0_numbers.json rc_excess_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "conflict: the gap (recall - lookup)",
+   "value": 0.31521739130434784,
+   "readme": [],
+   "source": "0.32 [0.20, 0.43]",
+   "ref": "x0_numbers.json contrast_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, whole: identity share",
+   "value": 0.6133333333333333,
+   "readme": [],
+   "source": "0.61 [0.56, 0.67]",
+   "ref": "x0_numbers.json rtg_C2_whole_identity_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, whole: position share",
+   "value": 0.38333333333333336,
+   "readme": [],
+   "source": "0.38 [0.33, 0.44]",
+   "ref": "x0_numbers.json rtg_C2_whole_position_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, no_alf: identity share",
+   "value": 0.62,
+   "readme": [],
+   "source": "0.62 [0.57, 0.67]",
+   "ref": "x0_numbers.json rtg_C2_no_alf_identity_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, no_alf: position share",
+   "value": 0.04666666666666667,
+   "readme": [],
+   "source": "0.05 [0.02, 0.07]",
+   "ref": "x0_numbers.json rtg_C2_no_alf_position_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, no_alf_rand: identity share",
+   "value": 0.6133333333333333,
+   "readme": [],
+   "source": "0.61 [0.56, 0.67]",
+   "ref": "x0_numbers.json rtg_C2_no_alf_rand_identity_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, no_alf_rand: position share",
+   "value": 0.36,
+   "readme": [],
+   "source": "0.36 [0.31, 0.41]",
+   "ref": "x0_numbers.json rtg_C2_no_alf_rand_position_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, keep_alf: identity share",
+   "value": 0.013333333333333334,
+   "readme": [],
+   "source": "0.01 [0.00, 0.03]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_identity_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, keep_alf: position share",
+   "value": 0.20666666666666667,
+   "readme": [],
+   "source": "0.21 [0.16, 0.26]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_position_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, keep_alf_rand: identity share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_identity_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "122b",
+   "quantity": "routes C2, keep_alf_rand: position share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_position_122b",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "conflict: lookup, switches lost beyond a random part",
+   "value": -0.1,
+   "readme": [
+    "\u22120.10",
+    "\u22120.10"
+   ],
+   "source": "\u22120.10 [\u22120.15, \u22120.04]",
+   "ref": "x0_numbers.json lk_excess_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "conflict: recall, switches lost beyond a random part",
+   "value": 0.7521367521367521,
+   "readme": [
+    "0.75",
+    "0.75"
+   ],
+   "source": "0.75 [0.61, 0.87]",
+   "ref": "x0_numbers.json rc_excess_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "conflict: the gap (recall - lookup)",
+   "value": 0.8521367521367521,
+   "readme": [],
+   "source": "0.85 [0.68, 0.98]",
+   "ref": "x0_numbers.json contrast_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, whole: identity share",
+   "value": 0.43666666666666665,
+   "readme": [
+    "0.44"
+   ],
+   "source": "0.44 [0.38, 0.49]",
+   "ref": "x0_numbers.json rt_C2_whole_identity_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, whole: position share",
+   "value": 0.5433333333333333,
+   "readme": [
+    "0.54"
+   ],
+   "source": "0.54 [0.49, 0.60]",
+   "ref": "x0_numbers.json rt_C2_whole_position_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, no_alf: identity share",
+   "value": 0.43333333333333335,
+   "readme": [],
+   "source": "0.43 [0.38, 0.48]",
+   "ref": "x0_numbers.json rt_C2_no_alf_identity_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, no_alf: position share",
+   "value": 0.2733333333333333,
+   "readme": [
+    "0.27",
+    "0.27"
+   ],
+   "source": "0.27 [0.23, 0.32]",
+   "ref": "x0_numbers.json rt_C2_no_alf_position_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, no_alf_rand: identity share",
+   "value": 0.41333333333333333,
+   "readme": [],
+   "source": "0.41 [0.36, 0.46]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_identity_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, no_alf_rand: position share",
+   "value": 0.5466666666666666,
+   "readme": [
+    "0.55",
+    "0.55"
+   ],
+   "source": "0.55 [0.50, 0.60]",
+   "ref": "x0_numbers.json rt_C2_no_alf_rand_position_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, keep_alf: identity share",
+   "value": 0.04666666666666667,
+   "readme": [],
+   "source": "0.05 [0.02, 0.07]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_identity_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, keep_alf: position share",
+   "value": 0.29333333333333333,
+   "readme": [
+    "0.29",
+    "0.29"
+   ],
+   "source": "0.29 [0.25, 0.34]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_position_muse",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, keep_alf_rand: identity share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.00 [0.00, 0.00]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_identity_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "muse",
+   "quantity": "routes C2, keep_alf_rand: position share",
+   "value": 0.01,
+   "readme": [],
+   "source": "0.01 [0.00, 0.03]",
+   "ref": "x0_numbers.json rtk_C2_keep_alf_rand_position_muse",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "conflict: lookup, switches lost beyond a random part",
+   "value": 0.03333333333333333,
+   "readme": [
+    "0.03",
+    "0.03"
+   ],
+   "source": "0.033333333333333326",
+   "ref": "data.csv (nemotron-3.5-lightning) conflict: lookup, switches lost beyond a random part",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "conflict: recall, switches lost beyond a random part",
+   "value": 0.3439153439153439,
+   "readme": [
+    "0.34",
+    "0.34"
+   ],
+   "source": "0.34391534391534384",
+   "ref": "data.csv (nemotron-3.5-lightning) conflict: recall, switches lost beyond a random part",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "conflict: the gap (recall - lookup)",
+   "value": 0.31058201058201057,
+   "readme": [],
+   "source": "0.3105820105820105",
+   "ref": "data.csv (nemotron-3.5-lightning) main test (two people swap picks): gap",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, whole: identity share",
+   "value": 0.44333333333333336,
+   "readme": [
+    "0.44",
+    "0.44"
+   ],
+   "source": "0.44333333333333336 / 0.44333333333333336",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, whole: identity share",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, whole: position share",
+   "value": 0.5533333333333333,
+   "readme": [
+    "0.55",
+    "0.55"
+   ],
+   "source": "0.5533333333333333 / 0.5533333333333333",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, whole: position share",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, no_alf: identity share",
+   "value": 0.31333333333333335,
+   "readme": [],
+   "source": "0.31333333333333335 / 0.31333333333333335",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf: identity share",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, no_alf: position share",
+   "value": 0.10333333333333333,
+   "readme": [
+    "0.10",
+    "0.10"
+   ],
+   "source": "0.10333333333333333 / 0.10333333333333333 / 0.10333333333333333",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf: position share",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, no_alf_rand: position share",
+   "value": 0.56,
+   "readme": [
+    "0.56",
+    "0.56"
+   ],
+   "source": "0.56 / 0.56",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf_rand: position share",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, keep_alf: identity share",
+   "value": 0.07,
+   "readme": [],
+   "source": "0.07",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, keep_alf: identity share",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, keep_alf: position share",
+   "value": 0.39666666666666667,
+   "readme": [
+    "0.40",
+    "0.40"
+   ],
+   "source": "0.39666666666666667 / 0.39666666666666667",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, keep_alf: position share",
+   "vs source": "match",
+   "vs README": "match",
+   "status": "match"
+  },
+  {
+   "model": "lightning",
+   "quantity": "routes C2, keep_alf_rand: position share",
+   "value": 0.0,
+   "readme": [],
+   "source": "0.0",
+   "ref": "data.csv (nemotron-3.5-lightning) another item moved, keep_alf_rand: position share",
+   "vs source": "match",
+   "vs README": "not shown",
+   "status": "match"
+  }
+ ],
+ "summary": {
+  "rows": 63,
+  "match": 63,
+  "mismatch": 0,
+  "item sets recomputed = the runs' (conflict, routes)": {
+   "9b": [
+    true,
+    true
+   ],
+   "27b": [
+    true,
+    true
+   ],
+   "122b": [
+    true,
+    true
+   ],
+   "muse": [
+    true,
+    true
+   ],
+   "lightning": [
+    true,
+    true
+   ]
+  }
+ }
+}
