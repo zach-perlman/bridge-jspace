@@ -1531,7 +1531,7 @@ def attnblock(plt) -> str:
                        rows, absent, "switches cut", xlim=(-0.1, 1.05), bars=((0.6, "--"), (0.3, ":")))
 
 
-JSUITE = R / "x51_answer" / "x53_jsuite-20261029T092753Z" / "verdict.json"  # 53.1b, the 9B and the 27B so far
+JSUITE = R / "x51_answer" / "x53_jsuite-20261029T095443Z" / "verdict.json"  # 53.1b, both models (combined)
 JSUITE_NOTES = {("z2p", "qwen3.5-9b"): "not tested\n(gate 0.757\n< 0.80)", ("z2p", "qwen3.6-27b"): "pending\n(rerun)"}
 
 
@@ -1556,7 +1556,7 @@ def jsuite(plt) -> str:
                 else:
                     rows[t].append((lab, m["readers"][rd]["extra"][arm], col, False))
     absent = {"muse-glimmer-30b": "not designed\n(9B / 27B only)", LT: "not designed\n(9B / 27B only)"}
-    return four_panels(plt, "ledger_jsuite", "On Zach's named-bridge passages both recalls read as mixed",
+    return four_panels(plt, "ledger_jsuite", "Named: both recalls mixed; described: the 27B's reads as the answer",
                        "Lost beyond random; P- named bridge, M- described; -P lookup, -M recall; whiskers 95%",
                        rows, absent, "lost beyond random", xlim=(-0.3, 1.0))
 

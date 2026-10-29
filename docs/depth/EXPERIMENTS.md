@@ -1556,7 +1556,7 @@ New in this ledger:
 
 Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every rule fixed before any run, no predictions, UNVERIFIED; each result gets a card and a figure here, and nothing goes into the README until the next day's verification. In Dan's priority order (53.1b first); the rules are quoted from the brief.
 
-### On Zach's made-up-fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00; the 27B's two described-bridge cells to come) <a id="b53-1b"></a>
+### On Zach's made-up-fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00-12:15) <a id="b53-1b"></a>
 
 `ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
 
@@ -1565,25 +1565,29 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Data.** Zach's passages with made-up facts: the named bridge (Z1-P's items) and the described bridge (Z2's design, the change at the description's last token); 200 per cell where tested; the 9B at L12, the 27B at L32.
 - **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
 
-![On Zach's named-bridge passages both recalls read as mixed](../../figures/ledger/ledger_jsuite.png)
-*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its described-bridge cells not tested: gate), 27B (its described-bridge cells running, gate passed); Muse and Lightning grey (not designed: 9B / 27B only).*
+![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/ledger/ledger_jsuite.png)
+*Per cell, switches lost beyond a random part without the lens part and without the answer directions only; whiskers 95%. Models: 9B (its described-bridge cells not tested: gate), 27B (all four cells); Muse and Lightning grey (not designed: 9B / 27B only).*
 
-- **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md; no prediction)
+- **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md; no prediction)
 
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning |
   |---|---|---|---|---|
-  | PP (lookup, named bridge): lost without the lens part, beyond random | -0.05 [-0.13, 0.05]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: -0.05 [-0.13, 0.05] --> | 0.16 [0.06, 0.26]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: 0.16 [0.06, 0.26] --> | not designed | not designed |
-  | PP: the label | **can't tell<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: can't tell -->** | **the answer word is not read at the bridge word<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: the answer word is not read at the bridge word -->** | | |
-  | PM (recall, named bridge): lost without the lens part, beyond random | 0.59 [0.51, 0.67]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: 0.59 [0.51, 0.67] --> | 0.63 [0.54, 0.72]<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: 0.63 [0.54, 0.72] --> | | |
-  | PM: the label | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: mixed -->** | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T092753Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: mixed -->** | | |
-  | MP and MM (described bridge) | not tested (gate 0.757<!-- src: results/x50_zach/qwen35_9b_x53_z2p/gate.json \| "K": 0.757396449704142 :: 0.757 --> < 0.80) | running (gate passed: the described-bridge passages read right on 0.940, 140 of 184 chosen) | | |
+  | PP (lookup, named bridge): lost without the lens part, beyond random | -0.05 [-0.13, 0.05]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: -0.05 [-0.13, 0.05] --> | 0.16 [0.06, 0.26]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: 0.16 [0.06, 0.26] --> | not designed | not designed |
+  | PP: the label | **can't tell<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.5-9b :: lookup :: can't tell -->** | **the answer word is not read at the bridge word<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.6-27b :: lookup :: the answer word is not read at the bridge word -->** | | |
+  | PM (recall, named bridge): lost without the lens part, beyond random | 0.59 [0.51, 0.67]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: 0.59 [0.51, 0.67] --> | 0.63 [0.54, 0.72]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: 0.63 [0.54, 0.72] --> | | |
+  | PM: the label | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.5-9b :: recall :: mixed -->** | **mixed<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z1p :: qwen3.6-27b :: recall :: mixed -->** | | |
+  | MP (lookup, described bridge): lost without the lens part, beyond random | MP and MM (described bridge) | 0.38 [0.19, 0.56]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: lookup :: 0.38 [0.19, 0.56] --> | | |
+  | MP: the label | | **the answer word is not read at the bridge word<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: lookup :: the answer word is not read at the bridge word -->** (95% of 140 items; the arms beside: mixed) | | |
+  | MM (recall, described bridge): lost without the lens part, beyond random / share kept with the answer kept / the answer directions alone over the loss | | 0.64 [0.46, 0.83]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: recall :: 0.64 [0.46, 0.83] --> / 0.06 [-0.18, 0.27]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: recall :: 0.06 [-0.18, 0.27] --> / 0.75 [0.42, 1.22]<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: recall :: 0.75 [0.42, 1.22] --> | | |
+  | MM: the label | | **the lens effect is the answer<!-- src: results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md \| z2p :: qwen3.6-27b :: recall :: the lens effect is the answer -->** | | |
 
 - **Read.**
   - On the named-bridge passages both recalls read as mixed: keeping the answer's directions keeps only part of the recall's loss, and the answer directions alone cost some of it; the 9B's lookup loses nothing beyond random (cannot tell), and the 27B's answer word is not read at the bridge word.
+  - On the described bridge the 27B's recall reads as the answer: keeping the answer's directions keeps little of its loss, and the answer directions alone cost most of it; its lookup's answer word is not read at the bridge word.
 - **Caveats.**
-  - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's passed their gate and are running.
+  - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's passed theirs (read right on 0.940, 140 chosen of 184).
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
 ### Does the lens effect follow the question's position or the answer's type? (53.1, the 9B's and the 27B's number cells opened 29 Oct ~11:45-12:00; the word cells not tested) <a id="b53-1"></a>
@@ -1619,7 +1623,7 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - The conflict test's lookup loses nothing beyond random on the 9B; on the 27B it loses some with the question after the scene and more with it before. The word cells are not tested: the animal-class relation's recall reads too few of the 9B's answers with the question after the scene (Dan's 10:20 rule); with the question before the scene the 9B's recall misses the number cell's gate.
 - **Caveats.**
   - The word cells used the animal-class relation on 191 animal scenes, the only relation that passed the coverage rule (Dan's 10:20 decision: words read by their first token); it then missed the accuracy bar, so neither word cell is tested.
-  - Beside the word cells' gates (descriptive): the 9B's recall reads the animal's class on 0.3822 of scenes with the question after the scene and 0.9162 with it before; a CPU check of that gap is running and its note is not in yet.
+  - The question-after word prompt mostly gets the animal's name, not its class (236<!-- src: results/x53_2x2/diag_words-20261029T095338Z/note.md | the asked pick itself (the animal) 236 :: 236 --> of 382), so the 0.382 reflects the answer format; the cells stay not tested under Dan's rule (a CPU check, descriptive).
   - The (question after, number) cell repeats our main test (the rerun agrees with the stored run on the recall's whole change, 200 of 200).
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
