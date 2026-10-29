@@ -1,6 +1,6 @@
 figure,model,quantity,value,lo,hi,n,source
 j0,,Zach's example (lookup / recalled items),Austrian,,,,"data/tasks_v2/jsuite_v2_test_chat/items.jsonl | j2:chat:facts:MK-L0-00635, j2:chat:facts:MM-L0-00635"
-j0,,Dan's example,5 / 4,,,,scripts/readme_story_figures.py | f00_setup
+j0,,Dan's example,3 / 6,,,,scripts/readme_story_figures.py | f00_setup
 j1,Qwen 9B,remove everywhere: recalled answers that turn wrong (pp),47.6,,,,docs/breadth/data.csv | ko.q9.lostM
 j1,Qwen 9B,remove everywhere: lookup answers that turn wrong (pp),5.0,,,,docs/breadth/data.csv | ko.q9.lostK
 j1,Qwen 9B,"remove everywhere, largest control (rotated): recalled answers that turn wrong (pp)",2.7,,,,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
