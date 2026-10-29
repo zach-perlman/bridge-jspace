@@ -265,6 +265,26 @@ critic_1125: |
      minus Y's version >= 0.15; "no" if <= 0.05; else in between.
   Every result after ~21:00 goes in as "after the day, not verified
   tomorrow" unless the hand-check pack can include it.
+q122b_1130_received: "29 Oct ~11:31 Paris (Dan)"
+q122b_1130: |
+  The 122B (Qwen3.5-122B-A10B, FP8, L33) has results we left out (Dan, 11:30).
+  1. Inventory (CPU, now): every 122B verdict under results/ (x0_necessity r2
+     incl. k = 25 / 50 / 100, x6_routes g75 and its arms, x8_write / x8_order,
+     x0_probe v4, x0b_v2, x5_natural, x0_amnesic, x0_atoms, attn_knockout,
+     d1 maps, read_write tool) mapped to the ledger cards and README cards.
+     Report the list before editing; flag any run whose lens, layer or prompt
+     set differs from the other models' (FP8, the lens file, L33's rule).
+  2. Ledger + README: the 122B as a fifth model where a verdict exists, from
+     its source files via src comments, no reruns; grey slots elsewhere ("not
+     run"); "FP8; MoE, ~10B active" in its first mention. Claims table: add it
+     to the models of each claim it supports. One line in the Status and in
+     "How we checked": "the largest model gives the clean split (lookup 0.00;
+     still 0.00 at k = 100, where the 27B loses ~0.6), so the 27B's weakness is
+     not a total-size trend; active parameters are not separated".
+  3. If mats frees up today (2xH100; check the lens file and the FP8 weights
+     are on a box first): on the 122B, 53.1 (Q-before, number) with the paired
+     difference, then 51.12 E1 (answer control). Rules verbatim, no prediction,
+     UNVERIFIED. Priority: after 53.2, before 53.7.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
