@@ -244,6 +244,6 @@ def test_hand_pairs_classify_the_sheet_atoms():
     sheet = {"qwen3.5-9b|s0": {"run": "r", "scene": sc, "atoms": atoms}}
     labels = {"qwen3.5-9b|s0": {"1": "bridge", "2": "function"}}
     pairs = A.hand_pairs(sheet, labels, {"qwen3.5-9b": tok})
-    assert pairs["qwen3.5-9b"] == [("bridge", "bridge", " Oxygen"), ("function", "other", " und")]
+    assert pairs["qwen3.5-9b e1"] == [("bridge", "bridge", " Oxygen"), ("function", "other", " und")]
     with pytest.raises(AssertionError):
         A.hand_pairs(sheet, {"qwen3.5-9b|s0": {"1": "bridge", "2": "noun"}}, {"qwen3.5-9b": tok})

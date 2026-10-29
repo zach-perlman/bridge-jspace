@@ -1,0 +1,2741 @@
+{
+ "qwen3.5-9b|jsuite_v2_test_chat|j2:cities:M-L1-Istanbul-0": {
+  "run": "qwen35_9b_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Istanbul",
+   "new": "Kyoto",
+   "items": [
+    "Bilbao",
+    "Bruges",
+    "Copenhagen",
+    "Nagoya"
+   ],
+   "relation": "cities",
+   "persons": [
+    "Alice",
+    "Calloway",
+    "Garland",
+    "Hannah",
+    "Jonah",
+    "Kerr",
+    "Moreland",
+    "Ruth",
+    "Tess",
+    "Wells"
+   ],
+   "answers": [
+    "Turkey",
+    "Japan"
+   ],
+   "text": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nCopenhagen is in Denmark. A covering descends from under the headdress to cover the back half of the neck. Bilbao is in Spain. The headband is divided into four strips and begins above the right ear, extending around the entire head. Jonah Wells moved to Bruges last spring. A short strap descends from either side of the head to the ear. The ear ornaments are complex and are larger at the front of the ear than at the back. Istanbul is in Turkey. The face is that of an ageing male with the forehead creased in a frown, wrinkles under the eyes, sagging cheeks and deep creases on either side of the nose. Tess Garland moved to Copenhagen last spring. Ruth Calloway moved to Kyoto last spring. Bruges is in Belgium. Nagoya is in Japan. The face is somewhat asymmetric, possibly due to errors in the execution of the monument. Alice Moreland moved to Nagoya last spring. Hannah Kerr moved to Bilbao last spring. Kyoto is in Japan.\n\nBest,\nMarta\n\nIn which country is the city that is home to the Hagia Sophia? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    "土耳其",
+    -4.0478,
+    112071
+   ],
+   [
+    2,
+    " Sophia",
+    -3.90744,
+    67990
+   ],
+   [
+    3,
+    " jap",
+    2.56893,
+    82247
+   ],
+   [
+    4,
+    "릇",
+    2.59415,
+    169672
+   ],
+   [
+    5,
+    " Historic",
+    -2.60525,
+    49078
+   ],
+   [
+    6,
+    "fort",
+    1.79115,
+    3836
+   ],
+   [
+    7,
+    "OA",
+    -2.09161,
+    39973
+   ],
+   [
+    8,
+    "pos",
+    1.48801,
+    936
+   ],
+   [
+    9,
+    "ές",
+    1.85916,
+    150080
+   ],
+   [
+    10,
+    " inmediatamente",
+    -1.75048,
+    213763
+   ],
+   [
+    11,
+    "我们的工作",
+    -2.34775,
+    141927
+   ],
+   [
+    12,
+    "ToUpper",
+    1.81388,
+    74161
+   ],
+   [
+    13,
+    "ivate",
+    1.72267,
+    711
+   ],
+   [
+    14,
+    "rese",
+    -1.78091,
+    68057
+   ],
+   [
+    15,
+    " Somebody",
+    -2.25037,
+    89886
+   ],
+   [
+    16,
+    "大家可以",
+    2.25427,
+    114576
+   ],
+   [
+    17,
+    "作为一家",
+    -1.82267,
+    130781
+   ],
+   [
+    18,
+    "alph",
+    2.00715,
+    29237
+   ],
+   [
+    19,
+    "โฟน",
+    -2.43932,
+    166292
+   ],
+   [
+    20,
+    "成片",
+    2.28293,
+    145382
+   ],
+   [
+    21,
+    "游客",
+    1.6468,
+    103797
+   ],
+   [
+    22,
+    " Jean",
+    1.55801,
+    19084
+   ],
+   [
+    23,
+    "\tUINT",
+    -1.71428,
+    37426
+   ],
+   [
+    24,
+    "뱅",
+    1.53594,
+    158954
+   ],
+   [
+    25,
+    " yas",
+    -1.24792,
+    210979
+   ]
+  ]
+ },
+ "qwen3.5-9b|jsuite_v2_test_chat|j2:people:M-L1-Liszt-0": {
+  "run": "qwen35_9b_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Liszt",
+   "new": "Borges",
+   "items": [
+    "Chekhov",
+    "Edison",
+    "Galileo",
+    "Grieg"
+   ],
+   "relation": "people",
+   "persons": [
+    "Eli",
+    "Fiona",
+    "Gavin",
+    "Hannah",
+    "Iris",
+    "Kerr",
+    "Lockwood",
+    "Pemberton",
+    "Shore",
+    "Thornton"
+   ],
+   "answers": [
+    "Hungarian",
+    "Argentine"
+   ],
+   "text": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nBy nationality, Edison was American. The ability of the tympanum and stapes to effectively transmit vibrations is called impedance matching. Early tetrapods like temnospondyls have thick stapes with poor impedance matching, so it is now thought that they were not used for hearing. Instead, these thick stapes may have functioned to support the tissue that covers the otic notch. By nationality, Galileo was Italian. Gavin Shore's dissertation was about Galileo. Early temnospondyls like Dendrerpeton could not hear airborne sound but would have been able to detect vibration in the ground. By nationality, Grieg was Norwegian. By nationality, Chekhov was Russian. Hannah Kerr's dissertation was about Borges. Later temnospondyls like Doleserpeton had otic regions adapted to hearing. Iris Pemberton's dissertation was about Grieg. Doleserpeton has a structure in the inner ear called the perilymphatic duct, which is also seen in frogs and is associated with hearing. By nationality, Borges was Argentine. Fiona Lockwood's dissertation was about Edison. Eli Thornton's dissertation was about Chekhov. By nationality, Liszt was Hungarian.\n\nBest,\nMarta\n\nWhich nationality was the composer who wrote the Liebestraum piano pieces? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " Borges",
+    4.48118,
+    230811
+   ],
+   [
+    2,
+    " tune",
+    -2.491,
+    24439
+   ],
+   [
+    3,
+    ".BOTTOM",
+    -3.63287,
+    80833
+   ],
+   [
+    4,
+    "奇幻",
+    3.21856,
+    105254
+   ],
+   [
+    5,
+    "oken",
+    -2.21714,
+    1620
+   ],
+   [
+    6,
+    "丞",
+    -2.8158,
+    103305
+   ],
+   [
+    7,
+    "/Y",
+    2.77896,
+    37951
+   ],
+   [
+    8,
+    " Contenido",
+    3.02847,
+    227729
+   ],
+   [
+    9,
+    "糖类",
+    -2.60537,
+    145250
+   ],
+   [
+    10,
+    "的信",
+    1.79973,
+    127382
+   ],
+   [
+    11,
+    "aining",
+    -2.56625,
+    1988
+   ],
+   [
+    12,
+    " LU",
+    -2.34955,
+    72398
+   ],
+   [
+    13,
+    " funciona",
+    2.60227,
+    83897
+   ],
+   [
+    14,
+    "ма",
+    -2.60847,
+    66050
+   ],
+   [
+    15,
+    "一书",
+    3.09647,
+    126778
+   ],
+   [
+    16,
+    " ones",
+    -2.62154,
+    5981
+   ],
+   [
+    17,
+    "烛光",
+    -2.21778,
+    143625
+   ],
+   [
+    18,
+    "ंत",
+    2.86301,
+    182928
+   ],
+   [
+    19,
+    "ebt",
+    -2.76974,
+    243211
+   ],
+   [
+    20,
+    "訳",
+    2.55415,
+    208737
+   ],
+   [
+    21,
+    " ilgili",
+    -2.45716,
+    176868
+   ],
+   [
+    22,
+    " ся",
+    -2.20834,
+    236339
+   ],
+   [
+    23,
+    " Marxism",
+    2.25209,
+    79859
+   ],
+   [
+    24,
+    "Launcher",
+    -2.11183,
+    88036
+   ],
+   [
+    25,
+    "prest",
+    2.02939,
+    224365
+   ]
+  ]
+ },
+ "qwen3.5-9b|jsuite_v2nb_test_chat|j2:companies:M-L0-Sony-0": {
+  "run": "qwen35_9b_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Sony",
+   "new": "Volkswagen",
+   "items": [
+    "Peugeot"
+   ],
+   "relation": "companies",
+   "persons": [
+    "Gavin",
+    "Hart",
+    "Nina",
+    "Shore"
+   ],
+   "answers": [
+    "Japan",
+    "Germany"
+   ],
+   "text": "<|im_start|>user\nPosted by travel_notes_88:\nPeugeot comes from France. Nina Hart wrote a business school case study on Volkswagen. Although all the colossal heads are broadly similar, there are distinct stylistic differences in their execution. Sony comes from Japan. One of the heads from San Lorenzo bears traces of plaster and red paint, suggesting that the heads were originally brightly decorated. Gavin Shore wrote a business school case study on Peugeot. Volkswagen comes from Germany.\nHas anyone else heard about this?\n\nWhich country does the company that created the Walkman and the PlayStation come from? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " PlayStation",
+    -6.53925,
+    30238
+   ],
+   [
+    2,
+    " cars",
+    3.56463,
+    9054
+   ],
+   [
+    3,
+    "ategorized",
+    2.3155,
+    55678
+   ],
+   [
+    4,
+    " Gestion",
+    -2.63158,
+    178542
+   ],
+   [
+    5,
+    " Nick",
+    2.60229,
+    14557
+   ],
+   [
+    6,
+    ".company",
+    2.54662,
+    26059
+   ],
+   [
+    7,
+    "緒",
+    -2.60022,
+    103173
+   ],
+   [
+    8,
+    " بني",
+    1.65627,
+    191202
+   ],
+   [
+    9,
+    "abouts",
+    2.68859,
+    61163
+   ],
+   [
+    10,
+    " областной",
+    -2.5611,
+    222925
+   ],
+   [
+    11,
+    "子里",
+    2.21965,
+    98970
+   ],
+   [
+    12,
+    " Encore",
+    -2.46643,
+    95649
+   ],
+   [
+    13,
+    " Cort",
+    2.19415,
+    34495
+   ],
+   [
+    14,
+    "tail",
+    2.05955,
+    14166
+   ],
+   [
+    15,
+    "VIII",
+    -2.056,
+    239890
+   ],
+   [
+    16,
+    "一支",
+    -1.85447,
+    110100
+   ],
+   [
+    17,
+    "自媒体平台",
+    2.46593,
+    141583
+   ],
+   [
+    18,
+    " Poke",
+    -1.96216,
+    94256
+   ],
+   [
+    19,
+    "ersen",
+    -2.21616,
+    84957
+   ],
+   [
+    20,
+    " Ihnen",
+    2.10416,
+    42409
+   ],
+   [
+    21,
+    " Assassin",
+    -1.72953,
+    57975
+   ],
+   [
+    22,
+    "下拉",
+    2.01699,
+    125003
+   ],
+   [
+    23,
+    " gibi",
+    -2.0019,
+    65556
+   ],
+   [
+    24,
+    "quality",
+    1.91732,
+    10160
+   ],
+   [
+    25,
+    "(L",
+    -1.90137,
+    4796
+   ]
+  ]
+ },
+ "qwen3.5-9b|jsuite_v2nb_test_chat|j2:countries:M-L0-Colombia-0": {
+  "run": "qwen35_9b_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Colombia",
+   "new": "Japan",
+   "items": [
+    "Bhutan"
+   ],
+   "relation": "countries",
+   "persons": [
+    "Grace",
+    "Holloway",
+    "Paul",
+    "Whitaker"
+   ],
+   "answers": [
+    "South America",
+    "Asia"
+   ],
+   "text": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nGrace Holloway spent a whole childhood in Bhutan. Paul Whitaker spent a whole childhood in Japan. Metoposaurids are distinguished from capitosauroids by the positioning of their eye sockets near the front of their skulls. Bhutan is a country in Asia. Colombia is a country in South America. Japan is a country in Asia. Another group of stereospondyls, the plagiosaurs, had wide heads with external gills, and adapted to life at the bottom of lakes and rivers.\nMore updates will follow.\n\nThe country that was the homeland of the novelist Gabriel Garcia Marquez is on which continent? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    "奥运会",
+    5.81556,
+    105293
+   ],
+   [
+    2,
+    " Marquez",
+    -4.93277,
+    235333
+   ],
+   [
+    3,
+    "的小说",
+    -3.39124,
+    113781
+   ],
+   [
+    4,
+    "Rail",
+    2.30567,
+    90805
+   ],
+   [
+    5,
+    "和他的",
+    -3.91331,
+    117067
+   ],
+   [
+    6,
+    "_gc",
+    3.14125,
+    47760
+   ],
+   [
+    7,
+    "上世纪",
+    -2.44735,
+    116873
+   ],
+   [
+    8,
+    " PlayStation",
+    3.19875,
+    30238
+   ],
+   [
+    9,
+    "ครั้งนี้",
+    3.30947,
+    164150
+   ],
+   [
+    10,
+    "quier",
+    -2.31166,
+    31398
+   ],
+   [
+    11,
+    " paar",
+    3.28392,
+    46496
+   ],
+   [
+    12,
+    " Bergen",
+    -1.94444,
+    76293
+   ],
+   [
+    13,
+    " Facilities",
+    2.92789,
+    63083
+   ],
+   [
+    14,
+    " Associates",
+    -3.13562,
+    37805
+   ],
+   [
+    15,
+    "新华社记者",
+    -2.88948,
+    134882
+   ],
+   [
+    16,
+    "east",
+    2.41568,
+    58463
+   ],
+   [
+    17,
+    "类型的",
+    -2.59828,
+    104634
+   ],
+   [
+    18,
+    "刀剑",
+    2.57404,
+    141019
+   ],
+   [
+    19,
+    "/gui",
+    -2.65447,
+    53348
+   ],
+   [
+    20,
+    "待定",
+    2.21139,
+    123244
+   ],
+   [
+    21,
+    "泰迪",
+    2.65699,
+    136378
+   ],
+   [
+    22,
+    " Denken",
+    -3.10683,
+    233929
+   ],
+   [
+    23,
+    "逊",
+    -2.24496,
+    99833
+   ],
+   [
+    24,
+    " TY",
+    2.09599,
+    47227
+   ],
+   [
+    25,
+    "的念头",
+    2.41635,
+    144995
+   ]
+  ]
+ },
+ "qwen3.5-9b|jsuite_v2nb_test_chat|j2:people:M-L1-Sibelius-0": {
+  "run": "qwen35_9b_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Sibelius",
+   "new": "Bach",
+   "items": [
+    "Dante",
+    "Gandhi",
+    "Grieg",
+    "Plato"
+   ],
+   "relation": "people",
+   "persons": [
+    "Ashby",
+    "Bennett",
+    "Felix",
+    "Grace",
+    "Hart",
+    "Holloway",
+    "Laura",
+    "Nina",
+    "Simon",
+    "Ward"
+   ],
+   "answers": [
+    "Finnish",
+    "German"
+   ],
+   "text": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nSimon Ashby's dissertation was about Dante. With the recent growth of phylogenetics, this classification is no longer viable. Laura Bennett's dissertation was about Grieg. By nationality, Gandhi was Indian. Nina Hart's dissertation was about Bach. The basic rhachitomous condition is found in many primitive tetrapods, and is not unique to one group of temnospondyls. Moreover, the distinction between rhachitomous and stereospondylous vertebrae is not entirely clear. By nationality, Bach was German. Grace Holloway's dissertation was about Gandhi. By nationality, Dante was Italian. Some temnospondyls have rhachitomous, semirhachitomous, and sterospondylous vertebrae at different points in the same vertebral column. By nationality, Plato was Greek. By nationality, Grieg was Norwegian. Felix Ward's dissertation was about Plato. By nationality, Sibelius was Finnish. Other taxa have intermediate morphologies that do not fit into any category. Rachitomi is no longer recognized as a group, but Stereospondyli is still considered valid.\n\nBest,\nMarta\n\nWhich nationality was the composer who wrote the Valse triste? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " triste",
+    -4.25825,
+    161512
+   ],
+   [
+    2,
+    "КО",
+    2.90874,
+    159885
+   ],
+   [
+    3,
+    " York",
+    2.20152,
+    4121
+   ],
+   [
+    4,
+    "一个个",
+    2.238,
+    109329
+   ],
+   [
+    5,
+    "dc",
+    2.76769,
+    7385
+   ],
+   [
+    6,
+    " Suomen",
+    -2.57816,
+    201204
+   ],
+   [
+    7,
+    " Flav",
+    2.93175,
+    219820
+   ],
+   [
+    8,
+    " jogos",
+    2.93938,
+    176691
+   ],
+   [
+    9,
+    "heartbeat",
+    -2.40014,
+    70012
+   ],
+   [
+    10,
+    "巨",
+    2.45822,
+    97517
+   ],
+   [
+    11,
+    " gewonnen",
+    -2.71436,
+    193809
+   ],
+   [
+    12,
+    " Presidency",
+    2.8512,
+    83656
+   ],
+   [
+    13,
+    "公积金",
+    -2.80686,
+    102207
+   ],
+   [
+    14,
+    "ristol",
+    2.68414,
+    39276
+   ],
+   [
+    15,
+    "egen",
+    2.40267,
+    19372
+   ],
+   [
+    16,
+    "CL",
+    2.90637,
+    3040
+   ],
+   [
+    17,
+    "数量",
+    2.34792,
+    99474
+   ],
+   [
+    18,
+    "Nature",
+    -2.06436,
+    75731
+   ],
+   [
+    19,
+    " Abonn",
+    -2.7576,
+    234261
+   ],
+   [
+    20,
+    "居住地",
+    2.25831,
+    127521
+   ],
+   [
+    21,
+    " Stack",
+    2.11082,
+    13875
+   ],
+   [
+    22,
+    "aro",
+    2.48724,
+    16659
+   ],
+   [
+    23,
+    "ασ",
+    -2.14392,
+    152372
+   ],
+   [
+    24,
+    "思潮",
+    -2.03441,
+    133760
+   ],
+   [
+    25,
+    " Horaires",
+    2.07361,
+    242098
+   ]
+  ]
+ },
+ "qwen3.6-27b|jsuite_v2_test_chat|j2:cities:M-L1-Kyoto-0": {
+  "run": "x52_atoms_fwd_27b",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Kyoto",
+   "new": "Gothenburg",
+   "items": [
+    "Copenhagen",
+    "Hamburg",
+    "Lisbon",
+    "Vienna"
+   ],
+   "relation": "cities",
+   "persons": [
+    "Ellison",
+    "Fiona",
+    "Grace",
+    "Holloway",
+    "Jonah",
+    "Lockwood",
+    "Mark",
+    "Marsh",
+    "Owen",
+    "Wells"
+   ],
+   "answers": [
+    "Japan",
+    "Sweden"
+   ],
+   "text": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nHamburg is in Germany. Mark Ellison moved to Gothenburg last spring. All of the heads are realistic, unidealised and frank descriptions of the men. Jonah Wells moved to Hamburg last spring. It is likely that they were portraits of living (or recently deceased) rulers well known to the sculptors. Gothenburg is in Sweden. Owen Marsh moved to Vienna last spring. Each head is distinct and naturalistic, displaying individualised features. Copenhagen is in Denmark. Lisbon is in Portugal. They were once thought to represent ballplayers although this theory is no longer widely held; it is possible, however, that they represent rulers equipped for the Mesoamerican ballgame. Fiona Lockwood moved to Copenhagen last spring. Facial expressions depicted on the heads vary from stern through placid to smiling. Grace Holloway moved to Lisbon last spring. The most naturalistic Olmec art is the earliest, appearing suddenly without surviving antecedents, with a tendency towards more stylised sculpture as time progressed. Kyoto is in Japan. Vienna is in Austria.\n\nBest,\nMarta\n\nIn which country is the city that is famous for the Golden Pavilion temple? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " Buddhist",
+    -9.01936,
+    45178
+   ],
+   [
+    2,
+    " Motors",
+    6.82841,
+    35476
+   ],
+   [
+    3,
+    " Terrace",
+    -4.55743,
+    76455
+   ],
+   [
+    4,
+    " carrots",
+    7.01244,
+    59344
+   ],
+   [
+    5,
+    " manufacturing",
+    5.80131,
+    14488
+   ],
+   [
+    6,
+    " Temple",
+    -7.5804,
+    18097
+   ],
+   [
+    7,
+    " wisata",
+    -5.66191,
+    159895
+   ],
+   [
+    8,
+    " plc",
+    5.63829,
+    93129
+   ],
+   [
+    9,
+    "と思っている",
+    5.20613,
+    197508
+   ],
+   [
+    10,
+    " زیبایی",
+    -4.40509,
+    240453
+   ],
+   [
+    11,
+    " Cursors",
+    5.65328,
+    89959
+   ],
+   [
+    12,
+    "chent",
+    -3.42111,
+    194076
+   ],
+   [
+    13,
+    "aways",
+    4.25413,
+    38278
+   ],
+   [
+    14,
+    " IX",
+    -3.94666,
+    38397
+   ],
+   [
+    15,
+    "ンプ",
+    -5.53091,
+    152474
+   ],
+   [
+    16,
+    " evol",
+    4.8076,
+    201606
+   ],
+   [
+    17,
+    "保险杠",
+    4.51015,
+    143138
+   ],
+   [
+    18,
+    "让他",
+    -4.59192,
+    108660
+   ],
+   [
+    19,
+    "_person",
+    4.00184,
+    22689
+   ],
+   [
+    20,
+    " MouseEvent",
+    -4.19065,
+    63981
+   ],
+   [
+    21,
+    " tempora",
+    3.74711,
+    224647
+   ],
+   [
+    22,
+    " fluorescence",
+    -4.01356,
+    92905
+   ],
+   [
+    23,
+    "膳食纤维",
+    -3.95938,
+    128326
+   ],
+   [
+    24,
+    "くだ",
+    4.10169,
+    155053
+   ],
+   [
+    25,
+    " 모양",
+    -3.84845,
+    184606
+   ]
+  ]
+ },
+ "qwen3.6-27b|jsuite_v2_test_chat|j2:people:M-L0-Hokusai-0": {
+  "run": "x52_atoms_fwd_27b",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Hokusai",
+   "new": "Zola",
+   "items": [
+    "Nobel"
+   ],
+   "relation": "people",
+   "persons": [
+    "Bennett",
+    "Fiona",
+    "Laura",
+    "Lockwood"
+   ],
+   "answers": [
+    "Japanese",
+    "French"
+   ],
+   "text": "<|im_start|>user\nPosted by travel_notes_88:\nLaura Bennett's dissertation was about Zola. By nationality, Nobel was Swedish. Meanwhile, Veronica and Piz (Chris Lowell) come to terms with Veronica's FBI internship, and a sex tape of this couple is released on the internet. By nationality, Zola was French. Logan (Jason Dohring) beats up Piz, thinking that he posted it. By nationality, Hokusai was Japanese. Fiona Lockwood's dissertation was about Nobel.\nHas anyone else heard about this?\n\nWhich nationality was the artist who made the woodblock print The Great Wave? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " accused",
+    9.68126,
+    12803
+   ],
+   [
+    2,
+    " Waves",
+    -9.68965,
+    77682
+   ],
+   [
+    3,
+    " apprent",
+    -9.90458,
+    43819
+   ],
+   [
+    4,
+    " dossiers",
+    11.33165,
+    201468
+   ],
+   [
+    5,
+    " depict",
+    -7.70449,
+    40995
+   ],
+   [
+    6,
+    " Civil",
+    8.79413,
+    15917
+   ],
+   [
+    7,
+    " Yam",
+    -11.01718,
+    32442
+   ],
+   [
+    8,
+    " armi",
+    10.87313,
+    203270
+   ],
+   [
+    9,
+    " расчета",
+    -8.51655,
+    191527
+   ],
+   [
+    10,
+    " исполнения",
+    -7.95984,
+    188248
+   ],
+   [
+    11,
+    " تبع",
+    9.66583,
+    246362
+   ],
+   [
+    12,
+    " Ju",
+    5.7479,
+    21006
+   ],
+   [
+    13,
+    "avid",
+    -7.38258,
+    14770
+   ],
+   [
+    14,
+    " crews",
+    -8.96477,
+    40670
+   ],
+   [
+    15,
+    " crus",
+    8.28622,
+    59635
+   ],
+   [
+    16,
+    " séances",
+    7.87608,
+    217170
+   ],
+   [
+    17,
+    "塑",
+    -6.2756,
+    97936
+   ],
+   [
+    18,
+    "长按二维码",
+    -9.37467,
+    104941
+   ],
+   [
+    19,
+    " ezen",
+    7.62762,
+    237312
+   ],
+   [
+    20,
+    ".pub",
+    7.24002,
+    46179
+   ],
+   [
+    21,
+    " vistos",
+    -8.40336,
+    245092
+   ],
+   [
+    22,
+    "طول",
+    8.16564,
+    241389
+   ],
+   [
+    23,
+    "owod",
+    -8.21331,
+    166148
+   ],
+   [
+    24,
+    "MESS",
+    6.77673,
+    26232
+   ],
+   [
+    25,
+    " reconnaissance",
+    6.46131,
+    84489
+   ]
+  ]
+ },
+ "qwen3.6-27b|jsuite_v2nb_test_chat|j2:cities:M-L1-Geneva-0": {
+  "run": "x52_atoms_fwd_27b",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Geneva",
+   "new": "Chengdu",
+   "items": [
+    "Hamburg",
+    "Lisbon",
+    "Moscow",
+    "Seville"
+   ],
+   "relation": "cities",
+   "persons": [
+    "Garland",
+    "Grace",
+    "Hannah",
+    "Holloway",
+    "Kerr",
+    "Marsh",
+    "Owen",
+    "Paul",
+    "Tess",
+    "Whitaker"
+   ],
+   "answers": [
+    "Switzerland",
+    "China"
+   ],
+   "text": "<|im_start|>user\nPosted by travel_notes_88:\nMoscow lies in Russia. Two badly damaged Olmec sculptures depict rectangular stone blocks bound with ropes. Chengdu lies in China. Geneva lies in Switzerland. A largely destroyed human figure rides upon each block, with their legs hanging over the side. Paul Whitaker has lived in Hamburg since last spring. These sculptures may well depict Olmec rulers overseeing the transport of the stone that would be fashioned into their monuments. Hannah Kerr has lived in Seville since last spring. Seville lies in Spain. When transport over land was necessary, the Olmecs are likely to have used causeways, ramps and roads to facilitate moving the heads. Tess Garland has lived in Moscow since last spring. The regional terrain offers significant obstacles such as swamps and floodplains; avoiding these would have necessitated crossing undulating hill country. Lisbon lies in Portugal. Hamburg lies in Germany. Owen Marsh has lived in Lisbon since last spring. The construction of temporary causeways using the suitable and plentiful floodplain soils would have allowed a direct route across the floodplains to the San Lorenzo Plateau. Grace Holloway has lived in Chengdu since last spring.\nHas anyone else heard about this?\n\nThe city that hosts the European headquarters of the United Nations is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " UN",
+    -13.19405,
+    6434
+   ],
+   [
+    2,
+    "(cors",
+    -6.8267,
+    70016
+   ],
+   [
+    3,
+    "述职",
+    -6.27934,
+    106455
+   ],
+   [
+    4,
+    " животного",
+    8.69959,
+    210416
+   ],
+   [
+    5,
+    "纽",
+    -6.30464,
+    99342
+   ],
+   [
+    6,
+    "成效显著",
+    5.79252,
+    146586
+   ],
+   [
+    7,
+    " órgão",
+    -5.89929,
+    208913
+   ],
+   [
+    8,
+    "狮子",
+    -5.64382,
+    105289
+   ],
+   [
+    9,
+    " BaseService",
+    5.05734,
+    95158
+   ],
+   [
+    10,
+    "政务服务",
+    -7.81462,
+    121259
+   ],
+   [
+    11,
+    " Gods",
+    -3.97703,
+    42325
+   ],
+   [
+    12,
+    "不了",
+    -5.65656,
+    98690
+   ],
+   [
+    13,
+    " عليهم",
+    -5.79399,
+    183909
+   ],
+   [
+    14,
+    "上还",
+    5.16172,
+    144386
+   ],
+   [
+    15,
+    " luộc",
+    5.58147,
+    223483
+   ],
+   [
+    16,
+    "裕",
+    4.55571,
+    100306
+   ],
+   [
+    17,
+    "ходу",
+    -6.23375,
+    162962
+   ],
+   [
+    18,
+    "/name",
+    4.34696,
+    73391
+   ],
+   [
+    19,
+    " backtrack",
+    4.98883,
+    95500
+   ],
+   [
+    20,
+    " disliked",
+    -4.69677,
+    95226
+   ],
+   [
+    21,
+    "教学的",
+    4.7591,
+    118552
+   ],
+   [
+    22,
+    " بالات",
+    -4.76449,
+    202764
+   ],
+   [
+    23,
+    "Accessor",
+    4.95486,
+    28912
+   ],
+   [
+    24,
+    "업체",
+    4.68207,
+    178231
+   ],
+   [
+    25,
+    " Vertre",
+    -4.59252,
+    206438
+   ]
+  ]
+ },
+ "qwen3.6-27b|jsuite_v2nb_test_chat|j2:cities:M-L1-Seville-0": {
+  "run": "x52_atoms_fwd_27b",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Seville",
+   "new": "Moscow",
+   "items": [
+    "Agra",
+    "Gothenburg",
+    "Guadalajara",
+    "Jaipur"
+   ],
+   "relation": "cities",
+   "persons": [
+    "Bennett",
+    "Calloway",
+    "Ellison",
+    "Hart",
+    "Jonah",
+    "Laura",
+    "Mark",
+    "Nina",
+    "Ruth",
+    "Wells"
+   ],
+   "answers": [
+    "Spain",
+    "Russia"
+   ],
+   "text": "<|im_start|>user\nMeeting notes, 14 March.\n- Jonah Wells has lived in Jaipur since last spring.\n- One day, Mary seeks an announcement of Jack's engagement to a cabaret girl known as \"The Baby Vamp \".\n- Mark Ellison has lived in Agra since last spring.\n- Jaipur lies in India.\n- Bitter over the prospect of her child's future, she leaves the child at Jack's home during his absence with a note.\n- Laura Bennett has lived in Gothenburg since last spring.\n- Jack orders Ezra to take the baby to an orphanage, but Marie begs Ezra to keep him.\n- Moscow lies in Russia.\n- Seville lies in Spain.\n- After continually seeing the child, Jack is overcome with remorse and explains to Ezra and seeks his advice.\n- Gothenburg lies in Sweden.\n- Not knowing he was making the case for his own daughter, Ezra convinces Jack to seek out Mary and forget the Baby Vamp.\n- Guadalajara lies in Mexico.\n- Nina Hart has lived in Moscow since last spring.\n- The Baby Vamp seeks out Jack, but finds Ezra who convinces her to leave Jack.\n- Ruth Calloway has lived in Guadalajara since last spring.\n- Agra lies in India.\nNext meeting in two weeks.\n\nThe city that is famous for the Giralda tower is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    " Moscow",
+    6.0584,
+    21717
+   ],
+   [
+    2,
+    " площади",
+    6.86944,
+    183273
+   ],
+   [
+    3,
+    "塔的",
+    -5.97139,
+    144512
+   ],
+   [
+    4,
+    "endalian",
+    5.73309,
+    210642
+   ],
+   [
+    5,
+    "QQ",
+    6.29701,
+    46424
+   ],
+   [
+    6,
+    ".Tool",
+    -6.30615,
+    23666
+   ],
+   [
+    7,
+    " Rubin",
+    4.29949,
+    79100
+   ],
+   [
+    8,
+    "这两个",
+    4.01787,
+    109514
+   ],
+   [
+    9,
+    "IBOutlet",
+    -5.11525,
+    14126
+   ],
+   [
+    10,
+    " hardcore",
+    3.92946,
+    25753
+   ],
+   [
+    11,
+    " مرو",
+    -4.69352,
+    230134
+   ],
+   [
+    12,
+    "五脏",
+    5.72086,
+    131200
+   ],
+   [
+    13,
+    "过剩",
+    -5.46153,
+    117591
+   ],
+   [
+    14,
+    "личные",
+    4.4358,
+    213351
+   ],
+   [
+    15,
+    "福州",
+    -4.68198,
+    109596
+   ],
+   [
+    16,
+    "est",
+    -3.90505,
+    467
+   ],
+   [
+    17,
+    "esu",
+    4.76664,
+    186202
+   ],
+   [
+    18,
+    "湖区",
+    -4.33184,
+    114263
+   ],
+   [
+    19,
+    " kosong",
+    4.22658,
+    211841
+   ],
+   [
+    20,
+    " chùm",
+    -4.42196,
+    239775
+   ],
+   [
+    21,
+    " hind",
+    -3.81558,
+    45743
+   ],
+   [
+    22,
+    ".Red",
+    3.65995,
+    20303
+   ],
+   [
+    23,
+    "合同约定",
+    -3.69885,
+    118898
+   ],
+   [
+    24,
+    "剂等",
+    4.08439,
+    142770
+   ],
+   [
+    25,
+    "股东信息",
+    -3.64116,
+    112656
+   ]
+  ]
+ },
+ "qwen3.6-27b|jsuite_v2nb_test_chat|j2:people:M-L1-Liszt-0": {
+  "run": "x52_atoms_fwd_27b",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Liszt",
+   "new": "Joyce",
+   "items": [
+    "Freud",
+    "Gandhi",
+    "Nobel",
+    "Schiller"
+   ],
+   "relation": "people",
+   "persons": [
+    "Bennett",
+    "Eli",
+    "Garland",
+    "Laura",
+    "Marsh",
+    "Owen",
+    "Paul",
+    "Tess",
+    "Thornton",
+    "Whitaker"
+   ],
+   "answers": [
+    "Hungarian",
+    "Irish"
+   ],
+   "text": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nAll of the heads are realistic, unidealised and frank descriptions of the men. Owen Marsh spent five years writing a thesis on Schiller. Liszt was Hungarian by birth. It is likely that they were portraits of living (or recently deceased) rulers well known to the sculptors. Each head is distinct and naturalistic, displaying individualised features. They were once thought to represent ballplayers although this theory is no longer widely held; it is possible, however, that they represent rulers equipped for the Mesoamerican ballgame. Joyce was Irish by birth. Facial expressions depicted on the heads vary from stern through placid to smiling. Schiller was German by birth. Freud was Austrian by birth. Tess Garland spent five years writing a thesis on Freud. Laura Bennett spent five years writing a thesis on Nobel. Eli Thornton spent five years writing a thesis on Gandhi. Paul Whitaker spent five years writing a thesis on Joyce. Gandhi was Indian by birth. The most naturalistic Olmec art is the earliest, appearing suddenly without surviving antecedents, with a tendency towards more stylised sculpture as time progressed. Nobel was Swedish by birth.\n\nBest,\nMarta\n\nThe composer who wrote the Liebestraum piano pieces was of which nationality? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  "atoms": [
+   [
+    1,
+    "довать",
+    -6.57837,
+    182114
+   ],
+   [
+    2,
+    " totalitarian",
+    4.68852,
+    86191
+   ],
+   [
+    3,
+    " homer",
+    5.56681,
+    88160
+   ],
+   [
+    4,
+    " urine",
+    3.44455,
+    37937
+   ],
+   [
+    5,
+    " bookstore",
+    6.21456,
+    75970
+   ],
+   [
+    6,
+    "פים",
+    -6.46075,
+    200107
+   ],
+   [
+    7,
+    " verf",
+    5.11053,
+    174657
+   ],
+   [
+    8,
+    "但它们",
+    -5.72998,
+    145901
+   ],
+   [
+    9,
+    " représentants",
+    7.44434,
+    216636
+   ],
+   [
+    10,
+    "居家",
+    -4.2824,
+    104600
+   ],
+   [
+    11,
+    "/pr",
+    -6.46288,
+    43190
+   ],
+   [
+    12,
+    "Ell",
+    5.12482,
+    41295
+   ],
+   [
+    13,
+    " kerana",
+    5.70086,
+    206118
+   ],
+   [
+    14,
+    "/U",
+    4.7964,
+    59920
+   ],
+   [
+    15,
+    "ていた",
+    -5.31321,
+    247816
+   ],
+   [
+    16,
+    " ruas",
+    4.69668,
+    187992
+   ],
+   [
+    17,
+    " INTERVAL",
+    -4.34685,
+    88003
+   ],
+   [
+    18,
+    " наличными",
+    -4.66231,
+    239449
+   ],
+   [
+    19,
+    "alted",
+    4.81537,
+    59168
+   ],
+   [
+    20,
+    "(object",
+    4.28217,
+    4253
+   ],
+   [
+    21,
+    " Speci",
+    -4.25358,
+    182687
+   ],
+   [
+    22,
+    " языке",
+    4.44257,
+    188638
+   ],
+   [
+    23,
+    ",port",
+    -3.82785,
+    93554
+   ],
+   [
+    24,
+    "iby",
+    4.08735,
+    224465
+   ],
+   [
+    25,
+    "不妥",
+    -4.13778,
+    130184
+   ]
+  ]
+ },
+ "muse-glimmer-30b|jsuite_v2_test_chat|j2:cities:M-L1-Istanbul-0": {
+  "run": "muse30_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Istanbul",
+   "new": "Kyoto",
+   "items": [
+    "Bilbao",
+    "Bruges",
+    "Copenhagen",
+    "Nagoya"
+   ],
+   "relation": "cities",
+   "persons": [
+    "Alice",
+    "Calloway",
+    "Garland",
+    "Hannah",
+    "Jonah",
+    "Kerr",
+    "Moreland",
+    "Ruth",
+    "Tess",
+    "Wells"
+   ],
+   "answers": [
+    "Turkey",
+    "Japan"
+   ],
+   "text": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hi all,\n\nA few updates before Friday's meeting.\n\nCopenhagen is in Denmark. A covering descends from under the headdress to cover the back half of the neck. Bilbao is in Spain. The headband is divided into four strips and begins above the right ear, extending around the entire head. Jonah Wells moved to Bruges last spring. A short strap descends from either side of the head to the ear. The ear ornaments are complex and are larger at the front of the ear than at the back. Istanbul is in Turkey. The face is that of an ageing male with the forehead creased in a frown, wrinkles under the eyes, sagging cheeks and deep creases on either side of the nose. Tess Garland moved to Copenhagen last spring. Ruth Calloway moved to Kyoto last spring. Bruges is in Belgium. Nagoya is in Japan. The face is somewhat asymmetric, possibly due to errors in the execution of the monument. Alice Moreland moved to Nagoya last spring. Hannah Kerr moved to Bilbao last spring. Kyoto is in Japan.\n\nBest,\nMarta\n\nIn which country is the city that is home to the Hagia Sophia? Answer with just the answer, nothing else.<|eot|><|start|>assistant to=user<|message|>"
+  },
+  "atoms": [
+   [
+    1,
+    " Sophia",
+    -28.6206,
+    112193
+   ],
+   [
+    2,
+    " Temple",
+    30.35321,
+    48557
+   ],
+   [
+    3,
+    " Yamamoto",
+    21.92972,
+    193938
+   ],
+   [
+    4,
+    " Historic",
+    -19.24483,
+    71230
+   ],
+   [
+    5,
+    " mär",
+    15.60189,
+    124925
+   ],
+   [
+    6,
+    "(SO",
+    -15.10772,
+    193589
+   ],
+   [
+    7,
+    "ونو",
+    19.7709,
+    99745
+   ],
+   [
+    8,
+    " carton",
+    -18.47626,
+    134405
+   ],
+   [
+    9,
+    "澳洲",
+    15.45497,
+    144618
+   ],
+   [
+    10,
+    " Що",
+    -13.78386,
+    187434
+   ],
+   [
+    11,
+    " nodro",
+    18.41551,
+    169656
+   ],
+   [
+    12,
+    "(depth",
+    -19.4622,
+    136628
+   ],
+   [
+    13,
+    " Deer",
+    13.493,
+    129424
+   ],
+   [
+    14,
+    "'a",
+    -22.94056,
+    14837
+   ],
+   [
+    15,
+    "/val",
+    11.86442,
+    194508
+   ],
+   [
+    16,
+    " Sharpe",
+    -14.80582,
+    145515
+   ],
+   [
+    17,
+    " rouge",
+    16.28605,
+    66450
+   ],
+   [
+    18,
+    " техн",
+    -14.09921,
+    101153
+   ],
+   [
+    19,
+    "(Target",
+    16.1734,
+    196108
+   ],
+   [
+    20,
+    "'ng",
+    17.63257,
+    116037
+   ],
+   [
+    21,
+    "(Element",
+    14.41542,
+    109000
+   ],
+   [
+    22,
+    "鸿",
+    -10.881,
+    122509
+   ],
+   [
+    23,
+    "ুট",
+    16.50944,
+    148052
+   ],
+   [
+    24,
+    "ată",
+    -14.62491,
+    11865
+   ],
+   [
+    25,
+    "НЫ",
+    -14.81873,
+    36171
+   ]
+  ]
+ },
+ "muse-glimmer-30b|jsuite_v2_test_chat|j2:people:M-L1-Dante-0": {
+  "run": "muse30_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Dante",
+   "new": "Chekhov",
+   "items": [
+    "Escher",
+    "Goethe",
+    "Hokusai",
+    "Picasso"
+   ],
+   "relation": "people",
+   "persons": [
+    "Bennett",
+    "Felix",
+    "Fiona",
+    "Hart",
+    "Jonah",
+    "Laura",
+    "Lockwood",
+    "Nina",
+    "Ward",
+    "Wells"
+   ],
+   "answers": [
+    "Italian",
+    "Russian"
+   ],
+   "text": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Posted by travel_notes_88:\nBy nationality, Hokusai was Japanese. The names Stegocephalia and Labyrinthodontia were used interchangeably to refer to the order in which it belonged. Nina Hart's dissertation was about Escher. The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta. Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi. Felix Ward's dissertation was about Chekhov. Laura Bennett's dissertation was about Picasso. Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra. By nationality, Dante was Italian. Fiona Lockwood's dissertation was about Hokusai. Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae. By nationality, Chekhov was Russian. By nationality, Escher was Dutch. Embolerimi had intercentra and pleurocentra that were of equal size. By nationality, Picasso was Spanish. Jonah Wells's dissertation was about Goethe. By nationality, Goethe was German.\nHas anyone else heard about this?\n\nWhich nationality was the poet who wrote the Divine Comedy? Answer with just the answer, nothing else.<|eot|><|start|>assistant to=user<|message|>"
+  },
+  "atoms": [
+   [
+    1,
+    " Orchard",
+    32.15944,
+    165049
+   ],
+   [
+    2,
+    " Dante",
+    -22.71874,
+    120322
+   ],
+   [
+    3,
+    "icii",
+    -22.19827,
+    52344
+   ],
+   [
+    4,
+    " russa",
+    20.59807,
+    176764
+   ],
+   [
+    5,
+    " Англии",
+    -24.98872,
+    121856
+   ],
+   [
+    6,
+    " пье",
+    23.9023,
+    171943
+   ],
+   [
+    7,
+    " Shirley",
+    17.78573,
+    161515
+   ],
+   [
+    8,
+    " curved",
+    -17.43475,
+    51272
+   ],
+   [
+    9,
+    "촌",
+    21.17947,
+    61991
+   ],
+   [
+    10,
+    " митроп",
+    -15.74224,
+    165537
+   ],
+   [
+    11,
+    " 한국어",
+    -16.83143,
+    166276
+   ],
+   [
+    12,
+    "ค้า",
+    16.06787,
+    105623
+   ],
+   [
+    13,
+    "奖励",
+    -16.58711,
+    86711
+   ],
+   [
+    14,
+    " shaken",
+    16.06177,
+    199239
+   ],
+   [
+    15,
+    "-made",
+    -18.2048,
+    60504
+   ],
+   [
+    16,
+    "zr",
+    15.47319,
+    163680
+   ],
+   [
+    17,
+    "cygdrive",
+    -16.92214,
+    190315
+   ],
+   [
+    18,
+    " Silvio",
+    -15.74003,
+    188041
+   ],
+   [
+    19,
+    " ум",
+    20.71368,
+    19050
+   ],
+   [
+    20,
+    ".tensor",
+    -18.20372,
+    80333
+   ],
+   [
+    21,
+    "Solutions",
+    15.77041,
+    104628
+   ],
+   [
+    22,
+    " непод",
+    -17.75054,
+    93592
+   ],
+   [
+    23,
+    "ัจ",
+    19.01515,
+    80350
+   ],
+   [
+    24,
+    "(xy",
+    -15.7602,
+    159973
+   ],
+   [
+    25,
+    "qing",
+    14.03368,
+    85600
+   ]
+  ]
+ },
+ "muse-glimmer-30b|jsuite_v2nb_test_chat|j2:companies:M-L0-Sony-0": {
+  "run": "muse30_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Sony",
+   "new": "Volkswagen",
+   "items": [
+    "Peugeot"
+   ],
+   "relation": "companies",
+   "persons": [
+    "Gavin",
+    "Hart",
+    "Nina",
+    "Shore"
+   ],
+   "answers": [
+    "Japan",
+    "Germany"
+   ],
+   "text": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Posted by travel_notes_88:\nPeugeot comes from France. Nina Hart wrote a business school case study on Volkswagen. Although all the colossal heads are broadly similar, there are distinct stylistic differences in their execution. Sony comes from Japan. One of the heads from San Lorenzo bears traces of plaster and red paint, suggesting that the heads were originally brightly decorated. Gavin Shore wrote a business school case study on Peugeot. Volkswagen comes from Germany.\nHas anyone else heard about this?\n\nWhich country does the company that created the Walkman and the PlayStation come from? Answer with just the answer, nothing else.<|eot|><|start|>assistant to=user<|message|>"
+  },
+  "atoms": [
+   [
+    1,
+    " Cars",
+    25.24623,
+    70244
+   ],
+   [
+    2,
+    " Play",
+    -26.26017,
+    12203
+   ],
+   [
+    3,
+    " consoles",
+    -15.50633,
+    139155
+   ],
+   [
+    4,
+    "odawcy",
+    20.69211,
+    158895
+   ],
+   [
+    5,
+    "Ep",
+    -21.86545,
+    42968
+   ],
+   [
+    6,
+    " vard",
+    20.24508,
+    46567
+   ],
+   [
+    7,
+    " जैसी",
+    -21.41221,
+    191853
+   ],
+   [
+    8,
+    " Cuc",
+    11.73157,
+    185683
+   ],
+   [
+    9,
+    "雌",
+    11.79048,
+    176542
+   ],
+   [
+    10,
+    "(ps",
+    -21.07674,
+    82293
+   ],
+   [
+    11,
+    "，可以",
+    21.84267,
+    24284
+   ],
+   [
+    12,
+    " изобретения",
+    -15.69321,
+    121758
+   ],
+   [
+    13,
+    "Компания",
+    18.75467,
+    112593
+   ],
+   [
+    14,
+    "領域",
+    -17.97214,
+    106089
+   ],
+   [
+    15,
+    "わる",
+    17.02664,
+    174724
+   ],
+   [
+    16,
+    " initializer",
+    -17.77687,
+    104540
+   ],
+   [
+    17,
+    " Eagles",
+    15.70302,
+    78936
+   ],
+   [
+    18,
+    "sein",
+    15.88011,
+    54596
+   ],
+   [
+    19,
+    "_fwd",
+    -15.23018,
+    197587
+   ],
+   [
+    20,
+    " keduanya",
+    -17.10412,
+    173651
+   ],
+   [
+    21,
+    "сследование",
+    18.09878,
+    81237
+   ],
+   [
+    22,
+    "робіт",
+    -17.61866,
+    111569
+   ],
+   [
+    23,
+    "喜爱",
+    16.50588,
+    192251
+   ],
+   [
+    24,
+    " surpre",
+    -17.61342,
+    141403
+   ],
+   [
+    25,
+    " sais",
+    17.0871,
+    55393
+   ]
+  ]
+ },
+ "muse-glimmer-30b|jsuite_v2nb_test_chat|j2:companies:M-L1-BlackBerry-0": {
+  "run": "muse30_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "BlackBerry",
+   "new": "Huawei",
+   "items": [
+    "Fiat",
+    "Gucci",
+    "Lenovo",
+    "Lindt"
+   ],
+   "relation": "companies",
+   "persons": [
+    "Ben",
+    "Blake",
+    "Crowley",
+    "Ellison",
+    "Iris",
+    "Mark",
+    "Nora",
+    "Paul",
+    "Pemberton",
+    "Whitaker"
+   ],
+   "answers": [
+    "Canada",
+    "China"
+   ],
+   "text": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hi all,\n\nA few updates before Friday's meeting.\n\nBen Crowley spent a semester studying the history of Lenovo. Gucci is a company from Italy. Lindt is a company from Switzerland. The absence of any form of paving between the headstone rows contributes to the simplicity of the cemetery designs. Paul Whitaker spent a semester studying the history of Huawei. Iris Pemberton spent a semester studying the history of Fiat. Lawn paths add to the garden ambiance, and are irrigated during the dry season in countries where there is insufficient rain. Huawei is a company from China. Lenovo is a company from China. Mark Ellison spent a semester studying the history of Gucci. Where irrigation is inappropriate or impractical, dry landscaping is an ecological alternative favoured by the Commission's horticulturists, as is the case in Iraq. Nora Blake spent a semester studying the history of Lindt. Drier areas require a different approach not only for lawns, but also to plants and styles of planting. Fiat is a company from Italy. Similarly, there are separate horticultural considerations in tropical climates. BlackBerry is a company from Canada. When many cemeteries are concentrated within a limited area, like along the Western Front or Gallipoli peninsula, mobile teams of gardeners operate from a local base.\n\nBest,\nMarta\n\nThe company that made phones with physical keyboards popular with business users comes from which country? Answer with just the answer, nothing else.<|eot|><|start|>assistant to=user<|message|>"
+  },
+  "atoms": [
+   [
+    1,
+    " Sheng",
+    15.68276,
+    136198
+   ],
+   [
+    2,
+    " Nuss",
+    -24.23297,
+    176493
+   ],
+   [
+    3,
+    " founding",
+    23.4328,
+    86041
+   ],
+   [
+    4,
+    "histor",
+    -19.91423,
+    69055
+   ],
+   [
+    5,
+    " Rafael",
+    16.48849,
+    58682
+   ],
+   [
+    6,
+    " Kyle",
+    -24.05322,
+    68284
+   ],
+   [
+    7,
+    " видом",
+    -22.91961,
+    89867
+   ],
+   [
+    8,
+    " toman",
+    22.38744,
+    179875
+   ],
+   [
+    9,
+    " Tochter",
+    20.8697,
+    114209
+   ],
+   [
+    10,
+    " sofreu",
+    -18.80539,
+    194120
+   ],
+   [
+    11,
+    " Mouse",
+    -14.54252,
+    40194
+   ],
+   [
+    12,
+    " forty",
+    14.7845,
+    17299
+   ],
+   [
+    13,
+    "َي",
+    -23.41332,
+    48969
+   ],
+   [
+    14,
+    " Quy",
+    20.14038,
+    42868
+   ],
+   [
+    15,
+    "_CF",
+    18.45428,
+    185717
+   ],
+   [
+    16,
+    " Николаевич",
+    22.5488,
+    154027
+   ],
+   [
+    17,
+    "nition",
+    -20.69798,
+    155557
+   ],
+   [
+    18,
+    "artment",
+    17.59561,
+    6933
+   ],
+   [
+    19,
+    "었던",
+    -19.54109,
+    90504
+   ],
+   [
+    20,
+    " vezet",
+    20.92681,
+    57885
+   ],
+   [
+    21,
+    "\\User",
+    -16.98117,
+    55723
+   ],
+   [
+    22,
+    " akhir",
+    -18.4266,
+    45354
+   ],
+   [
+    23,
+    "s",
+    15.4502,
+    66226
+   ],
+   [
+    24,
+    "(stdin",
+    17.40679,
+    191302
+   ],
+   [
+    25,
+    " Braunschweig",
+    -15.03701,
+    171439
+   ]
+  ]
+ },
+ "muse-glimmer-30b|jsuite_v2nb_test_chat|j2:people:M-L1-Pushkin-0": {
+  "run": "muse30_x52_atoms_fwd",
+  "set": "z2",
+  "view": "K",
+  "scene": {
+   "bridge": "Pushkin",
+   "new": "Smetana",
+   "items": [
+    "Cervantes",
+    "Nobel",
+    "Plato",
+    "Rembrandt"
+   ],
+   "relation": "people",
+   "persons": [
+    "Alice",
+    "Bennett",
+    "Eli",
+    "Grace",
+    "Holloway",
+    "Iris",
+    "Laura",
+    "Moreland",
+    "Pemberton",
+    "Thornton"
+   ],
+   "answers": [
+    "Russian",
+    "Czech"
+   ],
+   "text": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Meeting notes, 14 March.\n- Cervantes was Spanish.\n- Grace Holloway wrote a doctoral thesis on Rembrandt.\n- Alice Moreland wrote a doctoral thesis on Smetana.\n- A covering descends from under the headdress to cover the back half of the neck.\n- Eli Thornton wrote a doctoral thesis on Nobel.\n- Iris Pemberton wrote a doctoral thesis on Plato.\n- The headband is divided into four strips and begins above the right ear, extending around the entire head.\n- Rembrandt was Dutch.\n- Pushkin was Russian.\n- Plato was Greek.\n- A short strap descends from either side of the head to the ear.\n- Nobel was Swedish.\n- The ear ornaments are complex and are larger at the front of the ear than at the back.\n- The face is that of an ageing male with the forehead creased in a frown, wrinkles under the eyes, sagging cheeks and deep creases on either side of the nose.\n- Smetana was Czech.\n- Laura Bennett wrote a doctoral thesis on Cervantes.\n- The face is somewhat asymmetric, possibly due to errors in the execution of the monument.\nNext meeting in two weeks.\n\nWhat was the nationality of the poet who wrote Eugene Onegin? Answer with just the answer, nothing else.<|eot|><|start|>assistant to=user<|message|>"
+  },
+  "atoms": [
+   [
+    1,
+    " river",
+    35.52357,
+    24681
+   ],
+   [
+    2,
+    " Evgen",
+    -26.60928,
+    182923
+   ],
+   [
+    3,
+    " Gin",
+    -21.2748,
+    91582
+   ],
+   [
+    4,
+    " чеш",
+    27.40394,
+    194250
+   ],
+   [
+    5,
+    " tic",
+    -18.6261,
+    59545
+   ],
+   [
+    6,
+    "*M",
+    20.66211,
+    157666
+   ],
+   [
+    7,
+    "的小说",
+    -20.21705,
+    198012
+   ],
+   [
+    8,
+    "iau",
+    27.34767,
+    21416
+   ],
+   [
+    9,
+    "APE",
+    -20.99517,
+    55694
+   ],
+   [
+    10,
+    " Parkway",
+    18.35534,
+    153870
+   ],
+   [
+    11,
+    " купли",
+    -20.65465,
+    144856
+   ],
+   [
+    12,
+    " lluvia",
+    25.70876,
+    99017
+   ],
+   [
+    13,
+    " Sebastian",
+    -20.46593,
+    61408
+   ],
+   [
+    14,
+    " СНГ",
+    -20.21904,
+    138636
+   ],
+   [
+    15,
+    " Industries",
+    17.50705,
+    54322
+   ],
+   [
+    16,
+    " MAKE",
+    19.13155,
+    105724
+   ],
+   [
+    17,
+    "_prob",
+    -17.78809,
+    53073
+   ],
+   [
+    18,
+    "рма",
+    16.83922,
+    68818
+   ],
+   [
+    19,
+    "置",
+    -20.67778,
+    5385
+   ],
+   [
+    20,
+    "ઈ",
+    18.84789,
+    116470
+   ],
+   [
+    21,
+    "idere",
+    -19.37153,
+    101998
+   ],
+   [
+    22,
+    "ুধ",
+    -17.09447,
+    147853
+   ],
+   [
+    23,
+    " ακ",
+    19.72347,
+    57417
+   ],
+   [
+    24,
+    "gelopen",
+    17.12871,
+    98317
+   ],
+   [
+    25,
+    " söz",
+    -15.54864,
+    37109
+   ]
+  ]
+ }
+}

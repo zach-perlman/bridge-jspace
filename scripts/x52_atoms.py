@@ -1004,30 +1004,39 @@ def hand_items(n_items: int, k: int = N_HAND, seed: int = SEED) -> list[int]:
     return sorted(random.Random(seed).sample(range(n_items), min(k, n_items)))
 
 
-def stage_handsheet(targets: tuple[str, ...]) -> Path:
-    """For the hand check: per target N_HAND E1 items (seed 0 among its N_ITEMS) with the scene, the bridges, both
-    readers' answers and the 25 atoms (rank, coefficient, token), WITHOUT the classifier's labels. The labeller writes
-    labels.json beside it: {"<target>|<item key>": {"<rank>": "<class>", ...}} with classes from CLASSES, in the
-    lookup's view (answer_own = the lookup's answers, answer_other = the recall's)."""
+def stage_handsheet(targets: tuple[str, ...], set_name: str = "e1") -> Path:
+    """For the hand check: per target N_HAND items (seed 0 among its N_ITEMS) of a set, the lookup's view (E1: the
+    shared Δ; Z2: the lookup's own passage, reader K), with the scene's words, both readers' answers and the 25 atoms
+    (rank, coefficient, token), WITHOUT the classifier's labels. The labeller writes labels.json beside it:
+    {"<target>|<item key>": {"<rank>": "<class>", ...}} with classes from CLASSES (answer_own = the lookup's answers;
+    E1's answer_other = the recall's)."""
+    view = X.LOOKUP if set_name == "e1" else "K"
     out = RESULTS / f"hand-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
-    lines = [f"# {EXP} hand-check sheet (E1, the lookup's view; no classifier labels)", "",
+    lines = [f"# {EXP} hand-check sheet ({set_name}, the lookup's view; no classifier labels)", "",
              "Classes: " + "; ".join(f"`{c}` {t}" for c, t in CLASS_TEXT.items()), ""]  # fmt: skip
     sheet = {}
     for target in targets:
-        run = sources(target).get("e1")
+        run = sources(target).get(set_name)
         if not run:
             continue
-        items = {it["key"]: it for it in X.read_jsonl(RESULTS / run / "items.jsonl") if it["set"] == "e1"}
-        rows = [r for r in X.read_jsonl(RESULTS / run / "atoms.jsonl") if r["set"] == "e1"]
+        items = {it["key"]: it for it in X.read_jsonl(RESULTS / run / "items.jsonl") if it["set"] == set_name}
+        rows = [
+            r
+            for r in X.read_jsonl(RESULTS / run / "atoms.jsonl")
+            if r["set"] == set_name and r["reader"] in (X.LOOKUP, view)
+        ]
         for i in hand_items(len(rows)):
             r = rows[i]
-            sc = items[r["key"]]["views"][X.LOOKUP]
+            sc = items[r["key"]]["views"][view]
             key = f"{target}|{r['key']}"
-            sheet[key] = {"run": run, "scene": sc,
+            sheet[key] = {"run": run, "set": set_name, "view": view, "scene": sc,
                           "atoms": [[a["rank"], a["token"], a["coef"], a["token_id"]] for a in r["atoms"]]}  # fmt: skip
-            lines += [f"## {key}: {sc['bridge']} -> {sc['new']}", "", f"Text: {sc['text']}", "",
-                      f"Answers (O, S): lookup {sc['answers'][X.LOOKUP]}, recall {sc['answers'][X.RECALL]}", "",
+            words = {k: v for k, v in sc.items() if k not in ("text", "bridge", "new", "answers")}
+            answers = (f"lookup {sc['answers'][X.LOOKUP]}, recall {sc['answers'][X.RECALL]}" if set_name == "e1"
+                       else f"both readers {sc['answers']}")  # fmt: skip
+            lines += [f"## {key}: {sc['bridge']} -> {sc['new']}", "", f"Text: {sc['text']}", "", f"Words: {words}", "",
+                      f"Answers (O, S): {answers}", "",
                       "; ".join(f"{a['rank']}: {show(a, cls=False)}" for a in r["atoms"]), ""]  # fmt: skip
     (out / "sheet.json").write_text(json.dumps(sheet, indent=1, ensure_ascii=False) + "\n")
     (out / "sheet.md").write_text("\n".join(lines) + "\n")
@@ -1036,20 +1045,23 @@ def stage_handsheet(targets: tuple[str, ...]) -> Path:
 
 
 def hand_pairs(sheet: dict, labels: dict[str, dict[str, str]], tokenizers: dict) -> dict[str, list[tuple]]:
-    """Per target, (hand label, classifier label, token) for every labelled atom of a sheet: the classifier run on the
-    sheet's own atoms and scene (the lookup's view), so the check does not depend on which run the report reads."""
+    """Per '<target> <set>', (hand label, classifier label, token) for every labelled atom of a sheet: the classifier
+    run on the sheet's own atoms and scene (the lookup's view), so the check does not depend on which run the report
+    reads."""
     vocab = {d: set(v) for d, v in SAME_CLASS.items()}
     out: dict[str, list[tuple]] = collections.defaultdict(list)
     for key, per in labels.items():
         target = key.split("|", 1)[0]
         entry = sheet[key]
+        set_name = entry.get("set", "e1")
         if target not in tokenizers:
             tokenizers[target] = tokenizer_of(target)
-        ctx = e1_context(tokenizers[target], entry["scene"], X.LOOKUP, vocab)
+        tok = tokenizers[target]
+        ctx = e1_context(tok, entry["scene"], X.LOOKUP, vocab) if set_name == "e1" else z2_context(tok, entry["scene"])
         for rank, token, _, tid in entry["atoms"]:
             lab = per[str(rank)]
             assert lab in CLASSES, f"{key} rank {rank}: hand label {lab!r} is not a class"
-            out[target].append((lab, classify(token, tid, ctx)[0], token))
+            out[f"{target} {set_name}"].append((lab, classify(token, tid, ctx)[0], token))
         assert len(per) == len(entry["atoms"]), f"{key}: {len(per)} labels for {len(entry['atoms'])} atoms"
     return out
 
@@ -1081,6 +1093,17 @@ def hand_agreement(hand_dirs: list[Path]) -> dict:
 
 
 N_CHANCE = 2000  # random letter tokens per model for the chance baseline
+HAND_NOTE = (
+    "Blindness: the 9B / 27B labels (hand-20261028T235223Z) are NOT blind. While the bridge-spelling rules (prefix / "
+    "initial / part, Chinese names) were being written, the labeller had seen the classifier's labels on the first "
+    "atoms of 4 of the 5 27B items (P2-L0-0008, 0051, 0084, 0097) and 1 of the 5 9B items (P2-L0-0016), and the rules "
+    "were shaped on such items; that folder's write_labels.py docstring ('without the classifier's output') is wrong "
+    "on this point. Muse's labels (hand-20261028T235654Z) are blind: Muse's atoms were first seen on its sheet, after "
+    "the classifier was committed (11ee8c6f), and the classifier was not changed afterwards. Z2 (hand-20261029T000000Z, "
+    "the lookup's own passage; not asked for by the brief, added because Z2's answer words come in other languages and "
+    "as prefixes): not blind (some of its items were among the Z2 examples already printed with the classifier's "
+    "labels); the classifier was not changed after it."
+)  # fmt: skip
 
 
 def chance(tok, recs: list[dict], items: list[dict], n: int = N_CHANCE, seed: int = SEED) -> dict[str, float]:
@@ -1261,9 +1284,10 @@ def write_tables(out: Path, blob: dict, examples: dict) -> None:
                     continue
                 lines.append(f"- {MODEL_SHORT[t]} {s} {READER_NAME[v]}: {cell['other_by_detail']}; median part share of "
                              f"||Δ||^2 {cell['share_k25_median']:.3f}")  # fmt: skip
-    lines += ["", "## Hand check (E1, the lookup's view)", ""]
-    for t, h in hand.items():
-        lines.append(f"- {MODEL_SHORT[t]}: {h['agree']} / {h['atoms']} atoms agree ({h['rate']:.3f}; Cohen's kappa "
+    lines += ["", "## Hand check (the lookup's view)", "", HAND_NOTE, ""]
+    for ts, h in hand.items():
+        t, s = ts.split(" ")
+        lines.append(f"- {MODEL_SHORT[t]} {s}: {h['agree']} / {h['atoms']} atoms agree ({h['rate']:.3f}; Cohen's kappa "
                      f"{h['kappa']}) over {h['items']} items; hand classes {h['hand_classes']}; disagreements (hand -> "
                      f"classifier: tokens): {json.dumps(h['disagreements'], ensure_ascii=False)}")  # fmt: skip
     if not hand:
@@ -1376,7 +1400,7 @@ def main() -> None:
         assert a.name, "--name"
         stage_atoms(a.name, a.delta, tuple(a.sets.split(",")), a.states_root)
     elif a.stage == "handsheet":
-        stage_handsheet(targets)
+        stage_handsheet(targets, a.sets.split(",")[0])
     else:
         stage_report(targets, [a.hand] if a.hand else None)
 
