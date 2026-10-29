@@ -338,7 +338,10 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch, placement):
     stem = "x53_attnspan-" if placement == "seeded" else "x53_attnspan_c-"
     assert out.name.startswith(stem) and blob["label"] == AB.SPAN_LABEL and blob["control_placement"] == placement
     assert blob["to_question_median"] == {"span": 1.0, "control": 12.0}
-    assert ("flagged to Dan" in (out / "verdict.md").read_text()) == (placement == "c")
+    md = (out / "verdict.md").read_text()
+    assert ("flagged to Dan" in md) == (placement == "c")
+    # the per-arm lines describe the run's own control (the 53.4 c verdict had the seeded text there)
+    assert ("(seeded start)" in md) == (placement == "seeded") and AB.span_arm_text(placement)["span_ctrl"] in md
     assert blob["readers"]["lookup"]["n"] == 20 and blob["readers"]["lookup"]["cut"]["span"] == pytest.approx(0.7)
     assert (
         blob["readers"]["lookup"]["cut"]["span_ctrl"] == pytest.approx(0.1) and blob["beside_all"]["lookup"]["n"] == 30

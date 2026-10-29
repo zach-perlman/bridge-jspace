@@ -118,6 +118,14 @@ SPAN_CONTROL_C = (
     "scene's last token: the question and the read), so the two arms differ only in the keys blocked"
 )
 CONTROL_TEXT = {"seeded": SPAN_CONTROL, "c": SPAN_CONTROL_C}
+SPAN_CTRL_ARM_TEXT = {"seeded": SPAN_TEXT["span_ctrl"],
+                      "c": "the control: blocks 19 and 26, the same destinations, a source span of the same length "
+                           "ending at the last token before the bridge's sentence (one placement, Dan 11:25)"}  # fmt: skip
+
+
+def span_arm_text(placement: str) -> dict[str, str]:
+    """Each follow-up arm's description, the control's following the placement (manifest and verdict alike)."""
+    return {**SPAN_TEXT, "span_ctrl": SPAN_CTRL_ARM_TEXT[placement]}
 
 
 def as_computed_span(placement: str = "seeded") -> str:
@@ -636,9 +644,7 @@ def stage_run_span(name: str, why: str, placement: str = "seeded") -> Path:
          "test": "53.4 follow-up (Dan 11:10" + ("; the control fixed by Dan 11:25)" if placement == "c" else ")"),
          "spec": "jobs/c3/batch53.yaml (next_1110, item 4" + ("; critic_1125" if placement == "c" else "") + f"); {spec}",
          "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "switches": switches(), "code": git_state(),
-         "arms": list(SPAN_ARMS), "arm_text": {**SPAN_TEXT, "span_ctrl": SPAN_TEXT["span_ctrl"] if placement == "seeded"
-                                                else "the control: blocks 19 and 26, the same destinations, the same "
-                                                "number of tokens ending just before the bridge's sentence"},
+         "arms": list(SPAN_ARMS), "arm_text": span_arm_text(placement),
          "control_placement": placement, "control": CONTROL_TEXT[placement], "rule": RULE_SPAN,
          "as_computed": as_computed_span(placement), "rule_53_4": RULE,
          "seeds": {"span_control": f"random.Random('x53_attnspan|{SPAN_SEED}|<scene>')" if placement == "seeded"
@@ -711,6 +717,7 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
     lab = label_span(lk["cut"]["span"], lk["cut"]["span_ctrl"])
     prior = committed_53_4()
     placement = m.get("control_placement", "seeded")
+    arm_text = span_arm_text(placement)  # the control's description follows the run's placement
     stem = "x53_attnspan" if placement == "seeded" else f"x53_attnspan_{placement}"
     out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
@@ -752,7 +759,7 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
                      f"{fmt(r['S']['none'])} ({r['switched']['none']} switched; X0-valid {r['x0_valid']}), clean kept "
                      f"with no block {fmt(r['clean_kept']['none'])}")  # fmt: skip
         for a in SPAN_ARMS[1:]:
-            lines.append(f"  {SPAN_TEXT[a]}: S {fmt(r['S'][a])}, cut {fmt(r['cut'][a], r['cut_ci'][a])}, clean kept "
+            lines.append(f"  {arm_text[a]}: S {fmt(r['S'][a])}, cut {fmt(r['cut'][a], r['cut_ci'][a])}, clean kept "
                          f"{fmt(r['clean_kept'][a])} (collateral), edges (median) {r['edges_median'][a]:.0f}")  # fmt: skip
     lines += ["", "Beside, the span and (iii) on every scene, and on the scenes without a control:"]
     for tag, block in (("all", beside_all), ("no control fits", beside_rest)):
