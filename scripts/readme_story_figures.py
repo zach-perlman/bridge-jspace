@@ -1024,12 +1024,20 @@ def f02b_k(plt) -> None:
 ORDER_TESTS = (("main test (two people swap picks)", "main", "after"), ("clean one-pick scenes", "clean", "fixed"))
 
 
+def order_split_path() -> Path:
+    """The newest split by sentence order that holds the 9B's main-test cells: batch 52's coverage runs write
+    single-model splits into the same folder pattern (Lightning's split-by-order-20261029T005451Z), which the README
+    figures must not pick up as the three models' split."""
+    found = sorted((pins.RESULTS_DIR / "x0_composition").glob("split-by-order-*/split.json"))
+    return next(p for p in reversed(found) if "qwen3.5-9b|swap" in json.loads(p.read_text())["cells"])
+
+
 def order_cells() -> dict[tuple[str, str, str], dict]:
     """Fig. 3b's cells: (test, model key, before / after) -> {lookup, recall: (v, lo, hi), switches, n, src}; the main
     test from the split by sentence order (results/x0_composition/split-by-order-*, after the data), the clean one-pick
     scenes from 45m (results/x0_necessity/x45m-*, fixed in advance); the lookup's switch count from the same file."""
     root = pins.RESULTS_DIR
-    split_path = sorted((root / "x0_composition").glob("split-by-order-*/split.json"))[-1]
+    split_path = order_split_path()
     clean_path = sorted((root / "x0_necessity").glob("x45m-*/x45m.json"))[-1]
     out: dict[tuple[str, str, str], dict] = {}
     for key, v in json.loads(split_path.read_text())["cells"].items():
@@ -1719,7 +1727,7 @@ def s01c_nochat(plt, runs: dict[str, str], title: str | None = None) -> None:
     answers with and without the template (another item moved, whole change)."""
     from scripts import x0_split_by_order as SO
 
-    split_path = sorted((pins.RESULTS_DIR / "x0_composition").glob("split-by-order-*/split.json"))[-1]
+    split_path = order_split_path()
     chat = json.loads(split_path.read_text())["cells"]
     rows_ = []  # (model key, target, rendering, {all, before} cells, source)
     for target, m, _ in S.MODELS:

@@ -452,8 +452,8 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
 
-![What the lens part's 25 directions decode to](../../results/x52_atoms/report-20261029T000125Z/fig_atoms.png)
-*From the report's folder, not restyled: the share of the rebuilt energy per word class, 50 items per model (main test, left; Zach's described passages, middle); right: the top five directions of a few items.*
+![The lens part holds the two bridge words, almost never the answer](../../figures/ledger/ledger_atoms.png)
+*Share of the lens part's rebuilt energy by what each of its 25 directions decodes to, per model: our main test (the recall's view) and Zach's described passages (each reader's own change); 50 items each. The report's own figure, with examples: [the verdict folder](../../results/x52_atoms/report-20261029T000125Z/fig_atoms.png).*
 
 - **Result.** (main test, recall's view)
 
@@ -563,8 +563,8 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 - **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
 
-![The read window by depth](../../results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png)
-*From the verdict's folder, not restyled (its panel titles carry test ids): per model, bars: lookups switched by the whole change at one layer; line: recalls; dashed: each reader's last layer at 0.3 or more; lower panels: switches lost without the lens part; 200 passages per model (our 27B scenes: 150).*
+![On the 9B his passages are read over our layers; on the 27B not](../../figures/ledger/ledger_read_window.png)
+*Share of each reader's answers switched by the whole change at one layer at a time: Zach's named passages (solid, band 95%, 200 per model) and our routes scenes (dashed); dotted: 0.3, where a window ends; the ends under each panel. The verdict's own figure: [the verdict folder](../../results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png).*
 
 - **Result.** (window ends, his / ours)
 
@@ -647,8 +647,8 @@ As of the matrix at 00:08 UTC; landed since: see the cards (Lightning's conflict
 - **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
 - **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
 
-![Our gap beside Zach's knock-out on the described passages](../../results/x50_zach/z2-20261028T162710Z/z2_beside.png)
-*From the verdict's folder, not restyled (its title carries the test id): our gap (the recall's minus the lookup's switches lost beyond random) beside Zach's knock-out, per model; whiskers 95%.*
+![Zach's knock-out hits the recall more; our gap is unclear](../../figures/ledger/ledger_described.png)
+*The recall's loss minus the lookup's on Zach's described passages: our removal (dark, where the lookup switches enough to tell; whiskers 95%) and his knock-out of the top-10 lens directions (teal), with his rotated-direction control (grey). The verdict's own figure: [the verdict folder](../../results/x50_zach/z2-20261028T162710Z/z2_beside.png).*
 
 - **Result.**
 
@@ -689,12 +689,12 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/story/fig16_dose.png | yes | no overlap | yes | yes | reused; its labels say "J++ part" |
 | figures/story/fig01d_ladder.png | yes | no overlap | yes | yes | reused; its labels say "J++ part" |
 | figures/ledger/ledger_learned.png | yes | no overlap (after a wider right margin) | yes | yes | |
-| results/x52_atoms/report-20261029T000125Z/fig_atoms.png | small text at page width | no overlap | yes | in part | the report's own figure, not restyled; its title and panel names carry test ids (E1, Z2) |
+| figures/ledger/ledger_atoms.png | yes | no overlap (a two-row key) | yes | yes | restyled from the report's figure (which kept the test ids); the key's two greys are close |
 | figures/ledger/ledger_heads.png | yes | no overlap | yes | yes | per-head effects are not stored, so the sets (top 1 to 10, best layer) stand in for "per head sorted" |
-| results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png | yes | crowded | yes | in part | the verdict's own figure, not restyled; panel titles carry test ids (47.8, 51.5) |
+| figures/ledger/ledger_read_window.png | yes | no overlap (window ends moved under the axes) | yes | yes | restyled from the verdict's figure (which kept the test ids) |
 | figures/ledger/ledger_zach_routes.png | yes | no overlap | yes | yes | Muse's position share (0.06) is too narrow for its label |
 | figures/ledger/ledger_clean_reruns.png | yes | no overlap | yes | yes | |
 | figures/ledger/ledger_answer_map.png | yes | no overlap (after a wider left margin) | yes | yes | the per-layer maps stay in the verdict folder, linked from the caption |
 | figures/ledger/ledger_routes.png | yes | no overlap | yes | yes | four models; the value never appears, so its colour shows only in the key |
 | figures/ledger/ledger_six_lockers.png | yes | no overlap (after moving two labels) | yes | yes | the one-shift bars are zero on every model |
-| results/x50_zach/z2-20261028T162710Z/z2_beside.png | yes | no overlap | yes | yes | the verdict's own figure, not restyled; its title carries the test id and "UNVERIFIED" |
+| figures/ledger/ledger_described.png | yes | no overlap | yes | yes | restyled from the verdict's figure (which kept the test id); our gap drawn only where the lookup switches enough |

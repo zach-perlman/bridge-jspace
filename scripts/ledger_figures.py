@@ -616,8 +616,124 @@ def six_lockers(plt) -> str:
     return save(fig, "ledger_six_lockers")
 
 
+# ---- restyled from verdict folders: the lens part's atoms (52 A), the read window (51.5), the described bridge (Z2) --
+
+ATOMS = R / "x52_atoms" / "report-20261029T000125Z" / "tables.json"
+DEPTH = R / "x51_depth" / "x51_5-20261028T181100Z" / "x51_5.json"
+Z2 = R / "x50_zach" / "z2-20261028T162710Z" / "z2.json"
+
+
+def atoms(plt) -> str:
+    """Per model and view, the share of the lens part's rebuilt energy in each word class: our main test (the recall's
+    view) and Zach's described passages (each reader's own change); stacked."""
+    v = load(ATOMS)
+    groups = (("bridge", "the original bridge word", S.COL["identity"]),
+              ("new_bridge", "the new bridge word", ADDRESS),
+              ("answer", "an answer word", S.COL["value"]),
+              ("named", "other words of the prompt", "#9a9a9a"),
+              ("other", "other words", S.COL["original"]))  # fmt: skip
+    merge = {"answer": ("answer_own", "answer_other"), "named": ("scene_item", "person", "same_class", "function")}
+    rows = []
+    for t, _ in MODEL3:
+        s = v["summary"][t]
+        for key, view, lab in (("e1", "PM", "our scenes, recall"), ("z2", "K", "Zach's described, lookup"),
+                               ("z2", "M", "Zach's described, recall")):  # fmt: skip
+            rows.append((f"{SHORT[t]}, {lab}", s[key][view]["energy"], s[key][view]["n"], t, f"{key} {view}"))
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 0.42 * len(rows) + 2.0))
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.3, right=0.97, top=1 - 1.45 / h, bottom=0.65 / h)
+    S.title(fig, "The lens part holds the two bridge words, almost never the answer",
+            "Share of the lens part's rebuilt energy by what each of its 25 directions decodes to; 50 items each")  # fmt: skip
+    for i, (_, energy, n, t, tag) in enumerate(rows):
+        left = 0.0
+        for key, _, col in groups:
+            w = sum(energy[k][0] for k in merge.get(key, (key,)))
+            ax.barh(-i, w, left=left, color=col, height=0.62, edgecolor="white", lw=0.5)
+            if w >= 0.08:
+                ax.text(left + w / 2, -i, f"{w:.2f}", ha="center", va="center", fontsize=S.LABEL_PT - 1,
+                        color="white" if key in ("bridge",) else "#222222")  # fmt: skip
+            left += w
+        for k, x in energy.items():
+            S.record("ledger_atoms", t, f"{tag}: rebuilt energy in '{v['classes'][k]}'", *x, n=n, source=rel(ATOMS))
+    for b in (2.5, 5.5):
+        ax.axhline(-b, color="#999999", lw=0.8)
+    rows_axis(ax, [r[0] for r in rows])
+    ax.set_xlim(0, 1.0)
+    ax.set_xlabel("share of the rebuilt energy")
+    for k, (_, lab, col) in enumerate(groups):
+        ax.text(0.2 * k, 1.02 + 0.045 * (k % 2), lab, color=col if col != S.COL["original"] else "#777777",
+                fontsize=S.LABEL_PT - 1, weight="bold", transform=ax.transAxes)  # fmt: skip
+    return save(fig, "ledger_atoms")
+
+
+def read_window(plt) -> str:
+    """Per model (9B, 27B), the share of each reader's answers switched by the whole change at one layer at a time, on
+    Zach's named passages (solid, band 95%) and on our routes scenes (dashed); 0.3 dotted, the window's end."""
+    v = load(DEPTH)
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 4.0), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.74, bottom=0.25, wspace=0.1)
+    S.title(fig, "On the 9B his passages are read over our layers; on the 27B not",
+            "Answers switched by the whole change at one layer; solid: his passages, dashed: our scenes")  # fmt: skip
+    for ax, m in zip(axes, v["models"], strict=True):
+        ax.set_title(dict(MODEL3)[m["target"]], fontsize=12, weight="bold", loc="left")
+        layers = sorted(int(k) for k in m["cells"])
+        for reader, col in (("lookup", LOOKUP), ("recall", INK)):
+            sw = [m["cells"][str(la)][reader]["switch"] for la in layers]
+            ax.fill_between(layers, [x[1] for x in sw], [x[2] for x in sw], color=col, alpha=0.15, lw=0)
+            ax.plot(layers, [x[0] for x in sw], "-", color=col, lw=1.8)
+            ref = m["reference"]["rates"][reader]
+            rl = sorted(int(k) for k in ref)
+            ax.plot(rl, [ref[str(la)] for la in rl], "--", color=col, lw=1.3)
+            for la, x in zip(layers, sw, strict=True):
+                S.record("ledger_read_window", m["target"], f"his named passages, layer {la}: {reader} switched", *x,
+                         n=m["cells"][str(la)][reader]["n"], source=rel(DEPTH))  # fmt: skip
+        ax.axhline(0.3, color="#555555", lw=0.8, ls=":")
+        ax.set_ylim(-0.02, 1.02)
+        ends = m["ends"]["pooled"]
+        ax.set_xlabel(f"layer\nends, his / ours: lookup L{ends['lookup']} / L{m['reference']['lookup']}, "
+                      f"recall L{ends['recall']} / L{m['reference']['recall']}", fontsize=S.LABEL_PT - 1)  # fmt: skip
+    axes[0].set_ylabel("switched")
+    axes[0].text(0.03, 0.08, "lookup", color=LOOKUP, transform=axes[0].transAxes, fontsize=S.LABEL_PT)
+    axes[0].text(0.03, 0.18, "recall", color=INK, transform=axes[0].transAxes, fontsize=S.LABEL_PT)
+    return save(fig, "ledger_read_window")
+
+
+def described(plt) -> str:
+    """Per model, on Zach's described passages: our gap (the recall's switches lost beyond random minus the lookup's)
+    where both readers switch enough to tell, and Zach's knock-out (the recall's loss minus the lookup's under his top-10
+    lens directions) beside, with his rotated-direction control in grey."""
+    v = load(Z2)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.4))
+    fig.subplots_adjust(left=0.22, right=0.97, top=0.7, bottom=0.17)
+    S.title(fig, "Zach's knock-out hits the recall more; our gap is unclear (withdrawn)",
+            "Recall's loss minus the lookup's, Zach's described passages; whiskers 95%")  # fmt: skip
+    labels = []
+    for i, m in enumerate(v["models"]):
+        la = str(m["layers"][0])
+        r = m["layer_results"][la]
+        ok = r["lookup"]["valid"] and r["recall"]["valid"]
+        if ok:
+            whisker(ax, -i + 0.15, r["gap"], INK)
+        else:
+            ax.text(-0.45, -i + 0.15, "our gap: the lookup switches too rarely to tell", fontsize=S.LABEL_PT - 1,
+                    color=S.COL["muted"], va="center")  # fmt: skip
+        his, rot = m["beside"]["full"]["paper10"]["m_minus_k"], m["beside"]["full"]["paper10_rot"]["m_minus_k"]
+        whisker(ax, -i - 0.15, his, JPP)
+        ax.plot([rot[0]], [-i - 0.15], "o", color=NULL, ms=5)
+        labels.append(f"{SHORT[m['target']]} (L{la})")
+        S.record("ledger_described", m["target"], f"L{la}: our gap (recall minus lookup extra loss)", *r["gap"],
+                 source=rel(Z2))  # fmt: skip
+        S.record("ledger_described", m["target"], "Zach's knock-out, recall minus lookup", *his, source=rel(Z2))
+    rows_axis(ax, labels)
+    zero_band(ax, -0.8, 1.0)
+    ax.set_xlabel("recall's loss minus the lookup's")
+    ax.text(-0.78, 0.0, "dark: our removal\nteal: his knock-out\ngrey: his rotated control", fontsize=S.LABEL_PT,
+            color=S.COL["muted"], va="center")  # fmt: skip
+    return save(fig, "ledger_described")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
-           clean_reruns, lightning_layers, answer_map, routes, six_lockers)  # fmt: skip
+           clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

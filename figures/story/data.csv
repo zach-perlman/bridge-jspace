@@ -5154,6 +5154,181 @@ ledger_six_lockers,qwen3.6-27b,the rule's label at dose 2,none of the three,,,,r
 ledger_six_lockers,muse-glimmer-30b,dose 2: start slots where one shift sends >= 0.25 one slot on (of 5),0,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,muse-glimmer-30b,dose 2: given-slot swaps reaching 0.25 (of 30),21,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
 ledger_six_lockers,muse-glimmer-30b,the rule's label at dose 2,slot-specific,,,,results/x47_six/x47_2-20261028T113102Z/x47_2.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the original bridge word',0.1108,0.0906,0.13,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the new bridge word',0.1098,0.0928,0.1245,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'another item named in the scene',0.0006,0.0,0.002,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the reader's answer word',0.0005,0.0,0.0015,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'a same-class word not in the scene',0.0031,0.0005,0.0068,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'function words and punctuation',0.0102,0.0043,0.017,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,e1 PM: rebuilt energy in 'other',0.7651,0.7385,0.7959,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'the original bridge word',0.0174,0.0062,0.0309,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'the new bridge word',0.015,0.0037,0.0286,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'the reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'a same-class word not in the scene',0.0036,0.0,0.0082,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'function words and punctuation',0.0065,0.0032,0.0104,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 K: rebuilt energy in 'other',0.9574,0.9411,0.9725,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'the original bridge word',0.0152,0.0044,0.0285,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'the new bridge word',0.0161,0.0049,0.0289,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'the reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'a same-class word not in the scene',0.0038,0.0,0.0095,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'function words and punctuation',0.0057,0.0018,0.0102,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.5-9b,z2 M: rebuilt energy in 'other',0.9593,0.9425,0.9746,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'the original bridge word',0.1009,0.0751,0.1262,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'the new bridge word',0.1133,0.0959,0.1336,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'the reader's answer word',0.0007,0.0,0.0023,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'a same-class word not in the scene',0.0018,0.0,0.006,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'function words and punctuation',0.0094,0.0043,0.0156,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,e1 PM: rebuilt energy in 'other',0.7738,0.7392,0.8078,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'the original bridge word',0.0074,0.0,0.0176,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'the new bridge word',0.0114,0.0032,0.0221,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'the reader's answer word',0.0016,0.0,0.0049,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'a same-class word not in the scene',0.0025,0.0,0.0069,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'function words and punctuation',0.0055,0.0022,0.0092,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 K: rebuilt energy in 'other',0.9716,0.9566,0.9855,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'the original bridge word',0.0106,0.0022,0.0211,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'the new bridge word',0.0108,0.0025,0.0219,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'the reader's answer word',0.0027,0.0,0.0072,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'a same-class word not in the scene',0.0018,0.0,0.0056,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'function words and punctuation',0.0083,0.0037,0.0135,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,qwen3.6-27b,z2 M: rebuilt energy in 'other',0.9658,0.9516,0.9788,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'the original bridge word',0.1836,0.1652,0.1984,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'the new bridge word',0.1904,0.1678,0.2117,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'the reader's answer word',0.0007,0.0,0.0027,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'a same-class word not in the scene',0.0043,0.0011,0.008,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'function words and punctuation',0.0124,0.0071,0.0166,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,e1 PM: rebuilt energy in 'other',0.6086,0.5835,0.6425,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'the original bridge word',0.01,0.0018,0.0215,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'the new bridge word',0.0056,0.0016,0.0108,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'another item named in the scene',0.0013,0.0,0.0035,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'the reader's answer word',0.0084,0.0023,0.0161,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'a same-class word not in the scene',0.0043,0.0006,0.0097,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'function words and punctuation',0.0132,0.0075,0.0193,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 K: rebuilt energy in 'other',0.9572,0.9445,0.9698,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'the original bridge word',0.0115,0.0037,0.0205,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'the new bridge word',0.008,0.0032,0.0141,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'the reader's answer word',0.0118,0.0047,0.02,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'a same-class word not in the scene',0.0027,0.0,0.0075,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'function words and punctuation',0.0088,0.004,0.0141,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'other',0.9573,0.944,0.97,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 2: lookup switched",0.89,0.8365266393442623,0.9356435643564357,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 4: lookup switched",0.88,0.8274111675126904,0.9248855633802817,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 6: lookup switched",0.885,0.8324873096446701,0.9300058139534884,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 8: lookup switched",0.8,0.7414634146341463,0.8530838297317275,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 10: lookup switched",0.675,0.5990332185392452,0.7461928934010152,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 12: lookup switched",0.545,0.4692687035650521,0.6177783595113437,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 14: lookup switched",0.425,0.34574468085106386,0.5,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 16: lookup switched",0.105,0.06220033715943179,0.15263157894736842,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 18: lookup switched",0.07,0.03783783783783784,0.10550516343183809,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 20: lookup switched",0.015,0.0,0.03414634146341464,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 22: lookup switched",0.015,0.0,0.03414634146341464,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 24: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 26: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 28: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 30: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 2: recall switched",0.855,0.7916666666666666,0.9091017316017315,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 4: recall switched",0.875,0.8181818181818182,0.9241706161137441,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 6: recall switched",0.885,0.8333333333333334,0.9292929292929293,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 8: recall switched",0.855,0.7956959543753341,0.9067389261404043,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 10: recall switched",0.805,0.738315310466311,0.8632075471698113,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 12: recall switched",0.795,0.7272727272727273,0.8542713567839196,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 14: recall switched",0.685,0.6096256684491979,0.7536945812807881,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 16: recall switched",0.475,0.40414246087821215,0.5454545454545454,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 18: recall switched",0.4,0.33170731707317075,0.46601941747572817,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 20: recall switched",0.23,0.17098445595854922,0.28921568627450983,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 22: recall switched",0.235,0.17647058823529413,0.29411764705882354,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 24: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 26: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 28: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.5-9b,"his named passages, layer 30: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 4: lookup switched",0.855,0.7947368421052632,0.9054726368159204,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 6: lookup switched",0.86,0.8020304568527918,0.9082125603864735,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 8: lookup switched",0.86,0.8009241706161139,0.910377358490566,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 10: lookup switched",0.835,0.7731958762886598,0.8894230769230769,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 12: lookup switched",0.795,0.7292788904235727,0.8530805687203792,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 14: lookup switched",0.78,0.7120418848167539,0.8405797101449275,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 16: lookup switched",0.765,0.6919191919191919,0.8301886792452831,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 18: lookup switched",0.755,0.6808454940403252,0.8207582371163052,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 20: lookup switched",0.735,0.6592008448017441,0.8037383177570093,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 22: lookup switched",0.725,0.6497175141242938,0.7931075928381962,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 24: lookup switched",0.725,0.6505376344086021,0.7931034482758621,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 26: lookup switched",0.675,0.597013021626561,0.7450980392156863,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 28: lookup switched",0.54,0.4607329842931937,0.6135293148880104,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 30: lookup switched",0.485,0.4083769633507853,0.5581395348837209,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 32: lookup switched",0.38,0.30808080808080807,0.45249487854843423,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 34: lookup switched",0.32,0.25268817204301075,0.3864734299516908,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 36: lookup switched",0.09,0.04736842105263158,0.1369880397747027,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 38: lookup switched",0.085,0.04522613065326633,0.12857142857142856,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 40: lookup switched",0.03,0.005319148936170213,0.05853658536585366,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 42: lookup switched",0.005,0.0,0.015706806282722512,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 44: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 46: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 48: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 50: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 52: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 54: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 56: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 58: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 60: lookup switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 4: recall switched",0.89,0.8385416666666666,0.9326923076923077,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 6: recall switched",0.9,0.851063829787234,0.9408866995073891,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 8: recall switched",0.905,0.8578947368421053,0.9450051369863013,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 10: recall switched",0.905,0.8549980569948187,0.9468599033816425,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 12: recall switched",0.88,0.8251331967213115,0.9271844660194175,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 14: recall switched",0.865,0.8061224489795918,0.9162567304387673,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 16: recall switched",0.855,0.7961140897454475,0.9072190093034951,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 18: recall switched",0.86,0.8010471204188482,0.9104477611940298,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 20: recall switched",0.86,0.8020304568527918,0.9095028011204481,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 22: recall switched",0.855,0.7958087034847716,0.9056603773584906,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 24: recall switched",0.85,0.7910426680158529,0.9009913882013202,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 26: recall switched",0.825,0.763731527093596,0.8790697674418605,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 28: recall switched",0.79,0.71875,0.8509615384615384,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 30: recall switched",0.745,0.671875,0.8106796116504854,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 32: recall switched",0.625,0.5463917525773195,0.6963396368940636,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 34: recall switched",0.56,0.48205128205128206,0.6320754716981132,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 36: recall switched",0.25,0.18867924528301888,0.31527093596059114,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 38: recall switched",0.24,0.17741736850468776,0.3059360730593607,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 40: recall switched",0.05,0.02262443438914027,0.08040201005025126,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 42: recall switched",0.035,0.010751250646886323,0.061855670103092786,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 44: recall switched",0.03,0.009754913568553162,0.05633983387504512,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 46: recall switched",0.03,0.009754913568553162,0.05633983387504512,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 48: recall switched",0.025,0.00510204081632653,0.049019607843137254,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 50: recall switched",0.025,0.00510204081632653,0.049019607843137254,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 52: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 54: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 56: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 58: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_read_window,qwen3.6-27b,"his named passages, layer 60: recall switched",0.0,0.0,0.0,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
+ledger_described,qwen3.5-9b,L12: our gap (recall minus lookup extra loss),0.15574032619123757,-0.009811152721958198,0.30930272557631044,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,qwen3.5-9b,"Zach's knock-out, recall minus lookup",0.30357142857142855,0.17543859649122806,0.43636363636363634,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,qwen3.6-27b,L32: our gap (recall minus lookup extra loss),-0.11868686868686862,-0.3324825532178473,0.08333333333333326,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,qwen3.6-27b,"Zach's knock-out, recall minus lookup",0.44594594594594594,0.32,0.5652173913043478,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,muse-glimmer-30b,L26: our gap (recall minus lookup extra loss),-0.16666666666666674,-0.7499999999999999,0.6071428571428572,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,muse-glimmer-30b,"Zach's knock-out, recall minus lookup",0.6,0.4827586206896552,0.711864406779661,,results/x50_zach/z2-20261028T162710Z/z2.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
