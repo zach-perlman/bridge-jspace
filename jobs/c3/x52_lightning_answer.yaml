@@ -1,0 +1,39 @@
+id: x52_lightning_answer
+title: "Batch 52 C coverage (Lightning lane speedup, key row 2): the answer control (51.12 E1) on Lightning at L14: the conflict test's lens part without / with only the answer words' directions, the answer word's lens rank at the bridge word; the conflict run's 200 items; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.2
+depends_on: [x52_lightning_conflict]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x51_answer.py run --set e1 --name nem35l_x52_answer &&
+  uv run python scripts/x51_answer.py verdict --set e1 --coverage
+question: >-
+  On Lightning at L14: is what the recall follows in the lens part the bridge item or its answer word (51.12 E1's
+  rules, copied verbatim)?
+why_it_matters: >-
+  Row 2 of the coverage matrix; the specificity control of the conflict test, on the second family.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x51_12_e1_muse_r2.yaml (jobs/c3/batch51.yaml addendum_4, 51.12, and
+  addendum_4_amendment, Dan 20:20; first scored in results/x51_answer/x51_12-20261028T201842Z): "Rules, fixed in
+  advance (per model, per reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3
+  costs ≤ 0.10 beyond random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥
+  0.5 of arm 1. Else: mixed, report both shares." With the amendment's number-word answer directions and its readout
+  check first ("the answer word is not read at the bridge word (lens rank > 50 on ≥ 90 % of items)" decides before the
+  arms). As computed: x51_12_e1_muse_r2's text with Lightning's source: items = the conflict run nem35l_x52_conflict's
+  chat items at the committed layer L14 (x45b_binding.MAIN_RUN; its 200 scenes, the 60 dev scenes excluded; X0's gate
+  0.80 per reader on all 516 scenes, chosen after the 60-scene pre-check was seen: hollow), rebuilt by
+  x0_necessity.build_cases and checked id by id; the gate asserted from the source's gate.json (failed = not tested).
+  Cells under 30 switches are left out (amendment 3; X0's validity bar). Verdict in the job: x51_answer.py verdict
+  --set e1 --coverage (x52_answer-<UTC>/, 'no prediction: coverage run on an already-scored rule').
+controls:
+- "arm 1's random twin (X0's random subspace at the J++ part's share), arm 2's and arm 3's random twins (the same share)"
+- "the readout check before the arms (the answer word's lens rank at the bridge word, O and S)"
+- "the agreement of arm 1 with the stored conflict run (agreement.json)"
+n: "the conflict run's 200 items at L14 (both readers), 2 x 8 reads each"
+seeds: [888, 0]
+notes: "Batch 52 C, amendment 3 lane speedup: conflict test -> THIS -> order split (CPU) -> ladder (not tested: clean design gate, flagged). Same box as the conflict run (its results folder is read from the box's checkout; depends_on). Run name nem35l_x52_answer (x51_answer.COVERAGE_RUNS). Wallclock: muse30_x51_12_e1_r2 took 0.05 h run on an H100 PCIe for 200 items; Lightning loads in ~3 min (the prerequisite: 0.08 h with competence on 516 scenes); est ~6-10 min, 0.2 GPU-h with margin; opens well before the freeze (Thu ~16:00 Paris)."

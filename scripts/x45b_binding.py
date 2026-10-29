@@ -79,6 +79,7 @@ MAIN_RUN = {
     "qwen3.5-9b": "qwen35_9b_x0_necessity",
     "qwen3.6-27b": "x0_necessity_27b_chat",
     "muse-glimmer-30b": "muse30b_x0_necessity",
+    "nemotron-3.5-lightning": "nem35l_x52_conflict",  # batch 52 C coverage: Lightning's conflict test at L14
 }  # Muse: Dan ~22:35, 45b on Muse after the sweep
 FRESH_RUN = {
     "qwen3.5-9b": "qwen35_9b_x45m_fresh",

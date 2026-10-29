@@ -113,6 +113,18 @@ RUNS = {
 }  # fmt: skip
 TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}
 SPEC_IDS = {s: {t: f"x51_12_{s}_{TAGS[t]}_r2" for t in RUNS[s]} for s in SETS}
+# Batch 52 C coverage (jobs/c3/batch52.yaml, amendment 3): the same rules on Lightning, no Q-line; read by verdict
+# --coverage (RUNS and 51.12's own verdict unchanged)
+COVERAGE_RUNS = {"e1": {"nemotron-3.5-lightning": "nem35l_x52_answer"}}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_answer/x51_12-20261028T201842Z"  # 51.12's rules first scored (r2)
+
+
+def runs_of(set_name: str) -> dict[str, str]:
+    """51.12's runs of a set and the batch 52 coverage runs."""
+    return {**RUNS.get(set_name, {}), **COVERAGE_RUNS.get(set_name, {})}
+
+
 ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_jpp_A", "no_jpp_A_rand", "no_A", "no_A_rand")
 F_ARM = "no_F"
 FREQ_SETS = ("z2",)  # the amendment's frequency-matched control: Z2 only
@@ -773,7 +785,7 @@ def manifest(name: str, set_name: str, target: str, layer: int, src: Path) -> di
     )
     return {"exp": EXP, "run": name, "test": "51.12", "set": set_name, "set_text": SET_TEXT[set_name],
             "spec": f"jobs/c3/batch51.yaml (addendum_4 and addendum_4_amendment, 51.12); "
-                    f"jobs/c3/{SPEC_IDS[set_name][target]}.yaml",
+                    f"jobs/c3/{SPEC_IDS.get(set_name, {}).get(target, 'x52_lightning_answer')}.yaml",
             "question": f"{QUESTION} ({PREDICTIONS})", "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
             "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
@@ -835,11 +847,14 @@ def stage_run(name: str, set_name: str) -> Path:
 
     pins.check_run_name(name)
     target = pins.TARGET
-    assert target in RUNS[set_name], f"51.12 {set_name} runs on {sorted(RUNS[set_name])}, not {target}"
+    assert target in runs_of(set_name), f"51.12 {set_name} runs on {sorted(runs_of(set_name))}, not {target}"
     layer, src = layer_of(set_name, target), source_of(set_name, target)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, set_name, target, layer, src)
+    if target in COVERAGE_RUNS.get(set_name, {}):  # batch 52: no Q-line, opened when it lands
+        m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage); verdict --coverage",
+              "rules_first_scored": SCORED}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -1206,16 +1221,21 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def all_runs(sets: tuple[str, ...] = SETS) -> list[tuple[str, str, str]]:
-    return [(s, t, r) for s in sets for t, r in RUNS[s].items()]
+def all_runs(sets: tuple[str, ...] = SETS, coverage: bool = False) -> list[tuple[str, str, str]]:
+    runs = COVERAGE_RUNS if coverage else RUNS
+    return [(s, t, r) for s in sets for t, r in runs.get(s, {}).items()]
 
 
-def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS) -> Path:
-    answer = unsealed()
-    models = [model_result(s, t, r, n_boot) for s, t, r in all_runs(sets)]
-    out = RESULTS / f"x51_12-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+def stage_verdict(n_boot: int = X.N_BOOT, sets: tuple[str, ...] = SETS, coverage: bool = False) -> Path:
+    """51.12's verdict (sealed until Q51.12), or with coverage (batch 52) the same rules on COVERAGE_RUNS, no seal
+    guard, "no prediction" in place of Dan's answer, written to x52_answer-<UTC>/."""
+    answer = f"{NO_PREDICTION} (rules first scored in {SCORED})" if coverage else unsealed()
+    models = [model_result(s, t, r, n_boot) for s, t, r in all_runs(sets, coverage)]
+    out = RESULTS / f"{'x52_answer' if coverage else 'x51_12'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ")
     per = {f"{m['set']}|{m['target']}|{w}": r["label"] for m in models if m["status"] == "tested"
            for w, r in m["readers"].items()}  # fmt: skip
     blob = {
@@ -1289,6 +1309,7 @@ def main() -> None:
     ap.add_argument("--name", help="run: the run name (results/x51_answer/<name>/)")
     ap.add_argument("--plan-dir", help="plan: the folder to write into (default a new plan-<UTC>/)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52's coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         assert a.set, "plan needs --set"
@@ -1300,7 +1321,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view((a.set,) if a.set else SETS)
     else:
-        stage_verdict(a.n_boot, (a.set,) if a.set else SETS)
+        stage_verdict(a.n_boot, (a.set,) if a.set else SETS, a.coverage)
 
 
 if __name__ == "__main__":

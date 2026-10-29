@@ -469,6 +469,27 @@ def test_verdict_and_view_on_a_planted_run(tmp_path, monkeypatch):
     assert view.count("⟦") == 1 + 5 * 2 * 2 and "### no_A_rand: 10 random rows of 40 (seed 0)" in view
 
 
+def test_coverage_verdict_reads_the_coverage_runs_without_the_seal(tmp_path, monkeypatch):
+    """Batch 52: the same planted run read as a coverage run: no Q51.12 line needed, 'no prediction' in its place."""
+    planted(tmp_path, monkeypatch, answer="")
+    monkeypatch.setattr(A, "COVERAGE_RUNS", {"e1": {"qwen3.5-9b": "qwen35_9b_x51_12_e1_r2"}})
+    with pytest.raises(AssertionError, match="sealed"):
+        A.stage_verdict(n_boot=10)
+    out = A.stage_verdict(n_boot=100, coverage=True)
+    assert out.name.startswith("x52_answer-")
+    text = (out / "verdict.md").read_text()
+    assert A.NO_PREDICTION in text and "Dan:" not in text and "batch 52 coverage" in text
+    blob = json.loads((out / "verdict.json").read_text())
+    assert blob["per_cell"]["e1|qwen3.5-9b|recall"] == A.LABELS["entity"] and blob["dan"].startswith(A.NO_PREDICTION)
+    assert A.runs_of("e1")["qwen3.5-9b"] == "qwen35_9b_x51_12_e1_r2"
+
+
+def test_lightning_is_a_coverage_target_of_e1_only():
+    assert set(A.COVERAGE_RUNS) == {"e1"} and A.COVERAGE_RUNS["e1"] == {"nemotron-3.5-lightning": "nem35l_x52_answer"}
+    assert "nemotron-3.5-lightning" not in A.RUNS["e1"] and "nemotron-3.5-lightning" in A.runs_of("e1")
+    assert A.all_runs(("e1",), coverage=True) == [("e1", "nemotron-3.5-lightning", "nem35l_x52_answer")]
+
+
 def test_sealed_until_dans_answer(tmp_path, monkeypatch):
     planted(tmp_path, monkeypatch, answer="")
     with pytest.raises(AssertionError, match="sealed"):
