@@ -72,3 +72,20 @@ def test_cli_coverage_defaults_to_the_coverage_runs(tmp_path, monkeypatch, scrip
         monkeypatch.setattr("sys.argv", [script, *argv])
         M.main()
     assert seen == [(list(M.COVERAGE_RUNS.values()), True), (list(M.RUNS.values()), False)]
+
+
+def test_natural_verdict_on_a_gate_failed_run_says_not_tested(tmp_path, monkeypatch):
+    """x5_natural: a run that stopped at its gate (no outcomes; Lightning's nem35l_x52_natural) exits with 'not tested'
+    and writes no verdict folder (it raised a TypeError on the empty bootstrap before)."""
+    import json
+
+    from scripts import x5_natural as N
+
+    run = tmp_path / "r"
+    run.mkdir()
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": LT}, "layer": 14}))
+    (run / "gate.json").write_text(json.dumps({"pass": False, "org_read_accuracy": {"PP": 0.77}, "eligible": 36}))
+    monkeypatch.setattr(N, "RESULTS", tmp_path)
+    with pytest.raises(SystemExit, match="not tested, no outcomes"):
+        N.stage_verdict("r", 10)
+    assert sorted(p.name for p in run.iterdir()) == ["gate.json", "manifest.json"]

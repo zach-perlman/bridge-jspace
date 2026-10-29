@@ -334,6 +334,10 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     m = json.loads((src / "manifest.json").read_text())
     rows = [r for r in X.read_jsonl(src / "outcomes.jsonl")
             if r["arm"] in ("whole", "no_part", "no_rand") and r["dict"] in ("jpp", "-")]  # fmt: skip
+    if not rows:  # the run stopped at its gate (no outcomes): nothing to score, and no verdict folder
+        gate = json.loads((src / "gate.json").read_text()) if (src / "gate.json").exists() else {}
+        raise SystemExit(f"{name}: not tested, no outcomes (gate pass {gate.get('pass')}, read accuracy "
+                         f"{gate.get('org_read_accuracy')}, eligible {gate.get('eligible')}); no verdict written")  # fmt: skip
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
