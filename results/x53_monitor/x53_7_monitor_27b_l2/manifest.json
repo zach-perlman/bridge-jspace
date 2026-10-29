@@ -1,0 +1,285 @@
+{
+  "exp": "x53_monitor",
+  "run": "x53_7_monitor_27b_l2",
+  "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_27b.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch53.yaml (53.2); no prediction",
+  "written_utc": "2026-10-29T12:59:40Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "a58762ad9bcad1a7a02ff012e6ff5317bacf4b8b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "sets": {
+    "main": "our main test (X0's scenes)",
+    "json": "the varied scenes, JSON format (x0b_v2)",
+    "code": "the main test's scenes as Python code (53.7)",
+    "tool": "the main test's scenes as tool output (53.7)",
+    "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)",
+    "code_l": "the main test's set as Python code, lookup-only gate (53.7)",
+    "tool_l": "the main test's set as tool output, lookup-only gate (53.7)"
+  },
+  "positions": {
+    "B": "the bridge word (X0's position; the readers' prompts agree through it: read on the lookup's prompt)",
+    "T_lookup": "the lookup prompt's last token (the appended space token, before the answer)",
+    "T_recall": "the recall prompt's last token (the appended space token, before the answer)"
+  },
+  "ks": [
+    25,
+    100
+  ],
+  "rule": "\"J-space blind to X\" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; \"J-space carries X\" if J++ >= 0.8 and >= 0.3 above random; else in between.",
+  "jpp_part": "X0's signed OMP over the J++ letter-token atoms (x0_necessity.dictionary('jpp')), the least-squares fit on the first k chosen atoms, applied to the state itself",
+  "storage": "states_<set>_{h,jpp25,jpp100}.npy fp16 [L, n, O/S, B/T lookup/T recall, d] (gitignored); states_<set>_atoms.npy int32 token ids of the 100 chosen atoms (committed)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "e90a9c3d86fcd378d681e6f8e14084c22f3c0d5904317e70ac55137c29818b1a",
+    "data/tasks_v2/x0b_v2/items.jsonl": "3d327acdaebb68b531d6c49c03b4fb38c8002402d423ab94ec118877a12f87f3"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "n_layers": 64,
+  "sets_run": [
+    "code_l",
+    "tool_l"
+  ],
+  "x53_7": {
+    "test": "53.7 (the pointer in code and tool output)",
+    "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+    "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+    "design": "adapted design: lookup-only gate; the recall is not part of this test",
+    "formats": [
+      "code",
+      "tool"
+    ],
+    "datasets": {
+      "code": "code_l",
+      "tool": "tool_l"
+    },
+    "format_text": {
+      "code": "the scene as Python in the user turn (tasks_v2's code framing): picks = {} and lockers = {}, then one assignment per statement in the scene's order (picks[\"Eva\"] = \"oxygen\"; lockers[\"oxygen\"] = 5), then the question and the digit instruction",
+      "tool": "the scene's text verbatim as the response of a declared tool (get_notes) in the model's chat template, after the user's 'Look up my notes.' and the assistant's call; the question and the instruction in a new user turn"
+    },
+    "gates": {
+      "code": {
+        "cases": 272,
+        "lookup_right_share": 0.9816,
+        "bar": 0.8,
+        "pass": true,
+        "status": "passed",
+        "eligible": 267,
+        "design": "adapted design: lookup-only gate; the recall is not part of this test",
+        "rule": "Dan 12:10 (decisions_1210): the share of the test's own scenes in the format where the lookup says and reads O and S right (X0's competence: the greedy answer and the chat read) >= 0.80, before any state is kept; a failed format is 'not tested (gate x < 0.80)'; an item is eligible when the lookup is right on all four; the recall's rates are reported descriptively",
+        "descriptive": {
+          "rates": {
+            "PP": {
+              "says_and_reads_O_and_S": 0.9816,
+              "right_org": 0.989,
+              "right_alt": 0.989,
+              "read_right_org": 0.9926,
+              "read_right_alt": 0.989
+            },
+            "PM": {
+              "says_and_reads_O_and_S": 0.7721,
+              "right_org": 0.9007,
+              "right_alt": 0.8603,
+              "read_right_org": 0.9007,
+              "read_right_alt": 0.8676
+            }
+          },
+          "note": "the recall's rates are descriptive (not part of this test)"
+        },
+        "set": "d1_topics_v3",
+        "counts": {
+          "set": "d1_topics_v3",
+          "format": "code",
+          "scenes": 600,
+          "cases": 272,
+          "entities": 28,
+          "domains": {
+            "animals": 72,
+            "greek": 200
+          },
+          "dropped": {
+            "animals: the bridge is not one token at one position in org and alt": 128,
+            "elements: the bridge is not one token at one position in org and alt": 200
+          }
+        }
+      },
+      "tool": {
+        "cases": 600,
+        "lookup_right_share": 0.9883,
+        "bar": 0.8,
+        "pass": true,
+        "status": "passed",
+        "eligible": 593,
+        "design": "adapted design: lookup-only gate; the recall is not part of this test",
+        "rule": "Dan 12:10 (decisions_1210): the share of the test's own scenes in the format where the lookup says and reads O and S right (X0's competence: the greedy answer and the chat read) >= 0.80, before any state is kept; a failed format is 'not tested (gate x < 0.80)'; an item is eligible when the lookup is right on all four; the recall's rates are reported descriptively",
+        "descriptive": {
+          "rates": {
+            "PP": {
+              "says_and_reads_O_and_S": 0.9883,
+              "right_org": 0.9933,
+              "right_alt": 0.9967,
+              "read_right_org": 0.99,
+              "read_right_alt": 0.9983
+            },
+            "PM": {
+              "says_and_reads_O_and_S": 0.945,
+              "right_org": 0.9767,
+              "right_alt": 0.97,
+              "read_right_org": 0.9767,
+              "read_right_alt": 0.9683
+            }
+          },
+          "note": "the recall's rates are descriptive (not part of this test)"
+        },
+        "set": "d1_topics_v3",
+        "counts": {
+          "set": "d1_topics_v3",
+          "format": "tool",
+          "scenes": 600,
+          "cases": 600,
+          "entities": 46,
+          "domains": {
+            "animals": 200,
+            "elements": 200,
+            "greek": 200
+          },
+          "dropped": {}
+        }
+      }
+    },
+    "states_for": [
+      "code",
+      "tool"
+    ],
+    "items": "the first 200 lookup-eligible scenes of d1_topics_v3 per format (x53_7.eligible_items)"
+  },
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "sets_done": {
+    "code_l": {
+      "items": 200,
+      "entities": 26,
+      "counts": {
+        "format": "code",
+        "items": 200,
+        "entities": 26,
+        "domains": {
+          "animals": 52,
+          "greek": 148
+        },
+        "eligible": 267,
+        "selection": "the first 200 lookup-eligible scenes of d1_topics_v3 in scene order"
+      },
+      "b_gap_max": 0.045487578958272934,
+      "b_gap_over_tol": 9
+    },
+    "tool_l": {
+      "items": 200,
+      "entities": 43,
+      "counts": {
+        "format": "tool",
+        "items": 200,
+        "entities": 43,
+        "domains": {
+          "animals": 68,
+          "elements": 67,
+          "greek": 65
+        },
+        "eligible": 593,
+        "selection": "the first 200 lookup-eligible scenes of d1_topics_v3 in scene order"
+      },
+      "b_gap_max": 0.0,
+      "b_gap_over_tol": 0
+    }
+  },
+  "hub_kernels": {},
+  "finished_utc": "2026-10-29T13:16:19Z"
+}
