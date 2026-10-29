@@ -960,7 +960,51 @@ def model_verdict(target: str, n_boot: int) -> dict:
     wm = json.loads((dw / "manifest.json").read_text()) if dw and (dw / "manifest.json").exists() else {}
     return {"target": target, "run": run, "word_run": wrun, "status": "run", "layer": m["layer"],
             "relation": wm.get("relation"), "relation_check": rel, "cells": cells, "across": across(labels),
-            "cross_check": cross_check(cells), "position": position_rule(cells)}  # fmt: skip
+            "cross_check": cross_check(cells), "position": position_rule(cells),
+            "paired": paired_difference(d, cells, n_boot)}  # fmt: skip
+
+
+ORDER_DEPENDENCE = "order dependence"
+
+
+def paired_difference(d: Path, cells: dict[str, dict], n_boot: int = X.N_BOOT, seed: int = X.BOOT_SEED) -> dict:
+    """Dan 11:25: the conflict test's lookup extra loss beyond random (X0's excess) in (Q-before, number) minus
+    (Q-after, number), on the scenes both cells read, paired: one cluster bootstrap over the bridge entity (n_boot, seed)
+    resamples both cells' rows with the same draws; 'order dependence' only if the 95% CI excludes 0."""
+    if any(cells[c].get("status") != "tested" for c in NUMBER_CELLS):
+        return {"text": "can't tell: a number cell not tested", "holds": None}
+    sw: dict[str, dict[tuple[str, str], int]] = {}
+    ent: dict[str, str] = {}
+    for c in NUMBER_CELLS:
+        for r in X.read_jsonl(d / c / "outcomes.jsonl"):
+            if r["reader"] == X.LOOKUP and r["arm"] in ("whole", "no_jpp", "no_jpp_rand"):
+                sw.setdefault(c, {})[(r["key"], r["arm"])] = int(r["sw"])
+                ent[r["key"]] = r["entity"]
+    keys = sorted({k for (k, _) in sw[NUMBER_CELLS[0]]} & {k for (k, _) in sw[NUMBER_CELLS[1]]})
+    if not keys:
+        return {"text": "can't tell: no scene read in both cells", "holds": None, "n": 0}
+    series = {
+        f"{c}|{a}": [sw[c][(k, a)] for k in keys] for c in NUMBER_CELLS for a in ("whole", "no_jpp", "no_jpp_rand")
+    }
+    ents = [ent[k] for k in keys]
+    rr = X.resampled_rates(series, ents, n_boot, seed)
+
+    def extra(rates: dict, c: str):
+        with np.errstate(divide="ignore", invalid="ignore"):
+            return (np.asarray(rates[f"{c}|no_jpp_rand"]) - np.asarray(rates[f"{c}|no_jpp"])) / np.asarray(
+                rates[f"{c}|whole"])  # fmt: skip
+
+    pt = {k: float(np.mean(v)) for k, v in series.items()}
+    e = {c: float(extra(pt, c)) for c in NUMBER_CELLS}
+    draws = extra(rr, "qb_num") - extra(rr, "qa_num")
+    lo, hi = X.interval(draws)
+    diff = e["qb_num"] - e["qa_num"]
+    holds = bool(lo > 0 or hi < 0)
+    text = (f"{ORDER_DEPENDENCE}: Q-before minus Q-after {diff:+.2f} [{lo:+.2f}, {hi:+.2f}]" if holds else
+            f"the CI includes 0 ({diff:+.2f} [{lo:+.2f}, {hi:+.2f}]): no order dependence claimed")  # fmt: skip
+    return {"n": len(keys), "entities": len(set(ents)), "lookup_extra_shared": e, "diff": [diff, lo, hi],
+            "holds": holds, "text": f"{text} (the lookup's extra loss beyond random on the {len(keys)} scenes both "
+            f"number cells read; cluster bootstrap over the bridge entity, {n_boot}, seed {seed})"}  # fmt: skip
 
 
 def position_rule(cells: dict[str, dict]) -> dict:
@@ -1020,6 +1064,13 @@ def verdict_lines(models: list[dict]) -> list[str]:
              "lookup extra loss beyond random (X0's excess, point estimate) in (Q-after, number) and (Q-before, number); "
              "'does not hold' names a tested cell above 0.10; 'can't tell' while a cell is untested and none is above. "
              "Kept apart from the brief's rule across cells.", "",
+             'Dan 11:25 (batch53.yaml critic_1125), verbatim: "Add the paired difference (Q-before minus Q-after) with '
+             'its cluster-bootstrap CI, 27B now (CPU), Muse and Lightning when they land. Wording: "order dependence" '
+             'only if that CI excludes 0." As computed: the lookup\'s extra loss beyond random (X0\'s excess) per cell '
+             "on the scenes both number cells read; one cluster bootstrap over the bridge entity resamples both "
+             "cells with the same draws.", "",
+             "The evaluation logic of the cross-check (and of Dan 11:10's rule) was clarified after the data (Dan 11:25: "
+             "the correct reading of 'in all four cells': 'does not hold' as soon as a tested cell exceeds 0.10).", "",
              "As computed: see scripts/x53_2x2.py's docstring (cells, relation, gate, conflict test, 51.12 arms, "
              "atoms). The cell's label is the recall's 51.12 label (51.12's decisive E1 reader); the lookup's beside. "
              f"Cluster bootstrap over the bridge entity ({X.N_BOOT}, seed {X.BOOT_SEED}).", ""]  # fmt: skip
@@ -1030,6 +1081,7 @@ def verdict_lines(models: list[dict]) -> list[str]:
             continue
         lines += [f"## {name} ({mv['run']}, L{mv['layer']}; relation for the word cells: {mv['relation']})", "",
                   f"Across the number cells (Dan 11:10): **{mv['position']['text']}**.", "",
+                  f"Paired difference (Dan 11:25): **{mv['paired']['text']}**.", "",
                   f"Rule across cells (the brief's): **{mv['across']}**. Cross-check: **{mv['cross_check']['text']}**.",
                   ""]  # fmt: skip
         if mv.get("relation_check"):

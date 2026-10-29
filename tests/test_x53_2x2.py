@@ -364,6 +364,38 @@ def test_position_rule():
     assert T2.position_rule(cells(0.3, None))["holds"] is False
 
 
+def _plant_lookup(d, cell: str, keys: list[str], lost: set[str]) -> None:
+    """Lookup rows of one number cell: every item switches whole and without a random part; the items in `lost` do not
+    switch without the J++ part (so the extra loss beyond random = len(lost) / len(keys))."""
+    d.mkdir(parents=True)
+    rows = []
+    for k in keys:
+        for arm, sw in (("whole", 1), ("no_jpp_rand", 1), ("no_jpp", 0 if k in lost else 1)):
+            rows.append({"key": k, "scene": k, "entity": f"e{int(k[1:]) % 20}", "reader": LK, "arm": arm, "sw": sw})
+    X.write_jsonl(d / "outcomes.jsonl", rows)
+
+
+def test_paired_difference(tmp_path):
+    """Dan 11:25: Q-before minus Q-after on the shared scenes, one bootstrap for both; 'order dependence' only if the CI
+    excludes 0; an untested cell: can't tell."""
+    keys = [f"s{i:03d}" for i in range(200)]
+    tested = {c: {"status": "tested"} for c in T2.NUMBER_CELLS}
+    _plant_lookup(tmp_path / "a" / "qa_num", "qa_num", keys, set(keys[::10]))  # 0.10
+    _plant_lookup(tmp_path / "a" / "qb_num", "qb_num", keys[:180] + [f"x{i}" for i in range(20)], set(keys[:90:2]))
+    r = T2.paired_difference(tmp_path / "a", tested, n_boot=500)
+    assert r["n"] == 180 and r["holds"] is True and r["text"].startswith(T2.ORDER_DEPENDENCE)
+    assert r["lookup_extra_shared"]["qa_num"] == pytest.approx(18 / 180)
+    assert r["lookup_extra_shared"]["qb_num"] == pytest.approx(45 / 180)
+    assert r["diff"][0] == pytest.approx(27 / 180) and r["diff"][1] > 0
+    _plant_lookup(tmp_path / "b" / "qa_num", "qa_num", keys, set(keys[::10]))
+    _plant_lookup(tmp_path / "b" / "qb_num", "qb_num", keys, set(keys[1::10]))  # the same rate, other items
+    r = T2.paired_difference(tmp_path / "b", tested, n_boot=500)
+    assert r["holds"] is False and r["diff"][0] == pytest.approx(0.0) and r["diff"][1] < 0 < r["diff"][2]
+    assert "no order dependence claimed" in r["text"]
+    untested = {**tested, "qb_num": {"status": "not tested (gate 0.76 < 0.80)"}}
+    assert T2.paired_difference(tmp_path / "b", untested)["holds"] is None
+
+
 def test_qa_num_matches_the_stored_main_test(tok):
     """On this target's tokenizer, (Q-after, number) rebuilds the stored main test's chat cases (the source of 51.12's
     E1 and the agreement check): the same scenes dropped and kept, the same ids and bridge positions."""
