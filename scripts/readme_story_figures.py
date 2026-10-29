@@ -2048,33 +2048,51 @@ ROUTE_RUNS = {"9b": ("qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly"),
               "muse": ("muse30b_x6_routes", "muse30b_x6_routes")}  # fmt: skip
 
 
+# the 122B (FP8; MoE, ~10B active; L33), Figs. 5 and 7's fifth slot (Dan 11:30, the coordinator 12:15): its routes and
+# swap runs ran at the gate lowered to 0.75 after the data (their 0.80 routes run missed it on the recall), marked °;
+# each file by its explicit path
+Q122 = ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B")
+Q122_ROUTES = pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_g75" / "verdict-20261025T134214Z" / "verdict.json"
+Q122_KEEP = (pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_keeponly_g75" / "verdict-20261025T202506Z"
+             / "verdict.json")  # fmt: skip
+Q122_PROBE = pins.RESULTS_DIR / "x0_probe" / "qwen35_122b_x0_probe_v4" / "probe-20261024T230718Z" / "probe.json"
+Q122_SWAP = pins.RESULTS_DIR / "x8_write" / "qwen35_122b_x8_write_g75" / "verdict-20261026T125705Z" / "verdict.json"
+Q122_RECALL = pins.RESULTS_DIR / "x8_write" / "qwen35_122b_x8_write_g75" / "recall-20261026T125802Z" / "recall.json"
+Q122_NOTE = (
+    "122B° (FP8; MoE, ~10B active; L33, the 27B's relative depth carried over): gate lowered to 0.75 after the data."
+)
+
+
 def f05_routes(plt) -> None:
     """Fig. 5 (E5, v6): left, the routes test drawn (routes_drawing); right, another item moved, at the layer fixed in
-    advance, per model (9B, 27B, Muse) two stacked rows of lookup answers, whole change and without the address, each
-    identity / position share with its 95% interval, the original answer empty; under the second row a thin light grey
-    bar for the position answers without a random part of the same size; the value's share (0.00 on every row) in the
-    legend, not as a box per row (v6 iteration 2). Under the plot, the three routes defined in one line (Dan's Fig. 4 /
-    5 brief). The 122B and the keep-only arms are in s05. Lightning (batch 52) the fourth block, at L14, its bars
-    hollow (outlined)."""
+    advance, per model two stacked rows of lookup answers, whole change and without the address, each identity /
+    position share with its 95% interval, the original answer empty; under the second row a thin light grey bar for
+    the position answers without a random part of the same size; the value's share (0.00 on every row) in the legend,
+    not as a box per row (v6 iteration 2). Blocks: 9B, 27B, Muse; Lightning (batch 52) the fourth, at L14, its bars
+    hollow (outlined); the 122B the fifth (Q122_ROUTES, its gate lowered after the data: ° on its name and n). The
+    keep-only arms are in s05."""
     # Dan (21:55): no line under the plot; the routes are defined once, in the README's Setup
-    h, cap, lt_in = 6.85, 0.05, 1.08  # lt_in: Lightning's block
+    h, cap, lt_in, q_in = 7.93 + 0.3, 0.35, 1.08, 1.08  # lt_in, q_in: Lightning's and the 122B's blocks
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "The lookup takes the identity route or the position route, never the value",
             "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.",
             limit=80)  # fmt: skip
-    left_ax = fig.add_axes((0.01, (0.22 + cap + lt_in + 0.3) / h, 0.40, 3.75 / h))
+    left_ax = fig.add_axes((0.01, (0.22 + cap + lt_in + q_in + 0.3) / h, 0.40, 3.75 / h))
     routes_drawing(plt, left_ax)
     left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
-    ax = fig.add_axes((0.625, (0.54 + cap + 0.3) / h, 0.355, (3.24 + lt_in) / h))
-    models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # v6: the 122B in supplements only
-    gap, y, ticks, labels, ns, values = 2.75, 0.0, [], [], [], []
-    for target, m in (*models, LT[:2]):
-        lt = m == "lightning"
-        run = rel(LT_ROUTES) if lt else ROUTE_RUNS[m][0]
-        v = json.loads(LT_ROUTES.read_text()) if lt else latest(pins.RESULTS_DIR / "x6_routes" / run,
-                                                                 "verdict-*/verdict.json")  # fmt: skip
+    ax_in = 3.24 + lt_in + q_in
+    ax = fig.add_axes((0.625, (0.54 + cap + 0.3) / h, 0.355, ax_in / h))
+    models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # 9B, 27B, Muse; then Lightning and the 122B
+    gap, y, ticks, labels, ns, values, block_y = 2.75, 0.0, [], [], {}, [], {}
+    for target, m in (*models, LT[:2], Q122[:2]):
+        lt, q = m == "lightning", m == "122b"
+        path = LT_ROUTES if lt else Q122_ROUTES if q else None
+        run = rel(path) if path else ROUTE_RUNS[m][0]
+        v = json.loads(path.read_text()) if path else latest(pins.RESULTS_DIR / "x6_routes" / run,
+                                                              "verdict-*/verdict.json")  # fmt: skip
         rows = {r["arm"]: r for r in (v or {}).get("rows", []) if r["condition"] == "C2"}
-        ax.text(-0.02, y + 0.62, NAMES[m], transform=ax.get_yaxis_transform(), ha="right", va="center",
+        block_y[m] = y
+        ax.text(-0.02, y + 0.62, name_of(m, lowered=q), transform=ax.get_yaxis_transform(), ha="right", va="center",
                 fontsize=S.FONT, weight="bold")  # fmt: skip
         for i, (arm, label, rand) in enumerate(ROUTE_ROWS):
             yi = y - i
@@ -2085,7 +2103,7 @@ def f05_routes(plt) -> None:
                 S.empty(ax, "not run")
                 continue
             if i == 0:
-                ns.append(str(r["n"]))
+                ns[m] = str(r["n"])
             left = 0.0
             for route in ("identity", "position"):
                 sh = r["share"][route]
@@ -2121,13 +2139,15 @@ def f05_routes(plt) -> None:
     ax.set_yticks(ticks, labels)
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("share of lookups")
-    ax.text(-0.5, 1 + 0.29 / (3.24 + lt_in), "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold",
+    ax.text(-0.5, 1 + 0.29 / ax_in, "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold",
             va="bottom")  # fmt: skip
-    lt_n = ns.pop()  # Lightning's n beside its own block, with its open glyph
-    S.panel_tag(ax, ", ".join(ns), "fixed")
-    ax.text(1.0, y + gap + 0.62, f"n = {lt_n}  {S.STATUS_GLYPH['after']}", ha="right", va="center",
-            transform=ax.get_yaxis_transform(), fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
-    fig.text(0.01, 0.12 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
+    S.panel_tag(ax, ", ".join(ns[m] for _, m in models), "fixed")
+    # Lightning's n with its open glyph, the 122B's with its gate's °, each beside its own block
+    for m, glyph in (("lightning", S.STATUS_GLYPH["after"]), ("122b", S.STATUS_GLYPH["fixed"] + S.LOWERED)):
+        ax.text(1.0, block_y[m] + 0.62, f"n = {ns[m]}  {glyph}", ha="right", va="center",
+                transform=ax.get_yaxis_transform(), fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
+    fig.text(0.01, 0.08 / h, f"{LT_NOTE}\n{Q122_NOTE}", color=S.COL["muted"], fontsize=S.FONT - 1, va="bottom",
+             linespacing=1.3)  # fmt: skip
     top = max(values, default=0.0)
     value_label = "value: 0.00 in every row" if top < 0.005 else f"value: at most {top:.2f}"
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["position"]),
@@ -2217,7 +2237,20 @@ def f06_depth(plt) -> None:
 
 
 ADDRESS_COL = "#a63d40"  # v6: the address's own hue (no other meaning on the README figures)
-SWAP_MARK = {"9b": ("o", "-"), "27b": ("s", "--"), "muse": ("^", ":"), "lightning": ("D", "-.")}  # Fig. 7 (c)
+SWAP_MARK = {
+    "9b": ("o", "-"),
+    "27b": ("s", "--"),
+    "muse": ("^", ":"),
+    "lightning": ("D", "-."),
+    "122b": ("v", (0, (6, 2, 1, 2))),
+}  # Fig. 7 (c)
+# Fig. 7 (b): a model's two arms B_STEP[0] apart, its two rows B_STEP[1] apart, the bar and its random part at B_DY:
+# room for each value label on its own line (five models since the 122B joined)
+B_STEP, B_DY = (2.1, 1.0), (0.25, -0.27)
+# Fig. 7 (c): each model's end label (dx, dy, ha) beside its last point; the 9B's, the 122B's and Lightning's end close
+# together: the 9B's above its point, the 122B's under its own, Lightning's up and to the left of its point
+END_LABEL = {"Muse": (0.07, 0.06, "left"), "Lightning": (-0.07, 0.06, "right"), "9B": (0.07, 0.03, "left"),
+             "122B" + S.LOWERED: (0.07, -0.05, "left")}  # fmt: skip
 
 
 def route_row(run: str, arm: str) -> dict:
@@ -2247,10 +2280,12 @@ def f07_writes(plt) -> None:
     random vector of the same size; the mean over locker pairs (the 26 Oct line) is still recorded. The recall's
     answers under the strongest swap: figures/supp/s07_recall_follows_swap. Lightning (batch 52, hollow) in each panel
     from its coverage folders (LT_PROBE, LT_ROUTES, LT_SWAP); its swap has no recall stage, so its real change's dose
-    s* is the recall stage's formula on the run's manifest norms (scripts/x8_write.py)."""
+    s* is the recall stage's formula on the run's manifest norms (scripts/x8_write.py). The 122B the fifth slot in
+    each panel (Q122_PROBE, Q122_ROUTES / Q122_KEEP, Q122_SWAP with its recall stage Q122_RECALL), filled, its routes
+    and swap runs marked ° (their gate lowered to 0.75 after the data)."""
     from scripts import x0_details as XD
 
-    h = 9.2
+    h = 11.3
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
@@ -2258,23 +2293,24 @@ def f07_writes(plt) -> None:
 
     S.title(fig, "The address carries the position route; swapping it moves the lookup",
             "A: a probe at the bridge word. B: without the address, or with only the address, at L. C: the swap, by dose.")  # fmt: skip
-    a = fig.add_axes(box(0.185, 0.21, 2.1, 5.0))
-    b = fig.add_axes(box(0.675, 0.27, 2.1, 5.0))
-    c = fig.add_axes(box(0.155, 0.70, 6.2, 8.3))
+    a = fig.add_axes(box(0.185, 0.21, 2.1, 6.8))
+    b = fig.add_axes(box(0.675, 0.27, 2.1, 6.8))
+    c = fig.add_axes(box(0.155, 0.70, 8.0, 10.1))
     head = {"fontsize": 12, "weight": "bold", "va": "bottom", "linespacing": 1.05}
     fig.text(0.01, 1 - 1.78 / h, "A  A probe reads the address", **head)
     # B's claim on two lines, from the left edge of its row labels
     fig.text(0.44, 1 - 1.78 / h, "B  Without the address, position answers go;\n      with only the address, they come back",
              **head)  # fmt: skip
-    names = [NAMES[m] for _, m, _ in V6_MODELS] + ["Nemotron 3.5\nLightning"]  # in full here; "9B" after
+    names = [NAMES[m] for _, m, _ in V6_MODELS] + ["Nemotron 3.5\nLightning", NAMES["122b"]]  # in full here; "9B" after
 
     # (a) the probe against the layout alone
     ns_a = []
-    for i, (target, m, _) in enumerate((*V6_MODELS, LT)):
+    for i, (target, m, _) in enumerate((*V6_MODELS, LT, Q122)):
         lt = m == "lightning"
-        if lt:
-            src = rel(LT_PROBE)
-            rows = {(r["target"], r["stratum"]): r for r in json.loads(LT_PROBE.read_text())["rows"]
+        path = LT_PROBE if lt else Q122_PROBE if m == "122b" else None
+        if path:
+            src = rel(path)
+            rows = {(r["target"], r["stratum"]): r for r in json.loads(path.read_text())["rows"]
                     if r["subset"] == "all"}  # fmt: skip
         else:
             src, rows = XD.probe_v4_rows(m)
@@ -2294,51 +2330,57 @@ def f07_writes(plt) -> None:
         ns_a.append(str(r["n"]))
         if i == 0:  # Dan (21:50): the panel names its two bars, on its first row
             a.text(0.03, -i + 0.13, "probe", va="center", fontsize=S.LABEL_PT, color="white", zorder=4)
-            a.text(max(r["layout"][0], r["layout"][2]) + 0.27, -i - 0.24, "layout", va="center", fontsize=S.LABEL_PT,
+            a.text(max(r["layout"][0], r["layout"][2]) + 0.33, -i - 0.24, "layout", va="center", fontsize=S.LABEL_PT,
                    color=S.COL["muted"])  # fmt: skip
-    a.set_yticks([0, -1, -2, -3], names)
-    a.set_ylim(-3.55, 0.5)
+    a.set_yticks([0, -1, -2, -3, -4], names)
+    a.set_ylim(-4.55, 0.5)
 
     # (b) without the address / with only the address, each against its random part
     ns_b = []
     ticks, labels = [], []
     lt_rows = {r["arm"]: r for r in json.loads(LT_ROUTES.read_text())["rows"] if r["condition"] == "C2"}
-    for i, (target, m, _) in enumerate((*V6_MODELS, LT)):
-        lt = m == "lightning"
-        run, keep = (None, None) if lt else ROUTE_RUNS[m]
+    q_rows = {r["arm"]: r for p in (Q122_ROUTES, Q122_KEEP) for r in json.loads(p.read_text())["rows"]
+              if r["condition"] == "C2" and (p == Q122_KEEP) == r["arm"].startswith("keep")}  # fmt: skip
+    for i, (target, m, _) in enumerate((*V6_MODELS, LT, Q122)):
+        lt, q = m == "lightning", m == "122b"
+        run, keep = (None, None) if lt or q else ROUTE_RUNS[m]
         for j, (rn, arm, ctl, label, key) in enumerate(
                 ((run, "no_alf", "no_alf_rand", "without the address", "rt_C2_no_alf"),
                  (keep, "keep_alf", "keep_alf_rand", "only the address", "rtk_C2_keep_alf"))):  # fmt: skip
-            y = -1.25 * i - 0.55 * j
-            got, rand = (lt_rows[arm], lt_rows[ctl]) if lt else (route_row(rn, arm), route_row(rn, ctl))
+            y = -B_STEP[0] * i - B_STEP[1] * j
+            got, rand = (
+                (lt_rows[arm], lt_rows[ctl]) if lt else (q_rows[arm], q_rows[ctl]) if q
+                else (route_row(rn, arm), route_row(rn, ctl))
+            )  # fmt: skip
+            key = key.replace("rt_", "rtg_") if q and key == "rt_C2_no_alf" else key  # the 122B's g75 keys
             for k, row in () if lt else ((f"{key}_position_{m}", got), (f"{key}_rand_position_{m}", rand)):
                 stated = S.parse(N[k])
                 assert stated is not None, k
                 assert stated[0] == round(row["share"]["position"][0], 2), (k, N[k])
-            hbar(b, y + 0.08, got["share"]["position"], S.COL["position"], 0.26)
+            hbar(b, y + B_DY[0], got["share"]["position"], S.COL["position"], 0.3)
             if lt:  # hollow
                 b.patches[-1].set(facecolor="white", edgecolor=S.COL["position"], lw=1.6)
-            hbar(b, y - 0.15, rand["share"]["position"], S.COL["control"], 0.10)
+            hbar(b, y + B_DY[1], rand["share"]["position"], S.COL["control"], 0.12)
             if lt:
                 b.patches[-1].set(facecolor="white", edgecolor="#9a9a9a", lw=1.0)
             if i == 0 and j == 0:  # Dan (21:50): the panel names its two bars, on its first row
                 gp, rp = got["share"]["position"], rand["share"]["position"]
-                b.text(max(gp[0], gp[2]) + 0.22, y + 0.08, "position answers", va="center", fontsize=S.LABEL_PT,
+                b.text(max(gp[0], gp[2]) + 0.22, y + B_DY[0], "position answers", va="center", fontsize=S.LABEL_PT,
                        color="#1e1e1e")  # fmt: skip
-                b.text(max(rp[0], rp[2]) + 0.22, y - 0.15, "random", va="center", fontsize=S.LABEL_PT,
+                b.text(max(rp[0], rp[2]) + 0.22, y + B_DY[1], "random", va="center", fontsize=S.LABEL_PT,
                        color=S.COL["muted"])  # fmt: skip
             if j == 0:
                 ns_b.append(str(got["n"]))
             ticks.append(y)
-            labels.append(f"{SHORT[m]} · {label}")
-            src = rel(LT_ROUTES) if lt else str(newest(pins.RESULTS_DIR / "x6_routes" / rn,
-                                                        "verdict-*/verdict.json").relative_to(S.REPO))  # fmt: skip
+            labels.append(f"{SHORT[m]}{S.LOWERED if q else ''} · {label}")
+            src = (rel(LT_ROUTES) if lt else rel(Q122_KEEP if j else Q122_ROUTES) if q
+                   else str(newest(pins.RESULTS_DIR / "x6_routes" / rn, "verdict-*/verdict.json").relative_to(S.REPO)))  # fmt: skip
             S.record("fig07", target, f"another item moved, {arm}: position share", *got["share"]["position"],
                      n=got["n"], source=src)  # fmt: skip
             S.record("fig07", target, f"another item moved, {ctl}: position share", *rand["share"]["position"],
                      n=rand["n"], source=src)  # fmt: skip
     b.set_yticks(ticks, labels)
-    b.set_ylim(ticks[-1] - 0.45, 0.5)
+    b.set_ylim(ticks[-1] - 0.6, 0.55)
     for ax in (a, b):
         ax.set_xlim(0, 1.18)
         ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
@@ -2349,13 +2391,18 @@ def f07_writes(plt) -> None:
     a.set_xlabel("share of scenes")
     b.set_xlabel("position answers (share)")
     S.panel_tag(a, ", ".join(ns_a), "after")
-    S.panel_tag(b, f"{', '.join(ns_b[:-1])}  {S.STATUS_GLYPH['fixed']};  {ns_b[-1]}", "after")  # Lightning: open
+    # Lightning: open; the 122B: its n marked ° (gate lowered after the data), its rule fixed in advance
+    S.panel_tag(b, f"{', '.join(ns_b[:3])}  {S.STATUS_GLYPH['fixed']};  {ns_b[3]}  {S.STATUS_GLYPH['after']};  "
+                   f"{ns_b[4]}{S.LOWERED}", "fixed")  # fmt: skip
 
     # (c) the swap by dose, pooled over the locker pairs, against a random vector of the same size
     ends = []
-    for target, m, _ in (*V6_MODELS, LT):
+    for target, m, _ in (*V6_MODELS, LT, Q122):
         lt = m == "lightning"
-        if lt:
+        if m == "122b":
+            v, run_name, src = json.loads(Q122_SWAP.read_text()), rel(Q122_SWAP), rel(Q122_SWAP)
+            s_real = json.loads(Q122_RECALL.read_text())["s_real"]
+        elif lt:
             v, run_name, src = json.loads(LT_SWAP.read_text()), rel(LT_SWAP), rel(LT_SWAP)
             norms = v["manifest"]["norms"]  # scripts/x8_write.py's recall stage: s* = median ||U U^T Delta|| / step
             s_real = {pair: norms["median_U_UT_delta_C2"] / step for pair, step in norms["step"].items()}
@@ -2388,7 +2435,7 @@ def f07_writes(plt) -> None:
             if kind == "write":
                 c.fill_between(x, y[:, 1], y[:, 2], color=col, alpha=0.15, lw=0, zorder=1)
                 c.plot(x, y[:, 0], color=col, ls=ls, lw=2.2, marker=mk, ms=6.5, zorder=3, **hollow)
-                ends.append((x[-1], y[-1, 0], SHORT[m]))
+                ends.append((x[-1], y[-1, 0], SHORT[m] + (S.LOWERED if m == "122b" else "")))
             else:
                 c.plot(x, y[:, 0], color=col, ls=ls, lw=1.6, marker=mk, ms=6, zorder=2, **hollow)
                 c.vlines(x, y[:, 1], y[:, 2], color=col, lw=1.2, zorder=2)
@@ -2399,8 +2446,8 @@ def f07_writes(plt) -> None:
                 S.record("fig07", target, q, *t, n=n, source=src)
     for xe, ye, name in ends:  # Muse and the 27B end near the same share: Muse's label above its line; Lightning's
         # last point sits on the 9B's line: its label under it
-        dy = {"Muse": 0.06, "Lightning": -0.085}.get(name, -0.02)
-        c.text(xe + 0.07, ye + dy, name, va="center", fontsize=S.FONT,
+        dx, dy, ha = END_LABEL.get(name, (0.07, -0.02, "left"))
+        c.text(xe + dx, ye + dy, name, va="center", ha=ha, fontsize=S.FONT,
                color=S.COL["lookup"], weight="bold")  # fmt: skip
     c.axvline(1, color="#555555", lw=1, ls=":", zorder=0)
     c.text(1.04, 0.97, "as large as\na real change", transform=c.get_xaxis_transform(), va="top", color="#555555",
@@ -2420,7 +2467,8 @@ def f07_writes(plt) -> None:
           plt.Rectangle((0, 0), 1, 0.4, fc="white", ec="#9a9a9a", hatch="////", lw=0.6)]  # fmt: skip
     legend(fig, hs, ["address (probe)", "position answers", "lookup", "a random part (same size)", "layout baseline"],
            1 - 0.62 / h, ncol=3)  # fmt: skip
-    fig.text(0.01, 0.12 / h, LT_NOTE, color=S.COL["muted"], fontsize=S.FONT - 1)
+    fig.text(0.01, 0.08 / h, f"{LT_NOTE}\n{Q122_NOTE}", color=S.COL["muted"], fontsize=S.FONT - 1, va="bottom",
+             linespacing=1.3)  # fmt: skip
     S.save(fig, "fig07_writes")
 
 
