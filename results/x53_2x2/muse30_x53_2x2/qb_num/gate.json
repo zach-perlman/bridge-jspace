@@ -1,0 +1,33 @@
+{
+ "cases": 530,
+ "org_read_accuracy": {
+  "PP": 0.9849,
+  "PM": 0.7189
+ },
+ "said_accuracy": {
+  "PP": 0.9849,
+  "PM": 0.717
+ },
+ "gate": 0.8,
+ "pass": false,
+ "eligible": 302,
+ "min": 150,
+ "enough": true,
+ "tested": false,
+ "chosen": 0,
+ "order": [],
+ "counts": {
+  "scenes": 600,
+  "cases": 530,
+  "dropped": {
+   "the bridge is not one token at one position in O and S": 70
+  },
+  "domains": {
+   "animals": 176,
+   "elements": 200,
+   "greek": 154
+  }
+ },
+ "status": "not tested (gate 0.72 < 0.80)",
+ "hub_kernels": {}
+}

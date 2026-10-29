@@ -1,0 +1,86 @@
+{
+  "exp": "x53_2x2",
+  "run": "muse30_x53_2x2",
+  "test": "53.1",
+  "spec": "jobs/c3/batch53.yaml (brief, 53.1)",
+  "question": "no prediction (batch 53: exploration day, rules fixed in the brief)",
+  "written_utc": "2026-10-29T10:28:46Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "aca60ede687705265605e2349248c546c7ce3b55",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "inputs": {
+    "jobs/c3/batch53.yaml": "453da26fa690839bffe7261f70db768b066eff14d25645a637654292ed6cd0b2",
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b"
+  },
+  "set": "d1_topics_v3",
+  "layer": 26,
+  "cells": [
+    "qa_num",
+    "qb_num"
+  ],
+  "cell_text": {
+    "qa_num": "(Q-after, number)",
+    "qb_num": "(Q-before, number)",
+    "qa_word": "(Q-after, word)",
+    "qb_word": "(Q-before, word)"
+  },
+  "relation": null,
+  "word_instruction": "Answer with a single word and nothing else.",
+  "gate": 0.8,
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "k": 25,
+  "omp": "signed",
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_jpp_A",
+    "no_jpp_A_rand",
+    "no_A",
+    "no_A_rand"
+  ],
+  "atoms": {
+    "items": 50,
+    "seed": 0
+  },
+  "order": {
+    "cells": "every cell's competence and gate first (the relation's 9B accuracy = qa_word's recall gate), then each tested cell's Δ, readout, arms and atoms in CELLS order",
+    "reads": "per item and reader: O unedited then the arms in order, batches of at most 128 rows (BJ_SUITE_BATCH)"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "atoms": 0
+  },
+  "design": "scripts/x53_2x2.py docstring",
+  "verdict": "x53_2x2.py verdict (CPU)",
+  "finished_utc": "2026-10-29T10:41:43Z"
+}

@@ -1,0 +1,19 @@
+{
+  "c0_generated": 1400,
+  "roles": {
+    "C's legs equal A's or B's": 888,
+    "kept": 512
+  },
+  "cases": 512,
+  "org_read_accuracy": {
+    "PP": 1.0,
+    "PM": 0.990234375
+  },
+  "pass": true,
+  "gate_min": 0.8,
+  "eligible": 503,
+  "used": 300,
+  "generator_dropped": {
+    "A and B have the same number of legs": 801
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "exp": "x53_identity_address",
+  "run": "muse30_x53_6",
+  "why": "Batch 53, test 53.6 on Muse (Dan 11:25, jobs/c3/batch53.yaml critic_1125: same rule): the recall, lens identity toward B vs the address swap toward C's slot (s = 2) at the bridge word at L26; no prediction",
+  "written_utc": "2026-10-29T10:42:58Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "7c153aa664c47d61944fffd0f6677694be44db55",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "53.6",
+  "spec": "jobs/c3/batch53.yaml (53.6)",
+  "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "58a71b3a4bf419026866b9d0483c3f27ba4143a390fb23945faa1490c8acf9f5"
+  },
+  "layer": 26,
+  "k": 25,
+  "s": 2,
+  "arms": {
+    "none": "O unedited",
+    "lens": "the lens part toward B: P_J (h_{S_B} - h_O)",
+    "addr": "the address swap toward C's slot: 2 (mu_{j_C} - mu_{j_A})",
+    "both": "lens + addr (the rule's arm)",
+    "both_rand": "lens + a random direction of addr's norm (beside)"
+  },
+  "classes": [
+    "B",
+    "C",
+    "original",
+    "other"
+  ],
+  "rule": "on the recall under lens + address: \"the recall follows the lens identity\" if B's share >= 2x C's; \"follows the address\" if C's >= 2x B's; else \"both\"",
+  "mu_from": "muse30b_x0_probe_v4",
+  "n_items": 300,
+  "scenes": "x6_routes.scenes (seed 2510, 1400 per condition), the C0 pairs (S_B: Iris picked B) whose three items have distinct legs counts; on these X0's competence and X0's gate (O's read accuracy >= 0.80 per reader); the first 300 eligible in generator order",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 5306,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "sealed": "none (no prediction)"
+}
