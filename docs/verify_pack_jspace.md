@@ -6,11 +6,11 @@ Dan 13:15 (jobs/c3/batch53.yaml answers_1315), verbatim: "Rank check: no flag (t
 
 The per-item panel: "Look into J-space" on every card of `make review-serve` (the state, the change, its J++ part, the rest, the random part and U at any saved token and layer; J++ and logit-lens top 30; typed and listed tokens' ranks; a token x layer heatmap; the change's 25 atoms at L; self-checks against 51.12 and x52_atoms; a free-text note per item, saved in review/marks.jsonl as kind "jspace").
 
-As computed (scripts/review_jspace.py rank-check): the readout is the J++ lens (JLens.readout) at L; the J++ part is X0's 25-atom signed OMP over the J++ letter-token atoms, the rest = Δ minus it, the random part X0's (seed 888 + L) at the J++ part's share; rank = 1 + tokens with a strictly larger logit, a word's best token (S's bridge: its one-token spellings and symbol, then also the first pieces of split spellings; an answer: its digit and its number word). Flag (Dan 13:15: the rest exceeding random): (share in the top 50 under the rest) minus (under the random part) >= 0.20. Routes: per condition and over all. By construction the random part keeps share x Δ along Δ itself (statement_positions.random_subspace_part's docstring), so it carries whatever Δ's own direction reads as. Sources: Muse Glimmer 30B: `results/review_states/muse30_review_states`; Nemotron 3.5 Lightning: `results/review_states/nem35l_review_states`; Qwen3.5-9B: `results/review_states/qwen35_9b_review_states`; Qwen3.6-27B: `51.10's cached states (results/x51_jread, CPU; conflict test only)`. Models read from 51.10's states: the conflict test only, until their states job lands. 
+As computed (scripts/review_jspace.py rank-check): the readout is the J++ lens (JLens.readout) at L; the J++ part is X0's 25-atom signed OMP over the J++ letter-token atoms, the rest = Δ minus it, the random part X0's (seed 888 + L) at the J++ part's share; rank = 1 + tokens with a strictly larger logit, a word's best token (S's bridge: its one-token spellings and symbol, then also the first pieces of split spellings; an answer: its digit and its number word). Flag (Dan 13:15: the rest exceeding random): (share in the top 50 under the rest) minus (under the random part) >= 0.20. Routes: per condition and over all. By construction the random part keeps share x Δ along Δ itself (statement_positions.random_subspace_part's docstring), so it carries whatever Δ's own direction reads as. Sources: Muse Glimmer 30B: `results/review_states/muse30_review_states`; Nemotron 3.5 Lightning: `results/review_states/nem35l_review_states`; Qwen3.5-9B: `results/review_states/qwen35_9b_review_states`; Qwen3.6-27B: `results/review_states/review_states_27b`. 
 
 **Flags: 0**.
 
-The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: Muse Glimmer 30B main_swap: max |gap| 0.0000 over 200; Muse Glimmer 30B routes: max |gap| 0.0000 over 900; Nemotron 3.5 Lightning main_swap: max |gap| 0.0000 over 200; Nemotron 3.5 Lightning routes: max |gap| 0.0000 over 900; Qwen3.5-9B main_swap: max |gap| 0.0000 over 200; Qwen3.5-9B routes: max |gap| 0.0000 over 900; Qwen3.6-27B main_swap: max |gap| 0.0042 over 200.
+The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: Muse Glimmer 30B main_swap: max |gap| 0.0000 over 200; Muse Glimmer 30B routes: max |gap| 0.0000 over 900; Nemotron 3.5 Lightning main_swap: max |gap| 0.0000 over 200; Nemotron 3.5 Lightning routes: max |gap| 0.0000 over 900; Qwen3.5-9B main_swap: max |gap| 0.0000 over 200; Qwen3.5-9B routes: max |gap| 0.0000 over 900; Qwen3.6-27B main_swap: max |gap| 0.0000 over 200; Qwen3.6-27B routes: max |gap| 0.0000 over 900.
 
 | model | test | condition | token | n | top 50: J++ part | rest | random part | rest - random | flag | median rank: J++ / rest / random |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -74,7 +74,23 @@ The parts reproduce the runs': the J++ share of Δ against the run's stored shar
 | Qwen3.5-9B | routes | all | S's bridge (with first pieces) | 900 | 0.48 | 0.01 | 0.26 | -0.25 |  | 58 / 26460 / 1953 |
 | Qwen3.5-9B | routes | all | the lookup's S answer (digit or word) | 900 | 0.02 | 0.01 | 0.02 | -0.01 |  | 14788 / 28458 / 29210 |
 | Qwen3.5-9B | routes | all | the recall's S answer (digit or word) | 900 | 0.02 | 0.00 | 0.02 | -0.01 |  | 15521 / 33771 / 35538 |
-| Qwen3.6-27B | main_swap | all | S's bridge (word or symbol) | 200 | 0.81 | 0.02 | 0.53 | -0.51 |  | 2 / 20384 / 42 |
-| Qwen3.6-27B | main_swap | all | S's bridge (with first pieces) | 200 | 0.82 | 0.03 | 0.54 | -0.51 |  | 2 / 16758 / 41 |
-| Qwen3.6-27B | main_swap | all | the lookup's S answer (digit or word) | 200 | 0.01 | 0.00 | 0.00 | +0.00 |  | 46339 / 52854 / 35004 |
-| Qwen3.6-27B | main_swap | all | the recall's S answer (digit or word) | 200 | 0.01 | 0.01 | 0.01 | +0.00 |  | 18502 / 28734 / 18362 |
+| Qwen3.6-27B | main_swap | all | S's bridge (word or symbol) | 200 | 0.81 | 0.02 | 0.53 | -0.51 |  | 2 / 21106 / 42 |
+| Qwen3.6-27B | main_swap | all | S's bridge (with first pieces) | 200 | 0.82 | 0.03 | 0.54 | -0.51 |  | 2 / 17359 / 41 |
+| Qwen3.6-27B | main_swap | all | the lookup's S answer (digit or word) | 200 | 0.01 | 0.00 | 0.00 | +0.00 |  | 41090 / 52854 / 34718 |
+| Qwen3.6-27B | main_swap | all | the recall's S answer (digit or word) | 200 | 0.01 | 0.03 | 0.01 | +0.02 |  | 18502 / 29327 / 17940 |
+| Qwen3.6-27B | routes | C0 | S's bridge (word or symbol) | 300 | 0.77 | 0.02 | 0.37 | -0.35 |  | 4 / 27204 / 522 |
+| Qwen3.6-27B | routes | C0 | S's bridge (with first pieces) | 300 | 0.79 | 0.02 | 0.38 | -0.36 |  | 4 / 17345 / 356 |
+| Qwen3.6-27B | routes | C0 | the lookup's S answer (digit or word) | 300 | 0.01 | 0.01 | 0.04 | -0.03 |  | 27782 / 56079 / 32160 |
+| Qwen3.6-27B | routes | C0 | the recall's S answer (digit or word) | 300 | 0.01 | 0.00 | 0.03 | -0.03 |  | 20720 / 57734 / 32124 |
+| Qwen3.6-27B | routes | C1 | S's bridge (word or symbol) | 300 | 0.14 | 0.01 | 0.02 | -0.00 |  | 58788 / 86701 / 66882 |
+| Qwen3.6-27B | routes | C1 | S's bridge (with first pieces) | 300 | 0.14 | 0.01 | 0.02 | -0.01 |  | 26523 / 62591 / 28294 |
+| Qwen3.6-27B | routes | C1 | the lookup's S answer (digit or word) | 300 | 0.01 | 0.00 | 0.13 | -0.13 |  | 30594 / 45892 / 39829 |
+| Qwen3.6-27B | routes | C1 | the recall's S answer (digit or word) | 300 | 0.01 | 0.00 | 0.16 | -0.16 |  | 31998 / 53616 / 39234 |
+| Qwen3.6-27B | routes | C2 | S's bridge (word or symbol) | 300 | 0.77 | 0.03 | 0.33 | -0.30 |  | 4 / 26729 / 460 |
+| Qwen3.6-27B | routes | C2 | S's bridge (with first pieces) | 300 | 0.79 | 0.03 | 0.35 | -0.32 |  | 3 / 18654 / 336 |
+| Qwen3.6-27B | routes | C2 | the lookup's S answer (digit or word) | 300 | 0.01 | 0.00 | 0.05 | -0.04 |  | 33030 / 57108 / 26000 |
+| Qwen3.6-27B | routes | C2 | the recall's S answer (digit or word) | 300 | 0.01 | 0.01 | 0.04 | -0.04 |  | 28434 / 55700 / 29304 |
+| Qwen3.6-27B | routes | all | S's bridge (word or symbol) | 900 | 0.56 | 0.02 | 0.24 | -0.22 |  | 19 / 38924 / 5492 |
+| Qwen3.6-27B | routes | all | S's bridge (with first pieces) | 900 | 0.57 | 0.02 | 0.25 | -0.23 |  | 18 / 26147 / 2460 |
+| Qwen3.6-27B | routes | all | the lookup's S answer (digit or word) | 900 | 0.01 | 0.00 | 0.07 | -0.07 |  | 30232 / 52098 / 32098 |
+| Qwen3.6-27B | routes | all | the recall's S answer (digit or word) | 900 | 0.01 | 0.00 | 0.08 | -0.07 |  | 26176 / 55063 / 32456 |
