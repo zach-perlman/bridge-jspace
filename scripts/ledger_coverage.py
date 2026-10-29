@@ -99,7 +99,7 @@ HEATMAP = (
     ("II", "t51-3", "Learned subspaces at scale", ("B (iii) no", "N not ported", "B (iii) no", "B (iii) no")),
     ("III", "probe", "Address probe", ("D readable", "D readable", "D readable", "D readable")),
     ("III", "swap", "Address swap, rule at dose 1", ("F no", "F no", "F no", "F no")),
-    ("III", "t47-16", "Swap after neutral sentences", ("H robust", "H robust", "H robust", "N running")),
+    ("III", "t47-16", "Swap after neutral sentences", ("H robust", "H robust", "H robust", "H robust")),
     ("III", "six", "Six lockers, own code each", ("F none of three", "H own code", "H own code", "H own code")),
     ("III", "t51-11", "What the address is", ("B part 2 only", "N not ported", "B in between", "B mixed")),
     ("III", "t47-0", "Lens readout of the swap", ("H lens blind", "H lens blind", "H lens blind", "H lens blind")),

@@ -72,6 +72,18 @@ def below_gate(name: str, model: str) -> None:
     _SLOTS.setdefault(name, {})[SHORT[model]] = "below gate"
 
 
+def grey_panel(name: str, model: str, label: str, ax) -> None:
+    """A whole panel for a model without a result: its name as the title, the grey label in the middle, no axes."""
+    ax.set_title(SHORT[model], fontsize=12, weight="bold", loc="left", color=GREY)
+    # tick_params, not set_ticks: the panel may share an axis with the data panels
+    ax.tick_params(left=False, labelleft=False, bottom=False, labelbottom=False)
+    ax.set_xlabel("")
+    ax.grid(False)
+    for side in ax.spines.values():
+        side.set_visible(False)
+    grey(name, model, label, ax, 0.5, 0.5, ha="center", transform=ax.transAxes, wrap=True)
+
+
 def slots_of(name: str) -> dict[str, str]:
     """The figure's four slots: what grey() / below_gate() registered, else "data" where the figure recorded a number
     for the model (S.record), else missing."""
@@ -170,16 +182,22 @@ def address_shape(plt) -> str:
     lockers, the random code dashed (9B, Muse). Bottom: part 3's midpoint swaps from slot 1 and slot 6: the share sent
     to the midpoint slot, beside the full swap's share sent to its target."""
     v = load(ADDR)
-    models = [m for m in v["models"] if m.get("part1") and m["part1"].get("S")]
-    fig, axes = plt.subplots(2, len(models), figsize=(S.WIDTH, 6.6))
-    fig.subplots_adjust(left=0.09, right=0.97, top=0.84, bottom=0.08, hspace=0.55, wspace=0.18)
+    by = {m["target"]: m for m in v["models"] if m.get("part1") and m["part1"].get("S")}
+    fig, axes = plt.subplots(2, 4, figsize=(S.WIDTH, 6.6))
+    fig.subplots_adjust(left=0.09, right=0.97, top=0.84, bottom=0.08, hspace=0.55, wspace=0.35)
     S.title(fig, "Muse's code grows with the lockers, the 9B's does not; midpoints fail",
             "Top: learned code's accuracy by size k, per number of lockers; bottom: swaps to the midpoint slot")  # fmt: skip
     shades = {"3": "#f5c48a", "4": "#eaa04f", "6": "#c9731a", "8": "#8a4a0b"}
-    for j, m in enumerate(models):
+    absent = {"qwen3.6-27b": "part 2 only\n(parts 1, 3 not\ndesigned); its\nswap in the table",
+              LT: "not tested:\nDAS port\ndropped"}  # fmt: skip
+    for j, t in enumerate(SLOT_MODELS):
+        if t not in by:
+            grey_panel("ledger_address_shape", t, absent[t], axes[0, j])
+            axes[1, j].axis("off")
+            continue
+        m = by[t]
         ax = axes[0, j]
-        name = dict(MODEL3)[m["target"]]
-        ax.set_title(name, fontsize=12, weight="bold", loc="left")
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         items = []
         for s, cell in m["part1"]["S"].items():
             c = cell.get("curve")
@@ -212,7 +230,8 @@ def address_shape(plt) -> str:
                 ax.plot([i + dx, i + dx], [val[1], val[2]], color="#333333", lw=1.2)
                 S.record("ledger_address_shape", m["target"], f"part 3, dose 2, {lab}: {what}", *val,
                          n=cells["1|mid|2"]["n"], source=rel(ADDR))  # fmt: skip
-        ax.set_xticks([0, 1], [b[0] for b in bars])
+        ax.set_xticks([0, 1], ["slot 1", "slot 6"])
+        ax.set_xlabel("swapped from")
         ax.set_ylim(0, 1.0)
         if j == 0:
             ax.set_ylabel("share of lookups")
@@ -229,12 +248,13 @@ def learned(plt) -> str:
     the lookup; a random subspace of the same size dashed."""
     v = load(DAS)
     by = {m["target"]: m for m in v["models"]}
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.6), sharey=True)
-    fig.subplots_adjust(left=0.08, right=0.93, top=0.72, bottom=0.17, wspace=0.22)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.93, top=0.72, bottom=0.17, wspace=0.3)
     S.title(fig, "Learned subspaces carry each reader's item switch; random ones none",
             "Switches carried by a learned subspace of size k on held-out entities; dashed: random subspace")  # fmt: skip
-    for ax, (t, name) in zip(axes, MODEL3, strict=True):
-        ax.set_title(name, fontsize=12, weight="bold", loc="left")
+    grey_panel("ledger_learned", LT, "dropped:\nDAS port", axes[3])
+    for ax, (t, name) in zip(axes, MODEL3, strict=False):
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         readers = by[t]["identity"]["readers"]
         items = []
         for key, col, word in (("PM", INK, "recall"), ("PP", LOOKUP, "lookup")):
@@ -248,7 +268,7 @@ def learned(plt) -> str:
             ax.plot(ks, [test["random_iia"][str(k)][0] for k in ks], "--", color=NULL, lw=1.2)
             items.append((vals[-1][0], word, col))
         ax.set_xscale("log", base=2)
-        ax.set_xticks([4, 16, 64, 128], ["4", "16", "64", "128"])
+        ax.set_xticks([4, 16, 128], ["4", "16", "128"])
         ax.set_xlim(3, 220)
         ax.set_ylim(-0.05, 1.05)
         ax.set_xlabel("subspace size k")
@@ -301,14 +321,20 @@ def full_carrier(plt) -> str:
     """Per model (9B, 27B, Lightning), lookups and recalls lost without the lens part beyond a random part, fact first
     and fact after, the change at one layer (hollow) and at every layer up to L (filled)."""
     runs = [(m, CARRIER) for m in load(CARRIER)["models"]] + [(m, CARRIER_L) for m in load(CARRIER_L)["models"]]
-    names = {**dict(MODEL3), "nemotron-3.5-lightning": "Lightning"}
-    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.9), sharey=True)
+    by = {m["target"]: (m, src) for m, src in runs}
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.9), sharey=True)
     fig.subplots_adjust(left=0.18, right=0.98, top=0.72, bottom=0.15, wspace=0.1)
     S.title(fig, "Over every layer up to L, fact-after lookups follow the lens part",
             "Switches lost without the lens part, beyond a random part; hollow: one layer, filled: every layer to L")  # fmt: skip
     labels = ["fact first", "fact after"]
-    for ax, (m, src) in zip(axes, runs, strict=True):
-        ax.set_title(names[m["target"]], fontsize=12, weight="bold", loc="left")
+    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+        if t not in by:
+            rows_axis(ax, labels)
+            ax.set_ylim(-1.6, 0.5)
+            grey_panel("ledger_full_carrier", t, "not designed\n(9B / 27B only)", ax)
+            continue
+        m, src = by[t]
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         for i, g in enumerate(("fact-first", "fact-after")):
             grp = m["groups"][g]
             for carrier, dy, hollow in (("one", 0.18, True), ("before", 0.0, False)):
@@ -327,9 +353,9 @@ def full_carrier(plt) -> str:
         zero_band(ax, -0.2, 1.0)
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         ax.axvspan(-0.2, 0.10, color=S.COL["band"], lw=0, zorder=0)
-        ax.set_xlabel("switches lost beyond random")
-    axes[1].text(0.62, 0.32, "lookup", color=LOOKUP, fontsize=S.LABEL_PT)
-    axes[1].text(0.62, -0.18, "recall", color=INK, fontsize=S.LABEL_PT)
+    fig.text(0.58, 0.03, "switches lost beyond random", ha="center", fontsize=S.FONT)
+    axes[1].text(0.55, 0.32, "lookup", color=LOOKUP, fontsize=S.LABEL_PT)
+    axes[1].text(0.55, -0.18, "recall", color=INK, fontsize=S.LABEL_PT)
     return save(fig, "ledger_full_carrier")
 
 
@@ -500,6 +526,8 @@ def clean_reruns(plt) -> str:
     ax.set_ylim(-0.03, 1.03)
     ax.set_xlabel("run of record")
     ax.set_ylabel("clean rerun")
+    for t in SLOT_MODELS[1:]:
+        grey("ledger_clean_reruns", t, "9B only by design (the caption)")
     ax.text(1.05, 0.5, "filled: the same\non every row\n\nhollow: the depth\nanatomy's cells,\n38 of 11,988 rows\ndiffer",
             transform=ax.transAxes, ha="left", va="center",
             fontsize=S.LABEL_PT, color=S.COL["muted"])  # fmt: skip
@@ -516,7 +544,7 @@ def lightning_layers(plt) -> str:
     lay, ver = load(LAYER), load(CONFLICT)
     layers = sorted(int(k) for k in lay["rates"])
     fig, axes = plt.subplots(2, 1, figsize=(S.WIDTH, 5.8), sharex=True)
-    fig.subplots_adjust(left=0.1, right=0.86, top=0.85, bottom=0.09, hspace=0.25)
+    fig.subplots_adjust(left=0.1, right=0.86, top=0.85, bottom=0.13, hspace=0.25)
     S.title(fig, "On Lightning the recall follows the lens part; the lookup does not",
             "Top: switches by the whole change per layer; bottom: switches lost beyond a random part")  # fmt: skip
     ax = axes[0]
@@ -557,12 +585,17 @@ def lightning_layers(plt) -> str:
     axes[1].set_xlim(0, 52)
     axes[1].text(53, 0.10, "lookup bar 0.10", fontsize=S.LABEL_PT, color=LOOKUP, va="center")
     axes[1].set_xticks(layers)
+    for t in SLOT_MODELS[:3]:
+        grey("ledger_lightning_layers", t, "L fixed in advance; conflict test in the README")
+    fig.text(0.1, 0.008, "9B, 27B, Muse: their layer was fixed in advance (L12 / L32 / L26); their conflict test is the "
+             "README's", fontsize=S.LABEL_PT - 1, color=GREY)  # fmt: skip
     return save(fig, "ledger_lightning_layers")
 
 
 # ---- where the answer is readable and usable (batch 52 B) -----------------------------------------------------------
 
 ANSWER_MAP = R / "x52_answer_map" / "x52-20261029T004559Z" / "verdict.json"
+ANSWER_MAP_L = R / "x52_answer_map" / "x52cov-20261029T005848Z" / "verdict.json"  # Lightning: our main test only
 
 
 def answer_map(plt) -> str:
@@ -570,41 +603,50 @@ def answer_map(plt) -> str:
     the answer word in the lens's top 5 before the answer layer (the rule's 0.5 dashed); right, the answers changed by
     writing the answer word's lens directions at that cell (the better of gains 1 and 2, whiskers 95%) with the random
     part of the same gain in grey (the rule's 0.3 dashed); the combination at the right."""
-    v = load(ANSWER_MAP)
+    v, vl = load(ANSWER_MAP), load(ANSWER_MAP_L)
+    combos = {**v["combinations"], **vl["combinations"]}
+    srcs = {m["target"]: ANSWER_MAP for m in v["models"]} | {m["target"]: ANSWER_MAP_L for m in vl["models"]}
+    by = {m["target"]: m for m in v["models"] + vl["models"]}
     rows = []
-    for m in sorted(v["models"], key=lambda m: [t for t, _ in MODEL3].index(m["target"])):
+    for t in SLOT_MODELS:
         for d, dname in (("main", "ours"), ("z2", "Zach's")):
             for rd in ("lookup", "recall"):
-                rows.append((m, d, dname, rd))
+                rows.append((by[t], d, dname, rd))
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.36 * len(rows) + 1.9), sharey=True,
                              gridspec_kw={"width_ratios": [1, 1.25]})  # fmt: skip
     h = fig.get_figheight()
-    fig.subplots_adjust(left=0.215, right=0.8, top=1 - 1.25 / h, bottom=0.75 / h, wspace=0.22)
+    fig.subplots_adjust(left=0.26, right=0.8, top=1 - 1.25 / h, bottom=0.75 / h, wspace=0.22)
     S.title(fig, "On Zach's passages the answer is readable and usable; on ours rarely",
-            "Ours: our main test; Zach's: his described passages. Grey: a random part, same gain")  # fmt: skip
+            "Ours: our main test; Zach's: his described passages. Grey: a random part; ○ hollow: Lightning")  # fmt: skip
     labels = []
     for i, (m, d, dname, rd) in enumerate(rows):
         t, col, y = m["target"], (LOOKUP if rd == "lookup" else INK), -i
+        labels.append(f"{SHORT[t]}{' ○' if t == LT else ''}, {dname}, {rd}")
+        if d not in m["writes"]:  # Lightning on Zach's passages: the read has not landed
+            if rd == "lookup":
+                grey("ledger_answer_map", t, "Zach's passages: read pending", axes[0], 0.02, y - 0.5)
+                _SLOTS["ledger_answer_map"].pop(SHORT[t])  # the model has data (ours); only these rows are grey
+            continue
         r = m["maps"][d]["readers"][rd]
         best = r["readable"]["best_before"]
-        axes[0].barh(y, best["top5"], color=col, height=0.6, alpha=0.85)
+        hollow = t == LT
+        axes[0].barh(y, best["top5"], color="white" if hollow else col, edgecolor=col, height=0.6, alpha=0.85)
         w = m["writes"][d][rd]["switch"]
         g = "ans1" if w["ans1"][0] >= w["ans2"][0] else "ans2"
-        whisker(axes[1], y, w[g], col)
+        whisker(axes[1], y, w[g], col, hollow=hollow)
         axes[1].plot([w["rand" + g[-1]][0]], [y], "o", color=NULL, ms=5)
-        combo = v["combinations"][f"{t}|{d}|{rd}"]["combination"]
+        combo = combos[f"{t}|{d}|{rd}"]["combination"]
         axes[1].text(1.05, y, combo, va="center", fontsize=S.LABEL_PT, color="#222222", clip_on=False)
-        labels.append(f"{SHORT[t]}, {dname}, {rd}")
         S.record("ledger_answer_map", t, f"{dname}, {rd}: best top-5 share before the answer layer "
-                 f"({best['group']} L{best['layer']})", best["top5"], source=rel(ANSWER_MAP))  # fmt: skip
+                 f"({best['group']} L{best['layer']})", best["top5"], source=rel(srcs[t]))  # fmt: skip
         S.record("ledger_answer_map", t, f"{dname}, {rd}: answers changed by the write, gain {g[-1]}", *w[g],
-                 n=m["writes"][d][rd]["n"], source=rel(ANSWER_MAP))  # fmt: skip
+                 n=m["writes"][d][rd]["n"], source=rel(srcs[t]))  # fmt: skip
     for ax, bar in ((axes[0], 0.5), (axes[1], 0.3)):
         ax.axvline(bar, color="#555555", lw=0.9, ls="--")
         ax.set_xlim(0, 1.0)
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         ax.grid(axis="x", color="#eeeeee")
-        for b in (3.5, 7.5):
+        for b in (3.5, 7.5, 11.5):
             ax.axhline(-b, color="#cccccc", lw=0.8)
     axes[0].set_yticks([-i for i in range(len(rows))], labels)
     axes[0].tick_params(axis="y", length=0)
@@ -709,6 +751,7 @@ def six_lockers(plt) -> str:
 ATOMS = R / "x52_atoms" / "report-20261029T000125Z" / "tables.json"
 ATOMS_L = R / "x52_atoms" / "report-20261029T010648Z" / "tables.json"  # Lightning's run (our scenes only)
 DEPTH = R / "x51_depth" / "x51_5-20261028T181100Z" / "x51_5.json"
+DEPTH_L = R / "x51_depth" / "x52_depth51-20261029T083500Z" / "x51_5.json"  # Lightning, the 9B / 27B design
 Z2 = R / "x50_zach" / "z2-20261028T162710Z" / "z2.json"
 Z2_L = R / "x50_zach" / "x52_z2-20261029T025625Z" / "z2.json"  # Lightning's coverage run (L14 decides)
 LIGHTNING_HOLLOW = "○ Lightning: gate set after its 60-scene pre-check (hollow)"
@@ -764,13 +807,18 @@ def atoms(plt) -> str:
 def read_window(plt) -> str:
     """Per model (9B, 27B), the share of each reader's answers switched by the whole change at one layer at a time, on
     Zach's named passages (solid, band 95%) and on our routes scenes (dashed); 0.3 dotted, the window's end."""
-    v = load(DEPTH)
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 4.0), sharey=True)
-    fig.subplots_adjust(left=0.08, right=0.98, top=0.74, bottom=0.25, wspace=0.1)
-    S.title(fig, "On the 9B his passages are read over our layers; on the 27B not",
+    by = {m["target"]: (m, path) for path in (DEPTH, DEPTH_L) for m in load(path)["models"]
+          if m.get("status", "tested") == "tested"}  # fmt: skip
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.0), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.74, bottom=0.3, wspace=0.12)
+    S.title(fig, "The 9B and Lightning read his passages over our layers; the 27B not",
             "Answers switched by the whole change at one layer; solid: his passages, dashed: our scenes")  # fmt: skip
-    for ax, m in zip(axes, v["models"], strict=True):
-        ax.set_title(dict(MODEL3)[m["target"]], fontsize=12, weight="bold", loc="left")
+    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+        if t not in by:
+            grey_panel("ledger_read_window", t, "not designed\n(9B / 27B only)", ax)
+            continue
+        m, src = by[t]
+        ax.set_title(SHORT[t] + (" ○" if t == LT else ""), fontsize=12, weight="bold", loc="left")
         layers = sorted(int(k) for k in m["cells"])
         for reader, col in (("lookup", LOOKUP), ("recall", INK)):
             sw = [m["cells"][str(la)][reader]["switch"] for la in layers]
@@ -781,11 +829,11 @@ def read_window(plt) -> str:
             ax.plot(rl, [ref[str(la)] for la in rl], "--", color=col, lw=1.3)
             for la, x in zip(layers, sw, strict=True):
                 S.record("ledger_read_window", m["target"], f"his named passages, layer {la}: {reader} switched", *x,
-                         n=m["cells"][str(la)][reader]["n"], source=rel(DEPTH))  # fmt: skip
+                         n=m["cells"][str(la)][reader]["n"], source=rel(src))  # fmt: skip
         ax.axhline(0.3, color="#555555", lw=0.8, ls=":")
         ax.set_ylim(-0.02, 1.02)
         ends = m["ends"]["pooled"]
-        ax.set_xlabel(f"layer\nends, his / ours: lookup L{ends['lookup']} / L{m['reference']['lookup']}, "
+        ax.set_xlabel(f"layer\nends, his / ours:\nlookup L{ends['lookup']} / L{m['reference']['lookup']}\n"
                       f"recall L{ends['recall']} / L{m['reference']['recall']}", fontsize=S.LABEL_PT - 1)  # fmt: skip
     axes[0].set_ylabel("switched")
     axes[0].text(0.03, 0.08, "lookup", color=LOOKUP, transform=axes[0].transAxes, fontsize=S.LABEL_PT)
@@ -943,7 +991,8 @@ def attention(plt) -> str:
 # ---- the swap after neutral sentences (47.16) and the gain map (49.1) -----------------------------------------------
 
 DISTANCE = (R / "x47_distance" / "x47_16-20261028T131501Z" / "x47_16.json",
-            R / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json")  # fmt: skip
+            R / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json",
+            R / "x47_distance" / "x52_distance-20261029T090323Z" / "x47_16.json")  # fmt: skip  # Muse's r2
 GAIN = (R / "x49_gain" / "x49_1-20261028T154510Z" / "x49_1.json",
         R / "x49_gain" / "x52_gain-20261029T021814Z" / "x49_1.json")  # fmt: skip
 
@@ -952,14 +1001,18 @@ def distance(plt) -> str:
     """Per tested model, by the number of neutral sentences k before the picks: the position and identity shares of the
     lookup under the whole change, and the address swap's share sent to the target (dose 2)."""
     runs = [(m, path) for path in DISTANCE for m in load(path)["models"] if m["status"] == "tested"]
+    by = {m["target"]: (m, path) for m, path in runs}
     ks = ("0", "5", "20", "50")
-    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.6), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
     S.title(fig, "The address survives fifty neutral sentences",
             "Lookups under the whole change by route, and the swap's lookups sent to the target, by sentences added")  # fmt: skip
     ident = S.MARK_COL["identity"]
-    for ax, (m, path) in zip(axes, runs, strict=True):
-        t = m["target"]
+    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+        if t not in by:
+            grey_panel("ledger_distance", t, "no outcomes\n(rerun running)", ax)
+            continue
+        m, path = by[t]
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         series = (("position under the whole change", ADDRESS, "o", "-",
                    [m["cells"][k]["routes"]["whole"]["position"] for k in ks]),
@@ -976,7 +1029,7 @@ def distance(plt) -> str:
                 S.record("ledger_distance", t, f"{k} neutral sentences: {lab}", *v, n=m["cells"][k]["n"],
                          source=rel(path))  # fmt: skip
         ax.set_xticks(range(len(ks)), ks)
-        ax.set_xlabel("neutral sentences added")
+        ax.set_xlabel("sentences added")
         ax.set_ylim(0, 1.0)
     axes[0].set_ylabel("share of lookups")
     axes[-1].text(0.98, 0.97, "blue: identity\norange: position\ndashed: the swap", transform=axes[-1].transAxes,
@@ -1109,28 +1162,30 @@ def value_formats(plt) -> str:
 # ---- the pooled person probe (49.3) ---------------------------------------------------------------------------------
 
 POOLED = (R / "x49_probe" / "x49_3-20261028T154604Z" / "x49_3.json",
-          R / "x49_probe" / "x52_probe49-20261029T044135Z" / "x49_3.json")  # fmt: skip
+          R / "x49_probe" / "x52_probe49-20261029T044135Z" / "x49_3.json",
+          R / "x49_probe" / "x52_probe49_below-20261029T085547Z" / "x49_3.json")  # fmt: skip  # Lightning below gate
 
 
 def pooled_probe(plt) -> str:
     """Per model and layer, locker-after scenes: the probe for who picked the item, pooled over the locker sentence
     (whisker 95%) and its best single token (hollow); chance dotted, the rule's 0.85 dashed."""
     runs = {m["target"]: (m, path) for path in POOLED for m in load(path)["models"] if m["status"] == "tested"}
-    rows = [(t, la) for t in SHORT if t in runs for la in runs[t][0]["layers"]]
+    rows = [(t, la) for t in SLOT_MODELS if t in runs for la in runs[t][0]["layers"]]
+    below_gate("ledger_pooled_probe", LT)
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.5 * len(rows) + 1.9))
-    fig.subplots_adjust(left=0.16, right=0.97, top=1 - 1.2 / fig.get_figheight(), bottom=0.75 / fig.get_figheight())
+    fig.subplots_adjust(left=0.27, right=0.97, top=1 - 1.2 / fig.get_figheight(), bottom=0.75 / fig.get_figheight())
     S.title(fig, "No probe reads who picked an item at its locker sentence",
             "Locker-after scenes: who of three picked the item; filled: whole sentence, hollow: best token")  # fmt: skip
     for i, (t, la) in enumerate(rows):
         m, path = runs[t]
         pooled = m["results"][str(la)]["probes"]["picker"]["mean"]["after"]["accuracy"]
         best = m["rules"][str(la)]["i_token_max"]
-        whisker(ax, -i, pooled, INK)
+        whisker(ax, -i, pooled, INK, hollow=t == LT)
         ax.plot([best], [-i - 0.25], "o", mfc="white", mec=INK, mew=1.5, ms=6)
         S.record("ledger_pooled_probe", t, f"L{la}: who picked it, pooled over the locker sentence", *pooled,
                  source=rel(path))  # fmt: skip
         S.record("ledger_pooled_probe", t, f"L{la}: who picked it, best single token", round(best, 4), source=rel(path))
-    rows_axis(ax, [f"{SHORT[t]} L{la}" for t, la in rows])
+    rows_axis(ax, [f"{SHORT[t]} L{la}" + (" ○ below gate" if t == LT else "") for t, la in rows])
     ax.set_ylim(-len(rows) + 0.3, 0.6)
     ax.axvline(1 / 3, color="#999999", lw=0.9, ls=":")
     ax.axvline(0.85, color="#555555", lw=0.9, ls="--")
