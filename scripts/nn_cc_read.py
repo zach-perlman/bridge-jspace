@@ -1,6 +1,6 @@
 """nn_cc_read (Zach, 2026-10-29, prereg amendment 58 note 24): the cue-conflict set's three readings, split by description type
 (conflict: the description's association is another nationality, the cue; aligned: it is the person's own).
-  1 behaviour   MM accuracy by type among items whose closed-book hop 1 (H1) and hop 2 alone are right; among conflict
+  1 behaviour   MM accuracy by type among gated items (scripts/nn_swap.v4_split: H1 by cand2 or its greedy reply, hop 2, guess); among conflict
                 MM errors, the share whose top answer is the cue (chance: one of 33 wrong nationalities), bootstrap over bridges
   2 answer      note 15's rule (Dan's 51.12; scripts/nn_cf_read.note15) on MM rows of each type, per cell, cf_ok pairs
   3 knock-out   note 20's loss gap (MM minus MP, paper10 and its controls) per type, bootstrap over items
@@ -39,17 +39,14 @@ def main(P: str) -> None:
     for l in (RES / "tasks_v2" / f"{P}{SET}_competence_cand2_v1" / "items.jsonl").read_text().splitlines():
         r = json.loads(l)
         comp[r["id"]][r["part"]] = r
-    h1 = {}
-    for l in (RES / "competence_variants" / f"{P}jsuite_v4cc_cv_v1" / "rows.jsonl").read_text().splitlines():
-        r = json.loads(l)
-        if r["word"] == "H1":
-            h1[r["id"].replace(":H1-", ":XX-")] = r["correct_cand2"] in (True, "True")
+    from scripts.nn_swap import v4_split  # the gate every other note uses: H1 (cand2 or the greedy reply with other names), hop 2, guess
+
+    split = v4_split(f"{P}{SET}_competence_cand2_v1", f"{P}jsuite_v4cc_cv_v1", SET)
     out: dict = {"prefix": P, "behaviour": {}, "answer": {}, "knockout": {}}
     # 1 behaviour
     for word in ("MM", "MP"):
         for typ in ("conflict", "aligned"):
-            ids = [i for i, it in items.items() if it["word"] == word and it["cc_type"] == typ and i in comp
-                   and comp[i].get("step2", {}).get("correct") and h1.get(i.replace(f":{word}-", ":XX-"))]  # fmt: skip
+            ids = [i for i, it in items.items() if it["word"] == word and it["cc_type"] == typ and i in split]  # gated: ok or fail
             acc = [bool(comp[i]["whole"]["correct"]) for i in ids]
             rec = {"n_eligible": len(ids), "whole_acc": round(100 * sum(acc) / max(1, len(acc)), 1)}
             if word == "MM" and typ == "conflict":
