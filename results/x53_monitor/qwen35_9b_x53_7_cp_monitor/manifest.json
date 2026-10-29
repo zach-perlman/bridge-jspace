@@ -1,0 +1,159 @@
+{
+  "exp": "x53_monitor",
+  "run": "qwen35_9b_x53_7_cp_monitor",
+  "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_9b.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch53.yaml (53.2); no prediction",
+  "written_utc": "2026-10-29T11:10:18Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "430d2f7c1dbfc88820823c63cc6d0b2ec072187f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "sets": {
+    "main": "our main test (X0's scenes)",
+    "json": "the varied scenes, JSON format (x0b_v2)",
+    "code": "the main test's scenes as Python code (53.7)",
+    "tool": "the main test's scenes as tool output (53.7)",
+    "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)"
+  },
+  "positions": {
+    "B": "the bridge word (X0's position; the readers' prompts agree through it: read on the lookup's prompt)",
+    "T_lookup": "the lookup prompt's last token (the appended space token, before the answer)",
+    "T_recall": "the recall prompt's last token (the appended space token, before the answer)"
+  },
+  "ks": [
+    25,
+    100
+  ],
+  "rule": "\"J-space blind to X\" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; \"J-space carries X\" if J++ >= 0.8 and >= 0.3 above random; else in between.",
+  "jpp_part": "X0's signed OMP over the J++ letter-token atoms (x0_necessity.dictionary('jpp')), the least-squares fit on the first k chosen atoms, applied to the state itself",
+  "storage": "states_<set>_{h,jpp25,jpp100}.npy fp16 [L, n, O/S, B/T lookup/T recall, d] (gitignored); states_<set>_atoms.npy int32 token ids of the 100 chosen atoms (committed)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "d18fcc7ef7e5f8ec4fd7bb81afad4dd718542845522d721865a8d1327363a78e",
+    "data/tasks_v2/x0b_v2/items.jsonl": "3d327acdaebb68b531d6c49c03b4fb38c8002402d423ab94ec118877a12f87f3"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "n_layers": 32,
+  "sets_run": [
+    "cp_ch2"
+  ],
+  "x53_7": {
+    "test": "53.7 add-on: code_pointer_v1's CH2 chains (Dan 11:25, critic_1125; descriptive)",
+    "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+    "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+    "rule": "none: descriptive, numbers only (Dan 11:25, critic_1125: 'code_pointer_v1 (CH2 chains) only if time remains: descriptive, the address probe and the monitor'); no label is computed or stated",
+    "descriptive": true,
+    "formats": [
+      "cp_ch2"
+    ],
+    "format_text": {
+      "cp_ch2": "cp_ch2: code_pointer_v1's CH2 programs (data/code_pointer_v1/main/{animals,months}_CH2_e5f0.json, 400 scenes each): a dict line `lockers = {...}` of 5 keys, then a 2-variable target chain (x = \"mouse\"; h = x) and a distractor chain, then print(lockers[h]); suite_v1's chat prompt ('What does this Python code print?'). The bridge word = the target chain's head key; S = the item's dissoc source (another key heads the chain, its own dict). One reader (the lookup): the monitor's (d) is the key's recalled number (legs / month), read at the bridge word and at the lookup's last token (CH2 has no recall prompt; the recall slot repeats the lookup's prompt); the dict always precedes the chain, so the probe has no locker-after stratum"
+    },
+    "gates": {
+      "cp_ch2": {
+        "cases": 800,
+        "org_read_accuracy": {
+          "PP": 0.9012
+        },
+        "pass": true,
+        "status": "passed",
+        "per_domain": {
+          "animals": {
+            "PP": 0.8925
+          },
+          "months": {
+            "PP": 0.91
+          }
+        },
+        "set": "code_pointer_v1/main CH2 (every aligned scene)"
+      }
+    },
+    "states_for": [
+      "cp_ch2"
+    ],
+    "probe_run": "qwen35_9b_x53_7_cp_probe",
+    "items": "the first 100 aligned scenes per domain (x53_7.cp_monitor_items)"
+  },
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "sets_done": {
+    "cp_ch2": {
+      "items": 200,
+      "entities": 19,
+      "counts": {
+        "set": "code_pointer_v1/main CH2",
+        "cases": 800,
+        "entities": 19,
+        "domains": {
+          "animals": 400,
+          "months": 400
+        },
+        "dropped": {},
+        "monitor_items": 200,
+        "per_domain": 100,
+        "monitor_entities": 19,
+        "target": "qwen3.5-9b"
+      },
+      "b_gap_max": 0.0,
+      "b_gap_over_tol": 0
+    }
+  },
+  "hub_kernels": {},
+  "finished_utc": "2026-10-29T11:13:38Z"
+}

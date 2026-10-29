@@ -1,0 +1,163 @@
+{
+ "test": "53.7 add-on: code_pointer_v1's CH2 chains (Dan 11:25, critic_1125; descriptive)",
+ "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+ "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+ "status": "UNVERIFIED",
+ "reading": null,
+ "rule": "none: descriptive, numbers only (Dan 11:25, critic_1125: 'code_pointer_v1 (CH2 chains) only if time remains: descriptive, the address probe and the monitor'); no label is computed or stated",
+ "gate": "X0's main gate on CH2's one reader: the unedited base prompt's chat read right on >= 0.80 of the scenes (both domains pooled; per domain beside), before any state is kept; a failure is 'not tested (gate x < 0.80)'. code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; the 27B: CH2 100% on both domains, results/code_pointer_v1/code_competence_27b) is not re-applied",
+ "n_boot": 10000,
+ "seed": 0,
+ "format_text": {
+  "cp_ch2": "cp_ch2: code_pointer_v1's CH2 programs (data/code_pointer_v1/main/{animals,months}_CH2_e5f0.json, 400 scenes each): a dict line `lockers = {...}` of 5 keys, then a 2-variable target chain (x = \"mouse\"; h = x) and a distractor chain, then print(lockers[h]); suite_v1's chat prompt ('What does this Python code print?'). The bridge word = the target chain's head key; S = the item's dissoc source (another key heads the chain, its own dict). One reader (the lookup): the monitor's (d) is the key's recalled number (legs / month), read at the bridge word and at the lookup's last token (CH2 has no recall prompt; the recall slot repeats the lookup's prompt); the dict always precedes the chain, so the probe has no locker-after stratum"
+ },
+ "runs": [
+  {
+   "run": "qwen35_9b_x53_7_cp_probe",
+   "model": "qwen3.5-9b",
+   "format": "cp_ch2",
+   "layer": 12,
+   "set": "code_pointer_v1/main/CH2",
+   "gate": {
+    "cases": 800,
+    "org_read_accuracy": {
+     "PP": 0.9012
+    },
+    "bar": 0.8,
+    "pass": true,
+    "status": "passed",
+    "rule": "X0's main gate on CH2's one reader: the unedited base prompt's chat read right on >= 0.80 of the scenes (both domains pooled; per domain beside), before any state is kept; a failure is 'not tested (gate x < 0.80)'. code_pointer_v1's own competence gate (Wilson lower bound >= 0.85 per domain x family; the 27B: CH2 100% on both domains, results/code_pointer_v1/code_competence_27b) is not re-applied",
+    "per_domain": {
+     "animals": {
+      "PP": 0.8925
+     },
+     "months": {
+      "PP": 0.91
+     }
+    },
+    "counts": {
+     "set": "code_pointer_v1/main CH2",
+     "cases": 800,
+     "entities": 19,
+     "domains": {
+      "animals": 400,
+      "months": 400
+     },
+     "dropped": {}
+    }
+   },
+   "status": "tested",
+   "rows": [
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "answer digit",
+     "n": 800,
+     "entities": 19,
+     "classes": 10,
+     "chance": 0.1,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "probe": [
+      0.43,
+      0.36328802830380413,
+      0.5129829916444595
+     ],
+     "majority": [
+      0.1575,
+      0.13343108504398826,
+      0.1798069505856017
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.27249999999999996,
+      0.20219500838144908,
+      0.36128073367427216
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "locker sentence",
+     "n": 800,
+     "entities": 19,
+     "classes": 5,
+     "chance": 0.2,
+     "penalties": [
+      0.1,
+      0.1,
+      0.1,
+      0.01,
+      0.1
+     ],
+     "probe": [
+      0.9975,
+      0.9942593069137073,
+      1.0
+     ],
+     "majority": [
+      0.1625,
+      0.13839806115221492,
+      0.18527348275482663
+     ],
+     "structure": [
+      0.14875,
+      0.129840282643214,
+      0.16685727715292933
+     ],
+     "layout": [
+      0.1625,
+      0.13839806115221492,
+      0.18527348275482663
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.7975000000000001,
+      0.7942593069137074,
+      0.8
+     ]
+    },
+    {
+     "subset": "all",
+     "stratum": "before",
+     "target": "bridge identity",
+     "n": 800,
+     "entities": 19,
+     "classes": 19,
+     "chance": 0.0526,
+     "penalties": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.10375,
+      0.0,
+      0.3047735618115055
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.89625,
+      0.6952264381884945,
+      1.0
+     ]
+    }
+   ],
+   "prose_v4": null,
+   "prose_v4_rows": []
+  }
+ ],
+ "written_utc": "20261029T111348Z"
+}
