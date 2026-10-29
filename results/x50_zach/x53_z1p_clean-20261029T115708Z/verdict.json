@@ -1,0 +1,381 @@
+{
+ "run": "qwen35_9b_x52_z1p",
+ "dan": "\"CPU check first (verification): Z1-P on the 9B without the 60 passages where the bridge's true value stands in the lookup's passage as another entity's value: rule verbatim on the remaining 140; report beside the full-set number in the Z1 card, both ways.\" (Dan 12:50, batch53.yaml docs_1250 item 0)",
+ "rule": "Per model: gap >= 0.3 and lookup extra loss <= 0.10 -> \"the split holds on his passages\"; lookup >= 0.20 -> \"the lookup follows the lens here\"; else in between. Order split (after the gate, before the data): items where the bridge's fact sentence comes before the pointer sentence vs after. \"The order pattern replicates\" if the lookup's switch under the whole change is >= 2x higher fact-first than fact-after (both CIs), as in our 65-89 % vs 9-19 %. Hard-read stratum (v3 flag): the gap within hard-read items within 0.15 of the easy items -> \"not a lookup-difficulty effect\".",
+ "as_computed": "Extra loss = X0's excess = Jdep - Rdep = (S_no_jpp_rand - S_no_jpp) / S_whole per reader over the chosen passages (J++: signed OMP, k = 25); switch = the top token is the first token of the other entity's answer; gap = the M reader's extra loss minus the K reader's on the same cluster-bootstrap draws (over the original bridge entity, 10,000 resamples, seed 0, 95% intervals). Point estimates decide (EPS 1e-9); an undefined extra loss (no switch under the whole change) holds no clause (\"can't tell\"). X0's validity bar (S_whole >= 0.30 and >= 30 switches) per reader beside, not in the rule. Muse: the rule at L26 and at L36, both reported. Z1 order: the K reader's whole-change switch share, fact-first vs fact-after by the original bridge's fact sentence (K passage) against the pointer sentence; replicates iff fact-first >= 2 x fact-after (point estimates; each stratum's interval beside, and whether they separate). Hard-read: no flag in v2, so not tested.",
+ "n_boot": 10000,
+ "seed": 0,
+ "excluded": [
+  "jsuite_v2_test_chat/j2:cities:P-L0-Moscow-0",
+  "jsuite_v2_test_chat/j2:cities:P-L1-Moscow-0",
+  "jsuite_v2_test_chat/j2:cities:P-L1-Toronto-0",
+  "jsuite_v2_test_chat/j2:companies:P-L1-Adidas-0",
+  "jsuite_v2_test_chat/j2:companies:P-L1-Gucci-0",
+  "jsuite_v2_test_chat/j2:companies:P-L1-Toyota-0",
+  "jsuite_v2_test_chat/j2:countries:P-L0-Finland-0",
+  "jsuite_v2_test_chat/j2:countries:P-L0-Italy-0",
+  "jsuite_v2_test_chat/j2:countries:P-L0-Spain-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Brazil-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Canada-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-France-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Ghana-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Iceland-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Mexico-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Poland-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Spain-0",
+  "jsuite_v2_test_chat/j2:countries:P-L1-Thailand-0",
+  "jsuite_v2_test_chat/j2:landmarks:P-L1-Chichen Itza-0",
+  "jsuite_v2_test_chat/j2:landmarks:P-L1-Mont Saint-Michel-0",
+  "jsuite_v2_test_chat/j2:landmarks:P-L1-the Nazca Lines-0",
+  "jsuite_v2_test_chat/j2:languages:P-L1-Ghana-0",
+  "jsuite_v2_test_chat/j2:languages:P-L1-Israel-0",
+  "jsuite_v2_test_chat/j2:languages:P-L1-Portugal-0",
+  "jsuite_v2_test_chat/j2:languages:P-L1-Turkey-0",
+  "jsuite_v2_test_chat/j2:people:P-L0-Edison-0",
+  "jsuite_v2_test_chat/j2:people:P-L0-Escher-0",
+  "jsuite_v2_test_chat/j2:people:P-L1-Aristotle-0",
+  "jsuite_v2nb_test_chat/j2:cities:P-L1-Guadalajara-0",
+  "jsuite_v2nb_test_chat/j2:cities:P-L1-Porto-0",
+  "jsuite_v2nb_test_chat/j2:companies:P-L0-Ferrero-0",
+  "jsuite_v2nb_test_chat/j2:companies:P-L1-Fiat-0",
+  "jsuite_v2nb_test_chat/j2:companies:P-L1-Lenovo-0",
+  "jsuite_v2nb_test_chat/j2:companies:P-L1-Michelin-0",
+  "jsuite_v2nb_test_chat/j2:companies:P-L1-Zara-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Egypt-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Ethiopia-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Finland-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Italy-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Japan-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Kenya-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Morocco-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L0-Venezuela-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Bolivia-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Colombia-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Ecuador-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Egypt-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Ethiopia-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-France-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Italy-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Japan-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Kenya-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Morocco-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Nigeria-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Peru-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Spain-0",
+  "jsuite_v2nb_test_chat/j2:countries:P-L1-Venezuela-0",
+  "jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0",
+  "jsuite_v2nb_test_chat/j2:dishes:P-L1-gazpacho-0",
+  "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Borobudur-0"
+ ],
+ "chosen": 200,
+ "how": "the run's chosen passages (gate.json order) whose lookup (K) original passage holds the recall's (M) original answer, the bridge's true value, as a whole word, case-insensitive (bridge_jspace.review.items.word_in; the verify check of review/verify_checks.json, recomputed and its count and listed ids asserted); a passage is one paired item (K and M rows), so both readers' rows of an excluded passage are dropped",
+ "layers": {
+  "12": {
+   "full": {
+    "n": 200,
+    "entities": 129,
+    "lookup": {
+     "n": 200,
+     "entities": 129,
+     "S_whole": [
+      0.315,
+      0.2546,
+      0.3824
+     ],
+     "S_no_part": [
+      0.28,
+      0.2224,
+      0.3459
+     ],
+     "S_no_rand": [
+      0.265,
+      0.2087,
+      0.3302
+     ],
+     "switched_whole": 63,
+     "valid": true,
+     "Jdep": [
+      0.11111111111111105,
+      0.0,
+      0.20895522388059695
+     ],
+     "Rdep": [
+      0.15873015873015872,
+      0.05263157894736836,
+      0.2615384615384616
+     ],
+     "excess": [
+      -0.04761904761904767,
+      -0.13043478260869545,
+      0.03389830508474567
+     ],
+     "label": "around"
+    },
+    "recall": {
+     "n": 200,
+     "entities": 129,
+     "S_whole": [
+      0.815,
+      0.7554,
+      0.8627
+     ],
+     "S_no_part": [
+      0.26,
+      0.2041,
+      0.3249
+     ],
+     "S_no_rand": [
+      0.74,
+      0.6751,
+      0.7959
+     ],
+     "switched_whole": 163,
+     "valid": true,
+     "Jdep": [
+      0.6809815950920245,
+      0.6040235770940469,
+      0.754601226993865
+     ],
+     "Rdep": [
+      0.09202453987730053,
+      0.044303797468354444,
+      0.1428571428571428
+     ],
+     "excess": [
+      0.588957055214724,
+      0.505952380952381,
+      0.6730769230769231
+     ],
+     "label": "through"
+    },
+    "gap": [
+     0.6365761028337716,
+     0.5109704315318497,
+     0.7645673114883536
+    ],
+    "verdict": "the split holds on his passages",
+    "routes": {
+     "K": {
+      "none": {
+       "original": 200
+      },
+      "whole": {
+       "original": 132,
+       "switch": 63,
+       "other": 5
+      },
+      "no_jpp": {
+       "original": 140,
+       "switch": 56,
+       "other": 4
+      },
+      "no_jpp_rand": {
+       "original": 144,
+       "switch": 53,
+       "other": 3
+      }
+     },
+     "M": {
+      "none": {
+       "original": 200
+      },
+      "whole": {
+       "switch": 163,
+       "original": 31,
+       "other": 5,
+       "lure": 1
+      },
+      "no_jpp": {
+       "original": 143,
+       "switch": 52,
+       "other": 5
+      },
+      "no_jpp_rand": {
+       "original": 45,
+       "switch": 148,
+       "other": 6,
+       "lure": 1
+      }
+     }
+    },
+    "order": {
+     "strata": {
+      "fact-first": {
+       "n": 96,
+       "whole_switch": [
+        0.6041666666666666,
+        0.4998809523809525,
+        0.7047744360902254
+       ]
+      },
+      "fact-after": {
+       "n": 104,
+       "whole_switch": [
+        0.04807692307692308,
+        0.01020408163265306,
+        0.09090909090909091
+       ]
+      }
+     },
+     "replicates": true,
+     "ratio": 12.566666666666665,
+     "separate": true
+    },
+    "hard_read": "no hard-read flag in v2 (not tested)"
+   },
+   "clean": {
+    "n": 140,
+    "entities": 100,
+    "lookup": {
+     "n": 140,
+     "entities": 100,
+     "S_whole": [
+      0.3,
+      0.2303,
+      0.3804
+     ],
+     "S_no_part": [
+      0.2571,
+      0.1919,
+      0.3353
+     ],
+     "S_no_rand": [
+      0.2357,
+      0.1731,
+      0.3125
+     ],
+     "switched_whole": 42,
+     "valid": true,
+     "Jdep": [
+      0.1428571428571429,
+      0.05128205128205121,
+      0.24390243902439024
+     ],
+     "Rdep": [
+      0.2142857142857143,
+      0.09375,
+      0.33333333333333337
+     ],
+     "excess": [
+      -0.0714285714285714,
+      -0.17307692307692302,
+      0.02777777777777779
+     ],
+     "label": "around"
+    },
+    "recall": {
+     "n": 140,
+     "entities": 100,
+     "S_whole": [
+      0.8,
+      0.7261,
+      0.8578
+     ],
+     "S_no_part": [
+      0.2714,
+      0.2046,
+      0.3505
+     ],
+     "S_no_rand": [
+      0.7214,
+      0.642,
+      0.789
+     ],
+     "switched_whole": 112,
+     "valid": true,
+     "Jdep": [
+      0.6607142857142858,
+      0.5675675675675675,
+      0.7525800908990133
+     ],
+     "Rdep": [
+      0.09821428571428581,
+      0.036036036036036,
+      0.1637931034482759
+     ],
+     "excess": [
+      0.5625,
+      0.45967741935483875,
+      0.6695652173913043
+     ],
+     "label": "through"
+    },
+    "gap": [
+     0.6339285714285714,
+     0.48856276817614597,
+     0.7837301587301586
+    ],
+    "verdict": "the split holds on his passages",
+    "routes": {
+     "K": {
+      "none": {
+       "original": 140
+      },
+      "whole": {
+       "original": 95,
+       "switch": 42,
+       "other": 3
+      },
+      "no_jpp": {
+       "original": 100,
+       "switch": 36,
+       "other": 4
+      },
+      "no_jpp_rand": {
+       "original": 104,
+       "switch": 33,
+       "other": 3
+      }
+     },
+     "M": {
+      "none": {
+       "original": 140
+      },
+      "whole": {
+       "switch": 112,
+       "original": 22,
+       "other": 5,
+       "lure": 1
+      },
+      "no_jpp": {
+       "original": 97,
+       "switch": 38,
+       "other": 5
+      },
+      "no_jpp_rand": {
+       "original": 32,
+       "switch": 101,
+       "other": 6,
+       "lure": 1
+      }
+     }
+    },
+    "order": {
+     "strata": {
+      "fact-first": {
+       "n": 66,
+       "whole_switch": [
+        0.5757575757575758,
+        0.4426229508196721,
+        0.696969696969697
+       ]
+      },
+      "fact-after": {
+       "n": 74,
+       "whole_switch": [
+        0.05405405405405406,
+        0.013157894736842105,
+        0.10810810810810811
+       ]
+      }
+     },
+     "replicates": true,
+     "ratio": 10.651515151515152,
+     "separate": true
+    },
+    "hard_read": "no hard-read flag in v2 (not tested)"
+   },
+   "full_matches_stored": true
+  }
+ }
+}
