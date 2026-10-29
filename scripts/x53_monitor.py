@@ -1163,6 +1163,8 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out
                                                 "standardised": "training rows' mean and sd"},
             "bootstrap": {"n": n_boot, "seed": X.BOOT_SEED, "cluster": "the row's bridge entity"},
             "models": list(models), "runs": {t: RUNS[t] for t in results}, "x52_check_min_cosine": checks,
+            "run_manifests": {t: json.loads((states_root / RUNS[t] / "manifest.json").read_text())
+                              for t in results if (states_root / RUNS[t] / "manifest.json").exists()},
             "figures": figs,
             "code": git_state(), "critic_1125": CRITIC_1125, "additions_1140": ADDITIONS_1140,
             "answers_1315": ANSWERS_1315, "energy_labels": list(ENERGY_LABELS),
@@ -1181,10 +1183,45 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT, out
     return out
 
 
+COVERAGE_FLAGS = {
+    "qwen3.5-122b-a10b": [
+        "Coverage run (Dan 12:20, jobs/c3/batch53.yaml fallback_1220): same rule, no new rule, no prediction; an "
+        "addendum to the four models' verdict, not part of it.",
+        "L33 (the main test's X0 r2 run, qwen35_122b_x0_necessity_r2) is the 27B's relative depth carried over (33/48), "
+        "not a layer fixed for the 122B on its own data.",
+        "The checkpoint is FP8 (Qwen/Qwen3.5-122B-A10B-FP8); the J++ lens was fit on the bf16 weights.",
+        "Mixture of experts, ~10B parameters active per token, split over 2 GPUs (BJ_DEVICE_MAP=auto).",
+    ]
+}
+
+
+def coverage_lines(blob: dict) -> list[str]:
+    """The coverage models' flags and, from their run manifests, the bridge word's reader gap (the recall's B state
+    vs the lookup's, identical prefixes; B is always read on the lookup's prompt)."""
+    lines: list[str] = []
+    for t in blob.get("models", ()):
+        if t not in COVERAGE_FLAGS:
+            continue
+        lines += [f"## Coverage flags: {NAMES[t]}", "", *(f"- {f}" for f in COVERAGE_FLAGS[t])]
+        m = blob.get("run_manifests", {}).get(t)
+        if m:
+            gaps = "; ".join(f"{s}: max {d['b_gap_max']:.3f}, {d['b_gap_over_tol']} of {d['items']} items over "
+                             f"{TOL_B}" for s, d in m["sets_done"].items())  # fmt: skip
+            lines.append("- The bridge word's state on the recall's prompt differs from the lookup's (identical "
+                         f"prefixes) by up to this relative norm ({gaps}): kernel numerics of the FP8 / MoE forward "
+                         "on prompts of different lengths; every probe reads B on the lookup's prompt.")  # fmt: skip
+        lines.append("")
+    return lines
+
+
 def verdict_lines(blob: dict) -> list[str]:
     res = blob["results"]
-    lines = ["# 53.2, the monitor test: what a J-space readout can decode vs the full state", "",
-             f"UNVERIFIED. {NO_PREDICTION}. Spec: {blob['spec']}.", "", f"Rule (verbatim): {RULE}", "",
+    coverage = [t for t in blob.get("models", ()) if t in COVERAGE_MODELS]
+    title = (f"# 53.2 addendum ({', '.join(NAMES[t] for t in coverage)}): the monitor test" if coverage else
+             "# 53.2, the monitor test: what a J-space readout can decode vs the full state")  # fmt: skip
+    lines = [title, "",
+             f"UNVERIFIED. {NO_PREDICTION}. Spec: {blob['spec']}.", "", *coverage_lines(blob),
+             f"Rule (verbatim): {RULE}", "",
              "As computed: per model, dataset, position, target and k, on point estimates (accuracy over rows and "
              f"{N_SEEDS} seeds of {N_FOLDS}-fold CV, each seed a random assignment of the groups to the folds), over "
              "every cached layer (every second layer from L0); logistic "
@@ -1226,7 +1263,8 @@ def verdict_lines(blob: dict) -> list[str]:
               "Cited, unchanged: 47.0 ('is the pointer verbalizable?'; results/x47_verbal/summary-20261028T033646Z/"
               "verbal.md for Qwen3.5-9B, Qwen3.6-27B and Muse Glimmer 30B; results/x47_verbal/summary-20261029T005548Z/"
               "verbal.md for Nemotron 3.5 Lightning): read 'not verbalizable' on all four models. No new numbers "
-              "here.", "",
+              "here." + (f" 47.0 has no run on {', '.join(NAMES[t] for t in coverage)}: nothing is cited for it."
+                         if coverage else ""), "",
               "## Monitor (b): the trained probe on J++ coordinates vs random vs full", "",
               "At a glance, the headline targets' decisive labels (k = 25 / 100; blind = 'J-space blind to X', carries "
               "= 'J-space carries X', many = random reads it too: Dan's sentence for the slot, 'decodable from many "
@@ -1252,7 +1290,8 @@ def verdict_lines(blob: dict) -> list[str]:
             lo = min(v for la in c.values() for v in la.values())
             lines.append(f"- {NAMES[t]}: {lo:.5f} over {len(c)} layers (B, T lookup, T recall)")
         else:
-            lines.append(f"- {NAMES[t]}: 52 B's states not found locally")
+            lines.append(f"- {NAMES[t]}: " + ("52 B's states not found locally" if t in X52_READ else
+                                               "52 B did not read this model (no cache to check against)"))  # fmt: skip
     lines += ["", "## Beside: each part's share of the state's squared norm (median over layers)", "",
               "The J++ part is fit to each state (OMP picks the atoms that match it), the random subspace is fixed: "
               "the shares say how much of the state each feature keeps. The energy-matched random subspace's share "
