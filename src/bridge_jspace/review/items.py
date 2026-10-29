@@ -675,8 +675,126 @@ def x45g_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]
     return got
 
 
+# ------------------------------------------------------------- 51.12 E1: the answer control on the main test (x51_answer)
+def x51_answer_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x51_answer, set e1 (Dan 28 Oct ~20:20): the main test's items (its gate.json "source", an x0_necessity run),
+    each read under three arms and their random parts: without the lens part (arm 1), without it but keeping its answer
+    directions (arm 2), without the answer directions only (arm 3). The prompts are the source run's cases.jsonl, joined
+    by scene (this run's own reader ids kept in "_joined" for the check); more: the answer word's lens rank at the bridge
+    word (readout.jsonl, O and S), the parts' shares (norms.jsonl)."""
+    if not in_set:  # its items are the source run's first 200 eligible; the source's own view lists the rest
+        return []
+    gate = read_json(f"{run}/gate.json")
+    src = f"results/x0_necessity/{gate.get('source', '')}"
+    m = read_json(f"{run}/manifest.json")
+    layer = int(m.get("layer") or spec()["models"][model]["layer"])
+    cases = {c["scene"]: c for c in read_jsonl(f"{src}/cases.jsonl") if c.get("rendering", "chat") == "chat"}
+    own = {c["scene"]: c for c in read_jsonl(f"{run}/cases.jsonl")}
+    idx = {(r["scene"], r["reader"], r["arm"]): r for r in read_jsonl(f"{run}/outcomes.jsonl")}
+    norms = {r["key"]: r for r in read_jsonl(f"{run}/norms.jsonl")}
+    readout = {(r["key"], r["variant"]): r for r in read_jsonl(f"{run}/readout.jsonl")}
+    out = []
+    for scene in sorted({k[0] for k in idx if k[2] == "whole"}):
+        case = cases.get(scene)
+        if case is not None:
+            case = {**case, "_joined": {run.split("/")[-1]: own.get(scene)}}
+        rows = {w: {label: ({**r, "_run": run.split("/")[-1]} if (r := idx.get((scene, w, arm))) else None)
+                    for label, arm in v["filters"]["arms"].items()} for w in READERS}  # fmt: skip
+        nm = norms.get(scene, {})
+        sh = {k.removeprefix("share_"): nm[k] for k in ("share_jpp", "share_jpp_A", "share_A") if k in nm}
+        ranks = {var: (readout.get((scene, var)) or {}).get("answer_word_rank") for var in ("org", "alt")}
+        more = {"answer_rank": ranks, "answer_words": (own.get(scene) or {}).get("tokens", {}).get("A_words")}
+        for w in v["filters"].get("readers", READERS):
+            whole = rows[w].get("whole")
+            out.append(_item(v, model, run, layer, scene, w, None, case, rows, sh,
+                             whole["role"] if whole else "-", "in set", more=more))  # fmt: skip
+    return out
+
+
+# --------------------------------------------------------------- Z1-P: Zach's made-up-fact passages (x50_zach, z1p)
+ZACH_READER = {"K": "PP", "M": "PM"}  # x50_zach: K = the lookup (the fact stated in its passage), M = the recall
+
+
+def word_in(word: str, text: str) -> bool:
+    return bool(re.search(rf"\b{re.escape(str(word))}\b", text, flags=re.IGNORECASE))
+
+
+def zach_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x50_zach part z1p: Zach's passages with a made-up final fact (Z1's rule, Dan 29 Oct morning). Readers K (the
+    lookup: the made-up fact is stated in its passage) and M (the recall: its passage leaves the fact out, the true
+    value comes from memory) are shown as PP / PM. The two readers read different passages, so each item's case carries
+    its own reader's passage and bridge token; more["facts"]: the made-up value (K's answer) beside the true one (M's
+    answer), and whether the true value appears in the lookup's passage."""
+    if not in_set:
+        return []
+    # one passage id can be in both of Zach's sets (jsuite_v2 and jsuite_v2nb): an item's scene is "<set>/<passage>"
+    raw = {f"{c['set']}/{c['scene']}": c for c in read_jsonl(f"{run}/cases.jsonl")}
+    got = read_jsonl(f"{run}/outcomes.jsonl")
+    idx = {(f"{r['set']}/{r['scene']}", ZACH_READER[r["reader"]], r["arm"]): r for r in got}
+    norms = {(f"{r['set']}/{r['scene']}", ZACH_READER[r["reader"]]): r for r in read_jsonl(f"{run}/norms.jsonl")}
+    layer = int(next((r["layer"] for r in got), spec()["models"][model]["layer"]))
+    out = []
+    for scene in sorted({k[0] for k in idx if k[2] == "whole"}):
+        c = raw.get(scene)
+        rows = {w: {label: idx.get((scene, w, arm)) for label, arm in v["filters"]["arms"].items()} for w in READERS}
+        if c is None:
+            case = None
+        else:
+            rd = {ZACH_READER[k]: x for k, x in c["readers"].items()}
+            k_ctx, k_cf = rd["PP"]["context"], rd["PP"]["cf_context"]
+            facts = {"made_up": rd["PP"]["answer"], "true": rd["PM"]["answer"], "cf_made_up": rd["PP"]["cf_answer"],
+                     "cf_true": rd["PM"]["cf_answer"], "relation": c.get("relation"), "stratum": c.get("stratum"),
+                     "true_in_lookup_passage": word_in(rd["PM"]["answer"], k_ctx),
+                     "cf_true_in_changed_lookup_passage": word_in(rd["PM"]["cf_answer"], k_cf)}  # fmt: skip
+        for w in v["filters"].get("readers", READERS):
+            if c is not None:
+                case = {"scene": scene, "bridge": c["bridge"], "cf_bridge": c["cf_bridge"], "context": rd[w]["context"],
+                        "cf_context": rd[w]["cf_context"], "pos": rd[w]["pos"], "span": rd[w].get("span"), "readers": rd,
+                        "relation": c.get("relation"), "order": c.get("order"), "set": c.get("set")}  # fmt: skip
+            whole = rows[w].get("whole")
+            sh = {"jpp": norms[(scene, w)]["share_jpp"]} if (scene, w) in norms else {}
+            out.append(_item(v, model, run, layer, scene, w, None, case, rows, sh, whole["role"] if whole else "-",
+                             "in set", more={"facts": facts} if c is not None else {}))  # fmt: skip
+    return out
+
+
+# ------------------------------------------------------------------- 51.10: the bridge entity at the last token (x51_jread)
+def jread_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x51_jread (51.10): the write arms at the last token (P3) at each reader's read peak (peak.json), on the
+    locker-first items the swap grid reads: no change, the whole-state patch, the lens swap, its random and rotated
+    controls, the J++ part at gain 1 / 2 and a random part of its size. The case is the run's own (the bridge word is
+    "pos"; the edit is at the last token, jpos P3); more: the read peak layer, the edit position, and the plain logit
+    lens's top token at the last token at that layer (logit_lens.jsonl: O and S). The J++ lens readout per item is not
+    stored by the run (read.json holds its rates)."""
+    if not in_set:
+        return []
+    peaks = read_json(f"{run}/peak.json").get("peaks", {})
+    peak = {"PP": peaks.get("lookup"), "PM": peaks.get("recall")}
+    cases = {c["scene"]: {**c, "bridge": c["entity"]} for c in read_jsonl(f"{run}/cases.jsonl")}
+    got = read_jsonl(f"{run}/outcomes.jsonl")
+    idx = {(r["scene"], r["reader"], r["arm"]): r for r in got
+           if r["arm"] == "none" or (r["pos"] == "P3" and r["layer"] == peak.get(r["reader"]))}  # fmt: skip
+    ll = {(r["scene"], r["reader"], r["variant"]): r for r in read_jsonl(f"{run}/logit_lens.jsonl")}
+    whole_label = next(label for label, arm in v["filters"]["arms"].items() if arm == "whole")
+    out = []
+    for scene in sorted({k[0] for k in idx if k[2] == "swap"}):
+        case = cases.get(scene)
+        rows = {w: {label: idx.get((scene, w, arm)) for label, arm in v["filters"]["arms"].items()} for w in READERS}
+        for w in v["filters"].get("readers", READERS):
+            whole = rows[w].get(whole_label)
+            if whole is None:
+                continue
+            la = peak[w]
+            lens = {var: (r["top"][la] if (r := ll.get((scene, w, var))) and la < len(r["top"]) else None)
+                    for var in ("org", "alt")}  # fmt: skip
+            more = {"peak": la, "edit_at": (case or {}).get("jpos", {}).get(w, {}).get("P3"), "logit_lens_top": lens}
+            out.append(_item(v, model, run, la, scene, w, None, case, rows, {}, whole["role"], "in set", more=more))
+    return out
+
+
 LOADERS = {"x0": x0_items, "x5": x0_items, "massmean": massmean_items, "x8": x8_items, "x0_parts": x0_parts_items,
-           "x45b_sweep": sweep_items, "x45a_prepend": prepend_items, "x45d": x45d_items, "x45g": x45g_items}  # fmt: skip
+           "x45b_sweep": sweep_items, "x45a_prepend": prepend_items, "x45d": x45d_items, "x45g": x45g_items,
+           "x51_answer": x51_answer_items, "zach": zach_items, "jread": jread_items}  # fmt: skip
 
 
 @lru_cache(maxsize=256)

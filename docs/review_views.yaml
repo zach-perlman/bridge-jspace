@@ -7,16 +7,33 @@
 # numbers the dashboard recounts over the whole item set (Phase 2) and compares with figures/story/data.csv.
 # join_runs (per model): runs whose rows give the arms the view's run does not have, joined by scene (x0_parts). A run
 # that has not landed gives no items; its view lists it as "not run yet" (no run dir) or "no outcomes.jsonl yet".
+#
+# 29 Oct (Dan 11:45, jobs/c3/batch53.yaml verify_prep_1145): the views are today's headline claims. tier: 1 marks the
+# seven views Dan reads tomorrow, in his order a-g (the first seven views below); tier 2 only once tier 1 is done.
+# headline csv: a number in figures/story/data.csv found by (model column, quantity) where no x0_numbers key exists
+# (Lightning, the newer tests). The fixed sample Dan reads (seed 29) is at the end of this file (fixed_sample).
 version: 1
 
 models:
   qwen3.5-9b: {key: 9b, label: Qwen3.5-9B, layer: 12}
   qwen3.6-27b: {key: 27b, label: Qwen3.6-27B, layer: 32}
-  qwen3.5-122b-a10b: {key: 122b, label: Qwen3.5-122B, layer: 33}
+  qwen3.5-122b-a10b:
+    key: 122b
+    label: Qwen3.5-122B
+    layer: 33
+    flags: ["L33 came from another rule: the 27B's relative depth carried over (not the 9B / 27B / Muse layer rule)",
+            "FP8; MoE, ~10B active"]
   muse-glimmer-30b: {key: muse, label: Muse Glimmer 30B, layer: 26}
+  nemotron-3.5-lightning:
+    key: lightning
+    label: Nemotron 3.5 Lightning
+    layer: 14
+    flags: ["○ its gate was chosen after the 60-scene pre-check was seen (README: hollow marks)",
+            "L14 by the rule fixed before its layer sweep was read (Dan 29 Oct ~00:50)"]
 
 # Token ids are decoded with tokenizer.json only, at the revision pinned in src/bridge_jspace/pins.py (hf_hub_download
-# of that one file). The three Qwens share one tokenizer.json (sha256 5f9e4d4901a92b99...); Muse has its own.
+# of that one file). The three Qwens share one tokenizer.json (sha256 5f9e4d4901a92b99...); Muse has its own; Lightning
+# its own (pins.TARGETS["nemotron-3.5-lightning"], revision pinned there).
 
 # How each kind's per-item files are read (src/bridge_jspace/review/).
 kinds:
@@ -177,18 +194,63 @@ kinds:
     classes: {b: changed answer (it switched), A: original answer, other: another token (not stored)}
     eligible: >-
       x0_massmean --mode two_routes: every chat item of the single run, both sentence orders (manifest items_rule).
+  x51_answer:  # 51.12 E1, the answer control (scripts/x51_answer.py --set e1)
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, readout.jsonl, gate.json, manifest.json]
+    prompts: >-
+      the cases.jsonl of the X0 run its gate.json names ("source"), joined by scene; this run's own cases.jsonl (reader
+      ids, answer token lists) is checked against it per item (badge "second run has the same prompts").
+    outcomes: >-
+      per (scene, reader, arm): top, switched, role, p_org, p_alt, ld. Arms: none, whole; no_jpp / no_jpp_rand (arm 1:
+      without the lens part); no_jpp_A / no_jpp_A_rand (arm 2: without it, keeping its answer-word directions); no_A /
+      no_A_rand (arm 3: without the answer-word directions only). readout.jsonl per (scene, variant O / S): the answer
+      words' lens rank at the bridge word (answer_word_rank per reader).
+    classes: {b: changed answer (it switched), A: original answer, other: another token}
+    eligible: the source X0 run's item set (its first 200 eligible scenes at L).
+  zach:  # Zach's passages, Z1-P: made-up final facts (scripts/x50_zach.py, part z1p)
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, competence.jsonl, gate.json, manifest.json]
+    prompts: >-
+      cases.jsonl per passage pair: readers K (the lookup: its passage states the made-up final fact) and M (the recall:
+      its passage leaves the fact out; the true value is from memory), each with its own context / cf_context, ids, pos
+      (the bridge token), tok_A / tok_b (answer words, read by their first token). K / M are shown as lookup / recall.
+    outcomes: "per (scene, layer, reader, arm none / whole / no_jpp / no_jpp_rand): top, switched, role, p_org, p_alt, ld."
+    classes: {b: changed answer (it switched), A: original answer, other: another token}
+    eligible: >-
+      x50_zach z1p: the gate (the lookup's read accuracy on the original passages >= 0.80), then the passages both
+      readers say and read right, the first 200 (gate.json chosen).
+  jread:  # 51.10, the bridge entity at the last token (scripts/x51_jread.py)
+    files: [cases.jsonl, outcomes.jsonl, logit_lens.jsonl, peak.json, gate.json, manifest.json]
+    prompts: >-
+      cases.jsonl per scene (the X0 run's main-test items): context / cf_context, entity (the bridge) / cf_bridge, pos
+      (the bridge word), jpos per reader (P1 the bridge word, P2 the question's pick, P3 the last token), group
+      (locker-first / locker-after / mixed), readers as x0.
+    outcomes: >-
+      per (scene, reader, pos, layer, arm): top, switched, role, p_org, p_alt, ld, other_digit. The view reads P3 at each
+      reader's read peak (peak.json): whole (the whole-state patch), swap (the lens swap), swap_rand / swap_rot (its
+      controls), jpp1 / rand1, jpp2 / rand2 (the J++ part of the change at gain 1 / 2 and a random part of its size).
+      logit_lens.jsonl: the plain logit lens's top token per layer at the last token (O and S). The J++ lens readout per
+      item is not stored (read.json holds its rates per layer); the inspector panel computes it.
+    classes: {b: changed answer (it switched), A: original answer, other: another token}
+    eligible: the locker-first items of the X0 run (cases.jsonl group), the swap grid's items.
 
 views:
+  # ---------------------------------------------------------------- Tier 1 (Dan 29 Oct 11:45): read tomorrow, order a-g
+  # a main_swap (conflict test) · b answer_control (51.12 E1) · c routes (+ address removal) · d x8_writes (swap s = 2)
+  # · e z1p (Zach's made-up facts, 9B) · f last_token (51.10) · g sentence_order. targeted: the 4 targeted items' rule
+  # per view (Dan: 2 nearest the decision, |p_alt - p_org| smallest; 2 "surprising"); see fixed_sample at the end.
   # ---------------------------------------------------------------- Phase 1 (Tuesday's hand check)
   - id: main_swap
-    title: Main test, two people swap picks
+    title: "a. Conflict test: which part of the bridge word each reader follows"
     status: phase1
+    tier: 1
+    order: a
     kind: x0
-    readme: "Section 1 'The split holds on all four models', Fig. 1; scorecard row 'The split (main test)'"
+    readme: "docs/depth/README.md, Claims row 1; Part I 'In a conflict, which part of the bridge word does each reader follow?', Fig. 1 (fig01_split)"
     claim: >-
-      Recall needs the lens-readable (J++) part of the bridge; the lookup mostly doesn't. Gap = the recall's extra loss
-      minus the lookup's; extra loss = the share of switches lost without the J++ part minus the share lost without a
-      random part of the same size.
+      The recall follows the lens part of the bridge word; the lookup follows the rest (README claim 1, grade A, 27B
+      partial; 9B, 27B, Muse, Lightning, and the 122B). Rule fixed in advance: "Confirmed if the lookup loses at most 0.10
+      beyond random and the recall loses at least 0.30 of its switches without the lens part; killed if the lookup loses
+      at least 0.20 or the recall under 0.20." Switches lost beyond a random part = (switches kept without the random
+      part - switches kept without the lens part) / switches with the whole change.
     sources: [lk_excess_<m>, rc_excess_<m>, contrast_<m>]
     filters:
       rendering: chat
@@ -200,14 +262,278 @@ views:
         without J++: [no_part, jpp, 25, signed]
         without its random part: [no_rand, jpp, 25, signed]
     headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
-               keys: {PP: lk_excess_<m>, PM: rc_excess_<m>, gap: contrast_<m>}}
+               keys: {PP: lk_excess_<m>, PM: rc_excess_<m>, gap: contrast_<m>},
+               csv: {PP: "conflict: lookup, switches lost beyond a random part", PM: "conflict: recall, switches lost beyond a random part",
+                     gap: "main test (two people swap picks): gap"}}
+    targeted:
+      nearest: [without J++, without its random part]  # |p_alt - p_org| smallest under either arm, items the whole change switched
+      surprising: {reader: PP, part: without J++, random: without its random part}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
       qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
       muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+      nemotron-3.5-lightning: [results/x0_necessity/nem35l_x52_conflict]
     superseded:
       qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity]
+    notes: >-
+      Lightning's run reads every 4th layer (L2-L50); the view reads L14 only. Its numbers in the README come from
+      data.csv (cards: conflict) and figures/story fig01 (gap), not x0_numbers.json.
+
+  - id: answer_control
+    title: "b. Answer control (51.12 E1): is the lens part the item or its answer?"
+    status: phase1
+    tier: 1
+    order: b
+    kind: x51_answer
+    readme: "docs/depth/README.md, Part I 'In a conflict ...', the result table's last four rows (specificity; conflict_answer in data.csv)"
+    claim: >-
+      What the recall follows is the item, not its answer: keeping the answer's lens directions keeps almost all of the
+      recall's loss (0.95 / 0.93 / 0.93 / 0.92 ○), and removing only the answer directions costs it about nothing beyond
+      random. Rule fixed in advance: "the lens effect is the item if the recall keeps at least 0.7 of its loss with the
+      answer directions kept and loses at most 0.10 beyond random without them only"; first, the answer word's lens rank
+      at the bridge word (outside the top 50 on >= 90% of items: "the answer word is not read", Muse and Lightning).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      arms:  # label: arm (x51_answer e1)
+        unedited: none
+        whole: whole
+        "arm 1: without the lens part": no_jpp
+        "arm 1's random part": no_jpp_rand
+        "arm 2: without the lens part, its answer directions kept": no_jpp_A
+        "arm 2's random part": no_jpp_A_rand
+        "arm 3: without the answer directions only": no_A
+        "arm 3's random part": no_A_rand
+    headline:
+      - {stat: share_kept, reader: PM, csv: "main test, recall: share of its loss kept when the lens part keeps the answer words' directions"}
+      - {stat: extra_loss, reader: PM, part: "arm 3: without the answer directions only", random: "arm 3's random part",
+         csv: "main test, recall: switches lost beyond random without the answer words' directions only"}
+      - {stat: answer_rank_below, reader: PM, top: 50, csv: "main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word"}
+    targeted:
+      nearest: ["arm 1: without the lens part", "arm 2: without the lens part, its answer directions kept"]
+      surprising: {reader: PP, part: "arm 1: without the lens part", random: "arm 1's random part"}
+    runs:
+      qwen3.5-9b: [results/x51_answer/qwen35_9b_x51_12_e1_r2]
+      qwen3.6-27b: [results/x51_answer/x51_12_e1_27b_r2]
+      qwen3.5-122b-a10b: [results/x51_answer/qwen35_122b_x51_12_e1]
+      muse-glimmer-30b: [results/x51_answer/muse30_x51_12_e1_r2]
+      nemotron-3.5-lightning: [results/x51_answer/nem35l_x52_answer]
+    superseded:
+      qwen3.5-9b: [results/x51_answer/qwen35_9b_x51_12_e1]
+    notes: >-
+      Verdicts: results/x51_answer/x51_12-20261028T201842Z (9B, 27B, Muse) and x52_answer-20261029T002056Z (Lightning).
+      The 122B's E1 (jobs/c3/x51_12_e1_122b.yaml, Dan 11:30) is specced, not run: listed as not run yet. The answer
+      word's lens rank comes from readout.jsonl (variant O and S); "below the top 50" = rank > 50.
+
+  - id: routes
+    title: "c. Routes test and address removal: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)"
+    status: phase1
+    tier: 1
+    order: c
+    kind: routes
+    readme: "docs/depth/README.md, Claims rows 4, 6, 7; E5 'Identity, position, never the value'; E6 'The address: probe, remove, add, swap'"
+    claim: >-
+      The lookup goes by which item it is or where its locker sits, never by the number (claim 4, A); the address can be
+      removed: without it position answers drop to 0.08 / 0.06 / 0.27 / 0.10 ○ against 0.54 / 0.25 / 0.55 / 0.56 ○ without
+      a random part (claim 6, A); adding the address alone brings position answers back on the 9B, Muse and Lightning, not
+      the 27B (claim 7, B).
+    sources: [rt_C2_whole_identity_9b, rt_C2_whole_position_9b, rt_C2_no_alf_position_9b, rt_C2_no_alf_rand_position_9b,
+              rt_C2_whole_identity_27b, rt_C2_whole_position_27b, rt_C2_no_alf_position_27b, rt_C2_no_alf_rand_position_27b,
+              rt_C2_whole_identity_muse, rt_C2_whole_position_muse, rt_C2_no_alf_position_muse, rt_C2_no_alf_rand_position_muse,
+              rtg_C2_whole_identity_122b, rtg_C2_whole_position_122b, rtg_C2_no_alf_position_122b, rtg_C2_no_alf_rand_position_122b,
+              rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>, rtk_C2_keep_jpp_identity_<m>]
+    filters:
+      layer: fixed
+      conditions: [C0, C1, C2]
+      readers: [PP, PM]
+      arms:  # label: arm (the first run that has it; keep-only arms come from the keep-only run, C1 and C2 only)
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+        only the pointer part: keep_alf
+        only a random part of its size: keep_alf_rand
+        only the J++ part: keep_jpp
+        only a random part of J++'s size: keep_jpp_rand
+    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without the pointer directions, without the pointer's random part, only the pointer part, only a random part of its size, only the J++ part],
+               csv: "another item moved, <arm>: <route> share"}
+    export: {condition: C2}  # the static export's sample (Dan: routes C2)
+    sample_filter: {condition: C2}  # the fixed sample: C2 (another item moved), the claims' condition
+    targeted:
+      nearest: [without the pointer directions, without the pointer's random part]
+      surprising: {reader: PP, route: position, part: without the pointer directions, random: "without the pointer's random part"}
+    runs:  # the main run first (it fixes the item set); the keep-only run joined by scene and condition
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes, results/x6_routes/qwen35_9b_x6_routes_keeponly]
+      qwen3.6-27b: [results/x6_routes/x6_routes_27b, results/x6_routes/x6_routes_keeponly_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75, results/x6_routes/qwen35_122b_x6_routes_keeponly_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
+      nemotron-3.5-lightning: [results/x6_routes/nem35l_x52_routes]
+    model_flags:
+      qwen3.5-122b-a10b: ["° gate lowered to 0.75 after the data (g75): its run at 0.80, qwen35_122b_x6_routes_c0, stopped at the gate"]
+    notes: "122B: gate lowered to 0.75 after the data (its run at 0.80, qwen35_122b_x6_routes_c0, stopped at the gate and backs Section 4's 'not tested' line: rt_c0gate_rc_122b). Lightning: one run with every arm (keep-only arms included)."
+    superseded:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_c0]
+      qwen3.6-27b: [results/x6_routes/x6_routes_c0_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75_c0]
+
+  - id: x8_writes
+    title: "d. The address swap at s = 2: h + s (mu_k - mu_j) at the bridge word"
+    status: phase1
+    tier: 1
+    order: d
+    kind: x8
+    readme: "docs/depth/README.md, Claims row 6 ('a swap redirects the lookup'); E6 'The address: probe, remove, add, swap', 'The recall under the swap'; Fig. 7"
+    claim: >-
+      A swap at a real change's size (s = 2) moves 0.46 / 0.25 / 0.52 / 0.50 ○ of lookups to the swapped-in locker (the
+      target share, mean over locker pairs); it changes 0.21 / 0.04 / 0.06 / 0.27 ○ of recalls, and of those 0.84 (9B) and
+      0.85 ○ (Lightning) name the swapped-in item's answer. The rule fixed in advance was read at s = 1 and said no on
+      every model (a design error: s = 1 is below a real change's size).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      kinds: [write, random]
+      s: [1, 2, 4]
+    headline:
+      - {stat: x8_target_mean_pairs, s: 2, csv: "lookup target share, mean over locker pairs, s = 2"}
+      - {stat: x8_recall_changed, s: 2, csv: "the address swap at s = 2: recalls that change"}
+    export: {s: 2, kind: write}  # the static export's sample (Dan 29 Oct: the swap at s = 2)
+    sample_filter: {s: 2, kind: write}
+    targeted:  # no probabilities stored (x8 stores the top token and its class only); the agent's reading, flagged
+      nearest: null
+      surprising: {lookup_vs_recall: true}  # the lookup goes to the target but the recall does not change, or the reverse
+    cases_from:  # the C2 cases of the routes run with the same generator, seed and gate
+      qwen3.5-9b: results/x6_routes/qwen35_9b_x6_routes
+      qwen3.6-27b: results/x6_routes/x6_routes_27b
+      qwen3.5-122b-a10b: results/x6_routes/qwen35_122b_x6_routes_g75
+      muse-glimmer-30b: results/x6_routes/muse30b_x6_routes
+      nemotron-3.5-lightning: results/x6_routes/nem35l_x52_routes
+    runs:
+      qwen3.5-9b: [results/x8_write/qwen35_9b_x8_write]
+      qwen3.6-27b: [results/x8_write/x8_write_27b]
+      qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_write_g75]
+      muse-glimmer-30b: [results/x8_write/muse30b_x8_write]
+      nemotron-3.5-lightning: [results/x8_write/nem35l_x52_write]
+    model_flags:
+      qwen3.5-122b-a10b: ["° its C2 cases are the g75 routes run's (gate lowered to 0.75 after the data); not in the README's swap numbers"]
+    notes: >-
+      Each card names the slot written to (k), its item and its digit, beside the bridge's own slot (j). Lightning's run
+      has random directions at s = 1 and 4 only; the README's s = 2 numbers have no random control at s = 2.
+
+  - id: z1p
+    title: "e. Zach's made-up-fact passages (Z1-P) on the 9B"
+    status: phase1
+    tier: 1
+    order: e
+    kind: zach
+    readme: "docs/depth/README.md, Part V 'His made-up-fact passages'; Claims row 1 (limits)"
+    claim: >-
+      On his made-up-fact passages (same rule as the conflict test) the split holds on the 9B: the lookup loses -0.05
+      [-0.13, 0.03] beyond random, the recall 0.59, gap 0.64. The lookup's passage states a made-up final fact; the
+      recall's passage leaves it out, so the recall answers from memory (the true fact).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without its random part: no_jpp_rand
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, keys: {},
+               csv: {PP: "Z1-P: lookup, switches lost beyond a random part", PM: "Z1-P: recall, switches lost beyond a random part", gap: "Z1-P: the gap"}}
+    targeted:
+      nearest: [without J++, without its random part]
+      surprising: {reader: PP, part: without J++, random: without its random part}
+    runs:
+      qwen3.5-9b: [results/x50_zach/qwen35_9b_x52_z1p]
+    notes: >-
+      Verdict: results/x50_zach/x52_z1p-20261029T081112Z/z1p.json. Each card shows the made-up value (the lookup's
+      answer) beside the true one (the recall's answer) and whether the true value appears in the lookup's passage.
+      Readers K / M of the run are shown as lookup / recall.
+
+  - id: last_token
+    title: "f. 51.10: the recall's bridge entity at the last token, readable through the lens, not used"
+    status: phase1
+    tier: 1
+    order: f
+    kind: jread
+    readme: "docs/depth/README.md, Part IV 'The recall's bridge entity at the last token: readable through the lens, not used'; In one minute, 'At the last token'"
+    claim: >-
+      At the last token the recall's bridge entity is readable through the lens on all four models, but writing it
+      through the lens does not move the answer at a real change's size: the whole-state patch switches nearly every
+      recall (0.95 / 0.97 / 1.00 / 0.97 ○), the lens swap almost none (0.00 / 0.01 / 0.01 / 0.14 ○). Rule: "(b) readable,
+      not used: read holds, write fails".
+    sources: []
+    filters:
+      layer: run  # each reader's read peak (peak.json)
+      readers: [PP, PM]
+      arms:  # label: arm, at the last token (P3) and the reader's read peak
+        unedited: none
+        "whole-state patch": whole
+        "lens swap": swap
+        "its random control": swap_rand
+        "its rotated control": swap_rot
+        "J++ part, gain 1": jpp1
+        "random part, gain 1": rand1
+        "J++ part, gain 2": jpp2
+        "random part, gain 2": rand2
+    headline:
+      - {stat: switch_share, reader: PM, arm: "lens swap", csv: "51.10: recall, last token, read peak: the lens swap's switches"}
+      - {stat: switch_share, reader: PM, arm: "whole-state patch", csv: "51.10: recall, last token, read peak: the whole-state patch's switches"}
+      - {stat: switch_share, reader: PP, arm: "lens swap", csv: "51.10: lookup, last token, read peak: the lens swap's switches"}
+      - {stat: switch_share, reader: PP, arm: "whole-state patch", csv: "51.10: lookup, last token, read peak: the whole-state patch's switches"}
+    targeted:
+      nearest: ["lens swap"]
+      surprising: {reader: PM, part: "lens swap", random: "its random control", mode: differ}
+    runs:
+      qwen3.5-9b: [results/x51_jread/qwen35_9b_x51_10]
+      qwen3.6-27b: [results/x51_jread/x51_10_27b]
+      muse-glimmer-30b: [results/x51_jread/muse30_x51_10]
+      nemotron-3.5-lightning: [results/x51_jread/nem35l_x52_jread]
+    notes: >-
+      The read side (the probe on the lens part: 0.97 / 0.95 / 0.95 / 0.98 ○) is a probe over the states, not per item:
+      results/x51_jread/read-*/read.json. Per item the run stores the write outcomes and the plain logit lens's top token
+      at the last token (logit_lens.jsonl), not the J++ lens readout's top words: those come from the inspector panel
+      (its states job). 122B: not run.
+
+  - id: sentence_order
+    title: "g. Sentence order: lookups switch when the locker sentence came first"
+    status: phase1
+    tier: 1
+    order: g
+    kind: x0
+    readme: "docs/depth/README.md, Claims row 10; E10 'Sentence order: where the link is made', Fig. 3"
+    claim: >-
+      The bridge word redirects the lookup only when its locker sentence came first (claim 10, A): lookups switch in
+      65%-89% of locker-first scenes and 9%-19% otherwise (the whole change, the main test's scenes; locker-first = the
+      original bridge's locker sentence before the asked person's pick sentence); Lightning 0.86 / 0.15 ○.
+    sources: [lk_order_before_<m>, lk_order_after_<m>, lk_order_before_<m>_k, lk_order_before_<m>_n,
+              lk_order_after_<m>_k, lk_order_after_<m>_n]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+    headline: {stat: order_switched, keys: {k: "lk_order_<o>_<m>_k", n: "lk_order_<o>_<m>_n"},
+               csv: "lookups switched by the whole change, locker sentence <o> the pick"}
+    targeted:
+      nearest: [whole]
+      surprising: {reader: PP, order_vs_switch: true}  # locker-first lookups the whole change does not switch, or locker-after ones it does
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
+      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+      nemotron-3.5-lightning: [results/x0_necessity/nem35l_x52_conflict]
+
+  # ---------------------------------------------------------------- earlier views (before 29 Oct; not tier 1)
 
   - id: single_change
     title: Only the asked person's pick changes
@@ -233,48 +559,6 @@ views:
       qwen3.6-27b: [results/x0_necessity/x0_single_27b_r2]
       qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_single]
       muse-glimmer-30b: [results/x0_necessity/muse30b_x0_single]
-
-  - id: routes
-    title: "Routes test: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)"
-    status: phase1
-    kind: routes
-    readme: "Section 3, Fig. 5 and its table; Section 4 'Removing the pointer stops position answers', 'Adding only the pointer'; scorecard rows 'Never the value', 'The pointer alone gives position'"
-    claim: >-
-      When another item moved, the lookup follows its identity or its locker sentence's position, never the new value.
-      Removing the pointer directions cuts position; adding only them gives position answers on all but the 27B; the
-      J++ part alone moves none.
-    sources: [rt_C2_whole_identity_9b, rt_C2_whole_position_9b, rt_C2_no_alf_position_9b, rt_C2_no_alf_rand_position_9b,
-              rt_C2_whole_identity_27b, rt_C2_whole_position_27b, rt_C2_no_alf_position_27b, rt_C2_no_alf_rand_position_27b,
-              rt_C2_whole_identity_muse, rt_C2_whole_position_muse, rt_C2_no_alf_position_muse, rt_C2_no_alf_rand_position_muse,
-              rtg_C2_whole_identity_122b, rtg_C2_whole_position_122b, rtg_C2_no_alf_position_122b, rtg_C2_no_alf_rand_position_122b,
-              rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>, rtk_C2_keep_jpp_identity_<m>]
-    filters:
-      layer: fixed
-      conditions: [C0, C1, C2]
-      readers: [PP, PM]
-      arms:  # label: arm (the first run that has it; keep-only arms come from the keep-only run, C1 and C2 only)
-        unedited: none
-        whole: whole
-        without J++: no_jpp
-        without J++'s random part: no_jpp_rand
-        without the pointer directions: no_alf
-        without the pointer's random part: no_alf_rand
-        only the pointer part: keep_alf
-        only a random part of its size: keep_alf_rand
-        only the J++ part: keep_jpp
-        only a random part of J++'s size: keep_jpp_rand
-    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without the pointer directions, without the pointer's random part, only the pointer part, only a random part of its size, only the J++ part]}
-    export: {condition: C2}  # the static export's sample (Dan: routes C2)
-    runs:  # the main run first (it fixes the item set); the keep-only run joined by scene and condition
-      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes, results/x6_routes/qwen35_9b_x6_routes_keeponly]
-      qwen3.6-27b: [results/x6_routes/x6_routes_27b, results/x6_routes/x6_routes_keeponly_27b]
-      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75, results/x6_routes/qwen35_122b_x6_routes_keeponly_g75]
-      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
-    notes: "122B: gate lowered to 0.75 after the data (its run at 0.80, qwen35_122b_x6_routes_c0, stopped at the gate and backs Section 4's 'not tested' line: rt_c0gate_rc_122b)."
-    superseded:
-      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_c0]
-      qwen3.6-27b: [results/x6_routes/x6_routes_c0_27b]
-      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75_c0]
 
   - id: routes_early
     title: Routes test at the early layer
@@ -334,33 +618,6 @@ views:
     superseded:
       qwen3.5-9b: [results/x0_massmean/qwen35_9b_x0_massmean]
       qwen3.6-27b: [results/x0_massmean/x0_massmean_27b]
-
-  - id: x8_writes
-    title: "Writing the pointer (batch 44 A): h + s (mu_k - mu_j) at the bridge word"
-    status: phase1
-    kind: x8
-    readme: "Section 4 'One fixed vector written into the bridge moves the lookup', 'The recall follows a strong write', Fig. 7; scorecard rows 'A write moves the lookup', 'The recall follows the write'"
-    claim: >-
-      Batch 44: writing one generic address mu_k - mu_j at the bridge word sends the lookup to locker k, against a
-      random direction of the same norm (Q44.1-3).
-    sources: []
-    filters:
-      layer: fixed
-      readers: [PP, PM]
-      kinds: [write, random]
-      s: [1, 2, 4]
-    headline: {stat: x8_target_minus_random, s: 1}
-    export: {s: 1, kind: write}  # the static export's sample (Dan: x8 A at s = 1)
-    cases_from:  # the C2 cases of the routes run with the same generator, seed and gate
-      qwen3.5-9b: results/x6_routes/qwen35_9b_x6_routes
-      qwen3.6-27b: results/x6_routes/x6_routes_27b
-      qwen3.5-122b-a10b: results/x6_routes/qwen35_122b_x6_routes_g75
-      muse-glimmer-30b: results/x6_routes/muse30b_x6_routes
-    runs:
-      qwen3.5-9b: [results/x8_write/qwen35_9b_x8_write]
-      qwen3.6-27b: [results/x8_write/x8_write_27b]
-      qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_write_g75]
-      muse-glimmer-30b: [results/x8_write/muse30b_x8_write]
 
   # ---------------------------------------------------------------- batch 45, before scoring (Dan 26 Oct ~22:40)
   # Added before these runs land and before any of them is scored: no README claim, no sources. The claim field states
@@ -796,30 +1053,6 @@ views:
       all: [results/x0_composition/x0_composition_20261026]
     per_item: "x0_composition is an analysis over the main, one-change and fresh-scene runs' outcomes.jsonl; its items are those runs' items split by first mention"
 
-  - id: sentence_order
-    title: Lookups by sentence order
-    status: phase2
-    kind: x0
-    readme: "Section 2, Fig. 3"
-    claim: >-
-      Lookups switch in 65%-89% of locker-first scenes and 9%-19% otherwise (the whole change, the main test's scenes;
-      locker-first = the original bridge's locker sentence before the asked person's pick sentence).
-    sources: [lk_order_before_<m>, lk_order_after_<m>, lk_order_before_<m>_k, lk_order_before_<m>_n,
-              lk_order_after_<m>_k, lk_order_after_<m>_n]
-    filters:
-      rendering: chat
-      layer: fixed
-      readers: [PP, PM]
-      arms:
-        unedited: [none, "-", 0, "-"]
-        whole: [whole, "-", 0, "-"]
-    headline: {stat: order_switched, keys: {k: "lk_order_<o>_<m>_k", n: "lk_order_<o>_<m>_n"}}
-    runs:
-      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
-      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
-      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
-      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
-
   - id: pointer_probe
     title: The pointer probe and first mention
     status: later
@@ -1067,3 +1300,94 @@ views:
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_notemplate]
+
+# ---- fixed_sample: BEGIN (generated by `uv run python scripts/review.py sample` at c7457c08, 2026-10-29T11:02:44Z; do not edit by hand, never re-roll)
+fixed_sample:
+  seed: 29
+  n_per_view: 10
+  rule: >-
+    Dan 29 Oct 11:45 (verify_prep_1145 item 3): per tier-1 view, pooled over its models, 6 random stratified by
+    model x reader (the models in a seeded order, one item per (model, reader), the reader alternating, round
+    after round) + 4 targeted: 2 nearest the decision (|p_alt - p_org| smallest under the view's decisive arms,
+    items the whole change switched) and 2 surprising (the view's targeted.surprising, one per direction where
+    both exist). N = 10 per view in all (not per model): the agent's reading of 'N = 10 per view' with 6 + 4;
+    flagged. Item ids as the dashboard's: model|run|scene|reader[|condition][|kind|j-k|s].
+  views:
+    main_swap:
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0301|PP", "model": "qwen3.5-122b-a10b", "reader": "PP", "scene": "P2-L0-0301", "run": "results/x0_necessity/qwen35_122b_x0_necessity_r2", "layer": 33, "stratum": "random: Qwen3.5-122B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0266|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "P2-L0-0266", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0085|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0085", "run": "results/x0_necessity/x0_necessity_27b_chat", "layer": 32, "stratum": "random: Qwen3.6-27B x lookup"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_conflict|P2-L0-0338|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0338", "run": "results/x0_necessity/nem35l_x52_conflict", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x recall"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0172|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0172", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "random: Muse Glimmer 30B x lookup"}
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0265|PM", "model": "qwen3.5-122b-a10b", "reader": "PM", "scene": "P2-L0-0265", "run": "results/x0_necessity/qwen35_122b_x0_necessity_r2", "layer": 33, "stratum": "random: Qwen3.5-122B x recall"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0037|PM", "model": "muse-glimmer-30b", "reader": "PM", "scene": "P2-L0-0037", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0274|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0274", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0193|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0193", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without its random part'; 19 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0078|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0078", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without its random part', not under 'without J++'; 24 candidates)"}
+    answer_control:
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_answer|P2-L0-0078|PP", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "P2-L0-0078", "run": "results/x51_answer/nem35l_x52_answer", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x lookup"}
+      - {"item": "qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0043|PM", "model": "qwen3.6-27b", "reader": "PM", "scene": "P2-L0-0043", "run": "results/x51_answer/x51_12_e1_27b_r2", "layer": 32, "stratum": "random: Qwen3.6-27B x recall"}
+      - {"item": "muse-glimmer-30b|muse30_x51_12_e1_r2|P2-L0-0095|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0095", "run": "results/x51_answer/muse30_x51_12_e1_r2", "layer": 26, "stratum": "random: Muse Glimmer 30B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x51_12_e1_r2|P2-L0-0191|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "P2-L0-0191", "run": "results/x51_answer/qwen35_9b_x51_12_e1_r2", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_answer|P2-L0-0092|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0092", "run": "results/x51_answer/nem35l_x52_answer", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x recall"}
+      - {"item": "qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0130|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0130", "run": "results/x51_answer/x51_12_e1_27b_r2", "layer": 32, "stratum": "random: Qwen3.6-27B x lookup"}
+      - {"item": "muse-glimmer-30b|muse30_x51_12_e1_r2|P2-L0-0208|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0208", "run": "results/x51_answer/muse30_x51_12_e1_r2", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_answer|P2-L0-0041|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0041", "run": "results/x51_answer/nem35l_x52_answer", "layer": 14, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0039|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0039", "run": "results/x51_answer/x51_12_e1_27b_r2", "layer": 32, "stratum": "targeted: surprising (switches under 'arm 1's random part', not under 'arm 1: without the lens part'; 16 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x51_12_e1_r2|P2-L0-0031|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0031", "run": "results/x51_answer/qwen35_9b_x51_12_e1_r2", "layer": 12, "stratum": "targeted: surprising (switches under 'arm 1: without the lens part', not under 'arm 1's random part'; 15 candidates)"}
+    routes:
+      - {"item": "qwen3.6-27b|x6_routes_27b|C2-0421|PP|C2", "model": "qwen3.6-27b", "reader": "PP", "scene": "C2-0421", "run": "results/x6_routes/x6_routes_27b", "layer": 32, "stratum": "random: Qwen3.6-27B x lookup", "condition": "C2"}
+      - {"item": "muse-glimmer-30b|muse30b_x6_routes|C2-0596|PM|C2", "model": "muse-glimmer-30b", "reader": "PM", "scene": "C2-0596", "run": "results/x6_routes/muse30b_x6_routes", "layer": 26, "stratum": "random: Muse Glimmer 30B x recall", "condition": "C2"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_routes|C2-0495|PP|C2", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "C2-0495", "run": "results/x6_routes/nem35l_x52_routes", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x lookup", "condition": "C2"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x6_routes|C2-0538|PM|C2", "model": "qwen3.5-9b", "reader": "PM", "scene": "C2-0538", "run": "results/x6_routes/qwen35_9b_x6_routes", "layer": 12, "stratum": "random: Qwen3.5-9B x recall", "condition": "C2"}
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x6_routes_g75|C2-0418|PP|C2", "model": "qwen3.5-122b-a10b", "reader": "PP", "scene": "C2-0418", "run": "results/x6_routes/qwen35_122b_x6_routes_g75", "layer": 33, "stratum": "random: Qwen3.5-122B x lookup", "condition": "C2"}
+      - {"item": "qwen3.6-27b|x6_routes_27b|C2-0172|PM|C2", "model": "qwen3.6-27b", "reader": "PM", "scene": "C2-0172", "run": "results/x6_routes/x6_routes_27b", "layer": 32, "stratum": "random: Qwen3.6-27B x recall", "condition": "C2"}
+      - {"item": "muse-glimmer-30b|muse30b_x6_routes|C2-0083|PM|C2", "model": "muse-glimmer-30b", "reader": "PM", "scene": "C2-0083", "run": "results/x6_routes/muse30b_x6_routes", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)", "condition": "C2"}
+      - {"item": "muse-glimmer-30b|muse30b_x6_routes|C2-0478|PM|C2", "model": "muse-glimmer-30b", "reader": "PM", "scene": "C2-0478", "run": "results/x6_routes/muse30b_x6_routes", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)", "condition": "C2"}
+      - {"item": "qwen3.6-27b|x6_routes_27b|C2-0128|PP|C2", "model": "qwen3.6-27b", "reader": "PP", "scene": "C2-0128", "run": "results/x6_routes/x6_routes_27b", "layer": 32, "stratum": "targeted: surprising (position under 'without the pointer directions', not under 'without the pointer's random part'; 7 candidates)", "condition": "C2"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x6_routes|C2-0235|PP|C2", "model": "qwen3.5-9b", "reader": "PP", "scene": "C2-0235", "run": "results/x6_routes/qwen35_9b_x6_routes", "layer": 12, "stratum": "targeted: surprising (position under 'without the pointer's random part', not under 'without the pointer directions'; 514 candidates)", "condition": "C2"}
+    x8_writes:
+      - {"item": "qwen3.5-9b|qwen35_9b_x8_write|C2-0431|PP|write|1-2|s2", "model": "qwen3.5-9b", "reader": "PP", "scene": "C2-0431", "run": "results/x8_write/qwen35_9b_x8_write", "layer": 12, "stratum": "random: Qwen3.5-9B x lookup", "x8": {"kind": "write", "j": 1, "k": 2, "s": 2}}
+      - {"item": "muse-glimmer-30b|muse30b_x8_write|C2-0231|PM|write|0-2|s2", "model": "muse-glimmer-30b", "reader": "PM", "scene": "C2-0231", "run": "results/x8_write/muse30b_x8_write", "layer": 26, "stratum": "random: Muse Glimmer 30B x recall", "x8": {"kind": "write", "j": 0, "k": 2, "s": 2}}
+      - {"item": "qwen3.6-27b|x8_write_27b|C2-0037|PP|write|2-1|s2", "model": "qwen3.6-27b", "reader": "PP", "scene": "C2-0037", "run": "results/x8_write/x8_write_27b", "layer": 32, "stratum": "random: Qwen3.6-27B x lookup", "x8": {"kind": "write", "j": 2, "k": 1, "s": 2}}
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x8_write_g75|C2-0047|PM|write|2-0|s2", "model": "qwen3.5-122b-a10b", "reader": "PM", "scene": "C2-0047", "run": "results/x8_write/qwen35_122b_x8_write_g75", "layer": 33, "stratum": "random: Qwen3.5-122B x recall", "x8": {"kind": "write", "j": 2, "k": 0, "s": 2}}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_write|C2-0313|PP|write|0-2|s2", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "C2-0313", "run": "results/x8_write/nem35l_x52_write", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x lookup", "x8": {"kind": "write", "j": 0, "k": 2, "s": 2}}
+      - {"item": "qwen3.5-9b|qwen35_9b_x8_write|C2-0148|PM|write|2-0|s2", "model": "qwen3.5-9b", "reader": "PM", "scene": "C2-0148", "run": "results/x8_write/qwen35_9b_x8_write", "layer": 12, "stratum": "random: Qwen3.5-9B x recall", "x8": {"kind": "write", "j": 2, "k": 0, "s": 2}}
+      - {"item": "qwen3.6-27b|x8_write_27b|C2-0372|PP|write|1-0|s2", "model": "qwen3.6-27b", "reader": "PP", "scene": "C2-0372", "run": "results/x8_write/x8_write_27b", "layer": 32, "stratum": "targeted: surprising (lookup to the target, recall unchanged; 957 candidates)", "x8": {"kind": "write", "j": 1, "k": 0, "s": 2}}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_write|C2-0111|PP|write|0-2|s2", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "C2-0111", "run": "results/x8_write/nem35l_x52_write", "layer": 14, "stratum": "targeted: surprising (recall changed, lookup not to the target; 118 candidates)", "x8": {"kind": "write", "j": 0, "k": 2, "s": 2}}
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x8_write_g75|C2-0232|PP|write|1-0|s2", "model": "qwen3.5-122b-a10b", "reader": "PP", "scene": "C2-0232", "run": "results/x8_write/qwen35_122b_x8_write_g75", "layer": 33, "stratum": "targeted: surprising (lookup to the target, recall unchanged; 956 candidates)", "x8": {"kind": "write", "j": 1, "k": 0, "s": 2}}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_write|C2-0311|PP|write|2-1|s2", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "C2-0311", "run": "results/x8_write/nem35l_x52_write", "layer": 14, "stratum": "targeted: surprising (recall changed, lookup not to the target; 117 candidates)", "x8": {"kind": "write", "j": 2, "k": 1, "s": 2}}
+    z1p:
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L1-Mumbai-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Mumbai-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:companies:P-L1-Huawei-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Huawei-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:countries:P-L1-France-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2_test_chat/j2:countries:P-L1-France-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:cities:P-L1-Lisbon-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lisbon-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:countries:P-L0-Greece-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Greece-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:countries:P-L0-Italy-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Italy-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without its random part'; 4 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without its random part', not under 'without J++'; 3 candidates)"}
+    last_token:
+      - {"item": "qwen3.6-27b|x51_10_27b|P2-L0-0015|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0015", "run": "results/x51_jread/x51_10_27b", "layer": 60, "stratum": "random: Qwen3.6-27B x lookup"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0132|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0132", "run": "results/x51_jread/nem35l_x52_jread", "layer": 36, "stratum": "random: Nemotron 3.5 Lightning x recall"}
+      - {"item": "muse-glimmer-30b|muse30_x51_10|P2-L0-0103|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0103", "run": "results/x51_jread/muse30_x51_10", "layer": 32, "stratum": "random: Muse Glimmer 30B x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x51_10|P2-L0-0115|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "P2-L0-0115", "run": "results/x51_jread/qwen35_9b_x51_10", "layer": 24, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "qwen3.6-27b|x51_10_27b|P2-L0-0181|PM", "model": "qwen3.6-27b", "reader": "PM", "scene": "P2-L0-0181", "run": "results/x51_jread/x51_10_27b", "layer": 56, "stratum": "random: Qwen3.6-27B x recall"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0225|PP", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "P2-L0-0225", "run": "results/x51_jread/nem35l_x52_jread", "layer": 32, "stratum": "random: Nemotron 3.5 Lightning x lookup"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0413|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0413", "run": "results/x51_jread/nem35l_x52_jread", "layer": 36, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "qwen3.6-27b|x51_10_27b|P2-L0-0161|PM", "model": "qwen3.6-27b", "reader": "PM", "scene": "P2-L0-0161", "run": "results/x51_jread/x51_10_27b", "layer": 56, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0324|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0324", "run": "results/x51_jread/nem35l_x52_jread", "layer": 36, "stratum": "targeted: surprising (switches under 'lens swap', not under 'its random control'; 8 candidates)"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0054|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0054", "run": "results/x51_jread/nem35l_x52_jread", "layer": 36, "stratum": "targeted: surprising (switches under 'lens swap', not under 'its random control'; 7 candidates)"}
+    sentence_order:
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_conflict|P2-L0-0049|PP", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "P2-L0-0049", "run": "results/x0_necessity/nem35l_x52_conflict", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x lookup"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0109|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "P2-L0-0109", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0208|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0208", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "random: Muse Glimmer 30B x lookup"}
+      - {"item": "qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0032|PM", "model": "qwen3.5-122b-a10b", "reader": "PM", "scene": "P2-L0-0032", "run": "results/x0_necessity/qwen35_122b_x0_necessity_r2", "layer": 33, "stratum": "random: Qwen3.5-122B x recall"}
+      - {"item": "qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0192|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0192", "run": "results/x0_necessity/x0_necessity_27b_chat", "layer": 32, "stratum": "random: Qwen3.6-27B x lookup"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_conflict|P2-L0-0300|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0300", "run": "results/x0_necessity/nem35l_x52_conflict", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x recall"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0041|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0041", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "nemotron-3.5-lightning|nem35l_x52_conflict|P2-L0-0089|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0089", "run": "results/x0_necessity/nem35l_x52_conflict", "layer": 14, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
+      - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0040|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0040", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: surprising (locker after, switched; 66 candidates)"}
+      - {"item": "qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0152|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0152", "run": "results/x0_necessity/x0_necessity_27b_chat", "layer": 32, "stratum": "targeted: surprising (locker first, not switched; 91 candidates)"}
+# ---- fixed_sample: END

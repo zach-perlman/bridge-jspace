@@ -7,6 +7,7 @@ uv run python scripts/review.py serve --seed 7 --port 8001     # make review-ser
 uv run python scripts/review.py export --seed 0 --n 10         # make review-export SEED=0 N=10 -> review/seed-0/
 uv run python scripts/review.py pack                           # docs/verify_pack.md from the views file
 uv run python scripts/review.py summary                        # make review-summary -> docs/review_summary.md
+uv run python scripts/review.py sample --seed 29               # the fixed sample, into the views file (once)
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ from urllib.parse import parse_qs, urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace.review import checks as C
+from bridge_jspace.review import fixed as F
 from bridge_jspace.review import items as I
 from bridge_jspace.review import page as P
 from bridge_jspace.review import recount as RC
@@ -72,6 +74,8 @@ def params_of(q: dict[str, str], v: dict) -> dict:
 
 def samples(v: dict, p: dict) -> dict[str, dict]:
     models = list(I.spec()["models"]) if p["model"] == "all" else [p["model"]]
+    if p["mode"] == "uniform" and (fx := F.samples(v, p["seed"], models)) is not None:
+        return {"set": fx}  # the fixed sample for this seed (views file fixed_sample): Dan's read, never re-drawn
     sections = ["set"] + (["out"] if p["out"] else []) + (["superseded"] if p["superseded"] else [])
     got: dict[str, dict] = {}
     for sec in sections:
@@ -248,7 +252,7 @@ def summary(out: Path | None = None) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["serve", "export", "pack", "summary"])
+    ap.add_argument("stage", choices=["serve", "export", "pack", "summary", "sample"])
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--port", type=int, default=8001)
@@ -261,6 +265,9 @@ def main() -> None:
         pack(a.out)
     elif a.stage == "summary":
         summary(a.out)
+    elif a.stage == "sample":  # draw the fixed sample into the views file (once: Dan's read is never re-rolled)
+        F.write(a.seed)
+        print(f"wrote fixed_sample (seed {a.seed}) into {I.VIEWS_FILE.relative_to(REPO)}")
     else:
         export(a.seed, a.n, a.out)
 

@@ -88,12 +88,46 @@ def diff_positions(item: dict) -> list[int]:
 
 
 def check_pos(it: dict) -> tuple[str, str]:
+    """The token at pos is the bridge in O and the cf bridge in S. Zach's passages: about a third of his bridge names
+    are several tokens; the stored span's tokens decode to the bridge and pos is the span's last token (where x50_zach
+    adds the change). 51.10 (jread): the edit is at the last token (jpos P3), so P3 must be the prompt's last index,
+    and P1 the bridge word (pos)."""
     c, m = it["case"], it["model"]
     rd = c["readers"][it["reader"]]
     p = c["pos"]
     o, a = _strip(piece(m, rd["ids"]["org"][p])), _strip(piece(m, rd["ids"]["alt"][p]))
-    ok = o == c["bridge"] and a == c["cf_bridge"]
-    return (PASS if ok else FAIL), f"org[{p}] {o!r} / bridge {c['bridge']!r}; alt[{p}] {a!r} / cf {c['cf_bridge']!r}"
+    if it["kind"] == "zach" and c.get("span"):
+        s0, s1 = c["span"]
+        tk = tokenizer(m)
+        o = _strip(tk.decode(rd["ids"]["org"][s0 : s1 + 1], skip_special_tokens=False))
+        a = _strip(tk.decode(rd["ids"]["alt"][s0 : s1 + 1], skip_special_tokens=False))
+        ok = p == s1 and o == c["bridge"] and a == c["cf_bridge"]
+        return (PASS if ok else FAIL), (f"org[{s0}:{s1 + 1}] {o!r} / bridge {c['bridge']!r}; alt {a!r} / cf "
+                                        f"{c['cf_bridge']!r}; pos {p} = the span's last token")  # fmt: skip
+    else:
+        ok = o == c["bridge"] and a == c["cf_bridge"]
+    detail = f"org[{p}] {o!r} / bridge {c['bridge']!r}; alt[{p}] {a!r} / cf {c['cf_bridge']!r}"
+    if it["kind"] == "jread":  # the read appends the space token (case "space"): the last token is that suffix
+        jp = c.get("jpos", {}).get(it["reader"], {})
+        last = {v: len(rd["ids"][v]) + len(read_suffix(it)) - 1 for v in ("org", "alt")}
+        p3 = jp.get("P3", {})
+        ok &= jp.get("P1", {}).get("org") == p and all(p3.get(v) == last[v] for v in ("org", "alt"))
+        detail += f"; the edit at the last token (the appended space): P3 {p3} / last index {last}"
+    return (PASS if ok else FAIL), detail
+
+
+def read_suffix(it: dict) -> list[int]:
+    """The tokens the run appended to the stored ids at the read (x0_necessity.read_logits, chat: a digit's space
+    token): the case's own "space" / the reader's "suffix" where stored, else the tokenizer's " "; Zach's passages are
+    read at the end of the template with nothing appended (x50_zach: space [])."""
+    if it["kind"] == "zach":
+        return []
+    c = it["case"] or {}
+    got = c.get("space") or c.get("readers", {}).get(it["reader"], {}).get("suffix")
+    if got is None:
+        for jc in (c.get("_joined") or {}).values():  # 51.12: its own case stores the suffix per reader
+            got = got or (jc or {}).get("readers", {}).get(it["reader"], {}).get("suffix")
+    return list(got) if got else tokenizer(it["model"]).encode(" ", add_special_tokens=False).ids
 
 
 def check_diff(it: dict) -> tuple[str, str]:
@@ -123,6 +157,11 @@ def check_answers(it: dict) -> tuple[str, str]:
     if "tok_A" not in rd:  # natural passages: answers are words, read among the relation's answer words
         return NA, "answer words (no answer token stored)"
     a, b = _strip(piece(m, rd["tok_A"])), _strip(piece(m, rd["tok_b"]))
+    if it["kind"] == "zach":  # answer words, read by their first token
+        ok = bool(a) and bool(b) and str(rd["answer"]).startswith(a) and str(rd["cf_answer"]).startswith(b) and a != b
+        return (
+            PASS if ok else FAIL
+        ), f"first tokens: tok_A {a!r} / {rd['answer']!r}; tok_b {b!r} / {rd['cf_answer']!r}"
     ok = a == str(rd["answer"]) and b == str(rd["cf_answer"])
     return (PASS if ok else FAIL), f"tok_A {a!r} / {rd['answer']!r}; tok_b {b!r} / {rd['cf_answer']!r}"
 
@@ -143,7 +182,7 @@ def check_class(it: dict) -> tuple[str, str]:
         bad = [f"{label}: top {r['top']!r}, switched {r['switched']}" for label, r in rows.items()
                if bool(r["switched"]) != (r["top"] == rd["cf_answer"])]  # fmt: skip
         return (FAIL if bad else PASS), "; ".join(bad[:4]) or f"{len(rows)} rows agree"
-    if it["kind"] in ("x0", "massmean", "x0_parts", "x45b_sweep", "x45d", "x45g"):
+    if it["kind"] in ("x0", "massmean", "x0_parts", "x45b_sweep", "x45d", "x45g", "x51_answer", "zach", "jread"):
         # runs since batch 45 store the top token (x0_necessity.read_row): the role it gives against the case's answer
         # tokens (b = tok_b, A = tok_A, else other) must be the stored role, and switched must be role b
         rd = c["readers"][w]
@@ -232,6 +271,27 @@ def check_joined(it: dict) -> tuple[str, str]:
         return (FAIL if bad else PASS), "; ".join(bad) or (
             f"entity {c['bridge']!r}; org_order {derived['org_order']}, alt_order {derived['alt_order']} as the case"
         )
+    if it["kind"] == "x51_answer":  # 51.12's own reader ids and bridge position against the source X0 case's
+        w = it["reader"]
+        bad = []
+        for run, own in (c.get("_joined") or {}).items():
+            if own is None:
+                bad.append(f"{run}: no case for this scene")
+                continue
+            o, s = own["readers"][w], c["readers"][w]
+            if (
+                o["ids"] != s["ids"]
+                or o.get("pos", c["pos"]) != c["pos"]
+                or (o["tok_A"], o["tok_b"]) != (s["tok_A"], s["tok_b"])
+            ):
+                bad.append(f"{run}: ids / pos / answer tokens differ from the source case")
+            if own.get("entity") != c["bridge"] or own.get("cf_entity") != c["cf_bridge"]:
+                bad.append(
+                    f"{run}: entity {own.get('entity')!r} / {own.get('cf_entity')!r} vs {c['bridge']!r} / {c['cf_bridge']!r}"
+                )
+        return (FAIL if bad else PASS), "; ".join(
+            bad
+        ) or f"same ids, pos and answer tokens in {list(c.get('_joined') or {})}"
     used = {r["_run"] for r in it["rows"][it["reader"]].values() if r and "_run" in r}
     joined = {run: jc for run, jc in (c.get("_joined") or {}).items() if run in used}
     if not joined:
