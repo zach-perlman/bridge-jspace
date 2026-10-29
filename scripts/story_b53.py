@@ -250,6 +250,10 @@ def record_card_numbers(id_verdict: Path, order_verdict: Path, brief: Path = S.R
     for t, (m, _) in order.items():  # Dan 11:10, across the number cells; the verdict's words before its reason
         S.record("cards", t, "53.1: the lookup at most 0.10 beyond random in both number cells",
                  m["position"]["text"].split(":")[0].split(" (")[0], source=src)  # fmt: skip
+        d = (m.get("paired") or {}).get("diff")
+        if d:  # Dan 13:15 (answers_1315 item 3): "lower bound +0.01", signed, as he wrote it
+            S.record("cards", t, "53.1: the lookup, question before minus after (paired): the interval's lower bound",
+                     f"{d[1]:+.2f}", source=src)  # fmt: skip
     agree = order["qwen3.5-122b-a10b"][0]["cells"]["qa_num"]["agreement"]
     for reader in ("recall", "lookup"):
         w = agree[reader]["whole"]

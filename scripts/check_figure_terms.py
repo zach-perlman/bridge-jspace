@@ -158,7 +158,11 @@ MARK_FIGS += ("fig23_monitor",)
 # figures with one panel per model gain a panel (Fig. 16: two columns by four rows)
 V6_PANELS |= {"fig01d_ladder": 4, "fig06b_anatomy": 4, "fig09a_transfer": 5, "fig09b_refit": 4, "fig16_dose": 8,
               "fig03c_earlier_mention": 5, "fig09b_six_lockers": 4}  # fmt: skip
-# The same brief, §6: no internal ids in the README body (prose, headings, captions): batch test ids (47.x, 49.x,
+# Dan's restructure brief (29 Oct 12:50, docs_1250): the new cards' figures, five model slots each (the lens part
+# against the address, the order cell, code and tool output, Lightning's attention blocks)
+V6_FIGS += ("fig19_identity_address", "fig20_order_cell", "fig21_code_tool", "fig22_attention_blocks")
+MARK_FIGS += ("fig19_identity_address", "fig20_order_cell", "fig22_attention_blocks")
+# Dan's restructure brief (28 Oct 22:20), §6: no internal ids in the README body (prose, headings, captions): batch test ids (47.x, 49.x,
 # 51.x), Zach's test names (Z1-Z3), scene-set codes (C0-C2, P2-L0), run names (x0_necessity), the ladder's "rung 6",
 # "batch", "amendment". Ids live only in the Appendix's "where things live" line and in source comments.
 README_IDS = {

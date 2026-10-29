@@ -30,15 +30,14 @@ from scripts.story_b50 import caption
 R = S.REPO / "results"
 # 53.7: the newest verdict first; a (model, format) cell is taken from the first verdict that holds it, so a verdict
 # under the lookup-only gate (decisions_1210) wins over the earlier two-reader one. The 27B's probe ran before 12:10
-# under X0's gate on both readers and passed both: "adapted design" only (Dan 13:15, answers_1315 item 4). Only the
-# combined verdicts are cited (coordinator, 29 Oct): the probe's over the 9B (115640Z), the routes test's over both
-# models in code (120413Z, which replaces 115759Z); the tool-output routes' combined verdict is not written yet
-PROBES_537 = (R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json",
-              R / "x0_probe" / "x53_7_probe-20261029T110647Z" / "verdict.json")  # fmt: skip
-ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T120413Z" / "verdict.json",)
-# cells without a combined verdict yet (the coordinator, 29 Oct ~13:20): the routes test in tool output, both models
-RUNNING_537 = {"probe": {("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")},
-               "routes": {("qwen3.5-9b", "tool"), ("qwen3.6-27b", "tool")}}  # fmt: skip
+# under X0's gate on both readers; its lookup-only rerun is still running, and only the combined verdicts are cited
+# (coordinator, 29 Oct ~13:40: "the 27B probe is still running ... mark it 'running'"), so its cells read "running"
+# until the 53.7 agent's combined probe verdict covers it ("adapted design" then, Dan 13:15, answers_1315 item 4). The
+# routes test's combined verdict over both models and both formats (122509Z) replaces 115759Z and 120413Z
+PROBES_537 = (R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json",)
+ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T122509Z" / "verdict.json",)
+# cells without a combined verdict yet: the 27B's probe in both formats
+RUNNING_537 = {"probe": {("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")}, "routes": set()}
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
 # the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded); the
 # verdict rewritten at Dan's 13:15 (answers_1315) with the scenes where the clean answer survives the span block beside
@@ -129,7 +128,7 @@ def build_code_tool(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Path, .
     top_in, unit_in, bottom_in = 1.75, 0.8, 2.45
     h = top_in + unit_in * sum(heights) + bottom_in
     fig = plt.figure(figsize=(S.WIDTH, h))
-    S.title(fig, "Code and tool output: the address is readable; in code it carries less",
+    S.title(fig, "In code and tool output the address is readable and carries position",
             "A: a probe at the bridge word, locker before the pick. B: without the address, or with only the address, at L.")  # fmt: skip
     box = (bottom_in / h, unit_in * sum(heights) / h)
     a = fig.add_axes((0.215, box[0], 0.29, box[1]))
@@ -217,8 +216,8 @@ def build_code_tool(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Path, .
     S.panel_tag(b, ", ".join(ns_b), "fixed")
     caption(fig, ["Adapted design: a lookup-only gate (the lookup says and reads both prompts right on at least 0.80 of "
                   "the scenes); the recall is not part of this test. The 9B's code probe: that gate set after the data "
-                  f"({S.STATUS_GLYPH['after']}). The 27B's probe ran under the earlier gate on both readers and passed "
-                  "both. The routes test in tool output and the monitor: running.",
+                  f"({S.STATUS_GLYPH['after']}). The 27B's probe under the lookup-only gate and the lens monitor: "
+                  "running.",
                   "Tool output: the scene as a tool's reply in prose, its bridge word about 250 tokens later than in a "
                   "prose prompt. B: another item moved; the address removed or added is the one fit on prose, carried "
                   "over; grey: a random part of the same size. Muse, Lightning and the 122B: not run."], 1.6)  # fmt: skip
@@ -342,6 +341,12 @@ def record_card_numbers(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Pat
         for route in ("identity", "position", "value"):
             S.record("cards", t, f"53.7, {fmt}: another item moved, the whole change: {route} share",
                      *whole["share"][route], n=whole["n"], source=rel(p))  # fmt: skip
+        # the coordinator's C1 caveat (~13:40): where two picks swap, a random part of the address's share already takes
+        # position down in tool output, so there the removal cannot tell the address from a random part
+        for arm, what in (("no_alf", "without the address"), ("no_alf_rand", "without a random part")):
+            c1 = run["cells"][f"C1|{arm}"]
+            S.record("cards", t, f"53.7, {fmt}: two picks swapped, {what}: position share", *c1["share"]["position"],
+                     n=c1["n"], source=rel(p))  # fmt: skip
         c0 = run["c0_check"]
         S.record("cards", t, f"53.7, {fmt}: the sanity swap's lookup switch (against the reference)",
                  f"{c0['c0_lookup_switch']:.3f} vs {c0['reference']:.3f}", source=rel(p))  # fmt: skip
