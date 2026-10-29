@@ -2825,3 +2825,17 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     - "Recall needs the lens part more than the lookup (the headline replicates on v4)" if the gap is >= 10 with an interval above 0, and paper10_rot's gap is <= 1/3 of it.
     - Each word's losses and the controls are reported beside.
 - **Queue.** scripts/queues/h200_abl_1029.sh. GPU1, beside the 27B chain, after Lightning's stage 2. A smoke of each runs first.
+
+##### Amendment 58 note 15 addendum 2 (Zach, 2026-10-29 ~04:25 UTC; the 27B's note 15 final cell had been read: "answer"; no result of these arms seen): this answer, or any answer? (27B, the headline model)
+- **Why.** Note 15's arm 3 control strips as many random atoms. Stripping X's and D's own answers costs about what stripping all of the relation's answers costs, so the lens part may carry "an answer of this kind" rather than this item's answer.
+- **Arms.** As note 15, plus the same arms with two other answers of the relation in place of X's and D's ("oth": remkeepoth_cf, noaoth_cf, noaothctl_cf).
+  - The two other answers are drawn with random.Random('oth:' + id).
+  - They are never X's, D's or the third's answer, nor any value of X's passage.
+  - Their control is as many of SEED_CTL's random atoms.
+- **Cells.** The 27B's note 15 cells (final L49-56; last L16-23, L24-31, L32-40). Donor seeds 0 and 1, cf_ok pairs.
+- **Reading (scripts/nn_cf_read.py, note15_spec).** Let d = e3(own) − e3(oth), with a 95% cluster bootstrap over bridges.
+  - "This item's answer" if d >= 0.20 with its interval above 0 and e3(oth) <= 0.5 e3(own).
+  - "Answer-ness (any answer of the relation)" if e3(oth) >= 0.7 e3(own).
+  - Otherwise "partly specific".
+  - Dan's rule is also applied to the oth set (note15_oth).
+- **Queue.** scripts/queues/h200_n15b_1029.sh, on GPU0 after the 27B's stage 2, once >= 75 GB is free. A 2-item smoke runs first.

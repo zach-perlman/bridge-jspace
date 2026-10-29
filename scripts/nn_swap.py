@@ -52,6 +52,8 @@ jswap):
   remrand_cf        h_X + Δ - P_R Δ                  (arms 1 and 2's random twin)
   remkeep{own,rel}_cf   h_X + Δ - (I - P_A) P_S Δ    (arm 2: without the lens part, its answer component kept)
   noa{own,rel}_cf   h_X + Δ - P_A Δ                  (arm 3: without the answer directions only); noa{own,rel}ctl_cf with C
+  note 15 addendum 2: remkeepoth_cf / noaoth_cf / noaothctl_cf, the arms with two other answers of the relation (not X's,
+  D's or the third's; random.Random('oth:' + id)) in place of X's and D's own
   note 15 addendum: lensshr_cf h_X + Rs, remshr_cf h_X + Δ - Rs, Rs = Δ's random part holding P_S Δ's share of ||Δ||²
   (Dan's random_subspace_part over rotation(d, 888 + layer))
   the "none" rows carry the readout check: the lens rank (over the letter tokens) of X's answer at h_X and D's at h_D,
@@ -109,7 +111,8 @@ SEED_NULL = 5900  # + layer: clamp_null's direction
 SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer atoms (noansctl, ansctl)
 
 
-N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl", "lensshr", "remshr")  # note 15 (+ addendum)
+N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl", "lensshr", "remshr",
+       "remkeepoth", "noaoth", "noaothctl")  # note 15 (+ addenda; oth: two other answers of the relation)
 N16 = ("jpp", "jpprand", "nojpp", "nojpprand")  # note 16's arm kinds
 
 
@@ -363,6 +366,16 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                 c.startswith("repair") for c in conds) else None  # fmt: skip
             # note 15: the answer sets (per site row) and the readout check on this chunk's "none" rows
             ans_sets = {"own": (own_idx, own_mask), "ownctl": (ctl_idx, own_mask)}
+            if any(c.split("_")[0] in ("remkeepoth", "noaoth", "noaothctl") for c in conds):  # note 15 addendum 2: two other answers
+                oth = []
+                for j in chunk:
+                    pool = sorted(set(items[j["id"]]["answer_vocab"]) - {j["ax"], j["ad"], j["at"]} - set(items[j["id"]].get("passage_values", {}).values()))
+                    picks = random.Random(f"oth:{j['id']}").sample(pool, 2)
+                    oth.append(sorted({int(row_of[t]) for v in picks for t in JS.forms(tok, v, j["kind_"]) if int(row_of[t]) >= 0}))
+                ow = max(1, max(len(o) for o in oth))
+                oth_idx = torch.tensor([o + [0] * (ow - len(o)) for o in oth], device="cuda")[bi]
+                oth_mask = torch.tensor([[1] * len(o) + [0] * (ow - len(o)) for o in oth], device="cuda")[bi]
+                ans_sets.update({"oth": (oth_idx, oth_mask), "othctl": (c_rows[:ow][None].expand(len(chunk), -1)[bi], oth_mask)})
             if "noansrel" in narrow:
                 ans_sets.update({"rel": narrow["noansrel"][:2], "relctl": narrow["noansrelctl"][:2]})
             if any(c.split("_")[0] in N15 for c in conds):

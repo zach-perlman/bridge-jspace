@@ -137,9 +137,18 @@ def main(name: str, runs: list[str], all_pairs: bool) -> None:
         bb = collections.defaultdict(list)  # notes 15-16: pairs clustered by bridge
         for k, d in by.items():
             bb[bridge[k]].append(d)
-        for A in ("own", "rel"):
+        for A in ("own", "rel", "oth"):
             if all(c in conds for c in ("full_cf", "rem_cf", "remrand_cf", f"remkeep{A}_cf", f"noa{A}_cf", f"noa{A}ctl_cf")):
                 rec[f"note15_{A}"] = note15(bb, list(ranks[(site, word, band)].values()), A)
+        if "note15_own" in rec and "note15_oth" in rec:  # note 15 addendum 2: this answer, or answer-ness?
+            def e3(A: str):
+                return lambda ds: None if share_of(ds, "full_cf") <= 0 else (share_of(ds, f"noa{A}ctl_cf") - share_of(ds, f"noa{A}_cf")) / share_of(ds, "full_cf")
+
+            diff = boot_stat(bb, lambda ds: None if e3("own")(ds) is None else e3("own")(ds) - e3("oth")(ds))
+            po, pt = rec["note15_own"]["e3"][0], rec["note15_oth"]["e3"][0]
+            rec["note15_spec"] = {"e3_own_minus_oth": diff,
+                                  "verdict": "can't tell" if po is None or pt is None or po <= 0 else "this item's answer" if diff[0] >= 0.2 and diff[1][0] > 0 and pt <= 0.5 * po
+                                  else "answer-ness (any answer of the relation)" if pt >= 0.7 * po else "partly specific"}  # fmt: skip
         if all(c in conds for c in ("full_cf", "lens_cf", "rem_cf", "lensshr_cf", "remshr_cf")):  # note 15 addendum
             def frac(arm: str, twin: str):
                 return lambda ds: None if share_of(ds, "full_cf") <= 0 else (share_of(ds, twin) - share_of(ds, arm)) / share_of(ds, "full_cf")
@@ -157,7 +166,7 @@ def main(name: str, runs: list[str], all_pairs: bool) -> None:
             line += f"  full-rand CI {rec['full_minus_rand_ci']}  {'<-- LIVES HERE' if rec['bridge_lives_here'] else ''}"
         if "decomposition" in rec:
             line += f"  decomposition {rec['decomposition']}"
-        for k in ("note15_own", "note15_rel", "note15a", "note16"):
+        for k in ("note15_own", "note15_rel", "note15_oth", "note15_spec", "note15a", "note16"):
             if k in rec:
                 line += f"\n    {k}: {json.dumps(rec[k])}"
         print(line)
