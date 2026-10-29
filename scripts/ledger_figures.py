@@ -1348,7 +1348,10 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
             rows_axis(ax, labels)
             grey_panel(name, t, absent[t], ax)
             continue
-        ax.set_title(SHORT[t] + (" ○" if t == LT else ""), fontsize=12, weight="bold", loc="left")
+        # the hollow mark on every hollow panel: Lightning (its gate set after the pre-check) and any model registered
+        # below gate for this figure (Dan's figures brief, 10:00: below-gate panels hollow and labelled alike)
+        hollow_panel = t == LT or _SLOTS.get(name, {}).get(SHORT[t]) == "below gate"
+        ax.set_title(SHORT[t] + (" ○" if hollow_panel else ""), fontsize=12, weight="bold", loc="left")
         for lab, v, col, hollow in rows[t]:
             if isinstance(v, str):  # a cell this model does not have (not tested, pending): a grey note in its row
                 ax.text(xlim[0] + 0.03, -labels.index(lab), v, color=GREY, va="center", fontsize=S.LABEL_PT - 1)
