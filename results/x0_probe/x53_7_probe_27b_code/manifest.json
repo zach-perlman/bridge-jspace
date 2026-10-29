@@ -1,0 +1,64 @@
+{
+  "exp": "x0_probe",
+  "run": "x53_7_probe_27b_code",
+  "written_utc": "2026-10-29T10:55:32Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "test": "53.7 (the pointer in code and tool output)",
+  "spec": "jobs/c3/batch53.yaml (next_1110 item 2, standing_rules_0950 item 6, next_1110_reading_537)",
+  "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+  "source": null,
+  "source_code": null,
+  "set": "d1_topics_v4",
+  "layer": 32,
+  "x0_items": 0,
+  "format": "code",
+  "format_text": "the scene as Python in the user turn (tasks_v2's code framing): picks = {} and lockers = {}, then one assignment per statement in the scene's order (picks[\"Eva\"] = \"oxygen\"; lockers[\"oxygen\"] = 5), then the question and the digit instruction",
+  "gate": "X0's main gate in the format, over the test's own scenes: the unedited O prompt's chat read right on >= 0.80 of the scenes for both readers; a failed format is not tested (no states, no probe)",
+  "read": "the chat read: one forward of the prompt with a digit's space token appended, the top token",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "6fdb3099578f3ebad301ef48f2dfe9ff3376fb69",
+    "dirty": true
+  },
+  "position": "the asked person's bridge word, org run, code",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v4/items.jsonl": "d89e802bc78fd093c9361b7f135f7750f06f8f51aa468896fd1c2b01f5b46f4e"
+  },
+  "folds": {
+    "outer": 5,
+    "inner": 4,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "targets": {
+    "answer digit": "answer",
+    "locker sentence": "locker_index",
+    "bridge identity": "entity"
+  },
+  "gate_pass": true,
+  "cases": 682,
+  "finished_utc": "2026-10-29T10:57:27Z"
+}
