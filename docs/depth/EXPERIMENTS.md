@@ -1,6 +1,8 @@
 # Experiments ledger (depth)
 
-Every opened test, so nothing is lost (Dan, 29 Oct ~01:10). Internal doc: test ids allowed. Sections by status, not by date. Each entry: the question, the verdict under the rule fixed in advance (per model), at most three key numbers with their 95% intervals copied from the cited verdict file, where it is used, at most two caveats. No interpretation beyond the verdict. Opened times are the opening commit's time (Paris, 28 Oct unless stated); box times are UTC from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct. Every cited path is checked by `uv run python scripts/check_ledger.py` (tests/test_experiments_ledger.py). Status of every entry: UNVERIFIED until a human adds it to VERIFIED.md.
+Every opened test, so nothing is lost (Dan, 29 Oct ~01:10), written to be read without the runs, like the README's Part I (Dan, 01:15). Internal doc: test ids in the card headings only. Sections by status; inside each, the story's order (two readers → identity → address → where and when → other datasets). Each card follows the README's template: Question, Why we asked, Data, Method, Rule fixed in advance (quoted), one figure, Result (one column per model, 95% intervals, every number with its source), Read, Caveats. No interpretation beyond the verdict. Opened times are the opening commit's time (Paris, 28 Oct unless stated); box times are UTC. Every result here is UNVERIFIED until a human adds it to VERIFIED.md (said once, here). `uv run python scripts/check_ledger.py` checks every cited path, anchor, field and the coverage table (tests/test_experiments_ledger.py).
+
+Restructure in progress (Dan 01:15): the coverage table and the order are in; the entries below move to the card template next, then their figures.
 
 ## Flagged for Dan
 
@@ -21,6 +23,64 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 - New card, Part IV next to the address at the last token: the recall's entity at the last token is readable but not used, all three models; figure figures/story/fig17_jspace_last_token.png ([51.10](#t51-10)).
 - Claim 1: add the full-carrier limit (fact-after lookups follow the lens, 0.51 on the 9B and 27B) ([51.7](#t51-7)).
 - Claim 12: add the last-token result (the address is not at the last token on the 9B and 27B; it travels on Muse) ([51.4](#t51-4)).
+
+## Coverage
+
+Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T000836Z/matrix.json, built 00:08 UTC 29 Oct; each cell's source is in that file). A linked test has a card below. Status words are the matrix's: done / partial / running / queued / missing / not tested (reason) / not designed. Lightning's gate (all cells): the main test's gate on all 516 scenes, ○ chosen after the 60-scene pre-check was seen; layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
+
+<!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
+| test | 27B | Lightning | 9B | Muse |
+|---|---|---|---|---|
+| 1. Conflict test (main test, at L) | **done**: not confirmed (lookup 0.14 > 0.10; recall 0.74) | **queued**: x52_lightning_conflict, speedup first: 3 arms at all 13 swept layers, decided at L14 | **done**: confirmed | **done**: confirmed |
+| [2. Answer control (51.12 E1)](#t51-12) | **done**: recall: the entity | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done**: recall: the entity | **done**: answer word not read |
+| 3. Routes test (identity / position / value; no address; address alone) | **done**: 0.66 / 0.34 / 0.00; alone fails | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done** | **done** |
+| 4. Address swap by dose (x8_write, s = 1 / 2 / 4) | **done**: 0.01 / 0.24 / 0.50 | **missing**: Lightning chain, spec in Dan's order (reads the committed L14); needs the routes test's items | **done**: 0.05 / 0.52 / 0.52 | **done**: 0.02 / 0.46 / 0.73 |
+| 5a. Order split (descriptive) | **done** | **missing**: CPU from the conflict test's outcomes once it lands | **done** | **done** |
+| 5b. Copy test (45q) | **done**: holds | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done**: holds | **done**: holds |
+| 6. Anatomy by layer (47.8) | **queued**: on record a reduced grid (9 of 15 layers); full grid x47_8_27b on mats (run x47_anatomy_27b) | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done** | **done** |
+| [7. Ladder (49.2, rungs 1-6)](#t49-2) | **queued**: on record rungs 1-2 only; rungs 1-6 (rung 6 at Zach's L32-40) x52_ladder_27b on another (the speedup copy was stopped after 2 min) | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **queued**: on record, rung 6 at L23-29; rung 6 in Zach's L36-42: x52_ladder_muse on mats (behind part B) |
+| 8. Lens readout with the item-change control (47.0) | **done** | **missing**: Lightning chain, spec in Dan's order (reads the committed L14); needs x8_write's items | **done** | **done** |
+| [9. Last-token read / write (51.10)](#t51-10) | **done** | **missing**: Lightning chain, spec in Dan's order (reads the committed L14) | **done** | **done** |
+| 10. Attention under the swap (49.7) | **done** | **missing**: Lightning chain, spec in Dan's order (reads the committed L14); full attention at 6 of 52 blocks only | **done** | **done** |
+| Split in other texts: varied scenes (x0b) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Split in other texts: natural passages (x5) | **done** | **missing**: Lightning, after the 10 key rows | **done**: gate lowered after the data | **done** |
+| [Dose curves, a part alone (51.1)](#t51-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Zeroing at one layer (47.5) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Earlier mention (45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
+| E3: identity route outside the lens (47.1 atom slices) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E6: the address probe (x0_probe v4) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E6: the swap after neutral sentences (47.16 distance) | **missing**: 27B gap: spec to write (mats) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E7: six lockers, one code per slot (47.2) | **queued**: x47_2_27b on another (behind part B and the 27B ladder) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E8: the report prompt (47.10) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E11: token by layer map (47.D1) | **queued**: x47_d1_27b on mats (run x47_depthmap_27b) | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
+| E11: lookups carried before L (47.4 cumulative) | **missing**: 27B gap: spec to write (mats) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| E12: address persistence across depth (D4, CPU) | **missing**: CPU from x47_anatomy_27b's cache once it lands | **missing**: CPU after Lightning's anatomy | **done** | **done** |
+| [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Part V: Zach's passages Z3 (routes on his passages)](#z3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Described bridge (47.3, and 51.12's cue r2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **partial**: 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design) |
+| One question, two instructions (49.6) | **done** | **missing**: Lightning, after the 10 key rows | **not tested**: ran; the gate failed (README: the others miss the gate) | **missing**: 9B / Muse gap: not run on Muse |
+| Address refit per text format (x45d) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| The lookup's errors are not address errors (47.13) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: a person mark at the locker sentence (48.3 bind) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: copying heads pass the rest (48 heads) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: the address as the recall's second route (48 route2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: blocking the pick sentence (47.6 edges) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: the second hop's key token (47.15 source) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Failed: the address is the same for any kind of item (47.11 agnostic) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Chained addresses (47.14) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| What is left of the route; the value (47.7) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Gain map (49.1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| Pooled person probe (49.3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| DAS by position (49.x das_pos) | **not designed**: 9B only by design | **not designed**: 9B only by design | **done** | **not designed**: 9B only by design |
+| [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | **partial**: 51.3 done; 48's DAS not run on the 27B (51.3 supersedes it) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Joint head ablation under the swap (51.2)](#t51-2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [The address at the last token (51.4)](#t51-4) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Anatomy on Zach's passages (51.5)](#t51-5) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **missing**: 9B / Muse gap (51.5 designed for the 9B and 27B) |
+| [Z1 on the full carrier (51.7)](#t51-7) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **missing**: 9B / Muse gap (51.7 designed for the 9B and 27B) |
+| [What is the address: dimension, methods, geometry (51.11)](#t51-11) | **partial**: part 2 only by design (parts 1, 3 not designed for the 27B) | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **missing**: 9B / Muse gap (Z2 designed for the 9B and 27B) |
+<!-- coverage:end -->
 
 ## Changes a README claim (README must be updated)
 
@@ -100,6 +160,14 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 
 ## Ledger only (opened, not in README)
 
+### What is inside the lens part's 25 directions (batch 52 A, landed 29 Oct 01:01) <a id="b52-a"></a>
+
+- Question: which words do the 25 lens directions of the change stand for: the two bridge items, the answer words, or other words?
+- Verdict (descriptive, no rule): on the main test the original and the new bridge words carry about a fifth to two fifths of the rebuilt energy, the answer words almost none; on Zach's described passages the bridge names carry little and the descriptions' words dominate.
+- Key numbers, from `results/x52_atoms/report-20261029T000125Z/verdict.md` (main test, recall's view, n = 50): the original bridge word 0.111 [0.091, 0.130] (9B), 0.184 [0.165, 0.198] (Muse); the recall's answer word 0.001 [0.000, 0.002] (9B).
+- Where used: ledger only.
+- Caveats: a word classifier labels the directions (hand-checked on 5 items per model, blind on Muse's main test only); it misses non-English answer words.
+
 ### The address swap's heads (51.2, opened 28 Oct 20:04) <a id="t51-2"></a>
 
 - Question: does a small set of attention heads at the last token carry the address swap's effect, or is it spread over heads?
@@ -161,14 +229,6 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 - Key numbers: none yet.
 - Where used: coverage matrix (`scripts/x52_coverage.py`).
 - Caveats: the 60 dev scenes used for the layer are excluded.
-
-### Batch 52 A: what is in the lens part (atom inventory) <a id="b52-a"></a>
-
-- Question: which kinds of lens atoms make up the J++ part of the change (Dan's nine classes)?
-- Verdict: not opened; the three GPU forwards have landed (`results/x52_atoms/qwen35_9b_x52_atoms_fwd`, `results/x52_atoms/x52_atoms_fwd_27b`, `results/x52_atoms/muse30_x52_atoms_fwd`); classification on CPU.
-- Key numbers: none yet.
-- Where used: ledger only.
-- Caveats: rule in `jobs/c3/batch52.yaml` (A).
 
 ### Batch 52 B: where the answer is readable and usable (answer map) <a id="b52-b"></a>
 

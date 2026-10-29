@@ -17,9 +17,14 @@ def test_the_ledger_covers_dans_list():
         assert f'<a id="{anchor}"></a>' in text, anchor
 
 
+def test_the_coverage_table_is_the_matrix():
+    assert not (bad := L.coverage_problems(L.LEDGER.read_text())), bad
+    assert L.coverage_problems("no table here")
+
+
 def test_the_ledger_sections_by_status():
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
-    assert heads == ["## Flagged for Dan", "## README changes waiting for Dan",
+    assert heads == ["## Flagged for Dan", "## README changes waiting for Dan", "## Coverage",
                      "## Changes a README claim (README must be updated)", "## Supports a README claim",
                      "## Ledger only (opened, not in README)", "## Withdrawn", "## Running or sealed"]  # fmt: skip
 
