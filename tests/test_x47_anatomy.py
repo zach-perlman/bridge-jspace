@@ -213,8 +213,10 @@ def test_locker_layers_every_eighth_model_layer():
 
 
 def test_sweeps_hold_the_fixed_layer_and_the_arms_are_fourteen():
-    for t, layers in A.LAYERS.items():
-        assert X.PREDICTED[t] in layers
+    from scripts import x51_lightning as L6
+
+    for t, layers in A.LAYERS.items():  # Lightning's fixed layer: the committed one (batch 52, BJ_PREDICTED_LAYER)
+        assert (L6.committed_layer() if t == L6.TARGET else X.PREDICTED[t]) in layers
     assert len(A.ARMS) == 14 and A.ARMS[:2] == ("none", "whole")
     assert len(A.read_labels((2, 4), A.ARMS)) == 1 + 2 * 13
     assert A.read_labels((2,), A.C0_ARMS) == [(None, "none"), (2, "whole")]
@@ -635,3 +637,28 @@ def pins_run_prefix() -> str:
     from bridge_jspace import pins
 
     return pins.RUN_PREFIX
+
+
+def test_lightning_coverage_copies_muses_design():
+    """Batch 52: Lightning runs Muse's 52-block design verbatim (every 4th layer L2-L50 holding L14, 200 test scenes,
+    C0 >= 0.5) as a coverage run, outside 47.8's own RUNS."""
+    lt = "nemotron-3.5-lightning"
+    assert A.LAYERS[lt] == A.LAYERS["muse-glimmer-30b"] and 14 in A.LAYERS[lt]
+    assert A.N_TEST[lt] == A.N_TEST["muse-glimmer-30b"] and A.C0_MIN[lt] == A.C0_MIN["muse-glimmer-30b"]
+    assert lt not in A.RUNS and A.COVERAGE_RUNS[lt].startswith("nem35l_")
+
+
+def test_coverage_verdict_needs_no_seal(tmp_path, monkeypatch):
+    monkeypatch.setattr(A, "RESULTS", tmp_path)
+    monkeypatch.setattr(A, "unsealed", lambda: (_ for _ in ()).throw(AssertionError("sealed")))
+    monkeypatch.setattr(A, "model_result", lambda r, n_boot: {"run": r, "target": "nemotron-3.5-lightning",
+                                                                "status": "pending", "why": "planted"})  # fmt: skip
+    with pytest.raises(AssertionError, match="sealed"):
+        A.stage_verdict(["nem35l_x52_anatomy"], n_boot=10)
+    out = A.stage_verdict(["nem35l_x52_anatomy"], n_boot=10, coverage=True)
+    assert out.name.startswith("x52_anatomy-")
+    blob = json.loads((out / "x47_8.json").read_text())
+    assert blob["dan"].startswith(A.NO_PREDICTION) and [m["target"] for m in blob["models"]] == [
+        "nemotron-3.5-lightning"
+    ]
+    assert A.NO_PREDICTION in (out / "x47_8.md").read_text()

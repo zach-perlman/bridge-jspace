@@ -433,3 +433,23 @@ def test_the_committed_predictions_file_has_the_q_depth_block():
     if f"**{D.QUESTION}**" not in text:
         pytest.skip("the Q-depth block is not in this checkout's HEAD")
     assert isinstance(D.dan_answer(), str)
+
+
+def test_lightning_coverage_runs_muses_grid_on_the_main_test(tmp_path, monkeypatch):
+    """Batch 52: Lightning takes Muse's step (every 4th layer), a coverage run outside D1's own RUNS, the main-test
+    design alone (--designs main), and a coverage verdict without the Q-depth seal."""
+    from scripts import x47_depthmap as DM
+
+    lt = "nemotron-3.5-lightning"
+    assert (
+        DM.STEP[lt] == DM.STEP["muse-glimmer-30b"] and lt not in DM.RUNS and DM.COVERAGE_RUNS[lt].startswith("nem35l_")
+    )
+    monkeypatch.setattr(DM, "RESULTS", tmp_path)
+    monkeypatch.setattr(DM, "DESIGNS", ("main",))
+    monkeypatch.setattr(DM, "unsealed", lambda: (_ for _ in ()).throw(AssertionError("sealed")))
+    monkeypatch.setattr(DM, "model_result", lambda r, n_boot: {"run": r, "target": lt, "status": "pending", "why": "x"})
+    with pytest.raises(AssertionError, match="sealed"):
+        DM.stage_verdict(["nem35l_x52_depthmap"], n_boot=10)
+    out = DM.stage_verdict(["nem35l_x52_depthmap"], n_boot=10, coverage=True)
+    assert out.name.startswith("x52_depthmap-")
+    assert any(DM.NO_PREDICTION in p.read_text() for p in out.iterdir() if p.suffix in (".md", ".json"))

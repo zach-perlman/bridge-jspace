@@ -1,0 +1,41 @@
+id: x52_lightning_anatomy
+title: "Batch 52 C coverage (Lightning lane mats; key row 6): the layer anatomy of the switch (47.8) on Lightning, Muse's 52-block design (every 4th layer L2-L50, holding L14; 200 test scenes; C0 >= 0.5): per layer the J++ / address / identity-outside-J++ parts, keep-only and without, each against a random part of its share, both readers, the probes and refits; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.9
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x47_anatomy.py run --name nem35l_x52_anatomy --why "Batch 52 part C (jobs/c3/batch52.yaml amendment 3), coverage: 47.8's layer anatomy on Lightning, Muse's design (every 4th layer L2-L50, 200 test scenes, C0 >= 0.5), the committed layer L$L; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x47_anatomy.py verdict --coverage --runs nem35l_x52_anatomy
+question: >-
+  On Lightning, as depth increases, what does a change at the bridge word move, and through which part (the J++
+  part, the identity outside the lens, the address), and is the value ever taken (47.8's (a)-(e))?
+why_it_matters: >-
+  Row 6 of the coverage matrix (E12, claim 12: identity route early, position route late; the address readable before
+  it is used).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x47_8_muse.yaml / jobs/c3/batch47.yaml 47.8 (first scored in
+  results/x47_anatomy/x47_8-20261028T154518Z): "l_J = the first layer from which the lookup's extra loss without J++
+  stays <= 0.10; l_P = the first layer where the position share under the whole change is >= 0.20; l_probe = the first
+  layer where the slot probe is >= 0.80. (a) Handoff: l_P >= l_J ... (b) The address forms before it is used: l_probe
+  <= l_P on every model ... (c) Identity leaves the lens: identity share with only-J++ >= 0.5 at the earliest
+  interpretable layer and <= 0.1 by L, while identity with only-I_l rises to >= 0.3 by L, on >= 2 of 3 models ... (d)
+  Never the value, at any depth: value <= 0.05 at every interpretable layer. (e) The recall side ... 'Not
+  interpretable' where the whole change switches < 30% of a reader." As computed: x47_8_muse's text with Lightning in
+  Muse's place: the sweep every 4th layer L2-L50 (Muse's 52-block grid; it holds the committed L14, amendment 1), 200
+  test scenes, the C0 check >= 0.5 (Muse's: no one-pick reference), X0's gate 0.80 per reader on the routes scenes
+  (no change; a failed gate stops the run as written). Rule (c)'s "on >= 2 of 3 models" is read on Lightning alone
+  (reported per model). Verdict in the job (verdict --coverage on Lightning's run alone; x52_anatomy-<UTC>/).
+controls:
+- "every keep-only and without arm paired with a random part of the same share per scene (random lens atoms seed 777 + layer for J; X0's random subspace seed 888 + layer for U and I)"
+- "the sanity swap C0 at every layer; at L its lookup switch >= 0.5 (Muse's rule), else the job fails after writing its files"
+- "fit and test halves share no bridge entity; the refits' held-out accuracies and the lens top-10 rate reported"
+- "layers where the whole change switches < 30% of a reader are not read"
+n: "200 test scenes (C2, another item moved) and their C0 base scenes; the fit half every other eligible C2 scene up to 250 (>= 150, else the run stops)"
+seeds: [0, 777, 888, 2510]
+notes: "Batch 52 C, amendment 3, lane mats (independent of the other Lightning jobs: its own routes scenes, its own per-layer address refit). Code: x47_anatomy.LAYERS / N_TEST / C0_MIN gain Lightning (Muse's values), COVERAGE_RUNS + verdict --coverage (47.8's RUNS and own verdict unchanged). Memory: Muse's run peaked 76.9 GB on an 80 GB H100 PCIe with 13 layers; Lightning's d is 2688 (Muse 6656) and its weights ~59 GiB, so per-layer states are smaller; mem_gb 78. Wallclock (ledger): x47_8_muse 0.86 h, x47_8_27b 0.75 h; Lightning ~0.5x Muse's time per row; est ~30-50 min, 0.9 GPU-h; opens before the freeze."

@@ -85,16 +85,21 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch47.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.8"
 RENDERING = "chat"
+# Lightning (batch 52 C coverage, amendment 3): Muse's design for a 52-block model, verbatim (every 4th layer L2-L50,
+# which holds the committed L14; 200 test scenes; C0 >= 0.5, no one-pick reference)
 LAYERS = {"qwen3.5-9b": tuple(range(2, 31, 2)), "muse-glimmer-30b": tuple(range(2, 51, 4)),
-          "qwen3.6-27b": tuple(range(4, 61, 4))}  # fmt: skip
-N_TEST = {"qwen3.5-9b": 200, "muse-glimmer-30b": 200, "qwen3.6-27b": 150}
+          "qwen3.6-27b": tuple(range(4, 61, 4)), "nemotron-3.5-lightning": tuple(range(2, 51, 4))}  # fmt: skip
+N_TEST = {"qwen3.5-9b": 200, "muse-glimmer-30b": 200, "qwen3.6-27b": 150, "nemotron-3.5-lightning": 200}
 N_FIT_MIN, N_FIT_MAX = 150, 250  # the fit half: at least 150 scenes (the spec), at most 250 (the cache's size)
-C0_MIN = {"muse-glimmer-30b": 0.5}  # Muse has no one-pick reference (x6_routes: its C0 gate is --c0-min, batch 38's G2)
+C0_MIN = {"muse-glimmer-30b": 0.5, "nemotron-3.5-lightning": 0.5}  # no one-pick reference (x6_routes --c0-min, G2)
 RUNS = {
     "qwen3.5-9b": "qwen35_9b_x47_anatomy",
     "qwen3.6-27b": "x47_anatomy_27b",
     "muse-glimmer-30b": "muse30_x47_anatomy",
 }
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_anatomy"}  # batch 52: verdict --coverage, no Q-line
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_anatomy/x47_8-20261028T154518Z"  # 47.8's rules first scored
 SPLIT_SEED, ATOMS_SEED = 0, 777
 LOCKER_STEP, N_LOCKER = (
     8,
@@ -486,6 +491,13 @@ def stage_run(name: str, why: str, n_boot: int = X.N_BOOT, layers: tuple[int, ..
                    "locker_tokens": "per locker sentence in context order: [item token, number token] (the last token of each)"},
          "read": "X0's chat read: the prompt with a digit's space token appended; the top token classified",
          "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -915,24 +927,27 @@ def yn(v) -> str:
     return "-" if v is None else "yes" if v else "no"
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.8's verdict (sealed until Q47.8), or with coverage (batch 52) the same rules on the given runs only (no pending
+    rows for the others), no seal guard, "no prediction" in place of Dan's answer, written to x52_anatomy-<UTC>/."""
     from scripts import x47_anatomy_fig as F
 
-    answer = unsealed()
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else unsealed()
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
     models += [
         {"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
         for t in RUNS
-        if t not in targets
+        if t not in targets and not coverage
     ]
     tested = [m for m in models if m["status"] == "tested"]
     b = batch_rules(models)
-    out = RESULTS / f"x47_8-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_anatomy' if coverage else 'x47_8'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
+    who = f"batch 52 coverage, {answer}" if coverage else f"{QUESTION}, Dan: {answer}"
     lines = ["# 47.8: layer anatomy of the switch", "",
-             f"Batch 47, test 47.8 (jobs/c3/batch47.yaml, amendment 2; {QUESTION}, Dan: {answer}). Routes scenes "
+             f"Batch 47, test 47.8 (jobs/c3/batch47.yaml, amendment 2; {who}). Routes scenes "
              "(another item moved), locker-first, the test half (split by bridge entity, seed 0); every arm at every "
              f"sweep layer on O, X0's chat read. Cluster bootstrap over bridge entities ({n_boot}, seed {X.BOOT_SEED}). "
              "A reader's layer is not interpretable where the whole change switches < 0.30 of it (lookup switch = the "
@@ -1099,6 +1114,7 @@ def main() -> None:
     ap.add_argument("--verdict", type=Path, help="figures: the verdict folder (results/x47_anatomy/x47_8-<UTC>)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--layers", type=int, nargs="+", help="run: a sweep other than the target's default (49.4)")
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1106,7 +1122,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, a.n_boot, tuple(a.layers) if a.layers else None)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.coverage)
     elif a.stage == "view":
         stage_view(a.runs)
     elif a.stage == "figures":
