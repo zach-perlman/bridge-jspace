@@ -980,9 +980,51 @@ def agnostic(plt) -> str:
     return save(fig, "ledger_agnostic")
 
 
+# ---- never the value, by text format (47.7 (c)) ---------------------------------------------------------------------
+
+VALUEC = (R / "x47_value" / "x47_7c-20261028T123632Z" / "x47_7c.json",
+          R / "x47_value" / "x52_valuec-20261029T040037Z" / "x47_7c.json")  # fmt: skip
+
+
+def value_formats(plt) -> str:
+    """Per model and text format, the lookup's answer under the whole change (identity, position, value, original,
+    other), stacked; formats whose gate failed marked 'not tested'."""
+    runs = {m["target"]: (m, path) for path in VALUEC for m in load(path)["models"]}
+    models = [t for t in SHORT if t in runs]
+    fmts = ("prose", "json", "table")
+    parts = (("identity", S.COL["identity"]), ("position", S.COL["position"]), ("value", S.COL["value"]),
+             ("original", S.COL["original"]), ("other", "#e6e6e6"))  # fmt: skip
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.6), sharey=True)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.14, wspace=0.1)
+    S.title(fig, "In prose, JSON and tables the lookup never takes the value",
+            "The lookup's answer under the whole change, by text format; blue identity, orange position, grey original")  # fmt: skip
+    for ax, t in zip(axes, models, strict=True):
+        m, path = runs[t]
+        ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
+        for i, f in enumerate(fmts):
+            c = m["cells"][f]
+            if c is None or "arms" not in c:
+                ax.text(i, 0.5, "not tested\n(gate)", ha="center", va="center", fontsize=S.LABEL_PT - 1,
+                        color=S.COL["muted"])  # fmt: skip
+                continue
+            whole, bottom = c["arms"]["whole"], 0.0
+            for p, col in parts:
+                w = whole[p][0]
+                ax.bar(i, w, bottom=bottom, color=col, width=0.6, edgecolor="white", lw=0.5)
+                bottom += w
+                if p in ("position", "value"):
+                    S.record("ledger_value_formats", t, f"{f}, whole change: {p} share", *whole[p], n=c["n"],
+                             source=rel(path))  # fmt: skip
+        ax.set_xticks(range(len(fmts)), ["prose", "JSON", "table"])
+        ax.set_xlim(-0.5, len(fmts) - 0.5)
+        ax.set_ylim(0, 1.0)
+    axes[0].set_ylabel("share of the lookup's answers")
+    return save(fig, "ledger_value_formats")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
            clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split, attention, distance, gain, agnostic)  # fmt: skip
+           order_split, attention, distance, gain, agnostic, value_formats)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

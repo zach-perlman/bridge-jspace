@@ -9,7 +9,8 @@ REQUIRED = ("t49-2", "t49-5", "t51-1", "t51-2", "t51-3", "t51-4", "t51-5", "t51-
             "z2", "z3", "lightning-layer", "lightning-conflict", "b52-a", "b52-b", "routes", "six", "swap",
             "order", "t47-0", "t47-8", "d1", "t47-1",
             "t49-7", "x0b", "t49-1", "t47-14", "t47-16", "t47-4",
-            "t48-3", "t47-6", "t47-11", "t47-5", "x45d", "t47-13")  # fmt: skip
+            "t48-3", "t47-6", "t47-11", "t47-5", "x45d", "t47-13", "t47-7c",
+            "t48-1")  # fmt: skip
 CARD = """### A test (1.1, opened x) <a id="a"></a>
 
 - **Question.** q?

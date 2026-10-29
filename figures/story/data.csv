@@ -5539,6 +5539,20 @@ ledger_agnostic,nemotron-3.5-lightning,"fruits: position lost without the animal
 ledger_agnostic,nemotron-3.5-lightning,"fruits: position lost without the refit address, beyond random",0.5933333333333334,0.5367647058823529,0.643752140410959,150,results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.json
 ledger_agnostic,nemotron-3.5-lightning,"names: position lost without the animal-fit address, beyond random",0.4833333333333333,0.42906465239649394,0.5358258109789161,,results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.json
 ledger_agnostic,nemotron-3.5-lightning,"names: position lost without the refit address, beyond random",0.5666666666666667,0.49593495934959353,0.6400060975609755,150,results/x47_agnostic/x52_agnostic-20261029T031638Z/x47_11.json
+ledger_value_formats,qwen3.5-9b,"prose, whole change: position share",0.17647058823529413,0.127268875192604,0.23894286263947667,119,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.5-9b,"prose, whole change: value share",0.008403361344537815,0.0,0.02727272727272727,119,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.5-9b,"table, whole change: position share",0.2288135593220339,0.16666666666666666,0.31521739130434784,118,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.5-9b,"table, whole change: value share",0.0,0.0,0.0,118,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"prose, whole change: position share",0.08,0.047619047619047616,0.116609246171967,300,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"prose, whole change: value share",0.0,0.0,0.0,300,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"json, whole change: position share",0.17419354838709677,0.12307692307692308,0.21875,155,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"json, whole change: value share",0.0,0.0,0.0,155,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"table, whole change: position share",0.19,0.15123277347114558,0.23267461746174617,300,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,qwen3.6-27b,"table, whole change: value share",0.0,0.0,0.0,300,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,muse-glimmer-30b,"json, whole change: position share",0.21333333333333335,0.10869565217391304,0.3442668488160291,75,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,muse-glimmer-30b,"json, whole change: value share",0.0,0.0,0.0,75,results/x47_value/x47_7c-20261028T123632Z/x47_7c.json
+ledger_value_formats,nemotron-3.5-lightning,"json, whole change: position share",0.35714285714285715,0.2711864406779661,0.43636363636363634,56,results/x47_value/x52_valuec-20261029T040037Z/x47_7c.json
+ledger_value_formats,nemotron-3.5-lightning,"json, whole change: value share",0.0,0.0,0.0,56,results/x47_value/x52_valuec-20261029T040037Z/x47_7c.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

@@ -35,6 +35,7 @@ ANCHORS = {
     "Dose curves, a part alone (51.1)": "t51-1",
     "Split in other texts: varied scenes (x0b)": "x0b",
     "Gain map (49.1)": "t49-1",
+    "What is left of the route; the value (47.7)": "t47-7c",
     "Zeroing at one layer (47.5)": "t47-5",
     "Address refit per text format (x45d)": "x45d",
     "The lookup's errors are not address errors (47.13)": "t47-13",

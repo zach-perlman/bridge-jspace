@@ -62,13 +62,14 @@ Overnight rule (Dan 01:10): no README edits until Dan returns. One line each:
 - Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
 - Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
 - Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
+- E5, models: "never the value" holds on Lightning's JSON (its prose and tables not tested, gate) ([47.7 (c)](#t47-7c)).
 - E8, E12 and the 51.10 card, models: Lightning reads the same (lens readout not verbalizable; anatomy (a), (b), (d) yes, (c) no; recall at the last token readable, not used); coverage runs, no prediction ([47.0](#t47-0), [47.8](#t47-8), [51.10](#t51-10)).
 
 ## Coverage
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T000836Z/matrix.json, built 00:08 UTC 29 Oct; each cell's source is in that file). A linked test has a card below. Status words are the matrix's: done / partial / running / queued / missing / not tested (reason) / not designed. Lightning's gate (all cells): the main test's gate on all 516 scenes, ○ chosen after the 60-scene pre-check was seen; layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B; Lightning's Z2, 47.11, 47.5, x45d and 47.13. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->). Lightning's second hop's key token (47.15) is **not tested**: no placement passed its gate. Lightning's 47.7 (a) is **not tested**: the question-first recall read right on 0.4357<!-- src: results/x47_value/nem35l_x52_value_a/gate.json \| "PM" :: 0.4357 --> of its prompts, under 0.80. Lightning's 51.12 cue r2 was cancelled before it started: its source, 47.3, failed the gate.
+As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the conflict test, answer control, routes test, address swap, order split, anatomy by layer, lens readout, last-token read, 52 A and 52 B (main set); on the 27B six lockers and the token map; on Lightning also six lockers, the token map (main design), dose curves, the identity route outside the lens and the address at the last token; the 27B's full ladder and Muse's ladder with step 6 in Zach's band; the 27B's full anatomy grid and its D4; Lightning's attention under the swap, Z1, Z3, the carrier before L, the varied scenes, joint heads, D4 and the gain map; 47.14, 47.16 and 47.4 on the 27B (47.16 on Lightning too; 47.14 not tested on Lightning, gate); 47.11, 47.6, 48.3 and Z3 on the 27B; Lightning's Z2, 47.11, 47.5, x45d, 47.13 and 47.7 (c); the 27B's 48.1 DAS. Not in a card: Lightning on natural passages is **not tested**: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 --> of the 87<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "cases" :: 87 --> cases, under 0.80; 36<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "eligible" :: 36 --> eligible), and by the spec's rule there is no lowered rerun. Lightning's described bridge (47.3) is **not tested**: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 --> of its prompts, under 0.80). Lightning's report prompt (47.10) is **not tested**: the gate failed for the report at the last token (right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 -->) and for the recall and the report at the first (0.572<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.572 --> and 0.702<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| first: gate :: 0.702 -->). Lightning's second hop's key token (47.15) is **not tested**: no placement passed its gate. Lightning's 47.7 (a) is **not tested**: the question-first recall read right on 0.4357<!-- src: results/x47_value/nem35l_x52_value_a/gate.json \| "PM" :: 0.4357 --> of its prompts, under 0.80. Lightning's 51.12 cue r2 was cancelled before it started: its source, 47.3, failed the gate.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -111,7 +112,7 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 | Failed: the second hop's key token (47.15 source) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Chained addresses (47.14)](#t47-14) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
-| What is left of the route; the value (47.7) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
+| [What is left of the route; the value (47.7)](#t47-7c) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | [Gain map (49.1)](#t49-1) | **done** | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | Pooled person probe (49.3) | **missing**: 27B gap: spec to write | **missing**: Lightning, after the 10 key rows | **done** | **done** |
 | DAS by position (49.x das_pos) | **not designed**: 9B only by design | **not designed**: 9B only by design | **done** | **not designed**: 9B only by design |
@@ -512,6 +513,34 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
 - **Caveats.**
   - Added by itself, the address brings position answers back on the 9B, Muse and Lightning, not on the 27B.
   - Lightning's gate was chosen after the 60-scene pre-check was seen; its sanity swap uses Muse's rule.
+
+### Does the lookup never take the value, in prose, JSON and tables too? (never the value by format, 47.7 (c); Lightning's coverage run 29 Oct) <a id="t47-7c"></a>
+
+*Used in: README Part II card "Identity, position, never the value" ("the value never, in any format"; 9B, 27B, Muse); Lightning not in the README yet. Story: identity.*
+
+- **Question.** In varied scenes (prose, JSON, tables) where another item moved and took a new number, does the lookup's answer ever follow the number (the value route)?
+- **Why we asked.** On simple scenes the lookup never takes the value; "in any format" needs the formats.
+- **Data.** Varied scenes, locker first, question last, per format that passes the gate (the recall right on at least 0.80 of the original prompts); n per cell in the verdicts.
+- **Method.** The routes test's whole change at the bridge word at L, per format; the lookup's answer sorted into identity, position, value and original; the per-format refit address taken out against a random part (9B, Muse, Lightning).
+- **Rule, fixed in advance.** "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's removal cuts it >= 0.3 beyond random." Lightning: a coverage run on this rule, no prediction.
+
+![In prose, JSON and tables the lookup never takes the value](../../figures/ledger/ledger_value_formats.png)
+*Per model and format, the lookup's answer under the whole change: identity (blue), position (orange), value (green, a sliver on the 9B's prose), original (grey), other (light); formats whose gate failed marked "not tested".*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | value share, prose (bar <= 0.05) | 0.01 [0.00, 0.03]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| qwen3.5-9b :: prose :: 119 :: 0.01 [0.00, 0.03] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| qwen3.6-27b :: prose :: 300 :: 0.00 [0.00, 0.00] --> | not tested (gate) | not tested (the recall right on 0.786<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: prose :: 0.786 -->) |
+  | value share, JSON (bar <= 0.05) | not tested (gate) | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| qwen3.6-27b :: json :: 155 :: 0.00 [0.00, 0.00] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| muse-glimmer-30b :: json :: 75 :: 0.00 [0.00, 0.00] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: json :: 56 :: 0.00 [0.00, 0.00] --> |
+  | value share, table (bar <= 0.05) | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| qwen3.5-9b :: table :: 118 :: 0.00 [0.00, 0.00] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| qwen3.6-27b :: table :: 300 :: 0.00 [0.00, 0.00] --> | not tested (gate) | not tested (the recall right on 0.788<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: table :: 0.788 -->) |
+  | the verdict | **incomplete<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| Verdict :: incomplete -->** | **incomplete<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| Verdict :: incomplete -->** | **incomplete<!-- src: results/x47_value/x47_7c-20261028T123632Z/x47_7c.md \| Verdict :: incomplete -->** | **incomplete<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| Verdict :: incomplete -->** (no prediction) |
+
+- **Read.**
+  - Wherever a format passes the gate, the lookup never takes the value, on all four models; the verdict stays incomplete because some formats fail the gate.
+- **Caveats.**
+  - The gate reads the recall on question-last prompts: prose and tables fail it on Muse and Lightning, JSON on the 9B.
+  - No format shows a position route by the rule: Lightning's JSON position share 0.36 [0.27, 0.44]<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: json :: 56 :: 0.36 [0.27, 0.44] --> is cut by 0.18 [0.11, 0.26]<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: json :: 56 :: 0.18 [0.11, 0.26] --> by the refit address, under 0.3.
 
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? (51.3, opened 28 Oct 20:46) <a id="t51-3"></a>
 
@@ -946,6 +975,33 @@ As of the matrix at 00:08 UTC. Landed since (see the cards): on Lightning the co
   - Lightning's lookup with the lens part at twice its size sits at the rule's 0.10 bar, its point estimate just above it.
   - Locker-first main-test scenes only.
 
+### Do the two readers read two separate learned subspaces? (DAS at the bridge word, 48.1; the 27B's coverage run 29 Oct) <a id="t48-1"></a>
+
+*Used in: ledger only (the README's supplementary Fig. S12; 9B, Muse). Story: two readers.*
+
+- **Question.** At the bridge word at L, does each reader's switch run through its own small learned subspace, the recall's inside the lens part and the lookup's holding the address or a third identity code?
+- **Why we asked.** Our parts are hand-built; a subspace trained for each reader tests the two-reader picture without that choice.
+- **Data.** Pairs from the main test's locker-first scenes the whole change switches, split by bridge entity 60 / 20 / 20; the 27B's test pairs: lookup 10<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 10 (7) :: 10 -->, recall 8<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 8 (4) :: 8 -->.
+- **Method.** Distributed alignment search per reader at k = 1, 4, 16, 64 directions; k chosen on the select split; own and cross interchange accuracy (IIA) on the test entities' pairs, against random and shuffled-target subspaces; the subspaces' energy inside the lens part, the address and the embedding directions.
+- **Rule, fixed in advance.** "(a) "two readers, two subspaces": own-IIA >= 0.7 at some k <= 16 for both readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA). (b) "the recall's subspace is the lens's part": R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2. (c) "the address is part of the lookup's subspace": ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d). (d) "a third identity code": R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read." The 27B: a coverage run on this rule, no prediction.
+
+![The two readers do not use two separate subspaces](../../figures/supp/s12_das_muse.png)
+*Switches carried by a learned subspace of k directions at the bridge word (lookup purple, recall dark; large dot: the k the rule reads) and the subspaces' energy in our parts, with the rule's bars; 9B and Muse (the README's supplementary figure; its 27B panels say "not run"); the 27B in the table.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | the lookup's learned subspace: k chosen, held-out own-IIA (bar >= 0.7 at k <= 16) | k 1: 0.39 [0.08, 0.56]<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| 1 (chosen) :: 0.39 [0.08, 0.56] --> | k 16: 0.30 [0.07, 0.62]<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 16 (chosen) :: 0.30 [0.07, 0.62] --> | k 16: 0.62 [0.38, 1.00]<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| 16 (chosen) :: 0.62 [0.38, 1.00] --> | not run |
+  | the recall's learned subspace: k chosen, held-out own-IIA | k 4: 0.16 [0.00, 0.29]<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| 4 (chosen) :: 0.16 [0.00, 0.29] --> | k 16: 0.12 [0.00, 0.23]<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 16 (chosen) :: 0.12 [0.00, 0.23] --> | k 16: 0.00 [0.00, 0.00]<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| 16 (chosen) :: 0.00 [0.00, 0.00] --> | |
+  | the rules (a) / (b) / (c) / (d) | (a) no, (b) no, (c) no, (d) no<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| qwen35_9b_x48_das_r2 :: (a) no, (b) no, (c) no, (d) no --> | (a) no, (b) no, (c) no, (d) no<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| x48_das_27b :: (a) no, (b) no, (c) no, (d) no --> | (a) no, (b) no, (c) no, (d) no<!-- src: results/x48_das/verdict-20261028T134153Z/verdict.md \| muse30_x48_das :: (a) no, (b) no, (c) no, (d) no --> | |
+
+- **Read.**
+  - On none of the three models does each reader run through its own small learned subspace: at the chosen k neither reader's subspace carries 0.7 of its switches on held-out pairs, and (a) to (d) all fail.
+- **Caveats.**
+  - The 27B's run (r2) used BJ_DAS_GDN=torch, a run fix for the backward pass, as in 51.3 on the 27B.
+  - Few test pairs (the 27B: 10 lookup, 8 recall).
+
 ### What is inside the lens part's 25 directions? (batch 52 A, landed 29 Oct 01:01; Lightning's 01:06) <a id="b52-a"></a>
 
 *Used in: ledger only. Story: two readers.*
@@ -1273,6 +1329,8 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/story/fig01c_zeroing.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig09b_refit.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig07c_probe_errors.png | yes | no overlap | yes | yes | reused; drawn by the README pass; its build folder is now pinned (Lightning's one-model 47.13 folder is newer) |
+| figures/ledger/ledger_value_formats.png | yes | no overlap (after fixing the x range) | yes | yes | untested formats marked in the panel |
+| figures/supp/s12_das_muse.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; its 27B panels say "not run" (the 27B is in the table) |
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
 | figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |
