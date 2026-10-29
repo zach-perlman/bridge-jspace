@@ -76,10 +76,14 @@ def load_titles(repo: Path) -> dict[str, str]:
 
 
 def find_examples(repo: Path, rec: dict[str, Any]) -> dict[str, Any] | None:
+    """The job's examples in the examples stage's schema ({"examples": [...], "groups": [...]}); other writers use the
+    same file name for their own schema (x47_verbal: a list of writes), which these pages do not render."""
     for d in rec.get("new_results", []):
         path = repo / "results" / d / "examples.json"
         if path.exists():
-            return json.loads(path.read_text())
+            got = json.loads(path.read_text())
+            if isinstance(got, dict) and isinstance(got.get("examples"), list) and isinstance(got.get("groups"), list):
+                return got
     return None
 
 
@@ -113,6 +117,8 @@ def _example_html(ex: dict[str, Any], colours: dict[str, str]) -> str:
     answers = ex.get("answers", {})
     edited = answers.get("edited")
     expected = answers.get("expected", {})
+    if not isinstance(expected, dict):  # code_positions' examples store one expected answer, not one per hypothesis
+        expected = {"expected": expected}
     hyp_rows = "".join(
         f"<tr><td>{_esc(h)}</td><td class='{'hit' if str(a) == str(edited) else ''}'>{_esc(str(a))}</td></tr>"
         for h, a in expected.items()

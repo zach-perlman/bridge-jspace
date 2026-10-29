@@ -31,6 +31,15 @@ models:
     flags: ["○ its gate was chosen after the 60-scene pre-check was seen (README: hollow marks)",
             "L14 by the rule fixed before its layer sweep was read (Dan 29 Oct ~00:50)"]
 
+# The inspector panel's residual states for the fixed sample's items (Dan 29 Oct 11:45, inspector_1145 item 1; the
+# inspector agent's GPU job, queued ~12:30, landing ~15:00): per model, the run dir under results/review_states/.
+jspace_states:
+  qwen3.5-9b: results/review_states/qwen35_9b_review_states
+  qwen3.6-27b: results/review_states/review_states_27b
+  qwen3.5-122b-a10b: results/review_states/qwen35_122b_review_states
+  muse-glimmer-30b: results/review_states/muse30_review_states
+  nemotron-3.5-lightning: results/review_states/nem35l_review_states
+
 # Token ids are decoded with tokenizer.json only, at the revision pinned in src/bridge_jspace/pins.py (hf_hub_download
 # of that one file). The three Qwens share one tokenizer.json (sha256 5f9e4d4901a92b99...); Muse has its own; Lightning
 # its own (pins.TARGETS["nemotron-3.5-lightning"], revision pinned there).

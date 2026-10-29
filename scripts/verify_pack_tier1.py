@@ -26,6 +26,7 @@ CHECKS = I.REPO / "review" / "verify_checks.json"
 INDEP = I.REPO / "review" / "verify_independent.json"
 README = I.REPO / "docs" / "depth" / "README.md"
 INSPECTOR = "## J-space rank checks (inspector)"
+JSPACE = I.REPO / "docs" / "verify_pack_jspace.md"  # the inspector agent's section, included verbatim
 INSPECTOR_TODO = ("_Reserved for the inspector agent (inspector_1145 item 3): the rank of S's bridge token and of the answer "
                   "words in the readout of the J++ part, the rest and a random part of the same share, at L and the bridge "
                   "word, over every item of the conflict test and the routes test. Not written yet. Everything between this "
@@ -127,6 +128,55 @@ def sample_lines(vid: str) -> list[str]:
     return out
 
 
+TOP_NOT_STORED = ("The conflict-test runs of the 9B, 27B, 122B and Muse store no top token (only the label): on their "
+                  "cards the top token reads \"not stored\", and the check \"label = top token == S's answer\" is n/a "
+                  "there. Their labels were compared with the 51.12 E1 rerun of the same prompts, which stores the top "
+                  "token: the 27B agrees on every arm; the 9B, Muse and Lightning differ on 1 to 7 of 400 per arm "
+                  "(near ties: two runs of identical prompts are not bit-reproducible).")  # fmt: skip
+READ_FIRST = {
+    "main_swap": [TOP_NOT_STORED],
+    "sentence_order": [TOP_NOT_STORED],
+    "z1p": ["Dan's check \"the true value is absent from the lookup's passage\" fails on 60 of 200 lookup passages: the "
+            "bridge's true value appears there as another entity's made-up value (the made-up values are drawn from the "
+            "relation's own answer words). Example jsuite_v2_test_chat/j2:cities:P-L0-Moscow-0: Moscow's true country is "
+            "Russia; the passage says \"This year's partner city for Mumbai is in Russia\", while the lookup's answer is "
+            "the made-up France. The 60 passages: review/verify_checks.json, view z1p, check \"Z1-P: the true value is "
+            "absent from the lookup's passage\".",
+            "The token-diff check fails on 2 passages (4 items) with hyphenated multi-word bridges (\"Mont Saint-Michel\" "
+            "→ \"Christ the Redeemer\"): every differing token is inside the bridge name, but the check splits words at "
+            "\"-\" (a limit of the check, not changed): results/x50_zach/qwen35_9b_x52_z1p/outcomes.jsonl lines 665, "
+            "669, 1553, 1557.",
+            "Zach's prompts end at the chat template (no \"Answer:\", nothing appended at the read); his answers are "
+            "words read by their first token."],
+    "x8_writes": ["The swap runs store no probabilities: \"nearest the decision\" cannot be computed, so the 4 targeted "
+                  "items are all \"surprising\" (2: the lookup goes to the target, the recall does not change; 2: the "
+                  "recall changes, the lookup does not go to the target). The probability check is n/a."],
+    "last_token": ["Per item the run stores the write outcomes and the plain logit lens's top token at the last token; "
+                   "the J++ lens readout's top words per item are not stored (the inspector panel computes them)."],
+}  # fmt: skip
+
+
+def read_first(vid: str, vc: dict) -> list[str]:
+    """Automatic-check findings to read before the view's items: its failures, what is not computable, and the
+    sample's items that sit on an exact logit tie."""
+    out = []
+    for m, x in vc["models"].items():
+        for c in x.get("run_checks", []):
+            if c["status"] == "fail":
+                out.append(f"{label(m)}: **{c['check']}** failed: {c['detail']}")
+        for f in x.get("item_fail_examples", [])[:4]:
+            out.append(f"{label(m)}: **{f['check']}** failed on `{f['item']}`: {f['detail']} ({f['where']})")
+        for r in [r for r in vc["recount"]["mismatch"] if r["model"] == m]:
+            out.append(f"{label(m)}: recount mismatch, {r['quantity']}: {r['value']:.4f} against {r['data']}")
+    out += READ_FIRST.get(vid, [])
+    fs = (I.spec().get("fixed_sample") or {}).get("views", {}).get(vid) or []
+    ties = [str(n) for n, e in enumerate(fs, 1) if "= 0.0000" in e["stratum"]]
+    if ties:
+        out.append(f"Items {', '.join(ties)} sit on a tie as stored under a decisive arm (P(original) = P(changed) to 4 "
+                   "decimals, logit gap 0.000): the label there is decided by the argmax's tie-break, not by a margin.")  # fmt: skip
+    return [f"- {x}" for x in out]
+
+
 def flags(v: dict) -> list[str]:
     out = []
     for m in v.get("runs", {}):
@@ -137,7 +187,18 @@ def flags(v: dict) -> list[str]:
 
 
 def inspector_section(old: str) -> list[str]:
-    """The inspector agent's section as it stands in the current pack (up to the first view section), else a stub."""
+    """The inspector agent's section: docs/verify_pack_jspace.md verbatim where it exists (their file, the source); else
+    the section as it stands in the current pack (up to the first view section); else a stub."""
+    if JSPACE.exists():
+        body = JSPACE.read_text().strip("\n")
+        return [
+            INSPECTOR,
+            "",
+            "_Included verbatim from docs/verify_pack_jspace.md (the inspector agent's file)._",
+            "",
+            body,
+            "",
+        ]
     if INSPECTOR in old:
         body = old.split(INSPECTOR, 1)[1]
         body = re.split(r"\n## a\. ", body, maxsplit=1)[0].strip("\n")
@@ -263,6 +324,8 @@ def build(old: str = "") -> str:
         r = vc["views"][v["id"]]
         title = v["title"] if v["title"].endswith(("?", ".")) else v["title"] + "."
         L += [f"## {v['order']}. {v['id']}", "", f"**{title}** README: {v.get('readme', '')}.", ""]
+        first = read_first(v["id"], r)
+        L += ["**Read first: automatic-check findings for this view.**", "", *(first or ["- None."]), ""]
         quotes = readme_rows(v.get("readme_rows") or []) + readme_quotes(v.get("readme_quotes") or [])
         L += ["**The claim in the README's words** (quoted at generation):", "", *[f"> {q}" for q in quotes], ""]
         L += [f"**What the cards test.** {v['claim'].strip()}", ""]

@@ -174,3 +174,83 @@ def test_the_pack_keeps_the_inspectors_section_and_quotes_the_readme():
         assert f"## {v['order']}. {v['id']}" in new
         for q in VP.readme_quotes(v.get("readme_quotes") or []):
             assert not q.startswith("(not found") and "<!--" not in q
+    assert "60 of 200 lookup passages" in new.split("## e. z1p", 1)[1].split("**The claim", 1)[0]  # read first
+
+
+def test_the_pack_includes_the_inspectors_file_verbatim(tmp_path, monkeypatch):
+    from scripts import verify_pack_tier1 as VP
+
+    f = tmp_path / "verify_pack_jspace.md"
+    f.write_text("Rank of S's bridge token in the rest: top 50 on 3% of items (planted).\n")
+    monkeypatch.setattr(VP, "JSPACE", f)
+    new = VP.build(f"{VP.INSPECTOR}\n\nan older text\n\n## a. main_swap\n")
+    sec = new.split(VP.INSPECTOR, 1)[1].split("\n## a. ", 1)[0]
+    assert "top 50 on 3% of items (planted)." in sec and "an older text" not in sec
+
+
+# ---- the hand marks read back: review-summary and VERIFIED.md ----------------------------------------------------
+def marks_file(tmp_path, rows):
+    p = tmp_path / "marks.jsonl"
+    p.write_text("".join(json.dumps(r) + "\n" for r in rows))
+    return p
+
+
+def test_marks_skip_jspace_notes_count_the_last_verdict_and_apply_the_stop_rule(tmp_path):
+    from bridge_jspace.review import handcheck as H
+
+    fs = I.spec()["fixed_sample"]
+    a, b, c = (e["item"] for e in fs["views"]["main_swap"][:3])
+    seed = fs["seed"]
+    rows = [{"view": "main_swap", "item": a, "seed": seed, "verdict": "consistent"},
+            {"view": "main_swap", "item": a, "seed": seed, "verdict": "wrong", "note": "label b, top '7'"},  # the last counts
+            {"view": "main_swap", "item": b, "seed": seed, "verdict": "wrong"},
+            {"view": "main_swap", "item": c, "seed": seed, "kind": "jspace", "note": "identity token in the rest at L14"},
+            {"view": "main_swap", "item": c, "seed": 7, "verdict": "consistent"},  # another seed: not the fixed sample's read
+            {"view": "routes", "item": "not|in|the|sample", "seed": seed, "verdict": "unclear"}]  # fmt: skip
+    marks = H.load_marks(marks_file(tmp_path, rows))
+    assert len(marks) == 5 and all(r.get("kind") != "jspace" for r in marks)
+    pv = H.per_view(marks)
+    m = pv["main_swap"]
+    assert (m["read"], m["consistent"], m["wrong"], m["unclear"], m["flagged"]) == (2, 0, 2, 0, True)
+    assert pv["routes"]["read"] == 0 and pv["routes"]["outside_sample"] == 1
+
+
+def test_verified_writes_only_its_block_and_replaces_it(tmp_path):
+    from scripts import verified as VF
+
+    out = tmp_path / "VERIFIED.md"
+    out.write_text("# VERIFIED\n\nHuman text, kept.\n")
+    item = I.spec()["fixed_sample"]["views"]["z1p"][0]["item"]
+    mk = marks_file(tmp_path, [{"view": "z1p", "item": item, "seed": 29, "verdict": "unclear", "note": "passage cut"}])
+    VF.main(["--marks", str(mk), "--out", str(out)])
+    VF.main(["--marks", str(mk), "--out", str(out)])  # twice: one block
+    text = out.read_text()
+    assert (
+        text.startswith("# VERIFIED\n\nHuman text, kept.\n") and text.count(VF.BEGIN) == 1 and text.count(VF.END) == 1
+    )
+    assert "| e. z1p |" in text and "1 of 10 | 0 | 0 | 1 | no |" in text and "passage cut" in text
+
+
+# ---- examples-render SEED=29: the write-up's examples are the items Dan read ----------------------------------------
+def test_writeup_exports_the_fixed_sample(tmp_path):
+    from bridge_jspace.review import writeup as W
+
+    out = W.export(29, tmp_path)
+    md = (out / "examples.md").read_text()
+    fs = I.spec()["fixed_sample"]["views"]
+    assert md.count("\n#### ") == sum(len(x) for x in fs.values()) == 70
+    assert all(f"`{e['scene']}`" in md for x in fs.values() for e in x)
+    src = json.loads((out / "source.json").read_text())["entry"]
+    assert src["n_examples"] == 70 and [g["n_total"] for g in src["groups"]] == [10] * 7
+    assert "Answer:" in md and "<|im_start|>" in md  # the prompt as the model saw it
+
+
+def test_job_pages_take_only_the_examples_stage_schema(tmp_path):
+    from bridge_jspace import job_pages as J
+
+    put(tmp_path, "results/a/examples.json", [{"bridge": "x"}])  # another writer's schema (x47_verbal)
+    put(tmp_path, "results/b/examples.json", {"examples": [], "groups": []})
+    assert J.find_examples(tmp_path, {"new_results": ["a"]}) is None
+    assert J.find_examples(tmp_path, {"new_results": ["a", "b"]}) == {"examples": [], "groups": []}
+    html = J._example_html({"answers": {"clean": "Beijing", "edited": "Tehran", "expected": "Tehran"}}, {})
+    assert "Tehran" in html  # one expected answer (code_positions), not one per hypothesis

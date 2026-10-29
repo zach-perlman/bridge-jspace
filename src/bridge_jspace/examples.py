@@ -787,9 +787,18 @@ if __name__ == "__main__":
     import sys
 
     cmd, args = (sys.argv[1] if len(sys.argv) > 1 else "export"), sys.argv[2:]
+    seed = None
+    if "--seed" in args:  # also the review's fixed sample of that seed: the items Dan read (review/writeup.py)
+        i = args.index("--seed")
+        seed, args = int(args[i + 1]), args[:i] + args[i + 2 :]
     if cmd == "export":
         for out in export_all(args or None):
             print(out)
+        if seed is not None:
+            from bridge_jspace.review import writeup
+
+            print(writeup.export(seed, _examples_root()))
+            export_index()
         print(_examples_root() / "index.html")
     elif cmd == "serve":
         serve(int(args[0]) if args else 8000, open_browser="--no-browser" not in args)

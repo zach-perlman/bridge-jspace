@@ -112,8 +112,8 @@ verify-pack:        ## docs/verify_pack.md: how to review in 2 hours, the automa
 	-uv run python scripts/verify_independent.py
 	uv run python scripts/verify_pack_tier1.py
 
-examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
-	uv run python -m bridge_jspace.examples export
+examples-render:    ## examples/<exp>/ from the latest examples runs; SEED=29 adds examples/review-seed-29/ (the items Dan read; no GPU)
+	uv run python -m bridge_jspace.examples export $(if $(SEED),--seed $(SEED))
 
 examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
 	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)
