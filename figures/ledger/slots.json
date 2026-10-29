@@ -1,9 +1,15 @@
 {
+ "ledger_address_probe": {
+  "9B": "data",
+  "27B": "data",
+  "Muse": "data",
+  "Lightning": "data"
+ },
  "ledger_address_shape": {
   "9B": "data",
-  "27B": "grey: part 2 only\n(parts 1, 3 not\ndesigned); its\nswap in the table",
+  "27B": "grey: part 2 only (parts 1, 3 not designed); its swap in the table",
   "Muse": "data",
-  "Lightning": "grey: not tested:\nDAS port\ndropped"
+  "Lightning": "grey: not tested: DAS port dropped"
  },
  "ledger_address_swap": {
   "9B": "data",
@@ -41,6 +47,12 @@
   "Muse": "data",
   "Lightning": "data"
  },
+ "ledger_attnblock": {
+  "9B": "grey: not applicable (Lightning test)",
+  "27B": "grey: not applicable (Lightning test)",
+  "Muse": "grey: not applicable (Lightning test)",
+  "Lightning": "data"
+ },
  "ledger_clean_reruns": {
   "9B": "data",
   "27B": "grey: 9B only by design (the caption)",
@@ -48,6 +60,18 @@
   "Lightning": "grey: 9B only by design (the caption)"
  },
  "ledger_coverage_map": {},
+ "ledger_cumulative": {
+  "9B": "data",
+  "27B": "data",
+  "Muse": "data",
+  "Lightning": "below gate"
+ },
+ "ledger_das48": {
+  "9B": "data",
+  "27B": "data",
+  "Muse": "data",
+  "Lightning": "grey: dropped: DAS port"
+ },
  "ledger_described": {
   "9B": "data",
   "27B": "data",
@@ -63,7 +87,7 @@
  "ledger_full_carrier": {
   "9B": "data",
   "27B": "data",
-  "Muse": "grey: not designed\n(9B / 27B only)",
+  "Muse": "grey: not designed (9B / 27B only)",
   "Lightning": "data"
  },
  "ledger_gain": {
@@ -76,6 +100,12 @@
   "9B": "data",
   "27B": "data",
   "Muse": "data",
+  "Lightning": "data"
+ },
+ "ledger_identity_address": {
+  "9B": "data",
+  "27B": "grey: not designed (9B / Lightning only)",
+  "Muse": "grey: not designed (9B / Lightning only)",
   "Lightning": "data"
  },
  "ledger_last_conflict": {
@@ -94,7 +124,7 @@
   "9B": "data",
   "27B": "data",
   "Muse": "data",
-  "Lightning": "grey: dropped:\nDAS port"
+  "Lightning": "grey: dropped: DAS port"
  },
  "ledger_lightning_layers": {
   "9B": "grey: L fixed in advance; conflict test in the README",
@@ -117,8 +147,14 @@
  "ledger_read_window": {
   "9B": "data",
   "27B": "data",
-  "Muse": "grey: not designed\n(9B / 27B only)",
+  "Muse": "grey: not designed (9B / 27B only)",
   "Lightning": "data"
+ },
+ "ledger_report47": {
+  "9B": "grey: not tested: gate (report 0.568 < 0.80)",
+  "27B": "data",
+  "Muse": "grey: not tested: gate (report 0.498 < 0.80)",
+  "Lightning": "grey: not tested: gate (report 0.488 < 0.80)"
  },
  "ledger_routes": {
   "9B": "data",
@@ -131,6 +167,12 @@
   "27B": "data",
   "Muse": "data",
   "Lightning": "data"
+ },
+ "ledger_subset27b": {
+  "9B": "data",
+  "27B": "data",
+  "Muse": "grey: not designed (9B / 27B only)",
+  "Lightning": "grey: not designed (9B / 27B only)"
  },
  "ledger_value_formats": {
   "9B": "data",

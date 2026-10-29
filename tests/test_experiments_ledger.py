@@ -143,3 +143,46 @@ def test_a_running_stub_needs_only_its_status():
     assert not L.problems(ruled)
     assert L.problems(stub.replace("- **Status.**", '- **Status.** s.\n- **Rule, fixed in advance.** "r."\n- **X.**'))
     assert L.problems(stub.replace("- **Where used.** w.\n", '- **Where used.** w.\n- **Rule, fixed in advance.** r.\n'))
+
+
+SLOT_CARD = """### T (1.3, opened x) <a id="t"></a>
+
+`ledger only`
+
+- **Question.** q?
+- **Why we asked.** w.
+- **Data.** d.
+- **Method.** m.
+
+![f](../../figures/ledger/ledger_x.png)
+*c.*
+
+- **Rule, fixed in advance.** "r."
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | a | 0.10 [0.00, 0.20] | 0.30 | not designed | ○ 0.40 |
+  | the rule | **no** | **no** | | not tested (gate 0.751 < 0.80); below gate |
+
+- **Read.**
+  - r.
+- **Caveats.**
+  - c.
+"""
+
+
+def test_the_figure_shows_every_model_of_its_table():
+    """Dan's figures brief (29 Oct 10:00): a number in a model's column needs that model's data in the card's ledger
+    figure; a column without a number needs its grey slot; a verdict-folder figure on a card is flagged; the README's
+    shared figures are left to its build."""
+    head, body = L.entries(SLOT_CARD)[0]
+    good = {"ledger_x": {"9B": "data", "27B": "data", "Muse": "grey: not designed", "Lightning": "below gate"}}
+    assert not L.slot_problems(head, body, good)
+    assert L.slot_problems(head, body, {"ledger_x": {**good["ledger_x"], "Lightning": "grey: x"}})  # data shown grey
+    assert L.slot_problems(head, body, {"ledger_x": {k: v for k, v in good["ledger_x"].items() if k != "Muse"}})
+    assert L.slot_problems(head, body, {})  # no slot record for the figure
+    borrowed = SLOT_CARD.replace("../../figures/ledger/ledger_x.png", "../../results/x/verdict.png")
+    assert L.slot_problems(*L.entries(borrowed)[0], good)
+    readme = SLOT_CARD.replace("../../figures/ledger/ledger_x.png", "../../figures/story/fig01_split.png")
+    assert not L.slot_problems(*L.entries(readme)[0], {})

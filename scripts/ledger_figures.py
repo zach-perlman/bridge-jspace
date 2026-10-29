@@ -62,7 +62,7 @@ GREY = "#9a9a9a"
 
 def grey(name: str, model: str, label: str, ax=None, x: float = 0.0, y: float = 0.0, **kw) -> None:
     """A model's empty slot: registered as grey with its label, and drawn at (x, y) on ax when given."""
-    _SLOTS.setdefault(name, {})[SHORT[model]] = f"grey: {label}"
+    _SLOTS.setdefault(name, {})[SHORT[model]] = "grey: " + " ".join(label.split())
     if ax is not None:
         ax.text(x, y, label, color=GREY, va="center", fontsize=kw.pop("fontsize", S.LABEL_PT - 1), **kw)
 
@@ -1318,10 +1318,212 @@ def last_conflict(plt) -> str:
     return save(fig, "ledger_last_conflict")
 
 
+# ---- four-slot figures that replace borrowed ones (Dan's figures brief, 29 Oct 10:00) ------------------------------
+
+
+def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, xlabel: str, xlim=(-0.05, 1.05),
+                bars: tuple = (), height: float | None = None) -> str:
+    """One panel per model slot (9B, 27B, Muse, Lightning). rows: model -> [(row label, (v, lo, hi), colour, hollow)];
+    absent: model -> its grey label. Row labels (the union, in first-seen order) on the left panel; each (x, style)
+    in bars is drawn on every data panel. Every plotted value is recorded for figures/story/data.csv."""
+    labels: list[str] = []
+    for t in SLOT_MODELS:
+        for lab, *_ in rows.get(t, []):
+            if lab not in labels:
+                labels.append(lab)
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, height or 0.42 * len(labels) + 2.1), sharey=True)
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.37, right=0.985, top=1 - 1.3 / h, bottom=0.75 / h, wspace=0.12)
+    S.title(fig, title, sub)
+    for ax, t in zip(axes, SLOT_MODELS, strict=True):
+        if t in absent:
+            rows_axis(ax, labels)
+            grey_panel(name, t, absent[t], ax)
+            continue
+        ax.set_title(SHORT[t] + (" ○" if t == LT else ""), fontsize=12, weight="bold", loc="left")
+        for lab, v, col, hollow in rows[t]:
+            whisker(ax, -labels.index(lab), v, col, hollow=hollow)
+            S.record(name, t, lab, *v)
+        rows_axis(ax, labels)
+        ax.set_xlim(*xlim)
+        ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+        ax.grid(axis="x", color="#eeeeee")
+        ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+        for x, ls in bars:
+            ax.axvline(x, color="#555555", lw=0.8, ls=ls)
+        ax.set_xlabel(xlabel, fontsize=S.LABEL_PT)
+    # the row labels on the left panel, also when that panel is a grey slot
+    axes[0].tick_params(axis="y", labelleft=True)
+    axes[0].set_yticks([-i for i in range(len(labels))], labels, fontsize=S.LABEL_PT)
+    return save(fig, name)
+
+
+PROBE = {"qwen3.5-9b": R / "x0_probe" / "qwen35_9b_x0_probe_v4" / "probe-20261024T172340Z" / "probe.json",
+         "qwen3.6-27b": R / "x0_probe" / "x0_probe_v4_27b" / "probe-20261024T172424Z" / "probe.json",
+         "muse-glimmer-30b": R / "x0_probe" / "muse30b_x0_probe_v4" / "probe-20261026T000115Z" / "probe.json",
+         LT: R / "x0_probe" / "nem35l_x52_probe" / "probe-20261029T002432Z" / "probe.json"}  # fmt: skip
+
+
+def address_probe(plt) -> str:
+    """The address probe (x0_probe v4) at each model's L: which locker sentence (locker first; locker after, the
+    control), with the layout-only baseline beside, and the answer digit; four models, Lightning hollow."""
+    rows = {}
+    for t, path in PROBE.items():
+        by = {(r["stratum"], r["target"]): r for r in load(path)["rows"] if r["subset"] == "all"}
+        hollow = t == LT
+        rows[t] = [("locker sentence, locker first", by[("before", "locker sentence")]["probe"], ADDRESS, hollow),
+                   ("the same, layout alone", by[("before", "locker sentence")]["layout"], NULL, False),
+                   ("locker sentence, locker after", by[("after", "locker sentence")]["probe"], ADDRESS, True),
+                   ("answer digit, locker first", by[("before", "answer digit")]["probe"], INK, hollow)]  # fmt: skip
+    return four_panels(plt, "ledger_address_probe", "A probe reads the address at the bridge word on all four models",
+                       "Held-out probe accuracy at each model's L; grey: the layout alone; chance 0.20 (dotted)",
+                       rows, {}, "probe accuracy", xlim=(0, 1.05), bars=((0.2, ":"),))
+
+
+CUMUL = {"qwen3.5-9b": R / "x47_cumulative" / "x47_4-20261028T113105Z" / "x47_4.json",
+         "muse-glimmer-30b": R / "x47_cumulative" / "x47_4-20261028T113105Z" / "x47_4.json",
+         "qwen3.6-27b": R / "x47_cumulative" / "x52_cumulative-20261029T023427Z" / "x47_4.json",
+         LT: R / "x47_cumulative" / "x52_cumulative-20261029T044453Z" / "x47_4.json"}  # fmt: skip
+CUMUL_BELOW = R / "x47_cumulative" / "x52_cumulative_below-20261029T085952Z" / "x47_4.json"  # Lightning, clean, below gate
+
+
+def _cumul(path: Path, target: str, design: str) -> dict:
+    (m,) = [m for m in load(path)["models"] if m["target"] == target and m["status"] == "tested"]
+    return m["cells"][design]["lookup"]
+
+
+def cumulative(plt) -> str:
+    """47.4 on four slots: the lookups the change at L leaves unswitched (locker first) and the lookups the bridge word
+    before L carries (locker after), main design; Lightning's clean design below gate beside (hollow)."""
+    rows = {}
+    for t, path in CUMUL.items():
+        c = _cumul(path, t, "main")
+        hollow = t == LT
+        rows[t] = [("locker first: missed at L", c["locker-first"]["non_switch"], LOOKUP, hollow),
+                   ("locker after: carried before L", c["locker-after"]["terms"]["before_L"], LOOKUP, hollow)]
+    cb = _cumul(CUMUL_BELOW, LT, "clean")
+    rows[LT].append(("the same, clean design", cb["locker-after"]["terms"]["before_L"], LOOKUP, True))
+    below_gate("ledger_cumulative", LT)
+    return four_panels(plt, "ledger_cumulative", "Lookups the change misses are read at the bridge word before L",
+                       "Share of lookups; main design on all four; ○ Lightning's clean design below gate (exploratory)",
+                       rows, {}, "share of lookups")
+
+
+DAS48 = {"qwen3.5-9b": R / "x48_das" / "verdict-20261028T134153Z" / "verdict.json",
+         "muse-glimmer-30b": R / "x48_das" / "verdict-20261028T134153Z" / "verdict.json",
+         "qwen3.6-27b": R / "x48_das" / "x52_das-20261029T040955Z" / "verdict.json"}  # fmt: skip
+
+
+def das48(plt) -> str:
+    """48.1 on four slots: each reader's learned subspace at the chosen size k, its held-out own interchange accuracy
+    (whiskers 95%), the rule's 0.7 dashed; Lightning grey (dropped: DAS port)."""
+    rows = {}
+    for t, path in DAS48.items():
+        (m,) = [m for m in load(path)["models"] if m["target"] == t]
+        rows[t] = []
+        for key, word, col in (("PP", "lookup", LOOKUP), ("PM", "recall", INK)):
+            r = m["readers"][key]
+            rows[t].append((f"{word}'s subspace", r["test"]["own_iia"][str(r["k"])], col, False))
+    return four_panels(plt, "ledger_das48", "Neither reader has a learned subspace of its own",
+                       "Held-out switches carried by each reader's learned subspace at its chosen size; dashed: 0.7",
+                       rows, {LT: "dropped:\nDAS port"}, "switches carried", bars=((0.7, "--"),))
+
+
+REPORT = R / "x47_report" / "x47_10-20261028T113109Z" / "x47_10.json"
+
+
+def report47(plt) -> str:
+    """47.10 on four slots: the 27B, question last: the lens top five holding the right ordinal under the report
+    prompt (rule's 0.4), the report's switches lost without the lens part and without the address, beyond random; the
+    other three grey with the gate that stopped them."""
+    (m,) = [m for m in load(REPORT)["models"] if m["target"] == "qwen3.6-27b"]
+    o = m["orders"]["last"]
+    rows = {"qwen3.6-27b": [("lens top 5: the right ordinal", o["lens"]["report"]["top5_ordinal"], ADDRESS, False),
+                            ("lost without the lens part", o["readers"]["report"]["jpp"]["excess"], INK, False),
+                            ("lost without the address", o["readers"]["report"]["alf"]["excess"], ADDRESS, False)]}
+    absent = {"qwen3.5-9b": "not tested:\ngate (report\n0.568 < 0.80)", "muse-glimmer-30b": "not tested:\ngate (report\n0.498 < 0.80)",
+              LT: "not tested:\ngate (report\n0.488 < 0.80)"}  # fmt: skip
+    return four_panels(plt, "ledger_report47", "Asked for the position, the 27B's lens still does not show it",
+                       "Question last; whiskers 95%; dashed: the rule's 0.4; the other three missed the report gate",
+                       rows, absent, "share", bars=((0.4, "--"),))
+
+
+SUBSET = R / "x53_subset27b" / "x53_subset27b-20261029T085435Z" / "x53_subset27b.json"
+
+
+def subset27b(plt) -> str:
+    """53.5 on four slots: on each model's position-route scenes, position answers without the address, without a
+    random part of its share, with the address alone, with a random part alone, and the swap at dose 2 (C2 scenes);
+    the rule's bars 0.10 and 0.25 dotted / dashed; Muse and Lightning grey (not designed)."""
+    v = load(SUBSET)
+    rows = {}
+    for t in ("qwen3.5-9b", "qwen3.6-27b"):
+        m = v["models"][t]
+        sh = m["subset"]["pooled"]["share"]
+        rows[t] = [("without the address", sh["no_alf"], ADDRESS, False),
+                   ("without a random part", sh["no_alf_rand"], NULL, False),
+                   ("the address alone", sh["keep_alf"], ADDRESS, False),
+                   ("a random part alone", sh["keep_alf_rand"], NULL, False),
+                   ("the swap at dose 2: to the target", m["swap"]["subset"]["swap"]["target"], ADDRESS, False)]
+    absent = {"muse-glimmer-30b": "not designed\n(9B / 27B only)", LT: "not designed\n(9B / 27B only)"}
+    return four_panels(plt, "ledger_subset27b", "On its position scenes the 27B's address brings fewer answers back",
+                       "Position answers on each model's position-route scenes; dotted / dashed: the rule's 0.10 / 0.25",
+                       rows, absent, "share of lookups", bars=((0.10, ":"), (0.25, "--")))
+
+
+IDADDR = {LT: R / "x53_identity_address" / "x53_identity_address-20261029T090826Z" / "verdict.json",
+          "qwen3.5-9b": R / "x53_identity_address" / "x53_identity_address-20261029T091319Z" / "verdict.json"}
+
+
+def identity_address(plt) -> str:
+    """53.6 on four slots: the recall under the lens part toward item B plus the address swap toward item C's slot:
+    the shares answering B's, C's and the original answer, with each part alone beside; 27B and Muse grey."""
+    rows = {}
+    for t, path in IDADDR.items():
+        if not path.exists():
+            continue
+        (m,) = [m for m in load(path)["models"] if m["target"] == t]
+        c = m["cells"]["PM"]
+        hollow = t == LT
+        rows[t] = [("both: B's answer", c["both"]["B"], JPP, hollow),
+                   ("both: C's answer", c["both"]["C"], ADDRESS, hollow),
+                   ("both: the original", c["both"]["original"], NULL, hollow),
+                   ("lens part alone: B's", c["lens"]["B"], JPP, hollow),
+                   ("address alone: C's", c["addr"]["C"], ADDRESS, hollow)]
+    absent = {"qwen3.6-27b": "not designed\n(9B / Lightning only)", "muse-glimmer-30b": "not designed\n(9B / Lightning only)"}
+    for t in IDADDR:
+        if t not in rows:
+            absent[t] = "running"
+    return four_panels(plt, "ledger_identity_address", "Pulled two ways, the recall follows both the lens and the address",
+                       "The recall's answers; teal: item B (the lens part), orange: item C (the address); whiskers 95%",
+                       rows, absent, "share of recalls")
+
+
+ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
+
+
+def attnblock(plt) -> str:
+    """53.4 on four slots: Lightning, the share of the whole change's lookup switches cut by blocking the bridge word in
+    attention block 19, 26, both, every attention block after L, and the control (both blocks, another token); the
+    recall beside; the rule's 0.6, 0.3 and 0.15 bars; the other three grey (a Lightning test)."""
+    v = load(ATTNBLOCK)
+    arms = (("b19", "(i) block 19"), ("b26", "(ii) block 26"), ("both", "(iii) blocks 19, 26"),
+            ("after", "(iv) all after L"), ("control", "(v) control"))
+    rows = {LT: []}
+    for reader, col in (("lookup", LOOKUP), ("recall", INK)):
+        r = v["readers"][reader]
+        for k, lab in arms:
+            rows[LT].append((f"{reader}: {lab}", [r["cut"][k], *r["cut_ci"][k]], col, True))
+    absent = {t: "not applicable\n(Lightning test)" for t in SLOT_MODELS[:3]}
+    return four_panels(plt, "ledger_attnblock", "Two attention blocks carry a third of Lightning's lookup switch",
+                       "Share of the whole change's switches cut by blocking the bridge word; dashed: 0.6, dotted: 0.3",
+                       rows, absent, "switches cut", xlim=(-0.1, 1.05), bars=((0.6, "--"), (0.3, ":")))
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
-           last_conflict)  # fmt: skip
+           last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

@@ -341,8 +341,8 @@ New in this ledger:
 - **Data.** Pairs from the main test's locker-first scenes the whole change switches, split by bridge entity 60 / 20 / 20; the 27B's test pairs: lookup 10<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 10 (7) :: 10 -->, recall 8<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 8 (4) :: 8 -->.
 - **Method.** Distributed alignment search per reader at k = 1, 4, 16, 64 directions; k chosen on the select split; own and cross interchange accuracy (IIA) on the test entities' pairs, against random and shuffled-target subspaces; the subspaces' energy inside the lens part, the address and the embedding directions.
 
-![The two readers do not use two separate subspaces](../../figures/supp/s12_das_muse.png)
-*Switches carried by a learned subspace of k directions at the bridge word (lookup purple, recall dark; large dot: the k the rule reads) and the subspaces' energy in our parts, with the rule's bars; 9B and Muse (the README's supplementary figure; its 27B panels say "not run"); the 27B in the table.*
+![Neither reader has a learned subspace of its own](../../figures/ledger/ledger_das48.png)
+*Held-out switches carried by each reader's learned subspace at the size k the rule chose (lookup purple, recall dark); dashed: the rule's 0.7; whiskers 95%. Models: 9B, 27B, Muse; Lightning grey (dropped: DAS port). The README's supplementary figure for Muse: [s12](../../figures/supp/s12_das_muse.png).*
 
 - **Rule, fixed in advance.** "(a) "two readers, two subspaces": own-IIA >= 0.7 at some k <= 16 for both readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA). (b) "the recall's subspace is the lens's part": R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2. (c) "the address is part of the lookup's subspace": ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d). (d) "a third identity code": R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read." The 27B: a coverage run on this rule, no prediction.
 
@@ -556,8 +556,8 @@ New in this ledger:
 - **Data.** Every scene of the topic scenes, split by whether the item's locker sentence comes before or after the asked pick (see the table's n in the verdicts).
 - **Method.** Probes on the bridge word's state at L, cross-validated by bridge entity: the locker sentence's place, the answer digit and the bridge's identity; baselines: the majority class, the pick's sentence index, the visible layout.
 
-![What the bridge's word holds on Lightning](../../results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.png)
-*Lightning at L14 (the verdict folder's figure): probe accuracy for the answer digit, the locker sentence and the bridge identity, locker before / after the pick / both, against chance (dashed), the majority class and two layout baselines; the other models' numbers in the table.*
+![A probe reads the address at the bridge word on all four models](../../figures/ledger/ledger_address_probe.png)
+*Held-out probe accuracy at each model's L: which locker sentence, locker first (orange) and locker after the pick (the control, hollow), the layout-only baseline (grey) and the answer digit (dark); dotted: chance for the locker sentence (0.20); whiskers 95%. Models: 9B, 27B, Muse, Lightning (Lightning hollow (its gate set after the 60-scene pre-check)). Lightning's own figure: [the verdict folder](../../results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.png).*
 
 - **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
 
@@ -736,8 +736,8 @@ New in this ledger:
 - **Data.** Routes scenes without a move, four readers as separate prompts over the same context, question last or first: the 27B, question last, 200<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 --> scenes. Every other cell failed its gate (the report reader below 0.80): the 9B, Muse, the 27B with the question first, and Lightning (its report right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 --> with the question last).
 - **Method.** At the bridge word at L: the lens readout's top five under the report prompt and under the lookup prompt; the report's switches lost without the lens part and without the address, each beyond a random part.
 
-![The lens reads which item is at the bridge, not where its locker sits](../../figures/story/fig07b_verbal.png)
-*The README's figure for the same card (the lens readout of an address swap, 47.0); the report prompt's numbers are in the table.*
+![Asked for the position, the 27B's lens still does not show it](../../figures/ledger/ledger_report47.png)
+*The 27B, question last: the lens top five holding the right ordinal under the report prompt (dashed: the rule's 0.4), and the report's switches lost without the lens part and without the address, beyond random; whiskers 95%. Models: the 27B; 9B, Muse and Lightning grey (not tested: the report reader below its gate, 0.568 / 0.498 / 0.488 < 0.80).*
 
 - **Rule, fixed in advance.** ""Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U [...]"
 
@@ -949,8 +949,8 @@ New in this ledger:
 - **Data.** The main test and clean one-pick scenes, by sentence order: locker first 75 / 69 / 68 (main) and 151 / 202 / 143 (clean), locker after 68 / 61 / 69 (main) (9B / 27B / Muse). Lightning, main design: locker first 59<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: lookup :: locker-first :: 59 -->, locker after 79<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: lookup :: locker-after :: 79 -->; its clean design not tested (gate).
 - **Method.** Four arms on the original prompt: (a) the change at the bridge word at L; (b) the bridge word replaced at every layer up to L; (c) at every layer; (d) the whole asked pick sentence at every layer. The lookups (a) leaves unswitched split into before L (b minus a), the pick sentence's other tokens (d minus c) and outside the pick sentence (1 minus d).
 
-![Lookups the change misses sit mostly at the bridge word before L](../../figures/supp/s03e_cumulative.png)
-*Locker-first scenes: answers by what switches them as more of the changed prompt's states are placed (the change at L; the bridge word at every layer up to L; the pick sentence's other tokens; outside the pick sentence), main test and clean scenes; 9B and Muse (the README's supplementary figure); the 27B in the table.*
+![Lookups the change misses are read at the bridge word before L](../../figures/ledger/ledger_cumulative.png)
+*Main design: the locker-first lookups the change at L leaves unswitched, and the locker-after lookups carried by the bridge word before L; whiskers 95%. Models: 9B, 27B, Muse, Lightning (Lightning hollow (its gate set after the 60-scene pre-check); its clean design below gate, exploratory, hollow). The README's supplementary figure with every placement: [s03e](../../figures/supp/s03e_cumulative.png).*
 
 - **Rule, fixed in advance.** None: descriptive, no bar; the verdict reads which part is largest in locker-first scenes. The 27B and Lightning: coverage runs, no prediction.
 
@@ -1576,12 +1576,35 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - Here the rest alone and the change without the lens part are the same arm (the verdict's table gives them the same shares).
   - Exploratory (batch 53): no prediction; UNVERIFIED.
 
-### 53.4 (running) <a id="b53-4"></a>
+### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? (53.4, opened 29 Oct ~10:40) <a id="b53-4"></a>
 
-- **Question.** On Lightning, does the lookup read the bridge word through attention blocks 19 and 26?
-- **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05 on 29 Oct; unchanged in batch 53)
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** On Lightning, does the lookup read the bridge word through its attention blocks 19 and 26?
+- **Why we asked.** Lightning's attention heads move with the address swap in blocks 19 and 26 ([attention under the swap](#t49-7)); its other blocks are Mamba-2 state, so the bridge word could reach the lookup through two attention blocks.
+- **Data.** Main test at L14, 200 scenes (37 bridge entities); the whole change switches the lookup on 88 of them.
+- **Method.** The whole change at the bridge word at L14, with attention from every later position to the bridge word's position blocked in (i) block 19, (ii) block 26, (iii) both, (iv) every attention block after L14 (19, 26, 33, 42), and (v) the control: both blocks, attention to a random other token of the same sentence; the share of the whole change's lookup switches cut; the recall beside.
+
+![Two attention blocks carry a third of Lightning's lookup switch](../../figures/ledger/ledger_attnblock.png)
+*The share of the whole change's switches cut by each block, lookup (purple) and recall (dark); dashed: the rule's 0.6; dotted: 0.3; whiskers 95%. Models: Lightning (hollow: its gate set after the 60-scene pre-check); 9B, 27B and Muse grey (not applicable: a Lightning test).*
+
+- **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05; no prediction)
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | lookup switches cut: (i) block 19 / (ii) block 26 | not applicable | not applicable | not applicable | 0.114 [0.039, 0.189]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (i) block 19 only: S 0.390 :: 0.114 [0.039, 0.189] --> / 0.136 [0.060, 0.216]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (ii) block 26 only: S 0.380 :: 0.136 [0.060, 0.216] --> |
+  | lookup: (iii) both blocks / (iv) every attention block after L / (v) control | | | | 0.341 [0.253, 0.420]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (iii) blocks 19 and 26: S 0.290 :: 0.341 [0.253, 0.420] --> / 0.352 [0.272, 0.423]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.285 :: 0.352 [0.272, 0.423] --> / 0.000 [-0.056, 0.054]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| random non-bridge token of the bridge :: 0.000 [-0.056, 0.054] --> |
+  | the clean answer kept, (iii) / (iv) | | | | 0.770<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| (iii) blocks 19 and 26: S 0.290 :: 0.770 --> / 0.760<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.285 :: 0.760 --> |
+  | recall (beside): (iv) every attention block after L | | | | 0.555 [0.441, 0.647]<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| every attention block after L: S 0.425 :: 0.555 [0.441, 0.647] --> |
+  | the rule (lookup) | | | | **in between<!-- src: results/x53_attnblock/x53_attnblock-20261029T091303Z/verdict.md \| Label (lookup) :: in between -->** |
+
+- **Read.**
+  - Blocking the bridge word in attention blocks 19 and 26 cuts about a third of Lightning's lookup switches, as much as blocking every attention block after L; either block alone cuts little, and the control cuts nothing. By the rule this is in between: the lookup is partly read through those two blocks.
+- **Caveats.**
+  - The block also costs the clean answer on about a quarter of items (collateral), and blocking every attention block after L cuts more than half of the recall's switches.
+  - One model by design; exploratory (batch 53), no prediction; UNVERIFIED.
 
 ### On the scenes where the 27B's lookup goes by position, does the address work as on the 9B? (53.5, opened 29 Oct ~10:00; CPU, existing outcomes) <a id="b53-5"></a>
 
@@ -1592,8 +1615,8 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Data.** Routes scenes of the two conditions that have a position answer, kept where the lookup answers by position under the whole change: 232 on the 27B (31 bridge items), 340 on the 9B beside; the swap on those scenes of the second condition (101 / 153).
 - **Method.** On existing outcomes (CPU): position answers without the address against without a random part of its share; the address alone against a random part alone; the address swap at dose 2.
 
-![On its position-route scenes the 27B's address brings back fewer answers than the 9B's](../../results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png)
-*The verdict's figure: on each model's position-route scenes, the lookup's position share under the whole change, without the address, without a random part, with the address alone and with a random part alone, and the swap at dose 2 (hatched); dashed: the rule's bars (0.10, 0.25); whiskers 95%. Its title names the test.*
+![On its position scenes the 27B's address brings fewer answers back](../../figures/ledger/ledger_subset27b.png)
+*On each model's position-route scenes, the lookup's position share without the address, without a random part of its share, with the address alone, with a random part alone, and the swap at dose 2 (to the target); dotted / dashed: the rule's 0.10 / 0.25; whiskers 95%. Models: 27B and the 9B beside; Muse and Lightning grey (not designed: 9B / 27B only). The verdict's own figure: [the verdict folder](../../results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png).*
 
 - **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
 
@@ -1615,12 +1638,31 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
   - In the first condition, removing a random part of the address's share also leaves few position answers (0.07 [0.03, 0.11]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md | Without a random part of the address's share, C1 keeps :: 0.07 [0.03, 0.11] --> on the 27B), so there the removal clause cannot tell the address from a random part.
   - CPU on existing outcomes; exploratory (batch 53); no prediction; UNVERIFIED.
 
-### 53.6 (running) <a id="b53-6"></a>
+### When the lens part points the recall to one item and the address to another, which does it follow? (53.6, opened 29 Oct ~10:35-10:45; the 9B and Lightning) <a id="b53-6"></a>
 
-- **Question.** When the lens part points the recall to one item and the address to another, which does the recall follow?
-- **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." 9B, Lightning, at the bridge word (the lens part toward item B plus the address swap toward item C's slot, s = 2).
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** When the lens part of the change points the recall to one item and the address points it to another, which does the recall follow?
+- **Why we asked.** The address swap redirects part of the recall ([swap](#swap)); the lens part carries the item's identity to the recall. Set against each other, the two show which the recall weights.
+- **Data.** Routes scenes of the condition without a move whose three items have distinct leg counts: 300 per model (9B at L12, Lightning at L14).
+- **Method.** At the bridge word: the lens part of the change toward item B plus the address swap toward item C's slot (dose 2); read the recall's answer: B's, C's or the original; each part alone beside, and the lens part with a random direction of the address's norm.
+
+![Pulled two ways, the recall follows both the lens and the address](../../figures/ledger/ledger_identity_address.png)
+*The recall's answers under both parts together (B's answer teal, C's orange, the original grey) and under each part alone; whiskers 95%. Models: 9B, Lightning (hollow: its gate set after the 60-scene pre-check); 27B and Muse grey (not designed: 9B / Lightning only).*
+
+- **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | both parts: the recall answers B's / C's / the original | 0.25 [0.20, 0.32]<!-- src: results/x53_identity_address/x53_identity_address-20261029T091319Z/verdict.md \| qwen3.5-9b :: 300 :: 0.25 [0.20, 0.32] --> / 0.30 [0.25, 0.35]<!-- src: results/x53_identity_address/x53_identity_address-20261029T091319Z/verdict.md \| qwen3.5-9b :: 300 :: 0.30 [0.25, 0.35] --> / 0.39 [0.31, 0.46]<!-- src: results/x53_identity_address/x53_identity_address-20261029T091319Z/verdict.md \| qwen3.5-9b :: 300 :: 0.39 [0.31, 0.46] --> | not designed | not designed | 0.25 [0.19, 0.32]<!-- src: results/x53_identity_address/x53_identity_address-20261029T090826Z/verdict.md \| nemotron-3.5-lightning :: 300 :: 0.25 [0.19, 0.32] --> / 0.27 [0.21, 0.34]<!-- src: results/x53_identity_address/x53_identity_address-20261029T090826Z/verdict.md \| nemotron-3.5-lightning :: 300 :: 0.27 [0.21, 0.34] --> / 0.45 [0.39, 0.52]<!-- src: results/x53_identity_address/x53_identity_address-20261029T090826Z/verdict.md \| nemotron-3.5-lightning :: 300 :: 0.45 [0.39, 0.52] --> |
+  | the rule | **both<!-- src: results/x53_identity_address/x53_identity_address-20261029T091319Z/verdict.md \| qwen3.5-9b :: 300 :: both -->** | | | **both<!-- src: results/x53_identity_address/x53_identity_address-20261029T090826Z/verdict.md \| nemotron-3.5-lightning :: 300 :: both -->** |
+
+- **Read.**
+  - Pulled two ways, the recall goes to the lens part's item and to the address's item about equally often on both models: by the rule, both.
+- **Caveats.**
+  - Two models by design; the separate verdicts per model (a combined verdict is coming); exploratory (batch 53), no prediction; UNVERIFIED.
 
 ### 53.7 (running) <a id="b53-7"></a>
 
@@ -1873,6 +1915,13 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 |---|---|---|---|---|---|
 | figures/ledger/ledger_coverage_map.png | yes (tall: 49 rows) | no overlap; the hatched cells' words sit on a white patch | yes | yes | the overview (29 Oct morning); no number drawn, each cell a verdict word from its card (scripts/ledger_coverage.py's HEATMAP); opened after rendering |
 | figures/ledger/ledger_last_conflict.png | yes | no overlap (after shortening the recall's label to "outside the lens" and a wider left margin) | yes | yes | batch 53 (53.3), four models from the combined verdict (x53_lastconflict-20261029T090326Z), Lightning hollow; new title; restyled from the verdict's figure; re-opened 29 Oct morning |
+| figures/ledger/ledger_address_probe.png | yes | no overlap (short row labels) | yes | yes | four slots (Dan's figures brief, 10:00), replaces Lightning's verdict-folder probe.png on the address-probe card; one layer per model (each model's L) |
+| figures/ledger/ledger_cumulative.png | yes | no overlap | yes | yes | four slots, replaces the README's s03e on the 47.4 card: 27B full, Lightning's main design, its clean design below gate (hollow) |
+| figures/ledger/ledger_das48.png | yes | no overlap | yes | yes | four slots, replaces the README's s12 (Muse only) on the 48.1 card; Lightning grey (dropped: DAS port) |
+| figures/ledger/ledger_report47.png | yes | no overlap (row labels on the grey 9B panel) | yes | yes | four slots, the 47.10 card's own figure (it no longer reuses fig07b); 9B, Muse, Lightning grey with their gate |
+| figures/ledger/ledger_subset27b.png | yes | no overlap | yes | yes | four slots, replaces the verdict's figure on the 53.5 card; Muse and Lightning grey (not designed) |
+| figures/ledger/ledger_identity_address.png | yes | no overlap | yes | yes | batch 53 (53.6), four slots: the 9B and Lightning (hollow); 27B and Muse grey; from the two per-model verdicts |
+| figures/ledger/ledger_attnblock.png | yes | no overlap | yes | yes | batch 53 (53.4), four slots: Lightning (hollow), the other three grey (not applicable) |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened) |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened) |

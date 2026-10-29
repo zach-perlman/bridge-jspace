@@ -13,7 +13,11 @@ well formed:
   text right before the comment, so a number cannot drift from the file it was copied from;
 - every card has one figure, right after its Method (before its rule; Dan's restructure brief, 29 Oct 08:55), with an
   italic caption and its file present; internal links resolve to any <a id> on the page (cards and the Appendix);
-- the coverage table equals scripts/ledger_coverage.py's output (the committed matrix).
+- the coverage table equals scripts/ledger_coverage.py's output (the committed matrix);
+- four model slots (Dan's figures brief, 29 Oct 10:00): on a card whose figure is a ledger figure, a model with a
+  number in the card's table has data in the figure, a model without one has a grey slot (figures/ledger/slots.json,
+  written by scripts/ledger_figures.py); a verdict-folder figure on a card is a problem; the README's shared figures
+  (figures/story, figures/supp) are left to the README build.
 
 Exit 1 with one line per problem.
 
@@ -22,6 +26,7 @@ uv run python scripts/check_ledger.py
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -88,6 +93,66 @@ def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
     return out
 
 
+SLOTS = REPO / "figures" / "ledger" / "slots.json"
+COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning")
+# a cell that says the model has no result here (Dan's grey labels, the tables' words for a missing cell)
+NO_RESULT = ("not ", "running", "pending", "dropped", "read pending", "see the readme", "–", "no outcomes")
+
+
+def table_columns(body: str) -> dict[str, str]:
+    """The card's first result table: per model column, "number" if a cell holds a number (a below-gate ○ number
+    counts), else "none" (not run / not tested / not designed, empty or words only)."""
+    m = re.search(r"^- \*\*Result\.\*\*(.*?)^- \*\*Read\.\*\*", body, re.M | re.S)
+    rows = [r for r in (m.group(1) if m else "").splitlines() if r.strip().startswith("|")]
+    if len(rows) < 3:
+        return {}
+    split = lambda r: [c.strip() for c in re.sub(r"<!--.*?-->", "", r).strip().strip("|").split("|")]  # noqa: E731
+    head = split(rows[0])
+    cols = {j: next(k for k in COLUMN_MODELS if k in h) for j, h in enumerate(head) if any(k in h for k in COLUMN_MODELS)}
+    out = {k: "none" for k in cols.values()}
+    for r in rows[2:]:
+        if not re.match(r"^\s*\|", r) or r.strip().startswith("|---"):
+            continue
+        cells = split(r)
+        for j, k in cols.items():
+            c = cells[j].replace("**", "").strip() if j < len(cells) else ""
+            if re.fullmatch(r"L\d+", c):  # a layer alone (the layer fixed in advance) is not a result
+                continue
+            if c and re.search(r"\d", c) and not c.lower().startswith(NO_RESULT):
+                out[k] = "number"
+    return out
+
+
+def slot_problems(head: str, body: str, slots: dict | None = None) -> list[str]:
+    """Dan's figures brief (29 Oct 10:00), on the cards whose figure is a ledger figure: a number in a model's column of
+    the card's table means the figure has that model's data (or its below-gate data); a column with no number means the
+    figure shows that model's grey slot. A verdict-folder figure on a card is a borrowed figure; the README's shared
+    figures (figures/story, figures/supp) are the README build's and are not checked here."""
+    m = re.search(r"^!\[[^\]]+\]\(([^)]+)\)", body, re.M)
+    if not m:
+        return []
+    target = m.group(1)
+    if "/results/" in target:
+        return [f"a borrowed verdict figure (make a four-slot ledger figure) in: {head}"]
+    fm = re.search(r"figures/ledger/([\w-]+)\.png$", target)
+    if not fm:
+        return []
+    name = fm.group(1)
+    if slots is None:
+        slots = json.loads(SLOTS.read_text()) if SLOTS.exists() else {}
+    if name not in slots:
+        return [f"no slot record for {name} (rerun scripts/ledger_figures.py) in: {head}"]
+    out = []
+    for model, status in table_columns(body).items():
+        have = slots[name].get(model, "")
+        if status == "number" and have not in ("data", "below gate"):
+            out.append(f"{name}: the table has {model}'s numbers but the figure shows {have or 'no slot'}")
+        if status == "none" and not have.startswith("grey"):
+            out.append(f"{name}: the table has no number for {model} but the figure shows {have or 'no slot'}, "
+                       f"not a grey slot")  # fmt: skip
+    return out
+
+
 def problems(text: str, repo: Path = REPO) -> list[str]:
     out = [f"missing path: {p}" for p in cited_paths(text) if not (repo / p).exists()]
     anchors = []
@@ -108,7 +173,8 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
             if not TAG_LINE.match(first):
                 out.append(f"no status tag line under the heading of: {head}")
             out += figure_problems(head, body, repo)
-    every = re.findall(r'<a id="([a-z0-9-]+)"></a>', text)
+            out += slot_problems(head, body)
+    every =re.findall(r'<a id="([a-z0-9-]+)"></a>', text)
     out += [f"duplicate anchor: {a}" for a in sorted({a for a in every if every.count(a) > 1})]
     links = set(re.findall(r"\]\(#([a-z0-9-]+)\)", text))
     out += [f"link to a missing anchor: #{a}" for a in sorted(links - set(every))]
