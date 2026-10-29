@@ -1,0 +1,40 @@
+{
+  "design": "main",
+  "source": "qwen35_122b_x0_necessity_r2",
+  "alt": "cf",
+  "layer": 33,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+    "locker-after": 82,
+    "mixed": 65,
+    "locker-first": 53
+  },
+  "upstream": {
+    "False": 117,
+    "True": 83
+  },
+  "locker-first, prefix-identical": 14,
+  "pick_tokens": {
+    "5": 63,
+    "4": 133,
+    "6": 4
+  },
+  "positions_dropped": {},
+  "items_read": 200,
+  "entities_read": 40,
+  "families": {
+    "elements": 81,
+    "greek": 71,
+    "animals": 48
+  },
+  "classes_per_family": {
+    "animals": 28,
+    "elements": 6,
+    "greek": 8
+  },
+  "items_locker_first": 53,
+  "entities_locker_first": 27
+}

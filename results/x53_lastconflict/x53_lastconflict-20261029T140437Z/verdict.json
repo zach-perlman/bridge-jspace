@@ -1,0 +1,208 @@
+{
+ "runs": [
+  "qwen35_122b_x53_3"
+ ],
+ "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+ "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+ "as_computed": "the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole; the rest alone's share = S_rest / S_whole; S_arm = the share of the locker-first items switched (the top token is S's answer's first token); point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the original bridge entities (10000, seed 0, paired) beside; S_whole = 0: not tested",
+ "models": [
+  {
+   "run": "qwen35_122b_x53_3",
+   "target": "qwen3.5-122b-a10b",
+   "layers": {
+    "source_run": "qwen35_122b_x51_10",
+    "peak_file": "results/x51_jread/qwen35_122b_x51_10/peak.json",
+    "read_file": "results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json",
+    "mode": "53.3",
+    "readers": {
+     "lookup": {
+      "peak": 12,
+      "answer": 46,
+      "layers": [
+       12,
+       44
+      ]
+     },
+     "recall": {
+      "peak": 44,
+      "answer": 46,
+      "layers": [
+       44
+      ]
+     }
+    }
+   },
+   "cells": [
+    {
+     "reader": "lookup",
+     "layer": 12,
+     "n": 53,
+     "entities": 27,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "no_jpp": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "no_rand": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "jpp": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "rest": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "switches_whole": 0,
+     "excess": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "rest_share": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "label": "untested",
+     "text": "not tested (the whole change switches no item)",
+     "x0_valid": false,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "lookup",
+     "layer": 44,
+     "n": 53,
+     "entities": 27,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.05660377358490566,
+       0.0,
+       0.13725490196078433
+      ],
+      "no_jpp": [
+       0.018867924528301886,
+       0.0,
+       0.05660377358490566
+      ],
+      "no_rand": [
+       0.018867924528301886,
+       0.0,
+       0.05660377358490566
+      ],
+      "jpp": [
+       0.018867924528301886,
+       0.0,
+       0.05660377358490566
+      ],
+      "rest": [
+       0.018867924528301886,
+       0.0,
+       0.05660377358490566
+      ]
+     },
+     "switches_whole": 3,
+     "excess": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rest_share": [
+      0.3333333333333333,
+      0.0,
+      0.5
+     ],
+     "label": "between",
+     "text": "in between",
+     "x0_valid": false,
+     "rest_equals_no_jpp": true
+    },
+    {
+     "reader": "recall",
+     "layer": 44,
+     "n": 53,
+     "entities": 27,
+     "rates": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.7547169811320755,
+       0.6607142857142857,
+       0.851063829787234
+      ],
+      "no_jpp": [
+       0.22641509433962265,
+       0.11290322580645161,
+       0.3684210526315789
+      ],
+      "no_rand": [
+       0.3584905660377358,
+       0.23728813559322035,
+       0.4888888888888889
+      ],
+      "jpp": [
+       0.05660377358490566,
+       0.0,
+       0.1276595744680851
+      ],
+      "rest": [
+       0.22641509433962265,
+       0.11290322580645161,
+       0.3684210526315789
+      ]
+     },
+     "switches_whole": 40,
+     "excess": [
+      0.17499999999999996,
+      0.05124999999999999,
+      0.3
+     ],
+     "rest_share": [
+      0.3,
+      0.15384615384615383,
+      0.4848484848484848
+     ],
+     "label": "between",
+     "text": "in between",
+     "x0_valid": true,
+     "rest_equals_no_jpp": true
+    }
+   ],
+   "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_rand",
+    "jpp",
+    "rest"
+   ],
+   "mode": "53.3",
+   "below_gate": null
+  }
+ ]
+}

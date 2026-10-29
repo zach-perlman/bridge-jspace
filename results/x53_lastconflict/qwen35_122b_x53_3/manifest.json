@@ -1,0 +1,92 @@
+{
+  "exp": "x53_lastconflict",
+  "run": "qwen35_122b_x53_3",
+  "why": "Batch 53, test 53.3 coverage on the 122B (Dan 12:20, jobs/c3/batch53.yaml fallback_1220: the same rule): the conflict test at the last token at 51.10's read peak and the answer layer minus 2, both from the 122B's own 51.10 run (qwen35_122b_x51_10); no prediction",
+  "written_utc": "2026-10-29T14:01:49Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "822efe7ac702d0b30f05d6345ec04dc279dbd5ef",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "test": "53.3",
+  "spec": "jobs/c3/batch53.yaml (53.3)",
+  "question": "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)",
+  "mode": "53.3",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "1a245922edd51e6d90ec3b95d85494fcc5fcedf53bd00e686a2b07a9b3e8fdf5",
+    "results/x0_necessity/qwen35_122b_x0_necessity_r2/manifest.json": "9f777a7747d7e5f55bf4a908e08dbd0255153309b86103c7286438fbd62e499b",
+    "results/x0_necessity/qwen35_122b_x0_necessity_r2/gate.json": "2638ab45a2b0b6f2df6b3a038c1628331d4bcd73b9102349cca3c64054e1d0c9",
+    "results/x0_necessity/qwen35_122b_x0_necessity_r2/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl": "6c69fad27efd22883423de4fd792391ec6702b65177e40959a73720b20546d4b",
+    "results/x51_jread/qwen35_122b_x51_10/peak.json": "e6e3c943f102b8c13ab645efde432daa1856db8bb5d8efa34baba7e010b2bbc4",
+    "results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json": "35a4a6dc37fe4da3d0328b931ded2e54d96d27c5858f24c0a42ee8085a4b6130"
+  },
+  "source": "qwen35_122b_x0_necessity_r2",
+  "L": 33,
+  "layers": {
+    "source_run": "qwen35_122b_x51_10",
+    "peak_file": "results/x51_jread/qwen35_122b_x51_10/peak.json",
+    "read_file": "results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json",
+    "mode": "53.3",
+    "readers": {
+      "lookup": {
+        "peak": 12,
+        "answer": 46,
+        "layers": [
+          12,
+          44
+        ]
+      },
+      "recall": {
+        "peak": 44,
+        "answer": 46,
+        "layers": [
+          44
+        ]
+      }
+    }
+  },
+  "k": 25,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change Δ = h_S - h_O at P3",
+    "no_jpp": "without the lens part: Δ - P_J Δ",
+    "no_rand": "without a random part of the same share: Δ - R Δ",
+    "jpp": "the lens part alone: P_J Δ",
+    "rest": "the rest alone: Δ - P_J Δ (the same vector as no_jpp)"
+  },
+  "rule": "per reader and layer: \"computes outside the lens at the last token\" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; \"through the lens\" if the loss is >= 0.30 beyond random; else \"in between\"",
+  "as_computed": "the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole; the rest alone's share = S_rest / S_whole; S_arm = the share of the locker-first items switched (the top token is S's answer's first token); point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the original bridge entities (10000, seed 0, paired) beside; S_whole = 0: not tested",
+  "items_rule": "51.10's items (x51_jread.select), 49.1's locker-first ones (51.10's write arms)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "none (no prediction)"
+}
