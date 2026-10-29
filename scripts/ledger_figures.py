@@ -28,6 +28,7 @@ DAS = R / "x51_das" / "verdict-20261028T194630Z" / "verdict.json"
 HEADS = R / "x51_heads" / "x51_2-20261028T190358Z" / "verdict.json"
 CARRIER = R / "x51_carrier" / "x51_7-20261028T171646Z" / "verdict.json"
 TRAVEL = R / "x51_travel" / "x51_4-20261028T173333Z" / "verdict.json"
+TRAVEL_L = R / "x51_travel" / "x52_travel-20261029T012517Z" / "verdict.json"  # Lightning's coverage run
 Z1 = R / "x50_zach" / "z1-20261028T161649Z" / "z1.json"
 Z3 = R / "x50_zach" / "z3-20261028T163053Z" / "z3.json"
 CLEAN = R / "checks" / "clean49_9b.json"
@@ -290,16 +291,18 @@ def full_carrier(plt) -> str:
 
 
 def last_token_address(plt) -> str:
-    """Per model, the slot probe's held-out accuracy at the last token by layer (the majority baseline dashed), L and
-    L + 4 marked, and the bridge-fit swap's share sent to the target at L + 4 (dose 2) as text."""
-    v = load(TRAVEL)
-    by = {m["target"]: m for m in v["models"]}
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.6), sharey=True)
+    """Per model (9B, 27B, Muse, Lightning), the slot probe's held-out accuracy at the last token by layer (the majority
+    baseline dashed), L and L + 4 marked, and the bridge-fit swap's share sent to the target at L + 4 (dose 2) as
+    text."""
+    by = {m["target"]: (m, TRAVEL) for m in load(TRAVEL)["models"]}
+    by.update({m["target"]: (m, TRAVEL_L) for m in load(TRAVEL_L)["models"]})
+    models = [*MODEL3, ("nemotron-3.5-lightning", "Lightning")]
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 3.6), sharey=True)
     fig.subplots_adjust(left=0.08, right=0.98, top=0.72, bottom=0.17, wspace=0.12)
-    S.title(fig, "The slot is readable at the last token; the code works there on Muse",
+    S.title(fig, "The bridge word's code works at the last token only on Muse",
             "Slot probe's accuracy at the last token by layer; dashed: majority slot; text: the swap at L+4")  # fmt: skip
-    for ax, (t, name) in zip(axes, MODEL3, strict=True):
-        m = by[t]
+    for ax, (t, name) in zip(axes, models, strict=True):
+        m, src = by[t]
         ax.set_title(name, fontsize=12, weight="bold", loc="left")
         layers = sorted(int(k) for k in m["probe"])
         acc = [m["probe"][str(la)]["acc"] for la in layers]
@@ -313,10 +316,10 @@ def last_token_address(plt) -> str:
         ax.text(0.97, 0.06, f"swap at L+4: {swap['target'][0]:.2f}", transform=ax.transAxes, ha="right",
                 fontsize=S.LABEL_PT, color="#222222")  # fmt: skip
         S.record("ledger_last_token_address", t, "bridge-fit swap at L+4, dose 2: lookups sent to the target",
-                 *swap["target"], n=swap["n"], source=rel(TRAVEL))  # fmt: skip
+                 *swap["target"], n=swap["n"], source=rel(src))  # fmt: skip
         for la, a in zip(layers, acc, strict=True):
             S.record("ledger_last_token_address", t, f"slot probe at the last token, layer {la}", *a,
-                     n=m["probe"][str(la)]["n"], source=rel(TRAVEL))  # fmt: skip
+                     n=m["probe"][str(la)]["n"], source=rel(src))  # fmt: skip
         ax.set_ylim(0, 1.05)
         ax.set_xlabel("layer")
     axes[0].set_ylabel("probe accuracy")
