@@ -332,7 +332,9 @@ def test_relink_from_a_subfolder_resolves_every_local_link():
     moved = B.relink(text, out)
     targets = [m.group(2) for m in B.LINK_TARGET.finditer(moved)]
     local = [t for t in targets if not re.match(r"[a-z][a-z0-9+.-]*:", t) and not t.startswith(("#", "/"))]
-    assert local and all(t.startswith("../") for t in local)
+    # a target beside the page (docs/depth/EXPERIMENTS.md, the ledger's cards: Dan 12:50) needs no "../"
+    beside = {t for t in local if (out.parent / t.partition("#")[0]).resolve().parent == out.parent.resolve()}
+    assert local and all(t.startswith("../") for t in local if t not in beside)
     assert all((out.parent / t.partition("#")[0]).resolve().exists() for t in local)
 
 

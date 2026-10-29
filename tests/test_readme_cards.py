@@ -92,7 +92,9 @@ def test_figure_after_the_method_with_a_caption():
         idx = dict(fields(body))
         imgs = [i for i, line in enumerate(lines) if IMAGE.match(line)]
         assert imgs, f"{head}: no figure"
-        assert all(idx["Rule, fixed in advance"] < i < idx["Result"] for i in imgs), f"{head}: a figure outside Rule-Result"
+        assert all(idx["Rule, fixed in advance"] < i < idx["Result"] for i in imgs), (
+            f"{head}: a figure outside Rule-Result"
+        )
         for i in imgs:
             cap = lines[i + 1] if i + 1 < len(lines) else ""
             assert re.fullmatch(r"\*[^*].*\*", cap.strip()), f"{head}: no italic caption under {lines[i]}"
