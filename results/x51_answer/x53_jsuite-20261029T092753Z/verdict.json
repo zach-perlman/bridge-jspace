@@ -1,0 +1,1506 @@
+{
+ "dan": "no prediction (batch 53, 53.1b: 51.12's rules verbatim) (rules first scored in results/x51_answer/x51_12-20261028T201842Z)",
+ "rule": "Per model, per reader: \"the lens effect is the entity\": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. \"The lens effect is the answer\": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed, report both shares. Amendment (Dan 20:20): before the arms, the lens readout check at the bridge word; the verdict says which case held, either 'the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)' or the arm-based entity / answer / mixed (never 'void by construction'). Z2: arm 3 is read against its controls (a same-size random part and a frequency-matched part), not against zero.",
+ "as_computed": "Extra loss of arm k = X0's excess = (S_rand_k - S_k) / S_whole per reader over the source run's items (switch: the set's own read; 47.3's lookup: follows the change, identity / position / value). e1, e2, e3 = arms 1, 2, 3; arm 4 (no_A_rand) is arm 3's random twin. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Z2: arm 3 against both its controls, e3 (vs no_A_rand) and e3f = (S_noF - S_noA) / S_whole (vs no_F); 'entity' needs max(e3, e3f) <= 0.10, 'answer' needs min(e3, e3f) >= 0.5 e1 (a label holds only against both controls). Point estimates decide (EPS 1e-9); e1 <= 0 or undefined (no switch under the whole change) -> can't tell; CIs from X0's cluster bootstrap over the bridge entity (10,000, seed 0), paired across arms (ratios on the same draws). Readout case first: per reader the rank (1 + tokens with a strictly higher lens logit, full vocabulary) of its own answer word (best of its A-style variant tokens) at the edited token at L, O's answer on O's state and S's on S's (z2: the reader's own state; e1 / cue: the lookup's, shared through the edited token); an item is 'not read' when it ranks > 50 on both; >= 90 % of items not read -> 'the answer word is not read at the bridge word', the arms reported beside; else the arm-based label. A: J++ unit atoms of letter tokens (the OMP dictionary); e1 / cue the answers' number words (suite_v1.WORDS: 6 -> 'six'), each of its variants (as is, leading space, capitalised, both) kept where it is one letter token; z2 the first token of each answer word and variant (where the tokenizer splits the full word, its first token only). Frequency-matched control F (z2): per atom a of A, the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2 (a BPE id is its merge rank, earlier = more frequent in the tokenizer's training corpus; the factor doubles until a candidate exists) and the closest log J++ readout norm ||(g * W_U[t]) J_L|| (ties: lower id); unrelated = its key (decode, stripped, lower-cased) equals no key of the set's answer words, A tokens, bridge entities' tokens / names or edited tokens, and (keys of >= 3 characters) neither contains nor is contained in one; never twice in one item. no_F = Δ - P_F Δ, P_F the projector on span(F). Decisive cells for Q51.12: Z2 both readers; E1 the recall (the lookup beside); 47.3 both readers. Projected out: (I - P_A) P_J Δ, P_A the orthogonal projector on the span of the item's answer atoms (the J++ part minus its component along span(A)).",
+ "labels": {
+  "entity": "the lens effect is the entity",
+  "answer": "the lens effect is the answer",
+  "mixed": "mixed",
+  "na": "can't tell (arm 1 has no extra loss beyond random)",
+  "not_read": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)"
+ },
+ "models": [
+  {
+   "set": "z1p",
+   "target": "qwen3.5-9b",
+   "run": "qwen35_9b_x52_answer_z1p",
+   "status": "tested",
+   "layer": 12,
+   "source": "qwen35_9b_x52_z1p",
+   "gate": {
+    "pass": true,
+    "chosen": 200,
+    "org_read_accuracy": {
+     "K": 0.8,
+     "M": 0.8438095238095238
+    },
+    "gate": 0.8
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 129,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.32,
+       0.24742268041237114,
+       0.3951248548199767
+      ],
+      "no_jpp": [
+       0.29,
+       0.22340425531914893,
+       0.35965260373155106
+      ],
+      "no_jpp_rand": [
+       0.275,
+       0.211340206185567,
+       0.34196891191709844
+      ],
+      "no_jpp_A": [
+       0.29,
+       0.22438393608074012,
+       0.3584905660377358
+      ],
+      "no_jpp_A_rand": [
+       0.28,
+       0.21761658031088082,
+       0.3459511434511434
+      ],
+      "no_A": [
+       0.335,
+       0.26107260769311397,
+       0.4131485340615119
+      ],
+      "no_A_rand": [
+       0.305,
+       0.23560146496173984,
+       0.37628865979381443
+      ],
+      "no_F": [
+       0.33,
+       0.25668099224458946,
+       0.40487804878048783
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 64,
+      "no_jpp": 58,
+      "no_jpp_rand": 55,
+      "no_jpp_A": 58,
+      "no_jpp_A_rand": 56,
+      "no_A": 67,
+      "no_A_rand": 61,
+      "no_F": 66
+     },
+     "extra": {
+      "1": [
+       -0.04687499999999987,
+       -0.13335365853658543,
+       0.04687499999999989
+      ],
+      "2": [
+       -0.031249999999999854,
+       -0.10667857142857143,
+       0.0461538461538461
+      ],
+      "3": [
+       -0.09375000000000008,
+       -0.19999999999999996,
+       -0.012496141975308765
+      ],
+      "3f": [
+       -0.015625000000000014,
+       -0.10769230769230775,
+       0.06000000000000005
+      ]
+     },
+     "share2": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "share3": [
+      NaN,
+      NaN,
+      8.000000000000025
+     ],
+     "share3f": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "valid": true,
+     "label": "can't tell (arm 1 has no extra loss beyond random)",
+     "key": "na",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "K",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.02,
+       0.004784688995215311,
+       0.04081632653061224
+      ],
+      "top50_O": [
+       0.115,
+       0.0748663101604278,
+       0.1568627450980392
+      ],
+      "median_rank_O": 355.0,
+      "median_bridge_rank_O": 1.0,
+      "above_bridge_O": [
+       0.08,
+       0.04499440298507463,
+       0.11979166666666667
+      ],
+      "top10_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_S": [
+       0.12,
+       0.07978260294273315,
+       0.165
+      ],
+      "median_rank_S": 431.5,
+      "median_bridge_rank_S": 2.0,
+      "above_bridge_S": [
+       0.07,
+       0.03365384615384615,
+       0.11538461538461539
+      ],
+      "top10_either": [
+       0.02,
+       0.004784688995215311,
+       0.04081632653061224
+      ],
+      "top50_either": [
+       0.225,
+       0.16939673865903374,
+       0.28426395939086296
+      ],
+      "not_read": [
+       0.775,
+       0.7157360406091371,
+       0.8306032613409663
+      ],
+      "case": "arms"
+     },
+     "arm_label": "can't tell (arm 1 has no extra loss beyond random)",
+     "arm_key": "na"
+    },
+    "recall": {
+     "n": 200,
+     "entities": 129,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.815,
+       0.7548076923076923,
+       0.87
+      ],
+      "no_jpp": [
+       0.26,
+       0.1968891246830559,
+       0.3248730964467005
+      ],
+      "no_jpp_rand": [
+       0.74,
+       0.6741573033707865,
+       0.8
+      ],
+      "no_jpp_A": [
+       0.68,
+       0.6063829787234043,
+       0.7522957623416339
+      ],
+      "no_jpp_A_rand": [
+       0.79,
+       0.7297262824048538,
+       0.8450704225352113
+      ],
+      "no_A": [
+       0.605,
+       0.5313971920289855,
+       0.6746440516560598
+      ],
+      "no_A_rand": [
+       0.81,
+       0.7487684729064039,
+       0.8656733692647871
+      ],
+      "no_F": [
+       0.82,
+       0.7602040816326531,
+       0.875
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 163,
+      "no_jpp": 52,
+      "no_jpp_rand": 148,
+      "no_jpp_A": 136,
+      "no_jpp_A_rand": 158,
+      "no_A": 121,
+      "no_A_rand": 162,
+      "no_F": 164
+     },
+     "extra": {
+      "1": [
+       0.588957055214724,
+       0.5093167701863354,
+       0.6704596488840501
+      ],
+      "2": [
+       0.13496932515337423,
+       0.06508491508491508,
+       0.21229145940154587
+      ],
+      "3": [
+       0.25153374233128845,
+       0.18518518518518523,
+       0.3208978256863828
+      ],
+      "3f": [
+       0.26380368098159507,
+       0.19672131147540983,
+       0.33536585365853655
+      ]
+     },
+     "share2": [
+      0.22916666666666666,
+      0.11363636363636366,
+      0.35294117647058837
+     ],
+     "share3": [
+      0.4270833333333335,
+      0.31313131313131315,
+      0.5531966535839703
+     ],
+     "share3f": [
+      0.4479166666666666,
+      0.33333333333333326,
+      0.5789473684210525
+     ],
+     "valid": true,
+     "label": "mixed",
+     "key": "mixed",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "M",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.69,
+       0.6055542813455657,
+       0.7677746276235613
+      ],
+      "top50_O": [
+       0.895,
+       0.8469293272864702,
+       0.9359605911330049
+      ],
+      "median_rank_O": 3.0,
+      "median_bridge_rank_O": 1.0,
+      "above_bridge_O": [
+       0.3,
+       0.22857142857142856,
+       0.37823834196891193
+      ],
+      "top10_S": [
+       0.57,
+       0.4948966442247002,
+       0.6424870466321243
+      ],
+      "top50_S": [
+       0.8,
+       0.7424242424242424,
+       0.8535353535353535
+      ],
+      "median_rank_S": 9.0,
+      "median_bridge_rank_S": 2.0,
+      "above_bridge_S": [
+       0.27,
+       0.20274904402392394,
+       0.34328358208955223
+      ],
+      "top10_either": [
+       0.825,
+       0.7649926470588235,
+       0.8805970149253731
+      ],
+      "top50_either": [
+       0.95,
+       0.9183673469387755,
+       0.9771715442092154
+      ],
+      "not_read": [
+       0.05,
+       0.02282845579078456,
+       0.08163265306122448
+      ],
+      "case": "arms"
+     },
+     "arm_label": "mixed",
+     "arm_key": "mixed"
+    }
+   },
+   "readout": {
+    "lookup's prompt, O": {
+     "answer": [
+      0.115,
+      0.07179487179487179,
+      0.15920398009950248
+     ],
+     "bridge": [
+      0.555,
+      0.47668393782383417,
+      0.6280223581676498
+     ],
+     "neither": [
+      0.33,
+      0.2621359223300971,
+      0.4027181488709227
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.115,
+      0.07179487179487179,
+      0.15920398009950248
+     ],
+     "other_prompt_answer": [
+      0.01,
+      0.0,
+      0.025380710659898477
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 18526.0,
+      "recall": 214.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 355.0,
+      "recall": 4.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "lookup's prompt, S": {
+     "answer": [
+      0.08,
+      0.0425531914893617,
+      0.12121579876434241
+     ],
+     "bridge": [
+      0.395,
+      0.32142857142857145,
+      0.4696969696969697
+     ],
+     "neither": [
+      0.525,
+      0.4523809523809524,
+      0.6
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.08,
+      0.0425531914893617,
+      0.12121579876434241
+     ],
+     "other_prompt_answer": [
+      0.01,
+      0.0,
+      0.025906735751295335
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 22994.0,
+      "recall": 458.0
+     },
+     "median_answer_word_rank": {
+      "lookup": 431.5,
+      "recall": 8.5
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, O": {
+     "answer": [
+      0.14,
+      0.08780047774704551,
+      0.19487499999999996
+     ],
+     "bridge": [
+      0.585,
+      0.5053191489361702,
+      0.6615384615384615
+     ],
+     "neither": [
+      0.275,
+      0.21076233183856502,
+      0.34673366834170855
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.14,
+      0.08780047774704551,
+      0.19487499999999996
+     ],
+     "other_prompt_answer": [
+      0.01,
+      0.0,
+      0.025380710659898477
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 11462.5,
+      "recall": 126.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 331.0,
+      "recall": 3.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, S": {
+     "answer": [
+      0.065,
+      0.03076923076923077,
+      0.10362694300518134
+     ],
+     "bridge": [
+      0.445,
+      0.36648284839641804,
+      0.5217391304347826
+     ],
+     "neither": [
+      0.49,
+      0.415,
+      0.5659340659340659
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.065,
+      0.03076923076923077,
+      0.10362694300518134
+     ],
+     "other_prompt_answer": [
+      0.01,
+      0.0,
+      0.025906735751295335
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 20463.5,
+      "recall": 614.0
+     },
+     "median_answer_word_rank": {
+      "lookup": 414.0,
+      "recall": 9.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    }
+   },
+   "atoms": {
+    "lookup": {
+     "A_tokens": {
+      "n": 200,
+      "min": 4,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.58,
+      "hist": {
+       "4": 5,
+       "6": 32,
+       "8": 163
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 4,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.58,
+      "hist": {
+       "4": 5,
+       "6": 32,
+       "8": 163
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 2,
+      "mean": 0.06,
+      "hist": {
+       "0": 190,
+       "1": 8,
+       "2": 2
+      }
+     },
+     "items_with_an_answer_atom_in_25": 10,
+     "share_median": {
+      "share_jpp": 0.2311335,
+      "share_jpp_A": 0.1950385,
+      "share_A": 0.033483,
+      "share_A_in_jpp": 0.0284895,
+      "share_F": 0.0044595
+     },
+     "F_match": {
+      "pairs": 1516,
+      "median_id_ratio": 1.1078,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    },
+    "recall": {
+     "A_tokens": {
+      "n": 200,
+      "min": 4,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.58,
+      "hist": {
+       "4": 5,
+       "6": 32,
+       "8": 163
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 4,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.58,
+      "hist": {
+       "4": 5,
+       "6": 32,
+       "8": 163
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 1,
+      "mean": 0.065,
+      "hist": {
+       "0": 187,
+       "1": 13
+      }
+     },
+     "items_with_an_answer_atom_in_25": 13,
+     "share_median": {
+      "share_jpp": 0.22616,
+      "share_jpp_A": 0.1962715,
+      "share_A": 0.038146,
+      "share_A_in_jpp": 0.030115000000000003,
+      "share_F": 0.004609500000000001
+     },
+     "F_match": {
+      "pairs": 1516,
+      "median_id_ratio": 1.1078,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    }
+   },
+   "agreement": {
+    "lookup": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 199,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 197,
+      "agree_top": 197,
+      "top_stored": 200,
+      "rerun": 64,
+      "stored": 63
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 198,
+      "top_stored": 200,
+      "rerun": 58,
+      "stored": 56
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 198,
+      "top_stored": 200,
+      "rerun": 55,
+      "stored": 53
+     },
+     "extra_loss_arm1": {
+      "rerun": -0.04687499999999987,
+      "stored": -0.04761904761904766
+     }
+    },
+    "recall": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 163,
+      "stored": 163
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 196,
+      "agree_top": 196,
+      "top_stored": 200,
+      "rerun": 52,
+      "stored": 52
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 148,
+      "stored": 148
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.588957055214724,
+      "stored": 0.588957055214724
+     }
+    }
+   }
+  },
+  {
+   "set": "z1p",
+   "target": "qwen3.6-27b",
+   "run": "x52_answer_z1p_27b",
+   "status": "tested",
+   "layer": 32,
+   "source": "x52_z1p_27b",
+   "gate": {
+    "pass": true,
+    "chosen": 200,
+    "org_read_accuracy": {
+     "K": 0.9885057471264368,
+     "M": 0.9003831417624522
+    },
+    "gate": 0.8
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 118,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.29,
+       0.21761658031088082,
+       0.3596110906496017
+      ],
+      "no_jpp": [
+       0.22,
+       0.15897435897435896,
+       0.28350515463917525
+      ],
+      "no_jpp_rand": [
+       0.265,
+       0.19786096256684493,
+       0.3302325581395349
+      ],
+      "no_jpp_A": [
+       0.24,
+       0.17513771186440677,
+       0.3073170731707317
+      ],
+      "no_jpp_A_rand": [
+       0.27,
+       0.2,
+       0.33816425120772947
+      ],
+      "no_A": [
+       0.27,
+       0.203125,
+       0.3351063829787234
+      ],
+      "no_A_rand": [
+       0.28,
+       0.211340206185567,
+       0.3463414634146341
+      ],
+      "no_F": [
+       0.29,
+       0.21761658031088082,
+       0.3596110906496017
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 58,
+      "no_jpp": 44,
+      "no_jpp_rand": 53,
+      "no_jpp_A": 48,
+      "no_jpp_A_rand": 54,
+      "no_A": 54,
+      "no_A_rand": 56,
+      "no_F": 58
+     },
+     "extra": {
+      "1": [
+       0.1551724137931035,
+       0.06451612903225812,
+       0.2558288610614191
+      ],
+      "2": [
+       0.10344827586206906,
+       0.0,
+       0.2142857142857142
+      ],
+      "3": [
+       0.03448275862068969,
+       0.0,
+       0.09259259259259267
+      ],
+      "3f": [
+       0.06896551724137918,
+       0.01638683236382858,
+       0.13559322033898313
+      ]
+     },
+     "share2": [
+      0.6666666666666671,
+      0.0,
+      1.2727272727272723
+     ],
+     "share3": [
+      0.22222222222222235,
+      0.0,
+      0.7499999999999986
+     ],
+     "share3f": [
+      0.4444444444444435,
+      0.10000000000000048,
+      1.0833333333333326
+     ],
+     "valid": false,
+     "label": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)",
+     "key": "not_read",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "K",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_O": [
+       0.06,
+       0.028842703349282302,
+       0.0972972972972973
+      ],
+      "median_rank_O": 2003.5,
+      "median_bridge_rank_O": 1.0,
+      "above_bridge_O": [
+       0.035,
+       0.010416666666666666,
+       0.06349206349206349
+      ],
+      "top10_S": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_S": [
+       0.035,
+       0.01092896174863388,
+       0.06091370558375635
+      ],
+      "median_rank_S": 2226.0,
+      "median_bridge_rank_S": 1.0,
+      "above_bridge_S": [
+       0.045,
+       0.019138755980861243,
+       0.07692307692307693
+      ],
+      "top10_either": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "top50_either": [
+       0.095,
+       0.057139156180606956,
+       0.1366165326322301
+      ],
+      "not_read": [
+       0.905,
+       0.8633834673677698,
+       0.942860843819393
+      ],
+      "case": "not_read"
+     },
+     "arm_label": "mixed",
+     "arm_key": "mixed"
+    },
+    "recall": {
+     "n": 200,
+     "entities": 118,
+     "rate": {
+      "none": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "whole": [
+       0.63,
+       0.5526315789473685,
+       0.7
+      ],
+      "no_jpp": [
+       0.2,
+       0.14285714285714285,
+       0.2583745497553895
+      ],
+      "no_jpp_rand": [
+       0.595,
+       0.5185185185185185,
+       0.6666666666666666
+      ],
+      "no_jpp_A": [
+       0.525,
+       0.441025641025641,
+       0.6041787790697672
+      ],
+      "no_jpp_A_rand": [
+       0.63,
+       0.5543478260869565,
+       0.7
+      ],
+      "no_A": [
+       0.44,
+       0.3626943005181347,
+       0.514018691588785
+      ],
+      "no_A_rand": [
+       0.64,
+       0.5641025641025641,
+       0.7098484455958548
+      ],
+      "no_F": [
+       0.63,
+       0.5508021390374331,
+       0.7020278365045806
+      ]
+     },
+     "hits": {
+      "none": 0,
+      "whole": 126,
+      "no_jpp": 40,
+      "no_jpp_rand": 119,
+      "no_jpp_A": 105,
+      "no_jpp_A_rand": 126,
+      "no_A": 88,
+      "no_A_rand": 128,
+      "no_F": 126
+     },
+     "extra": {
+      "1": [
+       0.6269841269841269,
+       0.5373103490810409,
+       0.7166666666666667
+      ],
+      "2": [
+       0.16666666666666663,
+       0.0847425032594523,
+       0.2521758715236977
+      ],
+      "3": [
+       0.3174603174603175,
+       0.2348993288590605,
+       0.40741452991452987
+      ],
+      "3f": [
+       0.30158730158730157,
+       0.22429503706090873,
+       0.3823593350383633
+      ]
+     },
+     "share2": [
+      0.26582278481012656,
+      0.14084507042253522,
+      0.39130434782608703
+     ],
+     "share3": [
+      0.5063291139240508,
+      0.37078651685393277,
+      0.6666666666666664
+     ],
+     "share3f": [
+      0.48101265822784817,
+      0.3544237869198311,
+      0.6279144305307095
+     ],
+     "valid": true,
+     "label": "mixed",
+     "key": "mixed",
+     "clauses": {
+      "entity": false,
+      "answer": false
+     },
+     "check": {
+      "source": "M",
+      "n": 200,
+      "missing": 0,
+      "top10_O": [
+       0.59,
+       0.5071073359588812,
+       0.6737967914438503
+      ],
+      "top50_O": [
+       0.81,
+       0.7487179487179487,
+       0.8684241413392636
+      ],
+      "median_rank_O": 5.0,
+      "median_bridge_rank_O": 1.0,
+      "above_bridge_O": [
+       0.29,
+       0.21499883177570092,
+       0.3718683696259072
+      ],
+      "top10_S": [
+       0.525,
+       0.44878048780487806,
+       0.6
+      ],
+      "top50_S": [
+       0.72,
+       0.6530612244897959,
+       0.7850467289719626
+      ],
+      "median_rank_S": 8.0,
+      "median_bridge_rank_S": 1.0,
+      "above_bridge_S": [
+       0.265,
+       0.19248826291079812,
+       0.34574468085106386
+      ],
+      "top10_either": [
+       0.71,
+       0.6387402156446012,
+       0.7777777777777778
+      ],
+      "top50_either": [
+       0.915,
+       0.8689300493394875,
+       0.955
+      ],
+      "not_read": [
+       0.085,
+       0.045,
+       0.13106995066051247
+      ],
+      "case": "arms"
+     },
+     "arm_label": "mixed",
+     "arm_key": "mixed"
+    }
+   },
+   "readout": {
+    "lookup's prompt, O": {
+     "answer": [
+      0.115,
+      0.06914832336503579,
+      0.16489361702127658
+     ],
+     "bridge": [
+      0.6,
+      0.518324607329843,
+      0.6778846153846154
+     ],
+     "neither": [
+      0.285,
+      0.2175925925925926,
+      0.35784313725490197
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.115,
+      0.06914832336503579,
+      0.16489361702127658
+     ],
+     "other_prompt_answer": [
+      0.01,
+      0.0,
+      0.02564102564102564
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 30132.5,
+      "recall": 184.0
+     },
+     "median_answer_word_rank": {
+      "lookup": 2003.5,
+      "recall": 4.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "lookup's prompt, S": {
+     "answer": [
+      0.085,
+      0.04807692307692308,
+      0.12690355329949238
+     ],
+     "bridge": [
+      0.515,
+      0.4293187106668782,
+      0.5943396226415094
+     ],
+     "neither": [
+      0.4,
+      0.3269230769230769,
+      0.4789473684210526
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.085,
+      0.04807692307692308,
+      0.12690355329949238
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 35781.5,
+      "recall": 511.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 2226.0,
+      "recall": 10.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, O": {
+     "answer": [
+      0.09,
+      0.05102040816326531,
+      0.13471502590673576
+     ],
+     "bridge": [
+      0.625,
+      0.5384615384615384,
+      0.7056143485431555
+     ],
+     "neither": [
+      0.285,
+      0.21359096885113268,
+      0.3621621621621622
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.09,
+      0.05102040816326531,
+      0.13471502590673576
+     ],
+     "other_prompt_answer": [
+      0.005,
+      0.0,
+      0.015873015873015872
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 27030.5,
+      "recall": 192.5
+     },
+     "median_answer_word_rank": {
+      "lookup": 2164.0,
+      "recall": 5.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    },
+    "recall's prompt, S": {
+     "answer": [
+      0.08,
+      0.043478260869565216,
+      0.12429454878607421
+     ],
+     "bridge": [
+      0.525,
+      0.4390210027100271,
+      0.6063854412923562
+     ],
+     "neither": [
+      0.395,
+      0.3188389975318018,
+      0.4742268041237113
+     ],
+     "top1_is_lookup_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "top1_is_recall_answer": [
+      0.08,
+      0.043478260869565216,
+      0.12429454878607421
+     ],
+     "other_prompt_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "other_prompt_bridge": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "median_answer_rank": {
+      "lookup": 40113.5,
+      "recall": 536.0
+     },
+     "median_answer_word_rank": {
+      "lookup": 2010.0,
+      "recall": 8.0
+     },
+     "top_digit_is_answer": {},
+     "n": 200
+    }
+   },
+   "atoms": {
+    "lookup": {
+     "A_tokens": {
+      "n": 200,
+      "min": 6,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.59,
+      "hist": {
+       "6": 41,
+       "8": 159
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 6,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.59,
+      "hist": {
+       "6": 41,
+       "8": 159
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 2,
+      "mean": 0.055,
+      "hist": {
+       "0": 190,
+       "1": 9,
+       "2": 1
+      }
+     },
+     "items_with_an_answer_atom_in_25": 10,
+     "share_median": {
+      "share_jpp": 0.170667,
+      "share_jpp_A": 0.1430735,
+      "share_A": 0.025396500000000002,
+      "share_A_in_jpp": 0.0238615,
+      "share_F": 0.0052965
+     },
+     "F_match": {
+      "pairs": 1518,
+      "median_id_ratio": 1.2993,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    },
+    "recall": {
+     "A_tokens": {
+      "n": 200,
+      "min": 6,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.59,
+      "hist": {
+       "6": 41,
+       "8": 159
+      }
+     },
+     "A_rank": {
+      "n": 200,
+      "min": 6,
+      "median": 8.0,
+      "max": 8,
+      "mean": 7.59,
+      "hist": {
+       "6": 41,
+       "8": 159
+      }
+     },
+     "answer_atoms_in_25": {
+      "n": 200,
+      "min": 0,
+      "median": 0.0,
+      "max": 1,
+      "mean": 0.05,
+      "hist": {
+       "0": 190,
+       "1": 10
+      }
+     },
+     "items_with_an_answer_atom_in_25": 10,
+     "share_median": {
+      "share_jpp": 0.170454,
+      "share_jpp_A": 0.1439185,
+      "share_A": 0.025106499999999997,
+      "share_A_in_jpp": 0.022751,
+      "share_F": 0.0051185
+     },
+     "F_match": {
+      "pairs": 1518,
+      "median_id_ratio": 1.2993,
+      "median_norm_ratio": 1.0,
+      "widened": 0
+     }
+    }
+   },
+   "agreement": {
+    "lookup": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 198,
+      "top_stored": 200,
+      "rerun": 58,
+      "stored": 60
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 44,
+      "stored": 44
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 53,
+      "stored": 53
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.1551724137931035,
+      "stored": 0.15000000000000005
+     }
+    },
+    "recall": {
+     "none": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 0,
+      "stored": 0
+     },
+     "whole": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 198,
+      "top_stored": 200,
+      "rerun": 126,
+      "stored": 128
+     },
+     "no_jpp": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 198,
+      "agree_top": 198,
+      "top_stored": 200,
+      "rerun": 40,
+      "stored": 40
+     },
+     "no_jpp_rand": {
+      "n": 200,
+      "matched": 200,
+      "agree_switch": 200,
+      "agree_top": 200,
+      "top_stored": 200,
+      "rerun": 119,
+      "stored": 119
+     },
+     "extra_loss_arm1": {
+      "rerun": 0.6269841269841269,
+      "stored": 0.6171874999999999
+     }
+    }
+   }
+  },
+  {
+   "set": "z2p",
+   "target": "qwen3.5-9b",
+   "run": "qwen35_9b_x53_answer_z2p",
+   "status": "not tested",
+   "gate": {
+    "pass": false,
+    "chosen": 88,
+    "org_read_accuracy": {
+     "K": 0.757396449704142,
+     "M": 0.9467455621301775
+    },
+    "gate": 0.8
+   },
+   "why": "the source gate failed, no items, or the run did not finish"
+  },
+  {
+   "set": "z2p",
+   "target": "qwen3.6-27b",
+   "run": "x53_answer_z2p_27b",
+   "status": "pending",
+   "why": "no manifest here"
+  }
+ ],
+ "per_cell": {
+  "z1p|qwen3.5-9b|lookup": "can't tell (arm 1 has no extra loss beyond random)",
+  "z1p|qwen3.5-9b|recall": "mixed",
+  "z1p|qwen3.6-27b|lookup": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)",
+  "z1p|qwen3.6-27b|recall": "mixed"
+ },
+ "jsuite_cells": {
+  "qwen3.5-9b": {
+   "PP": "can't tell (arm 1 has no extra loss beyond random) (n 200)",
+   "PM": "mixed (n 200)",
+   "MP": "not tested",
+   "MM": "not tested"
+  },
+  "qwen3.6-27b": {
+   "PP": "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items) (n 200)",
+   "PM": "mixed (n 200)",
+   "MP": "pending",
+   "MM": "pending"
+  }
+ },
+ "status": "UNVERIFIED"
+}

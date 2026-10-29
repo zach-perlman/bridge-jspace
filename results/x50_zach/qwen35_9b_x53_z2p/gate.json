@@ -1,0 +1,418 @@
+{
+ "cases": 169,
+ "org_read_accuracy": {
+  "K": 0.757396449704142,
+  "M": 0.9467455621301775
+ },
+ "gate": 0.8,
+ "pass": false,
+ "eligible": 88,
+ "over_zach_kept": {
+  "cases": 58,
+  "org_read_accuracy": {
+   "K": 1.0,
+   "M": 0.9655172413793104
+  },
+  "pass": true,
+  "eligible": 40
+ },
+ "chosen": 88,
+ "counts": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "(options dropped for a leak)": 0,
+    "no option aligns (the patch token is not at one index in O and S)": 250,
+    "no other entity with another answer": 3
+   },
+   "with_options": 105,
+   "descriptions": 117,
+   "descriptions_kept": 102,
+   "competence_drops": {
+    "competence: no S description named >= 0.90": 12,
+    "competence: O's description not named >= 0.90": 12
+   },
+   "cases": 81
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "(options dropped for a leak)": 0,
+    "no option aligns (the patch token is not at one index in O and S)": 236,
+    "no other entity with another answer": 1
+   },
+   "with_options": 121,
+   "descriptions": 127,
+   "descriptions_kept": 106,
+   "competence_drops": {
+    "competence: no S description named >= 0.90": 12,
+    "competence: O's description not named >= 0.90": 21
+   },
+   "cases": 88
+  }
+ },
+ "sets_used": [
+  "jsuite_v2_test_chat",
+  "jsuite_v2nb_test_chat"
+ ],
+ "chosen_sets": {
+  "jsuite_v2_test_chat": 42,
+  "jsuite_v2nb_test_chat": 46
+ },
+ "order": [
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L0-Mumbai-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L1-Barcelona-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L1-Istanbul-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L1-Lyon-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L1-Moscow-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:M-L1-Vienna-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L0-Sony-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Fiat-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Haribo-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Sony-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Spotify-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Toyota-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:M-L1-Volvo-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L0-Botswana-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L0-Cuba-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L0-Laos-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L0-Poland-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L1-Croatia-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:M-L1-Spain-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:M-L0-gazpacho-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:M-L1-bouillabaisse-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:M-L1-gazpacho-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:landmarks:M-L1-Ha Long Bay-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:landmarks:M-L1-Machu Picchu-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:M-L1-Austria-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:M-L1-Cuba-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:M-L1-Mexico-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L0-Bach-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L0-Edison-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L0-Grieg-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L0-Hokusai-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L0-Lorca-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Bach-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Borges-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Edison-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Grieg-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Hokusai-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Liszt-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Mendeleev-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Mozart-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Puccini-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:M-L1-Vermeer-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L0-Buenos Aires-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L0-Calgary-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L0-Copenhagen-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L0-Gothenburg-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L1-Calgary-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L1-Geneva-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L1-Lyon-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L1-Moscow-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:M-L1-Seville-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L0-Barilla-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L0-Ferrari-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L0-Michelin-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L0-Sony-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L1-Barilla-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:M-L1-Michelin-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L0-Bolivia-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L0-Japan-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L0-Nigeria-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-France-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-Kenya-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-Mongolia-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-Nigeria-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-Poland-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:countries:M-L1-Spain-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:dishes:M-L0-guacamole-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:landmarks:M-L0-the Acropolis-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:landmarks:M-L0-the Golden Pavilion-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:landmarks:M-L1-Petra-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:landmarks:M-L1-the Acropolis-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:landmarks:M-L1-the Colosseum-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:M-L0-Peru-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:M-L1-Argentina-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:M-L1-Ecuador-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:M-L1-Venezuela-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L0-Hokusai-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L0-Ibsen-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L0-Liszt-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L0-Rembrandt-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L0-Vivaldi-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Cervantes-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Dante-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Ibsen-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Kant-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Puccini-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Pushkin-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:M-L1-Smetana-0"
+  ]
+ ]
+}
