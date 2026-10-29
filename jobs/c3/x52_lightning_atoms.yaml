@@ -1,0 +1,31 @@
+id: x52_lightning_atoms
+title: "Batch 52 C coverage (Lightning extra c, part A): the 25 OMP atoms of the lens part of the change on Lightning at L14 (E1 only: Zach's Z2 never ran there), one forward of each O / S prompt; classification by the CPU report afterwards; descriptive, no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl &&
+  uv run python scripts/x52_atoms.py atoms --delta forward --sets e1 --name nem35l_x52_atoms_fwd
+question: >-
+  On Lightning, what do the 25 OMP atoms of the bridge word's change at L14 decode to (batch 52 A's nine classes)?
+why_it_matters: >-
+  Amendment 3, extra c: part A's inventory of 'the lens part' on the second family.
+hypotheses:
+  none: "Descriptive, no rule (batch 52 A); no prediction."
+decision_rule: >-
+  As jobs/c3/x52_atoms_muse.yaml (descriptive; "the verdict line writes 'descriptive; no rule'"), with Lightning's
+  source: items E1 = x49_gain.select_items (the locker-first items of the conflict run nem35l_x52_conflict at L14),
+  50 drawn by sorted(random.Random(0).sample(range(n), 50)); Delta = h_S - h_O at the bridge word at L14 from the
+  lookup's prompts; atoms: X0's signed OMP K = 25 over JLens.vectors(L, letters); per atom its rank, token, final
+  coefficient and the rebuilt energy it adds. Z2 not run (Zach's Z2 passages never ran on Lightning). Classification
+  and tables on the CPU afterwards (x52_atoms.py report with --targets nemotron-3.5-lightning).
+controls:
+- "the recall's Delta beside for the identity check (as on the other models)"
+- "the OMP asserted against x0_necessity.fit"
+n: "50 of the conflict run's locker-first E1 items (seed 0), one forward of O and of S each"
+seeds: [0]
+notes: "Batch 52 C, amendment 3 extra c; any free Lightning box (mats / speedup / another). Needs the conflict run committed (dacab82d; checked). Code: x52_atoms.layer_of checks Z2's layer only where a Z2 run exists; answer_atoms_51 reads 51.12's and batch 52's coverage runs (x51_answer.runs_of: Lightning's nem35l_x52_answer). Wallclock (ledger): x52_atoms_muse 0.03 h; est ~5 min, 0.1 GPU-h."

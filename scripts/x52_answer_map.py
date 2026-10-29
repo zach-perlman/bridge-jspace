@@ -95,8 +95,12 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch52.yaml"
 NO_PREDICTION = "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction"
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}
-NAMES = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse-Glimmer-30B"}
+# batch 52 C coverage (amendment 3, extra c): Lightning, the main set only (Zach's Z2 never ran there); verdict
+# --coverage reads it alone, the three models' verdict unchanged
+COVERAGE_MODELS = ("nemotron-3.5-lightning",)
+TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "nemotron-3.5-lightning": "lightning"}
+NAMES = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse-Glimmer-30B",
+         "nemotron-3.5-lightning": "Nemotron-3.5-Lightning"}  # fmt: skip
 SETS = ("main", "z2")
 SET_TEXT = {"main": "our scenes (the main test)", "z2": "his passages (Z2, never-named bridge)"}
 STAGES = ("read", "write")
@@ -670,7 +674,8 @@ def stage_run(name: str, set_name: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "x52 reads the sources' chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in MODELS, f"x52 runs on {MODELS}, not {target}"
+    assert target in MODELS + COVERAGE_MODELS, f"x52 runs on {MODELS + COVERAGE_MODELS}, not {target}"
+    assert target in MODELS or set_name == "main", f"{target}: the main set only (Zach's Z2 never ran there)"
     n_layers = pins.TARGETS[target]["n_layers"]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -870,7 +875,7 @@ def check_51_12(numbers: dict, target: str, set_name: str) -> dict | None:
     from scripts import x50_zach as Z
 
     L = Z.LAYERS[target][0] if set_name == "z2" else X.PREDICTED[target]
-    run = A.RUNS["z2" if set_name == "z2" else "e1"].get(target)
+    run = A.runs_of("z2" if set_name == "z2" else "e1").get(target)  # 51.12's runs and batch 52's coverage runs
     path = A.RESULTS / run / "readout.jsonl" if run else None
     if path is None or not path.exists() or L not in numbers["layers"]:
         return None
@@ -1135,12 +1140,14 @@ def model_results(target: str, runs: dict | None, n_boot: int) -> dict:
     return res
 
 
-def stage_verdict(n_boot: int = X.N_BOOT, decode_for=None) -> Path:
+def stage_verdict(n_boot: int = X.N_BOOT, decode_for=None, coverage: bool = False) -> Path:
+    """The three models' verdict, or with coverage (batch 52 C) the same readings on COVERAGE_MODELS' runs alone
+    (x52cov-<UTC>/)."""
     from scripts import x47_atoms as AT
 
-    out = RESULTS / f"x52-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52cov' if coverage else 'x52'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
-    results = [model_results(t, None, n_boot) for t in MODELS]
+    results = [model_results(t, None, n_boot) for t in (COVERAGE_MODELS if coverage else MODELS)]
     lines = verdict_lines(results, n_boot)
     combos = combinations(results)
     (out / "verdict.json").write_text(json.dumps({"prediction": NO_PREDICTION, "rule": RULE, "combinations": combos,
@@ -1165,6 +1172,7 @@ def main() -> None:
     ap.add_argument("--read", help="write: the read run whose ranks and states it uses")
     ap.add_argument("--plan-dir", default=None)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help="verdict: batch 52 C's coverage models (Lightning) alone")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.plan_dir)
@@ -1178,7 +1186,7 @@ def main() -> None:
         assert a.read, "write needs --read (the read run)"
         stage_write(a.name, a.set, a.read)
     else:
-        stage_verdict(a.n_boot)
+        stage_verdict(a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

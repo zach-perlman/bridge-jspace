@@ -1,0 +1,35 @@
+id: x52_lightning_answermap
+title: "Batch 52 C coverage (Lightning extra c, part B): the answer map on Lightning, main set (our scenes): read (the J++ ranks of the bridge entity and the answer word at B / E / Q / T, every second layer) then write (the answer word's lens directions at 1x and 2x at the most readable cell, against random and frequency-matched parts); no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl &&
+  uv run python scripts/x52_answer_map.py run --set main --name nem35l_x52_read_main &&
+  uv run python scripts/x52_answer_map.py write --set main --name nem35l_x52_write_main --read nem35l_x52_read_main &&
+  uv run python scripts/x52_answer_map.py verdict --coverage
+question: >-
+  On Lightning, in our scenes: is the reader's answer word readable through the lens (top-5 on >= 0.5 of items at some
+  layer before the answer layer) and usable (writing its directions changes the answer on >= 0.3 with random <= 0.10)?
+why_it_matters: >-
+  Amendment 3, extra c: part B's map on the second family.
+hypotheses:
+  none: "No prediction (batch 52 addendum)."
+decision_rule: >-
+  Verbatim from jobs/c3/x52_write_main_muse.yaml (jobs/c3/batch52.yaml brief B, Dan 29 Oct 00:30): "Rules, fixed in
+  advance. “Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.
+  “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the
+  four combinations per reader, per dataset." As computed: x52_read_main_muse's / x52_write_main_muse's text with
+  Lightning's source: 51.10's items (x51_jread.select on the conflict run nem35l_x52_conflict at L14), every second
+  layer L0-L50; the answer word = 51.12's word ids; the main set only (Zach's Z2 never ran on Lightning). Verdict in the
+  job (x52_answer_map.py verdict --coverage: Lightning alone, x52cov-<UTC>/).
+controls:
+- "random parts of the same size and a frequency-matched part, at 1x and 2x (the write)"
+- "51.12's readout check beside (Lightning's E1 coverage run nem35l_x52_answer)"
+n: "the conflict run's 200 items x 2 readers (read); the write at one cell per reader"
+seeds: [0]
+notes: "Batch 52 C, amendment 3 extra c; any free Lightning box. Needs the conflict run committed (checked) and, for the check beside, the answer run nem35l_x52_answer committed. Code: x52_answer_map.COVERAGE_MODELS / TAGS / NAMES gain Lightning (the main set only), verdict --coverage; check_51_12 reads x51_answer.runs_of. Wallclock (ledger): x52_read_main_27b 0.03 h, x52_write_main_27b 0.03 h; est ~10 min, 0.3 GPU-h with two loads."

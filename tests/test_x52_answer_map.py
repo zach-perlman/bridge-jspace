@@ -298,3 +298,11 @@ def test_read_write_verdict_end_to_end(tmp_path, monkeypatch, set_name):
     assert (vout / f"map_{M.TAGS[target]}.png").exists()
     view = (vout / "view.md").read_text()
     assert view.count("⟦") >= 5 * 2 * 3 and "random rows of" in view
+
+
+def test_lightning_is_a_coverage_model_with_live_run_names():
+    """Batch 52 C: Lightning runs the main set as a coverage model (its own verdict), outside the three models'."""
+    lt = "nemotron-3.5-lightning"
+    assert lt in M.COVERAGE_MODELS and lt not in M.MODELS and M.TAGS[lt] == "lightning"
+    assert M.run_name("read", "main", lt) == "nem35l_x52_read_main"
+    assert M.run_name("write", "main", lt) == "nem35l_x52_write_main"

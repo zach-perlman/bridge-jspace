@@ -553,7 +553,8 @@ def layer_of(target: str) -> int:
     """L: X0's layer; Zach's Z2 run uses the same one first (asserted)."""
     from scripts import x50_zach as Z
 
-    assert Z.LAYERS[target][0] == X.PREDICTED[target], f"{target}: Z2's layer {Z.LAYERS[target]} is not X0's"
+    if target in Z.LAYERS:  # batch 52 C's Lightning: no Z2 run, its committed L (BJ_PREDICTED_LAYER)
+        assert Z.LAYERS[target][0] == X.PREDICTED[target], f"{target}: Z2's layer {Z.LAYERS[target]} is not X0's"
     return X.PREDICTED[target]
 
 
@@ -746,7 +747,7 @@ def answer_atoms_51(target: str, set_name: str) -> dict[tuple[str, str], tuple[l
     exists."""
     from scripts import x51_answer as A
 
-    run = A.RUNS.get(set_name, {}).get(target)
+    run = A.runs_of(set_name).get(target)  # 51.12's runs and batch 52's coverage runs (Lightning's E1)
     path = A.RESULTS / run / "norms.jsonl" if run else None
     if not path or not path.exists():
         return {}
