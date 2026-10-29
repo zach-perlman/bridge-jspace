@@ -491,6 +491,14 @@ fallback_1220: |
   53.3 на 122B. 53.8 на 27B, після 9B і Muse. Lightning не додаю: ти зупинив нове покриття для нього."
   All on already-fixed rules, no new rules, no prediction; queued after the day's ordered items so GPUs do not idle
   after ~15:00.
+wording_531_received: "29 Oct ~12:40 Paris (Dan)"
+wording_531: |
+  53.1: write the denominator explicitly ("order dependence on 1 of the 2
+  models where both number cells passed their gates: 27B yes, 122B no; 9B /
+  Muse / Lightning: Q-before gate failed"). Add one caveat on the 122B: the
+  rerun of its main cells matches the stored run on 193-194 of 200 items and
+  arm 1's recall loss moves 0.315 → 0.270 (likely FP8 / MoE numerics,
+  unchecked); its numbers carry ~±0.04 run-to-run noise beyond the bootstrap.
 decisions_1210_coordinator_note: >-
   Disclosure (coordinator): before this decision the coordinator had pulled and read both 53.7 address-probe box
   verdicts and reported them to Dan (~12:05-12:15): the 9B's code format failed X0's two-reader gate on the recall
