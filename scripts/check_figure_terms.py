@@ -147,6 +147,8 @@ MARK_FIGS += ("fig17_jspace_last_token", "s17_jspace_grid_9b", "s17_jspace_grid_
 # Dan's restructure brief (28 Oct 22:20): the earlier mention's card shows Fig. 3c, one panel per model (9B, 27B, Muse)
 V6_FIGS += ("fig03c_earlier_mention",)
 V6_PANELS["fig03c_earlier_mention"] = 3
+# Dan's README brief (29 Oct 08:55, decision 7): the new Part I card "What do the lens part's 25 directions stand for?"
+V6_FIGS += ("fig18_atoms",)
 # The same brief, §6: no internal ids in the README body (prose, headings, captions): batch test ids (47.x, 49.x,
 # 51.x), Zach's test names (Z1-Z3), scene-set codes (C0-C2, P2-L0), run names (x0_necessity), the ladder's "rung 6",
 # "batch", "amendment". Ids live only in the Appendix's "where things live" line and in source comments.

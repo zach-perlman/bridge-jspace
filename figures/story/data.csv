@@ -1423,9 +1423,9 @@ fig11,muse-glimmer-30b,"6 The address can be removed, and a swap redirects the l
 fig11,qwen3.5-9b,7 Adding the address alone brings position answers back,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_9b
 fig11,qwen3.6-27b,7 Adding the address alone brings position answers back,x,,,,fixed; numbers:rtk_C2_keep_alf_position_27b
 fig11,muse-glimmer-30b,7 Adding the address alone brings position answers back,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_muse
-fig11,qwen3.5-9b,"8 With six lockers, every locker has its own code",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
-fig11,qwen3.6-27b,"8 With six lockers, every locker has its own code",-,,,,fixed
-fig11,muse-glimmer-30b,"8 With six lockers, every locker has its own code",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.5-9b,"8 With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.6-27b,"8 With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",-,,,,fixed
+fig11,muse-glimmer-30b,"8 With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
 fig11,qwen3.5-9b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,qwen3.6-27b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,muse-glimmer-30b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
@@ -1435,11 +1435,11 @@ fig11,muse-glimmer-30b,10 The bridge word redirects the lookup only when its loc
 fig11,qwen3.5-9b,11 Lookups the change at L misses were read from the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
 fig11,qwen3.6-27b,11 Lookups the change at L misses were read from the bridge word before L,-,,,,fixed
 fig11,muse-glimmer-30b,11 Lookups the change at L misses were read from the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
-fig11,qwen3.5-9b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
-fig11,qwen3.6-27b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06b:address formed: layer
-fig11,muse-glimmer-30b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.5-9b,"12 The address is readable before the lookup uses it, and the lookup never reads the value",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.6-27b,"12 The address is readable before the lookup uses it, and the lookup never reads the value",ok,,,,fixed; fig06b:address formed: layer
+fig11,muse-glimmer-30b,"12 The address is readable before the lookup uses it, and the lookup never reads the value",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
 s11,qwen3.5-9b,"2×2 Both operations, both datasets: one direction",ok,,,,"after the data; fig12:our removal, our scenes (main test): gap"
-s11,qwen3.6-27b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
+s11,qwen3.6-27b,"2×2 Both operations, both datasets: one direction",ok,,,,"after the data; fig12:our removal, our scenes (main test): gap"
 s11,muse-glimmer-30b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
 s11,qwen3.5-9b,"Z1 Our removal on Zach's passages: the split, by degree",x,,,,"fixed; fig12:our removal, his passages: gap"
 s11,qwen3.6-27b,"Z1 Our removal on Zach's passages: the split, by degree",x,,,,"fixed; fig12:our removal, his passages: gap"
@@ -2937,97 +2937,121 @@ fig15,qwen3.5-9b,47.6 (b) block/sentence/all: lookup identity share,0.21,0.17142
 fig15,qwen3.5-9b,47.6: the rule's bar (whole change's identity share less 0.10),0.42666666666666664,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
 fig15,muse-glimmer-30b,47.6 (b) block/sentence/all: lookup identity share,0.16333333333333333,0.12972880730559913,0.20233463035019456,300,results/x47_edges/x47_6-20261028T113107Z/verdict.json
 fig15,muse-glimmer-30b,47.6: the rule's bar (whole change's identity share less 0.10),0.31333333333333335,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
-fig01d,qwen3.5-9b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0054,0.0,0.019,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0054,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0699,0.0333,0.1135,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0054,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: recall, locker before the pick: answers lost beyond random",0.3925,0.3081,0.4737,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0054,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: recall, locker before the pick: answers lost beyond random",0.4194,0.3518,0.4842,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0699,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: recall, locker before the pick: answers lost beyond random",0.4194,0.3448,0.5,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0645,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: recall, locker before the pick: answers lost beyond random",0.4194,0.3151,0.5241,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0376,,,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0519,0.0213,0.0944,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: recall, locker after the pick: answers lost beyond random",0.3983,0.3095,0.5082,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0043,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: recall, locker after the pick: answers lost beyond random",0.4242,0.3409,0.5238,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: recall, locker after the pick: answers lost beyond random",0.4632,0.3787,0.557,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0303,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: recall, locker after the pick: answers lost beyond random",0.4545,0.3684,0.5464,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.039,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: recall, locker after the pick: answers lost beyond random",0.2121,0.1462,0.3102,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0303,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 1: lookup, every scene: answers lost beyond random",0.0048,0.0,0.0111,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: lookup, every scene: answers lost beyond random",-0.0072,-0.017,0.0,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0096,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: lookup, every scene: answers lost beyond random",-0.0096,-0.0194,-0.0022,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0096,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: lookup, every scene: answers lost beyond random",-0.0072,-0.0205,0.0069,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0168,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: lookup, every scene: answers lost beyond random",-0.0168,-0.031,-0.0044,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0216,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: lookup, every scene: answers lost beyond random",-0.0168,-0.0321,-0.0023,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.5-9b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0192,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0079,0.0,0.019,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0276,0.0077,0.051,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0039,,,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: recall, locker after the pick: answers lost beyond random",0.05,0.0273,0.0793,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0062,,,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: recall, locker after the pick: answers lost beyond random",0.2625,0.1919,0.3387,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0031,,,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,qwen3.6-27b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0337,0.0054,0.073,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0056,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0506,0.0102,0.1066,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0056,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1517,0.0795,0.2284,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0056,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: recall, locker before the pick: answers lost beyond random",0.1798,0.1148,0.2458,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0169,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1854,0.1118,0.2632,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0112,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: recall, locker before the pick: answers lost beyond random",-0.0169,-0.0667,0.0362,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0506,,,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0476,0.0193,0.0909,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: recall, locker after the pick: answers lost beyond random",0.1515,0.1012,0.2155,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.013,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: recall, locker after the pick: answers lost beyond random",0.2121,0.148,0.2874,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0173,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: recall, locker after the pick: answers lost beyond random",0.2251,0.1623,0.2949,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.013,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: recall, locker after the pick: answers lost beyond random",0.2208,0.161,0.2873,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0043,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: recall, locker after the pick: answers lost beyond random",0.0087,-0.0075,0.0279,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: lookup, every scene: answers lost beyond random",-0.0049,-0.0134,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0024,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: lookup, every scene: answers lost beyond random",-0.0049,-0.0134,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0024,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: lookup, every scene: answers lost beyond random",-0.0122,-0.0254,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0122,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: lookup, every scene: answers lost beyond random",-0.0122,-0.0237,-0.0028,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0098,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: lookup, every scene: answers lost beyond random",-0.0098,-0.0197,-0.0022,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig01d,muse-glimmer-30b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0098,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0054,0.0,0.019,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0054,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0699,0.0333,0.1135,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",-0.0054,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker before the pick: answers lost beyond random",0.3925,0.3081,0.4737,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0054,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker before the pick: answers lost beyond random",0.4194,0.3518,0.4842,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0699,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker before the pick: answers lost beyond random",0.4194,0.3448,0.5,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0645,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker before the pick: answers lost beyond random",0.4194,0.3151,0.5241,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0376,,,186,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0519,0.0213,0.0944,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker after the pick: answers lost beyond random",0.3983,0.3095,0.5082,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0043,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker after the pick: answers lost beyond random",0.4242,0.3409,0.5238,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker after the pick: answers lost beyond random",0.4632,0.3787,0.557,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0303,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker after the pick: answers lost beyond random",0.4545,0.3684,0.5464,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.039,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker after the pick: answers lost beyond random",0.2121,0.1462,0.3102,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0303,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: lookup, every scene: answers lost beyond random",0.0048,0.0,0.0111,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: lookup, every scene: answers lost beyond random",-0.0072,-0.017,0.0,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0096,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: lookup, every scene: answers lost beyond random",-0.0096,-0.0194,-0.0022,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0096,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: lookup, every scene: answers lost beyond random",-0.0072,-0.0205,0.0069,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0168,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: lookup, every scene: answers lost beyond random",-0.0168,-0.031,-0.0044,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0216,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: lookup, every scene: answers lost beyond random",-0.0168,-0.0321,-0.0023,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0192,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0079,0.0,0.0188,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0236,0.0068,0.0438,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0039,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1535,0.0917,0.2222,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0118,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: recall, locker before the pick: answers lost beyond random",0.1535,0.0893,0.2234,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0118,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1535,0.0902,0.2271,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0118,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: recall, locker before the pick: answers lost beyond random",0.5039,0.4227,0.6091,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0433,,,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0406,0.0205,0.0649,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0062,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker after the pick: answers lost beyond random",0.2406,0.1691,0.3221,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0031,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: recall, locker after the pick: answers lost beyond random",0.3031,0.2242,0.3821,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0031,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: recall, locker after the pick: answers lost beyond random",0.3438,0.2672,0.42,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: recall, locker after the pick: answers lost beyond random",0.3344,0.2602,0.4091,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: recall, locker after the pick: answers lost beyond random",0.4031,0.3148,0.5268,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0469,,,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: lookup, every scene: answers lost beyond random",0.0017,0.0,0.0056,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",-0.0017,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: lookup, every scene: answers lost beyond random",0.0017,0.0,0.0056,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",-0.0017,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: lookup, every scene: answers lost beyond random",-0.0052,-0.0111,0.0,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0035,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0112,0.0,0.0366,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0449,0.0127,0.0876,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1517,0.0774,0.2378,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0056,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker before the pick: answers lost beyond random",0.1461,0.0775,0.2151,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0225,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1685,0.0959,0.2449,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0112,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker before the pick: answers lost beyond random",0.073,0.0231,0.1226,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0843,,,178,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0433,0.0164,0.0833,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker after the pick: answers lost beyond random",0.1342,0.0914,0.1862,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.013,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker after the pick: answers lost beyond random",0.2078,0.1433,0.2784,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0173,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker after the pick: answers lost beyond random",0.2208,0.162,0.2865,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0087,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker after the pick: answers lost beyond random",0.2121,0.1493,0.2811,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0043,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker after the pick: answers lost beyond random",0.0996,0.0402,0.1818,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0563,,,231,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: lookup, every scene: answers lost beyond random",-0.0024,-0.0086,0.0,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: lookup, every scene: answers lost beyond random",-0.0049,-0.0134,0.0,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0024,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: lookup, every scene: answers lost beyond random",-0.0049,-0.0131,0.0,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0024,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: lookup, every scene: answers lost beyond random",-0.0122,-0.0254,0.0,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0122,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: lookup, every scene: answers lost beyond random",-0.0098,-0.0199,-0.0023,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0073,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: lookup, every scene: answers lost beyond random",-0.0024,-0.0086,0.0,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,qwen3.5-9b,"our removal, our scenes (main test): gap",0.53,0.42,0.61,200,contrast_9b
 fig12,qwen3.5-9b,"our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup",-0.2121,,,200,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig12,qwen3.5-9b,"our removal, his passages: lookup switches under the whole change",114,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"our removal, his passages: gap",0.3721,0.2693,0.4697,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.0511,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
-fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.3213,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0144,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.3213,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0144,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,qwen3.5-9b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0,-0.0207,0.0208,142,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"Zach's operation, his passages: his stored recall minus lookup",0.4789,0.3831,0.5755,142,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, our scenes (main test): gap",0.6,0.5,0.69,200,contrast_27b
@@ -3035,13 +3059,15 @@ fig12,qwen3.6-27b,"our removal, our scenes (main test): the control (a random pa
 fig12,qwen3.6-27b,"our removal, his passages: lookup switches under the whole change",76,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, his passages: gap",0.303,0.1671,0.428,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.018,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.453,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0418,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,qwen3.6-27b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.005,0.0,0.0154,199,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"Zach's operation, his passages: his stored recall minus lookup",0.4623,0.3835,0.5425,199,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,muse-glimmer-30b,"our removal, our scenes (main test): gap",0.85,0.68,0.98,200,contrast_muse
 fig12,muse-glimmer-30b,"our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup",-0.1485,,,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig12,muse-glimmer-30b,"our removal, his passages: lookup switches under the whole change",25,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
-fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0073,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0171,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0905,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0685,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,muse-glimmer-30b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0062,0.0,0.0195,161,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,muse-glimmer-30b,"Zach's operation, his passages: his stored recall minus lookup",0.5714,0.4852,0.6548,161,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,nemotron-3.5-lightning,"our removal, our scenes (main test): gap",0.3106,0.1953,0.4244,200,results/x0_composition/split-by-order-20261029T005451Z/split.json
@@ -3285,34 +3311,78 @@ fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token, read peak layer 2
 fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token, read peak layer 24: the lens swap's switches over the whole-state patch's (0.0000 / 0.6800), paired cluster bootstrap",0.0,0.0,0.0,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token: the read peak layer (the answer appears at layer 29)",24,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,qwen3.5-9b,51.10: the read probe's chance (locker-first rows),0.0925670498084291,,,,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
+fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.36,0.22857142857142856,0.4805194805194805,150,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
+fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-9b,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.68,,,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token, read peak layer 60: the probe's accuracy on the lens part of the state, locker-first rows",0.45652173913043476,0.3333333333333333,0.5597014925373134,138,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
 fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token, read peak layer 60: the lens swap's switches over the whole-state patch's (0.0000 / 0.4348), paired cluster bootstrap",0.0,0.0,0.0,69,results/x51_jread/x51_10_27b/outcomes.jsonl
 fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token: the read peak layer (the answer appears at layer 61)",60,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,qwen3.6-27b,51.10: the read probe's chance (locker-first rows),0.10320243104254323,,,,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
+fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.45652173913043476,0.3333333333333333,0.5597014925373134,138,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
+fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,69,results/x51_jread/x51_10_27b/outcomes.jsonl
+fig17_jspace_last_token,qwen3.6-27b,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.43478260869565216,,,69,results/x51_jread/x51_10_27b/outcomes.jsonl
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token, read peak layer 32: the probe's accuracy on the lens part of the state, locker-first rows",0.16911764705882354,0.07894736842105263,0.26154069767441857,136,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token, read peak layer 32: the lens swap's switches over the whole-state patch's (0.0000 / 0.8824), paired cluster bootstrap",0.0,0.0,0.0,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token: the read peak layer (the answer appears at layer 35)",32,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,muse-glimmer-30b,51.10: the read probe's chance (locker-first rows),0.0953849281648143,,,,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.16911764705882354,0.07894736842105263,0.26154069767441857,136,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.8823529411764706,,,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak layer 32: the probe's accuracy on the lens part of the state, locker-first rows",0.288135593220339,0.18269230769230768,0.388064091308165,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak layer 32: the lens swap's switches over the whole-state patch's (0.0000 / 0.8983), paired cluster bootstrap",0.0,0.0,0.0,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token: the read peak layer (the answer appears at layer 45)",32,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
 fig17_jspace_last_token,nemotron-3.5-lightning,51.10: the read probe's chance (locker-first rows),0.09983857949959643,,,,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.288135593220339,0.18269230769230768,0.388064091308165,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.8983050847457628,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak layer 24: the probe's accuracy on the lens part of the state, locker-first rows",0.9733333333333334,0.9416666666666667,0.9941176470588236,150,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak layer 24: the lens swap's switches over the whole-state patch's (0.0000 / 0.9467), paired cluster bootstrap",0.0,0.0,0.0,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token: the read peak layer (the answer appears at layer 29)",24,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,qwen3.5-9b,51.10: the read probe's chance (locker-first rows),0.0925670498084291,,,,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
+fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9733333333333334,0.9416666666666667,0.9941176470588236,150,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
+fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak: the lens swap's switches",0.0,,,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak: the whole-state patch's switches",0.9466666666666667,,,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token, read peak layer 56: the probe's accuracy on the lens part of the state, locker-first rows",0.9492753623188406,0.8939313346228239,0.9876543209876543,138,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
 fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token, read peak layer 56: the lens swap's switches over the whole-state patch's (0.0145 / 0.9710), paired cluster bootstrap",0.014925373134328358,0.0,0.047619047619047616,69,results/x51_jread/x51_10_27b/outcomes.jsonl
 fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token: the read peak layer (the answer appears at layer 61)",56,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,qwen3.6-27b,51.10: the read probe's chance (locker-first rows),0.10320243104254323,,,,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
+fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9492753623188406,0.8939313346228239,0.9876543209876543,138,results/x51_jread/read-x51_10_27b-20261028T185638Z/read.json
+fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token, read peak: the lens swap's switches",0.014492753623188406,,,69,results/x51_jread/x51_10_27b/outcomes.jsonl
+fig17_jspace_last_token,qwen3.6-27b,"51.10: recall, last token, read peak: the whole-state patch's switches",0.9710144927536232,,,69,results/x51_jread/x51_10_27b/outcomes.jsonl
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token, read peak layer 40: the probe's accuracy on the lens part of the state, locker-first rows",0.9485294117647058,0.9067796610169492,0.98,136,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token, read peak layer 40: the lens swap's switches over the whole-state patch's (0.0147 / 1.0000), paired cluster bootstrap",0.014705882352941176,0.0,0.05172413793103448,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
 fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token: the read peak layer (the answer appears at layer 46)",40,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
 fig17_jspace_last_token,muse-glimmer-30b,51.10: the read probe's chance (locker-first rows),0.0953849281648143,,,,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9485294117647058,0.9067796610169492,0.98,136,results/x51_jread/read-muse30_x51_10-20261028T185636Z/read.json
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token, read peak: the lens swap's switches",0.014705882352941176,,,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
+fig17_jspace_last_token,muse-glimmer-30b,"51.10: recall, last token, read peak: the whole-state patch's switches",1.0,,,68,results/x51_jread/muse30_x51_10/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak layer 36: the probe's accuracy on the lens part of the state, locker-first rows",0.9830508474576272,0.9591836734693877,1.0,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak layer 36: the lens swap's switches over the whole-state patch's (0.1356 / 0.9661), paired cluster bootstrap",0.14035087719298245,0.05084745762711865,0.25925925925925924,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token: the read peak layer (the answer appears at layer 49)",36,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
 fig17_jspace_last_token,nemotron-3.5-lightning,51.10: the read probe's chance (locker-first rows),0.09983857949959643,,,,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9830508474576272,0.9591836734693877,1.0,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the lens swap's switches",0.13559322033898305,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
+fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the whole-state patch's switches",0.9661016949152542,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
+fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, the old bridge word",0.1108,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, the new bridge word",0.1098,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, an answer word",0.0005,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, another scene word or its class",0.0139,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, no scene word",0.7651,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.6-27b,"52 A: share of the rebuilt energy, the old bridge word",0.1009,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.6-27b,"52 A: share of the rebuilt energy, the new bridge word",0.1133,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.6-27b,"52 A: share of the rebuilt energy, an answer word",0.0007,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.6-27b,"52 A: share of the rebuilt energy, another scene word or its class",0.0112,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,qwen3.6-27b,"52 A: share of the rebuilt energy, no scene word",0.7738,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,muse-glimmer-30b,"52 A: share of the rebuilt energy, the old bridge word",0.1836,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,muse-glimmer-30b,"52 A: share of the rebuilt energy, the new bridge word",0.1904,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,muse-glimmer-30b,"52 A: share of the rebuilt energy, an answer word",0.0007,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,muse-glimmer-30b,"52 A: share of the rebuilt energy, another scene word or its class",0.0167,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,muse-glimmer-30b,"52 A: share of the rebuilt energy, no scene word",0.6086,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
+fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, the old bridge word",0.0901,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
+fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, the new bridge word",0.1107,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
+fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, an answer word",0.0,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
+fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, another scene word or its class",0.0123,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
+fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, no scene word",0.7869,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -4759,10 +4829,16 @@ e3_identity,qwen3.5-9b,47.1: identity answers lost beyond random without lens di
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-25,0.003333333333333355,-0.016077170418006437,0.02372881355932205,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 26-100,0.020000000000000018,-0.0033898305084745783,0.042763597663946,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-100,0.016666666666666663,0.0,0.034130487779026136,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,nemotron-3.5-lightning,47.1: identity answers lost beyond random without lens directions 1-25,0.03666666666666668,0.012345679012345678,0.06159420289855072,,results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.json
+e3_identity,nemotron-3.5-lightning,47.1: identity answers lost beyond random without lens directions 26-100,0.04666666666666669,0.014792080613113844,0.08127280301071563,,results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.json
+e3_identity,nemotron-3.5-lightning,47.1: identity answers lost beyond random without lens directions 1-100,-0.07999999999999999,-0.12132558494643865,-0.03942652329749105,,results/x47_atoms/x52_atoms47-20261029T011717Z/x47_1.json
 e11_before_l,qwen3.5-9b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9264705882352942,0.8490566037735849,0.9772791113381001,68,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 e11_before_l,qwen3.5-9b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.9457831325301205,0.9142857142857143,0.9774436090225564,166,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 e11_before_l,muse-glimmer-30b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9855072463768116,0.9491525423728814,1.0,69,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 e11_before_l,muse-glimmer-30b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,170,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
+e11_before_l,qwen3.6-27b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,61,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
+e11_before_l,qwen3.6-27b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.9957627118644068,0.9863013698630136,1.0,236,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
+e11_before_l,nemotron-3.5-lightning,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9240506329113923,0.8648648648648649,0.9770114942528736,79,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 catalogue,qwen3.5-9b,clean one-pick scenes: scenes used,417,,,,results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl
@@ -4771,8 +4847,10 @@ catalogue,muse-glimmer-30b,clean one-pick scenes: scenes used,409,,,,results/x0_
 catalogue,qwen3.5-9b,routes scenes: scenes used,300,,,,results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl
 catalogue,qwen3.6-27b,routes scenes: scenes used,300,,,,results/x6_routes/x6_routes_27b/outcomes.jsonl
 catalogue,muse-glimmer-30b,routes scenes: scenes used,300,,,,results/x6_routes/muse30b_x6_routes/outcomes.jsonl
+catalogue,nemotron-3.5-lightning,routes scenes: scenes used,300,,,,results/x6_routes/nem35l_x52_routes/outcomes.jsonl
 catalogue,qwen3.5-9b,six-locker scenes: scenes used,300,,,,results/x47_six/qwen35_9b_x47_2/outcomes.jsonl
 catalogue,muse-glimmer-30b,six-locker scenes: scenes used,300,,,,results/x47_six/muse30_x47_2/outcomes.jsonl
+catalogue,nemotron-3.5-lightning,six-locker scenes: scenes used,300,,,,results/x47_six/nem35l_x52_six/outcomes.jsonl
 catalogue,qwen3.5-9b,natural passages: scenes eligible,83,,,,results/x5_natural/qwen35_9b_x5_natural_g75/gate.json
 catalogue,qwen3.6-27b,natural passages: scenes eligible,137,,,,results/x5_natural/x5_natural_ptr_27b/gate.json
 catalogue,muse-glimmer-30b,natural passages: scenes eligible,60,,,,results/x5_natural/muse30b_x5_natural_ptr/gate.json
@@ -4782,12 +4860,16 @@ catalogue,qwen3.6-27b,"varied scenes: scenes used (prose, JSON and table)",1635,
 catalogue,qwen3.6-27b,natural passages: scenes used (fact first),75,,,,results/x5_natural/x5_natural_ptr_27b/outcomes.jsonl
 catalogue,muse-glimmer-30b,"varied scenes: scenes used (prose, JSON and table)",1389,,,,results/x0b_generalize/muse30b_x0b_v2_ptr/outcomes.jsonl
 catalogue,muse-glimmer-30b,natural passages: scenes used (fact first),28,,,,results/x5_natural/muse30b_x5_natural_ptr/outcomes.jsonl
+catalogue,nemotron-3.5-lightning,"varied scenes: scenes used (prose, JSON and table)",1105,,,,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
 catalogue,qwen3.5-9b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
 catalogue,qwen3.6-27b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
 catalogue,muse-glimmer-30b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
 catalogue,qwen3.5-9b,"Zach's passages, described bridge: passages used",158,,,,results/x50_zach/z2-20261028T162710Z/z2.json
 catalogue,qwen3.6-27b,"Zach's passages, described bridge: passages used",166,,,,results/x50_zach/z2-20261028T162710Z/z2.json
 catalogue,muse-glimmer-30b,"Zach's passages, described bridge: passages used",157,,,,results/x50_zach/z2-20261028T162710Z/z2.json
+catalogue,nemotron-3.5-lightning,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+catalogue,nemotron-3.5-lightning,natural passages: scenes eligible (below gate),36,,,,results/x5_natural/nem35l_x52_natural_below/gate.json
+catalogue,nemotron-3.5-lightning,main test: scenes used,200,,,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 conflict_answer,qwen3.5-9b,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.9489795918367347,0.9032258064516131,0.9896907216494845,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 conflict_answer,qwen3.5-9b,"main test, recall: switches lost beyond random without the answer words' directions only",0.0,0.0,0.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 conflict_answer,qwen3.5-9b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.565,0.4692737430167598,0.6595772529798373,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
@@ -4800,6 +4882,10 @@ conflict_answer,muse-glimmer-30b,"main test, recall: share of its loss kept when
 conflict_answer,muse-glimmer-30b,"main test, recall: switches lost beyond random without the answer words' directions only",-0.00847457627118645,-0.048545374865156615,0.029126213592232997,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 conflict_answer,muse-glimmer-30b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.995,0.9837837837837838,1.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 conflict_answer,muse-glimmer-30b,"main test, recall: the rule's label (page words)",the answer word is not read,,,,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,nemotron-3.5-lightning,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.9230769230769234,0.8260869565217392,1.0327868852459017,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+conflict_answer,nemotron-3.5-lightning,"main test, recall: switches lost beyond random without the answer words' directions only",0.0,-0.01570680628272237,0.012931034482758674,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+conflict_answer,nemotron-3.5-lightning,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.955,0.9049773755656109,0.9905660377358491,200,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
+conflict_answer,nemotron-3.5-lightning,"main test, recall: the rule's label (page words)",the answer word is not read,,,,results/x51_answer/x52_answer-20261029T002056Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: the answer word's median lens rank at the changed token (original prompt), rounded",47,,,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: the bridge entity's median lens rank at the changed token (original prompt), rounded",177,,,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 withdrawn_z2,qwen3.5-9b,"Zach's described passages, lookup: items whose answer word ranks below the lens's top 50 at the changed token",0.22151898734177214,0.15625,0.2948717948717949,158,results/x51_answer/x51_12-20261028T201842Z/verdict.json
@@ -4848,24 +4934,186 @@ dose_rules,muse-glimmer-30b,"dose curves: main-test scenes, locker sentences fir
 dose_rules,muse-glimmer-30b,(i) the lookup is blind to the J++ part,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 dose_rules,muse-glimmer-30b,(ii) the recall reads the J++ part above its share,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 dose_rules,muse-glimmer-30b,(iii) together only,no,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-ladder_rules,qwen3.5-9b,the second copy is the earlier mention,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,qwen3.5-9b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,qwen3.5-9b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,qwen3.6-27b,the second copy is the earlier mention,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,qwen3.6-27b,needed only when everything goes,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,qwen3.6-27b,the lookup never needs it,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,muse-glimmer-30b,the second copy is the earlier mention,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,muse-glimmer-30b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_rules,muse-glimmer-30b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,the second copy is the earlier mention,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,needed only when everything goes,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,the lookup never needs it,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0236,0.0068,0.0438,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1535,0.0917,0.2222,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1535,0.0902,0.2271,254,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 2: recall, locker after the pick: answers lost beyond random",0.2406,0.1691,0.3221,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 3: recall, locker after the pick: answers lost beyond random",0.3031,0.2242,0.3821,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-ladder_27b_full,qwen3.6-27b,"rung 5: recall, locker after the pick: answers lost beyond random",0.3344,0.2602,0.4091,320,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+dose_rules,nemotron-3.5-lightning,"dose curves: main-test scenes, locker sentences first",59,,,,results/x51_dose/x52_dose-20261029T011635Z/verdict.json
+dose_rules,nemotron-3.5-lightning,(i) the lookup is blind to the J++ part,yes,,,,results/x51_dose/x52_dose-20261029T011635Z/verdict.json
+dose_rules,nemotron-3.5-lightning,(ii) the recall reads the J++ part above its share,no,,,,results/x51_dose/x52_dose-20261029T011635Z/verdict.json
+dose_rules,nemotron-3.5-lightning,(iii) together only,undecided,,,,results/x51_dose/x52_dose-20261029T011635Z/verdict.json
+ladder_rules,qwen3.5-9b,the second copy is the earlier mention,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,qwen3.5-9b,needed only when everything goes,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,qwen3.5-9b,the lookup never needs it,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,qwen3.6-27b,the second copy is the earlier mention,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,qwen3.6-27b,needed only when everything goes,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,qwen3.6-27b,the lookup never needs it,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,muse-glimmer-30b,the second copy is the earlier mention,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,muse-glimmer-30b,needed only when everything goes,no,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+ladder_rules,muse-glimmer-30b,the lookup never needs it,yes,,,,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+cards,,"the ladder: largest difference between the first runs and the full reruns, every scene, on the steps both ran at the same layers",0.0171,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json; results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+cards,,the ladder: the same within one sentence order,0.0337,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json; results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+cards,muse-glimmer-30b,"the ladder: step 6's difference, every scene (moved into Zach's band)",0.0905,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json; results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+cards,nemotron-3.5-lightning,L: the layer fixed in advance,14,,,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+cards,nemotron-3.5-lightning,"conflict: recall, switches lost beyond a random part",0.34391534391534384,0.2499999999999999,0.44171779141104295,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+cards,nemotron-3.5-lightning,"conflict: recall, switches lost, not net of random",0.40740740740740733,0.3151515151515152,0.5032701671272536,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+cards,nemotron-3.5-lightning,"conflict: lookup, switches lost beyond a random part",0.033333333333333326,-0.012345679012345623,0.08108108108108103,200,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+cards,nemotron-3.5-lightning,conflict: the rule,confirmed,,,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+cards,nemotron-3.5-lightning,"varied: lookup, switches lost beyond a random part",0.025703794369644983,0.0,0.046854124265248445,1105,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
+cards,nemotron-3.5-lightning,varied: the gap,0.23911102044516996,0.17058844519836183,0.3171415494180996,1105,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
+cards,nemotron-3.5-lightning,varied: the rule,holds,,,,results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.json
+cards,nemotron-3.5-lightning,"natural (below gate): recall, switches lost beyond a random part",0.48571428571428577,0.30555555555555547,0.6666666666666667,36,results/x5_natural/nem35l_x52_natural_below/verdict-20261029T082128Z/verdict.json
+cards,nemotron-3.5-lightning,"natural (below gate): lookup, switches lost beyond a random part",-0.07692307692307698,-0.2727272727272726,0.0,36,results/x5_natural/nem35l_x52_natural_below/verdict-20261029T082128Z/verdict.json
+cards,nemotron-3.5-lightning,natural (below gate): the gap,0.5626373626373627,0.3513513513513514,0.8214333976833976,36,results/x5_natural/nem35l_x52_natural_below/verdict-20261029T082128Z/verdict.json
+cards,nemotron-3.5-lightning,natural (below gate): the rule's reading,holds,,,,results/x5_natural/nem35l_x52_natural_below/verdict-20261029T082128Z/verdict.json
+cards,nemotron-3.5-lightning,"47.5: recall's answers kept at L, the J++ part's 25 directions taken out",0.975,0.9540229885057471,0.9936315810690962,200,results/x47_zero/x52_zero-20261029T032056Z/x47_5.json
+cards,nemotron-3.5-lightning,47.5: recall's answers lost beyond random (L),0.025000000000000022,0.006368418930903814,0.04597701149425293,200,results/x47_zero/x52_zero-20261029T032056Z/x47_5.json
+cards,nemotron-3.5-lightning,47.5: the rule's reading (recall at L),"followed, not needed at one layer",,,,results/x47_zero/x52_zero-20261029T032056Z/x47_5.json
+cards,qwen3.5-9b,52 A: main-test scenes,50,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: share of the rebuilt energy in the original bridge word,0.1108,0.0906,0.13,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: share of the rebuilt energy in the new bridge word,0.1098,0.0928,0.1245,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: share of the rebuilt energy in the reader's answer word,0.0005,0.0,0.0015,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: share of the rebuilt energy in no scene word,0.7651,0.7385,0.7959,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",0.9912,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: hand-checked items (the lookup's view),5,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.5-9b,52 A: hand labels agreeing with the classifier,0.968,,,125,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: main-test scenes,50,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: share of the rebuilt energy in the original bridge word,0.1009,0.0751,0.1262,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: share of the rebuilt energy in the new bridge word,0.1133,0.0959,0.1336,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: share of the rebuilt energy in the reader's answer word,0.0007,0.0,0.0023,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: share of the rebuilt energy in no scene word,0.7738,0.7392,0.8078,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",1.0,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: hand-checked items (the lookup's view),5,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,qwen3.6-27b,52 A: hand labels agreeing with the classifier,0.952,,,125,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: main-test scenes,50,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: share of the rebuilt energy in the original bridge word,0.1836,0.1652,0.1984,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: share of the rebuilt energy in the new bridge word,0.1904,0.1678,0.2117,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: share of the rebuilt energy in the reader's answer word,0.0007,0.0,0.0027,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: share of the rebuilt energy in no scene word,0.6086,0.5835,0.6425,50,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",1.0,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: hand-checked items (the lookup's view),5,,,,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,muse-glimmer-30b,52 A: hand labels agreeing with the classifier,0.936,,,125,results/x52_atoms/report-20261029T000125Z/tables.json
+cards,nemotron-3.5-lightning,52 A: main-test scenes,50,,,,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in the original bridge word,0.0901,0.0735,0.1042,50,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in the new bridge word,0.1107,0.0893,0.1312,50,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in the reader's answer word,0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in no scene word,0.7869,0.7581,0.818,50,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,nemotron-3.5-lightning,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",1.0,,,,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,qwen3.5-9b,lenswrite: the recall keeps its clean answer under the lens swap,0.947,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.5-9b,lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer,0.147,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.5-9b,lenswrite: a random part at gain 2 gives the changed prompt's recall answer,0.04,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.5-9b,"lenswrite: the most outputs naming the entity or a number word, over every arm",0.0,,,,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.6-27b,lenswrite: the recall keeps its clean answer under the lens swap,0.971,,,69,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.6-27b,lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer,0.029,,,69,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.6-27b,lenswrite: a random part at gain 2 gives the changed prompt's recall answer,0.029,,,69,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.6-27b,"lenswrite: the most outputs naming the entity or a number word, over every arm",0.0,,,,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,muse-glimmer-30b,lenswrite: the recall keeps its clean answer under the lens swap,0.941,,,68,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,muse-glimmer-30b,lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer,0.382,,,68,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,muse-glimmer-30b,lenswrite: a random part at gain 2 gives the changed prompt's recall answer,0.044,,,68,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,muse-glimmer-30b,"lenswrite: the most outputs naming the entity or a number word, over every arm",0.0,,,,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,nemotron-3.5-lightning,lenswrite: the recall keeps its clean answer under the lens swap,0.78,,,59,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,nemotron-3.5-lightning,lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer,0.559,,,59,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,nemotron-3.5-lightning,lenswrite: a random part at gain 2 gives the changed prompt's recall answer,0.186,,,59,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,nemotron-3.5-lightning,"lenswrite: the most outputs naming the entity or a number word, over every arm",0.0,,,,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
+cards,qwen3.5-9b,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,qwen3.5-9b,51.10: lookup at the last token: the rule's reading,(c) routes around J-space,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,qwen3.5-9b,"51.10: main-test scenes, locker first",75,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,qwen3.6-27b,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,qwen3.6-27b,51.10: lookup at the last token: the rule's reading,none of the four,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,qwen3.6-27b,"51.10: main-test scenes, locker first",69,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,muse-glimmer-30b,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,muse-glimmer-30b,51.10: lookup at the last token: the rule's reading,none of the four,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,muse-glimmer-30b,"51.10: main-test scenes, locker first",68,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
+cards,nemotron-3.5-lightning,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
+cards,nemotron-3.5-lightning,51.10: lookup at the last token: the rule's reading,none of the four,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
+cards,nemotron-3.5-lightning,"51.10: main-test scenes, locker first",59,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
+cards,qwen3.5-9b,the address swap at s = 2: recalls that change,0.215,,,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+cards,qwen3.6-27b,the address swap at s = 2: recalls that change,0.043333333333333335,,,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+cards,muse-glimmer-30b,the address swap at s = 2: recalls that change,0.058333333333333334,,,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+cards,nemotron-3.5-lightning,the address swap at s = 2: recalls that change,0.2733333333333333,,,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+cards,qwen3.5-9b,the address swap at s = 2: changed recalls naming the swapped-in item's answer,0.845,,,129,results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.json
+cards,nemotron-3.5-lightning,the address swap at s = 2: changed recalls naming the swapped-in item's answer,0.854,,,164,results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.json
+cards,qwen3.5-9b,"Z1: lookup, switches lost beyond a random part",0.26315789473684215,0.1759137426900585,0.3571428571428572,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.5-9b,"Z1: recall, switches lost beyond a random part",0.6352201257861635,0.5555555555555557,0.7115384615384615,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.5-9b,Z1: the gap,0.37206223104932135,0.2693016869095815,0.4697369970843877,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.5-9b,Z1: the rule's reading,the lookup follows the lens here,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.6-27b,"Z1: lookup, switches lost beyond a random part",0.2763157894736843,0.17948717948717952,0.381578947368421,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.6-27b,"Z1: recall, switches lost beyond a random part",0.5793650793650794,0.49193548387096764,0.663553525913339,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.6-27b,Z1: the gap,0.3030492898913951,0.16712661426267433,0.42801468591161285,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,qwen3.6-27b,Z1: the rule's reading,the lookup follows the lens here,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,muse-glimmer-30b,"Z1: lookup, switches lost beyond a random part",0.6,0.3793103448275863,0.8148148148148149,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,muse-glimmer-30b,"Z1: recall, switches lost beyond a random part",0.8118811881188119,0.72,0.9047619047619048,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,muse-glimmer-30b,Z1: the gap,0.21188118811881196,-0.014579094292803765,0.44361560356901364,200,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,muse-glimmer-30b,Z1: the rule's reading,the lookup follows the lens here,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+cards,nemotron-3.5-lightning,"Z1: lookup, switches lost beyond a random part",0.15454545454545465,0.06796116504854366,0.24561403508771928,200,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+cards,nemotron-3.5-lightning,"Z1: recall, switches lost beyond a random part",0.47590361445783136,0.4049079754601227,0.5510233070500926,200,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+cards,nemotron-3.5-lightning,Z1: the gap,0.3213581599123767,0.2052578138847443,0.43610132082958175,200,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+cards,nemotron-3.5-lightning,Z1: the rule's reading,in between,,,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+cards,qwen3.5-9b,"Z1-P: lookup, switches lost beyond a random part",-0.04761904761904767,-0.13043478260869545,0.03389830508474567,200,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+cards,qwen3.5-9b,"Z1-P: recall, switches lost beyond a random part",0.588957055214724,0.505952380952381,0.6730769230769231,200,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+cards,qwen3.5-9b,Z1-P: the gap,0.6365761028337716,0.5109704315318497,0.7645673114883536,200,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+cards,qwen3.5-9b,Z1-P: the rule's reading,the split holds on his passages,,,,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+cards,qwen3.5-9b,Z1-P: the gate (the lookup's read accuracy on the original passages),0.8,,,,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+cards,qwen3.6-27b,"Z1-P: lookup, switches lost beyond a random part",0.15000000000000002,0.06349206349206349,0.24528301886792458,200,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+cards,qwen3.6-27b,"Z1-P: recall, switches lost beyond a random part",0.6171874999999999,0.5294117647058825,0.7024849229394684,200,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+cards,qwen3.6-27b,Z1-P: the gap,0.46718749999999987,0.35802008086772,0.5796824200718477,200,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+cards,qwen3.6-27b,Z1-P: the rule's reading,in between,,,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+cards,qwen3.6-27b,Z1-P: the gate (the lookup's read accuracy on the original passages),0.989,,,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+cards,nemotron-3.5-lightning,"Z1-P: lookup, switches lost beyond a random part",0.02631578947368418,-0.09722222222222221,0.14864864864864857,200,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,nemotron-3.5-lightning,"Z1-P: recall, switches lost beyond a random part",0.47619047619047616,0.4076424466906674,0.5499999999999998,200,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,nemotron-3.5-lightning,Z1-P: the gap,0.449874686716792,0.3035961895403429,0.6037600931663932,200,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,nemotron-3.5-lightning,Z1-P: the rule's reading,the split holds on his passages,,,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,nemotron-3.5-lightning,Z1-P: the gate (the lookup's read accuracy on the original passages),0.794,,,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,qwen3.5-9b,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.5111111111111111,0.40909090909090906,0.6122448979591837,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+cards,qwen3.6-27b,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.5116279069767442,0.41758241758241754,0.6091954022988505,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
+cards,nemotron-3.5-lightning,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.4117647058823529,0.30525353016688067,0.5194805194805195,97,results/x51_carrier/x52_carrier-20261029T014338Z/verdict.json
+cards,qwen3.5-9b,51.4: the rule's reading,(c) not at the last token,,,,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+cards,muse-glimmer-30b,51.4: the rule's reading,(a) the code travels,,,,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+cards,qwen3.6-27b,51.4: the rule's reading,(c) not at the last token,,,,results/x51_travel/x51_4-20261028T173333Z/verdict.json
+cards,nemotron-3.5-lightning,51.4: the rule's reading,(d) in between,,,,results/x51_travel/x52_travel-20261029T012517Z/verdict.json
+cards,qwen3.5-9b,Z3: position share under the whole change,0.1,0.01818181818181818,0.1935483870967742,60,results/x50_zach/z3-20261028T163053Z/z3.json
+cards,muse-glimmer-30b,Z3: position share under the whole change,0.0625,0.0,0.14,48,results/x50_zach/z3-20261028T163053Z/z3.json
+cards,qwen3.6-27b,Z3: position share under the whole change,0.037037037037037035,0.0,0.08641975308641975,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
+cards,nemotron-3.5-lightning,Z3: position share under the whole change,0.09615384615384616,0.0196078431372549,0.18518518518518517,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+cards,qwen3.6-27b,D4: the address's mean overlap over every pair of window layers,0.2556,,,,results/x47_depth_cpu/persistence-20261029T013614Z/persistence.json
+cards,nemotron-3.5-lightning,D4: the address's mean overlap over every pair of window layers,0.3405,,,,results/x47_depth_cpu/persistence-20261029T015607Z/persistence.json
+cards,qwen3.5-9b,47.8: the last layer the lookup needs the J++ part,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.5-9b,47.8: the first layer of the position route,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.5-9b,47.8: the address readable from,4,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.5-9b,47.8: (a) the handoff,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.5-9b,47.8: (b) readable before it is used,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.5-9b,47.8: (d) never the value,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): the last layer the lookup needs the J++ part,16,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): the first layer of the position route,30,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): the address readable from,8,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): (a) the handoff,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): (b) readable before it is used,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (reduced grid): (d) never the value,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: the last layer the lookup needs the J++ part,2,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: the first layer of the position route,22,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: the address readable from,6,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: (a) the handoff,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: (b) readable before it is used,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,muse-glimmer-30b,47.8: (d) never the value,yes,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): the last layer the lookup needs the J++ part,40,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): the first layer of the position route,28,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): the address readable from,8,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): (a) the handoff,no,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): (b) readable before it is used,yes,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,qwen3.6-27b,47.8 (full grid): (d) never the value,yes,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: the last layer the lookup needs the J++ part,14,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: the first layer of the position route,14,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: the address readable from,6,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: (a) the handoff,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: (b) readable before it is used,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,nemotron-3.5-lightning,47.8: (d) never the value,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,qwen3.6-27b,47.2: pairwise writes reaching 25% (dose 2),13,,,30,results/x47_six/x52_six-20261029T004919Z/x47_2.json
+cards,qwen3.5-9b,51.11 part 1: the code's size,in between,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
+cards,qwen3.5-9b,51.11 part 3: the order,none of the three,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
+cards,qwen3.5-9b,"51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2)",0.06,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
+cards,qwen3.5-9b,51.11 part 3: full swaps reaching their target (dose 2),0.395,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
+cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: pointer,0.044577636290341616,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
+cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: random draws (mean),0.030900454046204687,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
+cards,nemotron-3.5-lightning,47.13: wrong answers whose locker the address probe predicts,0.047619047619047616,0.010752688172043012,0.09278350515463918,105,results/x47_errors/x47_13-20261029T035254Z/x47_errors.json
+cards,nemotron-3.5-lightning,"45d: the refit address, lookup switches lost beyond random: prose",0.15714285714285714,0.1121495327102805,0.2124999999999999,,results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.json
+cards,nemotron-3.5-lightning,"45d: the refit address, lookup switches lost beyond random: json",0.25806451612903214,0.19999999999999984,0.4,,results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.json
+cards,nemotron-3.5-lightning,"45d: the refit address, lookup switches lost beyond random: table",0.2534246575342466,0.18823529411764717,0.32232071447613964,,results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: without the lens part",0.4974619289340101,0.4108083976833977,0.5714285714285713,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: lens part out, answer kept",0.47208121827411165,0.38775223572575085,0.5478741620518799,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
 ledger_answer_control,qwen3.5-9b,"main test, recall, switches lost beyond random: answer directions only",0.0,0.0,0.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
@@ -5226,12 +5474,22 @@ ledger_last_token_address,nemotron-3.5-lightning,"slot probe at the last token, 
 ledger_last_token_address,nemotron-3.5-lightning,"slot probe at the last token, layer 49",0.9966666666666667,0.9895470383275261,1.0,300,results/x51_travel/x52_travel-20261029T012517Z/verdict.json
 ledger_last_token_address,nemotron-3.5-lightning,"slot probe at the last token, layer 50",0.9966666666666667,0.9895470383275261,1.0,300,results/x51_travel/x52_travel-20261029T012517Z/verdict.json
 ledger_last_token_address,nemotron-3.5-lightning,"slot probe at the last token, layer 51",0.9933333333333333,0.9828163881976537,1.0,300,results/x51_travel/x52_travel-20261029T012517Z/verdict.json
-ledger_zach_named,qwen3.5-9b,"Zach's named passages, lookup: switches lost beyond random",0.26315789473684215,0.1759137426900585,0.3571428571428572,,results/x50_zach/z1-20261028T161649Z/z1.json
-ledger_zach_named,qwen3.6-27b,"Zach's named passages, lookup: switches lost beyond random",0.2763157894736843,0.17948717948717952,0.381578947368421,,results/x50_zach/z1-20261028T161649Z/z1.json
-ledger_zach_named,muse-glimmer-30b,"Zach's named passages, lookup: switches lost beyond random",0.6,0.3793103448275863,0.8148148148148149,,results/x50_zach/z1-20261028T161649Z/z1.json
-ledger_zach_named,qwen3.5-9b,"Zach's named passages, recall: switches lost beyond random",0.6352201257861635,0.5555555555555557,0.7115384615384615,,results/x50_zach/z1-20261028T161649Z/z1.json
-ledger_zach_named,qwen3.6-27b,"Zach's named passages, recall: switches lost beyond random",0.5793650793650794,0.49193548387096764,0.663553525913339,,results/x50_zach/z1-20261028T161649Z/z1.json
-ledger_zach_named,muse-glimmer-30b,"Zach's named passages, recall: switches lost beyond random",0.8118811881188119,0.72,0.9047619047619048,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.26315789473684215,0.1759137426900585,0.3571428571428572,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, made-up facts, lookup: switches lost beyond random",-0.04761904761904767,-0.13043478260869545,0.03389830508474567,,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.2763157894736843,0.17948717948717952,0.381578947368421,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.15000000000000002,0.06349206349206349,0.24528301886792458,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.6,0.3793103448275863,0.8148148148148149,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,nemotron-3.5-lightning,"our main test (L14), lookup: switches lost beyond random",0.033333333333333326,-0.012345679012345623,0.08108108108108103,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, true facts, lookup: switches lost beyond random",0.15454545454545465,0.06796116504854366,0.24561403508771928,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.02631578947368418,-0.09722222222222221,0.14864864864864857,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, true facts, recall: switches lost beyond random",0.6352201257861635,0.5555555555555557,0.7115384615384615,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.5-9b,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.588957055214724,0.505952380952381,0.6730769230769231,,results/x50_zach/x52_z1p-20261029T081112Z/z1p.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, true facts, recall: switches lost beyond random",0.5793650793650794,0.49193548387096764,0.663553525913339,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,qwen3.6-27b,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.6171874999999999,0.5294117647058825,0.7024849229394684,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, true facts, recall: switches lost beyond random",0.8118811881188119,0.72,0.9047619047619048,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,nemotron-3.5-lightning,"our main test (L14), recall: switches lost beyond random",0.34391534391534384,0.2499999999999999,0.44171779141104295,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
+ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, true facts, recall: switches lost beyond random",0.47590361445783136,0.4049079754601227,0.5510233070500926,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
+ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.47619047619047616,0.4076424466906674,0.5499999999999998,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: identity share",0.43333333333333335,0.2982456140350877,0.5645161290322581,60,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: position share",0.1,0.01818181818181818,0.1935483870967742,60,results/x50_zach/z3-20261028T163053Z/z3.json
 ledger_zach_routes,qwen3.5-9b,"L12, whole change: value share",0.0,0.0,0.0,60,results/x50_zach/z3-20261028T163053Z/z3.json
@@ -5497,6 +5755,15 @@ ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'the other reader's answer
 ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'a same-class word not in the scene',0.0027,0.0,0.0075,50,results/x52_atoms/report-20261029T000125Z/tables.json
 ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'function words and punctuation',0.0088,0.004,0.0141,50,results/x52_atoms/report-20261029T000125Z/tables.json
 ledger_atoms,muse-glimmer-30b,z2 M: rebuilt energy in 'other',0.9573,0.944,0.97,50,results/x52_atoms/report-20261029T000125Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'the original bridge word',0.0901,0.0735,0.1042,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'the new bridge word',0.1107,0.0893,0.1312,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'another item named in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'a person's name in the scene',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'the reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'the other reader's answer word',0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'a same-class word not in the scene',0.0037,0.0006,0.008,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'function words and punctuation',0.0086,0.0041,0.0131,50,results/x52_atoms/report-20261029T010648Z/tables.json
+ledger_atoms,nemotron-3.5-lightning,e1 PM: rebuilt energy in 'other',0.7869,0.7581,0.818,50,results/x52_atoms/report-20261029T010648Z/tables.json
 ledger_read_window,qwen3.5-9b,"his named passages, layer 2: lookup switched",0.89,0.8365266393442623,0.9356435643564357,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
 ledger_read_window,qwen3.5-9b,"his named passages, layer 4: lookup switched",0.88,0.8274111675126904,0.9248855633802817,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
 ledger_read_window,qwen3.5-9b,"his named passages, layer 6: lookup switched",0.885,0.8324873096446701,0.9300058139534884,200,results/x51_depth/x51_5-20261028T181100Z/x51_5.json
@@ -5591,6 +5858,8 @@ ledger_described,qwen3.6-27b,L32: our gap (recall minus lookup extra loss),-0.11
 ledger_described,qwen3.6-27b,"Zach's knock-out, recall minus lookup",0.44594594594594594,0.32,0.5652173913043478,,results/x50_zach/z2-20261028T162710Z/z2.json
 ledger_described,muse-glimmer-30b,L26: our gap (recall minus lookup extra loss),-0.16666666666666674,-0.7499999999999999,0.6071428571428572,,results/x50_zach/z2-20261028T162710Z/z2.json
 ledger_described,muse-glimmer-30b,"Zach's knock-out, recall minus lookup",0.6,0.4827586206896552,0.711864406779661,,results/x50_zach/z2-20261028T162710Z/z2.json
+ledger_described,nemotron-3.5-lightning,L14: our gap (recall minus lookup extra loss),-0.00021630975556985454,-0.16563318530106486,0.17128176171654425,,results/x50_zach/x52_z2-20261029T025625Z/z2.json
+ledger_described,nemotron-3.5-lightning,"Zach's knock-out, recall minus lookup",0.36363636363636365,0.23809523809523808,0.49206349206349204,,results/x50_zach/x52_z2-20261029T025625Z/z2.json
 ledger_address_swap,qwen3.5-9b,dose 1: lookups sent to the target,0.018333333333333333,0.008305647840531562,0.03076923076923077,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
 ledger_address_swap,qwen3.5-9b,dose 1: recalls changed,0.04,,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
 ledger_address_swap,qwen3.5-9b,dose 2: lookups sent to the target,0.4583333333333333,0.42131109593199756,0.49691358024691357,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
@@ -5741,6 +6010,38 @@ ledger_pooled_probe,muse-glimmer-30b,"L13: who picked it, pooled over the locker
 ledger_pooled_probe,muse-glimmer-30b,"L13: who picked it, best single token",0.3118,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
 ledger_pooled_probe,muse-glimmer-30b,"L26: who picked it, pooled over the locker sentence",0.29411764705882354,0.23076923076923078,0.3630573248407643,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
 ledger_pooled_probe,muse-glimmer-30b,"L26: who picked it, best single token",0.407,,,,results/x49_probe/x49_3-20261028T154604Z/x49_3.json
+ledger_last_conflict,qwen3.5-9b,lookup L24: switches lost without the lens part beyond random (last token),0.11764705882352942,0.0,0.23404255319148937,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,"lookup L24: the rest alone, share of the whole change",0.3529411764705882,0.18867924528301888,0.5217391304347826,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,lookup L27: switches lost without the lens part beyond random (last token),0.16363636363636364,0.08064516129032258,0.2608695652173913,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,"lookup L27: the rest alone, share of the whole change",0.16363636363636364,0.0392156862745098,0.2923076923076923,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,recall L24: switches lost without the lens part beyond random (last token),0.0704225352112676,-0.029850746268656737,0.18181818181818182,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,"recall L24: the rest alone, share of the whole change",0.7887323943661972,0.6666666666666667,0.9027777777777778,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,recall L27: switches lost without the lens part beyond random (last token),0.19718309859154928,0.057142857142857204,0.32812500000000006,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.5-9b,"recall L27: the rest alone, share of the whole change",0.591549295774648,0.4545454545454546,0.7323943661971831,75,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,lookup L59: switches lost without the lens part beyond random (last token),0.14285714285714285,0.0,0.2857142857142857,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,"lookup L59: the rest alone, share of the whole change",0.09523809523809523,0.0,0.25,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,lookup L60: switches lost without the lens part beyond random (last token),0.12903225806451615,0.030303030303030304,0.25,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,"lookup L60: the rest alone, share of the whole change",0.1935483870967742,0.06896551724137931,0.33333333333333337,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,recall L56: switches lost without the lens part beyond random (last token),0.029850746268656737,-0.09261111111111103,0.137944297082228,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,"recall L56: the rest alone, share of the whole change",0.7910447761194029,0.6438356164383562,0.9298245614035088,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,recall L59: switches lost without the lens part beyond random (last token),0.6323529411764706,0.5352112676056338,0.7321428571428572,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,qwen3.6-27b,"recall L59: the rest alone, share of the whole change",0.25,0.15,0.3661971830985915,69,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,lookup L32: switches lost without the lens part beyond random (last token),0.0,0.0,0.0,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,"lookup L32: the rest alone, share of the whole change",1.0,1.0,1.0,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,lookup L33: switches lost without the lens part beyond random (last token),0.0,0.0,0.0,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,"lookup L33: the rest alone, share of the whole change",1.0,1.0,1.0,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,recall L40: switches lost without the lens part beyond random (last token),0.10294117647058831,0.015151515151515138,0.215392156862745,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,"recall L40: the rest alone, share of the whole change",0.8529411764705882,0.7246251874062969,0.9560559006211179,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,recall L44: switches lost without the lens part beyond random (last token),0.3382352941176471,0.19696969696969702,0.4918097840228987,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,muse-glimmer-30b,"recall L44: the rest alone, share of the whole change",0.6176470588235294,0.4589993169398907,0.7611940298507462,68,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,lookup L32: switches lost without the lens part beyond random (last token),0.0,0.0,0.0,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,"lookup L32: the rest alone, share of the whole change",0.981132075471698,0.9464285714285714,1.0,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,lookup L43: switches lost without the lens part beyond random (last token),0.288135593220339,0.18333333333333335,0.3870967741935484,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,"lookup L43: the rest alone, share of the whole change",0.6271186440677966,0.5,0.7586366538952743,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,recall L36: switches lost without the lens part beyond random (last token),0.375,0.21739130434782614,0.532258064516129,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,"recall L36: the rest alone, share of the whole change",0.46428571428571425,0.2857142857142857,0.629642313546423,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,recall L47: switches lost without the lens part beyond random (last token),0.6610169491525424,0.5681818181818182,0.75,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
+ledger_last_conflict,nemotron-3.5-lightning,"recall L47: the rest alone, share of the whole change",0.22033898305084745,0.125,0.31035647716682185,59,results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

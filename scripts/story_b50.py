@@ -37,6 +37,15 @@ CAPTION = "#555555"
 CAPTION_CHARS = 110  # caption characters per line at 10 pt in the 8.8 in column
 MUSE_BAND = "Muse's rung 6 ran at L23–29; his band is L36–42, where it was not run"
 MUSE_DAGGER = "† Muse's rung 6 ran at L23–29, outside his band (L36–42)"  # the one caption line (Dan, 21:55)
+ZACH_MUSE_BAND = list(range(36, 43))  # Muse's rerun (r3, muse30_x52_ladder) ran rung 6 here: no dagger then
+
+
+def muse_outside_band(ladder: dict) -> bool:
+    """True when the ladder verdict's Muse rung 6 ran outside Zach's band (the first run), so the dagger is drawn."""
+    m = next((x for x in ladder["models"] if x["target"] == "muse-glimmer-30b"), None)
+    return m is not None and m.get("band") != ZACH_MUSE_BAND
+
+
 # the ladder's rungs in words, two lines each: where, then what is added (49.2's rung_text; Dan's round 3, 28 Oct
 # 21:10; rungs 5 and 6 are two definitions, not one). Dan (21:55): each rung's full meaning is in the README's Setup,
 # so the ticks stay short and leave room for the end labels
@@ -185,7 +194,7 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
                 ax.plot([x, x], [100 * c[1], 100 * c[2]], color="#1e1e1e", lw=1.1, zorder=3, solid_capstyle="butt")
                 ax.plot([x - LADDER_BAR_W * 0.55, x + LADDER_BAR_W * 0.55], [100 * own] * 2, color=NULL, lw=2.4,
                         zorder=4, solid_capstyle="butt", path_effects=[pe.withStroke(linewidth=3.6, foreground="white")])  # fmt: skip
-        if m == "muse" and 6 in rungs:  # rung 6 outside Zach's band on Muse (the caption's dagger)
+        if m == "muse" and 6 in rungs and muse_outside_band(v):  # rung 6 outside Zach's band on Muse (the dagger)
             top = max(100 * mod["cells"][w][g]["cost"]["6"][2] for w, g, *_ in LADDER_BARS)
             # above its bars' whiskers and clear of the 10 pp line
             ax.text(RUNG_X[6], max(top, 10) + 4, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
@@ -208,7 +217,10 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
                loc="upper left", bbox_to_anchor=(0.0, 1 - 0.74 / h), frameon=False, ncol=2, handlelength=1.6,
                columnspacing=1.6)  # fmt: skip
     # Dan (21:55): one caption line; L to L+3 and the rungs' meanings are in the README's Setup
-    line = MUSE_DAGGER + "." + (f" Grey columns: not run ({'; '.join(greyed)})." if greyed else "")
+    line = (
+        MUSE_DAGGER + "." if muse_outside_band(v) else "Each model's full run; Muse's rung 6 inside his band (L36–42)."
+    )
+    line += f" Grey columns: not run ({'; '.join(greyed)})." if greyed else ""
     line += f" Omitted: {'; '.join(omitted)}." if omitted else ""
     if lightning:  # no rung ran on Lightning: one row, its name and why, under the rung labels
         y = (bottom_in - 0.72) / h
@@ -274,7 +286,9 @@ def build_two_by_two(
     lightning: Lightning the fourth column, hollow, from its coverage folders (readme_story_figures.LT_*); the ladder
     did not run on it (its gate), so its (1, 0) cell is empty."""
     lad_path, z1_path = ladder_dir / "x49_2.json", z1_dir / "z1.json"
-    lad = {m["target"]: m for m in json.loads(lad_path.read_text())["models"] if m.get("status") == "tested"}
+    lad_v = json.loads(lad_path.read_text())
+    lad = {m["target"]: m for m in lad_v["models"] if m.get("status") == "tested"}
+    dagger = muse_outside_band(lad_v)
     z1 = {m["target"]: m for m in json.loads(z1_path.read_text())["models"] if m.get("status") == "tested"}
     z1_src = dict.fromkeys(z1, rel(z1_path))
     columns = MODELS
@@ -363,7 +377,9 @@ def build_two_by_two(
 
     # Dan (21:55): one caption line, Muse's dagger and the empty cells; the grey tick's meaning is the legend's and the
     # README's Setup, the K items and the two scopes are E1's card and Zach's report
-    lines = [MUSE_DAGGER + ". Empty cells: " + ("; ".join(omitted) if omitted else "none") + "."]
+    lines = [
+        (MUSE_DAGGER + ". " if dagger else "") + "Empty cells: " + ("; ".join(omitted) if omitted else "none") + "."
+    ]
     lines += [F.LT_NOTE] if lightning else []
     plt = S.setup()
     cell_in, gap_in, top_in = 1.75, 0.62, 1.85
@@ -383,7 +399,7 @@ def build_two_by_two(
             mark(ax, i, v, INK, "remove", ms=8.5, hollow=columns[i][1] == "lightning")
             ax.text(i + 0.3, v[0], f"{v[0]:.2f}", ha="left", va="center", fontsize=S.FONT - 1, color="#333333",
                     zorder=5)  # fmt: skip
-            if (r, c) == (1, 0) and columns[i][1] == "muse":  # the caption line's dagger
+            if (r, c) == (1, 0) and columns[i][1] == "muse" and dagger:  # the caption line's dagger
                 ax.text(i, max(v[0], ctl) + 0.12, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
         if items:  # Dan (21:50): each cell names its grey tick, under the first one
             i, _, ctl = items[0]

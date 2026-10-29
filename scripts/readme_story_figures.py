@@ -3098,13 +3098,14 @@ FINDINGS = (
     ("What the lookup reads", "The lookup's “which item” lives outside the lens", "6"),
     ("What the lookup reads", "The address can be removed, and a swap redirects the lookup", "4a"),
     ("What the lookup reads", "Adding the address alone brings position answers back", "4b"),
-    ("What the lookup reads", "With six lockers, every locker has its own code", "10"),
+    ("What the lookup reads",
+     "With six lockers, swaps between given lockers work on most pairs; the code's size is not settled", "10"),
     ("What the lookup reads", "The lens cannot read the address", "9a"),
     ("Where and when the link is made",
      "The bridge word redirects the lookup only when its locker sentence came first", "3"),
     ("Where and when the link is made", "Lookups the change at L misses were read from the bridge word before L", "11"),
     ("Where and when the link is made",
-     "Identity route early, position route late; the address is readable before it is used", "7"),
+     "The address is readable before the lookup uses it, and the lookup never reads the value", "7"),
 )  # fmt: skip
 # Fig. 12's rows (Dan's figures brief, ~18:30): off the main figure until the reruns on Zach's P items land (Dan
 # 21:20); kept in the supplement version (s11_scorecard_all), in their own group
@@ -3655,28 +3656,37 @@ def batch47_numbers() -> None:
     m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
     src = str(v.relative_to(S.REPO))
     for k in ("0", "5", "20", "50"):
-        S.record("e6_distance", m["target"], f"47.16: position share with {k} neutral sentences", m["position"][k], source=src)
+        S.record(
+            "e6_distance",
+            m["target"],
+            f"47.16: position share with {k} neutral sentences",
+            m["position"][k],
+            source=src,
+        )
         S.record("e6_distance", m["target"], f"47.16: slot probe with {k} neutral sentences", m["probe"][k], source=src)
         S.record("e6_distance", m["target"], f"47.16: the swap (fit with none) sends lookups to the target, {k} sentences",
                  m["swap_target"][k], source=src)  # fmt: skip
         if k in m["betas"]:
             S.record("e6_distance", m["target"], f"47.16: the code's shift beta with {k} sentences", *m["betas"][k]["beta"],
                      source=src)  # fmt: skip
-    v = latest_verdict("x47_atoms/x47_1-*") / "x47_1.json"
-    src = str(v.relative_to(S.REPO))
-    for m in json.loads(v.read_text())["models"]:
-        for part in ("1-25", "26-100", "1-100"):
-            if part in m.get("routes", {}).get("falls", {}):
-                S.record("e3_identity", m["target"], f"47.1: identity answers lost beyond random without lens directions {part}",
-                         *m["routes"]["falls"][part]["identity"], source=src)  # fmt: skip
-    v = latest_verdict("x47_cumulative/x47_4-*") / "x47_4.json"
-    src = str(v.relative_to(S.REPO))
-    for m in json.loads(v.read_text())["models"]:
-        for design, cells in m.get("cells", {}).items():
-            after = cells.get("lookup", {}).get("locker-after")
-            if after:
-                S.record("e11_before_l", m["target"], f"47.4: {design}, locker after the pick: lookups carried by the bridge word "
-                         "before L", *after["terms"]["before_L"], n=after["n"], source=src)  # fmt: skip
+    # 47.1 and 47.4: the first verdicts, then batch 52's coverage folders (Lightning; the 27B's 47.4), by explicit path
+    for v in (latest_verdict("x47_atoms/x47_1-*") / "x47_1.json",
+              pins.RESULTS_DIR / "x47_atoms" / "x52_atoms47-20261029T011717Z" / "x47_1.json"):  # fmt: skip
+        src = str(v.relative_to(S.REPO))
+        for m in json.loads(v.read_text())["models"]:
+            for part in ("1-25", "26-100", "1-100"):
+                if part in m.get("routes", {}).get("falls", {}):
+                    S.record("e3_identity", m["target"], f"47.1: identity answers lost beyond random without lens directions {part}",
+                             *m["routes"]["falls"][part]["identity"], source=src)  # fmt: skip
+    for v in (latest_verdict("x47_cumulative/x47_4-*") / "x47_4.json",
+              pins.RESULTS_DIR / "x47_cumulative" / "x52_cumulative-20261029T044453Z" / "x47_4.json"):  # fmt: skip
+        src = str(v.relative_to(S.REPO))
+        for m in json.loads(v.read_text())["models"]:
+            for design, cells in m.get("cells", {}).items():
+                after = cells.get("lookup", {}).get("locker-after")
+                if after and after.get("n"):
+                    S.record("e11_before_l", m["target"], f"47.4: {design}, locker after the pick: lookups carried by the bridge word "
+                             "before L", *after["terms"]["before_L"], n=after["n"], source=src)  # fmt: skip
     v = latest_verdict("x47_value/x47_7a-*") / "x47_7a.json"
     m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
     src = str(v.relative_to(S.REPO))
@@ -3685,13 +3695,15 @@ def batch47_numbers() -> None:
                  source=src)  # fmt: skip
 
 
-# the runs behind the README's data catalogue (Dan's restructure brief, 28 Oct 22:20), 9B / 27B / Muse
+# the runs behind the README's data catalogue (Dan's restructure brief, 28 Oct 22:20), 9B / 27B / Muse, and Lightning
+# (batch 52; no clean one-pick run passed its gate)
 CATALOGUE_RUNS = {
     "clean one-pick": ("x0_necessity", {"qwen3.5-9b": "qwen35_9b_x45m_fresh", "qwen3.6-27b": "x45m_fresh_27b",
                                         "muse-glimmer-30b": "muse30b_x45m_fresh"}, ""),
-    "routes": ("x6_routes", {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
-                             "muse-glimmer-30b": "muse30b_x6_routes"}, "C2"),
-    "six-locker": ("x47_six", {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2"}, "M6"),
+    "routes":("x6_routes", {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
+                             "muse-glimmer-30b": "muse30b_x6_routes", "nemotron-3.5-lightning": "nem35l_x52_routes"}, "C2"),
+    "six-locker": ("x47_six", {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2",
+                               "nemotron-3.5-lightning": "nem35l_x52_six"}, "M6"),
 }  # fmt: skip
 
 
@@ -3714,34 +3726,51 @@ def card_numbers() -> None:
         S.record("catalogue", target, "natural passages: scenes eligible", gate["eligible"],
                  source=rel(base / run / "gate.json"))  # fmt: skip
     fig09a = {(r["model"], r["quantity"]): r for r in S.ROWS if r["figure"] == "fig09a"}
-    for target, _, _ in CARD_MODELS:
+    for target, _, _ in (*CARD_MODELS, LT):
         rows = [fig09a[(target, f"recall extra loss without the J++ part: {f}")] for f in ("prose", "json", "table")]
         S.record("catalogue", target, "varied scenes: scenes used (prose, JSON and table)", sum(r["n"] for r in rows),
                  source=rows[0]["source"])  # fmt: skip
-        r = fig09a[(target, "recall extra loss without the J++ part: natural")]
-        S.record("catalogue", target, "natural passages: scenes used (fact first)", r["n"], source=r["source"])
+        r = fig09a.get((target, "recall extra loss without the J++ part: natural"))  # Lightning: below gate, not drawn
+        if r:
+            S.record("catalogue", target, "natural passages: scenes used (fact first)", r["n"], source=r["source"])
     for z, what in (("z1", "named bridge"), ("z2", "described bridge")):
         v = latest_verdict(f"x50_zach/{z}-*") / f"{z}.json"
         for m in json.loads(v.read_text())["models"]:
             S.record("catalogue", m["target"], f"Zach's passages, {what}: passages used", m["gate"]["chosen"],
                      source=rel(v))  # fmt: skip
+    for m in json.loads(LT_Z1.read_text())["models"]:
+        S.record("catalogue", m["target"], "Zach's passages, named bridge: passages used", m["gate"]["chosen"],
+                 source=rel(LT_Z1))  # fmt: skip
+    v = pins.RESULTS_DIR / "x5_natural" / "nem35l_x52_natural_below" / "gate.json"
+    S.record("catalogue", LT[0], "natural passages: scenes eligible (below gate)", json.loads(v.read_text())["eligible"],
+             source=rel(v))  # fmt: skip
+    v = LT_CONFLICT
+    S.record("catalogue", LT[0], "main test: scenes used", next(c["n"] for c in json.loads(v.read_text())["cells"]
+             if c["layer"] == LT_L and c["reader"] == "PM"), source=rel(v))  # fmt: skip
+    # the answer control: 51.12's opened verdict (9B / 27B / Muse) and Lightning's coverage run (x52_answer, set e1)
+    lt_answer = pins.RESULTS_DIR / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.json"
+    for v in (latest_verdict("x51_answer/x51_12-*") / "verdict.json", lt_answer):
+        for m in json.loads(v.read_text())["models"]:
+            if m["set"] != "e1":
+                continue
+            rc = m["readers"]["recall"]
+            S.record("conflict_answer", m["target"], "main test, recall: share of its loss kept when the lens part keeps "
+                     "the answer words' directions", *rc["share2"], n=rc["n"], source=rel(v))  # fmt: skip
+            S.record("conflict_answer", m["target"], "main test, recall: switches lost beyond random without the answer "
+                     "words' directions only", *rc["extra"]["3"], n=rc["n"], source=rel(v))  # fmt: skip
+            S.record("conflict_answer", m["target"], "main test, recall: items whose answer word ranks below the lens's "
+                     "top 50 at the bridge word", *rc["check"]["not_read"], n=rc["n"], source=rel(v))  # fmt: skip
+            S.record("conflict_answer", m["target"], "main test, recall: the rule's label (page words)",
+                     ANSWER_LABEL[rc["key"]], source=rel(v))  # fmt: skip
     v = latest_verdict("x51_answer/x51_12-*") / "verdict.json"
-    for m in json.loads(v.read_text())["models"]:
-        if m["set"] != "e1":
-            continue
-        rc = m["readers"]["recall"]
-        S.record("conflict_answer", m["target"], "main test, recall: share of its loss kept when the lens part keeps "
-                 "the answer words' directions", *rc["share2"], n=rc["n"], source=rel(v))  # fmt: skip
-        S.record("conflict_answer", m["target"], "main test, recall: switches lost beyond random without the answer "
-                 "words' directions only", *rc["extra"]["3"], n=rc["n"], source=rel(v))  # fmt: skip
-        S.record("conflict_answer", m["target"], "main test, recall: items whose answer word ranks below the lens's "
-                 "top 50 at the bridge word", *rc["check"]["not_read"], n=rc["n"], source=rel(v))  # fmt: skip
-        S.record("conflict_answer", m["target"], "main test, recall: the rule's label (page words)",
-                 ANSWER_LABEL[rc["key"]], source=rel(v))  # fmt: skip
     # Part VI (Dan 29 Oct ~01:00): the described bridge on Zach's passages withdrawn, and the locker scenes' answer check
     for m in json.loads(v.read_text())["models"]:
         for w, r in m["readers"].items() if m["set"] in ("z2", "cue") else ():
-            fig, what = ("withdrawn_z2", "Zach's described passages") if m["set"] == "z2" else ("cue_answer", "the described bridge in locker scenes")
+            fig, what = (
+                ("withdrawn_z2", "Zach's described passages")
+                if m["set"] == "z2"
+                else ("cue_answer", "the described bridge in locker scenes")
+            )
             ch = r.get("check", {})
             S.record(fig, m["target"], f"{what}, {w}: the answer word's median lens rank at the changed token (original prompt), rounded",
                      int(ch["median_rank_O"] + 0.5), n=r["n"], source=rel(v))  # fmt: skip
@@ -3754,15 +3783,16 @@ def card_numbers() -> None:
             if r["extra"].get("3f"):
                 S.record(fig, m["target"], f"{what}, {w}: switches lost beyond a frequency-matched part without the answer "
                          "directions only", *r["extra"]["3f"], n=r["n"], source=rel(v))  # fmt: skip
-    v = latest_verdict("x51_dose/x51_1-*") / "verdict.json"
-    for m in json.loads(v.read_text())["models"]:
-        S.record("dose_rules", m["target"], "dose curves: main-test scenes, locker sentences first", m["n"],
-                 source=rel(v))  # fmt: skip
-        S.record("dose_rules", m["target"], "(i) the lookup is blind to the J++ part", m["rules"]["i"]["label"],
-                 source=rel(v))  # fmt: skip
-        S.record("dose_rules", m["target"], "(ii) the recall reads the J++ part above its share",
-                 m["rules"]["ii"]["recall"]["label"], source=rel(v))  # fmt: skip
-        S.record("dose_rules", m["target"], "(iii) together only", m["rules"]["iii"]["recall"]["label"], source=rel(v))
+    for v in (latest_verdict("x51_dose/x51_1-*") / "verdict.json", LT_DOSE / "verdict.json"):
+        for m in json.loads(v.read_text())["models"]:
+            S.record("dose_rules", m["target"], "dose curves: main-test scenes, locker sentences first", m["n"],
+                     source=rel(v))  # fmt: skip
+            S.record("dose_rules", m["target"], "(i) the lookup is blind to the J++ part", m["rules"]["i"]["label"],
+                     source=rel(v))  # fmt: skip
+            S.record("dose_rules", m["target"], "(ii) the recall reads the J++ part above its share",
+                     m["rules"]["ii"]["recall"]["label"], source=rel(v))  # fmt: skip
+            S.record("dose_rules", m["target"], "(iii) together only", m["rules"]["iii"]["recall"]["label"],
+                     source=rel(v))  # fmt: skip
     v = latest_verdict(LADDER_VERDICT) / "x49_2.json"
     for m in json.loads(v.read_text())["models"]:
         rules = m["rules"] or {}
@@ -3771,19 +3801,277 @@ def card_numbers() -> None:
                           ("lookup", "the lookup never needs it")):  # fmt: skip
             label = ("yes" if rules[key] else "no") if key in rules else "not run (bridge-word steps only)"
             S.record("ladder_rules", m["target"], what, label, source=rel(v))
-    # the 27B's full ladder (coverage run x52_ladder_27b_a, 29 Oct), recorded beside the first run's rows (which stay)
-    # so the card's 27B column can be filled without changing Fig. 1d
-    v = pins.RESULTS_DIR / "x49_ladder" / "x52_ladder-20261029T012701Z" / "x49_2.json"
-    m = next(x for x in json.loads(v.read_text())["models"] if x["target"] == "qwen3.6-27b")
-    for key, what in (("second_copy", "the second copy is the earlier mention"),
-                      ("only_everything", "needed only when everything goes"),
-                      ("lookup", "the lookup never needs it")):  # fmt: skip
-        S.record("ladder_27b_full", m["target"], what, "yes" if m["rules"][key] else "no", source=rel(v))
-    for group, label in (("locker-first", "recall, locker before the pick"), ("locker-after", "recall, locker after the pick")):
-        cell = m["cells"]["recall"][group]
-        for r in ("2", "3", "5"):
-            S.record("ladder_27b_full", m["target"], f"rung {r}: {label}: answers lost beyond random",
-                     *[round(x, 4) for x in cell["cost"][r]], n=cell["n"], source=rel(v))  # fmt: skip
+
+
+def ladder_agreement() -> None:
+    """How we checked (flag 20): the largest difference between the ladder's first runs and the full reruns the README
+    cites, per reader over every scene (point estimates), on the steps both ran at the same layers: Muse's step 6 moved
+    into Zach's layer band in the rerun (r3), so it is recorded apart; each order's own largest difference beside."""
+    first, full = (latest_verdict(p) / "x49_2.json" for p in (LADDER_FIRST, LADDER_VERDICT))
+    old = {m["target"]: m for m in json.loads(first.read_text())["models"]}
+    worst, worst_order, moved = 0.0, 0.0, 0.0
+    for m in json.loads(full.read_text())["models"]:
+        o = old.get(m["target"])
+        for reader, groups in m["cells"].items():
+            for group, cell in groups.items():
+                ocell = ((o or {}).get("cells") or {}).get(reader, {}).get(group)
+                if not ocell:
+                    continue
+                for r, cost in cell["cost"].items():
+                    if r not in ocell["cost"]:
+                        continue
+                    d = abs(cost[0] - ocell["cost"][r][0])
+                    if m["target"] == "muse-glimmer-30b" and r == "6":
+                        moved = max(moved, d) if group == "all" else moved
+                    elif group == "all":
+                        worst = max(worst, d)
+                    else:
+                        worst_order = max(worst_order, d)
+    src = f"{rel(first)}; {rel(full)}"
+    S.record("cards", "", "the ladder: largest difference between the first runs and the full reruns, every scene, "
+             "on the steps both ran at the same layers", round(worst, 4), source=src)  # fmt: skip
+    S.record("cards", "", "the ladder: the same within one sentence order", round(worst_order, 4), source=src)
+    S.record("cards", "muse-glimmer-30b", "the ladder: step 6's difference, every scene (moved into Zach's band)",
+             round(moved, 4), source=src)  # fmt: skip
+
+
+# Batch 52's coverage folders and the morning's CPU checks the README quotes (Dan's README brief, 29 Oct 08:55-09:35),
+# each read by its explicit folder (a newest-folder pattern would pick another model's coverage run)
+R = pins.RESULTS_DIR
+X52 = {
+    "zero": R / "x47_zero" / "x52_zero-20261029T032056Z" / "x47_5.json",
+    "x0b": LT_X0B,
+    "natural": R / "x5_natural" / "nem35l_x52_natural_below" / "verdict-20261029T082128Z" / "verdict.json",
+    "atoms": (R / "x52_atoms" / "report-20261029T000125Z" / "tables.json",
+              R / "x52_atoms" / "report-20261029T010648Z" / "tables.json"),
+    "lenswrite": R / "x51_jread" / "x52_lenswrite-20261029T080535Z" / "lenswrite.json",
+    "swaprecall": R / "x8_write" / "x52_swaprecall-20261029T080538Z" / "swaprecall.json",
+    "x8_write": {"qwen3.5-9b": "qwen35_9b_x8_write/verdict-20261026T110254Z",
+                 "qwen3.6-27b": "x8_write_27b/verdict-20261026T125548Z",
+                 "muse-glimmer-30b": "muse30b_x8_write/verdict-20261026T141141Z",
+                 "nemotron-3.5-lightning": "nem35l_x52_write/verdict-20261029T005021Z"},
+    "z1": (R / "x50_zach" / "z1-20261028T161649Z" / "z1.json", LT_Z1),
+    "z1p": (R / "x50_zach" / "x52_z1p-20261029T081112Z" / "z1p.json", R / "x50_zach" / "x52_z1p-20261029T081323Z" / "z1p.json",
+            R / "x50_zach" / "x52_z1p-20261029T080731Z" / "z1p.json"),
+    "carrier": (R / "x51_carrier" / "x51_7-20261028T171646Z" / "verdict.json",
+                R / "x51_carrier" / "x52_carrier-20261029T014338Z" / "verdict.json"),
+    "travel": (R / "x51_travel" / "x51_4-20261028T173333Z" / "verdict.json",
+               R / "x51_travel" / "x52_travel-20261029T012517Z" / "verdict.json"),
+    "z3": (R / "x50_zach" / "z3-20261028T163053Z" / "z3.json", R / "x50_zach" / "x52_z3-20261029T024151Z" / "z3.json",
+           R / "x50_zach" / "x52_z3-20261029T013329Z" / "z3.json"),
+    "persistence": (R / "x47_depth_cpu" / "persistence-20261029T013614Z" / "persistence.json",
+                    R / "x47_depth_cpu" / "persistence-20261029T015607Z" / "persistence.json"),
+    "anatomy": (R / "x47_anatomy" / "x47_8-20261028T154518Z" / "x47_8.json",
+                R / "x47_anatomy" / "x52_anatomy-20261029T013405Z" / "x47_8.json", LT_ANATOMY),
+    "six_27b": R / "x47_six" / "x52_six-20261029T004919Z" / "x47_2.json",
+    "addr": R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json",
+    "verbal": R / "x47_verbal" / "summary-20261029T005548Z" / "verbal.json",
+    "errors": R / "x47_errors" / "x47_13-20261029T035254Z" / "x47_errors.json",
+    "x45d": R / "x0b_generalize" / "nem35l_x52_x45d" / "x45d-20261029T035250Z" / "verdict.json",
+}  # fmt: skip
+
+
+def cards_numbers() -> None:
+    """Numbers the README quotes from batch 52's coverage runs (Lightning; the 27B's full grids) and the morning's CPU
+    checks, recorded as figure "cards" with each verdict file as source. Lightning's gate was chosen after its 60-scene
+    pre-check was seen: the page marks its numbers hollow."""
+    lt = LT[0]
+
+    def rec(model: str, what: str, v, src: Path, n=None) -> None:
+        vals = list(v) if isinstance(v, (list, tuple)) else [v]
+        S.record("cards", model, what, *vals[:3], n=n, source=rel(src))
+
+    # the conflict test at Lightning's layer (rule copied from the 9B; layer fixed by amendment 1)
+    v = json.loads(LT_CONFLICT.read_text())
+    rec(lt, "L: the layer fixed in advance", v["verdict"]["predicted"], LT_CONFLICT)
+    cells = {c["reader"]: c for c in v["cells"] if c["layer"] == LT_L and c["dict"] == "jpp"}
+    rec(
+        lt, "conflict: recall, switches lost beyond a random part", cells["PM"]["excess"], LT_CONFLICT, cells["PM"]["n"]
+    )
+    rec(lt, "conflict: recall, switches lost, not net of random", cells["PM"]["Jdep"], LT_CONFLICT, cells["PM"]["n"])
+    rec(
+        lt, "conflict: lookup, switches lost beyond a random part", cells["PP"]["excess"], LT_CONFLICT, cells["PP"]["n"]
+    )
+    rec(lt, "conflict: the rule", v["verdict"]["chat"]["verdict"], LT_CONFLICT)
+    # other texts: the varied scenes (pooled) and the natural passages (below gate: descriptive)
+    v = json.loads(LT_X0B.read_text())
+    pp = next(c for c in v["cells"] if c["layer"] == LT_L and c["reader"] == "PP" and c["dict"] == "jpp"
+              and c["k"] == 25 and c["omp"] == "signed")  # fmt: skip
+    rec(lt, "varied: lookup, switches lost beyond a random part", pp["excess"], LT_X0B, pp["n"])
+    rec(lt, "varied: the gap", v["contrast"][str(LT_L)], LT_X0B, pp["n"])
+    rec(lt, "varied: the rule", v["verdict"], LT_X0B)
+    p = X52["natural"]
+    v = json.loads(p.read_text())
+    rec(
+        lt,
+        "natural (below gate): recall, switches lost beyond a random part",
+        v["main"]["excess"]["PM"],
+        p,
+        v["main"]["n"],
+    )
+    rec(
+        lt,
+        "natural (below gate): lookup, switches lost beyond a random part",
+        v["main"]["excess"]["PP"],
+        p,
+        v["main"]["n"],
+    )
+    rec(lt, "natural (below gate): the gap", v["main"]["gap"], p, v["main"]["n"])
+    rec(lt, "natural (below gate): the rule's reading", v["label"], p)
+    # zeroing at one layer
+    p = X52["zero"]
+    m = json.loads(p.read_text())["models"][0]
+    rc = m["readers"]["recall"]
+    rec(
+        m["target"],
+        "47.5: recall's answers kept at L, the J++ part's 25 directions taken out",
+        rc["kept"]["zero_L"],
+        p,
+        rc["n"],
+    )
+    rec(m["target"], "47.5: recall's answers lost beyond random (L)", rc["beyond_random"]["L"], p, rc["n"])
+    rec(m["target"], "47.5: the rule's reading (recall at L)", m["labels"]["recall L"], p)
+    # 52 A: what the lens part's 25 directions stand for (descriptive; the e1 set, the recall's view)
+    for p in X52["atoms"]:
+        d = json.loads(p.read_text())
+        for target, sets in d["summary"].items():
+            s = sets["e1"]["PM"]
+            rec(target, "52 A: main-test scenes", s["n"], p)
+            for cls, what in (("bridge", "the original bridge word"), ("new_bridge", "the new bridge word"),
+                              ("answer_own", "the reader's answer word"), ("other", "no scene word")):  # fmt: skip
+                rec(target, f"52 A: share of the rebuilt energy in {what}", s["energy"][cls], p, s["n"])
+            atoms = [c for cls in ("bridge", "new_bridge") for c in s["bridge_by_match"].get(cls, {}).values()]
+            signed = sum(c["atoms"] * c["sign_as_expected"] for c in atoms) / sum(c["atoms"] for c in atoms)
+            rec(target, "52 A: the bridge words' directions whose sign points the expected way (old -, new +)",
+                round(signed, 4), p)  # fmt: skip
+            hand = d["hand"].get(f"{target} e1")
+            if hand:
+                rec(target, "52 A: hand-checked items (the lookup's view)", hand["items"], p)
+                rec(target, "52 A: hand labels agreeing with the classifier", hand["rate"], p, hand["atoms"])
+    # 51.10's writes at the last token: what the model outputs (descriptive)
+    p = X52["lenswrite"]
+    for target, m in json.loads(p.read_text())["models"].items():
+        c = m["cells"]
+        rec(target, "lenswrite: the recall keeps its clean answer under the lens swap", c["recall|swap"]["original"], p,
+            c["recall|swap"]["n"])  # fmt: skip
+        rec(target, "lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer", c["recall|jpp2"]["new"],
+            p, c["recall|jpp2"]["n"])  # fmt: skip
+        rec(target, "lenswrite: a random part at gain 2 gives the changed prompt's recall answer", c["recall|rand2"]["new"],
+            p, c["recall|rand2"]["n"])  # fmt: skip
+        rec(target, "lenswrite: the most outputs naming the entity or a number word, over every arm",
+            max(x[k] for x in c.values() for k in ("entity", "number_word")), p)  # fmt: skip
+    # 51.10: the rule's reading at the appended last token (P3), per reader; the 9B / 27B / Muse verdict and Lightning's
+    for p in (latest_verdict(JREAD_VERDICT) / "verdict.json", LT_JREAD / "verdict.json"):
+        v = json.loads(p.read_text())
+        for m in v["models"]:
+            for w in ("recall", "lookup"):
+                rec(
+                    m["target"],
+                    f"51.10: {w} at the last token: the rule's reading",
+                    v["labels"][m["target"]][w]["P3"],
+                    p,
+                )
+            rec(m["target"], "51.10: main-test scenes, locker first", m["n"], p)
+    # the address swap at s = 2: recalls that change, and of those, the swapped-in item's answer
+    for target, run in X52["x8_write"].items():
+        p = R / "x8_write" / run / "verdict.json"
+        cell = next(c for c in json.loads(p.read_text())["cells"] if c["kind"] == "write" and c["pair"] is None
+                    and c["s"] == 2)  # fmt: skip
+        rec(target, "the address swap at s = 2: recalls that change", cell["recall_changed"], p, cell["n"])
+    p = X52["swaprecall"]
+    for target, m in json.loads(p.read_text())["models"].items():
+        ch = m["cells"]["write|2"]["of_changed"]
+        rec(target, "the address swap at s = 2: changed recalls naming the swapped-in item's answer", ch["swapped_in"], p,
+            ch["n"])  # fmt: skip
+    # Zach's passages: Z1 (true facts) and Z1-P (made-up facts), at each model's L
+    for p in (*X52["z1"], *X52["z1p"]):
+        tag = "Z1-P" if p.name == "z1p.json" else "Z1"
+        for m in json.loads(p.read_text())["models"]:
+            r = m["layer_results"][str(m["layers"][0])]
+            rec(m["target"], f"{tag}: lookup, switches lost beyond a random part", r["lookup"]["excess"], p, r["n"])
+            rec(m["target"], f"{tag}: recall, switches lost beyond a random part", r["recall"]["excess"], p, r["n"])
+            rec(m["target"], f"{tag}: the gap", r["gap"], p, r["n"])
+            rec(m["target"], f"{tag}: the rule's reading", r["verdict"], p)
+            if tag == "Z1-P":
+                rec(m["target"], "Z1-P: the gate (the lookup's read accuracy on the original passages)",
+                    round(m["gate"]["org_read_accuracy"]["K"], 3), p)  # fmt: skip
+    # 51.7: fact-after lookups on the full carrier (the whole before-L)
+    for p in X52["carrier"]:
+        for m in json.loads(p.read_text())["models"]:
+            lk = m["groups"]["fact-after"]["before"]["lookup"]
+            rec(m["target"], "51.7: fact-after lookups, full carrier: switches lost beyond a random part", lk["excess"], p,
+                lk["n"])  # fmt: skip
+    # 51.4: does the address travel to the last token
+    for p in X52["travel"]:
+        for m in json.loads(p.read_text())["models"]:
+            rec(m["target"], "51.4: the rule's reading", m["label"], p)
+    # Z3: the routes test on Zach's passages, position share under the whole change at the first layer
+    for p in X52["z3"]:
+        for m in json.loads(p.read_text())["models"]:
+            r = m["layer_results"][str(m["layers"][0])]
+            rec(
+                m["target"],
+                "Z3: position share under the whole change",
+                r["shares"]["C2"]["whole"]["position"],
+                p,
+                r["n"],
+            )
+    # D4 on the 27B and Lightning (the 9B's and Muse's: Fig. 6c)
+    for p in X52["persistence"]:
+        for target, m in json.loads(p.read_text())["models"].items():
+            rec(
+                target,
+                "D4: the address's mean overlap over every pair of window layers",
+                round(m["U"]["mean_cos2"], 4),
+                p,
+            )
+    # 47.8's rules: the 9B, Muse and the 27B's reduced grid (first run); the 27B's full grid and Lightning (batch 52)
+    for p in X52["anatomy"]:
+        for m in json.loads(p.read_text())["models"]:
+            if m["status"] != "tested":
+                continue
+            grid = (
+                "" if m["target"] != "qwen3.6-27b" else (" (full grid)" if len(m["layers"]) > 10 else " (reduced grid)")
+            )
+            r = m["rules"]
+            for key, what in (
+                ("l_J", "the last layer the lookup needs the J++ part"),
+                ("l_P", "the first layer of the position route"),
+                ("l_probe", "the address readable from"),
+            ):
+                rec(m["target"], f"47.8{grid}: {what}", r[key], p)
+            for key, what in (
+                ("a", "(a) the handoff"),
+                ("b", "(b) readable before it is used"),
+                ("d", "(d) never the value"),
+            ):
+                rec(m["target"], f"47.8{grid}: {what}", "yes" if r[key]["holds"] else "no", p)
+    # six lockers: the 27B's coverage run (not in Fig. 9b)
+    p = X52["six_27b"]
+    m = next(x for x in json.loads(p.read_text())["models"] if x["target"] == "qwen3.6-27b")
+    rec(m["target"], "47.2: pairwise writes reaching 25% (dose 2)", m["rules"]["2"]["pairs_reaching"], p,
+        m["rules"]["2"]["pairs"])  # fmt: skip
+    # 51.11 on the 9B: the code's size and its shape
+    p = X52["addr"]
+    m = next(x for x in json.loads(p.read_text())["models"] if x["target"] == "qwen3.5-9b")
+    rec(m["target"], "51.11 part 1: the code's size", m["part1"]["rule"]["text"], p)
+    rec(m["target"], "51.11 part 3: the order", m["part3"]["rule"]["text"], p)
+    rec(m["target"], "51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2)",
+        m["part3"]["rule"]["mid"]["1"], p)  # fmt: skip
+    rec(m["target"], "51.11 part 3: full swaps reaching their target (dose 2)", m["part3"]["rule"]["full_far"], p)
+    # Lightning: the lens and the address (47.0), the lookup's errors (47.13), the refit address (45d)
+    p = X52["verbal"]
+    b = json.loads(p.read_text())["models"][lt]["b"]["all|25"]
+    rec(lt, "47.0 (b) share rebuilt by 25 lens directions: pointer", b["pointer"], p)
+    rec(lt, "47.0 (b) share rebuilt by 25 lens directions: random draws (mean)", b["random_mean"], p)
+    p = X52["errors"]
+    m = json.loads(p.read_text())["models"][0]
+    rec(m["target"], "47.13: wrong answers whose locker the address probe predicts", m["rates"]["match"]["probe"], p,
+        m["rates"]["n"])  # fmt: skip
+    p = X52["x45d"]
+    v = json.loads(p.read_text())
+    for fmt, cell in v["lookup_refit"].items():
+        rec(lt, f"45d: the refit address, lookup switches lost beyond random: {fmt}", cell, p)
 
 
 CARD_MODELS = tuple(m for m in S.MODELS if m[1] != "122b")  # 9B, 27B, Muse
@@ -3806,8 +4094,13 @@ def f_batch47(plt) -> None:
     batch47_figures(plt)
 
 
-# Dan's figures brief (28 Oct ~18:30): the mark legend, the removal ladder (E2, replacing fig01c) and the 2 x 2
-LADDER_VERDICT = "x49_ladder/x49_2-*"
+# Dan's figures brief (28 Oct ~18:30): the mark legend, the removal ladder (E2, replacing fig01c) and the 2 x 2. The
+# ladder: the full reruns for every step (Dan's flag-20 decision, 29 Oct 09:05): the 9B's run, the 27B's x52_ladder_27b_a
+# and Muse's r3 (muse30_x52_ladder) in one verdict, so no column mixes runs
+LADDER_VERDICT = "x49_ladder/x52_ladder-20261029T012701Z"
+LADDER_FIRST = (
+    "x49_ladder/x49_2-20261028T161612Z"  # the first runs (the 27B: bridge-word steps only), for the agreement
+)
 Z1_VERDICT = "x50_zach/z1-*"
 
 
@@ -3882,6 +4175,12 @@ def f17_jspace_last_token(plt) -> None:
                           "was seen.")  # fmt: skip
 
 
+def f18_atoms(plt) -> None:
+    from scripts import story_b52 as B52
+
+    B52.build_atoms(tuple(p.parent for p in X52["atoms"]), "fig18_atoms")
+
+
 def s17_jspace_grids(plt) -> None:
     from scripts import story_b51b as B51B
 
@@ -3892,7 +4191,7 @@ def s17_jspace_grids(plt) -> None:
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
-               f13_attention, f14_learned, f16_dose, f17_jspace_last_token)  # fmt: skip
+               f13_attention, f14_learned, f16_dose, f17_jspace_last_token, f18_atoms)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -3919,10 +4218,10 @@ SUPP_FIGS = (
 # Fig. 5b (the main test's parts) goes to the second sheet, linked from E1, to keep the sheet at fourteen. Dan's
 # restructure brief (28 Oct 22:20): one figure per card, every page figure on this sheet in page order; Part I's cards
 # show the dose curves (Fig. 16) and the earlier mention (Fig. 3c), the 2 x 2 moves to Part V
-README_NAMES = ("fig00_setup", "fig00b_marks", "fig01_split", "fig09a_transfer", "fig16_dose", "fig01d_ladder",
-                "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig06b_anatomy", "fig07_writes",
-                "fig09b_six_lockers", "fig07b_verbal", "fig03_order", "fig03d_depth_map",
-                "fig12_two_by_two")  # fmt: skip
+README_NAMES = ("fig00_setup", "fig00b_marks", "fig01_split", "fig18_atoms", "fig09a_transfer", "fig16_dose",
+                "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig06b_anatomy",
+                "fig07_writes", "fig09b_six_lockers", "fig07b_verbal", "fig03_order", "fig03d_depth_map",
+                "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
@@ -3983,6 +4282,8 @@ def main(argv: list[str] | None = None) -> None:
     probe_rows()
     batch47_numbers()
     card_numbers()
+    ladder_agreement()
+    cards_numbers()
     if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/ledger/, their rows into data.csv
         from scripts import ledger_figures as LF
 

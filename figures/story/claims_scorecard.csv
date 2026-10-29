@@ -20,9 +20,9 @@ id,group,claim,was,model,cell,flag,data.csv key,hand-checked
 7,What the lookup reads,Adding the address alone brings position answers back,4b,Qwen3.5-9B,ok,,numbers:rtk_C2_keep_alf_position_9b,no
 7,What the lookup reads,Adding the address alone brings position answers back,4b,Qwen3.6-27B,x,,numbers:rtk_C2_keep_alf_position_27b,no
 7,What the lookup reads,Adding the address alone brings position answers back,4b,Muse Glimmer 30B,ok,,numbers:rtk_C2_keep_alf_position_muse,no
-8,What the lookup reads,"With six lockers, every locker has its own code",10,Qwen3.5-9B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
-8,What the lookup reads,"With six lockers, every locker has its own code",10,Qwen3.6-27B,-,,,no
-8,What the lookup reads,"With six lockers, every locker has its own code",10,Muse Glimmer 30B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
+8,What the lookup reads,"With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",10,Qwen3.5-9B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
+8,What the lookup reads,"With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",10,Qwen3.6-27B,-,,,no
+8,What the lookup reads,"With six lockers, swaps between given lockers work on most pairs; the code's size is not settled",10,Muse Glimmer 30B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
 9,What the lookup reads,The lens cannot read the address,9a,Qwen3.5-9B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
 9,What the lookup reads,The lens cannot read the address,9a,Qwen3.6-27B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
 9,What the lookup reads,The lens cannot read the address,9a,Muse Glimmer 30B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
@@ -32,11 +32,11 @@ id,group,claim,was,model,cell,flag,data.csv key,hand-checked
 11,Where and when the link is made,Lookups the change at L misses were read from the bridge word before L,11,Qwen3.5-9B,ok,,"s03e_cumulative:47.4 main, locker-first, lookup: before_L",no
 11,Where and when the link is made,Lookups the change at L misses were read from the bridge word before L,11,Qwen3.6-27B,-,,,no
 11,Where and when the link is made,Lookups the change at L misses were read from the bridge word before L,11,Muse Glimmer 30B,ok,,"s03e_cumulative:47.4 main, locker-first, lookup: before_L",no
-12,Where and when the link is made,"Identity route early, position route late; the address is readable before it is used",7,Qwen3.5-9B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
-12,Where and when the link is made,"Identity route early, position route late; the address is readable before it is used",7,Qwen3.6-27B,ok,,fig06b:address formed: layer,no
-12,Where and when the link is made,"Identity route early, position route late; the address is readable before it is used",7,Muse Glimmer 30B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
+12,Where and when the link is made,"The address is readable before the lookup uses it, and the lookup never reads the value",7,Qwen3.5-9B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
+12,Where and when the link is made,"The address is readable before the lookup uses it, and the lookup never reads the value",7,Qwen3.6-27B,ok,,fig06b:address formed: layer,no
+12,Where and when the link is made,"The address is readable before the lookup uses it, and the lookup never reads the value",7,Muse Glimmer 30B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
 2×2,On Zach's passages (Fig. 12),"Both operations, both datasets: one direction",2×2,Qwen3.5-9B,ok,a,"fig12:our removal, our scenes (main test): gap",no
-2×2,On Zach's passages (Fig. 12),"Both operations, both datasets: one direction",2×2,Qwen3.6-27B,~,a,"fig12:our removal, our scenes (main test): gap",no
+2×2,On Zach's passages (Fig. 12),"Both operations, both datasets: one direction",2×2,Qwen3.6-27B,ok,a,"fig12:our removal, our scenes (main test): gap",no
 2×2,On Zach's passages (Fig. 12),"Both operations, both datasets: one direction",2×2,Muse Glimmer 30B,~,a,"fig12:our removal, our scenes (main test): gap",no
 Z1,On Zach's passages (Fig. 12),"Our removal on Zach's passages: the split, by degree",Z1,Qwen3.5-9B,x,degree,"fig12:our removal, his passages: gap",no
 Z1,On Zach's passages (Fig. 12),"Our removal on Zach's passages: the split, by degree",Z1,Qwen3.6-27B,x,degree,"fig12:our removal, his passages: gap",no

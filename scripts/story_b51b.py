@@ -392,6 +392,13 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
             S.record(out_name, t, f"51.10: {w}, last token: the read peak layer (the answer appears at layer "
                      f"{m['answer'][w]['layer']})", la, source=d["src_v"])  # fmt: skip
             S.record(out_name, t, "51.10: the read probe's chance (locker-first rows)", chance, source=d["src_r"])
+            # the README card's plain keys (no layer or value inside the quantity)
+            S.record(out_name, t, f"51.10: {w}, last token, read peak: the probe's accuracy on the lens part", *rv,
+                     n=c["thru"]["n_lf"], source=d["src_r"])  # fmt: skip
+            for arm, v in (("the lens swap's switches", sw), ("the whole-state patch's switches", wh)):
+                S.record(
+                    out_name, t, f"51.10: {w}, last token, read peak: {arm}", v, n=wv[3], source=rel(d["outcomes"])
+                )
         ax.text(-dx - bw / 2 - 0.06, chances[0], "chance", ha="right", va="center", fontsize=S.LABEL_PT,
                 color=S.COL["muted"])  # fmt: skip
         ax.set_xticks(ticks, labels, fontsize=S.LABEL_PT)
