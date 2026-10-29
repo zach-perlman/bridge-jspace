@@ -1,0 +1,41 @@
+id: x52_lightning_depth51
+title: "Batch 52, Dan's morning queue item 2: 51.5 (the anatomy by depth on Zach's passages) on Lightning, DESIGN FROM THE 9B / 27B SPEC: 47.8's per-layer sweep (Lightning's grid, every 4th L2-L50) on Z1's Lightning items (nem35l_x52_z1); whole / without J++ / without random lens atoms / without a random part at each layer; 51.5's rule verbatim against ours (Lightning's 47.8 sweep: lookup L22, recall L22); no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x50_zach/nem35l_x52_z1/cases.jsonl && test -f results/x47_anatomy/nem35l_x52_anatomy/outcomes.jsonl &&
+  uv run python scripts/x51_depth.py run --name nem35l_x52_depth51 --why "Batch 52, Dan's morning queue item 2: 51.5 on Lightning, design from the 9B / 27B spec; no prediction" &&
+  printf '%s\n' "design from the 9B / 27B spec (jobs/c3/x51_5_9b.yaml / x51_5_27b.yaml); no prediction (Dan's morning queue, 29 Oct)" > results/x51_depth/nem35l_x52_depth51/coverage.txt &&
+  uv run python scripts/x51_depth.py verdict --design-from --runs nem35l_x52_depth51
+question: >-
+  On Lightning, on Zach's named passages: does the read window (the last layer where each reader's switch >= 0.3) lie
+  within 4 layers of ours (Lightning's 47.8 sweep on our scenes)?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 2: Lightning, design from the 9B / 27B
+  specs (L14, Zach's band L27-33): 51.12 Z2, 51.5, 49.6.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction)."
+decision_rule: >-
+  51.5's rule verbatim (jobs/c3/batch51.yaml 51.5; scripts/x51_depth.py RULE; first scored in
+  results/x51_depth/x51_5-20261028T181100Z): "The same read window as ours" if the last layer where each reader's
+  switch >= 0.3 lies within 4 layers of ours (9B: both readers to ~L16, the recall to L24; 27B: from 49.4). Report
+  against Zach's swap window (L4-20, gone by L25)." As computed: x51_depth's AS_COMPUTED unchanged (Z1's chosen
+  passages and its gate, re-aligned on the tokenizer before the run; Delta_l per reader at the pointer name's last token
+  added at layer l alone on O; arms whole / no_jpp / no_jpp_ratoms (seed 777 + l) / no_jpp_rand (seed 888 + l); Z1's
+  read; cluster bootstrap over the original bridge entity, 10,000, seed 0; window end = the last sampled layer whose
+  switch >= 0.30) on Lightning: the sweep is 47.8's Lightning grid (every 4th L2-L50: L14 included; Zach's Lightning band
+  L27-33 lies between the sampled L26 and L30 / L34; his band reported in the notes, the verdict's beside keeps the
+  script's fixed swap window, descriptive); ours = reference() on Lightning's 47.8 sweep nem35l_x52_anatomy (C2 test
+  half), computed before this run: lookup L22, recall L22. DESIGN FROM THE 9B / 27B SPEC. Verdict in the job
+  (verdict --design-from: results/x51_depth/x52_depth51-<UTC>/, never the default x51_5-<UTC>/).
+controls:
+- "without J++ against random lens atoms of the same share (seed 777 + l, 47.8's control) and against X0's random subspace (seed 888 + l, Z1's control)"
+- "ours: the same function on Lightning's 47.8 sweep (our scenes)"
+n: "Z1's 200 chosen Lightning passages (nem35l_x52_z1), both strata"
+seeds: [777, 888, 0]
+notes: "Batch 52, Dan's morning queue item 2 (coordinator 09:40 Paris). Box: speedup (or another; every box holds Lightning). Conservative choice: the sweep is 47.8's Lightning grid (every 4th) as the 9B / 27B used their 47.8 grids; Zach's band L27-33 is not added as extra layers. Code: x51_depth gains DESIGN_RUNS, LAYERS / OURS / REFERENCE for Lightning (REFERENCE = reference()'s value on nem35l_x52_anatomy, tested), z1_run reads x50_zach's COVERAGE_RUNS, verdict --design-from; TARGETS / RUNS and 51.5's verdict unchanged. Wallclock: x51_5_9b 831 s (15 layers), x51_5_27b 3,160 s (29 layers); Lightning 13 layers: est ~20-35 min, 0.6 GPU-h. UNVERIFIED; into EXPERIMENTS.md."

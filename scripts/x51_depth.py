@@ -76,6 +76,17 @@ OURS = {"qwen3.5-9b": "qwen35_9b_x47_anatomy", "qwen3.6-27b": "x49_4_anatomy_27b
 # of the reader (lookup: identity + position + value; recall: the changed item). 9B grid L2-L30 every 2nd; 27B 49.4's
 # grid L8, 16, 24, 30, 32, 34, 40, 48, 56.
 REFERENCE = {"qwen3.5-9b": {"lookup": 16, "recall": 14}, "qwen3.6-27b": {"lookup": 40, "recall": 32}}
+# Batch 52, Dan's morning queue (29 Oct) item 2: 51.5 on Lightning, the design from the 9B / 27B spec: 47.8's Lightning
+# grid (every 4th L2-L50, x47_anatomy.LAYERS), Z1's Lightning run as the items, ours = reference() on Lightning's 47.8
+# sweep nem35l_x52_anatomy, computed before any Lightning 51.5 run (29 Oct ~09:45: lookup L22, recall L22); read by
+# verdict --design-from alone (TARGETS / RUNS and 51.5's own verdict unchanged)
+DESIGN_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_depth51"}
+LAYERS["nemotron-3.5-lightning"] = A.LAYERS["nemotron-3.5-lightning"]
+OURS["nemotron-3.5-lightning"] = "nem35l_x52_anatomy"
+REFERENCE["nemotron-3.5-lightning"] = {"lookup": 22, "recall": 22}
+DESIGN_NOTE = ("design from the 9B / 27B spec (jobs/c3/x51_5_9b.yaml / x51_5_27b.yaml), 51.5's rule verbatim; Zach's "
+               "Lightning band L27-33 (x50_zach.BESIDE_BAND) beside the script's fixed swap window; no prediction (Dan's "
+               "morning queue, 29 Oct)")  # fmt: skip
 STRATA = ("fact-first", "fact-after")
 ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_jpp_ratoms")
 READERS = Z.READERS  # K (lookup), M (recall)
@@ -118,7 +129,7 @@ AS_COMPUTED = (
 
 
 def z1_run(target: str) -> Path:
-    return Z.RESULTS / Z.RUNS["z1"][target]
+    return Z.RESULTS / {**Z.RUNS["z1"], **Z.COVERAGE_RUNS["z1"]}[target]  # batch 52: Lightning's Z1 (nem35l_x52_z1)
 
 
 def rel(p: Path) -> str:
@@ -456,6 +467,8 @@ def stage_run(name: str, why: str, split: bool = False) -> Path:
          "split": split, "seeds": {"random_atoms": f"{ATOMS_SEED} + layer", "random_subspace": f"{X.SUBSPACE_SEED} + layer",
                                    "bootstrap": X.BOOT_SEED, "view": VIEW_SEED},
          "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in DESIGN_RUNS:  # batch 52: no Q-line
+        m |= {"question": DESIGN_NOTE, "batch": 52, "sealed": "none: verdict --design-from"}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -567,7 +580,7 @@ def split_result(src: Path, n_boot: int) -> dict | None:
 
 def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     src = RESULTS / run
-    target = {r: t for t, r in RUNS.items()}.get(run)
+    target = {r: t for d in (RUNS, DESIGN_RUNS) for t, r in d.items()}.get(run)
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
         return {"run": run, "target": target, "status": "pending", "why": "no manifest or outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -661,12 +674,16 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, design_from: bool = False) -> Path:
+    """51.5's verdict (sealed until Q51.5), or with design_from (batch 52, Dan's morning queue item 2) Lightning's run
+    made with the 9B / 27B spec's design, alone: no seal, x52_depth51-<UTC>/."""
+    answer = DESIGN_NOTE if design_from else unsealed()
     models = [model_result(r, n_boot) for r in runs]
-    out = RESULTS / f"x51_5-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_depth51' if design_from else 'x51_5'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if design_from:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52, ") for ln in lines]
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     (out / "x51_5.json").write_text(
         json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str) + "\n"
@@ -857,6 +874,8 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the 51.5 runs")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--plan-dir", help="plan: the folder to write into (one per model, the same folder)")
+    ap.add_argument("--design-from", action="store_true",
+                    help="verdict: batch 52, the runs made with the 9B / 27B spec's design (DESIGN_RUNS: Lightning)")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.plan_dir)
@@ -864,7 +883,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, a.split)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, a.design_from)
     else:
         stage_view(a.runs)
 

@@ -161,3 +161,21 @@ def test_report49_design_from_lightning(tmp_path, monkeypatch):
     out = R.stage_verdict(["nem35l_x52_report49"], 10, design_from=True)
     text = (out / "x49_6.md").read_text()
     assert out.name.startswith("x52_report49-") and "design from the 9B / 27B spec" in text and ", Dan:" not in text
+
+
+def test_depth51_design_from_lightning(tmp_path, monkeypatch):
+    """51.5 on Lightning with the 9B / 27B spec's design: 47.8's Lightning grid, Z1's Lightning run, ours from
+    Lightning's 47.8 sweep (L22 / L22); verdict --design-from alone, no seal, x52_depth51-<UTC>/."""
+    from scripts import x47_anatomy as A
+    from scripts import x51_depth as D
+
+    assert D.LAYERS[LT] == A.LAYERS[LT] and D.REFERENCE[LT] == {"lookup": 22, "recall": 22}
+    assert D.z1_run(LT).name == "nem35l_x52_z1" and D.z1_run("qwen3.5-9b").name == "qwen35_9b_x50_z1"
+    assert LT not in D.TARGETS and LT not in D.RUNS
+    ref = D.reference(LT)
+    assert (ref["lookup"], ref["recall"]) == (22, 22)  # the constant is the function's value on the stored sweep
+    monkeypatch.setattr(D, "RESULTS", tmp_path)
+    monkeypatch.setattr(D, "unsealed", lambda: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    out = D.stage_verdict(["nem35l_x52_depth51"], 10, design_from=True)
+    text = (out / "verdict.md").read_text()
+    assert out.name.startswith("x52_depth51-") and "design from the 9B / 27B spec" in text and ", Dan:" not in text
