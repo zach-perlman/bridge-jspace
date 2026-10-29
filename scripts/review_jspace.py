@@ -836,11 +836,9 @@ def rank_table(rows: list[dict]) -> list[dict]:
             share = {p: sum(x is not None and x <= TOP50 for x in xs) / n for p, xs in vals.items()}
             med = {p: float(np.median([x for x in xs if x is not None])) for p, xs in vals.items()}
             gap = share["rest"] - share["rand"]
-            # flag: the reading used (rest's share minus random's >= 0.20); flag_alt: the other reading of the sentence
-            # (the rest puts it in the top 50 on >= 20% of items, and more often than the random part)
+            # Dan 13:15 (answers_1315): "the rule flags the rest exceeding random": rest's share - random's >= 0.20
             out.append({"model": m, "view": v, "condition": c, "kind": kind, "n": n, "top50": share, "median": med,
-                        "rest_minus_rand": gap, "flag": gap >= FLAG_GAP - 1e-9,
-                        "flag_alt": share["rest"] >= FLAG_GAP - 1e-9 and share["rest"] > share["rand"]})  # fmt: skip
+                        "rest_minus_rand": gap, "flag": gap >= FLAG_GAP - 1e-9})  # fmt: skip
     return out
 
 
@@ -953,6 +951,10 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              "rest and of a random part of the same share; the share of items with it in the top 50 for each. Flag if the "
              "rest puts it in the top 50 on >= 20% of items more often than the random part does. The same for the answer "
              "words. No rule change: this is a check.\"", "",
+             "Dan 13:15 (jobs/c3/batch53.yaml answers_1315), verbatim: \"Rank check: no flag (the rest 0.00-0.02 vs "
+             "random 0.52; the rule flags the rest exceeding random).\" Card line, verbatim: \"what the lens can read about "
+             "the item sits in the J++ part; the rest reads nothing (0.00-0.02); the random part reads the bridge because "
+             "it keeps part of Δ itself\".", "",
              "The per-item panel: \"Look into J-space\" on every card of `make review-serve` (the state, the change, its "
              "J++ part, the rest, the random part and U at any saved token and layer; J++ and logit-lens top 30; typed and "
              "listed tokens' ranks; a token x layer heatmap; the change's 25 atoms at L; self-checks against 51.12 and "
@@ -961,28 +963,26 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              "part is X0's 25-atom signed OMP over the J++ letter-token atoms, the rest = Δ minus it, the random part X0's "
              "(seed 888 + L) at the J++ part's share; rank = 1 + tokens with a strictly larger logit, a word's best token "
              "(S's bridge: its one-token spellings and symbol, then also the first pieces of split spellings; an answer: "
-             "its digit and its number word). Flag read as: (share in the top 50 under the rest) minus (under the random "
-             f"part) >= {FLAG_GAP:.2f} (the agent's reading of the sentence; to confirm). Beside it, column 'alt': the "
-             f"other reading, the rest's share >= {FLAG_GAP:.2f} and above the random part's. Routes: per condition and "
-             "over all. By construction the random part keeps share x Δ along Δ itself (statement_positions."
+             "its digit and its number word). Flag (Dan 13:15: the rest exceeding random): (share in the top 50 under "
+             f"the rest) minus (under the random part) >= {FLAG_GAP:.2f}. Routes: per condition and over all. By "
+             "construction the random part keeps share x Δ along Δ itself (statement_positions."
              "random_subspace_part's docstring), so it carries whatever Δ's own direction reads as. "
              + (f"Sources: {'; '.join(f'{label.get(m, m)}: `{s}`' for m, s in sorted(sources.items()))}. " if sources else "")
              + note, "",
              f"**Flags: {len(flags)}**" + (": " + "; ".join(f"{label.get(t['model'], t['model'])} {t['view']} "
                                                              f"{t['condition']}, {t['kind']} (rest {t['top50']['rest']:.2f} vs "
-                                                             f"random {t['top50']['rand']:.2f})" for t in flags) if flags else ".")
-             + f" Under the other reading: {sum(t['flag_alt'] for t in table)}.", "",
+                                                             f"random {t['top50']['rand']:.2f})" for t in flags) if flags else "."),
+             "",
              "The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: "
              + "; ".join(f"{label.get(m, m)} {v}: max |gap| {g:.4f} over {n}" for (m, v), (g, n) in share_gaps(rows).items())
              + ".",
              "", "| model | test | condition | token | n | top 50: J++ part | rest | random part | rest - random | flag | "
-             "alt | median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+             "median rank: J++ / rest / random |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in table:
         s, md = t["top50"], t["median"]
         lines.append(f"| {label.get(t['model'], t['model'])} | {t['view']} | {t['condition']} | {t['kind']} | {t['n']} | "
                      f"{s['jpp']:.2f} | {s['rest']:.2f} | {s['rand']:.2f} | {t['rest_minus_rand']:+.2f} | "
-                     f"{'FLAG' if t['flag'] else ''} | {'flag' if t['flag_alt'] else ''} | "
-                     f"{md['jpp']:.0f} / {md['rest']:.0f} / {md['rand']:.0f} |")  # fmt: skip
+                     f"{'FLAG' if t['flag'] else ''} | {md['jpp']:.0f} / {md['rest']:.0f} / {md['rand']:.0f} |")  # fmt: skip
     return "\n".join(lines) + "\n"
 
 

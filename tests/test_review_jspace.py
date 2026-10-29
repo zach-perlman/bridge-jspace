@@ -218,8 +218,10 @@ def test_card_links_and_the_flag_rule():
     flag = {t["kind"]: t["flag"] for t in J.rank_table(rows(40, 20))}
     assert flag["S's bridge (word or symbol)"] is True  # 0.40 - 0.20 = 0.20
     assert {t["kind"]: t["flag"] for t in J.rank_table(rows(39, 20))}["S's bridge (word or symbol)"] is False
-    alt = {t["kind"]: (t["flag"], t["flag_alt"]) for t in J.rank_table(rows(30, 20))}["S's bridge (word or symbol)"]
-    assert alt == (False, True)  # the other reading: the rest's share >= 0.20 and above the random part's
+    # Dan 13:15: the rule flags the rest exceeding random (by >= 0.20); a rest above 0.20 but within 0.20 of random
+    # is no flag
+    assert {t["kind"]: t["flag"] for t in J.rank_table(rows(30, 20))}["S's bridge (word or symbol)"] is False
+    assert all("flag_alt" not in t for t in J.rank_table(rows(30, 20)))
 
 
 def test_the_dashboards_verdicts_skip_jspace_notes(tmp_path, monkeypatch):
