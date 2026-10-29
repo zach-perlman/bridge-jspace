@@ -1,0 +1,55 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 357
+  },
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "lookup_right_share": 0.9971,
+      "pass": true,
+      "eligible": 698,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9971428571428571,
+          "PM": 0.9628571428571429
+        },
+        "recall_right_share": 0.9371,
+        "two_reader_pass": true,
+        "two_reader_eligible": 656
+      }
+    },
+    "C1": {
+      "cases": 700,
+      "lookup_right_share": 0.9971,
+      "pass": true,
+      "eligible": 698,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9971428571428571,
+          "PM": 0.9628571428571429
+        },
+        "recall_right_share": 0.9386,
+        "two_reader_pass": true,
+        "two_reader_eligible": 657
+      }
+    },
+    "C2": {
+      "cases": 700,
+      "lookup_right_share": 0.9957,
+      "pass": true,
+      "eligible": 697,
+      "design": "adapted design: lookup-only gate; the recall is not part of this test",
+      "descriptive": {
+        "org_read_accuracy": {
+          "PP": 0.9971428571428571,
+          "PM": 0.9628571428571429
+        },
+        "recall_right_share": 0.9343,
+        "two_reader_pass": true,
+        "two_reader_eligible": 653
+      }
+    }
+  }
+}
