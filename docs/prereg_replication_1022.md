@@ -2722,3 +2722,23 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - "Needed beyond a same-share random part" if need >= 0.30 and its interval is above 0. "Not needed beyond it" if need < 0.10. Otherwise "weak".
   - Reported beside: alone = (lens − lensshr) / full.
 - **9B only.** A 2-item smoke runs first in the same queue (scripts/queues/h200_n15a_1029.sh).
+
+##### Amendment 58 note 17 (Zach, 2026-10-29 ~02:10 UTC; before any result): the person or the looked-up answer? A value swap at the description's end (9B)
+- **Why.** In v4 the passage comes before the question. By the description's end the model may already have looked up X's value (MP) or recalled X's attribute (MM). Note 14's counterfactual patch, a question about another person D, would then carry the answer and not the person. Note 15 shows this for MM from L12 on. For MP the lens cannot read the value there (2-4%, about chance), but it could sit outside the lens.
+- **Donor (nn_swap --value-swap).** The same prompt and question about X; only the passage changes, giving X a new value.
+  - The new value is drawn from the relation's answer vocabulary with random.Random(seed:id). It is not one of the passage's values, not X's remembered attribute, and has the same vowel or consonant start (for "a" / "an").
+  - It is placed by replacing X's value, which appears exactly once.
+  - Classes: donor = the new value; kept = X's old answer; MP third = X's remembered attribute; MM third = X's old passage value.
+- **Cells.** v4ok, MP and MM, donor seeds 0 and 1, conditions full_cf and lensrand_cf.
+  - Site last: L4-7, L8-11, L12-16.
+  - Site span: L0-3, L4-7, L8-11, L12-16. The description text is identical in both prompts, so early layers are not a text swap here.
+  - Site final: L21-24, L25-28, L29-30.
+- **Pairs.** MP: pairs whose donor prompt the model answers with the new value (cf_ok). MM: all pairs (the donor prompt's right answer is still X's remembered attribute).
+- **Readings, MP (scripts/nn_cf_read.py):**
+  1. Positive check: at final L29-30 the whole patch moves >= 50% of answers to the new value. Otherwise readings 2 are void.
+  2. Per description cell (last, span):
+     - "carries the looked-up value": full_cf moves >= 20% to the new value, lensrand_cf < 10%, and full − lensrand has a 95% interval above 0 (note 14's reading 1);
+     - "carries the person, not the value": < 5% moved while note 14's full_cf at that cell is >= 20%;
+     - otherwise "partly".
+- **MM (reported).** The share moved to the new passage value. Expected about 0: the recall's answer comes from memory.
+- **Queue.** scripts/queues/h200_n17_1029.sh. GPU0, beside the 27B. A 2-item smoke runs first.

@@ -59,6 +59,9 @@ jswap):
   note 16 (v4, cf only; Dan's lens part): J = the signed OMP fit, 25 atoms, of Δ over the unit J++ vectors of the letter
   tokens and the ten digits (scripts/exp04_brew_parts.signed_omp); Jr = Δ's random part of the same share (Dan's
   random_subspace_part over rotation(d, 888 + layer))
+  note 17 (--value-swap, v4): the donor prompt keeps the question about X and gives X another passage value (same
+  vowel start, not in the passage, not X's real attribute); classes: donor = the new value; MP third = X's remembered
+  attribute, MM third = X's old passage value
   jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
@@ -510,7 +513,7 @@ def main(a) -> None:
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
                                                        "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",
                                                                  "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer", "ctl": SEED_CTL},
-                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1,
+                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap,
                                                        "git_commit": commit, "git_state": pins.git_state(), "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ")}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -568,7 +571,20 @@ def main(a) -> None:
             dn = rng.choice(cands)
             desc_x, desc_d = it["start_desc"], rng.choice(it["entity_descs"][dn])
             assert it["question"].count(desc_x) == 1, it["id"]
-            cf_ids = S.ids(tok, T.render(tok, {**it, "_question": it["question"].replace(desc_x, desc_d), "_kind": kind}))
+            if a.value_swap:  # note 17: the same question about X; the donor passage gives X another value
+                vowel = xv[0].lower() in "aeiou"
+                pool = sorted(v for v in it["answer_vocab"] if v not in pv.values() and v != mem(x) and (v[0].lower() in "aeiou") == vowel
+                              and not any(v in w or w in v for w in pv.values()))  # fmt: skip
+                if it["context"].count(xv) != 1 or not pool:
+                    continue
+                vnew = rng.choice(pool)
+                ctx2 = it["context"].replace(xv, vnew, 1)
+                if ctx2.count(vnew) != 1:
+                    continue
+                dn, desc_d = x, desc_x
+                cf_ids = S.ids(tok, T.render(tok, {**it, "context": ctx2, "_question": it["question"], "_kind": kind}))
+            else:
+                cf_ids = S.ids(tok, T.render(tok, {**it, "_question": it["question"].replace(desc_x, desc_d), "_kind": kind}))
             cf_desc = bridge_positions(tok, cf_ids, desc_d)
             x_desc = bridge_positions(tok, p["ids"], desc_x)
             if not cf_desc or not x_desc:
@@ -588,6 +604,8 @@ def main(a) -> None:
             # MP: kept X's passage value, donor D's passage value, third D's remembered attribute, xmem X's remembered one;
             # MM (recall twin): kept X's attribute, donor D's attribute, third D's passage value, xmem X's passage value
             ax, ad, at, am = (xv, pv[dn], mem(dn), mem(x)) if lookup else (mem(x), mem(dn), pv[dn], xv)
+            if a.value_swap:  # note 17: donor = X's new passage value; MP third = X's remembered attribute, MM third = X's old value
+                ax, ad, at, am = (xv, vnew, mem(x), xv) if lookup else (mem(x), vnew, xv, mem(x))
             jid = f"{p['id']}|{dn}"
             jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
                          "lat_id": f"none:{p['id']}", "lat_ids": nids, "lat_pos": npos[0], "tx": tx, "td": name_token(model, tok, dn),
@@ -688,6 +706,7 @@ if __name__ == "__main__":
     ap.add_argument("--items", choices=["eligible", "fail", "v4ok", "v4fail"], default="eligible",
                     help="note 11: fail = composition failures (RM); note 14: v4ok / v4fail = v4's gate")  # fmt: skip
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1 (closed-book hop 1)")
+    ap.add_argument("--value-swap", action="store_true", help="note 17: the donor prompt keeps the question about X and gives X another passage value")
     a = ap.parse_args()
     assert a.band or a.sweep, "--band or --sweep"
     main(a)
