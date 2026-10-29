@@ -1,0 +1,1593 @@
+{
+ "batch": 52,
+ "built_at": "2ca7e5e8",
+ "utc": "20261029T000836Z",
+ "models": [
+  "qwen3.6-27b",
+  "nemotron-3.5-lightning",
+  "qwen3.5-9b",
+  "muse-glimmer-30b"
+ ],
+ "bolt": "Nemotron 3.5 Bolt: out of scope: only a J-lens exists, no J++ lens (amendment 2; every depth test uses J++ atoms). Checked 28 Oct ~23:15 UTC: no J++ file under cache/nemotron-3.5-bolt/lenses/jpp/ on mats, speedup or another; the H200 box it was fit on is unreachable",
+ "lightning_gate": "Lightning's gate: the main test's gate on all 516 scenes (lookup 0.957, recall 0.816), chosen after the 60-scene pre-check was seen (lookup 0.883, recall 0.783: failed) — hollow mark (Dan 01:10); layer L14 by amendment 1 (results/x51_lightning/nem35l_x52_layer_r2)",
+ "rows": [
+  {
+   "row": "1. Conflict test (main test, at L)",
+   "rule": "X0 (jobs/c3/x0_necessity_27b_chat.yaml)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "not confirmed (lookup 0.14 > 0.10; recall 0.74)",
+     "sources": [
+      "results/x0_necessity/x0_necessity_27b_chat/verdict-20261024T135446Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "queued",
+     "note": "x52_lightning_conflict, speedup first: 3 arms at all 13 swept layers, decided at L14; Lightning's gate: the main test's gate on all 516 scenes (lookup 0.957, recall 0.816), chosen after the 60-scene pre-check was seen (lookup 0.883, recall 0.783: failed) — hollow mark (Dan 01:10); layer L14 by amendment 1 (results/x51_lightning/nem35l_x52_layer_r2)",
+     "sources": [
+      "jobs/c3/x52_lightning_conflict.yaml",
+      "results/x51_lightning/nem35l_x52_layer_r2/layer.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "confirmed",
+     "sources": [
+      "results/x0_necessity/qwen35_9b_x0_necessity/verdict-20261024T135419Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "confirmed",
+     "sources": [
+      "results/x0_necessity/muse30b_x0_necessity/verdict-20261026T001148Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "2. Answer control (51.12 E1)",
+   "rule": "jobs/c3/batch51.yaml 51.12 r2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "recall: the entity",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "recall: the entity",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "answer word not read",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "3. Routes test (identity / position / value; no address; address alone)",
+   "rule": "x6_routes (E5/E6)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "0.66 / 0.34 / 0.00; alone fails",
+     "sources": [
+      "results/x6_routes/x6_routes_27b/verdict-20261025T105901Z",
+      "results/x6_routes/x6_routes_keeponly_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z",
+      "results/x6_routes/qwen35_9b_x6_routes_keeponly"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "4. Address swap by dose (x8_write, s = 1 / 2 / 4)",
+   "rule": "x8_write (Q44.1-3)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "0.01 / 0.24 / 0.50",
+     "sources": [
+      "results/x8_write/x8_write_27b/verdict-20261026T125548Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14); needs the routes test's items",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "0.05 / 0.52 / 0.52",
+     "sources": [
+      "results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "0.02 / 0.46 / 0.73",
+     "sources": [
+      "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "5a. Order split (descriptive)",
+   "rule": "x0_composition split-by-order",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "CPU from the conflict test's outcomes once it lands",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "5b. Copy test (45q)",
+   "rule": "jobs/c3/batch45.yaml 45b/45q",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "holds",
+     "sources": [
+      "results/x45b_binding/x45q-20261027T005345Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "not tested",
+     "note": "not tested: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "holds",
+     "sources": [
+      "results/x45b_binding/x45q-20261027T005345Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "holds",
+     "sources": [
+      "results/x45b_binding/x45q-20261027T005345Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "6. Anatomy by layer (47.8)",
+   "rule": "jobs/c3/batch47.yaml 47.8",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "queued",
+     "note": "on record a reduced grid (9 of 15 layers); full grid x47_8_27b on mats (run x47_anatomy_27b)",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "7. Ladder (49.2, rungs 1-6)",
+   "rule": "jobs/c3/batch49.yaml 49.2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "queued",
+     "note": "on record rungs 1-2 only; rungs 1-6 (rung 6 at Zach's L32-40) x52_ladder_27b on another (the speedup copy was stopped after 2 min)",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z",
+      "jobs/c3/x52_ladder_27b.yaml"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "not tested",
+     "note": "not tested: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "queued",
+     "note": "on record, rung 6 at L23-29; rung 6 in Zach's L36-42: x52_ladder_muse on mats (behind part B)",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z",
+      "jobs/c3/x52_ladder_muse.yaml"
+     ]
+    }
+   }
+  },
+  {
+   "row": "8. Lens readout with the item-change control (47.0)",
+   "rule": "47.0 (descriptive)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14); needs x8_write's items",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "9. Last-token read / write (51.10)",
+   "rule": "jobs/c3/batch51.yaml addendum_2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "10. Attention under the swap (49.7)",
+   "rule": "jobs/c3/batch49.yaml 49.7",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning chain, spec in Dan's order (reads the committed L14); full attention at 6 of 52 blocks only",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Split in other texts: varied scenes (x0b)",
+   "rule": "x0b_generalize",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/x0b_v2_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/qwen35_9b_x0b_v2"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/muse30b_x0b_v2"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Split in other texts: natural passages (x5)",
+   "rule": "x5_natural",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x5_natural/x5_natural_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "gate lowered after the data",
+     "sources": [
+      "results/x5_natural/qwen35_9b_x5_natural_g75"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x5_natural/muse30b_x5_natural"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Dose curves, a part alone (51.1)",
+   "rule": "jobs/c3/batch51.yaml 51.1",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_dose/x51_1-20261028T170335Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_dose/x51_1-20261028T170335Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_dose/x51_1-20261028T170335Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Zeroing at one layer (47.5)",
+   "rule": "jobs/c3/batch47.yaml 47.5",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_zero/x47_5-20261028T113106Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_zero/x47_5-20261028T113106Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_zero/x47_5-20261028T113106Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Earlier mention (45p)",
+   "rule": "jobs/c3/batch45.yaml 45p",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x45p/x45p-20261027T012017Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "not tested",
+     "note": "not tested: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x45p/x45p-20261027T012017Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x45p/x45p-20261027T012017Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E3: identity route outside the lens (47.1 atom slices)",
+   "rule": "jobs/c3/batch47.yaml 47.1",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_atoms/x47_1-20261028T113101Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_atoms/x47_1-20261028T113101Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_atoms/x47_1-20261028T113101Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E6: the address probe (x0_probe v4)",
+   "rule": "x0_probe",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_probe/x0_probe_v4_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_probe/qwen35_9b_x0_probe_v4"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0_probe/muse30b_x0_probe_v4"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E6: the swap after neutral sentences (47.16 distance)",
+   "rule": "jobs/c3/batch47.yaml 47.16",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write (mats)",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_distance/x47_16-20261028T131501Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_distance/x47_16-20261028T131501Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E7: six lockers, one code per slot (47.2)",
+   "rule": "jobs/c3/batch47.yaml 47.2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "queued",
+     "note": "x47_2_27b on another (behind part B and the 27B ladder)",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_six/x47_2-20261028T113102Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_six/x47_2-20261028T113102Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E8: the report prompt (47.10)",
+   "rule": "jobs/c3/batch47.yaml 47.10",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_report/x47_10-20261028T113109Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_report/x47_10-20261028T113109Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_report/x47_10-20261028T113109Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E11: token by layer map (47.D1)",
+   "rule": "jobs/c3/batch47.yaml D1",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "queued",
+     "note": "x47_d1_27b on mats (run x47_depthmap_27b)",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "not tested",
+     "note": "not tested: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_depthmap/depth-20261028T120525Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_depthmap/depth-20261028T120525Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E11: lookups carried before L (47.4 cumulative)",
+   "rule": "jobs/c3/batch47.yaml 47.4",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write (mats)",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_cumulative/x47_4-20261028T113105Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_cumulative/x47_4-20261028T113105Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "E12: address persistence across depth (D4, CPU)",
+   "rule": "jobs/c3/batch47.yaml D4",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "CPU from x47_anatomy_27b's cache once it lands",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "CPU after Lightning's anatomy",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_depth_cpu/persistence-20261028T115530Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_depth_cpu/persistence-20261028T115530Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Part V: Zach's passages Z1 / Z2 (x50)",
+   "rule": "jobs/c3/batch50 (x50_zach)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x50_zach/z1-20261028T161649Z",
+      "results/x50_zach/z2-20261028T162710Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x50_zach/z1-20261028T161649Z",
+      "results/x50_zach/z2-20261028T162710Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x50_zach/z1-20261028T161649Z",
+      "results/x50_zach/z2-20261028T162710Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Part V: Zach's passages Z3 (routes on his passages)",
+   "rule": "x50_zach z3",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x50_zach/z3-20261028T163053Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x50_zach/z3-20261028T163053Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Described bridge (47.3, and 51.12's cue r2)",
+   "rule": "jobs/c3/batch47.yaml 47.3",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_cue/x47_3-20261028T113104Z",
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_cue/x47_3-20261028T113104Z",
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "partial",
+     "note": "47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)",
+     "sources": [
+      "results/x47_cue/x47_3-20261028T113104Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "One question, two instructions (49.6)",
+   "rule": "jobs/c3/batch49.yaml 49.6",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_report/x49_6-20261028T154511Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "not tested",
+     "note": "ran; the gate failed (README: the others miss the gate)",
+     "sources": [
+      "results/x49_report/x49_6-20261028T154511Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "missing",
+     "note": "9B / Muse gap: not run on Muse",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "Address refit per text format (x45d)",
+   "rule": "x45d",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/x45d_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/qwen35_9b_x45d"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x0b_generalize/muse30b_x45d"
+     ]
+    }
+   }
+  },
+  {
+   "row": "The lookup's errors are not address errors (47.13)",
+   "rule": "jobs/c3/batch47.yaml 47.13",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_errors/x47_13-20261028T113107Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_errors/x47_13-20261028T113107Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_errors/x47_13-20261028T113107Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)",
+   "rule": "jobs/c3/batch48.yaml 48.2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_enrich/x48_2-20261028T113111Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_enrich/x48_2-20261028T113111Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: a person mark at the locker sentence (48.3 bind)",
+   "rule": "jobs/c3/batch48.yaml",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_bind/x48_bind-20261028T113120Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_bind/x48_bind-20261028T113120Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: copying heads pass the rest (48 heads)",
+   "rule": "jobs/c3/batch48.yaml",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_heads/x48_heads-20261028T113126Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_heads/x48_heads-20261028T113126Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: the address as the recall's second route (48 route2)",
+   "rule": "jobs/c3/batch48.yaml",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_route2/x48_route2-20261028T113127Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_route2/x48_route2-20261028T113127Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x48_route2/x48_route2-20261028T113127Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: blocking the pick sentence (47.6 edges)",
+   "rule": "jobs/c3/batch47.yaml 47.6",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_edges/x47_6-20261028T113107Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_edges/x47_6-20261028T113107Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: the second hop's key token (47.15 source)",
+   "rule": "jobs/c3/batch47.yaml 47.15",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_source/x47_15-20261028T142722Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_source/x47_15-20261028T142722Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_source/x47_15-20261028T142722Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Failed: the address is the same for any kind of item (47.11 agnostic)",
+   "rule": "jobs/c3/batch47.yaml 47.11",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_agnostic/x47_11-20261028T143952Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_agnostic/x47_11-20261028T143952Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Chained addresses (47.14)",
+   "rule": "jobs/c3/batch47.yaml 47.14",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_chain/x47_14-20261028T115841Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_chain/x47_14-20261028T115841Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "What is left of the route; the value (47.7)",
+   "rule": "jobs/c3/batch47.yaml 47.7",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_value/x47_7a-20261028T131819Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_value/x47_7a-20261028T131819Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x47_value/x47_7a-20261028T131819Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Gain map (49.1)",
+   "rule": "jobs/c3/batch49.yaml 49.1",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_gain/x49_1-20261028T154510Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_gain/x49_1-20261028T154510Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_gain/x49_1-20261028T154510Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Pooled person probe (49.3)",
+   "rule": "jobs/c3/batch49.yaml 49.3",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "missing",
+     "note": "27B gap: spec to write",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_probe/x49_3-20261028T154604Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_probe/x49_3-20261028T154604Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "DAS by position (49.x das_pos)",
+   "rule": "jobs/c3/batch49.yaml",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "not designed",
+     "note": "9B only by design",
+     "sources": []
+    },
+    "nemotron-3.5-lightning": {
+     "status": "not designed",
+     "note": "9B only by design",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x49_das_pos/verdict-20261028T154510Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "not designed",
+     "note": "9B only by design",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "Learned subspaces (48 DAS; 51.3 DAS at scale)",
+   "rule": "jobs/c3/batch51.yaml 51.3",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "partial",
+     "note": "51.3 done; 48's DAS not run on the 27B (51.3 supersedes it)",
+     "sources": [
+      "results/x51_das/verdict-20261028T194630Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_das/verdict-20261028T194630Z",
+      "results/x48_das/verdict-20261028T134153Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_das/verdict-20261028T194630Z",
+      "results/x48_das/verdict-20261028T134153Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Joint head ablation under the swap (51.2)",
+   "rule": "jobs/c3/batch51.yaml 51.2",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_heads/x51_2-20261028T190358Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_heads/x51_2-20261028T190358Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_heads/x51_2-20261028T190358Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "The address at the last token (51.4)",
+   "rule": "jobs/c3/batch51.yaml 51.4",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_travel/x51_4-20261028T173333Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_travel/x51_4-20261028T173333Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_travel/x51_4-20261028T173333Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Anatomy on Zach's passages (51.5)",
+   "rule": "jobs/c3/batch51.yaml 51.5",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_depth/x51_5-20261028T181100Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_depth/x51_5-20261028T181100Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "missing",
+     "note": "9B / Muse gap (51.5 designed for the 9B and 27B)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "Z1 on the full carrier (51.7)",
+   "rule": "jobs/c3/batch51.yaml 51.7",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_carrier/x51_7-20261028T171646Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_carrier/x51_7-20261028T171646Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "missing",
+     "note": "9B / Muse gap (51.7 designed for the 9B and 27B)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "What is the address: dimension, methods, geometry (51.11)",
+   "rule": "jobs/c3/batch51.yaml 51.11",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "partial",
+     "note": "part 2 only by design (parts 1, 3 not designed for the 27B)",
+     "sources": [
+      "results/x51_addr/verdict-20261028T215138Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_addr/verdict-20261028T215138Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_addr/verdict-20261028T215138Z"
+     ]
+    }
+   }
+  },
+  {
+   "row": "Answer-direction control on Zach's Z2 (51.12 Z2)",
+   "rule": "jobs/c3/batch51.yaml 51.12",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "note": "missing: Lightning, after the 10 key rows",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "note": "",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "missing",
+     "note": "9B / Muse gap (Z2 designed for the 9B and 27B)",
+     "sources": []
+    }
+   }
+  }
+ ],
+ "counts": {
+  "qwen3.6-27b": {
+   "done": 31,
+   "queued": 4,
+   "missing": 11,
+   "not designed": 1,
+   "partial": 2
+  },
+  "nemotron-3.5-lightning": {
+   "queued": 1,
+   "missing": 43,
+   "not tested": 4,
+   "not designed": 1
+  },
+  "qwen3.5-9b": {
+   "done": 48,
+   "not tested": 1
+  },
+  "muse-glimmer-30b": {
+   "done": 42,
+   "queued": 1,
+   "partial": 1,
+   "missing": 4,
+   "not designed": 1
+  }
+ }
+}
