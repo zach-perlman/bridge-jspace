@@ -71,3 +71,36 @@ amendment_1: |
 
   Queue: once the layer is committed, the Lightning conflict test preempts
   everything on speedup. On another: 27B ladder rungs 3–6 before the six lockers.
+amendment_2: |
+  Amendment 2 (Dan, 29 Oct 01:05), before any new launch:
+
+  1. Nemotron 3.5 Bolt (74B-A9B): cancelled for good. Zach has only a J-lens for
+     Bolt, not a J++ lens, and every depth test uses J++ atoms. Remove the "resume
+     if the file appears before ~10:00" clause from amendment 1. Coverage matrix
+     and EXPERIMENTS.md: Bolt = "out of scope: only a J-lens exists, no J++ lens".
+     The Bolt row in docs/digest.md is a J-lens result: do not cite it on the
+     depth side.
+
+  2. Models, full grid (every test in the coverage matrix, not only the 10 key
+     rows), in this priority:
+     1. Qwen3.6-27B: finish the full anatomy and the ladder (rungs 3-6), then any
+        other gap.
+     2. Nemotron 3.5 Lightning: the whole chain once the layer is committed; the
+        conflict test first, and it preempts everything on speedup.
+     3. Qwen3.5-9B and Muse Glimmer 30B, equal priority: fill every gap beyond
+        the 10 key rows (Muse ladder rung 6 in Zach's band included), alternating
+        between the two.
+     No other models (no Gemma, no Bolt).
+
+  3. Unchanged: no predictions for coverage runs; gates as written (Lightning's
+     copy test stays "not tested", clean recall 0.75); Lightning's layer rule as
+     recorded in amendment 1; UNVERIFIED until hand-checked.
+
+  4. Boxes: speedup = Lightning; mats = 27B; another = 27B ladder, then 9B / Muse
+     gaps. If a box goes idle, take the next item in the priority above. Before
+     each launch, estimate wallclock; anything that cannot open before the freeze
+     (Thu ~16:00 Paris) still runs, but lands in EXPERIMENTS.md as "after freeze",
+     not in the README.
+
+  Reply with the updated coverage matrix (rows = tests, columns = 27B / Lightning
+  / 9B / Muse: done / running / queued / not tested + reason) and the queue per box.
