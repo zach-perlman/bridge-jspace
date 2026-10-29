@@ -549,7 +549,7 @@ def stage_run(name: str, why: str) -> Path:
     full, skipped = A.recorded_layers(layer_kinds(model), layer)
     assert full == D["layers"], f"recorded layers {full} differ from 49.7's {D['layers']}"
     assert cfg.num_attention_heads == D["n_heads"], "head count differs from 49.7's"
-    print(f"heads at layers {full}; skipped (Gated DeltaNet) {skipped}", flush=True)
+    print(f"heads at layers {full}; skipped ({A.skipped_kind(pins.TARGET)}) {skipped}", flush=True)
     m.update(
         recorded_layers=full, skipped_linear_layers=skipped, n_heads=cfg.num_attention_heads, head_dim=cfg.head_dim
     )
@@ -788,7 +788,7 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = Fals
         rq = r["sites"]["question"]["rules"]
         lines += [f"**{ru['label']}** ({DECISIVE} token; small set at k = {ru['small_ks'] or 'none'}; distributed: "
                   f"{'yes' if ru['distributed'] else 'no'}). Question tokens beside: {rq['label']}.", "",
-                  f"L = {r['layer']}; heads at layers {r['recorded_layers']}; skipped (Gated DeltaNet) "
+                  f"L = {r['layer']}; heads at layers {r['recorded_layers']}; skipped ({A.skipped_kind(r['target'])}) "
                   f"{r['skipped_linear_layers'] or 'none'}. Read items {r['read_items']}, read pairs {r['read_pairs']}; "
                   f"switch under the swap (this run, no ablation) {r['switch_swap']:.3f}. Best layer L{r['best_layer']}. "
                   "Top 10 (fit move): " + ", ".join(f"L{h['layer']}:h{h['head']} {h['move']:.2f}" for h in r["ranking_top10"]) + ".",

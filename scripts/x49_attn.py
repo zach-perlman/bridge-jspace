@@ -107,8 +107,19 @@ RULES = {
 # ---- pure (CPU) ---------------------------------------------------------------------------------------------------
 
 
+# What the skipped layers (no softmax attention) are, per model; wording only. Lightning's: NemotronH's Mamba-2 and MoE
+# blocks (config layers_block_type: mamba / moe / attention, snapshot a9904d24).
+SKIPPED_KIND = {"qwen3.5-9b": "Gated DeltaNet", "qwen3.6-27b": "Gated DeltaNet",
+                "nemotron-3.5-lightning": "Mamba-2 and MoE blocks"}  # fmt: skip
+
+
+def skipped_kind(target: str) -> str:
+    return SKIPPED_KIND.get(target, "no softmax attention")
+
+
 def recorded_layers(kinds: list[str], layer: int) -> tuple[list[int], list[int]]:
-    """The softmax-attention layers after `layer` (recorded) and the other layers after it (Gated DeltaNet: skipped)."""
+    """The softmax-attention layers after `layer` (recorded) and the other layers after it (skipped: Gated DeltaNet on
+    Qwen3.5, Mamba-2 and MoE blocks on NemotronH; SKIPPED_KIND)."""
     full = H.candidate_layers(kinds, layer)
     return full, [la for la, k in enumerate(kinds) if la > layer and k != FULL]
 
@@ -614,7 +625,7 @@ def stage_run(name: str, why: str) -> Path:
     cfg = model.hf.config.get_text_config()
     kinds = layer_kinds(model)
     full, skipped = recorded_layers(kinds, layer)
-    print(f"recording layers {full}; skipped (Gated DeltaNet) {skipped}", flush=True)
+    print(f"recording layers {full}; skipped ({skipped_kind(pins.TARGET)}) {skipped}", flush=True)
     n_heads, n_kv, hd = cfg.num_attention_heads, cfg.num_key_value_heads, cfg.head_dim
     m.update(recorded_layers=full, skipped_linear_layers=skipped, n_heads=n_heads, n_kv=n_kv, head_dim=hd,
              sliding_window=getattr(cfg, "sliding_window", None))  # fmt: skip
@@ -1029,7 +1040,7 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = Fals
         lines += [f"**{ru['label']}**" + (f" (heads {', '.join(ru['follows_heads'])})" if ru["follows_heads"] else "")
                   + f"; distributed: {'yes' if ru['distributed'] else 'no'}"
                   + (f"; {ru['caveat']}" if "caveat" in ru else "") + ".", "",
-                  f"L = {r['layer']}; recorded layers {r['recorded_layers']}; skipped (Gated DeltaNet) "
+                  f"L = {r['layer']}; recorded layers {r['recorded_layers']}; skipped ({skipped_kind(r['target'])}) "
                   f"{r['skipped_linear_layers'] or 'none'}. Read pairs {r['read_pairs']}, switched {r['read_switched']}; "
                   f"switch share {fmt(r['switch_share'])} (bar {SWITCH_MIN}). Largest mean move over every recorded head "
                   f"{fmt(ru['max_move_all_heads'])} (L{(d['top_head_all'] or {}).get('layer')}:h{(d['top_head_all'] or {}).get('head')}); "

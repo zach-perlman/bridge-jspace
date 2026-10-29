@@ -111,3 +111,11 @@ def test_x48_heads_capture_and_gain_on_nemotronh():
     assert torch.allclose(got[3].float(), seen[3][0][:, 7].float(), atol=1e-5)
     blk = m.model.layers[3]
     assert torch.equal(H48.input_gain(blk), blk.norm.weight.float())
+
+
+def test_skipped_layers_are_named_by_the_models_block_type():
+    """49.7 / 51.2 name the skipped (non-softmax-attention) layers by the model's own block type: Lightning's are
+    NemotronH's Mamba-2 and MoE blocks (its config's layers_block_type), never Gated DeltaNet."""
+    assert A.skipped_kind("nemotron-3.5-lightning") == "Mamba-2 and MoE blocks"
+    assert A.skipped_kind("qwen3.5-9b") == A.skipped_kind("qwen3.6-27b") == "Gated DeltaNet"
+    assert A.skipped_kind("unknown-model") == "no softmax attention"
