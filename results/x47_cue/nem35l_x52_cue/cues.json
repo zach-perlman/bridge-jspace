@@ -1,0 +1,331 @@
+{
+ "candidates": {
+  "ant": [
+   "colonies"
+  ],
+  "bee": [
+   "honey"
+  ],
+  "cat": [
+   "purring",
+   "curiosity"
+  ],
+  "chicken": [
+   "clucking",
+   "eggs"
+  ],
+  "cow": [
+   "mooing",
+   "milk"
+  ],
+  "dog": [
+   "barking",
+   "loyalty"
+  ],
+  "eagle": [
+   "soaring"
+  ],
+  "elephant": [
+   "trumpeting",
+   "ivory",
+   "memory"
+  ],
+  "fox": [
+   "cunning"
+  ],
+  "frog": [
+   "croaking",
+   "ponds"
+  ],
+  "goat": [
+   "bleating",
+   "climbing"
+  ],
+  "horse": [
+   "neighing",
+   "galloping",
+   "racing"
+  ],
+  "lion": [
+   "roaring",
+   "mane"
+  ],
+  "mouse": [
+   "squeaking",
+   "cheese"
+  ],
+  "owl": [
+   "hooting",
+   "wisdom"
+  ],
+  "pig": [
+   "oinking",
+   "bacon"
+  ],
+  "rabbit": [
+   "hopping",
+   "carrots"
+  ],
+  "sheep": [
+   "wool"
+  ],
+  "spider": [
+   "webs"
+  ],
+  "tick": [
+   "Lyme"
+  ],
+  "turkey": [
+   "gobbling",
+   "Thanksgiving"
+  ],
+  "wolf": [
+   "howling",
+   "packs"
+  ],
+  "zebra": [
+   "stripes"
+  ]
+ },
+ "one_token": {
+  "ant": "colonies",
+  "bee": "honey",
+  "cat": "curiosity",
+  "chicken": "eggs",
+  "cow": "milk",
+  "dog": "loyalty",
+  "elephant": "memory",
+  "frog": "ponds",
+  "goat": "climbing",
+  "horse": "racing",
+  "lion": "mane",
+  "mouse": "cheese",
+  "owl": "wisdom",
+  "pig": "bacon",
+  "sheep": "wool",
+  "spider": "webs",
+  "turkey": "Thanksgiving",
+  "wolf": "packs"
+ },
+ "dropped": {
+  "bear": "no candidate cue (no one-word cue names it alone)",
+  "butterfly": "no candidate cue (no one-word cue names it alone)",
+  "camel": "no candidate cue (no one-word cue names it alone)",
+  "crow": "no candidate cue (no one-word cue names it alone)",
+  "deer": "no candidate cue (no one-word cue names it alone)",
+  "duck": "no candidate cue (no one-word cue names it alone)",
+  "fly": "no candidate cue (no one-word cue names it alone)",
+  "tiger": "no candidate cue (no one-word cue names it alone)",
+  "eagle": "no one-token cue among ['soaring']",
+  "fox": "no one-token cue among ['cunning']",
+  "rabbit": "no one-token cue among ['hopping', 'carrots']",
+  "tick": "no one-token cue among ['Lyme']",
+  "zebra": "the animal is not one token"
+ },
+ "table": {
+  "ant": {
+   "cue": "colonies",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "ant": 10
+   }
+  },
+  "bee": {
+   "cue": "honey",
+   "prompts": 10,
+   "right": 4,
+   "share": 0.4,
+   "kept": false,
+   "named": {
+    "bear": 6,
+    "bee": 4
+   }
+  },
+  "cat": {
+   "cue": "curiosity",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "cat": 10
+   }
+  },
+  "chicken": {
+   "cue": "eggs",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "chicken": 10
+   }
+  },
+  "cow": {
+   "cue": "milk",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "cow": 10
+   }
+  },
+  "dog": {
+   "cue": "loyalty",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "dog": 10
+   }
+  },
+  "elephant": {
+   "cue": "memory",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "elephant": 10
+   }
+  },
+  "frog": {
+   "cue": "ponds",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "frog": 10
+   }
+  },
+  "goat": {
+   "cue": "climbing",
+   "prompts": 10,
+   "right": 7,
+   "share": 0.7,
+   "kept": false,
+   "named": {
+    "goat": 7,
+    "None": 2,
+    "spider": 1
+   }
+  },
+  "horse": {
+   "cue": "racing",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "horse": 10
+   }
+  },
+  "lion": {
+   "cue": "mane",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "lion": 10
+   }
+  },
+  "mouse": {
+   "cue": "cheese",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "mouse": 10
+   }
+  },
+  "owl": {
+   "cue": "wisdom",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "owl": 10
+   }
+  },
+  "pig": {
+   "cue": "bacon",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "pig": 10
+   }
+  },
+  "sheep": {
+   "cue": "wool",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "sheep": 10
+   }
+  },
+  "spider": {
+   "cue": "webs",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "spider": 10
+   }
+  },
+  "turkey": {
+   "cue": "Thanksgiving",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "turkey": 10
+   }
+  },
+  "wolf": {
+   "cue": "packs",
+   "prompts": 10,
+   "right": 10,
+   "share": 1.0,
+   "kept": true,
+   "named": {
+    "wolf": 10
+   }
+  }
+ },
+ "kept": {
+  "ant": "colonies",
+  "cat": "curiosity",
+  "chicken": "eggs",
+  "cow": "milk",
+  "dog": "loyalty",
+  "elephant": "memory",
+  "frog": "ponds",
+  "horse": "racing",
+  "lion": "mane",
+  "mouse": "cheese",
+  "owl": "wisdom",
+  "pig": "bacon",
+  "sheep": "wool",
+  "spider": "webs",
+  "turkey": "Thanksgiving",
+  "wolf": "packs"
+ },
+ "bar": 0.9,
+ "status": "ok",
+ "why": "16 animals kept, legs [2, 4, 6, 8]"
+}

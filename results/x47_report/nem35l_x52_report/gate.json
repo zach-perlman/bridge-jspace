@@ -1,0 +1,112 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 371
+  },
+  "gate": {
+    "last": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.9,
+        "report": 0.488,
+        "report_digit": 0.116
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.908,
+        "report": 0.488,
+        "report_digit": 0.114
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.2857142857142857,
+            168
+          ],
+          "2": [
+            0.6832298136645962,
+            161
+          ],
+          "3": [
+            0.5029239766081871,
+            171
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.125,
+            168
+          ],
+          "2": [
+            0.09937888198757763,
+            161
+          ],
+          "3": [
+            0.12280701754385964,
+            171
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [
+        "report"
+      ],
+      "pass": false,
+      "eligible": 113,
+      "chosen": 0
+    },
+    "first": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.572,
+        "report": 0.702,
+        "report_digit": 0.138
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.564,
+        "report": 0.702,
+        "report_digit": 0.136
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.44642857142857145,
+            168
+          ],
+          "2": [
+            0.7018633540372671,
+            161
+          ],
+          "3": [
+            0.9532163742690059,
+            171
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.17261904761904762,
+            168
+          ],
+          "2": [
+            0.09937888198757763,
+            161
+          ],
+          "3": [
+            0.14035087719298245,
+            171
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [
+        "recall",
+        "report"
+      ],
+      "pass": false,
+      "eligible": 78,
+      "chosen": 0
+    }
+  }
+}

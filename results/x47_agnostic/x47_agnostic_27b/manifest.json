@@ -1,0 +1,93 @@
+{
+  "exp": "x47_agnostic",
+  "run": "x47_agnostic_27b",
+  "why": "Batch 52 C coverage (amendment 2): 47.11 on the 27B at L32; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)",
+  "written_utc": "2026-10-29T01:44:38Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "caf22ddb24f51d45415fb8a35747ae4cbc03852f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "47.11",
+  "spec": "jobs/c3/batch47.yaml (47.11, amendment 4)",
+  "question": "Q47.11 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 32,
+  "types": [
+    "animals",
+    "fruits",
+    "names"
+  ],
+  "condition": "C2 (another item moved: Iris picks B; B's and C's locker sentences swapped, B's number new)",
+  "n_per_type": 300,
+  "n_generated_per_type": 700,
+  "gate": 0.8,
+  "arms": {
+    "whole": "the whole change",
+    "no_alf": "without U (fit on animals, not refit)",
+    "no_alf_rand": "without a random part of U's share",
+    "keep_alf": "only U",
+    "keep_alf_rand": "only a random part of U's share",
+    "no_refit": "without U' (refit on this type's fit half)",
+    "no_refit_rand": "without a random part of U''s share",
+    "keep_refit": "only U'",
+    "keep_refit_rand": "only a random part of U''s share"
+  },
+  "pointer": {
+    "U": "x47_atoms.pointer_basis (x0_probe_v4_27b): layout-free mass-mean slot directions on fresh animal scenes, not refit",
+    "refit": "U' per type: x0_massmean.mass_mean of O's bridge-word states by the O bridge's locker slot on the fit half (seeded split), read on the test half only (the fallback)"
+  },
+  "random_part": "X0's random subspace at each part's share of ||Δ||^2, seed 888 + layer",
+  "read": "X0's chat read: the digit's space token appended for a digit reader, nothing for a word reader; switch = the top token is S's answer's first token; the lookup's top token classified identity / position / value / original / other (x6_routes.classify)",
+  "items_rule": "per type the first n scenes in generator order on which the lookup says and reads O's and S's answers right, if its gate (O read accuracy >= gate) passed; the recall read on those it gets right too, if its gate passed (reported, not in the rule)",
+  "recall": {
+    "animals": "How many legs does {p}'s pick have?",
+    "fruits": "What color is {p}'s pick?",
+    "names": "skipped: no clean fact for a name"
+  },
+  "rule": "\"An address, not an animal code\" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type",
+  "bars": {
+    "fall": 0.3,
+    "near_animals": 0.1,
+    "keep": 0.15
+  },
+  "seeds": {
+    "scenes": 4711,
+    "split": 4712,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.11 answer",
+  "items": {
+    "animals": 300,
+    "fruits": 300,
+    "names": 300
+  }
+}

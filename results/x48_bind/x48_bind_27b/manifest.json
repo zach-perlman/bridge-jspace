@@ -1,0 +1,84 @@
+{
+  "exp": "x48_bind",
+  "run": "x48_bind_27b",
+  "why": "Batch 52 C coverage (amendment 2): 48.3 on the 27B at L32; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)",
+  "written_utc": "2026-10-29T02:33:51Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "caf22ddb24f51d45415fb8a35747ae4cbc03852f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "48.3",
+  "spec": "jobs/c3/batch48.yaml (48.3)",
+  "question": "Q48.3 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x0_necessity/x45m_fresh_27b/manifest.json": "81532062c323053fd4c50fd77b1177d0d7fd34c166a6b18ccc7f63e1f1d53b22",
+    "results/x0_necessity/x45m_fresh_27b/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl": "cae7973b9d0aa8fed9a2e47dfc3a1db711b21d7472f30d79208857d80808542e"
+  },
+  "sources": {
+    "main": "x0_necessity_27b_chat",
+    "45m": "x45m_fresh_27b"
+  },
+  "layer": 32,
+  "arms": {
+    "none": "O unedited",
+    "w1": "s = 1 (mu_Iris - mu_Jack) at the written sentence's item and number tokens",
+    "w2": "s = 2 (mu_Iris - mu_Jack)",
+    "r1": "a random vector of the s = 1 write's norm, per token",
+    "r2": "a random vector of the s = 2 write's norm, per token"
+  },
+  "s": [
+    1.0,
+    2.0
+  ],
+  "tokens": [
+    "item",
+    "number"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "random_dirs": 20,
+  "items_rule": "the scenes of both runs' chat outcomes at L; groups: main by x0_strata's org locker vs asked pick, 45m by x45m.group_of; the write on locker-after scenes of half B with a candidate",
+  "means": "per picker name and token, the mean state over the after sentences of half A (MIN_FIT states)",
+  "write": "at the written sentence's item and number tokens, s * (mu_asked - mu_picker) per token; random: a Gaussian vector of the same norm per token (seed RAND_SEED, drawn in item order)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token classified",
+  "rule": "forward binding at the locker sentence, outside the lens: probe >= 0.85 in locker-after and <= 0.5 in locker-first; the person contrast's J++ share (k = 25) <= 2x a random direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05); on both models",
+  "seeds": {
+    "split": 0,
+    "random": 4803,
+    "random_dirs": "4803 + layer",
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "no probe, rates or verdict in the run; closed until predictions/2026-10-28_dan.md holds Dan's Q48.3 answer"
+}

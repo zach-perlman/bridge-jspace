@@ -1,0 +1,133 @@
+{
+  "exp": "x47_report",
+  "run": "nem35l_x52_report",
+  "why": "Batch 52 C coverage: 47.10 on Lightning; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14)",
+  "written_utc": "2026-10-29T02:23:44Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a2feb63db58cf95ea9199bf5b06afe4013a9eae8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "47.10",
+  "spec": "jobs/c3/batch47.yaml (47.10)",
+  "question": "Q47.10 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 14,
+  "scenes": "x6_routes.scenes C0 (seed 2510), 500 generated; the first 200 eligible per order",
+  "orders": {
+    "last": "question-last: the question after the context (tasks_v2's prompt, as every routes test)",
+    "first": "question-first: the question and its instruction before the context, one user turn"
+  },
+  "readers": {
+    "lookup": {
+      "question": "Which locker belongs to {p}'s pick?",
+      "kind": "digit"
+    },
+    "recall": {
+      "question": "How many legs does {p}'s pick have?",
+      "kind": "digit"
+    },
+    "report": {
+      "question": "Was the locker of {p}'s pick listed first, second or third?",
+      "kind": "word"
+    },
+    "report_digit": {
+      "question": "Was the locker of {p}'s pick listed 1, 2 or 3?",
+      "kind": "digit"
+    }
+  },
+  "gated_readers": [
+    "lookup",
+    "recall",
+    "report"
+  ],
+  "gate": 0.8,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the bridge word at L",
+    "no_jpp": "without its J++ part (signed OMP, K = 25, letter and digit atoms)",
+    "no_jpp_rand": "without a random part of J++'s share",
+    "no_alf": "without U (the 4 pointer directions)",
+    "no_alf_rand": "without a random part of U's share",
+    "keep_alf": "only U's part",
+    "keep_alf_rand": "only a random part of U's share"
+  },
+  "k": 25,
+  "omp": "signed",
+  "dictionary": "the J++ lens's letter-token atoms plus the ten digit tokens (the letter-only restriction lifted)",
+  "pointer": {
+    "states_run": "nem35l_x52_probe",
+    "basis": "x0_massmean.subspaces Alf (layout-free class means of the locker slot), not refit"
+  },
+  "random_part": "X0's random subspace, seed 888 + layer, at the part's share of ||change||^2",
+  "change": "h_S - h_O at the bridge word at L on each reader's own prompt; in the question-last order the four prompts share the prefix through the bridge word (asserted), so the lookup's change serves all four",
+  "read": "X0's chat read: a digit reader with the space token appended, the word reader right after 'Answer:'; switch = the top token is S's answer (the report: S's slot's ordinal); right = O's",
+  "lens_read": "JLens.readout of O's bridge-word state at L (full vocabulary, special tokens out): the rank of O's slot's ordinal (best of four spellings) and of its digit; top-5 = rank <= 5",
+  "probe": "x0_probe (b), the locker sentence's index, entities held out (the verdict stage, from states.npz)",
+  "rule": "\"Surfaced on demand\": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). \"Reported late, not surfaced\": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U; the address is converted to a word at the question, not at the token.",
+  "seeds": {
+    "scenes": 2510,
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.10 answer",
+  "ordinal_tokens": {
+    "first": {
+      "first": 11517,
+      " first": 2158,
+      "First": 10107,
+      " First": 7610
+    },
+    "second": {
+      "second": 13023,
+      " second": 2667,
+      "Second": 14859,
+      " Second": 10322
+    },
+    "third": {
+      "third": 61165,
+      " third": 5888,
+      "Third": 37117,
+      " Third": 22126
+    }
+  },
+  "orders_tested": [],
+  "not_tested": {
+    "last": [
+      "report"
+    ],
+    "first": [
+      "recall",
+      "report"
+    ]
+  }
+}
