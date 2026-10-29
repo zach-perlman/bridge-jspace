@@ -1194,7 +1194,11 @@ def verdict_lines(blob: dict) -> list[str]:
               "verbal.md for Qwen3.5-9B, Qwen3.6-27B and Muse Glimmer 30B; results/x47_verbal/summary-20261029T005548Z/"
               "verbal.md for Nemotron 3.5 Lightning): read 'not verbalizable' on all four models. No new numbers "
               "here.", "",
-              "## Monitor (b): the trained probe on J++ coordinates vs random vs full", ""]  # fmt: skip
+              "## Monitor (b): the trained probe on J++ coordinates vs random vs full", "",
+              "At a glance, the headline targets' decisive labels (k = 25 / 100; blind = 'J-space blind to X', carries "
+              "= 'J-space carries X', many = random reads it too: Dan's sentence for the slot, 'decodable from many "
+              "subspaces, J++ included' for the digit; between = in between). Full wording and the arms beside in "
+              "the tables below.", "", *glance_table(res), ""]  # fmt: skip
     for title, targets in (("### Headline: (b) the bridge's locker slot and (c) the lookup's answer digit", HEADLINE),
                            ("### Positive controls: (a) which item is the bridge and (d) the recall's answer",
                             CONTROLS)):  # fmt: skip
@@ -1205,7 +1209,7 @@ def verdict_lines(blob: dict) -> list[str]:
     missing = [f"{NAMES[t]} {s}" for t in models for s in SETS if not res.get(t, {}).get(s)]
     missing += [f"{NAMES[t]} {s} ({', '.join(p for p in PASSES if p not in r.get('passes', PASSES))} pass)"
                 for t in models for s, r in res.get(t, {}).items() if set(r.get("passes", PASSES)) != set(PASSES)]  # fmt: skip
-    lines += ["", f"Not yet probed (states not pulled): {', '.join(missing) or 'none'}.", ""]
+    lines += ["", f"Not yet probed (a dataset or a pass missing): {', '.join(missing) or 'none'}.", ""]
     lines += ["## The main test's states vs 52 B's cache (lowest cosine over rows, any layer)", ""]
     for t, c in blob["x52_check_min_cosine"].items():
         if c:
@@ -1303,6 +1307,21 @@ def label_table(res: dict, targets: tuple[str, ...]) -> list[str]:
                         lines.append(f"| {NAMES[t]} | {s} ({r['n_rows']} rows, {r['n_entities']} bridges) | {p} | "
                                      f"{TARGET_SHORT[tg]} | {k} | {lab['']} | {lab['fixed_']} | {lab['erand_']} | "
                                      f"{mx} | {'; '.join(notes)} |")  # fmt: skip
+    return lines
+
+
+def glance_table(res: dict) -> list[str]:
+    """One row per model and dataset: the headline targets' decisive labels per position, k = 25 / 100."""
+    short = {LABELS[0]: "blind", LABELS[1]: "carries", LABELS[2]: "between", LABELS[3]: "many"}
+    cols = [(p, t) for t in HEADLINE for p in PROBE_POS]
+    lines = ["| model | dataset | " + " | ".join(f"{TARGET_SHORT[t]} at {'B' if p == 'B' else 'T'}" for p, t in cols)
+             + " |", "|---|---|" + "---|" * len(cols)]  # fmt: skip
+    for t in MODELS:
+        for s in SETS:
+            r = res.get(t, {}).get(s)
+            if r:
+                cells = [" / ".join(short[r["rules"][f"{p}|{tg}"][f"k{k}"]["label"]] for k in KS) for p, tg in cols]
+                lines.append(f"| {NAMES[t]} | {s} | " + " | ".join(cells) + " |")
     return lines
 
 
