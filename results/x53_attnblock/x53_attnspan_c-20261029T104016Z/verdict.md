@@ -1,0 +1,40 @@
+x53_attnspan: the 53.4 follow-up on Lightning (L14; run nem35l_x53_attnspan_c); Batch 53, 53.4 follow-up (Dan 11:10); no prediction (Dan, 29 Oct ~10:05: the rule fixed then, before any run); UNVERIFIED
+
+Rule (verbatim): "the pointer is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4.
+53.4's rule (for "else as 53.4"): "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between.
+As computed: cut(x) = 1 - S_x / S_whole on the lookup (53.4's), S_x = the share of the scenes kept whose lookup switches under the whole change with arm x's block, S_whole = the same with no block, all in this run's forwards; point estimates decide, EPS 1e-09 at the bars. "else as 53.4": 53.4's labels applied to the span arm: its (iv) clause "not through attention at the bridge" if the span cuts < 0.3 (the Mamba state carries it), else "in between" (the per-block clauses (i) / (ii) have no span arm). The span's destinations are every position after the scene's last token (knock_out needs disjoint sources and destinations, so attention inside the span is as is), the same for the control. the control span (Dan 11:25; the coordinator's reading, flagged to Dan): as many tokens as the bridge-to-scene-end span, inside the scene, ending at the last token before the bridge's sentence (X0's bind_bridge statement) begins: one deterministic placement, the nearest to the question that does not touch the bridge's sentence (the span itself reaches the scene's end, so the span's own distance to the question cannot be matched); its distance to the question is the span's plus the span's length plus the bridge sentence's part before the bridge word (reported per scene); a scene where it does not fit inside the scene (from its first token, never position 0) is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked. S_whole = 0: not tested; X0's validity reported, not a gate. 53.4's (iii) and (v) from its committed verdict beside, and (iii) rerun here
+
+Control placement: c (the control span (Dan 11:25; the coordinator's reading, flagged to Dan): as many tokens as the bridge-to-scene-end span, inside the scene, ending at the last token before the bridge's sentence (X0's bind_bridge statement) begins: one deterministic placement, the nearest to the question that does not touch the bridge's sentence (the span itself reaches the scene's end, so the span's own distance to the question cannot be matched); its distance to the question is the span's plus the span's length plus the bridge sentence's part before the bridge word (reported per scene); a scene where it does not fit inside the scene (from its first token, never position 0) is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked). Distance to the question's first token (tokens, median over the rule's scenes): the span's end 1.0, the control's end 12.0. The coordinator's reading of Dan's 11:25 wording (flagged to Dan; he can correct it, a rerun is ~6 min)
+
+Label (lookup): in between — decided on the 83 scenes where a control span fits (median span 9.0 tokens); 117 scenes without one (median span 28.0 tokens) dropped from the rule. The span arm's cut: 0.522 [0.411, 0.617] on the 83, 0.407 [0.262, 0.538] on all 200 (median span 20.0 tokens), 0.045 [-0.571, 0.423] on the 117.
+
+Scenes: 200 (53.4's); in the rule (a control span fits) 83 (35 bridge entities); dropped from the rule, no control fits: 117; span length (tokens, min / median / max) in the rule [2, 9, 18], all [2, 20, 39]
+
+lookup (the rule's scenes): n 83, S_whole 0.831 (69 switched; X0-valid True), clean kept with no block 1.000
+  (iii) of 53.4, rerun here: blocks 19 and 26, source = the bridge word: S 0.554, cut 0.333 [0.243, 0.418], clean kept 0.578 (collateral), edges (median) 72
+  blocks 19 and 26: every position after the scene's last token cannot attend to any position from the bridge word through the scene's last token: S 0.398, cut 0.522 [0.411, 0.617], clean kept 0.446 (collateral), edges (median) 504
+  the control: blocks 19 and 26, the same destinations, a source span of the same length inside the scene before the bridge word (seeded start): S 0.843, cut -0.015 [-0.050, 0.000], clean kept 1.000 (collateral), edges (median) 504
+recall (beside) (the rule's scenes): n 83, S_whole 0.988 (82 switched; X0-valid True), clean kept with no block 1.000
+  (iii) of 53.4, rerun here: blocks 19 and 26, source = the bridge word: S 0.807, cut 0.183 [0.101, 0.261], clean kept 0.759 (collateral), edges (median) 76
+  blocks 19 and 26: every position after the scene's last token cannot attend to any position from the bridge word through the scene's last token: S 0.699, cut 0.293 [0.198, 0.385], clean kept 0.590 (collateral), edges (median) 540
+  the control: blocks 19 and 26, the same destinations, a source span of the same length inside the scene before the bridge word (seeded start): S 1.000, cut -0.012 [-0.042, 0.000], clean kept 0.988 (collateral), edges (median) 540
+
+Beside, the span and (iii) on every scene, and on the scenes without a control:
+  all, lookup: n 200, S_whole 0.455; span cut 0.407 [0.262, 0.538], clean kept 0.585; (iii) cut 0.352 [0.264, 0.426]
+  all, recall: n 200, S_whole 0.945; span cut 0.222 [0.162, 0.275], clean kept 0.685; (iii) cut 0.127 [0.077, 0.179]
+  no control fits, lookup: n 117, S_whole 0.188; span cut 0.045 [-0.571, 0.423], clean kept 0.684; (iii) cut 0.409 [0.226, 0.625]
+  no control fits, recall: n 117, S_whole 0.914; span cut 0.168 [0.098, 0.228], clean kept 0.752; (iii) cut 0.084 [0.034, 0.141]
+
+Beside, 53.4's committed verdict (results/x53_attnblock/x53_attnblock-20261029T091303Z; label in between; n 200, S_whole 0.440): (iii) cut 0.341 [0.253, 0.420], clean kept 0.770; (v) cut 0.000 [-0.056, 0.054], clean kept 0.995
+
+Examples (10 random scenes of the rule, seed 0; the lookup's top token under the whole change, '*' = switched):
+- P2-L0-0045: span ' spider. The locker of the spider is nine. The locker of the mouse is eight.\n'; control 'The locker of the sheep is seven. Maria picked the sheep. James picked the mouse.'; none '8'*, both '9', span '8'*, span_ctrl '8'*
+- P2-L0-0216: span ' wolf. The locker of the wolf is nine. The locker of the horse is five.\n'; control 'ina picked the eagle. The locker of the eagle is three. Hugo picked the horse.'; none '9', both '9', span '9', span_ctrl '9'
+- P2-L0-0244: span ' hydrogen.\n'; control ' oxygen.'; none '8'*, both '8'*, span '8'*, span_ctrl '8'*
+- P2-L0-0273: span ' fox. Sean picked the turkey.\n'; control ' of the frog is 7.'; none '4'*, both '4'*, span '7', span_ctrl '4'*
+- P2-L0-0291: span ' tiger. The locker of the turkey is 4.\n'; control ' the cow is 3. Ruby picked the turkey.'; none '4'*, both '4'*, span '5', span_ctrl '4'*
+- P2-L0-0298: span ' hydrogen. The locker of helium is seven. Anna picked nitrogen.\n'; control ' eight. Owen picked helium. The locker of nitrogen is five.'; none '5'*, both '5'*, span '5'*, span_ctrl '5'*
+- P2-L0-0324: span ' bee. David picked the spider.\n'; control ' locker of the spider is five.'; none '5'*, both '5'*, span '5'*, span_ctrl '5'*
+- P2-L0-0362: span ' gamma. The locker of gamma is 2.\n'; control ' alpha. The locker of alpha is 5.'; none '2', both '2', span '2', span_ctrl '2'
+- P2-L0-0363: span ' crow. The locker of the spider is two. The locker of the fox is five.\n'; control 'ia picked the spider. Tom picked the fox. The locker of the crow is four.'; none '4', both '4', span '4', span_ctrl '4'
+- P2-L0-0389: span ' beta.\n'; control '6.'; none '2'*, both '2'*, span '2'*, span_ctrl '2'*
