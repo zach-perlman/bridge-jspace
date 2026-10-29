@@ -1540,12 +1540,37 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
 - **Where used.** This ledger only (README: not before the next day's verification).
 
-### 53.3 (running) <a id="b53-3"></a>
+### At the last token, does each reader compute its answer through the lens part or outside it? (53.3, the 9B opened 29 Oct ~10:00; the 27B, Muse and Lightning to come) <a id="b53-3"></a>
 
-- **Question.** At the last token, does each reader compute its answer through the lens part or outside it?
-- **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between." 9B, 27B, Muse, Lightning, at 51.10's read-peak layer and the answer layer minus 2.
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** At the last token, does each reader compute its answer through the lens part of the last token's change, or outside it?
+- **Why we asked.** At the last token the recall's bridge entity is readable through the lens, yet writing it there does not move the answer ([51.10](#t51-10)); the conflict test at that token asks which part of the change each reader follows there.
+- **Data.** Main test, the locker-first scenes of 51.10: 75 on the 9B (32 bridge entities); the 27B, Muse and Lightning running.
+- **Method.** The change at the last token (the changed prompt's last-token state minus the original's) at 51.10's read-peak layer (L24 on the 9B) and two layers before the answer layer (L27); the lens part = its 25 J++ directions; arms: the whole change, without the lens part, without a random part of the same share, the lens part alone, the rest alone.
+
+![At the last token the 9B's recall computes outside the lens part](../../figures/ledger/ledger_last_conflict.png)
+*Per reader and layer, the last token's change: switches lost without the lens part beyond a random part (dashed: the rule's 0.10; dotted: 0.30) and the rest alone's switches as a share of the whole change's (dashed: 0.7); the rule's label at the right; 75 locker-first scenes; whiskers 95%. The 9B so far. The verdict's own figure: [the verdict folder](../../results/x53_lastconflict/x53_lastconflict-20261029T085443Z/x53_lastconflict.png).*
+
+- **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | lookup, L24 (read peak): lost beyond a random part / the rest alone over the whole | 0.12 [0.00, 0.23]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 24 (read peak) :: 0.12 [0.00, 0.23] --> / 0.35 [0.19, 0.52]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 24 (read peak) :: 0.35 [0.19, 0.52] --> | running | running | running |
+  | lookup, L27: the same | 0.16 [0.08, 0.26]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 27 (answer L29 - 2) :: 0.16 [0.08, 0.26] --> / 0.16 [0.04, 0.29]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 27 (answer L29 - 2) :: 0.16 [0.04, 0.29] --> | | | |
+  | recall, L24 (read peak): the same | 0.07 [-0.03, 0.18]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 24 (read peak) :: 0.07 [-0.03, 0.18] --> / 0.79 [0.67, 0.90]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 24 (read peak) :: 0.79 [0.67, 0.90] --> | | | |
+  | recall, L27: the same | 0.20 [0.06, 0.33]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 27 (answer L29 - 2) :: 0.20 [0.06, 0.33] --> / 0.59 [0.45, 0.73]<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 27 (answer L29 - 2) :: 0.59 [0.45, 0.73] --> | | | |
+  | the rule: lookup L24 / L27; recall L24 / L27 | **in between<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 24 (read peak) :: in between -->** / **in between<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| lookup :: 27 (answer L29 - 2) :: in between -->**; **computes outside the lens at the last token<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 24 (read peak) :: computes outside the lens at the last token -->** / **in between<!-- src: results/x53_lastconflict/x53_lastconflict-20261029T085443Z/verdict.md \| recall :: 27 (answer L29 - 2) :: in between -->** | | | |
+
+- **Read.**
+  - On the 9B, at its read-peak layer, the recall computes its answer outside the lens part at the last token: without the lens part it loses little beyond a random part, and the rest alone switches most of what the whole change does. Two layers before the answer it is in between.
+  - The lookup is in between at both layers.
+- **Caveats.**
+  - One model so far; 75 scenes over 32 bridge entities.
+  - Here the rest alone and the change without the lens part are the same arm (the verdict's table gives them the same shares).
+  - Exploratory (batch 53): no prediction; UNVERIFIED.
 
 ### 53.4 (running) <a id="b53-4"></a>
 
@@ -1554,12 +1579,37 @@ Dan's batch 53 (29 Oct 09:30, standing rules 09:50; jobs/c3/batch53.yaml): every
 - **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
 - **Where used.** This ledger only (README: not before the next day's verification).
 
-### 53.5 (running) <a id="b53-5"></a>
+### On the scenes where the 27B's lookup goes by position, does the address work as on the 9B? (53.5, opened 29 Oct ~10:00; CPU, existing outcomes) <a id="b53-5"></a>
 
-- **Question.** On the scenes where the 27B's lookup goes by position, does the address work as on the 9B?
-- **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." CPU, existing outcomes.
-- **Status.** Queued or running per Dan's 09:50 box plan; no result opened.
-- **Where used.** This ledger only (README: not before the next day's verification).
+`ledger only` *Used in: batch 53, exploration day; nothing into the README before the next day's verification.*
+
+- **Question.** On the scenes where the 27B's lookup goes by position, does the address work as it does on the 9B?
+- **Why we asked.** Added by itself, the 27B's address brings few position answers back overall ([routes](#routes)); the 27B takes the position route less often, so its address could be the same mechanism, used less.
+- **Data.** Routes scenes of the two conditions that have a position answer, kept where the lookup answers by position under the whole change: 232 on the 27B (31 bridge items), 340 on the 9B beside; the swap on those scenes of the second condition (101 / 153).
+- **Method.** On existing outcomes (CPU): position answers without the address against without a random part of its share; the address alone against a random part alone; the address swap at dose 2.
+
+![On its position-route scenes the 27B's address brings back fewer answers than the 9B's](../../results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png)
+*The verdict's figure: on each model's position-route scenes, the lookup's position share under the whole change, without the address, without a random part, with the address alone and with a random part alone, and the swap at dose 2 (hatched); dashed: the rule's bars (0.10, 0.25); whiskers 95%. Its title names the test.*
+
+- **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
+
+- **Result.**
+
+  | | 9B (beside) | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | position answers back with the address alone (bar >= 0.25) | 0.46 [0.39, 0.53]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.5-9B :: C1 + C2 :: 0.46 [0.39, 0.53] --> | 0.22 [0.15, 0.29]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.6-27B :: C1 + C2 :: 0.22 [0.15, 0.29] --> | not designed | not designed |
+  | position answers left without the address (bar <= 0.10) | 0.06 [0.04, 0.09]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.5-9B :: C1 + C2 :: 0.06 [0.04, 0.09] --> | 0.08 [0.04, 0.11]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.6-27B :: C1 + C2 :: 0.08 [0.04, 0.11] --> | | |
+  | the same without a random part of its share | 0.45 [0.41, 0.50]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.5-9B :: C1 + C2 :: 0.45 [0.41, 0.50] --> | 0.37 [0.30, 0.42]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.6-27B :: C1 + C2 :: 0.37 [0.30, 0.42] --> | | |
+  | the swap at dose 2: lookups sent to the target | 0.40 [0.36, 0.43]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.5-9B :: position-route subset :: 0.40 [0.36, 0.43] --> | 0.23 [0.18, 0.29]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| Qwen3.6-27B :: position-route subset :: 0.23 [0.18, 0.29] --> | | |
+  | the rule | the pattern holds | **the 27B differs<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md \| 27B: the 27B differs :: the 27B differs -->** | | |
+
+- **Read.**
+  - On its own position-route scenes the 27B's address, added by itself, brings back fewer position answers than the rule's bar, and its removal leaves few: by the rule the 27B differs; the 9B's subset shows its pattern.
+- **Caveats.**
+  - The 27B's interval for the address alone ([0.15, 0.29]) contains the 0.25 bar.
+  - The 9B's pattern holds only with the two conditions pooled: per condition, the first holds and the second does not, on both models.
+  - In the first condition, removing a random part of the address's share also leaves few position answers (0.07 [0.03, 0.11]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md | Without a random part of the address's share, C1 keeps :: 0.07 [0.03, 0.11] --> on the 27B), so there the removal clause cannot tell the address from a random part.
+  - CPU on existing outcomes; exploratory (batch 53); no prediction; UNVERIFIED.
 
 ### 53.6 (running) <a id="b53-6"></a>
 
@@ -1818,6 +1868,8 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figure | page width | labels | axes in words | finding visible | note |
 |---|---|---|---|---|---|
 | figures/ledger/ledger_coverage_map.png | yes (tall: 49 rows) | no overlap; the hatched cells' words sit on a white patch | yes | yes | the overview (29 Oct morning); no number drawn, each cell a verdict word from its card (scripts/ledger_coverage.py's HEATMAP); opened after rendering |
+| figures/ledger/ledger_last_conflict.png | yes | no overlap (after shortening the recall's label to "outside the lens") | yes | yes | batch 53 (53.3), the 9B only so far; restyled from the verdict's figure, whose key covers the lookup's bars and whose title holds the run name |
+| results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn |
 | figures/ledger/ledger_last_token_address.png | yes | no overlap | yes | yes | L and L+4 are unlabelled dotted lines (the caption names them); Lightning added 29 Oct, re-opened; title now names Muse only |

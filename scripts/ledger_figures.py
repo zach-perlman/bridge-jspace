@@ -1176,9 +1176,53 @@ def coverage_map(plt) -> str:
     return save(fig, "ledger_coverage_map")
 
 
+# ---- batch 53 (exploration day, Dan 29 Oct 09:30) -------------------------------------------------------------------
+
+LASTCONFLICT = R / "x53_lastconflict" / "x53_lastconflict-20261029T085443Z" / "verdict.json"  # 53.3, the 9B first
+
+
+def last_conflict(plt) -> str:
+    """53.3, per model, reader and layer (51.10's read peak, the answer layer minus 2): the switches lost without the
+    lens part of the last token's change beyond a random part (bars 0.10 and 0.30), and the rest alone's switches as a
+    share of the whole change's (bar 0.7); the rule's label at the right."""
+    v = load(LASTCONFLICT)
+    rows = []
+    for m in v["models"]:
+        for c in sorted(m["cells"], key=lambda c: (c["reader"] != "lookup", c["layer"])):
+            rows.append((m["target"], c))
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, 0.42 * len(rows) + 1.9), sharey=True)
+    h = fig.get_figheight()
+    fig.subplots_adjust(left=0.17, right=0.8, top=1 - 1.25 / h, bottom=1.0 / h, wspace=0.12)
+    S.title(fig, "At the last token the 9B's recall computes outside the lens part",
+            "The change at the last token, 75 locker-first scenes; whiskers 95%; dashed / dotted: the rule's bars")  # fmt: skip
+    labels = [f"{SHORT[t]} {c['reader']}, L{c['layer']}" for t, c in rows]
+    for i, (t, c) in enumerate(rows):
+        col = LOOKUP if c["reader"] == "lookup" else INK
+        whisker(axes[0], -i, c["excess"], col)
+        whisker(axes[1], -i, c["rest_share"], col)
+        short = {"computes outside the lens at the last token": "outside the lens"}.get(c["text"], c["text"])
+        axes[1].text(1.08, -i, short, va="center", fontsize=S.LABEL_PT - 1, color=col, clip_on=False)
+        S.record("ledger_last_conflict", t, f"{c['reader']} L{c['layer']}: switches lost without the lens part beyond "
+                 "random (last token)", *c["excess"], n=c["n"], source=rel(LASTCONFLICT))  # fmt: skip
+        S.record("ledger_last_conflict", t, f"{c['reader']} L{c['layer']}: the rest alone, share of the whole change",
+                 *c["rest_share"], n=c["n"], source=rel(LASTCONFLICT))  # fmt: skip
+    rows_axis(axes[0], labels)
+    zero_band(axes[0], -0.2, 1.0)
+    axes[0].axvline(0.10, color="#555555", lw=0.8, ls="--")
+    axes[0].axvline(0.30, color="#555555", lw=0.8, ls=":")
+    axes[0].set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+    axes[0].set_xlabel("lost without the lens part\nbeyond a random part")
+    zero_band(axes[1], 0.0, 1.05)
+    axes[1].axvline(0.7, color="#555555", lw=0.8, ls="--")
+    axes[1].set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+    axes[1].set_xlabel("the rest alone,\nshare of the whole change")
+    return save(fig, "ledger_last_conflict")
+
+
 FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named,
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
-           address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe)  # fmt: skip
+           address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
+           last_conflict)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
