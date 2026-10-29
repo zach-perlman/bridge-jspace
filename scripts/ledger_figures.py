@@ -1779,6 +1779,27 @@ def code_tool(plt) -> str:
                        rows, absent, "share", left=0.4)
 
 
+TWO_SOURCES = R / "x47_source" / "x47_15-20261028T142722Z" / "x47_15.json"  # 47.15, one question, two sources
+
+
+def two_sources(plt) -> str:
+    """47.15 on five slots: per instruction (from the text, from memory), the fact placed after, the switches lost beyond
+    a random part without the lens part and without the address and identity parts (U + I); the rule's 0.10 / 0.30
+    bars; the models whose gate failed grey."""
+    rows = {}
+    for m in load(TWO_SOURCES)["models"]:
+        if m["status"] != "tested":
+            continue
+        conds = m["placements"]["after"]["conditions"]
+        rows[m["target"]] = [(f"{lab}: without {part}", conds[k]["extra"][key], col, False)
+                             for k, lab in (("text", "from the text"), ("memory", "from memory"))
+                             for key, part, col in (("jpp", "the lens part", JPP), ("ui", "U + I", ADDRESS))]  # fmt: skip
+    absent = {"qwen3.5-9b": "not tested\n(gate)", "muse-glimmer-30b": "not tested\n(gate)", LT: "not tested\n(gate)"}
+    return four_panels(plt, "ledger_two_sources", "On the 27B neither instruction makes the part follow the source",
+                       "Fact after: switches lost beyond a random part; dotted / dashed: the rule's 0.10 / 0.30",
+                       rows, absent, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, ":"), (0.30, "--")))
+
+
 SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          "qwen3.6-27b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          LT: R / "x49_report" / "x52_report49-20261029T082508Z" / "x49_6.json"}  # fmt: skip
@@ -1868,7 +1889,7 @@ FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_car
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool, two_sources)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

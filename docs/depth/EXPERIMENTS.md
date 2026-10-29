@@ -1652,6 +1652,34 @@ New in this ledger:
   - Few bridge items (9 to 15).
   - Muse's recall loss is wide.
 
+### Under one question with two instructions, does the lens part follow the source or the question? (one question, two sources, 47.15; the 27B) <a id="t47-15"></a>
+
+`ledger only` `below gate: 9B, Muse, Lightning` *Used in: README Part VI, "One question under two instructions", as a one-line link (its 12:50 rebuild).*
+
+- **Question.** When one question asks for the answer "from the passage" or "from what you know", does each part of the change follow the source of the answer or the question?
+- **Why we asked.** The lookup answers from the passage and the recall from memory: the split could follow the source, or the question the reader is asked.
+- **Data.** Routes scenes (locker first) with a false-legs sentence per item, one question under two instructions (from the text / from memory) and none; 300 scenes per condition on the 27B at L32. Muse's gate failed with the fact after (memory 0.746<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| muse-glimmer-30b (muse30_x47_15_r2, L26) :: memory :: 0.746 -->); the 9B's rerun and Lightning's coverage run failed their gates too.
+- **Method.** The change at the bridge word at L: without the lens part, and without the address and identity parts (U + I), each against a random part of its share; per condition (the text, memory), the fact placed after.
+
+![On the 27B neither instruction makes the part follow the source](../../figures/ledger/ledger_two_sources.png)
+*Switches lost beyond a random part without the lens part and without the address and identity parts, per instruction, the fact after; whiskers 95%. Models: 27B; the 9B, Muse and Lightning grey (not tested: gate); the 122B grey (not run).*
+
+- **Rule, fixed in advance.** "a condition is like a lookup if without J++ <= 0.10 and without U + I >= 0.30, like a recall if without J++ >= 0.30 and without U + I <= 0.10, can't tell if its whole cell is invalid (S_whole < 0.30 or < 30 switches), else neither; the part follows the source if text is like a lookup and memory like a recall; follows the question if both give the same label (lookup or recall); each on the batch on >= 2 of 3 models; a model whose gate (0.80 per instruction) fails is not tested." (results/x47_source/x47_15-20261028T142722Z/x47_15.md; Dan's Q47.15 prediction)
+
+- **Result.** (the fact placed after)
+
+  | | 9B | 27B | Muse | Lightning | 122B |
+  |---|---|---|---|---|---|
+  | from the text: lost without the lens part / without U + I, beyond random | not tested (gate) | 0.54 [0.43, 0.66]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: tested :: 0.54 [0.43, 0.66] --> / 0.39 [0.30, 0.49]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: tested :: 0.39 [0.30, 0.49] --> | not tested (gate) | not tested (gate) | not run |
+  | from memory: the same | | 0.55 [0.40, 0.68]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: tested :: 0.55 [0.40, 0.68] --> / 0.31 [0.20, 0.44]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: tested :: 0.31 [0.20, 0.44] --> | | | |
+  | the labels: text / memory | | **neither<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: tested :: neither -->** / **can't tell** | | | |
+
+- **Read.**
+  - On the 27B both instructions lose most of their switches without the lens part and many without the address and identity parts: neither instruction reads like a lookup or a recall, so the part follows neither the source nor the question. With no instruction the 27B answers from the passage.
+- **Caveats.**
+  - One model; the 9B, Muse and Lightning missed the gate (Lightning's coverage rerun: results/x47_source/x52_source-20261029T062807Z).
+  - The coverage matrix named this test "the second hop's key token" until its 12:20 build; that is another failure ([47.14](#t47-14)).
+
 ### Are the lookup's errors address errors? (the address probe on the lookup's errors, 47.13; Lightning's coverage run 29 Oct) <a id="t47-13"></a>
 
 `in README` *Used in: README Part VI, weaker results ("The lookup's errors are not address errors", 9B); Lightning not in the README yet.*
@@ -1884,6 +1912,16 @@ New in this ledger:
   - Lightning's column comes from a later verdict folder that re-reads the 27B with the same rows.
   - The refit is read on half the scenes (150 per kind).
 
+## Also failed (one line each) <a id="also-failed"></a>
+
+The README's Part VI "Also failed" line (Dan 12:50: its cards move here); each with its verdict, no card.
+
+- **The positive control (the 27B, chemical symbols).** The alias test's difference for the elements is 0.15 [0.10, 0.19]<!-- src: results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.md \| elements :: excess (syn) - excess (same) :: 0.15 [0.10, 0.19] -->, under its bar of 0.20: it "fails: the method may not see a lookup that needs J++" (the interval rests on 6 entities).
+- **A second-versus-third address.** Only the pointer part moves lookups between slots 1 and 2 on no model to speak of: 1 → 2 / 2 → 1, the 9B 0.00<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| qwen3.5-9b :: 1 → 2 :: 47 :: 0.00 --> / 0.00<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| qwen3.5-9b :: 2 → 1 :: 49 :: 0.00 -->, the 27B 0.00<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| qwen3.6-27b :: 1 → 2 :: 54 :: 0.00 --> / 0.00<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| qwen3.6-27b :: 2 → 1 :: 50 :: 0.00 -->, Muse 0.04<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| muse-glimmer-30b :: 1 → 2 :: 45 :: 0.04 --> / 0.16<!-- src: results/x8_write/pairs-20261026T151225Z/pairs.md \| muse-glimmer-30b :: 2 → 1 :: 51 :: 0.16 -->; the mean-difference write at twice a real change reaches 0.78<!-- src: results/x8_write/score45c-20261026T211201Z/score.md \| qwen35_9b_x8_write12 :: 2 → 1 :: 0.78 --> on the 9B (2 → 1) and 0.39<!-- src: results/x8_write/score45c-20261026T211201Z/score.md \| muse30b_x8_write12 :: 1 → 2 :: 0.39 --> on Muse (1 → 2).
+- **The 9B in the clean design.** Locker first, the gap is 0.23 [0.14, 0.31]<!-- src: results/x0_necessity/x45m-20261026T230628Z/x45m.md \| qwen3.5-9b :: locker-before :: 0.23 [0.14, 0.31] -->, under the rule's 0.3.
+- **The 9B's replication.** The recall loses 0.12 [0.06, 0.19]<!-- src: results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.md \| J++ (k = 25) :: recall :: 0.12 [0.06, 0.19] --> beyond a random part: mixed.
+- **The 27B's strict bar.** Its lookup loses 0.14 [0.08, 0.20]<!-- src: docs/x0_details.md \| 32 :: lookup :: 200 :: 0.14 [0.08, 0.20] --> beyond a random part at L32, over the rule's 0.10: not confirmed (the rule in docs/x0_details.md).
+
 ## How we checked
 
 ### Do the 9B's headline runs reproduce from a clean checkout? (49.5, landed 28 Oct 17:11) <a id="t49-5"></a>
@@ -1918,7 +1956,6 @@ New in this ledger:
 
 Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
 
-- **The second hop's key token (47.15), the 27B.** With the fact placed after, the text-source condition loses 0.54 [0.43, 0.66]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.54 [0.43, 0.66] --> without the lens part and 0.39 [0.30, 0.49]<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: 0.39 [0.30, 0.49] --> without the address and identity parts: "neither<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| x47_15_27b_r2 :: neither -->", like neither reader; the memory condition "can't tell". The 9B was never run; Muse and Lightning failed the gate. No figure.
 - **DAS for the address (49.8, DAS by position), the 9B only by design.** A learned 4-direction position subspace carries 0.94<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| k = 4: own-IIA 0.94 :: 0.94 --> of the position switches on held-out pairs, but holds only 0.247<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| U's energy in R_pos 0.247 :: 0.247 --> of our address's energy and moves the recall too (cross-IIA 0.44<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| the recall's cross-IIA 0.44 :: 0.44 -->): "(d) in between". Its figure: [the verdict folder](../../results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png).
 
 ## Withdrawn
@@ -1994,7 +2031,7 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 28. The coverage matrix's row "One question, two instructions (49.6)" is 49.6, "the report of slot 1, reworded" (results/x49_report/x49_6-20261028T154511Z): the matrix marks the 9B "ran; the gate failed", but the verdict scores the 9B (slot 1 recovers under the sentence wording; it decides: drop), and Lightning has a coverage run (not "not designed"). The README's Part VI "One question under two instructions" is another test. The ledger's card follows the verdict ([49.6](#t49-6)); the matrix row needs a rename and fresh cells. Fixed (fb9667eb, scripts/x52_coverage.py): the matrix row is now "Report of slot 1, reworded (49.6)" with the 9B, 27B and Lightning done and Muse not designed (results/x52_coverage/matrix-20261029T094549Z); Appendix C follows it.
 29. Resolved (Dan, 11:25), a record line: 53.1's evaluation logic was clarified after the data (3dae749f): the cross-check reads "does not hold" once a tested cell exceeds 0.10, and a "can't tell" across cells lists the patterns still open. Dan confirmed it as the correct reading of "in all four cells"; on the 27B it changes nothing, since the Q-after cell is the main test (0.14<!-- src: results/x53_2x2/x53_2x2-20261029T100414Z/verdict.md \| Cross-check :: (Q-after, number) (0.14) :: 0.14 -->) ([53.1](#b53-1)).
 30. The 53.6 labels ignore magnitude (a rule design issue, Dan's; Dan 12:10): every model reads "both", though the recall moves a quarter or more under each lever on the 9B and Lightning and at most about a tenth on the 27B and Muse ([53.6](#b53-6)).
-31. Two Part VI items the README drops (Dan 12:50) have no card here and no source on the README's line: "One question under two instructions" (27B only; not 49.6, see flag 28) and "Also failed: the positive control, a second-vs-third address, the 9B in the clean design and its replication, the 27B's strict bar". Their verdict paths are asked of the README agent; each becomes a card in Part VI when they come.
+31. Resolved (README agent, 29 Oct afternoon): "One question under two instructions" is 47.15, one question, two sources ([47.15](#t47-15)), misnamed "the second hop's key token" in the coverage matrix until its 12:20 build; the "Also failed" items are one line each under [Also failed](#also-failed), sourced to their verdicts.
 32. The 122B's routes and swap runs (g75) lowered the gate to 0.75 after its 0.80 run missed it (recall 0.797): shown below gate here (○, never in claims), where the README marks them ° ([routes](#routes), [swap](#swap)).
 
 ## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>
@@ -2030,9 +2067,9 @@ Dan lifted the overnight no-README rule at 08:55; the README pass is applying th
 
 ## Appendix C. Coverage table <a id="coverage"></a>
 
-Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T110130Z/matrix.json, built 11:01 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
+Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T122040Z/matrix.json, built 12:20 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 11:01 UTC (12:01 Paris; b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
+As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One question, two sources"; otherwise as b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |
@@ -2081,16 +2118,16 @@ As of the matrix at 11:01 UTC (12:01 Paris; b8a24aab: 161 done, 20 not tested, 9
 | [Anatomy on Zach's passages (51.5)](#t51-5) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
 | **Part VI. What did not hold** | | | | |
 | [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>43</sup> | ✓ | ◐ <sup>44</sup> |
-| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>45</sup> | ✓ | ✓ |
-| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>46</sup> | ◐ <sup>47</sup> | ✓ | ✓ |
-| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>48</sup> | ✓ | ✓ |
-| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
-| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>50</sup> | ✓ | ✓ |
-| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>51</sup> | ✓ | ✓ |
-| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>52</sup> | ✓ | ✓ |
+| [One question, two sources (47.15)](#t47-15) | ✓ | ○ <sup>14</sup> | ○ <sup>14</sup> | ○ <sup>45</sup> |
+| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>46</sup> | ✓ | ✓ |
+| [Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>47</sup> | ◐ <sup>48</sup> | ✓ | ✓ |
+| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
+| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>50</sup> | ✓ | ✓ |
+| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>51</sup> | ✓ | ✓ |
+| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>52</sup> | ✓ | ✓ |
+| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>53</sup> | ✓ | ✓ |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | ✓ | ✓ | ✓ | ✓ |
 | **Withdrawn, or run on one model only** | | | | |
-| Failed: the second hop's key token (47.15 source) | ✓ | ○ <sup>14</sup> | ○ <sup>14</sup> | ○ <sup>53</sup> |
 | DAS by position (49.x das_pos) | ✗ <sup>54</sup> | ✗ <sup>54</sup> | ✓ | ✗ <sup>54</sup> |
 | [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
 
@@ -2140,15 +2177,15 @@ As of the matrix at 11:01 UTC (12:01 Paris; b8a24aab: 161 done, 20 not tested, 9
 42. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
 43. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
 44. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
-45. count (CPU) then the verdict
-46. A and B
-47. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
-48. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
-49. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
-50. attention blocks after L14 (NemotronH port)
-51. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
-52. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
-53. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
+45. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
+46. count (CPU) then the verdict
+47. A and B
+48. A only; B not tested: it ablates each block's MLP and NemotronH has none (MoE blocks are separate)
+49. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (48.3 reads the 45m scenes too)
+50. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (49.3 reads the 45m scenes)
+51. attention blocks after L14 (NemotronH port)
+52. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) (route2 reads the 45m scenes)
+53. the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks
 54. 9B only by design
 <!-- coverage:end -->
 
@@ -2173,6 +2210,7 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_twobytwo.png | yes | no overlap (short row labels; the grey notes touch the dashed 0.10 line, still legible; Lightning's gate note reaches the panel edge, inside the page; the panel titles smaller with five panels) | yes | yes | batch 53 (53.1, the five-model verdict 113335Z), five slots: the 9B, the 27B, Muse, Lightning (hollow) and the 122B, each untested cell a grey note with its own gate; the last row the lookup's paired difference (the 27B and the 122B); the cross-check's 0.10 dashed; five slots (Dan 12:50), opened |
 | figures/ledger/ledger_bindid.png | yes | no overlap | yes | yes | batch 53 (53.8, x53_bindid-20261029T115942Z), five slots: the 9B and Muse (pre-specified and centered arms at 2x; x53_bindid-20261029T121515Z), the 27B grey (running), Lightning grey (not designed), the 122B grey (not run); five slots (Dan 12:50), opened |
 | figures/ledger/ledger_code_tool.png | yes | no overlap | yes | yes | batch 53 (53.7, adapted design), five slots: the 9B and the 27B (routes in code; the 9B's tool probe; the 27B's probes to come as grey notes), Muse and Lightning grey (not designed), the 122B grey (not run); opened |
+| figures/ledger/ledger_two_sources.png | yes | no overlap | yes | yes | 47.15 (one question, two sources), five slots: the 27B; the 9B, Muse and Lightning grey (not tested: gate); the 122B grey (not run); opened |
 | results/x53_subset27b/x53_subset27b-20261029T085435Z/x53_subset27b.png | yes | no overlap | yes | yes | batch 53 (53.5); verdict folder, used as the card's figure; near the visual system; its title names the test |
 | figures/ledger/ledger_full_carrier.png | yes | no overlap | yes | yes | the 27B's one-layer fact-after lookup is left out (11 switches, under 30); Lightning added 29 Oct, re-opened; four slots (Muse grey: not designed); one x label for the row (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |
 | figures/ledger/ledger_address_shape.png | yes | no overlap | yes | yes | d* is read off the lines, not drawn; four slots (27B part 2 only, Lightning not tested: grey), tick labels shortened (Dan's figures brief, 10:00; re-opened); five slots (Dan 12:50), opened |

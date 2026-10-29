@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T110130Z" / "matrix.json"
+MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T122040Z" / "matrix.json"
 COLUMNS = (("qwen3.6-27b", "27B"), ("nemotron-3.5-lightning", "Lightning"), ("qwen3.5-9b", "9B"),
            ("muse-glimmer-30b", "Muse"))  # fmt: skip
 # the matrix's row -> the ledger card's anchor (rows without a card stay plain)
@@ -67,6 +67,7 @@ ANCHORS = {
     "What is the address: dimension, methods, geometry (51.11)": "t51-11",
     "Answer-direction control on Zach's Z2 (51.12 Z2)": "z2",
     "Report of slot 1, reworded (49.6)": "t49-6",
+    "One question, two sources (47.15)": "t47-15",
 }
 
 # The overview heatmap (Dan's restructure brief, 29 Oct 08:55): one row per test card in the ledger's (the README's)
@@ -141,6 +142,7 @@ HEATMAP = (
     ("V", "z3", "Position route, his passages", ("F no position", "B in between", "B in between", "B in between")),
     ("V", "t51-5", "Read window, his passages", ("F not the same", "H same window", "H same window", "X not designed")),
     ("VI", "t47-3", "Described bridge", ("F through lens", "G below gate", "H holds", "H holds")),
+    ("VI", "t47-15", "One question, two instructions", ("F neither", "N gate missed", "N gate missed", "N gate missed")),
     ("VI", "t47-13", "Errors are address errors", ("N 5 errors", "F no", "F no", "F no")),
     ("VI", "t48-2", "Lens part keys the attribute", ("F no", "F no", "F no", "F no")),
     ("VI", "t48-3", "Person mark at the locker", ("F no", "G below gate", "F no", "F no")),
