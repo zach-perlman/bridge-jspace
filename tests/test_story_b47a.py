@@ -114,13 +114,16 @@ PLANTED = {"47.1": planted_atoms, "47.5": planted_zero, "47.3": planted_cue, "47
            "47.13": planted_errors}  # fmt: skip
 VERDICT_FILE = {"47.1": "x47_1.json", "47.5": "x47_5.json", "47.3": "x47_3.json", "47.2": "x47_2.json",
                 "47.13": "x47_errors.json"}  # fmt: skip
+# the planted verdicts alone: Lightning's real coverage folders (the builders' defaults) left out, its slot "not run"
+NO_LIGHTNING = {"47.5": {"lightning": None}, "47.3": {"lightning": None, "lightning_answer": None},
+                "47.13": {"lightning": None}}  # fmt: skip
 
 
 @pytest.mark.parametrize("test_id", list(B.TESTS))
 def test_figure_on_its_planted_verdict(test_id, tmp_path, monkeypatch, saved):  # noqa: F811
     verdict = PLANTED[test_id](tmp_path / "results", monkeypatch)
     _, build, name = B.TESTS[test_id]
-    assert build(verdict, name) == name
+    assert build(verdict, name, **NO_LIGHTNING.get(test_id, {})) == name
     assert (S.OUT / f"{name}.png").exists() and (S.OUT / f"{name}.svg").exists()
     check(saved[name])
     rows = [r for r in S.ROWS if r["figure"] == B.fig_id(name)]
@@ -132,7 +135,7 @@ def test_routes_lens_on_the_planted_verdict(tmp_path, monkeypatch, saved):  # no
     """Fig. 5d: both routes on every model and slice, the falls cited to the verdict (the per-item rows reproduce them,
     or the builder stops), the random part's own cost to the routes run's per-item rows, plus the README's maximum."""
     verdict = planted_atoms(tmp_path / "results", monkeypatch)
-    assert B.build_routes_lens(verdict, "fig05d_routes_lens") == "fig05d_routes_lens"
+    assert B.build_routes_lens(verdict, "fig05d_routes_lens", lightning=None) == "fig05d_routes_lens"
     check(saved["fig05d_routes_lens"])
     rows = [r for r in S.ROWS if r["figure"] == "fig05d"]
     falls = [r for r in rows if "beyond random without lens directions" in r["quantity"]]
@@ -156,5 +159,15 @@ def test_titles_read_the_planted_outcomes(tmp_path, monkeypatch):
 
 def test_a_given_title_wins(tmp_path, monkeypatch, saved):  # noqa: F811
     verdict = planted_errors(tmp_path / "results", monkeypatch)
-    B.build_errors(verdict, "fig15_probe_errors", title="A claim Dan wrote")
+    B.build_errors(verdict, "fig15_probe_errors", title="A claim Dan wrote", lightning=None)
     assert saved["fig15_probe_errors"]["title"] == "A claim Dan wrote"
+
+
+def test_lightning_keeps_the_fourth_slot(tmp_path, monkeypatch, saved):  # noqa: F811
+    """Dan's figures brief (29 Oct ~10:00): four model slots, Lightning's from its own folder; without it, its slot
+    stays and says "not run"."""
+    verdict = planted_errors(tmp_path / "results", monkeypatch)
+    B.build_errors(verdict, "fig15_probe_errors", lightning=None)
+    check(saved["fig15_probe_errors"])
+    assert not [r for r in S.ROWS if r["model"] == B.F.LT[0]]
+    assert len(B.SLOTS) == 4 and B.SLOTS[-1] == B.F.LT[:2]
