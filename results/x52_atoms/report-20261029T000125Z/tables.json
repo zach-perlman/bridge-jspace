@@ -1,0 +1,2295 @@
+{
+ "exp": "x52_atoms",
+ "part": "52 A",
+ "verdict": "descriptive; no rule",
+ "written_utc": "2026-10-29T00:01:38Z",
+ "code": {
+  "sha": "f16624874954c5370ac581fb11f60242c0a43d19",
+  "dirty": false
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "sources": {
+  "qwen3.5-9b": {
+   "e1": "qwen35_9b_x52_atoms_fwd",
+   "z2": "qwen35_9b_x52_atoms_fwd"
+  },
+  "qwen3.6-27b": {
+   "e1": "x52_atoms_fwd_27b",
+   "z2": "x52_atoms_fwd_27b"
+  },
+  "muse-glimmer-30b": {
+   "e1": "muse30_x52_atoms_fwd",
+   "z2": "muse30_x52_atoms_fwd"
+  }
+ },
+ "checks": {
+  "qwen3.5-9b|qwen35_9b_x52_atoms_fwd": {
+   "target": "qwen3.5-9b",
+   "layer": 12,
+   "e1_delta": {
+    "max_abs_delta_lookup_minus_recall": 0.0,
+    "max_abs_delta": 2.9765625,
+    "max_rel_norm_lookup_minus_recall": 0.0,
+    "median_rel_norm_lookup_minus_recall": 0.0
+   },
+   "z2_delta": {},
+   "letters": 242132,
+   "e1_PP_fit_max_abs_diff": 0.0,
+   "e1_x0_share_max_abs_gap": 5.000000000032756e-06,
+   "e1_x0_share_items": 50,
+   "e1_51_12_answer_atoms_items_agree": [
+    50,
+    50
+   ],
+   "e1_x0_atoms_same_25_items": [
+    6,
+    6
+   ],
+   "e1_recall_delta_atoms_in_common": {
+    "all_25": 50,
+    "items": 50,
+    "min": 25,
+    "median": 25.0
+   },
+   "z2_K_fit_max_abs_diff": 0.0,
+   "z2_M_fit_max_abs_diff": 0.0,
+   "z2_x0_share_max_abs_gap": null,
+   "z2_x0_share_items": 0,
+   "z2_51_12_answer_atoms_items_agree": [
+    100,
+    100
+   ],
+   "z2_x0_atoms_same_25_items": [
+    0,
+    0
+   ]
+  },
+  "qwen3.6-27b|x52_atoms_fwd_27b": {
+   "target": "qwen3.6-27b",
+   "layer": 32,
+   "e1_delta": {
+    "max_abs_delta_lookup_minus_recall": 0.75,
+    "max_abs_delta": 8.96875,
+    "max_rel_norm_lookup_minus_recall": 0.03438575938344002,
+    "median_rel_norm_lookup_minus_recall": 0.0
+   },
+   "z2_delta": {},
+   "letters": 242132,
+   "e1_PP_fit_max_abs_diff": 0.0,
+   "e1_x0_share_max_abs_gap": 5.0000000000050004e-06,
+   "e1_x0_share_items": 50,
+   "e1_51_12_answer_atoms_items_agree": [
+    50,
+    50
+   ],
+   "e1_x0_atoms_same_25_items": [
+    3,
+    3
+   ],
+   "e1_recall_delta_atoms_in_common": {
+    "all_25": 37,
+    "items": 50,
+    "min": 4,
+    "median": 25.0
+   },
+   "z2_K_fit_max_abs_diff": 0.0,
+   "z2_M_fit_max_abs_diff": 0.0,
+   "z2_x0_share_max_abs_gap": null,
+   "z2_x0_share_items": 0,
+   "z2_51_12_answer_atoms_items_agree": [
+    100,
+    100
+   ],
+   "z2_x0_atoms_same_25_items": [
+    0,
+    0
+   ]
+  },
+  "muse-glimmer-30b|muse30_x52_atoms_fwd": {
+   "target": "muse-glimmer-30b",
+   "layer": 26,
+   "e1_delta": {
+    "max_abs_delta_lookup_minus_recall": 0.0,
+    "max_abs_delta": 54.0,
+    "max_rel_norm_lookup_minus_recall": 0.0,
+    "median_rel_norm_lookup_minus_recall": 0.0
+   },
+   "z2_delta": {},
+   "letters": 190773,
+   "e1_PP_fit_max_abs_diff": 0.0,
+   "e1_x0_share_max_abs_gap": 5.0000000000050004e-06,
+   "e1_x0_share_items": 50,
+   "e1_51_12_answer_atoms_items_agree": [
+    50,
+    50
+   ],
+   "e1_x0_atoms_same_25_items": [
+    0,
+    0
+   ],
+   "e1_recall_delta_atoms_in_common": {
+    "all_25": 50,
+    "items": 50,
+    "min": 25,
+    "median": 25.0
+   },
+   "z2_K_fit_max_abs_diff": 0.0,
+   "z2_M_fit_max_abs_diff": 0.0,
+   "z2_x0_share_max_abs_gap": null,
+   "z2_x0_share_items": 0,
+   "z2_51_12_answer_atoms_items_agree": [
+    0,
+    0
+   ],
+   "z2_x0_atoms_same_25_items": [
+    0,
+    0
+   ]
+  }
+ },
+ "summary": {
+  "qwen3.5-9b": {
+   "e1": {
+    "PP": {
+     "n": 50,
+     "entities": 29,
+     "share_k25_median": 0.2226745,
+     "atoms": {
+      "bridge": [
+       0.0472,
+       0.0392,
+       0.0549
+      ],
+      "new_bridge": [
+       0.044,
+       0.0365,
+       0.0509
+      ],
+      "scene_item": [
+       0.0008,
+       0.0,
+       0.0029
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0008,
+       0.0,
+       0.0025
+      ],
+      "same_class": [
+       0.0032,
+       0.0007,
+       0.0064
+      ],
+      "function": [
+       0.008,
+       0.0038,
+       0.0125
+      ],
+      "other": [
+       0.896,
+       0.8839,
+       0.9094
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1108,
+       0.0906,
+       0.13
+      ],
+      "new_bridge": [
+       0.1098,
+       0.0928,
+       0.1245
+      ],
+      "scene_item": [
+       0.0006,
+       0.0,
+       0.002
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0005,
+       0.0,
+       0.0015
+      ],
+      "same_class": [
+       0.0031,
+       0.0005,
+       0.0068
+      ],
+      "function": [
+       0.0102,
+       0.0043,
+       0.017
+      ],
+      "other": [
+       0.7651,
+       0.7385,
+       0.7959
+      ]
+     },
+     "items_with": {
+      "bridge": 45,
+      "new_bridge": 43,
+      "scene_item": 1,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 1,
+      "same_class": 4,
+      "function": 10,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "alias": {
+        "atoms": 6,
+        "energy": 0.0117,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 5,
+        "energy": 0.0076,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 15,
+        "energy": 0.0249,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 24,
+        "energy": 0.0548,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 9,
+        "energy": 0.0125,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 5,
+        "energy": 0.0091,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 2,
+        "energy": 0.004,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 11,
+        "energy": 0.0159,
+        "sign_as_expected": 0.909
+       },
+       "key": {
+        "atoms": 32,
+        "energy": 0.0735,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 5,
+        "energy": 0.0073,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.7639
+     }
+    },
+    "PM": {
+     "n": 50,
+     "entities": 29,
+     "share_k25_median": 0.2226745,
+     "atoms": {
+      "bridge": [
+       0.0472,
+       0.0392,
+       0.0549
+      ],
+      "new_bridge": [
+       0.044,
+       0.0365,
+       0.0509
+      ],
+      "scene_item": [
+       0.0008,
+       0.0,
+       0.0029
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0008,
+       0.0,
+       0.0025
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0032,
+       0.0007,
+       0.0064
+      ],
+      "function": [
+       0.008,
+       0.0038,
+       0.0125
+      ],
+      "other": [
+       0.896,
+       0.8839,
+       0.9094
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1108,
+       0.0906,
+       0.13
+      ],
+      "new_bridge": [
+       0.1098,
+       0.0928,
+       0.1245
+      ],
+      "scene_item": [
+       0.0006,
+       0.0,
+       0.002
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0005,
+       0.0,
+       0.0015
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0031,
+       0.0005,
+       0.0068
+      ],
+      "function": [
+       0.0102,
+       0.0043,
+       0.017
+      ],
+      "other": [
+       0.7651,
+       0.7385,
+       0.7959
+      ]
+     },
+     "items_with": {
+      "bridge": 45,
+      "new_bridge": 43,
+      "scene_item": 1,
+      "person": 0,
+      "answer_own": 1,
+      "answer_other": 0,
+      "same_class": 4,
+      "function": 10,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "alias": {
+        "atoms": 6,
+        "energy": 0.0117,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 5,
+        "energy": 0.0076,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 15,
+        "energy": 0.0249,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 24,
+        "energy": 0.0548,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 9,
+        "energy": 0.0125,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 5,
+        "energy": 0.0091,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 2,
+        "energy": 0.004,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 11,
+        "energy": 0.0159,
+        "sign_as_expected": 0.909
+       },
+       "key": {
+        "atoms": 32,
+        "energy": 0.0735,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 5,
+        "energy": 0.0073,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.7639
+     }
+    }
+   },
+   "z2": {
+    "K": {
+     "n": 50,
+     "entities": 41,
+     "share_k25_median": 0.193798,
+     "atoms": {
+      "bridge": [
+       0.0064,
+       0.0026,
+       0.0104
+      ],
+      "new_bridge": [
+       0.0072,
+       0.0017,
+       0.0136
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0024,
+       0.0,
+       0.0051
+      ],
+      "function": [
+       0.0088,
+       0.0044,
+       0.0138
+      ],
+      "other": [
+       0.9752,
+       0.9683,
+       0.9821
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0174,
+       0.0062,
+       0.0309
+      ],
+      "new_bridge": [
+       0.015,
+       0.0037,
+       0.0286
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0036,
+       0.0,
+       0.0082
+      ],
+      "function": [
+       0.0065,
+       0.0032,
+       0.0104
+      ],
+      "other": [
+       0.9574,
+       0.9411,
+       0.9725
+      ]
+     },
+     "items_with": {
+      "bridge": 8,
+      "new_bridge": 8,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 3,
+      "function": 10,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "initial": {
+        "atoms": 1,
+        "energy": 0.0004,
+        "sign_as_expected": 0.0
+       },
+       "key": {
+        "atoms": 7,
+        "energy": 0.0182,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "initial": {
+        "atoms": 2,
+        "energy": 0.0012,
+        "sign_as_expected": 0.0
+       },
+       "key": {
+        "atoms": 5,
+        "energy": 0.0099,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0036,
+        "sign_as_expected": 0.5
+       }
+      }
+     },
+     "other_by_detail": {
+      "in the prompt": 0.0561,
+      "none": 0.9012
+     }
+    },
+    "M": {
+     "n": 50,
+     "entities": 41,
+     "share_k25_median": 0.1910555,
+     "atoms": {
+      "bridge": [
+       0.0048,
+       0.0016,
+       0.0085
+      ],
+      "new_bridge": [
+       0.0064,
+       0.0024,
+       0.011
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0024,
+       0.0,
+       0.0055
+      ],
+      "function": [
+       0.0064,
+       0.0023,
+       0.0112
+      ],
+      "other": [
+       0.98,
+       0.9738,
+       0.9861
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0152,
+       0.0044,
+       0.0285
+      ],
+      "new_bridge": [
+       0.0161,
+       0.0049,
+       0.0289
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0038,
+       0.0,
+       0.0095
+      ],
+      "function": [
+       0.0057,
+       0.0018,
+       0.0102
+      ],
+      "other": [
+       0.9593,
+       0.9425,
+       0.9746
+      ]
+     },
+     "items_with": {
+      "bridge": 6,
+      "new_bridge": 8,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 3,
+      "function": 8,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "key": {
+        "atoms": 6,
+        "energy": 0.0168,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "key": {
+        "atoms": 6,
+        "energy": 0.0119,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0036,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "in the prompt": 0.0567,
+      "none": 0.9017
+     }
+    }
+   }
+  },
+  "qwen3.6-27b": {
+   "e1": {
+    "PP": {
+     "n": 50,
+     "entities": 30,
+     "share_k25_median": 0.144154,
+     "atoms": {
+      "bridge": [
+       0.0408,
+       0.0308,
+       0.0512
+      ],
+      "new_bridge": [
+       0.04,
+       0.0337,
+       0.0475
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0008,
+       0.0,
+       0.0024
+      ],
+      "same_class": [
+       0.0008,
+       0.0,
+       0.0027
+      ],
+      "function": [
+       0.0096,
+       0.0045,
+       0.0152
+      ],
+      "other": [
+       0.908,
+       0.8915,
+       0.9228
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1009,
+       0.0751,
+       0.1262
+      ],
+      "new_bridge": [
+       0.1133,
+       0.0959,
+       0.1336
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0007,
+       0.0,
+       0.0023
+      ],
+      "same_class": [
+       0.0018,
+       0.0,
+       0.006
+      ],
+      "function": [
+       0.0094,
+       0.0043,
+       0.0156
+      ],
+      "other": [
+       0.7738,
+       0.7392,
+       0.8078
+      ]
+     },
+     "items_with": {
+      "bridge": 39,
+      "new_bridge": 42,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 1,
+      "same_class": 1,
+      "function": 11,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "first token": {
+        "atoms": 4,
+        "energy": 0.0115,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 20,
+        "energy": 0.0382,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 17,
+        "energy": 0.0385,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 2,
+        "energy": 0.0032,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 8,
+        "energy": 0.0132,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 2,
+        "energy": 0.0027,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 3,
+        "energy": 0.0054,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 21,
+        "energy": 0.043,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 19,
+        "energy": 0.0547,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 5,
+        "energy": 0.0105,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0009,
+      "none": 0.7673
+     }
+    },
+    "PM": {
+     "n": 50,
+     "entities": 30,
+     "share_k25_median": 0.144154,
+     "atoms": {
+      "bridge": [
+       0.0408,
+       0.0308,
+       0.0512
+      ],
+      "new_bridge": [
+       0.04,
+       0.0337,
+       0.0475
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0008,
+       0.0,
+       0.0024
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0008,
+       0.0,
+       0.0027
+      ],
+      "function": [
+       0.0096,
+       0.0045,
+       0.0152
+      ],
+      "other": [
+       0.908,
+       0.8915,
+       0.9228
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1009,
+       0.0751,
+       0.1262
+      ],
+      "new_bridge": [
+       0.1133,
+       0.0959,
+       0.1336
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0007,
+       0.0,
+       0.0023
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0018,
+       0.0,
+       0.006
+      ],
+      "function": [
+       0.0094,
+       0.0043,
+       0.0156
+      ],
+      "other": [
+       0.7738,
+       0.7392,
+       0.8078
+      ]
+     },
+     "items_with": {
+      "bridge": 39,
+      "new_bridge": 42,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 1,
+      "answer_other": 0,
+      "same_class": 1,
+      "function": 11,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "first token": {
+        "atoms": 4,
+        "energy": 0.0115,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 20,
+        "energy": 0.0382,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 17,
+        "energy": 0.0385,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 2,
+        "energy": 0.0032,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 8,
+        "energy": 0.0132,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 2,
+        "energy": 0.0027,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 3,
+        "energy": 0.0054,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 21,
+        "energy": 0.043,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 19,
+        "energy": 0.0547,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 5,
+        "energy": 0.0105,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0009,
+      "none": 0.7673
+     }
+    }
+   },
+   "z2": {
+    "K": {
+     "n": 50,
+     "entities": 45,
+     "share_k25_median": 0.1577,
+     "atoms": {
+      "bridge": [
+       0.0032,
+       0.0,
+       0.0074
+      ],
+      "new_bridge": [
+       0.0072,
+       0.0024,
+       0.0128
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0008,
+       0.0,
+       0.0025
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0016,
+       0.0,
+       0.0041
+      ],
+      "function": [
+       0.0064,
+       0.0026,
+       0.0104
+      ],
+      "other": [
+       0.9808,
+       0.9714,
+       0.9896
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0074,
+       0.0,
+       0.0176
+      ],
+      "new_bridge": [
+       0.0114,
+       0.0032,
+       0.0221
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0016,
+       0.0,
+       0.0049
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0025,
+       0.0,
+       0.0069
+      ],
+      "function": [
+       0.0055,
+       0.0022,
+       0.0092
+      ],
+      "other": [
+       0.9716,
+       0.9566,
+       0.9855
+      ]
+     },
+     "items_with": {
+      "bridge": 3,
+      "new_bridge": 7,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 1,
+      "answer_other": 0,
+      "same_class": 2,
+      "function": 8,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "key": {
+        "atoms": 3,
+        "energy": 0.0071,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0007,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "initial": {
+        "atoms": 3,
+        "energy": 0.0018,
+        "sign_as_expected": 0.667
+       },
+       "key": {
+        "atoms": 3,
+        "energy": 0.0053,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0007,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0031,
+        "sign_as_expected": 0.5
+       }
+      }
+     },
+     "other_by_detail": {
+      "in the prompt": 0.0536,
+      "none": 0.9182
+     }
+    },
+    "M": {
+     "n": 50,
+     "entities": 45,
+     "share_k25_median": 0.1539065,
+     "atoms": {
+      "bridge": [
+       0.0048,
+       0.0009,
+       0.0094
+      ],
+      "new_bridge": [
+       0.0064,
+       0.0024,
+       0.0114
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0016,
+       0.0,
+       0.0041
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0008,
+       0.0,
+       0.0026
+      ],
+      "function": [
+       0.0104,
+       0.0051,
+       0.0162
+      ],
+      "other": [
+       0.976,
+       0.968,
+       0.9835
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0106,
+       0.0022,
+       0.0211
+      ],
+      "new_bridge": [
+       0.0108,
+       0.0025,
+       0.0219
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0027,
+       0.0,
+       0.0072
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0018,
+       0.0,
+       0.0056
+      ],
+      "function": [
+       0.0083,
+       0.0037,
+       0.0135
+      ],
+      "other": [
+       0.9658,
+       0.9516,
+       0.9788
+      ]
+     },
+     "items_with": {
+      "bridge": 5,
+      "new_bridge": 7,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 2,
+      "answer_other": 0,
+      "same_class": 1,
+      "function": 11,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "key": {
+        "atoms": 5,
+        "energy": 0.0105,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0007,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "initial": {
+        "atoms": 2,
+        "energy": 0.0009,
+        "sign_as_expected": 0.5
+       },
+       "key": {
+        "atoms": 3,
+        "energy": 0.0057,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0005,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0031,
+        "sign_as_expected": 0.5
+       }
+      }
+     },
+     "other_by_detail": {
+      "in the prompt": 0.0594,
+      "none": 0.9062
+     }
+    }
+   }
+  },
+  "muse-glimmer-30b": {
+   "e1": {
+    "PP": {
+     "n": 50,
+     "entities": 26,
+     "share_k25_median": 0.139009,
+     "atoms": {
+      "bridge": [
+       0.0568,
+       0.0506,
+       0.0632
+      ],
+      "new_bridge": [
+       0.0568,
+       0.0498,
+       0.063
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0008,
+       0.0,
+       0.0029
+      ],
+      "same_class": [
+       0.0056,
+       0.0016,
+       0.0105
+      ],
+      "function": [
+       0.0176,
+       0.01,
+       0.0241
+      ],
+      "other": [
+       0.8624,
+       0.8524,
+       0.8753
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1836,
+       0.1652,
+       0.1984
+      ],
+      "new_bridge": [
+       0.1904,
+       0.1678,
+       0.2117
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0007,
+       0.0,
+       0.0027
+      ],
+      "same_class": [
+       0.0043,
+       0.0011,
+       0.008
+      ],
+      "function": [
+       0.0124,
+       0.0071,
+       0.0166
+      ],
+      "other": [
+       0.6086,
+       0.5835,
+       0.6425
+      ]
+     },
+     "items_with": {
+      "bridge": 49,
+      "new_bridge": 49,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 1,
+      "same_class": 6,
+      "function": 19,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "initial": {
+        "atoms": 23,
+        "energy": 0.0389,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 44,
+        "energy": 0.1426,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 4,
+        "energy": 0.0026,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 2,
+        "energy": 0.0052,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 24,
+        "energy": 0.0394,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 44,
+        "energy": 0.1512,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0011,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0018,
+      "none": 0.6002
+     }
+    },
+    "PM": {
+     "n": 50,
+     "entities": 26,
+     "share_k25_median": 0.139009,
+     "atoms": {
+      "bridge": [
+       0.0568,
+       0.0506,
+       0.0632
+      ],
+      "new_bridge": [
+       0.0568,
+       0.0498,
+       0.063
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0008,
+       0.0,
+       0.0029
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0056,
+       0.0016,
+       0.0105
+      ],
+      "function": [
+       0.0176,
+       0.01,
+       0.0241
+      ],
+      "other": [
+       0.8624,
+       0.8524,
+       0.8753
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1836,
+       0.1652,
+       0.1984
+      ],
+      "new_bridge": [
+       0.1904,
+       0.1678,
+       0.2117
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0007,
+       0.0,
+       0.0027
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0043,
+       0.0011,
+       0.008
+      ],
+      "function": [
+       0.0124,
+       0.0071,
+       0.0166
+      ],
+      "other": [
+       0.6086,
+       0.5835,
+       0.6425
+      ]
+     },
+     "items_with": {
+      "bridge": 49,
+      "new_bridge": 49,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 1,
+      "answer_other": 0,
+      "same_class": 6,
+      "function": 19,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "initial": {
+        "atoms": 23,
+        "energy": 0.0389,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 44,
+        "energy": 0.1426,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 4,
+        "energy": 0.0026,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 2,
+        "energy": 0.0052,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 24,
+        "energy": 0.0394,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 44,
+        "energy": 0.1512,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0011,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0018,
+      "none": 0.6002
+     }
+    }
+   },
+   "z2": {
+    "K": {
+     "n": 50,
+     "entities": 44,
+     "share_k25_median": 0.11879500000000001,
+     "atoms": {
+      "bridge": [
+       0.0064,
+       0.0018,
+       0.0113
+      ],
+      "new_bridge": [
+       0.0048,
+       0.0016,
+       0.0088
+      ],
+      "scene_item": [
+       0.0016,
+       0.0,
+       0.0039
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0048,
+       0.0016,
+       0.0083
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0032,
+       0.0007,
+       0.0067
+      ],
+      "function": [
+       0.0152,
+       0.0092,
+       0.0211
+      ],
+      "other": [
+       0.964,
+       0.9548,
+       0.9733
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.01,
+       0.0018,
+       0.0215
+      ],
+      "new_bridge": [
+       0.0056,
+       0.0016,
+       0.0108
+      ],
+      "scene_item": [
+       0.0013,
+       0.0,
+       0.0035
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0084,
+       0.0023,
+       0.0161
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0043,
+       0.0006,
+       0.0097
+      ],
+      "function": [
+       0.0132,
+       0.0075,
+       0.0193
+      ],
+      "other": [
+       0.9572,
+       0.9445,
+       0.9698
+      ]
+     },
+     "items_with": {
+      "bridge": 8,
+      "new_bridge": 6,
+      "scene_item": 2,
+      "person": 0,
+      "answer_own": 6,
+      "answer_other": 0,
+      "same_class": 4,
+      "function": 17,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "initial": {
+        "atoms": 3,
+        "energy": 0.0014,
+        "sign_as_expected": 0.0
+       },
+       "key": {
+        "atoms": 3,
+        "energy": 0.0058,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0006,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.003,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "initial": {
+        "atoms": 2,
+        "energy": 0.0011,
+        "sign_as_expected": 1.0
+       },
+       "key": {
+        "atoms": 1,
+        "energy": 0.0016,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 3,
+        "energy": 0.0022,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0013,
+      "in the prompt": 0.0726,
+      "none": 0.8836
+     }
+    },
+    "M": {
+     "n": 50,
+     "entities": 44,
+     "share_k25_median": 0.1178305,
+     "atoms": {
+      "bridge": [
+       0.0064,
+       0.0024,
+       0.0111
+      ],
+      "new_bridge": [
+       0.0072,
+       0.0032,
+       0.0119
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0072,
+       0.0031,
+       0.0119
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0016,
+       0.0,
+       0.004
+      ],
+      "function": [
+       0.0104,
+       0.005,
+       0.0162
+      ],
+      "other": [
+       0.9672,
+       0.9585,
+       0.9757
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.0115,
+       0.0037,
+       0.0205
+      ],
+      "new_bridge": [
+       0.008,
+       0.0032,
+       0.0141
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0118,
+       0.0047,
+       0.02
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0027,
+       0.0,
+       0.0075
+      ],
+      "function": [
+       0.0088,
+       0.004,
+       0.0141
+      ],
+      "other": [
+       0.9573,
+       0.944,
+       0.97
+      ]
+     },
+     "items_with": {
+      "bridge": 8,
+      "new_bridge": 9,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 9,
+      "answer_other": 0,
+      "same_class": 2,
+      "function": 13,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "initial": {
+        "atoms": 3,
+        "energy": 0.0018,
+        "sign_as_expected": 0.333
+       },
+       "key": {
+        "atoms": 4,
+        "energy": 0.0065,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0034,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "initial": {
+        "atoms": 4,
+        "energy": 0.0025,
+        "sign_as_expected": 0.75
+       },
+       "key": {
+        "atoms": 2,
+        "energy": 0.0027,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 3,
+        "energy": 0.0021,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "answer kind": 0.0009,
+      "in the prompt": 0.0751,
+      "none": 0.8823
+     }
+    }
+   }
+  }
+ },
+ "chance": {
+  "qwen3.5-9b": {
+   "e1": {
+    "bridge": 0.00037,
+    "new_bridge": 0.00033,
+    "scene_item": 1e-05,
+    "person": 0.0,
+    "answer_own": 0.0002,
+    "answer_other": 0.00018,
+    "same_class": 0.00116,
+    "function": 0.00772,
+    "other": 0.99002
+   },
+   "z2": {
+    "bridge": 0.00063,
+    "new_bridge": 0.00045,
+    "scene_item": 4e-05,
+    "person": 0.0,
+    "answer_own": 2e-05,
+    "answer_other": 0.0,
+    "same_class": 0.00042,
+    "function": 0.00766,
+    "other": 0.99078
+   }
+  },
+  "qwen3.6-27b": {
+   "e1": {
+    "bridge": 0.00033,
+    "new_bridge": 0.00033,
+    "scene_item": 4e-05,
+    "person": 0.0,
+    "answer_own": 0.00018,
+    "answer_other": 0.00015,
+    "same_class": 0.00091,
+    "function": 0.00773,
+    "other": 0.99033
+   },
+   "z2": {
+    "bridge": 0.00055,
+    "new_bridge": 0.00051,
+    "scene_item": 0.0,
+    "person": 0.0,
+    "answer_own": 4e-05,
+    "answer_other": 0.0,
+    "same_class": 0.00042,
+    "function": 0.00779,
+    "other": 0.99069
+   }
+  },
+  "muse-glimmer-30b": {
+   "e1": {
+    "bridge": 0.00061,
+    "new_bridge": 0.00035,
+    "scene_item": 0.0,
+    "person": 2e-05,
+    "answer_own": 0.0,
+    "answer_other": 0.0,
+    "same_class": 0.00197,
+    "function": 0.00838,
+    "other": 0.98867
+   },
+   "z2": {
+    "bridge": 0.0006,
+    "new_bridge": 0.00073,
+    "scene_item": 2e-05,
+    "person": 8e-05,
+    "answer_own": 0.0,
+    "answer_other": 0.0,
+    "same_class": 0.00054,
+    "function": 0.00825,
+    "other": 0.98978
+   }
+  }
+ },
+ "hand": {
+  "qwen3.5-9b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 121,
+   "rate": 0.968,
+   "kappa": 0.8548,
+   "hand_classes": {
+    "bridge": 6,
+    "new_bridge": 7,
+    "other": 108,
+    "function": 4
+   },
+   "disagreements": {
+    "function -> other": [
+     "и",
+     "ни",
+     "مع",
+     "ein"
+    ]
+   }
+  },
+  "qwen3.6-27b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 119,
+   "rate": 0.952,
+   "kappa": 0.7339,
+   "hand_classes": {
+    "new_bridge": 5,
+    "bridge": 4,
+    "other": 111,
+    "function": 4,
+    "answer_other": 1
+   },
+   "disagreements": {
+    "function -> other": [
+     " Ты",
+     " və",
+     " 에서",
+     " των"
+    ],
+    "other -> function": [
+     ">i"
+    ],
+    "bridge -> other": [
+     "EEEE"
+    ]
+   }
+  },
+  "muse-glimmer-30b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 117,
+   "rate": 0.936,
+   "kappa": 0.7553,
+   "hand_classes": {
+    "new_bridge": 7,
+    "bridge": 8,
+    "other": 103,
+    "function": 5,
+    "same_class": 2
+   },
+   "disagreements": {
+    "function -> other": [
+     "We'll",
+     "』の",
+     "”等",
+     " επίσης",
+     "/other"
+    ],
+    "new_bridge -> other": [
+     " nitride"
+    ],
+    "same_class -> other": [
+     "Zn",
+     "铅"
+    ]
+   }
+  },
+  "qwen3.5-9b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3523,
+   "hand_classes": {
+    "answer_own": 3,
+    "other": 116,
+    "new_bridge": 1,
+    "function": 5
+   },
+   "disagreements": {
+    "answer_own -> other": [
+     "土耳其",
+     " jap",
+     " Suomen"
+    ],
+    "function -> other": [
+     " ся",
+     " Ihnen",
+     " gibi",
+     "和他的"
+    ]
+   }
+  },
+  "qwen3.6-27b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 123,
+   "rate": 0.984,
+   "kappa": 0.496,
+   "hand_classes": {
+    "other": 122,
+    "new_bridge": 1,
+    "same_class": 1,
+    "function": 1
+   },
+   "disagreements": {
+    "same_class -> other": [
+     "福州"
+    ],
+    "function -> other": [
+     " kerana"
+    ]
+   }
+  },
+  "muse-glimmer-30b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3451,
+   "hand_classes": {
+    "other": 120,
+    "function": 2,
+    "bridge": 1,
+    "answer_own": 2
+   },
+   "disagreements": {
+    "other -> function": [
+     "(SO",
+     "s",
+     "*M"
+    ],
+    "answer_own -> other": [
+     " russa",
+     " чеш"
+    ],
+    "function -> other": [
+     "sein"
+    ],
+    "other -> same_class": [
+     " Sebastian"
+    ]
+   }
+  }
+ },
+ "n_boot": 10000,
+ "boot_seed": 0,
+ "classes": {
+  "bridge": "the original bridge word",
+  "new_bridge": "the new bridge word",
+  "scene_item": "another item named in the scene",
+  "person": "a person's name in the scene",
+  "answer_own": "the reader's answer word",
+  "answer_other": "the other reader's answer word",
+  "same_class": "a same-class word not in the scene",
+  "function": "function words and punctuation",
+  "other": "other"
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "exp": "x52_atoms",
+ "part": "52 A",
+ "verdict": "descriptive; no rule",
+ "written_utc": "2026-10-29T00:01:38Z",
+ "code": {
+  "sha": "f16624874954c5370ac581fb11f60242c0a43d19",
+  "dirty": false
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "sources": {
+  "qwen3.5-9b": {
+   "e1": "qwen35_9b_x52_atoms_fwd",
+   "z2": "qwen35_9b_x52_atoms_fwd"
+  },
+  "qwen3.6-27b": {
+   "e1": "x52_atoms_fwd_27b",
+   "z2": "x52_atoms_fwd_27b"
+  },
+  "muse-glimmer-30b": {
+   "e1": "muse30_x52_atoms_fwd",
+   "z2": "muse30_x52_atoms_fwd"
+  }
+ },
+ "n_boot": 10000,
+ "boot_seed": 0
+}

@@ -1,0 +1,18 @@
+# x52_atoms verdict (batch 52 A)
+
+descriptive; no rule
+
+Descriptive inventory, no rule fixed in advance; every number UNVERIFIED until hand-checked. Tables: tables.md; examples: examples.md; figure: fig_atoms.png; every classified atom: labelled.jsonl.
+
+- 9B e1 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.111 [0.091, 0.130], the new bridge word 0.110 [0.093, 0.124], the reader's answer word 0.000 [0.000, 0.000], the other reader's 0.001 [0.000, 0.002], other 0.765 [0.739, 0.796]; items with an own-answer atom 0
+- 9B e1 (recall's view, n = 50): rebuilt energy in the original bridge word 0.111 [0.091, 0.130], the new bridge word 0.110 [0.093, 0.124], the reader's answer word 0.001 [0.000, 0.002], the other reader's 0.000 [0.000, 0.000], other 0.765 [0.739, 0.796]; items with an own-answer atom 1
+- 9B z2 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.017 [0.006, 0.031], the new bridge word 0.015 [0.004, 0.029], the reader's answer word 0.000 [0.000, 0.000], the other reader's 0.000 [0.000, 0.000], other 0.957 [0.941, 0.973]; items with an own-answer atom 0
+- 9B z2 (recall's view, n = 50): rebuilt energy in the original bridge word 0.015 [0.004, 0.029], the new bridge word 0.016 [0.005, 0.029], the reader's answer word 0.000 [0.000, 0.000], the other reader's 0.000 [0.000, 0.000], other 0.959 [0.943, 0.975]; items with an own-answer atom 0
+- 27B e1 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.101 [0.075, 0.126], the new bridge word 0.113 [0.096, 0.134], the reader's answer word 0.000 [0.000, 0.000], the other reader's 0.001 [0.000, 0.002], other 0.774 [0.739, 0.808]; items with an own-answer atom 0
+- 27B e1 (recall's view, n = 50): rebuilt energy in the original bridge word 0.101 [0.075, 0.126], the new bridge word 0.113 [0.096, 0.134], the reader's answer word 0.001 [0.000, 0.002], the other reader's 0.000 [0.000, 0.000], other 0.774 [0.739, 0.808]; items with an own-answer atom 1
+- 27B z2 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.007 [0.000, 0.018], the new bridge word 0.011 [0.003, 0.022], the reader's answer word 0.002 [0.000, 0.005], the other reader's 0.000 [0.000, 0.000], other 0.972 [0.957, 0.986]; items with an own-answer atom 1
+- 27B z2 (recall's view, n = 50): rebuilt energy in the original bridge word 0.011 [0.002, 0.021], the new bridge word 0.011 [0.003, 0.022], the reader's answer word 0.003 [0.000, 0.007], the other reader's 0.000 [0.000, 0.000], other 0.966 [0.952, 0.979]; items with an own-answer atom 2
+- Muse e1 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.184 [0.165, 0.198], the new bridge word 0.190 [0.168, 0.212], the reader's answer word 0.000 [0.000, 0.000], the other reader's 0.001 [0.000, 0.003], other 0.609 [0.584, 0.642]; items with an own-answer atom 0
+- Muse e1 (recall's view, n = 50): rebuilt energy in the original bridge word 0.184 [0.165, 0.198], the new bridge word 0.190 [0.168, 0.212], the reader's answer word 0.001 [0.000, 0.003], the other reader's 0.000 [0.000, 0.000], other 0.609 [0.584, 0.642]; items with an own-answer atom 1
+- Muse z2 (lookup's view, n = 50): rebuilt energy in the original bridge word 0.010 [0.002, 0.021], the new bridge word 0.006 [0.002, 0.011], the reader's answer word 0.008 [0.002, 0.016], the other reader's 0.000 [0.000, 0.000], other 0.957 [0.945, 0.970]; items with an own-answer atom 6
+- Muse z2 (recall's view, n = 50): rebuilt energy in the original bridge word 0.011 [0.004, 0.021], the new bridge word 0.008 [0.003, 0.014], the reader's answer word 0.012 [0.005, 0.020], the other reader's 0.000 [0.000, 0.000], other 0.957 [0.944, 0.970]; items with an own-answer atom 9
