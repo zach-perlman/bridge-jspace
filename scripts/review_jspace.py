@@ -611,6 +611,8 @@ def page(q: dict[str, str], server: bool = True) -> str:
     ro = readout(model)
     la_default = int(st["meta"].get("layer") or model_layer(model))
     pos_default = int(st["meta"]["pos"])
+    if it["kind"] == "jread":  # 51.10 edits the last token (the read's space), at the reader's read peak
+        pos_default = int(st["pos_O"][-1])
     prompt = q.get("prompt") or "O"
     pos = int(q.get("pos") or pos_default)
     layer = int(q.get("layer") or la_default)
@@ -679,7 +681,7 @@ def page(q: dict[str, str], server: bool = True) -> str:
         if got:
             label, tids, note = got[0]
             body.append(heat_html(st, model, prompt, kind, int(tids[0]), label, note, ro))
-    body.append(atoms_html(st, it, model, pos_default, model_layer(model)))
+    body.append(atoms_html(st, it, model, int(st["meta"]["pos"]), model_layer(model)))  # L and the bridge word
     body.append(checks_html(st, it, model))
     body.append(notes_html(it, view_id, item_id, q, {"prompt": prompt, "pos": pos, "layer": layer, "vector": kind}))
     return doc("".join(body))
