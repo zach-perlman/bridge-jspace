@@ -329,8 +329,11 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch, placement):
             for a in AB.SPAN_ARMS if ok else AB.SPAN_ARMS[:3]:
                 for p in AB.PATCHES:
                     sw = int(p == "whole" and (i % 20 < keep[a] if w == "PP" else True))
+                    # the span block loses the lookup's clean answer on scenes 0, 1 and 15 (Dan 13:15's restriction)
+                    lost = w == "PP" and a == "span" and p == "clean" and i in (0, 1, 15)
                     rows.append({"scene": s, "entity": f"e{i % 5}", "reader": w, "arm": a, "patch": p, "switched": sw,
-                                 "role": "b" if sw else "A", "top_text": "x", "edges": 3, "in_rule": ok})  # fmt: skip
+                                 "role": "other" if lost else "b" if sw else "A", "top_text": "x", "edges": 3,
+                                 "in_rule": ok})  # fmt: skip
     AB.X.write_jsonl(run / "outcomes.jsonl", rows)
     AB.X.write_jsonl(run / "items.jsonl", items)
     out = AB.stage_verdict_span(n_boot=200)
@@ -356,6 +359,23 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch, placement):
     }
     label_line = next(ln for ln in text.splitlines() if ln.startswith("Label (lookup)"))
     assert "on the 20" in label_line and "on all 30" in label_line and "median span 10.0 tokens" in label_line
+    # Dan 13:15: beside, the rule's scenes whose clean answer survives the span block (17 of 20: scenes 2-9 switch with
+    # no block, the span keeps scene 2 switching, the control 2-8): span cut 1 - 1/8, control 1 - 7/8; label unchanged
+    sv = blob["clean_survives_span"]
+    assert (sv["scenes"], sv["of"], sv["lookup"]["n"]) == (17, 20, 17)
+    assert sv["lookup"]["cut"]["span"] == pytest.approx(0.875)
+    assert sv["lookup"]["cut"]["span_ctrl"] == pytest.approx(0.125)
+    assert blob["readers"]["lookup"]["cut"]["span"] == pytest.approx(0.7) and blob["label"] == AB.SPAN_LABEL
+    surv_line = next(ln for ln in text.splitlines() if ln.startswith("Beside (Dan 13:15"))
+    assert "17 of 20" in surv_line and "0.875" in surv_line and "the label stays as computed on all 20" in surv_line
+
+
+def test_clean_survives_needs_every_clean_read():
+    reads = (("a", "A"), ("b", "b"))
+    rows = [{"scene": s, "reader": "PP", "arm": "span", "patch": "clean", "role": r} for s, r in reads]
+    assert AB.clean_survives(rows, ["b", "a"], "PP") == ["a"]
+    with pytest.raises(AssertionError, match="no clean read under span"):
+        AB.clean_survives(rows, ["a", "c"], "PP")
 
 
 def test_placement_c_ends_just_before_the_bridge_sentence():

@@ -1,0 +1,413 @@
+{
+ "prediction": "no prediction (Dan, 29 Oct ~10:05: the rule fixed then, before any run)",
+ "rule": "\"the pointer is read by attention after the Mamba state spreads it\" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4.",
+ "rule_53_4": "\"read through two blocks\" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; \"one block\" if (i) or (ii) alone cuts >= 0.6; \"not through attention at the bridge\" if (iv) cuts < 0.3 (the Mamba state carries it); else in between.",
+ "as_computed": "cut(x) = 1 - S_x / S_whole on the lookup (53.4's), S_x = the share of the scenes kept whose lookup switches under the whole change with arm x's block, S_whole = the same with no block, all in this run's forwards; point estimates decide, EPS 1e-09 at the bars. \"else as 53.4\": 53.4's labels applied to the span arm: its (iv) clause \"not through attention at the bridge\" if the span cuts < 0.3 (the Mamba state carries it), else \"in between\" (the per-block clauses (i) / (ii) have no span arm). The span's destinations are every position after the scene's last token (knock_out needs disjoint sources and destinations, so attention inside the span is as is), the same for the control. the control span (Dan 11:25; the coordinator's reading, flagged to Dan): as many tokens as the bridge-to-scene-end span, inside the scene, ending at the last token before the bridge's sentence (X0's bind_bridge statement) begins: one deterministic placement, the nearest to the question that does not touch the bridge's sentence (the span itself reaches the scene's end, so the span's own distance to the question cannot be matched); its distance to the question is the span's plus the span's length plus the bridge sentence's part before the bridge word (reported per scene); a scene where it does not fit inside the scene (from its first token, never position 0) is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked. S_whole = 0: not tested; X0's validity reported, not a gate. 53.4's (iii) and (v) from its committed verdict beside, and (iii) rerun here",
+ "control": "the control span (Dan 11:25; the coordinator's reading, flagged to Dan): as many tokens as the bridge-to-scene-end span, inside the scene, ending at the last token before the bridge's sentence (X0's bind_bridge statement) begins: one deterministic placement, the nearest to the question that does not touch the bridge's sentence (the span itself reaches the scene's end, so the span's own distance to the question cannot be matched); its distance to the question is the span's plus the span's length plus the bridge sentence's part before the bridge word (reported per scene); a scene where it does not fit inside the scene (from its first token, never position 0) is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked",
+ "control_placement": "c",
+ "to_question_median": {
+  "span": 1.0,
+  "control": 12.0
+ },
+ "run": "nem35l_x53_attnspan_c",
+ "layer": 14,
+ "arm_layers": {
+  "b19": [
+   19
+  ],
+  "b26": [
+   26
+  ],
+  "both": [
+   19,
+   26
+  ],
+  "after": [
+   19,
+   26,
+   33,
+   42
+  ],
+  "control": [
+   19,
+   26
+  ]
+ },
+ "label": "in between",
+ "items": {
+  "source": "nem35l_x52_conflict",
+  "set": "d1_topics_v3",
+  "layer": 14,
+  "items": 200,
+  "entities": 37,
+  "control_before_bridge": 146,
+  "sentence_tokens": [
+   4,
+   6
+  ],
+  "control_placement": "c",
+  "span_items_in_rule": 83,
+  "span_dropped_no_control_fits": 117,
+  "span_entities_in_rule": 35,
+  "span_tokens_in_rule": [
+   2,
+   9,
+   18
+  ],
+  "span_tokens_all": [
+   2,
+   20,
+   39
+  ]
+ },
+ "readers": {
+  "lookup": {
+   "n": 83,
+   "entities": 35,
+   "switched": {
+    "none": 69,
+    "both": 46,
+    "span": 33,
+    "span_ctrl": 70
+   },
+   "S": {
+    "none": 0.8313,
+    "both": 0.5542,
+    "span": 0.3976,
+    "span_ctrl": 0.8434
+   },
+   "cut": {
+    "both": 0.3333,
+    "span": 0.5217,
+    "span_ctrl": -0.0145
+   },
+   "cut_ci": {
+    "both": [
+     0.243,
+     0.418
+    ],
+    "span": [
+     0.411,
+     0.617
+    ],
+    "span_ctrl": [
+     -0.05,
+     0.0
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.5783,
+    "span": 0.4458,
+    "span_ctrl": 1.0
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "both": 72.0,
+    "span": 504.0,
+    "span_ctrl": 504.0
+   }
+  },
+  "recall": {
+   "n": 83,
+   "entities": 35,
+   "switched": {
+    "none": 82,
+    "both": 67,
+    "span": 58,
+    "span_ctrl": 83
+   },
+   "S": {
+    "none": 0.988,
+    "both": 0.8072,
+    "span": 0.6988,
+    "span_ctrl": 1.0
+   },
+   "cut": {
+    "both": 0.1829,
+    "span": 0.2927,
+    "span_ctrl": -0.0122
+   },
+   "cut_ci": {
+    "both": [
+     0.101,
+     0.261
+    ],
+    "span": [
+     0.198,
+     0.385
+    ],
+    "span_ctrl": [
+     -0.042,
+     0.0
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.759,
+    "span": 0.5904,
+    "span_ctrl": 0.988
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "both": 76.0,
+    "span": 540.0,
+    "span_ctrl": 540.0
+   }
+  }
+ },
+ "beside_all": {
+  "lookup": {
+   "n": 200,
+   "entities": 37,
+   "switched": {
+    "none": 91,
+    "both": 59,
+    "span": 54
+   },
+   "S": {
+    "none": 0.455,
+    "both": 0.295,
+    "span": 0.27
+   },
+   "cut": {
+    "both": 0.3516,
+    "span": 0.4066
+   },
+   "cut_ci": {
+    "both": [
+     0.264,
+     0.426
+    ],
+    "span": [
+     0.262,
+     0.538
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.77,
+    "span": 0.585
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "both": 94.0,
+    "span": 1120.0
+   }
+  },
+  "recall": {
+   "n": 200,
+   "entities": 37,
+   "switched": {
+    "none": 189,
+    "both": 165,
+    "span": 147
+   },
+   "S": {
+    "none": 0.945,
+    "both": 0.825,
+    "span": 0.735
+   },
+   "cut": {
+    "both": 0.127,
+    "span": 0.2222
+   },
+   "cut_ci": {
+    "both": [
+     0.077,
+     0.179
+    ],
+    "span": [
+     0.162,
+     0.275
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.87,
+    "span": 0.685
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "both": 98.0,
+    "span": 1160.0
+   }
+  }
+ },
+ "beside_no_control": {
+  "lookup": {
+   "n": 117,
+   "entities": 27,
+   "switched": {
+    "none": 22,
+    "both": 13,
+    "span": 21
+   },
+   "S": {
+    "none": 0.188,
+    "both": 0.1111,
+    "span": 0.1795
+   },
+   "cut": {
+    "both": 0.4091,
+    "span": 0.0455
+   },
+   "cut_ci": {
+    "both": [
+     0.226,
+     0.625
+    ],
+    "span": [
+     -0.571,
+     0.423
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.906,
+    "span": 0.6838
+   },
+   "x0_valid": false,
+   "edges_median": {
+    "both": 110.0,
+    "span": 1568.0
+   }
+  },
+  "recall": {
+   "n": 117,
+   "entities": 27,
+   "switched": {
+    "none": 107,
+    "both": 98,
+    "span": 89
+   },
+   "S": {
+    "none": 0.9145,
+    "both": 0.8376,
+    "span": 0.7607
+   },
+   "cut": {
+    "both": 0.0841,
+    "span": 0.1682
+   },
+   "cut_ci": {
+    "both": [
+     0.034,
+     0.141
+    ],
+    "span": [
+     0.098,
+     0.228
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.9487,
+    "span": 0.7521
+   },
+   "x0_valid": true,
+   "edges_median": {
+    "both": 116.0,
+    "span": 1740.0
+   }
+  }
+ },
+ "x53_4": {
+  "verdict": "results/x53_attnblock/x53_attnblock-20261029T091303Z",
+  "label": "in between",
+  "n": 200,
+  "S_whole": 0.44,
+  "iii": {
+   "cut": 0.3409,
+   "cut_ci": [
+    0.253,
+    0.42
+   ],
+   "clean_kept": 0.77
+  },
+  "v": {
+   "cut": 0.0,
+   "cut_ci": [
+    -0.056,
+    0.054
+   ],
+   "clean_kept": 0.995
+  }
+ },
+ "selection": {
+  "rule_scenes": 83,
+  "dropped_scenes": 117,
+  "median_span_tokens": {
+   "rule": 9.0,
+   "dropped": 28.0,
+   "all": 20.0
+  },
+  "span_cut_rule": [
+   0.5217,
+   [
+    0.411,
+    0.617
+   ]
+  ],
+  "span_cut_all": [
+   0.4066,
+   [
+    0.262,
+    0.538
+   ]
+  ]
+ },
+ "clean_survives_span": {
+  "why": "Dan 13:15 (answers_1315): descriptive, beside the label (computed on every rule scene)",
+  "scenes": 37,
+  "of": 83,
+  "lookup": {
+   "n": 37,
+   "entities": 25,
+   "switched": {
+    "none": 26,
+    "both": 18,
+    "span": 12,
+    "span_ctrl": 26
+   },
+   "S": {
+    "none": 0.7027,
+    "both": 0.4865,
+    "span": 0.3243,
+    "span_ctrl": 0.7027
+   },
+   "cut": {
+    "both": 0.3077,
+    "span": 0.5385,
+    "span_ctrl": 0.0
+   },
+   "cut_ci": {
+    "both": [
+     0.143,
+     0.52
+    ],
+    "span": [
+     0.333,
+     0.708
+    ],
+    "span_ctrl": [
+     0.0,
+     0.0
+    ]
+   },
+   "clean_kept": {
+    "none": 1.0,
+    "both": 0.9189,
+    "span": 1.0,
+    "span_ctrl": 1.0
+   },
+   "x0_valid": false,
+   "edges_median": {
+    "both": 74.0,
+    "span": 560.0,
+    "span_ctrl": 560.0
+   }
+  }
+ },
+ "status": "UNVERIFIED"
+}

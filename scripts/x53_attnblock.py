@@ -523,6 +523,16 @@ def reader_numbers(rows: list[dict], reader: str, n_boot: int = X.N_BOOT, arms: 
             "edges_median": {a: float(np.median(v)) for a, v in edges.items()}}  # fmt: skip
 
 
+def clean_survives(rows: list[dict], scenes: list[str], reader: str = X.LOOKUP, arm: str = "span") -> list[str]:
+    """The scenes (in order) whose clean answer survives the arm's block: the reader's unedited read under the arm (patch
+    "clean") still has O's answer's first token on top (role A, as clean_kept). Dan 13:15 (answers_1315)."""
+    mine = [r for r in rows if r["reader"] == reader and r["arm"] == arm and r["patch"] == "clean"]
+    kept = {r["scene"]: r["role"] == "A" for r in mine}
+    missing = [s for s in scenes if s not in kept]
+    assert not missing, f"no clean read under {arm} for {len(missing)} scenes (e.g. {missing[:3]})"
+    return [s for s in scenes if kept[s]]
+
+
 def agreement(rows: list[dict], items: list[dict]) -> dict:
     """This run's whole-change switch (no block) vs the conflict run's stored one, per reader (Lightning's numerics
     depend on batch composition: descriptive)."""
@@ -715,6 +725,10 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
     beside_rest = {w: reader_numbers(rows, w, n_boot, SPAN_ARMS[:3], rest) for w in X.READERS} if rest else None
     lk = nums[X.LOOKUP]
     lab = label_span(lk["cut"]["span"], lk["cut"]["span_ctrl"])
+    # Dan 13:15 (batch53.yaml answers_1315), descriptive, the label stays on every rule scene: the span's cut and the
+    # control's on the rule's scenes where the lookup's clean answer survives the span block, the same bootstrap
+    survive = clean_survives(rows, in_rule)
+    surv = reader_numbers(rows, X.LOOKUP, n_boot, SPAN_ARMS, survive) if survive else None
     prior = committed_53_4()
     placement = m.get("control_placement", "seeded")
     arm_text = span_arm_text(placement)  # the control's description follows the run's placement
@@ -739,6 +753,20 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
     sel = {"rule_scenes": len(in_rule), "dropped_scenes": len(rest), "median_span_tokens": med,
            "span_cut_rule": [lk["cut"]["span"], lk["cut_ci"]["span"]],
            "span_cut_all": [beside_all[X.LOOKUP]["cut"]["span"], beside_all[X.LOOKUP]["cut_ci"]["span"]]}  # fmt: skip
+    surv_line = (
+        f"Beside (Dan 13:15, descriptive; the label stays as computed on all {len(in_rule)}): the rule's scenes where "
+        f"the lookup's clean answer survives the span block (its unedited read under the span arm is O's answer): "
+        f"{len(survive)} of {len(in_rule)}"
+        + (
+            f"; there (n {surv['n']}, {surv['entities']} bridge entities, S_whole {fmt(surv['S']['none'])}, "
+            f"{surv['switched']['none']} switched) the span's cut {fmt(surv['cut']['span'], surv['cut_ci']['span'])}, "
+            f"the control's {fmt(surv['cut']['span_ctrl'], surv['cut_ci']['span_ctrl'])} (the same bootstrap), beside "
+            f"{fmt(lk['cut']['span'], lk['cut_ci']['span'])} and {fmt(lk['cut']['span_ctrl'], lk['cut_ci']['span_ctrl'])} "
+            f"on all {len(in_rule)}."
+            if surv
+            else "; no scene survives: no cut."
+        )
+    )
     lines = [f"x53_attnspan: the 53.4 follow-up on Lightning (L{m['layer']}; run {name}); Batch 53, 53.4 follow-up (Dan "
              f"11:10); {NO_PREDICTION}; UNVERIFIED", "", f"Rule (verbatim): {RULE_SPAN}", f"53.4's rule (for \"else as "
              f"53.4\"): {RULE}", f"As computed: {as_computed_span(placement)}", "", placement_line, "",
@@ -748,7 +776,7 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
              f"{len(in_rule)}, {fmt(beside_all[X.LOOKUP]['cut']['span'], beside_all[X.LOOKUP]['cut_ci']['span'])} on all "
              f"{len(items)} (median span {med['all']} tokens)" + (
                  f", {fmt(beside_rest[X.LOOKUP]['cut']['span'], beside_rest[X.LOOKUP]['cut_ci']['span'])} on the {len(rest)}"
-                 if beside_rest else "") + ".", "",
+                 if beside_rest else "") + ".", "", surv_line, "",
              f"Scenes: {c['items']} (53.4's); in the rule (a control span fits) {c['span_items_in_rule']} "
              f"({c['span_entities_in_rule']} bridge entities); dropped from the rule, no control fits: "
              f"{c['span_dropped_no_control_fits']}; span length (tokens, min / median / max) in the rule "
@@ -791,7 +819,11 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
             "beside_all": {("lookup" if w == X.LOOKUP else "recall"): v for w, v in beside_all.items()},
             "beside_no_control": None if beside_rest is None else {("lookup" if w == X.LOOKUP else "recall"): v
                                                                   for w, v in beside_rest.items()},
-            "x53_4": prior, "selection": sel, "status": "UNVERIFIED"}  # fmt: skip
+            "x53_4": prior, "selection": sel,
+            "clean_survives_span": {"why": "Dan 13:15 (answers_1315): descriptive, beside the label (computed on every "
+                                           "rule scene)", "scenes": len(survive), "of": len(in_rule),
+                                    "lookup": surv},
+            "status": "UNVERIFIED"}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, default=float) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
