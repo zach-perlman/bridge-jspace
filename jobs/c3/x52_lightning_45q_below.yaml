@@ -1,0 +1,42 @@
+id: x52_lightning_45q_below
+title: "Batch 52, Dan's morning queue item 1: the copy test (45q) on Lightning at L14, BELOW GATE (exploratory): the clean one-pick design's locker-after items from x52_lightning_fresh_below (eligible items only; the clean gate fails, recall 0.751 < 0.80); 45b's arms at L, 45n's link arms, the per-layer sweep; 45q's rule verbatim per model, no batch count; no prediction; hollow; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.35
+depends_on: [x52_lightning_fresh_below]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_fresh/outcomes.jsonl &&
+  NOTE=$(uv run python -c "from scripts import x45b_binding as B; print(B.BELOW_GATE)") &&
+  uv run python scripts/x45b_binding.py q-run --below-gate --name nem35l_x52_45q_below --why "Batch 52, Dan's morning queue item 1: 45q on Lightning at L$L, below gate; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x45b_binding/nem35l_x52_45q_below/coverage.txt &&
+  uv run python scripts/x45b_binding.py q-verdict --below-gate --names nem35l_x52_45q_below
+question: >-
+  Below gate, on Lightning's clean one-pick scenes whose locker comes after the asked pick: is the link made in the
+  locker sentences ((c) or (d) switches at least half of the lookups S switches while (a) stays <= 0.25)?
+why_it_matters: >-
+  Dan's morning queue (jobs/c3/batch52.yaml morning_queue, 29 Oct ~08:55) item 1: the copy test was "not tested" on
+  Lightning (clean gate 0.751); Dan asks for it below gate, exploratory, hollow.
+hypotheses:
+  none: "No prediction (Dan's morning queue: rules verbatim, no prediction; below gate, exploratory)."
+decision_rule: >-
+  45q's rule verbatim (jobs/c3/batch45.yaml 45q; scripts/x45b_binding.py Q_RULE; first scored in
+  results/x45b_binding/x45q-20261027T005345Z): "45b's, unchanged: "the link is made in the locker sentences" if (c)
+  or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3
+  models." Read per model only: the "2 of 3 models" count is the design's and is not re-scored (Lightning alone, below
+  gate). As computed: 45q's text unchanged (x45b_binding.select on the 45m source run, locker-after items,
+  same_after_bridge, aligned locker sentences; 45b's arms at L and its L/2, L/4 layers; 45n's link arms; the sweep
+  every 4th layer; X0's chat read; cluster bootstrap over bridge entities, 10,000, seed 0) on Lightning at the
+  committed L14 with the below-gate source x52_lightning_fresh_below (x45b_binding.FRESH_BELOW). BELOW GATE
+  (exploratory): the clean gate fails (recall 0.751 < 0.80); eligible items only; the source gate numbers in the
+  manifest; hollow, never in the claims table or grades. Verdict in the job: q-verdict --below-gate
+  (results/x45b_binding/x52_45q_below-<UTC>/, never the default x45q-<UTC>/).
+controls:
+- "45b's random-subspace twins and 45n's link arms against a random part of the J++ share (seed 888 + layer)"
+- "S read on S; O unedited"
+- "Dan's sanity check (O and S the same length, the same ids after the bridge word) and the checks against the 45m source run"
+n: "the source run's locker-after items passing same_after_bridge (eligible items only)"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning queue item 1 (coordinator 09:10 Paris). Box: mats, depends_on x52_lightning_fresh_below (its run in mats' checkout; checked before loading). Code: x45b_binding gains FRESH_BELOW / BELOW_GATE / fresh_of and --below-gate on q-run / q-verdict (FRESH_RUN and Q_MODELS unchanged: 45q's own verdict and count untouched; tested). Wallclock: x45q_9b 291 s, x45q_muse 1,028 s, x45q_27b 1,199 s: est ~10-20 min, 0.35 GPU-h. Hollow; UNVERIFIED; into EXPERIMENTS.md."

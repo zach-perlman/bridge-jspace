@@ -86,6 +86,28 @@ FRESH_RUN = {
     "qwen3.6-27b": "x45m_fresh_27b",
     "muse-glimmer-30b": "muse30b_x45m_fresh",
 }  # 45q's item source: each model's 45m run (x0_necessity --alt fresh)
+# Batch 52, Dan's morning queue (29 Oct) item 1: Lightning's clean design below its gate (exploratory, hollow), read only
+# by a script's --below-gate flag; FRESH_RUN (which 45q's rule counts) stays the three design models
+FRESH_BELOW = {"nemotron-3.5-lightning": "nem35l_x52_fresh"}  # jobs/c3/x52_lightning_fresh_below.yaml
+BELOW_GATE = ("below gate (exploratory): Lightning's clean one-pick gate fails (recall 0.751 < 0.80, "
+              "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json); eligible items only; hollow, never in the claims "
+              "table or grades; rules verbatim, no prediction (Dan's morning queue, 29 Oct)")  # fmt: skip
+
+
+def fresh_of(target: str, below: bool = False) -> str:
+    """The target's clean-design (45m) source run: FRESH_RUN, or with below the below-gate one (FRESH_BELOW)."""
+    if below:
+        assert target in FRESH_BELOW, f"below gate: {sorted(FRESH_BELOW)}, not {target}"
+        return FRESH_BELOW[target]
+    return FRESH_RUN[target]
+
+
+def source_gate(run: str) -> dict:
+    """The source run's chat gate numbers (recorded beside a below-gate run)."""
+    g = json.loads((X.RESULTS / run / "gate.json").read_text())["gate"][RENDERING]
+    return {k: g.get(k) for k in ("cases", "org_accuracy", "pass", "eligible", "enough", "descriptive")}
+
+
 SOURCES = {"main": "cf", "45m": "fresh"}  # select's item source -> the x0_necessity alt its run was made with
 RENDERING = "chat"
 LOCKER_PREFIX = "The locker of "
@@ -1111,7 +1133,7 @@ def stage_q_plan() -> dict:
     return counts
 
 
-def stage_q(name: str, why: str) -> Path:
+def stage_q(name: str, why: str, below: bool = False) -> Path:
     """45q's run (GPU): the target's 45m locker-after items (select(..., "45m")); per item one forward of O and of S
     recording every arm's layer, then O read under every arm by both readers (X.read_logits batches and chunks them)
     and S read on S. Sealed: the log gets counts only; no verdict, table or example runs here."""
@@ -1127,8 +1149,8 @@ def stage_q(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "45q renders 45m's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in FRESH_RUN, f"45q runs on {sorted(FRESH_RUN)}, not {target}"
-    fresh_run, layer = FRESH_RUN[target], X.PREDICTED[target]
+    assert below or target in FRESH_RUN, f"45q runs on {sorted(FRESH_RUN)}, not {target}"
+    fresh_run, layer = fresh_of(target, below), X.PREDICTED[target]
     layers, sweep = arm_layers(layer), q_sweep_layers(pins.N_LAYERS)
     arms = q_arms(layer, sweep)
     out = RESULTS / name
@@ -1158,6 +1180,9 @@ def stage_q(name: str, why: str) -> Path:
          "n_boot": X.N_BOOT,
          "sealed": f"results closed until {PREDICTIONS_REL} holds Dan's {QUESTION}; the job "
                    "runs q-run only"}  # fmt: skip
+    if below:  # batch 52 morning queue: below gate, exploratory
+        m |= {"question": BELOW_GATE, "below_gate": {"note": BELOW_GATE, "source_gate": source_gate(fresh_run)},
+              "sealed": "none (below gate, exploratory): q-verdict --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -1292,18 +1317,28 @@ def q_folder(kind: str) -> Path:
     return out
 
 
-def stage_q_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
+def stage_q_verdict(names: list[str], n_boot: int = X.N_BOOT, below: bool = False) -> Path:
     """45q's verdict: 45b's rule per model (lookup, point estimates) and on at least 2 of 3 models, with Dan's sanity
-    counts (select's drops and same_after_bridge on the stored items) and the checks against the 45m runs."""
+    counts (select's drops and same_after_bridge on the stored items) and the checks against the 45m runs. With below
+    (batch 52): the below-gate runs alone, the rule per model only (no batch count), written to x52_45q_below-<UTC>/."""
     models = [q_model(n, n_boot) for n in names]
-    v = q_batch(models)
-    out = q_folder("")
+    if below:
+        assert all(m["status"] == "pending" or m["model"] in FRESH_BELOW for m in models), "below gate: Lightning only"
+        tested = [m for m in models if m["status"] == "tested"]
+        v = {"label": "below gate (exploratory): per model only, no batch count", "q45_12": "none (no prediction)",
+             "models_holding": sum(m["holds"] for m in tested), "models_tested": len(tested), "models": len(models),
+             "missing": [], "not_tested": [m["run"] for m in models if m["status"] == "not tested"]}  # fmt: skip
+        out = RESULTS / f"x52_45q_below-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+        out.mkdir()
+    else:
+        v = q_batch(models)
+        out = q_folder("")
     lines = ["# 45q: where is the link made when the locker comes after the pick, on clean scenes? "
              "(jobs/c3/batch45.yaml, fixed in advance)", "",
              "Items: each model's 45m scenes (only the bridge token differs) whose asked bridge's locker sentence comes "
              "after the asked pick. Read on O at its answer position as X0 reads; switch = the top token is S's answer. "
              f"Cluster bootstrap over bridge entities ({n_boot} resamples, seed {X.BOOT_SEED}). UNVERIFIED.", "",
-             f"Rule: {Q_RULE}", "",
+             *([f"**{BELOW_GATE}**", ""] if below else []), f"Rule: {Q_RULE}", "",
              f"**Verdict: {v['label']}** ({QUESTION} {v['q45_12']}): {v['models_holding']} of {v['models']} models hold "
              f"(at least {Q_MODELS_MIN} needed); tested {v['models_tested']}"
              + (f"; not tested: {', '.join(v['not_tested'])}" if v["not_tested"] else "")
@@ -1436,6 +1471,8 @@ def main() -> None:
                     help="link-verdict: the 45n runs (9B, 27B, Muse if run); q-verdict / q-*-table: the 45q runs")  # fmt: skip
     ap.add_argument("--why", default="batch 45, test 45b (jobs/c3/batch45.yaml)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--below-gate", action="store_true",
+                    help="q-run / q-verdict: batch 52, Lightning's clean design below its gate (FRESH_BELOW; exploratory)")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1445,6 +1482,10 @@ def main() -> None:
         return
     if a.stage == "link-verdict":
         stage_link_verdict(a.names, a.n_boot)
+        return
+    if a.stage == "q-verdict" and a.below_gate:
+        assert a.names, "q-verdict --below-gate needs --names"
+        stage_q_verdict(a.names, a.n_boot, below=True)
         return
     if a.stage in ("q-verdict", "q-link-table", "q-sweep-table"):
         assert a.names, f"{a.stage} needs --names (the 45q runs: 9B, 27B, Muse)"
@@ -1469,7 +1510,7 @@ def main() -> None:
     elif a.stage == "link":
         stage_link(a.name, a.why)
     elif a.stage == "q-run":
-        stage_q(a.name, a.why)
+        stage_q(a.name, a.why, a.below_gate)
     else:
         stage_examples(a.name)
 
