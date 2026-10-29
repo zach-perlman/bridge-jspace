@@ -87,6 +87,9 @@ STEP = {"qwen3.5-9b": 2, "qwen3.6-27b": 4, "muse-glimmer-30b": 4, "nemotron-3.5-
 # batch 52 C coverage (amendment 3): Lightning's run, the main-test design only (--designs main: its clean one-pick
 # design fails the gate, recall 0.751), read by verdict --coverage; RUNS and D1's own verdict unchanged
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_depthmap"}
+# batch 52, Dan's morning queue item 1: --below-gate (Lightning's clean design below its gate, exploratory)
+BELOW = False
+BELOW_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_depthmap_clean_below"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 LATE_BAND = {"qwen3.5-9b": 26, "qwen3.6-27b": 52}  # the start of Zach's late "question" band (D2's rule); Muse: none
 LOCKER_ROLES = ("lk_org", "lk_cf", "lk_other1", "lk_other2")
@@ -243,7 +246,7 @@ def stage_plan() -> dict:
     layers = layer_grid(pins.N_LAYERS, STEP[target], layer)
     out: dict[str, Any] = {"target": target, "layer": layer, "n_layers": pins.N_LAYERS, "layers": layers}
     for design in DESIGNS:
-        items, counts = select(tok, design, C.SOURCES[design][target], layer)
+        items, counts = select(tok, design, C.sources(BELOW)[design][target], layer)
         reads = [len(arm_names(list(it["token_groups"][w]), layers)) for it in items for w in X.READERS]
         counts["reads"] = {"per_reader_item": dict(collections.Counter(reads)), "total": sum(reads)}
         if items:
@@ -326,7 +329,7 @@ def stage_run(name: str, why: str) -> Path:
     assert target in STEP, f"D1 runs on {sorted(STEP)}, not {target}"
     layer, n_layers = X.PREDICTED[target], pins.N_LAYERS
     layers = layer_grid(n_layers, STEP[target], layer)
-    runs = {d: C.SOURCES[d][target] for d in DESIGNS}
+    runs = {d: C.sources(BELOW)[d][target] for d in DESIGNS}
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     srcs = [X.RESULTS / r for r in runs.values()]
@@ -355,6 +358,9 @@ def stage_run(name: str, why: str) -> Path:
     m["designs"] = list(DESIGNS)
     if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
         m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage)"}
+    if BELOW and "clean" in DESIGNS:  # batch 52, Dan's morning queue item 1: below gate, exploratory
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(runs["clean"])},
+              "sealed": "none (below gate, exploratory): verdict --coverage --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -520,7 +526,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     rules per design; the state check and the side checks beside."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for d in (RUNS, COVERAGE_RUNS, BELOW_RUNS) for t, r in d.items()}.get(run)
         assert target, f"no D1 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "the run has no manifest or outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -594,14 +600,15 @@ def map_lines(cells: dict[str, list], layers: list[int], groups: list[str]) -> l
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
     """D1 + D2's verdict (sealed until Q-depth), or with coverage (batch 52) the same rules on the given runs only, no
     seal guard, "no prediction" in place of Dan's answer, written to x52_depthmap-<UTC>/."""
-    answer = NO_PREDICTION if coverage else unsealed()
+    answer = (B.BELOW_GATE if BELOW else NO_PREDICTION) if coverage else unsealed()
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
     models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
                for t in RUNS if t not in targets and not coverage]  # fmt: skip
     tested = [m for m in models if m["status"] == "tested"]
-    out = RESULTS / f"{'x52_depthmap' if coverage else 'depth'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_depthmap_below" if BELOW else "x52_depthmap" if coverage else "depth"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     who = f"Batch 52 coverage ({answer}; designs {list(DESIGNS)})" if coverage else f"{QUESTION}, Dan: {answer}"
     lines = ["# D1 + D2 (batch 47, amendment 3): the token x layer causal map, and window patching", "",
@@ -799,7 +806,11 @@ def main() -> None:
     ap.add_argument("--designs", nargs="+", choices=list(C.DESIGNS), default=list(C.DESIGNS),
                     help="run / verdict: these designs only (batch 52: Lightning's main test; its clean design fails the gate)")  # fmt: skip
     ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, Lightning's clean design below its gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     global DESIGNS
     DESIGNS = tuple(d for d in C.DESIGNS if d in a.designs)  # the order of C.DESIGNS
     if a.stage == "plan":

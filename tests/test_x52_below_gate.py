@@ -194,3 +194,24 @@ def test_probe49_below_gate(tmp_path, monkeypatch):
     assert out.name.startswith("x52_probe49_below-") and "below gate (exploratory)" in (out / "x49_3.md").read_text()
     with pytest.raises(AssertionError, match=r"49\.3 runs on"):
         P.stage_verdict([P.COVERAGE_RUNS["qwen3.6-27b"]], 10, coverage=True)
+
+
+def test_d1_and_474_clean_below_gate(tmp_path, monkeypatch):
+    """D1 and 47.4: the clean design's source is Lightning's below-gate run only below gate; the coverage verdicts
+    below gate write the note, x52_depthmap_below-<UTC>/ and x52_cumulative_below-<UTC>/."""
+    from scripts import x45b_binding as B
+    from scripts import x47_cumulative as C
+    from scripts import x47_depthmap as DM
+
+    assert C.BELOW is False and DM.BELOW is False and C.sources() is C.SOURCES and LT not in C.SOURCES["clean"]
+    assert C.sources(True)["clean"][LT] == B.FRESH_BELOW[LT] and C.sources(True)["main"] is B.MAIN_RUN
+    monkeypatch.setattr(C, "BELOW", True)
+    monkeypatch.setattr(C, "RESULTS", tmp_path)
+    out = C.stage_verdict(["nem35l_x52_cumulative_clean_below"], 10, coverage=True)
+    assert out.name.startswith("x52_cumulative_below-") and "below gate (exploratory)" in (out / "x47_4.md").read_text()
+    monkeypatch.setattr(DM, "BELOW", True)
+    monkeypatch.setattr(DM, "RESULTS", tmp_path)
+    monkeypatch.setattr(DM, "model_result", lambda r, n_boot: {"run": r, "target": LT, "status": "pending", "why": "x"})
+    out = DM.stage_verdict(["nem35l_x52_depthmap_clean_below"], 10, coverage=True)
+    assert out.name.startswith("x52_depthmap_below-")
+    assert "below gate (exploratory)" in "".join(p.read_text() for p in out.glob("*.md"))

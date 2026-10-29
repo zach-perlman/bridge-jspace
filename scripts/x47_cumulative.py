@@ -92,6 +92,17 @@ RENDERING = "chat"
 DESIGNS = ("main", "clean")
 ALT = {"main": "cf", "clean": "fresh"}  # the x0_necessity alt each design's source run was made with
 SOURCES = {"main": B.MAIN_RUN, "clean": B.FRESH_RUN}  # design -> target -> the source X0 run (main test / 45m)
+# batch 52, Dan's morning queue item 1: --below-gate (Lightning's clean design below its gate, exploratory)
+BELOW = False
+BELOW_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cumulative_clean_below"}
+
+
+def sources(below: bool | None = None) -> dict[str, dict[str, str]]:
+    """SOURCES, or below gate the clean design's source extended by Lightning's below-gate run (B.FRESH_BELOW)."""
+    below = BELOW if below is None else below
+    return {**SOURCES, "clean": {**B.FRESH_RUN, **B.FRESH_BELOW}} if below else SOURCES
+
+
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_cumulative", "qwen3.6-27b": "x47_cumulative_27b",
         "muse-glimmer-30b": "muse30_x47_cumulative"}  # fmt: skip
 # batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, the 27B's spec never ran before; and
@@ -332,7 +343,7 @@ def stage_plan() -> dict:
     layer = X.PREDICTED[pins.TARGET]
     out: dict[str, Any] = {"target": pins.TARGET, "layer": layer, "n_layers": pins.N_LAYERS, "arms": list(ARMS)}
     for design in DESIGNS:
-        items, counts = select(tok, design, SOURCES[design][pins.TARGET], layer)
+        items, counts = select(tok, design, sources()[design][pins.TARGET], layer)
         counts["reads"] = len(items) * len(X.READERS) * len(ARMS)
         if items:
             it = items[example_indices(len(items), 1)[0]]
@@ -428,9 +439,9 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "47.4 renders X0's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert all(target in SOURCES[d] for d in DESIGNS), f"47.4 runs on {sorted(B.FRESH_RUN)}, not {target}"
+    assert all(target in sources()[d] for d in DESIGNS), f"47.4 runs on {sorted(B.FRESH_RUN)}, not {target}"
     layer, n_layers = X.PREDICTED[target], pins.N_LAYERS
-    runs = {d: SOURCES[d][target] for d in DESIGNS}
+    runs = {d: sources()[d][target] for d in DESIGNS}
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     srcs = [X.RESULTS / r for r in runs.values()]
@@ -455,6 +466,9 @@ def stage_run(name: str, why: str) -> Path:
                                        "batch": SUITE.BATCH},
          "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
     m["designs"] = list(DESIGNS)  # batch 52 C: Lightning runs the main design only (--designs main)
+    if BELOW and "clean" in DESIGNS:  # batch 52, Dan's morning queue item 1: below gate, exploratory
+        m |= {"question": B.BELOW_GATE, "below_gate": {"note": B.BELOW_GATE, "source_gate": B.source_gate(runs["clean"])},
+              "sealed": "none (below gate, exploratory): verdict --coverage --below-gate"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -674,7 +688,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending (not here), or per design, reader and group the decomposition, and the checks."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
+        target = {r: t for d in (RUNS, COVERAGE_RUNS, BELOW_RUNS) for t, r in d.items()}.get(run)
         assert target, f"no 47.4 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "the run has no manifest or outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -705,7 +719,7 @@ def fmt(v: list) -> str:
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
     """47.4's verdict (sealed until Q47.4), or with coverage (batch 52 C) the same reading on the given coverage runs
     alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_cumulative-<UTC>/."""
-    answer = f"{NO_PREDICTION}; first read in {SCORED}" if coverage else unsealed()
+    answer = f"{B.BELOW_GATE if BELOW else NO_PREDICTION}; first read in {SCORED}" if coverage else unsealed()
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
@@ -716,7 +730,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = Fals
                    for t in RUNS if t not in targets]  # fmt: skip
     tested = [m for m in models if m["status"] == "tested"]
     flags = [f"{m['target']}: {f}" for m in tested for f in m["bugs"]["flags"]]
-    out = RESULTS / f"{'x52_cumulative' if coverage else 'x47_4'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stem = "x52_cumulative_below" if BELOW else "x52_cumulative" if coverage else "x47_4"
+    out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 47.4: why does not every answer switch? Cumulative patches at the bridge token", "",
              f"Batch 47, test 47.4 (jobs/c3/batch47.yaml; {QUESTION}, Dan: {answer}). Arms on O, read by X0's chat read "
@@ -916,7 +931,11 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--designs", nargs="+", choices=list(DESIGNS), default=list(DESIGNS),
                     help="run / verdict: these designs only (batch 52: Lightning's clean design fails the gate)")  # fmt: skip
+    ap.add_argument("--below-gate", action="store_true",
+                    help="run / verdict (with --coverage): batch 52, Lightning's clean design below its gate (exploratory)")  # fmt: skip
     a = ap.parse_args()
+    global BELOW
+    BELOW = a.below_gate
     DESIGNS = tuple(d for d in DESIGNS if d in a.designs)
     if a.stage == "plan":
         stage_plan()
