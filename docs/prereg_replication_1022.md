@@ -2658,3 +2658,54 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
 ##### Amendment 58 note 14 addendum (Zach, 2026-10-28 ~22:20 UTC; before any map result: the first map run failed at its last window)
 - **Windows corrected.** The J-lens has no layer for the model's last block, so each map's last window ends one layer earlier: 27B 57-62, 9B 29-30, Lightning 46-50. Everything else is unchanged.
 - **Order.** The runs go in seed-major order (Zach: the full seed-0 map first; scripts/queues/h200_v4b_1028.sh), with the same runs.
+
+##### Amendment 58 note 15 (Zach, 2026-10-29 ~00:40 UTC; before any result): on v4, is the recall twin's lens part the bridge or the answer? (Dan's 51.12 rule)
+- **Why.** Dan's 51.12 (unverified) finds the lens effect at the bridge is the answer on our v3 passages, and the entity on his locker scenes, whose answers are digits the lens mostly cannot read. v4's answers are words. At the 9B's final token (L21-24, L25-28) the recall twin (MM) needs note 10's lens part (rem 12.5 of full 27.9; 11.3 of 45.0) but the lens part alone moves little (1.7; 6.2).
+- **Items.** v4ok, MM, donor seeds 0 and 1; primary: cf_ok pairs (note 14).
+- **Cells.**
+  - 9B: MM at last L4-7, L8-11, L12-16 and final L21-24, L25-28. These are note 14's stage-1 hits, minus the window ending at the lens's last layer, where the answer is formed.
+  - 27B: every MM stage-1 hit at sites last and final, minus its last window (57-62).
+- **Definitions.** Δ = h_D − h_X at the site. S = note 10's lens part. A = an answer set. C = as many of SEED_CTL's fixed random atoms. R = note 10's fixed random 20-dim subspace.
+- **Arms (scripts/nn_swap.py):**
+  - full_cf;
+  - rem_cf (arm 1: without the lens part);
+  - remrand_cf = h_X + Δ − P_R Δ (the random twin of arms 1 and 2);
+  - remkeep{A}_cf = h_X + Δ − (I − P_A) P_S Δ (arm 2: without the lens part, its answer component kept);
+  - noa{A}_cf = h_X + Δ − P_A Δ (arm 3: without the answer directions only);
+  - noa{A}ctl_cf, the same with C in place of A.
+- **Two answer sets (Zach: both).**
+  - own: X's and D's own answers (note 11's narrowest scrub; Dan's A).
+  - rel: every answer of the item's relation (note 11 addendum's noansrel).
+- **Measures (donor shares, cf_ok pairs).**
+  - e1 = (remrand − rem) / full.
+  - e2 = (remrand − remkeep) / full.
+  - e3 = (noactl − noa) / full.
+  - 95% cluster bootstrap over bridges.
+- **Rule: Dan's 51.12 rule, used verbatim (his "entity" read as "the bridge"), per model, cell and answer set.** Point estimates decide.
+  - "The lens part is the bridge" if e2 >= 0.7 e1 and e3 <= 0.10.
+  - "The lens part is the answer" if e2 <= 0.3 e1 and e3 >= 0.5 e1.
+  - Otherwise "mixed". If e1 <= 0: "can't tell".
+- **Readout check (Dan's amendment), reported first.**
+  - The lens rank, over the letter tokens, of X's answer at h_X and D's answer at h_D, at the site and the band's first layer.
+  - "The answer is not read at the site" if both rank > 50 on >= 90% of pairs.
+- **Decisive cells.** The final cells, where the recall needs the lens part. The description-end cells are reported beside them.
+- **Scorer.** scripts/nn_cf_read.py (note15_own, note15_rel).
+
+##### Amendment 58 note 16 (Zach, 2026-10-29 ~00:40 UTC; before any result): the latent bridge with Dan's lens part
+- **Why.** With note 10's lens part (X's and D's top-10 J++ atoms), the 9B's lookup bridge at the description's end goes around the lens (L4-7: lens 2.6 of full 26.0). Dan's lens part is fit to the change itself, so it catches any lens-readable part of the change. At his named bridge word (9B, L2-6) it alone moves both readers 0.60-0.96 (51.10, unverified). Does the latent bridge stay outside the lens under his definition?
+- **Items and seeds.** As note 15; 9B only (Zach).
+- **Cells.**
+  - Site last, MP and MM, L4-7 and L8-11.
+  - Positive check: final MM L29-30, where note 10's lens part alone moves 57.2 of 89.4.
+- **Lens part (Dan's x0 / x45p).**
+  - J = the signed OMP fit, k = 25, of Δ over the unit J++ vectors of the letter tokens and the ten digits (exp04_brew_parts.signed_omp; JLens.vectors), at each band layer.
+  - Its random twin: Δ's projection on the first k columns of rotation(d, 888 + layer), k per row so it keeps the same share of ||Δ||² (Dan's random_subspace_part, copied).
+- **Arms.** full_cf, jpp_cf (h_X + J), jpprand_cf, nojpp_cf (h_X + Δ − J), nojpprand_cf.
+- **Readings (donor shares, cf_ok pairs).**
+  1. Positive check: at final MM L29-30, jpp − jpprand >= 0.5 full. If it fails, readings 2 are void.
+  2. Per cell (full >= 20):
+     - "the bridge is in Dan's lens part" if jpp − jpprand >= 0.5 full (his write bar) and nojpprand − nojpp >= 1/3 full;
+     - "outside it" if both are < 1/3 full;
+     - else "mixed".
+  3. Reported beside: the mean share of ||Δ||² that J holds.
+- **Scorer.** scripts/nn_cf_read.py (note16).

@@ -47,6 +47,17 @@ jswap):
   note 13: clamp_noans, the clamp with X's and D's name vectors first made orthogonal to every answer direction (A);
   items with an in-context second hop (final P, jsuite_v3mp): D is another entity of the passage; classes kept (X's
   passage value), donor (D's passage value), third (D's remembered attribute), xmem (X's remembered attribute)
+  note 15 (v4, cf only; Dan's 51.12 arms): Δ = h_D - h_X at the site, S as note 10, A an answer set (own: X's and D's own
+  answers; rel: every answer of the item's relation), C as many of SEED_CTL's atoms, R note 10's random 20-dim subspace
+  remrand_cf        h_X + Δ - P_R Δ                  (arms 1 and 2's random twin)
+  remkeep{own,rel}_cf   h_X + Δ - (I - P_A) P_S Δ    (arm 2: without the lens part, its answer component kept)
+  noa{own,rel}_cf   h_X + Δ - P_A Δ                  (arm 3: without the answer directions only); noa{own,rel}ctl_cf with C
+  the "none" rows carry the readout check: the lens rank (over the letter tokens) of X's answer at h_X and D's at h_D,
+  at the site and the band's first layer
+  note 16 (v4, cf only; Dan's lens part): J = the signed OMP fit, 25 atoms, of Δ over the unit J++ vectors of the letter
+  tokens and the ten digits (scripts/exp04_brew_parts.signed_omp); Jr = Δ's random part of the same share (Dan's
+  random_subspace_part over rotation(d, 888 + layer))
+  jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
 
@@ -85,6 +96,23 @@ RES = pins.RESULTS_DIR / "nn_swap"
 SEED_RAND = 5800  # + layer: the random k-dim subspaces
 SEED_NULL = 5900  # + layer: clamp_null's direction
 SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer atoms (noansctl, ansctl)
+
+
+N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl")  # note 15's arm kinds
+N16 = ("jpp", "jpprand", "nojpp", "nojpprand")  # note 16's arm kinds
+
+
+def random_subspace_part(delta: torch.Tensor, share: torch.Tensor, basis: torch.Tensor) -> torch.Tensor:
+    """Note 16, copied from Dan's scripts/statement_positions.random_subspace_part (23 Oct): each row of delta [P, d]
+    projected onto the first k columns of a random orthonormal basis, k per row so that it keeps share[row] of the row's
+    squared norm (to within one basis direction)."""
+    delta = delta.float()
+    coef = delta @ basis
+    cum = torch.cumsum(coef**2, dim=-1) / (delta.norm(dim=-1, keepdim=True) ** 2).clamp_min(1e-30)
+    cum = torch.cat([torch.zeros_like(cum[:, :1]), cum], dim=-1)
+    k = (cum - share.float()[:, None]).abs().argmin(dim=-1)
+    keep = torch.arange(basis.shape[1], device=delta.device)[None, :] < k[:, None]
+    return (coef * keep) @ basis.T
 
 
 def conds_for(ks: list[int]) -> list[str]:
@@ -202,6 +230,12 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             rel_cache[key] = sorted({int(row_of[t]) for t in toks if int(row_of[t]) >= 0})
         return rel_cache[key]
 
+    jdic = {}
+    if any(c.split("_")[0] in N16 for c in conds):  # note 16: Dan's dictionary, the letter tokens and the ten digits
+        digits = torch.tensor([S.ids(tok, str(i))[0] for i in range(10)], device="cuda")
+        jids = torch.unique(torch.cat([letters, digits]))
+        jdic = {la: lens.vectors(la, jids) for la in band}
+        from scripts.exp04_brew_parts import signed_omp
     qa, qc = {}, {}
     if any(c.endswith(("_noans", "_noansctl")) for c in conds):
         for la in band:
@@ -270,6 +304,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             prot = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
             meta = lambda j: {"x": j["x"], "donor": j["d"], "third": j["at"], "ax": j["ax"], "ad": j["ad"], "at": j["at"], "rel": j["rel"], "band": tag,  # noqa: E731
                               **({"cf_ok": cf_ok.get(j["jid"])} if "jid" in j else {})}  # fmt: skip
+            none_at = len(rows)  # note 15: the readout check is added to these rows below
             for b, j in enumerate(chunk):
                 cls, pick = classify(clean[b], j)
                 rows.append({"id": j["id"], "family": j["family"], "condition": "none", "cls": cls, "pick": pick, **meta(j)})
@@ -291,7 +326,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             # note 11 addendum: the item's relation's answer atoms (every form of every answer in its answer_vocab) and X's
             # and D's own, each with as many of C's atoms; the atom choice never from the scrubbed rows
             narrow: dict = {}
-            if any(c.split("_")[-1].startswith(("noansrel", "noansown")) for c in conds):
+            if any(c.split("_")[-1].startswith(("noansrel", "noansown")) or c.startswith(("remkeeprel", "noarel")) for c in conds):
                 rel = [rel_rows(j) for j in chunk]
                 rwidth = max(1, max(len(r) for r in rel))
                 rel_idx = torch.tensor([r + [0] * (rwidth - len(r)) for r in rel], device="cuda")[bi]
@@ -306,6 +341,19 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                           "noansown": (own_idx, own_mask, excl(own, False)), "noansownctl": (ctl_idx, own_mask, excl(own, True))}  # fmt: skip
             selfv = torch.stack([vec[("insert", chunk[b]["x"], chunk[b]["kind_"], chunk[b]["format_"])] for b in bi.tolist()]) if any(
                 c.startswith("repair") for c in conds) else None  # fmt: skip
+            # note 15: the answer sets (per site row) and the readout check on this chunk's "none" rows
+            ans_sets = {"own": (own_idx, own_mask), "ownctl": (ctl_idx, own_mask)}
+            if "noansrel" in narrow:
+                ans_sets.update({"rel": narrow["noansrel"][:2], "relctl": narrow["noansrelctl"][:2]})
+            if any(c.split("_")[0] in N15 for c in conds):
+                la0 = band[0]
+                for which, hs, key in (("rank_ax", rec[la0][bi, xi], "fx"), ("rank_ad", cfv[:, 0], "fd")):
+                    lg0 = dic[la0].logits(hs.float())  # [m, n] over the letter tokens
+                    for b, j in enumerate(chunk):
+                        r = [int(row_of[t]) for t in j[key] if int(row_of[t]) >= 0]
+                        m0 = int((bi == b).nonzero()[0, 0])
+                        rows[none_at + b][which] = int((lg0[m0] > lg0[m0, r].max()).sum()) + 1 if r else None
+            jshare: dict = {}
 
             def note11(cond: str, la: int, li: int, hx: torch.Tensor) -> torch.Tensor:
                 src, rest = cond.split("_")[0], cond.split("_")[1:]
@@ -362,6 +410,33 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                                                                             "noansown", "noansownctl"):  # note 11 (and its addendum)  # fmt: skip
                         h[bi, xi] = note11(cond, la, li, h[bi, xi].float()).to(h.dtype)
                         return h
+                    kind0 = cond.split("_")[0]
+                    if kind0 in N15 or kind0 in N16:  # notes 15-16 (cf only)
+                        hx = h[bi, xi].float()
+                        dl = cfv[:, li] - hx
+                        if kind0 in N16:  # Dan's lens part: the 25-atom signed OMP fit of the change, or its random twin
+                            jp = signed_omp(jdic[la], dl, 25)
+                            share = jp.norm(dim=-1) ** 2 / (dl.norm(dim=-1) ** 2).clamp_min(1e-30)
+                            if kind0 == "jpp" and li == 0:
+                                jshare.update({b: float(share[bi == b].mean()) for b in range(len(chunk))})
+                            if kind0.endswith("rand"):
+                                jp = random_subspace_part(dl, share, rot[la])
+                            new = hx + jp if kind0 in ("jpp", "jpprand") else hx + dl - jp
+                        elif kind0 == "remrand":  # arms 1 and 2's random twin
+                            Q = rand[la][:, :20]
+                            new = hx + dl - (dl @ Q) @ Q.T
+                        else:
+                            idx, msk = ans_sets[kind0.removeprefix("remkeep").removeprefix("noa")]
+                            if kind0.startswith("noa"):  # arm 3: without the answer directions only (or C's)
+                                new = hx + dl - JS.span_proj(dic[la], dl, idx, msk)
+                            else:  # arm 2: without the lens part, its answer component kept (S as note 10)
+                                _, cx = top_span_removal(dic[la], hx, 10, protected=groups, return_chosen=True)
+                                _, cd = top_span_removal(dic[la], cfv[:, li], 10, protected=groups, return_chosen=True)
+                                Q = torch.linalg.qr(dic[la].atoms(torch.cat([cx, cd], dim=1)).transpose(1, 2).double())[0].float()
+                                ps = (Q @ (Q.transpose(1, 2) @ dl.unsqueeze(2))).squeeze(2)
+                                new = hx + dl - (ps - JS.span_proj(dic[la], ps, idx, msk))
+                        h[bi, xi] = new.to(h.dtype)
+                        return h
                     if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand"):  # note 10: the paper's decomposition
                         kind, src = cond.split("_")
                         hx = h[bi, xi].float()
@@ -408,7 +483,8 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                     if cond.startswith("clamp") and not bool(ok_rows[b]):
                         continue
                     cls, pick = classify(lg[b], j)
-                    rows.append({"id": j["id"], "family": j["family"], "condition": cond, "cls": cls, "pick": pick, **meta(j)})
+                    rows.append({"id": j["id"], "family": j["family"], "condition": cond, "cls": cls, "pick": pick, **meta(j),
+                                 **({"jshare": round(jshare[b], 4)} if cond.startswith("jpp_") and b in jshare else {})})  # fmt: skip
         print(f"[{tag}] {len(rows)} rows, {time.time() - t0:.0f}s", flush=True)
 
 
