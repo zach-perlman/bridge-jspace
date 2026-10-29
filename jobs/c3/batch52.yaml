@@ -211,3 +211,91 @@ morning_queue: |
      applicable: Mamba-2 state carries the edge").
   Use all four GPUs. Anything that lands after ~13:00 goes to EXPERIMENTS.md
   only, not the README.
+
+ledger_restructure_received: "29 Oct ~08:55 Paris (Dan)"
+ledger_restructure: |
+  Restructure docs/depth/EXPERIMENTS.md to read like README.md (Dan, 08:55).
+  The figures exist (50), but the first one sits at line 142 under flags and a
+  text-heavy table; a reader sees no picture for three screens.
+
+  New order:
+  1. Title + "In one minute": 4-6 bullets: what the ledger holds (N tests, four
+     models), what changed overnight (Lightning confirms the split, the routes
+     and the address; E12 breaks on the 27B's full grid; E6's s = 1 rule said
+     no), what was withdrawn.
+  2. One overview figure right under it: coverage as a heatmap, rows = tests in
+     README order, columns = 27B / Lightning / 9B / Muse, cells coloured by
+     verdict (holds / in between / fails / not tested / below gate), short
+     labels. The reader's first screen must contain a picture.
+  3. "How to read": link to README's methods / measures / figure marks; add only
+     what is new here (below gate, adapted design, coverage run).
+  4. Parts I-VI, the same parts, titles and order as README. Each card keeps its
+     template; its status goes on the "Used in" line as a tag (in README /
+     changes README / ledger only / below gate). Figure right after Method.
+  5. Withdrawn; Run on one model only.
+  6. Appendix: Flagged for Dan, README changes waiting, the full coverage table,
+     Figure checks. Coverage table cells: symbols with a legend (✓ done,
+     ◐ partial, ○ below gate, – not tested, ✗ not designed), reasons as
+     numbered footnotes, not text in the cell.
+
+  Figures: every card whose result has a Lightning column must show Lightning in
+  its figure. Where a card reuses a figures/story PNG without Lightning, use the
+  README rebuild's version (task 3) once it lands; until then a ledger copy with
+  Lightning added. Same visual system; Lightning's marks hollow (gate after the
+  pre-check). Open every PNG after rendering; keep the Figure checks list.
+  No number changes; check_ledger.py must pass. Commit in steps.
+
+readme_update_received: "29 Oct ~08:55 Paris (Dan)"
+readme_update: |
+  README update (Dan, 08:55): bring in Lightning and every opened result. This
+  lifts the overnight "no README edits" rule. Edit docs/README.template.md and
+  the figure builders; rebuild; all numbers via data.csv / x0_numbers.json src
+  comments; run the tests. Target: ready for my review by 13:00 (freeze 16:00).
+
+  Apply every line of "README changes waiting for Dan" in EXPERIMENTS.md, with
+  these decisions:
+  1. Models: Lightning (Nemotron 3.5 Lightning 30B-A3B, a Mamba-attention
+     hybrid, another family) is the fourth model everywhere: Status line, claims
+     table "Models" column, a Lightning column in every card's result table, a
+     Lightning panel or column in every per-model figure (fig01, fig09a, fig16,
+     fig05, the swap figure, fig17, fig06b, fig03, fig09b, fig11, fig01d with
+     "not tested (gate)" where so). Its marks hollow everywhere: "gate chosen
+     after the 60-scene pre-check was seen". Its layer L14 and the rule that
+     picked it in the setup. Bolt: one line, out of scope (no J++ lens).
+  2. Claim 1: confirmed on Lightning (recall 0.34, lookup 0.03). Add two limits:
+     on the full carrier fact-after lookups follow the lens (51.7, 0.41-0.51);
+     on Zach's true-fact named passages the lookup follows the lens on the 9B and
+     27B (Z1), and the made-up-fact rerun is queued.
+  3. E6: say the rule fixed in advance was at s = 1 and said no on every model
+     (a design error: s = 1 is below a real change's size); the swap numbers are
+     at s = 2; Lightning 0.50.
+  4. E12 and claim 12: (a) the handoff holds on the 9B, Muse and Lightning and
+     fails on the 27B's full grid (l_J L40 after l_P L28); it depends on the layer
+     grid, say so. Keep (b) address readable before it is used and (d) never the
+     value as the headline: 4 of 4. Regrade claim 12 if (a) was part of its A/B.
+  5. Claim 8 and "In one minute": replace "one code per locker" with what holds:
+     swaps between given slots work on most pairs (9B, Muse, Lightning; not the
+     27B); the code's size is not settled (51.11: in between on the 9B,
+     midpoints fail, so not a metric order). Grade B.
+  6. New card, Part IV: the recall's bridge entity at the last token is readable
+     through the lens but not used (read 0.95-0.98, lens write 0.00-0.14 vs
+     whole-state 0.95-1.00), all four models; fig17 with Lightning.
+  7. New card, Part I after the answer control: "What do the lens part's 25
+     directions stand for?" (batch 52 A, descriptive): the two bridge words carry
+     ~0.1-0.2 of the energy each with the expected signs (old −, new +), the
+     answer words ~0.001, 0.61-0.79 match no scene word (some are missed
+     abbreviations of the bridge; the classifier was hand-checked on 5 items per
+     model). Say plainly: this is what is readable, not all that is there.
+  8. Ladder card: fill the 27B column from the full ladder (n 574): (a) no,
+     (b) no, (c) yes; Muse's step 6 in Zach's band, same labels.
+  9. Part V: Z1 ran Zach's true-fact passages; no made-up-fact rerun yet
+     (queued). Z3: no position route on the 27B (0.04), others in between.
+  10. Batch 52 B stays out of the README (the write at the last token is close to
+      steering the output; its 1x / 2x doses disagree). One line in Open
+      questions.
+  11. "In one minute" rewritten last, from the updated cards: four models, two
+      families plus a hybrid architecture; what holds on all four; what is
+      weaker on the 27B; what was withdrawn.
+  Keep "Unverified until hand-checked" in the Status line; I hand-check 09:00-13:00
+  and will add VERIFIED.md. Commit in steps (tables and text → figures → "In one
+  minute"), and send me a one-screen diff summary per step.
