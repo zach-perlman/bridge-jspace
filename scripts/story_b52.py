@@ -25,6 +25,7 @@ ROWS = (
     ("qwen3.6-27b", "27B"),
     ("muse-glimmer-30b", "Muse"),
     ("nemotron-3.5-lightning", "Lightning"),
+    ("qwen3.5-122b-a10b", "122B"),  # Dan's 11:30: the fifth slot; no 52 A run on it (a grey "not run")
 )
 # the classes drawn, left to right, and the x52_atoms classes each one sums
 KINDS = (
@@ -48,14 +49,17 @@ def build_atoms(reports: tuple[Path, ...], out_name: str = "fig18_atoms") -> str
         p = d / "tables.json"
         for target, sets in json.loads(p.read_text())["summary"].items():
             data[target] = (sets["e1"]["PM"], p)
-    rows = [(t, name) for t, name in ROWS if t in data]
+    rows = list(ROWS)  # every slot, a model without a report grey
     plt = S.setup()
-    top_in, row_in, bottom_in = 0.85, 0.5, 1.75
+    top_in, row_in, bottom_in = 0.85, 0.5, 1.95
     h = top_in + row_in * len(rows) + bottom_in
     fig, ax = plt.subplots(figsize=(S.WIDTH, h))
     fig.subplots_adjust(left=0.13, right=0.88, top=1 - top_in / h, bottom=bottom_in / h)
     S.title(fig, TITLE, SUB)
     for i, (t, _) in enumerate(rows):
+        if t not in data:
+            ax.text(0.02, -i, "not run", va="center", fontsize=S.FONT, color=S.COL["muted"])
+            continue
         s, p = data[t]
         y, x = -i, 0.0
         hollow = t in HOLLOW
@@ -79,10 +83,10 @@ def build_atoms(reports: tuple[Path, ...], out_name: str = "fig18_atoms") -> str
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
     handles = [plt.Rectangle((0, 0), 1, 1, color=col) for _, _, col in KINDS]
-    fig.legend(handles, [w for w, _, _ in KINDS], loc="lower left", bbox_to_anchor=(0.01, 0.6 / h),
+    fig.legend(handles, [w for w, _, _ in KINDS], loc="lower left", bbox_to_anchor=(0.01, 0.78 / h),
                ncol=3, frameon=False, fontsize=S.FONT - 1, handlelength=1.2, columnspacing=1.2)  # fmt: skip
     caption(fig, ["Descriptive (no rule): each direction's class is automatic, hand-checked on five items per model "
                   "(9B, 27B, Muse). Some 'no scene word' directions are spellings of the bridge the classifier missed. "
-                  "Lightning hatched: its gate was chosen after its 60-scene pre-check was seen."], 0.5)  # fmt: skip
+                  "Lightning hatched: its gate was chosen after its 60-scene pre-check was seen."], 0.66)  # fmt: skip
     S.save(fig, out_name)
     return out_name

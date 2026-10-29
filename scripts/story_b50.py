@@ -30,7 +30,11 @@ from scripts import readme_story_figures as F
 from scripts import story_style as S
 
 MODELS = tuple((t, m, name) for t, m, name in S.MODELS if m != "122b")  # 9B, 27B, Muse
-SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse", "lightning": "Lightning"}
+SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse", "lightning": "Lightning", "122b": "122B"}
+# Dan's 11:30 (q122b_1130): the 122B as the fifth slot, after Lightning, with data where it ran, grey "not run" elsewhere
+B122 = ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B")
+B122_NOTE = "122B: FP8; MoE, ~10B active; L33 (the 27B's relative depth carried over)."
+NOT_RUN = "not run"
 INK, LOOKUP, NULL = S.MARK_COL["recall"], S.MARK_COL["lookup"], S.MARK_COL["null"]
 RECALL_AFTER = "#9a9a9a"  # the recall's lighter shade (locker after the pick): a grey, so no new hue
 CAPTION = "#555555"
@@ -167,9 +171,12 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
                 by[m["target"]], srcs[m["target"]] = m, rel(p)
         panels.append((F.LT[0], F.LT[1], F.LT[2]))
     lt_row = lightning and not lt_below  # the text row under the rung labels
+    # grey rows under the rung labels: Lightning without its below-gate run, and the 122B (Dan's 11:30; no ladder)
+    text_rows = ([(F.LT[2], F.LT_GATE)] if lt_row else []) + [(B122[2], NOT_RUN)]
     plt = S.setup()
     n_p = len(panels)
-    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05 + 0.45 * lt_row + 0.4 * lt_below
+    panel_in, gap_in, top_in = 1.5, 0.42, 1.75
+    bottom_in = 1.05 + 0.45 * len(text_rows) + 0.4 * lt_below
     h = top_in + n_p * panel_in + (n_p - 1) * gap_in + bottom_in
     fig, axes = plt.subplots(n_p, 1, figsize=(S.WIDTH, h), sharex=True)
     fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
@@ -254,11 +261,11 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
         band = by[F.LT[0]].get("band") or []
         lines.append(f"Lightning hollow: below gate (its clean one-pick recall {gate:.3f} < 0.80), descriptive only"
                      + (f"; rung 6 in his band (L{band[0]}–{band[-1]})." if band else ".") + " " + F.LT_NOTE)  # fmt: skip
-    if lt_row:  # no rung ran on Lightning: one row, its name and why, under the rung labels
-        y = (bottom_in - 0.72) / h
-        fig.text(0.01, y, F.LT[2], ha="left", va="top", fontsize=12, weight="bold")
-        fig.text(0.5, y, F.LT_GATE, ha="center", va="top", color=S.COL["muted"])
-    caption(fig, lines, bottom_in - 0.75 - 0.45 * lt_row)
+    for i, (who, why) in enumerate(text_rows):  # no rung ran: one row each, its name and why, under the rung labels
+        y = (bottom_in - 0.72 - 0.45 * i) / h
+        fig.text(0.01, y, who, ha="left", va="top", fontsize=12, weight="bold")
+        fig.text(0.5, y, why, ha="center", va="top", color=S.COL["muted"])
+    caption(fig, lines, bottom_in - 0.75 - 0.45 * len(text_rows))
     S.save(fig, out_name)
     return out_name
 
@@ -329,6 +336,9 @@ def build_two_by_two(
                if m.get("status") == "tested" and m["target"] == F.LT[0]}  # fmt: skip
         z1_src[F.LT[0]] = rel(F.LT_Z1)
         columns = (*MODELS, F.LT)
+    # the fifth column (Dan's 11:30): the 122B's main test as the other models' (contrast_122b and its r2 run's
+    # random part); no Z1, ladder or stored rows on it
+    columns = (*columns, B122)
     fid = out_name.split("_")[0]
     omitted = []
     cells: dict[tuple[int, int], list] = {(0, 0): [], (0, 1): [], (1, 0): [], (1, 1): []}  # (i, v, control)
@@ -393,6 +403,9 @@ def build_two_by_two(
             ns[(1, 0)].append(str(n))
         # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control
         full = (z1.get(target) or {}).get("beside", {}).get("full")
+        if target == B122[0]:
+            omitted.append(f"{SHORT[m]} not run")
+            continue
         if not full:
             omitted.append(f"{SHORT[m]} rows not stored")
             continue
@@ -409,10 +422,12 @@ def build_two_by_two(
 
     # Dan (21:55): one caption line, Muse's dagger and the empty cells; the grey tick's meaning is the legend's and the
     # README's Setup, the K items and the two scopes are E1's card and Zach's report
-    lines = [
-        (MUSE_DAGGER + ". " if dagger else "") + "Empty cells: " + ("; ".join(omitted) if omitted else "none") + "."
-    ]
+    # one entry per reason, its number of cells beside it (the 122B is not run in three)
+    counted = [(x, omitted.count(x)) for x in dict.fromkeys(omitted)]
+    empty = "; ".join(f"{x} ({k} cells)" if k > 1 else x for x, k in counted)
+    lines = [(MUSE_DAGGER + ". " if dagger else "") + "Empty cells: " + (empty or "none") + "."]
     lines += [F.LT_NOTE] if lightning else []
+    lines += [B122_NOTE]
     plt = S.setup()
     cell_in, gap_in, top_in = 1.75, 0.62, 1.85
     bottom_in = 0.55 + 0.19 * len(caption_lines(lines))
@@ -438,13 +453,14 @@ def build_two_by_two(
             ax.text(i, ctl - 0.05, "rotated" if (r, c) == (1, 1) else "random", ha="center", va="top",
                     fontsize=S.LABEL_PT, color=S.COL["muted"], zorder=5)  # fmt: skip
         n = ns[(r, c)]
-        n_tag(ax, f"{n[0]} per model" if len(n) == 3 and len(set(n)) == 1 else ", ".join(n), lt_n.get((r, c), ""))
+        n_tag(ax, f"{n[0]} per model" if len(n) >= 3 and len(set(n)) == 1 else ", ".join(n), lt_n.get((r, c), ""))
     for ax in axes.flat:
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
         ax.set_xlim(-0.55, len(columns) - 0.25)
-        ax.set_xticks(range(len(columns)), [SHORT[m] for _, m, _ in columns])
+        # five columns: the names a point smaller, so they keep clear of each other
+        ax.set_xticks(range(len(columns)), [SHORT[m] for _, m, _ in columns], fontsize=S.FONT - 1.5)
         ax.tick_params(axis="x", length=0)
-        ax.set_ylim(-0.36, 1.05)
+        ax.set_ylim(-0.42, 1.05)  # room under the lowest grey tick for its name
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)

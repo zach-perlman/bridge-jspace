@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import readme_story_figures as F
 from scripts import story_style as S
-from scripts.story_b50 import INK, LOOKUP, MODELS, NULL, SHORT, caption, rel
+from scripts.story_b50 import B122, B122_NOTE, INK, LOOKUP, MODELS, NULL, SHORT, caption, rel
 
 ADDRESS, IDENTITY = S.MARK_COL["address"], S.MARK_COL["identity"]
 K = 25  # lens directions in the share rebuilt (47.0 (b), the README's number)
@@ -292,21 +292,23 @@ def rows_axis(ax, labels: list[str], first: bool) -> None:
 
 
 def build_transfer(out_name: str = "fig09a_transfer") -> str:
-    """Fig. 9a: per model (9B, 27B, Muse, Lightning), the recall's and the lookup's extra loss without the J++ part by
+    """Fig. 9a: per model (9B, 27B, Muse, Lightning, 122B), the recall's and the lookup's extra loss without the J++ part by
     text format: simple scenes (docs/x0_numbers.json), prose / JSON / table (varied scenes) and natural passages with
     the fact first (run files, readme_story_figures.transfer_cells; Lightning's from its X0b verdict,
     readme_story_figures.lightning_transfer); the 0.10 band. A cell whose whole change switches fewer than 30 lookups is
     omitted and listed in the caption; hollow: the 9B's natural run had its gate lowered after the data, and every
-    Lightning cell (its gate chosen after the pre-check was seen)."""
+    Lightning cell (its gate chosen after the pre-check was seen). The 122B (Dan's 11:30) from the same run files
+    (transfer_cells), at its gate: filled."""
     plt = S.setup()
-    top_in, body_in, bottom_in = 1.55, 3.3, 1.25
+    slots = (*MODELS, F.LT, B122)
+    top_in, body_in, bottom_in = 1.55, 3.3, 1.45
     h = top_in + body_in + bottom_in
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, h), sharey=True)
+    fig, axes = plt.subplots(1, len(slots), figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.16, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The split carries over to other texts",
             "Extra loss without the J++ part, beyond a random part (same size), by text format")  # fmt: skip
     omitted: list[tuple[str, str]] = []
-    for k, (ax, (target, m, name)) in enumerate(zip(axes, (*MODELS, F.LT), strict=True)):
+    for k, (ax, (target, m, name)) in enumerate(zip(axes, slots, strict=True)):
         S.extra_axis(ax)
         ax.set_title(name if k == 0 else SHORT[m], fontsize=12, weight="bold", loc="left")
         lt = m == "lightning"
@@ -346,7 +348,7 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     # Dan (21:55): one caption line, the omitted cells; hollow (a gate lowered after the data) is in the README's Setup
     why = {r: [c for rr, c in omitted if rr == r] for r, _ in omitted}
     line = "; ".join(f"omitted, {r}: {', '.join(cs)}" for r, cs in why.items())
-    caption(fig, [line[0].upper() + line[1:] + "." if line else "", F.LT_NOTE], bottom_in - 0.62)
+    caption(fig, [line[0].upper() + line[1:] + "." if line else "", F.LT_NOTE, B122_NOTE], bottom_in - 0.62)
     S.save(fig, out_name)
     return out_name
 

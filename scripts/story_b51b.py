@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import story_style as S
 from scripts import x0_necessity as X
-from scripts.story_b50 import INK, LOOKUP, MODELS, SHORT, caption, rel
+from scripts.story_b50 import INK, LOOKUP, MODELS, NOT_RUN, SHORT, caption, rel
 from scripts.story_b51 import head
 
 TITLE = "At the last token the in-between entity is in the lens, but the answer is not computed through it"
@@ -353,7 +353,7 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
     fig.subplots_adjust(left=0.075, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.06)
     S.title(fig, TITLE, "The last token, at the layer before the answer where the lens reads the entity best",
             limit=100)  # fmt: skip
-    bw, dx = (0.36, 0.215) if four else (0.34, 0.19)
+    bw, dx = (0.34, 0.25) if four else (0.34, 0.19)  # read and swap ticks clear of each other
     for ax, (w, col) in zip(axes, READERS, strict=True):
         ax.text(0.0, 1.03, w, transform=ax.transAxes, ha="left", va="bottom", fontsize=12, weight="bold", color=col)
         ticks, labels, chances = [], [], []
@@ -399,11 +399,19 @@ def build_last_token(verdict_dir: Path, out_name: str = "fig17_jspace_last_token
                 S.record(
                     out_name, t, f"51.10: {w}, last token, read peak: {arm}", v, n=wv[3], source=rel(d["outcomes"])
                 )
+        # the fifth slot (Dan's 11:30): the 122B ran no last-token read, a grey slot after the drawn models
+        i = len(rows) - 0.12  # a narrow slot: no bars, only its label (a full slot crowds the read / swap ticks)
+        ax.text(i, 0.5, NOT_RUN.replace(" ", "\n"), ha="center", va="center", fontsize=S.LABEL_PT,
+                color=S.COL["muted"])  # fmt: skip
+        ax.text(i, -0.12, SHORT["122b"], transform=blended_transform_factory(ax.transData, ax.transAxes),
+                ha="center", va="top", fontsize=S.FONT, weight="bold")  # fmt: skip
         ax.text(-dx - bw / 2 - 0.06, chances[0], "chance", ha="right", va="center", fontsize=S.LABEL_PT,
                 color=S.COL["muted"])  # fmt: skip
-        ax.set_xticks(ticks, labels, fontsize=S.LABEL_PT)
+        ax.set_xticks(
+            ticks, labels, fontsize=S.LABEL_PT - 1
+        )  # ten ticks per panel: a point smaller, clear of each other
         ax.tick_params(axis="x", length=0)
-        ax.set_xlim(-0.95, len(rows) - 0.45)
+        ax.set_xlim(-0.95, len(rows) + 0.2)
         ax.set_ylim(0, 1.12)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")

@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import story_style as S
-from scripts.story_b50 import INK, LOOKUP, MODELS, NULL, SHORT, caption, rel
+from scripts.story_b50 import B122, INK, LOOKUP, MODELS, NOT_RUN, NULL, SHORT, caption, rel
 
 ADDRESS = S.MARK_COL["address"]
 LABEL_PT = S.LABEL_PT
@@ -102,6 +102,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose", lightning: Path 
     plt = S.setup()
     top_in, row_in, gap_in = 1.75, 1.75, 0.7
     bottom_in = 0.75 + 0.3 * bool(shade) + 0.3 * bool(lightning_note and LT_ROW in rows)
+    bottom_in += 0.5  # the 122B's grey row (Dan's 11:30): no dose run on it
     h = top_in + len(rows) * row_in + (len(rows) - 1) * gap_in + bottom_in
     fig, axes = plt.subplots(len(rows), 2, figsize=(S.WIDTH, h), squeeze=False,
                              gridspec_kw={"width_ratios": [1, 1], "hspace": gap_in / row_in})  # fmt: skip
@@ -189,11 +190,15 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose", lightning: Path 
         if r == len(rows) - 1:
             a.set_xlabel("dose of the J++ part (×)", loc="left")
             b.set_xlabel("dose of the rest (×)", loc="left")
+    # the fifth slot (Dan's 11:30): the 122B ran no dose curves, one grey row under the last model's panels
+    y = (bottom_in - 0.62) / h  # under the x labels
+    fig.text(0.01, y, B122[2], ha="left", va="top", fontsize=12, weight="bold")
+    fig.text(0.53, y, NOT_RUN, ha="center", va="top", color=S.COL["muted"])
     # Dan (21:55): definitions live in the README's Setup; one caption line only where this figure needs it
     lines = [f"Shaded: plain-text loss over twice the whole change's ({', '.join(shaded)})."] if shaded else []
     lines += [lightning_note] if lightning_note and LT_ROW in rows else []
     if lines:
-        caption(fig, lines, bottom_in - 0.6)
+        caption(fig, lines, bottom_in - 1.05)
     S.save(fig, out_name)
     return out_name
 
