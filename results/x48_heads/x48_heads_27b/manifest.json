@@ -1,0 +1,75 @@
+{
+  "exp": "x48_heads",
+  "run": "x48_heads_27b",
+  "why": "Batch 52 C coverage (amendment 2): 48.4 on the 27B at L32; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)",
+  "written_utc": "2026-10-29T01:47:54Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": null,
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "caf22ddb24f51d45415fb8a35747ae4cbc03852f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "48.4",
+  "spec": "jobs/c3/batch48.yaml (48.4)",
+  "question": "Q48.4 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x0_probe/x0_probe_v4_27b/states.npz": "63f309a6f3d4b7f3fcdf9f536097cb27fad3d310ec0ac8f32ee729e2368b12d1"
+  },
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "states_run": "x0_probe_v4_27b",
+  "k": 25,
+  "omp": "signed",
+  "parts": {
+    "jpp": "the J++ part of Delta (signed OMP, k = 25, J++ lens atoms at L, letter tokens)",
+    "rest": "Delta minus its J++ part",
+    "address": "U U^T Delta, U = x0_massmean's Alf (4 pointer directions on the x0_probe_v4 states; not refit)",
+    "random": "a random part of J++'s share (X0's random subspace, seed 888 + layer)"
+  },
+  "items_rule": "the main run's chat scenes read at L, kept where both the org and the alt item's locker sentence come before the asked pick (x0_strata); unedited",
+  "delta": "h_alt - h_org at the bridge word at L, X0's two forwards (no read suffix)",
+  "attention": "one forward of the reader's org prompt with X0's read suffix appended; per candidate layer the softmax attention from the last token to the bridge token, per query head, recomputed from the layer's inputs (capture_last_attention); the lookup's selects the heads, the recall's is beside",
+  "candidate_layers_rule": "layers > L whose token mixer is softmax attention over the whole prompt: the 9B's full_attention layers; on Muse every layer (sliding window 2048 > every prompt, asserted; its config's full_attention = NoPE layers, reported)",
+  "head_selection": "the 5 (layer, head) with the largest mean lookup mass over items; ties: the lower layer, then the lower head",
+  "w_ov": {
+    "ov": "W_O[:, h*hd:(h+1)*hd] @ W_V[g*hd:(g+1)*hd, :], g = h // (n_heads / n_kv); the rule's",
+    "ov_gain": "ov @ diag(1 + input_layernorm.weight): the block's input RMSNorm gain folded in (beside)",
+    "excluded": "the q/k norms (not on the value path), the sigmoid output gate (query-token dependent), the per-token 1/rms of the input norm (a scalar, cancels in r)"
+  },
+  "r": "||W_OV x|| / ||x|| per item and part; stored for every candidate head (r_all.npz) and per item for the five (r_items.jsonl)",
+  "rule": "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold",
+  "decisive_variant": "ov",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.4 answer"
+}

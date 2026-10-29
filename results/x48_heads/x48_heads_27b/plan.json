@@ -1,0 +1,44 @@
+{
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "items_at_L": 200,
+  "locker vs asked pick": {
+    "org before, alt before": 69,
+    "org after, alt after": 61,
+    "org after, alt before": 38,
+    "org before, alt after": 32
+  },
+  "items": 69,
+  "entities": 34,
+  "max_read_len": 77,
+  "target": "qwen3.6-27b",
+  "candidate_layers": [
+    35,
+    39,
+    43,
+    47,
+    51,
+    55,
+    59,
+    63
+  ],
+  "config_full_attention": [
+    35,
+    39,
+    43,
+    47,
+    51,
+    55,
+    59,
+    63
+  ],
+  "layer_types": {
+    "linear_attention": 48,
+    "full_attention": 16
+  },
+  "sliding_window": null,
+  "n_heads": 24,
+  "n_kv": 4,
+  "head_dim": 256,
+  "candidate_heads": 192
+}

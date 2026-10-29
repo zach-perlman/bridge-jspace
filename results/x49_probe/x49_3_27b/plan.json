@@ -1,0 +1,49 @@
+{
+  "target": "qwen3.6-27b",
+  "layers": [
+    16,
+    32
+  ],
+  "run": "x45m_fresh_27b",
+  "scenes_at_L": 574,
+  "dropped": {},
+  "scenes": 574,
+  "entities": 46,
+  "groups": {
+    "before": 202,
+    "after": 236,
+    "mixed": 136
+  },
+  "rows": 1722,
+  "rows_by_stratum": {
+    "before": 874,
+    "after": 848
+  },
+  "rule_cell_rows": {
+    "after (locker-after scenes)": 236,
+    "before (locker-first scenes)": 202
+  },
+  "tokens": 13560,
+  "keys": {
+    "w:The": 1722,
+    "w:locker": 1722,
+    "w:of": 1722,
+    "item": 1722,
+    "w:is": 1722,
+    "number": 1722,
+    "w:.": 1722,
+    "w:space": 918,
+    "w:the": 588
+  },
+  "keys_in_rule": [
+    "item",
+    "number",
+    "w:.",
+    "w:The",
+    "w:is",
+    "w:locker",
+    "w:of",
+    "w:space"
+  ],
+  "names": 59
+}
