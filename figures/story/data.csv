@@ -8710,12 +8710,26 @@ cards,,"checks: rerun label agreement, the highest over models and arms",400,,,,
 cards,,"checks: rerun label agreement, items per arm",400,,,,review/verify_checks.json
 cards,qwen3.5-9b,checks: clean-checkout reruns reproducing row for row,4 of 5,,,,results/checks/clean49_9b.json
 cards,,checks: the rank check's flags,0,,,,docs/verify_pack_jspace.md
+cards,muse-glimmer-30b,"rank check, conflict test: the new bridge word in the lens's top 50, the J++ part",0.89,,,200,docs/verify_pack_jspace.md
+cards,muse-glimmer-30b,"rank check, conflict test: the new bridge word in the lens's top 50, the rest",0.01,,,200,docs/verify_pack_jspace.md
+cards,muse-glimmer-30b,"rank check, conflict test: the new bridge word in the lens's top 50, a random part",0.66,,,200,docs/verify_pack_jspace.md
+cards,nemotron-3.5-lightning,"rank check, conflict test: the new bridge word in the lens's top 50, the J++ part",0.93,,,200,docs/verify_pack_jspace.md
+cards,nemotron-3.5-lightning,"rank check, conflict test: the new bridge word in the lens's top 50, the rest",0.06,,,200,docs/verify_pack_jspace.md
+cards,nemotron-3.5-lightning,"rank check, conflict test: the new bridge word in the lens's top 50, a random part",0.65,,,200,docs/verify_pack_jspace.md
+cards,qwen3.5-122b-a10b,"rank check, conflict test: the new bridge word in the lens's top 50, the J++ part",0.93,,,200,docs/verify_pack_jspace.md
+cards,qwen3.5-122b-a10b,"rank check, conflict test: the new bridge word in the lens's top 50, the rest",0.05,,,200,docs/verify_pack_jspace.md
+cards,qwen3.5-122b-a10b,"rank check, conflict test: the new bridge word in the lens's top 50, a random part",0.83,,,200,docs/verify_pack_jspace.md
 cards,qwen3.5-9b,"rank check, conflict test: the new bridge word in the lens's top 50, the J++ part",0.81,,,200,docs/verify_pack_jspace.md
 cards,qwen3.5-9b,"rank check, conflict test: the new bridge word in the lens's top 50, the rest",0.0,,,200,docs/verify_pack_jspace.md
 cards,qwen3.5-9b,"rank check, conflict test: the new bridge word in the lens's top 50, a random part",0.52,,,200,docs/verify_pack_jspace.md
 cards,qwen3.6-27b,"rank check, conflict test: the new bridge word in the lens's top 50, the J++ part",0.81,,,200,docs/verify_pack_jspace.md
 cards,qwen3.6-27b,"rank check, conflict test: the new bridge word in the lens's top 50, the rest",0.02,,,200,docs/verify_pack_jspace.md
 cards,qwen3.6-27b,"rank check, conflict test: the new bridge word in the lens's top 50, a random part",0.53,,,200,docs/verify_pack_jspace.md
+cards,muse-glimmer-30b,"rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",0.01,,,,docs/verify_pack_jspace.md
+cards,nemotron-3.5-lightning,"rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",0.14,,,,docs/verify_pack_jspace.md
+cards,qwen3.5-122b-a10b,"rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",0.02,,,,docs/verify_pack_jspace.md
+cards,qwen3.5-9b,"rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",0.01,,,,docs/verify_pack_jspace.md
+cards,qwen3.6-27b,"rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",0.03,,,,docs/verify_pack_jspace.md
 cards,qwen3.5-9b,"monitor, main test: rows, bridge items","400 rows, 43 bridge items",,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 cards,qwen3.5-9b,"monitor, main test: the address at the bridge word, the full state at its best layer",0.7095,,,400,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 cards,qwen3.5-9b,"monitor, main test: the address at the bridge word, the rule's label (25 / 100 lens directions)",in between / in between,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json

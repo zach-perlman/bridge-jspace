@@ -3235,6 +3235,9 @@ CLAIM_CELLS = {
     11: claim_cells("holds", "holds", "holds", "holds", "not run"),
     12: claim_cells("holds", "holds", "holds", "holds", "not run"),
 }
+# cell footnotes, {(claim, model): (mark, note)}; Lightning's claim 10: Dan 18:10 (jobs/c3/batch53.yaml decisions_1810 item 3)
+F11_NOTES = {(10, "lightning"): ("¹", "Lightning, claim 10: the order split is descriptive; the copy test only below "
+                                      "gate (0.751).")}  # fmt: skip
 # Dan's three groups (28 Oct 21:20), over the claims' numbers
 CLAIM_GROUPS = (("Two readers, one word", (1, 2, 3)), ("What the lookup reads", (4, 5, 6, 7, 8, 9)),
                 ("Where and when the link is made", (10, 11, 12)))  # fmt: skip
@@ -3371,8 +3374,8 @@ def draw_scorecard(plt, table: dict[str, str]) -> None:
             layout.append(("claim", "\n".join(lines), y, y + height, n))
             y += height
     caption = ("Hollow: Lightning (gate chosen after its pre-check) and the 122B where its gate was lowered after the "
-               "data (FP8).")  # fmt: skip
-    top_in, heads_in, bottom_in = 0.95, 0.32, 0.45
+               "data (FP8).\n" + " ".join(f"{mark} {note}" for mark, note in F11_NOTES.values()))  # fmt: skip
+    top_in, heads_in, bottom_in = 0.95, 0.32, 0.62
     h = top_in + heads_in + y + bottom_in
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "What holds on which model",
@@ -3399,6 +3402,8 @@ def draw_scorecard(plt, table: dict[str, str]) -> None:
             word, flag = CLAIM_CELLS[n][m]
             label = cell_label(word)
             col, bh = CLAIM_WORD[word], F11_BOX_H[len(label.splitlines())]
+            if (n, m) in F11_NOTES:
+                label += F11_NOTES[(n, m)][0]
             if word == "not run":
                 box, ink, weight = {"fc": "#eeeeee", "ec": "none"}, col, "normal"
             elif flag == "hollow":
@@ -4263,14 +4268,23 @@ def checks_numbers() -> None:
     text = RANK_CHECK.read_text()
     S.record("cards", "", "checks: the rank check's flags", int(re.search(r"\*\*Flags: (\d+)\*\*", text).group(1)),
              source=rel(RANK_CHECK))  # fmt: skip
-    names = {"Qwen3.5-9B": "qwen3.5-9b", "Qwen3.6-27B": "qwen3.6-27b"}
+    names = {"Qwen3.5-9B": "qwen3.5-9b", "Qwen3.6-27B": "qwen3.6-27b", "Muse Glimmer 30B": "muse-glimmer-30b",
+             "Nemotron 3.5 Lightning": "nemotron-3.5-lightning", "Qwen3.5-122B": "qwen3.5-122b-a10b"}  # fmt: skip
+    routes_rest: dict[str, float] = {}
     for line in text.splitlines():
         cells = [x.strip() for x in line.strip().strip("|").split("|")]
-        if len(cells) < 9 or cells[0] not in names or cells[1:4] != ["main_swap", "all", "S's bridge (word or symbol)"]:
+        if len(cells) < 9 or cells[0] not in names or cells[3] != "S's bridge (word or symbol)":
+            continue
+        if cells[1] == "routes" and cells[2] != "all":  # Dan 18:10 item 2: the range includes the routes conditions
+            routes_rest[names[cells[0]]] = max(routes_rest.get(names[cells[0]], 0.0), float(cells[6]))
+        if cells[1:3] != ["main_swap", "all"]:
             continue
         for v, part in zip(cells[5:8], ("the J++ part", "the rest", "a random part"), strict=True):
             S.record("cards", names[cells[0]], f"rank check, conflict test: the new bridge word in the lens's top 50, {part}",
                      float(v), n=int(cells[4]), source=rel(RANK_CHECK))  # fmt: skip
+    for m, v in routes_rest.items():
+        S.record("cards", m, "rank check, routes test: the new bridge word in the lens's top 50, the rest, highest condition",
+                 v, source=rel(RANK_CHECK))  # fmt: skip
 
 
 CARD_MODELS = tuple(m for m in S.MODELS if m[1] != "122b")  # 9B, 27B, Muse
