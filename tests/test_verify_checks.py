@@ -158,3 +158,19 @@ def test_targeted_picks_the_nearest_and_one_surprise_per_direction():
         and any("under 'p', not under 'r'" in w for w in sur)
         and any("under 'r', not under 'p'" in w for w in sur)
     )
+
+
+# ---- the pack ---------------------------------------------------------------------------------------------------
+def test_the_pack_keeps_the_inspectors_section_and_quotes_the_readme():
+    from scripts import verify_pack as VP
+
+    old = f"# x\n\n{VP.INSPECTOR}\n\nRanks: 12 of 200 in the top 50 (planted).\n\n## a. main_swap\n\nold text\n"
+    new = VP.build(old)
+    assert "Ranks: 12 of 200 in the top 50 (planted)." in new and "old text" not in new
+    assert new.index("## How to review in 2 hours") < new.index("## Automatic checks") < new.index(VP.INSPECTOR)
+    assert VP.INSPECTOR_TODO in VP.build("")  # no section yet: the stub
+    assert "the 122B's answer control landed after the sample was fixed; not in the hand-check" in new
+    for v in (v for v in I.spec()["views"] if v.get("tier") == 1):
+        assert f"## {v['order']}. {v['id']}" in new
+        for q in VP.readme_quotes(v.get("readme_quotes") or []):
+            assert not q.startswith("(not found") and "<!--" not in q

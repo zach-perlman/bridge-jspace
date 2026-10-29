@@ -266,6 +266,8 @@ views:
                csv: {PP: "conflict: lookup, switches lost beyond a random part", PM: "conflict: recall, switches lost beyond a random part",
                      gap: "main test (two people swap picks): gap"}}
     decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
+    readme_rows: [1]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: ["The recall follows the part of the bridge word the lens reads; the lookup follows the rest"]  # README lines containing these, quoted whole
     targeted:
       nearest: [without J++, without its random part]  # |p_alt - p_org| smallest under either arm, items the whole change switched
       surprising: {reader: PP, part: without J++, random: without its random part}
@@ -313,6 +315,8 @@ views:
          csv: "main test, recall: switches lost beyond random without the answer words' directions only"}
       - {stat: answer_rank_below, reader: PM, top: 50, csv: "main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word"}
     decisive: ["unedited", "whole", "arm 1: without the lens part", "arm 1's random part", "arm 2: without the lens part, its answer directions kept", "arm 2's random part", "arm 3: without the answer directions only", "arm 3's random part"]  # the arms shown side by side on each card
+    readme_rows: []  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: ["What the recall follows is the item, not its answer"]  # README lines containing these, quoted whole
     targeted:
       nearest: ["arm 1: without the lens part", "arm 2: without the lens part, its answer directions kept"]
       surprising: {reader: PP, part: "arm 1: without the lens part", random: "arm 1's random part"}
@@ -368,6 +372,8 @@ views:
     export: {condition: C2}  # the static export's sample (Dan: routes C2)
     sample_filter: {condition: C2}  # the fixed sample: C2 (another item moved), the claims' condition
     decisive: ["unedited", "whole", "without the pointer directions", "without the pointer's random part", "only the pointer part", "only a random part of its size"]  # the arms shown side by side on each card
+    readme_rows: [4, 6, 7]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: []  # README lines containing these, quoted whole
     targeted:
       nearest: [without the pointer directions, without the pointer's random part]
       surprising: {reader: PP, route: position, part: without the pointer directions, random: "without the pointer's random part"}
@@ -408,6 +414,8 @@ views:
       - {stat: x8_recall_changed, reader: PM, s: 2, csv: "the address swap at s = 2: recalls that change"}
     export: {s: 2, kind: write}  # the static export's sample (Dan 29 Oct: the swap at s = 2)
     sample_filter: {s: 2, kind: write}
+    readme_rows: [6]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: ["**The recall under the swap**"]  # README lines containing these, quoted whole
     targeted:  # no probabilities stored (x8 stores the top token and its class only); the agent's reading, flagged
       nearest: null
       surprising: {lookup_vs_recall: true}  # the lookup goes to the target but the recall does not change, or the reverse
@@ -452,6 +460,8 @@ views:
     headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, keys: {},
                csv: {PP: "Z1-P: lookup, switches lost beyond a random part", PM: "Z1-P: recall, switches lost beyond a random part", gap: "Z1-P: the gap"}}
     decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
+    readme_rows: []  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: ["**His made-up-fact passages**"]  # README lines containing these, quoted whole
     targeted:
       nearest: [without J++, without its random part]
       surprising: {reader: PP, part: without J++, random: without its random part}
@@ -494,6 +504,8 @@ views:
       - {stat: switch_share, reader: PP, arm: "lens swap", csv: "51.10: lookup, last token, read peak: the lens swap's switches"}
       - {stat: switch_share, reader: PP, arm: "whole-state patch", csv: "51.10: lookup, last token, read peak: the whole-state patch's switches"}
     decisive: ["unedited", "whole-state patch", "lens swap", "its random control", "J++ part, gain 2", "random part, gain 2"]  # the arms shown side by side on each card
+    readme_rows: []  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: ["**At the last token** the recall's item", "At the last token the recall's bridge entity is readable"]  # README lines containing these, quoted whole
     targeted:
       nearest: ["lens swap"]
       surprising: {reader: PM, part: "lens swap", random: "its random control", mode: differ}
@@ -531,6 +543,8 @@ views:
     headline: {stat: order_switched, keys: {k: "lk_order_<o>_<m>_k", n: "lk_order_<o>_<m>_n"},
                csv: "lookups switched by the whole change, locker sentence <o> the pick"}
     decisive: ["unedited", "whole"]  # the arms shown side by side on each card
+    readme_rows: [10]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
+    readme_quotes: []  # README lines containing these, quoted whole
     targeted:
       nearest: [whole]
       surprising: {reader: PP, order_vs_switch: true}  # locker-first lookups the whole change does not switch, or locker-after ones it does

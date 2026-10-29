@@ -1,308 +1,298 @@
-"""Superseded (26 Oct): docs/verify_pack.md is now written by `uv run python scripts/review.py pack` from
-docs/review_views.yaml, so the dashboard and the pack cannot drift; this script is kept (no moves before Friday) and its
-output, if run, goes to docs/verify_pack_25oct.md.
+"""docs/verify_pack.md for Dan's hand check (Dan 29 Oct 11:45, jobs/c3/batch53.yaml verify_prep_1145 item 4): first page
+"How to review in 2 hours", then the automatic checks over every item (review/verify_checks.json) and the independent
+recount (review/verify_independent.json), the inspector's J-space rank checks (kept as they are on regeneration), and one
+section per tier-1 view: its claim in the README's words (quoted from docs/depth/README.md at generation, src comments
+stripped), its numbers recounted beside their source, its runs and flags, its checks and the 10 items of the fixed
+sample. CPU only; reads files, writes docs/verify_pack.md.
 
-Verification pack for Dan (25 Oct plan, step 4): for each README finding, one raw-count table recounted directly from
-the per-item files (outcomes.jsonl, cases.jsonl, eligible.jsonl; no verdict or aggregate file is read), with the file
-paths and the one-line command that prints it; 10 random route cases (seed 0) with both prompts and the lookup's answer
-per arm; the outputs recomputed locally after the jobq copy bug, with their commands. Extra loss from counts:
-(switches without the random part - switches without the part) / switches with the whole change.
-
-uv run python scripts/verify_pack.py                 # writes docs/verify_pack_25oct.md
-uv run python scripts/verify_pack.py --only 3        # prints finding 3's table
+make verify-pack        # verify-checks + verify-independent, then this
 """
 
 from __future__ import annotations
 
-import argparse
-import collections
-import random
+import json
+import re
+import subprocess
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
-from scripts import x0_first_mention as FM
-from scripts import x0_necessity as X
-from scripts import x0_strata as ST
+from bridge_jspace.review import items as I
 
-R = pins.RESULTS_DIR
-OUT = pins.REPO_ROOT / "docs" / "verify_pack_25oct.md"
-LAYER = {"9B": 12, "27B": 32, "122B": 33}
-CMD = "uv run python scripts/verify_pack.py --only {}"
-READER = {X.LOOKUP: "lookup", X.RECALL: "recall"}
-
-
-def rows_of(path: Path) -> list[dict]:
-    return X.read_jsonl(path)
-
-
-def tally(rows: list[dict], scenes: set[str] | None = None) -> dict[tuple, int]:
-    """Switch counts per (reader, arm, dict, k, omp), on the given scenes."""
-    t: dict[tuple, int] = collections.Counter()
-    n: dict[str, set] = collections.defaultdict(set)
-    for r in rows:
-        if scenes is not None and r["scene"] not in scenes:
-            continue
-        key = (r["reader"], r["arm"], r.get("dict", "-"), r.get("k", 0), r.get("omp", "-"))
-        t[key] += int(r["switched"])
-        if r["arm"] == "whole":
-            n[r["reader"]].add(r["scene"])
-    return {**t, **{("n", w): len(s) for w, s in n.items()}}
+PACK = I.REPO / "docs" / "verify_pack.md"
+CHECKS = I.REPO / "review" / "verify_checks.json"
+INDEP = I.REPO / "review" / "verify_independent.json"
+README = I.REPO / "docs" / "depth" / "README.md"
+INSPECTOR = "## J-space rank checks (inspector)"
+INSPECTOR_TODO = ("_Reserved for the inspector agent (inspector_1145 item 3): the rank of S's bridge token and of the answer "
+                  "words in the readout of the J++ part, the rest and a random part of the same share, at L and the bridge "
+                  "word, over every item of the conflict test and the routes test. Not written yet. Everything between this "
+                  "heading and the next view section is kept when the pack is regenerated._")  # fmt: skip
+EXTRA = {"answer_control": ["the 122B's answer control landed after the sample was fixed; not in the hand-check (Dan 12:10, "
+                            "jobs/c3/batch53.yaml decisions_1210b)"]}  # fmt: skip
+MINUTES = 15  # per view: 7 views x 15 min ~ 1 h 45 min, ~1.5 min per item
 
 
-def extra(whole: int, no: int, rand: int) -> str:
-    return f"{(rand - no) / whole:.2f}" if whole else "–"
+def strip(text: str) -> str:
+    return re.sub(r"<!--.*?-->", "", text).replace("\\|", "|").strip()
 
 
-def at(rows: list[dict], layer: int) -> list[dict]:
-    return [r for r in rows if r.get("rendering", "chat") == "chat" and r.get("layer", layer) == layer]
-
-
-def part_rows(label: str, rows: list[dict], parts, scenes=None) -> list[str]:
-    """One table row per reader and part: n, switches whole / without the part / without its random part, extra loss."""
-    t = tally(rows, scenes)
+def readme_rows(nums: list[int]) -> list[str]:
     out = []
-    for w in X.READERS:
-        whole = t.get((w, "whole", "-", 0, "-"), 0)
-        for name, d, k, omp in parts:
-            no, rand = t.get((w, "no_part", d, k, omp), 0), t.get((w, "no_rand", d, k, omp), 0)
-            out.append(f"| {label} | {READER[w]} | {name} | {t.get(('n', w), 0)} | {whole} | {no} | {rand} | "
-                       f"{extra(whole, no, rand)} |")  # fmt: skip
+    for line in README.read_text().splitlines():
+        m = re.match(r"\| (\d+) \| (.+)", line)
+        if m and int(m.group(1)) in nums:
+            cells = [c.strip() for c in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+            n, claim, models, grade, key = (strip(c) for c in cells[:5])
+            out.append(f"Claims row {n} ({grade}; {models}): **{claim}** Key numbers: {key}")
     return out
 
 
-HEAD = ["| run | reader | part | n | switches, whole change | without the part | without its random part | extra loss |",
-        "|---|---|---|---|---|---|---|---|"]  # fmt: skip
-JPP = [("J++ (25)", "jpp", X.K_MAIN, "signed")]
-
-
-def f1() -> tuple[str, list[str], list[str]]:
-    runs = [("9B, two people swap", "x0_necessity/qwen35_9b_x0_necessity", 12),
-            ("27B, two people swap", "x0_necessity/x0_necessity_27b_chat", 32),
-            ("122B, two people swap", "x0_necessity/qwen35_122b_x0_necessity_r2", 33),
-            ("122B, only the asked pick", "x0_necessity/qwen35_122b_x0_single", 33)]  # fmt: skip
-    lines = list(HEAD)
-    for label, d, layer in runs:
-        lines += part_rows(label, at(rows_of(R / d / "outcomes.jsonl"), layer), JPP)
-    return (
-        "1. Recall needs the J++ part far more than lookup does",
-        [f"results/{d}/outcomes.jsonl" for _, d, _ in runs],
-        lines,
-    )
-
-
-def f2() -> tuple[str, list[str], list[str]]:
-    lines = list(HEAD)
-    files = []
-    for label, d in (("varied scenes, 9B", "x0b_generalize/qwen35_9b_x0b_v2"), ("varied scenes, 27B", "x0b_generalize/x0b_v2_27b"),
-                     ("varied scenes, 122B", "x0b_generalize/qwen35_122b_x0b_v2"),
-                     ("natural passages, 27B", "x5_natural/x5_natural_27b"),
-                     ("natural passages, 122B", "x5_natural/qwen35_122b_x5_natural")):  # fmt: skip
-        layer = LAYER[label.split(", ")[1]]
-        lines += part_rows(label, at(rows_of(R / d / "outcomes.jsonl"), layer), JPP)
-        files.append(f"results/{d}/outcomes.jsonl")
-    lines += ["", "The locker key in another language (lookup, each form on its own eligible items):", "",
-              "| run | key | n | switches, whole change | without J++ | without its random part | extra loss |",
-              "|---|---|---|---|---|---|---|"]  # fmt: skip
-    for m, d in (
-        ("9B", "x4_alias/qwen35_9b_x4_patch"),
-        ("27B", "x4_alias/x4_patch_27b"),
-        ("122B", "x4_alias/qwen35_122b_x4_patch"),
-    ):
-        rows = at(rows_of(R / d / "outcomes.jsonl"), LAYER[m])
-        elig = {r["key"]: set(r["scenes"]) for r in rows_of(R / d / "eligible.jsonl")}
-        files += [f"results/{d}/outcomes.jsonl", f"results/{d}/eligible.jsonl"]
-        for key in sorted(k for k in elig if k.startswith("animals/") and k.endswith(f"/{X.LOOKUP}")):
-            t = tally([r for r in rows if r["domain"] == "animals" and r["reader"] == X.LOOKUP], elig[key])
-            whole, no, rand = (t.get((X.LOOKUP, a, *p), 0) for a, p in (("whole", ("-", 0, "-")),
-                               ("no_part", ("jpp", X.K_MAIN, "signed")), ("no_rand", ("jpp", X.K_MAIN, "signed"))))  # fmt: skip
-            form = {"same": "verbatim", "xlang": "translated"}.get(key.split("/")[1], key.split("/")[1])
-            lines.append(f"| {m} | {form} | {len(elig[key])} | {whole} | {no} | {rand} | {extra(whole, no, rand)} |")
-    return "2. It holds beyond the simple scenes on most models, not on all", files, lines
-
-
-def f3() -> tuple[str, list[str], list[str]]:
-    parts = [("J++ (25)", "jpp", X.K_MAIN, "signed"), ("main directions at J++'s share", "pca_eq", 0, "eq"),
-             ("J++ without the word's directions", "jwo", X.K_MAIN, "signed"), ("the word only", "w", 0, "lsq")]  # fmt: skip
-    lines, files = list(HEAD), []
-    for label, d in (("9B", "x0_parts/qwen35_9b_x0_pcaeq"), ("27B", "x0_parts/x0_pcaeq_27b"), ("122B", "x0_parts/qwen35_122b_x0_parts"),
-                     ("9B (word part run)", "x0_parts/qwen35_9b_x0_parts"), ("27B (word part run)", "x0_parts/x0_parts_27b")):  # fmt: skip
-        rows = at(rows_of(R / d / "outcomes.jsonl"), LAYER[label.split(" ")[0]])
-        have = {(r.get("dict"), r.get("k"), r.get("omp")) for r in rows}
-        lines += part_rows(label, rows, [p for p in parts if p[1:] in have])
-        files.append(f"results/{d}/outcomes.jsonl")
-    return "3. The J++ part against the layer's main directions and the word", files, lines
-
-
-def f4() -> tuple[str, list[str], list[str]]:
-    lines = ["| run | the original's locker sentence | n | lookup switches, whole change |", "|---|---|---|---|"]
-    files = []
-    for m, d in (("9B", "x0_necessity/qwen35_9b_x0_necessity"), ("27B", "x0_necessity/x0_necessity_27b_chat"),
-                 ("122B", "x0_necessity/qwen35_122b_x0_necessity_r2")):  # fmt: skip
-        cases = {c["scene"]: c for c in rows_of(R / d / "cases.jsonl") if c["rendering"] == "chat"}
-        sw: dict[str, list[int]] = collections.defaultdict(list)
-        for r in at(rows_of(R / d / "outcomes.jsonl"), LAYER[m]):
-            if r["reader"] == X.LOOKUP and r["arm"] == "whole":
-                sw[ST.features(cases[r["scene"]])["org locker vs asked pick"]].append(int(r["switched"]))
-        lines += [f"| {m} | {o} | {len(v)} | {sum(v)} |" for o, v in sorted(sw.items())]
-        files += [f"results/{d}/outcomes.jsonl", f"results/{d}/cases.jsonl"]
-    return "4. Lookups move mostly when the locker sentence comes first", files, lines
-
-
-def f5() -> tuple[str, list[str], list[str]]:
-    lines = ["| run | the new item's first earlier mention | n | lookup switches, whole change | without J++ | "
-             "recall switches, whole change | without J++ |", "|---|---|---|---|---|---|---|"]  # fmt: skip
-    files = []
-    for m, d in (("9B", "x0_necessity/qwen35_9b_x0_single_r2"), ("27B", "x0_necessity/x0_single_27b_r2"),
-                 ("122B", "x0_necessity/qwen35_122b_x0_single")):  # fmt: skip
-        cases = {c["scene"]: c for c in rows_of(R / d / "cases.jsonl") if c["rendering"] == "chat"}
-        rows = at(rows_of(R / d / "outcomes.jsonl"), LAYER[m])
-        both = {s for s in {r["scene"] for r in rows} if (f := ST.features(cases[s]))["org locker vs asked pick"] == "before"
-                and f["alt locker vs asked pick"] == "before"}  # fmt: skip
-        groups = collections.defaultdict(set)
-        for s in both:
-            groups[FM.first_mention(cases[s])].add(s)
-        for g, scenes in sorted(groups.items()):
-            t = tally(rows, scenes)
-            c = [
-                t.get((w, a, *p), 0)
-                for w in X.READERS
-                for a, p in (("whole", ("-", 0, "-")), ("no_part", ("jpp", X.K_MAIN, "signed")))
-            ]
-            lines.append(f"| {m} | {g} | {len(scenes)} | {c[0]} | {c[1]} | {c[2]} | {c[3]} |")
-        files += [f"results/{d}/outcomes.jsonl", f"results/{d}/cases.jsonl"]
-    lines += ["", "The probe's own accuracy (0.97 / 0.99 / 0.92) is not recountable from saved per-item files: the "
-              "probe's per-scene predictions are not written. It refits from the saved states on CPU: "
-              "`uv run python scripts/x0_probe.py fit --name x0_probe_v4_27b` (9B / 122B: `BJ_TARGET=qwen3.5-9b` / "
-              "`BJ_TARGET=qwen3.5-122b-a10b`, `--name qwen35_9b_x0_probe_v4` / `qwen35_122b_x0_probe_v4`), into a new "
-              "probe-<UTC>/ folder."]  # fmt: skip
-    return "5. The bridge word holds a pointer to the item's first mention (the duplicate-pick split)", files, lines
-
-
-def f6() -> tuple[str, list[str], list[str]]:
-    lines = ["| run | reader | part | n | switches, whole change | without the part | without its random part | extra loss |",
-             "|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    files = []
-    for m, d in (("9B", "x0_massmean/qwen35_9b_x0_massmean_lf"), ("27B", "x0_massmean/x0_massmean_lf_27b"),
-                 ("122B", "x0_massmean/qwen35_122b_x0_massmean_grid")):  # fmt: skip
-        rows = rows_of(R / d / "outcomes.jsonl")
-        for w in X.READERS:
-            c = collections.Counter(r["arm"] for r in rows if r["reader"] == w and r["switched"])
-            n = sum(1 for r in rows if r["reader"] == w and r["arm"] == "whole")
-            lines.append(f"| {m} | {READER[w]} | pointer directions | {n} | {c['whole']} | {c['no_Alf']} | {c['no_Alf_rand']} | "
-                         f"{extra(c['whole'], c['no_Alf'], c['no_Alf_rand'])} |")  # fmt: skip
-        files.append(f"results/{d}/outcomes.jsonl")
-    for m, d in (
-        ("9B, replication", "x0_replicate/qwen35_9b_x0_replicate"),
-        ("27B, replication", "x0_replicate/x0_replicate_27b"),
-    ):
-        rows = at(rows_of(R / d / "outcomes.jsonl"), LAYER[m.split(",")[0]])
-        lines += part_rows(m, rows, [("pointer directions", "alf", 0, "proj"), ("J++ (25)", "jpp", X.K_MAIN, "signed")])
-        files.append(f"results/{d}/outcomes.jsonl")
-    return "6. Pointer directions outside the lens matter to the lookup on the 9B and 122B", files, lines
-
-
-def f7() -> tuple[str, list[str], list[str]]:
-    routes = ("identity", "position", "value", "original", "other")
-    lines = ["| run | swap | arm | n | " + " | ".join(routes) + " |", "|---|---|---|---|" + "---|" * len(routes)]
-    files = []
-    for m, d in (("9B", "x6_routes/qwen35_9b_x6_routes"), ("27B", "x6_routes/x6_routes_27b")):
-        c = collections.Counter((r["condition"], r["arm"], r["route"]) for r in rows_of(R / d / "outcomes.jsonl")
-                                if r["reader"] == X.LOOKUP and r["condition"] != "C0")  # fmt: skip
-        for cond in ("C1", "C2"):
-            for arm in ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand"):
-                counts = [c[(cond, arm, rt)] for rt in routes]
-                lines.append(f"| {m} | {'same item moved' if cond == 'C1' else 'another item moved'} | {arm} | {sum(counts)} | "
-                             + " | ".join(map(str, counts)) + " |")  # fmt: skip
-        files.append(f"results/{d}/outcomes.jsonl")
-    lines += ["", "Same item moved: 'identity' is the unchanged answer."]
-    return "7. The lookup follows the bridge's identity or its locker sentence's position", files, lines
-
-
-FINDINGS = {1: f1, 2: f2, 3: f3, 4: f4, 5: f5, 6: f6, 7: f7}
-
-
-def route_cases(n: int = 10) -> list[str]:
-    pool = []
-    for m, d in (("9B", "x6_routes/qwen35_9b_x6_routes"), ("27B", "x6_routes/x6_routes_27b")):
-        cases = {c["scene"]: c for c in rows_of(R / d / "cases.jsonl")}
-        by = collections.defaultdict(dict)
-        for r in rows_of(R / d / "outcomes.jsonl"):
-            if r["reader"] == X.LOOKUP and r["condition"] in ("C1", "C2"):
-                by[r["scene"]][r["arm"]] = r
-        pool += [(m, d, cases[s], by[s]) for s in sorted(by)]
-    out = [f"Drawn with `random.Random(0).sample` from the {len(pool)} same-item-moved and another-item-moved scenes of the 9B and 27B "
-           "runs (layer fixed in advance). Each arm's answer is the route its top token matched (the digit in brackets).", ""]  # fmt: skip
-    for k, (m, d, c, arms) in enumerate(random.Random(0).sample(pool, n), 1):
-        exp = c["expect"]
-        out += [f"### {k}. {m}, {'same item moved' if c['condition'] == 'C1' else 'another item moved'}, {c['scene']} (results/{d})", "",
-                f"- Original prompt: {c['context']}", f"- Swapped prompt: {c['cf_context']}",
-                f"- Question: {c['readers'][X.LOOKUP]['question']}",
-                "- Routes: " + ", ".join(f"{rt} → {v}" for rt, v in exp.items()), "",
-                "| arm | " + " | ".join(arms) + " |", "|---|" + "---|" * len(arms),
-                "| lookup's answer | " + " | ".join(f"{r['route']} ({exp.get(r['route'], '?')})" for r in arms.values()) + " |", ""]  # fmt: skip
+def readme_quotes(subs: list[str]) -> list[str]:
+    lines = README.read_text().splitlines()
+    out = []
+    for s in subs:
+        hit = next((ln for ln in lines if s in ln), None)
+        out.append(strip(hit).lstrip("- ").strip() if hit else f"(not found in the README: {s!r})")
     return out
 
 
-RECOMPUTED = [
-    (
-        "The 122B's first-mention cross-tab (lost by the box copy; b3)",
-        "BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_first_mention.py --single qwen35_122b_x0_single",
-        "results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/",
-    ),
-    (
-        "X4 on the 122B, the probe fit and the verdict (b5)",
-        "BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x4_alias.py probe_fit --name qwen35_122b_x4_patch && "
-        "BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x4_alias.py verdict --name qwen35_122b_x4_patch",
-        "results/x4_alias/qwen35_122b_x4_patch/{probe,verdict}-20261025T003459Z/",
-    ),
-    (
-        "X4 on the 9B and 27B, the probe fit and the verdict (24 Oct)",
-        "uv run python scripts/x4_alias.py probe_fit --name x4_patch_27b && uv run python scripts/x4_alias.py verdict "
-        "--name x4_patch_27b (9B: BJ_TARGET=qwen3.5-9b, --name qwen35_9b_x4_patch)",
-        "results/x4_alias/{x4_patch_27b,qwen35_9b_x4_patch}/{probe,verdict}-*/",
-    ),
-    (
-        "The 122B's varied-scene cross-tab (b6)",
-        "BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0b_generalize.py cross --name qwen35_122b_x0b_v2",
-        "results/x0b_generalize/qwen35_122b_x0b_v2/cross-20261025T112138Z/",
-    ),
-    (
-        "The 122B's probe a-given-b (b3)",
-        "BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_probe.py a_given_b --name qwen35_122b_x0_probe_v4",
-        "results/x0_probe/qwen35_122b_x0_probe_v4/a-given-b-20261025T112514Z/",
-    ),
-]
+def label(m: str) -> str:
+    return I.spec()["models"][m]["label"]
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--only", type=int, default=None)
-    a = ap.parse_args()
-    if a.only:
-        title, files, lines = FINDINGS[a.only]()
-        print(f"## {title}\n\n" + "\n".join(lines))
-        return
-    out = ["# Verification pack (25 Oct)", "",
-           "For Dan's own checks. Every table below is recounted from per-item files only (outcomes.jsonl, cases.jsonl, "
-           "eligible.jsonl), not from verdict or aggregate files; each has the command that prints it again. Extra loss "
-           "from counts = (switches without the random part - switches without the part) / switches with the whole "
-           "change; its point value should equal the README's. Layers fixed in advance: 9B 12, 27B 32, 122B 33; chat "
-           "prompts; 25 J++ directions. Generated by scripts/verify_pack.py. Unverified until Dan's check.", ""]  # fmt: skip
-    for i, fn in FINDINGS.items():
-        title, files, lines = fn()
-        out += [f"## {title}", "", f"Files: {', '.join(f'`{f}`' for f in dict.fromkeys(files))}", "",
-                f"Command: `{CMD.format(i)}`", "", *lines, ""]  # fmt: skip
-    out += ["## 10 random route cases (seed 0)", "", *route_cases(), "## Outputs recomputed locally after the jobq copy bug", "",
-            "The box copies only run folders new to it, so CPU output a later job wrote into an earlier job's folder was "
-            "lost; these were recomputed locally from the same input files (checksums matched the box's).", "",
-            "| output | command | folder |", "|---|---|---|",
-            *[f"| {t} | `{c}` | `{f}` |" for t, c, f in RECOMPUTED], ""]  # fmt: skip
-    OUT.write_text("\n".join(out) + "\n")
-    print("wrote", OUT)
+def fmt(x: float, quantity: str = "") -> str:
+    """Counts (k, n) as integers, everything else with 2 decimals."""
+    return f"{x:.0f}" if quantity.endswith((": k", ": n")) else f"{x:.2f}".replace("-", "−")
+
+
+def numbers_table(vid: str, rc: list[dict]) -> list[str]:
+    """quantity x model: the recount over the whole item set; ✓ = equals its source (x0_numbers.json, 2 decimals, or
+    data.csv), ✗ = differs (its source's value beside), – = no source for that model."""
+    keep = [r for r in rc if r["status"] != "no source" or vid in ("answer_control", "x8_writes")]
+    if vid == "routes":
+        keep = [
+            r for r in keep if r["quantity"].startswith("C2 ") and re.search(r": (identity|position)$", r["quantity"])
+        ]
+    models = [m for m in I.spec()["models"] if any(r["model"] == m for r in keep)]
+    qs = list(dict.fromkeys(r["quantity"] for r in keep))
+    cell = {(r["quantity"], r["model"]): r for r in keep}
+    out = [
+        "| recounted quantity (n per model) | " + " | ".join(label(m) for m in models) + " |",
+        "|---" * (len(models) + 1) + "|",
+    ]
+    for q in qs:
+        cs = []
+        for m in models:
+            r = cell.get((q, m))
+            if r is None:
+                cs.append("")
+                continue
+            mark = {"match": " ✓", "mismatch": f" ✗ (source {r['data']})", "no source": " (no source)"}[r["status"]]
+            cs.append(f"{fmt(r['value'], q)}{mark} <sub>n {r['n']}</sub>")
+        out.append(f"| {q} | " + " | ".join(cs) + " |")
+    return out
+
+
+def check_lines(vc: dict) -> list[str]:
+    out = []
+    for m, x in vc["models"].items():
+        if not x.get("n"):
+            nl = "; ".join(f"`{r}` ({s})" for r, s in x.get("not_landed", []))
+            out.append(f"- {label(m)}: no items" + (f" ({nl})" if nl else ""))
+            continue
+        fails = ", ".join(f"{k}: {n}" for k, n in x["item_fail"].items()) or "none"
+        na = ", ".join(f"{k}: {n}" for k, n in x["item_na"].items())
+        bad = [c for c in x["run_checks"] if c["status"] not in ("pass",)]
+        out.append(f"- {label(m)}: {x['n']} items; per-item failures: {fails}" + (f" (n/a: {na})" if na else "")
+                   + (f"; run checks: {sum(c['status'] == 'pass' for c in x['run_checks'])} pass" if x["run_checks"] else ""))  # fmt: skip
+        for c in bad:
+            out.append(f"  - **{c['status']}**: {c['check']}: {c['detail']}")
+        for f in x["item_fail_examples"][:4]:
+            out.append(f"  - **fail** `{f['item']}` ({f['check']}): {f['detail']} ({f['where']})")
+    return out
+
+
+def sample_lines(vid: str) -> list[str]:
+    fs = (I.spec().get("fixed_sample") or {}).get("views", {}).get(vid) or []
+    out = ["| # | model | reader | scene | why it is in the sample |", "|---|---|---|---|---|"]
+    for n, e in enumerate(fs, 1):
+        extra = f" · {e['condition']}" if e.get("condition") else ""
+        if e.get("x8"):
+            extra += f" · slot {e['x8']['j']} → {e['x8']['k']}, s = {e['x8']['s']:g}"
+        why = e["stratum"].replace("|", "\\|")  # "|p_alt - p_org|" inside a table cell
+        out.append(f"| {n} | {label(e['model'])} | {I.READER_NAME[e['reader']]} | `{e['scene']}`{extra} | {why} |")
+    return out
+
+
+def flags(v: dict) -> list[str]:
+    out = []
+    for m in v.get("runs", {}):
+        fl = [*I.spec()["models"][m].get("flags", []), *(v.get("model_flags") or {}).get(m, [])]
+        if fl:
+            out.append(f"- {label(m)}: " + "; ".join(fl))
+    return out
+
+
+def inspector_section(old: str) -> list[str]:
+    """The inspector agent's section as it stands in the current pack (up to the first view section), else a stub."""
+    if INSPECTOR in old:
+        body = old.split(INSPECTOR, 1)[1]
+        body = re.split(r"\n## a\. ", body, maxsplit=1)[0].strip("\n")
+        return [INSPECTOR, "", body, ""] if body.strip() else [INSPECTOR, "", INSPECTOR_TODO, ""]
+    return [INSPECTOR, "", INSPECTOR_TODO, ""]
+
+
+def commit() -> str:
+    return subprocess.run(
+        ["git", "rev-parse", "--short", "HEAD"], cwd=I.REPO, capture_output=True, text=True
+    ).stdout.strip()
+
+
+def build(old: str = "") -> str:
+    vc = json.loads(CHECKS.read_text())
+    ind = json.loads(INDEP.read_text()) if INDEP.exists() else None
+    views = [v for v in I.spec()["views"] if v.get("tier") == 1]
+    fs = I.spec().get("fixed_sample") or {}
+    L = ["# Verification pack: the seven headline claims, for Dan's hand check (30 Oct)", "",
+         f"Generated by `make verify-pack` (scripts/verify_pack.py) at {commit()}, {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}, "
+         f"from docs/review_views.yaml, review/verify_checks.json ({vc['generated_utc']}), review/verify_independent.json and "
+         "docs/depth/README.md (quoted as it stands). Do not edit by hand; regenerate. Every claim below is UNVERIFIED "
+         "until it is in VERIFIED.md. The pack of 26 Oct is in git history (docs/verify_pack.md before this commit); the "
+         "one of 25 Oct is docs/verify_pack_25oct.md.", "",
+         "## How to review in 2 hours", "",
+         "**Open it.** `make review-serve SEED=29`, then http://localhost:8001 (marks go to review/marks.jsonl). Without "
+         "a server: `make review-export SEED=29 N=10`, then open review/seed-29/index.html (marks stay in the browser; "
+         "the page's download button saves them as marks.jsonl, to put in review/).", "",
+         f"**The order.** Seven views, {fs.get('n_per_view', 10)} items each (seed {fs.get('seed', 29)}, fixed in "
+         "docs/review_views.yaml, never re-rolled): about 15 minutes per view, 1.5 minutes per item.", "",
+         "| | view | the claim in short | models | your items |", "|---|---|---|---|---|"]  # fmt: skip
+    for v in views:
+        ms = ", ".join(label(m) for m in v["runs"] if vc["views"][v["id"]]["models"].get(m, {}).get("n"))
+        L.append(f"| {v['order']} | [{v['id']}](#{v['order']}-{v['id'].replace('_', '-')}) | {v['title'].split('. ', 1)[1]} | {ms} | "
+                 f"{len((fs.get('views') or {}).get(v['id']) or [])} |")  # fmt: skip
+    L += ["",
+          "**Each item: three questions**, answered from the card's first boxes:",
+          "1. *Is the prompt what the claim says?* \"As the model saw it\" decodes the stored token ids with the pinned "
+          "tokenizer: the chat template, thinking off, the reply begun with \"Answer:\" (Zach's passages end at the "
+          "template, no \"Answer:\"), the token the run appended at the read in grey, the changed token in red. Is the "
+          "changed prompt the claim's change (two picks swapped; another item moved; the bridge's sentence only)?",
+          "2. *Is each arm's top token what is shown?* \"The decisive arms\" gives, per reader and arm, the top token "
+          "decoded from its stored id and the run's label. The conflict-test runs of the 9B, 27B, 122B and Muse stored no "
+          "top token (\"not stored\"): read the label against P(original) and P(changed) under \"the stored numbers\" "
+          "(their labels were also compared with the 51.12 rerun, which stored the token: see the automatic checks).",
+          "3. *Does the label follow?* The original answer is \"original answer (A)\", the changed answer \"changed "
+          "answer (b)\" and a switch; routes: the digit each route predicts is listed above the arms; the swap: the "
+          "swapped-in slot's digit is named on the card.", "",
+          "**Mark** each item consistent / wrong / unclear, with a note for wrong or unclear (what you saw, e.g. \"label "
+          "b, but the top token is '7' and S's answer is '4'\"). The last mark per item counts.", "",
+          "**Stop rule.** Two items marked wrong in one view: stop that view, flag it in the note of the second, go on "
+          "to the next view. A flagged view is not hand-checked.", "",
+          "**What a machine already checked** (do not redo it): the section below, over every item of every view (not "
+          "only your 70), with each failure's file and line; each card also shows its own check badges (red: fail). "
+          "Read a failure there before the view it belongs to.", "",
+          "**After.** `make review-summary` (docs/review_summary.md: per view, items read, consistent / wrong / unclear, "
+          "flagged items) and `make review-verified` (VERIFIED.md's generated section: per claim, the hand marks, the "
+          "automatic checks and the independent recount).", "",
+          "## Automatic checks", "",
+          "scripts/verify_checks.py over every item of the seven views (not the sample), and scripts/verify_independent.py, "
+          "written from scratch (standard library only, no pipeline or review import). Per item: the changed token "
+          "decodes to the bridge in O and S; the answers decode to the stated answers; the label equals \"top token == "
+          "S's answer\" recomputed from the stored ids; the prompts differ only in the scene's words; the probabilities "
+          "agree with the label; a second run's prompts are the same. Per run: gate and eligibility recomputed from "
+          "competence.jsonl; duplicates; Z1-P's facts; the random part's share against the lens part's; the headline "
+          "numbers recounted from the per-item files against x0_numbers.json / figures/story/data.csv.", "",
+          "| view | items | per-item failures | run checks failed | headline recount | n/a (not computable) |",
+          "|---|---|---|---|---|---|"]  # fmt: skip
+    findings = []
+    for v in views:
+        r = vc["views"][v["id"]]
+        n = sum(x.get("n", 0) for x in r["models"].values())
+        nf = sum(sum(x.get("item_fail", {}).values()) for x in r["models"].values())
+        bad = [(m, c) for m, x in r["models"].items() for c in x.get("run_checks", []) if c["status"] == "fail"]
+        na = {}
+        for x in r["models"].values():
+            for k, c in x.get("item_na", {}).items():
+                na[k] = na.get(k, 0) + c
+        rc = r["recount"]
+        L.append(f"| {v['order']}. {v['id']} | {n} | {nf} | {len(bad)} | {rc['match']} match, {len(rc['mismatch'])} mismatch | "
+                 + ("; ".join(f"{k}: {c}" for k, c in na.items() if k != "second run has the same prompts") or "–") + " |")  # fmt: skip
+        for m, x in r["models"].items():
+            for f in x.get("item_fail_examples", []):
+                findings.append(
+                    f"- {v['order']}. {v['id']}, {label(m)}: `{f['item']}`: {f['check']}: {f['detail']} ({f['where']})"
+                )
+        findings += [f"- {v['order']}. {v['id']}, {label(m)}: {c['check']}: {c['detail']}" for m, c in bad]
+        findings += [f"- {v['order']}. {v['id']}, {label(m)}: {r_['quantity']}: recount {r_['value']:.4f}, source {r_['data']}"
+                     for m in r["models"] for r_ in rc["mismatch"] if r_["model"] == m]  # fmt: skip
+    L += [
+        "",
+        "**Failures** (findings: listed, not fixed; no check was changed to pass):",
+        "",
+        *(findings or ["None."]),
+        "",
+    ]
+    L += ["**Read beside them.**",
+          "- The label check is n/a on the conflict-test runs of the 9B, 27B, 122B and Muse (views a and g): they store "
+          "no top token. Their labels against the 51.12 E1 rerun of the same prompts (which stores it) are the run check "
+          "\"labels against the 51.12 E1 rerun\" in view a; two runs of identical prompts disagree on a few near-tie "
+          "items, so that check fails on the 9B, Muse and Lightning by 1 to 7 items of 400 per arm.",
+          "- Z1-P, the true value in the lookup's passage (Dan's check, failed on 60 of 200): the made-up values are "
+          "drawn from the relation's own answer words, so the bridge's true value often stands in the passage as "
+          "another entity's made-up value (Moscow, true country Russia: \"This year's partner city for Mumbai is in "
+          "Russia\", while the lookup's answer is the made-up \"France\"). Whether that matters for the claim is for "
+          "you to judge; the list of passages is in review/verify_checks.json (z1p).",
+          "- The Z1-P token-diff failures are hyphenated multi-word bridges (\"Mont Saint-Michel\" → \"Christ the "
+          "Redeemer\"): every differing token is inside the bridge name, but the check splits words at \"-\".",
+          "- The x8 probability check is n/a: the swap runs store no probabilities. Several targeted items are exact "
+          "logit ties (P(original) = P(changed), logit gap 0.0; the argmax keeps the lower token id).", ""]  # fmt: skip
+    if ind:
+        s = ind["summary"]
+        L += [f"**Independent recount** (review/verify_independent.json): {s['match']} of {s['rows']} numbers equal the "
+              f"README's and their source, {s['mismatch']} differ; the item sets recomputed from competence.jsonl equal "
+              "the runs' on every model (conflict test, routes); each routes label recomputed from the raw top-token id "
+              "equals the stored one. The 9B (the brief's model):", "",
+              "| quantity | recomputed | README shows | source |", "|---|---|---|---|"]  # fmt: skip
+        L += [f"| {r['quantity']} | {r['value']:+.4f} | {', '.join(r['readme']) or '–'} | {r['source']} ({r['status']}) |"
+              for r in ind["rows"] if r["model"] == "9b"]  # fmt: skip
+        L.append("")
+    L += inspector_section(old)
+    for v in views:
+        r = vc["views"][v["id"]]
+        title = v["title"] if v["title"].endswith(("?", ".")) else v["title"] + "."
+        L += [f"## {v['order']}. {v['id']}", "", f"**{title}** README: {v.get('readme', '')}.", ""]
+        quotes = readme_rows(v.get("readme_rows") or []) + readme_quotes(v.get("readme_quotes") or [])
+        L += ["**The claim in the README's words** (quoted at generation):", "", *[f"> {q}" for q in quotes], ""]
+        L += [f"**What the cards test.** {v['claim'].strip()}", ""]
+        L += [
+            "**Numbers**, recounted over the whole item set (✓ equals its source):",
+            "",
+            *numbers_table(v["id"], r["recount"]["rows"]),
+            "",
+        ]
+        L += [
+            "**Runs.** " + "; ".join(f"{label(m)}: " + ", ".join(f"`{x}`" for x in rs) for m, rs in v["runs"].items()),
+            "",
+        ]
+        fl = flags(v)
+        if fl:
+            L += ["**Flags.**", *fl, ""]
+        L += ["**Automatic checks.**", *check_lines(r), ""]
+        L += [f"**Your {len((fs.get('views') or {}).get(v['id']) or [])} items** (open the view in the dashboard; the "
+              "same items, in this order by model):", "", *sample_lines(v["id"]), ""]  # fmt: skip
+        notes = [*EXTRA.get(v["id"], []), *([v["notes"].strip()] if v.get("notes") else [])]
+        if notes:
+            L += ["**Notes.**", *[f"- {x}" for x in notes], ""]
+    return "\n".join(L) + "\n"
+
+
+def main() -> Path:
+    old = PACK.read_text() if PACK.exists() else ""
+    PACK.write_text(build(old))
+    print(f"wrote {PACK.relative_to(I.REPO)}")
+    return PACK
 
 
 if __name__ == "__main__":

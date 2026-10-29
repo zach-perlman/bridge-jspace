@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -97,6 +97,20 @@ review-export:      ## a static sample of every review view under review/seed-<S
 
 review-summary:     ## docs/review_summary.md: items read by hand per view, flagged, seeds, automatic-check failures
 	uv run python scripts/review.py summary
+
+review-verified:    ## VERIFIED.md's generated section from review/marks.jsonl + the automatic checks + the independent recount
+	uv run python scripts/verified.py
+
+verify-checks:      ## automatic checks over every item of the tier-1 review views -> review/verify_checks.json (no GPU)
+	uv run python scripts/verify_checks.py
+
+verify-independent: ## the README's conflict-test and routes numbers recounted from scratch -> review/verify_independent.json
+	uv run python scripts/verify_independent.py
+
+verify-pack:        ## docs/verify_pack.md: how to review in 2 hours, the automatic checks, one section per tier-1 view
+	uv run python scripts/verify_checks.py
+	-uv run python scripts/verify_independent.py
+	uv run python scripts/verify_pack.py
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export
