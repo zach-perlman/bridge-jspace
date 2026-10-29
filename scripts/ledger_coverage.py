@@ -38,6 +38,8 @@ ANCHORS = {
     "E6: the address probe (x0_probe v4)": "probe",
     "5b. Copy test (45q)": "t45q",
     "Earlier mention (45p)": "t45p",
+    "Split in other texts: natural passages (x5)": "x5",
+    "Described bridge (47.3, and 51.12's cue r2)": "t47-3",
     "Pooled person probe (49.3)": "t49-3",
     "Failed: copying heads pass the rest (48 heads)": "t48-4",
     "Failed: the J++ part keys the attribute; late MLPs (48.2 enrichment)": "t48-2",

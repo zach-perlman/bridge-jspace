@@ -88,7 +88,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [9. Last-token read / write (51.10)](#t51-10) | **done** | **done** | **done** | **done** |
 | [10. Attention under the swap (49.7)](#t49-7) | **done** | **done**: attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks) | **done** | **done** |
 | [Split in other texts: varied scenes (x0b)](#x0b) | **done** | **done** | **done** | **done** |
-| Split in other texts: natural passages (x5) | **done** | **not tested**: its gate failed ({'PP': 0.7701149425287356, 'PM': 0.896551724137931}, eligible 36); no lowered rerun (the spec's rule) | **done**: gate lowered after the data | **done** |
+| [Split in other texts: natural passages (x5)](#x5) | **done** | **not tested**: its gate failed ({'PP': 0.7701149425287356, 'PM': 0.896551724137931}, eligible 36); no lowered rerun (the spec's rule) | **done**: gate lowered after the data | **done** |
 | [Dose curves, a part alone (51.1)](#t51-1) | **done** | **done** | **done** | **done** |
 | [Zeroing at one layer (47.5)](#t47-5) | **done** | **done**: L14 and L14..17; the 60 dev scenes kept out | **done** | **done** |
 | [Earlier mention (45p)](#t45p) | **done** | **not tested**: the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change) | **done** | **done** |
@@ -102,7 +102,7 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 | [E12: address persistence across depth (D4, CPU)](#t47-8) | **done**: CPU from x47_anatomy_27b's cache | **done**: CPU from Lightning's anatomy cache (on its box) | **done** | **done** |
 | [Part V: Zach's passages Z1 / Z2 (x50)](#z1) | **done** | **done**: Z1 done; Z2 done | **done** | **done** |
 | [Part V: Zach's passages Z3 (routes on his passages)](#z3) | **done**: at L32 (X0's layer = the start of his band L32-40) | **done**: at L14 and L27 | **done** | **done** |
-| Described bridge (47.3, and 51.12's cue r2) | **done** | **not tested**: the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet)) | **done** | **partial**: 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design) |
+| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | **done** | **not tested**: the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet)) | **done** | **partial**: 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design) |
 | One question, two instructions (49.6) | **done** | **not designed**: the test was designed for the 9B and 27B; amendment 2's grid adds no new design | **not tested**: ran; the gate failed (README: the others miss the gate) | **not designed**: designed for the 9B and 27B (conservative, Dan 01:10) |
 | [Address refit per text format (x45d)](#x45d) | **done** | **done** | **done** | **done** |
 | [The lookup's errors are not address errors (47.13)](#t47-13) | **done** | **done**: count (CPU) then the verdict | **done** | **done** |
@@ -860,6 +860,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
   - Descriptive: no rule fixed in advance.
   - In the main test the rest of a locker-first miss sits outside the pick sentence on the 9B, 27B and Lightning (the other person's pick also changes there); in clean scenes it is before L on all three.
 
+### Does the split hold in natural passages? (natural passages, x5, opened 25-26 Oct; Lightning's gate 29 Oct) <a id="x5"></a>
+
+*Used in: README Part I card "Does the split hold in other texts?" (9B, 27B, Muse). Story: other datasets.*
+
+- **Question.** In natural passages, where a fact sentence names the bridge, does the lookup let go of the lens part while the recall follows it?
+- **Why we asked.** Our scenes are templates; natural passages test the split outside them.
+- **Data.** Natural passages: 83<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| 83 items :: 83 --> / 137<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| 137 items :: 137 --> / 60<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| 60 items :: 60 --> items (9B / 27B / Muse); the 9B's gate was lowered after the data. Lightning not tested: its gate failed, and by the spec's rule there is no lowered rerun.
+- **Method.** The conflict test unchanged, at L: without the lens part, against without a random part of its share; the gap is the recall's loss minus the lookup's.
+- **Rule, fixed in advance.** "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed."
+
+![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
+*The README's figure: switches lost without the lens part beyond a random part, by text format; the bottom row is the natural passages (fact first; hollow: the 9B's lowered gate); grey band: the lookup's 0.10 bar; 9B, 27B, Muse.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | lookup: switches lost beyond a random part | 0.03 [-0.08, 0.15]<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| Lookup excess :: 0.03 [-0.08, 0.15] --> | 0.32 [0.20, 0.45]<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| Lookup excess :: 0.32 [0.20, 0.45] --> | -0.20 [-0.55, 0.00]<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| Lookup excess :: -0.20 [-0.55, 0.00] --> | not tested: the gate failed (the lookup right on 0.77<!-- src: results/x5_natural/nem35l_x52_natural/gate.json \| "PP" :: 0.77 -->, under 0.80) |
+  | recall: the same | 0.56 [0.45, 0.66]<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| recall excess :: 0.56 [0.45, 0.66] --> | 0.59 [0.50, 0.67]<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| recall excess :: 0.59 [0.50, 0.67] --> | 0.75 [0.62, 0.86]<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| recall excess :: 0.75 [0.62, 0.86] --> | |
+  | the gap | 0.52 [0.36, 0.68]<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| Rule:  :: 0.52 [0.36, 0.68] --> | 0.27 [0.13, 0.41]<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| Rule:  :: 0.27 [0.13, 0.41] --> | 0.95 [0.64, 1.33]<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| Rule:  :: 0.95 [0.64, 1.33] --> | |
+  | the rule | **HOLDS<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| Rule:  :: HOLDS -->** | **MIXED<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| Rule:  :: MIXED -->** | **HOLDS<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| Rule:  :: HOLDS -->** | no lowered rerun (the spec's rule) |
+
+- **Read.**
+  - In natural passages the recall follows the lens part on all three tested models; the 27B's lookup follows it too, so its split is mixed.
+- **Caveats.**
+  - The 9B's gate was lowered after the data; Muse's lookup switches rarely under the whole change, so its lookup loss is wide.
+  - Few items (60 to 137).
+
 ### Does the split hold in prose, JSON and tables? (varied scenes, x0b; Lightning's coverage run 29 Oct) <a id="x0b"></a>
 
 *Used in: README Part I card "Does the split hold in other texts?" and Fig. 9a (9B, 27B, Muse); Lightning not in the README yet. Story: other datasets.*
@@ -887,6 +915,34 @@ As of the matrix at 06:29 UTC (07:29 Paris).
 - **Caveats.**
   - Only cells that pass the gate count; about a quarter of Lightning's and Muse's cells fail it.
   - Muse's scene count is 1,388 here and 1,389 in the README (Flagged 6).
+
+### Does the split hold for a described bridge? (described bridge, 47.3, opened 28 Oct; Lightning's gate 29 Oct) <a id="t47-3"></a>
+
+*Used in: README Part VI, weaker results ("A described bridge"; 9B, 27B, Muse). Story: other datasets.*
+
+- **Question.** When the asked pick describes the item instead of naming it ("picked the one known for honey"), does the lookup still let go of the lens part at the description's word while the recall follows it?
+- **Why we asked.** A described bridge must be computed first; the computed item could travel through the lens.
+- **Data.** Routes scenes with the asked pick described: 300 per model (15 / 15 / 9 bridge items). Lightning not tested: its gate failed. The answer control on these scenes (51.12's cue r2, 9B and 27B) is in the README; Lightning's was cancelled with 47.3.
+- **Method.** The change at the description's word at L, another item moved (C2); without the lens part against a random part of its share; value answers; the refit address's cut beside.
+- **Rule, fixed in advance.** "(a) "the split holds for a recalled bridge": gap >= 0.3 and lookup extra loss <= 0.10; (a') "a recalled bridge is handed through the lens": lookup extra loss >= 0.20 [...]; (b) "never the value": value <= 0.05; (c) "a pointer at the cue token": U' removal cuts position answers >= 0.30 beyond random."
+
+![A described bridge: the split holds on two of the three models](../../figures/story/fig05c_described_bridge.png)
+*The README's figure: (a) each reader's extra loss without the lens part, (b) value answers, (c) position answers lost without the refit address beyond random, with the rule's bars; 300 scenes per model; 9B, 27B, Muse.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning |
+  |---|---|---|---|---|
+  | lookup: switches lost beyond a random part | 0.07 [0.01, 0.16]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.07 [0.01, 0.16] --> | 0.39 [0.32, 0.45]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.39 [0.32, 0.45] --> | -0.02 [-0.12, 0.08]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: -0.02 [-0.12, 0.08] --> | not tested: the gate failed (the lookup right on 0.72<!-- src: results/x47_cue/x52_cue-20261029T023827Z/x47_3.md \| nem35l_x52_cue :: 0.72 -->, under 0.80) |
+  | recall: the same | 0.39 [0.31, 0.47]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.39 [0.31, 0.47] --> | 0.48 [0.37, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.48 [0.37, 0.60] --> | 0.33 [0.12, 0.60]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.33 [0.12, 0.60] --> | |
+  | the gap | 0.32 [0.20, 0.41]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| qwen35_9b_x47_cue :: 0.32 [0.20, 0.41] --> | 0.09 [-0.02, 0.20]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| x47_cue_27b :: 0.09 [-0.02, 0.20] --> | 0.36 [0.06, 0.66]<!-- src: results/x47_cue/x47_3-20261028T113104Z/x47_3.md \| muse30_x47_cue :: 0.36 [0.06, 0.66] --> | |
+  | the rule | **the split holds** | **handed through the lens** | **the split holds** | |
+
+- **Read.**
+  - For a described bridge the split holds on the 9B and Muse; on the 27B the lookup follows the lens part too (the bridge is handed through the lens there). The lookup never takes the value, and no pointer sits at the description's word.
+- **Caveats.**
+  - Few bridge items (9 to 15).
+  - Muse's recall loss is wide.
 
 ### Must the address be refit for each text format? (address refit per format, x45d; Lightning's coverage run 29 Oct) <a id="x45d"></a>
 
