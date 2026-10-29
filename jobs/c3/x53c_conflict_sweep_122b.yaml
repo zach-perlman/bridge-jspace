@@ -1,0 +1,41 @@
+id: x53c_conflict_sweep_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 1): the conflict test (main test, two people swap picks) with X0's three arms (whole / without the J++ part / without a random part of its share) at every 4th layer L1-L45 (12 layers, as Lightning's sweep), decided at L33 (X0's predicted layer for the 122B, unchanged); FP8, 2x H100; both readers; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.6
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x0_necessity.py run --name qwen35_122b_x53c_conflict --set d1_topics_v3 --renderings chat --layers 1 5 9 13 17 21 25 29 33 37 41 45 --alt cf --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --coverage --why "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 1): the conflict test, X0's three arms at every 4th layer (L1-L45, as Lightning's sweep), decided at L33 (X0's layer for the 122B); descriptive sweep: does the split hold at relative depth 0.25-0.50 too; no prediction: coverage run on an already-scored rule"
+question: >-
+  On Qwen3.5-122B-A10B (FP8), the main test: at L33 does the recall lose its switches without the J++ part of the
+  bridge word's change while the lookup does not (beyond a random part of the same share)? And what does the same
+  conflict test give at every 4th layer, in particular at relative depth 0.25-0.50 (L13, L17, L21)?
+why_it_matters: >-
+  Dan 18:20: "does the split hold at relative depth 0.25-0.50 too". Lightning's sweep (x52_lightning_conflict) showed
+  the split by layer on the second family; the 122B has it only at L30 / L33 / L36 (qwen35_122b_x0_necessity_r2).
+hypotheses:
+  none: "No prediction (coverage_122b_1820: rules verbatim, no predictions, UNVERIFIED)."
+decision_rule: >-
+  The main test's rule, verbatim from its original spec (jobs/c3/x0_necessity_27b_chat.yaml, as copied in
+  jobs/c3/x52_lightning_conflict.yaml): "jobs/c3/X0.md "Decision rule" with amendment 1 (24 Oct, before data), on this
+  run's chat rendering at layer 32: confirmed iff lookup excess <= 0.10 and recall Jdep >= 0.30 (23 Oct); killed iff
+  lookup excess >= 0.20 or recall Jdep < 0.20 (24 Oct); not confirmed otherwise (24 Oct); can't tell if either reader's
+  cell is invalid (S_whole < 0.30 or < 30 items switched; 24 Oct). Point estimates, top-token read; cand read
+  descriptive." Here the layer is the 122B's L33 (X0.md, PREDICTED) in place of 32; no new thresholds. The rule decides
+  at L33 only (Dan 18:20: "L33 stays the decided layer"); every other layer is descriptive, X0's label per layer in
+  the verdict table. As computed: J++ k = 25 signed OMP over the 122B's pinned J++ lens (fit on bf16, used on FP8);
+  excess = Jdep - Rdep with Rdep against X0's random subspace at the J++ part's share (seed 888 + layer); X0's
+  competence gate (0.80 per reader, both readers); the first 200 eligible scenes; W_U, W_E, the random dictionary,
+  the k curve and the non-negative arm not run (as x52_lightning_conflict). Gates never lowered; an invalid cell is
+  "can't tell" / "not tested".
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + layer): the reference of each extra loss"
+- "both readers on the identical patch (one change per scene)"
+- "X0's valid-cell bar (S_whole >= 0.30 and >= 30 switches), in the rule (can't tell)"
+- "the competence gate (0.80 per reader)"
+- "every swept layer reported, not only the decisive one"
+n: "the first 200 eligible scenes of d1_topics_v3, 2 readers, 12 layers"
+seeds: [24, 0, 888]
+notes: "Coverage, not hand-checked (Dan 18:20): results into EXPERIMENTS.md and figures only; the README untouched until after the 30 Oct check. Caveats: J++ fit on the bf16 weights used on the FP8 checkpoint; MoE (~10B active); 2x H100 PCIe, BJ_DEVICE_MAP=auto. L1 / L5 / L9 lie below the 0.25 depth floor (descriptive, as Lightning's L2-L10). Cost: competence on 600 scenes + 200 x 2 readers x 3 arms x 12 layers = 14,400 reads; qwen35_122b_d1_late_parts ran ~49k reads/h on this box, the r2 run (5 layers, ~10-19 arms) ~1.5-2 h wall: ~0.6-0.8 h wall x 2 GPUs."
