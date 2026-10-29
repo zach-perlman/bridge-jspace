@@ -485,15 +485,20 @@ def across_readers(models: list[dict]) -> dict[str, Any]:
     n_copy = sum(v["copy_bypasses"] and not v["below_gate"] for v in per.values())
     n_digits = sum(v["digits_only"] and not v["below_gate"] for v in per.values())
     missing = N_MODELS_WORDS - len(per)
+    counted = sum(not v["below_gate"] for v in per.values())
     if n_copy >= ACROSS_MIN:
         lab = "copy bypasses the lens"
     elif n_digits >= ACROSS_MIN:
         lab = "digits only"
     elif missing and (n_copy + missing >= ACROSS_MIN or n_digits + missing >= ACROSS_MIN):
         lab = f"pending ({len(per)} of {N_MODELS_WORDS} models)"
+    elif counted + missing < ACROSS_MIN:  # the rule's else: say why neither clause could be reached
+        lab = (f"in between (only {counted} of {N_MODELS_WORDS} models above their gate: neither clause can reach "
+               f"{ACROSS_MIN} of {N_MODELS_WORDS})")  # fmt: skip
     else:
         lab = "in between"
-    return {"label": lab, "per_model": per, "copy_models": n_copy, "digits_models": n_digits, "models": len(per)}
+    return {"label": lab, "per_model": per, "copy_models": n_copy, "digits_models": n_digits, "models": len(per),
+            "counted": counted}  # fmt: skip
 
 
 def word_example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) -> list[str]:
@@ -533,8 +538,10 @@ def stage_verdict_words(runs: list[str], locker_runs: list[str], n_boot: int = X
              "vocabulary); the change at the last token at each reader's own answer layer minus 1, 2, 3 and 51.10's read "
              "peak. UNVERIFIED.", "", f"Rule per reader and layer (53.3's): {RULE}; 53.3's validity bar (S_whole >= "
              f"{X.VALID_S}, >= {X.VALID_N} switches) applied.", "", f"Rule across readers: {RULE_WORDS}.", "",
-             f"As computed: {AS_COMPUTED_WORDS}.", "", f"**Across readers: {across['label']}** (copy bypasses on "
-             f"{across['copy_models']} of {across['models']} models run, digits only on {across['digits_models']}).", "",
+             f"As computed: {AS_COMPUTED_WORDS}; a model below its source's gate (○, hollow) is shown and never counted "
+             "toward a clause.", "", f"**Across readers: {across['label']}** (copy bypasses on {across['copy_models']} "
+             f"and digits only on {across['digits_models']} of the {across['counted']} models counted; "
+             f"{across['models']} models run).", "",
              "| model | reader | layer (why) | n (entities) | whole | without the lens part | without a random part | the "
              "lens part alone | loss beyond random | rest / whole | label | valid |",
              "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -661,22 +668,30 @@ def figure(models: list[dict], path: Path) -> None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    fig, axes = plt.subplots(1, len(models), figsize=(5.5 * len(models), 3.8), squeeze=False)
-    for ax, mdl in zip(axes[0], models, strict=True):
+    ncols = min(len(models), 4)
+    nrows = math.ceil(len(models) / ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(5.5 * ncols, 3.8 * nrows), squeeze=False)
+    for ax in axes.flat[len(models) :]:
+        ax.axis("off")
+    for ax, mdl in zip(axes.flat, models, strict=False):
         cells = mdl["cells"]
         arms = tuple(mdl.get("arms") or ARMS)[1:]
         width = 0.8 / len(arms)
+        hollow = bool(mdl.get("below_gate"))  # below its gate: hollow bars (exploratory)
         for j, a in enumerate(arms):
             xs = [i + (j - (len(arms) - 1) / 2) * width for i in range(len(cells))]
             ys = [c["rates"][a][0] for c in cells]
             err = [[max(0.0, c["rates"][a][0] - c["rates"][a][1]) for c in cells],
                    [max(0.0, c["rates"][a][2] - c["rates"][a][0]) for c in cells]]  # fmt: skip
-            ax.bar(xs, ys, width, yerr=err, capsize=2, label=ARM_TEXT[a].split(":")[0])
+            style = {"fill": False, "edgecolor": f"C{j}", "linewidth": 1.2} if hollow else {"color": f"C{j}"}
+            ax.bar(xs, ys, width, yerr=err, capsize=2, label=ARM_TEXT[a].split(":")[0], **style)
         ax.set_xticks(range(len(cells)))
         ax.set_xticklabels([f"{c['reader']} L{c['layer']}\n{c['text'][:24]}" for c in cells], fontsize=7)
         ax.set_ylim(0, 1)
         ax.set_ylabel("switched to S's answer")
-        ax.set_title(f"{mdl['target']} ({mdl['run']}{', below gate' if mdl.get('below_gate') else ''})", fontsize=9)
+        ax.set_title(
+            f"{mdl['target']} ({mdl['run']}{', below gate: hollow' if mdl.get('below_gate') else ''})", fontsize=9
+        )
     axes[0][0].legend(fontsize=6)
     fig.suptitle(f"{'53.3b: word answers' if any(m.get('mode') == 'words' for m in models) else '53.3'}: the conflict "
                  "test at the last token (UNVERIFIED)", fontsize=10)  # fmt: skip

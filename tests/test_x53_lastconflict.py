@@ -102,6 +102,10 @@ def test_a_model_below_gate_never_counts_toward_a_clause():
     assert res["copy_models"] == 2 and res["per_model"]["c"]["copy_bypasses"] and res["per_model"]["c"]["below_gate"]
     assert res["label"] == "pending (3 of 4 models)"
     assert LC.across_readers([*two_and_below, model("d", False)])["label"] == "copy bypasses the lens"
+    two_below = LC.across_readers([*two_and_below, model("d", True)])  # Muse and Lightning's case: 2 counted of 4
+    assert two_below["counted"] == 2 and two_below["label"].startswith(
+        "in between (only 2 of 4 models above their gate"
+    )
 
 
 def plant_z1p(root, run: str, n: int, data_dir) -> list[dict]:
