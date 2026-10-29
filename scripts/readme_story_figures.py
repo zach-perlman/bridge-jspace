@@ -12,6 +12,7 @@ from __future__ import annotations
 import csv
 import itertools
 import json
+import re
 import sys
 import textwrap
 from pathlib import Path
@@ -4112,6 +4113,158 @@ def cards_numbers() -> None:
         rec(lt, f"45d: the refit address, lookup switches lost beyond random: {fmt}", cell, p)
 
 
+# Dan's restructure (29 Oct 12:50, docs_1250): Parts II and III as cards; the address probe's Lightning run
+LT_PROBE = R / "x0_probe" / "nem35l_x52_probe" / "probe-20261029T002432Z" / "probe.json"
+
+
+def cards_numbers_parts23() -> None:
+    """Numbers Parts II and III's cards quote that no figure row or x0_numbers key held (Dan's 12:50 restructure, the
+    old cards turned into the card format), recorded as figure "cards" with each verdict file as source: the identity
+    route's rule label and the recall's loss per model (47.1), Lightning's address probe control and answer digit
+    (x0_probe v4's other models: x0_numbers v4_*), the 27B's six-locker label and scenes (47.2), Lightning's refit
+    outcome (45d)."""
+    for v in (latest_verdict("x47_atoms/x47_1-*") / "x47_1.json",
+              R / "x47_atoms" / "x52_atoms47-20261029T011717Z" / "x47_1.json"):  # fmt: skip
+        src = rel(v)
+        for m in json.loads(v.read_text())["models"]:
+            if m.get("status") != "tested":
+                continue
+            S.record("cards", m["target"], "47.1: the rule's label", m["label"], source=src)
+            S.record("cards", m["target"], "47.1: recall, switches lost beyond random without lens directions 26-100 "
+                     "(main test)", *m["recall_extra_loss"], source=src)  # fmt: skip
+    rows = json.loads(LT_PROBE.read_text())["rows"]
+    for stratum, target, what in (("after", "locker sentence", "the locker probe at the bridge word, locker-after "
+                                   "scenes (the control)"),
+                                  ("before", "answer digit", "the answer digit probe at the bridge word, locker-first "
+                                   "scenes")):  # fmt: skip
+        r = next(x for x in rows if x["subset"] == "all" and x["stratum"] == stratum and x["target"] == target)
+        S.record("cards", LT[0], f"address probe: {what}", *r["probe"], n=r["n"], source=rel(LT_PROBE))
+    p = X52["six_27b"]
+    m = json.loads(p.read_text())["models"][0]
+    S.record("cards", m["target"], "47.2: the rule's reading (dose 2)", m["label"], source=rel(p))
+    S.record("cards", m["target"], "47.2: test scenes", int(m["n"]), source=rel(p))
+    p = X52["x45d"]
+    S.record("cards", LT[0], "45d: the outcome", json.loads(p.read_text())["verdict"]["outcome"], source=rel(p))
+
+
+# Dan's restructure brief (29 Oct 12:50, docs_1250): Parts IV and V as cards. The token-by-layer map's verdicts (the 9B
+# and Muse; the 27B's and Lightning's coverage runs), the made-up-fact rerun on Muse (below its gate), and Dan's item 0:
+# the 9B's made-up-fact passages without the 60 whose bridge's true value stands in the lookup's passage (CPU, 11:57 UTC)
+DEPTHMAP = (R / "x47_depthmap" / "depth-20261028T120525Z" / "depth.json",
+            R / "x47_depthmap" / "x52_depthmap-20261029T010426Z" / "depth.json",
+            R / "x47_depthmap" / "x52_depthmap-20261029T011452Z" / "depth.json")  # fmt: skip
+Z1P_MUSE = R / "x50_zach" / "x52_z1p-20261029T094820Z" / "z1p.json"
+Z1P_CLEAN = R / "x50_zach" / "x53_z1p_clean-20261029T115708Z" / "verdict.json"
+
+
+def cards_numbers_parts45() -> None:
+    """Numbers and labels Part IV's and Part V's cards quote that no figure records (figure "cards"), each with its
+    verdict file as source: the token-by-layer map's readings (a) and (b) per model (clean one-pick scenes; Lightning
+    the main test, its clean design below gate), the copy test's reading, the address's reading across depth on the 27B
+    and Lightning, the routes test's reading on Zach's passages, Muse's made-up-fact passages (below gate), and the
+    9B's made-up-fact recheck both ways (Dan 12:50, item 0; pending hand-check)."""
+
+    def rec(model: str, what: str, v, src: Path, n=None) -> None:
+        vals = list(v) if isinstance(v, (list, tuple)) else [v]
+        S.record("cards", model, what, *vals[:3], n=n, source=rel(src))
+
+    for p in DEPTHMAP:
+        for m in json.loads(p.read_text())["models"]:
+            if m["status"] != "tested":
+                continue
+            design = "main" if m["target"] == LT[0] else "clean"
+            r = m["rules"][design]
+            for k, what in (("a", "(a) locker after: a locker-sentence cell carries the lookup"),
+                            ("b", "(b) locker first: the lookup leaves the bridge word before the recall")):  # fmt: skip
+                rec(m["target"], f"D1 ({design}): {what}", "yes" if r[k]["holds"] else "no", p)
+    p = pins.RESULTS_DIR / LANDED["45q"]["verdict"] / "x45q.json"
+    for m in json.loads(p.read_text())["models"]:
+        if m["status"] == "tested":
+            rec(m["model"], "45q: the rule's reading", m["rule"]["verdict"], p)
+    for p in X52["persistence"]:
+        for target, m in json.loads(p.read_text())["models"].items():
+            rec(target, "D4: the rule's reading (the address)", m["U"]["label"], p)
+    for p in X52["z3"]:
+        for m in json.loads(p.read_text())["models"]:
+            clause = m["layer_results"][str(m["layers"][0])]["verdict"]["clause"]
+            rec(m["target"], "Z3: the rule's reading", clause.split(" (")[0].split(":")[0], p)
+    m = json.loads(Z1P_MUSE.read_text())["models"][0]
+    r = m["layer_results"][str(m["layers"][0])]
+    rec(m["target"], "Z1-P: lookup, switches lost beyond a random part", r["lookup"]["excess"], Z1P_MUSE, r["n"])
+    rec(m["target"], "Z1-P: recall, switches lost beyond a random part", r["recall"]["excess"], Z1P_MUSE, r["n"])
+    rec(m["target"], "Z1-P: the gap", r["gap"], Z1P_MUSE, r["n"])
+    rec(m["target"], "Z1-P: lookups switched by the whole change", r["lookup"]["switched_whole"], Z1P_MUSE, r["n"])
+    rec(m["target"], "Z1-P: the gate (the lookup's read accuracy on the original passages)",
+        round(m["gate"]["org_read_accuracy"]["K"], 3), Z1P_MUSE)  # fmt: skip
+    v = json.loads(Z1P_CLEAN.read_text())
+    t = "qwen3.5-9b"
+    rec(t, "Z1-P recheck: passages left out (the bridge's true value in the lookup's passage)", len(v["excluded"]),
+        Z1P_CLEAN)  # fmt: skip
+    for key, what in (("full", "all passages"), ("clean", "without the passages holding the true value")):
+        c = v["layers"]["12"][key]
+        rec(t, f"Z1-P recheck, {what}: passages", c["n"], Z1P_CLEAN)
+        rec(t, f"Z1-P recheck, {what}: bridge entities", c["entities"], Z1P_CLEAN)
+        for w in ("lookup", "recall"):
+            rec(t, f"Z1-P recheck, {what}: {w}, switches lost beyond a random part", c[w]["excess"], Z1P_CLEAN, c["n"])
+        rec(t, f"Z1-P recheck, {what}: the gap", c["gap"], Z1P_CLEAN, c["n"])
+        rec(t, f"Z1-P recheck, {what}: the rule's reading", c["verdict"], Z1P_CLEAN)
+        for order in ("fact-first", "fact-after"):
+            o = c["order"]["strata"][order]
+            rec(t, f"Z1-P recheck, {what}: lookups switched by the whole change, {order}", o["whole_switch"],
+                Z1P_CLEAN, o["n"])  # fmt: skip
+
+
+VERIFY_INDEPENDENT = S.REPO / "review" / "verify_independent.json"
+VERIFY_CHECKS = S.REPO / "review" / "verify_checks.json"
+CLEAN49 = R / "checks" / "clean49_9b.json"
+RANK_CHECK = S.REPO / "docs" / "verify_pack_jspace.md"
+
+
+def checks_numbers() -> None:
+    """The numbers "How we checked" and the conflict card's rank-check line quote (Dan 12:50 docs_1250 and 13:15
+    answers_1315; the verify agent's keys, coordinator ~13:30), under figure "cards", each from its file: the independent
+    recount (summary.match of summary.rows), the automatic checks' items (summary.tier1.items), per-item failures and
+    the one check they come from, the recount, the rerun label agreement's range over models and arms
+    (summary.e1_label_agreement), the 9B's clean-checkout reruns that reproduce row for row (49.5), and the inspector's
+    rank check on the conflict test (S's bridge in the lens's top 50 under the J++ part, the rest and a random part)."""
+    ind = json.loads(VERIFY_INDEPENDENT.read_text())["summary"]
+    src = rel(VERIFY_INDEPENDENT)
+    S.record(
+        "cards", "", "checks: the independent recount, rows matching", f"{ind['match']} of {ind['rows']}", source=src
+    )
+    t1 = json.loads(VERIFY_CHECKS.read_text())["summary"]
+    src = rel(VERIFY_CHECKS)
+    S.record("cards", "", "checks: items the automatic checks read", f"{t1['tier1']['items']:,}", source=src)
+    S.record("cards", "", "checks: per-item check failures", t1["tier1"]["item_check_failures"], source=src)
+    by = t1["tier1"]["item_check_failures_by_check"]
+    S.record("cards", "", "checks: the per-item checks with a failure", len(by), source=src)
+    rc = t1["tier1"]["recount"]
+    S.record("cards", "", "checks: the automatic recount, numbers matching",
+             f"{rc['match']} of {rc['match'] + rc['mismatch']}", source=src)  # fmt: skip
+    agree = [a for m in t1["e1_label_agreement"].values() for a in m.values()]
+    n = {a["n"] for a in agree}
+    assert len(n) == 1, n
+    S.record("cards", "", "checks: rerun label agreement, the lowest over models and arms", min(a["agree"] for a in agree),
+             source=src)  # fmt: skip
+    S.record("cards", "", "checks: rerun label agreement, the highest over models and arms", max(a["agree"] for a in agree),
+             source=src)  # fmt: skip
+    S.record("cards", "", "checks: rerun label agreement, items per arm", n.pop(), source=src)
+    c = json.loads(CLEAN49.read_text())["comparisons"]
+    S.record("cards", "qwen3.5-9b", "checks: clean-checkout reruns reproducing row for row",
+             f"{sum(bool(x['identical']) for x in c)} of {len(c)}", source=rel(CLEAN49))  # fmt: skip
+    text = RANK_CHECK.read_text()
+    S.record("cards", "", "checks: the rank check's flags", int(re.search(r"\*\*Flags: (\d+)\*\*", text).group(1)),
+             source=rel(RANK_CHECK))  # fmt: skip
+    names = {"Qwen3.5-9B": "qwen3.5-9b", "Qwen3.6-27B": "qwen3.6-27b"}
+    for line in text.splitlines():
+        cells = [x.strip() for x in line.strip().strip("|").split("|")]
+        if len(cells) < 9 or cells[0] not in names or cells[1:4] != ["main_swap", "all", "S's bridge (word or symbol)"]:
+            continue
+        for v, part in zip(cells[5:8], ("the J++ part", "the rest", "a random part"), strict=True):
+            S.record("cards", names[cells[0]], f"rank check, conflict test: the new bridge word in the lens's top 50, {part}",
+                     float(v), n=int(cells[4]), source=rel(RANK_CHECK))  # fmt: skip
+
+
 CARD_MODELS = tuple(m for m in S.MODELS if m[1] != "122b")  # 9B, 27B, Muse
 # 51.12's verdict keys in the page's words (the verdict's own label stays in verdict.json)
 ANSWER_LABEL = {"entity": "the item", "answer": "the answer", "mixed": "mixed", "na": "can't tell",
@@ -4228,13 +4381,35 @@ X53_2X2 = pins.RESULTS_DIR / "x53_2x2" / "x53_2x2-20261029T113335Z" / "verdict.j
 def f19_identity_address(plt) -> None:
     from scripts import story_b53 as B53
 
-    B53.build_identity_address((X53_IDADDR,), "fig19_identity_address", {"qwen3.5-122b-a10b": "not run yet: queued"})
+    B53.build_identity_address((X53_IDADDR,), "fig19_identity_address", {"qwen3.5-122b-a10b": "not run yet"})
 
 
 def f20_order_cell(plt) -> None:
     from scripts import story_b53 as B53
 
     B53.build_order_cell(X53_2X2, "fig20_order_cell")
+
+
+# Dan's README brief (29 Oct 12:50, docs_1250 item 2): Part III's code and tool output card (53.7) and Part IV's
+# Lightning attention blocks card (53.4 + span); their verdict paths in scripts/story_b53b.py
+def f21_code_tool(plt) -> None:
+    from scripts import story_b53b as B53B
+
+    B53B.build_code_tool()
+
+
+def f22_attention_blocks(plt) -> None:
+    from scripts import story_b53b as B53B
+
+    B53B.build_attention_blocks()
+
+
+# the coordinator (29 Oct ~13:50): 53.2, "the scope answer", a Part III card next to the lens-blindness card; its verdict
+# path in scripts/story_b53c.py
+def f23_monitor(plt) -> None:
+    from scripts import story_b53c as B53C
+
+    B53C.build_monitor()
 
 
 def s17_jspace_grids(plt) -> None:
@@ -4247,7 +4422,8 @@ def s17_jspace_grids(plt) -> None:
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
-               f13_attention, f14_learned, f16_dose, f17_jspace_last_token, f18_atoms)  # fmt: skip
+               f13_attention, f14_learned, f16_dose, f17_jspace_last_token, f18_atoms, f19_identity_address,
+               f20_order_cell, f21_code_tool, f22_attention_blocks, f23_monitor)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -4273,16 +4449,21 @@ SUPP_FIGS = (
 # Appendix) moved to the second sheet; Dan decides. His Fig. 5b / 5d brief (~20:30): E3's card shows Fig. 5d, and
 # Fig. 5b (the main test's parts) goes to the second sheet, linked from E1, to keep the sheet at fourteen. Dan's
 # restructure brief (28 Oct 22:20): one figure per card, every page figure on this sheet in page order; Part I's cards
-# show the dose curves (Fig. 16) and the earlier mention (Fig. 3c), the 2 x 2 moves to Part V
-README_NAMES = ("fig00_setup", "fig00b_marks", "fig01_split", "fig18_atoms", "fig09a_transfer", "fig16_dose",
-                "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig06b_anatomy",
-                "fig07_writes", "fig09b_six_lockers", "fig07b_verbal", "fig03_order", "fig03d_depth_map",
-                "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
+# show the dose curves (Fig. 16) and the earlier mention (Fig. 3c), the 2 x 2 moves to Part V. Dan's 12:50 restructure
+# (29 Oct, docs_1250): the scorecard (Fig. 11) right under "In one minute"; Part I gains the lens part against the
+# address (Fig. 19) and the order cell (Fig. 20), its dose card moves to the ledger (Fig. 16 to the second sheet); Part
+# III gains the monitor (Fig. 23), the refit (Fig. 9b refit) and code and tool output (Fig. 21); Part IV Lightning's
+# attention blocks (Fig. 22)
+README_NAMES = ("fig11_scorecard", "fig00_setup", "fig00b_marks", "fig01_split", "fig18_atoms",
+                "fig19_identity_address", "fig09a_transfer", "fig20_order_cell", "fig01d_ladder",
+                "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig07_writes", "fig09b_six_lockers",
+                "fig07b_verbal", "fig23_monitor", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map",
+                "fig22_attention_blocks", "fig06b_anatomy", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
-              "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig11_scorecard", "fig15_mechanisms",
-              "fig13_attention", "fig14_learned", "fig09b_refit", "fig09_transfer",
+              "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
+              "fig13_attention", "fig14_learned", "fig09_transfer",
               *(n for n in BATCH47 if n not in README_NAMES),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
@@ -4340,9 +4521,18 @@ def main(argv: list[str] | None = None) -> None:
     card_numbers()
     ladder_agreement()
     cards_numbers()
+    cards_numbers_parts23()
+    cards_numbers_parts45()
+    checks_numbers()
+    from scripts import story_b53c as B53C
+
+    B53C.record_card_numbers()
     from scripts import story_b53 as B53
 
     B53.record_card_numbers(X53_IDADDR, X53_2X2)
+    from scripts import story_b53b as B53B
+
+    B53B.record_card_numbers()
     if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/ledger/, their rows into data.csv
         from scripts import ledger_figures as LF
 
