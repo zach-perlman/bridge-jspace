@@ -21,7 +21,18 @@ CASES = [
                                              coverage=True), "x52_enrich", {Q27, LT}),
     ("x49_gain", lambda M: M.stage_verdict(None, 10, coverage=True), "x52_gain", {LT}),
     ("x47_edges", lambda M: M.stage_verdict(None, 10, coverage=True), "x52_edges", {Q27}),
+    ("x47_cue", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_cue", {LT}),
+    ("x47_report", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_report", {LT}),
+    ("x47_agnostic", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_agnostic",
+     {Q27, LT}),
+    ("x47_chain", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_chain", {Q27, LT}),
+    ("x47_distance", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_distance",
+     {Q27, LT}),
+    ("x47_cumulative", lambda M: M.stage_verdict(list(M.COVERAGE_RUNS.values()), 10, coverage=True), "x52_cumulative",
+     {Q27, LT}),
 ]  # fmt: skip
+DESIGN_RUNS_REFUSED = ["x48_heads", "x48_bind", "x49_probe", "x47_source", "x47_cue", "x47_report", "x47_agnostic",
+                       "x47_chain", "x47_distance"]  # fmt: skip
 
 
 @pytest.mark.parametrize(("script", "call", "stem", "targets"), CASES, ids=[c[0] for c in CASES])
@@ -41,10 +52,23 @@ def test_coverage_verdict_reads_the_coverage_runs_alone(tmp_path, monkeypatch, s
     assert targets <= named and "qwen3.5-9b" not in named and "muse-glimmer-30b" not in named, named
 
 
-@pytest.mark.parametrize("script", ["x48_heads", "x48_bind", "x49_probe", "x47_source"])
+@pytest.mark.parametrize("script", DESIGN_RUNS_REFUSED)
 def test_coverage_verdict_refuses_a_design_run(tmp_path, monkeypatch, script):
     """--coverage reads coverage runs only; a design model's run (the 9B's) is refused."""
     M = importlib.import_module(f"scripts.{script}")
     monkeypatch.setattr(M, "RESULTS", tmp_path)
     with pytest.raises(AssertionError, match="runs on"):
         M.stage_verdict([M.RUNS["qwen3.5-9b"]], 10, coverage=True)
+
+
+@pytest.mark.parametrize("script", ["x47_cue", "x47_report", "x47_agnostic", "x47_chain", "x47_distance",
+                                    "x47_cumulative"])  # fmt: skip
+def test_cli_coverage_defaults_to_the_coverage_runs(tmp_path, monkeypatch, script):
+    """`verdict --coverage` without --runs reads COVERAGE_RUNS; `verdict` alone still reads the design's RUNS."""
+    M = importlib.import_module(f"scripts.{script}")
+    seen = []
+    monkeypatch.setattr(M, "stage_verdict", lambda runs, n_boot, coverage=False: seen.append((runs, coverage)))
+    for argv in (["verdict", "--coverage"], ["verdict"]):
+        monkeypatch.setattr("sys.argv", [script, *argv])
+        M.main()
+    assert seen == [(list(M.COVERAGE_RUNS.values()), True), (list(M.RUNS.values()), False)]

@@ -76,8 +76,10 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.3"
 RUNS = {"qwen3.6-27b": "x47_cue_27b", "qwen3.5-9b": "qwen35_9b_x47_cue", "muse-glimmer-30b": "muse30_x47_cue"}
 # batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cue"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_cue/x47_3-20261028T113104Z"  # 47.3's rule first scored (27B, 9B, Muse)
 
 FRAME = "{p} picked the one known for {cue}."
 # per animal, the cue candidates in order of preference (a sound or behaviour first where one exists); the first that
@@ -709,7 +711,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending, not tested (cue competence or gate), or its numbers and the rule's clauses."""
     src = RESULTS / run
     if not (src / "manifest.json").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         return {"run": run, "target": target, "status": "pending", "why": "no run here"}
     m = json.loads((src / "manifest.json").read_text())
     base = {"run": run, "target": m["model"]["target"], "layer": m["layer"]}
@@ -815,13 +817,17 @@ def view(run: str, decode=None, k: int = N_VIEW, seed: int = VIEW_SEED) -> list[
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode=None, coverage: bool = False) -> Path:
+    """47.3's verdict (sealed until Q47.3), or with coverage (batch 52 C) the same rule on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, written to x52_cue-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [mm["target"] for mm in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    out = RESULTS / f"x47_3-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    if coverage:
+        assert set(targets) <= set(COVERAGE_RUNS), f"47.3 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    out = RESULTS / f"{'x52_cue' if coverage else 'x47_3'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     yn = lambda b: "yes" if b else "no"  # noqa: E731
     lines = ["# 47.3: a computed bridge, the routes test with a described item (UNVERIFIED)", "",
@@ -870,6 +876,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Path:
                   f"cos² with U {d['pcf_fit'].get('cos2_with_U')} (random {d['pcf_fit'].get('random_mean_cos2')}).",
                   f"Lookup on O naming an animal instead of a digit (greedy, unedited): {ni['count']} of {ni['n']}. "
                   f"Elimination check (A's cue swapped for an absent animal's; original = A's locker): {el}.", ""]  # fmt: skip
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_3.json").write_text(json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str)
                                     + "\n")  # fmt: skip
     (out / "x47_3.md").write_text("\n".join(lines) + "\n")
@@ -905,8 +913,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view"])
     ap.add_argument("--name", help="run: the run name (results/x47_cue/<name>/)")
-    ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the runs (27B, 9B, Muse)")
+    ap.add_argument("--runs", nargs="+", default=None,
+                    help=f"verdict / view: the runs (default {list(RUNS.values())}; with --coverage the coverage runs)")  # fmt: skip
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs (default {list(COVERAGE_RUNS.values())}; '{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -914,9 +925,10 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name)
     elif a.stage == "view":
-        stage_view(a.runs)
+        stage_view(a.runs or list(RUNS.values()))
     else:
-        stage_verdict(a.runs, a.n_boot)
+        default = COVERAGE_RUNS if a.coverage else RUNS
+        stage_verdict(a.runs or list(default.values()), a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

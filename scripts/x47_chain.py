@@ -84,6 +84,11 @@ SPEC = "jobs/c3/batch47.yaml (47.14)"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.14"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_14", "muse-glimmer-30b": "muse30_x47_14"}
+# batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, x52_lightning_fill1.yaml): read by verdict
+# --coverage alone (RUNS and the design's own verdict unchanged)
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_14_27b", "nemotron-3.5-lightning": "nem35l_x52_chain"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_chain/x47_14-20261028T115841Z"  # 47.14's rule first scored (the 9B and Muse)
 SEED, SPLIT_SEED = 4714, 4715
 N_GEN, N_ITEMS = 500, 300
 HALL = "PPP"  # the three-step reader's key (X.LOOKUP = "PP" is the locker question)
@@ -610,7 +615,7 @@ def rule(probe: dict, hall: dict, locker: dict) -> dict:
 def model_result(run: str, n_boot: int = X.N_BOOT) -> dict:
     src = RESULTS / run
     if not (src / "manifest.json").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 47.14 run {run!r} here, and it is not one of the specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "holds": False, "why": "no manifest here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -703,17 +708,24 @@ def report_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.14's verdict (sealed until Q47.14), or with coverage (batch 52 C) the same rule on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_chain-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
-               for t in RUNS if t not in targets]  # fmt: skip
-    out = RESULTS / f"x47_14-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    if coverage:
+        assert set(targets) <= set(COVERAGE_RUNS), f"47.14 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    else:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
+                   for t in RUNS if t not in targets]  # fmt: skip
+    out = RESULTS / f"{'x52_chain' if coverage else 'x47_14'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = report_lines(models, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_14.json").write_text(json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str)
                                      + "\n")  # fmt: skip
     (out / "x47_14.md").write_text("\n".join(lines) + "\n")
@@ -778,10 +790,12 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "examples"])
     ap.add_argument("--name", help="run: the run name (results/x47_chain/<name>/)")
-    ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / examples: the 47.14 runs")
+    ap.add_argument("--runs", nargs="+", default=None,
+                    help=f"verdict / examples: the 47.14 runs (default {list(RUNS.values())}; with --coverage the coverage runs)")  # fmt: skip
     ap.add_argument("--why", default="batch 47, test 47.14 (jobs/c3/batch47.yaml; Q47.14)")
     ap.add_argument("--n-gen", type=int, default=N_GEN, help="plan: the candidates to generate")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.n_gen)
@@ -789,9 +803,10 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        default = COVERAGE_RUNS if a.coverage else RUNS
+        stage_verdict(a.runs or list(default.values()), a.n_boot, a.coverage)
     else:
-        stage_examples(a.runs)
+        stage_examples(a.runs or list(RUNS.values()))
 
 
 if __name__ == "__main__":

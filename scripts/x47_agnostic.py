@@ -80,8 +80,10 @@ REFERENCE, NEW_TYPES = "animals", ("fruits", "names")
 SEED, SPLIT_SEED, N_GEN, N_ITEMS = 4711, 4712, R.N_GEN, R.N_ITEMS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_agnostic", "muse-glimmer-30b": "muse30_x47_agnostic"}
 # batch 52 C coverage (amendment 2: the 27B fills every gap): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (the 27B's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"qwen3.6-27b": "x47_agnostic_27b", "nemotron-3.5-lightning": "nem35l_x52_agnostic"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_agnostic/x47_11-20261028T143952Z"  # 47.11's rule first scored (the 9B and Muse)
 STORED_ANIMALS = {
     "qwen3.5-9b": "qwen35_9b_x6_routes_keeponly",
     "muse-glimmer-30b": "muse30b_x6_routes",
@@ -604,7 +606,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict:
     """One model's run: pending (not here), or per type the numbers and the rule."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 47.11 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {
             "run": run,
@@ -736,16 +738,23 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.11's verdict (sealed until Q47.11), or with coverage (batch 52 C) the same rule on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_agnostic-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else unsealed()
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "answer": "pending", "why": "no run given"}
-               for t in RUNS if t not in targets]  # fmt: skip
-    out = RESULTS / f"x47_11-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    if coverage:
+        assert set(targets) <= set(COVERAGE_RUNS), f"47.11 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    else:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "answer": "pending", "why": "no run given"}
+                   for t in RUNS if t not in targets]  # fmt: skip
+    out = RESULTS / f"{'x52_agnostic' if coverage else 'x47_11'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_11.json").write_text(json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1) + "\n")
     (out / "x47_11.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -808,8 +817,10 @@ def main() -> None:
     ap.add_argument(
         "--targets", nargs="+", default=list(RUNS), help="plan: the targets whose tokenizers check the pools"
     )
-    ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the 47.11 runs")
+    ap.add_argument("--runs", nargs="+", default=None,
+                    help=f"verdict / view: the 47.11 runs (default {list(RUNS.values())}; with --coverage the coverage runs)")  # fmt: skip
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.targets)
@@ -817,9 +828,10 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, tuple(a.types))
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        default = COVERAGE_RUNS if a.coverage else RUNS
+        stage_verdict(a.runs or list(default.values()), a.n_boot, a.coverage)
     else:
-        stage_view(a.runs)
+        stage_view(a.runs or list(RUNS.values()))
 
 
 if __name__ == "__main__":

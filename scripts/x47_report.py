@@ -97,8 +97,10 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION, TEST = "Q47.10", "47.10"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_report", "qwen3.6-27b": "x47_report_27b", "muse-glimmer-30b": "muse30_x47_report"}
 # batch 52 C coverage (amendment 2: the full grid on Lightning): run-stage targets beyond the design's; the
-# verdict's own model list is unchanged (Lightning's run is read by passing it to the verdict)
+# verdict's own model list is unchanged (verdict --coverage reads these runs alone)
 COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_report"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_report/x47_10-20261028T113109Z"  # 47.10's rule first scored (9B, 27B, Muse)
 ORDERS = ("last", "first")
 ORDER_TEXT = {"last": "question-last: the question after the context (tasks_v2's prompt, as every routes test)",
               "first": "question-first: the question and its instruction before the context, one user turn"}  # fmt: skip
@@ -752,7 +754,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending (not here), not tested (the gate), or its orders' results."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "gate.json").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 47.10 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "the run has no manifest or gate here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -779,15 +781,20 @@ def fmt(v: list | None) -> str:
     return f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]".replace("-", "−")
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.10's verdict (sealed until Q47.10), or with coverage (batch 52 C) the same rule on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_report-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rule first scored in {SCORED}" if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [mm["target"] for mm in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"} for t in RUNS
-               if t not in targets]  # fmt: skip
-    out = RESULTS / f"x47_10-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    if coverage:
+        assert set(targets) <= set(COVERAGE_RUNS), f"47.10 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    else:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"} for t in RUNS
+                   if t not in targets]  # fmt: skip
+    out = RESULTS / f"{'x52_report' if coverage else 'x47_10'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 47.10: report the address (on-demand surfacing into the J-space)", "",
              f"Batch 47, amendment 4, test {TEST} (jobs/c3/batch47.yaml; {QUESTION}, Dan: {answer}). Routes C0 scenes, "
@@ -868,6 +875,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     lines += ["", "The rule is applied per order. In the question-last order the lens clause cannot separate the "
               "readers (one state); the question-first order is where surfacing on demand can show. Which order "
               "answers Q47.10 is Dan's call (the spec's as-computed paragraph)."]  # fmt: skip
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_10.json").write_text(json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1) + "\n")
     (out / "x47_10.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -992,7 +1001,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view", "figures"])
     ap.add_argument("--name", help="run / view: the run name (results/x47_report/<name>/)")
-    ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict: the 47.10 runs (9B, 27B, Muse)")
+    ap.add_argument("--runs", nargs="+", default=None,
+                    help=f"verdict: the 47.10 runs (default {list(RUNS.values())}; with --coverage the coverage runs)")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     ap.add_argument("--why", default=f"batch 47, test {TEST} (jobs/c3/batch47.yaml; {QUESTION})")
     ap.add_argument("--orders", default=",".join(ORDERS), help="run: the question orders, comma-separated (last,first)")
     ap.add_argument("--n-gen", type=int, default=N_GEN, help="run / plan: C0 scenes generated")
@@ -1010,7 +1021,8 @@ def main() -> None:
         assert len(set(orders)) == len(orders), f"--orders {orders}: an order twice"
         stage_run(a.name, a.why, orders, a.n_gen, a.n_items)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        default = COVERAGE_RUNS if a.coverage else RUNS
+        stage_verdict(a.runs or list(default.values()), a.n_boot, a.coverage)
     elif a.stage == "view":
         assert a.name, "view needs --name"
         stage_view(a.name)

@@ -94,6 +94,11 @@ ALT = {"main": "cf", "clean": "fresh"}  # the x0_necessity alt each design's sou
 SOURCES = {"main": B.MAIN_RUN, "clean": B.FRESH_RUN}  # design -> target -> the source X0 run (main test / 45m)
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_cumulative", "qwen3.6-27b": "x47_cumulative_27b",
         "muse-glimmer-30b": "muse30_x47_cumulative"}  # fmt: skip
+# batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, the 27B's spec never ran before; and
+# x52_lightning_fill4.yaml): read by verdict --coverage alone (the design's own verdict unchanged)
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_cumulative_27b", "nemotron-3.5-lightning": "nem35l_x52_cumulative"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_cumulative/x47_4-20261028T113105Z"  # 47.4 first read (the 9B and Muse; descriptive, no bar)
 ARMS = ("none", "a", "b", "c", "d", "b_blocks", "S")
 ARM_TEXT = {
     "none": "O unedited",
@@ -669,7 +674,7 @@ def model_result(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     """One model's run: pending (not here), or per design, reader and group the decomposition, and the checks."""
     src = RESULTS / run
     if not (src / "manifest.json").exists() or not (src / "outcomes.jsonl").exists():
-        target = {r: t for t, r in RUNS.items()}.get(run)
+        target = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}.get(run)
         assert target, f"no 47.4 run {run!r} here, and it is not one of the job specs' runs {sorted(RUNS.values())}"
         return {"run": run, "target": target, "status": "pending", "why": "the run has no manifest or outcomes here"}
     m = json.loads((src / "manifest.json").read_text())
@@ -697,16 +702,21 @@ def fmt(v: list) -> str:
         f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]".replace("-", "−"))  # fmt: skip
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """47.4's verdict (sealed until Q47.4), or with coverage (batch 52 C) the same reading on the given coverage runs
+    alone: no seal guard, "no prediction" in place of Dan's answer, no pending rows, written to x52_cumulative-<UTC>/."""
+    answer = f"{NO_PREDICTION}; first read in {SCORED}" if coverage else unsealed()
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
-               for t in RUNS if t not in targets]  # fmt: skip
+    if coverage:
+        assert set(targets) <= set(COVERAGE_RUNS), f"47.4 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    else:
+        models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "why": "no run given"}
+                   for t in RUNS if t not in targets]  # fmt: skip
     tested = [m for m in models if m["status"] == "tested"]
     flags = [f"{m['target']}: {f}" for m in tested for f in m["bugs"]["flags"]]
-    out = RESULTS / f"x47_4-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_cumulative' if coverage else 'x47_4'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 47.4: why does not every answer switch? Cumulative patches at the bridge token", "",
              f"Batch 47, test 47.4 (jobs/c3/batch47.yaml; {QUESTION}, Dan: {answer}). Arms on O, read by X0's chat read "
@@ -788,6 +798,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
             lines.append(f"- {m['target']}, {design} items: {p['items']} of {p['items_at_L']} at L from {p['source']} "
                          f"(dropped {p['dropped'] or 'none'}; groups {p['groups']}; other change first "
                          f"{p['upstream'].get('True', 0)}; {p['entities']} bridge items)")  # fmt: skip
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_4.json").write_text(json.dumps({"runs": runs, "dan": answer, "flags": flags, "models": models}, indent=1)
                                     + "\n")  # fmt: skip
     (out / "x47_4.md").write_text("\n".join(lines) + "\n")
@@ -897,7 +909,9 @@ def main() -> None:
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view", "figures"])
     ap.add_argument("--name", help="run: the run name (results/x47_cumulative/<name>/)")
     ap.add_argument("--why", default="batch 47, test 47.4 (jobs/c3/batch47.yaml; Q47.4, sealed)")
-    ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the 47.4 runs")
+    ap.add_argument("--runs", nargs="+", default=None,
+                    help=f"verdict / view: the 47.4 runs (default {list(RUNS.values())}; with --coverage the coverage runs)")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     ap.add_argument("--verdict", type=Path, help="figures: the verdict folder (results/x47_cumulative/x47_4-<UTC>)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--designs", nargs="+", choices=list(DESIGNS), default=list(DESIGNS),
@@ -910,9 +924,10 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        default = COVERAGE_RUNS if a.coverage else RUNS
+        stage_verdict(a.runs or list(default.values()), a.n_boot, a.coverage)
     elif a.stage == "view":
-        stage_view(a.runs)
+        stage_view(a.runs or list(RUNS.values()))
     else:
         assert a.verdict, "figures needs --verdict"
         stage_figures(a.verdict)
