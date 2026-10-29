@@ -1,0 +1,540 @@
+{
+  "status": "done",
+  "layer": 14,
+  "label": "L14",
+  "rule": "Batch 52 prerequisite (jobs/c3/batch52.yaml part C, Dan's words): \"the gate passes on 60 main-test scenes; the layer is fixed by the published rule (earliest layer where both readers switch >= 0.3, sweeping every 4th layer)\". As computed: the gate = X0's (unedited org accuracy under X0's top-token read >= 0.80 for both readers) on the first 60 main-test scenes in scene order; the sweep = the whole change at the bridge word on 60 dev scenes (51.6's split: random.Random(0).sample of the eligible scenes) at L2, L6, ..., L50; the layer by amendment 1 (PICK_RULE: the earliest layer where both readers' switch rates are >= 0.3 at relative depth >= 0.25); every swept layer's rates, passing status and the bridge word's lens readability recorded; none: \"the bridge word does not redirect the lookup at any layer on Lightning\" and the column is cancelled",
+  "n_layers": 52,
+  "passing_layers": [
+    2,
+    6,
+    10,
+    14,
+    18,
+    22
+  ],
+  "candidates": [
+    14,
+    18,
+    22
+  ],
+  "rates": {
+    "2": {
+      "lookup": 0.9833333333333333,
+      "recall": 0.9666666666666667
+    },
+    "6": {
+      "lookup": 0.8666666666666667,
+      "recall": 0.9833333333333333
+    },
+    "10": {
+      "lookup": 0.7833333333333333,
+      "recall": 0.9833333333333333
+    },
+    "14": {
+      "lookup": 0.5833333333333334,
+      "recall": 0.9833333333333333
+    },
+    "18": {
+      "lookup": 0.5166666666666667,
+      "recall": 0.9666666666666667
+    },
+    "22": {
+      "lookup": 0.31666666666666665,
+      "recall": 0.8
+    },
+    "26": {
+      "lookup": 0.016666666666666666,
+      "recall": 0.4
+    },
+    "30": {
+      "lookup": 0.0,
+      "recall": 0.36666666666666664
+    },
+    "34": {
+      "lookup": 0.0,
+      "recall": 0.0
+    },
+    "38": {
+      "lookup": 0.0,
+      "recall": 0.0
+    },
+    "42": {
+      "lookup": 0.0,
+      "recall": 0.0
+    },
+    "46": {
+      "lookup": 0.0,
+      "recall": 0.0
+    },
+    "50": {
+      "lookup": 0.0,
+      "recall": 0.0
+    }
+  },
+  "rates_ci": {
+    "2": {
+      "lookup": [
+        0.9833333333333333,
+        0.9506172839506173,
+        1.0
+      ],
+      "recall": [
+        0.9666666666666667,
+        0.92,
+        1.0
+      ]
+    },
+    "6": {
+      "lookup": [
+        0.8666666666666667,
+        0.7878787878787878,
+        0.95
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.9411764705882353,
+        1.0
+      ]
+    },
+    "10": {
+      "lookup": [
+        0.7833333333333333,
+        0.6923076923076923,
+        0.8833333333333333
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.9411764705882353,
+        1.0
+      ]
+    },
+    "14": {
+      "lookup": [
+        0.5833333333333334,
+        0.4489619985925405,
+        0.7333333333333333
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.94,
+        1.0
+      ]
+    },
+    "18": {
+      "lookup": [
+        0.5166666666666667,
+        0.36619718309859156,
+        0.6724137931034483
+      ],
+      "recall": [
+        0.9666666666666667,
+        0.9130434782608695,
+        1.0
+      ]
+    },
+    "22": {
+      "lookup": [
+        0.31666666666666665,
+        0.1836734693877551,
+        0.4642857142857143
+      ],
+      "recall": [
+        0.8,
+        0.6811594202898551,
+        0.8983050847457628
+      ]
+    },
+    "26": {
+      "lookup": [
+        0.016666666666666666,
+        0.0,
+        0.04938271604938271
+      ],
+      "recall": [
+        0.4,
+        0.2692307692307692,
+        0.5072463768115942
+      ]
+    },
+    "30": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.36666666666666664,
+        0.22641509433962265,
+        0.4909170653907495
+      ]
+    },
+    "34": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "38": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "42": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "46": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "50": {
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "per_layer": {
+    "2": {
+      "depth": 0.0385,
+      "passes": true,
+      "deep_enough": false,
+      "candidate": false,
+      "lookup": [
+        0.9833333333333333,
+        0.9506172839506173,
+        1.0
+      ],
+      "recall": [
+        0.9666666666666667,
+        0.92,
+        1.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.0,
+        "top5": 0.0,
+        "median_rank": 38323.5
+      }
+    },
+    "6": {
+      "depth": 0.1154,
+      "passes": true,
+      "deep_enough": false,
+      "candidate": false,
+      "lookup": [
+        0.8666666666666667,
+        0.7878787878787878,
+        0.95
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.9411764705882353,
+        1.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.1,
+        "top5": 0.39166666666666666,
+        "median_rank": 62.5
+      }
+    },
+    "10": {
+      "depth": 0.1923,
+      "passes": true,
+      "deep_enough": false,
+      "candidate": false,
+      "lookup": [
+        0.7833333333333333,
+        0.6923076923076923,
+        0.8833333333333333
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.9411764705882353,
+        1.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.16666666666666666,
+        "top5": 0.31666666666666665,
+        "median_rank": 50.5
+      }
+    },
+    "14": {
+      "depth": 0.2692,
+      "passes": true,
+      "deep_enough": true,
+      "candidate": true,
+      "lookup": [
+        0.5833333333333334,
+        0.4489619985925405,
+        0.7333333333333333
+      ],
+      "recall": [
+        0.9833333333333333,
+        0.94,
+        1.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.24166666666666667,
+        "top5": 0.8666666666666667,
+        "median_rank": 2.0
+      }
+    },
+    "18": {
+      "depth": 0.3462,
+      "passes": true,
+      "deep_enough": true,
+      "candidate": true,
+      "lookup": [
+        0.5166666666666667,
+        0.36619718309859156,
+        0.6724137931034483
+      ],
+      "recall": [
+        0.9666666666666667,
+        0.9130434782608695,
+        1.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.44166666666666665,
+        "top5": 0.9333333333333333,
+        "median_rank": 2.0
+      }
+    },
+    "22": {
+      "depth": 0.4231,
+      "passes": true,
+      "deep_enough": true,
+      "candidate": true,
+      "lookup": [
+        0.31666666666666665,
+        0.1836734693877551,
+        0.4642857142857143
+      ],
+      "recall": [
+        0.8,
+        0.6811594202898551,
+        0.8983050847457628
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.15,
+        "top5": 0.35,
+        "median_rank": 26.0
+      }
+    },
+    "26": {
+      "depth": 0.5,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.016666666666666666,
+        0.0,
+        0.04938271604938271
+      ],
+      "recall": [
+        0.4,
+        0.2692307692307692,
+        0.5072463768115942
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.35833333333333334,
+        "top5": 0.9166666666666666,
+        "median_rank": 2.0
+      }
+    },
+    "30": {
+      "depth": 0.5769,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.36666666666666664,
+        0.22641509433962265,
+        0.4909170653907495
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.25,
+        "top5": 0.8916666666666667,
+        "median_rank": 3.0
+      }
+    },
+    "34": {
+      "depth": 0.6538,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.13333333333333333,
+        "top5": 0.5166666666666667,
+        "median_rank": 5.0
+      }
+    },
+    "38": {
+      "depth": 0.7308,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.06666666666666667,
+        "top5": 0.475,
+        "median_rank": 8.0
+      }
+    },
+    "42": {
+      "depth": 0.8077,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.041666666666666664,
+        "top5": 0.10833333333333334,
+        "median_rank": 188.0
+      }
+    },
+    "46": {
+      "depth": 0.8846,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.025,
+        "top5": 0.06666666666666667,
+        "median_rank": 92.0
+      }
+    },
+    "50": {
+      "depth": 0.9615,
+      "passes": false,
+      "deep_enough": true,
+      "candidate": false,
+      "lookup": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "readability": {
+        "n": 120,
+        "top1": 0.0,
+        "top5": 0.016666666666666666,
+        "median_rank": 41.0
+      }
+    }
+  },
+  "n_dev": 60,
+  "layers": [
+    2,
+    6,
+    10,
+    14,
+    18,
+    22,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "prediction": "no prediction: the layer is a design choice fixed by the published rule (batch 52 addendum)",
+  "prereq_gate": "main",
+  "gate60_pass": false,
+  "main_gate_pass": true
+}
