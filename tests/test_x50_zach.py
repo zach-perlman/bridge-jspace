@@ -101,6 +101,29 @@ def test_z1_order_strata_follow_the_sentence_order(tok, z1_pairs):
         assert (c["stratum"] == "fact-first") == first == c["order"]["bridge_fact_first"]
 
 
+def test_z1p_reads_the_made_up_facts_of_the_p_passage(tok):
+    """Z1-P (Dan's morning brief, 29 Oct): Z1 on the P items: the lookup reads the PP passage (made-up values stated for
+    every entity), the recall PM; O's and S's lookup answers are the made-up values its passage states, the recall's the
+    true facts; the order strata follow the P passage's own fact sentences; Z1's rule verbatim; the committed L only."""
+    ps, why = Z.load_pairs(Z.SETS[0], "z1p")
+    assert not why and len(ps) == 358 and all(p[Z.LOOKUP]["word"] == "PP" and p[Z.RECALL]["word"] == "PM" for p in ps)
+    cases, drops = Z.z1_cases(tok, ps[:60], "z1p")
+    assert len(cases) + sum(drops.values()) == 60 and len(cases) >= 30
+    for c in cases:
+        k, m = c["readers"][Z.LOOKUP], c["readers"][Z.RECALL]
+        src = next(p for p in ps if p[Z.LOOKUP]["scene"] == c["scene"])
+        rel, w = c["relation"], c["wording"]
+        assert k["answer"] == src[Z.LOOKUP]["answer"] == Z.lure(rel, w, c["bridge"], k["context"])
+        assert k["cf_answer"] == Z.lure(rel, w, c["cf_bridge"], k["context"]) != k["answer"]
+        assert m["answer"] == Z.fact(rel, c["bridge"]) and m["cf_answer"] == Z.fact(rel, c["cf_bridge"])
+        assert k["tok_A"] != k["tok_b"] and m["tok_A"] != m["tok_b"] and k["lure"] is None
+        ptr = k["context"].index(Z.pointer(src[Z.LOOKUP], c["bridge"]))
+        first = k["context"].index(Z.pfact(rel, w, c["bridge"], k["answer"])) < ptr
+        assert (c["stratum"] == "fact-first") == first
+    assert Z.RULE["z1p"] == Z.RULE["z1"] and "z1p" not in Z.RUNS
+    assert set(Z.COVERAGE_RUNS["z1p"]) == {"qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning"}
+
+
 def test_z2_counterfactual_changes_only_the_description(tok):
     ps, _ = Z.load_pairs(Z.SETS[0], "z2")
     opts, _ = Z.z2_options(tok, ps[:80])
@@ -510,6 +533,6 @@ def test_lightning_coverage_reads_the_committed_layer_and_his_band(monkeypatch):
     lt = "nemotron-3.5-lightning"
     assert Z.LAYERS[lt] == (L6.committed_layer(), 27) and Z.BESIDE_BAND[lt] == "L27-33"
     assert (Z.pins.RESULTS_DIR / "ablate_v2" / Z.BESIDE[lt]["full"]).exists()
-    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z2", "z3"}
+    assert all(lt not in Z.RUNS[p] for p in Z.RUNS) and set(Z.COVERAGE_RUNS) == {"z1", "z2", "z3", "z1p"}
     monkeypatch.setattr(Z, "COVERAGE", True)
     assert Z.require_answer("z1") == Z.NO_PREDICTION

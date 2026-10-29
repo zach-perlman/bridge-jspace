@@ -91,9 +91,11 @@ EXP = "x50_zach"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch50.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
-PARTS = ("z1", "z2", "z3")
-QUESTION = {"z1": "Q50.1", "z2": "Q50.2", "z3": "Q50.3"}
-WORDS = {"z1": ("PK", "PM"), "z2": ("MK", "MM"), "z3": ("PK", "PM")}  # (K final: lookup, M final: recall); Z3 reads K
+PARTS = ("z1", "z2", "z3", "z1p")
+Z1_LIKE = ("z1", "z1p")  # Z1's design: the named bridge
+QUESTION = {"z1": "Q50.1", "z2": "Q50.2", "z3": "Q50.3", "z1p": "Z1-P (no Q-line: Dan's morning brief, 29 Oct)"}
+WORDS = {"z1": ("PK", "PM"), "z2": ("MK", "MM"), "z3": ("PK", "PM"),
+         "z1p": ("PP", "PM")}  # (K final: lookup, M final: recall); Z3 reads K; Z1-P's lookup reads P (made-up facts)  # fmt: skip
 SETS = ("jsuite_v2_test_chat", "jsuite_v2nb_test_chat")  # the main set; the second seed only if items run short
 # Z3: few passages have all three facts before the pointer (about 1 in 4 level-0 scenes), so his two other renderings of
 # v2's facts (seeds 2602 / 2603) follow the second seed, in the same "only if short" order
@@ -101,7 +103,7 @@ Z3_SETS = (*SETS, "jsuite_v2r2_test_chat", "jsuite_v2r3_test_chat")
 TARGETS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 LAYERS = {"qwen3.5-9b": (12,), "qwen3.6-27b": (32,), "muse-glimmer-30b": (26, 36)}
 RUNS = {p: {"qwen3.5-9b": f"qwen35_9b_x50_{p}", "qwen3.6-27b": f"x50_{p}_27b", "muse-glimmer-30b": f"muse30_x50_{p}"}
-        for p in PARTS if p != "z3"}  # fmt: skip
+        for p in ("z1", "z2")}  # fmt: skip
 RUNS["z3"] = {"qwen3.5-9b": "qwen35_9b_x50_z3", "muse-glimmer-30b": "muse30_x50_z3"}  # batch50.yaml: Z3 on 9B and Muse
 # batch 52 C coverage (amendment 3, extra e): Lightning, Z1 and Z3; Muse's design for a model whose X0 layer lies below
 # Zach's band: X0's layer (the committed L14) and his band's start (L27, of L27-33), both reported. Read by verdict
@@ -114,6 +116,12 @@ COVERAGE_RUNS["z3"]["qwen3.6-27b"] = "x50_z3_27b"
 # batch 52 C coverage (amendment 2; jobs/c3/x52_lightning_z2.yaml): Z2 on Lightning at L14 and L27, as its Z1 / Z3
 COVERAGE_RUNS["z2"] = {"nemotron-3.5-lightning": "nem35l_x52_z2"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+# Batch 52, Dan's morning brief (29 Oct, item 1; jobs/c3/x52_z1p_*.yaml): Z1-P on the 9B, 27B and Lightning, each at
+# its committed L only (9B L12, 27B L32, Lightning L14); rule fixed now (Z1's, verbatim), no prediction
+COVERAGE_RUNS["z1p"] = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z1p_27b",
+                        "nemotron-3.5-lightning": "nem35l_x52_z1p"}  # fmt: skip
+NO_PREDICTION_Z1P = ("no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/"
+                     "z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)")  # fmt: skip
 COVERAGE = False  # set by verdict --coverage
 Z3_CONDS = {"C2": "alt", "C0": "alt0"}  # condition -> its source prompt; C2 the test, C0 the name alone (descriptive)
 ROUTES = ("identity", "position", "value", "original", "other")  # x6_routes.ROUTES
@@ -144,6 +152,7 @@ RULE = {
            "only it vs random. If position <= 0.05: \"no position route in his layout\": the address is a property of "
            "listed layouts."),
 }  # fmt: skip
+RULE["z1p"] = RULE["z1"]  # Z1-P: Z1's rule, verbatim (Dan's morning brief)
 AS_COMPUTED_Z3 = (
     "Shares = the lookup's (K) route under the whole change in C2 over the chosen passages (x6_routes.classify on the top "
     "token: identity b, position c, value e, original a, else other), cluster bootstrap over the original bridge entity "
@@ -206,6 +215,15 @@ def kfact(rel: str, w: int, e: str, value: str | None = None) -> str:
         tables()
         .REL2[rel]["kfact"][w]
         .format(x=e, X=cap(e), a=a, al=a.lower(), an="an" if a[0].upper() in "AEIOU" else "a")
+    )
+
+
+def pfact(rel: str, w: int, e: str, value: str) -> str:
+    """The P / M passage's made-up final-hop sentence stating `value` for e (jsuite_v2.facts_items' pf)."""
+    return (
+        tables()
+        .REL2[rel]["pfact"][w]
+        .format(x=e, X=cap(e), a=value, al=value.lower(), an="an" if value[0].upper() in "AEIOU" else "a")
     )
 
 
@@ -288,7 +306,10 @@ def pairs(items: list[dict], part: str) -> tuple[list[dict], collections.Counter
             why["a reader is missing"] += 1
             continue
         k, m = p[LOOKUP], p[RECALL]
-        if any(k[f] != m[f] for f in ("question", "answer", "bridge", "entities", "wording", "relation", "start_desc")):
+        same = ("bridge", "entities", "wording", "relation", "start_desc") + (
+            () if part == "z1p" else ("question", "answer")
+        )
+        if any(k[f] != m[f] for f in same):
             why["the K and M items differ in question, answer, bridge or entities"] += 1
             continue
         out.append(p)
@@ -331,13 +352,17 @@ def encode(tok, part: str, p: dict, e: str, d_e: str | None = None) -> tuple[dic
     question), or the reason it does not align: the patch token (the name's / description's last token) at one index in
     O and S, only the name's / description's tokens differ, distinct first answer tokens."""
     k = p[LOOKUP]
-    rel, x, real, w = k["relation"], k["bridge"], k["answer"], k["wording"]
-    cf_ans = fact(rel, e)
+    rel, x, w = k["relation"], k["bridge"], k["wording"]
     readers = {}
     for r in READERS:
         it = p[r]
         ctx, q = it["context"], it["question"]
-        if part == "z1":
+        # O's and S's answers: the true facts (K / M), or Z1-P's lookup (P): the made-up values its passage states
+        real = it["answer"]
+        cf_ans = lure(rel, w, e, ctx) if part == "z1p" and r == LOOKUP else fact(rel, e)
+        if cf_ans is None:
+            return None, "the P passage states no made-up value for the other entity"
+        if part in Z1_LIKE:
             sent, cf_sent = pointer(it, x), pointer(it, e)
             cf_ctx, cf_q = ctx.replace(sent, cf_sent), q
             ids_o, at_o = span_tokens(tok, render(tok, it, ctx, q), ctx, sent, x)
@@ -356,19 +381,20 @@ def encode(tok, part: str, p: dict, e: str, d_e: str | None = None) -> tuple[dic
         tok_a, tok_b = answer_tok(tok, real), answer_tok(tok, cf_ans)
         if tok_a == tok_b:
             return None, "O's and S's answers share their first token"
-        lu = lure(rel, w, e, ctx) if r == RECALL else None
+        lu = lure(rel, w, e, ctx) if r == RECALL else None  # Z1-P's P reader: S's answer is that value (no lure)
         readers[r] = {"id": it["id"], "question": q, "cf_question": cf_q, "context": ctx, "cf_context": cf_ctx,
                       "answer": real, "cf_answer": cf_ans, "ids": {"org": ids_o, "alt": ids_s}, "pos": at_o[-1],
                       "span": [at_o[0], at_o[-1]], "tok_A": tok_a, "tok_b": tok_b, "lure": lu,
                       "tok_lure": answer_tok(tok, lu) if lu else None}  # fmt: skip
     case = {"part": part, "scene": k["scene"], "set": k.get("_set"), "relation": rel, "bridge": x, "cf_bridge": e,
             "level": k["level"], "popularity": k["popularity"], "half": k.get("half"), "wording": w,
-            "answer": real, "cf_answer": cf_ans, "readers": readers}  # fmt: skip
-    if part == "z1":
+            "answer": readers[LOOKUP]["answer"], "cf_answer": readers[LOOKUP]["cf_answer"], "readers": readers}  # fmt: skip
+    if part in Z1_LIKE:
         ctx = k["context"]
         ptr = ctx.index(pointer(k, x))
-        case["order"] = {"bridge_fact_first": ctx.index(kfact(rel, w, x)) < ptr,
-                         "cf_fact_first": ctx.index(kfact(rel, w, e)) < ptr}  # fmt: skip
+        # the lookup passage's own fact sentences (K: the true facts; Z1-P's P: the made-up values)
+        fs = (lambda v: kfact(rel, w, v)) if part == "z1" else (lambda v: pfact(rel, w, v, lure(rel, w, v, ctx)))
+        case["order"] = {"bridge_fact_first": ctx.index(fs(x)) < ptr, "cf_fact_first": ctx.index(fs(e)) < ptr}
         case["stratum"] = "fact-first" if case["order"]["bridge_fact_first"] else "fact-after"
     else:
         case["desc"], case["cf_desc"] = k["start_desc"], d_e
@@ -381,17 +407,22 @@ def others(p: dict) -> list[str]:
     k = p[LOOKUP]
     rel, x = k["relation"], k["bridge"]
     cands = sorted(e for e in k["entities"] if e != x and fact(rel, e) != fact(rel, x))
+    if k["word"].endswith("P"):  # Z1-P: the lookup reads the made-up values its P passage states
+        mine = lure(rel, k["wording"], x, k["context"])
+        assert mine == k["answer"], f"{k['id']}: the bridge's made-up value is not the P item's answer"
+        cands = [e for e in cands if lure(rel, k["wording"], e, k["context"]) not in (None, mine)]
     for e in cands:
-        assert kfact(rel, k["wording"], e) in k["context"], f"{k['id']}: {e}'s fact is not stated in the K passage"
+        if k["word"].endswith("K"):
+            assert kfact(rel, k["wording"], e) in k["context"], f"{k['id']}: {e}'s fact is not stated in the K passage"
     random.Random(f"{CF_SEED}|{k['scene']}").shuffle(cands)
     return cands
 
 
-def z1_cases(tok, ps: list[dict]) -> tuple[list[dict], collections.Counter]:
-    """Z1: per passage the first aligning other entity (seeded order); drops counted by reason."""
+def z1_cases(tok, ps: list[dict], part: str = "z1") -> tuple[list[dict], collections.Counter]:
+    """Z1 (and Z1-P): per passage the first aligning other entity (seeded order); drops counted by reason."""
     out, why = [], collections.Counter()
     for p in ps:
-        if leaks(p[LOOKUP]["start_desc"], [p[LOOKUP]["answer"]]):
+        if leaks(p[LOOKUP]["start_desc"], sorted({p[r]["answer"] for r in READERS})):
             why["leak: the description holds the answer"] += 1
             continue
         cands = others(p)
@@ -400,7 +431,7 @@ def z1_cases(tok, ps: list[dict]) -> tuple[list[dict], collections.Counter]:
             continue
         reasons = []
         for e in cands:
-            c, r = encode(tok, "z1", p, e)
+            c, r = encode(tok, part, p, e)
             if c is not None:
                 c["cf_candidates"] = len(cands)
                 out.append(c)
@@ -650,8 +681,8 @@ def plan_one(tok, part: str) -> dict:
                       "slot_aligned": sum(c["slot_aligned"] for c in cases),
                       "slots_BC": dict(collections.Counter(f"{c['slots']['B']}->{c['slots']['C']}" for c in cases)),
                       "relations": dict(collections.Counter(c["relation"] for c in cases))}  # fmt: skip
-        elif part == "z1":
-            cases, drop = z1_cases(tok, ps)
+        elif part in Z1_LIKE:
+            cases, drop = z1_cases(tok, ps, part)
             out[s] = {"passages": len(ps), "pair_drops": dict(why), "cases": len(cases), "drops": dict(drop),
                       "strata": dict(collections.Counter(c["stratum"] for c in cases)),
                       "cf_order": dict(collections.Counter(str(c["order"]["cf_fact_first"]) for c in cases)),
@@ -821,7 +852,7 @@ def manifest(name: str, part: str, target: str, layers: tuple[int, ...]) -> dict
          "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "inputs": inputs,
          "sets": list(sets_of(part)), "words": list(WORDS[part]), "layers": list(layers), "n_items": N_ITEMS, "gate": GATE,
          "arms": list(ARMS), "k": X.K_MAIN, "omp": "signed", "cf_seed": CF_SEED,
-         "patch": "the last token of the pointer sentence's name" if part in ("z1", "z3") else "the description's last token",
+         "patch": "the last token of the pointer sentence's name" if part in (*Z1_LIKE, "z3") else "the description's last token",
          "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
          "desc_competence": {"templates": list(DESC_TEMPLATES), "instructions": list(DESC_INSTRUCTIONS),
                              "bar": DESC_BAR, "tokens": DESC_GEN_TOKENS} if part == "z2" else None,
@@ -839,8 +870,8 @@ def manifest(name: str, part: str, target: str, layers: tuple[int, ...]) -> dict
 def build(tok, model, part: str, set_name: str, out: Path) -> tuple[list[dict], dict]:
     """The set's cases for the part (Z2: after its description competence step, rows appended to out/)."""
     ps, why = load_pairs(set_name, part)
-    if part in ("z1", "z3"):
-        cases, drop = (z1_cases if part == "z1" else z3_cases)(tok, ps)
+    if part in (*Z1_LIKE, "z3"):
+        cases, drop = z1_cases(tok, ps, part) if part in Z1_LIKE else z3_cases(tok, ps)
         return cases, {"passages": len(ps), "pair_drops": dict(why), "drops": dict(drop), "cases": len(cases)}
     opts, drop = z2_options(tok, ps)
     prompts = desc_prompts(tok, z2_descs(opts))
@@ -868,14 +899,14 @@ def stage_run(name: str, part: str) -> Path:
     pins.check_run_name(name)
     target = pins.TARGET
     assert target in LAYERS, f"batch 50 runs on {sorted(LAYERS)}, not {target}"
-    layers = LAYERS[target]
+    layers = LAYERS[target][:1] if part == "z1p" else LAYERS[target]  # Z1-P: the committed L only (Dan: "at L")
     if target in COVERAGE_RUNS.get(part, {}):  # Lightning: X0's layer is the committed one (BJ_PREDICTED_LAYER)
         assert layers[0] == X.PREDICTED[target], f"{target}: LAYERS {layers} do not start at the committed L"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, part, target, layers)
     if target in COVERAGE_RUNS.get(part, {}):
-        m |= {"question": NO_PREDICTION, "batch": 52}
+        m |= {"question": NO_PREDICTION_Z1P if part == "z1p" else NO_PREDICTION, "batch": 52}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -897,7 +928,7 @@ def stage_run(name: str, part: str) -> Path:
     gate.update({"chosen": len(chosen), "counts": counts, "sets_used": sorted({c["set"] for c in cases}),
                  "chosen_sets": dict(collections.Counter(c["set"] for c in chosen)),
                  "order": [[c["set"], c["scene"]] for c in chosen]})  # fmt: skip
-    if part == "z1":
+    if part in Z1_LIKE:
         gate["chosen_strata"] = dict(collections.Counter(c["stratum"] for c in chosen))
     if part == "z3":
         alt0 = {(r["set"], r["scene"]): r["right"] and r["read_right"] for r in comp if r["variant"] == "alt0"}
@@ -990,7 +1021,8 @@ def dan_answer(question: str, rev: str = "HEAD") -> str:
 
 def require_answer(part: str) -> str:
     if COVERAGE:  # batch 52 C: no Q-line for coverage runs
-        return NO_PREDICTION
+        return NO_PREDICTION_Z1P if part == "z1p" else NO_PREDICTION
+    assert part != "z1p", "Z1-P has no Q-line: verdict --coverage"
     answer = dan_answer(QUESTION[part])
     assert answer, (
         f"sealed: {PREDICTIONS} has no committed answer to {QUESTION[part]} (its 'Dan:' line is empty at HEAD)"
@@ -1007,6 +1039,7 @@ def main_rule(part: str, lookup: float, gap: float) -> str:
     if not ok(lookup):
         return "can't tell (no lookup switch under the whole change)"
     names = {"z1": ("the split holds on his passages", "the lookup follows the lens here", "in between"),
+             "z1p": ("the split holds on his passages", "the lookup follows the lens here", "in between"),
              "z2": ("(a) the split holds", "(a') the computed bridge is handed through the lens", "(d) in between")}[part]  # fmt: skip
     if ok(gap) and gap >= GAP_MIN - EPS and lookup <= LOOKUP_MAX + EPS:
         return names[0]
@@ -1048,7 +1081,7 @@ def layer_result(part: str, rows: list[dict], n_boot: int) -> dict:
     gap = [cells[RECALL]["excess"][0] - cells[LOOKUP]["excess"][0], *X.interval(draws[RECALL] - draws[LOOKUP])]
     out = {"n": len(keys), "entities": len(set(ents)), "lookup": cells[LOOKUP], "recall": cells[RECALL], "gap": gap,
            "verdict": main_rule(part, cells[LOOKUP]["excess"][0], gap[0]), "routes": routes}  # fmt: skip
-    if part == "z1":
+    if part in Z1_LIKE:
         strata = {}
         for s in ("fact-first", "fact-after"):
             ks = [k for k in keys if by[(*k, LOOKUP, "whole")]["stratum"] == s]
@@ -1118,7 +1151,7 @@ def beside(target: str, part: str, cases: list[dict], n_boot: int) -> dict:
                            "(jswap covers P and T starts only)" if part == "z2" else None}  # fmt: skip
     mine = [c for c in cases if c["set"] == SETS[0]]
     for kind, run in BESIDE.get(target, {}).items():
-        if part == "z1" and kind != "full":
+        if part in Z1_LIKE and kind != "full":
             continue
         path = pins.RESULTS_DIR / "ablate_v2" / run / "rows.jsonl"
         if not path.exists():
@@ -1149,7 +1182,7 @@ def model_result(part: str, run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     if not (src / "manifest.json").exists():
         return {
             "run": run,
-            "target": {r: t for t, r in {**RUNS[part], **COVERAGE_RUNS.get(part, {})}.items()}.get(run),
+            "target": {r: t for d in (RUNS.get(part, {}), COVERAGE_RUNS.get(part, {})) for t, r in d.items()}.get(run),
             "status": "pending",
             "why": "no run here",
         }
@@ -1207,7 +1240,7 @@ def view(part: str, run: str, decode=None, k: int = N_VIEW, seed: int = VIEW_SEE
                     f"{c['slot_aligned']}): original {v['original']}, identity {v['identity']}, position {v['position']}, "
                     f"value {v['value']}")  # fmt: skip
         else:
-            extra = f", {c['stratum']}" if part == "z1" else f"; {c['desc']!r} -> {c['cf_desc']!r}"
+            extra = f", {c['stratum']}" if part in Z1_LIKE else f"; {c['desc']!r} -> {c['cf_desc']!r}"
             head = f"{c['bridge']} -> {c['cf_bridge']} ({c['answer']} -> {c['cf_answer']}){extra}"
         lines += [f"### {key[1]} ({key[0]}): {head}", ""]
         for w, rd in c["readers"].items():
@@ -1384,7 +1417,7 @@ def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, decode=Non
                   f"(sets {g.get('chosen_sets')}); counts {json.dumps(g.get('counts'))}.", ""]  # fmt: skip
         for la, lr in mm["layer_results"].items():
             lines.append(f"L{la}: routes {json.dumps(lr['routes'])}")
-            if part == "z1":
+            if part in Z1_LIKE:
                 o = lr["order"]
                 lines.append(f"L{la} order: fact-first {fmt(o['strata']['fact-first']['whole_switch'])} (n "
                              f"{o['strata']['fact-first']['n']}), fact-after {fmt(o['strata']['fact-after']['whole_switch'])} "

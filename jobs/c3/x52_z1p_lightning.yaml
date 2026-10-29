@@ -1,0 +1,46 @@
+id: x52_z1p_lightning
+title: "Batch 52, Dan's morning brief (29 Oct) item 1, Z1-P on nemotron-3.5-lightning at L14: the conflict test on Zach's named-bridge passages with made-up facts (jsuite v2 P items: the PP passage as the lookup, PM as the recall); whole / without J++ / without a random part at the pointer name's last token; Z1's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  NOTE="no prediction: Z1's rule (verbatim) applied now to the P items (Dan's morning brief, 29 Oct)" &&
+  uv run python scripts/x50_zach.py run --part z1p --name nem35l_x52_z1p &&
+  printf '%s\n' "$NOTE" > results/x50_zach/nem35l_x52_z1p/coverage.txt &&
+  uv run python scripts/x50_zach.py verdict --part z1p --coverage --runs nem35l_x52_z1p
+question: >-
+  Is Z1's "the lookup follows the lens" due to true-fact passages, where the lookup can answer from memory? On the P
+  items the passage states a made-up value for every entity, so the lookup can only read it from the passage.
+why_it_matters: >-
+  Dan's morning brief (jobs/c3/batch52.yaml morning_brief, 29 Oct ~08:45), item 1 (top): Z1 found the lookup following
+  the lens on Zach's named-bridge K passages, where the true fact is also in memory; the P passages remove that route.
+hypotheses:
+  none: "No prediction (rule fixed now, Dan's morning brief; no Q-line)."
+decision_rule: >-
+  Z1's rule, verbatim (jobs/c3/batch50.yaml Z1; scripts/x50_zach.py RULE['z1'], first scored on the K items in
+  results/x50_zach/z1-20261028T161649Z): "Per model: gap >= 0.3 and lookup extra loss <= 0.10 -> \"the split holds on his passages\"; lookup >= 0.20 -> \"the lookup follows the lens here\"; else in between. Order split (after the gate, before the data): items where the bridge's fact sentence comes before the pointer sentence vs after. \"The order pattern replicates\" if the lookup's switch under the whole change is >= 2x higher fact-first than fact-after (both CIs), as in our 65-89 % vs 9-19 %. Hard-read stratum (v3 flag): the gap within hard-read items within 0.15 of the easy items -> \"not a lookup-difficulty effect\"." As computed: Z1's text unchanged (scripts/x50_zach.py
+  AS_COMPUTED: extra loss = X0's excess (S_no_jpp_rand - S_no_jpp) / S_whole per reader; J++ signed OMP k = 25; switch =
+  the top token is the first token of the other entity's answer; gap = the recall's extra loss minus the lookup's on the
+  same cluster-bootstrap draws over the original bridge entity, 10,000, seed 0; point estimates decide, EPS 1e-9; the
+  gate 0.80 per reader on O's read, eligible = both readers say and read O's and S's answers right, the first 200 in
+  passage order; his main set, the second seed only if short; S = the pointer sentence names another entity of the
+  passage, seeded order 5001, the first whose name ends at the same token index) with one change, the brief's: the
+  lookup reads Zach's P item (PP: every entity's final-hop sentence states a made-up value from the answer vocabulary)
+  in place of the K item; its O and S answers are the made-up values the PP passage states for the bridge and the other
+  entity (the other entity's must differ from the bridge's); the recall reads PM as in Z1 (true facts recalled); the
+  order strata from the PP passage's own fact sentences. Layer: L14 (amendment 1's committed layer; Lightning's gate chosen after the 60-scene pre-check was seen: hollow mark), the committed L only ("at L"; Z1 on
+  Lightning also read L27, not here). Beside: Zach's stored knock-out rows joined by item id (descriptive). Cells under
+  30 switches left out (amendment 3). Verdict in the job: x50_zach.py verdict --part z1p --coverage
+  (results/x50_zach/x52_z1p-<UTC>/, never the default z1-<UTC>/ prefix).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + L)"
+- "the recall (PM) on the same passage and the same counterfactual (the gap)"
+- "the read gate (0.80 per reader) and O / S said and read right"
+- "Z1 on the K items (the same passages' true-fact rendering) beside: x52_lightning_zach"
+n: "up to 200 eligible passages (plan check on the 9B tokenizer: 261 aligned of 358 main-set passages, 264 more on the second seed)"
+seeds: [2601, 2701, 5001, 888, 0]
+notes: "Batch 52, Dan's morning brief item 1 (top priority; coordinator 08:50 Paris). Box: another (every box holds the 9B, 27B, Lightning and Muse weights: checked 08:55 Paris). Code: x50_zach gains part z1p (WORDS ('PP', 'PM'); per-reader answers; RULE['z1p'] = RULE['z1']; the committed L only; COVERAGE_RUNS['z1p'] for the three models, verdict --coverage with no Q-line; RUNS and batch 50's verdicts unchanged); tested on the real passages (tests/test_x50_zach.py) and a planted verdict. Wallclock: x52_lightning_zach 1,010 s (Z1 + Z3, two layers each); one layer here: est ~10-20 min, 0.35 GPU-h. UNVERIFIED; results into EXPERIMENTS.md."
