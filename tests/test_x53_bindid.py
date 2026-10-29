@@ -24,10 +24,12 @@ from scripts import x53_bindid as B
 LK, RC = X.LOOKUP, X.RECALL
 
 
-def test_rule_is_dans_text_verbatim():
+def test_rule_and_the_centered_arm_are_dans_text_verbatim():
     spec = yaml.safe_load(B.SPEC.read_text())
     norm = lambda s: re.sub(r"\s+", " ", s).strip()  # noqa: E731
     assert norm(B.RULE_VERBATIM) in norm(spec["critic_1125"])
+    assert norm(B.CENTERED_VERBATIM) in norm(spec["decisions_1210b"])
+    assert B.HEADLINE == "uncentered" and B.VARIANTS == {"uncentered": "code", "centered": "ccode"}
 
 
 # ---- the vectors and the doses -------------------------------------------------------------------------------------
@@ -47,6 +49,36 @@ def test_mention_codes_are_the_mean_of_state_minus_embedding_per_slot():
         B.mention_codes(h, e[:, :2])
 
 
+def planted_codes(d: int = 32, common: float = 150.0, seed: int = 0):
+    """Slot vectors = one large component shared by every slot + a small slot-specific part (the parts sum to zero)."""
+    g = torch.Generator().manual_seed(seed)
+    shared = torch.randn(d, generator=g)
+    shared = common * shared / shared.norm()
+    parts = torch.randn(3, d, generator=g) * torch.tensor([[1.0], [2.0], [3.0]])
+    parts = parts - parts.mean(0)
+    return shared[None] + parts, parts
+
+
+def test_centered_codes_are_the_slot_specific_parts_on_planted_data():
+    codes, parts = planted_codes()
+    cc = B.centered(codes)
+    assert torch.allclose(cc, parts, atol=1e-5) and torch.allclose(cc.sum(0), torch.zeros(32), atol=1e-4)
+    assert torch.allclose(B.centered(cc), cc, atol=1e-5)  # centering twice changes nothing
+    assert np.allclose(B.centered(codes.numpy()), parts.numpy(), atol=1e-5)  # numpy too (the verdict's geometry)
+    g = B.geometry(codes.numpy(), None)
+    norm, spec = [float(c.norm()) for c in codes], [float(p.norm()) for p in parts]
+    assert g["norm"] == pytest.approx(norm, abs=1e-3) and g["slot_specific_norm"] == pytest.approx(spec, abs=1e-3)
+    assert g["slot_specific_share"] == pytest.approx([s / n for s, n in zip(spec, norm, strict=True)], abs=1e-4)
+    assert min(g["cos"].values()) > 0.9  # the shared component dominates the raw slot vectors
+    cos = lambda a, b: float(a @ b / (a.norm() * b.norm()))  # noqa: E731
+    assert g["cos_centered"]["0-1"] == pytest.approx(cos(parts[0], parts[1]), abs=1e-4)
+    assert min(g["cos_centered"].values()) < 0  # parts summing to zero: their pairwise dot products sum below zero
+    mu = {k: np.random.default_rng(k).normal(size=32) for k in range(5)}
+    gm = B.geometry(codes.numpy(), mu)
+    want = cos((codes[2] - codes[0]).double(), torch.tensor(mu[2] - mu[0], dtype=torch.float64))
+    assert gm["cos_diff_vs_pointer_means"]["0-2"] == pytest.approx(want, abs=1e-4)
+
+
 @pytest.mark.parametrize("slot_a", [0, 1, 2])
 def test_doses_match_the_real_change_and_controls_have_equal_norms(slot_a):
     g = torch.Generator().manual_seed(slot_a)
@@ -56,27 +88,50 @@ def test_doses_match_the_real_change_and_controls_have_equal_norms(slot_a):
     size = float(delta.norm())
     v = B.arm_vectors(codes, rand, slot_a, size, delta)
     assert list(v) == B.arm_names(slot_a)[1:] and B.arm_names(slot_a)[0] == "none"
+    assert len(v) == 1 + len(B.DOSES) * 5  # whole; per dose 2 codes, random, 2 centered codes
     assert torch.equal(v["whole"], delta)
     others = [k for k in B.SLOTS if k != slot_a]
-    assert f"code{slot_a}_x1" not in v and f"code{slot_a}_x2" not in v  # never A's own slot
+    assert not {f"{p}{slot_a}_x{d}" for p in ("code", "ccode") for d in B.DOSES} & set(v)  # never A's own slot
+    cc = B.centered(codes)
     for d in B.DOSES:
-        arms = [f"code{k}_x{d}" for k in others] + [f"rand_x{d}"]
-        assert len(arms) == 3  # X's vector, Y's version (the other code arm), random
-        for a in arms:
-            assert float(v[a].norm()) == pytest.approx(d * size, rel=1e-5)
-        for k in others:  # the direction is the slot's code
+        for prefix in ("code", "ccode"):  # X's vector, Y's version (the other slot's) and random: one norm, d ||Δ||
+            arms = [f"{prefix}{k}_x{d}" for k in others] + [f"rand_x{d}"]
+            for a in arms:
+                assert float(v[a].norm()) == pytest.approx(d * size, rel=1e-5)
+        for k in others:  # the directions: the slot's vector, raw and centered
             assert torch.allclose(v[f"code{k}_x{d}"] / v[f"code{k}_x{d}"].norm(), codes[k] / codes[k].norm(), atol=1e-6)
+            assert torch.allclose(v[f"ccode{k}_x{d}"] / v[f"ccode{k}_x{d}"].norm(), cc[k] / cc[k].norm(), atol=1e-6)
         assert torch.allclose(v[f"rand_x{d}"] / v[f"rand_x{d}"].norm(), rand / rand.norm(), atol=1e-6)
     assert torch.allclose(v[f"code{others[0]}_x2"], 2 * v[f"code{others[0]}_x1"], atol=1e-5)
+    assert torch.allclose(v[f"ccode{others[0]}_x2"], 2 * v[f"ccode{others[0]}_x1"], atol=1e-5)
+
+
+def test_centered_arm_on_planted_codes_has_its_own_direction_at_the_same_norm():
+    """The planted case the centered arm exists for: raw slot vectors nearly parallel (cos > 0.9), so the raw X and Y
+    arms nearly coincide, while the centered arms point along the slot-specific parts alone; the centered X, Y's
+    centered version and the random control all at X's dosed norm."""
+    codes, parts = planted_codes()
+    rand, delta = torch.ones(32), torch.full((32,), 0.5)
+    size = float(delta.norm())
+    v = B.arm_vectors(codes, rand, 0, size, delta)
+    cos = lambda a, b: float(a @ b / (a.norm() * b.norm()))  # noqa: E731
+    assert cos(v["code1_x2"], v["code2_x2"]) > 0.9
+    for k in (1, 2):
+        assert cos(v[f"ccode{k}_x2"], parts[k]) == pytest.approx(1.0, abs=1e-5)
+    assert cos(v["ccode1_x2"], v["ccode2_x2"]) == pytest.approx(cos(parts[1], parts[2]), abs=1e-5)
+    norms = {a: float(v[a].norm()) for a in ("ccode1_x2", "ccode2_x2", "rand_x2")}
+    assert max(norms.values()) - min(norms.values()) < 1e-4 and norms["rand_x2"] == pytest.approx(2 * size, rel=1e-5)
 
 
 # ---- reads, pairs, the rule ----------------------------------------------------------------------------------------
 
 
-def planted(n_scenes: int, p_hit: float, seed: int = 0) -> tuple[list[dict], list[dict]]:
+def planted(n_scenes: int, p_hit: float, seed: int = 0, p_centered: float = 0.0) -> tuple[list[dict], list[dict]]:
     """Cases with slots and lookup rows where, at every dose, each slot's vector sends the lookup to that slot's locker
     with probability p_hit and otherwise leaves it on A's; the random vector always leaves it on A's. So X's share
-    under X's vector is about p_hit, under Y's version and random 0, and Y's version sends to Y's locker as often."""
+    under X's vector is about p_hit, under Y's version and random 0, and Y's version sends to Y's locker as often.
+    The centered vectors: the same with p_centered, except that they send the lookup to the OTHER non-A slot (so the
+    centered arm's X share is 0 while Y's centered version sends to X's locker)."""
     rng = np.random.default_rng(seed)
     cases, rows = [], []
     for i in range(n_scenes):
@@ -89,6 +144,9 @@ def planted(n_scenes: int, p_hit: float, seed: int = 0) -> tuple[list[dict], lis
             for x in others:
                 lk[f"code{x}_x{d}"] = x if rng.random() < p_hit else a
             lk[f"rand_x{d}"] = a
+            for x in others:
+                (y,) = [k for k in others if k != x]
+                lk[f"ccode{x}_x{d}"] = y if rng.random() < p_centered else a
         for arm, slot in lk.items():
             rows.append(
                 {"scene": s, "entity": f"e{i % 7}", "reader": LK, "arm": arm, "slot": slot, "kept": int(slot == a)}
@@ -118,6 +176,26 @@ def test_pair_rows_read_x_under_x_y_and_random():
     assert col["none"]["lookup"][0] == 1 and col["whole_lookup_to_B"][0] == 1
     assert col["code_x2"]["lookup"][0] == pytest.approx(1 - x) and col["code_x2"]["n"] == 120
     assert col["rand_x1"]["recall"][0] == 1
+    assert col["ccode_x2"]["n"] == 120 and col["ccode_x2"]["lookup"][0] == 1  # p_centered 0: A's locker kept
+
+
+def test_the_centered_arm_is_paired_on_its_own_vectors_with_the_same_random_control():
+    cases, rows = planted(60, 0.7, p_centered=0.6)
+    lk = {(r["scene"], r["arm"]): r["slot"] for r in rows if r["reader"] == LK}
+    raw, cen = B.pair_rows(rows, cases, "code"), B.pair_rows(rows, cases, "ccode")
+    assert [(p["scene"], p["x"]) for p in raw] == [(p["scene"], p["x"]) for p in cen]
+    for p, q in zip(raw, cen, strict=True):
+        for d in B.DOSES:
+            assert p[f"R_x{d}"] == q[f"R_x{d}"]  # one random arm, the same norm as both constructions' vectors
+            assert (q[f"X_x{d}"] == "X") == (lk[(q["scene"], f"ccode{q['x']}_x{d}")] == q["x"])
+            assert (q[f"Y_x{d}"] == "X") == (lk[(q["scene"], f"ccode{q['y']}_x{d}")] == q["x"])
+    vr, vc = B.variant_numbers(raw, n_boot=100), B.variant_numbers(cen, n_boot=100)
+    y = np.mean([lk[(q["scene"], f"ccode{q['y']}_x2")] == q["x"] for q in cen])
+    assert vc["cells"]["2"]["X"][0] == 0 and vc["cells"]["2"]["Y"][0] == pytest.approx(y)
+    assert vc["label"] == "no" and vc["label"] == B.label(0.0, -y)
+    xr = vr["cells"]["2"]["X"][0]
+    assert vr["label"] == B.label(xr, xr) == "shared"  # X 0.7-ish, Y and random 0
+    assert set(vr["per_slot"]) == {"0", "1", "2"} and sum(s["n"] for s in vr["per_slot"].values()) == len(raw)
 
 
 @pytest.mark.parametrize(
@@ -236,30 +314,44 @@ def test_run_and_verdict_end_to_end_on_the_fake_model(fake_env):
         for a, v in r["arm_norms"].items():
             want = r["norm_delta"] if a == "whole" else int(a[-1]) * r["norm_delta"]
             assert v == pytest.approx(want, rel=1e-3, abs=1e-3)
-    # one code arm recomputed through the fake's own read
+    # one code arm and one centered arm recomputed through the fake's own read
     c0 = used[0]
     k = next(k for k in B.SLOTS if k != c0["slots"]["slot_a"])
     ids = c0["readers"][LK]["ids"]
     hd = [fake.run(torch.tensor([ids[v]]), record=(layer,))[1][layer][c0["pos"]] for v in ("org", "alt")]
     size = float((hd[1] - hd[0]).norm())
-    vec = B.dosed(torch.tensor(codes["codes"][k]), 2 * size)
     space = next(c for c in cases if c["scene"] == c0["scene"])["space"]  # cases.jsonl leaves it out, as X0's does
-    lg = fake.generate_batch(torch.tensor([ids["org"] + space]), 1, [{layer: AddRows(vec[None].float(), [c0["pos"]])}],
-                             first_logits=True)[1]  # fmt: skip
-    rec = next(r for r in rows if r["scene"] == c0["scene"] and r["reader"] == LK and r["arm"] == f"code{k}_x2")
-    assert rec["top"] == int(lg[0].argmax()) and rec["slot"] == B.lookup_slot(rec["top"], c0["slots"]["tokens"])
-    # the verdict recomputes from the rows
+    cc = torch.tensor(codes["codes"]) - torch.tensor(codes["codes"]).mean(0)
+    for arm, raw in ((f"code{k}_x2", torch.tensor(codes["codes"][k])), (f"ccode{k}_x2", cc[k])):
+        vec = B.dosed(raw, 2 * size)
+        lg = fake.generate_batch(torch.tensor([ids["org"] + space]), 1,
+                                 [{layer: AddRows(vec[None].float(), [c0["pos"]])}], first_logits=True)[1]  # fmt: skip
+        rec = next(r for r in rows if r["scene"] == c0["scene"] and r["reader"] == LK and r["arm"] == arm)
+        assert rec["top"] == int(lg[0].argmax()) and rec["slot"] == B.lookup_slot(rec["top"], c0["slots"]["tokens"])
+    # the verdict recomputes from the rows: the headline from the uncentered arm, the centered arm's label beside
     v = B.stage_verdict([run], n_boot=50)
     assert v.name.startswith("x53_bindid-") and v.parent == B.RESULTS
     blob = json.loads((v / "verdict.json").read_text())
     mdl = blob["models"][0]
-    pairs = B.pair_rows(rows, used)
-    x, y, r_ = (np.mean([p[f"{kind}_x2"] == "X" for p in pairs]) for kind in B.KINDS)
-    cell = mdl["cells"]["2"]
-    assert cell["X"][0] == pytest.approx(x) and cell["Y"][0] == pytest.approx(y) and cell["R"][0] == pytest.approx(r_)
-    assert mdl["status"] == "tested" and mdl["label"] == B.label(float(x - r_), float(x - y))
+    assert mdl["status"] == "tested" and mdl["headline"] == "uncentered" and set(mdl["variants"]) == set(B.VARIANTS)
+    for var, prefix in B.VARIANTS.items():
+        pairs = B.pair_rows(rows, used, prefix)
+        x, y, r_ = (np.mean([p[f"{kind}_x2"] == "X" for p in pairs]) for kind in B.KINDS)
+        cell = mdl["variants"][var]["cells"]["2"]
+        assert (
+            cell["X"][0] == pytest.approx(x) and cell["Y"][0] == pytest.approx(y) and cell["R"][0] == pytest.approx(r_)
+        )
+        assert mdl["variants"][var]["label"] == B.label(float(x - r_), float(x - y))
+    assert mdl["label"] == mdl["variants"]["uncentered"]["label"]
+    g = mdl["geometry"]
+    assert (
+        g["slot_specific_norm"] == pytest.approx([float(c.norm()) for c in cc], abs=1e-3)
+        and len(g["cos_centered"]) == 3
+    )
     md = (v / "verdict.md").read_text()
-    assert "UNVERIFIED" in md and "no prediction" in md and B.RULE_VERBATIM in md
+    assert "UNVERIFIED" in md and "no prediction" in md and B.RULE_VERBATIM in md and B.CENTERED_VERBATIM in md
+    assert "label (uncentered)" in md and "label (centered)" in md and "norm of the slot-specific part" in md
+    assert md.index("label (uncentered)") < md.index("label (centered)")  # the headline first
     assert B.NOT_DESIGNED in md  # the 27B and Lightning slots
     assert (v / "x53_bindid.png").stat().st_size > 5_000
     assert (v / "examples.md").read_text().count("### C0-") == 10

@@ -24,10 +24,13 @@ Dose: "the size of a real identity change" = ||Δ||, Δ = h_{S_B} - h_O at the b
   pick changed from A to B and nothing else (x6_routes' C0 pair), per scene: the existing definition of x52_answer_map's
   ans1 / ans2 ("s = ||Δ|| at that position and layer, Δ = h_S - h_O, the real change there"). 1x and 2x.
 Arms, each added at the bridge word (Iris's pick) at L on O (X0's AddRows), per test scene with A at slot j_A:
-  code{k}_x{d}  d ||Δ|| c_k / ||c_k|| for both slots k != j_A (the scene's two other items take turns as X and Y)
-  rand_x{d}     d ||Δ|| r / ||r||, r one Gaussian direction per scene (seed RAND_SEED, drawn in scene order)
-  whole         Δ itself (the real identity change; beside: the lookup sent to B's locker)
-  none          O unedited
+  code{k}_x{d}   d ||Δ|| c_k / ||c_k|| for both slots k != j_A (the scene's two other items take turns as X and Y)
+  rand_x{d}      d ||Δ|| r / ||r||, r one Gaussian direction per scene (seed RAND_SEED, drawn in scene order)
+  ccode{k}_x{d}  the centered arm (Dan 12:10, decisions_1210b item 1, added before any run): d ||Δ|| c~_k / ||c~_k||,
+                 c~_k = c_k - the mean of c_0, c_1, c_2 (the slot-specific part); its controls are the same random arm
+                 (rand_x{d}: the same norm, d ||Δ||) and Y's centered version (ccode{k'}_x{d})
+  whole          Δ itself (the real identity change; beside: the lookup sent to B's locker)
+  none           O unedited
 Read: X0's chat read (the top token after the digit's space), both readers; the lookup's top token classed by locker
   slot (slot k's digit token, as x8_write.classify) or other; the recall's kept = its top token is A's legs (collateral).
 Per (scene, X slot k), Y = the scene's remaining slot: X's share under X (code{k}), under Y's version (code{k'}) and
@@ -35,18 +38,21 @@ Per (scene, X slot k), Y = the scene's remaining slot: X's share under X (code{k
   pooled; cluster-bootstrap CIs over the bridge item A (10,000 draws, seed 0), the differences paired on the same draws.
 Rule (Dan's text; at 2x, point estimates; EPS 1e-9 at the bars): "a shared identity code" if X - random >= 0.25 and
   X - Y >= 0.15; "no" if X - random <= 0.05 (the reading of Dan's "<= 0.05": X's share minus random's, at 2x); else "in
-  between". A failed gate: "not tested (gate x < 0.80)", never lowered.
+  between". A failed gate: "not tested (gate x < 0.80)", never lowered. The headline is the pre-specified (uncentered)
+  arm's label; the centered arm gets its own label by the same thresholds, reported beside (Dan 12:10).
 Beside, not in the rule: 1x; the per-slot split; every arm's classes (X / Y / original / other); the collateral (the
   lookup's and the recall's clean answers kept); ||Δ|| and ||U^T Δ|| (U: the pointer directions, x47_atoms.pointer_basis:
-  E6c's unit of a real pointer change); the vectors' norms, cosines, and their differences against the pointer means
-  (x0_massmean.pointer_means).
+  E6c's unit of a real pointer change); the slot vectors' norms and cosines (raw and centered), the norm of each
+  slot-specific part ||c~_k|| (Dan 12:10), and the slot differences against the pointer means (x0_massmean.pointer_means).
 
 No prediction, not sealed: verdict (CPU) to results/x53_bindid/x53_bindid-<UTC>/ (verdict.md, verdict.json, a figure
 with the four model slots, examples.md: 10 random scenes, seed 0). UNVERIFIED.
 
-BJ_TARGET=qwen3.5-9b uv run python scripts/x53_bindid.py plan                         # CPU, the tokenizer
-BJ_TARGET=qwen3.5-9b uv run python scripts/x53_bindid.py run --name qwen35_9b_x53_8   # GPU
-uv run python scripts/x53_bindid.py verdict --runs qwen35_9b_x53_8                    # CPU
+Models: the 9B (L12), then Muse (L26), then the 27B (L32; fallback_1220, Dan 12:22: "53.8 на 27B, після 9B і Muse").
+
+BJ_TARGET=qwen3.5-9b uv run python scripts/x53_bindid.py plan                          # CPU, the tokenizer
+BJ_TARGET=qwen3.5-9b uv run python scripts/x53_bindid.py run --name qwen35_9b_x53_8c   # GPU
+uv run python scripts/x53_bindid.py verdict --runs qwen35_9b_x53_8c                    # CPU
 """
 
 from __future__ import annotations
@@ -78,7 +84,9 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch53.yaml"
 TEST = "53.8"
 NO_PREDICTION = "no prediction (batch 53: the rule fixed in Dan's text, 29 Oct 11:25, before any run)"
-RUNS = {"qwen3.5-9b": "qwen35_9b_x53_8", "muse-glimmer-30b": "muse30_x53_8"}  # Dan: "9B, then Muse"
+# Dan: "9B, then Muse"; the 27B after them (fallback_1220, Dan 12:22). With the centered arm (Dan 12:10): new names;
+# qwen35_9b_x53_8 / muse30_x53_8 (specs x53_8_bindid_9b / _muse) were queued and cancelled before running, unused
+RUNS = {"qwen3.5-9b": "qwen35_9b_x53_8c", "muse-glimmer-30b": "muse30_x53_8c", "qwen3.6-27b": "x53_8c_27b"}
 MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")  # the four figure slots
 MODEL_SHORT = {
     "qwen3.5-9b": "9B",
@@ -86,7 +94,7 @@ MODEL_SHORT = {
     "muse-glimmer-30b": "Muse",
     "nemotron-3.5-lightning": "Lightning",
 }
-NOT_DESIGNED = "not designed (9B, then Muse: Dan 11:25)"
+NOT_DESIGNED = "not designed (9B, Muse, then 27B: Dan 11:25, 12:22; Lightning not added)"
 RENDERING = "chat"
 N_GEN = 1000  # per condition; prefix-stable, so C0 scenes 1-700 are the routes runs'
 N_TEST_POOL = R.N_GEN  # 700: the test pool, C0 scenes 1-700
@@ -103,6 +111,17 @@ ROLES = ("X", "Y", "original", "other")
 KINDS = ("X", "Y", "R")  # the arm read for X's share: X's own vector, Y's version, the random vector
 KIND_TEXT = {"X": "X's vector", "Y": "Y's version", "R": "random (same norm)"}
 READER_NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
+# the two constructions, by their arms' prefix: the pre-specified (the headline) and Dan's 12:10 centered arm (beside)
+VARIANTS = {"uncentered": "code", "centered": "ccode"}
+HEADLINE = "uncentered"
+VARIANT_TEXT = {"uncentered": "pre-specified, uncentered c_k (headline)",
+                "centered": "centered c_k - mean over slots (Dan 12:10, beside)"}  # fmt: skip
+CENTERED_VERBATIM = (
+    "53.8: keep your construction (uncentered, dose 1x = ||Δ|| at the bridge word, as in 52) as the pre-specified arm, "
+    "rule unchanged. Add, now, before any run: a centered arm (X's vector minus the mean over slots), same doses, same "
+    "controls (random of the same norm; Y's centered version), the same rule thresholds reported for it beside. Report "
+    "the slot-vector cosines and the norm of the slot-specific part."
+)
 RULE_VERBATIM = (
     "Stretch, 53.8, a binding-ID test for the lookup's identity code (9B, then Muse): at L, take the state at item X's "
     "mention in its locker sentence minus X's token embedding (mean over scenes, X fixed by slot), add it at the bridge "
@@ -130,6 +149,10 @@ DESIGN = {
             "A -> B, nothing else), per scene: x52_answer_map's ans1 / ans2 (s = ||Δ||); 1x and 2x",
     "controls": f"a random Gaussian direction per scene (seed {RAND_SEED}) at the same norm; Y's version = slot k''s "
                 "vector at the same norm",
+    "centered": "Dan 12:10 (decisions_1210b item 1, before any run): a second arm with c~_k = c_k - (c_0 + c_1 + c_2) / 3 "
+                "(the slot-specific part) in place of c_k, the same doses (d ||Δ||), the same random arm (same norm) "
+                "and Y's centered version as controls, its own label by the same thresholds, beside; the headline is "
+                "the uncentered arm's",
     "read": "X0's chat read, both readers; the lookup's top token classed by locker slot (the slot's digit token) or "
             "other; X's share = the lookup's top token is X's locker digit",
     "collateral": "the clean answers kept: the lookup's (A's locker) and the recall's (A's legs) top token unchanged",
@@ -223,27 +246,40 @@ def mention_codes(h, e):
     return (h - e).mean(0)
 
 
+def centered(codes):
+    """The slot-specific parts (Dan 12:10): each slot's vector minus the mean over the slots ([S, d] -> [S, d])."""
+    return codes - codes.mean(0)
+
+
 def dosed(v, size: float):
     """v rescaled to norm `size` (its direction kept)."""
     return v * (size / v.norm())
 
 
 def arm_names(slot_a: int) -> list[str]:
-    """The read order of one scene's rows: none, whole, then per dose the two other slots' vectors and the random one."""
+    """The read order of one scene's rows: none, whole, then per dose the two other slots' vectors, the random one and
+    the two other slots' centered vectors."""
+    others = [k for k in SLOTS if k != slot_a]
     return ["none", "whole"] + [
-        a for d in DOSES for a in (*(f"code{k}_x{d}" for k in SLOTS if k != slot_a), f"rand_x{d}")
+        a
+        for d in DOSES
+        for a in (*(f"code{k}_x{d}" for k in others), f"rand_x{d}", *(f"ccode{k}_x{d}" for k in others))
     ]
 
 
 def arm_vectors(codes, rand_dir, slot_a: int, size: float, delta) -> dict[str, Any]:
     """The vector each arm adds at the bridge word (one scene; every arm but none): codes [S, d], rand_dir [d] (any norm),
-    size = ||Δ|| (the real identity change's), delta = Δ."""
+    size = ||Δ|| (the real identity change's), delta = Δ. Every arm at dose d has norm d ||Δ||."""
+    cc = centered(codes)
     out = {"whole": delta}
     for d in DOSES:
         for k in SLOTS:
             if k != slot_a:
                 out[f"code{k}_x{d}"] = dosed(codes[k], d * size)
         out[f"rand_x{d}"] = dosed(rand_dir, d * size)
+        for k in SLOTS:
+            if k != slot_a:
+                out[f"ccode{k}_x{d}"] = dosed(cc[k], d * size)
     assert list(out) == arm_names(slot_a)[1:]
     return out
 
@@ -293,6 +329,7 @@ def stage_run(name: str, why: str, n_items: int = N_ITEMS, n_test: int = N_TEST_
          "spec": "jobs/c3/batch53.yaml (critic_1125, item 6)", "question": NO_PREDICTION,
          "inputs": {str(SPEC.relative_to(pins.REPO_ROOT)): X.sha256_of(SPEC)}, "layer": layer, "doses": list(DOSES),
          "rule_verbatim": RULE_VERBATIM, "rule": RULE, "design": DESIGN, "arms": arm_names(0),
+         "centered_verbatim": CENTERED_VERBATIM, "variants": VARIANT_TEXT, "headline": HEADLINE,
          "n": {"items": n_items, "test_pool": n_test, "mean_pool": n_mean, "gen_per_condition": N_GEN},
          "gate_min": X.GATE, "seeds": {"scenes": R.SEED, "random_directions": RAND_SEED, "bootstrap": X.BOOT_SEED,
                                        "examples": X.EXAMPLES_SEED}, "sealed": "none (no prediction)"}  # fmt: skip
@@ -404,9 +441,9 @@ def gate_status(gate: dict) -> str | None:
     return None
 
 
-def pair_rows(rows: list[dict], cases: list[dict]) -> list[dict]:
+def pair_rows(rows: list[dict], cases: list[dict], prefix: str = VARIANTS[HEADLINE]) -> list[dict]:
     """Per (scene, X slot k), Y = the scene's remaining slot: per dose the lookup's role (X / Y / original / other)
-    under X's vector, Y's version and the random vector."""
+    under X's vector, Y's version (prefix: "code" uncentered, "ccode" centered) and the random vector."""
     lk = {(r["scene"], r["arm"]): r["slot"] for r in rows if r["reader"] == X.LOOKUP}
     out = []
     for c in cases:
@@ -416,7 +453,7 @@ def pair_rows(rows: list[dict], cases: list[dict]) -> list[dict]:
             (y,) = [k for k in others if k != x]
             rec: dict[str, Any] = {"scene": c["scene"], "entity": c["bridge"], "x": x, "y": y, "a": a}
             for d in DOSES:
-                arm = {"X": f"code{x}_x{d}", "Y": f"code{y}_x{d}", "R": f"rand_x{d}"}
+                arm = {"X": f"{prefix}{x}_x{d}", "Y": f"{prefix}{y}_x{d}", "R": f"rand_x{d}"}
                 for kind, name in arm.items():
                     rec[f"{kind}_x{d}"] = role(lk[(c["scene"], name)], x, y, a)
             out.append(rec)
@@ -443,15 +480,14 @@ def dose_cell(pairs: list[dict], d: int, n_boot: int = X.N_BOOT) -> dict[str, An
 
 
 def collateral(rows: list[dict], cases: list[dict], n_boot: int = X.N_BOOT) -> dict[str, Any]:
-    """The clean answers kept per arm kind (none, whole, the code vectors pooled, random) and dose, both readers; the
-    whole change's lookup sent to B's locker (the real change's own effect)."""
+    """The clean answers kept per arm kind (none, whole; per dose the code vectors pooled, random, the centered vectors
+    pooled), both readers; the whole change's lookup sent to B's locker (the real change's own effect)."""
     by = {(r["scene"], r["reader"], r["arm"]): r for r in rows}
     ent = {c["scene"]: c["bridge"] for c in cases}
     groups: dict[str, list[tuple[str, str]]] = {"none": [], "whole": []}
     for c in cases:
-        names = arm_names(c["slots"]["slot_a"])
-        for a in names:
-            kind = a if a in ("none", "whole") else ("code" if a.startswith("code") else "rand") + a[a.index("_x") :]
+        for a in arm_names(c["slots"]["slot_a"]):
+            kind = a if a in ("none", "whole") else a.split("_x")[0].rstrip("0123456789") + a[a.index("_x") :]
             groups.setdefault(kind, []).append((c["scene"], a))
     out: dict[str, Any] = {}
     for kind, keys in groups.items():
@@ -464,11 +500,19 @@ def collateral(rows: list[dict], cases: list[dict], n_boot: int = X.N_BOOT) -> d
 
 
 def geometry(codes: np.ndarray, mu: dict[int, np.ndarray] | None) -> dict[str, Any]:
-    """The vectors' norms and pairwise cosines; per slot pair the cosine of their difference with the pointer means'."""
+    """The slot vectors' norms and pairwise cosines, raw and centered (Dan 12:10); each slot-specific part's norm
+    ||c_k - mean over slots|| and its share of ||c_k||; per slot pair the cosine of the difference with the pointer
+    means' (the same for raw and centered: centering moves every slot by the same vector)."""
     cos = lambda a, b: float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-30))  # noqa: E731
     pairs = [(j, k) for j in SLOTS for k in SLOTS if j < k]
-    out: dict[str, Any] = {"norm": [round(float(np.linalg.norm(c)), 3) for c in codes],
+    cc = centered(codes)
+    norm = [float(np.linalg.norm(c)) for c in codes]
+    spec = [float(np.linalg.norm(c)) for c in cc]
+    out: dict[str, Any] = {"norm": [round(v, 3) for v in norm],
                            "cos": {f"{j}-{k}": round(cos(codes[j], codes[k]), 4) for j, k in pairs},
+                           "slot_specific_norm": [round(v, 3) for v in spec],
+                           "slot_specific_share": [round(s / n, 4) for s, n in zip(spec, norm, strict=True)],
+                           "cos_centered": {f"{j}-{k}": round(cos(cc[j], cc[k]), 4) for j, k in pairs},
                            "diff_over_norm": {f"{j}-{k}": round(float(np.linalg.norm(codes[k] - codes[j])
                                                                        / np.linalg.norm(codes[j])), 4)
                                               for j, k in pairs}}  # fmt: skip
@@ -476,6 +520,20 @@ def geometry(codes: np.ndarray, mu: dict[int, np.ndarray] | None) -> dict[str, A
         out["cos_diff_vs_pointer_means"] = {f"{j}-{k}": round(cos(codes[k] - codes[j], mu[k] - mu[j]), 4)
                                             for j, k in pairs}  # fmt: skip
     return out
+
+
+def variant_numbers(pairs: list[dict], n_boot: int = X.N_BOOT) -> dict[str, Any]:
+    """One construction's cells per dose, its label by the rule's thresholds at RULE_DOSE and the per-slot split."""
+    cells = {str(d): dose_cell(pairs, d, n_boot) for d in DOSES}
+    rc = cells[str(RULE_DOSE)]
+    lab = label(rc["X_minus_R"][0], rc["X_minus_Y"][0])
+    per_slot = {}
+    for k in SLOTS:
+        mine = [p for p in pairs if p["x"] == k]
+        if mine:
+            per_slot[str(k)] = {"n": len(mine), **{kind: round(float(np.mean([p[f"{kind}_x{RULE_DOSE}"] == "X" for p in mine])), 4)
+                                                   for kind in KINDS}}  # fmt: skip
+    return {"cells": cells, "label": lab, "text": LABELS[lab], "per_slot": per_slot}
 
 
 def run_numbers(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
@@ -488,24 +546,16 @@ def run_numbers(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
         return {**base, "status": why, "label": None, "text": why}
     rows = X.read_jsonl(src / "outcomes.jsonl")
     cases = X.read_jsonl(src / "cases.jsonl")
-    pairs = pair_rows(rows, cases)
-    cells = {d: dose_cell(pairs, d, n_boot) for d in DOSES}
-    rc = cells[RULE_DOSE]
-    lab = label(rc["X_minus_R"][0], rc["X_minus_Y"][0])
-    per_slot = {}
-    for k in SLOTS:
-        mine = [p for p in pairs if p["x"] == k]
-        if mine:
-            per_slot[str(k)] = {"n": len(mine), **{kind: round(float(np.mean([p[f"{kind}_x{RULE_DOSE}"] == "X" for p in mine])), 4)
-                                                   for kind in KINDS}}  # fmt: skip
+    variants = {v: variant_numbers(pair_rows(rows, cases, prefix), n_boot) for v, prefix in VARIANTS.items()}
+    lab = variants[HEADLINE]["label"]
     norms = X.read_jsonl(src / "norms.jsonl")
     med = {k: round(float(np.median([r[k] for r in norms])), 4)
            for k in ("norm_delta", "norm_U_delta", "cos_delta_codes_b_minus_a") if norms and norms[0].get(k) is not None}  # fmt: skip
     codes = np.load(src / "codes.npz")
     info = json.loads((src / "run_info.json").read_text())
     _, mu, _ = pointer_refs(base["target"])
-    return {**base, "status": "tested", "label": lab, "text": LABELS[lab], "cells": {str(d): c for d, c in cells.items()},
-            "per_slot": per_slot, "collateral": collateral(rows, cases, n_boot), "norms_median": med,
+    return {**base, "status": "tested", "label": lab, "text": LABELS[lab], "headline": HEADLINE, "variants": variants,
+            "collateral": collateral(rows, cases, n_boot), "norms_median": med,
             "geometry": {**geometry(codes["codes"], mu), "n_mean": int(codes["n"]),
                          "mention_state_norm": [round(float(v), 3) for v in codes["norm_h"]],
                          "embedding_norm": [round(float(v), 3) for v in codes["norm_e"]]},
@@ -531,39 +581,43 @@ def model_slots(models: list[dict]) -> list[dict]:
 
 
 def figure(models: list[dict], path: Path) -> None:
-    """Per model slot: X's share (lookups sent to X's locker) under X's vector, Y's version and random, at 1x and 2x."""
+    """Per model slot: X's share (lookups sent to X's locker) under X's vector, Y's version and random, at 1x and 2x, for
+    the pre-specified (uncentered) construction and the centered one beside."""
     from scripts import story_style as SS
 
     plt = SS.setup()
     slots = model_slots(models)
-    fig, axes = plt.subplots(1, len(slots), figsize=(SS.WIDTH * 1.6, 3.9), sharey=True, squeeze=False)
+    groups = [(v, d) for v in VARIANTS for d in DOSES]
+    fig, axes = plt.subplots(1, len(slots), figsize=(SS.WIDTH * 1.8, 4.1), sharey=True, squeeze=False)
     cols = {"X": SS.COL["identity"], "Y": SS.COL["position"], "R": SS.COL["control"]}
     w = 0.26
     for ax, mdl in zip(axes[0], slots, strict=True):
         ax.set_title(short(mdl["target"]) + (f", L{mdl['layer']}" if "layer" in mdl else ""), loc="left")
         ax.set_ylim(0, 1)
-        ax.set_xlim(-0.6, len(DOSES) - 0.4)
-        ax.set_xticks(range(len(DOSES)))
-        ax.set_xticklabels([f"{d}x" for d in DOSES])
+        ax.set_xlim(-0.6, len(groups) - 0.4)
+        ax.set_xticks(range(len(groups)))
+        ax.set_xticklabels([f"{d}x" + ("\ncentered" if v == "centered" else "\nas fixed") for v, d in groups])
         if mdl["status"] != "tested":
             SS.empty(ax, textwrap.fill(mdl["status"], 22))
             continue
-        for i, d in enumerate(DOSES):
-            c = mdl["cells"][str(d)]
+        ax.axvline(len(DOSES) - 0.5, color="#999999", lw=0.8)
+        for i, (var, d) in enumerate(groups):
+            c = mdl["variants"][var]["cells"][str(d)]
             for j, kind in enumerate(KINDS):
                 v = c[kind]
                 ax.bar(i + (j - 1) * w, v[0], w, color=cols[kind], label=KIND_TEXT[kind] if i == 0 else None)
                 ax.errorbar(
                     i + (j - 1) * w, v[0], yerr=[[v[0] - v[1]], [v[2] - v[0]]], color="#333333", lw=1, capsize=2
                 )
-        ax.text(0.02, 0.97, textwrap.fill(mdl["text"], 22), transform=ax.transAxes, va="top", fontsize=SS.LABEL_PT)
+        text = f"as fixed: {mdl['text']}; centered (beside): {mdl['variants']['centered']['text']}"
+        ax.text(0.02, 0.97, textwrap.fill(text, 26), transform=ax.transAxes, va="top", fontsize=SS.LABEL_PT)
     axes[0][0].set_ylabel("lookups sent to X's locker")
     handles, labels = next(((h, lb) for ax in axes[0] for h, lb in [ax.get_legend_handles_labels()] if h), ([], []))
     if handles:
         fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False, fontsize=SS.LABEL_PT)
     SS.title(fig, "53.8: does a mention's slot code move the lookup? (UNVERIFIED)",
-             f"Added at the bridge word at L, 1x / 2x a real identity change's size; rule at {RULE_DOSE}x; 95% CIs over "
-             "the bridge item.")  # fmt: skip
+             f"At the bridge word at L, 1x / 2x a real identity change's size; rule at {RULE_DOSE}x; headline: as fixed "
+             "(uncentered); centered beside (Dan 12:10); 95% CIs over the bridge item.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.1, 1, 0.86))
     fig.savefig(path, dpi=100)
     plt.close(fig)
@@ -592,6 +646,24 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
+def rule_table(models: list[dict], var: str) -> list[str]:
+    """The rule's numbers at RULE_DOSE for one construction, one row per model slot (grey statuses kept)."""
+    lines = [f"| model | layer | n (scene, X) | X's share at {RULE_DOSE}x | Y's version | random | X - random | X - Y | "
+             f"label ({var}) |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mdl in model_slots(models):
+        name = short(mdl["target"])
+        if mdl["status"] != "tested":
+            lines.append(f"| {name} | {mdl.get('layer', '-')} | - | - | - | - | - | - | {mdl['status']} |")
+            continue
+        vn = mdl["variants"][var]
+        c = vn["cells"][str(RULE_DOSE)]
+        text = f"**{vn['text']}**" if var == HEADLINE else vn["text"]
+        lines.append(f"| {name} | {mdl['layer']} | {c['n']} ({c['scenes']} scenes, {c['entities']} items) | "
+                     f"{fmt(c['X'])} | {fmt(c['Y'])} | {fmt(c['R'])} | {fmt(c['X_minus_R'])} | {fmt(c['X_minus_Y'])} | "
+                     f"{text} |")  # fmt: skip
+    return lines
+
+
 def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     models = [run_numbers(r, n_boot) for r in runs]
     out = RESULTS / f"{EXP}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
@@ -599,30 +671,43 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     lines = ["# 53.8: a binding-ID test for the lookup's identity code", "",
              f"Batch 53, test 53.8 (jobs/c3/batch53.yaml critic_1125, item 6; Dan 11:25, stretch; {NO_PREDICTION}). "
              "UNVERIFIED.", "", f"Dan's text, verbatim: \"{RULE_VERBATIM}\"", "", f"Rule as computed: {RULE}.", "",
+             f"Centered arm (Dan 12:10, jobs/c3/batch53.yaml decisions_1210b item 1, verbatim; added before any run): "
+             f"\"{CENTERED_VERBATIM}\" The headline is the pre-specified (uncentered) arm's label; the centered arm's "
+             "label, by the same thresholds, is beside.", "",
              "Design (fixed before any run):", ""] + [f"- {k}: {v}" for k, v in DESIGN.items()] + [""]  # fmt: skip
-    lines += [f"| model | layer | n (scene, X) | X's share at {RULE_DOSE}x | Y's version | random | X - random | X - Y | "
-              "label |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    for mdl in model_slots(models):
-        name = short(mdl["target"])
-        if mdl["status"] != "tested":
-            lines.append(f"| {name} | {mdl.get('layer', '-')} | - | - | - | - | - | - | {mdl['status']} |")
-            continue
-        c = mdl["cells"][str(RULE_DOSE)]
-        lines.append(f"| {name} | {mdl['layer']} | {c['n']} ({c['scenes']} scenes, {c['entities']} items) | "
-                     f"{fmt(c['X'])} | {fmt(c['Y'])} | {fmt(c['R'])} | {fmt(c['X_minus_R'])} | {fmt(c['X_minus_Y'])} | "
-                     f"**{mdl['text']}** |")  # fmt: skip
+    lines += ["Headline, the pre-specified arm (uncentered c_k):", "", *rule_table(models, HEADLINE), "",
+              "Beside, the centered arm (c_k - mean over slots; Dan 12:10), same doses, controls and thresholds:", "",
+              *rule_table(models, "centered")]  # fmt: skip
     tested = [m for m in models if m["status"] == "tested"]
     if tested:
+        lines += ["", "Slot vectors (Dan 12:10: the cosines and the norm of the slot-specific part c_k - mean over "
+                  "slots; with three slots the centered vectors sum to zero, so their cosines are about -0.5 when "
+                  "their norms are alike):", "",
+                  "| model | slot | norm c_k | norm of the slot-specific part | its share of norm c_k |",
+                  "|---|---|---|---|---|"]  # fmt: skip
+        for mdl in tested:
+            g = mdl["geometry"]
+            for k in SLOTS:
+                lines.append(f"| {short(mdl['target'])} | {k} | {g['norm'][k]:.2f} | {g['slot_specific_norm'][k]:.2f} | "
+                             f"{g['slot_specific_share'][k]:.3f} |")  # fmt: skip
+        lines.append("")
+        for mdl in tested:
+            g = mdl["geometry"]
+            lines.append(f"- {short(mdl['target'])}: cosines between slot vectors {g['cos']}; between their "
+                         f"slot-specific parts {g['cos_centered']}; slot differences vs the pointer means' "
+                         f"{g.get('cos_diff_vs_pointer_means', 'not available')}.")  # fmt: skip
         lines += ["", "Every dose: the lookup's answer under each arm kind, by role (X's locker / Y's / A's own = "
                   "original / other); shares with cluster-bootstrap CIs over the bridge item:", "",
-                  "| model | dose | arm | X | Y | original | other |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+                  "| model | construction | dose | arm | X | Y | original | other |",
+                  "|---|---|---|---|---|---|---|---|"]  # fmt: skip
         for mdl in tested:
-            for d in DOSES:
-                c = mdl["cells"][str(d)]
-                for kind in KINDS:
-                    r = c["roles"][kind]
-                    lines.append(f"| {short(mdl['target'])} | {d}x | {KIND_TEXT[kind]} | {fmt(r['X'])} | {fmt(r['Y'])} | "
-                                 f"{fmt(r['original'])} | {fmt(r['other'])} |")  # fmt: skip
+            for var in VARIANTS:
+                for d in DOSES:
+                    c = mdl["variants"][var]["cells"][str(d)]
+                    for kind in KINDS:
+                        r = c["roles"][kind]
+                        lines.append(f"| {short(mdl['target'])} | {var} | {d}x | {KIND_TEXT[kind]} | {fmt(r['X'])} | "
+                                     f"{fmt(r['Y'])} | {fmt(r['original'])} | {fmt(r['other'])} |")  # fmt: skip
         lines += ["", "Collateral (the clean answers kept) and the real change's own effect:", "",
                   "| model | arm | n | lookup kept | recall kept |", "|---|---|---|---|---|"]  # fmt: skip
         for mdl in tested:
@@ -636,7 +721,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                          f"{fmt(col['whole_lookup_to_B'])} | - |")  # fmt: skip
         lines += [""]
         for mdl in tested:
-            lines.append(f"- {short(mdl['target'])}: per X slot at {RULE_DOSE}x (X / Y / random) {mdl['per_slot']}; "
+            per_slot = {v: mdl["variants"][v]["per_slot"] for v in VARIANTS}
+            lines.append(f"- {short(mdl['target'])}: per X slot at {RULE_DOSE}x (X / Y / random) {per_slot}; "
                          f"medians {mdl['norms_median']}; vectors {mdl['geometry']}; mean pool {mdl['mean_pool_used']} "
                          f"scenes; pointer refs {mdl['pointer_refs']}; gate {mdl['gate']['org_read_accuracy']} (pass "
                          f"{mdl['gate']['pass']}), eligible {mdl['gate']['eligible']} of {mdl['gate']['test_pool']}, "
@@ -649,7 +735,9 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     lines += ["", f"Figure: {EXP}.png"]
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     (out / "verdict.json").write_text(json.dumps({"runs": runs, "question": NO_PREDICTION, "rule_verbatim": RULE_VERBATIM,
-                                                  "rule": RULE, "design": DESIGN, "models": models}, indent=1) + "\n")  # fmt: skip
+                                                  "rule": RULE, "centered_verbatim": CENTERED_VERBATIM,
+                                                  "headline": HEADLINE, "design": DESIGN, "models": models},
+                                                 indent=1) + "\n")  # fmt: skip
     figure(models, out / f"{EXP}.png")
     ex = ["# 53.8 examples (verify pack): the scene's slots, O and S_B, every arm's top token. UNVERIFIED.", ""]
     for mdl in tested:

@@ -1,0 +1,53 @@
+id: x53_8_bindid_muse_c
+title: "Batch 53.8 on Muse (L26), Dan 11:25 stretch, after the 9B, with Dan's 12:10 centered arm: a binding-ID test for the lookup's identity code. Per locker slot, the mean over 300 held-out scenes of the state at L at the item's mention in its locker sentence minus its token embedding (headline: as fixed, uncentered; beside: centered, minus the mean over slots), added at the bridge word at 1x / 2x the scene's real identity change (||h_S - h_O||, C0), against a random vector of the same norm and against the other item's (Y's) version; read: lookups sent to X's locker; x6_routes' C0 scenes; rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+depends_on: [x53_8_bindid_9b_c]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_bindid.py run --name muse30_x53_8c --why "Batch 53, test 53.8 on Muse (jobs/c3/batch53.yaml critic_1125 item 6, Dan 29 Oct 11:25, stretch: 9B, then Muse; with the centered arm of decisions_1210b item 1, Dan 12:10): a binding-ID test for the lookup's identity code at L26, the mention's slot code (uncentered, the headline; centered, beside) added at the bridge word at 1x / 2x a real identity change against random and Y's version; no prediction" &&
+  uv run python scripts/x53_bindid.py verdict
+question: >-
+  On Muse: does the state at an item's mention in its locker sentence (minus its token embedding, averaged over scenes
+  with the item fixed by slot) carry an identity code the lookup reads at the bridge word: added there at the size of a
+  real identity change, does it send the lookup to that item's locker, beyond a random vector of the same norm and
+  beyond another item's version? Beside (Dan 12:10): the same with each slot vector's slot-specific part (minus the mean
+  over slots).
+why_it_matters: >-
+  Batch 53 (Dan, 29 Oct 11:25, critic_1125 order item 6, stretch; "9B, then Muse"): whether the lookup's identity code at
+  the bridge word is a binding ID shared with the item's mention in its locker sentence, on a second family. The
+  centered arm (Dan 12:10) keeps a component shared by all slots from deciding the read.
+hypotheses:
+  none: "No prediction (batch 53: the rule fixed in Dan's text before any run; the centered arm added by Dan at 12:10, before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (critic_1125, item 6): "Stretch, 53.8, a binding-ID test for the lookup's identity
+  code (9B, then Muse): at L, take the state at item X's mention in its locker sentence minus X's token embedding (mean
+  over scenes, X fixed by slot), add it at the bridge word at 1x / 2x the size of a real identity change, against a
+  random vector of the same norm and against the same with another item Y's mention. Read: lookups sent to X's locker.
+  Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <=
+  0.05; else in between." And verbatim from decisions_1210b, item 1 (Dan 12:10, before any run): "53.8: keep your
+  construction (uncentered, dose 1x = ||Δ|| at the bridge word, as in 52) as the pre-specified arm, rule unchanged. Add,
+  now, before any run: a centered arm (X's vector minus the mean over slots), same doses, same controls (random of the
+  same norm; Y's centered version), the same rule thresholds reported for it beside. Report the slot-vector cosines and
+  the norm of the slot-specific part." As computed (scripts/x53_bindid.py, fixed before the run, the 9B's code
+  unchanged): per construction, at 2x, on point estimates (EPS 1e-9 at the bars), "a shared identity code" if X -
+  random >= 0.25 and X - Y >= 0.15; "no" if X - random <= 0.05 (the reading of "<= 0.05": X's share minus random's, at
+  2x); else "in between". The headline is the uncentered (pre-specified) construction's label; the centered
+  construction's label (c~_k = c_k - (c_0 + c_1 + c_2) / 3, the same doses d ||Δ||, the same random arm, Y's centered
+  version) is beside. X's share = the share of (scene, X) reads whose lookup's top token (X0's chat read) is X's locker
+  digit; both non-bridge items of each scene take turns as X and Y (pooled); cluster-bootstrap CIs over the bridge item
+  (10,000, seed 0), the differences paired, beside. Gate: X0's (O's read accuracy >= 0.80 per reader, lookup and recall,
+  on the 700 test-pool scenes); a failed gate gives "not tested (gate x < 0.80)", never lowered. Verdict in the job:
+  results/x53_bindid/x53_bindid-<UTC>/ over every 53.8 run in the checkout (the 9B's: its results are copied in, as
+  this job depends on it).
+controls:
+- "a random Gaussian direction per scene (seed 5308) at the same norm as X's vector (1x and 2x ||Δ||); one random arm serves both constructions, whose vectors are dosed to the same norm"
+- "Y's version: the other non-bridge item's slot vector, built the same way, at the same norm (uncentered and centered); X's share under it"
+- "the real identity change itself (Δ = h_S - h_O, C0) added at the bridge word: the lookup sent to B's locker (the dose's positive reference, beside)"
+- "O unedited (the floor); collateral beside: the lookup's and the recall's clean answers kept under every arm"
+- "X0's gate (O's read accuracy >= 0.80 per reader) and X0's eligibility (both readers say and read O's and S_B's answers right)"
+n: "the first 300 eligible of the routes runs' 700 C0 scenes (x6_routes' generator, seed 2510; the routes run had 580 eligible on Muse; 32 bridge items in the pool); 2 (scene, X) rows per scene = 600 per dose and construction; vectors from 300 held-out C0 scenes (generator 701-1,000, all three mentions one token on Muse's tokenizer); 12 arms x 2 readers per scene"
+seeds: [2510, 5308, 0]
+notes: "Batch 53, 53.8 (Dan 11:25, stretch); no prediction; UNVERIFIED; rule verbatim. Replaces x53_8_bindid_muse (queued and cancelled before running; its id and run name muse30_x53_8 stay unused) with Dan's 12:10 centered arm (decisions_1210b item 1, recorded before any run). Order: depends on x53_8_bindid_9b_c (Dan: 9B, then Muse; both on another, per the coordinator), so the verdict in this job reports both models; a 9B gate failure still ends that job 'done' (not tested, exit 0), so only a crash would block this one. The 27B (x53_8_bindid_27b_c, fallback_1220, Dan 12:22) depends on this job. Design choices exactly as the 9B's (scripts/x53_bindid.py, unchanged): (1) c_k per locker slot = the mean over the mean pool of [the block output at L26 at the k-th locker sentence's item word in O's chat lookup prompt] minus [that token's raw input-embedding row, model.hf.get_input_embeddings]; the item word one token (asserted; 0 of 900 dropped on Muse's tokenizer); X = the item at slot k for both slots other than the bridge item A's, Y = the remaining one, pooled; mean pool = C0 scenes 701-1,000, disjoint from the test pool (C0 1-700, checked identical to results/x6_routes/muse30b_x6_routes on CPU). Centered (Dan 12:10): c~_k = c_k - (c_0 + c_1 + c_2) / 3. (2) Dose: ||Δ|| per scene, Δ = h_{S_B} - h_O at the bridge word at L26 (C0); every arm at dose d has norm d ||Δ||. (3) Controls: one seeded random direction per scene shared by both constructions; Y's version and Y's centered version. (4) Read: X0's chat read; X / Y / random shares at 1x and 2x per construction, cluster-bootstrap CIs over the bridge item (10,000, seed 0); collateral = clean answers kept, both readers. (5) Rule: Dan's text at 2x on point estimates per construction; the headline is the uncentered one's. Reported (Dan 12:10): the slot-vector cosines (raw and centered), each slot-specific part's norm and its share of ||c_k||; beside: cos(c_k - c_j, mu_k - mu_j) with muse30b_x0_probe_v4's pointer means, cos(Δ, c_B - c_A), ||U^T Δ||. Muse caveat: the input-embedding row is the raw row; if Muse scales its embeddings before block 0 the subtracted part is off by that factor (the verdict gives mention_state_norm vs embedding_norm). Writes results/x53_bindid/muse30_x53_8c/ and results/x53_bindid/x53_bindid-<UTC>/. Cost (ledger): x53_6_muse ran 418 s on another vs x53_6_9b's 364 s (1.15x); the 9B's ~10 min -> ~12 min with load; est 0.25. Memory: 75 GB as x53_6_muse (an H100 80 GB on another)."
