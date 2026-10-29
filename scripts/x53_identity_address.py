@@ -65,7 +65,10 @@ TEST = "53.6"
 NO_PREDICTION = "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_6", "nemotron-3.5-lightning": "nem35l_x53_6",
         # Dan 11:25 (jobs/c3/batch53.yaml critic_1125, order item 4): "53.6 on the 27B and Muse (same rule)"
-        "qwen3.6-27b": "x53_6_27b", "muse-glimmer-30b": "muse30_x53_6"}  # fmt: skip
+        "qwen3.6-27b": "x53_6_27b", "muse-glimmer-30b": "muse30_x53_6",
+        # Dan 12:20 (batch53.yaml fallback_1220): coverage on the 122B, the same rule; in the rule across models it is one
+        # of "the others" (not in Dan's moved list; the coordinator's reading, flagged)
+        "qwen3.5-122b-a10b": "qwen35_122b_x53_6"}  # fmt: skip
 # the rule across models, verbatim (critic_1125); the "moved" models are Dan's list, verbatim
 RULE_ACROSS = ("\"the recall's pointer use tracks the swap's collateral\" if the models whose recall the address swap "
                "moved (9B, Lightning) give \"both\" and the others give \"follows the lens identity\"")  # fmt: skip
@@ -357,7 +360,7 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
 
 def across(models: list[dict]) -> dict[str, Any]:
     """The rule across models (critic_1125): the moved models (MOVED, Dan's list) "both", every other model run "follows
-    the lens identity"; with all four models: holds / does not hold; fewer: pending (unless already broken)."""
+    the lens identity"; with every model of RUNS (the 122B among "the others"): holds / does not hold; fewer: pending (unless already broken)."""
     labels = {m["target"]: m["label"] for m in models}
     want = {t: ("both" if t in MOVED else "identity") for t in RUNS}
     broken = [t for t, lab in labels.items() if t in want and lab != want[t]]

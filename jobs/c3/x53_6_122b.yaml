@@ -1,0 +1,45 @@
+id: x53_6_122b
+title: "Batch 53.6 coverage on the 122B (Qwen3.5-122B-A10B FP8, L33), Dan 12:20 (fallback_1220): the recall, lens identity vs address, in conflict. At the bridge word: the lens part toward item B (25 J++ atoms of B's change) plus the address swap toward item C's slot (s = 2, the probe run's pointer means); x6_routes' C0 scenes with three distinct legs counts; 53.6's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.0
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_identity_address.py run --name qwen35_122b_x53_6 --why "Batch 53, test 53.6 coverage on the 122B (Dan 12:20, jobs/c3/batch53.yaml fallback_1220: the same rule): the recall, lens identity toward B vs the address swap toward C's slot (s = 2) at the bridge word at L33; no prediction" &&
+  uv run python scripts/x53_identity_address.py verdict --runs qwen35_122b_x53_6
+question: >-
+  On the 122B: when the bridge word carries the lens part of B's identity and an address pointing at C's locker slot,
+  which does the recall follow: B's attribute, C's, or both?
+why_it_matters: >-
+  Dan 12:20 (jobs/c3/batch53.yaml fallback_1220, approving the coordinator's list): "53.6 на 122B", on the already-fixed
+  rule, queued after the day's ordered items. The four models run so far all give "both"
+  (results/x53_identity_address/x53_identity_address-20261029T105132Z; across models: does not hold).
+hypotheses:
+  none: "No prediction (fallback_1220: already-fixed rules, no new rules, no prediction)."
+decision_rule: >-
+  53.6's rule verbatim (jobs/c3/batch53.yaml brief, 53.6): "At the bridge word: the lens part toward item B plus the
+  address swap toward item C's slot (s = 2). Read: the recall answers B's, C's or the original. Rule: "the recall
+  follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." Across models
+  (critic_1125, verbatim): ""the recall's pointer use tracks the swap's collateral" if the models whose recall the
+  address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity"." As computed: as
+  jobs/c3/x53_6_9b.yaml (scripts/x53_identity_address.py, unchanged design), on the 122B at L33 (X0's layer for the
+  122B): x6_routes' C0 pairs (seed 2510, 1,400 per condition) with three distinct legs counts (512 of 1,400 on the
+  122B's tokenizer), X0's competence and X0's gate (0.80 per reader on O) on these, the first 300 eligible; the lens
+  part = P_J (h_{S_B} - h_O), 25 signed-OMP atoms of the 122B's J++ at L33; the address swap = 2 (mu_{j_C} - mu_{j_A}),
+  mu = x0_massmean.pointer_means(qwen35_122b_x0_probe_v4) (x8_write's means, the probe run at L33, not refit; checked on
+  CPU: slots 0-4 present); the rule on the recall under both, the clauses in the brief's order, "neither (no B or C
+  answers)" when both shares are 0; CIs over the original bridge item (10,000, seed 0) beside. Across models (flagged:
+  the coordinator's reading): the 122B is not in Dan's moved list (9B, Lightning), so it is one of "the others", wanted
+  at "follows the lens identity"; the rule's label over every model run (x53_identity_address.across: RUNS gains the
+  122B). Verdict in the job (the 122B alone): results/x53_identity_address/x53_identity_address-<UTC>/; a joint
+  five-model verdict by hand on CPU.
+controls:
+- "the lens part alone (B's identity, no address) and the address alone (no lens part): what each signal does by itself"
+- "the lens part plus a random direction of the address's norm (seeded): the address's effect beyond its size"
+- "O unedited (the floor); the lookup read on every arm beside (B's / C's / A's locker digit)"
+- "X0's gate on the scenes read (0.80 per reader on O) and X0's eligibility (both readers right on O and S_B)"
+n: "the first 300 eligible of 512 C0 scenes with three distinct legs counts (x6_routes' generator, 1,400 per condition, seed 2510); 5 arms x 2 readers"
+seeds: [2510, 5306, 888, 0]
+notes: "Dan 12:20 (jobs/c3/batch53.yaml fallback_1220), coverage; queued after the day's ordered items. Two flags for Dan: (1) L33 is the 27B's relative depth carried over to the 122B (33 of 48 blocks; x0_necessity.PREDICTED, fixed 23 Oct), not the rule the other models' layers came from; (2) the 122B's J++ lens (neuronpedia, Qwen3.5-122B-A10B_jpp_lens.pt, sha b771e502) was fit on the bf16 weights, while the runs read the FP8 checkpoint. And the coordinator's reading of the rule across models: the 122B counted among 'the others' (not in Dan's moved list). Loading as jobs/c3/x53_2x2_122b.yaml (BJ_DEVICE_MAP=auto over 2 GPUs, BJ_SUITE_BATCH=16). Code: x53_identity_address RUNS gains the 122B (qwen35_122b_x53_6; tested); the run unchanged since a8c1a516. Writes results/x53_identity_address/qwen35_122b_x53_6/ and the verdict folder x53_identity_address-<UTC>/. Cost (ledger): x53_6_9b 364 s run, x53_6_27b ~15 min; the 122B (10B active, FP8 over 2 H100s) on competence for 512 scenes, 600 state forwards and 600 batched reads ~25-35 min wall (qwen35_122b_competence_chat_v1: 456 s): est 1.0 GPU-h over the 2 GPUs. Memory: the 122B's reads peak near 120-135 GB over 2 GPUs. Disk on the Mac before the spec: 165 GB free. UNVERIFIED."

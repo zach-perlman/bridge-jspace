@@ -131,9 +131,14 @@ def test_rule_across_models_uses_dans_moved_list():
         return {"target": target, "label": lab}
 
     assert IA.MOVED == ("qwen3.5-9b", "nemotron-3.5-lightning")
-    ok = [m("qwen3.5-9b", "both"), m("nemotron-3.5-lightning", "both"), m("qwen3.6-27b", "identity"),
-          m("muse-glimmer-30b", "identity")]  # fmt: skip
+    ok = [
+        m("qwen3.5-9b", "both"),
+        m("nemotron-3.5-lightning", "both"),
+        m("qwen3.6-27b", "identity"),
+        m("muse-glimmer-30b", "identity"),
+        m("qwen3.5-122b-a10b", "identity"),
+    ]  # fmt: skip (the 122B: "the others")
     assert IA.across(ok)["label"].startswith("holds: ")
-    assert IA.across(ok[:2])["label"].startswith("pending (2 of 4 models")
+    assert IA.across(ok[:2])["label"].startswith("pending (2 of 5 models")
     assert IA.across([*ok[:3], m("muse-glimmer-30b", "both")])["label"] == "does not hold"
     assert IA.across([m("qwen3.5-9b", "identity")])["label"] == "does not hold"  # broken before the others land
