@@ -1,0 +1,62 @@
+{
+  "run": "nem35l_nn_n17_last_s0_v1",
+  "why": "Zach (2026-10-29, prereg amendment 58 notes 15 and 17, Lightning addendum): note 17, value swap, site last, donor seed 0",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "bands": [
+    "6-10",
+    "11-15",
+    "16-20",
+    "21-26"
+  ],
+  "set": "jsuite_v4_test_chat",
+  "competence": "nem35l_jsuite_v4_test_chat_competence_cand2_v1",
+  "words": [
+    "MP",
+    "MM"
+  ],
+  "site": "last",
+  "conditions": [
+    "full_cf",
+    "lensrand_cf"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "v4ok",
+  "sample_refs": 0,
+  "scene_words": null,
+  "cv_h1": "nem35l_jsuite_v4_cv_v1",
+  "value_swap": true,
+  "position_swap": false,
+  "resample": false,
+  "git_commit": "6ac70416a903439db60d6fad847ecff1b49306ff",
+  "git_state": {
+    "head": "6ac70416a903439db60d6fad847ecff1b49306ff",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

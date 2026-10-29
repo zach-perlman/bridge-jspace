@@ -1,0 +1,192 @@
+{
+ "runs": [
+  "nn_n15a_final_MM_L49-56_s0_v1",
+  "nn_n15a_final_MM_L49-56_s1_v1",
+  "nn_n15a_last_MM_L16-23_s0_v1",
+  "nn_n15a_last_MM_L16-23_s1_v1",
+  "nn_n15a_last_MM_L24-31_s0_v1",
+  "nn_n15a_last_MM_L24-31_s1_v1",
+  "nn_n15a_last_MM_L32-40_s0_v1",
+  "nn_n15a_last_MM_L32-40_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L49-56": {
+   "n": 540,
+   "donor": {
+    "full_cf": 71.5,
+    "lens_cf": 13.5,
+    "lensshr_cf": 0.7,
+    "none": 0.0,
+    "rem_cf": 37.0,
+    "remshr_cf": 71.9
+   },
+   "kept": {
+    "full_cf": 16.9,
+    "lens_cf": 75.2,
+    "lensshr_cf": 96.3,
+    "none": 99.8,
+    "rem_cf": 41.7,
+    "remshr_cf": 16.7
+   },
+   "third": {
+    "full_cf": 8.7,
+    "lens_cf": 1.1,
+    "lensshr_cf": 0.6,
+    "none": 0.0,
+    "rem_cf": 17.2,
+    "remshr_cf": 8.5
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.487,
+     [
+      0.43,
+      0.542
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.179,
+     [
+      0.136,
+      0.231
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  },
+  "last/MM/L16-23": {
+   "n": 540,
+   "donor": {
+    "full_cf": 20.9,
+    "lens_cf": 2.6,
+    "lensshr_cf": 0.7,
+    "none": 0.0,
+    "rem_cf": 20.0,
+    "remshr_cf": 20.6
+   },
+   "kept": {
+    "full_cf": 54.3,
+    "lens_cf": 92.4,
+    "lensshr_cf": 94.6,
+    "none": 99.8,
+    "rem_cf": 55.6,
+    "remshr_cf": 54.1
+   },
+   "third": {
+    "full_cf": 6.9,
+    "lens_cf": 0.0,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 7.0,
+    "remshr_cf": 7.4
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.027,
+     [
+      -0.03,
+      0.081
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.088,
+     [
+      0.04,
+      0.147
+     ]
+    ],
+    "verdict": "not needed beyond it"
+   }
+  },
+  "last/MM/L24-31": {
+   "n": 540,
+   "donor": {
+    "full_cf": 22.8,
+    "lens_cf": 4.1,
+    "lensshr_cf": 1.1,
+    "none": 0.0,
+    "rem_cf": 14.6,
+    "remshr_cf": 22.0
+   },
+   "kept": {
+    "full_cf": 61.3,
+    "lens_cf": 87.6,
+    "lensshr_cf": 95.9,
+    "none": 99.8,
+    "rem_cf": 70.0,
+    "remshr_cf": 61.3
+   },
+   "third": {
+    "full_cf": 3.7,
+    "lens_cf": 1.5,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 3.9,
+    "remshr_cf": 4.1
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.325,
+     [
+      0.224,
+      0.427
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.13,
+     [
+      0.051,
+      0.22
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  },
+  "last/MM/L32-40": {
+   "n": 540,
+   "donor": {
+    "full_cf": 20.4,
+    "lens_cf": 5.4,
+    "lensshr_cf": 0.7,
+    "none": 0.0,
+    "rem_cf": 13.1,
+    "remshr_cf": 20.0
+   },
+   "kept": {
+    "full_cf": 68.1,
+    "lens_cf": 89.6,
+    "lensshr_cf": 96.3,
+    "none": 99.8,
+    "rem_cf": 76.3,
+    "remshr_cf": 68.5
+   },
+   "third": {
+    "full_cf": 2.0,
+    "lens_cf": 0.0,
+    "lensshr_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 2.2,
+    "remshr_cf": 2.0
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.336,
+     [
+      0.233,
+      0.436
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.227,
+     [
+      0.126,
+      0.36
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  }
+ },
+ "hits": []
+}

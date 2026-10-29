@@ -1,0 +1,132 @@
+{
+ "L32-40/MP/none": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MP/full_cf": {
+  "n": 501,
+  "kept": 69.7,
+  "donor": 26.3,
+  "third": 0.2,
+  "other": 3.8,
+  "n_third": 501,
+  "transfer": 26.1,
+  "ci": [
+   22.0,
+   30.4
+  ]
+ },
+ "L32-40/MP/jpp_cf": {
+  "n": 501,
+  "kept": 82.0,
+  "donor": 14.4,
+  "third": 0.2,
+  "other": 3.4,
+  "n_third": 501,
+  "transfer": 14.2,
+  "ci": [
+   10.8,
+   17.8
+  ]
+ },
+ "L32-40/MP/jpprand_cf": {
+  "n": 501,
+  "kept": 87.4,
+  "donor": 9.8,
+  "third": 0.0,
+  "other": 2.8,
+  "n_third": 501,
+  "transfer": 9.8,
+  "ci": [
+   7.3,
+   12.4
+  ]
+ },
+ "L32-40/MP/nojpp_cf": {
+  "n": 501,
+  "kept": 76.8,
+  "donor": 20.2,
+  "third": 0.2,
+  "other": 2.8,
+  "n_third": 501,
+  "transfer": 20.0,
+  "ci": [
+   16.0,
+   23.5
+  ]
+ },
+ "L32-40/MP/nojpprand_cf": {
+  "n": 501,
+  "kept": 70.1,
+  "donor": 25.9,
+  "third": 0.2,
+  "other": 3.8,
+  "n_third": 501,
+  "transfer": 25.7,
+  "ci": [
+   21.7,
+   29.7
+  ]
+ },
+ "L32-40/MP/lensnp_cf": {
+  "n": 501,
+  "kept": 96.6,
+  "donor": 1.8,
+  "third": 0.0,
+  "other": 1.6,
+  "n_third": 501,
+  "transfer": 1.8,
+  "ci": [
+   0.8,
+   3.0
+  ]
+ },
+ "L32-40/MP/remnp_cf": {
+  "n": 501,
+  "kept": 72.9,
+  "donor": 22.8,
+  "third": 0.2,
+  "other": 4.2,
+  "n_third": 501,
+  "transfer": 22.6,
+  "ci": [
+   18.7,
+   26.3
+  ]
+ },
+ "L32-40/MP/lensshrnp_cf": {
+  "n": 501,
+  "kept": 97.8,
+  "donor": 0.8,
+  "third": 0.0,
+  "other": 1.4,
+  "n_third": 501,
+  "transfer": 0.8,
+  "ci": [
+   0.2,
+   1.7
+  ]
+ },
+ "L32-40/MP/remshrnp_cf": {
+  "n": 501,
+  "kept": 70.1,
+  "donor": 25.7,
+  "third": 0.2,
+  "other": 4.0,
+  "n_third": 501,
+  "transfer": 25.5,
+  "ci": [
+   21.2,
+   29.5
+  ]
+ }
+}

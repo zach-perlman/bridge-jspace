@@ -1,0 +1,107 @@
+{
+ "runs": [
+  "nn_n15_final_MM_L49-56_s0_v1",
+  "nn_n15_final_MM_L49-56_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L49-56": {
+   "n": 540,
+   "donor": {
+    "full_cf": 71.5,
+    "noaown_cf": 42.4,
+    "noaownctl_cf": 71.9,
+    "noarel_cf": 28.5,
+    "noarelctl_cf": 68.9,
+    "none": 0.0,
+    "rem_cf": 37.0,
+    "remkeepown_cf": 65.7,
+    "remkeeprel_cf": 71.9,
+    "remrand_cf": 71.5
+   },
+   "kept": {
+    "full_cf": 16.9,
+    "noaown_cf": 41.7,
+    "noaownctl_cf": 16.5,
+    "noarel_cf": 53.1,
+    "noarelctl_cf": 18.3,
+    "none": 99.8,
+    "rem_cf": 41.7,
+    "remkeepown_cf": 20.0,
+    "remkeeprel_cf": 17.0,
+    "remrand_cf": 16.9
+   },
+   "third": {
+    "full_cf": 8.7,
+    "noaown_cf": 12.6,
+    "noaownctl_cf": 8.7,
+    "noarel_cf": 14.8,
+    "noarelctl_cf": 9.8,
+    "none": 0.0,
+    "rem_cf": 17.2,
+    "remkeepown_cf": 12.0,
+    "remkeeprel_cf": 8.5,
+    "remrand_cf": 8.7
+   },
+   "note15_own": {
+    "e1": [
+     0.482,
+     [
+      0.426,
+      0.537
+     ]
+    ],
+    "e2": [
+     0.08,
+     [
+      0.052,
+      0.108
+     ]
+    ],
+    "e3": [
+     0.412,
+     [
+      0.353,
+      0.469
+     ]
+    ],
+    "e2_over_e1": 0.166,
+    "e3_over_e1": 0.855,
+    "answer_not_read_share": 0.209,
+    "n_ranked": 540,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "note15_rel": {
+    "e1": [
+     0.482,
+     [
+      0.426,
+      0.537
+     ]
+    ],
+    "e2": [
+     -0.005,
+     [
+      -0.015,
+      0.005
+     ]
+    ],
+    "e3": [
+     0.565,
+     [
+      0.512,
+      0.616
+     ]
+    ],
+    "e2_over_e1": -0.01,
+    "e3_over_e1": 1.172,
+    "answer_not_read_share": 0.209,
+    "n_ranked": 540,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  }
+ },
+ "hits": []
+}

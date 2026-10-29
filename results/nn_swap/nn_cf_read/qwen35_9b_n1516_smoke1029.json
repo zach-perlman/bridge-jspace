@@ -1,0 +1,138 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n15_smoke1029",
+  "qwen35_9b_nn_n16_smoke1029"
+ ],
+ "pairs": "all",
+ "cells": {
+  "final/MM/L21-24": {
+   "n": 2,
+   "donor": {
+    "full_cf": 0.0,
+    "noaown_cf": 0.0,
+    "noaownctl_cf": 0.0,
+    "noarel_cf": 0.0,
+    "noarelctl_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.0,
+    "remkeepown_cf": 0.0,
+    "remkeeprel_cf": 0.0,
+    "remrand_cf": 0.0
+   },
+   "kept": {
+    "full_cf": 50.0,
+    "noaown_cf": 50.0,
+    "noaownctl_cf": 50.0,
+    "noarel_cf": 50.0,
+    "noarelctl_cf": 50.0,
+    "none": 100.0,
+    "rem_cf": 50.0,
+    "remkeepown_cf": 50.0,
+    "remkeeprel_cf": 50.0,
+    "remrand_cf": 50.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "noaown_cf": 0.0,
+    "noaownctl_cf": 0.0,
+    "noarel_cf": 0.0,
+    "noarelctl_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.0,
+    "remkeepown_cf": 0.0,
+    "remkeeprel_cf": 0.0,
+    "remrand_cf": 0.0
+   },
+   "note15_own": {
+    "e1": [
+     null,
+     null
+    ],
+    "e2": [
+     null,
+     null
+    ],
+    "e3": [
+     null,
+     null
+    ],
+    "e2_over_e1": null,
+    "e3_over_e1": null,
+    "answer_not_read_share": 0.5,
+    "n_ranked": 2,
+    "arms": "can't tell (arm 1 has no extra loss beyond random)",
+    "verdict": "can't tell (arm 1 has no extra loss beyond random)"
+   },
+   "note15_rel": {
+    "e1": [
+     null,
+     null
+    ],
+    "e2": [
+     null,
+     null
+    ],
+    "e3": [
+     null,
+     null
+    ],
+    "e2_over_e1": null,
+    "e3_over_e1": null,
+    "answer_not_read_share": 0.5,
+    "n_ranked": 2,
+    "arms": "can't tell (arm 1 has no extra loss beyond random)",
+    "verdict": "can't tell (arm 1 has no extra loss beyond random)"
+   }
+  },
+  "last/MP/L4-7": {
+   "n": 2,
+   "donor": {
+    "full_cf": 50.0,
+    "jpp_cf": 50.0,
+    "jpprand_cf": 50.0,
+    "nojpp_cf": 0.0,
+    "nojpprand_cf": 50.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 50.0,
+    "jpp_cf": 50.0,
+    "jpprand_cf": 50.0,
+    "nojpp_cf": 100.0,
+    "nojpprand_cf": 50.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "jpp_cf": 0.0,
+    "jpprand_cf": 0.0,
+    "nojpp_cf": 0.0,
+    "nojpprand_cf": 0.0,
+    "none": 0.0
+   },
+   "note16": {
+    "full": 50.0,
+    "jpp_minus_rand": 0.0,
+    "removal_minus_rand": 50.0,
+    "jpp_alone_ci": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "removal_ci": [
+     50.0,
+     [
+      0.0,
+      100.0
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.203,
+    "verdict": "mixed"
+   }
+  }
+ },
+ "hits": []
+}

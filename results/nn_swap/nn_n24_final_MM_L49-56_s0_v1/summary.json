@@ -1,0 +1,132 @@
+{
+ "L49-56/MM/none": {
+  "n": 41,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 41,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L49-56/MM/full_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -37.8,
+   8.3
+  ]
+ },
+ "L49-56/MM/rem_cf": {
+  "n": 41,
+  "kept": 19.5,
+  "donor": 19.5,
+  "third": 56.1,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -36.6,
+  "ci": [
+   -53.5,
+   -15.8
+  ]
+ },
+ "L49-56/MM/remrand_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -35.9,
+   8.3
+  ]
+ },
+ "L49-56/MM/remkeepown_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -37.5,
+   7.9
+  ]
+ },
+ "L49-56/MM/noaown_cf": {
+  "n": 41,
+  "kept": 19.5,
+  "donor": 24.4,
+  "third": 51.2,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -26.8,
+  "ci": [
+   -47.2,
+   -7.0
+  ]
+ },
+ "L49-56/MM/noaownctl_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -37.5,
+   6.5
+  ]
+ },
+ "L49-56/MM/remkeeprel_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -35.9,
+   7.5
+  ]
+ },
+ "L49-56/MM/noarel_cf": {
+  "n": 41,
+  "kept": 24.4,
+  "donor": 12.2,
+  "third": 56.1,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -43.9,
+  "ci": [
+   -59.0,
+   -27.5
+  ]
+ },
+ "L49-56/MM/noarelctl_cf": {
+  "n": 41,
+  "kept": 12.2,
+  "donor": 34.1,
+  "third": 48.8,
+  "other": 4.9,
+  "n_third": 41,
+  "transfer": -14.6,
+  "ci": [
+   -38.5,
+   8.1
+  ]
+ }
+}

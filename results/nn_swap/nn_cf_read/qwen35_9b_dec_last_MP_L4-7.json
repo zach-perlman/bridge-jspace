@@ -1,0 +1,56 @@
+{
+ "runs": [
+  "qwen35_9b_nn_cfdec_last_MP_L4-7_s0_v1",
+  "qwen35_9b_nn_cfdec_last_MP_L4-7_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MP/L4-7": {
+   "n": 577,
+   "donor": {
+    "full_cf": 26.0,
+    "lens_cf": 2.6,
+    "lensrand_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 23.6,
+    "remfix_cf": 17.9
+   },
+   "kept": {
+    "full_cf": 66.7,
+    "lens_cf": 95.1,
+    "lensrand_cf": 99.5,
+    "none": 100.0,
+    "rem_cf": 69.2,
+    "remfix_cf": 73.3
+   },
+   "third": {
+    "full_cf": 0.7,
+    "lens_cf": 0.2,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.7,
+    "remfix_cf": 0.7
+   },
+   "full_minus_rand_ci": [
+    21.0,
+    30.7
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 26.0,
+    "lens": 2.6,
+    "rem": 23.6,
+    "remfix": 17.9,
+    "lensrand": 0.2,
+    "verdict": "around"
+   }
+  }
+ },
+ "hits": [
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L4-7"
+  }
+ ]
+}

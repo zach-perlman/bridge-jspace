@@ -1,0 +1,238 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n15a_final_MM_L21-24_s0_v1",
+  "qwen35_9b_nn_n15a_final_MM_L21-24_s1_v1",
+  "qwen35_9b_nn_n15a_final_MM_L25-28_s0_v1",
+  "qwen35_9b_nn_n15a_final_MM_L25-28_s1_v1",
+  "qwen35_9b_nn_n15a_last_MM_L4-7_s0_v1",
+  "qwen35_9b_nn_n15a_last_MM_L4-7_s1_v1",
+  "qwen35_9b_nn_n15a_last_MM_L8-11_s0_v1",
+  "qwen35_9b_nn_n15a_last_MM_L8-11_s1_v1",
+  "qwen35_9b_nn_n15a_last_MM_L12-16_s0_v1",
+  "qwen35_9b_nn_n15a_last_MM_L12-16_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L21-24": {
+   "n": 416,
+   "donor": {
+    "full_cf": 27.9,
+    "lens_cf": 1.7,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 12.5,
+    "remshr_cf": 26.9
+   },
+   "kept": {
+    "full_cf": 66.8,
+    "lens_cf": 95.4,
+    "lensshr_cf": 98.3,
+    "none": 99.3,
+    "rem_cf": 80.8,
+    "remshr_cf": 67.1
+   },
+   "third": {
+    "full_cf": 1.2,
+    "lens_cf": 0.0,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 2.2,
+    "remshr_cf": 1.2
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.517,
+     [
+      0.407,
+      0.638
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.06,
+     [
+      0.018,
+      0.113
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  },
+  "final/MM/L25-28": {
+   "n": 416,
+   "donor": {
+    "full_cf": 45.0,
+    "lens_cf": 6.2,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 11.3,
+    "remshr_cf": 45.2
+   },
+   "kept": {
+    "full_cf": 48.6,
+    "lens_cf": 89.7,
+    "lensshr_cf": 99.0,
+    "none": 99.3,
+    "rem_cf": 79.8,
+    "remshr_cf": 48.1
+   },
+   "third": {
+    "full_cf": 3.1,
+    "lens_cf": 0.7,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 3.8,
+    "remshr_cf": 3.1
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.754,
+     [
+      0.682,
+      0.825
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.139,
+     [
+      0.082,
+      0.196
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  },
+  "last/MM/L4-7": {
+   "n": 416,
+   "donor": {
+    "full_cf": 25.7,
+    "lens_cf": 3.1,
+    "lensshr_cf": 0.7,
+    "none": 0.0,
+    "rem_cf": 24.8,
+    "remshr_cf": 25.2
+   },
+   "kept": {
+    "full_cf": 49.0,
+    "lens_cf": 92.5,
+    "lensshr_cf": 92.8,
+    "none": 99.3,
+    "rem_cf": 52.4,
+    "remshr_cf": 49.5
+   },
+   "third": {
+    "full_cf": 3.8,
+    "lens_cf": 0.2,
+    "lensshr_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 3.8,
+    "remshr_cf": 3.8
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.019,
+     [
+      -0.038,
+      0.071
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.093,
+     [
+      0.045,
+      0.151
+     ]
+    ],
+    "verdict": "not needed beyond it"
+   }
+  },
+  "last/MM/L8-11": {
+   "n": 416,
+   "donor": {
+    "full_cf": 28.8,
+    "lens_cf": 7.5,
+    "lensshr_cf": 1.4,
+    "none": 0.0,
+    "rem_cf": 24.8,
+    "remshr_cf": 29.6
+   },
+   "kept": {
+    "full_cf": 52.6,
+    "lens_cf": 80.8,
+    "lensshr_cf": 94.7,
+    "none": 99.3,
+    "rem_cf": 60.3,
+    "remshr_cf": 52.4
+   },
+   "third": {
+    "full_cf": 1.7,
+    "lens_cf": 0.7,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.9,
+    "remshr_cf": 1.7
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.167,
+     [
+      0.076,
+      0.257
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.208,
+     [
+      0.125,
+      0.295
+     ]
+    ],
+    "verdict": "weak"
+   }
+  },
+  "last/MM/L12-16": {
+   "n": 416,
+   "donor": {
+    "full_cf": 25.2,
+    "lens_cf": 4.8,
+    "lensshr_cf": 1.0,
+    "none": 0.0,
+    "rem_cf": 17.5,
+    "remshr_cf": 25.2
+   },
+   "kept": {
+    "full_cf": 62.7,
+    "lens_cf": 89.7,
+    "lensshr_cf": 97.4,
+    "none": 99.3,
+    "rem_cf": 70.0,
+    "remshr_cf": 62.7
+   },
+   "third": {
+    "full_cf": 0.5,
+    "lens_cf": 0.0,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.2,
+    "remshr_cf": 0.5
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.305,
+     [
+      0.208,
+      0.402
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.152,
+     [
+      0.071,
+      0.238
+     ]
+    ],
+    "verdict": "needed beyond a same-share random part"
+   }
+  }
+ },
+ "hits": []
+}

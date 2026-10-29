@@ -1,0 +1,158 @@
+{
+ "L41-48/MM/none": {
+  "n": 350,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L41-48/MP/none": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L41-48/MM/full_cf": {
+  "n": 350,
+  "kept": 93.1,
+  "donor": 0.0,
+  "third": 2.3,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": -2.3,
+  "ci": [
+   -3.9,
+   -0.9
+  ]
+ },
+ "L41-48/MP/full_cf": {
+  "n": 501,
+  "kept": 87.0,
+  "donor": 0.0,
+  "third": 13.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": -13.0,
+  "ci": [
+   -16.0,
+   -10.0
+  ]
+ },
+ "L41-48/MM/lensrand_cf": {
+  "n": 350,
+  "kept": 99.4,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L41-48/MP/lensrand_cf": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L49-56/MM/none": {
+  "n": 350,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L49-56/MP/none": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L49-56/MM/full_cf": {
+  "n": 350,
+  "kept": 32.0,
+  "donor": 54.6,
+  "third": 7.4,
+  "other": 4.6,
+  "n_third": 350,
+  "transfer": 47.1,
+  "ci": [
+   40.2,
+   54.3
+  ]
+ },
+ "L49-56/MP/full_cf": {
+  "n": 501,
+  "kept": 18.4,
+  "donor": 0.0,
+  "third": 25.9,
+  "other": 53.3,
+  "n_third": 501,
+  "transfer": -25.9,
+  "ci": [
+   -30.1,
+   -22.0
+  ]
+ },
+ "L49-56/MM/lensrand_cf": {
+  "n": 350,
+  "kept": 99.4,
+  "donor": 0.0,
+  "third": 0.3,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": -0.3,
+  "ci": [
+   -0.9,
+   0.0
+  ]
+ },
+ "L49-56/MP/lensrand_cf": {
+  "n": 501,
+  "kept": 99.8,
+  "donor": 0.0,
+  "third": 0.2,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": -0.2,
+  "ci": [
+   -0.6,
+   0.0
+  ]
+ }
+}

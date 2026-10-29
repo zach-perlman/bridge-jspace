@@ -1,0 +1,444 @@
+{
+ "runs": [
+  "nn_n15b_final_MM_L49-56_s0_v1",
+  "nn_n15b_final_MM_L49-56_s1_v1",
+  "nn_n15b_last_MM_L16-23_s0_v1",
+  "nn_n15b_last_MM_L16-23_s1_v1",
+  "nn_n15b_last_MM_L24-31_s0_v1",
+  "nn_n15b_last_MM_L24-31_s1_v1",
+  "nn_n15b_last_MM_L32-40_s0_v1",
+  "nn_n15b_last_MM_L32-40_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L49-56": {
+   "n": 540,
+   "donor": {
+    "full_cf": 71.5,
+    "noaoth_cf": 71.3,
+    "noaothctl_cf": 71.9,
+    "noaown_cf": 42.4,
+    "noaownctl_cf": 71.9,
+    "none": 0.0,
+    "rem_cf": 37.0,
+    "remkeepoth_cf": 38.7,
+    "remkeepown_cf": 65.7,
+    "remrand_cf": 71.5
+   },
+   "kept": {
+    "full_cf": 16.9,
+    "noaoth_cf": 17.0,
+    "noaothctl_cf": 16.5,
+    "noaown_cf": 41.7,
+    "noaownctl_cf": 16.5,
+    "none": 99.8,
+    "rem_cf": 41.7,
+    "remkeepoth_cf": 39.8,
+    "remkeepown_cf": 20.0,
+    "remrand_cf": 16.9
+   },
+   "third": {
+    "full_cf": 8.7,
+    "noaoth_cf": 8.7,
+    "noaothctl_cf": 8.7,
+    "noaown_cf": 12.6,
+    "noaownctl_cf": 8.7,
+    "none": 0.0,
+    "rem_cf": 17.2,
+    "remkeepoth_cf": 17.8,
+    "remkeepown_cf": 12.0,
+    "remrand_cf": 8.7
+   },
+   "note15_own": {
+    "e1": [
+     0.482,
+     [
+      0.426,
+      0.537
+     ]
+    ],
+    "e2": [
+     0.08,
+     [
+      0.052,
+      0.108
+     ]
+    ],
+    "e3": [
+     0.412,
+     [
+      0.353,
+      0.469
+     ]
+    ],
+    "e2_over_e1": 0.166,
+    "e3_over_e1": 0.855,
+    "answer_not_read_share": 0.209,
+    "n_ranked": 540,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "note15_oth": {
+    "e1": [
+     0.482,
+     [
+      0.426,
+      0.537
+     ]
+    ],
+    "e2": [
+     0.459,
+     [
+      0.402,
+      0.512
+     ]
+    ],
+    "e3": [
+     0.008,
+     [
+      0.0,
+      0.019
+     ]
+    ],
+    "e2_over_e1": 0.952,
+    "e3_over_e1": 0.017,
+    "answer_not_read_share": 0.209,
+    "n_ranked": 540,
+    "arms": "the lens part is the bridge",
+    "verdict": "the lens part is the bridge"
+   },
+   "note15_spec": {
+    "e3_own_minus_oth": [
+     0.404,
+     [
+      0.343,
+      0.46
+     ]
+    ],
+    "verdict": "this item's answer"
+   }
+  },
+  "last/MM/L16-23": {
+   "n": 540,
+   "donor": {
+    "full_cf": 20.9,
+    "noaoth_cf": 20.4,
+    "noaothctl_cf": 20.7,
+    "noaown_cf": 19.4,
+    "noaownctl_cf": 20.7,
+    "none": 0.0,
+    "rem_cf": 20.0,
+    "remkeepoth_cf": 20.2,
+    "remkeepown_cf": 20.4,
+    "remrand_cf": 20.7
+   },
+   "kept": {
+    "full_cf": 54.3,
+    "noaoth_cf": 54.4,
+    "noaothctl_cf": 54.4,
+    "noaown_cf": 55.9,
+    "noaownctl_cf": 54.4,
+    "none": 99.8,
+    "rem_cf": 55.6,
+    "remkeepoth_cf": 56.1,
+    "remkeepown_cf": 55.6,
+    "remrand_cf": 54.1
+   },
+   "third": {
+    "full_cf": 6.9,
+    "noaoth_cf": 6.9,
+    "noaothctl_cf": 7.0,
+    "noaown_cf": 6.3,
+    "noaownctl_cf": 7.0,
+    "none": 0.0,
+    "rem_cf": 7.0,
+    "remkeepoth_cf": 7.0,
+    "remkeepown_cf": 6.7,
+    "remrand_cf": 6.7
+   },
+   "note15_own": {
+    "e1": [
+     0.035,
+     [
+      -0.021,
+      0.095
+     ]
+    ],
+    "e2": [
+     0.018,
+     [
+      -0.045,
+      0.076
+     ]
+    ],
+    "e3": [
+     0.062,
+     [
+      0.018,
+      0.112
+     ]
+    ],
+    "e2_over_e1": 0.514,
+    "e3_over_e1": 1.771,
+    "answer_not_read_share": 0.98,
+    "n_ranked": 540,
+    "arms": "mixed",
+    "verdict": "the answer is not read at the site (98% of pairs; arms beside: mixed)"
+   },
+   "note15_oth": {
+    "e1": [
+     0.035,
+     [
+      -0.021,
+      0.095
+     ]
+    ],
+    "e2": [
+     0.027,
+     [
+      -0.036,
+      0.089
+     ]
+    ],
+    "e3": [
+     0.018,
+     [
+      -0.017,
+      0.056
+     ]
+    ],
+    "e2_over_e1": 0.771,
+    "e3_over_e1": 0.514,
+    "answer_not_read_share": 0.98,
+    "n_ranked": 540,
+    "arms": "the lens part is the bridge",
+    "verdict": "the answer is not read at the site (98% of pairs; arms beside: the lens part is the bridge)"
+   },
+   "note15_spec": {
+    "e3_own_minus_oth": [
+     0.044,
+     [
+      0.0,
+      0.097
+     ]
+    ],
+    "verdict": "partly specific"
+   }
+  },
+  "last/MM/L24-31": {
+   "n": 540,
+   "donor": {
+    "full_cf": 22.8,
+    "noaoth_cf": 22.4,
+    "noaothctl_cf": 22.2,
+    "noaown_cf": 17.8,
+    "noaownctl_cf": 22.2,
+    "none": 0.0,
+    "rem_cf": 14.6,
+    "remkeepoth_cf": 15.4,
+    "remkeepown_cf": 20.6,
+    "remrand_cf": 22.0
+   },
+   "kept": {
+    "full_cf": 61.3,
+    "noaoth_cf": 61.3,
+    "noaothctl_cf": 61.1,
+    "noaown_cf": 64.1,
+    "noaownctl_cf": 61.3,
+    "none": 99.8,
+    "rem_cf": 70.0,
+    "remkeepoth_cf": 68.7,
+    "remkeepown_cf": 64.1,
+    "remrand_cf": 61.3
+   },
+   "third": {
+    "full_cf": 3.7,
+    "noaoth_cf": 3.7,
+    "noaothctl_cf": 3.9,
+    "noaown_cf": 4.1,
+    "noaownctl_cf": 3.9,
+    "none": 0.0,
+    "rem_cf": 3.9,
+    "remkeepoth_cf": 4.1,
+    "remkeepown_cf": 3.7,
+    "remrand_cf": 3.9
+   },
+   "note15_own": {
+    "e1": [
+     0.325,
+     [
+      0.224,
+      0.427
+     ]
+    ],
+    "e2": [
+     0.065,
+     [
+      -0.025,
+      0.162
+     ]
+    ],
+    "e3": [
+     0.195,
+     [
+      0.132,
+      0.263
+     ]
+    ],
+    "e2_over_e1": 0.2,
+    "e3_over_e1": 0.6,
+    "answer_not_read_share": 0.85,
+    "n_ranked": 540,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "note15_oth": {
+    "e1": [
+     0.325,
+     [
+      0.224,
+      0.427
+     ]
+    ],
+    "e2": [
+     0.293,
+     [
+      0.197,
+      0.389
+     ]
+    ],
+    "e3": [
+     -0.008,
+     [
+      -0.045,
+      0.026
+     ]
+    ],
+    "e2_over_e1": 0.902,
+    "e3_over_e1": -0.025,
+    "answer_not_read_share": 0.85,
+    "n_ranked": 540,
+    "arms": "the lens part is the bridge",
+    "verdict": "the lens part is the bridge"
+   },
+   "note15_spec": {
+    "e3_own_minus_oth": [
+     0.203,
+     [
+      0.128,
+      0.284
+     ]
+    ],
+    "verdict": "this item's answer"
+   }
+  },
+  "last/MM/L32-40": {
+   "n": 540,
+   "donor": {
+    "full_cf": 20.4,
+    "noaoth_cf": 20.2,
+    "noaothctl_cf": 20.0,
+    "noaown_cf": 16.7,
+    "noaownctl_cf": 20.0,
+    "none": 0.0,
+    "rem_cf": 13.1,
+    "remkeepoth_cf": 14.4,
+    "remkeepown_cf": 17.2,
+    "remrand_cf": 20.2
+   },
+   "kept": {
+    "full_cf": 68.1,
+    "noaoth_cf": 68.1,
+    "noaothctl_cf": 68.9,
+    "noaown_cf": 72.4,
+    "noaownctl_cf": 68.9,
+    "none": 99.8,
+    "rem_cf": 76.3,
+    "remkeepoth_cf": 74.8,
+    "remkeepown_cf": 71.7,
+    "remrand_cf": 68.3
+   },
+   "third": {
+    "full_cf": 2.0,
+    "noaoth_cf": 2.2,
+    "noaothctl_cf": 2.2,
+    "noaown_cf": 2.4,
+    "noaownctl_cf": 2.2,
+    "none": 0.0,
+    "rem_cf": 2.2,
+    "remkeepoth_cf": 2.2,
+    "remkeepown_cf": 2.4,
+    "remrand_cf": 2.2
+   },
+   "note15_own": {
+    "e1": [
+     0.345,
+     [
+      0.24,
+      0.447
+     ]
+    ],
+    "e2": [
+     0.145,
+     [
+      0.075,
+      0.218
+     ]
+    ],
+    "e3": [
+     0.164,
+     [
+      0.083,
+      0.25
+     ]
+    ],
+    "e2_over_e1": 0.42,
+    "e3_over_e1": 0.475,
+    "answer_not_read_share": 0.778,
+    "n_ranked": 540,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "note15_oth": {
+    "e1": [
+     0.345,
+     [
+      0.24,
+      0.447
+     ]
+    ],
+    "e2": [
+     0.282,
+     [
+      0.183,
+      0.382
+     ]
+    ],
+    "e3": [
+     -0.009,
+     [
+      -0.061,
+      0.036
+     ]
+    ],
+    "e2_over_e1": 0.817,
+    "e3_over_e1": -0.026,
+    "answer_not_read_share": 0.778,
+    "n_ranked": 540,
+    "arms": "the lens part is the bridge",
+    "verdict": "the lens part is the bridge"
+   },
+   "note15_spec": {
+    "e3_own_minus_oth": [
+     0.173,
+     [
+      0.095,
+      0.257
+     ]
+    ],
+    "verdict": "partly specific"
+   }
+  }
+ },
+ "hits": []
+}

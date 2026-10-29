@@ -1,0 +1,58 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n16_final_MM_L29-30_s0_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L29-30": {
+   "n": 213,
+   "donor": {
+    "full_cf": 89.7,
+    "jpp_cf": 71.4,
+    "jpprand_cf": 0.9,
+    "nojpp_cf": 25.4,
+    "nojpprand_cf": 85.4,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 2.8,
+    "jpp_cf": 14.6,
+    "jpprand_cf": 96.2,
+    "nojpp_cf": 62.4,
+    "nojpprand_cf": 5.2,
+    "none": 99.1
+   },
+   "third": {
+    "full_cf": 4.7,
+    "jpp_cf": 4.2,
+    "jpprand_cf": 0.9,
+    "nojpp_cf": 3.3,
+    "nojpprand_cf": 5.2,
+    "none": 0.0
+   },
+   "note16": {
+    "full": 89.7,
+    "jpp_minus_rand": 70.4,
+    "removal_minus_rand": 60.1,
+    "jpp_alone_ci": [
+     70.423,
+     [
+      63.303,
+      77.387
+     ]
+    ],
+    "removal_ci": [
+     60.094,
+     [
+      53.0,
+      67.15
+     ]
+    ],
+    "positive_check_pass": true,
+    "jshare_mean": 0.153,
+    "verdict": "in Dan's lens part"
+   }
+  }
+ },
+ "hits": []
+}

@@ -1,0 +1,210 @@
+{
+ "L12-16/MM/none": {
+  "n": 290,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MP/none": {
+  "n": 360,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 360,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/clamp": {
+  "n": 290,
+  "kept": 65.5,
+  "donor": 16.6,
+  "third": 1.0,
+  "other": 13.1,
+  "n_third": 290,
+  "transfer": 15.5,
+  "ci": [
+   10.5,
+   20.7
+  ]
+ },
+ "L12-16/MP/clamp": {
+  "n": 353,
+  "kept": 98.6,
+  "donor": 0.6,
+  "third": 0.0,
+  "other": 0.8,
+  "n_third": 353,
+  "transfer": 0.6,
+  "ci": [
+   0.0,
+   1.5
+  ]
+ },
+ "L12-16/MM/clamp_null": {
+  "n": 290,
+  "kept": 94.5,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 2.8,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MP/clamp_null": {
+  "n": 353,
+  "kept": 98.3,
+  "donor": 0.8,
+  "third": 0.0,
+  "other": 0.8,
+  "n_third": 353,
+  "transfer": 0.8,
+  "ci": [
+   0.0,
+   1.9
+  ]
+ },
+ "L12-16/MM/clamp_noans": {
+  "n": 290,
+  "kept": 99.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MP/clamp_noans": {
+  "n": 353,
+  "kept": 99.2,
+  "donor": 0.6,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 353,
+  "transfer": 0.6,
+  "ci": [
+   0.0,
+   1.4
+  ]
+ },
+ "L4-11/MM/none": {
+  "n": 290,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L4-11/MP/none": {
+  "n": 360,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 360,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L4-11/MM/clamp": {
+  "n": 290,
+  "kept": 63.4,
+  "donor": 17.2,
+  "third": 1.0,
+  "other": 15.5,
+  "n_third": 290,
+  "transfer": 16.2,
+  "ci": [
+   11.2,
+   21.5
+  ]
+ },
+ "L4-11/MP/clamp": {
+  "n": 353,
+  "kept": 89.2,
+  "donor": 2.5,
+  "third": 0.8,
+  "other": 6.5,
+  "n_third": 353,
+  "transfer": 1.7,
+  "ci": [
+   -0.3,
+   3.7
+  ]
+ },
+ "L4-11/MM/clamp_null": {
+  "n": 290,
+  "kept": 95.2,
+  "donor": 0.3,
+  "third": 0.3,
+  "other": 3.1,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   -1.0,
+   1.0
+  ]
+ },
+ "L4-11/MP/clamp_null": {
+  "n": 353,
+  "kept": 92.4,
+  "donor": 0.8,
+  "third": 0.0,
+  "other": 5.9,
+  "n_third": 353,
+  "transfer": 0.8,
+  "ci": [
+   0.0,
+   1.9
+  ]
+ },
+ "L4-11/MM/clamp_noans": {
+  "n": 290,
+  "kept": 98.6,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L4-11/MP/clamp_noans": {
+  "n": 353,
+  "kept": 96.9,
+  "donor": 1.4,
+  "third": 0.3,
+  "other": 1.4,
+  "n_third": 353,
+  "transfer": 1.1,
+  "ci": [
+   0.0,
+   2.6
+  ]
+ }
+}

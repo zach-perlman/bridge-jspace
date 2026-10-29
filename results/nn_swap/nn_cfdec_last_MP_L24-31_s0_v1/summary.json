@@ -1,0 +1,80 @@
+{
+ "L24-31/MP/none": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L24-31/MP/full_cf": {
+  "n": 501,
+  "kept": 65.5,
+  "donor": 28.9,
+  "third": 0.6,
+  "other": 5.0,
+  "n_third": 501,
+  "transfer": 28.3,
+  "ci": [
+   24.4,
+   32.7
+  ]
+ },
+ "L24-31/MP/lens_cf": {
+  "n": 501,
+  "kept": 92.8,
+  "donor": 4.8,
+  "third": 0.0,
+  "other": 2.4,
+  "n_third": 501,
+  "transfer": 4.8,
+  "ci": [
+   2.9,
+   6.8
+  ]
+ },
+ "L24-31/MP/rem_cf": {
+  "n": 501,
+  "kept": 71.5,
+  "donor": 24.0,
+  "third": 0.4,
+  "other": 4.2,
+  "n_third": 501,
+  "transfer": 23.6,
+  "ci": [
+   19.5,
+   27.7
+  ]
+ },
+ "L24-31/MP/remfix_cf": {
+  "n": 501,
+  "kept": 78.0,
+  "donor": 17.4,
+  "third": 0.4,
+  "other": 4.2,
+  "n_third": 501,
+  "transfer": 17.0,
+  "ci": [
+   13.6,
+   20.3
+  ]
+ },
+ "L24-31/MP/lensrand_cf": {
+  "n": 501,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 501,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

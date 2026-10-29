@@ -1,0 +1,59 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n16_last_MM_L4-7_s0_v1",
+  "qwen35_9b_nn_n16_last_MM_L4-7_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MM/L4-7": {
+   "n": 416,
+   "donor": {
+    "full_cf": 25.7,
+    "jpp_cf": 13.7,
+    "jpprand_cf": 3.8,
+    "nojpp_cf": 20.2,
+    "nojpprand_cf": 25.5,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 49.0,
+    "jpp_cf": 66.8,
+    "jpprand_cf": 83.9,
+    "nojpp_cf": 55.3,
+    "nojpprand_cf": 49.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 3.8,
+    "jpp_cf": 1.9,
+    "jpprand_cf": 1.4,
+    "nojpp_cf": 3.6,
+    "nojpprand_cf": 3.8,
+    "none": 0.0
+   },
+   "note16": {
+    "full": 25.7,
+    "jpp_minus_rand": 9.9,
+    "removal_minus_rand": 5.3,
+    "jpp_alone_ci": [
+     9.856,
+     [
+      6.739,
+      13.285
+     ]
+    ],
+    "removal_ci": [
+     5.288,
+     [
+      2.488,
+      8.0
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.157,
+    "verdict": "mixed"
+   }
+  }
+ },
+ "hits": []
+}

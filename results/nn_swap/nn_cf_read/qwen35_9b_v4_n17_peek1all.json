@@ -1,0 +1,147 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n17_last_s0_v1"
+ ],
+ "pairs": "all",
+ "cells": {
+  "last/MM/L4-7": {
+   "n": 292,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.3,
+    "lensrand_cf": 99.7,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MM/L8-11": {
+   "n": 292,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.7,
+    "lensrand_cf": 99.7,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MM/L12-16": {
+   "n": 292,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.7,
+    "lensrand_cf": 99.0,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L4-7": {
+   "n": 359,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 100.0,
+    "lensrand_cf": 99.7,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L8-11": {
+   "n": 359,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 100.0,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L12-16": {
+   "n": 359,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 98.6,
+    "lensrand_cf": 99.7,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  }
+ },
+ "hits": []
+}
