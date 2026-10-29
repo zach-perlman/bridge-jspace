@@ -1,0 +1,56 @@
+id: x53_4b_lightning_attnspan
+title: "Batch 53, 53.4 follow-up on nemotron-3.5-lightning at L14 (Dan 11:10): attention in blocks 19 + 26 blocked from the positions after the scene to the whole span from the bridge word to the scene's last token, vs a control span of the same length inside the scene before the bridge word; the whole change at the bridge word on 53.4's items; the rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x53_attnblock.py run-span --name nem35l_x53_attnspan --why "Batch 53, 53.4 follow-up (Dan 11:10, jobs/c3/batch53.yaml next_1110 item 4): attention in blocks 19 + 26 blocked to the span from the bridge word to the scene's end vs a control span of the same length; no prediction" &&
+  uv run python scripts/x53_attnblock.py verdict-span --name nem35l_x53_attnspan
+question: >-
+  53.4 found blocking the bridge word alone in blocks 19 and 26 cuts the lookup's switches by 0.34 (in between): is the
+  pointer read by attention from the positions the Mamba-2 state has spread it to? Block the readers' attention (the
+  question and the read) in blocks 19 and 26 to every position from the bridge word to the scene's end, against a
+  control span of the same length elsewhere in the scene.
+why_it_matters: >-
+  Dan's 11:10 list, item 4 (jobs/c3/batch53.yaml next_1110): the 53.4 follow-up; it separates "attention reads the
+  pointer after the Mamba state spreads it" from "the state carries it to the read".
+hypotheses:
+  none: "No prediction (Batch 53, 53.4 follow-up, Dan 11:10: the rule fixed then, before any run)."
+decision_rule: >-
+  Verbatim (jobs/c3/batch53.yaml next_1110, item 4): "53.4 follow-up (Lightning): block attention in blocks 19 + 26 to
+  the whole span from the bridge word to the end of the scene, vs a control span of the same length elsewhere. Rule:
+  "the pointer is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6
+  and the control by <= 0.15; else as 53.4." 53.4's rule (jobs/c3/x53_4_lightning_attnblock.yaml, verbatim):
+  "\"read through two blocks\" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15;
+  \"one block\" if (i) or (ii) alone cuts >= 0.6; \"not through attention at the bridge\" if (iv) cuts < 0.3 (the Mamba
+  state carries it); else in between." As computed (scripts/x53_attnblock.py run-span / verdict-span, fixed before the
+  run): items = 53.4's (the conflict run nem35l_x52_conflict's 200 items at L14, its order; the whole change Δ at the
+  bridge word at L14, X0's chat read, switch = the alt answer's first token); cut(x) = 1 - S_x / S_whole on the lookup
+  (53.4's). The span arm: in blocks 19 and 26, every position after the scene's last token (the question and the read:
+  53.4's destinations are every position after its source, here after the span) has its attention logits to every
+  position from the bridge word through the scene's last token at -inf in every head (knockout.knock_out, mode value,
+  via x47_edges.forward, uncached; knock_out needs disjoint sources and destinations, so attention inside the span is as
+  is). The control arm, chosen now before any run: as many tokens as the span, inside the scene before the bridge word
+  (from the scene's first token to the token before the bridge word; never the bridge-to-end span, never the question,
+  never position 0), the start drawn per scene among the starts that fit (random.Random('x53_attnspan|5348|<scene>'));
+  the same destinations as the span arm, so the two arms differ only in the keys blocked. A scene where no control span
+  fits is dropped from the rule and counted (plan check, Lightning's tokenizer: 95 of 200 scenes keep a control, 35
+  bridge entities; 105 dropped, the bridge word early in the scene); its span arm is read beside. "else as 53.4": 53.4's
+  labels on the span arm: "not through attention at the bridge" if the span cuts < 0.3, else "in between" (its
+  per-block clauses (i) / (ii) have no span arm). Point estimates decide, EPS 1e-9; cluster-bootstrap CIs over the
+  bridge entities (10,000, seed 0, paired) beside; S_whole = 0: not tested; X0's validity reported, not a gate. Beside:
+  53.4's (iii) rerun in this run, 53.4's committed (iii) and (v) (results/x53_attnblock/x53_attnblock-20261029T091303Z:
+  cut 0.34 [0.25, 0.42] and 0.00), the clean answer kept per arm (collateral), the span and (iii) on all 200 scenes and
+  on the 105 without a control. Verdict in the job: results/x53_attnblock/x53_attnspan-<UTC>/ (not a default prefix).
+controls:
+- "the control span: the same length, the same destinations, inside the scene before the bridge word (seeded start)"
+- "the clean answer kept under each block (collateral damage), as 53.4"
+- "53.4's (iii), the bridge word alone in blocks 19 and 26, rerun on the same forwards"
+- "the recall's numbers beside (no label)"
+n: "53.4's 200 items; the rule on the 95 where a control span fits (35 bridge entities; span 2-21 tokens, median 10); the span arm on all 200 beside (span 2-39 tokens, median 20); 2 readers"
+seeds: [5348, 0]
+notes: "Batch 53, 53.4 follow-up (Dan 11:10); no prediction; UNVERIFIED. Code: scripts/x53_attnblock.py (53.4's, 3c97a25b) gains span_positions / control_span / span_knock / label_span / build_span_items and the plan-span / run-span / verdict-span stages; 53.4's stages unchanged (reader_numbers takes arms and scenes, defaults as before). Tests in tests/test_x53_attnblock.py: the span and control on planted scenes (the control never meets the span or the question, the lengths match; 500 random scene geometries), the masks, the rule at its bars, the span mask on a tiny NemotronH (every span edge's weight 0, the queries up to the scene's end untouched), and the verdict on planted reads. Writes results/x53_attnblock/nem35l_x53_attnspan/ (manifest.json, items.jsonl with each scene's span and control and their text, outcomes.jsonl) and the verdict folder x53_attnspan-<UTC>/. Cost (ledger, results/jobq/ledger_sesterce-*.jsonl): x53_4_lightning_attnblock 94 s run + 58 s setup for 200 items x 2 readers x 12 rows; here 6-8 rows per forward: ~2-3 min; est 0.1. Memory: 53.4 peaked at 61.9 GB. Disk on the Mac before the spec: 131 GB free."

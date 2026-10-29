@@ -212,3 +212,122 @@ def test_verdict_on_a_planted_run(tmp_path, monkeypatch):
     assert blob["readers"]["lookup"]["cut"]["both"] == pytest.approx(0.8)
     assert blob["readers"]["recall"]["cut"]["both"] == 0.0 and blob["agreement"]["PP"]["agree"] == 1.0
     assert AB.RULE in text and AB.NO_PREDICTION in text and "UNVERIFIED" in text
+
+
+# ---- the 53.4 follow-up (Dan 11:10): the bridge-to-scene-end span and its control ----------------------------------
+
+
+def test_span_and_control_on_a_planted_scene():
+    """Scene tokens 8..40, the bridge word at 30, the question 42..50: the span is 30..40 (11 tokens); a control of 11
+    tokens fits with starts 8..19 (it must end before the bridge word); the control never meets the span or the
+    question and has the span's length."""
+    sp = AB.span_positions(30, (8, 40), list(range(42, 51)))
+    assert sp is not None and sp["span"] == list(range(30, 41)) and sp["starts"] == list(range(8, 20))
+    ctrl = AB.control_span("s1", sp["starts"], len(sp["span"]))
+    assert len(ctrl) == len(sp["span"]) and ctrl[-1] < 30 and ctrl[0] >= 8
+    assert not set(ctrl) & set(sp["span"]) and not set(ctrl) & set(range(42, 51))
+    assert ctrl == AB.control_span("s1", sp["starts"], 11)  # seeded per scene
+    # the bridge word early: 31 tokens of span, 2 before it in the scene: no control fits
+    assert AB.span_positions(10, (8, 40), list(range(42, 51))) is None
+    # position 0 is never a source: a scene starting at 0 starts its controls at 1
+    sp0 = AB.span_positions(12, (0, 14), [16, 17])
+    assert sp0 is not None and min(sp0["starts"]) == 1
+
+
+def test_control_never_overlaps_and_lengths_match_over_random_scenes():
+    import random as rnd
+
+    g = rnd.Random(0)
+    fits = 0
+    for i in range(500):
+        first = g.randint(1, 20)
+        last = first + g.randint(5, 60)
+        pos = g.randint(first, last)
+        question = list(range(last + 2, last + 2 + g.randint(3, 12)))
+        sp = AB.span_positions(pos, (first, last), question)
+        if sp is None:
+            assert last - pos + 1 > pos - first  # no room before the bridge word
+            continue
+        fits += 1
+        ctrl = AB.control_span(f"s{i}", sp["starts"], len(sp["span"]))
+        assert len(ctrl) == len(sp["span"]) == last - pos + 1
+        assert not set(ctrl) & set(sp["span"]) and not set(ctrl) & set(question)
+        assert first <= ctrl[0] and ctrl[-1] < pos and 0 not in ctrl
+    assert fits > 100
+
+
+def test_span_knock_masks():
+    sets = AB.arm_layers(LIGHTNING_LIKE, 14)
+    it = {"scene": "s", "pos": 30, "control": 28, "scene_end": 40, "span": list(range(30, 41)),
+          "span_control": list(range(12, 23))}  # fmt: skip
+    n = 52
+    k_span, k_ctrl = AB.span_knock("span", sets, it, n), AB.span_knock("span_ctrl", sets, it, n)
+    assert k_span is not None and k_ctrl is not None
+    blocks, src, dst = k_span
+    assert blocks == [19, 26] and src == it["span"] and dst == list(range(41, 52))
+    blocks_c, src_c, dst_c = k_ctrl
+    assert blocks_c == blocks and src_c == it["span_control"] and dst_c == dst and len(src_c) == len(src)
+    assert (
+        AB.span_knock("both", sets, it, n) == AB.knock_of("both", sets, 30, 28, n)
+        and AB.span_knock("none", sets, it, n) is None
+    )
+
+
+@pytest.mark.parametrize(
+    ("span", "ctrl", "want"),
+    [(0.6, 0.15, AB.SPAN_LABEL), (0.59, 0.0, AB.LABELS[3]), (0.8, 0.16, AB.LABELS[3]), (0.29, 0.0, AB.LABELS[2]),
+     (0.3, 0.3, AB.LABELS[3]), (math.nan, 0.0, "not tested (nothing switched under the whole change)")],
+)  # fmt: skip
+def test_span_rule_and_else_as_53_4(span, ctrl, want):
+    assert AB.label_span(span, ctrl) == want
+
+
+def test_span_mask_on_nemotronh_zeroes_every_span_edge():
+    """knock_out with the span as sources and the positions after the scene as destinations, on the tiny NemotronH: every
+    (destination, span) weight is 0 in both attention blocks; attention inside the span is untouched."""
+    m = tiny()
+    ids = torch.randint(0, 64, (1, 14), generator=torch.Generator().manual_seed(4))
+    span, dst = list(range(5, 10)), list(range(10, 14))
+    w0 = weights(m, ids)
+    w1 = weights(m, ids, ([1, 3], [span], [dst]))
+    for la in (1, 3):
+        assert (w1[la][0][:, dst][:, :, span] == 0).all()
+        assert torch.allclose(
+            w1[la][0][:, :10], w0[la][0][:, :10], atol=1e-6
+        )  # the queries up to the scene's end as is
+
+
+def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
+    import json
+
+    monkeypatch.setattr(AB, "RESULTS", tmp_path)
+    run = tmp_path / AB.RUN_SPAN
+    run.mkdir()
+    counts = {"items": 30, "entities": 5, "control_before_bridge": 0, "span_items_in_rule": 20,
+              "span_dropped_no_control_fits": 10, "span_entities_in_rule": 5, "span_tokens_in_rule": [2, 8, 15],
+              "span_tokens_all": [2, 12, 30]}  # fmt: skip
+    (run / "manifest.json").write_text(json.dumps({"layer": 14, "arm_layers": AB.arm_layers(LIGHTNING_LIKE, 14),
+                                                   "items": counts}))  # fmt: skip
+    # the rule's 20 scenes: 10 switch with no block, the span keeps 3 (cut 0.7), the control 9 (cut 0.1)
+    keep = {"none": 10, "both": 6, "span": 3, "span_ctrl": 9}
+    rows, items = [], []
+    for i in range(30):
+        s, ok = f"s{i}", i < 20
+        items.append({"scene": s, "in_rule": ok, "span_text": " beta. ...", "control_text": "Eve" if ok else None})
+        for w in ("PP", "PM"):
+            for a in AB.SPAN_ARMS if ok else AB.SPAN_ARMS[:3]:
+                for p in AB.PATCHES:
+                    sw = int(p == "whole" and (i % 20 < keep[a] if w == "PP" else True))
+                    rows.append({"scene": s, "entity": f"e{i % 5}", "reader": w, "arm": a, "patch": p, "switched": sw,
+                                 "role": "b" if sw else "A", "top_text": "x", "edges": 3, "in_rule": ok})  # fmt: skip
+    AB.X.write_jsonl(run / "outcomes.jsonl", rows)
+    AB.X.write_jsonl(run / "items.jsonl", items)
+    out = AB.stage_verdict_span(n_boot=200)
+    blob = json.loads((out / "verdict.json").read_text())
+    assert out.name.startswith("x53_attnspan-") and blob["label"] == AB.SPAN_LABEL
+    assert blob["readers"]["lookup"]["n"] == 20 and blob["readers"]["lookup"]["cut"]["span"] == pytest.approx(0.7)
+    assert (
+        blob["readers"]["lookup"]["cut"]["span_ctrl"] == pytest.approx(0.1) and blob["beside_all"]["lookup"]["n"] == 30
+    )
+    text = (out / "verdict.md").read_text()
+    assert AB.RULE_SPAN in text and "Dan 11:10" in text and "UNVERIFIED" in text and "dropped from the rule" in text
