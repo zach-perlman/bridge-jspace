@@ -389,7 +389,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.6-27b": c("not designed", "9B only by design"), LT: c("not designed", "9B only by design"),
             "qwen3.5-9b": done("results/x49_das_pos/verdict-20261028T154510Z"), "muse-glimmer-30b": c("not designed", "9B only by design")}),
         ("Learned subspaces (48 DAS; 51.3 DAS at scale)", "jobs/c3/batch51.yaml 51.3", {
-            "qwen3.6-27b": c("partial", "51.3 done; 48's DAS not run on the 27B (51.3 supersedes it)", "results/x51_das/verdict-20261028T194630Z"),
+            "qwen3.6-27b": parts(**{"51.3": done("results/x51_das/verdict-20261028T194630Z"),
+                                    "48.1": track("x48_1_27b_r2", "x48_das/x48_das_27b", "x48_das/x52_das-*")}),
             LT: c("not tested", NO_DAS),
             "qwen3.5-9b": done("results/x51_das/verdict-20261028T194630Z", "results/x48_das/verdict-20261028T134153Z"),
             "muse-glimmer-30b": done("results/x51_das/verdict-20261028T194630Z", "results/x48_das/verdict-20261028T134153Z")}),
