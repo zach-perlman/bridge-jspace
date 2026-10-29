@@ -19,6 +19,7 @@ OUT = S.REPO / "figures" / "ledger"
 R = S.REPO / "results"
 INK, LOOKUP, JPP, ADDRESS, NULL = (S.MARK_COL[k] for k in ("recall", "lookup", "jpp", "address", "null"))
 MODEL3 = (("qwen3.5-9b", "Qwen3.5-9B"), ("qwen3.6-27b", "Qwen3.6-27B"), ("muse-glimmer-30b", "Muse Glimmer 30B"))
+# the display names (a lookup only: iterate SLOT_MODELS for the four slots, FIVE where the 122B has a slot)
 SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning",
          "qwen3.5-122b-a10b": "122B"}  # fmt: skip
 
@@ -297,7 +298,7 @@ def heads(plt) -> str:
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.2, wspace=0.12)
     S.title(fig, "No small set of heads carries the swapped address",
             "Share of the swap's switch cut by ablating heads at the last token; grey: random heads, same size")  # fmt: skip
-    for ax, t in zip(axes, SHORT, strict=True):
+    for ax, t in zip(axes, SLOT_MODELS, strict=True):
         ax.set_title(SHORT[t], fontsize=12, weight="bold", loc="left")
         r, src = by[t]
         site = r["sites"]["last"]
@@ -491,7 +492,7 @@ def zach_routes(plt) -> str:
     coverage runs)."""
     by = {m["target"]: (m, path) for path in (Z3, Z3_27B, Z3_L) for m in load(path)["models"] if m["layer_results"]}
     rows = []
-    for t in (t for t in SHORT if t in by):
+    for t in (t for t in SLOT_MODELS if t in by):
         m, path = by[t]
         for la, lr in m["layer_results"].items():
             rows.append((f"{SHORT[t]} L{la}", lr["shares"]["C2"]["whole"], lr["n"], t, la, path))
@@ -1135,7 +1136,7 @@ def agnostic(plt) -> str:
         for m in load(path)["models"]:
             if m["status"] == "tested":
                 runs.setdefault(m["target"], (m, path))
-    models = [t for t in SHORT if t in runs]
+    models = [t for t in SLOT_MODELS if t in runs]
     kinds = ("animals", "fruits", "names")
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 3.5), sharey=True)
     fig.subplots_adjust(left=0.09, right=0.98, top=0.72, bottom=0.16, wspace=0.12)
@@ -1176,7 +1177,7 @@ def value_formats(plt) -> str:
     """Per model and text format, the lookup's answer under the whole change (identity, position, value, original,
     other), stacked; formats whose gate failed marked 'not tested'."""
     runs = {m["target"]: (m, path) for path in VALUEC for m in load(path)["models"]}
-    models = [t for t in SHORT if t in runs]
+    models = [t for t in SLOT_MODELS if t in runs]
     fmts = ("prose", "json", "table")
     parts = (("identity", S.COL["identity"]), ("position", S.COL["position"]), ("value", S.COL["value"]),
              ("original", S.COL["original"]), ("other", "#e6e6e6"))  # fmt: skip
