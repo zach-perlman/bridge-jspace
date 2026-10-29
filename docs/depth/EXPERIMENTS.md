@@ -1581,7 +1581,7 @@ Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-hig
 
 ## Figure checks
 
-Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable at the page width (880 px), no overlapping labels, axis names in words, the finding visible without the caption. New figures: `scripts/ledger_figures.py` into figures/ledger/, every plotted number recorded in figures/story/data.csv (figure ids `ledger_*`), not on the README's contact sheet.
+Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable at the page width (880 px), no overlapping labels, axis names in words, the finding visible without the caption. New figures: `scripts/ledger_figures.py` into figures/ledger/, every plotted number recorded in figures/story/data.csv (figure ids `ledger_*`), not on the README's contact sheet. Every PNG linked from a caption or a one-line entry was opened too (29 Oct, morning) and has a row; none was changed.
 
 | figure | page width | labels | axes in words | finding visible | note |
 |---|---|---|---|---|---|
@@ -1620,6 +1620,21 @@ Every PNG was opened after rendering (29 Oct ~02:00) and checked for: readable a
 | figures/ledger/ledger_value_formats.png | yes | no overlap (after fixing the x range) | yes | yes | untested formats marked in the panel |
 | figures/supp/s12_das_muse.png | yes | no overlap | yes | yes | reused; the README's supplementary figure; its 27B panels say "not run" (the 27B is in the table) |
 | figures/ledger/ledger_pooled_probe.png | yes | no overlap (after a shorter subtitle) | yes | yes | the best token is the verdict's per-token maximum, no interval |
+| figures/story/fig03_order.png | yes | no overlap | yes | yes | reused; the README's figure; three models |
+| figures/story/fig03c_earlier_mention.png | yes | no overlap | yes | yes | reused; the README's figure (restyled earlier tonight); three models |
+| figures/story/fig05c_described_bridge.png | yes | no overlap | yes | yes | reused; the README's figure; three models |
+| results/x0_probe/nem35l_x52_probe/probe-20261029T002432Z/probe.png | yes | no overlap | yes | yes | verdict folder; plain style; the title holds the run name and "UNVERIFIED" |
+| results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/x0b_strata.png | yes | no overlap | yes | yes | caption link; verdict folder; small text; the title holds the run name |
+| results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_anatomy.png | yes | the title runs off the right edge | yes | yes | caption link; verdict folder; Lightning; the subtitle names the test (47.8) |
+| results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_anatomy.png | yes | the title runs off the right edge | yes | yes | caption link; verdict folder; the 27B's full grid |
+| results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png | yes | the key's labels sit on the black bars | yes | yes | linked from the one-line entry; verdict folder; the title names the test (49.8) |
+| results/x50_zach/z2-20261028T162710Z/z2_beside.png | yes | no overlap | yes | yes | caption link; verdict folder; plain style; the title names the batch |
+| results/x51_depth/x51_5-20261028T181100Z/x51_5_depth.png | yes | the "n = 200" boxes cover a few hatched bars | yes | yes | caption link; verdict folder |
+| results/x51_dose/x52_dose-20261029T011635Z/dose_curves.png | yes | the right panel's key sits over the curves | yes | yes | caption link; verdict folder; Lightning |
+| results/x52_answer_map/x52-20261029T004559Z/map_9b.png | yes (wide) | the colour bar touches the last panel's title | yes | yes | caption link; verdict folder; dense heat maps |
+| results/x52_answer_map/x52-20261029T004559Z/map_27b.png | yes (wide) | the colour bar touches the last panel's title | yes | yes | caption link; verdict folder |
+| results/x52_answer_map/x52-20261029T004559Z/map_muse.png | yes (wide) | the colour bar touches the last panel's title | yes | yes | caption link; verdict folder |
+| results/x52_atoms/report-20261029T000125Z/fig_atoms.png | yes (wide) | no overlap | yes | yes | caption link; the report's figure; its panels name the test sets (E1, Z2) |
 | figures/story/fig07b_verbal.png | yes | no overlap | yes | yes | reused; drawn by the README pass; three models |
 | figures/story/fig03d_depth_map.png | yes | no overlap | yes | yes | reused; drawn by the README pass; the 9B only |
 | figures/story/fig06b_anatomy.png | yes | the 27B panel's "identity route" label sits on thin bars and is hard to read | yes | yes | reused; drawn by the README pass; three models |
