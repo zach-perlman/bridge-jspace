@@ -2841,3 +2841,37 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
 - **Queue.** scripts/queues/h200_n15b_1029.sh, on GPU0 after the 27B's stage 2, once >= 75 GB is free. A 2-item smoke runs first.
 
 - Note 19 code fix (2026-10-29 05:10 UTC, before any result): the default answer classes looked up D's passage value before the resample override, and the resample donor is never in X's passage (KeyError in the smoke). The fix uses pv.get; no design change.
+
+##### Amendment 58 notes 21-23 (Zach, 2026-10-29 ~06:00 UTC; before any result): is the J-space what the model will say? (9B, then the 27B)
+- **Why.** The workspace paper's J-lens finds directions "poised to be verbalized" and calls them reportable. Our results so far fit a narrower reading: the J-space holds what the model is set to say (the recall twin's answer; late copies of the bridge), not every variable it computes with (the lookup's bridge goes around it).
+- **Note 21: report vs use (nn_swap --report).**
+  - **Report question.** Each v4ok MP item's hop-1 question over the same passage ("Which person wrote Things Fall Apart?"). The person is said, not used. The donor is the same question with D's description clause, D as note 14.
+  - **Patch site.** The clause's last token, the same token as the lookup's description end.
+  - **Answers.** Kept = X's name; donor = D's name; third = another entity of the passage. Candidates: the passage's names, first token with and without a leading space.
+  - **Conditions.**
+    - Dan's lens part (note 16): jpp_cf, jpprand_cf, nojpp_cf, nojpprand_cf. This is the primary lens part.
+    - Beside it: note 10's top-10 part (lens_cf, rem_cf, lensrand_cf), which excludes the clean answer's top-10 output tokens. For a naming question these are the names, so it cannot carry X's name by construction.
+    - Plus full_cf.
+  - **Cells.**
+    - 9B: last L4-7, L8-11, L12-16.
+    - 27B: last L16-23, L24-31, L32-40.
+    - Donor seeds 0 and 1.
+  - **The lookup's counterpart** is note 16 (9B L4-7, L8-11; 27B L16-23, L24-31), plus the lookup with Dan's part at the missing cells (9B L12-16; 27B L32-40), run here.
+  - **Reading per cell** (Dan's part; donor shares; cf_ok pairs). need = (nojpprand − nojpp) / full.
+    - "the report needs the lens part" if the report's need >= 1/3;
+    - "the use does not" if the lookup's need < 1/3;
+    - "dissociation" if both hold at the cell.
+    - Reported beside: alone = (jpp − jpprand) / full for both questions.
+- **Note 22: the paper's clamp on v4** (conditions clamp, clamp_null, clamp_noans; v4ok MP and MM; cf_ok pairs).
+  - **Bands.** 9B L4-11 and L12-16; 27B L16-31 and L32-40. Donor seeds 0 and 1.
+  - **Readings:**
+    - MM: "the clamp moves the recall" if >= 20% move to D's attribute and clamp_null < 10%; "through answer directions" if clamp_noans moves <= 1/3 of the clamp's share.
+    - MP: "the clamp does not move the lookup" if < 10% move to D's passage value and less than 1/3 of MM's share.
+- **Note 23: a trained read-out as the ceiling** (scripts/nn_probe_v4.py).
+  - **Data.** The description-end state of every v4 MP and MM item, every 2nd layer.
+  - **Split.** For a bridge with >= 2 distinct descriptions, the items using its second description (sorted) are held out.
+  - **Read-outs.** Nearest class mean and logistic regression (300 steps, seed 0), scored top-1 among the relation's bridges (the readout's candidates). They are compared with the J++ lens's top-1 on the same held-out gated items.
+  - **Readings (in the used window: 9B L4-16, 27B L8-40):**
+    - "the bridge is represented beyond what the lens reads" if a read-out's held-out top-1 is >= 2x the lens's and >= 50% at some used layer;
+    - "the person, not the description's words" if the held-out top-1 is >= 50% (the description is new to the read-out).
+- **Queue.** scripts/queues/h200_rep2_1029.sh. 9B on GPU1 after the 9B ablations; 27B on GPU0 after the 27B note 15 addendum 2. A smoke of each note runs first.

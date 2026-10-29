@@ -70,6 +70,9 @@ jswap):
   note 19 (--resample, v4): the donor is another passage's own question (same word and relation, a person absent from
   X's passage); classes: kept = X's answer, donor = the new person's remembered attribute, third = any other value of
   X's passage, xmem = X's remembered attribute (MP) / passage value (MM)
+  note 21 (--report, v4): the job's prompt is the item's hop-1 question over the same passage ('Which person wrote X?'),
+  the donor the same with D's description clause; sites at the clause; classes the passage's names (kept X, donor D,
+  third another entity)
   jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
@@ -85,6 +88,7 @@ import argparse
 import collections
 import json
 import random
+import re
 import subprocess
 import sys
 import time
@@ -541,7 +545,7 @@ def main(a) -> None:
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
                                                        "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",
                                                                  "rand": f"{SEED_RAND}+layer", "null": f"{SEED_NULL}+layer", "rot": f"{JS.SEED_ROT}+layer", "ctl": SEED_CTL},
-                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap, "position_swap": a.position_swap, "resample": a.resample,
+                                                       "seed": a.seed, "items": a.items, "sample_refs": a.sample_refs, "scene_words": a.scene_words, "cv_h1": a.cv_h1, "value_swap": a.value_swap, "position_swap": a.position_swap, "resample": a.resample, "report": a.report,
                                                        "git_commit": commit, "git_state": pins.git_state(), "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ")}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -611,6 +615,13 @@ def main(a) -> None:
                     continue
                 dn, desc_d = x, desc_x
                 cf_ids = S.ids(tok, T.render(tok, {**it, "context": ctx2, "_question": it["question"], "_kind": kind}))
+            elif a.report:  # note 21: the same passage, the hop-1 question ("Which person wrote X?"): the bridge is said, not used
+                q1, k1 = it["steps"][0]["question"], it["steps"][0]["kind"]
+                desc_x, desc_d = (re.split(r" (?:who|that) ", d_, maxsplit=1)[-1] for d_ in (desc_x, desc_d))
+                if q1.count(desc_x) != 1:
+                    continue
+                p = {**p, "ids": S.ids(tok, T.render(tok, {**it, "_question": q1, "_kind": k1}))}
+                cf_ids = S.ids(tok, T.render(tok, {**it, "_question": q1.replace(desc_x, desc_d), "_kind": k1}))
             elif a.resample:  # note 19: the donor is another passage's own question, about a person absent from X's passage
                 pool = sorted(i for i, o in items.items() if o.get("set_version") == "v4" and o["word"] == it["word"] and o["relation"] == rel
                               and o["scene"] != it["scene"] and o["bridge"] not in it["entities"] and o["bridge"] in t["facts"]
@@ -669,6 +680,11 @@ def main(a) -> None:
             if a.resample:  # note 19: third = any other value of X's passage
                 jobs[-1]["ft"] = set().union(*(JS.forms(tok, v, kind) for v in pv.values() if v != xv))
                 jobs[-1]["at"] = "another passage value"
+            if a.report:  # note 21: kept X's name, donor D's name, third another entity of the passage; candidates the passage's names
+                nm = lambda e: {S.ids(tok, " " + e)[0], S.ids(tok, e)[0]}  # noqa: E731
+                jobs[-1].update({"fx": nm(x), "fd": nm(dn), "ft": set().union(*(nm(e) for e in it["entities"] if e not in (x, dn))),
+                                 "fm": set(), "ax": x, "ad": dn, "at": "another entity of the passage",
+                                 "ok2": sorted(nm(x)), "cands2": sorted(set().union(*(nm(e) for e in it["entities"])))})  # fmt: skip
             continue
         if it.get("final") == "P":  # note 13: an in-context second hop (jsuite_v3mp); D is another entity of the passage
             pv, mem = it["passage_values"], (lambda e, t=t: t["facts"][e][0] if e in t["facts"] else None)
@@ -765,6 +781,7 @@ if __name__ == "__main__":
     ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1 (closed-book hop 1)")
     ap.add_argument("--value-swap", action="store_true", help="note 17: the donor prompt keeps the question about X and gives X another passage value")
     ap.add_argument("--position-swap", action="store_true", help="note 18: the donor prompt keeps the question; X's fact sentence trades places with Z's")
+    ap.add_argument("--report", action="store_true", help="note 21: the hop-1 question over the same passage (the bridge is said)")
     ap.add_argument("--resample", action="store_true", help="note 19: the donor is another passage's own question, about a person absent from X's passage")
     a = ap.parse_args()
     assert a.band or a.sweep, "--band or --sweep"
