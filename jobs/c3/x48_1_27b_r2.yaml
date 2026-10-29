@@ -1,0 +1,40 @@
+id: x48_1_27b_r2
+title: "Batch 48.1 on the 27B (L32), r2 for batch 52 C coverage: DAS at the bridge word, two readers, two subspaces? R_lookup and R_recall (k = 1, 4, 16, 64) trained on the main test's locker-first pairs; own-IIA, cross-IIA, energy inside J++-25 / U / W_E-25, routes read; random and shuffled-target baselines; the run fix BJ_DAS_GDN=torch; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 1.9
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= BJ_DAS_GDN=torch PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap; 48.1 named the 27B 'if time', x48_1_27b never ran)" &&
+  uv run python scripts/x48_das.py run --name x48_das_27b --why "batch 48, test 48.1 (jobs/c3/batch48.yaml) on the 27B, batch 52 C coverage (x48_1_27b r2, BJ_DAS_GDN=torch): DAS at the bridge word at L32 on the main test's locker-first pairs the whole change switches; one R per reader and k, random and shuffled-target baselines; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x48_das/x48_das_27b/coverage.txt &&
+  uv run python scripts/x48_das.py verdict --coverage
+question: >-
+  At the bridge word at L32 of the 27B, is there a low-dimensional subspace of the change that mediates the lookup, one
+  that mediates the recall, are they disjoint (own-IIA high, cross-IIA low), and where do they sit against the lens
+  (J++-25), the pointer directions U and the input-embedding part W_E-25?
+why_it_matters: >-
+  The 27B is the third model of the main test; 48.1 names it "if time". Amendment 2: the 27B fills every gap.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule. (x48_1_27b: Q48.1 asks for the 9B and Muse; the 27B is reported beside them, descriptive unless Dan adds a line.)"
+decision_rule: >-
+  Unchanged from jobs/c3/x48_1_27b.yaml, verbatim: "Fixed in advance (jobs/c3/batch48.yaml, 48.1): rules (a)-(d) and
+  the fallback as in jobs/c3/x48_1_9b.yaml, read the same way (as computed there), on the 27B's stored main-test run
+  x0_necessity_27b_chat (chat, L32): its locker-first scenes the whole change switches for at least one reader (plan
+  check: 68 pairs of 200, 34 bridge entities; lookup 66, recall 51), split by the original bridge entity 60 / 20 / 20,
+  seed 0; U = x0_massmean.subspaces' Alf on x0_probe_v4_27b." First scored on the 9B and Muse in
+  results/x48_das/verdict-20261028T134153Z. The only change from x48_1_27b is the run fix BJ_DAS_GDN=torch (the Gated
+  DeltaNet layers' chunked rule in transformers' torch reference for the backward; the 9B's first 48.1 run failed in
+  fla's backward without it, x48_1_9b_r2 and the 27B's 51.3 ran with it); no rule, layer, prompt set or gate changes.
+  Verdict in the job (x48_das.py verdict --coverage: the 27B's run alone, 'no prediction', results/x48_das/x52_das-<UTC>/).
+controls:
+- "untrained random R of the same k (seed 4802 + k)"
+- "R trained on shuffled targets (seed 4801 + k + reader): must sit at the random R"
+- "the whole change and O unedited reread on the select and test pairs (IIA / S_whole reported)"
+- "cross-IIA: R_lookup read by the recall, R_recall read by the lookup"
+- "the read position: both readers' prompts identical through the bridge token (asserted per pair)"
+n: "plan check on the 27B (CPU, the stored run): 68 locker-first pairs of 200 scenes at L32 (34 bridge entities); lookup pairs 66, recall pairs 51"
+seeds: [0, 48, 4801, 4802, 4803, 2510]
+notes: "Batch 52 C, amendment 2 (coordinator 03:15 Paris: an existing design, 48.1's 27B; r2 of x48_1_27b, which never ran). Box: mats (sesterce-h100x2), the first to drain by jobq stats at 02:04 UTC: drains 02:58-04:19 UTC vs another 03:46-06:15 UTC. Run name x48_das_27b = x48_das.RUNS['qwen3.6-27b'] (no folder yet). DAS trains its own R per reader and k (16 trainings x 300 steps); nothing from 51.3 is reused. Code: x48_das gains COVERAGE_RUNS (the 27B) and verdict --coverage (no seal guard, 'no prediction', x52_das-<UTC>/); 48.1's own verdict unchanged. Checked on a planted run (Muse's 48.1 relabelled as the 27B's): verdict --coverage passes. Retry once, then skip with the reason logged. Wallclock (ledger): x48_1_9b_r2 1,867 s, x48_1_muse 3,298 s; the 27B's 51.3 took 2.1x the 9B's: est ~1.1 h (x48_1_27b's arithmetic: 1.7 h, est 1.9); peak memory ~70 GB (x51_3_27b 70.4 GB)."

@@ -86,6 +86,11 @@ MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "muse-glimmer-30b": "muse30b
 # the 9B's runs are the r2 retries (BJ_DAS_GDN=torch): the first x48_1_9b failed in fla's backward (28 Oct)
 RUNS = {"qwen3.5-9b": "qwen35_9b_x48_das_r2", "muse-glimmer-30b": "muse30_x48_das", "qwen3.6-27b": "x48_das_27b"}
 DEPTH_RUNS = {"qwen3.5-9b": ["qwen35_9b_x48_das_r2", "qwen35_9b_x47_d3_r2"]}
+# batch 52 C coverage (amendment 2, the 27B gap; jobs/c3/x48_1_27b_r2.yaml): 48.1 named the 27B ("if time") and its run
+# never ran; read by verdict --coverage alone (48.1's own verdict, the 9B and Muse, unchanged)
+COVERAGE_RUNS = {"qwen3.6-27b": "x48_das_27b"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x48_das/verdict-20261028T134153Z"  # 48.1's rules first scored (the 9B and Muse)
 RENDERING = "chat"
 KS = (1, 4, 16, 64)
 K_LOW = 16  # rule (a): own-IIA >= 0.7 at some k <= 16
@@ -1003,10 +1008,17 @@ def layer_lines(num: dict[str, Any], label: str) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = dan_answer(QUESTION)
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """48.1's verdict (sealed until Q48.1), or with coverage (batch 52 C) the same rules on the coverage runs: no seal
+    guard, "no prediction" in place of Dan's answer, written to x52_das-<UTC>/."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else dan_answer(QUESTION)
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
-    out = RESULTS / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    if coverage:
+        names = {**RUNS, **COVERAGE_RUNS}
+        targets = [json.loads((RESULTS / r / "manifest.json").read_text())["model"]["target"] if
+                   (RESULTS / r / "manifest.json").exists() else {v: k for k, v in names.items()}.get(r) for r in runs]  # fmt: skip
+        assert set(targets) <= set(COVERAGE_RUNS), f"48.1 coverage runs on {sorted(COVERAGE_RUNS)}, not {targets}"
+    out = RESULTS / f"{'x52_das' if coverage else 'verdict'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     models = []
     lines = ["# 48.1: DAS at the bridge word, two readers, two subspaces?", "",
@@ -1034,6 +1046,8 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
                          f"{fmt(r['original'])} | {fmt(r['other'])} | {r['recall_switch']} |")  # fmt: skip
         lines += ["", f"Rule detail: {json.dumps(v['detail'])}", ""]
     lines += ["Rules (fixed in advance): " + "; ".join(f"({k}) {t}" for k, t in RULE.items()) + "."]
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "verdict.json").write_text(json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     ex = ["# 48.1 examples (verify pack): prompts exactly as the model reads them; ⟦bridge:…⟧ the bridge word where "
@@ -1112,6 +1126,8 @@ def main() -> None:
     ap.add_argument("--steps", type=int, default=STEPS)
     ap.add_argument("--n-routes", type=int, default=N_ROUTES)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs (default {list(COVERAGE_RUNS.values())}; '{NO_PREDICTION}')")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -1120,7 +1136,8 @@ def main() -> None:
         stage_run(a.name, a.why, layers=tuple(a.layers) if a.layers else None, depth=a.depth, steps=a.steps,
                   n_routes=a.n_routes)  # fmt: skip
     elif a.stage == "verdict":
-        stage_verdict(a.runs or [RUNS["qwen3.5-9b"], RUNS["muse-glimmer-30b"]], a.n_boot)
+        default = list(COVERAGE_RUNS.values()) if a.coverage else [RUNS["qwen3.5-9b"], RUNS["muse-glimmer-30b"]]
+        stage_verdict(a.runs or default, a.n_boot, a.coverage)
     else:
         stage_depth(a.runs or DEPTH_RUNS["qwen3.5-9b"], a.n_boot)
 

@@ -123,3 +123,27 @@ def test_lightning_z2_cue_and_value_c_lookups(tmp_path, monkeypatch):
     assert AN.runs_of("cue")[LT] == "nem35l_x52_cue_answer" and AN.source_of("cue", LT).name == "nem35l_x52_cue"
     assert AN.source_of("cue", Q27).name == "x47_cue_27b"  # the design's sources unchanged
     assert V.PCF_FIT[LT] == "x7_pcf/nem35l_x52_x45d_fit" and Q27 not in V.PCF_FIT
+
+
+def test_das_coverage_verdict_reads_the_27b_alone(tmp_path, monkeypatch):
+    """48.1 on the 27B (x48_1_27b_r2): verdict --coverage reads COVERAGE_RUNS (the 27B's x48_das_27b) with no seal
+    guard; a design model's run is refused under --coverage."""
+    import json
+
+    from scripts import x48_das as D
+
+    assert D.COVERAGE_RUNS == {Q27: "x48_das_27b"} and D.RUNS[Q27] == "x48_das_27b"
+    seen = []
+    monkeypatch.setattr(D, "stage_verdict", lambda runs, n_boot, coverage=False: seen.append((runs, coverage)))
+    for argv in (["verdict", "--coverage"], ["verdict"]):
+        monkeypatch.setattr("sys.argv", ["x48_das", *argv])
+        D.main()
+    assert seen == [(["x48_das_27b"], True), ([D.RUNS["qwen3.5-9b"], D.RUNS["muse-glimmer-30b"]], False)]
+    monkeypatch.undo()
+    run = tmp_path / D.RUNS["qwen3.5-9b"]
+    run.mkdir()
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": "qwen3.5-9b"}}))
+    monkeypatch.setattr(D, "RESULTS", tmp_path)
+    monkeypatch.setattr(D, "dan_answer", lambda q: (_ for _ in ()).throw(AssertionError("the seal guard ran")))
+    with pytest.raises(AssertionError, match=r"48\.1 coverage runs on"):
+        D.stage_verdict([run.name], 10, coverage=True)
