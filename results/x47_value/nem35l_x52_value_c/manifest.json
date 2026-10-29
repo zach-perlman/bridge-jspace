@@ -1,0 +1,87 @@
+{
+  "exp": "x47_value",
+  "run": "nem35l_x52_value_c",
+  "part": "c",
+  "why": "Batch 52 C coverage: 47.7 (c) on Lightning at L14, the varied scenes, the refit pointer from fill5's 45d fit (x7_pcf/nem35l_x52_x45d_fit); no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14; hollow gate)",
+  "written_utc": "2026-10-29T03:52:13Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "e583621f47b98af51f7ca063d33cad15fa03effd",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "47.7(c)",
+  "spec": "jobs/c3/batch47.yaml (47.7, amendment 1)",
+  "question": "Q47.7 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 14,
+  "k": 25,
+  "omp": "signed",
+  "dictionary": "J++ lens atoms of the letter tokens and the digit tokens (the main test's letter-only restriction lifted)",
+  "arms": {
+    "ql": [
+      "whole",
+      "no_jpp",
+      "no_jpp_rand",
+      "no_alf",
+      "no_alf_rand",
+      "no_pcf",
+      "no_pcf_rand"
+    ]
+  },
+  "gate": 0.8,
+  "gate_renderings": [
+    "ql"
+  ],
+  "n_per_group": 300,
+  "alf_from": "nem35l_x52_probe",
+  "pcf_from": "x7_pcf/nem35l_x52_x45d_fit",
+  "random_part": "X0's random subspace, seed 888 + layer, at each part's share of ||change||^2",
+  "change": "h_S - h_O at the bridge word at L; question-first: per reader from its own prompts; question-last: from the lookup's prompt (the readers' prefixes equal), read by both",
+  "read": "the top token at the read step (a digit's space token appended; a word answer read right after 'Answer:')",
+  "probe_states": "the lookup's O state at the bridge word per rendering (states.npz; x0_probe's (a) at the verdict)",
+  "readout": "the lens vectors (unit=False) of the value pool's tokens at that state: the rank of O's answer",
+  "c0": {
+    "reference": null,
+    "tolerance": 0.1,
+    "c0_min": null,
+    "stop": "recorded in c0_check.json, the run does not stop (sealed); the verdict labels a failed model"
+  },
+  "rule": "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's removal cuts it >= 0.3 beyond random",
+  "seeds": {
+    "scenes": 2510,
+    "independence": 4707,
+    "move": 4708,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.7 answer"
+}

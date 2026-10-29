@@ -1,0 +1,31 @@
+{
+  "set": "x0b_v2",
+  "scenes": 4410,
+  "cases": 1263,
+  "dropped": {
+    "json: no new number left": 160,
+    "json: no other pick with a different locker and memory number before the pick": 11,
+    "json: the bridge is not one token at the same index in O and S (a number word's token count changes)": 756,
+    "json: the bridge's locker statement comes after the pick": 348,
+    "prose: no new number left": 152,
+    "prose: no other pick with a different locker and memory number before the pick": 138,
+    "prose: no third locker item before the pick with a distinct number": 146,
+    "prose: the bridge is not one token at the same index in O and S (a number word's token count changes)": 223,
+    "prose: the bridge's locker statement comes after the pick": 384,
+    "table: no new number left": 165,
+    "table: no other pick with a different locker and memory number before the pick": 12,
+    "table: the bridge is not one token at the same index in O and S (a number word's token count changes)": 253,
+    "table: the bridge's locker statement comes after the pick": 399
+  },
+  "pcf_from": "x7_pcf/nem35l_x52_x45d_fit",
+  "held_out_cases": 535,
+  "per_format": {
+    "table": 222,
+    "json": 98,
+    "prose": 215
+  },
+  "per_numbers": {
+    "digits": 258,
+    "words": 277
+  }
+}

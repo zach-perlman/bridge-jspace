@@ -1,0 +1,437 @@
+{
+ "part": "c",
+ "runs": [
+  "nem35l_x52_value_c"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule; rules first scored in results/x47_value/x47_7c-20261028T123632Z; the 2-of-3 labels cover the given runs only, not re-scored",
+ "verdict": {
+  "label": "incomplete",
+  "value_above": [],
+  "position_route": [],
+  "untested": [
+   "nem35l_x52_value_c/prose",
+   "nem35l_x52_value_c/table"
+  ]
+ },
+ "models": [
+  {
+   "run": "nem35l_x52_value_c",
+   "target": "nemotron-3.5-lightning",
+   "layer": 14,
+   "gate": {
+    "json": {
+     "cases": 98,
+     "org_read_accuracy": {
+      "ql": {
+       "PP": 0.9285714285714286,
+       "PM": 0.8163265306122449
+      }
+     },
+     "gate_renderings": [
+      "ql"
+     ],
+     "pass": true,
+     "eligible": 56,
+     "used": 56
+    },
+    "prose": {
+     "cases": 215,
+     "org_read_accuracy": {
+      "ql": {
+       "PP": 0.9953488372093023,
+       "PM": 0.786046511627907
+      }
+     },
+     "gate_renderings": [
+      "ql"
+     ],
+     "pass": false,
+     "eligible": 150,
+     "used": 0
+    },
+    "table": {
+     "cases": 222,
+     "org_read_accuracy": {
+      "ql": {
+       "PP": 0.9819819819819819,
+       "PM": 0.7882882882882883
+      }
+     },
+     "gate_renderings": [
+      "ql"
+     ],
+     "pass": false,
+     "eligible": 122,
+     "used": 0
+    }
+   },
+   "status": "tested",
+   "why": "",
+   "plan": {
+    "set": "x0b_v2",
+    "scenes": 4410,
+    "cases": 1263,
+    "dropped": {
+     "json: no new number left": 160,
+     "json: no other pick with a different locker and memory number before the pick": 11,
+     "json: the bridge is not one token at the same index in O and S (a number word's token count changes)": 756,
+     "json: the bridge's locker statement comes after the pick": 348,
+     "prose: no new number left": 152,
+     "prose: no other pick with a different locker and memory number before the pick": 138,
+     "prose: no third locker item before the pick with a distinct number": 146,
+     "prose: the bridge is not one token at the same index in O and S (a number word's token count changes)": 223,
+     "prose: the bridge's locker statement comes after the pick": 384,
+     "table: no new number left": 165,
+     "table: no other pick with a different locker and memory number before the pick": 12,
+     "table: the bridge is not one token at the same index in O and S (a number word's token count changes)": 253,
+     "table: the bridge's locker statement comes after the pick": 399
+    },
+    "pcf_from": "x7_pcf/nem35l_x52_x45d_fit",
+    "held_out_cases": 535,
+    "per_format": {
+     "table": 222,
+     "json": 98,
+     "prose": 215
+    },
+    "per_numbers": {
+     "digits": 258,
+     "words": 277
+    }
+   },
+   "cells": {
+    "prose": null,
+    "json": {
+     "n": 56,
+     "entities": 11,
+     "scenes": [
+      "P2-L0-0036",
+      "P2-L0-0051",
+      "P2-L0-0099",
+      "P2-L0-0156",
+      "P2-L0-0309",
+      "P2-L0-0414",
+      "P2-L0-0477",
+      "P2-L0-0561",
+      "P2-L0-0582",
+      "P2-L0-0687",
+      "P2-L0-0815",
+      "P2-L0-0834",
+      "P2-L0-0863",
+      "P2-L0-0876",
+      "P2-L0-0878",
+      "P2-L0-0918",
+      "P2-L0-0960",
+      "P2-L0-1086",
+      "P2-L0-1107",
+      "P2-L0-1157",
+      "P2-L0-1304",
+      "P2-L0-1325",
+      "P2-L0-1416",
+      "P2-L0-1430",
+      "P2-L1-0002",
+      "P2-L1-0070",
+      "P2-L1-0091",
+      "P2-L1-0107",
+      "P2-L1-0125",
+      "P2-L1-0154",
+      "P2-L1-0175",
+      "P2-L1-0209",
+      "P2-L1-0254",
+      "P2-L1-0461",
+      "P2-L1-0532",
+      "P2-L1-0549",
+      "P2-L1-0574",
+      "P2-L1-0637",
+      "P2-L1-0658",
+      "P2-L1-0674",
+      "P2-L1-0675",
+      "P2-L1-0695",
+      "P2-L1-0742",
+      "P2-L1-0805",
+      "P2-L1-0842",
+      "P2-L1-0863",
+      "P2-L1-0868",
+      "P2-L1-1052",
+      "P2-L1-1057",
+      "P2-L1-1073",
+      "P2-L1-1099",
+      "P2-L1-1304",
+      "P2-L1-1309",
+      "P2-L1-1330",
+      "P2-L1-1456",
+      "P2-L2-0238"
+     ],
+     "arms": {
+      "whole": {
+       "identity": [
+        0.48214285714285715,
+        0.3448275862068966,
+        0.5882352941176471
+       ],
+       "position": [
+        0.35714285714285715,
+        0.2711864406779661,
+        0.43636363636363634
+       ],
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.05357142857142857,
+        0.0,
+        0.14000877192982444
+       ],
+       "other": [
+        0.10714285714285714,
+        0.046875,
+        0.1951219512195122
+       ]
+      },
+      "no_jpp": {
+       "identity": [
+        0.42857142857142855,
+        0.27450980392156865,
+        0.5625
+       ],
+       "position": [
+        0.375,
+        0.254537750385208,
+        0.5
+       ],
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.07142857142857142,
+        0.0,
+        0.15151515151515152
+       ],
+       "other": [
+        0.125,
+        0.06349206349206349,
+        0.21428571428571427
+       ]
+      },
+      "no_jpp_rand": {
+       "identity": [
+        0.48214285714285715,
+        0.38181818181818183,
+        0.5588235294117647
+       ],
+       "position": [
+        0.26785714285714285,
+        0.14893617021276595,
+        0.37254901960784315
+       ],
+       "value": [
+        0.017857142857142856,
+        0.0,
+        0.05172413793103448
+       ],
+       "original": [
+        0.125,
+        0.044101662404092086,
+        0.2187690548780485
+       ],
+       "other": [
+        0.10714285714285714,
+        0.031746031746031744,
+        0.23076923076923078
+       ]
+      },
+      "no_alf": {
+       "identity": [
+        0.5892857142857143,
+        0.45454545454545453,
+        0.717391304347826
+       ],
+       "position": [
+        0.19642857142857142,
+        0.08509736747205193,
+        0.3090909090909091
+       ],
+       "value": [
+        0.017857142857142856,
+        0.0,
+        0.05172413793103448
+       ],
+       "original": [
+        0.08928571428571429,
+        0.022222222222222223,
+        0.15789473684210525
+       ],
+       "other": [
+        0.10714285714285714,
+        0.04918032786885246,
+        0.1875
+       ]
+      },
+      "no_alf_rand": {
+       "identity": [
+        0.48214285714285715,
+        0.36585365853658536,
+        0.5737780813600485
+       ],
+       "position": [
+        0.3392857142857143,
+        0.25,
+        0.421875
+       ],
+       "value": [
+        0.017857142857142856,
+        0.0,
+        0.05172413793103448
+       ],
+       "original": [
+        0.03571428571428571,
+        0.0,
+        0.11538461538461539
+       ],
+       "other": [
+        0.125,
+        0.06349206349206349,
+        0.21428571428571427
+       ]
+      },
+      "no_pcf": {
+       "identity": [
+        0.4642857142857143,
+        0.375,
+        0.58
+       ],
+       "position": [
+        0.125,
+        0.035072595281306726,
+        0.23076923076923078
+       ],
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.3392857142857143,
+        0.22448979591836735,
+        0.42857142857142855
+       ],
+       "other": [
+        0.07142857142857142,
+        0.02040816326530612,
+        0.125
+       ]
+      },
+      "no_pcf_rand": {
+       "identity": [
+        0.5,
+        0.3589622641509434,
+        0.6
+       ],
+       "position": [
+        0.30357142857142855,
+        0.20689655172413793,
+        0.39683123249299707
+       ],
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "original": [
+        0.08928571428571429,
+        0.021739130434782608,
+        0.16326530612244897
+       ],
+       "other": [
+        0.10714285714285714,
+        0.04411764705882353,
+        0.2045600233100231
+       ]
+      }
+     },
+     "fall_beyond_random": {
+      "jpp": {
+       "value": [
+        0.017857142857142856,
+        0.0,
+        0.05172413793103448
+       ],
+       "position": [
+        -0.10714285714285715,
+        -0.22641509433962262,
+        0.0
+       ],
+       "identity": [
+        0.0535714285714286,
+        -0.05769230769230771,
+        0.17188846982758602
+       ]
+      },
+      "alf": {
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "position": [
+        0.14285714285714288,
+        0.07500000000000001,
+        0.2040816326530612
+       ],
+       "identity": [
+        -0.10714285714285715,
+        -0.1833333333333333,
+        -0.038461538461538436
+       ]
+      },
+      "pcf": {
+       "value": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "position": [
+        0.17857142857142855,
+        0.1090909090909091,
+        0.2619047619047619
+       ],
+       "identity": [
+        0.0357142857142857,
+        -0.12,
+        0.13888888888888884
+       ]
+      }
+     }
+    },
+    "table": null
+   },
+   "rule": {
+    "prose": {
+     "tested": false,
+     "value_ok": null,
+     "position_route": null
+    },
+    "json": {
+     "tested": true,
+     "value_ok": true,
+     "n": 56,
+     "position_route": false,
+     "value": 0.0,
+     "position": 0.35714285714285715,
+     "pcf_cut": 0.17857142857142855
+    },
+    "table": {
+     "tested": false,
+     "value_ok": null,
+     "position_route": null
+    }
+   },
+   "tested_formats": [
+    "json"
+   ]
+  }
+ ]
+}
