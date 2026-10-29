@@ -235,7 +235,7 @@ def main(a) -> None:
                                 # conservative: a tie (bridges sharing a first token) counts against the true candidate
                                 rank = int((cand >= cand[true]).sum())
                                 stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
-                                if a.items in ("composition", "v4", "v4ctl", "v4cc"):
+                                if a.items in ("composition", "v4", "v4ctl", "v4cc", "v4all"):  # amendment 60: v4all too (fixed 2026-10-29 after the 9B v5kc2 readout wrote no rows)
                                     item_rows.append({"id": j["id"], "family": j["family"], "rel": j["rel"], "bridge": j["bridge"], "site": site,
                                                       "lens": ln, "what": what, "layer": la, "rank": rank, "k": len(rws), **j["tags"]})  # fmt: skip
     summ = {}
