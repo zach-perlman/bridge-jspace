@@ -3587,6 +3587,22 @@ def card_numbers() -> None:
                  "top 50 at the bridge word", *rc["check"]["not_read"], n=rc["n"], source=rel(v))  # fmt: skip
         S.record("conflict_answer", m["target"], "main test, recall: the rule's label (page words)",
                  ANSWER_LABEL[rc["key"]], source=rel(v))  # fmt: skip
+    # Part VI (Dan 29 Oct ~01:00): the described bridge on Zach's passages withdrawn, and the locker scenes' answer check
+    for m in json.loads(v.read_text())["models"]:
+        for w, r in m["readers"].items() if m["set"] in ("z2", "cue") else ():
+            fig, what = ("withdrawn_z2", "Zach's described passages") if m["set"] == "z2" else ("cue_answer", "the described bridge in locker scenes")
+            ch = r.get("check", {})
+            S.record(fig, m["target"], f"{what}, {w}: the answer word's median lens rank at the changed token (original prompt), rounded",
+                     int(ch["median_rank_O"] + 0.5), n=r["n"], source=rel(v))  # fmt: skip
+            S.record(fig, m["target"], f"{what}, {w}: the bridge entity's median lens rank at the changed token (original prompt), rounded",
+                     int(ch["median_bridge_rank_O"] + 0.5), n=r["n"], source=rel(v))  # fmt: skip
+            S.record(fig, m["target"], f"{what}, {w}: items whose answer word ranks below the lens's top 50 at the changed token",
+                     *ch["not_read"], n=r["n"], source=rel(v))  # fmt: skip
+            S.record(fig, m["target"], f"{what}, {w}: switches lost beyond a random part without the answer directions only",
+                     *r["extra"]["3"], n=r["n"], source=rel(v))  # fmt: skip
+            if r["extra"].get("3f"):
+                S.record(fig, m["target"], f"{what}, {w}: switches lost beyond a frequency-matched part without the answer "
+                         "directions only", *r["extra"]["3f"], n=r["n"], source=rel(v))  # fmt: skip
     v = latest_verdict("x51_dose/x51_1-*") / "verdict.json"
     for m in json.loads(v.read_text())["models"]:
         S.record("dose_rules", m["target"], "dose curves: main-test scenes, locker sentences first", m["n"],
