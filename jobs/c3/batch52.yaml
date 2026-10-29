@@ -324,3 +324,20 @@ decisions_0905: |
   (b) The address swap at s = 2: when the recall changes, what to (the
       swapped-in item's answer, another, a non-answer), 9B and Lightning.
   Both into EXPERIMENTS.md; tell me before either touches a README claim.
+
+readme_additions_0915_received: "29 Oct ~09:15 Paris (Dan)"
+readme_additions_0915: |
+  README additions (on top of the 08:55 brief), from the 09:05 CPU checks:
+  - 51.10 card: the lens swap at the last token never makes the model output the
+    entity's name or a number word (0.00 on all four); O's answer stays on
+    0.95 / 0.97 / 0.94 / 0.78. At gain 2 the J++ part moves Muse's and
+    Lightning's recall beyond random (0.38 / 0.56 vs 0.04 / 0.19): "not used at
+    a real change's size".
+  - E6: the address swap at s = 2 also sends the recall to the swapped-in item
+    on the 9B and Lightning (0.21 / 0.27 of recalls; 0.84 / 0.85 of the changed
+    ones name that item's answer), not on the 27B and Muse (<= 0.06). Wording:
+    "the address points to the item; the lookup always follows it, the recall
+    sometimes". Add one line in Part VI next to route2: removing the address does
+    not hurt the recall (route2), but swapping it redirects part of it.
+  - Z1-P on Lightning: "not tested (gate 0.794 < 0.80)", numbers descriptive with
+    a hollow mark; no relabel. Same policy for every gate miss.
