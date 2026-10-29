@@ -11,6 +11,7 @@ uv run python -m scripts.readme_story_figures      # rebuilds every figure and d
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from scripts import story_style as S
@@ -1612,7 +1613,7 @@ def identity_address(plt) -> str:
 
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
 # the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded)
-ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T105304Z" / "verdict.json"
+ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T121412Z" / "verdict.json"  # + survivors (Dan 13:15)
 
 
 def attnblock(plt) -> str:
@@ -1740,6 +1741,44 @@ def bindid(plt) -> str:
                        rows, absent, "share of lookups")
 
 
+CODE_PROBE = R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json"  # 53.7 probe (the 9B; the 27B to come)
+CODE_ROUTES = R / "x6_routes" / "x53_7_routes-20261029T120413Z" / "verdict.json"  # 53.7 routes in code, 9B + 27B
+
+
+def code_tool(plt) -> str:
+    """53.7 (adapted design: lookup-only gate) on five slots: the routes test in code, condition C2, position answers
+    under the whole change, without the address, without a random part of its share and with the address alone; the
+    probe (which locker sentence, locker first) in code and tool output, a cell not tested or to come as a grey note;
+    Muse and Lightning grey (not designed), the 122B grey (not run)."""
+    rows: dict[str, list] = {}
+    arms = (("C2|whole", "code, routes: position, whole change", ADDRESS),
+            ("C2|no_alf", "code, routes: position without the address", ADDRESS),
+            ("C2|no_alf_rand", "code, routes: the same, random part out", NULL),
+            ("C2|keep_alf", "code, routes: position, the address alone", ADDRESS))  # fmt: skip
+    for run in load(CODE_ROUTES)["runs"]:
+        rows.setdefault(run["model"], [])
+        for key, lab, col in arms:
+            rows[run["model"]].append((lab, run["cells"][key]["share"]["position"], col, False))
+    probes = {(run["model"], run["format"]): run for run in load(CODE_PROBE)["runs"]}
+    for t in ("qwen3.5-9b", "qwen3.6-27b"):
+        for fmt in ("code", "tool"):
+            lab = f"{fmt}, probe: locker sentence, locker first"
+            run = probes.get((t, fmt))
+            if run is None:
+                rows.setdefault(t, []).append((lab, "to come", ADDRESS, False))
+            elif run["status"] != "tested":
+                gate = re.search(r"gate ([0-9.]+)", run["status"]).group(1)
+                rows.setdefault(t, []).append((lab, f"○ not tested\n(gate {gate})", ADDRESS, True))
+            else:
+                r = next(x for x in run["rows"] if x["subset"] == "all" and x["stratum"] == "before"
+                         and x["target"] == "locker sentence")  # fmt: skip
+                rows.setdefault(t, []).append((lab, r["probe"], ADDRESS, bool(run.get("hollow"))))
+    absent = {"muse-glimmer-30b": "not designed", LT: "not designed"}
+    return four_panels(plt, "ledger_code_tool", "In code the address carries the position route; alone it adds none",
+                       "Code, another item moved: position answers by arm; probe: which locker sentence, locker first",
+                       rows, absent, "share", left=0.4)
+
+
 SLOT1 = {"qwen3.5-9b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          "qwen3.6-27b": R / "x49_report" / "x49_6-20261028T154511Z" / "x49_6.json",
          LT: R / "x49_report" / "x52_report49-20261029T082508Z" / "x49_6.json"}  # fmt: skip
@@ -1829,7 +1868,7 @@ FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_car
            zach_routes, clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described,
            address_swap, order_split, attention, distance, gain, agnostic, value_formats, pooled_probe,
            last_conflict, address_probe, cumulative, das48, report47, subset27b, identity_address, attnblock,
-           jsuite, last_conflict_words, report_slot1, twobytwo, bindid)  # fmt: skip
+           jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:

@@ -120,7 +120,7 @@ HEATMAP = (
     ("III", "t49-7", "Attention follows the swap", ("F neither", "F neither", "F neither", "F neither")),
     ("III", "t47-14", "Chained addresses", ("F no", "G below gate", "F no", "F no")),
     ("III", "x45d", "Address refit per format", ("B neither", "H refit works", "H refit works", "H refit works")),
-    ("III", "b53-7", "Address in code, tool output", ("N running", "N running", "N running", "N running")),
+    ("III", "b53-7", "Address in code, tool output", ("B in part", "X not designed", "B in part", "X not designed")),
     ("IV", "order", "Split by sentence order", ("D by order", "D by order", "D by order", "D by order")),
     ("IV", "t45q", "Copy test, locker after", ("H yes", "G below gate", "H yes", "H yes")),
     ("IV", "d1", "Token-by-layer map", ("F (a)-(c) no", "F (a)-(c) no", "F (a)-(c) no", "F (a)-(c) no")),
