@@ -1,0 +1,58 @@
+id: x51_10_122b
+title: "Batch 51.10 coverage on the 122B (Qwen3.5-122B-A10B FP8, L33), Dan 12:20 (fallback_1220, as the source of 53.3's layers): does the intermediate pass through J-space? Read / write per position (P1 the bridge word, P2 the question's pick token, P3 the last token) and reader at 14 layers (every 4th from L4 to L44 plus L31 / 33 / 35); 51.10's rules verbatim; no prediction (coverage run on an already-scored rule); UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 2.0
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_jread.py run --name qwen35_122b_x51_10 --why "Batch 53 coverage (Dan 12:20, jobs/c3/batch53.yaml fallback_1220): 51.10's read / write per position and reader on the 122B at 14 layers (every 4th from L4 to L44 plus L and L +- 2 around L33), the items of its X0 main-test run (qwen35_122b_x0_necessity_r2); the source of 53.3's layers on the 122B; no prediction: coverage run on an already-scored rule" &&
+  if grep -q '"tested": true' results/x51_jread/qwen35_122b_x51_10/gate.json; then uv run python scripts/x51_jread.py read --name qwen35_122b_x51_10; else echo "51.10 on the 122B: not tested (results/x51_jread/qwen35_122b_x51_10/gate.json)"; fi &&
+  uv run python scripts/x51_jread.py verdict --coverage --prefix x53_jread
+question: >-
+  On the 122B: does the bridge entity (the intermediate) pass through J-space where the second hop is made (at the
+  question's pick token and at the last token) for the lookup and the recall? Read: readable through his top-10 lens
+  directions there before the answer forms; write: does his J-part swap or the J++ part of the change move the answer as
+  the whole state does? Its read peak and answer layer are also the layers of 53.3 on the 122B (x53_3_122b).
+why_it_matters: >-
+  Dan 12:20 approved "53.3 на 122B" (jobs/c3/batch53.yaml fallback_1220). 53.3's rule reads its layers from 51.10 ("at
+  51.10's read-peak layer and the answer layer minus 2"), and 51.10 never ran on the 122B; the coordinator's option (a):
+  run 51.10 on the 122B first, as a coverage run on its already-scored rule, so 53.3 takes its layers from the rule's own
+  source and never from a guessed layer. The coordinator flags this to Dan.
+hypotheses:
+  none: "No prediction: coverage run on an already-scored rule (51.10's rules first scored in results/x51_jread/x51_10-20261028T190608Z)."
+decision_rule: >-
+  51.10's rules verbatim (jobs/c3/batch51.yaml addendum_2, 51.10; as jobs/c3/x51_10_27b.yaml and the Lightning coverage
+  run jobs/c3/x52_lightning_jread.yaml): "The intermediate is in J-space at the last token" (read): the
+  through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the
+  full-residual probe >= 0.9 there. "Writable through J-space at the last token": at the layer of the read peak (or the
+  best layer), his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches
+  at that layer, with the random part <= 0.10. "Readable, not used": read holds, write fails. "Routes around J-space":
+  read fails at every layer before the answer (through-the-lens probe < 0.5 while the full-residual probe >= 0.9 at some
+  layer), and write fails. "Not represented at the last token at all": the full-residual probe < 0.5 at every layer
+  before the answer -- then the P2 rows decide. Same clauses at P2. As computed: scripts/x51_jread.py unchanged
+  (position_rule, write_at, read_stats); on the 122B: items = x47_cumulative.select of its X0 main-test run
+  qwen35_122b_x0_necessity_r2 at L33 (chat, alt cf; X0's gate 0.80 per reader on O unedited and >= 150 eligible,
+  asserted from its gate.json: PP 0.992, PM 0.850, 410 eligible, passes; the first attempt, qwen35_122b_x0_necessity,
+  stopped before its outcomes): 200 items (40 bridge entities) read, decided on the locker-first items (53, 27 bridge
+  entities), on which the write and remove arms run (49.1 never ran on the 122B: no 49.1 rows beside P1). Layers (the
+  27B / Muse grid on 48 blocks: every 4th layer from L4 to the last multiple of 4 four blocks before the end, as L60 of
+  64 and L48 of 52, plus L and L +- 2): [4, 8, 12, 16, 20, 24, 28, 31, 32, 33, 35, 36, 40, 44]. The answer layer (per
+  reader, the lower median over the locker-first O prompts of the layer from which O's answer is the plain logit lens's
+  top token at P3 through the last layer) and the read peak (the cached layer before it with the highest
+  through-the-lens accuracy at P3, ties: the earliest) are computed in the job (peak.json; read-<run>-<UTC>/read.json),
+  and 53.3 on the 122B takes its layers from these two files. The rest as x51_10_27b. Not tested: if the source's gate
+  fails or there are no locker-first items, the run writes gate.json with tested false and no reads; then no read
+  stage runs, the verdict lists the 122B as "not tested", and 53.3 on the 122B is not tested either.
+controls:
+- "a random part of the same share beside every write arm (swap -> swap_rand, J++ part -> X0's random part at its share, gain 1 and 2); his own rotated control (swap_rot) beside the swap"
+- "the whole-state patch (h_O <- h_S) at every position and layer: the upper bound the write ratio is read against, at the read peak"
+- "the full-residual and outside-the-lens probes beside the through-the-lens probe; chance per family; per-variant (O / S) accuracy; scenes held out"
+- "the answer digit's layer at P3 (plain logit lens): the read must precede it; the whole-vocabulary lens top token a digit, by layer"
+- "O unedited (none) per reader"
+- "removal at P3 against a random subspace part of the same share (his knock-out over the band, the J++-25 removal at the peak)"
+- "plain-text loss at P1 and P2 under every arm; 'changed to another digit' separately from 'switched to S's answer'"
+n: '200 main-test items (40 bridge entities) read at 14 layers x 3 positions x 2 readers x O / S; 53 locker-first items (27 bridge entities) decide and carry the write / remove arms; chat (plan: results/x51_jread/plan-20261029T113447Z/)'
+seeds: [888, 0]
+notes: "Dan 12:20 (jobs/c3/batch53.yaml fallback_1220), coverage; the coordinator's option (a) for 53.3 on the 122B (the layers from the rule's own source); queued last on mats, before x53_3_122b (which depends on it). Flags for Dan: (1) L33 is the 27B's relative depth carried over to the 122B (33 of 48 blocks; x0_necessity.PREDICTED, fixed 23 Oct), not the rule the other models' layers came from; here it sets the items (X0's run at L33) and the grid's L and L +- 2; 53.3's layers come from this run's read peak and answer layer, not from L33. (2) The 122B's J++ lens (neuronpedia, Qwen3.5-122B-A10B_jpp_lens.pt, sha b771e502) was fit on the bf16 weights, while the run reads the FP8 checkpoint. (3) The grid on 48 blocks is my extension of the 27B / Muse grid (every 4th from L4 to L44, plus L31 / 33 / 35); the lens's maps at every grid layer are asserted right after the load (the 9B's and 27B's J++ files map every layer 0 to n - 2; the 122B's file is not on the Mac). Code: x51_jread COVERAGE_RUNS / COVERAGE_BATCH / LAYERS / N_LAYERS gain the 122B, SOURCES = x49_gain's plus the 122B's X0 run (x45b_binding untouched), verdict --prefix (batch 53: verdicts in x53_* folders); RUNS, the design's verdict and every rule unchanged; tested. Writes results/x51_jread/qwen35_122b_x51_10/ (states.npz ~0.4 GB, gitignored: pull it beside the run folder), read-qwen35_122b_x51_10-<UTC>/read.json, and the coverage verdict results/x51_jread/x53_jread-<UTC>/ (Lightning and the 122B, the same rules; the 51.10 card's 122B column is the ledger agent's). Loading as jobs/c3/x53_2x2_122b.yaml (BJ_DEVICE_MAP=auto over 2 GPUs, BJ_SUITE_BATCH=16; edits homed by the Model wrapper). Cost: x51_10_27b ran 1,396 s on one H100 for 56,442 write + 37,536 loss + 690 removal reads and 800 cache forwards; here 35,722 write + 23,744 loss + 530 removal reads and 800 cache forwards (~0.63 of the work), the 122B ~2x slower per read than the 27B (qwen35_122b_x0_necessity_r2 1,756 s vs x0_necessity_27b_chat 1,708 s on fewer layers): ~35-45 min GPU wall, then the read stage (CPU, ~5-15 min) and the coverage verdict (CPU, ~5 min) with the GPUs idle; est 2.0 GPU-h over the 2 GPUs (estimate, not measured). Memory: the 122B's runs peaked near 120-140 GB over 2 GPUs; the cache is on the CPU (~0.8 GB fp32). Disk on the Mac before the spec: 109 GB free. UNVERIFIED."

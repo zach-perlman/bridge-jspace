@@ -15,7 +15,9 @@ read's appended space token (whose next token is the answer). The question is id
 are P2 and P3 in O counted from the end (asserted token by token).
 
 Layers: the 9B every 2nd layer L2-L30 (the brief's "L2-L38" runs past the 9B's 32 layers, 0-31: cut at L30); the 27B
-and Muse every 4th layer from L4 (to L60 / L48) plus L and L +- 2 (L = 32 / 26).
+and Muse every 4th layer from L4 (to L60 / L48) plus L and L +- 2 (L = 32 / 26). Coverage (no prediction): Lightning
+on Muse's grid around its committed L14 (batch 52); the 122B (48 blocks) every 4th layer from L4 to L44 plus L and
+L +- 2 (L = 33, X0's layer: the 27B's relative depth carried over), items from its X0 main-test run (batch 53, Dan 12:20).
 
 Run (GPU, sealed: no statistic is printed, no label written):
   1. cache: one forward of each prompt (item x reader x O/S) recording every layer: the block outputs at P1 / P2 / P3
@@ -110,15 +112,24 @@ QUESTION = "Q51.10"
 MODELS = G.MODELS
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_10", "qwen3.6-27b": "x51_10_27b", "muse-glimmer-30b": "muse30_x51_10"}
 STATES_FILE = "states.npz"
-N_LAYERS = {"qwen3.5-9b": 32, "qwen3.6-27b": 64, "muse-glimmer-30b": 52, "nemotron-3.5-lightning": 52}
+N_LAYERS = {"qwen3.5-9b": 32, "qwen3.6-27b": 64, "muse-glimmer-30b": 52, "nemotron-3.5-lightning": 52,
+            "qwen3.5-122b-a10b": 48}  # fmt: skip
 LAYERS = {
     "qwen3.5-9b": tuple(range(2, 31, 2)),  # every 2nd from L2; the brief's L38 is past the 9B's last layer (31)
     "qwen3.6-27b": tuple(sorted({*range(4, 61, 4), 30, 32, 34})),  # every 4th from L4, plus L and L +- 2 (L = 32)
     "muse-glimmer-30b": tuple(sorted({*range(4, 49, 4), 24, 26, 28})),  # every 4th from L4, plus L and L +- 2 (L = 26)
     # batch 52 C coverage: Muse's 52-block grid with Lightning's committed L = 14 (every 4th from L4, plus L and L +- 2)
     "nemotron-3.5-lightning": tuple(sorted({*range(4, 49, 4), 12, 14, 16})),
+    # batch 53 coverage (Dan 12:20, fallback_1220): the 27B / Muse grid on 48 blocks (every 4th from L4 to the last
+    # multiple of 4 four blocks before the end, as L60 of 64 and L48 of 52), plus L and L +- 2 (L = 33, X0's layer)
+    "qwen3.5-122b-a10b": tuple(sorted({*range(4, 45, 4), 31, 33, 35})),
 }
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_jread"}  # batch 52: verdict --coverage; RUNS unchanged
+# batch 52 (Lightning) and batch 53 (the 122B): verdict --coverage; RUNS unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_jread", "qwen3.5-122b-a10b": "qwen35_122b_x51_10"}
+COVERAGE_BATCH = {"nemotron-3.5-lightning": 52, "qwen3.5-122b-a10b": 53}
+# the main test's X0 run per model (x49_gain's SOURCES), plus the 122B's: its X0 run at L33 (chat, alt cf; the first
+# attempt, qwen35_122b_x0_necessity, stopped before its outcomes; r2 is the complete one)
+SOURCES = {**G.SOURCES, "qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x51_jread/x51_10-20261028T190608Z"  # 51.10's rules first scored
 POS = ("P1", "P2", "P3")
@@ -236,7 +247,7 @@ def select(tok, target: str) -> tuple[list[dict], dict]:
     whether it is one of 49.1's locker-first items; counts after every filter."""
     from scripts import x47_cumulative as C
 
-    items, counts = C.select(tok, "main", G.SOURCES[target], X.PREDICTED[target])
+    items, counts = C.select(tok, "main", SOURCES[target], X.PREDICTED[target])
     out, dropped = [], collections.Counter()
     for it in items:
         try:
@@ -280,19 +291,22 @@ def stage_plan(k_prompts: int = N_PROMPTS) -> Path:
     tok = x45m.tokenizer()
     target = pins.TARGET
     decode = lambda ids: tok.decode([int(t) for t in ids], skip_special_tokens=False)  # noqa: E731
-    gate = G.source_gate(G.SOURCES[target])
+    gate = G.source_gate(SOURCES[target])
     items, counts = select(tok, target)
     lf = [it for it in items if it["lf"]]
     layers = LAYERS[target]
     n_w = 1 + len(write_names(layers))
-    blob = {"target": target, "L": X.PREDICTED[target], "prefix": pins.RUN_PREFIX, "run": RUNS.get(target),
-            "source": G.SOURCES[target], "source_gate": gate, "gate_passes": G.gate_passes(gate), "counts": counts,
+    same_x49 = ([it["scene"] for it in lf] == [it["scene"] for it in G.select_items(tok, target)[0]]
+                if target in G.SOURCES else None)  # the 122B: 49.1 has no source there  # fmt: skip
+    blob = {"target": target, "L": X.PREDICTED[target], "prefix": pins.RUN_PREFIX,
+            "run": RUNS.get(target, COVERAGE_RUNS.get(target)),
+            "source": SOURCES[target], "source_gate": gate, "gate_passes": G.gate_passes(gate), "counts": counts,
             "layers": list(layers), "n_layers_model": N_LAYERS[target], "write_arms": list(WRITE_ARMS),
             "remove_arms": list(REMOVE_ARMS), "cache_forwards": len(items) * 2 * 2,
             "state_rows": len(items) * 2 * 2 * len(POS) * len(layers),
             "write_reads": len(lf) * 2 * n_w, "loss_reads": len(lf) * 2 * len(loss_names(layers)),
             "remove_reads": len(lf) * 2 * len(REMOVE_ARMS),
-            "same_items_as_x49": [it["scene"] for it in lf] == [it["scene"] for it in G.select_items(tok, target)[0]],
+            "same_items_as_x49": same_x49,
             "probe_rows": 2 * len(items), "probe_rows_locker_first": 2 * len(lf),
             "probe_lf_rows_class_unseen_in_training": len(unseen_rows(probe_rows(items))),
             "prompts": [{"scene": it["scene"], "bridge": f"{it['entity']} -> {it['cf_bridge']}", "locker_first": it["lf"],
@@ -799,7 +813,7 @@ def stage_run(name: str, why: str) -> Path:
     assert target in RUNS or target in COVERAGE_RUNS, f"51.10 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     if target in COVERAGE_RUNS:  # Lightning: its fixed layer is the committed one (BJ_PREDICTED_LAYER), in the grid
         assert X.PREDICTED[target] in LAYERS[target], f"L{X.PREDICTED[target]} is not in {LAYERS[target]}"
-    layers, source, n_layers = LAYERS[target], G.SOURCES[target], N_LAYERS[target]
+    layers, source, n_layers = LAYERS[target], SOURCES[target], N_LAYERS[target]
     assert pins.TARGETS[target]["n_layers"] == n_layers, "the model's layer count changed"
     src = X.RESULTS / source
     out = RESULTS / name
@@ -825,12 +839,12 @@ def stage_run(name: str, why: str) -> Path:
                    "examples": X.EXAMPLES_SEED, "folds": "x0_probe.folds round robin by O's bridge (deterministic)"},
          "n_boot": X.N_BOOT, "storage": f"{STATES_FILE}: fp16 states and projections, gitignored (> 50 MB)",
          "sealed": f"no label in the job; results closed until {PREDICTIONS} holds Dan's {QUESTION}"}  # fmt: skip
-    if target in COVERAGE_RUNS:  # batch 52: no Q-line; read and verdict --coverage after the run
+    if target in COVERAGE_RUNS:  # batch 52 / 53: no Q-line; read and verdict --coverage after the run
         m |= {
             "question": NO_PREDICTION,
-            "batch": 52,
+            "batch": COVERAGE_BATCH[target],
             "rules_first_scored": SCORED,
-            "sealed": "none (batch 52 coverage)",
+            "sealed": f"none (batch {COVERAGE_BATCH[target]} coverage)",
         }
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
@@ -1229,17 +1243,22 @@ def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
-    """51.10's verdict (sealed until Q51.10), or with coverage (batch 52) the same rules on COVERAGE_RUNS, no seal
-    guard, "no prediction" in place of Dan's answer, written to x52_jread-<UTC>/."""
+def stage_verdict(
+    runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False, prefix: str | None = None
+) -> Path:
+    """51.10's verdict (sealed until Q51.10), or with coverage (batch 52 / 53) the same rules on COVERAGE_RUNS, no seal
+    guard, "no prediction" in place of Dan's answer, written to <prefix>-<UTC>/ (default x52_jread; x51_10 without
+    coverage)."""
     answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else unsealed()
     runs = runs or (COVERAGE_RUNS if coverage else RUNS)
     models = [model_result(t, runs[t], n_boot) for t in (runs if coverage else MODELS)]
-    out = RESULTS / f"{'x52_jread' if coverage else 'x51_10'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    prefix = prefix or ("x52_jread" if coverage else "x51_10")
+    out = RESULTS / f"{prefix}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
     if coverage:
-        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ")
+        batches = " / ".join(str(b) for b in sorted({COVERAGE_BATCH.get(t, 52) for t in runs}))
+        lines[2] = lines[2].replace(f"{QUESTION}, Dan: ", f"batch {batches} coverage, ")
     labels = {m["target"]: {w: {p: m["rules"][w][p]["label"] for p in ("P3", "P2")} for w in m["rules"]}
               for m in models if m["status"] == "tested"}  # fmt: skip
     slim = [{k: v for k, v in m.items() if k != "read"} for m in models]
@@ -1367,7 +1386,8 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict / view: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
-    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: the coverage runs ('{NO_PREDICTION}')")
+    ap.add_argument("--prefix", default=None, help="verdict: the folder's prefix (default x52_jread with --coverage)")
     a = ap.parse_args()
     runs: dict[str, str] | None = {str(t): str(r) for t, r in zip(MODELS, a.runs, strict=True)} if a.runs else None
     if a.stage == "plan":
@@ -1381,7 +1401,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(runs, n_boot=a.n_boot)
     else:
-        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage)
+        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage, prefix=a.prefix)
 
 
 if __name__ == "__main__":

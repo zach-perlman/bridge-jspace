@@ -92,12 +92,27 @@ def test_layers_fixed_in_advance():
     assert J.LAYERS["muse-glimmer-30b"] == (4, 8, 12, 16, 20, 24, 26, 28, 32, 36, 40, 44, 48)
     # batch 52: Lightning on Muse's grid around its committed L14 (every 4th from L4, plus L and L +- 2)
     assert J.LAYERS["nemotron-3.5-lightning"] == (4, 8, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48)
+    # batch 53 (Dan 12:20): the 122B on the 27B / Muse grid (every 4th from L4, four blocks short of the end) around L33
+    assert J.LAYERS["qwen3.5-122b-a10b"] == (4, 8, 12, 16, 20, 24, 28, 31, 32, 33, 35, 36, 40, 44)
     from scripts import x51_lightning as L6
 
     for t, la in J.LAYERS.items():
         fixed = L6.committed_layer() if t == L6.TARGET else X.PREDICTED[t]
         assert fixed in la and J.N_LAYERS[t] == J.pins.TARGETS[t]["n_layers"]
     assert len(J.write_names((2, 4))) == 3 * 2 * 8 and len(J.loss_names((2, 4))) == 2 * 2 * 8
+
+
+def test_coverage_runs_sources_and_batches():
+    """The 122B's 51.10 is a coverage run (batch 53) on its X0 main-test run; the design's RUNS and x49_gain's sources
+    stay as they were."""
+    assert J.COVERAGE_RUNS == {"nemotron-3.5-lightning": "nem35l_x52_jread", "qwen3.5-122b-a10b": "qwen35_122b_x51_10"}
+    assert set(J.COVERAGE_BATCH) == set(J.COVERAGE_RUNS) and J.COVERAGE_BATCH["qwen3.5-122b-a10b"] == 53
+    for t, run in J.COVERAGE_RUNS.items():
+        assert run.startswith(J.pins.TARGETS[t]["run_prefix"]) and t in J.SOURCES and t in J.LAYERS
+    assert {k: v for k, v in J.SOURCES.items() if k in G.SOURCES} == G.SOURCES
+    assert set(J.SOURCES) - set(G.SOURCES) == {"qwen3.5-122b-a10b"}
+    assert J.SOURCES["qwen3.5-122b-a10b"] == "qwen35_122b_x0_necessity_r2"
+    assert "qwen3.5-122b-a10b" not in J.RUNS
 
 
 # ---- the parts and edits ---------------------------------------------------------------------------------------------
@@ -400,6 +415,10 @@ def test_stage_run_read_verdict_view_end_to_end(tmp_path, monkeypatch):
         J.NO_PREDICTION
     )
     assert "Dan:" not in (cv / "verdict.md").read_text() and "batch 52 coverage" in (cv / "verdict.md").read_text()
+    # batch 53: the folder's prefix given (verdicts go to x53_* folders) and the batch named from COVERAGE_BATCH
+    monkeypatch.setitem(J.COVERAGE_BATCH, pins.TARGET, 53)
+    cv53 = J.stage_verdict(n_boot=20, coverage=True, prefix="x53_jread")
+    assert cv53.name.startswith("x53_jread-") and "batch 53 coverage" in (cv53 / "verdict.md").read_text()
 
 
 def test_stage_run_without_the_gate_writes_no_outcomes(tmp_path, monkeypatch):

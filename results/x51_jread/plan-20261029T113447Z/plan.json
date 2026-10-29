@@ -1,0 +1,157 @@
+{
+ "target": "qwen3.5-122b-a10b",
+ "L": 33,
+ "prefix": "qwen35_122b_",
+ "run": "qwen35_122b_x51_10",
+ "source": "qwen35_122b_x0_necessity_r2",
+ "source_gate": {
+  "cases": 600,
+  "org_accuracy": {
+   "PP": 0.9917,
+   "PM": 0.85
+  },
+  "said_accuracy": {
+   "PP": 0.99,
+   "PM": 0.8533
+  },
+  "cand_accuracy": {
+   "PP": 0.9917,
+   "PM": 0.845
+  },
+  "pass": true,
+  "eligible": 410,
+  "enough": true,
+  "descriptive": false
+ },
+ "gate_passes": true,
+ "counts": {
+  "design": "main",
+  "source": "qwen35_122b_x0_necessity_r2",
+  "alt": "cf",
+  "layer": 33,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+   "locker-after": 82,
+   "mixed": 65,
+   "locker-first": 53
+  },
+  "upstream": {
+   "False": 117,
+   "True": 83
+  },
+  "locker-first, prefix-identical": 14,
+  "pick_tokens": {
+   "5": 63,
+   "4": 133,
+   "6": 4
+  },
+  "positions_dropped": {},
+  "items_read": 200,
+  "entities_read": 40,
+  "families": {
+   "elements": 81,
+   "greek": 71,
+   "animals": 48
+  },
+  "classes_per_family": {
+   "animals": 28,
+   "elements": 6,
+   "greek": 8
+  },
+  "items_locker_first": 53,
+  "entities_locker_first": 27
+ },
+ "layers": [
+  4,
+  8,
+  12,
+  16,
+  20,
+  24,
+  28,
+  31,
+  32,
+  33,
+  35,
+  36,
+  40,
+  44
+ ],
+ "n_layers_model": 48,
+ "write_arms": [
+  "swap",
+  "swap_rand",
+  "swap_rot",
+  "jpp1",
+  "rand1",
+  "jpp2",
+  "rand2",
+  "whole"
+ ],
+ "remove_arms": [
+  "none",
+  "ko",
+  "ko_rand",
+  "jrm",
+  "jrm_rand"
+ ],
+ "cache_forwards": 800,
+ "state_rows": 33600,
+ "write_reads": 35722,
+ "loss_reads": 23744,
+ "remove_reads": 530,
+ "same_items_as_x49": null,
+ "probe_rows": 400,
+ "probe_rows_locker_first": 106,
+ "probe_lf_rows_class_unseen_in_training": 1,
+ "prompts": [
+  {
+   "scene": "P2-L0-0019",
+   "bridge": "nitrogen -> oxygen",
+   "locker_first": true,
+   "lookup_org": "<|im_start|>user\nJames picked oxygen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦P1: nitrogen⟧. The locker of lithium is eight.\nWhich locker belongs to Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "lookup_alt": "<|im_start|>user\nJames picked nitrogen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦P1: oxygen⟧. The locker of lithium is eight.\nWhich locker belongs to Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_org": "<|im_start|>user\nJames picked oxygen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦P1: nitrogen⟧. The locker of lithium is eight.\nWhat is the atomic number of Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_alt": "<|im_start|>user\nJames picked nitrogen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦P1: oxygen⟧. The locker of lithium is eight.\nWhat is the atomic number of Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧"
+  },
+  {
+   "scene": "P2-L0-0106",
+   "bridge": "lithium -> helium",
+   "locker_first": false,
+   "lookup_org": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked⟦P1: lithium⟧. Amy picked helium. The locker of carbon is 3. The locker of lithium is 6.\nWhich locker belongs to Paul's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "lookup_alt": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked⟦P1: helium⟧. Amy picked lithium. The locker of carbon is 3. The locker of lithium is 6.\nWhich locker belongs to Paul's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_org": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked⟦P1: lithium⟧. Amy picked helium. The locker of carbon is 3. The locker of lithium is 6.\nWhat is the atomic number of Paul's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_alt": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked⟦P1: helium⟧. Amy picked lithium. The locker of carbon is 3. The locker of lithium is 6.\nWhat is the atomic number of Paul's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧"
+  },
+  {
+   "scene": "P2-L0-0154",
+   "bridge": "oxygen -> helium",
+   "locker_first": false,
+   "lookup_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦P1: oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "lookup_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦P1: helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhich locker belongs to Sean's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦P1: oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦P1: helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhat is the atomic number of Sean's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧"
+  },
+  {
+   "scene": "P2-L0-0168",
+   "bridge": "elephant -> fly",
+   "locker_first": true,
+   "lookup_org": "<|im_start|>user\nRyan picked the frog. The locker of the fly is five. The locker of the frog is nine. The locker of the elephant is two. Kyle picked the⟦P1: elephant⟧. Henry picked the fly.\nWhich locker belongs to Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "lookup_alt": "<|im_start|>user\nRyan picked the frog. The locker of the fly is five. The locker of the frog is nine. The locker of the elephant is two. Kyle picked the⟦P1: fly⟧. Henry picked the elephant.\nWhich locker belongs to Kyle's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_org": "<|im_start|>user\nRyan picked the frog. The locker of the fly is five. The locker of the frog is nine. The locker of the elephant is two. Kyle picked the⟦P1: elephant⟧. Henry picked the fly.\nHow many legs does Kyle's⟦P2: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_alt": "<|im_start|>user\nRyan picked the frog. The locker of the fly is five. The locker of the frog is nine. The locker of the elephant is two. Kyle picked the⟦P1: fly⟧. Henry picked the elephant.\nHow many legs does Kyle's⟦P2: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧"
+  },
+  {
+   "scene": "P2-L0-0298",
+   "bridge": "hydrogen -> nitrogen",
+   "locker_first": true,
+   "lookup_org": "<|im_start|>user\nThe locker of hydrogen is eight. Owen picked helium. The locker of nitrogen is five. Ryan picked⟦P1: hydrogen⟧. The locker of helium is seven. Anna picked nitrogen.\nWhich locker belongs to Ryan's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "lookup_alt": "<|im_start|>user\nThe locker of hydrogen is eight. Owen picked helium. The locker of nitrogen is five. Ryan picked⟦P1: nitrogen⟧. The locker of helium is seven. Anna picked hydrogen.\nWhich locker belongs to Ryan's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_org": "<|im_start|>user\nThe locker of hydrogen is eight. Owen picked helium. The locker of nitrogen is five. Ryan picked⟦P1: hydrogen⟧. The locker of helium is seven. Anna picked nitrogen.\nWhat is the atomic number of Ryan's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧",
+   "recall_alt": "<|im_start|>user\nThe locker of hydrogen is eight. Owen picked helium. The locker of nitrogen is five. Ryan picked⟦P1: nitrogen⟧. The locker of helium is seven. Anna picked hydrogen.\nWhat is the atomic number of Ryan's⟦P2: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦P3: ⟧"
+  }
+ ]
+}

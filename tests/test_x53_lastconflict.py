@@ -38,6 +38,27 @@ def test_layers_are_the_read_peak_and_the_answer_layer_minus_2(tmp_path, monkeyp
     assert lay["read_file"].endswith("20261028T120000Z/read.json") and lay["peak_file"].endswith(f"{run}/peak.json")
 
 
+def test_the_122b_takes_its_layers_from_its_own_51_10_run_and_never_a_guessed_one(tmp_path, monkeypatch):
+    """Dan 12:20 coverage: the 122B's 53.3 reads the read peak and the answer layer of its own 51.10 run (a coverage
+    run); before that run exists there is no layer (no fallback, never L33)."""
+    from bridge_jspace import pins
+
+    t = "qwen3.5-122b-a10b"
+    assert LC.RUNS[t] == "qwen35_122b_x53_3" and LC.SOURCE_RUNS[t] == JR.COVERAGE_RUNS[t] == "qwen35_122b_x51_10"
+    assert JR.SOURCES[t] == "qwen35_122b_x0_necessity_r2"
+    monkeypatch.setattr(JR, "RESULTS", tmp_path / "x51_jread")
+    monkeypatch.setattr(pins, "REPO_ROOT", tmp_path)
+    with pytest.raises(FileNotFoundError):
+        LC.layers_of(t)
+    plant_51_10(JR.RESULTS, LC.SOURCE_RUNS[t], {"lookup": 28, "recall": 31}, {"lookup": 40, "recall": 36})
+    lay = LC.layers_of(t)["readers"]
+    assert lay["lookup"]["layers"] == [28, 38] and lay["recall"]["layers"] == [31, 34]
+    plant_51_10(JR.RESULTS, "qwen35_122b_x51_10_nopeak", {"lookup": None, "recall": 31}, {"lookup": 40, "recall": 36})
+    monkeypatch.setitem(LC.SOURCE_RUNS, t, "qwen35_122b_x51_10_nopeak")
+    with pytest.raises(AssertionError, match="no read peak"):
+        LC.layers_of(t)
+
+
 def test_the_real_51_10_files_give_the_briefs_layers():
     """The committed 51.10 files: the brief's read peaks (9B 24/24, 27B 60/56, Muse 32/40, Lightning 32/36)."""
     want = {

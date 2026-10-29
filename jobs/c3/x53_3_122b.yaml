@@ -1,0 +1,52 @@
+id: x53_3_122b
+title: "Batch 53.3 coverage on the 122B (Qwen3.5-122B-A10B FP8), Dan 12:20 (fallback_1220): the conflict test at the last token (P3) at 51.10's read-peak layer and the answer layer minus 2, both from the 122B's own 51.10 run (x51_10_122b; never L33 or another guessed layer); arms whole / without the lens part / without a random part of its share / the lens part alone / the rest alone; 51.10's 53 locker-first items, both readers; 53.3's rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.4
+depends_on: [x51_10_122b]
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  if grep -q '"tested": true' results/x51_jread/qwen35_122b_x51_10/gate.json; then
+  uv run python scripts/x53_lastconflict.py run --name qwen35_122b_x53_3 --why "Batch 53, test 53.3 coverage on the 122B (Dan 12:20, jobs/c3/batch53.yaml fallback_1220: the same rule): the conflict test at the last token at 51.10's read peak and the answer layer minus 2, both from the 122B's own 51.10 run (qwen35_122b_x51_10); no prediction" &&
+  uv run python scripts/x53_lastconflict.py verdict --runs qwen35_122b_x53_3;
+  else echo "53.3 on the 122B: not tested (51.10 on the 122B is not tested: results/x51_jread/qwen35_122b_x51_10/gate.json)"; fi
+question: >-
+  On the 122B: at the last token (the read position, whose next token is the answer), does each reader's change from O
+  to S act on the answer through the lens part (its 25 J++ atoms) or outside it, at 51.10's read-peak layer and two
+  layers before the answer layer?
+why_it_matters: >-
+  Dan 12:20 (jobs/c3/batch53.yaml fallback_1220, approving the coordinator's list): "53.3 на 122B", on the
+  already-fixed rule. 53.3's rule takes its layers from 51.10, which had not run on the 122B; the coordinator's option
+  (a): x51_10_122b first (a coverage run on 51.10's already-scored rule), then this job on its read peak and answer
+  layer. The coordinator flags this to Dan.
+hypotheses:
+  none: "No prediction (fallback_1220: already-fixed rules, no new rules, no prediction)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (brief, 53.3): "9B, 27B, Muse, Lightning; at 51.10's read-peak layer and the
+  answer layer minus 2. The change = S's last-token state minus O's at that layer; the lens part = its 25 J++ atoms;
+  arms: whole; without the lens part; without a random part of the same share; the lens part alone; the rest alone.
+  Rule per reader: "computes outside the lens at the last token" if the loss without the lens part is <= 0.10 beyond
+  random and the rest alone switches >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random;
+  else in between." As computed: as jobs/c3/x53_3_27b.yaml (scripts/x53_lastconflict.py, the run unchanged), on the
+  122B. Layers: per reader the read peak from results/x51_jread/qwen35_122b_x51_10/peak.json and the answer layer
+  minus 2 from the newest results/x51_jread/read-qwen35_122b_x51_10-*/read.json (the answer layer = 51.10's: the lower
+  median over the locker-first O prompts of the layer from which O's answer is the plain logit lens's top token at P3
+  through the last layer), deduplicated; never L33 or any other guessed layer. Not tested: if 51.10 on the 122B is not
+  tested (its gate.json: tested false, the source's gate failed or no locker-first items), 53.3 on the 122B is not
+  tested either (the command prints so; no run folder). If 51.10 gives a reader no read peak (no cached layer before
+  its answer layer) or no answer layer (never settled), the run stops (layers_of asserts) and I report back; no layer is
+  substituted. Items = 51.10's (x51_jread.select on the 122B's X0 main-test run qwen35_122b_x0_necessity_r2 at L33),
+  its 53 locker-first items (27 entities); the loss beyond random = X0's excess (S_no_rand - S_no_jpp) / S_whole, the
+  rest alone's share = S_rest / S_whole, point estimates decide (EPS 1e-9), cluster-bootstrap CIs over bridge entities
+  (10,000, seed 0) beside; S_whole = 0: not tested; X0's validity bar (S_whole >= 0.30 and >= 30 switches) beside, not
+  in the rule. Verdict in the job (the 122B alone): results/x53_lastconflict/x53_lastconflict-<UTC>/; a joint
+  five-model verdict by hand on CPU.
+controls:
+- "without a random part of the lens part's share (X0's random subspace, seed 888 + layer): the reference of the loss"
+- "O unedited (the floor) and the whole change (the ceiling) read on the same items"
+- "the rest alone read separately from 'without the lens part' (the same vector: the two reads must agree)"
+- "the source run's gate (X0: 0.80 per reader on O unedited, >= 150 eligible) asserted (PP 0.992, PM 0.850, 410 eligible)"
+n: "51.10's 53 locker-first items (27 bridge entities) on the 122B, 2 readers, up to 2 layers each (the read peak and the answer layer minus 2, from x51_10_122b): up to 1,166 reads + 212 state forwards"
+seeds: [888, 0]
+notes: "Dan 12:20 (jobs/c3/batch53.yaml fallback_1220), coverage; queued last on mats, after x51_10_122b (depends_on, the same box: its peak.json and read folder are this job's inputs). Flags for Dan: (1) L33 is the 27B's relative depth carried over to the 122B (33 of 48 blocks; x0_necessity.PREDICTED, fixed 23 Oct), not the rule the other models' layers came from; it sets the items (X0's run at L33, as 51.10's), not this job's layers. (2) The 122B's J++ lens (neuronpedia, Qwen3.5-122B-A10B_jpp_lens.pt, sha b771e502) was fit on the bf16 weights, while the runs read the FP8 checkpoint. (3) The layers come from a 51.10 run made for this purpose (x51_10_122b, the coordinator's option a), on a grid extended to 48 blocks (every 4th from L4 to L44 plus L31 / 33 / 35): the read peak can only be one of those 14 layers. Code: x53_lastconflict RUNS gains the 122B (qwen35_122b_x53_3); its X0 source from x51_jread.SOURCES; the run and the rule unchanged; tested (the 122B's layers come from its 51.10 files and from nothing else). Writes results/x53_lastconflict/qwen35_122b_x53_3/ (manifest.json before the model loads, plan.json, cases.jsonl, norms.jsonl, outcomes.jsonl) and the verdict folder x53_lastconflict-<UTC>/. Loading as jobs/c3/x53_2x2_122b.yaml (BJ_DEVICE_MAP=auto over 2 GPUs, BJ_SUITE_BATCH=16). Cost: x53_3_27b ran 107 s (276 forwards, 1,518 reads); here 212 forwards and up to 1,166 reads, the 122B ~2x slower per read, plus its load: ~8-12 min wall; est 0.4 GPU-h over the 2 GPUs (estimate). Memory: the 122B's runs peaked near 120-140 GB over 2 GPUs. Disk on the Mac before the spec: 109 GB free. UNVERIFIED."

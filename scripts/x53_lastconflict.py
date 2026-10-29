@@ -64,7 +64,9 @@ TEST = "53.3"
 NO_PREDICTION = "no prediction (batch 53: every rule fixed in Dan's brief, 29 Oct 09:30, before any run)"
 SOURCE_RUNS = {**JR.RUNS, **JR.COVERAGE_RUNS}  # 51.10's runs: the read peak and the answer layer
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_3", "qwen3.6-27b": "x53_3_27b", "muse-glimmer-30b": "muse30_x53_3",
-        "nemotron-3.5-lightning": "nem35l_x53_3"}  # fmt: skip
+        "nemotron-3.5-lightning": "nem35l_x53_3",
+        # Dan 12:20 (batch53.yaml fallback_1220): coverage on the 122B, its layers from its own 51.10 run (x51_10_122b)
+        "qwen3.5-122b-a10b": "qwen35_122b_x53_3"}  # fmt: skip
 # batch 53.3b's check (Dan 10:05): 53.3's lookup on the locker scenes at its own answer layer minus 1 and minus 3
 MODES = ("53.3", "ans13")
 RUNS_ANS13 = {"qwen3.5-9b": "qwen35_9b_x53_3l", "qwen3.6-27b": "x53_3l_27b", "muse-glimmer-30b": "muse30_x53_3l",
@@ -160,7 +162,7 @@ def stage_plan() -> dict:
     lay = layers_of(target)
     items, counts = select(tok, target)
     blob = {"target": target, "run": RUNS[target], "layers": lay, "counts": counts,
-            "gate": G.source_gate(G.SOURCES[target]), "reads": len(items) * n_reads(lay),
+            "gate": G.source_gate(JR.SOURCES[target]), "reads": len(items) * n_reads(lay),
             "forwards_states": len(items) * 2 * 2}  # fmt: skip
     print(json.dumps(blob, indent=1))
     return blob
@@ -192,7 +194,7 @@ def stage_run(name: str, why: str, mode: str = "53.3") -> Path:
     lay = layers_of(target, mode)
     per_reader = {w: lay["readers"][READER_NAME[w]]["layers"] for w in READERS if READER_NAME[w] in lay["readers"]}
     all_layers = sorted({la for v in per_reader.values() for la in v})
-    source = G.SOURCES[target]
+    source = JR.SOURCES[target]  # x49_gain's sources, plus the 122B's X0 run
     src = X.RESULTS / source
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
