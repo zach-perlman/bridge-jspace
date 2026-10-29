@@ -1195,8 +1195,9 @@ def figure(models: list[dict], path: Path) -> None:
                 yy = y - 0.27 + 0.18 * j
                 lo, hi = (v[1], v[2]) if not (math.isnan(v[1]) or math.isnan(v[2])) else (v[0], v[0])
                 ax.errorbar(v[0], yy, xerr=[[v[0] - lo], [hi - v[0]]], fmt=mk, color=col, ms=6, lw=1.2, capsize=0)
-            ax.text(1.0, y, r["readers"]["recall"]["key"], va="center", ha="right", fontsize=SS.LABEL_PT,
-                    color=SS.COL["muted"])  # fmt: skip
+            key = r["readers"]["recall"]["key"]  # in the row's lowest lane (the lookup's), clear of the recall's dots
+            ax.text(1.0, y + 0.27, {"not_read": "not read", "na": "can't tell"}.get(key, key), va="center", ha="right",
+                    fontsize=SS.LABEL_PT, color=SS.COL["muted"])  # fmt: skip
     from matplotlib.lines import Line2D
 
     handles = [Line2D([], [], marker=mk, color=col, ls="", label=t) for _, _, col, mk, t in marks]
