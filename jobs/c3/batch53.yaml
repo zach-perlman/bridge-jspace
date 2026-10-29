@@ -285,6 +285,96 @@ q122b_1130: |
      are on a box first): on the 122B, 53.1 (Q-before, number) with the paired
      difference, then 51.12 E1 (answer control). Rules verbatim, no prediction,
      UNVERIFIED. Priority: after 53.2, before 53.7.
+additions_1140_received: "29 Oct ~11:42 Paris (Dan)"
+additions_1140: |
+  Two additions (Dan, 11:40), CPU only, no GPU impact:
+
+  1. Verification pack for tomorrow (start now): docs/depth/VERIFY_PACK.md
+     + results/verify_pack/. For each headline claim (conflict test 9B / 27B /
+     Muse / Lightning / 122B; answer control; routes + address removal;
+     address swap s = 2; Z1-P 9B; 51.10 last token): 20 random items (seed 0,
+     from the eligible set) with the raw prompt, the model's answer under none
+     / whole / without the lens part / without a random part, and the switch
+     label as the pipeline scored it. Plus scripts/verify_independent.py,
+     written from scratch without importing the pipeline's scoring code: it
+     reads the raw outcomes and recomputes the 4-5 headline numbers; it reports
+     any mismatch with the README. Do not run new forwards for it.
+
+  2. 53.2 wording, fixed now before the verdict: report two monitors
+     separately. (a) The lens readout (top words): cite 47.0, unchanged. (b) The
+     trained probe on J++ coordinates vs random vs full. If the random subspace
+     also decodes the slot ("random reads it too"), the wording is: "the address
+     is linearly decodable from many subspaces, J++ included; the lens readout
+     does not show it" — not "J-space is blind". Only "J-space blind" if J++ is
+     within 0.10 of random AND random is under 0.8 while the full state is
+     >= 0.8.
+
+  Also confirm in the 13:00 status: 53.7 started (27B), 53.6 on the 27B and Muse
+  specced or queued.
+verify_prep_1145_received: "29 Oct ~11:47 Paris (Dan; refines additions_1140 item 1: the review dashboard and docs/verify_pack.md)"
+verify_prep_1145: |
+  Verification prep for tomorrow (Dan, 11:45), CPU only, never at the cost of
+  an idle GPU; ready by ~17:00. Use the review dashboard (scripts/review.py,
+  docs/review_views.yaml); the goal: Dan reads ~2 hours tomorrow and only what
+  a machine cannot check.
+
+  1. Views: update docs/review_views.yaml to today's headline claims (phase1 =
+     in the dashboard). Add Lightning to models (its pinned tokenizer.json),
+     keep the 122B. Tier 1, in this order:
+     a. Conflict test (x0): 9B, 27B, Muse, Lightning, 122B.
+     b. Answer control (51.12 E1): the three arms per item and the answer
+        word's lens rank at the bridge word.
+     c. Routes + address removal (routes): + Lightning, + 122B.
+     d. Address swap at s = 2 (x8_writes): + Lightning; show the swapped-in
+        target slot and its digit.
+     e. Z1-P on the 9B (Zach's made-up-fact passages): show the passage's
+        made-up fact next to the true fact (e.g. "Hungarian actor" vs "Greek").
+     f. 51.10, the last token: the lens readout's top words and the write
+        outcomes.
+     g. Sentence order split (sentence_order).
+     Tier 2, only if tier 1 is done: 53.6, 53.3 at the read peak, natural
+     passages, varied scenes.
+     Each view shows the item exactly as the model saw it (chat template,
+     thinking off, the "Answer:" prefix) and, side by side, the decisive arms
+     only (none / whole / without the lens part / without a random part, or the
+     view's equivalent), each with the top token and the pipeline's label.
+
+  2. Automatic checks over every item of every tier-1 view (Phase 2 recount
+     included), results at the top of docs/verify_pack.md:
+     - recount each headline number from the per-item files; exact match with
+       figures/story/data.csv / x0_numbers.json, else list the mismatch;
+     - the edit position decodes to the bridge token (O and S);
+     - answers are single tokens and decode to the stated answer; the switch
+       label equals "top token == S's answer" recomputed from stored ids;
+     - gate and eligibility recomputed from competence.jsonl;
+     - duplicates; for Z1-P: the made-up value differs from the true one and
+       the true value is absent from the lookup passage;
+     - for the conflict test: the random part's share matches the lens part's.
+     Plus scripts/verify_independent.py, written from scratch (no import of the
+     pipeline's scoring or review code): reads raw outcomes, recomputes the
+     conflict-test extra loss and the routes shares for the 9B, reports
+     differences.
+
+  3. Samples, fixed now: seed 29, N = 10 per view: 6 random (stratified by
+     model x reader) + 4 targeted (2 nearest the decision, |p_alt - p_org|
+     smallest; 2 "surprising": the lookup switches without the lens part but
+     not without the random part, or the reverse). Record the seed and strata in
+     the views file; no re-rolls tomorrow. make review-export SEED=29 N=10 into
+     review/seed-29/, and check that make review-serve opens every view.
+
+  4. docs/verify_pack.md, first page "How to review in 2 hours": the order of
+     views, the three questions per item (is the prompt what the claim says;
+     is each arm's top token what is shown; does the label follow), how to mark
+     (consistent / wrong / unclear), the stop rule (2 wrong in one view → stop,
+     flag the view), and where the automatic-check failures are. Then one
+     section per view with its claim in the README's words and its numbers.
+
+  5. After my marks tomorrow: make review-summary, and a VERIFIED.md generated
+     from review/marks.jsonl: per claim, items read, consistent / wrong /
+     unclear, automatic checks passed, independent recount matched.
+
+  6. For the write-up: make examples-render with the same seed, so the random
+     examples shown after the summary are the ones I read.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
