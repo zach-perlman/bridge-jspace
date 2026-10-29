@@ -1,0 +1,115 @@
+{
+ "exp": "x53_attnblock",
+ "run": "nem35l_x53_attnspan",
+ "why": "Batch 53, 53.4 follow-up (Dan 11:10, jobs/c3/batch53.yaml next_1110 item 4): attention in blocks 19 + 26 blocked to the span from the bridge word to the scene's end vs a control span of the same length; no prediction",
+ "test": "53.4 follow-up (Dan 11:10)",
+ "spec": "jobs/c3/batch53.yaml (next_1110, item 4); jobs/c3/x53_4b_lightning_attnspan.yaml",
+ "written_utc": "2026-10-29T10:22:35Z",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat",
+  "kernels": "hub"
+ },
+ "switches": {
+  "target": "nemotron-3.5-lightning",
+  "BJ_DEVICE_MAP": "",
+  "BJ_PREDICTED_LAYER": "14",
+  "BJ_SUITE_BATCH": "16",
+  "BJ_TARGET": "nemotron-3.5-lightning",
+  "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+ },
+ "code": {
+  "sha": "0038b61b01a0a77ac695f5831d51e67a91ad7352",
+  "dirty": true
+ },
+ "inputs": {
+  "jobs/c3/batch52.yaml": "70fe7ff47951006f69ba340f79efd25e7614b3f84f9dbf53d484b64c2f8056a6",
+  "jobs/c3/batch53.yaml": "71d4774010e54b66374913ac55f72a1045fa86f8dff5fe9f47752233f545e54e",
+  "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+  "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+  "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde"
+ },
+ "items": {
+  "source": "nem35l_x52_conflict",
+  "set": "d1_topics_v3",
+  "layer": 14,
+  "items": 200,
+  "entities": 37,
+  "control_before_bridge": 146,
+  "sentence_tokens": [
+   4,
+   6
+  ],
+  "span_items_in_rule": 95,
+  "span_dropped_no_control_fits": 105,
+  "span_entities_in_rule": 35,
+  "span_tokens_in_rule": [
+   2,
+   10,
+   21
+  ],
+  "span_tokens_all": [
+   2,
+   20,
+   39
+  ]
+ },
+ "layer": 14,
+ "arms": [
+  "none",
+  "both",
+  "span",
+  "span_ctrl"
+ ],
+ "arm_text": {
+  "none": "no block",
+  "both": "(iii) of 53.4, rerun here: blocks 19 and 26, source = the bridge word",
+  "span": "blocks 19 and 26: every position after the scene's last token cannot attend to any position from the bridge word through the scene's last token",
+  "span_ctrl": "the control: blocks 19 and 26, the same destinations, a source span of the same length inside the scene before the bridge word (seeded start)"
+ },
+ "arm_layers": {
+  "b19": [
+   19
+  ],
+  "b26": [
+   26
+  ],
+  "both": [
+   19,
+   26
+  ],
+  "after": [
+   19,
+   26,
+   33,
+   42
+  ],
+  "control": [
+   19,
+   26
+  ]
+ },
+ "patches": {
+  "clean": "nothing added",
+  "whole": "\u0394 added at the bridge word at L (AddRows' arithmetic)"
+ },
+ "blocking": "knockout.knock_out (mode value) via x47_edges.forward: in the arm's blocks, every position after the source has its logits to the source at -inf in every head; uncached forwards",
+ "read": "X0's chat read (the org prompt with a digit's space token appended; top token over the vocabulary; switch = the alt answer's first token)",
+ "seeds": {
+  "span_control": "random.Random('x53_attnspan|5348|<scene>')",
+  "bootstrap": 0
+ },
+ "order": {
+  "items": "the conflict run's item order (53.4's)",
+  "rows": "per item and reader one forward: arm-major (none, both, span, span_ctrl where a control fits), clean then whole"
+ },
+ "rule": "\"the pointer is read by attention after the Mamba state spreads it\" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4.",
+ "as_computed": "cut(x) = 1 - S_x / S_whole on the lookup (53.4's), S_x = the share of the scenes kept whose lookup switches under the whole change with arm x's block, S_whole = the same with no block, all in this run's forwards; point estimates decide, EPS 1e-09 at the bars. \"else as 53.4\": 53.4's labels applied to the span arm: its (iv) clause \"not through attention at the bridge\" if the span cuts < 0.3 (the Mamba state carries it), else \"in between\" (the per-block clauses (i) / (ii) have no span arm). The span's destinations are every position after the scene's last token (knock_out needs disjoint sources and destinations, so attention inside the span is as is), the same for the control. the control span: as many tokens as the bridge-to-scene-end span, inside the scene before the bridge word (from the scene's first token to the token before the bridge word; never the bridge-to-end span, never the question, never position 0), its start drawn per scene among the starts that fit (random.Random('x53_attnspan|5348|<scene>')); a scene where no such span fits is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked. S_whole = 0: not tested; X0's validity reported, not a gate. 53.4's (iii) and (v) from its committed verdict beside, and (iii) rerun here",
+ "prediction": "no prediction (Dan, 29 Oct ~10:05: the rule fixed then, before any run)",
+ "control": "the control span: as many tokens as the bridge-to-scene-end span, inside the scene before the bridge word (from the scene's first token to the token before the bridge word; never the bridge-to-end span, never the question, never position 0), its start drawn per scene among the starts that fit (random.Random('x53_attnspan|5348|<scene>')); a scene where no such span fits is dropped from the rule and counted (its span arm read beside); the destinations are the span arm's (every position after the scene's last token: the question and the read), so the two arms differ only in the keys blocked",
+ "rule_53_4": "\"read through two blocks\" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; \"one block\" if (i) or (ii) alone cuts >= 0.6; \"not through attention at the bridge\" if (iv) cuts < 0.3 (the Mamba state carries it); else in between."
+}
