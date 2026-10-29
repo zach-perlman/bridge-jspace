@@ -30,13 +30,15 @@ from scripts.story_b50 import caption
 R = S.REPO / "results"
 # 53.7: the newest verdict first; a (model, format) cell is taken from the first verdict that holds it, so a verdict
 # under the lookup-only gate (decisions_1210) wins over the earlier two-reader one. The 27B's probe ran before 12:10
-# under X0's gate on both readers (passed); its lookup-only rerun is running.
+# under X0's gate on both readers and passed both: "adapted design" only (Dan 13:15, answers_1315 item 4). Only the
+# combined verdicts are cited (coordinator, 29 Oct): the probe's over the 9B (115640Z), the routes test's over both
+# models in code (120413Z, which replaces 115759Z); the tool-output routes' combined verdict is not written yet
 PROBES_537 = (R / "x0_probe" / "x53_7_probe-20261029T115640Z" / "verdict.json",
               R / "x0_probe" / "x53_7_probe-20261029T110647Z" / "verdict.json")  # fmt: skip
-ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T115759Z" / "verdict.json",)
-# cells queued or running under the lookup-only gate when these verdicts were written (the 53.7 agent, ~12:58)
+ROUTES_537 = (R / "x6_routes" / "x53_7_routes-20261029T120413Z" / "verdict.json",)
+# cells without a combined verdict yet (the coordinator, 29 Oct ~13:20): the routes test in tool output, both models
 RUNNING_537 = {"probe": {("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")},
-               "routes": {("qwen3.5-9b", "tool"), ("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool")}}  # fmt: skip
+               "routes": {("qwen3.5-9b", "tool"), ("qwen3.6-27b", "tool")}}  # fmt: skip
 ATTNBLOCK = R / "x53_attnblock" / "x53_attnblock-20261029T091303Z" / "verdict.json"
 # the follow-up with Dan's 11:25 control (one placement; the first run, x53_attnspan-20261029T102727Z, superseded)
 ATTNSPAN = R / "x53_attnblock" / "x53_attnspan_c-20261029T105304Z" / "verdict.json"
@@ -213,11 +215,11 @@ def build_code_tool(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Path, .
     S.panel_tag(b, ", ".join(ns_b), "fixed")
     caption(fig, ["Adapted design: a lookup-only gate (the lookup says and reads both prompts right on at least 0.80 of "
                   "the scenes); the recall is not part of this test. The 9B's code probe: that gate set after the data "
-                  f"({S.STATUS_GLYPH['after']}). The 27B's probe ran under the earlier gate on both readers (passed); its "
-                  "lookup-only rerun, the routes test in tool output and the 27B's routes: running. The monitor: running.",
+                  f"({S.STATUS_GLYPH['after']}). The 27B's probe ran under the earlier gate on both readers and passed "
+                  "both. The routes test in tool output and the monitor: running.",
                   "Tool output: the scene as a tool's reply in prose, its bridge word about 250 tokens later than in a "
-                  "prose prompt. B: another item moved; grey: a random part of the same size. Muse, Lightning and the "
-                  "122B: not run."], 1.6)  # fmt: skip
+                  "prose prompt. B: another item moved; the address removed or added is the one fit on prose, carried "
+                  "over; grey: a random part of the same size. Muse, Lightning and the 122B: not run."], 1.6)  # fmt: skip
     S.save(fig, out_name)
     return out_name
 
@@ -341,6 +343,11 @@ def record_card_numbers(probes: tuple[Path, ...] = PROBES_537, routes: tuple[Pat
         c0 = run["c0_check"]
         S.record("cards", t, f"53.7, {fmt}: the sanity swap's lookup switch (against the reference)",
                  f"{c0['c0_lookup_switch']:.3f} vs {c0['reference']:.3f}", source=rel(p))  # fmt: skip
+        # Dan 13:15 (answers_1315 item 4): U carried over from prose, not refit; the run's manifest names the prose
+        # probe run it was fit on (x6_routes.stage_run, x0_massmean on that run's states at L)
+        man = R / "x6_routes" / run["run"] / "manifest.json"
+        S.record("cards", t, f"53.7, {fmt}: the routes test's address, fit on (the prose probe run)",
+                 json.loads(man.read_text())["alf_from"], source=rel(man))  # fmt: skip
     v, sp = json.loads(blocks.read_text()), json.loads(span.read_text())
     lk = v["readers"]["lookup"]
     S.record("cards", LT, "53.4: scenes, bridge entities", f"{lk['n']} scenes, {lk['entities']} bridge entities",

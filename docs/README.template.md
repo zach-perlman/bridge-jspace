@@ -373,76 +373,257 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 *"Which item" is lens-readable for the recall, and the lookup's copy of it sits outside the lens.*
 
-### E3. The lookup's identity route runs outside the lens <a id="e3-identity"></a>
+### Does the lookup's identity route run outside the lens?
 
-- **Hypothesis.** The lookup's answers by the identity route fall at least 0.30 beyond random without lens directions 26-100, or under 0.10 (outside the lens). Fixed in advance.
-- **Mechanics.** Lens directions 1-25, 26-100 or both taken out of the change, against a random part.
-- **Data.** Routes scenes, 300 items per model.
-- **Result.** Identity route without 1-25 / 26-100 / both: {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-100}} (9B), {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-100}} (27B), {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-100}} (Muse), {{dp|e3_identity|nemotron-3.5-lightning|47.1: identity answers lost beyond random without lens directions 1-25}} / {{dp|e3_identity|nemotron-3.5-lightning|47.1: identity answers lost beyond random without lens directions 26-100}} / {{dp|e3_identity|nemotron-3.5-lightning|47.1: identity answers lost beyond random without lens directions 1-100}} (Lightning ○); position route at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}}; the 122B not run.
-- **Figure.**
+- **Question.** Does the lookup's identity route run outside the lens?
+- **Why we asked.** The lookup barely needs the lens part's 25 directions; its identity route could still sit in the lens's next 75 directions rather than outside the lens.
+- **Data.** Routes scenes (another item moved), {{dp|catalogue|9b|routes scenes: scenes used}} / {{dp|catalogue|27b|routes scenes: scenes used}} / {{dp|catalogue|muse|routes scenes: scenes used}} / {{dp|catalogue|nemotron-3.5-lightning|routes scenes: scenes used}} per model, for the lookup's answers; the main test for the recall's switches. The 122B not run.
+- **Method.** The change's 100 best lens directions in order; directions 1-25 (the lens part), 26-100 or all 100 taken out of the change at the bridge word at L, each against a random part of the same share. Read: the identity-route and position-route answers lost beyond random, and the recall's switches lost without directions 26-100.
+- **Rule, fixed in advance.** "(a) 'the lookup's identity route sits in lens directions beyond the recall's 25': without 26-100, identity answers fall at least 0.30 beyond the random part (paired interval excluding 0) and the recall loses at most 0.10 of its switches beyond random without 26-100, on at least 2 of 3 models; (b) 'continuum': both readers lose at least 0.20 beyond random without 26-100; (c) 'outside the lens': without 26-100, identity answers fall under 0.10 beyond random." Lightning: the same rule, copied, no prediction.
 
 ![The lookup's identity route runs outside the lens; the position route never touches it](figures/story/fig05d_routes_lens.png)
+*Identity-route and position-route answers lost without lens directions 1-25, 26-100 and all 100, beyond a random part of the same size, per model; routes scenes at L; Lightning hollow; 122B not run.*
 
-- **Conclusion.** The identity route survives the loss of lens directions 26-100 on all four models and of 1-25 on the 9B, Muse and Lightning; on the 27B the two slices are redundant copies. Not shown: the identity code itself.
+- **Result.**
 
-### E5. Identity, position, never the value <a id="e5-routes"></a>
+  | | 9B | 27B | Muse | Lightning ○ | 122B |
+  |---|---|---|---|---|---|
+  | identity answers lost beyond random without lens directions 1-25 | {{d|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-25}} | {{d|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-25}} | {{d|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-25}} | {{d|fig05d|nemotron-3.5-lightning|47.1: identity route: answers lost beyond random without lens directions 1-25}} | not run |
+  | the same without directions 26-100 | {{d|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} | {{d|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} | {{d|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}} | {{d|fig05d|nemotron-3.5-lightning|47.1: identity route: answers lost beyond random without lens directions 26-100}} | |
+  | the same without all 100 | {{d|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-100}} | {{d|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-100}} | {{d|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-100}} | {{d|fig05d|nemotron-3.5-lightning|47.1: identity route: answers lost beyond random without lens directions 1-100}} | |
+  | recall: switches lost beyond random without directions 26-100 (main test) | {{d|cards|9b|47.1: recall, switches lost beyond random without lens directions 26-100 (main test)}} | {{d|cards|27b|47.1: recall, switches lost beyond random without lens directions 26-100 (main test)}} | {{d|cards|muse|47.1: recall, switches lost beyond random without lens directions 26-100 (main test)}} | {{d|cards|nemotron-3.5-lightning|47.1: recall, switches lost beyond random without lens directions 26-100 (main test)}} | |
+  | the rule | {{dp|cards|9b|47.1: the rule's label}} | {{dp|cards|27b|47.1: the rule's label}} | {{dp|cards|muse|47.1: the rule's label}} | {{dp|cards|nemotron-3.5-lightning|47.1: the rule's label}} | |
 
-- **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number. Fixed in advance.
-- **Mechanics.** The change comes from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Whole change; without the address, against a random part.
-- **Data.** Routes scenes, 300 items per model.
-- **Result.** Identity / position {{pt|rt_C2_whole_identity_9b}} / {{pt|rt_C2_whole_position_9b}} (9B), {{pt|rt_C2_whole_identity_27b}} / {{pt|rt_C2_whole_position_27b}} (27B), {{pt|rt_C2_whole_identity_muse}} / {{pt|rt_C2_whole_position_muse}} (Muse), {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: identity share}} / {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: position share}} (Lightning ○), {{pt|rtg_C2_whole_identity_122b}} / {{pt|rtg_C2_whole_position_122b}} (122B°); the value never, in any format.
-- **Figure.**
+  The position route loses at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}} beyond random, over every model and slice.
+
+- **Read.**
+  - On all four models the identity route survives the loss of the lens's next directions: it runs outside the lens, not in lens directions beyond the recall's.
+  - Only the 27B loses identity answers to the lens part itself or to all the directions together: there the slices are redundant copies.
+  - The position route does not depend on any slice of the lens.
+- **Caveats.**
+  - Identity is read on routes scenes, the recall's switches on the main test: two scene sets.
+  - Lightning's gate was chosen after its pre-check (○).
+  - Not shown: the identity code itself.
+
+### Which route does the lookup take: the item's identity, its locker's position, or the number?
+
+- **Question.** Which route does the lookup take: the item's identity, its locker's position, or the number?
+- **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads.
+- **Data.** Routes scenes, {{dp|catalogue|9b|routes scenes: scenes used}} / {{dp|catalogue|27b|routes scenes: scenes used}} / {{dp|catalogue|muse|routes scenes: scenes used}} / {{dp|catalogue|nemotron-3.5-lightning|routes scenes: scenes used}} / {{dp|catalogue|122b|routes scenes: scenes used}} per model. The 122B's routes run had its gate lowered to 0.75 after the data (hollow ○): its run at 0.80 missed the gate on the recall.
+- **Method.** The change comes from a prompt where another item's locker sentence moved and took a new number, so each route predicts a different locker: the identity route the item's own locker, the position route the locker now at the item's old place, the value the new number. Arms at the bridge word at L: the whole change; without the address (Part III), against without a random part of its share. A sanity swap (two picks trade places, nothing moves) comes first.
+- **Rule, fixed in advance.** "A route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference and takes Muse's rule (a switch rate of at least 0.50). Lightning and the 122B: the same rule, copied, no prediction.
 
 ![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
-*The design is drawn on the setup figure's items; the routes test's own scenes are animals. The 122B° fifth: its gate lowered to 0.75 after the data.*
+*Left: where each route sends the lookup, drawn on the setup figure's items (the routes test's own scenes are animals). Right: the lookup's answers under the whole change and without the address, per model; grey: without a random part of the same share. Lightning hollow; 122B hollow (gate lowered to 0.75 after the data; FP8).*
 
-The same routes by depth:
+- **Result.**
 
-![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
+  | | 9B | 27B | Muse | Lightning ○ | 122B ○ |
+  |---|---|---|---|---|---|
+  | whole change: identity route | {{d|fig05|9b|another item moved, whole: identity share}} | {{d|fig05|27b|another item moved, whole: identity share}} | {{d|fig05|muse|another item moved, whole: identity share}} | {{d|fig05|nemotron-3.5-lightning|another item moved, whole: identity share}} | {{d|fig05|122b|another item moved, whole: identity share}} |
+  | whole change: position route | {{d|fig05|9b|another item moved, whole: position share}} | {{d|fig05|27b|another item moved, whole: position share}} | {{d|fig05|muse|another item moved, whole: position share}} | {{d|fig05|nemotron-3.5-lightning|another item moved, whole: position share}} | {{d|fig05|122b|another item moved, whole: position share}} |
+  | whole change: the value | {{dp|fig05|9b|another item moved, whole: value share}} | {{dp|fig05|27b|another item moved, whole: value share}} | {{dp|fig05|muse|another item moved, whole: value share}} | {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: value share}} | {{dp|fig05|122b|another item moved, whole: value share}} |
+  | without the address: identity route | {{d|fig05|9b|another item moved, no_alf: identity share}} | {{d|fig05|27b|another item moved, no_alf: identity share}} | {{d|fig05|muse|another item moved, no_alf: identity share}} | {{d|fig05|nemotron-3.5-lightning|another item moved, no_alf: identity share}} | {{d|fig05|122b|another item moved, no_alf: identity share}} |
+  | without the address: position route | {{d|fig05|9b|another item moved, no_alf: position share}} | {{d|fig05|27b|another item moved, no_alf: position share}} | {{d|fig05|muse|another item moved, no_alf: position share}} | {{d|fig05|nemotron-3.5-lightning|another item moved, no_alf: position share}} | {{d|fig05|122b|another item moved, no_alf: position share}} |
+  | without a random part: position route | {{d|fig05|9b|another item moved, no_alf_rand: position share}} | {{d|fig05|27b|another item moved, no_alf_rand: position share}} | {{d|fig05|muse|another item moved, no_alf_rand: position share}} | {{d|fig05|nemotron-3.5-lightning|another item moved, no_alf_rand: position share}} | {{d|fig05|122b|another item moved, no_alf_rand: position share}} |
 
-- **Conclusion.** The lookup reads what the item is and where it sits. Not shown: who reads the position (the dereference test is running).
+- **Read.**
+  - On all five models the lookup answers by the item's identity or by its locker's position, never by the new number.
+  - The 27B and the 122B lean on identity; the 9B, Muse and Lightning split about evenly.
+  - Without the address the position route falls beyond a random part of its share; the identity route stays.
+- **Caveats.**
+  - The 122B (FP8; MoE, ~10B active): gate lowered to 0.75 after the data; its numbers are hollow and descriptive.
+  - Lightning's gate was chosen after its pre-check (○); its sanity swap uses Muse's rule.
+  - Not shown: what reads the position.
 
 ## Part III. The address: where the item's locker sits
 
 *The lookup's second input is a code for where the locker sentence sits.*
 
-### E6. The address: probe, remove, add, swap <a id="e6-address"></a>
+### Can the address be read, removed, added and swapped?
 
-- **Hypothesis.** Removing the address stops position answers; adding it alone creates them; swapping it moves the lookup. Fixed in advance; probe post hoc.
-- **Mechanics.** Removed or kept alone, against a random part; swapped (two slot means' difference) against a random vector of its size.
-- **Data.** Routes scenes, 300 items per model.
-- **Result.** A probe reads it in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes ({{dp|fig07|nemotron-3.5-lightning|the locker probe at the bridge word, locker-first scenes}} on Lightning ○). Without it position answers drop to {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_position_muse}} / {{dp|fig05|nemotron-3.5-lightning|another item moved, no_alf: position share}} ○ / {{pt|rtg_C2_no_alf_position_122b}}° (random {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rt_C2_no_alf_rand_position_muse}} / {{dp|fig05|nemotron-3.5-lightning|another item moved, no_alf_rand: position share}} ○ / {{pt|rtg_C2_no_alf_rand_position_122b}}°); alone it gives {{pt|rtk_C2_keep_alf_position_9b}} / {{pt|rtk_C2_keep_alf_position_27b}} / {{pt|rtk_C2_keep_alf_position_muse}} / {{dp|fig07|nemotron-3.5-lightning|another item moved, keep_alf: position share}} ○ / {{pt|rtk_C2_keep_alf_position_122b}}°; a swap at a real change's size (s = 2) moves {{dp|fig07|9b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|27b|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|muse|lookup target share, mean over locker pairs, s = 2}} / {{dp|fig07|nemotron-3.5-lightning|lookup target share, mean over locker pairs, s = 2}} ○ / {{pt|x8_t2_122b}}° (122B, pooled over locker pairs) of lookups, {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} after 50 neutral sentences (9B). The 122B's routes and swap runs had their gate lowered to 0.75 after the data (°): its 0.80 routes run missed it on the recall.
-- **The recall under the swap** (descriptive). At s = 2 the swap changes {{dp|cards|9b|the address swap at s = 2: recalls that change}} / {{dp|cards|27b|the address swap at s = 2: recalls that change}} / {{dp|cards|muse|the address swap at s = 2: recalls that change}} / {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: recalls that change}} ○ / {{dp|cards|122b|the address swap at s = 2: recalls that change}}° of recalls; of those, {{dp|cards|9b|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} (9B) and {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} ○ (Lightning) name the swapped-in item's answer. The address points to the item; the lookup always follows it, the recall sometimes.
-- **Note.** The swap's rule fixed in advance was read at s = 1 (one times the slot difference) and said no on every model. That was a design error: s = 1 is below a real change's size. The swap numbers above are at s = 2.
-- **Figure.**
+- **Question.** Can the address be read, removed, added and swapped?
+- **Why we asked.** If the bridge word stores where the item's locker sits, a probe should read it, removing it should cost position answers, adding it by itself should bring them back, and swapping it should send the lookup elsewhere.
+- **Data.** The probe: every topic scene, split by whether the item's locker sentence comes before or after the pick. Removing and adding: the routes scenes ({{dp|catalogue|9b|routes scenes: scenes used}} per model). The swap: routes scenes without a move, each swapped to both other lockers.
+- **Method.** At the bridge word at L:
+  - the probe, held out by bridge entity: which locker sentence holds the item's locker, against the layout baseline; scenes with the locker after the pick are the control; the answer digit beside;
+  - removing: the routes test without the address, against without a random part of its share; adding: only the address, against only a random part;
+  - the swap: the difference between two lockers' mean address codes, at one, two and four times its size (s = 1, 2, 4), against a random vector of the same size; read: lookups sent to the swapped-in locker, and recalls that change.
+- **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The probe: none, descriptive, after the data. Lightning and the 122B: the same rules, copied, no prediction.
 
 ![The address carries the position route; swapping it moves the lookup](figures/story/fig07_writes.png)
+*A: the probe at the bridge word, locker before the pick, against the layout baseline. B: position answers without the address and with only the address, against a random part of the same size (grey). C: lookups sent to the swapped-in locker by dose, against a random vector. Lightning hollow; 122B hollow in the removal, addition and swap panels (gate lowered to 0.75 after the data; FP8), filled in the probe panel.*
 
-- **Conclusion.** The address is causal and survives distance. Not shown: who reads it.
+- **Result.**
 
-### E7. Six lockers: swaps between given lockers <a id="e7-code"></a>
+  | | 9B | 27B | Muse | Lightning ○ | 122B |
+  |---|---|---|---|---|---|
+  | probe, locker before the pick: which locker sentence | {{d|fig07|9b|the locker probe at the bridge word, locker-first scenes}} | {{d|fig07|27b|the locker probe at the bridge word, locker-first scenes}} | {{d|fig07|muse|the locker probe at the bridge word, locker-first scenes}} | {{d|fig07|nemotron-3.5-lightning|the locker probe at the bridge word, locker-first scenes}} | {{d|fig07|122b|the locker probe at the bridge word, locker-first scenes}} |
+  | the layout baseline | {{dp|fig07|9b|the locker probe's layout baseline, locker-first scenes}} | {{dp|fig07|27b|the locker probe's layout baseline, locker-first scenes}} | {{dp|fig07|muse|the locker probe's layout baseline, locker-first scenes}} | {{dp|fig07|nemotron-3.5-lightning|the locker probe's layout baseline, locker-first scenes}} | {{dp|fig07|122b|the locker probe's layout baseline, locker-first scenes}} |
+  | probe, locker after the pick (the control) | {{num|v4_b_after_9b}} | {{num|v4_b_after_27b}} | {{num|v4_b_after_muse}} | {{dp|cards|nemotron-3.5-lightning|address probe: the locker probe at the bridge word, locker-after scenes (the control)}} | {{num|v4_b_after_122b}} |
+  | probe, locker before the pick: the answer digit | {{num|v4_a_before_9b}} | {{num|v4_a_before_27b}} | {{num|v4_a_before_muse}} | {{dp|cards|nemotron-3.5-lightning|address probe: the answer digit probe at the bridge word, locker-first scenes}} | {{num|v4_a_before_122b}} |
+  | position answers without the address / without a random part | {{dp|fig05|9b|another item moved, no_alf: position share}} / {{dp|fig05|9b|another item moved, no_alf_rand: position share}} | {{dp|fig05|27b|another item moved, no_alf: position share}} / {{dp|fig05|27b|another item moved, no_alf_rand: position share}} | {{dp|fig05|muse|another item moved, no_alf: position share}} / {{dp|fig05|muse|another item moved, no_alf_rand: position share}} | {{dp|fig05|nemotron-3.5-lightning|another item moved, no_alf: position share}} / {{dp|fig05|nemotron-3.5-lightning|another item moved, no_alf_rand: position share}} | {{dp|fig05|122b|another item moved, no_alf: position share}} / {{dp|fig05|122b|another item moved, no_alf_rand: position share}} ○ |
+  | position answers with only the address / with only a random part | {{dp|fig07|9b|another item moved, keep_alf: position share}} / {{dp|fig07|9b|another item moved, keep_alf_rand: position share}} | {{dp|fig07|27b|another item moved, keep_alf: position share}} / {{dp|fig07|27b|another item moved, keep_alf_rand: position share}} | {{dp|fig07|muse|another item moved, keep_alf: position share}} / {{dp|fig07|muse|another item moved, keep_alf_rand: position share}} | {{dp|fig07|nemotron-3.5-lightning|another item moved, keep_alf: position share}} / {{dp|fig07|nemotron-3.5-lightning|another item moved, keep_alf_rand: position share}} | {{dp|fig07|122b|another item moved, keep_alf: position share}} / {{dp|fig07|122b|another item moved, keep_alf_rand: position share}} ○ |
+  | the swap at s = 1: lookups sent to the swapped-in locker (mean over locker pairs) | {{dp|fig07|9b|lookup target share, mean over locker pairs, s = 1}} | {{dp|fig07|27b|lookup target share, mean over locker pairs, s = 1}} | {{dp|fig07|muse|lookup target share, mean over locker pairs, s = 1}} | {{dp|fig07|nemotron-3.5-lightning|lookup target share, mean over locker pairs, s = 1}} | {{dp|fig07|122b|lookup target share, mean over locker pairs, s = 1}} ○ |
+  | the swap at s = 2, about a real change's size (the same) | {{dp|fig07|9b|lookup target share, mean over locker pairs, s = 2}} | {{dp|fig07|27b|lookup target share, mean over locker pairs, s = 2}} | {{dp|fig07|muse|lookup target share, mean over locker pairs, s = 2}} | {{dp|fig07|nemotron-3.5-lightning|lookup target share, mean over locker pairs, s = 2}} | {{dp|fig07|122b|lookup target share, mean over locker pairs, s = 2}} ○ |
+  | a random vector at s = 4 | {{dp|fig07|9b|lookup target share, random direction, s = 4}} | {{dp|fig07|27b|lookup target share, random direction, s = 4}} | {{dp|fig07|muse|lookup target share, random direction, s = 4}} | {{dp|fig07|nemotron-3.5-lightning|lookup target share, random direction, s = 4}} | {{dp|fig07|122b|lookup target share, random direction, s = 4}} ○ |
+  | the swap at s = 2: recalls that change | {{dp|cards|9b|the address swap at s = 2: recalls that change}} | {{dp|cards|27b|the address swap at s = 2: recalls that change}} | {{dp|cards|muse|the address swap at s = 2: recalls that change}} | {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: recalls that change}} | {{dp|cards|122b|the address swap at s = 2: recalls that change}} ○ |
+  | of those, naming the swapped-in item's answer | {{dp|cards|9b|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} | not checked | not checked | {{dp|cards|nemotron-3.5-lightning|the address swap at s = 2: changed recalls naming the swapped-in item's answer}} | not checked |
 
-- **Hypothesis.** The address is a line over slots (one shift steps the lookup one slot), first-vs-rest, or one code per slot. Fixed in advance.
-- **Mechanics.** Six-locker scenes: one shift per start slot and swaps between given slots, against a random direction.
-- **Data.** 300 items each, 9B and Muse; the 27B and Lightning since; the 122B not run. On the 9B the code was then fit three ways on held-out items.
-- **Result.** No single shift reaches the bar on any model; swaps between given lockers reach it on {{dp|fig09b|9b|47.2: pairwise writes reaching 25% (dose 2)}} / {{dp|cards|27b|47.2: pairwise writes reaching 25% (dose 2)}} / {{dp|fig09b|muse|47.2: pairwise writes reaching 25% (dose 2)}} / {{dp|fig09b|nemotron-3.5-lightning|47.2: pairwise writes reaching 25% (dose 2)}} ○ of 30 pairs (9B / 27B / Muse / Lightning). The code's size on the 9B: {{dp|cards|9b|51.11 part 1: the code's size}}; swaps to a midpoint slot reach it in {{dp|cards|9b|51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2)}} of cases against {{dp|cards|9b|51.11 part 3: full swaps reaching their target (dose 2)}} for full swaps, so the slots are not a metric order.
-- **Figure.**
+  With 50 neutral sentences between the lockers and the picks, the 9B's swap at s = 2 still sends {{dp|e6_distance|9b|47.16: the swap (fit with none) sends lookups to the target, 50 sentences}} of lookups to the target.
+
+- **Read.**
+  - With its locker sentence before the pick, the bridge word holds which locker sentence the item's locker sits in, on all five models, far above the layout baseline; with the locker after the pick it does not.
+  - Removing the address takes the position route away beyond a random part on every model; added by itself it brings position answers back on the 9B, Muse, Lightning and the 122B, not on the 27B.
+  - At about a real change's size a swap sends a quarter to a half of lookups to the swapped-in locker on every model; a random vector sends none.
+  - The address points to the item: the lookup always follows the swap, the recall sometimes, most on the 9B and Lightning.
+- **Caveats.**
+  - The swap's rule fixed in advance was read at s = 1 and said no on every model. That was a design error: s = 1 is below a real change's size; the swap numbers above are read at s = 2, after the data.
+  - The probe is descriptive, chosen after the data; the answer digit is read only weakly.
+  - The 122B (FP8; MoE, ~10B active): its routes and swap runs had their gate lowered to 0.75 after the data (hollow ○, descriptive); its probe ran at its gate.
+  - Lightning's gate was chosen after its pre-check (○); its probe reads the locker sentence less well than the others'.
+  - Not shown: what reads the address.
+
+### With six lockers, does each locker have its own code?
+
+- **Question.** With six lockers, does each locker have its own code?
+- **Why we asked.** With three lockers a line over the lockers and a first-versus-rest marker look the same.
+- **Data.** Six-locker scenes: a test half of {{dp|catalogue|9b|six-locker scenes: scenes used}} / {{dp|cards|27b|47.2: test scenes}} / {{dp|catalogue|muse|six-locker scenes: scenes used}} / {{dp|catalogue|nemotron-3.5-lightning|six-locker scenes: scenes used}} scenes per model; the other half fits the lockers' mean codes. The 122B not run. On the 9B, follow-ups with 3, 4, 6 and 8 lockers on held-out entities.
+- **Method.** At the bridge word at L:
+  - one fixed shift (the mean step between neighbouring lockers' mean codes) from each start locker, and swaps between given lockers, each at doses 1 and 2, against a random vector of the same size; the first principal component of the lockers' mean codes beside;
+  - on the 9B: the smallest learned code that carries the position switch, per number of lockers, against random codes of the same size; swaps to the midpoint between two lockers, against full swaps.
+- **Rule, fixed in advance.** "Ordinal: the first principal component is monotone in the locker (|Spearman| ≥ 0.9) and the shift sends ≥ 0.25 of lookups one locker on from ≥ 4 of 5 start lockers, the random vector ≤ 0.05; categorical, first vs rest: the shift works only from the first locker (others < 0.10) and removing the address on the other moves is within 0.10 of random; slot-specific: swaps between given lockers reach ≥ 0.25 on most pairs but no single shift does." Dose 2 decides. On the 9B: "one dimension per locker" if the learned code's size is at least the number of lockers minus 2 for every count and at least 5 at 8 lockers; "an ordinal code" if it is at most 2 up to 8 lockers; "categories" if midpoint swaps send < 0.1 to the midpoint locker while the full swaps reach ≥ 0.4 of the target; "a metric order" if midpoint swaps send ≥ 0.3 to the midpoint locker, from both ends. The 27B and Lightning: the same rule, copied, no prediction.
 
 ![Six lockers: swaps between given lockers work on most pairs, no single shift does](figures/story/fig09b_six_lockers.png)
+*At dose 2, per model: start lockers from which one shift sends at least a quarter of lookups one locker on, and locker pairs that a swap between given lockers reaches; Lightning hollow; 122B not run.*
 
-- **Conclusion.** A given locker can be targeted on most pairs on the 9B, Muse and Lightning, not on the 27B; the code's size is not settled. Not shown: whether the code is shared across item kinds (Part VI).
+- **Result.**
 
-### E8. The lens is blind to the address <a id="e8-blind"></a>
+  | | 9B | 27B | Muse | Lightning ○ | 122B |
+  |---|---|---|---|---|---|
+  | swaps between given lockers reaching 0.25 of lookups at dose 2, of 30 pairs | {{dp|fig09b|9b|47.2: pairwise writes reaching 25% (dose 2)}} | {{dp|cards|27b|47.2: pairwise writes reaching 25% (dose 2)}} | {{dp|fig09b|muse|47.2: pairwise writes reaching 25% (dose 2)}} | {{dp|fig09b|nemotron-3.5-lightning|47.2: pairwise writes reaching 25% (dose 2)}} | not run |
+  | the rule at dose 2 | {{dp|fig09b|9b|47.2: the rule's reading (dose 2)}} | {{dp|cards|27b|47.2: the rule's reading (dose 2)}} | {{dp|fig09b|muse|47.2: the rule's reading (dose 2)}} | {{dp|fig09b|nemotron-3.5-lightning|47.2: the rule's reading (dose 2)}} | |
+  | the code's size, follow-up | {{dp|cards|9b|51.11 part 1: the code's size}} | | | | |
+  | midpoint swaps reaching the locker between, from the first locker (dose 2) / full swaps reaching their target | {{dp|cards|9b|51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2)}} / {{dp|cards|9b|51.11 part 3: full swaps reaching their target (dose 2)}} | | | | |
 
-- **Hypothesis.** Through the J++ lens an address swap looks like a random draw. Descriptive.
-- **Mechanics.** The swap against 200 random draws: any position word's best rank and the share rebuilt; an identity change as control.
-- **Data.** 200 cases per model; the 122B not run.
-- **Result.** The lens rebuilds {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: pointer}} ○ of the swap: as for random draws on the 9B, 27B and Muse; on Lightning a little more than its random draws ({{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: random draws (mean)}}), still a small share. Asked for the position, the 27B's lens top five hold the right ordinal in {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} of reports, yet it loses {{dp|e8_report|27b|47.10: the report's extra loss without the address}} without the address.
-- **Figure.**
+- **Read.**
+  - No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers.
+  - Swaps between given lockers work on most pairs on the 9B, Muse and Lightning, so each locker is its own target there; on the 27B on fewer than half, and no reading holds.
+  - On the 9B the code's size is not settled, and midpoint swaps do not land between lockers: the lockers are not a metric order.
+- **Caveats.**
+  - The 27B's shifts move nothing from any start locker, though its lockers' mean codes lie in order.
+  - The follow-ups are read here on the 9B only; Muse's and the 27B's runs of them are in the ledger.
+  - Lightning's gate was chosen after its pre-check (○).
+  - Not shown: whether the same code serves other kinds of item.
+
+### Can the lens read the address?
+
+- **Question.** Can the lens read the address?
+- **Why we asked.** A lens monitor would have to see the address to see where the model will look.
+- **Data.** Routes scenes, each swapped at the bridge word to both other lockers at about a real change's size; for each case 200 random vectors of the same size. The report prompt: the 27B's routes scenes, question last. The 122B not run.
+- **Method.**
+  - Through the lens after the swap: (a) the best rank of a position word (first, second, third, 1, 2, 3, ...) in the lens readout; (b) the share the lens's 25 best directions rebuild; (c) how far the readout moves; each against the random vectors; positive control: an item change of the same size.
+  - The report prompt (27B): asked which locker sentence holds the item, the lens's top five at the bridge word, and the report's switches lost without the lens part and without the address, beyond random.
+- **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: "'not verbalizable': the share rebuilt with 25 lens directions within 2x the random vectors' share, no position word in the top 20 beyond the random vectors' 5th-percentile rank, and the readout's change under the swap within the random vectors' 95th percentile, on all three models." The report prompt: "'surfaced on demand': under the report prompt the lens ranks the right position word in its top five in ≥ 0.4 of items (under the lookup prompt ≤ 0.1), and the report loses ≥ 0.3 of its switches without the lens part beyond random"; else "reported late, not surfaced" or neither. Lightning: the reading copied, no prediction.
 
 ![The lens reads which item is at the bridge, not where its locker sits](figures/story/fig07b_verbal.png)
+*How far above 200 random vectors of the same size the lens ranks a position word (left) and rebuilds the change with 25 directions (right), per model: the address swap and an item change of the same size; grey strip: the random vectors' range. Lightning hollow; 122B not run.*
 
-- **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look. Not shown: a probe-based monitor.
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning ○ | 122B |
+  |---|---|---|---|---|---|
+  | share rebuilt by 25 lens directions: the address swap | {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} | {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} | {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} | {{dp|fig07b_verbal|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: pointer}} | not run |
+  | the same for random vectors (mean) | {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)}} | {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)}} | {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)}} | {{dp|fig07b_verbal|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)}} | |
+  | the same for an item change of the same size | {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: identity_mean}} | {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: identity_mean}} | {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: identity_mean}} | {{dp|fig07b_verbal|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: identity_mean}} | |
+  | a position word's rank after the swap, z (the random vectors: −1 to 1) | {{dp|fig07b_verbal|9b|47.0 (a) best ordinal word's rank, h + pointer write: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|27b|47.0 (a) best ordinal word's rank, h + pointer write: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|muse|47.0 (a) best ordinal word's rank, h + pointer write: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|nemotron-3.5-lightning|47.0 (a) best ordinal word's rank, h + pointer write: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | |
+  | the new item's name rank after an item change, z | {{dp|fig07b_verbal|9b|47.0 (a) new item's name rank, h + identity change: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|27b|47.0 (a) new item's name rank, h + identity change: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|muse|47.0 (a) new item's name rank, h + identity change: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | {{dp|fig07b_verbal|nemotron-3.5-lightning|47.0 (a) new item's name rank, h + identity change: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)}} | |
+  | report prompt, question last: the lens's top five hold the right position word | not tested (gate) | {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} | not tested (gate) | not tested (gate) | |
+  | the report's switches lost beyond random without the lens part / without the address | | {{dp|e8_report|27b|47.10: the report's extra loss without the J++ part}} / {{dp|e8_report|27b|47.10: the report's extra loss without the address}} | | | |
+
+- **Read.**
+  - On all four models the address swap reads through the lens like a random vector of its size: no position word, no more rebuilt, little change in the readout.
+  - An item change of the same size stands far outside the random range: the lens reads which item is at the bridge, not where its locker sits.
+  - Asked for the position, the 27B's lens still does not show it, and its report needs the address more than the lens part.
+- **Caveats.**
+  - Descriptive: the reading is the plan's, not a claim fixed in advance; it uses medians, and per case some readouts move beyond their own random range on the 9B and Muse.
+  - Lightning rebuilds a little more of the swap than its random vectors ({{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: pointer}} against {{dp|cards|nemotron-3.5-lightning|47.0 (b) share rebuilt by 25 lens directions: random draws (mean)}}), still a small share; its gate was chosen after its pre-check (○).
+  - The report prompt: one cell tested (the 27B, question last); every other cell missed its gate. Its loss without the address is just under the rule's bar, so neither reading holds.
+
+### Must the address be refit for each text format?
+
+- **Question.** Must the address be refit for each text format?
+- **Why we asked.** The address was fit on one template; in prose, JSON and tables the code may sit elsewhere.
+- **Data.** The varied scenes (prose, JSON and tables), split in halves by bridge item: one half fits the address per format, the other half is tested. The 122B not run.
+- **Method.** The address refit per format on one half (four directions) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on the simple scenes beside.
+- **Rule, fixed in advance.** "'Pointer elsewhere' if the refit address costs the lookup at least 0.2 of its switches beyond random, with lower bound above 0.1, in 2 of 3 formats; 'no linear pointer found' if all three formats are below 0.1 (point estimate); otherwise neither." After the data (Dan, 26 Oct): a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: the same rule, copied, no prediction.
+
+![The address must be refit for each text format](figures/story/fig09b_refit.png)
+*The lookup's switches lost without the address beyond a random part, by format: refit on the format (filled) and fit on the simple scenes (hollow); grey: the 0.10 bar. Lightning hollow; Muse's JSON left out (too few switches); 122B not run.*
+
+- **Result.**
+
+  | lookup's switches lost beyond random: refit / fit on the simple scenes | 9B | 27B | Muse | Lightning ○ | 122B |
+  |---|---|---|---|---|---|
+  | prose | {{dp|fig09b_refit|9b|(b) prose: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|9b|(b) prose: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|27b|(b) prose: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|27b|(b) prose: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|muse|(b) prose: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|muse|(b) prose: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|nemotron-3.5-lightning|(b) prose: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|nemotron-3.5-lightning|(b) prose: lookup extra loss without the pointer fit on simple scenes}} | not run |
+  | JSON | {{dp|fig09b_refit|9b|(b) json: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|9b|(b) json: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|27b|(b) json: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|27b|(b) json: lookup extra loss without the pointer fit on simple scenes}} | too few switches ({{dp|fig09b_refit|muse|(b) json: lookup switches with the whole change}}) | {{dp|fig09b_refit|nemotron-3.5-lightning|(b) json: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|nemotron-3.5-lightning|(b) json: lookup extra loss without the pointer fit on simple scenes}} | |
+  | tables | {{dp|fig09b_refit|9b|(b) table: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|9b|(b) table: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|27b|(b) table: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|27b|(b) table: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|muse|(b) table: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|muse|(b) table: lookup extra loss without the pointer fit on simple scenes}} | {{dp|fig09b_refit|nemotron-3.5-lightning|(b) table: lookup extra loss without the refit pointer}} / {{dp|fig09b_refit|nemotron-3.5-lightning|(b) table: lookup extra loss without the pointer fit on simple scenes}} | |
+  | the outcome | {{num|x45d_outcome_9b}} | {{num|x45d_outcome_27b}} | {{num|x45d_outcome_muse}} | {{dp|cards|nemotron-3.5-lightning|45d: the outcome}} | |
+
+- **Read.**
+  - Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning; on the 27B it stays weak in every format.
+  - Fit on the simple scenes it costs the lookup little in JSON and tables: in other formats the code sits elsewhere.
+- **Caveats.**
+  - The bar of 30 switches was set after the first results; it drops Muse's JSON.
+  - Lightning's JSON rests on few scenes; its gate was chosen after its pre-check (○).
+
+### Is the address readable, and used, in Python code and tool output?
+
+- **Question.** Is the address readable, and used, in Python code and tool output?
+- **Why we asked.** Every other test reads the scene as prose; a model in an agent reads code and tool replies. If the address were a habit of prose, it would not show there.
+- **Data.** The probe's scenes from the address card, rendered two ways: as Python in the user turn (`picks["Eva"] = "oxygen"`, `lockers["oxygen"] = 5`, one assignment per statement in the scene's order, then the question), and as the reply of a declared notes tool in the chat template, the question in a new user turn. Code keeps the scenes whose bridge is one token at one position in both prompts: {{dp|cards|27b|53.7, code: the probe's scenes (one token at one position in both prompts)}} scenes, {{dp|cards|27b|53.7, code: the probe's scenes, locker before the pick}} with the locker before the pick (27B); tool output keeps all {{dp|cards|27b|53.7, tool: the probe's scenes (one token at one position in both prompts)}} ({{dp|cards|27b|53.7, tool: the probe's scenes, locker before the pick}} with the locker before the pick). The routes test in code: {{dp|cards|9b|53.7, code: the routes test's items, another item moved}} / {{dp|cards|27b|53.7, code: the routes test's items, another item moved}} items, another item moved (9B / 27B). The 9B and the 27B; Muse, Lightning and the 122B not run.
+- **Method.** Two of the address card's tests, unchanged, in each format, at L:
+  - the probe at the bridge word: which locker sentence holds the bridge's locker, against the layout baseline; scenes with the locker after the pick are the control (the locker sentence comes later, so nothing can be read there);
+  - the routes test, another item moved: the whole change; position answers without the address against without a random part of the same size, and with only the address against only a random part. The address is the one fit on the model's prose scenes, carried over to code, not refit<!-- src: results/x6_routes/qwen35_9b_x53_7_routes_code_l/manifest.json | alf_from :: qwen35_9b_x0_probe_v4 (scripts/x6_routes.py stage_run: x0_massmean on that run's states at L) --><!-- src: results/x6_routes/x53_7_routes_code_27b_l/manifest.json | alf_from :: x0_probe_v4_27b -->;
+  - the lens monitor in both formats: running;
+  - adapted design: lookup-only gate; the recall is not part of this test. A format is tested if the lookup answers and reads both prompts right on at least 0.80 of its scenes; the recall's rates are reported, not gated.
+- **Rule, fixed in advance.** Pending hand-check. The routes test's, verbatim: "A route counts as used if its share is >= 0.2 with lower CI >= 0.1." The probe has no rule of its own (descriptive, after the data). The lookup-only gate was set before any result in these formats was opened, except the 9B's code probe: gate changed after the data (hollow ○). The 27B's probes ran under the earlier gate on both readers and passed it, so they pass either gate: adapted design. No prediction.
+
+![Code and tool output: the address is readable; in code it carries less](figures/story/fig21_code_tool.png)
+*A: the probe for the locker sentence at the bridge word, with the locker before the pick, against its layout baseline (hatched); the black tick: the same probe in prose. B: the routes test in code, another item moved, at L: position answers without the address and with only the address, each against a random part of the same size (grey). The 9B's code probe not tested (○); the 27B's probes under the earlier gate on both readers; cells still running and models not run keep their rows.*
+
+- **Result.**
+
+  | | 9B | 27B | Muse | Lightning | 122B |
+  |---|---|---|---|---|---|
+  | probe, locker before the pick: code | {{dp|fig21_code_tool|9b|code and tool output, code: the probe's status}} ○ | {{d|fig21_code_tool|27b|code and tool output, code: the locker probe at the bridge word, locker-first scenes}} (layout {{dp|fig21_code_tool|27b|code and tool output, code: the locker probe's layout baseline, locker-first scenes}}) | not run | not run | not run |
+  | probe, locker before the pick: tool output | {{d|fig21_code_tool|9b|code and tool output, tool: the locker probe at the bridge word, locker-first scenes}} (layout {{dp|fig21_code_tool|9b|code and tool output, tool: the locker probe's layout baseline, locker-first scenes}}) | {{d|fig21_code_tool|27b|code and tool output, tool: the locker probe at the bridge word, locker-first scenes}} (layout {{dp|fig21_code_tool|27b|code and tool output, tool: the locker probe's layout baseline, locker-first scenes}}) | | | |
+  | the same probe in prose | {{dp|fig21_code_tool|9b|code and tool output, tool: the locker probe in prose, locker-first scenes (stored)}} | {{dp|fig21_code_tool|27b|code and tool output, tool: the locker probe in prose, locker-first scenes (stored)}} | | | |
+  | control, locker after the pick: probe / best baseline, tool output | {{dp|cards|9b|53.7, tool: the probe, locker sentence, locker-after scenes (the control)}} / {{dp|cards|9b|53.7, tool: the probe's best baseline (structure), locker sentence, locker-after scenes (the control)}} | {{dp|cards|27b|53.7, tool: the probe, locker sentence, locker-after scenes (the control)}} / {{dp|cards|27b|53.7, tool: the probe's best baseline (structure), locker sentence, locker-after scenes (the control)}} | | | |
+  | control, locker after the pick: probe / best baseline, code | | {{dp|cards|27b|53.7, code: the probe, locker sentence, locker-after scenes (the control)}} / {{dp|cards|27b|53.7, code: the probe's best baseline (majority), locker sentence, locker-after scenes (the control)}} | | | |
+  | the answer digit at the bridge word, locker before the pick: probe / chance, tool output | {{dp|cards|9b|53.7, tool: the probe, answer digit, locker-first scenes}} / {{dp|cards|9b|53.7, tool: chance, answer digit, locker-first scenes}} | {{dp|cards|27b|53.7, tool: the probe, answer digit, locker-first scenes}} / {{dp|cards|27b|53.7, tool: chance, answer digit, locker-first scenes}} | | | |
+  | the probe's gate | lookup only: code {{dp|cards|9b|53.7, code: the probe's gate, the lookup says and reads both prompts right}}, tool output {{dp|cards|9b|53.7, tool: the probe's gate, the lookup says and reads both prompts right}} | earlier design, both readers (lookup / recall): code {{dp|cards|27b|53.7, code: the probe's gate (earlier design), lookup / recall read right}}, tool output {{dp|cards|27b|53.7, tool: the probe's gate (earlier design), lookup / recall read right}} | | | |
+  | routes, code, the whole change: identity / position / value | {{dp|cards|9b|53.7, code: another item moved, the whole change: identity share}} / {{dp|cards|9b|53.7, code: another item moved, the whole change: position share}} / {{dp|cards|9b|53.7, code: another item moved, the whole change: value share}} | {{dp|cards|27b|53.7, code: another item moved, the whole change: identity share}} / {{d|cards|27b|53.7, code: another item moved, the whole change: position share}} / {{dp|cards|27b|53.7, code: another item moved, the whole change: value share}} | | | |
+  | routes, code: the routes the rule counts as used | {{dp|cards|9b|53.7, code: another item moved, the whole change: the routes the rule counts as used}} | {{dp|cards|27b|53.7, code: another item moved, the whole change: the routes the rule counts as used}} | | | |
+  | routes, code: position answers without the address / without a random part | {{d|fig21_code_tool|9b|code and tool output, code: another item moved, no_alf: position share}} / {{d|fig21_code_tool|9b|code and tool output, code: another item moved, no_alf_rand: position share}} | {{d|fig21_code_tool|27b|code and tool output, code: another item moved, no_alf: position share}} / {{d|fig21_code_tool|27b|code and tool output, code: another item moved, no_alf_rand: position share}} | | | |
+  | routes, code: position answers with only the address / with only a random part | {{d|fig21_code_tool|9b|code and tool output, code: another item moved, keep_alf: position share}} / {{dp|fig21_code_tool|9b|code and tool output, code: another item moved, keep_alf_rand: position share}} | {{d|fig21_code_tool|27b|code and tool output, code: another item moved, keep_alf: position share}} / {{dp|fig21_code_tool|27b|code and tool output, code: another item moved, keep_alf_rand: position share}} | | | |
+  | routes, code: the gate (lookup only) / the recall read right, not gated | {{dp|cards|9b|53.7, code: the routes test's gate, another item moved (lookup-only)}} / {{dp|cards|9b|53.7, code: the routes test, the recall's read right (descriptive)}} | {{dp|cards|27b|53.7, code: the routes test's gate, another item moved (lookup-only)}} / {{dp|cards|27b|53.7, code: the routes test, the recall's read right (descriptive)}} | | | |
+  | routes, tool output | {{dp|fig21_code_tool|9b|code and tool output, tool: the routes test's status (another item moved)}} | {{dp|fig21_code_tool|27b|code and tool output, tool: the routes test's status (another item moved)}} | | | |
+  | in prose (the address card): position answers without the address / without a random part / with only the address | {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rtk_C2_keep_alf_position_9b}} | {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rtk_C2_keep_alf_position_27b}} | | | |
+  | the lens monitor, code and tool output | running | running | | | |
+
+- **Read.**
+  - In tool output on the 9B and the 27B, and in code on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines.
+  - In code both models' lookups take the identity route or the position route, never the value; without the address they lose position answers beyond a random part of the same size, though less than in prose, and the address by itself brings almost none back.
+  - The address is readable in both formats and used in code; whether the lookup uses it in tool output waits for the routes runs still going.
+- **Caveats.**
+  - Pending hand-check: today's runs, unverified until hand-checked.
+  - Adapted design: lookup-only gate; the recall is not part of this test. The 9B's code probe: gate changed after the data (hollow ○); it fails that gate too. The 27B's probes passed the earlier gate on both readers.
+  - The address removed and added in code is the one fit on prose, carried over, not refit.
+  - Tool output is prose inside a tool reply; JSON is covered by the varied scenes ("Does the split hold in other texts?", Part I).
+  - In the tool format the bridge word sits about 250 tokens later than in prose<!-- src: results/x0_probe/x53_7_probe-20261029T115640Z/verdict.md | the bridge ~250 tokens later in the tool format --> (the template's tools block and two turns come first), not separated from the format; on the 9B the address stays readable after 50 neutral sentences (probe {{dp|e6_distance|9b|47.16: slot probe with 50 neutral sentences}}).
+  - The probe only shows the address is readable; the routes test decides whether the lookup uses it.
+  - The code scenes keep only the domains whose names stay one token at one position, so their mix differs from prose.
 
 ## Part IV. Where and when the link is made
 
