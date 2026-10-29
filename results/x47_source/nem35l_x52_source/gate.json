@@ -1,0 +1,108 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 519,
+    "no three false digits outside the locker digits and the true legs": 28
+  },
+  "gate": {
+    "after": {
+      "cases": 672,
+      "org_read_accuracy": {
+        "text": 0.8839285714285714,
+        "memory": 0.01488095238095238
+      },
+      "gate": 0.8,
+      "pass": false,
+      "eligible": 0,
+      "follows": {
+        "text": {
+          "org": {
+            "n": 672,
+            "instructed": 0.8839285714285714,
+            "other_source": 0.022321428571428572,
+            "neither": 0.09375,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 672,
+            "instructed": 0.8824404761904762,
+            "other_source": 0.020833333333333332,
+            "neither": 0.09672619047619048,
+            "no_digit": 0.0
+          }
+        },
+        "memory": {
+          "org": {
+            "n": 672,
+            "instructed": 0.01488095238095238,
+            "other_source": 0.9226190476190477,
+            "neither": 0.0625,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 672,
+            "instructed": 0.01488095238095238,
+            "other_source": 0.9181547619047619,
+            "neither": 0.06696428571428571,
+            "no_digit": 0.0
+          }
+        }
+      }
+    },
+    "before": {
+      "cases": 672,
+      "org_read_accuracy": {
+        "text": 0.8616071428571429,
+        "memory": 0.041666666666666664
+      },
+      "gate": 0.8,
+      "pass": false,
+      "eligible": 0,
+      "follows": {
+        "text": {
+          "org": {
+            "n": 672,
+            "instructed": 0.8616071428571429,
+            "other_source": 0.020833333333333332,
+            "neither": 0.11755952380952381,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 672,
+            "instructed": 0.9002976190476191,
+            "other_source": 0.01636904761904762,
+            "neither": 0.08333333333333333,
+            "no_digit": 0.0
+          }
+        },
+        "memory": {
+          "org": {
+            "n": 672,
+            "instructed": 0.041666666666666664,
+            "other_source": 0.8497023809523809,
+            "neither": 0.10863095238095238,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 672,
+            "instructed": 0.03869047619047619,
+            "other_source": 0.8988095238095238,
+            "neither": 0.0625,
+            "no_digit": 0.0
+          }
+        }
+      }
+    }
+  },
+  "identity_dropped": {
+    "after": 0,
+    "before": 0
+  },
+  "items": {
+    "after": 0,
+    "before": 0
+  },
+  "entities": {
+    "after": 0,
+    "before": 0
+  }
+}
