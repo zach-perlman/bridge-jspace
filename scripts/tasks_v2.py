@@ -575,7 +575,9 @@ def render(tok, item: dict) -> str:
     if item.get("framing") == "prefill":  # 2026-10-24 (amendment 26): the chat turn, the assistant turn prefilled "Answer:"
         return chat.chat_text(tok, f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}")
     if item.get("framing") == "chat":  # natural_v1: one user turn, thinking off, no "Answer:" prefill (on-policy)
-        msgs = [{"role": "user", "content": f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}"}]
+        # amendment 59 note 27: question first (the question and its instruction, then the passage, in the same turn)
+        body = f"{q} {NATURAL_CHAT_INSTRUCTION}\n\n{item['context']}" if item.get("qfirst") else f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}"
+        msgs = [{"role": "user", "content": body}]
         return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     instr = DIGIT_INSTRUCTION if kind == "digit" else S.INSTRUCTION
     if item["format"] != "chat":

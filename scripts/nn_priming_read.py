@@ -11,7 +11,10 @@ be said" if rho >= 0.7; "what will be said" if rho <= 0.3; mixed between; unclea
 Final token: "the end shows what will be said" if MP attr (the passage value) - MP other >= 20 points.
 Cluster bootstrap over bridges, 2000 draws.
 
-python scripts/nn_priming_read.py PREFIX   (PREFIX "qwen35_9b_", "" for the 27B, "nem35l_")
+python scripts/nn_priming_read.py PREFIX [RUN [OUT]]   (PREFIX "qwen35_9b_", "" for the 27B, "nem35l_", "muse30_"; OUT names the
+       output {PREFIX}{OUT}_n25.json, default v4; amendment 59 notes 27-28)
+Windows: WIN below; for a model not in WIN (Muse, note 28), the rule that gives them: the min-max of the bands that are stage 1
+hits for both MP and MM, at site last (the description's end) and at site final ({PREFIX}v4_stage1.json).
 """
 
 from __future__ import annotations
@@ -29,9 +32,21 @@ WIN = {"qwen35_9b_": ((4, 16), (21, 30)), "": ((16, 40), (49, 62)), "nem35l_": (
 WHAT = ("attr", "other", "third", "ctx", "bridge")
 
 
-def main(P: str, run_name: str | None = None) -> None:
+def windows(P: str) -> dict:
+    if P in WIN:
+        return dict(zip(("desc_end", "final"), WIN[P]))
+    d = json.loads((ROOT / "results" / "nn_swap" / "nn_cf_read" / f"{P}v4_stage1.json").read_text())
+    out = {}
+    for site, key in (("last", "desc_end"), ("final", "final")):
+        both = set.intersection(*({h["band"] for h in d["hits"] if h["site"] == site and h["word"] == w} for w in ("MP", "MM")))
+        assert both, f"no band is a stage 1 hit for both words at site {site}"
+        out[key] = (min(int(b[1:].split("-")[0]) for b in both), max(int(b.split("-")[1]) for b in both))
+    return out
+
+
+def main(P: str, run_name: str | None = None, out_name: str = "v4") -> None:
     run = RES / (run_name or f"{P}nn_readout_v4prime_v1")
-    win = dict(zip(("desc_end", "final"), WIN[P]))
+    win = windows(P)
     hits = collections.defaultdict(list)
     fam, bridge = {}, {}
     for line in (run / "rows.jsonl").open():
@@ -102,7 +117,7 @@ def main(P: str, run_name: str | None = None) -> None:
                       "end_shows_what_will_be_said": fi["MP_said_minus_other"] >= 20, "end_said_minus_other": fi["MP_said_minus_other"]}  # fmt: skip
     d = RES / "nn_priming_read"
     d.mkdir(parents=True, exist_ok=True)
-    (d / f"{P}v4_n25.json").write_text(json.dumps(out, indent=1) + "\n")
+    (d / f"{P}{out_name}_n25.json").write_text(json.dumps(out, indent=1) + "\n")
     print(f"n paired {out['n_paired']}, MP ok {len(mp)}, MM ok {len(mm)}; windows {win}")
     for k, rec in out["cells"].items():
         print(k, {t: rec[t] for t in ("MP/attr", "MP/other", "MP/third", "MP/ctx", "MM/attr", "MM/other", "MM/third")}, "rho", rec["rho"], rec["ci"].get("rho"))
@@ -110,4 +125,4 @@ def main(P: str, run_name: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "", sys.argv[2] if len(sys.argv) > 2 else None)
+    main(sys.argv[1] if len(sys.argv) > 1 else "", sys.argv[2] if len(sys.argv) > 2 else None, sys.argv[3] if len(sys.argv) > 3 else "v4")
