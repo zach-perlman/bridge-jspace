@@ -1,0 +1,49 @@
+id: x53_7_monitor_9b
+title: "Batch 53, test 53.7 (the pointer in code and tool output) on the 9B, forwards: the monitor test (53.2) on the main test's items rendered as Python code and as tool output; the main gate per format first, then for each format that passes the states at the bridge word and the last token, every second layer, and their J++ parts (k = 25 / 100); sealed (the probes and the verdict run on CPU); no prediction"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_7.py monitor-run --name qwen35_9b_x53_7_monitor
+question: >-
+  With the main test's scenes rendered as Python code and as tool output: what can a J-space readout decode compared
+  with the full state, (a) which item is the bridge, (b) its locker slot (the address), (c) the lookup's answer digit,
+  (d) the recall's answer, at the bridge word and the last token?
+why_it_matters: >-
+  Dan 11:10 (jobs/c3/batch53.yaml next_1110 item 2): "53.7 (the pointer in code and tool output): start now on any free
+  GPU, 27B then 9B." 09:50 priority 6: "53.7: the pointer in code and tool output (routes, address probe, monitor)."
+  Dan 11:25 (critic_1125) confirmed the reading: the locker scenes rendered as Python and as tool output, rules verbatim.
+hypotheses:
+  none: "no prediction (batch 53, 53.7; UNVERIFIED)"
+decision_rule: >-
+  53.2's, verbatim (jobs/c3/batch53.yaml brief 53.2, Dan 29 Oct 09:30): "Rule: “J-space blind to X” if the J++ probe is
+  within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; “J-space
+  carries X” if J++ >= 0.8 and >= 0.3 above random; else in between." As computed by scripts/x53_monitor.py (features,
+  probes, folds, seeds, CIs exactly as jobs/c3/x53_monitor_9b.yaml), per format. Gate (53.7; the monitor has none of
+  its own): the main test's gate, X0's, per format over every aligned scene of the main test's set (d1_topics_v3): the
+  unedited O prompt's chat read right on >= 0.80 for both readers, computed before any state is recorded; a failed
+  format is "not tested (gate x < 0.80)": no states, no probe.
+controls:
+- "a random subspace of the same k (the brief's control)"
+- "PCA top-k fit on the training rows only"
+- "the full residual"
+- "the training folds' majority class (chance) per target"
+n: "the main test's 200 items (qwen35_9b_x0_necessity at L12) re-rendered: tool output keeps all 200 (40 bridge entities), code keeps 77 (21 entities; Greek 56, animals 21, elements 0: an item name after a quote must be one token); gate set d1_topics_v3: tool 600 scenes, code 272; 16 layers (L0-L30); plan: scripts/x53_7.py plan"
+seeds: [888, 0, 1, 2, 3, 4]
+notes: >-
+  Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED; rule verbatim from the monitor (53.2). Renderings
+  (scripts/x53_7.py, fixed before any run): code = the scene as Python in the user turn (tasks_v2's code framing):
+  picks = {} and lockers = {}, then one assignment per statement in the scene's order, then the question and the digit
+  instruction; tool = the scene's text verbatim as the response of a declared tool (get_notes) after the user's "Look
+  up my notes." and the assistant's call, then the question and the instruction in a new user turn. Same items, S,
+  labels, positions (B the bridge word, T the last token) and layers (every second layer) as 53.2's main dataset.
+  Writes results/x53_monitor/qwen35_9b_x53_7_monitor/ (x53_monitor's run layout; datasets "code" and "tool"; states
+  gitignored; the gate and its reads in manifest.json / x53_7_gate_reads_<format>.jsonl). The CPU probes are too heavy
+  for the job (53.2 runs them on the Mac): after the pull, `uv run python scripts/x53_monitor.py probe --name
+  qwen35_9b_x53_7_monitor --sets <the formats that passed>` then `uv run python scripts/x53_7.py monitor-verdict --names
+  qwen35_9b_x53_7_monitor` -> results/x53_monitor/x53_7_monitor-<UTC>/. Estimate: gate 1,744 O reads (code 272 x 2, tool 600 x
+  2) plus 1,108 recorded forwards (code 77 x 4, tool 200 x 4) and the J++ OMP over 1,662 rows x 16 layers, against
+  the 9B's ledger for 53.2 (x53_monitor_9b_d: 2,040 forwards and the OMP in 553 s): ~0.25 h.

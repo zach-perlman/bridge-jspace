@@ -1,0 +1,48 @@
+id: x53_7_routes_code_9b
+title: "Batch 53, test 53.7 (the pointer in code and tool output) on the 9B (L12): the routes test (C0, C1, C2; whole, without the address / J++, the address / J++ alone, each against a random part of its share) with the routes scenes rendered as Python code; its own gate and C0 check; the verdict into results/x6_routes/x53_7_routes-<UTC>/; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x6_routes.py run --name qwen35_9b_x53_7_routes_code --format code --keeponly --sealed;
+  uv run python scripts/x53_7.py routes-verdict --names qwen35_9b_x53_7_routes_code
+question: >-
+  With the routes scenes rendered as Python code, does the lookup still follow the item's identity or its locker's
+  position (never the value), and does the address still carry the position route (removed: position falls beyond a
+  random part; alone: position answers come back)?
+why_it_matters: >-
+  Dan 11:10 (jobs/c3/batch53.yaml next_1110 item 2): "53.7 (the pointer in code and tool output): start now on any free
+  GPU, 27B then 9B." 09:50 priority 6: "53.7: the pointer in code and tool output (routes, address probe, monitor)."
+  Dan 11:25 (critic_1125) confirmed the reading: the locker scenes rendered as Python and as tool output, rules verbatim.
+hypotheses:
+  none: "no prediction (batch 53, 53.7; UNVERIFIED)"
+decision_rule: >-
+  The routes test's own, verbatim (scripts/x6_routes.py, Dan 25 Oct ~01:50, fixed in advance): "a route counts as used
+  if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap over the bridge item, 10,000 resamples, seed 0). C0
+  must reproduce the one-pick lookup switch rate within 0.10, or the run stops." The reference is the 9B's own
+  (qwen35_9b_x0_massmean_lf, whole change), unchanged. Gate per condition, the test's own: O's read accuracy >= 0.80 per
+  reader; a failed condition is "not tested (gate x < 0.80)"; a C0 stop makes every condition "not tested (the C0 check
+  stopped the run ...)". Applied per condition and arm (x6_routes' verdict cell, recomputed by scripts/x53_7.py
+  routes-verdict); C1: identity = original.
+controls:
+- "C0, the sanity swap (only the asked pick changes), against the one-pick reference"
+- "each part removed / added alone against a random part of its own share (X0's random subspace, seed 888 + L)"
+- "the recall beside (in C2 it should follow B, in C1 stay on A)"
+n: "300 eligible scenes per condition (the first 300 of 700 generated per condition, seed 2510); code keeps scenes whose items are one token after a quote (22 of the 32 one-token animals on the 9B tokenizer; 1,156 / 692 / 1,156 draws dropped for C0 / C1 / C2 to fill 700 each; plan: scripts/x53_7.py plan)"
+seeds: [2510, 888, 0]
+notes: >-
+  Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED; rule verbatim from the routes test (x6_routes). Rendering
+  (scripts/x53_7.py, fixed before any run): code = the scene as Python in the user turn (tasks_v2's code framing):
+  picks = {} and lockers = {}, then one assignment per statement in the scene's order (lockers["frog"] = 5 for "The
+  locker of the frog is 5.", picks["Iris"] = "frog" for "Iris picked the frog."), then the question and the digit
+  instruction; chat read. Only the rendering changes: the generator, seed, S and the expected answers are the routes
+  test's (x6_routes.scenes, --format code). Layer: the model's L (L12). --sealed: x6_routes writes no verdict of its
+  own (no default prefix); scripts/x53_7.py routes-verdict writes verdict.md / .json and x53_7_routes.png into
+  results/x6_routes/x53_7_routes-<UTC>/, also when the run stopped at its gate or C0 check (then "not tested"); it fails
+  the job on any other failure. Estimate from the ledger (x6_routes_r2 C0 + C0 / C1 / C2 with 6 read rows: 2,449 s;
+  x6_routes_keeponly C1 / C2 with 10 rows: 1,421 s): ~0.76 s per competence case and ~0.03 s per read row on the 27B,
+  so 2,100 cases + 900 x 2 x 10 rows ~ 2,140 s, plus code's longer prompts (~108 vs ~70 tokens): ~0.7 h on the 27B;
+  the 9B at the ledger's 9B / 27B ratio (x45m_9b_q2 480 s vs x45m_27b_q2 990 s): ~0.35 h.
