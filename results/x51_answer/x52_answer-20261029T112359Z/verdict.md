@@ -1,0 +1,94 @@
+# 51.12: is it the bridge or the answer that moves through the lens? (r2, amendment 20:20; UNVERIFIED)
+
+Batch 51, test 51.12 (jobs/c3/batch51.yaml addendum_4 and addendum_4_amendment; batch 52 coverage, no prediction: coverage run on an already-scored rule (rules first scored in results/x51_answer/x51_12-20261028T201842Z)). Cluster bootstrap over the bridge entity (10000, seed 0), paired across arms.
+
+Rule (fixed in advance): Per model, per reader: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra loss and arm 3 costs <= 0.10 beyond random. "The lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed, report both shares. Amendment (Dan 20:20): before the arms, the lens readout check at the bridge word; the verdict says which case held, either 'the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)' or the arm-based entity / answer / mixed (never 'void by construction'). Z2: arm 3 is read against its controls (a same-size random part and a frequency-matched part), not against zero.
+
+As computed: Extra loss of arm k = X0's excess = (S_rand_k - S_k) / S_whole per reader over the source run's items (switch: the set's own read; 47.3's lookup: follows the change, identity / position / value). e1, e2, e3 = arms 1, 2, 3; arm 4 (no_A_rand) is arm 3's random twin. 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'costs <= 0.10 beyond random' = e3 <= 0.10; 'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Z2: arm 3 against both its controls, e3 (vs no_A_rand) and e3f = (S_noF - S_noA) / S_whole (vs no_F); 'entity' needs max(e3, e3f) <= 0.10, 'answer' needs min(e3, e3f) >= 0.5 e1 (a label holds only against both controls). Point estimates decide (EPS 1e-9); e1 <= 0 or undefined (no switch under the whole change) -> can't tell; CIs from X0's cluster bootstrap over the bridge entity (10,000, seed 0), paired across arms (ratios on the same draws). Readout case first: per reader the rank (1 + tokens with a strictly higher lens logit, full vocabulary) of its own answer word (best of its A-style variant tokens) at the edited token at L, O's answer on O's state and S's on S's (z2: the reader's own state; e1 / cue: the lookup's, shared through the edited token); an item is 'not read' when it ranks > 50 on both; >= 90 % of items not read -> 'the answer word is not read at the bridge word', the arms reported beside; else the arm-based label. A: J++ unit atoms of letter tokens (the OMP dictionary); e1 / cue the answers' number words (suite_v1.WORDS: 6 -> 'six'), each of its variants (as is, leading space, capitalised, both) kept where it is one letter token; z2 the first token of each answer word and variant (where the tokenizer splits the full word, its first token only). Frequency-matched control F (z2): per atom a of A, the letter token f with |log((id_f + 1) / (id_a + 1))| <= log 2 (a BPE id is its merge rank, earlier = more frequent in the tokenizer's training corpus; the factor doubles until a candidate exists) and the closest log J++ readout norm ||(g * W_U[t]) J_L|| (ties: lower id); unrelated = its key (decode, stripped, lower-cased) equals no key of the set's answer words, A tokens, bridge entities' tokens / names or edited tokens, and (keys of >= 3 characters) neither contains nor is contained in one; never twice in one item. no_F = Δ - P_F Δ, P_F the projector on span(F). Decisive cells for Q51.12: Z2 both readers; E1 the recall (the lookup beside); 47.3 both readers. Projected out: (I - P_A) P_J Δ, P_A the orthogonal projector on the span of the item's answer atoms (the J++ part minus its component along span(A)).
+
+Which case held, per cell: first the readout check (the reader's own answer word at the edited token at L; 'not read' = rank > 50 on both O and S), then the arms.
+
+| set | model | reader | n | answer word top-50 O | top-50 S | not read | case | e1 (no J++) | e2 (no J++, A kept) | e3 (no A vs random) | e3f (no A vs freq.) | e2/e1 | e3/e1 | verdict | decisive |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| e1 | nemotron-3.5-lightning | lookup | 200 | 0.01 [0.00, 0.02] | 0.01 [0.00, 0.03] | 0.98 [0.97, 1.00] | not_read | 0.02 [-0.03, 0.07] | 0.03 [-0.02, 0.09] | 0.02 [-0.03, 0.08] | - | 1.50 [-2.00, nan] | 1.00 [-5.00, nan] | **the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items) (98% of 200 items; arms beside: the lens effect is the entity)** | beside |
+| e1 | nemotron-3.5-lightning | recall | 200 | 0.02 [0.00, 0.07] | 0.03 [0.01, 0.05] | 0.95 [0.90, 0.99] | not_read | 0.34 [0.25, 0.44] | 0.32 [0.24, 0.40] | 0.00 [-0.02, 0.01] | - | 0.92 [0.83, 1.03] | 0.00 [-0.04, 0.04] | **the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items) (96% of 200 items; arms beside: the lens effect is the entity)** | yes |
+| e1 | qwen3.5-122b-a10b | lookup | 200 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 1.00 [1.00, 1.00] | not_read | 0.01 [-0.06, 0.08] | 0.01 [-0.07, 0.10] | 0.01 [-0.03, 0.05] | - | 1.00 [nan, nan] | 1.00 [-2.00, nan] | **the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items) (100% of 200 items; arms beside: the lens effect is the entity)** | beside |
+| e1 | qwen3.5-122b-a10b | recall | 200 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 1.00 [1.00, 1.00] | not_read | 0.27 [0.17, 0.38] | 0.26 [0.18, 0.35] | 0.01 [-0.01, 0.04] | - | 0.98 [0.86, 1.18] | 0.04 [-0.04, 0.18] | **the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items) (100% of 200 items; arms beside: the lens effect is the entity)** | yes |
+
+## e1 on nemotron-3.5-lightning (nem35l_x52_answer, L14, source nem35l_x52_conflict)
+
+Source gate: {'pass': True, 'chosen': 200, 'org_read_accuracy': {'PP': 0.9574, 'PM': 0.8159}, 'gate': 0.8, 'eligible': 315}.
+
+Readout check (the answer word at the edited token):
+
+- lookup (state: lookup's prompts; n 200, no letter token for the word 0): top-10 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; top-50 O 0.01 [0.00, 0.02], S 0.01 [0.00, 0.03], either 0.01 [0.00, 0.03]; median rank O 8932.0, S 5884.0 vs the bridge entity's O 1.0, S 1.0; above the bridge O 0.01 [0.00, 0.02], S 0.00 [0.00, 0.00]; not read 0.98 [0.97, 1.00] -> case not_read
+- recall (state: lookup's prompts; n 200, no letter token for the word 0): top-10 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; top-50 O 0.02 [0.00, 0.07], S 0.03 [0.01, 0.05], either 0.04 [0.01, 0.10]; median rank O 5512.0, S 4928.5 vs the bridge entity's O 1.0, S 1.0; above the bridge O 0.01 [0.00, 0.02], S 0.00 [0.00, 0.00]; not read 0.95 [0.90, 0.99] -> case not_read
+
+| arm | lookup | recall |
+|---|---|---|
+| none | 0.00 [0.00, 0.00] | 0.01 [0.00, 0.02] |
+| whole | 0.45 [0.40, 0.52] | 0.95 [0.91, 0.99] |
+| no_jpp | 0.38 [0.33, 0.43] | 0.56 [0.46, 0.65] |
+| no_jpp_rand | 0.39 [0.34, 0.45] | 0.88 [0.84, 0.92] |
+| no_jpp_A | 0.38 [0.33, 0.45] | 0.60 [0.52, 0.69] |
+| no_jpp_A_rand | 0.40 [0.34, 0.46] | 0.90 [0.85, 0.95] |
+| no_A | 0.44 [0.38, 0.51] | 0.95 [0.92, 0.98] |
+| no_A_rand | 0.45 [0.39, 0.52] | 0.95 [0.91, 0.99] |
+- lookup: X0's validity bar True; whole 90 of 200; arm rule: the lens effect is the entity; e3f/e1 -
+- recall: X0's validity bar True; whole 190 of 200; arm rule: the lens effect is the entity; e3f/e1 -
+
+Answer directions and OMP atoms (per item):
+
+- Δ from the lookup's prompts: |A| tokens {'n': 200, 'min': 7, 'median': 15.0, 'max': 16, 'mean': 13.86, 'hist': {7: 2, 8: 1, 9: 1, 10: 7, 11: 23, 12: 20, 13: 4, 14: 34, 15: 78, 16: 30}}; rank {'n': 200, 'min': 7, 'median': 15.0, 'max': 16, 'mean': 13.86, 'hist': {7: 2, 8: 1, 9: 1, 10: 7, 11: 23, 12: 20, 13: 4, 14: 34, 15: 78, 16: 30}}; answer atoms among the 25: {'n': 200, 'min': 0, 'median': 0.0, 'max': 0, 'mean': 0.0, 'hist': {0: 200}} (0 items with at least one); median shares of ||Δ||^2 {'share_jpp': 0.26988, 'share_jpp_A': 0.26103, 'share_A': 0.0136, 'share_A_in_jpp': 0.00858}
+
+Lens readout at the edited token (top-1 over the vocabulary; O = org, S = alt):
+
+| state | n | own answer | own bridge | neither | per reader's answer | other prompt's answer | top digit = reader's answer |
+|---|---|---|---|---|---|---|---|
+| lookup's prompt, O | 200 | 0.00 [0.00, 0.00] | 0.89 [0.80, 0.95] | 0.12 [0.05, 0.20] | recall_answer: 0.00 [0.00, 0.00]; lookup_answer: 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | recall: 0.17 [0.05, 0.32]; lookup: 0.06 [0.03, 0.09] |
+| lookup's prompt, S | 200 | 0.00 [0.00, 0.00] | 0.87 [0.81, 0.93] | 0.13 [0.07, 0.19] | recall_answer: 0.00 [0.00, 0.00]; lookup_answer: 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | recall: 0.15 [0.10, 0.20]; lookup: 0.11 [0.07, 0.15] |
+
+Arm 1 against the stored run, item by item (agreement.json):
+
+- recall: none 200/200 agree (rerun 1, stored 1); whole 199/200 agree (rerun 190, stored 189); no_jpp 199/200 agree (rerun 111, stored 112); no_jpp_rand 199/200 agree (rerun 176, stored 177); arm 1's extra loss rerun 0.3421052631578947 vs stored 0.3439153439153439
+- lookup: none 200/200 agree (rerun 0, stored 0); whole 196/200 agree (rerun 90, stored 90); no_jpp 198/200 agree (rerun 75, stored 73); no_jpp_rand 199/200 agree (rerun 77, stored 76); arm 1's extra loss rerun 0.02222222222222224 vs stored 0.03333333333333336
+
+## e1 on qwen3.5-122b-a10b (qwen35_122b_x51_12_e1, L33, source qwen35_122b_x0_necessity_r2)
+
+Source gate: {'pass': True, 'chosen': 200, 'org_read_accuracy': {'PP': 0.9917, 'PM': 0.85}, 'gate': 0.8, 'eligible': 410}.
+
+Readout check (the answer word at the edited token):
+
+- lookup (state: lookup's prompts; n 200, no letter token for the word 0): top-10 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; top-50 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; median rank O 4472.5, S 5637.5 vs the bridge entity's O 1.0, S 1.0; above the bridge O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00]; not read 1.00 [1.00, 1.00] -> case not_read
+- recall (state: lookup's prompts; n 200, no letter token for the word 0): top-10 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; top-50 O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00], either 0.00 [0.00, 0.00]; median rank O 3509.0, S 3214.0 vs the bridge entity's O 1.0, S 1.0; above the bridge O 0.00 [0.00, 0.00], S 0.00 [0.00, 0.00]; not read 1.00 [1.00, 1.00] -> case not_read
+
+| arm | lookup | recall |
+|---|---|---|
+| none | 0.01 [0.00, 0.02] | 0.01 [0.00, 0.04] |
+| whole | 0.43 [0.38, 0.50] | 0.93 [0.88, 0.96] |
+| no_jpp | 0.36 [0.31, 0.43] | 0.59 [0.49, 0.69] |
+| no_jpp_rand | 0.36 [0.31, 0.43] | 0.84 [0.78, 0.89] |
+| no_jpp_A | 0.36 [0.31, 0.42] | 0.61 [0.53, 0.70] |
+| no_jpp_A_rand | 0.36 [0.31, 0.43] | 0.85 [0.79, 0.90] |
+| no_A | 0.44 [0.39, 0.51] | 0.91 [0.86, 0.95] |
+| no_A_rand | 0.45 [0.39, 0.51] | 0.92 [0.88, 0.95] |
+- lookup: X0's validity bar True; whole 87 of 200; arm rule: the lens effect is the entity; e3f/e1 -
+- recall: X0's validity bar True; whole 185 of 200; arm rule: the lens effect is the entity; e3f/e1 -
+
+Answer directions and OMP atoms (per item):
+
+- Δ from the lookup's prompts: |A| tokens {'n': 200, 'min': 8, 'median': 16.0, 'max': 16, 'mean': 15.0, 'hist': {8: 2, 12: 46, 16: 152}}; rank {'n': 200, 'min': 8, 'median': 16.0, 'max': 16, 'mean': 15.0, 'hist': {8: 2, 12: 46, 16: 152}}; answer atoms among the 25: {'n': 200, 'min': 0, 'median': 0.0, 'max': 0, 'mean': 0.0, 'hist': {0: 200}} (0 items with at least one); median shares of ||Δ||^2 {'share_jpp': 0.2522, 'share_jpp_A': 0.23797, 'share_A': 0.0163, 'share_A_in_jpp': 0.01087}
+
+Lens readout at the edited token (top-1 over the vocabulary; O = org, S = alt):
+
+| state | n | own answer | own bridge | neither | per reader's answer | other prompt's answer | top digit = reader's answer |
+|---|---|---|---|---|---|---|---|
+| lookup's prompt, O | 200 | 0.00 [0.00, 0.00] | 0.99 [0.98, 1.00] | 0.01 [0.00, 0.02] | recall_answer: 0.00 [0.00, 0.00]; lookup_answer: 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | recall: 0.30 [0.13, 0.48]; lookup: 0.09 [0.05, 0.13] |
+| lookup's prompt, S | 200 | 0.00 [0.00, 0.00] | 0.98 [0.97, 1.00] | 0.01 [0.00, 0.03] | recall_answer: 0.00 [0.00, 0.00]; lookup_answer: 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | recall: 0.32 [0.23, 0.39]; lookup: 0.10 [0.06, 0.15] |
+
+Arm 1 against the stored run, item by item (agreement.json):
+
+- recall: none 196/200 agree (rerun 3, stored 1); whole 193/200 agree (rerun 185, stored 184); no_jpp 191/200 agree (rerun 118, stored 111); no_jpp_rand 193/200 agree (rerun 168, stored 169); arm 1's extra loss rerun 0.27027027027027023 vs stored 0.3152173913043477
+- lookup: none 199/200 agree (rerun 1, stored 2); whole 194/200 agree (rerun 87, stored 89); no_jpp 195/200 agree (rerun 72, stored 71); no_jpp_rand 194/200 agree (rerun 73, stored 71); arm 1's extra loss rerun 0.011494252873563229 vs stored 0.0
+
+Arms: whole = Δ = h_S - h_O at the edited token at L; no_jpp = arm 1: Δ - P_J Δ (P_J Δ: X0's 25-atom signed OMP part over the J++ letter-token atoms at L); no_jpp_A = arm 2: Δ - (I - P_A) P_J Δ (the J++ part with the answer directions A projected out); no_A = arm 3: Δ - P_A Δ (the answer directions alone); *_rand = each arm's random twin: Δ minus X0's random subspace part of the removed part's share of ||Δ||^2 (seed 888 + L); no_A_rand is arm 4, 'without a random part of A's share'; no_F = Z2 only: arm 3's frequency-matched control, Δ - P_F Δ (F: per atom of A one unrelated letter atom with its BPE id within a factor 2 and the closest J++ readout norm).
