@@ -1,0 +1,45 @@
+id: x53_8_bindid_9b
+title: "Batch 53.8 on the 9B (L12), Dan 11:25 stretch: a binding-ID test for the lookup's identity code. Per locker slot, the mean over 300 held-out scenes of the state at L at the item's mention in its locker sentence minus its token embedding, added at the bridge word at 1x / 2x the scene's real identity change (||h_S - h_O||, C0), against a random vector of the same norm and against the other item's (Y's) version; read: lookups sent to X's locker; x6_routes' C0 scenes; rule verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x53_bindid.py run --name qwen35_9b_x53_8 --why "Batch 53, test 53.8 (jobs/c3/batch53.yaml critic_1125 item 6, Dan 29 Oct 11:25, stretch): a binding-ID test for the lookup's identity code at L12 on the 9B, the mention's slot code added at the bridge word at 1x / 2x a real identity change against random and Y's version; no prediction" &&
+  uv run python scripts/x53_bindid.py verdict --runs qwen35_9b_x53_8
+question: >-
+  Does the state at an item's mention in its locker sentence (minus its token embedding, averaged over scenes with the
+  item fixed by slot) carry an identity code the lookup reads at the bridge word: added there at the size of a real
+  identity change, does it send the lookup to that item's locker, beyond a random vector of the same norm and beyond
+  another item's version?
+why_it_matters: >-
+  Batch 53 (Dan, 29 Oct 11:25, critic_1125 order item 6, stretch): whether the lookup's identity code at the bridge word
+  is a binding ID shared with the item's mention in its locker sentence (the code is written at the mention and read at
+  the bridge), or something the bridge word builds that the mention does not carry.
+hypotheses:
+  none: "No prediction (batch 53: the rule fixed in Dan's text before any run)."
+decision_rule: >-
+  Verbatim from jobs/c3/batch53.yaml (critic_1125, item 6): "Stretch, 53.8, a binding-ID test for the lookup's identity
+  code (9B, then Muse): at L, take the state at item X's mention in its locker sentence minus X's token embedding (mean
+  over scenes, X fixed by slot), add it at the bridge word at 1x / 2x the size of a real identity change, against a
+  random vector of the same norm and against the same with another item Y's mention. Read: lookups sent to X's locker.
+  Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <=
+  0.05; else in between." As computed (scripts/x53_bindid.py, fixed before the run): at 2x, on point estimates (EPS
+  1e-9 at the bars), "a shared identity code" if X - random >= 0.25 and X - Y >= 0.15; "no" if X - random <= 0.05 (the
+  reading of "<= 0.05": X's share minus random's, at 2x); else "in between". X's share = the share of (scene, X) reads
+  whose lookup's top token (X0's chat read) is X's locker digit; under X's vector, under Y's version and under the
+  random vector; both non-bridge items of each scene take turns as X and Y (pooled); cluster-bootstrap CIs over the
+  bridge item (10,000, seed 0), the differences paired, beside. Gate: X0's (O's read accuracy >= 0.80 per reader, lookup
+  and recall, on the 700 test-pool scenes); a failed gate gives "not tested (gate x < 0.80)", never lowered. Verdict in
+  the job: results/x53_bindid/x53_bindid-<UTC>/.
+controls:
+- "a random Gaussian direction per scene (seed 5308) at the same norm as X's vector (1x and 2x ||Δ||)"
+- "Y's version: the other non-bridge item's slot vector, built the same way, at the same norm; X's share under it"
+- "the real identity change itself (Δ = h_S - h_O, C0) added at the bridge word: the lookup sent to B's locker (the dose's positive reference, beside)"
+- "O unedited (the floor); collateral beside: the lookup's and the recall's clean answers kept under every arm"
+- "X0's gate (O's read accuracy >= 0.80 per reader) and X0's eligibility (both readers say and read O's and S_B's answers right)"
+n: "the first 300 eligible of the routes runs' 700 C0 scenes (x6_routes' generator, seed 2510; the routes run had 572 eligible on the 9B; 32 bridge items in the pool); 2 (scene, X) rows per scene = 600 per dose; vectors from 300 held-out C0 scenes (generator 701-1,000, all three mentions one token on the 9B's tokenizer); 8 arms x 2 readers per scene"
+seeds: [2510, 5308, 0]
+notes: "Batch 53, 53.8 (Dan 11:25, stretch); no prediction; UNVERIFIED; rule verbatim. Design choices (fixed before the run; manifest 'design', verdict.md): (1) X's vector: per locker slot k, the mean over the mean pool of [the block output at L12 at the k-th locker sentence's item word in O's chat lookup prompt] minus [that token's raw input-embedding row]; the item word is one token by the generator's rule (asserted; 0 of 900 mentions dropped on the 9B's tokenizer). Slot: X = the item at slot k, for both slots k other than the bridge item A's; Y = the scene's remaining item; both assignments pooled per scene, per-slot split beside. Mean pool: 300 C0 scenes (generator 701-1,000), disjoint from the test pool (C0 1-700 = the routes runs' scenes, checked identical to results/x6_routes/qwen35_9b_x6_routes on CPU), so no test scene's own state enters its vector. (2) Dose: 'the size of a real identity change' = ||Δ|| per scene, Δ = h_{S_B} - h_O at the bridge word at L12, S_B = O with Iris's pick A -> B and nothing else (C0): the existing definition of x52_answer_map's ans1 / ans2 (s = ||Δ||, 'the real change there'); E6c's real pointer change (median ||U U^T Δ||) recorded beside as norm_U_delta, not used. (3) Controls: a seeded random direction per scene and Y's version, both at the same norm (tested). (4) Read: X0's chat read; X's share, Y's, random's at 1x and 2x with cluster-bootstrap CIs over the bridge item (10,000, seed 0); collateral = clean answers kept, both readers. (5) Rule: Dan's text at 2x on point estimates; 'no' read as X - random <= 0.05. (6) Order: 9B first, then Muse (x53_8_bindid_muse). Descriptive beside: the vectors' norms and cosines, cos(c_k - c_j, mu_k - mu_j) with the probe run's pointer means (qwen35_9b_x0_probe_v4), cos(Δ, c_B - c_A). Script scripts/x53_bindid.py (plan / run / verdict), tests tests/test_x53_bindid.py (21, CPU; pass with BJ_TARGET=qwen3.5-9b and =muse-glimmer-30b): the vector construction on planted data and through x49_das_pos's fake model, doses matched to ||Δ||, equal-norm controls, the X / Y / random pairing, the rule at its bars, a failed gate giving 'not tested', mention positions and pools on the real tokenizer, run and verdict end to end. Writes results/x53_bindid/qwen35_9b_x53_8/ (manifest.json before the model loads, gate.json, competence.jsonl, cases.jsonl, mean_cases.jsonl, codes.npz, norms.jsonl, outcomes.jsonl, run_info.json) and results/x53_bindid/x53_bindid-<UTC>/ (verdict.md, verdict.json, x53_bindid.png with the four model slots, examples.md = 10 random scenes, seed 0). Cost (ledger): x53_6_9b ran 364 s (competence on 512 routes scenes, 600 state forwards, 600 reads of 5 rows); here competence on 700, 900 state forwards, 600 reads of 8 rows: ~9 min with load; est 0.2. Memory: as x53_6_9b (~20 GB peak). Disk on the Mac before the spec: 173 GB free."
