@@ -397,7 +397,33 @@ def test_atom_bases_match_x0s_picks():
 @pytest.mark.parametrize(("flags", "want"), [([], None), (["--runs", "a", "b", "c"], ["a", "b", "c"])])
 def test_main_passes_the_verdicts_runs(monkeypatch, flags, want):
     seen = {}
-    monkeypatch.setattr(Z, "stage_verdict", lambda runs=None, n_boot=0: seen.setdefault("runs", runs))
+    monkeypatch.setattr(Z, "stage_verdict", lambda runs=None, n_boot=0, coverage=False: seen.setdefault("runs", runs))
     monkeypatch.setattr(sys, "argv", ["x47_zero.py", "verdict", *flags])
     Z.main()
     assert seen["runs"] == (None if want is None else dict(zip(Z.MODELS, want, strict=True)))
+
+
+def test_lightning_coverage_verdict_and_exclude_dev(tmp_path, monkeypatch):
+    """Batch 52 C: 47.5 on Lightning reads its coverage run alone with no prediction (x52_zero-<UTC>/), and
+    --exclude-dev fills x0_necessity.EXCLUDE with the layer prerequisite's 60 dev scenes."""
+    monkeypatch.setattr(Z, "RESULTS", tmp_path)
+    out = Z.stage_verdict(None, 10, coverage=True)
+    text = (out / "x47_5.md").read_text()
+    assert out.name.startswith("x52_zero-") and Z.NO_PREDICTION in text and ", Dan:" not in text
+    assert "nem35l_x52_zero" in text and "qwen3.5-9b" not in text
+    seen = []
+    monkeypatch.setattr(X, "EXCLUDE", set())
+    monkeypatch.setattr(Z, "stage_verdict", lambda runs, n_boot, coverage=False: seen.append(coverage))
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "x47_zero.py",
+            "verdict",
+            "--coverage",
+            "--exclude-dev",
+            "results/x51_lightning/nem35l_x52_layer_r2/gate.json",
+        ],
+    )
+    Z.main()
+    assert seen == [True] and len(X.EXCLUDE) == 60

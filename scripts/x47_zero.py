@@ -75,6 +75,12 @@ PAIRS = (("L", "zero_L", "rand_L"), ("L..L+3", "zero_L3", "rand_L3"))
 DECISIVE = "L"  # one layer, the recall
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_5", "qwen3.6-27b": "x47_5_27b", "muse-glimmer-30b": "muse30_x47_5"}
+# batch 52 C coverage (amendment 2: the full grid on Lightning; jobs/c3/x52_lightning_zero.yaml): read by verdict
+# --coverage alone (MODELS / RUNS and the design's own verdict unchanged); the run takes --exclude-dev (Lightning's 60
+# dev scenes, which chose its layer, stay out of the items, as in its conflict run)
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_zero"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x47_zero/x47_5-20261028T113106Z"  # 47.5's rule first scored (9B, 27B, Muse)
 KEEP_FOLLOWED, NEAR, NEEDED = 0.80, 0.10, 0.30
 EPS = 1e-9  # a value exactly at a bar counts as at the bar
 FOLLOWED, NEEDS, NEITHER = "followed, not needed at one layer", "needed", "neither (between the bars)"
@@ -239,6 +245,10 @@ def stage_run(name: str, why: str, set_name: str = SET) -> Path:
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED,
                    "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
          "sealed": f"no verdict in the job; results closed until {A.PREDICTIONS} holds Dan's {QUESTION}"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52 C: no Q-line; verdict --coverage
+        m |= {"question": NO_PREDICTION, "batch": 52, "sealed": "none (batch 52 coverage; verdict --coverage)"}
+    if X.EXCLUDE:
+        m["excluded_scenes"] = sorted(X.EXCLUDE)
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -420,14 +430,24 @@ def example_lines(target: str, run: str, decode, k: int = X.K_EXAMPLES, seed: in
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, decode_for=None) -> Path:
-    answer = A.require_answer(QUESTION)
-    runs = runs or RUNS
-    models = [model_result(t, runs[t], n_boot) for t in MODELS]
+def stage_verdict(
+    runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, decode_for=None, coverage: bool = False
+) -> Path:
+    """47.5's verdict over MODELS (sealed until Q47.5), or with coverage (batch 52 C) the same rule on the coverage runs
+    (target -> run, default COVERAGE_RUNS) alone: no seal guard, "no prediction" in place of Dan's answer, written to
+    x52_zero-<UTC>/."""
+    answer = (f"{NO_PREDICTION}; rule first scored in {SCORED}; the README verb counts the given runs only, not "
+              "re-scored") if coverage else A.require_answer(QUESTION)  # fmt: skip
+    runs = runs or (COVERAGE_RUNS if coverage else RUNS)
+    if coverage:
+        assert set(runs) <= set(COVERAGE_RUNS), f"47.5 coverage runs on {sorted(COVERAGE_RUNS)}, not {sorted(runs)}"
+    models = [model_result(t, runs[t], n_boot) for t in (runs if coverage else MODELS)]
     batch = batch_verb(models)
-    out = RESULTS / f"x47_5-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_zero' if coverage else 'x47_5'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, batch, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 C coverage, ") for ln in lines]
     (out / "x47_5.json").write_text(json.dumps({"dan": answer, "batch": batch, "models": models}, indent=1) + "\n")
     (out / "x47_5.md").write_text("\n".join(lines) + "\n")
     ex = ["# 47.5 verify pack: S's prompts as the model reads them (the read appends the digit's space token); ⟦...⟧ the "
@@ -449,12 +469,21 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: batch 52 coverage runs {COVERAGE_RUNS} ('{NO_PREDICTION}')")  # fmt: skip
+    ap.add_argument("--exclude-dev", default=None, metavar="GATE_JSON",
+                    help="run: keep the 'dev' scenes of this gate.json out of the items (x0_necessity's flag)")  # fmt: skip
     a = ap.parse_args()
+    if a.exclude_dev:
+        X.EXCLUDE.update(json.loads((pins.REPO_ROOT / a.exclude_dev).read_text())["dev"])
+        assert X.EXCLUDE, f"{a.exclude_dev}: no dev scenes"
     if a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)
     else:
-        stage_verdict({**RUNS, **dict(zip(MODELS, a.runs, strict=True))} if a.runs else None, n_boot=a.n_boot)
+        assert not (a.coverage and a.runs), "verdict --coverage reads COVERAGE_RUNS (no --runs)"
+        runs = {**RUNS, **dict(zip(MODELS, a.runs, strict=True))} if a.runs else None
+        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":
