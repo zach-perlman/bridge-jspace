@@ -3120,3 +3120,20 @@ Zach's design choices, 29 Oct (multiple choice; each listed below where it appli
      - rho_alias = (MP remembered - third) / (MM attr - third) beside.
      - Descriptive beside: v4 MM's description-end share, and the final token.
   3. The top-20 dump read by note 26's plan.
+
+##### Amendment 60 addendum (Zach, 2026-10-29 ~21:05 UTC; before any v5 set was generated or run): confound controls
+Zach asked whether extending v4 adds confounds (e.g. linear entity -> country relations). Controls added:
+- **Note 29 (key).**
+  - Entities whose name reveals the country are excluded: name_reveals_answer, or a country / nationality word in the name ("Air France", "Great Wall of China").
+  - A closed-book prior control K0 ("What colour badges will the delegation from <country> wear?", no passage) measures any country -> colour prior; it should sit at chance. Items record flag_colour_match (the assigned colour is an iconic national colour of X's country), and reading 1 is also reported without those items.
+  - Linear entity -> country relations do not reach the answer: the colour is assigned at random per scene, so the lookup's answer cannot be decoded from the entity.
+  - The say-twin MM has its answer among the passage's six countries (recognition). Reading 1's "half of MM's loss" is a within-set comparison, and MM's loss is expected below v4 MM's.
+- **Note 30 (conflict).**
+  - The description cue lexicon adds about 150 well-known places mapped to their country ("Hollywood", "Seville"); a description naming a place of another country is dropped. Kept descriptions record desc_place_cue.
+  - Named words are primary; described words are secondary, since a semantic cue can survive a lexicon.
+  - Items carry entity_reals.
+- **Note 31 (alias).**
+  - Codenames are assigned to entities at random (seeded), so a codename's own sound cannot correlate with its entity's attribute.
+  - Items carry entity_reals, and the readout adds the target ctxreal (another scene entity's real attribute).
+  - Reading 2 adds a within-scene condition: X's attribute's top-1 share must exceed ctxreal's by >= 5 points, interval above 0. Otherwise the reading is "scene-level association, not this identity".
+  - Phrasing: a positive reading means the attribute reaches the bridge through the in-context binding; it may be carried from the passage's mention of X's name.
