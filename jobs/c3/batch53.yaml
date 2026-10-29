@@ -506,6 +506,80 @@ decisions_1210_coordinator_note: >-
   pick: code 0.95, tool 0.99). No 53.7 routes or monitor result had been opened. The 53.7 jobs still pending at 12:16
   use the two-reader gate and are cancelled and re-queued under the lookup-only gate; the two routes runs already
   running finish under the old gate and are kept as run, superseded, not cited.
+docs_1250_received: "29 Oct ~12:52 Paris (Dan; lifts the batch 53 'nothing into the README until tomorrow's verification' rule: results enter marked unverified, claims resting on them 'pending hand-check')"
+docs_1250: |
+  README + EXPERIMENTS.md + all figures (Dan, 12:50). Today's batch 53 results
+  may enter both documents now, marked as everything else ("unverified until
+  hand-checked"); claims resting on them carry "pending hand-check" beside the
+  grade. Keep the structure of the findings and the card format exactly:
+  Question / Why we asked / Data / Method / Rule (quoted; "after the data"
+  where so) / one figure after Method / Result (one column per model) / Read /
+  Caveats. No number changes; every number via its src comment; tests pass.
+  Commit in steps: figures → README → EXPERIMENTS.md.
+
+  0. CPU check first (verification): Z1-P on the 9B without the 60 passages
+     where the bridge's true value stands in the lookup's passage as another
+     entity's value: rule verbatim on the remaining 140; report beside the
+     full-set number in the Z1 card, both ways.
+
+  1. Figures, all of them (README and ledger):
+     - Five model slots in every per-model figure, in the tables' order:
+       9B, 27B, Muse, Lightning, 122B. Lightning hollow (gate after pre-check);
+       122B hollow where its gate was lowered (routes, address, swap), with
+       "FP8" in the caption; grey labelled slots where a model did not run.
+     - Rebuild fig11 (the scorecard) as the README's overview: rows = the
+       README claims, columns = the five models, cells coloured by verdict with
+       its word; it goes right under "In one minute".
+     - check_ledger: the figure-vs-table check extended to the 122B; open every
+       PNG; update Figure checks.
+
+  2. README.md: the main findings only, in this order.
+     - "In one minute": at most 6 bullets, ~150 words:
+       (1) the lookup reads the bridge word by a pointer (where the item's
+       locker sits) plus an identity code, both outside the lens; never the
+       value; remove / add / swap moves it; the lens cannot read it; 5 models,
+       3 families, prose / JSON / tables, Zach's made-up-fact passages, 50
+       neutral sentences, and readable in Python code and tool output (27B);
+       (2) the recall takes the item's name through the lens part, and on the
+       9B and Lightning partly the pointer too;
+       (3) what the lens part holds: the item names ("−carbon, +oxygen"),
+       almost never the answer in our scenes; the answer when it is a word tied
+       to the entity (Zach's passages); at the last token the item is readable
+       but not used;
+       (4) scale and order: the 122B's lookup ignores the lens part (0.00 at
+       25, −0.12 at 100 directions, where the 27B loses 0.60); question-first
+       order matters on the 27B, not on the 122B;
+       (5) the 27B is weaker throughout;
+       (6) tested and dropped (one line).
+     - Then the scorecard figure, the setup, "How to read".
+     - Parts I-VI stay, but only cards that back a claim in "In one minute"
+       or the claims table; every other card moves to EXPERIMENTS.md and the
+       README keeps a one-line link to it in its Part.
+     - New Part I card from today (backs bullet 2): lens identity vs address
+       (53.6), with the magnitude caveat. New card in Part III or IV (backs
+       bullet 1): the address in code and tool output (53.7 probe; routes and
+       monitor when they land). Part IV: the Lightning attention blocks (53.4
+       + span), one card. Part I: the order cell (53.1, 27B vs 122B).
+     - New section "Tested and dropped", before "How we checked": copy bypasses
+       the lens (it was the missing digit atoms); question position decides
+       item vs answer (not on the 27B); the lookup follows the lens on Zach's
+       passages (memory, gone with made-up facts); one code per locker; the
+       described bridge on Zach's passages (withdrawn); the four mechanism
+       tests. One line each, with the test that dropped it.
+     - "How we checked": the independent recount (63 of 63, written from
+       scratch), the automatic checks (45,542 items, 0 per-item failures; the
+       rerun label agreement 393-399 of 400), clean-checkout reruns within
+       0.02, the hand-check (pending, 30 Oct; link VERIFIED.md).
+     - Status line: five models, the 122B caveats (FP8, L33 by another rule,
+       lowered gates, ~±0.04 rerun noise).
+
+  3. EXPERIMENTS.md: keep its order (README Parts, status tags, cards). Put
+     every batch 53 result into its Part as a card (not a separate batch 53
+     section); add the 122B slot everywhere; move in the cards the README drops;
+     rewrite its "In one minute" from the cards; update Flagged and Appendix C.
+
+  At the end: a one-screen diff summary per document, and the list of claims
+  whose grade changed.
 next_1110_reading_537: >-
   Coordinator's reading (flagged to Dan): 53.7 has no rule of its own; the 09:50 priority list names it "the pointer in
   code and tool output (routes, address probe, monitor)", so each of those three tests runs with its own rule verbatim
