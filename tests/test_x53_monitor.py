@@ -208,7 +208,7 @@ def test_probe_matrix_groupings():
     assert acc["B|a|full"] > 0.9  # held-out scenes: every entity seen in training
     assert acc["B|b|full"] == 0.0  # held-out entities: never seen
     assert acc["B|c|full"] > 0.9
-    assert out["B|b|full"][1].sum() == pytest.approx(M.N_SEEDS * 2 * n_items / M.N_FOLDS, rel=0.25)
+    assert (out["B|b|full"][1] == M.N_SEEDS).all()  # 5-fold per seed: every row held out once per seed
     assert (out["B|b|full"][0] <= out["B|b|full"][1]).all()
 
 

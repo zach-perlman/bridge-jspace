@@ -405,13 +405,9 @@ def stage_run(name: str) -> Path:
 
 # ---- CPU: probes -----------------------------------------------------------------------------------------------------
 # Per model, dataset, layer and row set (B; T lookup for (a)-(c); T recall for (d)): features full / J++_k / random_k /
-# PCA_k; multinomial logistic probes (sklearn's objective, C = 1.0 for all, standardised on the training rows), 5 seeds,
-# each holding out a random fifth of the groups (the row's bridge entity for (b) and (c), the scene for (a) and (d));
-# per row how often it was held out and predicted right (cache/x53_monitor/<run>/<set>.npz).
-# AMENDMENT (~11:00, before any x53 run, for CPU time only): the specs say 5 seeds x 5-fold CV; a dev timing on 52 B's
-# cached 9B main-test states (no J++ part; 59 s for 16 layers at one held-out fifth per seed, 6 workers) puts 5-fold
-# at ~2 h of wall time for the four models and both datasets, so each seed holds out one random fifth of the groups
-# (fold 0 of the same seeded fold assignment): 5x fewer fits. The rule, the features, C and the groupings unchanged.
+# PCA_k; multinomial logistic probes (sklearn's objective, C = 1.0 for all, standardised on the training rows), 5 seeds
+# x 5-fold CV (as the specs' decision rule writes it), grouped by the row's bridge entity for (b) and (c) and by scene
+# for (a) and (d); per row in how many seeds its out-of-fold prediction is right (cache/x53_monitor/<run>/<set>.npz).
 
 TARGETS = ("a", "b", "c", "d")
 TARGET_KEY = {"a": "bridge", "b": "slot", "c": "lookup", "d": "recall"}
@@ -552,9 +548,8 @@ def fold_features(mats: dict[str, np.ndarray], rand_all: np.ndarray, tr: np.ndar
 
 def probe_matrix(mats: dict[str, np.ndarray], frames: dict[int, np.ndarray], rows: dict[str, np.ndarray],
                  cells: list[tuple[str, str]]) -> dict[str, np.ndarray]:  # fmt: skip
-    """One row set at one layer: per cell (position, target) and feature (and chance), per row [2, n_rows]: how many
-    seeds held it out and predicted it right, and how many seeds held it out (each seed holds out a random fifth of the
-    groups: fold 0 of fold_ids)."""
+    """One row set at one layer: per cell (position, target) and feature (and chance), per row [2, n_rows]: in how many
+    seeds its out-of-fold prediction is right, and in how many seeds it was held out (5-fold per seed: every seed)."""
     n = len(rows["entity"])
     out = {}
     for grouping in sorted({GROUP_BY[t] for _, t in cells}):
@@ -563,16 +558,19 @@ def probe_matrix(mats: dict[str, np.ndarray], frames: dict[int, np.ndarray], row
         right = {(p, t, f): np.zeros(n, np.float32) for p, t in mine for f in (*FEATURES, "chance")}
         tested = np.zeros(n, np.float32)
         for s in range(N_SEEDS):
-            te = fold_ids(groups, s) == 0
-            tr = ~te
-            tested[te] += 1
-            feats = fold_features(mats, mats["h"] @ frames[s], tr, te)
-            for p, t in mine:
-                y = rows[f"y_{t}"]
-                for name, (xtr, xte) in feats.items():
-                    right[(p, t, name)][te] += logistic(xtr, y[tr], xte) == y[te]
-                vals, cnt = np.unique(y[tr], return_counts=True)
-                right[(p, t, "chance")][te] += y[te] == vals[np.argmax(cnt)]
+            folds = fold_ids(groups, s)
+            rand_all = mats["h"] @ frames[s]
+            for f in range(N_FOLDS):
+                te = folds == f
+                tr = ~te
+                tested[te] += 1
+                feats = fold_features(mats, rand_all, tr, te)
+                for p, t in mine:
+                    y = rows[f"y_{t}"]
+                    for name, (xtr, xte) in feats.items():
+                        right[(p, t, name)][te] += logistic(xtr, y[tr], xte) == y[te]
+                    vals, cnt = np.unique(y[tr], return_counts=True)
+                    right[(p, t, "chance")][te] += y[te] == vals[np.argmax(cnt)]
         out.update({"|".join(key): np.stack([a, tested]) for key, a in right.items()})
     return out
 
@@ -822,10 +820,8 @@ def stage_verdict(states_root: Path, x52_root: Path, n_boot: int = X.N_BOOT) -> 
     blob = {"exp": EXP, "test": "53.2 (the monitor test)", "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_*.yaml",
             "prediction": NO_PREDICTION, "status": "UNVERIFIED", "rule": RULE, "targets": TARGET_TEXT,
             "groupings": {t: GROUP_TEXT[GROUP_BY[t]] for t in TARGETS}, "positions": PROBE_POS_TEXT,
-            "features": FEATURE_TEXT, "probe": {"C": C_REG, "seeds": N_SEEDS,
-                                                "held_out": f"per seed a random 1/{N_FOLDS} of the groups",
-                                                "amendment": "5-fold per seed -> one held-out fifth per seed (CPU "
-                                                              "time; before any x53 run; rule unchanged)",
+            "features": FEATURE_TEXT, "probe": {"C": C_REG, "seeds": N_SEEDS, "folds": N_FOLDS,
+                                                "cv": "per seed a random assignment of the groups to the folds",
                                                 "objective": "0.5 ||W||^2 + C x summed log-loss, intercept unpenalised",
                                                 "standardised": "training rows' mean and sd"},
             "bootstrap": {"n": n_boot, "seed": X.BOOT_SEED, "cluster": "the row's bridge entity"},
@@ -843,9 +839,8 @@ def verdict_lines(blob: dict) -> list[str]:
     lines = ["# 53.2, the monitor test: what a J-space readout can decode vs the full state", "",
              f"UNVERIFIED. {NO_PREDICTION}. Spec: {blob['spec']}.", "", f"Rule (verbatim): {RULE}", "",
              "As computed: per model, dataset, position, target and k, on point estimates (accuracy over rows and "
-             f"{N_SEEDS} seeds, each holding out a random 1/{N_FOLDS} of the groups; amendment before any x53 run: the "
-             "specs' 5-fold per seed cut to one held-out fifth per seed for CPU time), over every cached layer "
-             "(every second layer from L0); logistic "
+             f"{N_SEEDS} seeds of {N_FOLDS}-fold CV, each seed a random assignment of the groups to the folds), over "
+             "every cached layer (every second layer from L0); logistic "
              f"probes, C = {C_REG} for every feature (sklearn's objective, standardised features, scipy L-BFGS); "
              "(b), (c) on held-out entities; (a), (d) on held-out scenes (a held-out entity is an unseen class there). "
              f"CIs: cluster bootstrap over the bridge entity ({blob['bootstrap']['n']:,}, seed 0).", ""]  # fmt: skip
