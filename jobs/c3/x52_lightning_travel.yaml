@@ -1,0 +1,35 @@
+id: x52_lightning_travel
+title: "Batch 52 C coverage (Lightning extra f, 2 of 2): the address at the last token (51.4): the bridge-fit and last-token-fit swaps mu_k - mu_j at the last token at L14 and L18, s = 1 / 2, against random vectors of their norm; routes C0 scenes; the slot probe at the last token; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz && test -f results/x6_routes/nem35l_x52_routes/gate.json &&
+  uv run python scripts/x51_travel.py run --name nem35l_x52_travel &&
+  uv run python scripts/x51_travel.py verdict --coverage --runs nem35l_x52_travel
+question: >-
+  On Lightning: does the address code travel to the last token (the bridge-fit swap works there), is it re-encoded on
+  copy (only a last-token fit works), or not at the last token at all (51.4's labels)?
+why_it_matters: >-
+  51.4 (the address at the last token) on the second family; amendment 3 extra f.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rules verbatim from jobs/c3/x51_4_muse.yaml (jobs/c3/batch51.yaml 51.4; first scored in
+  results/x51_travel/x51_4-20261028T173333Z): ""The code travels": the bridge-fit swap sends >= 0.3 of lookups to slot
+  k (random <= 0.05). "Re-encoded on copy": bridge-fit <= 0.10 while last-token-fit >= 0.3. "Not at the last token":
+  both <= 0.10 while the probe reads the slot there >= 0.8." As computed: x51_4_muse's text with Lightning's sources:
+  x8_write.eligible's gate and eligibility on the routes generator's C0 scenes (seed 2510; gate 0.80 per reader), mu
+  from nem35l_x52_probe (x0_massmean.pointer_means), layers L = 14 (the committed layer, amendment 1) and L + 4 = 18
+  (x51_travel.layers_of), doses 1 and 2. Verdict in the job (verdict --coverage, x52_travel-<UTC>/).
+controls:
+- "random vectors of each swap's norm (seed RAND_SEED), per cell"
+- "the last-token fit on the fit half, read on the other (split by entity)"
+- "the slot probe at the last token (held out)"
+n: "the first 300 eligible routes C0 scenes, fit / read halves by entity; 2 layers x 2 doses x 4 arms"
+seeds: [2510, 0]
+notes: "Batch 52 C, amendment 3 extra f; any Lightning box whose checkout has the probe and routes runs (both checked; the routes run is on speedup: commit results/x6_routes/nem35l_x52_routes first, or enqueue on speedup). Code: x51_travel.COVERAGE_RUNS + verdict --coverage (51.4's RUNS and own verdict unchanged). Wallclock (ledger): x51_4_muse 0.17 h; est ~10-15 min, 0.4 GPU-h; opens before the freeze."

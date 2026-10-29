@@ -67,6 +67,10 @@ PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q51.4"
 MODELS = ("qwen3.5-9b", "muse-glimmer-30b", "qwen3.6-27b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_4", "muse-glimmer-30b": "muse30_x51_4", "qwen3.6-27b": "x51_4_27b"}
+# batch 52 C coverage (amendment 3, extra f): Lightning; verdict --coverage reads it alone, RUNS / own verdict unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_travel"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_travel/x51_4-20261028T173333Z"  # 51.4's rules first scored
 CONDITION = "C0"
 DOSES = (1.0, 2.0)
 LAYER_STEP = 4
@@ -249,7 +253,7 @@ def stage_plan() -> Path:
     from scripts import x45m
 
     target = pins.TARGET
-    assert target in RUNS, f"51.4 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.4 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     tok = x45m.tokenizer()
     cases, gate = stored_c0(target)
     for c in cases:
@@ -351,7 +355,7 @@ def stage_run(name: str, why: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "51.4 reads chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"51.4 runs on {sorted(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.4 runs on {sorted({*RUNS, *COVERAGE_RUNS})}, not {target}"
     lay = layers_of(target)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -381,6 +385,13 @@ def stage_run(name: str, why: str) -> Path:
         "seeds": {"scenes": R.SEED, "random_vectors": W.RAND_SEED, "split": A.SPLIT_SEED, "bootstrap": X.BOOT_SEED,
                   "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
         "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {
+            "question": NO_PREDICTION,
+            "batch": 52,
+            "rules_first_scored": SCORED,
+            "sealed": "none (batch 52 coverage)",
+        }
     manifest = out / "manifest.json"
     manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", manifest, flush=True)
@@ -693,15 +704,19 @@ def verdict_lines(results: list[dict], answer: str, n_boot: int) -> list[str]:
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
-    answer = sealed()
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """51.4's verdict (sealed until Q51.4), or with coverage (batch 52) the same rules on the given runs, no seal guard,
+    "no prediction" in place of Dan's answer (x52_travel-<UTC>/)."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else sealed()
     results = [analyse(run, n_boot) for run in runs]
-    out = RESULTS / f"x51_4-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_travel' if coverage else 'x51_4'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     for r in results:
         if r["status"] == "tested":
             figure(r, out / f"travel_{r['target']}.png")
     lines = verdict_lines(results, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ") for ln in lines]
     blob = {"dan": answer, "rule": RULE, "as_computed": AS_COMPUTED, "labels": LABELS, "models": results,
             "per_model": {r.get("target", r["run"]): r["label"] for r in results}}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False, default=str) + "\n")
@@ -777,6 +792,7 @@ def main() -> None:
         "--why", default="batch 51, test 51.4 (jobs/c3/batch51.yaml; Q51.4): the swap at the last token; sealed"
     )
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
@@ -786,7 +802,7 @@ def main() -> None:
     elif a.stage == "view":
         stage_view(a.runs)
     else:
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

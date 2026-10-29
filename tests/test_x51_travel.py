@@ -222,3 +222,11 @@ def test_planted_run_through_the_verdict(tmp_path, monkeypatch):
     text = (view / "view.md").read_text()
     assert text.count("random rows of") == 5 and text.count("⟦last:<1>⟧") == 2 * T.N_PROMPTS
     assert "muse30_x51_4" not in text  # not tested: no view
+
+
+def test_lightning_is_a_coverage_run_outside_51_4s_runs():
+    """Batch 52 C: Lightning's 51.4 run is a coverage run (verdict --coverage), 51.4's RUNS unchanged."""
+    from scripts import x51_travel as TR
+
+    lt = "nemotron-3.5-lightning"
+    assert lt not in TR.RUNS and TR.COVERAGE_RUNS[lt].startswith("nem35l_") and TR.NO_PREDICTION.startswith("no pred")

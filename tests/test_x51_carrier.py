@@ -331,3 +331,13 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
     one = loss_calls[0][2][L_]
     h_o = fake.run(torch.tensor([rd["ids"]["org"]]), record=(L_,))[1][L_][rd["pos"]]
     assert torch.allclose(edits[2][L_].values[0], h_o + one.delta[0], atol=1e-5)
+
+
+def test_lightning_coverage_reads_its_own_z1_run():
+    """Batch 52 C: Lightning's carrier run reads Lightning's Z1 coverage run, outside 51.7's RUNS."""
+    from scripts import x50_zach as Z
+    from scripts import x51_carrier as CR
+
+    lt = "nemotron-3.5-lightning"
+    assert lt not in CR.RUNS and CR.COVERAGE_RUNS[lt].startswith("nem35l_")
+    assert CR.z1_run(lt) == Z.COVERAGE_RUNS["z1"][lt] and CR.z1_run("qwen3.5-9b") == Z.RUNS["z1"]["qwen3.5-9b"]

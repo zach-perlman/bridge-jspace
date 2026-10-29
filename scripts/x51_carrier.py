@@ -78,6 +78,18 @@ PREDICTIONS = Z.PREDICTIONS
 QUESTION = "Q51.7"
 TARGETS = ("qwen3.5-9b", "qwen3.6-27b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x51_7", "qwen3.6-27b": "x51_7_27b"}
+# batch 52 C coverage (amendment 3, extra f): Lightning on its own Z1 run (x50_zach.COVERAGE_RUNS); verdict --coverage
+# reads it alone, 51.7's RUNS and own verdict unchanged
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_carrier"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
+SCORED = "results/x51_carrier/x51_7-20261028T171646Z"  # 51.7's rules first scored
+
+
+def z1_run(target: str) -> str:
+    """Z1's run on the target: batch 50's, or batch 52's coverage run (Lightning)."""
+    return {**Z.RUNS["z1"], **Z.COVERAGE_RUNS.get("z1", {})}[target]
+
+
 READERS, LOOKUP, RECALL = Z.READERS, Z.LOOKUP, Z.RECALL
 STRATA = ("fact-first", "fact-after")
 GROUPS = (*STRATA, "all")
@@ -142,7 +154,7 @@ def layer_of(target: str) -> int:
 
 
 def z1_dir(target: str) -> Path:
-    return Z.RESULTS / Z.RUNS["z1"][target]
+    return Z.RESULTS / z1_run(target)
 
 
 # ---- items (tokenizer and Z1's stored files) ------------------------------------------------------------------------
@@ -224,7 +236,7 @@ def swapped(rd: dict) -> list[int]:
 def plan_counts(items: list[dict], bad: list[str], target: str) -> dict:
     L = layer_of(target)
     lens = [len(c["readers"][w]["ids"]["org"]) for c in items for w in READERS]
-    return {"target": target, "z1_run": Z.RUNS["z1"][target], "layer": L, "patched_layers": [0, L], "n_patched": L + 1,
+    return {"target": target, "z1_run": z1_run(target), "layer": L, "patched_layers": [0, L], "n_patched": L + 1,
             "items": len(items), "mismatches": bad, "strata": dict(collections.Counter(c["stratum"] for c in items)),
             "entities": {s: len({c["bridge"] for c in items if c["stratum"] == s}) for s in STRATA}
             | {"all": len({c["bridge"] for c in items})},
@@ -429,9 +441,9 @@ def manifest(name: str, target: str) -> dict:
     return {"exp": EXP, "run": name, "test": "51.7", "spec": "jobs/c3/batch51.yaml (51.7)",
             "question": f"{QUESTION} ({PREDICTIONS})", "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
-            "inputs": inputs, "source": Z.RUNS["z1"][target], "layer": L, "layers": list(range(L + 1)), "k": X.K_MAIN,
+            "inputs": inputs, "source": z1_run(target), "layer": L, "layers": list(range(L + 1)), "k": X.K_MAIN,
             "omp": "signed", "arms": ARM_TEXT, "read_arms": list(READ_ARMS), "loss_arms": list(LOSS_ARMS),
-            "stored_arms": {"from": Z.RUNS["z1"][target], "map": Z1_ARM},
+            "stored_arms": {"from": z1_run(target), "map": Z1_ARM},
             "items_rule": "Z1's chosen passages in Z1's order (gate.json), rebuilt with x50_zach.z1_cases on the "
                           "target's tokenizer and equal to Z1's stored cases (ids, patch token, answer tokens, S's "
                           "entity, stratum); a mismatch fails the job",
@@ -459,12 +471,14 @@ def stage_run(name: str) -> Path:
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "51.7 renders Z1's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
-    assert target in RUNS, f"51.7 runs on {list(RUNS)}, not {target}"
+    assert target in RUNS or target in COVERAGE_RUNS, f"51.7 runs on {[*RUNS, *COVERAGE_RUNS]}, not {target}"
     L = layer_of(target)
     assert (z1_dir(target) / "gate.json").exists(), f"Z1's run {z1_dir(target)} is not here"
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = manifest(name, target)
+    if target in COVERAGE_RUNS:  # batch 52: no Q-line; verdict --coverage when it lands
+        m |= {"question": NO_PREDICTION, "batch": 52, "rules_first_scored": SCORED}
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -797,16 +811,23 @@ def view_lines(
 def resolve(runs: list[str] | None) -> dict[str, str]:
     if not runs:
         return dict(RUNS)
-    inv = {r: t for t, r in RUNS.items()}
+    inv = {r: t for t, r in {**RUNS, **COVERAGE_RUNS}.items()}
     return {inv.get(r, json.loads((RESULTS / r / "manifest.json").read_text())["model"]["target"]): r for r in runs}
 
 
-def stage_verdict(runs: list[str] | None = None, n_boot: int = X.N_BOOT, decode=None) -> Path:
-    answer = unsealed()
-    models = [model_result(t, r, n_boot) for t, r in resolve(runs).items()]
-    out = RESULTS / f"x51_7-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+def stage_verdict(runs: list[str] | None = None, n_boot: int = X.N_BOOT, decode=None, coverage: bool = False) -> Path:
+    """51.7's verdict (sealed until Q51.7), or with coverage (batch 52) the same rules on COVERAGE_RUNS alone, no seal
+    guard, "no prediction" in place of Dan's answer (x52_carrier-<UTC>/)."""
+    answer = f"{NO_PREDICTION}; rules first scored in {SCORED}" if coverage else unsealed()
+    models = [
+        model_result(t, r, n_boot)
+        for t, r in resolve(runs or (list(COVERAGE_RUNS.values()) if coverage else None)).items()
+    ]
+    out = RESULTS / f"{'x52_carrier' if coverage else 'x51_7'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = verdict_lines(models, answer, n_boot)
+    if coverage:
+        lines = [ln.replace(f"{QUESTION}, Dan: ", "batch 52 coverage, ") for ln in lines]
     for mm in models:
         if "groups" in mm:
             png = out / f"x51_7_{mm['target']}.png"
@@ -844,6 +865,7 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", help="verdict / view: the runs (default: the 9B's and the 27B's)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--plan-dir", help="plan: the folder to write into (one per model, the same folder)")
+    ap.add_argument("--coverage", action="store_true", help=f"verdict: batch 52 coverage runs ('{NO_PREDICTION}')")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan(a.plan_dir)
@@ -851,7 +873,7 @@ def main() -> None:
         assert a.name, "run needs --name"
         stage_run(a.name)
     elif a.stage == "verdict":
-        stage_verdict(a.runs, a.n_boot)
+        stage_verdict(a.runs, a.n_boot, coverage=a.coverage)
     else:
         stage_view(a.runs)
 
