@@ -143,6 +143,21 @@ def write_cell(fixed: str | None = None, **tracked) -> dict:
     return cell
 
 
+def parts(**cells: dict) -> dict:
+    """A cell made of named parts (e.g. Z1 and Z2): done when every part is done, partial when some are (the rest named
+    with their own status), else the first part's cell with the others' status in its note."""
+    st = {k: v["status"] for k, v in cells.items()}
+    srcs = [s for v in cells.values() for s in v["sources"]]
+    if all(s == "done" for s in st.values()):
+        return c("done", "; ".join(f"{k} done" for k in cells), *srcs)
+    if any(s in ("done", "partial") for s in st.values()):
+        return c("partial", "; ".join(f"{k} {v['status']}" + (f" ({v['note']})" if v["note"] else "")
+                                      for k, v in cells.items()), *srcs)  # fmt: skip
+    first = next(iter(cells.values()))
+    return c(first["status"], "; ".join(f"{k} {v['status']}" + (f" ({v['note']})" if v["note"] else "")
+                                        for k, v in cells.items()), *srcs)  # fmt: skip
+
+
 LT = "nemotron-3.5-lightning"
 
 
@@ -287,9 +302,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "muse-glimmer-30b": done("results/x47_depth_cpu/persistence-20261028T115530Z")}),
         ("Part V: Zach's passages Z1 / Z2 (x50)", "jobs/c3/batch50 (x50_zach)", {
             "qwen3.6-27b": done("results/x50_zach/z1-20261028T161649Z", "results/x50_zach/z2-20261028T162710Z"),
-            LT: track("x52_lightning_zach", "x50_zach/nem35l_x52_z1", "x50_zach/x52_z1-*",
-                   "Z1 at L14 and L27 (his band's start); Z2 not run on Lightning (its answer map ran the main set only)",
-                   done_as="partial"),
+            LT: parts(Z1=track("x52_lightning_zach", "x50_zach/nem35l_x52_z1", "x50_zach/x52_z1-*", "L14 and L27"),
+                      Z2=track("x52_lightning_z2", "x50_zach/nem35l_x52_z2", "x50_zach/x52_z2-*", "L14 and L27")),
             "qwen3.5-9b": done("results/x50_zach/z1-20261028T161649Z", "results/x50_zach/z2-20261028T162710Z"),
             "muse-glimmer-30b": done("results/x50_zach/z1-20261028T161649Z", "results/x50_zach/z2-20261028T162710Z")}),
         ("Part V: Zach's passages Z3 (routes on his passages)", "x50_zach z3", {
@@ -299,8 +313,9 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x50_zach/z3-20261028T163053Z"), "muse-glimmer-30b": done("results/x50_zach/z3-20261028T163053Z")}),
         ("Described bridge (47.3, and 51.12's cue r2)", "jobs/c3/batch47.yaml 47.3", {
             "qwen3.6-27b": done("results/x47_cue/x47_3-20261028T113104Z", "results/x51_answer/x51_12-20261028T201842Z"),
-            LT: track("x52_lightning_fill2", "x47_cue/nem35l_x52_cue", "x47_cue/x52_cue-*",
-                   "47.3 only; 51.12's cue r2 designed for the 9B / 27B", done_as="partial"),
+            LT: parts(**{"47.3": track("x52_lightning_fill2", "x47_cue/nem35l_x52_cue", "x47_cue/x52_cue-*"),
+                         "51.12 cue r2": track("x52_lightning_cue_answer", "x51_answer/nem35l_x52_cue_answer",
+                                               "x51_answer/x52_answer-*")}),
             "qwen3.5-9b": done("results/x47_cue/x47_3-20261028T113104Z", "results/x51_answer/x51_12-20261028T201842Z"),
             "muse-glimmer-30b": c("partial", "47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)",
                                   "results/x47_cue/x47_3-20261028T113104Z")}),
@@ -359,8 +374,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x47_chain/x47_14-20261028T115841Z"), "muse-glimmer-30b": done("results/x47_chain/x47_14-20261028T115841Z")}),
         ("What is left of the route; the value (47.7)", "jobs/c3/batch47.yaml 47.7", {
             "qwen3.6-27b": done("results/x47_value/x47_7a-20261028T131819Z"),
-            LT: track("x52_lightning_fill3", "x47_value/nem35l_x52_value_a", "x47_value/x52_valuea-*", "(a) only",
-                   done_as="partial"),
+            LT: parts(**{"(a)": track("x52_lightning_fill3", "x47_value/nem35l_x52_value_a", "x47_value/x52_valuea-*"),
+                         "(c)": track("x52_lightning_value_c", "x47_value/nem35l_x52_value_c", "x47_value/x52_valuec-*")}),
             "qwen3.5-9b": done("results/x47_value/x47_7a-20261028T131819Z"), "muse-glimmer-30b": done("results/x47_value/x47_7a-20261028T131819Z")}),
         ("Gain map (49.1)", "jobs/c3/batch49.yaml 49.1", {
             "qwen3.6-27b": done("results/x49_gain/x49_1-20261028T154510Z"),
