@@ -114,7 +114,9 @@ NUMBER_CELLS, WORD_CELLS = CELLS[:2], CELLS[2:]
 RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2", "qwen3.6-27b": "x53_2x2_27b", "nemotron-3.5-lightning": "nem35l_x53_2x2"}
 WORD_RUNS = {"qwen3.5-9b": "qwen35_9b_x53_2x2_words", "qwen3.6-27b": "x53_2x2_words_27b",
              "nemotron-3.5-lightning": "nem35l_x53_2x2_words"}  # fmt: skip
-MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
+# the verdict's models: Dan's 53.1 decision (10:20) names the 9B and the 27B, and batch 53 stops adding Lightning
+# coverage; the run stage still takes Lightning (RUNS, DEV_GATE) should it be asked for
+MODEL_ORDER = ("qwen3.5-9b", "qwen3.6-27b")
 MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "nemotron-3.5-lightning": "Lightning"}
 # Lightning's main test (nem35l_x52_conflict) keeps the 60 scenes its layer was fixed on out of the selection
 DEV_GATE = {"nemotron-3.5-lightning": "results/x51_lightning/nem35l_x52_layer_r2/gate.json"}
@@ -986,6 +988,17 @@ def verdict_lines(models: list[dict]) -> list[str]:
     return lines
 
 
+def title_of(models: list[dict]) -> str:
+    """The figure's title (<= 70 characters): the rule across cells per model, 'can't tell' without its reasons (the
+    verdict lists them)."""
+    parts = []
+    for mv in models:
+        a = mv.get("across", "pending")
+        parts.append(f"{MODEL_SHORT.get(mv['target'], mv['target'])} {a.split(':')[0]}")
+    t = "53.1 across cells: " + "; ".join(parts)
+    return t if len(t) <= 70 else t[:67] + "..."
+
+
 def figure(models: list[dict], path: Path) -> None:
     """One figure for the ledger card: per model a panel, per cell a row; the recall's three extra losses (arm 1
     without the J++ part, arm 2 with the answer directions kept, arm 3 the answer directions alone) and the lookup's arm
@@ -1031,10 +1044,10 @@ def figure(models: list[dict], path: Path) -> None:
 
     handles = [Line2D([], [], marker=mk, color=col, ls="", label=t) for _, _, col, mk, t in marks]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False, fontsize=SS.LABEL_PT)
-    head = run[0]
-    t = f"53.1 on {MODEL_SHORT.get(head['target'], head['target'])}: {head.get('across', 'pending')}"
     SS.title(
-        fig, t[:70], "Shaded: the lookup's 'not needed' band (<= 0.10). Right: the recall's 51.12 label. UNVERIFIED."
+        fig,
+        title_of(run),
+        "Shaded: the lookup's 'not needed' band (<= 0.10). Right: the recall's 51.12 label. UNVERIFIED.",
     )
     fig.tight_layout(rect=(0, 0.12, 1, 0.9))
     fig.savefig(path, dpi=100)
