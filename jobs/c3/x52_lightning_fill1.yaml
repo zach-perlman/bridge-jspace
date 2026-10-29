@@ -1,0 +1,38 @@
+id: x52_lightning_fill1
+title: "Batch 52 C coverage (Lightning fillers, amendment 2's full grid, 1): 49.1 the gain map, 47.14 chained addresses, 47.16 the swap after neutral sentences, on Lightning at the committed L14, each with its existing rule; one job; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl && test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L; its main-test gate chosen after the 60-scene pre-check was seen: hollow)";
+  uv run python scripts/x49_gain.py run --name nem35l_x52_gain --why "Batch 52 C coverage: 49.1 on Lightning; $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x49_gain/nem35l_x52_gain/coverage.txt;
+  uv run python scripts/x47_chain.py run --name nem35l_x52_chain --why "Batch 52 C coverage: 47.14 on Lightning; $NOTE"; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_chain/nem35l_x52_chain/coverage.txt;
+  uv run python scripts/x47_distance.py run --name nem35l_x52_distance --why "Batch 52 C coverage: 47.16 on Lightning; $NOTE"; c=$?; [ $c -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_distance/nem35l_x52_distance/coverage.txt;
+  echo "exit 49.1=$a 47.14=$b 47.16=$c"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0
+question: >-
+  On Lightning: the gain map of the J++ part and the rest (49.1); does a chained hall -> locker address behave as the
+  locker address (47.14); does the address swap survive 5 / 20 / 50 neutral sentences (47.16)?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning; three matrix rows that need no new code (the scripts take Lightning's
+  committed layer and its address from nem35l_x52_probe).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B and Muse (the 27B for 49.1): 49.1 =
+  jobs/c3/x49_1_muse.yaml's decision_rule (results/x49_gain/x49_1-20261028T154510Z); 47.14 = jobs/c3/x47_14_muse.yaml's
+  (results/x47_chain/x47_14-20261028T115841Z); 47.16 = jobs/c3/x47_16_muse.yaml's
+  (results/x47_distance/x47_16-20261028T131501Z). As computed: each script's own computation on Lightning at L14 with
+  its sources (49.1: the conflict run nem35l_x52_conflict's locker-first items, x45b_binding.MAIN_RUN; 47.14 / 47.16:
+  their own scenes, the address from nem35l_x52_probe), the same seeds, gates (a failed gate = not tested) and n. Cells
+  under 30 switches left out (amendment 3). Verdicts (CPU, after the job): each script's verdict with Lightning's run
+  passed (its row under 'no prediction'; coverage.txt in the run folder); multi-model clauses not re-scored (flagged).
+controls:
+- "each test's own matched random controls, unchanged"
+n: "each test's n on Lightning, as on Muse"
+seeds: [0, 888, 2510]
+notes: "Batch 52 C, amendment 2 full grid; first on speedup (frees ~02:45-04:20 Paris). No code change (x49_gain.SOURCES is x45b_binding.MAIN_RUN, which holds Lightning's conflict run; x47_chain / x47_distance take any target with an address basis). Exit codes collected; retry once then skip (Dan 01:10). Wallclock (ledger, Muse ~2x Lightning per row): 49.1 0.05 h, 47.14 0.12 h, 47.16 0.47 h on Muse -> est ~25-40 min with three loads, 0.8 GPU-h; opens before the freeze."
