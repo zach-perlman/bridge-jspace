@@ -30,6 +30,8 @@ ANCHORS = {
     "E7: six lockers, one code per slot (47.2)": "six",
     "7. Ladder (49.2, rungs 1-6)": "t49-2",
     "9. Last-token read / write (51.10)": "t51-10",
+    "10. Attention under the swap (49.7)": "t49-7",
+    "E12: address persistence across depth (D4, CPU)": "t47-8",
     "Dose curves, a part alone (51.1)": "t51-1",
     "Part V: Zach's passages Z1 / Z2 (x50)": "z1",
     "Part V: Zach's passages Z3 (routes on his passages)": "z3",

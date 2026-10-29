@@ -5417,6 +5417,18 @@ ledger_order_split,muse-glimmer-30b,locker before the pick: lookups switched,0.6
 ledger_order_split,muse-glimmer-30b,locker after the pick: lookups switched,0.0926,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
 ledger_order_split,nemotron-3.5-lightning,locker before the pick: lookups switched,0.8588,,,85,results/x0_composition/split-by-order-20261029T005451Z/split.json
 ledger_order_split,nemotron-3.5-lightning,locker after the pick: lookups switched,0.1478,,,115,results/x0_composition/split-by-order-20261029T005451Z/split.json
+ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, pairs that switched",1.301247239112854,1.2373820425073305,1.3697777633606387,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, pairs that did not",0.19633686542510986,0.1538539160983891,0.24728672422750878,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,qwen3.5-9b,"best head L27:h1, last token: attention moved, a random vector (switched pairs)",0.0037796860560774803,0.00019191665519942828,0.007716789434633783,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,qwen3.6-27b,"best head L51:h20, last token: attention moved, pairs that switched",1.4124658107757568,1.3339189413894177,1.5071469202962897,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,qwen3.6-27b,"best head L51:h20, last token: attention moved, pairs that did not",0.18281982839107513,0.13509031010045816,0.23661021440818208,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,qwen3.6-27b,"best head L51:h20, last token: attention moved, a random vector (switched pairs)",-0.009768224321305752,-0.01819159398853138,-0.00017007656948354158,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,muse-glimmer-30b,"best head L39:h1, last token: attention moved, pairs that switched",1.7102693319320679,1.670280998712874,1.7484889011211224,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,muse-glimmer-30b,"best head L39:h1, last token: attention moved, pairs that did not",0.4087122976779938,0.33449638046883257,0.4729220904299965,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,muse-glimmer-30b,"best head L39:h1, last token: attention moved, a random vector (switched pairs)",0.014704094268381596,0.007381278657143928,0.021490605403221036,,results/x49_attn/x49_7-20261028T154511Z/verdict.json
+ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, pairs that switched",1.7785323858261108,1.7462258315425228,1.8121964629863436,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
+ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, pairs that did not",0.31194812059402466,0.23301540097165296,0.3936180711003679,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
+ledger_attention,nemotron-3.5-lightning,"best head L33:h7, last token: attention moved, a random vector (switched pairs)",-0.0009302759426645935,-0.005221614201605577,0.003060512713047193,,results/x49_attn/x52_attn-20261029T013321Z/verdict.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

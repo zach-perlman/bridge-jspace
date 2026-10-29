@@ -3471,7 +3471,8 @@ BATCH47 = {
     "fig09b_six_lockers": ("story_b47a", "build_six", "x47_six/x47_2-*", None),
     "fig09c_formation": ("story_b47b", "build_47_6", "x47_edges/x47_6-*",
                          "Blocking the pick sentence from the lockers removes most switches, not only position"),
-    "fig06c_address_depth": ("story_b47c", "build_depth", "x47_depth_cpu/persistence-*",
+    # pinned: the 27B's D4 run (persistence-20261029T013614Z, one model) is newer and would drop the 9B and Muse panels
+    "fig06c_address_depth": ("story_b47c", "build_depth", "x47_depth_cpu/persistence-20261028T115530Z",
                              "The address is re-encoded early in depth and settles in later layers"),
     "fig09d_chain": ("story_b47c", "build_chain", "x47_chain/x47_14-*", None),
     "fig10b_enrichment": ("story_b48", "build_enrichment", "x48_enrich/x48_2-*",

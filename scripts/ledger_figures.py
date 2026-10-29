@@ -805,9 +805,52 @@ def order_split(plt) -> str:
     return save(fig, "ledger_order_split")
 
 
+# ---- attention under the swap (49.7) --------------------------------------------------------------------------------
+
+ATTN = (R / "x49_attn" / "x49_7-20261028T154511Z" / "verdict.json",
+        R / "x49_attn" / "x52_attn-20261029T013321Z" / "verdict.json")  # fmt: skip
+
+
+def attention(plt) -> str:
+    """Per model, the best head (chosen on the fit half) at the last token: the attention moved to the swapped-in
+    locker on read pairs where the lookup switched, on pairs where it did not, and under a random vector of the swap's
+    size on the switched pairs; the rule's bars (0.30 switched, 0.10 non-switched) as lines."""
+    res = {r["target"]: (r, path) for path in ATTN for r in load(path)["results"]}
+    models = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+    arms = (("swap_switched", "pairs that switched", LOOKUP, 1.0), ("swap_nonswitched", "pairs that did not", LOOKUP, 0.35),
+            ("random_switched", "a random vector (switched pairs)", NULL, 1.0))  # fmt: skip
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 3.8))
+    fig.subplots_adjust(left=0.1, right=0.74, top=0.74, bottom=0.17)
+    S.title(fig, "Heads move with the swap even where the lookup did not switch",
+            "Best head per model at the last token: attention moved to the swapped-in locker")  # fmt: skip
+    ticks = []
+    for i, t in enumerate(models):
+        r, path = res[t]
+        bh = r["best_head"]
+        h = next(x for x in r["sites"]["last"]["heads"] if (x["layer"], x["head"]) == (bh["layer"], bh["head"]))
+        name = f"L{bh['layer']}:h{bh['head']}"
+        ticks.append(f"{SHORT[t]}\n{name}")
+        for j, (key, lab, col, alpha) in enumerate(arms):
+            v = h["stats"][key]
+            x = i + (j - 1) * 0.27
+            ax.bar(x, v[0], width=0.25, color=col, alpha=alpha, edgecolor=col)
+            ax.plot([x, x], [v[1], v[2]], color="#222222", lw=1.2)
+            S.record("ledger_attention", t, f"best head {name}, last token: attention moved, {lab}", *v,
+                     source=rel(path))  # fmt: skip
+    ax.axhline(0.30, color="#555555", lw=0.9, ls="--")
+    ax.axhline(0.10, color="#555555", lw=0.9, ls=":")
+    ax.set_xticks(range(len(models)), ticks)
+    ax.set_ylim(-0.05, 2.0)
+    ax.set_ylabel("attention moved")
+    ax.text(1.03, 0.62, "dark: pairs that switched\nlight: pairs that did not\ngrey: a random vector\n\n"
+            "dashed: 0.30, the bar on\nswitched pairs\ndotted: 0.10, the bar on\npairs that did not",
+            transform=ax.transAxes, fontsize=S.LABEL_PT, color=S.COL["muted"], va="center")  # fmt: skip
+    return save(fig, "ledger_attention")
+
+
 FIGURES = (answer_control, address_shape, learned, heads, full_carrier, last_token_address, zach_named, zach_routes,
            clean_reruns, lightning_layers, answer_map, routes, six_lockers, atoms, read_window, described, address_swap,
-           order_split)  # fmt: skip
+           order_split, attention)  # fmt: skip
 
 
 def build_all(plt) -> list[str]:
