@@ -1141,7 +1141,7 @@ def figure(models: list[dict], path: Path) -> None:
     SS.title(
         fig,
         title_of(run),
-        "Title: Dan 11:10's rule. Shaded: <= 0.10. Right: the recall's 51.12 label. UNVERIFIED.",
+        "Title: Dan 11:10's rule (? = can't tell). Shaded: <= 0.10. Right: the recall's 51.12 label. UNVERIFIED.",
     )
     fig.tight_layout(rect=(0, 0.12 / nrows, 1, 1 - 0.1 / nrows))
     fig.savefig(path, dpi=100)
