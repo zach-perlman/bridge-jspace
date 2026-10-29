@@ -43,7 +43,9 @@ Rule (Dan's text; at 2x, point estimates; EPS 1e-9 at the bars): "a shared ident
 Beside, not in the rule: 1x; the per-slot split; every arm's classes (X / Y / original / other); the collateral (the
   lookup's and the recall's clean answers kept); ||Δ|| and ||U^T Δ|| (U: the pointer directions, x47_atoms.pointer_basis:
   E6c's unit of a real pointer change); the slot vectors' norms and cosines (raw and centered), the norm of each
-  slot-specific part ||c~_k|| (Dan 12:10), and the slot differences against the pointer means (x0_massmean.pointer_means).
+  slot-specific part ||c~_k|| (Dan 12:10), and the slot differences against the pointer means (x0_massmean.pointer_means);
+  each centered slot vector's cos^2 with the address span(U) against Gaussian vectors of the same dimension (Dan 13:15,
+  answers_1315, CPU; no bar for "high" is fixed, so no label).
 
 No prediction, not sealed: verdict (CPU) to results/x53_bindid/x53_bindid-<UTC>/ (verdict.md, verdict.json, a figure
 with the four model slots, examples.md: 10 random scenes, seed 0). UNVERIFIED.
@@ -116,6 +118,11 @@ VARIANTS = {"uncentered": "code", "centered": "ccode"}
 HEADLINE = "uncentered"
 VARIANT_TEXT = {"uncentered": "pre-specified, uncentered c_k (headline)",
                 "centered": "centered c_k - mean over slots (Dan 12:10, beside)"}  # fmt: skip
+ADDRESS_VERBATIM = (
+    '53.8: headline stays the uncentered arm ("no"). Add, CPU: cos^2 of the centered slot vectors with U (the address). '
+    'If high, the card says "the centered arm re-finds the address; the identity code stays open".'
+)  # Dan 13:15, jobs/c3/batch53.yaml answers_1315; "high" has no number fixed: the verdict gives the cos^2 and the baseline
+ADDR_RAND_N, ADDR_RAND_SEED = 2000, 5315  # the random-vector baseline for cos^2 with span(U)
 CENTERED_VERBATIM = (
     "53.8: keep your construction (uncentered, dose 1x = ||Δ|| at the bridge word, as in 52) as the pre-specified arm, "
     "rule unchanged. Add, now, before any run: a centered arm (X's vector minus the mean over slots), same doses, same "
@@ -499,10 +506,30 @@ def collateral(rows: list[dict], cases: list[dict], n_boot: int = X.N_BOOT) -> d
     return out
 
 
-def geometry(codes: np.ndarray, mu: dict[int, np.ndarray] | None) -> dict[str, Any]:
+def cos2_in(q: np.ndarray, v: np.ndarray) -> np.ndarray:
+    """cos^2 between each row of v and its projection on span(q) = ||q^T v||^2 / ||v||^2; q [d, r] orthonormal."""
+    v = np.atleast_2d(np.asarray(v, dtype=np.float64))
+    return ((v @ q) ** 2).sum(1) / (v**2).sum(1)
+
+
+def address_cos2(cc: np.ndarray, U: np.ndarray, n: int = ADDR_RAND_N, seed: int = ADDR_RAND_SEED) -> dict[str, Any]:
+    """Dan 13:15 (answers_1315): each centered slot vector's cos^2 with span(U) (U: the pointer directions, the address),
+    and the same for n seeded Gaussian vectors of the same dimension (the baseline; its expectation is rank(U) / d)."""
+    q, _ = np.linalg.qr(np.asarray(U, dtype=np.float64))  # U is orthonormal already (x0_massmean.mass_mean); re-done
+    rng = np.random.default_rng(seed)
+    rand = np.concatenate([cos2_in(q, rng.standard_normal((min(500, n - s), q.shape[0]))) for s in range(0, n, 500)])
+    return {"cos2_centered": [round(float(v), 4) for v in cos2_in(q, cc)],
+            "random": {"n": n, "seed": seed, "mean": round(float(rand.mean()), 5),
+                       "p99": round(float(np.percentile(rand, 99)), 5), "max": round(float(rand.max()), 5),
+                       "expected": round(q.shape[1] / q.shape[0], 5)},
+            "rank_U": int(q.shape[1]), "d": int(q.shape[0])}  # fmt: skip
+
+
+def geometry(codes: np.ndarray, mu: dict[int, np.ndarray] | None, U: np.ndarray | None = None) -> dict[str, Any]:
     """The slot vectors' norms and pairwise cosines, raw and centered (Dan 12:10); each slot-specific part's norm
     ||c_k - mean over slots|| and its share of ||c_k||; per slot pair the cosine of the difference with the pointer
-    means' (the same for raw and centered: centering moves every slot by the same vector)."""
+    means' (the same for raw and centered: centering moves every slot by the same vector); with U, each centered slot
+    vector's cos^2 with the address span(U) against random vectors (Dan 13:15)."""
     cos = lambda a, b: float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-30))  # noqa: E731
     pairs = [(j, k) for j in SLOTS for k in SLOTS if j < k]
     cc = centered(codes)
@@ -519,6 +546,8 @@ def geometry(codes: np.ndarray, mu: dict[int, np.ndarray] | None) -> dict[str, A
     if mu is not None:
         out["cos_diff_vs_pointer_means"] = {f"{j}-{k}": round(cos(codes[k] - codes[j], mu[k] - mu[j]), 4)
                                             for j, k in pairs}  # fmt: skip
+    if U is not None:
+        out["address"] = address_cos2(cc, U)
     return out
 
 
@@ -553,10 +582,10 @@ def run_numbers(run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
            for k in ("norm_delta", "norm_U_delta", "cos_delta_codes_b_minus_a") if norms and norms[0].get(k) is not None}  # fmt: skip
     codes = np.load(src / "codes.npz")
     info = json.loads((src / "run_info.json").read_text())
-    _, mu, _ = pointer_refs(base["target"])
+    U, mu, _ = pointer_refs(base["target"])
     return {**base, "status": "tested", "label": lab, "text": LABELS[lab], "headline": HEADLINE, "variants": variants,
             "collateral": collateral(rows, cases, n_boot), "norms_median": med,
-            "geometry": {**geometry(codes["codes"], mu), "n_mean": int(codes["n"]),
+            "geometry": {**geometry(codes["codes"], mu, U), "n_mean": int(codes["n"]),
                          "mention_state_norm": [round(float(v), 3) for v in codes["norm_h"]],
                          "embedding_norm": [round(float(v), 3) for v in codes["norm_e"]]},
             "mean_pool_used": info["mean_pool_used"], "pointer_refs": info["pointer_refs"]}  # fmt: skip
@@ -646,6 +675,29 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
+def address_lines(tested: list[dict]) -> list[str]:
+    """Dan 13:15: the centered slot vectors' cos^2 with the address span(U), per model and slot, beside random vectors
+    of the same dimension; no bar for "high" is fixed, so no label is computed."""
+    lines = ["", f"The centered slot vectors in the address (Dan 13:15, jobs/c3/batch53.yaml answers_1315, CPU, verbatim: "
+             f"\"{ADDRESS_VERBATIM}\"): cos^2 = ||P_U c~_k||^2 / ||c~_k||^2, U = the routes test's pointer directions "
+             "at L (x47_atoms.pointer_basis: the span of the probe run's per-slot pointer-mean differences, x0_probe "
+             f"v4); baseline: {ADDR_RAND_N} Gaussian vectors of the same dimension (seed {ADDR_RAND_SEED}). Dan fixed no "
+             "number for \"high\": the card's wording is the human's call.", "",
+             "| model | probe run (U) | rank U / d | slot | cos^2 (centered c~_k, U) | random: mean (99th pct; max) | "
+             "cos^2 / random mean |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mdl in tested:
+        a = mdl["geometry"].get("address")
+        if a is None:
+            lines.append(f"| {short(mdl['target'])} | {mdl['pointer_refs']} | - | - | not available | - | - |")
+            continue
+        r = a["random"]
+        for k in SLOTS:
+            v = a["cos2_centered"][k]
+            lines.append(f"| {short(mdl['target'])} | {mdl['pointer_refs']} | {a['rank_U']} / {a['d']} | {k} | {v:.4f} | "
+                         f"{r['mean']:.5f} ({r['p99']:.5f}; {r['max']:.5f}) | {v / r['mean']:.0f}x |")  # fmt: skip
+    return lines
+
+
 def rule_table(models: list[dict], var: str) -> list[str]:
     """The rule's numbers at RULE_DOSE for one construction, one row per model slot (grey statuses kept)."""
     lines = [f"| model | layer | n (scene, X) | X's share at {RULE_DOSE}x | Y's version | random | X - random | X - Y | "
@@ -696,6 +748,7 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
             lines.append(f"- {short(mdl['target'])}: cosines between slot vectors {g['cos']}; between their "
                          f"slot-specific parts {g['cos_centered']}; slot differences vs the pointer means' "
                          f"{g.get('cos_diff_vs_pointer_means', 'not available')}.")  # fmt: skip
+        lines += address_lines(tested)
         lines += ["", "Every dose: the lookup's answer under each arm kind, by role (X's locker / Y's / A's own = "
                   "original / other); shares with cluster-bootstrap CIs over the bridge item:", "",
                   "| model | construction | dose | arm | X | Y | original | other |",
@@ -736,6 +789,7 @@ def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT) -> Path:
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     (out / "verdict.json").write_text(json.dumps({"runs": runs, "question": NO_PREDICTION, "rule_verbatim": RULE_VERBATIM,
                                                   "rule": RULE, "centered_verbatim": CENTERED_VERBATIM,
+                                                  "address_verbatim": ADDRESS_VERBATIM,
                                                   "headline": HEADLINE, "design": DESIGN, "models": models},
                                                  indent=1) + "\n")  # fmt: skip
     figure(models, out / f"{EXP}.png")

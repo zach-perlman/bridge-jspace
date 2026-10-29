@@ -29,6 +29,7 @@ def test_rule_and_the_centered_arm_are_dans_text_verbatim():
     norm = lambda s: re.sub(r"\s+", " ", s).strip()  # noqa: E731
     assert norm(B.RULE_VERBATIM) in norm(spec["critic_1125"])
     assert norm(B.CENTERED_VERBATIM) in norm(spec["decisions_1210b"])
+    assert norm(B.ADDRESS_VERBATIM) in norm(spec["answers_1315"])
     assert B.HEADLINE == "uncentered" and B.VARIANTS == {"uncentered": "code", "centered": "ccode"}
 
 
@@ -77,6 +78,29 @@ def test_centered_codes_are_the_slot_specific_parts_on_planted_data():
     gm = B.geometry(codes.numpy(), mu)
     want = cos((codes[2] - codes[0]).double(), torch.tensor(mu[2] - mu[0], dtype=torch.float64))
     assert gm["cos_diff_vs_pointer_means"]["0-2"] == pytest.approx(want, abs=1e-4)
+
+
+def test_centered_slot_vectors_cos2_with_the_address_on_planted_data():
+    """Dan 13:15: each centered slot vector's cos^2 with span(U) and the random baseline (expectation rank / d)."""
+    d, rng = 64, np.random.default_rng(3)
+    q, _ = np.linalg.qr(rng.standard_normal((d, 6)))
+    U, w = q[:, :2], q[:, 2:]  # the address and directions outside it
+    frac = np.array([0.9, 0.5, 0.1])  # each slot-specific part's planted share of energy in span(U)
+    inside, outside = (U @ rng.standard_normal((2, 3))).T, (w @ rng.standard_normal((4, 3))).T
+    unit = lambda x: x / np.linalg.norm(x, axis=1, keepdims=True)  # noqa: E731
+    slot = unit(inside) * np.sqrt(frac)[:, None] + unit(outside) * np.sqrt(1 - frac)[:, None]
+    want = B.cos2_in(U, slot)
+    assert want == pytest.approx(frac, abs=1e-9)  # the planted shares come back from the helper
+    codes = 40.0 * rng.standard_normal(d)[None] + slot  # a shared component: centering removes it
+    cc = B.centered(codes)
+    a = B.geometry(codes, None, U * 3.0)["address"]  # U rescaled: the QR inside restores an orthonormal basis
+    assert a["cos2_centered"] == pytest.approx(B.cos2_in(U, cc), abs=1e-4)
+    assert a["rank_U"] == 2 and a["d"] == d and a["random"]["expected"] == pytest.approx(2 / d, abs=1e-5)
+    assert a["random"]["mean"] == pytest.approx(2 / d, rel=0.15) and a["random"]["p99"] < 0.25
+    assert B.geometry(codes, None, U)["address"] == B.geometry(codes, None, U)["address"]  # seeded: the same twice
+    assert "address" not in B.geometry(codes, None)
+    lines = B.address_lines([{"target": "qwen3.5-9b", "pointer_refs": "probe", "geometry": {"address": a}}])
+    assert lines[-3].startswith("| 9B | probe | 2 / 64 | 0 |") and len(lines) == 5 + 3
 
 
 @pytest.mark.parametrize("slot_a", [0, 1, 2])
