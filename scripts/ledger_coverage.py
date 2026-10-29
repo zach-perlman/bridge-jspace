@@ -138,13 +138,18 @@ HEATMAP = (
 
 # Dan 11:30 (q122b_1130): the 122B (FP8; MoE, ~10B active) as a fifth heatmap column where a verdict exists (the README
 # agent's mapping, 29 Oct); "not run" elsewhere. ° = its routes gate lowered to 0.75 after the data (0.797 < 0.80)
-HEATMAP_122B = {"lightning-conflict": "H confirmed", "x0b": "B mixed", "x5": "H holds", "probe": "D readable",
+HEATMAP_122B = {"lightning-conflict": "H confirmed", ("t51-12", "Item or answer, main test"): "H answer not read",
+                "x0b": "B mixed", "x5": "H holds",
+                "probe": "D readable",
                 "routes": "G below gate°", "swap": "G below gate°", "order": "D by order"}  # fmt: skip
 
 
-def heatmap_122b(anchor: str) -> tuple[str, str]:
-    """The 122B's (code, words) for a heatmap row."""
-    cell = HEATMAP_122B.get(anchor, "N not run")
+def heatmap_122b(anchor: str, label: str) -> tuple[str, str]:
+    """The 122B's (code, words) for a heatmap row: keyed by (anchor, row label) where a card has several rows, else by
+    the anchor (a card with one row)."""
+    if (anchor, label) not in HEATMAP_122B and anchor in HEATMAP_122B:
+        assert sum(row[1] == anchor for row in HEATMAP) == 1, f"{anchor} has several rows: key it by (anchor, label)"
+    cell = HEATMAP_122B.get((anchor, label)) or HEATMAP_122B.get(anchor, "N not run")
     assert cell[0] in VERDICT_CODES, cell
     return cell[0], cell[2:]
 

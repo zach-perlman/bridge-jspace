@@ -25,6 +25,7 @@ SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "
 
 ANSWER = R / "x51_answer" / "x51_12-20261028T201842Z" / "verdict.json"
 ANSWER_LIGHTNING = R / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.json"
+ANSWER_122B = R / "x51_answer" / "x52_answer-20261029T112359Z" / "verdict.json"  # the 122B's E1 (coverage, Dan 11:30)
 ADDR = R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json"
 DAS = R / "x51_das" / "verdict-20261028T194630Z" / "verdict.json"
 HEADS = R / "x51_heads" / "x51_2-20261028T190358Z" / "verdict.json"
@@ -142,7 +143,8 @@ def answer_control(plt) -> str:
     arms = (("1", "without the lens part"), ("2", "lens part out, answer kept"), ("3", "answer directions only"))
     sources = [(ANSWER, m) for m in load(ANSWER)["models"] if m["set"] == "e1"]
     sources += [(ANSWER_LIGHTNING, m) for m in load(ANSWER_LIGHTNING)["models"] if m["set"] == "e1"]
-    order = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+    sources += [(ANSWER_122B, m) for m in load(ANSWER_122B)["models"] if m["set"] == "e1" and m["target"] == B122]
+    order = FIVE
     sources.sort(key=lambda s: order.index(s[1]["target"]))
     blocks = []
     for path, m in sources:
@@ -1284,12 +1286,12 @@ def coverage_map(plt) -> str:
     ax.axis("off")
     for (part, anchor, label, cells), yy in zip(rows, ys, strict=True):
         ax.text(-0.06, yy + 0.5, label, ha="right", va="center", fontsize=S.FONT - 1, color="#222222")
-        for j, (code, words) in enumerate([*cells, LC.heatmap_122b(anchor)]):
+        for j, (code, words) in enumerate([*cells, LC.heatmap_122b(anchor, label)]):
             hatch = "////" if code == "G" else None
             ax.add_patch(plt.Rectangle((j + 0.03, yy + 0.06), 0.94, 0.88, facecolor=VERDICT_FILL[code],
                                        edgecolor="#c8c8c8" if code in "GNX" else "none", lw=0.6, hatch=hatch))  # fmt: skip
             muted = code in "GNX"
-            ax.text(j + 0.5, yy + 0.5, words, ha="center", va="center", fontsize=S.FONT - 1.5,
+            ax.text(j + 0.5, yy + 0.5, words, ha="center", va="center", fontsize=S.FONT - (2.5 if len(words) > 13 else 1.5),
                     color=S.COL["muted"] if muted else "#1a1a1a",
                     bbox={"boxstyle": "square,pad=0.05", "fc": "white", "ec": "none"} if code == "G" else None)  # fmt: skip
     # Parts in the left gutter: a bracket and the Part's name, rotated
