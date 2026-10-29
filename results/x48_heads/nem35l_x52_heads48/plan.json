@@ -1,0 +1,37 @@
+{
+  "main_run": "nem35l_x52_conflict",
+  "layer": 14,
+  "items_at_L": 200,
+  "locker vs asked pick": {
+    "org after, alt after": 79,
+    "org after, alt before": 36,
+    "org before, alt before": 59,
+    "org before, alt after": 26
+  },
+  "items": 59,
+  "entities": 30,
+  "max_read_len": 79,
+  "target": "nemotron-3.5-lightning",
+  "candidate_layers": [
+    19,
+    26,
+    33,
+    42
+  ],
+  "config_full_attention": [
+    19,
+    26,
+    33,
+    42
+  ],
+  "layer_types": {
+    "linear_attention": 23,
+    "moe": 23,
+    "full_attention": 6
+  },
+  "sliding_window": null,
+  "n_heads": 32,
+  "n_kv": 2,
+  "head_dim": 128,
+  "candidate_heads": 128
+}

@@ -1,0 +1,84 @@
+{
+  "exp": "x47_cumulative",
+  "run": "nem35l_x52_cumulative",
+  "why": "Batch 52 C coverage: 47.4 on Lightning, the main design only (the clean design fails the gate); no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14; hollow gate)",
+  "written_utc": "2026-10-29T02:33:47Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a2feb63db58cf95ea9199bf5b06afe4013a9eae8",
+    "dirty": true
+  },
+  "test": "47.4",
+  "spec": "jobs/c3/batch47.yaml (47.4)",
+  "question": "Q47.4 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde"
+  },
+  "sources": {
+    "main": "nem35l_x52_conflict"
+  },
+  "layer": 14,
+  "n_layers": 52,
+  "arms": {
+    "none": "O unedited",
+    "a": "(a) h_S - h_O added at the bridge token at L (X0's whole arm)",
+    "b": "(b) the bridge token swapped at every layer <= L (block outputs 0..L, and its input embedding)",
+    "c": "(c) the bridge token swapped at every layer (block outputs 0..n_layers - 1, and its input embedding)",
+    "d": "(d) every token of the asked pick sentence swapped at every layer (and the bridge's input embedding)",
+    "b_blocks": "(b) on O's own tokens: block outputs 0..L only, no embedding swap (descriptive)",
+    "S": "S read on S (unedited)"
+  },
+  "prompts": {
+    "org": "O",
+    "swap": "O with S's token at the bridge (its input embedding swapped)",
+    "alt": "S"
+  },
+  "states": "set (SetRows), from one unedited forward of S (every layer) and O (layer L) on the lookup's prompts",
+  "items_rule": "each source run's scenes at L (chat), the items its unedited run made eligible; O and S the same length, changed only at the bridge (clean) or the bridge and one other pick token (main); the asked pick sentence at the same positions with the same ids but the bridge's; the readers' prompts equal through the last patched token; else dropped and counted (plan.json)",
+  "groups": "x45m.group_of: locker-first (both locker sentences before the asked pick), locker-after, mixed",
+  "terms": {
+    "before_L": "read before L at the bridge token, (a)->(b)",
+    "propagation": "(b)->(c), should be ~0",
+    "pick_other": "carried by the pick sentence's other tokens, (c)->(d)",
+    "outside": "carried outside the pick sentence, (d)->100%"
+  },
+  "bug_check": {
+    "read": 0.02,
+    "state": 0.05
+  },
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "per design (main, clean), the source run's scene order",
+    "reads": "per item and reader: the arms in ARMS order, one batch (BJ_SUITE_BATCH)",
+    "batch": 16
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.4 answer",
+  "designs": [
+    "main"
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "exp": "x48_enrich",
+  "run": "nem35l_x52_enrich_a",
+  "why": "Batch 52 C coverage: 48.2 A on Lightning; no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14; hollow gate)",
+  "design": "A",
+  "test": "48.2",
+  "written_utc": "2026-10-29T02:36:14Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a2feb63db58cf95ea9199bf5b06afe4013a9eae8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "spec": "jobs/c3/batch48.yaml (48.2)",
+  "question": "Q48.2 (predictions/2026-10-28_dan.md)",
+  "main_run": "nem35l_x52_conflict",
+  "layer": 14,
+  "n_layers": 52,
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde"
+  },
+  "items_rule": "the main-test X0 run's chat items at L (every scene with a whole-arm read), rebuilt with X.build_cases (alt = cf) and checked against the run's ids",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.2 answer",
+  "probe_layers": [
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    51
+  ],
+  "positions": {
+    "bridge": "the asked person's bridge token",
+    "last": "the recall's read position (the appended space token)"
+  },
+  "arms": {
+    "none": "O unedited",
+    "alt": "S unedited (the changed prompt)",
+    "whole": "the whole change h_S - h_O at the bridge token at L",
+    "no_jpp": "the change minus its J++ part (signed OMP, k = 25) at the bridge token at L",
+    "no_rand": "the change minus a random part of the J++ part's share at the bridge token at L"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at the J++ part's share of ||Δ||^2",
+  "states": "the recall reader's prompt (+ space) under each arm, at the probe layers, bridge and last token, fp16",
+  "training": "every chat scene of the set, O unedited: the same states, labels = the bridge item's number (animals: legs); one probe per domain; the rule's domain is animals (the others have one entity per class: descriptive)",
+  "rule_domain": "animals",
+  "probe": {
+    "kind": "one-hot ridge on standardized states (x0_probe.ridge), penalty by entity-held-out CV",
+    "folds": 5,
+    "split_seed": 0,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "fraction": "(m(arm) - m(O)) / (m(S) - m(O)) clipped to [0, 1], m = score(changed class) - score(original class) from the probe trained without the original's and the changed item's entity folds; items with a non-positive unedited gap are not read",
+  "branch": "bridge if the animals probe's held-out accuracy reaches 2x chance at some probed layer, else last",
+  "rule": "J++ keys the enrichment if, at every probed layer >= L + 4 where the legs probe (animals, entities held out) reads the attribute (held-out accuracy >= 2x chance), the probe moves >= 0.6 of the way under whole and under no_rand and <= 0.3 under no_jpp (the paired CI of no_rand - no_jpp excluding 0), on both models; if the probe reads the attribute at no layer at the bridge token, the same at the last token",
+  "seeds_more": {
+    "random_subspace": "888 + layer",
+    "split": 0
+  }
+}

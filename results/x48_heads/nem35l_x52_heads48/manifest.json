@@ -1,0 +1,77 @@
+{
+  "exp": "x48_heads",
+  "run": "nem35l_x52_heads48",
+  "why": "Batch 52 C coverage: 48.4 on Lightning (attention blocks after L: 19, 26, 33, 42); no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L14; hollow gate)",
+  "written_utc": "2026-10-29T02:35:34Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_PREDICTED_LAYER": "14",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "a2feb63db58cf95ea9199bf5b06afe4013a9eae8",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "test": "48.4",
+  "spec": "jobs/c3/batch48.yaml (48.4)",
+  "question": "Q48.4 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/nem35l_x52_conflict/manifest.json": "69e2efb204316c66e69f3d21d5701475e86eafb18c44fb0eb9d5fccd1dcbfdd9",
+    "results/x0_necessity/nem35l_x52_conflict/cases.jsonl": "b03173850fa4d24a318012a9079d1a3b631cec95daace37d39c0c4a14314265e",
+    "results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl": "25f5e3f55b21790d043c3c5aa497b3135a41a8e7282725f3f99d55816563cbde",
+    "results/x0_probe/nem35l_x52_probe/states.npz": "93c57d03b804d5017706fcfc6176dd613bd8c446e886e6621bd92c05efecc7de"
+  },
+  "main_run": "nem35l_x52_conflict",
+  "layer": 14,
+  "states_run": "nem35l_x52_probe",
+  "k": 25,
+  "omp": "signed",
+  "parts": {
+    "jpp": "the J++ part of Delta (signed OMP, k = 25, J++ lens atoms at L, letter tokens)",
+    "rest": "Delta minus its J++ part",
+    "address": "U U^T Delta, U = x0_massmean's Alf (4 pointer directions on the x0_probe_v4 states; not refit)",
+    "random": "a random part of J++'s share (X0's random subspace, seed 888 + layer)"
+  },
+  "items_rule": "the main run's chat scenes read at L, kept where both the org and the alt item's locker sentence come before the asked pick (x0_strata); unedited",
+  "delta": "h_alt - h_org at the bridge word at L, X0's two forwards (no read suffix)",
+  "attention": "one forward of the reader's org prompt with X0's read suffix appended; per candidate layer the softmax attention from the last token to the bridge token, per query head, recomputed from the layer's inputs (capture_last_attention); the lookup's selects the heads, the recall's is beside",
+  "candidate_layers_rule": "layers > L whose token mixer is softmax attention over the whole prompt: the 9B's full_attention layers; on Muse every layer (sliding window 2048 > every prompt, asserted; its config's full_attention = NoPE layers, reported)",
+  "head_selection": "the 5 (layer, head) with the largest mean lookup mass over items; ties: the lower layer, then the lower head",
+  "w_ov": {
+    "ov": "W_O[:, h*hd:(h+1)*hd] @ W_V[g*hd:(g+1)*hd, :], g = h // (n_heads / n_kv); the rule's",
+    "ov_gain": "ov @ diag(1 + input_layernorm.weight): the block's input RMSNorm gain folded in (beside)",
+    "excluded": "the q/k norms (not on the value path), the sigmoid output gate (query-token dependent), the per-token 1/rms of the input norm (a scalar, cancels in r)"
+  },
+  "r": "||W_OV x|| / ||x|| per item and part; stored for every candidate head (r_all.npz) and per item for the five (r_items.jsonl)",
+  "rule": "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold",
+  "decisive_variant": "ov",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.4 answer"
+}

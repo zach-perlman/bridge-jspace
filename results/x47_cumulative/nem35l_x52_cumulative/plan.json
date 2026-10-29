@@ -1,0 +1,27 @@
+{
+  "main": {
+    "design": "main",
+    "source": "nem35l_x52_conflict",
+    "alt": "cf",
+    "layer": 14,
+    "items_at_L": 200,
+    "dropped": {},
+    "items": 200,
+    "entities": 37,
+    "groups": {
+      "locker-after": 79,
+      "mixed": 62,
+      "locker-first": 59
+    },
+    "upstream": {
+      "False": 111,
+      "True": 89
+    },
+    "locker-first, prefix-identical": 16,
+    "pick_tokens": {
+      "5": 77,
+      "4": 115,
+      "6": 8
+    }
+  }
+}
