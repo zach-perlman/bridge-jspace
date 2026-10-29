@@ -246,6 +246,59 @@ def test_monitor_verdict_applies_53_2s_rule(tmp_path, monkeypatch):
     assert "tool" not in blob["results"]["qwen3.6-27b"] and (out / "x53_7_monitor_code.png").exists()
 
 
+def test_monitor_verdict_shows_the_arms_beside(tmp_path, monkeypatch):
+    monkeypatch.setattr(M, "RESULTS", tmp_path / "results")
+    monkeypatch.setattr(M, "CACHE", tmp_path / "cache")
+    run = tmp_path / "results" / "mon_9b"
+    run.mkdir(parents=True)
+    gates = {"code": {"cases": 272, "org_read_accuracy": {"PP": 0.9, "PM": 0.85}, "pass": True, "status": "passed",
+                      "set": "d1_topics_v3"}}  # fmt: skip
+    (run / "manifest.json").write_text(json.dumps({"model": {"target": "qwen3.5-9b"},
+                                                   "x53_7": {"formats": ["code"], "gates": gates}}))  # fmt: skip
+    monitor_cache(
+        tmp_path / "cache", "mon_9b", "code", {"full": 0.9, ("B", "a", "jpp25"): 0.85, ("B", "a", "rand25"): 0.3}
+    )
+    keys, right, n, layers = [], [], 20, (0, 2, 4)
+    for p in M.PROBE_POS:
+        for t in M.TARGETS:
+            for k in M.KS:
+                keys.append(f"{p}|{t}|fix{k}")
+                v = 0.4 if (p, t) == ("B", "a") else 0.5  # the fixed subspace reads less than the per-state part
+                right.append(np.stack([np.stack([(np.arange(n) < round(v * n)).astype(np.float32), np.ones(n, np.float32)])
+                                       for _ in layers]))  # fmt: skip
+    np.savez(M.cache_file("mon_9b", "code", "fixed"), layers=np.array(layers), keys=np.array(keys),
+             right=np.stack(right), entity=np.array([f"e{i % 7}" for i in range(n)]),
+             scene=np.array([f"s{i // 2}" for i in range(n)]), seconds=np.zeros(len(layers)))  # fmt: skip
+    out = F.stage_monitor_verdict(["mon_9b"], n_boot=50)
+    rules = json.loads((out / "x53_7_monitor.json").read_text())["results"]["qwen3.5-9b"]["code"]["rules"]
+    assert rules["B|a"]["k25"]["label"] == "J-space carries X"  # the decisive arm
+    assert rules["B|a"]["fixed_k25"]["label"] != rules["B|a"]["k25"]["label"]  # beside, from the fixed pass
+    md = (out / "verdict.md").read_text()
+    assert "beside: fixed k25 / k100" in md and f"| {rules['B|a']['fixed_k25']['label']} / " in md
+
+
+def test_monitor_atom_ids_are_the_monitors(tmp_path):
+    run = tmp_path / "x53_7_monitor_x"
+    run.mkdir()
+    rng = np.random.default_rng(0)
+    items = [{"scene": f"s{i}", "labels": {v: {"bridge": f"e{(i + j) % 6}", "slot": (i + j) % 3, "lookup": str(i % 4),
+                                              "recall": str(i % 5)} for j, v in enumerate(M.VARIANTS)}}
+             for i in range(30)]  # fmt: skip
+    write_jsonl(run / "cases_code.jsonl", items)
+    atoms = rng.integers(0, 400, size=(2, 30, 2, 3, M.K_MAX)).astype(np.int32)
+    np.save(run / "states_code_atoms.npy", atoms)
+    m = {"x53_7": {}, "layers": [0, 2], "sets_done": {"code": {}}, "finished_utc": "x"}
+    (run / "manifest.json").write_text(json.dumps(m))
+    got = F.monitor_atom_ids(run)
+    rows = M.row_table(items)
+    assert got == {"code": {str(la): M.needed_atom_ids(atoms[li], rows) for li, la in enumerate((0, 2))}}
+    (run / "manifest.json").write_text(json.dumps({**m, "sets_done": {}}))
+    assert F.monitor_atom_ids(run) == {}  # every format failed its gate: no atoms
+    (run / "manifest.json").write_text(json.dumps({**m, "finished_utc": None}))
+    with pytest.raises(AssertionError, match="has not finished"):
+        F.monitor_atom_ids(run)
+
+
 def test_gate_of_is_x0s_gate():
     rows = [{"scene": f"s{i}", "reader": w, "read_right": i < (8 if w == X.LOOKUP else 7)} for i in range(10)
             for w in X.READERS]  # fmt: skip

@@ -444,6 +444,80 @@ def stage_monitor_run(name: str, formats: tuple[str, ...] = FORMATS) -> Path:
     return out
 
 
+def monitor_atom_ids(run_dir: Path) -> dict:
+    """CPU: per recorded dataset and layer of a 53.7 monitor run, every J++ atom (token id) some training fold's fixed
+    J++ subspace uses (x53_monitor.needed_atom_ids over its row_table, as its atom-ids stage); {} if no dataset passed
+    its gate (no states were recorded)."""
+    from scripts import x53_monitor as M
+
+    m = json.loads((run_dir / "manifest.json").read_text())
+    assert "x53_7" in m, f"{run_dir.name}: not a 53.7 monitor run"
+    assert m.get("finished_utc"), f"{run_dir.name}: the forward run has not finished (no finished_utc)"
+    out = {}
+    for s in m["sets_done"]:
+        rows = M.row_table(X.read_jsonl(run_dir / f"cases_{s}.jsonl"))
+        atoms = np.load(run_dir / f"states_{s}_atoms.npy", mmap_mode="r")
+        out[s] = {str(la): M.needed_atom_ids(np.asarray(atoms[li]), rows) for li, la in enumerate(m["layers"])}
+    return out
+
+
+def stage_monitor_atoms(source: str) -> Path:
+    """GPU (53.2's fixed J++ arm, critic_1125, beside 53.7's monitor verdicts): the atom ids (monitor_atom_ids,
+    computed here from the forward run in this checkout) and their unit J++ lens vectors (lens.vectors, as
+    x0_necessity.dictionary and x53_monitor's atoms stage) into results/x53_monitor/<source>_atoms/:
+    fixed_atom_ids.json and fixed_atoms_<set>.npz (ids_L<l> int64, vec_L<l> fp16; the layout x53_monitor's fixed pass
+    reads)."""
+    import torch
+
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+    from bridge_jspace.run_switches import switches
+    from bridge_jspace.utils import git_state
+    from scripts import x53_monitor as M
+
+    run_dir = M.RESULTS / source
+    assert (run_dir / "manifest.json").exists(), f"{run_dir}: the monitor run is not in this checkout (depends_on)"
+    sm = json.loads((run_dir / "manifest.json").read_text())
+    assert sm["model"]["target"] == pins.TARGET, f"{source} is a {sm['model']['target']} run, not {pins.TARGET}'s"
+    name = M.atoms_run(source)
+    pins.check_run_name(name)
+    need = monitor_atom_ids(run_dir)
+    out = M.RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": M.EXP, "run": name, "stage": "atoms", "source": source, "test": sm["x53_7"]["test"],
+         "prediction": NO_PREDICTION, "spec": "jobs/c3/batch53.yaml (53.2 critic_1125 arms beside 53.7's monitor)",
+         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "model": pins.model_pin(),
+         "switches": switches(), "code": git_state(), "lens": X.lens_record(), "sets": list(need),
+         "what": "unit J++ lens vectors of the fixed J++ subspaces' atoms (lens.vectors, as x0_necessity.dictionary); "
+                 "the ids computed here from the forward run (x53_7.monitor_atom_ids = x53_monitor.needed_atom_ids)"}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    (out / "fixed_atom_ids.json").write_text(json.dumps({"run": source, "sets": need}) + "\n")
+    if not need:
+        print(f"{source}: no dataset passed its gate; no atoms needed", flush=True)
+    else:
+        model = load_model()
+        lens = JLens(model, "jpp")
+        letters = set(model.letter_token_ids().tolist())
+        with torch.no_grad():
+            for s, per_layer in need.items():
+                blob = {}
+                for la, ids in per_layer.items():
+                    assert set(ids) <= letters, f"{s} L{la}: an atom that is not a letter token"
+                    vec = lens.vectors(int(la), torch.tensor(ids, device=model.device))
+                    blob[f"ids_L{la}"] = np.array(ids, dtype=np.int64)
+                    blob[f"vec_L{la}"] = vec.cpu().numpy().astype(np.float16)
+                np.savez(out / f"fixed_atoms_{s}.npz", **blob)
+                print(
+                    f"{s}: {len(per_layer)} layers, {sum(len(v) for v in per_layer.values())} atom vectors", flush=True
+                )
+                lens._J_gpu.clear()
+                torch.cuda.empty_cache()
+    m["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
+    print("wrote", out, flush=True)
+    return out
+
+
 # ---- CPU: verdicts ----------------------------------------------------------------------------------------------------
 
 
@@ -748,18 +822,23 @@ def stage_monitor_verdict(names: list[str], n_boot: int = X.N_BOOT, states_root:
         lines.append(f"| {M.NAMES.get(s['model'], s['model'])} | {s['format']} | {s['gate']['set']} "
                      f"({s['gate']['cases']} scenes) | {acc.get(X.LOOKUP, float('nan')):.3f} / "
                      f"{acc.get(X.RECALL, float('nan')):.3f} | {s['status']} |")  # fmt: skip
-    lines += ["", "## Labels (53.2's rule per position, target and k)", "",
-              "| model | format | position | target | k = 25 | k = 100 | full max | J++25 max (gap max) | J++100 max (gap max) |",
-              "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    lines += ["", "## Labels (53.2's rule per position, target and k; the arms beside where their passes ran)", "",
+              "The decisive label is the per-state J++ part against a random subspace of the same k. Beside it (53.2, "
+              "critic_1125): the same rule with the fixed J++ subspace (fixed) and with the energy-matched random "
+              "subspace (erand); '-' where that pass has not run.", "",
+              "| model | format | position | target | k = 25 | k = 100 | full max | J++25 max (gap max) | J++100 max (gap max) "
+              "| beside: fixed k25 / k100 | beside: erand k25 / k100 |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in M.MODELS:
         for fmt, r in results.get(t, {}).items():
             for p in M.PROBE_POS:
                 for tg in M.TARGETS:
                     ru = r["rules"][f"{p}|{tg}"]
+                    side = [" / ".join(ru[f"{tag}k{k}"]["label"] if f"{tag}k{k}" in ru else "-" for k in M.KS)
+                            for tag in ("fixed_", "erand_")]  # fmt: skip
                     lines.append(f"| {M.NAMES[t]} | {fmt} (n {r['n_rows']} rows, {r['n_entities']} entities) | {p} | "
                                  f"{M.TARGET_TEXT[tg]} | {ru['k25']['label']} | {ru['k100']['label']} | "
                                  f"{ru['k25']['full_max']:.2f} | {ru['k25']['jpp_max']:.2f} ({ru['k25']['gap_max']:+.2f}) | "
-                                 f"{ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) |")  # fmt: skip
+                                 f"{ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) | {side[0]} | {side[1]} |")  # fmt: skip
     lines += report_lines("x53_monitor (53.7 monitor)", status, "per target and position the J++ probe against the "
                           "random subspace of the same k, and the full residual's best layer (53.2's rule)",
                           "x53_7_monitor.json: results[<model>][<format>]['acc'] and ['rules']; the probes in "
@@ -1014,7 +1093,8 @@ def monitor_numbers_figure(results: dict, s: str, path: Path) -> None:
 
     from scripts import x53_monitor as M
 
-    col = {"full": "#111111", "jpp": "#6a4bd6", "rand": "#9a9a9a", "pca": "#009e73", "chance": "#cccccc"}
+    col = {"full": "#111111", "jpp": "#6a4bd6", "rand": "#9a9a9a", "pca": "#009e73", "chance": "#cccccc",
+           "fix": "#c27c0e", "erand": "#d1495b"}  # fmt: skip
     rows = [(t, p) for t in M.MODELS if s in results.get(t, {}) for p in M.PROBE_POS]
     fig, axes = plt.subplots(len(rows), len(M.TARGETS), figsize=(13, 2.3 * len(rows) + 1.2), sharey=True, squeeze=False)
     for i, (t, p) in enumerate(rows):
@@ -1024,7 +1104,7 @@ def monitor_numbers_figure(results: dict, s: str, path: Path) -> None:
             ax.plot(res["layers"], feats["chance"]["acc"], ":", color=col["chance"])
             ax.plot(res["layers"], feats["full"]["acc"], "-", color=col["full"], lw=1.8)
             for k, ls in zip(M.KS, ("-", "--"), strict=True):
-                for fam in ("rand", "pca", "jpp"):
+                for fam in ("rand", "pca", "erand", "fix", "jpp"):  # fix / erand: 53.2's arms beside, if they ran
                     if f"{fam}{k}" in feats:
                         ax.plot(res["layers"], feats[f"{fam}{k}"]["acc"], ls, color=col[fam], lw=1.4)
             ax.set_title(M.TARGET_SHORT[tg], fontsize=8.5)
@@ -1032,7 +1112,8 @@ def monitor_numbers_figure(results: dict, s: str, path: Path) -> None:
             if j == 0:
                 ax.set_ylabel(f"{M.NAMES[t]}\n{'bridge word' if p == 'B' else 'last token'}", fontsize=9)
     fig.suptitle(f"{CP_TEST}: probe accuracy by layer (numbers only, no label; full black, J++ purple, random grey, PCA "
-                 "green; k = 25 solid, 100 dashed; UNVERIFIED)", fontsize=9)  # fmt: skip
+                 "green, beside where run: fixed J++ amber, energy-matched random red; k = 25 solid, 100 dashed; "
+                 "UNVERIFIED)", fontsize=9)  # fmt: skip
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(path, dpi=110, facecolor="white")
     plt.close(fig)
@@ -1079,17 +1160,20 @@ def stage_cp_monitor_report(names: list[str], n_boot: int = X.N_BOOT) -> Path:
         lines.append(f"| {M.NAMES.get(s['model'], s['model'])} | {s['gate']['org_read_accuracy']} "
                      f"{s['gate'].get('per_domain', '')} | {s['status']} |")  # fmt: skip
     lines += ["", "## Best layer per cell (accuracy [95% CI]; no label)", "",
-              "| model | position | target | full (layer) | J++25 | random25 | J++100 | random100 | PCA25 | chance |",
-              "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+              "| model | position | target | full (layer) | J++25 | random25 | J++100 | random100 | PCA25 | chance | "
+              "fixed J++25 / 100 (beside) | energy-matched random25 / 100 (beside) |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t, per in results.items():
         r = per[CP_FORMAT]
         for p in M.PROBE_POS:
             for tg in M.TARGETS:
                 f = r["acc"][f"{p}|{tg}"]
                 li = int(np.argmax(f["full"]["acc"]))
-                best = lambda key, f=f: M.fmt_acc(f[key], int(np.argmax(f[key]["acc"])))  # noqa: E731
+                best = lambda key, f=f: M.fmt_acc(f[key], int(np.argmax(f[key]["acc"]))) if key in f else "-"  # noqa: E731
+                side = [" / ".join(best(f"{fam}{k}") for k in M.KS) for fam in ("fix", "erand")]
                 lines.append(f"| {M.NAMES[t]} | {p} | {M.TARGET_SHORT[tg]} | {M.fmt_acc(f['full'], li)} (L{r['layers'][li]}) | "
-                             + " | ".join(best(k) for k in ("jpp25", "rand25", "jpp100", "rand100", "pca25", "chance")) + " |")  # fmt: skip
+                             + " | ".join(best(k) for k in ("jpp25", "rand25", "jpp100", "rand100", "pca25", "chance"))
+                             + f" | {side[0]} | {side[1]} |")  # fmt: skip
     lines += ["", "Each column's best layer (full: the layer named). (d) at the last token is read on the lookup's prompt "
               "(CH2 has no recall prompt).", ""]  # fmt: skip
     lines += report_lines("x53_monitor (code_pointer_v1 CH2, descriptive)", status, "numbers only: per target and "
@@ -1146,9 +1230,13 @@ def main() -> None:
     p = sub.add_parser("cp-run", help="GPU: CH2's gate and probe states, then its monitor states (descriptive)")
     p.add_argument("--probe-name", required=True)
     p.add_argument("--monitor-name", required=True)
+    p = sub.add_parser("monitor-atoms", help="GPU: the fixed J++ arm's atom vectors for a 53.7 monitor run")
+    p.add_argument("--source", required=True, help="the 53.7 monitor run (writes results/x53_monitor/<source>_atoms/)")
     a = ap.parse_args()
     if a.cmd == "plan":
         stage_plan()
+    elif a.cmd == "monitor-atoms":
+        stage_monitor_atoms(a.source)
     elif a.cmd == "cp-plan":
         from scripts import x45m
 
