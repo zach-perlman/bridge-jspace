@@ -71,6 +71,10 @@ QUESTION = "Q45.13"
 RUN_45M = {"qwen3.5-9b": "qwen35_9b_x45m_fresh", "qwen3.6-27b": "x45m_fresh_27b",
            "muse-glimmer-30b": "muse30b_x45m_fresh"}  # fmt: skip
 RUNS = {"qwen3.5-9b": "qwen35_9b_x45p", "qwen3.6-27b": "x45p_27b", "muse-glimmer-30b": "muse30b_x45p"}
+# the 122B's coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 6): its 45m run, kept out of RUN_45M so
+# 45p's own verdict (three models) is unchanged; verdict --coverage reads such runs alone
+COVERAGE_45M = {"qwen3.5-122b-a10b": "qwen35_122b_x45m_fresh"}
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 RENDERING = "chat"
 ARMS = ("none", "whole", "a1", "a2", "a3", "a4", "o2")
 ARM_TEXT = {
@@ -296,7 +300,7 @@ def stage_plan() -> dict:
 
     tok = x45m.tokenizer()
     layer = X.PREDICTED[pins.TARGET]
-    items, counts = select(tok, RUN_45M[pins.TARGET], layer)
+    items, counts = select(tok, {**RUN_45M, **COVERAGE_45M}[pins.TARGET], layer)
     counts["target"] = pins.TARGET
     if items:
         it = items[example_indices(len(items), 1)[0]]
@@ -360,7 +364,7 @@ def stage_run(name: str, why: str, below: bool = False) -> Path:
     assert chat.FORMAT == "chat", "45p renders 45m's chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
     assert below or target in RUN_45M, f"45p runs on {sorted(RUN_45M)}, not {target}"
-    run_45m, layer = (B.fresh_of(target, True) if below else RUN_45M[target]), X.PREDICTED[target]
+    run_45m, layer = (B.fresh_of(target, True) if below else {**RUN_45M, **COVERAGE_45M}[target]), X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / run_45m
@@ -605,21 +609,21 @@ def example_lines(run: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) 
     return lines
 
 
-def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, below: bool = False) -> Path:
+def stage_verdict(runs: list[str], n_boot: int = X.N_BOOT, below: bool = False, coverage: bool = False) -> Path:
     """45p's verdict (sealed until Q45.13), or with below (batch 52, Dan's morning queue item 1) the below-gate runs
     alone: the rule per model, no batch count, no seal, written to x52_45p_below-<UTC>/."""
-    answer = B.BELOW_GATE if below else dan_answer()
+    answer = B.BELOW_GATE if below else NO_PREDICTION if coverage else dan_answer()
     assert answer, f"sealed: {PREDICTIONS} has no committed answer to {QUESTION} (its 'Dan:' line is empty at HEAD)"
     models = [model_result(r, n_boot) for r in runs]
     targets = [m["target"] for m in models]
     assert len(set(targets)) == len(targets), f"one run per model: {targets}"
-    known = set(B.FRESH_BELOW) if below else set(RUN_45M)
+    known = set(B.FRESH_BELOW) if below else set(COVERAGE_45M) if coverage else set(RUN_45M)
     assert set(targets) <= known, f"45p runs on {sorted(known)}, not {sorted(set(targets) - known)}"
-    if not below:
+    if not below and not coverage:
         models += [{"run": f"({RUNS[t]})", "target": t, "status": "pending", "holds": False, "why": "no run given"}
                    for t in RUN_45M if t not in targets]  # fmt: skip
     v = batch_verdict(models)
-    stem = "x52_45p_below" if below else "x45p"
+    stem = "x52_45p_below" if below else "x53_45p_coverage" if coverage else "x45p"
     out = RESULTS / f"{stem}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     lines = ["# 45p: does the recall read the item's earlier mention when its locker came first?", "",
@@ -702,14 +706,17 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--below-gate", action="store_true",
                     help="run / verdict: batch 52, Lightning's clean design below its gate (exploratory)")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"verdict: coverage runs (COVERAGE_45M's models) alone, '{NO_PREDICTION}'")  # fmt: skip
     a = ap.parse_args()
+    assert not (a.coverage and a.below_gate), "--coverage and --below-gate are separate verdicts"
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why, a.below_gate)
     else:
-        stage_verdict(a.runs, a.n_boot, a.below_gate)
+        stage_verdict(a.runs, a.n_boot, a.below_gate, a.coverage)
 
 
 if __name__ == "__main__":

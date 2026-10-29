@@ -1,0 +1,37 @@
+id: x45p_122b
+title: "122B coverage (Dan 18:20, coverage_122b_1820 item 6): 45p on Qwen3.5-122B-A10B (FP8) at L33: does the recall read the new item's earlier mention when its locker came first? x45m_122b's locker-first scenes (166); no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x0_necessity/qwen35_122b_x45m_fresh/outcomes.jsonl &&
+  uv run python scripts/x45p.py run --name qwen35_122b_x45p --why "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 6): 45p on x45m_122b's scenes whose new item's locker sentence comes before the asked pick, at L33; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x45p.py verdict --coverage --runs qwen35_122b_x45p
+question: >-
+  On the 122B, when the new item's locker sentence came before the asked pick: once the bridge-word change has lost its
+  J++ part, does also taking the J++ part out of the new item's token in its locker sentence cost the recall more than
+  a random part of the same share, and more than the same at another locker item's token?
+why_it_matters: >-
+  Dan 18:20 item 6: claim 3 ("the recall also reads the item's earlier mention") is "not run" on the 122B (fig11).
+hypotheses:
+  none: "No prediction (coverage_122b_1820): coverage run on an already-scored rule."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45p), verbatim from jobs/c3/x45p_27b.yaml: "The recall reads the earlier
+  mention" if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least 2 of 3
+  models; the lookup reported beside it. Read on the 122B alone ("on at least 2 of 3 models" not applicable). As
+  computed: x45p_27b's text unchanged (the base edit at the bridge word: the whole change minus its J++ part, signed
+  OMP k = 25; arm (2) the new item's token(s) in its locker sentence minus its own J++ part; (3) minus a random part
+  of the same share, seed 888 + layer; (4) the same as (2) at another locker sentence's item token), on
+  qwen35_122b_x45m_fresh's scenes whose new item's locker sentence comes before the asked pick (166 scenes, 38 bridge
+  items, plan on the 122B tokenizer), at L33. 45m's gate passed (0.80, never lowered). Verdict in the job (verdict
+  --coverage, x53_45p_coverage-<UTC>/).
+controls:
+- "(3) a random part of the same share at the new item's token"
+- "(4) the same removal at another locker item's token"
+- "the lookup on the identical edits (reported beside)"
+n: "166 locker-first clean one-pick scenes (38 bridge items), 2 readers"
+seeds: [888, 0]
+notes: "Coverage, not hand-checked (Dan 18:20); UNVERIFIED; README untouched. Caveats: J++ fit on bf16 used on FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. Code: x45p.COVERAGE_45M (the 122B's 45m run, kept out of RUN_45M) and verdict --coverage. Cost: 166 scenes x 2 readers x 7 arms + the load: ~20 min wall on 2 GPUs."
