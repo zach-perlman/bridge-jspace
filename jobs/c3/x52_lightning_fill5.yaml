@@ -1,0 +1,35 @@
+id: x52_lightning_fill5
+title: "Batch 52 C coverage (Lightning fillers, amendment 2's full grid, 5): x45d the address refit per text format (x7_pcf varied fit, then x0b_v2 with the refit basis) and 47.13 the lookup's errors (on Lightning's varied run), at the committed L14, each with its existing rule; one job; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.7
+depends_on: [x52_lightning_varied]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L)";
+  uv run python scripts/x7_pcf.py varied --name nem35l_x52_x45d_fit && uv run python scripts/x0b_generalize.py run --name nem35l_x52_x45d --set x0b_v2 --no-curve --pcf-from x7_pcf/nem35l_x52_x45d_fit --why "Batch 52 C coverage: x45d on Lightning; $NOTE"; a=$?; [ $a -eq 0 ] && printf '%s\n' "$NOTE" > results/x0b_generalize/nem35l_x52_x45d/coverage.txt;
+  test -f results/x0b_generalize/nem35l_x52_x0b/states.npz && uv run python scripts/x47_errors.py gpu --name nem35l_x52_errors; b=$?; [ $b -eq 0 ] && printf '%s\n' "$NOTE" > results/x47_errors/nem35l_x52_errors/coverage.txt;
+  echo "exit x45d=$a 47.13=$b"; test $a -eq 0 -a $b -eq 0
+question: >-
+  On Lightning: refit per text format, does the address carry the position route in prose / JSON / tables (x45d); are
+  the lookup's errors address errors (47.13)?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning (Part VI's 'the address must be refit per text format'; 'the lookup's errors
+  are not address errors').
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage runs on already-scored rules."
+decision_rule: >-
+  Each test's rule unchanged, as fixed in advance and first scored on the 9B, 27B and Muse: x45d = jobs/c3/x45d_muse.yaml's
+  decision_rule (batch 45, 45d; its pcf-verdict); 47.13 = jobs/c3/x47_13_muse.yaml's (results/x47_errors/x47_13-20261028T113107Z).
+  As computed: each script's own computation on Lightning at L14 (x45d: the per-format bases fit by x7_pcf varied on one
+  half, x0b_v2's held-out half; 47.13: Lightning's varied run nem35l_x52_x0b's scenes, reads and states, and the probe
+  run nem35l_x52_probe). Cells under 30 switches left out. Verdicts (CPU, after the job): x0b_generalize pcf-verdict and
+  x47_errors' count / verdict with Lightning's run passed (coverage.txt); multi-model clauses not re-scored (flagged).
+controls:
+- "each test's own matched random controls (random parts of the same share), unchanged"
+n: "each test's n on Lightning, as on Muse"
+seeds: [0, 888]
+notes: "Batch 52 C, amendment 2 full grid; box another, behind x52_lightning_varied (47.13 reads that run's folder in the box's checkout; depends_on; checked before 47.13 runs). Code: x47_errors.SOURCES / NAMED gain Lightning (lookups; verdict list unchanged); x7_pcf and x0b_generalize take Lightning as they are (address from x6_routes.STATES; x0b's LAYERS (14,)). Exit codes collected; retry once then skip. Wallclock (ledger, Muse ~2x Lightning per row): x45d_muse 0.65 h, x47_13_muse ~0.1 h -> est ~30-45 min, 0.7 GPU-h; opens before the freeze."

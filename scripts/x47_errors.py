@@ -65,12 +65,18 @@ SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch47.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q47.13"
 # the scenes with a stored read and a stored bridge-word state for every scene (x0b_generalize's run per model)
-SOURCES = {"qwen3.5-9b": "qwen35_9b_x0b_v2", "qwen3.6-27b": "x0b_v2_27b", "muse-glimmer-30b": "muse30b_x0b_v2"}
+SOURCES = {
+    "qwen3.5-9b": "qwen35_9b_x0b_v2",
+    "qwen3.6-27b": "x0b_v2_27b",
+    "muse-glimmer-30b": "muse30b_x0b_v2",
+    "nemotron-3.5-lightning": "nem35l_x52_x0b",
+}  # fmt: skip (Lightning: batch 52 C coverage)
 # the source Dan named: states for every scene, no read (x0_probe records states only); `gpu` reads the lookup there
 NAMED = {
     "qwen3.5-9b": "qwen35_9b_x0_probe_v4",
     "qwen3.6-27b": "x0_probe_v4_27b",
     "muse-glimmer-30b": "muse30b_x0_probe_v4",
+    "nemotron-3.5-lightning": "nem35l_x52_probe",  # batch 52 C coverage
 }
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_errors", "qwen3.6-27b": "x47_errors_27b", "muse-glimmer-30b": "muse30_x47_errors"}
 MATCH_BAR, LENS_BAR, N_MIN = 0.5, 0.8, 30
