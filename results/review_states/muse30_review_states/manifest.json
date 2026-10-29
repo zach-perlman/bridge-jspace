@@ -1,0 +1,46 @@
+{
+ "exp": "review_states",
+ "run": "muse30_review_states",
+ "spec": "jobs/c3/batch53.yaml (inspector_1145, item 1)",
+ "written_utc": "2026-10-29T12:31:18Z",
+ "model": {
+  "target": "muse-glimmer-30b",
+  "repo": "meta-models/Muse-Glimmer-30B",
+  "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat"
+ },
+ "switches": {
+  "target": "muse-glimmer-30b",
+  "BJ_DEVICE_MAP": "",
+  "BJ_SUITE_BATCH": null,
+  "BJ_TARGET": "muse-glimmer-30b",
+  "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+ },
+ "code": {
+  "sha": "4e209c5b0b4e5d9b012d3e2dd1753bc7d8bd1a57",
+  "dirty": true
+ },
+ "lens": {
+  "name": "jpp",
+  "source": [
+   "local",
+   "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+   "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  ],
+  "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+ },
+ "layer": 26,
+ "k": 25,
+ "views_file": {
+  "path": "docs/review_views.yaml",
+  "sha256": "f3691ff05903d8da12fe2676b379d47a66b613b852cd42effcedaba4235fe995"
+ },
+ "cache": "cache/review_states/muse-glimmer-30b",
+ "seeds": {
+  "sample": 29,
+  "random_subspace": "888 + layer (X0's; CPU QR at L, GPU QR elsewhere)"
+ },
+ "verdict": "none (inputs for the review dashboard's J-space panel)"
+}

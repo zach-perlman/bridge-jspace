@@ -1,0 +1,43 @@
+{
+  "exp": "x53_monitor",
+  "run": "x53_7_cp_monitor_27b_atoms",
+  "stage": "atoms",
+  "source": "x53_7_cp_monitor_27b",
+  "test": "53.7 add-on: code_pointer_v1's CH2 chains (Dan 11:25, critic_1125; descriptive)",
+  "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+  "spec": "jobs/c3/batch53.yaml (53.2 critic_1125 arms beside 53.7's monitor)",
+  "written_utc": "2026-10-29T12:29:18Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "4e209c5b0b4e5d9b012d3e2dd1753bc7d8bd1a57",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "sets": [
+    "cp_ch2"
+  ],
+  "what": "unit J++ lens vectors of the fixed J++ subspaces' atoms (lens.vectors, as x0_necessity.dictionary); the ids computed here from the forward run (x53_7.monitor_atom_ids = x53_monitor.needed_atom_ids)",
+  "finished_utc": "2026-10-29T12:29:38Z"
+}

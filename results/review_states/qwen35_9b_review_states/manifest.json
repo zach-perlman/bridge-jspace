@@ -1,0 +1,46 @@
+{
+ "exp": "review_states",
+ "run": "qwen35_9b_review_states",
+ "spec": "jobs/c3/batch53.yaml (inspector_1145, item 1)",
+ "written_utc": "2026-10-29T12:27:05Z",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat"
+ },
+ "switches": {
+  "target": "qwen3.5-9b",
+  "BJ_DEVICE_MAP": "",
+  "BJ_SUITE_BATCH": null,
+  "BJ_TARGET": "qwen3.5-9b",
+  "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+ },
+ "code": {
+  "sha": "4e209c5b0b4e5d9b012d3e2dd1753bc7d8bd1a57",
+  "dirty": true
+ },
+ "lens": {
+  "name": "jpp",
+  "source": [
+   "neuronpedia/jacobian-lens",
+   "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+   "e166deb5ad540932100ef803c8c9bcc2a5453694"
+  ],
+  "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+ },
+ "layer": 12,
+ "k": 25,
+ "views_file": {
+  "path": "docs/review_views.yaml",
+  "sha256": "f3691ff05903d8da12fe2676b379d47a66b613b852cd42effcedaba4235fe995"
+ },
+ "cache": "cache/review_states/qwen3.5-9b",
+ "seeds": {
+  "sample": 29,
+  "random_subspace": "888 + layer (X0's; CPU QR at L, GPU QR elsewhere)"
+ },
+ "verdict": "none (inputs for the review dashboard's J-space panel)"
+}

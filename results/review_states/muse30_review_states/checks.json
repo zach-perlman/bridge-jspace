@@ -1,0 +1,36 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "load_s": 46.4,
+ "head": {
+  "norm_class": "MuseGlimmerRMSNorm",
+  "norm_kind": "weight_fp32_pow",
+  "lm_head_dtype": "torch.bfloat16",
+  "vocab": 202048,
+  "d": 6656
+ },
+ "max_abs_state": 510.0,
+ "stored_dtype": "float16",
+ "omp_atoms_vs_fit_max_abs_diff_at_L": 0.0,
+ "arms": {
+  "rows": 42,
+  "mismatches": [
+   "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0037|PM no_rand: stored {'top': None, 'role': 'A', 'switched': 0, 'route': None}, now top 36 b None",
+   "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0274|PP no_rand: stored {'top': None, 'role': 'A', 'switched': 0, 'route': None}, now top 35 b None",
+   "muse-glimmer-30b|muse30b_x6_routes|C2-0596|PM|C2 no_rand: stored {'top': 36, 'role': 'A', 'switched': 0, 'route': None}, now top 34 other None"
+  ]
+ },
+ "rank_share_vs_stored": {
+  "main_swap": {
+   "n": 200,
+   "max_abs_gap": 4.959630966180906e-06
+  },
+  "routes": {
+   "n": 900,
+   "max_abs_gap": 4.9987649917704324e-06
+  }
+ },
+ "sample_items": 13,
+ "change_rows": 218,
+ "seconds": 294.4
+}
