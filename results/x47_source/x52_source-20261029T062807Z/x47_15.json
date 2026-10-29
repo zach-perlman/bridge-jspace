@@ -1,0 +1,22 @@
+{
+ "runs": [
+  "nem35l_x52_source"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule; rules first scored in results/x47_source/x47_15-20261028T142722Z; the batch count covers the given runs only, not re-scored",
+ "batch": {
+  "label": "neither",
+  "counts": {
+   "follows the source": 0,
+   "follows the question": 0
+  },
+  "pending": 1
+ },
+ "models": [
+  {
+   "run": "nem35l_x52_source",
+   "target": "nemotron-3.5-lightning",
+   "status": "pending",
+   "why": "the run has no manifest or outcomes here"
+  }
+ ]
+}

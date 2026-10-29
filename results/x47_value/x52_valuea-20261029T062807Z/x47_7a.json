@@ -1,0 +1,29 @@
+{
+ "part": "a",
+ "runs": [
+  "nem35l_x52_value_a"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule; rules first scored in results/x47_value/x47_7a-20261028T131819Z; the 2-of-3 labels cover the given runs only, not re-scored",
+ "verdict": {
+  "label": "neither label on 2 of 3 models",
+  "counts": {
+   "prefetch": 0,
+   "jspace": 0,
+   "address": 0
+  },
+  "tested": [],
+  "not_tested": [
+   "nem35l_x52_value_a"
+  ],
+  "models": 1
+ },
+ "models": [
+  {
+   "run": "nem35l_x52_value_a",
+   "target": "nemotron-3.5-lightning",
+   "status": "pending",
+   "why": "the run has no manifest or outcomes here",
+   "rule": {}
+  }
+ ]
+}

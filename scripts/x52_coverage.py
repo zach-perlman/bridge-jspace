@@ -41,6 +41,9 @@ LT_GATE = ("Lightning's gate: the main test's gate on all 516 scenes (lookup 0.9
 # reasons (the cell's status word is printed before them)
 CLEAN = "the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)"
 CLEAN_SRC = "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+# specs written overnight but deliberately not enqueued (held for Dan): without this the cell would read "queued"
+HELD = {"x47_16_muse_r2": "Dan cancelled x47_16_muse on 28 Oct (batch 49 amendment 1: low value, the 9B already "
+                          "answers it); re-opening it under amendment 2 waits for Dan"}  # fmt: skip
 NO_KO = "the edge knock-out (knockout.py) is not ported to NemotronH's Mamba-2 blocks"
 NO_DAS = ("DAS trains through the model's backward, unverified through NemotronH's Mamba-2 kernels; its recall half "
           "needs the clean design (gate fails)")  # fmt: skip
@@ -97,6 +100,21 @@ def landed(run_dir: Path) -> bool:
     return any(p.is_dir() or p.name not in SETUP_FILES for p in run_dir.iterdir())
 
 
+def gate_failed(g: dict) -> bool:
+    """A gate.json that did not pass: its own 'pass' is false, or (per placement / condition, nested, as 47.15's and
+    47.7's) no nested gate passed while at least one was read."""
+    if "pass" in g:
+        return g["pass"] is False
+    passes, todo = [], [v for v in g.values() if isinstance(v, dict)]
+    while todo:
+        d = todo.pop()
+        if "pass" in d:
+            passes.append(bool(d["pass"]))
+        else:
+            todo += [v for v in d.values() if isinstance(v, dict)]
+    return bool(passes) and not any(passes)
+
+
 def track(specs: str | tuple[str, ...] | None, run: str | None, verdict: str | None, note: str = "",
           mention: str | None = None, done_as: str = "done", gate_fail: bool = False) -> dict:  # fmt: skip
     """A coverage cell. `run`: '<exp>/<run folder glob>' under results/; `verdict`: '<exp>/<folder glob>' ('{run}' is the
@@ -109,9 +127,11 @@ def track(specs: str | tuple[str, ...] | None, run: str | None, verdict: str | N
     run_dir = runs[-1] if runs else None
     if gate_fail and run_dir is not None and not (run_dir / "outcomes.jsonl").exists():
         g = json.loads((run_dir / "gate.json").read_text()) if (run_dir / "gate.json").exists() else {}
-        if g.get("pass") is False:
-            return c("not tested", f"its gate failed ({g.get('org_read_accuracy')}, eligible {g.get('eligible')}); no "
-                     "lowered rerun (the spec's rule)" + (f"; {note}" if note else ""), rel(run_dir / "gate.json"))  # fmt: skip
+        if gate_failed(g):
+            why = (f"({g.get('org_read_accuracy')}, eligible {g.get('eligible')})" if "pass" in g
+                   else "(no placement / condition passed; see gate.json)")  # fmt: skip
+            return c("not tested", f"its gate failed {why}; no lowered rerun (the spec's rule)"
+                     + (f"; {note}" if note else ""), rel(run_dir / "gate.json"))  # fmt: skip
     if verdict:
         pat = verdict.replace("{run}", run_dir.name if run_dir is not None else "<none>")
         key = mention or (run_dir.name if run_dir is not None else None)
@@ -141,6 +161,10 @@ def track(specs: str | tuple[str, ...] | None, run: str | None, verdict: str | N
         if e and e.get("status") == "done":
             return c("running", f"{s} done on {e.get('host')} ({e['ledger']}); results not pulled here yet"
                      + (f"; {note}" if note else ""), *spec_paths)  # fmt: skip
+    held = [s for s in specs if s in HELD]
+    if held:
+        return c("missing", f"{', '.join(held)} written, not enqueued: {HELD[held[-1]]}" + (f"; {note}" if note else ""),
+                 *spec_paths)  # fmt: skip
     if spec_paths:
         return c("queued", f"{', '.join(specs)} (queued or running; no ledger entry here yet)" + (f"; {note}" if note else ""),
                  *spec_paths)  # fmt: skip
@@ -383,7 +407,7 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x47_edges/x47_6-20261028T113107Z"), "muse-glimmer-30b": done("results/x47_edges/x47_6-20261028T113107Z")}),
         ("Failed: the second hop's key token (47.15 source)", "jobs/c3/batch47.yaml 47.15", {
             "qwen3.6-27b": done("results/x47_source/x47_15-20261028T142722Z"),
-            LT: track("x52_lightning_fill3", "x47_source/nem35l_x52_source", "x47_source/x52_source-*"),
+            LT: track("x52_lightning_fill3", "x47_source/nem35l_x52_source", "x47_source/x52_source-*", gate_fail=True),
             "qwen3.5-9b": done("results/x47_source/x47_15-20261028T142722Z"),
             "muse-glimmer-30b": done("results/x47_source/x47_15-20261028T142722Z")}),
         ("Failed: the address is the same for any kind of item (47.11 agnostic)", "jobs/c3/batch47.yaml 47.11", {
@@ -397,7 +421,8 @@ def rows() -> list[tuple[str, str, dict]]:
             "qwen3.5-9b": done("results/x47_chain/x47_14-20261028T115841Z"), "muse-glimmer-30b": done("results/x47_chain/x47_14-20261028T115841Z")}),
         ("What is left of the route; the value (47.7)", "jobs/c3/batch47.yaml 47.7", {
             "qwen3.6-27b": done("results/x47_value/x47_7a-20261028T131819Z"),
-            LT: parts(**{"(a)": track("x52_lightning_fill3", "x47_value/nem35l_x52_value_a", "x47_value/x52_valuea-*"),
+            LT: parts(**{"(a)": track("x52_lightning_fill3", "x47_value/nem35l_x52_value_a", "x47_value/x52_valuea-*",
+                                      gate_fail=True),
                          "(c)": track("x52_lightning_value_c", "x47_value/nem35l_x52_value_c", "x47_value/x52_valuec-*")}),
             "qwen3.5-9b": done("results/x47_value/x47_7a-20261028T131819Z"), "muse-glimmer-30b": done("results/x47_value/x47_7a-20261028T131819Z")}),
         ("Gain map (49.1)", "jobs/c3/batch49.yaml 49.1", {
