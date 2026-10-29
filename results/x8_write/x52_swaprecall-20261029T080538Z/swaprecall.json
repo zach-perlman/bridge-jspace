@@ -1,0 +1,203 @@
+{
+ "exp": "x52_cpu_checks/swaprecall",
+ "written_utc": "2026-10-29T08:05:38Z",
+ "code": {
+  "head": "f0bcc519cf2f5bb60c60b150530744a9cc139f1b",
+  "dirty_files": [],
+  "untracked_scripts": [
+   "scripts/x52_cpu_checks.py"
+  ],
+  "code_diff_sha256": null
+ },
+ "classes": [
+  "unchanged",
+  "swapped_in",
+  "third",
+  "digit",
+  "non_answer"
+ ],
+ "models": {
+  "qwen3.5-9b": {
+   "run": "results/x8_write/qwen35_9b_x8_write",
+   "rows_checked": 3000,
+   "cells": {
+    "write|1": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.96,
+      "swapped_in": 0.035,
+      "third": 0.005,
+      "digit": 0.0,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 24,
+      "swapped_in": 0.875,
+      "third": 0.125,
+      "digit": 0.0,
+      "non_answer": 0.0
+     }
+    },
+    "write|2": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.785,
+      "swapped_in": 0.182,
+      "third": 0.02,
+      "digit": 0.013,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 129,
+      "swapped_in": 0.845,
+      "third": 0.093,
+      "digit": 0.062,
+      "non_answer": 0.0
+     }
+    },
+    "write|4": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.573,
+      "swapped_in": 0.342,
+      "third": 0.063,
+      "digit": 0.022,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 256,
+      "swapped_in": 0.801,
+      "third": 0.148,
+      "digit": 0.051,
+      "non_answer": 0.0
+     }
+    },
+    "random|1": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.995,
+      "swapped_in": 0.0,
+      "third": 0.002,
+      "digit": 0.003,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 3,
+      "swapped_in": 0.0,
+      "third": 0.333,
+      "digit": 0.667,
+      "non_answer": 0.0
+     }
+    },
+    "random|4": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.97,
+      "swapped_in": 0.008,
+      "third": 0.013,
+      "digit": 0.008,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 18,
+      "swapped_in": 0.278,
+      "third": 0.444,
+      "digit": 0.278,
+      "non_answer": 0.0
+     }
+    }
+   }
+  },
+  "nemotron-3.5-lightning": {
+   "run": "results/x8_write/nem35l_x52_write",
+   "rows_checked": 3000,
+   "cells": {
+    "write|1": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.98,
+      "swapped_in": 0.015,
+      "third": 0.002,
+      "digit": 0.003,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 12,
+      "swapped_in": 0.75,
+      "third": 0.083,
+      "digit": 0.167,
+      "non_answer": 0.0
+     }
+    },
+    "write|2": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.727,
+      "swapped_in": 0.233,
+      "third": 0.018,
+      "digit": 0.022,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 164,
+      "swapped_in": 0.854,
+      "third": 0.067,
+      "digit": 0.079,
+      "non_answer": 0.0
+     }
+    },
+    "write|4": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.602,
+      "swapped_in": 0.337,
+      "third": 0.04,
+      "digit": 0.022,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 239,
+      "swapped_in": 0.845,
+      "third": 0.1,
+      "digit": 0.054,
+      "non_answer": 0.0
+     }
+    },
+    "random|1": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.998,
+      "swapped_in": 0.0,
+      "third": 0.002,
+      "digit": 0.0,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 1,
+      "swapped_in": 0.0,
+      "third": 1.0,
+      "digit": 0.0,
+      "non_answer": 0.0
+     }
+    },
+    "random|4": {
+     "all": {
+      "n": 600,
+      "unchanged": 0.987,
+      "swapped_in": 0.005,
+      "third": 0.002,
+      "digit": 0.007,
+      "non_answer": 0.0
+     },
+     "of_changed": {
+      "n": 8,
+      "swapped_in": 0.375,
+      "third": 0.125,
+      "digit": 0.5,
+      "non_answer": 0.0
+     }
+    }
+   }
+  }
+ }
+}
