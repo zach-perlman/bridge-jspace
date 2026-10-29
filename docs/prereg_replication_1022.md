@@ -2961,3 +2961,37 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Descriptive: the logit lens; all v4ok prompts unpaired; MM's other (X's passage value on recall prompts); ctx.
 - **Order.** 9B now on GPU1 beside Bolt (it fits in the free memory); smoke of 8 prompts per family first. The 27B (GPU0) and Lightning (GPU1) after Bolt. Queue: scripts/queues/h200_prime_1029.sh.
 - **Question order (Dan's 27B result, question first).** Not tested here. Every v4 prompt puts the passage first; results are scoped to that order.
+
+#### Amendment 59 (Zach, 2026-10-29 ~18:45 UTC; before any run of it): what the J-space shows at the bridge, question order, Muse on v4
+Context: Bolt's v4 run was cancelled (Zach: too slow, same family as Lightning); its cached weights were dropped (Zach's OK). Zach chose notes 26-28; no data-seed replication.
+
+##### Note 26: what the J-space shows at the bridge (9B, 27B, Lightning; Muse after note 28's map)
+One readout job per model (scripts/nn_readout.py; J++ and logit lens; every 2nd layer; sites: the description's last token and the final token).
+- **(a) Top-20 tokens, descriptive.** Over the full vocabulary and over letter tokens only, for v4 MP and MM (gated, ok and fail) and for (b)'s prompts. The token categories and the analysis plan are fixed in an addendum before the dump is read. No verdict.
+- **(b) Priming with no relation asked.** For scenes whose MM is v4ok, the closed-book naming question H1 ("Which person wrote Things Fall Apart?": no passage, no relation) and the recognition question RG (the passage, no relation).
+  - Targets as note 25 (attr = X's remembered attribute, other = X's passage value, third = an answer absent from the scene), candidates = the relation's answers.
+  - Window: note 25's description-end window per model.
+  - rho_H1 = (H1 attr - H1 third) / (MM attr - MM third), paired by scene, from the same run; cluster bootstrap over bridges.
+  - Readings: rho_H1 >= 0.7 "the remembered attribute is there with no relation asked (association)"; <= 0.3 "the asked relation brings it"; mixed between; unclear if the interval holds 0.3 and 0.7. RG reported beside (descriptive).
+- **(c) Priming on cue-conflict descriptions** (jsuite_v4cc). MP and MM, all items, one more target: the description's cue (conflict items only; e.g. "designed the Statue of Liberty": cue American, answer French).
+  - Primary subset: scenes whose named recall (MM hop 2 alone) is right in the model's cc competence run. Secondary: the v4_split-gated subset; all items.
+  - Statistic at the description's end (note 25's window): d = top-1 share of X's remembered attribute minus the cue's, conflict items, MP and MM pooled (each word beside); cluster bootstrap over people.
+  - Readings: "the person" if d >= 10 points with its interval above 0 and remembered >= 2x cue; "the description's words" if cue - remembered >= 10 points with its interval above 0; mixed otherwise. Aligned items' remembered-attribute share reported beside.
+- Scorer: scripts/nn_bridge_read.py.
+
+##### Note 27: question first (9B, 27B, Lightning)
+- **Why.** Every v4 prompt puts the passage first. Dan (29 Oct, his test 53.1, rule set after the 27B's cells) finds the 27B's lookup leans more on the lens part with the question first (+0.11 [0.01, 0.22]); agents usually see the question before the tool output.
+- **Set.** jsuite_v4qf_test_chat and jsuite_v4ctlqf_test_chat: v4's items unchanged except one flag that renders the question and its instruction first, then the passage, in the same user turn (scripts/jsuite_v4qf.py; sha256 recorded).
+- **Runs per model.** Competence (MP MM, cand2, hop 1 by generation). The closed-book H1 gate reuses the v4 controls run (no passage, so order is irrelevant). Note 20's knock-out at the model's band (paper10, paper10_rot, unembed10, paper10_pcasize). Note 25's priming readout (descriptive here: at the description's end the passage is not yet read).
+- **Readings.**
+  1. "The split holds with the question first": MM - MP loss gap >= 10 points, interval above 0 (as note 20).
+  2. Order effect on the lookup: items gated in both orders, per-item paper10 loss question-first minus passage-first, MP; cluster bootstrap over bridges. "The lookup leans more on the J-space with the question first" if >= 10 points with its interval above 0; "no order effect" if the interval lies within +-10; else unclear. MM beside.
+  3. Competence by order reported.
+
+##### Note 28: Muse Glimmer 30B on v4 (meta-models/Muse-Glimmer-30B, our J++, prefix muse30_)
+- **The note 14 battery:** competence, controls (H1 RG RO), the readout map, stage 1 (full_cf / lensrand_cf; sites last, span, final; donor seeds 0 1; windows 0-5 6-11 12-17 18-23 24-29 30-35 36-41 42-47 48-50), stage 2 at stage 1's cells (as h200_v4_1028.sh).
+- **Note 20's knock-out at two bands:** L36-42 (Muse's band since v2) and L26-32 (the 27B's and Lightning's relative depth, ~50-62%); both reported, each read by note 20's rule.
+- **Note 25's priming:** windows by the rule that gives the other models' windows: the min-max of the bands that are stage 1 hits for both MP and MM, at site last (description end) and at site final.
+- **Note 26 on Muse** with those windows.
+- **Note 17's value swap** at site last over Muse's description windows (stage 1 last hits for MP), donor seeds 0 1.
+- Two GPUs, a Muse process on each. Readings: each note's own.
