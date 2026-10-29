@@ -1,0 +1,47 @@
+id: x52_lightning_conflict
+title: "Batch 52 C coverage (tier 2, Lightning): the conflict test (main test, two people swap picks) with X0's three arms (whole / without the J++ part / without a random part of its share) at all 13 swept layers L2-L50 every 4th, decided at the committed layer (L14, read from results/x51_lightning/nem35l_x52_layer_r2/layer.json); the first 200 eligible scenes not among the 60 dev scenes; both readers; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  uv run python scripts/x0_necessity.py run --name nem35l_x52_conflict --set d1_topics_v3 --renderings chat --layers 2 6 10 14 18 22 26 30 34 38 42 46 50 --alt cf --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --exclude-dev results/x51_lightning/nem35l_x52_layer_r2/gate.json --coverage --why "Batch 52 part C (jobs/c3/batch52.yaml and amendment_1), coverage: the conflict test on Lightning, X0's three arms at every swept layer (L2-L50 every 4th), decided at the committed layer ($L); the 60 dev scenes excluded; no prediction: coverage run on an already-scored rule"
+question: >-
+  On NVIDIA Nemotron 3.5 Lightning 30B-A3B, in the main test at its committed layer (L14): does the recall lose its
+  switches without the J++ part of the bridge word's change while the lookup does not (beyond a random part of the same
+  share)? And what does the same conflict test give at every other swept layer (amendment 1: "the report must show the
+  conflict result at every swept layer")?
+why_it_matters: >-
+  Row 1 of the coverage matrix: the claim "the recall follows the lens part; the lookup follows the rest" holds on the
+  9B and Muse and mostly on the 27B (and the 122B); Lightning is the second family (hybrid Mamba-2 / attention / MoE).
+  Its layer was fixed on dev scenes by amendment 1 and committed before this run.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule; the verdict writes 'no prediction: coverage run on an already-scored rule'."
+decision_rule: >-
+  The main test's rule, verbatim from its original spec (jobs/c3/x0_necessity_27b_chat.yaml; first scored on the 27B,
+  9B and Muse, results/x0_necessity/*/verdict-*): "jobs/c3/X0.md "Decision rule" with amendment 1 (24 Oct, before
+  data), on this run's chat rendering at layer 32: confirmed iff lookup excess <= 0.10 and recall Jdep >= 0.30 (23
+  Oct); killed iff lookup excess >= 0.20 or recall Jdep < 0.20 (24 Oct); not confirmed otherwise (24 Oct); can't tell if
+  either reader's cell is invalid (S_whole < 0.30 or < 30 items switched; 24 Oct). Point estimates, top-token read;
+  cand read descriptive." Here the layer is Lightning's committed layer (L14, results/x51_lightning/nem35l_x52_layer_r2,
+  by jobs/c3/batch52.yaml amendment_1) in place of 32; no new thresholds. As computed (the 45s-a spec's reading, fixed
+  before any Lightning run): J++ k = 25 signed OMP over the letter-token J++ vectors of our Lightning lens (sha
+  3306b6e4) at each layer; excess = Jdep - Rdep with Rdep against X0's random subspace at the J++ part's own share
+  (seed 888 + layer); X0's gate on all 516 scenes (0.80 per reader, >= 150 eligible); the first 200 eligible scenes in
+  scene order NOT among the prerequisite's 60 dev scenes (--exclude-dev; = the prerequisite's recorded test list);
+  W_U, W_E, the random dictionary, the k curve and the non-negative arm not run (as 45s-a). Amendment 1: the same three
+  arms at every swept layer (all 13: L2-L50 every 4th, including the shallow L2-L10 below the 0.25 depth floor), X0's
+  label per layer in the verdict table; the rule decides at L14 only. Verdict in the job (x0_necessity write_verdict,
+  not sealed).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + layer): the reference of each extra loss"
+- "both readers on the identical patch (one change per scene)"
+- "X0's valid-cell bar (S_whole >= 0.30 and >= 30 switches), in the rule (can't tell)"
+- "the read gate (0.80) on all scenes; the dev scenes that fixed the layer are not scored"
+- "every swept layer reported, not only the decisive one (amendment 1)"
+n: "the first 200 eligible main-test scenes not among the 60 dev scenes (315 eligible of 516 made, per nem35l_x52_layer_r2/gate.json; its 'test' list), 2 readers, 13 layers"
+seeds: [24, 0, 888]
+notes: "Batch 52 part C, tier 2, box speedup, FIRST on speedup once the layer is committed (amendment 1: it preempts everything there). The layer comes from `x51_lightning.py layer` (committed layer.json of nem35l_x52_layer_r2 at HEAD; refuses otherwise), exported as BJ_PREDICTED_LAYER (x0_necessity.PREDICTED takes it for Lightning only; asserted). Run name nem35l_x52_conflict. The job writes manifest (coverage: no prediction; the excluded scenes), competence, cases, gate (with 'excluded': 60), outcomes, shares, examples, then verdict-*/ and its figures (not sealed). Afterwards (CPU): the order split from these outcomes (row 5: scripts/x0_composition.py with this run added, as split-by-order-20261026T173323Z), the copy test 'not tested' on Lightning (amendment 1: the clean one-pick recall 0.751 < 0.80; no gate change). Cost: 200 x 2 readers x 4 reads x 13 layers = 20,800 reads + 10 examples' greedy texts per layer; the 45s linear model (4.1e-6 h per read at Muse's speed, 0.198 h load + competence) -> 0.28 h; Lightning runs 0.42-0.55x Muse's time per row; est 0.5 with margin. Memory: one 80 GB card (45s smoke peak 62.5 GB; dictionaries built and freed per layer)."

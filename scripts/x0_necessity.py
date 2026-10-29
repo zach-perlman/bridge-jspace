@@ -72,6 +72,17 @@ PREDICTED = {
     "muse-glimmer-30b": 26,  # Muse: 50% depth
     "nemotron-3.5-lightning": 27,  # 45s: the shallowest layer of Zach's band L27-33 (Dan 27 Oct ~15:55, fixed before any run and before his answers: the stated answer's switch rate falls with depth, Muse 8 of 200 at L30, and X0 needs 30%)
 }
+# Batch 52 (jobs/c3/batch52.yaml part C, amendment 1): a new family's layer is fixed on a dev set by the published rule
+# and committed before any scored run; the coverage specs export it as BJ_PREDICTED_LAYER from `x51_lightning.py layer`
+# (which refuses until layer.json is committed), so every script reading PREDICTED takes it. Lightning only.
+if os.environ.get("BJ_PREDICTED_LAYER"):
+    assert pins.TARGET == "nemotron-3.5-lightning", (
+        f"BJ_PREDICTED_LAYER: Lightning's committed layer, not {pins.TARGET}"
+    )
+    PREDICTED[pins.TARGET] = int(os.environ["BJ_PREDICTED_LAYER"])
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"  # batch 52 addendum
+COVERAGE = False  # batch 52: the run is a coverage cell (manifest and verdict say NO_PREDICTION)
+EXCLUDE: set[str] = set()  # batch 52: scenes kept out of the eligible selection (Lightning's 60 dev scenes)
 
 
 # ---- cells (CPU) --------------------------------------------------------------------------------------------------
@@ -498,6 +509,10 @@ def gate_and_eligible(cases: list[dict], comp: list[dict]) -> tuple[dict, dict[s
                       "pass": bool(acc) and all(a >= GATE for a in acc.values()),
                       "eligible": len(ok), "enough": len(ok) >= N_MIN}  # fmt: skip
         gate[rend]["descriptive"] = DESCRIPTIVE
+        if EXCLUDE:  # batch 52: the dev scenes stay out of the selection; the gate and its counts are over all scenes
+            gate[rend]["excluded"] = sum(c["scene"] in EXCLUDE for c in ok)
+            ok = [c for c in ok if c["scene"] not in EXCLUDE]
+            gate[rend]["enough"] = gate[rend]["enough"] and len(ok) >= N_MIN
         eligible[rend] = ok[:N_ITEMS] if DESCRIPTIVE or (gate[rend]["pass"] and gate[rend]["enough"]) else []
     return gate, eligible
 
@@ -719,6 +734,9 @@ def stage_run(
          **({"fresh": {"seed": FRESH_SEED, "design": "jobs/c3/batch45.yaml, 45m", "draws": "x0_necessity.fresh_pair"}}
             if ALT == "fresh" else {}),
          "atom_slices": SLICES, **({"x47_1": x47_record()} if SLICES else {}),
+         **({"coverage": {"batch": 52, "question": NO_PREDICTION, "spec": "jobs/c3/batch52.yaml (part C)"}}
+            if COVERAGE else {}),
+         **({"excluded_scenes": sorted(EXCLUDE)} if EXCLUDE else {}),
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -832,6 +850,8 @@ def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
              f"Model {m['model']['target']} ({m['model']['revision'][:8]}); lens J++ `{lens['source'][1]}` sha256 "
              f"{lens['sha256'][:16]}; set {m['set']}; predicted layer {m['predicted']}; non-chat read "
              f"{m.get('read', {}).get('mode', 'first')}; UNVERIFIED.", "",
+             *([f"Batch 52 coverage: {m['coverage']['question']} (X0's rule unchanged; scenes excluded from the "
+                f"selection: {len(m.get('excluded_scenes', []))}).", ""] if m.get("coverage") else []),
              *(["DESCRIPTIVE (amendment 3, after data): run on the items each reader gets right whether or not the "
                 "gate passed; not part of the X0 rule.", ""] if m.get("descriptive") else []),
              "Gate (unedited org accuracy under the decisive read >= 0.80 for both readers): " + "; ".join(
@@ -961,7 +981,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG, N_ITEMS, SLICES  # the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG, N_ITEMS, SLICES, COVERAGE  # the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -991,7 +1011,15 @@ def main() -> None:
                     help="run: no verdict or figures after the run (batch 45: sealed until Dan's predictions)")  # fmt: skip
     ap.add_argument("--atom-slices", action="store_true",
                     help="run: 47.1's atoms 26-100 (1-25 kept) and random lens atoms at L (needs --curve-k 100)")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"run: batch 52 coverage cell ('{NO_PREDICTION}' in the manifest and verdict)")  # fmt: skip
+    ap.add_argument("--exclude-dev", default=None, metavar="GATE_JSON",
+                    help="run: keep the 'dev' scenes of this gate.json (a batch 52 prerequisite run) out of the selection")  # fmt: skip
     a = ap.parse_args()
+    COVERAGE = a.coverage
+    if a.exclude_dev:
+        EXCLUDE.update(json.loads((pins.REPO_ROOT / a.exclude_dev).read_text())["dev"])
+        assert EXCLUDE, f"{a.exclude_dev}: no dev scenes"
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
     DICTS, READOUT, NONNEG, N_ITEMS = tuple(a.dicts), a.readout, not a.no_nonneg, a.n_items

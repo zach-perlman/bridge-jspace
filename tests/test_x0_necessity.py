@@ -160,6 +160,36 @@ def test_gate_uses_the_decisive_read_and_skips_a_rendering_not_run():
     assert gate["raw"]["cases"] == 0 and not gate["raw"]["pass"] and eligible["raw"] == []
 
 
+def test_excluded_dev_scenes_leave_the_selection_not_the_gate(monkeypatch):
+    """Batch 52: Lightning's 60 dev scenes stay out of the conflict test's selection; the gate is over all scenes."""
+    cases = [{"scene": f"s{i}", "rendering": "chat"} for i in range(400)]
+    comp = [{"scene": f"s{i}", "rendering": "chat", "reader": w, "variant": v, "right": True, "read_right": True,
+             "cand_right": True} for i in range(400) for w in X.READERS for v in ("org", "alt")]  # fmt: skip
+    monkeypatch.setattr(X, "EXCLUDE", {f"s{i}" for i in range(0, 120, 2)})
+    gate, eligible = X.gate_and_eligible(cases, comp)
+    chosen = [c["scene"] for c in eligible["chat"]]
+    assert gate["chat"]["eligible"] == 400 and gate["chat"]["excluded"] == 60 and gate["chat"]["pass"]
+    assert len(chosen) == X.N_ITEMS and not set(chosen) & X.EXCLUDE
+    assert chosen == [f"s{i}" for i in range(400) if f"s{i}" not in X.EXCLUDE][: X.N_ITEMS]
+    monkeypatch.setattr(X, "EXCLUDE", {f"s{i}" for i in range(300)})  # too few left: not enough
+    gate, eligible = X.gate_and_eligible(cases, comp)
+    assert not gate["chat"]["enough"] and eligible["chat"] == []
+
+
+def test_predicted_layer_override_is_lightnings_only():
+    import subprocess
+    import sys
+
+    code = "from scripts import x0_necessity as X; print(X.PREDICTED[X.pins.TARGET])"
+    env = {**__import__("os").environ, "BJ_PREDICTED_LAYER": "14"}
+    run = lambda target: subprocess.run([sys.executable, "-c", code], capture_output=True, text=True,  # noqa: E731
+                                        env={**env, "BJ_TARGET": target}, cwd=X.pins.REPO_ROOT)  # fmt: skip
+    ok = run("nemotron-3.5-lightning")
+    assert ok.returncode == 0 and ok.stdout.strip() == "14"
+    bad = run("qwen3.5-9b")
+    assert bad.returncode != 0 and "Lightning's committed layer, not qwen3.5-9b" in bad.stderr
+
+
 class FakeGenModel:
     """Greedy continuations scripted per edit set: {"say": [token ids]}; logits put 1.0 on the said token each step."""
 
