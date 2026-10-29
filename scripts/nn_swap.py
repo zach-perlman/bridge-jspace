@@ -653,7 +653,7 @@ def main(a) -> None:
                 continue
             # MP: kept X's passage value, donor D's passage value, third D's remembered attribute, xmem X's remembered one;
             # MM (recall twin): kept X's attribute, donor D's attribute, third D's passage value, xmem X's passage value
-            ax, ad, at, am = (xv, pv[dn], mem(dn), mem(x)) if lookup else (mem(x), mem(dn), pv[dn], xv)
+            ax, ad, at, am = (xv, pv.get(dn), mem(dn), mem(x)) if lookup else (mem(x), mem(dn), pv.get(dn), xv)  # note 19: dn may be absent from the passage (overridden below)
             if a.value_swap:  # note 17: donor = X's new passage value; MP third = X's remembered attribute, MM third = X's old value
                 ax, ad, at, am = (xv, vnew, mem(x), xv) if lookup else (mem(x), vnew, xv, mem(x))
             if a.position_swap:  # note 18: donor = Z's value (the value at X's new slot in the original passage: the position route)

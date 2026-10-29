@@ -2839,3 +2839,5 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Otherwise "partly specific".
   - Dan's rule is also applied to the oth set (note15_oth).
 - **Queue.** scripts/queues/h200_n15b_1029.sh, on GPU0 after the 27B's stage 2, once >= 75 GB is free. A 2-item smoke runs first.
+
+- Note 19 code fix (2026-10-29 05:10 UTC, before any result): the default answer classes looked up D's passage value before the resample override, and the resample donor is never in X's passage (KeyError in the smoke). The fix uses pv.get; no design change.
