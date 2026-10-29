@@ -1,0 +1,48 @@
+id: x52_lightning_value_c_s
+title: "Batch 52 C coverage (Lightning, amendment 2's full grid): 47.7 (c) on Lightning at L14: the varied scenes (x0b_v2: prose / JSON / table), locker-first, the asked pick changed to another item whose locker statement trades places with a third item's and takes a new number; the lookup's route shares per format under the whole change and without J++ / U / the refit pointer (fill5's 45d basis) vs random parts; rule unchanged; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: [x52_lightning_fill5_s]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x7_pcf/nem35l_x52_x45d_fit/split.json && test -f results/x0_probe/nem35l_x52_probe/states.npz &&
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: full grid on Lightning, L$L; hollow gate)" &&
+  uv run python scripts/x47_value.py run --part c --name nem35l_x52_value_c --why "Batch 52 C coverage: 47.7 (c) on Lightning at L$L, the varied scenes, the refit pointer from fill5's 45d fit (x7_pcf/nem35l_x52_x45d_fit); $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x47_value/nem35l_x52_value_c/coverage.txt &&
+  uv run python scripts/x47_value.py verdict --part c --coverage
+question: >-
+  On Lightning, in the varied scenes (prose, JSON, tables), when the asked pick becomes another item whose locker
+  statement moved and whose number is new: does the lookup ever answer the new value, and does a position route appear
+  in JSON / tables that the refit pointer's removal cuts?
+why_it_matters: >-
+  Amendment 2: the full grid on Lightning (the depth page's 47.7 row: Lightning had (a) only).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule unchanged (jobs/c3/batch47.yaml, 47.7 (c), amendment 1; scripts/x47_value.py RULE['c'], verbatim): "never
+  the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the
+  position share >= 0.2 and the refit pointer's removal cuts it >= 0.3 beyond random". As computed: jobs/c3/x47_7c_muse_r2.yaml's
+  text unchanged (first scored in results/x47_value/x47_7c-20261028T123632Z): the change h_S - h_O at the bridge word
+  at the layer fixed in advance; arms whole, without the J++ part (signed OMP, k = 25, over the lens atoms of the
+  letter AND the digit tokens), without a random part of its share (seed 888 + layer), without U (x0_massmean's Alf of
+  the probe states, not refit), without a random part of its share, and, where a 45d basis exists, without the refit
+  pointer vs a random part of its share; the lookup's answer classified identity / position / value / original / other
+  by the top token at the read step; route shares with cluster-bootstrap intervals over bridge items (10,000, seed 0);
+  EPS 1e-9; tasks_v2 x0b_v2's scenes, locker-first, t / u / e seeded 4708, swap_lockers; only the held-out half of
+  45d's split per format, at most 300 eligible per format. On Lightning: the committed L14 (amendment 1); U from
+  Lightning's probe run (x6_routes.STATES: nem35l_x52_probe); the refit pointer and the split from fill5's 45d fit
+  (x7_pcf/nem35l_x52_x45d_fit; x47_value.PCF_FIT gains Lightning, as the 9B's and Muse's designs carried theirs).
+  "Every model" is a cross-model clause: not re-scored (the coverage verdict reads Lightning alone). Verdict in the job
+  (verdict --part c --coverage, results/x47_value/x52_valuec-<UTC>/).
+controls:
+- "a random part at the J++ part's share, at U's share and at the refit pointer's share of the change, per item"
+- "the recall reader on the identical patch"
+- "the routes test's templated result and 45d's per-format cells (Lightning's x45d, fill5) beside"
+n: "the held-out half of fill5's 45d split per format, at most 300 eligible per format"
+seeds: [0, 888, 2510, 4707, 4708]
+notes: "Batch 52 C, amendment 2 (coordinator 03:10 Paris). Box another, depends_on x52_lightning_fill5 (its 45d fit and split in the box's checkout; checked before loading). Code: x47_value.PCF_FIT and COVERAGE_RUNS['c'] gain Lightning (lookups); a coverage run not yet landed reads as pending in the verdict (rule rows as the design's pending rows). Checked on a planted run (Muse's 7c relabelled): verdict --part c --coverage passes. Retry once, then skip with the reason logged. Wallclock (ledger_sesterce-h100x2): x47_7c_muse_r2 788 s, x47_7c_27b_r2 1,892 s; Lightning ~0.5-1x Muse per row: est ~10-15 min, 0.3 GPU-h; opens before the freeze."
+
+# Moved to speedup 29 Oct ~04:25 Paris (coordinator): the another box was busy with x52_27b_gaps_c (~3.5 h) and speedup drained; the original ids were cancelled on another before they started. Same commands and run names.

@@ -1,0 +1,173 @@
+{
+ "dan": "no prediction: coverage run on an already-scored rule; rule first scored in results/x47_zero/x47_5-20261028T113106Z; the README verb counts the given runs only, not re-scored",
+ "batch": {
+  "verb": "follows / reads",
+  "needed_on": [],
+  "per_model": {
+   "nemotron-3.5-lightning": "followed, not needed at one layer"
+  }
+ },
+ "models": [
+  {
+   "target": "nemotron-3.5-lightning",
+   "run": "nem35l_x52_zero",
+   "layer": 14,
+   "layers": [
+    14,
+    15,
+    16,
+    17
+   ],
+   "status": "tested",
+   "label": "followed, not needed at one layer",
+   "labels": {
+    "recall L": "followed, not needed at one layer",
+    "recall L..L+3": "neither (between the bars)",
+    "lookup L": "followed, not needed at one layer",
+    "lookup L..L+3": "followed, not needed at one layer"
+   },
+   "readers": {
+    "lookup": {
+     "n": 200,
+     "entities": 37,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.995,
+       0.9832402234636871,
+       1.0
+      ],
+      "rand_L": [
+       0.99,
+       0.9664804469273743,
+       1.0
+      ],
+      "zero_L3": [
+       0.99,
+       0.9748743718592965,
+       1.0
+      ],
+      "rand_L3": [
+       0.99,
+       0.9664804469273743,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       -0.0050000000000000044,
+       -0.016759776536312776,
+       0.0
+      ],
+      "L..L+3": [
+       0.0,
+       -0.014424818840579766,
+       0.014218009478673022
+      ]
+     }
+    },
+    "recall": {
+     "n": 200,
+     "entities": 37,
+     "kept": {
+      "none": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L": [
+       0.975,
+       0.9540229885057471,
+       0.9936315810690962
+      ],
+      "rand_L": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "zero_L3": [
+       0.815,
+       0.75,
+       0.8727299001576457
+      ],
+      "rand_L3": [
+       0.99,
+       0.973681312311616,
+       1.0
+      ]
+     },
+     "beyond_random": {
+      "L": [
+       0.025000000000000022,
+       0.006368418930903814,
+       0.04597701149425293
+      ],
+      "L..L+3": [
+       0.17500000000000004,
+       0.11666666666666659,
+       0.23926625114214847
+      ]
+     }
+    }
+   },
+   "gate": {
+    "cases": 516,
+    "org_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8159
+    },
+    "said_accuracy": {
+     "PP": 0.9574,
+     "PM": 0.8178
+    },
+    "cand_accuracy": {
+     "PP": 0.9554,
+     "PM": 0.814
+    },
+    "pass": true,
+    "eligible": 315,
+    "enough": true,
+    "descriptive": false,
+    "excluded": 60
+   },
+   "shares_median": {
+    "14": {
+     "share_hS_atoms": 0.066454,
+     "share_delta_atoms": 0.2698755,
+     "share_hS_rand": 0.0664825,
+     "k_rand": 163.0,
+     "norm_hS": 17.9683,
+     "norm_delta": 13.950099999999999
+    },
+    "15": {
+     "share_hS_atoms": 0.05793,
+     "share_delta_atoms": 0.223709,
+     "share_hS_rand": 0.057869000000000004,
+     "k_rand": 146.0,
+     "norm_hS": 19.935200000000002,
+     "norm_delta": 15.1845
+    },
+    "16": {
+     "share_hS_atoms": 0.056957499999999994,
+     "share_delta_atoms": 0.23426550000000002,
+     "share_hS_rand": 0.0566425,
+     "k_rand": 165.0,
+     "norm_hS": 22.6687,
+     "norm_delta": 16.749200000000002
+    },
+    "17": {
+     "share_hS_atoms": 0.051995,
+     "share_delta_atoms": 0.2000255,
+     "share_hS_rand": 0.0522325,
+     "k_rand": 153.0,
+     "norm_hS": 25.50565,
+     "norm_delta": 19.0807
+    }
+   }
+  }
+ ]
+}
