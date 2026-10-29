@@ -1,0 +1,50 @@
+id: x52_answer_z1p_lightning
+title: "Batch 52, Dan's morning brief (29 Oct) item 2, P half: 51.12's arms on Zach's named passages with made-up facts (Z1-P's P passages: PP the lookup, PM the recall) on nemotron-3.5-lightning at L14: without J++ / without J++ minus the answer atoms / without the answer atoms, each against a random part, arm 3 also against the frequency-matched control; the readout check first; 51.12's rules verbatim; no prediction; UNVERIFIED"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.25
+depends_on: [x52_z1p_lightning]
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  L=$(uv run python scripts/x51_lightning.py layer) && export BJ_PREDICTED_LAYER=$L &&
+  test -f results/x50_zach/nem35l_x52_z1p/outcomes.jsonl &&
+  NOTE="no prediction: 51.12's rules (already scored) on Zach's named passages (Dan's morning brief item 2, 29 Oct)" &&
+  uv run python scripts/x51_answer.py run --set z1p --name nem35l_x52_answer_z1p &&
+  printf '%s\n' "$NOTE" > results/x51_answer/nem35l_x52_answer_z1p/coverage.txt &&
+  uv run python scripts/x51_answer.py verdict --set z1p --coverage
+question: >-
+  Zach's missing cell: with the bridge named before the question and word answers, is what each reader follows in the
+  lens part at the bridge name the bridge entity or the answer word (P: made-up facts)?
+why_it_matters: >-
+  Dan's morning brief (jobs/c3/batch52.yaml morning_brief, 29 Oct ~08:45) item 2: 51.12 tested the answer direction on
+  our locker scenes (number words), 47.3's described bridge and Zach's never-named Z2; his named-bridge passages are
+  the cell left.
+hypotheses:
+  none: "No prediction (Dan's morning brief: rules fixed, no Q-line)."
+decision_rule: >-
+  51.12's rules verbatim (jobs/c3/batch51.yaml addendum_4, 51.12; first scored in
+  results/x51_answer/x51_12-20261028T201842Z): "Rules, fixed in advance (per model, per reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1. Else: mixed, report both shares." With addendum_4_amendment (Dan 20:20) as for Z2: the readout
+  check first ("the answer word is not read at the bridge word (lens rank > 50 on ≥ 90 % of items)" decides before the
+  arms; never "void by construction"); A = the first token of each answer word and variant (letter tokens; a split
+  answer word keeps its first token); arm 3 against both its controls, the same-size random part and the
+  frequency-matched part (no_F), a label holding only against both. As computed: jobs/c3/x51_12_z2_27b_r2.yaml's text
+  unchanged (e_k = X0's excess (S_rand_k - S_k) / S_whole per reader; arm 1 no_jpp, arm 2 no_jpp_A = Δ - (I - P_A) P_J
+  Δ, arm 3 no_A = Δ - P_A Δ, each against a random part of its share, seed 888 + L; point estimates decide, EPS 1e-9;
+  cluster bootstrap over the bridge entity, 10,000, seed 0) on the named passages: items = the Z1-P
+  run nem35l_x52_z1p's chosen passages (x50_zach part z1p: his v2 sets, the gate 0.80 per reader;
+  failed = not tested), rebuilt by x50_zach.encode and checked id by id; Δ per reader from its own O / S prompts at the
+  pointer name's last token; the read: x50_zach's (top token after the prompt, no prefill = the other entity's answer's
+  first token); L14 (the committed L). The frequency-matched control is applied as on
+  Z2 (word answers; the conservative reading: a label needs both controls). Decisive cells: both readers. Cells under 30
+  switches left out (amendment 3). Verdict in the job (x51_answer.py verdict --set z1p --coverage:
+  results/x51_answer/x52_answer-<UTC>/, never the default x51_12-<UTC>/ prefix).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "arm 3 also against a frequency-matched part: |A| unrelated letter atoms, BPE id within a factor 2 and the closest J++ readout norm (no_F)"
+- "the lens-readout check of the answer word at the edited token (rank > 50 on >= 90 % of items: not read), stated before the arms"
+- "arm 1 against the source run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "O unedited and the whole change read with the same edits batch"
+n: "the chosen passages of nem35l_x52_z1p (Z1-P, up to 200) at L14"
+seeds: [888, 0]
+notes: "Batch 52, Dan's morning brief item 2 (P half; coordinator 09:15 Paris). Box: another, depends_on x52_z1p_lightning (its Z1-P run in this box's checkout; checked before loading). Code: x51_answer gains the sets z1k / z1p (NAMED_SETS; read as Z2: each reader's own Δ, word answers, x50_zach's read and route, the frequency-matched control; sources x50_zach's Z1 / Z1-P runs; COVERAGE_RUNS for the three models; 51.12's design sets and verdicts unchanged); K items rebuilt on CPU at spec time on all three tokenizers (200 each, gates passed). Wallclock: Lightning's 51.12 runs ~0.5x the 27B's per item; 200 items x 2 readers x 9 reads plus the frequency control's norms: est ~8-15 min, 0.25 GPU-h. UNVERIFIED; results into EXPERIMENTS.md."
