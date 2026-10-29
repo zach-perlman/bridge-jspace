@@ -844,8 +844,14 @@ def verdict_lines(blob: dict) -> list[str]:
              f"probes, C = {C_REG} for every feature (sklearn's objective, standardised features, scipy L-BFGS); "
              "(b), (c) on held-out entities; (a), (d) on held-out scenes (a held-out entity is an unseen class there). "
              f"CIs: cluster bootstrap over the bridge entity ({blob['bootstrap']['n']:,}, seed 0).", ""]  # fmt: skip
-    lines += ["## Labels", "", "| model | dataset | position | target | k = 25 | k = 100 | full max | J++25 max "
-              "(gap to random max) | J++100 max (gap max) |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    lines += ["## Labels", "",
+              "Notes column (beside the rule, not part of it): 'random reads it too' = blind by the rule while J++ "
+              "itself reaches >= 0.8 (the random subspace decodes X as well, so the label says J++ adds nothing over "
+              "a random subspace, not that J++ cannot read X); 'full < 0.8' = the full residual never reaches 0.8, so "
+              "neither 'blind' nor 'carries' can open.", "",
+              "| model | dataset | position | target | k = 25 | k = 100 | full max | J++25 max (gap to random max) | "
+              "J++100 max (gap max) | PCA25 / PCA100 max | notes |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for t in MODELS:
         for s in SETS:
             r = res.get(t, {}).get(s)
@@ -854,10 +860,20 @@ def verdict_lines(blob: dict) -> list[str]:
             for p in PROBE_POS:
                 for tg in TARGETS:
                     ru = r["rules"][f"{p}|{tg}"]
+                    feats = r["acc"][f"{p}|{tg}"]
+                    pca = " / ".join(f"{max(feats[f'pca{k}']['acc']):.2f}" for k in KS)
+                    notes = [
+                        f"k = {k}: random reads it too"
+                        for k in KS
+                        if ru[f"k{k}"]["label"] == LABELS[0] and ru[f"k{k}"]["jpp_max"] >= CARRY_MIN - EPS
+                    ]
+                    if not ru["k25"]["full_reaches_0.8"]:
+                        notes.append("full < 0.8")
                     lines.append(f"| {NAMES[t]} | {s} (n {r['n_rows']} rows, {r['n_entities']} entities) | {p} | "
                                  f"{TARGET_TEXT[tg]} | {ru['k25']['label']} | {ru['k100']['label']} | "
                                  f"{ru['k25']['full_max']:.2f} | {ru['k25']['jpp_max']:.2f} ({ru['k25']['gap_max']:+.2f}) "
-                                 f"| {ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) |")  # fmt: skip
+                                 f"| {ru['k100']['jpp_max']:.2f} ({ru['k100']['gap_max']:+.2f}) | {pca} | "
+                                 f"{'; '.join(notes)} |")  # fmt: skip
     missing = [f"{NAMES[t]} {s}" for t in MODELS for s in SETS if not res.get(t, {}).get(s)]
     lines += ["", f"Not yet probed (states not pulled): {', '.join(missing) or 'none'}.", ""]
     lines += ["## The main test's states vs 52 B's cache (lowest cosine over rows, any layer)", ""]
