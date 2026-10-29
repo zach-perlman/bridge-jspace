@@ -1,0 +1,189 @@
+{
+  "exp": "x53_monitor",
+  "run": "qwen35_122b_x53_monitor",
+  "spec": "jobs/c3/batch53.yaml (53.2); jobs/c3/x53_monitor_122b.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch53.yaml (53.2); no prediction",
+  "written_utc": "2026-10-29T13:01:39Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "4e209c5b0b4e5d9b012d3e2dd1753bc7d8bd1a57",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "sets": {
+    "main": "our main test (X0's scenes)",
+    "json": "the varied scenes, JSON format (x0b_v2)",
+    "code": "the main test's scenes as Python code (53.7)",
+    "tool": "the main test's scenes as tool output (53.7)",
+    "cp_ch2": "code_pointer_v1's CH2 chains (53.7 add-on, descriptive)",
+    "code_l": "the main test's set as Python code, lookup-only gate (53.7)",
+    "tool_l": "the main test's set as tool output, lookup-only gate (53.7)"
+  },
+  "positions": {
+    "B": "the bridge word (X0's position; the readers' prompts agree through it: read on the lookup's prompt)",
+    "T_lookup": "the lookup prompt's last token (the appended space token, before the answer)",
+    "T_recall": "the recall prompt's last token (the appended space token, before the answer)"
+  },
+  "ks": [
+    25,
+    100
+  ],
+  "rule": "\"J-space blind to X\" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; \"J-space carries X\" if J++ >= 0.8 and >= 0.3 above random; else in between.",
+  "jpp_part": "X0's signed OMP over the J++ letter-token atoms (x0_necessity.dictionary('jpp')), the least-squares fit on the first k chosen atoms, applied to the state itself",
+  "storage": "states_<set>_{h,jpp25,jpp100}.npy fp16 [L, n, O/S, B/T lookup/T recall, d] (gitignored); states_<set>_atoms.npy int32 token ids of the 100 chosen atoms (committed)",
+  "inputs": {
+    "jobs/c3/batch53.yaml": "64364e93a2034bb1a71d02e16b0ada00ed57aa66083e2f57e9024bbba1571db1",
+    "data/tasks_v2/x0b_v2/items.jsonl": "3d327acdaebb68b531d6c49c03b4fb38c8002402d423ab94ec118877a12f87f3"
+  },
+  "layers_candidate": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46
+  ],
+  "n_layers": 48,
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46
+  ],
+  "sets_done": {
+    "main": {
+      "items": 200,
+      "entities": 40,
+      "counts": {
+        "design": "main",
+        "source": "qwen35_122b_x0_necessity_r2",
+        "alt": "cf",
+        "layer": 33,
+        "items_at_L": 200,
+        "dropped": {},
+        "items": 200,
+        "entities": 40,
+        "groups": {
+          "locker-after": 82,
+          "mixed": 65,
+          "locker-first": 53
+        },
+        "upstream": {
+          "False": 117,
+          "True": 83
+        },
+        "locker-first, prefix-identical": 14,
+        "pick_tokens": {
+          "5": 63,
+          "4": 133,
+          "6": 4
+        },
+        "positions_dropped": {},
+        "items_read": 200
+      },
+      "b_gap_max": 0.08245831727981567,
+      "b_gap_over_tol": 9
+    },
+    "json": {
+      "items": 310,
+      "entities": 30,
+      "counts": {
+        "json_cases": 310,
+        "json_entities": 30,
+        "json_domains": {
+          "greek": 188,
+          "animals": 85,
+          "shapes": 37
+        },
+        "json_levels": {
+          "0": 83,
+          "1": 109,
+          "2": 118
+        },
+        "x0b_counts": {
+          "scenes": 4410,
+          "cases": 2258,
+          "dropped": {
+            "animals: no other pick with a different locker and memory number": 9,
+            "animals: the bridge is not one token at one position in org and alt": 215,
+            "elements: the bridge is not one token at one position in org and alt": 365,
+            "greek: the bridge is not one token at one position in org and alt": 60,
+            "instruments: no other pick with a different locker and memory number": 49,
+            "instruments: the bridge is not one token at one position in org and alt": 266,
+            "planets: the bridge is not one token at one position in org and alt": 261,
+            "shapes: the bridge is not one token at one position in org and alt": 496,
+            "vehicles: the bridge is not one token at one position in org and alt": 431
+          }
+        }
+      },
+      "b_gap_max": 0.1525784581899643,
+      "b_gap_over_tol": 82
+    }
+  },
+  "hub_kernels": {
+    "kernels-community/finegrained-fp8": [
+      "0e5764aa5c27d0f005117a92645156481540950a"
+    ]
+  },
+  "finished_utc": "2026-10-29T13:17:14Z"
+}
