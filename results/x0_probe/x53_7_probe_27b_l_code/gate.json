@@ -1,0 +1,45 @@
+{
+ "cases": 682,
+ "lookup_right_share": 0.9809,
+ "bar": 0.8,
+ "pass": true,
+ "status": "passed",
+ "eligible": 669,
+ "design": "adapted design: lookup-only gate; the recall is not part of this test",
+ "rule": "Dan 12:10 (decisions_1210): the share of the test's own scenes in the format where the lookup says and reads O and S right (X0's competence: the greedy answer and the chat read) >= 0.80, before any state is kept; a failed format is 'not tested (gate x < 0.80)'; an item is eligible when the lookup is right on all four; the recall's rates are reported descriptively",
+ "descriptive": {
+  "rates": {
+   "PP": {
+    "says_and_reads_O_and_S": 0.9809,
+    "right_org": 0.9956,
+    "right_alt": 0.9853,
+    "read_right_org": 0.9956,
+    "read_right_alt": 0.9868
+   },
+   "PM": {
+    "says_and_reads_O_and_S": 0.7434,
+    "right_org": 0.8768,
+    "right_alt": 0.846,
+    "read_right_org": 0.8798,
+    "read_right_alt": 0.8431
+   }
+  },
+  "note": "the recall's rates are descriptive (not part of this test)"
+ },
+ "counts": {
+  "set": "d1_topics_v4",
+  "format": "code",
+  "scenes": 1500,
+  "cases": 682,
+  "entities": 29,
+  "domains": {
+   "greek": 500,
+   "animals": 182
+  },
+  "dropped": {
+   "animals: the bridge is not one token at one position in org and alt": 318,
+   "elements: the bridge is not one token at one position in org and alt": 500
+  }
+ },
+ "hollow": null
+}

@@ -1,0 +1,43 @@
+{
+ "cases": 1500,
+ "lookup_right_share": 0.994,
+ "bar": 0.8,
+ "pass": true,
+ "status": "passed",
+ "eligible": 1491,
+ "design": "adapted design: lookup-only gate; the recall is not part of this test",
+ "rule": "Dan 12:10 (decisions_1210): the share of the test's own scenes in the format where the lookup says and reads O and S right (X0's competence: the greedy answer and the chat read) >= 0.80, before any state is kept; a failed format is 'not tested (gate x < 0.80)'; an item is eligible when the lookup is right on all four; the recall's rates are reported descriptively",
+ "descriptive": {
+  "rates": {
+   "PP": {
+    "says_and_reads_O_and_S": 0.994,
+    "right_org": 0.9967,
+    "right_alt": 0.9973,
+    "read_right_org": 0.9973,
+    "read_right_alt": 0.9973
+   },
+   "PM": {
+    "says_and_reads_O_and_S": 0.9307,
+    "right_org": 0.9673,
+    "right_alt": 0.964,
+    "read_right_org": 0.9667,
+    "read_right_alt": 0.9667
+   }
+  },
+  "note": "the recall's rates are descriptive (not part of this test)"
+ },
+ "counts": {
+  "set": "d1_topics_v4",
+  "format": "tool",
+  "scenes": 1500,
+  "cases": 1500,
+  "entities": 46,
+  "domains": {
+   "elements": 500,
+   "greek": 500,
+   "animals": 500
+  },
+  "dropped": {}
+ },
+ "hollow": null
+}

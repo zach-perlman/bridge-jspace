@@ -1,0 +1,32 @@
+{
+ "target": "qwen3.5-122b-a10b",
+ "layer": 33,
+ "load_s": 67.1,
+ "head": {
+  "norm_class": "Qwen3_5MoeRMSNorm",
+  "norm_kind": "one_plus_weight_fp32",
+  "lm_head_dtype": "torch.bfloat16",
+  "vocab": 248320,
+  "d": 3072
+ },
+ "max_abs_state": 26.75,
+ "stored_dtype": "float16",
+ "omp_atoms_vs_fit_max_abs_diff_at_L": 0.0,
+ "arms": {
+  "rows": 18,
+  "mismatches": []
+ },
+ "rank_share_vs_stored": {
+  "main_swap": {
+   "n": 200,
+   "max_abs_gap": 4.984097480786875e-06
+  },
+  "routes": {
+   "n": 900,
+   "max_abs_gap": 4.990444183339271e-06
+  }
+ },
+ "sample_items": 6,
+ "change_rows": 107,
+ "seconds": 458.3
+}
