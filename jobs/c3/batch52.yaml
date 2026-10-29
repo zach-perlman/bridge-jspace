@@ -162,3 +162,31 @@ amendment_3: |
 
   At 02:00, in the status: per-GPU queue with expected empty time; if any GPU
   will idle before 07:00, say which test from 4 goes there.
+
+morning_brief_received: "29 Oct ~08:45 Paris (Dan, after the overnight run; boxes idle since ~05:00-05:44)"
+morning_brief: |
+  Boxes idle since 05:00. Queue now. Rules fixed now, no predictions, same gates,
+  UNVERIFIED, into EXPERIMENTS.md. README: draft the edits from "README changes
+  waiting for Dan" but do not commit until I approve.
+
+  1. Z1-P (top): the conflict test on Zach's named-bridge passages with made-up
+     facts (jsuite v2 P items), 9B / 27B / Lightning at L. Rule: Z1's, verbatim.
+     Purpose: is Z1's "the lookup follows the lens" due to true-fact passages,
+     where the lookup can answer from memory?
+  2. 51.12 arms on Zach's named passages, K and P, 9B / 27B / Lightning (Zach's
+     missing cell: bridge named before the question, word answers). Rule:
+     51.12's verbatim, readout check first.
+  3. 51.12 Z2 on Lightning (~0.2 GPU-h).
+  4. Named vs unnamed atoms (9B, then 27B / Muse / Lightning): split the J++ part
+     into its bridge + new_bridge atoms (x52_atoms classes) and the rest. Arms:
+     without the J++ part; without the named atoms only; without the J++ part
+     keeping the named atoms; each vs a random part of its share. "Follows the
+     names": (2) >= 0.5 of (1) beyond random and (3) keeps <= 0.3; "follows the
+     unnamed part": (2) <= 0.10 and (3) keeps >= 0.7; else mixed.
+  5. If a GPU is still free: question-first locker scenes on the 9B (the
+     question before the scene, numbers kept): gate, conflict test, 51.12 arms.
+     Tests whether the lens part turns into the answer once the question is
+     known at the bridge word.
+  CPU now: batch 52 B, why the recall write moves 0.37 / 0.70 / 0.65 at 1x but
+  0.03 / 0.09 / 0.01 at 2x: what the model outputs at 2x (original, target,
+  other). Keep B out of the README.
