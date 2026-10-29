@@ -3764,7 +3764,8 @@ CATALOGUE_RUNS = {
     "clean one-pick": ("x0_necessity", {"qwen3.5-9b": "qwen35_9b_x45m_fresh", "qwen3.6-27b": "x45m_fresh_27b",
                                         "muse-glimmer-30b": "muse30b_x45m_fresh"}, ""),
     "routes":("x6_routes", {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
-                             "muse-glimmer-30b": "muse30b_x6_routes", "nemotron-3.5-lightning": "nem35l_x52_routes"}, "C2"),
+                             "muse-glimmer-30b": "muse30b_x6_routes", "nemotron-3.5-lightning": "nem35l_x52_routes",
+                             "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_g75"}, "C2"),  # the 122B: gate lowered after the data
     "six-locker": ("x47_six", {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2",
                                "nemotron-3.5-lightning": "nem35l_x52_six"}, "M6"),
 }  # fmt: skip
@@ -3780,9 +3781,7 @@ def card_numbers() -> None:
             path = pins.RESULTS_DIR / exp / run / "outcomes.jsonl"
             scenes = {r["scene"] for r in X.read_jsonl(path) if r["scene"].startswith(prefix)}
             S.record("catalogue", target, f"{name} scenes: scenes used", len(scenes), source=rel(path))
-    for target, (_, (nat_ptr, nat)) in TRANSFER_RUNS.items():
-        if target == "qwen3.5-122b-a10b":
-            continue
+    for target, (_, (nat_ptr, nat)) in TRANSFER_RUNS.items():  # the 122B too (Dan 11:30: the fifth model)
         base = pins.RESULTS_DIR / "x5_natural"
         run = next(r for r in (nat_ptr, nat) if (base / r / "outcomes.jsonl").exists())  # transfer_cells' choice
         gate = json.loads((base / run / "gate.json").read_text())
@@ -3912,7 +3911,8 @@ X52 = {
     "x8_write": {"qwen3.5-9b": "qwen35_9b_x8_write/verdict-20261026T110254Z",
                  "qwen3.6-27b": "x8_write_27b/verdict-20261026T125548Z",
                  "muse-glimmer-30b": "muse30b_x8_write/verdict-20261026T141141Z",
-                 "nemotron-3.5-lightning": "nem35l_x52_write/verdict-20261029T005021Z"},
+                 "nemotron-3.5-lightning": "nem35l_x52_write/verdict-20261029T005021Z",
+                 "qwen3.5-122b-a10b": "qwen35_122b_x8_write_g75/verdict-20261026T125705Z"},
     "z1": (R / "x50_zach" / "z1-20261028T161649Z" / "z1.json", LT_Z1),
     "z1p": (R / "x50_zach" / "x52_z1p-20261029T081112Z" / "z1p.json", R / "x50_zach" / "x52_z1p-20261029T081323Z" / "z1p.json",
             R / "x50_zach" / "x52_z1p-20261029T080731Z" / "z1p.json"),

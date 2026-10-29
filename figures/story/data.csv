@@ -8053,11 +8053,13 @@ catalogue,qwen3.5-9b,routes scenes: scenes used,300,,,,results/x6_routes/qwen35_
 catalogue,qwen3.6-27b,routes scenes: scenes used,300,,,,results/x6_routes/x6_routes_27b/outcomes.jsonl
 catalogue,muse-glimmer-30b,routes scenes: scenes used,300,,,,results/x6_routes/muse30b_x6_routes/outcomes.jsonl
 catalogue,nemotron-3.5-lightning,routes scenes: scenes used,300,,,,results/x6_routes/nem35l_x52_routes/outcomes.jsonl
+catalogue,qwen3.5-122b-a10b,routes scenes: scenes used,300,,,,results/x6_routes/qwen35_122b_x6_routes_g75/outcomes.jsonl
 catalogue,qwen3.5-9b,six-locker scenes: scenes used,300,,,,results/x47_six/qwen35_9b_x47_2/outcomes.jsonl
 catalogue,muse-glimmer-30b,six-locker scenes: scenes used,300,,,,results/x47_six/muse30_x47_2/outcomes.jsonl
 catalogue,nemotron-3.5-lightning,six-locker scenes: scenes used,300,,,,results/x47_six/nem35l_x52_six/outcomes.jsonl
 catalogue,qwen3.5-9b,natural passages: scenes eligible,83,,,,results/x5_natural/qwen35_9b_x5_natural_g75/gate.json
 catalogue,qwen3.6-27b,natural passages: scenes eligible,137,,,,results/x5_natural/x5_natural_ptr_27b/gate.json
+catalogue,qwen3.5-122b-a10b,natural passages: scenes eligible,114,,,,results/x5_natural/qwen35_122b_x5_natural_ptr/gate.json
 catalogue,muse-glimmer-30b,natural passages: scenes eligible,60,,,,results/x5_natural/muse30b_x5_natural_ptr/gate.json
 catalogue,qwen3.5-9b,"varied scenes: scenes used (prose, JSON and table)",1010,,,,results/x0b_generalize/qwen35_9b_x0b_v2_ptr/outcomes.jsonl
 catalogue,qwen3.5-9b,natural passages: scenes used (fact first),41,,,,results/x5_natural/qwen35_9b_x5_natural_g75/outcomes.jsonl
@@ -8232,6 +8234,7 @@ cards,qwen3.5-9b,the address swap at s = 2: recalls that change,0.215,,,600,resu
 cards,qwen3.6-27b,the address swap at s = 2: recalls that change,0.043333333333333335,,,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
 cards,muse-glimmer-30b,the address swap at s = 2: recalls that change,0.058333333333333334,,,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
 cards,nemotron-3.5-lightning,the address swap at s = 2: recalls that change,0.2733333333333333,,,600,results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.json
+cards,qwen3.5-122b-a10b,the address swap at s = 2: recalls that change,0.22666666666666666,,,600,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
 cards,qwen3.5-9b,the address swap at s = 2: changed recalls naming the swapped-in item's answer,0.845,,,129,results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.json
 cards,nemotron-3.5-lightning,the address swap at s = 2: changed recalls naming the swapped-in item's answer,0.854,,,164,results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.json
 cards,qwen3.5-9b,"Z1: lookup, switches lost beyond a random part",0.26315789473684215,0.1759137426900585,0.3571428571428572,200,results/x50_zach/z1-20261028T161649Z/z1.json
@@ -8686,6 +8689,7 @@ ledger_zach_named,qwen3.5-9b,"Zach's named passages, made-up facts, lookup: swit
 ledger_zach_named,qwen3.6-27b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.2763157894736843,0.17948717948717952,0.381578947368421,,results/x50_zach/z1-20261028T161649Z/z1.json
 ledger_zach_named,qwen3.6-27b,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.15000000000000002,0.06349206349206349,0.24528301886792458,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
 ledger_zach_named,muse-glimmer-30b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.6,0.3793103448275863,0.8148148148148149,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.039999999999999925,0.0,0.1428571428571428,,results/x50_zach/x52_z1p-20261029T094820Z/z1p.json
 ledger_zach_named,nemotron-3.5-lightning,"our main test (L14), lookup: switches lost beyond random",0.033333333333333326,-0.012345679012345623,0.08108108108108103,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, true facts, lookup: switches lost beyond random",0.15454545454545465,0.06796116504854366,0.24561403508771928,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
 ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.02631578947368418,-0.09722222222222221,0.14864864864864857,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
@@ -8694,6 +8698,7 @@ ledger_zach_named,qwen3.5-9b,"Zach's named passages, made-up facts, recall: swit
 ledger_zach_named,qwen3.6-27b,"Zach's named passages, true facts, recall: switches lost beyond random",0.5793650793650794,0.49193548387096764,0.663553525913339,,results/x50_zach/z1-20261028T161649Z/z1.json
 ledger_zach_named,qwen3.6-27b,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.6171874999999999,0.5294117647058825,0.7024849229394684,,results/x50_zach/x52_z1p-20261029T081323Z/z1p.json
 ledger_zach_named,muse-glimmer-30b,"Zach's named passages, true facts, recall: switches lost beyond random",0.8118811881188119,0.72,0.9047619047619048,,results/x50_zach/z1-20261028T161649Z/z1.json
+ledger_zach_named,muse-glimmer-30b,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.8144329896907216,0.7227722772277227,0.9021739130434783,,results/x50_zach/x52_z1p-20261029T094820Z/z1p.json
 ledger_zach_named,nemotron-3.5-lightning,"our main test (L14), recall: switches lost beyond random",0.34391534391534384,0.2499999999999999,0.44171779141104295,,results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.json
 ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, true facts, recall: switches lost beyond random",0.47590361445783136,0.4049079754601227,0.5510233070500926,,results/x50_zach/x52_z1-20261029T013035Z/z1.json
 ledger_zach_named,nemotron-3.5-lightning,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.47619047619047616,0.4076424466906674,0.5499999999999998,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
@@ -9354,11 +9359,15 @@ ledger_attnblock,nemotron-3.5-lightning,lookup: (ii) block 26,0.1364,0.06,0.216,
 ledger_attnblock,nemotron-3.5-lightning,"lookup: (iii) blocks 19, 26",0.3409,0.253,0.42,,
 ledger_attnblock,nemotron-3.5-lightning,lookup: (iv) all after L,0.3523,0.272,0.423,,
 ledger_attnblock,nemotron-3.5-lightning,lookup: (v) control,0.0,-0.056,0.054,,
+ledger_attnblock,nemotron-3.5-lightning,"lookup: span, first run",0.527,0.412,0.627,,
+ledger_attnblock,nemotron-3.5-lightning,"lookup: control span, first run",0.0,-0.039,0.041,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (i) block 19,0.0524,0.021,0.083,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (ii) block 26,0.0524,0.014,0.096,,
 ledger_attnblock,nemotron-3.5-lightning,"recall: (iii) blocks 19, 26",0.1414,0.089,0.199,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (iv) all after L,0.555,0.441,0.647,,
 ledger_attnblock,nemotron-3.5-lightning,recall: (v) control,0.0052,-0.012,0.022,,
+ledger_attnblock,nemotron-3.5-lightning,"recall: span, first run",0.2872,0.209,0.363,,
+ledger_attnblock,nemotron-3.5-lightning,"recall: control span, first run",-0.0106,-0.037,0.0,,
 ledger_jsuite,qwen3.5-9b,PP lookup: without the lens part,-0.04687499999999987,-0.13335365853658543,0.04687499999999989,,
 ledger_jsuite,qwen3.5-9b,PP lookup: answer directions only,-0.09375000000000008,-0.19999999999999996,-0.012496141975308765,,
 ledger_jsuite,qwen3.5-9b,PM recall: without the lens part,0.588957055214724,0.5093167701863354,0.6704596488840501,,
@@ -9367,24 +9376,65 @@ ledger_jsuite,qwen3.6-27b,PP lookup: without the lens part,0.1551724137931035,0.
 ledger_jsuite,qwen3.6-27b,PP lookup: answer directions only,0.03448275862068969,0.0,0.09259259259259267,,
 ledger_jsuite,qwen3.6-27b,PM recall: without the lens part,0.6269841269841269,0.5373103490810409,0.7166666666666667,,
 ledger_jsuite,qwen3.6-27b,PM recall: answer directions only,0.3174603174603175,0.2348993288590605,0.40741452991452987,,
-ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 1",0.5454545454545454,0.4444444444444444,0.6444444444444444,,
-ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 2",0.3728813559322034,0.22727272727272727,0.5263157894736842,,
+ledger_jsuite,qwen3.6-27b,MP lookup: without the lens part,0.375,0.19354838709677413,0.5555555555555556,,
+ledger_jsuite,qwen3.6-27b,MP lookup: answer directions only,0.28125,0.13333333333333353,0.4411764705882354,,
+ledger_jsuite,qwen3.6-27b,MM recall: without the lens part,0.64,0.45833333333333326,0.8277298850574691,,
+ledger_jsuite,qwen3.6-27b,MM recall: answer directions only,0.48,0.30434782608695643,0.6799999999999999,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 1: uninformative",0.5454545454545454,0.4444444444444444,0.6444444444444444,,
+ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 2: uninformative",0.3728813559322034,0.22727272727272727,0.5263157894736842,,
 ledger_last_conflict_words,qwen3.5-9b,"words, lookup, answer - 3",0.16326530612244897,0.047619047619047596,0.2857142857142857,,
 ledger_last_conflict_words,qwen3.5-9b,"words, lookup, read peak",0.0263157894736842,-0.058823529411764726,0.12202743902438916,,
-ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 1",0.6481481481481481,0.5514018691588786,0.7452830188679245,,
-ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 2",0.49382716049382713,0.3677979048450458,0.619047619047619,,
+ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 1: uninformative",0.6481481481481481,0.5514018691588786,0.7452830188679245,,
+ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 2: uninformative",0.49382716049382713,0.3677979048450458,0.619047619047619,,
 ledger_last_conflict_words,qwen3.5-9b,"words, recall, answer - 3",0.4722222222222222,0.29411764705882354,0.6522157190635446,,
-ledger_last_conflict_words,qwen3.5-9b,"our locker scenes, lookup, answer - 1",0.19047619047619047,0.10909090909090909,0.2647058823529412,,
-ledger_last_conflict_words,qwen3.5-9b,"our locker scenes, lookup, answer - 3",0.05454545454545452,-0.02,0.12858294930875555,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 1",0.8217054263565892,0.7518796992481203,0.8855016357688112,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 2",0.8527131782945736,0.7873886665806118,0.9126984126984127,,
+ledger_last_conflict_words,qwen3.5-9b,"locker, lookup, answer - 1: uninformative",0.19047619047619047,0.10909090909090909,0.2647058823529412,,
+ledger_last_conflict_words,qwen3.5-9b,"locker, lookup, answer - 3",0.05454545454545452,-0.02,0.12858294930875555,,
+ledger_last_conflict_words,qwen3.6-27b,"words, lookup, answer - 1: uninformative",0.8844221105527639,0.8418598718557191,0.923469387755102,,
+ledger_last_conflict_words,qwen3.6-27b,"words, lookup, answer - 2: uninformative",0.7411167512690355,0.6778846153846154,0.803030303030303,,
+ledger_last_conflict_words,qwen3.6-27b,"words, lookup, answer - 3",0.5846153846153845,0.5132275132275133,0.654054054054054,,
+ledger_last_conflict_words,qwen3.6-27b,"words, lookup, read peak",0.5846153846153845,0.5132275132275133,0.654054054054054,,
+ledger_last_conflict_words,qwen3.6-27b,"words, recall, answer - 1: uninformative",0.964824120603015,0.9354798587706628,0.9903846153846153,,
+ledger_last_conflict_words,qwen3.6-27b,"words, recall, answer - 2: uninformative",0.883248730964467,0.8357487922705314,0.9289617486338797,,
+ledger_last_conflict_words,qwen3.6-27b,"words, recall, answer - 3",0.6363636363636364,0.5617977528089888,0.7071823204419889,,
+ledger_last_conflict_words,qwen3.6-27b,"words, recall, read peak",0.6222222222222221,0.543586956521739,0.6994227549827853,,
+ledger_last_conflict_words,qwen3.6-27b,"locker, lookup, read peak",0.12903225806451615,0.030303030303030304,0.25,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, lookup, answer - 1: uninformative",0.791304347826087,0.7129629629629629,0.865546218487395,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, lookup, answer - 2: uninformative",0.6551724137931035,0.5596330275229358,0.744,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, lookup, answer - 3",0.6637931034482758,0.5765765765765766,0.7461567164179104,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, recall, answer - 1: uninformative",0.7456140350877194,0.6635514018691588,0.8275862068965517,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, recall, answer - 2: uninformative",0.6666666666666666,0.5714285714285714,0.7586206896551725,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, recall, answer - 3",0.6929824561403509,0.601851851851852,0.7786885245901639,,
+ledger_last_conflict_words,muse-glimmer-30b,"words, recall, read peak",0.7777777777777778,0.6972477064220183,0.8557692307692307,,
+ledger_last_conflict_words,muse-glimmer-30b,"locker, lookup, answer - 1: uninformative",-0.01538461538461533,-0.047619047619047616,0.0,,
+ledger_last_conflict_words,muse-glimmer-30b,"locker, lookup, answer - 3",0.0,0.0,0.0,,
+ledger_last_conflict_words,muse-glimmer-30b,"locker, lookup, read peak",0.0,0.0,0.0,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 1: uninformative",0.8217054263565892,0.7518796992481203,0.8855016357688112,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 2: uninformative",0.8527131782945736,0.7873886665806118,0.9126984126984127,,
 ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, answer - 3",0.7578125,0.6842105263157895,0.8292730194743808,,
 ledger_last_conflict_words,nemotron-3.5-lightning,"words, lookup, read peak",-0.04918032786885243,-0.125,0.017241379310344848,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 1",0.875,0.8125,0.9328358208955224,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 2",0.8671875000000001,0.803415300546448,0.9253731343283582,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 1: uninformative",0.875,0.8125,0.9328358208955224,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 2: uninformative",0.8671875000000001,0.803415300546448,0.9253731343283582,,
 ledger_last_conflict_words,nemotron-3.5-lightning,"words, recall, answer - 3",0.7441860465116279,0.6641776803007862,0.8201438848920863,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"our locker scenes, lookup, answer - 1",0.18644067796610175,0.08771929824561409,0.28985507246376807,,
-ledger_last_conflict_words,nemotron-3.5-lightning,"our locker scenes, lookup, answer - 3",0.13559322033898302,0.04761904761904756,0.2222222222222222,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"locker, lookup, answer - 1: uninformative",0.18644067796610175,0.08771929824561409,0.28985507246376807,,
+ledger_last_conflict_words,nemotron-3.5-lightning,"locker, lookup, answer - 3",0.13559322033898302,0.04761904761904756,0.2222222222222222,,
+ledger_report_slot1,qwen3.5-9b,the earlier report wording,0.027210884353741496,0.006450578990901573,0.05426752096187306,,
+ledger_report_slot1,qwen3.5-9b,position wording (a digit),0.17687074829931973,0.1079136690647482,0.25,,
+ledger_report_slot1,qwen3.5-9b,sentence wording (a word),0.6054421768707483,0.5079334077380953,0.6959459459459459,,
+ledger_report_slot1,qwen3.6-27b,the earlier report wording,0.7142857142857143,0.6280943686334807,0.7891566265060241,,
+ledger_report_slot1,qwen3.6-27b,position wording (a digit),0.6802721088435374,0.5930972906403941,0.7631578947368421,,
+ledger_report_slot1,qwen3.6-27b,sentence wording (a word),0.9863945578231292,0.9642857142857143,1.0,,
+ledger_report_slot1,nemotron-3.5-lightning,the earlier report wording,0.2857142857142857,0.21637031768610715,0.35374149659863946,,
+ledger_report_slot1,nemotron-3.5-lightning,position wording (a digit),0.2916666666666667,0.21494753741184566,0.3670229598707245,,
+ledger_report_slot1,nemotron-3.5-lightning,sentence wording (a word),0.4583333333333333,0.3674698795180723,0.551948051948052,,
+ledger_twobytwo,qwen3.5-9b,"Q after, number: recall lost",0.4974619289340101,0.4108083976833977,0.5714285714285713,,
+ledger_twobytwo,qwen3.5-9b,"Q after, number: recall kept",0.9489795918367347,0.9032258064516131,0.9896907216494845,,
+ledger_twobytwo,qwen3.5-9b,"Q after, number: lookup lost",-0.047169811320754707,-0.08791208791208793,0.0,,
+ledger_twobytwo,qwen3.6-27b,"Q after, number: recall lost",0.7399999999999999,0.6646706586826348,0.8021420586724674,,
+ledger_twobytwo,qwen3.6-27b,"Q after, number: recall kept",0.927927927927928,0.8469387755102042,0.9894736842105264,,
+ledger_twobytwo,qwen3.6-27b,"Q after, number: lookup lost",0.13953488372093015,0.07608695652173902,0.20481927710843362,,
+ledger_twobytwo,qwen3.6-27b,"Q before, number: recall lost",0.5589743589743589,0.4583333333333335,0.6463414634146342,,
+ledger_twobytwo,qwen3.6-27b,"Q before, number: recall kept",0.9082568807339451,0.8108036984352772,0.9836098893775823,,
+ledger_twobytwo,qwen3.6-27b,"Q before, number: lookup lost",0.22448979591836726,0.1456310679611651,0.3059739567468778,,
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
