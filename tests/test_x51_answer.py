@@ -485,7 +485,7 @@ def test_coverage_verdict_reads_the_coverage_runs_without_the_seal(tmp_path, mon
 
 
 def test_lightning_is_a_coverage_target_of_e1_and_cue():
-    assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2"} and A.COVERAGE_RUNS["e1"] == {
+    assert set(A.COVERAGE_RUNS) == {"e1", "cue", "z2", "z1k", "z1p"} and A.COVERAGE_RUNS["e1"] == {
         "nemotron-3.5-lightning": "nem35l_x52_answer"
     }
     assert A.COVERAGE_RUNS["cue"] == {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"} and A.COVERAGE_RUNS["z2"] == {
@@ -537,4 +537,24 @@ def test_run_names_and_spec_ids():
         A.RUNS["cue"]
     )
     assert np.isclose(A.ENTITY_KEEP, 0.7) and np.isclose(A.ANSWER_KEEP, 0.3) and np.isclose(A.ANSWER_A_MIN, 0.5)
-    assert A.NOT_READ_RANK == 50 and math.isclose(A.NOT_READ_SHARE, 0.9) and A.FREQ_SETS == ("z2",)
+    assert (
+        A.NOT_READ_RANK == 50 and math.isclose(A.NOT_READ_SHARE, 0.9) and set(A.FREQ_SETS) & set(A.SETS) == {"z2"}
+    )  # the design: Z2 only (the named sets: batch 52)
+
+
+def test_zachs_named_passages_k_and_p_are_coverage_sets():
+    """Dan's morning brief item 2: 51.12's arms on Zach's named passages, K (Z1's runs) and P (Z1-P's runs), read like
+    Z2 (each reader's own Δ at the patch token, word answers, the frequency-matched control), on the 9B, 27B and
+    Lightning at the committed L; no prediction (coverage runs)."""
+    from scripts import x50_zach as Z
+
+    for s in ("z1k", "z1p"):
+        assert s in A.ZACH_SETS and s in A.FREQ_SETS and s not in A.NUMBER_SETS and s not in A.RUNS
+        assert set(A.COVERAGE_RUNS[s]) == {"qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning"}
+        assert A.DECISIVE[s] == ("lookup", "recall")
+        for t in A.COVERAGE_RUNS[s]:
+            assert A.layer_of(s, t) == Z.LAYERS[t][0]
+    assert A.source_of("z1k", "qwen3.5-9b").name == Z.RUNS["z1"]["qwen3.5-9b"]
+    assert A.source_of("z1k", "nemotron-3.5-lightning").name == Z.COVERAGE_RUNS["z1"]["nemotron-3.5-lightning"]
+    assert A.source_of("z1p", "qwen3.6-27b").name == Z.COVERAGE_RUNS["z1p"]["qwen3.6-27b"]
+    assert A.source_of("z2", "qwen3.5-9b").name == Z.RUNS["z2"]["qwen3.5-9b"]  # unchanged

@@ -101,8 +101,14 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch51.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
 QUESTION = "Q51.12"
-SETS = ("z2", "e1", "cue")
+SETS = ("z2", "e1", "cue")  # 51.12's design sets
+NAMED_SETS = ("z1k", "z1p")  # batch 52, Dan's morning brief item 2 (coverage runs only)
+ALL_SETS = SETS + NAMED_SETS
+ZACH_SETS = ("z2", "z1k", "z1p")  # Zach's passages: each reader's own Δ at the patch token, word answers, his read
+Z1_SOURCE = {"z1k": "z1", "z1p": "z1p"}  # x50_zach part each Z1 set rebuilds from (K: Z1's PK / PM; P: Z1-P's PP / PM)
 SET_TEXT = {"z2": "Z2 (Zach's never-named bridge, the description's last token)",
+            "z1k": "Zach's named bridge, true facts (Z1's K passages; the pointer name's last token)",
+            "z1p": "Zach's named bridge, made-up facts (Z1-P's P passages; the pointer name's last token)",
             "e1": "the main test E1 (the bridge word)", "cue": "47.3's described bridge (the cue token, locker scenes)"}  # fmt: skip
 # r2 (amendment 20:20): new run names; the r1 runs (digit A, no frequency control) stay as records
 RUNS = {
@@ -112,12 +118,19 @@ RUNS = {
     "cue": {"qwen3.5-9b": "qwen35_9b_x51_12_cue_r2", "qwen3.6-27b": "x51_12_cue_27b_r2"},
 }  # fmt: skip
 TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}
-SPEC_IDS = {s: {t: f"x51_12_{s}_{TAGS[t]}_r2" for t in RUNS[s]} for s in SETS}
+SPEC_IDS = {s: {t: f"x51_12_{s}_{TAGS[t]}_r2" for t in RUNS.get(s, {})} for s in SETS}
 # Batch 52 C coverage (jobs/c3/batch52.yaml, amendment 3): the same rules on Lightning, no Q-line; read by verdict
 # --coverage (RUNS and 51.12's own verdict unchanged)
-COVERAGE_RUNS = {"e1": {"nemotron-3.5-lightning": "nem35l_x52_answer"},
-                 "cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"},  # cue: on 47.3's Lightning run
-                 "z2": {"nemotron-3.5-lightning": "nem35l_x52_answer_z2"}}  # z2: on Lightning's Z2 run (morning brief 3)  # fmt: skip
+COVERAGE_RUNS = {
+    "e1": {"nemotron-3.5-lightning": "nem35l_x52_answer"},
+    "cue": {"nemotron-3.5-lightning": "nem35l_x52_cue_answer"},  # cue: on 47.3's Lightning run
+    "z2": {"nemotron-3.5-lightning": "nem35l_x52_answer_z2"},  # z2: on Lightning's Z2 run (morning brief 3)
+}
+# Dan's morning brief (29 Oct) item 2: 51.12's arms on Zach's named passages, K and P (his missing cell: the bridge named
+# before the question, word answers), on the 9B, 27B and Lightning at the committed L; rules verbatim, no prediction
+for _s in ("z1k", "z1p"):
+    COVERAGE_RUNS[_s] = {"qwen3.5-9b": f"qwen35_9b_x52_answer_{_s}", "qwen3.6-27b": f"x52_answer_{_s}_27b",
+                         "nemotron-3.5-lightning": f"nem35l_x52_answer_{_s}"}  # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x51_answer/x51_12-20261028T201842Z"  # 51.12's rules first scored (r2)
 
@@ -129,7 +142,8 @@ def runs_of(set_name: str) -> dict[str, str]:
 
 ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_jpp_A", "no_jpp_A_rand", "no_A", "no_A_rand")
 F_ARM = "no_F"
-FREQ_SETS = ("z2",)  # the amendment's frequency-matched control: Z2 only
+FREQ_SETS = ("z2", "z1k", "z1p")  # the amendment's frequency-matched control: Z2, and Zach's named passages (word
+# answers too: the amendment's reason, common word starts, applies; a label then needs both controls: conservative)
 NUMBER_SETS = ("e1", "cue")  # A = the answers' number words
 PAIRS = {1: ("no_jpp", "no_jpp_rand"), 2: ("no_jpp_A", "no_jpp_A_rand"), 3: ("no_A", "no_A_rand")}
 PAIR_F = ("no_A", F_ARM)  # arm 3 against its frequency-matched control
@@ -396,7 +410,7 @@ def freq_match(a_ids: list[int], letter_ids: np.ndarray, log_norm: np.ndarray, b
 def layer_of(set_name: str, target: str) -> int:
     from scripts import x50_zach as Z
 
-    return Z.LAYERS[target][0] if set_name == "z2" else X.PREDICTED[target]
+    return Z.LAYERS[target][0] if set_name in ZACH_SETS else X.PREDICTED[target]
 
 
 def source_of(set_name: str, target: str) -> Path:
@@ -404,10 +418,9 @@ def source_of(set_name: str, target: str) -> Path:
     from scripts import x47_cue as CUE
     from scripts import x50_zach as Z
 
-    if set_name == "z2":
-        return (
-            Z.RESULTS / {**Z.RUNS["z2"], **Z.COVERAGE_RUNS.get("z2", {})}[target]
-        )  # batch 52: Lightning's nem35l_x52_z2
+    if set_name in ZACH_SETS:
+        part = Z1_SOURCE.get(set_name, set_name)
+        return Z.RESULTS / {**Z.RUNS.get(part, {}), **Z.COVERAGE_RUNS.get(part, {})}[target]  # batch 52: Lightning's
     if set_name == "e1":
         return X.RESULTS / B.MAIN_RUN[target]
     return CUE.RESULTS / {**CUE.RUNS, **CUE.COVERAGE_RUNS}[target]  # batch 52 C: Lightning's 47.3 run (nem35l_x52_cue)
@@ -418,10 +431,10 @@ def unit(set_name: str, c: dict, key: str, entity: str, cf_entity: str, extra_wo
     reader whose prompts give its Δ (z2: its own; e1 / cue: the lookup's, identical through the edited token)."""
     readers = {}
     for w, rd in c["readers"].items():
-        pos = rd["pos"] if set_name == "z2" else c["pos"]
-        src = w if set_name == "z2" else X.LOOKUP
+        pos = rd["pos"] if set_name in ZACH_SETS else c["pos"]
+        src = w if set_name in ZACH_SETS else X.LOOKUP
         readers[w] = {**{k: v for k, v in rd.items() if k not in ("context", "cf_context")}, "pos": pos, "src": src,
-                      "suffix": [] if set_name == "z2" else c["space"],
+                      "suffix": [] if set_name in ZACH_SETS else c["space"],
                       "words_A": [rd["answer"], rd["cf_answer"], *extra_words.get(w, [])]}  # fmt: skip
     out = {
         "set": set_name,
@@ -434,9 +447,12 @@ def unit(set_name: str, c: dict, key: str, entity: str, cf_entity: str, extra_wo
     if set_name == "cue":
         out["route_tokens"] = c["route_tokens"]
         out["expect"] = c["expect"]
-    if set_name == "z2":
+    if set_name in ZACH_SETS:
         out["source_set"] = c["set"]
+    if set_name == "z2":
         out["desc"], out["cf_desc"] = c["desc"], c["cf_desc"]
+    if set_name in Z1_SOURCE:
+        out["stratum"] = c.get("stratum")
     return out
 
 
@@ -527,7 +543,41 @@ def cue_items(tok, target: str) -> tuple[list[dict], dict, dict]:
     return items, g, {"source": src.name, "items": len(items), "cues_kept": len(cues["kept"])}
 
 
-BUILD = {"z2": z2_items, "e1": e1_items, "cue": cue_items}
+def z1_items(tok, target: str, set_name: str) -> tuple[list[dict], dict, dict]:
+    """Zach's named passages (K: Z1's run; P: Z1-P's run): the source run's chosen passages rebuilt by x50_zach.encode
+    (its part) and checked id by id, as z2_items."""
+    from scripts import x50_zach as Z
+
+    part = Z1_SOURCE[set_name]
+    src = source_of(set_name, target)
+    gate = json.loads((src / "gate.json").read_text())
+    m = json.loads((src / "manifest.json").read_text())
+    assert m["model"]["target"] == target, f"{src.name} is not {target}'s"
+    assert m["part"] == part, f"{src.name} is a {m['part']} run, not {part}"
+    assert layer_of(set_name, target) in m["layers"], f"{src.name} has no L{layer_of(set_name, target)}"
+    stored = {(c["set"], c["scene"]): c for c in X.read_jsonl(src / "cases.jsonl")}
+    passages = {}
+    for s_ in sorted({s_ for s_, _ in gate["order"]}):
+        ps, _ = Z.load_pairs(s_, part)
+        passages.update({(s_, p[Z.LOOKUP]["scene"]): p for p in ps})
+    items = []
+    for s_, scene in gate["order"]:
+        old = stored[(s_, scene)]
+        c, why = Z.encode(tok, part, passages[(s_, scene)], old["cf_bridge"])
+        assert c is not None, f"{s_} {scene}: does not rebuild ({why})"
+        c["set"] = s_
+        for w in Z.READERS:
+            assert c["readers"][w]["ids"] == old["readers"][w]["ids"], f"{scene}: {w}'s ids changed since {src.name}"
+            assert c["readers"][w]["pos"] == old["readers"][w]["pos"], f"{scene}: {w}'s patch token moved"
+        items.append(unit(set_name, c, f"{s_}|{scene}", c["bridge"], c["cf_bridge"], {}))
+    g = {"pass": bool(gate["pass"]), "chosen": gate["chosen"], "org_read_accuracy": gate["org_read_accuracy"],
+         "gate": gate["gate"]}  # fmt: skip
+    return items, g, {"source": src.name, "items": len(items),
+                      "sets": dict(collections.Counter(it["source_set"] for it in items))}  # fmt: skip
+
+
+BUILD = {"z2": z2_items, "e1": e1_items, "cue": cue_items, "z1k": lambda tok, t: z1_items(tok, t, "z1k"),
+         "z1p": lambda tok, t: z1_items(tok, t, "z1p")}  # fmt: skip
 
 
 def item_tokens(tok, it: dict) -> dict:
@@ -587,7 +637,7 @@ def stage_plan(set_name: str, plan_dir: str | None = None, k_prompts: int = N_PR
     from scripts import x45m
 
     target = pins.TARGET
-    assert target in RUNS[set_name], f"51.12 {set_name} runs on {sorted(RUNS[set_name])}, not {target}"
+    assert target in runs_of(set_name), f"51.12 {set_name} runs on {sorted(runs_of(set_name))}, not {target}"
     tok = x45m.tokenizer()
     decode = lambda ids: tok.decode([int(t) for t in ids], skip_special_tokens=False)  # noqa: E731
     items, gate, counts = BUILD[set_name](tok, target)
@@ -604,8 +654,8 @@ def stage_plan(set_name: str, plan_dir: str | None = None, k_prompts: int = N_PR
     out = Path(plan_dir) if plan_dir else RESULTS / f"plan-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True, exist_ok=True)
     chosen = sorted(random.Random(VIEW_SEED).sample(range(len(items)), min(k_prompts, len(items))))
-    blob = {"set": set_name, "target": target, "layer": layer_of(set_name, target), "run": RUNS[set_name][target],
-            "spec": SPEC_IDS[set_name][target], "code": git_state(), "source_gate": gate, "counts": counts,
+    blob = {"set": set_name, "target": target, "layer": layer_of(set_name, target), "run": runs_of(set_name)[target],
+            "spec": SPEC_IDS.get(set_name, {}).get(target), "code": git_state(), "source_gate": gate, "counts": counts,
             "entities": len({it["entity"] for it in items}), "arms": list(names), "reads": reads,
             "delta_forwards": len(items) * 2 * len({rd["src"] for rd in items[0]["readers"].values()}) if items else 0,
             "A_kind": "number words, one-token letter variants" if num else "answer words, first token of each variant",
@@ -626,7 +676,7 @@ def stage_plan(set_name: str, plan_dir: str | None = None, k_prompts: int = N_PR
                          "A": [decode([t]) for t in toks[i]["A"]],
                          **{f"{READER_NAME[w]}_{v}": mark(decode, rd["ids"][v] + rd["suffix"], rd["pos"])
                             for w, rd in items[i]["readers"].items() for v in ("org", "alt")}} for i in chosen]}  # fmt: skip
-    stem = f"plan-{set_name}-{TAGS[target]}"
+    stem = f"plan-{set_name}-{TAGS.get(target, target)}"
     (out / f"{stem}.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
     lines = [f"# {EXP} plan (r2, amendment 20:20): {SET_TEXT[set_name]} on {target} (tokenizer and stored runs only; "
              "UNVERIFIED)", "",
@@ -705,14 +755,14 @@ def read_item(model, set_name: str, it: dict, layer: int, arms: dict, i: int, di
     for w, rd in it["readers"].items():
         edits = [{}] + [{layer: AddRows(arms[rd["src"]][a][i : i + 1], [rd["pos"]])} for a in names]
         logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", rd["suffix"], ws)
-        if set_name == "z2":
+        if set_name in ZACH_SETS:
             cands = torch.tensor(sorted({rd["tok_A"], rd["tok_b"], *([rd["tok_lure"]] if rd["tok_lure"] else [])}),
                                  device=model.device)  # fmt: skip
         else:
             cands = digits
         for a, lg in zip(("none", *names), logits, strict=True):
             row = X.read_row(lg, rd, cands)
-            if set_name == "z2":
+            if set_name in ZACH_SETS:
                 row["route"] = Z.route(row["top"], rd)
             elif set_name == "cue" and w == X.LOOKUP:
                 row["route"] = R.classify(row["top"], it)
@@ -739,11 +789,11 @@ def stored_rows(set_name: str, src: Path, layer: int) -> dict[tuple[str, str, st
                 continue
             key = r["scene"]
         else:
-            if set_name == "z2" and r["layer"] != layer:
+            if set_name in ZACH_SETS and r["layer"] != layer:
                 continue
             if r["arm"] not in ("none", "whole", "no_jpp", "no_jpp_rand"):
                 continue
-            arm, key = r["arm"], (f"{r['set']}|{r['scene']}" if set_name == "z2" else r["scene"])
+            arm, key = r["arm"], (f"{r['set']}|{r['scene']}" if set_name in ZACH_SETS else r["scene"])
         # the 9B's X0 run (24 Oct) predates the stored top token: None there, and agree_top counts what is stored
         out[(key, r["reader"], arm)] = {"switched": int(r["switched"]), "top": r.get("top"),
                                         "sw": switch_of(set_name, r["reader"], r) if set_name == "cue" else int(r["switched"])}  # fmt: skip
@@ -1154,7 +1204,8 @@ def fmt(v) -> str:
     return "-" if v is None or not ok(v[0]) else f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"
 
 
-DECISIVE = {"z2": ("lookup", "recall"), "e1": ("recall",), "cue": ("lookup", "recall")}
+DECISIVE = {"z2": ("lookup", "recall"), "e1": ("recall",), "cue": ("lookup", "recall"), "z1k": ("lookup", "recall"),
+            "z1p": ("lookup", "recall")}  # fmt: skip
 
 
 def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
@@ -1309,7 +1360,7 @@ def stage_view(sets: tuple[str, ...] = SETS, decode_for=None) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view"])
-    ap.add_argument("--set", choices=SETS, help="plan / run: the set; verdict / view: one set (default all)")
+    ap.add_argument("--set", choices=ALL_SETS, help="plan / run: the set; verdict / view: one set (default all)")
     ap.add_argument("--name", help="run: the run name (results/x51_answer/<name>/)")
     ap.add_argument("--plan-dir", help="plan: the folder to write into (default a new plan-<UTC>/)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
