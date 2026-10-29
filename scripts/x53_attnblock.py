@@ -652,9 +652,25 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
     out = RESULTS / f"x53_attnspan-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     c = m["items"]
+    # the selection beside the label (coordinator 11:40): the rule's scenes vs those without a control, their span
+    # lengths (from items.jsonl), and the span arm's cut on the rule's scenes and on every scene
+    med = {k: float(np.median(v)) if v else None for k, v in
+           (("rule", [len(it["span"]) for it in items if it["in_rule"]]),
+            ("dropped", [len(it["span"]) for it in items if not it["in_rule"]]),
+            ("all", [len(it["span"]) for it in items]))}  # fmt: skip
+    sel = {"rule_scenes": len(in_rule), "dropped_scenes": len(rest), "median_span_tokens": med,
+           "span_cut_rule": [lk["cut"]["span"], lk["cut_ci"]["span"]],
+           "span_cut_all": [beside_all[X.LOOKUP]["cut"]["span"], beside_all[X.LOOKUP]["cut_ci"]["span"]]}  # fmt: skip
     lines = [f"x53_attnspan: the 53.4 follow-up on Lightning (L{m['layer']}; run {name}); Batch 53, 53.4 follow-up (Dan "
              f"11:10); {NO_PREDICTION}; UNVERIFIED", "", f"Rule (verbatim): {RULE_SPAN}", f"53.4's rule (for \"else as "
-             f"53.4\"): {RULE}", f"As computed: {AS_COMPUTED_SPAN}", "", f"Label (lookup): {lab}", "",
+             f"53.4\"): {RULE}", f"As computed: {AS_COMPUTED_SPAN}", "",
+             f"Label (lookup): {lab} — decided on the {len(in_rule)} scenes where a control span fits (median span "
+             f"{med['rule']} tokens); {len(rest)} scenes without one (median span {med['dropped']} tokens; the bridge word "
+             f"early) dropped from the rule. The span arm's cut: {fmt(lk['cut']['span'], lk['cut_ci']['span'])} on the "
+             f"{len(in_rule)}, {fmt(beside_all[X.LOOKUP]['cut']['span'], beside_all[X.LOOKUP]['cut_ci']['span'])} on all "
+             f"{len(items)} (median span {med['all']} tokens)" + (
+                 f", {fmt(beside_rest[X.LOOKUP]['cut']['span'], beside_rest[X.LOOKUP]['cut_ci']['span'])} on the {len(rest)}"
+                 if beside_rest else "") + ".", "",
              f"Scenes: {c['items']} (53.4's); in the rule (a control span fits) {c['span_items_in_rule']} "
              f"({c['span_entities_in_rule']} bridge entities); dropped from the rule, no control fits: "
              f"{c['span_dropped_no_control_fits']}; span length (tokens, min / median / max) in the rule "
@@ -697,7 +713,7 @@ def stage_verdict_span(name: str = RUN_SPAN, n_boot: int = X.N_BOOT) -> Path:
             "beside_all": {("lookup" if w == X.LOOKUP else "recall"): v for w, v in beside_all.items()},
             "beside_no_control": None if beside_rest is None else {("lookup" if w == X.LOOKUP else "recall"): v
                                                                   for w, v in beside_rest.items()},
-            "x53_4": prior, "status": "UNVERIFIED"}  # fmt: skip
+            "x53_4": prior, "selection": sel, "status": "UNVERIFIED"}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, default=float) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

@@ -313,7 +313,15 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
     rows, items = [], []
     for i in range(30):
         s, ok = f"s{i}", i < 20
-        items.append({"scene": s, "in_rule": ok, "span_text": " beta. ...", "control_text": "Eve" if ok else None})
+        items.append(
+            {
+                "scene": s,
+                "in_rule": ok,
+                "span": list(range(10 if ok else 20)),
+                "span_text": " beta. ...",
+                "control_text": "Eve" if ok else None,
+            }
+        )
         for w in ("PP", "PM"):
             for a in AB.SPAN_ARMS if ok else AB.SPAN_ARMS[:3]:
                 for p in AB.PATCHES:
@@ -331,3 +339,11 @@ def test_span_verdict_on_planted_reads(tmp_path, monkeypatch):
     )
     text = (out / "verdict.md").read_text()
     assert AB.RULE_SPAN in text and "Dan 11:10" in text and "UNVERIFIED" in text and "dropped from the rule" in text
+    sel = blob["selection"]
+    assert (sel["rule_scenes"], sel["dropped_scenes"]) == (20, 10) and sel["median_span_tokens"] == {
+        "rule": 10.0,
+        "dropped": 20.0,
+        "all": 10.0,
+    }
+    label_line = next(ln for ln in text.splitlines() if ln.startswith("Label (lookup)"))
+    assert "on the 20" in label_line and "on all 30" in label_line and "median span 10.0 tokens" in label_line
