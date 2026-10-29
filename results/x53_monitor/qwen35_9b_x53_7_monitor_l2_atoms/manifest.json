@@ -1,0 +1,43 @@
+{
+  "exp": "x53_monitor",
+  "run": "qwen35_9b_x53_7_monitor_l2_atoms",
+  "stage": "atoms",
+  "source": "qwen35_9b_x53_7_monitor_l2",
+  "test": "53.7 (the pointer in code and tool output)",
+  "prediction": "Batch 53, 53.7 (Dan 11:10); no prediction; UNVERIFIED",
+  "spec": "jobs/c3/batch53.yaml (53.2 critic_1125 arms beside 53.7's monitor)",
+  "written_utc": "2026-10-29T12:43:15Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "a58762ad9bcad1a7a02ff012e6ff5317bacf4b8b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "sets": [
+    "tool_l"
+  ],
+  "what": "unit J++ lens vectors of the fixed J++ subspaces' atoms (lens.vectors, as x0_necessity.dictionary); the ids computed here from the forward run (x53_7.monitor_atom_ids = x53_monitor.needed_atom_ids)",
+  "finished_utc": "2026-10-29T12:43:28Z"
+}
