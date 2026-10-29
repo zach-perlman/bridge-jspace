@@ -1,0 +1,47 @@
+id: x52_27b_z3
+title: "Batch 52 C coverage (27B gap, amendment 2): Zach's Z3 on Qwen3.6-27B at L32 (X0's layer, the start of his 27B band L32-40): the routes test on his jsuite v2 passages (three facts before the pointer; S moves B's fact to C's slot with a new value; the change at the pointer name's last token, read on O: identity / position / value / original / other); whole / without J++ / without a random part; C0 beside; rule unchanged; no prediction"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (batch 52 C, amendment 2: the 27B fills every gap)" &&
+  uv run python scripts/x50_zach.py run --part z3 --name x50_z3_27b &&
+  printf '%s\n' "$NOTE" > results/x50_zach/x50_z3_27b/coverage.txt &&
+  uv run python scripts/x50_zach.py verdict --part z3 --coverage --runs x50_z3_27b
+question: >-
+  In Zach's natural passages, on the 27B, does the change at the bridge name carry a position (the lookup answers the
+  fact standing at B's new slot in O, C's fact), the identity (B's fact where it stands in O), or the value (the new
+  word)?
+why_it_matters: >-
+  Amendment 2: the 27B fills every gap (Part V, Z3 on his passages; batch 50 ran it on the 9B and Muse only).
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule."
+decision_rule: >-
+  The rule unchanged, verbatim from jobs/c3/x50_z3_muse.yaml (jobs/c3/batch50.yaml, Z3; first scored in
+  results/x50_zach/z3-20261028T163053Z): "Value <= 0.05; report identity / position shares. If position >= 0.2: the
+  address exists in scattered-fact passages; then and only then fit a label-free address basis on a held-out half (as
+  45d) and run without / only it vs random. If position <= 0.05: "no position route in his layout": the address is a
+  property of listed layouts." As computed: x50_z3_muse.yaml's text unchanged (his v2 facts module, level-0 P-start K
+  passages with all three facts before the asked person's pointer sentence; sets in order until 200 eligible:
+  jsuite_v2_test_chat, jsuite_v2nb_test_chat, jsuite_v2r2_test_chat, jsuite_v2r3_test_chat; B / C order and the value
+  seeded 5001; alignment as there; C0 = S0, the pointer's name alone, descriptive; his chat framing, the top token at
+  the first answer step, x6_routes.classify; the gate 0.80 on O's read; eligibility O said / read a, S said / read e;
+  arms whole (the rule), without J++ (signed OMP, k = 25) and without a random part of its share (seed 888 + L),
+  descriptive; cluster bootstrap over the original bridge entity, 10,000, seed 0; point estimates decide, EPS 1e-9;
+  position >= 0.20 -> "the address exists in scattered-fact passages", <= 0.05 -> "no position route in his layout",
+  else in between; the value check beside) on the 27B's tokenizer. Layer: x50_zach.LAYERS['qwen3.6-27b'] = (32,),
+  batch 50's own 27B layer, which is X0's L32 and the start of Zach's 27B band L32-40 (BESIDE_BAND): one layer, as the
+  9B's design (the two coincide; Muse and Lightning report two because X0's L lies below his band). The 45d follow-up
+  is not in this job (due only if position >= 0.2). Verdict in the job (verdict --coverage, results/x50_zach/x52_z3-<UTC>/).
+controls:
+- "the value route (the new word, never in O): <= 0.05 expected (batch50.yaml)"
+- "C0: the pointer names B and nothing else moves (Z1's counterfactual on the same passages), beside"
+- "the J++ part against a random part of its own share (X0's random subspace, seed 888 + L), descriptive"
+- "the read gate (0.80) and O / S said and read right"
+- "stratum: passages whose moved sentence keeps C's exact token span (position share beside)"
+n: "all eligible up to 200 over the four sets (the gate may keep fewer)"
+seeds: [2601, 2701, 2602, 2603, 5001, 0, 888]
+notes: "Batch 52 C, amendment 2 (27B gap; coordinator 03:00 Paris). Box: mats (the box that ran x50_z1_27b / x50_z2_27b_s; 27B weights and his sets there; one GPU, behind or beside the 27B gaps a / b). Code: x50_zach.COVERAGE_RUNS['z3'] gains the 27B (x50_z3_27b); the run asserts LAYERS' first layer is X0's (32 = 32) and writes 'no prediction' into the manifest; RUNS['z3'] and batch 50's verdict unchanged. Retry once, then skip with the reason logged. Wallclock (ledger_sesterce-h100x2): x50_z3_9b 257 s, x50_z3_muse 322 s (two layers), x50_z1_27b 1,024 s vs x50_z1_9b 1,050 s: est ~6-8 min, 0.2 GPU-h with margin; opens before the freeze."

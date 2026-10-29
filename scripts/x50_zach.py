@@ -108,6 +108,9 @@ RUNS["z3"] = {"qwen3.5-9b": "qwen35_9b_x50_z3", "muse-glimmer-30b": "muse30_x50_
 # --coverage; RUNS and batch 50's own verdicts unchanged
 LAYERS["nemotron-3.5-lightning"] = (14, 27)  # 14 = results/x51_lightning/nem35l_x52_layer_r2/layer.json (asserted)
 COVERAGE_RUNS = {"z1": {"nemotron-3.5-lightning": "nem35l_x52_z1"}, "z3": {"nemotron-3.5-lightning": "nem35l_x52_z3"}}
+# batch 52 C coverage (amendment 2, 27B gap; jobs/c3/x52_27b_z3.yaml): Z3 on the 27B at L32, X0's layer and the start
+# of Zach's 27B band L32-40 (one layer: they coincide); RUNS['z3'] and batch 50's verdict unchanged
+COVERAGE_RUNS["z3"]["qwen3.6-27b"] = "x50_z3_27b"
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 COVERAGE = False  # set by verdict --coverage
 Z3_CONDS = {"C2": "alt", "C0": "alt0"}  # condition -> its source prompt; C2 the test, C0 the name alone (descriptive)

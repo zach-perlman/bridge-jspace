@@ -89,3 +89,17 @@ def test_natural_verdict_on_a_gate_failed_run_says_not_tested(tmp_path, monkeypa
     with pytest.raises(SystemExit, match="not tested, no outcomes"):
         N.stage_verdict("r", 10)
     assert sorted(p.name for p in run.iterdir()) == ["gate.json", "manifest.json"]
+
+
+def test_z3_coverage_verdict_on_the_27b(tmp_path, monkeypatch):
+    """Z3 on the 27B (batch 52 C, after the matrix): at L32 (X0's layer, the start of Zach's 27B band L32-40), a
+    coverage verdict with no prediction, the 27B's run alone, its own folder."""
+    from scripts import x50_zach as Z
+
+    monkeypatch.setattr(Z, "RESULTS", tmp_path / "zach")
+    monkeypatch.setattr(Z, "COVERAGE", True)
+    assert Z.COVERAGE_RUNS["z3"][Q27] == "x50_z3_27b" and Q27 not in Z.RUNS["z3"] and Z.LAYERS[Q27] == (32,)
+    assert Z.BESIDE_BAND[Q27] == "L32-40"
+    out = Z.stage_verdict("z3", [Z.COVERAGE_RUNS["z3"][Q27]], 10)
+    text = (out / "z3.md").read_text()
+    assert out.name.startswith("x52_z3-") and Z.NO_PREDICTION in text and "Dan:" not in text and Q27 in text
