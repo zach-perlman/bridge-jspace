@@ -81,3 +81,38 @@ brief: |
   forwards, then 53.6; another = 51.12 9B K / P, 53.4, then queued Lightning.
   CPU: 53.5, 53.2 probes. Everything launched by 11:00; at 13:00 and 17:00 a
   one-screen status with which rules have opened.
+
+standing_rules_0950_received: "29 Oct ~09:50 Paris (Dan)"
+standing_rules_0950: |
+  Go. Standing rules for today, so you don't need to stop and wait:
+  - Commit finished results right away, with their verdicts (below-gate ones
+    as "below gate, exploratory", hollow marks), into EXPERIMENTS.md. Commit
+    now: Lightning's clean-design source run (below gate), 47.3 and cue below
+    gate, 51.5 on Lightning.
+  - When a GPU idles, take the next item from the priority list below. Ask me
+    only for: a rule or gate change, a README claim, deleting data or results.
+  - Disk: check free space before each launch, keep >= 100 GB free; delete only
+    clean, merged worktrees and caches you can rebuild.
+
+  Priority (top first):
+  1. 53.1b: jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No new scenes
+     needed: start it on speedup now.
+  2. 53.1: the 2x2 on locker scenes (9B, then 27B, then Lightning if its gate
+     passes), as soon as the scenes and the word relation pass the 9B gate.
+  3. 53.3: the conflict test at the last token.
+  4. 53.2: the monitor test (CPU first; forwards only where a cache is missing).
+  5. 53.4: Lightning attention blocks 19 / 26.
+  6. 53.7: the pointer in code and tool output (routes, address probe, monitor).
+  7. 53.5: the 27B position-route subset (CPU, any time).
+  8. 53.6: lens identity vs address for the recall.
+  9. Lowest: the 8 Lightning below-gate jobs you took off the queue; 47.7 (a) on
+     the 9B.
+  Dropped for good: the Lightning gradient check and 48.1 / DAS ports.
+
+  Boxes now: speedup = 53.1b, then 53.1. mats: let Muse 47.16 r2 finish, then
+  53.3. another: let 47.7 (a) Muse finish, then 53.4. CPU agents: 53.2 and 53.5
+  in parallel.
+
+  README agent: carry on, figures at ~11:45 are fine.
+  Status at 11:00, 13:00 and 17:00: one screen, which rules have opened, what
+  is running per box, anything idle.
