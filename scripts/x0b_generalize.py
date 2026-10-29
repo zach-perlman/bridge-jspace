@@ -60,6 +60,7 @@ LAYERS = {
     "qwen3.5-9b": (10, 12, 14),
     "qwen3.5-122b-a10b": (33,),
     "muse-glimmer-30b": (26,),
+    "nemotron-3.5-lightning": (14,),  # batch 52 C coverage: the committed L only, as Muse (asserted against PREDICTED)
 }  # 122B: b6, L33 only; Muse: L26 only (fmt: skip)
 CAP = 40  # eligible scenes per cell
 CHUNK = 500  # cases per run_rendering call (the batched OMP's memory)
@@ -297,6 +298,7 @@ def stage_run(
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "run with BJ_FORMAT unset"
     layers, predicted = LAYERS[pins.TARGET], X.PREDICTED[pins.TARGET]
+    assert predicted in layers, f"{pins.TARGET}: L{predicted} is not in {layers}"  # Lightning: its committed layer
     X.DICTS, X.CURVE_DICTS, X.K_CURVE = (
         ("jpp",),
         ("jpp",),
