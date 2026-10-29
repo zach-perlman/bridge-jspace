@@ -140,3 +140,15 @@ def test_claims_table_grades_and_hand_check():
         assert len(r) == 6, r
         assert re.sub(r"\*\*", "", r[3]).split(" ")[0] in GRADES, r
         assert r[5] in ("no", "yes"), r
+
+
+DECK_FIGURES = ("c0_setup_a", "c0_setup_b", "c1_controls", "c2_pointer", "c3_address", "c4_readable", "c9_breaks")
+
+
+def test_deck_figures_exist():
+    """The joint deck's figures (scripts/deck_figures.py, deck skeleton brief 29 Oct): a PNG and an SVG each, and the
+    captions file."""
+    deck = REPO / "figures" / "deck"
+    missing = [f"{n}.{ext}" for n in DECK_FIGURES for ext in ("png", "svg") if not (deck / f"{n}.{ext}").exists()]
+    assert not missing, missing
+    assert (deck / "CAPTIONS.md").exists()
