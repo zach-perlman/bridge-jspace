@@ -8,6 +8,7 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit.dottable import (
+    BAND,
     INK,
     MUTED,
     C,
@@ -19,12 +20,14 @@ from bridge_jspace.figkit.dottable import (
     connector,
     dot,
     head_label,
-    under,
 )
 
 OUT = "."  # set by bridge_jspace.figkit.tables
 DPI = 160
 NAME, DAN, ZK = X.NAME, X.DAN, X.ZK
+# one model order everywhere (G8): the depth models, then the breadth-only ones
+ZORD = [(k, dict(D.ZACH)[k]) for k in ("q9", "q27", "mu", "nl", "q122", "ds", "mi", "nb", "ol")]
+BANDKEY = ("■", BAND, "within 0.10 of a random part")
 
 
 def render(t: Table, name: str) -> None:
@@ -69,19 +72,17 @@ def f_controls():
 
         return f
 
-    cols = [Col(1.38, n, "points" if j == 0 else "", zcol(k, c), (-3, 70), [0, 50]) for j, (n, k, c) in enumerate(zach)]
-    cols += [
-        Col(1.38, n, "share" if j == 0 else "", dcol(q, c), (-0.05, 0.85), [0, 0.5]) for j, (n, q, c) in enumerate(dq)
-    ]
+    cols = [Col(1.38, n, "", zcol(k, c), (-3, 70), [0, 50], xlabel="points") for n, k, c in zach]
+    cols += [Col(1.38, n, "", dcol(q, c), (-0.05, 0.85), [0, 0.5], xlabel="share") for n, q, c in dq]
     t = Table(rows, cols, label_w=1.45, pad=0.18, labels=False, head=1.25)
 
     def group_titles(fig):
         w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
         x0 = (t.label_w + t.pad) / w
         x1 = (t.label_w + t.pad * 5 + sum(c.width for c in t.cols[:4])) / w
-        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Removed everywhere, over a band (recalled − stated lost)", ha="left", va="top",
+        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Band of layers: recall − lookup answers lost", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
-        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "Removed from the patch (recall's switches lost)", ha="left", va="top",
+        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "One layer: recall's switches lost beyond random", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
 
     t.extra.append(group_titles)
@@ -95,10 +96,10 @@ def f_nine():
     grade = {"q27": "clean", "q9": "clean", "nl": "clean", "ds": "weak, not specific", "mi": "weak",
              "nb": "not specific", "ol": "carried, not needed", "mu": "shared with logit lens", "q122": "gone by probability"}  # fmt: skip
     swapkey = {"ds": "swap.ds.mid.swap", "mi": "swap.mi.mid.swap"}
-    rows = [Row(n) for _, n in D.ZACH]
+    rows = [Row(n) for _, n in ZORD]
 
     def carried(ax, _r):
-        for i, (k, _) in enumerate(D.ZACH):
+        for i, (k, _) in enumerate(ZORD):
             c = D.b(swapkey.get(k, f"swap.{k}.swap"))
             if not c:
                 ax.text(-6, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
@@ -106,33 +107,33 @@ def f_nine():
             dot(ax, c[0], i, C["lens"], cell=c, value=c[0], vfmt="{:.0f}")
             if k == "nb":
                 c100 = D.b("swap.nb.k100.swap")
-                dot(ax, c100[0], i, C["lens"], size=6, value=None)
-                ax.text(c100[0], i - 0.32, "100 dirs", ha="center", va="bottom", fontsize=10, color=MUTED)
+                dot(ax, c100[0], i, C["lens"], size=6, value=None)  # Bolt at 100 directions (the key says so)
         head_label(ax, 52, "lens part written in", C["lens"])
 
     def needed(ax, _r):
-        for i, (k, _) in enumerate(D.ZACH):
+        for i, (k, _) in enumerate(ZORD):
             mk, ct = D.b(f"ko.{k}.mk"), S.ctrl(k)
             if ct is not None:
                 ax.plot([ct, ct], [i - 0.26, i + 0.26], color=C["control"], lw=2.4, zorder=3)
             dot(ax, mk[0], i, C["recall"], cell=mk, value=mk[0], vfmt="{:.0f}")
             if k == "q122":
                 soft = D.b("ko.q122.soft")
-                dot(ax, soft[0], i, C["recall"], hollow=True, size=7.5)
-                ax.text(soft[0], i - 0.32, "by probability", ha="left", va="bottom", fontsize=10, color=MUTED)
+                dot(
+                    ax, soft[0], i, C["control"], size=7
+                )  # the 122B scored by probability (a grey dot, the key says so)
         head_label(ax, 52, "lens part removed", C["recall"])
-        head_label(ax, 0, "control", MUTED, ha="left", weight="normal")
 
     def grades(i, _r):
-        k = D.ZACH[i][0]
+        k = ZORD[i][0]
         g = grade[k]
         return [(g, INK if g == "clean" else MUTED, "bold" if g == "clean" else "normal")]
 
     t = Table(rows, [
-        Col(3.4, "Carried", "answers moved to the other entity, points", carried, (-8, 80), [0, 40, 80]),
-        Col(3.4, "Needed", "recalled minus stated answers lost, points", needed, (-3, 70), [0, 30, 60]),
+        Col(3.4, "answers moved", "to the other entity's fact", carried, (-8, 80), [0, 40, 80], xlabel="points"),
+        Col(3.4, "answers lost", "recall minus lookup", needed, (-3, 70), [0, 30, 60], xlabel="points"),
         Col(2.3, "Grade", "", grades, text=True),
-    ], label_w=1.45)  # fmt: skip
+    ], label_w=1.45, key=[("|", C["control"], "largest same-size control"), ("●", C["lens"], "at 100 directions"),
+                          ("●", C["control"], "122B: scored by probability")])  # fmt: skip
     render(t, "f3_nine_models")
 
 
@@ -144,14 +145,15 @@ def f_atoms():
 
     def stack(ax, _r):
         for i, (m, _) in enumerate(models):
-            a = 0.45 if D.hollow(m) else 1.0
+            hol = D.hollow(m)  # post hoc: hollow segments (G1), not a tint
             segs = [(D.s(m, q + "the old bridge word")[0], C["recall"]), (D.s(m, q + "the new bridge word")[0], C["lens"]),
                     (D.s(m, q + "another scene word or its class")[0], "#9E9E9E"), (D.s(m, q + "no scene word")[0], "#DADADA")]  # fmt: skip
             x = 0
             for j, (v, col) in enumerate(segs):
-                ax.barh(i, v, left=x, height=0.62, color=col, alpha=a if j < 2 else 1, zorder=3)
+                kw = {"facecolor": "white", "edgecolor": col, "linewidth": 2.0} if hol else {"color": col}
+                ax.barh(i, v, left=x, height=0.62, zorder=3, **kw)
                 if v >= 0.08:
-                    tc = "white" if (j < 2 and a == 1) else INK
+                    tc = "white" if (j < 2 and not hol) else INK
                     ax.text(
                         x + v / 2,
                         i,
@@ -172,9 +174,10 @@ def f_atoms():
         v = D.s(models[i][0], q + "an answer word")[0]
         return [(clean(f"{v:.2f}"), INK, "bold")]
 
-    t = Table(rows, [Col(7.2, "What the lens part's 25 directions are", "share of the energy they rebuild, by the word "
-                         "each direction decodes to", stack, (0, 1), [0, 0.5, 1]),
-                     Col(1.3, "answer word", "share", answer, text=True)], label_w=1.45)  # fmt: skip
+    t = Table(rows, [Col(7.2, "share of the rebuilt energy", "of the lens part's 25 directions, by the word each decodes to",
+                         stack, (0, 1), [0, 0.5, 1], xlabel="share of the rebuilt energy"),
+                     Col(1.3, "answer word", "share", answer, text=True)], label_w=1.45,
+              key=[("●", "#9E9E9E", "another scene word")])  # fmt: skip
     render(t, "f5_atoms")
 
 
@@ -207,8 +210,7 @@ def f_address():
             connector(ax, a[0], r[0], i)
             dot(ax, r[0], i, C["control"], size=8)
             dot(ax, a[0], i, C["address"], D.hollow(m, True), value=a[0], vside="left")
-        head_label(ax, 0.0, "removed", C["address"], ha="left")
-        head_label(ax, 0.62, "random", MUTED, ha="right", weight="normal")
+        head_label(ax, 0.0, "address removed", C["address"], ha="left")
 
     def swap(ax, _r):
         for i, (m, _) in enumerate(DAN):
@@ -216,9 +218,8 @@ def f_address():
             rnd = D.s(m, "lookup target share, random direction, s = 4", "fig07")
             connector(ax, rnd[0], two[0], i)
             dot(ax, rnd[0], i, C["control"], size=8)
-            dot(ax, two[0], i, C["lookup"], D.hollow(m, True), value=two[0])
-        head_label(ax, 0.0, "random", MUTED, ha="left", weight="normal")
-        head_label(ax, 0.46, "address swap", C["lookup"])
+            dot(ax, two[0], i, C["address"], D.hollow(m, True), value=two[0])
+        head_label(ax, 0.62, "address swap", C["address"], ha="right")
 
     zq = "47.0 (b) share rebuilt by 25 lens directions: "
 
@@ -233,20 +234,24 @@ def f_address():
             dot(ax, p[0], i, C["address"], D.hollow(m, True))  # the 122B: lookup-only gate, post hoc
             dot(ax, it[0], i, C["identity"], D.hollow(m, True), value=it[0], vfmt="{:.0f}")
         head_label(ax, 0, "swap", C["address"], ha="left")
-        head_label(ax, 20, "item change", C["identity"])
-        under(ax, 0, "grey band: random vectors")
+        head_label(ax, 31, "item change", C["identity"], ha="right")
 
     t = Table(rows, [
-        Col(2.35, "A probe reads it", "accuracy at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1]),
-        Col(2.35, "Removing it", "lookups answering by position", remove, (-0.2, 0.62), [0, 0.25, 0.5]),
-        Col(2.35, "A swap moves it", "lookups sent to the new locker", swap, (-0.03, 0.62), [0, 0.25, 0.5]),
-        Col(2.35, "The lens misses it", "z above random vectors", lens, (-2.5, 26), [0, 10, 20]),
-    ], label_w=1.45, pad=0.22)  # fmt: skip
+        Col(2.35, "probe accuracy", "at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy"),
+        Col(2.35, "position answers", "lookups following the position", remove, (-0.2, 0.62), [0, 0.25, 0.5],
+            xlabel="share of lookups"),
+        Col(2.35, "lookups sent", "to the new locker", swap, (-0.03, 0.66), [0, 0.25, 0.5],
+            xlabel="share of lookups"),
+        Col(2.35, "lens rebuild", "z from 200 random vectors", lens, (-2.5, 34), [0, 10, 20],
+            xlabel="z (distance from random)"),
+    ], label_w=1.45, pad=0.22, key=[("●", C["control"], "a random part taken out (column 2), a random vector written in (column 3)"),
+                                                  ("■", BAND, "range of the random vectors (column 4)")])  # fmt: skip
     render(t, "f6_address")
 
 
-# ---- F8: where it breaks --------------------------------------------------------------------------------------------
-def f_breaks():
+# ---- F8: where it breaks, two figures (review v3: two different findings) -------------------------------------------
+def f_directions():
+    """The 27B's lookup with more lens directions (the x-range reaches 0.95 so the 0.60 label stays inside, G10)."""
     short = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "qwen3.5-122b-a10b": "122b"}
     rows = [Row(NAME[m]) for m, _ in DAN]
 
@@ -258,11 +263,21 @@ def f_breaks():
                 if not c:
                     ax.text(-0.27, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
                     continue
-                strong = c[0] > 0.1
-                dot(ax, c[0], i, C["lookup"], value=c[0], size=9.5 if strong else 8)
+                dot(ax, c[0], i, C["lookup"], value=c[0], size=9.5 if c[0] > 0.1 else 8)
 
         return f
 
+    t = Table(rows, [
+        Col(2.45, "25 lens directions", "the lookup's loss", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
+        Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
+        Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
+    ], label_w=1.45, pad=0.22, labels=False, key=[BANDKEY])  # fmt: skip
+    render(t, "f8_directions")
+
+
+def f_facts():
+    """The lookup on Zach's passages with true and with made-up facts."""
+    rows = [Row(NAME[m]) for m, _ in DAN]
     q = "Zach's named passages, {} facts, lookup: switches lost beyond random"
 
     def zach(ax, _r):
@@ -274,24 +289,19 @@ def f_breaks():
                 continue
             if mu:
                 connector(ax, mu[0], tr[0], i)
-                dot(ax, mu[0], i, C["control"], D.hollow(m), size=8, cell=None)
+                dot(ax, mu[0], i, C["lookup_light"], D.hollow(m), size=8)
             dot(ax, tr[0], i, C["lookup"], D.hollow(m), cell=tr, value=tr[0])
-        head_label(ax, 0.12, "made-up facts", MUTED, ha="right", weight="normal")
-        head_label(ax, 0.2, "true facts", C["lookup"], ha="left")
-        under(ax, 0, "grey band: not needed")
 
-    t = Table(rows, [
-        Col(1.75, "25 lens dirs", "the lookup's loss", kcol(25), (-0.3, 0.8), [0, 0.5]),
-        Col(1.75, "50", "", kcol(50), (-0.3, 0.8), [0, 0.5]),
-        Col(1.75, "100", "", kcol(100), (-0.3, 0.8), [0, 0.5]),
-        Col(3.6, "Fact passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.85), [0, 0.5]),
-    ], label_w=1.45, pad=0.22, labels=True)  # fmt: skip
-    render(t, "f8_breaks")
+    t = Table(rows, [Col(7.0, "fact passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.9),
+                         [0, 0.25, 0.5, 0.75], xlabel="switches lost beyond random")],
+              label_w=1.45, labels=False,
+              key=[("●", C["lookup"], "true facts"), ("●", C["lookup_light"], "made-up facts"), BANDKEY])  # fmt: skip
+    render(t, "f8_facts")
 
 
 # ---- F9: where in the prompt and in depth (Zach) --------------------------------------------------------------------
 def f_where():
-    models = [("q27", "Qwen 27B"), ("q9", "Qwen 9B"), ("nl", "Lightning"), ("mu", "Muse 30B")]
+    models = [("q9", "Qwen 9B"), ("q27", "Qwen 27B"), ("mu", "Muse 30B"), ("nl", "Lightning")]
     rows = [Row(n) for _, n in models]
     keys = {"mid": ("pos.{}.all.all", "pos.{}.all.bridge", "pos.{}.all.question"),
             "late": ("late.{}.all", "late.{}.bridge", "late.{}.question")}  # fmt: skip
@@ -306,15 +316,36 @@ def f_where():
                 if not c:
                     ax.text(2, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
                     continue
-                col_ = C["recall"] if j == 0 else (C["lens"] if j == 1 else C["lookup"])
+                col_ = C["recall"] if j == 0 else (C["mention"] if j == 1 else C["question"])
+                if band_ == "late" and j:  # the rotated control (at most 2.5 points), where it was run
+                    rot = D.b(keys[band_][j].format(k) + ".rot")
+                    if rot:
+                        dot(ax, rot[0], i, C["control"], size=7)
                 dot(ax, c[0], i, col_, cell=c, value=c[0], vfmt="{:.0f}", size=9.5 if c[0] > 15 else 8)
 
         return f
 
     names = ["all tokens", "mention", "question"]
-    cols = [Col(1.55, f"{n}", "pp" if j == 0 else "", col("mid", j), (-3, 72), [0, 50]) for j, n in enumerate(names)]
-    cols += [Col(1.55, f"{n}", "pp" if j == 0 else "", col("late", j), (-3, 72), [0, 50]) for j, n in enumerate(names)]
-    t = Table(rows, cols, label_w=1.35, pad=0.2, labels=False, head=1.25)
+    cols = [
+        Col(1.55, f"{n}", "removed at", col("mid", j), (-3, 72), [0, 50], xlabel="points") for j, n in enumerate(names)
+    ]
+    cols += [
+        Col(1.55, f"{n}", "removed at", col("late", j), (-3, 72), [0, 50], xlabel="points") for j, n in enumerate(names)
+    ]
+    t = Table(
+        rows,
+        cols,
+        label_w=1.35,
+        pad=0.2,
+        labels=False,
+        head=1.25,
+        key=[
+            ("●", C["recall"], "all tokens"),
+            ("●", C["mention"], "the bridge's mention"),
+            ("●", C["question"], "the question"),
+            ("●", C["control"], "rotated control (deeper layers)"),
+        ],
+    )
     t.extra.append(
         lambda fig: [
             fig.text(
@@ -356,10 +387,10 @@ def f_monitor():
         return f
 
     t = Table(rows, [Col(4.0, "25 lens directions", "probe accuracy for the address at the last token",
-                         kcol(25), (0.4, 1.02), [0.5, 0.75, 1]),
-                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1])], label_w=1.45, labels=False,
+                         kcol(25), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy"),
+                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy")], label_w=1.45, labels=False,
               key=[("●", C["lens"], "the lens part"), ("●", "#7A7A7A", "a random part of the same energy"),
-                   ("|", INK, "the full state"), ("○", C["lens"], "post hoc")])  # fmt: skip
+                   ("|", INK, "the full state")])  # fmt: skip
     render(t, "f11_monitor")
 
 
@@ -374,27 +405,27 @@ def f_order():
             a = D.s(m, "question after the scene: lookup, switches lost beyond a random part")
             b = D.s(m, "question before the scene: lookup, switches lost beyond a random part")
             connector(ax, a[0], b[0], i)
-            dot(ax, a[0], i, C["control"], size=8)
+            dot(ax, a[0], i, C["lookup_dark"], cell=a, value=a[0], vside="left")
             dot(ax, b[0], i, C["lookup"], cell=b, value=b[0])
-        head_label(ax, 0.13, "question after", MUTED, ha="right", weight="normal")
+        head_label(ax, 0.13, "question after", C["lookup_dark"], ha="right")
         head_label(ax, 0.2, "question before", C["lookup"], ha="left")
 
     def diff(i, _r):
         d = D.s(models[i][0], "the lookup, question before minus after (paired)")
         return [(f"{d[0]:+.2f}", INK, "bold"), (f"  [{d[1]:.2f}, {d[2]:.2f}]", MUTED, "normal")]
 
-    t = Table(rows, [Col(4.5, "The lookup without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.6),
-                         [0, 0.25, 0.5]),
-                     Col(2.0, "before − after", "paired, 95%", diff, text=True)], label_w=1.45)  # fmt: skip
+    t = Table(rows, [Col(4.5, "the lookup without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.6),
+                         [0, 0.25, 0.5], xlabel="switches lost beyond random (share)"),
+                     Col(2.3, "before − after", "paired, 95% interval", diff, text=True)], label_w=1.45,
+              key=[BANDKEY])  # fmt: skip
     render(t, "f12_order")
 
 
 if __name__ == "__main__":
     X.r1_split()
-    X.r2_address()
     X.r3_last_token()
     X.r4_pointer()
     X.r5_routes()
-    for f in (f_controls, f_nine, f_atoms, f_address, f_breaks, f_where, f_monitor, f_order):
+    for f in (f_controls, f_nine, f_atoms, f_address, f_directions, f_facts, f_where, f_monitor, f_order):
         f()
         print("ok", f.__name__)

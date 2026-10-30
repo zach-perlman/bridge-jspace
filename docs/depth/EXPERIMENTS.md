@@ -782,8 +782,8 @@ New in this ledger:
 - **Data.** Every scene of the topic scenes, split by whether the item's locker sentence comes before or after the asked pick (see the table's n in the verdicts).
 - **Method.** Probes on the bridge word's state at L, cross-validated by bridge entity: the locker sentence's place, the answer digit and the bridge's identity; baselines: the majority class, the pick's sentence index, the visible layout.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/r2_address.png)
-*The README's address figure; this card is its left column: the probe at the bridge word against the layout-only baseline (grey tick), locker before the pick. whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+*The README's address figure; this card is its first column: the probe at the bridge word against the layout-only baseline (grey tick), locker before the pick. whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
 
 - **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
 
@@ -812,8 +812,8 @@ New in this ledger:
 - **Data.** Routes scenes without a move, 300 per model, each swapped to two target lockers (600 swaps); Lightning at L14 (gate chosen after the 60-scene pre-check, ○).
 - **Method.** At the bridge word at L: the difference of two slot means, at one, two and four times its size; control: a random vector of the same size. Read: the lookup's answer (target locker, original, the third), and whether the recall's answer changes (the collateral).
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/r2_address.png)
-*The README's address figure; this card is its middle column: lookups sent to the swapped-in locker at about a real change's size, against a random vector (grey). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only. The dose curves are in the verdicts.*
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+*The README's address figure; this card is its third column: lookups sent to the swapped-in locker at about a real change's size, against a random vector (grey). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only. The dose curves are in the verdicts.*
 
 - **Rule, fixed in advance.** "at s = 1 the target share minus the random direction's >= 0.15 with lower CI > 0; [...] among writes that move the lookup to another locker target / (target + third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; [...] target minus random >= 0.10 in each of the 6 (j, k) pairs" (jobs/c3/x8_a_9b.yaml; each over the 9B, the 27B, the 122B and Muse). Lightning: a coverage run on that rule, no prediction.
 
@@ -963,8 +963,8 @@ New in this ledger:
 - **Data.** Routes scenes, 100 items per model, each swapped to both other lockers (200 cases); null: 200 random vectors of the same size.
 - **Method.** At the bridge word at L, the swap h + 2 (mu_k - mu_j): (a) the best rank of a position word (first, second, third, 1, 2, 3, ...) in the lens readout; (b) the share the lens's 25 best directions rebuild; (c) how far the readout moves (KL). Positive control: an item change of the same size.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/r2_address.png)
-*The README's address figure; this card is its right column: how far above 200 random vectors the lens's 25 directions rebuild the address swap and, as the positive control, an item change of the same size (z; grey band: the random vectors' range). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+*The README's address figure; this card is its fourth column: how far above 200 random vectors the lens's 25 directions rebuild the address swap and, as the positive control, an item change of the same size (z; grey band: the random vectors' range). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
 
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: ""Not verbalizable": reconstruction at k = 25 within 2x the random null's share, no ordinal token in the top-20 beyond the null's 5th-percentile rank, and the KL under the write within the null's 95th percentile, on all three models." Lightning: a coverage run on that reading, no prediction.
 

@@ -17,9 +17,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
-INK, MUTED, FAINT, GRID, ZEBRA, BAND = "#1A1A1A", "#6B6B6B", "#BDBDBD", "#E4E4E4", "#F5F5F5", "#E6E6E6"
-C = {"recall": "#2B2B2B", "lookup": "#6B5BD2", "lens": "#1A9E8A", "address": "#E08A1E", "identity": "#3A7DC9",
-     "control": "#A8A8A8", "other": "#D9D9D9"}  # fmt: skip
+from bridge_jspace.palette import BAND, FAINT, GREYS, GRID, INK, MUTED, ROLE, SHADE, ZEBRA  # noqa: E402
+
+# One colour per role, the same in every figure (bridge_jspace/palette.py; docs/shared/figure_style.md).
+C = {**ROLE, **SHADE}
 
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "svg.fonttype": "none",
                      "axes.edgecolor": FAINT, "xtick.color": MUTED, "xtick.labelsize": 11})  # fmt: skip
@@ -27,6 +28,8 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "svg.fonttyp
 BEFORE_SAVE = None  # a hook f(fig, path) run before every save
 ROW_H, HEAD_H, FOOT_H, LABEL_ROW = 0.50, 0.85, 0.62, 0.46  # inches; LABEL_ROW: direct labels above row 1
 KEY_H = 0.42  # the key row under the axes
+XLAB_H = 0.30  # the axis titles under the ticks
+HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure then carries "○ post hoc" (G1)
 
 
 @dataclass
@@ -47,6 +50,7 @@ class Col:
     xfmt: str = "{:g}"
     text: bool = False
     align: str = "left"
+    xlabel: str = ""  # the axis title under the ticks, with the unit (G4)
 
 
 @dataclass
@@ -64,11 +68,22 @@ class Table:
     head: float = HEAD_H  # header height (inches); raise it for group titles above the column titles
 
     def render(self, path: str, dpi: int = 160) -> None:
+        """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
+        "○ post hoc" if it is (G1: a hollow mark always has its legend item)."""
+        HOLLOW["seen"] = False
+        self._draw(None, dpi, self.key)
+        key = list(self.key)
+        if HOLLOW["seen"] and not any(m == "○" for m, _, _ in key):
+            key.append(("○", INK, "post hoc"))
+        self._draw(path, dpi, key)
+
+    def _draw(self, path: str | None, dpi: int, key: list) -> None:
         n = len(self.rows)
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         body = n * ROW_H + lab
-        height = self.head + body + FOOT_H + (KEY_H if self.key else 0)
+        xlab = XLAB_H if any(c.xlabel for c in self.cols) else 0.0
+        height = self.head + body + FOOT_H + xlab + (KEY_H if key else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
         fy = lambda inch_from_top: 1 - inch_from_top / height  # noqa: E731
         fx = lambda inch: inch / width  # noqa: E731
@@ -88,6 +103,7 @@ class Table:
             t = fig.text(fx(0.12), y + dy / height * 1.0, r.name, ha="left", va="center", fontsize=13,
                          weight="bold", color=INK)  # fmt: skip
             if r.hollow:
+                HOLLOW["seen"] = True
                 fig.canvas.draw()
                 bb = t.get_window_extent()
                 fig.text(bb.x1 / fig.bbox.width + fx(0.06), y + dy / height, "○", ha="left", va="center",
@@ -127,15 +143,17 @@ class Table:
                 if c.xticks is not None:
                     ax.set_xticks(c.xticks, [c.xfmt.format(t) for t in c.xticks])
                 ax.tick_params(axis="x", length=3, color=FAINT, pad=4)
+                if c.xlabel:
+                    ax.set_xlabel(c.xlabel, fontsize=11.5, color=MUTED, labelpad=3)
                 for t in ax.get_xticks():
                     ax.plot([t, t], [n - 0.5, -0.5], color=GRID, lw=0.8, zorder=0)
                 if c.xlim[0] < 0 < c.xlim[1]:
                     ax.plot([0, 0], [n - 0.5, -0.5], color=MUTED, lw=0.9, zorder=1)
                 c.draw(ax, self.rows)
             x += c.width + self.pad
-        if self.key:
+        if key:
             parts = []
-            for k, (mark, col, words) in enumerate(self.key):
+            for k, (mark, col, words) in enumerate(key):
                 parts += [
                     ("     " if k else "", MUTED, "normal"),
                     (mark + " ", col, "normal"),
@@ -144,9 +162,10 @@ class Table:
             rich(fig, fx(0.12), fy(height - 0.24), parts, size=11.5)
         for f in self.extra:
             f(fig)
-        if BEFORE_SAVE is not None:  # the kit's table lint (figkit/lint.py table_problems)
-            BEFORE_SAVE(fig, path)
-        fig.savefig(path, dpi=dpi, facecolor="white")
+        if path is not None:
+            if BEFORE_SAVE is not None:  # the kit's table lint (figkit/lint.py table_problems)
+                BEFORE_SAVE(fig, path)
+            fig.savefig(path, dpi=dpi, facecolor="white")
         plt.close(fig)
 
 
@@ -167,6 +186,7 @@ def rich(fig, x, y, parts, ha="left", size=12.5):
 
 # ---- marks ------------------------------------------------------------------------------------------------------------
 def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:.2f}", vside="right", zorder=4):
+    HOLLOW["seen"] = HOLLOW["seen"] or bool(hollow)
     if cell and cell[1] is not None:
         ax.plot([cell[1], cell[2]], [y, y], color=color, lw=1.8, solid_capstyle="butt", zorder=zorder - 1)
     ax.plot([x], [y], "o", ms=size, color=color, mfc="white" if hollow else color, mew=2 if hollow else 0,

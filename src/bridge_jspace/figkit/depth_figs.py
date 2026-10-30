@@ -46,10 +46,14 @@ def two_by_two():
 
         return f
 
-    cols = [Col(2.15, t, u, col(k), (-0.3, 1.0), [0, 0.5, 1]) for k, (t, u, _q, _c) in enumerate(TWO_BY_TWO)]
+    xl = ("share of switches lost", "share of switches lost", "share of answers lost", "share of answers lost")
+    cols = [
+        Col(2.15, t, "recall − lookup", col(k), (-0.3, 1.0), [0, 0.5, 1], xlabel=xl[k])
+        for k, (t, _u, _q, _c) in enumerate(TWO_BY_TWO)
+    ]
     key = [("●", C["recall"], "recall minus lookup"),
-           ("●", C["control"], "control: the same removal with a random part (a band: rotated directions)"),
-           ("○", C["recall"], "post hoc")]  # fmt: skip
+           ("●", C["control"], "control: a random part (rotated directions in a band)"),
+           ("●", MUTED, "Muse: L23-29, off the band")]  # fmt: skip
     t = Table(rows, cols, label_w=1.45, head=1.25, labels=False, key=key)
     width = t.label_w + sum(c.width for c in cols) + t.pad * (len(cols) + 1)
 
@@ -92,3 +96,56 @@ def datasets():
                Col(2.1, "Answer", "and its source", lambda i, _r: rows[i][2] or [("", MUTED, "normal")], text=True)],
               label_w=1.75, labels=False)  # fmt: skip
     t.render(f"{X.OUT}/p0a_datasets.png")
+
+
+def tools():
+    """p0b: the three tools as grids (layers x tokens), no prose inside the image (G9, Dan 30 Oct review); the colours
+    are the roles' (the lens part teal, another entity's part blue). Horizontal text only."""
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+
+    from bridge_jspace.figkit import dottable as T
+    from bridge_jspace.figkit import lint
+
+    fig = plt.figure(figsize=(10.5, 3.3), dpi=160)
+    nl, nt = 4, 7
+    panels = [("remove everywhere", "a band of layers, every token", {(1, t) for t in range(nt)} | {(2, t) for t in range(nt)}, "lens"),
+              ("remove from the patch", "one layer, the bridge word", {(2, 4)}, "lens"),
+              ("swap", "the bridge word, over the band", {(1, 4), (2, 4)}, "identity")]  # fmt: skip
+    for k, (title, sub, cells, role) in enumerate(panels):
+        x0 = 0.04 + k * 0.325
+        fig.text(x0, 0.93, title, ha="left", va="top", fontsize=13, weight="bold", color=T.INK)
+        fig.text(x0, 0.83, sub, ha="left", va="top", fontsize=11.5, color=T.MUTED)
+        ax = fig.add_axes((x0 + 0.04, 0.2, 0.25, 0.5))
+        ax.set_xlim(0, nt)
+        ax.set_ylim(nl, 0)
+        ax.axis("off")
+        for r in range(nl):
+            for t in range(nt):
+                hit = (r, t) in cells
+                ax.add_patch(
+                    Rectangle(
+                        (t + 0.06, r + 0.08),
+                        0.88,
+                        0.84,
+                        facecolor=T.C[role] if hit else "white",
+                        edgecolor=T.C[role] if hit else T.FAINT,
+                        lw=1.0,
+                    )
+                )
+        fig.text(x0 + 0.035, 0.45, "layers", ha="right", va="center", fontsize=11.5, color=T.MUTED)
+        fig.text(
+            x0 + 0.165, 0.12, "tokens (the bridge word marked)", ha="center", va="center", fontsize=11.5, color=T.MUTED
+        )
+    for k, (col, words) in enumerate(
+        [(T.C["lens"], "the lens part taken out"), (T.C["identity"], "another entity's lens part written in")]
+    ):
+        x = 0.04 + k * 0.3
+        fig.patches.append(Rectangle((x, 0.015), 0.02, 0.06, transform=fig.transFigure, facecolor=col, edgecolor=col))
+        fig.text(x + 0.03, 0.045, words, ha="left", va="center", fontsize=11.5, color=col)  # the coloured word is the legend
+    probs = lint.table_problems(fig, "p0b_tools")
+    from bridge_jspace.figkit import tables
+
+    tables.PROBLEMS.extend(probs)
+    fig.savefig(f"{X.OUT}/p0b_tools.png", dpi=160, facecolor="white")
+    plt.close(fig)

@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from bridge_jspace import palette as P
 from scripts import story_style as S
 from scripts.story_b50 import caption
 
@@ -31,7 +32,7 @@ ROWS = (
 KINDS = (
     ("the old bridge word", ("bridge",), "#5b5b5b"),
     ("the new bridge word", ("new_bridge",), S.MARK_COL["jpp"]),
-    ("an answer word", ("answer_own", "answer_other"), "#b8433a"),
+    ("an answer word", ("answer_own", "answer_other"), P.SHADE["answer"]),
     ("another scene word or its class", ("scene_item", "person", "same_class", "function"), S.COL["control"]),
     ("no scene word", ("other",), S.COL["other"]),
 )

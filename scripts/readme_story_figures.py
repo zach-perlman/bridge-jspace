@@ -4526,7 +4526,7 @@ SUPP_FIGS = (
 # address (Fig. 19) and the order cell (Fig. 20), its dose card moves to the ledger (Fig. 16 to the second sheet); Part
 # III gains the monitor (Fig. 23), the refit (Fig. 9b refit) and code and tool output (Fig. 21); Part IV Lightning's
 # attention blocks (Fig. 22)
-README_NAMES = ("fig00_setup", "r1_dan_split", "f5_atoms", "f12_order", "r2_address", "f11_monitor", "r3_last_token",
+README_NAMES = ("fig00_setup", "r1_dan_split", "f5_atoms", "f12_order", "f6_address", "f11_monitor", "r3_last_token",
                 "t12_two_by_two")  # fmt: skip
 # the table-style figures above (all but fig00_setup) are bridge_jspace.figkit.tables's (--target depth), held to its
 # lint; the figures they replaced (Dan's 01:58 brief) are still drawn here, off the page: fig11 became a markdown table

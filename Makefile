@@ -128,4 +128,5 @@ readme: figures-kit ## both READMEs from their templates (root: docs/readme/, de
 	uv run python -m bridge_jspace.figkit.tables --target depth
 	uv run python scripts/readme_root.py build
 	uv run python scripts/readme_build.py
+	uv run python scripts/check_style.py --report | tail -1
 	uv run pytest -q tests/test_readme_sources.py tests/test_readme_cards.py

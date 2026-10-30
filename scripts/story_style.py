@@ -25,9 +25,13 @@ SUPP = REPO / "figures" / "depth" / "supp"
 DATA_DIR = REPO / "data" / "figures" / "depth"  # data.csv, scorecard.csv (figures/ holds PNGs only)
 NUMBERS = REPO / "docs" / "depth" / "x0_numbers.json"
 WIDTH = 8.8  # inches: 880 px at 100 px per inch, GitHub's README column
-COL = {"lookup": "#6a4bd6", "recall": "#3a3a3a", "identity": "#2b7bba", "position": "#e08a1e", "original": "#c8c8c8",
-       "value": "#009e73", "other": "#ececec", "control": "#bdbdbd", "band": "#f0f0f0", "muted": "#666666",
-       "shade": "#efe9fb"}  # fmt: skip
+# The story figures draw with the one palette (bridge_jspace/palette.py; Dan, 30 Oct: the same colour for the same
+# concept in every README); "value" (the number itself: a route nobody takes) is the neutral slate, not a hue of its own.
+from bridge_jspace import palette as P  # noqa: E402
+
+COL = {"lookup": P.ROLE["lookup"], "recall": P.ROLE["recall"], "identity": P.ROLE["identity"],
+       "position": P.ROLE["address"], "original": "#C8C8C8", "value": P.SHADE["neutral"], "other": P.ROLE["other"],
+       "control": P.ROLE["control"], "band": P.BAND, "muted": P.MUTED, "shade": "#EFE9FB"}  # fmt: skip
 FONT = 11  # pt, the smallest text on a README figure
 LOWERED = "°"  # on a label: a rerun with the gate lowered to 0.75 after the data
 MODELS = (("qwen3.5-9b", "9b", "Qwen3.5-9B"), ("qwen3.6-27b", "27b", "Qwen3.6-27B"),
@@ -47,7 +51,7 @@ EMPTY = {"facecolor": "none", "edgecolor": "#9a9a9a", "lw": 0.7}
 ORIGINAL = {"facecolor": COL["original"], "edgecolor": "#8c8c8c", "lw": 0.6}
 # Dan's figures brief (28 Oct ~18:30) §1, one mark system: colour = who or what (no other hue on a figure that follows
 # it), mark = the operation, panel = the model (9B, 27B, Muse). scripts/check_figure_terms.py checks MARK_FIGS' hues.
-MARK_COL = {"recall": COL["recall"], "lookup": COL["lookup"], "jpp": "#13998f", "address": COL["position"],
+MARK_COL = {"recall": COL["recall"], "lookup": COL["lookup"], "jpp": P.ROLE["lens"], "address": COL["position"],
             "identity": COL["identity"], "null": COL["control"]}  # fmt: skip
 MARK = {"remove": "o", "zero": "X", "add": "D", "swap": "^", "whole": "s"}
 MARK_TEXT = {"remove": "removed from the change", "zero": "taken out of a prompt's own state",
@@ -55,7 +59,7 @@ MARK_TEXT = {"remove": "removed from the change", "zero": "taken out of a prompt
 MARK_COL_TEXT = {"recall": "recall", "lookup": "lookup", "jpp": "the J++ part", "address": "the address",
                  "identity": "identity route", "null": "a random part (same size)"}  # fmt: skip
 STATUS_GLYPH = {"fixed": "●", "after": "○"}
-STATUS_TEXT = {"fixed": "fixed in advance", "after": "after the data"}
+STATUS_TEXT = {"fixed": "fixed in advance", "after": P.HOLLOW_WORD}
 SUBTITLE = "story_subtitle"  # the attribute title() sets on the subtitle's Text
 INSET = "story_inset"  # the attribute inset() sets on a small inset axes (not counted as a panel by the v6 check)
 

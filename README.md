@@ -159,9 +159,13 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
   - Untestable: removing the top lens directions breaks plain text on Gemma 4 31B-it, gpt-oss-20b and Kolibri-1 (9.3, 4.7 and 6.4 nats added)<!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->.
 - **Two tests disagree on two models.** The 122B fails the band test by probability but passes the one-layer conflict test (recall 0.32, lookup 0.00 beyond random)<!-- src: docs/depth/x0_numbers.json | rc_excess_122b; lk_excess_122b -->. Muse shares much of its band effect with the logit lens, yet at one layer the logit lens's directions cost its recall nothing<!-- src: data/figures/depth/data.csv | logit-lens directions: recall extra loss -->.
 
-![Where it breaks: more lens directions on the 27B, and passages whose fact the model knows](figures/readme/f8_breaks.png)
+![With more lens directions removed, the 27B's lookup loses more](figures/readme/f8_directions.png)
 
-*Left: the lookup's loss beyond random as more lens directions are removed. Right: the lookup on passages with made-up and with true facts.*
+*The 27B's lookup loses more beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions; no intervals (single values from the conflict test).*
+
+![On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so](figures/readme/f8_facts.png)
+
+*The lookup on passages with true and with made-up facts, per model; whiskers: intervals on the true-fact values (Muse: too few lookup switches, not drawn).*
 
 ![With the question before the scene, the 27B's lookup needs the lens part a little](figures/readme/f12_order.png)
 
