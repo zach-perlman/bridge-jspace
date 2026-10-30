@@ -1,0 +1,81 @@
+{
+  "exp": "x52_answer_map",
+  "run": "qwen35_122b_x52_write_main",
+  "stage": "write",
+  "set": "main",
+  "set_text": "our scenes (the main test)",
+  "spec": "jobs/c3/batch52.yaml (brief B); jobs/c3/x52_write_main_122b.yaml",
+  "prediction": "rule fixed in advance in jobs/c3/batch52.yaml (B); no prediction",
+  "written_utc": "2026-10-30T04:56:34Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "ee0bc74a917298b97ea54d3beb36b25cc0166817",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "groups": {
+    "B": "the bridge word (X0's position, 51.10's P1)",
+    "E": "the bridge entity's last mention before the bridge word (its locker sentence), where there is one",
+    "Q": "the question's 'pick' token (51.10's P2)",
+    "T": "the appended space token (51.10's P3)"
+  },
+  "rank_sets": {
+    "bridge": "the bridge entity (51.12's: the first token of each variant of its name)",
+    "ans": "the reader's answer word (51.12's A-style tokens; decides)",
+    "ans_S": "S's answer word on O (a same-type distractor; baseline)",
+    "tokA": "the answer token as read (main: the digit)",
+    "bridge_whole": "the bridge entity, whole-word variants only (no fragment such as 'I' for 'Iota')",
+    "ans_whole": "the answer word, whole-word variants only (no fragment such as 'G' for 'Greece')"
+  },
+  "rule": {
+    "readable": "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer.",
+    "usable": "“Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10.",
+    "combinations": "Report the four combinations per reader, per dataset."
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "Δ = h_S - h_O added at the cell (the whole state patched; the upper bound, beside)",
+    "ans1": "s u: u the unit sum of the J++ lens directions of S's answer word's tokens, s = ||Δ|| at the cell",
+    "ans2": "2 s u",
+    "rand1": "s u R^T (R: X0's random basis at the layer, seed 888 + layer): a random part of the same size",
+    "rand2": "2 s u R^T",
+    "freq1": "s u_F: F per answer token one unrelated letter token, BPE id within a factor 2, closest J++ readout norm",
+    "freq2": "2 s u_F"
+  },
+  "seeds": {
+    "random_rotation": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "read_run": "qwen35_122b_x52_read_main",
+  "inputs": {
+    "jobs/c3/batch52.yaml": "4f97d5904b758cd1e336f2233b3ed4ff237f7ee0c9d50cdf913a3ab682012a00",
+    "results/x52_answer_map/qwen35_122b_x52_read_main/manifest.json": "b115b89ee3025e68168d979973e5937af333e150ebb0ec03a6bff0ed2780bc9b",
+    "results/x52_answer_map/qwen35_122b_x52_read_main/cases.jsonl": "fc9edec4e4eff4fa863689acfed56bda7b542a12eae7635d2a712ded62166e13",
+    "results/x52_answer_map/qwen35_122b_x52_read_main/ranks.npz": "6ad7eeaeaab722453221e7de7f314abac79e2bc5ddf7429cc63b9b8121676040"
+  },
+  "cell_rule": "per reader the (group, layer) before the answer layer with the largest share of items whose answer word is in the J++ top-5 (ties: lower median rank, earlier layer, B < E < Q < T), point estimates",
+  "size": "s = ||h_S - h_O|| at the cell; below 0.001 x ||h_O|| (the position precedes the change): the bridge word's ||Δ|| at that layer (flagged)"
+}

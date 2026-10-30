@@ -1,0 +1,27 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 357
+  },
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.7971428571428572
+      },
+      "pass": true,
+      "eligible": 699,
+      "design": "adapted design: lookup-only gate; the recall (0.797) is not part of this test"
+    },
+    "C2": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.7971428571428572
+      },
+      "pass": true,
+      "eligible": 699,
+      "design": "adapted design: lookup-only gate; the recall (0.797) is not part of this test"
+    }
+  }
+}

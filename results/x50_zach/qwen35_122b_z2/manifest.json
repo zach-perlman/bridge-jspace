@@ -1,0 +1,96 @@
+{
+  "exp": "x50_zach",
+  "run": "qwen35_122b_z2",
+  "part": "z2",
+  "test": "Z2",
+  "spec": "jobs/c3/batch50.yaml",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-30T04:13:42Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "ee0bc74a917298b97ea54d3beb36b25cc0166817",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "inputs": {
+    "jobs/c3/batch50.yaml": "bcb685220e1bb8f48313b41b97bedb8398fbad624eed61cca256436a14f811b3",
+    "data/tasks_v2/jsuite_v2_test_chat/items.jsonl": "a45bdde20c8280a3483d3133f78294503dccc8ceaa4765e77d36334a0639784a",
+    "data/tasks_v2/jsuite_v2nb_test_chat/items.jsonl": "93dbd3de18dce737bac637cc89a406e9845ec885ac0543ea0983e234c229dde5"
+  },
+  "sets": [
+    "jsuite_v2_test_chat",
+    "jsuite_v2nb_test_chat"
+  ],
+  "words": [
+    "MK",
+    "MM"
+  ],
+  "layers": [
+    33,
+    39
+  ],
+  "n_items": 200,
+  "gate": 0.8,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "cf_seed": 5001,
+  "patch": "the description's last token",
+  "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
+  "desc_competence": {
+    "templates": [
+      "{q1}",
+      "Which {noun} is {d}?",
+      "Name {d}.",
+      "What is the name of {d}?",
+      "I am thinking of {d}. Which {noun} is it?"
+    ],
+    "instructions": [
+      "Answer with just the answer, nothing else.",
+      "Reply with the name only."
+    ],
+    "bar": 0.9,
+    "tokens": 12
+  },
+  "rule": "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between.",
+  "as_computed": "Extra loss = X0's excess = Jdep - Rdep = (S_no_jpp_rand - S_no_jpp) / S_whole per reader over the chosen passages (J++: signed OMP, k = 25); switch = the top token is the first token of the other entity's answer; gap = the M reader's extra loss minus the K reader's on the same cluster-bootstrap draws (over the original bridge entity, 10,000 resamples, seed 0, 95% intervals). Point estimates decide (EPS 1e-9); an undefined extra loss (no switch under the whole change) holds no clause (\"can't tell\"). X0's validity bar (S_whole >= 0.30 and >= 30 switches) per reader beside, not in the rule. Muse: the rule at L26 and at L36, both reported. Z1 order: the K reader's whole-change switch share, fact-first vs fact-after by the original bridge's fact sentence (K passage) against the pointer sentence; replicates iff fact-first >= 2 x fact-after (point estimates; each stratum's interval beside, and whether they separate). Hard-read: no flag in v2, so not tested.",
+  "beside": {
+    "full": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+    "question": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1"
+  },
+  "seeds": {
+    "cf_order": 5001,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q50.2 answer",
+  "batch": 52,
+  "items": 192
+}

@@ -1,0 +1,134 @@
+{
+  "exp": "x47_anatomy",
+  "run": "qwen35_122b_anatomy",
+  "why": "122B coverage (Dan 30 Oct ~02:10): 47.8's layer anatomy, Muse's design (every 4th layer L1-L45, 200 test scenes, C0 >= 0.5) at L33; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-30T02:25:36Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_LOOKUP_GATE": "1",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "5a2e1d37057aa61d7b5582153c99d80547ca7d4f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "test": "47.8",
+  "spec": "jobs/c3/batch47.yaml (47.8, amendment 2; D4 cache per amendment 3)",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e95d71ed01bf8de3ac5f824f9a16b1210ec0866e7585017d2210b8250e1f8353"
+  },
+  "layers": [
+    1,
+    5,
+    9,
+    13,
+    17,
+    21,
+    25,
+    29,
+    33,
+    37,
+    41,
+    45
+  ],
+  "fixed_layer": 33,
+  "n_layers": 48,
+  "n_test": 200,
+  "n_fit_min": 150,
+  "n_fit_max": 250,
+  "k": 25,
+  "omp": "signed",
+  "arms": [
+    "none",
+    "whole",
+    "keep_J",
+    "keep_J_rand",
+    "no_J",
+    "no_J_rand",
+    "keep_U",
+    "keep_U_rand",
+    "no_U",
+    "no_U_rand",
+    "keep_I",
+    "keep_I_rand",
+    "no_I",
+    "no_I_rand"
+  ],
+  "c0_arms": [
+    "none",
+    "whole"
+  ],
+  "parts": {
+    "J": "the J++ part (25 signed-OMP atoms of the layer's lens)",
+    "U": "the address part (U_l, the slot class means' basis refit at the layer)",
+    "I": "identity outside J++ (mu_alt - mu_org orthogonalised against the scene's 25 atoms)"
+  },
+  "as_computed": "Scenes: x6_routes' generator (seed 2510; locker-first), conditions C2 and C0, X0's gate (0.80 per reader on unedited scenes) and eligibility; the eligible C2 scenes split by bridge entity (seed 0; entities in a seeded order fill the test half to N_TEST scenes, the rest form the fit half, >= 150 or the run stops). Per sweep layer, from one forward of O and of S per scene: on the fit half the layout-free slot means and U_l (mass-mean basis; rank 2 with three lockers, the spec's rank 4 is not reachable here), the entity means over O and S bridge-word states and Id_l, x0_probe's three probes (entities held out), the refit's held-out slot / entity accuracy on the test half, the lens's top-10 rate for the bridge token; on the test half Delta = h_S - h_O and its parts J (signed OMP, 25 atoms of the layer's J++ lens, letter tokens), U (projection on U_l), I (rank-1 along mu_S - mu_O orthogonalised against the scene's atoms; zero where an entity has no mean, the scene left out of the I cells), W_E's 25-atom part and its overlap with J (D4). Random parts of the same share per scene: random lens atoms (seed 777 + l) for J, X0's random subspace (seed 888 + l) for U and I. Arms: none, whole, keep_X, keep_X_rand, no_X, no_X_rand for X in J, U, I; C0 scenes none and whole. Reads: X0's chat read, both readers; lookup answers classified identity / position / value / original / other, recall answers changed / original / slot item / other. Verdict (CPU, after Q47.8): per model and layer, shares and extra losses (X.cell) with cluster-bootstrap CIs over bridge entities (10,000, seed 0); the lookup's switch = identity + position + value, the recall's = changed; not interpretable where the whole change switches < 0.30; l_J, l_P, l_probe and rules (a)-(e) as the spec words them, point estimates, EPS 1e-9. C0 check at L: the whole change's lookup switch within 0.10 of the one-pick reference (Muse: >= 0.5), else the job fails after writing its files.",
+  "c0_reference": {
+    "run": "qwen35_122b_x0_massmean_grid",
+    "lookup_switch": 1.0,
+    "tolerance": 0.1,
+    "c0_min": 0.5
+  },
+  "seeds": {
+    "scenes": 2510,
+    "split": 0,
+    "random_atoms": "777 + layer",
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "gate": 0.8,
+  "cache": {
+    "layers_states": [
+      1,
+      5,
+      9,
+      13,
+      17,
+      21,
+      25,
+      29,
+      33,
+      37,
+      41,
+      45
+    ],
+    "layers_locker": [
+      1,
+      9,
+      17,
+      25,
+      33,
+      41
+    ],
+    "dtype": "float16",
+    "locker_tokens": "per locker sentence in context order: [item token, number token] (the last token of each)"
+  },
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token classified",
+  "sealed": "none (batch 52 coverage)",
+  "batch": 52,
+  "rules_first_scored": "results/x47_anatomy/x47_8-20261028T154518Z"
+}

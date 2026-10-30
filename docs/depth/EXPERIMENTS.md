@@ -2046,6 +2046,17 @@ Dan 18:20 (jobs/c3/batch53.yaml coverage_122b_1820, decision_470_1845): Qwen3.5-
 - **45p, the earlier mention** (`jobs/c3/x45p_122b_r2.yaml`, r2 after a script bug in r1; [verdict](../../results/x45p/x53_45p_coverage-20261030T002915Z/x45p.md), 166 locker-first clean scenes): does not hold (the recall's loss with the new item's token also stripped exceeds random by 0.15 and another item's token by 0.20, against the bars 0.20 / 0.15).
 - **53.7, the address probe in code and tool output** (adapted design: lookup-only gate; the recall is not part of this test; `jobs/c3/x53_7_probe_122b.yaml`; [verdict](../../results/x0_probe/x53_7_probe-20261030T002257Z/)): both formats tested (gate 0.867 code, 0.991 tool); locker before the pick, which locker sentence: code 0.92 [0.88, 0.95] (layout baseline 0.44), tool output 0.93 [0.91, 0.95] (0.40); descriptive.
 - **Every item of Dan's 18:20 list has run** (the routes part of 47.1 not tested at its gate).
+- **Second night batch (Dan 30 Oct 02:00-02:10, order of decisions_0205).**
+  - **47.4, cumulative patches** (`x47_4_122b`; [verdict](../../results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.md)): main design (53 items) "outside", clean design (134) "before L" (descriptive).
+  - **47.16, the swap after neutral sentences** (`x47_16_122b`; adapted design: lookup-only gate; the recall (0.797) is not part of this test): ran, its gate passed (lookup 1.00, the recall 0.78 descriptive); the verdict stage (CPU) not run yet.
+  - **47.8, anatomy by layer** (`x47_8_122b_lk`; same adapted design; [verdict](../../results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.md)): (a) yes, gap 0; (b) yes; (c) no; (d) yes.
+  - **47.13, the lookup's errors** (`x47_13_122b`): the GPU stage ran; 7 wrong of 1,500 lookups, under the rule's 30: can't tell. The job's exit 1 is its coverage note's path, not the run; no rerun.
+  - **Z3, routes on Zach's passages** (`x50_z3_122b`; [verdict](../../results/x50_zach/x52_z3-20261030T035019Z/z3.md)): "no position route in his layout" at L33 and L39.
+  - **47.14, chained addresses** (`x47_14_122b`): ran, its own gate passed (both lookups: 1.00 / 0.84); the verdict stage (CPU) not run yet.
+  - **49.1, the gain grid** (`x49_1_122b`): ran on the main test's 410 eligible scenes; the verdict stage (CPU) not run yet.
+  - **Z2, the described bridge** (`x50_z2_122b`; [verdict](../../results/x50_zach/x52_z2-20261030T045145Z/z2.md)): at L33 "(a') the computed bridge is handed through the lens"; at L39 can't tell (no lookup switch under the whole change).
+  - **52 B, the answer map** (`x52_answermap_122b`; [verdict](../../results/x52_answer_map/x52cov-20261030T045919Z/verdict.md)): the lookup's answer readable at the last token (best L44) and writing it there does not move it; the recall's answer not readable there, and writing it moves it.
+  - **Not run** (decisions_0205 item 2): 47.7 (c) and 45d (need the 122B's 45d / P_cf refit on varied scenes); 51.3 DAS (needs a clean-design source decision, as Lightning's); 53.8 (its script has no coverage path); 47.11 (no single script).
 
 ## Running or sealed
 

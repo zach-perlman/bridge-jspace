@@ -1,0 +1,51 @@
+{
+  "main": {
+    "design": "main",
+    "source": "qwen35_122b_x0_necessity_r2",
+    "alt": "cf",
+    "layer": 33,
+    "items_at_L": 200,
+    "dropped": {},
+    "items": 200,
+    "entities": 40,
+    "groups": {
+      "locker-after": 82,
+      "mixed": 65,
+      "locker-first": 53
+    },
+    "upstream": {
+      "False": 117,
+      "True": 83
+    },
+    "locker-first, prefix-identical": 14,
+    "pick_tokens": {
+      "5": 63,
+      "4": 133,
+      "6": 4
+    }
+  },
+  "clean": {
+    "design": "clean",
+    "source": "qwen35_122b_x45m_fresh",
+    "alt": "fresh",
+    "layer": 33,
+    "items_at_L": 435,
+    "dropped": {},
+    "items": 435,
+    "entities": 44,
+    "groups": {
+      "locker-after": 211,
+      "mixed": 90,
+      "locker-first": 134
+    },
+    "upstream": {
+      "False": 435
+    },
+    "locker-first, prefix-identical": 134,
+    "pick_tokens": {
+      "5": 153,
+      "4": 272,
+      "6": 10
+    }
+  }
+}

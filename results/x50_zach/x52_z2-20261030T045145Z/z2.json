@@ -1,0 +1,743 @@
+{
+ "runs": [
+  "nem35l_x52_z2",
+  "qwen35_122b_z2"
+ ],
+ "dan": "no prediction: coverage run on an already-scored rule",
+ "models": [
+  {
+   "run": "nem35l_x52_z2",
+   "target": "nemotron-3.5-lightning",
+   "layers": [
+    14,
+    27
+   ],
+   "gate": {
+    "cases": 243,
+    "org_read_accuracy": {
+     "K": 0.9753086419753086,
+     "M": 0.9465020576131687
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 206,
+    "over_zach_kept": {
+     "cases": 75,
+     "org_read_accuracy": {
+      "K": 1.0,
+      "M": 0.9466666666666667
+     },
+     "pass": true,
+     "eligible": 66
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "(options dropped for a leak)": 0,
+       "no option aligns (the patch token is not at one index in O and S)": 219
+      },
+      "with_options": 139,
+      "descriptions": 137,
+      "descriptions_kept": 128,
+      "competence_drops": {
+       "competence: O's description not named >= 0.90": 9,
+       "competence: no S description named >= 0.90": 9
+      },
+      "cases": 121
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "(options dropped for a leak)": 0,
+       "no option aligns (the patch token is not at one index in O and S)": 222
+      },
+      "with_options": 136,
+      "descriptions": 135,
+      "descriptions_kept": 125,
+      "competence_drops": {
+       "competence: no S description named >= 0.90": 5,
+       "competence: O's description not named >= 0.90": 9
+      },
+      "cases": 122
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 103,
+     "jsuite_v2nb_test_chat": 97
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "14": {
+     "n": 200,
+     "entities": 124,
+     "lookup": {
+      "n": 200,
+      "entities": 124,
+      "S_whole": [
+       0.335,
+       0.2732,
+       0.403
+      ],
+      "S_no_part": [
+       0.08,
+       0.0498,
+       0.126
+      ],
+      "S_no_rand": [
+       0.25,
+       0.1951,
+       0.3143
+      ],
+      "switched_whole": 67,
+      "valid": true,
+      "Jdep": [
+       0.7611940298507462,
+       0.6521739130434783,
+       0.8571428571428572
+      ],
+      "Rdep": [
+       0.25373134328358216,
+       0.13793103448275867,
+       0.375
+      ],
+      "excess": [
+       0.5074626865671641,
+       0.38181818181818183,
+       0.6346230158730157
+      ],
+      "label": "through"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 124,
+      "S_whole": [
+       0.345,
+       0.2826,
+       0.4132
+      ],
+      "S_no_part": [
+       0.08,
+       0.0498,
+       0.126
+      ],
+      "S_no_rand": [
+       0.255,
+       0.1996,
+       0.3196
+      ],
+      "switched_whole": 69,
+      "valid": true,
+      "Jdep": [
+       0.7681159420289855,
+       0.6710526315789473,
+       0.8653846153846154
+      ],
+      "Rdep": [
+       0.26086956521739124,
+       0.15584415584415579,
+       0.3728813559322034
+      ],
+      "excess": [
+       0.5072463768115942,
+       0.4032258064516129,
+       0.6199999999999999
+      ],
+      "label": "through"
+     },
+     "gap": [
+      -0.00021630975556985454,
+      -0.16563318530106486,
+      0.17128176171654425
+     ],
+     "verdict": "(a') the computed bridge is handed through the lens",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 130,
+        "other": 3,
+        "switch": 67
+       },
+       "no_jpp": {
+        "original": 180,
+        "other": 4,
+        "switch": 16
+       },
+       "no_jpp_rand": {
+        "original": 145,
+        "other": 5,
+        "switch": 50
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 69,
+        "original": 125,
+        "lure": 3,
+        "other": 3
+       },
+       "no_jpp": {
+        "other": 7,
+        "original": 175,
+        "switch": 16,
+        "lure": 2
+       },
+       "no_jpp_rand": {
+        "other": 7,
+        "original": 140,
+        "lure": 2,
+        "switch": 51
+       }
+      }
+     }
+    },
+    "27": {
+     "n": 200,
+     "entities": 124,
+     "lookup": {
+      "n": 200,
+      "entities": 124,
+      "S_whole": [
+       0.075,
+       0.046,
+       0.12
+      ],
+      "S_no_part": [
+       0.01,
+       0.0027,
+       0.0357
+      ],
+      "S_no_rand": [
+       0.05,
+       0.0274,
+       0.0896
+      ],
+      "switched_whole": 15,
+      "valid": false,
+      "Jdep": [
+       0.8666666666666667,
+       0.6428571428571428,
+       1.0
+      ],
+      "Rdep": [
+       0.33333333333333326,
+       0.11111111111111105,
+       0.5714285714285714
+      ],
+      "excess": [
+       0.5333333333333334,
+       0.2666666666666666,
+       0.7692307692307693
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 124,
+      "S_whole": [
+       0.09,
+       0.0577,
+       0.1378
+      ],
+      "S_no_part": [
+       0.01,
+       0.0027,
+       0.0357
+      ],
+      "S_no_rand": [
+       0.075,
+       0.046,
+       0.12
+      ],
+      "switched_whole": 18,
+      "valid": false,
+      "Jdep": [
+       0.8888888888888888,
+       0.7,
+       1.0
+      ],
+      "Rdep": [
+       0.16666666666666663,
+       0.0,
+       0.33333333333333337
+      ],
+      "excess": [
+       0.7222222222222222,
+       0.5,
+       0.9166666666666666
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      0.18888888888888877,
+      -0.10577205882352937,
+      0.5128205128205129
+     ],
+     "verdict": "(a') the computed bridge is handed through the lens",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 184,
+        "switch": 15,
+        "other": 1
+       },
+       "no_jpp": {
+        "original": 196,
+        "switch": 2,
+        "other": 2
+       },
+       "no_jpp_rand": {
+        "original": 189,
+        "switch": 10,
+        "other": 1
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 180,
+        "switch": 18,
+        "lure": 1,
+        "other": 1
+       },
+       "no_jpp": {
+        "original": 196,
+        "switch": 2,
+        "lure": 2
+       },
+       "no_jpp_rand": {
+        "original": 183,
+        "switch": 15,
+        "lure": 1,
+        "other": 1
+       }
+      }
+     }
+    }
+   },
+   "beside": {
+    "band": "L27-33",
+    "swap": "no M-start swap or erase rows in his results (jswap covers P and T starts only)",
+    "full": {
+     "run": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 66,
+      "m_minus_k": [
+       0.36363636363636365,
+       0.23809523809523808,
+       0.49206349206349204
+      ]
+     },
+     "paper10_rot": {
+      "joined": 66,
+      "m_minus_k": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "question": {
+     "run": "nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1",
+     "paper10": {
+      "joined": 66,
+      "m_minus_k": [
+       0.19696969696969696,
+       0.10606060606060606,
+       0.29691581156716357
+      ]
+     },
+     "paper10_rot": {
+      "joined": 66,
+      "m_minus_k": [
+       -0.015151515151515152,
+       -0.047619047619047616,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "run": "qwen35_122b_z2",
+   "target": "qwen3.5-122b-a10b",
+   "layers": [
+    33,
+    39
+   ],
+   "gate": {
+    "cases": 221,
+    "org_read_accuracy": {
+     "K": 0.9592760180995475,
+     "M": 0.9411764705882353
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 192,
+    "over_zach_kept": {
+     "cases": 80,
+     "org_read_accuracy": {
+      "K": 0.975,
+      "M": 0.9625
+     },
+     "pass": true,
+     "eligible": 73
+    },
+    "chosen": 192,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "(options dropped for a leak)": 0,
+       "no option aligns (the patch token is not at one index in O and S)": 248
+      },
+      "with_options": 110,
+      "descriptions": 120,
+      "descriptions_kept": 115,
+      "competence_drops": {
+       "competence: no S description named >= 0.90": 5,
+       "competence: O's description not named >= 0.90": 5
+      },
+      "cases": 100
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "(options dropped for a leak)": 0,
+       "no option aligns (the patch token is not at one index in O and S)": 228
+      },
+      "with_options": 130,
+      "descriptions": 132,
+      "descriptions_kept": 128,
+      "competence_drops": {
+       "competence: O's description not named >= 0.90": 5,
+       "competence: no S description named >= 0.90": 4
+      },
+      "cases": 121
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 87,
+     "jsuite_v2nb_test_chat": 105
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "33": {
+     "n": 192,
+     "entities": 121,
+     "lookup": {
+      "n": 192,
+      "entities": 121,
+      "S_whole": [
+       0.2917,
+       0.232,
+       0.3595
+      ],
+      "S_no_part": [
+       0.0417,
+       0.0213,
+       0.0801
+      ],
+      "S_no_rand": [
+       0.1823,
+       0.1341,
+       0.243
+      ],
+      "switched_whole": 56,
+      "valid": false,
+      "Jdep": [
+       0.8571428571428572,
+       0.7666666666666667,
+       0.9423076923076923
+      ],
+      "Rdep": [
+       0.3750000000000001,
+       0.2549019607843137,
+       0.5079365079365079
+      ],
+      "excess": [
+       0.4821428571428571,
+       0.35593220338983045,
+       0.603448275862069
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 192,
+      "entities": 121,
+      "S_whole": [
+       0.2135,
+       0.1615,
+       0.2768
+      ],
+      "S_no_part": [
+       0.0417,
+       0.0213,
+       0.0801
+      ],
+      "S_no_rand": [
+       0.1406,
+       0.0985,
+       0.1969
+      ],
+      "switched_whole": 41,
+      "valid": false,
+      "Jdep": [
+       0.8048780487804879,
+       0.6808297872340425,
+       0.9166666666666666
+      ],
+      "Rdep": [
+       0.3414634146341463,
+       0.18518518518518523,
+       0.5
+      ],
+      "excess": [
+       0.46341463414634154,
+       0.2820312499999999,
+       0.6530808477237047
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      -0.018728222996515553,
+      -0.19230769230769218,
+      0.171343083390549
+     ],
+     "verdict": "(a') the computed bridge is handed through the lens",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 192
+       },
+       "whole": {
+        "original": 135,
+        "switch": 56,
+        "other": 1
+       },
+       "no_jpp": {
+        "original": 182,
+        "switch": 8,
+        "other": 2
+       },
+       "no_jpp_rand": {
+        "original": 156,
+        "switch": 35,
+        "other": 1
+       }
+      },
+      "M": {
+       "none": {
+        "original": 192
+       },
+       "whole": {
+        "original": 149,
+        "switch": 41,
+        "other": 2
+       },
+       "no_jpp": {
+        "original": 182,
+        "switch": 8,
+        "other": 2
+       },
+       "no_jpp_rand": {
+        "original": 163,
+        "switch": 27,
+        "other": 1,
+        "lure": 1
+       }
+      }
+     }
+    },
+    "39": {
+     "n": 192,
+     "entities": 121,
+     "lookup": {
+      "n": 192,
+      "entities": 121,
+      "S_whole": [
+       0.0,
+       0.0,
+       0.0196
+      ],
+      "S_no_part": [
+       0.0,
+       0.0,
+       0.0196
+      ],
+      "S_no_rand": [
+       0.0,
+       0.0,
+       0.0196
+      ],
+      "switched_whole": 0,
+      "valid": false,
+      "Jdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "Rdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "excess": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 192,
+      "entities": 121,
+      "S_whole": [
+       0.0104,
+       0.0029,
+       0.0372
+      ],
+      "S_no_part": [
+       0.0052,
+       0.0009,
+       0.0289
+      ],
+      "S_no_rand": [
+       0.0,
+       0.0,
+       0.0196
+      ],
+      "switched_whole": 2,
+      "valid": false,
+      "Jdep": [
+       0.5,
+       0.0,
+       1.0
+      ],
+      "Rdep": [
+       1.0,
+       1.0,
+       1.0
+      ],
+      "excess": [
+       -0.5,
+       -1.0,
+       0.0
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "verdict": "can't tell (no lookup switch under the whole change)",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 192
+       },
+       "whole": {
+        "original": 190,
+        "other": 2
+       },
+       "no_jpp": {
+        "original": 191,
+        "other": 1
+       },
+       "no_jpp_rand": {
+        "original": 190,
+        "other": 2
+       }
+      },
+      "M": {
+       "none": {
+        "original": 192
+       },
+       "whole": {
+        "original": 190,
+        "switch": 2
+       },
+       "no_jpp": {
+        "original": 191,
+        "switch": 1
+       },
+       "no_jpp_rand": {
+        "original": 191,
+        "other": 1
+       }
+      }
+     }
+    }
+   },
+   "beside": {
+    "band": "L39-45",
+    "swap": "no M-start swap or erase rows in his results (jswap covers P and T starts only)",
+    "full": {
+     "run": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 73,
+      "m_minus_k": [
+       0.3835616438356164,
+       0.2676056338028169,
+       0.5070422535211268
+      ]
+     },
+     "paper10_rot": {
+      "joined": 73,
+      "m_minus_k": [
+       0.0410958904109589,
+       0.0,
+       0.10526315789473684
+      ]
+     }
+    },
+    "question": {
+     "run": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1",
+     "paper10": {
+      "joined": 73,
+      "m_minus_k": [
+       0.2328767123287671,
+       0.14084507042253522,
+       0.3333333333333333
+      ]
+     },
+     "paper10_rot": {
+      "joined": 73,
+      "m_minus_k": [
+       0.0273972602739726,
+       0.0,
+       0.0821917808219178
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

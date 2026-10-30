@@ -1,0 +1,37 @@
+{
+ "cells": {
+  "lookup": [
+   "T",
+   44
+  ],
+  "recall": [
+   "T",
+   44
+  ]
+ },
+ "from": "qwen35_122b_x52_read_main",
+ "answer": {
+  "lookup": {
+   "layer": 46,
+   "n": 200,
+   "never": 0,
+   "quartiles": [
+    46.0,
+    46.0,
+    46.0
+   ],
+   "settle_layer": 46
+  },
+  "recall": {
+   "layer": 46,
+   "n": 200,
+   "never": 0,
+   "quartiles": [
+    46.0,
+    46.0,
+    46.0
+   ],
+   "settle_layer": 46
+  }
+ }
+}
