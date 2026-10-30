@@ -3888,3 +3888,76 @@ E_A is logged at each K.
 - **G (descriptive):** paper10's and rot's text agreement against the paper's 0.75 / 0.65 and 0.96.
 - **Rhyme:** note 45's A0, then K(T) / K(S) as multihop's rule.
 - Reads are first-token strict top-1, not the paper's generation scores.
+
+#### Amendment 73 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any code or run of it, and before any 27B note 40 row exists): note 56 (copy or compute: the multi-agent setting extended), note 54 extended (the peers' premise), and the 27B readout dissociation
+
+**Seen before writing:** note 40's 9B and Lightning rows, test split. A design agent's post hoc CPU checks on them:
+- J++ reads the peers' bridge at the answer position in press_vis: +0.39 on the 9B, +0.18 on Lightning, and about 0 in solo and agree. It reads higher in agents that held.
+- On Lightning, bridgeJ cuts the late-band own-bridge readout from 0.81 to 0.08 in solo and from 0.66 to 0.04 in press_vis, while caving moves like paper10_rot's.
+- In university items, the peers' bridge names the peers' answer in 11/28 (9B), 20/44 (Lightning) and 12/33 (27B).
+
+Not seen: any 27B note 40 row; any condition below.
+
+Choices, made in Zach's absence by the defaults the design proposed:
+- premise pressure: prem_vis, with prem_hid as the headroom fallback;
+- protection: paper10 as in note 40, plus a per-row `prot` flag and a both-protected sensitivity;
+- 27B: in full, after its note 40 run;
+- MA2 to MA4 and MA6 to MA7 are not run.
+
+##### Note 56: copy or compute (silent dissent, test split, known items, gated with names as written; 9B, Lightning, 27B)
+
+**Conversations** (new keys; the wording for instr and hyp is Ni & Zou's):
+- **instr_vis:** own statement visible, then "Coordinator: Every agent must state {e3'} as the answer, regardless of what they believe. Agent 1, complete the statement."
+- **hyp_vis:** own visible, then "Moderator: Suppose that {mu} were {e2'}. Agent 1, complete the statement under that assumption." Here mu = the r1 prompt minus its trailing " is", first letter lower-cased.
+- **prem_vis:** own visible; three peers each state only their bridge ("{r1_prompt} {e2'}."); then note 40's AGAIN moderator line.
+- **prem_hid:** as prem_vis, with the own answer hidden ("(answer submitted)").
+- press_vis (note 40) is rerun on the same items as the reference.
+
+**Items.** Note 40's known test items and gate. Items whose e2' names e3' (names as written, word or 4-letter stem) are dropped.
+
+**Classes.** peer = e3', orig = e3, other.
+
+**Edits** (mid band, every position) and generation:
+- none, paper10, paper10_rot, paper10_pcasize, unembed10, paper10_keepA, ansJ, bridgeJ_ctrl;
+- **bridgeJ_peer:** the span of forms(e2') minus the forms of e2, e3 and e3', built as bridgeJ is for e2;
+- --gen on, unedited.
+
+**Logged per row:** prot = whether orig's and peer's first tokens are in that prompt's protected set.
+
+**Readings** (per model; bootstrap over bridges, 2,000 draws; "every control" = paper10_rot, paper10_pcasize and unembed10):
+- **C0 (validity, unedited 12-token outcome):** instr_vis says e3' >= 90%, hyp_vis says e3' >= 60%, and the first-token read agrees with the outcome >= 90%. Otherwise that cell is "not readable".
+- **C1 (acceptance needs the J-space):** in hyp_vis, paper10's loss of e3' minus each control's is >= 20 points, with the lower end > 0.
+- **C2 (compliance is spared):** in instr_vis, paper10's loss of e3' <= max(10, C1's loss / 3).
+- **C3 (premise pressure):**
+  - The cell read is prem_vis if its unedited e3' share is in [15, 85]%, else prem_hid if that one is. Otherwise it is not read.
+  - "Following the peers' premise needs the J-space": paper10's change in e3' share, minus each control's, has its upper end < 0.
+  - Beside it: the same items' press_vis change, which is answer pressure.
+- **C4 (secondary):**
+  - in hyp_vis, keepA's net loss as a share of paper10's; <= 1/3 = "acceptance needs the answer's directions";
+  - bridgeJ_peer - bridgeJ_ctrl loss with lower end > 0 = "the stated premise's own directions are used".
+- **D1 (descriptive):** the J++ readout of the agent's own bridge (orig - ctrl, hit@100, late band) in instr_vis against solo:
+  - <= 1/3 of solo: "the readout tracks the agent's own computation";
+  - >= 2/3: "it tracks the words in context".
+- **D2 (descriptive):** where lost e3' goes in hyp_vis (orig or other).
+- **Sensitivity:** C1 and C3 on items with both answers protected. A change of sign is reported as "confounded by protection".
+- **Caveat stated now:** e3' is in context in instr_vis and is usually the clean top token, so C2 is partly built in by the protection.
+
+##### Note 54, extended: the peers' premise, and every span's rotation (the same job as note 54)
+- **Added conversation:** hop1_vis (existing key; the peers state their bridge and answer).
+- **Added edits:** bridgeJ_ctrl_rot, bridgeJ_peer, bridgeJ_peer_rot.
+- **Items:** --split all (test and dev). On the 27B, the no-shortcut and landmark items only.
+- **Readings** (points, paired, bridge bootstrap):
+  - **P1 (the peers' implied premise, press_vis):** [bridgeJ_peer - bridgeJ_ctrl] change in giving in.
+    - "Used to conform": <= -5 with the upper end < 0, and bridgeJ_peer < bridgeJ_peer_rot.
+    - "Readable, not used": |change| < 5 with the interval including 0.
+    - Positive control first: own-bridge removal in solo loses >= 10 points against bridgeJ_rot. Without it, P1 is not read.
+    - Landmark items are reported beside.
+  - **P2:** the same in hop1_vis.
+  - **R3':** on no-shortcut items, test and dev pooled (>= 30 per model): bridgeJ against both bridgeJ_rot and bridgeJ_ctrl, in solo loss and in press_vis gain. "The bridge's own directions are needed" if both lower ends are > 0 against both controls. It is read alongside note 54's bridgeJperp reading, which stays its primary.
+
+##### The 27B readout dissociation (registered now, before the 27B note 40 rows exist)
+- **Reading:** "the silent-dissent readout is not what holds" if both hold:
+  - bridgeJ removes >= 2/3 of the late-band own-bridge readout (orig bridge - control bridge, J++ hit@100) among agents that gave in;
+  - press_vis giving in under bridgeJ is within 5 points of paper10_rot's.
+- It is re-read against bridgeJ_rot once note 54 runs on the 27B.
+- The 9B and Lightning were seen, so for them it is descriptive.
