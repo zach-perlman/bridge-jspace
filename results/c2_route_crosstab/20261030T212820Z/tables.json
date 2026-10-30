@@ -1,0 +1,793 @@
+{
+ "qwen3.5-9b": {
+  "run": "qwen35_9b_x6_routes",
+  "n": 300,
+  "whole": {
+   "identity": 144,
+   "position": 153,
+   "original": 3
+  },
+  "arms": {
+   "no_alf": {
+    "text": "without the pointer directions",
+    "marginal": {
+     "identity": 109,
+     "original": 166,
+     "position": 25
+    },
+    "cells": {
+     "identity->identity": 61,
+     "identity->original": 80,
+     "identity->position": 3,
+     "original->original": 3,
+     "position->identity": 48,
+     "position->original": 83,
+     "position->position": 22
+    },
+    "identity_to_position": [
+     "C2-0164",
+     "C2-0498",
+     "C2-0506"
+    ]
+   },
+   "no_alf_rand": {
+    "text": "size-matched random part (control of the pointer arm)",
+    "marginal": {
+     "identity": 120,
+     "position": 163,
+     "original": 17
+    },
+    "cells": {
+     "identity->identity": 119,
+     "identity->original": 7,
+     "identity->position": 18,
+     "original->original": 3,
+     "position->identity": 1,
+     "position->original": 7,
+     "position->position": 145
+    },
+    "identity_to_position": [
+     "C2-0003",
+     "C2-0017",
+     "C2-0036",
+     "C2-0079",
+     "C2-0082",
+     "C2-0132",
+     "C2-0170",
+     "C2-0172",
+     "C2-0236",
+     "C2-0284",
+     "C2-0295",
+     "C2-0304",
+     "C2-0311",
+     "C2-0337",
+     "C2-0364",
+     "C2-0481",
+     "C2-0498",
+     "C2-0539"
+    ]
+   },
+   "no_jpp": {
+    "text": "without J++",
+    "marginal": {
+     "identity": 105,
+     "position": 182,
+     "original": 13
+    },
+    "cells": {
+     "identity->identity": 103,
+     "identity->original": 6,
+     "identity->position": 35,
+     "original->original": 3,
+     "position->identity": 2,
+     "position->original": 4,
+     "position->position": 147
+    },
+    "identity_to_position": [
+     "C2-0003",
+     "C2-0004",
+     "C2-0017",
+     "C2-0036",
+     "C2-0043",
+     "C2-0045",
+     "C2-0068",
+     "C2-0079",
+     "C2-0127",
+     "C2-0132",
+     "C2-0170",
+     "C2-0172",
+     "C2-0182",
+     "C2-0228",
+     "C2-0236",
+     "C2-0284",
+     "C2-0294",
+     "C2-0295",
+     "C2-0304",
+     "C2-0311",
+     "C2-0328",
+     "C2-0337",
+     "C2-0354",
+     "C2-0357",
+     "C2-0447",
+     "C2-0448",
+     "C2-0472",
+     "C2-0475",
+     "C2-0481",
+     "C2-0495",
+     "C2-0498",
+     "C2-0508",
+     "C2-0522",
+     "C2-0539",
+     "C2-0542"
+    ]
+   },
+   "no_jpp_rand": {
+    "text": "size-matched random part (control of the J++ arm)",
+    "marginal": {
+     "identity": 122,
+     "position": 151,
+     "original": 27
+    },
+    "cells": {
+     "identity->identity": 121,
+     "identity->original": 6,
+     "identity->position": 17,
+     "original->original": 3,
+     "position->identity": 1,
+     "position->original": 18,
+     "position->position": 134
+    },
+    "identity_to_position": [
+     "C2-0003",
+     "C2-0017",
+     "C2-0036",
+     "C2-0079",
+     "C2-0082",
+     "C2-0132",
+     "C2-0170",
+     "C2-0172",
+     "C2-0182",
+     "C2-0236",
+     "C2-0284",
+     "C2-0295",
+     "C2-0311",
+     "C2-0337",
+     "C2-0481",
+     "C2-0495",
+     "C2-0539"
+    ]
+   }
+  },
+  "contrasts": {
+   "a_leave_position_no_alf_minus_rand": {
+    "n_whole_position": 153,
+    "arm": "no_alf",
+    "count_arm": 131,
+    "count_rand": 8,
+    "share_arm": 0.8562091503267973,
+    "share_rand": 0.05228758169934641,
+    "difference": [
+     0.8039215686274509,
+     0.7364851770375026,
+     0.8661983044765408
+    ]
+   },
+   "b_identity_to_position_no_jpp_minus_rand": {
+    "n_whole_identity": 144,
+    "arm": "no_jpp",
+    "count_arm": 35,
+    "count_rand": 17,
+    "share_arm": 0.24305555555555555,
+    "share_rand": 0.11805555555555555,
+    "difference": [
+     0.125,
+     0.06779661016949154,
+     0.1843585324299695
+    ]
+   }
+  }
+ },
+ "qwen3.6-27b": {
+  "run": "x6_routes_27b",
+  "n": 300,
+  "whole": {
+   "identity": 197,
+   "position": 101,
+   "original": 1,
+   "other": 1
+  },
+  "arms": {
+   "no_alf": {
+    "text": "without the pointer directions",
+    "marginal": {
+     "identity": 217,
+     "position": 18,
+     "original": 64,
+     "other": 1
+    },
+    "cells": {
+     "identity->identity": 156,
+     "identity->original": 39,
+     "identity->position": 2,
+     "original->original": 1,
+     "other->identity": 1,
+     "position->identity": 60,
+     "position->original": 24,
+     "position->other": 1,
+     "position->position": 16
+    },
+    "identity_to_position": [
+     "C2-0128",
+     "C2-0200"
+    ]
+   },
+   "no_alf_rand": {
+    "text": "size-matched random part (control of the pointer arm)",
+    "marginal": {
+     "identity": 209,
+     "position": 76,
+     "original": 14,
+     "other": 1
+    },
+    "cells": {
+     "identity->identity": 190,
+     "identity->original": 6,
+     "identity->position": 1,
+     "original->original": 1,
+     "other->identity": 1,
+     "position->identity": 18,
+     "position->original": 7,
+     "position->other": 1,
+     "position->position": 75
+    },
+    "identity_to_position": [
+     "C2-0012"
+    ]
+   },
+   "no_jpp": {
+    "text": "without J++",
+    "marginal": {
+     "identity": 135,
+     "position": 127,
+     "original": 37,
+     "other": 1
+    },
+    "cells": {
+     "identity->identity": 135,
+     "identity->original": 26,
+     "identity->position": 36,
+     "original->original": 1,
+     "other->other": 1,
+     "position->original": 10,
+     "position->position": 91
+    },
+    "identity_to_position": [
+     "C2-0012",
+     "C2-0014",
+     "C2-0024",
+     "C2-0032",
+     "C2-0047",
+     "C2-0068",
+     "C2-0070",
+     "C2-0080",
+     "C2-0085",
+     "C2-0089",
+     "C2-0132",
+     "C2-0134",
+     "C2-0142",
+     "C2-0160",
+     "C2-0168",
+     "C2-0183",
+     "C2-0187",
+     "C2-0200",
+     "C2-0216",
+     "C2-0228",
+     "C2-0242",
+     "C2-0260",
+     "C2-0275",
+     "C2-0279",
+     "C2-0293",
+     "C2-0295",
+     "C2-0297",
+     "C2-0299",
+     "C2-0307",
+     "C2-0366",
+     "C2-0369",
+     "C2-0400",
+     "C2-0408",
+     "C2-0427",
+     "C2-0430",
+     "C2-0447"
+    ]
+   },
+   "no_jpp_rand": {
+    "text": "size-matched random part (control of the J++ arm)",
+    "marginal": {
+     "identity": 210,
+     "position": 85,
+     "original": 4,
+     "other": 1
+    },
+    "cells": {
+     "identity->identity": 194,
+     "identity->original": 3,
+     "original->original": 1,
+     "other->identity": 1,
+     "position->identity": 15,
+     "position->other": 1,
+     "position->position": 85
+    },
+    "identity_to_position": []
+   }
+  },
+  "contrasts": {
+   "a_leave_position_no_alf_minus_rand": {
+    "n_whole_position": 101,
+    "arm": "no_alf",
+    "count_arm": 85,
+    "count_rand": 26,
+    "share_arm": 0.8415841584158416,
+    "share_rand": 0.25742574257425743,
+    "difference": [
+     0.5841584158415841,
+     0.4893559204440333,
+     0.6699029126213591
+    ]
+   },
+   "b_identity_to_position_no_jpp_minus_rand": {
+    "n_whole_identity": 197,
+    "arm": "no_jpp",
+    "count_arm": 36,
+    "count_rand": 0,
+    "share_arm": 0.18274111675126903,
+    "share_rand": 0.0,
+    "difference": [
+     0.18274111675126903,
+     0.1336898395721925,
+     0.2293577981651376
+    ]
+   }
+  }
+ },
+ "muse-glimmer-30b": {
+  "run": "muse30b_x6_routes",
+  "n": 300,
+  "whole": {
+   "position": 163,
+   "identity": 131,
+   "original": 6
+  },
+  "arms": {
+   "no_alf": {
+    "text": "without the pointer directions",
+    "marginal": {
+     "position": 82,
+     "original": 88,
+     "identity": 130
+    },
+    "cells": {
+     "identity->identity": 100,
+     "identity->original": 29,
+     "identity->position": 2,
+     "original->original": 6,
+     "position->identity": 30,
+     "position->original": 53,
+     "position->position": 80
+    },
+    "identity_to_position": [
+     "C2-0363",
+     "C2-0634"
+    ]
+   },
+   "no_alf_rand": {
+    "text": "size-matched random part (control of the pointer arm)",
+    "marginal": {
+     "position": 164,
+     "identity": 124,
+     "original": 12
+    },
+    "cells": {
+     "identity->identity": 123,
+     "identity->original": 2,
+     "identity->position": 6,
+     "original->original": 6,
+     "position->identity": 1,
+     "position->original": 4,
+     "position->position": 158
+    },
+    "identity_to_position": [
+     "C2-0167",
+     "C2-0172",
+     "C2-0234",
+     "C2-0492",
+     "C2-0505",
+     "C2-0634"
+    ]
+   },
+   "no_jpp": {
+    "text": "without J++",
+    "marginal": {
+     "position": 169,
+     "identity": 119,
+     "original": 12
+    },
+    "cells": {
+     "identity->identity": 118,
+     "identity->original": 5,
+     "identity->position": 8,
+     "original->original": 6,
+     "position->identity": 1,
+     "position->original": 1,
+     "position->position": 161
+    },
+    "identity_to_position": [
+     "C2-0167",
+     "C2-0172",
+     "C2-0234",
+     "C2-0353",
+     "C2-0410",
+     "C2-0505",
+     "C2-0608",
+     "C2-0634"
+    ]
+   },
+   "no_jpp_rand": {
+    "text": "size-matched random part (control of the J++ arm)",
+    "marginal": {
+     "position": 160,
+     "identity": 120,
+     "original": 20
+    },
+    "cells": {
+     "identity->identity": 118,
+     "identity->original": 9,
+     "identity->position": 4,
+     "original->original": 6,
+     "position->identity": 2,
+     "position->original": 5,
+     "position->position": 156
+    },
+    "identity_to_position": [
+     "C2-0172",
+     "C2-0492",
+     "C2-0505",
+     "C2-0634"
+    ]
+   }
+  },
+  "contrasts": {
+   "a_leave_position_no_alf_minus_rand": {
+    "n_whole_position": 163,
+    "arm": "no_alf",
+    "count_arm": 83,
+    "count_rand": 5,
+    "share_arm": 0.50920245398773,
+    "share_rand": 0.03067484662576687,
+    "difference": [
+     0.47852760736196315,
+     0.40397350993377484,
+     0.5502958579881656
+    ]
+   },
+   "b_identity_to_position_no_jpp_minus_rand": {
+    "n_whole_identity": 131,
+    "arm": "no_jpp",
+    "count_arm": 8,
+    "count_rand": 4,
+    "share_arm": 0.061068702290076333,
+    "share_rand": 0.030534351145038167,
+    "difference": [
+     0.030534351145038167,
+     0.006849315068493149,
+     0.06363636363636363
+    ]
+   }
+  }
+ },
+ "nemotron-3.5-lightning": {
+  "run": "nem35l_x52_routes",
+  "n": 300,
+  "whole": {
+   "identity": 133,
+   "position": 166,
+   "original": 1
+  },
+  "arms": {
+   "no_alf": {
+    "text": "without the pointer directions",
+    "marginal": {
+     "identity": 94,
+     "original": 175,
+     "position": 31
+    },
+    "cells": {
+     "identity->identity": 57,
+     "identity->original": 76,
+     "original->original": 1,
+     "position->identity": 37,
+     "position->original": 98,
+     "position->position": 31
+    },
+    "identity_to_position": []
+   },
+   "no_alf_rand": {
+    "text": "size-matched random part (control of the pointer arm)",
+    "marginal": {
+     "identity": 126,
+     "position": 168,
+     "original": 6
+    },
+    "cells": {
+     "identity->identity": 122,
+     "identity->original": 1,
+     "identity->position": 10,
+     "original->original": 1,
+     "position->identity": 4,
+     "position->original": 4,
+     "position->position": 158
+    },
+    "identity_to_position": [
+     "C2-0028",
+     "C2-0031",
+     "C2-0075",
+     "C2-0093",
+     "C2-0171",
+     "C2-0284",
+     "C2-0418",
+     "C2-0479",
+     "C2-0516",
+     "C2-0545"
+    ]
+   },
+   "no_jpp": {
+    "text": "without J++",
+    "marginal": {
+     "identity": 108,
+     "position": 174,
+     "original": 18
+    },
+    "cells": {
+     "identity->identity": 105,
+     "identity->original": 6,
+     "identity->position": 22,
+     "original->original": 1,
+     "position->identity": 3,
+     "position->original": 11,
+     "position->position": 152
+    },
+    "identity_to_position": [
+     "C2-0020",
+     "C2-0028",
+     "C2-0031",
+     "C2-0060",
+     "C2-0093",
+     "C2-0125",
+     "C2-0149",
+     "C2-0158",
+     "C2-0171",
+     "C2-0199",
+     "C2-0228",
+     "C2-0331",
+     "C2-0341",
+     "C2-0371",
+     "C2-0386",
+     "C2-0399",
+     "C2-0418",
+     "C2-0485",
+     "C2-0524",
+     "C2-0545",
+     "C2-0570",
+     "C2-0596"
+    ]
+   },
+   "no_jpp_rand": {
+    "text": "size-matched random part (control of the J++ arm)",
+    "marginal": {
+     "identity": 124,
+     "original": 35,
+     "position": 141
+    },
+    "cells": {
+     "identity->identity": 116,
+     "identity->original": 6,
+     "identity->position": 11,
+     "original->original": 1,
+     "position->identity": 8,
+     "position->original": 28,
+     "position->position": 130
+    },
+    "identity_to_position": [
+     "C2-0031",
+     "C2-0093",
+     "C2-0171",
+     "C2-0176",
+     "C2-0245",
+     "C2-0284",
+     "C2-0316",
+     "C2-0418",
+     "C2-0479",
+     "C2-0516",
+     "C2-0545"
+    ]
+   }
+  },
+  "contrasts": {
+   "a_leave_position_no_alf_minus_rand": {
+    "n_whole_position": 166,
+    "arm": "no_alf",
+    "count_arm": 135,
+    "count_rand": 8,
+    "share_arm": 0.8132530120481928,
+    "share_rand": 0.04819277108433735,
+    "difference": [
+     0.7650602409638554,
+     0.708608325449385,
+     0.8216572853404434
+    ]
+   },
+   "b_identity_to_position_no_jpp_minus_rand": {
+    "n_whole_identity": 133,
+    "arm": "no_jpp",
+    "count_arm": 22,
+    "count_rand": 11,
+    "share_arm": 0.16541353383458646,
+    "share_rand": 0.08270676691729323,
+    "difference": [
+     0.08270676691729323,
+     0.01709401709401709,
+     0.1487603305785124
+    ]
+   }
+  }
+ },
+ "qwen3.5-122b-a10b": {
+  "run": "qwen35_122b_x6_routes_g75",
+  "n": 300,
+  "whole": {
+   "identity": 184,
+   "position": 115,
+   "original": 1
+  },
+  "arms": {
+   "no_alf": {
+    "text": "without the pointer directions",
+    "marginal": {
+     "identity": 186,
+     "original": 100,
+     "position": 14
+    },
+    "cells": {
+     "identity->identity": 120,
+     "identity->original": 64,
+     "original->original": 1,
+     "position->identity": 66,
+     "position->original": 35,
+     "position->position": 14
+    },
+    "identity_to_position": []
+   },
+   "no_alf_rand": {
+    "text": "size-matched random part (control of the pointer arm)",
+    "marginal": {
+     "identity": 184,
+     "position": 108,
+     "original": 8
+    },
+    "cells": {
+     "identity->identity": 176,
+     "identity->original": 1,
+     "identity->position": 7,
+     "original->original": 1,
+     "position->identity": 8,
+     "position->original": 6,
+     "position->position": 101
+    },
+    "identity_to_position": [
+     "C2-0036",
+     "C2-0037",
+     "C2-0127",
+     "C2-0333",
+     "C2-0427",
+     "C2-0470",
+     "C2-0602"
+    ]
+   },
+   "no_jpp": {
+    "text": "without J++",
+    "marginal": {
+     "identity": 156,
+     "position": 139,
+     "original": 5
+    },
+    "cells": {
+     "identity->identity": 156,
+     "identity->original": 2,
+     "identity->position": 26,
+     "original->original": 1,
+     "position->original": 2,
+     "position->position": 113
+    },
+    "identity_to_position": [
+     "C2-0036",
+     "C2-0037",
+     "C2-0045",
+     "C2-0052",
+     "C2-0070",
+     "C2-0132",
+     "C2-0194",
+     "C2-0216",
+     "C2-0237",
+     "C2-0294",
+     "C2-0325",
+     "C2-0333",
+     "C2-0354",
+     "C2-0366",
+     "C2-0369",
+     "C2-0427",
+     "C2-0444",
+     "C2-0447",
+     "C2-0451",
+     "C2-0470",
+     "C2-0475",
+     "C2-0515",
+     "C2-0527",
+     "C2-0539",
+     "C2-0602",
+     "C2-0649"
+    ]
+   },
+   "no_jpp_rand": {
+    "text": "size-matched random part (control of the J++ arm)",
+    "marginal": {
+     "identity": 178,
+     "position": 100,
+     "original": 22
+    },
+    "cells": {
+     "identity->identity": 169,
+     "identity->original": 10,
+     "identity->position": 5,
+     "original->original": 1,
+     "position->identity": 9,
+     "position->original": 11,
+     "position->position": 95
+    },
+    "identity_to_position": [
+     "C2-0036",
+     "C2-0127",
+     "C2-0427",
+     "C2-0470",
+     "C2-0602"
+    ]
+   }
+  },
+  "contrasts": {
+   "a_leave_position_no_alf_minus_rand": {
+    "n_whole_position": 115,
+    "arm": "no_alf",
+    "count_arm": 101,
+    "count_rand": 14,
+    "share_arm": 0.8782608695652174,
+    "share_rand": 0.12173913043478261,
+    "difference": [
+     0.7565217391304349,
+     0.6724101709649376,
+     0.8305084745762712
+    ]
+   },
+   "b_identity_to_position_no_jpp_minus_rand": {
+    "n_whole_identity": 184,
+    "arm": "no_jpp",
+    "count_arm": 26,
+    "count_rand": 5,
+    "share_arm": 0.14130434782608695,
+    "share_rand": 0.02717391304347826,
+    "difference": [
+     0.11413043478260869,
+     0.06285714285714286,
+     0.16574585635359113
+    ]
+   }
+  }
+ }
+}

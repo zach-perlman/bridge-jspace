@@ -1,0 +1,16 @@
+{
+  "exp": "c2_route_crosstab",
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x6_routes",
+    "qwen3.6-27b": "x6_routes_27b",
+    "muse-glimmer-30b": "muse30b_x6_routes",
+    "nemotron-3.5-lightning": "nem35l_x52_routes",
+    "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_g75"
+  },
+  "reader": "PP",
+  "condition": "C2",
+  "cpu": true,
+  "post_hoc": true,
+  "rule": null,
+  "written_utc": "20261030T212820Z"
+}

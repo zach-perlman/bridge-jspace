@@ -83,4 +83,12 @@ remains), **not done** (a check is still open).
 - **Same item: the recall's blocked-beyond-random count is +0 in every arm.** The recall still switches to 7 without the lens part,
   without the lens part with the answer directions retained, and without the answer directions only, and equally without each
   same-size random part, so the item adds nothing to any arm's count. Consistent with the stored numbers; not a bug.
+- **27B `C2-0128` (run `x6_routes_27b`), the lookup: identity under the whole change (5), position under pointer removal (2).** Not a
+  bug: it is one of 0-3 such scenes per model. Post hoc, CPU, `scripts/c2_route_crosstab.py`, `results/c2_route_crosstab/20261030T212820Z`
+  (lookup, C2, n = 300 scenes per model). Identity -> position without the pointer directions, beside the size-matched random part:
+  9B 3 (random 18), 27B 2 (random 1; `C2-0128`, `C2-0200`), Muse 2 (random 6), Lightning 0 (random 10), 122B 0 (random 7). At or
+  below the random arm on four models; on the 27B it is one scene above (2 vs 1). Without J++ the same cell is 35 / 36 / 8 / 22 / 26
+  (random 17 / 0 / 4 / 11 / 5). Paired differences with 95% cluster-bootstrap intervals are in `tables.json` (`contrasts`); the
+  README reports route shares per arm over all scenes (55 values compared, all equal), not scene-by-scene changes. A draft paragraph
+  and table are in `draft_readme.md` in that folder, not applied.
 - **Status.** Closed.
