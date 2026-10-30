@@ -24,7 +24,7 @@ from scripts import x0_figures as XF
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 
-DOCS = pins.REPO_ROOT / "docs"
+DOCS = pins.REPO_ROOT / "docs" / "depth"  # the page and its numbers live in docs/depth (moved from docs/ on 30 Oct)
 NUMBERS = DOCS / "x0_numbers.json"
 TEMPLATE = DOCS / "x0_details.template.md"
 MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),

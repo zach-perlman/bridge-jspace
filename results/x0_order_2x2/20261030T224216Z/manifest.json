@@ -1,0 +1,29 @@
+{
+  "exp": "x0_order_2x2",
+  "post_hoc": true,
+  "cpu": true,
+  "runs": {
+    "qwen3.5-9b": [
+      "qwen35_9b_x0_necessity",
+      12
+    ],
+    "qwen3.6-27b": [
+      "x0_necessity_27b_chat",
+      32
+    ],
+    "muse-glimmer-30b": [
+      "muse30b_x0_necessity",
+      26
+    ],
+    "nemotron-3.5-lightning": [
+      "nem35l_x52_conflict",
+      14
+    ],
+    "qwen3.5-122b-a10b": [
+      "qwen35_122b_x0_necessity_r2",
+      33
+    ]
+  },
+  "preset": "(Dan 30 Oct): if the changed order's effect is larger than the original order's on at least 3 of 5 models, with the two effects' intervals not overlapping,\ndraft a reworded claim 10 naming the order that matters (or both); otherwise keep claim 10 and add the 2x2 as a caveat table.",
+  "written_utc": "20261030T224216Z"
+}

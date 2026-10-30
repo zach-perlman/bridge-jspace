@@ -1,0 +1,323 @@
+{
+ "qwen3.5-9b": {
+  "run": "qwen35_9b_x0_necessity",
+  "layer": 12,
+  "lookups": 200,
+  "in_2x2": 200,
+  "left_out_no_locker_sentence": 0,
+  "cells": {
+   "original before / changed before": {
+    "n": 75,
+    "switched": 72,
+    "rate": [
+     0.96,
+     0.9153,
+     1.0
+    ]
+   },
+   "original before / changed after": {
+    "n": 25,
+    "switched": 14,
+    "rate": [
+     0.56,
+     0.3333,
+     0.7619
+    ]
+   },
+   "original after / changed before": {
+    "n": 32,
+    "switched": 15,
+    "rate": [
+     0.4688,
+     0.3333,
+     0.5926
+    ]
+   },
+   "original after / changed after": {
+    "n": 68,
+    "switched": 4,
+    "rate": [
+     0.0588,
+     0.0127,
+     0.1277
+    ]
+   }
+  },
+  "changed_order_effect": [
+   0.405,
+   0.2674,
+   0.5442
+  ],
+  "original_order_effect": [
+   0.4962,
+   0.3743,
+   0.6181
+  ],
+  "changed_larger_than_original": false,
+  "intervals_separate_in_changed_favour": false,
+  "examples": []
+ },
+ "qwen3.6-27b": {
+  "run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "lookups": 200,
+  "in_2x2": 200,
+  "left_out_no_locker_sentence": 0,
+  "cells": {
+   "original before / changed before": {
+    "n": 69,
+    "switched": 66,
+    "rate": [
+     0.9565,
+     0.9114,
+     1.0
+    ]
+   },
+   "original before / changed after": {
+    "n": 32,
+    "switched": 11,
+    "rate": [
+     0.3438,
+     0.1818,
+     0.5172
+    ]
+   },
+   "original after / changed before": {
+    "n": 38,
+    "switched": 8,
+    "rate": [
+     0.2105,
+     0.087,
+     0.3488
+    ]
+   },
+   "original after / changed after": {
+    "n": 61,
+    "switched": 1,
+    "rate": [
+     0.0164,
+     0.0,
+     0.0606
+    ]
+   }
+  },
+  "changed_order_effect": [
+   0.4035,
+   0.2851,
+   0.515
+  ],
+  "original_order_effect": [
+   0.5367,
+   0.4349,
+   0.6449
+  ],
+  "changed_larger_than_original": false,
+  "intervals_separate_in_changed_favour": false,
+  "examples": [
+   {
+    "scene": "P2-L0-0152",
+    "original": "before",
+    "changed": "after",
+    "switched": 0
+   }
+  ]
+ },
+ "muse-glimmer-30b": {
+  "run": "muse30b_x0_necessity",
+  "layer": 26,
+  "lookups": 200,
+  "in_2x2": 200,
+  "left_out_no_locker_sentence": 0,
+  "cells": {
+   "original before / changed before": {
+    "n": 68,
+    "switched": 55,
+    "rate": [
+     0.8088,
+     0.7188,
+     0.8971
+    ]
+   },
+   "original before / changed after": {
+    "n": 24,
+    "switched": 5,
+    "rate": [
+     0.2083,
+     0.0625,
+     0.4
+    ]
+   },
+   "original after / changed before": {
+    "n": 39,
+    "switched": 10,
+    "rate": [
+     0.2564,
+     0.0968,
+     0.3902
+    ]
+   },
+   "original after / changed after": {
+    "n": 69,
+    "switched": 0,
+    "rate": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "changed_order_effect": [
+   0.4285,
+   0.3009,
+   0.5202
+  ],
+  "original_order_effect": [
+   0.3804,
+   0.2968,
+   0.4912
+  ],
+  "changed_larger_than_original": true,
+  "intervals_separate_in_changed_favour": false,
+  "examples": [
+   {
+    "scene": "P2-L0-0208",
+    "original": "after",
+    "changed": "before",
+    "switched": 1
+   },
+   {
+    "scene": "P2-L0-0041",
+    "original": "after",
+    "changed": "before",
+    "switched": 1
+   },
+   {
+    "scene": "P2-L0-0040",
+    "original": "after",
+    "changed": "before",
+    "switched": 1
+   }
+  ]
+ },
+ "nemotron-3.5-lightning": {
+  "run": "nem35l_x52_conflict",
+  "layer": 14,
+  "lookups": 200,
+  "in_2x2": 200,
+  "left_out_no_locker_sentence": 0,
+  "cells": {
+   "original before / changed before": {
+    "n": 59,
+    "switched": 58,
+    "rate": [
+     0.9831,
+     0.9412,
+     1.0
+    ]
+   },
+   "original before / changed after": {
+    "n": 26,
+    "switched": 15,
+    "rate": [
+     0.5769,
+     0.3846,
+     0.7692
+    ]
+   },
+   "original after / changed before": {
+    "n": 36,
+    "switched": 13,
+    "rate": [
+     0.3611,
+     0.2222,
+     0.5
+    ]
+   },
+   "original after / changed after": {
+    "n": 79,
+    "switched": 4,
+    "rate": [
+     0.0506,
+     0.012,
+     0.102
+    ]
+   }
+  },
+  "changed_order_effect": [
+   0.3583,
+   0.2351,
+   0.4889
+  ],
+  "original_order_effect": [
+   0.5741,
+   0.4529,
+   0.6806
+  ],
+  "changed_larger_than_original": false,
+  "intervals_separate_in_changed_favour": false,
+  "examples": []
+ },
+ "qwen3.5-122b-a10b": {
+  "run": "qwen35_122b_x0_necessity_r2",
+  "layer": 33,
+  "lookups": 200,
+  "in_2x2": 200,
+  "left_out_no_locker_sentence": 0,
+  "cells": {
+   "original before / changed before": {
+    "n": 53,
+    "switched": 51,
+    "rate": [
+     0.9623,
+     0.902,
+     1.0
+    ]
+   },
+   "original before / changed after": {
+    "n": 32,
+    "switched": 25,
+    "rate": [
+     0.7812,
+     0.6333,
+     0.9375
+    ]
+   },
+   "original after / changed before": {
+    "n": 33,
+    "switched": 12,
+    "rate": [
+     0.3636,
+     0.2,
+     0.5652
+    ]
+   },
+   "original after / changed after": {
+    "n": 82,
+    "switched": 1,
+    "rate": [
+     0.0122,
+     0.0,
+     0.0423
+    ]
+   }
+  },
+  "changed_order_effect": [
+   0.2662,
+   0.1572,
+   0.3754
+  ],
+  "original_order_effect": [
+   0.6838,
+   0.5572,
+   0.8023
+  ],
+  "changed_larger_than_original": false,
+  "intervals_separate_in_changed_favour": false,
+  "examples": []
+ },
+ "_rule": {
+  "models_where_the_changed_order_matters_more": 0,
+  "of": 5,
+  "outcome": "keep claim 10; the 2x2 is a caveat table"
+ }
+}
