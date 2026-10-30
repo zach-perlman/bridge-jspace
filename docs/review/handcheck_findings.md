@@ -28,11 +28,17 @@ remains), **not done** (a check is still open).
   - GPU, Muse: labels (not read / read) 199 / 1 before and after; 0 flips of 200, Wilson 95% interval [0, 0.019]. 188 of 200 items
     have an answer in a language with no single-token translation for some value (Japanese for 1, 6, 7, 8, 10; Ukrainian for 4, 8),
     so those translations could not be checked.
-- **Effect on claims.** f5 unchanged. The 51.12 verdicts are unchanged. One caveat line added to the answer-control section of the depth
-  README ("The answer control used English answer words only ...").
-- **Status.** Limitation. The label check is closed. The arms with translated answer directions (arms 2 and 3 rebuilt with the answer
-  directions in every language, with the size-matched random parts rebuilt): done, post hoc, Muse only; the pre-set rule says the claim
-  changes (see below); README and deck not yet edited.
+- **Summary for Zach (final, 30 Oct).** The answer control (51.12) used English number words as the answer directions. Redone with the answer in any language (single-token translations; about 100 directions per item against 15), post hoc, on the 9B, 27B and Muse (Lightning and the 122B not run):
+
+  | model | (a) answer directions only, beyond a size-matched random part | (b) raw: "lens part out, answer kept" blocks, English -> any language | (b) beyond K random directions kept | label of the recall's arms |
+  |---|---|---|---|---|
+  | 9B | +0.005 [0.000, 0.018]: no | 0.503 -> 0.289 | -0.024 [-0.061, 0.011] | the item (entity) |
+  | 27B | +0.040 [0.006, 0.082]: yes | 0.707 -> 0.467 | -0.015 [-0.059, 0.035] | mixed |
+  | Muse | +0.085 [0.018, 0.154]: yes | 0.678 -> 0.483 | -0.009 [-0.074, 0.071] | mixed (the readout case "the answer word is not read" is unchanged: 0 of 200 labels flip) |
+
+  The (b) shift, arm 2 blocking less with the larger answer set, is explained by the number of directions kept: random directions of the same count do the same. The labels therefore rest on (a): the item on the 9B, mixed on the 27B and Muse; the answer in other languages is a small part of the recall's switches there, not the whole of it. Rule (b) had no size control (Dan's design error); the K-random control was added afterwards.
+- **Effect on claims.** f5 unchanged. The 51.12 English verdicts are unchanged; the post hoc labels above are in the depth README (Part I row and caveat) and the EXPERIMENTS 51.12 table, tagged post hoc, with the figure `ledger_answer_control.png` redrawn (the English bars as before, the any-language bars hollow, the K-random twins as the control). One caveat line is in the answer-control section of the depth README.
+- **Status.** Limitation (Lightning and the 122B not run). The label check is closed; the translated-arms check and its size control are done, post hoc, on the 9B, 27B and Muse (detail below).
   Post hoc attempt (30 Oct, `scripts/answer_arms_translated.py`, `runs/answer_arms_translated/muse-glimmer-30b/preflight_stop_20261030`):
   stopped at the pre-flight. The English-only set through the new driver reproduced the saved `muse30_x51_12_e1_r2` switches in
   3197 of 3200 rows, not all: three arm counts differ by 1 (recall `no_jpp_rand` 123 vs 122 saved, recall `no_A_rand` 117 vs 118,
