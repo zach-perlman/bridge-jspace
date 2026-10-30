@@ -31,6 +31,7 @@ MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
           "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b"),
           "122b": ("qwen3.5-122b-a10b", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"),
           "muse": ("muse-glimmer-30b", "muse30b_x0_necessity", "muse30b_x0_necessity")}  # fmt: skip
+LIGHTNING_CONFLICT, LIGHTNING_LAYER = "nem35l_x52_conflict", 14  # the conflict run of the coverage batch and its layer (L14, fixed before its layer sweep was read)
 CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
 NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
 DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2",
@@ -214,6 +215,18 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     num.add("ctx_recall_droprand", f"{100 * nec['recall_drop_rand']:.0f}".replace("-", "−"), CTX)
     num.add("ctx_recall_diff", ci(nec["recall_dropJ_minus_droprand"]), CTX)
     num.add("ctx_n", str(nec["n_lookup"]), CTX)
+    # sentence order for Lightning (Dan 30 Oct, the review recount of view g: its k / n had no source). Only these counts: Lightning's other X0 numbers are
+    # cards' keys (x52_conflict at its layer 14, the layer its data.csv order shares are read at)
+    lt = XF.Run(LIGHTNING_CONFLICT)
+    lt_src = f"results/x0_necessity/{LIGHTNING_CONFLICT}/outcomes.jsonl"
+    lt_cases = {c["scene"]: c for c in X.read_jsonl(lt.dir / "cases.jsonl") if c["rendering"] == "chat"}
+    lt_whole = [x for x in lt.rows if x["rendering"] == "chat" and x["layer"] == LIGHTNING_LAYER and x["reader"] == X.LOOKUP and x["arm"] == "whole"]
+    for order in ("before", "after"):
+        mine = [x for x in lt_whole if ST.features(lt_cases[x["scene"]])["org locker vs asked pick"] == order]
+        k = sum(x["switched"] for x in mine)
+        num.add(f"lk_order_{order}_lightning", pct(k / len(mine)), lt_src)
+        num.add(f"lk_order_{order}_lightning_k", str(k), lt_src)
+        num.add(f"lk_order_{order}_lightning_n", str(len(mine)), lt_src)
     return num, tables
 
 

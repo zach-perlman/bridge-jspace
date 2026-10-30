@@ -252,3 +252,11 @@ remains), **not done** (a check is still open).
   Flag (lens swap above both controls with intervals not overlapping): not raised on any model, either reader; Lightning's recall is the closest (swap 0.086 [0.020, 0.163] against 0.017 [0.000, 0.057] and 0.017 [0.000, 0.061]; the intervals overlap). Of the lens swap's "other" answers, 1 of 4 (9B), 0 of 1 (27B), 2 of 3 (Muse), 1 of 5 (Lightning) are a locker digit, and all of them are digits. Beside the question: the J++ part at gain 2 moves the recall to "other" more than its random part on Muse (0.224 [0.100, 0.357] against 0.045 [0.000, 0.095]; 6 of 15 are locker digits) and not on the 9B (0.200 against 0.120), the 27B or Lightning (0.293 against 0.207).
 - **Effect on claims.** None beyond the wording. Nothing else was changed.
 - **Status.** Observation.
+
+### O5. View g recount: the four "no source" numbers (30 Oct)
+
+- **Which.** Lightning's sentence-order counts: `lk_order_before_lightning_k` (73) and `_n` (85), `lk_order_after_lightning_k` (17) and `_n` (115); the two shares beside them (0.859, 0.148) matched `data.csv`.
+- **Why.** `scripts/x0_details.py` builds `docs/depth/x0_numbers.json` (and so the `numbers` rows of `data.csv`) for the four original models only; Lightning's X0 conflict run (`nem35l_x52_conflict`, L14) was added later and its k and n were never written, only its shares (from a figure's rows).
+- **Fix.** Traced to `results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl` (whole-change lookups at L14 by the locker sentence's order; the recount's own counts) and added six keys (the share, k and n for before and after) to the generator, `docs/depth/x0_numbers.json` and the `numbers` tail of `data/figures/depth/data.csv`. Recount of view g: 30 rows, 0 no source, 0 mismatch.
+- **Not fixed, flagged.** `scripts/x0_details.py` writes to `docs/` (stale path; the page lives in `docs/depth/`) and its template path is missing, so it cannot be rerun as is; I ran its `compute()`, spliced only the six new keys and left the rest. Its rerun also gives `pred_n` 122 where the file has 121 (an unrelated key, left as is).
+- **Status.** Closed.
