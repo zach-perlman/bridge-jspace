@@ -3718,3 +3718,173 @@ Seen before writing:
 - **Status:** confirmatory for the 27B's test split (note 40) and every model's dev split (note 47); post hoc on the 9B's and Lightning's test split. Note 40's registered R1 stays the primary.
 
 **R3 inherits G2.** Amendment 66 requires "not recall-specific" when G2 fails. The reader's R3 branch did not check G2 on the no-shortcut stratum. It now applies G2 on that stratum, and R3's label is "not recall-specific" when G2 fails there. This is a reader fix to match the registered rule. The 9B's test-split R3 is therefore "not recall-specific" (G2 fails on its no-shortcut stratum: agree_hid 23.3 vs solo 53.3).
+
+#### Amendment 72 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any code or run of it): notes 49-55, the last round
+
+Seen before writing:
+- notes 37, 38, 39 (+ 6b, 5R), 40 (gated), 41 and 45 on the 9B, 27B and Lightning, and note 44 on the 9B;
+- two agents' post hoc CPU passes (not registered).
+  - **Note 41, seed 4001:** interpolated random-keep rescue at keepA's energy (amendment 70). Per-relation keepR ratios were 0.55-0.78 on the 9B.
+  - **Geometry:** in the J++ letter dictionary (9B L14, 27B L36), a protected output token's case and space variants have cosine 0.8-0.9 with it. Their span holds a median 0.73-0.81 of its energy (films about 0.46), against 0.01 for a random span.
+  - **Note 39:** arms 7 and 5R are rank-matched, not energy-matched (A holds 1.3-2.4x a same-rank random span's bridge energy). Arm 1's flips come mostly from high-overlap items.
+  - **Note 40:** the held-margin strata (amendment 71). The bridge span holds about twice the answers' energy that the control bridge's does.
+  - **The paper's Fig. 22 data:** at medium strength the J ablation keeps plain-text top-1 agreement at 0.75 and the random control at 0.96.
+
+Not seen: notes 42, 43, 46, 47 and 48; note 44 on the 27B and Lightning; any condition below.
+
+Shared:
+- One deterministic run per model: 9B, 27B and Lightning. Muse is descriptive where named.
+- paper10 and paper10_rot are rerun in every job and checked against the stored rows (byte-identical on the Qwens, within run-to-run noise on Lightning).
+- ratio(X) = (X - X_rot) / (paper10 - paper10_rot) on MM loss, within run; rescue = 1 - ratio.
+- Item bootstrap as in note 41.
+- Every keep and protection logs its retained energy share E_X of paper10's removal, |edit| / |h|, and its rank.
+
+##### Note 49: the paper's output protection, sealed (v4 seed 4001, jsuite_v4_test_chat, note 20's gate, main bands, all positions)
+
+**Conditions** (each + _rot):
+- **paper10_protF.** The protected rows are paper10's plus the letter-dictionary rows of every form of each clean top-10 token. Forms follow note 45's rule: decoded and stripped; lower, capitalised and as-is; with and without a leading space; first token. The top-10 removed atoms are then chosen from the unprotected atoms, so ten are still removed per position.
+- **paper10_protC.** protF plus every row with cosine >= 0.5 to a clean top-10 token's atom, at that layer (ablate_v2's own_rows rule applied to the decoded top-10).
+- **paper10_keepT10.** keep_span = QR of the unit J++ vectors of protF's added rows plus the top-10 tokens' own rows. Label-free.
+- **paper10_keepRT10.** A random letter-token keep rank-matched to keepT10. Seed Random("n49:" + item); it excludes T10's and the protected rows.
+- **paper10_keepOwn.** Every form of the item's own answer (note 37's keepA forms).
+- **paper10_keepSib.** Every form of one sibling answer of the same relation, with a distinct first token and the form count matched. Seed Random("n49sib:" + item).
+
+Logged for protF and protC: the number of protected rows, and the share of paper10's answer-part energy (sum ||P_A r||^2) they still remove.
+
+**Readings** (per model, MM):
+- **R1 (primary):**
+  - "the protection leaks through spellings": ratio(protF) <= 1/3 and protF's gap (MM - MP) < 15;
+  - "not through spellings": ratio(protF) >= 2/3;
+  - otherwise "partly".
+  - protC is read by the same rule as "leaks through J++ neighbours".
+- **R2:**
+  - "the output candidates' directions": ratio(keepT10) <= 1/3 and rescue(keepT10) - rescue(keepRT10) >= 0.33, with CI > 0;
+  - "beyond the candidates": ratio(keepT10) >= 2/3;
+  - otherwise "partly".
+- **R3:**
+  - "this item's answer": rescue(keepOwn) - rescue(keepSib) >= 0.20 with CI > 0;
+  - "the category": |difference| < 0.10 and rescue(keepOwn) >= 2/3;
+  - otherwise "unclear".
+- **Beside:** MP losses.
+
+##### Note 50: the orthogonal placebo, the exact complement, and a rank-matched ansR (same job as note 49)
+
+**Conditions** (each + _rot):
+- **paper10_keepR4perp, paper10_keepR8perp.** Note 41's nested random rows (Random("n41:" + item); R8 is 8x A's row count, drawn the same way). Each span is projected off span(A) per layer and re-orthonormalised. Columns of norm < 1e-3 are dropped, and the rank is logged.
+- **paper10_onlyA.** r' = P_A r under paper10's protection: only the answer part of the removal.
+- **ansRk.** Random letter rows equal in count to ansJ's (cands2) rows. Seed Random("n50:" + item), excluding A's rows.
+- **Logged:** alpha_X = 1 - sum ||P_A (r - P_X r)||^2 / sum ||P_A r||^2, the share of the removal's answer part that keep X retains. It is logged for A, R, R2, R4 (rebuilt from their seeds) and both perps.
+
+**Readings** (per model, MM):
+- **P1 (primary).** Take the perp keep with E closest to E_A and not below it.
+  - "the placebo's rescue is its overlap with the answer span": rescue <= 1/3;
+  - "non-answer J content rescues": rescue >= 2/3;
+  - otherwise "partly";
+  - "not matched" if both perps hold E < E_A.
+- **P2.** P1 in answer first-token log p (amendment 70's rescue_L).
+- **P3.** "The answer part is sufficient for the damage" if onlyA's net MM loss >= 2/3 of paper10's and onlyA's gap >= 2/3 of paper10's.
+- **P4.** Note 41's removal rule with ansRk in place of ansR. This replaces the 9B's flawed removal reading (ansR had about twice ansJ's rank); both are reported.
+- **Descriptive:** rescue against alpha for every keep.
+
+##### Note 51: dose x keepA (v4 seed 4001, main bands)
+
+**Conditions:**
+- top30, top30_rot, top30_pcasize, top30_keepA, top30_keepA_rot;
+- the same five for top100.
+- topK carries paper10's protection (verified in the smoke).
+
+E_A is logged at each K.
+
+**Reading** (per K and model; read only where gap_K - pcasize gap_K >= 10):
+- "the answer account holds at dose K": ratio(keepA) <= 1/3;
+- "beyond the answer at dose K": ratio >= 2/3;
+- otherwise "partly".
+
+##### Note 52: note 44's spans residualised (jsuite_v5kn2c, as note 44)
+
+**Conditions:**
+- **keepCapPerp:** keepCap's span projected off keepCty's span per layer and re-orthonormalised.
+- **keepCtyPerp:** the reverse.
+- **keepShared:** span(Cap) ∩ span(Cty), estimated as the principal vectors with cosine >= 0.9.
+- paper10 and paper10_rot are rerun.
+- Each logs E and rank.
+
+**Readings** (MC0, all gated; the 27B and Lightning primary, the 9B descriptive):
+- "the capital carries it": rescue(keepCapPerp) >= 2/3 and rescue(keepCtyPerp) <= 1/3;
+- "the country carries it": the reverse;
+- "the shared part carries it": both <= 1/3 and rescue(keepShared) >= 2/3;
+- "either suffices": both >= 2/3;
+- otherwise "unclear".
+
+##### Note 53: note 39 with energy-matched controls (the paper's 90 prompts, main band, J++; 9B, 27B, Lightning; Muse descriptive)
+
+**Conditions:**
+- **arm 7E:** arm 3 with random letter-token atoms added (Random("n53:" + item)) until their bridge-energy share reaches A's;
+- **arm 5R2, arm 5R4:** arm 5R with 2x and 4x A's dimension, nested;
+- **arm 7 seeds 2 and 3;**
+- **arms 1, 3 and 5 at every position except the final one** (1nf, 3nf, 5nf);
+- arm 1 and the null are rerun and checked against note 39's rows.
+
+**Readings:**
+- **E1:** A1 re-read with arm 7E as the guard. "Answer-carried survives energy matching" if arm 7E keeps >= 2/3 and K <= 1/3. If arm 7E keeps < 2/3: "scrub not specific at matched energy".
+- **E2:** "Sufficiency is answer-specific at matched energy" if arm 5 - arm 5R_k >= 1/3 of arm 1's net with the interval above 0. Here 5R_k is the smallest nested 5R whose bridge-energy share is >= A's; it is "not matched" if none is.
+- **E3 (descriptive):** arm 1nf / arm 1, and arm 5nf / arm 5. The swap's share that survives when the final position is not edited.
+- The A1 guard spread over the three arm-7 seeds is reported.
+
+##### Note 54: note 40's R3 de-confounded (silent dissent, gated, names as written; solo, press_vis and press_hid; 9B and Lightning, plus the 27B if its note 40 run completes; test and dev splits)
+
+**Conditions** (mid band):
+- bridgeJ;
+- bridgeJ_rot;
+- bridgeJ_ctrl;
+- **bridgeJperp:** the bridge forms' unit vectors orthogonalised to the span of the item's two answers' forms before removal;
+- paper10 and paper10_rot.
+
+**Reading** (no-shortcut stratum, R3 inheriting G2 as amendment 71):
+- "the bridge's own directions are needed": bridgeJperp - bridgeJ_ctrl >= 10 points with the lower end > 0, and bridgeJperp - bridgeJ_rot >= 10 points;
+- otherwise "not shown".
+- The gated-set result is reported beside.
+
+##### Note 55: the paper's strengths, matched for generic damage (Fig. 22 + 24 on open models)
+
+**Bands.** The paper's percent-of-depth bands, pct(l) = 100 l / (N - 1), taken inward:
+
+| Model | Medium (54-79) | Heavy (42-88) |
+|---|---|---|
+| 9B | L17-24 | L14-27 |
+| 27B | L35-49 | L27-55 |
+| Lightning | L28-40 | L22-44 |
+
+**Generic damage.** Plain-text top-1 agreement with the clean model (Fig. 22's metric):
+- on the 64 pinned WikiText rows x 128 tokens that removal_textloss uses;
+- and on 64 v4 passages, beside;
+- under each condition. J conditions protect each position's own clean top-10.
+
+**Dose conditions** at each band:
+- J: top3, paper10, top30;
+- PCA: pca3, pca10, pca30 (ablate_v2's variance dictionary);
+- logit lens: unembed10, unembed30;
+- paper10_rot.
+
+**Tasks** (note 45's gate and reads):
+- the paper's multilingual (ML), multihop (MH) and order-of-operations (OO, descriptive) sets;
+- its released rhyme set (lens-eval poetry, same pinned source and licence; T = intermediates[0], S = line 1's last alphabetic word; sha recorded on download);
+- keep_T and keep_E (ML) / keep_B (MH) / keep_S (rhyme) at medium.
+
+**v4.** paper10, paper10_rot, paper10_pcasize, unembed10, keepA and keepA_rot at medium and heavy, on note 20's gated items.
+
+**Readings:**
+- **S (primary; per set, per strength):**
+  - a* = paper10's text agreement; L_PCA(a*) = task loss interpolated linearly along the PCA dose by text agreement.
+  - Delta_sel = L(paper10) - L_PCA(a*), bootstrapped over the set's clusters with the interpolation inside.
+  - "J-selective at matched generic damage": Delta_sel >= 15 with CI > 0;
+  - "not selective": Delta_sel < 10 and the CI includes 0;
+  - otherwise "partly";
+  - "not matched" if the PCA dose does not bracket a* (the nearest point is reported, with no reading).
+  - The same against the logit-lens dose is reported beside, and so is the paper's own contrast (paper10 - rot).
+- **V (v4, per strength):**
+  - "C1 holds at the paper's strength": gap >= 20 with CI > 0, rotated gap <= 1/3 of it, and gap - max(pcasize gap, unembed10 gap) >= 10;
+  - note 37's keepA reading at each strength.
+- **G (descriptive):** paper10's and rot's text agreement against the paper's 0.75 / 0.65 and 0.96.
+- **Rhyme:** note 45's A0, then K(T) / K(S) as multihop's rule.
+- Reads are first-token strict top-1, not the paper's generation scores.
