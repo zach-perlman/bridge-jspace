@@ -32,6 +32,10 @@ remains), **not done** (a check is still open).
   README ("The answer control used English answer words only ...").
 - **Status.** Limitation. The label check is closed. The arms with translated answer directions (arms 2 and 3 rebuilt with the answer
   directions in every language, with the size-matched random parts rebuilt) are **not done**.
+  Post hoc attempt (30 Oct, `scripts/answer_arms_translated.py`, `runs/answer_arms_translated/muse-glimmer-30b/preflight_stop_20261030`):
+  stopped at the pre-flight. The English-only set through the new driver reproduced the saved `muse30_x51_12_e1_r2` switches in
+  3197 of 3200 rows, not all: three arm counts differ by 1 (recall `no_jpp_rand` 123 vs 122 saved, recall `no_A_rand` 117 vs 118,
+  lookup `no_jpp_rand` 61 vs 62); all other counts equal. The all-languages arms were not run.
 
 ## F2. Recall route collision in C2
 

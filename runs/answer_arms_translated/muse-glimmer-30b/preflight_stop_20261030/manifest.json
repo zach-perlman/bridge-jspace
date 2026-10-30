@@ -1,0 +1,18 @@
+{
+  "exp": "answer_arms_translated",
+  "post_hoc": true,
+  "model": "muse-glimmer-30b",
+  "run": "muse30_x51_12_e1_r2",
+  "layer": 26,
+  "items": 200,
+  "what": "51.12 E1 arms with the answer directions A taken in every language (Muse only)",
+  "english_set": "the run's own A (cases.jsonl tokens.A)",
+  "all_languages_set": "the English set + tokens_of() translations of the items' answer values (answer_translation_check: eleven languages, 4 spellings, whole tokens, no lone I/V/X)",
+  "size_matched_random": "each part's random twin rebuilt from the part's own share (x6_routes.removal_arms), seed 888 + layer",
+  "preflight": "English set through this driver; per reader per arm switch counts must equal the saved outcomes.jsonl, else stop",
+  "decision_rule": "Claim changes only if, on the recall: (a) arm 3 (answer directions only, all languages) beats its size-matched random part (arm 4): the 95% interval of the extra (S_rand - S_arm) / S_whole is above 0; or (b) arm 2 (without the lens part, answer directions kept) blocks a different share of the switches than in the English-only arm: the two 95% intervals do not overlap. Otherwise no change. The lookup is reported beside, not decisive.",
+  "decisive_reader": "recall (PM)",
+  "seed_for_random_items": 29,
+  "git": "pod: no git (tar)",
+  "written_utc": "2026-10-30T21:14:02Z"
+}

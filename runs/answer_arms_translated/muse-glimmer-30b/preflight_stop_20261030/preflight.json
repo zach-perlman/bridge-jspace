@@ -1,0 +1,49 @@
+{
+ "match": false,
+ "counts_driver": {
+  "PP": {
+   "none": 0,
+   "whole": 70,
+   "no_jpp": 69,
+   "no_jpp_rand": 61,
+   "no_jpp_A": 69,
+   "no_jpp_A_rand": 64,
+   "no_A": 70,
+   "no_A_rand": 68
+  },
+  "PM": {
+   "none": 0,
+   "whole": 118,
+   "no_jpp": 32,
+   "no_jpp_rand": 123,
+   "no_jpp_A": 38,
+   "no_jpp_A_rand": 122,
+   "no_A": 119,
+   "no_A_rand": 117
+  }
+ },
+ "counts_saved": {
+  "PP": {
+   "none": 0,
+   "whole": 70,
+   "no_jpp": 69,
+   "no_jpp_rand": 62,
+   "no_jpp_A": 69,
+   "no_jpp_A_rand": 64,
+   "no_A": 70,
+   "no_A_rand": 68
+  },
+  "PM": {
+   "none": 0,
+   "whole": 118,
+   "no_jpp": 32,
+   "no_jpp_rand": 122,
+   "no_jpp_A": 38,
+   "no_jpp_A_rand": 122,
+   "no_A": 119,
+   "no_A_rand": 118
+  }
+ },
+ "rows_agreeing": 3197,
+ "rows": 3200
+}
