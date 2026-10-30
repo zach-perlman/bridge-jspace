@@ -1,0 +1,983 @@
+{
+ "models": {
+  "muse-glimmer-30b": {
+   "pooled": {
+    "old": [
+     0.374,
+     0.3413,
+     0.3995
+    ],
+    "new": [
+     0.3762,
+     0.3458,
+     0.4002
+    ],
+    "both": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "old_bridge": [
+     0.1836,
+     0.1652,
+     0.1984
+    ],
+    "old_new_bridge": [
+     0.1904,
+     0.1678,
+     0.2117
+    ],
+    "new_bridge_word": [
+     0.1852,
+     0.1676,
+     0.1995
+    ],
+    "new_new_bridge": [
+     0.1911,
+     0.1696,
+     0.212
+    ],
+    "old_sign_ok": [
+     0.374,
+     0.3413,
+     0.3995
+    ],
+    "new_sign_ok": [
+     0.3762,
+     0.3458,
+     0.4002
+    ],
+    "n": 100,
+    "change": [
+     0.0022,
+     0.0,
+     0.0066
+    ]
+   },
+   "views": {
+    "PM": {
+     "old": [
+      0.374,
+      0.3413,
+      0.3995
+     ],
+     "new": [
+      0.3762,
+      0.3458,
+      0.4002
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1836,
+      0.1652,
+      0.1984
+     ],
+     "old_new_bridge": [
+      0.1904,
+      0.1678,
+      0.2117
+     ],
+     "new_bridge_word": [
+      0.1852,
+      0.1676,
+      0.1995
+     ],
+     "new_new_bridge": [
+      0.1911,
+      0.1696,
+      0.212
+     ],
+     "old_sign_ok": [
+      0.374,
+      0.3413,
+      0.3995
+     ],
+     "new_sign_ok": [
+      0.3762,
+      0.3458,
+      0.4002
+     ],
+     "n": 50,
+     "change": [
+      0.0022,
+      0.0,
+      0.0066
+     ]
+    },
+    "PP": {
+     "old": [
+      0.374,
+      0.3413,
+      0.3995
+     ],
+     "new": [
+      0.3762,
+      0.3458,
+      0.4002
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1836,
+      0.1652,
+      0.1984
+     ],
+     "old_new_bridge": [
+      0.1904,
+      0.1678,
+      0.2117
+     ],
+     "new_bridge_word": [
+      0.1852,
+      0.1676,
+      0.1995
+     ],
+     "new_new_bridge": [
+      0.1911,
+      0.1696,
+      0.212
+     ],
+     "old_sign_ok": [
+      0.374,
+      0.3413,
+      0.3995
+     ],
+     "new_sign_ok": [
+      0.3762,
+      0.3458,
+      0.4002
+     ],
+     "n": 50,
+     "change": [
+      0.0022,
+      0.0,
+      0.0066
+     ]
+    }
+   },
+   "largest_newly_classed": [
+    {
+     "scene": "P2-L0-0022",
+     "view": "PM",
+     "token": " Helio",
+     "class": "bridge",
+     "bridge_class": "bridge",
+     "form_language": "Spanish",
+     "weak": false,
+     "sign": "-",
+     "coef": -10.87834,
+     "energy_share": 0.009398,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0022",
+     "view": "PP",
+     "token": " Helio",
+     "class": "bridge",
+     "bridge_class": "bridge",
+     "form_language": "Spanish",
+     "weak": false,
+     "sign": "-",
+     "coef": -10.87834,
+     "energy_share": 0.009398,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0170",
+     "view": "PM",
+     "token": " Эта",
+     "class": "new_bridge",
+     "bridge_class": "new_bridge",
+     "form_language": "Russian",
+     "weak": false,
+     "sign": "+",
+     "coef": 15.75202,
+     "energy_share": 0.004171,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0170",
+     "view": "PP",
+     "token": " Эта",
+     "class": "new_bridge",
+     "bridge_class": "new_bridge",
+     "form_language": "Russian",
+     "weak": false,
+     "sign": "+",
+     "coef": 15.75202,
+     "energy_share": 0.004171,
+     "old_class": "other",
+     "numbers": []
+    }
+   ],
+   "n_newly_classed_atoms": 4,
+   "languages_of_new_atoms": {
+    "Russian": 2,
+    "Spanish": 2
+   }
+  },
+  "qwen3.5-9b": {
+   "pooled": {
+    "old": [
+     0.2206,
+     0.1912,
+     0.2463
+    ],
+    "new": [
+     0.2206,
+     0.1912,
+     0.2463
+    ],
+    "both": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "old_bridge": [
+     0.1108,
+     0.0906,
+     0.13
+    ],
+    "old_new_bridge": [
+     0.1098,
+     0.0928,
+     0.1245
+    ],
+    "new_bridge_word": [
+     0.1108,
+     0.0906,
+     0.13
+    ],
+    "new_new_bridge": [
+     0.1098,
+     0.0928,
+     0.1245
+    ],
+    "old_sign_ok": [
+     0.2199,
+     0.1907,
+     0.2454
+    ],
+    "new_sign_ok": [
+     0.2199,
+     0.1907,
+     0.2454
+    ],
+    "n": 100,
+    "change": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "views": {
+    "PM": {
+     "old": [
+      0.2206,
+      0.1912,
+      0.2463
+     ],
+     "new": [
+      0.2206,
+      0.1912,
+      0.2463
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1108,
+      0.0906,
+      0.13
+     ],
+     "old_new_bridge": [
+      0.1098,
+      0.0928,
+      0.1245
+     ],
+     "new_bridge_word": [
+      0.1108,
+      0.0906,
+      0.13
+     ],
+     "new_new_bridge": [
+      0.1098,
+      0.0928,
+      0.1245
+     ],
+     "old_sign_ok": [
+      0.2199,
+      0.1907,
+      0.2454
+     ],
+     "new_sign_ok": [
+      0.2199,
+      0.1907,
+      0.2454
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "PP": {
+     "old": [
+      0.2206,
+      0.1912,
+      0.2463
+     ],
+     "new": [
+      0.2206,
+      0.1912,
+      0.2463
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1108,
+      0.0906,
+      0.13
+     ],
+     "old_new_bridge": [
+      0.1098,
+      0.0928,
+      0.1245
+     ],
+     "new_bridge_word": [
+      0.1108,
+      0.0906,
+      0.13
+     ],
+     "new_new_bridge": [
+      0.1098,
+      0.0928,
+      0.1245
+     ],
+     "old_sign_ok": [
+      0.2199,
+      0.1907,
+      0.2454
+     ],
+     "new_sign_ok": [
+      0.2199,
+      0.1907,
+      0.2454
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "largest_newly_classed": [],
+   "n_newly_classed_atoms": 0,
+   "languages_of_new_atoms": {}
+  },
+  "qwen3.6-27b": {
+   "pooled": {
+    "old": [
+     0.2143,
+     0.1808,
+     0.2482
+    ],
+    "new": [
+     0.2143,
+     0.1808,
+     0.2482
+    ],
+    "both": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "old_bridge": [
+     0.1009,
+     0.0751,
+     0.1262
+    ],
+    "old_new_bridge": [
+     0.1133,
+     0.0959,
+     0.1336
+    ],
+    "new_bridge_word": [
+     0.1009,
+     0.0751,
+     0.1262
+    ],
+    "new_new_bridge": [
+     0.1133,
+     0.0959,
+     0.1336
+    ],
+    "old_sign_ok": [
+     0.2143,
+     0.1808,
+     0.2482
+    ],
+    "new_sign_ok": [
+     0.2143,
+     0.1808,
+     0.2482
+    ],
+    "n": 100,
+    "change": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "views": {
+    "PM": {
+     "old": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "new": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1009,
+      0.0751,
+      0.1262
+     ],
+     "old_new_bridge": [
+      0.1133,
+      0.0959,
+      0.1336
+     ],
+     "new_bridge_word": [
+      0.1009,
+      0.0751,
+      0.1262
+     ],
+     "new_new_bridge": [
+      0.1133,
+      0.0959,
+      0.1336
+     ],
+     "old_sign_ok": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "new_sign_ok": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "PP": {
+     "old": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "new": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1009,
+      0.0751,
+      0.1262
+     ],
+     "old_new_bridge": [
+      0.1133,
+      0.0959,
+      0.1336
+     ],
+     "new_bridge_word": [
+      0.1009,
+      0.0751,
+      0.1262
+     ],
+     "new_new_bridge": [
+      0.1133,
+      0.0959,
+      0.1336
+     ],
+     "old_sign_ok": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "new_sign_ok": [
+      0.2143,
+      0.1808,
+      0.2482
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "largest_newly_classed": [],
+   "n_newly_classed_atoms": 0,
+   "languages_of_new_atoms": {}
+  },
+  "nemotron-3.5-lightning": {
+   "pooled": {
+    "old": [
+     0.2008,
+     0.1689,
+     0.2305
+    ],
+    "new": [
+     0.2046,
+     0.1733,
+     0.2342
+    ],
+    "both": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "old_bridge": [
+     0.0901,
+     0.0735,
+     0.1042
+    ],
+    "old_new_bridge": [
+     0.1107,
+     0.0893,
+     0.1312
+    ],
+    "new_bridge_word": [
+     0.0916,
+     0.0755,
+     0.1051
+    ],
+    "new_new_bridge": [
+     0.113,
+     0.092,
+     0.1337
+    ],
+    "old_sign_ok": [
+     0.2008,
+     0.1689,
+     0.2305
+    ],
+    "new_sign_ok": [
+     0.2046,
+     0.1733,
+     0.2342
+    ],
+    "n": 100,
+    "change": [
+     0.0039,
+     0.0,
+     0.0091
+    ]
+   },
+   "views": {
+    "PM": {
+     "old": [
+      0.2008,
+      0.1689,
+      0.2305
+     ],
+     "new": [
+      0.2046,
+      0.1733,
+      0.2342
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.0901,
+      0.0735,
+      0.1042
+     ],
+     "old_new_bridge": [
+      0.1107,
+      0.0893,
+      0.1312
+     ],
+     "new_bridge_word": [
+      0.0916,
+      0.0755,
+      0.1051
+     ],
+     "new_new_bridge": [
+      0.113,
+      0.092,
+      0.1337
+     ],
+     "old_sign_ok": [
+      0.2008,
+      0.1689,
+      0.2305
+     ],
+     "new_sign_ok": [
+      0.2046,
+      0.1733,
+      0.2342
+     ],
+     "n": 50,
+     "change": [
+      0.0039,
+      0.0,
+      0.0091
+     ]
+    },
+    "PP": {
+     "old": [
+      0.2008,
+      0.1689,
+      0.2305
+     ],
+     "new": [
+      0.2046,
+      0.1733,
+      0.2342
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.0901,
+      0.0735,
+      0.1042
+     ],
+     "old_new_bridge": [
+      0.1107,
+      0.0893,
+      0.1312
+     ],
+     "new_bridge_word": [
+      0.0916,
+      0.0755,
+      0.1051
+     ],
+     "new_new_bridge": [
+      0.113,
+      0.092,
+      0.1337
+     ],
+     "old_sign_ok": [
+      0.2008,
+      0.1689,
+      0.2305
+     ],
+     "new_sign_ok": [
+      0.2046,
+      0.1733,
+      0.2342
+     ],
+     "n": 50,
+     "change": [
+      0.0039,
+      0.0,
+      0.0091
+     ]
+    }
+   },
+   "largest_newly_classed": [
+    {
+     "scene": "P2-L0-0078",
+     "view": "PM",
+     "token": " loup",
+     "class": "bridge",
+     "bridge_class": "bridge",
+     "form_language": "French",
+     "weak": false,
+     "sign": "-",
+     "coef": -2.54436,
+     "energy_share": 0.023452,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0078",
+     "view": "PP",
+     "token": " loup",
+     "class": "bridge",
+     "bridge_class": "bridge",
+     "form_language": "French",
+     "weak": false,
+     "sign": "-",
+     "coef": -2.54436,
+     "energy_share": 0.023452,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0285",
+     "view": "PM",
+     "token": "馬",
+     "class": "new_bridge",
+     "bridge_class": "new_bridge",
+     "form_language": "Japanese",
+     "weak": false,
+     "sign": "+",
+     "coef": 3.74776,
+     "energy_share": 0.018408,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0285",
+     "view": "PP",
+     "token": "馬",
+     "class": "new_bridge",
+     "bridge_class": "new_bridge",
+     "form_language": "Japanese",
+     "weak": false,
+     "sign": "+",
+     "coef": 3.74776,
+     "energy_share": 0.018408,
+     "old_class": "other",
+     "numbers": []
+    },
+    {
+     "scene": "P2-L0-0030",
+     "view": "PM",
+     "token": " кот",
+     "class": "new_bridge",
+     "bridge_class": "new_bridge",
+     "form_language": "Russian",
+     "weak": false,
+     "sign": "+",
+     "coef": 1.00767,
+     "energy_share": 0.013115,
+     "old_class": "other",
+     "numbers": []
+    }
+   ],
+   "n_newly_classed_atoms": 6,
+   "languages_of_new_atoms": {
+    "French": 2,
+    "Japanese": 2,
+    "Russian": 2
+   }
+  },
+  "qwen3.5-122b-a10b": {
+   "pooled": {
+    "old": [
+     0.3051,
+     0.269,
+     0.3418
+    ],
+    "new": [
+     0.3051,
+     0.269,
+     0.3418
+    ],
+    "both": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "old_bridge": [
+     0.1518,
+     0.1276,
+     0.1762
+    ],
+    "old_new_bridge": [
+     0.1533,
+     0.1297,
+     0.1787
+    ],
+    "new_bridge_word": [
+     0.1518,
+     0.1276,
+     0.1762
+    ],
+    "new_new_bridge": [
+     0.1533,
+     0.1297,
+     0.1787
+    ],
+    "old_sign_ok": [
+     0.3037,
+     0.2681,
+     0.3403
+    ],
+    "new_sign_ok": [
+     0.3037,
+     0.2681,
+     0.3403
+    ],
+    "n": 100,
+    "change": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "views": {
+    "PM": {
+     "old": [
+      0.3051,
+      0.269,
+      0.3418
+     ],
+     "new": [
+      0.3051,
+      0.269,
+      0.3418
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1518,
+      0.1276,
+      0.1762
+     ],
+     "old_new_bridge": [
+      0.1533,
+      0.1297,
+      0.1787
+     ],
+     "new_bridge_word": [
+      0.1518,
+      0.1276,
+      0.1762
+     ],
+     "new_new_bridge": [
+      0.1533,
+      0.1297,
+      0.1787
+     ],
+     "old_sign_ok": [
+      0.3037,
+      0.2681,
+      0.3403
+     ],
+     "new_sign_ok": [
+      0.3037,
+      0.2681,
+      0.3403
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "PP": {
+     "old": [
+      0.3051,
+      0.269,
+      0.3418
+     ],
+     "new": [
+      0.3051,
+      0.269,
+      0.3418
+     ],
+     "both": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "old_bridge": [
+      0.1518,
+      0.1276,
+      0.1762
+     ],
+     "old_new_bridge": [
+      0.1533,
+      0.1297,
+      0.1787
+     ],
+     "new_bridge_word": [
+      0.1518,
+      0.1276,
+      0.1762
+     ],
+     "new_new_bridge": [
+      0.1533,
+      0.1297,
+      0.1787
+     ],
+     "old_sign_ok": [
+      0.3037,
+      0.2681,
+      0.3403
+     ],
+     "new_sign_ok": [
+      0.3037,
+      0.2681,
+      0.3403
+     ],
+     "n": 50,
+     "change": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "largest_newly_classed": [],
+   "n_newly_classed_atoms": 0,
+   "languages_of_new_atoms": {}
+  }
+ },
+ "max_abs_change": 0.0038,
+ "redraw_f5": false,
+ "changes_by_model_view": {
+  "muse-glimmer-30b|PM": 0.0022,
+  "muse-glimmer-30b|PP": 0.0022,
+  "qwen3.5-9b|PM": 0.0,
+  "qwen3.5-9b|PP": 0.0,
+  "qwen3.6-27b|PM": 0.0,
+  "qwen3.6-27b|PP": 0.0,
+  "nemotron-3.5-lightning|PM": 0.0038,
+  "nemotron-3.5-lightning|PP": 0.0038,
+  "qwen3.5-122b-a10b|PM": 0.0,
+  "qwen3.5-122b-a10b|PP": 0.0
+ }
+}

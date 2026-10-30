@@ -76,6 +76,26 @@ remains), **not done** (a check is still open).
   in C2, and any future one must exclude colliding scenes (caveat added to the depth README).
 - **Status.** Limitation.
 
+## F3. The bridge class held English words only
+
+- **Found on.** Dan's hand-check (30 Oct), by the same reading as F1: the classes of the 25 atoms recognized the bridge word in English
+  (and its spelling: first token, initial, prefix, alias), not its translations or symbol forms (crow / ворона / Krähe; gamma / γ / Γ; eta / η / Η).
+- **What.** The saved old / new bridge classes are English rules; a bridge atom in another language was classed "other".
+- **Check run.** CPU, post hoc, saved atoms, `scripts/bridge_multilingual.py`, `results/bridge_multilingual/20261030T213703Z` (same inputs, normalization and single-token rule as
+  9a34b0b5). Forms: the 43 old / new bridge words of the f5 items in ten languages plus Greek names and symbols; the chemical symbols He / Li
+  (case-sensitive, weak).
+- **Pre-set rule.** An atom that is a bridge atom and an answer atom goes to "both", never to either; redraw f5 only if the bridge share changes by more
+  than 0.05 on any model.
+- **Result.** Bridge share (old + new bridge energy share, f5 items, 50 per model, 95% cluster-bootstrap interval over the bridge entity), English -> any
+  language: 9B 0.221 [0.191, 0.246] -> 0.221 [0.191, 0.246]; 27B 0.214 [0.181, 0.248] -> 0.214 [0.181, 0.248]; Muse 0.374 [0.341, 0.400] -> 0.376 [0.346, 0.400]; Lightning 0.201 [0.169, 0.231] -> 0.205 [0.173, 0.234]; 122B 0.305 [0.269, 0.342] -> 0.305 [0.269, 0.342]. The largest change is 0.0038 (Lightning): the bar 0.05 is not met on any model. "Both": 0 on every model. Sign split: of the bridge
+  energy, every atom is sign-correct (old bridge -, new bridge +) except 0.0007 on the 9B and 0.0014 on the 122B (sign-correct share equals the bridge share, English and any
+  language, on the 27B and Muse; Lightning 0.201 -> 0.205). Newly classed atoms: 0 on the 9B, 27B and 122B; 2 distinct on Muse (` Helio`, ` Эта`) and 3 on Lightning
+  (` loup`, `馬`, ` кот`); both views carry the same atoms, so the pooled counts in `tables.json` list each twice. The 5 largest: ` loup` (French, old bridge, -, 0.023), `馬`
+  (Japanese, new bridge, +, 0.018), ` кот` (Russian, new bridge, +, 0.013), ` Helio` (Spanish, old bridge, -, 0.009), ` Эта` (Russian, new bridge, +, 0.004).
+- **Effect on claims.** f5 is not redrawn. The bridge share goes up, by at most 0.004. I did not check the link to Claim 3 (the README's claim 3 is about
+  the recall reading the item's earlier mention); the check only shows the English-only class undercounted the bridge by under 0.005.
+- **Status.** Closed.
+
 ## Checked, not bugs
 
 - **Muse `P2-L0-0095` (run `muse30_x51_12_e1_r2`, layer 26): the lookup did not switch.** Dan's reading: the locker sentence comes after
