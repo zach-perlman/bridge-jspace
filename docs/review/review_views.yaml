@@ -700,7 +700,7 @@ views:
     readme: "docs/depth/README.md, Part IV 'The recall's bridge entity at the last token: readable through the lens, not used'; In one minute, 'At the last token'"
     claim: >-
       At the last token the recall's bridge entity is readable through the lens on all four models, but writing it
-      through the lens does not move the answer at a real change's size: the whole-state patch switches nearly every
+      through the lens does not switch it to the swapped-in entity's answer at a real change's size: the whole-state patch switches nearly every
       recall (0.95 / 0.97 / 1.00 / 0.97 ○), the lens swap almost none (0.00 / 0.01 / 0.01 / 0.14 ○). Rule: "(b) readable,
       not used: read holds, write fails".
     sources: []

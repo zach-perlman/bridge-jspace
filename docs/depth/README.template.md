@@ -475,7 +475,7 @@ None of these claims is hand-checked yet: VERIFIED.md has no entry for any of th
   The recall's rule reads “(b) readable, not used” on every model (the 122B: coverage, pending hand-check).
 
 - **Read.**
-  - At the last token the recall's bridge entity is readable through the lens on all five models (the 122B reads "(b) readable, not used" too: coverage, pending hand-check), but writing it through the lens does not move the answer at a real change's size: the whole-state patch switches nearly every recall, the lens swap almost none; the 122B's whole-state patch switches less (the Result's table).
+  - At the last token the recall's bridge entity is readable through the lens on all five models (the 122B reads "(b) readable, not used" too: coverage, pending hand-check), but writing it through the lens does not switch it to the swapped-in entity's answer at a real change's size: the whole-state patch switches nearly every recall, the lens swap almost none; the 122B's whole-state patch switches less (the Result's table).
   - The lens swap never makes the model say the entity's name or a number word; the recall's clean answer stays unchanged.
   - At twice the size, the J++ part moves part of Muse's and Lightning's recalls, beyond a random part of that size.
   - The lookup's entity is not readable there by the rule on any model.

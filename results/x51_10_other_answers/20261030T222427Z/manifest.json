@@ -1,0 +1,18 @@
+{
+  "exp": "x51_10_other_answers",
+  "post_hoc": true,
+  "cpu": true,
+  "view": "last_token",
+  "arms": [
+    "lens swap",
+    "its random control",
+    "its rotated control",
+    "J++ part, gain 1",
+    "random part, gain 1",
+    "J++ part, gain 2",
+    "random part, gain 2",
+    "whole-state patch"
+  ],
+  "written_utc": "20261030T222427Z",
+  "flag": "the lens swap moves away from A more than both its controls with intervals not overlapping"
+}
