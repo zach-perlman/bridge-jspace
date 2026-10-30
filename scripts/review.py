@@ -280,7 +280,7 @@ def tier1_summary() -> list[str]:
     notes = []
     for vid, x in pv.items():
         a, b = H.auto_status(vid, checks, indep)
-        out.append(f"| {x['order']}. {vid} | {x['read']} of {x['sample']} | {x['consistent']} | {x['wrong']} | {x['unclear']} | "
+        out.append(f"| {x['order']}. {vid} | {x['read']} of {x['sample']}{' (+' + str(x['extra']) + ' extra)' if x.get('extra') else ''} | {x['consistent']} | {x['wrong']} | {x['unclear']} | "
                    f"{'**flagged**' if x['flagged'] else '–'} | {a} | {b} |")  # fmt: skip
         notes += [
             f"- {vid}: `{r['item']}` ({r['verdict']}, {r.get('utc', '')}): {r.get('note', '')}" for r in x["notes"]
@@ -319,6 +319,12 @@ def summary(out: Path | None = None) -> Path:
         flagged += [f"- {v['id']}: `{r['item']}` ({r['verdict']}, seed {r['seed']}, {r['utc']}, {r['commit']}): {r['note']}"
                     for r in last.values() if r["verdict"] != "consistent"]  # fmt: skip
     qrows = Q.load_rows(MARKS)
+    vmarks = H.load_marks(MARKS)
+    deck = [Q.deck_line(v["id"], vmarks, qrows) for v in I.shown() if v.get("five")]
+    lines += ["", "## One line per view (the five items; ready for the deck)", "",
+              "Five items per tier-1 view, fixed in advance (docs/review/review_views.yaml five_rule); marks on other items are "
+              "counted as extra. Machine tallies are the machine's observations over the five (yes/applicable); H3 is the "
+              "human's ticks.", "", *[f"- {x}" for x in deck], ""]  # fmt: skip
     lines += ["", "## Checklist answers (per view and model)", "",
               "Each question's last answer per item (docs/review/review_views.yaml questions; marks.jsonl rows with schema 2). A "
               "check question: yes / no / unclear counts; an observe question: a tally, \"phrase: yes/answered\" (a No there is "

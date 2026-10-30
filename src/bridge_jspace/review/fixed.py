@@ -228,6 +228,9 @@ def samples(v: dict, seed: int, models: list[str]) -> dict[str, list[dict]] | No
     got = fixed(v["id"], seed)
     if got is None:
         return None
+    if v.get("five"):  # Dan 30 Oct: five items per view, fixed in advance (yaml five_rule); the rest of the sample stays in the file
+        order = {i: n for n, i in enumerate(v["five"])}
+        got = sorted((e for e in got if e["item"] in order), key=lambda e: order[e["item"]])
     out: dict[str, list[dict]] = {}
     for m in models:
         by_id = {it["id"]: it for it in I.items(v["id"], m)}

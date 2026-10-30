@@ -59,6 +59,18 @@ def questions_of(view_id: str) -> list[dict]:
     return out
 
 
+def split(view_id: str) -> tuple[list[dict], list[dict]]:
+    """(the human questions, the machine-only questions) of a view: H1, H2 (check) and H3 (observe, views a and b) are put to
+    the human; every other question is answered by the machine and collapsed on the card (Dan 30 Oct, 45-minute read)."""
+    qs = questions_of(view_id)
+    return [q for q in qs if q.get("human")], [q for q in qs if not q.get("human")]
+
+
+def five_ids(view_id: str) -> list[str]:
+    """The view's five items (yaml `five`, drawn from the seed-29 fixed sample by the rule at the top of the file)."""
+    return list(I.view(view_id).get("five") or [])
+
+
 def has_questions(view_id: str) -> bool:
     v = I.view(view_id)
     return bool(v.get("common") or v.get("questions"))
@@ -185,9 +197,51 @@ class Env:
             return "yes: " + "; ".join(hits)
         return "no" + (f" (smallest |gap| {smallest[0]:.2f}: {I.READER_NAME[smallest[1]]}, {smallest[2]})" if smallest else "")
 
+    # -- the one-line story (H2)
+    def _pairs(self) -> list[list[str]]:
+        v = self.view
+        if v.get("story"):
+            return v["story"]
+        h = v.get("header") or {}
+        return [[h["part"], h["random"], "J++"]] if h.get("part") else []
+
+    def _outcome(self, w: str, row: dict | None) -> str:
+        if row is None:
+            return "not in the run"
+        if w == "PP" and "route" in row:
+            return f"route {row['route']}"
+        if w == "PP" and "class" in row:
+            return f"digit {row['class']}"
+        if "changed" in row and "role" not in row:
+            return "changed" if row["changed"] else "unchanged"
+        return "switched" if row.get("switched") else "kept"
+
+    def story(self) -> str:
+        """The item's story in one sentence per reader, from the stored rows: switched / blocked / kept under each arm."""
+        pairs, parts = self._pairs(), []
+        for w in ("PM", "PP"):
+            name, rows = I.READER_NAME[w], self.it["rows"].get(w) or {}
+            if pairs:
+                sw = self.switched(w, self.whole)
+                if sw is None:
+                    parts.append(f"{name}: no row under '{self.whole}'")
+                elif not sw:
+                    after = (self.it.get("order") or {}).get("original") == "after"
+                    parts.append(f"{name}: did not switch" + (" (locker after the pick)" if w == "PP" and after else ""))
+                else:
+                    bits = ["switched"]
+                    for arm, rnd, phrase in pairs:
+                        bits.append(("kept" if self.switched(w, arm) else "blocked") + f" without {phrase}")
+                        bits.append(("kept" if self.switched(w, rnd) else "blocked") + " without its random part")
+                    parts.append(f"{name}: " + ", ".join(bits))
+            else:
+                labels = [lb for lb in (self.view.get("decisive") or list(rows)) if lb in rows and lb not in ("unedited", "unwritten")]
+                parts.append(f"{name}: " + "; ".join(f"{lb}: {self._outcome(w, rows.get(lb))}" for lb in labels))
+        return " | ".join(parts)
+
     def names(self) -> dict[str, Any]:
         return {n: getattr(self, n) for n in ("says", "blocked", "still", "locker_order", "check", "pre_change", "label_agrees",
-                                              "shares_same", "fragile", "switched", "row")
+                                              "shares_same", "fragile", "switched", "row", "story")
                 } | self.extra() | {"abs": abs, "min": min, "max": max, "len": len, "all": all, "any": any, "round": round}
 
     def extra(self) -> dict[str, Any]:
@@ -234,10 +288,87 @@ def machine(it: dict, q: dict) -> dict[str, str | None]:
 
 
 # ------------------------------------------------------------------------------------------------ the item's mark
+def machine_status(it: dict) -> dict:
+    """What the machine settles on one item: every machine-only question's answer and state (pass / fail / na / info), and
+    which of them need the human: a failed check, or an observe question that is n/a where it matters (matters_if_na)."""
+    _, mach = split(it["view"])
+    rows = []
+    for q in mach:
+        if not q.get("machine"):
+            continue
+        m = machine(it, q)
+        text, err = m["text"] or "", m["error"]
+        if err:
+            state = "fail"
+        elif text.startswith(("n/a", "not stored")):
+            state = "na"
+        elif q["kind"] == "check":
+            state = "pass" if text.startswith(("pass", "yes")) and "fail:" not in text else "fail"
+        else:
+            state = "info"
+        need = state == "fail" or (state == "na" and bool(q.get("matters_if_na")))
+        rows.append({"q": q, "text": text or (err or ""), "state": state, "need": need})
+    return {"rows": rows, "need": [r for r in rows if r["need"]], "all_pass": not any(r["need"] for r in rows)}
+
+
+def h3(it: dict) -> dict:
+    """H3's pre-fill: the three ticks from the atom classes and the answer word's state rank (the J-space panel's machine);
+    {"error": why} where the states or the readout are not there."""
+    try:
+        I.scripts_on_path()
+        from scripts import review_jspace as J
+
+        st = J.states(it["model"], it["view"], it["id"])
+        return {"error": "no states for this item (cache/review_states)"} if st is None else J.a8_machine(st, it, it["model"])
+    except Exception as e:
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
+def five_items(view_id: str) -> list[dict]:
+    """The view's five items as loaded items, in the yaml's order."""
+    out = []
+    for item_id in five_ids(view_id):
+        model = model_of(item_id)
+        got = next((it for it in I.items(view_id, model) if it["id"] == item_id), None)
+        if got is not None:
+            out.append(got)
+    return out
+
+
+def deck_line(view_id: str, marks: list[dict], rows: list[dict]) -> str:
+    """One line per view, ready for the deck: the five items' marks, the machine's observe tallies over them, the H3 tallies
+    ("5 items: 3 consistent, 1 wrong, 1 unclear · machine: recall switch blocked without J++ 3/4 · H3: old bridge (-) 3/4")."""
+    five = five_ids(view_id)
+    last = {r["item"]: r for r in marks if r.get("view") == view_id and r.get("item") in five}
+    c = collections.Counter(r["verdict"] for r in last.values())
+    extra = len({r["item"] for r in marks if r.get("view") == view_id and r.get("item") not in five})
+    head = (f"{view_id}: {len(five)} items: {c['consistent']} consistent, {c['wrong']} wrong, {c['unclear']} unclear"
+            + (f" ({len(five) - len(last)} not read yet)" if len(last) < len(five) else "") + (f"; {extra} extra" if extra else ""))
+    _, mach = split(view_id)
+    items = five_items(view_id)
+    bits = []
+    for q in mach:
+        if q["kind"] != "observe" or not q.get("machine"):
+            continue
+        res = [machine(it, q)["text"] or "" for it in items]
+        yes, no = sum(x.startswith("yes") for x in res), sum(x.startswith("no") for x in res)
+        na = len(res) - yes - no
+        bits.append(f"{q.get('tally', q['text'])} {yes}/{yes + no}" + (f" ({na} n/a)" if na else ""))
+    h3rows = [r for r in rows if r["item_key"] in set(five) and r["q_id"] in ("H3a", "H3b", "H3c")]
+    lastq = latest(h3rows)
+    names = {"H3a": "old bridge (-)", "H3b": "new bridge (+)", "H3c": "answer word"}
+    h3bits = []
+    for qid, nm in names.items():
+        got = [qa[qid]["answer"] for qa in lastq.values() if qid in qa]
+        if got:
+            h3bits.append(f"{nm} {got.count('yes')}/{len(got)}")
+    return head + (" · machine: " + "; ".join(bits) if bits else "") + (" · H3: " + ", ".join(h3bits) if h3bits else "")
+
+
 def overall(answers: dict[str, str], qs: list[dict]) -> str | None:
-    """The item's derived mark: wrong if any check is No, unclear if any check is Unclear, consistent once every check is
-    Yes; None until the checks are answered. Observe questions never change it."""
-    checks = [q["id"] for q in qs if q["kind"] == "check"]
+    """The item's derived mark: wrong if any human check (H1, H2) is No, unclear if any is Unclear, consistent once both are
+    Yes; None until they are answered. Observe questions and the machine's checks never change it."""
+    checks = [q["id"] for q in qs if q["kind"] == "check" and q.get("human")] or [q["id"] for q in qs if q["kind"] == "check"]
     got = [answers.get(c) for c in checks]
     if "no" in got:
         return "wrong"

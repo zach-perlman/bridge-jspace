@@ -786,7 +786,7 @@ def checks_html(st, it, model) -> str:
 
 
 def a8_machine(st, it, model) -> dict:
-    """The machine's answer to the three ticks of A8 (the J-space panel, view a): among the change's 25 atoms at the bridge
+    """The machine's answer to the three ticks of A8 (H3: the J-space panel, views a and b): among the change's 25 atoms at the bridge
     word and L, is the old bridge there with a minus sign, the new bridge with a plus sign, the reader's answer word? Also
     the answer word's rank in the state's own readout ("readable in the state"), which is not the same thing as being
     "in the change's atoms"."""
@@ -800,9 +800,9 @@ def a8_machine(st, it, model) -> dict:
     old = [a for a in atoms if a["class"] == "bridge"]
     new = [a for a in atoms if a["class"] == "new bridge"]
     ans = [a for a in atoms if a["class"] == "answer"]
-    out = {"A8a": (any(a["coef"] < 0 for a in old), f"old bridge among the atoms: {fmt(old)}"),
-           "A8b": (any(a["coef"] > 0 for a in new), f"new bridge among the atoms: {fmt(new)}"),
-           "A8c": (bool(ans), f"answer word among the atoms: {fmt(ans)}")}  # fmt: skip
+    out = {"H3a": (any(a["coef"] < 0 for a in old), f"old bridge among the atoms: {fmt(old)}"),
+           "H3b": (any(a["coef"] > 0 for a in new), f"new bridge among the atoms: {fmt(new)}"),
+           "H3c": (bool(ans), f"answer word among the atoms: {fmt(ans)}")}  # fmt: skip
     ro = readout(model)
     ranks = []
     for prompt, which in (("O", "O"), ("S", "S")):
@@ -820,17 +820,17 @@ def a8_machine(st, it, model) -> dict:
 
 
 def a8_html(st, it, model, view_id: str, item_id: str, seed: str) -> str:
-    """A8's three ticks with the machine's answer, saved as checklist rows (schema 2) in review/marks.jsonl."""
+    """H3's three ticks with the machine's answer, saved as checklist rows (schema 2) in review/marks.jsonl."""
     from bridge_jspace.review import questions as Q
 
-    if not any("A8a" in (q.get("panel") or []) for q in Q.questions_of(view_id)):
+    if not any("H3a" in (q.get("panel") or []) for q in Q.questions_of(view_id)):
         return ""
     got = Q.latest(Q.load_rows(MARKS)).get(item_id, {})
     m = a8_machine(st, it, model)
     if "error" in m:
         return f"<div class='box'><h3>Checklist A8</h3><p class='mut'>The machine could not compute: {E(m['error'])}</p></div>"
-    labels = {"A8a": "the old bridge is among the 25 atoms with a minus sign", "A8b": "the new bridge is among the 25 atoms with a plus sign",
-              "A8c": "the reader's answer word is among the 25 atoms"}  # fmt: skip
+    labels = {"H3a": "the old bridge is among the 25 atoms with a minus sign", "H3b": "the new bridge is among the 25 atoms with a plus sign",
+              "H3c": "the reader's answer word is among the 25 atoms"}  # fmt: skip
     rows = []
     for qid, text in labels.items():
         ok, detail = m[qid]
@@ -843,7 +843,7 @@ def a8_html(st, it, model, view_id: str, item_id: str, seed: str) -> str:
           "ts:new Date().toISOString()};let ok=false;try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':"
           "'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}document.getElementById('s-'+q).textContent=ok?'saved':'not saved'}"
           "</script>" % (json.dumps(view_id), json.dumps(item_id), json.dumps(int(seed) if str(seed).isdigit() else 0)))
-    return (f"<div class='box'><h3>Checklist A8 (observe)</h3><p class='mut'>Tick each of the three that holds. Readable in the "
+    return (f"<div class='box'><h3>Checklist H3 (observe)</h3><p class='mut'>Tick each of the three that holds. Readable in the "
             f"<b>state</b> and present in the <b>change's atoms</b> are different things: the ranks below are the state's.</p>"
             f"<table><tr><th>question</th><th>machine</th><th>your answer</th></tr>{''.join(rows)}</table>"
             f"<p class='mut'>The answer word in the state readout at the bridge word and L:</p><ul>{state}</ul>{js}</div>")  # fmt: skip

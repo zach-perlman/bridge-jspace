@@ -269,7 +269,45 @@ kinds:
 # src/bridge_jspace/review/questions.py; its value is shown as "the machine says"), tally (observe: the phrase the
 # summary reports, "<tally>: <yes>/<answered>"). `header:` is the view-level block (per model, computed over every
 # item of the view): whole / part / random name the arms, min_switched the H1 bar.
+# The hand-check fits in ~45 minutes (Dan 30 Oct): five items per tier-1 view (a, b, c, d, f), fixed in advance, and
+# three human questions per item. Everything the machine can settle is answered by the machine and collapsed into one line
+# on the card ("Machine checks: all pass"); a failed machine check, or an observe question that is n/a where it matters
+# (matters_if_na), is shown expanded and red as a question for the human. H1 and H2 (kind check) derive the item's mark;
+# H3 (observe, views a and b) is the J-space ticks, pre-filled from the atom classes and ranks.
+five_rule: >-
+  Five items per view, fixed before more were read (Dan 30 Oct): from the seed-29 fixed sample keep 3 random items, one per
+  model, rotating the 9B, the 27B, then the next model in this file's order (the lookup and the recall alternating where the
+  model's random item allows), and the 2 targeted "surprising" items (the claim's failure cases; two different kinds where
+  the view has them). Marks already saved on other items of the sample stay in marks.jsonl and the summary, counted as extra.
 common_questions:
+  - id: H1
+    human: true
+    text: "Read the two prompts. Is the change the one the claim describes, and are the gold answers right?"
+    look_at: "the two prompts (red tokens) and the questions with their answers in brackets"
+    anchor: prompts
+    yes_if: "the prompts differ only by the change this claim describes, and each reader's original and changed answer is the right one for the scene"
+    protects_against: "a wrongly built scene or a wrong gold answer makes every number about the item meaningless"
+    kind: check
+    machine: "check(\"only the scene's words differ\") + ' | ' + check('answers decode right')"
+  - id: H2
+    human: true
+    text: 'Read "What the model answered". Does its one-line story (switched / blocked / kept, per reader) match the stored numbers?'
+    look_at: '"What the model answered" and the stored numbers'
+    anchor: answers
+    yes_if: "the machine's one-sentence story is what the answers and the stored numbers show"
+    protects_against: "a story that disagrees with the numbers means a label, an arm or a reader is mixed up"
+    kind: check
+    machine: "story()"
+  - id: H3
+    human: true
+    text: "J-space: among the 25 atoms of the change, is the old bridge there (minus sign), the new bridge (plus sign), the answer word?"
+    look_at: "the 25 atoms at the bridge word (J-space panel); the answer word's rank in the state readout"
+    anchor: jspace
+    yes_if: "tick each that holds: old bridge with a minus sign; new bridge with a plus sign; the answer word among the atoms"
+    protects_against: "'readable in the state' and 'in the change's atoms' are different things"
+    kind: observe
+    tally: "J-space atoms"
+    panel: [H3a, H3b, H3c]
   - id: P1
     text: "Do the original and changed prompts differ only by the change this claim describes?"
     look_at: 'the prompt diff (red tokens) and the "The bridge ..." line'
@@ -317,6 +355,13 @@ views:
     status: phase1
     tier: 1
     order: a
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0266|PM
+      - qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0085|PP
+      - qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0265|PM
+      - qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0193|PP
+      - qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0078|PP
     kind: x0
     readme: "docs/depth/README.md, Claims row 1; Part I 'In a conflict, which part of the bridge word does each reader follow?', Fig. 1 (fig01_split)"
     claim: >-
@@ -340,7 +385,7 @@ views:
                csv: {PP: "conflict: lookup, switches lost beyond a random part", PM: "conflict: recall, switches lost beyond a random part",
                      gap: "main test (two people swap picks): gap"}}
     decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
-    common: [P1, P2, P3, P4]
+    common: [H1, H2, H3, P1, P2, P3, P4]
     header: {whole: whole, part: without J++, random: without its random part, min_switched: 30}
     questions:
       - id: A1
@@ -356,6 +401,7 @@ views:
         text: "Without J++, was the recall's switch blocked?"
         look_at: 'the stored numbers, recall, the "without J++" row'
         anchor: "numbers:PM:without J++"
+        matters_if_na: true  # the recall did not switch: this item cannot show a block
         yes_if: "the recall switched under the whole change and does not switch without J++"
         protects_against: "the claim's effect is exactly this row"
         kind: observe
@@ -405,15 +451,6 @@ views:
         kind: observe
         tally: "an item with a fragile deciding switch"
         machine: "fragile()"
-      - id: A8
-        text: "J-space panel, three ticks: among the 25 atoms, is the old bridge there with a minus sign, the new bridge with a plus sign, and the reader's answer word?"
-        look_at: "the J-space panel (the link under the card): the change's 25 atoms at the bridge word; the answer word's rank in the state readout"
-        anchor: jspace
-        yes_if: "tick each of the three that holds: old bridge with a minus sign; new bridge with a plus sign; the answer word among the atoms"
-        protects_against: "'readable in the state' (the readout of the state) and 'in the change's atoms' are different things"
-        kind: observe
-        tally: "J-space atoms"
-        panel: [A8a, A8b, A8c]
     readme_rows: [1]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
     readme_quotes: ["The recall follows the part of the bridge word the lens reads; the lookup follows the rest"]  # README lines containing these, quoted whole
     targeted:
@@ -436,6 +473,16 @@ views:
     status: phase1
     tier: 1
     order: b
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x51_12_e1_r2|P2-L0-0191|PM
+      - qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0130|PP
+      - muse-glimmer-30b|muse30_x51_12_e1_r2|P2-L0-0095|PP
+      - qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0039|PP
+      - qwen3.5-9b|qwen35_9b_x51_12_e1_r2|P2-L0-0031|PP
+    common: [H1, H2, H3, P1, P2, P3, P4]
+    header: {whole: whole, part: "arm 1: without the lens part", random: "arm 1's random part", min_switched: 30}
+    story: [["arm 1: without the lens part", "arm 1's random part", "the lens part"], ["arm 2: without the lens part, its answer directions kept", "arm 2's random part", "the lens part (answer directions kept)"], ["arm 3: without the answer directions only", "arm 3's random part", "the answer directions only"]]
     kind: x51_answer
     readme: "docs/depth/README.md, Part I 'In a conflict ...', the result table's last four rows (specificity; conflict_answer in data.csv)"
     claim: >-
@@ -488,6 +535,14 @@ views:
     status: phase1
     tier: 1
     order: c
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x6_routes|C2-0538|PM|C2
+      - qwen3.6-27b|x6_routes_27b|C2-0421|PP|C2
+      - qwen3.5-122b-a10b|qwen35_122b_x6_routes_g75|C2-0418|PP|C2
+      - qwen3.6-27b|x6_routes_27b|C2-0128|PP|C2
+      - qwen3.5-9b|qwen35_9b_x6_routes|C2-0235|PP|C2
+    common: [H1, H2, P1, P2, P3, P4]
     kind: routes
     readme: "docs/depth/README.md, Claims rows 4, 6, 7; E5 'Identity, position, never the value'; E6 'The address: probe, remove, add, swap'"
     claim: >-
@@ -544,6 +599,14 @@ views:
     status: phase1
     tier: 1
     order: d
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x8_write|C2-0431|PP|write|1-2|s2
+      - qwen3.6-27b|x8_write_27b|C2-0037|PP|write|2-1|s2
+      - qwen3.5-122b-a10b|qwen35_122b_x8_write_g75|C2-0047|PM|write|2-0|s2
+      - qwen3.6-27b|x8_write_27b|C2-0372|PP|write|1-0|s2
+      - nemotron-3.5-lightning|nem35l_x52_write|C2-0111|PP|write|0-2|s2
+    common: [H1, H2, P1, P2, P3, P4]
     kind: x8
     readme: "docs/depth/README.md, Claims row 6 ('a swap redirects the lookup'); E6 'The address: probe, remove, add, swap', 'The recall under the swap'; Fig. 7"
     claim: >-
@@ -625,6 +688,14 @@ views:
     status: phase1
     tier: 1
     order: f
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x51_10|P2-L0-0115|PM
+      - qwen3.6-27b|x51_10_27b|P2-L0-0015|PP
+      - muse-glimmer-30b|muse30_x51_10|P2-L0-0103|PP
+      - nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0324|PM
+      - nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0054|PM
+    common: [H1, H2, P1, P2, P3, P4]
     kind: jread
     readme: "docs/depth/README.md, Part IV 'The recall's bridge entity at the last token: readable through the lens, not used'; In one minute, 'At the last token'"
     claim: >-

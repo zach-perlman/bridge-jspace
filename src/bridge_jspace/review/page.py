@@ -46,6 +46,7 @@ border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-m
 .grid td:first-child,.grid th:first-child{text-align:left}.wrap{overflow-x:auto}
 .check{border-left:4px solid var(--oth)}.q{border-top:1px solid var(--line);padding:6px 0;font-size:13px}
 .mach{background:var(--bg);border-left:3px solid var(--val);padding:2px 8px;margin:3px 0}.qa{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:3px}
+.attn{border-left:3px solid var(--bad);background:rgba(184,67,58,.07);padding-left:8px}.okc{color:var(--ok)}.badc{color:var(--bad)}.mline{margin:6px 0}
 .qa input[type=text]{flex:1;min-width:160px}a.look{cursor:pointer}.flash{outline:3px solid var(--oth);outline-offset:2px;background:var(--hl)}
 """
 
@@ -72,6 +73,7 @@ note:q.querySelector('.qnote').value,seed:+box.dataset.seed,ts:new Date().toISOS
 if(SERVER){try{const x=await fetch('/mark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});ok=x.ok}catch(e){}}
 MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
 q.querySelector('.qsaved').textContent=SERVER?(ok?'saved':'server failed, kept locally'):'kept locally';derive(box)}
+function confirmH3(btn){const box=btn.closest('.h3');box.querySelectorAll('.q').forEach(q=>{const r=q.querySelector('input[type=radio]:checked');if(r)answerQ(r)})}
 addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.check').forEach(derive));
 function download(){const b=new Blob([MARKS.map(m=>JSON.stringify(m)).join('\\n')+'\\n'],{type:'application/json'});
 const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='marks.jsonl';a.click()}
@@ -585,37 +587,95 @@ def facts_html(it: dict) -> str:
     return ""
 
 
+def question_html(it: dict, q: dict, got: dict, uid: str, kind: str, machine_text: str | None = None, error: str | None = None,
+                  red: bool = False) -> str:
+    """One question to the human: text, where to look (a link that scrolls to and highlights the field), what counts as yes,
+    what it protects against, the machine's answer beside it, Yes / No / Unclear and a note (saved as the click is made)."""
+    says = ""
+    if machine_text is not None:
+        says = f"<div class='mach'>the machine says: <b>{E(machine_text)}</b></div>"
+    elif error:
+        says = f"<div class='mach mut'>the machine could not compute: {E(error)}</div>"
+    look = (f"<a href='#' class='look' onclick=\"return look(this,'{E(q['anchor'])}')\">{E(q['look_at'])}</a>" if q.get("anchor")
+            else E(q["look_at"]))  # fmt: skip
+    radios = "".join(f"<label><input type='radio' name='q-{uid}-{q['id']}' value='{a}'{' checked' if got.get('answer') == a else ''} "
+                     f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
+    return (f"<div class='q{' attn' if red else ''}' data-q='{E(q['id'])}' data-kind='{kind}'><div><b>{E(q['id'])}</b> {E(q['text'])} "
+            f"{tag(q['kind'], 'fail' if red else 'st' if q['kind'] == 'observe' else 'oth')}</div>"
+            f"<div class='mut'>look at: {look}</div><div class='mut'>yes if: {E(q['yes_if'])}</div>"
+            f"<div class='mut'>protects against: {E(q['protects_against'])}</div>{says}"
+            f"<div class='qa'>{radios}<input type='text' class='qnote' placeholder='note' value='{E(got.get('note', ''))}' "
+            "onchange='answerQ(this)'><span class='qsaved mut'></span></div></div>")  # fmt: skip
+
+
+H3_TICKS = (("H3a", "the old bridge is among the 25 atoms, with a minus sign"), ("H3b", "the new bridge is among the 25 atoms, with a plus sign"),
+            ("H3c", "the reader's answer word is among the 25 atoms"))  # fmt: skip
+
+
+def h3_html(it: dict, q: dict, answers: dict, uid: str) -> str:
+    """H3: three ticks, pre-filled from the atom classes and the answer word's rank (the machine's reading); the human
+    confirms or corrects, and a click saves. The panel (link) shows the atoms and the state readout."""
+    m = Q.h3(it)
+    err = m.get("error")
+    rows = []
+    for qid, text in H3_TICKS:
+        got = answers.get(qid) or {}
+        pre = None if err else ("yes" if m[qid][0] else "no")
+        cur = got.get("answer") or pre
+        detail = "" if err else f"<br><span class='mut'>{E(m[qid][1])}</span>"
+        radios = "".join(f"<label><input type='radio' name='q-{uid}-{qid}' value='{a}'{' checked' if cur == a else ''} "
+                         f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
+        rows.append(f"<div class='q' data-q='{qid}' data-kind='observe'><b>{qid}</b> {E(text)}: <span class='mut'>machine "
+                    f"{'could not compute' if err else 'says ' + pre}{' (saved: ' + got['answer'] + ')' if got else ''}</span>{detail}"
+                    f"<div class='qa'>{radios}<input type='text' class='qnote' placeholder='note' value='{E(got.get('note', ''))}' "
+                    "onchange='answerQ(this)'><span class='qsaved mut'></span></div></div>")  # fmt: skip
+    state = "".join(f"<li>{E(x)}</li>" for x in (m.get("state") or []))
+    panel = ("<a href='/jspace?" + E(urlencode({"view": it["view"], "item": it["id"]})) + "' target='_blank'>open the J-space panel</a>"
+             " <span class='mut'>(server only)</span>")  # fmt: skip
+    return (f"<div class='h3' data-anchor='jspace'><div><b>H3</b> {E(q['text'])} {tag('observe', 'st')}</div>"
+            f"<div class='mut'>look at: {panel}; the answer word's rank in the state readout (readable in the state) is not the same "
+            "as being in the change's atoms</div>"
+            + (f"<div class='mach mut'>the machine could not compute: {E(err)}</div>" if err else f"<ul class='mut'>{state}</ul>")
+            + "".join(rows) + "<div><button type='button' onclick='confirmH3(this)'>confirm the three ticks</button></div></div>")  # fmt: skip
+
+
 def checklist_html(it: dict, seed: int, answers: dict[str, dict]) -> str:
-    """The guided checklist box (Dan 30 Oct): per question its text, where to look (a link that scrolls to and highlights
-    the field), what counts as yes, what it protects against, the machine's answer, and Yes / No / Unclear with a note.
-    The item's mark is derived from the checks (wrong if any check is No, unclear if any is Unclear, else consistent) and
-    can still be set by hand below. A question with a `panel` (A8) is answered on the J-space panel."""
-    qs = Q.questions_of(it["view"])
+    """The card's top box (Dan 30 Oct, the 45-minute read): one line "Machine checks: all pass" (expandable) for everything the
+    machine settles; a failed check or an observe question that is n/a where it matters is shown red, expanded, as a human
+    question; then H1 and H2 (their machine answers beside them) and, on views a and b, H3's three ticks. The item's mark
+    is derived from H1 and H2 only and can be set by hand below."""
+    human, _ = Q.split(it["view"])
+    st = Q.machine_status(it)
     uid = hashlib.md5(it["id"].encode()).hexdigest()[:8]
     out = [f"<div class='box check' data-item='{E(it['id'])}' data-view='{E(it['view'])}' data-seed='{seed}'>"
-           "<b>Checklist</b> <span class='mut'>read the item against each question; <b>check</b>: a No means the item is "
-           "wrong; <b>observe</b>: a No is data. Derived mark: </span><b class='derived'>–</b>"
+           "<b>Checklist</b> <span class='mut'>Derived mark (from H1 and H2): </span><b class='derived'>–</b>"
            "<span class='mut'> (set the mark below by hand to override)</span>"]  # fmt: skip
-    for q in qs:
-        got = answers.get(q["id"]) or {}
-        m = Q.machine(it, q) if q.get("machine") else None
-        says = ("" if m is None else f"<div class='mach'>the machine says: <b>{E(m['text'])}</b></div>" if m["text"] is not None
-                else f"<div class='mach mut'>the machine could not compute: {E(m['error'] or '')}</div>")  # fmt: skip
+    line = ("<b class='okc'>Machine checks: all pass</b>" if st["all_pass"]
+            else f"<b class='badc'>Machine checks: {len(st['need'])} need you</b> <span class='mut'>(shown below, red)</span>")
+    tags = {"pass": "pass", "fail": "fail", "na": "na", "info": "st"}
+    rows = "".join(f"<tr><td><b>{E(r['q']['id'])}</b></td><td>{E(r['q']['text'])}</td><td>{E(r['text'])}</td>"
+                   f"<td>{tag(r['state'], tags[r['state']])}</td></tr>" for r in st["rows"])
+    out.append(f"<p class='mline'>{line} <details style='display:inline'><summary class='mut'>show the {len(st['rows'])} machine "
+               f"answers</summary><table>{rows}</table></details></p>")  # fmt: skip
+    for r in st["need"]:  # a machine answer the human has to look at: red, expanded, answered like any question
+        out.append(question_html(it, r["q"], answers.get(r["q"]["id"]) or {}, uid, "attn", r["text"], None, red=True))
+    for q in human:
         if q.get("panel"):
-            says += ("<div class='mach'>answered on the J-space panel: <a href='/jspace?" + E(urlencode({"view": it["view"], "item": it["id"]}))
-                     + "' target='_blank'>open it</a> <span class='mut'>(server only)</span></div>")  # fmt: skip
-        look = (f"<a href='#' class='look' onclick=\"return look(this,'{E(q['anchor'])}')\">{E(q['look_at'])}</a>" if q.get("anchor")
-                else E(q["look_at"]))  # fmt: skip
-        radios = "".join(f"<label><input type='radio' name='q-{uid}-{q['id']}' value='{a}'{' checked' if got.get('answer') == a else ''} "
-                         f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
-        btns = (f"<div class='qa'>{radios}<input type='text' class='qnote' placeholder='note' value='{E(got.get('note', ''))}' "
-                "onchange='answerQ(this)'><span class='qsaved mut'></span></div>") if not q.get("panel") else ""
-        out.append(f"<div class='q' data-q='{E(q['id'])}' data-kind='{q['kind']}'><div><b>{E(q['id'])}</b> {E(q['text'])} "
-                   f"{tag(q['kind'], 'st' if q['kind'] == 'observe' else 'oth')}</div>"
-                   f"<div class='mut'>look at: {look}</div><div class='mut'>yes if: {E(q['yes_if'])}</div>"
-                   f"<div class='mut'>protects against: {E(q['protects_against'])}</div>{says}{btns}</div>")  # fmt: skip
+            out.append(h3_html(it, q, answers, uid))
+            continue
+        m = Q.machine(it, q)
+        out.append(question_html(it, q, answers.get(q["id"]) or {}, uid, q["kind"], m["text"], m["error"]))
     out.append("</div>")
     return "".join(out)
+
+
+def five_box(v: dict) -> str:
+    """The rule that fixed the view's five items (yaml five_rule), recorded on the view page: the 45-minute read."""
+    if not v.get("five"):
+        return ""
+    items = "".join(f"<li><code>{E(i)}</code></li>" for i in v["five"])
+    return (f"<div class='box'><b>Five items, fixed in advance</b> <span class='mut'>{E(' '.join(str(I.spec().get('five_rule', '')).split()))}</span>"
+            f"<ul class='mut'>{items}</ul></div>")
 
 
 def header_html(header: dict[str, list[dict]]) -> str:
@@ -1046,7 +1106,7 @@ def view_page(
 ) -> str:
     seed = int(p["seed"])
     body = [f"<p><a href='{'/' if server else 'index.html'}'>← all views</a></p><h1>{E(v['title'])}</h1>", controls(v, p, server),
-            claim_box(v), LEGEND, header_html(header or {}), recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
+            claim_box(v), five_box(v), LEGEND, header_html(header or {}), recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
             "<span class='mut'>(also kept in this browser)</span></p>"]  # fmt: skip
     for section, label in (("set", "Sample from the claim's item set"), ("out", "Outside the claim's set (ineligible or beyond the first N)"),
                            ("superseded", "Superseded runs")):  # fmt: skip

@@ -34,7 +34,7 @@ def test_the_shipped_views_have_questions_and_a_header():
         assert vid in WITH_QUESTIONS
         assert I.view(vid).get("header")
     ids = [q["id"] for q in Q.questions_of("main_swap")]
-    assert ids == ["P1", "P2", "P3", "P4", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
+    assert ids == ["H1", "H2", "H3", "P1", "P2", "P3", "P4", "A1", "A2", "A3", "A4", "A5", "A6", "A7"]
 
 
 @pytest.mark.parametrize("view_id", WITH_QUESTIONS)
@@ -43,7 +43,9 @@ def test_questions_are_well_formed(view_id):
     assert qs
     for q in qs:
         assert q["kind"] in Q.KINDS and q["yes_if"] and q["look_at"] and q["protects_against"], q["id"]
-    assert [q["id"] for q in qs][:4] == ["P1", "P2", "P3", "P4"]
+    human, machine_only = Q.split(view_id)
+    assert [q["id"] for q in human][:2] == ["H1", "H2"] and len(human) <= 3
+    assert all(q["id"].startswith("P") or q["id"].startswith("A") for q in machine_only)
 
 
 def test_p1_says_what_yes_means_per_view():
@@ -81,14 +83,13 @@ def test_machine_answers_on_a_known_item():
 
 def test_overall_is_derived_from_the_checks_only():
     qs = Q.questions_of("main_swap")
-    checks = [q["id"] for q in qs if q["kind"] == "check"]
-    yes = {c: "yes" for c in checks}
+    yes = {"H1": "yes", "H2": "yes"}
     assert Q.overall(yes, qs) == "consistent"
-    assert Q.overall({**yes, "P2": "no"}, qs) == "wrong"
-    assert Q.overall({**yes, "P2": "unclear"}, qs) == "unclear"
-    assert Q.overall({**yes, "P2": "unclear", "P1": "no"}, qs) == "wrong"
-    assert Q.overall({"P1": "yes"}, qs) is None  # not every check answered yet
-    assert Q.overall({**yes, "A1": "no", "A2": "no"}, qs) == "consistent"  # an observe never changes it
+    assert Q.overall({**yes, "H2": "no"}, qs) == "wrong"
+    assert Q.overall({**yes, "H2": "unclear"}, qs) == "unclear"
+    assert Q.overall({"H1": "no", "H2": "unclear"}, qs) == "wrong"
+    assert Q.overall({"H1": "yes"}, qs) is None  # not both answered yet
+    assert Q.overall({**yes, "A1": "no", "H3a": "no", "P1": "no"}, qs) == "consistent"  # only H1 and H2 derive the mark
 
 
 def test_the_card_shows_the_checklist_and_every_look_at_anchor_is_on_the_card():
@@ -96,12 +97,14 @@ def test_the_card_shows_the_checklist_and_every_look_at_anchor_is_on_the_card():
     html = P.card(it, 0, False, None)
     assert "Checklist" in html and "the machine says" in html and "onclick=\"return look(this," in html
     assert html.index("Checklist") < html.index("As the model saw it")  # above the existing panels
-    for q in Q.questions_of("main_swap"):
+    human, _ = Q.split("main_swap")
+    for q in human:
         a = q.get("anchor")
         if a and a != "jspace":
             assert f"data-anchor='{a}'" in html, (q["id"], a)
-    assert "answered on the J-space panel" in html
-    assert "data-q='A1' data-kind='observe'" in html and "data-q='P1' data-kind='check'" in html
+    assert "Machine checks:" in html and "confirm the three ticks" in html
+    assert "data-q='H1' data-kind='check'" in html and "data-q='H2' data-kind='check'" in html
+    assert "data-q='A1'" not in html  # the machine's A1 is collapsed into the machine line, not put to the human
 
 
 def test_the_old_marks_buttons_still_work_and_old_files_load(tmp_path):
@@ -183,3 +186,60 @@ def test_export_works_offline_with_the_checklist(tmp_path):
     out = R.export(0, 1, tmp_path / "seed-0")
     page = (out / "main_swap.html").read_text()
     assert "Checklist" in page and "const SERVER=false" in page and re.search(r"function answerQ", page)
+
+
+def human_questions(card_html: str) -> set[str]:
+    """The questions a card puts to the human, H3's three ticks counted as one."""
+    got = {re.sub(r"^(H3)[abc]$", r"\1", x) for x in re.findall(r"class='q(?: attn)?' data-q='([A-Za-z0-9]+)'", card_html)}
+    return got
+
+
+@pytest.mark.parametrize("view_id", WITH_QUESTIONS)
+def test_every_tier_1_view_renders_five_items_with_three_or_fewer_human_questions(view_id):
+    from scripts import review as R
+
+    assert len(Q.five_ids(view_id)) == 5
+    page = R.render_view({"view": view_id, "seed": "29", "n": "10"}, False, "t")
+    cards = page.split("<div class='card")[1:]
+    assert len(cards) == 5
+    for c in cards:
+        assert len(human_questions(c)) <= 3 + 3  # H1, H2, H3, and at most a few machine checks put back to the human, in red
+        assert {"H1", "H2"} <= human_questions(c) and "Machine checks:" in c
+    # unless a machine check failed, exactly H1, H2 (and H3 on a and b) are asked
+    plain = [c for c in cards if "Machine checks: all pass" in c]
+    want = {"H1", "H2"} | ({"H3"} if view_id in ("main_swap", "answer_control") else set())
+    assert all(human_questions(c) == want for c in plain)
+
+
+def test_the_five_items_follow_the_rule_and_come_from_the_fixed_sample():
+    fs = I.spec()["fixed_sample"]["views"]
+    order = list(I.spec()["models"])
+    for vid in WITH_QUESTIONS:
+        five = Q.five_ids(vid)
+        sample = {e["item"]: e for e in fs[vid]}
+        assert set(five) <= set(sample), vid
+        rnd, sur = [sample[i] for i in five[:3]], [sample[i] for i in five[3:]]
+        assert all(e["stratum"].startswith("random") for e in rnd) and all("surprising" in e["stratum"] for e in sur), vid
+        assert [e["model"] for e in rnd] == sorted({e["model"] for e in rnd}, key=order.index), vid  # the yaml's model order
+        assert rnd[0]["model"] == "qwen3.5-9b" or "qwen3.5-9b" not in {e["model"] for e in fs[vid] if e["stratum"].startswith("random")}
+    assert "Five items per view" in I.spec()["five_rule"]
+
+
+def test_the_fixed_sample_shows_only_the_five(tmp_path):
+    from bridge_jspace.review import fixed as F
+
+    got = F.samples(I.view("main_swap"), 29, list(I.spec()["models"]))
+    ids = [it["id"] for per in got.values() for s in per for it in s["items"]]
+    assert sorted(ids) == sorted(Q.five_ids("main_swap"))
+
+
+def test_per_view_reads_the_five_and_counts_the_rest_as_extra(tmp_path):
+    five = Q.five_ids("main_swap")
+    other = next(e["item"] for e in I.spec()["fixed_sample"]["views"]["main_swap"] if e["item"] not in five)
+    rows = [{"view": "main_swap", "item": five[0], "seed": 29, "verdict": "wrong", "note": ""},
+            {"view": "main_swap", "item": five[1], "seed": 29, "verdict": "consistent", "note": ""},
+            {"view": "main_swap", "item": other, "seed": 29, "verdict": "unclear", "note": ""}]  # fmt: skip
+    x = H.per_view(rows)["main_swap"]
+    assert (x["sample"], x["read"], x["wrong"], x["consistent"], x["extra"]) == (5, 2, 1, 1, 1)
+    line = Q.deck_line("main_swap", rows, [])
+    assert line.startswith("main_swap: 5 items: 1 consistent, 1 wrong, 0 unclear") and "1 extra" in line and "machine:" in line

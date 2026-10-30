@@ -35,13 +35,13 @@ def per_view(marks: list[dict], seed: int | None = None) -> dict[str, dict]:
     seed = fs.get("seed") if seed is None else seed
     out = {}
     for v in (v for v in I.spec()["views"] if v.get("tier") == 1):
-        sample = [e["item"] for e in (fs.get("views") or {}).get(v["id"]) or []]
+        sample = list(v.get("five") or [e["item"] for e in (fs.get("views") or {}).get(v["id"]) or []])  # five: Dan 30 Oct
         last = {r["item"]: r for r in marks if r["view"] == v["id"] and r.get("seed") == seed}
         on = {i: last[i] for i in sample if i in last}
         c = collections.Counter(r["verdict"] for r in on.values())
         out[v["id"]] = {"order": v.get("order"), "title": v["title"], "sample": len(sample), "read": len(on),
                         "consistent": c["consistent"], "wrong": c["wrong"], "unclear": c["unclear"],
-                        "flagged": c["wrong"] >= STOP_WRONG, "outside_sample": len(set(last) - set(sample)),
+                        "flagged": c["wrong"] >= STOP_WRONG, "outside_sample": len(set(last) - set(sample)), "extra": len(set(last) - set(sample)),
                         "notes": [r for r in on.values() if r["verdict"] != "consistent"]}  # fmt: skip
     return out
 

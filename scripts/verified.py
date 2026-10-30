@@ -62,6 +62,7 @@ def block(marks_path: Path, checks: dict | None, indep: dict | None) -> str:
         notes += [f"- {x['order']}. {vid}, `{r['item']}`: **{r['verdict']}** ({r.get('utc', '')}, commit {r.get('commit', '')}): "
                   f"{r.get('note', '') or '(no note)'}" for r in x["notes"]]  # fmt: skip
     qrows = Q.load_rows(marks_path)
+    L += ["", "One line per claim (five items each):", "", *[f"- {Q.deck_line(vid, marks, qrows)}" for vid in pv if views[vid].get("five")]]
     tallies = [(vid, Q.tally_lines(qrows, vid)) for vid in pv]
     L += ["", "Wrong and unclear items, with the notes:", "", *(notes or ["None."])]
     if any(x for _, x in tallies):  # the guided checklist's answers (schema-2 rows): checks as counts, observations as tallies
