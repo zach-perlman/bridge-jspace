@@ -744,6 +744,13 @@ views:
     status: phase1
     tier: 1
     order: g
+    fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
+    five:
+      - qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0109|PM
+      - qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0192|PP
+      - qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0032|PM
+      - muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0040|PP
+      - qwen3.6-27b|x0_necessity_27b_chat|P2-L0-0152|PP
     kind: x0
     readme: "docs/depth/README.md, Claims row 10; E10 'Sentence order: where the link is made', Fig. 3"
     claim: >-
