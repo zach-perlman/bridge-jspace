@@ -489,7 +489,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 
 **More in the ledger** (each card with its figure, numbers and caveats):
 
-- [Does the bridge word redirect the lookup only when its locker sentence came first?](docs/depth/EXPERIMENTS.md#order) With the locker sentence first, the change at the bridge word switches most lookups on all five models; with it after, few.
+- [Does the bridge word redirect the lookup only when its locker sentence came first?](docs/depth/EXPERIMENTS.md#order) With the locker sentence first, the change at the bridge word switches most lookups on all five models; with it after, few. Both orders matter; the original order's effect is larger on 4 of 5 models (Muse: about equal; post hoc, [the 2x2](docs/depth/EXPERIMENTS.md#order))<!-- src: results/x0_order_2x2/20261030T224216Z/tables.json | original_order_effect -->.
 - [Which token and layer carry the lookup when the locker sentence comes after the pick?](docs/depth/EXPERIMENTS.md#d1) No single cell carries the locker-after lookup on any model: the link is spread over tokens and layers.
 - [On Lightning, does the lookup read the bridge word through its attention blocks?](docs/depth/EXPERIMENTS.md#b53-4) Blocking the bridge word in both attention blocks cuts about a third of Lightning's lookup switches, as much as blocking every attention block after L; either block on its own cuts little, the control nothing. By the rule: in between.
 - [Does the lookup drop the lens part before it takes up the address?](docs/depth/EXPERIMENTS.md#t47-8) On all five models the address is readable before the lookup starts using it, and the lookup never takes the value (the 122B: coverage, lookup-only gate, pending hand-check).
