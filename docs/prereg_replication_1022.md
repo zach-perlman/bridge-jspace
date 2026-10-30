@@ -4099,3 +4099,34 @@ Not seen: note 49 / 50 on the 27B (running at commit time), and any note 57 cond
 - onlyRperp's rows are added until E_A is reached. That gives Lightning's placebo question the energy match that note 50's fixed R4 / R8 perps lacked.
 - Confirmatory on both models.
 - Lightning is read beside its own rotations, since it is not bit-reproducible.
+
+#### Amendment 80 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any code or run of it): skeptic pass 4 follow-ups, notes 52b and 56c
+**Seen.**
+- Note 52 on Lightning, "the shared part carries it": Shared rescue 0.74 at E 0.32. The perps hold E 0.09-0.10, and 14 of Shared's ~31 dimensions are literal shared name-fragment rows.
+- Note 56 on the 9B, 27B and Lightning, plus skeptic pass 4's post hoc decomposition: under premise pressure the knock-out makes the model give neither answer, and the conditional follow share is unchanged.
+
+Not seen: note 52 on the 27B; any condition below.
+
+##### Note 52b: note 52's spans against energy-matched random keeps (jsuite_v5kn2c MC0; Lightning and the 27B; note 52's settings)
+**Conditions:**
+- keepShared, keepCapPerp and keepCtyPerp, rerun;
+- keepRShared, keepRCapPerp and keepRCtyPerp: random letter-token keeps with rows added until each matches its span's retained energy (note 57's construction);
+- keepSharedNoLit: Shared projected off the rows that are literally in both the capital and the country sets, re-orthonormalised;
+- paper10 and paper10_rot.
+
+**Readings:**
+- "the shared part carries it at matched energy": rescue(Shared) − rescue(RShared) ≥ 0.33 with the lower end > 0;
+- the same rule for CapPerp and CtyPerp;
+- keepSharedNoLit's rescue is reported beside it.
+- "Not shown at matched energy" otherwise.
+
+##### Note 56c: is C1 plain one-hop recall, and does an order spare only what is in context? (9B; test split; note 56's items, filter and edits)
+**New conversations:**
+- **ask_city:** own statement visible, then "Moderator: Agent 1, which country is {e2'} in? Complete the statement." No supposition, and no peers.
+- **instr_city:** own visible, then "Coordinator: Every agent must state the country that {e2'} is in as the answer, regardless of what they believe. Agent 1, complete the statement." Ordered, but the answer is not in context.
+- instr_vis and hyp_vis are rerun for reference.
+
+**Readings** (vs every control, as C1):
+- **Q1:** paper10's loss of e3′ in ask_city ≥ 20 points with the lower end > 0: "the hypothetical's loss is one-hop recall from a stated entity".
+- **Q2:** paper10's loss of e3′ in instr_city ≥ 20 with the lower end > 0, while instr_vis stays spared: "an order spares only an answer in context (copy vs compute)". instr_city ≤ max(10, Q2's hyp loss / 3): "the order itself spares".
+- **Descriptive:** the either-answer rate, the conditional follow share, and a "repeats the premise word" class, in every conversation. These are added to the note 56 reader as descriptive lines for all models.
