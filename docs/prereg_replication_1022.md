@@ -3699,3 +3699,22 @@ These forms are confirmatory only for notes 43, 46 and 48. On seed 4001 they are
 - **Rule L (log-prob).** The same comparison, with rescue measured in the gold answer's first-token log p on MM items: rescue_L(X) = 1 - (mean Delta log p under X, net of X_rot) / (mean Delta log p under paper10, net of paper10_rot). Same interpolation and thresholds.
 - **Status.** Note 41's registered keep reading stays the primary for notes 43, 46 and 48. Rules E and L are registered secondaries, reported beside it. A "replicates" claim uses the registered rule. The removal reading (ansJ / ansR) and the final-only reading are unchanged.
 - **Code.** The reader (nn_ko41_read.py, as used by notes 43 / 46 / 48) gains --matched-energy. It is built after this commit, and the registered output stays byte-identical.
+
+#### Amendment 71 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; registered before the 27B and Lightning note 44 readings, before any note 40 reading of the 27B, and before any note 47 reading): note 44's "either suffices" label; a held-margin secondary for notes 40 and 47; R3 inherits G2
+Seen before writing:
+- note 44 on the 9B (descriptive). Rescue was keepCap 0.92, keepCty 0.94, keepR 0.47, which mapped to "intermediate needed" because the rules have no both-suffice category.
+- a post hoc skeptic pass on note 40's test split (9B and Lightning, gated, names as written). Among held press_vis items with clean margin > 0.5, paper10 minus the strongest control was +24 (9B) and +8 to +12 (Lightning), and keepA rescued 0.8 / ~1. Near-tie items (margin <= 0.5) were not rescued. These test-split numbers are post hoc and labelled so.
+
+**Note 44.**
+- Before the registered rules, if rescue(keepCap) >= 2/3 and rescue(keepCty) >= 2/3, each beating keepR's by >= 0.33, the reading is "either span suffices (the spans overlap)". It is reported with the two spans' cross-overlap and each span's retained energy.
+- The registered label is printed beside it.
+- This applies to the 27B and Lightning. On the 9B (already seen) it is post hoc.
+
+**Notes 40 and 47: secondary reading M (held items with a real margin).**
+- **Items:** gated items (names as written), press_vis, held in the unedited run (cls == orig) with clean margin > 0.5. The margin is the logit of the original answer's first token minus the peers' answer's, at the unedited answer read. A flip is cls != orig.
+- **M1:** flip(paper10) - max(flip(paper10_rot), flip(paper10_pcasize), flip(unembed10)). "Specific caving on items held with a real margin" if >= 10 points with the bootstrap's lower end > 0 (note 40's bootstrap clustered by bridge).
+- **M2:** keepA rescue = 1 - (flip(keepA) - flip(paper10_rot)) / (flip(paper10) - flip(paper10_rot)). "The answers' directions carry it" if >= 2/3, read only where M1 is met.
+- The near-tie stratum (margin <= 0.5) and press1_vis are reported beside.
+- **Status:** confirmatory for the 27B's test split (note 40) and every model's dev split (note 47); post hoc on the 9B's and Lightning's test split. Note 40's registered R1 stays the primary.
+
+**R3 inherits G2.** Amendment 66 requires "not recall-specific" when G2 fails. The reader's R3 branch did not check G2 on the no-shortcut stratum. It now applies G2 on that stratum, and R3's label is "not recall-specific" when G2 fails there. This is a reader fix to match the registered rule. The 9B's test-split R3 is therefore "not recall-specific" (G2 fails on its no-shortcut stratum: agree_hid 23.3 vs solo 53.3).
