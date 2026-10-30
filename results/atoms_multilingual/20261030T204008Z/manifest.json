@@ -1,0 +1,49 @@
+{
+  "exp": "atoms_multilingual",
+  "written_utc": "20261030T204008Z",
+  "script": "scripts/atoms_multilingual.py",
+  "inputs": [
+    "results/x52_atoms/report-20261029T000125Z/labelled.jsonl",
+    "results/x52_atoms/report-20261029T010648Z/labelled.jsonl",
+    "results/x52_atoms/report-20261030T094628Z/labelled.jsonl"
+  ],
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x52_atoms_fwd",
+    "qwen3.6-27b": "x52_atoms_fwd_27b",
+    "muse-glimmer-30b": "muse30_x52_atoms_fwd",
+    "nemotron-3.5-lightning": "nem35l_x52_atoms_fwd",
+    "qwen3.5-122b-a10b": "qwen35_122b_x52_atoms_fwd"
+  },
+  "views": [
+    "PM",
+    "PP"
+  ],
+  "classes": {
+    "bridge": "old bridge word",
+    "new_bridge": "new bridge word",
+    "answer_any": "answer (any language)",
+    "number_other": "number, not the answer",
+    "scene_item": "another scene item",
+    "person": "a person",
+    "same_class": "a same-class word",
+    "function": "function word / punctuation",
+    "other": "other"
+  },
+  "languages": [
+    "Chinese",
+    "English",
+    "French",
+    "German",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Portuguese",
+    "Roman numeral",
+    "Russian",
+    "Spanish",
+    "Ukrainian",
+    "digit"
+  ],
+  "note": "CPU only; descriptive; the 51.12 verdicts are not rerun",
+  "git": "79323dc5"
+}

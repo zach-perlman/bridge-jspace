@@ -1,0 +1,1473 @@
+{
+ "sets": {
+  "f5": {
+   "muse-glimmer-30b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0007,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.003,
+       0.0011,
+       0.0048
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1836,
+      "new_bridge": 0.1904,
+      "answer_any": 0.0007,
+      "number_other": 0.003,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0043,
+      "function": 0.0124,
+      "other": 0.6056
+     },
+     "old_answer": [
+      0.0007,
+      0.0,
+      0.0027
+     ],
+     "items_with_answer": 1,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0007
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0037,
+       0.0016,
+       0.0061
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1836,
+      "new_bridge": 0.1904,
+      "answer_any": 0.0,
+      "number_other": 0.0037,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0043,
+      "function": 0.0124,
+      "other": 0.6056
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "qwen3.5-9b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0012,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.0019,
+       0.0,
+       0.0049
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1108,
+      "new_bridge": 0.1098,
+      "answer_any": 0.0012,
+      "number_other": 0.0019,
+      "scene_item": 0.0006,
+      "person": 0.0,
+      "same_class": 0.0031,
+      "function": 0.0102,
+      "other": 0.7625
+     },
+     "old_answer": [
+      0.0005,
+      0.0,
+      0.0015
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0007,
+      "toward changed": 0.0005
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0031,
+       0.0005,
+       0.006
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1108,
+      "new_bridge": 0.1098,
+      "answer_any": 0.0,
+      "number_other": 0.0031,
+      "scene_item": 0.0006,
+      "person": 0.0,
+      "same_class": 0.0031,
+      "function": 0.0102,
+      "other": 0.7625
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "qwen3.6-27b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0014,
+       0.0,
+       0.0034
+      ],
+      "number_other": [
+       0.0017,
+       0.0,
+       0.004
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1009,
+      "new_bridge": 0.1133,
+      "answer_any": 0.0014,
+      "number_other": 0.0017,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0018,
+      "function": 0.0094,
+      "other": 0.7715
+     },
+     "old_answer": [
+      0.0007,
+      0.0,
+      0.0023
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0014
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0031,
+       0.0007,
+       0.0057
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1009,
+      "new_bridge": 0.1133,
+      "answer_any": 0.0,
+      "number_other": 0.0031,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0018,
+      "function": 0.0094,
+      "other": 0.7715
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "nemotron-3.5-lightning": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0016,
+       0.0,
+       0.0036
+      ],
+      "number_other": [
+       0.002,
+       0.0005,
+       0.0036
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.0901,
+      "new_bridge": 0.1107,
+      "answer_any": 0.0016,
+      "number_other": 0.002,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0037,
+      "function": 0.0086,
+      "other": 0.7832
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 2,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0016
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0013,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.0023,
+       0.0,
+       0.0052
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.0901,
+      "new_bridge": 0.1107,
+      "answer_any": 0.0013,
+      "number_other": 0.0023,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0037,
+      "function": 0.0086,
+      "other": 0.7832
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 3,
+     "items_with_other_language_answer": 3,
+     "sign": {
+      "toward original": 0.0004,
+      "toward changed": 0.0009
+     }
+    }
+   },
+   "qwen3.5-122b-a10b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0005,
+       0.0,
+       0.0016
+      ],
+      "number_other": [
+       0.0003,
+       0.0,
+       0.0009
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1518,
+      "new_bridge": 0.1533,
+      "answer_any": 0.0005,
+      "number_other": 0.0003,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0028,
+      "function": 0.0041,
+      "other": 0.6871
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 1,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0005
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0008,
+       0.0,
+       0.0019
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1518,
+      "new_bridge": 0.1533,
+      "answer_any": 0.0,
+      "number_other": 0.0008,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0028,
+      "function": 0.0041,
+      "other": 0.6871
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   }
+  },
+  "answer_control": {
+   "muse-glimmer-30b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0007,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.003,
+       0.0011,
+       0.0048
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1836,
+      "new_bridge": 0.1904,
+      "answer_any": 0.0007,
+      "number_other": 0.003,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0043,
+      "function": 0.0124,
+      "other": 0.6056
+     },
+     "old_answer": [
+      0.0007,
+      0.0,
+      0.0027
+     ],
+     "items_with_answer": 1,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0007
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0037,
+       0.0016,
+       0.0061
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1836,
+      "new_bridge": 0.1904,
+      "answer_any": 0.0,
+      "number_other": 0.0037,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0043,
+      "function": 0.0124,
+      "other": 0.6056
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "qwen3.5-9b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0012,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.0019,
+       0.0,
+       0.0049
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1108,
+      "new_bridge": 0.1098,
+      "answer_any": 0.0012,
+      "number_other": 0.0019,
+      "scene_item": 0.0006,
+      "person": 0.0,
+      "same_class": 0.0031,
+      "function": 0.0102,
+      "other": 0.7625
+     },
+     "old_answer": [
+      0.0005,
+      0.0,
+      0.0015
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0007,
+      "toward changed": 0.0005
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0031,
+       0.0005,
+       0.006
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1108,
+      "new_bridge": 0.1098,
+      "answer_any": 0.0,
+      "number_other": 0.0031,
+      "scene_item": 0.0006,
+      "person": 0.0,
+      "same_class": 0.0031,
+      "function": 0.0102,
+      "other": 0.7625
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "qwen3.6-27b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0014,
+       0.0,
+       0.0034
+      ],
+      "number_other": [
+       0.0017,
+       0.0,
+       0.004
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1009,
+      "new_bridge": 0.1133,
+      "answer_any": 0.0014,
+      "number_other": 0.0017,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0018,
+      "function": 0.0094,
+      "other": 0.7715
+     },
+     "old_answer": [
+      0.0007,
+      0.0,
+      0.0023
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0014
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0031,
+       0.0007,
+       0.0057
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1009,
+      "new_bridge": 0.1133,
+      "answer_any": 0.0,
+      "number_other": 0.0031,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0018,
+      "function": 0.0094,
+      "other": 0.7715
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   },
+   "nemotron-3.5-lightning": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0016,
+       0.0,
+       0.0036
+      ],
+      "number_other": [
+       0.002,
+       0.0005,
+       0.0036
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.0901,
+      "new_bridge": 0.1107,
+      "answer_any": 0.0016,
+      "number_other": 0.002,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0037,
+      "function": 0.0086,
+      "other": 0.7832
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 2,
+     "items_with_other_language_answer": 2,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0016
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0013,
+       0.0,
+       0.0027
+      ],
+      "number_other": [
+       0.0023,
+       0.0,
+       0.0052
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.0901,
+      "new_bridge": 0.1107,
+      "answer_any": 0.0013,
+      "number_other": 0.0023,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0037,
+      "function": 0.0086,
+      "other": 0.7832
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 3,
+     "items_with_other_language_answer": 3,
+     "sign": {
+      "toward original": 0.0004,
+      "toward changed": 0.0009
+     }
+    }
+   },
+   "qwen3.5-122b-a10b": {
+    "PM": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0005,
+       0.0,
+       0.0016
+      ],
+      "number_other": [
+       0.0003,
+       0.0,
+       0.0009
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1518,
+      "new_bridge": 0.1533,
+      "answer_any": 0.0005,
+      "number_other": 0.0003,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0028,
+      "function": 0.0041,
+      "other": 0.6871
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 1,
+     "items_with_other_language_answer": 1,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0005
+     }
+    },
+    "PP": {
+     "n": 50,
+     "energy": {
+      "answer_any": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "number_other": [
+       0.0008,
+       0.0,
+       0.0019
+      ]
+     },
+     "energy_other_classes": {
+      "bridge": 0.1518,
+      "new_bridge": 0.1533,
+      "answer_any": 0.0,
+      "number_other": 0.0008,
+      "scene_item": 0.0,
+      "person": 0.0,
+      "same_class": 0.0028,
+      "function": 0.0041,
+      "other": 0.6871
+     },
+     "old_answer": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "items_with_answer": 0,
+     "items_with_other_language_answer": 0,
+     "sign": {
+      "toward original": 0.0,
+      "toward changed": 0.0
+     }
+    }
+   }
+  }
+ },
+ "examples": [
+  {
+   "model": "nemotron-3.5-lightning",
+   "scene": "P2-L0-0347",
+   "token": "prima",
+   "language": "Italian",
+   "kind": "ordinal",
+   "value": 1,
+   "sign": "toward changed",
+   "coef": 1.78178,
+   "energy_share": 0.011462,
+   "old_class": "other",
+   "weak": false
+  },
+  {
+   "model": "qwen3.5-9b",
+   "scene": "P2-L0-0063",
+   "token": " Segundo",
+   "language": "Spanish",
+   "kind": "ordinal",
+   "value": 2,
+   "sign": "toward original",
+   "coef": -1.63583,
+   "energy_share": 0.008497,
+   "old_class": "other",
+   "weak": false
+  },
+  {
+   "model": "nemotron-3.5-lightning",
+   "scene": "P2-L0-0407",
+   "token": " quattro",
+   "language": "Italian",
+   "kind": "number word",
+   "value": 4,
+   "sign": "toward changed",
+   "coef": 1.20996,
+   "energy_share": 0.007744,
+   "old_class": "other",
+   "weak": false
+  },
+  {
+   "model": "nemotron-3.5-lightning",
+   "scene": "P2-L0-0428",
+   "token": "-IV",
+   "language": "Roman numeral",
+   "kind": "roman",
+   "value": 4,
+   "sign": "toward original",
+   "coef": -1.63902,
+   "energy_share": 0.005223,
+   "old_class": "other",
+   "weak": false
+  },
+  {
+   "model": "qwen3.6-27b",
+   "scene": "P2-L0-0206",
+   "token": "Fourth",
+   "language": "English",
+   "kind": "ordinal",
+   "value": 4,
+   "sign": "toward changed",
+   "coef": 3.5237,
+   "energy_share": 0.005174,
+   "old_class": "answer_own",
+   "weak": false
+  }
+ ],
+ "examples_by_model": {
+  "muse-glimmer-30b": [
+   {
+    "model": "muse-glimmer-30b",
+    "scene": "P2-L0-0221",
+    "token": " four",
+    "language": "English",
+    "kind": "number word",
+    "value": 4,
+    "sign": "toward changed",
+    "coef": 9.36277,
+    "energy_share": 0.004962,
+    "old_class": "answer_own",
+    "weak": false
+   }
+  ],
+  "qwen3.5-9b": [
+   {
+    "model": "qwen3.5-9b",
+    "scene": "P2-L0-0063",
+    "token": " Segundo",
+    "language": "Spanish",
+    "kind": "ordinal",
+    "value": 2,
+    "sign": "toward original",
+    "coef": -1.63583,
+    "energy_share": 0.008497,
+    "old_class": "other",
+    "weak": false
+   },
+   {
+    "model": "qwen3.5-9b",
+    "scene": "P2-L0-0256",
+    "token": "_first",
+    "language": "English",
+    "kind": "ordinal",
+    "value": 1,
+    "sign": "toward changed",
+    "coef": 1.07424,
+    "energy_share": 0.004934,
+    "old_class": "answer_own",
+    "weak": false
+   }
+  ],
+  "qwen3.6-27b": [
+   {
+    "model": "qwen3.6-27b",
+    "scene": "P2-L0-0206",
+    "token": "Fourth",
+    "language": "English",
+    "kind": "ordinal",
+    "value": 4,
+    "sign": "toward changed",
+    "coef": 3.5237,
+    "energy_share": 0.005174,
+    "old_class": "answer_own",
+    "weak": false
+   },
+   {
+    "model": "qwen3.6-27b",
+    "scene": "P2-L0-0132",
+    "token": " segunda",
+    "language": "Spanish",
+    "kind": "ordinal",
+    "value": 2,
+    "sign": "toward changed",
+    "coef": 3.42099,
+    "energy_share": 0.003269,
+    "old_class": "other",
+    "weak": false
+   }
+  ],
+  "nemotron-3.5-lightning": [
+   {
+    "model": "nemotron-3.5-lightning",
+    "scene": "P2-L0-0347",
+    "token": "prima",
+    "language": "Italian",
+    "kind": "ordinal",
+    "value": 1,
+    "sign": "toward changed",
+    "coef": 1.78178,
+    "energy_share": 0.011462,
+    "old_class": "other",
+    "weak": false
+   },
+   {
+    "model": "nemotron-3.5-lightning",
+    "scene": "P2-L0-0407",
+    "token": " quattro",
+    "language": "Italian",
+    "kind": "number word",
+    "value": 4,
+    "sign": "toward changed",
+    "coef": 1.20996,
+    "energy_share": 0.007744,
+    "old_class": "other",
+    "weak": false
+   },
+   {
+    "model": "nemotron-3.5-lightning",
+    "scene": "P2-L0-0428",
+    "token": "-IV",
+    "language": "Roman numeral",
+    "kind": "roman",
+    "value": 4,
+    "sign": "toward original",
+    "coef": -1.63902,
+    "energy_share": 0.005223,
+    "old_class": "other",
+    "weak": false
+   }
+  ],
+  "qwen3.5-122b-a10b": [
+   {
+    "model": "qwen3.5-122b-a10b",
+    "scene": "P2-L0-0110",
+    "token": "\u7b2c\u4e94",
+    "language": "Chinese / Japanese",
+    "kind": "ordinal",
+    "value": 5,
+    "sign": "toward changed",
+    "coef": 0.23167,
+    "energy_share": 0.004554,
+    "old_class": "other",
+    "weak": false
+   }
+  ]
+ },
+ "muse_case": {
+  "item": "muse-glimmer-30b|muse30_x51_12_e1_r2|P2-L0-0095|PP",
+  "run": "muse30_x51_12_e1_r2",
+  "recall_answers": {
+   "original": 3,
+   "changed": 7
+  },
+  "atoms": [
+   {
+    "omp": 1,
+    "token": " Carm",
+    "coef": -14.149314880371094,
+    "energy_share": 0.019132502377033234,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 2,
+    "token": "Eta",
+    "coef": 24.713964462280273,
+    "energy_share": 0.01588457264006138,
+    "old_class": "new bridge",
+    "new_class": "new_bridge",
+    "numbers": []
+   },
+   {
+    "omp": 3,
+    "token": " Gamma",
+    "coef": -19.64094352722168,
+    "energy_share": 0.025199655443429947,
+    "old_class": "bridge",
+    "new_class": "bridge",
+    "numbers": []
+   },
+   {
+    "omp": 4,
+    "token": "\uff0c\u4e09",
+    "coef": -18.5282039642334,
+    "energy_share": 0.0130019411444664,
+    "old_class": "other",
+    "new_class": "answer_any",
+    "numbers": [
+     [
+      3,
+      "Chinese / Japanese",
+      "number word"
+     ]
+    ]
+   },
+   {
+    "omp": 5,
+    "token": "VG",
+    "coef": -19.928071975708008,
+    "energy_share": 0.008057749830186367,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 6,
+    "token": " Ani",
+    "coef": 14.377772331237793,
+    "energy_share": 0.008868959732353687,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 7,
+    "token": " DPP",
+    "coef": -13.7498140335083,
+    "energy_share": 0.006675591226667166,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 8,
+    "token": "(Id",
+    "coef": 18.223957061767578,
+    "energy_share": 0.0063075958751142025,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 9,
+    "token": " ids",
+    "coef": -17.313051223754883,
+    "energy_share": 0.006519705057144165,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 10,
+    "token": " oito",
+    "coef": 16.105501174926758,
+    "energy_share": 0.00717580784112215,
+    "old_class": "other",
+    "new_class": "number_other",
+    "numbers": [
+     [
+      8,
+      "Portuguese",
+      "number word"
+     ]
+    ]
+   },
+   {
+    "omp": 11,
+    "token": ".side",
+    "coef": -11.560537338256836,
+    "energy_share": 0.006060171406716108,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 12,
+    "token": " V",
+    "coef": 12.274211883544922,
+    "energy_share": 0.006019047927111387,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 13,
+    "token": " unfor",
+    "coef": -12.450517654418945,
+    "energy_share": 0.00500578572973609,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 14,
+    "token": " meanings",
+    "coef": 15.679798126220703,
+    "energy_share": 0.006065499968826771,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 15,
+    "token": " Powers",
+    "coef": -13.426812171936035,
+    "energy_share": 0.004930255934596062,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 16,
+    "token": " Stap",
+    "coef": 8.22972583770752,
+    "energy_share": 0.004764079116284847,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 17,
+    "token": "\u6e20",
+    "coef": 12.04417610168457,
+    "energy_share": 0.004026684910058975,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 18,
+    "token": " \u043f\u043b\u0430\u043d\u043e\u0432",
+    "coef": -12.903796195983887,
+    "energy_share": 0.0042644161731004715,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 19,
+    "token": " Ness",
+    "coef": 11.078876495361328,
+    "energy_share": 0.0038664699532091618,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 20,
+    "token": "\u043a\u0435\u0442\u0438",
+    "coef": 11.468281745910645,
+    "energy_share": 0.004310781601816416,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 21,
+    "token": " \u0648\u0633\u0637",
+    "coef": -13.177648544311523,
+    "energy_share": 0.0038957102224230766,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 22,
+    "token": "Y",
+    "coef": -13.351183891296387,
+    "energy_share": 0.003846255596727133,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 23,
+    "token": " Hn",
+    "coef": 13.207389831542969,
+    "energy_share": 0.003697784850373864,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 24,
+    "token": " Cunningham",
+    "coef": -11.004098892211914,
+    "energy_share": 0.0033634211868047714,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   },
+   {
+    "omp": 25,
+    "token": "swa",
+    "coef": 11.157379150390625,
+    "energy_share": 0.0036368342116475105,
+    "old_class": "other",
+    "new_class": "other",
+    "numbers": []
+   }
+  ],
+  "answer_energy_any_language": 0.0704
+ },
+ "translation_ranks": {
+  "muse-glimmer-30b": {
+   "n": 2,
+   "changed": 0,
+   "items": [
+    {
+     "scene": "P2-L0-0095",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 61,
+      "stored_rank": 61,
+      "best_rank_any_language": 61,
+      "best_token": " three",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 131,
+      "stored_rank": 131,
+      "best_rank_any_language": 131,
+      "best_token": " seven",
+      "lens": "J++"
+     },
+     "english_best": 61,
+     "translation_best": 61,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0208",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 7452,
+      "stored_rank": 7452,
+      "best_rank_any_language": 7452,
+      "best_token": " three",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 9583,
+      "stored_rank": 9583,
+      "best_rank_any_language": 2379,
+      "best_token": " Sept",
+      "lens": "J++"
+     },
+     "english_best": 7452,
+     "translation_best": 2379,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    }
+   ]
+  },
+  "qwen3.5-9b": {
+   "n": 2,
+   "changed": 0,
+   "items": [
+    {
+     "scene": "P2-L0-0191",
+     "reader_card": "PM",
+     "O": {
+      "english_rank": 38,
+      "stored_rank": 38,
+      "best_rank_any_language": 38,
+      "best_token": " one",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 140,
+      "stored_rank": 140,
+      "best_rank_any_language": 140,
+      "best_token": " nine",
+      "lens": "J++"
+     },
+     "english_best": 38,
+     "translation_best": 38,
+     "label_english": "read",
+     "label_translations": "read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0031",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 107,
+      "stored_rank": 107,
+      "best_rank_any_language": 107,
+      "best_token": " eight",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 152,
+      "stored_rank": 152,
+      "best_rank_any_language": 152,
+      "best_token": " seven",
+      "lens": "J++"
+     },
+     "english_best": 107,
+     "translation_best": 107,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    }
+   ]
+  },
+  "qwen3.6-27b": {
+   "n": 3,
+   "changed": 0,
+   "items": [
+    {
+     "scene": "P2-L0-0043",
+     "reader_card": "PM",
+     "O": {
+      "english_rank": 76,
+      "stored_rank": 76,
+      "best_rank_any_language": 76,
+      "best_token": " three",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 987,
+      "stored_rank": 987,
+      "best_rank_any_language": 987,
+      "best_token": " seven",
+      "lens": "J++"
+     },
+     "english_best": 76,
+     "translation_best": 76,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0130",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 4264,
+      "stored_rank": 4264,
+      "best_rank_any_language": 4264,
+      "best_token": " six",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 10330,
+      "stored_rank": 10330,
+      "best_rank_any_language": 10330,
+      "best_token": " three",
+      "lens": "J++"
+     },
+     "english_best": 4264,
+     "translation_best": 4264,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0039",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 911,
+      "stored_rank": 911,
+      "best_rank_any_language": 911,
+      "best_token": " eight",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 267,
+      "stored_rank": 267,
+      "best_rank_any_language": 267,
+      "best_token": " four",
+      "lens": "J++"
+     },
+     "english_best": 267,
+     "translation_best": 267,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    }
+   ]
+  },
+  "nemotron-3.5-lightning": {
+   "n": 3,
+   "changed": 0,
+   "items": [
+    {
+     "scene": "P2-L0-0078",
+     "reader_card": "PP",
+     "O": {
+      "english_rank": 22083,
+      "stored_rank": 22083,
+      "best_rank_any_language": 20012,
+      "best_token": " \uc0ac",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 3667,
+      "stored_rank": 3667,
+      "best_rank_any_language": 3667,
+      "best_token": " Two",
+      "lens": "J++"
+     },
+     "english_best": 3667,
+     "translation_best": 3667,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0092",
+     "reader_card": "PM",
+     "O": {
+      "english_rank": 70379,
+      "stored_rank": 70379,
+      "best_rank_any_language": 1645,
+      "best_token": " Otto",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 70441,
+      "stored_rank": 70441,
+      "best_rank_any_language": 63134,
+      "best_token": " cinque",
+      "lens": "J++"
+     },
+     "english_best": 70379,
+     "translation_best": 1645,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    },
+    {
+     "scene": "P2-L0-0041",
+     "reader_card": "PM",
+     "O": {
+      "english_rank": 872,
+      "stored_rank": 872,
+      "best_rank_any_language": 872,
+      "best_token": " three",
+      "lens": "J++"
+     },
+     "S": {
+      "english_rank": 1100,
+      "stored_rank": 1100,
+      "best_rank_any_language": 1100,
+      "best_token": " five",
+      "lens": "J++"
+     },
+     "english_best": 872,
+     "translation_best": 872,
+     "label_english": "not read",
+     "label_translations": "not read",
+     "changes": false
+    }
+   ]
+  },
+  "qwen3.5-122b-a10b": {
+   "n": 0,
+   "changed": 0,
+   "items": []
+  }
+ }
+}
