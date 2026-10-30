@@ -3188,3 +3188,14 @@ The first build of v5kn2 / v5kd2 (">= 2 same-continent distractors"; sha256 4c51
 
 ##### Amendment 61 note 33 addendum (Zach's position-split test, 2026-10-29 ~21:55 UTC; after the 9B's desc / final runs, before any mention run): the bridge's mention
 The 9B's description-only and final-only runs account for about a third and none of the main band's recall need ("spread"). To complete the split: the same knock-out restricted to the bridge's mentions in the passage (ablate_v2 --positions bridge: the bridge name's tokens, where v4 names X in its fact sentence). Main band, paper10 and paper10_rot, v4 gate, 9B, 27B, Lightning. Descriptive: the mention's share beside the description's and the final token's.
+
+#### Amendment 62 (Zach, 2026-10-30 ~01:20 UTC; before any of it is run): DeepSeek-V4-Flash after Muse
+- **Model.** deepseek-ai/DeepSeek-V4-Flash (rev 60d8d70; MoE, 284B total / 13B active; FP8; both GPUs). Lens: its published J++ (Ayonrinde & Lindsey via neuronpedia; sha-pinned). Prefix dsv4f_.
+- **Order and disk.** It starts once every Muse job has exited. Zach approved dropping Muse's cached weights first (56 GB); DeepSeek (160 GB) is then downloaded.
+- **Runs.**
+  - v4: competence, controls, and note 20's knock-out at its band L18-23 (pre-registered for DeepSeek since amendment 39; paper10, paper10_rot, unembed10, paper10_pcasize).
+  - Note 25's priming readout with note 26's top-20 dump.
+  - Note 31's alias set (competence, controls, knock-out, readout).
+  - Note 29b's named key set (jsuite_v5kn2: competence, controls, knock-out, readout).
+- **Windows.** No stage 1 map is run, so they are fixed now by relative depth, from the three main models' rule-derived windows: description end 15-55% of depth (L6-23), final token 70-95% (L30-40).
+- **Readings:** each note's own. Smoke first.

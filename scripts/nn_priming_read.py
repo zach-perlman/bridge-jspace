@@ -28,7 +28,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "results" / "nn_readout"
 # stage 1's hits for both words (note 14): the description's end, then the final token
-WIN = {"qwen35_9b_": ((4, 16), (21, 30)), "": ((16, 40), (49, 62)), "nem35l_": ((6, 26), (34, 50))}
+WIN = {"qwen35_9b_": ((4, 16), (21, 30)), "": ((16, 40), (49, 62)), "nem35l_": ((6, 26), (34, 50)), "dsv4f_": ((6, 23), (30, 40))}  # DeepSeek: amendment 62, by relative depth (no stage 1 map)
 WHAT = ("attr", "other", "third", "ctx", "bridge")
 
 
