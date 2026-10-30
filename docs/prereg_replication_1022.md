@@ -4620,3 +4620,10 @@ It is our MP twin in another format: recall a key (the bridge) from memory, then
     - D0 is met on both. Notes 32-33's stored desc rows give gaps net of rotation of 15.1 (27B) and 19.5 (9B), computed post hoc tonight; Lightning is 6.0 and is not run.
     - K-desc reads "the recall's J-need is its answer's directions" on both.
     - S1-desc is met on the 9B and uncertain on the 27B. A1-desc is met on the 27B and uncertain on the 9B.
+
+##### Amendment 89, addendum (Zach, 2026-10-30 ~23:45 UTC; before any 9B or Lightning run of it): note 68 on the 9B and Lightning (confirmatory)
+- **Setup:** note 68 exactly as registered above (queue h200_n89a_1030.sh, N57_SET=jsuite_v5al_test_chat, N57_CV={P}jsuite_v5alctl_cv_v1), on the 9B (band L12-16) and Lightning (band L27-33). Run on GPU 1: the 9B first, then Lightning.
+- **Status:** confirmatory; the 27B stays primary.
+- **Readings and labels:** amendment 78's, verbatim. "Replicates" = the same label as that model's draw 4001 (amendment 83's rule).
+- **Prediction:** all four replicate on both models.
+- **Known caveat, reported beside:** Lightning's onlyRperp has under-reached its energy target before (28.8% / 30.6% of items on draws 4001 / p4002).
