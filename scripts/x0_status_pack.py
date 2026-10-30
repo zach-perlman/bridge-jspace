@@ -1,4 +1,4 @@
-"""x0_status_pack: the status figures, from the run files only; writes figures/status_2026-10-25/*.png and data.csv
+"""x0_status_pack: the status figures, from the run files only; writes figures/archive/status_2026-10-25/*.png and data.csv
 (every plotted number, and every number of docs/x0_numbers.json, with its run). UNVERIFIED.
 
 Dan, 25 Oct: the 24 Oct folder stays as shared; batch 31's runs stay closed until his answers are committed, so their
@@ -37,7 +37,7 @@ from scripts import x0_figures as XF
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 
-OUT = pins.REPO_ROOT / "figures" / "status_2026-10-25"  # the 24 Oct folder stays as shared (Dan, 25 Oct)
+OUT = pins.REPO_ROOT / "figures" / "archive" / "status_2026-10-25"  # the 24 Oct folder stays as shared (Dan, 25 Oct)
 # batch 31 (Dan, 25 Oct ~00:20): these runs stay closed until his answers are committed
 CLOSED_RUNS: set[str] = set()  # every run's batch answers are committed (25 Oct ~13:55)  # batch 32, Q32.7 / Q32.8
 SHOW_CLOSED = False

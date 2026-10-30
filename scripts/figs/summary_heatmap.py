@@ -308,7 +308,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="a results/cross_model/<stamp> folder (default: the newest)")
     ap.add_argument("--only", choices=("main", "full"), default=None, help="one version (default: both)")
-    ap.add_argument("--out", default=str(C.OUT), help="output folder (default figures/cross_model)")
+    ap.add_argument("--out", default=str(C.OUT), help="output folder (default figures/archive/cross_model)")
     a = ap.parse_args(argv)
     grid_dir = Path(a.grid) if a.grid else newest_grid()
     for kind in ("main", "full") if a.only is None else (a.only,):

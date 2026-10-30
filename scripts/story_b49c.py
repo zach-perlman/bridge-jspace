@@ -1,6 +1,6 @@
 """README figure for batch 49 (part c): 49.3's pooled probe, drawn from its verdict folder only (x49_probe.py's
 `verdict` writes x49_3-<UTC>/x49_3.json), in story_b47a's look; every plotted number recorded for
-figures/story/data.csv with the verdict file as the source.
+data/figures/depth/data.csv with the verdict file as the source.
 
   49.3  x49_probe.py   x49_3-<UTC>/x49_3.json   the locker-after link: a person mark pooled over the locker sentence?
 

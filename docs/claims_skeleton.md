@@ -1,7 +1,7 @@
 # Claims and evidence: skeleton (draft, 2026-10-26 evening; for Zach and Dan to edit and lock on day 9)
 
 Bullets, not prose. Every number is in docs/digest.md (generated from results/ by scripts/results_digest.py) unless a
-line names an EXPERIMENTS.md entry. Figures: figures/writeup/fig1-5 (scripts/fig_writeup.py, same readers as the digest).
+line names an EXPERIMENTS.md entry. Figures: figures/archive/writeup/fig1-5 (scripts/fig_writeup.py, same readers as the digest).
 Greedy accuracy unless "by probability". Intervals: 95% bootstrap over bridges (seed 0). No LLM-judge numbers anywhere.
 
 ## Setup (one paragraph in the write-up)

@@ -6,7 +6,7 @@ Draft for the Neel drop-in, 27 Oct; UNVERIFIED; numbers cited to their files
 
 v2, on danorel (5782c055) after the critic's 22 findings. Nothing here is hand-checked; no number below is established. Interpretations that go beyond a file's own reading are marked "reading".
 
-**Source keys.** D = figures/story/data.csv (figure, model, quantity; or the `numbers` key). Z = docs/breadth/data.csv (`key` column). E l.N = EXPERIMENTS.md line N (one run per line). P45 = predictions/2026-10-26_dan.md (the "Result" line under the question). SBO = docs/split_by_order.md. X0D = docs/x0_details.md. DR = docs/depth/README.md. ZR = docs/breadth/README.md. DG = docs/digest.md. CS = docs/claims_skeleton.md. JS = results/jswap/<run>/summary.json (Zach's stored swap summaries; cells he has not reported). G = docs/shared/grid.csv.
+**Source keys.** D = data/figures/depth/data.csv (figure, model, quantity; or the `numbers` key). Z = docs/breadth/data.csv (`key` column). E l.N = EXPERIMENTS.md line N (one run per line). P45 = predictions/2026-10-26_dan.md (the "Result" line under the question). SBO = docs/split_by_order.md. X0D = docs/x0_details.md. DR = docs/depth/README.md. ZR = docs/breadth/README.md. DG = docs/digest.md. CS = docs/claims_skeleton.md. JS = results/jswap/<run>/summary.json (Zach's stored swap summaries; cells he has not reported). G = docs/shared/grid.csv.
 
 **Status tags.** [FA] fixed in advance (pre-registered rule / amendment). [AD] after the data (descriptive, post hoc, gate lowered, or judged against thresholds written for other models). [US] unsourced (only in prose or a message, not in a results-derived file). A tag after a number applies to the test that produced it.
 
@@ -66,7 +66,7 @@ Claim: removing J++ costs recall, not the in-context reader; removing the order 
   - DR §6 limits: "reader and answer source (prompt vs memory) confounded". The positive control (chemical symbols) failed (27B 0.15, bar 0.20).
   - On the 27B the pointer costs recall as much as the lookup (0.15 vs 0.15). His stated reads are attribute sentences, not our binding; Lightning's stated read moves under no transplant at the mention.
 - Credence: **low-medium** (J++ half medium, pointer half medium-low).
-- Best figure: figures/story/fig05_routes.png, with docs/breadth/figures/fig05_carries.png.
+- Best figure: figures/depth/fig05_routes.png, with figures/breadth/fig05_carries.png.
 
 ### b. The model holds the entity twice
 
@@ -83,7 +83,7 @@ Claim: a lens-readable code the recall reads, and a code outside the lens (plus 
   - On the 27B, removing the J++ part cuts identity answers from 0.66 to 0.45 vs 0.70 for a random part (D fig02b no_jpp, no_jpp_rand), so part of the lookup's identity route is lens-readable.
   - His complement also carries position and binding (his own reading of the Lightning paste, ZR §4), so it does not isolate an entity code.
 - Credence: **low.**
-- Best figure: figures/story/fig10_what_is_left.png.
+- Best figure: figures/depth/fig10_what_is_left.png.
 
 ### c. "Carried, not needed"
 
@@ -102,7 +102,7 @@ Claim: our change-removal and his knock-out disagree on Muse and the 122B, the t
   - GPU estimate in the committed specs: 0.25 + 0.6 (+0.55 optional) h.
 - Strongest counter-evidence: different sites (L26 vs L36-42; L33 vs L39-45 / L24-30); the 122B rebuild is descriptive and seen at L24-30, not at its band (E l.110).
 - Credence: **medium** for "our test is a carried test"; **low** for "Muse/122B carry but do not need J++".
-- Best figure: none shows both; nearest docs/breadth/figures/fig08_readable.png next to figures/story/fig02_specificity.png.
+- Best figure: none shows both; nearest figures/breadth/fig08_readable.png next to figures/depth/fig02_specificity.png.
 
 ### d. Earlier mentions
 
@@ -116,7 +116,7 @@ Claim: our 45p (the recall reads the earlier mention's J++) vs his passing-menti
 - Where Lightning breaks it: no protection (+4.0), as on the 122B (+1.7) and the 9B base (−1; E l.170). We have no Lightning runs; no 45p on the 122B. Our 122B still shows the order effect (0.20 vs 0.41).
 - Strongest counter-evidence: the designs differ (deleting a sentence changes competence by 5-20 points, E l.170, vs an in-place edit); no common unit.
 - Credence: **low-medium.**
-- Best figure: figures/story/fig03c_earlier_mention.png.
+- Best figure: figures/depth/fig03c_earlier_mention.png.
 
 ### e. Information moves later with depth
 
@@ -134,7 +134,7 @@ Claim: our 45q (the link moves into the locker sentences by L) vs his late bands
   - Our first test (45b) was a design error and is withdrawn (P45 Q45.5).
   - His late dependence is half logit-lens-shared.
 - Credence: **low-medium** for the shape, **low** as a joint mechanism.
-- Best figure: figures/story/fig03b_layers.png, with docs/breadth/figures/fig04_where.png.
+- Best figure: figures/depth/fig03b_layers.png, with figures/breadth/fig04_where.png.
 
 ### f. Methods lessons
 
@@ -149,7 +149,7 @@ Claim: our 45q (the link moves into the locker sentences by L) vs his late bands
   - Ours: a probe reads the order pointer in 0.92-0.99 of scenes (layout alone 0.53; DR §4; D v4_b_before_9b 0.97); the lens does not. Removing it cuts position answers to near zero on the Qwens and halves them on Muse (0.27 vs 0.55; D fig05).
 - Bar reachability: two of our fixed questions were out of reach at their share (P45 Q40.1, Q45.1); his plateau rule judged specificity by greedy answers (ZR §8).
 - Credence: **high** (as lessons).
-- Best figure: docs/breadth/figures/fig09_dose.png.
+- Best figure: figures/breadth/fig09_dose.png.
 
 ### Internal tensions
 

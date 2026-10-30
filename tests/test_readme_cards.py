@@ -142,13 +142,13 @@ def test_claims_table_grades_and_hand_check():
         assert r[5] in ("no", "yes"), r
 
 
-DECK_FIGURES = ("c0_setup_a", "c0_setup_b", "c1_controls", "c2_pointer", "c3_address", "c4_readable", "c9_breaks")
-
-
 def test_deck_figures_exist():
-    """The joint deck's figures (scripts/deck_figures.py, deck skeleton brief 29 Oct): a PNG and an SVG each, and the
-    captions file."""
-    deck = REPO / "figures" / "deck"
-    missing = [f"{n}.{ext}" for n in DECK_FIGURES for ext in ("png", "svg") if not (deck / f"{n}.{ext}").exists()]
-    assert not missing, missing
-    assert (deck / "CAPTIONS.md").exists()
+    """The figure kit's deck figures (src/bridge_jspace/figkit/specs.py): one PNG each in figures/presentation/ and
+    figures/readme/, nothing but PNGs in either folder."""
+    from bridge_jspace.figkit.specs import SPECS
+
+    for folder in ("presentation", "readme"):
+        d = REPO / "figures" / folder
+        missing = [i for i in SPECS if not (d / f"{i}.png").exists()]
+        assert not missing, (folder, missing)
+        assert {p.suffix for p in d.iterdir()} == {".png"}, folder

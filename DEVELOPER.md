@@ -94,7 +94,7 @@ and `-cue-phrase` from `scripts.exp12_position_map.cue`):
 uv run python -m scripts.exp10_lens_sanity.experiment analyze results/exp10_lens_sanity/<run>
 uv run python -m scripts.exp11_bridge_vs_answer_by_layer.experiment analyze results/exp11_bridge_vs_answer_by_layer/<run>
 uv run python -m scripts.exp12_position_map.experiment analyze results/exp12_position_map/<run>
-uv run python -m scripts.exp10_lens_sanity.plot --summary    # exp10's README figures -> figures/exp10_lens_sanity/<stamp>/
+uv run python -m scripts.exp10_lens_sanity.plot --summary    # exp10's README figures -> figures/pre-sprint/exp10_lens_sanity/<stamp>/
 ```
 Then copy the PNGs the README uses into `figures/<exp>/` and point `results/README.md` at the new analysis folder.
 

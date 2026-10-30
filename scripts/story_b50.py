@@ -1,7 +1,7 @@
 """README figures from Dan's figures brief (28 Oct ~18:30), drawn in its one mark system (story_style.MARK_COL / MARK):
 colour = who or what, mark = the operation, one panel per model in the order 9B, 27B, Muse; omitted cells are listed in
 one caption line under the plot, never drawn as text inside a frame. Every plotted number is recorded for
-figures/story/data.csv with its source file.
+data/figures/depth/data.csv with its source file.
 
   fig00b_marks       the mark legend, under Fig. 0
   fig01d_ladder      49.2's removal ladder (x49_2-<UTC>/x49_2.json): E2's figure, replacing fig01c

@@ -1,8 +1,8 @@
 """ledger_figures: the figures of docs/depth/EXPERIMENTS.md's cards (Dan, 29 Oct 01:15) that no README figure covers,
-into figures/ledger/ (PNG + SVG), in figures/story's visual system (scripts/story_style.py: colour = reader or part,
+into figures/depth/ledger/ (PNG + SVG), in figures/story's visual system (scripts/story_style.py: colour = reader or part,
 mark = operation, grey = random, whiskers = 95% intervals, hollow = after the data; the title is the finding). Every
 plotted number is read from its verdict file and recorded with S.record (figure id "ledger_<name>") for
-figures/story/data.csv; scripts/readme_story_figures.py's main() calls build_all() before it writes data.csv. Not on
+data/figures/depth/data.csv; scripts/readme_story_figures.py's main() calls build_all() before it writes data.csv. Not on
 the README's contact sheet.
 
 uv run python -m scripts.readme_story_figures      # rebuilds every figure and data.csv, these included
@@ -16,7 +16,7 @@ from pathlib import Path
 
 from scripts import story_style as S
 
-OUT = S.REPO / "figures" / "ledger"
+OUT = S.REPO / "figures" / "depth" / "ledger"
 R = S.REPO / "results"
 INK, LOOKUP, JPP, ADDRESS, NULL = (S.MARK_COL[k] for k in ("recall", "lookup", "jpp", "address", "null"))
 MODEL3 = (("qwen3.5-9b", "Qwen3.5-9B"), ("qwen3.6-27b", "Qwen3.6-27B"), ("muse-glimmer-30b", "Muse Glimmer 30B"))
@@ -56,7 +56,7 @@ def load(p: Path) -> dict:
 
 # Dan's figures brief (29 Oct 10:00): four model slots on every per-model figure, in the tables' order; a model without
 # a result keeps its slot with a short grey label; below-gate results hollow, labelled "below gate". Each figure's slots
-# go to figures/ledger/slots.json ("data" where the figure records a number for the model, else what grey() or
+# go to data/figures/depth/ledger/slots.json ("data" where the figure records a number for the model, else what grey() or
 # below_gate() registered); scripts/check_ledger.py checks them against the card's table.
 SLOT_MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
 LT = "nemotron-3.5-lightning"
@@ -64,7 +64,7 @@ LT = "nemotron-3.5-lightning"
 # verdict; the other figures keep four slots (a not-run 122B needs none)
 B122 = "qwen3.5-122b-a10b"
 FIVE = (*SLOT_MODELS, B122)
-SLOTS_FILE = OUT / "slots.json"
+SLOTS_FILE = S.REPO / "data" / "figures" / "depth" / "ledger" / "slots.json"
 _SLOTS: dict[str, dict[str, str]] = {}
 GREY = "#9a9a9a"
 
@@ -122,7 +122,6 @@ def slots_of(name: str) -> dict[str, str]:
 
 def save(fig, name: str) -> str:
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{name}.svg", facecolor="white")
     fig.savefig(OUT / f"{name}.png", dpi=200, facecolor="white")
     S.plt.close(fig)
     every = json.loads(SLOTS_FILE.read_text()) if SLOTS_FILE.exists() else {}
@@ -1428,7 +1427,7 @@ def four_panels(plt, name: str, title: str, sub: str, rows: dict, absent: dict, 
     """One panel per model slot (9B, 27B, Muse, Lightning, the 122B; Dan 12:50); a model with neither rows nor a label
     in absent gets the grey "not run" slot. rows: model -> [(row label, (v, lo, hi), colour, hollow)];
     absent: model -> its grey label. Row labels (the union, in first-seen order) on the left panel; each (x, style)
-    in bars is drawn on every data panel. Every plotted value is recorded for figures/story/data.csv."""
+    in bars is drawn on every data panel. Every plotted value is recorded for data/figures/depth/data.csv."""
     absent = {**{t: "not run" for t in models if t not in rows}, **absent}
     labels: list[str] = []
     for t in models:

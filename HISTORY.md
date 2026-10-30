@@ -188,29 +188,29 @@ text, and no part B result has yet been run in the format the model takes as a q
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
 |---|---|
-| [exp12 `two_step.png`](figures/exp12_position_map/two_step.png) | **Headline.** Where in the prompt each word is read (left) and from which layer (right): the bridge one word before the end from layer 23, the answer at the last word from layer 44 |
-| [exp12 `layers_at_positions_jlens.png`](figures/exp12_position_map/layers_at_positions_jlens.png) | The same, one line per position for the last four words: which positions carry the bridge, and the answer, at which layers |
-| [exp12 `cue_phrase.png`](figures/exp12_position_map/cue_phrase.png) | On the cue phrase (the words that point to the bridge): the bridge is read there as often as at the read sites, and earlier; the answer only weakly |
-| [exp12 `cue_phrase_lenses.png`](figures/exp12_position_map/cue_phrase_lenses.png) | J-lens vs J++ on the cue phrase: they read the same bridge; their swaps differ |
-| [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | The "where in the prompt" panel for all three readers, logit lens included |
-| [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
-| [exp14 `flip_rates_by_overlap.png`](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png) | On the cue phrase, swapping the answer changes it only where the swap also moves the bridge |
-| [exp14 `flip_rates.png`](figures/exp14_cue_answer_swaps/flip_rates.png) | Bridge vs answer swaps on the cue phrase and at the last token, with random-direction controls |
-| [exp14 `flip_rates_pinned.png`](figures/exp14_cue_answer_swaps/flip_rates_pinned.png) | The same swaps with the other pair held: on the cue phrase the bridge swap still works, the answer swap does not |
-| [exp15 `readers_by_layer.png`](figures/exp15_oracle_lens/readers_by_layer.png) | J-lens, J++ and the oracle lens side by side on the same activations, layers 20-60: the oracle has the bridge a little more often, the answer much more often early on (with more false alarms) |
-| [exp15 `oracle_vs_lenses.png`](figures/exp15_oracle_lens/oracle_vs_lenses.png) | The less the lenses see the word, the less often the oracle names it: about 85% where both rank it 1st, 20% where they have it 11th or lower; false alarms 4-8% |
-| [exp15 `after_swap.png`](figures/exp15_oracle_lens/after_swap.png) | After the bridge swap, the oracle names the swap target where the model's answer changes (67%), rarely where it does not (10%) |
-| [exp15 `by_layer.png`](figures/exp15_oracle_lens/by_layer.png) | By layer (20-60): the oracle names the lens-blind bridge at every layer; the swap's effect reaches the last words between layers 32 and 40 |
-| [exp16 `methods_at_42.png`](figures/exp16_nla/methods_at_42.png) | Every reader at layer 42: the NLA and the oracle lens have the bridge and the answer more often than the J-lens and J++, at the same 3-9% false alarms |
-| [exp16 `after_swap.png`](figures/exp16_nla/after_swap.png) | The NLA too names the swap target where the model's answer changes (59%), rarely where it does not (11%) |
-| [exp16 `by_swap_label.png`](figures/exp16_nla/by_swap_label.png) | By part B's swap labels: where the J-space swap does not change the answer the lenses see the bridge less, the verbalizers as often |
-| [exp18 `code_vs_lens.png`](figures/exp18_brew_verbalizers/v3/code_vs_lens.png) | On brew, a J++ direction the model ignores makes both verbalizers name X more often than the code the model computes with |
-| [exp18 `state_vs_text.png`](figures/exp18_brew_verbalizers/v2/state_vs_text.png) | On brew, with the counterfactual's state patched in, both verbalizers name the state's intermediate, not the text's |
-| [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
-| [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
-| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
-| [exp10 `pass_at_10_by_bridge_kind.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png) | pass@10 by kind of bridge (27B), best layer anywhere and within 32-48: the logit lens's numbers come from the last layers |
-| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261015-135537/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
+| [exp12 `two_step.png`](figures/pre-sprint/exp12_position_map/two_step.png) | **Headline.** Where in the prompt each word is read (left) and from which layer (right): the bridge one word before the end from layer 23, the answer at the last word from layer 44 |
+| [exp12 `layers_at_positions_jlens.png`](figures/pre-sprint/exp12_position_map/layers_at_positions_jlens.png) | The same, one line per position for the last four words: which positions carry the bridge, and the answer, at which layers |
+| [exp12 `cue_phrase.png`](figures/pre-sprint/exp12_position_map/cue_phrase.png) | On the cue phrase (the words that point to the bridge): the bridge is read there as often as at the read sites, and earlier; the answer only weakly |
+| [exp12 `cue_phrase_lenses.png`](figures/pre-sprint/exp12_position_map/cue_phrase_lenses.png) | J-lens vs J++ on the cue phrase: they read the same bridge; their swaps differ |
+| [exp12 `by_offset.png`](figures/pre-sprint/exp12_position_map/by_offset.png) | The "where in the prompt" panel for all three readers, logit lens included |
+| [exp12 `position_layer.png`](figures/pre-sprint/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
+| [exp14 `flip_rates_by_overlap.png`](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates_by_overlap.png) | On the cue phrase, swapping the answer changes it only where the swap also moves the bridge |
+| [exp14 `flip_rates.png`](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates.png) | Bridge vs answer swaps on the cue phrase and at the last token, with random-direction controls |
+| [exp14 `flip_rates_pinned.png`](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates_pinned.png) | The same swaps with the other pair held: on the cue phrase the bridge swap still works, the answer swap does not |
+| [exp15 `readers_by_layer.png`](figures/pre-sprint/exp15_oracle_lens/readers_by_layer.png) | J-lens, J++ and the oracle lens side by side on the same activations, layers 20-60: the oracle has the bridge a little more often, the answer much more often early on (with more false alarms) |
+| [exp15 `oracle_vs_lenses.png`](figures/pre-sprint/exp15_oracle_lens/oracle_vs_lenses.png) | The less the lenses see the word, the less often the oracle names it: about 85% where both rank it 1st, 20% where they have it 11th or lower; false alarms 4-8% |
+| [exp15 `after_swap.png`](figures/pre-sprint/exp15_oracle_lens/after_swap.png) | After the bridge swap, the oracle names the swap target where the model's answer changes (67%), rarely where it does not (10%) |
+| [exp15 `by_layer.png`](figures/pre-sprint/exp15_oracle_lens/by_layer.png) | By layer (20-60): the oracle names the lens-blind bridge at every layer; the swap's effect reaches the last words between layers 32 and 40 |
+| [exp16 `methods_at_42.png`](figures/pre-sprint/exp16_nla/methods_at_42.png) | Every reader at layer 42: the NLA and the oracle lens have the bridge and the answer more often than the J-lens and J++, at the same 3-9% false alarms |
+| [exp16 `after_swap.png`](figures/pre-sprint/exp16_nla/after_swap.png) | The NLA too names the swap target where the model's answer changes (59%), rarely where it does not (11%) |
+| [exp16 `by_swap_label.png`](figures/pre-sprint/exp16_nla/by_swap_label.png) | By part B's swap labels: where the J-space swap does not change the answer the lenses see the bridge less, the verbalizers as often |
+| [exp18 `code_vs_lens.png`](figures/pre-sprint/exp18_brew_verbalizers/v3/code_vs_lens.png) | On brew, a J++ direction the model ignores makes both verbalizers name X more often than the code the model computes with |
+| [exp18 `state_vs_text.png`](figures/pre-sprint/exp18_brew_verbalizers/v2/state_vs_text.png) | On brew, with the counterfactual's state patched in, both verbalizers name the state's intermediate, not the text's |
+| [exp11 `pool_top1_by_layer.png`](figures/pre-sprint/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
+| [exp11 `advantage_by_layer.png`](figures/pre-sprint/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
+| [exp10 `pass_at_10_by_model.png`](figures/pre-sprint/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
+| [exp10 `pass_at_10_by_bridge_kind.png`](figures/pre-sprint/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png) | pass@10 by kind of bridge (27B), best layer anywhere and within 32-48: the logit lens's numbers come from the last layers |
+| [exp10 `27b_by_layer.png`](figures/pre-sprint/exp10_lens_sanity/20261015-135537/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
 
 Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (exp10-12,
 exp15, exp16); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
@@ -275,7 +275,7 @@ each question.
     they name X as often where the code did not change the model's step (exp18 v3). Naming the bridge after a swap
     thus shows the swap wrote it into the vector, not that the model uses it; exp17 tests readings away from edits.
 
-![exp12: where and how deep](figures/exp12_position_map/two_step.png)
+![exp12: where and how deep](figures/pre-sprint/exp12_position_map/two_step.png)
 
 *The headline figure (exp12): left, where in the prompt the bridge (blue) and the answer (orange) are ranked first;
 right, from which layer, the bridge at -1 and the answer at the last word, 19 layers apart. How to read it in detail:
@@ -301,7 +301,7 @@ list at every layer, and count how often the bridge is in the top 10 at some lay
   J++ misses the bridge in 1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiments check
   other ways of reading it.
 
-![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png)
+![pass@10 by model and reader](figures/pre-sprint/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png)
 
 *How to read it: each bar is the share of the 84 questions whose bridge is in that reader's top 10 at its best layer,
 read at the last prompt token; a bridge listed in several forms ('5', 'five') counts as found if any form is. Error
@@ -312,13 +312,13 @@ J-lens (blue) is within its error bars.*
 bridge; near the output the logit lens catches up. pass@10 takes the *best* layer, so the late layers hide the
 difference.
 
-![27B by layer](figures/exp10_lens_sanity/20261015-135537/27b_by_layer.png)
+![27B by layer](figures/pre-sprint/exp10_lens_sanity/20261015-135537/27b_by_layer.png)
 
 *How to read it: x is the layer, y the share of the 84 questions with the bridge in the reader's top 10 at that
 layer. Inside layers 32-48 (grey) J++ has it for up to 35% of the questions, the J-lens up to 18%, the logit lens at
 most 2%; only from about layer 55 does the logit lens join them.*
 
-![pass@10 by kind of bridge](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png)
+![pass@10 by kind of bridge](figures/pre-sprint/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png)
 
 *How to read it: the bars of the first figure, split by what the bridge is (27B). Left, the best layer anywhere (as
 pass@10): for word bridges both lenses are above the logit lens and J++ finds almost all; for number bridges the
@@ -371,7 +371,7 @@ same-category distractors (Mexico, Spanish) are the controls. Chance is about 1%
   swap works, 50% [38, 62] (n=49) and 41% [29, 54] (n=37). Suggestive: the intervals overlap (J-lens) or nearly touch
   (J++). Each lens is split by its own swaps.
 
-![exp11: ranked first by layer](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
+![exp11: ranked first by layer](figures/pre-sprint/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
 
 *How to read it: one panel per reader; x is the layer, y the share of the 77 questions in which the reader ranks the
 word first among its candidates, at the last prompt token (shaded: 95% Wilson interval). Blue = bridge among the 97
@@ -395,7 +395,7 @@ single-token answer), layers 32-48, 95% percentile bootstrap CI over questions (
 | J-lens | 0.57 [0.48, 0.66] | 0.41 [0.32, 0.50] | 0.05 | 0.83 [0.76, 0.90] | L35 / L44 (8 [3, 16]) |
 | J++ | 0.56 [0.46, 0.64] | 0.38 [0.29, 0.47] | 0.05 | 0.84 [0.78, 0.90] | L36 / L43 (8 [3, 20]) |
 
-![exp11: advantage over the distractor](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png)
+![exp11: advantage over the distractor](figures/pre-sprint/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png)
 
 *How to read it: y is how many times higher than its same-category distractor the reader ranks the word in the full
 vocabulary (log scale; 1x = no better). Line: the median question; shaded: the middle half. Within layers 32-48 the
@@ -449,7 +449,7 @@ alone gets.
   read the bridge equally (67% and 67%). Where the swap flips, the bridge reads better (both lenses flip: 79%;
   neither: 48%).
 
-![exp12: where and how deep](figures/exp12_position_map/two_step.png)
+![exp12: where and how deep](figures/pre-sprint/exp12_position_map/two_step.png)
 
 *How to read it. Left: x is the position in the prompt, counted back from the last word; y is in what share of layers
 32-48 the reader ranks the word first, averaged over the questions. The blue bridge line rises toward the end of the
@@ -458,7 +458,7 @@ the level of the grey control until the last two words. Right: x is the layer, y
 ranked first, the bridge read at -1 and the answer at the last word; the dots mark the layer at which each reaches
 half of the questions, the arrow the 19-layer lag. Thick: J-lens with 95% intervals; thin: J++.*
 
-![exp12: layers at each of the last positions](figures/exp12_position_map/layers_at_positions_jlens.png)
+![exp12: layers at each of the last positions](figures/pre-sprint/exp12_position_map/layers_at_positions_jlens.png)
 
 *How to read it: one line per prompt position (J-lens), y the share of questions with the word ranked first at each
 layer. Bridge (left): one word before the end (thick) reaches half of the questions at layer 23, the two words before
@@ -466,7 +466,7 @@ it at layers 24-25, the last word only at layer 35; earlier words (grey, average
 (right): the last word (thick) reaches half of the questions at layer 44, the word before it at layer 55; the two
 words before that stay at or below 25%, earlier words at or below 10%.*
 
-![exp12: the cue phrase](figures/exp12_position_map/cue_phrase.png)
+![exp12: the cue phrase](figures/pre-sprint/exp12_position_map/cue_phrase.png)
 
 *How to read it. Left: for each place in the prompt, in what share of layers 32-48 the J-lens ranks the word first,
 averaged over the questions; each place counts as one position (an average token of the cue phrase or of the other
@@ -476,7 +476,7 @@ associations give ("Munich" already points to Germany at layer 0). Right: by lay
 keeps rising; the answer on the cue phrase (solid orange) stays near 15-20%, while at the last word (dashed orange) it
 climbs from layer 20 to over 80%.*
 
-![exp12: J-lens vs J++ on the cue phrase](figures/exp12_position_map/cue_phrase_lenses.png)
+![exp12: J-lens vs J++ on the cue phrase](figures/pre-sprint/exp12_position_map/cue_phrase_lenses.png)
 
 *How to read it. Left: two different measures, each for both lenses. "Reads the bridge": in what share of layers
 32-48 the lens ranks the bridge first on the cue phrase (56% J-lens, 58% J++: the same). "Swapping it changes the
@@ -521,7 +521,7 @@ current; figures re-rendered in `analysis-20261015-125333-position-map/`, the cu
 - Earlier run, prompts as published with part B's earlier labels (`20261014-095358`, 67 eligible): the same picture
   (J-lens bridge at -1: 0.66; lag 21 [16, 28]).
 
-![exp12: reference heatmaps](figures/exp12_position_map/position_layer.png)
+![exp12: reference heatmaps](figures/pre-sprint/exp12_position_map/position_layer.png)
 
 *Reference: every position x layer for all three readers, colour = share of questions with the word ranked first; the
 box marks the best position over layers 32-48. The line figure above shows the J-lens rows that matter.*
@@ -552,14 +552,14 @@ was fixed in the config before the run.
   works at the last token (14%), and the bridge swap rarely on the cue phrase. Most swap effects live in the place
   questions, where bridge and answer cannot be pulled apart along their token directions.
 
-![exp14: bridge vs answer swaps](figures/exp14_cue_answer_swaps/flip_rates.png)
+![exp14: bridge vs answer swaps](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates.png)
 
 *How to read it: one panel per lens; each pair of bars is the share of questions whose answer changes to the swap
 target's, when the bridge (blue) or the answer (orange) is swapped at the given positions and layers; the grey bars
 (right of each, mostly at 0%) are random directions of the same edit size. On the cue phrase blue is above orange; at
 the last token, layers 24-40, neither works; at layers 40-56 both do, the answer more.*
 
-![exp14: split by overlap](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png)
+![exp14: split by overlap](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates_by_overlap.png)
 
 *How to read it: the same swaps, for the 72 questions where both swaps are possible (single-token answers), split
 in two halves of about 36: those whose bridge and answer swaps overlap little (left of each pair of groups) or much. On the cue phrase the orange bar is near 0 where the overlap is low: the answer swap only works where
@@ -589,7 +589,7 @@ pair's stay at their clean values: what still works moves only what its pair doe
 - Not in the rule, read afterwards: at the last token, holding the answer cuts the bridge swap from 29% / 28% to
   11% / 10%; there the bridge swap works mostly through the direction it shares with the answer.
 
-![exp14: swaps with the other pair held](figures/exp14_cue_answer_swaps/flip_rates_pinned.png)
+![exp14: swaps with the other pair held](figures/pre-sprint/exp14_cue_answer_swaps/flip_rates_pinned.png)
 
 *How to read it: as the first exp14 figure, with two more bars per group: the bridge swapped while the answer's
 coordinates are held (dark blue, hatched) and the answer swapped while the bridge's are held (dark orange, hatched).
@@ -675,28 +675,28 @@ would keep naming Brazil). The decision rule was fixed in the config before the 
   at 40-48 and 83-89% at 52-60; on the questions whose answer stays, 0-13% up to layer 48, but 24-25% at 52-60, where
   it is less specific.
 
-![exp15: three readers by layer](figures/exp15_oracle_lens/readers_by_layer.png)
+![exp15: three readers by layer](figures/pre-sprint/exp15_oracle_lens/readers_by_layer.png)
 
 *How to read it: one line per reader on the same activations; y: the share of readings where the reader has the word
 (J-lens, J++: rank it 1st among the candidates; oracle: name it), by layer. Dashed: the same reader has the word's
 distractor instead, its own false-alarm baseline. The two criteria differ, so read each solid line against its own
 dashed one.*
 
-![exp15: oracle vs lenses](figures/exp15_oracle_lens/oracle_vs_lenses.png)
+![exp15: oracle vs lenses](figures/pre-sprint/exp15_oracle_lens/oracle_vs_lenses.png)
 
 *How to read it (all 11 layers): left to right, readings where the lenses see the word less and less (both rank it
 1st, one does, then neither, by how far down the better lens has it). Bars: how often the oracle names the bridge
 (blue) or the answer (orange) there. Dashed lines: how often it names the word's distractor where the lenses miss the
 word, its false-alarm baseline. The bars fall from about 85% to about 20%, and stay above the dashed lines.*
 
-![exp15: after the swap](figures/exp15_oracle_lens/after_swap.png)
+![exp15: after the swap](figures/pre-sprint/exp15_oracle_lens/after_swap.png)
 
 *How to read it: the share of questions whose oracle words name the swap target (e.g. Mexico) at the last word and -1,
 layer 44. Left: before the swap, on the 23 questions whose answer the swap changes. Middle: after the swap, the same
 questions. Right: after the swap, the 54 questions whose answer stays. If the oracle only re-solved the question from
 the activation, the middle bar would stay as low as the left one.*
 
-![exp15: by layer](figures/exp15_oracle_lens/by_layer.png)
+![exp15: by layer](figures/pre-sprint/exp15_oracle_lens/by_layer.png)
 
 *How to read it: left, where neither lens ranks the bridge 1st, the share of readings naming it (blue) and its
 distractor (grey dashed), by layer. Right, the swap target named after the swap, by layer; grey band: the layers the
@@ -801,14 +801,14 @@ Greedy, 160 tokens. The decision rule (exp15's, at layer 42) was fixed in the co
   for all. The answer: 38%, 34%, 57%, 54% / 55%; false alarms 4-9%. Where neither lens has the bridge first: NLA 46%,
   oracle 54% (40) / 38% (44).
 
-![exp16: every reader at layer 42](figures/exp16_nla/methods_at_42.png)
+![exp16: every reader at layer 42](figures/pre-sprint/exp16_nla/methods_at_42.png)
 
 *How to read it: one row per reader, at layer 42 (the oracle lens at 40 and 44, its trained layers nearest 42).
 Filled dot: the share of readings where the reader has the word (a lens ranks it 1st; a verbalizer names it); hollow
 dot: where it has the word's distractor instead, its false alarms. Right panel: the readings where neither lens ranks
 the bridge 1st (the lenses are at 0% there by definition, so only the verbalizers are shown).*
 
-![exp16: after the swap](figures/exp16_nla/after_swap.png)
+![exp16: after the swap](figures/pre-sprint/exp16_nla/after_swap.png)
 
 *How to read it: as exp15's: the share of questions whose NLA explanation names the swap target at the last word and
 -1, before and after the swap.*
@@ -825,7 +825,7 @@ cannot see would show, and was the question this project set out with; but the v
 two groups and only the lenses' changes, which a reader that solves the question whatever the state holds would show
 too. exp17 is what tells the two apart.
 
-![exp16: by swap label](figures/exp16_nla/by_swap_label.png)
+![exp16: by swap label](figures/pre-sprint/exp16_nla/by_swap_label.png)
 
 *How to read it: per verbalizer, the questions split by part B's label (J-lens swaps); grey: the share of readings
 where the J-lens or J++ ranks the bridge 1st; colour: where the verbalizer names it, on the same readings. In the
@@ -922,14 +922,14 @@ verbalizer naming the bridge after a swap shows that the swap wrote the bridge i
 uses it; and a lens-blind reading can be a weaker token direction the lens ranks below first. Whether they ever see a
 part the lens cannot read is still exp17's question, on unedited positions.
 
-![exp18 v3: code vs lens direction](figures/exp18_brew_verbalizers/v3/code_vs_lens.png)
+![exp18 v3: code vs lens direction](figures/pre-sprint/exp18_brew_verbalizers/v3/code_vs_lens.png)
 
 *How to read it (v3): one panel per reader, on the items where the code edit took. Grey: how often each edit makes the
 model itself take X as its step (all 680 eligible items). Green: how often the readings name X. Under J++'s
 direction (third group) the model almost never takes X, yet every reader names it; under the code (second) the model
 takes X on 57% of items, and the readers name it less often.*
 
-![exp18 v2: state vs text](figures/exp18_brew_verbalizers/v2/state_vs_text.png)
+![exp18 v2: state vs text](figures/pre-sprint/exp18_brew_verbalizers/v2/state_vs_text.png)
 
 *How to read it: one panel per reader, on the items where the patch changed the model's answer. Dark: the share of
 items whose readings name X, the patched state's intermediate; light: I, the one the text implies. Dots: how often J++
@@ -1014,7 +1014,7 @@ first line. B1 (90 items), brew bank (100, gated when it was built), fresh (200)
 - Brew (exp03-08, exp18) ran in the chat format, where its steps are perfect; its gate drops the 12% of items where
   composing them fails.
 
-![exp20: competence by task and format](figures/exp20_competence/v1/competence.png)
+![exp20: competence by task and format](figures/pre-sprint/exp20_competence/v1/competence.png)
 
 *How to read it: one row per task (n and the format its runs used under the name). Left: the share of items the
 unedited model answers, per format, with Wilson 95% intervals; the hollow diamonds are exp09's gate (all three of its
@@ -1070,9 +1070,9 @@ questions the model answers correctly (stripped prompts, answers judged on the g
   86% for people (n=7), 25% for everything else (elements, organs, animals, dates). The J-lens matches J++ on places
   (85%) but not on people (14%).
 
-![exp02 v4: J-space part vs remainder](figures/exp02_swaps/v4b/jpart_vs_remainder.png)
+![exp02 v4: J-space part vs remainder](figures/pre-sprint/exp02_swaps/v4b/jpart_vs_remainder.png)
 
-![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4b/swap_position.png)
+![exp02 v4: where in the prompt the swap acts](figures/pre-sprint/exp02_swaps/v4b/swap_position.png)
 
 <img width="1360" height="612" alt="image" src="https://github.com/user-attachments/assets/54ba8646-a9f5-4676-ab9b-0bfb1510cf55" />
 
@@ -1126,7 +1126,7 @@ Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filt
   exact McNemar p = 0.0002).
 - The full probe uses no lens: its outcomes are identical item by item in the J-lens and J++ runs.
 - Every run's report (`results/exp02_swaps/analysis/<run>/REPORT_auto.md`) lists edit sizes, collateral damage and
-  the files to recompute from. Supplementary figures in `figures/exp02_swaps/v4b/` (`v4/` is the same set before
+  the files to recompute from. Supplementary figures in `figures/pre-sprint/exp02_swaps/v4b/` (`v4/` is the same set before
   the cue runs): `lens_comparison.png`,
   `positions.png`, `outcomes.png`, `dose.png`, `per_question.png`, `examples.png`, `by_bridge_type.png`.
 </details>
@@ -1158,9 +1158,9 @@ colour the model answers after the bank's "Answer:" prefill.
   setting, 0 at every other size, band and lens). There, where the J-lens reads the intermediate, its direction acts as a candidate answer, not as a step:
   consistent with WorkspaceBench's caveat that the brew intermediate is usually the model's runner-up answer.
 
-![exp03: swaps, amplified](figures/exp03_brew_swaps/v2_swaps/swaps_amplified.png)
+![exp03: swaps, amplified](figures/pre-sprint/exp03_brew_swaps/v2_swaps/swaps_amplified.png)
 
-![exp03: steering the start line](figures/exp03_brew_swaps/v1/steering_start_line.png)
+![exp03: steering the start line](figures/pre-sprint/exp03_brew_swaps/v1/steering_start_line.png)
 
 **What this does not show.** That the model does not compute the intermediate serially: the intermediate swap is
 tested at layers 8-24 only, and steering after the start line only produces an output; neither reaches an
@@ -1177,7 +1177,7 @@ line), `swap_amp` (start and intermediate swaps at 8-24, amplified 1x/3x/5x), `f
 `data/brew_fresh.json`, from `exp03_make_items.py`; decision rule fixed in its manifest). `swap_early` is `swap_amp`
 with a bug: its amplification multiplied the edit at every layer, which compounded (edits of 1.4-3.9x the residual
 norm), so its 3x and 5x rows are void. Our render puts the start line and the last token on the bank's labelled cells for every item
-(`render_matches_bank` in `items.jsonl`). Figures: `figures/exp03_brew_swaps/v1/`, `v2_swaps/`, `v2_fresh/` (`exp03_figures.py`; categories are
+(`render_matches_bank` in `items.jsonl`). Figures: `figures/pre-sprint/exp03_brew_swaps/v1/`, `v2_swaps/`, `v2_fresh/` (`exp03_figures.py`; categories are
 read off each item's table, and an unchanged answer counts as "original" even where one lookup from S' lands on it).
 
 | Start line steered along S' - S, layers 8-24, n=94 | 1% | 2% | 3% | 5% | 10% | 20% |
@@ -1245,13 +1245,13 @@ counterfactual and the control correctly); every second layer.
   give 0%, and O's copy at the 4 gives 0%. No single one does it alone: the newline after "assistant" 3%, the
   "\n\n" 0% (the last token alone peaked at 36% at layer 50 in the map).
 
-![exp04: patching map](figures/exp04_brew_patch/v1/patch_map.png)
+![exp04: patching map](figures/pre-sprint/exp04_brew_patch/v1/patch_map.png)
 
-![exp04: parts of the copy](figures/exp04_brew_patch/v2_parts/parts.png)
+![exp04: parts of the copy](figures/pre-sprint/exp04_brew_patch/v2_parts/parts.png)
 
-![exp04: patching map, fresh items, with I](figures/exp04_brew_patch/v3_fresh_map/patch_map.png)
+![exp04: patching map, fresh items, with I](figures/pre-sprint/exp04_brew_patch/v3_fresh_map/patch_map.png)
 
-![exp04: which positions carry the step](figures/exp04_brew_patch/v5_positions/positions.png)
+![exp04: which positions carry the step](figures/pre-sprint/exp04_brew_patch/v5_positions/positions.png)
 
 **What this does not show.** Which direction carries the step, beyond "not the J-space": the copy replaces whole block
 outputs at about 21 positions. 48-52% is the best single-layer copy, not a ceiling: information held at several layers
@@ -1266,7 +1266,7 @@ open.
 Runs: `results/exp04_brew_patch/patch_map` (manifest written before the run; layers 0-62 in steps of 2, chosen by the
 human) and `parts_window` (the window read from `patch_map`'s decision; its full copy reproduces `patch_map` in all
 656 item x layer cells; variance shares in `fve.jsonl`). Per-layer rates of every role for each group, and the off-path control, are in `summary.md`; the first answer
-token's log-probabilities in `figures/exp04_brew_patch/v1/patch_logp.png`. Eligibility: 13 items fail on the
+token's log-probabilities in `figures/pre-sprint/exp04_brew_patch/v1/patch_logp.png`. Eligibility: 13 items fail on the
 counterfactual and 4 on the control prompt. 52 of the 82 items give f(X) at one window layer or more. Headlines are
 recomputed by `scripts/verify_headlines.py`.
 
@@ -1276,13 +1276,13 @@ manifest written from `patch_map_fresh`'s decision; its full copy reproduces the
 Of the 200 fresh items, 154 are eligible: they are not gated, so 25 fail on the original prompt, 18 on the
 counterfactual, 2 on the control, and 1 has no X. Positive controls at layer 0: the rule lines give c for 100% and the
 start colour's rule gives f(X) for 92%, the control changes at most 1%. 97 of the 154 give f(X) at one window layer or
-more. Figures: `figures/exp04_brew_patch/v3_fresh_map/` (the map figure draws I from this version on) and
+more. Figures: `figures/pre-sprint/exp04_brew_patch/v3_fresh_map/` (the map figure draws I from this version on) and
 `v4_fresh_parts/parts.png`.
 
 Positions: `positions_window` (manifest written before the run; the human chose the run; bank and fresh items as
 exp04): C's copy at subsets of the 21 positions after the start line, O's copy at the same positions as the control.
 Its 'all' copy reproduces exp04's full copy item for item (1232/1232 fresh, 656/656 bank). The groups came from
-exp08's readouts on the same items. Figure: `figures/exp04_brew_patch/v5_positions/`.
+exp08's readouts on the same items. Figure: `figures/pre-sprint/exp04_brew_patch/v5_positions/`.
 </details>
 
 ### exp06_sigma_writes (part B): read with the lens, write along the covariance?
@@ -1307,7 +1307,7 @@ at the same Euclidean size.
   covariance-shaped directions are far from the lens's (median cosine 0.29-0.44) and at 3% leave the original answer
   for 54-77% of items, against 7-18% along the lens's direction.
 
-![exp06: writing along the covariance](figures/exp06_sigma_writes/v1/sigma_writes.png)
+![exp06: writing along the covariance](figures/pre-sprint/exp06_sigma_writes/v1/sigma_writes.png)
 
 **What this does not show.** Σ is WikiText's covariance, not that of the two-hop or brew prompts. Sizes are Euclidean:
 at a matched Mahalanobis size the covariance-shaped edits would be larger. The steering is at the start line, where
@@ -1350,7 +1350,7 @@ copy's size, next to the copy itself, a random direction, the lens direction v_X
 - Like the copy, the code also makes the model answer I (one lookup) in 25% of fresh item x layer cells (the copy 29%,
   the lens directions 2-6%).
 
-![exp07: a code for the intermediate](figures/exp07_step_code/v1/step_code.png)
+![exp07: a code for the intermediate](figures/pre-sprint/exp07_step_code/v1/step_code.png)
 
 **What this does not show.** Whether the lens can read the intermediate at these positions: the code is orthogonal to
 the lens's direction for X - I, which says the lens cannot write the step, not that it cannot see I (the lens's
@@ -1391,7 +1391,7 @@ With exp07: the lens sees the intermediate where brew carries it, at a few scaff
 direction (v_X - v_I) moves the step for 1% of window layers, while a fitted code nearly orthogonal to it moves it for
 34%. The direction the lens reads I along is not one that takes the step when written.
 
-![exp08: reading the intermediate](figures/exp08_brew_read/v1/brew_read.png)
+![exp08: reading the intermediate](figures/pre-sprint/exp08_brew_read/v1/brew_read.png)
 
 **What this does not show.** Top-1 among 12 colours, not among the vocabulary: in the window the median vocabulary
 rank of I is about 9,600 (J++), 25,000 (logit lens) and 182,000 (J-lens), so the lens ranks the colour above other
@@ -1464,14 +1464,14 @@ Being in the context is not what puts a variable outside the J-space: what uses 
 uses acts through its J-space part (B) or its J-space probe (R); a bridge a lookup in the prompt uses acts through
 the rest, wherever it came from (RL, L), as brew's intermediate does.
 
-![exp09: source x use](figures/exp09_bind_recall/v2/source_use.png)
+![exp09: source x use](figures/pre-sprint/exp09_bind_recall/v2/source_use.png)
 
 *How to read it: one panel per family, at its window; each bar is how often copying that part of C's activation
 into the original makes the model give X's answer. Right column (a lookup in the prompt uses the bridge): the J-space
 part and the I/X coordinates do nothing, the rest carries what the copy does. Left column: B's J-space part acts and
 its rest does not; R's split is small both ways.*
 
-![exp09: recalled vs bound](figures/exp09_bind_recall/v1/bind_recall.png)
+![exp09: recalled vs bound](figures/pre-sprint/exp09_bind_recall/v1/bind_recall.png)
 
 **What this does not show.** The split recovers little of the copy in either family (12.5% of B's 70%, 4-7% of R's
 44%): pieces of the copied difference act much less than the whole, so "inside" rests on small effects, and B's window
@@ -1566,7 +1566,7 @@ their clean values) asks whether the J-part acts through more than the entities'
   outside by a small margin (2% vs 6%, +4 [+1, +9]; raw: both or neither), and L's window shrinks to layer 40 with a
   weak copy (14%; J-space part 0%, rest 2%: both or neither; its I/X coordinates 0% vs the rest 9%: outside).
 
-![exp09 in the chat format](figures/exp09_bind_recall/v3_chat/source_use.png)
+![exp09 in the chat format](figures/pre-sprint/exp09_bind_recall/v3_chat/source_use.png)
 
 **What this does not show.** The chat gate passed on its second probe position, chosen after the first failed, on the
 same 76 items. The own-word test holds the own-word coordinates, so it asks whether anything else carries the swap,
@@ -1643,7 +1643,7 @@ decides" if the reverse; otherwise mixed.
   58% (outside; not reliable); BT 31%, 1% vs 12% (outside); RT 99%, 6% vs 56% (both or neither: +6 [+3, +10] over its
   null). Their I/X lens coordinates carry 0-4% against 18-72% for the rest.
 
-![Phase 3: which part of the copy acts](figures/exp09_bind_recall/v4_use_source/source_use.png)
+![Phase 3: which part of the copy acts](figures/pre-sprint/exp09_bind_recall/v4_use_source/source_use.png)
 
 *Which part of the bridge's copy acts in each new family (chat format, J++; RM is not reliable in exp20).*
 
@@ -1915,12 +1915,12 @@ answer, the paste is split into its lens-readable part and the rest, and a lens 
 alt prompt (pets swapped) → answer alt 1. Pasting only into "Leo's pet is a duck." gives 3; only into the question 3;
 into the whole context 1; the lens-readable part of that context paste alone 3, the rest 1.
 
-![Where the stated bridge is carried, and whether that is lens-readable](figures/depth_1021/d1_where_the_bridge_is_carried.png)
+![Where the stated bridge is carried, and whether that is lens-readable](figures/archive/depth_1021/d1_where_the_bridge_is_carried.png)
 
 - The sentence that states the bridge carries it only up to layer 24 (100% at 0-16, 81% at 24, 0% from 28); between
   layers 28 and 44 it is spread over the whole context (88-94%); the question takes over only at 52 (88%).
 - A second, larger map (80 per family, layers 32-52) confirms every cell the rule uses: of 416 shared cells, 54
-  carry the bridge in both maps, 353 in neither, 9 differ (all at 34-56%): `figures/depth_1021/d1_map_confirmation.png`.
+  carry the bridge in both maps, 353 in neither, 9 differ (all at 34-56%): `figures/archive/depth_1021/d1_map_confirmation.png`.
 - At the whole context (layers 32-40) the lens-readable part flips 0% vs 90% for the full paste; the countries
   positive control is "inside" there (2.66 [2.51, 2.83]); prompt → prompt → memory behaves like prompt → prompt.
 - Gates: identity paste exactly 0.0 change (1,280/1,280); alt prompt pasted everywhere gives answer alt 640/640;
@@ -1936,15 +1936,15 @@ blocked positions (exactly the statement's contribution; tested against an fp64 
 its roar? Answer:" → answer org 5. With "The lion's locker is 5." hidden from the question words and the last tokens
 in every layer, it answers 9, another locker in the prompt.
 
-![Which positions must read the statement](figures/depth_1021/d2_which_positions_must_read.png)
-![From which layer on the statement must stay readable](figures/depth_1021/d2_from_which_layer.png)
+![Which positions must read the statement](figures/archive/depth_1021/d2_which_positions_must_read.png)
+![From which layer on the statement must stay readable](figures/archive/depth_1021/d2_from_which_layer.png)
 
 - memory → prompt and prompt → prompt break when the last tokens cannot read the statement giving the answer (7%, 3%)
   and do not care about the question words (100%); in memory → prompt 67% of the original answers become another
   locker named in the prompt. memory → memory and prompt → memory: 100% wherever the locker statement is hidden.
 - The read happens in the attention layers (attention only 8%, DeltaNet only 100%) and late: layers 48-63 are needed
   together (17%), 56-63 alone are not (100%), 0-47 are not (100%). No single 8-layer window breaks it
-  (`figures/depth_1021/d2_windows_attention_vs_deltanet.png`).
+  (`figures/archive/depth_1021/d2_windows_attention_vs_deltanet.png`).
 - The statement giving a stated bridge ("Jack's pet is a cow.") is read by the question words before layer 32
   (prompt → memory: blocking 0-31 leaves 30%); countries: prompt → memory reads it early (16-23).
 - Gates: empty block exactly 0.0; positive controls exact; controls lost answer org in 11 of 47,880 rows; DeltaNet
@@ -1961,17 +1961,17 @@ belongs to the animal known for its roar?" → answer org 8. The alt prompt asks
 Pasting after the question at layer 48 gives **3**, the bee's locker: the bee is 3rd in the org prompt (slot), not
 9 (the turkey's statement, word) and not 5 (the alt prompt's own answer).
 
-![Word, slot or answer, by layer](figures/depth_1021/d3_word_slot_or_answer_by_layer.png)
+![Word, slot or answer, by layer](figures/archive/depth_1021/d3_word_slot_or_answer_by_layer.png)
 
 - Question words carry the word up to ~layer 40 in every family, then stop mattering. After the question and at the
   last 2 tokens, the slot answer peaks at layers 44-50 (memory → prompt 31% at 48; named → prompt 53% at 50), then
   the alt prompt's own answer takes over (last 2 tokens 98-100% from layer 56). memory → memory never shows a slot
   answer (~0%): the pointer appears only where a lookup is used.
 - By slot of the asked statement: first 13%, middle 28%, last 42% slot answers
-  (`figures/depth_1021/d3_by_statement_slot.png`; each slot cut is below the n the rule needs).
+  (`figures/archive/depth_1021/d3_by_statement_slot.png`; each slot cut is below the n the rule needs).
 - With 3 statements the slot answer is stronger (73% at layer 48; on the last tokens +22 [+4, +37] points vs 5
   statements); filler sentences between the statements: "unclear" for every outcome
-  (`figures/depth_1021/d3_levels.png`).
+  (`figures/archive/depth_1021/d3_levels.png`).
 - Gates: base patched into itself 300/300 unchanged; layer-0 paste of the whole alt prompt reproduces it 300/300;
   digits no hypothesis predicts 1%. Superseded runs (pilot, first main, first levels) used too few items or
   gate-failing topics; they are kept and flagged in their reports.
@@ -1986,13 +1986,13 @@ the cue, mention it elsewhere), an embedding push and the alt-prompt patch.
 bridge alt goose → answer alt 7. Naming the goose, adding it next to the cue, swapping the noun and the alt prompt
 all give 7; the tested push, the embedding push and mentioning the goose elsewhere keep 1.
 
-![Where an early push works, next to prompt edits](figures/depth_1021/d4_early_push_vs_edits.png)
+![Where an early push works, next to prompt edits](figures/archive/depth_1021/d4_early_push_vs_edits.png)
 
 - The push only works on the subject phrase ("the animal known for howling"): up to 100% [94, 100] at layer 16,
   16x; the rest of the question and the last tokens: 0% at every layer and size; random push <= 10%.
 - prompt → prompt barely moves (0% at the tested push, 47% vs 100% at 16x) — but input edits (the embedding of bridge
   alt, the text "add bridge alt next to the cue") show the same gap, so this gap cannot tell injection from writing
-  (`figures/depth_1021/d4_decision_tests.png`).
+  (`figures/archive/depth_1021/d4_decision_tests.png`).
 - Item by item the push agrees best with the alt-prompt patch at the same layer (Cohen's kappa +0.34 [+0.12, +0.55]),
   not with any text edit.
 - Gates: zero-size push exactly 0.0 change; the earlier run's push reproduced on 97.6% of 4,320 cells.
@@ -2227,8 +2227,8 @@ memory 57/60), and not those where it is stated in the prompt (prompt → prompt
 (28/60, 43/60, matching the earlier layer sweep). So the early push acts on **recalling the bridge**, a step that
 goes through the J-space, not on the lookup.
 
-![Word, slot or answer, by layer (D3)](figures/depth_1021/d3_word_slot_or_answer_by_layer.png)
-![From which layer the statement must stay readable (D2)](figures/depth_1021/d2_from_which_layer.png)
+![Word, slot or answer, by layer (D3)](figures/archive/depth_1021/d3_word_slot_or_answer_by_layer.png)
+![From which layer the statement must stay readable (D2)](figures/archive/depth_1021/d2_from_which_layer.png)
 
 ### Detail: batch 2 (Dan, 21 Oct; new data and a learned pointer)
 Same rules (pre-registered, controls, headline numbers recounted from the raw files), 4×A100. Predictions vs results:
@@ -2249,15 +2249,15 @@ position?" (pointer_v2).
 | D3b (batch 3) | Does the pointer direction mean "the Nth statement" or "this place in the text"? | **The Nth statement.** Fitted where both coincide, pushed toward a statement after a filler sentence (layer 48, 2×, 125 targets in 55 scenes): the target statement's digit 31% [24, 40] vs the digit now at its old place 9% [5, 15], difference +22 [+14, +31] (scene bootstrap); animals 29 vs 7 of 77, elements 10 vs 4 of 48; random and shuffled-label pushes 0/125; memory → memory 2%. Weaker than where both readings agree (51%). Without a push, the nearest learned mean names the asked statement by order 51% vs by place 12% (layer 48, 59 scenes). |
 | D3b | Can a learned **pointer direction** steer the lookup where the lens push cannot? | **For animals yes; pooled, only by the item-level rule.** A direction fitted to "which statement the question asks", added at layer 48 at the size of the alt-prompt patch: 37% of memory → prompt answers become the target statement's digit, item-level [30.3, 45] (the pre-registered rule passes by 0.3 points), but resampling the 22 queried entities gives [28.7, 45.2] (does not pass). **By domain: animals 54% (52/96, 16 animals), elements 16% (13/79, 6 elements;** the alt-prompt patch itself switches only 11/79 there). Lens push of the same size 0/175; random 0; shuffled-label direction 1%; memory → memory 1/100. Four dimensions are enough; unrelated to the lens's word directions (cosine 0.03, random 0.03). A probe reads which statement is asked at only 39% (chance 20%; small fit set). Prior art: an "ordering ID" subspace that steers binding (Dai, Heinzerling & Inui 2024, arXiv 2409.05448); new here is that it appears for a *recalled* bridge, where the lens reads the word but cannot steer. Caveat: at layer 48 the last tokens no longer carry the word (D3), so the lens push's 0% there is expected either way; it is not a test of "lookups go around the lens" (that is layers 32-40, question tokens). |
 
-![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/depth_1022/d1_headline_n80.png)
-![The pointer direction on fresh scenes (D3b replication)](figures/depth_1022/d3b_replication_decision_cell.png)
-![The late attention read on Python code (D2)](figures/depth_1022/d2_code_which_positions_read.png)
-![The last-token pointer with statements in another language (D3)](figures/depth_1022/d3_other_language_last_tokens_by_layer.png)
-![Word, position or answer in Python code (D3)](figures/depth_1022/d3_code_word_slot_or_answer_by_layer.png)
-![The Nth statement or the same place in the text (D3)](figures/depth_1022/d3_order_or_place_by_layer.png)
-![Counted from the start or from the end (D3)](figures/depth_1022/d3_start_or_end_last_tokens.png)
-![The pointer direction: the Nth statement or the place (D3b)](figures/depth_1022/d3b_direction_order_or_position.png)
-![A learned pointer direction vs the lens push (D3b)](figures/depth_1022/d3b_pointer_direction_vs_lens_push.png)
+![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/archive/depth_1022/d1_headline_n80.png)
+![The pointer direction on fresh scenes (D3b replication)](figures/archive/depth_1022/d3b_replication_decision_cell.png)
+![The late attention read on Python code (D2)](figures/archive/depth_1022/d2_code_which_positions_read.png)
+![The last-token pointer with statements in another language (D3)](figures/archive/depth_1022/d3_other_language_last_tokens_by_layer.png)
+![Word, position or answer in Python code (D3)](figures/archive/depth_1022/d3_code_word_slot_or_answer_by_layer.png)
+![The Nth statement or the same place in the text (D3)](figures/archive/depth_1022/d3_order_or_place_by_layer.png)
+![Counted from the start or from the end (D3)](figures/archive/depth_1022/d3_start_or_end_last_tokens.png)
+![The pointer direction: the Nth statement or the place (D3b)](figures/archive/depth_1022/d3b_direction_order_or_position.png)
+![A learned pointer direction vs the lens push (D3b)](figures/archive/depth_1022/d3b_pointer_direction_vs_lens_push.png)
 
 ## README before the rewrite (21 Oct, 22:30): claims table, audit, batch 4, plan, D5 design
 
@@ -2319,7 +2319,7 @@ Recall from memory goes through the J-space; a lookup in the prompt goes around 
   mostly untested; Gemma 4 31B-it is untestable (its lens cannot write even the positive control, and any J-space
   removal wrecks the model).
 
-![The suite under three measures](figures/overview_1020/story_2x2.png)
+![The suite under three measures](figures/archive/overview_1020/story_2x2.png)
 
 #### Unverified: what is the "around" route? (Dan, 21 Oct; three batches on Qwen3.6-27B)
 Every run pre-registered (hypotheses, decision rule, controls) before it ran; Dan wrote predictions before each result
@@ -2356,17 +2356,17 @@ topic, the honest interval when items of one entity are correlated. The per-batc
 | 48-63 | the last tokens read the pointed-at statement through attention (not DeltaNet), spread over many heads (no single head is needed); one head (layer 51, head 22) attends to the bridge's statement on every scene | D2 |
 | 52-60 | the last tokens carry the fetched digit | D3 |
 
-![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/depth_1022/d1_headline_n80.png)
-![From which layer the statement must stay readable (D2)](figures/depth_1021/d2_from_which_layer.png)
-![Which code lines read the dict entry (D2)](figures/depth_1022/d2_code_which_lines_read.png)
-![Word, slot or answer on 85 entities and 9 wordings per topic (D3, pointer_v4)](figures/depth_1022/d3_v4_word_slot_or_answer_by_layer.png)
-![Counted from the start or from the end (D3)](figures/depth_1022/d3_start_or_end_last_tokens.png)
-![The pointer direction on held-out entities and wordings (D3b, pointer_v4)](figures/depth_1022/d3b_v4_held_out_decision_cell.png)
-![The pointer direction vs the lens push where the lens reads the word (D3b, layers 32-40)](figures/depth_1022/d3b_pointer_vs_lens_layers_32_40.png)
-![How well the asked statement can be read out (D3b)](figures/depth_1022/d3b_pointer_readout_probe.png)
-![Where an early lens push switches the answer, wording B (D4, pre-registered)](figures/depth_1022/d4_wording_b_where_the_push_works.png)
-![Does one head look at the statement the answer comes from? (D2 heads)](figures/depth_1022/d2_heads_attention_readout.png)
-![Which head units read the statement, late layers (D2 heads)](figures/depth_1022/d2_heads_units_late.png)
+![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/archive/depth_1022/d1_headline_n80.png)
+![From which layer the statement must stay readable (D2)](figures/archive/depth_1021/d2_from_which_layer.png)
+![Which code lines read the dict entry (D2)](figures/archive/depth_1022/d2_code_which_lines_read.png)
+![Word, slot or answer on 85 entities and 9 wordings per topic (D3, pointer_v4)](figures/archive/depth_1022/d3_v4_word_slot_or_answer_by_layer.png)
+![Counted from the start or from the end (D3)](figures/archive/depth_1022/d3_start_or_end_last_tokens.png)
+![The pointer direction on held-out entities and wordings (D3b, pointer_v4)](figures/archive/depth_1022/d3b_v4_held_out_decision_cell.png)
+![The pointer direction vs the lens push where the lens reads the word (D3b, layers 32-40)](figures/archive/depth_1022/d3b_pointer_vs_lens_layers_32_40.png)
+![How well the asked statement can be read out (D3b)](figures/archive/depth_1022/d3b_pointer_readout_probe.png)
+![Where an early lens push switches the answer, wording B (D4, pre-registered)](figures/archive/depth_1022/d4_wording_b_where_the_push_works.png)
+![Does one head look at the statement the answer comes from? (D2 heads)](figures/archive/depth_1022/d2_heads_attention_readout.png)
+![Which head units read the statement, late layers (D2 heads)](figures/archive/depth_1022/d2_heads_units_late.png)
 
 ### Synthesis so far: two routes (Dan, 21 Oct, evening; UNVERIFIED, one model)
 
@@ -2610,5 +2610,5 @@ Catalog with sizes: [data/README.md](data/README.md#depth-track-scenes-dan-21-oc
 | D4 early push vs edits | `scripts/early_push.py` | `results/early_push/` |
 | Entity-cluster intervals | `src/bridge_jspace/stats.py` (`cluster_bootstrap`) | |
 | Job queue, job pages, plain names | `scripts/jobq.py`, `src/bridge_jspace/job_pages.py`, `jobs/`, `jobs/titles.yaml` | `results/jobq/` (ledger, draft run-log rows) |
-| Figures used on this page | | `figures/overview_1020/`, `figures/depth_1021/`, `figures/depth_1022/` |
+| Figures used on this page | | `figures/archive/overview_1020/`, `figures/archive/depth_1021/`, `figures/archive/depth_1022/` |
 | Earlier experiments (exp01-exp23, part A readers) | `scripts/exp*` | see [README_archive.md](README_archive.md) |

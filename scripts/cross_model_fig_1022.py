@@ -68,6 +68,6 @@ fig.text(0.01, 0.01, "Bars: mean over the three words; dots: each word, left to 
          "gated lens write (add / swap)\nat the aligned band (copy-sweep rule fixed beforehand). One data seed; unverified; Muse and Qwen3-32B use our own J++ fits, the 27B the published J++.",
          fontsize=7.3, color=INK2)
 fig.subplots_adjust(left=0.06, right=0.99, top=0.82, bottom=0.29, wspace=0.18)
-out = Path("figures/cross_model"); out.mkdir(parents=True, exist_ok=True)
+out = Path("figures/archive/cross_model"); out.mkdir(parents=True, exist_ok=True)
 fig.savefig(out / "c1_c2_by_model_1022.png", dpi=180)
 print("saved")

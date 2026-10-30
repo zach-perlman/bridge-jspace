@@ -954,7 +954,7 @@ def recount_box(rows: list[dict]) -> str:
     count = {s: sum(r["status"] == s for r in rows) for s in ("match", "mismatch", "no source")}
     head = (f"<b>Recount from the per-item files</b> (whole item set): {tag(str(count['match']), 'pass')} match, "
             f"{tag(str(count['mismatch']), 'fail' if count['mismatch'] else 'pass')} mismatch, {count['no source']} no source "
-            "(figures/story/data.csv, 2 decimals)")  # fmt: skip
+            "(data/figures/depth/data.csv, 2 decimals)")  # fmt: skip
     order = sorted(rows, key=lambda r: (r["status"] != "mismatch", r["status"] == "no source"))
     table = [
         "<table><tr><th>model</th><th>quantity</th><th>n</th><th>recount</th><th>data.csv</th><th>key</th><th></th></tr>"

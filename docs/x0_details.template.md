@@ -12,7 +12,7 @@ The README gives the summary; this page holds the tables behind it. Every number
 
 CIs are 95%, from a cluster bootstrap over bridge entities (10,000 resamples).
 
-![Overview: excess by layer, two models, three prompt formats](../figures/x0_necessity/overview.png)
+![Overview: excess by layer, two models, three prompt formats](../figures/archive/x0_necessity/overview.png)
 
 ## Every layer (chat, the bridge's word, J++ at 25 atoms)
 
@@ -28,8 +28,8 @@ Qwen3.5-122B-A10B (n = {{num|n_122b}} scenes, {{num|ents_122b}} bridge entities;
 
 {{tbl|layers_122b}}
 
-![27B detail](../figures/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
-![9B detail](../figures/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
+![27B detail](../figures/archive/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
+![9B detail](../figures/archive/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
 ## Every dictionary and number of atoms (the pre-registered layer; added after the data)
 
@@ -47,9 +47,9 @@ Qwen3.5-122B, layer {{num|layer_122b}} (from its X0 run: J++ at 25 / 50 / 100 di
 
 {{tbl|dicts_122b}}
 
-![Equal removed share](../figures/x0_necessity/kmatch.png)
-![Excess against the number of atoms](../figures/x0_necessity/kcurve.png)
-![Share against J-dependence](../figures/x0_necessity/share.png)
+![Equal removed share](../figures/archive/x0_necessity/kmatch.png)
+![Excess against the number of atoms](../figures/archive/x0_necessity/kcurve.png)
+![Share against J-dependence](../figures/archive/x0_necessity/share.png)
 
 On the 27B, the lookup's J-dependence tracks, across layers, the share of ‖Δ‖² that J++ takes (Spearman {{num|share_rho_27b}}). The recall's does not.
 
@@ -72,7 +72,7 @@ Qwen3.5-122B:
 
 {{tbl|strata_122b}}
 
-![Upstream change](../figures/x0_necessity/asked_first.png)
+![Upstream change](../figures/archive/x0_necessity/asked_first.png)
 
 ## The digit check (the pre-registered layer; added after the data)
 
@@ -93,7 +93,7 @@ Qwen3.5-122B, layer {{num|layer_122b}} (its X0 run; the readout ranks the answer
 
 {{tbl|digit_122b}}
 
-![The digit check](../figures/status_2026-10-24/f6_digits.png)
+![The digit check](../figures/archive/status_2026-10-24/f6_digits.png)
 
 ## The value, the slot and the identity at the bridge word (x0_probe v4; four models; added after the data)
 

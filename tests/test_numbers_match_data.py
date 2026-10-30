@@ -1,5 +1,5 @@
-"""Every number README.md and STATUS.md's current block quote is in figures/story/data.csv (Dan, 25 Oct: the address /
-value mix-up; README v2 moved the data file from the frozen figures/status_2026-10-25/). An interval 'v [lo, hi]' must
+"""Every number README.md and STATUS.md's current block quote is in data/figures/depth/data.csv (Dan, 25 Oct: the address /
+value mix-up; README v2 moved the data file from the frozen figures/archive/status_2026-10-25/). An interval 'v [lo, hi]' must
 match one row's value, lo and hi; a lone decimal or percentage must match some row's value. Rule bars (0.05, 0.10,
 0.15, 0.20, 0.30, 0.75, 0.80, 95%) and integers (counts) are skipped, as are source comments (<!-- src: ... -->, whose
 data.csv keys name tests) and test ids (40.1-50.99 without a %: batches 40-50 name their tests 'NN.k'; no plotted
@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-DATA = REPO / "figures" / "story" / "data.csv"
+DATA = REPO / "data" / "figures" / "depth" / "data.csv"
 NUM = r"[−-]?\d+\.\d+"
 TRIPLE = re.compile(rf"({NUM}) \[({NUM}), ({NUM})\]")
 SINGLE = re.compile(rf"(?<![\w.\[])({NUM}|\d+(?:\.\d+)?%)(?![\d\]])")

@@ -1,6 +1,6 @@
 """Figures for exp08_brew_read (part B), from a run's reads.
 
-exp08_figures.py OUT_NAME RUN  -> figures/exp08_brew_read/OUT_NAME/ (write-once; loads the tokenizer for the labels)
+exp08_figures.py OUT_NAME RUN  -> figures/pre-sprint/exp08_brew_read/OUT_NAME/ (write-once; loads the tokenizer for the labels)
     brew_read.png  fresh items, per lens reader (J++, the J-lens, the logit lens). Left: by layer, how often each role's
                    colour (the intermediate I, the distractor X, the start S, the answer A) is the top-1 of the 12
                    palette colours after the start line (over items and the 21 positions), with exp07's code as a
@@ -130,7 +130,7 @@ def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp08_brew_read/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp08_brew_read/ (write-once)")
     parser.add_argument("run", help="the exp08 run")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     parser.add_argument("--results-root", type=Path, default=pins.RESULTS_DIR, help="for test renders")

@@ -11,7 +11,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = Path("figures/day3_1021")
+OUT = Path("figures/archive/day3_1021")
 OUT.mkdir(parents=True, exist_ok=True)
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 LOOKUP, MEMORY, CONTROL, BAND = "#2a78d6", "#eb6834", "#8d8c88", "#ecebe7"

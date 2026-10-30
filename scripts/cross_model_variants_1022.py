@@ -157,6 +157,6 @@ fig.text(0.01, 0.012, "Top-10 J-lens directions removed at every position at eac
          "loss = random-control accuracy minus knock-out accuracy on the same items.\nB, C: mean loss of P→M, M→M, C→M minus mean loss of P→P, M→P, C→P "
          "within each format / level (20-60 items per word per cell). Our J++ for Qwen3-32B and Muse, the published J++ for the 27B. One data seed; unverified.",
          fontsize=7.5, color=INK2)
-out = Path("figures/cross_model"); out.mkdir(parents=True, exist_ok=True)
+out = Path("figures/archive/cross_model"); out.mkdir(parents=True, exist_ok=True)
 fig.savefig(out / "variants_by_model_1022.png", dpi=170)
 print(json.dumps({n: {"steps": d["steps"], "format": d["format"], "level": d["level"]} for n, d in data.items()}, default=str)[:1500])

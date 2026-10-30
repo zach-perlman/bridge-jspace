@@ -1199,7 +1199,7 @@ def f26_where_lens_writes(out: Path) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", default="figures/readme_1021")
+    ap.add_argument("--out", default="figures/archive/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
     for f in (f0_patch_example, f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer,

@@ -256,7 +256,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="a results/cross_model/<stamp> folder (default: the README's pin)")
     ap.add_argument("--only", choices=("main", "full"), default=None)
-    ap.add_argument("--out", default=None, help="output folder (default figures/cross_model)")
+    ap.add_argument("--out", default=None, help="output folder (default figures/archive/cross_model)")
     a = ap.parse_args(argv)
     b = C.book(Path(a.grid).resolve() if a.grid else None)
     out = Path(a.out) if a.out else C.OUT

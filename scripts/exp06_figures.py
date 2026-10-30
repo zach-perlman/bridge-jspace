@@ -1,6 +1,6 @@
 """Figures for exp06_sigma_writes (part B), from a run's outcomes.
 
-exp06_figures.py OUT_NAME RUN  -> figures/exp06_sigma_writes/OUT_NAME/ (write-once)
+exp06_figures.py OUT_NAME RUN  -> figures/pre-sprint/exp06_sigma_writes/OUT_NAME/ (write-once)
     sigma_writes.png  per lens. Left: exp02's swap of the bridge with its J-part, with the matched-alignment direction
                       (the rest isotropic) and with the same direction's rest drawn from the activation covariance;
                       how often each flips the answer to the swap target (95% Wilson CI), next to its random-direction
@@ -128,7 +128,7 @@ def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp06_sigma_writes/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp06_sigma_writes/ (write-once)")
     parser.add_argument("run", help="the exp06 run")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     parser.add_argument("--results-root", type=Path, default=pins.RESULTS_DIR, help="for test renders")

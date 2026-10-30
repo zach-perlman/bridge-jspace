@@ -21,7 +21,7 @@ CARD = """### A test (1.1, opened x) <a id="a"></a>
 - **Data.** d.
 - **Method.** m.
 
-![a figure](../../figures/story/fig01_split.png)
+![a figure](../../figures/depth/fig01_split.png)
 *What is plotted.*
 
 - **Rule, fixed in advance.** "r."
@@ -94,7 +94,7 @@ def test_the_overview_heatmap_follows_the_cards():
     assert all(in_part[a] == part for part, a, _, _ in rows)
     assert all(a in in_part for a in LC.HEATMAP_LEFT_OUT)
     top = text.split("## How to read")[0]
-    assert "](../../figures/ledger/ledger_coverage_map.png)" in top.split("## In one minute")[1]
+    assert "](../../figures/depth/ledger/ledger_coverage_map.png)" in top.split("## In one minute")[1]
 
 
 def test_the_ledger_follows_the_readme_order():
@@ -108,7 +108,9 @@ def test_the_ledger_follows_the_readme_order():
                      "## Part IV. Where and when the link is made", "## Part V. Other datasets and operations",
                      "## Part VI. What did not hold", "## Also failed (one line each) <a id=\"also-failed\"></a>", "## How we checked",
                      "## Run on one model only (one line each)",
-                     "## Withdrawn", "## Running or sealed",
+                     "## Withdrawn",
+                     '## The 122B coverage, night 29-30 Oct (coverage, not hand-checked) <a id="cov-122b-night"></a>',
+                     "## Running or sealed",
                      '## Appendix A. Flagged for Dan <a id="flagged"></a>',
                      '## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>',
                      '## Appendix C. Coverage table <a id="coverage"></a>',
@@ -124,13 +126,13 @@ def test_the_checker_catches_failures():
     assert L.problems(CARD + "See [b](#b).\n")
     assert L.problems(CARD.replace("0.53<!--", "0.54<!--"))  # the shown number is not the source's
     assert L.problems(CARD.replace(":: 0.53 -->", ":: 0.99 -->"))  # the source's number is not in the file
-    assert L.problems(CARD.replace("![a figure](../../figures/story/fig01_split.png)\n", ""))  # no figure
+    assert L.problems(CARD.replace("![a figure](../../figures/depth/fig01_split.png)\n", ""))  # no figure
     assert L.problems(CARD.replace("fig01_split", "no_such_figure"))  # the figure's file is missing
     assert L.problems(CARD.replace("*What is plotted.*\n", ""))  # no caption
     assert L.problems(CARD.replace("`in README` ", ""))  # no status tag
     assert L.problems(CARD.replace("`in README`", "`in the README`"))  # not one of the tags
-    moved = CARD.replace("![a figure](../../figures/story/fig01_split.png)\n*What is plotted.*\n\n", "")
-    moved = moved.replace("- **Result.**", "\n![a figure](../../figures/story/fig01_split.png)\n*What is plotted.*\n\n- **Result.**")
+    moved = CARD.replace("![a figure](../../figures/depth/fig01_split.png)\n*What is plotted.*\n\n", "")
+    moved = moved.replace("- **Result.**", "\n![a figure](../../figures/depth/fig01_split.png)\n*What is plotted.*\n\n- **Result.**")
     assert L.problems(moved)  # the figure after the rule, not right after Method
     assert not L.problems(CARD + "See [the flags](#flagged).\n## Flags <a id=\"flagged\"></a>\n")  # a section anchor
 
@@ -154,7 +156,7 @@ SLOT_CARD = """### T (1.3, opened x) <a id="t"></a>
 - **Data.** d.
 - **Method.** m.
 
-![f](../../figures/ledger/ledger_x.png)
+![f](../../figures/depth/ledger/ledger_x.png)
 *c.*
 
 - **Rule, fixed in advance.** "r."
@@ -182,9 +184,9 @@ def test_the_figure_shows_every_model_of_its_table():
     assert L.slot_problems(head, body, {"ledger_x": {**good["ledger_x"], "Lightning": "grey: x"}})  # data shown grey
     assert L.slot_problems(head, body, {"ledger_x": {k: v for k, v in good["ledger_x"].items() if k != "Muse"}})
     assert L.slot_problems(head, body, {})  # no slot record for the figure
-    borrowed = SLOT_CARD.replace("../../figures/ledger/ledger_x.png", "../../results/x/verdict.png")
+    borrowed = SLOT_CARD.replace("../../figures/depth/ledger/ledger_x.png", "../../results/x/verdict.png")
     assert L.slot_problems(*L.entries(borrowed)[0], good)
-    readme = SLOT_CARD.replace("../../figures/ledger/ledger_x.png", "../../figures/story/fig01_split.png")
+    readme = SLOT_CARD.replace("../../figures/depth/ledger/ledger_x.png", "../../figures/depth/fig01_split.png")
     assert not L.slot_problems(*L.entries(readme)[0], {})
 
 

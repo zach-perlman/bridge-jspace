@@ -2,7 +2,7 @@
 report in the AGENTS format with the mechanical checks filled in.
 
   report.py RUN   reads results/exp02_swaps/RUN/{manifest,summary}.json; writes
-                  figures/exp02_swaps/RUN/flip_rates.png and results/exp02_swaps/analysis/RUN/REPORT_auto.md
+                  figures/pre-sprint/exp02_swaps/RUN/flip_rates.png and results/exp02_swaps/analysis/RUN/REPORT_auto.md
                   (both write-once)
 """
 

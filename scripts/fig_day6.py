@@ -6,7 +6,7 @@
 Colours: J-lens top-10 blue, logit lens orange, the J-part's complement aqua (validated: dataviz validate_palette).
 Intervals: 95% bootstrap over bridges (seed 0), as scored; removal-at-mention intervals computed here the same way.
 
-python scripts/fig_day6.py   (writes figures/day6/*.png)
+python scripts/fig_day6.py   (writes figures/archive/day6/*.png)
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ import sys  # noqa: E402
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT))
 RES = ROOT / "results"
-OUT = ROOT / "figures" / "day6"
+OUT = ROOT / "figures" / "archive" / "day6"
 J, LOGIT, COMP = "#2a78d6", "#eb6834", "#1baf7a"
 MARK = {J: "o", LOGIT: "s", COMP: "D"}  # shape as the second channel: identity never by colour alone
 INK, INK2, MUTED, GRID, AXIS, SURF = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7", "#fcfcfb"

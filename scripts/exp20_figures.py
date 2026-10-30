@@ -1,6 +1,6 @@
 """Figures for exp20_competence (task competence, parts A and B), from a run's summary.json.
 
-exp20_figures.py OUT_NAME [--run v1]  -> figures/exp20_competence/OUT_NAME/competence.png (write-once)
+exp20_figures.py OUT_NAME [--run v1]  -> figures/pre-sprint/exp20_competence/OUT_NAME/competence.png (write-once)
     competence.png   one row per task, three panels sharing the rows. Left: how often the unedited model answers the
                      clean prompt, raw text (as B1 and exp09 ran) vs the chat template vs the chat template with
                      "Answer:" prefilled (as brew ran), Wilson 95% intervals; for exp09's families, hollow: all three of

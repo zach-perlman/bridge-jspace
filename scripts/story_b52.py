@@ -7,7 +7,7 @@ for?", batch 52 A, descriptive).
                scene or of the same class, and no scene word. Lightning (its own report folder) hollow: its gate was
                chosen after its 60-scene pre-check was seen.
 
-Every plotted number is recorded for figures/story/data.csv with its source file.
+Every plotted number is recorded for data/figures/depth/data.csv with its source file.
 """
 
 from __future__ import annotations

@@ -22,7 +22,7 @@
    - **27B:** the lookup needs it a little at 25 atoms, so the pre-registered test did not pass. With 100 atoms it needs it about as much as recall does.
 4. **Open lead.** Lookups flip mostly when the locker sentence comes *before* the pick sentence. The lookup may read a locker number that is already attached to the bridge word. Our J++ dictionary has no digit tokens, so this is being checked now.
 
-![Recall needs the J++ form; lookup much less](figures/status_2026-10-24/f1_readers.png)
+![Recall needs the J++ form; lookup much less](figures/archive/status_2026-10-24/f1_readers.png)
 
 ## How we test it
 
@@ -47,9 +47,9 @@ How to read this:
 - In answer counts (27B, 200 scenes): lookups go 86 → 71 without J++ and 86 → 83 without the random part; recalls go 150 → 35 and 150 → 146.
 - 95% intervals come from resampling the 44 bridge entities.
 
-![Where in depth](figures/status_2026-10-24/f2_depth.png)
+![Where in depth](figures/archive/status_2026-10-24/f2_depth.png)
 
-![It is J++, not any dictionary](figures/status_2026-10-24/f3_dictionaries.png)
+![It is J++, not any dictionary](figures/archive/status_2026-10-24/f3_dictionaries.png)
 
 ## What did not hold
 
@@ -68,7 +68,7 @@ How to read this:
 | On the 27B, the lookup's drop with depth follows how much of the change J++ captures | stated beside the depth figure |
 | Two models from one family, generated scenes only | 122B running; diverse and natural-text sets planned |
 
-![What moves lookups: sentence order](figures/status_2026-10-24/f4_order.png)
+![What moves lookups: sentence order](figures/archive/status_2026-10-24/f4_order.png)
 
 ## Next
 

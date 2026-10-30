@@ -1,6 +1,6 @@
 """The deck's depth-track figures (Dan's brief, 29 Oct ~20:40: "turn the root README into the deck's skeleton") into
-figures/slides/ (PNG + SVG each). CPU only, from committed files: the story figures (figures/story/*.png, themselves
-built from figures/story/data.csv), figures/story/data.csv, and the per-item run files the depth README cites.
+figures/archive/slides/ (PNG + SVG each). CPU only, from committed files: the story figures (figures/depth/*.png, themselves
+built from data/figures/depth/data.csv), data/figures/depth/data.csv, and the per-item run files the depth README cites.
 
   d1_split      the conflict test (fig01), the lens part's atoms (fig18), parts of the same size (fig02): one page
   d2_address    the address: probe / removal / swap (fig07), code and tool output (fig21), the lens readout of the
@@ -35,8 +35,8 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
 REPO = Path(__file__).resolve().parents[1]
-STORY = REPO / "figures" / "story"
-OUT = REPO / "figures" / "slides"
+STORY = REPO / "figures" / "depth"
+OUT = REPO / "figures" / "archive" / "slides"
 DATA = STORY / "data.csv"
 COL = {"lookup": "#6a4bd6", "recall": "#3a3a3a", "band": "#f0f0f0", "muted": "#666666", "tag": "#b8433a"}
 MODELS = (("qwen3.5-9b", "9B"), ("qwen3.6-27b", "27B"), ("muse-glimmer-30b", "Muse"),
@@ -69,7 +69,7 @@ def place(fig, rect: tuple[float, float, float, float], name: str, tag: str) -> 
     ax = fig.add_axes(rect)
     ax.imshow(mpimg.imread(STORY / f"{name}.png"))
     ax.set_axis_off()
-    ax.set_title(f"{tag}  (figures/story/{name}.png)", fontsize=8, loc="left", color=COL["muted"])
+    ax.set_title(f"{tag}  (figures/depth/{name}.png)", fontsize=8, loc="left", color=COL["muted"])
 
 
 def d1_split() -> None:

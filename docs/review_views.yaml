@@ -1,16 +1,16 @@
 # The review views: one per claim the README makes. The single source of truth for the review dashboard
 # (scripts/review.py: make review-serve / review-export / review-summary) and, from Phase 2, for docs/verify_pack.md.
 # Per view: the claim in the README's words, the docs/x0_numbers.json keys it backs ("sources"; <m> = 9b / 27b / 122b /
-# muse, the same keys as the `source` column of figures/story/data.csv), per model the run dirs and their per-item
+# muse, the same keys as the `source` column of data/figures/depth/data.csv), per model the run dirs and their per-item
 # files, the filters that make the claim's item set (as the verdict used them), and what each answer class means.
 # Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard. headline: the
-# numbers the dashboard recounts over the whole item set (Phase 2) and compares with figures/story/data.csv.
+# numbers the dashboard recounts over the whole item set (Phase 2) and compares with data/figures/depth/data.csv.
 # join_runs (per model): runs whose rows give the arms the view's run does not have, joined by scene (x0_parts). A run
 # that has not landed gives no items; its view lists it as "not run yet" (no run dir) or "no outcomes.jsonl yet".
 #
 # 29 Oct (Dan 11:45, jobs/c3/batch53.yaml verify_prep_1145): the views are today's headline claims. tier: 1 marks the
 # seven views Dan reads tomorrow, in his order a-g (the first seven views below); tier 2 only once tier 1 is done.
-# headline csv: a number in figures/story/data.csv found by (model column, quantity) where no x0_numbers key exists
+# headline csv: a number in data/figures/depth/data.csv found by (model column, quantity) where no x0_numbers key exists
 # (Lightning, the newer tests). The fixed sample Dan reads (seed 29) is at the end of this file (fixed_sample).
 version: 1
 
@@ -1201,7 +1201,7 @@ views:
     title: Matched scenes and the first-mention split (table 3c)
     status: later
     kind: composition
-    readme: "not in README v4's body (docs/x0_details.md; figures/supp/s01)"
+    readme: "not in README v4's body (docs/x0_details.md; figures/depth/supp/s01)"
     claim: "The recall needs J++ most where the pick is the bridge's first mention."
     sources: [comp_rep_both_gap_<m>, comp_two_fmyes_lk_cell_<m>, comp_two_fmyes_rc_<m>, comp_two_fmno_lk_cell_<m>, comp_two_fmno_rc_<m>,
               comp_one_fmyes_lk_cell_<m>, comp_one_fmyes_rc_<m>, comp_one_fmno_lk_cell_<m>, comp_one_fmno_rc_<m>, comp_rep_fmno_lk_cell_<m>, comp_rep_fmno_rc_<m>]
@@ -1298,7 +1298,7 @@ views:
     title: The pointer with J++ against the pointer with a random part of J++'s size
     status: phase2
     kind: routes
-    readme: "Section 6 design errors (the bar out of reach); figures/supp/s10"
+    readme: "Section 6 design errors (the bar out of reach); figures/depth/supp/s10"
     claim: "Removing the pointer with J++ costs the lookup more than the pointer with a random part of J++'s size only on the 27B."
     sources: [rtc_lost_C0_jpp_minus_rand_lk_<m>, rtc_left_C0_alf_jpp_lk_<m>]
     filters:

@@ -10,7 +10,7 @@ contrast against white (WCAG 2.x, graphical objects). Semantic colors, the same 
 accent) for lookups, RECALL (dark grey) for recalls, CONTROL (light grey) for controls, a pale CHANCE band.
 Markers: filled = hybrid, hollow = attention-only (said once, in the caption).
 
-Data: every number a figure draws is also written to figures/cross_model/data/<stem>.json, one record per number with
+Data: every number a figure draws is also written to figures/archive/cross_model/data/<stem>.json, one record per number with
 its grid key (finding, model, setting) when it is a grid cell, so tests can compare it with grid.csv.
 """
 
@@ -33,7 +33,7 @@ from bridge_jspace import plot_style as PS
 from scripts import readme_build as RB
 
 REPO = RB.REPO
-OUT = REPO / "figures" / "cross_model"
+OUT = REPO / "figures" / "archive" / "cross_model"
 DATA = OUT / "data"
 
 # ---------------------------------------------------------------- size and type (Dan's guide, section 2)

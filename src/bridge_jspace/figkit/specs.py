@@ -63,7 +63,7 @@ def c1_split() -> Figure:
                   "grey tick: the largest same-size control in M − K (rotated, logit lens, PCA). Muse 30B: shared with "
                   "the logit lens; Qwen 122B: gone by probability (Zach's grading). Right (Dan, share): the conflict "
                   "test at L, switches lost beyond a random part (docs/x0_numbers.json rc_excess_* / lk_excess_*; "
-                  "Lightning from figures/story/data.csv), 200 scenes per model, 95% whiskers; bold: recall minus "
+                  "Lightning from data/figures/depth/data.csv), 200 scenes per model, 95% whiskers; bold: recall minus "
                   "lookup (contrast_*); dashed: the lookup's 0.10 bar. Lightning hollow (gate chosen after its "
                   "pre-check; pending hand-check, 29 Oct).", [left, right])  # fmt: skip
 
@@ -90,7 +90,7 @@ def controls_dan() -> Figure:
     return Figure("p2b_controls_dan", "Same-size parts do not do it (Dan).",
                   "The recall's switches lost beyond a random part without the lens part's 25 directions (teal, 95% "
                   "whiskers) against same-size PCA directions, the logit lens's directions and random lens directions "
-                  "(grey), main test at L, 200 scenes (figures/story/data.csv fig02 rows). On the 122B the PCA control "
+                  "(grey), main test at L, 200 scenes (data/figures/depth/data.csv fig02 rows). On the 122B the PCA control "
                   "is close (0.21 vs 0.26). Lightning has no fig02 row.",
                   [Multiples(models, list(qs), data, colors, "recall: switches lost beyond a random part", (-0.1, 0.85))])  # fmt: skip
 
@@ -135,7 +135,7 @@ def atoms_dan() -> Figure:
     ans = ", ".join(f"{n} {D.s(m, q + 'an answer word')[0]:.2f}" for m, n in models)
     return Figure("p4b_atoms_dan", "The lens part's 25 directions are the bridge words, never the answer.",
                   f"Dan: share of the rebuilt energy by the kind of lens word, main test at L, 50 scenes per model "
-                  f"(figures/story/data.csv 52 A rows). The answer word's share: {ans}. Lightning hollow (pending "
+                  f"(data/figures/depth/data.csv 52 A rows). The answer word's share: {ans}. Lightning hollow (pending "
                   f"hand-check, 29 Oct); the 122B has no 52 A row in the depth README.",
                   [Stacked(models, segs, "share of the lens part's rebuilt energy", lightning_hollow(models), rotate=20)],
                   size="half")  # fmt: skip
@@ -171,7 +171,7 @@ def swap_dose() -> Figure:
     p = Curves(panels, "dose (a real change = 1)", "lookups to the swapped-in locker", (-0.02, 0.85), band=(-0.02, rnd + 0.02),
                vline=(1, "a real change"))  # fmt: skip
     return Figure("p5b_swap_dose", "The address swap moves the lookup.",
-                  "Lookups answering the swapped-in locker by dose (s / the mean real change; figures/story/data.csv "
+                  "Lookups answering the swapped-in locker by dose (s / the mean real change; data/figures/depth/data.csv "
                   "fig07), 600 swaps per dose and model; dot: s = 2 (about a real change's size) with its value; grey "
                   "band: a random vector at s = 4; dashed: a real change. The swap's rule fixed in advance was read at "
                   "s = 1 and said no on every model (a design error). Lightning and the 122B thinner (after the data; "
@@ -189,7 +189,7 @@ def lens_readout() -> Figure:
     return Figure("p5c_lens_readout", "The lens cannot see the address.",
                   "How far above 200 random vectors of the same size the lens's 25 directions rebuild the address swap "
                   "(orange) and an item change of the same size (blue, the positive control), in z (grey band: the "
-                  "random vectors' 95% range); 200 cases per model (figures/story/data.csv fig07b_verbal). Lightning "
+                  "random vectors' 95% range); 200 cases per model (data/figures/depth/data.csv fig07b_verbal). Lightning "
                   "hollow; the 122B has no 47.0 run in the depth README.", [p], size="half")  # fmt: skip
 
 
@@ -217,7 +217,7 @@ def readable() -> Figure:
                   "At the last token, at the layer where the read peaks (under each model): read = a probe for the "
                   "recall's bridge entity on the lens part of the state (dark); lens swap = the changed prompt's lens "
                   "part swapped in, its switches as a share of the whole-state patch's, which switches 0.95-1.00 (teal); "
-                  "dashed: the probe's chance. Locker-first items (figures/story/data.csv fig17_jspace_last_token). "
+                  "dashed: the probe's chance. Locker-first items (data/figures/depth/data.csv fig17_jspace_last_token). "
                   "Rule: '(b) readable, not used' on all four. Lightning hollow (pending hand-check, 29 Oct); the 122B "
                   "has no 51.10 run in the depth README.", [p], size="half")  # fmt: skip
 
@@ -239,7 +239,7 @@ def breaks() -> Figure:
     return Figure("p7_breaks", "Where it breaks: the 27B with more directions; passages whose fact the model knows.",
                   "Left: the lookup's switches lost beyond a random part without 25 / 50 / 100 lens directions, main "
                   "test at L, 200 scenes (docs/x0_numbers.json lk_excess_k*). Right: Zach's named passages through "
-                  "Dan's conflict test, the lookup with true facts (purple) and made-up facts (dark) (figures/story/"
+                  "Dan's conflict test, the lookup with true facts (purple) and made-up facts (dark) (figures/depth/"
                   "data.csv ledger_zach_named). Muse and Lightning missed the made-up-fact gate (descriptive); Lightning "
                   "hollow (pending hand-check, 29 Oct). Dashed: the lookup's 0.10 bar.", [left, right])  # fmt: skip
 
@@ -277,7 +277,7 @@ def routes() -> Figure:
     return Figure("p9_routes", "The lookup goes by identity or position, never the value.",
                   "Routes test (another item moved), the whole change at L: shares of switched lookups naming the "
                   f"item's own locker (identity) or the locker now at its old place (position); the new number (value): "
-                  f"{val}. 300 scenes per model (figures/story/data.csv fig05 rows). Lightning hollow; the 122B hollow "
+                  f"{val}. 300 scenes per model (data/figures/depth/data.csv fig05 rows). Lightning hollow; the 122B hollow "
                   "(gate lowered to 0.75 after the data).",
                   [Stacked(models, segs, "lookups switched by the whole change", {m for m, _ in models if D.hollow(m, True)}, rotate=20)],
                   size="half")  # fmt: skip

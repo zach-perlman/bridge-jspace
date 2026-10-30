@@ -39,7 +39,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
 
 ## Setup
 
-![One passage, five finals: the same question with the bridge's fact stated or left to memory](figures/fig00_dataset.png)
+![One passage, five finals: the same question with the bridge's fact stated or left to memory](../../figures/breadth/fig00_dataset.png)
 *Fig. 0.*
 
 - **The question.** "The composer who wrote The Magic Flute was of which nationality?" The bridge (Mozart) is:
@@ -76,7 +76,7 @@ Does removing what the lens reads cost recall more than reading?
   - M − K is +51 [46, 55] (27B), +43 [37, 49] (9B) and +53 [48, 59] (Lightning).
   - Stated facts lose 3, 5 and 4 points.
 
-![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](figures/fig01_needed.png)
+![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](../../figures/breadth/fig01_needed.png)
 *Fig. 1.*
 
 - **It is specific to the lens's directions.**
@@ -135,7 +135,7 @@ Does the split survive everything we could vary?
 - **Lightning on natplus** (amendment 55): +52 [46, 58], with rotated -1 and logit lens
   +8. Its only other datasets are v2 and the natural three-hop set (Section 6).
 
-![The Qwens' split on every dataset we built, with the logit lens near zero](figures/fig02_datasets.png)
+![The Qwens' split on every dataset we built, with the logit lens near zero](../../figures/breadth/fig02_datasets.png)
 *Fig. 2.*
 
 - **Every relation.**
@@ -146,7 +146,7 @@ Does the split survive everything we could vary?
     +49 and +50.
   - A rendering redraws passages, distractors and wording over the same facts.
 
-![The split holds on every relation, every start, both test halves, three renderings and by probability](figures/fig03_robust.png)
+![The split holds on every relation, every start, both test halves, three renderings and by probability](../../figures/breadth/fig03_robust.png)
 *Fig. 3.*
 
 - **A clean checkout reproduces it.** Rerun from a fresh worktree:
@@ -216,7 +216,7 @@ Where in the prompt must the removal act?
   - At these bands more of the effect is shared with the logit lens: 9B +28, Lightning
     +23 (mid band: +1, +9).
 
-![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](figures/fig04_where.png)
+![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](../../figures/breadth/fig04_where.png)
 *Fig. 4.*
 
 ## 4. What the directions carry at the mention: which entity it is
@@ -235,7 +235,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
     +70 vs +69 (9B), on the PM final.
   - The answer direction alone moves +29.
 
-![A swapped J-part moves the answer to the other entity; it is not the answer token](figures/fig05_carries.png)
+![A swapped J-part moves the answer to the other entity; it is not the answer token](../../figures/breadth/fig05_carries.png)
 *Fig. 5.*
 
 - **It is a pointer, whatever context it came from.**
@@ -252,7 +252,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   probe's subspace moves +8 / +6 / +2, against J++'s
   +75 / +80 / +62.
 
-![A J-part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](figures/fig06_pointer.png)
+![A J-part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/breadth/fig06_pointer.png)
 *Fig. 6.*
 
 - **The fact is looked up later.** At the answer position, the lens first reads X's fact on half the items at:
@@ -261,7 +261,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - layer 32 on Lightning (L33).
   For a swapped entity it reads D's fact at the same layers.
 
-![The fact appears at the answer position only after the band, for a swapped entity as for the original](figures/fig07_lookup.png)
+![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/fig07_lookup.png)
 *Fig. 7.*
 
 - **Readable, carried and needed come apart.**
@@ -269,7 +269,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - Ministral's lens reads the fact at mid depth, but its J-part carries only +3, and
     +5 with 100 directions.
 
-![The lens reads the fact at the mention in every model; readable is not the same as needed](figures/fig08_readable.png)
+![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/fig08_readable.png)
 *Fig. 8.*
 
 ## 5. How much J-space
@@ -330,7 +330,7 @@ How many directions does the dependence need, and when does the removal stop bei
   - Its top direction alone removes 11% of the residual; all 100 remove 21%.
   - At 100 directions stated facts lose 17 points.
 
-![The J-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](figures/fig09_dose.png)
+![The J-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/fig09_dose.png)
 *Fig. 9.*
 
 - **Swapping more directions.**
@@ -428,7 +428,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
     recall. In the 9B and Lightning that last test cannot be read.
   - We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls.
 
-![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](figures/fig10_beyond.png)
+![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](../../figures/breadth/fig10_beyond.png)
 *Fig. 10.*
 
 ## 7. Every model, every test
@@ -449,7 +449,7 @@ Size-matched for Bolt: from the dose run (150 items per word), where no stand-al
 pre-registered (on the J-specific excess). Bolt's readings stop at its specificity limit (K 10), so its
 K\* covers only 1-3 directions, where its effect is about 0.
 
-![Every model we tried against every test; the gaps are what is left](figures/fig11_scorecard.png)
+![Every model we tried against every test; the gaps are what is left](../../figures/breadth/fig11_scorecard.png)
 *Fig. 11.*
 
 Untestable: removing the top 10 lens directions adds more plain text loss than the 2-nat bar:
@@ -534,5 +534,5 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 ## Appendix. Links
 
 Every number on this page comes from [docs/breadth/data.csv](data.csv), each row with its source file;
-scripts/report_breadth.py builds it and this page. The figures ([figures/](figures/)) are drawn by scripts/fig_neel.py from
+scripts/report_breadth.py builds it and this page. The figures ([figures/](../../figures/breadth/)) are drawn by scripts/fig_neel.py from
 the same result files; they will be redrawn with the shared plot style after the code merge.

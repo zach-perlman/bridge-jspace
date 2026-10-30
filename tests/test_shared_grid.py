@@ -59,7 +59,7 @@ def test_depth_cells_resolve_to_their_scorecard_row_and_key(grid):
     targets = {name: target for target, _, name in S.MODELS}
     seen = set()
     for r in (r for r in grid if r["study"] == "depth"):
-        assert r["source"] == "figures/story/scorecard.csv"
+        assert r["source"] == "data/figures/depth/scorecard.csv"
         got = card.get((r["source row"], r["model key"]))
         if got is None:  # never run on this model: no scorecard row, a dash
             assert (r["cell"], r["flag"], r["key"], r["value"]) == ("-", "", "", ""), r
@@ -92,7 +92,7 @@ def test_breadth_cells_resolve_to_their_data_csv_keys(grid):
     assert graded == 64  # 10 rules x 9 models, less the 26 cells data.csv has no key for
 
 
-# five cells per source against the numbers each README states (depth: figures/story/scorecard.csv; breadth: Zach's
+# five cells per source against the numbers each README states (depth: data/figures/depth/scorecard.csv; breadth: Zach's
 # README sections 1, 4 and 8)
 @pytest.mark.parametrize(
     ("claim", "model", "study", "cell"),

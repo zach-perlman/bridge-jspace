@@ -61,8 +61,8 @@ def plant(root: Path, readme_lookup: str = "0.25", readme_route: str = "0.50") -
         "rt_C2_whole_identity_9b": {"text": "0.50", "source": f"{rr}/verdict-1/verdict.json"},
         "rt_C2_whole_position_9b": {"text": "0.50", "source": f"{rr}/verdict-1/verdict.json"},
         "rtk_C2_keep_alf_position_9b": {"text": "0.00", "source": f"{rr}/verdict-1/verdict.json"}})  # fmt: skip
-    (root / "figures/story").mkdir(parents=True)
-    (root / "figures/story/data.csv").write_text("figure,model,quantity,value,lo,hi,n,source\n")
+    (root / "data/figures/depth").mkdir(parents=True)
+    (root / "data/figures/depth/data.csv").write_text("figure,model,quantity,value,lo,hi,n,source\n")
     (root / "docs/depth").mkdir(parents=True)
     (root / "docs/depth/README.md").write_text(
         f"lookup {readme_lookup} [0.1, 0.4]<!-- src: docs/x0_numbers.json | lk_excess_9b --> | recall "

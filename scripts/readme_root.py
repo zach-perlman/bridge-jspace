@@ -4,7 +4,7 @@ of the words plus one command; numbers and figures fill themselves in.
 Placeholders in docs/README.root.template.md:
   {{b|key}}            docs/breadth/data.csv's value string for key, with its source comment
   {{x|key}}            docs/x0_numbers.json's first number for key, with its source comment
-  {{s|model|quantity}} figures/story/data.csv's value (2 decimals), with its source comment
+  {{s|model|quantity}} data/figures/depth/data.csv's value (2 decimals), with its source comment
   {{fig|id}}           the figure kit's README figure (figures/readme/<id>.png) under its claim as alt text
 
 uv run python scripts/readme_root.py build      # README.md from the template (run `make readme` for figures + both)
@@ -42,7 +42,7 @@ def x0() -> dict[str, str]:
 
 
 def story() -> dict[tuple[str, str], float]:
-    with (REPO / "figures/story/data.csv").open() as f:
+    with (REPO / "data/figures/depth/data.csv").open() as f:
         out = {}
         for r in csv.DictReader(f):
             try:
@@ -65,7 +65,7 @@ def build() -> str:
             return f"{X[arg]}<!-- src: docs/x0_numbers.json | {arg} -->"
         if kind == "s":
             model, quantity = arg.split("|", 1)
-            return f"{S[(model, quantity)]:.2f}<!-- src: figures/story/data.csv | {quantity} -->"
+            return f"{S[(model, quantity)]:.2f}<!-- src: data/figures/depth/data.csv | {quantity} -->"
         spec = SPECS[arg]()
         return f"![{spec.claim}](figures/readme/{arg}.png)"
 
@@ -99,10 +99,10 @@ def convert() -> None:
     text = re.sub(
         rf"((?:{num} / )*{num})<!-- src: (docs/breadth/data\.csv|docs/x0_numbers\.json) \| ([^>]*?) -->", conv, text
     )
-    swaps = {"figures/deck/c1_controls.png": "p2a_controls_zach", "figures/deck/c2_pointer.png": "p4a_pointer_zach",
-             "figures/deck/c3_address.png": "p5a_probe", "figures/deck/c4_readable.png": "p6_c4_readable",
-             "figures/deck/c9_breaks.png": "p7_breaks", "figures/deck/c0_setup_a.png": "p0a_datasets",
-             "figures/deck/c0_setup_b.png": "p0b_tools"}  # fmt: skip
+    swaps = {"figures/archive/deck/c1_controls.png": "p2a_controls_zach", "figures/archive/deck/c2_pointer.png": "p4a_pointer_zach",
+             "figures/archive/deck/c3_address.png": "p5a_probe", "figures/archive/deck/c4_readable.png": "p6_c4_readable",
+             "figures/archive/deck/c9_breaks.png": "p7_breaks", "figures/archive/deck/c0_setup_a.png": "p0a_datasets",
+             "figures/archive/deck/c0_setup_b.png": "p0b_tools"}  # fmt: skip
     for path, fid in swaps.items():
         text = re.sub(r"!\[[^\]]*\]\(" + re.escape(path) + r"\)", f"{{{{fig|{fid}}}}}", text)
     TEMPLATE.write_text(text)

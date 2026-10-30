@@ -42,7 +42,7 @@ Every README figure, as it is restyled for v6 (one experiment card E1–E16, one
 
 ## README v5 (27 Oct, after the overnight queue; draft, UNVERIFIED)
 
-Figure → claim (its title) → status → source. Built by `scripts/readme_story_figures.py` (`figures/story/`, `figures/supp/`, every plotted number in `figures/story/data.csv`; Fig. 11 from `figures/story/scorecard.csv`); `scripts/check_figure_terms.py` checks the retired terms. Status: fixed in advance (filled marks), after the data (open), ° gate lowered to 0.75 after the data.
+Figure → claim (its title) → status → source. Built by `scripts/readme_story_figures.py` (`figures/depth/`, `figures/depth/supp/`, every plotted number in `data/figures/depth/data.csv`; Fig. 11 from `data/figures/depth/scorecard.csv`); `scripts/check_figure_terms.py` checks the retired terms. Status: fixed in advance (filled marks), after the data (open), ° gate lowered to 0.75 after the data.
 
 | Figure | Claim (title) | Status | Source (results/) |
 |---|---|---|---|
@@ -61,7 +61,7 @@ Figure → claim (its title) → status → source. Built by `scripts/readme_sto
 | 8 `fig08_first_locker` | The pointer marks the first locker in a clean layout | after the data | x6_routes/x45a-descriptive-*, x8_write |
 | 9 `fig09_transfer` | The split carries over to other texts; the pointer must be refit for each format | fixed in advance (the 9B's natural passages °); (b) 45d fixed in advance | x0b_generalize, x5_natural, x0b_generalize/*x45d* |
 | 10 `fig10_what_is_left` | J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's | fixed in advance; the 122B ° (identity row; no wrong-pair control: not tested); the wrong pair on the scenes where it reached 0.9 of identity's share (size check, after the data) | x6_routes (bothoff, d1, *x45e_dom*, qwen35_122b_x6_routes_d1_g75), x6_routes/x45e-size-* |
-| 11 `fig11_scorecard` | What held where | per cell ("a": after the data; "–": not tested); no 45b row (a design error, Dan 27 Oct ~11:20) | figures/story/scorecard.csv (its data.csv key column) |
+| 11 `fig11_scorecard` | What held where | per cell ("a": after the data; "–": not tested); no 45b row (a design error, Dan 27 Oct ~11:20) | data/figures/depth/scorecard.csv (its data.csv key column) |
 | s01, s01b, s02, s05, s08, s10 | the supplements of Figs. 1, 1b, 2, 5, 8 and 10 (as before) | as their figures | as their figures |
 | s01c `s01c_no_chat_template` | Without the chat template the split is still there (after the data) | after the data, ° (45i'; Q45.8 stays not tested at gate 0.80) | x0_necessity/*x45i_main_nochat*_g75, x6_routes/*x45i_nochat* |
 | s03b `s03b_layers_45b` | Locker after the pick: what moves the lookup at each layer (the main test's items) | after the data (45b's sweep; a design error: its changed prompt differs after the bridge word) | x45b_binding/*sweep_v2* |
@@ -69,9 +69,9 @@ Figure → claim (its title) → status → source. Built by `scripts/readme_sto
 
 ## README v4 (Dan, 26 Oct ~16:45; kept for reference)
 
-One figure, one claim, in story order. The title is the claim. The subtitle, one line on the figure, says how to read it. The caption in the README is one short line saying what to look at. All numbers come from `scripts/readme_story_figures.py`, which reads the run files and writes every plotted number to `figures/story/data.csv` (figure rows) next to the README's keys (rows `numbers`). No number is typed by hand.
+One figure, one claim, in story order. The title is the claim. The subtitle, one line on the figure, says how to read it. The caption in the README is one short line saying what to look at. All numbers come from `scripts/readme_story_figures.py`, which reads the run files and writes every plotted number to `data/figures/depth/data.csv` (figure rows) next to the README's keys (rows `numbers`). No number is typed by hand.
 
-New file names (`figures/story/figNN_*.png`); the 26 Oct files (`fig0_setup.png` … `fig11_order.png`) are in `figures/archive/` since 27 Oct. Supplementary figures go to `figures/supp/` and are linked from Appendix A.
+New file names (`figures/depth/figNN_*.png`); the 26 Oct files (`fig0_setup.png` … `fig11_order.png`) are in `figures/archive/` since 27 Oct. Supplementary figures go to `figures/depth/supp/` and are linked from Appendix A.
 
 ## Shared visual language (Step 2)
 

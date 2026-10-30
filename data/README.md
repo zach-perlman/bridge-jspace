@@ -6,7 +6,7 @@ sha256 pins are in [SOURCES.md](SOURCES.md) and `src/bridge_jspace/pins.py`.
 
 ## Part B's prompt suite v1 (from 2026-10-19; the headline data)
 
-`data/suite_v1/` (generator and checks: `scripts/suite_v1.py`; page with examples: `figures/suite_v1/index.html`).
+`data/suite_v1/` (generator and checks: `scripts/suite_v1.py`; page with examples: `data/figures/archive/suite_v1/index.html`).
 Chat format (one user turn, thinking off, "Answer:" prefilled). Every item has a clean prompt, a counterfactual C that
 changes only the bridge, an off-path control O, and each step alone; C and O line up with the clean prompt token for
 token (2,400 of 2,400). No place relations and no answer tied one-to-one to its bridge (the France -> Paris problem).

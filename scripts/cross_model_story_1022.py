@@ -27,7 +27,7 @@ from matplotlib.lines import Line2D
 
 from scripts import tasks_v2 as T
 
-OUT = Path("figures/cross_model")
+OUT = Path("figures/archive/cross_model")
 OUT.mkdir(parents=True, exist_ok=True)
 AB, WM = Path("results/ablate_v2"), Path("results/write_max")
 SURFACE, INK, INK2, INK3, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#8d8c88", "#e4e3df"

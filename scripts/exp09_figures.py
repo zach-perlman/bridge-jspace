@@ -1,11 +1,11 @@
 """Figures for exp09_bind_recall (part B), from its map, parts and swaps runs.
 
-exp09_figures.py OUT_NAME [--map M --parts P --swaps S]  -> figures/exp09_bind_recall/OUT_NAME/ (write-once)
+exp09_figures.py OUT_NAME [--map M --parts P --swaps S]  -> figures/pre-sprint/exp09_bind_recall/OUT_NAME/ (write-once)
     bind_recall.png  left: the lens-free map, how often copying the counterfactual's activation at the question's
                      tokens (solid) or the last token (dashed) gives X's capital, by layer, recalled (R) and bound (B);
                      middle: at the window, how often each part of the copy does (exp04's split, J++), with the
                      random-direction nulls; right: exp02's probe swaps at the cue phrase, layers 24-40
-exp09_figures.py OUT_NAME --source-use  -> figures/exp09_bind_recall/OUT_NAME/source_use.png
+exp09_figures.py OUT_NAME --source-use  -> figures/pre-sprint/exp09_bind_recall/OUT_NAME/source_use.png
     source_use.png   the four families by source x use (R, B, RL, L): at each family's window, how often the whole
                      copy, its J-space part and the rest, and its I/X lens coordinates and the rest give X's answer
 """
@@ -248,7 +248,7 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp09_bind_recall/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp09_bind_recall/ (write-once)")
     parser.add_argument("--map", default="map_v1")
     parser.add_argument("--parts", default="parts_v1")
     parser.add_argument("--swaps", default="swaps_v1")

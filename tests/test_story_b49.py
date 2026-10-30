@@ -27,7 +27,7 @@ def test_figure_on_its_planted_verdict(kinds, tmp_path, monkeypatch, saved):  # 
     verdict = planted(tmp_path / "results", monkeypatch, kinds)
     _, build, name = B.TESTS["49.1"]
     assert build(verdict, name) == name
-    assert (S.OUT / f"{name}.png").exists() and (S.OUT / f"{name}.svg").exists()
+    assert (S.OUT / f"{name}.png").exists()  # PNG only (Dan, 30 Oct)
     check(saved[name])
     rows = [r for r in S.ROWS if r["figure"] == B.fig_id(name)]
     assert rows and all(r["source"].endswith("x49_1.json") for r in rows)

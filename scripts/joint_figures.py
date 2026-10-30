@@ -9,10 +9,10 @@ four directions outside the lens); the models Qwen 9B, Qwen 27B, Qwen 122B, Muse
   figures/shared/j2_swap.png               swapping the lens part moves the recalled answer, not the lookup one
   figures/shared/j3_order_signal.png       the lookup answer uses an order signal outside the lens (Dan's scenes)
   figures/shared/grid_front.png            the README's four findings x five models, from docs/shared/grid.csv
-  figures/shared/data.csv                  every plotted number with its source (figures/story/data.csv's columns)
+  data/figures/shared/data.csv                  every plotted number with its source (data/figures/depth/data.csv's columns)
   docs/shared/contact_sheet_joint.png      the five, for one look
 
-Sources: docs/breadth/data.csv (Zach's numbers), figures/story/data.csv (ours, with docs/x0_numbers.json's rows), Zach's
+Sources: docs/breadth/data.csv (Zach's numbers), data/figures/depth/data.csv (ours, with docs/x0_numbers.json's rows), Zach's
 stored knock-out scores and swap runs under results/ (controls and the swap of everything else, not in his report), and
 docs/shared/grid.csv. Example texts: Zach's from data/tasks_v2 (his Fig. 0's items), ours from readme_story_figures.f00_setup.
 
@@ -38,10 +38,10 @@ from scripts import shared_grid as G  # noqa: E402
 from scripts import story_style as S  # noqa: E402
 
 OUT = REPO / "figures" / "shared"
-DATA = OUT / "data.csv"
+DATA = REPO / "data" / "figures" / "shared" / "data.csv"  # figures/ holds PNGs only
 SHEET = REPO / "docs" / "shared" / "contact_sheet_joint.png"
 BREADTH = REPO / "docs" / "breadth" / "data.csv"
-DEPTH = REPO / "figures" / "story" / "data.csv"
+DEPTH = REPO / "data" / "figures" / "depth" / "data.csv"
 ITEMS = REPO / "data" / "tasks_v2" / "jsuite_v2_test_chat" / "items.jsonl"
 FIELDS = ("figure", "model", "quantity", "value", "lo", "hi", "n", "source")
 ROWS: list[dict] = []
@@ -83,7 +83,7 @@ def breadth() -> dict[tuple[str, str], dict]:
 
 
 def depth() -> dict[tuple[str, str, str], dict]:
-    """(figure, model, quantity) -> figures/story/data.csv row; docs/x0_numbers.json's rows are ('numbers', '', key)."""
+    """(figure, model, quantity) -> data/figures/depth/data.csv row; docs/x0_numbers.json's rows are ('numbers', '', key)."""
     return {(r["figure"], r["model"], r["quantity"]): r for r in read_csv(DEPTH)}
 
 
@@ -285,16 +285,16 @@ def j1_recall_needs_lens(plt):
                     continue
                 q = "main test (two people swap picks): {} extra loss"
                 rc, st = dp[("fig01", target, q.format("recall"))], dp[("fig01", target, q.format("lookup"))]
-                kind = "fixed"  # our main test, fixed in advance on all four (figures/story/scorecard.csv 'main test')
+                kind = "fixed"  # our main test, fixed in advance on all four (data/figures/depth/scorecard.csv 'main test')
                 cv = num(dp[("numbers", "", f"rc_droprand_{m}")]["value"])
                 pts = (100 * num(rc["value"]), 100 * num(st["value"]))
                 cis = tuple((100 * num(r["lo"]), 100 * num(r["hi"])) for r in (rc, st))
                 for label, r, v in (("recalled", rc, pts[0]), ("lookup", st, pts[1])):
                     record("j1", name, f"remove from the patch: share of the {label} answers' switches lost beyond a random part (%)", round(v, 1),
                            round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1),
-                           source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
+                           source=f"data/figures/depth/data.csv | fig01 | {r['quantity']}")  # fmt: skip
                 record("j1", name, "remove from the patch, control (a random part): share of the recalled answers' switches lost (%)", cv,
-                       source=f"figures/story/data.csv | numbers | rc_droprand_{m}")  # fmt: skip
+                       source=f"data/figures/depth/data.csv | numbers | rc_droprand_{m}")  # fmt: skip
             ax.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
             ax.plot([cv], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
             for v, ci, col in zip(pts, cis, (RECALLED, LOOKUP), strict=True):
@@ -445,11 +445,11 @@ def j3_order_signal(plt):
                 fontsize=S.FONT,
             )
             record("j3", name, f"answers by position lost when {what} is removed from the change (pp)", round(v, 1),
-                   round(lo, 1), round(hi, 1), n, source=f"figures/story/data.csv | fig05 | another item moved, whole: "
+                   round(lo, 1), round(hi, 1), n, source=f"data/figures/depth/data.csv | fig05 | another item moved, whole: "
                    f"position share; another item moved, {arm}: position share (difference; paired 95% interval over "
                    f"scenes from results/x6_routes/{run}/outcomes.jsonl, 10,000 draws, seed 0)")  # fmt: skip
         record("j3", name, "answers by position with the whole change (%)", round(whole, 1), n=n,
-               source="figures/story/data.csv | fig05 | another item moved, whole: position share")  # fmt: skip
+               source="data/figures/depth/data.csv | fig05 | another item moved, whole: position share")  # fmt: skip
         ticks.append(y0 - 0.5)
         labels.append(f"{name}, {whole:.0f}% of\nanswers by position")
         flag_w = card[("a write moves the lookup", scard)]
@@ -459,7 +459,7 @@ def j3_order_signal(plt):
         ):  # 'twice as large' on the figure
             dose = dp[("fig07", target, f"dose (s / mean s*), s = {s}")]
             record("j3", name, f"{what}: size in units of a real change's", round(num(dose["value"]), 2),
-                   source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
+                   source=f"data/figures/depth/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
         w = dp[("fig07", target, "lookup target share, mean over locker pairs, s = 2")]
         rnd = dp[("fig07", target, "lookup target share, random direction, s = 4")]
         for k, (r, col, what) in enumerate(((w, orange, "order signal"), (rnd, grey, "random vector, twice as large"))):
@@ -478,7 +478,7 @@ def j3_order_signal(plt):
             )
             record("j3", name, f"answers sent to the chosen locker when written: {what} (%)", v,
                    "" if lo is None else lo, "" if hi is None else hi,
-                   source=f"figures/story/data.csv | fig07 | {r['quantity']}")  # fmt: skip
+                   source=f"data/figures/depth/data.csv | fig07 | {r['quantity']}")  # fmt: skip
     for ax in (axl, axr):
         ax.set_xlim(-8, 62)
         ax.set_ylim(-4.2, 0.7)
@@ -679,7 +679,7 @@ def j4_depth_map(plt):
         ax.text(x + 0.02, y - 0.22, f"{100 * g[0]:.0f}%", va="center", fontsize=S.FONT, color=LOOKUP)
         key = f"contrast_{dict((z, s) for _n, z, _t, s in MODELS)[zm]}"
         record("j4", names[zm], f"remove from the patch, layer {dan_layer[zm]}: gap (% of the patch's switches)",
-               round(100 * g[0]), round(100 * g[1]), round(100 * g[2]), source=f"figures/story/data.csv | numbers | {key}")  # fmt: skip
+               round(100 * g[0]), round(100 * g[1]), round(100 * g[2]), source=f"data/figures/depth/data.csv | numbers | {key}")  # fmt: skip
         record("j4", names[zm], "remove from the patch: its layer", dan_layer[zm],
                source="predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)")  # fmt: skip
     ax.set_xlim(0, 1)
@@ -763,7 +763,7 @@ def j5_muse_depth(plt):
     fig.text(0.01, 0.025, f"Dan's patch at layer 26: the lens part carries the answer ({100 * g[0]:.0f}% of the patch's "
              "switches); a different measure.", fontsize=S.FONT, va="bottom")  # fmt: skip
     record("j5", "Muse 30B", "remove from the patch, layer 26: gap (share of the patch's switches, %)", round(100 * g[0]),
-           round(100 * g[1]), round(100 * g[2]), source="figures/story/data.csv | numbers | contrast_muse")  # fmt: skip
+           round(100 * g[1]), round(100 * g[2]), source="data/figures/depth/data.csv | numbers | contrast_muse")  # fmt: skip
     hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=9),
           plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=14, mew=2.6),
           plt.Line2D([], [], marker="o", ls="", mfc="white", mec=RECALLED, mew=1.6, ms=9)]  # fmt: skip
@@ -773,7 +773,7 @@ def j5_muse_depth(plt):
 
 
 def j8_routes(plt):
-    """Dan ~20:30, from Fig. 5's data (figures/story/data.csv s05, every model and arm, since v6's fig05 drops the
+    """Dan ~20:30, from Fig. 5's data (data/figures/depth/data.csv s05, every model and arm, since v6's fig05 drops the
     122B; the routes test, scenes where the patch moves another item): per model one stacked bar of the lookup answers under the whole patch, by route: identity (blue),
     position (orange), the original or another answer (light grey), and the number, labelled 0%; a dark grey tick where
     the position answers end without the order signal. Hollow = after the data (Qwen 122B, its gate lowered)."""
@@ -806,7 +806,7 @@ def j8_routes(plt):
                 xc = (x_tick + left + v) / 2 if key == "position" else left + v / 2
                 ax.text(xc, y, f"{v:.0f}%", ha="center", va="center", fontsize=S.FONT,
                         color="white" if kind == "fixed" and key != "original" else "#222222", zorder=3)  # fmt: skip
-            src = f"figures/story/data.csv | s05 | {q.format('whole', key)}"
+            src = f"data/figures/depth/data.csv | s05 | {q.format('whole', key)}"
             if key == "original":
                 src += f"; {q.format('whole', 'other')} (summed)"
             record("j8", name, f"lookup answers by route, whole change: {label} (%)", round(v, 1),
@@ -814,12 +814,12 @@ def j8_routes(plt):
             left += v
         ax.text(101.5, y, f"number: {shares['value']:.0f}%", va="center", fontsize=S.FONT, color="#222222")
         record("j8", name, "lookup answers by route, whole change: the number (%)", round(shares["value"], 1),
-               source=f"figures/story/data.csv | s05 | {q.format('whole', 'value')}")  # fmt: skip
+               source=f"data/figures/depth/data.csv | s05 | {q.format('whole', 'value')}")  # fmt: skip
         pos_without = 100 * num(get("no_alf", "position")["value"])
         x = shares["identity"] + pos_without  # where the orange segment would end without the order signal
         ax.plot([x, x], [y - 0.42, y + 0.42], color=tick_col, lw=2.6, zorder=4, solid_capstyle="butt")
         record("j8", name, "position answers without the order signal (%)", round(pos_without, 1),
-               source=f"figures/story/data.csv | s05 | {q.format('no_alf', 'position')}")  # fmt: skip
+               source=f"data/figures/depth/data.csv | s05 | {q.format('no_alf', 'position')}")  # fmt: skip
         ns.add(get("whole", "identity")["n"])
     S.title(fig, "Lookup answers follow identity or position, never the number",
             f"Locker scenes where the change moves another item; the number = the moved number; {'/'.join(sorted(ns))} "
@@ -877,13 +877,13 @@ def j9_link(plt):
             r = dp[("fig03b", target, q45.format(arm))]
             v, lo, hi = draw_bar(axt, -g * 1.25 + 0.21 - 0.42 * k, r, col, 0.38, label if g == 0 else "")
             record("j9", name, f"lookup switches carried at the main test's layer: {label} (%)", v, lo, hi, r["n"],
-                   source=f"figures/story/data.csv | fig03b | {r['quantity']}")  # fmt: skip
+                   source=f"data/figures/depth/data.csv | fig03b | {r['quantity']}")  # fmt: skip
             ns.append(int(r["n"]))
         for k, (arm, reader, label, col) in enumerate(bottom_bars):
             r = dp[("fig03c", target, f"45p, {arm}: {reader} switches lost against (1)")]
             v, lo, hi = draw_bar(axb, -g * 1.9 + 0.6 - 0.4 * k, r, col, 0.34, label if g == 0 else "")
             record("j9", name, f"switches lost at the item's earlier mention, {label} (%)", v, lo, hi, r["n"],
-                   source=f"figures/story/data.csv | fig03c | {r['quantity']}")  # fmt: skip
+                   source=f"data/figures/depth/data.csv | fig03c | {r['quantity']}")  # fmt: skip
             ns.append(int(r["n"]))
     S.title(fig, "Lookups link at the locker sentences; recalls read the earlier mention",
             f"Clean one-pick scenes; both tests fixed in advance; {min(ns)}-{max(ns)} scenes per model; 95% intervals")  # fmt: skip
@@ -912,7 +912,6 @@ FIGURES = (("j0_setup", j0_setup), ("j1_recall_needs_lens", j1_recall_needs_lens
 def save(fig, name: str) -> None:
     """As story_style.save, into figures/shared."""
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{name}.svg", facecolor="white")
     fig.savefig(OUT / f"{name}.png", dpi=200, facecolor="white")
 
 

@@ -12,14 +12,14 @@
 - **The 27B is weaker throughout:** its lookup partly follows the lens part; the address alone and swaps between given lockers mostly fail.
 - **Tested and dropped:** six readings, one line each with the test that dropped it ([below](#tested-and-dropped)).
 
-![What holds on which model](figures/story/fig11_scorecard.png)
+![What holds on which model](figures/depth/fig11_scorecard.png)
 *Each claim of the claims table, per model: the word is the verdict of the test behind it. Hollow: Lightning (gate chosen after its pre-check) and the 122B where its gate was lowered after the data (FP8). Grey: not run.*
 
 **Status.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; 29 Oct 2026. Unverified until hand-checked; today's results are marked "pending hand-check". Built at {{head}} from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its marks are hollow ○ everywhere: its gate was chosen after the 60-scene pre-check was seen. The 122B's caveats: FP8, its J++ lens fit on the bf16 weights; its layer, L{{num|layer_122b}}, set by another rule (the 27B's relative depth carried over: {{dp|cards|122b|L as a relative depth (L / the number of layers)}}); its gates lowered to 0.75 after the data for the routes, address and swap tests (hollow ○); its numbers carry {{dp|cards|122b|53.1: run-to-run noise beyond the bootstrap (Dan's estimate)}} run-to-run noise beyond the bootstrap. Its lookup losing nothing beyond random means the 27B's weakness is not a total-size trend; active parameters are not separated; its recall effect is the smallest of the five ({{pt|rc_excess_122b}}) and mixed on varied scenes ({{pt|x0b_c_122b}}), which we cannot separate from its later layer or FP8. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
 
 ## The question and the setup
 
-![One prompt, two questions about the same bridge word](figures/story/fig00_setup.png)
+![One prompt, two questions about the same bridge word](figures/depth/fig00_setup.png)
 *The running example: one prompt, its two questions and the changed prompt.*
 
 - **The prompt** (a main-test scene): "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium."
@@ -54,7 +54,7 @@ Every removal and every addition is matched by the same operation on a random pa
 
 **Reading the figures**:
 
-![How to read the figures: colour is who, the mark is what was done](figures/story/fig00b_marks.png)
+![How to read the figures: colour is who, the mark is what was done](figures/depth/fig00b_marks.png)
 *Colour says which reader or part; the mark says what was done to it.*
 
 - **Whiskers and bands**: {{q|95%}} intervals, cluster bootstrap over bridge items. **● / ○** beside n: rule fixed in advance / read after the data; a hollow mark: a gate lowered after the data (the 122B's routes, address and swap), or Lightning's gate (chosen after the 60-scene pre-check was seen). A model that misses a gate is "not tested (gate)"; where its numbers are shown they are descriptive only, hollow, and never relabelled.
@@ -184,7 +184,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - specificity: without the lens part but keeping its directions for both readers' answer words ("six", "eight"), and without those answer directions only, each against a random part of their share; and the lens's rank of the answer word at the bridge word.
 - **Rule, fixed in advance.** "Confirmed if the lookup loses at most 0.10 beyond random and the recall loses at least 0.30 of its switches without the lens part; killed if the lookup loses at least 0.20 or the recall under 0.20." Specificity: "the lens effect is the item if the recall keeps at least 0.7 of its loss with the answer directions kept and loses at most 0.10 beyond random without them only". Before that result was opened, the answer directions became number words (digits are not in the lens) and a check of the answer word's rank was put first. Lightning: the same rules, copied, no prediction.
 
-![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/story/fig01_split.png)
+![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/depth/fig01_split.png)
 *Switches lost without the lens part beyond a random part, per reader and model, main test at L (the 122B's L33: the 27B's relative depth carried over); whiskers: {{q|95%}} intervals; grey band: the lookup's 0.10 bar.*
 
 - **Result.**
@@ -218,7 +218,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** Each of the 25 directions is a word of the lens's vocabulary; each is classed automatically as the original bridge word (or its spelling: first token, initial, prefix), the new bridge word, another scene item, a person, either reader's answer word, a word of the same class, a function word, or none of these. Its share is the energy it adds when it enters the rebuild. The classifier was hand-checked on {{dp|cards|9b|52 A: hand-checked items (the lookup's view)}} items per model on the 9B, 27B and Muse (agreement {{dp|cards|muse|52 A: hand labels agreeing with the classifier}}-{{dp|cards|9b|52 A: hand labels agreeing with the classifier}}; only Muse's labels are blind: on the 9B and 27B the labeller had seen some of the classifier's labels while writing its spelling rules); Lightning's labels are not hand-checked.
 - **Rule, fixed in advance.** None: descriptive.
 
-![The lens part's directions: the bridge words, almost never the answer](figures/story/fig18_atoms.png)
+![The lens part's directions: the bridge words, almost never the answer](figures/depth/fig18_atoms.png)
 *The lens part's rebuilt energy at the bridge word, split by the kind of lens word each of its 25 directions is; main test at L; Lightning hatched (○); 122B not run.*
 
 - **Result.**
@@ -250,7 +250,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - read which answer the recall gives: B's, C's, the original or another.
 - **Rule, fixed in advance.** "The recall follows the lens identity if B's share >= 2x C's; follows the address if C's >= 2x B's; else both." Across models, after the data (set once the 9B's and Lightning's results had been seen, before the 27B and Muse ran): "the recall's pointer use tracks the swap's collateral if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity"."
 
-![Pulled two ways, the recall moves under both levers or barely at all](figures/story/fig19_identity_address.png)
+![Pulled two ways, the recall moves under both levers or barely at all](figures/depth/fig19_identity_address.png)
 *The recall's answers with both levers and with each alone, per model (B: the lens part's item; C: the address's item); routes scenes without a move, at L; Lightning hatched (○); 122B not run yet.*
 
 - **Result.**
@@ -284,7 +284,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** The conflict test unchanged, at L: without the lens part; control: without a random part.
 - **Rule, fixed in advance.** Varied scenes, pooled: "holds if the lookup loses at most 0.10 beyond random (upper bound at most 0.20) and the gap is at least 0.20 (lower bound at least 0.10); fails if the lookup loses at least 0.20." Natural passages: "holds if the gap is at least 0.30 with its lower bound at least 0.15; fails at 0.10 or below; otherwise mixed."
 
-![The split carries over to other texts](figures/story/fig09a_transfer.png)
+![The split carries over to other texts](figures/depth/fig09a_transfer.png)
 *Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; the 122B fifth; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
 
 - **Result.**
@@ -315,7 +315,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - per model with both cells, the lookup's loss with the question first minus after, paired on the scenes both cells read, with a cluster-bootstrap interval over the bridge item.
 - **Rule, fixed in advance.** "The conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the question")" (the two cells with a word answer were not tested: Caveats). After the data (set once the 27B's two cells had been seen, before the 122B ran): "the pointer does not depend on the question's position" if the lookup loses <= 0.10 in both cells on a model; and "order dependence" only if the paired difference's interval excludes 0.
 
-![Question first, one model's lookup leans more on the lens part](figures/story/fig20_order_cell.png)
+![Question first, one model's lookup leans more on the lens part](figures/depth/fig20_order_cell.png)
 *Switches lost without the lens part beyond a random part, lookup and recall, with the question after the scene (the main test) and before it; right: the lookup's paired difference, before minus after (the 27B's mark open: its rule was set after its two cells); Lightning open (○); 122B (FP8) at L33; grey band: the lookup's 0.10 bar.*
 
 - **Result.**
@@ -356,7 +356,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - sixth, Zach's definition: at every token, each token's own top-10 lens directions over his layers.
 - **Rule, fixed in advance.** Zeroing: "followed, not needed at one layer if the recall keeps at least 0.80 of its answers, within 0.10 of the random arm; needed if it loses at least 0.30 beyond random." The ladder: "(a) the second copy is the earlier mention: the third step costs the recall at least 0.3 more than the second where the locker comes first, and the second already costs at least 0.3 where it comes after; (b) needed only when everything goes: steps one to four each at most 0.2, and the fifth or sixth at least 0.5; (c) the lookup never needs it: at most 0.1 beyond random at every step."
 
-![Recall needs the lens part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
+![Recall needs the lens part once its other copies go; the lookup never](figures/depth/fig01d_ladder.png)
 *Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow; 122B not run.*
 
 - **Result.**
@@ -395,7 +395,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - (4) (1), and another item's tokens without their lens part: the control for the item.
 - **Rule, fixed in advance.** "The recall reads the earlier mention if its switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least two of three models; a model whose (1) switches fewer than 30 recalls is not tested." A loss is one minus the switches under the arm over those under (1).
 
-![The recall reads the item's earlier mention when its locker came first](figures/story/fig03c_earlier_mention.png)
+![The recall reads the item's earlier mention when its locker came first](figures/depth/fig03c_earlier_mention.png)
 *Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse; Lightning below gate, hollow; 122B not run.*
 
 - **Result.**
@@ -429,7 +429,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** The change's 100 best lens directions in order; directions 1-25 (the lens part), 26-100 or all 100 taken out of the change at the bridge word at L, each against a random part of the same share. Read: the identity-route and position-route answers lost beyond random, and the recall's switches lost without directions 26-100.
 - **Rule, fixed in advance.** "(a) 'the lookup's identity route sits in lens directions beyond the recall's 25': without 26-100, identity answers fall at least 0.30 beyond the random part (paired interval excluding 0) and the recall loses at most 0.10 of its switches beyond random without 26-100, on at least 2 of 3 models; (b) 'continuum': both readers lose at least 0.20 beyond random without 26-100; (c) 'outside the lens': without 26-100, identity answers fall under 0.10 beyond random." Lightning: the same rule, copied, no prediction.
 
-![The lookup's identity route runs outside the lens; the position route never touches it](figures/story/fig05d_routes_lens.png)
+![The lookup's identity route runs outside the lens; the position route never touches it](figures/depth/fig05d_routes_lens.png)
 *Identity-route and position-route answers lost without lens directions 1-25, 26-100 and all 100, beyond a random part of the same size, per model; routes scenes at L; Lightning hollow; 122B not run.*
 
 - **Result.**
@@ -461,7 +461,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** The change comes from a prompt where another item's locker sentence moved and took a new number, so each route predicts a different locker: the identity route the item's own locker, the position route the locker now at the item's old place, the value the new number. Arms at the bridge word at L: the whole change; without the address (Part III), against without a random part of its share. A sanity swap (two picks trade places, nothing moves) comes first.
 - **Rule, fixed in advance.** "A route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference and takes Muse's rule (a switch rate of at least 0.50). Lightning and the 122B: the same rule, copied, no prediction.
 
-![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
+![The lookup takes the identity route or the position route, never the value](figures/depth/fig05_routes.png)
 *Left: where each route sends the lookup, drawn on the setup figure's items (the routes test's own scenes are animals). Right: the lookup's answers under the whole change and without the address, per model; grey: without a random part of the same share. Lightning hollow; 122B hollow (gate lowered to 0.75 after the data; FP8).*
 
 - **Result.**
@@ -499,7 +499,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - the swap: the difference between two lockers' mean address codes, at one, two and four times its size (s = 1, 2, 4), against a random vector of the same size; read: lookups sent to the swapped-in locker, and recalls that change.
 - **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The distance test: "distance-robust: position share and probe within 0.1 of no neutral sentences at every distance, swap success within 0.15". The probe: none, descriptive, after the data. Lightning and the 122B (and the 27B's, Muse's and Lightning's distance runs): the same rules, copied, no prediction.
 
-![The address carries the position route; swapping it moves the lookup](figures/story/fig07_writes.png)
+![The address carries the position route; swapping it moves the lookup](figures/depth/fig07_writes.png)
 *A: the probe at the bridge word, locker before the pick, against the layout baseline. B: position answers without the address and with only the address, against a random part of the same size (grey). C: lookups sent to the swapped-in locker by dose, against a random vector. Lightning hollow; 122B hollow in the removal, addition and swap panels (gate lowered to 0.75 after the data; FP8), filled in the probe panel.*
 
 - **Result.**
@@ -543,7 +543,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - on the 9B: the smallest learned code that carries the position switch, per number of lockers, against random codes of the same size; swaps to the midpoint between two lockers, against full swaps.
 - **Rule, fixed in advance.** "Ordinal: the first principal component is monotone in the locker (|Spearman| ≥ 0.9) and the shift sends ≥ 0.25 of lookups one locker on from ≥ 4 of 5 start lockers, the random vector ≤ 0.05; categorical, first vs rest: the shift works only from the first locker (others < 0.10) and removing the address on the other moves is within 0.10 of random; slot-specific: swaps between given lockers reach ≥ 0.25 on most pairs but no single shift does." Dose 2 decides. On the 9B: "one dimension per locker" if the learned code's size is at least the number of lockers minus 2 for every count and at least 5 at 8 lockers; "an ordinal code" if it is at most 2 up to 8 lockers; "categories" if midpoint swaps send < 0.1 to the midpoint locker while the full swaps reach ≥ 0.4 of the target; "a metric order" if midpoint swaps send ≥ 0.3 to the midpoint locker, from both ends. The 27B and Lightning: the same rule, copied, no prediction.
 
-![Six lockers: swaps between given lockers work on most pairs, no single shift does](figures/story/fig09b_six_lockers.png)
+![Six lockers: swaps between given lockers work on most pairs, no single shift does](figures/depth/fig09b_six_lockers.png)
 *At dose 2, per model: start lockers from which one shift sends at least a quarter of lookups one locker on, and locker pairs that a swap between given lockers reaches; Lightning hollow; 122B not run.*
 
 - **Result.**
@@ -575,7 +575,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - The report prompt (27B): asked which locker sentence holds the item, the lens's top five at the bridge word, and the report's switches lost without the lens part and without the address, beyond random.
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: "'not verbalizable': the share rebuilt with 25 lens directions within 2x the random vectors' share, no position word in the top 20 beyond the random vectors' 5th-percentile rank, and the readout's change under the swap within the random vectors' 95th percentile, on all three models." The report prompt: "'surfaced on demand': under the report prompt the lens ranks the right position word in its top five in ≥ 0.4 of items (under the lookup prompt ≤ 0.1), and the report loses ≥ 0.3 of its switches without the lens part beyond random"; else "reported late, not surfaced" or neither. Lightning: the reading copied, no prediction.
 
-![The lens reads which item is at the bridge, not where its locker sits](figures/story/fig07b_verbal.png)
+![The lens reads which item is at the bridge, not where its locker sits](figures/depth/fig07b_verbal.png)
 *How far above 200 random vectors of the same size the lens ranks a position word (left) and rebuilds the change with 25 directions (right), per model: the address swap and an item change of the same size; grey strip: the random vectors' range. Lightning hollow; 122B not run.*
 
 - **Result.**
@@ -610,7 +610,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - the headline targets: which locker sentence holds the bridge's locker (the address) and the lookup's answer digit; positive controls: which item is the bridge and the recall's answer.
 - **Rule, fixed in advance.** Pending hand-check. The rule, verbatim: ""J-space blind to X" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; "J-space carries X" if J++ >= 0.8 and >= 0.3 above random; else in between." Dan's wording, fixed before the verdict: "If the random subspace also decodes the slot ("random reads it too"), the wording is: "the address is linearly decodable from many subspaces, J++ included; the lens readout does not show it" — not "J-space is blind". Only "J-space blind" if J++ is within 0.10 of random AND random is under 0.8 while the full state is >= 0.8." Dan's energy rule, after the data (set after the first labels had been written, before this verdict): "if J++ is >= 0.10 below the energy-matched random while the full state is >= 0.8, the label is "the address is under-represented in the lens directions" (stronger than blind), not an energy artefact. If J++ is within 0.10 of the energy-matched random, "no different from random directions of the same energy"." No prediction.
 
-![The J++ part holds less of the address than random parts of its energy](figures/story/fig23_monitor.png)
+![The J++ part holds less of the address than random parts of its energy](figures/depth/fig23_monitor.png)
 *Trained probes for which locker sentence holds the bridge's locker, at the last token of the main test, at the layer where the full state peaks: the full state, the lens part and two random parts, with 25 (left) and 100 (right) lens directions; under each model the rule's label and the energy rule's; whiskers: {{q|95%}} intervals; Lightning hollow; 122B not run.*
 
 - **Result.**
@@ -653,7 +653,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** The address refit per format on one half (four directions) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on the simple scenes beside.
 - **Rule, fixed in advance.** "'Pointer elsewhere' if the refit address costs the lookup at least 0.2 of its switches beyond random, with lower bound above 0.1, in 2 of 3 formats; 'no linear pointer found' if all three formats are below 0.1 (point estimate); otherwise neither." After the data (Dan, 26 Oct): a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: the same rule, copied, no prediction.
 
-![The address must be refit for each text format](figures/story/fig09b_refit.png)
+![The address must be refit for each text format](figures/depth/fig09b_refit.png)
 *The lookup's switches lost without the address beyond a random part, by format: refit on the format (filled) and fit on the simple scenes (hollow); grey: the 0.10 bar. Lightning hollow; Muse's JSON left out (too few switches); 122B not run.*
 
 - **Result.**
@@ -684,7 +684,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - adapted design: lookup-only gate; the recall is not part of this test. A format is tested if the lookup answers and reads both prompts right on at least 0.80 of its scenes; the recall's rates are reported, not gated.
 - **Rule, fixed in advance.** Pending hand-check. The routes test's, verbatim: "A route counts as used if its share is >= 0.2 with lower CI >= 0.1." The probe has no rule of its own (descriptive, after the data). The lookup-only gate was set before any result in these formats was opened, except the 9B's code probe: gate changed after the data (hollow ○). The 27B's probes and the 9B's tool probe: adapted design (they pass either gate). No prediction.
 
-![In code and tool output the address is readable and carries position](figures/story/fig21_code_tool.png)
+![In code and tool output the address is readable and carries position](figures/depth/fig21_code_tool.png)
 *A: the probe for the locker sentence at the bridge word, with the locker before the pick, against its layout baseline (hatched); the black tick: the same probe in prose. B: the routes test, another item moved, at L: position answers without the address and with only the address, each against a random part of the same size (grey). The 9B's code probe not tested (○); models not run keep their rows.*
 
 - **Result.**
@@ -737,7 +737,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - the copy, clean scenes with the locker after the pick: (a) the change at the bridge word at L; (c) the changed prompt's states copied into every locker-sentence token at L; (d) the same at L/2; each as a share of the lookups the changed prompt itself switches.
 - **Rule, fixed in advance.** The copy: "'the link is made in the locker sentences' if (c) or (d) switches at least half of the lookups the changed prompt switches while (a) stays at or below 0.25, on at least 2 of 3 models." The split by sentence order was read after the data (descriptive). Lightning: the same rule, copied, no prediction.
 
-![Locker after the pick: the link is made in the locker sentences](figures/story/fig03_order.png)
+![Locker after the pick: the link is made in the locker sentences](figures/depth/fig03_order.png)
 *(A) Lookups switched by the change at the bridge word, locker sentence before or after the pick, per model (the recall beside); (B) the same split on Zach's passages, by fact order (Part V); (C) locker after the pick, by layer: the change at the bridge word (dashed) and the change copied into the locker sentences (solid), the rule's arms ringed. Lightning hollow, its copy below gate; the 122B (FP8, its L33 the 27B's relative depth) in panel A only.*
 
 - **Result.**
@@ -770,7 +770,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - the lookups the change at L misses: the bridge word replaced at every layer up to L, against the change at L alone.
 - **Rule, fixed in advance.** "(a) In locker-after scenes the lookup's mass sits at the locker sentences, not at the bridge word, at every layer (bridge-word cells ≤ 0.25 everywhere; some locker-sentence cell ≥ 0.5). (b) In locker-first scenes the lookup's bridge-word mass ends before the recall's does (the last layer with bridge-word switch ≥ 0.3 is earlier for the lookup, by ≥ 2 layers on the 9B, ≥ 4 on Muse)." The 27B and Lightning: the same rule, copied, no prediction. The lookups the change at L misses: descriptive.
 
-![Locker after the pick: the lookup leaves the bridge word early](figures/story/fig03d_depth_map.png)
+![Locker after the pick: the lookup leaves the bridge word early](figures/depth/fig03d_depth_map.png)
 *Lookups and recalls switched when the changed state is placed in one token group at one layer, locker sentence before and after the pick, the locker sentences collapsed to their best cell; bottom rows: the bridge word replaced at every layer up to L, and from L on. The 9B, 27B and Muse on clean one-pick scenes; Lightning (hollow) on its main test.*
 
 - **Result.**
@@ -803,7 +803,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Follow-up: in blocks 19 and 26, every token after the scene's last token cannot attend to the whole span from the bridge word to the scene's end (median {{dp|cards|nemotron-3.5-lightning|53.4 span: median span length in tokens, the rule's scenes}} tokens on the rule's scenes); control: a span of the same length ending at the last token before the bridge's sentence, one placement, fixed before the run.
 - **Rule, fixed in advance.** "'Read through two blocks' if (iii) cuts the lookup's switches by ≥ 0.6 of the whole change's and (v) by ≤ 0.15; 'one block' if (i) or (ii) alone cuts ≥ 0.6; 'not through attention at the bridge' if (iv) cuts < 0.3 (the Mamba state carries it); else in between." Follow-up: "'The pointer is read by attention after the Mamba state spreads it' if the span cuts the lookup's switches by ≥ 0.6 and the control by ≤ 0.15; else as [the rule above]." No prediction. The cut on the scenes where the lookup's clean answer survives the span block was added after the data (descriptive).
 
-![Two attention blocks carry part of Lightning's lookup, not all of it](figures/story/fig22_attention_blocks.png)
+![Two attention blocks carry part of Lightning's lookup, not all of it](figures/depth/fig22_attention_blocks.png)
 *The share of the whole change's switches cut when later tokens cannot attend to the bridge word (top) or to the span from the bridge word to the scene's end (bottom), lookup (purple) and recall (dark), whiskers {{q|95%}}; dashed: the rule's 0.6, dotted: 0.3. Lightning hollow (○); the 9B, 27B and Muse not applicable (a test of Lightning's blocks); the 122B not run.*
 
 - **Result.** Pending hand-check.
@@ -843,7 +843,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Method.** At each sampled layer: the whole change and its parts (the lens part; the address refit at that layer; the identity outside the lens), each taken out or added by itself, against random parts of the same share; a probe for the locker at the bridge word. A layer counts only where the whole change switches 0.30 or more. Across depth: the overlap of the address refit at every pair of layers in the probe's window.
 - **Rule, fixed in advance.** "Define l_J = the first layer from which the lookup's switches lost without the lens part beyond random stay ≤ 0.10; l_P = the first layer where the position route's share under the whole change is ≥ 0.20; l_probe = the first layer where the probe is ≥ 0.80. (a) 'Handoff': l_P ≥ l_J [...] (b) 'The address forms before it is used': l_probe ≤ l_P on every model [...] (d) 'Never the value, at any depth': value ≤ 0.05 at every interpretable layer." Across depth: "persistent if the mean cos² of the principal angles ≥ 0.5 across the window where the probe is ≥ 0.8; re-encoded if it drops below 0.2 between adjacent sampled layers." The 27B's full grid and Lightning: the same rule, copied, no prediction.
 
-![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
+![The address forms early; identity route first, position route later](figures/depth/fig06b_anatomy.png)
 *Per sampled layer, the lookup's answers under the whole change at that layer (identity route blue, position route orange, the original answer grey) and the recall's switches (line); dashed: the address readable (probe ≥ 0.8); solid: position answers begin; hatched: too few switches to read. The 27B panel is its reduced grid; Lightning hollow; the 122B not run.*
 
 - **Result.**
@@ -878,7 +878,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - what the model then outputs (descriptive): its clean answer, the changed prompt's answer, another digit, the entity's name or a number word.
 - **Rule, fixed in advance.** "Read: through-the-lens probe ≥ 0.8 and lens top-5 ≥ 0.5 at some layer before the answer digit's layer, while the full-residual probe ≥ 0.9 there. Write: at the layer of the read peak, his swap or the J++ part of the change (gain ≤ 2) switches ≥ 0.5 of what the whole-state patch switches at that layer, with the random part ≤ 0.10. (b) readable, not used: read holds, write fails." Lightning: the same rule, copied.
 
-![The recall's entity at the last token: readable through the lens, not used](figures/story/fig17_jspace_last_token.png)
+![The recall's entity at the last token: readable through the lens, not used](figures/depth/fig17_jspace_last_token.png)
 *At the last token, per reader and model: the probe's accuracy on the lens part of the state (read) and the lens swap's switches as a share of the whole-state patch's (swap), both at the layer where the read peaks; Lightning hollow; 122B not run.*
 
 - **Result.**
@@ -925,7 +925,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - his operation: his stored rows on his passages against his rotated directions, and on our clean scenes the ladder's last step (Part I).
 - **Rule, fixed in advance.** "Per model: gap ≥ 0.3 and lookup extra loss ≤ 0.10 → the split holds on his passages; lookup ≥ 0.20 → the lookup follows the lens here; else in between. The order pattern replicates if the lookup's switch under the whole change is ≥ 2x higher fact-first than fact-after (both CIs)." The full carrier: "recall extra loss − lookup extra loss ≥ 0.3 and lookup ≤ 0.10 → the split holds on the full carrier; lookup ≥ 0.20 → the lookup follows the lens on the full carrier; else in between." The routes test: "Value ≤ 0.05; if position ≥ 0.2: the address exists in scattered-fact passages; if position ≤ 0.05: no position route in his layout." The recheck: the same rule, verbatim, on the remaining passages (set after the data). The two operations side by side: descriptive. Lightning: the same rules, copied, no prediction.
 
-![Both operations, both datasets, one direction](figures/story/fig12_two_by_two.png)
+![Both operations, both datasets, one direction](figures/depth/fig12_two_by_two.png)
 *Recall minus lookup in four cells: our removal or Zach's operation, on our scenes or his passages; grey tick: the same operation with a random part of the same size (his: his rotated directions). The units differ by row, so only the sign and the order compare. Lightning hollow; the 122B in our main test only.*
 
 - **Result.**
@@ -980,7 +980,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **The lookup follows the lens part on Zach's passages:** on his true-fact passages the lookup answers from memory; with made-up facts the split returns on the 9B. Dropped by his made-up-fact passages (Part V; [ledger card](docs/depth/EXPERIMENTS.md#z1)).
 - **One code per locker:** swaps between given lockers work, but the code's size on held-out items is open and swaps to a midpoint slot fail. Dropped by the held-out code test ([ledger card](docs/depth/EXPERIMENTS.md#t51-11)).
 - **The described bridge on Zach's passages** (withdrawn): at the changed token the lens ranks the answer word above or level with the bridge entity, so the recall's lens effect there cannot be read as the item. Dropped by the answer control on his described passages ([ledger card](docs/depth/EXPERIMENTS.md#z2)).
-- **Four mechanisms for the split:** the lens part keys the item's attribute and late MLPs carry the recall; a person mark at the locker sentence; copying heads pass the rest at twice the lens part; the address is the recall's second route. None held on any model that ran it ([attribute and MLPs](docs/depth/EXPERIMENTS.md#t48-2), [person mark](docs/depth/EXPERIMENTS.md#t48-3), [copying heads](docs/depth/EXPERIMENTS.md#t48-4), [second route](docs/depth/EXPERIMENTS.md#t48-5); [the tests on one page](figures/story/fig15_mechanisms.png)).
+- **Four mechanisms for the split:** the lens part keys the item's attribute and late MLPs carry the recall; a person mark at the locker sentence; copying heads pass the rest at twice the lens part; the address is the recall's second route. None held on any model that ran it ([attribute and MLPs](docs/depth/EXPERIMENTS.md#t48-2), [person mark](docs/depth/EXPERIMENTS.md#t48-3), [copying heads](docs/depth/EXPERIMENTS.md#t48-4), [second route](docs/depth/EXPERIMENTS.md#t48-5); [the tests on one page](figures/depth/fig15_mechanisms.png)).
 
 ## How we checked
 
@@ -1006,4 +1006,4 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into figures/story/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](docs/figures_contact_sheet.png). Supplementary figures: [every scene set](figures/supp/s01_split_all_scene_sets.png), [the settings](figures/story/fig01b_settings.png), [every part](figures/supp/s02_parts_all.png), [parts of the same size](figures/story/fig02_specificity.png), [the 27B with more directions](figures/story/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/story/fig01c_zeroing.png), [the dose curves](figures/story/fig16_dose.png), [the main test's parts](figures/story/fig05b_identity_outside.png), [a described bridge](figures/story/fig05c_described_bridge.png), [the order split with every model](figures/supp/s03_order_split.png), [the layer sweep](figures/story/fig03b_layers.png), [the link copy variants](figures/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/supp/s03e_cumulative.png), [the depth candidate on the main test](figures/story/fig06_depth.png), [the address across depth](figures/story/fig06c_address_depth.png), [the recall follows the swap](figures/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/supp/s07b_lens_readout.png), [the lookup's errors](figures/story/fig07c_probe_errors.png), [the first locker](figures/story/fig08_first_locker.png), [the first sentence and the moves](figures/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/supp/s04_routes_design.png), [every routes arm](figures/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/story/fig09c_formation.png), [chained addresses](figures/story/fig09d_chain.png), [what is left of the route](figures/story/fig10_what_is_left.png), [attribute probe and MLPs](figures/story/fig10b_enrichment.png), [binding](figures/story/fig10c_binding.png), [heads](figures/story/fig10d_heads.png), [second route](figures/story/fig10e_second_route.png), [the mechanism tests](figures/story/fig15_mechanisms.png), [attention follows the swapped address](figures/story/fig13_attention.png), [learned subspaces](figures/story/fig14_learned.png), [Muse's learned subspaces](figures/supp/s12_das_muse.png), [the transfer on every model](figures/story/fig09_transfer.png). Earlier figures: [figures/status_2026-10-25/](figures/status_2026-10-25/).
+Every number on this page carries a source comment into data/figures/depth/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](docs/figures_contact_sheet.png). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [the settings](figures/depth/fig01b_settings.png), [every part](figures/depth/supp/s02_parts_all.png), [parts of the same size](figures/depth/fig02_specificity.png), [the 27B with more directions](figures/depth/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/depth/fig01c_zeroing.png), [the dose curves](figures/depth/fig16_dose.png), [the main test's parts](figures/depth/fig05b_identity_outside.png), [a described bridge](figures/depth/fig05c_described_bridge.png), [the order split with every model](figures/depth/supp/s03_order_split.png), [the layer sweep](figures/depth/fig03b_layers.png), [the link copy variants](figures/depth/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/depth/supp/s03e_cumulative.png), [the depth candidate on the main test](figures/depth/fig06_depth.png), [the address across depth](figures/depth/fig06c_address_depth.png), [the recall follows the swap](figures/depth/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/depth/supp/s07b_lens_readout.png), [the lookup's errors](figures/depth/fig07c_probe_errors.png), [the first locker](figures/depth/fig08_first_locker.png), [the first sentence and the moves](figures/depth/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/depth/supp/s04_routes_design.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/depth/fig09c_formation.png), [chained addresses](figures/depth/fig09d_chain.png), [what is left of the route](figures/depth/fig10_what_is_left.png), [attribute probe and MLPs](figures/depth/fig10b_enrichment.png), [binding](figures/depth/fig10c_binding.png), [heads](figures/depth/fig10d_heads.png), [second route](figures/depth/fig10e_second_route.png), [the mechanism tests](figures/depth/fig15_mechanisms.png), [attention follows the swapped address](figures/depth/fig13_attention.png), [learned subspaces](figures/depth/fig14_learned.png), [Muse's learned subspaces](figures/depth/supp/s12_das_muse.png), [the transfer on every model](figures/depth/fig09_transfer.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).

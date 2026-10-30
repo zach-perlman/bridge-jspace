@@ -1,5 +1,5 @@
 """Phase 2: each view's headline numbers recounted from the per-item files over the whole item set (not the run's
-verdict), beside the figures/story/data.csv value of its source key: match (within the 2-decimal rounding), mismatch,
+verdict), beside the data/figures/depth/data.csv value of its source key: match (within the 2-decimal rounding), mismatch,
 or no source.
 
   extra loss   (switches without the random part - switches without the part) / switches with the whole change, per
@@ -24,9 +24,9 @@ ROUTES = ("identity", "position", "value", "original", "other")
 
 @lru_cache(maxsize=1)
 def data_csv() -> tuple[dict[str, str], dict[str, str]]:
-    """key -> its text value and its source file, from the rows figures/story/data.csv copies from x0_numbers.json."""
+    """key -> its text value and its source file, from the rows data/figures/depth/data.csv copies from x0_numbers.json."""
     value, source = {}, {}
-    with (I.REPO / "figures" / "story" / "data.csv").open() as f:
+    with (I.REPO / "data" / "figures" / "depth" / "data.csv").open() as f:
         for r in csv.DictReader(f):
             if r["figure"] == "numbers":
                 value[r["quantity"]], source[r["quantity"]] = r["value"], r["source"]
@@ -35,10 +35,10 @@ def data_csv() -> tuple[dict[str, str], dict[str, str]]:
 
 @lru_cache(maxsize=1)
 def csv_rows() -> dict[tuple[str, str], list[dict]]:
-    """(model column, quantity) -> its figures/story/data.csv rows (any figure): the README's src comments name a
+    """(model column, quantity) -> its data/figures/depth/data.csv rows (any figure): the README's src comments name a
     quantity and the model is the column."""
     out: dict[tuple[str, str], list[dict]] = {}
-    with (I.REPO / "figures" / "story" / "data.csv").open() as f:
+    with (I.REPO / "data" / "figures" / "depth" / "data.csv").open() as f:
         for r in csv.DictReader(f):
             out.setdefault((r["model"], r["quantity"]), []).append(r)
     return out

@@ -582,7 +582,7 @@ def render(out: Path, only: list[str] | None = None) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="*", default=None, help="overview detail kmatch kcurve share asked_first")
-    ap.add_argument("--publish", action="store_true", help="also copy the PNGs and data.csv to figures/x0_necessity/")
+    ap.add_argument("--publish", action="store_true", help="also copy the PNGs and data.csv to figures/archive/x0_necessity/")
     ap.add_argument("--out", type=Path, default=None,
                     help="output dir (default: a new results/x0_necessity/figures-<UTC>/)")  # fmt: skip
     a = ap.parse_args()

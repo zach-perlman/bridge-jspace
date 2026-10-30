@@ -19,7 +19,7 @@
 - ~02:45 47.5 (7b54102b, 3 specs ~0.6 GPU-h) and 48.4 (1f94df19, 2 specs ~0.25) committed, held: 47.5 for its place in the order, 48.4 after the freeze (amendment 4 cut). 47.3 (85e2fa30) queued, not cut; its plan outputs (cue lists, prompts) in results/x47_cue/plan-*. Muse note from 48.4: Muse has no linear attention, all 52 blocks softmax (39 sliding window 2048, 13 full/NoPE); prompts < 2048 so every layer attends over the whole prompt.
 - ~03:00 Dan: fill the queue with everything ready (the amendment-4 cuts and the order holds are lifted for what is committed); autonomy until 12:00. Queued: x48_3_9b/muse (forward binding, 86a467f5), x48_5_9b/27b/muse (recall's second route), x47_5_9b/27b/muse (one-layer zeroing), x47_2_muse (six lockers), x48_4_9b/muse (copying heads). Still to come as their agents commit: 47.7, 48.1 (+D3), 47.8 (+D4), D1+D2, 47.10, 47.11, 47.12, 47.13 (CPU), 47.14, 47.15, 47.16, 48.2; 47.6(b) once part (c) is removed from its specs.
 - Code: one agent per test in its own worktree (47.1+47.5, 47.4, 47.2, 47.3, 47.6, Tier 0, 47.7, 48.1-48.5, the §2 probe table); each test sealed (per-item outputs in the job, a CPU verdict stage that refuses until Dan's line is non-empty), a verify-pack view, an as-computed paragraph in its spec. Specs are enqueued as they are committed, in the order above.
-- Depth README (Dan ~02:35): the agent updates docs/depth/README.md itself after each batch with figures and data.csv rows; docs/depth/data.csv to be built from figures/story/data.csv by script.
+- Depth README (Dan ~02:35): the agent updates docs/depth/README.md itself after each batch with figures and data.csv rows; docs/depth/data.csv to be built from data/figures/depth/data.csv by script.
 
 # 27 Oct: merged into main; to the freeze (Wed 28 Oct evening) and the hand check (Thu 29 Oct) (agent). All numbers UNVERIFIED
 
@@ -62,7 +62,7 @@ Workflow (Dan ~15:10): one branch, danorel. Its commits are merged into main bit
 
 # Results matrix, 26 Oct ~04:30 (agent). All numbers UNVERIFIED
 
-Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75), and so are its fresh scenes (x0_122b_b11; the run fixed in advance stopped at its gate). Muse Glimmer 30B (held out, another family; L26 fixed in advance): batch 38's rules as for the Qwens, every gate passed at 0.80 on the first try, except its routes at L34 (the sanity swap moved the lookup in no scene: not tested); its labels are my reading of the fixed rules, not yet scored against Q38.
+Every cell from docs/x0_numbers.json (in data/figures/depth/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75), and so are its fresh scenes (x0_122b_b11; the run fixed in advance stopped at its gate). Muse Glimmer 30B (held out, another family; L26 fixed in advance): batch 38's rules as for the Qwens, every gate passed at 0.80 on the first try, except its routes at L34 (the sanity swap moved the lookup in no scene: not tested); its labels are my reading of the fixed rules, not yet scored against Q38.
 
 | Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) | Muse 30B (L26) |
 |---|---|---|---|---|
@@ -186,7 +186,7 @@ DeepSeek-V4-Flash feasibility (CPU only, no download):
 
 # Results opened, 25 Oct ~12:45 (agent; after Dan's batch-31 / 32 commit). All numbers UNVERIFIED
 
-Every number below is read from docs/x0_numbers.json or figures/status_2026-10-25/data.csv. Queue (~13:40): x6_routes_early_r2 and x0_jppother done (not opened yet; batch 33 closed until Dan's Q33.1 answer is committed); x0_122b_b7 running (F17's 122B panel); then x6_routes_bothoff (batch 34, closed until Dan answers), x6_routes_122b_g75, x5_natural_9b_g75.
+Every number below is read from docs/x0_numbers.json or data/figures/archive/status_2026-10-25/data.csv. Queue (~13:40): x6_routes_early_r2 and x0_jppother done (not opened yet; batch 33 closed until Dan's Q33.1 answer is committed); x0_122b_b7 running (F17's 122B panel); then x6_routes_bothoff (batch 34, closed until Dan answers), x6_routes_122b_g75, x5_natural_9b_g75.
 
 ## Decisions (Dan, 25 Oct ~13:15-13:20)
 
@@ -197,7 +197,7 @@ Every number below is read from docs/x0_numbers.json or figures/status_2026-10-2
 - Plan to the claims freeze (Dan, ~13:40), GPU order x0_jppother, bothoff, 122B routes, b7, 9B natural passages. Default taken: x0_122b_b7 had already started (x0_jppother finished ~13:35) and is left running, not killed; the rest follow in Dan's order.
 - Predictions moved (Dan ~13:55): batches 31-34 to predictions/2026-10-25_dan.md, unchanged; Dan's Q33.1 and Q34.1 answers committed with the move (01e3828d). Then x0_jppother and x6_routes_early_r2 opened and scored: Q32.7 right, Q32.8 right, Q33.1 wrong.
 - "Runs for all, the 122B too" (Dan ~14:15; overrides the plan's "no 122B runs beyond the above"): x0_122b_b8, appended after x5_natural_9b_g75: J++ from another scene at L33; the routes at an early layer; J++ and the pointer directions together. Defaults taken: the 122B's early layer is L27, its peak of the lookup's J++ extra loss among the layers measured (24-36; 0.56 at L27), chosen after the data; the two routes runs use the gate lowered to 0.75 (same scenes as the 122B routes run, whose recall read 0.797 right), hatched and descriptive like Dan's rerun; one job, three scripts, each runs whatever the others do.
-- README v2 (Dan ~15:00), defaults taken: (0) the gate's rounding was already gone from the code (f1a3eb9f replaced it with --gate); the cancelled x6_routes_122b_r2 spec now says so; the 122B routes run is the rerun at 0.75, after the data, descriptive. (1) The figure script is scripts/readme_story_figures.py, not scripts/story_figures.py: that name holds the 20 Oct partner-update figures (overwritten by mistake, restored from git before any commit). (2) Fig. 2's title is "No other part costs the recall as much as the scene's own J++", not "Only the scene's own J++ part costs the recall": on the 122B the main directions at J++'s share cost the recall 0.21 [0.13, 0.30] against J++'s 0.26 [0.16, 0.36], so the plan's title does not hold on that panel. (3) Fig. 4 has five arms (a random part at J++'s and at the pointer's size), so each removal has its own control. (4) Fig. 5 shades the layers where the lookup's J++ extra loss is at least 0.30 (Q35.1's bar). (5) Appendix A lists the key numbers, not all of data.csv (figures/story/data.csv has every number, with its source). (6) Tests: the 150-line budget became a 1,500-word body budget (numbers and headings count as words); banned terms extended (C0-C2, swap 1/2, one-pick / two-pick, edit); the number check reads figures/story/data.csv (figures/status_2026-10-25 is frozen; x0_status_pack.py is no longer run); 0.75 joins the rule bars. (7) The optional routes run at more layers (batch 35) is not queued: the GPU was not idle after bothoff (the 122B routes, the 9B natural passages and b8 were waiting).
+- README v2 (Dan ~15:00), defaults taken: (0) the gate's rounding was already gone from the code (f1a3eb9f replaced it with --gate); the cancelled x6_routes_122b_r2 spec now says so; the 122B routes run is the rerun at 0.75, after the data, descriptive. (1) The figure script is scripts/readme_story_figures.py, not scripts/story_figures.py: that name holds the 20 Oct partner-update figures (overwritten by mistake, restored from git before any commit). (2) Fig. 2's title is "No other part costs the recall as much as the scene's own J++", not "Only the scene's own J++ part costs the recall": on the 122B the main directions at J++'s share cost the recall 0.21 [0.13, 0.30] against J++'s 0.26 [0.16, 0.36], so the plan's title does not hold on that panel. (3) Fig. 4 has five arms (a random part at J++'s and at the pointer's size), so each removal has its own control. (4) Fig. 5 shades the layers where the lookup's J++ extra loss is at least 0.30 (Q35.1's bar). (5) Appendix A lists the key numbers, not all of data.csv (data/figures/depth/data.csv has every number, with its source). (6) Tests: the 150-line budget became a 1,500-word body budget (numbers and headings count as words); banned terms extended (C0-C2, swap 1/2, one-pick / two-pick, edit); the number check reads data/figures/depth/data.csv (figures/archive/status_2026-10-25 is frozen; x0_status_pack.py is no longer run); 0.75 joins the rule bars. (7) The optional routes run at more layers (batch 35) is not queued: the GPU was not idle after bothoff (the 122B routes, the 9B natural passages and b8 were waiting).
 - Q34.1 scored (~15:30): (b) the 27B only; Dan's top option (neither, 80%) wrong.
 - README v2 review (Dan ~14:30), defaults taken. Queue: x6_routes_122b_g75 finished at 14:42 and x5_natural_9b_g75 started before the new order was in (Dan wanted it last); it is short and left running; x0_122b_b8 moved after x6_routes_bothoff_ctrl and x6_routes_sweep (its pending file renamed on the box). bothoff_ctrl's random part: per scene the leading columns of the layer's random basis that keep J++'s share of the change (as every other random part), joined with the pointer directions and orthonormalized (SVD); "switches lost" = the share of the whole change's switches lost (Jdep), no random control subtracted, as Q36.1 asks. The sweep keeps the random part at J++'s share beside whole and without J++. Table 3c: GitHub's Markdown has no grey, so few-switch lookup cells are in italics with their count. Word budget: Dan's added lines took the body over 1,500 words when table cells count; the test now counts prose only (tables are data): 1,402 prose words. Fig. 5: one band from the first layer measured to the last where the lookup's J++ extra loss is at least 0.30 (on the 27B that spans layers 20 and 24, which are below 0.30); its title is Dan's wording, 77 characters (over the style's 70; the limit is raised for this figure). Appendix A's 122B routes cell is filled with the rerun (after the data).
 - x6_routes_122b_g75 opened (after the data, descriptive, not scored): another item moved, identity 0.61 [0.56, 0.67], position 0.38 [0.33, 0.44], value 0.00; without the pointer directions position 0.05 [0.02, 0.07] (random part of their size 0.36 [0.31, 0.41]).
@@ -367,7 +367,7 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
 | Which route the lookup follows, identity / position / value (x6_routes; 27B and 9B; batch 32) | a route is used if its share is ≥ 0.20 with lower CI ≥ 0.10; C0 must reproduce the one-pick lookup switch rate within 0.10, or the model's run stops | queued before b6 | | 300 per condition (planned) |
 | b6. 122B varied scenes, prose and tables, levels 0-1 (x0_122b_b6) | X0b's pooled rule | queued last (cancelled if not started by 07:30) | | |
 
-## Figures (figures/status_2026-10-25/; the 24 Oct folder stays as shared)
+## Figures (figures/archive/status_2026-10-25/; the 24 Oct folder stays as shared)
 
 | Figure | Claim | Models | | Role |
 |---|---|---|---|---|
@@ -438,16 +438,16 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
   - It also removes word answers (name answers −35% even in a pure lookup).
   - It may be erasing the subject's identity rather than the workspace.
 
-![The 27B families under three measures](figures/overview_1020/story_2x2.png)
+![The 27B families under three measures](figures/archive/overview_1020/story_2x2.png)
 *The suite's families under the three measures (27B).*
 
-![Lens write by depth](figures/overview_1020/story_depth.png)
+![Lens write by depth](figures/archive/overview_1020/story_depth.png)
 *Where the lens can write the bridge, by depth: 27B vs 122B.*
 
-![Settings and models](figures/overview_1020/overnight_1020.png)
+![Settings and models](figures/archive/overview_1020/overnight_1020.png)
 *Read vs write and the knock-out across settings and models.*
 
-![Evidence by model](figures/overview_1020/evidence_by_model.png)
+![Evidence by model](figures/archive/overview_1020/evidence_by_model.png)
 *Which claims each model supports, contradicts or can't test.*
 
 ## Where things are
@@ -459,7 +459,7 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
 | J-space knock-out (random and same-size rotated controls) | `scripts/ablate_pilot.py`, `scripts/tool_answer_type.py` | `results/ablate_pilot/`, `results/tool_answer_type/` |
 | Real facts (TwoHopFact): screening, natural lookup, per-step knock-out | `scripts/twohop_pilot.py`, `scripts/natural_rw.py`, `scripts/natural_hops_ablate.py` | `results/twohop_pilot/`, `results/natural_rw/` |
 | Gemma 4 31B-it J++ fit (jpp_lens recipe) and removal diagnostics | `scripts/lens_fit/`, `scripts/removal_norms.py`, `scripts/removal_textloss.py`, `scripts/gemma_ref_loss.py` | `results/lens_fit/`, `results/removal_norms/`, `results/removal_textloss/`, `results/harness_checks/` |
-| Figures | `scripts/story_figures.py`, `scripts/overnight_figure.py`, `scripts/coverage_figure.py` | `figures/overview_1020/` |
+| Figures | `scripts/story_figures.py`, `scripts/overnight_figure.py`, `scripts/coverage_figure.py` | `figures/archive/overview_1020/` |
 | Job scripts exactly as run | `scripts/queues/`, `scripts/quick_*.sh` | — |
 
 **Other models** are set with `BJ_TARGET` (see `src/bridge_jspace/pins.py`):

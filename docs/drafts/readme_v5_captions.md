@@ -1,6 +1,6 @@
 # README v5: figure alt texts, captions and table headers (draft for Tuesday's merge)
 
-Labels only (Dan, 26 Oct ~21:50): no number or claim changes. Per figure the current alt text and caption (README.md at bddf8b66), then the canonical one in the vocabulary of [docs/glossary.md](../glossary.md); the figures themselves are in figures/drafts/v5/ and replace figures/story/ at the merge. `tests/test_readme_build.py` checks every "canonical" line here until its switch `CHECK_README` is set at the merge; then it checks README.md's alt texts, "*Fig. N.*" lines and table headers.
+Labels only (Dan, 26 Oct ~21:50): no number or claim changes. Per figure the current alt text and caption (README.md at bddf8b66), then the canonical one in the vocabulary of [docs/glossary.md](../glossary.md); the figures themselves are in figures/archive/drafts/v5/ and replace figures/depth/ at the merge. `tests/test_readme_build.py` checks every "canonical" line here until its switch `CHECK_README` is set at the merge; then it checks README.md's alt texts, "*Fig. N.*" lines and table headers.
 
 The one-pick caveat (Dan ~22:10) goes into two captions only, Fig. 1b's (its one-pick panel) and Fig. 8's (panel (a), the first-sentence regroup, which runs on the one-pick items); not into any figure image. Its numbers: results/x0_necessity/duplicate-20261026T204558Z/duplicate.md, row qwen3.5-9b / x0_necessity/qwen35_9b_x0_single_r2 / gap (0.15 [0.07, 0.24] vs 0.64 [0.52, 0.74]). Dan's line says "needs J++"; here it says "needs the J++ part" (the glossary's part name).
 
@@ -125,11 +125,11 @@ The test's README scope is table headers; the rows and the footnote below follow
 
 ## Supplementary figures (README Appendix A)
 
-Their link texts already use the vocabulary ("every scene set", "every part", "every routes arm", "the parts removed together, with the bars fixed in advance"); the figures are in figures/drafts/v5/supp/ and replace figures/supp/ at the merge.
+Their link texts already use the vocabulary ("every scene set", "every part", "every routes arm", "the parts removed together, with the bars fixed in advance"); the figures are in figures/archive/drafts/v5/supp/ and replace figures/depth/supp/ at the merge.
 
 ## docs/x0_details.md (from docs/x0_details.template.md)
 
-The figures are in figures/drafts/v5/x0_necessity/ and figures/drafts/v5/status_2026-10-24/ and replace figures/x0_necessity/ and figures/status_2026-10-24/f6_digits.png at the merge. The page's prose still says "excess", "J-dependence", "edit" and "flips"; it is outside this pass (labels only), so the figures and the prose differ until it is reworded.
+The figures are in figures/archive/drafts/v5/x0_necessity/ and figures/archive/drafts/v5/status_2026-10-24/ and replace figures/archive/x0_necessity/ and figures/archive/status_2026-10-24/f6_digits.png at the merge. The page's prose still says "excess", "J-dependence", "edit" and "flips"; it is outside this pass (labels only), so the figures and the prose differ until it is reworded.
 
 - current alt text: Overview: excess by layer, two models, three prompt formats
 - canonical alt text: Overview: extra loss by layer, two models, three prompt formats

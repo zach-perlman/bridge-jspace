@@ -4,7 +4,7 @@ scripts/joint_figures.py's helpers. Every plotted number comes from docs/breadth
 
   figures/shared/j6_datasets.png      recalled answers need the lens part on every dataset Zach built
   figures/shared/j7_where.png         where the removal must act: the bridge's mention at middle layers, the question deeper
-  figures/shared/data_breadth.csv     every plotted number with its data.csv key
+  data/figures/shared/data_breadth.csv     every plotted number with its data.csv key
 
 uv run python scripts/joint_figures_breadth.py     (CPU only; reads docs/breadth/data.csv)
 """

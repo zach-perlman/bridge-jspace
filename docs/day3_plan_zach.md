@@ -170,7 +170,7 @@ Every model runs the identical pipeline (`docs/setup_grid.md`). Times are Easter
 | Fri | Cross-model analysis; figures; Dan verifies the headline numbers into VERIFIED.md; passage vs closed-book if time allows |
 | Sat (Day 6) | Progress update |
 
-*Figures:* Fig 1, C1 by layer band (27B); Fig 2, each step alone at layers 32–40 (27B). Both are in `figures/slack_1021/`.
+*Figures:* Fig 1, C1 by layer band (27B); Fig 2, each step alone at layers 32–40 (27B). Both are in `figures/archive/slack_1021/`.
 
 ---
 

@@ -88,8 +88,8 @@ NAME = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-
         "nemotron-3.5-lightning": "Nemotron 3.5 Lightning", "qwen3.5-122b-a10b": "Qwen3.5-122B"}  # fmt: skip
 RECON_RATIO_NOT, RECON_RATIO_PARTLY, TOP_RANK = 2.0, 3.0, 20
 LO_PCT, HI_PCT = 5.0, 95.0
-# the sanity swap (J++ and U removed together; x6_routes --bothoff, C0): figures/story/data.csv, fig10
-DATA_CSV = pins.REPO_ROOT / "figures" / "story" / "data.csv"
+# the sanity swap (J++ and U removed together; x6_routes --bothoff, C0): data/figures/depth/data.csv, fig10
+DATA_CSV = pins.REPO_ROOT / "data" / "figures" / "depth" / "data.csv"
 SANITY = "sanity swap, lookups still switching without J++ part + pointer: "
 
 
@@ -254,7 +254,7 @@ def overall(labels: dict[str, str]) -> str:
 
 def sanity_swap() -> dict:
     """The lookups still switching in the sanity swap with J++ and U removed together, and with a random part of the
-    same size, per model (figures/story/data.csv, fig10; x6_routes --bothoff)."""
+    same size, per model (data/figures/depth/data.csv, fig10; x6_routes --bothoff)."""
     out: dict = {}
     for r in csv.DictReader(DATA_CSV.open()):
         if r["figure"] == "fig10" and r["quantity"].startswith(SANITY):
@@ -527,7 +527,7 @@ def summary_lines(blob: dict) -> list[str]:
               "Sanity swap (the other reading of Neel's question, augmenting the lens with the pointer): with J++ and U "
               "removed together the lookup still switches in " + " / ".join(f"{sw[t]['part'][0]:.2f}" for t in order)
               + " of the sanity-swap scenes (" + " / ".join(NAME[t] for t in order) + "; a random part of the same size: "
-              + " / ".join(f"{sw[t]['random'][0]:.2f}" for t in order) + "; figures/story/data.csv, fig10, runs "
+              + " / ".join(f"{sw[t]['random'][0]:.2f}" for t in order) + "; data/figures/depth/data.csv, fig10, runs "
               + ", ".join(sw[t]["source"] for t in order) + ").", ""]  # fmt: skip
     for t in cols:
         lines.append(f"- {NAME.get(t, t)}: {models[t]['reading']['label']}: {models[t]['reading']['why']}.")

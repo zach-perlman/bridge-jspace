@@ -1,7 +1,7 @@
 """Figures across exp02_swaps runs (part B), in part A's style. Reads each run's summary.json and outcomes.jsonl;
 writes into a new folder (write-once).
 
-  exp02_figures.py OUT_NAME   -> figures/exp02_swaps/OUT_NAME/
+  exp02_figures.py OUT_NAME   -> figures/pre-sprint/exp02_swaps/OUT_NAME/
                                  jpart_vs_remainder.png  J-part / remainder / remainder with J held, J-lens vs J++ vs
                                                       Claude (the headline)
                                  swap_position.png    an example prompt with the swapped regions, and the J-part flip
@@ -531,7 +531,7 @@ def main(out_name: str, out_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp02_swaps/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp02_swaps/ (write-once)")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     args = parser.parse_args()
     main(args.out_name, args.out_root)

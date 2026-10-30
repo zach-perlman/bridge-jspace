@@ -3,7 +3,7 @@
 every image and link path exists, and (loosely) that no digit-bearing line of prose lacks a source comment.
 
 Key resolution by source type:
-- csv (figures/story/data.csv, docs/breadth/data.csv, docs/shared/grid.csv): the key equals some cell of the file;
+- csv (data/figures/depth/data.csv, docs/breadth/data.csv, docs/shared/grid.csv): the key equals some cell of the file;
 - json: the key is a top-level key;
 - "l.N" or "l.N-M": the file has at least that many lines;
 - anything else (Markdown, scripts): the key is a substring of the file, whitespace collapsed (hard-wrapped pages).
@@ -16,7 +16,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
-CSV_SOURCES = {"figures/story/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv"}
+CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv"}
 
 # In a table row the separator is written "\|" (a bare pipe would split the cell in GitHub's table syntax).
 SRC = re.compile(r"<!--\s*src:\s*([^|\\]*?)\s*\\?\|\s*(.*?)\s*-->", re.S)

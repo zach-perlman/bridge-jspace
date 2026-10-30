@@ -1,4 +1,4 @@
-"""scripts/joint_figures.py: the root README's five figures read at 880 px in the joint vocabulary, figures/shared/data.csv
+"""scripts/joint_figures.py: the root README's five figures read at 880 px in the joint vocabulary, data/figures/shared/data.csv
 is what they plot now, and three numbers per figure match their sources."""
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ def value(rows, figure: str, model: str, quantity: str):
 
 def test_data_csv_is_what_the_figures_plot_now(drawn):
     _, rows = drawn
-    assert J.DATA.read_text() == J.data_text(rows), "figures/shared/data.csv is stale: rerun scripts/joint_figures.py"
+    assert J.DATA.read_text() == J.data_text(rows), "data/figures/shared/data.csv is stale: rerun scripts/joint_figures.py"
     assert all(r["source"] for r in rows)
 
 
@@ -60,7 +60,7 @@ def sourced(rows, figure: str, model: str, source_end: str) -> dict:
 def test_j1_numbers_match_their_sources(drawn):
     _, rows = drawn
     assert sourced(rows, "j1", "Qwen 27B", "| ko.q27.lostM")["value"] == breadth("q27", "ko.q27.lostM") == 53.5
-    assert sourced(rows, "j1", "Qwen 9B", "recall extra loss")["value"] == 50.0  # 0.50 in figures/story/data.csv, in pp
+    assert sourced(rows, "j1", "Qwen 9B", "recall extra loss")["value"] == 50.0  # 0.50 in data/figures/depth/data.csv, in pp
     facts = json.loads(
         (J.REPO / "results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json").read_text()
     )["facts"]

@@ -271,7 +271,7 @@ def build(old: str = "") -> str:
           "S's answer\" recomputed from the stored ids; the prompts differ only in the scene's words; the probabilities "
           "agree with the label; a second run's prompts are the same. Per run: gate and eligibility recomputed from "
           "competence.jsonl; duplicates; Z1-P's facts; the random part's share against the lens part's; the headline "
-          "numbers recounted from the per-item files against x0_numbers.json / figures/story/data.csv.", "",
+          "numbers recounted from the per-item files against x0_numbers.json / data/figures/depth/data.csv.", "",
           "| view | items | per-item failures | run checks failed | headline recount | n/a (not computable) |",
           "|---|---|---|---|---|---|"]  # fmt: skip
     findings = []

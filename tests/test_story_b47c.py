@@ -248,7 +248,7 @@ def test_figure_on_its_planted_verdict(test_id, tmp_path, monkeypatch, saved):  
     verdict = PLANTED[test_id](tmp_path / "results", monkeypatch)
     _, build, name = B.TESTS[test_id]
     assert build(verdict, name) == name
-    assert (S.OUT / f"{name}.png").exists() and (S.OUT / f"{name}.svg").exists()
+    assert (S.OUT / f"{name}.png").exists()  # PNG only (Dan, 30 Oct)
     check(saved[name])
     _rows_ok(test_id, name)
 

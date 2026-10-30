@@ -10,7 +10,7 @@ panel, every line labelled at its right end in its own colour on every panel (no
                        models: the switches it carries, then how much of the hand-built address lies inside it
   s14_learned_sizes    51.3: the supplement, each learned subspace's switches carried by its number of directions
 
-Every plotted number is recorded for figures/story/data.csv with the verdict json as its source.
+Every plotted number is recorded for data/figures/depth/data.csv with the verdict json as its source.
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@ Reads (no run, no result file besides the grid's outputs):
   results/cross_model/<latest>/grid.csv  every number on the page (scripts/cross_model_grid.py)
   results/cross_model/<latest>/grid.md   the lens block, the grid table, its legend and footnotes, embedded as they are
   results/jobq/ledger*.jsonl             the night's runs: jobs started since --since (their --name and new results)
-  figures/cross_model/*.png              the merged figures (scripts/cross_model_figures.py), matched to a finding by
+  figures/archive/cross_model/*.png              the merged figures (scripts/cross_model_figures.py), matched to a finding by
                                          their claim-named file names at run time (FIGURE_RULES); unmatched ones are
                                          listed in the cross-model section, none dropped
   VERIFIED.md, predictions/README.md, jobs/*/*.yaml   the status line, the scorecard, the specs of the mapping table
@@ -708,9 +708,9 @@ def what_changed(cells: list[Cell], runs: set[str], since: dt.datetime) -> tuple
 
 
 def figures(repo: Path) -> dict[str, list[Path]]:
-    """figures/cross_model/*.png by finding key (FIGURE_RULES; the first match wins), unmatched under 'other'."""
+    """figures/archive/cross_model/*.png by finding key (FIGURE_RULES; the first match wins), unmatched under 'other'."""
     out: dict[str, list[Path]] = collections.defaultdict(list)
-    for p in sorted((repo / "figures" / "cross_model").glob("*.png")):
+    for p in sorted((repo / "figures" / "archive" / "cross_model").glob("*.png")):
         key = next((k for pat, k in FIGURE_RULES if fnmatch.fnmatch(p.name.lower(), pat)), "other")
         out[key].append(p)
     return out
@@ -735,7 +735,7 @@ def finding_section(j: Judgement, figs: list[Path], repo: Path, grid_link: str) 
     if figs:
         out += fig_lines(figs, repo)
     else:
-        out += ["_No merged figure for this finding in figures/cross_model/ yet._", ""]
+        out += ["_No merged figure for this finding in figures/archive/cross_model/ yet._", ""]
         placeholders.append(f"figure: {title(f)}")
     out += ["**What we did**", *(f"- {d}" for d in tx.did), ""]
     weak = [f"- {SHORT[c.model]}, {c.setting}: {c.word}" + (f" ({w})" if (w := why(c)) else "") + "."

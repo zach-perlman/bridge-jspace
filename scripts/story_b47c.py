@@ -1,5 +1,5 @@
 """README figures for batch 47 (part c): one figure per test, each drawn from that test's verdict folder (the json its
-`verdict` stage writes) in story_style's look, every plotted number recorded for figures/story/data.csv.
+`verdict` stage writes) in story_style's look, every plotted number recorded for data/figures/depth/data.csv.
 
   47.14 x47_chain.py      x47_14-<UTC>/x47_14.json            Fig. 21: chained addresses (hall, then locker)
   47.11 x47_agnostic.py   x47_11-<UTC>/x47_11.json            Fig. 22: the pointer on fruits and names
@@ -15,7 +15,7 @@ verdicts and on the two opened ones (tests/test_story_b47c.py); readme_story_fig
 folders are named there.
 
     from scripts import story_b47c as B
-    B.build_chain(Path("results/x47_chain/x47_14-<UTC>"), "fig21_chained_addresses")   # into figures/story/
+    B.build_chain(Path("results/x47_chain/x47_14-<UTC>"), "fig21_chained_addresses")   # into figures/depth/
 """
 
 from __future__ import annotations

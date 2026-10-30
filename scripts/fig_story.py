@@ -1,5 +1,5 @@
 """fig_story (Zach, 2026-10-25): one-page summary of the breadth half (does the memory-vs-prompt split hold, and where),
-for a reader new to the project, from committed results only. Writes figures/day6/story.png.
+for a reader new to the project, from committed results only. Writes figures/archive/day6/story.png.
 
 python scripts/fig_story.py
 """
@@ -209,8 +209,8 @@ def main():
                           "rather than at the bridge word (being checked: its band is deeper);\nOLMo shows no dependence (*its row in B is the earlier facts set); one rendering seed on the "
                           "current set; bands fixed per model; Gemma-4 and gpt-oss could not be tested (any removal breaks them). Intervals: 95% bootstrap over bridges.",
              fontsize=8.3, color=MUTED, va="top")  # fmt: skip
-    (ROOT / "figures" / "day6").mkdir(parents=True, exist_ok=True)
-    fig.savefig(ROOT / "figures" / "day6" / "story.png", dpi=150)
+    (ROOT / "figures" / "archive" / "day6").mkdir(parents=True, exist_ok=True)
+    fig.savefig(ROOT / "figures" / "archive" / "day6" / "story.png", dpi=150)
     print("ok")
 
 

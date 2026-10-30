@@ -33,7 +33,7 @@ def _f(x):
 @cache
 def story() -> dict:
     out = {}
-    with (REPO / "figures/story/data.csv").open() as f:
+    with (REPO / "data/figures/depth/data.csv").open() as f:
         for r in csv.DictReader(f):
             v = _f(r["value"])
             if v is not None:
@@ -65,7 +65,7 @@ def x0() -> dict:
 
 
 def s(model: str, quantity: str, figure: str | None = None, prefix: bool = False):
-    """A figures/story/data.csv cell by model and quantity (exact, or the first quantity starting with it)."""
+    """A data/figures/depth/data.csv cell by model and quantity (exact, or the first quantity starting with it)."""
     for (fig, m, q), v in story().items():
         if m == model and (figure is None or fig == figure) and (q.startswith(quantity) if prefix else q == quantity):
             return v

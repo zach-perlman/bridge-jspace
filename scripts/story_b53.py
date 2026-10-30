@@ -12,7 +12,7 @@
                           set after the 27B's two cells were seen (its mark open), before the 122B ran.
 
 record_card_numbers adds the numbers the two cards quote that the figures do not draw (figure "cards"). Every plotted
-number is recorded for figures/story/data.csv with its source file.
+number is recorded for data/figures/depth/data.csv with its source file.
 """
 
 from __future__ import annotations

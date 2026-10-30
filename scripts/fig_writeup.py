@@ -1,5 +1,5 @@
 """fig_writeup (Zach, 2026-10-26): the write-up figures, read from the same result files as docs/digest.md (through
-scripts/results_digest.py's readers, so a figure and the digest cannot disagree). Writes figures/writeup/*.png.
+scripts/results_digest.py's readers, so a figure and the digest cannot disagree). Writes figures/archive/writeup/*.png.
 
   fig1_knockout   M - K under the top-10 J++ removal at each model's band, with its three controls
   fig2_pointer    what the mention's J-part carries (27B, 9B, Lightning): swaps from other contexts, own name, probe
@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from scripts import results_digest as D  # noqa: E402
 
-RES, OUT = ROOT / "results", ROOT / "figures" / "writeup"
+RES, OUT = ROOT / "results", ROOT / "figures" / "archive" / "writeup"
 # categorical slots 1-4 in fixed order (validated, light surface; the two light hues always carry a label and a shape)
 J, LOGIT, ROT, SIZE = "#2a78d6", "#eb6834", "#1baf7a", "#eda100"
 PROBE, PASTE = "#6250d6", "#898781"  # slot 7 for the probe subspace; paste is a reference, in muted ink

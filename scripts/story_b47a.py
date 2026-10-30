@@ -1,5 +1,5 @@
 """README figures for batch 47 (part a): one figure per test, each drawn from that test's verdict folder (the json its
-`verdict` stage writes) in story_style's look, every plotted number recorded for figures/story/data.csv.
+`verdict` stage writes) in story_style's look, every plotted number recorded for data/figures/depth/data.csv.
 
   47.1  x47_atoms.py   x47_1-<UTC>/x47_1.json         Fig. 11: without the J++ lens's directions 26-100; README
                                                       Figs. 5b (the main test's parts) and 5d (the routes test's slices)
@@ -278,7 +278,7 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
     lens directions 26-100, PCA directions of the J++ part's size, logit-lens and random lens directions), one row per
     model (9B, 27B, Muse) with the lookup's and the recall's extra loss and their 95% intervals (open: the parts runs on
     one-pick scenes, after the data; filled: the main test, fixed in advance). The 122B's parts:
-    figures/supp/s02_parts_all."""
+    figures/depth/supp/s02_parts_all."""
     src = verdict_dir / "x47_1.json"
     v = json.loads(src.read_text())
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)

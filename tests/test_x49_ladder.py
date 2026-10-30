@@ -534,7 +534,7 @@ def test_the_figure_on_a_planted_verdict(tmp_path, monkeypatch, saved):  # noqa:
     verdict = planted_verdict(tmp_path / "results", monkeypatch)
     name = "fig30_removal_ladder"
     assert FIG.build_ladder(verdict, name) == name
-    assert (S.OUT / f"{name}.png").exists() and (S.OUT / f"{name}.svg").exists()
+    assert (S.OUT / f"{name}.png").exists()  # PNG only (Dan, 30 Oct)
     check(saved[name])
     texts = " ".join(saved[name]["texts"])
     assert "Two definitions, not one" in texts and "rung 5" in texts and "rung 6" in texts

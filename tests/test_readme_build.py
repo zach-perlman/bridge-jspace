@@ -238,7 +238,7 @@ def test_the_matcher_catches_each_banned_variant(text):
      "random lens directions", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
      "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches lost (%)",
      "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
-     "Adding the address alone brings position\nanswers back", *KEPT],
+     "Adding the address alone brings position\nanswers back", *sorted(KEPT)],  # sorted: xdist needs one order
 )  # fmt: skip
 def test_the_matcher_passes_the_canonical_strings(text):
     assert not banned([("example", text)]), banned([("example", text)])
@@ -339,15 +339,15 @@ def test_relink_from_a_subfolder_resolves_every_local_link():
 
 
 def test_relink_keeps_the_root_readme_and_urls():
-    text = '![a](figures/story/x.png) [b](docs/y.md#z) [c](https://e.org/p) [d](#sec) <img src="figures/w.png">'
+    text = '![a](figures/depth/x.png) [b](docs/y.md#z) [c](https://e.org/p) [d](#sec) <img src="figures/w.png">'
     assert B.relink(text, B.REPO / "README.md") == text
     moved = B.relink(text, B.REPO / "docs" / "depth" / "README.md")
-    assert moved == ("![a](../../figures/story/x.png) [b](../y.md#z) [c](https://e.org/p) [d](#sec) "
+    assert moved == ("![a](../../figures/depth/x.png) [b](../y.md#z) [c](https://e.org/p) [d](#sec) "
                      "<img src=\"../../figures/w.png\">")  # fmt: skip
 
 
 def test_data_marker_reads_data_csv_and_carries_its_source(tmp_path, monkeypatch):
-    # README v6 (Dan, 28 Oct): every number from figures/story/data.csv with its source comment
+    # README v6 (Dan, 28 Oct): every number from data/figures/depth/data.csv with its source comment
     csv_path = tmp_path / "data.csv"
     csv_path.write_text("figure,model,quantity,value,lo,hi,n,source\n"
                         "fig05,qwen3.5-9b,position share,0.514,0.46,0.56,300,results/x\n"

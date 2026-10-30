@@ -17,7 +17,7 @@ shared one cell before (the heat = the probe, the number = the swap) now get one
                                  rule was read), 95% cluster-bootstrap intervals over the bridge entities (the ratio's
                                  paired, from outcomes.jsonl).
 
-Every plotted number is recorded for figures/story/data.csv with its source file.
+Every plotted number is recorded for data/figures/depth/data.csv with its source file.
 """
 
 from __future__ import annotations

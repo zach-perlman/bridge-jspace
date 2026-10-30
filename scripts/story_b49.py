@@ -1,5 +1,5 @@
 """README figure for batch 49, test 49.1: the gain map, drawn from the test's verdict folder (the json its `verdict`
-stage writes) in story_style's look, every plotted number recorded for figures/story/data.csv.
+stage writes) in story_style's look, every plotted number recorded for data/figures/depth/data.csv.
 
   49.1  x49_gain.py   x49_1-<UTC>/x49_1.json   Fig. 27: the gain map, two readers, two weights
 

@@ -10,7 +10,7 @@ lens-blindness card; Dan's 12:50 restructure, docs_1250). Unverified until hand-
                  pre-check); the 122B "not run". Monitor (a), the lens readout, is the lens-blindness card's (cited, not
                  drawn here).
 
-Every plotted number is recorded for figures/story/data.csv with its source file; record_card_numbers() records the
+Every plotted number is recorded for data/figures/depth/data.csv with its source file; record_card_numbers() records the
 numbers the card quotes that the figure does not draw (figure "cards").
 """
 

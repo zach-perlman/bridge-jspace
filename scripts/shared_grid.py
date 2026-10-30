@@ -4,13 +4,13 @@ source.
   docs/shared/grid.csv        one row per (claim, model, study): cell (ok / ~ / x / - / pending), flag (a: after the
                               data; *: not counted), source file, source row, the model's name in that source, its key(s)
                               and the value(s) behind the cell
-  figures/shared/grid.png     (+ .svg) the claims graded on all nine models (both tracks' shared claims, Zach's tests)
-  figures/shared/grid_dan.png (+ .svg) Dan's own tests on his four models; both in coloured cells with Fig. 11's symbols
+  figures/shared/grid.png     the claims graded on all nine models (both tracks' shared claims, Zach's tests)
+  figures/shared/grid_dan.png Dan's own tests on his four models; both in coloured cells with Fig. 11's symbols
                               (readme_story_figures.CELL_SYMBOL) inside, short claims in the joint vocabulary (FIGURES)
 
 The two sources, never merged:
-  depth (Dan's half)    figures/story/scorecard.csv: cell and flag copied; its 'data.csv key' resolves in
-                        docs/x0_numbers.json ('numbers:') or figures/story/data.csv ('figNN:'), whose value is shown.
+  depth (Dan's half)    data/figures/depth/scorecard.csv: cell and flag copied; its 'data.csv key' resolves in
+                        docs/x0_numbers.json ('numbers:') or data/figures/depth/data.csv ('figNN:'), whose value is shown.
   breadth (Zach's half) docs/breadth/data.csv: one verdict per model by the rules on Zach's scorecard (scripts/fig_neel.py
                         f12, its note), one rule per row of BREADTH_RULES; a model whose data.csv lacks a rule's key is
                         '-'. Fixed in advance as in his prereg (docs/prereg_replication_1022.md); 'a' where it says not.
@@ -34,8 +34,8 @@ sys.path[:0] = [str(REPO), str(REPO / "src")]
 from scripts import readme_story_figures as F  # noqa: E402
 from scripts import story_style as S  # noqa: E402
 
-SCORECARD = REPO / "figures" / "story" / "scorecard.csv"
-DEPTH_DATA = REPO / "figures" / "story" / "data.csv"
+SCORECARD = REPO / "data" / "figures" / "depth" / "scorecard.csv"
+DEPTH_DATA = REPO / "data" / "figures" / "depth" / "data.csv"
 BREADTH_DATA = REPO / "docs" / "breadth" / "data.csv"
 GRID = REPO / "docs" / "shared" / "grid.csv"
 FIG_DIR = REPO / "figures" / "shared"
@@ -120,7 +120,7 @@ def breadth_value(r: dict) -> str:
 
 
 def depth_value(key: str, target: str, numbers: dict, recorded: dict) -> str:
-    """The value a scorecard key names: an x0_numbers text, or a figures/story/data.csv row of that model."""
+    """The value a scorecard key names: an x0_numbers text, or a data/figures/depth/data.csv row of that model."""
     fig_id, quantity = key.split(":", 1)
     if fig_id == "numbers":
         return numbers[quantity]["text"]
@@ -144,7 +144,7 @@ def build() -> list[dict]:
         for header, name, _ in MODELS:
             r = cells.get((card_claim, name)) if name else None
             row = {"group": group, "claim": claim, "model": header, "study": "depth", "cell": "-", "flag": "",
-                   "source": "figures/story/scorecard.csv", "source row": card_claim, "model key": name or "", "key": "", "value": ""}  # fmt: skip
+                   "source": "data/figures/depth/scorecard.csv", "source row": card_claim, "model key": name or "", "key": "", "value": ""}  # fmt: skip
             if name is not None and r is not None:
                 row.update(cell=r["cell"], flag=r["flag"], key=r["data.csv key"])
                 if r["data.csv key"]:
@@ -361,7 +361,6 @@ def code_of(r: dict) -> str:
 def save(fig, name: str) -> None:
     """As story_style.save, into figures/shared."""
     FIG_DIR.mkdir(parents=True, exist_ok=True)
-    fig.savefig(FIG_DIR / f"{name}.svg", facecolor="white")
     fig.savefig(FIG_DIR / f"{name}.png", dpi=200, facecolor="white")
 
 

@@ -8,14 +8,14 @@ REPO = Path(__file__).resolve().parents[1]
 
 
 def test_probe_v4_keys_match_the_stored_runs():
-    """The x0_probe v4 table's keys (docs/x0_numbers.json) and figures/story/data.csv's probe.<target>.<model>.<order>
+    """The x0_probe v4 table's keys (docs/x0_numbers.json) and data/figures/depth/data.csv's probe.<target>.<model>.<order>
     rows hold each run's stored probe accuracy, interval and n, for four models x three targets x two orders."""
     import csv
 
     from scripts import x0_details as XD
 
     numbers = json.loads((REPO / "docs" / "x0_numbers.json").read_text())
-    with (REPO / "figures" / "story" / "data.csv").open() as f:
+    with (REPO / "data" / "figures" / "depth" / "data.csv").open() as f:
         data = {r["quantity"]: r for r in csv.DictReader(f) if r["figure"] == "probe"}
     for m in ("9b", "27b", "122b", "muse"):
         src, rows = XD.probe_v4_rows(m)

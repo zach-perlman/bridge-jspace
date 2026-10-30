@@ -7,7 +7,7 @@ layer or by asked sentence), it reads the files the grid names for that cell wit
 (d2_formats, d2_parts, finding5_confirm, pointer_swap, early_push_where), and where the grid has the same number it
 checks it: a cell whose files disagree with the grid is drawn as missing ("files inconsistent"), never patched.
 
-Figures (figures/cross_model/<name>.png at 200 dpi and .svg, 16:9):
+Figures (figures/archive/cross_model/<name>.png at 200 dpi and .svg, 16:9):
   f_late_read_all_models                a  finding 4: % right with the answer's sentence hidden from the last tokens,
                                            against the DeltaNet layers (hybrids) and another sentence hidden instead
   f_digit_not_name_all_models           b  finding 3: only the digit vs only the name left visible, per format
@@ -83,7 +83,7 @@ from scripts import cross_model_grid as G
 from scripts import d2_formats as DF
 from scripts import d2_parts as DP
 
-OUT = pins.REPO_ROOT / "figures" / "cross_model"
+OUT = pins.REPO_ROOT / "figures" / "archive" / "cross_model"
 Triple = tuple[float, float, float]
 VALUE_WORDS = ("holds", "fails", "inconclusive", "open")
 LAYER_GAP_RUN = "d4_layer_gap_v2_27b"  # jobs/d4/d4_layer_gap_v2_27b.yaml (the 27B only; not a grid cell)

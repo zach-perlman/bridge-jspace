@@ -342,7 +342,7 @@ verify_prep_1145: |
   2. Automatic checks over every item of every tier-1 view (Phase 2 recount
      included), results at the top of docs/verify_pack.md:
      - recount each headline number from the per-item files; exact match with
-       figures/story/data.csv / x0_numbers.json, else list the mismatch;
+       data/figures/depth/data.csv / x0_numbers.json, else list the mismatch;
      - the edit position decodes to the bridge token (O and S);
      - answers are single tokens and decode to the stated answer; the switch
        label equals "top token == S's answer" recomputed from stored ids;

@@ -115,7 +115,7 @@ def test_figure_from_its_verdict(test, tmp_path, monkeypatch, drawn):
     out = VERDICTS[test](tmp_path / "runs", monkeypatch)
     _, build, name = F.TESTS[test]
     assert build(out, name) == name
-    assert (S.OUT / f"{name}.png").exists() and (S.OUT / f"{name}.svg").exists()
+    assert (S.OUT / f"{name}.png").exists()  # PNG only (Dan, 30 Oct)
     texts = drawn[name]
     assert any(t.startswith("PLANTED") for t in texts)  # the subtitle says the data are planted
     rows = [r for r in S.ROWS if r["figure"] == name.split("_")[0]]

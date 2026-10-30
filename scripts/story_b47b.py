@@ -11,7 +11,7 @@ number goes through story_style.record with the verdict file as its source.
     47.0   scripts/x47_verbal.py      x47_verbal/summary-*/verbal.json         fig20_verbal
 
     from scripts import story_b47b as B
-    B.build_d1(Path("results/x47_depthmap/depth-<UTC>"), "fig16_depth_map")   # into figures/story/ (out_dir= to change)
+    B.build_d1(Path("results/x47_depthmap/depth-<UTC>"), "fig16_depth_map")   # into figures/depth/ (out_dir= to change)
 """
 
 from __future__ import annotations
@@ -76,7 +76,7 @@ def legend(fig, handles, labels, y: float, ncol: int | None = None, **kw) -> Non
 
 
 def save(fig, name: str, out_dir: Path | None) -> str:
-    """story_style.save into out_dir (default figures/story/); returns the name."""
+    """story_style.save into out_dir (default figures/depth/); returns the name."""
     out = out_dir or S.OUT
     out.mkdir(parents=True, exist_ok=True)
     fig.savefig(out / f"{name}.svg", facecolor="white")

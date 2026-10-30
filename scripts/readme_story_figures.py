@@ -1,10 +1,10 @@
-"""README v2's figures (Dan, 25 Oct: one story, figures that read at a glance) into figures/story/ (SVG + PNG) and
-figures/story/data.csv, in story_style's look. Fig. 0 and Fig. 3 are schematics (no data); the others read the run
+"""README v2's figures (Dan, 25 Oct: one story, figures that read at a glance) into figures/depth/ (SVG + PNG) and
+data/figures/depth/data.csv, in story_style's look. Fig. 0 and Fig. 3 are schematics (no data); the others read the run
 files (X0 cells, verdicts) or docs/x0_numbers.json, and record every plotted number. The words on the figures:
 docs/glossary.md (tests/test_readme_build.py checks them).
 
-uv run python scripts/readme_story_figures.py                            # figures/story/, figures/supp/
-uv run python scripts/readme_story_figures.py --out figures/drafts/v5    # a draft set, Fig. 8b included
+uv run python scripts/readme_story_figures.py                            # figures/depth/, figures/depth/supp/
+uv run python scripts/readme_story_figures.py --out figures/archive/drafts/v5    # a draft set, Fig. 8b included
 """
 
 from __future__ import annotations
@@ -517,8 +517,8 @@ def transfer_cells(target: str, reader: str = X.LOOKUP) -> dict[tuple[str, str],
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# README v4 (Dan, 26 Oct ~16:45; docs/figure_plan.md): one claim per figure, in story order, figures/story/figNN_*.png.
-# The 26 Oct files (fig0_setup.png ... fig11_order.png) are in figures/archive/; the detail panels go to figures/supp/.
+# README v4 (Dan, 26 Oct ~16:45; docs/figure_plan.md): one claim per figure, in story order, figures/depth/figNN_*.png.
+# The 26 Oct files (fig0_setup.png ... fig11_order.png) are in figures/archive/; the detail panels go to figures/depth/supp/.
 
 NAMES = {m: name for _, m, name in S.MODELS} | {"lightning": "Nemotron 3.5 Lightning"}
 LOWERED_M = {"122b"}  # the 122B's routes, writes and pointer runs: gate lowered to 0.75 after the data
@@ -851,7 +851,7 @@ def f01_split(plt) -> None:
 def f01b_settings(plt) -> None:
     """The same per model in the other settings: the logit difference, the clean one-pick scenes with the locker before
     the pick (45m, fixed in advance; the 9B misses the 0.3 bar), varied scenes, natural passages. The one-pick scenes
-    with the duplicate pick moved to figures/supp/s01b_one_pick_duplicate."""
+    with the duplicate pick moved to figures/depth/supp/s01b_one_pick_duplicate."""
     fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.9))
     fig.subplots_adjust(left=0.07, right=0.91, top=0.665, bottom=0.075, wspace=0.42, hspace=0.62)
     S.title(fig, "Recall follows the J++ part more than the lookup in every setting",
@@ -1281,7 +1281,7 @@ def f03_order(plt) -> None:
     the bridge-word change (dashed) against the copy of the changed prompt's states into the locker sentences (solid);
     the sweep after the data (open marks), the rule's arms fixed in advance (filled: at L the bridge-word change and the
     copy, at L/2 the copy); one block per model on one axis, x = the layer index (ticks 0, L, the last layer swept).
-    The old Fig. 3 with the 122B and its extra-loss panel: figures/supp/s03_order_split; the old Fig. 3b stays
+    The old Fig. 3 with the 122B and its extra-loss panel: figures/depth/supp/s03_order_split; the old Fig. 3b stays
     fig03b_layers until the README drops it. Lightning (batch 52, hollow): A from its conflict test at L14, B from its
     Z1 run (LT_Z1), C not tested (its clean one-pick scenes missed their gate)."""
     h = 11.85  # the bottom 0.3 in: the 122B's caption line (the panels keep their places from the top)
@@ -1626,7 +1626,7 @@ def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str |
     arms (fixed in advance, filled), from the verdict: at L the bridge-word change (a) and the copy (c), at L/2 the copy
     (d) (Muse's sweep, every 4th layer, has no point at its L or L/2). The subtitle: where the copy makes the link
     (made_by) and n; the rule and its verdict as a footnote. The other copies (the item's own tokens, the other tokens,
-    the number or the period; without each token's J++ part or a random part, 45n): figures/supp/s03d (s03d_q)."""
+    the number or the period; without each token's J++ part or a random part, 45n): figures/depth/supp/s03d (s03d_q)."""
     v = json.loads((verdict_dir / "x45q.json").read_text())
     sweep = json.loads((sweep_dir / "sweep.json").read_text())["runs"]
     by = {m["model"]: m for m in v["models"] if m["status"] != "pending"}
@@ -1804,7 +1804,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     the asked pick; one panel per model (9B, 27B, Muse: no 122B run), one row per arm (Fig. 2's style): the recall's
     switches lost against arm (1), and the lookup's, with 95% intervals (both filled, apart by colour); arm (1)'s own
     switches as text. The rule and n are the README card's (a main-page figure since Dan's restructure brief, 28 Oct
-    22:20: a one-line subtitle, v6). Story Fig. 3c if the rule holds, else figures/supp/s03c (titled with the null).
+    22:20: a one-line subtitle, v6). Story Fig. 3c if the rule holds, else figures/depth/supp/s03c (titled with the null).
     Returns the saved name."""
     v = json.loads((verdict_dir / "x45p.json").read_text())
     by = {m["target"]: m for m in v["models"]}
@@ -1942,7 +1942,7 @@ def s01c_nochat(plt, runs: dict[str, str], title: str | None = None) -> None:
 
 
 def f03b(plt) -> None:
-    """README Fig. 3b: 45q once LANDED names its folders (the 35-item 45b sweep then goes to figures/supp/s03b),
+    """README Fig. 3b: 45q once LANDED names its folders (the 35-item 45b sweep then goes to figures/depth/supp/s03b),
     else the 45b sweep."""
     if LANDED.get("45q"):
         d = {k: pins.RESULTS_DIR / p for k, p in LANDED["45q"].items()}
@@ -1953,7 +1953,7 @@ def f03b(plt) -> None:
 
 
 def f03c(plt) -> None:
-    """45p once scored (README Fig. 3c if its rule holds, else figures/supp/s03c); nothing before."""
+    """45p once scored (README Fig. 3c if its rule holds, else figures/depth/supp/s03c); nothing before."""
     if LANDED.get("45p"):
         f03c_p(plt, pins.RESULTS_DIR / LANDED["45p"])
 
@@ -2282,7 +2282,7 @@ def f07_writes(plt) -> None:
     (rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>). (c) The swap by dose (x × a real change's
     size): the lookups sent to the target locker, all locker pairs pooled (the README's x8_t<s>_<m>, 95% band), and a
     random vector of the same size; the mean over locker pairs (the 26 Oct line) is still recorded. The recall's
-    answers under the strongest swap: figures/supp/s07_recall_follows_swap. Lightning (batch 52, hollow) in each panel
+    answers under the strongest swap: figures/depth/supp/s07_recall_follows_swap. Lightning (batch 52, hollow) in each panel
     from its coverage folders (LT_PROBE, LT_ROUTES, LT_SWAP); its swap has no recall stage, so its real change's dose
     s* is the recall stage's formula on the run's manifest norms (scripts/x8_write.py). The 122B the fifth slot in
     each panel (Q122_PROBE, Q122_ROUTES / Q122_KEEP, Q122_SWAP with its recall stage Q122_RECALL): its probe filled
@@ -2572,8 +2572,8 @@ def f08_first_locker(plt) -> None:
     """After the data. 45a: per model (9B, 27B, Muse) the lookup's answers on first-locker moves under the whole change,
     by the sentence added before the lockers, and at the right the code shift (beta: how far the pointer's code moves
     against no sentence, in positions). The routes test's position answers by the move and the neutral-sentence test:
-    figures/supp/s08b (s08b_pointer_moves); the 26 Oct panels on what the prompt names first and the label-free
-    pointer: figures/supp/s08_first_sentence_and_label_free."""
+    figures/depth/supp/s08b (s08b_pointer_moves); the 26 Oct panels on what the prompt names first and the label-free
+    pointer: figures/depth/supp/s08_first_sentence_and_label_free."""
     by = layout_table()
     h = 5.1
     fig = plt.figure(figsize=(S.WIDTH, h))
@@ -2924,7 +2924,7 @@ def matched_wrong_cell(run: str, n_boot: int = X.N_BOOT) -> dict:
 def f10_left(plt, matched: bool = True) -> None:
     """The sanity swap, one panel per model (as Figs. 8 and 9), one row per removal: J++ and the pointer (the both-removed
     runs), identity outside J++ removed too (batch 40), and a wrong pair in its place (45e; matched: on the scenes where
-    the control reached at least 0.9 of identity outside J++'s share, Dan ~01:05; else every scene, figures/supp/s10b).
+    the control reached at least 0.9 of identity outside J++'s share, Dan ~01:05; else every scene, figures/depth/supp/s10b).
     Per row, the share of the whole change's lookup switches still switching with the part removed (purple) and with a
     random part of the same size removed (grey), joined by a line: its length is the part's extra loss. The part's
     median share of the change and n under the row. The subtitle: 45e's condition (ii) on the same scenes."""
@@ -3033,9 +3033,9 @@ SCORECARD_V4 = (
     ("The pointer transfers", {"9b": ("no", 0), "27b": ("no", 0), "122b": ("no", 0), "muse": ("no", 0)}),
 )  # fmt: skip
 V4_CELL = {"held": "ok", "partial": "~", "no": "x", "not tested": "-"}
-# figures/story/scorecard.csv's cells: ok / ~ / x / - (not run, or too few switches: flag *) / pending; flag a = after
+# data/figures/depth/scorecard.csv's cells: ok / ~ / x / - (not run, or too few switches: flag *) / pending; flag a = after
 # the data. Its columns (Dan ~00:30): claim, model, cell, flag, data.csv key ("numbers:<x0_numbers key>" or
-# "<figure>:<quantity>", the row of figures/story/data.csv that carries the cell's number for that model)
+# "<figure>:<quantity>", the row of data/figures/depth/data.csv that carries the cell's number for that model)
 CELL_SYMBOL = {"ok": ("✓", "#2f7d4f"), "~": ("~", "#b07a0a"), "x": ("✗", "#b8433a"), "-": ("–", "#8a8a8a"),
                "pending": ("○", "#8a8a8a")}  # fmt: skip
 SC_FIELDS: tuple[str, ...] = ("claim", "model", "cell", "flag", "data.csv key")
@@ -3249,7 +3249,7 @@ def per(*keys: str, models: tuple[str, ...] = ("9b", "27b", "muse")) -> dict[str
 
 
 # each cell's numbers: the claims table's key numbers for that model, "numbers:<x0_numbers key>" or
-# "<figure>:<quantity>" (a figures/story/data.csv row of that model); none for a "not run" cell
+# "<figure>:<quantity>" (a data/figures/depth/data.csv row of that model); none for a "not run" cell
 CLAIM_KEYS = {
     1: per("numbers:rc_excess_{m}", "numbers:lk_excess_{m}", models=("9b", "27b", "muse", "122b"))
     | {"lightning": ("cards:conflict: recall, switches lost beyond a random part",
@@ -3317,12 +3317,12 @@ def check_claim_cells() -> None:
 def f11_scorecard(plt) -> None:
     """Fig. 11, the README's scorecard (Dan, 29 Oct 12:50): the claims table's rows (CLAIM_CELLS, sentences from the
     template, checked one to one) by the five models, each cell a box with its word; recorded as fig11 rows "claim
-    <n>: <word>" with the cell's numbers (CLAIM_KEYS) as the source. figures/story/scorecard.csv keeps v5's rows
+    <n>: <word>" with the cell's numbers (CLAIM_KEYS) as the source. data/figures/depth/scorecard.csv keeps v5's rows
     (scorecard_rows; rows of other models already in the file are kept): the joint figures and the shared grid
     (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
     v5_rows = scorecard_rows()
     S.OUT.mkdir(parents=True, exist_ok=True)
-    path = S.OUT / "scorecard.csv"
+    path = S.DATA_DIR / "scorecard.csv"
     ours = {name for _, _, name in S.MODELS}
     kept = []
     if path.exists():
@@ -4481,7 +4481,7 @@ README_NAMES = ("fig11_scorecard", "fig00_setup", "fig00b_marks", "fig01_split",
                 "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig07_writes", "fig09b_six_lockers",
                 "fig07b_verbal", "fig23_monitor", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map",
                 "fig22_attention_blocks", "fig06b_anatomy", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
-# the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
+# the draft set's second sheet: every other figure still drawn (the figures/depth/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
@@ -4519,11 +4519,11 @@ def contact_sheet(
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Default: figures/story/ (+ figures/supp/, figures/story/scorecard.csv, docs/figures_contact_sheet.png). --out DIR:
-    the whole draft set (Dan, 26 Oct ~21:50 / ~22:45: figures/drafts/v5): the README figures, the supplementary figures
+    """Default: figures/depth/ (+ figures/depth/supp/, data/figures/depth/scorecard.csv, docs/figures_contact_sheet.png). --out DIR:
+    the whole draft set (Dan, 26 Oct ~21:50 / ~22:45: figures/archive/drafts/v5): the README figures, the supplementary figures
     in DIR/supp, docs/x0_details.md's figures in DIR/x0_necessity (x0_figures) and DIR/status_2026-10-24
     (x0_status_pack's f6), each folder with its data.csv; DIR/contact_sheet.png (the README figures) and
-    DIR/contact_sheet_more.png (the rest). figures/story/, figures/supp/, figures/x0_necessity/ and docs/ stay
+    DIR/contact_sheet_more.png (the rest). figures/depth/, figures/depth/supp/, figures/archive/x0_necessity/ and docs/ stay
     untouched. (Fig. 8b, the 26 Oct draft, is Fig. 8 (a) since batch 45.)"""
     import argparse
 
@@ -4555,11 +4555,11 @@ def main(argv: list[str] | None = None) -> None:
     from scripts import story_b53b as B53B
 
     B53B.record_card_numbers()
-    if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/ledger/, their rows into data.csv
+    if out is None:  # the ledger's figures (docs/depth/EXPERIMENTS.md) into figures/depth/ledger/, their rows into data.csv
         from scripts import ledger_figures as LF
 
         LF.build_all(plt)
-    check_scorecard_keys(S.OUT / "scorecard.csv")
+    check_scorecard_keys(S.DATA_DIR / "scorecard.csv")
     check_claim_cells()
     S.write_data()
     contact_sheet(plt, README_NAMES, sheet)

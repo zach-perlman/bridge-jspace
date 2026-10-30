@@ -215,7 +215,7 @@ def drawn(monkeypatch, tmp_path):
 
 def check(name: str, out: Path, drawn: dict[str, list[str]], source: str) -> list[str]:
     """The files exist, every recorded row of the figure cites the verdict file, and the drawn words are canonical."""
-    assert (out / f"{name}.png").exists() and (out / f"{name}.svg").exists()
+    assert (out / f"{name}.png").exists()  # PNG only (Dan, 30 Oct)
     rows = [r for r in S.ROWS if r["figure"] == name]
     assert rows and all(r["source"].endswith(source) for r in rows), {r["source"] for r in rows}
     flat = [(name, t) for t in drawn[name]]

@@ -193,7 +193,7 @@ def make_fixture(root: Path) -> Path:
     jq = root / "results" / "jobq"
     jq.mkdir(parents=True)
     (jq / "ledger_box.jsonl").write_text("".join(json.dumps(r) + "\n" for r in ledger) + "not json\n")
-    figs = root / "figures" / "cross_model"
+    figs = root / "figures" / "archive" / "cross_model"
     figs.mkdir(parents=True)
     for name in ("f_late_read_all_models.png", "f_late_read_all_models.svg", "f_name_vs_digit_all_models.png",
                  "f_order_label_then_identity.png", "f_lens_push_by_layer.png", "f_layer_gap_27b.png",
@@ -470,14 +470,14 @@ def test_night_runs_from_the_ledger(built):
     ],
 )
 def test_the_figure_scripts_names_land_on_their_findings(tmp_path, name, key):
-    (tmp_path / "figures" / "cross_model").mkdir(parents=True)
-    (tmp_path / "figures" / "cross_model" / f"{name}.png").write_bytes(b"")
+    (tmp_path / "figures" / "archive" / "cross_model").mkdir(parents=True)
+    (tmp_path / "figures" / "archive" / "cross_model" / f"{name}.png").write_bytes(b"")
     assert {k: [p.stem for p in v] for k, v in R.figures(tmp_path).items()} == {key: [name]}
 
 
 def test_figures_by_claim_name_and_none_dropped(built):
     root, _, d = built
-    assert "![late read all models](figures/cross_model/f_late_read_all_models.png) ([SVG]" in d.text
+    assert "![late read all models](figures/archive/cross_model/f_late_read_all_models.png) ([SVG]" in d.text
     sec4 = _section(d.text, f"## {R.title(G.FINDING['f4'])}", f"## {R.title(G.FINDING['f5'])}")
     assert "f_late_read_all_models.png" in sec4
     assert "f_layer_gap_27b.png" in _section(d.text, f"## {R.title(G.FINDING['f8'])}", "## Across models")

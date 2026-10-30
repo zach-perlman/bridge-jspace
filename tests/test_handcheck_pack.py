@@ -1,4 +1,4 @@
-"""scripts/handcheck_pack.py on the repo's runs: the six recounts reproduce figures/story/data.csv (value and CI at 2
+"""scripts/handcheck_pack.py on the repo's runs: the six recounts reproduce data/figures/depth/data.csv (value and CI at 2
 decimals), the comparison fails on a wrong value, and the shown prompt is the stored ids' exact decode with the bridge
 marked; the batch-45 additions' loaders find their item sets, their recounts match the runs' verdict / table files and
 stop matching when an item changes, and their prompts decode exactly with each model's tokenizer. Uses the pinned

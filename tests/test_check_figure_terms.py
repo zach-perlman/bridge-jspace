@@ -29,7 +29,7 @@ def test_the_matcher_passes_figure_words(text):
 
 def test_caption_texts_read_alt_texts_fig_lines_and_the_draft(tmp_path, monkeypatch):
     readme = tmp_path / "README.md"
-    readme.write_text("![A claim](figures/story/fig01.png)\n*Fig. 1.* the first-mentioned item\n<!-- ablation -->\n"
+    readme.write_text("![A claim](figures/depth/fig01.png)\n*Fig. 1.* the first-mentioned item\n<!-- ablation -->\n"
                       "Body text with Q45.9 is not a caption.\n")  # fmt: skip
     draft = tmp_path / "captions.md"
     draft.write_text("- canonical Fig. 2: run x0_kmatch_27b\n- note: ablation here is not canonical\n")

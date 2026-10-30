@@ -15,7 +15,7 @@ well formed:
   italic caption and its file present; internal links resolve to any <a id> on the page (cards and the Appendix);
 - the coverage table equals scripts/ledger_coverage.py's output (the committed matrix);
 - four model slots (Dan's figures brief, 29 Oct 10:00): on a card whose figure is a ledger figure, a model with a
-  number in the card's table has data in the figure, a model without one has a grey slot (figures/ledger/slots.json,
+  number in the card's table has data in the figure, a model without one has a grey slot (data/figures/depth/ledger/slots.json,
   written by scripts/ledger_figures.py); a verdict-folder figure on a card is a problem; the README's shared figures
   (figures/story, figures/supp) are left to the README build.
 
@@ -93,7 +93,7 @@ def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
     return out
 
 
-SLOTS = REPO / "figures" / "ledger" / "slots.json"
+SLOTS = REPO / "data" / "figures" / "depth" / "ledger" / "slots.json"
 COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning", "122B")  # the 122B checked like the others (Dan 12:50)
 # a cell that says the model has no result here (Dan's grey labels, the tables' words for a missing cell)
 NO_RESULT = ("not ", "running", "pending", "dropped", "read pending", "see the readme", "–", "no outcomes")
@@ -134,7 +134,7 @@ def slot_problems(head: str, body: str, slots: dict | None = None) -> list[str]:
     target = m.group(1)
     if "/results/" in target:
         return [f"a borrowed verdict figure (make a four-slot ledger figure) in: {head}"]
-    fm = re.search(r"figures/ledger/([\w-]+)\.png$", target)
+    fm = re.search(r"figures/depth/ledger/([\w-]+)\.png$", target)
     if not fm:
         return []
     name = fm.group(1)

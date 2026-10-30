@@ -1,6 +1,6 @@
 """Figures for exp03_brew_swaps (part B), in part A's style, from follow-up runs' outcomes.
 
-  exp03_figures.py OUT_NAME RUN [RUN ...]  -> figures/exp03_brew_swaps/OUT_NAME/ (write-once)
+  exp03_figures.py OUT_NAME RUN [RUN ...]  -> figures/pre-sprint/exp03_brew_swaps/OUT_NAME/ (write-once)
       steering_start_line.png   steering the start line along S' - S, by size: which colour the model answers, read
                                 off the table: two lookups from S' (f(f(S'))), one lookup (f(S')), S' itself, the
                                 original answer, or none of these; random-direction nulls
@@ -202,7 +202,7 @@ def main(out_name: str, runs: list[str], out_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp03_brew_swaps/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp03_brew_swaps/ (write-once)")
     parser.add_argument("runs", nargs="+", help="exp03 follow-up runs")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     args = parser.parse_args()

@@ -7,7 +7,7 @@
   fig09a_transfer    the split carries over: lookup's and recall's extra loss without the J++ part by text format
   fig09b_refit       Part IV: the address fit on simple scenes vs refit per format (45d verdicts)
 
-Every plotted number is recorded for figures/story/data.csv with its source file; the random draws' 95% range is
+Every plotted number is recorded for data/figures/depth/data.csv with its source file; the random draws' 95% range is
 recomputed from the run folders' per-draw files (null.npz, omp.jsonl) exactly as scripts/x47_verbal.py summarizes them,
 and their median / mean is checked against the summary before anything is drawn.
 """

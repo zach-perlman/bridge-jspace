@@ -4,7 +4,7 @@ split, the specificity control (unembedding directions), keep-own-word, the extr
 gate. C2: C2-graded and C2-relative (pre-registered), C2' (docs/prereg_replication_1022.md), at the current band and at
 the aligned band. Missing runs show as "-". Everything unverified until in VERIFIED.md.
 
-python scripts/cross_model_summary.py   (writes results/cross_model/summary.md, .json and figures/cross_model/c1_by_model.png)
+python scripts/cross_model_summary.py   (writes results/cross_model/summary.md, .json and figures/archive/cross_model/c1_by_model.png)
 """
 
 from __future__ import annotations

@@ -13,7 +13,7 @@ Per run (here):
   duplicates: item ids, outcome rows with one key, items with identical prompts
   Z1-P: the made-up value differs from the true one; the true value is absent from the lookup's passage
   conflict test: the random part's share matches the lens part's (shares.jsonl at L)
-  the headline numbers recounted from the per-item files against x0_numbers.json / figures/story/data.csv
+  the headline numbers recounted from the per-item files against x0_numbers.json / data/figures/depth/data.csv
 
 uv run python scripts/verify_checks.py            # all tier-1 views -> review/verify_checks.json
 """

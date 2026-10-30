@@ -3,7 +3,7 @@ column (8.8 in wide, fonts >= 11 pt), the claim as the title (about 12 words) an
 fixed colours (lookup purple, recall dark grey; identity blue, position orange, value green, unchanged light grey;
 random controls light grey); extra loss as a dot with a 95% CI whisker on a shared [-0.2, 1.0] axis; models in the
 order 9B, 27B, 122B, Muse; one status encoding: filled = fixed in advance, open = after the data, a degree sign on the
-label = a rerun with a gate lowered after the data. Every plotted number is recorded for figures/story/data.csv. The
+label = a rerun with a gate lowered after the data. Every plotted number is recorded for data/figures/depth/data.csv. The
 words on the figures: docs/glossary.md."""
 
 from __future__ import annotations
@@ -20,8 +20,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 REPO = Path(__file__).resolve().parents[1]
-OUT = REPO / "figures" / "story"
-SUPP = REPO / "figures" / "supp"
+OUT = REPO / "figures" / "depth"
+SUPP = REPO / "figures" / "depth" / "supp"
+DATA_DIR = REPO / "data" / "figures" / "depth"  # data.csv, scorecard.csv (figures/ holds PNGs only)
 NUMBERS = REPO / "docs" / "x0_numbers.json"
 WIDTH = 8.8  # inches: 880 px at 100 px per inch, GitHub's README column
 COL = {"lookup": "#6a4bd6", "recall": "#3a3a3a", "identity": "#2b7bba", "position": "#e08a1e", "original": "#c8c8c8",
@@ -232,17 +233,17 @@ def end_labels(ax, x: float, items: list[tuple[float, str, str]], pad: float = 0
 def save(fig, name: str, supp: bool = False) -> None:
     out = SUPP if supp else OUT
     out.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out / f"{name}.svg", facecolor="white")
     fig.savefig(out / f"{name}.png", dpi=200, facecolor="white")
     plt.close(fig)
 
 
 def write_data() -> None:
-    """figures/story/data.csv: every plotted number, then every number docs/x0_numbers.json holds (the README's)."""
+    """data/figures/depth/data.csv: every plotted number, then every number docs/x0_numbers.json holds (the README's)."""
     buf = io.StringIO()
     w = csv.DictWriter(buf, fieldnames=["figure", "model", "quantity", "value", "lo", "hi", "n", "source"])
     w.writeheader()
     w.writerows(ROWS)
     for key, num in json.loads(NUMBERS.read_text()).items():
         w.writerow({"figure": "numbers", "quantity": key, "value": num["text"], "source": num["source"]})
-    (OUT / "data.csv").write_text(buf.getvalue())
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (DATA_DIR / "data.csv").write_text(buf.getvalue())

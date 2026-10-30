@@ -1,6 +1,6 @@
 """Figures for exp07_step_code (part B), from a run's outcomes and reads.
 
-exp07_figures.py OUT_NAME RUN  -> figures/exp07_step_code/OUT_NAME/ (write-once)
+exp07_figures.py OUT_NAME RUN  -> figures/pre-sprint/exp07_step_code/OUT_NAME/ (write-once)
     step_code.png  per item set (fresh, bank). Left: every edit's step score (the share of window layers at which it
                    makes the model answer f(X), averaged over items, 95% bootstrap CI): the lens-free edits, then J++'s
                    and the J-lens's. Right: by layer, how often the main edits give f(X), and how often the code reads
@@ -139,7 +139,7 @@ def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp07_step_code/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp07_step_code/ (write-once)")
     parser.add_argument("run", help="the exp07 run")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     parser.add_argument("--results-root", type=Path, default=pins.RESULTS_DIR, help="for test renders")

@@ -15,7 +15,7 @@ span), one card"). Both unverified until hand-checked.
                           after its 60-scene pre-check); the 9B, 27B and Muse "not applicable", the 122B "not run", as in
                           the ledger's card.
 
-Every plotted number is recorded for figures/story/data.csv with its source file; record_card_numbers() records the
+Every plotted number is recorded for data/figures/depth/data.csv with its source file; record_card_numbers() records the
 numbers the two cards quote that the figures do not draw (figure "cards").
 """
 

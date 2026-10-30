@@ -1,6 +1,6 @@
 """Figures for exp04_brew_patch (part B), from a patch_map run's outcomes.
 
-exp04_figures.py OUT_NAME RUN  -> figures/exp04_brew_patch/OUT_NAME/ (write-once)
+exp04_figures.py OUT_NAME RUN  -> figures/pre-sprint/exp04_brew_patch/OUT_NAME/ (write-once)
     patch_map.png   by layer, for each group of prompt positions: how often copying the counterfactual's activation
                     into the original run makes the model answer f(X) (X carried as the step), the counterfactual's
                     answer c, X itself, the original intermediate I (one step instead of two), or keep the original
@@ -318,7 +318,7 @@ def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("out_name", help="folder under figures/exp04_brew_patch/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp04_brew_patch/ (write-once)")
     parser.add_argument("run", help="the exp04 patch_map run")
     parser.add_argument("--out-root", type=Path, default=pins.FIGURES_DIR / EXP, help="for test renders")
     parser.add_argument("--results-root", type=Path, default=pins.RESULTS_DIR, help="for test renders")

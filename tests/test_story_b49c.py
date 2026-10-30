@@ -31,7 +31,7 @@ def pooled_verdict(tmp_path: Path, mp: pytest.MonkeyPatch) -> Path:
 def test_pooled_figure_from_its_verdict(tmp_path, monkeypatch, saved):  # noqa: F811
     out = pooled_verdict(tmp_path / "runs", monkeypatch)
     assert C.build_pooled(out, "fig27_pooled") == "fig27_pooled"
-    assert (S.OUT / "fig27_pooled.png").exists() and (S.OUT / "fig27_pooled.svg").exists()
+    assert (S.OUT / "fig27_pooled.png").exists()  # PNG only (Dan, 30 Oct)
     fig = saved["fig27_pooled"]
     check(fig)
     assert any(t.startswith("PLANTED") for t in fig["texts"])

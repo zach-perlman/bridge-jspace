@@ -293,7 +293,7 @@ def _summary_by_kind(path: Path) -> None:
 
 
 def plot_summary() -> Path:
-    """README figures across SUMMARY_RUNS, into `figures/exp10_lens_sanity/<timestamp>/`."""
+    """README figures across SUMMARY_RUNS, into `figures/pre-sprint/exp10_lens_sanity/<timestamp>/`."""
     out = FIGURES_DIR / "exp10_lens_sanity" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True)
     _summary_bars(out / "pass_at_10_by_model.png")

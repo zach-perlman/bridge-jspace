@@ -18,7 +18,7 @@ sys.path.insert(0, "src")
 sys.path.insert(0, ".")
 from scripts import tasks_v2 as T
 
-OUT = Path("figures/slack_1021")
+OUT = Path("figures/archive/slack_1021")
 OUT.mkdir(parents=True, exist_ok=True)
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 LOOKUP, MEMORY, COMPUTED, CONTROL = "#2a78d6", "#eb6834", "#1baf7a", "#8d8c88"

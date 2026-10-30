@@ -18,7 +18,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{q|text}}                   a number quoted from outside the grid, rendered as is
   {{num|key}}                  an X0 number from docs/x0_numbers.json (scripts/x0_details.py, from the run files)
   {{pt|key}}                   the same number's point estimate, without its interval (for ranges in prose)
-  {{d|figure|model|quantity}}  a plotted number from figures/story/data.csv (scripts/readme_story_figures.py writes it):
+  {{d|figure|model|quantity}}  a plotted number from data/figures/depth/data.csv (scripts/readme_story_figures.py writes it):
                                "0.08 [0.05, 0.12]"; model as 9b / 27b / 122b / muse or the target name
   {{dp|figure|model|quantity}} the same number's point estimate
   Every num / pt / d / dp marker renders with its source comment (<!-- src: file | key -->; in a table row the
@@ -91,7 +91,7 @@ def word(c: RD.Cell) -> str:
     return f"{w} (too few items)" if c.n is not None and c.n < FEW and c.word != "holds" else w
 
 
-DATA_CSV = REPO / "figures" / "story" / "data.csv"
+DATA_CSV = REPO / "data" / "figures" / "depth" / "data.csv"
 MODEL_KEYS = {"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "122b": "qwen3.5-122b-a10b", "muse": "muse-glimmer-30b"}
 
 
@@ -106,13 +106,13 @@ class Book:
         self._data: dict[tuple[str, str, str], dict[str, str]] | None = None
 
     def data(self, figure: str, model: str, quantity: str) -> dict[str, str]:
-        """The row of figures/story/data.csv for (figure, model, quantity); model as a short key or the target."""
+        """The row of data/figures/depth/data.csv for (figure, model, quantity); model as a short key or the target."""
         if self._data is None:
             with DATA_CSV.open(newline="", encoding="utf-8") as f:
                 self._data = {(r["figure"], r["model"], r["quantity"]): r for r in csv.DictReader(f)}
         key = (figure, MODEL_KEYS.get(model, model), quantity)
         if key not in self._data:
-            raise ValueError(f"no row {key} in figures/story/data.csv (run scripts/readme_story_figures.py)")
+            raise ValueError(f"no row {key} in data/figures/depth/data.csv (run scripts/readme_story_figures.py)")
         return self._data[key]
 
     def src(self, path: str, key: str) -> str:
@@ -290,7 +290,7 @@ def one(x: re.Match[str], book: Book) -> str:
         text = numbers[args[0]]["text"]
         text = text.split(" [")[0] if kind == "pt" else text  # pt: the point estimate, without its interval
         return text + (book.src("docs/x0_numbers.json", args[0]) if book is not None else "")
-    if kind in ("d", "dp"):  # a plotted number from figures/story/data.csv
+    if kind in ("d", "dp"):  # a plotted number from data/figures/depth/data.csv
         r = book.data(*args)
         return fmt_data(r, point=kind == "dp") + book.src(str(DATA_CSV.relative_to(REPO)), r["quantity"])
     if kind == "grid":
@@ -327,7 +327,7 @@ LINK_TARGET = re.compile(r"(\]\(|(?:src|href)=\")([^)\"\s]+)")
 
 def relink(text: str, out: Path) -> str:
     """The rendered page's relative link and image targets, written from the repo root, rewritten to resolve from out's
-    folder (docs/depth/README.md: figures/story/x.png -> ../../figures/story/x.png); URLs, anchors and absolute paths
+    folder (docs/depth/README.md: figures/depth/x.png -> ../../figures/depth/x.png); URLs, anchors and absolute paths
     stay. A no-op for the root README.md."""
     base = out.resolve().parent
 

@@ -1,5 +1,5 @@
 """README figure for batch 49 (part b): the removal ladder (49.2), drawn from its verdict folder (the json
-x49_ladder's `verdict` stage writes) in story_style's look, every plotted number recorded for figures/story/data.csv.
+x49_ladder's `verdict` stage writes) in story_style's look, every plotted number recorded for data/figures/depth/data.csv.
 
   49.2  x49_ladder.py  x49_2-<UTC>/x49_2.json   the removal ladder: kept share by rung
 

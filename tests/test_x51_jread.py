@@ -110,7 +110,7 @@ def test_coverage_runs_sources_and_batches():
     for t, run in J.COVERAGE_RUNS.items():
         assert run.startswith(J.pins.TARGETS[t]["run_prefix"]) and t in J.SOURCES and t in J.LAYERS
     assert {k: v for k, v in J.SOURCES.items() if k in G.SOURCES} == G.SOURCES
-    assert set(J.SOURCES) - set(G.SOURCES) == {"qwen3.5-122b-a10b"}
+    assert set(J.SOURCES) <= set(G.SOURCES)  # x49_gain.SOURCES holds the 122B's r2 run too (its coverage, 29-30 Oct)
     assert J.SOURCES["qwen3.5-122b-a10b"] == "qwen35_122b_x0_necessity_r2"
     assert "qwen3.5-122b-a10b" not in J.RUNS
 

@@ -1,7 +1,7 @@
-"""The joint deck's figures (deck skeleton brief, 29 Oct ~23:45, Section 5) into figures/deck/ (PNG + SVG each, 16:9,
-2400 x 1350 px). CPU only; every value is read from figures/story/data.csv, docs/x0_numbers.json, docs/breadth/data.csv
+"""The joint deck's figures (deck skeleton brief, 29 Oct ~23:45, Section 5) into figures/archive/deck/ (PNG + SVG each, 16:9,
+2400 x 1350 px). CPU only; every value is read from data/figures/depth/data.csv, docs/x0_numbers.json, docs/breadth/data.csv
 or docs/shared/grid.csv, never typed. Cells a source does not hold are left out of the frame and listed in
-figures/deck/CAPTIONS.md with the n per bar.
+data/figures/archive/deck/CAPTIONS.md with the n per bar.
 
   c0_setup_a / c0_setup_b  figures/shared/j0_setup.png cut in two (the datasets; the tools), no content change
   c1_controls              same-size parts do not do it: Zach's band removal (pp) | Dan's one-layer patch (share)
@@ -26,8 +26,8 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
 REPO = Path(__file__).resolve().parents[1]
-OUT = REPO / "figures" / "deck"
-STORY = REPO / "figures/story/data.csv"
+OUT = REPO / "figures" / "archive" / "deck"
+STORY = REPO / "data/figures/depth/data.csv"
 BREADTH = REPO / "docs/breadth/data.csv"
 GRID = REPO / "docs/shared/grid.csv"
 W, H, DPI = 16, 9, 150  # 2400 x 1350 px
@@ -142,7 +142,7 @@ def c1_controls() -> None:
         fig,
         "c1_controls",
         "docs/breadth/data.csv ko.{q27,q9,nl}.{mk,pc,u,rot} (" + "; ".join(ns) + "); "
-        "figures/story/data.csv fig02 rows (main test at L; Lightning has no fig02 row: left out). Whiskers 95%.",
+        "data/figures/depth/data.csv fig02 rows (main test at L; Lightning has no fig02 row: left out). Whiskers 95%.",
     )
 
 
@@ -198,7 +198,7 @@ def c2_pointer() -> None:
         "c2_pointer",
         "docs/breadth/data.csv ptr.{q27,q9,nl}.{swap,neutral,noown,rot} and probe.*.{probe,swap}; "
         "the neutral-sentence and own-word rows are the same-passage swap times their stored ratios (computed "
-        "here, no CI); the probe rows are on probe-valid relations. figures/story/data.csv 52 A rows (50 main-test "
+        "here, no CI); the probe rows are on probe-valid relations. data/figures/depth/data.csv 52 A rows (50 main-test "
         "scenes per model; the 122B: no 52 A row, left out; Lightning hatched).",
     )
 
@@ -283,7 +283,7 @@ def c3_address() -> None:
     save(
         fig,
         "c3_address",
-        "figures/story/data.csv: fig07 (probe 657-758 scenes, swap 600 per dose and model; Lightning "
+        "data/figures/depth/data.csv: fig07 (probe 657-758 scenes, swap 600 per dose and model; Lightning "
         "hollow; the 122B hollow in (B): its gate lowered after the data), fig21_code_tool (the 27B's code 682 and "
         "tool 1,500 scenes), fig07b_verbal (200 cases; the 122B has no 47.0 row in the depth README: left out). "
         "Random vector at s = 4: the grey band in (B).",
@@ -335,7 +335,7 @@ def c4_readable() -> None:
     save(
         fig,
         "c4_readable",
-        "figures/story/data.csv fig17_jspace_last_token rows (locker-first items; the 122B not run "
+        "data/figures/depth/data.csv fig17_jspace_last_token rows (locker-first items; the 122B not run "
         "in the depth README: left out; Lightning hatched); docs/shared/grid.csv, breadth study cells of the two "
         "claims. 'Readable at the mention' (all nine) has no row in the CSVs: not drawn.",
     )
@@ -376,7 +376,7 @@ def c9_breaks() -> None:
     save(
         fig,
         "c9_breaks",
-        "figures/story/data.csv fig02b (main test, 200 scenes) and ledger_zach_named (his named "
+        "data/figures/depth/data.csv fig02b (main test, 200 scenes) and ledger_zach_named (his named "
         "passages; Lightning's gate chosen after its pre-check; Muse and Lightning missed the made-up-fact gate: "
         "descriptive). The question-order panel moved to the appendix (A18).",
     )

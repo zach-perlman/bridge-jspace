@@ -14,7 +14,7 @@
 
 ## Setup
 
-![One prompt, two questions about the same bridge word](figures/story/fig00_setup.png)
+![One prompt, two questions about the same bridge word](figures/depth/fig00_setup.png)
 *Fig. 0.*
 
 - **Lookup**: "Which locker belongs to Iris's pick?" The answer is in a sentence of the prompt. **Recall**: "How many legs does Iris's pick have?" The answer comes from memory.
@@ -31,19 +31,19 @@ Does removing the part of the bridge the lens can read cost the recall more than
 
 - **The split holds on all four models:** removing the J++ part costs the recall a large share of its switches and the lookup almost none; the gap is {{pt|contrast_122b}} to {{pt|contrast_muse}}.
 
-![Recall needs the J++ part of the bridge; the lookup mostly does not](figures/story/fig01_split.png)
+![Recall needs the J++ part of the bridge; the lookup mostly does not](figures/depth/fig01_split.png)
 *Fig. 1.*
 
 - **It is not a margin effect:** scored on the logit difference instead of switches, the gap is about the same ({{pt|ld_gap_122b}} to {{pt|ld_gap_muse}}).
 - **It holds in every setting, weaker outside simple scenes**; in natural passages Muse's lookup switches too rarely to measure.
 - **On every model the recall needs J++ less when its locker sentence came first** (9B {{pt|sbo_fresh_before_rc_9b}}-{{pt|sbo_swap_before_rc_9b}} vs {{pt|sbo_one_after_rc_9b}}-{{pt|sbo_swap_after_rc_9b}}; 122B {{pt|sbo_swap_before_rc_122b}} vs {{pt|sbo_swap_after_rc_122b}}; 27B and Muse {{pt|sbo_swap_before_rc_27b}}-{{pt|sbo_swap_before_rc_muse}} vs {{pt|sbo_swap_after_rc_muse}}-{{pt|sbo_swap_after_rc_27b}}).
 
-![In every setting, recall needs the J++ part more than the lookup does](figures/story/fig01b_settings.png)
+![In every setting, recall needs the J++ part more than the lookup does](figures/depth/fig01b_settings.png)
 *Fig. 1b.*
 
 - **It is specific to the lens's part:** other parts of the same size cost the recall much less. The 122B is the exception: its main directions come close ({{num|pcaeq_pca_eq_rc_excess_122b}} vs {{num|pcaeq_jpp_rc_excess_122b}}).
 
-![No other part of the same size costs the recall as much as the J++ part](figures/story/fig02_specificity.png)
+![No other part of the same size costs the recall as much as the J++ part](figures/depth/fig02_specificity.png)
 *Fig. 2.*
 
 - **One model misses the strict rule:** on the 27B the lookup loses {{num|lk_excess_27b}} (bar 0.10) and needs J++ once 100 directions are removed ({{num|lk_excess_k100_27b}}).
@@ -54,7 +54,7 @@ Does removing the part of the bridge the lens can read cost the recall more than
 
 - **Lookups switch when the locker sentence comes before the pick:** {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of such scenes switch, against {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} when it comes after, on all four models.
 
-![Lookups follow the change mostly when the locker sentence comes first](figures/story/fig03_order.png)
+![Lookups follow the change mostly when the locker sentence comes first](figures/depth/fig03_order.png)
 *Fig. 3.*
 
 - **Timing** (after the data, on the items identical after the bridge word: {{num|x45bsw_pass_9b}} / {{num|x45bsw_pass_27b}}): a bridge change made early still switches locker-after lookups ({{num|x45bsw_bw_L6_9b}} at L6 on the 9B, {{num|x45bsw_bw_L16_27b}} at L16 on the 27B) and fades by the layer fixed in advance ({{num|x45bsw_bw_L12_9b}} / {{num|x45bsw_bw_L32_27b}}).
@@ -68,12 +68,12 @@ Which route does the lookup take: the item's identity, its position, or the numb
 
 - **We set three routes against each other:** the change comes from a prompt where another item's locker sentence moved to a new place with a new number (after Gur-Arieh et al. 2025).
 
-![Each route predicts a different locker](figures/story/fig04_routes_design.png)
+![Each route predicts a different locker](figures/depth/fig04_routes_design.png)
 *Fig. 4.*
 
 - **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position. **The lens's part alone gives no identity answers**, so even the identity route runs mostly outside J++.
 
-![The lookup follows identity or position, never the value](figures/story/fig05_routes.png)
+![The lookup follows identity or position, never the value](figures/depth/fig05_routes.png)
 *Fig. 5.*
 
 | Another item moved, whole change | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
@@ -84,7 +84,7 @@ Which route does the lookup take: the item's identity, its position, or the numb
 
 - **Position appears with depth (candidate):** at an early layer the change moves the lookup by identity only, and on the Qwens that identity sits inside J++; position answers appear a few layers later. On the 27B the lookup stops needing J++ at layer 24, four layers before position appears.
 
-![Position answers appear with depth, once the lookup stops needing the J++ part](figures/story/fig06_depth.png)
+![Position answers appear with depth, once the lookup stops needing the J++ part](figures/depth/fig06_depth.png)
 *Fig. 6.*
 
 ## 4. The pointer can be removed and written
@@ -99,7 +99,7 @@ Is "where the item's locker is stated" a part of the bridge word that the model 
 - **One fixed vector written into the bridge moves the lookup:** the mean difference between two positions, the same for every scene, sends the lookup to the target locker in a quarter to a half of the writes once it is as large as a real change; a random vector moves nothing. The strength fixed in advance moved nothing (a design error, Section 6).
 - **The recall follows a strong write to the item:** on the Qwens about four in five of the recalls a strong write changes name the item at the target position (Muse: {{num|x8_rc_target_muse}}).
 
-![One fixed vector written at the bridge sends the lookup to its locker](figures/story/fig07_writes.png)
+![One fixed vector written at the bridge sends the lookup to its locker](figures/depth/fig07_writes.png)
 *Fig. 7.*
 
 ## 5. Where the pointer stops working
@@ -110,28 +110,28 @@ How far does the pointer we found reach?
 
 - **It marks the first locker, in the clean layout:** a sentence before the lockers (Q45.3, fixed in advance) gives mixed. After the data: its code shifts with every sentence naming an item first (code shift β: neutral {{num|x45a_beta_V4_9b}}-{{num|x45a_beta_V4_muse}}, pick {{num|x45a_beta_V2_27b}}-{{num|x45a_beta_V1_muse}}), and after a pick sentence the Qwens' lookup follows identity instead of position ({{num|x45a_id_V3_9b}}-{{num|x45a_id_V3_27b}} vs {{num|x45a_id_V0_9b}} / {{num|x45a_id_V0_27b}}).
 
-![Naming an item before the lockers switches the lookup from position to identity](figures/story/fig08b_layout.png)
+![Naming an item before the lockers switches the lookup from position to identity](figures/depth/fig08b_layout.png)
 *Fig. 8b. On Muse part of the lost position answers go back to the original answer.*
 
 - **Later positions are coded elsewhere:** the pointer moves the lookup to and from the first locker, not between the second and third on the Qwens (Muse: {{num|pm_keep_12w_muse}}), though the whole change does; directions found from those moves do not carry them either (Q45.6). Halfway writes land between lockers only from the first: the code is first-vs-rest, not a line.
 
-![The pointer marks the first locker, in the clean layout](figures/story/fig08_first_mentioned.png)
+![The pointer marks the first locker, in the clean layout](figures/depth/fig08_first_mentioned.png)
 *Fig. 8.*
 
 - **It carries over poorly to other texts:** fit on simple scenes and not refit, the pointer costs the lookup {{num|tptr_varied_range}} in varied scenes and {{num|tptr_natural_range}} in natural passages, while the lookup still does not need J++ there.
 
-![The split carries over to other texts; the pointer does not](figures/story/fig09_transfer.png)
+![The split carries over to other texts; the pointer does not](figures/depth/fig09_transfer.png)
 *Fig. 9.*
 
 - **About half of the route is unexplained:** with J++ and the pointer removed, about half of the lookups still switch; identity outside J++ removes most of the rest on the 9B and 27B. Against a wrong-pair direction of its size (Q45.7) it is partly specific on the Qwens: fewer lookups left ({{num|x45e_left_idout_9b}} vs {{num|x45e_left_wrong_9b}}; {{num|x45e_left_idout_27b}} vs {{num|x45e_left_wrong_27b}}), but identity answers cut only {{num|x45e_cut_9b}} / {{num|x45e_cut_27b}} more (bar 0.15); not on Muse.
 
-![J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/story/fig10_what_is_left.png)
+![J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/depth/fig10_what_is_left.png)
 *Fig. 10.*
 
 
 ## 6. What did not hold
 
-![What held where](figures/story/fig11_scorecard.png)
+![What held where](figures/depth/fig11_scorecard.png)
 *Fig. 11.*
 
 - **Failed when fixed in advance.**
@@ -169,4 +169,4 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 
 ## Appendix A. Links
 
-Every number on this page comes from [figures/story/data.csv](figures/story/data.csv) (also every plotted number) and [docs/x0_numbers.json](docs/x0_numbers.json), each with its source file; [docs/x0_details.md](docs/x0_details.md) has the full tables; [docs/verify_pack.md](docs/verify_pack.md) recounts them. All figures on one page: [docs/figures_contact_sheet.png](docs/figures_contact_sheet.png); the figure plan: [docs/figure_plan.md](docs/figure_plan.md). Supplementary figures: [every scene set](figures/supp/s01_split_all_scene_sets.png), [every part](figures/supp/s02_parts_all.png), [every routes arm](figures/supp/s05_routes_all_arms.png), [the parts removed together, with the bars fixed in advance](figures/supp/s10_removed_together_bars.png). Earlier figures: [figures/status_2026-10-25/](figures/status_2026-10-25/).
+Every number on this page comes from [data/figures/depth/data.csv](data/figures/depth/data.csv) (also every plotted number) and [docs/x0_numbers.json](docs/x0_numbers.json), each with its source file; [docs/x0_details.md](docs/x0_details.md) has the full tables; [docs/verify_pack.md](docs/verify_pack.md) recounts them. All figures on one page: [docs/figures_contact_sheet.png](docs/figures_contact_sheet.png); the figure plan: [docs/figure_plan.md](docs/figure_plan.md). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [every part](figures/depth/supp/s02_parts_all.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the parts removed together, with the bars fixed in advance](figures/depth/supp/s10_removed_together_bars.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).

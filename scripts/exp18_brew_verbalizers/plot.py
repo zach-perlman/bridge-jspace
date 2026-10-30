@@ -1,6 +1,6 @@
 """Figure for exp18 v2: with C's state patched into B, do the verbalizers name the state's colour (X) or the text's (I)?
 
-  uv run python -m scripts.exp18_brew_verbalizers.plot RUN_DIR OUT_NAME  -> figures/exp18_brew_verbalizers/OUT_NAME/
+  uv run python -m scripts.exp18_brew_verbalizers.plot RUN_DIR OUT_NAME  -> figures/pre-sprint/exp18_brew_verbalizers/OUT_NAME/
 
 state_vs_text.png: one panel per reading cell (the NLA at 42 and the oracle lens at 44 after the early patch, the
 oracle at 48 after the late one), on the items where that patch took: how often a reading names X (dark) and I
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "run_dir", type=Path, help="an exp18 v2 run, e.g. results/exp18_brew_verbalizers/20261015-205549"
     )
-    parser.add_argument("out_name", help="folder under figures/exp18_brew_verbalizers/ (write-once)")
+    parser.add_argument("out_name", help="folder under figures/pre-sprint/exp18_brew_verbalizers/ (write-once)")
     parser.add_argument("--v3", action="store_true", help="a v3 run (exp07's code against J++'s direction)")
     args = parser.parse_args()
     main(args.run_dir.resolve(), args.out_name, args.v3)

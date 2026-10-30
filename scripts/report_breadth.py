@@ -27,6 +27,7 @@ from scripts import fig_neel as F  # noqa: E402
 
 D, RES, A2, SET = F.D, F.RES, F.A2, F.SET
 OUT = ROOT / "docs" / "breadth"
+FIGS_OUT = ROOT / "figures" / "breadth"  # figures/ by track (Dan, 30 Oct)
 CLEAN = Path("/workspace/clean_bridge/results")
 ROWS: list[dict] = []
 
@@ -458,11 +459,11 @@ def copy_figures() -> None:
     """The figure set (scripts/fig_neel.py, rendered into /workspace/scratch/neel_figures) under the README's names."""
     import shutil
 
-    (OUT / "figures").mkdir(exist_ok=True)
+    FIGS_OUT.mkdir(parents=True, exist_ok=True)
     for src, dst in FIGS.items():
         f = F.OUT / f"{src}.png"
         if f.exists():
-            shutil.copyfile(f, OUT / "figures" / f"{dst}.png")
+            shutil.copyfile(f, FIGS_OUT / f"{dst}.png")
 
 
 if __name__ == "__main__":
