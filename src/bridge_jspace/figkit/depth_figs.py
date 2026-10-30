@@ -60,10 +60,10 @@ def two_by_two():
                         why = "below gate"
                     else:
                         why = "–"
-                    ax.text(XLIM[0] + 0.04, i, why, ha="left", va="center", color=MUTED, fontsize=10.5 if len(why) > 3 else 12)
+                    ax.text(0.06 if len(why) > 3 else XLIM[0] + 0.04, i, why, ha="left", va="center", color=MUTED, fontsize=10.5 if len(why) > 3 else 12)
                     continue
                 if c:  # a little below the gap's dot, so a control close to the gap is not hidden behind it
-                    dot(ax, c[0], i + 0.2, C["control"], size=7)
+                    dot(ax, c[0], i + 0.2, C["control"], size=7, cell=c if c[1] is not None else None)
                 cell = v if len(v) == 3 and v[1] is not None else None
                 dot(ax, v[0], i - 0.08, C["recall"], D.hollow(m), cell=cell, value=v[0],
                     vside="left" if (cell[2] if cell else v[0]) > 0.8 else "right")  # a high value's label stays in its panel
@@ -75,14 +75,15 @@ def two_by_two():
     key = [[("●", C["recall"], "gap: recall − lookup"),
             ("●", C["control"], "grey: the same gap with a same-size control"),
             ("–", MUTED, "no result (the reason is in the cell)")],
-           [("", MUTED, "control: a random part (one layer; band · locker scenes), rotated directions (band · fact passages)")]]
-    t = Table(rows, cols, label_w=1.45, head=1.25, labels=False, key=key)
+           [("", MUTED, "control: a random part (one layer; band · locker scenes), rotated directions (band · fact passages)")],
+           [("", MUTED, "the control's interval is drawn in the two band columns; the one-layer controls are drawn without one")]]
+    t = Table(rows, cols, label_w=1.45, head=0.93, labels=False, key=key)
     width = t.label_w + sum(c.width for c in cols) + t.pad * (len(cols) + 1)
 
     def groups(fig):  # a group title over each pair of columns: the operation
         for g, w in enumerate(["one layer", "band of layers"]):
             x = t.label_w + t.pad + (cols[0].width + cols[1].width + 2 * t.pad) * g
-            fig.text(x / width, 1 - 0.12 / fig.get_figheight(), w, ha="left", va="top", fontsize=12.5, weight="bold",
+            fig.text(x / width, 1 - 0.06 / fig.get_figheight(), w, ha="left", va="top", fontsize=12.5, weight="bold",
                      color=INK)  # fmt: skip
 
     t.extra.append(groups)

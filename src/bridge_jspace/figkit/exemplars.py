@@ -151,11 +151,16 @@ def r4_pointer():
         def f(ax, _rows):
             for i, (cell, (_, col)) in enumerate(zip(cells(k), conds, strict=True)):
                 dot(ax, cell[0], i, C[col], cell=cell, value=cell[0], vfmt="{:.0f}")
+            d = D.b(f"ptr.{k}.neutral_minus_swap")  # row 2 minus row 1 on the same items (scripts/ptr_intervals.py)
+            ax.text(92, 1.38, f"neutral − own: {d[0]:+.1f} [{d[1]:.1f}, {d[2]:.1f}]", ha="right", va="center", fontsize=9.5,
+                    color=MUTED)  # fmt: skip
 
         return f
 
-    t = Table(rows, [Col(2.35, n, "answers moved to D's fact" if j == 0 else "", panel(k), (-8, 92), [0, 40, 80],
-                         xlabel="points", cue="→ more answers follow D") for j, (k, n) in enumerate(models)], label_w=3.55, labels=False)  # fmt: skip
+    t = Table(rows, [Col(2.35, n, "", panel(k), (-8, 92), [0, 40, 80],
+                         xlabel="points", cue="→ more answers follow D") for k, n in models], label_w=3.55, labels=False,
+              subtitle="D: another entity of the same kind · answers moved to D's fact",
+              key=[("●", C["neutral"], "a probe's subspace: supervised comparison")])  # fmt: skip
     t.render(f"{OUT}/r4_pointer.png")
 
 

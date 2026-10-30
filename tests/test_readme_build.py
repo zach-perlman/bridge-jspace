@@ -179,7 +179,7 @@ BANNED = {
     # removing / keeping: "X alone" in any form, "edit" and its inflections
     "removal variants": r"part removed|no J\+\+|(?i:keep-only)|\balone\b|\bedit(?:s|ed|ing)?\b",
     # "original" only as "original answer" / "original prompt" (across a line break too)
-    "answer classes": r"\bunchanged\b|\boriginal\b(?!\s(?:answer|prompt)|'s)",
+    "answer classes": r"\bunchanged\b|\boriginal\b(?!\s(?:answer|prompt|→)|'s)",
     # "Changed" as a row title (capitalised, no "prompt" after it); O / S as prompt names: a lone capital letter
     "prompt variants": r"\bswapped\b|\bChanged\b(?!\sprompt)|(?<![\w'’])[OS](?![\w'’.])",
     "slot": r"(?i:\bslots?\b)",

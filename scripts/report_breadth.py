@@ -248,6 +248,9 @@ def collect() -> None:
         x = F.cell(run, f"{cond}/start=all")
         if x:
             add(key, "positions", key.split(".")[1], f"M - K at {run}", x[0], *x[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
+        xr = F.cell(run, "paper10_rot/start=all") if key.startswith("pos.mu.") else None  # Muse's deeper rotated control
+        if xr:
+            add(f"{key}.rot", "positions", "mu", f"M - K at {run} (paper10_rot)", xr[0], *xr[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
     # ---- 4. swaps, pointer, probe, lookup
     for key, run in (("q27", "jswap_v2_v1"), ("q9", "qwen35_9b_jswap_v2_v1"), ("nl", "nem35l_jswap_v2_v1"), ("ol", "olmo32_jswap_v2_v1"),
                      ("nb", "nem35b_jswap_v2_v1"), ("nb.k100", "nem35b_jswap_v2_k100_v1"), ("ds.mid", "dsv4f_jswap_v2_L22-27_v1"),

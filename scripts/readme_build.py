@@ -270,12 +270,12 @@ def render(template: str, book: Book) -> str:
 
 def scorecard() -> list[str]:
     """The claims by model as a markdown table (Dan's 01:58 brief: Fig. 11 as markdown, no red and green): the claims
-    table's sentences, readme_story_figures.CLAIM_CELLS's words; "○" post hoc, "–" not run or below its gate,
+    table's sentences, readme_story_figures.CLAIM_CELLS's words; "○" post hoc, a cell that has no result says why ("below gate", "not run"),
     "fails" in bold, the cell notes as footnotes."""
     from scripts import readme_story_figures as F
 
     claims = dict(F.claims_table(TEMPLATE))
-    word = {"holds": "holds", "in part": "in part", "fails": "**fails**", "below gate": "–", "not run": "–"}
+    word = {"holds": "holds", "in part": "in part", "fails": "**fails**", "below gate": "below gate", "not run": "not run"}
     head = [F.SHORT[m] + (" ○" if m == "lightning" else "") for m in F.F11_MODELS]
     out = ["| # | Claim | " + " | ".join(head) + " |", "|---|---|" + "---|" * len(head)]
     for n, cells in F.CLAIM_CELLS.items():
@@ -390,6 +390,12 @@ def main(argv: list[str] | None = None) -> int:
     if a.runs:
         (REPO / "RUNS.md").write_text(RT.build(grid))
         print("RUNS.md written")
+    if out == PAGE:  # no blank or placeholder cell in a table (Dan 30 Oct): the build fails on one
+        from scripts import check_tables
+
+        if found := check_tables.empty_cells(readme):
+            print("\n".join(f"{PAGE.relative_to(REPO)}: {f}" for f in found))
+            return 1
     return 0
 
 

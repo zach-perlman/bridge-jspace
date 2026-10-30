@@ -354,21 +354,22 @@ def f_directions():
             for i, (m, _) in enumerate(DAN):
                 # the conflict test's direction curve with its 95% interval (data.csv fig02b: x0_kmatch runs)
                 c = D.s(m, f"(a) main test, {k} directions: lookup extra loss", "fig02b")
-                if not c:
-                    ax.text(-0.27, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
+                if not c:  # Lightning has no k-curve: its gate failed
+                    ax.text(0.12, i, "below gate", ha="left", va="center", fontsize=10.5, color=MUTED)
                     continue
-                dot(ax, c[0], i, C["lookup"], cell=c, value=c[0], size=9.5 if c[0] > 0.1 else 8)
+                dot(ax, c[0], i, C["lookup"], cell=c, value=c[0], size=9.5 if c[0] > 0.1 else 8, box=False)
 
         return f
 
     t = Table(rows, [
-        Col(2.45, "25 lens directions", "the lookup's loss", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+        Col(2.45, "25 lens directions", "", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
             cue="→ depends more on lens part"),
         Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
             cue="→ depends more on lens part"),
         Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
             cue="→ depends more on lens part"),
-    ], label_w=1.45, pad=0.22, labels=False, key=[BANDKEY])  # fmt: skip
+    ], label_w=1.45, pad=0.22, labels=False, key=[BANDKEY],
+              subtitle="the lookup's loss when more lens directions are removed")  # fmt: skip
     render(t, "f8_directions")
 
 
@@ -412,24 +413,26 @@ def f_where():
                     key = {"late": ("ko.mu.mk", "pos.mu.bridge", "pos.mu.question")}.get(band_, ("", "", ""))[j]
                 c = D.b(key) if key else None
                 if not c:
-                    ax.text(2, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
+                    ax.text(2, i, "no run", ha="left", va="center", fontsize=10.5, color=MUTED)
                     continue
                 col_ = C["recall"] if j == 0 else (C["mention"] if j == 1 else C["question"])
                 # the rotated control (a few points at most): every cell that has a run (the middle band's position-limited
                 # removals have scored rotated runs: docs/breadth/data.csv pos.*.rot)
-                rot = D.b(("ko.mu.rot" if (k == "mu" and j == 0) else keys[band_][j].format(k) + ".rot"))
-                if rot:
-                    dot(ax, rot[0], i, C["control"], size=7)
-                dot(ax, c[0], i, col_, cell=c, value=c[0], vfmt="{:.0f}", size=9.5 if c[0] > 15 else 8)
+                rot = D.b(("ko.mu.rot" if (k == "mu" and j == 0) else (key + ".rot" if k == "mu" else keys[band_][j].format(k) + ".rot")))
+                if rot:  # a little below the row's dot, so a control at the same value is not hidden behind it
+                    dot(ax, rot[0], i + 0.26, C["control"], size=7)
+                else:
+                    ax.text(2, i + 0.3, "no control run", ha="left", va="center", fontsize=9, color=MUTED)
+                dot(ax, c[0], i - 0.08, col_, cell=c, value=c[0], vfmt="{:.0f}", size=9.5 if c[0] > 15 else 8)
 
         return f
 
     names = ["all tokens", "mention", "question"]
     cols = [
-        Col(1.55, f"{n}", "removed at", col("mid", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
+        Col(1.55, f"{n}", "", col("mid", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
     ]
     cols += [
-        Col(1.55, f"{n}", "removed at", col("late", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
+        Col(1.55, f"{n}", "", col("late", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
     ]
     t = Table(
         rows,
@@ -445,22 +448,16 @@ def f_where():
             ("●", C["control"], "rotated control, same size"),
         ],
     )
-    t.extra.append(
-        lambda fig: [
-            fig.text(
-                (t.label_w + t.pad + (sum(c.width for c in t.cols[:3]) + 3 * t.pad) * g)
-                / (t.label_w + sum(c.width for c in t.cols) + t.pad * 7),
-                1 - 0.12 / fig.get_figheight(),
-                w,
-                ha="left",
-                va="top",
-                fontsize=12.5,
-                weight="bold",
-                color=INK,
-            )
-            for g, w in enumerate(["Middle layers (the knock-out band)", "Deeper layers"])
-        ]
-    )
+
+    def band_titles(fig):  # a title and, under it, what was removed: one line per band (Dan 30 Oct), not one per column
+        w = t.label_w + sum(c.width for c in t.cols) + t.pad * 7
+        for g, word in enumerate(["Middle layers (the knock-out band)", "Deeper layers"]):
+            x = (t.label_w + t.pad + (sum(c.width for c in t.cols[:3]) + 3 * t.pad) * g) / w
+            fig.text(x, 1 - 0.12 / fig.get_figheight(), word, ha="left", va="top", fontsize=12.5, weight="bold", color=INK)
+            fig.text(x, 1 - 0.40 / fig.get_figheight(), "the lens part removed at", ha="left", va="top", fontsize=11.5,
+                     color=MUTED)  # fmt: skip
+
+    t.extra.append(band_titles)
     render(t, "f9_where")
 
 

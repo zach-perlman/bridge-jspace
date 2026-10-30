@@ -29,6 +29,7 @@ BEFORE_SAVE = None  # a hook f(fig, path) run before every save
 ROW_H, HEAD_H, FOOT_H, LABEL_ROW = 0.50, 0.85, 0.62, 0.46  # inches; LABEL_ROW: direct labels above row 1
 KEY_H = 0.42  # the key row under the axes
 XLAB_H = 0.30  # the axis titles under the ticks
+SUBTITLE_H = 0.32  # the figure-wide subtitle over the column titles
 CUE_H = 0.24  # the direction cue under an axis title (Dan 30 Oct: say which way is "more" on every axis)
 CUE_OFFSET = 43  # points below the axis: under the ticks and the axis title
 HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure then carries "○ post hoc" (G1)
@@ -70,6 +71,7 @@ class Table:
     key: list = field(default_factory=list)
     head: float = HEAD_H  # header height (inches); raise it for group titles above the column titles
     group: int = 1  # rows per zebra stripe (two rows of one model share a stripe)
+    subtitle: str = ""  # one grey line over the whole figure (what a row or a dot means), above the column titles
 
     def render(self, path: str, dpi: int = 160) -> None:
         """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
@@ -88,16 +90,17 @@ class Table:
 
     def _draw(self, path: str | None, dpi: int, key: list) -> None:
         n = len(self.rows)
+        head = self.head + (SUBTITLE_H if self.subtitle else 0.0)
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         body = n * ROW_H + lab
         xlab = (XLAB_H if any(c.xlabel for c in self.cols) else 0.0) + (CUE_H if any(c.cue for c in self.cols) else 0.0)
         key_rows = self._key_rows(key)
-        height = self.head + body + FOOT_H + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
+        height = head + body + FOOT_H + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
         fy = lambda inch_from_top: 1 - inch_from_top / height  # noqa: E731
         fx = lambda inch: inch / width  # noqa: E731
-        top = self.head + lab  # first row's top edge, inches from the figure top
+        top = head + lab  # first row's top edge, inches from the figure top
 
         if self.zebra:  # stripes across the whole table, behind everything
             for i in range(n):
@@ -121,12 +124,14 @@ class Table:
             if r.sub:
                 fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=11, color=MUTED)
 
+        if self.subtitle:
+            fig.text(fx(0.12), fy(0.1), self.subtitle, ha="left", va="top", fontsize=11.5, color=MUTED)
         x = self.label_w + self.pad
         for c in self.cols:
             if c.title:
                 fig.text(
                     fx(x),
-                    fy(0.22 + self.head - HEAD_H),
+                    fy(0.22 + head - HEAD_H),
                     c.title,
                     ha="left",
                     va="top",
@@ -135,7 +140,7 @@ class Table:
                     color=INK,
                 )
             if c.sub:
-                fig.text(fx(x), fy(0.52 + self.head - HEAD_H), c.sub, ha="left", va="top", fontsize=11.5, color=MUTED)
+                fig.text(fx(x), fy(0.52 + head - HEAD_H), c.sub, ha="left", va="top", fontsize=11.5, color=MUTED)
             if c.text:
                 for i, r in enumerate(self.rows):
                     y = fy(top + (i + 0.5) * ROW_H)
@@ -200,7 +205,8 @@ def rich(fig, x, y, parts, ha="left", size=12.5):
 
 
 # ---- marks ------------------------------------------------------------------------------------------------------------
-def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:.2f}", vside="right", zorder=4):
+def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:.2f}", vside="right", zorder=4,
+        box=True):
     HOLLOW["seen"] = HOLLOW["seen"] or bool(hollow)
     if cell and cell[1] is not None:
         ax.plot([cell[1], cell[2]], [y, y], color=color, lw=1.8, solid_capstyle="butt", zorder=zorder - 1)
@@ -225,7 +231,7 @@ def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:
                 "boxstyle": "square,pad=0.12",
                 "facecolor": ZEBRA if round(y) % 2 == 0 else "white",
                 "edgecolor": "none",
-            },
+            } if box else None,  # box=False: a label that sits over a band keeps no white box
         )
 
 

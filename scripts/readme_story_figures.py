@@ -638,8 +638,8 @@ def f00_setup(plt) -> None:
     yq, xq, xa = (yc + 2 * pitch + 0.62, yc + 2 * pitch + 0.98), x0 + 0.32, 6.45
     trunk = x0 + 0.1
     ax.plot([trunk, trunk], [yc + 2 * pitch + 0.17, yq[1]], color=grey, lw=1.2)
-    ax.text(xa, yc + 2 * pitch + 0.33, "original answer → a switch", fontsize=S.FONT - 1, color=grey, va="center")
-    ax.text(xq, yc + 2 * pitch + 0.33, "each question follows this prompt: both read the same state", fontsize=S.FONT - 1,
+    ax.text(xa, yc + 2 * pitch + 0.33, "original → after the patch", fontsize=S.FONT - 1, color=grey, va="center")
+    ax.text(xq, yc + 2 * pitch + 0.33, "both questions read this same patched state", fontsize=S.FONT - 1,
             color=grey, va="center")  # fmt: skip
     for y, (name, _, q, a, b, src) in zip(yq, SETUP_QUESTIONS, strict=True):
         col = S.COL["lookup" if name == "Lookup" else "recall"]

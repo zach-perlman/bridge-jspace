@@ -35,8 +35,9 @@ Rules that go with the colours:
    text horizontal. A panel header names the quantity, never the claim; the claim is the sentence above the figure.
 5. **Every panel has an x-axis title with the unit** ("points", "share", "accuracy"); every mark and colour is named by a
    coloured word above the first row or by the key row under the axes (no legend box).
-6. **A missing cell is a grey en dash**; the reason goes in the caption, never inside the image. No title, subtitle or
-   footnote inside a README image.
+6. **A missing cell says why, in the cell**, in grey ("no run", "below gate", "too few switches"), never a bare dash
+   (Dan 30 Oct). No title or footnote inside a README image; one figure-wide subtitle line is allowed when a row or dot
+   needs defining (r4, f8), and each axis has a grey direction cue under its title (which way is "more").
 7. **Controls are grey and smaller** and named in the key ("the largest same-size control", "a random part",
    "a random vector").
 

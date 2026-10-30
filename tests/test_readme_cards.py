@@ -143,9 +143,10 @@ def test_claims_table_grades_and_hand_check():
     rows = claims_rows(text())
     assert [r[0] for r in rows] == [str(k) for k in range(1, 13)]
     for r in rows:
-        assert len(r) == 6, r
+        assert len(r) == 5, r  # # | Claim | Models | Grade | Key numbers: the hand-check column is gone (Dan 30 Oct)
         assert re.sub(r"\*\*", "", r[3]).split(" ")[0] in GRADES, r
-        assert r[5] in ("no", "yes"), r
+    # nothing is hand-checked yet, said once under the table instead of "no" twelve times
+    assert "None of these claims is hand-checked yet" in text()
 
 
 def test_deck_figures_exist():

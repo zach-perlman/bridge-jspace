@@ -112,6 +112,12 @@ def pos_rot() -> list[dict]:
                         "quantity": f"M - K, start all, {'every token' if mode == 'all' else 'pos' + mode} (paper10_rot)",
                         "value": c["diff"], "lo": c["ci"][0], "hi": c["ci"][1], "n": "", "unit": "points",
                         "source": f"results/ablate_v2/jsuite2_score/{run}.json"})  # fmt: skip
+    for mode in ("bridge", "question"):  # Muse's deeper band (L36-42): its position-limited runs carry the rotated control too
+        run = f"muse30_jsuite_v2_test_chat_ko_cand2_L36-42_pos{mode}_v1"
+        c = json.loads((REPO / "results" / "ablate_v2" / "jsuite2_score" / f"{run}.json").read_text())["facts"]["paper10_rot/start=all"]["contrasts"]["M-K"]
+        out.append({"key": f"pos.mu.{mode}.rot", "figure": "positions", "model": "mu",
+                    "quantity": f"M - K at {run} (paper10_rot)", "value": c["diff"], "lo": c["ci"][0], "hi": c["ci"][1],
+                    "n": "", "unit": "points", "source": f"results/ablate_v2/jsuite2_score/{run}.json"})  # fmt: skip
     return out
 
 

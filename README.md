@@ -161,7 +161,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![With more lens directions removed, the 27B's lookup loses more](figures/readme/f8_directions.png)
 
-*The 27B's lookup loses more beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions, with an interval over bridge items from the conflict test; Lightning is not drawn (below gate).*
+*The 27B's lookup loses more beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions, with an interval over bridge items from the conflict test; Lightning's cells say below gate.*
 
 ![On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so](figures/readme/f8_facts.png)
 

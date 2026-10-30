@@ -391,6 +391,8 @@ pos.nl.all.all.rot,positions,nl,"M - K, start all, every token (paper10_rot)",3.
 pos.nl.all.bridge.rot,positions,nl,"M - K, start all, posbridge (paper10_rot)",2.1,1,4,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
 pos.nl.all.context.rot,positions,nl,"M - K, start all, poscontext (paper10_rot)",2.0,1,3,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
 pos.nl.all.question.rot,positions,nl,"M - K, start all, posquestion (paper10_rot)",1.2,0,2,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.mu.bridge.rot,positions,mu,M - K at muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1 (paper10_rot),0.2,0,1,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1.json
+pos.mu.question.rot,positions,mu,M - K at muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1 (paper10_rot),2.4,1,4,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1.json
 pos.q27late.bridge,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1,2.9,2,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1.json
 pos.q27late.question,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1,47.1,43,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1.json
 pos.mi.bridge,positions,mi,M - K at min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1,0.0,0,0,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1.json
