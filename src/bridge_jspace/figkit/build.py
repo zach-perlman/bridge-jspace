@@ -12,30 +12,36 @@ from __future__ import annotations
 import argparse
 import sys
 
-import matplotlib.image as mpimg
-import matplotlib.pyplot as plt
-
 from bridge_jspace.figkit.data import REPO
 from bridge_jspace.figkit.render import render
 from bridge_jspace.figkit.specs import SPECS
 from bridge_jspace.figkit.theme import THEMES
 
 OUT = {"slide": REPO / "figures" / "slides", "readme": REPO / "figures" / "readme"}
-CAPTIONS = {"slide": REPO / "docs" / "slides" / "captions_presentation.md",
-            "readme": REPO / "docs" / "slides" / "captions_readme.md"}
+CAPTIONS = {
+    "slide": REPO / "docs" / "slides" / "captions_presentation.md",
+    "readme": REPO / "docs" / "slides" / "captions_readme.md",
+}
 
 
 def contact_sheet(out, ids) -> None:
-    pngs = [out / f"{i}.png" for i in ids if (out / f"{i}.png").exists()]
-    rows = (len(pngs) + 1) // 2
-    fig, axs = plt.subplots(rows, 2, figsize=(16, 3.6 * rows), squeeze=False)
-    for ax in axs.flat:
-        ax.set_axis_off()
-    for ax, p in zip(axs.flat, pngs, strict=False):
-        ax.imshow(mpimg.imread(p))
-        ax.text(0, -0.02, p.name, transform=ax.transAxes, fontsize=12, va="top")
-    fig.savefig(out / "contact_sheet.png", dpi=80, facecolor="white")
-    plt.close(fig)
+    page_sheet([out / f"{i}.png" for i in ids], out / "contact_sheet.png")
+
+
+def page_sheet(pngs, dest, width: int = 880) -> None:
+    """Every PNG scaled to the page width (880 px, GitHub's README column), stacked with its file name above it:
+    open at 100% to see the figures as a reader does."""
+    from PIL import Image, ImageDraw
+
+    ims = [(p.name, Image.open(p).convert("RGB")) for p in pngs if p.exists()]
+    ims = [(n, im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)) for n, im in ims]
+    sheet = Image.new("RGB", (width, sum(im.height + 40 for _, im in ims) or 1), "white")
+    y, draw = 0, ImageDraw.Draw(sheet)
+    for n, im in ims:
+        draw.text((4, y + 12), n, fill="#6B6B6B")
+        sheet.paste(im, (0, y + 40))
+        y += im.height + 40
+    sheet.save(dest)
 
 
 def main() -> int:

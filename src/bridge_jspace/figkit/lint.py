@@ -8,7 +8,7 @@ import re
 
 from matplotlib.colors import to_hex
 from matplotlib.lines import Line2D
-from matplotlib.patches import Patch
+from matplotlib.patches import Patch, Rectangle
 
 BANNED = ("not run", "not tested", "cannot report", "too few", "gate", "fixed in advance", "after the data",
           "descriptive", "n =")  # fmt: skip
@@ -22,6 +22,29 @@ def _redgreen(c) -> bool:
         return False
     r, g, b = (int(h[i : i + 2], 16) for i in (1, 3, 5))
     return (r > 150 and g < 90 and b < 90) or (g > 120 and r < 90 and b < 110 and g - max(r, b) > 50)
+
+
+def _marks(ax, name: str) -> list[str]:
+    """Markers other than "o", hatch, red or green colours among an axes' artists."""
+    out = []
+    for art in ax.get_children():
+        if isinstance(art, Line2D) and art.get_marker() not in ("None", None, "", "o", " "):
+            out.append(f"{name}: marker {art.get_marker()!r}")
+        if isinstance(art, Patch) and art.get_hatch():
+            out.append(f"{name}: hatch")
+        for getter in ("get_color", "get_facecolor", "get_edgecolor"):
+            c = getattr(art, getter, None)
+            if c is not None:
+                try:
+                    col = c()
+                except Exception:
+                    continue
+                flat = isinstance(col, str) or (
+                    hasattr(col, "__len__") and len(col) in (3, 4) and not hasattr(col[0], "__len__")
+                )
+                if flat and _redgreen(col):
+                    out.append(f"{name}: red/green colour {to_hex(col)}")
+    return out
 
 
 def problems(fig, name: str, names: set[str], titles_ok: bool = False) -> list[str]:
@@ -41,27 +64,59 @@ def problems(fig, name: str, names: set[str], titles_ok: bool = False) -> list[s
             t = lab.get_text()
             if t and MODELISH.search(t) and t not in names:
                 out.append(f"{name}: model name {t!r} not in the set")
-        for art in ax.get_children():
-            if isinstance(art, Line2D) and art.get_marker() not in ("None", None, "", "o", " "):
-                out.append(f"{name}: marker {art.get_marker()!r}")
-            if isinstance(art, Patch) and art.get_hatch():
-                out.append(f"{name}: hatch")
-            for getter in ("get_color", "get_facecolor", "get_edgecolor"):
-                c = getattr(art, getter, None)
-                if c is not None:
-                    try:
-                        col = c()
-                    except Exception:
-                        continue
-                    flat = isinstance(col, str) or (
-                        hasattr(col, "__len__") and len(col) in (3, 4) and not hasattr(col[0], "__len__")
-                    )
-                    if flat and _redgreen(col):
-                        out.append(f"{name}: red/green colour {to_hex(col)}")
+        out += _marks(ax, name)
         for t in ax.texts:
             if any(b in t.get_text().lower() for b in BANNED):
                 out.append(f"{name}: banned text inside axes {t.get_text()[:30]!r}")
     for t in fig.findobj(match=lambda a: hasattr(a, "get_fontsize") and hasattr(a, "get_text")):
         if t.get_text() and t.get_visible() and t.get_fontsize() < 11 - 1e-6:
             out.append(f"{name}: text under 11 pt {t.get_text()[:30]!r}")
+    return sorted(set(out))
+
+
+TABLE_BANNED = ("not run", "not tested", "not designed", "invalid", "under 30", "can't tell", "n =")
+TABLE_NAMES = {"Qwen 9B", "Qwen 27B", "Muse 30B", "Lightning", "Qwen 122B", "DeepSeek", "Ministral", "Bolt", "OLMo"}
+
+
+def table_problems(fig, name: str) -> list[str]:
+    """The table style's lint (morning brief 30 Oct, Section 4): rotated text, overlapping texts, text off the figure,
+    legends, markers other than "o", hatch, red or green, a suptitle, an image taller than 1.2x its width, banned
+    words, a model name outside the set, a panel with no data."""
+    out = []
+    w, h = fig.get_size_inches()
+    if h > 1.2 * w:
+        out.append(f"{name}: taller than 1.2x its width")
+    if fig._suptitle is not None and fig._suptitle.get_text():
+        out.append(f"{name}: suptitle")
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+    fb = fig.bbox
+    texts = [t for t in fig.findobj(match=lambda a: hasattr(a, "get_text") and hasattr(a, "get_rotation"))
+             if t.get_text().strip() and t.get_visible()]  # fmt: skip
+    boxes = []
+    for t in texts:
+        s = t.get_text()
+        if t.get_rotation() not in (0, 0.0):
+            out.append(f"{name}: rotated text {s[:25]!r}")
+        if any(b in s.lower() for b in TABLE_BANNED):
+            out.append(f"{name}: banned text {s[:25]!r}")
+        if MODELISH.search(s) and s.strip() not in TABLE_NAMES and len(s.split()) <= 3:
+            out.append(f"{name}: model name {s!r} outside the set")
+        bb = t.get_window_extent(r)
+        if bb.x0 < fb.x0 - 1 or bb.x1 > fb.x1 + 1 or bb.y0 < fb.y0 - 1 or bb.y1 > fb.y1 + 1:
+            out.append(f"{name}: text off the figure {s[:25]!r}")
+        boxes.append((s, bb))
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            a, b = boxes[i][1], boxes[j][1]
+            if a.x0 < b.x1 - 1 and b.x0 < a.x1 - 1 and a.y0 < b.y1 - 1 and b.y0 < a.y1 - 1:
+                out.append(f"{name}: texts overlap {boxes[i][0][:20]!r} / {boxes[j][0][:20]!r}")
+    for k, ax in enumerate(fig.axes):
+        if ax.get_legend() is not None:
+            out.append(f"{name}: legend")
+        out += _marks(ax, name)
+        dots = any(isinstance(a, Line2D) and a.get_marker() == "o" for a in ax.get_children())
+        bars = any(isinstance(a, Rectangle) and a is not ax.patch and a.get_width() > 0 for a in ax.patches)
+        if not (dots or bars or ax.collections or ax.images):
+            out.append(f"{name}: panel {k + 1} has no data")
     return sorted(set(out))

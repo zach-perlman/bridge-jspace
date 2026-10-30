@@ -144,7 +144,7 @@ def atoms_dan() -> Figure:
 # ---- slide 7: C3 ----------------------------------------------------------------------------------------------------
 def probe() -> Figure:
     q = "the locker probe at the bridge word, locker-first scenes"
-    cats = list(D.DAN) + [("tool", "27B tool output"), ("code", "27B code")]
+    cats = [*list(D.DAN), ("tool", "27B tool output"), ("code", "27B code")]
     cells = {m: D.s(m, q) for m, _ in D.DAN} | {
         k: D.s("qwen3.6-27b", f"code and tool output, {k}: {q}") for k in ("tool", "code")
     }
@@ -181,8 +181,8 @@ def swap_dose() -> Figure:
 def lens_readout() -> Figure:
     zq = "47.0 (b) share rebuilt by 25 lens directions: "
     models = [(m, n) for m, n in D.DAN if D.s(m, zq + "pointer: z", prefix=True)]
-    pz = {m: D.s(m, zq + "pointer: z", prefix=True)[:1] + (None, None) for m, _ in models}
-    iz = {m: D.s(m, zq + "identity_mean: z", prefix=True)[:1] + (None, None) for m, _ in models}
+    pz = {m: (*D.s(m, zq + "pointer: z", prefix=True)[:1], None, None) for m, _ in models}
+    iz = {m: (*D.s(m, zq + "identity_mean: z", prefix=True)[:1], None, None) for m, _ in models}
     hol = lightning_hollow(models)
     p = Bars(models, [Series("address swap", "address", pz, hol), Series("item change", "identity", iz, hol)],
              "lens rebuild above random vectors (z)", (-2, 26), "{:.1f}", band=(-1, 1), rotate=20)  # fmt: skip
