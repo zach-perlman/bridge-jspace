@@ -4256,3 +4256,63 @@ Note 58's edit follows DarkLens §3.2 exactly, including its per-position rescal
 - 27B: L32-35 and L36-39;
 - Lightning: L27-30 and L28-31.
 The mid-spectrum control's dimension is calibrated in-run (grid, then bisection to within 10% of dark's WikiText NLL increase). The calibration is logged in n58_calib.json.
+
+#### Amendment 85 (Zach's session, 2026-10-30, box clock at commit; Zach chose notes 60-62 at ~14:20 ET from the round-2 planning reports in /home/zach/scratch/redteam_1030/next8h/r2_*.md; before any code or run of them): notes 60-62
+**Seen before writing:**
+- everything through amendment 84, including note 58 on all three models (9B: D1 met at both windows; 27B and Lightning: D1 not met) and note 59 on the 9B and Lightning test splits;
+- post hoc CPU analyses of stored note 55 rows. Keeping the English answer word E rescues 9B multilingual fully (K -0.15; -0.24 on the 61 / 77 items where E is not in the clean top-10). Keeping the target word T rescues about half (K 0.45). Lightning shows the same pattern.
+- the energy shares of note 38's scrubs: the answer scrub removes 0.40-0.49 of the swap edit's energy, the other-relation and random scrubs 0.26-0.32.
+- the layer types: every 4-layer window of the 9B and 27B holds one full-attention layer (layers 3, 7, 11, ... ); Lightning's attention layers are 5, 12, 19, 26, 33 and 42, so note 58's Lightning windows (L27-30, L28-31) held none.
+
+Not seen: any condition below.
+
+##### Note 60: outputs vs pivots on the paper's own tasks (paper_ko_decomp note 55 path; multilingual ML and multihop MH; 9B and Lightning primary, 27B MH descriptive; rhyme beside, label-free keeps only)
+- **Bands:** the medium band, plus the note 39 median-onset window for MH.
+- **Conditions** (on paper10):
+  - paper10_rot, paper10_pcasize;
+  - keepT10 (the label-free span of the clean top-10 tokens' forms) and keepRT10E (random, at keepT10's energy);
+  - keep_T, keep_E, keep_I (ML); keep_T, keep_B (MH);
+  - keep_Eperp, keep_Iperp, keep_Bperp: each word's span projected off span(T's forms ∪ keepT10), with rank logged;
+  - keepRE_<X>perp: random, at each perp's energy;
+  - keep_ctlE / keep_ctlB: another item's word, same relation, count-matched;
+  - onlyT10 and onlyRT10E.
+- **Primary metric:** mean delta log p of the target's first token. Rescue_X = 1 - (L_X - L_rot) / (L_p10 - L_rot). Top-1 K is reported beside.
+- **A0:** paper10 - max(rot, pcasize) >= 20 points top-1 or >= 0.5 nats, CI > 0. Without it, keeps are read as "which span prevents the damage", not "J-specific".
+- **Readings:**
+  - **O1 (output candidates):** rescue(keepT10) >= 0.67, and rescue(keepT10) - rescue(keepRT10E) >= 0.33 with lower end > 0.
+  - **O2 (the kill: a non-output intermediate is needed):** for X = I (ML) or B (MH, each band), rescue(keep_Xperp) - rescue(keepRE_Xperp) >= 0.33 with lower end > 0.
+  - **O3 (the answer concept across languages):** on items where E is not in the clean top-10, rescue(keep_Eperp) - rescue(keepRE_Eperp) >= 0.33 with lower end > 0.
+  - **Specificity guard:** rescue(keep_ctlE) <= rescue(keep_E) - 0.33. Otherwise "any English word of the relation rescues".
+  - A CI half-width > 0.4 means "underpowered".
+
+##### Note 61: note 58 at windows holding an attention layer (Lightning) and at the 9B's depth (27B); v4 draw 4001 twins, note 58's machinery unchanged
+- **Why:** the 9B's crossover sat at 39-48% and 55-65% depth, and every Qwen window holds a full-attention layer. Lightning's two windows held no attention layer, and the 27B's started at 51% depth.
+- **Windows** (4 layers each; darkperm_W and its calibrated midperm_W, as note 58 and its addendum):
+  - Lightning: L24-27 (holds attention L26; 47-53%), L31-34 (holds L33; 61-67%), L17-20 (holds L19; 33-39%);
+  - 27B: L19-22 (30-35%), L24-27 (38-43%), L28-31 (44-49%).
+- **Measured** as note 58: MP and MM, gate and cand2 read, paper10 and paper10_rot rerun in-run.
+- **Readings:** note 58's D1 and DD per window, unchanged.
+  - Per model, with 3 new windows: "lookup needs the dark space at an attention window" only if D1 holds at >= 1 window with Bonferroni-widened intervals (98.3% bootstrap CIs, 3 windows) for both of D1's inequalities. The 95% reading is printed beside.
+  - Lightning, given that: the attention window(s) pass while note 58's L27-30 / L28-31 failed = "Lightning's null was the window choice" (post hoc framing of a pre-registered test, labelled as such).
+  - If no window passes on either model: "the crossover is specific to the 9B at the windows tested", and note 58 stays a 9B-only result.
+
+##### Note 62: a positive control for note 54's bridge null: can bridgeJperp see a bridge where one is needed? (person-birthcity-country; 9B and Lightning primary; 27B if time)
+- **Why:** Key Handoff (2609.32942) shows in-context two-hop needs the bridge as a retrieval key in dense and hybrid models. If our bridge-orthogonal knock-out cannot detect a bridge there, note 54's "not shown" is uninformative.
+- **Items:** the silent-dissent test split's person-birthcity-country items, gated as note 54 (G2: known, no shortcut).
+- **Prompts** (matched bridge city C and answer country K):
+  - **(I) in-context two-hop:** a fact list of 4 shuffled chains, "{X} was born in {C}." and "{C} is in {K}.", one per chain. The target chain's person X is a seeded fictional name; the 3 distractor chains use other items' (city, country) pairs with countries distinct from K and from each other. Then the question, "In which country was {X} born?", with the note 56 answer prefix. Only the bridge C selects K among the 4 countries.
+  - **(P) parametric two-hop:** note 54's solo prompt for the same item, rerun in-run.
+  - **(O) one-hop** "{C} is in": beside only.
+- **Position mask:** every arm acts only at the question's positions and after (from the question's first token to the end). The fact list is untouched. (P) and (O) use the same mask from their question's first token.
+- **Arms** (mid band, as note 54):
+  - none, paper10, paper10_rot;
+  - bridgeJ, bridgeJ_rot, bridgeJ_ctrl (another item's city, count-matched);
+  - bridgeJperp: C's forms' unit vectors orthogonalised before removal. In (I), to the span of the forms of all 4 countries in the list; in (P), to the item's two answers' forms, as note 54. Its rank is logged.
+  - ansJ beside.
+- **Validity:** unedited (I) first-token K share >= 70% on gated items, else "not readable" for that model. (P) as note 54.
+- **Readings** (first-token K share; n, bootstrap 95% CI over items):
+  - **R1 (positive control):** on (I), bridgeJperp - bridgeJ_ctrl >= 15 AND bridgeJperp - bridgeJ_rot >= 15, both lower ends > 0 = "the knock-out sees a needed bridge". Otherwise "the method cannot be shown to detect a bridge", and note 54 is reworded to "found no bridge need; we could not show the test can detect one".
+  - **R2 (given R1):** (P)'s bridgeJperp specific loss (min over the two controls) <= 1/3 of (I)'s, with (I) - (P) lower end > 0 = "the bridge is needed when it is a key in context, not in latent recall". If (P)'s specific loss is >= 2/3 of (I)'s = "(P) needs the bridge too", and note 54's null was a masking artefact.
+  - Beside: bridgeJ (unorthogonalised) and ansJ on (I), (P), (O); (O)'s bridgeJ loss.
+
+Not run (proposed, not chosen): the scope test on non-country relations, the energy-matched swap scrub, and the mechanism on natplus.
