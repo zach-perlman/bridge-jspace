@@ -4562,3 +4562,15 @@ It is our MP twin in another format: recall a key (the bridge) from memory, then
   - the 27B first, on both GPUs (notes 67 and 65 in parallel, then 66);
   - then the 9B and Lightning;
   - code smokes stay on the 9B, and every full run begins with its own 8-item smoke on its model.
+
+##### Amendment 88, addendum 2: notes 65 and 66 as implemented (box clock at commit; before any full-run result; only the 8-item 9B smokes seen)
+- **Note 65 validity:** "Yes / No in the top-2 tokens" is read as " Yes" OR " No" among the top 2. The strict reading (both are the top 2) holds in 1.8% of 9B smoke rows and would make every model invalid. The strict share is printed beside.
+- **Note 65, seen in the 9B smoke** (8 items): under paper10 the first token is rarely Yes or No, and 12-token answers restate the claim.
+  - The registered primary stays the first-token d (logit Yes − No), which asks whether the damaged model's internal Yes / No preference still tracks truth.
+  - The 12-token Yes / No classification is reported beside as the behavioural read. Slides must show both.
+- **Note 65 ansRe:** note 57's loop (random letter rows, Random("n50:" + uid), minus ansJ's rows; the smallest prefix whose removed energy reaches ansJ's in ansJ's forward of the same batch).
+- **Note 66:**
+  - chk_solo's moderator line is "Work it out yourself.";
+  - edits are note 59's queue list (with ansJ_rot); items as note 59;
+  - if chk_wrong's unedited K share is < 60%, F2 is reported as the orig − peer logit-margin change with a CI and no label.
+- **Both notes:** --gen-edited (12-token generation under every edit) is on for every model. Generation-based shares are used where first-token agreement is < 90%.
