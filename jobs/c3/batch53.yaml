@@ -671,3 +671,10 @@ coverage_122b_0200: |
   Not queued, the agent's reading (flagged for Dan): 47.8, 53.8, 51.3, 47.16, 47.14, 47.13, 47.11, 47.7 (c) run on
   x6_routes' scenes with X0's gate (0.80 per reader); the 122B's recall reads 0.797 there, so each would stop at its gate
   ("not tested"). Only Dan can extend the lookup-only gate (decisions_1210 / decision_470_1845) to them.
+coverage_122b_0210_received: "30 Oct ~02:10 Paris (Dan: 'Постав-усі-усі, тому що до ранку мабуть всі встигнуть')"
+coverage_122b_0210: |
+  Added, each with its own gate (never lowered): x52_fill1_122b (49.1 gain, 47.14 chained addresses, 47.16 distance),
+  x47_8_122b (47.8 anatomy, every 4th layer L1-L45), x47_13_122b (47.13 errors). Not added (prerequisites the 122B
+  does not have, more than a spec copy; flagged for Dan): 47.7 (c) and 45d (need the 122B's 45d / P_cf refit on varied
+  scenes), 51.3 DAS (needs a clean-design DAS source decision as Lightning's NO_CLEAN), 53.8 (its script has no
+  coverage path), 47.11 (no single script found).

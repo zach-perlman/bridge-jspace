@@ -86,7 +86,7 @@ QUESTION = "Q47.14"
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_14", "muse-glimmer-30b": "muse30_x47_14"}
 # batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, x52_lightning_fill1.yaml): read by verdict
 # --coverage alone (RUNS and the design's own verdict unchanged)
-COVERAGE_RUNS = {"qwen3.6-27b": "x47_14_27b", "nemotron-3.5-lightning": "nem35l_x52_chain"}
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_14_27b", "nemotron-3.5-lightning": "nem35l_x52_chain", "qwen3.5-122b-a10b": "qwen35_122b_chain"}
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_chain/x47_14-20261028T115841Z"  # 47.14's rule first scored (the 9B and Muse)
 SEED, SPLIT_SEED = 4714, 4715

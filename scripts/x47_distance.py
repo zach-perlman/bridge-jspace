@@ -83,6 +83,7 @@ COVERAGE_RUNS = {"qwen3.6-27b": "x47_16_27b", "nemotron-3.5-lightning": "nem35l_
 # Muse (jobs/c3/x47_16_muse_r2.yaml): x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; exit 143, no
 # outcomes in muse30_x47_16); its r2 under a new run name, read as coverage (RUNS['muse-glimmer-30b'] unchanged)
 COVERAGE_RUNS["muse-glimmer-30b"] = "muse30_x47_16_r2"
+COVERAGE_RUNS["qwen3.5-122b-a10b"] = "qwen35_122b_distance"  # Dan 30 Oct ~02:10
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_distance/x47_16-20261028T131501Z"  # 47.16's rule first scored (the 9B and Muse)
 KS = (0, 5, 20, 50)

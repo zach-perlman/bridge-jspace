@@ -1,0 +1,25 @@
+id: x47_13_122b
+title: "122B coverage (Dan 30 Oct ~02:10): 47.13, are the lookup's errors address errors? (the address probe on the lookup's errors), as Lightning's fill5; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x0b_generalize/qwen35_122b_x0b_v2/states.npz &&
+  uv run python scripts/x47_errors.py gpu --name qwen35_122b_errors &&
+  printf '%s\n' "no prediction: coverage run on an already-scored rule (Dan 30 Oct ~02:10; the 122B at L33, FP8)" > results/x47_errors/qwen35_122b_errors/coverage.txt
+question: >-
+  On the 122B, when the lookup answers wrong, does the address probe at the bridge word point to the wrong answer's slot?
+why_it_matters: >-
+  Dan 30 Oct ~02:10 ('став усі-усі'): every 122B test not yet run.
+hypotheses:
+  none: "No prediction: coverage run on an already-scored rule."
+decision_rule: >-
+  47.13's rule verbatim (scripts/x47_errors.py RULE, as jobs/c3/x52_lightning_fill5.yaml): the address predicts the error if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33; the layout baseline beside), with >= 30 wrong items; on the 122B's x0b_v2 scenes and its x0_probe_v4 address.
+controls:
+- "the layout baseline; chance with three lockers"
+n: "the 122B's x0b_v2 scenes the lookup gets wrong (>= 30 needed)"
+seeds: [0]
+notes: "Coverage, not hand-checked; UNVERIFIED. The verdict (CPU) after the run: scripts/x47_errors.py verdict with the 122B's run beside."

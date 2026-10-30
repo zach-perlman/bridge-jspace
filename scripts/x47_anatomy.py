@@ -88,16 +88,17 @@ RENDERING = "chat"
 # Lightning (batch 52 C coverage, amendment 3): Muse's design for a 52-block model, verbatim (every 4th layer L2-L50,
 # which holds the committed L14; 200 test scenes; C0 >= 0.5, no one-pick reference)
 LAYERS = {"qwen3.5-9b": tuple(range(2, 31, 2)), "muse-glimmer-30b": tuple(range(2, 51, 4)),
-          "qwen3.6-27b": tuple(range(4, 61, 4)), "nemotron-3.5-lightning": tuple(range(2, 51, 4))}  # fmt: skip
-N_TEST = {"qwen3.5-9b": 200, "muse-glimmer-30b": 200, "qwen3.6-27b": 150, "nemotron-3.5-lightning": 200}
+          "qwen3.6-27b": tuple(range(4, 61, 4)), "nemotron-3.5-lightning": tuple(range(2, 51, 4)),
+          "qwen3.5-122b-a10b": tuple(range(1, 46, 4))}  # fmt: skip  (the 122B: every 4th layer, holds L33; Dan 30 Oct ~02:10)
+N_TEST = {"qwen3.5-9b": 200, "muse-glimmer-30b": 200, "qwen3.6-27b": 150, "nemotron-3.5-lightning": 200, "qwen3.5-122b-a10b": 200}
 N_FIT_MIN, N_FIT_MAX = 150, 250  # the fit half: at least 150 scenes (the spec), at most 250 (the cache's size)
-C0_MIN = {"muse-glimmer-30b": 0.5, "nemotron-3.5-lightning": 0.5}  # no one-pick reference (x6_routes --c0-min, G2)
+C0_MIN = {"muse-glimmer-30b": 0.5, "nemotron-3.5-lightning": 0.5, "qwen3.5-122b-a10b": 0.5}  # no one-pick reference (x6_routes --c0-min, G2)
 RUNS = {
     "qwen3.5-9b": "qwen35_9b_x47_anatomy",
     "qwen3.6-27b": "x47_anatomy_27b",
     "muse-glimmer-30b": "muse30_x47_anatomy",
 }
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_anatomy"}  # batch 52: verdict --coverage, no Q-line
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_anatomy", "qwen3.5-122b-a10b": "qwen35_122b_anatomy"}  # batch 52: verdict --coverage, no Q-line
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_anatomy/x47_8-20261028T154518Z"  # 47.8's rules first scored
 SPLIT_SEED, ATOMS_SEED = 0, 777

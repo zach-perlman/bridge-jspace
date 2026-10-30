@@ -77,7 +77,7 @@ MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 RUNS = {"qwen3.5-9b": "qwen35_9b_x49_1", "qwen3.6-27b": "x49_1_27b", "muse-glimmer-30b": "muse30_x49_1"}
 # batch 52 C coverage (amendment 2: the full grid on Lightning): read by verdict --coverage alone (RUNS / MODELS and the
 # design's own verdict unchanged)
-COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_gain"}
+COVERAGE_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_gain", "qwen3.5-122b-a10b": "qwen35_122b_gain"}  # 122B: Dan 30 Oct ~02:10
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x49_gain/x49_1-20261028T154510Z"  # 49.1's rule first scored (9B, 27B, Muse)
 # target -> the main test's X0 run (chat, at X.PREDICTED); the 122B's r2 run at L33 for Dan's 18:20 coverage

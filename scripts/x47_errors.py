@@ -70,6 +70,7 @@ SOURCES = {
     "qwen3.6-27b": "x0b_v2_27b",
     "muse-glimmer-30b": "muse30b_x0b_v2",
     "nemotron-3.5-lightning": "nem35l_x52_x0b",
+    "qwen3.5-122b-a10b": "qwen35_122b_x0b_v2",  # Dan 30 Oct ~02:10
 }  # fmt: skip (Lightning: batch 52 C coverage)
 # the source Dan named: states for every scene, no read (x0_probe records states only); `gpu` reads the lookup there
 NAMED = {
@@ -77,6 +78,7 @@ NAMED = {
     "qwen3.6-27b": "x0_probe_v4_27b",
     "muse-glimmer-30b": "muse30b_x0_probe_v4",
     "nemotron-3.5-lightning": "nem35l_x52_probe",  # batch 52 C coverage
+    "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4",
 }
 RUNS = {"qwen3.5-9b": "qwen35_9b_x47_errors", "qwen3.6-27b": "x47_errors_27b", "muse-glimmer-30b": "muse30_x47_errors"}
 MATCH_BAR, LENS_BAR, N_MIN = 0.5, 0.8, 30

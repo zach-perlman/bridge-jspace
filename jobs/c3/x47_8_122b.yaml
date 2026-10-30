@@ -1,0 +1,24 @@
+id: x47_8_122b
+title: "122B coverage (Dan 30 Oct ~02:10): 47.8 layer anatomy, every 4th layer L1-L45, Muse's design; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x47_anatomy.py run --name qwen35_122b_anatomy --why "122B coverage (Dan 30 Oct ~02:10): 47.8's layer anatomy, Muse's design (every 4th layer L1-L45, 200 test scenes, C0 >= 0.5) at L33; no prediction: coverage run on an already-scored rule" &&
+  uv run python scripts/x47_anatomy.py verdict --coverage --runs qwen35_122b_anatomy
+question: >-
+  As depth increases, what does a change at the 122B's bridge word move, and through which part (claim 12)?
+why_it_matters: >-
+  Dan 30 Oct ~02:10: every 122B test not yet run.
+hypotheses:
+  none: "No prediction (Dan 30 Oct ~02:10, 'став усі-усі'): coverage run on an already-scored rule."
+decision_rule: >-
+  47.8's rule verbatim from jobs/c3/x52_lightning_anatomy.yaml (Muse's design: every 4th layer, 200 test scenes, C0 >= 0.5); on the 122B every 4th layer L1-L45 (holds L33); X0's gate on the routes scenes, never lowered.
+controls:
+- "as the Lightning coverage spec jobs/c3/x52_lightning_anatomy.yaml"
+n: "as jobs/c3/x52_lightning_anatomy.yaml, on the 122B"
+seeds: [2510, 888, 0]
+notes: "Coverage, not hand-checked; UNVERIFIED; README untouched. FP8; MoE; 2x H100. Gates never lowered (X0's 0.80 per reader on the routes scenes: the 122B's recall read 0.797 there, so a gate miss = not tested)."
