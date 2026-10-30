@@ -38,6 +38,7 @@ class S:
     control: bool = False  # grey and smaller (R8)
     needs: tuple | None = None  # (quantity, minimum): the cell is drawn only if that quantity reaches the minimum
     prefix: bool = False  # the first quantity starting with q (names that carry a model's own layer)
+    regex: bool = False  # q is a regular expression (a model's own layer or head inside the name)
 
 
 @dataclass
@@ -74,11 +75,32 @@ def cell(t: str, q: str, fig: str, k="", prefix: bool = False):
 
 def valid(t: str, s: S, fig: str, k="") -> tuple | None:
     """The series' cell, or None when it is missing or its count is under the rule's minimum (S2: a dash)."""
-    v = cell(t, s.q, fig, k, s.prefix)
+    if s.regex:
+        hit = D.s_match(t, s.q.format(k=k), fig)
+        v = hit[1] if hit and hit[1][0] == hit[1][0] else None
+    else:
+        v = cell(t, s.q, fig, k, s.prefix)
     if v is None or s.needs is None:
         return v
     n = cell(t, s.needs[0], fig, k)
     return v if n is not None and n[0] >= s.needs[1] else None
+
+
+def keyed(fig: str, rx: str, sub: str = "{k}") -> list[tuple[str, str, str]]:
+    """Rows (model, key, label) for every key a regex's group captures in a figure's quantities, models in D.DAN
+    order, keys in numeric order (a model's own layers)."""
+    import re
+
+    pat = re.compile(rx)
+    out = []
+    for t, _ in D.DAN:
+        ks = {m.group(1) for (f, m_, q) in D.story() if f == fig and m_ == t and (m := pat.fullmatch(q))}
+        out += [(t, k, sub.format(k=k)) for k in sorted(ks, key=lambda k: (len(k), k))]
+    return out
+
+
+def row_list(spec: Spec) -> list:
+    return spec.rows() if callable(spec.rows) else (spec.rows or [])
 
 
 def cols_of(spec: Spec) -> list[K]:
@@ -86,13 +108,12 @@ def cols_of(spec: Spec) -> list[K]:
     return [
         c
         for c in spec.cols
-        if c.target is None
-        or any(valid(c.target, s, spec.figure, k) for _, k, _ in (spec.rows or []) for s in c.series)
+        if c.target is None or any(valid(c.target, s, spec.figure, k) for _, k, _ in row_list(spec) for s in c.series)
     ]
 
 
 def rows_of(spec: Spec) -> list[tuple[str, str, str]]:
-    rows = spec.rows or [(t, "", "") for t, _ in D.DAN]
+    rows = row_list(spec) or [(t, "", "") for t, _ in D.DAN]
     return [r for r in rows if any(valid(c.target or r[0], s, spec.figure, r[1]) for c in spec.cols for s in c.series)]
 
 
@@ -143,12 +164,20 @@ def table(spec: Spec) -> Table:
                 for s, v in have:
                     if s.control:
                         dot(ax, v[0], i, C["control"], size=7, zorder=7)  # above the value labels' boxes
+                span = c.xlim[1] - c.xlim[0]
                 for j, (s, v) in enumerate(main):
                     ci = v if len(v) >= 3 and v[1] is not None and v[2] is not None else None
                     last = j == len(main) - 1
-                    dot(ax, v[0], i, C[s.color], hollow[t], cell=ci, value=v[0] if last else None, vfmt=c.fmt)
+                    right = (ci[2] if ci else v[0]) if last else v[0]
+                    # the value label goes left when a grey control sits where it would be written
+                    side = (
+                        "left" if any(s2.control and 0 <= v2[0] - right <= 0.25 * span for s2, v2 in have) else "right"
+                    )
+                    dot(ax, v[0], i, C[s.color], hollow[t], cell=ci, value=v[0] if last else None, vfmt=c.fmt,
+                        vside=side)  # fmt: skip
 
-        cols.append(Col(c.width, c.title, c.unit, draw, c.xlim, c.xticks))
+        xlim = (c.xlim[0], c.xlim[1] + 0.22 * (c.xlim[1] - c.xlim[0])) if c.xlim[1] in (1.0, 0.6, 0.8) else c.xlim
+        cols.append(Col(c.width, c.title, c.unit, draw, xlim, c.xticks))
     words = {}
     for c in spec_cols:
         for s in c.series:
@@ -248,6 +277,164 @@ SPECS: list[Spec] = [
     Spec("das48", "ledger_das48",
          [K("The lookup's subspace", "its lookups switched", [S("lookup's subspace", "lookup")], xlim=(0, 1.25), width=3.2),
           K("The recall's subspace", "its recalls switched", [S("recall's subspace", "recall")], xlim=(0, 1.0), width=3.2)]),
+    # ---- Part II --------------------------------------------------------------------------------------------------
+    Spec("routes_lens", "fig05d",
+         [K(f"Lens directions {r}", "answers lost beyond random",
+            [S(f"47.1: identity route: answers lost beyond random without lens directions {r}", "identity", "identity route"),
+             S(f"47.1: position route: answers lost beyond random without lens directions {r}", "address", "position route")],
+            xlim=(-0.4, 0.8), xticks=[0, 0.25, 0.5], width=2.5) for r in ("1-25", "26-100", "1-100")]),
+    Spec("routes", "ledger_routes",
+         [K(title, "share of the lookup's answers",
+            [S(f"another item moved, {arm}: value share", "recall", "the value"),
+             S(f"another item moved, {arm}: identity share", "identity", "identity"),
+             S(f"another item moved, {arm}: position share", "address", "position")],
+            xlim=(0, 1.0), width=2.5) for arm, title in (("whole", "The whole change"), ("no_alf", "Without the address"),
+                                                         ("keep_alf", "The address alone"))],
+         lowered=True),
+    Spec("value_formats", "ledger_value_formats",
+         [K("The whole change", "share of the lookup's answers",
+            [S("{k}, whole change: value share", "recall", "the value"), S("{k}, whole change: position share", "address", "position")],
+            xlim=(0, 1.0), width=4.0)],
+         rows=[(t, f, n) for t, _ in D.DAN for f, n in (("prose", "prose"), ("table", "tables"), ("json", "JSON"))]),
+    Spec("learned", "ledger_learned",
+         [K(NAME[t], "own-IIA, test half", [S("lookup: test own-IIA at k = {k}", "lookup", "lookup's subspace"),
+                                             S("recall: test own-IIA at k = {k}", "recall", "recall's subspace")],
+            xlim=(0, 1.0), width=2.4, target=t) for t in ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")],
+         rows=[(None, str(k), f"k = {k}") for k in (4, 16, 64, 128)], label_w=1.1),
+    Spec("bindid", "ledger_bindid",
+         [K(title, "lookups moved", [S(f"{v}: random", "control", "random", control=True),
+                                     S(f"{v}: Y's version", "lens", "Y's version"), S(f"{v}: X's vector", "address", "X's vector")],
+            xlim=(0, 0.6), xticks=[0, 0.25, 0.5], width=3.2) for v, title in (("pre-specified", "Pre-specified"), ("centered", "Centered"))]),
+    # ---- Part III -------------------------------------------------------------------------------------------------
+    Spec("distance", "e6_distance",
+         [K("Position share", "the lookup, whole change", [S("47.16: position share with 0 neutral sentences", "control", "no neutral sentences", control=True),
+                                                            S("47.16: position share with 50 neutral sentences", "address", "50 neutral sentences")],
+            xlim=(0, 1.0), width=3.2),
+          K("The swap", "lookups sent to the target", [S("47.16: the swap (fit with none) sends lookups to the target, 0 sentences", "control", control=True),
+                                                        S("47.16: the swap (fit with none) sends lookups to the target, 50 sentences", "lookup", "the swap, 50 sentences")],
+            xlim=(0, 1.0), width=3.2)],
+         lowered=True),
+    Spec("subset27b", "ledger_subset27b",
+         [K("Without the address", "position share", [S("without a random part", "control", "a random part", control=True), S("without the address", "address", "the address")],
+            xlim=(0, 1.0), width=2.5),
+          K("Alone", "position share", [S("a random part alone", "control", control=True), S("the address alone", "address")], xlim=(0, 1.0), width=2.5),
+          K("The swap, dose 2", "to the target", [S("the swap at dose 2: to the target", "lookup")], xlim=(0, 1.0), width=2.5)]),
+    Spec("report_slot1", "ledger_report_slot1",
+         [K(title, "reads slot 1", [S(q, "lookup")], xlim=(0, 1.0), width=2.4)
+          for q, title in (("the earlier report wording", "Earlier wording"), ("position wording (a digit)", "Position (a digit)"),
+                           ("sentence wording (a word)", "Sentence (a word)"))]),
+    Spec("heads", "ledger_heads",
+         [K(n, "swap cut", [S(f"last token, {n}: random sets' mean cut", "control", "random heads", control=True),
+                            S(f"last token, {n}: share of the swap's switch cut", "lookup", "the top heads")],
+            xlim=(-0.2, 1.0), xticks=[0, 0.5, 1], width=1.7) for n in ("top 1", "top 3", "top 5", "top 10", "best layer")]),
+    Spec("attention", "ledger_attention",
+         [K("Attention moved", "the best head, last token",
+            [S(r"best head L\d+:h\d+, last token: attention moved, a random vector \(switched pairs\)", "control", "a random vector", control=True, regex=True),
+             S(r"best head L\d+:h\d+, last token: attention moved, pairs that switched", "lookup", "pairs that switched", regex=True)],
+            xlim=(0, 2.4), xticks=[0, 1, 2], width=4.5)]),
+    Spec("chain", "fig09d",
+         [K("Taken out", "hall answers by position", [S("47.14: hall answers by position, without a random part (same size)", "control", "a random part", control=True),
+                                                      S("47.14: hall answers by position, without the hall address", "address", "the hall address")],
+            xlim=(0, 1.0), width=3.0),
+          K("Only kept", "hall answers by position", [S("47.14: hall answers by position, only a random part (same size) kept", "control", control=True),
+                                                      S("47.14: hall answers by position, only the hall address kept", "address")],
+            xlim=(0, 1.0), width=3.0),
+          K("Probe", "the hall at the locker digit", [S("47.14: hall probe's layout baseline", "control", control=True),
+                                                      S("47.14: hall probe at the locker digit", "address")], xlim=(0, 1.0), width=2.6)]),
+    Spec("refit", "fig09b_refit",
+         [K("Without the pointer", "the lookup, beyond random", [S("(b) {k}: lookup extra loss without the pointer fit on simple scenes", "control", "fit on simple scenes", control=True),
+                                                                 S("(b) {k}: lookup extra loss without the refit pointer", "address", "refit on this format")],
+            xlim=(-0.2, 1.0), band=NB, width=4.0)],
+         rows=[(t, f, n) for t, _ in D.DAN for f, n in (("prose", "prose"), ("json", "JSON"), ("table", "tables"))]),
+    Spec("code_tool", "ledger_code_tool",
+         [K("Without the address", "position share", [S("{k}, routes: the same, random part out", "control", "a random part", control=True),
+                                                      S("{k}, routes: position without the address", "address", "the address")],
+            xlim=(0, 1.0), width=2.6),
+          K("The address alone", "position share", [S("{k}, routes: position, the address alone", "address")], xlim=(0, 1.0), width=2.4),
+          K("Probe", "locker sentence, locker first", [S("{k}, probe: the layout alone", "control", control=True), S("{k}, probe: locker sentence, locker first", "address")],
+            xlim=(0, 1.0), width=2.6)],
+         rows=[(t, f, n) for t, _ in D.DAN for f, n in (("code", "code"), ("tool", "tool output"))]),
+    # ---- Part IV --------------------------------------------------------------------------------------------------
+    Spec("order_split", "ledger_order_split",
+         [K("Lookups switched", "by the whole change", [S("locker after the pick: lookups switched", "control", "locker after the pick", control=True),
+                                                        S("locker before the pick: lookups switched", "lookup", "locker before the pick")],
+            xlim=(0, 1.0), width=5.0)],
+         lowered=True),
+    Spec("copy45q", "fig03",
+         [K(title, "lookups switched", [S(q, "lookup")], xlim=(0, 1.0), width=2.5)
+          for q, title in (("45q, the rule's arm a: the bridge-word change at L (lookups switched)", "The bridge word at L"),
+                           ("45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)", "Copy at L"),
+                           ("45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)", "Copy at L/2"))]),
+    Spec("cumulative", "ledger_cumulative",
+         [K("Locker first", "missed at L", [S("locker first: missed at L", "lookup")], xlim=(0, 1.0), width=3.2),
+          K("Locker after", "carried before L", [S("locker after: carried before L", "lookup")], xlim=(0, 1.0), width=3.2)]),
+    Spec("last_token_address", "ledger_last_token_address",
+         [K("The bridge-fit swap at L+4", "dose 2: lookups sent to the target", [S("bridge-fit swap at L+4, dose 2: lookups sent to the target", "address")],
+            xlim=(0, 1.0), width=5.0)]),
+    Spec("last_conflict", "ledger_last_conflict",
+         [K(f"The {w}", "lost beyond random, last token", [S(rf"{w} L{{k}}: switches lost without the lens part beyond random \(last token\)", "lookup" if w == "lookup" else "recall", w, regex=True)],
+            xlim=(-0.3, 1.0), band=NB, width=3.0) for w in ("lookup", "recall")],
+         rows=lambda: keyed("ledger_last_conflict", r"(?:lookup|recall) L(\d+): switches lost without the lens part beyond random \(last token\)", "L{k}")),
+    Spec("last_conflict_words", "ledger_last_conflict_words",
+         [K(f"{at.capitalize()}, {w}", "lost beyond random", [S(f"{{k}}, {w}, {at}", w, w)], xlim=(-0.3, 1.0), band=NB, width=2.3)
+          for at in ("answer - 3", "read peak") for w in ("lookup", "recall")],
+         rows=[(t, k, n) for t, _ in D.DAN for k, n in (("words", "word answers"), ("locker", "number answers"))]),
+    Spec("attnblock", "ledger_attnblock",
+         [K("The lookup", "switches cut", [S("lookup: {k}", "lookup", "lookup")], xlim=(-0.2, 1.0), width=3.0),
+          K("The recall", "switches cut", [S("recall: {k}", "recall", "recall")], xlim=(-0.2, 1.0), width=3.0)],
+         rows=[(LT, k, k) for k in ("(i) block 19", "(ii) block 26", "(iii) blocks 19, 26", "(iv) all after L", "(v) control",
+                                    "follow-up: span", "follow-up: control span")], label_w=2.6),
+    # ---- Part V ---------------------------------------------------------------------------------------------------
+    Spec("zach_named", "ledger_zach_named",
+         [K(f"{f.capitalize()} facts", LOST, [S(f"Zach's named passages, {f} facts, lookup: switches lost beyond random", "lookup", "lookup"),
+                                              S(f"Zach's named passages, {f} facts, recall: switches lost beyond random", "recall", "recall")],
+            xlim=(-0.3, 1.0), band=NB, width=3.2) for f in ("true", "made-up")]),
+    Spec("jsuite", "ledger_jsuite",
+         [K(title, "lost beyond random", [S(f"{{k}}P lookup: {arm}", "lookup", "lookup"), S(f"{{k}}M recall: {arm}", "recall", "recall")],
+            xlim=(-0.3, 1.0), band=NB, width=3.2) for arm, title in (("without the lens part", "Without the lens part"),
+                                                                     ("answer directions only", "Answer directions only"))],
+         rows=[(t, k, n) for t, _ in D.DAN for k, n in (("P", "named bridge"), ("M", "described bridge"))]),
+    Spec("full_carrier", "ledger_full_carrier",
+         [K(title, LOST, [S(f"{{k}}, lookup, {arm}: switches lost beyond random", "lookup", "lookup"),
+                          S(f"{{k}}, recall, {arm}: switches lost beyond random", "recall", "recall")],
+            xlim=(-0.3, 1.0), band=NB, width=3.2) for arm, title in (("one layer", "One layer"), ("every layer to L", "Every layer to L"))],
+         rows=[(t, k, k) for t, _ in D.DAN for k in ("fact-first", "fact-after")]),
+    Spec("zach_routes", "ledger_zach_routes",
+         [K("The whole change", "share of the lookup's answers",
+            [S("L{k}, whole change: value share", "recall", "the value"), S("L{k}, whole change: identity share", "identity", "identity"),
+             S("L{k}, whole change: position share", "address", "position")], xlim=(0, 1.0), width=5.0)],
+         rows=lambda: keyed("ledger_zach_routes", r"L(\d+), whole change: identity share", "L{k}")),
+    Spec("read_window", "ledger_read_window",
+         [K(NAME[t], "switched", [S("his named passages, layer {k}: lookup switched", "lookup", "lookup"),
+                                  S("his named passages, layer {k}: recall switched", "recall", "recall")],
+            xlim=(0, 1.0), width=2.6, target=t) for t in ("qwen3.5-9b", "qwen3.6-27b", LT)],
+         rows=[(None, str(k), f"L{k}") for k in range(2, 31, 2)], label_w=1.0),
+    # ---- Part VI --------------------------------------------------------------------------------------------------
+    Spec("described_bridge", "fig05c",
+         [K("Without the lens part", "extra loss", [S("47.3: lookup's extra loss without the J++ part", "lookup", "lookup"),
+                                                    S("47.3: recall's extra loss without the J++ part", "recall", "recall")],
+            xlim=(-0.3, 1.0), band=NB, width=4.0),
+          K("gap", "recall − lookup", [S("47.3: gap (recall's extra loss minus the lookup's)", "recall")], text=True, width=1.4)]),
+    Spec("pooled_probe", "ledger_pooled_probe",
+         [K("Who picked the item", "probe accuracy", [S(r"L{k}: who picked it, best single token", "control", "best single token", control=True, regex=True),
+                                                      S(r"L{k}: who picked it, pooled over the locker sentence", "recall", "pooled over the sentence", regex=True)],
+            xlim=(0, 1.0), width=5.0)],
+         rows=lambda: keyed("ledger_pooled_probe", r"L(\d+): who picked it, pooled over the locker sentence", "L{k}")),
+    Spec("agnostic", "ledger_agnostic",
+         [K(kind.capitalize(), "position lost, beyond random", [S(f"{kind}: position lost without the animal-fit address, beyond random", "control", "fit on animals", control=True)]
+            + ([S(f"{kind}: position lost without the refit address, beyond random", "address", "refit")] if kind != "animals" else []),
+            xlim=(-0.2, 1.0), width=2.6) for kind in ("animals", "fruits", "names")]),
+    Spec("described", "ledger_described",
+         [K("Our gap", "recall − lookup, one layer", [S(r"L\d+: our gap \(recall minus lookup extra loss\)", "recall", regex=True)], xlim=(-0.3, 1.0), width=3.2),
+          K("The band knock-out", "recall − lookup", [S("Zach's knock-out, recall minus lookup", "recall")], xlim=(-0.3, 1.0), width=3.2)]),
+    Spec("answer_map", "ledger_answer_map",
+         [K("Readable", "best top-5 share before the answer", [S(r"{k}, lookup: best top-5 share before the answer layer \(T L\d+\)", "lookup", "lookup", regex=True),
+                                                                S(r"{k}, recall: best top-5 share before the answer layer \(T L\d+\)", "recall", "recall", regex=True)],
+            xlim=(0, 1.0), width=3.2),
+          K("Usable", "answers changed by the write, gain 1", [S("{k}, lookup: answers changed by the write, gain 1", "lookup"),
+                                                               S("{k}, recall: answers changed by the write, gain 1", "recall")],
+            xlim=(0, 1.0), width=3.2)],
+         rows=[(t, k, n) for t, _ in D.DAN for k, n in (("ours", "locker scenes"), ("Zach's", "fact passages"))]),
 ]  # fmt: skip
 
 

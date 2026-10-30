@@ -1,6 +1,53 @@
 {
+ "t_agnostic": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
  "t_answer_control": {
   "122B": "data",
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_answer_map": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_attention": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_attnblock": {
+  "Lightning": "data"
+ },
+ "t_bindid": {
+  "27B": "data",
+  "9B": "data",
+  "Muse": "data"
+ },
+ "t_chain": {
+  "27B": "data",
+  "9B": "data",
+  "Muse": "data"
+ },
+ "t_code_tool": {
+  "27B": "data",
+  "9B": "data"
+ },
+ "t_copy45q": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_cumulative": {
   "27B": "data",
   "9B": "data",
   "Lightning": "data",
@@ -9,6 +56,25 @@
  "t_das48": {
   "27B": "data",
   "9B": "data",
+  "Muse": "data"
+ },
+ "t_described": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_described_bridge": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_distance": {
+  "122B": "data",
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
   "Muse": "data"
  },
  "t_dose": {
@@ -23,11 +89,26 @@
   "Lightning": "data",
   "Muse": "data"
  },
+ "t_full_carrier": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data"
+ },
+ "t_heads": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
  "t_identity_address": {
   "27B": "data",
   "9B": "data",
   "Lightning": "data",
   "Muse": "data"
+ },
+ "t_jsuite": {
+  "27B": "data",
+  "9B": "data"
  },
  "t_ladder_before": {
   "27B": "data",
@@ -35,9 +116,78 @@
   "Lightning": "data",
   "Muse": "data"
  },
+ "t_last_conflict": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_last_conflict_words": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_last_token_address": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_learned": {
+  "27B": "data",
+  "9B": "data",
+  "Muse": "data"
+ },
  "t_lightning_layers": {
   "122B": "data",
   "Lightning": "data"
+ },
+ "t_order_split": {
+  "122B": "data",
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_pooled_probe": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_read_window": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data"
+ },
+ "t_refit": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_report_slot1": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data"
+ },
+ "t_routes": {
+  "122B": "data",
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_routes_lens": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_subset27b": {
+  "27B": "data",
+  "9B": "data"
  },
  "t_transfer": {
   "122B": "data",
@@ -48,6 +198,24 @@
  },
  "t_twobytwo": {
   "122B": "data",
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_value_formats": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_zach_named": {
+  "27B": "data",
+  "9B": "data",
+  "Lightning": "data",
+  "Muse": "data"
+ },
+ "t_zach_routes": {
   "27B": "data",
   "9B": "data",
   "Lightning": "data",
