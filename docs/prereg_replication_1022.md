@@ -4130,3 +4130,17 @@ Not seen: note 52 on the 27B; any condition below.
 - **Q1:** paper10's loss of e3′ in ask_city ≥ 20 points with the lower end > 0: "the hypothetical's loss is one-hop recall from a stated entity".
 - **Q2:** paper10's loss of e3′ in instr_city ≥ 20 with the lower end > 0, while instr_vis stays spared: "an order spares only an answer in context (copy vs compute)". instr_city ≤ max(10, Q2's hyp loss / 3): "the order itself spares".
 - **Descriptive:** the either-answer rate, the conditional follow share, and a "repeats the premise word" class, in every conversation. These are added to the note 56 reader as descriptive lines for all models.
+
+#### Amendment 81 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any full run of note 56c): note 56c's wording fixed
+**Seen.** The builder's 8-item 9B smoke of amendment 80's ask_city and instr_city. With no edit, e3' was 0/8 in both:
+- the final statement still asked for the subject's chain, so the model gave its own answer;
+- in instr_city it wrote the city itself.
+
+Both readings sat at their floor. No edited result was read.
+
+**Change.**
+- In ask_city and instr_city, the closing statement the agent completes becomes the hop-2 relation applied to e2' itself: the fact's r2 prompt template instantiated on e2' (for person-birthcity-cntry, the country that e2' is in). e3' is then the statement's answer.
+- The moderator and coordinator lines are otherwise as registered.
+- The run is restricted to person-birthcity-cntry, the category whose peers' bridge is a city with a country answer.
+- **C0-style validity:** each new cell is read only if the unedited e3' share is >= 60% with first-token agreement >= 90%. Otherwise it is "not readable".
+- Q1 and Q2 are unchanged otherwise.
