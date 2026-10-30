@@ -20,6 +20,7 @@ case $M in
   nem35l) export BJ_TARGET=nemotron-3.5-lightning; P=nem35l_; KB=27-33; LB=42-45; KBATCH=16; GBATCH=32 ;;
   *) echo "=== unknown model $M"; exit 2 ;;
 esac
+KBATCH=${SD_KBATCH:-$KBATCH}; GBATCH=${SD_GBATCH:-$GBATCH}  # 2026-10-30: the 27B knock-out ran out of memory at 32/64; override per run
 W="silent-dissent necessity (2026-10-30, design sd_necessity_design.md, $BJ_TARGET)"
 for J in "$@"; do
   echo "=== waiting for $J $(date -u +%T)"
