@@ -4049,3 +4049,38 @@ Not seen: any condition below on these draws or split.
 - **Note 56** on the 9B's dev split, with the same conversations, edits, filter and readings as amendment 73 (C0-C4, D1, D2). D1's solo rows come from note 47's dev run.
 
 **Readings.** "Replicates" means the same registered label per reading as on draw 4001 (notes 49/50) or on the test split (note 56). A changed label is reported as "does not replicate". No pooling across draws.
+
+#### Amendment 78 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any code or run of it, and before any 27B note 40 reading): skeptic pass 3 follow-ups (note 57) and a sharper dissociation reading
+
+**Seen.** A skeptic pass (post hoc, CPU) on the 9B's notes 47, 49-51 and 54:
+- **keepSib** makes the model say the sibling on 158/267 items. Keeping any candidate's span steers the model toward it.
+- **keepT10's** top-10 contains the gold answer on 267/267 items. Its random twin is rank-matched, not energy-matched.
+- **protF / protC** change the removal by only 0.2% / 1% of its energy.
+- **onlyA** has no random "remove only this part" control.
+- **Note 51** has no random keep at K30 / K100.
+- **The note 54 dissociation:** among agents that held, bridgeJ makes 13% cave (+5.5 [0.7, 10.8] beyond bridgeJ_rot). This sits where the same edit breaks the solo answer.
+
+##### Note 57: the controls the 9B's mechanism claims lacked (9B, v4 draw 4001, note 49's run settings; one ablate_v2 run)
+**Conditions** (each + _rot):
+- **paper10_onlyRperp:** r' = P_X r, where X is a random letter-token span orthogonalised to span(A) (note 50's construction) with rows added until its retained share of paper10's removal energy reaches E_A. It removes only a random, non-answer part of r at the answer part's energy.
+- **topK_keepRE** for K = 30 and 100: a random keep (note 41's nested draws, rows added) energy-matched to topK_keepA's E_A at that K.
+- **ansRe:** a random letter-token removal energy-matched to ansJ (rows added until its removed energy reaches ansJ's). Every removal logs edit_rel.
+- **paper10_keepRivals:** every form of every candidate in the item's clean top-10 except the gold answer.
+- **paper10_keepRandRivals:** forms of as many random same-relation answers (not the gold answer, not in the clean top-10), with the form count matched.
+
+**Readings** (9B; MM; note 41's bootstrap):
+- **S1 (sufficiency is answer-specific):** onlyA's net MM loss minus onlyRperp's >= 1/3 of paper10's net, with the lower end > 0. Otherwise "sufficiency not shown specific".
+- **D1 (dose):** at each K, rescue(topK_keepA) - rescue(topK_keepRE) >= 0.33 with the lower end > 0: "answer-specific at dose K".
+- **A1 (removal at matched energy):** ansRe's gap <= 1/3 of ansJ's: "answer-specific removal at matched energy".
+- **T1 (descriptive):**
+  - under keepRivals, the share of MM items whose output is a kept rival, against keepRandRivals' share of a kept random answer;
+  - the gold answer's survival under each.
+  - This describes the steering effect of keeping a candidate's span.
+
+##### The 27B readout dissociation, sharpened (added before any 27B note 40 reading; amendment 73's reading is unchanged and stays registered)
+- **D-held:** among press_vis agents that held unedited, the cave rate under bridgeJ minus under bridgeJ_rot (once note 54 runs on the 27B), and minus under bridgeJ_ctrl. It is split by whether the same item's solo answer survives bridgeJ.
+- **Labels:**
+  - "the readout's removal moves holders only where it breaks the recall": the cave excess is >= 5 points with the lower end > 0 in the solo-breaks stratum, and < 5 points with the interval including 0 in the solo-survives stratum;
+  - "the readout's removal moves holders": the excess is met in both strata;
+  - "not shown": otherwise.
+- On the 9B and Lightning this reading is post hoc.
