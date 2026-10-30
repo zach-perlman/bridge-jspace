@@ -1,0 +1,3349 @@
+{
+ "routes_c2": {
+  "qwen3.5-9b": {
+   "n": 300,
+   "collisions": 114,
+   "share": 0.38,
+   "items": [
+    {
+     "scene": "C2-0004",
+     "position_entity": "lion",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0005",
+     "position_entity": "tiger",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0012",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0015",
+     "position_entity": "beetle",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0018",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0030",
+     "position_entity": "camel",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0034",
+     "position_entity": "sheep",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0036",
+     "position_entity": "frog",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0056",
+     "position_entity": "camel",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0057",
+     "position_entity": "deer",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0061",
+     "position_entity": "pig",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0068",
+     "position_entity": "horse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0076",
+     "position_entity": "chicken",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0077",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0078",
+     "position_entity": "lion",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0080",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0082",
+     "position_entity": "wolf",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0085",
+     "position_entity": "goat",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0091",
+     "position_entity": "lion",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0093",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0096",
+     "position_entity": "crow",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0102",
+     "position_entity": "wolf",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0110",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0125",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0128",
+     "position_entity": "lion",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0132",
+     "position_entity": "horse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0142",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0143",
+     "position_entity": "frog",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0148",
+     "position_entity": "eagle",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0150",
+     "position_entity": "crow",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0151",
+     "position_entity": "frog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0160",
+     "position_entity": "frog",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0162",
+     "position_entity": "frog",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0170",
+     "position_entity": "horse",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0172",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0182",
+     "position_entity": "ant",
+     "changed_entity": "beetle",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0187",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0190",
+     "position_entity": "cow",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0195",
+     "position_entity": "bear",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0202",
+     "position_entity": "bear",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0207",
+     "position_entity": "frog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0211",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0216",
+     "position_entity": "horse",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0224",
+     "position_entity": "chicken",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0225",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0229",
+     "position_entity": "bear",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0231",
+     "position_entity": "beetle",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0252",
+     "position_entity": "pig",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0260",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0267",
+     "position_entity": "butterfly",
+     "changed_entity": "beetle",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0268",
+     "position_entity": "lion",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0269",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0285",
+     "position_entity": "pig",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0295",
+     "position_entity": "sheep",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0299",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0314",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0316",
+     "position_entity": "camel",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0319",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0323",
+     "position_entity": "sheep",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0324",
+     "position_entity": "wolf",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0328",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0329",
+     "position_entity": "cat",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0331",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0334",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0339",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0340",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0342",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0347",
+     "position_entity": "turkey",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0349",
+     "position_entity": "duck",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0365",
+     "position_entity": "dog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0366",
+     "position_entity": "turkey",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0367",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0374",
+     "position_entity": "duck",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0375",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0378",
+     "position_entity": "fox",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0379",
+     "position_entity": "bear",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0382",
+     "position_entity": "tiger",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0383",
+     "position_entity": "pig",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0386",
+     "position_entity": "tiger",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0391",
+     "position_entity": "turkey",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0394",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0399",
+     "position_entity": "deer",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0400",
+     "position_entity": "pig",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0402",
+     "position_entity": "goose",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0403",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0404",
+     "position_entity": "lion",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0426",
+     "position_entity": "turkey",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0428",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0432",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0433",
+     "position_entity": "tiger",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0435",
+     "position_entity": "lion",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0437",
+     "position_entity": "chicken",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0447",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0451",
+     "position_entity": "pig",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0465",
+     "position_entity": "goose",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0470",
+     "position_entity": "bee",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0475",
+     "position_entity": "fox",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0481",
+     "position_entity": "deer",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0486",
+     "position_entity": "rabbit",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0491",
+     "position_entity": "fly",
+     "changed_entity": "beetle",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0493",
+     "position_entity": "dog",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0498",
+     "position_entity": "horse",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0505",
+     "position_entity": "dog",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0506",
+     "position_entity": "mouse",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0517",
+     "position_entity": "sheep",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0522",
+     "position_entity": "tiger",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0523",
+     "position_entity": "eagle",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0524",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0526",
+     "position_entity": "fox",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0532",
+     "position_entity": "rabbit",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0535",
+     "position_entity": "ant",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0538",
+     "position_entity": "deer",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0539",
+     "position_entity": "dog",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0541",
+     "position_entity": "dog",
+     "changed_entity": "pig",
+     "legs": 4
+    }
+   ]
+  },
+  "qwen3.6-27b": {
+   "n": 300,
+   "collisions": 108,
+   "share": 0.36,
+   "items": [
+    {
+     "scene": "C2-0004",
+     "position_entity": "lion",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0005",
+     "position_entity": "tiger",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0009",
+     "position_entity": "frog",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0012",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0014",
+     "position_entity": "tiger",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0015",
+     "position_entity": "beetle",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0018",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0030",
+     "position_entity": "camel",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0032",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0034",
+     "position_entity": "sheep",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0036",
+     "position_entity": "frog",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0042",
+     "position_entity": "spider",
+     "changed_entity": "tick",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0056",
+     "position_entity": "camel",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0057",
+     "position_entity": "deer",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0061",
+     "position_entity": "pig",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0068",
+     "position_entity": "horse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0069",
+     "position_entity": "frog",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0076",
+     "position_entity": "chicken",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0077",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0078",
+     "position_entity": "lion",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0080",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0082",
+     "position_entity": "wolf",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0085",
+     "position_entity": "goat",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0089",
+     "position_entity": "fly",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0091",
+     "position_entity": "lion",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0092",
+     "position_entity": "spider",
+     "changed_entity": "tick",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0093",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0096",
+     "position_entity": "crow",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0102",
+     "position_entity": "wolf",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0110",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0122",
+     "position_entity": "turkey",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0125",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0128",
+     "position_entity": "lion",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0132",
+     "position_entity": "horse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0142",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0148",
+     "position_entity": "eagle",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0150",
+     "position_entity": "crow",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0151",
+     "position_entity": "frog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0160",
+     "position_entity": "frog",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0162",
+     "position_entity": "frog",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0170",
+     "position_entity": "horse",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0172",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0174",
+     "position_entity": "tiger",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0182",
+     "position_entity": "ant",
+     "changed_entity": "beetle",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0183",
+     "position_entity": "goat",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0187",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0188",
+     "position_entity": "fly",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0190",
+     "position_entity": "cow",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0194",
+     "position_entity": "sheep",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0195",
+     "position_entity": "bear",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0199",
+     "position_entity": "fly",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0202",
+     "position_entity": "bear",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0207",
+     "position_entity": "frog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0208",
+     "position_entity": "mouse",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0211",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0216",
+     "position_entity": "horse",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0224",
+     "position_entity": "chicken",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0225",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0229",
+     "position_entity": "bear",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0231",
+     "position_entity": "beetle",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0244",
+     "position_entity": "horse",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0252",
+     "position_entity": "pig",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0260",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0267",
+     "position_entity": "butterfly",
+     "changed_entity": "beetle",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0268",
+     "position_entity": "lion",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0269",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0285",
+     "position_entity": "pig",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0293",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0295",
+     "position_entity": "sheep",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0299",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0314",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0316",
+     "position_entity": "camel",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0319",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0323",
+     "position_entity": "sheep",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0324",
+     "position_entity": "wolf",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0328",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0329",
+     "position_entity": "cat",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0331",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0334",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0339",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0340",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0342",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0347",
+     "position_entity": "turkey",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0349",
+     "position_entity": "duck",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0365",
+     "position_entity": "dog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0366",
+     "position_entity": "turkey",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0367",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0374",
+     "position_entity": "duck",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0375",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0378",
+     "position_entity": "fox",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0379",
+     "position_entity": "bear",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0382",
+     "position_entity": "tiger",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0383",
+     "position_entity": "pig",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0386",
+     "position_entity": "tiger",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0391",
+     "position_entity": "turkey",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0394",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0399",
+     "position_entity": "deer",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0400",
+     "position_entity": "pig",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0402",
+     "position_entity": "goose",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0403",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0404",
+     "position_entity": "lion",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0426",
+     "position_entity": "turkey",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0428",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0432",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0433",
+     "position_entity": "tiger",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0435",
+     "position_entity": "lion",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0437",
+     "position_entity": "chicken",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0447",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    }
+   ]
+  },
+  "qwen3.5-122b-a10b": {
+   "n": 300,
+   "collisions": 129,
+   "share": 0.43,
+   "items": [
+    {
+     "scene": "C2-0004",
+     "position_entity": "lion",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0005",
+     "position_entity": "tiger",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0009",
+     "position_entity": "frog",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0012",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0014",
+     "position_entity": "tiger",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0015",
+     "position_entity": "beetle",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0018",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0030",
+     "position_entity": "camel",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0034",
+     "position_entity": "sheep",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0036",
+     "position_entity": "frog",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0042",
+     "position_entity": "spider",
+     "changed_entity": "tick",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0056",
+     "position_entity": "camel",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0057",
+     "position_entity": "deer",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0061",
+     "position_entity": "pig",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0068",
+     "position_entity": "horse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0076",
+     "position_entity": "chicken",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0077",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0078",
+     "position_entity": "lion",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0080",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0082",
+     "position_entity": "wolf",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0085",
+     "position_entity": "goat",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0091",
+     "position_entity": "lion",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0092",
+     "position_entity": "spider",
+     "changed_entity": "tick",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0093",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0096",
+     "position_entity": "crow",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0102",
+     "position_entity": "wolf",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0110",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0125",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0128",
+     "position_entity": "lion",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0132",
+     "position_entity": "horse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0142",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0143",
+     "position_entity": "frog",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0148",
+     "position_entity": "eagle",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0150",
+     "position_entity": "crow",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0151",
+     "position_entity": "frog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0160",
+     "position_entity": "frog",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0162",
+     "position_entity": "frog",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0170",
+     "position_entity": "horse",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0172",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0174",
+     "position_entity": "tiger",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0183",
+     "position_entity": "goat",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0190",
+     "position_entity": "cow",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0194",
+     "position_entity": "sheep",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0195",
+     "position_entity": "bear",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0202",
+     "position_entity": "bear",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0207",
+     "position_entity": "frog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0211",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0216",
+     "position_entity": "horse",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0224",
+     "position_entity": "chicken",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0225",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0229",
+     "position_entity": "bear",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0244",
+     "position_entity": "horse",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0252",
+     "position_entity": "pig",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0260",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0268",
+     "position_entity": "lion",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0269",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0285",
+     "position_entity": "pig",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0299",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0314",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0316",
+     "position_entity": "camel",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0323",
+     "position_entity": "sheep",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0324",
+     "position_entity": "wolf",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0328",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0329",
+     "position_entity": "cat",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0331",
+     "position_entity": "mouse",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0334",
+     "position_entity": "rabbit",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0340",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0342",
+     "position_entity": "owl",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0347",
+     "position_entity": "turkey",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0349",
+     "position_entity": "duck",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0365",
+     "position_entity": "dog",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0366",
+     "position_entity": "turkey",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0378",
+     "position_entity": "fox",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0379",
+     "position_entity": "bear",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0382",
+     "position_entity": "tiger",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0386",
+     "position_entity": "tiger",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0399",
+     "position_entity": "deer",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0400",
+     "position_entity": "pig",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0402",
+     "position_entity": "goose",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0403",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0426",
+     "position_entity": "turkey",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0428",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0433",
+     "position_entity": "tiger",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0435",
+     "position_entity": "lion",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0437",
+     "position_entity": "chicken",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0447",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0451",
+     "position_entity": "pig",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0465",
+     "position_entity": "goose",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0470",
+     "position_entity": "bee",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0475",
+     "position_entity": "fox",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0481",
+     "position_entity": "deer",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0486",
+     "position_entity": "rabbit",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0493",
+     "position_entity": "dog",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0494",
+     "position_entity": "lion",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0498",
+     "position_entity": "horse",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0505",
+     "position_entity": "dog",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0506",
+     "position_entity": "mouse",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0517",
+     "position_entity": "sheep",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0522",
+     "position_entity": "tiger",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0523",
+     "position_entity": "eagle",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0524",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0526",
+     "position_entity": "fox",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0532",
+     "position_entity": "rabbit",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0535",
+     "position_entity": "ant",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0538",
+     "position_entity": "deer",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0539",
+     "position_entity": "dog",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0541",
+     "position_entity": "dog",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0545",
+     "position_entity": "eagle",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0557",
+     "position_entity": "horse",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0558",
+     "position_entity": "rabbit",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0566",
+     "position_entity": "frog",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0571",
+     "position_entity": "bear",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0573",
+     "position_entity": "duck",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0579",
+     "position_entity": "cow",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0587",
+     "position_entity": "horse",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0594",
+     "position_entity": "fly",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0595",
+     "position_entity": "pig",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0599",
+     "position_entity": "cow",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0602",
+     "position_entity": "frog",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0603",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0616",
+     "position_entity": "dog",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0618",
+     "position_entity": "goat",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0629",
+     "position_entity": "rabbit",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0635",
+     "position_entity": "spider",
+     "changed_entity": "tick",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0641",
+     "position_entity": "pig",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0647",
+     "position_entity": "rabbit",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0648",
+     "position_entity": "horse",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0649",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0651",
+     "position_entity": "rabbit",
+     "changed_entity": "dog",
+     "legs": 4
+    }
+   ]
+  },
+  "muse-glimmer-30b": {
+   "n": 300,
+   "collisions": 93,
+   "share": 0.31,
+   "items": [
+    {
+     "scene": "C2-0007",
+     "position_entity": "camel",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0011",
+     "position_entity": "zebra",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0012",
+     "position_entity": "chicken",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0018",
+     "position_entity": "butterfly",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0030",
+     "position_entity": "deer",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0035",
+     "position_entity": "goat",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0040",
+     "position_entity": "rabbit",
+     "changed_entity": "zebra",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0053",
+     "position_entity": "rabbit",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0059",
+     "position_entity": "tiger",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0060",
+     "position_entity": "turkey",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0068",
+     "position_entity": "zebra",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0069",
+     "position_entity": "ant",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0070",
+     "position_entity": "bear",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0077",
+     "position_entity": "mouse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0081",
+     "position_entity": "cat",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0092",
+     "position_entity": "frog",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0098",
+     "position_entity": "goat",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0103",
+     "position_entity": "frog",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0104",
+     "position_entity": "crow",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0118",
+     "position_entity": "sheep",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0123",
+     "position_entity": "goat",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0125",
+     "position_entity": "mouse",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0131",
+     "position_entity": "goat",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0139",
+     "position_entity": "wolf",
+     "changed_entity": "zebra",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0157",
+     "position_entity": "cat",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0164",
+     "position_entity": "pig",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0174",
+     "position_entity": "pig",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0184",
+     "position_entity": "sheep",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0186",
+     "position_entity": "fox",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0191",
+     "position_entity": "frog",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0194",
+     "position_entity": "turkey",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0198",
+     "position_entity": "lion",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0201",
+     "position_entity": "duck",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0205",
+     "position_entity": "cow",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0211",
+     "position_entity": "elephant",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0216",
+     "position_entity": "tiger",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0223",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0226",
+     "position_entity": "mouse",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0233",
+     "position_entity": "rabbit",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0240",
+     "position_entity": "elephant",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0242",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0246",
+     "position_entity": "wolf",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0253",
+     "position_entity": "tiger",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0267",
+     "position_entity": "rabbit",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0269",
+     "position_entity": "bear",
+     "changed_entity": "zebra",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0270",
+     "position_entity": "wolf",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0272",
+     "position_entity": "pig",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0278",
+     "position_entity": "camel",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0290",
+     "position_entity": "goose",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0304",
+     "position_entity": "lion",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0308",
+     "position_entity": "tick",
+     "changed_entity": "spider",
+     "legs": 8
+    },
+    {
+     "scene": "C2-0327",
+     "position_entity": "wolf",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0329",
+     "position_entity": "frog",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0334",
+     "position_entity": "duck",
+     "changed_entity": "goose",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0346",
+     "position_entity": "turkey",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0349",
+     "position_entity": "deer",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0357",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0365",
+     "position_entity": "deer",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0366",
+     "position_entity": "fly",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0382",
+     "position_entity": "elephant",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0389",
+     "position_entity": "wolf",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0390",
+     "position_entity": "chicken",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0405",
+     "position_entity": "fox",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0407",
+     "position_entity": "rabbit",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0410",
+     "position_entity": "wolf",
+     "changed_entity": "zebra",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0421",
+     "position_entity": "pig",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0423",
+     "position_entity": "tiger",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0426",
+     "position_entity": "elephant",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0444",
+     "position_entity": "cat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0454",
+     "position_entity": "elephant",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0468",
+     "position_entity": "goat",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0470",
+     "position_entity": "wolf",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0471",
+     "position_entity": "bear",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0472",
+     "position_entity": "sheep",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0496",
+     "position_entity": "deer",
+     "changed_entity": "zebra",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0509",
+     "position_entity": "eagle",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0522",
+     "position_entity": "mouse",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0526",
+     "position_entity": "camel",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0527",
+     "position_entity": "deer",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0535",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0536",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0544",
+     "position_entity": "deer",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0553",
+     "position_entity": "duck",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0560",
+     "position_entity": "bear",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0575",
+     "position_entity": "fox",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0593",
+     "position_entity": "wolf",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0596",
+     "position_entity": "pig",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0604",
+     "position_entity": "sheep",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0606",
+     "position_entity": "frog",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0608",
+     "position_entity": "frog",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0612",
+     "position_entity": "eagle",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0625",
+     "position_entity": "lion",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0628",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    }
+   ]
+  },
+  "nemotron-3.5-lightning": {
+   "n": 300,
+   "collisions": 101,
+   "share": 0.3367,
+   "items": [
+    {
+     "scene": "C2-0003",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0006",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0009",
+     "position_entity": "lion",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0012",
+     "position_entity": "cow",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0013",
+     "position_entity": "lion",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0019",
+     "position_entity": "fly",
+     "changed_entity": "ant",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0020",
+     "position_entity": "sheep",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0024",
+     "position_entity": "ant",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0035",
+     "position_entity": "cat",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0037",
+     "position_entity": "turkey",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0038",
+     "position_entity": "mouse",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0046",
+     "position_entity": "wolf",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0048",
+     "position_entity": "horse",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0051",
+     "position_entity": "cat",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0058",
+     "position_entity": "turkey",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0068",
+     "position_entity": "owl",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0075",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0081",
+     "position_entity": "cow",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0085",
+     "position_entity": "horse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0089",
+     "position_entity": "sheep",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0094",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0099",
+     "position_entity": "bear",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0130",
+     "position_entity": "wolf",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0134",
+     "position_entity": "mouse",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0137",
+     "position_entity": "fox",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0139",
+     "position_entity": "dog",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0142",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0145",
+     "position_entity": "deer",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0156",
+     "position_entity": "elephant",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0159",
+     "position_entity": "tiger",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0169",
+     "position_entity": "deer",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0176",
+     "position_entity": "elephant",
+     "changed_entity": "sheep",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0179",
+     "position_entity": "duck",
+     "changed_entity": "eagle",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0180",
+     "position_entity": "wolf",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0186",
+     "position_entity": "cow",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0206",
+     "position_entity": "ant",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0210",
+     "position_entity": "deer",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0212",
+     "position_entity": "camel",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0220",
+     "position_entity": "bear",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0228",
+     "position_entity": "duck",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0229",
+     "position_entity": "cat",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0236",
+     "position_entity": "horse",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0262",
+     "position_entity": "camel",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0274",
+     "position_entity": "butterfly",
+     "changed_entity": "bee",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0290",
+     "position_entity": "dog",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0293",
+     "position_entity": "dog",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0294",
+     "position_entity": "crow",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0296",
+     "position_entity": "bee",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0299",
+     "position_entity": "butterfly",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0303",
+     "position_entity": "goat",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0304",
+     "position_entity": "fox",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0316",
+     "position_entity": "cow",
+     "changed_entity": "camel",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0317",
+     "position_entity": "frog",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0320",
+     "position_entity": "cow",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0326",
+     "position_entity": "frog",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0330",
+     "position_entity": "tiger",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0341",
+     "position_entity": "cow",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0354",
+     "position_entity": "cow",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0361",
+     "position_entity": "lion",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0366",
+     "position_entity": "rabbit",
+     "changed_entity": "mouse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0367",
+     "position_entity": "bear",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0384",
+     "position_entity": "rabbit",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0386",
+     "position_entity": "tiger",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0389",
+     "position_entity": "cow",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0396",
+     "position_entity": "pig",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0399",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0402",
+     "position_entity": "tiger",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0428",
+     "position_entity": "cat",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0430",
+     "position_entity": "dog",
+     "changed_entity": "fox",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0452",
+     "position_entity": "deer",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0467",
+     "position_entity": "cow",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0481",
+     "position_entity": "horse",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0488",
+     "position_entity": "bee",
+     "changed_entity": "fly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0490",
+     "position_entity": "mouse",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0506",
+     "position_entity": "fox",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0507",
+     "position_entity": "mouse",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0514",
+     "position_entity": "frog",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0523",
+     "position_entity": "camel",
+     "changed_entity": "rabbit",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0544",
+     "position_entity": "duck",
+     "changed_entity": "turkey",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0546",
+     "position_entity": "tiger",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0548",
+     "position_entity": "deer",
+     "changed_entity": "cow",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0549",
+     "position_entity": "chicken",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0550",
+     "position_entity": "horse",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0558",
+     "position_entity": "fox",
+     "changed_entity": "lion",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0561",
+     "position_entity": "bee",
+     "changed_entity": "butterfly",
+     "legs": 6
+    },
+    {
+     "scene": "C2-0567",
+     "position_entity": "deer",
+     "changed_entity": "elephant",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0575",
+     "position_entity": "bear",
+     "changed_entity": "tiger",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0595",
+     "position_entity": "goat",
+     "changed_entity": "cat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0610",
+     "position_entity": "horse",
+     "changed_entity": "goat",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0616",
+     "position_entity": "fox",
+     "changed_entity": "horse",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0619",
+     "position_entity": "turkey",
+     "changed_entity": "chicken",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0629",
+     "position_entity": "cow",
+     "changed_entity": "frog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0636",
+     "position_entity": "eagle",
+     "changed_entity": "crow",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0639",
+     "position_entity": "tiger",
+     "changed_entity": "dog",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0643",
+     "position_entity": "turkey",
+     "changed_entity": "duck",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0653",
+     "position_entity": "chicken",
+     "changed_entity": "owl",
+     "legs": 2
+    },
+    {
+     "scene": "C2-0656",
+     "position_entity": "bear",
+     "changed_entity": "wolf",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0662",
+     "position_entity": "horse",
+     "changed_entity": "deer",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0664",
+     "position_entity": "tiger",
+     "changed_entity": "bear",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0673",
+     "position_entity": "cow",
+     "changed_entity": "pig",
+     "legs": 4
+    },
+    {
+     "scene": "C2-0684",
+     "position_entity": "goat",
+     "changed_entity": "pig",
+     "legs": 4
+    }
+   ]
+  }
+ },
+ "swap_claim": {
+  "qwen3.5-9b": {
+   "run": "qwen35_9b_x8_write",
+   "rows": 600,
+   "rows_non_colliding": 279,
+   "all": {
+    "n": 129,
+    "swapped_in": 0.845,
+    "third": 0.093,
+    "digit": 0.062,
+    "non_answer": 0.0
+   },
+   "non_colliding": {
+    "n": 73,
+    "swapped_in": 0.822,
+    "third": 0.082,
+    "digit": 0.096,
+    "non_answer": 0.0
+   }
+  },
+  "nemotron-3.5-lightning": {
+   "run": "nem35l_x52_write",
+   "rows": 600,
+   "rows_non_colliding": 299,
+   "all": {
+    "n": 164,
+    "swapped_in": 0.854,
+    "third": 0.067,
+    "digit": 0.079,
+    "non_answer": 0.0
+   },
+   "non_colliding": {
+    "n": 91,
+    "swapped_in": 0.813,
+    "third": 0.099,
+    "digit": 0.088,
+    "non_answer": 0.0
+   }
+  }
+ }
+}
