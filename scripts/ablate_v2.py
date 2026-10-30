@@ -74,7 +74,9 @@ CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "pa
               "ansJ", "ansJ_rot", "ansU", "ansU_rot",  # ans*: amendment 58 note 3
               "paper10_keepA", "paper10_keepA_rot",  # amendment 64 note 37: paper10's r minus its part in the answers' J++ span
               "paper10_keepR", "paper10_keepR_rot", "paper10_keepR2", "paper10_keepR2_rot", "paper10_keepR4",
-              "paper10_keepR4_rot", "ansR", "ansR_rot")  # fmt: skip  # amendment 67 note 41 + addendum: random kept / removed spans
+              "paper10_keepR4_rot", "ansR", "ansR_rot",  # amendment 67 note 41 + addendum: random kept / removed spans
+              "paper10_keepCap", "paper10_keepCty", "paper10_keepCapCty", "paper10_keepRcap", "ansCap", "ansCty",
+              "ansCty_rot")  # fmt: skip  # amendment 68 note 44: capitals vs countries (jsuite_v5kn2c MC0)
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 KEEPA_ROWS = {"every": "forms", "cands2": "cands2"}  # note 37's kept span: every form, or ansJ's rows (cands2) only
 RAND_MULT = {"R": 1, "R2": 2, "R4": 4}  # note 41: random kept spans of 1x, 2x, 4x A's row count, nested (R in R2 in R4)
@@ -82,8 +84,35 @@ RAND_MULT = {"R": 1, "R2": 2, "R4": 4}  # note 41: random kept spans of 1x, 2x, 
 
 def keep_kind(cond: str) -> str | None:
     """The kept span of a paper10_keep* condition: A (note 37) or R, R2, R4 (note 41); None for any other condition."""
-    m = re.fullmatch(r"paper10_keep(A|R|R2|R4)(_rot)?", cond)
+    m = re.fullmatch(r"paper10_keep(A|R|R2|R4|Cap|Cty|CapCty|Rcap)(_rot)?", cond)  # Cap ... Rcap: amendment 68 note 44
     return m[1] if m else None
+
+
+def is_n44(cond: str) -> bool:
+    """Note 44's conditions: paper10_keepCap / Cty / CapCty / Rcap (+ _rot) and ansCap / ansCty (+ _rot)."""
+    return keep_kind(cond) in ("Cap", "Cty", "CapCty", "Rcap") or re.fullmatch(r"ans(Cap|Cty)(_rot)?", cond) is not None
+
+
+N44_SAY_SET = "jsuite_v5kn2_test_chat"  # note 44: the countries are kn2's say vocabulary (its MM answer_vocab)
+
+
+def n44_values() -> tuple[list[str], list[str]]:
+    """Note 44's capitals (note 35's table, scripts/jsuite_v5key.CAPITAL, and CAPITAL_ALIASES) and countries (kn2's say
+    vocabulary), sorted."""
+    from scripts import jsuite_v5key as K5
+    from scripts import tasks_v2 as T
+
+    caps = set(K5.CAPITAL.values()) | {x for v in K5.CAPITAL_ALIASES.values() for x in v}
+    ctys = {v for it in T.load(N44_SAY_SET) if it["word"] == "MM" for v in it["answer_vocab"]}
+    return sorted(caps), sorted(ctys)
+
+
+def n44_subsample(item_id: str, rows: list[int], n: int) -> list[int]:
+    """Note 44: keepCty's rows count-matched to keepCap's, random.Random("n44:" + item id).sample(rows, n), sorted (all of
+    them if there are no more than n)."""
+    import random
+
+    return sorted(rows) if len(rows) <= n else sorted(random.Random("n44:" + item_id).sample(rows, n))
 
 
 def is_rand(cond: str) -> bool:
@@ -433,6 +462,12 @@ def main(args) -> None:
     if any(is_rand(c) for c in args.conditions):
         manifest["n41_random_rows"] = ('random.Random("n41:" + id).sample(letter-token rows minus A\'s rows minus the protected '
                                        "rows, 4 |A|), in draw order: R = the first |A|, R2 the first 2 |A|, R4 all (rand_rows.jsonl)")
+    if any(is_n44(c) for c in args.conditions):
+        manifest["n44_spans"] = ("Cap: every form of every capital in jsuite_v5key.CAPITAL / CAPITAL_ALIASES; Cty: every form of every "
+                                 f"country in {N44_SAY_SET}'s MM answer_vocab, count-matched to Cap by random.Random(\"n44:\" + id).sample; "
+                                 "CapCty: their union; Rcap: random.Random(\"n41:\" + id).sample(letter rows minus Cap's minus the "
+                                 "protected, 4 |Cap|), its shortest prefix whose share of paper10's removal energy is >= Cap's (n44_spans.json, "
+                                 "n44_rows.jsonl, paper10 rows' retained44)")  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     suite_fams = [f for f in args.families if f in COMPETENCE]
@@ -520,6 +555,22 @@ def main(args) -> None:
             gauss[la] = MatrixDictionary(torch.nn.functional.normalize(torch.randn((letters.numel(), wg.shape[1]),
                                                                                     device="cuda", generator=g), dim=-1))  # fmt: skip
     own_cache: dict[tuple[str, int], torch.Tensor] = {}
+    cap_rows = cty_rows = None  # note 44: the letter-token rows of every form of every capital / country
+    if any(is_n44(c) for c in args.conditions):
+        caps, ctys = n44_values()
+
+        def every_form(vals: list[str]) -> torch.Tensor:  # either case, with or without a leading space (note 37's forms)
+            ids = {S.ids(tok, f)[0] for v in vals for f in (v, v.lower(), " " + v, " " + v.lower())}
+            rr = row_of[torch.tensor(sorted(ids), device="cuda")]
+            return rr[rr >= 0].unique()
+
+        cap_rows, cty_rows = every_form(caps), every_form(ctys)
+        shared = sorted(set(cap_rows.tolist()) & set(cty_rows.tolist()))
+        print(f"note 44: {len(caps)} capitals -> {cap_rows.numel()} rows; {len(ctys)} countries -> {cty_rows.numel()} rows; "
+              f"{len(shared)} rows shared", flush=True)
+        (out_dir / "n44_spans.json").write_text(json.dumps({"capitals": caps, "countries": ctys, "cap_rows": cap_rows.tolist(),
+                                                            "cty_rows": cty_rows.tolist(), "shared_rows": shared,
+                                                            "shared_tokens": [model.decoded[int(letters[i])] for i in shared]}) + "\n")  # fmt: skip
 
     def own_rows(word: str, la: int) -> torch.Tensor:
         if (word, la) not in own_cache:
@@ -574,28 +625,57 @@ def main(args) -> None:
                     fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "n_A": int(a_rows[i].numel()),
                                               "rows4": rand_rows[i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
 
+            n44: dict = {}  # note 44: per row, its Cty rows (count-matched), CapCty rows, Rcap pool (draw order) and Rcap's size
+            if cap_rows is not None:
+                nc = cap_rows.numel()
+                for i, p in enumerate(chunk):
+                    cty = torch.tensor(n44_subsample(p["id"], cty_rows.tolist(), nc), device="cuda")
+                    n44.setdefault("cty", []).append(cty)
+                    n44.setdefault("capcty", []).append(torch.cat([cap_rows, cty]).unique())
+                    pool = random_rows(p["id"], nc, letters.numel(), set(cap_rows.tolist()) | set(protected[i].tolist()))
+                    n44.setdefault("pool", []).append(torch.tensor(pool, device="cuda"))
+                n44["k"] = [4 * nc] * len(chunk)  # set from paper10's forward (energy-matched); paper10 runs first
+                with (out_dir / "n44_rows.jsonl").open("a") as fh:  # the draws, for audit
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "kind": p["kind"], "cty_rows": n44["cty"][i].tolist(),
+                                              "rcap_pool": n44["pool"][i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+
             def kept_span(i: int, la: int, kind: str) -> torch.Tensor:
                 """Row i's kept span at layer la (orthonormal [d, k]): A as note 37, or the first 1x / 2x / 4x |A| columns of
-                one QR of the 4|A| random rows' J++ unit vectors (their spans are nested)."""
+                one QR of the 4|A| random rows' J++ unit vectors (their spans are nested); note 44: Cap, Cty, CapCty, or Rcap
+                (the first k rows of the item's 4|Cap| random pool, k energy-matched in paper10's forward). Only Cap is cached
+                across conditions: the per-item note 44 spans are rebuilt per use (GPU memory: up to 32 rows x 9 layers)."""
                 if kind == "A":
                     rr = row_of[torch.tensor(chunk[i][KEEPA_ROWS[args.keepA_forms]], device="cuda")]
                     rr = rr[rr >= 0].unique()
+                elif kind in ("Cty", "CapCty", "Rcap"):
+                    rr = n44["pool"][i][: n44["k"][i]] if kind == "Rcap" else n44[{"Cty": "cty", "CapCty": "capcty"}[kind]][i]
+                    return torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                elif kind == "Cap":
+                    rr = cap_rows
                 else:
                     rr = rand_rows[i]
                 ck = (la, tuple(rr.tolist()))
                 if ck not in span_cache:
                     span_cache[ck] = torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
-                return span_cache[ck] if kind in ("A", "R4") else span_cache[ck][:, : RAND_MULT[kind] * a_rows[i].numel()]
+                return span_cache[ck] if kind in ("A", "R4", "Cap") else span_cache[ck][:, : RAND_MULT[kind] * a_rows[i].numel()]
 
             for band in bands:
                 tb = time.time()
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
                     energy = torch.zeros(len(chunk), 5, dtype=torch.float64, device="cuda") if rand_rows else None  # note 41: |r|^2, in A, R, R2, R4
+                    if n44 and cond == "paper10":  # note 44: |r|^2, in Cap, Cty, CapCty; the pool's per-column energy; span overlap
+                        e44 = torch.zeros(len(chunk), 4, dtype=torch.float64, device="cuda")
+                        e44pool = torch.zeros(len(chunk), 4 * cap_rows.numel(), dtype=torch.float64, device="cuda")
+                        ov44 = torch.zeros(len(chunk), dtype=torch.float64, device="cuda")
                     for la in band:
                         if cond.startswith("ans"):  # amendment 58 note 3: the candidate answers' directions only
                             if cond.startswith("ansR"):  # amendment 67 note 41: R's span instead (the first |A| random rows)
                                 cand_rows = [rr[: a_rows[i].numel()] for i, rr in enumerate(rand_rows)]
+                            elif cond.startswith("ansCap"):  # amendment 68 note 44: every form of every capital
+                                cand_rows = [cap_rows] * len(chunk)
+                            elif cond.startswith("ansCty"):  # note 44: the item's count-matched country rows
+                                cand_rows = list(n44["cty"])
                             else:
                                 cand_rows = []
                                 for p in chunk:
@@ -627,14 +707,22 @@ def main(args) -> None:
                             # relation's answers (--keepA-forms; QR as answer_span_edit), kept out of paper10's r; note 41: R, R2, R4
                             keep = [kept_span(i, la, keep_kind(cond)) for i in range(len(chunk))]
                         observe = None
-                        if cond == "paper10" and rand_rows:  # note 41 addendum: the share of paper10's removal energy in each span
+                        if cond == "paper10" and (rand_rows or n44):  # note 41 addendum / note 44: paper10's removal energy per span
                             def observe(r, B, T, la=la):
                                 for b in range(B):
                                     rb = r[b * T : (b + 1) * T].double()
-                                    n = a_rows[b].numel()
-                                    e4 = (rb @ kept_span(b, la, "R4")).pow(2).sum(0)  # per column of the nested basis
-                                    energy[b] += torch.stack([rb.pow(2).sum(), (rb @ kept_span(b, la, "A")).pow(2).sum(),
-                                                              e4[:n].sum(), e4[: 2 * n].sum(), e4.sum()])  # fmt: skip
+                                    if rand_rows:
+                                        n = a_rows[b].numel()
+                                        e4 = (rb @ kept_span(b, la, "R4")).pow(2).sum(0)  # per column of the nested basis
+                                        energy[b] += torch.stack([rb.pow(2).sum(), (rb @ kept_span(b, la, "A")).pow(2).sum(),
+                                                                  e4[:n].sum(), e4[: 2 * n].sum(), e4.sum()])  # fmt: skip
+                                    if n44:
+                                        qc, qt = kept_span(b, la, "Cap"), kept_span(b, la, "Cty")
+                                        e44[b] += torch.stack([rb.pow(2).sum(), (rb @ qc).pow(2).sum(), (rb @ qt).pow(2).sum(),
+                                                               (rb @ kept_span(b, la, "CapCty")).pow(2).sum()])  # fmt: skip
+                                        qp = torch.linalg.qr(dic[la].atoms(n44["pool"][b]).double().T)[0]  # nested: prefixes span prefixes
+                                        e44pool[b] += (rb @ qp).pow(2).sum(0)
+                                        ov44[b] += (qc.T @ qt).pow(2).sum() / min(qc.shape[1], qt.shape[1]) / len(band)
                         edits[la] = removal_edit(
                             method,
                             d,
@@ -659,11 +747,24 @@ def main(args) -> None:
                         e = energy.tolist()
                         retained = [{"energy": x[0], **{k: (x[j] / x[0] if x[0] > 0 else None) for j, k in enumerate(("A", "R", "R2", "R4"), 1)}}
                                     for x in e]  # fmt: skip
+                    retained44 = []  # note 44: the same shares for Cap, Cty, CapCty; Rcap = the smallest prefix of the item's pool whose
+                    if n44 and cond == "paper10":  # share is not below Cap's (all of it if none reaches), used by paper10_keepRcap
+                        cum = e44pool.cumsum(1)
+                        for b in range(len(chunk)):
+                            hit = (cum[b] >= e44[b, 1]).nonzero()
+                            n44["k"][b] = int(hit[0]) + 1 if hit.numel() else cum.shape[1]
+                            tot = float(e44[b, 0])
+                            retained44.append({"energy": tot, **{k: (float(e44[b, j]) / tot if tot > 0 else None) for j, k in enumerate(("Cap", "Cty", "CapCty"), 1)},
+                                               "Rcap": float(cum[b, n44["k"][b] - 1]) / tot if tot > 0 else None, "k_Rcap": n44["k"][b],
+                                               "Rcap_reached": bool(hit.numel()), "n_cap": int(cap_rows.numel()), "n_cty": int(n44["cty"][b].numel()),
+                                               "shared_rows": len(set(cap_rows.tolist()) & set(n44["cty"][b].tolist())),
+                                               "span_overlap": float(ov44[b])})  # fmt: skip
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
                                          "condition": cond, **reads(logits[row], p, args.read),
                                          "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"],
-                                         **({"retained": retained[row]} if retained else {})})  # fmt: skip
+                                         **({"retained": retained[row]} if retained else {}),
+                                         **({"retained44": retained44[row]} if retained44 else {})})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
                 fh.writelines(json.dumps(r) + "\n" for r in rows_out[written:])
@@ -794,6 +895,10 @@ if __name__ == "__main__":
     assert not bad, f"unknown conditions {bad}"
     keepa = [c for c in a.conditions if "keep" in c and "keepown" not in c and c != "keep_own"]
     assert all(keep_kind(c) for c in keepa) and (not keepa or a.tasks), f"notes 37 / 41: {keepa} unknown or without --tasks"
+    n44c = [c for c in a.conditions if is_n44(c)]
+    assert not n44c or (a.tasks and "paper10" in a.conditions and ("paper10_keepRcap" not in a.conditions
+                        or a.conditions.index("paper10") < a.conditions.index("paper10_keepRcap"))), \
+        f"note 44: {n44c} need --tasks and paper10 in the run, before paper10_keepRcap (it sets Rcap's size)"
     rand = [c for c in a.conditions if is_rand(c)]
     assert not rand or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions), \
         f"note 41: {rand} need --tasks, --keepA-forms every and paper10 in the run (the retained-energy log)"
