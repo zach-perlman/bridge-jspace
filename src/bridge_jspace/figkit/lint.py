@@ -74,7 +74,7 @@ def problems(fig, name: str, names: set[str], titles_ok: bool = False) -> list[s
     return sorted(set(out))
 
 
-TABLE_BANNED = ("not run", "not tested", "not designed", "invalid", "under 30", "can't tell", "n =")
+TABLE_BANNED = ("not run", "not tested", "not designed", "invalid", "under 30", "n =")  # "can't tell" and "below gate" are cell reasons (Dan 30 Oct)
 TABLE_NAMES = {"Qwen 9B", "Qwen 27B", "Muse 30B", "Lightning", "Qwen 122B", "DeepSeek", "Ministral", "Bolt", "OLMo"}
 
 

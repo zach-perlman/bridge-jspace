@@ -7,58 +7,80 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit.dottable import INK, MUTED, C, Col, Row, Table, dot
 
-# (title, unit, the gap's quantity, its control's quantity); a quantity with no row for a model is a grey en dash
+# (column title, the gap's quantity, its control's quantity). One quantity in all four columns (Dan 30 Oct):
+# gap = the recall's loss - the lookup's loss, each as a share of that reader's own answers; 0 = no difference between
+# the readers, 1 = the recall loses everything and the lookup nothing; positive = the recall loses more. One layer: the
+# share of the whole patch's switches lost without the lens part, beyond a random part of the same size. Band: the share
+# of the reader's answers lost beyond a random part (rung 6; Zach's stored M - K for his passages). Verified for the 9B
+# from the per-item rows (results/x49_ladder/qwen35_9b_x49_2/outcomes.jsonl): cost(recall) - cost(lookup) = 0.3213 and
+# the control's gap 0.0144, the numbers in data.csv; the sign is positive when the recall loses more.
 TWO_BY_TWO = [
-    ("locker scenes", "share of switches", "our removal, our scenes (main test): gap",
+    ("locker scenes", "our removal, our scenes (main test): gap",
      "our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup"),
-    ("fact passages", "share of switches", "our removal, his passages: gap",
+    ("fact passages", "our removal, his passages: gap",
      "our removal, his passages: the control (a random part of the same size instead), recall minus lookup"),
-    ("locker scenes", "share of answers kept", "Zach's operation, our scenes (rung 6): recall's cost minus "
-     "the lookup's, every scene", "Zach's operation, our scenes (rung 6): the control (a random part of the same size "
-     "instead), recall minus lookup, every scene (kept with none minus kept with the random part)"),
-    ("fact passages", "share of answers", "Zach's operation, his passages: his stored recall "
-     "minus lookup", "Zach's operation, his passages: his rotated-direction control, recall minus lookup"),
+    ("locker scenes", "Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",
+     "Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, "
+     "every scene (kept with none minus kept with the random part)"),
+    ("fact passages", "Zach's operation, his passages: his stored recall minus lookup",
+     "Zach's operation, his passages: his rotated-direction control, recall minus lookup"),
 ]  # fmt: skip
-# the Muse's rung 6 ran at L23-29, outside Zach's band (L36-42): ink vs grey, said in the caption (S3: hollow means
-# only "post hoc")
-OFF_BAND = {("muse-glimmer-30b", 2)}
+SWITCHES = "our removal, his passages: lookup switches under the whole change"  # col 2: a lookup with < 30 switches
+XLIM, XTICKS = (-0.25, 1.0), [0, 0.5, 1]
+
+
+def _n(model: str, quantity: str):
+    """The n column of a data.csv row (the story cache keeps values only)."""
+    import csv
+
+    with (D.REPO / "data/figures/depth/data.csv").open() as f:
+        for r in csv.DictReader(f):
+            if r["model"] == model and r["quantity"] == quantity:
+                return int(float(r["n"])) if r["n"] else None
+    return None
 
 
 def two_by_two():
-    """Fig. 12: both operations on both datasets, recall minus lookup per model; the control a small grey dot."""
+    """Fig. 12: both operations on both datasets, one unit in every column: recall minus lookup, share lost. The grey dot
+    is the same gap with a same-size control; a missing cell says why in the cell."""
     models = X.DAN
     rows = [Row(X.NAME[m]) for m, _ in models]
+    LT = "nemotron-3.5-lightning"
 
     def col(k):
-        _t, _u, q, qc = TWO_BY_TWO[k]
+        _t, q, qc = TWO_BY_TWO[k]
 
         def f(ax, _r):
             for i, (m, _) in enumerate(models):
                 v, c = D.s(m, q), D.s(m, qc)
                 if not v:
-                    ax.text(0.08, i, "–", ha="left", va="center", color=MUTED, fontsize=12)
+                    if k == 1 and (sw := D.s(m, SWITCHES)):
+                        why = f"too few switches ({sw[0]:.0f} of {_n(m, SWITCHES)})"
+                    elif k == 2 and m == LT:
+                        why = "below gate"
+                    else:
+                        why = "–"
+                    ax.text(XLIM[0] + 0.04, i, why, ha="left", va="center", color=MUTED, fontsize=10.5 if len(why) > 3 else 12)
                     continue
-                if c:
-                    dot(ax, c[0], i, C["control"], size=7)
-                col_ = MUTED if (m, k) in OFF_BAND else C["recall"]
+                if c:  # a little below the gap's dot, so a control close to the gap is not hidden behind it
+                    dot(ax, c[0], i + 0.2, C["control"], size=7)
                 cell = v if len(v) == 3 and v[1] is not None else None
-                dot(ax, v[0], i, col_, D.hollow(m), cell=cell, value=v[0])
+                dot(ax, v[0], i - 0.08, C["recall"], D.hollow(m), cell=cell, value=v[0],
+                    vside="left" if (cell[2] if cell else v[0]) > 0.8 else "right")  # a high value's label stays in its panel
 
         return f
 
-    xl = ("share of switches lost", "share of switches lost", "share of answers lost", "share of answers lost")
-    cols = [
-        Col(2.15, t, "recall − lookup", col(k), (-0.3, 1.0), [0, 0.5, 1], xlabel=xl[k])
-        for k, (t, _u, _q, _c) in enumerate(TWO_BY_TWO)
-    ]
-    key = [("●", C["recall"], "recall minus lookup"),
-           ("●", C["control"], "control: a random part (rotated directions in a band)"),
-           ("●", MUTED, "Muse: L23-29, off the band")]  # fmt: skip
+    cols = [Col(2.3, t, "", col(k), XLIM, XTICKS, xlabel="recall − lookup, share lost")
+            for k, (t, _q, _c) in enumerate(TWO_BY_TWO)]
+    key = [[("●", C["recall"], "gap: recall − lookup"),
+            ("●", C["control"], "grey: the same gap with a same-size control"),
+            ("–", MUTED, "no result (the reason is in the cell)")],
+           [("", MUTED, "control: a random part (one layer; band · locker scenes), rotated directions (band · fact passages)")]]
     t = Table(rows, cols, label_w=1.45, head=1.25, labels=False, key=key)
     width = t.label_w + sum(c.width for c in cols) + t.pad * (len(cols) + 1)
 
-    def groups(fig):  # a group title over each pair of columns, as f9_where
-        for g, w in enumerate(["Removed from the patch (one layer)", "Removed everywhere (a band of layers)"]):
+    def groups(fig):  # a group title over each pair of columns: the operation
+        for g, w in enumerate(["one layer", "band of layers"]):
             x = t.label_w + t.pad + (cols[0].width + cols[1].width + 2 * t.pad) * g
             fig.text(x / width, 1 - 0.12 / fig.get_figheight(), w, ha="left", va="top", fontsize=12.5, weight="bold",
                      color=INK)  # fmt: skip

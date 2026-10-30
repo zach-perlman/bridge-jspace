@@ -26,6 +26,7 @@ SHADE = {
     "neutral": "#4A5F6A",  # a method or quantity that is none of the roles (a supervised probe's subspace, the value)
     "mention": "#8C6D46",  # the bridge's mention (a position in the prompt)
     "question": "#B8689A",  # the question (a position in the prompt)
+    "recall_light": "#6E6E6E",  # the recall's second condition (question after the scene), a lighter black
     "answer": "#B8433A",  # the answer word (the readout's, in the lens-readout figures); never next to a green
 }
 # text and chrome: three text levels (bold ink, ink, grey), grid, zebra stripes, the "within 0.10" band

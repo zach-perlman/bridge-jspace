@@ -44,7 +44,7 @@ CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "f8_facts": "On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so",
     "f9_where": "Middle layers need the bridge's mention; deeper layers, the question",
     "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",
-    "f12_order": "With the question before the scene, the 27B's lookup needs the lens part a little",
+    "f12_order": "With the question before the scene, the 27B's lookup leans a little more on the lens part; the other models missed the gate",
     "p0a_datasets": "One question, two kinds of answer, two datasets.",
     "p0b_tools": "Three tools, one target: the lens part at the bridge.",
 }

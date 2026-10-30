@@ -394,30 +394,52 @@ def f_monitor():
     render(t, "f11_monitor")
 
 
-# ---- F12: question before or after the scene (Dan) ------------------------------------------------------------------
+# ---- F12: question before or after the scene (Dan), all five models --------------------------------------------------
 def f_order():
-    models = [(m, n) for m, n in DAN if D.s(m, "question before the scene: lookup, switches lost beyond a random part")]
-    rows = [Row(NAME[m]) for m, _ in models]
+    """The lookup and the recall without the lens part, with the question after the scene (the main test) and before it.
+    Question before ran on the 27B and the 122B only (its gate: the recall must read the original prompts right); the
+    others say so in the cell. The 27B's rule was set after its cells (post hoc, hollow)."""
+    stem = "question {} the scene: {}, switches lost beyond a random part"
+    gate = "question before the scene: the recall's gate (read right on the original prompts)"
+    models = list(DAN)
+    rows = []
+    for m, _ in models:
+        rows += [Row(NAME[m], sub="lookup"), Row("", sub="recall")]
+    post_hoc = lambda m: D.hollow(m) or m == "qwen3.6-27b"  # noqa: E731
+    reader_col = {"lookup": (C["lookup_light"], C["lookup"]), "recall": (C["recall_light"], C["recall"])}
 
     def lk(ax, _r):
-        band(ax, -0.1, 0.1, len(models))
+        band(ax, -0.1, 0.1, len(rows))
         for i, (m, _) in enumerate(models):
-            a = D.s(m, "question after the scene: lookup, switches lost beyond a random part")
-            b = D.s(m, "question before the scene: lookup, switches lost beyond a random part")
-            connector(ax, a[0], b[0], i)
-            dot(ax, a[0], i, C["lookup_dark"], cell=a, value=a[0], vside="left")
-            dot(ax, b[0], i, C["lookup"], cell=b, value=b[0])
-        head_label(ax, 0.13, "question after", C["lookup_dark"], ha="right")
-        head_label(ax, 0.2, "question before", C["lookup"], ha="left")
+            for j, reader in enumerate(("lookup", "recall")):
+                y = 2 * i + j
+                a, b = D.s(m, stem.format("after", reader)), D.s(m, stem.format("before", reader))
+                light, dark = reader_col[reader]
+                if b:
+                    connector(ax, a[0], b[0], y)
+                before_right = bool(b) and b[0] >= a[0]  # each dot's label on the side away from the other dot
+                dot(ax, a[0], y, light, post_hoc(m), size=8.5, value=a[0], vside="left" if before_right else "right")
+                if b:
+                    dot(ax, b[0], y, dark, post_hoc(m), cell=b, value=b[0], vside="right" if before_right else "left")
+                elif j == 0 and (g := D.s(m, gate)):
+                    ax.text(0.3, y, f"below gate ({g[0]:.2f})", ha="left", va="center", fontsize=10.5, color=MUTED)
 
     def diff(i, _r):
-        d = D.s(models[i][0], "the lookup, question before minus after (paired)")
+        m, reader = models[i // 2][0], ("lookup", "recall")[i % 2]
+        if reader == "recall":
+            return [("", MUTED, "normal")]
+        d = D.s(m, "the lookup, question before minus after (paired)")
+        if not d:
+            return [("can't tell", MUTED, "normal")]
         return [(f"{d[0]:+.2f}", INK, "bold"), (f"  [{d[1]:.2f}, {d[2]:.2f}]", MUTED, "normal")]
 
-    t = Table(rows, [Col(4.5, "the lookup without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.6),
-                         [0, 0.25, 0.5], xlabel="switches lost beyond random (share)"),
-                     Col(2.3, "before − after", "paired, 95% interval", diff, text=True)], label_w=1.45,
-              key=[BANDKEY])  # fmt: skip
+    t = Table(rows, [Col(5.0, "without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.95), [0, 0.5],
+                         xlabel="switches lost beyond random (share)"),
+                     Col(2.1, "before − after", "paired, 95% interval", diff, text=True)], label_w=1.45,
+              group=2, key=[[("●", C["lookup"], "lookup"), ("●", C["recall"], "recall"),
+                             ("", MUTED, "lighter: question after · darker: question before"),
+                             ("■", BAND, "within 0.10 of a random part")],
+                            [("○", INK, "post hoc: the 27B's rule was set after its cells; Lightning's gate after its pre-check")]])  # fmt: skip
     render(t, "f12_order")
 
 

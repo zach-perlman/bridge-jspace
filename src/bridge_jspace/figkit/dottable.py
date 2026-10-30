@@ -66,16 +66,22 @@ class Table:
     # that mean the same in every column, where a head label over column 1 would read as that column's only (Dan, 30 Oct)
     key: list = field(default_factory=list)
     head: float = HEAD_H  # header height (inches); raise it for group titles above the column titles
+    group: int = 1  # rows per zebra stripe (two rows of one model share a stripe)
 
     def render(self, path: str, dpi: int = 160) -> None:
         """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
         "○ post hoc" if it is (G1: a hollow mark always has its legend item)."""
         HOLLOW["seen"] = False
         self._draw(None, dpi, self.key)
-        key = list(self.key)
-        if HOLLOW["seen"] and not any(m == "○" for m, _, _ in key):
-            key.append(("○", INK, "post hoc"))
+        key = [list(r) for r in self._key_rows(self.key)]
+        if HOLLOW["seen"] and not any(m == "○" for r in key for m, _, _ in r):
+            (key[-1] if key else key.append([]) or key[-1]).append(("○", INK, "post hoc"))
         self._draw(path, dpi, key)
+
+    @staticmethod
+    def _key_rows(key: list) -> list:
+        """The key as rows: a flat list of (mark, colour, words) is one row; a list of such lists is several."""
+        return key if key and isinstance(key[0], list) else ([key] if key else [])
 
     def _draw(self, path: str | None, dpi: int, key: list) -> None:
         n = len(self.rows)
@@ -83,7 +89,8 @@ class Table:
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         body = n * ROW_H + lab
         xlab = XLAB_H if any(c.xlabel for c in self.cols) else 0.0
-        height = self.head + body + FOOT_H + xlab + (KEY_H if key else 0)
+        key_rows = self._key_rows(key)
+        height = self.head + body + FOOT_H + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
         fy = lambda inch_from_top: 1 - inch_from_top / height  # noqa: E731
         fx = lambda inch: inch / width  # noqa: E731
@@ -91,7 +98,7 @@ class Table:
 
         if self.zebra:  # stripes across the whole table, behind everything
             for i in range(n):
-                if i % 2 == 0:
+                if (i // self.group) % 2 == 0:
                     fig.patches.append(Rectangle((0, fy(top + (i + 1) * ROW_H)), 1, ROW_H / height,
                                                  transform=fig.transFigure, color=ZEBRA, zorder=-5))  # fmt: skip
         for i, r in enumerate(self.rows):  # row labels
@@ -151,15 +158,15 @@ class Table:
                     ax.plot([0, 0], [n - 0.5, -0.5], color=MUTED, lw=0.9, zorder=1)
                 c.draw(ax, self.rows)
             x += c.width + self.pad
-        if key:
+        for ri, row in enumerate(key_rows):
             parts = []
-            for k, (mark, col, words) in enumerate(key):
+            for k, (mark, col, words) in enumerate(row):
                 parts += [
                     ("     " if k else "", MUTED, "normal"),
-                    (mark + " ", col, "normal"),
+                    (mark + " " if mark else "", col, "normal"),
                     (words, MUTED, "normal"),
                 ]
-            rich(fig, fx(0.12), fy(height - 0.24), parts, size=11.5)
+            rich(fig, fx(0.12), fy(height - 0.24 - 0.3 * (len(key_rows) - 1 - ri)), parts, size=11.5)
         for f in self.extra:
             f(fig)
         if path is not None:

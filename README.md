@@ -167,9 +167,9 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 *The lookup on passages with true and with made-up facts, per model; whiskers: intervals on the true-fact values (Muse: too few lookup switches, not drawn).*
 
-![With the question before the scene, the 27B's lookup needs the lens part a little](figures/readme/f12_order.png)
+![With the question before the scene, the 27B's lookup leans a little more on the lens part; the other models missed the gate](figures/readme/f12_order.png)
 
-*The lookup without the lens part, with the question after or before the scene, and the paired difference.*
+*The question-first cell passed its gate on the 27B and the 122B only. The rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first).*
 
 ## More results
 

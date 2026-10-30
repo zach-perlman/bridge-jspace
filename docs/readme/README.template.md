@@ -168,7 +168,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f12_order}}
 
-*The lookup without the lens part, with the question after or before the scene, and the paired difference.*
+*The question-first cell passed its gate on the 27B and the 122B only. The rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first).*
 
 ## More results
 

@@ -247,7 +247,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Rule, fixed in advance.** "The conflict test's lookup loses <= 0.10 beyond random in all four cells ("the pointer does not depend on the question")" (the two cells with a word answer were not tested: Caveats). After the data (set once the 27B's two cells had been seen, before the 122B ran): "the pointer does not depend on the question's position" if the lookup loses <= 0.10 in both cells on a model; and "order dependence" only if the paired difference's interval excludes 0.
 
 ![Question first, one model's lookup leans more on the lens part](figures/depth/f12_order.png)
-*The lookup's switches lost without the lens part beyond a random part, with the question after the scene (the main test, grey) and before it (purple); right: before minus after, paired, with its {{q|95%}} interval. The 27B's rule was set after its two cells; the 122B (FP8) at L33; models without both cells are left out (Data); grey band: within 0.10 of random.*
+*Lookup (purple) and recall (black), switches lost without the lens part beyond a random part, with the question after the scene (lighter, the main test) and before it (darker); right: the lookup's difference, before minus after, paired, with its {{q|95%}} interval. The question-first cell passed its gate on the 27B and the 122B only; the other models say so in the cell. The rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first). Grey band: within 0.10 of a random part.*
 
 - **Result.**
 
@@ -494,7 +494,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 - **Rule, fixed in advance.** "Per model: gap ≥ 0.3 and lookup extra loss ≤ 0.10 → the split holds on his passages; lookup ≥ 0.20 → the lookup follows the lens here; else in between. The order pattern replicates if the lookup's switch under the whole change is ≥ 2x higher fact-first than fact-after (both CIs)." The full carrier: "recall extra loss − lookup extra loss ≥ 0.3 and lookup ≤ 0.10 → the split holds on the full carrier; lookup ≥ 0.20 → the lookup follows the lens on the full carrier; else in between." The routes test: "Value ≤ 0.05; if position ≥ 0.2: the address exists in scattered-fact passages; if position ≤ 0.05: no position route in his layout." The recheck: the same rule, verbatim, on the remaining passages (set post hoc). The two operations side by side: descriptive. Lightning: the same rules, copied, no prediction.
 
 ![Both operations, both datasets, one direction](figures/depth/t12_two_by_two.png)
-*Recall minus lookup in four cells: our removal (one layer, the patch) or Zach's (a band of layers), on our scenes or his passages; small grey dot: the same operation with a random part of the same size (on his passages, his rotated directions). The units differ by column, so only the sign and the order compare. Lightning hollow; Muse's cell of Zach's removal on our scenes is grey: it ran at L23-29, outside his band. –: Lightning's ladder below its gate; Muse on his passages too few lookup switches.*
+*Same unit in every column. One layer asks whether the recall follows the lens part, a band whether it needs it, so compare the sign and the order across columns, not the size. Recall minus lookup, the share of answers each loses; grey: the same gap with a same-size control. Muse's band cell on our scenes ran at L23-29, outside his band; the reason for a missing cell is written in it.*
 
 - **Result.**
 
