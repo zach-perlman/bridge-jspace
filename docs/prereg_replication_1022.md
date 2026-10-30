@@ -4330,3 +4330,17 @@ Not run (proposed, not chosen): the scope test on non-country relations, the ene
   - **AT (attention contrast):** mean over the with-attention windows of (MP dark - mid) minus the same mean over the without windows, paired bootstrap over MP items. AT >= 15 points with lower end > 0 = "the 9B's dark-space lookup route runs through the full-attention layer's window".
   - If both without-attention windows meet D1 = "not attention-specific".
   - Otherwise "partly / not resolved".
+
+##### Amendment 85, addendum 2: note 62 as implemented (box clock at commit; before any note 62 full run; smoke outcome not yet seen)
+These are builder choices, recorded so the run is read as built:
+- **Fact list:** all 8 sentences are shuffled together, seeded per item, not just the order of the chains. This stops K being found by its position next to X.
+  - Distractor people also get seeded fictional names.
+  - Distractor countries have first tokens disjoint from K's and from each other's, so the first-token read can tell the 4 apart.
+  - Distractor cities avoid the item's peer and control bridges.
+- **(O):** the solo frame on "{C} is in the country of" (the hop-2 template).
+- **Mask start:** the question text's first token (" In" in (I); " Complete" in (P) and (O)). The "Question:" label is outside the mask.
+  - Implementation: the edit is computed at every position, and positions before the mask keep their unedited input. A unit test checked that a mask from token 0 equals the unmasked edit.
+- **bridgeJ_ctrl:** another item's city, count-matched by token count (exact on 307 of 350 test items; the rest smaller, because US cities are excluded when K is the US). Its country is never K, the peer's answer or a listed country.
+  - The same rule is used in (I), (P) and (O), so (P)'s control differs from note 54's control-fact city.
+- **(P) validity:** its unedited K share and paper10 - paper10_rot are printed; G2 is not re-run.
+- **CIs:** bootstrap over items, as registered, with a bridge-clustered CI printed beside. Many items share a city, so the clustered CI is the one quoted on slides if they disagree.
