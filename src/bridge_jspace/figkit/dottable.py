@@ -29,6 +29,8 @@ BEFORE_SAVE = None  # a hook f(fig, path) run before every save
 ROW_H, HEAD_H, FOOT_H, LABEL_ROW = 0.50, 0.85, 0.62, 0.46  # inches; LABEL_ROW: direct labels above row 1
 KEY_H = 0.42  # the key row under the axes
 XLAB_H = 0.30  # the axis titles under the ticks
+CUE_H = 0.24  # the direction cue under an axis title (Dan 30 Oct: say which way is "more" on every axis)
+CUE_OFFSET = 43  # points below the axis: under the ticks and the axis title
 HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure then carries "○ post hoc" (G1)
 
 
@@ -51,6 +53,7 @@ class Col:
     text: bool = False
     align: str = "left"
     xlabel: str = ""  # the axis title under the ticks, with the unit (G4)
+    cue: str = ""  # one grey line under the axis title: which way is "more", at most six words ("→ depends more on the lens part")
 
 
 @dataclass
@@ -88,7 +91,7 @@ class Table:
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         body = n * ROW_H + lab
-        xlab = XLAB_H if any(c.xlabel for c in self.cols) else 0.0
+        xlab = (XLAB_H if any(c.xlabel for c in self.cols) else 0.0) + (CUE_H if any(c.cue for c in self.cols) else 0.0)
         key_rows = self._key_rows(key)
         height = self.head + body + FOOT_H + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
@@ -152,6 +155,11 @@ class Table:
                 ax.tick_params(axis="x", length=3, color=FAINT, pad=4)
                 if c.xlabel:
                     ax.set_xlabel(c.xlabel, fontsize=11.5, color=MUTED, labelpad=3)
+                if c.cue:
+                    ax.annotate(c.cue, (0.5, 0), xycoords="axes fraction", xytext=(0, -CUE_OFFSET),
+                                textcoords="offset points", ha="center", va="top", fontsize=10.5, color=MUTED,
+                                annotation_clip=False)  # fmt: skip
+                    ax._cue = c.cue  # the table lint (figkit/lint.py) requires one per panel
                 for t in ax.get_xticks():
                     ax.plot([t, t], [n - 0.5, -0.5], color=GRID, lw=0.8, zorder=0)
                 if c.xlim[0] < 0 < c.xlim[1]:

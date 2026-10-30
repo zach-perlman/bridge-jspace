@@ -34,6 +34,48 @@ def render(t: Table, name: str) -> None:
     t.render(f"{X.OUT}/{name}.png", dpi=DPI)
 
 
+CTRL_NAME = {"rot": "rotated", "u": "logit lens", "pc": "PCA"}  # the band half's controls (specs.largest)
+LAYER_CTRL = (("pca", "PCA", "PCA directions (same size): recall extra loss"),
+              ("wu", "logit lens", "logit-lens directions: recall extra loss"),
+              ("rand", "random", "random lens directions: recall extra loss"))  # fmt: skip
+
+
+def layer_largest(m: str):
+    """The one-layer half's lens part and its largest same-size control: (lens cell, key, name, control cell); None where
+    the model has no one-layer row (Lightning)."""
+    lens = D.s(m, "J++ part: recall extra loss", "fig02")
+    ctrls = [(key, name, D.s(m, q, "fig02")) for key, name, q in LAYER_CTRL]
+    ctrls = [c for c in ctrls if c[2]]
+    if not lens or not ctrls:
+        return None
+    key, name, cell = max(ctrls, key=lambda c: c[2][0])
+    return lens, key, name, cell
+
+
+def band_diff_parts(k: str):
+    """The band half's "lens part - largest control" as text parts: the paired difference with its interval
+    (scripts/f2_differences.py), or the aggregate difference marked as having no interval."""
+    top = S.largest(k)
+    mk = D.b(f"ko.{k}.mk")
+    if not top or not mk:
+        return [("no run", MUTED, "normal")]
+    pair = D.b(f"f2.band.{k}.{top[0]}")
+    if pair and pair[1] is not None:
+        return [(f"{pair[0]:+.0f}", INK, "bold"), (f"  [{pair[1]:.0f}, {pair[2]:.0f}]", MUTED, "normal")]
+    return [(f"{mk[0] - top[1]:+.0f}", INK, "bold"), ("  no interval (aggregate only)", MUTED, "normal")]
+
+
+def layer_diff_parts(m: str):
+    top = layer_largest(m)
+    if not top:
+        return [("no run", MUTED, "normal")]
+    lens, key, _name, cell = top
+    pair = D.b(f"f2.layer.{ZK[m]}.pca") if key == "pca" else None
+    if pair and pair[1] is not None:
+        return [(f"{pair[0]:+.2f}", INK, "bold"), (f"  [{pair[1]:.2f}, {pair[2]:.2f}]", MUTED, "normal")]
+    return [(f"{lens[0] - cell[0]:+.2f}", INK, "bold"), ("  no interval (aggregate only)", MUTED, "normal")]
+
+
 # ---- F2: same-size parts do not do it (both tracks, one column per part) --------------------------------------------
 def f_controls():
     zach = [("lens part", "mk", "lens"), ("rotated", "rot", "control"), ("logit lens", "u", "control"),
@@ -72,14 +114,21 @@ def f_controls():
 
         return f
 
-    cols = [Col(1.38, n, "", zcol(k, c), (-3, 70), [0, 50], xlabel="points") for n, k, c in zach]
-    cols += [Col(1.38, n, "", dcol(q, c), (-0.05, 0.85), [0, 0.5], xlabel="share") for n, q, c in dq]
+    band_diff = Col(2.75, "lens part − largest control", "points [95% interval]",
+                    lambda i, _r: band_diff_parts(ZK[DAN[i][0]]), text=True)
+    layer_diff = Col(2.75, "lens part − largest control", "share [95% interval]",
+                     lambda i, _r: layer_diff_parts(DAN[i][0]), text=True)
+    cols = [Col(1.5, n, "", zcol(k, c), (-3, 70), [0, 50], xlabel="points", cue="→ needed more") for n, k, c in zach]
+    cols += [band_diff]
+    cols += [Col(1.5, n, "", dcol(q, c), (-0.05, 1.0), [0, 0.5, 1], xlabel="share", cue="→ depends more")
+             for n, q, c in dq]
+    cols += [layer_diff]
     t = Table(rows, cols, label_w=1.45, pad=0.18, labels=False, head=1.25)
 
     def group_titles(fig):
         w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
         x0 = (t.label_w + t.pad) / w
-        x1 = (t.label_w + t.pad * 5 + sum(c.width for c in t.cols[:4])) / w
+        x1 = (t.label_w + t.pad * 6 + sum(c.width for c in t.cols[:5])) / w
         fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Band of layers: recall − lookup answers lost", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
         fig.text(x1, 1 - 0.12 / fig.get_figheight(), "One layer: recall's switches lost beyond random", ha="left", va="top",
@@ -89,6 +138,49 @@ def f_controls():
     for c in t.cols:  # push the column titles below the group titles
         c.title, c.sub = c.title, c.sub
     render(t, "f2_controls")
+
+
+def f_main():
+    """The deck's one-panel f2 (Dan 30 Oct): per model the lens part against the largest same-size control, in the band of
+    layers (points) and at one layer (share), with the paired difference and its 95% interval at the right of each half.
+    The full eight-panel f2 is f2_controls (appendix)."""
+    rows = [Row(NAME[m]) for m, _ in DAN]
+
+    def name_under(ax, x, y, word):
+        ax.annotate(word, (x, y), xytext=(0, -9), textcoords="offset points", ha="center", va="top", fontsize=9,
+                    color=MUTED, annotation_clip=False)  # fmt: skip
+
+    def band_panel(ax, _r):
+        for i, (m, _) in enumerate(DAN):
+            k, mk, top = ZK[m], D.b(f"ko.{ZK[m]}.mk"), S.largest(ZK[m])
+            h = k in ("mu", "q122")
+            connector(ax, top[1], mk[0], i)
+            dot(ax, top[1], i, C["control"], h, size=8)
+            dot(ax, mk[0], i, C["lens"], h, cell=mk, value=mk[0], vfmt="{:.0f}")
+            name_under(ax, top[1], i, CTRL_NAME[top[0]])
+
+    def layer_panel(ax, _r):
+        for i, (m, _) in enumerate(DAN):
+            top = layer_largest(m)
+            if not top:
+                ax.text(0.02, i, "no run", ha="left", va="center", fontsize=10.5, color=MUTED)
+                continue
+            lens, _key, name, cell = top
+            connector(ax, cell[0], lens[0], i)
+            dot(ax, cell[0], i, C["control"], size=8)
+            dot(ax, lens[0], i, C["lens"], cell=lens, value=lens[0])
+            name_under(ax, cell[0], i, name)
+
+    t = Table(rows, [
+        Col(3.3, "Band of layers", "answers lost, recall − lookup", band_panel, (-3, 72), [0, 25, 50, 75], xlabel="points",
+            cue="→ lens part needed more"),
+        Col(2.0, "lens part − control", "points [95% interval]", lambda i, _r: band_diff_parts(ZK[DAN[i][0]]), text=True),
+        Col(3.0, "One layer", "recall's switches lost beyond random", layer_panel, (-0.05, 1.0), [0, 0.5, 1],
+            xlabel="share", cue="→ depends more on lens part"),
+        Col(2.0, "lens part − control", "share [95% interval]", lambda i, _r: layer_diff_parts(DAN[i][0]), text=True),
+    ], label_w=1.45, labels=False, key=[("●", C["lens"], "the lens part"),
+                                       ("●", C["control"], "the largest same-size control, named under its dot")])  # fmt: skip
+    render(t, "f2_main")
 
 
 # ---- F3: nine models, carried vs needed (Zach) ----------------------------------------------------------------------
@@ -129,8 +221,8 @@ def f_nine():
         return [(g, INK if g == "clean" else MUTED, "bold" if g == "clean" else "normal")]
 
     t = Table(rows, [
-        Col(3.4, "answers moved", "to the other entity's fact", carried, (-8, 80), [0, 40, 80], xlabel="points"),
-        Col(3.4, "answers lost", "recall minus lookup", needed, (-3, 70), [0, 30, 60], xlabel="points"),
+        Col(3.4, "answers moved", "to the other entity's fact", carried, (-8, 80), [0, 40, 80], xlabel="points", cue="→ carried more"),
+        Col(3.4, "answers lost", "recall minus lookup", needed, (-3, 70), [0, 30, 60], xlabel="points", cue="→ needed more"),
         Col(2.3, "Grade", "", grades, text=True),
     ], label_w=1.45, key=[("|", C["control"], "largest same-size control"), ("●", C["lens"], "at 100 directions"),
                           ("●", C["control"], "122B: scored by probability")])  # fmt: skip
@@ -175,7 +267,7 @@ def f_atoms():
         return [(clean(f"{v:.2f}"), INK, "bold")]
 
     t = Table(rows, [Col(7.2, "share of the rebuilt energy", "of the lens part's 25 directions, by the word each decodes to",
-                         stack, (0, 1), [0, 0.5, 1], xlabel="share of the rebuilt energy"),
+                         stack, (0, 1), [0, 0.5, 1], xlabel="share of the rebuilt energy", cue="→ more of the energy"),
                      Col(1.3, "answer word", "share", answer, text=True)], label_w=1.45,
               key=[("●", "#9E9E9E", "another scene word")])  # fmt: skip
     render(t, "f5_atoms")
@@ -237,13 +329,14 @@ def f_address():
         head_label(ax, 31, "item change", C["identity"], ha="right")
 
     t = Table(rows, [
-        Col(2.35, "probe accuracy", "at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy"),
+        Col(2.35, "probe accuracy", "at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy",
+            cue="→ address more readable"),
         Col(2.35, "position answers", "lookups following the position", remove, (-0.2, 0.62), [0, 0.25, 0.5],
-            xlabel="share of lookups"),
+            xlabel="share of lookups", cue="← address needed"),
         Col(2.35, "lookups sent", "to the new locker", swap, (-0.03, 0.66), [0, 0.25, 0.5],
-            xlabel="share of lookups"),
+            xlabel="share of lookups", cue="→ swap works"),
         Col(2.35, "lens rebuild", "z from 200 random vectors", lens, (-2.5, 34), [0, 10, 20],
-            xlabel="z (distance from random)"),
+            xlabel="z (distance from random)", cue="→ lens sees it"),
     ], label_w=1.45, pad=0.22, key=[("●", C["control"], "a random part taken out (column 2), a random vector written in (column 3)"),
                                                   ("■", BAND, "range of the random vectors (column 4)")])  # fmt: skip
     render(t, "f6_address")
@@ -269,9 +362,12 @@ def f_directions():
         return f
 
     t = Table(rows, [
-        Col(2.45, "25 lens directions", "the lookup's loss", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
-        Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
-        Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random"),
+        Col(2.45, "25 lens directions", "the lookup's loss", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+            cue="→ depends more on lens part"),
+        Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+            cue="→ depends more on lens part"),
+        Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+            cue="→ depends more on lens part"),
     ], label_w=1.45, pad=0.22, labels=False, key=[BANDKEY])  # fmt: skip
     render(t, "f8_directions")
 
@@ -294,7 +390,8 @@ def f_facts():
             dot(ax, tr[0], i, C["lookup"], D.hollow(m), cell=tr, value=tr[0])
 
     t = Table(rows, [Col(7.0, "fact passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.9),
-                         [0, 0.25, 0.5, 0.75], xlabel="switches lost beyond random")],
+                         [0, 0.25, 0.5, 0.75], xlabel="switches lost beyond random",
+                         cue="→ depends more on lens part")],
               label_w=1.45, labels=False,
               key=[("●", C["lookup"], "true facts"), ("●", C["lookup_light"], "made-up facts"), BANDKEY])  # fmt: skip
     render(t, "f8_facts")
@@ -329,10 +426,10 @@ def f_where():
 
     names = ["all tokens", "mention", "question"]
     cols = [
-        Col(1.55, f"{n}", "removed at", col("mid", j), (-3, 72), [0, 50], xlabel="points") for j, n in enumerate(names)
+        Col(1.55, f"{n}", "removed at", col("mid", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
     ]
     cols += [
-        Col(1.55, f"{n}", "removed at", col("late", j), (-3, 72), [0, 50], xlabel="points") for j, n in enumerate(names)
+        Col(1.55, f"{n}", "removed at", col("late", j), (-3, 72), [0, 50], xlabel="points", cue="→ needed more") for j, n in enumerate(names)
     ]
     t = Table(
         rows,
@@ -389,8 +486,9 @@ def f_monitor():
         return f
 
     t = Table(rows, [Col(4.0, "25 lens directions", "probe accuracy for the address at the last token",
-                         kcol(25), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy"),
-                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy")], label_w=1.45, labels=False,
+                         kcol(25), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy", cue="→ address more readable"),
+                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1], xlabel="accuracy",
+                         cue="→ address more readable")], label_w=1.45, labels=False,
               key=[("●", C["lens"], "the lens part"), ("●", "#7A7A7A", "a random part of the same energy"),
                    ("|", INK, "the full state")])  # fmt: skip
     render(t, "f11_monitor")
@@ -436,7 +534,8 @@ def f_order():
         return [(f"{d[0]:+.2f}", INK, "bold"), (f"  [{d[1]:.2f}, {d[2]:.2f}]", MUTED, "normal")]
 
     t = Table(rows, [Col(5.0, "without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.95), [0, 0.5],
-                         xlabel="switches lost beyond random (share)"),
+                         xlabel="switches lost beyond random (share)",
+                         cue="→ depends more on lens part"),
                      Col(2.1, "before − after", "paired, 95% interval", diff, text=True)], label_w=1.45,
               group=2, key=[[("●", C["lookup"], "lookup"), ("●", C["recall"], "recall"),
                              ("", MUTED, "lighter: question after · darker: question before"),

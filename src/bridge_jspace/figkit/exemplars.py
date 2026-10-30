@@ -34,12 +34,14 @@ def r1_split():
 
     def zach_nums(i, _r):
         k = ZK[DAN[i][0]]
-        mk, ct = D.b(f"ko.{k}.mk")[0], S.ctrl(k)
-        return [(f"{mk:.0f}", INK, "bold"), (f"  ({ct:.0f})", MUTED, "normal")]
+        mk, lo, hi = D.b(f"ko.{k}.mk")  # the gap's 95% interval, the same "[lo, hi]" as the right half's (Dan 30 Oct)
+        return [(f"{mk:.0f}", INK, "bold"), (f"  [{lo:.0f}, {hi:.0f}]", MUTED, "normal"),
+                (f"  ({S.ctrl(k):.0f})", MUTED, "normal")]
 
     t = Table(rows, [
-        Col(3.0, "Remove everywhere", "answers that turn wrong", zach, (-4, 70), [0, 20, 40, 60], xlabel="points"),
-        Col(1.35, "gap", "recall − lookup", zach_nums, text=True),
+        Col(3.0, "Remove everywhere", "answers that turn wrong", zach, (-4, 70), [0, 20, 40, 60], xlabel="points",
+            cue="→ lens part needed more"),
+        Col(2.25, "gap", "recall − lookup, 95%", zach_nums, text=True),
         *dan_split_cols(),
     ], label_w=1.45, key=[("(n)", MUTED, "the largest same-size control's gap (rotated, logit lens or PCA)"),
                           ("■", BAND, "within 0.10 of a random part")])  # fmt: skip
@@ -69,12 +71,13 @@ def dan_split_cols(title="Remove from the patch"):
         rc, lk = S.conflict(m, "recall")[0], S.conflict(m, "lookup")[0]
         return [
             (f"{rc - lk:.2f}", INK, "bold"),
-            ("  no interval", MUTED, "normal"),
+            ("  no interval (aggregate only)", MUTED, "normal"),
         ]  # a paired interval was not computed
 
     return [Col(3.0, title, "switches lost beyond a random part", dan, (-0.25, 1.0), [0, 0.5, 1.0],
-                xlabel="share of switches"),
-            Col(1.75, "gap", "recall − lookup, 95%", dan_nums, text=True)]  # fmt: skip
+                xlabel="share of switches",
+                cue="→ depends more on lens part"),
+            Col(3.5, "gap", "recall − lookup, 95%", dan_nums, text=True)]  # fmt: skip
 
 
 def r1_dan_split():
@@ -124,9 +127,9 @@ def r3_last_token():
 
     t = Table(rows, [
         Col(3.6, "probe accuracy on the lens part", "the recall's entity, at the last token", read, (0, 1.02),
-            [0, 0.5, 1.0], xlabel="accuracy"),
+            [0, 0.5, 1.0], xlabel="accuracy", cue="→ more readable"),
         Col(3.6, "recalls switched", "lens part written in, against the whole state", used, (-0.25, 1.02),
-            [0, 0.5, 1.0], xlabel="share of recalls switched"),
+            [0, 0.5, 1.0], xlabel="share of recalls switched", cue="→ used more"),
     ], label_w=1.6)  # fmt: skip
     t.render(f"{OUT}/r3_last_token.png")
 
@@ -152,7 +155,7 @@ def r4_pointer():
         return f
 
     t = Table(rows, [Col(2.35, n, "answers moved to D's fact" if j == 0 else "", panel(k), (-8, 92), [0, 40, 80],
-                         xlabel="points") for j, (k, n) in enumerate(models)], label_w=3.55, labels=False)  # fmt: skip
+                         xlabel="points", cue="→ more answers follow D") for j, (k, n) in enumerate(models)], label_w=3.55, labels=False)  # fmt: skip
     t.render(f"{OUT}/r4_pointer.png")
 
 
@@ -199,7 +202,7 @@ def r5_routes():
         return [(f"{v:.2f}", INK, "bold")]
 
     t = Table(rows, [Col(6.6, "share of the lookup's answers", "identity: the item's own locker · position: the locker now at its old place", stack,
-                         (0, 1), [0, 0.5, 1], xlabel="share of the lookup's answers"),
+                         (0, 1), [0, 0.5, 1], xlabel="share of the lookup's answers", cue="→ larger share"),
                      Col(1.3, "the number", "itself", value, text=True)], label_w=1.45,
               key=[("●", C["other"], "other")])  # fmt: skip
     t.render(f"{OUT}/r5_routes.png")

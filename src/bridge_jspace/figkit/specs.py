@@ -6,13 +6,22 @@ from __future__ import annotations
 from bridge_jspace.figkit import data as D
 
 
-def ctrl(m: str) -> float | None:
-    """Zach's largest same-size control in M - K: max of rotated, logit lens, PCA (or the size-matched ratio x mk)."""
+def largest(m: str) -> tuple[str, float] | None:
+    """Zach's largest same-size control in M - K, as (key, value): the max of rotated (rot), logit lens (u) and PCA (pc,
+    or the size-matched ratio x mk)."""
     pc, pcr, mk = D.b(f"ko.{m}.pc"), D.b(f"ko.{m}.pcr"), D.b(f"ko.{m}.mk")
-    vals = [v[0] for v in (D.b(f"ko.{m}.rot"), D.b(f"ko.{m}.u")) if v]
-    vals.append(pc[0] if pc else (pcr[0] * mk[0] if pcr and mk else None))
-    vals = [v for v in vals if v is not None]
-    return max(vals) if vals else None
+    vals = {k: v[0] for k, v in (("rot", D.b(f"ko.{m}.rot")), ("u", D.b(f"ko.{m}.u"))) if v}
+    if pc:
+        vals["pc"] = pc[0]
+    elif pcr and mk:
+        vals["pc"] = pcr[0] * mk[0]
+    return max(vals.items(), key=lambda kv: kv[1]) if vals else None
+
+
+def ctrl(m: str) -> float | None:
+    """The value of the largest same-size control in M - K (see largest)."""
+    top = largest(m)
+    return top[1] if top else None
 
 
 def conflict(m: str, reader: str):

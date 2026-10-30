@@ -22,14 +22,14 @@ from bridge_jspace.figkit.data import REPO
 OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth"}
 DPI = {"readme": 160, "slide": 200, "depth": 160}
 FIGS = {"r1_c1_split": X.r1_split, "r3_last_token": X.r3_last_token,
-        "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f3_nine_models": F.f_nine,
+        "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f2_main": F.f_main, "f3_nine_models": F.f_nine,
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_directions": F.f_directions, "f8_facts": F.f_facts,
         "f9_where": F.f_where, "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
         "t12_two_by_two": DF.two_by_two, "p0a_datasets": DF.datasets, "p0b_tools": DF.tools}  # fmt: skip
 DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "f6_address", "f11_monitor", "r3_last_token", "t12_two_by_two")
-TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two")], "depth": list(DEPTH)}
+TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two", "f2_main")], "depth": list(DEPTH)}
 # p0a_datasets: the root README's datasets figure (Dan 30 Oct: the table style, no title inside)
-TARGET["slide"] = TARGET["readme"]
+TARGET["slide"] = [*TARGET["readme"], "f2_main"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -54,7 +54,7 @@ PROBLEMS: list[str] = []
 
 
 def _check(fig, path) -> None:
-    PROBLEMS.extend(lint.table_problems(fig, Path(path).stem, need_xlabel=True))
+    PROBLEMS.extend(lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True))
 
 
 def build(target: str, ids: list[str] | None = None) -> list[str]:

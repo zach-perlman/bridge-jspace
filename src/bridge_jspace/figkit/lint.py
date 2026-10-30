@@ -91,12 +91,13 @@ def _hex(c) -> str | None:
         return None
 
 
-def table_problems(fig, name: str, need_xlabel: bool = False) -> list[str]:
+def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = False) -> list[str]:
     """The table style's lint (morning brief 30 Oct, Section 4; review v3 G1, G2, G4, G6): rotated text, overlapping
     texts, text off the figure, legends, markers other than "o", hatch, red or green, a suptitle, an image taller than
     1.2x its width, banned words, a model name outside the set, a panel with no data; a hollow mark without the key
     item "post hoc" (G1); a mark colour outside the one palette (G2); a data axis without a title when need_xlabel
-    (G4); a bar segment that no text names and none carries (G6)."""
+    (G4); a bar segment that no text names and none carries (G6); a data axis without its direction cue (a grey line under
+    the axis title, at most six words) when need_cue (Dan 30 Oct: say which way is "more")."""
     out = []
     w, h = fig.get_size_inches()
     if h > 1.2 * w:
@@ -152,6 +153,12 @@ def table_problems(fig, name: str, need_xlabel: bool = False) -> list[str]:
                     out.append(f"{name}: an unlabelled bar segment {fc}")
         if need_xlabel and not ax.get_xlabel():
             out.append(f"{name}: panel {k + 1} has no x-axis title")
+        if need_cue:
+            cue = getattr(ax, "_cue", "")
+            if not cue:
+                out.append(f"{name}: panel {k + 1} has no direction cue")
+            elif len([w for w in cue.split() if w not in ("→", "←")]) > 6:
+                out.append(f"{name}: panel {k + 1} direction cue over six words {cue!r}")
         dots = any(isinstance(a, Line2D) and a.get_marker() == "o" for a in ax.get_children())
         bars = any(isinstance(a, Rectangle) and a is not ax.patch and a.get_width() > 0 for a in ax.patches)
         if not (dots or bars or ax.collections or ax.images):

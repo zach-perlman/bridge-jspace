@@ -75,6 +75,17 @@ def test_tall_figure_fails():
     assert "taller than 1.2x" in _problems(fig)
 
 
+def test_direction_cue_is_required_per_panel():
+    fig, ax = _fig()
+    ax.set_xlabel("points")
+    assert "no direction cue" in " | ".join(lint.table_problems(fig, "t", need_xlabel=True, need_cue=True))
+    ax._cue = "→ needed more"
+    assert lint.table_problems(fig, "t", need_xlabel=True, need_cue=True) == []
+    ax._cue = "→ one two three four five six seven"
+    assert "over six words" in " | ".join(lint.table_problems(fig, "t", need_xlabel=True, need_cue=True))
+    plt.close(fig)
+
+
 @pytest.mark.parametrize("target", ["readme", "depth"])
 def test_table_figures_pass(tmp_path, monkeypatch, target):
     from bridge_jspace.figkit import tables

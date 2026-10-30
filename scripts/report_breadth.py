@@ -336,6 +336,11 @@ def collect() -> None:
                 n = sum(cl.values())
                 add(f"gen.{m}.{w}.bridge", "spot-check", m, f"{w}: replies naming the bridge", 100 * cl.get("bridge", 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
                 add(f"gen.{m}.{w}.right", "spot-check", m, f"{w}: replies still right", 100 * cl.get("answer", 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
+    # f2's paired differences, lens part minus a same-size control (Dan 30 Oct; scripts/f2_differences.py)
+    from scripts import f2_differences as F2  # noqa: PLC0415
+
+    for r in F2.rows():
+        add(r["key"], r["figure"], r["model"], r["quantity"], r["value"], r["lo"], r["hi"], r["n"] or None, r["unit"], r["source"])
 
 
 def collect_night() -> None:

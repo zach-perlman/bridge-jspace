@@ -1751,3 +1751,19 @@ late.q27.bridge.rot,positions,q27,"M - K at L52-60, bridge (paper10_rot)",0.2,0,
 ko.q9oj.mk,lens kind,q9,"M - K, 9B with our own J++ fit",44.8,40,50,563,points,results/ablate_v2/jsuite2_score/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1.json
 det.nl.rows,reruns,nl,determinism check: rows compared with the clean rerun,14275.0,,,,count,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1
 det.nl.same,reruns,nl,determinism check: rows with identical log-probability,14275.0,,,,count,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1
+f2.band.q27.rot,f2,q27,"M - K, lens part minus rotated (paired)",48.2,44,53,,points,results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q27.u,f2,q27,"M - K, lens part minus logit lens (paired)",49.0,45,54,,points,results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q27.pc,f2,q27,"M - K, lens part minus PCA (paired)",38.5,34,43,,points,results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl + jsuite_v2_test_chat_ko_cand2_L32-40_pca_v1
+f2.band.q9.rot,f2,q9,"M - K, lens part minus rotated (paired)",40.9,35,46,,points,results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q9.u,f2,q9,"M - K, lens part minus logit lens (paired)",41.2,36,47,,points,results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q9.pc,f2,q9,"M - K, lens part minus PCA (paired)",35.4,29,41,,points,results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl + qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_pca_v1
+f2.band.nl.rot,f2,nl,"M - K, lens part minus rotated (paired)",49.6,44,55,,points,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.nl.u,f2,nl,"M - K, lens part minus logit lens (paired)",44.4,38,50,,points,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.mu.rot,f2,mu,"M - K, lens part minus rotated (paired)",57.3,52,62,,points,results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.mu.u,f2,mu,"M - K, lens part minus logit lens (paired)",25.3,20,30,,points,results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q122.rot,f2,q122,"M - K, lens part minus rotated (paired)",46.4,42,51,,points,results/ablate_v2/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.band.q122.u,f2,q122,"M - K, lens part minus logit lens (paired)",36.6,32,41,,points,results/ablate_v2/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
+f2.layer.q9.pca,f2,q9,"recall extra loss, lens part minus PCA directions (paired)",0.2356,0.1695,0.2995,200,share,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl
+f2.layer.q27.pca,f2,q27,"recall extra loss, lens part minus PCA directions (paired)",0.4521,0.3681,0.5355,200,share,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl
+f2.layer.q122.pca,f2,q122,"recall extra loss, lens part minus PCA directions (paired)",0.0495,-0.0286,0.1226,200,share,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl
+f2.layer.mu.pca,f2,mu,"recall extra loss, lens part minus PCA directions (paired)",0.4821,0.3684,0.6034,200,share,results/x0_parts/muse30b_x0_parts/outcomes.jsonl
