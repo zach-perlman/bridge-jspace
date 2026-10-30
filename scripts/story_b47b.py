@@ -79,7 +79,6 @@ def save(fig, name: str, out_dir: Path | None) -> str:
     """story_style.save into out_dir (default figures/depth/); returns the name."""
     out = out_dir or S.OUT
     out.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out / f"{name}.svg", facecolor="white")
     fig.savefig(out / f"{name}.png", dpi=200, facecolor="white")
     S.plt.close(fig)
     return name

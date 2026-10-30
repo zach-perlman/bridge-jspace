@@ -154,7 +154,6 @@ def figure(models: list[dict], path: Path, preview: bool = False) -> Path:
                handlelength=1.6, columnspacing=1.2)  # fmt: skip
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=200, facecolor="white")
-    fig.savefig(path.with_suffix(".svg"), facecolor="white")
     plt.close(fig)
     return path
 
