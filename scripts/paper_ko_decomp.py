@@ -54,8 +54,29 @@ first 8 gated MH items at every band: paper10, paper10_rot, top3 and top30 again
 stage (scripts/removal_textloss.agreement): plain-text top-1 agreement with the clean model on the 64 pinned WikiText rows
 and 64 v4 passages, per band, under removal_textloss.TEXT_CONDS (text_rows.jsonl). Reader: scripts/paper_ko_read55.py.
 
+2026-10-30 (prereg amendment 85 note 60, outputs vs pivots on the paper's own tasks): --n60 with --bands medium=lo-hi (and
+--prev39 for MH's note 39 median-onset window, run as band "early" for MH only). Every condition on paper10 (its
+protection), every position; spans are the unit J++ vectors of token ids (QR), as note 45's keeps:
+  paper10, paper10_rot, paper10_pcasize                           as note 45
+  keepT10      kept span: the clean top-10 tokens (whitespace-only dropped) and the first token of every form of each
+               (decoded, stripped; note 45's forms rule), label-free
+  keepRT10E    kept span: the first k columns of one QR of the item's random letter-token pool (N60_POOL tokens drawn
+               with Random('n60R:<set>:<item>') from letter tokens that are no item word's, control's, T10's or
+               protected token), k the smallest prefix whose share of paper10's removal energy (summed over the band's
+               layers and positions, in paper10's own forward) is not below keepT10's (all of it if none reaches)
+  keep_T, keep_E, keep_I (ML); keep_T, keep_B (MH)                 note 45's word keeps
+  keep_Eperp, keep_Iperp (ML); keep_Bperp (MH)   the word's unit vectors projected off span(T's forms + T10's tokens),
+               columns of norm < 1e-3 dropped, QR (|R_jj| < 1e-3 dropped); rank logged
+  keepRE_<X>perp  the pool prefix at keep_<X>perp's energy (as keepRT10E)
+  keep_ctl     note 45's control keep: ML another item's E (same relation when possible), MH another item's B, count-matched
+  onlyT10, onlyRT10E   r' = P r: only paper10's removal's part in keepT10's / keepRT10E's span
+PO (rhyme, beside): paper10, rot, pcasize, keepT10, keepRT10E, onlyT10, onlyRT10E. Logged per item and band: the energy
+shares (T10, perps, T, words, ctl), ranks, the matched prefix sizes and whether they reached. No text stage. Byte check as
+note 55 at every band. Reader: scripts/paper_ko_read60.py.
+
 python scripts/paper_ko_decomp.py --name N --why W [--sets ML MH OO] [--limit K] [--prev39 RUN] [--prompt-end auto]
 python scripts/paper_ko_decomp.py --name N --why W --sets ML MH OO PO --bands medium=17-24 heavy=14-27 [--keep-band medium]
+python scripts/paper_ko_decomp.py --name N --why W --n60 --sets ML MH PO --bands medium=17-24 --prev39 RUN
 python scripts/paper_ko_decomp.py --check        (CPU: data hashes, tokenizer, words, cognates, plan)
 """
 
@@ -97,6 +118,11 @@ N55_DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "
             "unembed100", "unembed300")  # the last two: amendment 74
 N55_KEEP = {"ML": ["T", "E"], "MH": ["T", "B"], "OO": ["T"], "PO": ["T", "S"]}
 N55_BYTE_CONDS = ("paper10", "paper10_rot", "top3", "top30")
+# note 60 (amendment 85): word keeps, perp keeps, the random pool for energy matching
+N60_WORDS = {"ML": ["T", "E", "I"], "MH": ["T", "B"], "PO": []}
+N60_PERP = {"ML": ["E", "I"], "MH": ["B"], "PO": []}
+N60_POOL = 256
+N60_OWN = ("paper10", "keepT10", "keepRT10E", "onlyT10", "onlyRT10E")  # + keep_<X>perp, keepRE_<X>perp: make_edits60
 MAIN_BAND = {"qwen3.6-27b": (24, 40), "qwen3.5-9b": (8, 16), "nemotron-3.5-lightning": (20, 33)}  # note 39's
 N_DRAWS, GATE_TOKENS, CHAT_FALLBACK_BELOW, N_BYTE_CHECK = 3, 6, 50, 8
 QUOTES = " \t\n\"'«»“”‘’„"
@@ -258,6 +284,21 @@ def rel_tracked(e, acc: torch.Tensor):
     return f
 
 
+def conditions60(s: str, bands: list[str]) -> list[tuple[str, str]]:
+    """Note 60: (condition, band name) pairs for one set; paper10 first in every band (its forward sets the energies)."""
+    out = []
+    for b in bands:
+        cs = ["paper10", "paper10_rot", "paper10_pcasize", "keepT10", "keepRT10E"] + [f"keep_{w}" for w in N60_WORDS[s]]
+        cs += [f"keep_{w}perp" for w in N60_PERP[s]] + [f"keepRE_{w}perp" for w in N60_PERP[s]]
+        cs += (["keep_ctl"] if s != "PO" else []) + ["onlyT10", "onlyRT10E"]
+        out += [(c, b) for c in cs]
+    return out
+
+
+def is_n60_own(cond: str) -> bool:
+    return cond in N60_OWN or (cond.startswith("keep_") and cond.endswith("perp")) or cond.startswith("keepRE_")
+
+
 def parse_bands(spec: list[str]) -> dict[str, list[int]]:
     out = {}
     for x in spec:
@@ -287,7 +328,14 @@ def run(a) -> None:
     band_early = list(range(early[0], early[1] + 1)) if early else []
     n55 = bool(a.bands)  # prereg amendment 72 note 55 (its own conditions and bands; note 45's run is unchanged without it)
     bands55 = parse_bands(a.bands) if n55 else {}
-    assert not (n55 and early), "note 55 has no early window"
+    n60 = bool(getattr(a, "n60", False))  # prereg amendment 85 note 60 (on note 55's path: --bands, edit_rel, sec)
+    assert not n60 or n55, "--n60 needs --bands medium=lo-hi"
+    assert not (n55 and early and not n60), "note 55 has no early window"
+    if n60 and early:
+        bands55["early"] = list(range(early[0], early[1] + 1))  # note 39's median-onset window, MH only
+
+    def set_bands(s: str) -> list[str]:
+        return [b for b in bands55 if b != "early" or s == "MH"]
     assert not n55 or a.keep_band in bands55, "--keep-band must name one of --bands"
     sets = {s: load_set(s)[: a.limit or None] for s in a.sets}
     full = not a.limit
@@ -318,6 +366,10 @@ def run(a) -> None:
                          "force_chat": a.force_chat})  # fmt: skip
     elif a.force_chat:
         manifest["force_chat"] = a.force_chat
+    if n60:
+        manifest.update({"note": "prereg amendment 85 note 60", "keep_band": None, "text": None, "pool": N60_POOL,
+                         "conditions": {s: [f"{c}@{b}" for c, b in conditions60(s, set_bands(s))] for s in sets},
+                         "seeds": {**manifest["seeds"], "pool": "Random('n60R:<set>:<item>')"}})  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     t0 = time.time()
     model = load_model()
@@ -443,6 +495,103 @@ def run(a) -> None:
                                      observe=obs)  # fmt: skip
         return edits
 
+    span60: dict = {}  # note 60: (kind, row, layer) -> orthonormal basis [d, k], this batch only
+    k60: dict = {}  # note 60: (band, row) -> {X: matched pool prefix size}
+
+    def vecs(la: int, ids: list[int]) -> torch.Tensor:
+        return lens.vectors(la, torch.tensor(ids, device="cuda")).double().T  # [d, n] unit J++ vectors
+
+    def Q60(kind: str, chunk: list[dict], i: int, la: int, band: str | None = None) -> torch.Tensor:
+        """Note 60's spans for row i at layer la: T10, ref (T's forms + T10), <X>perp, pool, RT10E / RE_<X>perp (pool prefix)."""
+        if kind == "RT10E" or kind.startswith("RE_"):
+            k = k60[(band, i)]["T10" if kind == "RT10E" else kind[3:]]
+            return Q60("pool", chunk, i, la)[:, :k]
+        key = (kind, i, la)
+        if key not in span60:
+            r = chunk[i]
+            if kind == "T10":
+                span60[key] = torch.linalg.qr(vecs(la, r["t10_tokens"]))[0]
+            elif kind == "ref":
+                span60[key] = torch.linalg.qr(vecs(la, sorted(set(r["word_tokens"]["T"]) | set(r["t10_tokens"]))))[0]
+            elif kind == "pool":
+                span60[key] = torch.linalg.qr(vecs(la, r["pool60"]))[0]  # nested: its first k columns span the first k tokens
+            elif kind.endswith("perp"):
+                V = vecs(la, r["word_tokens"][kind[: -len("perp")]])
+                Qr = Q60("ref", chunk, i, la)
+                P = V - Qr @ (Qr.T @ V)
+                P = P[:, P.norm(dim=0) >= 1e-3]
+                if P.shape[1]:
+                    Qp, Rp = torch.linalg.qr(P)
+                    P = Qp[:, Rp.diagonal().abs() >= 1e-3]
+                span60[key] = P
+            else:
+                raise ValueError(kind)
+        return span60[key]
+
+    def make_edits60(cond: str, chunk: list[dict], protected: list[torch.Tensor], band: list[int], bname: str, acc60: dict) -> dict:
+        """Note 60's own conditions (paper10 with its energy log, the T10 / perp / pool keeps, the only-edits)."""
+        s = chunk[0]["set"]
+        edits = {}
+        for la in band:
+            rs = [RowSettings(skip=[], protected=protected[i]) for i in range(len(chunk))]
+            if cond == "paper10":
+                acc = acc60[bname]
+
+                def obs(r, B, T, la=la, acc=acc):  # read-only: paper10's removal per row, before anything else
+                    for b in range(B):
+                        rb = r[b * T : (b + 1) * T].double()
+                        a_ = acc[b]
+                        a_["tot"] += float(rb.pow(2).sum())
+                        for kind in ["T10"] + [f"{w}perp" for w in N60_PERP[s]]:
+                            a_[kind] = a_.get(kind, 0.0) + float((rb @ Q60(kind, chunk, b, la)).pow(2).sum())
+                        for w in N60_WORDS[s] + (["ctl"] if s != "PO" else []):
+                            a_[w] = a_.get(w, 0.0) + float((rb @ span(lens, la, chunk[b]["word_tokens"][w])).pow(2).sum())
+                        a_["pool"] += (rb @ Q60("pool", chunk, b, la)).pow(2).sum(0)
+
+                edits[la] = removal_edit("top", dic[la], rs, k=top_k("paper10"), observe=obs)
+            elif cond in ("onlyT10", "onlyRT10E"):  # r' = P r, as ablate_v2's note 50 onlyA
+                cap: dict = {}
+                inner = removal_edit("top", dic[la], rs, k=top_k("paper10"), observe=lambda r, B, T, cap=cap: cap.__setitem__("r", r))
+
+                def only(h: torch.Tensor, inner=inner, cap=cap, la=la, kind=cond[4:]) -> torch.Tensor:
+                    B, T, d = h.shape
+                    inner(h)
+                    r = cap.pop("r")
+                    out = torch.zeros_like(r)
+                    for b in range(B):
+                        Q = Q60(kind, chunk, b, la, bname)
+                        rb = r[b * T : (b + 1) * T].double()
+                        out[b * T : (b + 1) * T] = ((rb @ Q) @ Q.T).float()
+                    return (h.reshape(B * T, d).float() - out).reshape(B, T, d)
+
+                edits[la] = only
+            else:
+                kind = {"keepT10": "T10", "keepRT10E": "RT10E"}.get(cond) or (cond[5:] if cond.startswith("keep_") else "RE_" + cond[7:])
+                edits[la] = removal_edit("top", dic[la], rs, k=top_k("paper10"), keep_span=[Q60(kind, chunk, i, la, bname) for i in range(len(chunk))])
+        return edits
+
+    def set_k60(chunk: list[dict], bname: str, acc: list[dict]) -> None:
+        """After paper10's forward at a band: per row, the energy shares, ranks and each matched pool prefix (note 44's rule)."""
+        s = chunk[0]["set"]
+        for i, r in enumerate(chunk):
+            a_ = acc[i]
+            tot = a_["tot"]
+            cum = (a_["pool"].cumsum(0) / tot).tolist() if tot > 0 else [0.0] * N60_POOL
+            ks, reached, E = {}, {}, {}
+            for kind in ["T10"] + [f"{w}perp" for w in N60_PERP[s]]:
+                E[kind] = a_.get(kind, 0.0) / tot if tot > 0 else None
+                hit = [j for j, c in enumerate(cum) if E[kind] is not None and c >= E[kind]]
+                ks[kind] = hit[0] + 1 if hit else N60_POOL
+                reached[kind] = bool(hit)
+            for w in N60_WORDS[s] + (["ctl"] if s != "PO" else []):
+                E[w] = a_.get(w, 0.0) / tot if tot > 0 else None
+            k60[(bname, i)] = ks
+            la0 = bands55[bname][0]
+            rank = {kind: int(Q60(kind, chunk, i, la0).shape[1]) for kind in ["T10", "ref"] + [f"{w}perp" for w in N60_PERP[s]]}
+            rank.update({w: len(r["word_tokens"][w]) for w in N60_WORDS[s]})
+            r.setdefault("n60", {})[bname] = {"E": E, "k": ks, "reached": reached, "E_pool_k": {kind: (cum[ks[kind] - 1] if tot > 0 else None) for kind in ks},
+                                              "rank": rank, "rank_layer": la0}  # fmt: skip
+
     rows_out: list[dict] = []
     elig = [r for r in items if r["eligible"]]
     groups: dict = {}
@@ -487,7 +636,24 @@ def run(a) -> None:
                 r["protected"] = {k: bool(set(v) & top_set) for k, v in r["word_tokens"].items()}
                 r["protected_rows"] = {k: bool(set(wl[k]) & prot_rows) for k in wl}
                 log_items.append(r)
-            if not n55:
+                if n60:  # note 60: T10 tokens (label-free) and the item's random pool, drawn after the control
+                    t10 = set()
+                    for t in top10[i].tolist():
+                        w = tok.decode([t]).strip()
+                        if w:
+                            t10 |= {t} | set(word_tokens(tok, w))
+                    r["t10_tokens"] = sorted(t10)
+                    lt = letters.tolist()
+                    excl = own_toks | set(ctl) | t10 | {lt[j] for j in prot_rows}
+                    r["pool60"] = random.Random(f"n60R:{s}:{r['name']}").sample(sorted(set(lt) - excl), N60_POOL)
+            if n60:
+                plan = [(c, b, bands55[b]) for c, b in conditions60(s, set_bands(s))]
+                span60.clear()
+                acc60 = {b: [{"tot": 0.0, "pool": torch.zeros(N60_POOL, dtype=torch.float64, device="cuda")} for _ in chunk] for b in set_bands(s)}
+                k60.clear()
+                for i, r in enumerate(chunk):
+                    r["n_protected_rows"] = int(protected[i].numel())
+            elif not n55:
                 plan = [(c, "early" if e else "main", band_early if e else band_main) for c, e in conditions(s, bool(early))]
             else:
                 plan = [(c, b, bands55[b]) for c, b in conditions55(s, bands55, a.keep_band)]
@@ -499,6 +665,10 @@ def run(a) -> None:
                 rel, tc = None, time.time()
                 if not n55:
                     edits = make_edits(cond, chunk, protected, band)
+                elif n60:
+                    edits = make_edits60(cond, chunk, protected, band, wname, acc60) if is_n60_own(cond) else make_edits(cond, chunk, protected, band)
+                    rel = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")
+                    edits = {la: rel_tracked(e, rel) for la, e in edits.items()}
                 else:
                     edits = make_edits(cond, chunk, protected, band, energy if (cond == "paper10" and wname == a.keep_band) else None)
                     rel = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")
@@ -514,7 +684,12 @@ def run(a) -> None:
                 if rel is not None:  # note 55: the batch's wall time for this condition (GPU synced by the reads above)
                     for x in rows_out[-len(chunk) :]:
                         x["sec"] = round(time.time() - tc, 3)
-            if n55:
+                if n60 and cond == "paper10":  # note 60: the matched pool prefixes for this band, from paper10's energies
+                    set_k60(chunk, wname, acc60[wname])
+            if n60:
+                for r in chunk:
+                    r.pop("pool60", None)
+            elif n55:
                 for i, r in enumerate(chunk):
                     e = energy[i].tolist()
                     r["E55"] = {w: (e[j] / e[0] if e[0] > 0 else None) for j, w in enumerate(N55_KEEP[s], 1)}
@@ -559,7 +734,7 @@ def run(a) -> None:
 
     keys = ("set", "name", "prompt_end", "continuation", "eligible", "tok", "target_tokens", "single_token_target", "boundary_clean",
             "cluster", "words", "ctl_word", "word_tokens", "cognate", "protected", "protected_rows", "clean_correct", "clean_logp",
-            "n_protected_rows", "rank55", "E55")  # fmt: skip  # the last three: note 55 only
+            "n_protected_rows", "rank55", "E55", "t10_tokens", "n60")  # fmt: skip  # the last five: notes 55 and 60 only
     with open(out_dir / "items.jsonl", "w") as f:
         for r in items:
             f.write(json.dumps({k: r[k] for k in keys if k in r}, ensure_ascii=False) + "\n")
@@ -574,7 +749,10 @@ def run(a) -> None:
         summary["reader"] = f"python scripts/paper_ko_read55.py results/{EXP}/{a.name}"
         summary["note"] = "prereg amendment 72 note 55"
         summary["command"], summary["git_state"] = manifest["command"], manifest["git_state"]
-        if not a.no_text:  # the text stage: plain-text top-1 agreement (Fig. 22's metric), per band and condition
+        if n60:
+            summary["reader"] = f"python scripts/paper_ko_read60.py results/{EXP}/{a.name}"
+            summary["note"] = "prereg amendment 85 note 60"
+        if not a.no_text and not n60:  # the text stage: plain-text top-1 agreement (Fig. 22's metric), per band and condition
             from scripts.removal_textloss import TEXT_CONDS, agreement, v4_texts, wiki_texts
 
             n_text = a.limit or 64
@@ -646,6 +824,7 @@ if __name__ == "__main__":
     ap.add_argument("--no-text", action="store_true", help="note 55: skip the plain-text agreement stage")
     ap.add_argument("--text-batch", type=int, default=16)
     ap.add_argument("--force-chat", nargs="*", default=[], help="smoke only: gate these sets with the chat prefill")
+    ap.add_argument("--n60", action="store_true", help="note 60 (amendment 85): outputs vs pivots, with --bands medium=lo-hi")
     args = ap.parse_args()
     if args.check:
         check()
