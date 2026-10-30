@@ -75,6 +75,12 @@ def main() -> Path:
             "arm3_english": extra("a3e", "a3er"), "arm3_any_language": extra("a3a", "a3ar")},
             "sources": {"translated": str(t.relative_to(REPO)), "krand": f"runs/answer_arms_krand/{kdir}"}}  # fmt: skip
     (out / "tables.json").write_text(json.dumps(res, indent=1) + "\n")
+    lines = ["# Answer control, recall: switches blocked beyond a size-matched random part (post hoc; answer in any language; 9B, 27B, Muse)", "",
+             "| model | arm | value [95% interval] |", "|---|---|---|"]
+    for m, v in res["models"].items():
+        for k, x in v["extra"].items():
+            lines.append(f"| {m} | {k.replace('_', ' ')} | {x[0]:+.3f} [{x[1]:.3f}, {x[2]:.3f}] |")
+    (out / "tables.md").write_text("\n".join(lines) + "\n")
     print(out)
     for m, v in res["models"].items():
         print(m, {k: x[0] for k, x in v["extra"].items()})
