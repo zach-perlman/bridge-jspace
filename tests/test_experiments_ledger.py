@@ -75,7 +75,7 @@ def test_the_coverage_table_is_symbols_with_footnotes():
 def test_the_overview_heatmap_follows_the_cards():
     """The heatmap's rows (scripts/ledger_coverage.py's HEATMAP): every card in Parts I-VI, in the ledger's order, its
     Part as in the ledger; nothing else but the cards it leaves out on purpose; every cell a known verdict code. The
-    figure sits under "In one minute", before "How to read"."""
+    verdict tables (the map as markdown, morning brief 30 Oct) sit under "In one minute", before "How to read"."""
     import re
 
     from scripts import ledger_coverage as LC
@@ -94,7 +94,7 @@ def test_the_overview_heatmap_follows_the_cards():
     assert all(in_part[a] == part for part, a, _, _ in rows)
     assert all(a in in_part for a in LC.HEATMAP_LEFT_OUT)
     top = text.split("## How to read")[0]
-    assert "](../../figures/depth/ledger/ledger_coverage_map.png)" in top.split("## In one minute")[1]
+    assert "<!-- verdicts:start" in top.split("## In one minute")[1]
 
 
 def test_the_ledger_follows_the_readme_order():

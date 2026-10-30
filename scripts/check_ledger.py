@@ -12,8 +12,9 @@ well formed:
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
 - every card has one figure, right after its Method (before its rule; Dan's restructure brief, 29 Oct 08:55), with an
-  italic caption and its file present; internal links resolve to any <a id> on the page (cards and the Appendix);
-- the coverage table equals scripts/ledger_coverage.py's output (the committed matrix);
+  italic caption and its file present, or in its place one line "*No figure: <why>.*" (morning brief 30 Oct, S8); internal links resolve to any <a id> on the page (cards and the Appendix);
+- the coverage table equals scripts/ledger_coverage.py's output (the committed matrix), and the verdict tables (the
+  coverage map as markdown) its verdict_tables();
 - four model slots (Dan's figures brief, 29 Oct 10:00): on a card whose figure is a ledger figure, a model with a
   number in the card's table has data in the figure, a model without one has a grey slot (data/figures/depth/ledger/slots.json,
   written by scripts/ledger_figures.py); a verdict-folder figure on a card is a problem; the README's shared figures
@@ -79,6 +80,13 @@ def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
     (the link is written from docs/depth/), an italic caption on the next line."""
     lines = body.splitlines()
     imgs = [i for i, line in enumerate(lines) if re.match(r"^!\[[^\]]+\]\([^)]+\)", line)]
+    if not imgs:  # a card whose numbers are its table (morning brief 30 Oct, S8: four numbers or fewer, no figure)
+        marks = [i for i, line in enumerate(lines) if re.fullmatch(r"\*No figure: .+\*", line.strip())]
+        method = next((k for k, line in enumerate(lines) if line.startswith("- **Method.**")), -1)
+        rule = next((k for k, line in enumerate(lines) if line.startswith("- **Rule, fixed in advance.**")), -1)
+        if len(marks) == 1 and method < marks[0] < rule:
+            return []
+        return [f"no figure and no '*No figure: ...*' line after the method in: {head}"]
     if len(imgs) != 1:
         return [f"{len(imgs)} figures in: {head}"]
     i = imgs[0]
@@ -192,9 +200,21 @@ def coverage_problems(text: str) -> list[str]:
                                                                  "scripts/ledger_coverage.py)"]  # fmt: skip
 
 
+def verdict_problems(text: str) -> list[str]:
+    """The verdict tables between their markers (the coverage map as markdown, morning brief 30 Oct #1) must equal
+    scripts/ledger_coverage.py's verdict_tables()."""
+    from scripts import ledger_coverage as LC
+
+    m = re.search(r"<!-- verdicts:start[^>]*-->\n(.*?)\n<!-- verdicts:end -->", text, re.S)
+    if not m:
+        return ["no verdict tables between <!-- verdicts:start --> and <!-- verdicts:end -->"]
+    return [] if m.group(1).strip() == LC.verdict_tables().strip() else ["the verdict tables differ from "
+                                                                          "ledger_coverage.verdict_tables()"]  # fmt: skip
+
+
 def main() -> int:
     text = LEDGER.read_text()
-    bad = problems(text) + coverage_problems(text)
+    bad = problems(text) + coverage_problems(text) + verdict_problems(text)
     for line in bad:
         print(line)
     print(f"check_ledger: {len(entries(text))} entries, {len(cited_paths(text))} paths, "

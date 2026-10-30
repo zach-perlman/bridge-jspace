@@ -155,12 +155,21 @@ HEATMAP = (
 
 
 # Dan 11:30 (q122b_1130): the 122B (FP8; MoE, ~10B active) as a fifth heatmap column where a verdict exists (the README
-# agent's mapping, 29 Oct); "not run" elsewhere. ° = its routes gate lowered to 0.75 after the data (0.797 < 0.80)
+# agent's mapping, 29 Oct); "not run" elsewhere. ° = its routes gate lowered to 0.75 after the data (0.797 < 0.80).
+# 30 Oct (Dan: "all runs in"): the night's coverage verdicts (EXPERIMENTS.md #cov-122b-night), the agent's reading,
+# UNVERIFIED; "lk" marks the lookup-only gate (Dan 02:05; post hoc, hollow on the figures)
 HEATMAP_122B = {"lightning-conflict": "H confirmed", ("t51-12", "Item or answer, main test"): "H answer not read",
-                "b53-1": "H order-free", "b53-4": "X not designed", "b53-2": "N running",
+                "b53-1": "H order-free", "b53-4": "X not designed", "b53-2": "H lens blind",
                 "x0b": "B mixed", "x5": "H holds",
                 "probe": "D readable",
-                "routes": "G below gate°", "swap": "G below gate°", "order": "D by order"}  # fmt: skip
+                "routes": "G below gate°", "swap": "G below gate°", "order": "D by order",
+                "t51-1": "H (i), (ii) yes", "t47-5": "H not needed", "t49-2": "B (a), (b) no", "t45p": "F no",
+                "b53-6": "G below gate", "t49-1": "F neither", "b52-a": "D bridge words", "b52-b": "D descriptive",
+                "t47-1": "G below gate", "t47-16": "F none of three (lk)", "six": "H own code",
+                "t47-0": "H lens blind (lk)", "t47-14": "F no", "b53-7": "D readable (lk)", "t47-4": "D before L",
+                "t47-8": "H (a) yes (lk)", "t51-10": "B read, not used", "b53-3": "D in between",
+                ("z1", "Zach's passages, true facts"): "B in between", ("z1", "Zach's passages, made-up facts"): "H holds",
+                "z3": "F no position", "t47-13": "N 7 errors"}  # fmt: skip
 
 
 def heatmap_122b(anchor: str, label: str) -> tuple[str, str]:
@@ -259,5 +268,39 @@ def table(matrix: Path = MATRIX) -> str:
     return "\n".join(lines)
 
 
+VERDICT_WORD = {"H": "holds", "B": "in part", "F": "fails", "D": "descriptive"}
+
+
+def verdict_tables() -> str:
+    """The coverage map as markdown (morning brief 30 Oct, #1: no image): one table per Part, a row per heatmap row, a
+    column per model (9B, 27B, Muse, Lightning ○, 122B); a cell is the verdict and its words, "–" where nothing was
+    tested (not run, not designed, below its gate: the coverage table says which); "fails" in bold."""
+    order = ("9B", "27B", "Muse", "Lightning", "122B")
+    out = []
+    for part in ("I", "II", "III", "IV", "V", "VI"):
+        out += ["", f"**{PART_TITLE[part]}**", "", "| test | " + " | ".join(o + (" ○" if o == "Lightning" else "")
+                                                                          for o in order) + " |",
+                "|---|" + "---|" * len(order)]  # fmt: skip
+        for p_, anchor, label, cells in heatmap_cells():
+            if p_ != part:
+                continue
+            by = dict(zip([name for _, name in COLUMNS], cells, strict=True)) | {"122B": heatmap_122b(anchor, label)}
+            row = []
+            for o in order:
+                code, words = by[o]
+                if code in "NXG":
+                    row.append("–")
+                    continue
+                v = VERDICT_WORD[code]
+                words = words.replace("°", " ○").replace(" (lk)", " ○")
+                bare = words.replace(" ○", "")
+                cell = (v + words[len(bare):]) if bare in (v, "confirmed", "holds") else f"{v}: {words}"
+                row.append(f"**{cell}**" if code == "F" else cell)
+            out.append(f"| [{label}](#{anchor}) | " + " | ".join(row) + " |")
+    return "\n".join(out[1:])
+
+
 if __name__ == "__main__":
-    print(table())
+    import sys
+
+    print(verdict_tables() if sys.argv[1:] == ["verdicts"] else table())

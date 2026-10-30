@@ -11,8 +11,101 @@
 - **Open after today:** near the output the last-token test is uninformative ([53.3](#b53-3), [53.3b](#b53-3b)); the pre-specified identity code says no on the 9B and the 27B and in between on Muse ([53.8](#b53-8)); two attention blocks carry part of Lightning's lookup, in between ([53.4](#b53-4)).
 - **Withdrawn and rechecked:** Zach's described bridge is withdrawn ([Z2](#z2)); his named passages with made-up facts split on the 9B, also without the 60 passages that state the bridge's true value ([Z1](#z1)).
 
-![Which test ran on which model, and what its rule said](../../figures/depth/ledger/ledger_coverage_map.png)
-*One row per test card, in the README's order; columns 27B, Lightning, 9B, Muse, and the 122B (FP8; MoE, ~10B active; its verdict where one exists, else not run). Green: the hypothesis the card asks about holds; amber: in between or in part; red: fails; blue-grey: descriptive, no rule; grey: not tested or not designed; hatched: below the model's gate (not tested; any numbers descriptive only). Each cell's words are the card's verdict, shortened. Left out: Lightning's layer pick, the 9B's clean reruns, the withdrawn card. Every cell and its reason: [Appendix C](#coverage).*
+**Which test ran on which model, and what its rule said.** One table per Part, a row per test card, in the README's order; "in part" covers in between or in part; "–": not tested on that model (not run, not designed, or below its gate: the coverage table below says which). Lightning ○: its gate chosen after the 60-scene pre-check; ○ in a cell: post hoc (the 122B's gate lowered to 0.75, or its lookup-only gate, Dan 30 Oct). The 122B's cells from its coverage runs (FP8; MoE, ~10B active; L33), the agent's reading, pending hand-check.
+
+<!-- verdicts:start (scripts/ledger_coverage.py verdicts; do not edit by hand) -->
+**Part I. The two readers**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Conflict test, main test](#lightning-conflict) | holds | in part: not confirmed | holds | holds | holds |
+| [Item or answer, main test](#t51-12) | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read |
+| [Item or answer, his true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – |
+| [Item or answer, his made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – |
+| [Split in prose, JSON, tables](#x0b) | holds | holds | holds | holds | in part: mixed |
+| [Split in natural passages](#x5) | holds ○ | in part: mixed | holds | – | holds |
+| [Each part added by itself](#t51-1) | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes |
+| [Zeroing at one layer](#t47-5) | holds: not needed | holds: not needed | holds: not needed | holds: not needed | holds: not needed |
+| [Ladder: other copies taken out](#t49-2) | in part: (b) no | in part: (a), (b) no | in part: (a), (b) no | – | in part: (a), (b) no |
+| [The item's earlier mention](#t45p) | holds: yes | holds: yes | holds: yes | – | **fails: no** |
+| [Lens identity vs address](#b53-6) | in part: both | in part: both | in part: both | in part: both | – |
+| [Question order, number answer](#b53-1) | – | **fails: order matters** | – | – | holds: order-free |
+| [Gain map: weight or route](#t49-1) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** |
+| [Two learned subspaces](#t48-1) | **fails: no** | **fails: no** | **fails: no** | – | – |
+| [Inside the lens part](#b52-a) | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words |
+| [Answer readable, usable](#b52-b) | descriptive | descriptive | descriptive | descriptive: ours only | descriptive |
+
+**Part II. Identity**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Identity route outside the lens](#t47-1) | holds: outside | holds: outside | holds: outside | holds: outside | – |
+| [Routes test and the address](#routes) | holds: both routes | in part: adding: no | holds: both routes | holds: both routes | – |
+| [Never the value, by format](#t47-7c) | in part: incomplete | in part: incomplete | in part: incomplete | in part: incomplete | – |
+| [Learned subspaces at scale](#t51-3) | in part: (iii) no | in part: (iii) no | in part: (iii) no | – | – |
+| [Shared identity code](#b53-8) | **fails: no** | **fails: no** | in part: in between | – | – |
+
+**Part III. The address**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Address probe](#probe) | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable |
+| [Address swap, rule at dose 1](#swap) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
+| [Swap after neutral sentences](#t47-16) | holds: robust | holds: robust | holds: robust | holds: robust | **fails: none of three ○** |
+| [Six lockers, own code each](#six) | holds: own code | **fails: none of three** | holds: own code | holds: own code | holds: own code |
+| [What the address is](#t51-11) | in part: in between | in part: part 2 only | in part: mixed | – | – |
+| [Address, 27B position scenes](#b53-5) | holds: pattern holds | **fails: differs** | – | – | – |
+| [Lens readout of the swap](#t47-0) | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind ○ |
+| [Probes on the lens subspace](#b53-2) | holds: lens blind | in part: in between | holds: lens blind | in part: in between | holds: lens blind |
+| [Report prompt](#t47-10) | – | **fails: neither** | – | – | – |
+| [Report of slot 1, reworded](#t49-6) | **fails: recovers** | **fails: recovers** | – | **fails: recovers** | – |
+| [A few heads take the swap](#t51-2) | **fails: distributed** | **fails: distributed** | **fails: distributed** | **fails: distributed** | – |
+| [Attention follows the swap](#t49-7) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | – |
+| [Chained addresses](#t47-14) | **fails: no** | **fails: no** | **fails: no** | – | **fails: no** |
+| [Address refit per format](#x45d) | holds: refit works | in part: neither | holds: refit works | holds: refit works | – |
+| [Address in code, tool output](#b53-7) | in part | in part | – | – | descriptive: readable ○ |
+
+**Part IV. Where and when**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Split by sentence order](#order) | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order |
+| [Copy test, locker after](#t45q) | holds: yes | holds: yes | holds: yes | – | – |
+| [Token-by-layer map](#d1) | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | – |
+| [Lookups read before L](#t47-4) | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L |
+| [Anatomy by depth, handoff](#t47-8) | holds: (a) yes | **fails: (a) no** | holds: (a) yes | holds: (a) yes | holds: (a) yes ○ |
+| [Address at the last token](#t51-4) | **fails: not there** | **fails: not there** | holds: travels | in part: in between | – |
+| [Entity at the last token](#t51-10) | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used |
+| [Last token: the lookup's read](#b53-3) | descriptive: in between | descriptive: in between | descriptive: outside | descriptive: outside | descriptive: in between |
+| [Last token, word answers](#b53-3b) | in part: in between | in part: in between | – | – | – |
+| [Lightning's attention blocks](#b53-4) | – | – | – | in part: in between | – |
+
+**Part V. Other datasets**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Zach's passages, true facts](#z1) | **fails: lookup follows** | **fails: lookup follows** | **fails: follows, few** | in part: in between | in part: in between |
+| [Zach's passages, made-up facts](#z1) | holds | in part: in between | – | – | holds |
+| [Named vs described bridge](#b53-1b) | – | descriptive: mixed / answer | – | – | – |
+| [Full carrier up to L](#t51-7) | in part: in between | in part: in between | – | in part: in between | – |
+| [Position route, his passages](#z3) | in part: in between | **fails: no position** | in part: in between | in part: in between | **fails: no position** |
+| [Read window, his passages](#t51-5) | holds: same window | **fails: not the same** | – | holds: same window | – |
+
+**Part VI. What did not hold**
+
+| test | 9B | 27B | Muse | Lightning ○ | 122B |
+|---|---|---|---|---|---|
+| [Described bridge](#t47-3) | holds | **fails: through lens** | holds | – | – |
+| [One question, two instructions](#t47-15) | – | **fails: neither** | – | – | – |
+| [Errors are address errors](#t47-13) | **fails: no** | – | **fails: no** | **fails: no** | – |
+| [Lens part keys the attribute](#t48-2) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
+| [Person mark at the locker](#t48-3) | **fails: no** | **fails: no** | **fails: no** | – | – |
+| [Pooled person probe](#t49-3) | **fails: neither** | in part: in between | **fails: neither** | – | – |
+| [Copying heads pass the rest](#t48-4) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
+| [Address as the recall's route](#t48-5) | **fails: no** | **fails: no** | **fails: no** | – | – |
+| [Blocking the pick sentence](#t47-6) | **fails: no** | **fails: no** | **fails: no** | – | – |
+| [Same address, any item](#t47-11) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
+<!-- verdicts:end -->
 
 ## How to read
 
@@ -230,25 +323,25 @@ New in this ledger:
 - **Data.** Main test, 200 per model.
 - **Method.** In the changed prompt's state at the bridge word: its projection on the change's 25 lens directions removed at L (and at L to L+3), against a random subspace of the same share of the state.
 
-![Taking the J++ part out of the changed prompt's state leaves the recall's answers in place](../../figures/depth/fig01c_zeroing.png)
-*Answers kept with the lens part's 25 directions (dark for the recall, purple for the lookup) or a random part of the same size (grey) taken out of the changed prompt's state at the bridge word at L; dashed: the rule's 0.80; 200 scenes per model. Models: 9B, 27B, Muse, Lightning (Lightning hollow: its gate set after the 60-scene pre-check); the README's figure.*
+*No figure: every model keeps 0.94-0.97 of its recall answers, so the four numbers per model are the Result's table (the zeroing figure drew every dot near 1.0).*
 
-- **Rule, fixed in advance.** ""followed, not needed at one layer" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm; "needed" if it loses >= 0.30 beyond random. The lookup reported beside." Lightning: a coverage run on this rule, no prediction.
+- **Rule, fixed in advance.** ""followed, not needed at one layer" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm; "needed" if it loses >= 0.30 beyond random. The lookup reported beside." Lightning and the 122B: coverage runs on this rule, no prediction.
 
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
   |---|---|---|---|---|---|
-  | recall: answers kept, the lens part zeroed at L (bar >= 0.80) | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.97 [0.95, 0.99] --> | 0.97 [0.94, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.97 [0.94, 0.99] --> | 0.94 [0.89, 0.98]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.94 [0.89, 0.98] --> | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.97 [0.95, 0.99] --> | not run |
-  | recall: lost beyond a random part, at L (bar for needed >= 0.30) | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.03 [0.01, 0.05] --> | 0.03 [0.01, 0.06]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.03 [0.01, 0.06] --> | 0.06 [0.02, 0.11]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.06 [0.02, 0.11] --> | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.03 [0.01, 0.05] --> | |
-  | recall: lost beyond a random part, at L to L+3 (descriptive) | 0.25 [0.17, 0.32]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.5-9b :: recall :: 0.25 [0.17, 0.32] --> | 0.11 [0.06, 0.16]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.6-27b :: recall :: 0.11 [0.06, 0.16] --> | 0.08 [0.04, 0.13]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse-glimmer-30b :: recall :: 0.08 [0.04, 0.13] --> | 0.18 [0.12, 0.24]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nemotron-3.5-lightning :: recall :: 0.18 [0.12, 0.24] --> | |
-  | the rule | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: followed, not needed at one layer -->** (no prediction) | |
+  | recall: answers kept, the lens part zeroed at L (bar >= 0.80) | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.97 [0.95, 0.99] --> | 0.97 [0.94, 0.99]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.97 [0.94, 0.99] --> | 0.94 [0.89, 0.98]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.94 [0.89, 0.98] --> | 0.97 [0.95, 0.99]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.97 [0.95, 0.99] --> | 0.95 [0.91, 0.99]<!-- src: results/x47_zero/x52_zero-20261029T183120Z/x47_5.md \| qwen35_122b_x47_5 :: 0.95 [0.91, 0.99] --> |
+  | recall: lost beyond a random part, at L (bar for needed >= 0.30) | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: 0.03 [0.01, 0.05] --> | 0.03 [0.01, 0.06]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: 0.03 [0.01, 0.06] --> | 0.06 [0.02, 0.11]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: 0.06 [0.02, 0.11] --> | 0.03 [0.01, 0.05]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: 0.03 [0.01, 0.05] --> | 0.04 [0.00, 0.09]<!-- src: results/x47_zero/x52_zero-20261029T183120Z/x47_5.md \| qwen35_122b_x47_5 :: 0.04 [0.00, 0.09] --> |
+  | recall: lost beyond a random part, at L to L+3 (descriptive) | 0.25 [0.17, 0.32]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.5-9b :: recall :: 0.25 [0.17, 0.32] --> | 0.11 [0.06, 0.16]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen3.6-27b :: recall :: 0.11 [0.06, 0.16] --> | 0.08 [0.04, 0.13]<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse-glimmer-30b :: recall :: 0.08 [0.04, 0.13] --> | 0.18 [0.12, 0.24]<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nemotron-3.5-lightning :: recall :: 0.18 [0.12, 0.24] --> | 0.08 [0.04, 0.14]<!-- src: results/x47_zero/x52_zero-20261029T183120Z/x47_5.md \| qwen3.5-122b-a10b :: recall :: 0.08 [0.04, 0.14] --> |
+  | the rule | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| qwen35_9b_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| x47_5_27b :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x47_5-20261028T113106Z/x47_5.md \| muse30_x47_5 :: followed, not needed at one layer -->** | **followed, not needed at one layer<!-- src: results/x47_zero/x52_zero-20261029T032056Z/x47_5.md \| nem35l_x52_zero :: followed, not needed at one layer -->** (no prediction) | **followed, not needed at one layer<!-- src: results/x47_zero/x52_zero-20261029T183120Z/x47_5.md \| qwen35_122b_x47_5 :: followed, not needed at one layer -->** (no prediction) |
 
 - **Read.**
-  - Zeroing the lens part in the changed prompt's own state at L costs the recall at most 0.06 of its answers beyond random on all four models: the recall follows the lens part but does not need it at one layer.
+  - Zeroing the lens part in the changed prompt's own state at L costs the recall at most 0.06 of its answers beyond random on all five models: the recall follows the lens part but does not need it at one layer.
 - **Caveats.**
   - Over L to L+3 the recall loses more (0.08 to 0.25 beyond random), between the bars (descriptive).
-  - The lookup keeps its answers in every arm on all four.
+  - The lookup keeps its answers in every arm on all five.
+  - The 122B: a coverage run (FP8, L33; no prediction; pending hand-check).
 
 ### Does the recall need the lens part once its other copies are gone? (49.2, opened 28 Oct 17:16) <a id="t49-2"></a>
 
@@ -398,11 +491,10 @@ New in this ledger:
 
 - **Question.** Scaling the lens part and the rest of the change separately, does the recall move with either part at enough gain (weights), or only with one of them (routes), and does the lookup ignore the lens part?
 - **Why we asked.** Removing a part shows what a reader needs; adding each part at several gains shows whether it reads that part at all.
-- **Data.** Main test, locker first: 75<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 75 --> / 69<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 69 --> / 68<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 68 --> / 59<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 59 --> (9B / 27B / Muse / Lightning).
+- **Data.** Main test, locker first: 75<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 75 --> / 69<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 69 --> / 68<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 68 --> / 59<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 59 --> (9B / 27B / Muse / Lightning). The 122B (coverage, 30 Oct; FP8, L33): 53<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md | qwen35_122b_gain :: 53 --> scenes.
 - **Method.** At the bridge word at L: the lens part times α plus the rest times β, α and β from 0 to 2; the rest also without the address; random parts of the lens part's share at the same gains.
 
-![The gain map fits neither reading on any model](../../figures/depth/ledger/ledger_gain.png)
-*Per model, the five cells the rule reads, each with the rule's bar as a red tick: the recall with the lens part alone at twice its size, with the rest at twice its size without the address, and with a random part at the lens part's share (grey); the lookup with the lens part alone at twice its size and with the rest alone; whiskers 95%. The 122B grey (not run).*
+*No figure: five cells per model, each against its bar: the Result's table (the bars-and-ticks figure carried the verdict "(c) neither" on every model).*
 
 - **Rule, fixed in advance.** "(a) "weights, not routes": the recall's switch at (2,0) >= 0.5 and at (0,2, no U) >= 0.5, random corners <= 0.15; the lookup's switch at (2,0) <= 0.10 and at (0,1) >= 0.6. (b) "routes": the recall's switch at (0,2) <= 0.2 while (2,0) >= 0.5. (a') "the rest moves the recall only through the address": (0,2) >= 0.5 but (0,2, no U) <= 0.2. (c) "neither": report the two heatmaps." Lightning: a coverage run on this rule, no prediction.
 
@@ -410,16 +502,16 @@ New in this ledger:
 
   | | 9B | 27B | Muse | Lightning | 122B |
   |---|---|---|---|---|---|
-  | recall, the lens part alone at twice its size (bar >= 0.5) | 0.55 [0.42, 0.67]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.55 [0.42, 0.67] --> | 0.23 [0.13, 0.35]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.23 [0.13, 0.35] --> | 0.24 [0.10, 0.37]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.24 [0.10, 0.37] --> | 0.64 [0.51, 0.78]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.64 [0.51, 0.78] --> | not run |
-  | recall, the rest alone at twice its size | 0.97 [0.93, 1.00]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.97 [0.93, 1.00] --> | 0.64 [0.54, 0.74]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.64 [0.54, 0.74] --> | 0.18 [0.08, 0.29]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.18 [0.08, 0.29] --> | 0.90 [0.81, 0.97]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.90 [0.81, 0.97] --> | |
-  | recall, the same without the address (bar >= 0.5) | 0.76 [0.66, 0.86]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.76 [0.66, 0.86] --> | 0.45 [0.34, 0.56]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.45 [0.34, 0.56] --> | 0.21 [0.09, 0.34]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.21 [0.09, 0.34] --> | 0.73 [0.60, 0.84]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.73 [0.60, 0.84] --> | |
-  | recall, a random part at the lens part's share, twice (bar <= 0.15) | 0.24 [0.14, 0.34]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.24 [0.14, 0.34] --> | 0.01 [0.00, 0.05]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.01 [0.00, 0.05] --> | 0.01 [0.00, 0.05]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.01 [0.00, 0.05] --> | 0.42 [0.31, 0.54]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.42 [0.31, 0.54] --> | |
-  | lookup, the lens part alone at twice its size (bar <= 0.10) | 0.03 [0.00, 0.07]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.03 [0.00, 0.07] --> | 0.07 [0.02, 0.13]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.07 [0.02, 0.13] --> | 0.00 [0.00, 0.00]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.00 [0.00, 0.00] --> | 0.10 [0.04, 0.18]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.10 [0.04, 0.18] --> | |
-  | lookup, the rest alone (bar >= 0.6) | 0.91 [0.82, 0.97]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.91 [0.82, 0.97] --> | 0.80 [0.70, 0.90]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.80 [0.70, 0.90] --> | 0.81 [0.71, 0.91]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.81 [0.71, 0.91] --> | 0.93 [0.86, 0.98]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.93 [0.86, 0.98] --> | |
-  | the rule | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: (c) neither -->** (no prediction) | |
+  | recall, the lens part alone at twice its size (bar >= 0.5) | 0.55 [0.42, 0.67]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.55 [0.42, 0.67] --> | 0.23 [0.13, 0.35]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.23 [0.13, 0.35] --> | 0.24 [0.10, 0.37]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.24 [0.10, 0.37] --> | 0.64 [0.51, 0.78]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.64 [0.51, 0.78] --> | 0.55 [0.38, 0.69]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.55 [0.38, 0.69] --> |
+  | recall, the rest alone at twice its size | 0.97 [0.93, 1.00]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.97 [0.93, 1.00] --> | 0.64 [0.54, 0.74]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.64 [0.54, 0.74] --> | 0.18 [0.08, 0.29]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.18 [0.08, 0.29] --> | 0.90 [0.81, 0.97]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.90 [0.81, 0.97] --> | 0.87 [0.76, 0.95]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.87 [0.76, 0.95] --> |
+  | recall, the same without the address (bar >= 0.5) | 0.76 [0.66, 0.86]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.76 [0.66, 0.86] --> | 0.45 [0.34, 0.56]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.45 [0.34, 0.56] --> | 0.21 [0.09, 0.34]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.21 [0.09, 0.34] --> | 0.73 [0.60, 0.84]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.73 [0.60, 0.84] --> | 0.85 [0.73, 0.94]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.85 [0.73, 0.94] --> |
+  | recall, a random part at the lens part's share, twice (bar <= 0.15) | 0.24 [0.14, 0.34]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.24 [0.14, 0.34] --> | 0.01 [0.00, 0.05]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.01 [0.00, 0.05] --> | 0.01 [0.00, 0.05]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.01 [0.00, 0.05] --> | 0.42 [0.31, 0.54]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.42 [0.31, 0.54] --> | 0.23 [0.13, 0.34]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.23 [0.13, 0.34] --> |
+  | lookup, the lens part alone at twice its size (bar <= 0.10) | 0.03 [0.00, 0.07]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.03 [0.00, 0.07] --> | 0.07 [0.02, 0.13]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.07 [0.02, 0.13] --> | 0.00 [0.00, 0.00]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.00 [0.00, 0.00] --> | 0.10 [0.04, 0.18]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.10 [0.04, 0.18] --> | 0.09 [0.00, 0.19]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.09 [0.00, 0.19] --> |
+  | lookup, the rest alone (bar >= 0.6) | 0.91 [0.82, 0.97]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: 0.91 [0.82, 0.97] --> | 0.80 [0.70, 0.90]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: 0.80 [0.70, 0.90] --> | 0.81 [0.71, 0.91]<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: 0.81 [0.71, 0.91] --> | 0.93 [0.86, 0.98]<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: 0.93 [0.86, 0.98] --> | 0.81 [0.66, 0.94]<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: 0.81 [0.66, 0.94] --> |
+  | the rule | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| qwen35_9b_x49_1 :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| x49_1_27b :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x49_1-20261028T154510Z/x49_1.md \| muse30_x49_1 :: (c) neither -->** | **(c) neither<!-- src: results/x49_gain/x52_gain-20261029T021814Z/x49_1.md \| nem35l_x52_gain :: (c) neither -->** (no prediction) | **(c) neither<!-- src: results/x49_gain/x52_gain-20261030T094553Z/x49_1.md \| qwen35_122b_gain :: (c) neither -->** (no prediction) |
 
 - **Read.**
-  - The gain map fits neither reading fixed in advance on any model: on the 9B and Lightning a random part at the lens part's share also moves the recall; on the 27B and Muse the lens part alone moves the recall little even at twice its size. The rest alone moves the lookup on all four.
+  - The gain map fits neither reading fixed in advance on any model: on the 9B and Lightning a random part at the lens part's share also moves the recall; on the 27B and Muse the lens part alone moves the recall little even at twice its size. The rest alone moves the lookup on all five; the 122B (coverage, pending hand-check) reads like the 9B: a random part at the lens part's share moves its recall too.
 - **Caveats.**
   - Lightning's lookup with the lens part at twice its size sits at the rule's 0.10 bar, its point estimate just above it.
   - Locker-first main-test scenes only.
@@ -778,11 +870,10 @@ New in this ledger:
 
 - **Question.** With six locker sentences, is the address a line over slots (one shift steps the lookup one slot), a first-versus-rest marker, or one code per slot?
 - **Why we asked.** With three lockers a line and a first-versus-rest marker look the same.
-- **Data.** Six-locker scenes: the test half, 300 per model (9B, 27B, Muse, Lightning at L14), the other 300 fit the slot means.
+- **Data.** Six-locker scenes: the test half, 300 per model (9B, 27B, Muse, Lightning at L14, the 122B at L33 as a coverage run, 30 Oct), the other 300 fit the slot means.
 - **Method.** At the bridge word at L: one fixed shift (the mean step between neighbouring slot means) from each start slot, and swaps between given slots, each at doses 1 and 2, against a random vector of the same size; the slot means' first principal component beside.
 
-![One shift moves no lookup; pair swaps work on 9B, Muse and Lightning](../../figures/depth/ledger/ledger_six_lockers.png)
-*At dose 2, per model: start slots from which one shift sends at least 0.25 of lookups one slot on (light, of 5; none anywhere), and slot pairs a given-slot swap reaches (dark, of 30); dashed: "most pairs"; the rule's label under each model. 300 test scenes per model; 9B, 27B, Muse, Lightning. The 122B grey (not run).*
+*No figure: two counts per model (one shift: 0 of 5 start slots everywhere; given-slot swaps of 30) and a label: the Result's table.*
 
 - **Rule, fixed in advance.** "Ordinal: the first PCA component is monotone in slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector <= 0.05; Categorical, first vs rest: v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within 0.10 of random; Slot-specific: pairwise writes reach >= 0.25 on most pairs but no single v does." Dose 2 decides. The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -790,13 +881,13 @@ New in this ledger:
 
   | | 9B | 27B | Muse | Lightning | 122B |
   |---|---|---|---|---|---|
-  | position share under the whole change | 0.32 [0.28, 0.37]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| qwen35_9b_x47_2 :: 0.32 [0.28, 0.37] --> | 0.25 [0.19, 0.31]<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.70 [0.64, 0.76] :: 0.25 [0.19, 0.31] --> | 0.37 [0.31, 0.43]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| muse30_x47_2 :: 0.37 [0.31, 0.43] --> | 0.40 [0.33, 0.46]<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| nem35l_x52_six :: whole :: 0.40 [0.33, 0.46] --> | not run |
-  | first component monotone in slot (Spearman) | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 8.15, 5.59, 3.08 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 26.79, 16.42, 11.83 :: 1.00 --> | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 84.27, 58.15, 38.31 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| 6.40, 4.93, 2.50 :: 1.00 --> | |
-  | given-slot swaps reaching 0.25 at dose 2 | 18 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.025 :: 18 of 30 --> | 13 of 30<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.004 :: 13 of 30 --> | 21 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.055 :: 21 of 30 --> | 21 of 30<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| -0.020 :: 21 of 30 --> | |
-  | the rule at dose 2 | **slot-specific** | **none of the three** | **slot-specific** | **slot-specific** (no prediction) | |
+  | position share under the whole change | 0.32 [0.28, 0.37]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| qwen35_9b_x47_2 :: 0.32 [0.28, 0.37] --> | 0.25 [0.19, 0.31]<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.70 [0.64, 0.76] :: 0.25 [0.19, 0.31] --> | 0.37 [0.31, 0.43]<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| muse30_x47_2 :: 0.37 [0.31, 0.43] --> | 0.40 [0.33, 0.46]<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| nem35l_x52_six :: whole :: 0.40 [0.33, 0.46] --> | 0.32 [0.26, 0.38]<!-- src: results/x47_six/x52_six-20261029T231821Z/x47_2.md \| qwen35_122b_x47_2 :: whole :: 0.32 [0.26, 0.38] --> |
+  | first component monotone in slot (Spearman) | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 8.15, 5.59, 3.08 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 26.79, 16.42, 11.83 :: 1.00 --> | 1.00<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| 84.27, 58.15, 38.31 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| 6.40, 4.93, 2.50 :: 1.00 --> | 1.00<!-- src: results/x47_six/x52_six-20261029T231821Z/x47_2.md \| 1.75, 1.28, 0.74 :: 1.00 --> |
+  | given-slot swaps reaching 0.25 at dose 2 | 18 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.025 :: 18 of 30 --> | 13 of 30<!-- src: results/x47_six/x52_six-20261029T004919Z/x47_2.md \| 0.004 :: 13 of 30 --> | 21 of 30<!-- src: results/x47_six/x47_2-20261028T113102Z/x47_2.md \| -0.055 :: 21 of 30 --> | 21 of 30<!-- src: results/x47_six/x52_six-20261029T011006Z/x47_2.md \| -0.020 :: 21 of 30 --> | 21 of 30<!-- src: results/x47_six/x52_six-20261029T231821Z/x47_2.md \| qwen3.5-122b-a10b :: 0 of 5 :: 21 of 30 --> |
+  | the rule at dose 2 | **slot-specific** | **none of the three** | **slot-specific** | **slot-specific** (no prediction) | **slot-specific<!-- src: results/x47_six/x52_six-20261029T231821Z/x47_2.md \| qwen35_122b_x47_2 :: tested :: slot-specific -->** (no prediction) |
 
 - **Read.**
-  - No single shift moves the lookup on any model; given-slot swaps work on most pairs on the 9B, Muse and Lightning, so each slot is its own target there; on the 27B neither the line nor the per-slot pattern holds.
+  - No single shift moves the lookup on any model; given-slot swaps work on most pairs on the 9B, Muse, Lightning and the 122B (pending hand-check), so each slot is its own target there; on the 27B neither the line nor the per-slot pattern holds.
 - **Caveats.**
   - The 27B's shift writes move 0.00 at every start slot, though its slot means lie in order.
   - A different test of the code's size (see [51.11](#t51-11)) does not find one dimension per slot on the 9B.
@@ -942,8 +1033,7 @@ New in this ledger:
 - **Data.** Routes scenes without a move, four readers as separate prompts over the same context, question last or first: the 27B, question last, 200<!-- src: results/x47_report/x47_10-20261028T113109Z/x47_10.md \| qwen3.6-27b :: last :: 200 --> scenes. Every other cell failed its gate (the report reader below 0.80): the 9B, Muse, the 27B with the question first, and Lightning (its report right on 0.488<!-- src: results/x47_report/x52_report-20261029T023828Z/x47_10.md \| last: gate :: 0.488 --> with the question last).
 - **Method.** At the bridge word at L: the lens readout's top five under the report prompt and under the lookup prompt; the report's switches lost without the lens part and without the address, each beyond a random part.
 
-![Asked for the position, the 27B's lens still does not show it](../../figures/depth/ledger/ledger_report47.png)
-*The 27B, question last: the lens top five holding the right ordinal under the report prompt (dashed: the rule's 0.4), and the report's switches lost without the lens part and without the address, beyond random; whiskers 95%. Models: the 27B; 9B, Muse and Lightning grey (not tested: the report reader below its gate, 0.568 / 0.498 / 0.488 < 0.80). The 122B grey (not run).*
+*No figure: one model tested (the 27B), three numbers: the Result's table.*
 
 - **Rule, fixed in advance.** ""Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U [...]"
 
@@ -1701,8 +1791,7 @@ New in this ledger:
 - **Data.** Routes scenes (locker first) with a false-legs sentence per item, one question under two instructions (from the text / from memory) and none; 300 scenes per condition on the 27B at L32. Muse's gate failed with the fact after (memory 0.746<!-- src: results/x47_source/x47_15-20261028T142722Z/x47_15.md \| muse-glimmer-30b (muse30_x47_15_r2, L26) :: memory :: 0.746 -->); the 9B's rerun and Lightning's coverage run failed their gates too.
 - **Method.** The change at the bridge word at L: without the lens part, and without the address and identity parts (U + I), each against a random part of its share; per condition (the text, memory), the fact placed after.
 
-![On the 27B neither instruction makes the part follow the source](../../figures/depth/ledger/ledger_two_sources.png)
-*Switches lost beyond a random part without the lens part and without the address and identity parts, per instruction, the fact after; whiskers 95%. Models: 27B; the 9B, Muse and Lightning grey (not tested: gate); the 122B grey (not run).*
+*No figure: one model tested (the 27B), three numbers per instruction: the Result's table.*
 
 - **Rule, fixed in advance.** "a condition is like a lookup if without J++ <= 0.10 and without U + I >= 0.30, like a recall if without J++ >= 0.30 and without U + I <= 0.10, can't tell if its whole cell is invalid (S_whole < 0.30 or < 30 switches), else neither; the part follows the source if text is like a lookup and memory like a recall; follows the question if both give the same label (lookup or recall); each on the batch on >= 2 of 3 models; a model whose gate (0.80 per instruction) fails is not tested." (results/x47_source/x47_15-20261028T142722Z/x47_15.md; Dan's Q47.15 prediction)
 
@@ -1729,8 +1818,7 @@ New in this ledger:
 - **Data.** Unedited varied scenes where the lookup answers wrong (see the table).
 - **Method.** A slot probe trained on the scenes the lookup gets right (per format and locker order, the wrong item's entity held out), read on the wrong ones against the wrong answer's slot; the lens's top item at the bridge word beside.
 
-![The address probe does not predict the lookup's errors](../../figures/depth/fig07c_probe_errors.png)
-*(a) Wrong answers whose locker the address probe predicts, against the most common locker and the layout baseline; (b) of those, the lens's top item at the bridge word still the right item; dashed: the rule's bars. Models: 9B, Muse, Lightning (Lightning hollow: its gate set after the 60-scene pre-check); the 27B: too few wrong answers; the README's figure.*
+*No figure: one or two numbers per model against chance: the Result's table (the two-panel figure was mostly text).*
 
 - **Rule, fixed in advance.** ""The address predicts the error" if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; the layout baseline beside), and the lens's top item at the bridge word is still the right item in >= 0.8 of those." Lightning: a coverage run on this rule, no prediction.
 
@@ -1738,10 +1826,10 @@ New in this ledger:
 
   | | 9B | 27B | Muse | Lightning | 122B |
   |---|---|---|---|---|---|
-  | the lookup's wrong answers, with a probe | 100<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 100 (91 / 100; 40) :: 100 --> | 5<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 5 (5 / 5; 5) :: 5 --> | 32<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 32 (32 / 32; 25) :: 32 --> | 105<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 105 (100 / 105; 40) :: 105 --> | not run |
+  | the lookup's wrong answers, with a probe | 100<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 100 (91 / 100; 40) :: 100 --> | 5<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 5 (5 / 5; 5) :: 5 --> | 32<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 32 (32 / 32; 25) :: 32 --> | 105<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 105 (100 / 105; 40) :: 105 --> | 7 (coverage, 30 Oct) |
   | the probe matches the wrong answer's slot (bar >= 0.5) | 0.07 [0.02, 0.12]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 0.07 [0.02, 0.12] --> | 0.00 [0.00, 0.00]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 0.00 [0.00, 0.00] --> | 0.06 [0.00, 0.16]<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 0.06 [0.00, 0.16] --> | 0.05 [0.01, 0.09]<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 0.05 [0.01, 0.09] --> | |
   | chance | 0.20<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| qwen35_9b_x47_errors :: 100 (91 / 100; 40) :: 0.20 --> | 0.14<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| x47_errors_27b :: 5 (5 / 5; 5) :: 0.14 --> | 0.20<!-- src: results/x47_errors/x47_13-20261028T113107Z/x47_errors.md \| muse30_x47_errors :: 32 (32 / 32; 25) :: 0.20 --> | 0.19<!-- src: results/x47_errors/x47_13-20261029T035254Z/x47_errors.md \| nem35l_x52_errors :: 105 (100 / 105; 40) :: 0.19 --> | |
-  | the rule | **no** | not tested (5 errors, under 30) | pending (no lens read): no | **no** (no prediction) | |
+  | the rule | **no** | not tested (5 errors, under 30) | pending (no lens read): no | **no** (no prediction) | not tested (7 errors, under 30) |
 
 - **Read.**
   - On the 9B and Lightning the probe matches the wrong answer's slot in under a tenth of errors, below chance: the lookup's errors are not address errors. The 27B makes too few errors to test, and Muse's lens read never landed.
@@ -1758,8 +1846,7 @@ New in this ledger:
 - **Data.** Main test, 200 per model for design B; the attribute probe on animal items, entities held out, for design A. Lightning: design A only (it has no per-block MLP to ablate for design B).
 - **Method.** (A) At every probed layer from L+4 where the attribute probe reads above twice chance: its move under the whole change, without the lens part and without a random part. (B) The bridge word's MLP writes mean-ablated at layers after L; controls: the asked person's token after L, and the bridge word up to L/2.
 
-![Every mechanism we proposed for the split failed its rule](../../figures/depth/fig15_mechanisms.png)
-*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; design B is the first panel (recall accuracy lost with the late MLPs mean-replaced). Models: 9B, 27B, Muse in every panel; Lightning: copying heads drawn, person mark and second route below gate (hollow), late MLPs not applicable (no MLP in NemotronH), blocking not tested (knock-out not ported); the README's figure.*
+*No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** A: "J++ keys the enrichment if, at every probed layer >= L + 4 where the legs probe (animals, entities held out) reads the attribute (held-out accuracy >= 2x chance), the probe moves >= 0.6 of the way under whole and under no_rand and <= 0.3 under no_jpp (the paired CI of no_rand - no_jpp excluding 0), on both models". B: "the recall's retrieval runs through the bridge token's late MLPs if recall accuracy falls >= 0.4 under bridge_late while lookup accuracy stays within 0.1, and both controls stay within 0.1 for both readers." The 27B and Lightning: coverage runs on these rules, no prediction.
 
@@ -1787,8 +1874,7 @@ New in this ledger:
 - **Data.** Main-test scenes split by sentence order; the probe's rule cell, locker after: 266<!-- src: results/x48_bind/x48_bind-20261028T113120Z/x48_bind.md \| qwen3.5-9b :: item :: 266 --> / 335<!-- src: results/x48_bind/x52_bind-20261029T023827Z/x48_bind.md \| qwen3.6-27b :: item :: 335 --> / 278<!-- src: results/x48_bind/x48_bind-20261028T113120Z/x48_bind.md \| muse-glimmer-30b :: item :: 278 --> sentences (9B / 27B / Muse).
 - **Method.** A probe for which of the scene's three people picked the item, at the item and number tokens of the locker sentence; the person contrast's share in the lens part against random directions; the contrast written at both tokens at doses 1 and 2, against a random vector of its size.
 
-![Every mechanism we proposed for the split failed its rule](../../figures/depth/fig15_mechanisms.png)
-*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the second panel (the probe for who picked the item, chance 33%). Models: 9B, 27B, Muse in every panel; Lightning: copying heads drawn, person mark and second route below gate (hollow), late MLPs not applicable (no MLP in NemotronH), blocking not tested (knock-out not ported); the README's figure.*
+*No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "forward binding at the locker sentence, outside the lens: probe >= 0.85 in locker-after and <= 0.5 in locker-first; the person contrast's J++ share (k = 25) <= 2x a random direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05); on both models." The 27B: a coverage run on this rule, no prediction.
 
@@ -1846,8 +1932,7 @@ New in this ledger:
 - **Data.** Main-test items, locker first: 75<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| qwen35_9b_x48_heads :: 75 --> / 69<!-- src: results/x48_heads/x52_heads48-20261029T044138Z/x48_heads.md \| x48_heads_27b :: 69 --> / 68<!-- src: results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md \| muse30_x48_heads :: 68 --> / 59<!-- src: results/x48_heads/x52_heads48-20261029T044514Z/x48_heads.md \| nem35l_x52_heads48 :: 59 --> (9B / 27B / Muse / Lightning).
 - **Method.** For the five heads with the most attention from the last token to the bridge word, each part of the change (the lens part, the rest, the address, a random part) read through the head's output-value map; medians over items.
 
-![Every mechanism we proposed for the split failed its rule](../../figures/depth/fig15_mechanisms.png)
-*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the third panel (heads that pass the rest, of the five that copy most). Models: 9B, 27B, Muse in every panel; Lightning: copying heads drawn, person mark and second route below gate (hollow), late MLPs not applicable (no MLP in NemotronH), blocking not tested (knock-out not ported); the README's figure.*
+*No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold." The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -1874,8 +1959,7 @@ New in this ledger:
 - **Data.** Clean one-pick scenes with both items' lockers before the asked pick, informative writes: 224<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| qwen35_9b_x48_route2 :: 224 (34) :: 224 --> / 316<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| x48_route2_27b :: 316 (36) :: 316 --> / 208<!-- src: results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md \| muse30_x48_route2 :: 208 (36) :: 208 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
 - **Method.** At the bridge word at L: (i) the change without its lens part alone; (ii) the address of slot k written; (iii) the write alone; (iv) a random vector of the write's size; the recall's answer sorted by the attribute it matches.
 
-![Every mechanism we proposed for the split failed its rule](../../figures/depth/fig15_mechanisms.png)
-*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the fourth panel (recalls naming the item in the swap's target locker). Models: 9B, 27B, Muse in every panel; Lightning: copying heads drawn, person mark and second route below gate (hollow), late MLPs not applicable (no MLP in NemotronH), blocking not tested (knock-out not ported); the README's figure.*
+*No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "the recall's second route is the address if under (ii) the recall names slot k's item in >= 0.3 of the informative writes with the random vector (iv) <= 0.05 (point estimates), on >= 2 of 3 models."
 
@@ -1903,8 +1987,7 @@ New in this ledger:
 - **Data.** Routes scenes (another item moved, a filler sentence first): 300 per model (9B / 27B / Muse).
 - **Method.** Attention from the pick sentence to the locker sentences blocked at layers 0 to L, in both forward passes that make the change; control: the same number of edges to the filler sentence; the lookup's routes and the recall's switch.
 
-![Every mechanism we proposed for the split failed its rule](../../figures/depth/fig15_mechanisms.png)
-*Each mechanism test's deciding number per model against its rule's bar (dashed), whiskers 95%; this test is the bottom panel (identity answers kept with the block). Models: 9B, 27B, Muse in every panel; Lightning: copying heads drawn, person mark and second route below gate (hollow), late MLPs not applicable (no MLP in NemotronH), blocking not tested (knock-out not ported); the README's figure.*
+*No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** ""the pointer is formed by the pick token reading the lockers" if position answers fall to <= 0.10 (from 0.51 / 0.54) while identity answers stay within 0.10 and the recall's switch within 0.10, on Muse and the 9B; the control within 0.10 of none." The 27B: a coverage run on this rule, no prediction.
 
