@@ -4249,3 +4249,10 @@ Readings:
 - **Mechanism (secondary):** keepA's share of the B1 gain <= 1/3 = "through the answers' directions".
 
 Not run (proposed, not chosen): the paper-task outputs-vs-pivot test, the mechanism on natplus, and the energy-matched swap scrub.
+
+##### Amendment 84, addendum (box clock at commit; before any note 58 full run)
+Note 58's edit follows DarkLens §3.2 exactly, including its per-position rescaling to the original hidden-state norm after the permutation. Amendment 84's formula left that step out. The window choices are as implemented:
+- 9B: L12-15 and L17-20;
+- 27B: L32-35 and L36-39;
+- Lightning: L27-30 and L28-31.
+The mid-spectrum control's dimension is calibrated in-run (grid, then bisection to within 10% of dark's WikiText NLL increase). The calibration is logged in n58_calib.json.
