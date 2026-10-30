@@ -77,7 +77,8 @@ CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "pa
               "paper10_keepR4_rot", "ansR", "ansR_rot",  # amendment 67 note 41 + addendum: random kept / removed spans
               "paper10_keepCap", "paper10_keepCty", "paper10_keepCapCty", "paper10_keepRcap", "ansCap", "ansCty",
               "ansCty_rot",  # fmt: skip  # amendment 68 note 44: capitals vs countries (jsuite_v5kn2c MC0)
-              "ansRk", "ansRk_rot")  # fmt: skip  # amendment 72 note 50: random rows as many as ansJ's (cands2)
+              "ansRk", "ansRk_rot",  # fmt: skip  # amendment 72 note 50: random rows as many as ansJ's (cands2)
+              "ansRe", "ansRe_rot")  # fmt: skip  # amendment 78 note 57: random rows energy-matched to ansJ's removal
 # amendment 72 notes 49, 50, 52 (paper10_*: the protections, keeps and onlyA, each + _rot except note 52's) and note 51
 # (topK_keepA / _rot): see n49_kind, is_n52, is_n51 and the docstring of main's "amendment 72" block
 N49_KINDS = ("protF", "protC", "keepT10", "keepRT10", "keepOwn", "keepSib", "keepR4perp", "keepR8perp", "onlyA")
@@ -97,6 +98,18 @@ def keep_kind(cond: str) -> str | None:
     # amendment 72: note 49's T10 / RT10 / Own / Sib, note 50's perps, note 52's residualised spans, note 51's topK_keepA
     m = re.fullmatch(r"paper10_keep(T10|RT10|Own|Sib|R4perp|R8perp|CapPerp|CtyPerp|Shared)(_rot)?", cond) or re.fullmatch(
         r"top\d+_keep(A)(_rot)?", cond)
+    if m:
+        return m[1]
+    # amendment 78 note 57: the rivals' spans and the energy-matched random keep at dose K
+    m = re.fullmatch(r"paper10_keep(Rivals|RandRivals)(_rot)?", cond) or re.fullmatch(r"top\d+_keep(RE)(_rot)?", cond)
+    return m[1] if m else None
+
+
+def n57_kind(cond: str) -> str | None:
+    """Amendment 78 note 57: onlyRperp, keepRivals, keepRandRivals (paper10_X / _rot), keepRE (topK_keepRE / _rot), ansRe (/ _rot)."""
+    if cond in ("ansRe", "ansRe_rot"):
+        return "ansRe"
+    m = re.fullmatch(r"paper10_(onlyRperp|keepRivals|keepRandRivals)(_rot)?", cond) or re.fullmatch(r"top\d+_(keepRE)(_rot)?", cond)
     return m[1] if m else None
 
 
@@ -468,6 +481,9 @@ def top_k(cond: str) -> int | None:
     if m:
         return int(m[1])
     m = re.fullmatch(r"top(\d+)_keepA(_rot)?", cond)  # amendment 72 note 51: topK with A's span kept (paper10's protection)
+    if m:
+        return int(m[1])
+    m = re.fullmatch(r"top(\d+)_keepRE(_rot)?", cond)  # amendment 78 note 57: topK with an energy-matched random span kept
     return int(m[1]) if m else None
 
 
@@ -591,6 +607,22 @@ def main(args) -> None:
                        "conditions' rows carry keeplog: |edit| / |h| in their own forward and the kept rank / protected row count",
             "topk_chunk": args.topk_chunk,
         }  # fmt: skip
+    if any(n57_kind(c) for c in args.conditions):  # amendment 78 note 57
+        manifest["amendment78"] = {
+            "onlyRperp": 'r\' = P_X r; X = the first k columns of QR([Q_A | V]) beyond A (V: random.Random("n41:" + id).sample(note 41\'s pool, '
+                         "16 |A|), its first 4 |A| = note 41's R4, asserted); k per item = the smallest whose share of paper10's removal "
+                         "energy (paper10's forward, summed over layers and positions) reaches E_A (all 16 |A| if none: reached false)",
+            "topK_keepRE": "topK's removal minus its part in span(first k of the same 16 |A| rows), k per item energy-matched to E_A in "
+                           "topK's forward (nested QR of the rows)",
+            "ansRe": 'answer_span_edit over the first k of random.Random("n50:" + id).sample(letter rows minus A\'s, 16 |cands2 rows|) (its '
+                     "first |cands2 rows| = ansRk's), k = the smallest whose removed energy reaches ansJ's in ansJ's forward",
+            "keepRivals": "keep span = every form (note 37's) of every relation answer (not gold) with a form among the clean top-10 tokens, "
+                          "gold's form rows removed",
+            "keepRandRivals": 'as many random relation answers (not gold, not rivals, no form in the top-10, no gold row), each matched to a '
+                              'rival\'s form-row count (closest), random.Random("n57rr:" + id) order',
+            "logs": "n57_rows.jsonl (rows, rivals, tokens), n57_log.jsonl (per item and matching forward: k, reached, E_target, E_match); "
+                    "rows: edit_rel, keeplog.rank",
+        }  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     suite_fams = [f for f in args.families if f in COMPETENCE]
@@ -713,8 +745,10 @@ def main(args) -> None:
     has_keepA = any(keep_kind(c) == "A" for c in args.conditions)  # amendment 72 (shared): paper10 logs E_A whenever A is kept
     n51ks = {top_k(c) for c in args.conditions if is_n51(c)}  # doses whose plain topK forward logs E_A
     n52on = any(is_n52(c) for c in args.conditions)
+    n57on = any(n57_kind(c) for c in args.conditions)  # amendment 78 note 57
+    re_ks = {top_k(c) for c in args.conditions if n57_kind(c) == "keepRE"}  # doses whose plain topK forward sets keepRE's size
     items72 = {}
-    if any(n49_kind(c) in ("keepOwn", "keepSib") for c in args.conditions):
+    if any(n49_kind(c) in ("keepOwn", "keepSib") or n57_kind(c) in ("keepRivals", "keepRandRivals") for c in args.conditions):
         from scripts import tasks_v2 as T
 
         items72 = {it["id"]: it for it in T.load(args.tasks)}
@@ -763,6 +797,36 @@ def main(args) -> None:
         v = random.Random("n49sib:" + p["id"]).choice(pool)
         return {"own": own, "sib": cands[v], "sib_word": v, "sib_matched": best == 0}
 
+    def rivals_of(p: dict, top10_ids: list[int]) -> dict:
+        """Note 57: the relation's answers (not gold) with a form among the clean top-10 tokens (rivals; their form rows minus
+        gold's), and as many random answers of the relation that are not gold, not rivals, have no form in the top-10 and no row
+        of gold's, each with its rival's form-row count (closest if none; Random("n57rr:" + id) order)."""
+        it = items72.get(p["id"])
+        if it is None or p["kind"] != "clean":
+            return {"riv": [], "rand": [], "riv_rows": [], "rand_rows": [], "riv_tok": [], "rand_tok": [], "matched": False}
+        a, k = it["answer"], it["kind"]
+        vocab = sorted(set(it.get("answer_vocab") or natural_vocab(args.tasks)[(it["domain"], "answer")]))
+        S10 = set(top10_ids)
+        gold = set(letter_rows(answer_forms(a, k)))
+        rows_v = {v: sorted(set(letter_rows(answer_forms(v, k))) - gold) for v in vocab}
+        riv = [v for v in vocab if v.lower() != a.lower() and answer_forms(v, k) & S10]
+        pool = [v for v in vocab if v.lower() != a.lower() and v not in riv and not answer_forms(v, k) & S10
+                and not set(letter_rows(answer_forms(v, k))) & gold and rows_v[v]]  # fmt: skip
+        import random
+
+        random.Random("n57rr:" + p["id"]).shuffle(pool)
+        rand: list[str] = []
+        for v in riv:
+            left = [u for u in pool if u not in rand]
+            if not left:
+                break
+            want = len(rows_v[v])
+            rand.append(min(left, key=lambda u: abs(len(rows_v[u]) - want)))  # the first in seeded order among the closest
+        rr = sorted({x for v in riv for x in rows_v[v]})
+        ra = sorted({x for v in rand for x in rows_v[v]})
+        return {"riv": riv, "rand": rand, "riv_rows": rr, "rand_rows": ra, "matched": len(rr) == len(ra) and len(rand) == len(riv),
+                "riv_tok": sorted({t for v in riv for t in answer_forms(v, k)}), "rand_tok": sorted({t for v in rand for t in answer_forms(v, k)})}
+
     t0 = time.time()
     rows_out, band_seconds = [], collections.Counter()
     sink_tally: dict[str, list[int]] = {}
@@ -793,7 +857,7 @@ def main(args) -> None:
                        for p, t in zip(chunk, clean.topk(10, dim=1).indices, strict=True)]  # fmt: skip
             span_cache: dict = {}  # note 37: (layer, rows) -> kept span, this batch only
             a_rows, rand_rows = [], []  # note 41: per row, A's dictionary rows and its 4|A| random rows (draw order)
-            if any(is_rand(c) for c in args.conditions) or n4950:  # amendment 72 notes 49 / 50 use A and note 41's rows too
+            if any(is_rand(c) for c in args.conditions) or n4950 or n57on:  # amendments 72 / 78 use A and note 41's rows too
                 for i, p in enumerate(chunk):
                     rr = row_of[torch.tensor(p[KEEPA_ROWS[args.keepA_forms]], device="cuda")]
                     a_rows.append(rr[rr >= 0].unique())
@@ -877,6 +941,133 @@ def main(args) -> None:
                                               "own": g72["Own"][i].tolist(), "sib": g72["Sib"][i].tolist(), **g72["sib"][i],
                                               "R8_beyond_R4": g72["R8"][i][4 * a_rows[i].numel():].tolist(),
                                               "Rk": g72["Rk"][i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+            g57: dict = {}  # amendment 78 note 57: per row, R16 / Re draws, rivals, and the energy-matched sizes (set in the forwards)
+            if n57on:
+                import random
+
+                top10_57 = clean.topk(10, dim=1).indices.tolist()
+                for i, p in enumerate(chunk):
+                    n = a_rows[i].numel()
+                    excl = set(a_rows[i].tolist()) | set(protected[i].tolist())
+                    r16 = random.Random("n41:" + p["id"]).sample([j for j in range(letters.numel()) if j not in excl], 16 * n)
+                    assert r16[: 4 * n] == rand_rows[i].tolist(), "note 57: the 16|A| draw's first 4|A| rows are not note 41's R4"
+                    g57.setdefault("R16", []).append(torch.tensor(r16, device="cuda"))
+                    c2 = row_of[torch.tensor(p["cands2"], device="cuda")]
+                    c2 = c2[c2 >= 0].unique()
+                    g57.setdefault("J", []).append(c2)
+                    exa = set(a_rows[i].tolist())
+                    g57.setdefault("Re", []).append(torch.tensor(random.Random("n50:" + p["id"]).sample(
+                        [j for j in range(letters.numel()) if j not in exa], 16 * c2.numel()), device="cuda"))  # fmt: skip
+                    rv = rivals_of(p, top10_57[i])
+                    g57.setdefault("riv", []).append(rv)
+                    g57.setdefault("Rivals", []).append(torch.tensor(rv["riv_rows"], dtype=torch.long, device="cuda"))
+                    g57.setdefault("RandRivals", []).append(torch.tensor(rv["rand_rows"], dtype=torch.long, device="cuda"))
+                g57["k_onlyR"] = [int(x.numel()) for x in g57["R16"]]  # defaults (all rows) until the matching forward sets them
+                g57["k_RE"] = {K_: [int(x.numel()) for x in g57["R16"]] for K_ in re_ks}
+                g57["k_Re"] = [int(x.numel()) for x in g57["Re"]]
+                with (out_dir / "n57_rows.jsonl").open("a") as fh:
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "kind": p["kind"], "top10": top10_57[i], "n_A": int(a_rows[i].numel()),
+                                              "R16_beyond_R4": g57["R16"][i][4 * a_rows[i].numel():].tolist(), "Re": g57["Re"][i].tolist(),
+                                              **g57["riv"][i]}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+            acc57: dict = {}  # cond -> per row {"target", "tot", "cols", ...}, filled in the matching forwards
+
+            def obs57(r: torch.Tensor, B: int, T: int, la: int, cond: str, h: torch.Tensor) -> None:
+                """Note 57's matching in paper10's forward (onlyRperp's size; the rivals' E) and in topK's (keepRE's size). Reads r only."""
+                A_ = acc57.setdefault(cond, [collections.defaultdict(float) for _ in range(B)])
+                for b in range(B):
+                    rb = r[b * T : (b + 1) * T].double()
+                    QA = kept_span(b, la, "A")
+                    l = A_[b]
+                    l["target"] += float((rb @ QA).pow(2).sum())
+                    l["tot"] += float(rb.pow(2).sum())
+                    V = dic[la].atoms(g57["R16"][b]).double()
+                    if cond == "paper10":
+                        q, R_ = torch.linalg.qr(torch.cat([QA, V.T], 1))
+                        Q = q[:, QA.shape[1] :]
+                        l["min_R"] = min(l.get("min_R", 1e9), float(R_.diagonal()[QA.shape[1] :].abs().min()))
+                        for kk in ("Rivals", "RandRivals"):
+                            if f"paper10_keep{kk}" in args.conditions and g57[kk][b].numel():
+                                l["E_" + kk] += float((rb @ torch.linalg.qr(dic[la].atoms(g57[kk][b]).double().T)[0]).pow(2).sum())
+                    else:
+                        Q = torch.linalg.qr(V.T)[0]
+                    c = (rb @ Q).pow(2).sum(0)
+                    l["cols"] = c if isinstance(l["cols"], float) else l["cols"] + c
+
+            def obs57_ans(h: torch.Tensor, la: int) -> None:
+                """Note 57: ansJ's removed energy and each random row's in ansJ's forward (edited positions), for ansRe's size."""
+                A_ = acc57.setdefault("ansJ", [collections.defaultdict(float) for _ in range(h.shape[0])])
+                for b in range(h.shape[0]):
+                    xb = h[b].double()[emask[b, : h.shape[1]]]
+                    l = A_[b]
+                    l["target"] += float((xb @ torch.linalg.qr(dic[la].atoms(g57["J"][b]).double().T)[0]).pow(2).sum())
+                    l["tot"] += float(xb.pow(2).sum())
+                    c = (xb @ torch.linalg.qr(dic[la].atoms(g57["Re"][b]).double().T)[0]).pow(2).sum(0)
+                    l["cols"] = c if isinstance(l["cols"], float) else l["cols"] + c
+
+            def finalize57(cond: str) -> None:
+                """Set the energy-matched sizes from cond's forward and log them (n57_log.jsonl)."""
+                lines_ = []
+                for b, l in enumerate(acc57.pop(cond)):
+                    cum = l["cols"].cumsum(0)
+                    hit = (cum >= l["target"]).nonzero()
+                    k = int(hit[0]) + 1 if hit.numel() else cum.numel()
+                    if cond == "paper10":
+                        g57["k_onlyR"][b] = k
+                    elif cond == "ansJ":
+                        g57["k_Re"][b] = k
+                    else:
+                        g57["k_RE"][top_k(cond)][b] = k
+                    tot = l["tot"]
+                    lines_.append({"id": chunk[b]["id"], "family": chunk[b]["family"], "kind": chunk[b]["kind"], "forward": cond, "k": k,
+                                   "n_pool": int(cum.numel()), "reached": bool(hit.numel()), "E_target": l["target"] / tot if tot > 0 else None,
+                                   "E_match": float(cum[k - 1]) / tot if tot > 0 else None, "min_R": l.get("min_R"),
+                                   **{k_: v / tot for k_, v in l.items() if k_.startswith("E_") and tot > 0}})  # fmt: skip
+                with (out_dir / "n57_log.jsonl").open("a") as fh:
+                    fh.writelines(json.dumps(x) + "\n" for x in lines_)
+
+            def edit57(cond: str, la: int):
+                """Note 57's edit for cond at layer la."""
+                rot_ = rot[la] if cond.endswith("_rot") else None
+                kind = n57_kind(cond)
+                if kind == "ansRe":
+                    rows_ = [g57["Re"][i][: g57["k_Re"][i]] for i in range(len(chunk))]
+                    for i in range(len(chunk)):
+                        rank72[cond][i].append(int(rows_[i].numel()))
+                    return answer_span_edit(dic[la], rows_, [p["outside"] for p in chunk], rotation=rot_)
+                rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
+                if kind == "onlyRperp":  # r' = P_X r, X the energy-matched random span orthogonal to A
+                    cap: dict = {}
+                    inner = removal_edit("top", dic[la], rs, k=10, observe=lambda r, B, T: cap.__setitem__("r", r))
+
+                    def only(h: torch.Tensor, inner=inner, cap=cap, la=la, rot_=rot_, cond=cond) -> torch.Tensor:
+                        B, T, d = h.shape
+                        inner(h)
+                        r = cap.pop("r")
+                        out = torch.zeros_like(r)
+                        for b in range(B):
+                            QA = kept_span(b, la, "A")
+                            V = dic[la].atoms(g57["R16"][b][: g57["k_onlyR"][b]]).double()
+                            Q = torch.linalg.qr(torch.cat([QA, V.T], 1))[0][:, QA.shape[1] :]
+                            rank72[cond][b].append(int(Q.shape[1]))
+                            rb = r[b * T : (b + 1) * T].double()
+                            out[b * T : (b + 1) * T] = ((rb @ Q) @ Q.T).float()
+                        if rot_ is not None:
+                            out = out @ rot_.T
+                        return (h.reshape(B * T, d).float() - out).reshape(B, T, d)
+
+                    return only
+                K_ = top_k(cond)
+
+                def fn(i: int, la=la, kind=kind, cond=cond, K_=K_) -> torch.Tensor:
+                    rr = g57["R16"][i][: g57["k_RE"][K_][i]] if kind == "keepRE" else g57[kind.removeprefix("keep")][i]
+                    Q = (torch.linalg.qr(dic[la].atoms(rr).double().T)[0] if rr.numel()
+                         else torch.zeros(wg.shape[1], 0, dtype=torch.float64, device="cuda"))  # fmt: skip
+                    rank72[cond][i].append(int(Q.shape[1]))
+                    return Q
+
+                return removal_edit("top", dic[la], rs, rotation=rot_, k=K_, keep_span=LazySpans(fn, len(chunk)),
+                                    **({"chunk": args.topk_chunk} if args.topk_chunk and K_ > 10 else {}))  # fmt: skip
+
             protc_cache: dict = {}
 
             def protc_rows(i: int, la: int) -> torch.Tensor:
@@ -1047,6 +1238,9 @@ def main(args) -> None:
                         ov44 = torch.zeros(len(chunk), dtype=torch.float64, device="cuda")
                     acc72 = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")  # amendment 72: |edit|^2, |h|^2 sums
                     for la in band:
+                        if n57_kind(cond):  # amendment 78 note 57 (ansRe before ansR's prefix test)
+                            edits[la] = edit57(cond, la)
+                            continue
                         if n49_kind(cond) or is_n52(cond):  # amendment 72 notes 49, 50, 52 (ansRk before ansR's prefix test)
                             edits[la] = edit72(cond, la)
                             continue
@@ -1112,6 +1306,12 @@ def main(args) -> None:
                                 if base is not None:
                                     base(r, B, T)
                                 observe72(r, B, T, la, cond, holder["h"])
+                        need57 = n57on and (cond == "paper10" or cond in (f"top{k_}" for k_ in re_ks))
+                        if need57:  # amendment 78 note 57: the energy matching (onlyRperp's, keepRE's sizes)
+                            def observe(r, B, T, la=la, cond=cond, base=observe, holder=holder):
+                                if base is not None:
+                                    base(r, B, T)
+                                obs57(r, B, T, la, cond, holder["h"])
                         edits[la] = removal_edit(
                             method,
                             d,
@@ -1124,12 +1324,22 @@ def main(args) -> None:
                             observe=observe,
                             **({"chunk": args.topk_chunk} if args.topk_chunk and top_k(cond) is not None and top_k(cond) > 10 else {}),
                         )
-                        if holder is not None and observe is not None and (cond == "paper10" and (n4950 or n52on) or cond in (f"top{k_}" for k_ in n51ks)):
+                        if holder is not None and observe is not None and (cond == "paper10" and (n4950 or n52on) or cond in (f"top{k_}" for k_ in n51ks) or need57):
                             def with_h(h, inner=edits[la], holder=holder):  # the residual, for observe72 (output unchanged)
                                 holder["h"] = h
                                 return inner(h)
 
                             edits[la] = with_h
+                    if n57on and cond == "ansJ" and any(n57_kind(c) == "ansRe" for c in args.conditions):  # note 57: ansRe's size
+
+                        def ans_obs(inner, la_):
+                            def f(h: torch.Tensor) -> torch.Tensor:
+                                obs57_ans(h, la_)
+                                return inner(h)
+
+                            return f
+
+                        edits = {la_: ans_obs(e_, la_) for la_, e_ in edits.items()}
                     edits = {la_: measured(e_, emask, acc72) for la_, e_ in edits.items()}  # amendment 72: |edit| / |h|, every row
                     logits = first_token_logits(model, ids, edits, last)
                     if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition
@@ -1158,8 +1368,10 @@ def main(args) -> None:
                                                "Rcap_reached": bool(hit.numel()), "n_cap": int(cap_rows.numel()), "n_cty": int(n44["cty"][b].numel()),
                                                "shared_rows": len(set(cap_rows.tolist()) & set(n44["cty"][b].tolist())),
                                                "span_overlap": float(ov44[b])})  # fmt: skip
+                    if cond in acc57:  # note 57: the energy-matched sizes from this forward
+                        finalize57(cond)
                     k72 = []  # amendment 72: the new conditions' own |edit| / |h| and kept rank (or protected rows), mean over layers
-                    if n49_kind(cond) or is_n51(cond) or is_n52(cond):
+                    if n49_kind(cond) or is_n51(cond) or is_n52(cond) or n57_kind(cond):
                         for row in range(len(chunk)):
                             rk_ = rank72[cond][row] if not is_n51(cond) else [kept_span(row, la_, "A").shape[1] for la_ in band]
                             k72.append({"rank": sum(rk_) / len(rk_) if rk_ else None})
@@ -1314,7 +1526,12 @@ if __name__ == "__main__":
     rand = [c for c in a.conditions if is_rand(c)]
     assert not rand or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions), \
         f"note 41: {rand} need --tasks, --keepA-forms every and paper10 in the run (the retained-energy log)"
-    n72 = [c for c in a.conditions if n49_kind(c) or is_n51(c) or is_n52(c)]  # amendment 72
+    n57c = [c for c in a.conditions if n57_kind(c)]  # amendment 78 note 57: each matching forward runs before its condition
+    pos = {c: i for i, c in enumerate(a.conditions)}
+    assert all((n57_kind(c) == "ansRe" and pos.get("ansJ", 1e9) < pos[c]) or (n57_kind(c) == "keepRE" and pos.get(f"top{top_k(c)}", 1e9) < pos[c])
+               or (n57_kind(c) not in ("ansRe", "keepRE") and pos.get("paper10", 1e9) < pos[c]) for c in n57c) and not (n57c and any(is_n52(c) for c in a.conditions)), \
+        f"note 57: {n57c} need paper10 / topK / ansJ earlier in --conditions (they set the matched sizes), and no note 52 conditions"  # fmt: skip
+    n72 = [c for c in a.conditions if n49_kind(c) or is_n51(c) or is_n52(c) or n57_kind(c)]  # amendments 72 / 78
     assert not n72 or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions and "paper10_rot" in a.conditions
                        and not any("_nosink" in c for c in n72)
                        and not (any(n49_kind(c) for c in n72) and any(is_n52(c) for c in n72))), \
