@@ -45,6 +45,7 @@ medium and heavy, percent of depth taken inward), every position:
   top3, paper10, top30                J++ top-K (ablate_v2's topK: protected = the clean top-10 tokens' rows)
   pca3, pca10, pca30                  ablate_v2's variance dictionary (its pca10 rule, nothing protected)
   unembed10, unembed30                the logit lens's directions (ablate_v2's unembedK, protected)
+  unembed100, unembed300              the same (amendment 74: S's fallback dose when PCA cannot bracket)
   paper10_rot, paper10_pcasize        as note 45
   keep_T and keep_E (ML) / keep_B (MH) / keep_S (PO), at the --keep-band only (OO: keep_T)
 Logged per row: edit_rel = |edit| / |h| (root of summed squares over the band's layers and every position); per item at
@@ -92,7 +93,8 @@ EARLY_KEEP = {"ML": ["T", "E"], "MH": ["T", "B"], "OO": ["T", "P"]}
 # note 55: the paper's rhyme set (its words T, S; the per-item word dictionaries above need an entry for any set run)
 DATA_PO = {"PO": ("lens_eval_poetry.json", "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc")}
 CTL_KIND["PO"], KEEP_WORDS["PO"], RM_WORDS["PO"], EARLY_KEEP["PO"] = "S", ["T", "S"], ["T", "S"], ["T", "S"]
-N55_DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30", "paper10_rot", "paper10_pcasize")
+N55_DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30", "paper10_rot", "paper10_pcasize",
+            "unembed100", "unembed300")  # the last two: amendment 74
 N55_KEEP = {"ML": ["T", "E"], "MH": ["T", "B"], "OO": ["T"], "PO": ["T", "S"]}
 N55_BYTE_CONDS = ("paper10", "paper10_rot", "top3", "top30")
 MAIN_BAND = {"qwen3.6-27b": (24, 40), "qwen3.5-9b": (8, 16), "nemotron-3.5-lightning": (20, 33)}  # note 39's
@@ -406,7 +408,8 @@ def run(a) -> None:
         ([len(chunk), 1 + keeps]), paper10's removal energy and its part in each of the item's keep spans are summed."""
         edits = {}
         for la in band:
-            if cond in ("top3", "top30", "pca3", "pca10", "pca30", "unembed30"):  # note 55's doses: ablate_v2's topK, pcaK, unembedK
+            if cond in ("top3", "top30", "pca3", "pca10", "pca30", "unembed30", "unembed100", "unembed300"):  # note 55's doses (ablate_v2's
+                # topK, pcaK, unembedK; unembed100 / 300: amendment 74); removal_edit chunks rows itself above K = 100
                 pc = cond.startswith("pca")  # its pca rule: nothing protected (the rows index principal directions)
                 rs = [RowSettings(skip=[], protected=None if pc else protected[i]) for i in range(len(chunk))]
                 d = pca[la] if pc else unembed if cond.startswith("unembed") else dic[la]
@@ -493,7 +496,7 @@ def run(a) -> None:
                     r["n_protected_rows"] = int(protected[i].numel())
                     r["rank55"] = {w: len(r["word_tokens"][w]) for w in N55_KEEP[s]}
             for cond, wname, band in plan:
-                rel = None
+                rel, tc = None, time.time()
                 if not n55:
                     edits = make_edits(cond, chunk, protected, band)
                 else:
@@ -508,6 +511,9 @@ def run(a) -> None:
                                      "dlogp": float(lp[i] - clean_lp[i]), "top_id": int(logits[i].argmax())})  # fmt: skip
                     if rel is not None:
                         rows_out[-1]["edit_rel"] = float((rel[i, 0] / rel[i, 1]).sqrt())
+                if rel is not None:  # note 55: the batch's wall time for this condition (GPU synced by the reads above)
+                    for x in rows_out[-len(chunk) :]:
+                        x["sec"] = round(time.time() - tc, 3)
             if n55:
                 for i, r in enumerate(chunk):
                     e = energy[i].tolist()

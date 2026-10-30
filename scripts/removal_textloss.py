@@ -112,7 +112,7 @@ def _top(dic, k: int, rot, skip_sinks: bool = False):
 # paper10_noprot is paper10 with nothing protected (this script's top10, beside).
 TEXT_TOKENS, TEXT_FROM, TEXT_V4_SET = 128, 3, "jsuite_v4_test_chat"
 TEXT_CONDS = ("paper10", "paper10_rot", "top3", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30",
-              "paper10_pcasize", "paper10_noprot")  # fmt: skip
+              "paper10_pcasize", "paper10_noprot", "unembed100", "unembed300")  # fmt: skip  # the last two: amendment 74
 
 
 def wiki_texts(tok, n: int) -> list[list[int]]:
@@ -177,15 +177,19 @@ def text_edit(cond: str, la: int, dic: dict, unembed, pca: dict, rot: dict, prot
     m = re.fullmatch(r"(top|pca|unembed|paper)(\d+)(_rot|_pcasize)?", base)
     assert m and k, cond
     d = pca[la] if m[1] == "pca" else unembed if m[1] == "unembed" else dic[la]
-    if m[1] != "pca" and not cond.endswith("_noprot"):
-        d = _PerPositionProtected(d, prot)
-    e = removal_edit("top", d, [RowSettings()], rotation=rot[la] if base.endswith("_rot") else None, k=k,
-                     size_match=pca[la].D[:PCA_K] if base.endswith("_pcasize") else None)  # fmt: skip
+    protect = m[1] != "pca" and not cond.endswith("_noprot")
+    kw = {"rotation": rot[la] if base.endswith("_rot") else None, "k": k,
+          "size_match": pca[la].D[:PCA_K] if base.endswith("_pcasize") else None}  # fmt: skip
 
-    def edit(h: torch.Tensor) -> torch.Tensor:  # the batch's B rows as one row of B * T positions (one chunk)
+    def edit(h: torch.Tensor) -> torch.Tensor:  # the batch's B rows as rows of B * T positions, in pieces of removal_edit's chunk
         B, T, dd = h.shape
-        assert B * T <= 4096, "removal_edit's chunk"
-        return e(h.reshape(1, B * T, dd)).reshape(B, T, dd)
+        step = 4096 if k <= 100 else max(128, min(4096, 2**33 // (k * dd * 8)))  # removal_edit's own chunk (one per piece)
+        x = h.reshape(B * T, dd)
+        out = []
+        for s in range(0, B * T, step):
+            dp = _PerPositionProtected(d, prot[s : s + step]) if protect else d
+            out.append(removal_edit("top", dp, [RowSettings()], **kw)(x[None, s : s + step])[0])
+        return torch.cat(out).reshape(B, T, dd)
 
     return edit
 
@@ -228,13 +232,16 @@ def agreement(model, texts: list[list[int]], bands: dict[str, list[int]], conds,
 
                         return hook
 
+                    tc = time.time()
                     with _forward_hooks([(model.layers[la], hook_for(e)) for la, e in edits.items()]):
                         lg = model.hf(input_ids=x, use_cache=False).logits[:, TEXT_FROM:-1].float()
                     agree = (lg.argmax(-1) == clean_top).sum(1)
                     nll = torch.nn.functional.cross_entropy(lg.transpose(1, 2), x[:, TEXT_FROM + 1 :], reduction="none").mean(1)
+                    agree_l, nll_l, rel_l = agree.tolist(), nll.tolist(), (acc[:, 0] / acc[:, 1]).sqrt().tolist()  # syncs the GPU
+                    sec = round(time.time() - tc, 3)  # the batch's wall time for this band and condition
                     for j, i in enumerate(idx):
-                        out.append({"text": i, "band": bname, "cond": c, "agree": int(agree[j]), "n": int(lg.shape[1]),
-                                    "nll": float(nll[j]), "edit_rel": float((acc[j, 0] / acc[j, 1]).sqrt())})  # fmt: skip
+                        out.append({"text": i, "band": bname, "cond": c, "agree": int(agree_l[j]), "n": int(lg.shape[1]),
+                                    "nll": float(nll_l[j]), "edit_rel": float(rel_l[j]), "sec": sec})  # fmt: skip
                     del lg
     return out
 

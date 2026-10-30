@@ -8,13 +8,16 @@ positions of a text set (WikiText primary, v4 passages beside).
 Readings:
   G (descriptive): paper10's and paper10_rot's WikiText agreement at medium and heavy against the paper's Fig. 22 values
     (J ablation 0.75 at medium, 0.65 at heavy; its random control 0.96 at medium).
-  S (primary; per set and strength; OO descriptive): a* = paper10's agreement; L_PCA(a*) = task loss interpolated linearly
-    in agreement between the two PCA dose points (pca3, pca10, pca30) that bracket a*; Delta_sel = L(paper10) - L_PCA(a*),
-    cluster bootstrap (note 45's clusters; PO: T's spelled rhyme; 2000 draws, seed 0) with the interpolation inside (the
-    text agreements are fixed). "J-selective at matched generic damage" Delta_sel >= 15 with the interval above 0; "not
-    selective" Delta_sel < 10 and the interval includes 0; otherwise "partly"; "not matched" if the PCA points do not
-    bracket a* (the nearest point is printed, no reading). Beside: the same against the logit-lens dose (unembed10,
-    unembed30), the paper's own contrast paper10 - paper10_rot, and the v4-passage agreement version.
+  S (primary; per set and strength; OO descriptive): a* = paper10's agreement; L_dose(a*) = task loss interpolated linearly
+    in agreement between the two dose points that bracket a*; Delta_sel = L(paper10) - L_dose(a*), cluster bootstrap (note
+    45's clusters; PO: T's spelled rhyme; 2000 draws, seed 0) with the interpolation inside (the text agreements are
+    fixed). "J-selective at matched generic damage" Delta_sel >= 15 with the interval above 0; "not selective" Delta_sel <
+    10 and the interval includes 0; otherwise "partly". Dose order (amendment 74): (1) the PCA dose (pca3, pca10, pca30),
+    as registered; (2) if it does not bracket a*, the logit-lens dose (unembed10, 30, 100, 300); (3) if neither brackets,
+    S2 along the line through paper10_rot and paper10_pcasize, "size-matched pair, descriptive", no registered label;
+    "not matched" if none brackets (nearest points printed). Each line names its dose; every dose's raw points are
+    printed. Beside: the logit-lens dose when PCA brackets, the paper's own contrast paper10 - paper10_rot, and the
+    v4-passage agreement version.
   Rhyme (PO): note 45's A0 (paper10 - max(rot, pcasize) >= 20, interval above 0) per strength; then at the keep band
     multihop's rule with S in B's place, on the items whose S is unprotected: "the rhyme word carries it" K(T) <= 1/3 and
     K(S) >= 2/3; "the rhyme source carries it" the reverse; "both carry it" both <= 1/3; "neither" both >= 2/3; else "mixed".
@@ -44,8 +47,10 @@ sys.path[:0] = [str(ROOT), str(ROOT / "scripts")]
 from scripts.paper_ko_read import Read, f, label_pair  # noqa: E402
 
 PCA = ("pca3", "pca10", "pca30")
-UNEMBED = ("unembed10", "unembed30")
-DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30", "paper10_rot", "paper10_pcasize")
+UNEMBED = ("unembed10", "unembed30", "unembed100", "unembed300")  # unembed100 / 300: amendment 74
+SIZE_PAIR = ("paper10_rot", "paper10_pcasize")  # amendment 74's descriptive S2
+DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30", "unembed100", "unembed300", "paper10_rot",
+        "paper10_pcasize")  # fmt: skip
 PAPER_G = {"medium": 0.75, "heavy": 0.65}  # Fig. 22, pretraining top-1 match under the J ablation; random at medium 0.96
 PAPER_RANDOM = 0.96
 V_CONDS = ("paper10", "paper10_rot", "paper10_pcasize", "unembed10", "paper10_keepA", "paper10_keepA_rot")
@@ -128,29 +133,35 @@ def read_tasks(R: Read, bands: list[str], keep_band: str, ta: dict) -> tuple[dic
             lines.append(f"  {b}: loss/wiki agreement/v4 agreement: " + "; ".join(dose_line))
             for tset in ("wiki", "v4"):
                 agree = {c: ta[(tset, b, c)][0] for c in DOSE if (tset, b, c) in ta}
-                if "paper10" not in agree or not all(c in agree for c in PCA + UNEMBED):
+                if "paper10" not in agree or not all(c in agree for c in PCA + UNEMBED + SIZE_PAIR):
                     continue
                 a_star = agree["paper10"]
-                m_pca = matched(R, s, names, b, agree, PCA, a_star)
-                m_une = matched(R, s, names, b, agree, UNEMBED, a_star)
-                ob[f"S_{tset}"] = {"pca": m_pca, "unembed": m_une, "label": s_label(m_pca), "label_unembed": s_label(m_une)}
                 desc = " (OO descriptive)" if s == "OO" else ""
                 tag = "reading" if tset == "wiki" else "beside"
-                if m_pca["bracketed"]:
-                    lines.append(f"{tag} S {s} {b} [{tset}]: {s_label(m_pca)}{desc} (n {len(names)}; Delta_sel {f(m_pca['delta'])} pts; "
-                                 f"a* {a_star:.3f}; L(paper10) {ob['loss']['paper10']}, L_PCA(a*) {m_pca['L_interp']}; PCA agreement "
-                                 f"{m_pca['dose_agreement']})")  # fmt: skip
+                head = f"{tag} S {s} {b} [{tset}]"
+                ms = {k: matched(R, s, names, b, agree, dose, a_star) for k, dose in (("pca", PCA), ("unembed", UNEMBED), ("size_pair", SIZE_PAIR))}
+                used = "pca" if ms["pca"]["bracketed"] else "unembed" if ms["unembed"]["bracketed"] else "size_pair" if ms["size_pair"]["bracketed"] else None
+                lab = {"pca": s_label(ms["pca"]) if used == "pca" else None, "unembed": s_label(ms["unembed"]) if used == "unembed" else None,
+                       "size_pair": "size-matched pair, descriptive" if used == "size_pair" else None}[used] if used else "not matched"  # fmt: skip
+                ob[f"S_{tset}"] = {**ms, "dose_used": used, "label": lab}
+                dname = {"pca": "PCA dose (pca3/10/30, registered)", "unembed": "logit-lens dose (unembed10/30/100/300, amendment 74 step 2)",
+                         "size_pair": "S2 line through paper10_rot and paper10_pcasize (amendment 74 step 3)"}  # fmt: skip
+                pts = "; ".join(f"{k} {json.dumps({c: [ms[k]['dose_agreement'][c], ms[k]['dose_loss'][c]] for c in ms[k]['dose_agreement']})}"
+                                for k in ms)  # fmt: skip  # every dose's raw points: [agreement, task loss]
+                if used:
+                    m = ms[used]
+                    lines.append(f"{head}: {lab}{desc} (dose: {dname[used]}; n {len(names)}; Delta {f(m['delta'])} pts; a* {a_star:.3f}; "
+                                 f"L(paper10) {ob['loss']['paper10']}, L_dose(a*) {m['L_interp']}; not bracketed before it: "
+                                 f"{['pca', 'unembed'][: ['pca', 'unembed', 'size_pair'].index(used)] or 'none'})")  # fmt: skip
                 else:
-                    nr = m_pca["nearest"]
-                    lines.append(f"{tag} S {s} {b} [{tset}]: not matched{desc} (n {len(names)}; a* {a_star:.3f} outside the PCA agreements "
-                                 f"{m_pca['dose_agreement']}; nearest {nr['cond']} at {nr['agreement']}, loss {nr['loss']}; "
-                                 f"paper10 - nearest {f(nr['paper10_minus_nearest'])} pts; no reading)")  # fmt: skip
-                if m_une["bracketed"]:
-                    lines.append(f"  beside S {s} {b} [{tset}] vs logit-lens dose: {s_label(m_une)} (Delta {f(m_une['delta'])} pts; "
-                                 f"unembed agreement {m_une['dose_agreement']})")  # fmt: skip
-                else:
-                    lines.append(f"  beside S {s} {b} [{tset}] vs logit-lens dose: not matched (unembed agreement {m_une['dose_agreement']}; "
-                                 f"nearest {m_une['nearest']['cond']} paper10 - it {f(m_une['nearest']['paper10_minus_nearest'])} pts)")  # fmt: skip
+                    lines.append(f"{head}: not matched{desc} (no dose brackets a* {a_star:.3f}; n {len(names)}; nearest: "
+                                 + "; ".join(f"{k} {ms[k]['nearest']['cond']} at {ms[k]['nearest']['agreement']}, paper10 - it "
+                                             f"{f(ms[k]['nearest']['paper10_minus_nearest'])} pts" for k in ms) + "; no reading)")  # fmt: skip
+                if used == "pca":
+                    mu = ms["unembed"]
+                    lines.append(f"  beside S {s} {b} [{tset}] vs logit-lens dose: "
+                                 + (f"{s_label(mu)} (Delta {f(mu['delta'])} pts)" if mu["bracketed"] else "not bracketed"))  # fmt: skip
+                lines.append(f"  raw dose points {s} {b} [{tset}] [agreement, loss]: {pts}")
             lines.append(f"  beside {s} {b}: the paper's contrast paper10 - rot {f(ob['paper_contrast'])} pts; A0 "
                          f"{'met' if ob['A0']['met'] else 'not met'} ({f(a0)} pts)")  # fmt: skip
             if s == "PO":
