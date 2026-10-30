@@ -1,0 +1,21 @@
+{
+  "exp": "answer_arms_translated",
+  "post_hoc": true,
+  "model": "qwen3.6-27b",
+  "run": "x51_12_e1_27b_r2",
+  "layer": 32,
+  "items": 200,
+  "what": "51.12 E1 arms with the answer directions A taken in every language (Muse only)",
+  "english_set": "the run's own A (cases.jsonl tokens.A)",
+  "all_languages_set": "the English set + tokens_of() translations of the items' answer values (answer_translation_check: eleven languages, 4 spellings, whole tokens, no lone I/V/X)",
+  "size_matched_random": "each part's random twin rebuilt from the part's own share (x6_routes.removal_arms), seed 888 + layer",
+  "preflight_first_attempt": "exact counts; STOPPED (3 of 3200 rows differed, random-twin arms only): runs/answer_arms_translated/muse-glimmer-30b/preflight_stop_20261030",
+  "preflight": "second gate (Dan 30 Oct): English set through this driver; non-random arms (none, whole, no_jpp, no_jpp_A, no_A) must equal the saved outcomes.jsonl counts exactly, every random-twin arm (*_rand) within +-1; else stop",
+  "margin_check": "for each row whose switch differs from the saved run: top-1 vs top-2 logit margin in this run and in the saved run (saved margin inferred from its stored ld when the top two are the alt and org answer tokens); all < 0.5: log 'numerical noise, confirmed'; else stop and report",
+  "saved_run_code": "the saved run's manifest has code dirty = true (sha 15938ce4d9798bc9986bebafcd95db9b81f53e19)",
+  "decision_rule": "Claim changes only if, on the recall: (a) arm 3 (answer directions only, all languages) beats its size-matched random part (arm 4): the 95% interval of the extra (S_rand - S_arm) / S_whole is above 0; or (b) arm 2 (without the lens part, answer directions kept) blocks a different share of the switches than in the English-only arm: the two 95% intervals do not overlap. Otherwise no change. The lookup is reported beside, not decisive.",
+  "decisive_reader": "recall (PM)",
+  "seed_for_random_items": 29,
+  "git": "pod: no git (tar)",
+  "written_utc": "2026-10-30T21:54:08Z"
+}

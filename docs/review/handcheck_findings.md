@@ -56,6 +56,12 @@ remains), **not done** (a check is still open).
   is the entity" to "mixed" (arm 2 keeps 0.5 / 0.771 of arm 1's extra loss, below its 0.7 bar). By the pre-set rule the claim changes
   on Muse; the lower end of (a)'s interval is 0.018 and the random part's count is negative, so it is a thin margin. The README and deck
   are not edited; this needs your decision.
+  Same check on the 9B and the 27B (30 Oct, post hoc, same driver, same two gates, same decision rules, same manifest text with no change, so the
+  manifest's "what" line still says "Muse only"; weights downloaded to the pod; `runs/answer_arms_translated/qwen3.5-9b/run_qwen3.5-9b`,
+  `runs/answer_arms_translated/qwen3.6-27b/run_qwen3.6-27b`; the saved runs `qwen35_9b_x51_12_e1_r2` and `x51_12_e1_27b_r2`, both with `code.dirty = true`, sha 15938ce4).
+  9B: second gate passed (3199 of 3200 rows equal; one random-twin count differs by 1; P2-L0-0269 PP no_jpp_rand: saved 0, now 1, margin now 0.0, saved (inferred) 0.125; numerical noise, confirmed). Directions per item 14.9 English, 98.49 all languages. Recall: arm 3 extra +0.005 [+0.000, +0.018] all languages (+0.000 [+0.000, +0.000] English only), so (a) does not hold; arm 2 blocks 0.503 [0.416, 0.585] English only and 0.289 [0.212, 0.371] all languages, so (b) holds. By the pre-set rule the claim changes on the 9B: the recall's arm label the lens effect is the entity -> mixed; the lookup's can't tell (arm 1 has no extra loss beyond random) -> can't tell (arm 1 has no extra loss beyond random).
+  27B: second gate passed (3199 of 3200 rows equal; one random-twin count differs by 1; P2-L0-0188 PM no_jpp_rand: saved 1, now 0, margin now 0.375, saved (inferred) 0.0; numerical noise, confirmed). Directions per item 14.86 English, 97.08 all languages. Recall: arm 3 extra +0.040 [+0.006, +0.082] all languages (+0.027 [+0.006, +0.054] English only), so (a) holds; arm 2 blocks 0.707 [0.596, 0.799] English only and 0.467 [0.356, 0.556] all languages, so (b) holds. By the pre-set rule the claim changes on the 27B: the recall's arm label the lens effect is the entity -> mixed; the lookup's the lens effect is the entity -> mixed.
+  Limitation: Lightning and the 122B were not run (their weights were not downloaded; timebox). Muse, 9B and 27B all move to mixed on the recall; the README carries Muse only, the 9B and 27B results are here and not yet in the README or deck.
 
 ## F2. Recall route collision in C2
 
