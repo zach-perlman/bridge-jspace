@@ -4353,3 +4353,18 @@ These are builder choices, recorded so the run is read as built:
   - Bands: the paper's medium band above our mid band: 9B L17-24, 27B L41-49, Lightning L34-40.
   - Arms, mask, prompts, items and readings are as note 62 (with the population above). Separate runs {P}sd62b_ko_test_v1.
   - R1 is read per band. "The knock-out sees a needed bridge" if R1 holds at either band; that band is named.
+
+#### Amendment 86 (Zach's session, 2026-10-30, box clock at commit; Zach chose the scope test at ~15:00 ET; before any code or run of it): note 63
+##### Note 63: the mechanism beyond country answers (jsuite_v2_test_chat; non-country relations; 9B primary, Lightning and 27B confirmatory)
+- **Why:** 96-100% of the gated recall items behind notes 37, 41, 49, 50, 51 and 57 have country or nationality answers (round-2 red team H1). So "the answer words' directions" cannot be told apart from a country-identity code.
+- **Items:** jsuite_v2_test_chat's relations whose answers are not countries or nationalities (as the v2 data define them: e.g. languages, continents, animal classes). The builder lists them with their answer vocabularies and gated n per word before any run. Items are gated as note 37 (competence, cand2 read). The country-type v2 relations are run and printed beside.
+- **Conditions:** note 57's battery as run on v4, at each model's main band and batch: paper10 and paper10_rot, keepA, onlyA, onlyRperp, keepRE, ansJ and ansRe, with rotations where note 57 had them. A = every form of every answer in the relation, as ablate_v2 builds it.
+- **Readings, per non-country relation and pooled over them:**
+  - **validity:** C1 (paper10's MM - MP gap >= 20, lower end > 0). A relation without it is "not readable" for the mechanism.
+  - **K:** note 37's keepA rule (keepA keeps <= 1/3 of the loss).
+  - **S1:** note 57's rule.
+  - **E:** keepA - keepRE rescue >= 0.33, lower end > 0.
+  - Relations with fewer than 30 gated MM items are read pooled only.
+- **Kill:** keepA rescue < 0.5 or S1 < 0.5 on >= 2 readable non-country relations (or on the pool, if fewer than 2 are readable) = "the mechanism is specific to country-type answers".
+- **Pass:** K, S1 and E met on the pool and on every readable relation = "the answer-direction account holds beyond country answers".
+- Otherwise "partly", with the relations named.
