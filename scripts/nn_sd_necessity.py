@@ -28,6 +28,10 @@ Edits (one forward each; every position edited; band layers each edited):
   bridgeJ_ctrl: the same with the control fact's bridge (same category, in no transcript; also minus the bridge's own
       forms): the semantic control (nc)
   ansJ / ansJ_rot: the same with the category's answers' forms (amendment 58 note 3's ansJ, here)
+  paper10_skipown / _rot, paper10_onlyown / _rot (amendment 67 note 42): paper10 (and its rotated control) at every position
+      except the tokens of the agent's own earlier answer, or only at them (own_positions: the tokens of its round-0
+      completion inside its visible statement; the whole statement's tokens are logged beside, own_spans.jsonl). Only for
+      conversations with the earlier answer in view (press_vis, press1_vis, ...): elsewhere no edit is made and no row written.
 
 python scripts/nn_sd_necessity.py known --name {P}sd_known_v1 --facts data/sd_v1/facts.jsonl --categories C ... [--per-category N]
 python scripts/nn_sd_necessity.py ko --name {P}sd_ko_v1 --items-run {P}sd_known_v1 --split test --convs solo press_vis ...
@@ -57,7 +61,27 @@ RES = pins.RESULTS_DIR / "sd_necessity"
 SEED_ROT = 888  # + layer, as ablate_v2 (seed offset 0)
 TOPK_CONDS = ("paper10", "paper10_rot", "paper10_pcasize", "unembed10", "unembed10_rot", "paper10_keepA", "paper10_keepA_rot")
 SPAN_CONDS = {"bridgeJ": "bforms", "bridgeJ_rot": "bforms", "bridgeJ_ctrl": "cforms", "ansJ": "aforms", "ansJ_rot": "aforms"}
-CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS)
+# amendment 67 note 42: paper10 at every position but the agent's own earlier answer (skipown), or only there (onlyown)
+OWN_CONDS = ("paper10_skipown", "paper10_skipown_rot", "paper10_onlyown", "paper10_onlyown_rot")
+CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS
+
+
+def own_positions(tok, text: str, spans: list[tuple[str, int, int]], fact: dict, own_answer: str) -> tuple[list[int], list[int]]:
+    """Note 42: the token positions of the agent's own earlier answer in a transcript where it is visible (sd_prompts.render's
+    "own" span, "<composed> <answer>."): the tokens overlapping the answer's characters (its round-0 completion as written
+    there), and, logged beside, the tokens overlapping the whole own statement. ([], []) if the earlier answer is not in view."""
+    own = [(a, b) for lab, a, b in spans if lab == "own"]
+    if not own or text[own[0][0] : own[0][1]] == SP.WITHHELD:
+        return [], []
+    a, b = own[0]
+    ans = own_answer.strip().rstrip(".")
+    start = a + len(fact["composed"]) + 1
+    end = start + len(ans)
+    assert text[start:end] == ans and text[a:start] == fact["composed"] + " ", (fact["uid"], text[a:b])
+    offs = tokens.raw_encoding(tok, text, offsets=True)["offset_mapping"]
+    ans_pos = [i for i, (x, y) in enumerate(offs) if x < end and y > start]
+    line_pos = [i for i, (x, y) in enumerate(offs) if x < b and y > a]
+    return ans_pos, line_pos
 
 
 def manifest_base(a, stage: str) -> dict:
@@ -299,6 +323,7 @@ def stage_ko(a) -> None:
     cands = {cat: sorted(SP.first_ids(tok, sorted(v))) for cat, v in vocab.items()}
     aforms = {cat: sorted({t for x in sorted(v) for t in SP.forms(tok, x)}) for cat, v in vocab.items()}
     prompts, n_collide, leak = [], 0, collections.Counter()
+    need_own = any(c in OWN_CONDS for _, cs in edits_spec for c in cs)  # note 42 only: the earlier answer's token span
     for it in items:
         f, p, c = it["fact"], it["peer"], it["control"]
         tg = SP.answer_targets(tok, f, p, c)
@@ -318,6 +343,8 @@ def stage_ko(a) -> None:
                             "text": text, "ids": tokens.raw_encoding(tok, text)["input_ids"], "targets": tg,
                             "collide": tg["collide"], "bnamed": bnamed, "probes": probes, "cands": sorted(set(cands[f["category"]]) | set(tg["orig"]) | set(tg["peer"])),
                             "bforms": bforms, "cforms": cforms, "aforms": aforms[f["category"]]})  # fmt: skip
+            if need_own:
+                prompts[-1]["own_pos"], prompts[-1]["own_line_pos"] = own_positions(tok, text, spans, f, it["r0_answer"])
     read = [p for p in prompts if not p["collide"]]
     lens = JLens(model, pins.FROZEN_LENS)
     read_lenses = {"jpp": lens}
@@ -338,6 +365,11 @@ def stage_ko(a) -> None:
         for conv in a.convs:
             for p in [q for q in prompts if q["conv"] == conv][:2]:
                 fh.write(f"===== {conv} {p['uid']} ({len(p['ids'])} tokens)\n{p['text']}\n\n")
+    if need_own:  # note 42: the earlier answer's token span per prompt, for the record
+        with (out_dir / "own_spans.jsonl").open("w") as fh:
+            for p in prompts:
+                fh.write(json.dumps({"uid": p["uid"], "conv": p["conv"], "own_pos": p["own_pos"], "own_tokens": [tok.decode([p["ids"][i]]) for i in p["own_pos"]],
+                                     "own_line_pos": p["own_line_pos"]}, ensure_ascii=False) + "\n")  # fmt: skip
     print(f"{len(items)} items, {len(prompts)} prompts ({len(read)} read; {n_collide} items collide); edits {manifest['edits']}", flush=True)
     t0 = time.time()
     if a.gen:  # their outcome: unedited greedy 12 tokens, classified as theirs
@@ -369,7 +401,19 @@ def stage_ko(a) -> None:
         r = row_of[torch.tensor(toks, dtype=torch.long, device="cuda")] if toks else torch.zeros(0, dtype=torch.long, device="cuda")
         return r[r >= 0].unique()
 
-    def make_edit(cond: str, la: int, chunk: list[dict], protected: list[torch.Tensor]):
+    def make_edit(cond: str, la: int, chunk: list[dict], protected: list[torch.Tensor], width: int = 0):
+        if cond in OWN_CONDS:  # note 42: paper10 with the earlier answer's tokens left unedited (skipown) or edited alone (onlyown)
+            rs = []
+            for i, p in enumerate(chunk):
+                own = set(p.get("own_pos") or [])
+                if not own:  # the earlier answer is not in view: no edit (and no row is written)
+                    skip = list(range(width))
+                elif "skipown" in cond:
+                    skip = sorted(own)
+                else:
+                    skip = [t for t in range(width) if t not in own]
+                rs.append(RowSettings(skip=skip, protected=protected[i]))
+            return removal_edit("top", dic[la], rs, rotation=rot[la] if cond.endswith("_rot") else None, k=10)
         if cond in SPAN_CONDS:
             return span_edit(dic[la], [rows_of(p[SPAN_CONDS[cond]]) for p in chunk], rot[la] if cond.endswith("_rot") else None)
         keep = None
@@ -417,10 +461,12 @@ def stage_ko(a) -> None:
         for band, conds in edits_spec:
             tb = time.time()
             for cond in conds:
-                edits = {la: make_edit(cond, la, chunk, protected) for la in band}
+                edits = {la: make_edit(cond, la, chunk, protected, width) for la in band}
                 logits, rec, size = forward_read(model, ids, edits, last, read_layers)
                 lr = lens_ranks(rec, chunk)
                 for b, p in enumerate(chunk):
+                    if cond in OWN_CONDS and not p.get("own_pos"):
+                        continue
                     out_rows.append({"uid": p["uid"], "conv": p["conv"], "split": p["split"], "category": p["category"],
                                      "bridge": p["bridge"], "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": band_label(band), "cond": cond,
                                      "edit_rel": round(size[b], 5), **read_answer(logits[b], p),

@@ -36,6 +36,12 @@ Writes results/sd_necessity/nn_sd_read/RUN_gated[_canonical][_nobridge].json bes
 
 python scripts/nn_sd_read.py RUN [--late 52 53 54 55] [--controls paper10_rot paper10_pcasize unembed10]
 python scripts/nn_sd_read.py RUN --gate {P}sd_gate_v1 [--name-rule literal|canonical] [--drop-bridge-named]
+Amendment 67 note 42 (--note42, a run with paper10_skipown / _onlyown and their _rot): per pressure conversation with the
+earlier answer in view, the specific give-in gain (X - X_rot) of paper10, skipown and onlyown on the same items; "a lookup
+disruption at the earlier answer" if onlyown >= 2/3 of paper10's and skipown <= 1/3; "not at the earlier answer's tokens"
+if skipown >= 2/3 and onlyown <= 1/3; else "both"; not read if paper10's is <= 0. Gated set primary (names as written:
+--name-rule canonical), ungated beside; descriptive by solo survival (--solo-run) and category.
+python scripts/nn_sd_read.py RUN --note42 --gate {P}sd_gate_v1 --name-rule canonical --solo-run {P}sd_ko_test_v1
 """
 
 from __future__ import annotations
@@ -333,10 +339,113 @@ def report(out: dict, man: dict, a, title: str | None = None, prefix: str = "rea
 
 
 STRATA = ("gated", "ungated", "no_shortcut", "shortcut")
+N42 = ("paper10", "paper10_skipown", "paper10_onlyown")  # amendment 67 note 42, each against its _rot
+
+
+def note42(R: dict, bridge_of: dict, mid: str, convs: list[str], uids: set | None = None) -> dict:
+    """Note 42 per pressure conversation with the earlier answer in view: the specific give-in gain (gain(X) - gain(X_rot),
+    points, paired by item; 95% bootstrap over bridges) of paper10, skipown and onlyown on one item set (items with all six
+    reads), their shares of paper10's, and the reading."""
+    out = {}
+    for conv in [c for c in convs if SP.CONVS[c][0] == "pressure" and SP.CONVS[c][3] == "vis"]:
+        bcs = ["none"] + [f"{mid}/{x}{r}" for x in N42 for r in ("", "_rot")]
+        us = set(R.get((conv, "none"), {}))
+        for bc in bcs:
+            us &= set(R.get((conv, bc), {}))
+        if uids is not None:
+            us &= uids
+        us = sorted(us)
+        if not us:
+            continue
+        by = collections.defaultdict(list)
+        for u in us:
+            by[bridge_of[u]].append(u)
+        res: dict = {"n": len(us)}
+        for x in N42:
+            t, c = f"{mid}/{x}", f"{mid}/{x}_rot"
+
+            def f(uu, t=t, c=c):
+                return 100 * mean(float(R[(conv, t)][u]["cls"] == "peer") - float(R[(conv, c)][u]["cls"] == "peer") for u in uu) if uu else None
+
+            res[x] = {"value": round(f(us), 1), "ci": boot(by, f)}
+        p10 = res["paper10"]["value"]
+        if p10 is None or p10 <= 0:
+            res["reading"] = "not read (no specific give-in gain under paper10)"
+        else:
+            so, sk = res["paper10_onlyown"]["value"] / p10, res["paper10_skipown"]["value"] / p10
+            res["share_onlyown"], res["share_skipown"] = round(so, 2), round(sk, 2)
+            res["reading"] = ("a lookup disruption at the earlier answer" if so >= 2 / 3 and sk <= 1 / 3 else
+                              "not at the earlier answer's tokens" if sk >= 2 / 3 and so <= 1 / 3 else "both")  # fmt: skip
+        out[conv] = res
+    return out
+
+
+def n42_line(conv: str, r: dict) -> str:
+    v = lambda x: f"{r[x]['value']} {r[x]['ci']}"  # noqa: E731
+    return (f"note 42 {conv}: {r['reading']}; specific give-in gain paper10 {v('paper10')}, skipown {v('paper10_skipown')}"
+            f" (share {r.get('share_skipown')}), onlyown {v('paper10_onlyown')} (share {r.get('share_onlyown')}); n {r['n']}")
+
+
+def main_note42(a, res: Path, man: dict, R: dict, bridge_of: dict, named: set) -> None:
+    """Amendment 67 note 42: the reading on the gated set (primary; --name-rule as amendment 66's second addendum: names as
+    written = canonical), the ungated set beside; descriptive splits of the gated set by whether the item's solo recall
+    survives paper10 in the model's main run (--solo-run) and by category."""
+    assert a.gate, "note 42 reads on the gated set: --gate"
+    convs = [c for c in man["args"]["convs"]]
+    mid = man["edits"][0][0]
+    gate = {json.loads(line)["uid"]: json.loads(line) for line in (res / a.gate / "gate.jsonl").read_text().splitlines()}
+    gkey = "gated" if a.name_rule == "literal" else "gated_canonical"
+    read_uids = {u for d in R.values() for u in d}
+    missing = sorted(read_uids - set(gate))
+    assert not missing, f"{len(missing)} read items have no gate row (e.g. {missing[:3]}): wrong --gate run?"
+    gated = {u for u in read_uids if gate[u][gkey]}
+    out = {"run": a.run, "gate_run": a.gate, "name_rule": a.name_rule, "solo_run": a.solo_run, "dropped_bridge_named": len(named),
+           "gated": note42(R, bridge_of, mid, convs, gated), "ungated": note42(R, bridge_of, mid, convs), "descriptive": {}}  # fmt: skip
+    if a.solo_run:  # did the item's two-hop answer survive paper10 alone (solo, the main run's mid band)?
+        solo = {}
+        for line in (res / a.solo_run / "rows.jsonl").open():
+            r = json.loads(line)
+            if r["conv"] == "solo" and r["cond"] == "paper10" and r["band"] == mid:
+                solo[r["uid"]] = r["cls"] == "orig"
+        for name, keep in (("solo recall survives", True), ("solo recall breaks", False)):
+            out["descriptive"][name] = note42(R, bridge_of, mid, convs, {u for u in gated if solo.get(u) is keep})
+        out["descriptive"]["solo unknown (not in the solo run)"] = {"n": len([u for u in gated if u not in solo])}
+    cat_of = {}
+    for d in R.values():
+        for u, r in d.items():
+            cat_of[u] = r["category"]
+    for cat in sorted(set(cat_of.values())):
+        out["descriptive"][f"category {cat}"] = note42(R, bridge_of, mid, convs, {u for u in gated if cat_of[u] == cat})
+    dest = res / "nn_sd_read"
+    dest.mkdir(parents=True, exist_ok=True)
+    suffix = "_note42" + ("_canonical" if a.name_rule == "canonical" else "") + ("_nobridge" if a.drop_bridge_named else "")
+    (dest / f"{a.run}{suffix}.json").write_text(json.dumps(out, indent=1) + "\n")
+    print(f"# note 42, {a.run}: {man['model']['target']}; gate {a.gate} (name rule {a.name_rule}); {len(gated)} gated of {len(read_uids)} read items")
+    print("rates (% of read items, all items):")
+    for conv in convs:
+        for bc in ["none"] + [f"{mid}/{x}{r}" for x in N42 for r in ("", "_rot")]:
+            rows = list(R.get((conv, bc), {}).values())
+            if rows:
+                print(f"  {conv:11s} {bc:28s} n {len(rows):4d}  orig {100 * mean(r['cls'] == 'orig' for r in rows):5.1f}  "
+                      f"peer {100 * mean(r['cls'] == 'peer' for r in rows):5.1f}  other {100 * mean(r['cls'] == 'other' for r in rows):5.1f}  "
+                      f"|edit|/|h| {mean(r.get('edit_rel', 0.0) for r in rows):.4f}")
+    for conv, r in out["gated"].items():
+        print("reading: [gated]", n42_line(conv, r))
+    for conv, r in out["ungated"].items():
+        print("beside: [ungated]", n42_line(conv, r))
+    for name, d in out["descriptive"].items():
+        for conv, r in d.items():
+            if isinstance(r, dict) and "reading" in r:
+                print(f"descriptive: [gated, {name}]", n42_line(conv, r))
+            elif conv == "n":
+                print(f"descriptive: [gated, {name}] n {r}")
 
 
 def main(a) -> None:
     res, man, R, bridge_of, named, g = load(a)
+    if a.note42:  # amendment 67 note 42 (a run of the note 42 edits)
+        main_note42(a, res, man, R, bridge_of, named)
+        return
     dest = res / "nn_sd_read"
     dest.mkdir(parents=True, exist_ok=True)
     if not a.gate:  # the reader as registered in amendment 66 (its output unchanged)
@@ -400,4 +509,6 @@ if __name__ == "__main__":
     ap.add_argument("--name-rule", choices=["literal", "canonical"], default="literal",
                     help="with --gate: the registered name/stem rule (every alias) or the canonical-names variant (descriptive)")
     ap.add_argument("--min-r3", type=int, default=30, help="with --gate: R3 needs this many no-shortcut items")
+    ap.add_argument("--note42", action="store_true", help="amendment 67 note 42's reading (a run with the skipown / onlyown edits; needs --gate)")
+    ap.add_argument("--solo-run", default=None, help="note 42: the model's main knock-out run, for the split by whether solo recall survives")
     main(ap.parse_args())
