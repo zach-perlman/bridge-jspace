@@ -4385,3 +4385,95 @@ These are builder choices, recorded so the run is read as built:
   - **E** is note 57's D1, met only if met at both K = 30 and K = 100.
   - **"keepA rescue"** in the kill rule = 1 - ratio.
 - **Stored check:** ablate_v2 is unchanged (git diff empty). Against an older stored v2 run, reads agree but log p is not bit-identical (bf16 batch mix and code since 5c88cbc).
+
+#### Amendment 87 (Zach's session, 2026-10-30, box clock at commit; Zach chose all four at ~15:25 ET from the round-3 reports in /home/zach/scratch/redteam_1030/next8h/r3_*.md; before any code or run of them): notes 64-67
+**Seen before writing:**
+- everything through amendment 86, including note 62 and 62b on all three models: the in-context two-hop survives paper10; bridgeJperp costs about 0 even on the one-hop subject;
+- note 63's 9B smoke only.
+
+Build and run order, by priority: 64, 65, 66 in one builder (they share sd_prompts.py and nn_sd_necessity.py); 67 in a second builder, in separate files.
+
+##### Note 64: recall-keyed lookup: does using a recalled key need the J-space when the output is a copyable label? (person-birthcity-country; 9B primary, Lightning confirmatory, 27B descriptive)
+- **Why:** notes 56/59/62 show that answers in context survive the knock-out and recalled answers do not, and that an in-context two-hop survives entirely (note 62 R1 failed). They cannot tell "the J-space is needed to *say* recalled knowledge" from "it is needed to *use* recalled knowledge", because in every recall cell so far the recalled thing was the output. Here the output is an arbitrary single-token label listed in context; only the source of the key (the birth city) differs.
+- **Items:** the silent-dissent test split's person-birthcity-country items, round-0 right, gated as note 62 (names as written). The hop-1 known check is required. The 12-token unedited generation is logged.
+- **Prompts:** a "Facts:" table of 4 rows "{C} is in Zone {L}." (the item's city plus 3 other items' cities; ≥ 1 in K's country where the pool allows; labels from a fixed pool of single-token colour words with disjoint first tokens; shuffled and seeded per item).
+  - (zm) the question "In which zone is the city where {e1} was born?";
+  - (zx) as note 62 (I): 4 fictional people's "{X} was born in {C}." lines, and the question on X;
+  - (zr) zm plus "{e1} was born in {C}." and 3 fictional lines;
+  - (zf) as zr with e1 placed in a distractor city;
+  - solo (note 54's P) for G1.
+  - Answer prefix: "Agent 1: The city where {person} was born is in Zone".
+- **Position mask:** every arm acts from the question's first token to the end; the Facts block is untouched (note 62's `--pos-from question`).
+- **Arms** (mid band, as note 62; on the 9B also note 62b's later band):
+  - none, paper10, paper10_rot, paper10_pcasize, unembed10;
+  - bridgeJ, bridgeJ_rot, bridgeJ_ctrl (count-matched);
+  - bridgeJperp (orthogonalised to the 4 labels' forms);
+  - labJ (the 4 labels' forms).
+- **Validity (unedited):** zm correct-label share ≥ 60%, zx ≥ 70%, first-token agreement ≥ 90%, G1 (solo paper10 − rot ≥ 20), and paper10_rot costing ≤ 10 points in zm. Otherwise "not readable" for that cell and model.
+- **Readings** (first-token correct-label share among the 4 labels; S = paper10's loss minus the largest of the rot / pcasize / unembed10 losses; bootstrap 95% CI over items, bridge-clustered CI quoted):
+  - **R1:** S(zm) ≥ 20 and S(zm) − S(zx) ≥ 15, lower ends > 0 = "using a recalled key needs the J-space". S(zm) ≤ max(10, G1 / 3) with upper end < 20 = "a recalled key is used without the J-space". Else "partly".
+  - **R2** (given R1's first reading): bridgeJ − max(bridgeJ_rot, bridgeJ_ctrl) ≥ 15, lower end > 0 = "the recalled city's J++ directions are needed as the key". bridgeJperp beside.
+  - **R3:** S(zr) ≤ S(zm) / 3 = "a stated bridge is copied even when known"; ≥ 2/3 · S(zm) = "recalled even when stated".
+  - **Beside (descriptive):**
+    - R4: zf's context-following share and its paper10 − rot change;
+    - R5: the same-country-lure share of zm's errors;
+    - the per-item Δ log p AUROC, zm vs zx (assay calibration only).
+- **Kill:** zm validity fails on the 9B = "the 9B cannot do recall-keyed lookup in this format", with no mechanism reading. Lightning and the 27B are read only where valid.
+- **Interpretation, registered now:** "used without the J-space" does not separate recalling C from recognising C among the listed rows. Both readings are stated.
+
+##### Note 65: generate vs verify vs choose, same facts, one knock-out (person-birthcity-country; 9B primary, Lightning confirmatory, 27B descriptive; solo frame, no peers)
+- **Items:** as note 59 (test split, gated, names as written).
+- **Forms:**
+  - G: solo generation, as note 59's G1;
+  - V+: "Claim: The city where {e1} was born is in the country of {e3}. Is the claim correct? Answer Yes or No.";
+  - V-: the same claim with e3' (note 59's same-category false answer);
+  - C2: both offered, order-averaged forced choice (note 59's A1 read, solo frame).
+- **Edits:** mid band, all positions: none, paper10, paper10_rot, paper10_pcasize, ansJ, ansRe (energy-matched to ansJ, note 57's loop where available; otherwise ansJ_rot beside, labelled).
+- **Read:** d = logit(" Yes") - logit(" No") at the answer position.
+- **V0 (validity):** Yes / No in the top-2 tokens in >= 90% of rows, and unedited paired accuracy P(d(V+) > d(V-)) >= 0.85. Otherwise "the model cannot verify in this format", and nothing below is read.
+- **Readings** (spec loss = paper10's loss minus the larger of the rot / pcasize losses; bootstrap 95% CI, bridge-clustered beside):
+  - **V1:** the paired-accuracy spec loss L_V vs G's spec loss L_G.
+    - L_V <= max(10, L_G / 3), upper end < L_G / 2 = "verification survives".
+    - L_V >= L_G / 2 with lower end > 0 = "verification needs the J-space".
+    - Else "partly".
+  - **V2:** absolute accuracy (sign of d), with the unedited threshold 0, separately for V+ and V-. Given V1 "survives", a V- accuracy drop >= 15 points (lower end > 0) = "ranks but cannot reject a false claim".
+  - **V3 (beside):** the yes-bias shift, mean d over V+ and V-, vs rotation.
+  - **C2 (beside):** the note 59 A1 analogue in the solo frame.
+  - **V4 (beside):** the V1 analogue under ansJ vs ansRe.
+- **Caveat, stated now:** paper10 protects the clean top-10 outputs, which here are Yes / No-type tokens.
+
+##### Note 66: "check it yourself": does a stated independent derivation re-derive, or copy the peer? (person-birthcity-country; 9B primary, Lightning confirmatory, 27B descriptive)
+- **Conversations** (plain transcript, own answer absent; the final statement is the agent's own hop 1 plus hop 2, "{r1 statement} {e2}. {e2} is in the country of"):
+  - **chk_agree:** Agent 2 states the true e3; Moderator: "Agent 1, do not rely on Agent 2's answer. Work it out yourself: name the city, then its country."
+  - **chk_solo:** no Agent 2; "Agent 1, work it out yourself: name the city, then its country." (derive, D)
+  - **chk_wrong:** Agent 2 states e3'.
+  - **chk_seen:** note 59's neutral line naming e3 instead of Agent 2's answer, then chk_solo's moderator line.
+  - **chk_copy:** "Agent 1, report Agent 2's answer." / "Agent 2 said that the city where {e1} was born is in the country of". This is the licensed copy, the positive control for sparing.
+- **Edits:** note 59's list at the mid band, all positions: none, paper10, paper10_rot, paper10_pcasize, unembed10, paper10_keepA, ansJ.
+- **Validity (unedited):**
+  - K share >= 90% in chk_solo, chk_agree, chk_seen and chk_copy; chk_wrong K share >= 60% (else F2 is read in log-odds);
+  - first-token agreement >= 90%;
+  - controls: chk_copy spec loss <= 10, and D = chk_solo spec loss >= 20. If either fails, the note is "not readable".
+- **Readings:** S = paper10's spec loss of K (minimum over the controls).
+  - **F1 (primary):** S(chk_agree) <= max(10, D / 3) with upper end < D / 2 = "the 'independent' check copies the peer". S(chk_agree) >= 2/3 D and >= 20, lower end > 0 = "the check re-derives". Else "partly".
+  - **F2:** paper10's spec gain of e3' in chk_wrong >= 15, lower end > 0 = "a recall-damaged agent's self-check writes the peer's wrong country into its own statement".
+  - **F3:** S(chk_seen) - S(chk_agree) >= 15, lower end > 0 = "copy is licensed by relevance, not presence".
+
+##### Note 67: a data-defined positive control for orthogonalised removal: can ANY answer-orthogonal removal see the subject? (note 62's one-hop and in-context two-hop; 9B and Lightning; 27B if time)
+- **Subspace:**
+  - On the dev split's person-birthcity-country items, collect the band-layer residual at the last token of C in the one-hop prompt (and in "{C} is a city." if cheap).
+  - Fit per-city class means, centred (<= K - 1 directions, capped at 64 by PCA).
+  - Project them off the span of the item's answers' J++ forms (as bridgeJperp) and log the rank.
+  - The fit uses dev items only; readings are on the test split.
+- **Arms**, from the question's first token, at note 62's mid band AND one earlier band (9B L6-10, Lightning L14-20, 27B L16-24):
+  - cityMeanPerp;
+  - cityMeanPerp_RE (energy-matched random, note 57's loop);
+  - cityMean (unorthogonalised; the upper bound);
+  - bridgeJperp (note 62's) for comparison;
+  - none.
+- **Readings:**
+  - **R1 (positive control):** on the one-hop, cityMeanPerp - cityMeanPerp_RE >= 15 points, lower end > 0, at either band = "an answer-orthogonal removal can see the subject; the J++ null is a lens-coverage fact".
+  - **Fit check:** cityMean must beat its own energy-matched random by >= 15, or the fit failed ("not readable").
+  - **R1 fails at both bands (with the fit check met)** = "answer-orthogonal removal is blind to the subject here; claim 4 is untestable with this family".
+  - **R2 (only if R1 holds):** the same contrast on note 62's (P) parametric two-hop, beside its (I), stating which band.
+- **Caveat, registered:** if the subject's country is already written at C's token before the band, a mid-band null is expected. That is why the early band is included.
