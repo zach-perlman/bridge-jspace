@@ -3664,3 +3664,20 @@ Sources: /home/zach/scratch/redteam_1030/next_deepen.md (E6, E7) and next_fronti
     - early window: "the intermediate is needed early" if K_early(B) <= 1/3 and K_early(T) >= 2/3.
   - **Splits:** single- vs multi-token targets.
   - **Bootstrap** clustered by relation (multilingual) or answer type (multihop).
+
+#### Amendment 69 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated queueing until 12:00 ET; before any code or run of it): notes 46-48, cheap replications for the idle GPU hours after the current queue
+Seen before writing: note 41 on the 9B ("partly" keep; removal "not answer-specific"; "upstream"); note 45 on the 9B (A0 not met on every set); notes 38-40 and the arm 6b / 5R reruns. Order by research priority: note 44, note 42, then 46, 48, 47. Models 9B, 27B, Lightning; one deterministic run each.
+
+##### Note 46: notes 37 and 41 on the codename set (jsuite_v5al; does the answer-direction account hold when the bridge is a passage-defined codename that evokes nothing?)
+- **Knock-out:** the alias set's own command (note 31: words MP MM, kinds clean, the v4 gate with the v5alctl controls, main bands), with note 37's and note 41's conditions in one run: paper10, paper10_rot, keepA (+ _rot), keepR, R2, R4 (+ _rot), ansJ (+ _rot), ansR (+ _rot), ansU; --keepA-forms every.
+- **Readings:** note 37's ("the recall's J-need is its answer's directions" etc.) and note 41's keep and removal rules, unchanged. A note 37 reading that differs from v4's is reported as such.
+
+##### Note 47: note 40 on the silent-dissent dev split (replication and power for R1 and the no-shortcut R3)
+- **Run:** the same knock-out (amendment 66; mid band; the same edits incl. keepA and ansJ; J++ only) on their dev split's known items. The gate (amendment 66 addenda, names as written primary) is applied by the reader.
+- **Readings:** G1, G2, R1 and R2 on the gated dev items, and R3 on the dev no-shortcut items (>= 30), each read as note 40's.
+- **"Replicates":** the same reading as on the test split. A pooled test+dev R3 is reported beside, descriptive.
+
+##### Note 48: note 37 on a third v4 data draw (jsuite_v4p4003), with note 43's pipeline
+- **Pipeline:** competence, controls and the gate, then note 37's and note 41's conditions.
+- **"Replicates":** the same note 37 and note 41 readings per model as on seed 4001 (and as on p4002).
+- With note 43, this gives three draws for note 37 (CLAUDE.md asks for >= 3 seeds before calling a result positive).
