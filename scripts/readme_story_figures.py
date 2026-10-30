@@ -1275,6 +1275,37 @@ ORDER_SWEEP = (("bw", "the bridge-word change", "--", "o"), ("ls", "the copy int
 BLOCK = 1.3  # Fig. 3 (b): one block per model on one axis, each block the model's layers scaled to [0, 1]
 
 
+def order_both(fig, pos, rows, long_name) -> None:
+    """Panel D of fig03_order: per model four hollow dots (post hoc), original / changed locker sentence before (B) or after (A) the pick, with 95%
+    cluster-bootstrap intervals (results/x0_order_2x2, scripts/x0_order_2x2.py)."""
+    path = sorted((S.REPO / "results" / "x0_order_2x2").glob("*/tables.json"))[-1]
+    t = json.loads(path.read_text())
+    ax = fig.add_axes(pos)
+    cells = (("before", "before", "B/B"), ("before", "after", "B/A"), ("after", "before", "A/B"), ("after", "after", "A/A"))
+    for i, (target, m, _) in enumerate(rows):
+        d = t[target]["cells"]
+        for j, (o, a_, lab) in enumerate(cells):
+            x = i + (j - 1.5) * 0.2
+            r = d[f"original {o} / changed {a_}"]
+            p, lo, hi = r["rate"]
+            ax.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
+            ax.plot([x], [p], "o", color=S.COL["lookup"], ms=7, mfc="white", mec=S.COL["lookup"], mew=1.8, zorder=4)
+            ax.text(x, -0.06, lab, ha="center", va="top", fontsize=S.FONT - 2.5)
+            S.record("fig03", target, f"post hoc, original locker sentence {o} the pick, changed {a_}: lookups switched by the whole change",
+                     round(p, 4), round(lo, 4), round(hi, 4), r["n"], source=rel(path))  # fmt: skip
+        ax.text(i, -0.3, long_name[m], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
+    ax.set_xlim(-0.6, len(rows) - 0.4)
+    ax.set_ylim(-0.02, 1.05)
+    ax.set_xticks([])
+    ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
+    ax.set_ylabel("lookups switched (share)")
+    ax.grid(axis="y", color="#eeeeee")
+    ax.set_axisbelow(True)
+    ax.set_title("D  Both orders matter: original prompt's / changed prompt's locker sentence", loc="left", fontsize=12,
+                 weight="bold", pad=26)  # fmt: skip
+    S.panel_tag(ax, "24–82 per dot", "after")
+
+
 def f03_order(plt) -> None:
     """E10 (v6), two panels, 9B / 27B / Muse. (a) After the data: the share of lookups (purple bars) and recalls (grey
     dots) the whole change at the bridge word switches in the main test, the locker sentence before vs after the asked
@@ -1287,14 +1318,14 @@ def f03_order(plt) -> None:
     The old Fig. 3 with the 122B and its extra-loss panel: figures/depth/supp/s03_order_split; the old Fig. 3b stays
     fig03b_layers until the README drops it. Lightning (batch 52, hollow): A from its conflict test at L14, B from its
     Z1 run (LT_Z1), C not tested (its clean one-pick scenes missed their gate)."""
-    h = 11.85  # the bottom 0.3 in: the 122B's caption line (the panels keep their places from the top)
+    h = 15.0  # the bottom 0.3 in: the 122B's caption line; panel D (both orders, post hoc) at 11.55-13.0 in (the panels keep their places from the top)
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
         return (left, 1 - bottom_in / h, width, (bottom_in - top_in) / h)
 
     S.title(fig, "Locker after the pick: the link is made in the locker sentences",
-            "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer.")  # fmt: skip
+            "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer. D: both orders (post hoc).")  # fmt: skip
     a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
     zb = fig.add_axes(box(0.11, 0.86, 5.35, 6.75))  # four models: three-line order labels, two-line names
     b = fig.add_axes(box(0.11, 0.81, 8.3, 10.55))
@@ -1492,6 +1523,9 @@ def f03_order(plt) -> None:
     b.grid(axis="y", color="#eeeeee")
     b.set_axisbelow(True)
     S.panel_tag(b, ", ".join(nq), "after")
+    # (d) post hoc, CPU (results/x0_order_2x2): the lookup's switch under the whole change by both orders: the original prompt's bridge locker
+    # sentence before / after the asked pick x the changed prompt's (the changed pick names the new bridge; the lockers stay put)
+    order_both(fig, box(0.11, 0.86, 11.55, 13.0), rows, long_name)
     hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["lookup"]),
           plt.Line2D([], [], marker="D", ls="", color=S.COL["recall"], ms=5.5),
           plt.Line2D([], [], color=S.COL["lookup"], ls="--", lw=2.0), plt.Line2D([], [], color=S.COL["lookup"], lw=2.0),
@@ -2178,8 +2212,8 @@ ROUTE_LAYERS = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_ro
                 "muse": (("muse30b_x6_routes_l13", 13, "fixed"), ("muse30b_x6_routes", 26, "fixed"))}  # fmt: skip
 
 
-def f06_depth(plt) -> None:
-    """Candidate, after the data: top, the J++ extra loss by layer (points with CIs, no connecting line); bottom, the
+def f06_depth_candidate(plt) -> None:
+    """(Superseded on 31 Oct by f06_depth, which draws 47.8's own layers: this one's \"needs J++\" rule and the route runs give other layers than claim 12's.) Candidate, after the data: top, the J++ extra loss by layer (points with CIs, no connecting line); bottom, the
     position share when another item moved, at each layer the routes test ran; purple shading over the layers where the
     lookup still needs J++ (extra loss >= NEEDS); x = layer number."""
     fig, axes = plt.subplots(2, 4, figsize=(S.WIDTH, 6.3), sharex="col", gridspec_kw={"height_ratios": [1.2, 1]})
@@ -3497,6 +3531,81 @@ def grid_text(layers: list[int]) -> str:
     return f"every {ordinal(s)} plus " + " and ".join(f"L{la}" for la in extra)
 
 
+ANATOMY_RUNS = (("qwen3.5-9b", "9b", "x47_anatomy/x47_8-20261028T154518Z"), ("qwen3.6-27b", "27b", "x47_anatomy/x52_anatomy-20261029T013405Z"),
+                ("muse-glimmer-30b", "muse", "x47_anatomy/x47_8-20261028T154518Z"), ("nemotron-3.5-lightning", "lightning", "x47_anatomy/x52_anatomy-20261029T010517Z"),
+                ("qwen3.5-122b-a10b", "122b", "x47_anatomy/x52_anatomy-20261030T032402Z"))  # fmt: skip
+
+
+def anatomy_models() -> list[tuple[dict, str]]:
+    """Claim 12's own data: each model's 47.8 verdict (the 27B's full grid), as the claims table's l_J / l_P / l_probe read them."""
+    out = []
+    for target, _, folder in ANATOMY_RUNS:
+        path = pins.RESULTS_DIR / folder / "x47_8.json"
+        m = next(x for x in json.loads(path.read_text())["models"] if x["target"] == target and x["status"] == "tested")
+        out.append((m, rel(path)))
+    return out
+
+
+def f06_depth(plt) -> None:
+    """E12 (31 Oct): when, by depth. Per model one panel, x = the layer: the lookup's and the recall's switches blocked without the J++ part beyond a
+    random part (circle, diamond; 95% intervals), the position answers under the whole change when another item moves (orange squares), the locker
+    probe's accuracy (grey line); three marks: l_probe (the address is readable), l_P (position answers start), l_J (the last layer the lookup
+    needs the J++ part). All from 47.8's verdicts, the files the claims table's l_J / l_P / l_probe come from (the 27B: its full grid, where the
+    handoff rule (a) fails: l_J 40 after l_P 28). Lightning and the 122B hollow (coverage / gate chosen after)."""
+    models = anatomy_models()
+    nr, nc, row_in = 2, 3, 2.75
+    h = 2.6 + nr * row_in + 1.45
+    fig, axes = plt.subplots(nr, nc, figsize=(S.WIDTH, h), sharey=True, squeeze=False)
+    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 2.6 / h, bottom=1.45 / h, wspace=0.10, hspace=0.62)
+    S.title(fig, "The address is readable before the lookup uses it",
+            "Switches blocked without the J++ part beyond a random part (lookup, recall), position answers, the locker probe; whiskers 95%.")  # fmt: skip
+    for ax, (m, src) in zip(axes.flat, models, strict=False):
+        target, rules, rows = m["target"], m["rules"], m["figure"]["rows"]
+        hollow = target in ("nemotron-3.5-lightning", "qwen3.5-122b-a10b")
+        layers = [int(x) for x in m["layers"]]
+        name = next(lab for t, _, lab in (*S.MODELS, LT) if t == target)
+        ax.set_title(name + (" (full grid)" if target == "qwen3.6-27b" else ""), fontsize=S.FONT, weight="bold", loc="left")
+        ax.axhline(0, color="#999999", lw=0.8, zorder=1)
+        acc = [rows["probe.slot"][str(la)][0] for la in layers]
+        ax.plot(layers, acc, color=S.COL["control"], lw=1.4, ls="--", zorder=2)
+        for key, col, mk, dx, what in (("loss.lookup.J", S.COL["lookup"], "o", -0.5, "lookup"), ("loss.recall.J", S.COL["recall"], "D", 0.5, "recall"),
+                                       ("lookup.whole.position", S.COL["position"], "s", 0.0, "position answers")):  # fmt: skip
+            for la in layers:
+                v = rows[key][str(la)]
+                ax.plot([la + dx] * 2, [v[1], v[2]], color=col, lw=1.1, alpha=0.8, zorder=3)
+                ax.plot([la + dx], [v[0]], mk, color=col, ms=4.6 if mk != "D" else 4.0, mfc="white" if hollow else col, mec=col, mew=1.2, zorder=4)
+                S.record("fig06", target, f"47.8, layer {la}: {what}" + (" (switches blocked beyond random without the J++ part)" if "loss" in key else " under the whole change"),
+                         *v, n=m["cells"][str(la)]["lookup"]["n"], source=src)  # fmt: skip
+        for la in layers:
+            S.record("fig06", target, f"47.8, layer {la}: the locker probe's accuracy", *rows["probe.slot"][str(la)], source=src)
+        for key, ls, lab, y in (("l_probe", ":", "probe", 1.1), ("l_P", "--", "position", 1.1), ("l_J", "-", "J++", 1.1)):
+            x0 = rules[key]
+            col = S.COL["lookup"] if key == "l_J" else S.COL["position"] if key == "l_P" else S.COL["control"]
+            ax.axvline(x0, color=col, ls=ls, lw=1.4, zorder=2, ymax=0.9)
+            S.record("fig06", target, f"47.8: {key}", x0, source=src)
+        ax.set_ylim(-0.25, 1.1)
+        ax.set_yticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+        ax.set_xlim(0, m["n_layers"])
+        ax.set_xlabel("layer")
+        ax.grid(axis="y", color="#eeeeee")
+        ax.text(0.98, 0.03, f"probe L{rules['l_probe']} · position L{rules['l_P']} · J++ part L{rules['l_J']}", transform=ax.transAxes, ha="right", va="bottom",
+                fontsize=S.FONT - 2, color=S.COL["muted"])  # fmt: skip
+    for ax in axes.flat[len(models):]:
+        ax.axis("off")
+    for ax in axes[:, 0]:
+        ax.set_ylabel("share / effect")
+    hs = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=6), plt.Line2D([], [], marker="D", ls="", color=S.COL["recall"], ms=5),
+          plt.Line2D([], [], marker="s", ls="", color=S.COL["position"], ms=6), plt.Line2D([], [], ls="--", color=S.COL["control"], lw=1.4),
+          plt.Line2D([], [], ls=":", color=S.COL["control"], lw=1.4), plt.Line2D([], [], ls="--", color=S.COL["position"], lw=1.4),
+          plt.Line2D([], [], ls="-", color=S.COL["lookup"], lw=1.4)]  # fmt: skip
+    legend(fig, hs, ["lookup: blocked without the J++ part", "recall: blocked without the J++ part", "position answers (lookup)", "locker probe accuracy", "probe readable",
+                     "position answers start", "lookup's last layer needing the J++ part"], 1 - 1.0 / h, ncol=3)  # fmt: skip
+    fig.text(0.01, 0.12 / h, "Hollow: Lightning (gate chosen after the pre-check), the 122B (coverage run, gate lowered).\nIn the 27B's full grid the handoff rule (a) fails: the lookup needs the J++ part up to L40, after position answers start (L28).", fontsize=S.FONT - 2, color=S.COL["muted"], va="bottom")  # fmt: skip
+    S.save(fig, "fig06_depth")
+
+
+
+
 def f06b_anatomy(plt) -> None:
     """Fig. 6b (E12, and E5's second figure): 47.8 (fixed in advance), per tested model, the lookup's answers under the
     whole change at each sampled layer (identity / position stacked, the original answer empty, the value as a row of
@@ -4497,11 +4606,61 @@ def s17_jspace_grids(plt) -> None:
 
 
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
+def f24_two_codes(plt) -> None:
+    """Appendix B (31 Oct, post hoc; scripts/c2_route_crosstab.py): the same scenes followed one by one, another item moved, the lookup. Left: of the
+    scenes on the position route under the whole change, the share that leaves position without the address (no_alf) against without a same-size
+    random part. Right: of the scenes on the identity route, the share that goes to position without J++ against without its random part. The
+    paired difference with its 95% interval (cluster bootstrap over the bridge entity) printed at the right. All hollow (post hoc); Lightning and the
+    122B also (gate chosen after / lowered)."""
+    path = sorted((S.REPO / "results" / "c2_route_crosstab").glob("*/tables.json"))[-1]
+    t = json.loads(path.read_text())
+    order = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning", "qwen3.5-122b-a10b")
+    short = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning ○", "qwen3.5-122b-a10b": "122B ○"}
+    panels = (("A  Position scenes that leave position", "a_leave_position_no_alf_minus_rand", "n_whole_position", "without the address", S.COL["position"],
+               "share of position-route scenes that leave position"),
+              ("B  Identity scenes that go to position", "b_identity_to_position_no_jpp_minus_rand", "n_whole_identity", "without the J++ part", S.COL["lookup"],
+               "share of identity-route scenes that go to position"))  # fmt: skip
+    h = 1.9 + 5 * 0.62 + 1.35
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
+    fig.subplots_adjust(left=0.115, right=0.985, top=1 - 1.9 / h, bottom=1.35 / h, wspace=0.12)
+    S.title(fig, "The address and the J++ part each hold a different route in place",
+            "Another item moved, lookup, 300 scenes per model, followed one by one; hollow: post hoc. Whiskers: the paired difference, 95%.")  # fmt: skip
+    for ax, (title, key, nkey, arm_label, col, xl) in zip(axes, panels, strict=True):
+        for i, target in enumerate(order):
+            c = t[target]["contrasts"][key]
+            y = -i
+            ax.plot([c["share_rand"], c["share_arm"]], [y, y], color="#bbbbbb", lw=2.2, zorder=1)
+            ax.plot([c["share_rand"]], [y], "o", ms=8, mfc="white", mec=S.COL["control"], mew=1.8, zorder=3)
+            ax.plot([c["share_arm"]], [y], "o", ms=8, mfc="white", mec=col, mew=1.8, zorder=4)
+            d = c["difference"]
+            ax.text(1.1, y + 0.12, f"{d[0]:+.2f}", ha="left", va="center", fontsize=S.FONT, weight="bold")
+            ax.text(1.1, y - 0.22, f"[{d[1]:+.2f}, {d[2]:+.2f}]", ha="left", va="center", fontsize=S.FONT - 2, color=S.COL["muted"])
+            S.record("fig24", target, f"post hoc, another item moved, lookup: {title[3:]}, {arm_label}", c["share_arm"], n=c[nkey], source=rel(path))
+            S.record("fig24", target, f"post hoc, another item moved, lookup: {title[3:]}, without a same-size random part", c["share_rand"], n=c[nkey], source=rel(path))
+            S.record("fig24", target, f"post hoc, another item moved, lookup: {title[3:]}, paired difference", *d, n=c[nkey], source=rel(path))
+        ax.set_title(title, fontsize=11.5, weight="bold", loc="left", pad=8)
+        ax.set_xlim(-0.02, 1.5)
+        ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+        ax.spines["bottom"].set_bounds(0, 1)
+        ax.set_ylim(-4.6, 0.6)
+        ax.set_yticks([-i for i in range(5)], [short[tg] for tg in order])
+        ax.tick_params(axis="y", length=0)
+        ax.grid(axis="x", color="#eeeeee")
+        ax.set_xlabel(xl)
+        ax.text(0.58, 0.98, f"n = {t[order[0]]['contrasts'][key][nkey]}–{max(t[tg]['contrasts'][key][nkey] for tg in order)}", transform=ax.transAxes, ha="right", va="top",
+                fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+    hs = [plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["position"], mew=1.8, ms=8), plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["lookup"], mew=1.8, ms=8),
+          plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["control"], mew=1.8, ms=8)]  # fmt: skip
+    legend(fig, hs, ["without the address (A)", "without the J++ part (B)", "without a random part of the same size"], 1 - 1.05 / h, ncol=3)
+    fig.text(0.01, 0.2 / h, "Paired differences with 95% intervals (bootstrap over the bridge entity); post hoc, descriptive.", fontsize=S.FONT - 2, color=S.COL["muted"], va="bottom")  # fmt: skip
+    S.save(fig, "fig24_two_codes")
+
+
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
                f13_attention, f14_learned, f16_dose, f17_jspace_last_token, f18_atoms, f19_identity_address,
-               f20_order_cell, f21_code_tool, f22_attention_blocks, f23_monitor)  # fmt: skip
+               f20_order_cell, f21_code_tool, f22_attention_blocks, f23_monitor, f24_two_codes)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -4532,8 +4691,8 @@ SUPP_FIGS = (
 # address (Fig. 19) and the order cell (Fig. 20), its dose card moves to the ledger (Fig. 16 to the second sheet); Part
 # III gains the monitor (Fig. 23), the refit (Fig. 9b refit) and code and tool output (Fig. 21); Part IV Lightning's
 # attention blocks (Fig. 22)
-README_NAMES = ("fig00_setup", "r1_dan_split", "f5_atoms", "f12_order", "f6_address", "f11_monitor", "r3_last_token",
-                "t12_two_by_two")  # fmt: skip
+README_NAMES = ("fig00_setup", "r1_dan_split", "f5_atoms", "f12_order", "fig03_order", "f6_address", "r5_routes", "fig06_depth", "f11_monitor",
+                "r3_last_token", "t12_two_by_two")  # fmt: skip
 # the table-style figures above (all but fig00_setup) are bridge_jspace.figkit.tables's (--target depth), held to its
 # lint; the figures they replaced (Dan's 01:58 brief) are still drawn here, off the page: fig11 became a markdown table
 # (readme_build's {{scorecard}}), fig00b three lines
@@ -4541,7 +4700,7 @@ REPLACED = ("fig11_scorecard", "fig00b_marks", "fig01_split", "fig18_atoms", "fi
             "fig07b_verbal", "fig23_monitor", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/depth/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/depth/x0_details.md's figures
-SHEET_MORE = ("fig19_identity_address", "fig09a_transfer", "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig09b_six_lockers", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map", "fig22_attention_blocks", "fig06b_anatomy",  # moved to the ledger (Dan, 30 Oct)
+SHEET_MORE = ("fig24_two_codes", "fig19_identity_address", "fig09a_transfer", "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig09b_six_lockers", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map", "fig22_attention_blocks", "fig06b_anatomy",  # moved to the ledger (Dan, 30 Oct)
               "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09_transfer",

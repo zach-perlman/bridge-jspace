@@ -106,7 +106,7 @@ V6_PANELS = {"fig07_writes": 3,
              "fig05c_described_bridge": 3, "fig09_transfer": 8,
              # Dan's figures brief (28 Oct ~18:30): one panel per model (9B, 27B, Muse); the 2 x 2; Fig. 3's panel on
              # Zach's passages
-             "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 3,
+             "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 4,
              "fig09a_transfer": 3, "fig09b_refit": 3, "fig13_attention": 3,
              # Dan's Fig. 5b / 5d brief (28 Oct ~20:30): one panel per lens slice (1-25, 26-100, 1-100)
              "fig05d_routes_lens": 3}  # fmt: skip
@@ -154,6 +154,10 @@ V6_FIGS += ("fig18_atoms",)
 # the coordinator (29 Oct ~13:50; Dan's 12:50 restructure, docs_1250): the monitor card's figure, five model slots
 V6_FIGS += ("fig23_monitor",)
 MARK_FIGS += ("fig23_monitor",)
+# Dan's figures brief (31 Oct): the anatomy card's figure, rebuilt from the 47.8 verdicts (one panel per model, five slots and the key)
+V6_FIGS += ("fig06_depth",)
+V6_PANELS["fig06_depth"] = 6
+MARK_FIGS += ("fig06_depth",)
 # Dan's README brief (29 Oct 08:55, decision 1) and figures brief (10:00): Lightning is the fourth model slot, so the
 # figures with one panel per model gain a panel (Fig. 16: two columns by four rows)
 V6_PANELS |= {"fig01d_ladder": 4, "fig06b_anatomy": 4, "fig09a_transfer": 5, "fig09b_refit": 4, "fig16_dose": 8,

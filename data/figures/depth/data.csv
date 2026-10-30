@@ -10441,6 +10441,343 @@ fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, only the hall address
 fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, only a random part (same size) kept",0.21568627450980393,0.12056523968213279,0.3333333333333333,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
 fig09d,qwen3.5-122b-a10b,47.14: hall probe at the locker digit,1.0,1.0,1.0,300,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
 fig09d,qwen3.5-122b-a10b,47.14: hall probe's layout baseline,0.33666666666666667,0.2857142857142857,0.3882793323514973,300,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig03,qwen3.5-9b,"post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change",0.96,0.9153,1.0,75,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-9b,"post hoc, original locker sentence before the pick, changed after: lookups switched by the whole change",0.56,0.3333,0.7619,25,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-9b,"post hoc, original locker sentence after the pick, changed before: lookups switched by the whole change",0.4688,0.3333,0.5926,32,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-9b,"post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change",0.0588,0.0127,0.1277,68,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.6-27b,"post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change",0.9565,0.9114,1.0,69,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.6-27b,"post hoc, original locker sentence before the pick, changed after: lookups switched by the whole change",0.3438,0.1818,0.5172,32,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.6-27b,"post hoc, original locker sentence after the pick, changed before: lookups switched by the whole change",0.2105,0.087,0.3488,38,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.6-27b,"post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change",0.0164,0.0,0.0606,61,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,muse-glimmer-30b,"post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change",0.8088,0.7188,0.8971,68,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,muse-glimmer-30b,"post hoc, original locker sentence before the pick, changed after: lookups switched by the whole change",0.2083,0.0625,0.4,24,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,muse-glimmer-30b,"post hoc, original locker sentence after the pick, changed before: lookups switched by the whole change",0.2564,0.0968,0.3902,39,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,muse-glimmer-30b,"post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change",0.0,0.0,0.0,69,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,nemotron-3.5-lightning,"post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change",0.9831,0.9412,1.0,59,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,nemotron-3.5-lightning,"post hoc, original locker sentence before the pick, changed after: lookups switched by the whole change",0.5769,0.3846,0.7692,26,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,nemotron-3.5-lightning,"post hoc, original locker sentence after the pick, changed before: lookups switched by the whole change",0.3611,0.2222,0.5,36,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,nemotron-3.5-lightning,"post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change",0.0506,0.012,0.102,79,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-122b-a10b,"post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change",0.9623,0.902,1.0,53,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-122b-a10b,"post hoc, original locker sentence before the pick, changed after: lookups switched by the whole change",0.7812,0.6333,0.9375,32,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-122b-a10b,"post hoc, original locker sentence after the pick, changed before: lookups switched by the whole change",0.3636,0.2,0.5652,33,results/x0_order_2x2/20261030T224216Z/tables.json
+fig03,qwen3.5-122b-a10b,"post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change",0.0122,0.0,0.0423,82,results/x0_order_2x2/20261030T224216Z/tables.json
+fig06,qwen3.5-9b,"47.8, layer 2: lookup (switches blocked beyond random without the J++ part)",0.07000000000000006,0.04201680672268904,0.1097560975609756,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 4: lookup (switches blocked beyond random without the J++ part)",0.015000000000000013,0.0,0.033333333333333326,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 6: lookup (switches blocked beyond random without the J++ part)",0.039999999999999925,0.009949017289788637,0.07425742574257421,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 8: lookup (switches blocked beyond random without the J++ part)",0.03500000000000014,0.0,0.06936416184971095,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 10: lookup (switches blocked beyond random without the J++ part)",0.15499999999999992,0.11940086499321576,0.1911784795885567,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 12: lookup (switches blocked beyond random without the J++ part)",-0.025000000000000022,-0.05347648599282585,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 14: lookup (switches blocked beyond random without the J++ part)",-0.015463917525773141,-0.033019842507406874,0.005847953216374213,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 16: lookup (switches blocked beyond random without the J++ part)",-0.0434782608695653,-0.07142857142857151,-0.012500000000000063,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 18: lookup (switches blocked beyond random without the J++ part)",-0.08333333333333337,-0.7499999999999999,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 20: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 22: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 24: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 26: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 28: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 30: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 2: recall (switches blocked beyond random without the J++ part)",0.07070707070707072,0.0207463504826608,0.1356057566944136,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 4: recall (switches blocked beyond random without the J++ part)",0.010101010101010055,0.0,0.0280898876404494,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 6: recall (switches blocked beyond random without the J++ part)",0.03500000000000003,0.005780346820809299,0.06748466257668717,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 8: recall (switches blocked beyond random without the J++ part)",0.0653266331658291,0.03809523809523818,0.09677419354838712,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 10: recall (switches blocked beyond random without the J++ part)",0.13705583756345185,0.10052910052910058,0.17544092945128775,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 12: recall (switches blocked beyond random without the J++ part)",0.06024096385542177,0.025208762750383088,0.09434224318658276,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 14: recall (switches blocked beyond random without the J++ part)",0.047945205479452024,-0.007042253521126751,0.11111111111111105,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 16: recall (switches blocked beyond random without the J++ part)",0.05882352941176461,0.0,0.16000000000000003,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 18: recall (switches blocked beyond random without the J++ part)",0.16666666666666663,0.0,0.6000000000000001,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 20: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 22: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 24: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 26: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 28: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 30: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 2: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 4: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 6: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 8: position answers under the whole change",0.02,0.0,0.03982300884955752,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 10: position answers under the whole change",0.02,0.005434782608695652,0.03414634146341464,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 12: position answers under the whole change",0.51,0.4523809523809524,0.5642201834862385,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 14: position answers under the whole change",0.555,0.49425120288692864,0.605001050420168,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 16: position answers under the whole change",0.325,0.28494467366841714,0.3712871287128713,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 18: position answers under the whole change",0.04,0.010810810810810811,0.06787330316742081,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 20: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 22: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 24: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 26: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 28: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 30: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 2: the locker probe's accuracy",0.712,0.6513144073418841,0.7701612903225806,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 4: the locker probe's accuracy",0.976,0.9292017977841266,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 6: the locker probe's accuracy",0.976,0.9491510015408321,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 8: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 10: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 12: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 14: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 16: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 18: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 20: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 22: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 24: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 26: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 28: the locker probe's accuracy",0.996,0.9866071428571429,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,"47.8, layer 30: the locker probe's accuracy",0.984,0.9639146102533004,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,47.8: l_probe,4,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,47.8: l_P,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.5-9b,47.8: l_J,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 4: lookup (switches blocked beyond random without the J++ part)",0.09999999999999998,0.040932688865019745,0.16279069767441867,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 8: lookup (switches blocked beyond random without the J++ part)",0.20666666666666667,0.13157894736842102,0.2928571428571428,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 12: lookup (switches blocked beyond random without the J++ part)",0.006666666666666599,0.0,0.020270270270270285,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 16: lookup (switches blocked beyond random without the J++ part)",0.00666666666666671,0.0,0.018292682926829285,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 20: lookup (switches blocked beyond random without the J++ part)",0.16666666666666663,0.1079136690647482,0.2318905279503104,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 24: lookup (switches blocked beyond random without the J++ part)",0.033333333333333326,0.0062893081761006275,0.061797752808988804,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 28: lookup (switches blocked beyond random without the J++ part)",0.020000000000000018,0.0,0.041420118343195256,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 32: lookup (switches blocked beyond random without the J++ part)",0.04697986577181201,0.014184397163120699,0.08333333333333326,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 36: lookup (switches blocked beyond random without the J++ part)",0.1208791208791209,0.045112781954887216,0.24001851851851813,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 40: lookup (switches blocked beyond random without the J++ part)",0.02083333333333326,-0.10526315789473684,0.13888888888888884,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 44: lookup (switches blocked beyond random without the J++ part)",-0.09999999999999998,-0.17647058823529405,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 48: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 52: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 56: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 60: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 4: recall (switches blocked beyond random without the J++ part)",0.10666666666666669,0.03125,0.18867924528301894,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 8: recall (switches blocked beyond random without the J++ part)",0.20666666666666667,0.1283783783783784,0.2777777777777777,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 12: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 16: recall (switches blocked beyond random without the J++ part)",-0.006666666666666599,-0.025423728813559254,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 20: recall (switches blocked beyond random without the J++ part)",0.15333333333333332,0.08450704225352113,0.24293785310734461,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 24: recall (switches blocked beyond random without the J++ part)",0.03355704697986572,0.0064102564102563875,0.06180319658566323,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 28: recall (switches blocked beyond random without the J++ part)",0.023255813953488302,0.0064102564102563875,0.04918032786885229,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 32: recall (switches blocked beyond random without the J++ part)",0.1333333333333333,0.07594936708860756,0.18666666666666665,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 36: recall (switches blocked beyond random without the J++ part)",0.2857142857142856,0.0,0.5,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 40: recall (switches blocked beyond random without the J++ part)",1.0,1.0,1.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 44: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 48: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 52: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 56: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 60: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 4: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 8: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 12: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 16: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 20: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 24: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 28: position answers under the whole change",0.31333333333333335,0.24691358024691357,0.40186915887850466,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 32: position answers under the whole change",0.32666666666666666,0.2875,0.376814381270903,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 36: position answers under the whole change",0.24,0.1650485436893204,0.2919749036332321,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 40: position answers under the whole change",0.12666666666666668,0.07913669064748201,0.16483516483516483,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 44: position answers under the whole change",0.04666666666666667,0.012269938650306749,0.09230769230769231,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 48: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 52: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 56: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 60: position answers under the whole change",0.0,0.0,0.0,150,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 4: the locker probe's accuracy",0.76,0.6906755909401839,0.828,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 8: the locker probe's accuracy",0.908,0.8287937743190662,0.9680861659744002,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 12: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 16: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 20: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 24: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 28: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 32: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 36: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 40: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 44: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 48: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 52: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 56: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,"47.8, layer 60: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,47.8: l_probe,8,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,47.8: l_P,28,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,qwen3.6-27b,47.8: l_J,40,,,,results/x47_anatomy/x52_anatomy-20261029T013405Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 2: lookup (switches blocked beyond random without the J++ part)",0.040000000000000036,0.017543859649122858,0.0663716814159292,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 6: lookup (switches blocked beyond random without the J++ part)",0.04500000000000004,0.014183560818948235,0.08974358974358976,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 10: lookup (switches blocked beyond random without the J++ part)",0.09999999999999998,0.059113300492610876,0.14457831325301207,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 14: lookup (switches blocked beyond random without the J++ part)",0.039999999999999925,0.008000000000000004,0.07727389878163073,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 18: lookup (switches blocked beyond random without the J++ part)",-0.0050000000000000044,-0.024562122519413254,0.014564882784750143,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 22: lookup (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 26: lookup (switches blocked beyond random without the J++ part)",-0.005102040816326481,-0.018292682926829177,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 30: lookup (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 34: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 38: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 42: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 46: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 50: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 2: recall (switches blocked beyond random without the J++ part)",0.027027027027027084,0.006060606060605989,0.052942150370081716,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 6: recall (switches blocked beyond random without the J++ part)",0.027027027027026862,-0.016216216216216165,0.08187134502923965,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 10: recall (switches blocked beyond random without the J++ part)",0.08064516129032251,0.03499709302325574,0.13021399456521734,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 14: recall (switches blocked beyond random without the J++ part)",0.0478723404255319,-0.01149759422614273,0.11627906976744173,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 18: recall (switches blocked beyond random without the J++ part)",0.016129032258064502,-0.01492537313432829,0.0437527412280702,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 22: recall (switches blocked beyond random without the J++ part)",0.04166666666666663,-0.017094017094017033,0.09702010779436139,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 26: recall (switches blocked beyond random without the J++ part)",0.021739130434782705,-0.06820141065830725,0.0769230769230771,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 30: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 34: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 38: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 42: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 46: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 50: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 2: position answers under the whole change",0.01,0.0,0.026143790849673203,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 6: position answers under the whole change",0.005,0.0,0.018867924528301886,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 10: position answers under the whole change",0.015,0.0,0.03225806451612903,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 14: position answers under the whole change",0.04,0.02127659574468085,0.06842105263157895,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 18: position answers under the whole change",0.18,0.12920895251902864,0.22485277880014723,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 22: position answers under the whole change",0.36,0.2903225806451613,0.43452458863126403,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 26: position answers under the whole change",0.565,0.5,0.6363636363636364,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 30: position answers under the whole change",0.17,0.12177121771217712,0.22656510416666664,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 34: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 38: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 42: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 46: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 50: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 2: the locker probe's accuracy",0.768,0.7038829742905954,0.8285714285714286,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 6: the locker probe's accuracy",0.916,0.8687926148032531,0.9603554700423116,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 10: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 14: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 18: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 22: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 26: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 30: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 34: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 38: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 42: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 46: the locker probe's accuracy",0.976,0.9478252138990745,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,"47.8, layer 50: the locker probe's accuracy",0.988,0.9730769230769231,1.0,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,47.8: l_probe,6,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,47.8: l_P,22,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,muse-glimmer-30b,47.8: l_J,2,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 2: lookup (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 6: lookup (switches blocked beyond random without the J++ part)",0.05500000000000005,0.016192699490662182,0.1049382716049383,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 10: lookup (switches blocked beyond random without the J++ part)",0.11499999999999999,0.0634129786999227,0.18129984051036668,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 14: lookup (switches blocked beyond random without the J++ part)",-0.015075376884422065,-0.041884816753926746,0.007639598485303765,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 18: lookup (switches blocked beyond random without the J++ part)",-0.01005025125628134,-0.0363660037878788,0.01169762641898873,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 22: lookup (switches blocked beyond random without the J++ part)",-0.01273885350318471,-0.036036036036036,0.013607771875873616,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 26: lookup (switches blocked beyond random without the J++ part)",-0.5,-3.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 30: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 34: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 38: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 42: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 46: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 50: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 2: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 6: recall (switches blocked beyond random without the J++ part)",0.05882352941176461,0.02994011976047916,0.10389985736806544,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 10: recall (switches blocked beyond random without the J++ part)",0.1092896174863387,0.05445275505811445,0.1800031055900621,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 14: recall (switches blocked beyond random without the J++ part)",0.07534246575342451,0.019867549668874274,0.13157894736842113,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 18: recall (switches blocked beyond random without the J++ part)",0.03401360544217691,-0.03125,0.09027777777777768,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 22: recall (switches blocked beyond random without the J++ part)",-0.009009009009009028,-0.09302325581395343,0.08860759493670889,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 26: recall (switches blocked beyond random without the J++ part)",-0.33333333333333326,-0.5,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 30: recall (switches blocked beyond random without the J++ part)",0.25,0.0,0.5,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 34: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 38: recall (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 42: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 46: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 50: recall (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 2: position answers under the whole change",0.01,0.0,0.03488499035239157,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 6: position answers under the whole change",0.01,0.0,0.03488499035239157,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 10: position answers under the whole change",0.01,0.0,0.03488499035239157,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 14: position answers under the whole change",0.595,0.5343120467365028,0.6535109219126247,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 18: position answers under the whole change",0.59,0.527027027027027,0.6560517979307787,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 22: position answers under the whole change",0.495,0.4185022026431718,0.5656580086580086,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 26: position answers under the whole change",0.005,0.0,0.014925373134328358,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 30: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 34: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 38: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 42: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 46: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 50: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 2: the locker probe's accuracy",0.716,0.6357803722222882,0.7865612648221344,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 6: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 10: the locker probe's accuracy",0.996,0.9879032258064516,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 14: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 18: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 22: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 26: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 30: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 34: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 38: the locker probe's accuracy",0.996,0.9866071428571429,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 42: the locker probe's accuracy",0.996,0.9864253393665159,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 46: the locker probe's accuracy",0.976,0.94308732465563,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,"47.8, layer 50: the locker probe's accuracy",0.972,0.933920704845815,1.0,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,47.8: l_probe,6,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,47.8: l_P,14,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,nemotron-3.5-lightning,47.8: l_J,14,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 1: lookup (switches blocked beyond random without the J++ part)",0.0,-0.015465920623898347,0.013215859030836996,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 5: lookup (switches blocked beyond random without the J++ part)",0.04499999999999993,0.01621621621621616,0.07954545454545447,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 9: lookup (switches blocked beyond random without the J++ part)",0.07499999999999996,0.030972310920536497,0.14,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 13: lookup (switches blocked beyond random without the J++ part)",0.135,0.10576923076923084,0.17318435754189931,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 17: lookup (switches blocked beyond random without the J++ part)",0.04500000000000004,0.005681818181818232,0.07834327279298813,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 21: lookup (switches blocked beyond random without the J++ part)",0.09499999999999997,0.01492537313432829,0.1707317073170732,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 25: lookup (switches blocked beyond random without the J++ part)",0.1499999999999999,0.08670520231213874,0.21127637192449295,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 29: lookup (switches blocked beyond random without the J++ part)",0.15499999999999992,0.0970855673090856,0.20560841875188424,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 33: lookup (switches blocked beyond random without the J++ part)",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 37: lookup (switches blocked beyond random without the J++ part)",-0.02197802197802201,-0.045662100456621,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 41: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 45: lookup (switches blocked beyond random without the J++ part)",nan,nan,nan,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 1: recall (switches blocked beyond random without the J++ part)",0.016483516483516425,-0.019607843137254836,0.05235602094240832,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 5: recall (switches blocked beyond random without the J++ part)",0.07103825136612019,0.024691358024691246,0.11707317073170731,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 9: recall (switches blocked beyond random without the J++ part)",0.08287292817679559,0.03448275862068961,0.12834224598930477,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 13: recall (switches blocked beyond random without the J++ part)",0.04395604395604402,0.0051013933492178145,0.08974358974358976,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 17: recall (switches blocked beyond random without the J++ part)",0.06486486486486498,0.039548022598870025,0.08780487804878057,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 21: recall (switches blocked beyond random without the J++ part)",0.06666666666666676,0.007351599398883619,0.13658688077563994,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 25: recall (switches blocked beyond random without the J++ part)",0.08379888268156432,0.02173913043478259,0.13966780801345585,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 29: recall (switches blocked beyond random without the J++ part)",0.11494252873563215,0.062146015370038936,0.16571507498026844,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 33: recall (switches blocked beyond random without the J++ part)",0.045751633986928164,0.012903225806451535,0.070514705882353,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 37: recall (switches blocked beyond random without the J++ part)",0.023255813953488413,-0.025974025974025983,0.05882352941176461,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 41: recall (switches blocked beyond random without the J++ part)",0.0357142857142857,0.0,0.13043478260869557,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 45: recall (switches blocked beyond random without the J++ part)",0.05263157894736836,0.0,0.23076923076923084,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 1: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 5: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 9: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 13: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 17: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 21: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 25: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 29: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 33: position answers under the whole change",0.315,0.2526867572156197,0.3684210526315789,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 37: position answers under the whole change",0.525,0.4663455310880829,0.587572077581688,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 41: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 45: position answers under the whole change",0.0,0.0,0.0,200,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 1: the locker probe's accuracy",0.48,0.41114775998127007,0.547703546764805,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 5: the locker probe's accuracy",0.792,0.7333333333333333,0.8458498023715415,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 9: the locker probe's accuracy",0.764,0.7058823529411765,0.8165145864959409,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 13: the locker probe's accuracy",0.948,0.9233867105425781,0.9701024952286704,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 17: the locker probe's accuracy",0.952,0.9101113491229489,0.9879518072289156,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 21: the locker probe's accuracy",0.96,0.9176942628903414,0.992000796812749,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 25: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 29: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 33: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 37: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 41: the locker probe's accuracy",1.0,1.0,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,"47.8, layer 45: the locker probe's accuracy",0.996,0.987012987012987,1.0,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,47.8: l_probe,13,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,47.8: l_P,33,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig06,qwen3.5-122b-a10b,47.8: l_J,33,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Position scenes that leave position, without the address",0.8562091503267973,,,153,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Position scenes that leave position, without a same-size random part",0.05228758169934641,,,153,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Position scenes that leave position, paired difference",0.8039215686274509,0.7364851770375026,0.8661983044765408,153,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Position scenes that leave position, without the address",0.8415841584158416,,,101,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Position scenes that leave position, without a same-size random part",0.25742574257425743,,,101,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Position scenes that leave position, paired difference",0.5841584158415841,0.4893559204440333,0.6699029126213591,101,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Position scenes that leave position, without the address",0.50920245398773,,,163,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Position scenes that leave position, without a same-size random part",0.03067484662576687,,,163,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Position scenes that leave position, paired difference",0.47852760736196315,0.40397350993377484,0.5502958579881656,163,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Position scenes that leave position, without the address",0.8132530120481928,,,166,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Position scenes that leave position, without a same-size random part",0.04819277108433735,,,166,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Position scenes that leave position, paired difference",0.7650602409638554,0.708608325449385,0.8216572853404434,166,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Position scenes that leave position, without the address",0.8782608695652174,,,115,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Position scenes that leave position, without a same-size random part",0.12173913043478261,,,115,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Position scenes that leave position, paired difference",0.7565217391304349,0.6724101709649376,0.8305084745762712,115,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Identity scenes that go to position, without the J++ part",0.24305555555555555,,,144,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Identity scenes that go to position, without a same-size random part",0.11805555555555555,,,144,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-9b,"post hoc, another item moved, lookup: Identity scenes that go to position, paired difference",0.125,0.06779661016949154,0.1843585324299695,144,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Identity scenes that go to position, without the J++ part",0.18274111675126903,,,197,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Identity scenes that go to position, without a same-size random part",0.0,,,197,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.6-27b,"post hoc, another item moved, lookup: Identity scenes that go to position, paired difference",0.18274111675126903,0.1336898395721925,0.2293577981651376,197,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Identity scenes that go to position, without the J++ part",0.061068702290076333,,,131,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Identity scenes that go to position, without a same-size random part",0.030534351145038167,,,131,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,muse-glimmer-30b,"post hoc, another item moved, lookup: Identity scenes that go to position, paired difference",0.030534351145038167,0.006849315068493149,0.06363636363636363,131,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Identity scenes that go to position, without the J++ part",0.16541353383458646,,,133,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Identity scenes that go to position, without a same-size random part",0.08270676691729323,,,133,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,nemotron-3.5-lightning,"post hoc, another item moved, lookup: Identity scenes that go to position, paired difference",0.08270676691729323,0.01709401709401709,0.1487603305785124,133,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Identity scenes that go to position, without the J++ part",0.14130434782608695,,,184,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Identity scenes that go to position, without a same-size random part",0.02717391304347826,,,184,results/c2_route_crosstab/20261030T212820Z/tables.json
+fig24,qwen3.5-122b-a10b,"post hoc, another item moved, lookup: Identity scenes that go to position, paired difference",0.11413043478260869,0.06285714285714286,0.16574585635359113,184,results/c2_route_crosstab/20261030T212820Z/tables.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
