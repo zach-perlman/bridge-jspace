@@ -49,6 +49,7 @@ border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-m
 .card.done>:not(.hdr):not(.idl){display:none}.card .hdr{cursor:pointer}.card.done .hdr:before{content:'▸ '}.card:not(.done) .hdr:before{content:'▾ '}
 .vtag{margin-left:10px;border-radius:4px;padding:0 6px;font-size:12px;color:#fff;font-weight:400}.vtag.consistent{background:var(--ok)}.vtag.wrong{background:var(--bad)}.vtag.unclear{background:var(--oth)}
 .banner{background:#e4e4e6;color:#4a4a50;border-radius:6px;padding:6px 10px;margin:8px 0;font-weight:600}@media (prefers-color-scheme:dark){.banner{background:#34343a;color:#c8c8cf}}
+ul.steps{margin:2px 0 2px 0;padding-left:20px}ul.steps li{margin:1px 0}.mach b{font-weight:500}
 .attn{border-left:3px solid var(--bad);background:rgba(184,67,58,.07);padding-left:8px}.okc{color:var(--ok)}.badc{color:var(--bad)}.mline{margin:6px 0}
 .qa input[type=text]{flex:1;min-width:160px}a.look{cursor:pointer}.flash{outline:3px solid var(--oth);outline-offset:2px;background:var(--hl)}
 """
@@ -334,10 +335,12 @@ def answers_html(it: dict) -> str:
                 f"{name} <span class='tag {answer_class(what)}'>{E(ans)}</span> <span class='mut'>{E(what)}</span>"
             )
         first, rest = steps[0], steps[1:]
-        line = first + (" &nbsp;→&nbsp; " + " · ".join(rest) if rest else "")
-        notes = "".join(f"<br><span class='mut'>{E(n)}</span>" for n in contribution(it, w))
-        out.append(f"<p class='{'me' if w == w0 else ''}' style='margin:6px 0'><b>{I.READER_NAME[w]}</b>: "
-                   f"{E(rd['question'])} <span class='mut'>({key})</span><br>{line}{notes}</p>")  # fmt: skip
+        items = f"<li>{first}</li>" + "".join(f"<li>→ {s}</li>" for s in rest)  # one line per arm, not one long row
+        notes = contribution(it, w)
+        counts = ("<div class='mut'>counts toward the blocked-beyond-random count:</div><ul class='steps'>"
+                  + "".join(f"<li>{E(n)}</li>" for n in notes) + "</ul>") if notes else ""  # fmt: skip
+        out.append(f"<div class='{'me' if w == w0 else ''}' style='margin:8px 0'><b>{I.READER_NAME[w]}</b>: "
+                   f"{E(rd['question'])} <span class='mut'>({key})</span><ul class='steps'>{items}</ul>{counts}</div>")  # fmt: skip
     out.append("</div>")
     return "".join(out)
 
@@ -595,13 +598,22 @@ def facts_html(it: dict) -> str:
     return ""
 
 
+def machine_html(text: str) -> str:
+    """The machine's answer as lines, not one long row: readers apart (" | "), and each reader's "; " steps as bullets."""
+    out = []
+    for line in text.split(" | "):
+        head, *steps = line.split("; ")
+        out.append(f"<div>{E(head)}" + ("<ul class='steps'>" + "".join(f"<li>{E(s)}</li>" for s in steps) + "</ul>" if steps else "") + "</div>")
+    return "".join(out)
+
+
 def question_html(it: dict, q: dict, got: dict, uid: str, kind: str, machine_text: str | None = None, error: str | None = None,
                   red: bool = False) -> str:
     """One question to the human: text, where to look (a link that scrolls to and highlights the field), what counts as yes,
     what it protects against, the machine's answer beside it, Yes / No / Unclear and a note (saved as the click is made)."""
     says = ""
     if machine_text is not None:
-        says = f"<div class='mach'>the machine says: <b>{E(machine_text)}</b></div>"
+        says = f"<div class='mach'>the machine says:<b>{machine_html(machine_text)}</b></div>"
     elif error:
         says = f"<div class='mach mut'>the machine could not compute: {E(error)}</div>"
     look = (f"<a href='#' class='look' onclick=\"return look(this,'{E(q['anchor'])}')\">{E(q['look_at'])}</a>" if q.get("anchor")
