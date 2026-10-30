@@ -4028,3 +4028,24 @@ bridgeJ_peer's span shares about 0.30 of its energy with the answers' span (note
 - otherwise "partly".
 
 C1-C3 are unchanged.
+
+#### Amendment 77 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any code or run of it): 9B replications of notes 49/50 (draws p4002, p4003) and note 56 (dev split)
+**Seen.**
+- Notes 49 and 50 on the 9B, draw 4001:
+  - R1 "not through spellings";
+  - R2 "the output candidates' directions";
+  - R3 "this item's answer";
+  - P1 "the placebo's rescue is its overlap with the answer span";
+  - P3 "the answer part is sufficient";
+  - P4 "answer-specific removal".
+- Note 56 on the 9B test split: C1, C2 and C3 met.
+
+Not seen: any condition below on these draws or split.
+
+**Why.** CLAUDE.md asks for at least 3 seeds and held-out data before a result is called positive. The bigger models' lanes are full until about 15:00 UTC, so the replications run on the 9B only, and they are reported as 9B-only.
+
+**Runs:**
+- **Notes 49 + 50** on jsuite_v4p4002 and jsuite_v4p4003 (9B). The same conditions, bands, gate and readers as amendment 72. Each draw's own competence and control runs (notes 43 / 48) are used.
+- **Note 56** on the 9B's dev split, with the same conversations, edits, filter and readings as amendment 73 (C0-C4, D1, D2). D1's solo rows come from note 47's dev run.
+
+**Readings.** "Replicates" means the same registered label per reading as on draw 4001 (notes 49/50) or on the test split (note 56). A changed label is reported as "does not replicate". No pooling across draws.
