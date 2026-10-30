@@ -38,14 +38,14 @@ def r1_split():
         return [(f"{mk:.0f}", INK, "bold"), (f"   control {ct:.0f}", MUTED, "normal")]
 
     t = Table(rows, [
-        Col(3.0, "Remove everywhere (Zach)", "answers that turn wrong, points", zach, (-4, 70), [0, 20, 40, 60]),
+        Col(3.0, "Remove everywhere", "answers that turn wrong, points", zach, (-4, 70), [0, 20, 40, 60]),
         Col(1.15, "gap", "recall − lookup", zach_nums, text=True),
         *dan_split_cols(),
     ], label_w=1.45)  # fmt: skip
     t.render(f"{OUT}/r1_c1_split.png")
 
 
-def dan_split_cols(title="Remove from the patch (Dan)"):
+def dan_split_cols(title="Remove from the patch"):
     """r1's right half: the conflict test's lookup and recall, and the gap with its interval."""
 
     def dan(ax, _rows):

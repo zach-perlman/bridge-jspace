@@ -79,9 +79,9 @@ def f_controls():
         w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
         x0 = (t.label_w + t.pad) / w
         x1 = (t.label_w + t.pad * 5 + sum(c.width for c in t.cols[:4])) / w
-        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Zach: removed over a band (recalled − stated lost)", ha="left", va="top",
+        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Removed everywhere, over a band (recalled − stated lost)", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
-        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "Dan: removed from the patch (recall's switches lost)", ha="left", va="top",
+        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "Removed from the patch (recall's switches lost)", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
 
     t.extra.append(group_titles)
@@ -131,7 +131,7 @@ def f_nine():
     t = Table(rows, [
         Col(3.4, "Carried", "answers moved to the other entity, points", carried, (-8, 80), [0, 40, 80]),
         Col(3.4, "Needed", "recalled minus stated answers lost, points", needed, (-3, 70), [0, 30, 60]),
-        Col(2.3, "Zach's grade", "", grades, text=True),
+        Col(2.3, "Grade", "", grades, text=True),
     ], label_w=1.45)  # fmt: skip
     render(t, "f3_nine_models")
 
@@ -284,7 +284,7 @@ def f_breaks():
         Col(1.75, "25 lens dirs", "the lookup's loss", kcol(25), (-0.3, 0.8), [0, 0.5]),
         Col(1.75, "50", "", kcol(50), (-0.3, 0.8), [0, 0.5]),
         Col(1.75, "100", "", kcol(100), (-0.3, 0.8), [0, 0.5]),
-        Col(3.6, "Zach's passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.85), [0, 0.5]),
+        Col(3.6, "Fact passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.85), [0, 0.5]),
     ], label_w=1.45, pad=0.22, labels=True)  # fmt: skip
     render(t, "f8_breaks")
 
