@@ -3971,3 +3971,23 @@ Implementation choices made by the builder where the text was literal or open. T
 - **D1's solo rows** come from note 40's run of the same model (same items, prompts and read layers).
 - **The peer-name filter** is applied in the reader (names as written, on e2' alone). The GPU runs the full test set.
 - **press_vis** is rerun in-run as the reference. Its rows are not byte-identical to note 40's (batch composition), so no row-level diff against note 40 is read.
+
+#### Amendment 74 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any note 55 full run): note 55's S reading when the PCA dose cannot bracket
+**Seen.** The builder's 9B smoke, on 8 WikiText texts. This is mechanics only, not a result.
+- At medium, plain-text top-1 agreement was:
+  - paper10 0.683;
+  - pca3 / pca10 / pca30 0.178 / 0.076 / 0.023;
+  - unembed10 / unembed30 0.791 / 0.772;
+  - paper10_pcasize 0.619.
+- At heavy, paper10 was 0.527, and pca3 0.056.
+- So the registered PCA dose almost surely cannot bracket paper10's generic damage: the top principal directions carry the residual stream's outlier directions. S would read "not matched" everywhere.
+
+No task loss under any edit was seen.
+
+**Changes, fixed before the full runs:**
+- **Doses.** unembed100 and unembed300 (the logit lens's top-K directions, with paper10's protection, as unembed10/30) are added to note 55's text and task doses at both bands.
+- **S order** (per set and strength; all thresholds, the bootstrap and the "not matched" rule unchanged):
+  1. along the PCA dose, as registered;
+  2. if that does not bracket a*, along the logit-lens dose (unembed10 / 30 / 100 / 300);
+  3. if neither brackets, a descriptive S2 along the line through paper10_rot and paper10_pcasize: two non-J removals of paper10's size, interpolated by text agreement. It is labelled "size-matched pair, descriptive", and no registered label is printed.
+- The dose each reading used is printed on its line. Every dose's raw points are reported.
