@@ -275,12 +275,12 @@ def tier1_summary() -> list[str]:
     )
     seed = (I.spec().get("fixed_sample") or {}).get("seed")
     out = [f"## Tier 1: the fixed sample (seed {seed})", "",
-           "| view | items read | consistent | wrong | unclear | stop rule (2 wrong) | automatic checks | independent recount |",
-           "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+           "| view | items read | consistent | wrong | unclear | uninformative | stop rule (2 wrong) | automatic checks | independent recount |",
+           "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     notes = []
     for vid, x in pv.items():
         a, b = H.auto_status(vid, checks, indep)
-        out.append(f"| {x['order']}. {vid} | {x['read']} of {x['sample']}{' (+' + str(x['extra']) + ' extra)' if x.get('extra') else ''} | {x['consistent']} | {x['wrong']} | {x['unclear']} | "
+        out.append(f"| {x['order']}. {vid} | {x['read']} of {x['sample']}{' (+' + str(x['extra']) + ' extra)' if x.get('extra') else ''} | {x['consistent']} | {x['wrong']} | {x['unclear']} | {x['uninformative']} | "
                    f"{'**flagged**' if x['flagged'] else '–'} | {a} | {b} |")  # fmt: skip
         notes += [
             f"- {vid}: `{r['item']}` ({r['verdict']}, {r.get('utc', '')}): {r.get('note', '')}" for r in x["notes"]

@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 
 from bridge_jspace.review import items as I
+from bridge_jspace.review import questions as Q
 
 VERDICTS = ("consistent", "wrong", "unclear")
 STOP_WRONG = 2
@@ -39,8 +40,11 @@ def per_view(marks: list[dict], seed: int | None = None) -> dict[str, dict]:
         last = {r["item"]: r for r in marks if r["view"] == v["id"] and r.get("seed") == seed}
         on = {i: last[i] for i in sample if i in last}
         c = collections.Counter(r["verdict"] for r in on.values())
+        unin = Q.uninformative_ids(v["id"]) & set(sample) if v.get("five") else set()  # the reader did not switch (Dan 30 Oct)
+        n_unin = len([i for i in unin if (on.get(i) or {}).get("verdict") not in ("wrong", "unclear")])
+        n_cons = c["consistent"] - len([i for i in unin if (on.get(i) or {}).get("verdict") == "consistent"])
         out[v["id"]] = {"order": v.get("order"), "title": v["title"], "sample": len(sample), "read": len(on),
-                        "consistent": c["consistent"], "wrong": c["wrong"], "unclear": c["unclear"],
+                        "consistent": n_cons, "wrong": c["wrong"], "unclear": c["unclear"], "uninformative": n_unin,
                         "flagged": c["wrong"] >= STOP_WRONG, "outside_sample": len(set(last) - set(sample)), "extra": len(set(last) - set(sample)),
                         "notes": [r for r in on.values() if r["verdict"] != "consistent"]}  # fmt: skip
     return out

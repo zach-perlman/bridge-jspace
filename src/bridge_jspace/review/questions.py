@@ -330,6 +330,31 @@ def h3(it: dict) -> dict:
         return {"error": f"{type(e).__name__}: {e}"}
 
 
+def reader_switched(it: dict) -> bool | None:
+    """Did the card's reader switch under the view's whole change (yaml informative_arm, else header.whole)? An item whose
+    reader did not switch does not test the claim for that reader. None: the view has no such arm, or no such row."""
+    v = I.view(it["view"])
+    arm = v.get("informative_arm") or (v.get("header") or {}).get("whole")
+    if not arm:  # routes and the x8 write have no "switch under the whole change": a reader that follows another route is data
+        return None
+    row = (it["rows"].get(it["reader"]) or {}).get(arm)
+    if row is None:
+        return None
+    if "switched" in row:
+        return bool(row["switched"])
+    if it["reader"] == "PP" and "class" in row:
+        return row["class"] == "target"
+    if "changed" in row:
+        return bool(row["changed"])
+    return None
+
+
+def uninformative_ids(view_id: str) -> set[str]:
+    """The view's five items whose reader did not switch under the whole change (review-summary counts them as
+    uninformative, not consistent)."""
+    return {it["id"] for it in five_items(view_id) if reader_switched(it) is False}
+
+
 def five_items(view_id: str) -> list[dict]:
     """The view's five items as loaded items, in the yaml's order."""
     out = []
@@ -347,9 +372,13 @@ def deck_line(view_id: str, marks: list[dict], rows: list[dict]) -> str:
     five = five_ids(view_id)
     last = {r["item"]: r for r in marks if r.get("view") == view_id and r.get("item") in five}
     c = collections.Counter(r["verdict"] for r in last.values())
+    unin = uninformative_ids(view_id)  # the reader did not switch: not consistent, whatever the mark says (unless wrong / unclear)
+    n_unin = len([i for i in unin if (last.get(i) or {}).get("verdict") not in ("wrong", "unclear")])
+    n_cons = c["consistent"] - len([i for i in unin if (last.get(i) or {}).get("verdict") == "consistent"])
     extra = len({r["item"] for r in marks if r.get("view") == view_id and r.get("item") not in five})
-    head = (f"{view_id}: {len(five)} items: {c['consistent']} consistent, {c['wrong']} wrong, {c['unclear']} unclear"
-            + (f" ({len(five) - len(last)} not read yet)" if len(last) < len(five) else "") + (f"; {extra} extra" if extra else ""))
+    unread = len([i for i in five if i not in last and i not in unin])
+    head = (f"{view_id}: {len(five)} items: {n_cons} consistent, {c['wrong']} wrong, {c['unclear']} unclear, {n_unin} uninformative"
+            + (f" ({unread} not read yet)" if unread else "") + (f"; {extra} extra" if extra else ""))
     _, mach = split(view_id)
     items = five_items(view_id)
     bits = []
@@ -360,9 +389,10 @@ def deck_line(view_id: str, marks: list[dict], rows: list[dict]) -> str:
         yes, no = sum(x.startswith("yes") for x in res), sum(x.startswith("no") for x in res)
         na = len(res) - yes - no
         bits.append(f"{q.get('tally', q['text'])} {yes}/{yes + no}" + (f" ({na} n/a)" if na else ""))
-    h3rows = [r for r in rows if r["item_key"] in set(five) and r["q_id"] in ("H3a", "H3b", "H3c")]
+    h3rows = [r for r in rows if r["item_key"] in set(five) and r["q_id"] in ("H3a", "H3b", "H3c", "H3cL", "H3cR")]
     lastq = latest(h3rows)
-    names = {"H3a": "old bridge (-)", "H3b": "new bridge (+)", "H3c": "answer word"}
+    names = {"H3a": "old bridge (-)", "H3b": "new bridge (+)", "H3cL": "lookup answer word", "H3cR": "recall answer word",
+             "H3c": "answer word (either reader)"}
     h3bits = []
     for qid, nm in names.items():
         got = [qa[qid]["answer"] for qa in lastq.values() if qid in qa]

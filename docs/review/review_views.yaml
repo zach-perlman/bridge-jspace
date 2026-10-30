@@ -300,14 +300,14 @@ common_questions:
     machine: "story()"
   - id: H3
     human: true
-    text: "J-space: among the 25 atoms of the change, is the old bridge there (minus sign), the new bridge (plus sign), the answer word?"
+    text: "J-space: among the 25 atoms of the change, is the old bridge there (minus sign), the new bridge (plus sign), and each reader's answer word (the lookup's digit, the recall's number word)?"
     look_at: "the 25 atoms at the bridge word (J-space panel); the answer word's rank in the state readout"
     anchor: jspace
-    yes_if: "tick each that holds: old bridge with a minus sign; new bridge with a plus sign; the answer word among the atoms"
+    yes_if: "tick each that holds: old bridge with a minus sign; new bridge with a plus sign; the lookup's answer word among the atoms; the recall's answer word among the atoms"
     protects_against: "'readable in the state' and 'in the change's atoms' are different things"
     kind: observe
     tally: "J-space atoms"
-    panel: [H3a, H3b, H3c]
+    panel: [H3a, H3b, H3cL, H3cR]
   - id: P1
     text: "Do the original and changed prompts differ only by the change this claim describes?"
     look_at: 'the prompt diff (red tokens) and the "The bridge ..." line'
@@ -687,6 +687,7 @@ views:
     status: phase1
     tier: 1
     order: f
+    informative_arm: "whole-state patch"  # the positive control: if the reader does not switch here the item is uninformative
     fixed_n: 5  # Dan 30 Oct: see five_rule at the top; marks on other items of the fixed sample stay, counted as extra
     five:
       - qwen3.5-9b|qwen35_9b_x51_10|P2-L0-0115|PM

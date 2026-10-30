@@ -48,6 +48,7 @@ border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-m
 .mach{background:var(--bg);border-left:3px solid var(--val);padding:2px 8px;margin:3px 0}.qa{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:3px}
 .card.done>:not(.hdr):not(.idl){display:none}.card .hdr{cursor:pointer}.card.done .hdr:before{content:'▸ '}.card:not(.done) .hdr:before{content:'▾ '}
 .vtag{margin-left:10px;border-radius:4px;padding:0 6px;font-size:12px;color:#fff;font-weight:400}.vtag.consistent{background:var(--ok)}.vtag.wrong{background:var(--bad)}.vtag.unclear{background:var(--oth)}
+.banner{background:#e4e4e6;color:#4a4a50;border-radius:6px;padding:6px 10px;margin:8px 0;font-weight:600}@media (prefers-color-scheme:dark){.banner{background:#34343a;color:#c8c8cf}}
 .attn{border-left:3px solid var(--bad);background:rgba(184,67,58,.07);padding-left:8px}.okc{color:var(--ok)}.badc{color:var(--bad)}.mline{margin:6px 0}
 .qa input[type=text]{flex:1;min-width:160px}a.look{cursor:pointer}.flash{outline:3px solid var(--oth);outline-offset:2px;background:var(--hl)}
 """
@@ -616,11 +617,12 @@ def question_html(it: dict, q: dict, got: dict, uid: str, kind: str, machine_tex
 
 
 H3_TICKS = (("H3a", "the old bridge is among the 25 atoms, with a minus sign"), ("H3b", "the new bridge is among the 25 atoms, with a plus sign"),
-            ("H3c", "the reader's answer word is among the 25 atoms"))  # fmt: skip
+            ("H3cL", "the lookup's answer word (the digit) is among the 25 atoms"),
+            ("H3cR", "the recall's answer word (the number word) is among the 25 atoms"))  # fmt: skip
 
 
 def h3_html(it: dict, q: dict, answers: dict, uid: str) -> str:
-    """H3: three ticks, pre-filled from the atom classes and the answer word's rank (the machine's reading); the human
+    """H3: four ticks (the answer word once per reader), pre-filled from the atom classes and the answer word's rank (the machine's reading); the human
     confirms or corrects, and a click saves. The panel (link) shows the atoms and the state readout."""
     m = Q.h3(it)
     err = m.get("error")
@@ -643,7 +645,7 @@ def h3_html(it: dict, q: dict, answers: dict, uid: str) -> str:
             f"<div class='mut'>look at: {panel}; the answer word's rank in the state readout (readable in the state) is not the same "
             "as being in the change's atoms</div>"
             + (f"<div class='mach mut'>the machine could not compute: {E(err)}</div>" if err else f"<ul class='mut'>{state}</ul>")
-            + "".join(rows) + "<div><button type='button' onclick='confirmH3(this)'>confirm the three ticks</button></div></div>")  # fmt: skip
+            + "".join(rows) + "<div><button type='button' onclick='confirmH3(this)'>confirm the ticks</button></div></div>")  # fmt: skip
 
 
 def checklist_html(it: dict, seed: int, answers: dict[str, dict]) -> str:
@@ -720,6 +722,9 @@ def card(it: dict, seed: int, server: bool, mark: dict | None, answers: dict | N
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
+    if Q.reader_switched(it) is False:  # Dan 30 Oct: the reader did not switch, so the item does not test the claim for it
+        parts.append("<div class='banner'>this reader did not switch: the item does not test the claim for it; "
+                     "the other reader is shown for context</div>")  # fmt: skip
     if Q.has_questions(it["view"]):  # the guided checklist (Dan 30 Oct), above the panels it points into
         parts.append(checklist_html(it, seed, answers or {}))
     if I.view(it["view"]).get("tier") == 1:  # the verification read: what the model saw and the decisive arms first

@@ -256,7 +256,7 @@ def test_verified_writes_only_its_block_and_replaces_it(tmp_path):
     assert (
         text.startswith("# VERIFIED\n\nHuman text, kept.\n") and text.count(VF.BEGIN) == 1 and text.count(VF.END) == 1
     )
-    assert "| e. z1p |" in text and "1 of 10 | 0 | 0 | 1 | no |" in text and "passage cut" in text
+    assert "| e. z1p |" in text and "1 of 10 | 0 | 0 | 1 | 0 | no |" in text and "passage cut" in text
 
 
 # ---- examples-render SEED=29: the write-up's examples are the items Dan read ----------------------------------------

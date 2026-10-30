@@ -799,10 +799,12 @@ def a8_machine(st, it, model) -> dict:
     fmt = lambda xs: "; ".join(f"{a['token'].strip()!r} {a['coef']:+.2f} (OMP {a['rank']})" for a in xs) or "none"  # noqa: E731
     old = [a for a in atoms if a["class"] == "bridge"]
     new = [a for a in atoms if a["class"] == "new bridge"]
-    ans = [a for a in atoms if a["class"] == "answer"]
+    mine, other = it["reader"], ("PM" if it["reader"] == "PP" else "PP")  # the card's reader's answer words are "answer_own"
+    ans = {mine: [a for a in atoms if a["x52_class"] == "answer_own"], other: [a for a in atoms if a["x52_class"] == "answer_other"]}
     out = {"H3a": (any(a["coef"] < 0 for a in old), f"old bridge among the atoms: {fmt(old)}"),
            "H3b": (any(a["coef"] > 0 for a in new), f"new bridge among the atoms: {fmt(new)}"),
-           "H3c": (bool(ans), f"answer word among the atoms: {fmt(ans)}")}  # fmt: skip
+           "H3cL": (bool(ans["PP"]), f"the lookup's answer word (digit) among the atoms: {fmt(ans['PP'])}"),
+           "H3cR": (bool(ans["PM"]), f"the recall's answer word (number word) among the atoms: {fmt(ans['PM'])}")}  # fmt: skip
     ro = readout(model)
     ranks = []
     for prompt, which in (("O", "O"), ("S", "S")):
@@ -812,7 +814,7 @@ def a8_machine(st, it, model) -> dict:
         x = torch.as_tensor(h)[None]
         lg = ro.lens(x, la)[0] if (not ro.no_lens and la in ro.lens_layers) else ro.unembed(x)[0]
         for label, ids in listed_tokens(it, ro.tok):
-            if label.startswith(f"{I.READER_NAME.get(it['reader'], it['reader'])}'s {which} answer"):
+            if any(label.startswith(f"{name}'s {which} answer") for name in I.READER_NAME.values()):  # both readers' answer words
                 r, _ = rank_of(lg, ids)
                 ranks.append(f"{label}: rank {r} in the state's readout ({prompt}{'' if not ro.no_lens else ', logit lens'})")
     out["state"] = ranks
@@ -830,7 +832,8 @@ def a8_html(st, it, model, view_id: str, item_id: str, seed: str) -> str:
     if "error" in m:
         return f"<div class='box'><h3>Checklist A8</h3><p class='mut'>The machine could not compute: {E(m['error'])}</p></div>"
     labels = {"H3a": "the old bridge is among the 25 atoms with a minus sign", "H3b": "the new bridge is among the 25 atoms with a plus sign",
-              "H3c": "the reader's answer word is among the 25 atoms"}  # fmt: skip
+              "H3cL": "the lookup's answer word (the digit) is among the 25 atoms",
+              "H3cR": "the recall's answer word (the number word) is among the 25 atoms"}  # fmt: skip
     rows = []
     for qid, text in labels.items():
         ok, detail = m[qid]
@@ -842,8 +845,8 @@ def a8_html(st, it, model, view_id: str, item_id: str, seed: str) -> str:
     js = ("<script>async function ans(el,q){const d={schema:2,view:%s,item_key:%s,q_id:q,answer:el.value,note:'',seed:%s,"
           "ts:new Date().toISOString()};let ok=false;try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':"
           "'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}document.getElementById('s-'+q).textContent=ok?'saved':'not saved'}"
-          "</script>" % (json.dumps(view_id), json.dumps(item_id), json.dumps(int(seed) if str(seed).isdigit() else 0)))
-    return (f"<div class='box'><h3>Checklist H3 (observe)</h3><p class='mut'>Tick each of the three that holds. Readable in the "
+          "</script>" % (json.dumps(view_id), json.dumps(item_id), json.dumps(int(seed) if str(seed).isdigit() else 0)))  # noqa: UP031
+    return (f"<div class='box'><h3>Checklist H3 (observe)</h3><p class='mut'>Tick each of the four that holds (the answer word once per reader). Readable in the "
             f"<b>state</b> and present in the <b>change's atoms</b> are different things: the ranks below are the state's.</p>"
             f"<table><tr><th>question</th><th>machine</th><th>your answer</th></tr>{''.join(rows)}</table>"
             f"<p class='mut'>The answer word in the state readout at the bridge word and L:</p><ul>{state}</ul>{js}</div>")  # fmt: skip

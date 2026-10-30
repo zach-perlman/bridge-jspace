@@ -102,7 +102,7 @@ def test_the_card_shows_the_checklist_and_every_look_at_anchor_is_on_the_card():
         a = q.get("anchor")
         if a and a != "jspace":
             assert f"data-anchor='{a}'" in html, (q["id"], a)
-    assert "Machine checks:" in html and "confirm the three ticks" in html
+    assert "Machine checks:" in html and "confirm the ticks" in html
     assert "data-q='H1' data-kind='check'" in html and "data-q='H2' data-kind='check'" in html
     assert "data-q='A1'" not in html  # the machine's A1 is collapsed into the machine line, not put to the human
 
@@ -190,7 +190,7 @@ def test_export_works_offline_with_the_checklist(tmp_path):
 
 def human_questions(card_html: str) -> set[str]:
     """The questions a card puts to the human, H3's three ticks counted as one."""
-    got = {re.sub(r"^(H3)[abc]$", r"\1", x) for x in re.findall(r"class='q(?: attn)?' data-q='([A-Za-z0-9]+)'", card_html)}
+    got = {re.sub(r"^(H3)\w+$", r"\1", x) for x in re.findall(r"class='q(?: attn)?' data-q='([A-Za-z0-9]+)'", card_html)}
     return got
 
 
@@ -235,9 +235,10 @@ def test_the_fixed_sample_shows_only_the_five(tmp_path):
 
 def test_per_view_reads_the_five_and_counts_the_rest_as_extra(tmp_path):
     five = Q.five_ids("main_swap")
+    live = [it["id"] for it in Q.five_items("main_swap") if Q.reader_switched(it)]  # items whose reader switched can be consistent
     other = next(e["item"] for e in I.spec()["fixed_sample"]["views"]["main_swap"] if e["item"] not in five)
-    rows = [{"view": "main_swap", "item": five[0], "seed": 29, "verdict": "wrong", "note": ""},
-            {"view": "main_swap", "item": five[1], "seed": 29, "verdict": "consistent", "note": ""},
+    rows = [{"view": "main_swap", "item": live[0], "seed": 29, "verdict": "wrong", "note": ""},
+            {"view": "main_swap", "item": live[1], "seed": 29, "verdict": "consistent", "note": ""},
             {"view": "main_swap", "item": other, "seed": 29, "verdict": "unclear", "note": ""}]  # fmt: skip
     x = H.per_view(rows)["main_swap"]
     assert (x["sample"], x["read"], x["wrong"], x["consistent"], x["extra"]) == (5, 2, 1, 1, 1)
@@ -252,3 +253,31 @@ def test_a_marked_card_folds_to_its_header():
     assert "data-verdict=''" in P.card(it, 29, False, None)
     page = P.page("t", html, False, "x")
     assert ".card.done>:not(.hdr):not(.idl){display:none}" in page and "function fold(" in page and "nextCard(c)" in page
+
+
+def test_a_reader_that_did_not_switch_gets_a_grey_banner_and_counts_as_uninformative():
+    got = [it for it in I.items("main_swap", MODEL) if Q.reader_switched(it) is False]
+    assert got, "the 27B's lookup does not switch on every scene"
+    assert all(Q.reader_switched(it) is None for it in two_items("routes") + two_items("x8_writes"))  # no whole-change arm there
+    html = P.card(got[0], 29, False, None)
+    assert "this reader did not switch: the item does not test the claim for it; the other reader is shown for context" in html
+    sw = next(it for it in I.items("main_swap", MODEL) if Q.reader_switched(it))
+    assert "this reader did not switch" not in P.card(sw, 29, False, None)
+    five = Q.five_items("main_swap")
+    unin = [it["id"] for it in five if Q.reader_switched(it) is False]
+    assert unin and set(unin) == Q.uninformative_ids("main_swap")
+    rows = [{"view": "main_swap", "item": i, "seed": 29, "verdict": "consistent", "note": ""} for i in unin]
+    x = H.per_view(rows)["main_swap"]
+    assert x["uninformative"] == len(unin) and x["consistent"] == 0  # consistent only counts where the reader switched
+    assert f"{len(unin)} uninformative" in Q.deck_line("main_swap", rows, [])
+    wrong = [{"view": "main_swap", "item": unin[0], "seed": 29, "verdict": "wrong", "note": ""}]
+    y = H.per_view(wrong)["main_swap"]
+    assert y["wrong"] == 1 and y["uninformative"] == len(unin) - 1  # a mark of wrong stays wrong
+
+
+def test_h3_has_one_answer_word_tick_per_reader():
+    from bridge_jspace.review import page as PG
+
+    assert [t for t, _ in PG.H3_TICKS] == ["H3a", "H3b", "H3cL", "H3cR"]
+    human, _ = Q.split("main_swap")
+    assert next(q for q in human if q["id"] == "H3")["panel"] == ["H3a", "H3b", "H3cL", "H3cR"]

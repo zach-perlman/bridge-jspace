@@ -51,13 +51,13 @@ def block(marks_path: Path, checks: dict | None, indep: dict | None) -> str:
          "review/verify_independent.json. The items are docs/review/review_views.yaml's fixed_sample; the last mark per item "
          f"counts; a claim with {H.STOP_WRONG} or more items marked wrong is flagged (Dan's stop rule). How each was "
          "read: docs/review/verify_pack.md.", "",
-         "| claim | what it says | items read | consistent | wrong | unclear | flagged | automatic checks | independent recount |",
-         "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+         "| claim | what it says | items read | consistent | wrong | unclear | uninformative | flagged | automatic checks | independent recount |",
+         "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     notes = []
     for vid, x in pv.items():
         a, b = H.auto_status(vid, checks, indep)
         L.append(f"| {x['order']}. {vid} | {views[vid]['title'].split('. ', 1)[-1]} ({readme_claim(views[vid])}) | "
-                 f"{x['read']} of {x['sample']} | {x['consistent']} | {x['wrong']} | {x['unclear']} | "
+                 f"{x['read']} of {x['sample']} | {x['consistent']} | {x['wrong']} | {x['unclear']} | {x['uninformative']} | "
                  f"{'yes' if x['flagged'] else 'no'} | {a} | {b} |")  # fmt: skip
         notes += [f"- {x['order']}. {vid}, `{r['item']}`: **{r['verdict']}** ({r.get('utc', '')}, commit {r.get('commit', '')}): "
                   f"{r.get('note', '') or '(no note)'}" for r in x["notes"]]  # fmt: skip
