@@ -1,0 +1,267 @@
+{
+ "behaviour": {
+  "CN": {
+   "n": 662,
+   "memory": 23.7,
+   "passage": 76.0,
+   "other": 0.3
+  },
+  "CA": {
+   "n": 662,
+   "memory": 0.6,
+   "passage": 99.4,
+   "other": 0.0
+  },
+  "DN": {
+   "n": 404,
+   "memory": 64.1,
+   "passage": 24.5,
+   "other": 11.4
+  },
+  "DA": {
+   "n": 404,
+   "memory": 29.2,
+   "passage": 60.1,
+   "other": 10.6
+  },
+  "TN": {
+   "n": 662,
+   "memory": 100.0,
+   "passage": 0.0,
+   "other": 0.0
+  },
+  "TD": {
+   "n": 404,
+   "memory": 92.1,
+   "passage": 0.0,
+   "other": 7.9
+  }
+ },
+ "knockout": {
+  "share": {
+   "none": {
+    "memory": 41.4,
+    "passage": 56.4,
+    "other": 2.2
+   },
+   "paper10": {
+    "memory": 10.0,
+    "passage": 73.6,
+    "other": 16.5
+   },
+   "paper10_rot": {
+    "memory": 49.3,
+    "passage": 48.1,
+    "other": 2.6
+   },
+   "unembed10": {
+    "memory": 38.3,
+    "passage": 58.9,
+    "other": 2.8
+   },
+   "paper10_pcasize": {
+    "memory": 55.1,
+    "passage": 38.3,
+    "other": 6.7
+   }
+  },
+  "shift_paper10": {
+   "shift": 17.1,
+   "ci": [
+    13.164,
+    21.023
+   ]
+  },
+  "shift_paper10_rot": {
+   "shift": -8.3,
+   "ci": [
+    -10.741,
+    -5.697
+   ]
+  },
+  "shift_unembed10": {
+   "shift": 2.5,
+   "ci": [
+    0.918,
+    4.152
+   ]
+  },
+  "shift_paper10_pcasize": {
+   "shift": -18.2,
+   "ci": [
+    -21.229,
+    -15.062
+   ]
+  },
+  "paper10_minus_paper10_rot": {
+   "d": 25.4,
+   "ci": [
+    21.171,
+    29.418
+   ],
+   "met": true
+  },
+  "paper10_minus_unembed10": {
+   "d": 14.6,
+   "ci": [
+    10.932,
+    18.435
+   ],
+   "met": true
+  }
+ },
+ "bridge": {
+  "CN/jlens": {
+   "memory": {
+    "n": 157,
+    "attr": 78.2,
+    "other": 2.8,
+    "third": 0.5,
+    "ctxreal": 1.0
+   },
+   "passage": {
+    "n": 503,
+    "attr": 79.1,
+    "other": 1.5,
+    "third": 1.0,
+    "ctxreal": 0.3
+   },
+   "auc": 0.505,
+   "reading": "memory channel"
+  },
+  "CN/logit": {
+   "memory": {
+    "n": 157,
+    "attr": 11.1,
+    "other": 5.4,
+    "third": 2.0,
+    "ctxreal": 1.5
+   },
+   "passage": {
+    "n": 503,
+    "attr": 15.1,
+    "other": 3.4,
+    "third": 2.9,
+    "ctxreal": 2.8
+   },
+   "auc": 0.435
+  },
+  "DN/jlens": {
+   "memory": {
+    "n": 259,
+    "attr": 39.5,
+    "other": 3.3,
+    "third": 1.9,
+    "ctxreal": 2.9
+   },
+   "passage": {
+    "n": 99,
+    "attr": 23.4,
+    "other": 5.6,
+    "third": 4.3,
+    "ctxreal": 0.9
+   },
+   "auc": 0.635,
+   "reading": "memory strength"
+  },
+  "DN/logit": {
+   "memory": {
+    "n": 259,
+    "attr": 10.9,
+    "other": 3.9,
+    "third": 2.5,
+    "ctxreal": 3.1
+   },
+   "passage": {
+    "n": 99,
+    "attr": 9.5,
+    "other": 3.8,
+    "third": 5.1,
+    "ctxreal": 5.1
+   },
+   "auc": 0.527
+  },
+  "CA/jlens": {
+   "memory": {
+    "n": 4,
+    "attr": 96.4,
+    "other": 0.0,
+    "third": 0.0,
+    "ctxreal": 0.0
+   },
+   "passage": {
+    "n": 658,
+    "attr": 74.5,
+    "other": 1.9,
+    "third": 1.2,
+    "ctxreal": 0.6
+   },
+   "auc": 0.661,
+   "reading": "memory strength"
+  },
+  "CA/logit": {
+   "memory": {
+    "n": 4,
+    "attr": 14.3,
+    "other": 7.1,
+    "third": 0.0,
+    "ctxreal": 3.6
+   },
+   "passage": {
+    "n": 658,
+    "attr": 11.1,
+    "other": 3.9,
+    "third": 3.0,
+    "ctxreal": 3.7
+   },
+   "auc": 0.448
+  },
+  "DA/jlens": {
+   "memory": {
+    "n": 118,
+    "attr": 38.0,
+    "other": 3.3,
+    "third": 1.3,
+    "ctxreal": 3.0
+   },
+   "passage": {
+    "n": 243,
+    "attr": 32.1,
+    "other": 4.4,
+    "third": 3.2,
+    "ctxreal": 2.8
+   },
+   "auc": 0.545,
+   "reading": "memory channel"
+  },
+  "DA/logit": {
+   "memory": {
+    "n": 118,
+    "attr": 11.0,
+    "other": 3.4,
+    "third": 1.6,
+    "ctxreal": 4.5
+   },
+   "passage": {
+    "n": 243,
+    "attr": 9.4,
+    "other": 4.7,
+    "third": 3.8,
+    "ctxreal": 3.2
+   },
+   "auc": 0.535
+  }
+ },
+ "framing": {
+  "CN->CA": {
+   "n": 662,
+   "bridge_true_share_change": -4.1,
+   "passage_share_change": 23.4
+  },
+  "DN->DA": {
+   "n": 404,
+   "bridge_true_share_change": -0.9,
+   "passage_share_change": 35.6
+  }
+ }
+}

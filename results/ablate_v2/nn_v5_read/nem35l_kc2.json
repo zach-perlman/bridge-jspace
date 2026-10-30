@@ -1,0 +1,267 @@
+{
+ "behaviour": {
+  "CN": {
+   "n": 666,
+   "memory": 40.4,
+   "passage": 58.9,
+   "other": 0.8
+  },
+  "CA": {
+   "n": 666,
+   "memory": 1.8,
+   "passage": 98.2,
+   "other": 0.0
+  },
+  "DN": {
+   "n": 514,
+   "memory": 64.8,
+   "passage": 22.6,
+   "other": 12.6
+  },
+  "DA": {
+   "n": 514,
+   "memory": 45.3,
+   "passage": 43.0,
+   "other": 11.7
+  },
+  "TN": {
+   "n": 666,
+   "memory": 100.0,
+   "passage": 0.0,
+   "other": 0.0
+  },
+  "TD": {
+   "n": 514,
+   "memory": 93.4,
+   "passage": 0.0,
+   "other": 6.6
+  }
+ },
+ "knockout": {
+  "share": {
+   "none": {
+    "memory": 54.1,
+    "passage": 44.8,
+    "other": 1.2
+   },
+   "paper10": {
+    "memory": 20.6,
+    "passage": 64.0,
+    "other": 15.5
+   },
+   "paper10_rot": {
+    "memory": 53.5,
+    "passage": 44.3,
+    "other": 2.1
+   },
+   "unembed10": {
+    "memory": 41.7,
+    "passage": 55.0,
+    "other": 3.3
+   },
+   "paper10_pcasize": {
+    "memory": 52.7,
+    "passage": 43.7,
+    "other": 3.6
+   }
+  },
+  "shift_paper10": {
+   "shift": 19.2,
+   "ci": [
+    15.376,
+    23.549
+   ]
+  },
+  "shift_paper10_rot": {
+   "shift": -0.4,
+   "ci": [
+    -2.525,
+    1.417
+   ]
+  },
+  "shift_unembed10": {
+   "shift": 10.2,
+   "ci": [
+    7.961,
+    12.55
+   ]
+  },
+  "shift_paper10_pcasize": {
+   "shift": -1.1,
+   "ci": [
+    -3.688,
+    1.639
+   ]
+  },
+  "paper10_minus_paper10_rot": {
+   "d": 19.6,
+   "ci": [
+    15.778,
+    23.857
+   ],
+   "met": true
+  },
+  "paper10_minus_unembed10": {
+   "d": 9.0,
+   "ci": [
+    5.29,
+    12.736
+   ],
+   "met": false
+  }
+ },
+ "bridge": {
+  "CN/jlens": {
+   "memory": {
+    "n": 269,
+    "attr": 74.9,
+    "other": 1.0,
+    "third": 1.1,
+    "ctxreal": 0.7
+   },
+   "passage": {
+    "n": 392,
+    "attr": 67.9,
+    "other": 3.0,
+    "third": 1.5,
+    "ctxreal": 1.3
+   },
+   "auc": 0.586,
+   "reading": "memory channel"
+  },
+  "CN/logit": {
+   "memory": {
+    "n": 269,
+    "attr": 70.6,
+    "other": 1.1,
+    "third": 1.1,
+    "ctxreal": 0.4
+   },
+   "passage": {
+    "n": 392,
+    "attr": 54.5,
+    "other": 4.1,
+    "third": 2.3,
+    "ctxreal": 1.5
+   },
+   "auc": 0.631
+  },
+  "DN/jlens": {
+   "memory": {
+    "n": 333,
+    "attr": 37.7,
+    "other": 3.2,
+    "third": 2.2,
+    "ctxreal": 2.9
+   },
+   "passage": {
+    "n": 116,
+    "attr": 22.6,
+    "other": 6.3,
+    "third": 4.4,
+    "ctxreal": 1.9
+   },
+   "auc": 0.656,
+   "reading": "memory strength"
+  },
+  "DN/logit": {
+   "memory": {
+    "n": 333,
+    "attr": 35.7,
+    "other": 4.3,
+    "third": 2.7,
+    "ctxreal": 2.5
+   },
+   "passage": {
+    "n": 116,
+    "attr": 18.4,
+    "other": 4.4,
+    "third": 4.5,
+    "ctxreal": 6.0
+   },
+   "auc": 0.638
+  },
+  "CA/jlens": {
+   "memory": {
+    "n": 12,
+    "attr": 61.4,
+    "other": 3.8,
+    "third": 1.5,
+    "ctxreal": 0.0
+   },
+   "passage": {
+    "n": 654,
+    "attr": 65.5,
+    "other": 2.3,
+    "third": 1.4,
+    "ctxreal": 1.2
+   },
+   "auc": 0.43,
+   "reading": "memory channel"
+  },
+  "CA/logit": {
+   "memory": {
+    "n": 12,
+    "attr": 45.5,
+    "other": 6.8,
+    "third": 0.8,
+    "ctxreal": 0.0
+   },
+   "passage": {
+    "n": 654,
+    "attr": 56.7,
+    "other": 3.3,
+    "third": 1.2,
+    "ctxreal": 1.0
+   },
+   "auc": 0.392
+  },
+  "DA/jlens": {
+   "memory": {
+    "n": 233,
+    "attr": 36.8,
+    "other": 3.6,
+    "third": 2.0,
+    "ctxreal": 1.8
+   },
+   "passage": {
+    "n": 221,
+    "attr": 28.2,
+    "other": 4.7,
+    "third": 2.4,
+    "ctxreal": 2.8
+   },
+   "auc": 0.581,
+   "reading": "memory channel"
+  },
+  "DA/logit": {
+   "memory": {
+    "n": 233,
+    "attr": 34.5,
+    "other": 4.5,
+    "third": 1.2,
+    "ctxreal": 2.4
+   },
+   "passage": {
+    "n": 221,
+    "attr": 24.3,
+    "other": 4.0,
+    "third": 2.1,
+    "ctxreal": 3.7
+   },
+   "auc": 0.594
+  }
+ },
+ "framing": {
+  "CN->CA": {
+   "n": 666,
+   "bridge_true_share_change": -5.3,
+   "passage_share_change": 39.3
+  },
+  "DN->DA": {
+   "n": 514,
+   "bridge_true_share_change": -0.8,
+   "passage_share_change": 20.4
+  }
+ }
+}

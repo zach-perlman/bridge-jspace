@@ -1,0 +1,66 @@
+{
+  "seconds": 410,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.678,
+      "all_steps": 0.947,
+      "median_margin": 0.25,
+      "guess": 0.173,
+      "top_wrong": [
+        [
+          "Grey",
+          23
+        ],
+        [
+          "Blue",
+          22
+        ],
+        [
+          "Black",
+          19
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.95,
+      "all_steps": 0.947,
+      "median_margin": 6.38,
+      "guess": 0.159,
+      "top_wrong": [
+        [
+          "Nor",
+          5
+        ],
+        [
+          "Italy",
+          2
+        ],
+        [
+          "Unknown",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.951,
+      "MM": 0.995
+    },
+    "companies": {
+      "MP": 0.515,
+      "MM": 0.917
+    },
+    "landmarks": {
+      "MP": 0.84,
+      "MM": 1
+    },
+    "people": {
+      "MP": 0.441,
+      "MM": 0.904
+    }
+  },
+  "pick": {}
+}

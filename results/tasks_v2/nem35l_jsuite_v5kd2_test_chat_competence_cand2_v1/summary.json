@@ -1,0 +1,66 @@
+{
+  "seconds": 360,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.251,
+      "all_steps": 0.422,
+      "median_margin": -3.5,
+      "guess": 0.166,
+      "top_wrong": [
+        [
+          "yellow",
+          78
+        ],
+        [
+          "grey",
+          55
+        ],
+        [
+          "orange",
+          49
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.791,
+      "all_steps": 0.706,
+      "median_margin": 1.75,
+      "guess": 0.151,
+      "top_wrong": [
+        [
+          "United",
+          28
+        ],
+        [
+          "France",
+          6
+        ],
+        [
+          "England",
+          6
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.258,
+      "MM": 0.791
+    },
+    "companies": {
+      "MP": 0.311,
+      "MM": 0.674
+    },
+    "landmarks": {
+      "MP": 0.19,
+      "MM": 0.73
+    },
+    "people": {
+      "MP": 0.234,
+      "MM": 0.904
+    }
+  },
+  "pick": {}
+}

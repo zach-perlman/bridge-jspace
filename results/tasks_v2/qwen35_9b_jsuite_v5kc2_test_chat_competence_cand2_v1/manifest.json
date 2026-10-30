@@ -1,0 +1,36 @@
+{
+  "run": "qwen35_9b_jsuite_v5kc2_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-29, prereg amendment 60, kc2, qwen3.5-9b): competence",
+  "set": "jsuite_v5kc2_test_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "9714ac817e53cc629a503983b7dcdde2ebac7c79",
+  "git_state": {
+    "head": "9714ac817e53cc629a503983b7dcdde2ebac7c79",
+    "dirty_files": [
+      "scripts/jsuite_v5key.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "678a4f0181e83a682b6c4bcd62864ec167011fd6762c954bfdf27ae75bf0e0a5"
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "CN",
+    "CA",
+    "DN",
+    "DA",
+    "TN",
+    "TD"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-29T20:46:57Z"
+}

@@ -1,0 +1,66 @@
+{
+  "seconds": 408,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.723,
+      "all_steps": 0.955,
+      "median_margin": 0.5,
+      "guess": 0.199,
+      "top_wrong": [
+        [
+          "Gold",
+          17
+        ],
+        [
+          "Blue",
+          16
+        ],
+        [
+          "Grey",
+          15
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.963,
+      "all_steps": 0.955,
+      "median_margin": 6.5,
+      "guess": 0.164,
+      "top_wrong": [
+        [
+          "Nor",
+          2
+        ],
+        [
+          "No",
+          2
+        ],
+        [
+          "Ch",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.995,
+      "MM": 1
+    },
+    "companies": {
+      "MP": 0.561,
+      "MM": 0.947
+    },
+    "landmarks": {
+      "MP": 0.87,
+      "MM": 0.98
+    },
+    "people": {
+      "MP": 0.495,
+      "MM": 0.931
+    }
+  },
+  "pick": {}
+}

@@ -1,0 +1,27 @@
+{
+ "run": "nem35l_jsuite_v4_test_chat_ko_posfinal_cand2_v1",
+ "n": {
+  "MM": 361,
+  "MP": 385
+ },
+ "conditions": {
+  "paper10": {
+   "loss_MM": 2.2,
+   "loss_MP": 2.6,
+   "gap": -0.4,
+   "gap_ci": [
+    -2.8,
+    2.0
+   ]
+  },
+  "paper10_rot": {
+   "loss_MM": 2.2,
+   "loss_MP": 2.1,
+   "gap": 0.1,
+   "gap_ci": [
+    -1.8,
+    2.3
+   ]
+  }
+ }
+}

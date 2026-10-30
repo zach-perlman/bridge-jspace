@@ -1,0 +1,27 @@
+{
+ "run": "jsuite_v4_test_chat_ko_posbridge_cand2_v1",
+ "n": {
+  "MM": 338,
+  "MP": 473
+ },
+ "conditions": {
+  "paper10": {
+   "loss_MM": 14.2,
+   "loss_MP": 4.9,
+   "gap": 9.3,
+   "gap_ci": [
+    5.2,
+    13.9
+   ]
+  },
+  "paper10_rot": {
+   "loss_MM": 3.0,
+   "loss_MP": 1.3,
+   "gap": 1.7,
+   "gap_ci": [
+    -0.4,
+    4.0
+   ]
+  }
+ }
+}

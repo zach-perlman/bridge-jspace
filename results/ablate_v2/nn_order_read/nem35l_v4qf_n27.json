@@ -1,0 +1,98 @@
+{
+ "prefix": "nem35l_",
+ "split_qf": {
+  "paper10": {
+   "n_MM": 293,
+   "n_MP": 402,
+   "loss_MM": 50.9,
+   "loss_MP": 5.2,
+   "gap": 45.6,
+   "gap_ci": [
+    39.2,
+    51.7
+   ]
+  },
+  "paper10_rot": {
+   "n_MM": 293,
+   "n_MP": 402,
+   "loss_MM": 5.8,
+   "loss_MP": 1.7,
+   "gap": 4.1,
+   "gap_ci": [
+    0.9,
+    7.2
+   ]
+  },
+  "unembed10": {
+   "n_MM": 293,
+   "n_MP": 402,
+   "loss_MM": 8.5,
+   "loss_MP": 1.0,
+   "gap": 7.5,
+   "gap_ci": [
+    4.2,
+    11.4
+   ]
+  },
+  "paper10_pcasize": {
+   "n_MM": 293,
+   "n_MP": 402,
+   "loss_MM": 7.2,
+   "loss_MP": 13.2,
+   "gap": -6.0,
+   "gap_ci": [
+    -10.6,
+    -1.1
+   ]
+  }
+ },
+ "order": {
+  "MP": {
+   "n_both": 282,
+   "n_pf_only": 103,
+   "n_qf_only": 120,
+   "loss_pf": 2.5,
+   "loss_qf": 4.3,
+   "diff_qf_minus_pf": 1.8,
+   "ci": [
+    -1.4,
+    5.0
+   ],
+   "reading": "no order effect"
+  },
+  "MM": {
+   "n_both": 228,
+   "n_pf_only": 133,
+   "n_qf_only": 65,
+   "loss_pf": 55.7,
+   "loss_qf": 49.6,
+   "diff_qf_minus_pf": -6.1,
+   "ci": [
+    -14.8,
+    2.1
+   ]
+  }
+ },
+ "competence": {
+  "passage_first/MP": {
+   "whole": 69.8,
+   "step1": 80.0,
+   "step2": 100.0
+  },
+  "passage_first/MM": {
+   "whole": 72.8,
+   "step1": 80.0,
+   "step2": 66.5
+  },
+  "question_first/MP": {
+   "whole": 75.7,
+   "step1": 78.4,
+   "step2": 99.3
+  },
+  "question_first/MM": {
+   "whole": 75.7,
+   "step1": 78.4,
+   "step2": 50.3
+  }
+ }
+}
