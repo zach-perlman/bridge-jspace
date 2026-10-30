@@ -36,7 +36,25 @@ first 8 gated MH items, the runner's paper10 and paper10_rot edits equal ablate_
 rows, SEED_ROT rotation, top_k) on the same tokens: protected rows, edit outputs on the clean residuals at every band
 layer, and the final logits (check.json).
 
+2026-10-30 (prereg amendment 72 note 55, the paper's strengths matched for generic damage): --bands NAME=lo-hi ... runs
+note 55 instead of note 45 (note 45's runs above are unchanged without it). Sets ML, MH, OO and PO (lens-eval-poetry,
+98 couplets, copied unchanged from the same pinned source; T = intermediates[0], the rhyme word; S = the last alphabetic
+word of the couplet's first line, the rhyme source; clusters = T's spelled rhyme, from its last vowel group; PO takes
+the chat fallback as ML and MH, a primary set here). Same gate, reads, protection and machinery. Per band (the paper's
+medium and heavy, percent of depth taken inward), every position:
+  top3, paper10, top30                J++ top-K (ablate_v2's topK: protected = the clean top-10 tokens' rows)
+  pca3, pca10, pca30                  ablate_v2's variance dictionary (its pca10 rule, nothing protected)
+  unembed10, unembed30                the logit lens's directions (ablate_v2's unembedK, protected)
+  paper10_rot, paper10_pcasize        as note 45
+  keep_T and keep_E (ML) / keep_B (MH) / keep_S (PO), at the --keep-band only (OO: keep_T)
+Logged per row: edit_rel = |edit| / |h| (root of summed squares over the band's layers and every position); per item at
+the keep band, the share of paper10's removal energy inside each keep span (E_X) and the span's rank. Byte check on the
+first 8 gated MH items at every band: paper10, paper10_rot, top3 and top30 against ablate_v2's recipe. Then the text
+stage (scripts/removal_textloss.agreement): plain-text top-1 agreement with the clean model on the 64 pinned WikiText rows
+and 64 v4 passages, per band, under removal_textloss.TEXT_CONDS (text_rows.jsonl). Reader: scripts/paper_ko_read55.py.
+
 python scripts/paper_ko_decomp.py --name N --why W [--sets ML MH OO] [--limit K] [--prev39 RUN] [--prompt-end auto]
+python scripts/paper_ko_decomp.py --name N --why W --sets ML MH OO PO --bands medium=17-24 heavy=14-27 [--keep-band medium]
 python scripts/paper_ko_decomp.py --check        (CPU: data hashes, tokenizer, words, cognates, plan)
 """
 
@@ -71,6 +89,12 @@ CTL_KIND = {"ML": "E", "MH": "B", "OO": "P"}
 KEEP_WORDS = {"ML": ["T", "E", "I", "R", "L"], "MH": ["T", "B"], "OO": ["T", "P", "O"]}
 RM_WORDS = {"ML": ["T", "E", "R", "L"], "MH": ["T", "B"], "OO": ["T"]}
 EARLY_KEEP = {"ML": ["T", "E"], "MH": ["T", "B"], "OO": ["T", "P"]}
+# note 55: the paper's rhyme set (its words T, S; the per-item word dictionaries above need an entry for any set run)
+DATA_PO = {"PO": ("lens_eval_poetry.json", "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc")}
+CTL_KIND["PO"], KEEP_WORDS["PO"], RM_WORDS["PO"], EARLY_KEEP["PO"] = "S", ["T", "S"], ["T", "S"], ["T", "S"]
+N55_DOSE = ("top3", "paper10", "top30", "pca3", "pca10", "pca30", "unembed10", "unembed30", "paper10_rot", "paper10_pcasize")
+N55_KEEP = {"ML": ["T", "E"], "MH": ["T", "B"], "OO": ["T"], "PO": ["T", "S"]}
+N55_BYTE_CONDS = ("paper10", "paper10_rot", "top3", "top30")
 MAIN_BAND = {"qwen3.6-27b": (24, 40), "qwen3.5-9b": (8, 16), "nemotron-3.5-lightning": (20, 33)}  # note 39's
 N_DRAWS, GATE_TOKENS, CHAT_FALLBACK_BELOW, N_BYTE_CHECK = 3, 6, 50, 8
 QUOTES = " \t\n\"'«»“”‘’„"
@@ -97,18 +121,38 @@ def mh_type(target: str) -> str:
 
 
 def load_set(s: str) -> list[dict]:
-    name, sha = DATA[s]
+    name, sha = {**DATA, **DATA_PO}[s]
     raw = (pins.DATA_DIR / name).read_bytes()
     got = hashlib.sha256(raw).hexdigest()
     assert got == sha, f"data/{name} sha256 {got} != pinned {sha}"
-    return json.loads(raw)["items"]
+    items = json.loads(raw)["items"]
+    if s == "PO":  # note 55: the couplets have no target field; the rhyme word is
+        items = [{**it, "target": it["intermediates"][0]} for it in items]
+    return items
+
+
+def rhyme_source(it: dict) -> str:
+    """Note 55's S: the last alphabetic word of the couplet's first line (the prompt's second line)."""
+    return re.findall(r"[A-Za-z]+", it["prompt"].split("\n")[1])[-1]
+
+
+def rhyme_key(word: str) -> str:
+    """PO's bootstrap cluster: the word's spelled rhyme, from its last vowel group (y a vowel; a final silent e kept)."""
+    w = word.lower()
+    core = w[:-1] if len(w) > 2 and w.endswith("e") and w[-2] not in "aeiouy" else w
+    m = re.search(r"[aeiouy]+[^aeiouy]*$", core)
+    return (m[0] if m else core) + w[len(core) :]
 
 
 def cluster_of(s: str, it: dict) -> str:
+    if s == "PO":
+        return rhyme_key(it["target"])
     return {"ML": lambda: it["intermediates"][1], "MH": lambda: mh_type(it["target"]), "OO": lambda: it["intermediates"][1]}[s]()
 
 
 def words_of(s: str, it: dict) -> dict[str, str]:
+    if s == "PO":
+        return {"T": it["target"], "S": rhyme_source(it)}
     out = {"T": it["target"]}
     out.update({k: it["intermediates"][i] for k, i in WORD_INDEX[s].items()})
     return out
@@ -190,6 +234,37 @@ def conditions(s: str, early: bool) -> list[tuple[str, bool]]:
     return out
 
 
+def conditions55(s: str, bands: dict[str, list[int]], keep_band: str) -> list[tuple[str, str]]:
+    """Note 55: (condition, band name) pairs for one set; the keeps at the keep band only."""
+    out = []
+    for b in bands:
+        out += [(c, b) for c in N55_DOSE]
+        if b == keep_band:
+            out += [(f"keep_{w}", b) for w in N55_KEEP[s]]
+    return out
+
+
+def rel_tracked(e, acc: torch.Tensor):
+    """Note 55: the edit e, unchanged, with sum ||edit||^2 and sum ||h||^2 per batch row added to acc [B, 2]."""
+
+    def f(h: torch.Tensor) -> torch.Tensor:
+        out = e(h)
+        acc[:, 0] += (out.double() - h.double()).pow(2).sum((1, 2))
+        acc[:, 1] += h.double().pow(2).sum((1, 2))
+        return out
+
+    return f
+
+
+def parse_bands(spec: list[str]) -> dict[str, list[int]]:
+    out = {}
+    for x in spec:
+        name, rng = x.split("=")
+        lo, hi = map(int, rng.split("-"))
+        out[name] = list(range(lo, hi + 1))
+    return out
+
+
 @torch.no_grad()
 def run(a) -> None:
     from bridge_jspace.ablate import LensDictionary, RowSettings, first_token_logits, removal_edit, rotation
@@ -208,12 +283,16 @@ def run(a) -> None:
     early = onset_window(a.prev39)
     band_main = list(range(main_band[0], main_band[1] + 1))
     band_early = list(range(early[0], early[1] + 1)) if early else []
+    n55 = bool(a.bands)  # prereg amendment 72 note 55 (its own conditions and bands; note 45's run is unchanged without it)
+    bands55 = parse_bands(a.bands) if n55 else {}
+    assert not (n55 and early), "note 55 has no early window"
+    assert not n55 or a.keep_band in bands55, "--keep-band must name one of --bands"
     sets = {s: load_set(s)[: a.limit or None] for s in a.sets}
     full = not a.limit
     manifest = {
         "exp": EXP, "run": a.name, "why": a.why, "note": "prereg amendment 68 note 45", "target": target, "model": pins.model_pin(),
         "lens": {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS])},
-        "data": {s: {"file": f"data/{DATA[s][0]}", "sha256": DATA[s][1], "n_run": len(v)} for s, v in sets.items()},
+        "data": {s: {"file": f"data/{({**DATA, **DATA_PO})[s][0]}", "sha256": ({**DATA, **DATA_PO})[s][1], "n_run": len(v)} for s, v in sets.items()},
         "source": "safety-research/jpp_lens@93f02cd data/jlens/evaluations (copied unchanged)",
         "main_band": f"{main_band[0]}-{main_band[1]}", "early_window": f"{early[0]}-{early[1]}" if early else None,
         "early_from": f"paper_swap_decomp/{a.prev39} (arm 1's median onset, J++)" if early else None,
@@ -224,6 +303,19 @@ def run(a) -> None:
         "tf32": True, "bj_gram_proj": __import__("os").environ.get("BJ_GRAM_PROJ"),
         "command": " ".join(sys.argv), "git_state": pins.git_state(), "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }  # fmt: skip
+    if n55:
+        from scripts.removal_textloss import TEXT_CONDS
+
+        manifest.update({"note": "prereg amendment 72 note 55", "main_band": None,
+                         "bands": {b: f"{v[0]}-{v[-1]}" for b, v in bands55.items()}, "keep_band": a.keep_band,
+                         "conditions": {s: [f"{c}@{b}" for c, b in conditions55(s, bands55, a.keep_band)] for s in sets},
+                         "byte_check": {"conditions": list(N55_BYTE_CONDS), "bands": list(bands55), "items": f"first {N_BYTE_CHECK} gated MH"},
+                         "text": None if a.no_text else {"conditions": list(TEXT_CONDS), "n_per_set": a.limit or 64, "sets": ["wiki", "v4"],
+                                                         "code": "scripts/removal_textloss.agreement"},
+                         "po_rule": "T = intermediates[0]; S = last alphabetic word of the couplet's first line; cluster = T's spelled rhyme",
+                         "force_chat": a.force_chat})  # fmt: skip
+    elif a.force_chat:
+        manifest["force_chat"] = a.force_chat
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     t0 = time.time()
     model = load_model()
@@ -233,13 +325,14 @@ def run(a) -> None:
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
     row_of[letters] = torch.arange(letters.numel(), device="cuda")
-    layers = sorted(set(band_main) | set(band_early))
+    layers = sorted(set(band_main) | set(band_early)) if not n55 else sorted(set().union(*bands55.values()))
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     rot = {la: rotation(wg.shape[1], SEED_ROT + la) for la in layers}
     unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
-    pca = pca_dictionaries(model, band_main)
+    pca = pca_dictionaries(model, band_main if not n55 else layers)
     encode = lambda text: model.encode(text)[0].tolist()  # noqa: E731
-    print(f"[{a.name}] loaded {time.time() - t0:.0f}s; main {band_main[0]}-{band_main[-1]}, early {early}", flush=True)
+    print(f"[{a.name}] loaded {time.time() - t0:.0f}s; main {band_main[0]}-{band_main[-1]}, early {early}"
+          + (f"; note 55 bands {manifest['bands']}" if n55 else ""), flush=True)  # fmt: skip
 
     # gate
     def gate(s: str, prompt_end: str) -> list[dict]:
@@ -261,9 +354,12 @@ def run(a) -> None:
         rows = gate(s, "stripped")
         n_raw = sum(r["eligible"] for r in rows)
         decisions[s] = {"raw_eligible": n_raw, "n": len(rows), "prompt_end": "stripped"}
-        if s in ("ML", "MH") and full and a.prompt_end == "auto" and n_raw < CHAT_FALLBACK_BELOW:
+        if (s in ("ML", "MH") or (n55 and s == "PO")) and full and a.prompt_end == "auto" and n_raw < CHAT_FALLBACK_BELOW:
             rows = gate(s, "chat_prefill")
             decisions[s].update(prompt_end="chat_prefill", chat_eligible=sum(r["eligible"] for r in rows))
+        elif s in a.force_chat:  # smoke only: a stored full run's chat-prefill decision, reproduced on --limit items
+            rows = gate(s, "chat_prefill")
+            decisions[s].update(prompt_end="chat_prefill", chat_eligible=sum(r["eligible"] for r in rows), forced=True)
         items += rows
     print(f"[{a.name}] gate {decisions} {time.time() - t0:.0f}s", flush=True)
     by_name = {(s, it["name"]): it for s in sets for it in sets[s]}
@@ -305,10 +401,27 @@ def run(a) -> None:
         return {la: removal_edit("top", ref_cache["dic"][la], rs, rotation=ref_cache["rot"][la] if cond.endswith("_rot") else None, k=top_k(cond))
                 for la in la_list}, prot  # fmt: skip
 
-    def make_edits(cond: str, chunk: list[dict], protected: list[torch.Tensor], band: list[int]) -> dict:
-        """The per-layer edits of one condition for a batch of items (rows in chunk order)."""
+    def make_edits(cond: str, chunk: list[dict], protected: list[torch.Tensor], band: list[int], energy=None) -> dict:
+        """The per-layer edits of one condition for a batch of items (rows in chunk order). Note 55: with energy
+        ([len(chunk), 1 + keeps]), paper10's removal energy and its part in each of the item's keep spans are summed."""
         edits = {}
         for la in band:
+            if cond in ("top3", "top30", "pca3", "pca10", "pca30", "unembed30"):  # note 55's doses: ablate_v2's topK, pcaK, unembedK
+                pc = cond.startswith("pca")  # its pca rule: nothing protected (the rows index principal directions)
+                rs = [RowSettings(skip=[], protected=None if pc else protected[i]) for i in range(len(chunk))]
+                d = pca[la] if pc else unembed if cond.startswith("unembed") else dic[la]
+                edits[la] = removal_edit("top", d, rs, k=top_k(cond))
+                continue
+            obs = None
+            if energy is not None and cond == "paper10":
+
+                def obs(r, B, T, la=la):  # read-only (removal_edit's observe): the removal before any keep / rotation
+                    for b in range(B):
+                        rb = r[b * T : (b + 1) * T].double()
+                        energy[b, 0] += rb.pow(2).sum()
+                        for j, w in enumerate(N55_KEEP[chunk[b]["set"]], 1):
+                            energy[b, j] += (rb @ span(lens, la, chunk[b]["word_tokens"][w])).pow(2).sum()
+
             if cond.startswith("rm_"):  # answer_span_edit over the word's unit J++ vectors, every position but the last
                 word = cond.split("_")[1]
                 rows = [torch.tensor(r["word_tokens"][word], device="cuda") for r in chunk]
@@ -323,7 +436,8 @@ def run(a) -> None:
             d = unembed if cond == "unembed10" else dic[la]
             edits[la] = removal_edit("top", d, rs, rotation=rot[la] if cond.endswith("_rot") else None,
                                      k=top_k("unembed10" if cond == "unembed10" else "paper10"),
-                                     size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None, keep_span=keep)  # fmt: skip
+                                     size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None, keep_span=keep,
+                                     observe=obs)  # fmt: skip
         return edits
 
     rows_out: list[dict] = []
@@ -370,20 +484,40 @@ def run(a) -> None:
                 r["protected"] = {k: bool(set(v) & top_set) for k, v in r["word_tokens"].items()}
                 r["protected_rows"] = {k: bool(set(wl[k]) & prot_rows) for k in wl}
                 log_items.append(r)
-            for cond, is_early in conditions(s, bool(early)):
-                edits = make_edits(cond, chunk, protected, band_early if is_early else band_main)
+            if not n55:
+                plan = [(c, "early" if e else "main", band_early if e else band_main) for c, e in conditions(s, bool(early))]
+            else:
+                plan = [(c, b, bands55[b]) for c, b in conditions55(s, bands55, a.keep_band)]
+                energy = torch.zeros(len(chunk), 1 + len(N55_KEEP[s]), dtype=torch.float64, device="cuda")
+                for i, r in enumerate(chunk):
+                    r["n_protected_rows"] = int(protected[i].numel())
+                    r["rank55"] = {w: len(r["word_tokens"][w]) for w in N55_KEEP[s]}
+            for cond, wname, band in plan:
+                rel = None
+                if not n55:
+                    edits = make_edits(cond, chunk, protected, band)
+                else:
+                    edits = make_edits(cond, chunk, protected, band, energy if (cond == "paper10" and wname == a.keep_band) else None)
+                    rel = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")
+                    edits = {la: rel_tracked(e, rel) for la, e in edits.items()}
                 logits = first_token_logits(model, ids_t, edits)
                 lp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
                 for i, r in enumerate(chunk):
-                    rows_out.append({"set": s, "name": r["name"], "window": "early" if is_early else "main", "cond": cond,
+                    rows_out.append({"set": s, "name": r["name"], "window": wname, "cond": cond,
                                      "correct": int(logits[i].argmax()) == r["tok"], "logp": float(lp[i]),
                                      "dlogp": float(lp[i] - clean_lp[i]), "top_id": int(logits[i].argmax())})  # fmt: skip
+                    if rel is not None:
+                        rows_out[-1]["edit_rel"] = float((rel[i, 0] / rel[i, 1]).sqrt())
+            if n55:
+                for i, r in enumerate(chunk):
+                    e = energy[i].tolist()
+                    r["E55"] = {w: (e[j] / e[0] if e[0] > 0 else None) for j, w in enumerate(N55_KEEP[s], 1)}
         print(f"[{a.name}] {s}: length group of {len(group)} items done {time.time() - t0:.0f}s", flush=True)
 
     # byte-identity check on the first N_BYTE_CHECK gated MH items (batch of one, both recipes)
     check: dict = {"items": [], "all_equal": None}
     mh = [r for r in elig if r["set"] == "MH"][:N_BYTE_CHECK]
-    for r in mh:
+    for r in mh if not n55 else []:
         ids_t = torch.tensor([r["ids"]], device="cuda")
         _, rec = model.run(ids_t, record=tuple(band_main))
         clean = first_token_logits(model, ids_t, {})
@@ -397,12 +531,29 @@ def run(a) -> None:
             res[f"{cond}_edit_equal_all_layers"] = all(bool(torch.equal(mine[la](rec[la][None]), theirs[la](rec[la][None]))) for la in band_main)
             res[f"{cond}_logits_equal"] = bool(torch.equal(first_token_logits(model, ids_t, mine), first_token_logits(model, ids_t, theirs)))
         check["items"].append(res)
-    check["all_equal"] = all(v for x in check["items"] for k, v in x.items() if k != "name") if check["items"] else None
+    for bname, band in bands55.items():  # note 55: every band, its J top-K conditions against ablate_v2's recipe
+        ref_cache.clear()  # the reference dictionaries are built for the band's layers
+        for r in mh:
+            ids_t = torch.tensor([r["ids"]], device="cuda")
+            _, rec = model.run(ids_t, record=tuple(band))
+            clean = first_token_logits(model, ids_t, {})
+            prot = row_of[clean.topk(10, dim=1).indices[0]]
+            prot = prot[prot >= 0]
+            res = {"name": r["name"], "band": bname}
+            for cond in N55_BYTE_CONDS:
+                mine = make_edits(cond, [r], [prot], band)
+                theirs, prot_ref = ref_edits(ids_t, cond, band)
+                res[f"{cond}_protected_equal"] = bool(torch.equal(prot, prot_ref))
+                res[f"{cond}_edit_equal_all_layers"] = all(bool(torch.equal(mine[la](rec[la][None]), theirs[la](rec[la][None]))) for la in band)
+                res[f"{cond}_logits_equal"] = bool(torch.equal(first_token_logits(model, ids_t, mine), first_token_logits(model, ids_t, theirs)))
+            check["items"].append(res)
+    check["all_equal"] = all(v for x in check["items"] for k, v in x.items() if k not in ("name", "band")) if check["items"] else None
     (out_dir / "check.json").write_text(json.dumps(check, indent=2) + "\n")
     print(f"[{a.name}] byte-identity check on {len(mh)} MH items: all equal {check['all_equal']}", flush=True)
 
     keys = ("set", "name", "prompt_end", "continuation", "eligible", "tok", "target_tokens", "single_token_target", "boundary_clean",
-            "cluster", "words", "ctl_word", "word_tokens", "cognate", "protected", "protected_rows", "clean_correct", "clean_logp")  # fmt: skip
+            "cluster", "words", "ctl_word", "word_tokens", "cognate", "protected", "protected_rows", "clean_correct", "clean_logp",
+            "n_protected_rows", "rank55", "E55")  # fmt: skip  # the last three: note 55 only
     with open(out_dir / "items.jsonl", "w") as f:
         for r in items:
             f.write(json.dumps({k: r[k] for k in keys if k in r}, ensure_ascii=False) + "\n")
@@ -413,6 +564,31 @@ def run(a) -> None:
                "clean_correct": {s: sum(bool(r.get("clean_correct")) for r in items if r["set"] == s) for s in sets},
                "rows": len(rows_out), "byte_check_all_equal": check["all_equal"], "seconds": round(time.time() - t0),
                "reader": f"python scripts/paper_ko_read.py results/{EXP}/{a.name}"}  # fmt: skip
+    if n55:
+        summary["reader"] = f"python scripts/paper_ko_read55.py results/{EXP}/{a.name}"
+        summary["note"] = "prereg amendment 72 note 55"
+        summary["command"], summary["git_state"] = manifest["command"], manifest["git_state"]
+        if not a.no_text:  # the text stage: plain-text top-1 agreement (Fig. 22's metric), per band and condition
+            from scripts.removal_textloss import TEXT_CONDS, agreement, v4_texts, wiki_texts
+
+            n_text = a.limit or 64
+            vt, vids = v4_texts(tok, n_text)
+            trows = []
+            for tname, texts in (("wiki", wiki_texts(tok, n_text)), ("v4", vt)):
+                for x in agreement(model, texts, bands55, TEXT_CONDS, dic, unembed, pca, rot, row_of, batch=a.text_batch):
+                    trows.append({"textset": tname, **x, **({"id": vids[x["text"]]} if tname == "v4" else {})})
+                print(f"[{a.name}] text {tname}: {len(texts)} texts done {time.time() - t0:.0f}s", flush=True)
+            with open(out_dir / "text_rows.jsonl", "w") as f:
+                for x in trows:
+                    f.write(json.dumps(x) + "\n")
+            agg: dict = {}
+            for x in trows:
+                k = f"{x['textset']}/{x['band']}/{x['cond']}"
+                agg.setdefault(k, [0, 0])
+                agg[k][0] += x["agree"]
+                agg[k][1] += x["n"]
+            summary["text_agreement"] = {k: round(v[0] / v[1], 4) for k, v in agg.items()}
+            summary["seconds"] = round(time.time() - t0)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=2))
 
@@ -454,11 +630,16 @@ if __name__ == "__main__":
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--name")
     ap.add_argument("--why")
-    ap.add_argument("--sets", nargs="+", default=["ML", "MH", "OO"], choices=list(DATA))
+    ap.add_argument("--sets", nargs="+", default=["ML", "MH", "OO"], choices=list(DATA) + list(DATA_PO))
     ap.add_argument("--limit", type=int, default=0, help="first K items per set (smoke)")
     ap.add_argument("--prev39", help="the model's note 39 run (its arm-1 median-onset window is the early window)")
     ap.add_argument("--prompt-end", default="auto", choices=["auto", "stripped"])
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--bands", nargs="*", default=[], help="note 55: NAME=lo-hi ... (runs note 55 instead of note 45)")
+    ap.add_argument("--keep-band", default="medium", help="note 55: the band of the keep conditions")
+    ap.add_argument("--no-text", action="store_true", help="note 55: skip the plain-text agreement stage")
+    ap.add_argument("--text-batch", type=int, default=16)
+    ap.add_argument("--force-chat", nargs="*", default=[], help="smoke only: gate these sets with the chat prefill")
     args = ap.parse_args()
     if args.check:
         check()
