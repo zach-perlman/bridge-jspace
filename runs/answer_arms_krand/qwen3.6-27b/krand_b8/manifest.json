@@ -1,0 +1,17 @@
+{
+  "exp": "answer_arms_krand",
+  "post_hoc": true,
+  "why": "rule (b) of answer_arms_translated lacked a size control (Dan's design error)",
+  "model": "qwen3.6-27b",
+  "run": "x51_12_e1_27b_r2",
+  "layer": 32,
+  "items": 200,
+  "saved_arm2_from": "runs/answer_arms_translated/qwen3.6-27b/run_qwen3.6-27b",
+  "draws_per_item": 5,
+  "K": "the item's all-language count and, separately, its English count",
+  "random_directions": "letter tokens that are whole alphabetic words of >= 2 letters, excluding the item's answer tokens (all languages) and its old / new bridge tokens; built with x51_answer.answer_basis over JLens.vectors",
+  "preset": "The (b) shift counts as answer-specific only if [all-language arm 2 minus its K-random twin] minus [English arm 2 minus its K-random twin] (share of the whole change's switches blocked; 95% cluster bootstrap over the bridge entity, paired) has an interval excluding 0. Otherwise: '(b) shift is explained by the number of kept directions', and the label rests on (a) alone.",
+  "gate": "whole and both arm 2 switch counts within +-1 of the saved run, per reader",
+  "git": "pod: no git (tar)",
+  "written_utc": "2026-10-30T22:17:55Z"
+}

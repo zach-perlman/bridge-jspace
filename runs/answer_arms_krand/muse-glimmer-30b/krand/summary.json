@@ -1,0 +1,134 @@
+{
+ "post_hoc": true,
+ "model": "muse-glimmer-30b",
+ "run": "muse30_x51_12_e1_r2",
+ "layer": 26,
+ "n": 200,
+ "seconds": 167,
+ "gate": {
+  "ok": true,
+  "now_vs_saved": {
+   "PM": {
+    "whole": [
+     117,
+     118
+    ],
+    "a_en": [
+     38,
+     38
+    ],
+    "a_all": [
+     61,
+     61
+    ]
+   },
+   "PP": {
+    "whole": [
+     70,
+     70
+    ],
+    "a_en": [
+     69,
+     69
+    ],
+    "a_all": [
+     69,
+     69
+    ]
+   }
+  }
+ },
+ "K_mean": {
+  "all_languages": 102.0,
+  "english": 14.9
+ },
+ "pool_tokens": 159543,
+ "preset": "The (b) shift counts as answer-specific only if [all-language arm 2 minus its K-random twin] minus [English arm 2 minus its K-random twin] (share of the whole change's switches blocked; 95% cluster bootstrap over the bridge entity, paired) has an interval excluding 0. Otherwise: '(b) shift is explained by the number of kept directions', and the label rests on (a) alone.",
+ "readers": {
+  "recall": {
+   "n": 200,
+   "whole_switches": 117.0,
+   "share_blocked": {
+    "a_en": [
+     0.6752,
+     0.5156,
+     0.7857
+    ],
+    "a_all": [
+     0.4786,
+     0.3514,
+     0.5854
+    ],
+    "r_en": [
+     0.6701,
+     0.5168,
+     0.7765
+    ],
+    "r_all": [
+     0.4821,
+     0.3395,
+     0.5864
+    ]
+   },
+   "arm2_minus_K_random_all_languages": [
+    -0.0034,
+    -0.0536,
+    0.0597
+   ],
+   "arm2_minus_K_random_english": [
+    0.0051,
+    -0.0313,
+    0.0384
+   ],
+   "b_beyond_K_random": [
+    -0.0085,
+    -0.0736,
+    0.071
+   ],
+   "answer_specific": false
+  },
+  "lookup": {
+   "n": 200,
+   "whole_switches": 70.0,
+   "share_blocked": {
+    "a_en": [
+     0.0143,
+     -0.0377,
+     0.0595
+    ],
+    "a_all": [
+     0.0143,
+     -0.0377,
+     0.0595
+    ],
+    "r_en": [
+     0.0171,
+     -0.0357,
+     0.0615
+    ],
+    "r_all": [
+     0.0229,
+     -0.025,
+     0.0648
+    ]
+   },
+   "arm2_minus_K_random_all_languages": [
+    -0.0086,
+    -0.0222,
+    0.0
+   ],
+   "arm2_minus_K_random_english": [
+    -0.0029,
+    -0.009,
+    0.0
+   ],
+   "b_beyond_K_random": [
+    -0.0057,
+    -0.0146,
+    0.0
+   ],
+   "answer_specific": false
+  }
+ },
+ "verdict": "(b) shift is explained by the number of kept directions"
+}
