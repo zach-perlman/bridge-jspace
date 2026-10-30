@@ -492,7 +492,6 @@
    "quantity": "routes C2, no_alf: position share",
    "value": 0.08333333333333333,
    "readme": [
-    "0.08",
     "0.08"
    ],
    "source": "0.08 [0.05, 0.12]",
@@ -517,7 +516,6 @@
    "quantity": "routes C2, no_alf_rand: position share",
    "value": 0.5433333333333333,
    "readme": [
-    "0.54",
     "0.54"
    ],
    "source": "0.54 [0.49, 0.59]",
@@ -542,7 +540,6 @@
    "quantity": "routes C2, keep_alf: position share",
    "value": 0.26,
    "readme": [
-    "0.26",
     "0.26"
    ],
    "source": "0.26 [0.20, 0.32]",
@@ -578,6 +575,7 @@
    "quantity": "conflict: lookup, switches lost beyond a random part",
    "value": 0.13953488372093023,
    "readme": [
+    "0.14",
     "0.14",
     "0.14"
    ],
@@ -650,7 +648,6 @@
    "quantity": "routes C2, no_alf: position share",
    "value": 0.06,
    "readme": [
-    "0.06",
     "0.06"
    ],
    "source": "0.06 [0.03, 0.09]",
@@ -675,7 +672,6 @@
    "quantity": "routes C2, no_alf_rand: position share",
    "value": 0.25333333333333335,
    "readme": [
-    "0.25",
     "0.25"
    ],
    "source": "0.25 [0.19, 0.31]",
@@ -700,7 +696,6 @@
    "quantity": "routes C2, keep_alf: position share",
    "value": 0.09,
    "readme": [
-    "0.09",
     "0.09"
    ],
    "source": "0.09 [0.06, 0.12]",
@@ -1090,53 +1085,37 @@
    "quantity": "routes C2, whole: identity share",
    "value": 0.44333333333333336,
    "readme": [
-    "0.44",
-    "0.48",
-    "0.66",
-    "0.44",
-    "0.44",
-    "0.61"
+    "0.44"
    ],
    "source": "0.44333333333333336 / 0.44333333333333336",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, whole: identity share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   },
   {
    "model": "lightning",
    "quantity": "routes C2, whole: position share",
    "value": 0.5533333333333333,
    "readme": [
-    "0.55",
-    "0.51",
-    "0.34",
-    "0.54",
-    "0.55",
-    "0.38"
+    "0.55"
    ],
    "source": "0.5533333333333333 / 0.5533333333333333",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, whole: position share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   },
   {
    "model": "lightning",
    "quantity": "routes C2, no_alf: identity share",
    "value": 0.31333333333333335,
-   "readme": [
-    "0.36",
-    "0.72",
-    "0.43",
-    "0.31",
-    "0.62"
-   ],
+   "readme": [],
    "source": "0.31333333333333335 / 0.31333333333333335",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf: identity share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "not shown",
+   "status": "match"
   },
   {
    "model": "lightning",
@@ -1144,22 +1123,13 @@
    "value": 0.10333333333333333,
    "readme": [
     "0.10",
-    "0.08",
-    "0.06",
-    "0.27",
-    "0.10",
-    "0.05",
-    "0.08",
-    "0.06",
-    "0.27",
-    "0.10",
-    "0.05"
+    "0.10"
    ],
    "source": "0.10333333333333333 / 0.10333333333333333 / 0.10333333333333333",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf: position share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   },
   {
    "model": "lightning",
@@ -1167,22 +1137,13 @@
    "value": 0.56,
    "readme": [
     "0.56",
-    "0.54",
-    "0.25",
-    "0.55",
-    "0.56",
-    "0.36",
-    "0.54",
-    "0.25",
-    "0.55",
-    "0.56",
-    "0.36"
+    "0.56"
    ],
    "source": "0.56 / 0.56",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, no_alf_rand: position share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   },
   {
    "model": "lightning",
@@ -1201,40 +1162,32 @@
    "value": 0.39666666666666667,
    "readme": [
     "0.40",
-    "0.26",
-    "0.09",
-    "0.29",
-    "0.40",
-    "0.21"
+    "0.40"
    ],
    "source": "0.39666666666666667 / 0.39666666666666667",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, keep_alf: position share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   },
   {
    "model": "lightning",
    "quantity": "routes C2, keep_alf_rand: position share",
    "value": 0.0,
    "readme": [
-    "0.00",
-    "0.00",
-    "0.01",
-    "0.00",
     "0.00"
    ],
    "source": "0.0",
    "ref": "data.csv (nemotron-3.5-lightning) another item moved, keep_alf_rand: position share",
    "vs source": "match",
-   "vs README": "mismatch",
-   "status": "mismatch"
+   "vs README": "match",
+   "status": "match"
   }
  ],
  "summary": {
   "rows": 63,
-  "match": 56,
-  "mismatch": 7,
+  "match": 63,
+  "mismatch": 0,
   "item sets recomputed = the runs' (conflict, routes)": {
    "9b": [
     true,

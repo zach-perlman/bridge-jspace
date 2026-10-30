@@ -77,6 +77,35 @@ def readme_numbers(root: Path) -> dict[str, list[str]]:
         src, key = m.group(3).strip(), m.group(4).strip()
         tag = "x0" if src == NUMBERS else "csv" if src == DATA_CSV else src
         out[f"{tag}:{key}"].append(m.group(1) + m.group(2))
+    out.update(csv_by_model(root, text))
+    return dict(out)
+
+
+TEMPLATE = "docs/depth/README.template.md"
+MODEL_OF = {"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "muse": "muse-glimmer-30b", "122b": "qwen3.5-122b-a10b",
+            "lightning": "nemotron-3.5-lightning", "nemotron-3.5-lightning": "nemotron-3.5-lightning"}  # fmt: skip
+
+
+def csv_by_model(root: Path, text: str) -> dict[str, list[str]]:
+    """A multi-model line shows one number per model under one src comment (the data.csv quantity), so the comment alone
+    does not say whose number it is. The template's {{d|figure|model|quantity}} / {{dp|...}} markers do, and they render,
+    in order, to the data.csv src comments of the page: {"csvm:<model column>:<quantity>": [shown]}. Empty when the
+    template is absent or its markers and the page's comments do not line up (the old per-quantity list then applies)."""
+    tpl = root / TEMPLATE
+    if not tpl.exists():
+        return {}
+    marks = re.findall(r"\{\{(?:d|dp)\|[^|}]*\|([^|}]*)\|([^}]*)\}\}", tpl.read_text())
+    comment = re.compile(r"<!-- src: " + re.escape(DATA_CSV) + r" \\?\| (.+?) -->")
+    found = list(comment.finditer(text))
+    if len(found) != len(marks) or any(m.group(1).strip() != q.strip() for m, (_, q) in zip(found, marks, strict=True)):
+        return {}
+    before = re.compile(r"([−-]?\d+(?:\.\d+)?)(%?)(?:\s*\[[^\]]*\])?$")
+    out: dict[str, list[str]] = defaultdict(list)
+    for m, (model, quantity) in zip(found, marks, strict=True):
+        n = before.search(text[max(0, m.start() - 60) : m.start()])
+        col = MODEL_OF.get(model.strip())
+        if n and col:
+            out[f"csvm:{col}:{quantity.strip()}"].append(n.group(1) + n.group(2))
     return dict(out)
 
 
@@ -200,7 +229,9 @@ def rows_for(mk: str, res: dict, numbers: dict, shown: dict, csvd: dict) -> list
             ref = f"x0_numbers.json {key}"
         else:
             src = " / ".join(csvd.get((col, quantity), []))
-            shown_ = shown.get(f"csv:{quantity}", [])
+            shown_ = shown.get(f"csvm:{col}:{quantity}") or shown.get(
+                f"csv:{quantity}", []
+            )  # the model's own numbers where the template says whose they are
             ref = f"data.csv ({col}) {quantity}"
         src_ok = compare(val, [src]) if src else "no source"
         rd_ok = compare(val, shown_) if shown_ else "not shown"
