@@ -76,6 +76,14 @@ remains), **not done** (a check is still open).
   in C2, and any future one must exclude colliding scenes (caveat added to the depth README).
 - **Status.** Limitation.
 
+- **Second check, the address swap's changed recalls (post hoc, CPU, `scripts/x8_target_legs_check.py`, `results/x8_target_legs_check/20261030T214423Z`).** The share of recalls changed by the swap,
+  on all rows and on the rows where the target item's legs differ from the original item's (where a change is possible), 95% cluster-bootstrap
+  intervals over the bridge entity; all rows -> non-colliding rows. Example `C2-0047` (bee and butterfly, 6 legs; 9B, 27B, 122B): the write to the
+  bee slot is a collision. Random vectors are stored at s = 1 and 4 only. Per model (600 rows = 300 scenes x 2 targets): 9B: collisions 93/600 (0.155); write s = 1: 0.040 [0.022, 0.062] -> 0.045 [0.024, 0.072]; s = 2: 0.215 [0.165, 0.276] -> 0.243 [0.182, 0.322]; s = 4: 0.427 [0.374, 0.480] -> 0.477 [0.413, 0.548]; random s = 1: 0.005 [0.000, 0.016] -> 0.004 [0.000, 0.013], s = 4: 0.030 [0.011, 0.055] -> 0.022 [0.006, 0.044]. 27B: collisions 95/600 (0.158); write s = 1: 0.007 [0.000, 0.015] -> 0.008 [0.000, 0.018]; s = 2: 0.043 [0.015, 0.082] -> 0.045 [0.017, 0.084]; s = 4: 0.113 [0.066, 0.172] -> 0.127 [0.075, 0.191]; random s = 1: 0.000 [0.000, 0.000] -> 0.000 [0.000, 0.000], s = 4: 0.005 [0.000, 0.013] -> 0.006 [0.000, 0.015]. Muse: collisions 122/600 (0.203); write s = 1: 0.007 [0.000, 0.022] -> 0.008 [0.000, 0.028]; s = 2: 0.058 [0.029, 0.098] -> 0.061 [0.028, 0.104]; s = 4: 0.107 [0.064, 0.160] -> 0.109 [0.060, 0.174]; random s = 1: 0.003 [0.000, 0.009] -> 0.004 [0.000, 0.011], s = 4: 0.010 [0.000, 0.026] -> 0.011 [0.000, 0.030]. Lightning: collisions 99/600 (0.165); write s = 1: 0.020 [0.004, 0.041] -> 0.022 [0.005, 0.043]; s = 2: 0.273 [0.217, 0.329] -> 0.317 [0.254, 0.380]; s = 4: 0.398 [0.318, 0.473] -> 0.469 [0.383, 0.549]; random s = 1: 0.002 [0.000, 0.005] -> 0.000 [0.000, 0.000], s = 4: 0.013 [0.004, 0.024] -> 0.014 [0.005, 0.025]. 122B: collisions 94/600 (0.157); write s = 1: 0.032 [0.017, 0.051] -> 0.034 [0.018, 0.055]; s = 2: 0.227 [0.175, 0.291] -> 0.249 [0.186, 0.336]; s = 4: 0.447 [0.375, 0.526] -> 0.490 [0.402, 0.596]; random s = 1: 0.017 [0.004, 0.033] -> 0.014 [0.003, 0.029], s = 4: 0.032 [0.015, 0.053] -> 0.028 [0.011, 0.051].
+  The all-rows share at s = 2 equals the README's reported value on every model. Pre-set rule: the non-colliding share differs from the reported one by
+  at most 0.0441 (Lightning; 9B 0.028, 122B 0.022, 27B 0.002, Muse 0.002), under the bar 0.05, so the README gets a caveat line only. The
+  draft is in `draft_readme.md` in that folder, not applied.
+
 ## F3. The bridge class held English words only
 
 - **Found on.** Dan's hand-check (30 Oct), by the same reading as F1: the classes of the 25 atoms recognized the bridge word in English

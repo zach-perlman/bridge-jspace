@@ -1,0 +1,514 @@
+{
+ "qwen3.5-9b": {
+  "run": "qwen35_9b_x8_write",
+  "scenes": 700,
+  "reported_s2_write": 0.215,
+  "examples_C2_0047": [
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "bee",
+    "legs_j": 6,
+    "legs_k": 6,
+    "changed": 0,
+    "collision": true
+   },
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "chicken",
+    "legs_j": 6,
+    "legs_k": 2,
+    "changed": 0,
+    "collision": false
+   }
+  ],
+  "cells": {
+   "write|1": {
+    "rows": 600,
+    "collisions": 93,
+    "collision_rate": 0.155,
+    "share_all": [
+     0.04,
+     0.0219,
+     0.0623
+    ],
+    "rows_clean": 507,
+    "share_non_colliding": [
+     0.0454,
+     0.0238,
+     0.0724
+    ]
+   },
+   "write|2": {
+    "rows": 600,
+    "collisions": 93,
+    "collision_rate": 0.155,
+    "share_all": [
+     0.215,
+     0.1651,
+     0.2762
+    ],
+    "rows_clean": 507,
+    "share_non_colliding": [
+     0.2426,
+     0.1822,
+     0.3215
+    ]
+   },
+   "write|4": {
+    "rows": 600,
+    "collisions": 93,
+    "collision_rate": 0.155,
+    "share_all": [
+     0.4267,
+     0.3738,
+     0.4803
+    ],
+    "rows_clean": 507,
+    "share_non_colliding": [
+     0.4773,
+     0.4129,
+     0.5483
+    ]
+   },
+   "random|1": {
+    "rows": 600,
+    "collisions": 93,
+    "collision_rate": 0.155,
+    "share_all": [
+     0.005,
+     0.0,
+     0.0163
+    ],
+    "rows_clean": 507,
+    "share_non_colliding": [
+     0.0039,
+     0.0,
+     0.0132
+    ]
+   },
+   "random|4": {
+    "rows": 600,
+    "collisions": 93,
+    "collision_rate": 0.155,
+    "share_all": [
+     0.03,
+     0.0114,
+     0.0551
+    ],
+    "rows_clean": 507,
+    "share_non_colliding": [
+     0.0217,
+     0.0065,
+     0.0438
+    ]
+   }
+  },
+  "diff_non_colliding_vs_reported": 0.0276,
+  "share_all_equals_reported": true
+ },
+ "qwen3.6-27b": {
+  "run": "x8_write_27b",
+  "scenes": 700,
+  "reported_s2_write": 0.043333333333333335,
+  "examples_C2_0047": [
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "bee",
+    "legs_j": 6,
+    "legs_k": 6,
+    "changed": 0,
+    "collision": true
+   },
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "chicken",
+    "legs_j": 6,
+    "legs_k": 2,
+    "changed": 0,
+    "collision": false
+   }
+  ],
+  "cells": {
+   "write|1": {
+    "rows": 600,
+    "collisions": 95,
+    "collision_rate": 0.1583,
+    "share_all": [
+     0.0067,
+     0.0,
+     0.0149
+    ],
+    "rows_clean": 505,
+    "share_non_colliding": [
+     0.0079,
+     0.0,
+     0.0178
+    ]
+   },
+   "write|2": {
+    "rows": 600,
+    "collisions": 95,
+    "collision_rate": 0.1583,
+    "share_all": [
+     0.0433,
+     0.015,
+     0.0822
+    ],
+    "rows_clean": 505,
+    "share_non_colliding": [
+     0.0455,
+     0.0172,
+     0.0843
+    ]
+   },
+   "write|4": {
+    "rows": 600,
+    "collisions": 95,
+    "collision_rate": 0.1583,
+    "share_all": [
+     0.1133,
+     0.0655,
+     0.1725
+    ],
+    "rows_clean": 505,
+    "share_non_colliding": [
+     0.1267,
+     0.0752,
+     0.191
+    ]
+   },
+   "random|1": {
+    "rows": 600,
+    "collisions": 95,
+    "collision_rate": 0.1583,
+    "share_all": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rows_clean": 505,
+    "share_non_colliding": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "rows": 600,
+    "collisions": 95,
+    "collision_rate": 0.1583,
+    "share_all": [
+     0.005,
+     0.0,
+     0.0129
+    ],
+    "rows_clean": 505,
+    "share_non_colliding": [
+     0.0059,
+     0.0,
+     0.0155
+    ]
+   }
+  },
+  "diff_non_colliding_vs_reported": 0.0022,
+  "share_all_equals_reported": true
+ },
+ "muse-glimmer-30b": {
+  "run": "muse30b_x8_write",
+  "scenes": 700,
+  "reported_s2_write": 0.058333333333333334,
+  "examples_C2_0047": [],
+  "cells": {
+   "write|1": {
+    "rows": 600,
+    "collisions": 122,
+    "collision_rate": 0.2033,
+    "share_all": [
+     0.0067,
+     0.0,
+     0.0217
+    ],
+    "rows_clean": 478,
+    "share_non_colliding": [
+     0.0084,
+     0.0,
+     0.0275
+    ]
+   },
+   "write|2": {
+    "rows": 600,
+    "collisions": 122,
+    "collision_rate": 0.2033,
+    "share_all": [
+     0.0583,
+     0.0287,
+     0.0976
+    ],
+    "rows_clean": 478,
+    "share_non_colliding": [
+     0.0607,
+     0.0284,
+     0.1043
+    ]
+   },
+   "write|4": {
+    "rows": 600,
+    "collisions": 122,
+    "collision_rate": 0.2033,
+    "share_all": [
+     0.1067,
+     0.0643,
+     0.1597
+    ],
+    "rows_clean": 478,
+    "share_non_colliding": [
+     0.1088,
+     0.0597,
+     0.1743
+    ]
+   },
+   "random|1": {
+    "rows": 600,
+    "collisions": 122,
+    "collision_rate": 0.2033,
+    "share_all": [
+     0.0033,
+     0.0,
+     0.0086
+    ],
+    "rows_clean": 478,
+    "share_non_colliding": [
+     0.0042,
+     0.0,
+     0.0108
+    ]
+   },
+   "random|4": {
+    "rows": 600,
+    "collisions": 122,
+    "collision_rate": 0.2033,
+    "share_all": [
+     0.01,
+     0.0,
+     0.026
+    ],
+    "rows_clean": 478,
+    "share_non_colliding": [
+     0.0105,
+     0.0,
+     0.03
+    ]
+   }
+  },
+  "diff_non_colliding_vs_reported": 0.0024,
+  "share_all_equals_reported": true
+ },
+ "nemotron-3.5-lightning": {
+  "run": "nem35l_x52_write",
+  "scenes": 700,
+  "reported_s2_write": 0.2733333333333333,
+  "examples_C2_0047": [],
+  "cells": {
+   "write|1": {
+    "rows": 600,
+    "collisions": 99,
+    "collision_rate": 0.165,
+    "share_all": [
+     0.02,
+     0.0038,
+     0.0411
+    ],
+    "rows_clean": 501,
+    "share_non_colliding": [
+     0.022,
+     0.0047,
+     0.0435
+    ]
+   },
+   "write|2": {
+    "rows": 600,
+    "collisions": 99,
+    "collision_rate": 0.165,
+    "share_all": [
+     0.2733,
+     0.2175,
+     0.3287
+    ],
+    "rows_clean": 501,
+    "share_non_colliding": [
+     0.3174,
+     0.2544,
+     0.3795
+    ]
+   },
+   "write|4": {
+    "rows": 600,
+    "collisions": 99,
+    "collision_rate": 0.165,
+    "share_all": [
+     0.3983,
+     0.3183,
+     0.4732
+    ],
+    "rows_clean": 501,
+    "share_non_colliding": [
+     0.4691,
+     0.3831,
+     0.5486
+    ]
+   },
+   "random|1": {
+    "rows": 600,
+    "collisions": 99,
+    "collision_rate": 0.165,
+    "share_all": [
+     0.0017,
+     0.0,
+     0.0053
+    ],
+    "rows_clean": 501,
+    "share_non_colliding": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "rows": 600,
+    "collisions": 99,
+    "collision_rate": 0.165,
+    "share_all": [
+     0.0133,
+     0.0042,
+     0.0238
+    ],
+    "rows_clean": 501,
+    "share_non_colliding": [
+     0.014,
+     0.0046,
+     0.0245
+    ]
+   }
+  },
+  "diff_non_colliding_vs_reported": 0.0441,
+  "share_all_equals_reported": true
+ },
+ "qwen3.5-122b-a10b": {
+  "run": "qwen35_122b_x8_write_g75",
+  "scenes": 700,
+  "reported_s2_write": 0.22666666666666666,
+  "examples_C2_0047": [
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "bee",
+    "legs_j": 6,
+    "legs_k": 6,
+    "changed": 0,
+    "collision": true
+   },
+   {
+    "scene": "C2-0047",
+    "j_item": "butterfly",
+    "k_item": "chicken",
+    "legs_j": 6,
+    "legs_k": 2,
+    "changed": 0,
+    "collision": false
+   }
+  ],
+  "cells": {
+   "write|1": {
+    "rows": 600,
+    "collisions": 94,
+    "collision_rate": 0.1567,
+    "share_all": [
+     0.0317,
+     0.0168,
+     0.0505
+    ],
+    "rows_clean": 506,
+    "share_non_colliding": [
+     0.0336,
+     0.018,
+     0.055
+    ]
+   },
+   "write|2": {
+    "rows": 600,
+    "collisions": 94,
+    "collision_rate": 0.1567,
+    "share_all": [
+     0.2267,
+     0.1752,
+     0.2907
+    ],
+    "rows_clean": 506,
+    "share_non_colliding": [
+     0.249,
+     0.1857,
+     0.3359
+    ]
+   },
+   "write|4": {
+    "rows": 600,
+    "collisions": 94,
+    "collision_rate": 0.1567,
+    "share_all": [
+     0.4467,
+     0.3746,
+     0.5265
+    ],
+    "rows_clean": 506,
+    "share_non_colliding": [
+     0.4901,
+     0.4021,
+     0.5958
+    ]
+   },
+   "random|1": {
+    "rows": 600,
+    "collisions": 94,
+    "collision_rate": 0.1567,
+    "share_all": [
+     0.0167,
+     0.0036,
+     0.0325
+    ],
+    "rows_clean": 506,
+    "share_non_colliding": [
+     0.0138,
+     0.0034,
+     0.0292
+    ]
+   },
+   "random|4": {
+    "rows": 600,
+    "collisions": 94,
+    "collision_rate": 0.1567,
+    "share_all": [
+     0.0317,
+     0.0147,
+     0.0534
+    ],
+    "rows_clean": 506,
+    "share_non_colliding": [
+     0.0277,
+     0.0115,
+     0.0509
+    ]
+   }
+  },
+  "diff_non_colliding_vs_reported": 0.0223,
+  "share_all_equals_reported": true
+ },
+ "_rule": {
+  "max_abs_difference": 0.0441,
+  "bar": 0.05,
+  "readme_edit": "caveat line only"
+ }
+}
