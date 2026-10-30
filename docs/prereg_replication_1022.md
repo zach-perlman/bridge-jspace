@@ -3332,3 +3332,25 @@ The clock times in the headers of amendment 63 and its two addenda are wrong: I 
 - the second addendum and the code: 134a3154, 03:31 UTC.
 
 All are before any full run of notes 34 and 35; their jobs wait on DeepSeek's EXIT. The jobs are named "-1030-0055". The repo's earlier jobs use the box's UTC clock for their names; this one does not. The jobs were launched at 03:31 UTC (23:31 EDT, 29 Oct).
+
+#### Amendment 64 (Zach, 2026-10-30 05:10 UTC by the box clock; before any code or run of it): note 37, answer kept vs answer only (v4)
+Zach's MC answer (30 Oct, ~05:00 UTC): run "D" Friday morning, after notes 34-35. Why:
+- Neel's "answer swaps dominate".
+- paper10 protects only the clean top-10 output tokens' rows; other forms of the answer can still be removed (note 35's smoke).
+- The two tracks disagree. Dan's one-layer test: keeping the answer word's directions keeps 0.92-0.98 of the recall's loss. Our note 15: the lens part's effect is the answer.
+
+##### Note 37
+- **Data.** v4 (jsuite_v4_test_chat), MP and MM, note 20's gate (v4_split), each model's main band: 9B L12-16, 27B L32-40, Lightning L27-33. --tasks-level all --kinds clean --read cand2, as note 20's runs.
+- **Conditions:**
+  - paper10_keepA (new): paper10's removal r at each edited position and layer, then r' = r - P_A r. A spans the J++ unit vectors at that layer of every form (either case, with or without a leading space) of every answer in the item's relation vocabulary: its cands2 rows, the rows ansJ uses. The answers' directions are thereby kept.
+  - paper10_keepA_rot (new): r' turned by paper10_rot's rotation.
+  - ansJ and ansJ_rot (existing, amendment 58 note 3, never run on v4): removing only the answer vocabulary's J++ span, at all positions.
+  - ansU (existing): the same with the logit-lens rows (control).
+- **Measures.** Loss (points among items right unedited) per twin and condition; gap = MM - MP; bootstrap over bridges (2000).
+- **Reading** (per model):
+  - "the recall's J-need is its answer's directions": MM's keepA loss minus keepA_rot loss <= 1/3 of MM's (paper10 - paper10_rot) loss, and the keepA gap < 10 with its interval's upper end < 15;
+  - "beyond the answer": that ratio >= 2/3 and the keepA gap >= 10 with its interval above 0;
+  - otherwise "partly".
+  - Beside: ansJ's gap as a share of paper10's gap (v3 gave 0.56-0.75), with ansU as its control; and the answer log-prob change.
+- **Descriptive.** The same on jsuite_v4cc's gated items, where the readout's top-1 is the cue, not the answer.
+- **Order.** After notes 34-35 on each GPU; a 9B smoke (<= 8 items per word) first.
