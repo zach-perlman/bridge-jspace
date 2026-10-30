@@ -4009,3 +4009,22 @@ No task loss under any edit was seen.
 - otherwise "partly".
 
 **Models.** 9B (a new run with the conditions above), plus Lightning and the 27B: their note 54 runs, not yet started, get these conditions added. The 9B is a post hoc follow-up; on Lightning and the 27B the reading is confirmatory.
+
+#### Amendment 76 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before note 56's Lightning and 27B runs): note 56's C4 premise reading de-confounded
+
+**Seen.** Note 56 on the 9B (n 291):
+- C1 met (hyp_vis spec loss 55.0 vs rotation);
+- C2 met (instr_vis loss 7.6);
+- C3 met in prem_hid (-15.5 vs rotation), while answer pressure on the same items gave +15.5;
+- C4 bridgeJ_peer "the stated premise's own directions are used" (55.0 vs bridgeJ_ctrl).
+
+bridgeJ_peer's span shares about 0.30 of its energy with the answers' span (note 54 smoke), so C4's premise reading is confounded in the same way as note 54's P1.
+
+**Change.** Note 56's Lightning and 27B runs, which have not started, add bridgeJ_peerperp and bridgeJ_peerperp_rot (amendment 75's edits). The 9B gets a small follow-up run with none, bridgeJ_ctrl, bridgeJ_peer, bridgeJ_peerperp and bridgeJ_peerperp_rot on hyp_vis and prem_hid. That run is post hoc.
+
+**Reading C4-perp** (hyp_vis primary, prem_hid beside):
+- "the stated premise's own directions are used": the loss of e3' under bridgeJ_peerperp minus under bridgeJ_ctrl is >= 10 points with the lower end > 0, and exceeds bridgeJ_peerperp_rot's;
+- "via its answer component": C4 is met while bridgeJ_peerperp - bridgeJ_ctrl < 5 with the interval including 0;
+- otherwise "partly".
+
+C1-C3 are unchanged.
