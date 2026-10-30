@@ -92,3 +92,27 @@ remains), **not done** (a check is still open).
   README reports route shares per arm over all scenes (55 values compared, all equal), not scene-by-scene changes. A draft paragraph
   and table are in `draft_readme.md` in that folder, not applied.
 - **Status.** Closed.
+
+## Observations
+
+### O1. The recall's route under J++ removal and the pointer, C2, non-colliding scenes (post hoc, descriptive)
+
+- **Found on.** 122B, scene `C2-0418` (run `qwen35_122b_x6_routes_keeponly_g75`): the recall answers 2 (identity: the changed pick, a chicken)
+  under the whole change; 6 (position: the butterfly now at that slot's old place) without J++ and with only the pointer directions.
+- **What.** Whether the recall's answer goes to the position route when J++ or the pointer directions are changed, with a size-matched
+  random arm beside each; on the scenes where identity and position cannot be confused (no collision, `scripts/c2_route_collision.py`).
+- **Check run.** CPU, post hoc, `scripts/c2_recall_route_crosstab.py`, `results/c2_recall_route_crosstab/20261030T213031Z`. Saved x6_routes arms, C2, recall (PM), runs: 9B
+  `qwen35_9b_x6_routes_keeponly`, 27B `x6_routes_keeponly_27b`, Muse `muse30b_x6_routes`, Lightning `nem35l_x52_routes`, 122B
+  `qwen35_122b_x6_routes_keeponly_g75` (the runs that hold `keep_alf`; their own `whole`). Route of the recall's top token: identity = the
+  changed item's legs, position = the legs of the item at that slot in the original, original, other (precedence in that order).
+- **Pre-set rule.** None (descriptive).
+- **Result.** n of non-colliding scenes (9B / 27B / Muse / Lightning / 122B): 186 / 192 / 207 / 199 / 171. In 93 / 95 / 122 / 99 / 94 of them the position
+  item's legs equal the original answer, so position and original cannot be told apart there (they are read as position). On the scenes
+  where the original, changed and position legs all differ, n = 93 / 97 / 85 / 100 / 77, identity -> position (arm, size-matched random in
+  brackets): without J++ 8 (3) / 2 (0) / 0 (1) / 13 (1) / 6 (2); without the pointer
+  1 (4) / 0 (0) / 0 (1) / 1 (5) / 3 (1); with only the pointer 4 (0) / 0 (0) / 0 (0) / 9 (0) / 3 (0).
+  Position -> identity without the pointer: 6 (1) / 3 (0) / 0 (0) / 16 (4) / 4 (1). On all non-colliding scenes
+  identity -> position with only the pointer is 76 (73) / 49 (51) / 32 (33) / 75 (68) / 71 (70), close to the random arm's; in the scenes where
+  the position legs equal the original answer an original answer counts as position, which is why this cell is large. Full 4 x 4 tables per model, arm and subset in `tables.md`.
+- **Effect on claims.** None; README and deck not edited.
+- **Status.** Observation, not checked further.
