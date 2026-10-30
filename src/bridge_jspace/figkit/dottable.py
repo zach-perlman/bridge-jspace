@@ -81,6 +81,9 @@ class Table:
                                                  transform=fig.transFigure, color=ZEBRA, zorder=-5))  # fmt: skip
         for i, r in enumerate(self.rows):  # row labels
             y = fy(top + (i + 0.5) * ROW_H)
+            if not r.name and r.sub:  # a sub-row of a group (S6): its short label alone, indented, grey
+                fig.text(fx(0.3), y, r.sub, ha="left", va="center", fontsize=11.5, color=MUTED)
+                continue
             dy = 0.09 if r.sub else 0
             t = fig.text(fx(0.12), y + dy / height * 1.0, r.name, ha="left", va="center", fontsize=13,
                          weight="bold", color=INK)  # fmt: skip

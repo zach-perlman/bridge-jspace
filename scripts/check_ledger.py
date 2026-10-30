@@ -102,6 +102,7 @@ def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
 
 
 SLOTS = REPO / "data" / "figures" / "depth" / "ledger" / "slots.json"
+TABLE_SLOTS = REPO / "data" / "figures" / "depth" / "ledger" / "table_slots.json"  # the models each t_* figure draws
 COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning", "122B")  # the 122B checked like the others (Dan 12:50)
 # a cell that says the model has no result here (Dan's grey labels, the tables' words for a missing cell)
 NO_RESULT = ("not ", "running", "pending", "dropped", "read pending", "see the readme", "–", "no outcomes")
@@ -146,6 +147,15 @@ def slot_problems(head: str, body: str, slots: dict | None = None) -> list[str]:
     if not fm:
         return []
     name = fm.group(1)
+    if name.startswith("t_"):  # a table-style figure (figkit/ledger_tables.py): S1, only what ran is drawn
+        drawn = json.loads(TABLE_SLOTS.read_text()).get(name) if TABLE_SLOTS.exists() else None
+        if drawn is None:
+            return [f"no record for {name} (rerun python -m bridge_jspace.figkit.ledger_tables) in: {head}"]
+        cols = table_columns(body)
+        return ([f"{name}: the table has {m}'s numbers but the figure does not draw it" for m, st in cols.items()
+                 if st == "number" and m not in drawn]
+                + [f"{name}: the figure draws {m} but the table has no number for it" for m in drawn
+                   if cols and cols.get(m) != "number"])  # fmt: skip
     if slots is None:
         slots = json.loads(SLOTS.read_text()) if SLOTS.exists() else {}
     if name not in slots:

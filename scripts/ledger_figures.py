@@ -615,6 +615,9 @@ def lightning_layers(plt) -> str:
             S.record("ledger_lightning_layers", "nemotron-3.5-lightning", f"conflict test, L{c['layer']}, "
                      f"{'lookup' if reader == 'PP' else 'recall'}: switches lost beyond random",
                      *c["excess"], n=c["n"], source=rel(CONFLICT))  # fmt: skip
+            S.record("ledger_lightning_layers", "nemotron-3.5-lightning", f"conflict test, L{c['layer']}, "
+                     f"{'lookup' if reader == 'PP' else 'recall'}: switches under the whole change", c["switched_whole"],
+                     n=c["n"], source=rel(CONFLICT))  # fmt: skip (the table figure's validity: >= 30)
     ax.axhline(0, color="#999999", lw=0.8)
     ax.axhline(0.10, color=LOOKUP, lw=0.8, ls="--")
     ax.set_ylim(-0.2, 0.8)
@@ -637,6 +640,9 @@ def lightning_layers(plt) -> str:
             S.record("ledger_lightning_layers", B122, f"conflict test, L{c['layer']}, "
                      f"{'lookup' if reader == 'PP' else 'recall'}: switches lost beyond random",
                      *c["excess"], n=c["n"], source=rel(CONFLICT_122B))  # fmt: skip
+            S.record("ledger_lightning_layers", B122, f"conflict test, L{c['layer']}, "
+                     f"{'lookup' if reader == 'PP' else 'recall'}: switches under the whole change", c["switched_whole"],
+                     n=c["n"], source=rel(CONFLICT_122B))  # fmt: skip (the table figure's validity: >= 30)
     ax.axhline(0, color="#999999", lw=0.8)
     ax.axhline(0.10, color=LOOKUP, lw=0.8, ls="--")
     ax.axvline(33, color="#222222", lw=1.0)
