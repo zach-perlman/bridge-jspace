@@ -55,8 +55,8 @@ def test_every_converted_part_has_cards():
     cs = cards(text())
     assert cs, "no card in the converted parts"
     for head, body in parts(text()).items():
-        if head.startswith(CONVERTED):
-            assert re.search(r"^### ", body, re.M), head
+        if head.startswith(CONVERTED):  # a Part whose cards all moved to the ledger keeps its links (Dan, 30 Oct)
+            assert re.search(r"^### ", body, re.M) or "**More in the ledger**" in body, head
 
 
 def test_card_headings_are_questions_and_part_headings_statements():

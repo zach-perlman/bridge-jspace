@@ -15,7 +15,7 @@
 ![What holds on which model](../../figures/depth/fig11_scorecard.png)
 *Each claim of the claims table, per model: the word is the verdict of the test behind it. Hollow: Lightning (gate chosen after its pre-check) and the 122B where its gate was lowered after the data (FP8). Grey: not run.*
 
-**Status.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; 29 Oct 2026. Unverified until hand-checked; today's results are marked "pending hand-check". Built at 03f33aa6 from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its marks are hollow ○ everywhere: its gate was chosen after the 60-scene pre-check was seen. The 122B's caveats: FP8, its J++ lens fit on the bf16 weights; its layer, L33<!-- src: docs/depth/x0_numbers.json | layer_122b -->, set by another rule (the 27B's relative depth carried over: 0.69<!-- src: data/figures/depth/data.csv | L as a relative depth (L / the number of layers) -->); its gates lowered to 0.75 after the data for the routes, address and swap tests (hollow ○); its numbers carry ~±0.04<!-- src: data/figures/depth/data.csv | 53.1: run-to-run noise beyond the bootstrap (Dan's estimate) --> run-to-run noise beyond the bootstrap. Its lookup losing nothing beyond random means the 27B's weakness is not a total-size trend; active parameters are not separated; its recall effect is the smallest of the five (0.32<!-- src: docs/depth/x0_numbers.json | rc_excess_122b -->) and mixed on varied scenes (0.15<!-- src: docs/depth/x0_numbers.json | x0b_c_122b -->), which we cannot separate from its later layer or FP8. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
+**Status.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; 29 Oct 2026. Unverified until hand-checked; today's results are marked "pending hand-check". Built at 5e62fbf7 from the run files. Lightning ran on the rules already fixed for the other models, with no prediction of its own; its marks are hollow ○ everywhere: its gate was chosen after the 60-scene pre-check was seen. The 122B's caveats: FP8, its J++ lens fit on the bf16 weights; its layer, L33<!-- src: docs/depth/x0_numbers.json | layer_122b -->, set by another rule (the 27B's relative depth carried over: 0.69<!-- src: data/figures/depth/data.csv | L as a relative depth (L / the number of layers) -->); its gates lowered to 0.75 after the data for the routes, address and swap tests (hollow ○); its numbers carry ~±0.04<!-- src: data/figures/depth/data.csv | 53.1: run-to-run noise beyond the bootstrap (Dan's estimate) --> run-to-run noise beyond the bootstrap. Its lookup losing nothing beyond random means the 27B's weakness is not a total-size trend; active parameters are not separated; its recall effect is the smallest of the five (0.32<!-- src: docs/depth/x0_numbers.json | rc_excess_122b -->) and mixed on varied scenes (0.15<!-- src: docs/depth/x0_numbers.json | x0b_c_122b -->), which we cannot separate from its later layer or FP8. Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
 
 ## The question and the setup
 
@@ -239,72 +239,6 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - This is what is readable through the lens's vocabulary, not all that is there.
   - Descriptive: no rule was fixed in advance; one set (the main test) per model.
 
-### When the lens part points the recall to one item and the address to another, which does it follow?
-
-- **Question.** When the lens part points the recall to one item and the address to another, which does it follow?
-- **Why we asked.** The recall follows the lens part of the bridge word (first card), and on the 9B and Lightning the address swap moves part of the recall too (Part III). Set against each other, the two levers show which one the recall weighs.
-- **Data.** Routes scenes without a move whose three items have different leg counts: 300<!-- src: data/figures/depth/data.csv | scenes used --> / 300<!-- src: data/figures/depth/data.csv | scenes used --> / 300<!-- src: data/figures/depth/data.csv | scenes used --> / 300<!-- src: data/figures/depth/data.csv | scenes used --> scenes; the gate passed on all four (Lightning's chosen after its pre-check, ○). The 122B: not run yet.
-- **Method.** At the bridge word at L, on the original prompt:
-  - both levers: the lens part of the change toward item B, plus the address swap toward item C's locker (dose 2);
-  - each lever alone; control: the lens part with a random part of the address's size;
-  - read which answer the recall gives: B's, C's, the original or another.
-- **Rule, fixed in advance.** "The recall follows the lens identity if B's share >= 2x C's; follows the address if C's >= 2x B's; else both." Across models, after the data (set once the 9B's and Lightning's results had been seen, before the 27B and Muse ran): "the recall's pointer use tracks the swap's collateral if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity"."
-
-![Pulled two ways, the recall moves under both levers or barely at all](../../figures/depth/fig19_identity_address.png)
-*The recall's answers with both levers and with each alone, per model (B: the lens part's item; C: the address's item); routes scenes without a move, at L; Lightning hatched (○); 122B not run yet.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | both levers: the recall answers B's | 0.25 [0.20, 0.32]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: B's answer --> | 0.11 [0.07, 0.16]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: B's answer --> | 0.07 [0.04, 0.11]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: B's answer --> | 0.25 [0.19, 0.32]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: B's answer --> | not run yet |
-  | both levers: C's | 0.30 [0.25, 0.35]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: C's answer --> | 0.06 [0.04, 0.08]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: C's answer --> | 0.05 [0.02, 0.08]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: C's answer --> | 0.27 [0.21, 0.34]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: C's answer --> | not run yet |
-  | both levers: the original | 0.39 [0.31, 0.46]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: the original answer --> | 0.81 [0.75, 0.86]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: the original answer --> | 0.85 [0.77, 0.90]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: the original answer --> | 0.45 [0.39, 0.52]<!-- src: data/figures/depth/data.csv \| the recall's answers, both parts: the original answer --> | not run yet |
-  | the lens part alone: B's | 0.05 [0.03, 0.08]<!-- src: data/figures/depth/data.csv \| the recall's answers, the lens part by itself: B's answer --> | 0.00 [0.00, 0.01]<!-- src: data/figures/depth/data.csv \| the recall's answers, the lens part by itself: B's answer --> | 0.00 [0.00, 0.00]<!-- src: data/figures/depth/data.csv \| the recall's answers, the lens part by itself: B's answer --> | 0.04 [0.01, 0.06]<!-- src: data/figures/depth/data.csv \| the recall's answers, the lens part by itself: B's answer --> | not run yet |
-  | the address alone: C's | 0.21 [0.16, 0.27]<!-- src: data/figures/depth/data.csv \| the recall's answers, the address by itself: C's answer --> | 0.03 [0.01, 0.05]<!-- src: data/figures/depth/data.csv \| the recall's answers, the address by itself: C's answer --> | 0.03 [0.01, 0.05]<!-- src: data/figures/depth/data.csv \| the recall's answers, the address by itself: C's answer --> | 0.24 [0.19, 0.30]<!-- src: data/figures/depth/data.csv \| the recall's answers, the address by itself: C's answer --> | not run yet |
-  | the rule | **both<!-- src: data/figures/depth/data.csv \| the rule's label (B's share against twice C's) -->** | **both<!-- src: data/figures/depth/data.csv \| the rule's label (B's share against twice C's) -->** | **both<!-- src: data/figures/depth/data.csv \| the rule's label (B's share against twice C's) -->** | **both<!-- src: data/figures/depth/data.csv \| the rule's label (B's share against twice C's) -->** | not run yet |
-  | across models: the rule wanted | both | follows the lens identity | follows the lens identity | both | |
-
-  Across models: **does not hold<!-- src: data/figures/depth/data.csv | 53.6: across models, the rule --> as written (every model "both")**, pending hand-check. Beside it, descriptive: the recall moves under both levers on the 9B and Lightning (0.25<!-- src: data/figures/depth/data.csv | 53.6: both parts, the 9B and Lightning: the smallest of B's and C's shares -->-0.30<!-- src: data/figures/depth/data.csv | 53.6: both parts, the 9B and Lightning: the largest of B's and C's shares --> each), barely on the 27B and Muse (<= 0.11<!-- src: data/figures/depth/data.csv | 53.6: both parts, the 27B and Muse: the largest of B's and C's shares -->), the same split as the address swap's collateral.
-- **Read.**
-  - With both levers, the 9B's and Lightning's recall gives B's and C's answers in about equal shares: it follows the address as well as the lens part.
-  - The 27B's and Muse's recall mostly keeps its original answer; the little that moves leans slightly towards B.
-  - The lens part alone barely moves the recall on any model; added to the address swap, it sends a share of the 9B's and Lightning's recalls to B.
-- **Caveats.**
-  - The labels ignore magnitude (a rule design issue): on the 27B and Muse "both" rests on small shares, with most recalls keeping the original answer.
-  - The 27B sits just under the rule's bar for the lens part: B's share 0.11<!-- src: data/figures/depth/data.csv | the recall's answers, both parts: B's answer --> against twice C's 0.06<!-- src: data/figures/depth/data.csv | the recall's answers, both parts: C's answer -->.
-  - The rule across models was set after the 9B's and Lightning's results had been seen.
-  - One layer and one address dose; the 122B not run yet. Unverified until hand-checked.
-
-### Does the split hold in other texts?
-
-- **Question.** Does the split hold in other texts?
-- **Why we asked.** The main test is one template; the split could belong to that layout rather than to the two readers.
-- **Data.** Varied scenes, 1010<!-- src: data/figures/depth/data.csv | varied scenes: scenes used (prose, JSON and table) --> / 1635<!-- src: data/figures/depth/data.csv | varied scenes: scenes used (prose, JSON and table) --> / 1389<!-- src: data/figures/depth/data.csv | varied scenes: scenes used (prose, JSON and table) --> / 1105<!-- src: data/figures/depth/data.csv | varied scenes: scenes used (prose, JSON and table) --> / 852<!-- src: docs/depth/x0_numbers.json | x0b_n_122b -->; natural passages, 83<!-- src: data/figures/depth/data.csv | natural passages: scenes eligible --> / 137<!-- src: data/figures/depth/data.csv | natural passages: scenes eligible --> / 60<!-- src: data/figures/depth/data.csv | natural passages: scenes eligible --> / 36<!-- src: data/figures/depth/data.csv | natural passages: scenes eligible (below gate) --> / 114<!-- src: data/figures/depth/data.csv | natural passages: scenes eligible --> (the figure shows the 41<!-- src: data/figures/depth/data.csv | natural passages: scenes used (fact first) --> / 75<!-- src: data/figures/depth/data.csv | natural passages: scenes used (fact first) --> / 28<!-- src: data/figures/depth/data.csv | natural passages: scenes used (fact first) --> whose fact comes first); the 9B's natural gate was lowered after the data; Lightning's natural passages miss the gate.
-- **Method.** The conflict test unchanged, at L: without the lens part; control: without a random part.
-- **Rule, fixed in advance.** Varied scenes, pooled: "holds if the lookup loses at most 0.10 beyond random (upper bound at most 0.20) and the gap is at least 0.20 (lower bound at least 0.10); fails if the lookup loses at least 0.20." Natural passages: "holds if the gap is at least 0.30 with its lower bound at least 0.15; fails at 0.10 or below; otherwise mixed."
-
-![The split carries over to other texts](../../figures/depth/fig09a_transfer.png)
-*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; the 122B fifth; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | varied: lookup, switches lost beyond a random part | 0.01 [−0.01, 0.03]<!-- src: docs/depth/x0_numbers.json \| x0b_lk_excess_9b --> | 0.08 [0.06, 0.10]<!-- src: docs/depth/x0_numbers.json \| x0b_lk_excess_27b --> | 0.06 [0.03, 0.10]<!-- src: docs/depth/x0_numbers.json \| x0b_lk_excess_muse --> | 0.03 [0.00, 0.05]<!-- src: data/figures/depth/data.csv \| varied: lookup, switches lost beyond a random part --> | −0.02 [−0.03, −0.00]<!-- src: docs/depth/x0_numbers.json \| x0b_lk_excess_122b --> |
-  | varied: the gap | 0.22 [0.14, 0.31]<!-- src: docs/depth/x0_numbers.json \| x0b_c_9b --> | 0.47 [0.42, 0.53]<!-- src: docs/depth/x0_numbers.json \| x0b_c_27b --> | 0.50 [0.40, 0.61]<!-- src: docs/depth/x0_numbers.json \| x0b_c_muse --> | 0.24 [0.17, 0.32]<!-- src: data/figures/depth/data.csv \| varied: the gap --> | 0.15 [0.12, 0.18]<!-- src: docs/depth/x0_numbers.json \| x0b_c_122b --> |
-  | varied: the rule | holds<!-- src: docs/depth/x0_numbers.json \| x0b_verdict_9b --> | holds<!-- src: docs/depth/x0_numbers.json \| x0b_verdict_27b --> | holds<!-- src: docs/depth/x0_numbers.json \| x0b_verdict_muse --> | holds<!-- src: data/figures/depth/data.csv \| varied: the rule --> | mixed<!-- src: docs/depth/x0_numbers.json \| x0b_verdict_122b --> |
-  | natural: recall, switches lost beyond a random part | 0.56 [0.45, 0.66]<!-- src: docs/depth/x0_numbers.json \| natg75_rc_excess_9b --> | 0.59 [0.50, 0.67]<!-- src: docs/depth/x0_numbers.json \| nat_rc_excess_27b --> | 0.75 [0.62, 0.86]<!-- src: docs/depth/x0_numbers.json \| nat_rc_excess_muse --> | 0.49 [0.31, 0.67]<!-- src: data/figures/depth/data.csv \| natural (below gate): recall, switches lost beyond a random part --> (below gate) | 0.34 [0.24, 0.43]<!-- src: docs/depth/x0_numbers.json \| nat_rc_excess_122b --> |
-  | natural: lookup, switches lost beyond a random part | 0.03 [−0.08, 0.15]<!-- src: docs/depth/x0_numbers.json \| natg75_lk_excess_9b --> | 0.32 [0.20, 0.45]<!-- src: docs/depth/x0_numbers.json \| nat_lk_excess_27b --> | −0.20 [−0.55, 0.00]<!-- src: docs/depth/x0_numbers.json \| nat_lk_excess_muse --> | -0.08 [-0.27, 0.00]<!-- src: data/figures/depth/data.csv \| natural (below gate): lookup, switches lost beyond a random part --> (below gate) | −0.11 [−0.20, −0.03]<!-- src: docs/depth/x0_numbers.json \| nat_lk_excess_122b --> |
-  | natural: the rule | after the data | mixed<!-- src: docs/depth/x0_numbers.json \| nat_label_27b --> | holds<!-- src: docs/depth/x0_numbers.json \| nat_label_muse --> | not tested (gate); descriptive gap 0.56 [0.35, 0.82]<!-- src: data/figures/depth/data.csv \| natural (below gate): the gap --> | holds<!-- src: docs/depth/x0_numbers.json \| nat_label_122b --> |
-
-- **Read.**
-  - In prose, JSON and tables the recall follows the lens part and the lookup does not, on the 9B, 27B, Muse and Lightning; on the 122B the lookup does not either, but the recall's lead is below the rule's bar, so the split is mixed there.
-  - In natural passages the recall follows it on all five; the 27B's lookup follows it too, so there the split is mixed.
-- **Caveats.**
-  - In natural passages few lookups switch on Muse (10<!-- src: docs/depth/x0_numbers.json | nat_lk_whole_sw_muse --> under the whole change), and the figure leaves the 9B's and Muse's lookup cells out.
-  - The 9B's natural run had its gate lowered after the data; Lightning's misses its gate, so its natural numbers are descriptive only.
-
 ### Does asking the question before the scene change how the lookup uses the lens part?
 
 - **Question.** Does asking the question before the scene change how the lookup uses the lens part?
@@ -342,147 +276,21 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Gates just under the bar stay not tested: on the harder variants the eligible items are the easier ones.
   - The cells with a word answer were not tested (the only word relation that passed the one-token rule missed the 9B's accuracy bar), so the rule across all four cells gives no label; its cross-check was read as "does not hold" once a tested cell exceeds the bar, a reading clarified after the data that changes nothing on the 27B. Unverified until hand-checked.
 
-### Does the recall need the lens part, or only follow it?
+**More in the ledger** (each card with its figure, numbers and caveats):
 
-- **Question.** Does the recall need the lens part, or only follow it?
-- **Why we asked.** The conflict test says the recall follows the lens part; following is not the same as needing it.
-- **Data.** Zeroing: main test, 200<!-- src: docs/depth/x0_numbers.json | n_9b --> / 200<!-- src: docs/depth/x0_numbers.json | n_27b --> / 200<!-- src: docs/depth/x0_numbers.json | n_muse --> / 200<!-- src: data/figures/depth/data.csv | main test: scenes used --> scenes. The ladder: clean one-pick scenes, 417<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used --> / 574<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used --> / 409<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used -->, every step from the full reruns (the 27B's first run had the first two steps; Muse's sixth step ran again inside Zach's layer band); Lightning's ladder ran below gate (its clean one-pick recall misses the gate): descriptive only, no rule label.
-- **Method.** In the changed prompt's own run, nothing added, the lens part's directions are taken out, each step against a random part with the same share of the state:
-  - zeroing, the ladder's first step: at the bridge word at L;
-  - second step: at the bridge word over L to L+3;
-  - third: also at the item's earlier mention, in its locker sentence;
-  - fourth: also at the question's tokens;
-  - fifth: at every token over L to L+3;
-  - sixth, Zach's definition: at every token, each token's own top-10 lens directions over his layers.
-- **Rule, fixed in advance.** Zeroing: "followed, not needed at one layer if the recall keeps at least 0.80 of its answers, within 0.10 of the random arm; needed if it loses at least 0.30 beyond random." The ladder: "(a) the second copy is the earlier mention: the third step costs the recall at least 0.3 more than the second where the locker comes first, and the second already costs at least 0.3 where it comes after; (b) needed only when everything goes: steps one to four each at most 0.2, and the fifth or sixth at least 0.5; (c) the lookup never needs it: at most 0.1 beyond random at every step."
-
-![Recall needs the lens part once its other copies go; the lookup never](../../figures/depth/fig01d_ladder.png)
-*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs; Lightning below gate, hollow; 122B not run.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | zeroing: recall answers lost beyond random | 0.03 [0.01, 0.05]<!-- src: data/figures/depth/data.csv \| 47.5: recall's answers kept, random part minus J++ part taken out (L) --> | 0.03 [0.01, 0.06]<!-- src: data/figures/depth/data.csv \| 47.5: recall's answers kept, random part minus J++ part taken out (L) --> | 0.06 [0.02, 0.11]<!-- src: data/figures/depth/data.csv \| 47.5: recall's answers kept, random part minus J++ part taken out (L) --> | 0.03 [0.01, 0.05]<!-- src: data/figures/depth/data.csv \| 47.5: recall's answers lost beyond random (L) --> | not run |
-  | zeroing: the rule | followed, not needed at one layer<!-- src: data/figures/depth/data.csv \| 47.5: the rule's reading (recall at L) --> | followed, not needed at one layer<!-- src: data/figures/depth/data.csv \| 47.5: the rule's reading (recall at L) --> | followed, not needed at one layer<!-- src: data/figures/depth/data.csv \| 47.5: the rule's reading (recall at L) --> | followed, not needed at one layer<!-- src: data/figures/depth/data.csv \| 47.5: the rule's reading (recall at L) --> | not run |
-  | recall, locker first, second step | 0.07 [0.03, 0.11]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker before the pick: answers lost beyond random --> | 0.02 [0.01, 0.04]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker before the pick: answers lost beyond random --> | 0.04 [0.01, 0.09]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker before the pick: answers lost beyond random --> | 0.09 [0.04, 0.15]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker before the pick: answers lost beyond random --> below gate | not run |
-  | recall, locker first, third step | 0.39 [0.31, 0.47]<!-- src: data/figures/depth/data.csv \| rung 3: recall, locker before the pick: answers lost beyond random --> | 0.15 [0.09, 0.22]<!-- src: data/figures/depth/data.csv \| rung 3: recall, locker before the pick: answers lost beyond random --> | 0.15 [0.08, 0.24]<!-- src: data/figures/depth/data.csv \| rung 3: recall, locker before the pick: answers lost beyond random --> | 0.30 [0.22, 0.39]<!-- src: data/figures/depth/data.csv \| rung 3: recall, locker before the pick: answers lost beyond random --> below gate | not run |
-  | recall, locker after, second step | 0.40 [0.31, 0.51]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker after the pick: answers lost beyond random --> | 0.24 [0.17, 0.32]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker after the pick: answers lost beyond random --> | 0.13 [0.09, 0.19]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker after the pick: answers lost beyond random --> | 0.32 [0.22, 0.40]<!-- src: data/figures/depth/data.csv \| rung 2: recall, locker after the pick: answers lost beyond random --> below gate | not run |
-  | recall, locker first, fifth step | 0.42 [0.34, 0.50]<!-- src: data/figures/depth/data.csv \| rung 5: recall, locker before the pick: answers lost beyond random --> | 0.15 [0.09, 0.23]<!-- src: data/figures/depth/data.csv \| rung 5: recall, locker before the pick: answers lost beyond random --> | 0.17 [0.10, 0.24]<!-- src: data/figures/depth/data.csv \| rung 5: recall, locker before the pick: answers lost beyond random --> | 0.40 [0.30, 0.49]<!-- src: data/figures/depth/data.csv \| rung 5: recall, locker before the pick: answers lost beyond random --> below gate | not run |
-  | recall, locker first, sixth step (Zach's definition) | 0.42 [0.32, 0.52]<!-- src: data/figures/depth/data.csv \| rung 6: recall, locker before the pick: answers lost beyond random --> | 0.50 [0.42, 0.61]<!-- src: data/figures/depth/data.csv \| rung 6: recall, locker before the pick: answers lost beyond random --> | 0.07 [0.02, 0.12]<!-- src: data/figures/depth/data.csv \| rung 6: recall, locker before the pick: answers lost beyond random --> | 0.32 [0.18, 0.48]<!-- src: data/figures/depth/data.csv \| rung 6: recall, locker before the pick: answers lost beyond random --> below gate | not run |
-  | (a) the second copy is the earlier mention | yes<!-- src: data/figures/depth/data.csv \| the second copy is the earlier mention --> | no<!-- src: data/figures/depth/data.csv \| the second copy is the earlier mention --> | no<!-- src: data/figures/depth/data.csv \| the second copy is the earlier mention --> | not tested (gate) | not run |
-  | (b) needed only when everything goes | no<!-- src: data/figures/depth/data.csv \| needed only when everything goes --> | no<!-- src: data/figures/depth/data.csv \| needed only when everything goes --> | no<!-- src: data/figures/depth/data.csv \| needed only when everything goes --> | not tested (gate) | not run |
-  | (c) the lookup never needs it | yes<!-- src: data/figures/depth/data.csv \| the lookup never needs it --> | yes<!-- src: data/figures/depth/data.csv \| the lookup never needs it --> | yes<!-- src: data/figures/depth/data.csv \| the lookup never needs it --> | not tested (gate) | not run |
-
-- **Read.**
-  - At one layer the recall keeps nearly all its answers: it follows the lens part without needing it there.
-  - Over four layers and at the earlier mention the 9B's recall loses many answers; where the locker comes first, the earlier mention holds the second copy. The 27B's recall loses answers step by step too, but its earlier mention stays below the rule's bar.
-  - On Muse every step costs less, and Zach's definition, inside his band, costs little.
-  - The lookup never needs the lens part.
-- **Caveats.**
-  - Rule (b) fails on every model: the recall's loss grows step by step rather than appearing only when everything goes.
-  - Lightning's ladder is below gate: its steps are shown, its rules are not tested.
-
-### Does the recall also read the item's earlier mention?
-
-- **Question.** Does the recall also read the item's earlier mention?
-- **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
-- **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: 186<!-- src: docs/depth/x0_numbers.json | x45p_n_9b --> / 254<!-- src: docs/depth/x0_numbers.json | x45p_n_27b --> / 178<!-- src: docs/depth/x0_numbers.json | x45p_n_muse -->; Lightning below gate (its clean one-pick recall misses the gate), descriptive only.
-- **Method.** At L, on the original prompt:
-  - (1) the change without its lens part at the bridge word, as in the conflict test;
-  - (2) (1), and the new item's tokens in its locker sentence without their own lens part;
-  - (3) (1), and the same tokens without a random part of the same share: the control for (2);
-  - (4) (1), and another item's tokens without their lens part: the control for the item.
-- **Rule, fixed in advance.** "The recall reads the earlier mention if its switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least two of three models; a model whose (1) switches fewer than 30 recalls is not tested." A loss is one minus the switches under the arm over those under (1).
-
-![The recall reads the item's earlier mention when its locker came first](../../figures/depth/fig03c_earlier_mention.png)
-*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: 95% intervals; 9B, 27B, Muse; Lightning below gate, hollow; 122B not run.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ below gate | 122B |
-  |---|---|---|---|---|---|
-  | recalls switched under (1) | 137<!-- src: data/figures/depth/data.csv \| 45p, (1): recalls switched --> | 75<!-- src: data/figures/depth/data.csv \| 45p, (1): recalls switched --> | 55<!-- src: data/figures/depth/data.csv \| 45p, (1): recalls switched --> | 89<!-- src: data/figures/depth/data.csv \| 45p, (1): recalls switched --> | not run |
-  | recall: loss in (2) minus (3) | 0.25 [0.16, 0.34]<!-- src: docs/depth/x0_numbers.json \| x45p_d23_9b --> | 0.41 [0.32, 0.53]<!-- src: docs/depth/x0_numbers.json \| x45p_d23_27b --> | 0.42 [0.26, 0.63]<!-- src: docs/depth/x0_numbers.json \| x45p_d23_muse --> | 0.22 [0.15, 0.30]<!-- src: data/figures/depth/data.csv \| 45p (below gate): recall, loss in (2) minus (3) --> | not run |
-  | recall: loss in (2) minus (4) | 0.26 [0.18, 0.35]<!-- src: docs/depth/x0_numbers.json \| x45p_d24_9b --> | 0.49 [0.38, 0.64]<!-- src: docs/depth/x0_numbers.json \| x45p_d24_27b --> | 0.49 [0.31, 0.69]<!-- src: docs/depth/x0_numbers.json \| x45p_d24_muse --> | 0.21 [0.14, 0.29]<!-- src: data/figures/depth/data.csv \| 45p (below gate): recall, loss in (2) minus (4) --> | not run |
-  | lookup: loss in (2) | 0.01 [0.00, 0.02]<!-- src: data/figures/depth/data.csv \| 45p, a2: lookup switches lost against (1) --> | 0.01 [0.00, 0.02]<!-- src: data/figures/depth/data.csv \| 45p, a2: lookup switches lost against (1) --> | 0.00 [0.00, 0.00]<!-- src: data/figures/depth/data.csv \| 45p, a2: lookup switches lost against (1) --> | -0.01 [-0.03, 0.00]<!-- src: data/figures/depth/data.csv \| 45p, a2: lookup switches lost against (1) --> | not run |
-
-  The rule holds on 3 of 3<!-- src: docs/depth/x0_numbers.json | x45p_held --> models; Lightning is not tested (gate), its numbers descriptive only.
-- **Read.**
-  - The recall reads the item's lens part at its earlier mention as well as at the bridge word, on all three models; Lightning's numbers, below gate, point the same way.
-  - The same removal at another item's mention costs nothing, so the effect belongs to the item.
-  - The lookup does not read the earlier mention this way.
-- **Caveats.**
-  - Only scenes with the locker first; after the pick there is no earlier mention.
-  - Few recalls switch under (1) on the 27B and Muse, so their intervals are wide.
-  - Zeroing finds a weaker second copy on Muse (previous card): the two operations disagree in size there.
+- [When the lens part points the recall to one item and the address to another, which does it follow?](EXPERIMENTS.md#b53-6) With both levers, the 9B's and Lightning's recall gives B's and C's answers in about equal shares: it follows the address as well as the lens part.
+- [Does the split hold in other texts?](EXPERIMENTS.md#x0b) In prose, JSON and tables the recall follows the lens part and the lookup does not, on the 9B, 27B, Muse and Lightning; on the 122B the lookup does not either, but the recall's lead is below the rule's bar, so the split is mixed there.
+- [Does the recall need the lens part, or only follow it?](EXPERIMENTS.md#t47-5) At one layer the recall keeps nearly all its answers: it follows the lens part without needing it there.
+- [Does the recall also read the item's earlier mention?](EXPERIMENTS.md#t45p) The recall reads the item's lens part at its earlier mention as well as at the bridge word, on all three models; Lightning's numbers, below gate, point the same way.
 
 ## Part II. Identity: which item the lookup reads
 
 *"Which item" is lens-readable for the recall, and the lookup's copy of it sits outside the lens.*
 
-### Does the lookup's identity route run outside the lens?
+**More in the ledger** (each card with its figure, numbers and caveats):
 
-- **Question.** Does the lookup's identity route run outside the lens?
-- **Why we asked.** The lookup barely needs the lens part's 25 directions; its identity route could still sit in the lens's next 75 directions rather than outside the lens.
-- **Data.** Routes scenes (another item moved), 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> per model, for the lookup's answers; the main test for the recall's switches. The 122B not run.
-- **Method.** The change's 100 best lens directions in order; directions 1-25 (the lens part), 26-100 or all 100 taken out of the change at the bridge word at L, each against a random part of the same share. Read: the identity-route and position-route answers lost beyond random, and the recall's switches lost without directions 26-100.
-- **Rule, fixed in advance.** "(a) 'the lookup's identity route sits in lens directions beyond the recall's 25': without 26-100, identity answers fall at least 0.30 beyond the random part (paired interval excluding 0) and the recall loses at most 0.10 of its switches beyond random without 26-100, on at least 2 of 3 models; (b) 'continuum': both readers lose at least 0.20 beyond random without 26-100; (c) 'outside the lens': without 26-100, identity answers fall under 0.10 beyond random." Lightning: the same rule, copied, no prediction.
-
-![The lookup's identity route runs outside the lens; the position route never touches it](../../figures/depth/fig05d_routes_lens.png)
-*Identity-route and position-route answers lost without lens directions 1-25, 26-100 and all 100, beyond a random part of the same size, per model; routes scenes at L; Lightning hollow; 122B not run.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | identity answers lost beyond random without lens directions 1-25 | 0.06 [0.02, 0.09]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-25 --> | 0.25 [0.21, 0.29]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-25 --> | 0.00 [-0.02, 0.02]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-25 --> | 0.04 [0.01, 0.06]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-25 --> | not run |
-  | the same without directions 26-100 | 0.05 [0.02, 0.08]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 26-100 --> | 0.05 [0.03, 0.08]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 26-100 --> | 0.02 [-0.00, 0.04]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 26-100 --> | 0.05 [0.01, 0.08]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 26-100 --> | |
-  | the same without all 100 | 0.09 [0.05, 0.13]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-100 --> | 0.55 [0.50, 0.60]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-100 --> | 0.02 [0.00, 0.03]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-100 --> | -0.08 [-0.12, -0.04]<!-- src: data/figures/depth/data.csv \| 47.1: identity route: answers lost beyond random without lens directions 1-100 --> | |
-  | recall: switches lost beyond random without directions 26-100 (main test) | 0.03 [0.00, 0.06]<!-- src: data/figures/depth/data.csv \| 47.1: recall, switches lost beyond random without lens directions 26-100 (main test) --> | 0.05 [0.01, 0.10]<!-- src: data/figures/depth/data.csv \| 47.1: recall, switches lost beyond random without lens directions 26-100 (main test) --> | 0.01 [-0.05, 0.08]<!-- src: data/figures/depth/data.csv \| 47.1: recall, switches lost beyond random without lens directions 26-100 (main test) --> | 0.01 [-0.02, 0.04]<!-- src: data/figures/depth/data.csv \| 47.1: recall, switches lost beyond random without lens directions 26-100 (main test) --> | |
-  | the rule | (c) outside the lens<!-- src: data/figures/depth/data.csv \| 47.1: the rule's label --> | (c) outside the lens<!-- src: data/figures/depth/data.csv \| 47.1: the rule's label --> | (c) outside the lens<!-- src: data/figures/depth/data.csv \| 47.1: the rule's label --> | (c) outside the lens<!-- src: data/figures/depth/data.csv \| 47.1: the rule's label --> | |
-
-  The position route loses at most 0.01<!-- src: data/figures/depth/data.csv | 47.1: position route: the most answers lost beyond random, over the models and slices --> beyond random, over every model and slice.
-
-- **Read.**
-  - On all four models the identity route survives the loss of the lens's next directions: it runs outside the lens, not in lens directions beyond the recall's.
-  - Only the 27B loses identity answers to the lens part itself or to all the directions together: there the slices are redundant copies.
-  - The position route does not depend on any slice of the lens.
-- **Caveats.**
-  - Identity is read on routes scenes, the recall's switches on the main test: two scene sets.
-  - Lightning's gate was chosen after its pre-check (○).
-  - Not shown: the identity code itself.
-
-### Which route does the lookup take: the item's identity, its locker's position, or the number?
-
-- **Question.** Which route does the lookup take: the item's identity, its locker's position, or the number?
-- **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads.
-- **Data.** Routes scenes, 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | routes scenes: scenes used --> per model. The 122B's routes run had its gate lowered to 0.75 after the data (hollow ○): its run at 0.80 missed the gate on the recall.
-- **Method.** The change comes from a prompt where another item's locker sentence moved and took a new number, so each route predicts a different locker: the identity route the item's own locker, the position route the locker now at the item's old place, the value the new number. Arms at the bridge word at L: the whole change; without the address (Part III), against without a random part of its share. A sanity swap (two picks trade places, nothing moves) comes first.
-- **Rule, fixed in advance.** "A route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference and takes Muse's rule (a switch rate of at least 0.50). Lightning and the 122B: the same rule, copied, no prediction.
-
-![The lookup takes the identity route or the position route, never the value](../../figures/depth/fig05_routes.png)
-*Left: where each route sends the lookup, drawn on the setup figure's items (the routes test's own scenes are animals). Right: the lookup's answers under the whole change and without the address, per model; grey: without a random part of the same share. Lightning hollow; 122B hollow (gate lowered to 0.75 after the data; FP8).*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B ○ |
-  |---|---|---|---|---|---|
-  | whole change: identity route | 0.48 [0.43, 0.53]<!-- src: data/figures/depth/data.csv \| another item moved, whole: identity share --> | 0.66 [0.60, 0.71]<!-- src: data/figures/depth/data.csv \| another item moved, whole: identity share --> | 0.44 [0.38, 0.49]<!-- src: data/figures/depth/data.csv \| another item moved, whole: identity share --> | 0.44 [0.38, 0.51]<!-- src: data/figures/depth/data.csv \| another item moved, whole: identity share --> | 0.61 [0.56, 0.67]<!-- src: data/figures/depth/data.csv \| another item moved, whole: identity share --> |
-  | whole change: position route | 0.51 [0.46, 0.56]<!-- src: data/figures/depth/data.csv \| another item moved, whole: position share --> | 0.34 [0.28, 0.39]<!-- src: data/figures/depth/data.csv \| another item moved, whole: position share --> | 0.54 [0.49, 0.60]<!-- src: data/figures/depth/data.csv \| another item moved, whole: position share --> | 0.55 [0.49, 0.62]<!-- src: data/figures/depth/data.csv \| another item moved, whole: position share --> | 0.38 [0.33, 0.44]<!-- src: data/figures/depth/data.csv \| another item moved, whole: position share --> |
-  | whole change: the value | 0.00<!-- src: data/figures/depth/data.csv \| another item moved, whole: value share --> | 0.00<!-- src: data/figures/depth/data.csv \| another item moved, whole: value share --> | 0.00<!-- src: data/figures/depth/data.csv \| another item moved, whole: value share --> | 0.00<!-- src: data/figures/depth/data.csv \| another item moved, whole: value share --> | 0.00<!-- src: data/figures/depth/data.csv \| another item moved, whole: value share --> |
-  | without the address: identity route | 0.36 [0.32, 0.40]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: identity share --> | 0.72 [0.68, 0.77]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: identity share --> | 0.43 [0.38, 0.48]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: identity share --> | 0.31 [0.27, 0.36]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: identity share --> | 0.62 [0.57, 0.67]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: identity share --> |
-  | without the address: position route | 0.08 [0.05, 0.12]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: position share --> | 0.06 [0.03, 0.09]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: position share --> | 0.27 [0.23, 0.32]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: position share --> | 0.10 [0.07, 0.14]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: position share --> | 0.05 [0.02, 0.07]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf: position share --> |
-  | without a random part: position route | 0.54 [0.49, 0.59]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf_rand: position share --> | 0.25 [0.19, 0.31]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf_rand: position share --> | 0.55 [0.50, 0.60]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf_rand: position share --> | 0.56 [0.49, 0.63]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf_rand: position share --> | 0.36 [0.31, 0.41]<!-- src: data/figures/depth/data.csv \| another item moved, no_alf_rand: position share --> |
-
-- **Read.**
-  - On all five models the lookup answers by the item's identity or by its locker's position, never by the new number.
-  - The 27B and the 122B lean on identity; the 9B, Muse and Lightning split about evenly.
-  - Without the address the position route falls beyond a random part of its share; the identity route stays.
-- **Caveats.**
-  - The 122B (FP8; MoE, ~10B active): gate lowered to 0.75 after the data; its numbers are hollow and descriptive.
-  - Lightning's gate was chosen after its pre-check (○); its sanity swap uses Muse's rule.
-  - Not shown: what reads the position.
+- [Does the lookup's identity route run outside the lens?](EXPERIMENTS.md#t47-1) On all four models the identity route survives the loss of the lens's next directions: it runs outside the lens, not in lens directions beyond the recall's.
+- [Which route does the lookup take: the item's identity, its locker's position, or the number?](EXPERIMENTS.md#routes) On all five models the lookup answers by the item's identity or by its locker's position, never by the new number.
 
 ## Part III. The address: where the item's locker sits
 
@@ -532,38 +340,6 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - Lightning's gate was chosen after its pre-check (○); its probe reads the locker sentence less well than the others'.
   - The distance test ran on the 9B, and on the 27B, Muse (a rerun) and Lightning as coverage runs (Lightning ○); the 122B not run.
   - Not shown: what reads the address.
-
-### With six lockers, does each locker have its own code?
-
-- **Question.** With six lockers, does each locker have its own code?
-- **Why we asked.** With three lockers a line over the lockers and a first-versus-rest marker look the same.
-- **Data.** Six-locker scenes: a test half of 300<!-- src: data/figures/depth/data.csv | six-locker scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | 47.2: test scenes --> / 300<!-- src: data/figures/depth/data.csv | six-locker scenes: scenes used --> / 300<!-- src: data/figures/depth/data.csv | six-locker scenes: scenes used --> scenes per model; the other half fits the lockers' mean codes. The 122B not run. On the 9B, follow-ups with 3, 4, 6 and 8 lockers on held-out entities.
-- **Method.** At the bridge word at L:
-  - one fixed shift (the mean step between neighbouring lockers' mean codes) from each start locker, and swaps between given lockers, each at doses 1 and 2, against a random vector of the same size; the first principal component of the lockers' mean codes beside;
-  - on the 9B: the smallest learned code that carries the position switch, per number of lockers, against random codes of the same size; swaps to the midpoint between two lockers, against full swaps.
-- **Rule, fixed in advance.** "Ordinal: the first principal component is monotone in the locker (|Spearman| ≥ 0.9) and the shift sends ≥ 0.25 of lookups one locker on from ≥ 4 of 5 start lockers, the random vector ≤ 0.05; categorical, first vs rest: the shift works only from the first locker (others < 0.10) and removing the address on the other moves is within 0.10 of random; slot-specific: swaps between given lockers reach ≥ 0.25 on most pairs but no single shift does." Dose 2 decides. On the 9B: "one dimension per locker" if the learned code's size is at least the number of lockers minus 2 for every count and at least 5 at 8 lockers; "an ordinal code" if it is at most 2 up to 8 lockers; "categories" if midpoint swaps send < 0.1 to the midpoint locker while the full swaps reach ≥ 0.4 of the target; "a metric order" if midpoint swaps send ≥ 0.3 to the midpoint locker, from both ends. The 27B and Lightning: the same rule, copied, no prediction.
-
-![Six lockers: swaps between given lockers work on most pairs, no single shift does](../../figures/depth/fig09b_six_lockers.png)
-*At dose 2, per model: start lockers from which one shift sends at least a quarter of lookups one locker on, and locker pairs that a swap between given lockers reaches; Lightning hollow; 122B not run.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | swaps between given lockers reaching 0.25 of lookups at dose 2, of 30 pairs | 18<!-- src: data/figures/depth/data.csv \| 47.2: pairwise writes reaching 25% (dose 2) --> | 13<!-- src: data/figures/depth/data.csv \| 47.2: pairwise writes reaching 25% (dose 2) --> | 21<!-- src: data/figures/depth/data.csv \| 47.2: pairwise writes reaching 25% (dose 2) --> | 21<!-- src: data/figures/depth/data.csv \| 47.2: pairwise writes reaching 25% (dose 2) --> | not run |
-  | the rule at dose 2 | slot-specific<!-- src: data/figures/depth/data.csv \| 47.2: the rule's reading (dose 2) --> | none of the three<!-- src: data/figures/depth/data.csv \| 47.2: the rule's reading (dose 2) --> | slot-specific<!-- src: data/figures/depth/data.csv \| 47.2: the rule's reading (dose 2) --> | slot-specific<!-- src: data/figures/depth/data.csv \| 47.2: the rule's reading (dose 2) --> | |
-  | the code's size, follow-up | in between<!-- src: data/figures/depth/data.csv \| 51.11 part 1: the code's size --> | | | | |
-  | midpoint swaps reaching the locker between, from the first locker (dose 2) / full swaps reaching their target | 0.06<!-- src: data/figures/depth/data.csv \| 51.11 part 3: midpoint swaps reaching the slot between, from the first slot (dose 2) --> / 0.40<!-- src: data/figures/depth/data.csv \| 51.11 part 3: full swaps reaching their target (dose 2) --> | | | | |
-
-- **Read.**
-  - No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers.
-  - Swaps between given lockers work on most pairs on the 9B, Muse and Lightning, so each locker is its own target there; on the 27B on fewer than half, and no reading holds.
-  - On the 9B the code's size is not settled, and midpoint swaps do not land between lockers: the lockers are not a metric order.
-- **Caveats.**
-  - The 27B's shifts move nothing from any start locker, though its lockers' mean codes lie in order.
-  - The follow-ups are read here on the 9B only; Muse's and the 27B's runs of them are in the ledger.
-  - Lightning's gate was chosen after its pre-check (○).
-  - Not shown: whether the same code serves other kinds of item.
 
 ### Can the lens read the address?
 
@@ -645,227 +421,15 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - At the bridge word and on the JSON scenes the full state itself stays under 0.8, so those cells cannot open "blind" or "carries".
   - The 122B not run.
 
-### Must the address be refit for each text format?
+**More in the ledger** (each card with its figure, numbers and caveats):
 
-- **Question.** Must the address be refit for each text format?
-- **Why we asked.** The address was fit on one template; in prose, JSON and tables the code may sit elsewhere.
-- **Data.** The varied scenes (prose, JSON and tables), split in halves by bridge item: one half fits the address per format, the other half is tested. The 122B not run.
-- **Method.** The address refit per format on one half (four directions) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on the simple scenes beside.
-- **Rule, fixed in advance.** "'Pointer elsewhere' if the refit address costs the lookup at least 0.2 of its switches beyond random, with lower bound above 0.1, in 2 of 3 formats; 'no linear pointer found' if all three formats are below 0.1 (point estimate); otherwise neither." After the data (Dan, 26 Oct): a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: the same rule, copied, no prediction.
-
-![The address must be refit for each text format](../../figures/depth/fig09b_refit.png)
-*The lookup's switches lost without the address beyond a random part, by format: refit on the format (filled) and fit on the simple scenes (hollow); grey: the 0.10 bar. Lightning hollow; Muse's JSON left out (too few switches); 122B not run.*
-
-- **Result.**
-
-  | lookup's switches lost beyond random: refit / fit on the simple scenes | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | prose | 0.24<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the refit pointer --> / 0.17<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the pointer fit on simple scenes --> | 0.08<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the refit pointer --> / 0.07<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the pointer fit on simple scenes --> | 0.23<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the refit pointer --> / 0.18<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the pointer fit on simple scenes --> | 0.16<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the refit pointer --> / 0.14<!-- src: data/figures/depth/data.csv \| (b) prose: lookup extra loss without the pointer fit on simple scenes --> | not run |
-  | JSON | 0.24<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the refit pointer --> / 0.08<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the pointer fit on simple scenes --> | 0.09<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the refit pointer --> / 0.02<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the pointer fit on simple scenes --> | too few switches (29<!-- src: data/figures/depth/data.csv \| (b) json: lookup switches with the whole change -->) | 0.26<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the refit pointer --> / 0.00<!-- src: data/figures/depth/data.csv \| (b) json: lookup extra loss without the pointer fit on simple scenes --> | |
-  | tables | 0.18<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the refit pointer --> / 0.09<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the pointer fit on simple scenes --> | 0.13<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the refit pointer --> / 0.01<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the pointer fit on simple scenes --> | 0.47<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the refit pointer --> / 0.10<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the pointer fit on simple scenes --> | 0.25<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the refit pointer --> / 0.04<!-- src: data/figures/depth/data.csv \| (b) table: lookup extra loss without the pointer fit on simple scenes --> | |
-  | the outcome | pointer elsewhere<!-- src: docs/depth/x0_numbers.json \| x45d_outcome_9b --> | neither<!-- src: docs/depth/x0_numbers.json \| x45d_outcome_27b --> | pointer elsewhere<!-- src: docs/depth/x0_numbers.json \| x45d_outcome_muse --> | pointer elsewhere<!-- src: data/figures/depth/data.csv \| 45d: the outcome --> | |
-
-- **Read.**
-  - Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning; on the 27B it stays weak in every format.
-  - Fit on the simple scenes it costs the lookup little in JSON and tables: in other formats the code sits elsewhere.
-- **Caveats.**
-  - The bar of 30 switches was set after the first results; it drops Muse's JSON.
-  - Lightning's JSON rests on few scenes; its gate was chosen after its pre-check (○).
-
-### Is the address readable, and used, in Python code and tool output?
-
-- **Question.** Is the address readable, and used, in Python code and tool output?
-- **Why we asked.** Every other test reads the scene as prose; a model in an agent reads code and tool replies. If the address were a habit of prose, it would not show there.
-- **Data.** The address card's scenes, rendered two ways: as Python in the user turn (`picks["Eva"] = "oxygen"`, `lockers["oxygen"] = 5`, one assignment per statement in the scene's order, then the question), and as the reply of a declared notes tool in the chat template, the question in a new user turn. The probe: code keeps the scenes whose bridge is one token at one position in both prompts (682<!-- src: data/figures/depth/data.csv | 53.7, code: the probe's scenes (one token at one position in both prompts) --> on the 9B, 682<!-- src: data/figures/depth/data.csv | 53.7, code: the probe's scenes (one token at one position in both prompts) --> on the 27B); tool output keeps all (1500<!-- src: data/figures/depth/data.csv | 53.7, tool: the probe's scenes (one token at one position in both prompts) --> / 1500<!-- src: data/figures/depth/data.csv | 53.7, tool: the probe's scenes (one token at one position in both prompts) -->). The routes test, another item moved: 300<!-- src: data/figures/depth/data.csv | 53.7, code: the routes test's items, another item moved --> / 300<!-- src: data/figures/depth/data.csv | 53.7, tool: the routes test's items, another item moved --> items on the 9B, 300<!-- src: data/figures/depth/data.csv | 53.7, code: the routes test's items, another item moved --> / 300<!-- src: data/figures/depth/data.csv | 53.7, tool: the routes test's items, another item moved --> on the 27B (code / tool output). Muse, Lightning and the 122B not run.
-- **Method.** Two of the address card's tests, unchanged, in each format, at L:
-  - the probe at the bridge word: which locker sentence holds the bridge's locker, against the layout baseline; scenes with the locker after the pick are the control (the locker sentence comes later, so nothing can be read there);
-  - the routes test, another item moved: the whole change; position answers without the address against without a random part of the same size, and with only the address against only a random part. The address is the one fit on the model's prose scenes, carried over to code and tool output, not refit<!-- src: results/x6_routes/qwen35_9b_x53_7_routes_code_l/manifest.json | alf_from :: qwen35_9b_x0_probe_v4 (scripts/x6_routes.py stage_run: x0_massmean on that run's states at L) --><!-- src: results/x6_routes/x53_7_routes_code_27b_l/manifest.json | alf_from :: x0_probe_v4_27b -->;
-  - the lens monitor in both formats: probes on the lens part for the address at the last token, the monitor card's rule and energy rule (the 9B so far; the 27B running);
-  - adapted design: lookup-only gate; the recall is not part of this test. A format is tested if the lookup answers and reads both prompts right on at least 0.80 of its scenes; the recall's rates are reported, not gated.
-- **Rule, fixed in advance.** Pending hand-check. The routes test's, verbatim: "A route counts as used if its share is >= 0.2 with lower CI >= 0.1." The probe has no rule of its own (descriptive, after the data). The lookup-only gate was set before any result in these formats was opened, except the 9B's code probe: gate changed after the data (hollow ○). The 27B's probes and the 9B's tool probe: adapted design (they pass either gate). No prediction.
-
-![In code and tool output the address is readable and carries position](../../figures/depth/fig21_code_tool.png)
-*A: the probe for the locker sentence at the bridge word, with the locker before the pick, against its layout baseline (hatched); the black tick: the same probe in prose. B: the routes test, another item moved, at L: position answers without the address and with only the address, each against a random part of the same size (grey). The 9B's code probe not tested (○); models not run keep their rows.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning | 122B |
-  |---|---|---|---|---|---|
-  | probe, locker before the pick: code | not tested (gate 0.669 < 0.80)<!-- src: data/figures/depth/data.csv \| code and tool output, code: the probe's status --> ○ | 0.95 [0.92, 0.98]<!-- src: data/figures/depth/data.csv \| code and tool output, code: the locker probe at the bridge word, locker-first scenes --> (layout 0.48<!-- src: data/figures/depth/data.csv \| code and tool output, code: the locker probe's layout baseline, locker-first scenes -->; prose 0.99<!-- src: data/figures/depth/data.csv \| code and tool output, code: the locker probe in prose, locker-first scenes (stored) -->) | not run | not run | not run |
-  | probe, locker before the pick: tool output | 0.97 [0.95, 0.98]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: the locker probe at the bridge word, locker-first scenes --> (layout 0.53<!-- src: data/figures/depth/data.csv \| code and tool output, tool: the locker probe's layout baseline, locker-first scenes -->; prose 0.97<!-- src: data/figures/depth/data.csv \| code and tool output, tool: the locker probe in prose, locker-first scenes (stored) -->) | 0.99 [0.98, 0.99]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: the locker probe at the bridge word, locker-first scenes --> (layout 0.53<!-- src: data/figures/depth/data.csv \| code and tool output, tool: the locker probe's layout baseline, locker-first scenes -->) | | | |
-  | control, locker after the pick: probe / best baseline, tool output | 0.31<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe, locker sentence, locker-after scenes (the control) --> / 0.37<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe's best baseline (structure), locker sentence, locker-after scenes (the control) --> | code 0.38<!-- src: data/figures/depth/data.csv \| 53.7, code: the probe, locker sentence, locker-after scenes (the control) --> / 0.36<!-- src: data/figures/depth/data.csv \| 53.7, code: the probe's best baseline (majority), locker sentence, locker-after scenes (the control) -->; tool output 0.34<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe, locker sentence, locker-after scenes (the control) --> / 0.37<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe's best baseline (structure), locker sentence, locker-after scenes (the control) --> | | | |
-  | the answer digit at the bridge word, locker before the pick: probe / chance, tool output | 0.26<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe, answer digit, locker-first scenes --> / 0.11<!-- src: data/figures/depth/data.csv \| 53.7, tool: chance, answer digit, locker-first scenes --> | code 0.30<!-- src: data/figures/depth/data.csv \| 53.7, code: the probe, answer digit, locker-first scenes -->, tool output 0.40<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe, answer digit, locker-first scenes --> / 0.11<!-- src: data/figures/depth/data.csv \| 53.7, tool: chance, answer digit, locker-first scenes --> | | | |
-  | the probe's gate, lookup only: code / tool output | 0.669 (682 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, code: the probe's gate, the lookup says and reads both prompts right --> / 0.955 (1500 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe's gate, the lookup says and reads both prompts right --> | 0.981 (682 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, code: the probe's gate, the lookup says and reads both prompts right --> / 0.994 (1500 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, tool: the probe's gate, the lookup says and reads both prompts right --> | | | |
-  | routes, code, the whole change: identity / position / value | 0.38<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: identity share --> / 0.54<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: value share --> | 0.77<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: identity share --> / 0.20 [0.16, 0.25]<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: value share --> | | | |
-  | routes, tool output, the whole change: identity / position / value | 0.50<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: identity share --> / 0.46<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: value share --> | 0.72<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: identity share --> / 0.27<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: value share --> | | | |
-  | routes the rule counts as used: code / tool output | identity, position<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: the routes the rule counts as used --> / identity, position<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: the routes the rule counts as used --> | identity, position<!-- src: data/figures/depth/data.csv \| 53.7, code: another item moved, the whole change: the routes the rule counts as used --> / identity, position<!-- src: data/figures/depth/data.csv \| 53.7, tool: another item moved, the whole change: the routes the rule counts as used --> | | | |
-  | routes, code: position answers without the address / without a random part | 0.31 [0.27, 0.35]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, no_alf: position share --> / 0.53 [0.49, 0.58]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, no_alf_rand: position share --> | 0.09 [0.06, 0.12]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, no_alf: position share --> / 0.16 [0.13, 0.20]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, no_alf_rand: position share --> | | | |
-  | routes, tool output: position answers without the address / without a random part | 0.09 [0.05, 0.12]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, no_alf: position share --> / 0.48 [0.42, 0.53]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, no_alf_rand: position share --> | 0.09 [0.06, 0.13]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, no_alf: position share --> / 0.21 [0.17, 0.26]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, no_alf_rand: position share --> | | | |
-  | routes, code: position answers with only the address / with only a random part | 0.03 [0.01, 0.04]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, keep_alf: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, keep_alf_rand: position share --> | 0.01 [0.00, 0.02]<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, keep_alf: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| code and tool output, code: another item moved, keep_alf_rand: position share --> | | | |
-  | routes, tool output: position answers with only the address / with only a random part | 0.08 [0.05, 0.12]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, keep_alf: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, keep_alf_rand: position share --> | 0.06 [0.04, 0.08]<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, keep_alf: position share --> / 0.00<!-- src: data/figures/depth/data.csv \| code and tool output, tool: another item moved, keep_alf_rand: position share --> | | | |
-  | routes, the gate (lookup only): code / tool output | 0.996 (700 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, code: the routes test's gate, another item moved (lookup-only) --> / 0.999 (700 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, tool: the routes test's gate, another item moved (lookup-only) --> | 1.000 (700 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, code: the routes test's gate, another item moved (lookup-only) --> / 0.996 (700 scenes)<!-- src: data/figures/depth/data.csv \| 53.7, tool: the routes test's gate, another item moved (lookup-only) --> | | | |
-  | in prose (the address card): position answers without the address / without a random part / with only the address | 0.08<!-- src: docs/depth/x0_numbers.json \| rt_C2_no_alf_position_9b --> / 0.54<!-- src: docs/depth/x0_numbers.json \| rt_C2_no_alf_rand_position_9b --> / 0.26<!-- src: docs/depth/x0_numbers.json \| rtk_C2_keep_alf_position_9b --> | 0.06<!-- src: docs/depth/x0_numbers.json \| rt_C2_no_alf_position_27b --> / 0.25<!-- src: docs/depth/x0_numbers.json \| rt_C2_no_alf_rand_position_27b --> / 0.09<!-- src: docs/depth/x0_numbers.json \| rtk_C2_keep_alf_position_27b --> | | | |
-  | the lens monitor: code | not tested (gate 0.702 < 0.80)<!-- src: data/figures/depth/data.csv \| 53.7, code: the lens monitor's status --> | running | | | |
-  | the lens monitor, tool output, the address at the last token: the rule with 25 / 100 lens directions; the energy rule | in between<!-- src: data/figures/depth/data.csv \| 53.7, tool: the lens monitor, the address at the last token, 25 lens directions: the rule's label --> / in between<!-- src: data/figures/depth/data.csv \| 53.7, tool: the lens monitor, the address at the last token, 100 lens directions: the rule's label -->; **under-represented in the lens directions<!-- src: data/figures/depth/data.csv \| 53.7, tool: the lens monitor, the address at the last token, 25 lens directions: the energy rule's label -->** | running | | | |
-
-- **Read.**
-  - In tool output on the 9B and in both formats on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker about as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines.
-  - In code and in tool output, on both models, the lookup takes the identity route or the position route, never the value; without the address it loses position answers beyond a random part of the same size.
-  - The address by itself brings almost no position answers back, less than in prose on the 9B.
-  - A monitor on the lens part reads the address at the last token no better than random parts; by the energy rule the address is under-represented in the lens directions, as in prose (the 9B's tool output; the 27B running).
-- **Caveats.**
-  - Pending hand-check: today's runs, unverified until hand-checked.
-  - Adapted design: lookup-only gate; the recall is not part of this test. The 9B's code probe: gate changed after the data (hollow ○); it fails that gate too, as does its code monitor. The 27B's probes and the 9B's tool probe pass either gate: adapted design only.
-  - The address removed and added is the one fit on prose, carried over, not refit.
-  - Where two picks swap, in tool output a random part of the address's share already takes position answers down to 0.06<!-- src: data/figures/depth/data.csv | 53.7, tool: two picks swapped, without a random part: position share --> / 0.02<!-- src: data/figures/depth/data.csv | 53.7, tool: two picks swapped, without a random part: position share --> (9B / 27B), so there the removal cannot tell the address from a random part; the card's numbers are where another item moved.
-  - Tool output is prose inside a tool reply; JSON is covered by the varied scenes ("Does the split hold in other texts?", Part I).
-  - In the tool format the bridge word sits about 250 tokens later than in prose<!-- src: results/x0_probe/x53_7_probe-20261029T115640Z/verdict.md | the bridge ~250 tokens later in the tool format --> (the template's tools block and two turns come first), not separated from the format; on the 9B the address stays readable after 50 neutral sentences (probe 1.00<!-- src: data/figures/depth/data.csv | 47.16: slot probe with 50 neutral sentences -->).
-  - The probe only shows the address is readable; the routes test decides whether the lookup uses it.
-  - The code scenes keep only the domains whose names stay one token at one position, so their mix differs from prose.
+- [With six lockers, does each locker have its own code?](EXPERIMENTS.md#six) No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers.
+- [Must the address be refit for each text format?](EXPERIMENTS.md#x45d) Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning; on the 27B it stays weak in every format.
+- [Is the address readable, and used, in Python code and tool output?](EXPERIMENTS.md#b53-7) In tool output on the 9B and in both formats on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker about as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines.
 
 ## Part IV. Where and when the link is made
 
 *The bridge word can only point back, so the order decides where the link is made, and the address is written early and used late.*
-
-### Does the bridge word redirect the lookup only when its locker sentence came first?
-
-- **Question.** Does the bridge word redirect the lookup only when its locker sentence came first?
-- **Why we asked.** The bridge word can only point back: if the item's locker sentence comes after the pick, the link must be made somewhere else.
-- **Data.** Main test, 200<!-- src: docs/depth/x0_numbers.json | n_9b --> / 200<!-- src: docs/depth/x0_numbers.json | n_27b --> / 200<!-- src: docs/depth/x0_numbers.json | n_muse --> / 200<!-- src: data/figures/depth/data.csv | main test: scenes used --> / 200<!-- src: docs/depth/x0_numbers.json | n_122b --> scenes per model, split by where the asked item's locker sentence sits. The copy: clean one-pick scenes (417<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used --> / 574<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used --> / 409<!-- src: data/figures/depth/data.csv | clean one-pick scenes: scenes used --> on the 9B / 27B / Muse), those with the locker after the pick. Lightning: the clean design is not tested (gate: its clean one-pick recall is below 0.80); its copy numbers are descriptive only. The 122B: the split only.
-- **Method.**
-  - the split: the change at the bridge word at L; the lookups it switches, by sentence order;
-  - the copy, clean scenes with the locker after the pick: (a) the change at the bridge word at L; (c) the changed prompt's states copied into every locker-sentence token at L; (d) the same at L/2; each as a share of the lookups the changed prompt itself switches.
-- **Rule, fixed in advance.** The copy: "'the link is made in the locker sentences' if (c) or (d) switches at least half of the lookups the changed prompt switches while (a) stays at or below 0.25, on at least 2 of 3 models." The split by sentence order was read after the data (descriptive). Lightning: the same rule, copied, no prediction.
-
-![Locker after the pick: the link is made in the locker sentences](../../figures/depth/fig03_order.png)
-*(A) Lookups switched by the change at the bridge word, locker sentence before or after the pick, per model (the recall beside); (B) the same split on Zach's passages, by fact order (Part V); (C) locker after the pick, by layer: the change at the bridge word (dashed) and the change copied into the locker sentences (solid), the rule's arms ringed. Lightning hollow, its copy below gate; the 122B (FP8, its L33 the 27B's relative depth) in panel A only.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | lookups switched, locker sentence before the pick | 0.86 [0.78, 0.91]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence before the pick --> | 0.76 [0.67, 0.83]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence before the pick --> | 0.65 [0.55, 0.74]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence before the pick --> | 0.86 [0.77, 0.92]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence before the pick --> | 0.89 [0.81, 0.94]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence before the pick --> |
-  | lookups switched, locker sentence after the pick | 0.19 [0.13, 0.28]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence after the pick --> | 0.09 [0.05, 0.16]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence after the pick --> | 0.09 [0.05, 0.16]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence after the pick --> | 0.15 [0.09, 0.22]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence after the pick --> | 0.11 [0.07, 0.18]<!-- src: data/figures/depth/data.csv \| lookups switched by the whole change, locker sentence after the pick --> |
-  | the copy: (c) copied into the locker sentences at L | 0.70 [0.65, 0.74]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched) --> | 0.74 [0.68, 0.80]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched) --> | 0.76 [0.70, 0.81]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched) --> | below gate: 0.75 [0.69, 0.81]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched) --> | not run |
-  | the copy: (d) the same at L/2 | 0.07 [0.05, 0.10]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched) --> | 0.05 [0.02, 0.09]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched) --> | 0.47 [0.41, 0.53]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched) --> | below gate: 0.12 [0.07, 0.18]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched) --> | not run |
-  | the copy: (a) the change at the bridge word at L | 0.17 [0.12, 0.22]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm a: the bridge-word change at L (lookups switched) --> | 0.01 [0.00, 0.03]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm a: the bridge-word change at L (lookups switched) --> | 0.01 [0.00, 0.03]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm a: the bridge-word change at L (lookups switched) --> | below gate: 0.10 [0.06, 0.15]<!-- src: data/figures/depth/data.csv \| 45q, the rule's arm a: the bridge-word change at L (lookups switched) --> | not run |
-  | the copy: the rule | **holds<!-- src: data/figures/depth/data.csv \| 45q: the rule's reading -->** | **holds<!-- src: data/figures/depth/data.csv \| 45q: the rule's reading -->** | **holds<!-- src: data/figures/depth/data.csv \| 45q: the rule's reading -->** | not tested (gate) | not run |
-
-- **Read.**
-  - With the locker sentence first, the change at the bridge word switches most lookups on all five models; with it after, few.
-  - With the locker after the pick, copying the changed states into the locker sentences carries most of the lookup's switches and the bridge-word change almost none: the link is made in the locker sentences.
-  - Lightning's copy, below its gate, reads the same way.
-- **Caveats.**
-  - The split by sentence order was chosen after the data; with the locker after the pick too few lookups switch to read either reader's loss there.
-  - At L/2 the copy carries little on the 9B and 27B and about half on Muse.
-  - Lightning's copy is below its gate: descriptive only, never in the claims or grades.
-
-### Which token and layer carry the lookup when the locker sentence comes after the pick?
-
-- **Question.** Which token and layer carry the lookup when the locker sentence comes after the pick?
-- **Why we asked.** With the locker after the pick the bridge word cannot point back; a map of tokens and layers says where the link sits instead.
-- **Data.** Clean one-pick scenes on the 9B, 27B and Muse (the main test beside them); Lightning the main test only, its clean design below gate; the 122B not run.
-- **Method.**
-  - the map: the changed prompt's state placed into one token group (the bridge word, the rest of the pick sentence, the asked person, each locker sentence's item and number, the question, the last token) at one layer, every second (9B) or fourth layer (27B, Muse, Lightning), by sentence order;
-  - the lookups the change at L misses: the bridge word replaced at every layer up to L, against the change at L alone.
-- **Rule, fixed in advance.** "(a) In locker-after scenes the lookup's mass sits at the locker sentences, not at the bridge word, at every layer (bridge-word cells ≤ 0.25 everywhere; some locker-sentence cell ≥ 0.5). (b) In locker-first scenes the lookup's bridge-word mass ends before the recall's does (the last layer with bridge-word switch ≥ 0.3 is earlier for the lookup, by ≥ 2 layers on the 9B, ≥ 4 on Muse)." The 27B and Lightning: the same rule, copied, no prediction. The lookups the change at L misses: descriptive.
-
-![Locker after the pick: the lookup leaves the bridge word early](../../figures/depth/fig03d_depth_map.png)
-*Lookups and recalls switched when the changed state is placed in one token group at one layer, locker sentence before and after the pick, the locker sentences collapsed to their best cell; bottom rows: the bridge word replaced at every layer up to L, and from L on. The 9B, 27B and Muse on clean one-pick scenes; Lightning (hollow) on its main test.*
-
-- **Result.**
-
-  | | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | (a) locker after the pick: a locker-sentence cell carries the lookup | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (a) locker after: a locker-sentence cell carries the lookup --> | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (a) locker after: a locker-sentence cell carries the lookup --> | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (a) locker after: a locker-sentence cell carries the lookup --> | no<!-- src: data/figures/depth/data.csv \| D1 (main): (a) locker after: a locker-sentence cell carries the lookup --> (main test) | not run |
-  | (b) locker before the pick: the lookup leaves the bridge word before the recall | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (b) locker first: the lookup leaves the bridge word before the recall --> | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (b) locker first: the lookup leaves the bridge word before the recall --> | no<!-- src: data/figures/depth/data.csv \| D1 (clean): (b) locker first: the lookup leaves the bridge word before the recall --> | no<!-- src: data/figures/depth/data.csv \| D1 (main): (b) locker first: the lookup leaves the bridge word before the recall --> (main test) | |
-  | locker after the pick: of the lookups the change at L misses, carried by the bridge word before L (main test) | 0.93 [0.85, 0.98]<!-- src: data/figures/depth/data.csv \| 47.4: main, locker after the pick: lookups carried by the bridge word before L --> | 1.00 [1.00, 1.00]<!-- src: data/figures/depth/data.csv \| 47.4: main, locker after the pick: lookups carried by the bridge word before L --> | 0.99 [0.95, 1.00]<!-- src: data/figures/depth/data.csv \| 47.4: main, locker after the pick: lookups carried by the bridge word before L --> | 0.92 [0.86, 0.98]<!-- src: data/figures/depth/data.csv \| 47.4: main, locker after the pick: lookups carried by the bridge word before L --> | |
-  | the same, clean one-pick scenes | 0.95 [0.91, 0.98]<!-- src: data/figures/depth/data.csv \| 47.4: clean, locker after the pick: lookups carried by the bridge word before L --> | 1.00 [0.99, 1.00]<!-- src: data/figures/depth/data.csv \| 47.4: clean, locker after the pick: lookups carried by the bridge word before L --> | 1.00 [1.00, 1.00]<!-- src: data/figures/depth/data.csv \| 47.4: clean, locker after the pick: lookups carried by the bridge word before L --> | not tested (gate) | |
-
-- **Read.**
-  - No single cell carries the locker-after lookup on any model: the link is spread over tokens and layers.
-  - The lookup does not leave the bridge word before the recall by the margin fixed in advance; both read it to about the same depth, then the question and the last token carry the answer.
-  - The lookups the change at L misses are read from the bridge word at earlier layers.
-- **Caveats.**
-  - The 27B, Muse and Lightning were sampled every fourth layer, so their layers are known to four.
-  - Lightning: the main test only; its clean design is below its gate.
-  - The lookups the change misses are descriptive: no rule was fixed for them.
-
-### On Lightning, does the lookup read the bridge word through its attention blocks?
-
-- **Question.** On Lightning, does the lookup read the bridge word through its attention blocks?
-- **Why we asked.** Lightning's attention heads move with the address swap in blocks 19 and 26 (the appendix's attention figure); its other blocks carry a running state (Mamba-2), so the bridge word could reach the lookup through those two attention blocks, or through the state.
-- **Data.** Main test at L: 200 scenes, 37 bridge entities<!-- src: data/figures/depth/data.csv | 53.4: scenes, bridge entities -->; the whole change switches the lookup on 88<!-- src: data/figures/depth/data.csv | 53.4: lookups switched by the whole change --> of them. The follow-up uses the same scenes; its rule reads those where a control span fits (83 scenes, 35 bridge entities<!-- src: data/figures/depth/data.csv | 53.4 span: scenes where the control fits, bridge entities -->); the other 117<!-- src: data/figures/depth/data.csv | 53.4 span: scenes dropped (no control fits) --> are read on their own. The 9B, 27B and Muse: not applicable (a test of Lightning's blocks); the 122B: not run.
-- **Method.** The whole change at the bridge word at L, while every later token cannot attend to the bridge word in:
-  - (i) block 19, (ii) block 26, (iii) both, (iv) every attention block after L;
-  - (v) control: both blocks, with attention to another token of the same sentence blocked instead;
-  - read: the share of the whole change's lookup switches each block cuts; the recall alongside.
-  - Follow-up: in blocks 19 and 26, every token after the scene's last token cannot attend to the whole span from the bridge word to the scene's end (median 9<!-- src: data/figures/depth/data.csv | 53.4 span: median span length in tokens, the rule's scenes --> tokens on the rule's scenes); control: a span of the same length ending at the last token before the bridge's sentence, one placement, fixed before the run.
-- **Rule, fixed in advance.** "'Read through two blocks' if (iii) cuts the lookup's switches by ≥ 0.6 of the whole change's and (v) by ≤ 0.15; 'one block' if (i) or (ii) alone cuts ≥ 0.6; 'not through attention at the bridge' if (iv) cuts < 0.3 (the Mamba state carries it); else in between." Follow-up: "'The pointer is read by attention after the Mamba state spreads it' if the span cuts the lookup's switches by ≥ 0.6 and the control by ≤ 0.15; else as [the rule above]." No prediction. The cut on the scenes where the lookup's clean answer survives the span block was added after the data (descriptive).
-
-![Two attention blocks carry part of Lightning's lookup, not all of it](../../figures/depth/fig22_attention_blocks.png)
-*The share of the whole change's switches cut when later tokens cannot attend to the bridge word (top) or to the span from the bridge word to the scene's end (bottom), lookup (purple) and recall (dark), whiskers 95%; dashed: the rule's 0.6, dotted: 0.3. Lightning hollow (○); the 9B, 27B and Muse not applicable (a test of Lightning's blocks); the 122B not run.*
-
-- **Result.** Pending hand-check.
-
-  | the lookup's switches cut | 9B | 27B | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | block 19 / block 26 | not applicable | not applicable | not applicable | 0.11 [0.04, 0.19]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, lookup: switches cut, block 19 --> / 0.14 [0.06, 0.22]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, lookup: switches cut, block 26 --> | not run |
-  | both blocks | | | | 0.34 [0.25, 0.42]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, lookup: switches cut, blocks 19 and 26 --> | |
-  | every attention block after L | | | | 0.35 [0.27, 0.42]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, lookup: switches cut, every attention block after L --> | |
-  | control: another token, both blocks | | | | 0.00 [-0.06, 0.05]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, lookup: switches cut, control: another token, both blocks --> | |
-  | the lookup keeps its clean answer: both blocks / every attention block after L | | | | 0.77<!-- src: data/figures/depth/data.csv \| 53.4: the lookup keeps its clean answer, blocks 19 and 26 --> / 0.76<!-- src: data/figures/depth/data.csv \| 53.4: the lookup keeps its clean answer, every attention block after L --> | |
-  | the recall's switches cut: every attention block after L | | | | 0.56 [0.44, 0.65]<!-- src: data/figures/depth/data.csv \| attention blocks, the bridge word blocked, recall: switches cut, every attention block after L --> | |
-  | the rule | | | | **in between<!-- src: data/figures/depth/data.csv \| 53.4: the rule (lookup) -->** | |
-  | follow-up, the rule's scenes: the span / the control span | | | | 0.52 [0.41, 0.62]<!-- src: data/figures/depth/data.csv \| attention blocks, the span follow-up, lookup: switches cut, the span, blocks 19 and 26 --> / -0.01 [-0.05, 0.00]<!-- src: data/figures/depth/data.csv \| attention blocks, the span follow-up, lookup: switches cut, control span, same length --> | |
-  | follow-up: both blocks at the bridge word, the same scenes | | | | 0.33 [0.24, 0.42]<!-- src: data/figures/depth/data.csv \| attention blocks, the span follow-up, lookup: switches cut, the bridge word, both blocks (rerun) --> | |
-  | follow-up: the lookup keeps its clean answer, the span / the control span | | | | 0.45<!-- src: data/figures/depth/data.csv \| 53.4 span: the lookup keeps its clean answer, the span, blocks 19 and 26 --> / 1.00<!-- src: data/figures/depth/data.csv \| 53.4 span: the lookup keeps its clean answer, control span, same length --> | |
-  | follow-up, the rule's scenes where the lookup's clean answer survives the span block (37 of 83<!-- src: data/figures/depth/data.csv \| 53.4 span: the rule's scenes where the lookup's clean answer survives the span block -->; descriptive): the span / the control span | | | | 0.54 [0.33, 0.71]<!-- src: data/figures/depth/data.csv \| 53.4 span, the scenes where the clean answer survives: lookup switches cut by the span --> / 0.00 [0.00, 0.00]<!-- src: data/figures/depth/data.csv \| 53.4 span, the scenes where the clean answer survives: lookup switches cut by the control span --> | |
-  | follow-up: the span on every scene / on the scenes without a control | | | | 0.41 [0.26, 0.54]<!-- src: data/figures/depth/data.csv \| 53.4 span: lookup switches cut by the span, all scenes --> / 0.05 [-0.57, 0.42]<!-- src: data/figures/depth/data.csv \| 53.4 span: lookup switches cut by the span, scenes without a control --> | |
-  | follow-up: the rule | | | | **in between<!-- src: data/figures/depth/data.csv \| 53.4 span: the rule (lookup) -->** | |
-
-- **Read.**
-  - Blocking the bridge word in both attention blocks cuts about a third of Lightning's lookup switches, as much as blocking every attention block after L; either block on its own cuts little, the control nothing. By the rule: in between.
-  - Blocking the whole span from the bridge word to the scene's end in the same two blocks cuts about half, the control span nothing; still under the rule's bar, so in between: the lookup reads part of the bridge word through these two blocks and the rest some other way.
-  - On the scenes where the lookup keeps its clean answer under the span block, the span cuts about as much: the cut is not only general damage.
-- **Caveats.**
-  - Pending hand-check: today's runs, unverified until hand-checked.
-  - Lightning only, by design; its gate was chosen after its pre-check (○).
-  - Collateral: blocking both blocks costs the lookup its clean answer on about a quarter of scenes; the span costs it on more than half of the rule's scenes, the control span on none. The survivors' cut is descriptive; the label is computed on all the rule's scenes.
-  - The follow-up's rule reads only the scenes where a control span fits, whose spans are short (median 9<!-- src: data/figures/depth/data.csv | 53.4 span: median span length in tokens, the rule's scenes --> tokens against 28<!-- src: data/figures/depth/data.csv | 53.4 span: median span length in tokens, the dropped scenes --> on the others); on the others the lookup mostly does not switch under the whole change (0.19<!-- src: data/figures/depth/data.csv | 53.4 span: share of the scenes without a control whose lookup switches -->), so the span's cut there says little.
-  - The control span is one placement and ends further from the question than the span (median 12<!-- src: data/figures/depth/data.csv | 53.4 span: median distance from the end of the control span to the question --> tokens against 1<!-- src: data/figures/depth/data.csv | 53.4 span: median distance from the end of the span to the question -->).
-
-### Does the lookup drop the lens part before it takes up the address?
-
-- **Question.** Does the lookup drop the lens part before it takes up the address?
-- **Why we asked.** At L the lookup takes an identity route and a position route; depth says which comes first and whether the address is written before it is read.
-- **Data.** Routes scenes with the locker sentence first, split in halves: refit on one, read on the other. The 9B, Muse and Lightning; the 27B on two grids (first a reduced one, then every fourth layer); the 122B not run.
-- **Method.** At each sampled layer: the whole change and its parts (the lens part; the address refit at that layer; the identity outside the lens), each taken out or added by itself, against random parts of the same share; a probe for the locker at the bridge word. A layer counts only where the whole change switches 0.30 or more. Across depth: the overlap of the address refit at every pair of layers in the probe's window.
-- **Rule, fixed in advance.** "Define l_J = the first layer from which the lookup's switches lost without the lens part beyond random stay ≤ 0.10; l_P = the first layer where the position route's share under the whole change is ≥ 0.20; l_probe = the first layer where the probe is ≥ 0.80. (a) 'Handoff': l_P ≥ l_J [...] (b) 'The address forms before it is used': l_probe ≤ l_P on every model [...] (d) 'Never the value, at any depth': value ≤ 0.05 at every interpretable layer." Across depth: "persistent if the mean cos² of the principal angles ≥ 0.5 across the window where the probe is ≥ 0.8; re-encoded if it drops below 0.2 between adjacent sampled layers." The 27B's full grid and Lightning: the same rule, copied, no prediction.
-
-![The address forms early; identity route first, position route later](../../figures/depth/fig06b_anatomy.png)
-*Per sampled layer, the lookup's answers under the whole change at that layer (identity route blue, position route orange, the original answer grey) and the recall's switches (line); dashed: the address readable (probe ≥ 0.8); solid: position answers begin; hatched: too few switches to read. The 27B panel is its reduced grid; Lightning hollow; the 122B not run.*
-
-- **Result.**
-
-  | | 9B | 27B (full grid) | Muse | Lightning ○ | 122B |
-  |---|---|---|---|---|---|
-  | the address readable from layer | 4<!-- src: data/figures/depth/data.csv \| 47.8: the address readable from --> | 8<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): the address readable from --> | 6<!-- src: data/figures/depth/data.csv \| 47.8: the address readable from --> | 6<!-- src: data/figures/depth/data.csv \| 47.8: the address readable from --> | not run |
-  | the position route from layer | 12<!-- src: data/figures/depth/data.csv \| 47.8: the first layer of the position route --> | 28<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): the first layer of the position route --> | 22<!-- src: data/figures/depth/data.csv \| 47.8: the first layer of the position route --> | 14<!-- src: data/figures/depth/data.csv \| 47.8: the first layer of the position route --> | |
-  | the lookup needs the lens part up to layer | 12<!-- src: data/figures/depth/data.csv \| 47.8: the last layer the lookup needs the J++ part --> | 40<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): the last layer the lookup needs the J++ part --> | 2<!-- src: data/figures/depth/data.csv \| 47.8: the last layer the lookup needs the J++ part --> | 14<!-- src: data/figures/depth/data.csv \| 47.8: the last layer the lookup needs the J++ part --> | |
-  | (a) the handoff | yes<!-- src: data/figures/depth/data.csv \| 47.8: (a) the handoff --> | no<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): (a) the handoff --> (reduced grid: yes<!-- src: data/figures/depth/data.csv \| 47.8 (reduced grid): (a) the handoff -->) | yes<!-- src: data/figures/depth/data.csv \| 47.8: (a) the handoff --> | yes<!-- src: data/figures/depth/data.csv \| 47.8: (a) the handoff --> | |
-  | (b) the address readable before it is used | yes<!-- src: data/figures/depth/data.csv \| 47.8: (b) readable before it is used --> | yes<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): (b) readable before it is used --> | yes<!-- src: data/figures/depth/data.csv \| 47.8: (b) readable before it is used --> | yes<!-- src: data/figures/depth/data.csv \| 47.8: (b) readable before it is used --> | |
-  | (d) never the value | yes<!-- src: data/figures/depth/data.csv \| 47.8: (d) never the value --> | yes<!-- src: data/figures/depth/data.csv \| 47.8 (full grid): (d) never the value --> | yes<!-- src: data/figures/depth/data.csv \| 47.8: (d) never the value --> | yes<!-- src: data/figures/depth/data.csv \| 47.8: (d) never the value --> | |
-  | the address across depth: mean overlap (reading) | 0.28<!-- src: data/figures/depth/data.csv \| D4: the address's mean overlap over every pair of window layers --> (re-encoded<!-- src: data/figures/depth/data.csv \| D4: the rule's reading (the address) -->) | 0.26<!-- src: data/figures/depth/data.csv \| D4: the address's mean overlap over every pair of window layers --> (mixed<!-- src: data/figures/depth/data.csv \| D4: the rule's reading (the address) -->) | 0.21<!-- src: data/figures/depth/data.csv \| D4: the address's mean overlap over every pair of window layers --> (re-encoded<!-- src: data/figures/depth/data.csv \| D4: the rule's reading (the address) -->) | 0.34<!-- src: data/figures/depth/data.csv \| D4: the address's mean overlap over every pair of window layers --> (mixed<!-- src: data/figures/depth/data.csv \| D4: the rule's reading (the address) -->) | |
-
-- **Read.**
-  - On all four models the address is readable before the lookup starts using it, and the lookup never takes the value.
-  - On the 9B, Muse and Lightning the lookup stops needing the lens part by the layer its position route starts; on the 27B's full grid it still needs it after, so the handoff depends on which layers are sampled.
-  - The address's code changes across depth on every model.
-- **Caveats.**
-  - The 27B: the reduced grid gave a handoff (the lens part needed up to layer 16<!-- src: data/figures/depth/data.csv | 47.8 (reduced grid): the last layer the lookup needs the J++ part -->, the position route from layer 30<!-- src: data/figures/depth/data.csv | 47.8 (reduced grid): the first layer of the position route -->); the full grid samples a layer the reduced grid skipped. The figure shows the reduced grid.
-  - Each layer's address and probe are refit on the fit half; early layers read less well.
-  - Position grows with depth on the main test too (a candidate, not tested by a rule).
 
 ### At the last token, is the bridge entity in the lens part of the state, and does the model use it there?
 
@@ -904,6 +468,13 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - "Not used" means not at a real change's size: at gain 2 the J++ part has an effect on Muse and Lightning.
   - Lightning's swap moves more than the others' (0.14<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches -->), and its random part at gain 2 moves 0.19<!-- src: data/figures/depth/data.csv | lenswrite: a random part at gain 2 gives the changed prompt's recall answer -->.
   - The output classes are descriptive (CPU check of the stored runs).
+
+**More in the ledger** (each card with its figure, numbers and caveats):
+
+- [Does the bridge word redirect the lookup only when its locker sentence came first?](EXPERIMENTS.md#order) With the locker sentence first, the change at the bridge word switches most lookups on all five models; with it after, few.
+- [Which token and layer carry the lookup when the locker sentence comes after the pick?](EXPERIMENTS.md#d1) No single cell carries the locker-after lookup on any model: the link is spread over tokens and layers.
+- [On Lightning, does the lookup read the bridge word through its attention blocks?](EXPERIMENTS.md#b53-4) Blocking the bridge word in both attention blocks cuts about a third of Lightning's lookup switches, as much as blocking every attention block after L; either block on its own cuts little, the control nothing. By the rule: in between.
+- [Does the lookup drop the lens part before it takes up the address?](EXPERIMENTS.md#t47-8) On all four models the address is readable before the lookup starts using it, and the lookup never takes the value.
 
 ## Part V. Other datasets and operations
 

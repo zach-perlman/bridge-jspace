@@ -4477,13 +4477,12 @@ SUPP_FIGS = (
 # III gains the monitor (Fig. 23), the refit (Fig. 9b refit) and code and tool output (Fig. 21); Part IV Lightning's
 # attention blocks (Fig. 22)
 README_NAMES = ("fig11_scorecard", "fig00_setup", "fig00b_marks", "fig01_split", "fig18_atoms",
-                "fig19_identity_address", "fig09a_transfer", "fig20_order_cell", "fig01d_ladder",
-                "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig07_writes", "fig09b_six_lockers",
-                "fig07b_verbal", "fig23_monitor", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map",
-                "fig22_attention_blocks", "fig06b_anatomy", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
+                "fig20_order_cell", "fig07_writes", "fig07b_verbal", "fig23_monitor", "fig17_jspace_last_token",
+                "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/depth/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/depth/x0_details.md's figures
-SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
+SHEET_MORE = ("fig19_identity_address", "fig09a_transfer", "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig09b_six_lockers", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map", "fig22_attention_blocks", "fig06b_anatomy",  # moved to the ledger (Dan, 30 Oct)
+              "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09_transfer",
               *(n for n in BATCH47 if n not in README_NAMES),
