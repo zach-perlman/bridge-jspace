@@ -71,8 +71,10 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
               "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize",
-              "ansJ", "ansJ_rot", "ansU", "ansU_rot")  # fmt: skip  # ans*: amendment 58 note 3
+              "ansJ", "ansJ_rot", "ansU", "ansU_rot",  # ans*: amendment 58 note 3
+              "paper10_keepA", "paper10_keepA_rot")  # fmt: skip  # amendment 64 note 37: paper10's r minus its part in the answers' J++ span
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
+KEEPA_ROWS = {"every": "forms", "cands2": "cands2"}  # note 37's kept span: every form, or ansJ's rows (cands2) only
 
 
 def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str], skip: int = 0,
@@ -170,6 +172,11 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
                 ok2 = both(a) | ({t for x in it["steps"][0].get("alts", []) for t in both(x)} if kind == "step1" else set())
                 out[-1]["ok2"] = sorted(ok2)
                 out[-1]["cands2"] = sorted({t for v in vocab for t in both(v)} | ok2)
+                # forms (amendment 64 note 37, paper10_keepA's span): cands2 plus the same answers' first tokens with a
+                # leading space, either case (note 35's "any form"); used by --keepA-forms every only
+                sp = lambda v: {S.ids(tok, " " + v)[0], S.ids(tok, " " + v.lower())[0]}  # noqa: E731
+                src = set(vocab) | {a} | (set(it["steps"][0].get("alts", [])) if kind == "step1" else set())
+                out[-1]["forms"] = sorted(set(out[-1]["cands2"]) | {t for v in src for t in sp(v)})
     return out
 
 
@@ -398,6 +405,8 @@ def main(args) -> None:
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
                 "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "tasks_scene_words": args.tasks_scene_words, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
+    if any("_keepA" in c for c in args.conditions):  # amendment 64 note 37
+        manifest["keepA_forms"] = args.keepA_forms
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     suite_fams = [f for f in args.families if f in COMPETENCE]
@@ -527,6 +536,7 @@ def main(args) -> None:
             # does the protected set (clean top-10 at the answer position) shield the bridge itself? (logged per row)
             shields = [bool(p["bridge"]) and bool(set(model.surface_ids(p["bridge"])) & set(t.tolist()))
                        for p, t in zip(chunk, clean.topk(10, dim=1).indices, strict=True)]  # fmt: skip
+            span_cache: dict = {}  # note 37: (layer, rows) -> kept span, this batch only
             for band in bands:
                 tb = time.time()
                 for cond in conditions_for(band, args.conditions):
@@ -558,6 +568,16 @@ def main(args) -> None:
                         method = "top" if top_k(cond) is not None else "omp"
                         d = (unembed if cond.startswith("unembed") else pca[la] if cond.startswith("pca") else rdict[la] if cond.endswith("_rdict")
                              else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
+                        keep = None
+                        if "_keepA" in cond:  # amendment 64 note 37: the span A of the J++ unit vectors at this layer of the
+                            keep = []  # relation's answers (--keepA-forms; QR as answer_span_edit), kept out of paper10's r
+                            for p in chunk:
+                                rr = row_of[torch.tensor(p[KEEPA_ROWS[args.keepA_forms]], device="cuda")]
+                                rr = rr[rr >= 0].unique()
+                                ck = (la, tuple(rr.tolist()))
+                                if ck not in span_cache:
+                                    span_cache[ck] = torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                                keep.append(span_cache[ck])
                         edits[la] = removal_edit(
                             method,
                             d,
@@ -566,6 +586,7 @@ def main(args) -> None:
                             k=top_k(cond),
                             skip_sinks="_nosink" in cond,
                             size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None,
+                            keep_span=keep,
                         )
                     logits = first_token_logits(model, ids, edits, last)
                     if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition
@@ -701,7 +722,12 @@ if __name__ == "__main__":
                     help="where to remove: every position, only before the question (the facts), only from the "
                          "question on (question, instruction, 'Answer:'; see question_start), only the last position, "
                          "or only the bridge's mentions (bridge_positions)")  # fmt: skip
+    ap.add_argument("--keepA-forms", dest="keepA_forms", choices=sorted(KEEPA_ROWS), default="every",
+                    help="note 37's kept span: every form of the relation's answers (either case, with or without a leading "
+                         "space) or cands2 only (ansJ's rows)")  # fmt: skip
     a = ap.parse_args()
     bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
     assert not bad, f"unknown conditions {bad}"
+    keepa = [c for c in a.conditions if "keepA" in c]
+    assert set(keepa) <= {"paper10_keepA", "paper10_keepA_rot"} and (not keepa or a.tasks), f"note 37: {keepa} needs --tasks"
     main(a)

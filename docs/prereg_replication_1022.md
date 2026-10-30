@@ -3354,3 +3354,14 @@ Zach's MC answer (30 Oct, ~05:00 UTC): run "D" Friday morning, after notes 34-35
   - Beside: ansJ's gap as a share of paper10's gap (v3 gave 0.56-0.75), with ansU as its control; and the answer log-prob change.
 - **Descriptive.** The same on jsuite_v4cc's gated items, where the readout's top-1 is the cue, not the answer.
 - **Order.** After notes 34-35 on each GPU; a 9B smoke (<= 8 items per word) first.
+
+##### Amendment 64 addendum (Zach's session, 2026-10-30, before any full run of note 37; seen: only the builder's 9B smoke, n = 11 prompts, as a mechanics check)
+- **The kept span A for paper10_keepA uses "every form"** (--keepA-forms every): the item's cands2 rows plus the same answers' first tokens with a leading space, either case.
+  - Note 37's text says both "every form (either case, with or without a leading space)" and "its cands2 rows, the rows ansJ uses". On v4 these differ: cands2 holds only non-leading-space first tokens (often single letters), and the whole-word tokens appear only in the leading-space forms.
+  - "Every form" matches the note's purpose and Zach's any-form choice for note 35.
+  - ansJ, ansJ_rot and ansU keep cands2 only, as amendment 58 note 3.
+- **paper10 and paper10_rot are rerun inside note 37's runs,** so every keepA comparison sits in one run with the same batches. The reader checks them against note 20's stored rows.
+- **Loss** follows nn_ko_read (gated items). "Among items right unedited" is reported beside it.
+- **The v4cc subset is reported four ways:** all, conflict, aligned and cue_top1. cue_top1 means the J++ top-1 share for the cue beats the item's answer at the description end, from nn_readout_v4cc.
+- **When MM's (paper10 - paper10_rot) loss is <= 0, the ratio is "not read".**
+- **Behaviour of existing conditions is unchanged.** keep_span defaults to None. A CPU unit check shows the new removal_edit is bit-identical, and a 9B smoke on old vs new code gave 66/66 shared rows bit-identical.
