@@ -294,6 +294,29 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 
 *"Which item" is lens-readable for the recall, and the lookup's copy of it sits outside the lens.*
 
+### Which route does the lookup take: the item's identity, its locker's position, or the number?
+
+- **Question.** Which route does the lookup take: the item's identity, its locker's position, or the number?
+- **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads: when another item's locker sentence moves and takes a new number, each route predicts a different locker.
+- **Data.** Routes scenes, 300 per model; Lightning's gate was chosen after its pre-check was seen (○); the 122B is below its gate and was run with the gate lowered after the data (○).
+- **Method.** The change from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Arms: the whole change; without the address, against without a random part of its share; the address added by itself, against a random part.
+- **Rule, fixed in advance.** "A route counts as used if its share is >= 0.20 with lower CI >= 0.10."
+
+![Every model's lookup takes identity or position, never the value](figures/depth/r5_routes.png)
+*Shares of the lookup's answers by route when another item moves, per model: identity, position, other; {{q|95%}} intervals over bridge entities, n = 300 scenes per model; Lightning and the 122B hollow ○ (post hoc gates). The routes scenes are not among the hand-checked views.*
+
+- **Result.**
+  - Identity share under the whole change: 9B {{dp|fig05|9b|another item moved, whole: identity share}}, 27B {{dp|fig05|27b|another item moved, whole: identity share}}, Muse {{dp|fig05|muse|another item moved, whole: identity share}}, Lightning ○ {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: identity share}}, 122B ○ {{dp|fig05|122b|another item moved, whole: identity share}}.
+  - Position share: 9B {{dp|fig05|9b|another item moved, whole: position share}}, 27B {{dp|fig05|27b|another item moved, whole: position share}}, Muse {{dp|fig05|muse|another item moved, whole: position share}}, Lightning ○ {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: position share}}, 122B ○ {{dp|fig05|122b|another item moved, whole: position share}}.
+  - Value share: 9B {{dp|fig05|9b|another item moved, whole: value share}}, 27B {{dp|fig05|27b|another item moved, whole: value share}}, Muse {{dp|fig05|muse|another item moved, whole: value share}}, Lightning ○ {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: value share}}, 122B ○ {{dp|fig05|122b|another item moved, whole: value share}}.
+- **Read.**
+  - On every model the lookup answers by the item's identity or by its locker's position, never by the new number.
+  - The 27B leans on identity, the others split between the two routes.
+  - Removing the address takes the position route away beyond a random part of its share (Part III).
+- **Caveats.**
+  - The 122B was not tested at its gate on these scenes; its numbers are descriptive and never in a claim or a grade.
+  - Lightning's gate was chosen after its pre-check; the value is read only as the answer digit's share.
+
 **More in the ledger** (each card with its figure, numbers and caveats):
 
 - [Does the lookup's identity route run outside the lens?](docs/depth/EXPERIMENTS.md#t47-1) On the four models that passed the routes gate (9B, 27B, Muse, Lightning) the identity route survives taking out the lens's next directions: it runs outside the lens, not in lens directions beyond the recall's; the 122B's routes part is below its gate.
@@ -337,7 +360,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 
   Of those changed recalls, on scenes where the swapped-in item's answer differs from both the third and the original item's (no collision): 0.82 (9B, n = 73) and 0.81 (Lightning, n = 91), with {{q|95%}} intervals [0.74, 0.90] and [0.75, 0.89]; vs 0.85 / 0.85 on all<!-- src: results/c2_route_collision/20261030T210732Z/tables.json | swap_claim -->.
 
-  Post hoc, following the same scenes one by one (another item moved, lookup): of the lookups on the position route under the whole change, 131 of 153 (9B), 85 of 101 (27B), 83 of 163 (Muse), 135 of 166 (Lightning) and 101 of 115 (122B) leave it when the address is removed, against 8, 26, 5, 8 and 14 when a random part of the same size is removed. The other way, lookups on the identity route that go to the position route are rare without the address (3, 2, 2, 0 and 0) and more common without J++ (35, 36, 8, 22 and 26), each beside its random part. Counts, not a test: the paired differences, with {{q|95%}} intervals (bootstrap over the bridge entity), are in Appendix B<!-- src: results/c2_route_crosstab/20261030T212820Z/tables.json | contrasts -->.
+  Post hoc, following the same scenes one by one (another item moved, lookup): of the lookups on the position route under the whole change, 131 of 153 (9B), 85 of 101 (27B), 83 of 163 (Muse), 135 of 166 (Lightning) and 101 of 115 (122B) leave it when the address is removed, against 8, 26, 5, 8 and 14 when a random part of the same size is removed. The other way, lookups on the identity route that go to the position route are rare without the address (3, 2, 2, 0 and 0) and more common without J++ (35, 36, 8, 22 and 26), each beside its random part. Counts, not a test: the paired differences, with {{q|95%}} intervals (bootstrap over the bridge entity), are in [Appendix B](#appendix-b-following-the-same-scenes-the-position-route-post-hoc), with a figure<!-- src: results/c2_route_crosstab/20261030T212820Z/tables.json | contrasts -->.
 
 - **Read.**
   - With its locker sentence before the pick, the bridge word holds which locker sentence the item's locker sits in, on all five models, far above the layout baseline; with the locker after the pick it does not.
@@ -439,9 +462,9 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 
 **More in the ledger** (each card with its figure, numbers and caveats):
 
-- [With six lockers, does each locker have its own code?](docs/depth/EXPERIMENTS.md#six) No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers.
+- [With six lockers, does each locker have its own code?](docs/depth/EXPERIMENTS.md#six) No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers. ([the six-lockers figure](figures/depth/fig09b_six_lockers.png))
 - [Must the address be refit for each text format?](docs/depth/EXPERIMENTS.md#x45d) Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning; on the 27B it stays weak in every format.
-- [Is the address readable, and used, in Python code and tool output?](docs/depth/EXPERIMENTS.md#b53-7) In tool output on the 9B and in both formats on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker about as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines.
+- [Is the address readable, and used, in Python code and tool output?](docs/depth/EXPERIMENTS.md#b53-7) In tool output on the 9B and in both formats on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker about as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines. ([the code and tool figure](figures/depth/fig21_code_tool.png))
 
 ## Part IV. Where and when the link is made
 
@@ -486,6 +509,61 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
   - "Not used" means not at a real change's size: at gain 2 the J++ part has an effect on Muse and Lightning.
   - Lightning's swap moves more than the others' ({{dp|fig17_jspace_last_token|nemotron-3.5-lightning|51.10: recall, last token, read peak: the lens swap's switches}}), and its random part at gain 2 moves {{dp|cards|nemotron-3.5-lightning|lenswrite: a random part at gain 2 gives the changed prompt's recall answer}}.
   - The output classes are descriptive (CPU check of the stored runs).
+
+### Does the bridge word redirect the lookup only when its locker sentence came first?
+
+- **Question.** Does the bridge word redirect the lookup only when its locker sentence came first?
+- **Why we asked.** The bridge word can only point back: if the locker sentence comes after it, the link must be made elsewhere.
+- **Data.** Main test, 200 scenes per model, split by where the item's locker sentence sits: before the pick {{num|lk_order_before_9b_n}} / {{num|lk_order_before_27b_n}} / {{num|lk_order_before_muse_n}} / {{num|lk_order_before_lightning_n}} / {{num|lk_order_before_122b_n}}, after it {{num|lk_order_after_9b_n}} / {{num|lk_order_after_27b_n}} / {{num|lk_order_after_muse_n}} / {{num|lk_order_after_lightning_n}} / {{num|lk_order_after_122b_n}} (9B / 27B / Muse / Lightning ○ / 122B); Zach's passages by whether the fact sentence comes before the sentence naming the bridge; clean one-pick scenes with the locker after the pick.
+- **Method.** The lookup's switch under the change at the bridge word, by sentence order; on Zach's passages, the fact sentence before vs after; with the locker after the pick, the change at the bridge word against the same change copied into the locker sentences, by layer. Post hoc, a 2 × 2: the original prompt's locker sentence before or after the pick, and the changed prompt's.
+- **Rule, fixed in advance.** None for the split (read after the data, descriptive); Zach's split and the copy test's arms were fixed in advance.
+
+![Locker after the pick: the link is made in the locker sentences](figures/depth/fig03_order.png)
+*Lookups switched by the change at the bridge word, by sentence order (A: ours; B: Zach's passages); by layer, the change at the bridge word against the change copied into the locker sentences (C); the original prompt's and the changed prompt's locker sentence, before or after the pick (D, post hoc). {{q|95%}} intervals (cluster bootstrap over bridge entities), n per panel; Lightning hollow ○ (gate chosen after its pre-check); the 122B not run in B and (C). Panel A was hand-checked on a sample (view g); B, (C) and D were not.*
+
+- **Result.**
+  - Locker first / after, lookups switched by the whole change: 9B {{num|lk_order_before_9b}} / {{num|lk_order_after_9b}}, 27B {{num|lk_order_before_27b}} / {{num|lk_order_after_27b}}, Muse {{num|lk_order_before_muse}} / {{num|lk_order_after_muse}}, Lightning ○ {{num|lk_order_before_lightning}} / {{num|lk_order_after_lightning}}, 122B {{num|lk_order_before_122b}} / {{num|lk_order_after_122b}}.
+  - Zach's passages, fact first / after: 9B {{dp|fig03|9b|Zach's passages, L12: lookups switched by the whole change, fact-first}} / {{dp|fig03|9b|Zach's passages, L12: lookups switched by the whole change, fact-after}}, 27B {{dp|fig03|27b|Zach's passages, L32: lookups switched by the whole change, fact-first}} / {{dp|fig03|27b|Zach's passages, L32: lookups switched by the whole change, fact-after}}.
+  - Post hoc, both orders: the original prompt's and the changed prompt's locker sentence both before / both after the pick, lookups switched: 9B {{dp|fig03|9b|post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change}} / {{dp|fig03|9b|post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change}}, 27B {{dp|fig03|27b|post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change}} / {{dp|fig03|27b|post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change}}, Muse {{dp|fig03|muse|post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change}} / {{dp|fig03|muse|post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change}}, Lightning ○ {{dp|fig03|nemotron-3.5-lightning|post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change}} / {{dp|fig03|nemotron-3.5-lightning|post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change}}, 122B {{dp|fig03|122b|post hoc, original locker sentence before the pick, changed before: lookups switched by the whole change}} / {{dp|fig03|122b|post hoc, original locker sentence after the pick, changed after: lookups switched by the whole change}}.
+- **Read.**
+  - On every model the change at the bridge word switches most lookups when the locker sentence comes first and few when it comes after.
+  - On Zach's passages the same holds for the fact sentence; with the locker after the pick, the link is made in the locker sentences, in a band of layers.
+  - Both orders matter: the changed prompt's locker sentence moves the lookup too, but the original prompt's order has the larger effect on four models, Muse about equal (post hoc).
+- **Caveats.**
+  - With the locker after the pick the whole change switches few lookups, under the 30 switches a cell needs: the lookup's drop there is not usable.
+  - The split was chosen after the data; D is post hoc; some cells of the 2 × 2 hold few lookups.
+  - Lightning's copy test is below its gate, so the layer panel shows the rule's arms only.
+
+### Is the address readable before the lookup uses it, and when does the lookup let go of the J++ part?
+
+- **Question.** Is the address readable before the lookup uses it, and when does the lookup let go of the J++ part?
+- **Why we asked.** The address is formed early and used late; the order in which the lookup hands over from the lens part to the address is claim 12.
+- **Data.** Each model's sampled layers (the 27B's full grid, every fourth layer to 60), the lookup and recall main-test scenes, and the routes scenes where another item moves; Lightning and the 122B are coverage runs.
+- **Method.** At each layer: the lookup's and the recall's switches blocked without the J++ part beyond a random part; the position answers under the whole change when another item moves; the accuracy of a locker probe. Three marks per model: the layer where the probe reads the address, where position answers start, and the last layer the lookup needs the J++ part.
+- **Rule, fixed in advance.** "(a) the handoff: the lookup's last layer needing the J++ part is no later than its first layer of position answers; (b) the address is readable before it is used; (d) the lookup never answers with the value."
+
+![The address is readable before the lookup uses it](figures/depth/fig06_depth.png)
+*Per model, by layer: the lookup's and the recall's switches blocked without the J++ part beyond a random part (circles, diamonds), position answers (squares), the locker probe's accuracy (dashed line); marks at the probe's, the position route's and the J++ part's layers; {{q|95%}} intervals; Lightning and the 122B hollow ○. The 27B is its full grid, where the handoff rule (a) fails. This anatomy is not among the hand-checked views.*
+
+- **Result.**
+
+  | | 9B | 27B (full grid) | Muse | Lightning ○ | 122B ○ |
+  |---|---|---|---|---|---|
+  | the address readable from layer | {{dp|cards|9b|47.8: the address readable from}} | {{dp|cards|27b|47.8 (full grid): the address readable from}} | {{dp|cards|muse|47.8: the address readable from}} | {{dp|cards|nemotron-3.5-lightning|47.8: the address readable from}} | {{dp|cards|122b|47.8: the address readable from}} |
+  | position answers from layer | {{dp|cards|9b|47.8: the first layer of the position route}} | {{dp|cards|27b|47.8 (full grid): the first layer of the position route}} | {{dp|cards|muse|47.8: the first layer of the position route}} | {{dp|cards|nemotron-3.5-lightning|47.8: the first layer of the position route}} | {{dp|cards|122b|47.8: the first layer of the position route}} |
+  | the lookup's last layer needing the J++ part | {{dp|cards|9b|47.8: the last layer the lookup needs the J++ part}} | {{dp|cards|27b|47.8 (full grid): the last layer the lookup needs the J++ part}} | {{dp|cards|muse|47.8: the last layer the lookup needs the J++ part}} | {{dp|cards|nemotron-3.5-lightning|47.8: the last layer the lookup needs the J++ part}} | {{dp|cards|122b|47.8: the last layer the lookup needs the J++ part}} |
+  | (a) the handoff | {{dp|cards|9b|47.8: (a) the handoff}} | {{dp|cards|27b|47.8 (full grid): (a) the handoff}} | {{dp|cards|muse|47.8: (a) the handoff}} | {{dp|cards|nemotron-3.5-lightning|47.8: (a) the handoff}} | {{dp|cards|122b|47.8: (a) the handoff}} |
+  | (b) readable before it is used | {{dp|cards|9b|47.8: (b) readable before it is used}} | {{dp|cards|27b|47.8 (full grid): (b) readable before it is used}} | {{dp|cards|muse|47.8: (b) readable before it is used}} | {{dp|cards|nemotron-3.5-lightning|47.8: (b) readable before it is used}} | {{dp|cards|122b|47.8: (b) readable before it is used}} |
+  | (d) never the value | {{dp|cards|9b|47.8: (d) never the value}} | {{dp|cards|27b|47.8 (full grid): (d) never the value}} | {{dp|cards|muse|47.8: (d) never the value}} | {{dp|cards|nemotron-3.5-lightning|47.8: (d) never the value}} | {{dp|cards|122b|47.8: (d) never the value}} |
+
+- **Read.**
+  - On every model the address is readable before the lookup uses it (b), and the lookup never answers with the value (d).
+  - The handoff (a) holds on the 9B, Muse, Lightning and the 122B: the lookup stops needing the J++ part at or before the layer where position answers start.
+  - On the 27B's full grid it fails: the lookup needs the J++ part up to a layer after its position answers start; the reduced grid had read it the other way.
+- **Caveats.**
+  - The 27B's reduced grid (every fourth layer to 32) read the handoff as holding; the full grid is the one the claims table uses.
+  - Lightning is a coverage run (gate chosen after its pre-check); the 122B is a coverage run with its gate lowered; neither was hand-checked.
+  - The anatomy is not among the views hand-checked on a sample.
 
 **More in the ledger** (each card with its figure, numbers and caveats):
 
@@ -598,11 +676,14 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](figures/depth/contact_sheet.png). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [the settings](figures/depth/fig01b_settings.png), [every part](figures/depth/supp/s02_parts_all.png), [parts of the same size](figures/depth/fig02_specificity.png), [the 27B with more directions](figures/depth/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/depth/fig01c_zeroing.png), [the dose curves](figures/depth/fig16_dose.png), [the main test's parts](figures/depth/fig05b_identity_outside.png), [a described bridge](figures/depth/fig05c_described_bridge.png), [the order split with every model](figures/depth/supp/s03_order_split.png), [the layer sweep](figures/depth/fig03b_layers.png), [the link copy variants](figures/depth/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/depth/supp/s03e_cumulative.png), [the depth candidate on the main test](figures/depth/fig06_depth.png), [the address across depth](figures/depth/fig06c_address_depth.png), [the recall follows the swap](figures/depth/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/depth/supp/s07b_lens_readout.png), [the lookup's errors](figures/depth/fig07c_probe_errors.png), [the first locker](figures/depth/fig08_first_locker.png), [the first sentence and the moves](figures/depth/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/depth/supp/s04_routes_design.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/depth/fig09c_formation.png), [chained addresses](figures/depth/fig09d_chain.png), [what is left of the route](figures/depth/fig10_what_is_left.png), [attribute probe and MLPs](figures/depth/fig10b_enrichment.png), [binding](figures/depth/fig10c_binding.png), [heads](figures/depth/fig10d_heads.png), [second route](figures/depth/fig10e_second_route.png), [the mechanism tests](figures/depth/fig15_mechanisms.png), [attention follows the swapped address](figures/depth/fig13_attention.png), [learned subspaces](figures/depth/fig14_learned.png), [Muse's learned subspaces](figures/depth/supp/s12_das_muse.png), [the transfer on every model](figures/depth/fig09_transfer.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).
+Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](figures/depth/contact_sheet.png). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [the settings](figures/depth/fig01b_settings.png), [every part](figures/depth/supp/s02_parts_all.png), [parts of the same size](figures/depth/fig02_specificity.png), [the 27B with more directions](figures/depth/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/depth/fig01c_zeroing.png), [the dose curves](figures/depth/fig16_dose.png), [the main test's parts](figures/depth/fig05b_identity_outside.png), [a described bridge](figures/depth/fig05c_described_bridge.png), [the order split with every model](figures/depth/supp/s03_order_split.png), [the layer sweep](figures/depth/fig03b_layers.png), [the link copy variants](figures/depth/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/depth/supp/s03e_cumulative.png), [the address across depth](figures/depth/fig06c_address_depth.png), [the recall follows the swap](figures/depth/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/depth/supp/s07b_lens_readout.png), [the lookup's errors](figures/depth/fig07c_probe_errors.png), [the first locker](figures/depth/fig08_first_locker.png), [the first sentence and the moves](figures/depth/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/depth/supp/s04_routes_design.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/depth/fig09c_formation.png), [chained addresses](figures/depth/fig09d_chain.png), [what is left of the route](figures/depth/fig10_what_is_left.png), [attribute probe and MLPs](figures/depth/fig10b_enrichment.png), [binding](figures/depth/fig10c_binding.png), [heads](figures/depth/fig10d_heads.png), [second route](figures/depth/fig10e_second_route.png), [the mechanism tests](figures/depth/fig15_mechanisms.png), [attention follows the swapped address](figures/depth/fig13_attention.png), [learned subspaces](figures/depth/fig14_learned.png), [Muse's learned subspaces](figures/depth/supp/s12_das_muse.png), [the transfer on every model](figures/depth/fig09_transfer.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).
 
 ## Appendix B. Following the same scenes: the position route (post hoc)
 
 *Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Left: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Right: of the scenes on the identity route, those that go to the position route without J++, against without a random part. Differences with {{q|95%}} intervals (bootstrap over the bridge entity, paired).*
+
+![Position scenes leave position without the address; identity scenes go to position without the J++ part (post hoc)](figures/depth/fig24_two_codes.png)
+*Post hoc, another item moved, lookup, 300 scenes per model: the scenes that leave the position route without the address, and the scenes that go from identity to position without the J++ part, each against a random part of the same size, with the paired differences and {{q|95%}} intervals (bootstrap over the bridge entity); Lightning and the 122B hollow ○. Not among the hand-checked views. The table below has the counts.*
 
 | | whole = position: n | leave position, without the address | leave position, random part | difference | whole = identity: n | go to position, without the lens part | go to position, random part | difference |
 |---|---|---|---|---|---|---|---|---|
