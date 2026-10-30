@@ -16,8 +16,12 @@ Readings (9B; MM):
       against the share whose output is a kept random answer under keepRandRivals; the gold answer's survival under each (and
       under paper10 and unedited, beside).
 Writes results/ablate_v2/nn_ko_read/{P}note57.json (or --out-dir) and prints one "reading ..." line per registered reading.
+Amendment 83 (--set, another v4 draw, e.g. jsuite_v4p4002_test_chat): reads {P}{set}_ko57_cand2_v1, checks paper10 / paper10_rot
+against the draw's note 37 / 41 run {P}{set}_ko37_cand2_v1, writes {P}{set}_note57.json and prints, per registered reading (S1,
+D1 per K, A1), a "reading replication note57 ..." line: "replicates" if the label equals draw 4001's ({P}note57.json), otherwise
+"does not replicate" (no pooling). The default call is unchanged.
 
-python scripts/nn_ko57_read.py PREFIX [--run-dir DIR] [--out-dir DIR]
+python scripts/nn_ko57_read.py PREFIX [--set SET] [--run-dir DIR] [--out-dir DIR]
 """
 
 from __future__ import annotations
@@ -62,10 +66,10 @@ def contrast(acc, items, a: tuple, b: tuple, base: tuple) -> dict:
             "points": round(pts(us), 1), "points_ci": K.boot(by, pts), "den_points": round(100 * sum(u[4] - u[5] for u in us) / len(us), 1)}  # fmt: skip
 
 
-def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> dict:
-    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / SET / "items.jsonl").open()}
-    d = run_dir or RES / "ablate_v2" / f"{P}{SET}_ko57_cand2_v1"
-    out: dict = {"prefix": P, "run": str(d)}
+def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None, set_name: str = SET) -> dict:
+    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / set_name / "items.jsonl").open()}
+    d = run_dir or RES / "ablate_v2" / f"{P}{set_name}_ko57_cand2_v1"
+    out: dict = {"prefix": P, "run": str(d), **({"set": set_name} if set_name != SET else {})}
     if not (d / "rows.jsonl").exists():
         print(f"note 57 {P or '27b_'}: {d} missing")
         return out
@@ -73,8 +77,11 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
     m = K.measures(acc, items, lambda it: True, CONDS)
     cs = m["conditions"]
     out["measures"] = m
-    out["stored_check"] = K.stored_check(acc, f"{P}{SET}_ko41_cand2_v1")
+    # amendment 83: a draw's note 37 and note 41 conditions ran in one run (notes 43 / 48)
+    out["stored_check"] = K.stored_check(acc, f"{P}{SET}_ko41_cand2_v1" if set_name == SET else f"{P}{set_name}_ko37_cand2_v1")
     tag = P or "27b_"
+    if set_name != SET:
+        tag = f"{tag} {set_name}"
     lines = K.table(f"note 57 {tag}", m)
     R: dict = {}
     s1 = contrast(acc, items, ("paper10_onlyA", "paper10_onlyA_rot"), ("paper10_onlyRperp", "paper10_onlyRperp_rot"), ("paper10", "paper10_rot"))
@@ -129,6 +136,17 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
                                    "E_match_mean": round(sum(x["E_match"] for x in v) / len(v), 4)}  # fmt: skip
     for k, v in R.items():
         lines.append(f"reading note57 {k} {tag}: {v['label']!r} | " + json.dumps({kk: vv for kk, vv in v.items() if kk != "label"})[:700])
+    if set_name != SET:  # amendment 83: the same registered label as draw 4001's, per reading (T1 is descriptive)
+        ref_p = RES / "ablate_v2" / "nn_ko_read" / f"{P}note57.json"
+        ref = json.loads(ref_p.read_text()).get("readings", {}) if ref_p.exists() else {}
+        out["replication"] = {}
+        for k, v in R.items():
+            if k == "T1":
+                continue
+            base = ref.get(k, {}).get("label")
+            rep_ = ("not compared: draw 4001's reading missing" if base is None else "replicates" if base == v["label"] else "does not replicate")
+            out["replication"][k] = {"label": rep_, "draw4001": base, "this_draw": v["label"]}
+            lines.append(f"reading replication note57 {k} {tag}: {rep_!r} (draw 4001 {base!r}, this draw {v['label']!r})")
     lines.append(f"  energy matching (MM): {json.dumps(out['matching'])}")
     sc = out["stored_check"]
     if not sc.get("missing"):
@@ -136,7 +154,7 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
             f"{c} {v['n_both']}/{v['n_new']} same read {v['same_correct']} same logp {v['same_logp_bits']}" for c, v in sc.items() if c != "stored_run"))
     od = out_dir or RES / "ablate_v2" / "nn_ko_read"
     od.mkdir(parents=True, exist_ok=True)
-    (od / f"{P}note57.json").write_text(json.dumps(out, indent=1) + "\n")
+    (od / (f"{P}note57.json" if set_name == SET else f"{P}{set_name}_note57.json")).write_text(json.dumps(out, indent=1) + "\n")
     print("\n".join(lines))
     return out
 
@@ -144,7 +162,8 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("prefix", nargs="?", default="qwen35_9b_")
+    ap.add_argument("--set", default=SET, help="amendment 83: another v4 draw (e.g. jsuite_v4p4002_test_chat)")
     ap.add_argument("--run-dir", type=Path, default=None)
     ap.add_argument("--out-dir", type=Path, default=None)
     a = ap.parse_args()
-    main(a.prefix, a.run_dir, a.out_dir)
+    main(a.prefix, a.run_dir, a.out_dir, a.set)
