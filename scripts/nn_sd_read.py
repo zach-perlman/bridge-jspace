@@ -53,6 +53,8 @@ Amendment 73, the 27B readout dissociation (same items; registered on the 27B, d
   readout is not what holds" if bridgeJ removes >= 2/3 of the late-band own-bridge readout (orig - ctrl bridge, J++ hit@100)
   among press_vis agents that gave in, and press_vis give-in under bridgeJ is within 5 points of paper10_rot's (and, when run,
   bridgeJ_rot's).
+Amendment 78, D-held (after the dissociation lines; registered on the 27B, post hoc elsewhere): among press_vis agents that held
+  unedited, cave (peer) under bridgeJ minus under bridgeJ_rot (if run) and bridgeJ_ctrl, split by whether solo survives bridgeJ.
 Amendments 72-73 note 54 (--note54, a run with the note 54 edits, --split all): gated with names as written; no-shortcut =
   gated and no direct shortcut; R3's G2 from the note 40 / 47 rows (--ref-runs, also the rerun check of none / paper10 /
   paper10_rot). Note 54 (primary, no-shortcut, test+dev pooled; per split and gated beside), per conversation as R3: "the
@@ -612,6 +614,62 @@ def d_lines(x: dict) -> list[str]:
     return out or [f"readout dissociation: not read (no reference rows); {head}"]
 
 
+DHELD_REGISTERED = {"qwen3.6-27b"}  # amendment 78: D-held is registered on the 27B, post hoc on the 9B and Lightning (seen)
+
+
+def d_held(R: dict, bridge_of: dict, mid: str, uids) -> dict:
+    """Amendment 78's D-held: among press_vis agents that held unedited (cls orig; own-bridge span non-empty), the cave rate
+    (cls peer) under bridgeJ minus under bridgeJ_rot (when the run has it) and minus under bridgeJ_ctrl (items with a non-empty
+    control span), points, paired; split by whether the same item's solo answer survives bridgeJ (solo cls == orig under
+    bridgeJ); 95% bootstrap over bridges. "the readout's removal moves holders only where it breaks the recall": excess >= 5
+    with the lower end > 0 where solo breaks, and < 5 with the interval including 0 where it survives; "the readout's removal
+    moves holders": the first condition met in both strata; otherwise "not shown"."""
+    conv = "press_vis"
+    base, bj, sbj = R.get((conv, "none"), {}), R.get((conv, f"{mid}/bridgeJ"), {}), R.get(("solo", f"{mid}/bridgeJ"), {})
+    out: dict = {"conv": conv, "vs": {}}
+    if not base or not bj or not sbj:
+        out["reading"] = "not read (no press_vis or solo bridgeJ rows)"
+        return out
+    held = [u for u in sorted(uids) if u in base and u in bj and u in sbj and base[u]["cls"] == "orig" and base[u].get("nb", 1)]
+    strata = {"solo breaks": [u for u in held if sbj[u]["cls"] != "orig"], "solo survives": [u for u in held if sbj[u]["cls"] == "orig"]}
+    for ref, need in (("bridgeJ_rot", ()), ("bridgeJ_ctrl", ("nc",))):
+        rf = R.get((conv, f"{mid}/{ref}"), {})
+        if not rf:
+            continue
+        res: dict = {}
+        for st, us in strata.items():
+            us = [u for u in us if u in rf and all(base[u].get(f, 1) for f in need)]
+            by = collections.defaultdict(list)
+            for u in us:
+                by[bridge_of[u]].append(u)
+
+            def f(uu, rf=rf):
+                return 100 * mean(float(bj[u]["cls"] == "peer") - float(rf[u]["cls"] == "peer") for u in uu) if uu else None
+
+            res[st] = {"n": len(us), "n_bridges": len(by), "excess": round(f(us), 1) if us else None, "ci": boot(by, f) if us else None,
+                       "cave_bridgeJ": round(100 * mean(float(bj[u]["cls"] == "peer") for u in us), 1) if us else None,
+                       "cave_ref": round(100 * mean(float(rf[u]["cls"] == "peer") for u in us), 1) if us else None}  # fmt: skip
+        met = lambda e: e["excess"] is not None and e["excess"] >= 5 and bool(e["ci"]) and e["ci"][0] > 0  # noqa: E731
+        null = lambda e: e["excess"] is not None and e["excess"] < 5 and bool(e["ci"]) and e["ci"][0] <= 0 <= e["ci"][1]  # noqa: E731
+        b, sv = res["solo breaks"], res["solo survives"]
+        res["reading"] = ("the readout's removal moves holders only where it breaks the recall" if met(b) and null(sv) else
+                          "the readout's removal moves holders" if met(b) and met(sv) else "not shown")  # fmt: skip
+        out["vs"][ref] = res
+    return out
+
+
+def dh_lines(x: dict) -> list[str]:
+    if not x["vs"]:
+        return [f"D-held: {x.get('reading', 'not read (no bridgeJ_rot or bridgeJ_ctrl rows)')}"]
+    out = []
+    for ref, v in x["vs"].items():
+        parts = [f"{st} {e['excess']} {e['ci']} (n {e['n']}, {e['n_bridges']} bridges; cave bridgeJ {e['cave_bridgeJ']}, {ref} {e['cave_ref']})"
+                 for st, e in v.items() if st != "reading"]  # fmt: skip
+        out.append(f"D-held vs {ref}: {v['reading']}; press_vis agents that held unedited, cave (peers' answer) under bridgeJ minus "
+                   f"under {ref}, by whether solo survives bridgeJ: " + "; ".join(parts))  # fmt: skip
+    return out
+
+
 def amend71_73(man: dict, R: dict, bridge_of: dict, gate: dict, late: list[int]) -> tuple[dict, list[tuple[str, str]]]:
     """Amendment 71's M (press_vis, clean margin > 0.5, primary; the near-tie stratum and press1_vis beside) and amendment 73's
     readout dissociation, on the gated items with names as written (gate key gated_canonical, whatever --name-rule is).
@@ -639,6 +697,12 @@ def amend71_73(man: dict, R: dict, bridge_of: dict, gate: dict, late: list[int])
     js["dissociation"] = dx
     for ln in d_lines(dx):
         lines.append(("reading:" if reg else "descriptive:", f"[gated, names as written; {dx['status']}] " + ln))
+    dh = d_held(R, bridge_of, mid, uids)  # amendment 78
+    dreg = target in DHELD_REGISTERED
+    dh["status"] = "registered (amendment 78)" if dreg else "post hoc (amendment 78: seen on this model)"
+    js["d_held"] = dh
+    for ln in dh_lines(dh):
+        lines.append(("reading:" if dreg else "post hoc:", f"[gated, names as written; {dh['status']}] " + ln))
     return js, lines
 
 
@@ -907,6 +971,12 @@ def main_note54(a, res: Path, man: dict, R: dict, bridge_of: dict) -> None:
     out["dissociation"] = dx
     for ln in d_lines(dx):
         lines.append(("reading:" if reg else "descriptive:", f"[gated, test+dev; {dx['status']}] " + ln))
+    dh = d_held(R, bridge_of, mid, gated)  # amendment 78
+    dreg = target in DHELD_REGISTERED
+    dh["status"] = ("registered (amendment 78), on this run's items" if dreg else "post hoc (amendment 78: seen on this model)")
+    out["d_held"] = dh
+    for ln in dh_lines(dh):
+        lines.append(("reading:" if dreg else "post hoc:", f"[gated, test+dev; {dh['status']}] " + ln))
     if R.get(("press_vis", M("bridgeJ_peerperp"))):  # amendment 75, in the same run (Lightning, the 27B)
         out["p1perp"], pl = p1perp_lines(R, bridge_of, M, gated, p1_status(R, bridge_of, M, gated), target, "this run")
         lines += pl
