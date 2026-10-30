@@ -123,5 +123,6 @@ figures-kit:        ## every figure-kit figure for both targets (figures/slides/
 	uv run python -m bridge_jspace.figkit.build $(FIG) --target readme
 
 readme: figures-kit ## the root README from docs/readme/README.template.md (numbers and figures fill in)
+	uv run python -m bridge_jspace.figkit.tables --target readme
 	uv run python scripts/readme_root.py build
 	uv run pytest -q tests/test_readme_sources.py

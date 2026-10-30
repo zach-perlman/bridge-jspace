@@ -4,7 +4,7 @@ uv run python -m bridge_jspace.figkit.build                    # every figure, f
 uv run python -m bridge_jspace.figkit.build --target readme    # every figure, for the READMEs -> figures/readme/ (bold claim on top)
 uv run python -m bridge_jspace.figkit.build p1_c1_split p5a     # some figures (id or id prefix)
 
-Writes <out>/CAPTIONS.md (claim + caption per figure: the speaker notes) and <out>/contact_sheet.png.
+Writes the captions (claim + caption per figure: the speaker notes) and <out>/contact_sheet.png (readme: contact_sheet_kit.png).
 """
 
 from __future__ import annotations
@@ -25,7 +25,9 @@ CAPTIONS = {
 
 
 def contact_sheet(out, ids) -> None:
-    page_sheet([out / f"{i}.png" for i in ids], out / "contact_sheet.png")
+    # figures/readme/contact_sheet.png is the root README's figures in page order (scripts/readme_root.py)
+    name = "contact_sheet_kit.png" if out.name == "readme" else "contact_sheet.png"
+    page_sheet([out / f"{i}.png" for i in ids], out / name)
 
 
 def page_sheet(pngs, dest, width: int = 880) -> None:

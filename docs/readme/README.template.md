@@ -27,7 +27,7 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 ## C1. Recall needs the lens part; lookup does not
 
-![Taking the lens part out breaks recalled answers, not lookup ones](figures/shared/j1_recall_needs_lens.png)
+{{fig|r1_c1_split}}
 
 - **Zach, remove everywhere (a band of layers):** recalled minus stated answers lost 50.9 / 42.6 / 53.1 points (27B / 9B / Lightning)<!-- src: docs/breadth/data.csv | ko.q27.mk; ko.q9.mk; ko.nl.mk -->; rotated directions {{b|ko.q27.rot}} / {{b|ko.q9.rot}} / {{b|ko.nl.rot}}, the logit lens's {{b|ko.q27.u}} / {{b|ko.q9.u}} / {{b|ko.nl.u}}, same-norm PCA directions {{b|ko.q27.pc}} / {{b|ko.q9.pc}} / {{b|ko.nl.pc}}.
   - Three-step chains that end on a recalled answer need the lens part too: all four kinds on Lightning, three of four on Qwen 27B, on two data seeds each. <!-- src: docs/breadth/data.csv | mod.nl.threehop.paper10.PPM-PPP; mod.nl.threehop.paper10.MMP-PPP; mod2.nl.threehop.paper10.PPM-PPP; mod2.nl.threehop.paper10.MMM-PPP --> <!-- src: docs/breadth/data.csv | mod.q27.threehop.paper10.PPM-PPP; mod.q27.threehop.paper10.MMP-PPP; mod2.q27.threehop.paper10.PPM-PPP; mod2.q27.threehop.paper10.MMM-PPP -->
@@ -39,7 +39,7 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 - **Lightning on natural text:** 51.8 more on recalled answers; a random rotation costs −1.2, the logit lens's directions 7.9. <!-- src: docs/breadth/data.csv | natplus.nl; natplus.nl.rot; natplus.nl.u -->
 - **Every relation and wording:** on Qwen 27B from 36.0 (languages) to 72.0 (dishes); two rewordings of every passage give 49.3 and 50.2 (Qwen 27B), 48.9 and 50.3 (Lightning). Rare bridges lose as much as popular ones (Qwen 27B 55.6 against 50.4, Lightning 61.4 against 47.5). <!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes --> <!-- src: docs/breadth/data.csv | ko.q27.r2; ko.q27.r3; ko.nl.r2; ko.nl.r3 --> <!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->
 
-{{fig|p2a_controls_zach}}
+{{fig|f2_controls}}
 
 **Boring explanation, said first:** the lens part is the bridge word's identity; the lookup only needs where the sentence sits, which is not a word. **Limits:** the 27B (in part); Dan's answer kind and answer source go together; English templated passages, greedy answers with thinking off.
 
@@ -47,11 +47,13 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 ## C2. The lens part says which entity it is: a pointer, from any context, not its fact
 
-{{fig|p4a_pointer_zach}}
+{{fig|r4_pointer}}
 
 - **Zach, the swap:** another entity's lens part moves the recall 63.0 / 63.9 / 44.8 points (27B / 9B / Lightning)<!-- src: docs/breadth/data.csv | swap.q27.swap; swap.q9.swap; swap.nl.swap -->; from one neutral sentence about that entity 1.09 / 1.10 / 1.01 times as much<!-- src: docs/breadth/data.csv | ptr.q27.neutral; ptr.q9.neutral; ptr.nl.neutral -->; a probe's subspace that reads the fact moves it 8.3 / 5.5 / 2.2 points, against 74.8 / 79.5 / 62.4 for the lens part on the same relations<!-- src: docs/breadth/data.csv | probe.q27.probe; probe.q9.probe; probe.nl.probe; probe.q27.swap; probe.q9.swap; probe.nl.swap -->.
 - **Lookup answers** stay in 99.1% of Qwen 27B's cases; Qwen 9B's move a little. <!-- src: EXPERIMENTS.md | l.166 --> <!-- src: EXPERIMENTS.md | l.165 -->
 - **Dan, what the 25 directions are:** each bridge word carries 0.09-0.19 of the rebuilt energy<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the original bridge word; 52 A: share of the rebuilt energy in the new bridge word -->, the answer word 0.00<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the reader's answer word --> (9B, 27B, Muse, Lightning ○).
+
+{{fig|f5_atoms}}
 
 **Boring explanation:** it is the entity's name-like code. **Neel's likely question:** "is it just the answer token?" Keeping the answer word's lens directions keeps 0.92-0.98 of the recall's loss<!-- src: data/figures/depth/data.csv | main test, recall: share of its loss kept when the lens part keeps the answer words' directions -->.
 
@@ -59,7 +61,7 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 ## C3. The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it
 
-{{fig|p5a_probe}}
+{{fig|f6_address}}
 
 - **The address (a pointer to the item's mention).** A probe at the bridge word reads which locker sentence holds the item's locker: 0.97 / 0.99 / 0.97 / 0.85 ○ / 0.92<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, against a layout baseline of 0.53<!-- src: data/figures/depth/data.csv | the locker probe's layout baseline, locker-first scenes -->; in tool output 0.97-0.99<!-- src: data/figures/depth/data.csv | code and tool output, tool: the locker probe at the bridge word, locker-first scenes -->, in code 0.95<!-- src: data/figures/depth/data.csv | code and tool output, code: the locker probe at the bridge word, locker-first scenes --> (27B).
 - **The swap** at about a real change's size sends 0.46 / 0.25 / 0.52 / 0.50 ○ / 0.50 ○ of lookups to the swapped-in locker<!-- src: data/figures/depth/data.csv | lookup target share, mean over locker pairs, s = 2 -->; a random vector 0.00<!-- src: data/figures/depth/data.csv | lookup target share, random direction, s = 4 -->.
@@ -70,7 +72,7 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 ## C4. Readable is not used
 
-{{fig|p6_c4_readable}}
+{{fig|r3_last_token}}
 
 - **Dan, the last token:** a probe on the lens part reads the recall's entity 0.97 / 0.95 / 0.95 / 0.98 ○<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part -->; the lens swap moves 0.00 / 0.01 / 0.01 / 0.14 ○ of recalls<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches -->, the whole-state patch 0.95-1.00<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the whole-state patch's switches -->: "(b) readable, not used".
 - **Zach, nine models:** OLMo carries the entity without needing it (swap 41.4, removal 5.4)<!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk -->; the grading per model is in the strip (from [the grid](figures/shared/grid.png)).
@@ -81,10 +83,14 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 ## Where it breaks
 
-{{fig|p7_breaks}}
+{{fig|f8_breaks}}
 
 - **The 27B with more lens directions:** its lookup loses {{x|lk_excess_k100_27b}} beyond random at 100 directions; the 122B's {{x|lk_excess_k100_122b}}.
 - **Passages whose fact the model knows:** on Zach's true-fact passages the 9B's and 27B's lookups follow the lens part (0.26 / 0.28<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->); with made-up facts the 9B's split returns, the 27B is in between.
+- **The question before the scene:** the 27B's lookup loses {{s|qwen3.6-27b|the lookup, question before minus after (paired)}} more of its switches without the lens part than with the question after (95% interval from {{s|qwen3.6-27b|53.1: the lookup, question before minus after (paired): the interval's lower bound}}); the 122B's {{s|qwen3.5-122b-a10b|the lookup, question before minus after (paired)}}.
+
+{{fig|f12_order}}
+
 - **Dan's one-layer test where Zach's band test is weak:** on the 122B the conflict test is confirmed (the lookup 0.00, the recall 0.32 beyond random)<!-- src: docs/depth/x0_numbers.json | lk_excess_122b; rc_excess_122b -->; on Muse the logit lens's directions cost the recall nothing at one layer<!-- src: data/figures/depth/data.csv | logit-lens directions: recall extra loss -->.
 - **Across models it is graded** (Zach):
   - Weak: Ministral 14B 23.3 and DeepSeek V4 Flash 17.9 points. <!-- src: docs/breadth/data.csv | ko.mi.mk; ko.ds.mk -->
@@ -92,6 +98,8 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
   - Carried, not needed: OLMo 32B's lens part moves recalled answers when swapped (41.4) but removing it costs 5.4. <!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk -->
   - Shared or fragile: Muse 30B shares 34.6 of its 59.9 with the logit lens's directions, though a same-size removal costs it at most 6.5 at any number of directions; Qwen 122B's 48.5 drops to 1.7 scored by probability. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk; ko.q122.mk; ko.q122.soft --> <!-- src: docs/breadth/data.csv | dose.mu.k30.pc; dose.mu.k300.pc -->
   - Untestable: removing the top 10 lens directions breaks plain text on Gemma 4, gpt-oss and Kolibri (9.3, 4.7 and 6.4 nats added). <!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->
+
+{{fig|f3_nine_models}}
 
 > **Zach, to fill:** the rest of your grading lines (placeholder).
 
@@ -109,11 +117,13 @@ Hand-check: 30 Oct, results in [VERIFIED.md](VERIFIED.md).
 
 - **Dan:** the word-answer cells that failed the gate, with a relation that passes it.
 - **Zach:** a bridge computed from the passage (H0 head-on). *Zach, to fill (placeholder).*
-- **For monitoring:** a J++ monitor at the bridge reads which entity is about to be recalled; whether it is in use needs something beyond the lens.
+- **For monitoring:** a J++ monitor at the bridge reads which entity is about to be recalled; whether it is in use needs something beyond the lens. At the last token a probe on the lens part reads the address at {{s|qwen3.5-9b|the address at the last token, main test, 25 lens directions: the J++ part}} / {{s|qwen3.6-27b|the address at the last token, main test, 25 lens directions: the J++ part}} / {{s|muse-glimmer-30b|the address at the last token, main test, 25 lens directions: the J++ part}} / {{s|nemotron-3.5-lightning|the address at the last token, main test, 25 lens directions: the J++ part}} ○, below a random part of the same energy ({{s|qwen3.5-9b|the address at the last token, main test, 25 lens directions: a random part (same energy)}} / {{s|qwen3.6-27b|the address at the last token, main test, 25 lens directions: a random part (same energy)}} / {{s|muse-glimmer-30b|the address at the last token, main test, 25 lens directions: a random part (same energy)}} / {{s|nemotron-3.5-lightning|the address at the last token, main test, 25 lens directions: a random part (same energy)}} ○).
+
+{{fig|f11_monitor}}
 
 ## Appendix: every backup figure
 
-Main backups, in order: B1 below (where, by depth); B2 [identity or position, never the value](figures/shared/j8_routes.png); B3 [the grading, nine models](figures/shared/grid_front.png) and [the full grid](figures/shared/grid.png); B4 [three hops](figures/breadth/fig10_beyond.png); B5 [identity early, address late](figures/depth/fig06b_anatomy.png). Dan's backup figures, each with its question and key number: [docs/slides/appendix.md](docs/slides/appendix.md) (A1-A31). The deck: [docs/slides/deck_outline.md](docs/slides/deck_outline.md); captions and n: [data/figures/archive/deck/CAPTIONS.md](data/figures/archive/deck/CAPTIONS.md). Older figures kept as history: [the swap](figures/shared/j2_swap.png), [the order signal](figures/shared/j3_order_signal.png), [datasets](figures/shared/j6_datasets.png), [the link](figures/shared/j9_link.png), [the 27 Oct depth composites](figures/archive/slides/d1_split.png).<!-- src: docs/slides/appendix.md | A31 -->
+Main backups, in order: B1 below (where, by depth); B2 [identity or position, never the value](figures/readme/r5_routes.png); B3 [the grading, nine models](figures/shared/grid_front.png) and [the full grid](figures/shared/grid.png); B4 [three hops](figures/breadth/fig10_beyond.png); B5 [identity early, address late](figures/depth/fig06b_anatomy.png). Dan's backup figures, each with its question and key number: [docs/slides/appendix.md](docs/slides/appendix.md) (A1-A31). The deck: [docs/slides/deck_outline.md](docs/slides/deck_outline.md); captions and n: [data/figures/archive/deck/CAPTIONS.md](data/figures/archive/deck/CAPTIONS.md). Older figures kept as history: [the swap](figures/shared/j2_swap.png), [the order signal](figures/shared/j3_order_signal.png), [datasets](figures/shared/j6_datasets.png), [the link](figures/shared/j9_link.png), [the 27 Oct depth composites](figures/archive/slides/d1_split.png).<!-- src: docs/slides/appendix.md | A31 -->
 
 ### B1. At middle layers the bridge's mention carries it; deeper, the question does (Zach's Finding 5, unchanged)
 
@@ -125,7 +135,7 @@ Main backups, in order: B1 below (where, by depth); B2 [identity or position, ne
 - **Dan's routes test agrees in direction** (after the data): at an early layer the patch moves the lookup by identity only (inside the lens part on the Qwens); position answers appear a few layers later. <!-- src: docs/archive/README_v5_2026-10-28.md | Position appears with depth (candidate) -->
 - **Muse 30B**, tested only at layers 36-42, agrees: the question alone costs 59.3 of 59.9, the mention 1.8 (fixed in advance, amendment 57 note 1). <!-- src: docs/breadth/data.csv | pos.mu.question; ko.mu.mk; pos.mu.bridge -->
 
-![Middle layers need the bridge's mention; deeper layers, the question](figures/shared/j7_where.png)
+{{fig|f9_where}}
 
 **How sure.**
 - High on Qwen 27B, Qwen 9B and Lightning: fixed in advance, rotated controls cost at most 2.5 points, and Qwen 9B's and Lightning's deeper splits rerun identically from a clean checkout. The deeper bands of Qwen 9B and Lightning were picked on separate data. <!-- src: docs/breadth/data.csv | late.q27.question.rot; late.q9.question.rot; late.nl.question.rot --> <!-- src: docs/breadth/data.csv | clean57.same -->

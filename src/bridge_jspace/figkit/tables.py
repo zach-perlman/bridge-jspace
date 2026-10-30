@@ -23,6 +23,22 @@ FIGS = {"r1_c1_split": X.r1_split, "r2_address": X.r2_address, "r3_last_token": 
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_breaks": F.f_breaks, "f9_where": F.f_where,
         "f11_monitor": F.f_monitor, "f12_order": F.f_order}  # fmt: skip
 
+CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
+    "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
+    "r2_address": "A probe reads the address, a swap moves the lookup, the lens cannot see it",
+    "r3_last_token": "At the last token the lens reads the entity, and the answer does not go through it",
+    "r4_pointer": "Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not",
+    "r5_routes": "The patch moves the lookup by identity or by position, never by the value",
+    "f2_controls": "Random, rotated, logit-lens and PCA directions cost far less than the lens part",
+    "f3_nine_models": "Across nine models the lens part is carried, needed, or both: graded",
+    "f5_atoms": "The lens part's 25 directions are the two bridge words, never the answer word",
+    "f6_address": "A probe reads the address, removing the lens part leaves it, a swap moves the lookup, the lens misses it",
+    "f8_breaks": "Where it breaks: more lens directions on the 27B, and passages whose fact the model knows",
+    "f9_where": "Middle layers need the bridge's mention; deeper layers, the question",
+    "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",
+    "f12_order": "With the question before the scene, the 27B's lookup needs the lens part a little",
+}
+assert set(CLAIMS) == set(FIGS)
 
 PROBLEMS: list[str] = []
 

@@ -54,6 +54,7 @@ def story() -> dict[tuple[str, str], float]:
 
 def build() -> str:
     from bridge_jspace.figkit.specs import SPECS
+    from bridge_jspace.figkit.tables import CLAIMS
 
     B, X, S = breadth(), x0(), story()
 
@@ -66,12 +67,18 @@ def build() -> str:
         if kind == "s":
             model, quantity = arg.split("|", 1)
             return f"{S[(model, quantity)]:.2f}<!-- src: data/figures/depth/data.csv | {quantity} -->"
-        spec = SPECS[arg]()
-        return f"![{spec.claim}](figures/readme/{arg}.png)"
+        claim = CLAIMS[arg] if arg in CLAIMS else SPECS[arg]().claim
+        return f"![{claim}](figures/readme/{arg}.png)"
 
     text = PH.sub(fill, TEMPLATE.read_text())
     assert "{{" not in text, "an unknown placeholder is left"
     README.write_text(HEADER + text)
+    from bridge_jspace.figkit.build import page_sheet
+
+    page_sheet(
+        [REPO / f for f in re.findall(r"\]\((figures/readme/[^)]+\.png)\)", text)],
+        REPO / "figures/readme/contact_sheet.png",
+    )
     return text
 
 
