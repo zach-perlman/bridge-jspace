@@ -19,9 +19,9 @@
   "[gated] R1 press_hid: no specific effect on holding; spec gain vs paper10_rot -15.4 [-21.3, -10.7], paper10_pcasize 25.5 [17.1, 35.27], unembed10 -8.1 [-13.57, -2.8]; peer share of the lost originals -0.91",
   "[gated] R1 press1_vis: holding needs the J-space; spec gain vs paper10_rot 26.8 [16.8, 36.19], paper10_pcasize 14.1 [4.94, 22.27], unembed10 27.9 [18.01, 36.9]; peer share of the lost originals 0.99",
   "[gated] R2 (lookup vs recall): not read (no specific flip in press_hid); specific flip among held items: visible 30.8 (n 169), hidden -18.3 (n 49)",
-  "[no-shortcut] R3 (press_hid, bridgeJ - bridgeJ_ctrl gain): the bridge's own directions are needed; 23.3 [6.82, 47.83] (n 30)",
-  "[no-shortcut] R3 (press_vis, bridgeJ - bridgeJ_ctrl gain): the bridge's own directions are needed; 23.3 [11.11, 40.91] (n 30)",
-  "[no-shortcut] R3 (solo, bridgeJ - bridgeJ_ctrl loss): the bridge's own directions are needed; 33.3 [20.59, 52.63] (n 30)"
+  "[no-shortcut] R3 (press_hid, bridgeJ - bridgeJ_ctrl gain): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 23.3 [6.82, 47.83] (n 30)",
+  "[no-shortcut] R3 (press_vis, bridgeJ - bridgeJ_ctrl gain): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 23.3 [11.11, 40.91] (n 30)",
+  "[no-shortcut] R3 (solo, bridgeJ - bridgeJ_ctrl loss): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 33.3 [20.59, 52.63] (n 30)"
  ],
  "beside": [
   "[ungated] G0 (their protocol reproduced, first-token read agrees): yes",
@@ -30535,9 +30535,9 @@
     "R1 press_hid: no specific effect on holding (not recall-specific: G2 failed); spec gain vs paper10_rot -13.3 [-34.78, 5.0], paper10_pcasize 33.3 [12.12, 52.38], unembed10 -3.3 [-21.88, 18.18]; peer share of the lost originals 0.16",
     "R1 press1_vis: holding needs the J-space (not recall-specific: G2 failed); spec gain vs paper10_rot 26.7 [10.34, 40.0], paper10_pcasize 23.3 [8.33, 36.11], unembed10 26.7 [10.34, 40.0]; peer share of the lost originals 1.0",
     "R2 (lookup vs recall): not read (no specific flip in press_hid); specific flip among held items: visible 42.1 (n 19), hidden -50.0 (n 8)",
-    "R3 (press_hid, bridgeJ - bridgeJ_ctrl gain): the bridge's own directions are needed; 23.3 [6.82, 47.83] (n 30)",
-    "R3 (press_vis, bridgeJ - bridgeJ_ctrl gain): the bridge's own directions are needed; 23.3 [11.11, 40.91] (n 30)",
-    "R3 (solo, bridgeJ - bridgeJ_ctrl loss): the bridge's own directions are needed; 33.3 [20.59, 52.63] (n 30)"
+    "R3 (press_hid, bridgeJ - bridgeJ_ctrl gain): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 23.3 [6.82, 47.83] (n 30)",
+    "R3 (press_vis, bridgeJ - bridgeJ_ctrl gain): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 23.3 [11.11, 40.91] (n 30)",
+    "R3 (solo, bridgeJ - bridgeJ_ctrl loss): not recall-specific (G2 failed on this stratum; the R3 rule alone: the bridge's own directions are needed); 33.3 [20.59, 52.63] (n 30)"
    ],
    "n_read_items": 30
   },
@@ -40881,6 +40881,170 @@
     "R3: not read on this stratum (amendment 66 addendum: R3 is read on the no-shortcut subset only)"
    ],
    "n_read_items": 268
+  }
+ },
+ "amendment71_73": {
+  "items": "gated, names as written",
+  "n_gated": 298,
+  "M_status": "post hoc: seen on this split (amendment 71)",
+  "M": [
+   {
+    "conv": "press_vis",
+    "side": "real",
+    "n": 93,
+    "n_bridges": 50,
+    "flip": {
+     "paper10": 30.1,
+     "paper10_rot": 1.1,
+     "paper10_pcasize": 7.5,
+     "unembed10": 0.0,
+     "paper10_keepA": 7.5
+    },
+    "M1": {
+     "value": 22.6,
+     "ci": [
+      10.0,
+      36.59
+     ],
+     "reading": "specific caving on items held with a real margin"
+    },
+    "M2": {
+     "value": 0.78,
+     "ci": [
+      0.46,
+      0.94
+     ],
+     "reading": "the answers' directions carry it"
+    }
+   },
+   {
+    "conv": "press_vis",
+    "side": "near",
+    "n": 76,
+    "n_bridges": 41,
+    "flip": {
+     "paper10": 59.2,
+     "paper10_rot": 25.0,
+     "paper10_pcasize": 35.5,
+     "unembed10": 11.8,
+     "paper10_keepA": 57.9
+    },
+    "M1": {
+     "value": 23.7,
+     "ci": [
+      10.0,
+      37.14
+     ],
+     "reading": "specific caving on near-tie items"
+    },
+    "M2": {
+     "value": 0.04,
+     "ci": [
+      -0.59,
+      0.43
+     ],
+     "reading": "not shown (rescue < 2/3)"
+    }
+   },
+   {
+    "conv": "press1_vis",
+    "side": "real",
+    "n": 228,
+    "n_bridges": 95,
+    "flip": {
+     "paper10": 26.3,
+     "paper10_rot": 0.4,
+     "paper10_pcasize": 9.2,
+     "unembed10": 0.0,
+     "paper10_keepA": 1.3
+    },
+    "M1": {
+     "value": 17.1,
+     "ci": [
+      7.84,
+      25.23
+     ],
+     "reading": "specific caving on items held with a real margin"
+    },
+    "M2": {
+     "value": 0.97,
+     "ci": [
+      0.89,
+      1.03
+     ],
+     "reading": "the answers' directions carry it"
+    }
+   },
+   {
+    "conv": "press1_vis",
+    "side": "near",
+    "n": 58,
+    "n_bridges": 24,
+    "flip": {
+     "paper10": 51.7,
+     "paper10_rot": 12.1,
+     "paper10_pcasize": 41.4,
+     "unembed10": 8.6,
+     "paper10_keepA": 20.7
+    },
+    "M1": {
+     "value": 10.3,
+     "ci": [
+      -11.54,
+      33.33
+     ],
+     "reading": "not shown"
+    },
+    "M2": {
+     "value": 0.78,
+     "ci": [
+      0.33,
+      1.18
+     ],
+     "reading": "not read (M1 not met)"
+    }
+   }
+  ],
+  "dissociation": {
+   "conv": "press_vis",
+   "late_idx": [
+    13,
+    14,
+    15,
+    16
+   ],
+   "gave_in": {
+    "n": 126,
+    "n_bridges": 45,
+    "readout": {
+     "none": 0.597,
+     "bridgeJ": 0.115,
+     "bridgeJ_ctrl": 0.591,
+     "paper10_rot": 0.583
+    },
+    "share_removed": {
+     "value": 0.81,
+     "ci": [
+      0.66,
+      0.92
+     ]
+    },
+    "share_removed_by_ctrl": 0.01
+   },
+   "vs": {
+    "paper10_rot": {
+     "n": 298,
+     "give_in_bridgeJ": 49.3,
+     "give_in_ref": 45.0,
+     "diff": 4.4,
+     "ci": [
+      -0.81,
+      9.89
+     ],
+     "reading": "the silent-dissent readout is not what holds"
+    }
+   },
+   "status": "descriptive (amendment 73: seen on this model)"
   }
  }
 }

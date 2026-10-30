@@ -1,0 +1,120 @@
+{
+ "prefix": "qwen35_9b_",
+ "role": "descriptive",
+ "run": "/workspace/bridge-jspace/results/ablate_v2/qwen35_9b_jsuite_v5kn2c_test_chat_ko52_cand2_v1",
+ "MC0": {
+  "rescue": {
+   "CapPerp": {
+    "n": 257,
+    "contrast_paper10": 14.0,
+    "contrast_keep": 14.4,
+    "rescue": -0.028,
+    "rescue_ci": [
+     -2.0,
+     0.655
+    ],
+    "rescue_net_rot": -0.03,
+    "rescue_net_rot_ci": [
+     -2.5,
+     0.727
+    ]
+   },
+   "CtyPerp": {
+    "n": 257,
+    "contrast_paper10": 14.0,
+    "contrast_keep": 0.8,
+    "rescue": 0.944,
+    "rescue_ci": [
+     0.375,
+     2.636
+    ],
+    "rescue_net_rot": 1.03,
+    "rescue_net_rot_ci": [
+     0.4,
+     3.167
+    ]
+   },
+   "Shared": {
+    "n": 257,
+    "contrast_paper10": 14.0,
+    "contrast_keep": 4.3,
+    "rescue": 0.694,
+    "rescue_ci": [
+     -0.308,
+     1.054
+    ],
+    "rescue_net_rot": 0.758,
+    "rescue_net_rot_ci": [
+     -0.2,
+     1.2
+    ]
+   }
+  },
+  "reading": "the country carries it"
+ },
+ "MC": {
+  "rescue": {
+   "CapPerp": {
+    "n": 246,
+    "contrast_paper10": 13.8,
+    "contrast_keep": 20.7,
+    "rescue": -0.5,
+    "rescue_ci": [
+     -2.333,
+     0.022
+    ],
+    "rescue_net_rot": -0.515,
+    "rescue_net_rot_ci": [
+     -2.5,
+     0.022
+    ]
+   },
+   "CtyPerp": {
+    "n": 246,
+    "contrast_paper10": 13.8,
+    "contrast_keep": 4.1,
+    "rescue": 0.706,
+    "rescue_ci": [
+     0.057,
+     1.909
+    ],
+    "rescue_net_rot": 0.727,
+    "rescue_net_rot_ci": [
+     0.059,
+     2.087
+    ]
+   },
+   "Shared": {
+    "n": 246,
+    "contrast_paper10": 13.8,
+    "contrast_keep": 5.7,
+    "rescue": 0.588,
+    "rescue_ci": [
+     -0.192,
+     0.953
+    ],
+    "rescue_net_rot": 0.606,
+    "rescue_net_rot_ci": [
+     -0.2,
+     1.0
+    ]
+   }
+  },
+  "reading": "the country carries it"
+ },
+ "note44_beside": {
+  "Cap": 0.917,
+  "Cty": 0.944,
+  "CapCty": 1.0,
+  "Rcap": 0.472
+ },
+ "energy_MC0_whole": {
+  "E_CapPerp": 0.1356,
+  "E_CtyPerp": 0.1376,
+  "E_Shared": 0.2672,
+  "rank_CapPerp": 172.0,
+  "rank_CtyPerp": 171.0,
+  "rank_Shared": 30.0,
+  "n_cos_ge_0.9": 30.0
+ }
+}

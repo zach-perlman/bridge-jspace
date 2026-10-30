@@ -1,0 +1,35 @@
+{
+  "run": "nem35l_jsuite_v4p4003_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-30, prereg amendment 69 note 48, nemotron-3.5-lightning): competence",
+  "set": "jsuite_v4p4003_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "99db029540ee5538515bb04a35d98b96ef83b210",
+  "git_state": {
+    "head": "99db029540ee5538515bb04a35d98b96ef83b210",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_canonical.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_nobridge.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "MP",
+    "MM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-30T11:02:16Z"
+}

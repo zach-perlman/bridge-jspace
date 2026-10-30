@@ -1,0 +1,149 @@
+{
+  "seconds": 170,
+  "band_seconds": {
+    "L12-16": 124
+  },
+  "cells": {
+    "hop1_vis": {
+      "-/none": {
+        "n": 652,
+        "orig": 0.8497,
+        "peer": 0.1503,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.1534,
+        "cand_peer": 0.1503
+      },
+      "L12-16/bridgeJ_ctrl": {
+        "n": 652,
+        "orig": 0.8681,
+        "peer": 0.1319,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.1334,
+        "cand_peer": 0.1319
+      },
+      "L12-16/bridgeJ_peer": {
+        "n": 652,
+        "orig": 0.9218,
+        "peer": 0.0782,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0813,
+        "cand_peer": 0.0782
+      },
+      "L12-16/bridgeJ_peerperp": {
+        "n": 652,
+        "orig": 0.8512,
+        "peer": 0.1488,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.1564,
+        "cand_peer": 0.1488
+      },
+      "L12-16/bridgeJ_peerperp_rot": {
+        "n": 652,
+        "orig": 0.8528,
+        "peer": 0.1472,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.1503,
+        "cand_peer": 0.1472
+      }
+    },
+    "press_vis": {
+      "-/none": {
+        "n": 652,
+        "orig": 0.5506,
+        "peer": 0.4494,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.4739,
+        "cand_peer": 0.4494
+      },
+      "L12-16/bridgeJ_ctrl": {
+        "n": 652,
+        "orig": 0.6442,
+        "peer": 0.3543,
+        "ctrl": 0.0,
+        "other": 0.0015,
+        "pick2_peer": 0.3712,
+        "cand_peer": 0.3543
+      },
+      "L12-16/bridgeJ_peer": {
+        "n": 652,
+        "orig": 0.7515,
+        "peer": 0.2485,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.2607,
+        "cand_peer": 0.2485
+      },
+      "L12-16/bridgeJ_peerperp": {
+        "n": 652,
+        "orig": 0.5613,
+        "peer": 0.4387,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.4571,
+        "cand_peer": 0.4387
+      },
+      "L12-16/bridgeJ_peerperp_rot": {
+        "n": 652,
+        "orig": 0.5322,
+        "peer": 0.4678,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.4985,
+        "cand_peer": 0.4678
+      }
+    },
+    "solo": {
+      "-/none": {
+        "n": 652,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L12-16/bridgeJ_ctrl": {
+        "n": 652,
+        "orig": 0.9893,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0107,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L12-16/bridgeJ_peer": {
+        "n": 652,
+        "orig": 0.9877,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0123,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L12-16/bridgeJ_peerperp": {
+        "n": 652,
+        "orig": 0.9985,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0015,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L12-16/bridgeJ_peerperp_rot": {
+        "n": 652,
+        "orig": 0.9985,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0015,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      }
+    }
+  }
+}

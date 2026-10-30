@@ -1,0 +1,143 @@
+{
+ "run": "qwen35_9b_sd_n54pp_v1",
+ "gate_run": "qwen35_9b_sd_gate_v1",
+ "p1_run": "qwen35_9b_sd_n54_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "n_read": 652,
+ "n_gated": 541,
+ "p1perp": {
+  "positive_control_from": "qwen35_9b_sd_n54_v1 (gated, n 541)",
+  "pc": {
+   "conv": "solo",
+   "t": "bridgeJ",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 541,
+   "n_bridges": 161,
+   "value": 12.8,
+   "ci": [
+    9.15,
+    16.88
+   ],
+   "orig_none": 100.0,
+   "orig_t": 86.3,
+   "orig_c": 99.1
+  },
+  "pc_ok": true,
+  "geometry": "bridgeJ_peer's forms: mean energy share inside the answers' span 0.255 (n 535); peerperp span rank 5.01 (0 items with a non-empty peers' span reduced to rank 0; 6 with an empty one); press_vis |edit|/|h| bridgeJ_peer 0.0238, bridgeJ_peerperp 0.0154",
+  "press_vis": {
+   "perp_ctrl": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": 7.9,
+    "ci": [
+     5.27,
+     10.62
+    ],
+    "peer_none": 46.0,
+    "peer_t": 45.2,
+    "peer_c": 37.4
+   },
+   "perp_rot": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": -2.4,
+    "ci": [
+     -4.71,
+     -0.21
+    ],
+    "peer_none": 46.0,
+    "peer_t": 45.2,
+    "peer_c": 47.7
+   },
+   "peer_ctrl_this_run": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": -12.3,
+    "ci": [
+     -16.25,
+     -8.49
+    ],
+    "peer_none": 46.0,
+    "peer_t": 25.0,
+    "peer_c": 37.4
+   },
+   "reading": "partly"
+  },
+  "hop1_vis": {
+   "perp_ctrl": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": 2.1,
+    "ci": [
+     -0.18,
+     4.29
+    ],
+    "peer_none": 13.3,
+    "peer_t": 13.5,
+    "peer_c": 11.4
+   },
+   "perp_rot": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": 0.0,
+    "ci": [
+     -1.52,
+     1.66
+    ],
+    "peer_none": 13.3,
+    "peer_t": 13.5,
+    "peer_c": 13.5
+   },
+   "peer_ctrl_this_run": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 535,
+    "n_bridges": 158,
+    "value": -6.4,
+    "ci": [
+     -9.16,
+     -3.7
+    ],
+    "peer_none": 13.3,
+    "peer_t": 5.0,
+    "peer_c": 11.4
+   },
+   "reading": "via its answer component"
+  }
+ },
+ "readings": [
+  "descriptive: [gated, test+dev] P1-perp geometry: bridgeJ_peer's forms: mean energy share inside the answers' span 0.255 (n 535); peerperp span rank 5.01 (0 items with a non-empty peers' span reduced to rank 0; 6 with an empty one); press_vis |edit|/|h| bridgeJ_peer 0.0238, bridgeJ_peerperp 0.0154",
+  "beside: [gated, test+dev] P1-perp's positive control and P1 (from qwen35_9b_sd_n54_v1 (gated, n 541)): positive control yes; bridgeJ - bridgeJ_rot solo loss 12.8 [9.15, 16.88] (n 541, 161 bridges; orig% none 100.0, bridgeJ 86.3, bridgeJ_rot 99.1); P1 met True, P2 met True",
+  "post hoc: [gated, test+dev; post hoc (amendment 75: note 54 seen on this model)] P1-perp (press_vis, the peers' premise orthogonalised to the answers): partly; bridgeJ_peerperp - bridgeJ_ctrl press_vis gain 7.9 [5.27, 10.62] (n 535, 158 bridges; peer% none 46.0, bridgeJ_peerperp 45.2, bridgeJ_ctrl 37.4); bridgeJ_peerperp - bridgeJ_peerperp_rot press_vis gain -2.4 [-4.71, -0.21] (n 535, 158 bridges; peer% none 46.0, bridgeJ_peerperp 45.2, bridgeJ_peerperp_rot 47.7); this run's bridgeJ_peer - bridgeJ_ctrl press_vis gain -12.3 [-16.25, -8.49] (n 535, 158 bridges; peer% none 46.0, bridgeJ_peer 25.0, bridgeJ_ctrl 37.4)",
+  "beside: [gated, test+dev; beside] P1-perp (hop1_vis, the peers' premise orthogonalised to the answers): via its answer component; bridgeJ_peerperp - bridgeJ_ctrl hop1_vis gain 2.1 [-0.18, 4.29] (n 535, 158 bridges; peer% none 13.3, bridgeJ_peerperp 13.5, bridgeJ_ctrl 11.4); bridgeJ_peerperp - bridgeJ_peerperp_rot hop1_vis gain 0.0 [-1.52, 1.66] (n 535, 158 bridges; peer% none 13.3, bridgeJ_peerperp 13.5, bridgeJ_peerperp_rot 13.5); this run's bridgeJ_peer - bridgeJ_ctrl hop1_vis gain -6.4 [-9.16, -3.7] (n 535, 158 bridges; peer% none 13.3, bridgeJ_peer 5.0, bridgeJ_ctrl 11.4)"
+ ]
+}

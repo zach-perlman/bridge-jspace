@@ -1,0 +1,70 @@
+{
+  "seconds": 447,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.681,
+      "all_steps": 0.787,
+      "median_margin": 2.5,
+      "guess": 0.149,
+      "top_wrong": [
+        [
+          "Japan",
+          12
+        ],
+        [
+          "Argentina",
+          11
+        ],
+        [
+          "United",
+          11
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.736,
+      "all_steps": 0.537,
+      "median_margin": 1.62,
+      "guess": 0.001,
+      "top_wrong": [
+        [
+          "Japan",
+          11
+        ],
+        [
+          "United",
+          10
+        ],
+        [
+          "Cl",
+          7
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.416,
+      "MM": 0.817
+    },
+    "companies": {
+      "MP": 0.756,
+      "MM": 0.756
+    },
+    "films": {
+      "MP": 0.84,
+      "MM": 0.312
+    },
+    "landmarks": {
+      "MP": 0.681,
+      "MM": 0.836
+    },
+    "people": {
+      "MP": 0.754,
+      "MM": 0.853
+    }
+  },
+  "pick": {}
+}
