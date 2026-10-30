@@ -259,6 +259,53 @@ kinds:
     classes: {original: the original item's answer, B: the lens part's item's answer, C: the address target's answer, other: another token}
     eligible: the run's gate.json (C's legs differ from A's and B's; both readers read O right), the first 300.
 
+# ---------------------------------------------------------------------------------------------------------------
+# Guided checklists (Dan 30 Oct, review-tool brief). Per view: `common: [P1, ...]` names the questions below it
+# shares, `questions:` its own. A question: id, text (plain English), look_at (the card panel and field to read),
+# anchor (the card element the "look at" link scrolls to and highlights: prompts / seen / facts / decisive / answers /
+# tokens / numbers / numbers:<reader>:<arm> / shares / bridge / jspace), yes_if (one line; a string, or per view id
+# with a default), protects_against (one line), kind (check: "No" means the item is wrong; observe: "No" is data, not
+# an error), machine (optional expression over the item's stored fields, evaluated by
+# src/bridge_jspace/review/questions.py; its value is shown as "the machine says"), tally (observe: the phrase the
+# summary reports, "<tally>: <yes>/<answered>"). `header:` is the view-level block (per model, computed over every
+# item of the view): whole / part / random name the arms, min_switched the H1 bar.
+common_questions:
+  - id: P1
+    text: "Do the original and changed prompts differ only by the change this claim describes?"
+    look_at: 'the prompt diff (red tokens) and the "The bridge ..." line'
+    anchor: prompts
+    yes_if:
+      default: "the asked pick and one other pick swapped (nothing else differs)"
+      routes: "C1 / C2: the stated locker sentence moved (C0: the two picks swapped); nothing else differs"
+      x8_writes: "the prompts are identical (the change is a vector written in, not a text edit)"
+    protects_against: "a scene built wrongly would make every number about it meaningless"
+    kind: check
+    machine: "check(\"only the scene's words differ\") + ' | ' + check(\"bridge at the change's token\")"
+  - id: P2
+    text: "Are both readers' original and changed answers correct for this scene?"
+    look_at: '"What the model answered": the answers in brackets after each question'
+    anchor: answers
+    yes_if: "lookup = the digit of the asked pick's locker sentence; recall = the item's attribute (atomic number, alphabet position, ...)"
+    protects_against: "a wrong gold answer turns a correct switch into a counted failure, or the reverse"
+    kind: check
+    machine: "check('answers decode right')"
+  - id: P3
+    text: "Before the change, does each reader give the original answer with P(original) >= 0.5?"
+    look_at: 'the stored numbers, the "no change" row, P(original answer)'
+    anchor: numbers
+    yes_if: "both readers' P(original) >= 0.5 with no change"
+    protects_against: "a reader that did not know the answer cannot be 'switched' by anything"
+    kind: check
+    machine: "pre_change()"
+  - id: P4
+    text: "Does every arm's label agree with its probabilities (the label's answer has the higher P)?"
+    look_at: "the stored numbers: the label, P(original answer), P(changed answer), logit gap"
+    anchor: numbers
+    yes_if: "every row: changed answer <=> P(changed) > P(original) and logit gap > 0"
+    protects_against: "a mislabelled row moves a switch into or out of the counts"
+    kind: check
+    machine: "label_agrees()"
+
 views:
   # ---------------------------------------------------------------- Tier 1 (Dan 29 Oct 11:45): read tomorrow, order a-g
   # a main_swap (conflict test) · b answer_control (51.12 E1) · c routes (+ address removal) · d x8_writes (swap s = 2)
@@ -293,6 +340,80 @@ views:
                csv: {PP: "conflict: lookup, switches lost beyond a random part", PM: "conflict: recall, switches lost beyond a random part",
                      gap: "main test (two people swap picks): gap"}}
     decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
+    common: [P1, P2, P3, P4]
+    header: {whole: whole, part: without J++, random: without its random part, min_switched: 30}
+    questions:
+      - id: A1
+        text: "Did the whole change switch the recall?"
+        look_at: 'the stored numbers, recall, the "the whole change" row'
+        anchor: "numbers:PM:whole"
+        yes_if: "P(changed answer) > P(original answer) under the whole change"
+        protects_against: "a recall that never switched has nothing to block, so the rest says nothing"
+        kind: observe
+        tally: "the whole change switched the recall"
+        machine: "says('PM', 'whole')"
+      - id: A2
+        text: "Without J++, was the recall's switch blocked?"
+        look_at: 'the stored numbers, recall, the "without J++" row'
+        anchor: "numbers:PM:without J++"
+        yes_if: "the recall switched under the whole change and does not switch without J++"
+        protects_against: "the claim's effect is exactly this row"
+        kind: observe
+        tally: "recall switch blocked without J++"
+        machine: "blocked('PM', 'without J++')"
+      - id: A3
+        text: "Without its random part, did the recall still switch?"
+        look_at: 'the stored numbers, recall, the "without its random part" row'
+        anchor: "numbers:PM:without its random part"
+        yes_if: "the recall still switches when a random part of the same share is removed"
+        protects_against: "if the random part blocks it too, the effect is not about J++"
+        kind: observe
+        tally: "recall still switched without its random part"
+        machine: "says('PM', 'without its random part')"
+      - id: A4
+        text: "Did the whole change switch the lookup? If not: is the asked pick's locker sentence after the pick?"
+        look_at: 'the stored numbers, lookup, the "the whole change" row; the order of the pick and locker sentences'
+        anchor: "numbers:PP:whole"
+        yes_if: "the lookup switched; if it did not, the locker sentence comes after the pick (the lookup cannot follow it)"
+        protects_against: "a zero for the lookup could just mean it never switched"
+        kind: observe
+        tally: "the whole change switched the lookup"
+        machine: "says('PP', 'whole') + ' | locker sentence vs the asked pick: ' + locker_order()"
+      - id: A5
+        text: "If the lookup switched: did it still switch without J++?"
+        look_at: 'the stored numbers, lookup, the "without J++" row'
+        anchor: "numbers:PP:without J++"
+        yes_if: "the lookup switched under the whole change and still switches without J++ (it does not follow J++)"
+        protects_against: "a lookup that follows J++ would break the split the claim describes"
+        kind: observe
+        tally: "lookup still switched without J++"
+        machine: "still('PP', 'without J++')"
+      - id: A6
+        text: "Do the J++ part and the random part hold the same share of the change?"
+        look_at: "the shares of the change (J++ part, its random part)"
+        anchor: shares
+        yes_if: "the two stored shares agree (within 0.02)"
+        protects_against: "a bigger random part would make the control unfair"
+        kind: check
+        machine: "shares_same()"
+      - id: A7
+        text: "Is any deciding switch fragile (|logit gap| < 0.5)?"
+        look_at: "the stored numbers: the logit gap of each decisive row"
+        anchor: numbers
+        yes_if: "yes means a deciding row sits within 0.5 of a tie, so its label could flip on noise"
+        protects_against: "a switch decided by a hair is not evidence either way"
+        kind: observe
+        tally: "an item with a fragile deciding switch"
+        machine: "fragile()"
+      - id: A8
+        text: "J-space panel, three ticks: among the 25 atoms, is the old bridge there with a minus sign, the new bridge with a plus sign, and the reader's answer word?"
+        look_at: "the J-space panel (the link under the card): the change's 25 atoms at the bridge word; the answer word's rank in the state readout"
+        anchor: jspace
+        yes_if: "tick each of the three that holds: old bridge with a minus sign; new bridge with a plus sign; the answer word among the atoms"
+        protects_against: "'readable in the state' (the readout of the state) and 'in the change's atoms' are different things"
+        kind: observe
+        tally: "J-space atoms"
+        panel: [A8a, A8b, A8c]
     readme_rows: [1]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
     readme_quotes: ["The recall follows the part of the bridge word the lens reads; the lookup follows the rest"]  # README lines containing these, quoted whole
     targeted:

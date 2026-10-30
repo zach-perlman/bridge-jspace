@@ -31,6 +31,7 @@ from bridge_jspace.review import fixed as F
 from bridge_jspace.review import handcheck as H
 from bridge_jspace.review import items as I
 from bridge_jspace.review import page as P
+from bridge_jspace.review import questions as Q
 from bridge_jspace.review import recount as RC
 
 REPO = I.REPO
@@ -95,6 +96,17 @@ def latest_marks() -> dict[str, dict]:
     return {r["item"]: r for r in H.load_marks(MARKS)}
 
 
+@lru_cache(maxsize=32)
+def header(view_id: str) -> dict:
+    """The view-level block of the checklist (questions.header): per model, over every item of the view."""
+    return Q.header(view_id, stats(view_id), recount(view_id)) if Q.has_questions(view_id) else {}
+
+
+def latest_answers() -> dict[str, dict[str, dict]]:
+    """item_key -> q_id -> the last checklist answer (marks.jsonl rows with schema 2)."""
+    return Q.latest(Q.load_rows(MARKS))
+
+
 def jspace():
     """The J-space panel (scripts/review_jspace.py), imported on first use: it loads torch and a model's readout."""
     from scripts import review_jspace
@@ -106,7 +118,8 @@ def render_view(q: dict[str, str], server: bool, sha: str) -> str:
     v = I.view(q["view"])
     p = params_of(q, v)
     return P.view_page(
-        v, p, samples(v, p), stats(v["id"]), server, sha, latest_marks() if server else {}, recount(v["id"])
+        v, p, samples(v, p), stats(v["id"]), server, sha, latest_marks() if server else {}, recount(v["id"]),
+        header(v["id"]), latest_answers() if server else {},
     )
 
 
@@ -163,6 +176,18 @@ class Handler(BaseHTTPRequestHandler):
             self.send("not found", "text/plain", 404)
             return
         d = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
+        if d.get("q_id"):  # a checklist answer (schema 2); the item's own mark is the row below, as ever
+            if d.get("answer") not in Q.ANSWERS or not d.get("item_key") or not d.get("view"):
+                self.send("bad answer", "text/plain", 400)
+                return
+            row = {"schema": Q.SCHEMA, "view": d["view"], "item_key": d["item_key"], "q_id": d["q_id"], "answer": d["answer"],
+                   "note": d.get("note", ""), "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                   "seed": int(d.get("seed") or 0), "commit": commit()}  # fmt: skip
+            MARKS.parent.mkdir(exist_ok=True)
+            with MARKS.open("a") as f:
+                f.write(json.dumps(row) + "\n")
+            self.send("ok", "text/plain")
+            return
         if d.get("verdict") not in VERDICTS or not d.get("item") or not d.get("view"):
             self.send("bad mark", "text/plain", 400)
             return
@@ -293,7 +318,18 @@ def summary(out: Path | None = None) -> Path:
                      f"{', '.join(map(str, seeds)) or '–'} | {fails} | {mism} |")  # fmt: skip
         flagged += [f"- {v['id']}: `{r['item']}` ({r['verdict']}, seed {r['seed']}, {r['utc']}, {r['commit']}): {r['note']}"
                     for r in last.values() if r["verdict"] != "consistent"]  # fmt: skip
-    lines += ["", "## Flagged and unclear items", "", *(flagged or ["None yet."]), ""]
+    qrows = Q.load_rows(MARKS)
+    lines += ["", "## Checklist answers (per view and model)", "",
+              "Each question's last answer per item (docs/review/review_views.yaml questions; marks.jsonl rows with schema 2). A "
+              "check question: yes / no / unclear counts; an observe question: a tally, \"phrase: yes/answered\" (a No there is "
+              "data, not an error).", ""]  # fmt: skip
+    for v in I.shown():
+        got = Q.tally_lines(qrows, v["id"])
+        if got:
+            lines += [f"### {v['title']}", "", *got, ""]
+    if not qrows:
+        lines += ["None yet.", ""]
+    lines += ["## Flagged and unclear items", "", *(flagged or ["None yet."]), ""]
     lines += ["## J-space notes", "", *([f"- {r['view']}: `{r['item']}` ({r['utc']}, {json.dumps(r.get('where', {}))}): "
                                         f"{r['note']}" for r in notes] or ["None yet."]), ""]  # fmt: skip
     out.write_text("\n".join(lines) + "\n")

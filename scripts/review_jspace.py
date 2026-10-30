@@ -729,6 +729,7 @@ def page(q: dict[str, str], server: bool = True) -> str:
             label, tids, note = got[0]
             body.append(heat_html(st, model, prompt, kind, int(tids[0]), label, note, ro))
     body.append(atoms_html(st, it, model, int(st["meta"]["pos"]), model_layer(model)))  # L and the bridge word
+    body.append(a8_html(st, it, model, view_id, item_id, q.get("seed", "29")))
     body.append(checks_html(st, it, model))
     body.append(notes_html(it, view_id, item_id, q, {"prompt": prompt, "pos": pos, "layer": layer, "vector": kind}))
     return doc("".join(body))
@@ -782,6 +783,70 @@ def checks_html(st, it, model) -> str:
         f"<tr><td>{E(r['check'])}</td><td>{r['panel']}</td><td>{r['stored']}</td>{verdict(r)}</tr>" for r in rows
     )
     return f"<div class='box'><h3>Self-checks</h3><table><tr><th>check</th><th>panel</th><th>stored</th><th></th></tr>{trs}</table></div>"
+
+
+def a8_machine(st, it, model) -> dict:
+    """The machine's answer to the three ticks of A8 (the J-space panel, view a): among the change's 25 atoms at the bridge
+    word and L, is the old bridge there with a minus sign, the new bridge with a plus sign, the reader's answer word? Also
+    the answer word's rank in the state's own readout ("readable in the state"), which is not the same thing as being
+    "in the change's atoms"."""
+    import torch
+
+    la, pos = model_layer(model), int(st["meta"]["pos"])
+    atoms = atoms_at(st, it, model, pos, la)
+    if not atoms:
+        return {"error": "no atoms at L and the bridge word"}
+    fmt = lambda xs: "; ".join(f"{a['token'].strip()!r} {a['coef']:+.2f} (OMP {a['rank']})" for a in xs) or "none"  # noqa: E731
+    old = [a for a in atoms if a["class"] == "bridge"]
+    new = [a for a in atoms if a["class"] == "new bridge"]
+    ans = [a for a in atoms if a["class"] == "answer"]
+    out = {"A8a": (any(a["coef"] < 0 for a in old), f"old bridge among the atoms: {fmt(old)}"),
+           "A8b": (any(a["coef"] > 0 for a in new), f"new bridge among the atoms: {fmt(new)}"),
+           "A8c": (bool(ans), f"answer word among the atoms: {fmt(ans)}")}  # fmt: skip
+    ro = readout(model)
+    ranks = []
+    for prompt, which in (("O", "O"), ("S", "S")):
+        h, _ = vector(st, model, prompt, pos, la, "state")
+        if h is None:
+            continue
+        x = torch.as_tensor(h)[None]
+        lg = ro.lens(x, la)[0] if (not ro.no_lens and la in ro.lens_layers) else ro.unembed(x)[0]
+        for label, ids in listed_tokens(it, ro.tok):
+            if label.startswith(f"{I.READER_NAME.get(it['reader'], it['reader'])}'s {which} answer"):
+                r, _ = rank_of(lg, ids)
+                ranks.append(f"{label}: rank {r} in the state's readout ({prompt}{'' if not ro.no_lens else ', logit lens'})")
+    out["state"] = ranks
+    return out
+
+
+def a8_html(st, it, model, view_id: str, item_id: str, seed: str) -> str:
+    """A8's three ticks with the machine's answer, saved as checklist rows (schema 2) in review/marks.jsonl."""
+    from bridge_jspace.review import questions as Q
+
+    if not any("A8a" in (q.get("panel") or []) for q in Q.questions_of(view_id)):
+        return ""
+    got = Q.latest(Q.load_rows(MARKS)).get(item_id, {})
+    m = a8_machine(st, it, model)
+    if "error" in m:
+        return f"<div class='box'><h3>Checklist A8</h3><p class='mut'>The machine could not compute: {E(m['error'])}</p></div>"
+    labels = {"A8a": "the old bridge is among the 25 atoms with a minus sign", "A8b": "the new bridge is among the 25 atoms with a plus sign",
+              "A8c": "the reader's answer word is among the 25 atoms"}  # fmt: skip
+    rows = []
+    for qid, text in labels.items():
+        ok, detail = m[qid]
+        rad = "".join(f"<label><input type='radio' name='{qid}' value='{a}'{' checked' if (got.get(qid) or {}).get('answer') == a else ''}"
+                      f" onchange='ans(this,\"{qid}\")'>{a.capitalize()}</label> " for a in ("yes", "no", "unclear"))
+        rows.append(f"<tr><td><b>{qid}</b> {E(text)}</td><td>the machine says: <b>{'yes' if ok else 'no'}</b><br>"
+                    f"<span class='mut'>{E(detail)}</span></td><td>{rad}<span id='s-{qid}' class='mut'></span></td></tr>")  # fmt: skip
+    state = "".join(f"<li>{E(x)}</li>" for x in m.get("state", []))
+    js = ("<script>async function ans(el,q){const d={schema:2,view:%s,item_key:%s,q_id:q,answer:el.value,note:'',seed:%s,"
+          "ts:new Date().toISOString()};let ok=false;try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':"
+          "'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}document.getElementById('s-'+q).textContent=ok?'saved':'not saved'}"
+          "</script>" % (json.dumps(view_id), json.dumps(item_id), json.dumps(int(seed) if str(seed).isdigit() else 0)))
+    return (f"<div class='box'><h3>Checklist A8 (observe)</h3><p class='mut'>Tick each of the three that holds. Readable in the "
+            f"<b>state</b> and present in the <b>change's atoms</b> are different things: the ranks below are the state's.</p>"
+            f"<table><tr><th>question</th><th>machine</th><th>your answer</th></tr>{''.join(rows)}</table>"
+            f"<p class='mut'>The answer word in the state readout at the bridge word and L:</p><ul>{state}</ul>{js}</div>")  # fmt: skip
 
 
 def notes_html(it, view_id, item_id, q, where) -> str:

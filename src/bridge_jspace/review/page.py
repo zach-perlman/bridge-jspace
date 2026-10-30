@@ -3,6 +3,7 @@ Self-contained pages (inline CSS / JS) so an export opens from disk."""
 
 from __future__ import annotations
 
+import hashlib
 import html
 import json
 import re
@@ -11,6 +12,7 @@ from urllib.parse import urlencode
 
 from bridge_jspace.review import checks as C
 from bridge_jspace.review import items as I
+from bridge_jspace.review import questions as Q
 
 E = html.escape
 CLASS_COLOR = {"b": "ok", "switch": "ok", "target": "ok", "follows S": "ok", "changed": "ok", "A": "org",
@@ -42,6 +44,9 @@ border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-m
 .ins{outline:2px dashed var(--val);outline-offset:1px}.toks span.rl{background:var(--line)}.toks span.ri{background:var(--id);color:#fff}
 .toks span.rv{background:var(--val);color:#fff}.toks span.rf{background:var(--third);color:#fff}.grid td,.grid th{text-align:center}
 .grid td:first-child,.grid th:first-child{text-align:left}.wrap{overflow-x:auto}
+.check{border-left:4px solid var(--oth)}.q{border-top:1px solid var(--line);padding:6px 0;font-size:13px}
+.mach{background:var(--bg);border-left:3px solid var(--val);padding:2px 8px;margin:3px 0}.qa{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:3px}
+.qa input[type=text]{flex:1;min-width:160px}a.look{cursor:pointer}.flash{outline:3px solid var(--oth);outline-offset:2px;background:var(--hl)}
 """
 
 JS = """
@@ -52,6 +57,22 @@ d.utc=new Date().toISOString();d.commit=COMMIT;let ok=false;
 if(SERVER){try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}}
 MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
 f.querySelector('.saved').textContent=(SERVER?(ok?'saved to review/marks.jsonl':'server failed, kept locally'):'kept locally')+' · '+d.verdict;return false}
+function look(a,anchor){const card=a.closest('.card');let el=card.querySelector('[data-anchor="'+anchor+'"]');
+if(!el){alert('this panel is not on the card');return false}
+let d=el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}
+if(el.tagName==='DETAILS')el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'});
+el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),2500);return false}
+function derive(box){const qs=[...box.querySelectorAll('.q[data-kind=check]')];const got=qs.map(q=>{const r=q.querySelector('input[type=radio]:checked');return r?r.value:null});
+let v=null;if(got.includes('no'))v='wrong';else if(got.includes('unclear'))v='unclear';else if(got.length&&got.every(x=>x==='yes'))v='consistent';
+box.querySelector('.derived').textContent=v||'– (answer the checks)';
+const form=box.closest('.card').querySelector('form.marks');if(v&&form){const r=form.querySelector('input[name=verdict][value='+v+']');if(r)r.checked=true}}
+async function answerQ(el){const q=el.closest('.q'),box=el.closest('.check');const r=q.querySelector('input[type=radio]:checked');
+if(!r){return}const d={schema:2,view:box.dataset.view,item_key:box.dataset.item,q_id:q.dataset.q,answer:r.value,
+note:q.querySelector('.qnote').value,seed:+box.dataset.seed,ts:new Date().toISOString(),commit:COMMIT};let ok=false;
+if(SERVER){try{const x=await fetch('/mark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});ok=x.ok}catch(e){}}
+MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
+q.querySelector('.qsaved').textContent=SERVER?(ok?'saved':'server failed, kept locally'):'kept locally';derive(box)}
+addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.check').forEach(derive));
 function download(){const b=new Blob([MARKS.map(m=>JSON.stringify(m)).join('\\n')+'\\n'],{type:'application/json'});
 const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='marks.jsonl';a.click()}
 """
@@ -192,7 +213,7 @@ def shares_html(shares: dict) -> str:
             base, _, kk = k.partition("_k")
             name = str(SHARE_NAME.get(base, base)) + (f" (k = {kk})" if kk else "")
             parts.append(f"{E(str(name))} {100 * v:.0f}%")
-    return "<p class='mut'>Share of the change's size (squared) in: " + ", ".join(parts) + "</p>"
+    return "<p class='mut' data-anchor='shares'>Share of the change's size (squared) in: " + ", ".join(parts) + "</p>"
 
 
 def stored_label(it: dict, w: str, r: dict) -> str:
@@ -283,7 +304,7 @@ def contribution(it: dict, w: str) -> list[str]:
 def answers_html(it: dict) -> str:
     """What the model answered, per reader: before the change, then under each arm, with what each answer is."""
     c, w0 = it["case"], it["reader"]
-    out = ["<div class='ans'><b>What the model answered</b>"]
+    out = ["<div class='ans' data-anchor='answers'><b>What the model answered</b>"]
     for w in sorted(I.READERS, key=lambda x: x != w0):
         rows = [(label, r) for label, r in it["rows"][w].items() if r is not None]
         if not rows:
@@ -325,7 +346,7 @@ def arm_name(it: dict, label: str) -> str:
 def numbers_html(it: dict) -> str:
     """The stored numbers per arm and reader (the sampled reader first)."""
     m, w0 = it["model"], it["reader"]
-    rows = ["<details><summary>the stored numbers per change</summary><table><tr><th>reader</th><th>change applied</th>"
+    rows = ["<details data-anchor='numbers'><summary>the stored numbers per change</summary><table><tr><th>reader</th><th>change applied</th>"
             "<th>top token</th><th>what it is (run's label)</th><th>P(original answer)</th><th>P(changed answer)</th>"
             "<th>logit gap (changed − original)</th></tr>"]  # fmt: skip
     for w in sorted(I.READERS, key=lambda x: x != w0):
@@ -340,7 +361,7 @@ def numbers_html(it: dict) -> str:
             run = f" <span class='mut'>(run {E(r['_run'])})</span>" if "_run" in r else ""
             lab = stored_label(it, w, r)
             plain = PLAIN.get(lab, lab) + (f" ({lab})" if lab in ("A", "b") else "")
-            rows.append(f"<tr class='{'me' if w == w0 else ''}'><td>{I.READER_NAME[w]}</td><td>{name}{run}</td><td>{top}</td>"
+            rows.append(f"<tr class='{'me' if w == w0 else ''}' data-anchor='{E('numbers:' + w + ':' + str(label))}'><td>{I.READER_NAME[w]}</td><td>{name}{run}</td><td>{top}</td>"
                         f"<td>{tag(plain, CLASS_COLOR.get(lab, 'st'))}</td><td>{r.get('p_org', '–')}</td><td>{r.get('p_alt', '–')}</td>"
                         f"<td>{r.get('ld', '–')}</td></tr>")  # fmt: skip
     rows.append("</table></details>")
@@ -478,7 +499,7 @@ def seen_html(it: dict) -> str:
              f"the change is added at the marked token ({at})")  # fmt: skip
     sfx_note = (f"; grey: the token the run appended at the read ({E(repr(C.tokenizer(m).decode(sfx)))})" if sfx else
                 "; nothing appended: the read is the next token after the template")  # fmt: skip
-    return (f"<details open class='box'><summary><b>As the model saw it</b> ({I.READER_NAME[w]}; decoded from the stored ids "
+    return (f"<details open class='box' data-anchor='seen'><summary><b>As the model saw it</b> ({I.READER_NAME[w]}; decoded from the stored ids "
             f"with the pinned tokenizer; {where}{sfx_note})</summary><table><tr><th style='width:50%'>original prompt</th>"
             f"<th>changed prompt</th></tr><tr><td class='prompt'>{text('org')}</td><td class='prompt'>{text('alt')}</td></tr>"
             "</table></details>")  # fmt: skip
@@ -511,7 +532,7 @@ def decisive_html(it: dict) -> str:
         rd = it["case"]["readers"][w]
         who = f"{I.READER_NAME[w]}<br><span class='mut'>{E(str(rd['answer']))} → {E(str(rd['cf_answer']))}</span>"
         body.append(f"<tr class='{'me' if w == w0 else ''}'><td>{who}</td>{''.join(cells)}</tr>")
-    return (f"<div class='box wrap'><b>The decisive arms</b> <span class='mut'>(top token · the run's label; the answers are "
+    return (f"<div class='box wrap' data-anchor='decisive'><b>The decisive arms</b> <span class='mut'>(top token · the run's label; the answers are "
             f"original → changed)</span><table class='grid'><tr><th>reader</th>{head}</tr>{''.join(body)}</table></div>")  # fmt: skip
 
 
@@ -564,7 +585,57 @@ def facts_html(it: dict) -> str:
     return ""
 
 
-def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
+def checklist_html(it: dict, seed: int, answers: dict[str, dict]) -> str:
+    """The guided checklist box (Dan 30 Oct): per question its text, where to look (a link that scrolls to and highlights
+    the field), what counts as yes, what it protects against, the machine's answer, and Yes / No / Unclear with a note.
+    The item's mark is derived from the checks (wrong if any check is No, unclear if any is Unclear, else consistent) and
+    can still be set by hand below. A question with a `panel` (A8) is answered on the J-space panel."""
+    qs = Q.questions_of(it["view"])
+    uid = hashlib.md5(it["id"].encode()).hexdigest()[:8]
+    out = [f"<div class='box check' data-item='{E(it['id'])}' data-view='{E(it['view'])}' data-seed='{seed}'>"
+           "<b>Checklist</b> <span class='mut'>read the item against each question; <b>check</b>: a No means the item is "
+           "wrong; <b>observe</b>: a No is data. Derived mark: </span><b class='derived'>–</b>"
+           "<span class='mut'> (set the mark below by hand to override)</span>"]  # fmt: skip
+    for q in qs:
+        got = answers.get(q["id"]) or {}
+        m = Q.machine(it, q) if q.get("machine") else None
+        says = ("" if m is None else f"<div class='mach'>the machine says: <b>{E(m['text'])}</b></div>" if m["text"] is not None
+                else f"<div class='mach mut'>the machine could not compute: {E(m['error'] or '')}</div>")  # fmt: skip
+        if q.get("panel"):
+            says += ("<div class='mach'>answered on the J-space panel: <a href='/jspace?" + E(urlencode({"view": it["view"], "item": it["id"]}))
+                     + "' target='_blank'>open it</a> <span class='mut'>(server only)</span></div>")  # fmt: skip
+        look = (f"<a href='#' class='look' onclick=\"return look(this,'{E(q['anchor'])}')\">{E(q['look_at'])}</a>" if q.get("anchor")
+                else E(q["look_at"]))  # fmt: skip
+        radios = "".join(f"<label><input type='radio' name='q-{uid}-{q['id']}' value='{a}'{' checked' if got.get('answer') == a else ''} "
+                         f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
+        btns = (f"<div class='qa'>{radios}<input type='text' class='qnote' placeholder='note' value='{E(got.get('note', ''))}' "
+                "onchange='answerQ(this)'><span class='qsaved mut'></span></div>") if not q.get("panel") else ""
+        out.append(f"<div class='q' data-q='{E(q['id'])}' data-kind='{q['kind']}'><div><b>{E(q['id'])}</b> {E(q['text'])} "
+                   f"{tag(q['kind'], 'st' if q['kind'] == 'observe' else 'oth')}</div>"
+                   f"<div class='mut'>look at: {look}</div><div class='mut'>yes if: {E(q['yes_if'])}</div>"
+                   f"<div class='mut'>protects against: {E(q['protects_against'])}</div>{says}{btns}</div>")  # fmt: skip
+    out.append("</div>")
+    return "".join(out)
+
+
+def header_html(header: dict[str, list[dict]]) -> str:
+    """The view-level block (per model, over every item of the view): denominators, control sanity, headline recount,
+    labels against probabilities; pass / fail with one sentence of what each means."""
+    if not header:
+        return ""
+    out = ["<div class='box'><b>View header</b> <span class='mut'>(computed over every item of the view, per model)</span>"]
+    for m, rows in header.items():
+        out.append(f"<h3 style='margin:8px 0 2px'>{E(I.spec()['models'][m]['label'])}</h3><table>")
+        for r in rows:
+            st = {"pass": "pass", "fail": "fail", "na": "na"}[r["status"]]
+            out.append(f"<tr><td style='width:2.5em'><b>{E(r['id'])}</b></td><td style='width:4em'>{tag(r['status'], st)}</td>"
+                       f"<td>{E(r['value'])}<br><span class='mut'>{E(r['means'])}</span></td></tr>")
+        out.append("</table>")
+    out.append("</div>")
+    return "".join(out)
+
+
+def card(it: dict, seed: int, server: bool, mark: dict | None, answers: dict | None = None) -> str:
     if it["kind"] == "x45b_sweep":
         return sweep_card(it, seed, mark)
     if it["kind"] == "x45a_prepend":
@@ -582,6 +653,8 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
+    if Q.has_questions(it["view"]):  # the guided checklist (Dan 30 Oct), above the panels it points into
+        parts.append(checklist_html(it, seed, answers or {}))
     if I.view(it["view"]).get("tier") == 1:  # the verification read: what the model saw and the decisive arms first
         parts.append(flags_html(it) + seen_html(it) + facts_html(it) + decisive_html(it))
     right = ("Second prompt of the routes case (not used by the write)" if x8 else
@@ -589,16 +662,16 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     org, alt = marked(c["context"], c["cf_context"]), marked(c["cf_context"], c["context"])
     if c.get("fresh"):
         org, alt = outlined(org, c["fresh"]["sentence"]), outlined(alt, c["fresh"]["sentence"])
-    parts.append("<table><tr><th style='width:50%'>Original prompt (the model reads this)</th><th>" + right + "</th></tr>"
+    parts.append("<table data-anchor='prompts'><tr><th style='width:50%'>Original prompt (the model reads this)</th><th>" + right + "</th></tr>"
                  f"<tr><td class='prompt'>{org}</td><td class='prompt'>{alt}</td></tr></table>")  # fmt: skip
     qs = " &nbsp; ".join(f"<span class='{'me' if w == w0 else 'mut'}'>{I.READER_NAME[w]}: {E(c['readers'][w]['question'])}</span>"
                          for w in I.READERS)  # fmt: skip
-    parts.append(f"{fresh_html(it)}{x45d_html(it)}<p>{qs}<br>{bridge_html(it) if not x8 else ''} {expected_html(it)}</p>"
+    parts.append(f"{fresh_html(it)}{x45d_html(it)}<p data-anchor='bridge'>{qs}<br>{bridge_html(it) if not x8 else ''} {expected_html(it)}</p>"
                  f"{x45g_html(it)}{controls_html(it)}")  # fmt: skip
     parts.append(answers_html(it))
     rd = c["readers"][w0]
     diff = set(C.diff_positions(it))
-    parts.append(f"<details><summary>tokens as the model saw them ({I.READER_NAME[w0]}; the change is added at "
+    parts.append(f"<details data-anchor='tokens'><summary>tokens as the model saw them ({I.READER_NAME[w0]}; the change is added at "
                  f"<span class='toks'><span class='at'>{c['pos']}</span></span>, differing tokens marked)</summary>"
                  f"<p class='mut'>original prompt</p>{tokens_html(m, rd['ids']['org'], c['pos'], diff)}"
                  f"<p class='mut'>changed prompt</p>{tokens_html(m, rd['ids']['alt'], c['pos'], diff)}</details>")  # fmt: skip
@@ -968,11 +1041,12 @@ def recount_box(rows: list[dict]) -> str:
 
 
 def view_page(
-    v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bool, commit: str, marks: dict, recount: list[dict]
+    v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bool, commit: str, marks: dict, recount: list[dict],
+    header: dict | None = None, answers: dict | None = None,
 ) -> str:
     seed = int(p["seed"])
     body = [f"<p><a href='{'/' if server else 'index.html'}'>← all views</a></p><h1>{E(v['title'])}</h1>", controls(v, p, server),
-            claim_box(v), LEGEND, recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
+            claim_box(v), LEGEND, header_html(header or {}), recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
             "<span class='mut'>(also kept in this browser)</span></p>"]  # fmt: skip
     for section, label in (("set", "Sample from the claim's item set"), ("out", "Outside the claim's set (ineligible or beyond the first N)"),
                            ("superseded", "Superseded runs")):  # fmt: skip
@@ -996,7 +1070,7 @@ def view_page(
                     body.append(
                         f"<p class='mut'>{len(s['items'])} of {s['population']} items, uniform, seed {seed}</p>"
                     )
-                body += [card(it, seed, server, marks.get(it["id"])) for it in s["items"]]
+                body += [card(it, seed, server, marks.get(it["id"]), (answers or {}).get(it["id"])) for it in s["items"]]
     return page(v["title"], "".join(body), server, commit)
 
 
