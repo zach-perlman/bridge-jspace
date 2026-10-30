@@ -8,7 +8,7 @@ here, v4_split's other rule: the no-description guess prompt answered wrong ({P}
 part; an item without one is dropped). v4_split's closed-book H1 check needs a v4 control set that v2 lacks. The per-word gate
 alone is printed beside ("gate pw").
 Relations (jsuite_v2_test_chat's MP / MM answer_vocab): non-country: animals (6 animal classes), countries (5 continents),
-languages (16 languages; 11 share their word with a nationality adjective); country-type, beside: cities, companies, dishes,
+languages (16 languages; 12 share their word with a nationality adjective, 9 with one in people's vocabulary); country-type, beside: cities, companies, dishes,
 landmarks (country names), people (nationality adjectives).
 Measures: nn_ko37_read's (loss, MM - MP gap, bridge bootstrap: 2000 draws, random.Random(0), every gated item of a bridge
 together), on each relation's items, pooled over the non-country relations, and pooled over the country-type ones (beside).
