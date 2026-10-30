@@ -26,6 +26,8 @@ from scripts.story_b50 import caption
 
 R = S.REPO / "results"
 X53_MONITOR = R / "x53_monitor" / "x53_monitor-20261029T124428Z" / "x53_monitor.json"
+# the 122B's 53.2 (Dan 18:20 coverage, CPU from its pulled states; jobs/c3/x53_monitor_122b.yaml), its own verdict
+X53_MONITOR_122B = R / "x53_monitor" / "x53_monitor_122b-20261029T175223Z" / "x53_monitor.json"
 LT = "nemotron-3.5-lightning"
 MODELS = (("qwen3.5-9b", "9B"), ("qwen3.6-27b", "27B"), ("muse-glimmer-30b", "Muse"), (LT, "Lightning"),
           ("qwen3.5-122b-a10b", "122B"))  # fmt: skip
@@ -81,9 +83,13 @@ def value(cell: dict, key: str, i: int) -> tuple[float, float, float]:
     return (a["acc"][i], a["ci"][i][0], a["ci"][i][1])
 
 
-def build_monitor(path: Path = X53_MONITOR, out_name: str = "fig23_monitor") -> str:
+def build_monitor(path: Path = X53_MONITOR, out_name: str = "fig23_monitor", q122: Path | None = X53_MONITOR_122B) -> str:
     v = json.loads(path.read_text())
     res, src = v["results"], rel(path)
+    srcs = dict.fromkeys(res, src)
+    if q122 is not None:  # the 122B from its own verdict
+        res = {**res, **json.loads(q122.read_text())["results"]}
+        srcs |= {t: rel(q122) for t in json.loads(q122.read_text())["results"]}
     plt = S.setup()
     bar_h, gap = 0.17, 0.02
     group = 4 * (bar_h + gap) + 0.62  # four bars and two label lines
@@ -126,18 +132,18 @@ def build_monitor(path: Path = X53_MONITOR, out_name: str = "fig23_monitor") -> 
                 ax.text(max(val[0], val[2]) + 0.02, y, f"{val[0]:.2f}", va="center", fontsize=S.LABEL_PT - 1,
                         color="#1e1e1e")  # fmt: skip
                 S.record(out_name, t, f"the address at the last token, main test, {k} lens directions: {words}",
-                         round(val[0], 4), round(val[1], 4), round(val[2], 4), n=r["n_rows"], source=src)  # fmt: skip
+                         round(val[0], 4), round(val[1], 4), round(val[2], 4), n=r["n_rows"], source=srcs[t])  # fmt: skip
             rules = r["rules"]["T|b"]
             dec, ene = rules[f"k{k}"]["label"], rules[f"erand_k{k}"]["label"]
             yl = y0 - 0.12 - 4 * (bar_h + gap) - 0.04
             ax.text(0.015, yl, f"rule: {fig_label(dec)}", va="top", fontsize=S.LABEL_PT - 1, color="#1e1e1e")
             ax.text(0.015, yl - 0.27, f"energy rule: {fig_label(ene)}", va="top", fontsize=S.LABEL_PT - 1, color=GREY)
             S.record(out_name, t, f"the address at the last token, main test, {k} lens directions: the layer read "
-                     "(where the full state peaks)", layer, source=src)  # fmt: skip
+                     "(where the full state peaks)", layer, source=srcs[t])  # fmt: skip
             S.record(out_name, t, f"the address at the last token, main test, {k} lens directions: the rule's label",
-                     page_label(dec, "b"), source=src)  # fmt: skip
+                     page_label(dec, "b"), source=srcs[t])  # fmt: skip
             S.record(out_name, t, f"the address at the last token, main test, {k} lens directions: the energy rule's "
-                     "label", page_label(ene, "b"), source=src)  # fmt: skip
+                     "label", page_label(ene, "b"), source=srcs[t])  # fmt: skip
             ns.append(str(r["n_rows"]))
         ax.set_ylim(-sum(heights), 0.05)
         ax.set_xlim(0, 1.17)
@@ -160,7 +166,7 @@ def build_monitor(path: Path = X53_MONITOR, out_name: str = "fig23_monitor") -> 
                   "peaks; whiskers: 95% intervals. Under each model: the rule's label (fixed in advance) and the "
                   "energy rule's (against a random part of the same energy; set after the first labels, before the "
                   "verdict).",
-                  "Lightning hollow: its gate chosen after the 60-scene pre-check. 122B: not run."], 1.0)  # fmt: skip
+                  "Lightning hollow: its gate chosen after the 60-scene pre-check. 122B: FP8, L33, its own verdict."], 1.0)  # fmt: skip
     S.save(fig, out_name)
     return out_name
 

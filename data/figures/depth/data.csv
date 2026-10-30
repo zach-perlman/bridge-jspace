@@ -1283,6 +1283,23 @@ fig07b_verbal,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens direction
 fig07b_verbal,nemotron-3.5-lightning,"47.0 (b) share rebuilt by 25 lens directions: identity_mean: z = (share - random median) / w, w half the random draws' 95% range (lo, hi: that range in z)",10.071950445509428,-0.854707724835071,1.145292275164929,200,results/x47_verbal/nem35l_x52_verbal/omp.jsonl
 fig07b_verbal,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: the random draws' median,0.030386791564524174,,,200,results/x47_verbal/nem35l_x52_verbal/omp.jsonl
 fig07b_verbal,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: pointer / random mean,1.4426207531994766,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (a) position words the swap's best rank is taken over,15,,,,results/x47_verbal/qwen35_122b_x47_verbal/manifest.json
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",993.0,522.8250122070312,960.75,200,results/x47_verbal/summary-20261029T180530Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) best ordinal word's rank, h + pointer write: the random draws' 95% range (2.5th, 97.5th percentile)",960.75,501.95,1595.3375000000005,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) best ordinal word's rank, h + pointer write: half-width w of the random draws' band, (ln 97.5th - ln 2.5th percentile) / 2",0.578170039221817,,,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) best ordinal word's rank, h + pointer write: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)",-0.057105059689114876,-0.87712321243553,1.1228767875644698,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",2.0,1137.0250244140625,1789.25,200,results/x47_verbal/summary-20261029T180530Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) new item's name rank, h + identity change: the random draws' 95% range (2.5th, 97.5th percentile)",1789.25,1073.0375,2777.7500000000005,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) new item's name rank, h + identity change: half-width w of the random draws' band, (ln 97.5th - ln 2.5th percentile) / 2",0.47557391785113357,,,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (a) new item's name rank, h + identity change: z = (ln random median - ln median) / w (lo, hi: the random draws' 95% range in z)",14.290953269195482,-0.9248713887271968,1.0751286112728033,200,results/x47_verbal/qwen35_122b_x47_verbal/null.npz
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.025477258143946527,0.025477258143946527,0.03298943601548672,,results/x47_verbal/summary-20261029T180530Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (b) share rebuilt by 25 lens directions: the random draws' 95% range,0.025477258143946527,0.01718101822771132,0.03528620880097151,200,results/x47_verbal/qwen35_122b_x47_verbal/omp.jsonl
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.0289949553553015,,,,results/x47_verbal/summary-20261029T180530Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (b) share rebuilt by 25 lens directions: pointer: z = (share - random median) / w, w half the random draws' 95% range (lo, hi: that range in z)",0.4190046631661223,-0.8860285072704649,1.1139714927295352,200,results/x47_verbal/qwen35_122b_x47_verbal/omp.jsonl
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.14825935021042824,,,,results/x47_verbal/summary-20261029T180530Z/verbal.json
+fig07b_verbal,qwen3.5-122b-a10b,"47.0 (b) share rebuilt by 25 lens directions: identity_mean: z = (share - random median) / w, w half the random draws' 95% range (lo, hi: that range in z)",13.593612726256053,-0.8860285072704649,1.1139714927295352,200,results/x47_verbal/qwen35_122b_x47_verbal/omp.jsonl
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (b) share rebuilt by 25 lens directions: the random draws' median,0.02520187571644783,,,200,results/x47_verbal/qwen35_122b_x47_verbal/omp.jsonl
+fig07b_verbal,qwen3.5-122b-a10b,47.0 (b) share rebuilt by 25 lens directions: pointer / random mean,1.1380720480783286,,,,results/x47_verbal/summary-20261029T180530Z/verbal.json
 e8_report,qwen3.6-27b,47.10: the report's extra loss without the address,0.2767295597484277,0.21341015064562419,0.3395090845562544,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
 e8_report,qwen3.6-27b,47.10: the report's extra loss without the J++ part,0.06289308176100639,0.022058823529411797,0.108108108108108,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
 e8_report,qwen3.6-27b,47.10: lens top-5 holds the right ordinal (report prompt),0.0,0.0,0.0,200,results/x47_report/x47_10-20261028T113109Z/x47_10.json
@@ -1472,10 +1489,12 @@ fig11,qwen3.5-9b,claim 2: holds,holds,,,,"fig01c:47.5: recall's answers kept at 
 fig11,qwen3.6-27b,claim 2: holds,holds,,,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
 fig11,muse-glimmer-30b,claim 2: holds,holds,,,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
 fig11,nemotron-3.5-lightning,claim 2: holds,holds,,,,"cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,qwen3.5-122b-a10b,claim 2: holds,holds,,,,"cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
 fig11,qwen3.5-9b,claim 3: holds,holds,,,,numbers:x45p_d23_9b
 fig11,qwen3.6-27b,claim 3: holds,holds,,,,numbers:x45p_d23_27b
 fig11,muse-glimmer-30b,claim 3: holds,holds,,,,numbers:x45p_d23_muse
 fig11,nemotron-3.5-lightning,claim 3: below gate,below gate,,,,"cards:45p (below gate): recall, loss in (2) minus (3)"
+fig11,qwen3.5-122b-a10b,claim 3: fails,fails,,,,"cards:45p: recall, loss in (2) minus (3)"
 fig11,qwen3.5-9b,claim 4: holds,holds,,,,numbers:rt_C2_whole_identity_9b; numbers:rt_C2_whole_position_9b
 fig11,qwen3.6-27b,claim 4: holds,holds,,,,numbers:rt_C2_whole_identity_27b; numbers:rt_C2_whole_position_27b
 fig11,muse-glimmer-30b,claim 4: holds,holds,,,,numbers:rt_C2_whole_identity_muse; numbers:rt_C2_whole_position_muse
@@ -1485,6 +1504,7 @@ fig11,qwen3.5-9b,claim 5: holds,holds,,,,fig05d:47.1: identity route: answers lo
 fig11,qwen3.6-27b,claim 5: holds,holds,,,,fig05d:47.1: identity route: answers lost beyond random without lens directions 26-100
 fig11,muse-glimmer-30b,claim 5: holds,holds,,,,fig05d:47.1: identity route: answers lost beyond random without lens directions 26-100
 fig11,nemotron-3.5-lightning,claim 5: holds,holds,,,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.5-122b-a10b,claim 5: below gate,below gate,,,,cards:47.1 routes gate: the recall's read accuracy (the gate needs 0.80)
 fig11,qwen3.5-9b,claim 6: holds,holds,,,,"numbers:rt_C2_no_alf_position_9b; numbers:rt_C2_no_alf_rand_position_9b; fig07:lookup target share, mean over locker pairs, s = 2"
 fig11,qwen3.6-27b,claim 6: holds,holds,,,,"numbers:rt_C2_no_alf_position_27b; numbers:rt_C2_no_alf_rand_position_27b; fig07:lookup target share, mean over locker pairs, s = 2"
 fig11,muse-glimmer-30b,claim 6: holds,holds,,,,"numbers:rt_C2_no_alf_position_muse; numbers:rt_C2_no_alf_rand_position_muse; fig07:lookup target share, mean over locker pairs, s = 2"
@@ -1499,10 +1519,12 @@ fig11,qwen3.5-9b,claim 8: holds,holds,,,,fig09b:47.2: pairwise writes reaching 2
 fig11,qwen3.6-27b,claim 8: fails,fails,,,,cards:47.2: pairwise writes reaching 25% (dose 2)
 fig11,muse-glimmer-30b,claim 8: holds,holds,,,,fig09b:47.2: pairwise writes reaching 25% (dose 2)
 fig11,nemotron-3.5-lightning,claim 8: holds,holds,,,,fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.5-122b-a10b,claim 8: holds,holds,,,,cards:47.2: pairwise writes reaching 25% (dose 2)
 fig11,qwen3.5-9b,claim 9: holds,holds,,,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,qwen3.6-27b,claim 9: holds,holds,,,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,muse-glimmer-30b,claim 9: holds,holds,,,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,nemotron-3.5-lightning,claim 9: holds,holds,,,,cards:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,qwen3.5-122b-a10b,claim 9: holds,holds,,,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
 fig11,qwen3.5-9b,claim 10: holds,holds,,,,numbers:lk_order_before_9b; numbers:lk_order_after_9b; numbers:x45q_c_9b
 fig11,qwen3.6-27b,claim 10: holds,holds,,,,numbers:lk_order_before_27b; numbers:lk_order_after_27b; numbers:x45q_c_27b
 fig11,muse-glimmer-30b,claim 10: holds,holds,,,,numbers:lk_order_before_muse; numbers:lk_order_after_muse; numbers:x45q_c_muse
@@ -1512,10 +1534,12 @@ fig11,qwen3.5-9b,claim 11: holds,holds,,,,"e11_before_l:47.4: main, locker after
 fig11,qwen3.6-27b,claim 11: holds,holds,,,,"e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L"
 fig11,muse-glimmer-30b,claim 11: holds,holds,,,,"e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L"
 fig11,nemotron-3.5-lightning,claim 11: holds,holds,,,,"e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L"
+fig11,qwen3.5-122b-a10b,claim 11: holds,holds,,,,"e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L"
 fig11,qwen3.5-9b,claim 12: holds,holds,,,,cards:47.8: the address readable from; cards:47.8: the first layer of the position route
 fig11,qwen3.6-27b,claim 12: holds,holds,,,,cards:47.8 (full grid): the address readable from; cards:47.8 (full grid): the first layer of the position route
 fig11,muse-glimmer-30b,claim 12: holds,holds,,,,cards:47.8: the address readable from; cards:47.8: the first layer of the position route
 fig11,nemotron-3.5-lightning,claim 12: holds,holds,,,,cards:47.8: the address readable from; cards:47.8: the first layer of the position route
+fig11,qwen3.5-122b-a10b,claim 12: holds,holds,,,,cards:47.8: the address readable from; cards:47.8: the first layer of the position route
 fig01c,qwen3.5-9b,47.5: the rule's reading (recall at L),"followed, not needed at one layer",,,,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept, random part minus J++ part taken out (L)",0.025000000000000022,0.005376344086021501,0.05294215037008183,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept at L, the J++ part's 25 directions taken out",0.975,0.9470578496299181,0.9946236559139785,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
@@ -6289,6 +6313,13 @@ fig12,nemotron-3.5-lightning,"Zach's operation, his passages: his rotated-direct
 fig12,nemotron-3.5-lightning,"Zach's operation, his passages: his stored recall minus lookup",0.6624,0.5752,0.7468,157,results/x50_zach/x52_z1-20261029T013035Z/z1.json
 fig12,qwen3.5-122b-a10b,"our removal, our scenes (main test): gap",0.32,0.2,0.43,200,contrast_122b
 fig12,qwen3.5-122b-a10b,"our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup",-0.1207,,,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig12,qwen3.5-122b-a10b,"our removal, his passages: lookup switches under the whole change",98,,,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+fig12,qwen3.5-122b-a10b,"our removal, his passages: gap",0.2897,0.2001,0.3818,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+fig12,qwen3.5-122b-a10b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.0756,,,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0552,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0667,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0054,0.0,0.0172,184,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, his passages: his stored recall minus lookup",0.5,0.4278,0.573,184,results/x50_zach/x52_z1-20261029T215701Z/z1.json
 fig09a,qwen3.5-9b,recall extra loss without the J++ part: simple,0.06,0.0,0.12,,ss_jpp_rc_excess_9b
 fig09a,qwen3.5-9b,lookup extra loss without the J++ part: simple,0.0,0.0,0.0,,ss_jpp_lk_excess_9b
 fig09a,qwen3.5-9b,recall extra loss without the J++ part: prose,0.2397,0.145,0.3507,465,results/x0b_generalize/qwen35_9b_x0b_v2_ptr/outcomes.jsonl
@@ -6566,6 +6597,12 @@ fig17_jspace_last_token,nemotron-3.5-lightning,51.10: the read probe's chance (l
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.288135593220339,0.18269230769230768,0.388064091308165,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.8983050847457628,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: lookup, last token, read peak layer 12: the probe's accuracy on the lens part of the state, locker-first rows",0.20754716981132076,0.11627906976744186,0.2818181818181818,106,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: lookup, last token: the read peak layer (the answer appears at layer 46)",12,,,,results/x51_jread/x53_jread-20261029T140044Z/verdict.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,51.10: the read probe's chance (locker-first rows),0.11534141958670259,,,,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: lookup, last token, read peak: the probe's accuracy on the lens part",0.20754716981132076,0.11627906976744186,0.2818181818181818,106,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: lookup, last token, read peak: the lens swap's switches",0.0,,,,results/x51_jread/qwen35_122b_x51_10/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: lookup, last token, read peak: the whole-state patch's switches",0.0,,,,results/x51_jread/qwen35_122b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak layer 24: the probe's accuracy on the lens part of the state, locker-first rows",0.9733333333333334,0.9416666666666667,0.9941176470588236,150,results/x51_jread/read-qwen35_9b_x51_10-20261028T185634Z/read.json
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token, read peak layer 24: the lens swap's switches over the whole-state patch's (0.0000 / 0.9467), paired cluster bootstrap",0.0,0.0,0.0,75,results/x51_jread/qwen35_9b_x51_10/outcomes.jsonl
 fig17_jspace_last_token,qwen3.5-9b,"51.10: recall, last token: the read peak layer (the answer appears at layer 29)",24,,,,results/x51_jread/x51_10-20261028T190608Z/verdict.json
@@ -6594,6 +6631,13 @@ fig17_jspace_last_token,nemotron-3.5-lightning,51.10: the read probe's chance (l
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9830508474576272,0.9591836734693877,1.0,118,results/x51_jread/read-nem35l_x52_jread-20261029T005704Z/read.json
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the lens swap's switches",0.13559322033898305,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
 fig17_jspace_last_token,nemotron-3.5-lightning,"51.10: recall, last token, read peak: the whole-state patch's switches",0.9661016949152542,,,59,results/x51_jread/nem35l_x52_jread/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token, read peak layer 44: the probe's accuracy on the lens part of the state, locker-first rows",0.9056603773584906,0.8125,0.9642857142857143,106,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token, read peak layer 44: the lens swap's switches over the whole-state patch's (0.0000 / 0.7925), paired cluster bootstrap",0.0,0.0,0.0,53,results/x51_jread/qwen35_122b_x51_10/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token: the read peak layer (the answer appears at layer 46)",44,,,,results/x51_jread/x53_jread-20261029T140044Z/verdict.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,51.10: the read probe's chance (locker-first rows),0.11534141958670259,,,,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token, read peak: the probe's accuracy on the lens part",0.9056603773584906,0.8125,0.9642857142857143,106,results/x51_jread/read-qwen35_122b_x51_10-20261029T140039Z/read.json
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token, read peak: the lens swap's switches",0.0,,,53,results/x51_jread/qwen35_122b_x51_10/outcomes.jsonl
+fig17_jspace_last_token,qwen3.5-122b-a10b,"51.10: recall, last token, read peak: the whole-state patch's switches",0.7924528301886793,,,53,results/x51_jread/qwen35_122b_x51_10/outcomes.jsonl
 fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, the old bridge word",0.1108,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
 fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, the new bridge word",0.1098,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
 fig18_atoms,qwen3.5-9b,"52 A: share of the rebuilt energy, an answer word",0.0005,,,50,results/x52_atoms/report-20261029T000125Z/tables.json
@@ -6614,6 +6658,11 @@ fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, the new b
 fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, an answer word",0.0,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
 fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, another scene word or its class",0.0123,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
 fig18_atoms,nemotron-3.5-lightning,"52 A: share of the rebuilt energy, no scene word",0.7869,,,50,results/x52_atoms/report-20261029T010648Z/tables.json
+fig18_atoms,qwen3.5-122b-a10b,"52 A: share of the rebuilt energy, the old bridge word",0.1518,,,50,results/x52_atoms/report-20261030T094628Z/tables.json
+fig18_atoms,qwen3.5-122b-a10b,"52 A: share of the rebuilt energy, the new bridge word",0.1533,,,50,results/x52_atoms/report-20261030T094628Z/tables.json
+fig18_atoms,qwen3.5-122b-a10b,"52 A: share of the rebuilt energy, an answer word",0.0,,,50,results/x52_atoms/report-20261030T094628Z/tables.json
+fig18_atoms,qwen3.5-122b-a10b,"52 A: share of the rebuilt energy, another scene word or its class",0.0069,,,50,results/x52_atoms/report-20261030T094628Z/tables.json
+fig18_atoms,qwen3.5-122b-a10b,"52 A: share of the rebuilt energy, no scene word",0.6879,,,50,results/x52_atoms/report-20261030T094628Z/tables.json
 fig19_identity_address,qwen3.5-9b,the rule's label (B's share against twice C's),both,,,300,results/x53_identity_address/x53_identity_address-20261029T105132Z/verdict.json
 fig19_identity_address,qwen3.5-9b,scenes used,300,,,,results/x53_identity_address/x53_identity_address-20261029T105132Z/verdict.json
 fig19_identity_address,qwen3.5-9b,"the recall's answers, both parts: B's answer",0.2533,0.1974,0.3151,300,results/x53_identity_address/x53_identity_address-20261029T105132Z/verdict.json
@@ -6794,7 +6843,13 @@ fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 25 lens directions: the layer read (where the full state peaks)",34,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 25 lens directions: the rule's label",in between,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 25 lens directions: the energy rule's label",the address is under-represented in the lens directions,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
-fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: not run",not run,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: the full state",0.963,0.9486,0.9762,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: the J++ part",0.7295,0.6939,0.7654,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: a random part (same size)",0.712,0.687,0.7337,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: a random part (same energy)",0.9095,0.8871,0.93,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: the layer read (where the full state peaks)",40,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: the rule's label",J-space blind to the address,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 25 lens directions: the energy rule's label",the address is under-represented in the lens directions,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
 fig23_monitor,qwen3.5-9b,"the address at the last token, main test, 100 lens directions: the full state",0.876,0.8401,0.9099,400,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,qwen3.5-9b,"the address at the last token, main test, 100 lens directions: the J++ part",0.7215,0.6871,0.7565,400,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,qwen3.5-9b,"the address at the last token, main test, 100 lens directions: a random part (same size)",0.772,0.7369,0.8074,400,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
@@ -6823,7 +6878,13 @@ fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 100 lens directions: the layer read (where the full state peaks)",34,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 100 lens directions: the rule's label",in between,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
 fig23_monitor,nemotron-3.5-lightning,"the address at the last token, main test, 100 lens directions: the energy rule's label",the address is under-represented in the lens directions,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
-fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: not run",not run,,,,results/x53_monitor/x53_monitor-20261029T124428Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: the full state",0.963,0.9486,0.9762,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: the J++ part",0.8535,0.8298,0.8777,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: a random part (same size)",0.85,0.8289,0.8723,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: a random part (same energy)",0.944,0.9276,0.9595,400,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: the layer read (where the full state peaks)",40,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: the rule's label",in between,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
+fig23_monitor,qwen3.5-122b-a10b,"the address at the last token, main test, 100 lens directions: the energy rule's label",the address is under-represented in the lens directions,,,,results/x53_monitor/x53_monitor_122b-20261029T175223Z/x53_monitor.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -8344,6 +8405,23 @@ e6_distance,muse-glimmer-30b,47.16: position share with 50 neutral sentences,0.5
 e6_distance,muse-glimmer-30b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
 e6_distance,muse-glimmer-30b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.5161290322580645,,,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
 e6_distance,muse-glimmer-30b,47.16: the code's shift beta with 50 sentences,0.41744996755918923,0.3904057951173122,0.4427909943172652,,results/x47_distance/x52_distance-20261029T090323Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: the rule's reading,none of the three,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: routes scenes,300,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: position share with 0 neutral sentences,0.39,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.48,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: position share with 5 neutral sentences,0.30333333333333334,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: slot probe with 5 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,"47.16: the swap (fit with none) sends lookups to the target, 5 sentences",0.2916666666666667,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: the code's shift beta with 5 sentences,0.6353100050327389,0.5974895181418118,0.6745445164691102,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: position share with 20 neutral sentences,0.3233333333333333,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: slot probe with 20 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,"47.16: the swap (fit with none) sends lookups to the target, 20 sentences",0.25,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: the code's shift beta with 20 sentences,0.8268253039482027,0.7839190796674398,0.87083637238781,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: position share with 50 neutral sentences,0.33,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.26666666666666666,,,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
+e6_distance,qwen3.5-122b-a10b,47.16: the code's shift beta with 50 sentences,0.8881589168726012,0.8445619316167992,0.9331241922840627,,results/x47_distance/x52_distance-20261030T094552Z/x47_16.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
@@ -8363,6 +8441,11 @@ e11_before_l,muse-glimmer-30b,"47.4: clean, locker after the pick: lookups carri
 e11_before_l,qwen3.6-27b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,61,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
 e11_before_l,qwen3.6-27b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.9957627118644068,0.9863013698630136,1.0,236,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
 e11_before_l,nemotron-3.5-lightning,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9240506329113923,0.8648648648648649,0.9770114942528736,79,results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.json
+e11_before_l,qwen3.6-27b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,61,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+e11_before_l,qwen3.6-27b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.9957627118644068,0.9863013698630136,1.0,236,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+e11_before_l,nemotron-3.5-lightning,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9240506329113923,0.8648648648648649,0.9770114942528736,79,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+e11_before_l,qwen3.5-122b-a10b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,82,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+e11_before_l,qwen3.5-122b-a10b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.981042654028436,0.960226566033469,0.9957446808510638,211,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 catalogue,qwen3.5-9b,clean one-pick scenes: scenes used,417,,,,results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl
@@ -8526,6 +8609,12 @@ cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in the new bridge
 cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in the reader's answer word,0.0,0.0,0.0,50,results/x52_atoms/report-20261029T010648Z/tables.json
 cards,nemotron-3.5-lightning,52 A: share of the rebuilt energy in no scene word,0.7869,0.7581,0.818,50,results/x52_atoms/report-20261029T010648Z/tables.json
 cards,nemotron-3.5-lightning,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",1.0,,,,results/x52_atoms/report-20261029T010648Z/tables.json
+cards,qwen3.5-122b-a10b,52 A: main-test scenes,50,,,,results/x52_atoms/report-20261030T094628Z/tables.json
+cards,qwen3.5-122b-a10b,52 A: share of the rebuilt energy in the original bridge word,0.1518,0.1276,0.1762,50,results/x52_atoms/report-20261030T094628Z/tables.json
+cards,qwen3.5-122b-a10b,52 A: share of the rebuilt energy in the new bridge word,0.1533,0.1297,0.1787,50,results/x52_atoms/report-20261030T094628Z/tables.json
+cards,qwen3.5-122b-a10b,52 A: share of the rebuilt energy in the reader's answer word,0.0,0.0,0.0,50,results/x52_atoms/report-20261030T094628Z/tables.json
+cards,qwen3.5-122b-a10b,52 A: share of the rebuilt energy in no scene word,0.6879,0.6506,0.7235,50,results/x52_atoms/report-20261030T094628Z/tables.json
+cards,qwen3.5-122b-a10b,"52 A: the bridge words' directions whose sign points the expected way (old -, new +)",0.9808,,,,results/x52_atoms/report-20261030T094628Z/tables.json
 cards,qwen3.5-9b,lenswrite: the recall keeps its clean answer under the lens swap,0.947,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
 cards,qwen3.5-9b,lenswrite: the J++ part at gain 2 gives the changed prompt's recall answer,0.147,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
 cards,qwen3.5-9b,lenswrite: a random part at gain 2 gives the changed prompt's recall answer,0.04,,,75,results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.json
@@ -8554,6 +8643,9 @@ cards,muse-glimmer-30b,"51.10: main-test scenes, locker first",68,,,,results/x51
 cards,nemotron-3.5-lightning,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
 cards,nemotron-3.5-lightning,51.10: lookup at the last token: the rule's reading,none of the four,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
 cards,nemotron-3.5-lightning,"51.10: main-test scenes, locker first",59,,,,results/x51_jread/x52_jread-20261029T005707Z/verdict.json
+cards,qwen3.5-122b-a10b,51.10: recall at the last token: the rule's reading,"(b) readable, not used",,,,results/x51_jread/x53_jread-20261029T140044Z/verdict.json
+cards,qwen3.5-122b-a10b,51.10: lookup at the last token: the rule's reading,none of the four,,,,results/x51_jread/x53_jread-20261029T140044Z/verdict.json
+cards,qwen3.5-122b-a10b,"51.10: main-test scenes, locker first",53,,,,results/x51_jread/x53_jread-20261029T140044Z/verdict.json
 cards,qwen3.5-9b,the address swap at s = 2: recalls that change,0.215,,,600,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
 cards,qwen3.6-27b,the address swap at s = 2: recalls that change,0.043333333333333335,,,600,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
 cards,muse-glimmer-30b,the address swap at s = 2: recalls that change,0.058333333333333334,,,600,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
@@ -8592,6 +8684,15 @@ cards,nemotron-3.5-lightning,"Z1-P: recall, switches lost beyond a random part",
 cards,nemotron-3.5-lightning,Z1-P: the gap,0.449874686716792,0.3035961895403429,0.6037600931663932,200,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
 cards,nemotron-3.5-lightning,Z1-P: the rule's reading,the split holds on his passages,,,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
 cards,nemotron-3.5-lightning,Z1-P: the gate (the lookup's read accuracy on the original passages),0.794,,,,results/x50_zach/x52_z1p-20261029T080731Z/z1p.json
+cards,qwen3.5-122b-a10b,"Z1: lookup, switches lost beyond a random part",0.12244897959183665,0.05102040816326536,0.19811320754716977,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+cards,qwen3.5-122b-a10b,"Z1: recall, switches lost beyond a random part",0.4121621621621623,0.33333333333333337,0.49019924098671724,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+cards,qwen3.5-122b-a10b,Z1: the gap,0.28971318257032563,0.2000975934049434,0.3818317514994994,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+cards,qwen3.5-122b-a10b,Z1: the rule's reading,in between,,,,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+cards,qwen3.5-122b-a10b,"Z1-P: lookup, switches lost beyond a random part",0.015384615384615441,-0.06557377049180324,0.10000000000000009,200,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+cards,qwen3.5-122b-a10b,"Z1-P: recall, switches lost beyond a random part",0.3489932885906041,0.27856916817359845,0.42331400295553273,200,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+cards,qwen3.5-122b-a10b,Z1-P: the gap,0.33360867320598864,0.22906243322649567,0.43824863574935213,200,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+cards,qwen3.5-122b-a10b,Z1-P: the rule's reading,the split holds on his passages,,,,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+cards,qwen3.5-122b-a10b,Z1-P: the gate (the lookup's read accuracy on the original passages),0.93,,,,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
 cards,qwen3.5-9b,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.5111111111111111,0.40909090909090906,0.6122448979591837,100,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
 cards,qwen3.6-27b,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.5116279069767442,0.41758241758241754,0.6091954022988505,103,results/x51_carrier/x51_7-20261028T171646Z/verdict.json
 cards,nemotron-3.5-lightning,"51.7: fact-after lookups, full carrier: switches lost beyond a random part",0.4117647058823529,0.30525353016688067,0.5194805194805195,97,results/x51_carrier/x52_carrier-20261029T014338Z/verdict.json
@@ -8635,6 +8736,12 @@ cards,nemotron-3.5-lightning,47.8: the address readable from,6,,,,results/x47_an
 cards,nemotron-3.5-lightning,47.8: (a) the handoff,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
 cards,nemotron-3.5-lightning,47.8: (b) readable before it is used,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
 cards,nemotron-3.5-lightning,47.8: (d) never the value,yes,,,,results/x47_anatomy/x52_anatomy-20261029T010517Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: the last layer the lookup needs the J++ part,33,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: the first layer of the position route,33,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: the address readable from,13,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: (a) the handoff,yes,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: (b) readable before it is used,yes,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
+cards,qwen3.5-122b-a10b,47.8: (d) never the value,yes,,,,results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.json
 cards,qwen3.6-27b,47.2: pairwise writes reaching 25% (dose 2),13,,,30,results/x47_six/x52_six-20261029T004919Z/x47_2.json
 cards,qwen3.5-9b,51.11 part 1: the code's size,in between,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
 cards,qwen3.5-9b,51.11 part 3: the order,none of the three,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
@@ -8642,6 +8749,14 @@ cards,qwen3.5-9b,"51.11 part 3: midpoint swaps reaching the slot between, from t
 cards,qwen3.5-9b,51.11 part 3: full swaps reaching their target (dose 2),0.395,,,,results/x51_addr/verdict-20261028T215138Z/verdict.json
 cards,nemotron-3.5-lightning,"45p (below gate): recall, loss in (2) minus (3)",0.2247191011235955,0.14583333333333337,0.29670329670329665,119,results/x45p/x52_45p_below-20261029T090351Z/x45p.json
 cards,nemotron-3.5-lightning,"45p (below gate): recall, loss in (2) minus (4)",0.2134831460674157,0.13978494623655913,0.2891566265060239,119,results/x45p/x52_45p_below-20261029T090351Z/x45p.json
+cards,qwen3.5-122b-a10b,"47.5: recall's answers kept at L, the J++ part's 25 directions taken out",0.955,0.9069767441860465,0.9865470852017937,200,results/x47_zero/x52_zero-20261029T183120Z/x47_5.json
+cards,qwen3.5-122b-a10b,47.5: recall's answers lost beyond random (L),0.03500000000000003,0.0,0.08654166666666664,200,results/x47_zero/x52_zero-20261029T183120Z/x47_5.json
+cards,qwen3.5-122b-a10b,47.5: the rule's reading (recall at L),"followed, not needed at one layer",,,,results/x47_zero/x52_zero-20261029T183120Z/x47_5.json
+cards,qwen3.5-122b-a10b,"45p: recall, loss in (2) minus (3)",0.15200000000000002,0.09909909909909931,0.2183932193567081,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+cards,qwen3.5-122b-a10b,"45p: recall, loss in (2) minus (4)",0.20000000000000007,0.14728112175102592,0.26531063752934814,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+cards,qwen3.5-122b-a10b,45p: holds,no,,,,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+cards,qwen3.5-122b-a10b,47.2: pairwise writes reaching 25% (dose 2),21,,,30,results/x47_six/x52_six-20261029T231821Z/x47_2.json
+cards,qwen3.5-122b-a10b,47.1 routes gate: the recall's read accuracy (the gate needs 0.80),0.7971,,,484,results/x6_routes/qwen35_122b_routes_x47_1/gate.json
 cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: pointer,0.044577636290341616,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
 cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: random draws (mean),0.030900454046204687,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
 cards,nemotron-3.5-lightning,47.13: wrong answers whose locker the address probe predicts,0.047619047619047616,0.010752688172043012,0.09278350515463918,105,results/x47_errors/x47_13-20261029T035254Z/x47_errors.json

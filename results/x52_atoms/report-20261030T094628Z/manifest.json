@@ -1,0 +1,23 @@
+{
+ "exp": "x52_atoms",
+ "part": "52 A",
+ "verdict": "descriptive; no rule",
+ "written_utc": "2026-10-30T09:46:32Z",
+ "code": {
+  "sha": "2f3e2701f1ea5522015ff61db60464ba505a43e4",
+  "dirty": true
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "sources": {
+  "qwen3.5-122b-a10b": {
+   "e1": "qwen35_122b_x52_atoms_fwd"
+  }
+ },
+ "n_boot": 10000,
+ "boot_seed": 0
+}

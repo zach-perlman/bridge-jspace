@@ -3223,17 +3223,19 @@ def claim_cells(*words: str, hollow_122b: bool = False) -> dict[str, tuple[str, 
 
 CLAIM_CELLS = {
     1: claim_cells("holds", "in part", "holds", "holds", "holds"),
-    2: claim_cells("holds", "holds", "holds", "holds", "not run"),
-    3: claim_cells("holds", "holds", "holds", "below gate", "not run"),
+    # the 122B's cells from its coverage runs (Dan 30 Oct: "all runs in"; agent's reading, UNVERIFIED): 2 (47.5), 3 (45p),
+    # 8 (47.2), 9 (47.0, lookup-only gate: hollow), 11 (47.4, the 9B's pattern), 12 (47.8, lookup-only gate: hollow)
+    2: claim_cells("holds", "holds", "holds", "holds", "holds"),
+    3: claim_cells("holds", "holds", "holds", "below gate", "fails"),
     4: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
-    5: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    5: claim_cells("holds", "holds", "holds", "holds", "below gate"),  # the 122B: routes recall 0.797 < 0.80
     6: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
     7: claim_cells("holds", "fails", "holds", "holds", "holds", hollow_122b=True),
-    8: claim_cells("holds", "fails", "holds", "holds", "not run"),
-    9: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    8: claim_cells("holds", "fails", "holds", "holds", "holds"),
+    9: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
     10: claim_cells("holds", "holds", "holds", "holds", "in part"),  # the 122B: its order split only, the copy not run
-    11: claim_cells("holds", "holds", "holds", "holds", "not run"),
-    12: claim_cells("holds", "holds", "holds", "holds", "not run"),
+    11: claim_cells("holds", "holds", "holds", "holds", "holds"),
+    12: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
 }
 # cell footnotes, {(claim, model): (mark, note)}; Lightning's claim 10: Dan 18:10 (jobs/c3/batch53.yaml decisions_1810 item 3)
 F11_NOTES = {(10, "lightning"): ("¹", "Lightning, claim 10: the order split is descriptive; the copy test only below "
@@ -3255,12 +3257,15 @@ CLAIM_KEYS = {
     | {"lightning": ("cards:conflict: recall, switches lost beyond a random part",
                      "cards:conflict: lookup, switches lost beyond a random part")},
     2: per("fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out")
-    | {"lightning": ("cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",)},
-    3: per("numbers:x45p_d23_{m}") | {"lightning": ("cards:45p (below gate): recall, loss in (2) minus (3)",)},
+    | {"lightning": ("cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",),
+       "122b": ("cards:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",)},
+    3: per("numbers:x45p_d23_{m}") | {"lightning": ("cards:45p (below gate): recall, loss in (2) minus (3)",),
+                                       "122b": ("cards:45p: recall, loss in (2) minus (3)",)},
     4: per("numbers:rt_C2_whole_identity_{m}", "numbers:rt_C2_whole_position_{m}")
     | {"lightning": ("fig05:another item moved, whole: identity share", "fig05:another item moved, whole: position share"),
        "122b": ("numbers:rtg_C2_whole_identity_122b", "numbers:rtg_C2_whole_position_122b")},
     5: per("fig05d:47.1: identity route: answers lost beyond random without lens directions 26-100")
+    | {"122b": ("cards:47.1 routes gate: the recall's read accuracy (the gate needs 0.80)",)}
     | {"lightning": ("e3_identity:47.1: identity answers lost beyond random without lens directions 26-100",)},
     6: per("numbers:rt_C2_no_alf_position_{m}", "numbers:rt_C2_no_alf_rand_position_{m}",
            "fig07:lookup target share, mean over locker pairs, s = 2")
@@ -3273,8 +3278,9 @@ CLAIM_KEYS = {
     | {"lightning": ("fig07:another item moved, keep_alf: position share",
                      "fig07:another item moved, keep_alf_rand: position share")},
     8: per("fig09b:47.2: pairwise writes reaching 25% (dose 2)", models=("9b", "muse", "lightning"))
-    | {"27b": ("cards:47.2: pairwise writes reaching 25% (dose 2)",)},
-    9: per("fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer")
+    | {"27b": ("cards:47.2: pairwise writes reaching 25% (dose 2)",),
+       "122b": ("cards:47.2: pairwise writes reaching 25% (dose 2)",)},
+    9: per("fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer", models=("9b", "27b", "muse", "122b"))
     | {"lightning": ("cards:47.0 (b) share rebuilt by 25 lens directions: pointer",)},
     10: per("numbers:lk_order_before_{m}", "numbers:lk_order_after_{m}", "numbers:x45q_c_{m}")
     | {"lightning": ("fig03:lookups switched by the whole change, locker sentence before the pick",
@@ -3282,9 +3288,9 @@ CLAIM_KEYS = {
                      "fig03:45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)"),
        "122b": ("numbers:lk_order_before_122b", "numbers:lk_order_after_122b")},
     11: per("e11_before_l:47.4: main, locker after the pick: lookups carried by the bridge word before L",
-            models=("9b", "27b", "muse", "lightning")),
+            models=("9b", "27b", "muse", "lightning", "122b")),
     12: per("cards:47.8: the address readable from", "cards:47.8: the first layer of the position route",
-            models=("9b", "muse", "lightning"))
+            models=("9b", "muse", "lightning", "122b"))
     | {"27b": ("cards:47.8 (full grid): the address readable from",
                "cards:47.8 (full grid): the first layer of the position route")},
 }  # fmt: skip
@@ -3688,7 +3694,8 @@ def batch47_numbers() -> None:
     seen = set()
     for v in (latest_verdict("x47_distance/x47_16-*") / "x47_16.json",
               pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T023426Z" / "x47_16.json",
-              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T090323Z" / "x47_16.json"):  # fmt: skip
+              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261029T090323Z" / "x47_16.json",
+              pins.RESULTS_DIR / "x47_distance" / "x52_distance-20261030T094552Z" / "x47_16.json"):  # fmt: skip
         src = str(v.relative_to(S.REPO))
         for m in json.loads(v.read_text())["models"]:
             if m["status"] != "tested" or m["target"] in seen:
@@ -3717,7 +3724,8 @@ def batch47_numbers() -> None:
                     S.record("e3_identity", m["target"], f"47.1: identity answers lost beyond random without lens directions {part}",
                              *m["routes"]["falls"][part]["identity"], source=src)  # fmt: skip
     for v in (latest_verdict("x47_cumulative/x47_4-*") / "x47_4.json",
-              pins.RESULTS_DIR / "x47_cumulative" / "x52_cumulative-20261029T044453Z" / "x47_4.json"):  # fmt: skip
+              pins.RESULTS_DIR / "x47_cumulative" / "x52_cumulative-20261029T044453Z" / "x47_4.json",
+              pins.RESULTS_DIR / "x47_cumulative" / "x52_cumulative-20261030T010712Z" / "x47_4.json"):  # fmt: skip
         src = str(v.relative_to(S.REPO))
         for m in json.loads(v.read_text())["models"]:
             for design, cells in m.get("cells", {}).items():
@@ -3883,7 +3891,8 @@ X52 = {
     "x0b": LT_X0B,
     "natural": R / "x5_natural" / "nem35l_x52_natural_below" / "verdict-20261029T082128Z" / "verdict.json",
     "atoms": (R / "x52_atoms" / "report-20261029T000125Z" / "tables.json",
-              R / "x52_atoms" / "report-20261029T010648Z" / "tables.json"),
+              R / "x52_atoms" / "report-20261029T010648Z" / "tables.json",
+              R / "x52_atoms" / "report-20261030T094628Z" / "tables.json"),  # the 122B (Dan 18:20 coverage; E1 only)
     "lenswrite": R / "x51_jread" / "x52_lenswrite-20261029T080535Z" / "lenswrite.json",
     "swaprecall": R / "x8_write" / "x52_swaprecall-20261029T080538Z" / "swaprecall.json",
     "x8_write": {"qwen3.5-9b": "qwen35_9b_x8_write/verdict-20261026T110254Z",
@@ -3903,12 +3912,17 @@ X52 = {
     "persistence": (R / "x47_depth_cpu" / "persistence-20261029T013614Z" / "persistence.json",
                     R / "x47_depth_cpu" / "persistence-20261029T015607Z" / "persistence.json"),
     "anatomy": (R / "x47_anatomy" / "x47_8-20261028T154518Z" / "x47_8.json",
-                R / "x47_anatomy" / "x52_anatomy-20261029T013405Z" / "x47_8.json", LT_ANATOMY),
+                R / "x47_anatomy" / "x52_anatomy-20261029T013405Z" / "x47_8.json", LT_ANATOMY,
+                R / "x47_anatomy" / "x52_anatomy-20261030T032402Z" / "x47_8.json"),  # the 122B: lookup-only gate
     "six_27b": R / "x47_six" / "x52_six-20261029T004919Z" / "x47_2.json",
     "addr": R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json",
     "verbal": R / "x47_verbal" / "summary-20261029T005548Z" / "verbal.json",
     "errors": R / "x47_errors" / "x47_13-20261029T035254Z" / "x47_errors.json",
     "x45d": R / "x0b_generalize" / "nem35l_x52_x45d" / "x45d-20261029T035250Z" / "verdict.json",
+    # the 122B's coverage verdicts (Dan 18:20 and 02:05; jobs/c3/*_122b*.yaml; no prediction; UNVERIFIED)
+    "zero_122b": R / "x47_zero" / "x52_zero-20261029T183120Z" / "x47_5.json",
+    "x45p_122b": R / "x45p" / "x53_45p_coverage-20261030T002915Z" / "x45p.json",
+    "six_122b": R / "x47_six" / "x52_six-20261029T231821Z" / "x47_2.json",
 }  # fmt: skip
 
 
@@ -4019,6 +4033,14 @@ def cards_numbers() -> None:
                     p,
                 )
             rec(m["target"], "51.10: main-test scenes, locker first", m["n"], p)
+    from scripts import story_b51b as B51B
+
+    p = B51B.Q122_JREAD / "verdict.json"  # the 122B's 51.10 (its verdict holds Lightning's rerun too: the 122B only)
+    v = json.loads(p.read_text())
+    m = next(x for x in v["models"] if x["target"] == "qwen3.5-122b-a10b")
+    for w in ("recall", "lookup"):
+        rec(m["target"], f"51.10: {w} at the last token: the rule's reading", v["labels"][m["target"]][w]["P3"], p)
+    rec(m["target"], "51.10: main-test scenes, locker first", m["n"], p)
     # the address swap at s = 2: recalls that change, and of those, the swapped-in item's answer
     for target, run in X52["x8_write"].items():
         p = R / "x8_write" / run / "verdict.json"
@@ -4031,9 +4053,12 @@ def cards_numbers() -> None:
         rec(target, "the address swap at s = 2: changed recalls naming the swapped-in item's answer", ch["swapped_in"], p,
             ch["n"])  # fmt: skip
     # Zach's passages: Z1 (true facts) and Z1-P (made-up facts), at each model's L
-    for p in (*X52["z1"], *X52["z1p"]):
+    q122 = (R / "x50_zach" / "x52_z1-20261029T215701Z" / "z1.json", R / "x50_zach" / "x52_z1p-20261029T223420Z" / "z1p.json")
+    for p in (*X52["z1"], *X52["z1p"], *q122):
         tag = "Z1-P" if p.name == "z1p.json" else "Z1"
         for m in json.loads(p.read_text())["models"]:
+            if p in q122 and m["target"] != "qwen3.5-122b-a10b":  # the 122B's verdicts (Dan 18:20) hold Lightning too
+                continue
             r = m["layer_results"][str(m["layers"][0])]
             rec(m["target"], f"{tag}: lookup, switches lost beyond a random part", r["lookup"]["excess"], p, r["n"])
             rec(m["target"], f"{tag}: recall, switches lost beyond a random part", r["recall"]["excess"], p, r["n"])
@@ -4111,6 +4136,27 @@ def cards_numbers() -> None:
     rc = m["readers"]["recall"]
     for k, what in (("2-3", "(2) minus (3)"), ("2-4", "(2) minus (4)")):
         rec(lt, f"45p (below gate): recall, loss in {what}", rc["diff"][k], LT_45P, rc["n"])
+    # the 122B's coverage runs (no prediction; UNVERIFIED): 47.5, 45p, 47.2
+    q = "qwen3.5-122b-a10b"
+    p = X52["zero_122b"]
+    m = next(x for x in json.loads(p.read_text())["models"] if x["target"] == q)
+    rc = m["readers"]["recall"]
+    rec(q, "47.5: recall's answers kept at L, the J++ part's 25 directions taken out", rc["kept"]["zero_L"], p, rc["n"])
+    rec(q, "47.5: recall's answers lost beyond random (L)", rc["beyond_random"]["L"], p, rc["n"])
+    rec(q, "47.5: the rule's reading (recall at L)", m["labels"]["recall L"], p)
+    p = X52["x45p_122b"]
+    m = next(x for x in json.loads(p.read_text())["models"] if x["target"] == q)
+    rc = m["readers"]["recall"]
+    for k, what in (("2-3", "(2) minus (3)"), ("2-4", "(2) minus (4)")):
+        rec(q, f"45p: recall, loss in {what}", rc["diff"][k], p, rc["n"])
+    rec(q, "45p: holds", "yes" if m["holds"] else "no", p)
+    p = X52["six_122b"]
+    m = next(x for x in json.loads(p.read_text())["models"] if x["target"] == q)
+    rec(q, "47.2: pairwise writes reaching 25% (dose 2)", m["rules"]["2"]["pairs_reaching"], p, m["rules"]["2"]["pairs"])
+    p = R / "x6_routes" / "qwen35_122b_routes_x47_1" / "gate.json"  # 47.1's routes part: not tested at its gate
+    g = json.loads(p.read_text())["gate"]["C2"]
+    rec(q, "47.1 routes gate: the recall's read accuracy (the gate needs 0.80)", round(g["org_read_accuracy"]["PM"], 4), p,
+        g["eligible"])  # fmt: skip
     # Lightning: the lens and the address (47.0), the lookup's errors (47.13), the refit address (45d)
     p = X52["verbal"]
     b = json.loads(p.read_text())["models"][lt]["b"]["all|25"]

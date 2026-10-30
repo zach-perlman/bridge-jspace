@@ -71,6 +71,7 @@ TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}
 STATES_RUNS = {"qwen3.5-9b": "qwen35_9b_x52_atoms_e1_states", "qwen3.6-27b": "x52_atoms_e1_states_27b"}
 FWD_RUNS = {"qwen3.5-9b": "qwen35_9b_x52_atoms_fwd", "qwen3.6-27b": "x52_atoms_fwd_27b",
             "muse-glimmer-30b": "muse30_x52_atoms_fwd", "nemotron-3.5-lightning": "nem35l_x52_atoms_fwd"}  # fmt: skip
+FWD_RUNS["qwen3.5-122b-a10b"] = "qwen35_122b_x52_atoms_fwd"  # Dan 18:20 coverage (jobs/c3/x52_atoms_122b.yaml; E1 only)
 SETS = ("e1", "z2")
 SET_TEXT = {
     "e1": "the main test (E1), the bridge word",
@@ -1129,7 +1130,8 @@ COLOR = {"bridge": "#2a78d6", "new_bridge": "#eb6834", "scene_item": "#1baf7a", 
          "other": "#c8c7c1"}  # fmt: skip
 FIG_LABEL = {**CLASS_TEXT, "answer_own": "answer word: the lookup's (E1) / the reader's own (Z2)",
              "answer_other": "answer word: the recall's (E1)"}  # fmt: skip
-MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning"}
+MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "nemotron-3.5-lightning": "Lightning",
+               "qwen3.5-122b-a10b": "122B"}  # fmt: skip
 
 
 def figure(summary: dict, examples: dict, path: Path) -> None:

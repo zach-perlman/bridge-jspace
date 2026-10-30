@@ -115,10 +115,13 @@ def own_band(ax, y: float, band: tuple[float, float], target: str, key: str, own
 
 
 LT_VERBAL = S.REPO / "results" / "x47_verbal" / "summary-20261029T005548Z"  # Lightning's 47.0 (batch 52 coverage)
+# the 122B's 47.0 (Dan 18:20 coverage, jobs/c3/x47_0_122b.yaml): adapted design, lookup-only gate (the recall 0.797 is not
+# part of this test); hollow (post hoc: the gate adapted after the 0.797 was seen; Dan, 30 Oct)
+Q122_VERBAL = S.REPO / "results" / "x47_verbal" / "summary-20261029T180530Z"
 
 
 def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_verbal",
-                 lightning: Path | None = LT_VERBAL) -> str:  # fmt: skip
+                 lightning: Path | None = LT_VERBAL, q122: Path | None = Q122_VERBAL) -> str:  # fmt: skip
     """Fig. 7b (E8), Dan's round 3 (28 Oct 21:10): a before/after arrow plot, two panels, one row per model (9B, 27B,
     Muse, and Lightning from its own summary folder `lightning`, hollow: its gate was chosen after its pre-check was
     seen) holding both changes as arrows from 0 in z units: the address swap (orange) and, as the positive control, an
@@ -137,8 +140,12 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         lpath = lightning / "verbal.json"
         models[F.LT[0]] = json.loads(lpath.read_text())["models"][F.LT[0]]
         srcs[F.LT[0]] = rel(lpath)
+    if q122 is not None:  # the 122B from its own summary folder, hollow
+        qpath = q122 / "verbal.json"
+        models[B122[0]] = json.loads(qpath.read_text())["models"][B122[0]]
+        srcs[B122[0]] = rel(qpath)
     plt = S.setup()
-    rows = [(t, m) for t, m, _ in (*MODELS, F.LT) if t in models]
+    rows = [(t, m) for t, m, _ in (*MODELS, F.LT, B122) if t in models]
     # the fifth slot (Dan 11:30, coordinator 12:15): the 122B, where 47.0 never ran, a grey "not run" row
     grey = [(t, m) for t, m, _ in S.MODELS if m == "122b" and t not in models]
     slots = rows + grey
@@ -155,7 +162,7 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
     n_rand, words, label_9b, raw, own = set(), set(), {}, {}, []
     for t, _m in rows:
         r, y = models[t], ys[t]
-        hollow, vs = t == F.LT[0], srcs[t]
+        hollow, vs = t in (F.LT[0], B122[0]), srcs[t]
         nulls = verbal_nulls(S.REPO / r["run"])
         a_o, a_i = r["a"]["write|best_ordinal"], r["a"]["identity|alt_name"]
         bb = r["b"][f"all|{K}"]

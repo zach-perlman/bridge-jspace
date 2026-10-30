@@ -230,8 +230,8 @@ def f_address():
                 ax.text(-2.4, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
                 continue
             connector(ax, p[0], it[0], i)
-            dot(ax, p[0], i, C["address"], D.hollow(m))
-            dot(ax, it[0], i, C["identity"], D.hollow(m), value=it[0], vfmt="{:.0f}")
+            dot(ax, p[0], i, C["address"], D.hollow(m, True))  # the 122B: lookup-only gate, post hoc
+            dot(ax, it[0], i, C["identity"], D.hollow(m, True), value=it[0], vfmt="{:.0f}")
         head_label(ax, 0, "swap", C["address"], ha="left")
         head_label(ax, 20, "item change", C["identity"])
         under(ax, 0, "grey band: random vectors")

@@ -1,0 +1,591 @@
+{
+ "exp": "x52_atoms",
+ "part": "52 A",
+ "verdict": "descriptive; no rule",
+ "written_utc": "2026-10-30T09:46:32Z",
+ "code": {
+  "sha": "2f3e2701f1ea5522015ff61db60464ba505a43e4",
+  "dirty": true
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "sources": {
+  "qwen3.5-122b-a10b": {
+   "e1": "qwen35_122b_x52_atoms_fwd"
+  }
+ },
+ "checks": {
+  "qwen3.5-122b-a10b|qwen35_122b_x52_atoms_fwd": {
+   "target": "qwen3.5-122b-a10b",
+   "layer": 33,
+   "e1_delta": {
+    "max_abs_delta_lookup_minus_recall": 0.078125,
+    "max_abs_delta": 0.8134765625,
+    "max_rel_norm_lookup_minus_recall": 0.1440059095621109,
+    "median_rel_norm_lookup_minus_recall": 0.0
+   },
+   "letters": 242132,
+   "e1_PP_fit_max_abs_diff": 0.0,
+   "e1_x0_share_max_abs_gap": 5.000000000032756e-06,
+   "e1_x0_share_items": 50,
+   "e1_51_12_answer_atoms_items_agree": [
+    50,
+    50
+   ],
+   "e1_x0_atoms_same_25_items": [
+    7,
+    7
+   ],
+   "e1_recall_delta_atoms_in_common": {
+    "all_25": 45,
+    "items": 50,
+    "min": 1,
+    "median": 25.0
+   }
+  }
+ },
+ "summary": {
+  "qwen3.5-122b-a10b": {
+   "e1": {
+    "PP": {
+     "n": 50,
+     "entities": 27,
+     "share_k25_median": 0.23585899999999999,
+     "atoms": {
+      "bridge": [
+       0.0432,
+       0.0367,
+       0.0498
+      ],
+      "new_bridge": [
+       0.04,
+       0.0348,
+       0.0458
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.004,
+       0.0009,
+       0.0078
+      ],
+      "function": [
+       0.0056,
+       0.0023,
+       0.0098
+      ],
+      "other": [
+       0.9072,
+       0.8969,
+       0.9161
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1518,
+       0.1276,
+       0.1762
+      ],
+      "new_bridge": [
+       0.1533,
+       0.1297,
+       0.1787
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0028,
+       0.0007,
+       0.0058
+      ],
+      "function": [
+       0.0041,
+       0.0016,
+       0.0071
+      ],
+      "other": [
+       0.6879,
+       0.6506,
+       0.7235
+      ]
+     },
+     "items_with": {
+      "bridge": 46,
+      "new_bridge": 44,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 5,
+      "function": 7,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "alias": {
+        "atoms": 14,
+        "energy": 0.042,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 2,
+        "energy": 0.0078,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 12,
+        "energy": 0.0162,
+        "sign_as_expected": 0.917
+       },
+       "key": {
+        "atoms": 24,
+        "energy": 0.0849,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0006,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0015,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 13,
+        "energy": 0.0453,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0029,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 6,
+        "energy": 0.0062,
+        "sign_as_expected": 0.833
+       },
+       "key": {
+        "atoms": 28,
+        "energy": 0.0963,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0058,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.6838
+     }
+    },
+    "PM": {
+     "n": 50,
+     "entities": 27,
+     "share_k25_median": 0.23585899999999999,
+     "atoms": {
+      "bridge": [
+       0.0432,
+       0.0367,
+       0.0498
+      ],
+      "new_bridge": [
+       0.04,
+       0.0348,
+       0.0458
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.004,
+       0.0009,
+       0.0078
+      ],
+      "function": [
+       0.0056,
+       0.0023,
+       0.0098
+      ],
+      "other": [
+       0.9072,
+       0.8969,
+       0.9161
+      ]
+     },
+     "energy": {
+      "bridge": [
+       0.1518,
+       0.1276,
+       0.1762
+      ],
+      "new_bridge": [
+       0.1533,
+       0.1297,
+       0.1787
+      ],
+      "scene_item": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "person": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_own": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "answer_other": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "same_class": [
+       0.0028,
+       0.0007,
+       0.0058
+      ],
+      "function": [
+       0.0041,
+       0.0016,
+       0.0071
+      ],
+      "other": [
+       0.6879,
+       0.6506,
+       0.7235
+      ]
+     },
+     "items_with": {
+      "bridge": 46,
+      "new_bridge": 44,
+      "scene_item": 0,
+      "person": 0,
+      "answer_own": 0,
+      "answer_other": 0,
+      "same_class": 5,
+      "function": 7,
+      "other": 50
+     },
+     "bridge_by_match": {
+      "bridge": {
+       "alias": {
+        "atoms": 14,
+        "energy": 0.042,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 2,
+        "energy": 0.0078,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 12,
+        "energy": 0.0162,
+        "sign_as_expected": 0.917
+       },
+       "key": {
+        "atoms": 24,
+        "energy": 0.0849,
+        "sign_as_expected": 1.0
+       },
+       "part": {
+        "atoms": 1,
+        "energy": 0.0006,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 1,
+        "energy": 0.0015,
+        "sign_as_expected": 1.0
+       }
+      },
+      "new_bridge": {
+       "alias": {
+        "atoms": 13,
+        "energy": 0.0453,
+        "sign_as_expected": 1.0
+       },
+       "first token": {
+        "atoms": 1,
+        "energy": 0.0029,
+        "sign_as_expected": 1.0
+       },
+       "initial": {
+        "atoms": 6,
+        "energy": 0.0062,
+        "sign_as_expected": 0.833
+       },
+       "key": {
+        "atoms": 28,
+        "energy": 0.0963,
+        "sign_as_expected": 1.0
+       },
+       "prefix": {
+        "atoms": 2,
+        "energy": 0.0058,
+        "sign_as_expected": 1.0
+       }
+      }
+     },
+     "other_by_detail": {
+      "none": 0.6838
+     }
+    }
+   }
+  }
+ },
+ "chance": {
+  "qwen3.5-122b-a10b": {
+   "e1": {
+    "bridge": 0.00035,
+    "new_bridge": 0.00031,
+    "scene_item": 2e-05,
+    "person": 0.0,
+    "answer_own": 0.00017,
+    "answer_other": 0.00016,
+    "same_class": 0.00092,
+    "function": 0.00768,
+    "other": 0.99038
+   }
+  }
+ },
+ "hand": {
+  "qwen3.5-9b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 121,
+   "rate": 0.968,
+   "kappa": 0.8548,
+   "hand_classes": {
+    "bridge": 6,
+    "new_bridge": 7,
+    "other": 108,
+    "function": 4
+   },
+   "disagreements": {
+    "function -> other": [
+     "и",
+     "ни",
+     "مع",
+     "ein"
+    ]
+   }
+  },
+  "qwen3.6-27b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 119,
+   "rate": 0.952,
+   "kappa": 0.7339,
+   "hand_classes": {
+    "new_bridge": 5,
+    "bridge": 4,
+    "other": 111,
+    "function": 4,
+    "answer_other": 1
+   },
+   "disagreements": {
+    "function -> other": [
+     " Ты",
+     " və",
+     " 에서",
+     " των"
+    ],
+    "other -> function": [
+     ">i"
+    ],
+    "bridge -> other": [
+     "EEEE"
+    ]
+   }
+  },
+  "muse-glimmer-30b e1": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 117,
+   "rate": 0.936,
+   "kappa": 0.7553,
+   "hand_classes": {
+    "new_bridge": 7,
+    "bridge": 8,
+    "other": 103,
+    "function": 5,
+    "same_class": 2
+   },
+   "disagreements": {
+    "function -> other": [
+     "We'll",
+     "』の",
+     "”等",
+     " επίσης",
+     "/other"
+    ],
+    "new_bridge -> other": [
+     " nitride"
+    ],
+    "same_class -> other": [
+     "Zn",
+     "铅"
+    ]
+   }
+  },
+  "qwen3.5-9b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3523,
+   "hand_classes": {
+    "answer_own": 3,
+    "other": 116,
+    "new_bridge": 1,
+    "function": 5
+   },
+   "disagreements": {
+    "answer_own -> other": [
+     "土耳其",
+     " jap",
+     " Suomen"
+    ],
+    "function -> other": [
+     " ся",
+     " Ihnen",
+     " gibi",
+     "和他的"
+    ]
+   }
+  },
+  "qwen3.6-27b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 123,
+   "rate": 0.984,
+   "kappa": 0.496,
+   "hand_classes": {
+    "other": 122,
+    "new_bridge": 1,
+    "same_class": 1,
+    "function": 1
+   },
+   "disagreements": {
+    "same_class -> other": [
+     "福州"
+    ],
+    "function -> other": [
+     " kerana"
+    ]
+   }
+  },
+  "muse-glimmer-30b z2": {
+   "items": 5,
+   "atoms": 125,
+   "agree": 118,
+   "rate": 0.944,
+   "kappa": 0.3451,
+   "hand_classes": {
+    "other": 120,
+    "function": 2,
+    "bridge": 1,
+    "answer_own": 2
+   },
+   "disagreements": {
+    "other -> function": [
+     "(SO",
+     "s",
+     "*M"
+    ],
+    "answer_own -> other": [
+     " russa",
+     " чеш"
+    ],
+    "function -> other": [
+     "sein"
+    ],
+    "other -> same_class": [
+     " Sebastian"
+    ]
+   }
+  }
+ },
+ "n_boot": 10000,
+ "boot_seed": 0,
+ "classes": {
+  "bridge": "the original bridge word",
+  "new_bridge": "the new bridge word",
+  "scene_item": "another item named in the scene",
+  "person": "a person's name in the scene",
+  "answer_own": "the reader's answer word",
+  "answer_other": "the other reader's answer word",
+  "same_class": "a same-class word not in the scene",
+  "function": "function words and punctuation",
+  "other": "other"
+ }
+}

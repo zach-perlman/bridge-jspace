@@ -34,6 +34,9 @@ SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse", "lightning": "Lightning", "12
 # Dan's 11:30 (q122b_1130): the 122B as the fifth slot, after Lightning, with data where it ran, grey "not run" elsewhere
 B122 = ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B")
 B122_NOTE = "122B: FP8; MoE, ~10B active; L33 (the 27B's relative depth carried over)."
+# the 122B's Z1 and ladder (Dan 18:20 coverage; jobs/c3/x50_z1_122b.yaml, x49_2_122b.yaml), their own verdicts
+B122_Z1 = S.REPO / "results" / "x50_zach" / "x52_z1-20261029T215701Z" / "z1.json"
+B122_LADDER = S.REPO / "results" / "x49_ladder" / "x52_ladder-20261029T192919Z" / "x49_2.json"
 NOT_RUN = "not run"
 INK, LOOKUP, NULL = S.MARK_COL["recall"], S.MARK_COL["lookup"], S.MARK_COL["null"]
 RECALL_AFTER = "#9a9a9a"  # the recall's lighter shade (locker after the pick): a grey, so no new hue
@@ -314,7 +317,7 @@ def lightning_main_gap() -> tuple[tuple, float, int, str, str]:
 
 
 def build_two_by_two(
-    ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two", lightning: bool = False
+    ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two", lightning: bool = False, q122: bool = True
 ) -> str:
     """Fig. 12: recall minus lookup in four cells, our operation / Zach's x our scenes / his passages, one mark for
     every cell and one scale (Dan's round 3, 28 Oct 21:10): our main-test gap (docs/depth/x0_numbers.json, Fig. 1's); rung 6
@@ -337,8 +340,16 @@ def build_two_by_two(
         z1_src[F.LT[0]] = rel(F.LT_Z1)
         columns = (*MODELS, F.LT)
     # the fifth column (Dan's 11:30): the 122B's main test as the other models' (contrast_122b and its r2 run's
-    # random part); no Z1, ladder or stored rows on it
+    # random part); q122: its Z1 (with Zach's stored rows) and ladder from their own verdicts (Dan 18:20 coverage)
     columns = (*columns, B122)
+    lad_src = dict.fromkeys(lad, rel(lad_path))
+    if q122:
+        z1 |= {m["target"]: m for m in json.loads(B122_Z1.read_text())["models"]
+               if m.get("status") == "tested" and m["target"] == B122[0]}  # fmt: skip
+        z1_src[B122[0]] = rel(B122_Z1)
+        lad |= {m["target"]: m for m in json.loads(B122_LADDER.read_text())["models"]
+                if m.get("status") == "tested" and m["target"] == B122[0]}  # fmt: skip
+        lad_src[B122[0]] = rel(B122_LADDER)
     fid = out_name.split("_")[0]
     omitted = []
     cells: dict[tuple[int, int], list] = {(0, 0): [], (0, 1): [], (1, 0): [], (1, 1): []}  # (i, v, control)
@@ -395,15 +406,15 @@ def build_two_by_two(
                    for w in ("recall", "lookup")}  # fmt: skip
             n = mod["cells"]["recall"]["all"]["n"]
             S.record(fid, target, "Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",
-                     round(rc - lk, 4), n=n, source=rel(lad_path))  # fmt: skip
+                     round(rc - lk, 4), n=n, source=lad_src[target])  # fmt: skip
             S.record(fid, target, f"Zach's operation, our scenes (rung 6): {control}, every scene (kept with none "
                      "minus kept with the random part)", round(own["recall"] - own["lookup"], 4), n=n,
-                     source=rel(lad_path))  # fmt: skip
+                     source=lad_src[target])  # fmt: skip
             cells[(1, 0)].append((i, (rc - lk, None, None), own["recall"] - own["lookup"]))
             ns[(1, 0)].append(str(n))
         # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control
         full = (z1.get(target) or {}).get("beside", {}).get("full")
-        if target == B122[0]:
+        if target == B122[0] and not q122:
             omitted.append(f"{SHORT[m]} not run")
             continue
         if not full:

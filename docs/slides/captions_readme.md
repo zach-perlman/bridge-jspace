@@ -32,7 +32,7 @@ Built by `uv run python -m bridge_jspace.figkit.build --target readme` from src/
 
 ## p4b_atoms_dan
 
-**The lens part's 25 directions are the bridge words, never the answer.** Dan: share of the rebuilt energy by the kind of lens word, main test at L, 50 scenes per model (data/figures/depth/data.csv 52 A rows). The answer word's share: Qwen 9B 0.00, Qwen 27B 0.00, Muse 30B 0.00, Lightning ○ 0.00. Lightning hollow (pending hand-check, 29 Oct); the 122B has no 52 A row in the depth README.
+**The lens part's 25 directions are the bridge words, never the answer.** Dan: share of the rebuilt energy by the kind of lens word, main test at L, 50 scenes per model (data/figures/depth/data.csv 52 A rows). The answer word's share: Qwen 9B 0.00, Qwen 27B 0.00, Muse 30B 0.00, Lightning ○ 0.00, Qwen 122B 0.00. Lightning hollow (pending hand-check, 29 Oct); the 122B has no 52 A row in the depth README.
 
 ## p5a_probe
 
