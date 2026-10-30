@@ -145,8 +145,9 @@ def test_claims_table_grades_and_hand_check():
     for r in rows:
         assert len(r) == 5, r  # # | Claim | Models | Grade | Key numbers: the hand-check column is gone (Dan 30 Oct)
         assert re.sub(r"\*\*", "", r[3]).split(" ")[0] in GRADES, r
-    # nothing is hand-checked yet, said once under the table instead of "no" twelve times
-    assert "None of these claims is hand-checked yet" in text()
+    # the hand-check's status, said once under the table instead of per row (Dan 30 Oct: a sample, not yet VERIFIED.md)
+    assert "Hand-checked on a sample" in text()
+    assert "VERIFIED.md (human recomputation) not yet filled" in text()
 
 
 def test_deck_figures_exist():

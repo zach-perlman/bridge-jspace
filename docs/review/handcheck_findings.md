@@ -5,6 +5,8 @@ One entry per finding. A new finding is appended here, in this format, in the sa
 result: see VERIFIED.md. Status: **closed** (checked, nothing to change or the change is made), **limitation** (a stated limit
 remains), **not done** (a check is still open).
 
+**Sample (30 Oct).** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues (F1-F6) and 6 observations (O1-O6) below, none changes a headline claim.
+
 ## F1. The answer control used English answer words only
 
 - **Found on.** Muse Glimmer 30B, layer 26, run `muse30_x51_12_e1_r2` (51.12 E1, the answer control), scene

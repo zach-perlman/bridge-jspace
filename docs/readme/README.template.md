@@ -2,7 +2,7 @@
 
 *A controlled test of the J++ lens on two-step questions in open language models: what the lens reads at the middle entity of a question, and whether the model uses it.*
 
-**Danyil and Zach Perlman** · two-week research sprint, October 2026<!-- src: docs/depth/README.md | 29 Oct 2026 --> · **Status:** every number below comes from the sprint's run files and carries its source; a human hand-check is in progress ([VERIFIED.md](VERIFIED.md) lists what has been checked).
+**Danyil and Zach Perlman** · two-week research sprint, October 2026<!-- src: docs/depth/README.md | 29 Oct 2026 --> · **Status:** every number below comes from the sprint's run files and carries its source; Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](docs/review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 
 ## Summary
 
@@ -202,7 +202,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 - **Independent recounts.** Code written from scratch recounts the depth headline numbers from the per-item files and matches 56 of 63<!-- src: docs/depth/README.md | matches 56 of 63 -->; automatic checks read 45,942 items<!-- src: docs/depth/README.md | 45,942 items read --> and their recount matches 245 of 245 numbers<!-- src: docs/depth/README.md | their recount matches 245 of 245 -->.
 - **Red-teaming.** A shortcut found in one twin-set variant, and false values in the conflict variant that were too easy to reject, were fixed by rebuilding both sets, with the changes registered before any result was read.
 - **What we dropped.** Readings we once made, each with the test that dropped it: [depth](docs/depth/README.md#tested-and-dropped), [breadth](docs/breadth/README.md#8-what-did-not-hold).
-- **Hand-check.** In progress; checked claims enter [VERIFIED.md](VERIFIED.md).
+- **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](docs/review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Sources.** Every number on this page carries a source comment into the run data, checked by `tests/test_readme_sources.py`.
 
 ## Related work and what is new
