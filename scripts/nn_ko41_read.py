@@ -26,6 +26,16 @@ Checks: this run's none / paper10 / paper10_rot rows against note 37's run; the 
   ({P}jsuite_v4_test_chat_ko_posfinal_cand2_v1).
 Writes results/ablate_v2/nn_ko_read/{P}note41.json and prints a table.
 
+--matched-energy (amendment 70; registered secondaries beside the keep reading, which stays the primary; post hoc on seed 4001,
+  i.e. the default v4 set): Rule E: R_rand(E_A) = the accuracy rescue of keepR, keepR2, keepR4 (each net of its _rot, as above)
+  linearly interpolated in retained energy (MM's mean per-item share, as above) at E_A, keepA's share; "not interpolable" if
+  E_A lies outside the random keeps' range (no extrapolation). "answer-specific at matched energy" if rescue(keepA) -
+  R_rand(E_A) >= 0.33 with the bootstrap's lower end > 0 (note 41's bridge bootstrap, 2000 draws, random.Random(0); rescues,
+  energies and the interpolation recomputed per resample; resamples where E_A falls outside the range are dropped and counted);
+  otherwise "not shown at matched energy". Rule L: the same with rescue_L(X) = 1 - (mean dlogp under X - mean dlogp under
+  X_rot) / (mean dlogp under paper10 - mean dlogp under paper10_rot), dlogp = the drop in the gold answer's first-token log p
+  (the rows' "logp") on MM items. Adds "matched_energy" to the JSON. Without the flag the output is unchanged.
+
 python scripts/nn_ko41_read.py PREFIX      (PREFIX "" for the 27B, qwen35_9b_ for the 9B, nem35l_ for Lightning)
 """
 
@@ -33,6 +43,7 @@ from __future__ import annotations
 
 import collections
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -104,7 +115,105 @@ def gap_ratio(num: dict, den: dict, items: dict, cond_num: str, cond_den: str) -
     return {"ratio": round(v, 3) if v == v else None, "ratio_ci": [x / 100 for x in ci] if ci else None}
 
 
-def main(P: str, set_name: str = SET, run_a: str | None = None, run_n37: str | None = None) -> dict:
+def interp(pts: list, x: float) -> float:
+    """Piecewise-linear interpolation of (E, rescue) points at x; nan outside the points' range (no extrapolation)."""
+    pts = sorted(pts)
+    if not pts or any(v != v for p in pts for v in p) or x != x or x < pts[0][0] or x > pts[-1][0]:
+        return float("nan")
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        if x0 <= x <= x1:
+            return y0 if x1 == x0 else y0 + (y1 - y0) * (x - x0) / (x1 - x0)
+    return pts[0][1]  # a single point equal to x
+
+
+def matched_energy(acc: dict, items: dict, runs: dict, set_name: str) -> tuple[dict, list[str]]:
+    """Amendment 70's Rules E (accuracy) and L (gold first-token log p): keepA's rescue against the random keeps' rescue
+    interpolated at keepA's retained energy, with note 41's bridge bootstrap (interpolation recomputed per resample)."""
+    status = "post hoc on seed 4001" if set_name == SET else "registered secondary"
+    head = f"(amendment 70, {status}, beside the keep reading)"
+    if "A" not in acc or "n37" not in acc:
+        return {"reading_E": "not read: a run is missing", "reading_L": "not read: a run is missing"}, [
+            f"  reading E matched energy {head}: not read: a run is missing", f"  reading L log-prob {head}: not read: a run is missing"]
+    ret = {}
+    for line in (RES / "ablate_v2" / runs["A"] / "rows.jsonl").open():
+        r = json.loads(line)
+        if r["condition"] == "paper10" and "retained" in r and r["family"] == "MM" and r.get("kind", "clean") == "clean":
+            ret[r["id"]] = r["retained"]
+    src = {"A": acc["n37"], **{x: acc["A"] for x in RANDOM}}
+    rec: dict = collections.defaultdict(dict)  # MM id -> {X: ((accuracy losses), (logp drops) or None), "E": retained}
+    for x, a in src.items():
+        conds = (f"paper10_keep{x}", f"paper10_keep{x}_rot", "paper10", "paper10_rot")
+        if not all(("MM", c) in a for c in conds):
+            continue
+        for i, (ok, lp) in a[("MM", "none")].items():
+            if all(i in a[("MM", c)] for c in conds):
+                ls = tuple(int(ok) - int(a[("MM", c)][i][0]) for c in conds)
+                ok_lp = lp is not None and all(a[("MM", c)][i][1] is not None for c in conds)
+                rec[i][x] = (ls, tuple(lp - a[("MM", c)][i][1] for c in conds) if ok_lp else None)
+    for i in acc["A"].get(("MM", "none"), {}):
+        if i in ret and ret[i]["energy"] > 0:
+            rec[i]["E"] = ret[i]
+    by = collections.defaultdict(list)
+    for i, v in rec.items():
+        by[items[i]["bridge"]].append(v)
+
+    def stats(rs: list) -> dict:
+        s: dict = {}
+        es = [v["E"] for v in rs if "E" in v]
+        for x in ("A",) + RANDOM:
+            us = [v[x] for v in rs if x in v]
+            den = sum(u[0][2] - u[0][3] for u in us)
+            s[("acc", x)] = 1 - sum(u[0][0] - u[0][1] for u in us) / den if us and den > 0 else float("nan")
+            ul = [u[1] for u in us if u[1] is not None]
+            m = [sum(u[j] for u in ul) / len(ul) for j in range(4)] if ul else None
+            s[("lp", x)] = 1 - (m[0] - m[1]) / (m[2] - m[3]) if m and m[2] - m[3] > 0 else float("nan")
+            s[("E", x)] = sum(e[x] for e in es) / len(es) if es else float("nan")
+        for k in ("acc", "lp"):
+            s[(k, "rand")] = interp([(s[("E", x)], s[(k, x)]) for x in RANDOM], s[("E", "A")])
+            s[(k, "diff")] = s[(k, "A")] - s[(k, "rand")]
+        return s
+
+    us = [v for b in by.values() for v in b]
+    pt = stats(us)
+    n_boot, keys, rng = 2000, sorted(by), random.Random(0)
+    draws: dict = {"acc": [], "lp": []}
+    dropped = {"acc": 0, "lp": 0}
+    for _ in range(n_boot):  # note 41's bootstrap (nn_ko37_read.boot): bridges drawn with replacement, random.Random(0)
+        s = stats([u for k in (rng.choice(keys) for _ in keys) for u in by[k]])
+        for k in ("acc", "lp"):
+            if s[(k, "diff")] == s[(k, "diff")]:
+                draws[k].append(s[(k, "diff")])
+            else:
+                dropped[k] += 1
+    out: dict = {"status": status, "n_MM": {x: sum(1 for v in us if x in v) for x in ("A",) + RANDOM},
+                 "n_MM_energy": sum(1 for v in us if "E" in v), "n_boot": n_boot}  # fmt: skip
+    lines = []
+    rnd = lambda v: round(v, 4) if v == v else None  # noqa: E731
+    f3 = lambda v: f"{v:.3f}" if v == v else "nan"  # noqa: E731
+    for k, rule, name in (("acc", "E", "matched energy (accuracy)"), ("lp", "L", "log-prob (gold first-token log p, MM)")):
+        d = sorted(draws[k])
+        ci = [d[int(0.025 * len(d))], d[int(0.975 * len(d)) - 1]] if d else None
+        es = {x: pt[("E", x)] for x in ("A",) + RANDOM}
+        rs = {x: pt[(k, x)] for x in ("A",) + RANDOM}
+        if any(v != v for v in list(es.values()) + list(rs.values())):
+            lab = "not read: a rescue is undefined (paper10 - paper10_rot <= 0) or no retained energy"
+        elif es["A"] < min(es[x] for x in RANDOM) or es["A"] > max(es[x] for x in RANDOM):
+            lab = "not interpolable"
+        elif pt[(k, "diff")] >= 0.33 and ci is not None and ci[0] > 0:
+            lab = "answer-specific at matched energy"
+        else:
+            lab = "not shown at matched energy"
+        out[f"rule_{rule}"] = {"E": {x: rnd(v) for x, v in es.items()}, "rescue": {x: rnd(v) for x, v in rs.items()},
+                               "R_rand_at_E_A": rnd(pt[(k, "rand")]), "diff": rnd(pt[(k, "diff")]),
+                               "diff_ci": [round(v, 4) for v in ci] if ci else None, "boot_dropped": dropped[k], "reading": lab}  # fmt: skip
+        lines.append(f"  reading {rule} {name} {head}: n MM {out['n_MM']['A']} (A) / {out['n_MM']['R']} (R), E_A {f3(es['A'])}, rescue A "
+                     f"{f3(rs['A'])}; " + ", ".join(f"{x} E {f3(es[x])} rescue {f3(rs[x])}" for x in RANDOM)
+                     + f"; R_rand(E_A) {f3(pt[(k, 'rand')])}; A - R_rand {f3(pt[(k, 'diff')])} "
+                     + (f"[{ci[0]:.3f}, {ci[1]:.3f}]" if ci else "[no CI]") + f" ({n_boot} draws, {dropped[k]} dropped) -> {lab}")  # fmt: skip
+    return out, lines
+
+
+def main(P: str, set_name: str = SET, run_a: str | None = None, run_n37: str | None = None, matched: bool = False) -> dict:
     """Defaults: note 41 on v4. Amendment 68 note 43: set_name (another v4-format set) and run_a / run_n37 (both may name one
     run holding note 37's and note 41's conditions); written to {P}{set}_note41.json when set_name is not v4's."""
     items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / set_name / "items.jsonl").open()}
@@ -154,6 +263,10 @@ def main(P: str, set_name: str = SET, run_a: str | None = None, run_n37: str | N
             f"{x}: E {t['retained_MM']} ratio {t.get('ratio')} {t.get('ratio_ci')} rescue {t.get('rescue')}" for x, t in table.items()))
         lines.append(f"  keep reading: {out['keep'].get('reading')} (matched random keep {out['keep'].get('matched_random_keep')}; "
                      f"note 41's original keepR rule, replaced: {out['keep'].get('note41_original_keepR_rule_replaced')})")  # fmt: skip
+    me = None
+    if matched:  # amendment 70: Rules E and L beside the keep reading
+        me, me_lines = matched_energy(acc, items, runs, set_name)
+        lines += me_lines
     # removal: ansR's gap against ansJ's (note 37's run)
     if "A" in acc and "n37" in acc and "ansR" in out["A"]["conditions"] and "ansJ" in out["n37"]["conditions"]:
         gR, gJ = out["A"]["conditions"]["ansR"]["gap"], out["n37"]["conditions"]["ansJ"]["gap"]
@@ -178,6 +291,8 @@ def main(P: str, set_name: str = SET, run_a: str | None = None, run_n37: str | N
         if sc and not sc.get("missing") and not sc.get("same_run"):
             lines.append(f"  run {k} stored check ({sc['stored_run']}): " + "; ".join(
                 f"{c} {v['n_both']}/{v['n_new']} same read {v['same_correct']} same logp {v['same_logp_bits']}" for c, v in sc.items() if c != "stored_run"))
+    if me is not None:
+        out["matched_energy"] = me
     d = RES / "ablate_v2" / "nn_ko_read"
     d.mkdir(parents=True, exist_ok=True)
     (d / (f"{P}note41.json" if set_name == SET else f"{P}{set_name}_note41.json")).write_text(json.dumps(out, indent=1) + "\n")
@@ -193,5 +308,6 @@ if __name__ == "__main__":
     ap.add_argument("--set", default=SET, help="note 43: another v4-format set")
     ap.add_argument("--run-a", default=None, help="the run with note 41's conditions (default {P}{set}_ko41_cand2_v1)")
     ap.add_argument("--run-n37", default=None, help="the run with note 37's conditions (default {P}{set}_ko37_cand2_v1)")
+    ap.add_argument("--matched-energy", action="store_true", help="amendment 70: Rules E (matched energy) and L (log-prob) beside the keep reading")
     a = ap.parse_args()
-    main(a.prefix, a.set, a.run_a, a.run_n37)
+    main(a.prefix, a.set, a.run_a, a.run_n37, a.matched_energy)

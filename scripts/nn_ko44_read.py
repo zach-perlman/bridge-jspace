@@ -21,6 +21,10 @@ Readings (primary stratum: all gated MC0 items; anyform beside; 27B and Lightnin
   "intermediate needed": keepCty counts, or rescue(keepCap) <= 1/3 while keepCapCty counts;
   otherwise "unclear" ("not read" if MC0's paper10 contrast is <= 0). ("both" is tested before "intermediate needed", whose
   second clause contains it.)
+Amendment 71 (checked before the registered rules; the registered label is printed beside it, unchanged): "either span suffices
+  (the spans overlap)" if rescue(keepCap) >= 2/3 and rescue(keepCty) >= 2/3, each beating keepRcap's by >= 0.33 (MC0, per
+  stratum), with the spans' cross-overlap and each span's retained energy (paper10 rows' retained44); post hoc on the 9B. One
+  added "reading either-suffices" line before each stratum's line, and "either_suffices" in the JSON.
 Beside: ansCap / ansCty / ansCty_rot on MC0 (loss and contrast) next to the say twin's loss under each condition; the
   retained shares of paper10's removal energy (Cap, Cty, CapCty, Rcap and Rcap's size); the cross-overlap of the two spans
   (shared rows; mean squared cosine of their principal angles over the band's layers).
@@ -103,7 +107,9 @@ def main(P: str) -> dict:
     if removed_any is not None:
         strata["anyform"] = lambda i: i not in removed_any
     lines = []
+    at: dict = {}  # amendment 71: where each stratum's registered line starts (the either-suffices line goes before it)
     for sname, keep in strata.items():
+        at[sname] = len(lines)
         rec: dict = {}
         for fam in ("MC0", "MC"):
             rec[fam] = {"contrast": {c: v for c in CONDS if (v := contrast(acc, mc_items, fam, c, keep))},
@@ -150,6 +156,41 @@ def main(P: str) -> dict:
                         "shared_tokens": s["shared_tokens"]}  # fmt: skip
     g = out["retained"].get("MC0/clean", {})
     lines.append(f"  retained (MC0 whole question): {json.dumps(g)}; spans {json.dumps(out.get('spans', {}))[:300]}")
+    # amendment 71: "either span suffices (the spans overlap)", checked before the registered rules on MC0 (point rescues, as the
+    # registered rules), printed before each stratum's registered line, with the spans' cross-overlap and retained energy
+    per44 = {}
+    for r in map(json.loads, (RES / "ablate_v2" / mc_run / "rows.jsonl").open()):
+        if (r["condition"] == "paper10" and r["family"] == "MC0" and r["kind"] == "clean" and "retained44" in r
+                and r["id"] in acc.get(("MC0", "clean", "none"), {})):  # fmt: skip
+            per44[r["id"]] = r["retained44"]
+    out["either_suffices"], new = {}, {}
+    tag = f"[{out['role']}{', post hoc' if P == 'qwen35_9b_' else ''}]"
+    for sname, keep in strata.items():
+        rec = out["strata"][sname]
+        v = {x: rec["MC0"]["rescue"].get(x, {}).get("rescue") for x in ("Cap", "Cty", "Rcap")}
+        vs = [per44[i] for i in per44 if keep(i)]
+        geo: dict = {"n_items": len(vs)}
+        for k in ("Cap", "Cty", "span_overlap", "shared_rows"):
+            xs = [x[k] for x in vs if x.get(k) is not None]
+            geo[k] = round(sum(xs) / len(xs), 4) if xs else None
+        if all(geo[k] is not None for k in ("Cap", "Cty", "span_overlap", "shared_rows")):
+            gtxt = (f"cross-overlap: mean squared cosine of the principal angles {geo['span_overlap']}, shared rows {geo['shared_rows']}; "
+                    f"retained energy (share of paper10's removal): Cap {geo['Cap']}, Cty {geo['Cty']} (per-item means, MC0 whole question, "
+                    f"n {geo['n_items']})")  # fmt: skip
+        else:
+            gtxt = "cross-overlap and retained energy: not computable from stored rows (no retained44 on this stratum's paper10 rows)"
+        if any(x is None for x in v.values()):
+            met, lab = None, "not read: a rescue is undefined or missing"
+        else:
+            met = all(v[x] >= 2 / 3 and v[x] - v["Rcap"] >= 0.33 for x in ("Cap", "Cty"))
+            lab = "either span suffices (the spans overlap)" if met else "not met"
+        out["either_suffices"][sname] = {"met": met, "reading": lab, "rescues": v, "geometry": geo,
+                                         "registered_label": rec["reading"]["reading"]}  # fmt: skip
+        dif = ", ".join(f"{x} - Rcap {round(v[x] - v['Rcap'], 3)}" for x in ("Cap", "Cty")) if met is not None else "n/a"
+        new[sname] = (f"reading either-suffices (amendment 71) note 44 {P or '27b_'} {tag} {sname}: {lab}; MC0 rescue Cap {v['Cap']}, "
+                      f"Cty {v['Cty']}, Rcap {v['Rcap']} ({dif}); {gtxt}; registered label beside: {rec['reading']['reading']!r}")  # fmt: skip
+    for sname in reversed(list(strata)):  # insert from the last stratum so the earlier positions stay valid
+        lines.insert(at[sname], new[sname])
     d = RES / "ablate_v2" / "nn_v5_read"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{P}note44.json").write_text(json.dumps(out, indent=1) + "\n")
