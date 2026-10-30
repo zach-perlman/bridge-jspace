@@ -97,10 +97,10 @@ NO_PREDICTION = "rule fixed in advance in jobs/c3/batch52.yaml (B); no predictio
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 # batch 52 C coverage (amendment 3, extra c): Lightning, the main set only (Zach's Z2 never ran there); verdict
 # --coverage reads it alone, the three models' verdict unchanged
-COVERAGE_MODELS = ("nemotron-3.5-lightning",)
-TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "nemotron-3.5-lightning": "lightning"}
+COVERAGE_MODELS = ("nemotron-3.5-lightning", "qwen3.5-122b-a10b")  # the 122B: Dan 30 Oct ~02:00
+TAGS = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "nemotron-3.5-lightning": "lightning", "qwen3.5-122b-a10b": "122b"}
 NAMES = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse-Glimmer-30B",
-         "nemotron-3.5-lightning": "Nemotron-3.5-Lightning"}  # fmt: skip
+         "nemotron-3.5-lightning": "Nemotron-3.5-Lightning", "qwen3.5-122b-a10b": "Qwen3.5-122B-A10B"}  # fmt: skip
 SETS = ("main", "z2")
 SET_TEXT = {"main": "our scenes (the main test)", "z2": "his passages (Z2, never-named bridge)"}
 STAGES = ("read", "write")

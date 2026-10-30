@@ -665,3 +665,9 @@ decision_470_1845: |
   buffer is < 2 or a job failed; one-line status in NIGHT.md per wake, no
   messages to me until 08:00.
   I'm stopping speedup and another in the console now.
+coverage_122b_0200_received: "30 Oct ~02:00 Paris (Dan: 'Так, став усі, до ранку завтрашнього все відпрацює')"
+coverage_122b_0200: |
+  Queued on mats, in order: 47.4 (x47_4_122b), Z3 (x50_z3_122b), Z2 (x50_z2_122b), 52 B (x52_answermap_122b).
+  Not queued, the agent's reading (flagged for Dan): 47.8, 53.8, 51.3, 47.16, 47.14, 47.13, 47.11, 47.7 (c) run on
+  x6_routes' scenes with X0's gate (0.80 per reader); the 122B's recall reads 0.797 there, so each would stop at its gate
+  ("not tested"). Only Dan can extend the lookup-only gate (decisions_1210 / decision_470_1845) to them.

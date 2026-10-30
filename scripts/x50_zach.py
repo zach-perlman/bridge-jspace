@@ -127,6 +127,8 @@ COVERAGE_RUNS["z1p"] = {"qwen3.5-9b": "qwen35_9b_x52_z1p", "qwen3.6-27b": "x52_z
 LAYERS["qwen3.5-122b-a10b"] = (33, 39)
 COVERAGE_RUNS["z1"]["qwen3.5-122b-a10b"] = "qwen35_122b_z1"
 COVERAGE_RUNS["z1p"]["qwen3.5-122b-a10b"] = "qwen35_122b_z1p"
+COVERAGE_RUNS["z3"]["qwen3.5-122b-a10b"] = "qwen35_122b_z3"  # Dan 30 Oct ~02:00
+COVERAGE_RUNS["z2"]["qwen3.5-122b-a10b"] = "qwen35_122b_z2"
 NO_PREDICTION_Z1P = ("no prediction: Z1's rule (verbatim, first scored on the K items, results/x50_zach/"
                      "z1-20261028T161649Z) applied now to the P items (Dan's morning brief, 29 Oct)")  # fmt: skip
 # Batch 53, 53.1b (jobs/c3/batch53.yaml standing_rules_0950: "jsuite PP vs MP, 51.12's arms + readout, 9B then 27B. No

@@ -1,0 +1,26 @@
+id: x52_answermap_122b
+title: "122B coverage (Dan 30 Oct ~02:00): 52 B, where the answer is readable through the lens and whether writing it there moves the answer, main test at L33; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  test -f results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl &&
+  uv run python scripts/x52_answer_map.py run --set main --name qwen35_122b_x52_read_main &&
+  uv run python scripts/x52_answer_map.py write --set main --name qwen35_122b_x52_write_main --read qwen35_122b_x52_read_main &&
+  uv run python scripts/x52_answer_map.py verdict --coverage
+question: >-
+  On the 122B's main test, is the answer readable through the lens before the answer layer, and does writing it there move the answer?
+why_it_matters: >-
+  Dan 30 Oct ~02:00 ('став усі'): the 122B tests not yet run, before the morning.
+hypotheses:
+  none: "No prediction (Dan, 30 Oct ~02:00: the 122B coverage beyond the 18:20 list): coverage run on an already-scored rule."
+decision_rule: >-
+  52 B's readings verbatim from jobs/c3/x52_lightning_answermap.yaml (jobs/c3/batch52.yaml part B), on the 122B's main test at L33 (source qwen35_122b_x0_necessity_r2, its gate).
+controls:
+- "as the 27B spec jobs/c3/x52_lightning_answermap.yaml"
+n: "the main test's eligible items, both readers"
+seeds: [0, 888]
+notes: "Coverage, not hand-checked; UNVERIFIED; README untouched. Caveats: J++ fit on bf16 used on FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. Gates never lowered: a miss is not tested."

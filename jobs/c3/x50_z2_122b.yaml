@@ -1,0 +1,24 @@
+id: x50_z2_122b
+title: "122B coverage (Dan 30 Oct ~02:00): Z2 on Zach's described-bridge passages at L33 and L39; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x50_zach.py run --part z2 --name qwen35_122b_z2 &&
+  uv run python scripts/x50_zach.py verdict --part z2 --coverage
+question: >-
+  When the bridge is never named and must be computed from a description, does the 122B's recall follow the lens part at the description and the lookup not?
+why_it_matters: >-
+  Dan 30 Oct ~02:00 ('став усі'): the 122B tests not yet run, before the morning.
+hypotheses:
+  none: "No prediction (Dan, 30 Oct ~02:00: the 122B coverage beyond the 18:20 list): coverage run on an already-scored rule."
+decision_rule: >-
+  Z2's rule verbatim from jobs/c3/x50_z2_27b.yaml (jobs/c3/batch50.yaml), on the 122B at L33 and L39 (Muse's design); gate 0.80 per reader.
+controls:
+- "as the 27B spec jobs/c3/x50_z2_27b.yaml"
+n: "up to 200 passages, 2 readers, 2 layers"
+seeds: [0, 888]
+notes: "Coverage, not hand-checked; UNVERIFIED; README untouched. Caveats: J++ fit on bf16 used on FP8; MoE; 2x H100, BJ_DEVICE_MAP=auto. Gates never lowered: a miss is not tested."

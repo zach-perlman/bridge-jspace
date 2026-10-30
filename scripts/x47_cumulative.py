@@ -91,7 +91,8 @@ QUESTION = "Q47.4"
 RENDERING = "chat"
 DESIGNS = ("main", "clean")
 ALT = {"main": "cf", "clean": "fresh"}  # the x0_necessity alt each design's source run was made with
-SOURCES = {"main": B.MAIN_RUN, "clean": B.FRESH_RUN}  # design -> target -> the source X0 run (main test / 45m)
+SOURCES = {"main": {**B.MAIN_RUN, "qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"},
+           "clean": {**B.FRESH_RUN, "qwen3.5-122b-a10b": "qwen35_122b_x45m_fresh"}}  # design -> target -> the source X0 run; the 122B: Dan 30 Oct ~02:00 coverage
 # batch 52, Dan's morning queue item 1: --below-gate (Lightning's clean design below its gate, exploratory)
 BELOW = False
 BELOW_RUNS = {"nemotron-3.5-lightning": "nem35l_x52_cumulative_clean_below"}
@@ -107,7 +108,8 @@ RUNS = {"qwen3.5-9b": "qwen35_9b_x47_cumulative", "qwen3.6-27b": "x47_cumulative
         "muse-glimmer-30b": "muse30_x47_cumulative"}  # fmt: skip
 # batch 52 C coverage (amendments 2-3; jobs/c3/x52_27b_gaps_a.yaml, the 27B's spec never ran before; and
 # x52_lightning_fill4.yaml): read by verdict --coverage alone (the design's own verdict unchanged)
-COVERAGE_RUNS = {"qwen3.6-27b": "x47_cumulative_27b", "nemotron-3.5-lightning": "nem35l_x52_cumulative"}
+COVERAGE_RUNS = {"qwen3.6-27b": "x47_cumulative_27b", "nemotron-3.5-lightning": "nem35l_x52_cumulative",
+                 "qwen3.5-122b-a10b": "qwen35_122b_x47_cumulative"}  # fmt: skip
 NO_PREDICTION = "no prediction: coverage run on an already-scored rule"
 SCORED = "results/x47_cumulative/x47_4-20261028T113105Z"  # 47.4 first read (the 9B and Muse; descriptive, no bar)
 ARMS = ("none", "a", "b", "c", "d", "b_blocks", "S")
