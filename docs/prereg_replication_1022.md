@@ -3519,3 +3519,18 @@ Zach's MC answers (30 Oct ~06:40 UTC): five cells + the 1-peer cell; 27B, Lightn
   - **Section E** (composition) is not part of note 39.
 - **27B reproduction gate.** Arm 1 at L24-40 must fall inside exp02 main_v4_jpp's Wilson 95% interval on the shared items, or the run stops before any window.
 - **Seen before the freeze:** about 5 rows of exp02 main_v4_jpp outcomes, while checking that file's format.
+
+##### Amendment 66 addendum (Zach, 2026-10-30, box clock at commit; before any note 40 result exists): our dataset practices applied to the silent-dissent items
+Zach's MC answer: "All of it". Why: TwoHopFact's chains are mostly shortcut-prone. The final answer is reachable from the first entity without the bridge (person -> nationality; university -> country; landmark -> capital; person -> city). Their known check covers our first step, second step and whole, but not our guess control, name filter or a shortcut test.
+- **A new gate stage per model** (closed book; greedy 12 tokens, their prompt prefix, alias match, as their known check). Prompts per item:
+  - **guess:** the composed question with e1 replaced by a generic noun ("the person" / "the university" / "the landmark"). The item passes if the answer is NOT e3.
+  - **direct (shortcut):** a direct e1 -> e3 question per category. Fixed templates:
+    - person-birthcity-cntry: "{e1} is a citizen of the country of";
+    - person-uguniv-hqcity: "The city most associated with {e1} is";
+    - landmark-cntry-capital: "The city most associated with {e1} is".
+    - The item is flagged shortcut-available if the answer matches e3. The templates are approximations and are reported as such.
+- **Name/stem filter:** an item is dropped if e1 or e2 (any alias) contains e3 (any alias) as a word, or shares a 4-letter stem with it (e.g., "University of Chicago Law School" -> Chicago), in addition to their bridge-named flag.
+- **Strata:**
+  - **Gated** = their known check + guess wrong + name filter. G0-G2 and R1-R2 are primary on the gated set; the ungated (their) set is reported beside.
+  - **No-shortcut** = gated and not flagged shortcut-available. **R3 (the bridge-specific test) is read only on the no-shortcut subset**, and needs >= 30 items per model; otherwise it is "not read (too few no-shortcut items)". R1-R2 are also reported on the no-shortcut and shortcut subsets, descriptively.
+- **The knock-out runs are unchanged** (they run every known item); the strata are applied in the reader.
