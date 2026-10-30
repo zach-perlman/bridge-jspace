@@ -28,11 +28,18 @@ Readings (as registered):
   D2 (descriptive) hyp_vis: where the e3' lost under paper10 goes (orig, ctrl or other)
   Sensitivity: C1 and C3 on the items whose orig and peer first tokens are both in that prompt's protected set (the
      runner's per-row prot); a change of sign against the full set is reported as "confounded by protection"
+  C4-perp (amendment 76; hyp_vis primary, prem_hid beside): bridgeJ_peerperp - bridgeJ_ctrl loss of e3' >= 10 with the
+     lower end > 0 and above bridgeJ_peerperp_rot's: "the stated premise's own directions are used"; C4 met while it is < 5
+     with the interval including 0: "via its answer component"; else "partly". In-run (Lightning, 27B) or --perp-run (the
+     9B's post hoc {P}sd56pp_v1). Without either, the output is as before.
+  Replicates (amendment 77, --ref-run, e.g. the dev split's run against the test split's): each registered reading's label
+     (C0 instr / hyp, C1, C2, C3 with its cell, C4, D1, the sensitivities, C4-perp) the same as the reference's, or "does not
+     replicate"; read from the reference's reader JSON (and its --perp-run JSON for C4-perp).
   Caveat (stated in the amendment): e3' is in context in instr_vis and usually the clean top token, so C2 is partly built
   in by the protection. Log-prob changes (lp_peer, nats) are printed beside, descriptive.
 
-python scripts/nn_sd_ma1_read.py RUN --gate {P}sd_gate_v1 --late LO..HI [--solo-run {P}sd_ko_test_v1]
-Writes results/sd_necessity/nn_sd_read/RUN_note56.json; prints one "reading:" line per registered reading.
+python scripts/nn_sd_ma1_read.py RUN --gate {P}sd_gate_v1 --late LO..HI [--solo-run {P}sd_ko_test_v1] [--perp-run {P}sd56pp_v1] [--ref-run {P}sd56_ko_test_v1]
+Writes results/sd_necessity/nn_sd_read/RUN_note56.json (RUN_note56_perp-PERPRUN.json with --perp-run); prints one "reading:" line per registered reading.
 """
 
 from __future__ import annotations
@@ -40,6 +47,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -96,7 +104,7 @@ def main(a) -> None:
     gkey = "gated_canonical" if a.name_rule == "canonical" else "gated"
     pdrop = {u for u in read if peer_names_answer(items[u]["peer"])[0]}
     S = {u for u in read if gate[u][gkey] and u not in pdrop}
-    cat_n = collections.Counter(items[u]["fact"]["category"] for u in S)
+    cat_n = collections.Counter(sorted(items[u]["fact"]["category"] for u in S))  # sorted: a set's order varies per process
     R = collections.defaultdict(dict, {k: {u: r for u, r in d.items() if u in S} for k, d in R0.items()})
     g = {c: {u: o for u, o in d.items() if u in S} for c, d in g0.items()} if g0 else {}
     out: dict = {"run": a.run, "model": man["model"], "gate_run": a.gate, "name_rule": a.name_rule, "mid": mid,
@@ -337,6 +345,16 @@ def main(a) -> None:
         rd.append(f"Sensitivity {name} ({conv}, both answers protected, {len(P)} of {len(rows0)} items): "
                   f"{'confounded by protection (' + ', '.join(flip) + ')' if flip else 'same sign'}; paper10 spec {kind} vs "
                   + ", ".join(f"{c} {fmt(v)}" for c, v in sv.items()))  # fmt: skip
+    # amendment 76: C4-perp (in-run, or from --perp-run); nothing is added when neither has the perp edits
+    c4p, c4p_lines, c4p_rates = c4perp(a, res, R, S, mid, bridge_of, man)
+    if c4p:
+        out["c4perp"] = c4p
+        rd += c4p_lines
+    # amendment 77: the same registered labels as the reference run (the test split's) per reading
+    if a.ref_run:
+        rep = replicates(res, a.ref_run, rd)
+        out["replicates"] = rep["by"]
+        rd.append(rep["line"])
     # log-prob beside (descriptive)
     lp = {}
     for conv in [c for c in ("hyp_vis", "instr_vis", cell, "press_vis") if c]:
@@ -345,7 +363,7 @@ def main(a) -> None:
     out["logprob"] = lp
     dest = res / "nn_sd_read"
     dest.mkdir(parents=True, exist_ok=True)
-    (dest / f"{a.run}_note56.json").write_text(json.dumps(out, indent=1) + "\n")
+    (dest / f"{a.run}_note56{'_perp-' + a.perp_run if a.perp_run else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
     # print
     print(f"# note 56 (amendment 73), {a.run}: {man['model'].get('target')}; mid band {mid}; gate {a.gate} ({gkey}); {out['n_read']} read items, "
           f"{out['n_gated']} gated, {out['n_peer_named_dropped']} dropped by the peer-name filter ({out['n_gated_peer_named_dropped']} of them gated); "
@@ -362,9 +380,134 @@ def main(a) -> None:
     print("\nlog p(e3' first token), paper10 minus control (nats, descriptive):")
     for k, v in lp.items():
         print(f"  {k:48s} {fmt(v)}")
+    if c4p_rates:
+        print(f"\nC4-perp run {a.perp_run} rates (% of primary read items):")
+        for k, v in c4p_rates.items():
+            print(f"  {k:40s} n {v['n']:4d}  orig {v['orig']:5.1f}  peer {v['peer']:5.1f}  other {v['other']:5.1f}  |edit|/|h| {v['edit_rel']:.3f}")
     print()
     for line in rd:
         print("reading:", line)
+
+
+def label_of(line: str) -> tuple[str, str] | None:
+    """(reading, label) of a registered reading line (C0 instr / hyp, C1, C2, C3 with its cell, C4 keepA, C4 bridgeJ_peer, D1, the
+    sensitivities, C4-perp); None for descriptive lines (C0 beside, D2, the geometry). Parentheticals are dropped first."""
+    t = line
+    m = re.match(r"C4-perp \((\w+);", t)  # one C4-perp line per conversation: the conversation goes in the key
+    while re.search(r"\([^()]*\)", t):
+        t = re.sub(r" ?\([^()]*\)", "", t)
+    if ": " not in t:
+        return None
+    key, rest = t.split(": ", 1)
+    lab = rest.split(";")[0].strip()
+    if m:
+        key = f"C4-perp {m.group(1)}"
+    if key.startswith(("C0 beside", "D2", "C4-perp geometry")) or not key.startswith(("C0", "C1", "C2", "C3", "C4", "D1", "Sensitivity")):
+        return None
+    if key.startswith("C3 "):  # the cell read (prem_vis / prem_hid) is part of the label
+        key, lab = "C3", f"{key[3:]}: {lab}"
+    return key, lab
+
+
+def replicates(res: Path, ref: str, rd: list[str]) -> dict:
+    """Amendment 77: each registered reading's label against the reference run's (its reader JSON, and for C4-perp its
+    --perp-run JSON if that is where it was read): "replicates" if the same, "does not replicate" if changed."""
+    p = res / "nn_sd_read" / f"{ref}_note56.json"
+    if not p.exists():
+        return {"by": {}, "line": f"Replicates (amendment 77, vs {ref}): not read (no {p.name})"}
+    lines = json.loads(p.read_text())["readings"]
+    for q in sorted((res / "nn_sd_read").glob(f"{ref}_note56_perp-*.json")):
+        lines += [x for x in json.loads(q.read_text())["readings"] if x.startswith("C4-perp")]
+    R0 = dict(x for x in map(label_of, lines) if x)
+    R1 = dict(x for x in map(label_of, rd) if x)
+    by = {k: {"ref": R0[k], "this": R1[k], "replicates": R0[k] == R1[k]} for k in R0 if k in R1}
+    parts = [f"{k} {'replicates' if v['replicates'] else 'does not replicate'}" + ("" if v["replicates"] else f" ({ref} '{v['ref']}', here '{v['this']}')")
+             + (f" ('{v['this']}')" if v["replicates"] else "") for k, v in by.items()]  # fmt: skip
+    miss = [k for k in R0 if k not in R1] + [k for k in R1 if k not in R0]
+    changed = [k for k, v in by.items() if not v["replicates"]]
+    head = f"Replicates (amendment 77, labels vs {ref}): {'every compared label replicates' if not changed else 'does not replicate: ' + ', '.join(changed)}"
+    return {"by": by, "line": head + "; " + "; ".join(parts) + (f"; not compared (in one run only): {', '.join(miss)}" if miss else "")}
+
+
+PERP = ("bridgeJ_peerperp", "bridgeJ_peerperp_rot")
+C4P_POSTHOC = {"qwen3.5-9b"}  # amendment 76: post hoc on the 9B (its note 56 run was seen), registered on Lightning and the 27B
+C4P_YES = "the stated premise's own directions are used"
+
+
+def c4perp(a, res: Path, R: dict, S: set, mid: str, bridge_of: dict, man: dict) -> tuple[dict, list[str], dict]:
+    """Amendment 76's C4-perp: hyp_vis primary, prem_hid beside; loss of e3' (points, paired; bridge bootstrap as C4).
+    "the stated premise's own directions are used" if bridgeJ_peerperp - bridgeJ_ctrl >= 10 with the lower end > 0 and
+    bridgeJ_peerperp's loss exceeds bridgeJ_peerperp_rot's (their difference > 0); "via its answer component" if C4 is met
+    (this run's main reading: bridgeJ_peer - bridgeJ_ctrl, lower end > 0) while bridgeJ_peerperp - bridgeJ_ctrl < 5 with the
+    interval including 0; otherwise "partly". Items with non-empty peers' and control spans (np, nc), as C4. The perp edits
+    come from this run (Lightning, the 27B) or from --perp-run (the 9B's follow-up {P}sd56pp_v1, its own none and
+    bridgeJ_ctrl rows paired with them). Returns ({}, [], {}) when neither has them (the output is then unchanged)."""
+    Rx, bx, xmid, src = R, bridge_of, mid, a.run
+    if a.perp_run:
+        _, pman, R0, bp_, _, _ = load(argparse.Namespace(**{**vars(a), "run": a.perp_run}))
+        Rx = collections.defaultdict(dict, {k: {u: r for u, r in d.items() if u in S} for k, d in R0.items()})
+        bx, xmid, src = {**bridge_of, **bp_}, pman["edits"][0][0], a.perp_run
+    if not Rx.get(("hyp_vis", f"{xmid}/{PERP[0]}")):
+        if not a.perp_run:
+            return {}, [], {}
+        return {"perp_run": src}, [f"C4-perp: not read ({src} has no hyp_vis {PERP[0]} rows)"], {}
+
+    def sp(D, band, conv, t, c, need):  # loss of e3' under t minus under c, on items with all `need` span counts > 0
+        base, T, C = D.get((conv, "none"), {}), D.get((conv, f"{band}/{t}"), {}), D.get((conv, f"{band}/{c}"), {})
+        us = sorted(u for u in base if u in T and u in C and all(base[u].get(f, 1) for f in need))
+
+        def f(uu):
+            return 100 * mean(float(C[u]["cls"] == "peer") - float(T[u]["cls"] == "peer") for u in uu) if uu else None
+
+        by = collections.defaultdict(list)
+        for u in us:
+            by[bx[u]].append(u)
+        return {"t": t, "c": c, "n": len(us), "value": round(f(us), 1) if us else None, "ci": boot(by, f) if us else None}
+
+    def fm(e):
+        return f"{e['t']} - {e['c']} {e['value']} {e['ci']} (n {e['n']})"
+
+    tag = ("post hoc (amendment 76: note 56 seen on this model)" if man["model"].get("target") in C4P_POSTHOC
+           else "registered (amendment 76)")  # fmt: skip
+    js: dict = {"perp_run": src, "tag": tag}
+    lines = []
+    rows = list(Rx.get(("hyp_vis", f"{xmid}/{PERP[0]}"), {}).values())
+    sh = [r["ans_share"] for r in rows if r.get("ans_share") is not None]
+    ep = [r["edit_rel"] for r in Rx.get(("hyp_vis", f"{xmid}/bridgeJ_peer"), {}).values()]
+    geo = (f"bridgeJ_peer's forms: mean energy share inside the answers' span {round(mean(sh), 3) if sh else None} (n {len(sh)}); peerperp span "
+           f"rank {round(mean(r.get('span_rank', 0) for r in rows), 2)} ({sum(r.get('span_rank', 0) == 0 and r.get('np', 1) > 0 for r in rows)} items with a "
+           f"non-empty peers' span reduced to rank 0); hyp_vis |edit|/|h| bridgeJ_peer {round(mean(ep), 4) if ep else None}, bridgeJ_peerperp "
+           f"{round(mean(r['edit_rel'] for r in rows), 4)}")  # fmt: skip
+    js["geometry"] = geo
+    for conv in ("hyp_vis", "prem_hid"):
+        d = sp(Rx, xmid, conv, PERP[0], "bridgeJ_ctrl", ("np", "nc"))
+        r = sp(Rx, xmid, conv, PERP[0], PERP[1], ("np",))
+        c4 = sp(R, mid, conv, "bridgeJ_peer", "bridgeJ_ctrl", ("np", "nc"))  # C4's contrast in the main run
+        here = sp(Rx, xmid, conv, "bridgeJ_peer", "bridgeJ_ctrl", ("np", "nc")) if a.perp_run else None
+        c4_met = bool(c4["ci"] and c4["ci"][0] > 0)
+        js[conv] = {"perp_ctrl": d, "perp_rot": r, "c4_main": c4, "c4_met": c4_met, "peer_ctrl_perp_run": here}
+        if not d["n"]:
+            lab = "not read (no rows)"
+        elif d["value"] >= 10 and d["ci"] and d["ci"][0] > 0 and r["value"] is not None and r["value"] > 0:
+            lab = C4P_YES
+        elif c4_met and d["value"] < 5 and d["ci"] and d["ci"][0] <= 0 <= d["ci"][1]:
+            lab = "via its answer component"
+        else:
+            lab = "partly"
+        js[conv]["reading"] = lab
+        role = tag if conv == "hyp_vis" else "beside"
+        lines.append(f"C4-perp ({conv}; {role}; the peers' premise orthogonalised to the answers): {lab}; loss of e3' {fm(d)}; {fm(r)}; "
+                     f"C4 in {a.run} {fm(c4)} (met {c4_met})" + (f"; {src}'s {fm(here)}" if here else "") + f" [from {src}]")  # fmt: skip
+    lines.append(f"C4-perp geometry (descriptive, hyp_vis): {geo}")
+    rates = {}
+    if a.perp_run:
+        for (conv, bc), d in sorted(Rx.items()):
+            rs = list(d.values())
+            if rs:
+                n = len(rs)
+                rates[f"{conv} {bc}"] = {"n": n, **{k: round(100 * sum(x["cls"] == k for x in rs) / n, 1) for k in ("orig", "peer", "other")},
+                                         "edit_rel": round(mean(x.get("edit_rel", 0.0) for x in rs), 4)}  # fmt: skip
+    return js, lines, rates
 
 
 def hitdiff(r: dict, idx: list[int], role: str = "orig_bridge", k: int = 100) -> float | None:
@@ -388,4 +531,6 @@ if __name__ == "__main__":
     ap.add_argument("--solo-run", default=None, help="D1: note 40's run of the same model (its unedited solo rows)")
     ap.add_argument("--res", default=str(RES))
     ap.add_argument("--drop-bridge-named", action="store_true", help="(nn_sd_read.load's option; off: as note 40's primary)")
+    ap.add_argument("--ref-run", default=None, help="amendment 77: compare each registered label with this run's (the test split's, for a dev run)")
+    ap.add_argument("--perp-run", default=None, help="amendment 76: a run with bridgeJ_peerperp(_rot) on hyp_vis / prem_hid (the 9B's {P}sd56pp_v1)")
     main(ap.parse_args())
