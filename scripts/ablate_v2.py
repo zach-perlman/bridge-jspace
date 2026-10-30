@@ -83,6 +83,7 @@ CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "pa
 # (topK_keepA / _rot): see n49_kind, is_n52, is_n51 and the docstring of main's "amendment 72" block
 N49_KINDS = ("protF", "protC", "keepT10", "keepRT10", "keepOwn", "keepSib", "keepR4perp", "keepR8perp", "onlyA")
 N52_KEEPS = ("CapPerp", "CtyPerp", "Shared")
+N52B_KEEPS = ("RShared", "RCapPerp", "RCtyPerp", "SharedNoLit")  # amendment 80 note 52b: energy-matched random twins; Shared minus literal rows
 PERP_TOL = 1e-3  # note 50 / 52: a re-orthonormalised column whose norm after projection is below this is dropped
 SHARED_COS = 0.9  # note 52: keepShared = the principal vectors of span(Cap) and span(Cty) with cosine >= this
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
@@ -96,7 +97,7 @@ def keep_kind(cond: str) -> str | None:
     if m:
         return m[1]
     # amendment 72: note 49's T10 / RT10 / Own / Sib, note 50's perps, note 52's residualised spans, note 51's topK_keepA
-    m = re.fullmatch(r"paper10_keep(T10|RT10|Own|Sib|R4perp|R8perp|CapPerp|CtyPerp|Shared)(_rot)?", cond) or re.fullmatch(
+    m = re.fullmatch(r"paper10_keep(T10|RT10|Own|Sib|R4perp|R8perp|CapPerp|CtyPerp|Shared|RShared|RCapPerp|RCtyPerp|SharedNoLit)(_rot)?", cond) or re.fullmatch(
         r"top\d+_keep(A)(_rot)?", cond)
     if m:
         return m[1]
@@ -128,8 +129,10 @@ def is_n51(cond: str) -> bool:
 
 
 def is_n52(cond: str) -> bool:
-    """Amendment 72 note 52: paper10_keepCapPerp / keepCtyPerp / keepShared (note 44's spans residualised)."""
-    return keep_kind(cond) in N52_KEEPS
+    """Amendment 72 note 52: paper10_keepCapPerp / keepCtyPerp / keepShared (note 44's spans residualised); amendment 80 note 52b:
+    paper10_keepRShared / keepRCapPerp / keepRCtyPerp (random keeps energy-matched to each span in paper10's forward, the first k
+    rows of note 44's Rcap pool) and paper10_keepSharedNoLit."""
+    return keep_kind(cond) in N52_KEEPS + N52B_KEEPS
 
 
 def is_n44(cond: str) -> bool:
@@ -606,6 +609,10 @@ def main(args) -> None:
                        "share of paper10's answer part they still remove, sum |P_A r_X|^2 / sum |P_A r|^2; ranks; |edit| / |h|. The new "
                        "conditions' rows carry keeplog: |edit| / |h| in their own forward and the kept rank / protected row count",
             "topk_chunk": args.topk_chunk,
+            **({"note52b": "keepRShared / RCapPerp / RCtyPerp: the first k rows of note 44's Rcap pool (random.Random(\"n41:\" + id), "
+                           "4 |Cap| rows, nested QR), k per item = the smallest prefix whose share of paper10's removal energy reaches the "
+                           "span's (paper10's forward; keeplog k52b, E_R*); keepSharedNoLit: Shared projected off the item's rows in both "
+                           "Cap and its Cty, re-orthonormalised (perp_basis)"} if any(keep_kind(c) in N52B_KEEPS for c in args.conditions) else {}),
         }  # fmt: skip
     if any(n57_kind(c) for c in args.conditions):  # amendment 78 note 57
         manifest["amendment78"] = {
@@ -1093,6 +1100,13 @@ def main(args) -> None:
                     return perp_basis(kept_span(i, la, "Cap"), dic[la].atoms(n44["cty"][i]))
                 if kind == "Shared":
                     return shared_basis(kept_span(i, la, "Cap"), kept_span(i, la, "Cty"))[0]
+                if kind == "SharedNoLit":  # note 52b: Shared projected off the rows literally in both sets (this item's Cty)
+                    lit = sorted(set(cap_rows.tolist()) & set(n44["cty"][i].tolist()))
+                    ql = (torch.linalg.qr(dic[la].atoms(torch.tensor(lit, device="cuda")).double().T)[0] if lit
+                          else torch.zeros(wg.shape[1], 0, dtype=torch.float64, device="cuda"))  # fmt: skip
+                    return perp_basis(ql, shared_basis(kept_span(i, la, "Cap"), kept_span(i, la, "Cty"))[0].T)
+                if kind in ("RShared", "RCapPerp", "RCtyPerp"):  # note 52b: the first k rows of the Rcap pool, k matched in paper10's forward
+                    return torch.linalg.qr(dic[la].atoms(n44["pool"][i][: k52b[kind[1:]][i]]).double().T)[0]
                 raise ValueError(kind)
 
             def edit72(cond: str, la: int):
@@ -1141,6 +1155,7 @@ def main(args) -> None:
                 return removal_edit("top", dic[la], rs, rotation=rot_, k=10, keep_span=LazySpans(fn, len(chunk)))
 
             log72: dict = {}  # paper10's (notes 49, 50, 52) and topK's (note 51) per-row sums, filled by observe72
+            k52b = {kk: [int(x.numel()) for x in n44.get("pool", [])] for kk in N52_KEEPS}  # note 52b: matched sizes (set after paper10)
 
             def observe72(r: torch.Tensor, B: int, T: int, la: int, cond: str, h: torch.Tensor) -> None:
                 """Amendment 72's log in paper10's forward (notes 49 / 50 / 52) or a plain topK's (note 51): energies of r in each
@@ -1167,11 +1182,13 @@ def main(args) -> None:
                     l["h2"] += float(xn[b * T : (b + 1) * T].double().pow(2)[m].sum())
                     l["layers"] += 1
                     if cond == "paper10" and n52on:
-                        for kk in N52_KEEPS:
-                            if f"paper10_keep{kk}" in args.conditions:
+                        for kk in N52_KEEPS + ("SharedNoLit",):
+                            if f"paper10_keep{kk}" in args.conditions or f"paper10_keepR{kk}" in args.conditions:
                                 if kk == "Shared":
                                     Q, cs = shared_basis(kept_span(b, la, "Cap"), kept_span(b, la, "Cty"))
                                     l["n_cos_ge"] += len(cs)
+                                    if "paper10_keepSharedNoLit" in args.conditions:  # note 52b: literal shared rows per item
+                                        l["n_lit"] = len(set(cap_rows.tolist()) & set(n44["cty"][b].tolist()))
                                 else:
                                     Q = span72(b, la, kk)
                                 l["E_" + kk] += float((rb @ Q).pow(2).sum())
@@ -1223,6 +1240,10 @@ def main(args) -> None:
                     out["sib"] = g72["sib"][b]
                 if cond == "paper10" and n52on:
                     out["n_cos_ge_shared"] = l["n_cos_ge"] / nl
+                    if any(k_.startswith("k_R") for k_ in l):  # note 52b: the matched random keeps' sizes
+                        out["k52b"] = {k_: v for k_, v in l.items() if k_.startswith(("k_R", "reached_R", "n_pool"))}
+                    if "n_lit" in l:
+                        out["n_lit_shared_rows"] = l["n_lit"]
                 return out
 
             for band in bands:
@@ -1375,6 +1396,17 @@ def main(args) -> None:
                         for row in range(len(chunk)):
                             rk_ = rank72[cond][row] if not is_n51(cond) else [kept_span(row, la_, "A").shape[1] for la_ in band]
                             k72.append({"rank": sum(rk_) / len(rk_) if rk_ else None})
+                    if cond == "paper10" and n52on and any(f"paper10_keepR{kk}" in args.conditions for kk in N52_KEEPS):
+                        for b in range(len(chunk)):  # note 52b: k = the smallest Rcap-pool prefix whose energy reaches the span's
+                            l = log72["paper10"][b]
+                            cum = e44pool[b].cumsum(0)
+                            l["n_pool"] = int(cum.numel())
+                            for kk in N52_KEEPS:
+                                if f"paper10_keepR{kk}" in args.conditions:
+                                    hit = (cum >= l["E_" + kk]).nonzero()
+                                    k52b[kk][b] = int(hit[0]) + 1 if hit.numel() else int(cum.numel())
+                                    l["k_R" + kk], l["reached_R" + kk] = k52b[kk][b], bool(hit.numel())
+                                    l["E_R" + kk] = float(cum[k52b[kk][b] - 1])
                     if cond in log72:  # paper10's / topK's per-item log (keeplog.jsonl)
                         with (out_dir / "keeplog.jsonl").open("a") as fh:
                             fh.writelines(json.dumps({"band": label(band), **keeplog_line(cond, b)}) + "\n" for b in range(len(chunk)))
@@ -1531,7 +1563,9 @@ if __name__ == "__main__":
     assert all((n57_kind(c) == "ansRe" and pos.get("ansJ", 1e9) < pos[c]) or (n57_kind(c) == "keepRE" and pos.get(f"top{top_k(c)}", 1e9) < pos[c])
                or (n57_kind(c) not in ("ansRe", "keepRE") and pos.get("paper10", 1e9) < pos[c]) for c in n57c) and not (n57c and any(is_n52(c) for c in a.conditions)), \
         f"note 57: {n57c} need paper10 / topK / ansJ earlier in --conditions (they set the matched sizes), and no note 52 conditions"  # fmt: skip
-    n72 = [c for c in a.conditions if n49_kind(c) or is_n51(c) or is_n52(c) or n57_kind(c)]  # amendments 72 / 78
+    assert all(pos.get("paper10", 1e9) < pos[c] for c in a.conditions if keep_kind(c) in ("RShared", "RCapPerp", "RCtyPerp")), \
+        "note 52b: paper10 must run before the matched random keeps (it sets their sizes)"
+    n72 = [c for c in a.conditions if n49_kind(c) or is_n51(c) or is_n52(c) or n57_kind(c)]  # amendments 72 / 78 / 80
     assert not n72 or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions and "paper10_rot" in a.conditions
                        and not any("_nosink" in c for c in n72)
                        and not (any(n49_kind(c) for c in n72) and any(is_n52(c) for c in n72))), \
