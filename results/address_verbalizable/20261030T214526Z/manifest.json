@@ -1,0 +1,22 @@
+{
+  "exp": "address_verbalizable",
+  "written_utc": "20261030T214526Z",
+  "script": "scripts/address_verbalizable.py",
+  "post_hoc": true,
+  "cpu": true,
+  "models": [
+    "muse-glimmer-30b",
+    "qwen3.5-9b",
+    "qwen3.6-27b",
+    "nemotron-3.5-lightning",
+    "qwen3.5-122b-a10b"
+  ],
+  "docstring": "address_verbalizable: can the J++ lens verbalize the address (the locker-slot pointer)? (POST HOC; Dan 30 Oct; CPU; descriptive + a pre-set rule.)\n\n(a) the address-swap directions mu_k - mu_j x8_write adds (mu = the pointer class means of the model's probe states, x0_massmean.pointer_means,\n    at the model's fixed layer), for every ordered slot pair (j, k), decomposed over the model's J++ letter dictionary with the same signed\n    25-atom OMP as the depth view (x52_atoms.omp_atoms; dictionary = x52_atoms.cpu_dictionary's arithmetic: unit rows of (g W_U[t]) J_L).\n(b) optional (--deltas NPZ): the real change's component inside the pointer directions (U U^T Delta, U = Alf, the subspace no_alf removes) for 30\n    random C2 lookup scenes (seed 29), computed on a GPU box (scripts/address_verbalizable_delta.py), decomposed the same way. A digit / cardinal\n    atom equal to a locker digit of the scene is \"ambiguous\" and counted separately.\nAlso per model: the share of the pointer subspace's energy the 25-atom J++ part captures (each unit basis direction of Alf, and the six mu_k - mu_j).\n\nPosition classes (a token is matched whole after stripping edge punctuation and spaces, NFKC, case-folded; letter tokens only, so lone digits\nare not in the dictionary): ordinals of the slot (0-based and 1-based: values {k, k+1} for slot k, {j, j+1} for slot j) in eleven languages\n(atoms_multilingual.ORDINAL, 1st/2nd/3rd, Roman II / III), cardinals of the slot index (same values; zero / one / two / three in eleven\nlanguages), generic position words (first, last, middle, next, previous, before, after, former, latter, in eleven languages).\n\nControls: the base rate (share of dictionary atoms in each class); 100 random Gaussian vectors in the same space, same OMP (the 95th\npercentile of the position-atom energy share and of the sign-correct-ordinal rate over the six slot-pair labels); a label shuffle: each\nmu_k - mu_j scored against each of the five wrong pairs.\n\nPre-set rule (written to the manifest before the run): \"verbalizable\" only if, on at least 3 of 5 models, (1) the position atoms' energy share in (a)\n(mean over the six ordered pairs, each vector scored against its own pair) exceeds the random 95th percentile, and (2) a sign-correct ordinal (the\npair's k with a + coefficient, or its j with a -; an ordinal whose value belongs to both slots is not counted) appears in the 25 atoms on most slot\npairs (>= 4 of 6) and above the shuffle rate. Otherwise: \"not verbalizable by the J++ lens at this layer; consistent with the claim\".\n\nuv run python scripts/address_verbalizable.py [--deltas results/address_verbalizable_delta/<run>/deltas.npz --deltas-model muse-glimmer-30b]\n",
+  "n_random": 100,
+  "seed": 29,
+  "k_atoms": 25,
+  "rule": "'verbalizable' only if on >= 3 of 5 models (1) the position atoms' energy share in (a) (mean over the six ordered pairs) exceeds the random 95th percentile and (2) a sign-correct ordinal appears in the 25 atoms on >= 4 of 6 slot pairs and above the shuffle rate; otherwise 'not verbalizable by the J++ lens at this layer; consistent with the claim'",
+  "deltas": "results/address_verbalizable_delta/muse-glimmer-30b-20261030T214153Z/deltas.npz",
+  "deltas_model": "muse-glimmer-30b",
+  "git": "fdf2fc48"
+}

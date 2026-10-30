@@ -1,0 +1,6845 @@
+{
+ "models": {
+  "muse-glimmer-30b": {
+   "layer": 26,
+   "d": 6656,
+   "base_rate": {
+    "dictionary_tokens": 190773,
+    "ordinal_tokens": 125,
+    "cardinal_tokens": 265,
+    "generic_tokens": 220,
+    "position_tokens": 589,
+    "base_rate_any_position_class": 0.003087
+   },
+   "norm_median_write": 41.38123178222223,
+   "alf_rank": 4,
+   "seconds": 23,
+   "overlap": {
+    "alf_basis_directions_captured": [
+     0.0478,
+     0.0597,
+     0.0632,
+     0.0781
+    ],
+    "alf_mean_captured": 0.0622,
+    "writes_captured": {
+     "0->1": 0.066,
+     "0->2": 0.0615,
+     "1->0": 0.066,
+     "1->2": 0.0591,
+     "2->0": 0.0615,
+     "2->1": 0.0591
+    },
+    "random_mean_captured": 0.0523
+   },
+   "a": {
+    "per_pair": {
+     "0->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00404,
+        "pos": false,
+        "side": "none",
+        "token": " ramai",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00383,
+        "pos": false,
+        "side": "none",
+        "token": "にとって",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.0037,
+        "pos": false,
+        "side": "none",
+        "token": "idenav",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 577,
+        "sign": "-",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": " V",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 166033,
+        "sign": "+",
+        "energy": 0.00292,
+        "pos": false,
+        "side": "none",
+        "token": "izzera",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 77758,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "_REFERENCE",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 121996,
+        "sign": "+",
+        "energy": 0.00276,
+        "pos": false,
+        "side": "none",
+        "token": " acestuia",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 100230,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": " blod",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 33885,
+        "sign": "+",
+        "energy": 0.00238,
+        "pos": false,
+        "side": "none",
+        "token": "楼",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 29547,
+        "sign": "-",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": "LR",
+        "class": {}
+       }
+      ]
+     },
+     "0->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00426,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.0035,
+        "pos": false,
+        "side": "none",
+        "token": "にとって",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00372,
+        "pos": false,
+        "side": "none",
+        "token": " ramai",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 47307,
+        "sign": "-",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": " Tit",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": "idenav",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 198289,
+        "sign": "-",
+        "energy": 0.00306,
+        "pos": false,
+        "side": "none",
+        "token": "жар",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 87711,
+        "sign": "+",
+        "energy": 0.0024,
+        "pos": false,
+        "side": "none",
+        "token": "ซื้อ",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 93599,
+        "sign": "-",
+        "energy": 0.00257,
+        "pos": false,
+        "side": "none",
+        "token": "-associated",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 166033,
+        "sign": "+",
+        "energy": 0.00233,
+        "pos": false,
+        "side": "none",
+        "token": "izzera",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 38967,
+        "sign": "-",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": "embali",
+        "class": {}
+       }
+      ]
+     },
+     "1->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00404,
+        "pos": false,
+        "side": "none",
+        "token": " ramai",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00383,
+        "pos": false,
+        "side": "none",
+        "token": "にとって",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "-",
+        "energy": 0.0037,
+        "pos": false,
+        "side": "none",
+        "token": "idenav",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 577,
+        "sign": "+",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": " V",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00292,
+        "pos": false,
+        "side": "none",
+        "token": "izzera",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 77758,
+        "sign": "+",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "_REFERENCE",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 121996,
+        "sign": "-",
+        "energy": 0.00276,
+        "pos": false,
+        "side": "none",
+        "token": " acestuia",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 100230,
+        "sign": "+",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": " blod",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 33885,
+        "sign": "-",
+        "energy": 0.00238,
+        "pos": false,
+        "side": "none",
+        "token": "楼",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 29547,
+        "sign": "+",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": "LR",
+        "class": {}
+       }
+      ]
+     },
+     "1->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 185087,
+        "sign": "+",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": " Plen",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 162661,
+        "sign": "-",
+        "energy": 0.0037,
+        "pos": false,
+        "side": "none",
+        "token": " Beet",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 48471,
+        "sign": "+",
+        "energy": 0.00283,
+        "pos": false,
+        "side": "none",
+        "token": "abama",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 175854,
+        "sign": "-",
+        "energy": 0.00287,
+        "pos": false,
+        "side": "none",
+        "token": "ley's",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 175218,
+        "sign": "+",
+        "energy": 0.00263,
+        "pos": false,
+        "side": "none",
+        "token": "Reasons",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 95737,
+        "sign": "-",
+        "energy": 0.00322,
+        "pos": false,
+        "side": "none",
+        "token": "degrees",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 173021,
+        "sign": "-",
+        "energy": 0.00207,
+        "pos": false,
+        "side": "none",
+        "token": " Fitch",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 32265,
+        "sign": "+",
+        "energy": 0.00228,
+        "pos": false,
+        "side": "none",
+        "token": " også",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 39781,
+        "sign": "-",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " titre",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 113995,
+        "sign": "+",
+        "energy": 0.00227,
+        "pos": false,
+        "side": "none",
+        "token": " Hits",
+        "class": {}
+       }
+      ]
+     },
+     "2->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00426,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.0035,
+        "pos": false,
+        "side": "none",
+        "token": "にとって",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00372,
+        "pos": false,
+        "side": "none",
+        "token": " ramai",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 47307,
+        "sign": "+",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": " Tit",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 119647,
+        "sign": "-",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": "idenav",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 198289,
+        "sign": "+",
+        "energy": 0.00306,
+        "pos": false,
+        "side": "none",
+        "token": "жар",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 87711,
+        "sign": "-",
+        "energy": 0.0024,
+        "pos": false,
+        "side": "none",
+        "token": "ซื้อ",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 93599,
+        "sign": "+",
+        "energy": 0.00257,
+        "pos": false,
+        "side": "none",
+        "token": "-associated",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00233,
+        "pos": false,
+        "side": "none",
+        "token": "izzera",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 38967,
+        "sign": "+",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": "embali",
+        "class": {}
+       }
+      ]
+     },
+     "2->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 185087,
+        "sign": "-",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": " Plen",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 162661,
+        "sign": "+",
+        "energy": 0.0037,
+        "pos": false,
+        "side": "none",
+        "token": " Beet",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 48471,
+        "sign": "-",
+        "energy": 0.00283,
+        "pos": false,
+        "side": "none",
+        "token": "abama",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 175854,
+        "sign": "+",
+        "energy": 0.00287,
+        "pos": false,
+        "side": "none",
+        "token": "ley's",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 175218,
+        "sign": "-",
+        "energy": 0.00263,
+        "pos": false,
+        "side": "none",
+        "token": "Reasons",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 95737,
+        "sign": "+",
+        "energy": 0.00322,
+        "pos": false,
+        "side": "none",
+        "token": "degrees",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 173021,
+        "sign": "+",
+        "energy": 0.00207,
+        "pos": false,
+        "side": "none",
+        "token": " Fitch",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 32265,
+        "sign": "-",
+        "energy": 0.00228,
+        "pos": false,
+        "side": "none",
+        "token": " også",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 39781,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " titre",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 113995,
+        "sign": "-",
+        "energy": 0.00227,
+        "pos": false,
+        "side": "none",
+        "token": " Hits",
+        "class": {}
+       }
+      ]
+     }
+    },
+    "position_share_mean": 0.0,
+    "random_position_share_mean": 0.00015,
+    "random_position_share_p95": 0.00169,
+    "sign_correct_pairs": 0,
+    "sign_correct_rate": 0.0,
+    "shuffle_sign_correct_rate": 0.0,
+    "random_sign_correct_rate_mean": 0.007,
+    "random_sign_correct_rate_p95": 0.0,
+    "shuffle_position_share_mean": 0.0
+   },
+   "rule": {
+    "share_above_random_p95": false,
+    "sign_correct_on_most_pairs_above_shuffle": false,
+    "both": false
+   },
+   "b": {
+    "n": 30,
+    "position_share_mean": 0.00098,
+    "ambiguous_share_mean": 0.0,
+    "sign_correct_scenes": 5,
+    "captured_mean": 0.0622,
+    "items": [
+     {
+      "scene": "C2-0956",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.00229,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0664,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.0042,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00404,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "-",
+        "energy": 0.00384,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 4,
+        "token_id": 29547,
+        "sign": "+",
+        "energy": 0.00304,
+        "pos": false,
+        "side": "none",
+        "token": "LR"
+       },
+       {
+        "rank": 5,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 6,
+        "token_id": 21404,
+        "sign": "+",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": "amar"
+       },
+       {
+        "rank": 7,
+        "token_id": 155911,
+        "sign": "+",
+        "energy": 0.00225,
+        "pos": false,
+        "side": "none",
+        "token": "čios"
+       },
+       {
+        "rank": 8,
+        "token_id": 182387,
+        "sign": "-",
+        "energy": 0.00321,
+        "pos": false,
+        "side": "none",
+        "token": " průbě"
+       },
+       {
+        "rank": 9,
+        "token_id": 68275,
+        "sign": "+",
+        "energy": 0.00233,
+        "pos": false,
+        "side": "none",
+        "token": "-host"
+       },
+       {
+        "rank": 10,
+        "token_id": 79957,
+        "sign": "-",
+        "energy": 0.0031,
+        "pos": false,
+        "side": "none",
+        "token": ".optim"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0145",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.00322,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0665,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00342,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 577,
+        "sign": "+",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": " V"
+       },
+       {
+        "rank": 3,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00263,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 4,
+        "token_id": 121996,
+        "sign": "-",
+        "energy": 0.00402,
+        "pos": false,
+        "side": "none",
+        "token": " acestuia"
+       },
+       {
+        "rank": 5,
+        "token_id": 33885,
+        "sign": "-",
+        "energy": 0.00263,
+        "pos": false,
+        "side": "none",
+        "token": "楼"
+       },
+       {
+        "rank": 6,
+        "token_id": 142884,
+        "sign": "+",
+        "energy": 0.00322,
+        "pos": true,
+        "side": "both",
+        "token": " 첫번째"
+       },
+       {
+        "rank": 7,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 8,
+        "token_id": 167035,
+        "sign": "+",
+        "energy": 0.00275,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 9,
+        "token_id": 119647,
+        "sign": "-",
+        "energy": 0.00236,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 10,
+        "token_id": 150088,
+        "sign": "+",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": "ISOString"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0625",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.00259,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0684,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00312,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 2,
+        "token_id": 167035,
+        "sign": "+",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 3,
+        "token_id": 71781,
+        "sign": "-",
+        "energy": 0.00296,
+        "pos": false,
+        "side": "none",
+        "token": "incinnati"
+       },
+       {
+        "rank": 4,
+        "token_id": 172405,
+        "sign": "+",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": " vler"
+       },
+       {
+        "rank": 5,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00395,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 6,
+        "token_id": 143445,
+        "sign": "+",
+        "energy": 0.00292,
+        "pos": false,
+        "side": "none",
+        "token": " розта"
+       },
+       {
+        "rank": 7,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.00307,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 8,
+        "token_id": 150088,
+        "sign": "+",
+        "energy": 0.00296,
+        "pos": false,
+        "side": "none",
+        "token": "ISOString"
+       },
+       {
+        "rank": 9,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00372,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 10,
+        "token_id": 152796,
+        "sign": "+",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": " Hbf"
+       }
+      ]
+     },
+     {
+      "scene": "C2-1043",
+      "j": 0,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0635,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00397,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00362,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 4,
+        "token_id": 47307,
+        "sign": "-",
+        "energy": 0.00303,
+        "pos": false,
+        "side": "none",
+        "token": " Tit"
+       },
+       {
+        "rank": 5,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 6,
+        "token_id": 198289,
+        "sign": "-",
+        "energy": 0.00325,
+        "pos": false,
+        "side": "none",
+        "token": "жар"
+       },
+       {
+        "rank": 7,
+        "token_id": 166033,
+        "sign": "+",
+        "energy": 0.00249,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 8,
+        "token_id": 93599,
+        "sign": "-",
+        "energy": 0.00294,
+        "pos": false,
+        "side": "none",
+        "token": "-associated"
+       },
+       {
+        "rank": 9,
+        "token_id": 91495,
+        "sign": "+",
+        "energy": 0.00222,
+        "pos": false,
+        "side": "none",
+        "token": "יון"
+       },
+       {
+        "rank": 10,
+        "token_id": 114336,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": " margen"
+       }
+      ]
+     },
+     {
+      "scene": "C2-1056",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0619,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00438,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00354,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 71781,
+        "sign": "-",
+        "energy": 0.00305,
+        "pos": false,
+        "side": "none",
+        "token": "incinnati"
+       },
+       {
+        "rank": 4,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 5,
+        "token_id": 172405,
+        "sign": "+",
+        "energy": 0.00332,
+        "pos": false,
+        "side": "none",
+        "token": " vler"
+       },
+       {
+        "rank": 6,
+        "token_id": 93599,
+        "sign": "+",
+        "energy": 0.00258,
+        "pos": false,
+        "side": "none",
+        "token": "-associated"
+       },
+       {
+        "rank": 7,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00327,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 8,
+        "token_id": 150975,
+        "sign": "+",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": " birinci"
+       },
+       {
+        "rank": 9,
+        "token_id": 148445,
+        "sign": "-",
+        "energy": 0.00233,
+        "pos": false,
+        "side": "none",
+        "token": "าคารพาณิชย์"
+       },
+       {
+        "rank": 10,
+        "token_id": 47307,
+        "sign": "+",
+        "energy": 0.0018,
+        "pos": false,
+        "side": "none",
+        "token": " Tit"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0528",
+      "j": 0,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0634,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00402,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00362,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.0036,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 4,
+        "token_id": 47307,
+        "sign": "-",
+        "energy": 0.00303,
+        "pos": false,
+        "side": "none",
+        "token": " Tit"
+       },
+       {
+        "rank": 5,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.0028,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 6,
+        "token_id": 198289,
+        "sign": "-",
+        "energy": 0.00331,
+        "pos": false,
+        "side": "none",
+        "token": "жар"
+       },
+       {
+        "rank": 7,
+        "token_id": 166033,
+        "sign": "+",
+        "energy": 0.00255,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 8,
+        "token_id": 93599,
+        "sign": "-",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": "-associated"
+       },
+       {
+        "rank": 9,
+        "token_id": 91495,
+        "sign": "+",
+        "energy": 0.00221,
+        "pos": false,
+        "side": "none",
+        "token": "יון"
+       },
+       {
+        "rank": 10,
+        "token_id": 100230,
+        "sign": "-",
+        "energy": 0.00228,
+        "pos": false,
+        "side": "none",
+        "token": " blod"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0165",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0715,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 3468,
+        "sign": "+",
+        "energy": 0.00361,
+        "pos": false,
+        "side": "none",
+        "token": "anel"
+       },
+       {
+        "rank": 2,
+        "token_id": 153094,
+        "sign": "-",
+        "energy": 0.00594,
+        "pos": false,
+        "side": "none",
+        "token": "roga"
+       },
+       {
+        "rank": 3,
+        "token_id": 135625,
+        "sign": "+",
+        "energy": 0.00341,
+        "pos": false,
+        "side": "none",
+        "token": " Theta"
+       },
+       {
+        "rank": 4,
+        "token_id": 168197,
+        "sign": "-",
+        "energy": 0.00364,
+        "pos": false,
+        "side": "none",
+        "token": " Bunny"
+       },
+       {
+        "rank": 5,
+        "token_id": 139645,
+        "sign": "+",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": " Jeho"
+       },
+       {
+        "rank": 6,
+        "token_id": 57280,
+        "sign": "-",
+        "energy": 0.00362,
+        "pos": false,
+        "side": "none",
+        "token": "aphore"
+       },
+       {
+        "rank": 7,
+        "token_id": 188798,
+        "sign": "+",
+        "energy": 0.00269,
+        "pos": false,
+        "side": "none",
+        "token": "IPMENT"
+       },
+       {
+        "rank": 8,
+        "token_id": 29600,
+        "sign": "-",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": " caught"
+       },
+       {
+        "rank": 9,
+        "token_id": 143204,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": "Manufacturer"
+       },
+       {
+        "rank": 10,
+        "token_id": 69581,
+        "sign": "+",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": "rador"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0899",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.00265,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.0629,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00462,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 4,
+        "token_id": 100230,
+        "sign": "+",
+        "energy": 0.00292,
+        "pos": false,
+        "side": "none",
+        "token": " blod"
+       },
+       {
+        "rank": 5,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00312,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 6,
+        "token_id": 59962,
+        "sign": "+",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": " cans"
+       },
+       {
+        "rank": 7,
+        "token_id": 38967,
+        "sign": "+",
+        "energy": 0.00265,
+        "pos": false,
+        "side": "none",
+        "token": "embali"
+       },
+       {
+        "rank": 8,
+        "token_id": 71781,
+        "sign": "-",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": "incinnati"
+       },
+       {
+        "rank": 9,
+        "token_id": 165660,
+        "sign": "-",
+        "energy": 0.00246,
+        "pos": false,
+        "side": "none",
+        "token": " njihov"
+       },
+       {
+        "rank": 10,
+        "token_id": 198154,
+        "sign": "+",
+        "energy": 0.00265,
+        "pos": true,
+        "side": "k",
+        "token": " erstes"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0618",
+      "j": 0,
+      "k": 1,
+      "position_share": 0.0018,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0627,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00328,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 4,
+        "token_id": 21404,
+        "sign": "-",
+        "energy": 0.00318,
+        "pos": false,
+        "side": "none",
+        "token": "amar"
+       },
+       {
+        "rank": 5,
+        "token_id": 103967,
+        "sign": "+",
+        "energy": 0.00326,
+        "pos": false,
+        "side": "none",
+        "token": "ก็ตาม"
+       },
+       {
+        "rank": 6,
+        "token_id": 90502,
+        "sign": "-",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": "VF"
+       },
+       {
+        "rank": 7,
+        "token_id": 24580,
+        "sign": "+",
+        "energy": 0.00255,
+        "pos": false,
+        "side": "none",
+        "token": "atern"
+       },
+       {
+        "rank": 8,
+        "token_id": 85124,
+        "sign": "-",
+        "energy": 0.00303,
+        "pos": false,
+        "side": "none",
+        "token": "ocyt"
+       },
+       {
+        "rank": 9,
+        "token_id": 169310,
+        "sign": "+",
+        "energy": 0.0025,
+        "pos": false,
+        "side": "none",
+        "token": " Опти"
+       },
+       {
+        "rank": 10,
+        "token_id": 155911,
+        "sign": "-",
+        "energy": 0.00302,
+        "pos": false,
+        "side": "none",
+        "token": "čios"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0706",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0469,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 28583,
+        "sign": "-",
+        "energy": 0.00308,
+        "pos": false,
+        "side": "none",
+        "token": "upun"
+       },
+       {
+        "rank": 2,
+        "token_id": 171674,
+        "sign": "+",
+        "energy": 0.00184,
+        "pos": false,
+        "side": "none",
+        "token": " myš"
+       },
+       {
+        "rank": 3,
+        "token_id": 120207,
+        "sign": "-",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": "Anyone"
+       },
+       {
+        "rank": 4,
+        "token_id": 48924,
+        "sign": "+",
+        "energy": 0.0021,
+        "pos": false,
+        "side": "none",
+        "token": "five"
+       },
+       {
+        "rank": 5,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 6,
+        "token_id": 72570,
+        "sign": "-",
+        "energy": 0.00178,
+        "pos": false,
+        "side": "none",
+        "token": "_example"
+       },
+       {
+        "rank": 7,
+        "token_id": 78105,
+        "sign": "+",
+        "energy": 0.00212,
+        "pos": false,
+        "side": "none",
+        "token": " đ"
+       },
+       {
+        "rank": 8,
+        "token_id": 165660,
+        "sign": "-",
+        "energy": 0.00178,
+        "pos": false,
+        "side": "none",
+        "token": " njihov"
+       },
+       {
+        "rank": 9,
+        "token_id": 157657,
+        "sign": "+",
+        "energy": 0.00182,
+        "pos": false,
+        "side": "none",
+        "token": " высотой"
+       },
+       {
+        "rank": 10,
+        "token_id": 163515,
+        "sign": "+",
+        "energy": 0.00149,
+        "pos": false,
+        "side": "none",
+        "token": "/Hello"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0745",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0594,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 167035,
+        "sign": "-",
+        "energy": 0.00274,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 2,
+        "token_id": 154792,
+        "sign": "+",
+        "energy": 0.00269,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 3,
+        "token_id": 107878,
+        "sign": "-",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": " azok"
+       },
+       {
+        "rank": 4,
+        "token_id": 174529,
+        "sign": "+",
+        "energy": 0.00278,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 5,
+        "token_id": 198073,
+        "sign": "-",
+        "energy": 0.0023,
+        "pos": false,
+        "side": "none",
+        "token": " ITU"
+       },
+       {
+        "rank": 6,
+        "token_id": 59298,
+        "sign": "+",
+        "energy": 0.00206,
+        "pos": false,
+        "side": "none",
+        "token": "机的"
+       },
+       {
+        "rank": 7,
+        "token_id": 136686,
+        "sign": "-",
+        "energy": 0.00268,
+        "pos": false,
+        "side": "none",
+        "token": "_assets"
+       },
+       {
+        "rank": 8,
+        "token_id": 161300,
+        "sign": "-",
+        "energy": 0.00192,
+        "pos": false,
+        "side": "none",
+        "token": "Fourth"
+       },
+       {
+        "rank": 9,
+        "token_id": 51947,
+        "sign": "+",
+        "energy": 0.00262,
+        "pos": false,
+        "side": "none",
+        "token": " dedi"
+       },
+       {
+        "rank": 10,
+        "token_id": 138682,
+        "sign": "-",
+        "energy": 0.00215,
+        "pos": false,
+        "side": "none",
+        "token": " trener"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0035",
+      "j": 1,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0693,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 67750,
+        "sign": "-",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": " trapped"
+       },
+       {
+        "rank": 2,
+        "token_id": 181716,
+        "sign": "+",
+        "energy": 0.00405,
+        "pos": false,
+        "side": "none",
+        "token": "(IDC"
+       },
+       {
+        "rank": 3,
+        "token_id": 39747,
+        "sign": "+",
+        "energy": 0.00306,
+        "pos": false,
+        "side": "none",
+        "token": " Alpha"
+       },
+       {
+        "rank": 4,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00422,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 5,
+        "token_id": 139645,
+        "sign": "+",
+        "energy": 0.00314,
+        "pos": false,
+        "side": "none",
+        "token": " Jeho"
+       },
+       {
+        "rank": 6,
+        "token_id": 174529,
+        "sign": "-",
+        "energy": 0.00283,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 7,
+        "token_id": 188798,
+        "sign": "+",
+        "energy": 0.00332,
+        "pos": false,
+        "side": "none",
+        "token": "IPMENT"
+       },
+       {
+        "rank": 8,
+        "token_id": 153094,
+        "sign": "-",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": "roga"
+       },
+       {
+        "rank": 9,
+        "token_id": 3468,
+        "sign": "+",
+        "energy": 0.0032,
+        "pos": false,
+        "side": "none",
+        "token": "anel"
+       },
+       {
+        "rank": 10,
+        "token_id": 167816,
+        "sign": "-",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": " пошел"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0060",
+      "j": 0,
+      "k": 1,
+      "position_share": 0.00315,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.068,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00348,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 577,
+        "sign": "-",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": " V"
+       },
+       {
+        "rank": 3,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00271,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 4,
+        "token_id": 121996,
+        "sign": "+",
+        "energy": 0.00399,
+        "pos": false,
+        "side": "none",
+        "token": " acestuia"
+       },
+       {
+        "rank": 5,
+        "token_id": 33885,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": "楼"
+       },
+       {
+        "rank": 6,
+        "token_id": 142884,
+        "sign": "-",
+        "energy": 0.00315,
+        "pos": true,
+        "side": "both",
+        "token": " 첫번째"
+       },
+       {
+        "rank": 7,
+        "token_id": 166033,
+        "sign": "+",
+        "energy": 0.00269,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 8,
+        "token_id": 167035,
+        "sign": "-",
+        "energy": 0.00274,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 9,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 10,
+        "token_id": 150088,
+        "sign": "-",
+        "energy": 0.00272,
+        "pos": false,
+        "side": "none",
+        "token": "ISOString"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0197",
+      "j": 0,
+      "k": 2,
+      "position_share": 0.00191,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.0592,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00439,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00318,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 80338,
+        "sign": "+",
+        "energy": 0.00373,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 4,
+        "token_id": 65010,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": " Blut"
+       },
+       {
+        "rank": 5,
+        "token_id": 59962,
+        "sign": "-",
+        "energy": 0.0026,
+        "pos": false,
+        "side": "none",
+        "token": " cans"
+       },
+       {
+        "rank": 6,
+        "token_id": 155867,
+        "sign": "+",
+        "energy": 0.00283,
+        "pos": false,
+        "side": "none",
+        "token": "окуратура"
+       },
+       {
+        "rank": 7,
+        "token_id": 157422,
+        "sign": "-",
+        "energy": 0.00257,
+        "pos": false,
+        "side": "none",
+        "token": "būt"
+       },
+       {
+        "rank": 8,
+        "token_id": 194141,
+        "sign": "+",
+        "energy": 0.00258,
+        "pos": false,
+        "side": "none",
+        "token": "יוון"
+       },
+       {
+        "rank": 9,
+        "token_id": 173651,
+        "sign": "+",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": " keduanya"
+       },
+       {
+        "rank": 10,
+        "token_id": 47307,
+        "sign": "-",
+        "energy": 0.00212,
+        "pos": false,
+        "side": "none",
+        "token": " Tit"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0794",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.00402,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.0623,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00409,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 2,
+        "token_id": 7208,
+        "sign": "+",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": " Char"
+       },
+       {
+        "rank": 3,
+        "token_id": 71894,
+        "sign": "+",
+        "energy": 0.00246,
+        "pos": false,
+        "side": "none",
+        "token": " Cron"
+       },
+       {
+        "rank": 4,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 5,
+        "token_id": 198154,
+        "sign": "+",
+        "energy": 0.00402,
+        "pos": true,
+        "side": "k",
+        "token": " erstes"
+       },
+       {
+        "rank": 6,
+        "token_id": 131405,
+        "sign": "-",
+        "energy": 0.00237,
+        "pos": false,
+        "side": "none",
+        "token": "racuse"
+       },
+       {
+        "rank": 7,
+        "token_id": 123265,
+        "sign": "+",
+        "energy": 0.00254,
+        "pos": false,
+        "side": "none",
+        "token": " площадью"
+       },
+       {
+        "rank": 8,
+        "token_id": 173651,
+        "sign": "-",
+        "energy": 0.00258,
+        "pos": false,
+        "side": "none",
+        "token": " keduanya"
+       },
+       {
+        "rank": 9,
+        "token_id": 157422,
+        "sign": "+",
+        "energy": 0.00246,
+        "pos": false,
+        "side": "none",
+        "token": "būt"
+       },
+       {
+        "rank": 10,
+        "token_id": 71884,
+        "sign": "-",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": " 왜"
+       }
+      ]
+     },
+     {
+      "scene": "C2-1135",
+      "j": 0,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0636,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00393,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00393,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00381,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 4,
+        "token_id": 47307,
+        "sign": "-",
+        "energy": 0.00268,
+        "pos": false,
+        "side": "none",
+        "token": " Tit"
+       },
+       {
+        "rank": 5,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00294,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 6,
+        "token_id": 68275,
+        "sign": "-",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": "-host"
+       },
+       {
+        "rank": 7,
+        "token_id": 179124,
+        "sign": "-",
+        "energy": 0.00238,
+        "pos": false,
+        "side": "none",
+        "token": "avik"
+       },
+       {
+        "rank": 8,
+        "token_id": 53469,
+        "sign": "+",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": "isez"
+       },
+       {
+        "rank": 9,
+        "token_id": 111805,
+        "sign": "+",
+        "energy": 0.00227,
+        "pos": false,
+        "side": "none",
+        "token": " завершения"
+       },
+       {
+        "rank": 10,
+        "token_id": 114336,
+        "sign": "-",
+        "energy": 0.00297,
+        "pos": false,
+        "side": "none",
+        "token": " margen"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0399",
+      "j": 1,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0644,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 167035,
+        "sign": "+",
+        "energy": 0.00294,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 2,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.00428,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 3,
+        "token_id": 48981,
+        "sign": "+",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": "inių"
+       },
+       {
+        "rank": 4,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00361,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 5,
+        "token_id": 13144,
+        "sign": "+",
+        "energy": 0.0026,
+        "pos": false,
+        "side": "none",
+        "token": "ITH"
+       },
+       {
+        "rank": 6,
+        "token_id": 174529,
+        "sign": "-",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 7,
+        "token_id": 173092,
+        "sign": "+",
+        "energy": 0.00236,
+        "pos": false,
+        "side": "none",
+        "token": "_Air"
+       },
+       {
+        "rank": 8,
+        "token_id": 163677,
+        "sign": "-",
+        "energy": 0.00226,
+        "pos": false,
+        "side": "none",
+        "token": "Bog"
+       },
+       {
+        "rank": 9,
+        "token_id": 181716,
+        "sign": "+",
+        "energy": 0.00251,
+        "pos": false,
+        "side": "none",
+        "token": "(IDC"
+       },
+       {
+        "rank": 10,
+        "token_id": 193787,
+        "sign": "-",
+        "energy": 0.0024,
+        "pos": false,
+        "side": "none",
+        "token": " ricordo"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0629",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.0033,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.0603,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00392,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 2,
+        "token_id": 71894,
+        "sign": "+",
+        "energy": 0.00348,
+        "pos": false,
+        "side": "none",
+        "token": " Cron"
+       },
+       {
+        "rank": 3,
+        "token_id": 7208,
+        "sign": "+",
+        "energy": 0.00247,
+        "pos": false,
+        "side": "none",
+        "token": " Char"
+       },
+       {
+        "rank": 4,
+        "token_id": 173651,
+        "sign": "-",
+        "energy": 0.00269,
+        "pos": false,
+        "side": "none",
+        "token": " keduanya"
+       },
+       {
+        "rank": 5,
+        "token_id": 198154,
+        "sign": "+",
+        "energy": 0.0033,
+        "pos": true,
+        "side": "k",
+        "token": " erstes"
+       },
+       {
+        "rank": 6,
+        "token_id": 131405,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "racuse"
+       },
+       {
+        "rank": 7,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 8,
+        "token_id": 187301,
+        "sign": "-",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": " Outro"
+       },
+       {
+        "rank": 9,
+        "token_id": 157422,
+        "sign": "+",
+        "energy": 0.0022,
+        "pos": false,
+        "side": "none",
+        "token": "būt"
+       },
+       {
+        "rank": 10,
+        "token_id": 71884,
+        "sign": "-",
+        "energy": 0.00311,
+        "pos": false,
+        "side": "none",
+        "token": " 왜"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0164",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.00265,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0689,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00358,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 2,
+        "token_id": 167035,
+        "sign": "+",
+        "energy": 0.00447,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 3,
+        "token_id": 67198,
+        "sign": "+",
+        "energy": 0.00271,
+        "pos": false,
+        "side": "none",
+        "token": " HDR"
+       },
+       {
+        "rank": 4,
+        "token_id": 174529,
+        "sign": "-",
+        "energy": 0.00368,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 5,
+        "token_id": 172405,
+        "sign": "+",
+        "energy": 0.0031,
+        "pos": false,
+        "side": "none",
+        "token": " vler"
+       },
+       {
+        "rank": 6,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.0042,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 7,
+        "token_id": 33335,
+        "sign": "+",
+        "energy": 0.00265,
+        "pos": true,
+        "side": "both",
+        "token": "_first"
+       },
+       {
+        "rank": 8,
+        "token_id": 76594,
+        "sign": "-",
+        "energy": 0.00277,
+        "pos": false,
+        "side": "none",
+        "token": "@Suppress"
+       },
+       {
+        "rank": 9,
+        "token_id": 3468,
+        "sign": "+",
+        "energy": 0.00244,
+        "pos": false,
+        "side": "none",
+        "token": "anel"
+       },
+       {
+        "rank": 10,
+        "token_id": 193787,
+        "sign": "-",
+        "energy": 0.00286,
+        "pos": false,
+        "side": "none",
+        "token": " ricordo"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0879",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0602,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00451,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00318,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00372,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 4,
+        "token_id": 577,
+        "sign": "+",
+        "energy": 0.00251,
+        "pos": false,
+        "side": "none",
+        "token": " V"
+       },
+       {
+        "rank": 5,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00229,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 6,
+        "token_id": 100230,
+        "sign": "+",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": " blod"
+       },
+       {
+        "rank": 7,
+        "token_id": 38967,
+        "sign": "+",
+        "energy": 0.00261,
+        "pos": false,
+        "side": "none",
+        "token": "embali"
+       },
+       {
+        "rank": 8,
+        "token_id": 146260,
+        "sign": "-",
+        "energy": 0.00239,
+        "pos": false,
+        "side": "none",
+        "token": "为止"
+       },
+       {
+        "rank": 9,
+        "token_id": 59962,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " cans"
+       },
+       {
+        "rank": 10,
+        "token_id": 87711,
+        "sign": "-",
+        "energy": 0.0023,
+        "pos": false,
+        "side": "none",
+        "token": "ซื้อ"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0602",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0653,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00383,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.0038,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 119647,
+        "sign": "-",
+        "energy": 0.0038,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 4,
+        "token_id": 577,
+        "sign": "+",
+        "energy": 0.00287,
+        "pos": false,
+        "side": "none",
+        "token": " V"
+       },
+       {
+        "rank": 5,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00301,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 6,
+        "token_id": 77758,
+        "sign": "+",
+        "energy": 0.00316,
+        "pos": false,
+        "side": "none",
+        "token": "_REFERENCE"
+       },
+       {
+        "rank": 7,
+        "token_id": 121996,
+        "sign": "-",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": " acestuia"
+       },
+       {
+        "rank": 8,
+        "token_id": 100230,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " blod"
+       },
+       {
+        "rank": 9,
+        "token_id": 33885,
+        "sign": "-",
+        "energy": 0.00236,
+        "pos": false,
+        "side": "none",
+        "token": "楼"
+       },
+       {
+        "rank": 10,
+        "token_id": 97434,
+        "sign": "+",
+        "energy": 0.00279,
+        "pos": false,
+        "side": "none",
+        "token": "umiem"
+       }
+      ]
+     },
+     {
+      "scene": "C2-1059",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0646,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 67750,
+        "sign": "-",
+        "energy": 0.00268,
+        "pos": false,
+        "side": "none",
+        "token": " trapped"
+       },
+       {
+        "rank": 2,
+        "token_id": 48981,
+        "sign": "+",
+        "energy": 0.00376,
+        "pos": false,
+        "side": "none",
+        "token": "inių"
+       },
+       {
+        "rank": 3,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.00308,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 4,
+        "token_id": 181716,
+        "sign": "+",
+        "energy": 0.0032,
+        "pos": false,
+        "side": "none",
+        "token": "(IDC"
+       },
+       {
+        "rank": 5,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00303,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 6,
+        "token_id": 39747,
+        "sign": "+",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": " Alpha"
+       },
+       {
+        "rank": 7,
+        "token_id": 101848,
+        "sign": "+",
+        "energy": 0.003,
+        "pos": false,
+        "side": "none",
+        "token": "_emb"
+       },
+       {
+        "rank": 8,
+        "token_id": 123120,
+        "sign": "-",
+        "energy": 0.00265,
+        "pos": false,
+        "side": "none",
+        "token": "形的"
+       },
+       {
+        "rank": 9,
+        "token_id": 139645,
+        "sign": "+",
+        "energy": 0.00246,
+        "pos": false,
+        "side": "none",
+        "token": " Jeho"
+       },
+       {
+        "rank": 10,
+        "token_id": 188582,
+        "sign": "-",
+        "energy": 0.00234,
+        "pos": false,
+        "side": "none",
+        "token": " Judas"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0945",
+      "j": 0,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0547,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00445,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00307,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 4,
+        "token_id": 100230,
+        "sign": "-",
+        "energy": 0.00241,
+        "pos": false,
+        "side": "none",
+        "token": " blod"
+       },
+       {
+        "rank": 5,
+        "token_id": 165660,
+        "sign": "+",
+        "energy": 0.00271,
+        "pos": false,
+        "side": "none",
+        "token": " njihov"
+       },
+       {
+        "rank": 6,
+        "token_id": 38967,
+        "sign": "-",
+        "energy": 0.00251,
+        "pos": false,
+        "side": "none",
+        "token": "embali"
+       },
+       {
+        "rank": 7,
+        "token_id": 146260,
+        "sign": "+",
+        "energy": 0.00231,
+        "pos": false,
+        "side": "none",
+        "token": "为止"
+       },
+       {
+        "rank": 8,
+        "token_id": 59962,
+        "sign": "-",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": " cans"
+       },
+       {
+        "rank": 9,
+        "token_id": 80338,
+        "sign": "+",
+        "energy": 0.00233,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 10,
+        "token_id": 117455,
+        "sign": "-",
+        "energy": 0.00224,
+        "pos": false,
+        "side": "none",
+        "token": " Beziehungen"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0753",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.00187,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.049,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 198073,
+        "sign": "-",
+        "energy": 0.00222,
+        "pos": false,
+        "side": "none",
+        "token": " ITU"
+       },
+       {
+        "rank": 2,
+        "token_id": 177944,
+        "sign": "+",
+        "energy": 0.00213,
+        "pos": false,
+        "side": "none",
+        "token": " хэлб"
+       },
+       {
+        "rank": 3,
+        "token_id": 109837,
+        "sign": "-",
+        "energy": 0.00259,
+        "pos": false,
+        "side": "none",
+        "token": "แอ"
+       },
+       {
+        "rank": 4,
+        "token_id": 144164,
+        "sign": "+",
+        "energy": 0.00173,
+        "pos": false,
+        "side": "none",
+        "token": ">false"
+       },
+       {
+        "rank": 5,
+        "token_id": 193982,
+        "sign": "-",
+        "energy": 0.00217,
+        "pos": false,
+        "side": "none",
+        "token": "。总"
+       },
+       {
+        "rank": 6,
+        "token_id": 106492,
+        "sign": "+",
+        "energy": 0.002,
+        "pos": false,
+        "side": "none",
+        "token": " роби"
+       },
+       {
+        "rank": 7,
+        "token_id": 169165,
+        "sign": "-",
+        "energy": 0.00234,
+        "pos": false,
+        "side": "none",
+        "token": " никого"
+       },
+       {
+        "rank": 8,
+        "token_id": 167166,
+        "sign": "-",
+        "energy": 0.00178,
+        "pos": false,
+        "side": "none",
+        "token": "NSNotification"
+       },
+       {
+        "rank": 9,
+        "token_id": 60862,
+        "sign": "+",
+        "energy": 0.00178,
+        "pos": false,
+        "side": "none",
+        "token": "годи"
+       },
+       {
+        "rank": 10,
+        "token_id": 32265,
+        "sign": "-",
+        "energy": 0.00184,
+        "pos": false,
+        "side": "none",
+        "token": " også"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0355",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0605,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 149181,
+        "sign": "-",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "Improved"
+       },
+       {
+        "rank": 2,
+        "token_id": 71894,
+        "sign": "+",
+        "energy": 0.00376,
+        "pos": false,
+        "side": "none",
+        "token": " Cron"
+       },
+       {
+        "rank": 3,
+        "token_id": 89258,
+        "sign": "+",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": " ABCD"
+       },
+       {
+        "rank": 4,
+        "token_id": 24728,
+        "sign": "-",
+        "energy": 0.00395,
+        "pos": false,
+        "side": "none",
+        "token": " rg"
+       },
+       {
+        "rank": 5,
+        "token_id": 149619,
+        "sign": "+",
+        "energy": 0.00258,
+        "pos": false,
+        "side": "none",
+        "token": "目指"
+       },
+       {
+        "rank": 6,
+        "token_id": 85003,
+        "sign": "-",
+        "energy": 0.00277,
+        "pos": false,
+        "side": "none",
+        "token": " Ελλά"
+       },
+       {
+        "rank": 7,
+        "token_id": 21658,
+        "sign": "+",
+        "energy": 0.00217,
+        "pos": false,
+        "side": "none",
+        "token": "иболее"
+       },
+       {
+        "rank": 8,
+        "token_id": 63956,
+        "sign": "-",
+        "energy": 0.00296,
+        "pos": false,
+        "side": "none",
+        "token": " противоре"
+       },
+       {
+        "rank": 9,
+        "token_id": 9373,
+        "sign": "+",
+        "energy": 0.0022,
+        "pos": false,
+        "side": "none",
+        "token": " Dev"
+       },
+       {
+        "rank": 10,
+        "token_id": 150295,
+        "sign": "-",
+        "energy": 0.00241,
+        "pos": false,
+        "side": "none",
+        "token": " UIN"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0796",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0654,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 2,
+        "token_id": 181716,
+        "sign": "+",
+        "energy": 0.00405,
+        "pos": false,
+        "side": "none",
+        "token": "(IDC"
+       },
+       {
+        "rank": 3,
+        "token_id": 39747,
+        "sign": "+",
+        "energy": 0.00326,
+        "pos": false,
+        "side": "none",
+        "token": " Alpha"
+       },
+       {
+        "rank": 4,
+        "token_id": 174529,
+        "sign": "-",
+        "energy": 0.00353,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 5,
+        "token_id": 179301,
+        "sign": "+",
+        "energy": 0.00277,
+        "pos": false,
+        "side": "none",
+        "token": "AAAAAAAAAAAAAAAA"
+       },
+       {
+        "rank": 6,
+        "token_id": 175394,
+        "sign": "-",
+        "energy": 0.00277,
+        "pos": false,
+        "side": "none",
+        "token": "(fin"
+       },
+       {
+        "rank": 7,
+        "token_id": 120843,
+        "sign": "+",
+        "energy": 0.00261,
+        "pos": false,
+        "side": "none",
+        "token": "例句"
+       },
+       {
+        "rank": 8,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.00235,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 9,
+        "token_id": 3468,
+        "sign": "+",
+        "energy": 0.00305,
+        "pos": false,
+        "side": "none",
+        "token": "anel"
+       },
+       {
+        "rank": 10,
+        "token_id": 153094,
+        "sign": "-",
+        "energy": 0.00272,
+        "pos": false,
+        "side": "none",
+        "token": "roga"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0303",
+      "j": 0,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0573,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "+",
+        "energy": 0.00384,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 197679,
+        "sign": "-",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": "』の"
+       },
+       {
+        "rank": 3,
+        "token_id": 197311,
+        "sign": "+",
+        "energy": 0.00267,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       },
+       {
+        "rank": 4,
+        "token_id": 198289,
+        "sign": "-",
+        "energy": 0.00315,
+        "pos": false,
+        "side": "none",
+        "token": "жар"
+       },
+       {
+        "rank": 5,
+        "token_id": 175672,
+        "sign": "-",
+        "energy": 0.00215,
+        "pos": false,
+        "side": "none",
+        "token": " Vira"
+       },
+       {
+        "rank": 6,
+        "token_id": 148445,
+        "sign": "+",
+        "energy": 0.00248,
+        "pos": false,
+        "side": "none",
+        "token": "าคารพาณิชย์"
+       },
+       {
+        "rank": 7,
+        "token_id": 107556,
+        "sign": "-",
+        "energy": 0.00249,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 8,
+        "token_id": 119647,
+        "sign": "+",
+        "energy": 0.00264,
+        "pos": false,
+        "side": "none",
+        "token": "idenav"
+       },
+       {
+        "rank": 9,
+        "token_id": 123765,
+        "sign": "+",
+        "energy": 0.00235,
+        "pos": false,
+        "side": "none",
+        "token": ".When"
+       },
+       {
+        "rank": 10,
+        "token_id": 180189,
+        "sign": "-",
+        "energy": 0.00223,
+        "pos": false,
+        "side": "none",
+        "token": " lobster"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0388",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0545,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 167035,
+        "sign": "-",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 2,
+        "token_id": 154792,
+        "sign": "+",
+        "energy": 0.0029,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 3,
+        "token_id": 155792,
+        "sign": "-",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": "_NV"
+       },
+       {
+        "rank": 4,
+        "token_id": 181809,
+        "sign": "+",
+        "energy": 0.00192,
+        "pos": false,
+        "side": "none",
+        "token": "awaran"
+       },
+       {
+        "rank": 5,
+        "token_id": 193408,
+        "sign": "-",
+        "energy": 0.0025,
+        "pos": false,
+        "side": "none",
+        "token": " lưỡng"
+       },
+       {
+        "rank": 6,
+        "token_id": 5430,
+        "sign": "+",
+        "energy": 0.0022,
+        "pos": false,
+        "side": "none",
+        "token": " done"
+       },
+       {
+        "rank": 7,
+        "token_id": 146816,
+        "sign": "-",
+        "energy": 0.00215,
+        "pos": false,
+        "side": "none",
+        "token": ".Ag"
+       },
+       {
+        "rank": 8,
+        "token_id": 81191,
+        "sign": "+",
+        "energy": 0.00201,
+        "pos": false,
+        "side": "none",
+        "token": ".Б"
+       },
+       {
+        "rank": 9,
+        "token_id": 52516,
+        "sign": "-",
+        "energy": 0.00235,
+        "pos": false,
+        "side": "none",
+        "token": ".End"
+       },
+       {
+        "rank": 10,
+        "token_id": 146391,
+        "sign": "-",
+        "energy": 0.00187,
+        "pos": false,
+        "side": "none",
+        "token": "ceaux"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0775",
+      "j": 2,
+      "k": 1,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0651,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 118189,
+        "sign": "-",
+        "energy": 0.00307,
+        "pos": false,
+        "side": "none",
+        "token": "’Union"
+       },
+       {
+        "rank": 2,
+        "token_id": 5430,
+        "sign": "+",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": " done"
+       },
+       {
+        "rank": 3,
+        "token_id": 157385,
+        "sign": "-",
+        "energy": 0.00297,
+        "pos": false,
+        "side": "none",
+        "token": "[G"
+       },
+       {
+        "rank": 4,
+        "token_id": 186057,
+        "sign": "+",
+        "energy": 0.00308,
+        "pos": false,
+        "side": "none",
+        "token": ":Object"
+       },
+       {
+        "rank": 5,
+        "token_id": 141388,
+        "sign": "-",
+        "energy": 0.00344,
+        "pos": false,
+        "side": "none",
+        "token": " народу"
+       },
+       {
+        "rank": 6,
+        "token_id": 120946,
+        "sign": "+",
+        "energy": 0.00258,
+        "pos": false,
+        "side": "none",
+        "token": " béo"
+       },
+       {
+        "rank": 7,
+        "token_id": 69747,
+        "sign": "-",
+        "energy": 0.00323,
+        "pos": false,
+        "side": "none",
+        "token": "ள"
+       },
+       {
+        "rank": 8,
+        "token_id": 115877,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "chitz"
+       },
+       {
+        "rank": 9,
+        "token_id": 181809,
+        "sign": "+",
+        "energy": 0.00319,
+        "pos": false,
+        "side": "none",
+        "token": "awaran"
+       },
+       {
+        "rank": 10,
+        "token_id": 117657,
+        "sign": "+",
+        "energy": 0.00241,
+        "pos": false,
+        "side": "none",
+        "token": "主流"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0733",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0591,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 49103,
+        "sign": "-",
+        "energy": 0.00468,
+        "pos": false,
+        "side": "none",
+        "token": " ebenfalls"
+       },
+       {
+        "rank": 2,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.0032,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 3,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00347,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 4,
+        "token_id": 65010,
+        "sign": "+",
+        "energy": 0.0028,
+        "pos": false,
+        "side": "none",
+        "token": " Blut"
+       },
+       {
+        "rank": 5,
+        "token_id": 155867,
+        "sign": "-",
+        "energy": 0.00249,
+        "pos": false,
+        "side": "none",
+        "token": "окуратура"
+       },
+       {
+        "rank": 6,
+        "token_id": 59962,
+        "sign": "+",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": " cans"
+       },
+       {
+        "rank": 7,
+        "token_id": 38967,
+        "sign": "+",
+        "energy": 0.00215,
+        "pos": false,
+        "side": "none",
+        "token": "embali"
+       },
+       {
+        "rank": 8,
+        "token_id": 146260,
+        "sign": "-",
+        "energy": 0.00254,
+        "pos": false,
+        "side": "none",
+        "token": "为止"
+       },
+       {
+        "rank": 9,
+        "token_id": 16047,
+        "sign": "+",
+        "energy": 0.00202,
+        "pos": false,
+        "side": "none",
+        "token": " mentioned"
+       },
+       {
+        "rank": 10,
+        "token_id": 197311,
+        "sign": "-",
+        "energy": 0.00263,
+        "pos": false,
+        "side": "none",
+        "token": " ramai"
+       }
+      ]
+     }
+    ],
+    "three_random_items": [
+     {
+      "scene": "C2-0629",
+      "j": 2,
+      "k": 0,
+      "position_share": 0.0033,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": true,
+      "captured": 0.0603,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00392,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 2,
+        "token_id": 71894,
+        "sign": "+",
+        "energy": 0.00348,
+        "pos": false,
+        "side": "none",
+        "token": " Cron"
+       },
+       {
+        "rank": 3,
+        "token_id": 7208,
+        "sign": "+",
+        "energy": 0.00247,
+        "pos": false,
+        "side": "none",
+        "token": " Char"
+       },
+       {
+        "rank": 4,
+        "token_id": 173651,
+        "sign": "-",
+        "energy": 0.00269,
+        "pos": false,
+        "side": "none",
+        "token": " keduanya"
+       },
+       {
+        "rank": 5,
+        "token_id": 198154,
+        "sign": "+",
+        "energy": 0.0033,
+        "pos": true,
+        "side": "k",
+        "token": " erstes"
+       },
+       {
+        "rank": 6,
+        "token_id": 131405,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "racuse"
+       },
+       {
+        "rank": 7,
+        "token_id": 107556,
+        "sign": "+",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": "にとって"
+       },
+       {
+        "rank": 8,
+        "token_id": 187301,
+        "sign": "-",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": " Outro"
+       },
+       {
+        "rank": 9,
+        "token_id": 157422,
+        "sign": "+",
+        "energy": 0.0022,
+        "pos": false,
+        "side": "none",
+        "token": "būt"
+       },
+       {
+        "rank": 10,
+        "token_id": 71884,
+        "sign": "-",
+        "energy": 0.00311,
+        "pos": false,
+        "side": "none",
+        "token": " 왜"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0625",
+      "j": 1,
+      "k": 0,
+      "position_share": 0.00259,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0684,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00312,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 2,
+        "token_id": 167035,
+        "sign": "+",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": "’Unione"
+       },
+       {
+        "rank": 3,
+        "token_id": 71781,
+        "sign": "-",
+        "energy": 0.00296,
+        "pos": false,
+        "side": "none",
+        "token": "incinnati"
+       },
+       {
+        "rank": 4,
+        "token_id": 172405,
+        "sign": "+",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": " vler"
+       },
+       {
+        "rank": 5,
+        "token_id": 80338,
+        "sign": "-",
+        "energy": 0.00395,
+        "pos": false,
+        "side": "none",
+        "token": " ricev"
+       },
+       {
+        "rank": 6,
+        "token_id": 143445,
+        "sign": "+",
+        "energy": 0.00292,
+        "pos": false,
+        "side": "none",
+        "token": " розта"
+       },
+       {
+        "rank": 7,
+        "token_id": 154792,
+        "sign": "-",
+        "energy": 0.00307,
+        "pos": false,
+        "side": "none",
+        "token": "�蟹"
+       },
+       {
+        "rank": 8,
+        "token_id": 150088,
+        "sign": "+",
+        "energy": 0.00296,
+        "pos": false,
+        "side": "none",
+        "token": "ISOString"
+       },
+       {
+        "rank": 9,
+        "token_id": 166033,
+        "sign": "-",
+        "energy": 0.00372,
+        "pos": false,
+        "side": "none",
+        "token": "izzera"
+       },
+       {
+        "rank": 10,
+        "token_id": 152796,
+        "sign": "+",
+        "energy": 0.00288,
+        "pos": false,
+        "side": "none",
+        "token": " Hbf"
+       }
+      ]
+     },
+     {
+      "scene": "C2-0035",
+      "j": 1,
+      "k": 2,
+      "position_share": 0.0,
+      "ambiguous_share": 0.0,
+      "sign_correct_ordinal": false,
+      "captured": 0.0693,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 67750,
+        "sign": "-",
+        "energy": 0.00291,
+        "pos": false,
+        "side": "none",
+        "token": " trapped"
+       },
+       {
+        "rank": 2,
+        "token_id": 181716,
+        "sign": "+",
+        "energy": 0.00405,
+        "pos": false,
+        "side": "none",
+        "token": "(IDC"
+       },
+       {
+        "rank": 3,
+        "token_id": 39747,
+        "sign": "+",
+        "energy": 0.00306,
+        "pos": false,
+        "side": "none",
+        "token": " Alpha"
+       },
+       {
+        "rank": 4,
+        "token_id": 180465,
+        "sign": "-",
+        "energy": 0.00422,
+        "pos": false,
+        "side": "none",
+        "token": "Пользова"
+       },
+       {
+        "rank": 5,
+        "token_id": 139645,
+        "sign": "+",
+        "energy": 0.00314,
+        "pos": false,
+        "side": "none",
+        "token": " Jeho"
+       },
+       {
+        "rank": 6,
+        "token_id": 174529,
+        "sign": "-",
+        "energy": 0.00283,
+        "pos": false,
+        "side": "none",
+        "token": " turnaround"
+       },
+       {
+        "rank": 7,
+        "token_id": 188798,
+        "sign": "+",
+        "energy": 0.00332,
+        "pos": false,
+        "side": "none",
+        "token": "IPMENT"
+       },
+       {
+        "rank": 8,
+        "token_id": 153094,
+        "sign": "-",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": "roga"
+       },
+       {
+        "rank": 9,
+        "token_id": 3468,
+        "sign": "+",
+        "energy": 0.0032,
+        "pos": false,
+        "side": "none",
+        "token": "anel"
+       },
+       {
+        "rank": 10,
+        "token_id": 167816,
+        "sign": "-",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": " пошел"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "qwen3.5-9b": {
+   "layer": 12,
+   "d": 4096,
+   "base_rate": {
+    "dictionary_tokens": 242132,
+    "ordinal_tokens": 103,
+    "cardinal_tokens": 229,
+    "generic_tokens": 201,
+    "position_tokens": 513,
+    "base_rate_any_position_class": 0.002119
+   },
+   "norm_median_write": 4.099800022571753,
+   "alf_rank": 4,
+   "seconds": 14,
+   "overlap": {
+    "alf_basis_directions_captured": [
+     0.0671,
+     0.0786,
+     0.0936,
+     0.1646
+    ],
+    "alf_mean_captured": 0.101,
+    "writes_captured": {
+     "0->1": 0.0783,
+     "0->2": 0.0823,
+     "1->0": 0.0783,
+     "1->2": 0.078,
+     "2->0": 0.0823,
+     "2->1": 0.078
+    },
+    "random_mean_captured": 0.0844
+   },
+   "a": {
+    "per_pair": {
+     "0->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 57958,
+        "sign": "-",
+        "energy": 0.00409,
+        "pos": false,
+        "side": "none",
+        "token": " methane",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 118241,
+        "sign": "+",
+        "energy": 0.00338,
+        "pos": false,
+        "side": "none",
+        "token": "了些",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 196518,
+        "sign": "-",
+        "energy": 0.00469,
+        "pos": false,
+        "side": "none",
+        "token": "지와",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 109514,
+        "sign": "+",
+        "energy": 0.00328,
+        "pos": false,
+        "side": "none",
+        "token": "这两个",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 66082,
+        "sign": "+",
+        "energy": 0.00285,
+        "pos": false,
+        "side": "none",
+        "token": " mij",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 154494,
+        "sign": "-",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": "ztat",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 235542,
+        "sign": "+",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": " visar",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 219389,
+        "sign": "-",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": " noastre",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 175997,
+        "sign": "+",
+        "energy": 0.00367,
+        "pos": false,
+        "side": "none",
+        "token": " описа",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 82065,
+        "sign": "+",
+        "energy": 0.00316,
+        "pos": false,
+        "side": "none",
+        "token": "رو",
+        "class": {}
+       }
+      ]
+     },
+     "0->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 94849,
+        "sign": "-",
+        "energy": 0.00437,
+        "pos": false,
+        "side": "none",
+        "token": ".species",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 216133,
+        "sign": "+",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": " وعدد",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 46525,
+        "sign": "-",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": " residue",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 67312,
+        "sign": "+",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": " impart",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 196518,
+        "sign": "-",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "지와",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 70525,
+        "sign": "+",
+        "energy": 0.00451,
+        "pos": false,
+        "side": "none",
+        "token": "Cancelable",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 99665,
+        "sign": "+",
+        "energy": 0.00295,
+        "pos": false,
+        "side": "none",
+        "token": "这两",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 198386,
+        "sign": "-",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": " Perlu",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 109856,
+        "sign": "+",
+        "energy": 0.00373,
+        "pos": false,
+        "side": "none",
+        "token": "疲劳",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 88727,
+        "sign": "+",
+        "energy": 0.00325,
+        "pos": false,
+        "side": "none",
+        "token": " miejsc",
+        "class": {}
+       }
+      ]
+     },
+     "1->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 57958,
+        "sign": "+",
+        "energy": 0.00409,
+        "pos": false,
+        "side": "none",
+        "token": " methane",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 118241,
+        "sign": "-",
+        "energy": 0.00338,
+        "pos": false,
+        "side": "none",
+        "token": "了些",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 196518,
+        "sign": "+",
+        "energy": 0.00469,
+        "pos": false,
+        "side": "none",
+        "token": "지와",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 109514,
+        "sign": "-",
+        "energy": 0.00328,
+        "pos": false,
+        "side": "none",
+        "token": "这两个",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 66082,
+        "sign": "-",
+        "energy": 0.00285,
+        "pos": false,
+        "side": "none",
+        "token": " mij",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 154494,
+        "sign": "+",
+        "energy": 0.00289,
+        "pos": false,
+        "side": "none",
+        "token": "ztat",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 235542,
+        "sign": "-",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": " visar",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 219389,
+        "sign": "+",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": " noastre",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 175997,
+        "sign": "-",
+        "energy": 0.00367,
+        "pos": false,
+        "side": "none",
+        "token": " описа",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 82065,
+        "sign": "-",
+        "energy": 0.00316,
+        "pos": false,
+        "side": "none",
+        "token": "رو",
+        "class": {}
+       }
+      ]
+     },
+     "1->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 92935,
+        "sign": "-",
+        "energy": 0.00441,
+        "pos": false,
+        "side": "none",
+        "token": "deer",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 109856,
+        "sign": "+",
+        "energy": 0.00477,
+        "pos": false,
+        "side": "none",
+        "token": "疲劳",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 143643,
+        "sign": "-",
+        "energy": 0.00342,
+        "pos": false,
+        "side": "none",
+        "token": "长腿",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 110938,
+        "sign": "+",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "召唤",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 7969,
+        "sign": "-",
+        "energy": 0.00337,
+        "pos": false,
+        "side": "none",
+        "token": "kit",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 191164,
+        "sign": "+",
+        "energy": 0.00294,
+        "pos": false,
+        "side": "none",
+        "token": " infine",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 192171,
+        "sign": "-",
+        "energy": 0.00315,
+        "pos": false,
+        "side": "none",
+        "token": " piac",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 6098,
+        "sign": "+",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "ental",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 103837,
+        "sign": "-",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": "其次",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 4136,
+        "sign": "+",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "ORD",
+        "class": {}
+       }
+      ]
+     },
+     "2->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 94849,
+        "sign": "+",
+        "energy": 0.00437,
+        "pos": false,
+        "side": "none",
+        "token": ".species",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 216133,
+        "sign": "-",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": " وعدد",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 46525,
+        "sign": "+",
+        "energy": 0.00317,
+        "pos": false,
+        "side": "none",
+        "token": " residue",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 67312,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": " impart",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 196518,
+        "sign": "+",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "지와",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 70525,
+        "sign": "-",
+        "energy": 0.00451,
+        "pos": false,
+        "side": "none",
+        "token": "Cancelable",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 99665,
+        "sign": "-",
+        "energy": 0.00295,
+        "pos": false,
+        "side": "none",
+        "token": "这两",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 198386,
+        "sign": "+",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": " Perlu",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 109856,
+        "sign": "-",
+        "energy": 0.00373,
+        "pos": false,
+        "side": "none",
+        "token": "疲劳",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 88727,
+        "sign": "-",
+        "energy": 0.00325,
+        "pos": false,
+        "side": "none",
+        "token": " miejsc",
+        "class": {}
+       }
+      ]
+     },
+     "2->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 92935,
+        "sign": "+",
+        "energy": 0.00441,
+        "pos": false,
+        "side": "none",
+        "token": "deer",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 109856,
+        "sign": "-",
+        "energy": 0.00477,
+        "pos": false,
+        "side": "none",
+        "token": "疲劳",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 143643,
+        "sign": "+",
+        "energy": 0.00342,
+        "pos": false,
+        "side": "none",
+        "token": "长腿",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 110938,
+        "sign": "-",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "召唤",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 7969,
+        "sign": "+",
+        "energy": 0.00337,
+        "pos": false,
+        "side": "none",
+        "token": "kit",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 191164,
+        "sign": "-",
+        "energy": 0.00294,
+        "pos": false,
+        "side": "none",
+        "token": " infine",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 192171,
+        "sign": "+",
+        "energy": 0.00315,
+        "pos": false,
+        "side": "none",
+        "token": " piac",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 6098,
+        "sign": "-",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "ental",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 103837,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": "其次",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 4136,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "ORD",
+        "class": {}
+       }
+      ]
+     }
+    },
+    "position_share_mean": 0.0,
+    "random_position_share_mean": 0.00036,
+    "random_position_share_p95": 0.00331,
+    "sign_correct_pairs": 0,
+    "sign_correct_rate": 0.0,
+    "shuffle_sign_correct_rate": 0.0,
+    "random_sign_correct_rate_mean": 0.007,
+    "random_sign_correct_rate_p95": 0.0,
+    "shuffle_position_share_mean": 0.0
+   },
+   "rule": {
+    "share_above_random_p95": false,
+    "sign_correct_on_most_pairs_above_shuffle": false,
+    "both": false
+   }
+  },
+  "qwen3.6-27b": {
+   "layer": 32,
+   "d": 5120,
+   "base_rate": {
+    "dictionary_tokens": 242132,
+    "ordinal_tokens": 103,
+    "cardinal_tokens": 229,
+    "generic_tokens": 201,
+    "position_tokens": 513,
+    "base_rate_any_position_class": 0.002119
+   },
+   "norm_median_write": 13.568472890565426,
+   "alf_rank": 4,
+   "seconds": 20,
+   "overlap": {
+    "alf_basis_directions_captured": [
+     0.0533,
+     0.0711,
+     0.0665,
+     0.0815
+    ],
+    "alf_mean_captured": 0.0681,
+    "writes_captured": {
+     "0->1": 0.0799,
+     "0->2": 0.0676,
+     "1->0": 0.0799,
+     "1->2": 0.0603,
+     "2->0": 0.0676,
+     "2->1": 0.0603
+    },
+    "random_mean_captured": 0.067
+   },
+   "a": {
+    "per_pair": {
+     "0->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 157572,
+        "sign": "-",
+        "energy": 0.00353,
+        "pos": false,
+        "side": "none",
+        "token": " lesqu",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 179183,
+        "sign": "+",
+        "energy": 0.00484,
+        "pos": false,
+        "side": "none",
+        "token": "出て",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 171232,
+        "sign": "-",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " прове",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 232660,
+        "sign": "+",
+        "energy": 0.00477,
+        "pos": false,
+        "side": "none",
+        "token": "ง่ายดาย",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 155350,
+        "sign": "+",
+        "energy": 0.00393,
+        "pos": false,
+        "side": "none",
+        "token": "ementara",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 222067,
+        "sign": "-",
+        "energy": 0.00332,
+        "pos": false,
+        "side": "none",
+        "token": "以前の",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 133254,
+        "sign": "+",
+        "energy": 0.00385,
+        "pos": false,
+        "side": "none",
+        "token": "大大小小的",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 107044,
+        "sign": "-",
+        "energy": 0.00348,
+        "pos": false,
+        "side": "none",
+        "token": "升初",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 88969,
+        "sign": "-",
+        "energy": 0.00287,
+        "pos": false,
+        "side": "none",
+        "token": "/var",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 193960,
+        "sign": "+",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "ให้เลือก",
+        "class": {}
+       }
+      ]
+     },
+     "0->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 213626,
+        "sign": "-",
+        "energy": 0.00362,
+        "pos": false,
+        "side": "none",
+        "token": " kebak",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 133254,
+        "sign": "+",
+        "energy": 0.00422,
+        "pos": false,
+        "side": "none",
+        "token": "大大小小的",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 113345,
+        "sign": "-",
+        "energy": 0.00343,
+        "pos": false,
+        "side": "none",
+        "token": "本身的",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 193960,
+        "sign": "+",
+        "energy": 0.00376,
+        "pos": false,
+        "side": "none",
+        "token": "ให้เลือก",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 109986,
+        "sign": "+",
+        "energy": 0.00286,
+        "pos": false,
+        "side": "none",
+        "token": "被称为",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 6767,
+        "sign": "-",
+        "energy": 0.0026,
+        "pos": false,
+        "side": "none",
+        "token": "mut",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 226724,
+        "sign": "-",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "ującego",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 176158,
+        "sign": "+",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "รายละเอียด",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 40583,
+        "sign": "+",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "<boolean",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 171232,
+        "sign": "-",
+        "energy": 0.00298,
+        "pos": false,
+        "side": "none",
+        "token": " прове",
+        "class": {}
+       }
+      ]
+     },
+     "1->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 157572,
+        "sign": "+",
+        "energy": 0.00353,
+        "pos": false,
+        "side": "none",
+        "token": " lesqu",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 179183,
+        "sign": "-",
+        "energy": 0.00484,
+        "pos": false,
+        "side": "none",
+        "token": "出て",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 171232,
+        "sign": "+",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " прове",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 232660,
+        "sign": "-",
+        "energy": 0.00477,
+        "pos": false,
+        "side": "none",
+        "token": "ง่ายดาย",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 155350,
+        "sign": "-",
+        "energy": 0.00393,
+        "pos": false,
+        "side": "none",
+        "token": "ementara",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 222067,
+        "sign": "+",
+        "energy": 0.00332,
+        "pos": false,
+        "side": "none",
+        "token": "以前の",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 133254,
+        "sign": "-",
+        "energy": 0.00385,
+        "pos": false,
+        "side": "none",
+        "token": "大大小小的",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 107044,
+        "sign": "+",
+        "energy": 0.00348,
+        "pos": false,
+        "side": "none",
+        "token": "升初",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 88969,
+        "sign": "+",
+        "energy": 0.00287,
+        "pos": false,
+        "side": "none",
+        "token": "/var",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 193960,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "ให้เลือก",
+        "class": {}
+       }
+      ]
+     },
+     "1->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 115959,
+        "sign": "+",
+        "energy": 0.00496,
+        "pos": false,
+        "side": "none",
+        "token": "这三个",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 62851,
+        "sign": "-",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": " Bucks",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 113345,
+        "sign": "-",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "本身的",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 69339,
+        "sign": "+",
+        "energy": 0.00298,
+        "pos": false,
+        "side": "none",
+        "token": " funkc",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 178427,
+        "sign": "-",
+        "energy": 0.00286,
+        "pos": false,
+        "side": "none",
+        "token": "과의",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 178681,
+        "sign": "+",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": " usług",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 145643,
+        "sign": "+",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": "质量技术监督",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 243582,
+        "sign": "-",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": " مضيف",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 137299,
+        "sign": "+",
+        "energy": 0.00201,
+        "pos": false,
+        "side": "none",
+        "token": "在许多",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 135673,
+        "sign": "-",
+        "energy": 0.00216,
+        "pos": false,
+        "side": "none",
+        "token": "经济和",
+        "class": {}
+       }
+      ]
+     },
+     "2->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 213626,
+        "sign": "+",
+        "energy": 0.00362,
+        "pos": false,
+        "side": "none",
+        "token": " kebak",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 133254,
+        "sign": "-",
+        "energy": 0.00422,
+        "pos": false,
+        "side": "none",
+        "token": "大大小小的",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 113345,
+        "sign": "+",
+        "energy": 0.00343,
+        "pos": false,
+        "side": "none",
+        "token": "本身的",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 193960,
+        "sign": "-",
+        "energy": 0.00376,
+        "pos": false,
+        "side": "none",
+        "token": "ให้เลือก",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 109986,
+        "sign": "-",
+        "energy": 0.00286,
+        "pos": false,
+        "side": "none",
+        "token": "被称为",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 6767,
+        "sign": "+",
+        "energy": 0.0026,
+        "pos": false,
+        "side": "none",
+        "token": "mut",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 226724,
+        "sign": "+",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "ującego",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 176158,
+        "sign": "-",
+        "energy": 0.00293,
+        "pos": false,
+        "side": "none",
+        "token": "รายละเอียด",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 40583,
+        "sign": "-",
+        "energy": 0.0027,
+        "pos": false,
+        "side": "none",
+        "token": "<boolean",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 171232,
+        "sign": "+",
+        "energy": 0.00298,
+        "pos": false,
+        "side": "none",
+        "token": " прове",
+        "class": {}
+       }
+      ]
+     },
+     "2->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 115959,
+        "sign": "-",
+        "energy": 0.00496,
+        "pos": false,
+        "side": "none",
+        "token": "这三个",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 62851,
+        "sign": "+",
+        "energy": 0.00334,
+        "pos": false,
+        "side": "none",
+        "token": " Bucks",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 113345,
+        "sign": "+",
+        "energy": 0.00313,
+        "pos": false,
+        "side": "none",
+        "token": "本身的",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 69339,
+        "sign": "-",
+        "energy": 0.00298,
+        "pos": false,
+        "side": "none",
+        "token": " funkc",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 178427,
+        "sign": "+",
+        "energy": 0.00286,
+        "pos": false,
+        "side": "none",
+        "token": "과의",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 178681,
+        "sign": "-",
+        "energy": 0.00282,
+        "pos": false,
+        "side": "none",
+        "token": " usług",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 145643,
+        "sign": "-",
+        "energy": 0.00273,
+        "pos": false,
+        "side": "none",
+        "token": "质量技术监督",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 243582,
+        "sign": "+",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": " مضيف",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 137299,
+        "sign": "-",
+        "energy": 0.00201,
+        "pos": false,
+        "side": "none",
+        "token": "在许多",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 135673,
+        "sign": "+",
+        "energy": 0.00216,
+        "pos": false,
+        "side": "none",
+        "token": "经济和",
+        "class": {}
+       }
+      ]
+     }
+    },
+    "position_share_mean": 0.0,
+    "random_position_share_mean": 9e-05,
+    "random_position_share_p95": 0.0,
+    "sign_correct_pairs": 0,
+    "sign_correct_rate": 0.0,
+    "shuffle_sign_correct_rate": 0.0,
+    "random_sign_correct_rate_mean": 0.01,
+    "random_sign_correct_rate_p95": 0.0,
+    "shuffle_position_share_mean": 0.0
+   },
+   "rule": {
+    "share_above_random_p95": false,
+    "sign_correct_on_most_pairs_above_shuffle": false,
+    "both": false
+   }
+  },
+  "nemotron-3.5-lightning": {
+   "layer": 14,
+   "d": 2688,
+   "base_rate": {
+    "dictionary_tokens": 124782,
+    "ordinal_tokens": 98,
+    "cardinal_tokens": 190,
+    "generic_tokens": 159,
+    "position_tokens": 433,
+    "base_rate_any_position_class": 0.00347
+   },
+   "norm_median_write": 3.343203324759755,
+   "alf_rank": 4,
+   "seconds": 4,
+   "overlap": {
+    "alf_basis_directions_captured": [
+     0.0587,
+     0.0969,
+     0.1474,
+     0.2202
+    ],
+    "alf_mean_captured": 0.1308,
+    "writes_captured": {
+     "0->1": 0.0844,
+     "0->2": 0.0728,
+     "1->0": 0.0844,
+     "1->2": 0.1117,
+     "2->0": 0.0728,
+     "2->1": 0.1117
+    },
+    "random_mean_captured": 0.087
+   },
+   "a": {
+    "per_pair": {
+     "0->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 88586,
+        "sign": "+",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": ".accept",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 19196,
+        "sign": "-",
+        "energy": 0.00406,
+        "pos": false,
+        "side": "none",
+        "token": "�n",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 64173,
+        "sign": "+",
+        "energy": 0.00342,
+        "pos": false,
+        "side": "none",
+        "token": " المز",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 51802,
+        "sign": "-",
+        "energy": 0.00445,
+        "pos": false,
+        "side": "none",
+        "token": "Trim",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 122474,
+        "sign": "+",
+        "energy": 0.00487,
+        "pos": false,
+        "side": "none",
+        "token": " الإقليمية",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 6335,
+        "sign": "-",
+        "energy": 0.00471,
+        "pos": false,
+        "side": "none",
+        "token": " embod",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 56553,
+        "sign": "-",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": "Lear",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 105238,
+        "sign": "+",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "jima",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 24929,
+        "sign": "-",
+        "energy": 0.0038,
+        "pos": false,
+        "side": "none",
+        "token": "alin",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 106778,
+        "sign": "-",
+        "energy": 0.00314,
+        "pos": false,
+        "side": "none",
+        "token": " الكهربائية",
+        "class": {}
+       }
+      ]
+     },
+     "0->2": {
+      "position_share": 0.00173,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.00173,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 3516,
+        "sign": "-",
+        "energy": 0.0039,
+        "pos": false,
+        "side": "none",
+        "token": " mais",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 56112,
+        "sign": "+",
+        "energy": 0.00488,
+        "pos": false,
+        "side": "none",
+        "token": " Mayotte",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 52446,
+        "sign": "-",
+        "energy": 0.00379,
+        "pos": false,
+        "side": "none",
+        "token": " Nixon",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 70819,
+        "sign": "+",
+        "energy": 0.00346,
+        "pos": false,
+        "side": "none",
+        "token": " jos",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 18653,
+        "sign": "+",
+        "energy": 0.00346,
+        "pos": false,
+        "side": "none",
+        "token": " dort",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 10554,
+        "sign": "-",
+        "energy": 0.00385,
+        "pos": false,
+        "side": "none",
+        "token": "Stack",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 30608,
+        "sign": "-",
+        "energy": 0.00308,
+        "pos": false,
+        "side": "none",
+        "token": " incred",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 55179,
+        "sign": "+",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": " Noord",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 44580,
+        "sign": "+",
+        "energy": 0.00254,
+        "pos": false,
+        "side": "none",
+        "token": " sui",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 97377,
+        "sign": "-",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": " الذاتية",
+        "class": {}
+       }
+      ]
+     },
+     "1->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 88586,
+        "sign": "-",
+        "energy": 0.00375,
+        "pos": false,
+        "side": "none",
+        "token": ".accept",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 19196,
+        "sign": "+",
+        "energy": 0.00406,
+        "pos": false,
+        "side": "none",
+        "token": "�n",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 64173,
+        "sign": "-",
+        "energy": 0.00342,
+        "pos": false,
+        "side": "none",
+        "token": " المز",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 51802,
+        "sign": "+",
+        "energy": 0.00445,
+        "pos": false,
+        "side": "none",
+        "token": "Trim",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 122474,
+        "sign": "-",
+        "energy": 0.00487,
+        "pos": false,
+        "side": "none",
+        "token": " الإقليمية",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 6335,
+        "sign": "+",
+        "energy": 0.00471,
+        "pos": false,
+        "side": "none",
+        "token": " embod",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 56553,
+        "sign": "+",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": "Lear",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 105238,
+        "sign": "-",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "jima",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 24929,
+        "sign": "+",
+        "energy": 0.0038,
+        "pos": false,
+        "side": "none",
+        "token": "alin",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 106778,
+        "sign": "+",
+        "energy": 0.00314,
+        "pos": false,
+        "side": "none",
+        "token": " الكهربائية",
+        "class": {}
+       }
+      ]
+     },
+     "1->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 29830,
+        "sign": "+",
+        "energy": 0.00596,
+        "pos": false,
+        "side": "none",
+        "token": " Thé",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 13022,
+        "sign": "-",
+        "energy": 0.00677,
+        "pos": false,
+        "side": "none",
+        "token": " cyt",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 2419,
+        "sign": "+",
+        "energy": 0.00617,
+        "pos": false,
+        "side": "none",
+        "token": "κ",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 118867,
+        "sign": "-",
+        "energy": 0.00824,
+        "pos": false,
+        "side": "none",
+        "token": "Bride",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 73880,
+        "sign": "+",
+        "energy": 0.00498,
+        "pos": false,
+        "side": "none",
+        "token": " Kapelle",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 37261,
+        "sign": "-",
+        "energy": 0.00616,
+        "pos": false,
+        "side": "none",
+        "token": " FBI",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 5995,
+        "sign": "-",
+        "energy": 0.00554,
+        "pos": false,
+        "side": "none",
+        "token": " unter",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 31869,
+        "sign": "+",
+        "energy": 0.00447,
+        "pos": false,
+        "side": "none",
+        "token": "Struct",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 13427,
+        "sign": "-",
+        "energy": 0.00529,
+        "pos": false,
+        "side": "none",
+        "token": "لق",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 53809,
+        "sign": "+",
+        "energy": 0.00412,
+        "pos": false,
+        "side": "none",
+        "token": " cena",
+        "class": {}
+       }
+      ]
+     },
+     "2->0": {
+      "position_share": 0.00173,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.00173,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 3516,
+        "sign": "+",
+        "energy": 0.0039,
+        "pos": false,
+        "side": "none",
+        "token": " mais",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 56112,
+        "sign": "-",
+        "energy": 0.00488,
+        "pos": false,
+        "side": "none",
+        "token": " Mayotte",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 52446,
+        "sign": "+",
+        "energy": 0.00379,
+        "pos": false,
+        "side": "none",
+        "token": " Nixon",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 70819,
+        "sign": "-",
+        "energy": 0.00346,
+        "pos": false,
+        "side": "none",
+        "token": " jos",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 18653,
+        "sign": "-",
+        "energy": 0.00346,
+        "pos": false,
+        "side": "none",
+        "token": " dort",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 10554,
+        "sign": "+",
+        "energy": 0.00385,
+        "pos": false,
+        "side": "none",
+        "token": "Stack",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 30608,
+        "sign": "+",
+        "energy": 0.00308,
+        "pos": false,
+        "side": "none",
+        "token": " incred",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 55179,
+        "sign": "-",
+        "energy": 0.00281,
+        "pos": false,
+        "side": "none",
+        "token": " Noord",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 44580,
+        "sign": "-",
+        "energy": 0.00254,
+        "pos": false,
+        "side": "none",
+        "token": " sui",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 97377,
+        "sign": "+",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": " الذاتية",
+        "class": {}
+       }
+      ]
+     },
+     "2->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 29830,
+        "sign": "-",
+        "energy": 0.00596,
+        "pos": false,
+        "side": "none",
+        "token": " Thé",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 13022,
+        "sign": "+",
+        "energy": 0.00677,
+        "pos": false,
+        "side": "none",
+        "token": " cyt",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 2419,
+        "sign": "-",
+        "energy": 0.00617,
+        "pos": false,
+        "side": "none",
+        "token": "κ",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 118867,
+        "sign": "+",
+        "energy": 0.00824,
+        "pos": false,
+        "side": "none",
+        "token": "Bride",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 73880,
+        "sign": "-",
+        "energy": 0.00498,
+        "pos": false,
+        "side": "none",
+        "token": " Kapelle",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 37261,
+        "sign": "+",
+        "energy": 0.00616,
+        "pos": false,
+        "side": "none",
+        "token": " FBI",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 5995,
+        "sign": "+",
+        "energy": 0.00554,
+        "pos": false,
+        "side": "none",
+        "token": " unter",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 31869,
+        "sign": "-",
+        "energy": 0.00447,
+        "pos": false,
+        "side": "none",
+        "token": "Struct",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 13427,
+        "sign": "+",
+        "energy": 0.00529,
+        "pos": false,
+        "side": "none",
+        "token": "لق",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 53809,
+        "sign": "-",
+        "energy": 0.00412,
+        "pos": false,
+        "side": "none",
+        "token": " cena",
+        "class": {}
+       }
+      ]
+     }
+    },
+    "position_share_mean": 0.00058,
+    "random_position_share_mean": 0.0003,
+    "random_position_share_p95": 0.00244,
+    "sign_correct_pairs": 0,
+    "sign_correct_rate": 0.0,
+    "shuffle_sign_correct_rate": 0.0,
+    "random_sign_correct_rate_mean": 0.007,
+    "random_sign_correct_rate_p95": 0.0,
+    "shuffle_position_share_mean": 0.00058
+   },
+   "rule": {
+    "share_above_random_p95": false,
+    "sign_correct_on_most_pairs_above_shuffle": false,
+    "both": false
+   }
+  },
+  "qwen3.5-122b-a10b": {
+   "layer": 33,
+   "d": 3072,
+   "base_rate": {
+    "dictionary_tokens": 242132,
+    "ordinal_tokens": 103,
+    "cardinal_tokens": 229,
+    "generic_tokens": 201,
+    "position_tokens": 513,
+    "base_rate_any_position_class": 0.002119
+   },
+   "norm_median_write": 0.9261675874373372,
+   "alf_rank": 4,
+   "seconds": 9,
+   "overlap": {
+    "alf_basis_directions_captured": [
+     0.0668,
+     0.0688,
+     0.1006,
+     0.1649
+    ],
+    "alf_mean_captured": 0.1003,
+    "writes_captured": {
+     "0->1": 0.0694,
+     "0->2": 0.0677,
+     "1->0": 0.0694,
+     "1->2": 0.083,
+     "2->0": 0.0677,
+     "2->1": 0.083
+    },
+    "random_mean_captured": 0.1003
+   },
+   "a": {
+    "per_pair": {
+     "0->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 130652,
+        "sign": "-",
+        "energy": 0.0033,
+        "pos": false,
+        "side": "none",
+        "token": "四个意识",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 29871,
+        "sign": "+",
+        "energy": 0.00456,
+        "pos": false,
+        "side": "none",
+        "token": "Responder",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 122002,
+        "sign": "-",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": "山楂",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 83459,
+        "sign": "+",
+        "energy": 0.00364,
+        "pos": false,
+        "side": "none",
+        "token": "upos",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 83150,
+        "sign": "-",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " nef",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 46343,
+        "sign": "+",
+        "energy": 0.00374,
+        "pos": false,
+        "side": "none",
+        "token": " afterward",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 110147,
+        "sign": "-",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": "身上的",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 61751,
+        "sign": "+",
+        "energy": 0.00264,
+        "pos": false,
+        "side": "none",
+        "token": "-feira",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 144230,
+        "sign": "-",
+        "energy": 0.00268,
+        "pos": false,
+        "side": "none",
+        "token": "第一项",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 142016,
+        "sign": "+",
+        "energy": 0.00344,
+        "pos": false,
+        "side": "none",
+        "token": "所述第二",
+        "class": {}
+       }
+      ]
+     },
+     "0->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 87408,
+        "sign": "-",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " squirrel",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 2452,
+        "sign": "+",
+        "energy": 0.00369,
+        "pos": false,
+        "side": "none",
+        "token": ".out",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 201840,
+        "sign": "-",
+        "energy": 0.00402,
+        "pos": false,
+        "side": "none",
+        "token": "นึก",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 61751,
+        "sign": "+",
+        "energy": 0.00447,
+        "pos": false,
+        "side": "none",
+        "token": "-feira",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 134569,
+        "sign": "-",
+        "energy": 0.0035,
+        "pos": false,
+        "side": "none",
+        "token": "企业地址",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 173616,
+        "sign": "+",
+        "energy": 0.00316,
+        "pos": false,
+        "side": "none",
+        "token": "네요",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 45173,
+        "sign": "-",
+        "energy": 0.003,
+        "pos": false,
+        "side": "none",
+        "token": "_AF",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 113651,
+        "sign": "+",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": "为他",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 157867,
+        "sign": "-",
+        "energy": 0.00312,
+        "pos": false,
+        "side": "none",
+        "token": " tâ",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 123713,
+        "sign": "-",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": "一元",
+        "class": {}
+       }
+      ]
+     },
+     "1->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 130652,
+        "sign": "+",
+        "energy": 0.0033,
+        "pos": false,
+        "side": "none",
+        "token": "四个意识",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 29871,
+        "sign": "-",
+        "energy": 0.00456,
+        "pos": false,
+        "side": "none",
+        "token": "Responder",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 122002,
+        "sign": "+",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": "山楂",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 83459,
+        "sign": "-",
+        "energy": 0.00364,
+        "pos": false,
+        "side": "none",
+        "token": "upos",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 83150,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": " nef",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 46343,
+        "sign": "-",
+        "energy": 0.00374,
+        "pos": false,
+        "side": "none",
+        "token": " afterward",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 110147,
+        "sign": "+",
+        "energy": 0.00266,
+        "pos": false,
+        "side": "none",
+        "token": "身上的",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 61751,
+        "sign": "-",
+        "energy": 0.00264,
+        "pos": false,
+        "side": "none",
+        "token": "-feira",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 144230,
+        "sign": "+",
+        "energy": 0.00268,
+        "pos": false,
+        "side": "none",
+        "token": "第一项",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 142016,
+        "sign": "-",
+        "energy": 0.00344,
+        "pos": false,
+        "side": "none",
+        "token": "所述第二",
+        "class": {}
+       }
+      ]
+     },
+     "1->2": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 74495,
+        "sign": "-",
+        "energy": 0.00591,
+        "pos": false,
+        "side": "none",
+        "token": "\\Mail",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 165934,
+        "sign": "+",
+        "energy": 0.00485,
+        "pos": false,
+        "side": "none",
+        "token": "ήμερα",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 87408,
+        "sign": "-",
+        "energy": 0.00485,
+        "pos": false,
+        "side": "none",
+        "token": " squirrel",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 77592,
+        "sign": "-",
+        "energy": 0.00442,
+        "pos": false,
+        "side": "none",
+        "token": "(Util",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 22184,
+        "sign": "+",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "iating",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 91554,
+        "sign": "-",
+        "energy": 0.00325,
+        "pos": false,
+        "side": "none",
+        "token": "igrated",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 78260,
+        "sign": "+",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "_estimators",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 216090,
+        "sign": "-",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": "باعة",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 79364,
+        "sign": "-",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " apprentice",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 237427,
+        "sign": "+",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": " rovn",
+        "class": {}
+       }
+      ]
+     },
+     "2->0": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 87408,
+        "sign": "+",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " squirrel",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 2452,
+        "sign": "-",
+        "energy": 0.00369,
+        "pos": false,
+        "side": "none",
+        "token": ".out",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 201840,
+        "sign": "+",
+        "energy": 0.00402,
+        "pos": false,
+        "side": "none",
+        "token": "นึก",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 61751,
+        "sign": "-",
+        "energy": 0.00447,
+        "pos": false,
+        "side": "none",
+        "token": "-feira",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 134569,
+        "sign": "+",
+        "energy": 0.0035,
+        "pos": false,
+        "side": "none",
+        "token": "企业地址",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 173616,
+        "sign": "-",
+        "energy": 0.00316,
+        "pos": false,
+        "side": "none",
+        "token": "네요",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 45173,
+        "sign": "+",
+        "energy": 0.003,
+        "pos": false,
+        "side": "none",
+        "token": "_AF",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 113651,
+        "sign": "-",
+        "energy": 0.00284,
+        "pos": false,
+        "side": "none",
+        "token": "为他",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 157867,
+        "sign": "+",
+        "energy": 0.00312,
+        "pos": false,
+        "side": "none",
+        "token": " tâ",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 123713,
+        "sign": "+",
+        "energy": 0.00245,
+        "pos": false,
+        "side": "none",
+        "token": "一元",
+        "class": {}
+       }
+      ]
+     },
+     "2->1": {
+      "position_share": 0.0,
+      "sign_correct_ordinal": false,
+      "shuffle_position_share_mean": 0.0,
+      "shuffle_sign_correct_rate": 0.0,
+      "top10": [
+       {
+        "rank": 1,
+        "token_id": 74495,
+        "sign": "+",
+        "energy": 0.00591,
+        "pos": false,
+        "side": "none",
+        "token": "\\Mail",
+        "class": {}
+       },
+       {
+        "rank": 2,
+        "token_id": 165934,
+        "sign": "-",
+        "energy": 0.00485,
+        "pos": false,
+        "side": "none",
+        "token": "ήμερα",
+        "class": {}
+       },
+       {
+        "rank": 3,
+        "token_id": 87408,
+        "sign": "+",
+        "energy": 0.00485,
+        "pos": false,
+        "side": "none",
+        "token": " squirrel",
+        "class": {}
+       },
+       {
+        "rank": 4,
+        "token_id": 77592,
+        "sign": "+",
+        "energy": 0.00442,
+        "pos": false,
+        "side": "none",
+        "token": "(Util",
+        "class": {}
+       },
+       {
+        "rank": 5,
+        "token_id": 22184,
+        "sign": "-",
+        "energy": 0.00336,
+        "pos": false,
+        "side": "none",
+        "token": "iating",
+        "class": {}
+       },
+       {
+        "rank": 6,
+        "token_id": 91554,
+        "sign": "+",
+        "energy": 0.00325,
+        "pos": false,
+        "side": "none",
+        "token": "igrated",
+        "class": {}
+       },
+       {
+        "rank": 7,
+        "token_id": 78260,
+        "sign": "-",
+        "energy": 0.00349,
+        "pos": false,
+        "side": "none",
+        "token": "_estimators",
+        "class": {}
+       },
+       {
+        "rank": 8,
+        "token_id": 216090,
+        "sign": "+",
+        "energy": 0.00309,
+        "pos": false,
+        "side": "none",
+        "token": "باعة",
+        "class": {}
+       },
+       {
+        "rank": 9,
+        "token_id": 79364,
+        "sign": "+",
+        "energy": 0.00335,
+        "pos": false,
+        "side": "none",
+        "token": " apprentice",
+        "class": {}
+       },
+       {
+        "rank": 10,
+        "token_id": 237427,
+        "sign": "-",
+        "energy": 0.00355,
+        "pos": false,
+        "side": "none",
+        "token": " rovn",
+        "class": {}
+       }
+      ]
+     }
+    },
+    "position_share_mean": 0.0,
+    "random_position_share_mean": 0.0,
+    "random_position_share_p95": 0.0,
+    "sign_correct_pairs": 0,
+    "sign_correct_rate": 0.0,
+    "shuffle_sign_correct_rate": 0.0,
+    "random_sign_correct_rate_mean": 0.0,
+    "random_sign_correct_rate_p95": 0.0,
+    "shuffle_position_share_mean": 0.0
+   },
+   "rule": {
+    "share_above_random_p95": false,
+    "sign_correct_on_most_pairs_above_shuffle": false,
+    "both": false
+   }
+  }
+ },
+ "models_meeting_both_conditions": 0,
+ "verdict": "not verbalizable by the J++ lens at this layer; consistent with the claim"
+}
