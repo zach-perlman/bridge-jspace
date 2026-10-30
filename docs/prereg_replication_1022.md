@@ -3273,3 +3273,33 @@ Zach's MC answers (30 Oct ~03:10 UTC): build notes 34, 35 and 36; queue them aft
   - "both routes move": (b) >= 2/3 of (a);
   - otherwise "unclear".
 - **Descriptive.** The change in the passage and memory shares under the edit (does the edit move which source wins?), and the plain items answered passage unedited.
+
+##### Amendment 63 addendum (Zach, 2026-10-30 ~04:20 UTC; after a red-team, before any full run; seen: only note 36's 9B smoke, n = 8 per word, as a mechanics check)
+Zach's MC answer: "#2 fixed + slim #1". **Note 36 is dropped and not run.** Its result is mostly predictable from the C2 swap (memory recalls move 45-70 points; 27B lookups stay in 99%). Its two arms condition on different items: plain on items memory already won, "According to" on nearly all. Its code stays unused.
+
+**Note 35 changes**
+1. **Arm MC0: the MC question closed book (no passage).**
+   - It sits in the control set (jsuite_v5kn2cctl). Candidates are the same six capitals.
+   - It is gated on closed-book steps: H1 (the say question) and C0 (the direct capital).
+   - Its knock-out is exactly MC's. Its contrast is MC0's paper10 loss minus C0's, from its own knock-out rows.
+   - Why: MC's passage names X's country. MC could therefore route through the passage (find X's country's line, then the one-step capital of a named country). That would read as "goes around" without testing composition from memory.
+2. **Joint readings** (per model; MC and MC0 each read with note 35's "needs" rule; "does not need" means a contrast < 10 with its interval's upper end < 15):
+   - "memory computation needs it": MC0 needs and MC needs. With MP's existing reading, keys into the context are the exception.
+   - "through the passage": MC0 needs, MC does not.
+   - "only saying needs it": MC0 does not need.
+   - otherwise "unclear".
+   - Note 35's paired MC-vs-MP comparison is kept. MC0 is compared with MP on scenes gated ok for both, the same way.
+3. **Margin matching** (descriptive, beside the primary). MC, MC0 and MP items are binned by their unedited cand2 margin (the right candidate's logit minus the best other's; 5 quantile bins of the pooled margins). Each arm's contrast is recomputed within bins and averaged with MP's bin weights. If margins are not recorded, this is reported as not available and not computed.
+4. **Answer exclusion** covers every position the knock-out edits: all positions, every band layer.
+
+**Note 34 changes**
+1. **The primary reading is lens vs random** (the same dimension, both trained, the only fair pair):
+   - "lens no better than random": AUC_J <= AUC_R + 0.05;
+   - "lens better": AUC_J >= AUC_R + 0.10, intervals not overlapping;
+   - otherwise "unclear".
+   - The full-state comparison (AUC_F vs AUC_J) is no longer a reading.
+2. **F is descriptive, beside a memory-strength baseline B:** the closed-book named recall's (H2, kc2ctl controls) answer margin for X, or its correctness if no margin is recorded. "F adds beyond memory strength" if AUC_F >= AUC_B + 0.10, intervals not overlapping.
+3. **Time course** (descriptive): AUC_F and AUC_J at every 4th layer at s1 and s3. Beside it: the first layer at which the J++ top-1 among the candidates at s3 is the item's eventual answer for >= 50% of items.
+4. **Unchanged:** the claim read (fixed list, shuffled control and reading), the sites, the items and the probe procedure.
+
+**Runs.** After DeepSeek's EXIT: the 27B on GPU 0; Lightning then the 9B on GPU 1. Each model runs note 34 (extraction, then the reader) and note 35 (MC and MC0: competence, controls, knock-out, reader). A 9B smoke of at most 8 items per word comes first.
