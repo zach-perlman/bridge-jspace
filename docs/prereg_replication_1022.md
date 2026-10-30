@@ -3534,3 +3534,16 @@ Zach's MC answer: "All of it". Why: TwoHopFact's chains are mostly shortcut-pron
   - **Gated** = their known check + guess wrong + name filter. G0-G2 and R1-R2 are primary on the gated set; the ungated (their) set is reported beside.
   - **No-shortcut** = gated and not flagged shortcut-available. **R3 (the bridge-specific test) is read only on the no-shortcut subset**, and needs >= 30 items per model; otherwise it is "not read (too few no-shortcut items)". R1-R2 are also reported on the no-shortcut and shortcut subsets, descriptively.
 - **The knock-out runs are unchanged** (they run every known item); the strata are applied in the reader.
+
+##### Amendment 65, second addendum, note 39 (Zach, 2026-10-30, box clock at commit; seen: note 39's 9B and Lightning readings, where the arm 6 guard failed, arm 6 keeping 0.11 and 0.15)
+Zach's MC answer: "Overlap check + better control". Arm 6's other categories were drawn from the same domain as the answer type (e.g. languages for capitals). Our hypothesis, untested: those spans overlap the intermediate's own directions, so arm 6 also removes the bridge. Changes, fixed before any overlap is measured:
+- **Overlap diagnostic** (descriptive; lens files only, no forward pass). For each item, model and main-band layer: the share of the energy of the bridge atoms (intermediate and swap_to unit J++ vectors) inside:
+  - the answer span A;
+  - arm 6's span;
+  - each category span of an unrelated pool: colour, shape, unit, occupation, weekday, month, number, state of matter;
+  - 20 random letter-token spans of A's size.
+  A pool category is used only when it is not the item's own answer type.
+- **Arm 6b, replacing arm 6 in the A1 validity guard.** For each item, the unrelated-pool category with the smallest bridge-atom share, count-matched to A's token count (subsampled with Random("n39b:"+item), or padded from random letter tokens). Ties go to the order listed above.
+- **The guard is otherwise unchanged:** A1 is valid only if arm 6b AND arm 7 keep >= 2/3. Arm 7 is not changed. So Lightning's A1 stays invalid if arm 7 again keeps < 2/3.
+- **Rerun** of arms 1, 3, 6b, 7 and the null on the primary items, at the main band and at arm 1's median-onset window, on the 9B, Lightning and 27B; Muse descriptive. Arm 1 and the null are rerun in the same job and checked against note 39's stored rows.
+- **Reading.** A1 is re-read with arm 6b. The old arm 6 result is reported beside it, labelled "same-domain control, invalid as a guard".
