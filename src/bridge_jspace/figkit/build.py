@@ -1,6 +1,6 @@
 """Build figures from their specs for a target.
 
-uv run python -m bridge_jspace.figkit.build                    # every figure, for the slides -> figures/presentation/
+uv run python -m bridge_jspace.figkit.build                    # every figure, for the slides -> figures/slides/
 uv run python -m bridge_jspace.figkit.build --target readme    # every figure, for the READMEs -> figures/readme/ (bold claim on top)
 uv run python -m bridge_jspace.figkit.build p1_c1_split p5a     # some figures (id or id prefix)
 
@@ -20,7 +20,7 @@ from bridge_jspace.figkit.render import render
 from bridge_jspace.figkit.specs import SPECS
 from bridge_jspace.figkit.theme import THEMES
 
-OUT = {"slide": REPO / "figures" / "presentation", "readme": REPO / "figures" / "readme"}
+OUT = {"slide": REPO / "figures" / "slides", "readme": REPO / "figures" / "readme"}
 CAPTIONS = {"slide": REPO / "docs" / "slides" / "captions_presentation.md",
             "readme": REPO / "docs" / "slides" / "captions_readme.md"}
 

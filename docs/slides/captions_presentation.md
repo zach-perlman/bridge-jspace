@@ -52,7 +52,7 @@ Built by `uv run python -m bridge_jspace.figkit.build --target slide` from src/b
 
 ## p7_breaks
 
-**Where it breaks: the 27B with more directions; passages whose fact the model knows.** Left: the lookup's switches lost beyond a random part without 25 / 50 / 100 lens directions, main test at L, 200 scenes (docs/x0_numbers.json lk_excess_k*). Right: Zach's named passages through Dan's conflict test, the lookup with true facts (purple) and made-up facts (dark) (data/figures/depth/data.csv ledger_zach_named). Muse and Lightning missed the made-up-fact gate (descriptive); Lightning hollow (pending hand-check, 29 Oct). Dashed: the lookup's 0.10 bar.
+**Where it breaks: the 27B with more directions; passages whose fact the model knows.** Left: the lookup's switches lost beyond a random part without 25 / 50 / 100 lens directions, main test at L, 200 scenes (docs/x0_numbers.json lk_excess_k*). Right: Zach's named passages through Dan's conflict test, the lookup with true facts (purple) and made-up facts (dark) (figures/depth/data.csv ledger_zach_named). Muse and Lightning missed the made-up-fact gate (descriptive); Lightning hollow (pending hand-check, 29 Oct). Dashed: the lookup's 0.10 bar.
 
 ## p8_where
 

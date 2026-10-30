@@ -1,6 +1,6 @@
 {
- "generated_utc": "2026-10-29T11:57:59Z",
- "commit": "4cce7f51",
+ "generated_utc": "2026-10-29T23:04:06Z",
+ "commit": "41967cbe",
  "views": {
   "main_swap": {
    "title": "a. Conflict test: which part of the bridge word each reader follows",
@@ -149,8 +149,26 @@
       },
       {
        "check": "labels against the 51.12 E1 rerun (top token stored)",
-       "status": "n/a",
-       "detail": "no E1 run for this model"
+       "status": "fail",
+       "detail": "unedited: 393 of 400 agree; whole: 387 of 400 agree; without J++: 382 of 400 agree; without its random part: 385 of 400 agree; unedited / whole disagreements: [\"P2-L0-0087|PM: X0 A / E1 b (E1 top '8')\", \"P2-L0-0175|PM: X0 other / E1 A (E1 top '3')\", \"P2-L0-0197|PM: X0 A / E1 b (E1 top '2')\", \"P2-L0-0006|PP: X0 b / E1 A (E1 top '2')\", \"P2-L0-0012|PM: X0 A / E1 b (E1 top '4')\", \"P2-L0-0068|PP: X0 b / E1 A (E1 top '4')\"]",
+       "counts": {
+        "unedited": {
+         "agree": 393,
+         "n": 400
+        },
+        "whole": {
+         "agree": 387,
+         "n": 400
+        },
+        "without J++": {
+         "agree": 382,
+         "n": 400
+        },
+        "without its random part": {
+         "agree": 385,
+         "n": 400
+        }
+       }
       },
       {
        "check": "duplicates",
@@ -466,12 +484,24 @@
      ]
     },
     "qwen3.5-122b-a10b": {
-     "n": 0,
-     "not_landed": [
-      [
-       "results/x51_answer/qwen35_122b_x51_12_e1",
-       "not run yet"
-      ]
+     "n": 400,
+     "runs": [
+      "results/x51_answer/qwen35_122b_x51_12_e1"
+     ],
+     "item_fail": {},
+     "item_na": {},
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "the item set is the source X0 run's",
+       "status": "pass",
+       "detail": "source qwen35_122b_x0_necessity_r2 (view a's run: True); items = its 200 items: True; = gate.json order: True"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
      ]
     },
     "muse-glimmer-30b": {
@@ -518,7 +548,7 @@
     }
    },
    "recount": {
-    "match": 12,
+    "match": 15,
     "mismatch": [],
     "no_source": 0,
     "rows": [
@@ -581,6 +611,36 @@
       "data": "0.79",
       "status": "match",
       "source": "results/x51_answer/x51_12-20261028T201842Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "recall: share of arm 1's extra loss kept by arm 2",
+      "n": 200,
+      "value": 0.98,
+      "key": "data.csv: main test, recall: share of its loss kept when the lens part keeps the answer words' directions",
+      "data": "0.98",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T112359Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "recall extra loss: arm 3: without the answer directions only",
+      "n": 200,
+      "value": 0.010810810810810811,
+      "key": "data.csv: main test, recall: switches lost beyond random without the answer words' directions only",
+      "data": "0.01081081081081082",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T112359Z/verdict.json"
+     },
+     {
+      "model": "qwen3.5-122b-a10b",
+      "quantity": "recall: answer word below the lens's top 50 on both O and S",
+      "n": 200,
+      "value": 1.0,
+      "key": "data.csv: main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",
+      "data": "1.0",
+      "status": "match",
+      "source": "results/x51_answer/x52_answer-20261029T112359Z/verdict.json"
      },
      {
       "model": "muse-glimmer-30b",
@@ -2684,9 +2744,9 @@
     }
    },
    "recount": {
-    "match": 8,
+    "match": 10,
     "mismatch": [],
-    "no_source": 2,
+    "no_source": 0,
     "rows": [
      {
       "model": "qwen3.5-9b",
@@ -2734,8 +2794,9 @@
       "n": 600,
       "value": 0.5002406490649065,
       "key": "data.csv: lookup target share, mean over locker pairs, s = 2",
-      "data": "",
-      "status": "no source"
+      "data": "0.5002",
+      "status": "match",
+      "source": "results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json"
      },
      {
       "model": "qwen3.5-122b-a10b",
@@ -2743,8 +2804,9 @@
       "n": 600,
       "value": 0.22666666666666666,
       "key": "data.csv: the address swap at s = 2: recalls that change",
-      "data": "",
-      "status": "no source"
+      "data": "0.22666666666666666",
+      "status": "match",
+      "source": "results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json"
      },
      {
       "model": "muse-glimmer-30b",
@@ -3818,21 +3880,51 @@
      ]
     },
     "qwen3.6-27b": {
-     "n": 0,
-     "not_landed": [
-      [
-       "results/x53_identity_address/x53_6_27b",
-       "not run yet"
-      ]
+     "n": 600,
+     "runs": [
+      "results/x53_identity_address/x53_6_27b"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 600,
+      "second run has the same prompts": 600
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate and eligibility",
+       "status": "n/a",
+       "detail": "not recomputed for this kind (identity_address; tier 2): the run's gate.json as stored"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
      ]
     },
     "muse-glimmer-30b": {
-     "n": 0,
-     "not_landed": [
-      [
-       "results/x53_identity_address/muse30_x53_6",
-       "not run yet"
-      ]
+     "n": 600,
+     "runs": [
+      "results/x53_identity_address/muse30_x53_6"
+     ],
+     "item_fail": {},
+     "item_na": {
+      "probabilities agree with the label": 600,
+      "second run has the same prompts": 600
+     },
+     "item_fail_examples": [],
+     "run_checks": [
+      {
+       "check": "gate and eligibility",
+       "status": "n/a",
+       "detail": "not recomputed for this kind (identity_address; tier 2): the run's gate.json as stored"
+      },
+      {
+       "check": "duplicates",
+       "status": "pass",
+       "detail": "none (item ids, outcome keys, prompts)"
+      }
      ]
     },
     "nemotron-3.5-lightning": {
@@ -4424,20 +4516,20 @@
     "last_token",
     "sentence_order"
    ],
-   "items": 45542,
+   "items": 45942,
    "item_check_failures": 4,
    "item_check_failures_by_check": {
     "only the scene's words differ": 4
    },
-   "run_check_failures": 4,
+   "run_check_failures": 5,
    "run_check_failures_by_check": {
-    "labels against the 51.12 E1 rerun (top token stored)": 3,
+    "labels against the 51.12 E1 rerun (top token stored)": 4,
     "Z1-P: the true value is absent from the lookup's passage": 1
    },
    "recount": {
-    "match": 240,
+    "match": 245,
     "mismatch": 0,
-    "numbers": 240
+    "numbers": 245
    }
   },
   "tier2": {
@@ -4447,7 +4539,7 @@
     "varied_scenes",
     "natural"
    ],
-   "items": 14582,
+   "items": 15782,
    "item_check_failures": 0,
    "item_check_failures_by_check": {},
    "run_check_failures": 0,
@@ -4492,6 +4584,24 @@
     },
     "without its random part": {
      "agree": 400,
+     "n": 400
+    }
+   },
+   "qwen3.5-122b-a10b": {
+    "unedited": {
+     "agree": 393,
+     "n": 400
+    },
+    "whole": {
+     "agree": 387,
+     "n": 400
+    },
+    "without J++": {
+     "agree": 382,
+     "n": 400
+    },
+    "without its random part": {
+     "agree": 385,
      "n": 400
     }
    },

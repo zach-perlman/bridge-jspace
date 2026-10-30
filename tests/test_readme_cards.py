@@ -143,11 +143,11 @@ def test_claims_table_grades_and_hand_check():
 
 
 def test_deck_figures_exist():
-    """The figure kit's deck figures (src/bridge_jspace/figkit/specs.py): one PNG each in figures/presentation/ and
+    """The figure kit's deck figures (src/bridge_jspace/figkit/specs.py): one PNG each in figures/slides/ and
     figures/readme/, nothing but PNGs in either folder."""
     from bridge_jspace.figkit.specs import SPECS
 
-    for folder in ("presentation", "readme"):
+    for folder in ("slides", "readme"):
         d = REPO / "figures" / folder
         missing = [i for i in SPECS if not (d / f"{i}.png").exists()]
         assert not missing, (folder, missing)
