@@ -124,7 +124,7 @@ def _count(hay: str, needle: str) -> int:
     return f" {SP.norm(hay)} ".count(f" {n} ") if n else 0
 
 
-def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list, ids: list[int], fails, seen) -> None:
+def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list, ids: list[int], fails, seen, c: dict | None = None) -> None:
     """Amendment 73 note 56's keys: (a) the peers' answer e3' (the target) is the next token too: the prompt's ids are a
     prefix of prompt + " " + e3''s and the next id is e3''s main first token; (b) the inserted lines are the registered
     wording and hold mu and e2' (hyp_vis), e2' (each prem peer line) or e3' (instr_vis) exactly once (as written); (c) after
@@ -160,6 +160,19 @@ def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list
         if lines["final"] != f["r2_template"].format(e2p) or not text.endswith("\nAgent 1: " + lines["final"]):
             fails[f"{conv}: final statement is r2 on e2'"] += 1
         want_e2p, want_e3p = 2, 0
+        if style == "seen":  # amendment 84 K: e3' named once more, in the Moderator's neutral line
+            want_e3p = 1
+            if lines.get("neutral") != SP.NEUTRAL.format(place=e3p):
+                fails[f"{conv}: neutral line names e3'"] += 1
+        if style == "lure":  # the lure e3'' (the control fact's answer) once, in the neutral line
+            lure = c["e3"].strip()
+            if lines.get("neutral") != SP.NEUTRAL.format(place=lure) or _count(text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS) :], lure) != 1:
+                fails[f"{conv}: neutral line names the lure once"] += 1
+            if SP.same_entity(c["e3_aliases"], f["e3_aliases"]) or SP.same_entity(c["e3_aliases"], p["e3_aliases"]):
+                fails[f"{conv}: lure equals e3 or e3'"] += 1
+            if _count(lure, e3p):  # the lure's name contains e3' (e.g. "Northern Cyprus" / "Cyprus"): counted, and e3' expected there
+                seen[f"{conv}: the lure's name contains e3'"] += 1
+                want_e3p = _count(lure, e3p)
     else:  # prem: premise-only pressure
         peer_ls = [v for k, v in lines.items() if k.startswith("peer")]
         if len(peer_ls) != n_peers or any(x != SP.statement(f["r1_prompt"], e2p) or x.count(e2p) != 1 for x in peer_ls):
@@ -174,6 +187,41 @@ def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list
         seen[f"{conv}: e2' names e3' (dropped by the reader)"] += 1
     if _count(tail, e3p) != want_e3p + inside:
         fails[f"{conv}: e3' count after the worked examples"] += 1
+    seen[conv] += 1
+
+
+def n59_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list, ids: list[int], fails, seen) -> None:
+    """Amendment 84 note 59's A and B keys: e3' is also the next token (e3 is checked for every key); the inserted lines are
+    the registered wording; after the worked examples e3 and e3' are each written exactly as often as the condition says
+    (judge: once each; syc_wrong / tool_wrong: e3' once, e3 never; syc_right / syc_doubt: e3 once, e3' never)."""
+    from bridge_jspace import tokens
+
+    cond, style, _, _ = SP.CONVS[conv]
+    full = tokens.raw_encoding(tok, text + " " + p["e3"].strip())["input_ids"]
+    if full[: len(ids)] != ids or full[len(ids)] != tg["main"]["peer"]:
+        fails[f"{conv}: peer answer boundary"] += 1
+    lines = {lab: text[s:e] for lab, s, e in spans}
+    e3, e3p = f["e3"].strip(), p["e3"].strip()
+    tail = text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS) :]
+    if cond == "judge":
+        t, x = SP.statement(f["composed"], e3), SP.statement(f["composed"], e3p)
+        want_lines = [t, x] if style == "tf" else [x, t]
+        if [lines.get("peer1"), lines.get("peer2")] != want_lines or "own" in lines:
+            fails[f"{conv}: the two agents' lines"] += 1
+        if lines.get("moderator") != (SP.JUDGE_VER if style == "ver" else SP.JUDGE):
+            fails[f"{conv}: moderator line"] += 1
+        want = (1, 1)
+    elif cond == "user":
+        if lines.get("user") != SP.USER[style].format(e3=e3, e3p=e3p) or not text.endswith("\nAgent 1: " + f["composed"]):
+            fails[f"{conv}: user suffix"] += 1
+        want = (0, 1) if style == "wrong" else (1, 0)
+    else:  # tool
+        if lines.get("tool") != SP.statement(f["composed"], e3p) or f"\n{SP.TOOL}: {lines.get('tool')}\n" not in text:
+            fails[f"{conv}: tool line"] += 1
+        want = (0, 1)
+    rest = tail.replace(f["composed"], " ")  # occurrences inside the subject's name (e.g. "Felipe VI of Spain") are not written answers
+    if (_count(rest, e3), _count(rest, e3p)) != want:
+        fails[f"{conv}: e3 / e3' counts after the worked examples"] += 1
     seen[conv] += 1
 
 
@@ -214,7 +262,7 @@ def cmd_check(a) -> None:
         tg = SP.answer_targets(tok, f, p, c)
         own = f["e3"]  # a stand-in round-0 answer (the runner uses the model's own)
         for conv in SP.CONVS:
-            text, spans = SP.render(f, p, conv, own_answer=own)
+            text, spans = SP.render(f, p, conv, own_answer=own, control=c)
             ids = tokens.raw_encoding(tok, text)["input_ids"]
             lengths[conv].append(len(ids))
             # 1. the answer's first token is the next token: prompt ids are a prefix of prompt + " " + e3's
@@ -248,7 +296,9 @@ def cmd_check(a) -> None:
             if n_peer_spans != n_peers:
                 fails[f"{conv}: peers"] += 1
             if cond in ("instructed", "hypothetical", "ask", "instructed_city") or style == "bridge":
-                n56_check(tok, f, p, tg, conv, text, spans, ids, fails, n56)
+                n56_check(tok, f, p, tg, conv, text, spans, ids, fails, n56, c)
+            if cond in ("judge", "user", "tool"):
+                n59_check(tok, f, p, tg, conv, text, spans, ids, fails, n56)
             if len(examples[conv]) < a.show and f["category"] == ("landmark-cntry-capital", "person-birthcity-cntry")[len(examples[conv]) % 2]:
                 examples[conv].append(f"[{f['uid']} | e2={f['e2']} e3={f['e3']} | peer e2'={p['e2']} e3'={p['e3']} | "
                                       f"control e2={c['e2']} | {len(ids)} tokens, last token {tok.decode(ids[-1:])!r}, "
@@ -259,7 +309,7 @@ def cmd_check(a) -> None:
     print("position checks failed:", dict(fails) or "none")
     print("prompts where an alias of the bridge appears after the worked examples (descriptive; hop1/hop2 excluded):", dict(named) or "none")
     if n56:
-        print("note 56 keys (instr_vis, hyp_vis, prem_vis, prem_hid, ask_city, instr_city), prompts checked:", {k: v for k, v in sorted(n56.items())})
+        print("note 56 / 59 keys (instr_vis, hyp_vis, prem_vis, prem_hid, ask_city, instr_city; amendment 84's K, A, B), prompts checked:", {k: v for k, v in sorted(n56.items())})
     for conv, ex in examples.items():
         for e in ex:
             print(f"\n===== {conv} {e}")

@@ -396,7 +396,7 @@ def stage_ko(a) -> None:
         # amendment 73: bridgeJ_peer's span, the peers' bridge e2' minus the forms of e2, e3 and e3' (as bridgeJ for e2)
         pforms = sorted(set(SP.forms(tok, p["e2"])) - ans_f - set(SP.forms(tok, f["e2"])))
         for conv in a.convs:
-            text, spans = SP.render(f, p, conv, own_answer=it["r0_answer"])
+            text, spans = SP.render(f, p, conv, own_answer=it["r0_answer"], control=c)  # control: amendment 84's instr_city_lure only
             tail = f" {SP.norm(text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS):])} "
             bnamed = any(SP.norm(x) and f" {SP.norm(x)} " in tail for x in f["e2_aliases"])  # an alias of the bridge is written
             leak[conv] += bnamed  # (descriptive; the reader can leave such items out: --drop-bridge-named)
