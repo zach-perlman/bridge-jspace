@@ -3991,3 +3991,21 @@ No task loss under any edit was seen.
   2. if that does not bracket a*, along the logit-lens dose (unembed10 / 30 / 100 / 300);
   3. if neither brackets, a descriptive S2 along the line through paper10_rot and paper10_pcasize: two non-J removals of paper10's size, interpolated by text agreement. It is labelled "size-matched pair, descriptive", and no registered label is printed.
 - The dose each reading used is printed on its line. Every dose's raw points are reported.
+
+#### Amendment 75 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; post hoc follow-up, registered before its runs): note 54's P1 de-confounded (the peers' premise orthogonalised to the answers)
+**Seen.** Note 54 on the 9B (test and dev pooled):
+- The primary bridgeJperp reading is "not shown" in solo, press_vis and press_hid (bridgeJperp - bridgeJ_rot = 0.0 in press_vis), while R3' (the unorthogonalised bridgeJ) reads "needed". So the agent's own bridge span is needed only through its answer component.
+- P1 and P2 read "used to conform": bridgeJ_peer - bridgeJ_ctrl was -12.3 [-16.3, -8.5] in press_vis and -6.4 in hop1_vis, and -23.4 against bridgeJ_peer_rot.
+- bridgeJ_peer is not orthogonalised to the answers. The peers' bridge forms (e.g. a city) can share J++ energy with the peers' answer (its country), the same confound that bridgeJperp removed from R3.
+
+**New conditions** (mid band; the same items, conversations and split as note 54):
+- bridgeJ_peerperp: the peers' bridge forms' unit vectors orthogonalised to the span of both answers' forms (e3 and e3'), as bridgeJperp does for e2;
+- bridgeJ_peerperp_rot;
+- with none, bridgeJ_ctrl and bridgeJ_peer rerun in the same run.
+
+**Reading P1-perp** (press_vis primary, hop1_vis beside; gated, test and dev pooled; the solo positive control as P1):
+- "the peers' premise itself is used to conform": bridgeJ_peerperp - bridgeJ_ctrl <= -5 with upper end < 0, and bridgeJ_peerperp < bridgeJ_peerperp_rot;
+- "via its answer component": P1 is met, while |bridgeJ_peerperp - bridgeJ_ctrl| < 5 with the interval including 0;
+- otherwise "partly".
+
+**Models.** 9B (a new run with the conditions above), plus Lightning and the 27B: their note 54 runs, not yet started, get these conditions added. The 9B is a post hoc follow-up; on Lightning and the 27B the reading is confirmatory.
