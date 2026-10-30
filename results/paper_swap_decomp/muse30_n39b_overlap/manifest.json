@@ -1,0 +1,44 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "muse30_n39b_overlap",
+  "kind": "overlap",
+  "note": "prereg amendment 65 second addendum, note 39",
+  "target": "muse-glimmer-30b",
+  "lens": {
+    "jpp": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ]
+  },
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "main_band": "29-42",
+  "pool": [
+    "colour",
+    "shape",
+    "unit",
+    "occupation",
+    "weekday",
+    "month",
+    "number",
+    "state_of_matter"
+  ],
+  "n_rand": 20,
+  "device": "cuda",
+  "command": "scripts/paper_swap_6b.py overlap --name muse30_n39b_overlap",
+  "git_state": {
+    "head": "c5f3e3bfa7c3343a52dd4941f21dc46543ec3141",
+    "dirty_files": [
+      "scripts/nn_sd_read.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/paper_swap_6b.py",
+      "scripts/paper_swap_read6b.py",
+      "scripts/queues/h200_n39b_1030.sh",
+      "scripts/sd_gate.py"
+    ],
+    "code_diff_sha256": "8f21fa02ceb1807b6ae655c175f602deefaf3fc5bb6ad4eaa5ad61181b635c1e"
+  },
+  "written_utc": "2026-10-30T07:51:45Z"
+}

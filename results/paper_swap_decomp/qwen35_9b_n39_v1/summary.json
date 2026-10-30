@@ -1,0 +1,22 @@
+{
+  "gate": {
+    "raw_eligible": 65,
+    "prompt_end": "stripped"
+  },
+  "statuses": {
+    "eligible": 65,
+    "clean_wrong": 21,
+    "multi_token:swap_answer": 3,
+    "multi_token:answer": 1
+  },
+  "eligible_by_set": {
+    "primary": 51,
+    "own_pair_only": 12,
+    "side_table": 2
+  },
+  "rows": 8489,
+  "greedy_rows": 419,
+  "seconds": 1054,
+  "repro": null,
+  "reader": "python scripts/paper_swap_read.py results/paper_swap_decomp/qwen35_9b_n39_v1"
+}

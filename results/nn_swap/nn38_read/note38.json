@@ -1,0 +1,2269 @@
+{
+ "prefix": "",
+ "band": {
+  "run": "nn38_L32-40_v1",
+  "band": "32-40",
+  "git_commit": "2d037c7df778bc699328dcdf0cc080c96e3740aa",
+  "words": {
+   "RM": {
+    "insert": {
+     "insert_k10": {
+      "n": 134,
+      "transfer": 25.4,
+      "ci": [
+       16.41,
+       34.27
+      ],
+      "kept": 61.9,
+      "beyond": 24.6,
+      "beyond_ci": [
+       16.18,
+       33.57
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 134,
+      "transfer": 0.7,
+      "ci": [
+       0.0,
+       2.31
+      ],
+      "kept": 94.0
+     },
+     "insert_k10_noansrel": {
+      "n": 134,
+      "transfer": 2.2,
+      "ci": [
+       0.0,
+       5.11
+      ],
+      "kept": 86.6,
+      "beyond": 1.5,
+      "beyond_ci": [
+       0.0,
+       3.88
+      ],
+      "share": 0.061,
+      "share_ci": [
+       0.0,
+       0.17
+      ],
+      "raw_share": 0.088
+     },
+     "insert_k10_noansrelctl": {
+      "n": 134,
+      "transfer": 20.1,
+      "ci": [
+       13.08,
+       28.12
+      ],
+      "kept": 70.9,
+      "beyond": 19.4,
+      "beyond_ci": [
+       12.5,
+       27.13
+      ],
+      "share": 0.788,
+      "share_ci": [
+       0.61,
+       0.97
+      ],
+      "raw_share": 0.794
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 134,
+      "transfer": 3.0,
+      "ci": [
+       0.71,
+       6.11
+      ],
+      "kept": 85.8,
+      "beyond": 2.2,
+      "beyond_ci": [
+       0.0,
+       5.15
+      ],
+      "share": 0.091,
+      "share_ci": [
+       0.0,
+       0.21
+      ],
+      "raw_share": 0.118
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 134,
+      "transfer": 3.0,
+      "ci": [
+       0.71,
+       6.15
+      ],
+      "kept": 82.8,
+      "beyond": 2.2,
+      "beyond_ci": [
+       0.0,
+       5.04
+      ],
+      "share": 0.091,
+      "share_ci": [
+       0.0,
+       0.19
+      ],
+      "raw_share": 0.118
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 134,
+      "transfer": 0.7,
+      "ci": [
+       0.0,
+       2.31
+      ],
+      "kept": 78.4,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.029
+     },
+     "insert_k10_noansoff": {
+      "n": 134,
+      "transfer": 20.9,
+      "ci": [
+       13.39,
+       28.68
+      ],
+      "kept": 73.9,
+      "beyond": 20.1,
+      "beyond_ci": [
+       12.95,
+       27.82
+      ],
+      "share": 0.818,
+      "share_ci": [
+       0.65,
+       1.0
+      ],
+      "raw_share": 0.824
+     },
+     "insert_k10_noansform": {
+      "n": 44,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 88.6,
+      "beyond": -0.7,
+      "beyond_ci": [
+       -2.31,
+       0.0
+      ],
+      "share": -0.03,
+      "share_ci": [
+       -0.1,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_relans": {
+      "n": 134,
+      "transfer": 28.4,
+      "ci": [
+       19.35,
+       37.41
+      ],
+      "kept": 60.4,
+      "beyond": 27.6,
+      "beyond_ci": [
+       18.7,
+       36.62
+      ],
+      "share": 1.121,
+      "share_ci": [
+       0.97,
+       1.36
+      ],
+      "raw_share": 1.118
+     }
+    },
+    "clamp": {
+     "clamp": {
+      "n": 131,
+      "transfer": 22.9,
+      "ci": [
+       15.38,
+       30.16
+      ],
+      "kept": 55.7,
+      "beyond": 22.9,
+      "beyond_ci": [
+       15.38,
+       30.16
+      ]
+     },
+     "clamp_null": {
+      "n": 131,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.2
+     },
+     "clamp_noans": {
+      "n": 131,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 97.7,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "clamp_noans_nm": {
+      "n": 131,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.9,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    },
+    "readings": {
+     "swap_beyond_rot": 24.6,
+     "share_nm": 0.091,
+     "share_off": 0.818,
+     "share_rel": 0.061,
+     "share_relans": 1.121,
+     "B1": "inert at matched size",
+     "B2": "the scrub is specific to the asked relation",
+     "B3": "the answer subspace is sufficient",
+     "all": "necessary, sufficient, specific and size-controlled"
+    },
+    "norm_shares": {
+     "share_rel": {
+      "kept_items": {
+       "n": 134,
+       "mean": 0.4458,
+       "median": 0.4522,
+       "ci": [
+        0.42,
+        0.47
+       ]
+      },
+      "all_items": {
+       "n": 135,
+       "mean": 0.4472,
+       "median": 0.4522,
+       "ci": [
+        0.42,
+        0.47
+       ]
+      }
+     },
+     "share_c": {
+      "kept_items": {
+       "n": 134,
+       "mean": 0.285,
+       "median": 0.2822,
+       "ci": [
+        0.27,
+        0.3
+       ]
+      },
+      "all_items": {
+       "n": 135,
+       "mean": 0.2849,
+       "median": 0.2807,
+       "ci": [
+        0.27,
+        0.3
+       ]
+      }
+     },
+     "share_off": {
+      "kept_items": {
+       "n": 134,
+       "mean": 0.2867,
+       "median": 0.289,
+       "ci": [
+        0.28,
+        0.3
+       ]
+      },
+      "all_items": {
+       "n": 135,
+       "mean": 0.2869,
+       "median": 0.289,
+       "ci": [
+        0.28,
+        0.3
+       ]
+      }
+     },
+     "share_form": {
+      "kept_items": {
+       "n": 44,
+       "mean": 0.3919,
+       "median": 0.3622,
+       "ci": [
+        0.36,
+        0.43
+       ]
+      },
+      "all_items": {
+       "n": 44,
+       "mean": 0.3919,
+       "median": 0.3622,
+       "ci": [
+        0.36,
+        0.43
+       ]
+      }
+     },
+     "scrub_kept_rel": {
+      "kept_items": {
+       "n": 134,
+       "mean": 0.5716,
+       "median": 0.5681,
+       "ci": [
+        0.55,
+        0.6
+       ]
+      },
+      "all_items": {
+       "n": 135,
+       "mean": 0.5705,
+       "median": 0.5657,
+       "ci": [
+        0.54,
+        0.59
+       ]
+      }
+     },
+     "scrub_kept_off": {
+      "kept_items": {
+       "n": 134,
+       "mean": 0.7146,
+       "median": 0.7137,
+       "ci": [
+        0.7,
+        0.73
+       ]
+      },
+      "all_items": {
+       "n": 135,
+       "mean": 0.7144,
+       "median": 0.7127,
+       "ci": [
+        0.7,
+        0.73
+       ]
+      }
+     },
+     "scrub_kept_form": {
+      "kept_items": {
+       "n": 44,
+       "mean": 0.6325,
+       "median": 0.6472,
+       "ci": [
+        0.59,
+        0.66
+       ]
+      },
+      "all_items": {
+       "n": 44,
+       "mean": 0.6325,
+       "median": 0.6472,
+       "ci": [
+        0.59,
+        0.66
+       ]
+      }
+     },
+     "clamp_ratio": {
+      "kept_items": {
+       "n": 131,
+       "mean": 0.5092,
+       "median": 0.483,
+       "ci": [
+        0.47,
+        0.56
+       ]
+      },
+      "all_items": {
+       "n": 132,
+       "mean": 0.5071,
+       "median": 0.483,
+       "ci": [
+        0.47,
+        0.55
+       ]
+      }
+     }
+    },
+    "dose": {
+     "insert_k10_noansrel": {
+      "n": 134,
+      "transfer": 2.2,
+      "beyond": 1.5,
+      "beyond_ci": [
+       0.0,
+       3.88
+      ],
+      "share": 0.061,
+      "share_ci": [
+       0.0,
+       0.17
+      ],
+      "edit_norm_vs_swap": 0.751
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 134,
+      "transfer": 3.0,
+      "beyond": 2.2,
+      "beyond_ci": [
+       0.0,
+       5.15
+      ],
+      "share": 0.091,
+      "share_ci": [
+       0.0,
+       0.21
+      ],
+      "edit_norm_vs_swap": 1.0
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 134,
+      "transfer": 3.0,
+      "beyond": 2.2,
+      "beyond_ci": [
+       0.0,
+       5.04
+      ],
+      "share": 0.091,
+      "share_ci": [
+       0.0,
+       0.19
+      ],
+      "edit_norm_vs_swap": 1.502
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 134,
+      "transfer": 0.7,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "edit_norm_vs_swap": 3.003
+     }
+    },
+    "people_form": {
+     "insert_k10": {
+      "n": 44,
+      "transfer": 18.2,
+      "ci": [
+       5.0,
+       31.37
+      ],
+      "kept": 70.5,
+      "beyond": 18.2,
+      "beyond_ci": [
+       5.0,
+       31.37
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 44,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0
+     },
+     "insert_k10_noansrel": {
+      "n": 44,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 90.9,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_k10_noansoff": {
+      "n": 44,
+      "transfer": 15.9,
+      "ci": [
+       4.88,
+       27.45
+      ],
+      "kept": 77.3,
+      "beyond": 15.9,
+      "beyond_ci": [
+       4.88,
+       27.45
+      ],
+      "share": 0.875,
+      "share_ci": [
+       0.67,
+       1.0
+      ],
+      "raw_share": 0.875
+     },
+     "insert_k10_noansform": {
+      "n": 44,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 88.6,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    }
+   },
+   "PM": {
+    "insert": {
+     "insert_k10": {
+      "n": 80,
+      "transfer": 58.8,
+      "ci": [
+       47.5,
+       70.89
+      ],
+      "kept": 35.0,
+      "beyond": 58.8,
+      "beyond_ci": [
+       47.5,
+       70.89
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 80,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 98.8
+     },
+     "insert_k10_noansrel": {
+      "n": 80,
+      "transfer": 5.0,
+      "ci": [
+       1.2,
+       10.0
+      ],
+      "kept": 88.8,
+      "beyond": 5.0,
+      "beyond_ci": [
+       1.2,
+       10.0
+      ],
+      "share": 0.085,
+      "share_ci": [
+       0.02,
+       0.17
+      ],
+      "raw_share": 0.085
+     },
+     "insert_k10_noansrelctl": {
+      "n": 80,
+      "transfer": 56.2,
+      "ci": [
+       45.57,
+       68.42
+      ],
+      "kept": 37.5,
+      "beyond": 56.2,
+      "beyond_ci": [
+       45.57,
+       68.42
+      ],
+      "share": 0.957,
+      "share_ci": [
+       0.89,
+       1.0
+      ],
+      "raw_share": 0.957
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 80,
+      "transfer": 7.5,
+      "ci": [
+       2.44,
+       13.75
+      ],
+      "kept": 83.8,
+      "beyond": 7.5,
+      "beyond_ci": [
+       2.44,
+       13.75
+      ],
+      "share": 0.128,
+      "share_ci": [
+       0.04,
+       0.24
+      ],
+      "raw_share": 0.128
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 80,
+      "transfer": 11.2,
+      "ci": [
+       4.88,
+       18.52
+      ],
+      "kept": 77.5,
+      "beyond": 11.2,
+      "beyond_ci": [
+       4.88,
+       18.52
+      ],
+      "share": 0.191,
+      "share_ci": [
+       0.08,
+       0.31
+      ],
+      "raw_share": 0.191
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 80,
+      "transfer": 10.0,
+      "ci": [
+       2.56,
+       18.29
+      ],
+      "kept": 51.2,
+      "beyond": 10.0,
+      "beyond_ci": [
+       2.56,
+       18.29
+      ],
+      "share": 0.17,
+      "share_ci": [
+       0.05,
+       0.31
+      ],
+      "raw_share": 0.17
+     },
+     "insert_k10_noansoff": {
+      "n": 80,
+      "transfer": 55.0,
+      "ci": [
+       44.58,
+       67.5
+      ],
+      "kept": 40.0,
+      "beyond": 55.0,
+      "beyond_ci": [
+       44.58,
+       67.5
+      ],
+      "share": 0.936,
+      "share_ci": [
+       0.86,
+       1.0
+      ],
+      "raw_share": 0.936
+     },
+     "insert_k10_noansform": {
+      "n": 26,
+      "transfer": 7.7,
+      "ci": [
+       0.0,
+       20.0
+      ],
+      "kept": 88.5,
+      "beyond": 7.7,
+      "beyond_ci": [
+       0.0,
+       20.0
+      ],
+      "share": 0.131,
+      "share_ci": [
+       0.0,
+       0.34
+      ],
+      "raw_share": 0.131
+     },
+     "insert_relans": {
+      "n": 80,
+      "transfer": 51.2,
+      "ci": [
+       40.74,
+       64.1
+      ],
+      "kept": 33.8,
+      "beyond": 51.2,
+      "beyond_ci": [
+       40.74,
+       64.1
+      ],
+      "share": 0.872,
+      "share_ci": [
+       0.78,
+       0.96
+      ],
+      "raw_share": 0.872
+     }
+    },
+    "clamp": {
+     "clamp": {
+      "n": 79,
+      "transfer": 26.6,
+      "ci": [
+       16.67,
+       36.84
+      ],
+      "kept": 67.1,
+      "beyond": 26.6,
+      "beyond_ci": [
+       16.67,
+       36.84
+      ]
+     },
+     "clamp_null": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0
+     },
+     "clamp_noans": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "clamp_noans_nm": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    },
+    "readings": {
+     "swap_beyond_rot": 58.8,
+     "share_nm": 0.128,
+     "share_off": 0.936,
+     "share_rel": 0.085,
+     "share_relans": 0.872,
+     "B1": "inert at matched size",
+     "B2": "the scrub is specific to the asked relation",
+     "B3": "the answer subspace is sufficient",
+     "all": "necessary, sufficient, specific and size-controlled"
+    },
+    "norm_shares": {
+     "share_rel": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.4919,
+       "median": 0.487,
+       "ci": [
+        0.45,
+        0.53
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.4919,
+       "median": 0.487,
+       "ci": [
+        0.45,
+        0.53
+       ]
+      }
+     },
+     "share_c": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.291,
+       "median": 0.2934,
+       "ci": [
+        0.28,
+        0.31
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.291,
+       "median": 0.2934,
+       "ci": [
+        0.28,
+        0.31
+       ]
+      }
+     },
+     "share_off": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.3029,
+       "median": 0.309,
+       "ci": [
+        0.29,
+        0.32
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.3029,
+       "median": 0.309,
+       "ci": [
+        0.29,
+        0.32
+       ]
+      }
+     },
+     "share_form": {
+      "kept_items": {
+       "n": 26,
+       "mean": 0.4075,
+       "median": 0.4126,
+       "ci": [
+        0.36,
+        0.45
+       ]
+      },
+      "all_items": {
+       "n": 26,
+       "mean": 0.4075,
+       "median": 0.4126,
+       "ci": [
+        0.36,
+        0.45
+       ]
+      }
+     },
+     "scrub_kept_rel": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.5234,
+       "median": 0.5464,
+       "ci": [
+        0.48,
+        0.56
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.5234,
+       "median": 0.5464,
+       "ci": [
+        0.48,
+        0.56
+       ]
+      }
+     },
+     "scrub_kept_off": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.6999,
+       "median": 0.6918,
+       "ci": [
+        0.69,
+        0.71
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.6999,
+       "median": 0.6918,
+       "ci": [
+        0.69,
+        0.71
+       ]
+      }
+     },
+     "scrub_kept_form": {
+      "kept_items": {
+       "n": 26,
+       "mean": 0.6138,
+       "median": 0.6459,
+       "ci": [
+        0.57,
+        0.66
+       ]
+      },
+      "all_items": {
+       "n": 26,
+       "mean": 0.6138,
+       "median": 0.6459,
+       "ci": [
+        0.57,
+        0.66
+       ]
+      }
+     },
+     "clamp_ratio": {
+      "kept_items": {
+       "n": 79,
+       "mean": 0.4872,
+       "median": 0.3936,
+       "ci": [
+        0.41,
+        0.61
+       ]
+      },
+      "all_items": {
+       "n": 79,
+       "mean": 0.4872,
+       "median": 0.3936,
+       "ci": [
+        0.41,
+        0.61
+       ]
+      }
+     }
+    },
+    "dose": {
+     "insert_k10_noansrel": {
+      "n": 80,
+      "transfer": 5.0,
+      "beyond": 5.0,
+      "beyond_ci": [
+       1.2,
+       10.0
+      ],
+      "share": 0.085,
+      "share_ci": [
+       0.02,
+       0.17
+      ],
+      "edit_norm_vs_swap": 0.715
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 80,
+      "transfer": 7.5,
+      "beyond": 7.5,
+      "beyond_ci": [
+       2.44,
+       13.75
+      ],
+      "share": 0.128,
+      "share_ci": [
+       0.04,
+       0.24
+      ],
+      "edit_norm_vs_swap": 1.0
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 80,
+      "transfer": 11.2,
+      "beyond": 11.2,
+      "beyond_ci": [
+       4.88,
+       18.52
+      ],
+      "share": 0.191,
+      "share_ci": [
+       0.08,
+       0.31
+      ],
+      "edit_norm_vs_swap": 1.429
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 80,
+      "transfer": 10.0,
+      "beyond": 10.0,
+      "beyond_ci": [
+       2.56,
+       18.29
+      ],
+      "share": 0.17,
+      "share_ci": [
+       0.05,
+       0.31
+      ],
+      "edit_norm_vs_swap": 2.858
+     }
+    },
+    "people_form": {
+     "insert_k10": {
+      "n": 26,
+      "transfer": 57.7,
+      "ci": [
+       36.0,
+       78.26
+      ],
+      "kept": 38.5,
+      "beyond": 57.7,
+      "beyond_ci": [
+       36.0,
+       78.26
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0
+     },
+     "insert_k10_noansrel": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.2,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_k10_noansoff": {
+      "n": 26,
+      "transfer": 50.0,
+      "ci": [
+       30.77,
+       70.83
+      ],
+      "kept": 50.0,
+      "beyond": 50.0,
+      "beyond_ci": [
+       30.77,
+       70.83
+      ],
+      "share": 0.867,
+      "share_ci": [
+       0.69,
+       1.0
+      ],
+      "raw_share": 0.867
+     },
+     "insert_k10_noansform": {
+      "n": 26,
+      "transfer": 7.7,
+      "ci": [
+       0.0,
+       20.0
+      ],
+      "kept": 88.5,
+      "beyond": 7.7,
+      "beyond_ci": [
+       0.0,
+       20.0
+      ],
+      "share": 0.133,
+      "share_ci": [
+       0.0,
+       0.33
+      ],
+      "raw_share": 0.133
+     }
+    }
+   }
+  },
+  "stored_check": {
+   "nn_ans2_L32-40_s0_v1": {
+    "none": {
+     "ours": 215,
+     "common": 215,
+     "identical": 215,
+     "same_donor_third": 215,
+     "mismatch": []
+    },
+    "insert_k10_noansrel": {
+     "ours": 215,
+     "common": 215,
+     "identical": 213,
+     "same_donor_third": 215,
+     "mismatch": [
+      [
+       "L32-40",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-02095"
+      ],
+      [
+       "L32-40",
+       "PM",
+       "j3:chat:facts:PM-L1-r0-00055"
+      ]
+     ]
+    },
+    "insert_k10_noansrelctl": {
+     "ours": 215,
+     "common": 215,
+     "identical": 213,
+     "same_donor_third": 215,
+     "mismatch": [
+      [
+       "L32-40",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-05391"
+      ],
+      [
+       "L32-40",
+       "PM",
+       "j3:chat:facts:PM-L2-r0-00114"
+      ]
+     ]
+    }
+   },
+   "nn_ans_L32-40_s0_v1": {
+    "none": {
+     "ours": 215,
+     "common": 215,
+     "identical": 215,
+     "same_donor_third": 215,
+     "mismatch": []
+    },
+    "insert_k10": {
+     "ours": 215,
+     "common": 215,
+     "identical": 215,
+     "same_donor_third": 215,
+     "mismatch": []
+    }
+   },
+   "nn_clampnoans_L32-40_v1": {
+    "none": {
+     "ours": 215,
+     "common": 215,
+     "identical": 215,
+     "same_donor_third": 215,
+     "mismatch": []
+    },
+    "clamp": {
+     "ours": 211,
+     "common": 211,
+     "identical": 209,
+     "same_donor_third": 211,
+     "mismatch": [
+      [
+       "L32-40",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-02060"
+      ],
+      [
+       "L32-40",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-03300"
+      ]
+     ]
+    },
+    "clamp_null": {
+     "ours": 211,
+     "common": 211,
+     "identical": 211,
+     "same_donor_third": 211,
+     "mismatch": []
+    },
+    "clamp_noans": {
+     "ours": 211,
+     "common": 211,
+     "identical": 211,
+     "same_donor_third": 211,
+     "mismatch": []
+    }
+   },
+   "nn_swap_L32-40_v1": {
+    "none": {
+     "ours": 215,
+     "common": 215,
+     "identical": 215,
+     "same_donor_third": 215,
+     "mismatch": []
+    },
+    "insert_k10_rot": {
+     "ours": 215,
+     "common": 215,
+     "identical": 214,
+     "same_donor_third": 215,
+     "mismatch": [
+      [
+       "L32-40",
+       "RM",
+       "j3:chat:facts:RM-L1-r0-02013"
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "sweep": {
+  "run": "nn38_sweep_v1",
+  "windows": {
+   "L8-15/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 5.0,
+     "ci": [
+      0.0,
+      10.98
+     ],
+     "kept": 82.5,
+     "beyond": 5.0,
+     "beyond_ci": [
+      0.0,
+      10.98
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 91.2
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      0.0,
+      6.33
+     ],
+     "kept": 78.8,
+     "beyond": 2.5,
+     "beyond_ci": [
+      0.0,
+      6.33
+     ],
+     "share": 0.5,
+     "share_ci": [
+      0.0,
+      2.0
+     ],
+     "raw_share": 0.5
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      -1.3,
+      8.97
+     ],
+     "kept": 83.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      -1.3,
+      8.97
+     ],
+     "share": 0.75,
+     "share_ci": [
+      0.0,
+      1.0
+     ],
+     "raw_share": 0.75
+    }
+   },
+   "L16-23/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 17.5,
+     "ci": [
+      8.64,
+      26.25
+     ],
+     "kept": 56.2,
+     "beyond": 17.5,
+     "beyond_ci": [
+      8.64,
+      26.25
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 92.5
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      -2.5,
+      7.5
+     ],
+     "kept": 76.2,
+     "beyond": 2.5,
+     "beyond_ci": [
+      -2.5,
+      7.5
+     ],
+     "share": 0.143,
+     "share_ci": [
+      -0.14,
+      0.46
+     ],
+     "raw_share": 0.143
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 20.0,
+     "ci": [
+      10.81,
+      27.91
+     ],
+     "kept": 60.0,
+     "beyond": 20.0,
+     "beyond_ci": [
+      10.81,
+      27.91
+     ],
+     "share": 1.143,
+     "share_ci": [
+      0.75,
+      1.83
+     ],
+     "raw_share": 1.143
+    }
+   },
+   "L24-31/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 28.8,
+     "ci": [
+      18.99,
+      38.1
+     ],
+     "kept": 51.2,
+     "beyond": 28.8,
+     "beyond_ci": [
+      18.99,
+      38.1
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 90.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 5.0,
+     "ci": [
+      1.19,
+      10.84
+     ],
+     "kept": 75.0,
+     "beyond": 5.0,
+     "beyond_ci": [
+      1.19,
+      10.84
+     ],
+     "share": 0.174,
+     "share_ci": [
+      0.04,
+      0.4
+     ],
+     "raw_share": 0.174
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 23.8,
+     "ci": [
+      13.33,
+      33.75
+     ],
+     "kept": 51.2,
+     "beyond": 23.8,
+     "beyond_ci": [
+      13.33,
+      33.75
+     ],
+     "share": 0.826,
+     "share_ci": [
+      0.57,
+      1.08
+     ],
+     "raw_share": 0.826
+    }
+   },
+   "L32-40/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 20.0,
+     "ci": [
+      10.26,
+      30.95
+     ],
+     "kept": 63.8,
+     "beyond": 20.0,
+     "beyond_ci": [
+      10.26,
+      30.95
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 92.5
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      8.43
+     ],
+     "kept": 82.5,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      8.43
+     ],
+     "share": 0.188,
+     "share_ci": [
+      0.0,
+      0.44
+     ],
+     "raw_share": 0.188
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 25.0,
+     "ci": [
+      14.47,
+      35.53
+     ],
+     "kept": 60.0,
+     "beyond": 25.0,
+     "beyond_ci": [
+      14.47,
+      35.53
+     ],
+     "share": 1.25,
+     "share_ci": [
+      1.0,
+      1.78
+     ],
+     "raw_share": 1.25
+    }
+   },
+   "L41-48/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      8.64
+     ],
+     "kept": 88.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      8.64
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 96.2
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 95.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": 0.0,
+     "share_ci": [
+      0.0,
+      0.0
+     ],
+     "raw_share": 0.0
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      8.64
+     ],
+     "kept": 93.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      8.64
+     ],
+     "share": 1.0,
+     "share_ci": [
+      1.0,
+      1.0
+     ],
+     "raw_share": 1.0
+    }
+   },
+   "L49-56/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L57-62/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L8-15/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 26.2,
+     "ci": [
+      15.66,
+      37.97
+     ],
+     "kept": 60.0,
+     "beyond": 26.2,
+     "beyond_ci": [
+      15.66,
+      37.97
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      4.0
+     ],
+     "kept": 95.0,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      4.0
+     ],
+     "share": 0.048,
+     "share_ci": [
+      0.0,
+      0.17
+     ],
+     "raw_share": 0.048
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 28.8,
+     "ci": [
+      18.07,
+      40.79
+     ],
+     "kept": 57.5,
+     "beyond": 28.8,
+     "beyond_ci": [
+      18.07,
+      40.79
+     ],
+     "share": 1.095,
+     "share_ci": [
+      0.91,
+      1.33
+     ],
+     "raw_share": 1.095
+    }
+   },
+   "L16-23/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 45.0,
+     "ci": [
+      34.48,
+      56.79
+     ],
+     "kept": 47.5,
+     "beyond": 45.0,
+     "beyond_ci": [
+      34.48,
+      56.79
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      -1.25,
+      9.64
+     ],
+     "kept": 90.0,
+     "beyond": 3.8,
+     "beyond_ci": [
+      -1.25,
+      9.64
+     ],
+     "share": 0.083,
+     "share_ci": [
+      -0.03,
+      0.21
+     ],
+     "raw_share": 0.083
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 46.2,
+     "ci": [
+      35.44,
+      58.97
+     ],
+     "kept": 43.8,
+     "beyond": 46.2,
+     "beyond_ci": [
+      35.44,
+      58.97
+     ],
+     "share": 1.028,
+     "share_ci": [
+      0.85,
+      1.26
+     ],
+     "raw_share": 1.028
+    }
+   },
+   "L24-31/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 57.5,
+     "ci": [
+      46.51,
+      68.75
+     ],
+     "kept": 37.5,
+     "beyond": 57.5,
+     "beyond_ci": [
+      46.51,
+      68.75
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 6.2,
+     "ci": [
+      1.25,
+      11.84
+     ],
+     "kept": 87.5,
+     "beyond": 6.2,
+     "beyond_ci": [
+      1.25,
+      11.84
+     ],
+     "share": 0.109,
+     "share_ci": [
+      0.02,
+      0.21
+     ],
+     "raw_share": 0.109
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 56.2,
+     "ci": [
+      45.45,
+      69.05
+     ],
+     "kept": 35.0,
+     "beyond": 56.2,
+     "beyond_ci": [
+      45.45,
+      69.05
+     ],
+     "share": 0.978,
+     "share_ci": [
+      0.87,
+      1.11
+     ],
+     "raw_share": 0.978
+    }
+   },
+   "L32-40/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 58.8,
+     "ci": [
+      47.5,
+      70.89
+     ],
+     "kept": 35.0,
+     "beyond": 58.8,
+     "beyond_ci": [
+      47.5,
+      70.89
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 7.5,
+     "ci": [
+      2.44,
+      13.75
+     ],
+     "kept": 83.8,
+     "beyond": 7.5,
+     "beyond_ci": [
+      2.44,
+      13.75
+     ],
+     "share": 0.128,
+     "share_ci": [
+      0.04,
+      0.24
+     ],
+     "raw_share": 0.128
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 51.2,
+     "ci": [
+      40.74,
+      64.1
+     ],
+     "kept": 33.8,
+     "beyond": 51.2,
+     "beyond_ci": [
+      40.74,
+      64.1
+     ],
+     "share": 0.872,
+     "share_ci": [
+      0.78,
+      0.96
+     ],
+     "raw_share": 0.872
+    }
+   },
+   "L41-48/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 5.0,
+     "ci": [
+      0.0,
+      10.98
+     ],
+     "kept": 88.8,
+     "beyond": 5.0,
+     "beyond_ci": [
+      0.0,
+      10.98
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 96.2,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": 0.0,
+     "share_ci": [
+      0.0,
+      0.0
+     ],
+     "raw_share": 0.0
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      8.97
+     ],
+     "kept": 93.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      8.97
+     ],
+     "share": 0.75,
+     "share_ci": [
+      0.0,
+      1.0
+     ],
+     "raw_share": 0.75
+    }
+   },
+   "L49-56/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      0.0,
+      6.41
+     ],
+     "kept": 95.0,
+     "beyond": 2.5,
+     "beyond_ci": [
+      0.0,
+      6.41
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": 0.0,
+     "share_ci": [
+      0.0,
+      0.0
+     ],
+     "raw_share": 0.0
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      3.9
+     ],
+     "kept": 96.2,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      3.9
+     ],
+     "share": 0.5,
+     "share_ci": [
+      0.0,
+      1.0
+     ],
+     "raw_share": 0.5
+    }
+   },
+   "L57-62/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   }
+  },
+  "onset": {
+   "RM/insert_k10": {
+    "raw": "L16-23",
+    "beyond_rot": "L16-23"
+   },
+   "RM/insert_k10_noansrel_nm": {
+    "raw": null,
+    "beyond_rot": null
+   },
+   "RM/insert_relans": {
+    "raw": "L16-23",
+    "beyond_rot": "L16-23"
+   },
+   "RM/stored_note11/insert_ans": {
+    "raw": null,
+    "series": {
+     "L8-15": 1.2,
+     "L16-23": 3.8,
+     "L24-31": 7.5,
+     "L32-40": 7.5,
+     "L41-48": 0.0,
+     "L49-56": 0.0,
+     "L57-62": 0.0
+    }
+   },
+   "RM/stored_note11/insert_k10": {
+    "raw": "L16-23",
+    "series": {
+     "L8-15": 5.0,
+     "L16-23": 17.5,
+     "L24-31": 28.8,
+     "L32-40": 20.0,
+     "L41-48": 3.8,
+     "L49-56": 0.0,
+     "L57-62": 0.0
+    }
+   },
+   "PM/insert_k10": {
+    "raw": "L8-15",
+    "beyond_rot": "L8-15"
+   },
+   "PM/insert_k10_noansrel_nm": {
+    "raw": null,
+    "beyond_rot": null
+   },
+   "PM/insert_relans": {
+    "raw": "L8-15",
+    "beyond_rot": "L8-15"
+   },
+   "PM/stored_note11/insert_ans": {
+    "raw": "L16-23",
+    "series": {
+     "L8-15": 2.5,
+     "L16-23": 13.8,
+     "L24-31": 21.2,
+     "L32-40": 25.0,
+     "L41-48": 0.0,
+     "L49-56": 0.0,
+     "L57-62": 0.0
+    }
+   },
+   "PM/stored_note11/insert_k10": {
+    "raw": "L8-15",
+    "series": {
+     "L8-15": 26.2,
+     "L16-23": 45.0,
+     "L24-31": 57.5,
+     "L32-40": 58.8,
+     "L41-48": 5.0,
+     "L49-56": 2.5,
+     "L57-62": 0.0
+    }
+   }
+  },
+  "stored_check": {
+   "nn_ans_sweep_v1": {
+    "none": {
+     "ours": 1120,
+     "common": 1120,
+     "identical": 1120,
+     "same_donor_third": 1120,
+     "mismatch": []
+    },
+    "insert_k10": {
+     "ours": 1120,
+     "common": 1120,
+     "identical": 1120,
+     "same_donor_third": 1120,
+     "mismatch": []
+    }
+   }
+  }
+ }
+}

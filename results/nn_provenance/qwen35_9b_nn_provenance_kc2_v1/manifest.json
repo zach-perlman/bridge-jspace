@@ -1,0 +1,1307 @@
+{
+ "run": "qwen35_9b_nn_provenance_kc2_v1",
+ "why": "Zach (2026-10-30, prereg amendment 63 note 34 + addenda: the provenance probe, qwen3.5-9b)",
+ "note": "prereg amendment 63 note 34 (the provenance probe)",
+ "target": "qwen3.5-9b",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "lens": "jpp",
+ "set": "jsuite_v5kc2_test_chat",
+ "competence": "qwen35_9b_jsuite_v5kc2_test_chat_competence_cand2_v1",
+ "cv": "qwen35_9b_jsuite_v5kc2ctl_cv_v1",
+ "band": [
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "layers": [
+  0,
+  4,
+  8,
+  12,
+  13,
+  14,
+  15,
+  16,
+  20,
+  24,
+  28
+ ],
+ "time_course_layers": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30
+ ],
+ "every": 4,
+ "sites": [
+  "s1",
+  "s2",
+  "s3"
+ ],
+ "limit": 0,
+ "batch": 8,
+ "probe_words": [
+  "CN",
+  "DN"
+ ],
+ "claim_words": [
+  "CN",
+  "DN",
+  "TN",
+  "TD"
+ ],
+ "topk": 20,
+ "claim_list": [
+  "false",
+  "fake",
+  "wrong",
+  "incorrect",
+  "untrue",
+  "myth",
+  "mistaken",
+  "mistake",
+  "error",
+  "lie",
+  "lies",
+  "fiction",
+  "fictional",
+  "hoax",
+  "rumor",
+  "rumour",
+  "misinformation",
+  "inaccurate",
+  "bogus",
+  "not",
+  "actually",
+  "allegedly",
+  "supposedly",
+  "claimed",
+  "claims"
+ ],
+ "control_tokens": [
+  {
+   "id": 123350,
+   "decoded": "\u5168\u6587\u9605\u8bfb",
+   "fold": "\u5168\u6587\u9605\u8bfb"
+  },
+  {
+   "id": 59782,
+   "decoded": "-notes",
+   "fold": "notes"
+  },
+  {
+   "id": 155455,
+   "decoded": " \ub208",
+   "fold": "\ub208"
+  },
+  {
+   "id": 50965,
+   "decoded": " proliferation",
+   "fold": "proliferation"
+  },
+  {
+   "id": 174848,
+   "decoded": "larda",
+   "fold": "larda"
+  },
+  {
+   "id": 25592,
+   "decoded": " Melbourne",
+   "fold": "melbourne"
+  },
+  {
+   "id": 60902,
+   "decoded": " prin",
+   "fold": "prin"
+  },
+  {
+   "id": 231902,
+   "decoded": " abbond",
+   "fold": "abbond"
+  },
+  {
+   "id": 14050,
+   "decoded": "Rob",
+   "fold": "rob"
+  },
+  {
+   "id": 166155,
+   "decoded": "\u30c3\u30b1\u30fc\u30b8",
+   "fold": "\u30c3\u30b1\u30fc\u30b8"
+  },
+  {
+   "id": 113435,
+   "decoded": "\u51e0\u767e",
+   "fold": "\u51e0\u767e"
+  },
+  {
+   "id": 30507,
+   "decoded": "ufacturer",
+   "fold": "ufacturer"
+  },
+  {
+   "id": 6476,
+   "decoded": " Street",
+   "fold": "street"
+  },
+  {
+   "id": 121486,
+   "decoded": "\u9014\u7ecf",
+   "fold": "\u9014\u7ecf"
+  },
+  {
+   "id": 85635,
+   "decoded": " Amid",
+   "fold": "amid"
+  },
+  {
+   "id": 46232,
+   "decoded": " m\u00fcssen",
+   "fold": "m\u00fcssen"
+  },
+  {
+   "id": 18766,
+   "decoded": " refr",
+   "fold": "refr"
+  },
+  {
+   "id": 205446,
+   "decoded": " r\u1ec9",
+   "fold": "r\u1ec9"
+  },
+  {
+   "id": 185763,
+   "decoded": " Eta",
+   "fold": "eta"
+  },
+  {
+   "id": 180407,
+   "decoded": "\u0142ych",
+   "fold": "\u0142ych"
+  },
+  {
+   "id": 164472,
+   "decoded": " \u0909\u0924\u094d",
+   "fold": "\u0909\u0924"
+  },
+  {
+   "id": 216080,
+   "decoded": " connais",
+   "fold": "connais"
+  },
+  {
+   "id": 188280,
+   "decoded": "\u05d7\u05ea",
+   "fold": "\u05d7\u05ea"
+  },
+  {
+   "id": 27557,
+   "decoded": " RegExp",
+   "fold": "regexp"
+  },
+  {
+   "id": 187476,
+   "decoded": " \u043a\u0432\u0430\u0440",
+   "fold": "\u043a\u0432\u0430\u0440"
+  }
+ ],
+ "control_seed": 34,
+ "rotation_seed": "888+layer",
+ "relations": [
+  "cities",
+  "companies",
+  "landmarks",
+  "people"
+ ],
+ "forms": {
+  "cities": [
+   [
+    92118,
+    "Argentina"
+   ],
+   [
+    30046,
+    " Argentina"
+   ],
+   [
+    46435,
+    "Australia"
+   ],
+   [
+    8071,
+    " Australia"
+   ],
+   [
+    32,
+    "A"
+   ],
+   [
+    33741,
+    " Austria"
+   ],
+   [
+    21002,
+    "Bel"
+   ],
+   [
+    31868,
+    " Belgium"
+   ],
+   [
+    64931,
+    "Brazil"
+   ],
+   [
+    15477,
+    " Brazil"
+   ],
+   [
+    34740,
+    "Canada"
+   ],
+   [
+    6650,
+    " Canada"
+   ],
+   [
+    21591,
+    "China"
+   ],
+   [
+    5440,
+    " China"
+   ],
+   [
+    5935,
+    "Col"
+   ],
+   [
+    36777,
+    " Colombia"
+   ],
+   [
+    34,
+    "C"
+   ],
+   [
+    32050,
+    " Czech"
+   ],
+   [
+    22881,
+    "Den"
+   ],
+   [
+    33200,
+    " Denmark"
+   ],
+   [
+    82707,
+    "Egypt"
+   ],
+   [
+    14437,
+    " Egypt"
+   ],
+   [
+    8861,
+    "Fin"
+   ],
+   [
+    35057,
+    " Finland"
+   ],
+   [
+    47358,
+    "France"
+   ],
+   [
+    9338,
+    " France"
+   ],
+   [
+    48484,
+    "Germany"
+   ],
+   [
+    9564,
+    " Germany"
+   ],
+   [
+    38,
+    "G"
+   ],
+   [
+    23655,
+    " Greece"
+   ],
+   [
+    86299,
+    "Hung"
+   ],
+   [
+    41361,
+    " Hungary"
+   ],
+   [
+    32436,
+    "India"
+   ],
+   [
+    6535,
+    " India"
+   ],
+   [
+    40,
+    "I"
+   ],
+   [
+    14227,
+    " Ireland"
+   ],
+   [
+    68121,
+    "Italy"
+   ],
+   [
+    14898,
+    " Italy"
+   ],
+   [
+    47122,
+    "Japan"
+   ],
+   [
+    6124,
+    " Japan"
+   ],
+   [
+    45665,
+    "Ken"
+   ],
+   [
+    35453,
+    " Kenya"
+   ],
+   [
+    66502,
+    "Mexico"
+   ],
+   [
+    11920,
+    " Mexico"
+   ],
+   [
+    40301,
+    "Mor"
+   ],
+   [
+    56178,
+    " Morocco"
+   ],
+   [
+    45,
+    "N"
+   ],
+   [
+    24844,
+    " Netherlands"
+   ],
+   [
+    31580,
+    "Nor"
+   ],
+   [
+    30466,
+    " Norway"
+   ],
+   [
+    3758,
+    "Per"
+   ],
+   [
+    46157,
+    " Peru"
+   ],
+   [
+    14237,
+    "Pol"
+   ],
+   [
+    26707,
+    " Poland"
+   ],
+   [
+    6864,
+    "Port"
+   ],
+   [
+    32208,
+    " Portugal"
+   ],
+   [
+    43028,
+    "Russia"
+   ],
+   [
+    8100,
+    " Russia"
+   ],
+   [
+    24225,
+    "South"
+   ],
+   [
+    4725,
+    " South"
+   ],
+   [
+    71792,
+    "Spain"
+   ],
+   [
+    17163,
+    " Spain"
+   ],
+   [
+    93527,
+    "Sweden"
+   ],
+   [
+    22466,
+    " Sweden"
+   ],
+   [
+    969,
+    "Th"
+   ],
+   [
+    28506,
+    " Thailand"
+   ],
+   [
+    70247,
+    "Turkey"
+   ],
+   [
+    16511,
+    " Turkey"
+   ],
+   [
+    21675,
+    "United"
+   ],
+   [
+    3516,
+    " United"
+   ]
+  ],
+  "companies": [
+   [
+    46435,
+    "Australia"
+   ],
+   [
+    8071,
+    " Australia"
+   ],
+   [
+    32,
+    "A"
+   ],
+   [
+    33741,
+    " Austria"
+   ],
+   [
+    64931,
+    "Brazil"
+   ],
+   [
+    15477,
+    " Brazil"
+   ],
+   [
+    34740,
+    "Canada"
+   ],
+   [
+    6650,
+    " Canada"
+   ],
+   [
+    21591,
+    "China"
+   ],
+   [
+    5440,
+    " China"
+   ],
+   [
+    22881,
+    "Den"
+   ],
+   [
+    33200,
+    " Denmark"
+   ],
+   [
+    8861,
+    "Fin"
+   ],
+   [
+    35057,
+    " Finland"
+   ],
+   [
+    47358,
+    "France"
+   ],
+   [
+    9338,
+    " France"
+   ],
+   [
+    48484,
+    "Germany"
+   ],
+   [
+    9564,
+    " Germany"
+   ],
+   [
+    32436,
+    "India"
+   ],
+   [
+    6535,
+    " India"
+   ],
+   [
+    40,
+    "I"
+   ],
+   [
+    14227,
+    " Ireland"
+   ],
+   [
+    68121,
+    "Italy"
+   ],
+   [
+    14898,
+    " Italy"
+   ],
+   [
+    47122,
+    "Japan"
+   ],
+   [
+    6124,
+    " Japan"
+   ],
+   [
+    66502,
+    "Mexico"
+   ],
+   [
+    11920,
+    " Mexico"
+   ],
+   [
+    45,
+    "N"
+   ],
+   [
+    24844,
+    " Netherlands"
+   ],
+   [
+    43028,
+    "Russia"
+   ],
+   [
+    8100,
+    " Russia"
+   ],
+   [
+    24225,
+    "South"
+   ],
+   [
+    4725,
+    " South"
+   ],
+   [
+    71792,
+    "Spain"
+   ],
+   [
+    17163,
+    " Spain"
+   ],
+   [
+    93527,
+    "Sweden"
+   ],
+   [
+    22466,
+    " Sweden"
+   ],
+   [
+    75322,
+    "Tai"
+   ],
+   [
+    27371,
+    " Taiwan"
+   ],
+   [
+    21675,
+    "United"
+   ],
+   [
+    3516,
+    " United"
+   ]
+  ],
+  "landmarks": [
+   [
+    92118,
+    "Argentina"
+   ],
+   [
+    30046,
+    " Argentina"
+   ],
+   [
+    46435,
+    "Australia"
+   ],
+   [
+    8071,
+    " Australia"
+   ],
+   [
+    64931,
+    "Brazil"
+   ],
+   [
+    15477,
+    " Brazil"
+   ],
+   [
+    88343,
+    "Camb"
+   ],
+   [
+    58981,
+    " Cambodia"
+   ],
+   [
+    34740,
+    "Canada"
+   ],
+   [
+    6650,
+    " Canada"
+   ],
+   [
+    1106,
+    "Ch"
+   ],
+   [
+    31907,
+    " Chile"
+   ],
+   [
+    21591,
+    "China"
+   ],
+   [
+    5440,
+    " China"
+   ],
+   [
+    82707,
+    "Egypt"
+   ],
+   [
+    14437,
+    " Egypt"
+   ],
+   [
+    47358,
+    "France"
+   ],
+   [
+    9338,
+    " France"
+   ],
+   [
+    48484,
+    "Germany"
+   ],
+   [
+    9564,
+    " Germany"
+   ],
+   [
+    38,
+    "G"
+   ],
+   [
+    23655,
+    " Greece"
+   ],
+   [
+    32436,
+    "India"
+   ],
+   [
+    6535,
+    " India"
+   ],
+   [
+    205898,
+    "Indonesia"
+   ],
+   [
+    23220,
+    " Indonesia"
+   ],
+   [
+    32415,
+    "Israel"
+   ],
+   [
+    6565,
+    " Israel"
+   ],
+   [
+    68121,
+    "Italy"
+   ],
+   [
+    14898,
+    " Italy"
+   ],
+   [
+    47122,
+    "Japan"
+   ],
+   [
+    6124,
+    " Japan"
+   ],
+   [
+    68043,
+    "Jordan"
+   ],
+   [
+    16586,
+    " Jordan"
+   ],
+   [
+    28633,
+    "Mal"
+   ],
+   [
+    26799,
+    " Malaysia"
+   ],
+   [
+    66502,
+    "Mexico"
+   ],
+   [
+    11920,
+    " Mexico"
+   ],
+   [
+    3758,
+    "Per"
+   ],
+   [
+    46157,
+    " Peru"
+   ],
+   [
+    43028,
+    "Russia"
+   ],
+   [
+    8100,
+    " Russia"
+   ],
+   [
+    24225,
+    "South"
+   ],
+   [
+    4725,
+    " South"
+   ],
+   [
+    71792,
+    "Spain"
+   ],
+   [
+    17163,
+    " Spain"
+   ],
+   [
+    51,
+    "T"
+   ],
+   [
+    66467,
+    " Tanzania"
+   ],
+   [
+    70247,
+    "Turkey"
+   ],
+   [
+    16511,
+    " Turkey"
+   ],
+   [
+    21675,
+    "United"
+   ],
+   [
+    3516,
+    " United"
+   ],
+   [
+    53,
+    "V"
+   ],
+   [
+    34713,
+    " Venezuela"
+   ],
+   [
+    90808,
+    "Viet"
+   ],
+   [
+    21801,
+    " Vietnam"
+   ]
+  ],
+  "people": [
+   [
+    27490,
+    "American"
+   ],
+   [
+    3567,
+    " American"
+   ],
+   [
+    2648,
+    "Arg"
+   ],
+   [
+    78904,
+    " Argentine"
+   ],
+   [
+    71714,
+    "Australian"
+   ],
+   [
+    12982,
+    " Australian"
+   ],
+   [
+    32,
+    "A"
+   ],
+   [
+    55064,
+    " Austrian"
+   ],
+   [
+    21002,
+    "Bel"
+   ],
+   [
+    46460,
+    " Belgian"
+   ],
+   [
+    64931,
+    "Brazil"
+   ],
+   [
+    33826,
+    " Brazilian"
+   ],
+   [
+    57561,
+    "Canadian"
+   ],
+   [
+    11549,
+    " Canadian"
+   ],
+   [
+    1106,
+    "Ch"
+   ],
+   [
+    31907,
+    " Chile"
+   ],
+   [
+    43429,
+    "Chinese"
+   ],
+   [
+    8193,
+    " Chinese"
+   ],
+   [
+    5935,
+    "Col"
+   ],
+   [
+    80672,
+    " Colombian"
+   ],
+   [
+    34,
+    "C"
+   ],
+   [
+    32050,
+    " Czech"
+   ],
+   [
+    36769,
+    "Dan"
+   ],
+   [
+    42234,
+    " Danish"
+   ],
+   [
+    35,
+    "D"
+   ],
+   [
+    22510,
+    " Dutch"
+   ],
+   [
+    82707,
+    "Egypt"
+   ],
+   [
+    31416,
+    " Egyptian"
+   ],
+   [
+    21874,
+    "English"
+   ],
+   [
+    6163,
+    " English"
+   ],
+   [
+    41772,
+    "French"
+   ],
+   [
+    8323,
+    " French"
+   ],
+   [
+    31022,
+    "German"
+   ],
+   [
+    5753,
+    " German"
+   ],
+   [
+    91090,
+    "Greek"
+   ],
+   [
+    17326,
+    " Greek"
+   ],
+   [
+    86299,
+    "Hung"
+   ],
+   [
+    54871,
+    " Hungarian"
+   ],
+   [
+    45979,
+    "Indian"
+   ],
+   [
+    7502,
+    " Indian"
+   ],
+   [
+    46508,
+    "Ir"
+   ],
+   [
+    17097,
+    " Irish"
+   ],
+   [
+    66771,
+    "Italian"
+   ],
+   [
+    14382,
+    " Italian"
+   ],
+   [
+    41,
+    "J"
+   ],
+   [
+    38827,
+    " Jama"
+   ],
+   [
+    49732,
+    "Japanese"
+   ],
+   [
+    10452,
+    " Japanese"
+   ],
+   [
+    45665,
+    "Ken"
+   ],
+   [
+    13851,
+    " Ken"
+   ],
+   [
+    49828,
+    "Mex"
+   ],
+   [
+    22555,
+    " Mexican"
+   ],
+   [
+    45,
+    "N"
+   ],
+   [
+    52509,
+    " Nigerian"
+   ],
+   [
+    31580,
+    "Nor"
+   ],
+   [
+    43142,
+    " Norwegian"
+   ],
+   [
+    14237,
+    "Pol"
+   ],
+   [
+    30931,
+    " Polish"
+   ],
+   [
+    6864,
+    "Port"
+   ],
+   [
+    40790,
+    " Portuguese"
+   ],
+   [
+    46118,
+    "Russian"
+   ],
+   [
+    8260,
+    " Russian"
+   ],
+   [
+    24225,
+    "South"
+   ],
+   [
+    4725,
+    " South"
+   ],
+   [
+    59713,
+    "Spanish"
+   ],
+   [
+    14712,
+    " Spanish"
+   ],
+   [
+    12834,
+    "Sw"
+   ],
+   [
+    29125,
+    " Swedish"
+   ]
+  ]
+ },
+ "m": {
+  "cities": 70,
+  "companies": 42,
+  "landmarks": 56,
+  "people": 68
+ },
+ "union_m": 141,
+ "condition_J": {
+  "cities": {
+   "0": 63.2,
+   "4": 37.7,
+   "8": 37.4,
+   "12": 33.4,
+   "13": 32.1,
+   "14": 32.2,
+   "15": 32.3,
+   "16": 30.6,
+   "20": 21.6,
+   "24": 19.9,
+   "28": 21.9
+  },
+  "companies": {
+   "0": 41.8,
+   "4": 30.2,
+   "8": 30.8,
+   "12": 28.0,
+   "13": 27.2,
+   "14": 27.1,
+   "15": 27.0,
+   "16": 25.3,
+   "20": 18.3,
+   "24": 16.9,
+   "28": 18.2
+  },
+  "landmarks": {
+   "0": 50.1,
+   "4": 34.3,
+   "8": 34.5,
+   "12": 31.0,
+   "13": 30.0,
+   "14": 30.0,
+   "15": 30.1,
+   "16": 28.3,
+   "20": 20.5,
+   "24": 18.8,
+   "28": 20.8
+  },
+  "people": {
+   "0": 69.7,
+   "4": 44.8,
+   "8": 39.4,
+   "12": 37.4,
+   "13": 36.4,
+   "14": 36.2,
+   "15": 36.7,
+   "16": 36.2,
+   "20": 26.6,
+   "24": 24.4,
+   "28": 24.1
+  },
+  "union": {
+   "0": 143.0,
+   "4": 78.5,
+   "8": 68.5,
+   "12": 61.1,
+   "13": 58.6,
+   "14": 58.4,
+   "15": 60.3,
+   "16": 54.9,
+   "20": 37.8,
+   "24": 33.3,
+   "28": 37.8
+  }
+ },
+ "condition_U": {
+  "cities": 12.5,
+  "companies": 10.7,
+  "landmarks": 11.6,
+  "people": 14.8,
+  "union": 19.5
+ },
+ "command": "python scripts/nn_provenance.py --name qwen35_9b_nn_provenance_kc2_v1 --why Zach (2026-10-30, prereg amendment 63 note 34 + addenda: the provenance probe, qwen3.5-9b) --band 12-16 --competence qwen35_9b_jsuite_v5kc2_test_chat_competence_cand2_v1",
+ "git_commit": "22c80f879de882e6697a2971cb129b0d6852d5b5",
+ "git_state": {
+  "head": "22c80f879de882e6697a2971cb129b0d6852d5b5",
+  "dirty_files": [
+   "scripts/nn_swap.py"
+  ],
+  "untracked_scripts": [
+   "scripts/fig_more.py",
+   "scripts/nn_sd_necessity.py",
+   "scripts/nn_sd_read.py",
+   "scripts/nn_swap38_read.py",
+   "scripts/paper_answer_types_build.py",
+   "scripts/paper_swap_decomp.py",
+   "scripts/queues/h200_n38_1030.sh",
+   "scripts/queues/h200_sd_1030.sh",
+   "scripts/sd_build.py",
+   "scripts/sd_prompts.py"
+  ],
+  "code_diff_sha256": "896f09f956862136d94d80bf93aa1e4a81224794714110e4926093ab51630433"
+ }
+}

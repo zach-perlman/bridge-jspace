@@ -1,0 +1,91 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "muse30_n39_v1",
+  "why": "Zach (2026-10-30, prereg amendment 65 note 39, muse-glimmer-30b): note 39, the paper's prompts decomposed",
+  "note": "prereg amendment 65, note 39",
+  "target": "muse-glimmer-30b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ]
+  },
+  "items": {
+    "file": "data/probe_swap.json",
+    "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796",
+    "n_run": 90,
+    "full": true
+  },
+  "vocabulary": {
+    "file": "data/paper_answer_types.json",
+    "sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0"
+  },
+  "windows": [
+    "8-12",
+    "8-16",
+    "8-20",
+    "8-24",
+    "8-28",
+    "8-32",
+    "8-36",
+    "8-40",
+    "8-44",
+    "8-48"
+  ],
+  "main_band": "29-42",
+  "main_band_rule": "note 20's band 36-42 extended earlier by 1/8 of the depth (as exp02's 27B L24-40 extends L32-40)",
+  "arms": [
+    "bridge",
+    "answer",
+    "bridge_noA",
+    "bridge_noA_nm",
+    "bridge_onlyA",
+    "bridge_offA",
+    "bridge_randA",
+    "bridge_ownA"
+  ],
+  "null_arms": [
+    "bridge",
+    "answer",
+    "bridge_onlyA"
+  ],
+  "greedy_arms": [
+    "bridge",
+    "answer",
+    "bridge_noA",
+    "bridge_onlyA"
+  ],
+  "own_pair_arms": [
+    "bridge",
+    "answer",
+    "bridge_ownA"
+  ],
+  "seeds": {
+    "null": "NULL_SEED 0 + 1000 * item index + arm index (exp02 raw_jlens = bridge 0, exp14 answer 1)",
+    "rand_atoms": "random.Random('n39rand:<target>:<item>')",
+    "off": "frozen in the vocabulary file"
+  },
+  "prompt_end": "auto",
+  "chat_fallback_below": 50,
+  "repro_gate": false,
+  "positions": "every position from 1 (exp02's 'all')",
+  "flip": "swap answer's single-token surfaces at word rank 1 of the next-token logits (strict, formatting excluded)",
+  "command": "scripts/paper_swap_decomp.py --name muse30_n39_v1 --why Zach (2026-10-30, prereg amendment 65 note 39, muse-glimmer-30b): note 39, the paper's prompts decomposed",
+  "git_state": {
+    "head": "7d0dbc6f2f1809510f7cd78e34b57bc98faeb33b",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T08:01:29Z"
+}
