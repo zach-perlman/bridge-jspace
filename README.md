@@ -93,7 +93,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 - **Limits.** Which of the two the lens part holds depends on the setting. With named items and numeric answers (locker scenes), the part readable as words is the item's name; most of its energy matches no word of the scene; at a description (fact passages) it is the remembered attributes, the answer among them<!-- src: docs/depth/README.md | the answer when it is a word tied to the entity (Zach's passages) -->. Even at a named mention it is more than the name in the Qwens: without the name's own directions the swap keeps 0.84 / 0.83 / 0.62 (27B / 9B / Lightning)<!-- src: docs/breadth/README.md | swap keeps 0.84 / 0.83 / 0.62 -->, while Bolt's keeps 0.43<!-- src: docs/breadth/README.md | Bolt's keeps 0.43 -->.
 - **Takeaway.** A lens reading at an entity reports associations, primed by the words, before and regardless of the question. A misleading cue word in a description outranks the true attribute there, on all three models tested (twin set).
 
-![The lens part's 25 directions are the two bridge words, never the answer word](figures/readme/f5_atoms.png)
+![The lens part's 25 directions are the two bridge words, almost never the answer word](figures/readme/f5_atoms.png)
 
 *What the lens directions stand for in the locker scenes: the share of their energy in the old bridge word, the new bridge word, and no word of the scene; right, the answer word's share.*
 
