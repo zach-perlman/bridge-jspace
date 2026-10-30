@@ -46,6 +46,8 @@ border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-m
 .grid td:first-child,.grid th:first-child{text-align:left}.wrap{overflow-x:auto}
 .check{border-left:4px solid var(--oth)}.q{border-top:1px solid var(--line);padding:6px 0;font-size:13px}
 .mach{background:var(--bg);border-left:3px solid var(--val);padding:2px 8px;margin:3px 0}.qa{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:3px}
+.card.done>:not(.hdr):not(.idl){display:none}.card .hdr{cursor:pointer}.card.done .hdr:before{content:'▸ '}.card:not(.done) .hdr:before{content:'▾ '}
+.vtag{margin-left:10px;border-radius:4px;padding:0 6px;font-size:12px;color:#fff;font-weight:400}.vtag.consistent{background:var(--ok)}.vtag.wrong{background:var(--bad)}.vtag.unclear{background:var(--oth)}
 .attn{border-left:3px solid var(--bad);background:rgba(184,67,58,.07);padding-left:8px}.okc{color:var(--ok)}.badc{color:var(--bad)}.mline{margin:6px 0}
 .qa input[type=text]{flex:1;min-width:160px}a.look{cursor:pointer}.flash{outline:3px solid var(--oth);outline-offset:2px;background:var(--hl)}
 """
@@ -57,7 +59,11 @@ async function mark(f){const d=Object.fromEntries(new FormData(f));if(!d.verdict
 d.utc=new Date().toISOString();d.commit=COMMIT;let ok=false;
 if(SERVER){try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}}
 MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
-f.querySelector('.saved').textContent=(SERVER?(ok?'saved to review/marks.jsonl':'server failed, kept locally'):'kept locally')+' · '+d.verdict;return false}
+f.querySelector('.saved').textContent=(SERVER?(ok?'saved to review/marks.jsonl':'server failed, kept locally'):'kept locally')+' · '+d.verdict;
+const c=f.closest('.card');c.dataset.verdict=d.verdict;fold(c,true);const n=nextCard(c);if(n)n.scrollIntoView({behavior:'smooth',block:'start'});return false}
+function fold(c,on){const v=c.dataset.verdict;const t=c.querySelector('.vtag');if(t){t.textContent=v||'';t.className='vtag '+(v||'')}c.classList.toggle('done',!!on&&!!v)}
+function nextCard(c){let n=c.nextElementSibling;while(n&&!n.classList.contains('card'))n=n.nextElementSibling;return n}
+function toggleCard(h){const c=h.closest('.card');if(!c.dataset.verdict)return;c.classList.toggle('done')}
 function look(a,anchor){const card=a.closest('.card');let el=card.querySelector('[data-anchor="'+anchor+'"]');
 if(!el){alert('this panel is not on the card');return false}
 let d=el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}
@@ -74,7 +80,7 @@ if(SERVER){try{const x=await fetch('/mark',{method:'POST',headers:{'Content-Type
 MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
 q.querySelector('.qsaved').textContent=SERVER?(ok?'saved':'server failed, kept locally'):'kept locally';derive(box)}
 function confirmH3(btn){const box=btn.closest('.h3');box.querySelectorAll('.q').forEach(q=>{const r=q.querySelector('input[type=radio]:checked');if(r)answerQ(r)})}
-addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.check').forEach(derive));
+addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.check').forEach(derive);document.querySelectorAll('.card').forEach(c=>fold(c,true))});
 function download(){const b=new Blob([MARKS.map(m=>JSON.stringify(m)).join('\\n')+'\\n'],{type:'application/json'});
 const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='marks.jsonl';a.click()}
 """
@@ -708,8 +714,8 @@ def card(it: dict, seed: int, server: bool, mark: dict | None, answers: dict | N
             + (f" · {'write' if x8['kind'] == 'write' else 'random direction'} from slot {x8['j']} to slot {x8['k']}, "
                f"dose s = {x8['s']:g}" if x8 else ""))  # fmt: skip
     status = "" if it["in_set"] else " " + tag(it["status"], "st")
-    parts = [f"<div class='card{'' if it['in_set'] else ' outside'}'><div class='hdr'>{head}{status}</div>"
-             f"<div class='mut' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
+    parts = [f"<div class='card{'' if it['in_set'] else ' outside'}' data-verdict='{E((mark or {}).get('verdict', ''))}'><div class='hdr' onclick='toggleCard(this)'>{head}{status}<span class='vtag'></span></div>"
+             f"<div class='mut idl' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
@@ -799,7 +805,7 @@ def sweep_card(it: dict, seed: int, mark: dict | None) -> str:
     head = (f"{E(I.spec()['models'][m]['label'])} · L {it['layer']} (sweep L{lo}–L{hi}) · run {E(it['run'].split('/')[-1])} "
             f"· scene {E(it['scene'])} · {I.READER_NAME[w0]}")  # fmt: skip
     parts = [
-        f"<div class='card'><div class='hdr'>{head}</div><div class='mut' style='font-size:11px'>{E(it['id'])}</div>"
+        f"<div class='card' data-verdict='{E((mark or {}).get('verdict', ''))}'><div class='hdr' onclick='toggleCard(this)'>{head}<span class='vtag'></span></div><div class='mut idl' style='font-size:11px'>{E(it['id'])}</div>"
     ]
     if c is None:
         return "".join(parts) + "<p>No case for this scene in the run's cases.jsonl.</p></div>"
@@ -899,8 +905,8 @@ def prepend_card(it: dict, seed: int, mark: dict | None) -> str:
     head = (f"{E(I.spec()['models'][m]['label'])} · layer {it['layer']} · run {E(it['run'].split('/')[-1])} · base scene "
             f"{E(it['scene'])} · {I.READER_NAME[w0]} · C2 (another item moved)")  # fmt: skip
     status = "" if it["in_set"] else " " + tag(it["status"], "st")
-    parts = [f"<div class='card{'' if it['in_set'] else ' outside'}'><div class='hdr'>{head}{status}</div>"
-             f"<div class='mut' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
+    parts = [f"<div class='card{'' if it['in_set'] else ' outside'}' data-verdict='{E((mark or {}).get('verdict', ''))}'><div class='hdr' onclick='toggleCard(this)'>{head}{status}<span class='vtag'></span></div>"
+             f"<div class='mut idl' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
     if c is None:
         return "".join(parts) + "<p>No case for this base scene in the run's cases.jsonl.</p></div>"
     rows = [

@@ -243,3 +243,12 @@ def test_per_view_reads_the_five_and_counts_the_rest_as_extra(tmp_path):
     assert (x["sample"], x["read"], x["wrong"], x["consistent"], x["extra"]) == (5, 2, 1, 1, 1)
     line = Q.deck_line("main_swap", rows, [])
     assert line.startswith("main_swap: 5 items: 1 consistent, 1 wrong, 0 unclear") and "1 extra" in line and "machine:" in line
+
+
+def test_a_marked_card_folds_to_its_header():
+    it = two_items("main_swap")[0]
+    html = P.card(it, 29, False, {"verdict": "wrong"})
+    assert "data-verdict='wrong'" in html and "toggleCard(this)" in html and "class='vtag'" in html
+    assert "data-verdict=''" in P.card(it, 29, False, None)
+    page = P.page("t", html, False, "x")
+    assert ".card.done>:not(.hdr):not(.idl){display:none}" in page and "function fold(" in page and "nextCard(c)" in page
