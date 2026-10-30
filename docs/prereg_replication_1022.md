@@ -3961,3 +3961,13 @@ Choices, made in Zach's absence by the defaults the design proposed:
   - press_vis giving in under bridgeJ is within 5 points of paper10_rot's.
 - It is re-read against bridgeJ_rot once note 54 runs on the 27B.
 - The 9B and Lightning were seen, so for them it is descriptive.
+
+##### Amendment 73, addendum (box clock at commit; before any note 56 run beyond the builder's 8-item 9B smokes, which are mechanics only)
+Implementation choices made by the builder where the text was literal or open. They are recorded here before the full runs.
+- **mu.** The first letter is lower-cased only when the r1 prompt starts with "The". This matches TwoHopFact's own mu (r2(r1(e1)).subject) on 6,060 of 6,061 facts. The literal rule would lower-case 1,810 person names ("ketanji Brown Jackson's ...").
+- **C2's bound.** paper10's raw instr_vis loss is compared with max(10, paper10's raw hyp_vis loss / 3), following note 40's G2 convention. The version against C1's specific loss is printed beside it.
+- **C4's keepA "net".** It is net of paper10_rot, since no keepA_rot is in the edit list.
+- **C3's cell.** It is chosen by the unedited first-token e3' share. C0's 90% agreement gate applies to instr_vis and hyp_vis; the prem and press agreement is printed.
+- **D1's solo rows** come from note 40's run of the same model (same items, prompts and read layers).
+- **The peer-name filter** is applied in the reader (names as written, on e2' alone). The GPU runs the full test set.
+- **press_vis** is rerun in-run as the reference. Its rows are not byte-identical to note 40's (batch composition), so no row-level diff against note 40 is read.
