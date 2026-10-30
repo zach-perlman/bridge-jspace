@@ -4151,3 +4151,17 @@ Both readings sat at their floor. No edited result was read.
 Not seen: note 56c on these models.
 
 **Run.** The same conversations, wording (amendments 80 / 81), category, edits, gate and readings on the 27B and Lightning, test split. Confirmatory on both. Lightning is read beside all controls; its note 56 C1 was not shown against same-size PCA, which is carried into Q1 / Q2 unchanged.
+
+#### Amendment 83 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any run of it): the mechanism controls on the 27B's and Lightning's other v4 draws (GPU fill after the queue empties)
+**Seen.**
+- Notes 49 / 50 / 57 on draw 4001 for all three models. Note 57's S1, D1 and A1 are met on all three; note 50's P1 is "not matched" on Lightning.
+- Notes 49 / 50 on draws p4002 and p4003 for the 9B (all labels replicate).
+
+Not seen: any of these notes on p4002 / p4003 for the 27B or Lightning, or note 57 on any other draw.
+
+**Why.** CLAUDE.md asks for at least 3 seeds before a result is called positive. The 27B and Lightning have one draw for the mechanism controls.
+
+**Runs** (unchanged conditions, readers and readings; each draw's own competence and control runs):
+- note 57 on p4002 and p4003 for the 27B, Lightning and the 9B (first);
+- then notes 49 + 50 on p4002 and p4003 for the 27B and Lightning.
+- "Replicates" means the same registered label as on draw 4001. No pooling.
