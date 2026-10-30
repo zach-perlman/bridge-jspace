@@ -4368,3 +4368,20 @@ These are builder choices, recorded so the run is read as built:
 - **Kill:** keepA rescue < 0.5 or S1 < 0.5 on >= 2 readable non-country relations (or on the pool, if fewer than 2 are readable) = "the mechanism is specific to country-type answers".
 - **Pass:** K, S1 and E met on the pool and on every readable relation = "the answer-direction account holds beyond country answers".
 - Otherwise "partly", with the relations named.
+
+##### Amendment 86, addendum: note 63 as implemented (box clock at commit; before any note 63 full run; only the 8-item 9B smoke seen)
+- **Relations** (jsuite_v2_test_chat's MP/MM words):
+  - non-country: animals (6 classes), countries -> continent (5), languages (16).
+  - 12 of the 16 languages share their word with a nationality adjective, so languages is only partly separate from country-type answers. Animals and continents are the clean tests, and the kill / pass labels are also printed on {animals, continents} alone, beside.
+  - Country-type, printed beside: cities, companies, dishes, landmarks, people.
+- **Gate:** note 37's v4_split needs a v4 control set and an H1 run, which v2 lacks. The closest version: per word, whole + hop 1 + hop 2 right (cand2), plus v4_split's guess-wrong rule applied in the reader. The per-word-only gate is printed beside.
+  - Gated MP / MM, 9B: animals 14/25, continents 18/48, languages 12/36.
+  - 27B: 20/27, 29/38, 24/37.
+  - Lightning: 12/32, 11/43, 15/36.
+  - Relations under 30 MM are read in the pool only.
+- **Conditions:** paper10, paper10_keepA, paper10_onlyA, paper10_onlyRperp, top30 / top100 with keepA and keepRE, ansJ, ansRe, each with its _rot.
+- **Readings:**
+  - **K** is note 37's full rule.
+  - **E** is note 57's D1, met only if met at both K = 30 and K = 100.
+  - **"keepA rescue"** in the kill rule = 1 - ratio.
+- **Stored check:** ablate_v2 is unchanged (git diff empty). Against an older stored v2 run, reads agree but log p is not bit-identical (bf16 batch mix and code since 5c88cbc).
