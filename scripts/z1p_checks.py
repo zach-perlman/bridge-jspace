@@ -119,6 +119,13 @@ def main() -> Path:
     n_boot = X.N_BOOT
     full = numbers(rows, set(), n_boot)
     res["full"] = full
+    den = {}
+    for r in rows:
+        if r["layer"] == 12 and r["arm"] in ("none", "whole", "no_jpp", "no_jpp_rand"):
+            den.setdefault(r["reader"], {}).setdefault(r["arm"], [0, 0])
+            den[r["reader"]][r["arm"]][0] += int(r["switched"])
+            den[r["reader"]][r["arm"]][1] += 1
+    res["denominators"] = {"lookup (K)": den["K"], "recall (M)": den["M"], "format": "arm: [switched, rows]"}
     # ---- C3: the four rows
     four = {}
     for scene in FOUR:

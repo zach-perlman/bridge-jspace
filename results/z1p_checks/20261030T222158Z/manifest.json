@@ -1,0 +1,10 @@
+{
+  "exp": "z1p_checks",
+  "post_hoc": true,
+  "cpu": true,
+  "model": "qwen3.5-9b",
+  "run": "qwen35_9b_x52_z1p",
+  "rule_F4": "if the lookup's blocked-beyond-random moves by more than 0.05 or its interval stops including 0, report it as a change to the claim; otherwise a caveat line",
+  "gpu_part_F5": "not run: the 9B is not loaded on the pod",
+  "written_utc": "20261030T222158Z"
+}
