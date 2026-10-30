@@ -4574,3 +4574,24 @@ It is our MP twin in another format: recall a key (the bridge) from memory, then
   - edits are note 59's queue list (with ansJ_rot); items as note 59;
   - if chk_wrong's unedited K share is < 60%, F2 is reported as the orig − peer logit-margin change with a CI and no label.
 - **Both notes:** --gen-edited (12-token generation under every edit) is on for every model. Generation-based shares are used where first-token agreement is < 90%.
+
+##### Amendment 88, addendum 3: note 67 as implemented (box clock at commit; before any full-run result; only the 8-item 9B smoke seen)
+- **Templates:** six neutral sentences. Two have a lead-in so that C is never token 0 ("Last month, {C} hosted the event.", "Yesterday, {C} came up in conversation.").
+- **Fit population:**
+  - every city in the model's known-run items (both splits): 9B 129 cities / 67 countries; Lightning 259 / 83; 27B 187 / 75. No city has two countries.
+  - **v4:** the 224 MM bridges of draw 4001, classed by their 106 MM answers.
+  - The fit is deterministic and shared by the smoke and the full run.
+- **Ranks (9B smoke):** raw 128, country 66, clean 62 at every layer. The clean subspace holds 0.27-0.33 of the centred city energy.
+- **Read:**
+  - first token on every model;
+  - edited 12-token generation is NOT run (about 12x cost);
+  - first-token agreement is printed per conversation and flagged if under 90%.
+- **R2-P population:** as note 62's R2, the gated no-shortcut stratum (primary; small), with the gated set beside.
+- **v4 stage:**
+  - its fit check is read on MP, with MM beside;
+  - the MP positive control is entClean - entClean_RE >= 15 on MP;
+  - the queue runs the v4 stage only if the sd stage's R1 holds, as registered ("read only if R1 holds").
+- **cityClean_RJ** (random J++ rows, beside) uses one seeded pool per layer. The registered _RE is per item and layer.
+- **Seen in the smoke** (n = 8, not a result):
+  - at the early band, energy-matched Gaussian removal of the raw subspace is as destructive as the raw subspace, so the early-band fit check may be "not readable";
+  - random J++ rows at matched energy are far harsher than random Gaussian directions.
