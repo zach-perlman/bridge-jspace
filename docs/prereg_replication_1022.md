@@ -4084,3 +4084,18 @@ Not seen: any condition below on these draws or split.
   - "the readout's removal moves holders": the excess is met in both strata;
   - "not shown": otherwise.
 - On the 9B and Lightning this reading is post hoc.
+
+#### Amendment 79 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any note 57 run on these models): note 57 on Lightning and the 27B
+**Seen.**
+- Note 57 on the 9B: S1, D1 and A1 met.
+- Notes 49 and 50 on Lightning:
+  - P1 / P2 "not matched": R8perp holds E 0.37, below E_A 0.49;
+  - P3 "sufficient";
+  - P4 "answer-specific removal".
+
+Not seen: note 49 / 50 on the 27B (running at commit time), and any note 57 condition on Lightning or the 27B.
+
+**Run.** Note 57's conditions, readings and reader, unchanged, on Lightning (main band L27-33) and the 27B (L32-40), with v4 draw 4001 and note 49's settings.
+- onlyRperp's rows are added until E_A is reached. That gives Lightning's placebo question the energy match that note 50's fixed R4 / R8 perps lacked.
+- Confirmatory on both models.
+- Lightning is read beside its own rotations, since it is not bit-reproducible.
