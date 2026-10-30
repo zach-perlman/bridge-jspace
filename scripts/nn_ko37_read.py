@@ -191,11 +191,16 @@ def table(name: str, m: dict) -> list[str]:
     return lines
 
 
-def main(P: str) -> dict:
+def main(P: str, set_name: str | None = None) -> dict:
+    """set_name (amendment 68 note 43): read one v4-format set's {P}{set}_ko37_cand2_v1 instead (v4 part only), written to
+    {P}{set}_note37.json; default: v4 and v4cc, {P}note37.json."""
     out: dict = {"prefix": P, "v4": {}, "v4cc": {}}
     lines = []
-    for tag, SET, old in (("v4", "jsuite_v4_test_chat", f"{P}jsuite_v4_test_chat_ko_cand2_v1"),
-                          ("v4cc", "jsuite_v4cc_test_chat", f"{P}jsuite_v4cc_test_chat_ko_cand2_v1")):  # fmt: skip
+    sets = (("v4", "jsuite_v4_test_chat", f"{P}jsuite_v4_test_chat_ko_cand2_v1"),
+            ("v4cc", "jsuite_v4cc_test_chat", f"{P}jsuite_v4cc_test_chat_ko_cand2_v1"))  # fmt: skip
+    if set_name:
+        out["set"], sets = set_name, (("v4", set_name, f"{P}{set_name}_ko_cand2_v1"),)
+    for tag, SET, old in sets:
         run = f"{P}{SET}_ko37_cand2_v1"
         if not (RES / "ablate_v2" / run / "rows.jsonl").exists():
             out[tag] = {"run": run, "missing": True}
@@ -223,10 +228,16 @@ def main(P: str) -> dict:
         out[tag] = rec
     d = RES / "ablate_v2" / "nn_ko_read"
     d.mkdir(parents=True, exist_ok=True)
-    (d / f"{P}note37.json").write_text(json.dumps(out, indent=1) + "\n")
+    (d / (f"{P}{set_name}_note37.json" if set_name else f"{P}note37.json")).write_text(json.dumps(out, indent=1) + "\n")
     print("\n".join(lines))
     return out
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "")
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("prefix", nargs="?", default="")
+    ap.add_argument("--set", default=None, help="note 43: another v4-format set (e.g. jsuite_v4p4002_test_chat)")
+    a = ap.parse_args()
+    main(a.prefix, a.set)

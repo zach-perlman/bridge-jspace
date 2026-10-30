@@ -104,10 +104,13 @@ def gap_ratio(num: dict, den: dict, items: dict, cond_num: str, cond_den: str) -
     return {"ratio": round(v, 3) if v == v else None, "ratio_ci": [x / 100 for x in ci] if ci else None}
 
 
-def main(P: str) -> dict:
-    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / SET / "items.jsonl").open()}
-    runs = {"A": f"{P}{SET}_ko41_cand2_v1", "B": f"{P}{SET}_ko41_posfinal_cand2_v1", "n37": f"{P}{SET}_ko37_cand2_v1"}
-    out: dict = {"prefix": P, "runs": runs}
+def main(P: str, set_name: str = SET, run_a: str | None = None, run_n37: str | None = None) -> dict:
+    """Defaults: note 41 on v4. Amendment 68 note 43: set_name (another v4-format set) and run_a / run_n37 (both may name one
+    run holding note 37's and note 41's conditions); written to {P}{set}_note41.json when set_name is not v4's."""
+    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / set_name / "items.jsonl").open()}
+    runs = {"A": run_a or f"{P}{set_name}_ko41_cand2_v1", "B": f"{P}{set_name}_ko41_posfinal_cand2_v1",
+            "n37": run_n37 or f"{P}{set_name}_ko37_cand2_v1"}  # fmt: skip
+    out: dict = {"prefix": P, "runs": runs, **({"set": set_name} if set_name != SET else {})}
     miss = [k for k, r in runs.items() if not (RES / "ablate_v2" / r / "rows.jsonl").exists()]
     if miss:
         out["missing"] = [runs[k] for k in miss]
@@ -117,11 +120,11 @@ def main(P: str) -> dict:
     lines = []
     if "A" in acc:
         out["A"] = K.measures(acc["A"], items, every, CONDS_A)
-        out["A"]["stored_check"] = K.stored_check(acc["A"], runs["n37"])
+        out["A"]["stored_check"] = K.stored_check(acc["A"], runs["n37"]) if runs["A"] != runs["n37"] else {"same_run": runs["A"]}
         lines += K.table(f"note 41 run A {P or '27b_'}", out["A"])
     if "B" in acc:
         out["B"] = K.measures(acc["B"], items, every, CONDS_B)
-        out["B"]["stored_check"] = K.stored_check(acc["B"], f"{P}{SET}_ko_posfinal_cand2_v1")
+        out["B"]["stored_check"] = K.stored_check(acc["B"], f"{P}{set_name}_ko_posfinal_cand2_v1")
         lines += K.table(f"note 41 run B (final token only) {P or '27b_'}", out["B"])
     if "n37" in acc:
         out["n37"] = K.measures(acc["n37"], items, every)
@@ -172,15 +175,23 @@ def main(P: str) -> dict:
         lines.append(f"  output side: ansJ final-only gap {gF} / all-position gap {gJ} = {out['output_side']['share']} {rr['ratio_ci']} -> {out['output_side']['reading']}")
     for k in ("A", "B"):
         sc = out.get(k, {}).get("stored_check")
-        if sc and not sc.get("missing"):
+        if sc and not sc.get("missing") and not sc.get("same_run"):
             lines.append(f"  run {k} stored check ({sc['stored_run']}): " + "; ".join(
                 f"{c} {v['n_both']}/{v['n_new']} same read {v['same_correct']} same logp {v['same_logp_bits']}" for c, v in sc.items() if c != "stored_run"))
     d = RES / "ablate_v2" / "nn_ko_read"
     d.mkdir(parents=True, exist_ok=True)
-    (d / f"{P}note41.json").write_text(json.dumps(out, indent=1) + "\n")
+    (d / (f"{P}note41.json" if set_name == SET else f"{P}{set_name}_note41.json")).write_text(json.dumps(out, indent=1) + "\n")
     print("\n".join(lines))
     return out
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "")
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("prefix", nargs="?", default="")
+    ap.add_argument("--set", default=SET, help="note 43: another v4-format set")
+    ap.add_argument("--run-a", default=None, help="the run with note 41's conditions (default {P}{set}_ko41_cand2_v1)")
+    ap.add_argument("--run-n37", default=None, help="the run with note 37's conditions (default {P}{set}_ko37_cand2_v1)")
+    a = ap.parse_args()
+    main(a.prefix, a.set, a.run_a, a.run_n37)

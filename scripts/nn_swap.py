@@ -230,6 +230,8 @@ def v4_split(comp: str, cv_h1: str, set_name: str = "jsuite_v4_test_chat") -> di
     # the controls' own set: v4 family jsuite_v4* -> jsuite_v4ctl* (scripts/jsuite_v4.py); amendment 60: jsuite_v5<tag>_test_chat ->
     # jsuite_v5<tag>ctl_test_chat
     ctl_set = set_name.replace("jsuite_v4", "jsuite_v4ctl") if set_name.startswith("jsuite_v4") else set_name.replace("_test_chat", "ctl_test_chat")
+    if re.fullmatch(r"jsuite_v4p\d+_test_chat", set_name):  # amendment 68 note 43: the extra v4 draws' controls are
+        ctl_set = set_name.replace("_test_chat", "ctl_test_chat")  # jsuite_v4p<seed>ctl_test_chat (other sets as before)
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / ctl_set / "items.jsonl").read_text().splitlines()}
     h1 = {}
     for line in (pins.RESULTS_DIR / "competence_variants" / cv_h1 / "rows.jsonl").read_text().splitlines():
