@@ -4477,3 +4477,76 @@ Build and run order, by priority: 64, 65, 66 in one builder (they share sd_promp
   - **R1 fails at both bands (with the fit check met)** = "answer-orthogonal removal is blind to the subject here; claim 4 is untestable with this family".
   - **R2 (only if R1 holds):** the same contrast on note 62's (P) parametric two-hop, beside its (I), stating which band.
 - **Caveat, registered:** if the subject's country is already written at C's token before the band, a mid-band null is expected. That is why the early band is included.
+
+#### Amendment 88 (Zach's session, 2026-10-30, box clock at commit; Zach reviewed every design choice in four multiple-choice rounds at ~15:30-15:45 ET; before any code or run of notes 64-67): notes 64-67 as decided. This replaces amendment 87's text for these notes.
+**Seen before writing:** as amendment 87, plus note 63 still running (no readings seen).
+
+##### Note 64: dropped (not run)
+It is our MP twin in another format: recall a key (the bridge) from memory, then read the answer from context. C1 already measures this.
+- Caveat for C1 (wording only): MP may be solved by recognising the bridge among the passage's names rather than recalling it. Note 59's A1 shows recognition survives the knock-out.
+
+##### Note 65 (as decided): generate vs verify a single claim, same facts, one knock-out (person-birthcity-country, test split, gated as note 59; 9B primary, Lightning confirmatory, 27B descriptive)
+- **Forms** (solo frame, no peers):
+  - G: note 59's solo generation;
+  - V+: "Claim: The city where {e1} was born is in the country of {e3}. Is the claim correct? Answer Yes or No.";
+  - V-: the same with note 59's same-category e3';
+  - C2: note 59's A1 forced choice in the solo frame, beside.
+- **Edits:** note 59's list at the mid band, all positions: none, paper10, paper10_rot, paper10_pcasize, unembed10, ansJ; plus ansRe (energy-matched random, note 57's loop).
+- **Read:** d = logit(" Yes") - logit(" No") at the answer position.
+- **Validity:** Yes / No in the top-2 tokens in >= 90% of rows; unedited balanced accuracy >= 85%. Otherwise "the model cannot verify in this format", and nothing below is read.
+- **Primary reading (V1):** balanced absolute accuracy, the mean of [d(V+) > 0] and [d(V-) < 0]. L_V = paper10's loss of it minus the largest control loss (rot, pcasize, unembed10). L_G = G's spec loss in-run.
+  - L_V <= max(10, L_G / 3), upper end < L_G / 2 = "verification survives the knock-out".
+  - L_V >= L_G / 2, lower end > 0 = "verification needs the J-space".
+  - Else "partly".
+- **Beside:**
+  - V- accuracy alone ("can it reject a false claim on its own");
+  - paired ranking P(d(V+) > d(V-));
+  - the yes-bias shift (mean d) vs rotation;
+  - C2;
+  - ansJ vs ansRe on V1.
+- **Caveat, stated now:** paper10 protects the clean top-10 outputs (here Yes / No-type tokens).
+
+##### Note 66 (as decided): copy licensing, can a forbidden but relevant peer answer be copied? (person-birthcity-country; 9B primary, Lightning confirmatory, 27B descriptive)
+- **Final line in every cell:** "Agent 1: The city where {e1} was born is in the country of" (plain two-hop, no city stated).
+- **Cells:**
+  - chk_agree: Agent 2 states e3. Moderator: "Agent 1, do not rely on Agent 2's answer. Work it out yourself."
+  - chk_solo: no Agent 2; the same moderator line, minus its first sentence.
+  - chk_copy: Agent 2 states e3. Moderator: "Agent 1, report Agent 2's answer." This is the licensed copy, the positive control for sparing.
+  - chk_wrong: Agent 2 states e3'; the same moderator line as chk_agree.
+- **Edits:** note 59's list at the mid band, all positions.
+- **Validity (unedited):**
+  - K share >= 90% in chk_solo, chk_agree and chk_copy; chk_wrong K share >= 60% (else F2 is read in log-odds);
+  - first-token agreement >= 90% (the 27B falls back to 12-token generation);
+  - controls: chk_copy spec loss <= 10, and D = chk_solo spec loss >= 20. Otherwise "not readable".
+- **Readings:** S = paper10's spec loss of e3, the minimum over rot, pcasize and unembed10.
+  - **F1 (primary):** S(chk_agree) <= max(10, D / 3) with upper end < D / 2 = "a forbidden but relevant answer is copied". S(chk_agree) >= 2/3 D and >= 20, lower end > 0 = "a forbidden answer is not copied; the agent re-derives". Else "partly".
+  - **F2:** paper10's spec gain of e3' in chk_wrong >= 15, lower end > 0 = "a recall-damaged agent writes a forbidden wrong peer answer as its own".
+- Framed as copy licensing, not as faithfulness.
+
+##### Note 67 (as decided): a positive control built from data for answer-orthogonal removal, then the bridge (9B primary, Lightning confirmatory, 27B descriptive)
+- **City-identity subspace:**
+  - every city in the person-birthcity-country set (dev and test), each in ~6 neutral sentences that never mention its country (for example "I visited {C} last year.", "{C} hosted the event.");
+  - the residual at C's last token, averaged per city, centred over cities, per layer of each band;
+  - no answer labels are used for the city means.
+- **Cleaning:**
+  - project off a data-defined country subspace: country class means of the same city vectors (cities grouped by their country), centred. This uses test countries, which only makes a pass harder;
+  - then, per item, project off the J++ forms of the item's answers (as bridgeJperp);
+  - no direction cap; the rank is logged.
+- **Arms:** from the question's first token on (note 62's mask), at note 62's mid band and an earlier band (9B L6-10, Lightning L14-20, 27B L16-24):
+  - none;
+  - cityClean (the cleaned subspace);
+  - cityClean_RE (seeded random residual-space directions, added until the removed energy matches, per item and layer);
+  - cityRaw (uncleaned) and cityRaw_RE (the fit check);
+  - bridgeJperp (note 62's);
+  - beside: a random J++ dictionary control.
+- **Prompts:** note 62's (O) one-hop "{C} is in the country of"; (P) solo two-hop; (I) in-context two-hop, beside.
+- **Readings** (first-token K share; bootstrap CI, bridge-clustered beside):
+  - **Fit check:** cityRaw - cityRaw_RE >= 15 on (O), lower end > 0, at the band read. Otherwise "not readable" at that band.
+  - **R1 (positive control):** on (O), cityClean - cityClean_RE >= 15, lower end > 0, at either band = "an answer- and country-orthogonal removal sees the subject; the J++ null is a lens-coverage fact". Fails at both bands (fit check met) = "this removal family is blind to the subject; claim 4 is untestable with it".
+  - **R2-P (read only if R1 holds, at R1's band):** on (P), cityClean - cityClean_RE >= 15, lower end > 0 = "latent two-hop recall needs the bridge city's non-answer identity".
+- **v4 stage (read only if R1 holds):**
+  - an entity-identity subspace for v4 draw 4001's bridges (people, cities, companies, landmarks, films), from the same neutral templates, cleaned of a data-defined answer-class subspace (class means by each bridge's answer) and of the relation's answer span A;
+  - removed from the v4 question's first token on (the passage, which names the bridge, is untouched), at the main band and the early band;
+  - controls: energy-matched random residual directions, plus the raw fit check.
+  - **R2-v4 (primary):** MM loss beyond random >= 15, lower end > 0 = "latent recall needs the bridge's identity beyond its answer".
+  - **MP is an in-set positive control:** in lookup the bridge is the key for finding the row, so MP must lose >= 15 beyond random. Otherwise the v4 stage is "not readable".
