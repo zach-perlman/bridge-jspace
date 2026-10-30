@@ -1,5 +1,5 @@
-"""The setup figures as specs (p0a, p0b: the root README's Setup), and the helpers the table figures share (ctrl,
-conflict). The deck's claim figures p1-p9 were retired on 30 Oct (Dan: labels collided): the table style replaces
+"""The setup figure p0b (the root README's three tools) as a spec, and the helpers the table figures share (ctrl,
+conflict); p0a is a table figure (figkit/depth_figs.py datasets). The deck's claim figures p1-p9 were retired on 30 Oct (Dan: labels collided): the table style replaces
 them (figkit/tables.py: r1-r5, f2-f12, for the README and the slides). SPECS maps id -> function."""
 
 from __future__ import annotations
@@ -25,16 +25,10 @@ def conflict(m: str, reader: str):
 
 
 # ---- slides 2, 3 ----------------------------------------------------------------------------------------------------
-def setup_datasets() -> Figure:
-    return Figure("p0a_datasets", "One question, two kinds of answer, two datasets.",
-                  "figures/shared/j0_setup.png, its top half (a diagram, not re-drawn).",
-                  [Image("figures/shared/j0_setup.png", (0, 0.5))])  # fmt: skip
-
-
 def setup_tools() -> Figure:
     return Figure("p0b_tools", "Three tools, one target: the lens part at the bridge.",
                   "figures/shared/j0_setup.png, its bottom half (a diagram, not re-drawn).",
                   [Image("figures/shared/j0_setup.png", (0.5, 1))])  # fmt: skip
 
 
-SPECS = {f().id: f for f in (setup_datasets, setup_tools)}
+SPECS = {f().id: f for f in (setup_tools,)}

@@ -1,4 +1,5 @@
-"""The depth README's own table-style figures (the 01:58 brief, Section 2), beside exemplars.py's r1-r5."""
+"""The READMEs' own table-style figures beside exemplars.py's r1-r5: the 2x2 (depth, the 01:58 brief) and the
+datasets figure (root README, p0a; Dan 30 Oct: redrawn in the table style, no title inside)."""
 
 from __future__ import annotations
 
@@ -60,3 +61,34 @@ def two_by_two():
 
     t.extra.append(groups)
     t.render(f"{X.OUT}/t12_two_by_two.png")
+
+
+def datasets():
+    """p0a: the two kinds of prompt as a table. Rows: the fact passages (question, the lookup's passage, the recall's)
+    and the locker scenes (scene, lookup question, recall question); the bridge in bold; the answer and where it comes
+    from in the right column, lookup purple, recall ink."""
+    B = "bold"
+
+    def words(*parts):
+        return [(t, INK, B if bold else "normal") for t, bold in parts]
+
+    rows = [
+        (Row("Fact passages"), words(("Question: ", False), ("The composer who wrote The Magic Flute", True),
+                                     (" was of which nationality?", False)), []),
+        (Row("", "lookup"), words(("“… ", False), ("Mozart", True), (" was Austrian by birth. …”", False)),
+         [("Austrian", C["lookup"], B), ("  in the passage", MUTED, "normal")]),
+        (Row("", "recall"), words(("“… A reader asked a question about ", False), ("Mozart", True),
+                                  (" in the letters page. …”", False)),
+         [("Austrian", C["recall"], B), ("  from memory", MUTED, "normal")]),
+        (Row("Locker scenes"), words(("The locker of carbon is 3. The locker of helium is 5. Eric picked ", False),
+                                     ("carbon", True), (".", False)), []),
+        (Row("", "lookup"), words(("Which locker belongs to Eric's pick?", False)),
+         [("3", C["lookup"], B), ("  in the scene", MUTED, "normal")]),
+        (Row("", "recall"), words(("What is the atomic number of Eric's pick?", False)),
+         [("6", C["recall"], B), ("  from memory", MUTED, "normal")]),
+    ]  # fmt: skip
+    t = Table([r for r, _, _ in rows],
+              [Col(7.6, "Prompt", "the bridge in bold", lambda i, _r: rows[i][1], text=True),
+               Col(2.1, "Answer", "and its source", lambda i, _r: rows[i][2] or [("", MUTED, "normal")], text=True)],
+              label_w=1.75, labels=False)  # fmt: skip
+    t.render(f"{X.OUT}/p0a_datasets.png")
