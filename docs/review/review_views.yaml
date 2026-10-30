@@ -291,11 +291,11 @@ common_questions:
     machine: "check(\"only the scene's words differ\") + ' | ' + check('answers decode right')"
   - id: H2
     human: true
-    text: 'Read "What the model answered". Does its one-line story (switched / blocked / kept, per reader) match the stored numbers?'
-    look_at: '"What the model answered" and the stored numbers'
+    text: 'Read "What the model answered" and the stored numbers. Does the sentence below say what really happened to each reader?'
+    look_at: '"What the model answered" (answer under each change) and the stored numbers table'
     anchor: answers
-    yes_if: "the machine's one-sentence story is what the answers and the stored numbers show"
-    protects_against: "a story that disagrees with the numbers means a label, an arm or a reader is mixed up"
+    yes_if: "for each reader the sentence matches the answers shown: switched = it gave the changed answer instead of the original; blocked = after removing the part it went back to the original answer; not blocked = it still gave the changed answer"
+    protects_against: "if the sentence is wrong, a label, an arm or a reader got mixed up, and every count built from the labels is wrong too"
     kind: check
     machine: "story()"
   - id: H3

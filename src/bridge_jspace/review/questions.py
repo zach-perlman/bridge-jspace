@@ -222,18 +222,24 @@ class Env:
         for w in ("PM", "PP"):
             name, rows = I.READER_NAME[w], self.it["rows"].get(w) or {}
             if pairs:
+                rd = self.it["case"]["readers"][w]
+                a, b = rd["answer"], rd["cf_answer"]
+                head = f"{name} (original answer {a}, changed answer {b}):"
                 sw = self.switched(w, self.whole)
                 if sw is None:
-                    parts.append(f"{name}: no row under '{self.whole}'")
+                    parts.append(f"{head} no row under '{self.whole}'")
                 elif not sw:
                     after = (self.it.get("order") or {}).get("original") == "after"
-                    parts.append(f"{name}: did not switch" + (" (locker after the pick)" if w == "PP" and after else ""))
+                    parts.append(f"{head} the whole change did not switch it, it stayed {a}"
+                                 + (" (the locker sentence comes after the pick, so there is nothing for the lookup to follow)" if w == "PP" and after else ""))  # fmt: skip
                 else:
-                    bits = ["switched"]
+                    bits = [f"the whole change switched it to {b}"]
                     for arm, rnd, phrase in pairs:
-                        bits.append(("kept" if self.switched(w, arm) else "blocked") + f" without {phrase}")
-                        bits.append(("kept" if self.switched(w, rnd) else "blocked") + " without its random part")
-                    parts.append(f"{name}: " + ", ".join(bits))
+                        bits.append(f"without {phrase} it still switched to {b} (not blocked)" if self.switched(w, arm)
+                                    else f"without {phrase} it stayed {a} (blocked)")  # fmt: skip
+                        bits.append(f"without its random part it still switched to {b} (not blocked)" if self.switched(w, rnd)
+                                    else f"without its random part it stayed {a} (blocked)")  # fmt: skip
+                    parts.append(f"{head} " + "; ".join(bits))
             else:
                 labels = [lb for lb in (self.view.get("decisive") or list(rows)) if lb in rows and lb not in ("unedited", "unwritten")]
                 parts.append(f"{name}: " + "; ".join(f"{lb}: {self._outcome(w, rows.get(lb))}" for lb in labels))
