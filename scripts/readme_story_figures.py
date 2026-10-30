@@ -4476,16 +4476,20 @@ SUPP_FIGS = (
 # address (Fig. 19) and the order cell (Fig. 20), its dose card moves to the ledger (Fig. 16 to the second sheet); Part
 # III gains the monitor (Fig. 23), the refit (Fig. 9b refit) and code and tool output (Fig. 21); Part IV Lightning's
 # attention blocks (Fig. 22)
-README_NAMES = ("fig11_scorecard", "fig00_setup", "fig00b_marks", "fig01_split", "fig18_atoms",
-                "fig20_order_cell", "fig07_writes", "fig07b_verbal", "fig23_monitor", "fig17_jspace_last_token",
-                "fig12_two_by_two")  # fmt: skip
+README_NAMES = ("fig00_setup", "r1_dan_split", "f5_atoms", "f12_order", "r2_address", "f11_monitor", "r3_last_token",
+                "t12_two_by_two")  # fmt: skip
+# the table-style figures above (all but fig00_setup) are bridge_jspace.figkit.tables's (--target depth), held to its
+# lint; the figures they replaced (Dan's 01:58 brief) are still drawn here, off the page: fig11 became a markdown table
+# (readme_build's {{scorecard}}), fig00b three lines
+REPLACED = ("fig11_scorecard", "fig00b_marks", "fig01_split", "fig18_atoms", "fig20_order_cell", "fig07_writes",
+            "fig07b_verbal", "fig23_monitor", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/depth/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/depth/x0_details.md's figures
 SHEET_MORE = ("fig19_identity_address", "fig09a_transfer", "fig01d_ladder", "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig09b_six_lockers", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map", "fig22_attention_blocks", "fig06b_anatomy",  # moved to the ledger (Dan, 30 Oct)
               "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09_transfer",
-              *(n for n in BATCH47 if n not in README_NAMES),
+              *(n for n in BATCH47 if n not in README_NAMES), *(n for n in REPLACED if n not in BATCH47),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
               "supp/s03e_cumulative", "supp/s04_routes_design", "supp/s05_routes_all_arms", "supp/s07_recall_follows_swap",
@@ -4561,8 +4565,8 @@ def main(argv: list[str] | None = None) -> None:
     check_scorecard_keys(S.DATA_DIR / "scorecard.csv")
     check_claim_cells()
     S.write_data()
-    contact_sheet(plt, README_NAMES, sheet)
-    if out is not None:
+    if out is not None:  # the default page's sheet is scripts/readme_build.py's (its figures in page order, 880 px)
+        contact_sheet(plt, README_NAMES, sheet)
         from scripts import x0_status_pack as SP
 
         XF.render(out / "x0_necessity")

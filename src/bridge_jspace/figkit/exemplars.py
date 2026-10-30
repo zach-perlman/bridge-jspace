@@ -19,7 +19,7 @@ NAME = {m: n.replace(" ○", "") for m, n in DAN}
 # ---- R1: C1, two tools, one table ---------------------------------------------------------------------------------
 def r1_split():
     rows = [Row(NAME[m]) for m, _ in DAN]
-    z_hollow = {"mu", "q122"}  # Zach: after the data
+    z_hollow = {"mu", "q122"}  # Zach: post hoc
 
     def zach(ax, _rows):
         for i, (m, _) in enumerate(DAN):
@@ -36,6 +36,17 @@ def r1_split():
         k = ZK[DAN[i][0]]
         mk, ct = D.b(f"ko.{k}.mk")[0], S.ctrl(k)
         return [(f"{mk:.0f}", INK, "bold"), (f"   control {ct:.0f}", MUTED, "normal")]
+
+    t = Table(rows, [
+        Col(3.0, "Remove everywhere (Zach)", "answers that turn wrong, points", zach, (-4, 70), [0, 20, 40, 60]),
+        Col(1.15, "gap", "recall − lookup", zach_nums, text=True),
+        *dan_split_cols(),
+    ], label_w=1.45)  # fmt: skip
+    t.render(f"{OUT}/r1_c1_split.png")
+
+
+def dan_split_cols(title="Remove from the patch (Dan)"):
+    """r1's right half: the conflict test's lookup and recall, and the gap with its interval."""
 
     def dan(ax, _rows):
         n = len(DAN)
@@ -58,14 +69,15 @@ def r1_split():
         rc, lk = S.conflict(m, "recall")[0], S.conflict(m, "lookup")[0]
         return [(f"{rc - lk:.2f}", INK, "bold")]
 
-    t = Table(rows, [
-        Col(3.0, "Remove everywhere (Zach)", "answers that turn wrong, points", zach, (-4, 70), [0, 20, 40, 60]),
-        Col(1.15, "gap", "recall − lookup", zach_nums, text=True),
-        Col(3.0, "Remove from the patch (Dan)", "switches lost beyond a random part", dan, (-0.25, 1.0),
-            [0, 0.5, 1.0]),
-        Col(1.35, "gap", "[95% interval]", dan_nums, text=True),
-    ], label_w=1.45)  # fmt: skip
-    t.render(f"{OUT}/r1_c1_split.png")
+    return [Col(3.0, title, "switches lost beyond a random part", dan, (-0.25, 1.0), [0, 0.5, 1.0]),
+            Col(1.35, "gap", "[95% interval]", dan_nums, text=True)]  # fmt: skip
+
+
+def r1_dan_split():
+    """The depth README's Fig. 1: r1's right half alone (the 01:58 brief)."""
+    Table([Row(NAME[m]) for m, _ in DAN], dan_split_cols("Remove from the patch"), label_w=1.45).render(
+        f"{OUT}/r1_dan_split.png"
+    )
 
 
 # ---- R2: the address, three columns ---------------------------------------------------------------------------------
@@ -149,12 +161,12 @@ def r3_last_token():
             connector(ax, la, wh, i)
             dot(ax, wh, i, C["control"], size=8, value=None)
             dot(ax, la, i, C["lens"], D.hollow(m), value=la, vside="left")
-        head_label(ax, -0.2, "lens part swapped in", C["lens"], ha="left")
+        head_label(ax, -0.2, "lens part written in", C["lens"], ha="left")
         head_label(ax, 0.97, "whole state", MUTED, ha="right", weight="normal")
 
     t = Table(rows, [
         Col(3.6, "Readable", "a probe finds the recall's entity in the lens part", read, (0, 1.02), [0, 0.5, 1.0]),
-        Col(3.6, "Not used", "recalls that switch when it is swapped in", used, (-0.25, 1.02), [0, 0.5, 1.0]),
+        Col(3.6, "Not used", "recalls that switch when it is written in", used, (-0.25, 1.02), [0, 0.5, 1.0]),
     ], label_w=1.6)  # fmt: skip
     t.render(f"{OUT}/r3_last_token.png")
 

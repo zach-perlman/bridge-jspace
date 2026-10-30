@@ -26,13 +26,14 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "svg.fonttyp
 
 BEFORE_SAVE = None  # a hook f(fig, path) run before every save
 ROW_H, HEAD_H, FOOT_H, LABEL_ROW = 0.50, 0.85, 0.62, 0.46  # inches; LABEL_ROW: direct labels above row 1
+KEY_H = 0.42  # the key row under the axes
 
 
 @dataclass
 class Row:
     name: str
-    sub: str = ""  # grey second line (a layer, "after the data")
-    hollow: bool = False  # after the data: hollow marks and a grey ○ after the name
+    sub: str = ""  # grey second line (a layer, "post hoc")
+    hollow: bool = False  # post hoc: hollow marks and a grey ○ after the name
 
 
 @dataclass
@@ -57,6 +58,9 @@ class Table:
     zebra: bool = True
     extra: list = field(default_factory=list)  # callbacks f(fig) after drawing
     labels: bool = True  # reserve the direct-label row above row 1
+    # the key under the axes, [(mark, colour, words)], e.g. ("●", C["control"], "control: a random part"): for marks
+    # that mean the same in every column, where a head label over column 1 would read as that column's only (Dan, 30 Oct)
+    key: list = field(default_factory=list)
     head: float = HEAD_H  # header height (inches); raise it for group titles above the column titles
 
     def render(self, path: str, dpi: int = 160) -> None:
@@ -64,7 +68,7 @@ class Table:
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         body = n * ROW_H + lab
-        height = self.head + body + FOOT_H
+        height = self.head + body + FOOT_H + (KEY_H if self.key else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
         fy = lambda inch_from_top: 1 - inch_from_top / height  # noqa: E731
         fx = lambda inch: inch / width  # noqa: E731
@@ -126,6 +130,15 @@ class Table:
                     ax.plot([0, 0], [n - 0.5, -0.5], color=MUTED, lw=0.9, zorder=1)
                 c.draw(ax, self.rows)
             x += c.width + self.pad
+        if self.key:
+            parts = []
+            for k, (mark, col, words) in enumerate(self.key):
+                parts += [
+                    ("     " if k else "", MUTED, "normal"),
+                    (mark + " ", col, "normal"),
+                    (words, MUTED, "normal"),
+                ]
+            rich(fig, fx(0.12), fy(height - 0.24), parts, size=11.5)
         for f in self.extra:
             f(fig)
         if BEFORE_SAVE is not None:  # the kit's table lint (figkit/lint.py table_problems)

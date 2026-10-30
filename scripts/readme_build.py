@@ -23,6 +23,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{dp|figure|model|quantity}} the same number's point estimate
   Every num / pt / d / dp marker renders with its source comment (<!-- src: file | key -->; in a table row the
   separator is written as a backslash-pipe), the form tests/test_readme_sources.py checks.
+  {{scorecard}}                (a line of its own) the claims by model, a markdown table (scorecard() below)
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
@@ -258,10 +259,35 @@ def render(template: str, book: Book) -> str:
             f, *settings = t.group(2).split("|")
             out += book.table(f, settings)
             continue
+        if t and t.group(1) == "scorecard":
+            out += scorecard()
+            continue
         if book is not None:
             book.in_table = line.lstrip().startswith("|")
         out.append(MARK.sub(lambda x: one(x, book), line))
     return "\n".join(out).rstrip() + "\n"
+
+
+def scorecard() -> list[str]:
+    """The claims by model as a markdown table (Dan's 01:58 brief: Fig. 11 as markdown, no red and green): the claims
+    table's sentences, readme_story_figures.CLAIM_CELLS's words; "○" post hoc, "–" not run or below its gate,
+    "fails" in bold, the cell notes as footnotes."""
+    from scripts import readme_story_figures as F
+
+    claims = dict(F.claims_table(TEMPLATE))
+    word = {"holds": "holds", "in part": "in part", "fails": "**fails**", "below gate": "–", "not run": "–"}
+    head = [F.SHORT[m] + (" ○" if m == "lightning" else "") for m in F.F11_MODELS]
+    out = ["| # | Claim | " + " | ".join(head) + " |", "|---|---|" + "---|" * len(head)]
+    for n, cells in F.CLAIM_CELLS.items():
+        row = []
+        for m, (w, flag) in cells.items():
+            cell = word[w] + (
+                " ○" if flag == "hollow" and m != "lightning" and w not in ("not run", "below gate") else ""
+            )
+            row.append(cell + F.F11_NOTES.get((n, m), ("",))[0])
+        out.append(f"| {n} | {claims[str(n)]} | " + " | ".join(row) + " |")
+    notes = list(F.F11_NOTES.values())
+    return [*out, "", *[f"{mark} {note}" for mark, note in F.F11_NOTES.values()], *([""] if notes else [])]
 
 
 def one(x: re.Match[str], book: Book) -> str:
@@ -356,6 +382,11 @@ def main(argv: list[str] | None = None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(readme)
     print(f"{out.relative_to(REPO)}: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
+    if out == PAGE:  # figures/depth/contact_sheet.png: the page's figures in page order at the page width
+        from bridge_jspace.figkit.build import page_sheet
+
+        shown = re.findall(r"^!\[[^\]]*\]\(((?:\.\./)*figures/[^)]+\.png)\)", readme.split("## Appendix A")[0], re.M)
+        page_sheet([(out.parent / f).resolve() for f in shown], REPO / "figures" / "depth" / "contact_sheet.png")
     if a.runs:
         (REPO / "RUNS.md").write_text(RT.build(grid))
         print("RUNS.md written")

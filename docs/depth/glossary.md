@@ -20,7 +20,7 @@ One vocabulary across every figure the README or docs/depth/x0_details.md shows 
 | metrics | "extra loss" (0-1, defined in the subtitle wherever it appears); "gap"; "code shift (positions)", written β only after "code shift"; "dose (× a real change)" | "J++ extra loss", "Jdep", "s", "s*", "beta" alone |
 | shares | answer and switch shares in %, 0-100: "lookups switched (%)", "lookup answers (%)", "lookups still switching (%)" | the same quantities on 0-1 axes, "position share" |
 | cell states | "not tested (gate)"; "not run"; "too few switches (k of n)" | "not in this test", "queued", "queued (if time)", "not measurable" |
-| status | filled "fixed in advance"; open "after the data"; "° gate lowered to 0.75 after the data". Legend only if a figure has both statuses; otherwise one phrase in the subtitle | "fixed in advance (main test)", "° gate lowered after the data" |
+| status | filled "fixed in advance"; open "post hoc" (a gate or rule set after the results were seen; "after the data" until 30 Oct, Dan); "° gate lowered to 0.75 post hoc". Legend only if a figure has both statuses; otherwise one phrase in the subtitle | "fixed in advance (main test)", "° gate lowered after the data" |
 
 Added for the x0 details figures (26 Oct ~23:00, the same words; Dan to confirm):
 

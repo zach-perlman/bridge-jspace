@@ -67,7 +67,7 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 | 45r, Q46.1 | predictions | Zach's knock-out on Muse at L23-29 against Dan's L26 gap | pending test: Muse 30B at the same depth |
 | 45s, Q46.2-Q46.3 | predictions | Dan's tests on Lightning at L30 | pending test: Lightning with remove from the patch |
 | GAP -> … | joint drafts | a cell with no number yet | Pending tests |
-| ° | joint drafts | judged after the data | (after the data) |
+| ° | joint drafts | judged after the data | (post hoc: a gate or rule set after the results were seen) |
 | Qwen3.5-9B | both | | Qwen 9B |
 | Qwen3.6-27B | both | | Qwen 27B |
 | Qwen3.5-122B-A10B (FP8) | both | | Qwen 122B |

@@ -1,7 +1,9 @@
-"""The table-style figures (the dot table, Dan's references r1-r5 and the deck's f2-f12) for a target.
+"""The table-style figures (the dot table, Dan's references r1-r5, the deck's f2-f12, the depth README's own) for a
+target.
 
-uv run python -m bridge_jspace.figkit.tables                   # figures/readme/ (160 dpi)
-uv run python -m bridge_jspace.figkit.tables --target slide    # figures/slides/ (200 dpi)
+uv run python -m bridge_jspace.figkit.tables                   # the root README's, figures/readme/ (160 dpi)
+uv run python -m bridge_jspace.figkit.tables --target slide    # the same, figures/slides/ (200 dpi)
+uv run python -m bridge_jspace.figkit.tables --target depth    # docs/depth/README.md's, figures/depth/ (160 dpi)
 """
 
 from __future__ import annotations
@@ -10,18 +12,23 @@ import argparse
 from pathlib import Path
 
 from bridge_jspace.figkit import deck_figs as F
+from bridge_jspace.figkit import depth_figs as DF
 from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit import lint
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
 
-OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides"}
-DPI = {"readme": 160, "slide": 200}
+OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth"}
+DPI = {"readme": 160, "slide": 200, "depth": 160}
 FIGS = {"r1_c1_split": X.r1_split, "r2_address": X.r2_address, "r3_last_token": X.r3_last_token,
         "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f3_nine_models": F.f_nine,
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_breaks": F.f_breaks, "f9_where": F.f_where,
-        "f11_monitor": F.f_monitor, "f12_order": F.f_order}  # fmt: skip
+        "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
+        "t12_two_by_two": DF.two_by_two}  # fmt: skip
+DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "r2_address", "f11_monitor", "r3_last_token", "t12_two_by_two")
+TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two")], "depth": list(DEPTH)}
+TARGET["slide"] = TARGET["readme"]
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -38,7 +45,7 @@ CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",
     "f12_order": "With the question before the scene, the 27B's lookup needs the lens part a little",
 }
-assert set(CLAIMS) == set(FIGS)
+assert set(CLAIMS) == set(TARGET["readme"])
 
 PROBLEMS: list[str] = []
 
@@ -53,10 +60,10 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     out.mkdir(parents=True, exist_ok=True)
     X.OUT, F.DPI = str(out), DPI[target]
     done = []
-    for i, f in FIGS.items():
+    for i in TARGET[target]:
         if ids and not any(i.startswith(x) for x in ids):
             continue
-        f()
+        FIGS[i]()
         done.append(i)
     return done
 
@@ -70,4 +77,4 @@ if __name__ == "__main__":
         print("wrote", OUT[a.target] / f"{i}.png")
     print("\n".join(PROBLEMS) or "lint: clean")
     if not a.ids:
-        page_sheet([OUT[a.target] / f"{i}.png" for i in FIGS], OUT[a.target] / "contact_sheet_tables.png")
+        page_sheet([OUT[a.target] / f"{i}.png" for i in TARGET[a.target]], OUT[a.target] / "contact_sheet_tables.png")

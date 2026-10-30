@@ -58,12 +58,13 @@ def test_tall_figure_fails():
     assert "taller than 1.2x" in _problems(fig)
 
 
-def test_table_figures_pass(tmp_path, monkeypatch):
+@pytest.mark.parametrize("target", ["readme", "depth"])
+def test_table_figures_pass(tmp_path, monkeypatch, target):
     from bridge_jspace.figkit import tables
 
-    monkeypatch.setitem(tables.OUT, "readme", tmp_path)
+    monkeypatch.setitem(tables.OUT, target, tmp_path)
     monkeypatch.setattr(tables, "PROBLEMS", [])
-    done = tables.build("readme")
-    assert done == list(tables.FIGS)
+    done = tables.build(target)
+    assert done == tables.TARGET[target]
     assert tables.PROBLEMS == []
     assert all((tmp_path / f"{i}.png").exists() for i in done)

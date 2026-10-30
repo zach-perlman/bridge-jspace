@@ -170,9 +170,11 @@ def test_v6_titles_take_number_words_not_digits():
 
 
 def test_every_readme_figure_is_held_to_the_v6_rules():
+    from bridge_jspace.figkit import tables as TB
     from scripts import readme_story_figures as F
 
-    assert set(F.README_NAMES) <= set(C.V6_FIGS), set(F.README_NAMES) - set(C.V6_FIGS)
+    drawn_here = set(F.README_NAMES) - set(TB.FIGS)  # the table-style figures are held to the kit's table lint
+    assert drawn_here <= set(C.V6_FIGS), drawn_here - set(C.V6_FIGS)
 
 
 def test_v6_style_allows_three_panels_only_where_listed():

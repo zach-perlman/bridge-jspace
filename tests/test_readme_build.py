@@ -279,6 +279,10 @@ def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
             f(p)
         XF.render(tmp / "x0_necessity")
         SP.render(tmp / "status", ["f6"])
+        from bridge_jspace.figkit import tables as TB
+
+        mp.setitem(TB.OUT, "depth", tmp)
+        TB.build("depth")  # the page's table-style figures (scripts/readme_story_figures.py README_NAMES)
     return texts
 
 

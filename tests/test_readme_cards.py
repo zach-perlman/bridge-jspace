@@ -21,6 +21,8 @@ GRADES = {"A", "B"}
 # Dan 29 Oct 12:50 (docs_1250): Parts I-V hold cards; Part VI keeps one-line links to the ledger, no card
 CONVERTED = ("Part I.", "Part II.", "Part III.", "Part IV.", "Part V.")
 IMAGE = re.compile(r"^!\[[^\]]+\]\(([^)]+)\)", re.M)
+# Dan's 01:58 brief: fig07b dropped into r2_address's right column, shown in the card above
+POINTS_UP = ("Can the lens read the address?",)
 
 
 def text() -> str:
@@ -91,6 +93,10 @@ def test_figure_after_the_method_with_a_caption():
         lines = body.splitlines()
         idx = dict(fields(body))
         imgs = [i for i, line in enumerate(lines) if IMAGE.match(line)]
+        if head in POINTS_UP:  # its figure is a column of the card above's: an italic pointer in the figure's place
+            assert not imgs and any(idx["Rule, fixed in advance"] < i < idx["Result"] and line.startswith("*Shown in")
+                                    for i, line in enumerate(lines)), head  # fmt: skip
+            continue
         assert imgs, f"{head}: no figure"
         assert all(idx["Rule, fixed in advance"] < i < idx["Result"] for i in imgs), (
             f"{head}: a figure outside Rule-Result"

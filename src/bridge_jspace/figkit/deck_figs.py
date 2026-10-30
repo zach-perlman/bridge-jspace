@@ -108,7 +108,7 @@ def f_nine():
                 c100 = D.b("swap.nb.k100.swap")
                 dot(ax, c100[0], i, C["lens"], size=6, value=None)
                 ax.text(c100[0], i - 0.32, "100 dirs", ha="center", va="bottom", fontsize=10, color=MUTED)
-        head_label(ax, 52, "lens part swapped in", C["lens"])
+        head_label(ax, 52, "lens part written in", C["lens"])
 
     def needed(ax, _r):
         for i, (k, _) in enumerate(D.ZACH):
@@ -129,7 +129,7 @@ def f_nine():
         return [(g, INK if g == "clean" else MUTED, "bold" if g == "clean" else "normal")]
 
     t = Table(rows, [
-        Col(3.4, "Carried", "answers moved by a swapped J-part, points", carried, (-8, 80), [0, 40, 80]),
+        Col(3.4, "Carried", "answers moved to the other entity, points", carried, (-8, 80), [0, 40, 80]),
         Col(3.4, "Needed", "recalled minus stated answers lost, points", needed, (-3, 70), [0, 30, 60]),
         Col(2.3, "Zach's grade", "", grades, text=True),
     ], label_w=1.45)  # fmt: skip
@@ -352,16 +352,14 @@ def f_monitor():
                 connector(ax, jpp[0], ren[0], i)
                 dot(ax, ren[0], i, "#7A7A7A", size=8)
                 dot(ax, jpp[0], i, C["lens"], D.hollow(m), cell=jpp, value=jpp[0], vside="left")
-            if k == 25:
-                head_label(ax, 0.62, "lens part", C["lens"], ha="right")
-                head_label(ax, 0.84, "random", "#7A7A7A", ha="right", weight="normal")
-                head_label(ax, 0.88, "full state", INK, ha="left", weight="normal")
 
         return f
 
-    t = Table(rows, [Col(4.0, "25 lens directions", "probe accuracy for the address at the last token; tick: full state",
+    t = Table(rows, [Col(4.0, "25 lens directions", "probe accuracy for the address at the last token",
                          kcol(25), (0.4, 1.02), [0.5, 0.75, 1]),
-                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1])], label_w=1.45)  # fmt: skip
+                     Col(4.0, "100 lens directions", "", kcol(100), (0.4, 1.02), [0.5, 0.75, 1])], label_w=1.45, labels=False,
+              key=[("●", C["lens"], "the lens part"), ("●", "#7A7A7A", "a random part of the same energy"),
+                   ("|", INK, "the full state"), ("○", C["lens"], "post hoc")])  # fmt: skip
     render(t, "f11_monitor")
 
 
