@@ -299,6 +299,8 @@ def read_answer(logits: torch.Tensor, p: dict) -> dict:
             "cand_cls": ccls}  # fmt: skip
 
 
+@torch.no_grad()  # 2026-10-30: without it every LensDictionary kept its full wg @ J product in an autograd graph (wg comes from
+#                    lm_head.weight, a parameter): ~4.6 GB per band layer on the 27B (its OOM). Values are bit-identical either way.
 def stage_ko(a) -> None:
     from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit, rotation
     from bridge_jspace.lens import JLens
