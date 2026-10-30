@@ -1,0 +1,443 @@
+{
+ "run": "sd67_ko_test_v1",
+ "gate_run": "sd_gate_v1",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "role": "PRIMARY",
+ "bands": [
+  "L16-24",
+  "L32-40"
+ ],
+ "fit": "/workspace/scratch/n67/fit.pt",
+ "fit_sha256": "2882cefc8c1b83848de7a10b584a9ef0b91e8371033c93a661a7d89c7b67e814",
+ "fit_n_names": 187,
+ "fit_n_classes": 75,
+ "n_read": 415,
+ "n_gated": 325,
+ "n_no_shortcut": 11,
+ "r2_pop": "nosc",
+ "readings": {
+  "fit_check": {
+   "L16-24": {
+    "value": -9.230769230769232,
+    "ci": [
+     -12.31,
+     -6.15
+    ],
+    "ci_bridges": [
+     -26.01,
+     0.0
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 90.76923076923077,
+    "loss_c": 100.0,
+    "met": false
+   },
+   "L32-40": {
+    "value": 65.53846153846153,
+    "ci": [
+     60.31,
+     70.46
+    ],
+    "ci_bridges": [
+     50.0,
+     79.73
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 91.6923076923077,
+    "loss_c": 26.153846153846157,
+    "met": true
+   }
+  },
+  "R1_bands": {
+   "L16-24": {
+    "value": 13.230769230769232,
+    "ci": [
+     9.85,
+     16.92
+    ],
+    "ci_bridges": [
+     5.85,
+     22.91
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 28.000000000000004,
+    "loss_c": 14.76923076923077,
+    "met": false,
+    "fit_ok": false
+   },
+   "L32-40": {
+    "value": 11.076923076923077,
+    "ci": [
+     6.77,
+     15.38
+    ],
+    "ci_bridges": [
+     2.96,
+     21.07
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 21.23076923076923,
+    "loss_c": 10.153846153846153,
+    "met": false,
+    "fit_ok": true
+   }
+  },
+  "R1": {
+   "label": "this removal family is blind to the subject; claim 4 is untestable with it",
+   "bands": []
+  },
+  "R2_P": {
+   "gated, no shortcut/L16-24": {
+    "value": 72.72727272727273,
+    "ci": [
+     45.45,
+     100.0
+    ],
+    "ci_bridges": [
+     28.57,
+     94.74
+    ],
+    "n": 11,
+    "n_bridges": 7,
+    "loss_t": 90.9090909090909,
+    "loss_c": 18.181818181818183,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated, no shortcut/L32-40": {
+    "value": -18.181818181818183,
+    "ci": [
+     -54.55,
+     18.18
+    ],
+    "ci_bridges": [
+     -57.14,
+     0.0
+    ],
+    "n": 11,
+    "n_bridges": 7,
+    "loss_t": 9.090909090909092,
+    "loss_c": 27.27272727272727,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L16-24": {
+    "value": 29.230769230769234,
+    "ci": [
+     23.38,
+     34.77
+    ],
+    "ci_bridges": [
+     18.15,
+     39.27
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 43.38461538461538,
+    "loss_c": 14.153846153846153,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L32-40": {
+    "value": 10.153846153846153,
+    "ci": [
+     5.54,
+     15.08
+    ],
+    "ci_bridges": [
+     5.02,
+     15.67
+    ],
+    "n": 325,
+    "n_bridges": 116,
+    "loss_t": 15.692307692307692,
+    "loss_c": 5.538461538461538,
+    "label": "not read (R1 not met at this band)"
+   }
+  }
+ },
+ "agreement": {
+  "onehop": 99.38461538461539,
+  "solo": 95.6923076923077,
+  "ctx2hop": 100.0
+ },
+ "beside": {
+  "O/L16-24/cityClean-cityClean_RE": {
+   "value": 13.230769230769232,
+   "ci": [
+    9.85,
+    16.92
+   ],
+   "ci_bridges": [
+    5.85,
+    22.91
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 28.000000000000004,
+   "loss_c": 14.76923076923077
+  },
+  "O/L16-24/cityClean-cityClean_RJ": {
+   "value": -72.0,
+   "ci": [
+    -76.62,
+    -67.08
+   ],
+   "ci_bridges": [
+    -84.97,
+    -57.23
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 28.000000000000004,
+   "loss_c": 100.0
+  },
+  "O/L16-24/cityRaw-cityRaw_RE": {
+   "value": -9.230769230769232,
+   "ci": [
+    -12.31,
+    -6.15
+   ],
+   "ci_bridges": [
+    -26.01,
+    0.0
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 90.76923076923077,
+   "loss_c": 100.0
+  },
+  "P/L16-24/cityClean-cityClean_RE": {
+   "value": 29.230769230769234,
+   "ci": [
+    23.38,
+    34.77
+   ],
+   "ci_bridges": [
+    18.15,
+    39.27
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 43.38461538461538,
+   "loss_c": 14.153846153846153
+  },
+  "P/L16-24/cityClean-cityClean_RJ": {
+   "value": -52.0,
+   "ci": [
+    -57.23,
+    -46.46
+   ],
+   "ci_bridges": [
+    -65.3,
+    -39.73
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 43.38461538461538,
+   "loss_c": 95.38461538461539
+  },
+  "P/L16-24/cityRaw-cityRaw_RE": {
+   "value": -12.307692307692308,
+   "ci": [
+    -16.0,
+    -8.92
+   ],
+   "ci_bridges": [
+    -18.75,
+    -6.2
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 83.38461538461537,
+   "loss_c": 95.6923076923077
+  },
+  "I/L16-24/cityClean-cityClean_RE": {
+   "value": 44.30769230769231,
+   "ci": [
+    39.08,
+    50.15
+   ],
+   "ci_bridges": [
+    37.89,
+    50.79
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 45.230769230769226,
+   "loss_c": 0.9230769230769231
+  },
+  "I/L16-24/cityClean-cityClean_RJ": {
+   "value": -53.84615384615385,
+   "ci": [
+    -59.08,
+    -48.0
+   ],
+   "ci_bridges": [
+    -60.49,
+    -47.55
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 45.230769230769226,
+   "loss_c": 99.07692307692308
+  },
+  "I/L16-24/cityRaw-cityRaw_RE": {
+   "value": -8.307692307692308,
+   "ci": [
+    -11.38,
+    -5.54
+   ],
+   "ci_bridges": [
+    -11.94,
+    -5.3
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 90.76923076923077,
+   "loss_c": 99.07692307692308
+  },
+  "O/L32-40/cityClean-cityClean_RE": {
+   "value": 11.076923076923077,
+   "ci": [
+    6.77,
+    15.38
+   ],
+   "ci_bridges": [
+    2.96,
+    21.07
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 21.23076923076923,
+   "loss_c": 10.153846153846153
+  },
+  "O/L32-40/cityClean-cityClean_RJ": {
+   "value": -72.61538461538461,
+   "ci": [
+    -77.23,
+    -67.69
+   ],
+   "ci_bridges": [
+    -84.15,
+    -58.87
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 21.23076923076923,
+   "loss_c": 93.84615384615384
+  },
+  "O/L32-40/cityRaw-cityRaw_RE": {
+   "value": 65.53846153846153,
+   "ci": [
+    60.31,
+    70.46
+   ],
+   "ci_bridges": [
+    50.0,
+    79.73
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 91.6923076923077,
+   "loss_c": 26.153846153846157
+  },
+  "P/L32-40/cityClean-cityClean_RE": {
+   "value": 10.153846153846153,
+   "ci": [
+    5.54,
+    15.08
+   ],
+   "ci_bridges": [
+    5.02,
+    15.67
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 15.692307692307692,
+   "loss_c": 5.538461538461538
+  },
+  "P/L32-40/cityClean-cityClean_RJ": {
+   "value": -44.92307692307692,
+   "ci": [
+    -50.46,
+    -39.38
+   ],
+   "ci_bridges": [
+    -55.23,
+    -34.65
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 15.692307692307692,
+   "loss_c": 60.61538461538461
+  },
+  "P/L32-40/cityRaw-cityRaw_RE": {
+   "value": 40.0,
+   "ci": [
+    33.85,
+    46.15
+   ],
+   "ci_bridges": [
+    27.1,
+    55.02
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 69.23076923076923,
+   "loss_c": 29.230769230769234
+  },
+  "I/L32-40/cityClean-cityClean_RE": {
+   "value": -0.9230769230769231,
+   "ci": [
+    -2.15,
+    0.31
+   ],
+   "ci_bridges": [
+    -2.52,
+    0.3
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": -0.6153846153846154,
+   "loss_c": 0.3076923076923077
+  },
+  "I/L32-40/cityClean-cityClean_RJ": {
+   "value": -8.0,
+   "ci": [
+    -11.08,
+    -5.23
+   ],
+   "ci_bridges": [
+    -11.24,
+    -5.19
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": -0.6153846153846154,
+   "loss_c": 7.384615384615385
+  },
+  "I/L32-40/cityRaw-cityRaw_RE": {
+   "value": 11.076923076923077,
+   "ci": [
+    5.23,
+    16.92
+   ],
+   "ci_bridges": [
+    4.64,
+    17.59
+   ],
+   "n": 325,
+   "n_bridges": 116,
+   "loss_t": 26.769230769230766,
+   "loss_c": 15.692307692307692
+  }
+ }
+}

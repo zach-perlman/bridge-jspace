@@ -1,0 +1,485 @@
+{
+ "run": "qwen35_9b_sd62b_ko_test_v1",
+ "gate_run": "qwen35_9b_sd_gate_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "band": "L17-24",
+ "pos_from": "question",
+ "ctrl_match": "count",
+ "n_read": 347,
+ "n_gated": 258,
+ "n_no_shortcut": 15,
+ "strata": {
+  "gated, no shortcut": {
+   "n": 15,
+   "validity": {
+    "I_K_none": 93.33333333333333,
+    "I_ci": [
+     80.0,
+     100.0
+    ],
+    "I_n": 15,
+    "I_readable": true,
+    "P_K_none": 100.0,
+    "P_n": 15,
+    "P_paper10_spec": 66.66666666666666,
+    "P_paper10_spec_ci": [
+     40.0,
+     86.67
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 15,
+     "n_bridges": 6,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 6.666666666666667,
+     "ci_rot": [
+      0.0,
+      20.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      10.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": -6.666666666666667
+    },
+    "P": {
+     "n": 15,
+     "n_bridges": 6,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    },
+    "O": {
+     "n": 15,
+     "n_bridges": 6,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": 0.0,
+    "S_P": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "ci_bridges": [
+     0.0,
+     0.0
+    ],
+    "n": 15
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 15
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 6.666666666666667,
+     "ci": [
+      0.0,
+      20.0
+     ],
+     "n": 15
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 15
+    },
+    "I:ansJ loss": {
+     "value": 33.33333333333333,
+     "ci": [
+      13.33,
+      60.0
+     ],
+     "n": 15
+    },
+    "I:paper10 - paper10_rot": {
+     "value": 20.0,
+     "ci": [
+      0.0,
+      40.0
+     ],
+     "n": 15
+    },
+    "P:bridgeJ loss": {
+     "value": 26.666666666666668,
+     "ci": [
+      6.67,
+      46.67
+     ],
+     "n": 15
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 26.666666666666668,
+     "ci": [
+      6.67,
+      46.67
+     ],
+     "n": 15
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 26.666666666666668,
+     "ci": [
+      6.67,
+      46.67
+     ],
+     "n": 15
+    },
+    "P:ansJ loss": {
+     "value": 100.0,
+     "ci": [
+      100.0,
+      100.0
+     ],
+     "n": 15
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 66.66666666666666,
+     "ci": [
+      40.0,
+      86.67
+     ],
+     "n": 15
+    },
+    "O:bridgeJ loss": {
+     "value": 73.33333333333333,
+     "ci": [
+      53.33,
+      93.33
+     ],
+     "n": 15
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 73.33333333333333,
+     "ci": [
+      53.33,
+      93.33
+     ],
+     "n": 15
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 73.33333333333333,
+     "ci": [
+      53.33,
+      93.33
+     ],
+     "n": 15
+    },
+    "O:ansJ loss": {
+     "value": 86.66666666666667,
+     "ci": [
+      66.67,
+      100.0
+     ],
+     "n": 15
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 86.66666666666667,
+     "ci": [
+      66.67,
+      100.0
+     ],
+     "n": 15
+    }
+   }
+  },
+  "gated": {
+   "n": 258,
+   "validity": {
+    "I_K_none": 97.28682170542635,
+    "I_ci": [
+     94.96,
+     99.22
+    ],
+    "I_n": 258,
+    "I_readable": true,
+    "P_K_none": 100.0,
+    "P_n": 258,
+    "P_paper10_spec": 53.48837209302325,
+    "P_paper10_spec_ci": [
+     47.67,
+     59.3
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 258,
+     "n_bridges": 76,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      -1.16,
+      1.16
+     ],
+     "ci_bridges": [
+      -1.06,
+      1.08
+     ],
+     "perp_minus_rot": -1.550387596899225,
+     "ci_rot": [
+      -3.49,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      -3.6,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 1.550387596899225
+    },
+    "P": {
+     "n": 258,
+     "n_bridges": 76,
+     "perp_minus_ctrl": 0.3875968992248062,
+     "ci": [
+      0.0,
+      1.16
+     ],
+     "ci_bridges": [
+      0.0,
+      1.18
+     ],
+     "perp_minus_rot": -0.3875968992248062,
+     "ci_rot": [
+      -1.94,
+      0.78
+     ],
+     "ci_rot_bridges": [
+      -1.93,
+      0.79
+     ],
+     "loss_perp": 0.3875968992248062,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.7751937984496124
+    },
+    "O": {
+     "n": 258,
+     "n_bridges": 76,
+     "perp_minus_ctrl": 0.3875968992248062,
+     "ci": [
+      0.0,
+      1.16
+     ],
+     "ci_bridges": [
+      0.0,
+      1.5
+     ],
+     "perp_minus_rot": 0.3875968992248062,
+     "ci_rot": [
+      0.0,
+      1.16
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      1.5
+     ],
+     "loss_perp": 0.3875968992248062,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": -1.550387596899225,
+    "S_P": -0.3875968992248062,
+    "ci": [
+     -3.49,
+     1.16
+    ],
+    "ci_bridges": [
+     -3.67,
+     1.24
+    ],
+    "n": 258
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 1.937984496124031,
+     "ci": [
+      0.0,
+      3.88
+     ],
+     "n": 258
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 0.3875968992248062,
+     "ci": [
+      -1.94,
+      3.1
+     ],
+     "n": 258
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": 1.937984496124031,
+     "ci": [
+      0.0,
+      3.88
+     ],
+     "n": 258
+    },
+    "I:ansJ loss": {
+     "value": 23.643410852713178,
+     "ci": [
+      18.6,
+      29.07
+     ],
+     "n": 258
+    },
+    "I:paper10 - paper10_rot": {
+     "value": 7.751937984496124,
+     "ci": [
+      2.71,
+      13.18
+     ],
+     "n": 258
+    },
+    "P:bridgeJ loss": {
+     "value": 14.728682170542637,
+     "ci": [
+      10.85,
+      19.38
+     ],
+     "n": 258
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 13.953488372093023,
+     "ci": [
+      10.08,
+      18.6
+     ],
+     "n": 258
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 14.728682170542637,
+     "ci": [
+      10.85,
+      19.38
+     ],
+     "n": 258
+    },
+    "P:ansJ loss": {
+     "value": 70.54263565891473,
+     "ci": [
+      65.12,
+      75.97
+     ],
+     "n": 258
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 53.48837209302325,
+     "ci": [
+      47.67,
+      59.3
+     ],
+     "n": 258
+    },
+    "O:bridgeJ loss": {
+     "value": 51.55038759689923,
+     "ci": [
+      45.35,
+      57.75
+     ],
+     "n": 258
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 51.55038759689923,
+     "ci": [
+      45.35,
+      57.75
+     ],
+     "n": 258
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 51.55038759689923,
+     "ci": [
+      45.35,
+      57.75
+     ],
+     "n": 258
+    },
+    "O:ansJ loss": {
+     "value": 87.20930232558139,
+     "ci": [
+      82.95,
+      91.09
+     ],
+     "n": 258
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 71.31782945736434,
+     "ci": [
+      65.5,
+      76.74
+     ],
+     "n": 258
+    }
+   }
+  }
+ }
+}

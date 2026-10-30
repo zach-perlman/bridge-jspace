@@ -1,0 +1,75 @@
+{
+ "run": "sd66_ko_test_v1",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "role": "primary",
+ "band": "L32-40",
+ "n_read": 415,
+ "n_items": 325,
+ "n_peer_named_dropped": 0,
+ "gen_edited": true,
+ "readings": [
+  "reading validity [qwen3.6-27b, primary; test split; band L32-40]: unedited K share chk_solo 99.7, chk_agree 98.8, chk_copy 100.0 (>= 90 each), chk_wrong 98.2 (>= 60, else F2 in log-odds); sources {'chk_solo': 'generation', 'chk_agree': 'first token', 'chk_copy': 'first token', 'chk_wrong': 'generation'}; controls: chk_copy S 0.0 [-1.23, 1.23] (<= 10), D = chk_solo S 42.2 [36.62, 48.0] (>= 20; bridges [30.12, 54.05]): valid",
+  "reading F1 [qwen3.6-27b, primary; test split; band L32-40]: partly; S(chk_agree) 14.8 [10.46, 19.38] (bridges [8.15, 21.91]; n 325, 116 bridges); D 42.2; thresholds max(10, D/3) = 14.1, D/2 = 21.1, 2/3 D = 28.1",
+  "reading F2 [qwen3.6-27b, primary; test split; band L32-40]: not shown; spec gain of e3' in chk_wrong 13.8 [9.54, 17.54] (bridges [9.4, 18.02]; n 325, 116 bridges)"
+ ],
+ "beside": {},
+ "source": {
+  "chk_solo": "generation",
+  "chk_agree": "first token",
+  "chk_copy": "first token",
+  "chk_wrong": "generation"
+ },
+ "validity": {
+  "K_unedited": {
+   "chk_solo": 99.6923076923077,
+   "chk_agree": 98.76923076923076,
+   "chk_copy": 100.0,
+   "chk_wrong": 98.15384615384616
+  },
+  "copy_S": 0.0,
+  "copy_ci": [
+   -1.23,
+   1.23
+  ],
+  "D": 42.15384615384615,
+  "D_ci": [
+   36.62,
+   48.0
+  ],
+  "valid": true,
+  "wrong_ok": true
+ },
+ "F1": {
+  "label": "partly",
+  "S_agree": 14.76923076923077,
+  "ci": [
+   10.46,
+   19.38
+  ],
+  "ci_bridges": [
+   8.15,
+   21.91
+  ],
+  "n": 325,
+  "D": 42.15384615384615
+ },
+ "F2": {
+  "label": "not shown",
+  "gain": 13.846153846153847,
+  "ci": [
+   9.54,
+   17.54
+  ],
+  "ci_bridges": [
+   9.4,
+   18.02
+  ],
+  "n": 325
+ }
+}

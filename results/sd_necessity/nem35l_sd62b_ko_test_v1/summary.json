@@ -1,0 +1,245 @@
+{
+  "seconds": 380,
+  "band_seconds": {
+    "L34-40": 153
+  },
+  "cells": {
+    "ctx2hop": {
+      "-/none": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/ansJ": {
+        "n": 526,
+        "orig": 0.8916,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.1084,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJ": {
+        "n": 526,
+        "orig": 0.9905,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0095,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJ_ctrl": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJ_rot": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJperp": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/paper10": {
+        "n": 526,
+        "orig": 0.9962,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0038,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/paper10_rot": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      }
+    },
+    "onehop": {
+      "-/none": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/ansJ": {
+        "n": 526,
+        "orig": 0.327,
+        "peer": 0.0019,
+        "ctrl": 0.0057,
+        "other": 0.6654,
+        "pick2_peer": 0.3764,
+        "cand_peer": 0.0551
+      },
+      "L34-40/bridgeJ": {
+        "n": 526,
+        "orig": 0.9221,
+        "peer": 0.0019,
+        "ctrl": 0.0076,
+        "other": 0.0684,
+        "pick2_peer": 0.0038,
+        "cand_peer": 0.0019
+      },
+      "L34-40/bridgeJ_ctrl": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJ_rot": {
+        "n": 526,
+        "orig": 0.9943,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0057,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJperp": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/paper10": {
+        "n": 526,
+        "orig": 0.7205,
+        "peer": 0.0057,
+        "ctrl": 0.0038,
+        "other": 0.27,
+        "pick2_peer": 0.0247,
+        "cand_peer": 0.0095
+      },
+      "L34-40/paper10_rot": {
+        "n": 526,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      }
+    },
+    "solo": {
+      "-/none": {
+        "n": 526,
+        "orig": 0.9886,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0114,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/ansJ": {
+        "n": 526,
+        "orig": 0.3498,
+        "peer": 0.019,
+        "ctrl": 0.0095,
+        "other": 0.6217,
+        "pick2_peer": 0.1768,
+        "cand_peer": 0.0703
+      },
+      "L34-40/bridgeJ": {
+        "n": 526,
+        "orig": 0.7757,
+        "peer": 0.0171,
+        "ctrl": 0.0171,
+        "other": 0.1901,
+        "pick2_peer": 0.0418,
+        "cand_peer": 0.0209
+      },
+      "L34-40/bridgeJ_ctrl": {
+        "n": 526,
+        "orig": 0.9886,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0114,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/bridgeJ_rot": {
+        "n": 526,
+        "orig": 0.981,
+        "peer": 0.0,
+        "ctrl": 0.0038,
+        "other": 0.0152,
+        "pick2_peer": 0.0019,
+        "cand_peer": 0.0019
+      },
+      "L34-40/bridgeJperp": {
+        "n": 526,
+        "orig": 0.9924,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0076,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L34-40/paper10": {
+        "n": 526,
+        "orig": 0.6103,
+        "peer": 0.0114,
+        "ctrl": 0.0114,
+        "other": 0.3669,
+        "pick2_peer": 0.0304,
+        "cand_peer": 0.0152
+      },
+      "L34-40/paper10_rot": {
+        "n": 526,
+        "orig": 0.9715,
+        "peer": 0.0038,
+        "ctrl": 0.0057,
+        "other": 0.019,
+        "pick2_peer": 0.0038,
+        "cand_peer": 0.0038
+      }
+    }
+  },
+  "gen": {
+    "ctx2hop": {
+      "original": 1.0,
+      "n": 528
+    },
+    "solo": {
+      "original": 0.9962,
+      "other": 0.0038,
+      "n": 528
+    },
+    "onehop": {
+      "original": 1.0,
+      "n": 528
+    }
+  }
+}

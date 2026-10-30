@@ -1,0 +1,139 @@
+{
+  "exp": "paper_ko_decomp",
+  "run": "nem35l_n60_v1",
+  "why": "Zach (2026-10-30, prereg amendment 85 note 60, nemotron-3.5-lightning): note 60, outputs vs pivots on the paper's tasks",
+  "note": "prereg amendment 85 note 60",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": {
+    "jpp": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ]
+  },
+  "data": {
+    "ML": {
+      "file": "data/lens_eval_multilingual.json",
+      "sha256": "fa70b9bd89416a6d8d985a80dc628b109ae6fd3b25b9275c0fc5065d7ff4a0ef",
+      "n_run": 107
+    },
+    "MH": {
+      "file": "data/lens_eval_multihop.json",
+      "sha256": "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416",
+      "n_run": 93
+    },
+    "PO": {
+      "file": "data/lens_eval_poetry.json",
+      "sha256": "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc",
+      "n_run": 98
+    }
+  },
+  "source": "safety-research/jpp_lens@93f02cd data/jlens/evaluations (copied unchanged)",
+  "main_band": null,
+  "early_window": "8-20",
+  "early_from": "paper_swap_decomp/nem35l_n39_v1 (arm 1's median onset, J++)",
+  "conditions": {
+    "ML": [
+      "paper10@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "keepT10@medium",
+      "keepRT10E@medium",
+      "keep_T@medium",
+      "keep_E@medium",
+      "keep_I@medium",
+      "keep_Eperp@medium",
+      "keep_Iperp@medium",
+      "keepRE_Eperp@medium",
+      "keepRE_Iperp@medium",
+      "keep_ctl@medium",
+      "onlyT10@medium",
+      "onlyRT10E@medium"
+    ],
+    "MH": [
+      "paper10@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "keepT10@medium",
+      "keepRT10E@medium",
+      "keep_T@medium",
+      "keep_B@medium",
+      "keep_Bperp@medium",
+      "keepRE_Bperp@medium",
+      "keep_ctl@medium",
+      "onlyT10@medium",
+      "onlyRT10E@medium",
+      "paper10@early",
+      "paper10_rot@early",
+      "paper10_pcasize@early",
+      "keepT10@early",
+      "keepRT10E@early",
+      "keep_T@early",
+      "keep_B@early",
+      "keep_Bperp@early",
+      "keepRE_Bperp@early",
+      "keep_ctl@early",
+      "onlyT10@early",
+      "onlyRT10E@early"
+    ],
+    "PO": [
+      "paper10@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "keepT10@medium",
+      "keepRT10E@medium",
+      "onlyT10@medium",
+      "onlyRT10E@medium"
+    ]
+  },
+  "seeds": {
+    "rotation": "ablate_v2 SEED_ROT 888 + layer",
+    "ctl": "Random('n45ctl:<set>:<item>')",
+    "keepR": "Random('n45R<k>:<set>:<item>')",
+    "ctl_choice": "Random('n45ctlpick:<set>:<item>')",
+    "pool": "Random('n60R:<set>:<item>')"
+  },
+  "gate": "greedy 6 tokens, normalised prefix match; chat_prefill for ML / MH if < 50 raw-eligible (full runs)",
+  "tf32": true,
+  "bj_gram_proj": "1",
+  "command": "scripts/paper_ko_decomp.py --name nem35l_n60_v1 --why Zach (2026-10-30, prereg amendment 85 note 60, nemotron-3.5-lightning): note 60, outputs vs pivots on the paper's tasks --n60 --sets ML MH PO --bands medium=28-40 --prev39 nem35l_n39_v1",
+  "git_state": {
+    "head": "f448b1572985e6c4cc60f66178d81b42d87ecd3c",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T18:51:02Z",
+  "bands": {
+    "medium": "28-40",
+    "early": "8-20"
+  },
+  "keep_band": null,
+  "byte_check": {
+    "conditions": [
+      "paper10",
+      "paper10_rot",
+      "top3",
+      "top30"
+    ],
+    "bands": [
+      "medium",
+      "early"
+    ],
+    "items": "first 8 gated MH"
+  },
+  "text": null,
+  "po_rule": "T = intermediates[0]; S = last alphabetic word of the couplet's first line; cluster = T's spelled rhyme",
+  "force_chat": [],
+  "pool": 256
+}

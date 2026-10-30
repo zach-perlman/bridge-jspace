@@ -1,0 +1,122 @@
+{
+ "run": "qwen35_9b_sd65_ko_test_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "role": "confirmatory",
+ "band": "L12-16",
+ "n_read": 347,
+ "n_items": 258,
+ "n_peer_named_dropped": 0,
+ "gen_edited": true,
+ "readings": [
+  "reading validity [qwen3.5-9b, confirmatory; test split; band L12-16]: Yes or No among the top-2 tokens in 100.0% of V rows (every edit; unedited 100.0%; >= 90 required; both the top 2: 3.2%), unedited balanced accuracy 99.0% (n 258; >= 85 required): valid",
+  "reading V1 [qwen3.5-9b, confirmatory; test split; band L12-16]: verification survives the knock-out; L_V (BA spec loss) -16.3 [-19.19, -13.18] (bridges [-19.97, -11.85]; n 258, 76 bridges); L_G (G spec loss, first token) 29.5 [22.87, 36.05] (bridges [20.35, 37.82]; n 258); thresholds max(10, L_G/3) = 10.0, L_G/2 = 14.7"
+ ],
+ "beside": {
+  "V- accuracy spec loss": {
+   "value": -32.945736434108525,
+   "ci": [
+    -38.76,
+    -26.74
+   ],
+   "ci_bridges": [
+    -40.07,
+    -24.37
+   ],
+   "n": 258
+  },
+  "paired ranking spec loss": {
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "ci_bridges": [
+    0.0,
+    0.0
+   ],
+   "n": 258
+  },
+  "yes_bias_shift": {
+   "value": 0.4639050387596899,
+   "ci": [
+    0.44,
+    0.49
+   ],
+   "n": 258
+  },
+  "C2 spec loss": {
+   "value": 9.883720930232558,
+   "ci": [
+    5.23,
+    14.34
+   ],
+   "ci_bridges": [
+    0.74,
+    17.68
+   ],
+   "n": 258
+  },
+  "BA ansJ - ansRe loss": {
+   "value": 7.55813953488372,
+   "ci": [
+    5.23,
+    10.08
+   ],
+   "ci_bridges": [
+    4.51,
+    11.02
+   ],
+   "n": 258
+  },
+  "G ansJ - ansRe loss": {
+   "value": 37.5968992248062,
+   "ci": [
+    31.4,
+    43.8
+   ],
+   "ci_bridges": [
+    25.91,
+    50.42
+   ],
+   "n": 258
+  }
+ },
+ "source": {
+  "solo": "first token",
+  "choose_tf": "first token",
+  "choose_ft": "first token"
+ },
+ "validity": {
+  "yn_any2": 99.97231450719822,
+  "yn_any2_unedited": 100.0,
+  "yn_both_top2": 3.1561461794019934,
+  "ba_unedited": 99.03100775193798,
+  "n": 258,
+  "valid": true
+ },
+ "V1": {
+  "label": "verification survives the knock-out",
+  "L_V": -16.27906976744186,
+  "ci": [
+   -19.19,
+   -13.18
+  ],
+  "ci_bridges": [
+   -19.97,
+   -11.85
+  ],
+  "n": 258,
+  "L_G": 29.457364341085274,
+  "ci_G": [
+   22.87,
+   36.05
+  ],
+  "n_G": 258
+ }
+}
