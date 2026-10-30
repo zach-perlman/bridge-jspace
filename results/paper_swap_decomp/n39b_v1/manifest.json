@@ -1,0 +1,124 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "n39b_v1",
+  "kind": "rerun_6b",
+  "why": "Zach (2026-10-30, prereg amendment 65 second addendum note 39, qwen3.6-27b): arm 6b rerun",
+  "note": "prereg amendment 65 second addendum, note 39",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "jlens": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ]
+  },
+  "prev_run": "n39_v1",
+  "overlap_run": "n39b_overlap",
+  "overlap_sha256": "4861beee672b1087753cda1efdf373530b90cdcb0858e40471625776874af6a8",
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "windows": [
+    "24-40",
+    "16-24",
+    "16-36"
+  ],
+  "main_band": "24-40",
+  "median_onset_windows": {
+    "jpp": "16-24",
+    "jlens": "16-36"
+  },
+  "arms": [
+    "bridge",
+    "bridge_noA",
+    "bridge_off6b",
+    "bridge_randA"
+  ],
+  "null_arms": [
+    "bridge"
+  ],
+  "prompt_end": "stripped",
+  "items": [
+    "amazon-language",
+    "animal-legs-buffalo2",
+    "basketball-players",
+    "bird-color-swan",
+    "birthstone-emerald-month",
+    "chem-atmosphere-Z",
+    "chem-organic-Z",
+    "chem-photosynthesis-Z",
+    "christmas-season",
+    "city-state-Philadelphia",
+    "colosseum-currency",
+    "element-color-gold2",
+    "etym-saturn-position",
+    "etym-wargod-month",
+    "ex-city-capital-Barcelona-Toronto",
+    "ex-city-capital-Lyon-Naples",
+    "ex-city-capital-Naples-Barcelona",
+    "ex-city-capital-Toronto-Lyon",
+    "ex-city-continent-Toronto-Lyon",
+    "ex-city-currency-Toronto-Beijing",
+    "ex-city-language-Lyon-Naples",
+    "ex-element-state-26-8",
+    "ex-element-state-26-80",
+    "ex-element-state-8-26",
+    "ex-element-state-8-80",
+    "ex-planet-color-third-fourth",
+    "ex2-city-capital-Munich",
+    "ex2-city-capital-Osaka",
+    "ex2-city-continent-Lima",
+    "ex2-city-language-Cairo",
+    "ex2-city-language-Moscow",
+    "ex2-language-capital-Greek",
+    "ex2-language-capital-Hungarian",
+    "ex2-language-capital-Polish",
+    "ex2-language-capital-Swedish",
+    "ex2-river-capital-Thames",
+    "func-filters-count",
+    "func-pumps-chambers",
+    "gem-color-ruby",
+    "holiday-month-christmas2",
+    "mars-color",
+    "organ-count-kidney2",
+    "paper-continent",
+    "person-country-napoleon",
+    "person-firstname-darwin",
+    "person-firstname-einstein",
+    "person-firstname-mozart",
+    "person-firstname-newton",
+    "person-firstname-shakespeare",
+    "rhyme-chair-flag",
+    "spider-legs",
+    "super-populous-capital",
+    "super-smallest-continent",
+    "violin-strings"
+  ],
+  "arm6b": "overlap.json's per-item category and tokens (selected on the J++ lens; used for every lens)",
+  "command": "scripts/paper_swap_6b.py rerun --name n39b_v1 --why Zach (2026-10-30, prereg amendment 65 second addendum note 39, qwen3.6-27b): arm 6b rerun --prev n39_v1 --overlap n39b_overlap",
+  "git_state": {
+    "head": "162280e0e06be9016b5c11afdd37f65b71f19fd8",
+    "dirty_files": [
+      "scripts/ablate_v2.py",
+      "scripts/nn_ko37_read.py",
+      "src/bridge_jspace/ablate.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_ko41_read.py",
+      "scripts/queues/h200_n41_1030.sh"
+    ],
+    "code_diff_sha256": "cbe678093a4875e2a7a8c83194d0038c45bd75d59168b045d2508285abd7b58c"
+  },
+  "written_utc": "2026-10-30T08:18:46Z"
+}

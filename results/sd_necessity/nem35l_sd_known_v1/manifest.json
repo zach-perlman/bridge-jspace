@@ -1,0 +1,43 @@
+{
+  "run": "nem35l_sd_known_v1",
+  "stage": "known",
+  "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, nemotron-3.5-lightning): their known check, pairing, round 0",
+  "written_utc": "2026-10-30T07:19:58Z",
+  "git_commit": "69fdb42c382ed2f373c7bf567081270051e12ddc",
+  "git_state": {
+    "head": "69fdb42c382ed2f373c7bf567081270051e12ddc",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": [
+    "jpp",
+    "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  ],
+  "args": {
+    "stage": "known",
+    "name": "nem35l_sd_known_v1",
+    "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, nemotron-3.5-lightning): their known check, pairing, round 0",
+    "facts": "data/sd_v1/facts.jsonl",
+    "categories": [
+      "landmark-cntry-capital",
+      "person-birthcity-cntry",
+      "person-uguniv-hqcity"
+    ],
+    "per_category": 0,
+    "gen_tokens": 12,
+    "batch": 32
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_facts": 4610
+}

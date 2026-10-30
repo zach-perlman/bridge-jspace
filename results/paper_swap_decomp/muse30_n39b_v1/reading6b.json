@@ -1,0 +1,128 @@
+{
+  "prev_run": "results/paper_swap_decomp/muse30_n39_v1",
+  "rerun": "results/paper_swap_decomp/muse30_n39b_v1",
+  "target": "muse-glimmer-30b",
+  "n_items": 50,
+  "n_categories": 12,
+  "stored_check": {
+    "bridge": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.39,
+      "flip_rate_stored": 0.39,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.03,
+      "flip_rate_stored": 0.03,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.28,
+      "flip_rate_stored": 0.28,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "overlap_geometry_max_abs_diff": 0.0
+  },
+  "A1_6b": {
+    "jpp/main_band": {
+      "window": "29-42",
+      "rates": {
+        "bridge": 0.44,
+        "bridge_noA": 0.06,
+        "bridge_off6b": 0.44,
+        "bridge_randA": 0.42,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.13636363636363635,
+        0.0,
+        0.36363636363636365,
+        1
+      ],
+      "keep_arm6b": [
+        1.0,
+        1.0,
+        1.0,
+        1
+      ],
+      "keep_arm7": [
+        0.9545454545454545,
+        0.6666666666666666,
+        1.0,
+        1
+      ],
+      "valid": true,
+      "reading": "answer-carried",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.31818181818181823,
+        0.05263157894736842,
+        1.0,
+        1
+      ],
+      "stored_K": [
+        0.13636363636363635,
+        0.0,
+        0.36363636363636365,
+        1
+      ]
+    },
+    "jpp/median_onset": {
+      "window": "8-24",
+      "rates": {
+        "bridge": 0.34,
+        "bridge_noA": 0.0,
+        "bridge_off6b": 0.26,
+        "bridge_randA": 0.14,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.0,
+        0.0,
+        0.0,
+        2
+      ],
+      "keep_arm6b": [
+        0.7647058823529411,
+        0.5238095238095238,
+        1.5,
+        2
+      ],
+      "keep_arm7": [
+        0.411764705882353,
+        0.0,
+        0.8,
+        2
+      ],
+      "valid": false,
+      "reading": "scrub not specific (arm 6b keeps 0.76, arm 7 keeps 0.41; K = 0.00 would read 'answer-carried')",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.058823529411764705,
+        0.0,
+        0.3333333333333333,
+        2
+      ],
+      "stored_K": [
+        0.0,
+        0.0,
+        0.0,
+        2
+      ]
+    }
+  }
+}

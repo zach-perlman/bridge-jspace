@@ -1,0 +1,211 @@
+{
+  "prev_run": "results/paper_swap_decomp/muse30_n39_v1",
+  "rerun": "results/paper_swap_decomp/muse30_n39r_v1",
+  "target": "muse-glimmer-30b",
+  "n_items": 50,
+  "n_without_nation": 33,
+  "stored_check": {
+    "bridge": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.39,
+      "flip_rate_stored": 0.39,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.33,
+      "flip_rate_stored": 0.33,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 100,
+      "same_flip": 100,
+      "same_swap_rank": 100,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "blocks": {
+    "jpp/main_band/primary": {
+      "window": "29-42",
+      "n": 50,
+      "rates": {
+        "r1": 0.44,
+        "r0": 0.0,
+        "r5": 0.4,
+        "r5null": 0.0,
+        "r5R": 0.02
+      },
+      "arm1_net": [
+        0.44,
+        0.11761285909712722,
+        0.7705003415300545,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.38,
+        0.0967357910906298,
+        0.6806469298245609,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.8636363636363636,
+        0.5384615384615384,
+        1.2,
+        1
+      ],
+      "A3_ratio": [
+        0.9090909090909092,
+        0.5384615384615384,
+        1.2352941176470589,
+        1
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.045454545454545456,
+        0.0,
+        0.08,
+        1
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/main_band/without_capital_language_country": {
+      "window": "29-42",
+      "n": 33,
+      "rates": {
+        "r1": 0.21212121212121213,
+        "r0": 0.0,
+        "r5": 0.15151515151515152,
+        "r5null": 0.0,
+        "r5R": 0.0
+      },
+      "arm1_net": [
+        0.21212121212121213,
+        0.03225806451612903,
+        0.5769230769230769,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.15151515151515152,
+        0.03333333333333333,
+        0.38095238095238093,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.7142857142857143,
+        0.30000000000000004,
+        2.5000000000000004,
+        6
+      ],
+      "A3_ratio": [
+        0.7142857142857143,
+        0.30000000000000004,
+        2.5000000000000004,
+        6
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        6
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/median_onset/primary": {
+      "window": "8-24",
+      "n": 50,
+      "rates": {
+        "r1": 0.34,
+        "r0": 0.0,
+        "r5": 0.26,
+        "r5null": 0.0,
+        "r5R": 0.02
+      },
+      "arm1_net": [
+        0.34,
+        0.0768867924528302,
+        0.62,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.24000000000000002,
+        0.07405149051490514,
+        0.4444444444444444,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.7058823529411765,
+        0.46407967032967035,
+        1.3333333333333335,
+        2
+      ],
+      "A3_ratio": [
+        0.7647058823529411,
+        0.54816715542522,
+        1.3333333333333335,
+        2
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.058823529411764705,
+        0.0,
+        0.1,
+        2
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/median_onset/without_capital_language_country": {
+      "window": "8-24",
+      "n": 33,
+      "rates": {
+        "r1": 0.12121212121212122,
+        "r0": 0.0,
+        "r5": 0.12121212121212122,
+        "r5null": 0.0,
+        "r5R": 0.0
+      },
+      "arm1_net": [
+        0.12121212121212122,
+        0.018501984126984127,
+        0.3572142857142853,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.12121212121212122,
+        0.018510101010101008,
+        0.32,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        1.0,
+        0.3333333333333333,
+        2.5,
+        42
+      ],
+      "A3_ratio": [
+        1.0,
+        0.3333333333333333,
+        2.5,
+        42
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        42
+      ],
+      "reading": "sufficiency is answer-specific"
+    }
+  }
+}

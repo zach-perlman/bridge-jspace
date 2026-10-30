@@ -1,0 +1,54 @@
+{
+  "run": "qwen35_9b_sd_gate_v1",
+  "stage": "gate",
+  "why": "amendment 66 addendum (2026-10-30, qwen3.5-9b): the gate on every known item",
+  "written_utc": "2026-10-30T07:54:47Z",
+  "git_commit": "a7722d142500478a4e8537952600ae32e0243882",
+  "git_state": {
+    "head": "a7722d142500478a4e8537952600ae32e0243882",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/paper_swap_6b.py",
+      "scripts/paper_swap_read6b.py",
+      "scripts/queues/h200_n39b_1030.sh"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "name": "qwen35_9b_sd_gate_v1",
+    "why": "amendment 66 addendum (2026-10-30, qwen3.5-9b): the gate on every known item",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "n": 0,
+    "gen_tokens": 12,
+    "batch": 64,
+    "cpu_check": false,
+    "facts": "data/sd_v1/facts.jsonl",
+    "full": false
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 692,
+  "generic": {
+    "person-birthcity-cntry": "the person",
+    "person-uguniv-hqcity": "the person",
+    "landmark-cntry-capital": "the landmark",
+    "univ-hqcity-cntry": "the university"
+  },
+  "direct": {
+    "person-birthcity-cntry": "{e1} is a citizen of the country of",
+    "person-uguniv-hqcity": "The city most associated with {e1} is",
+    "landmark-cntry-capital": "The city most associated with {e1} is"
+  },
+  "prefix": "The capital city of Japan is Tokyo.\nThe author of the play Hamlet is William Shakespeare.\n"
+}

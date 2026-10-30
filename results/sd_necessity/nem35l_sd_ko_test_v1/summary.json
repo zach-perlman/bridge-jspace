@@ -1,0 +1,645 @@
+{
+  "seconds": 1623,
+  "band_seconds": {
+    "L27-33": 930,
+    "L42-45": 163
+  },
+  "cells": {
+    "agree_hid": {
+      "-/none": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.9698,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0302,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.9933,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0067,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 0.9966,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0034,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0285,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.9715,
+        "pick2_peer": 0.129,
+        "cand_peer": 0.1089
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      }
+    },
+    "agree_vis": {
+      "-/none": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.9816,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0184,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.9966,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0034,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0452,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.9548,
+        "pick2_peer": 0.0737,
+        "cand_peer": 0.0603
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 1.0,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      }
+    },
+    "press1_vis": {
+      "-/none": {
+        "n": 597,
+        "orig": 0.9832,
+        "peer": 0.0067,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0084,
+        "cand_peer": 0.0084
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.7052,
+        "peer": 0.2613,
+        "ctrl": 0.0,
+        "other": 0.0335,
+        "pick2_peer": 0.273,
+        "cand_peer": 0.2647
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.9481,
+        "peer": 0.0285,
+        "ctrl": 0.0017,
+        "other": 0.0218,
+        "pick2_peer": 0.0318,
+        "cand_peer": 0.0302
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 0.9816,
+        "peer": 0.0084,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0101,
+        "cand_peer": 0.0101
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 0.938,
+        "peer": 0.0436,
+        "ctrl": 0.0,
+        "other": 0.0184,
+        "pick2_peer": 0.0486,
+        "cand_peer": 0.0436
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 0.9816,
+        "peer": 0.0084,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0117,
+        "cand_peer": 0.0117
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 0.9765,
+        "peer": 0.0134,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0151,
+        "cand_peer": 0.0151
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 0.9765,
+        "peer": 0.0134,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0168,
+        "cand_peer": 0.0151
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 0.9715,
+        "peer": 0.0184,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0268,
+        "cand_peer": 0.0268
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0402,
+        "peer": 0.0017,
+        "ctrl": 0.0,
+        "other": 0.9581,
+        "pick2_peer": 0.4221,
+        "cand_peer": 0.3802
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 0.9765,
+        "peer": 0.0134,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.0168,
+        "cand_peer": 0.0151
+      }
+    },
+    "press_hid": {
+      "-/none": {
+        "n": 597,
+        "orig": 0.0436,
+        "peer": 0.9564,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.9564,
+        "cand_peer": 0.9564
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.0151,
+        "peer": 0.7638,
+        "ctrl": 0.0,
+        "other": 0.2211,
+        "pick2_peer": 0.9665,
+        "cand_peer": 0.9447
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.0251,
+        "peer": 0.9732,
+        "ctrl": 0.0,
+        "other": 0.0017,
+        "pick2_peer": 0.9799,
+        "cand_peer": 0.9749
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 0.0603,
+        "peer": 0.9363,
+        "ctrl": 0.0,
+        "other": 0.0034,
+        "pick2_peer": 0.9397,
+        "cand_peer": 0.938
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 0.0151,
+        "peer": 0.9196,
+        "ctrl": 0.0017,
+        "other": 0.0637,
+        "pick2_peer": 0.9665,
+        "cand_peer": 0.9514
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 0.062,
+        "peer": 0.938,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.9397,
+        "cand_peer": 0.938
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 0.0235,
+        "peer": 0.9765,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.9782,
+        "cand_peer": 0.9765
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 0.0235,
+        "peer": 0.9765,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.9765,
+        "cand_peer": 0.9765
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 0.0285,
+        "peer": 0.9715,
+        "ctrl": 0.0,
+        "other": 0.0,
+        "pick2_peer": 0.9732,
+        "cand_peer": 0.9715
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0,
+        "peer": 0.0151,
+        "ctrl": 0.0,
+        "other": 0.9849,
+        "pick2_peer": 0.7705,
+        "cand_peer": 0.6214
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 0.0519,
+        "peer": 0.9447,
+        "ctrl": 0.0,
+        "other": 0.0034,
+        "pick2_peer": 0.9481,
+        "cand_peer": 0.9464
+      }
+    },
+    "press_vis": {
+      "-/none": {
+        "n": 597,
+        "orig": 0.7404,
+        "peer": 0.2496,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.268,
+        "cand_peer": 0.2596
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.3786,
+        "peer": 0.5896,
+        "ctrl": 0.0,
+        "other": 0.0318,
+        "pick2_peer": 0.6064,
+        "cand_peer": 0.6013
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.5896,
+        "peer": 0.3987,
+        "ctrl": 0.0,
+        "other": 0.0117,
+        "pick2_peer": 0.4171,
+        "cand_peer": 0.407
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 0.7487,
+        "peer": 0.2412,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.263,
+        "cand_peer": 0.2513
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 0.5595,
+        "peer": 0.4238,
+        "ctrl": 0.0,
+        "other": 0.0168,
+        "pick2_peer": 0.4271,
+        "cand_peer": 0.4255
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 0.7605,
+        "peer": 0.2295,
+        "ctrl": 0.0,
+        "other": 0.0101,
+        "pick2_peer": 0.2412,
+        "cand_peer": 0.2395
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 0.6064,
+        "peer": 0.3869,
+        "ctrl": 0.0,
+        "other": 0.0067,
+        "pick2_peer": 0.3987,
+        "cand_peer": 0.3869
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 0.6064,
+        "peer": 0.3853,
+        "ctrl": 0.0,
+        "other": 0.0084,
+        "pick2_peer": 0.402,
+        "cand_peer": 0.3936
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 0.5477,
+        "peer": 0.4439,
+        "ctrl": 0.0,
+        "other": 0.0084,
+        "pick2_peer": 0.4707,
+        "cand_peer": 0.4523
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0184,
+        "peer": 0.0134,
+        "ctrl": 0.0,
+        "other": 0.9682,
+        "pick2_peer": 0.5427,
+        "cand_peer": 0.5075
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 0.7571,
+        "peer": 0.2345,
+        "ctrl": 0.0,
+        "other": 0.0084,
+        "pick2_peer": 0.2496,
+        "cand_peer": 0.2429
+      }
+    },
+    "solo": {
+      "-/none": {
+        "n": 597,
+        "orig": 0.9883,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.0117,
+        "pick2_peer": 0.0,
+        "cand_peer": 0.0
+      },
+      "L27-33/ansJ": {
+        "n": 597,
+        "orig": 0.1508,
+        "peer": 0.0034,
+        "ctrl": 0.0034,
+        "other": 0.8425,
+        "pick2_peer": 0.2596,
+        "cand_peer": 0.0871
+      },
+      "L27-33/bridgeJ": {
+        "n": 597,
+        "orig": 0.7102,
+        "peer": 0.0235,
+        "ctrl": 0.0134,
+        "other": 0.2529,
+        "pick2_peer": 0.0687,
+        "cand_peer": 0.0268
+      },
+      "L27-33/bridgeJ_ctrl": {
+        "n": 597,
+        "orig": 0.9732,
+        "peer": 0.0017,
+        "ctrl": 0.0,
+        "other": 0.0251,
+        "pick2_peer": 0.0017,
+        "cand_peer": 0.0017
+      },
+      "L27-33/paper10": {
+        "n": 597,
+        "orig": 0.526,
+        "peer": 0.0134,
+        "ctrl": 0.005,
+        "other": 0.4556,
+        "pick2_peer": 0.0553,
+        "cand_peer": 0.0251
+      },
+      "L27-33/paper10_keepA": {
+        "n": 597,
+        "orig": 0.9648,
+        "peer": 0.0,
+        "ctrl": 0.0017,
+        "other": 0.0335,
+        "pick2_peer": 0.0034,
+        "cand_peer": 0.0
+      },
+      "L27-33/paper10_pcasize": {
+        "n": 597,
+        "orig": 0.9548,
+        "peer": 0.0084,
+        "ctrl": 0.0084,
+        "other": 0.0285,
+        "pick2_peer": 0.0101,
+        "cand_peer": 0.0084
+      },
+      "L27-33/paper10_rot": {
+        "n": 597,
+        "orig": 0.9581,
+        "peer": 0.0034,
+        "ctrl": 0.005,
+        "other": 0.0335,
+        "pick2_peer": 0.0034,
+        "cand_peer": 0.0034
+      },
+      "L27-33/unembed10": {
+        "n": 597,
+        "orig": 0.9548,
+        "peer": 0.0017,
+        "ctrl": 0.005,
+        "other": 0.0385,
+        "pick2_peer": 0.0017,
+        "cand_peer": 0.0017
+      },
+      "L42-45/paper10": {
+        "n": 597,
+        "orig": 0.0101,
+        "peer": 0.0,
+        "ctrl": 0.0,
+        "other": 0.9899,
+        "pick2_peer": 0.5477,
+        "cand_peer": 0.3685
+      },
+      "L42-45/paper10_rot": {
+        "n": 597,
+        "orig": 0.9682,
+        "peer": 0.0,
+        "ctrl": 0.0034,
+        "other": 0.0285,
+        "pick2_peer": 0.0017,
+        "cand_peer": 0.0017
+      }
+    }
+  },
+  "gen": {
+    "solo": {
+      "original": 0.995,
+      "other": 0.005,
+      "n": 599
+    },
+    "agree_vis": {
+      "original": 1.0,
+      "n": 599
+    },
+    "agree_hid": {
+      "original": 1.0,
+      "n": 599
+    },
+    "press_vis": {
+      "original": 0.7513,
+      "peer": 0.2487,
+      "n": 599
+    },
+    "press_hid": {
+      "peer": 0.9566,
+      "original": 0.0434,
+      "n": 599
+    },
+    "press1_vis": {
+      "original": 0.9933,
+      "peer": 0.0067,
+      "n": 599
+    }
+  }
+}

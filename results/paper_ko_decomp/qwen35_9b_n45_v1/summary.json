@@ -1,0 +1,34 @@
+{
+  "gate": {
+    "ML": {
+      "raw_eligible": 79,
+      "n": 107,
+      "prompt_end": "stripped"
+    },
+    "MH": {
+      "raw_eligible": 49,
+      "n": 93,
+      "prompt_end": "chat_prefill",
+      "chat_eligible": 52
+    },
+    "OO": {
+      "raw_eligible": 14,
+      "n": 55,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "ML": 79,
+    "MH": 52,
+    "OO": 14
+  },
+  "clean_correct": {
+    "ML": 77,
+    "MH": 49,
+    "OO": 13
+  },
+  "rows": 3584,
+  "byte_check_all_equal": true,
+  "seconds": 377,
+  "reader": "python scripts/paper_ko_read.py results/paper_ko_decomp/qwen35_9b_n45_v1"
+}

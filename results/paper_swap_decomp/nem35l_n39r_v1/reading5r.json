@@ -1,0 +1,211 @@
+{
+  "prev_run": "results/paper_swap_decomp/nem35l_n39_v1",
+  "rerun": "results/paper_swap_decomp/nem35l_n39r_v1",
+  "target": "nemotron-3.5-lightning",
+  "n_items": 55,
+  "n_without_nation": 38,
+  "stored_check": {
+    "bridge": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.4090909090909091,
+      "flip_rate_stored": 0.4090909090909091,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.37272727272727274,
+      "flip_rate_stored": 0.37272727272727274,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "blocks": {
+    "jpp/main_band/primary": {
+      "window": "20-33",
+      "n": 55,
+      "rates": {
+        "r1": 0.4727272727272727,
+        "r0": 0.0,
+        "r5": 0.41818181818181815,
+        "r5null": 0.0,
+        "r5R": 0.18181818181818182
+      },
+      "arm1_net": [
+        0.4727272727272727,
+        0.22,
+        0.7555555555555555,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.23636363636363633,
+        0.07500000000000001,
+        0.4150943396226415,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.49999999999999994,
+        0.22714646464646468,
+        0.7692307692307692,
+        0
+      ],
+      "A3_ratio": [
+        0.8846153846153846,
+        0.6248511904761905,
+        1.0625,
+        0
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.38461538461538464,
+        0.09090909090909091,
+        0.6470588235294118,
+        0
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/main_band/without_capital_language_country": {
+      "window": "20-33",
+      "n": 38,
+      "rates": {
+        "r1": 0.3157894736842105,
+        "r0": 0.0,
+        "r5": 0.23684210526315788,
+        "r5null": 0.0,
+        "r5R": 0.02631578947368421
+      },
+      "arm1_net": [
+        0.3157894736842105,
+        0.11938401214267645,
+        0.6428571428571429,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.21052631578947367,
+        0.06246811224489796,
+        0.4583333333333333,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0909090909090908,
+        0
+      ],
+      "A3_ratio": [
+        0.75,
+        0.4375,
+        1.1541666666666648,
+        0
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.08333333333333333,
+        0.0,
+        0.3333333333333333,
+        0
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/median_onset/primary": {
+      "window": "8-20",
+      "n": 55,
+      "rates": {
+        "r1": 0.34545454545454546,
+        "r0": 0.0,
+        "r5": 0.32727272727272727,
+        "r5null": 0.0,
+        "r5R": 0.12727272727272726
+      },
+      "arm1_net": [
+        0.34545454545454546,
+        0.14285714285714285,
+        0.594610682110682,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.2,
+        0.0704163577958982,
+        0.34782608695652173,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.5789473684210527,
+        0.37499999999999994,
+        0.7500000000000001,
+        0
+      ],
+      "A3_ratio": [
+        0.9473684210526315,
+        0.6666666666666666,
+        1.115441176470588,
+        0
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.3684210526315789,
+        0.11764705882352941,
+        0.5714285714285715,
+        0
+      ],
+      "reading": "sufficiency is answer-specific"
+    },
+    "jpp/median_onset/without_capital_language_country": {
+      "window": "8-20",
+      "n": 38,
+      "rates": {
+        "r1": 0.21052631578947367,
+        "r0": 0.0,
+        "r5": 0.15789473684210525,
+        "r5null": 0.0,
+        "r5R": 0.02631578947368421
+      },
+      "arm1_net": [
+        0.21052631578947367,
+        0.05263157894736842,
+        0.5335416666666655,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.13157894736842105,
+        0.02631578947368421,
+        0.3333333333333333,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.625,
+        0.28571428571428575,
+        1.0,
+        0
+      ],
+      "A3_ratio": [
+        0.75,
+        0.45454545454545453,
+        1.0,
+        0
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.125,
+        0.0,
+        0.5,
+        0
+      ],
+      "reading": "sufficiency is answer-specific"
+    }
+  }
+}
