@@ -28,6 +28,12 @@ Edits (one forward each; every position edited; band layers each edited):
   bridgeJ_ctrl: the same with the control fact's bridge (same category, in no transcript; also minus the bridge's own
       forms): the semantic control (nc)
   ansJ / ansJ_rot: the same with the category's answers' forms (amendment 58 note 3's ansJ, here)
+  bridgeJ_ctrl_rot (amendment 73): bridgeJ_ctrl's removal vector turned (as bridgeJ_rot)
+  bridgeJ_peer / _rot (amendment 73): the same with the peers' bridge e2' (minus the forms of e2, e3 and e3'); rows carry np
+  bridgeJperp (amendment 72 note 54): bridgeJ's unit vectors projected off the span of the item's two answers' (e3, e3') form
+      vectors, columns of norm < 1e-3 dropped, re-orthonormalised; rows carry span_rank (mean kept rank over the band)
+  With any of these four (or --log-prot) every row also carries np and prot ({"orig": bool, "peer": bool}: is that answer's
+      main first token in the prompt's protected set, the clean top-10's letter rows). --uids: only these fact uids.
   paper10_skipown / _rot, paper10_onlyown / _rot (amendment 67 note 42): paper10 (and its rotated control) at every position
       except the tokens of the agent's own earlier answer, or only at them (own_positions: the tokens of its round-0
       completion inside its visible statement; the whole statement's tokens are logged beside, own_spans.jsonl). Only for
@@ -60,10 +66,13 @@ from scripts import sd_prompts as SP  # noqa: E402
 RES = pins.RESULTS_DIR / "sd_necessity"
 SEED_ROT = 888  # + layer, as ablate_v2 (seed offset 0)
 TOPK_CONDS = ("paper10", "paper10_rot", "paper10_pcasize", "unembed10", "unembed10_rot", "paper10_keepA", "paper10_keepA_rot")
-SPAN_CONDS = {"bridgeJ": "bforms", "bridgeJ_rot": "bforms", "bridgeJ_ctrl": "cforms", "ansJ": "aforms", "ansJ_rot": "aforms"}
+SPAN_CONDS = {"bridgeJ": "bforms", "bridgeJ_rot": "bforms", "bridgeJ_ctrl": "cforms", "ansJ": "aforms", "ansJ_rot": "aforms",
+              "bridgeJ_ctrl_rot": "cforms", "bridgeJ_peer": "pforms", "bridgeJ_peer_rot": "pforms"}  # the last three: amendments 72-73
+PERP_CONDS = ("bridgeJperp",)  # amendment 72 note 54: bridgeJ's unit vectors orthogonalised to the span of the item's two answers' forms
+PERP_MIN = 1e-3  # columns of norm < 1e-3 after the projection are dropped (amendment 72 note 50's convention)
 # amendment 67 note 42: paper10 at every position but the agent's own earlier answer (skipown), or only there (onlyown)
 OWN_CONDS = ("paper10_skipown", "paper10_skipown_rot", "paper10_onlyown", "paper10_onlyown_rot")
-CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS
+CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS + PERP_CONDS
 
 
 def own_positions(tok, text: str, spans: list[tuple[str, int, int]], fact: dict, own_answer: str) -> tuple[list[int], list[int]]:
@@ -221,6 +230,35 @@ def span_edit(D, rows: list[torch.Tensor], rotation: torch.Tensor | None = None)
     return edit
 
 
+def perp_span_edit(D, brows: list[torch.Tensor], arows: list[torch.Tensor]):
+    """Amendment 72 note 54's bridgeJperp: as span_edit (every position, no protection), with each row's span = the unit vectors
+    of its bridge rows (bridgeJ's) projected off the span of its two answers' form rows, columns of norm < PERP_MIN dropped,
+    re-orthonormalised (QR). The returned edit carries .ranks (each row's kept rank; 0 = no edit)."""
+    bases = []
+    for rb, ra in zip(brows, arows, strict=True):
+        Q = None
+        if rb.numel():
+            B = D.atoms(rb).double().T  # [d, nb] unit columns
+            if ra.numel():
+                Qa = torch.linalg.qr(D.atoms(ra).double().T)[0]
+                B = B - Qa @ (Qa.T @ B)
+            B = B[:, B.norm(dim=0) >= PERP_MIN]
+            Q = torch.linalg.qr(B)[0] if B.shape[1] else None
+        bases.append(Q)
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        out = h.float().clone()
+        for b, Q in enumerate(bases):
+            if Q is None:
+                continue
+            x = out[b].double()
+            out[b] = (x - (x @ Q) @ Q.T).float()
+        return out
+
+    edit.ranks = [0 if Q is None else Q.shape[1] for Q in bases]
+    return edit
+
+
 @torch.no_grad()
 def forward_read(model, ids: torch.Tensor, edits: dict, last: torch.Tensor, layers: list[int]):
     """ablate.first_token_logits (right-padded rows, each read at its own last position) that also returns each row's
@@ -312,6 +350,10 @@ def stage_ko(a) -> None:
     items = [json.loads(line) for line in (RES / a.items_run / "items.jsonl").read_text().splitlines()]
     items = [it for it in items if (a.split == "all" or it["split"] == a.split) and it["r0_outcome"] == "original"
              and (not a.categories or it["fact"]["category"] in a.categories)]  # fmt: skip
+    if a.uids:  # amendment 73 (note 54 extended, 27B): only these fact uids (one value that is a file: one uid per line; uids hold spaces)
+        one = len(a.uids) == 1 and Path(a.uids[0]).is_file()
+        want = {x.strip() for x in Path(a.uids[0]).read_text().splitlines() if x.strip()} if one else set(a.uids)
+        items = [it for it in items if it["fact"]["uid"] in want]
     if a.n and a.n < len(items):  # a seeded random subset (smoke)
         items = random.Random(a.seed).sample(items, a.n)
     model = load_model()
@@ -336,6 +378,8 @@ def stage_ko(a) -> None:
         ans_f = set(SP.forms(tok, f["e3"])) | set(SP.forms(tok, p["e3"]))
         bforms = sorted(set(SP.forms(tok, f["e2"])) - ans_f)
         cforms = sorted(set(SP.forms(tok, c["e2"])) - ans_f - set(SP.forms(tok, f["e2"])))
+        # amendment 73: bridgeJ_peer's span, the peers' bridge e2' minus the forms of e2, e3 and e3' (as bridgeJ for e2)
+        pforms = sorted(set(SP.forms(tok, p["e2"])) - ans_f - set(SP.forms(tok, f["e2"])))
         for conv in a.convs:
             text, spans = SP.render(f, p, conv, own_answer=it["r0_answer"])
             tail = f" {SP.norm(text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS):])} "
@@ -344,7 +388,7 @@ def stage_ko(a) -> None:
             prompts.append({"uid": f["uid"], "split": it["split"], "category": f["category"], "bridge": f["e2"], "conv": conv,
                             "text": text, "ids": tokens.raw_encoding(tok, text)["input_ids"], "targets": tg,
                             "collide": tg["collide"], "bnamed": bnamed, "probes": probes, "cands": sorted(set(cands[f["category"]]) | set(tg["orig"]) | set(tg["peer"])),
-                            "bforms": bforms, "cforms": cforms, "aforms": aforms[f["category"]]})  # fmt: skip
+                            "bforms": bforms, "cforms": cforms, "aforms": aforms[f["category"]], "pforms": pforms, "ansforms": sorted(ans_f)})  # fmt: skip
             if need_own:
                 prompts[-1]["own_pos"], prompts[-1]["own_line_pos"] = own_positions(tok, text, spans, f, it["r0_answer"])
     read = [p for p in prompts if not p["collide"]]
@@ -404,6 +448,8 @@ def stage_ko(a) -> None:
         return r[r >= 0].unique()
 
     def make_edit(cond: str, la: int, chunk: list[dict], protected: list[torch.Tensor], width: int = 0):
+        if cond in PERP_CONDS:  # amendment 72 note 54
+            return perp_span_edit(dic[la], [rows_of(p["bforms"]) for p in chunk], [rows_of(p["ansforms"]) for p in chunk])
         if cond in OWN_CONDS:  # note 42: paper10 with the earlier answer's tokens left unedited (skipown) or edited alone (onlyown)
             rs = []
             for i, p in enumerate(chunk):
@@ -443,6 +489,13 @@ def stage_ko(a) -> None:
                 out[b][name] = per[b]
         return out
 
+    # amendments 72-73: rows carry np (bridgeJ_peer's span size) and prot ({"orig", "peer"}: is that answer's main first token in
+    # the prompt's protected set, the clean top-10's letter rows) when the run has any of their edits, or with --log-prot;
+    # otherwise rows are as before, byte for byte
+    tail = a.log_prot or bool(all_conds & (set(PERP_CONDS) | {"bridgeJ_ctrl_rot", "bridgeJ_peer", "bridgeJ_peer_rot"}))
+    if tail:
+        manifest["row_tail"] = ["np", "prot"]
+        (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     rows_path = out_dir / "rows.jsonl"
     assert not rows_path.exists(), f"{rows_path} exists"
     pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
@@ -457,9 +510,15 @@ def stage_ko(a) -> None:
         clean, rec, _ = forward_read(model, ids, {}, last, read_layers)
         protected = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
         lr = lens_ranks(rec, chunk)
+        ext = [{} for _ in chunk]
+        if tail:
+            for b, p in enumerate(chunk):
+                pr = set(protected[b].tolist())
+                ext[b] = {"np": len(p["pforms"]), "prot": {k: int(row_of[p["targets"]["main"][k]]) in pr for k in ("orig", "peer")}}
         for b, p in enumerate(chunk):
             out_rows.append({"uid": p["uid"], "conv": p["conv"], "split": p["split"], "category": p["category"], "bridge": p["bridge"],
-                             "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": "-", "cond": "none", **read_answer(clean[b], p), "ranks": lr[b]})  # fmt: skip
+                             "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": "-", "cond": "none", **read_answer(clean[b], p), "ranks": lr[b],
+                             **ext[b]})  # fmt: skip
         for band, conds in edits_spec:
             tb = time.time()
             for cond in conds:
@@ -469,10 +528,11 @@ def stage_ko(a) -> None:
                 for b, p in enumerate(chunk):
                     if cond in OWN_CONDS and not p.get("own_pos"):
                         continue
+                    sr = {"span_rank": round(sum(edits[la].ranks[b] for la in band) / len(band), 2)} if cond in PERP_CONDS else {}
                     out_rows.append({"uid": p["uid"], "conv": p["conv"], "split": p["split"], "category": p["category"],
                                      "bridge": p["bridge"], "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": band_label(band), "cond": cond,
                                      "edit_rel": round(size[b], 5), **read_answer(logits[b], p),
-                                     "ranks": lr[b]})  # fmt: skip
+                                     "ranks": lr[b], **ext[b], **sr})  # fmt: skip
             band_seconds[band_label(band)] += time.time() - tb
         with rows_path.open("a") as fh:
             fh.writelines(json.dumps(r) + "\n" for r in out_rows)
@@ -528,5 +588,7 @@ if __name__ == "__main__":
     o.add_argument("--read-lenses", nargs="*", default=["jpp"], help='jpp (the frozen lens), logit, or a pins lens name ("jlens": 27B)')
     o.add_argument("--read-every", type=int, default=2)
     o.add_argument("--read-extra", nargs="*", type=int, default=[], help="more read layers (e.g. their band)")
+    o.add_argument("--uids", nargs="*", default=None, help="only these fact uids (or one file of uids, one per line)")
+    o.add_argument("--log-prot", action="store_true", help="rows carry np and prot even without an amendment 72-73 edit")
     args = ap.parse_args()
     {"known": stage_known, "ko": stage_ko}[args.stage](args)
