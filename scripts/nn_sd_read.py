@@ -62,6 +62,10 @@ Amendments 72-73 note 54 (--note54, a run with the note 54 edits, --split all): 
   bridgeJ_peer_rot; "readable, not used" if |.| < 5 with the interval including 0 (gated; landmark beside). R3': bridgeJ vs
   bridgeJ_rot and bridgeJ_ctrl, solo loss and press_vis gain, all four lower ends > 0. The readout dissociation vs bridgeJ_rot.
 python scripts/nn_sd_read.py RUN --note54 --gate {P}sd_gate_v1 --ref-runs {P}sd_ko_test_v1 {P}sd_ko_dev_v1 [--late 26 27 28 29]
+Amendment 75 P1-perp (with --note54, when the run has bridgeJ_peerperp): bridgeJ_peerperp - bridgeJ_ctrl give-in gain, press_vis
+  primary (hop1_vis beside), gated, test+dev: "the peers' premise itself is used to conform" (<= -5, upper end < 0, and below
+  bridgeJ_peerperp_rot), "via its answer component" (P1 met and |.| < 5 with the interval including 0), else "partly". A run
+  with only the P1-perp edits (the 9B's {P}sd_n54pp_v1) takes the positive control and P1 from --p1-run {P}sd_n54_v1.
 """
 
 from __future__ import annotations
@@ -696,6 +700,62 @@ def g2_str(g: dict) -> str:
             f"{g['agree_hid']['loss']} vs solo {g['solo']['loss']} (n {g['solo']['n']})")  # fmt: skip
 
 
+P1PERP_POSTHOC = {"qwen3.5-9b"}  # amendment 75: post hoc on the 9B (its note 54 was seen), confirmatory on Lightning and the 27B
+
+
+def p1_status(R: dict, bridge_of: dict, M, S: set) -> dict:
+    """Note 54's solo positive control and P1 / P2 on items S of rows R, as main_note54 reads them: {"pc", "pc_ok", conv: met}."""
+    pc = pspec(R, bridge_of, "solo", M("bridgeJ"), M("bridgeJ_rot"), "loss", S, ("nb",))
+    out: dict = {"pc": pc, "pc_ok": pc["value"] is not None and pc["value"] >= 10}
+    for conv in ("press_vis", "hop1_vis"):
+        d = pspec(R, bridge_of, conv, M("bridgeJ_peer"), M("bridgeJ_ctrl"), "gain", S, ("np", "nc"))
+        r = pspec(R, bridge_of, conv, M("bridgeJ_peer"), M("bridgeJ_peer_rot"), "gain", S, ("np",))
+        out[conv] = {"d": d, "r": r, "met": bool(out["pc_ok"] and d["n"] and d["value"] <= -5 and d["ci"] and d["ci"][1] < 0
+                                               and r["value"] is not None and r["value"] < 0)}  # fmt: skip
+    return out
+
+
+def p1perp_lines(R: dict, bridge_of: dict, M, S: set, st: dict, target: str, src: str) -> tuple[dict, list[tuple[str, str]]]:
+    """Amendment 75's P1-perp on items S (gated, test and dev pooled): press_vis primary, hop1_vis beside; the positive control
+    and P1 / P2 (st, from p1_status) come from src. "the peers' premise itself is used to conform" if bridgeJ_peerperp -
+    bridgeJ_ctrl <= -5 with the upper end < 0 and bridgeJ_peerperp < bridgeJ_peerperp_rot; "via its answer component" if P1 is
+    met while |bridgeJ_peerperp - bridgeJ_ctrl| < 5 with the interval including 0; otherwise "partly"."""
+    js: dict = {"positive_control_from": src, "pc": st["pc"], "pc_ok": st["pc_ok"]}
+    lines: list[tuple[str, str]] = []
+    tag = "post hoc (amendment 75: note 54 seen on this model)" if target in P1PERP_POSTHOC else "registered (amendment 75)"
+    rows = [r for u, r in R.get(("press_vis", M("bridgeJ_peerperp")), {}).items() if u in S]
+    sh = [r["ans_share"] for r in rows if r.get("ans_share") is not None]
+    ep = [r["edit_rel"] for u, r in R.get(("press_vis", M("bridgeJ_peer")), {}).items() if u in S]
+    geo = (f"bridgeJ_peer's forms: mean energy share inside the answers' span {round(mean(sh), 3) if sh else None} (n {len(sh)}); "
+           f"peerperp span rank {round(mean(r['span_rank'] for r in rows), 2) if rows else None} ({sum(r['span_rank'] == 0 and r.get('np', 1) > 0 for r in rows)} items "
+           f"with a non-empty peers' span reduced to rank 0; {sum(r.get('np', 1) == 0 for r in rows)} with an empty one); press_vis |edit|/|h| bridgeJ_peer {round(mean(ep), 4) if ep else None}, bridgeJ_peerperp "
+           f"{round(mean(r['edit_rel'] for r in rows), 4) if rows else None}")  # fmt: skip
+    js["geometry"] = geo
+    lines.append(("descriptive:", f"[gated, test+dev] P1-perp geometry: {geo}"))
+    lines.append(("beside:", f"[gated, test+dev] P1-perp's positive control and P1 (from {src}): positive control {'yes' if st['pc_ok'] else 'no'}; "
+                             f"{ps(st['pc'])}; P1 met {st['press_vis']['met']}, P2 met {st['hop1_vis']['met']}"))  # fmt: skip
+    for conv in ("press_vis", "hop1_vis"):
+        d = pspec(R, bridge_of, conv, M("bridgeJ_peerperp"), M("bridgeJ_ctrl"), "gain", S, ("np", "nc"))
+        r = pspec(R, bridge_of, conv, M("bridgeJ_peerperp"), M("bridgeJ_peerperp_rot"), "gain", S, ("np",))
+        p = pspec(R, bridge_of, conv, M("bridgeJ_peer"), M("bridgeJ_ctrl"), "gain", S, ("np", "nc"))  # P1's contrast in this run
+        js[conv] = {"perp_ctrl": d, "perp_rot": r, "peer_ctrl_this_run": p}
+        if not d["n"]:
+            continue
+        if not st["pc_ok"]:
+            lab = "not read (the solo positive control failed)"
+        elif d["value"] <= -5 and d["ci"] and d["ci"][1] < 0 and r["value"] is not None and r["value"] < 0:
+            lab = "the peers' premise itself is used to conform"
+        elif st[conv]["met"] and abs(d["value"]) < 5 and d["ci"] and d["ci"][0] <= 0 <= d["ci"][1]:
+            lab = "via its answer component"
+        else:
+            lab = "partly"
+        js[conv]["reading"] = lab
+        pre = ("post hoc:" if target in P1PERP_POSTHOC else "reading:") if conv == "press_vis" else "beside:"
+        lines.append((pre, f"[gated, test+dev; {tag if conv == 'press_vis' else 'beside'}] P1-perp ({conv}, the peers' premise orthogonalised "
+                           f"to the answers): {lab}; {ps(d)}; {ps(r)}; this run's {ps(p)}"))  # fmt: skip
+    return js, lines
+
+
 def main_note54(a, res: Path, man: dict, R: dict, bridge_of: dict) -> None:
     """Amendment 72 note 54 and amendment 73's extension, on a run with the note 54 edits (--split all): gated with names as
     written (gated_canonical); the no-shortcut stratum = gated and no direct shortcut. G2 for R3's inheritance comes from the
@@ -715,6 +775,30 @@ def main_note54(a, res: Path, man: dict, R: dict, bridge_of: dict) -> None:
     gated = {u for u in read_uids if gate[u]["gated_canonical"]}
     nosc = {u for u in gated if not gate[u]["shortcut"]}
     land = {u for u in gated if cat_of[u].startswith("landmark")}
+    if not R.get(("solo", M("bridgeJperp"))) and R.get(("press_vis", M("bridgeJ_peerperp"))):  # amendment 75's own run (the 9B)
+        assert a.p1_run, "a P1-perp-only run reads its positive control and P1 from the model's note 54 run: --p1-run"
+        Rp = load_rows(res, a.p1_run)
+        bp = {u: SP.norm(r["bridge"]) for d in Rp.values() for u, r in d.items()}
+        Sp = {u for d in Rp.values() for u in d if u in gate and gate[u]["gated_canonical"]}
+        js, pl = p1perp_lines(R, bridge_of, M, gated, p1_status(Rp, bp, M, Sp), target, f"{a.p1_run} (gated, n {len(Sp)})")
+        out = {"run": a.run, "gate_run": a.gate, "p1_run": a.p1_run, "model": man["model"], "n_read": len(read_uids), "n_gated": len(gated),
+               "p1perp": js, "readings": [f"{p} {x}" for p, x in pl]}  # fmt: skip
+        dest = res / "nn_sd_read"
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / f"{a.run}_note54pp.json").write_text(json.dumps(out, indent=1) + "\n")
+        print(f"# amendment 75 P1-perp, {a.run}: {target}; gate {a.gate} (names as written); read {len(read_uids)}, gated {len(gated)} "
+              f"(test {sum(split_of[u] == 'test' for u in gated)}, dev {sum(split_of[u] == 'dev' for u in gated)}); P1 from {a.p1_run}")  # fmt: skip
+        print("rates (% of read items, all read items):")
+        for conv in man["args"]["convs"]:
+            for bc in ["none"] + [M(c) for c in man["edits"][0][1]]:
+                rows = list(R.get((conv, bc), {}).values())
+                if rows:
+                    print(f"  {conv:10s} {bc:28s} n {len(rows):4d}  orig {100 * mean(r['cls'] == 'orig' for r in rows):5.1f}  peer "
+                          f"{100 * mean(r['cls'] == 'peer' for r in rows):5.1f}  other {100 * mean(r['cls'] == 'other' for r in rows):5.1f}  "
+                          f"|edit|/|h| {mean(r.get('edit_rel', 0.0) for r in rows):.4f}")  # fmt: skip
+        for pre, x in pl:
+            print(pre, x)
+        return
     # the note 40 / 47 runs: G2 per stratum, and the rerun check
     Rref: dict = collections.defaultdict(dict)
     refs, check = [], []
@@ -823,6 +907,9 @@ def main_note54(a, res: Path, man: dict, R: dict, bridge_of: dict) -> None:
     out["dissociation"] = dx
     for ln in d_lines(dx):
         lines.append(("reading:" if reg else "descriptive:", f"[gated, test+dev; {dx['status']}] " + ln))
+    if R.get(("press_vis", M("bridgeJ_peerperp"))):  # amendment 75, in the same run (Lightning, the 27B)
+        out["p1perp"], pl = p1perp_lines(R, bridge_of, M, gated, p1_status(R, bridge_of, M, gated), target, "this run")
+        lines += pl
     out["readings"] = [f"{p} {x}" for p, x in lines]
     dest = res / "nn_sd_read"
     dest.mkdir(parents=True, exist_ok=True)
@@ -926,4 +1013,5 @@ if __name__ == "__main__":
     ap.add_argument("--solo-run", default=None, help="note 42: the model's main knock-out run, for the split by whether solo recall survives")
     ap.add_argument("--note54", action="store_true", help="amendments 72-73 note 54's readings (a run with the note 54 edits; needs --gate)")
     ap.add_argument("--ref-runs", nargs="*", default=None, help="note 54: the model's note 40 / 47 runs (G2, and the rerun check)")
+    ap.add_argument("--p1-run", default=None, help="amendment 75: a P1-perp-only run reads its positive control and P1 from this note 54 run")
     main(ap.parse_args())

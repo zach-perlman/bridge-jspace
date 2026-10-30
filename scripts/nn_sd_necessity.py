@@ -32,7 +32,9 @@ Edits (one forward each; every position edited; band layers each edited):
   bridgeJ_peer / _rot (amendment 73): the same with the peers' bridge e2' (minus the forms of e2, e3 and e3'); rows carry np
   bridgeJperp (amendment 72 note 54): bridgeJ's unit vectors projected off the span of the item's two answers' (e3, e3') form
       vectors, columns of norm < 1e-3 dropped, re-orthonormalised; rows carry span_rank (mean kept rank over the band)
-  With any of these four (or --log-prot) every row also carries np and prot ({"orig": bool, "peer": bool}: is that answer's
+  bridgeJ_peerperp / _rot (amendment 75): as bridgeJperp with the peers' bridge forms (bridgeJ_peer's); _rot turns the
+      removal vector; rows carry span_rank and ans_share (the forms' mean energy share inside the answers' span)
+  With any of these (or --log-prot) every row also carries np and prot ({"orig": bool, "peer": bool}: is that answer's
       main first token in the prompt's protected set, the clean top-10's letter rows). --uids: only these fact uids.
   paper10_skipown / _rot, paper10_onlyown / _rot (amendment 67 note 42): paper10 (and its rotated control) at every position
       except the tokens of the agent's own earlier answer, or only at them (own_positions: the tokens of its round-0
@@ -69,10 +71,12 @@ TOPK_CONDS = ("paper10", "paper10_rot", "paper10_pcasize", "unembed10", "unembed
 SPAN_CONDS = {"bridgeJ": "bforms", "bridgeJ_rot": "bforms", "bridgeJ_ctrl": "cforms", "ansJ": "aforms", "ansJ_rot": "aforms",
               "bridgeJ_ctrl_rot": "cforms", "bridgeJ_peer": "pforms", "bridgeJ_peer_rot": "pforms"}  # the last three: amendments 72-73
 PERP_CONDS = ("bridgeJperp",)  # amendment 72 note 54: bridgeJ's unit vectors orthogonalised to the span of the item's two answers' forms
+# amendment 75: the same for the peers' bridge (bridgeJ_peer's forms), and its rotation; rows carry span_rank and ans_share
+PEERPERP_CONDS = ("bridgeJ_peerperp", "bridgeJ_peerperp_rot")
 PERP_MIN = 1e-3  # columns of norm < 1e-3 after the projection are dropped (amendment 72 note 50's convention)
 # amendment 67 note 42: paper10 at every position but the agent's own earlier answer (skipown), or only there (onlyown)
 OWN_CONDS = ("paper10_skipown", "paper10_skipown_rot", "paper10_onlyown", "paper10_onlyown_rot")
-CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS + PERP_CONDS
+CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS + PERP_CONDS + PEERPERP_CONDS
 
 
 def own_positions(tok, text: str, spans: list[tuple[str, int, int]], fact: dict, own_answer: str) -> tuple[list[int], list[int]]:
@@ -230,21 +234,28 @@ def span_edit(D, rows: list[torch.Tensor], rotation: torch.Tensor | None = None)
     return edit
 
 
-def perp_span_edit(D, brows: list[torch.Tensor], arows: list[torch.Tensor]):
-    """Amendment 72 note 54's bridgeJperp: as span_edit (every position, no protection), with each row's span = the unit vectors
-    of its bridge rows (bridgeJ's) projected off the span of its two answers' form rows, columns of norm < PERP_MIN dropped,
-    re-orthonormalised (QR). The returned edit carries .ranks (each row's kept rank; 0 = no edit)."""
-    bases = []
+def perp_span_edit(D, brows: list[torch.Tensor], arows: list[torch.Tensor], rotation: torch.Tensor | None = None):
+    """Amendment 72 note 54's bridgeJperp (and amendment 75's bridgeJ_peerperp with the peers' bridge rows): as span_edit
+    (every position, no protection), with each row's span = the unit vectors of its bridge rows projected off the span of its
+    two answers' form rows, columns of norm < PERP_MIN dropped, re-orthonormalised (QR); with rotation (amendment 75's _rot)
+    the removal vector is turned, as span_edit's. The returned edit carries .ranks (each row's kept rank; 0 = no edit) and
+    .ans_share (each row's mean share of its unit bridge vectors' energy inside the answers' span; None without bridge rows)."""
+    bases, shares = [], []
     for rb, ra in zip(brows, arows, strict=True):
-        Q = None
+        Q, sh = None, None
         if rb.numel():
             B = D.atoms(rb).double().T  # [d, nb] unit columns
             if ra.numel():
                 Qa = torch.linalg.qr(D.atoms(ra).double().T)[0]
-                B = B - Qa @ (Qa.T @ B)
+                PB = Qa @ (Qa.T @ B)
+                sh = float((PB * PB).sum() / (B * B).sum())
+                B = B - PB
+            else:
+                sh = 0.0
             B = B[:, B.norm(dim=0) >= PERP_MIN]
             Q = torch.linalg.qr(B)[0] if B.shape[1] else None
         bases.append(Q)
+        shares.append(sh)
 
     def edit(h: torch.Tensor) -> torch.Tensor:
         out = h.float().clone()
@@ -252,10 +263,14 @@ def perp_span_edit(D, brows: list[torch.Tensor], arows: list[torch.Tensor]):
             if Q is None:
                 continue
             x = out[b].double()
-            out[b] = (x - (x @ Q) @ Q.T).float()
+            if rotation is None:
+                out[b] = (x - (x @ Q) @ Q.T).float()
+            else:
+                out[b] = (x - ((x @ Q) @ Q.T) @ rotation.double().T).float()
         return out
 
     edit.ranks = [0 if Q is None else Q.shape[1] for Q in bases]
+    edit.ans_share = shares
     return edit
 
 
@@ -450,6 +465,9 @@ def stage_ko(a) -> None:
     def make_edit(cond: str, la: int, chunk: list[dict], protected: list[torch.Tensor], width: int = 0):
         if cond in PERP_CONDS:  # amendment 72 note 54
             return perp_span_edit(dic[la], [rows_of(p["bforms"]) for p in chunk], [rows_of(p["ansforms"]) for p in chunk])
+        if cond in PEERPERP_CONDS:  # amendment 75: the peers' bridge (pforms), orthogonalised to both answers' forms
+            return perp_span_edit(dic[la], [rows_of(p["pforms"]) for p in chunk], [rows_of(p["ansforms"]) for p in chunk],
+                                  rotation=rot[la] if cond.endswith("_rot") else None)
         if cond in OWN_CONDS:  # note 42: paper10 with the earlier answer's tokens left unedited (skipown) or edited alone (onlyown)
             rs = []
             for i, p in enumerate(chunk):
@@ -492,7 +510,7 @@ def stage_ko(a) -> None:
     # amendments 72-73: rows carry np (bridgeJ_peer's span size) and prot ({"orig", "peer"}: is that answer's main first token in
     # the prompt's protected set, the clean top-10's letter rows) when the run has any of their edits, or with --log-prot;
     # otherwise rows are as before, byte for byte
-    tail = a.log_prot or bool(all_conds & (set(PERP_CONDS) | {"bridgeJ_ctrl_rot", "bridgeJ_peer", "bridgeJ_peer_rot"}))
+    tail = a.log_prot or bool(all_conds & (set(PERP_CONDS) | set(PEERPERP_CONDS) | {"bridgeJ_ctrl_rot", "bridgeJ_peer", "bridgeJ_peer_rot"}))
     if tail:
         manifest["row_tail"] = ["np", "prot"]
         (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -528,7 +546,10 @@ def stage_ko(a) -> None:
                 for b, p in enumerate(chunk):
                     if cond in OWN_CONDS and not p.get("own_pos"):
                         continue
-                    sr = {"span_rank": round(sum(edits[la].ranks[b] for la in band) / len(band), 2)} if cond in PERP_CONDS else {}
+                    sr = {"span_rank": round(sum(edits[la].ranks[b] for la in band) / len(band), 2)} if cond in PERP_CONDS + PEERPERP_CONDS else {}
+                    if cond in PEERPERP_CONDS:  # amendment 75: the peers' bridge span's energy share inside the answers' span
+                        shs = [edits[la].ans_share[b] for la in band if edits[la].ans_share[b] is not None]
+                        sr["ans_share"] = round(sum(shs) / len(shs), 4) if shs else None
                     out_rows.append({"uid": p["uid"], "conv": p["conv"], "split": p["split"], "category": p["category"],
                                      "bridge": p["bridge"], "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": band_label(band), "cond": cond,
                                      "edit_rel": round(size[b], 5), **read_answer(logits[b], p),
