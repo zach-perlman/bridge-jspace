@@ -132,11 +132,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def send(self, body: str, ctype: str = "text/html; charset=utf-8", code: int = 200) -> None:
         data = body.encode()
-        self.send_response(code)
-        self.send_header("Content-Type", ctype)
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
+        try:
+            self.send_response(code)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):  # the browser closed the page (reload, a new click) before the reply was read
+            pass
 
     def do_GET(self) -> None:
         url = urlparse(self.path)
