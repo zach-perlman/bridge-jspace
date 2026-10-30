@@ -3553,3 +3553,39 @@ Zach's MC answer: "Names as written". The registered name filter (any alias of e
 - **The primary name filter is names as written:** e1, e2 and e3 with no alias lists, contained as a word or sharing a 4-letter stem (scripts/sd_gate.py name_drop_canonical, reader --name-rule canonical).
 - **The alias-based rule is reported beside**, labelled as the originally registered rule.
 - Everything else in the first addendum is unchanged: the guess control, the direct shortcut flag, the strata, R3 only on no-shortcut items with >= 30, and G0's like-for-like check on the ungated set.
+
+#### Amendment 67 (Zach's session, 2026-10-30, box clock at commit; Zach delegated queueing to 12:00 ET; before any code or run of it): the skeptic's must-run checks on notes 37, 39 and 40
+Source: /home/zach/scratch/redteam_1030/skeptic_1030.md (an adversarial read of tonight's results). Seen: notes 37, 38 and 39 readings; note 40's 9B gated and ungated readings and Lightning's ungated readings. Models: 9B, 27B, Lightning; one deterministic run each (Lightning's reruns are not bit-identical, as recorded).
+
+##### Note 41: random-span placebo and output-side check for note 37 (v4, note 20's gate and bands; ablate_v2)
+- **New conditions:**
+  - **paper10_keepR (+ _rot):** as paper10_keepA, but the kept span R is spanned by the unit J++ vectors of N random letter-token rows. N = the item's A row count (rank-matched). Rows are drawn with Random("n41:" + item id), excluding A's rows and the protected rows.
+  - **ansR (+ _rot):** as ansJ, but removing R's span at every position.
+- **Output-side run.** A separate run with --positions final and conditions paper10, paper10_rot, ansJ, ansJ_rot.
+- **Readings** (per model):
+  - "**answer-specific keep**" if keepR's net MM loss (keepR - keepR_rot) >= 2/3 of paper10's net loss while keepA's ratio stays <= 1/3; "**size, not answers**" if keepR's ratio <= 1/3 as well; otherwise "partly".
+  - "**answer-specific removal**" if ansR's gap <= 1/3 of ansJ's gap.
+  - ansJ at the final token only: "**largely output-side**" if its gap is >= 1/2 of ansJ's all-position gap; "**upstream**" if <= 1/4; otherwise "mixed".
+
+##### Note 42: position split for note 40's visible-answer effect (silent-dissent transcript; nn_sd_necessity)
+- **New conditions** at the mid band:
+  - **paper10_skipown (+ _rot):** paper10 at every position except the tokens of the agent's own earlier answer;
+  - **paper10_onlyown (+ _rot):** only at those tokens.
+- **Conversations:** press_vis and press1_vis. The gated set is primary (amendment 66 addenda, names as written). Models: 9B, Lightning, 27B.
+- **Reading** (specific give-in gain, as R1):
+  - "**a lookup disruption at the earlier answer**" if onlyown gives >= 2/3 of paper10's gain and skipown <= 1/3;
+  - "**not at the earlier answer's tokens**" if skipown >= 2/3 and onlyown <= 1/3;
+  - otherwise "both".
+- **Descriptive:** whether the solo recall survives, and the give-in, by category.
+
+##### Note 39 arm 5R: a random-projection control for sufficiency
+- **Arm 5R:** the bridge atoms projected onto a random span of A's dimension (random letter tokens, Random("n39r:" + item), excluding A and the item's name tokens), renormalised, then swapped. It runs with the arm 6b reruns.
+- **Reading:** "**sufficiency is answer-specific**" if arm 5 - arm 5R >= 1/3 of arm 1's net, with the interval above 0; otherwise "**not answer-specific**".
+- **Descriptive:** sufficiency without the capital/language/country items.
+
+##### Wording fixed now, whatever these show (the skeptic's list)
+- **Note 40:** a 9B result (Lightning ungated null); neither "memory" nor "conformity"; the hidden case is "not readable"; R3 is not quoted (its n is at the threshold, and the control bridge moves the other way).
+- **Note 37:** "the ~130-dim span of the relation's answer-word J++ vectors"; ansJ is all positions and unprotected; on Lightning about half of ansJ is shared with the logit lens.
+- **Note 38:** Lightning RM fails the specificity guard; the answer part alone reproduces 86-112%; one donor seed.
+- **Note 39:** sufficiency is not established on the 9B; it is driven by capital/language items; necessity is unreadable on Lightning.
+- **Note 35:** not "Lightning dissociates". Composition needs the J-space about equally on Lightning and the 27B; Lightning's key lookup does not.
