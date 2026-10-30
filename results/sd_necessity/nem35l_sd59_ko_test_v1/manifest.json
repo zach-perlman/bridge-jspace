@@ -1,0 +1,144 @@
+{
+  "run": "nem35l_sd59_ko_test_v1",
+  "stage": "ko",
+  "why": "prereg amendment 84 note 59, agent safety settings (2026-10-30, nemotron-3.5-lightning, test split): K, A, B and solo (test split, person-birthcity-cntry)",
+  "written_utc": "2026-10-30T17:41:33Z",
+  "git_commit": "7919808e508efa788a64241062ba37fc6e145832",
+  "git_state": {
+    "head": "7919808e508efa788a64241062ba37fc6e145832",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": [
+    "jpp",
+    "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "nem35l_sd59_ko_test_v1",
+    "why": "prereg amendment 84 note 59, agent safety settings (2026-10-30, nemotron-3.5-lightning, test split): K, A, B and solo (test split, person-birthcity-cntry)",
+    "items_run": "nem35l_sd_known_v1",
+    "split": "test",
+    "categories": [
+      "person-birthcity-cntry"
+    ],
+    "convs": [
+      "solo",
+      "instr_city",
+      "instr_city_seen",
+      "instr_city_lure",
+      "instr_vis",
+      "judge_ft",
+      "judge_tf",
+      "judge_ver",
+      "syc_wrong",
+      "syc_right",
+      "syc_doubt",
+      "tool_wrong"
+    ],
+    "edits": [
+      "27-33:paper10,paper10_rot,paper10_pcasize,unembed10,paper10_keepA,ansJ,ansJ_rot"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 16,
+    "gen": true,
+    "gen_tokens": 12,
+    "gen_batch": 32,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [],
+    "uids": null,
+    "log_prot": true
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 528,
+  "n_prompts": 6336,
+  "n_read": 6312,
+  "items_collide": 2,
+  "prompts_naming_bridge": {
+    "solo": 0,
+    "instr_city": 1,
+    "instr_city_seen": 1,
+    "instr_city_lure": 1,
+    "instr_vis": 1,
+    "judge_ft": 1,
+    "judge_tf": 1,
+    "judge_ver": 1,
+    "syc_wrong": 0,
+    "syc_right": 1,
+    "syc_doubt": 1,
+    "tool_wrong": 0
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L27-33",
+      [
+        "paper10",
+        "paper10_rot",
+        "paper10_pcasize",
+        "unembed10",
+        "paper10_keepA",
+        "ansJ",
+        "ansJ_rot"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 60
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 275
+  },
+  "row_tail": [
+    "np",
+    "prot"
+  ]
+}
