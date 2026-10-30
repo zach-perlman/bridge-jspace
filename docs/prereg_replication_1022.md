@@ -3606,3 +3606,61 @@ Source: /home/zach/scratch/redteam_1030/skeptic_1030.md (an adversarial read of 
   - **"Hidden >= visible":** the interval is above 0.
   - Otherwise **"no difference"**.
 - **Bridge control.** R3 stays unquoted (amendment 67). If a bridgeJ_rot condition is run later, R3 is re-read against it.
+
+#### Amendment 68 (Zach's session, 2026-10-30, box clock at commit; Zach delegated queueing to 12:00 ET; before any code or run of it): notes 43-45, the slate after the deepen, skeptic and frontier reviews
+Sources: /home/zach/scratch/redteam_1030/next_deepen.md (E6, E7) and next_frontier.md (D1). Models 9B, 27B and Lightning, one deterministic run each (Lightning not bit-reproducible, as recorded); J++ only. Seen: every result logged up to note 39 on Muse.
+
+##### Note 43: note 37 on a held-out v4 data draw (jsuite_v4p4002)
+- **Pipeline:** competence, controls and the v4 gate as note 20's queue. The v4_split control-set mapping is fixed for the p4002 naming, behaviour-preserving for existing sets.
+- **Conditions:** note 37's (paper10, paper10_rot, paper10_keepA, paper10_keepA_rot, ansJ, ansJ_rot, ansU; --keepA-forms every), plus note 41's keepR / keepR2 / keepR4 (+ _rot) and ansR (+ _rot) if note 41's code is committed before this run starts.
+- **Reading.** "Replicates" = the same note 37 reading (and, if run, the same note 41 reading) per model as on seed 4001. The headline gap (MM - MP under paper10) is reported beside.
+
+##### Note 44: answer or intermediate, on the closed-book capital question (jsuite_v5kn2c MC0; MC and the kn2 say twin as references; note 35's gate; main bands)
+- **Conditions** (note 37's keep machinery):
+  - keepCap: every form of every capital in note 35's table;
+  - keepCty: every form of every country in kn2's say vocabulary, count-matched to keepCap's rows by seeded subsampling, Random("n44:" + item);
+  - keepCapCty;
+  - keepR at keepCap's retained energy (as note 41);
+  - ansCap, ansCty, ansCty_rot.
+  - paper10 and paper10_rot are rerun in-run.
+- **Primary stratum:** all gated MC0 items. Note 35's anyform stratum is reported beside.
+- **Rescue** = 1 - (net MM-like loss under keepX) / (net loss under paper10), on MC0's contrast as note 35's.
+- **Readings** (27B and Lightning primary; 9B descriptive):
+  - "answer only": rescue(keepCap) >= 2/3 and rescue(keepCty) <= 1/3;
+  - "intermediate needed": rescue(keepCty) >= 2/3, or rescue(keepCap) <= 1/3 while rescue(keepCapCty) >= 2/3;
+  - "both": keepCapCty >= 2/3 with each alone <= 1/3;
+  - otherwise "unclear".
+  - A rescue counts only if it beats keepR's by >= 0.33.
+- **Beside:** ansCty's MC0 loss next to the say twin's loss, and the cross-overlap of the two spans.
+
+##### Note 45: which named word the ablation needs, on the paper's own items
+- **Items:**
+  - the paper's lens-eval multilingual set (107 items, labels: language L, relation R, input-in-English I, output-in-English E);
+  - the multihop set (data/lens_eval_multihop.json, 93 items, bridge = intermediates[0]);
+  - the order-of-operations set, descriptive only.
+  - The 7 multilingual items whose English pivot shares a first-token form with the target (cognates) are excluded from the pivot reading. No new item set is built.
+- **Gate.** Raw completion, greedy 6 tokens, normalised prefix match; chat prefill only if a model has fewer than 50 raw-eligible items.
+- **Read.** Delta log p and strict top-1 of the target's first token; a teacher-forced whole-target log p beside if built.
+- **Conditions** at note 39's main bands:
+  - paper10, paper10_rot, paper10_pcasize, unembed10;
+  - keep_T (target);
+  - keep_E, keep_I, keep_R, keep_L (multilingual); keep_B (multihop);
+  - keep_ctl (a same-type word from another item, count-matched);
+  - keepR (3 seeded draws, rank-matched);
+  - rm_T, rm_E, rm_R, rm_L, rm_B, rm_ctl (+ _rot each), removal at all positions except the final one.
+  - Early window (note 39's median onset): paper10, paper10_rot, keep_T, keep_E / keep_B.
+  - Items where the kept word is in paper10's protected set are logged; the primary is on unprotected items.
+- **Readings** (per set and model), with K = net loss under the keep / net loss under paper10:
+  - **A0:** paper10 loss - max(rot, pcasize) >= 20 points with CI > 0; otherwise "the knock-out does not bite on this set".
+  - **Validity:** K(keepR) >= 2/3 and K(keep_ctl) >= 2/3; otherwise "spans not specific".
+  - **Multilingual:**
+    - "English pivot carries it": K(E) <= 1/3 and K(T) >= 2/3;
+    - "target word carries it": the reverse;
+    - "shared concept": both <= 1/3;
+    - "neither": both >= 2/3. Then R and L are read the same way.
+    - Necessity: rm_E - rm_ctl >= 15 points with CI > 0 = "the English pivot is necessary" (the same for R and L).
+  - **Multihop:**
+    - "answer": K(T) <= 1/3 and K(B) >= 2/3; "bridge": the reverse;
+    - early window: "the intermediate is needed early" if K_early(B) <= 1/3 and K_early(T) >= 2/3.
+  - **Splits:** single- vs multi-token targets.
+  - **Bootstrap** clustered by relation (multilingual) or answer type (multihop).
