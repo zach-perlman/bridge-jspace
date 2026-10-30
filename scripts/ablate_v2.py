@@ -72,9 +72,32 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
               "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize",
               "ansJ", "ansJ_rot", "ansU", "ansU_rot",  # ans*: amendment 58 note 3
-              "paper10_keepA", "paper10_keepA_rot")  # fmt: skip  # amendment 64 note 37: paper10's r minus its part in the answers' J++ span
+              "paper10_keepA", "paper10_keepA_rot",  # amendment 64 note 37: paper10's r minus its part in the answers' J++ span
+              "paper10_keepR", "paper10_keepR_rot", "paper10_keepR2", "paper10_keepR2_rot", "paper10_keepR4",
+              "paper10_keepR4_rot", "ansR", "ansR_rot")  # fmt: skip  # amendment 67 note 41 + addendum: random kept / removed spans
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 KEEPA_ROWS = {"every": "forms", "cands2": "cands2"}  # note 37's kept span: every form, or ansJ's rows (cands2) only
+RAND_MULT = {"R": 1, "R2": 2, "R4": 4}  # note 41: random kept spans of 1x, 2x, 4x A's row count, nested (R in R2 in R4)
+
+
+def keep_kind(cond: str) -> str | None:
+    """The kept span of a paper10_keep* condition: A (note 37) or R, R2, R4 (note 41); None for any other condition."""
+    m = re.fullmatch(r"paper10_keep(A|R|R2|R4)(_rot)?", cond)
+    return m[1] if m else None
+
+
+def is_rand(cond: str) -> bool:
+    """Note 41's conditions on the random rows: paper10_keepR / R2 / R4 (+ _rot) and ansR (+ _rot)."""
+    return keep_kind(cond) in RAND_MULT or cond in ("ansR", "ansR_rot")
+
+
+def random_rows(item_id: str, n: int, n_dict: int, exclude: set[int]) -> list[int]:
+    """Amendment 67 note 41 (+ addendum): 4n letter-token dictionary rows drawn with random.Random("n41:" + item id) from
+    the rows not in exclude (A's rows and the protected rows), in draw order; R = the first n, R2 the first 2n, R4 all."""
+    import random
+
+    pool = [i for i in range(n_dict) if i not in exclude]
+    return random.Random("n41:" + item_id).sample(pool, 4 * n)
 
 
 def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str], skip: int = 0,
@@ -405,8 +428,11 @@ def main(args) -> None:
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
                 "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "tasks_scene_words": args.tasks_scene_words, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
-    if any("_keepA" in c for c in args.conditions):  # amendment 64 note 37
+    if any(keep_kind(c) or is_rand(c) for c in args.conditions):  # amendment 64 note 37; amendment 67 note 41
         manifest["keepA_forms"] = args.keepA_forms
+    if any(is_rand(c) for c in args.conditions):
+        manifest["n41_random_rows"] = ('random.Random("n41:" + id).sample(letter-token rows minus A\'s rows minus the protected '
+                                       "rows, 4 |A|), in draw order: R = the first |A|, R2 the first 2 |A|, R4 all (rand_rows.jsonl)")
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     suite_fams = [f for f in args.families if f in COMPETENCE]
@@ -537,16 +563,44 @@ def main(args) -> None:
             shields = [bool(p["bridge"]) and bool(set(model.surface_ids(p["bridge"])) & set(t.tolist()))
                        for p, t in zip(chunk, clean.topk(10, dim=1).indices, strict=True)]  # fmt: skip
             span_cache: dict = {}  # note 37: (layer, rows) -> kept span, this batch only
+            a_rows, rand_rows = [], []  # note 41: per row, A's dictionary rows and its 4|A| random rows (draw order)
+            if any(is_rand(c) for c in args.conditions):
+                for i, p in enumerate(chunk):
+                    rr = row_of[torch.tensor(p[KEEPA_ROWS[args.keepA_forms]], device="cuda")]
+                    a_rows.append(rr[rr >= 0].unique())
+                    pick = random_rows(p["id"], a_rows[-1].numel(), letters.numel(), set(a_rows[-1].tolist()) | set(protected[i].tolist()))
+                    rand_rows.append(torch.tensor(pick, device="cuda"))
+                with (out_dir / "rand_rows.jsonl").open("a") as fh:  # the draws, for audit
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "n_A": int(a_rows[i].numel()),
+                                              "rows4": rand_rows[i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+
+            def kept_span(i: int, la: int, kind: str) -> torch.Tensor:
+                """Row i's kept span at layer la (orthonormal [d, k]): A as note 37, or the first 1x / 2x / 4x |A| columns of
+                one QR of the 4|A| random rows' J++ unit vectors (their spans are nested)."""
+                if kind == "A":
+                    rr = row_of[torch.tensor(chunk[i][KEEPA_ROWS[args.keepA_forms]], device="cuda")]
+                    rr = rr[rr >= 0].unique()
+                else:
+                    rr = rand_rows[i]
+                ck = (la, tuple(rr.tolist()))
+                if ck not in span_cache:
+                    span_cache[ck] = torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                return span_cache[ck] if kind in ("A", "R4") else span_cache[ck][:, : RAND_MULT[kind] * a_rows[i].numel()]
+
             for band in bands:
                 tb = time.time()
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
+                    energy = torch.zeros(len(chunk), 5, dtype=torch.float64, device="cuda") if rand_rows else None  # note 41: |r|^2, in A, R, R2, R4
                     for la in band:
                         if cond.startswith("ans"):  # amendment 58 note 3: the candidate answers' directions only
-                            cand_rows = []
-                            for p in chunk:
-                                rr = row_of[torch.tensor(p["cands2"], device="cuda")]
-                                cand_rows.append(rr[rr >= 0].unique())
+                            if cond.startswith("ansR"):  # amendment 67 note 41: R's span instead (the first |A| random rows)
+                                cand_rows = [rr[: a_rows[i].numel()] for i, rr in enumerate(rand_rows)]
+                            else:
+                                cand_rows = []
+                                for p in chunk:
+                                    rr = row_of[torch.tensor(p["cands2"], device="cuda")]
+                                    cand_rows.append(rr[rr >= 0].unique())
                             edits[la] = answer_span_edit(unembed if cond.startswith("ansU") else dic[la], cand_rows,
                                                          [p["outside"] for p in chunk],
                                                          rotation=rot[la] if cond.endswith("_rot") else None)
@@ -569,15 +623,18 @@ def main(args) -> None:
                         d = (unembed if cond.startswith("unembed") else pca[la] if cond.startswith("pca") else rdict[la] if cond.endswith("_rdict")
                              else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
                         keep = None
-                        if "_keepA" in cond:  # amendment 64 note 37: the span A of the J++ unit vectors at this layer of the
-                            keep = []  # relation's answers (--keepA-forms; QR as answer_span_edit), kept out of paper10's r
-                            for p in chunk:
-                                rr = row_of[torch.tensor(p[KEEPA_ROWS[args.keepA_forms]], device="cuda")]
-                                rr = rr[rr >= 0].unique()
-                                ck = (la, tuple(rr.tolist()))
-                                if ck not in span_cache:
-                                    span_cache[ck] = torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
-                                keep.append(span_cache[ck])
+                        if keep_kind(cond):  # amendment 64 note 37: the span A of the J++ unit vectors at this layer of the
+                            # relation's answers (--keepA-forms; QR as answer_span_edit), kept out of paper10's r; note 41: R, R2, R4
+                            keep = [kept_span(i, la, keep_kind(cond)) for i in range(len(chunk))]
+                        observe = None
+                        if cond == "paper10" and rand_rows:  # note 41 addendum: the share of paper10's removal energy in each span
+                            def observe(r, B, T, la=la):
+                                for b in range(B):
+                                    rb = r[b * T : (b + 1) * T].double()
+                                    n = a_rows[b].numel()
+                                    e4 = (rb @ kept_span(b, la, "R4")).pow(2).sum(0)  # per column of the nested basis
+                                    energy[b] += torch.stack([rb.pow(2).sum(), (rb @ kept_span(b, la, "A")).pow(2).sum(),
+                                                              e4[:n].sum(), e4[: 2 * n].sum(), e4.sum()])  # fmt: skip
                         edits[la] = removal_edit(
                             method,
                             d,
@@ -587,6 +644,7 @@ def main(args) -> None:
                             skip_sinks="_nosink" in cond,
                             size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None,
                             keep_span=keep,
+                            observe=observe,
                         )
                     logits = first_token_logits(model, ids, edits, last)
                     if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition
@@ -596,10 +654,16 @@ def main(args) -> None:
                             tally[1] += e.sinks[1]
                             e.sinks[0] = e.sinks[1] = 0
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
+                    retained = []  # note 41 addendum: per row, the share of paper10's removal energy (summed over the edited
+                    if cond == "paper10" and rand_rows:  # positions and the band's layers) lying in A, R, R2, R4
+                        e = energy.tolist()
+                        retained = [{"energy": x[0], **{k: (x[j] / x[0] if x[0] > 0 else None) for j, k in enumerate(("A", "R", "R2", "R4"), 1)}}
+                                    for x in e]  # fmt: skip
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
                                          "condition": cond, **reads(logits[row], p, args.read),
-                                         "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"]})  # fmt: skip
+                                         "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"],
+                                         **({"retained": retained[row]} if retained else {})})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
                 fh.writelines(json.dumps(r) + "\n" for r in rows_out[written:])
@@ -728,6 +792,9 @@ if __name__ == "__main__":
     a = ap.parse_args()
     bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
     assert not bad, f"unknown conditions {bad}"
-    keepa = [c for c in a.conditions if "keepA" in c]
-    assert set(keepa) <= {"paper10_keepA", "paper10_keepA_rot"} and (not keepa or a.tasks), f"note 37: {keepa} needs --tasks"
+    keepa = [c for c in a.conditions if "keep" in c and "keepown" not in c and c != "keep_own"]
+    assert all(keep_kind(c) for c in keepa) and (not keepa or a.tasks), f"notes 37 / 41: {keepa} unknown or without --tasks"
+    rand = [c for c in a.conditions if is_rand(c)]
+    assert not rand or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions), \
+        f"note 41: {rand} need --tasks, --keepA-forms every and paper10 in the run (the retained-energy log)"
     main(a)

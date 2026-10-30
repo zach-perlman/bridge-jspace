@@ -79,13 +79,13 @@ def ratio_fn(us: list) -> float:
     return sum(u[0] - u[1] for u in us) / den if den > 0 else float("nan")
 
 
-def measures(acc: dict, items: dict, keep) -> dict:
+def measures(acc: dict, items: dict, keep, conds: tuple = CONDS) -> dict:
     """Loss per twin and condition, the gap with its bridge bootstrap, the strict loss, the paired-twin gap, dlogp, the ratio."""
     base = {f: {i: v for i, v in acc.get((f, "none"), {}).items() if keep(items[i])} for f in ("MP", "MM")}
     out: dict = {"n": {f: len(v) for f, v in base.items()}, "conditions": {}}
     if not base["MP"] or not base["MM"]:
         return out
-    for c in CONDS:
+    for c in conds:  # note 41 (nn_ko41_read) passes its own conditions; note 37 uses CONDS
         if (("MM", c) not in acc) or (("MP", c) not in acc):
             continue
         ed = {f: acc[(f, c)] for f in ("MP", "MM")}
