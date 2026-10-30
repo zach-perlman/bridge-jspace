@@ -211,9 +211,10 @@ def v4_split(comp: str, cv_h1: str, set_name: str = "jsuite_v4_test_chat") -> di
         r = json.loads(line)
         parts[r["id"]][r["part"]] = bool(r["correct"])
     out = {}
+    words = (":MP-", ":MM-", ":MC-", ":MC0-") if set_name.startswith("jsuite_v5") else (":MP-", ":MM-")  # amendment 63 note 35: MC, MC0
     for i, d in parts.items():
-        key = i.replace(":MP-", ":XX-").replace(":MM-", ":XX-")
-        if (":MP-" in i or ":MM-" in i) and h1.get(key) and d.get("step2") and d.get("guess") is False:
+        key = i.replace(":MP-", ":XX-").replace(":MM-", ":XX-").replace(":MC-", ":XX-").replace(":MC0-", ":XX-")
+        if any(w in i for w in words) and h1.get(key) and d.get("step2") and d.get("guess") is False:
             out[i] = "ok" if d.get("whole") else "fail"
     return out
 

@@ -39,6 +39,22 @@ python scripts/jsuite_v5key.py --seed 5002 --suffix 2 --split33  -> the same fou
     >= 3 eligible countries, so no continent is a majority; where X's continent has fewer (Oceania: Australia alone)
     the rest come from further continents, none past three. Items add other_continent, n_other_continent and split_ok
     (true only for an exact 3+3).
+Note 35's compute arm (amendment 63, Zach, 2026-10-30; the four builds above are unchanged and reproduce byte for byte):
+python scripts/jsuite_v5key.py --seed 5002 --suffix 2 --split33 --compute  -> jsuite_v5kn2c_test_chat (MC MC0) and
+    jsuite_v5kn2cctl_test_chat (H1 C0), on jsuite_v5kn2's named scenes (same passage, same X; ids j3:chat:v5kn2c:MC-w0-<suffix>
+    pair with kn2's by suffix). The four kn2 / kd2 sets are rebuilt in memory and checked against the files on disk (sha256)
+    instead of rewritten; no extra random draw is made, so they cannot move.
+  MC  "What is the capital of Achebe's home country?" (cities "...of the country where X is located", companies "...is based",
+      landmarks "...stands") -> the capital of X's country; candidates: the capitals of the passage's six countries
+  steps [the say question, the direct capital "What is the capital of Nigeria?"], with the passage, as MP's; the guess asks
+      about "an unnamed figure" (chance 1/6)
+  MC0 (amendment 63 addendum) the MC question, its steps and its guess closed book (context ""): steps H1's and C0's prompts;
+      it sits in jsuite_v5kn2c beside MC (not in the controls set) so competence, v4_split and the knock-out read it as MC
+  controls (closed book): H1 the say question (as kn2ctl's; v4_split's gate reads it), C0 the direct capital
+  A scene is left out of MC (kn2 untouched) when two of its six capitals share a first token (any of the three tokenizers,
+  either case, with or without a leading space), a capital shares a 4-letter stem with its own country's name or is that
+  name, or a capital shares a 4-letter stem with X's name. Capitals: CAPITAL, written 2026-10-30 for every country in the
+  vocabulary (England and the United Kingdom: London); CAPITAL_NOTE marks the contested or split ones (recorded, not dropped).
 """
 
 from __future__ import annotations
@@ -155,6 +171,35 @@ DIRECT = "What colour badges will the delegation from {c} wear?"
 LINE = "The delegation from {c} will wear {colour} badges."
 UNKNOWN = {"people": "an unnamed figure", "cities": "an unnamed city", "companies": "an unnamed company",
            "landmarks": "an unnamed landmark"}  # fmt: skip
+# --compute (amendment 63 note 35, 2026-10-30): one remembered fact, a third use. The capital table, written now for every
+# country in the vocabulary (and the United Kingdom, England's alias: London); ASCII spellings, accented forms as aliases.
+CAPITAL = {
+    "Argentina": "Buenos Aires", "Australia": "Canberra", "Austria": "Vienna", "Belgium": "Brussels", "Brazil": "Brasilia",
+    "Cambodia": "Phnom Penh", "Canada": "Ottawa", "Chile": "Santiago", "China": "Beijing", "Colombia": "Bogota",
+    "Czech Republic": "Prague", "Denmark": "Copenhagen", "Egypt": "Cairo", "England": "London", "United Kingdom": "London",
+    "Finland": "Helsinki", "France": "Paris", "Germany": "Berlin", "Greece": "Athens", "Hungary": "Budapest",
+    "India": "New Delhi", "Indonesia": "Jakarta", "Ireland": "Dublin", "Israel": "Jerusalem", "Italy": "Rome",
+    "Jamaica": "Kingston", "Japan": "Tokyo", "Jordan": "Amman", "Kenya": "Nairobi", "Malaysia": "Kuala Lumpur",
+    "Mexico": "Mexico City", "Morocco": "Rabat", "Netherlands": "Amsterdam", "Nigeria": "Abuja", "Norway": "Oslo",
+    "Peru": "Lima", "Poland": "Warsaw", "Portugal": "Lisbon", "Russia": "Moscow", "South Africa": "Pretoria",
+    "South Korea": "Seoul", "Spain": "Madrid", "Sweden": "Stockholm", "Taiwan": "Taipei", "Tanzania": "Dodoma",
+    "Thailand": "Bangkok", "Turkey": "Ankara", "United States": "Washington", "Venezuela": "Caracas", "Vietnam": "Hanoi",
+}  # fmt: skip
+CAPITAL_ALIASES = {"Brasilia": ["Brasília"], "Bogota": ["Bogotá"], "Washington": ["Washington, D.C.", "Washington D.C.", "Washington DC"]}
+CAPITAL_NOTE = {  # contested or split capitals: recorded on the items (capital_note), not dropped
+    "Israel": "Jerusalem: Israel's designated capital; its status is disputed and most embassies are in Tel Aviv",
+    "Netherlands": "Amsterdam: the constitutional capital; the seat of government is The Hague",
+    "South Africa": "Pretoria: the executive capital (Cape Town legislative, Bloemfontein judicial)",
+    "Malaysia": "Kuala Lumpur: the official capital; the administrative centre is Putrajaya",
+    "Tanzania": "Dodoma: the official capital; Dar es Salaam is the largest city and the former capital",
+    "Indonesia": "Jakarta: the capital in use; a move to Nusantara is legislated",
+}  # fmt: skip
+COMPUTE = {"people": "What is the capital of {x}'s home country?",
+           "cities": "What is the capital of the country where {x} is located?",
+           "companies": "What is the capital of the country where {x} is based?",
+           "landmarks": "What is the capital of the country where {x} stands?"}  # fmt: skip
+COMPUTE_GUESS = {**COMPUTE, "people": "What is the capital of the home country of {x}?"}  # as MP's guess (KEY_DESC)
+DIRECT_CAPITAL = "What is the capital of {c}?"
 
 
 def word_re(w: str, stem: bool = False) -> re.Pattern:
@@ -226,6 +271,25 @@ def main(a) -> None:
     ktoks = {c: first_tokens(toks, c) for c in countries}
     conflict = {c: {d for d in countries if d != c and ktoks[c] & ktoks[d]} for c in countries}
     conflict_pairs = sorted({tuple(sorted((c, d))) for c in countries for d in conflict[c]})
+    if a.compute:  # note 35: every country has a capital; capital pairs sharing a first token (no random draw here)
+        assert set(countries) <= set(CAPITAL), set(countries) - set(CAPITAL)
+        assert set(CAPITAL_NOTE) <= set(countries) and set(CAPITAL_ALIASES) <= set(CAPITAL.values())
+        captoks = {c: first_tokens(toks, CAPITAL[c]) for c in countries}
+        cap_conflict_pairs = sorted({tuple(sorted((CAPITAL[c], CAPITAL[d]))) for c in countries for d in countries
+                                     if CAPITAL[c] != CAPITAL[d] and captoks[c] & captoks[d]})  # fmt: skip
+        cap_vocab = sorted({CAPITAL[c] for c in countries})
+        mc_drops = collections.Counter()  # reason -> scenes (a scene can have several)
+
+        def mc_drop(x: str, order: list[str]) -> list[str]:
+            """Note 35's rules: the reasons a scene is left out of MC (empty: kept)."""
+            why = []
+            if any(captoks[c] & captoks[d] for c, d in itertools.combinations(order, 2)):
+                why.append("two capitals share a first token")
+            if any(CAPITAL[c] == c or V4.stems(CAPITAL[c]) & V4.stems(c) for c in order):
+                why.append("a capital shares a stem with its own country")
+            if any(V4.stems(CAPITAL[c]) & V4.stems(x) for c in order):
+                why.append("a capital shares a stem with X's name")
+            return why
 
     # the entities: films dropped; names revealing a country excluded
     excluded = {}
@@ -266,6 +330,7 @@ def main(a) -> None:
         return None
 
     items = {"n": [], "nctl": [], "d": [], "dctl": []}
+    mc, mc_rel = {"nc": [], "ncctl": []}, collections.Counter()  # --compute: note 35's MC set and its controls
     skipped = collections.Counter()
     k = 0
     pos_counter = collections.Counter()
@@ -403,15 +468,58 @@ def main(a) -> None:
                                                    "control": "H1", "scene": f"{v}:H1:{uid}", "question": say_n if named else hop1["question"], **h1})  # fmt: skip
                         items[tag + "ctl"].append({**ctrl, "id": f"j3:chat:{v}:K0-w0-{uid}", "word": "K0", "final": "P", "final_source": "P",
                                                    "control": "K0", "scene": f"{v}:K0:{uid}", "question": direct["question"], **col_item})  # fmt: skip
+                    if a.compute:  # note 35's MC on this named scene (no random draw: kn2 / kd2 cannot move)
+                        why = mc_drop(x, order)
+                        mc_drops.update(why)
+                        mc_rel[(rel, "dropped" if why else "kept")] += 1
+                        if why:
+                            continue
+                        v = f"{a.prefix}n{a.suffix}c"
+                        cap = CAPITAL[key]
+                        caps = {c: CAPITAL[c] for c in order}
+                        cvocab = sorted(set(caps.values()))  # the candidates: the passage's six countries' capitals
+                        b2 = {**base, "start_desc": x, "named": True, "desc_cue": None, "desc_own_cue": None, "set_kind": "key_compute",
+                              "capital": cap, "scene_capitals": caps, "capital_note": CAPITAL_NOTE.get(key),
+                              "capitals_in_passage": sorted(c for c in cap_vocab if re.search(r"(?i)\b" + re.escape(c) + r"\b", ctx)),
+                              "pairs_with": f"j3:chat:{a.prefix}n{a.suffix}:MP-w0-{uid}"}  # fmt: skip
+                        cap_item = {"answer": cap, "answer_aliases": CAPITAL_ALIASES.get(cap, []), "answer_vocab": cvocab}
+                        direct_c = {"question": DIRECT_CAPITAL.format(c=V3.disp(key)), "answer": cap, "kind": "open", "source": "M",
+                                    "cand_vocab": cvocab}  # fmt: skip
+                        mc["nc"].append({**b2, "id": f"j3:chat:{v}:MC-w0-{uid}", "word": "MC", "final": "M", "final_source": "M",
+                                         "control": "M", "scene": f"{v}:MC:{uid}", "question": COMPUTE[rel].format(x=x), **cap_item,
+                                         "answer_in_passage": False, "memory_answer": key, "steps": [say_step, direct_c],
+                                         "guess_question": COMPUTE_GUESS[rel].format(x=UNKNOWN[rel])})  # fmt: skip
+                        # MC0 (amendment 63 addendum): the same question, steps and guess closed book (context ""), so its
+                        # steps are H1's and C0's prompts; a word of this set (not the controls set) so that competence,
+                        # v4_split's gate and the knock-out read it exactly as MC
+                        mc["nc"].append({**b2, "id": f"j3:chat:{v}:MC0-w0-{uid}", "word": "MC0", "final": "M", "final_source": "M",
+                                         "control": "M", "scene": f"{v}:MC0:{uid}", "question": COMPUTE[rel].format(x=x), **cap_item,
+                                         "context": "", "capitals_in_passage": [], "answer_in_passage": False, "memory_answer": key, "steps": [say_step, direct_c],
+                                         "guess_question": COMPUTE_GUESS[rel].format(x=UNKNOWN[rel])})  # fmt: skip
+                        ctrl = {**b2, "context": "", "answer_in_passage": False, "steps": [], "guess_question": None, "memory_answer": key}
+                        mc["ncctl"].append({**ctrl, "id": f"j3:chat:{v}:H1-w0-{uid}", "word": "H1", "final": "B", "final_source": "M",
+                                            "control": "H1", "scene": f"{v}:H1:{uid}", "question": say_n, **cty_item})  # fmt: skip
+                        mc["ncctl"].append({**ctrl, "id": f"j3:chat:{v}:C0-w0-{uid}", "word": "C0", "final": "M", "final_source": "M",
+                                            "control": "C0", "scene": f"{v}:C0:{uid}", "question": direct_c["question"], **cap_item})  # fmt: skip
     ids = [it["id"] for xs in items.values() for it in xs]
     assert len(ids) == len(set(ids)), "duplicate ids"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
     data = Path(a.data_dir)
     dirs = {tag: data / f"jsuite_{a.prefix}{tag.removesuffix('ctl')}{a.suffix}{'ctl' if tag.endswith('ctl') else ''}_test_chat" for tag in items}
-    for d in dirs.values():
-        assert not d.exists(), f"{d} exists; sets are written once"
-    for d in dirs.values():
-        d.mkdir(parents=True)
+    verified = set()  # --compute: sets already on disk, rebuilt in memory and checked byte for byte instead of rewritten
+    if a.compute:
+        for tag, d in dirs.items():
+            if d.exists():
+                body = "".join(json.dumps(it, ensure_ascii=False) + "\n" for it in items[tag])
+                h_new, h_disk = hashlib.sha256(body.encode()).hexdigest(), hashlib.sha256((d / "items.jsonl").read_bytes()).hexdigest()
+                assert h_new == h_disk, f"{d.name}: the rebuild ({h_new}) differs from the file on disk ({h_disk})"
+                print(f"{d.name}: rebuilt in memory, identical to the file on disk (sha256 {h_disk})")
+                verified.add(tag)
+    for tag, d in dirs.items():
+        assert tag in verified or not d.exists(), f"{d} exists; sets are written once"
+    for tag, d in dirs.items():
+        if tag not in verified:
+            d.mkdir(parents=True)
     common = {"seed": a.seed, "scenes": k, "git_commit": commit, "script": "scripts/jsuite_v5key.py", "reps": REPS,
               "skipped": dict(skipped), "excluded_entities": excluded, "colours": COLOURS, "countries": countries,
               "nationality_to_country": NAT2C, "country_aliases": aliases, "country_first_token_conflicts": conflict_pairs,
@@ -427,6 +535,8 @@ def main(a) -> None:
                        "scenes_short_of_same_continent": sum(it["n_same_continent"] < (a.same_continent or 2) for it in mp),
                        "scenes_without_same_region": sum(it["n_same_region"] == 0 for it in mp)})  # fmt: skip
     for tag, xs in items.items():
+        if tag in verified:
+            continue
         body = "".join(json.dumps(it, ensure_ascii=False) + "\n" for it in xs)
         (dirs[tag] / "items.jsonl").write_text(body)
         man = {"set": dirs[tag].name, "n": len(xs), **common, "words": dict(collections.Counter(it["word"] for it in xs)),
@@ -441,6 +551,37 @@ def main(a) -> None:
             x = next(i for i in items[tag] if i["word"] == wd)
             print(f"--- {tag} {wd}: {x['question']} -> {x['answer']}")
     print(items["n"][0]["context"])
+    if a.compute:  # note 35's two sets
+        ids = [it["id"] for xs in mc.values() for it in xs]
+        assert len(ids) == len(set(ids)), "duplicate ids"
+        kn = {it["id"].rsplit("-", 1)[1] for it in items["n"]}
+        assert all(it["id"].rsplit("-", 1)[1] in kn for it in mc["nc"]), "an MC item without a kn scene"
+        cdirs = {tag: data / f"jsuite_{a.prefix}n{a.suffix}c{'ctl' if tag.endswith('ctl') else ''}_test_chat" for tag in mc}
+        for d in cdirs.values():
+            assert not d.exists(), f"{d} exists; sets are written once"
+        rels = sorted({r for r, _ in mc_rel})
+        ccommon = {**common, "compute": True, "pairs_with": dirs["n"].name, "capitals": CAPITAL, "capital_aliases": CAPITAL_ALIASES,
+                   "capital_notes": CAPITAL_NOTE, "capital_first_token_conflicts": cap_conflict_pairs,
+                   "mc_scenes": sum(it["word"] == "MC" for it in mc["nc"]), "mc_scenes_dropped": sum(v for (_, s), v in mc_rel.items() if s == "dropped"),
+                   "mc_drop_reasons": dict(sorted(mc_drops.items())),
+                   "mc_by_relation": {r: {s: mc_rel[(r, s)] for s in ("kept", "dropped")} for r in rels},
+                   "capital_notes_items": dict(collections.Counter(str(it["capital_note"] is not None) for it in mc["nc"] if it["word"] == "MC")),
+                   "capitals_in_passage_items": sum(bool(it["capitals_in_passage"]) for it in mc["nc"] if it["word"] == "MC")}  # fmt: skip
+        for tag, xs in mc.items():
+            cdirs[tag].mkdir(parents=True)
+            body = "".join(json.dumps(it, ensure_ascii=False) + "\n" for it in xs)
+            (cdirs[tag] / "items.jsonl").write_text(body)
+            man = {"set": cdirs[tag].name, "n": len(xs), **ccommon, "words": dict(collections.Counter(it["word"] for it in xs)),
+                   "relations": dict(collections.Counter(it["relation"] for it in xs if it["word"] in ("MC", "H1"))),
+                   **({"mc0": "MC0: MC closed book (context ''), amendment 63 addendum"} if tag == "nc" else {}),
+                   "items_sha256": hashlib.sha256(body.encode()).hexdigest()}  # fmt: skip
+            (cdirs[tag] / "manifest.json").write_text(json.dumps(man, indent=2, ensure_ascii=False) + "\n")
+            print(f"{man['set']}: n={man['n']} words={man['words']} relations={man['relations']} sha256={man['items_sha256']}")
+        print("MC scenes kept", ccommon["mc_scenes"], "dropped", ccommon["mc_scenes_dropped"], "reasons (a scene can have several)",
+              ccommon["mc_drop_reasons"], "by relation", ccommon["mc_by_relation"])  # fmt: skip
+        print("capital first-token conflicts (a scene with both is dropped):", cap_conflict_pairs)
+        for x in mc["nc"][:2]:
+            print(f"--- {x['word']}: {x['question']} -> {x['answer']} among {x['answer_vocab']}; steps {[s['question'] for s in x['steps']]}; context {len(x['context'])} chars")
 
 
 if __name__ == "__main__":
@@ -454,4 +595,7 @@ if __name__ == "__main__":
     ap.add_argument("--split33", action="store_true",
                     help="the six countries: three from X's continent (X + two, one from its region where possible) and three "
                          "from one other continent (random among those with >= 3 eligible); no continent has more than three")
+    ap.add_argument("--compute", action="store_true",
+                    help="note 35: also build jsuite_<prefix>n<suffix>c (MC, named) and its controls set (H1 C0) on the named "
+                         "scenes; the four sets already on disk are checked byte for byte, not rewritten")
     main(ap.parse_args())

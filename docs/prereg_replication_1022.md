@@ -3303,3 +3303,24 @@ Zach's MC answer: "#2 fixed + slim #1". **Note 36 is dropped and not run.** Its 
 4. **Unchanged:** the claim read (fixed list, shuffled control and reading), the sites, the items and the probe procedure.
 
 **Runs.** After DeepSeek's EXIT: the 27B on GPU 0; Lightning then the 9B on GPU 1. Each model runs note 34 (extraction, then the reader) and note 35 (MC and MC0: competence, controls, knock-out, reader). A 9B smoke of at most 8 items per word comes first.
+
+##### Amendment 63, second addendum (Zach, 2026-10-30 ~04:45 UTC; after the builders' 9B smokes, mechanics only, before any full run)
+- **Note 35's answer exclusion: "any form" is the primary** (Zach's MC answer).
+  - paper10 protects the dictionary rows of the clean top-10 output tokens at the answer position. So the capital's read token (its first token as the reply starts it) is never removed, and the letter of note 35 ("exact") excludes nothing.
+  - Other forms of that first token (either case, with or without a leading space) were removed somewhere in about 50-70% of the smoke's items.
+  - The primary therefore drops MC and MC0 items where any form was removed at any edited position and any band layer (scripts/nn_v5_mc_removed.py re-runs paper10 with the chosen rows written out; its reads reproduce the knock-out's).
+  - "Exact" and "all items" are reported beside. The primary stratum is split_ok/anyform.
+- **Implementation choices recorded** (no reading changes):
+  - Note 35:
+    - The knock-out uses --kinds clean step2, as note 29b's run did; the contrast needs the step rows.
+    - MC0 sits in jsuite_v5kn2c with an empty context (its steps are exactly H1 and C0). It is gated by v4_split as MC is, which also requires the closed-book guess to be wrong.
+    - The bootstrap is over bridges, as note 29's key() reader does.
+    - Drops: 325 of 602 kn2 scenes are kept. Mexico City's stem rule removes every Mexico scene, and Bogota / Buenos Aires share a first token.
+    - jsuite_v5kn2c sha d425909e, kn2cctl sha 24ab02e4. The existing builds reproduce byte for byte.
+    - 28 MC passages' filler mentions "London"; they are recorded and reported beside.
+  - Note 34:
+    - The script is scripts/nn_provenance.py, because nn_probe.py already exists.
+    - J, R and U are one block of coordinates per relation (zeros elsewhere; 236 columns). A single basis over all relations' tokens is reported beside.
+    - B is the H2 closed-book cand2 margin, computed by the script (one value per bridge); correctness is reported beside.
+    - The probe is a custom L-BFGS logistic regression on sklearn's objective (sklearn is not on the box).
+    - Named is primary, as for this set family.
