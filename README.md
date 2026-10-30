@@ -100,7 +100,7 @@ Joint draft of Dan's track (depth) and Zach's track (breadth), 29-30 Oct 2026, a
 
 | Dan | Zach |
 |---|---|
-| Independent recount 63 of 63<!-- src: docs/depth/README.md \| matches 63 of 63 -->; automatic checks on 45,542 items<!-- src: docs/depth/README.md \| 45,542 items read -->; rerun label agreement 393-400 of 400<!-- src: docs/depth/README.md \| 393-400 of 400 items per arm --> | Clean-checkout reruns match row for row: 0 of 22325 rows differ<!-- src: docs/breadth/README.md \| 0 of 22325 --> |
+| Independent recount 56 of 63<!-- src: docs/depth/README.md \| matches 56 of 63 -->; automatic checks on 45,942 items<!-- src: docs/depth/README.md \| 45,942 items read -->; rerun label agreement 382-400 of 400<!-- src: docs/depth/README.md \| 382-400 of 400 items per arm --> | Clean-checkout reruns match row for row: 0 of 22325 rows differ<!-- src: docs/breadth/README.md \| 0 of 22325 --> |
 | Predictions: Brier 0.32 over 121 answers, worse than always answering 50%<!-- src: docs/depth/README.md \| mean Brier 0.32 over 121 answers --> | *Zach, to fill: your predictions / checks line (placeholder)* |
 | Six readings dropped, each with its test ([the list](docs/depth/README.md#tested-and-dropped)) | Zach: Qwen 122B by probability; Muse's share with the logit lens; Bolt; OLMo. |
 

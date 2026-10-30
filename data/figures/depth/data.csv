@@ -8700,12 +8700,12 @@ cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: the
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: the rule's reading",the split holds on his passages,,,,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: lookups switched by the whole change, fact-first",0.5757575757575758,0.4426229508196721,0.696969696969697,66,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: lookups switched by the whole change, fact-after",0.05405405405405406,0.013157894736842105,0.10810810810810811,74,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
-cards,,"checks: the independent recount, rows matching",63 of 63,,,,review/verify_independent.json
-cards,,checks: items the automatic checks read,"45,542",,,,review/verify_checks.json
+cards,,"checks: the independent recount, rows matching",56 of 63,,,,review/verify_independent.json
+cards,,checks: items the automatic checks read,"45,942",,,,review/verify_checks.json
 cards,,checks: per-item check failures,4,,,,review/verify_checks.json
 cards,,checks: the per-item checks with a failure,1,,,,review/verify_checks.json
-cards,,"checks: the automatic recount, numbers matching",240 of 240,,,,review/verify_checks.json
-cards,,"checks: rerun label agreement, the lowest over models and arms",393,,,,review/verify_checks.json
+cards,,"checks: the automatic recount, numbers matching",245 of 245,,,,review/verify_checks.json
+cards,,"checks: rerun label agreement, the lowest over models and arms",382,,,,review/verify_checks.json
 cards,,"checks: rerun label agreement, the highest over models and arms",400,,,,review/verify_checks.json
 cards,,"checks: rerun label agreement, items per arm",400,,,,review/verify_checks.json
 cards,qwen3.5-9b,checks: clean-checkout reruns reproducing row for row,4 of 5,,,,results/checks/clean49_9b.json

@@ -557,7 +557,7 @@ def test_verdict_view_and_figure_on_the_fake_run(fake_run, monkeypatch):
         and set(m["cells"]) == {"2", "6", "10"}
         and set(m["rules"]) >= {"a", "b", "c", "d", "e", "l_J", "l_P", "l_probe"}
     )
-    assert (out / "x47_8.md").exists() and (out / "x47_anatomy.png").exists() and (out / "x47_anatomy.svg").exists()
+    assert (out / "x47_8.md").exists() and (out / "x47_anatomy.png").exists()
     assert [x["status"] for x in blob["models"][1:]] == ["pending"] * (len(A.RUNS) - 1)
     text = (out / "x47_8.md").read_text()
     assert "Q47.8" in text and "UNVERIFIED" in text
@@ -607,7 +607,7 @@ def test_figure_builds_with_missing_quantities(tmp_path):
     models = [{"target": "qwen3.5-9b", "n_layers": 32, "L": 12, "layers": [4, 8], "ni": {"lookup": [4], "recall": []}, "rows": rows},
               {"target": "muse-glimmer-30b", "n_layers": 52, "L": 26, "layers": [26], "ni": {"lookup": [], "recall": []}, "rows": {}}]  # fmt: skip
     path = F.figure(models, tmp_path / "fig.png", preview=True)
-    assert path.exists() and path.with_suffix(".svg").exists()
+    assert path.exists()  # PNG only (Dan, 30 Oct)
 
 
 def test_preview_models_have_the_contract(monkeypatch):

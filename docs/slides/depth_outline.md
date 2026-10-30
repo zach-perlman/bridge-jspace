@@ -70,9 +70,9 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 ![](../../figures/depth/fig11_scorecard.png)
 
-- Independent recount: 63 of 63 numbers match, from code written from scratch.
-- Automatic checks on 45,542 items; 4 per-item failures, all from one check's limit on hyphenated names.
-- Rerun label agreement: 393-400 of 400 items per arm (9B, 27B, Muse, Lightning).
+- Independent recount: 56 of 63 numbers match, from code written from scratch.
+- Automatic checks on 45,942 items; 4 per-item failures, all from one check's limit on hyphenated names.
+- Rerun label agreement: 382-400 of 400 items per arm (9B, 27B, Muse, Lightning).
 - Predictions: mean Brier 0.32 over 121 answers, worse than always answering 50%.
 - Hand-check: the 30 Oct status, filled from [VERIFIED.md](../../VERIFIED.md) on the day.
 - Dropped readings (the depth README's "Tested and dropped"):
