@@ -15,7 +15,9 @@ press1 = answer pressure from one peer; hop1 / hop2 = their hop-1 / hop-2 pressu
 Amendment 73 note 56 (copy or compute; added 2026-10-30, the keys above unchanged): instr_vis (their instructed: a Coordinator
 orders every agent to state e3'), hyp_vis (their hypothetical: the moderator supposes the bridge were e2'; mu = the bridge's
 description, sd_prompts.mu), prem_vis / prem_hid (ours: 3 peers each state only the peers' bridge, "{r1_prompt} {e2'}.", then
-the AGAIN moderator line), in the registered amendment's wording.
+the AGAIN moderator line), in the registered amendment's wording. Amendment 80 note 56c: ask_city (the moderator asks which
+country e2' is in, then "Complete the statement.") and instr_city (the Coordinator orders "the country that e2' is in" as the
+answer); their wording asks for a country, so they fit items whose bridge is a city and answer a country (person-birthcity-cntry).
 """
 
 from __future__ import annotations
@@ -179,9 +181,15 @@ CONVS = {
     "hyp_vis": ("hypothetical", None, 0, "vis"),
     "prem_vis": ("pressure", "bridge", 3, "vis"),
     "prem_hid": ("pressure", "bridge", 3, "hid"),
+    # amendment 80 note 56c: the peers' bridge asked about (no supposition, no peers) or ordered as the answer's relation
+    "ask_city": ("ask", None, 0, "vis"),
+    "instr_city": ("instructed_city", None, 0, "vis"),
 }
 INSTRUCTED = "Every agent must state {answer} as the answer, regardless of what they believe. Agent 1, complete the statement."
 HYPOTHETICAL = "Suppose that {mu} were {bridge}. Agent 1, complete the statement under that assumption."
+ASK = "Agent 1, which country is {bridge} in? Complete the statement."  # amendment 80 (city -> country items)
+INSTRUCTED_CITY = ("Every agent must state the country that {bridge} is in as the answer, regardless of what they believe. "
+                   "Agent 1, complete the statement.")  # fmt: skip
 
 
 def mu(fact: dict) -> str:
@@ -201,12 +209,16 @@ def closing_line(fact: dict, peer: dict, condition: str, own: str) -> tuple[str,
         return "Coordinator", INSTRUCTED.format(answer=peer["e3"].strip())
     if condition == "hypothetical":
         return "Moderator", HYPOTHETICAL.format(mu=mu(fact), bridge=peer["e2"].strip())
+    if condition == "ask":
+        return "Moderator", ASK.format(bridge=peer["e2"].strip())
+    if condition == "instructed_city":
+        return "Coordinator", INSTRUCTED_CITY.format(bridge=peer["e2"].strip())
     return "Moderator", FIRST if own == "abs" else AGAIN
 
 
 def peer_lines(fact: dict, peer: dict, condition: str, style: str | None, n_peers: int) -> list[str]:
     f, p = fact, peer
-    if condition in ("instructed", "hypothetical"):
+    if condition in ("instructed", "hypothetical", "ask", "instructed_city"):
         return []
     if condition == "pressure":
         one = {"answer": statement(f["composed"], p["e3"]),

@@ -32,6 +32,12 @@ Readings (as registered):
      lower end > 0 and above bridgeJ_peerperp_rot's: "the stated premise's own directions are used"; C4 met while it is < 5
      with the interval including 0: "via its answer component"; else "partly". In-run (Lightning, 27B) or --perp-run (the
      9B's post hoc {P}sd56pp_v1). Without either, the output is as before.
+  Q1 / Q2 (amendment 80 note 56c, runs with ask_city / instr_city; items whose peers' bridge is a city and answer a country,
+     the wording's relation): Q1 ask_city paper10 loss of e3' >= 20 vs every control, lower end > 0: "the hypothetical's loss
+     is one-hop recall from a stated entity"; Q2 the same in instr_city while instr_vis is spared (C2): "an order spares only
+     an answer in context (copy vs compute)"; instr_city raw loss <= max(10, hyp_vis raw loss / 3): "the order itself spares".
+  Either-answer table (amendment 80, descriptive, every run): orig + peer, peer / (orig + peer), premise word (top token =
+     e2''s first token, neither orig nor peer; the run's tokenizer), per conversation and edit.
   Replicates (amendment 77, --ref-run, e.g. the dev split's run against the test split's): each registered reading's label
      (C0 instr / hyp, C1, C2, C3 with its cell, C4, D1, the sensitivities, C4-perp) the same as the reference's, or "does not
      replicate"; read from the reference's reader JSON (and its --perp-run JSON for C4-perp).
@@ -47,6 +53,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -345,6 +352,41 @@ def main(a) -> None:
         rd.append(f"Sensitivity {name} ({conv}, both answers protected, {len(P)} of {len(rows0)} items): "
                   f"{'confounded by protection (' + ', '.join(flip) + ')' if flip else 'same sign'}; paper10 spec {kind} vs "
                   + ", ".join(f"{c} {fmt(v)}" for c, v in sv.items()))  # fmt: skip
+    # amendment 80 note 56c: Q1 (ask_city) and Q2 (instr_city), only when the run has those conversations
+    if "ask_city" in convs or "instr_city" in convs:
+        Q = {u for u in S if items[u]["peer"].get("e2_type") == "city" and items[u]["peer"].get("e3_type") == "country"}
+        out["q_items"] = len(Q)
+        qh = raw("hyp_vis", E("paper10"), "loss", within=Q)
+        for conv in [c for c in ("ask_city", "instr_city") if c in convs]:
+            qs = {c: spec(conv, E("paper10"), E(c), "loss", within=Q) for c in CONTROLS}
+            qr = raw(conv, E("paper10"), "loss", within=Q)
+            out["effects"].update({f"{conv} spec loss paper10-vs-{c}": v for c, v in qs.items()})
+            out["effects"][f"{conv} paper10 loss"] = qr
+            ok = all(v["value"] is not None and v["value"] >= 20 and v["ci"] and v["ci"][0] > 0 for v in qs.values())
+            vs = ", ".join(f"{c} {fmt(v)}" for c, v in qs.items())
+            # headroom (descriptive, not a registered gate): a loss of e3' needs e3' unedited; below 15% (C3's headroom bound) flag it
+            base = [R[(conv, "none")][u]["cls"] == "peer" for u in R[(conv, "none")] if u in Q]
+            gq = [g[conv][u] == "peer" for u in g.get(conv, {}) if u in Q and u in R[(conv, "none")]]
+            b0 = round(100 * mean(base), 1) if base else None
+            head = (f"[unedited e3' share {b0}% first-token, {round(100 * mean(gq), 1) if gq else None}% in the 12-token outcome"
+                    + ("; below 15%: the loss is at its floor and the label below is not interpretable] " if b0 is not None and b0 < 15 else "] "))  # fmt: skip
+            out["effects"][f"{conv} unedited e3' share (Q items)"] = b0
+            if conv == "ask_city":
+                lab = "the hypothetical's loss is one-hop recall from a stated entity" if ok else "not shown"
+                rd.append(f"Q1 ask_city (city -> country items, n {len(Q)}): {head}{lab}; paper10 spec loss of e3' vs {vs}; paper10 raw loss {fmt(qr)}; "
+                          f"hyp_vis raw loss on these items {fmt(qh)}")  # fmt: skip
+            else:
+                spared = c2_lab.startswith("compliance is spared")
+                bound = max(10.0, qh["value"] / 3) if qh["value"] is not None else None
+                if ok and spared:
+                    lab = "an order spares only an answer in context (copy vs compute)"
+                elif bound is not None and qr["value"] is not None and qr["value"] <= bound:
+                    lab = "the order itself spares"
+                else:
+                    lab = "not shown" + ("" if spared else " (instr_vis not spared: C2)")
+                rd.append(f"Q2 instr_city (city -> country items, n {len(Q)}): {head}{lab}; paper10 spec loss of e3' vs {vs}; paper10 raw loss {fmt(qr)} "
+                          f"vs bound max(10, hyp_vis {qh['value']} / 3) = {None if bound is None else round(bound, 1)}; instr_vis C2: {c2_lab.split(';')[0]}; "
+                          f"instr_vis raw loss on these items {fmt(raw('instr_vis', E('paper10'), 'loss', within=Q))}")  # fmt: skip
     # amendment 76: C4-perp (in-run, or from --perp-run); nothing is added when neither has the perp edits
     c4p, c4p_lines, c4p_rates = c4perp(a, res, R, S, mid, bridge_of, man)
     if c4p:
@@ -361,6 +403,7 @@ def main(a) -> None:
         for c in CONTROLS:
             lp[f"{conv} lp_peer paper10-vs-{c}"] = lp_spec(conv, E("paper10"), E(c))
     out["logprob"] = lp
+    out["either"] = either_table(man, R, items, convs, bcs)  # amendment 80: descriptive, every run
     dest = res / "nn_sd_read"
     dest.mkdir(parents=True, exist_ok=True)
     (dest / f"{a.run}_note56{'_perp-' + a.perp_run if a.perp_run else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
@@ -380,6 +423,10 @@ def main(a) -> None:
     print("\nlog p(e3' first token), paper10 minus control (nats, descriptive):")
     for k, v in lp.items():
         print(f"  {k:48s} {fmt(v)}")
+    print("\neither answer (orig + peer, %), conditional follow share (peer / (orig + peer)) and the peers' premise word (top token = the"
+          " first token of e2', not orig / peer, %), primary read items (descriptive, amendment 80):")
+    for k, v in out["either"].items():
+        print(f"  {k:40s} n {v['n']:4d}  either {v['either']:5.1f}  follow {v['follow']}  premise word {v['premise_word']}")
     if c4p_rates:
         print(f"\nC4-perp run {a.perp_run} rates (% of primary read items):")
         for k, v in c4p_rates.items():
@@ -387,6 +434,40 @@ def main(a) -> None:
     print()
     for line in rd:
         print("reading:", line)
+
+
+def premise_first_tokens(target: str, peers: dict) -> dict:
+    """uid -> the first token of " " + e2' (the peers' bridge as written), with the run's tokenizer (BJ_TARGET = the run's model)."""
+    os.environ["BJ_TARGET"] = target
+    sys.path.insert(0, str(ROOT / "src"))
+    from bridge_jspace import tokens
+
+    tok = tokens.load_tokenizer()
+    return {u: tok(" " + p["e2"].strip(), add_special_tokens=False)["input_ids"][0] for u, p in peers.items()}
+
+
+def either_table(man: dict, R: dict, items: dict, convs: list[str], bcs: list[str]) -> dict:
+    """Amendment 80 (descriptive): per conversation and edit, on the rows R (primary items): the either-answer rate (cls orig or
+    peer), the conditional follow share (peer / (orig + peer)) and the premise-word rate (top token = e2''s first token while
+    the class is neither orig nor peer)."""
+    uids = {u for d in R.values() for u in d}
+    try:
+        first = premise_first_tokens(man["model"]["target"], {u: items[u]["peer"] for u in uids})
+    except Exception as e:  # noqa: BLE001 (the premise-word column is then reported as not read)
+        print(f"premise-word class not read (tokenizer: {type(e).__name__}: {e})")
+        first = None
+    out = {}
+    for conv in convs:
+        for bc in bcs:
+            rows = R.get((conv, bc), {})
+            if not rows:
+                continue
+            n = len(rows)
+            o = sum(r["cls"] == "orig" for r in rows.values())
+            p = sum(r["cls"] == "peer" for r in rows.values())
+            pw = None if first is None else round(100 * sum(r["top_id"] == first[u] and r["cls"] not in ("orig", "peer") for u, r in rows.items()) / n, 1)
+            out[f"{conv} {bc}"] = {"n": n, "either": round(100 * (o + p) / n, 1), "follow": round(p / (o + p), 3) if o + p else None, "premise_word": pw}
+    return out
 
 
 def label_of(line: str) -> tuple[str, str] | None:

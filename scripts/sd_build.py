@@ -9,7 +9,7 @@ check   (tokenizer only, BJ_TARGET picks it; no model, no GPU) a seeded sample o
         positions the runner relies on: the prompt's tokens are a prefix of prompt + " " + answer's (the answer's
         first token is the next token), the subject's last token is inside the final statement, the visible own
         statement holds the round-0 answer and no condition names the bridge; prints two rendered prompts per conversation.
-        Amendment 73 note 56's keys (instr_vis, hyp_vis, prem_vis, prem_hid) also: e3' (their target) is the next token,
+        Amendment 73 note 56's keys (instr_vis, hyp_vis, prem_vis, prem_hid; amendment 80's ask_city, instr_city) also: e3' (their target) is the next token,
         the inserted lines are the registered wording with mu and e2' (or e3') exactly once, and e2' / e3' appear nowhere
         else after the worked examples (n56_check).
 
@@ -150,6 +150,12 @@ def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list
         if line != SP.INSTRUCTED.format(answer=e3p) or line.count(e3p) != 1 or f"\nCoordinator: {line}\n" not in text:
             fails[f"{conv}: e3' once in the order"] += 1
         want_e2p, want_e3p = 0, 1
+    elif cond in ("ask", "instructed_city"):  # amendment 80: e2' once in the question / order, e3' never written
+        line = lines["moderator"]
+        speaker, tmpl = ("Moderator", SP.ASK) if cond == "ask" else ("Coordinator", SP.INSTRUCTED_CITY)
+        if line != tmpl.format(bridge=e2p) or line.count(e2p) != 1 or f"\n{speaker}: {line}\n" not in text:
+            fails[f"{conv}: e2' once in the {cond} line"] += 1
+        want_e2p, want_e3p = 1, 0
     else:  # prem: premise-only pressure
         peer_ls = [v for k, v in lines.items() if k.startswith("peer")]
         if len(peer_ls) != n_peers or any(x != SP.statement(f["r1_prompt"], e2p) or x.count(e2p) != 1 for x in peer_ls):
@@ -237,7 +243,7 @@ def cmd_check(a) -> None:
             n_peer_spans = sum(k.startswith("peer") for k in lab)
             if n_peer_spans != n_peers:
                 fails[f"{conv}: peers"] += 1
-            if cond in ("instructed", "hypothetical") or style == "bridge":
+            if cond in ("instructed", "hypothetical", "ask", "instructed_city") or style == "bridge":
                 n56_check(tok, f, p, tg, conv, text, spans, ids, fails, n56)
             if len(examples[conv]) < a.show and f["category"] == ("landmark-cntry-capital", "person-birthcity-cntry")[len(examples[conv]) % 2]:
                 examples[conv].append(f"[{f['uid']} | e2={f['e2']} e3={f['e3']} | peer e2'={p['e2']} e3'={p['e3']} | "
@@ -249,7 +255,7 @@ def cmd_check(a) -> None:
     print("position checks failed:", dict(fails) or "none")
     print("prompts where an alias of the bridge appears after the worked examples (descriptive; hop1/hop2 excluded):", dict(named) or "none")
     if n56:
-        print("note 56 keys (instr_vis, hyp_vis, prem_vis, prem_hid), prompts checked:", {k: v for k, v in sorted(n56.items())})
+        print("note 56 keys (instr_vis, hyp_vis, prem_vis, prem_hid, ask_city, instr_city), prompts checked:", {k: v for k, v in sorted(n56.items())})
     for conv, ex in examples.items():
         for e in ex:
             print(f"\n===== {conv} {e}")
