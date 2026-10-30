@@ -1,0 +1,91 @@
+{
+  "exp": "x6_routes",
+  "run": "muse30b_x6_routes_x45k_r3",
+  "written_utc": "2026-10-27T01:20:15Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "db0c458088e6bf169ac2d5d4ae8d57196aa393fb",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+    "C0",
+    "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "identity": false,
+  "alf_from": "muse30b_x0_probe_v4",
+  "c0_min": 0.5,
+  "fixed_layer": 26,
+  "c0_reference": {
+    "run": null,
+    "lookup_switch": null,
+    "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+    "scenes": 2510,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "rendering": "chat",
+  "read": "chat (the top token after a space)",
+  "prepend": [],
+  "identity_controls": false,
+  "sealed": false,
+  "x45k": {
+    "ks": [
+      25,
+      50,
+      100
+    ],
+    "other": true,
+    "other_k": 100,
+    "arms": {
+      "jpp25": [
+        "no_jpp",
+        "no_jpp_rand"
+      ],
+      "jpp50": [
+        "no_jpp50",
+        "no_jpp50_rand"
+      ],
+      "jpp100": [
+        "no_jpp100",
+        "no_jpp100_rand"
+      ],
+      "jpp_other100": [
+        "no_jppother100",
+        "no_jppother100_rand"
+      ]
+    },
+    "omp": "signed (X.fit); the geometry over x0_parts.omp_atoms' first k picks at the largest k",
+    "partner_rule": "x0_parts.partners within the scene's condition: the first scene of a seeded order whose bridge pair shares no bridge with it",
+    "partner_seed": 0,
+    "geometry": "per item and k: ||P_span(atoms) U||_F^2 / rank(U) (U: the pointer directions) and ||P_span(atoms) u||^2 / ||u||^2 (u = mu_alt - mu_org, x0_massmean.entity_means; None where an entity has no class mean, the scene kept)"
+  }
+}
