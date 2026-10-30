@@ -4144,3 +4144,10 @@ Both readings sat at their floor. No edited result was read.
 - The run is restricted to person-birthcity-cntry, the category whose peers' bridge is a city with a country answer.
 - **C0-style validity:** each new cell is read only if the unedited e3' share is >= 60% with first-token agreement >= 90%. Otherwise it is "not readable".
 - Q1 and Q2 are unchanged otherwise.
+
+#### Amendment 82 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated; before any run of it): note 56c on the 27B and Lightning
+**Seen.** Note 56c on the 9B (n 258): Q1 "one-hop recall from a stated entity" (53.5 vs rotation); Q2 "an order spares only an answer in context" (57.0 vs rotation, while instr_vis lost 6.2).
+
+Not seen: note 56c on these models.
+
+**Run.** The same conversations, wording (amendments 80 / 81), category, edits, gate and readings on the 27B and Lightning, test split. Confirmatory on both. Lightning is read beside all controls; its note 56 C1 was not shown against same-size PCA, which is carried into Q1 / Q2 unchanged.
