@@ -1,0 +1,17 @@
+{
+  "exp": "answer_translation_check",
+  "model": "muse-glimmer-30b",
+  "run": "muse30_x51_12_e1_r2",
+  "layer": 26,
+  "keys": 2,
+  "preflight": true,
+  "reader": "PM",
+  "source": "PP",
+  "not_read_rank": 50,
+  "not_read_share": 0.9,
+  "rules": "single-token translations only (4 spellings), no lone I/V/X; same layer, position, lens, rank function and top-50 threshold as 51.12",
+  "decision_rule": "flips <= 5% of items: translation does not change the verdict; > 5%: report only",
+  "lens": "jpp (JLens.readout)",
+  "git": "",
+  "written_utc": "2026-10-30T20:59:56Z"
+}

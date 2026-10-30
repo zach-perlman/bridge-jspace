@@ -1,0 +1,285 @@
+[
+ {
+  "key": "P2-L0-0200",
+  "entity": "gamma",
+  "answers": {
+   "org": "3",
+   "alt": "2"
+  },
+  "org": {
+   "english_rank": 1313,
+   "stored_rank": 1313,
+   "best_rank": 1313,
+   "best_token": " three",
+   "rank_by_language": {
+    "English": 1313,
+    "Chinese": 72684,
+    "Japanese": 106696,
+    "Korean": 29123,
+    "Russian": 77920,
+    "Ukrainian": 77920,
+    "German": 49231,
+    "French": 38079,
+    "Spanish": 37054,
+    "Portuguese": 37054,
+    "Italian": 35287
+   },
+   "languages_without_single_token": []
+  },
+  "alt": {
+   "english_rank": 1157,
+   "stored_rank": 1157,
+   "best_rank": 790,
+   "best_token": " due",
+   "rank_by_language": {
+    "English": 1157,
+    "Chinese": 47045,
+    "Japanese": 55483,
+    "Korean": 9530,
+    "Russian": 27589,
+    "Ukrainian": 40972,
+    "German": 40972,
+    "French": 88879,
+    "Spanish": 968,
+    "Portuguese": 18856,
+    "Italian": 790
+   },
+   "languages_without_single_token": []
+  },
+  "english_best": 1157,
+  "best_over_translations": 790,
+  "label_old": "not read",
+  "label_new": "not read",
+  "flip": false,
+  "stored_matches": true
+ },
+ {
+  "key": "P2-L0-0033",
+  "entity": "bee",
+  "answers": {
+   "org": "6",
+   "alt": "4"
+  },
+  "org": {
+   "english_rank": 6592,
+   "stored_rank": 6592,
+   "best_rank": 6592,
+   "best_token": " six",
+   "rank_by_language": {
+    "English": 6592,
+    "Chinese": 25347,
+    "Japanese": null,
+    "Korean": 83593,
+    "Russian": 132606,
+    "Ukrainian": 139958,
+    "German": 132005,
+    "French": 6592,
+    "Spanish": 90377,
+    "Portuguese": 90377,
+    "Italian": 35668
+   },
+   "languages_without_single_token": [
+    "Japanese"
+   ]
+  },
+  "alt": {
+   "english_rank": 1599,
+   "stored_rank": 1599,
+   "best_rank": 1599,
+   "best_token": " four",
+   "rank_by_language": {
+    "English": 1599,
+    "Chinese": 64491,
+    "Japanese": 35020,
+    "Korean": 4651,
+    "Russian": 100269,
+    "Ukrainian": null,
+    "German": 19408,
+    "French": 23368,
+    "Spanish": 23821,
+    "Portuguese": 50354,
+    "Italian": 55467
+   },
+   "languages_without_single_token": [
+    "Ukrainian"
+   ]
+  },
+  "english_best": 1599,
+  "best_over_translations": 1599,
+  "label_old": "not read",
+  "label_new": "not read",
+  "flip": false,
+  "stored_matches": true
+ },
+ {
+  "key": "P2-L0-0124",
+  "entity": "nitrogen",
+  "answers": {
+   "org": "7",
+   "alt": "8"
+  },
+  "org": {
+   "english_rank": 46160,
+   "stored_rank": 46160,
+   "best_rank": 12146,
+   "best_token": " 칠",
+   "rank_by_language": {
+    "English": 46160,
+    "Chinese": 134155,
+    "Japanese": null,
+    "Korean": 12146,
+    "Russian": 133622,
+    "Ukrainian": 86437,
+    "German": 159036,
+    "French": 28676,
+    "Spanish": 117203,
+    "Portuguese": 74945,
+    "Italian": 55744
+   },
+   "languages_without_single_token": [
+    "Japanese"
+   ]
+  },
+  "alt": {
+   "english_rank": 29324,
+   "stored_rank": 29324,
+   "best_rank": 2788,
+   "best_token": " Ocho",
+   "rank_by_language": {
+    "English": 29324,
+    "Chinese": 145295,
+    "Japanese": null,
+    "Korean": 165493,
+    "Russian": 130033,
+    "Ukrainian": null,
+    "German": 19689,
+    "French": 104748,
+    "Spanish": 2788,
+    "Portuguese": 149117,
+    "Italian": 10172
+   },
+   "languages_without_single_token": [
+    "Japanese",
+    "Ukrainian"
+   ]
+  },
+  "english_best": 29324,
+  "best_over_translations": 2788,
+  "label_old": "not read",
+  "label_new": "not read",
+  "flip": false,
+  "stored_matches": true
+ },
+ {
+  "key": "P2-L0-0224",
+  "entity": "delta",
+  "answers": {
+   "org": "4",
+   "alt": "5"
+  },
+  "org": {
+   "english_rank": 6227,
+   "stored_rank": 6227,
+   "best_rank": 6227,
+   "best_token": " four",
+   "rank_by_language": {
+    "English": 6227,
+    "Chinese": 156650,
+    "Japanese": 138271,
+    "Korean": 15917,
+    "Russian": 65178,
+    "Ukrainian": null,
+    "German": 26852,
+    "French": 14540,
+    "Spanish": 8412,
+    "Portuguese": 7957,
+    "Italian": 21848
+   },
+   "languages_without_single_token": [
+    "Ukrainian"
+   ]
+  },
+  "alt": {
+   "english_rank": 12137,
+   "stored_rank": 12137,
+   "best_rank": 12137,
+   "best_token": " five",
+   "rank_by_language": {
+    "English": 12137,
+    "Chinese": 115108,
+    "Japanese": 38344,
+    "Korean": 86667,
+    "Russian": 35641,
+    "Ukrainian": 35641,
+    "German": 82068,
+    "French": 25539,
+    "Spanish": 48025,
+    "Portuguese": 48025,
+    "Italian": 14626
+   },
+   "languages_without_single_token": []
+  },
+  "english_best": 6227,
+  "best_over_translations": 6227,
+  "label_old": "not read",
+  "label_new": "not read",
+  "flip": false,
+  "stored_matches": true
+ },
+ {
+  "key": "P2-L0-0229",
+  "entity": "lithium",
+  "answers": {
+   "org": "3",
+   "alt": "1"
+  },
+  "org": {
+   "english_rank": 3988,
+   "stored_rank": 3988,
+   "best_rank": 3988,
+   "best_token": " three",
+   "rank_by_language": {
+    "English": 3988,
+    "Chinese": 88768,
+    "Japanese": 91736,
+    "Korean": 19977,
+    "Russian": 17630,
+    "Ukrainian": 17630,
+    "German": 67320,
+    "French": 73985,
+    "Spanish": 85289,
+    "Portuguese": 85289,
+    "Italian": 27841
+   },
+   "languages_without_single_token": []
+  },
+  "alt": {
+   "english_rank": 1282,
+   "stored_rank": 1282,
+   "best_rank": 1282,
+   "best_token": " one",
+   "rank_by_language": {
+    "English": 1282,
+    "Chinese": 34365,
+    "Japanese": null,
+    "Korean": 10788,
+    "Russian": 7882,
+    "Ukrainian": 20213,
+    "German": 9168,
+    "French": 12061,
+    "Spanish": 12061,
+    "Portuguese": 27501,
+    "Italian": 12061
+   },
+   "languages_without_single_token": [
+    "Japanese"
+   ]
+  },
+  "english_best": 1282,
+  "best_over_translations": 1282,
+  "label_old": "not read",
+  "label_new": "not read",
+  "flip": false,
+  "stored_matches": true
+ }
+]

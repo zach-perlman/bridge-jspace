@@ -1,0 +1,54 @@
+{
+ "model": "muse-glimmer-30b",
+ "run": "muse30_x51_12_e1_r2",
+ "n": 200,
+ "layer": 26,
+ "seconds": 43,
+ "labels_old": {
+  "not read": 199,
+  "read": 1
+ },
+ "labels_new": {
+  "not read": 199,
+  "read": 1
+ },
+ "flips": 0,
+ "flip_rate": 0.0,
+ "flip_rate_wilson95": [
+  0.0,
+  0.0188
+ ],
+ "flip_rate_cluster_bootstrap95": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "stored_rank_matches": 200,
+ "items_with_a_language_lacking_a_single_token": 188,
+ "languages_lacking_by_value": {
+  "1": [
+   "Japanese"
+  ],
+  "2": [],
+  "3": [],
+  "4": [
+   "Ukrainian"
+  ],
+  "5": [],
+  "6": [
+   "Japanese"
+  ],
+  "7": [
+   "Japanese"
+  ],
+  "8": [
+   "Japanese",
+   "Ukrainian"
+  ],
+  "9": [],
+  "10": [
+   "Japanese"
+  ]
+ },
+ "decision": "translation does not change the verdict"
+}
