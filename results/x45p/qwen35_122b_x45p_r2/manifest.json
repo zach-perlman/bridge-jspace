@@ -1,0 +1,71 @@
+{
+  "exp": "x45p",
+  "run": "qwen35_122b_x45p_r2",
+  "why": "122B coverage (Dan 18:20, jobs/c3/batch53.yaml coverage_122b_1820 item 6): 45p on x45m_122b's scenes whose new item's locker sentence comes before the asked pick, at L33; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-30T00:24:44Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-122b-a10b",
+    "BJ_DEVICE_MAP": "auto",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "qwen3.5-122b-a10b",
+    "lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "code": {
+    "sha": "7899be85e688bd1be700d35d12efab136b74fbe1",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "test": "45p",
+  "spec": "jobs/c3/batch45.yaml (45p)",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "f6636d5a91ef40ac6d34a725bd966136d7a7a5377a8a6f0c4e9d3b428a2b9ca9",
+    "results/x0_necessity/qwen35_122b_x45m_fresh/manifest.json": "117160f612bf13d56720bfc0f2cf1a4dea3d492b3fed3344a274f54f8c0650fd",
+    "results/x0_necessity/qwen35_122b_x45m_fresh/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/qwen35_122b_x45m_fresh/outcomes.jsonl": "b128303a56ba2b58e7605b137cd7cb51bdcff87f8dadef33504a0f8e8864dffb"
+  },
+  "run_45m": "qwen35_122b_x45m_fresh",
+  "layer": 33,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change at the bridge word (45m's whole arm, rerun)",
+    "a1": "(1) the base edit: the whole change minus its J++ part (k = 25, signed), at the bridge word",
+    "a2": "(2) the base edit, and the new item's token(s) in its locker sentence without their own J++ part",
+    "a3": "(3) the base edit, and the same tokens without a random part of the same share",
+    "a4": "(4) the base edit, and the control item's token(s) without their own J++ part",
+    "o2": "O alone with (2)'s item edit (no base edit)"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at each token's J++ share of ||h||^2",
+  "items_rule": "the 45m run's items at L (chat) whose new item's (alt) locker sentence comes before the asked pick (x0_strata); O and S the same but for the bridge word; a control locker item; every patched token exactly its item's name; else dropped and counted",
+  "positions": "the tokens overlapping the item's name inside its locker sentence (character offsets of the rendered prompt); control: the first locker sentence in context order whose item is neither the bridge nor the new item",
+  "h": "O's clean state at L (an edit at L changes only its own positions' states at L)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer; right = top token is O's",
+  "rule": "the recall reads the earlier mention if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested",
+  "decisive_reader": "PM",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer",
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "none (coverage): verdict --coverage"
+}
