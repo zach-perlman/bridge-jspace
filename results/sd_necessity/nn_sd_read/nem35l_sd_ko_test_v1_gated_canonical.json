@@ -41410,5 +41410,197 @@
    ],
    "n_read_items": 447
   }
+ },
+ "amendment71_73": {
+  "items": "gated, names as written",
+  "n_gated": 477,
+  "M_status": "post hoc: seen on this split (amendment 71)",
+  "M": [
+   {
+    "conv": "press_vis",
+    "side": "real",
+    "n": 315,
+    "n_bridges": 168,
+    "flip": {
+     "paper10": 19.7,
+     "paper10_rot": 6.7,
+     "paper10_pcasize": 7.0,
+     "unembed10": 11.1,
+     "paper10_keepA": 0.3
+    },
+    "M1": {
+     "value": 8.6,
+     "ci": [
+      1.71,
+      15.19
+     ],
+     "reading": "not shown"
+    },
+    "M2": {
+     "value": 1.49,
+     "ci": [
+      1.17,
+      2.58
+     ],
+     "reading": "not read (M1 not met)"
+    }
+   },
+   {
+    "conv": "press_vis",
+    "side": "near",
+    "n": 49,
+    "n_bridges": 35,
+    "flip": {
+     "paper10": 71.4,
+     "paper10_rot": 81.6,
+     "paper10_pcasize": 71.4,
+     "unembed10": 81.6,
+     "paper10_keepA": 12.2
+    },
+    "M1": {
+     "value": -10.2,
+     "ci": [
+      -29.79,
+      4.08
+     ],
+     "reading": "not shown"
+    },
+    "M2": {
+     "value": null,
+     "ci": null,
+     "reading": "not read (M1 not met)"
+    }
+   },
+   {
+    "conv": "press1_vis",
+    "side": "real",
+    "n": 460,
+    "n_bridges": 190,
+    "flip": {
+     "paper10": 3.7,
+     "paper10_rot": 0.4,
+     "paper10_pcasize": 0.4,
+     "unembed10": 0.4,
+     "paper10_keepA": 0.0
+    },
+    "M1": {
+     "value": 3.3,
+     "ci": [
+      1.26,
+      5.05
+     ],
+     "reading": "not shown"
+    },
+    "M2": {
+     "value": 1.13,
+     "ci": [
+      1.0,
+      1.62
+     ],
+     "reading": "not read (M1 not met)"
+    }
+   },
+   {
+    "conv": "press1_vis",
+    "side": "near",
+    "n": 7,
+    "n_bridges": 7,
+    "flip": {
+     "paper10": 100.0,
+     "paper10_rot": 14.3,
+     "paper10_pcasize": 28.6,
+     "unembed10": 71.4,
+     "paper10_keepA": 14.3
+    },
+    "M1": {
+     "value": 28.6,
+     "ci": [
+      0.0,
+      57.14
+     ],
+     "reading": "not shown"
+    },
+    "M2": {
+     "value": 1.0,
+     "ci": [
+      0.57,
+      1.75
+     ],
+     "reading": "not read (M1 not met)"
+    }
+   }
+  ],
+  "dissociation": {
+   "conv": "press_vis",
+   "late_idx": [
+    21,
+    22,
+    23,
+    24
+   ],
+   "gave_in": {
+    "n": 106,
+    "n_bridges": 47,
+    "readout": {
+     "none": 0.738,
+     "bridgeJ": 0.123,
+     "bridgeJ_ctrl": 0.705,
+     "paper10_rot": 0.736
+    },
+    "share_removed": {
+     "value": 0.83,
+     "ci": [
+      0.67,
+      0.94
+     ]
+    },
+    "share_removed_by_ctrl": 0.04
+   },
+   "vs": {
+    "paper10_rot": {
+     "n": 477,
+     "give_in_bridgeJ": 38.4,
+     "give_in_ref": 34.8,
+     "diff": 3.6,
+     "ci": [
+      -0.4,
+      8.33
+     ],
+     "reading": "the silent-dissent readout is not what holds"
+    }
+   },
+   "status": "descriptive (amendment 73: seen on this model)"
+  },
+  "d_held": {
+   "conv": "press_vis",
+   "vs": {
+    "bridgeJ_ctrl": {
+     "solo breaks": {
+      "n": 109,
+      "n_bridges": 57,
+      "excess": 39.4,
+      "ci": [
+       28.57,
+       50.43
+      ],
+      "cave_bridgeJ": 44.0,
+      "cave_ref": 4.6
+     },
+     "solo survives": {
+      "n": 255,
+      "n_bridges": 146,
+      "excess": 10.6,
+      "ci": [
+       5.63,
+       16.38
+      ],
+      "cave_bridgeJ": 11.8,
+      "cave_ref": 1.2
+     },
+     "reading": "the readout's removal moves holders"
+    }
+   },
+   "status": "post hoc (amendment 78: seen on this model)"
+  }
  }
 }

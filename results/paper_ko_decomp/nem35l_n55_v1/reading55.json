@@ -1,0 +1,1881 @@
+{
+  "run": "results/paper_ko_decomp/nem35l_n55_v1",
+  "target": "nemotron-3.5-lightning",
+  "bands": {
+    "medium": "28-40",
+    "heavy": "22-44"
+  },
+  "byte_check_all_equal": true,
+  "G": {
+    "medium": {
+      "wiki": {
+        "paper10": 0.5442662713919957,
+        "paper10_rot": 0.7830481067241611
+      },
+      "v4": {
+        "paper10": 0.5729586693548387,
+        "paper10_rot": 0.7985131048387096
+      }
+    },
+    "heavy": {
+      "wiki": {
+        "paper10": 0.43269101199299287,
+        "paper10_rot": 0.7152674841665544
+      },
+      "v4": {
+        "paper10": 0.4269153225806452,
+        "paper10_rot": 0.7295866935483871
+      }
+    }
+  },
+  "sets": {
+    "MH": {
+      "n_analysis": 51,
+      "n_eligible": 54,
+      "bands": {
+        "medium": {
+          "loss": {
+            "top3": 56.9,
+            "paper10": 54.9,
+            "top30": 70.6,
+            "pca3": 33.3,
+            "pca10": 80.4,
+            "pca30": 90.2,
+            "unembed10": 47.1,
+            "unembed30": 52.9,
+            "unembed100": 62.7,
+            "unembed300": 70.6,
+            "paper10_rot": 17.6,
+            "paper10_pcasize": 37.3
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              17.647058823529406,
+              2.5965700965700984,
+              51.61568409343713
+            ],
+            "met": false
+          },
+          "paper_contrast": [
+            37.25490196078431,
+            20.0,
+            74.19354838709677
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0395,
+                "pca30": 0.0205
+              },
+              "dose_loss": {
+                "pca3": 33.3,
+                "pca10": 80.4,
+                "pca30": 90.2
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 33.3,
+                "paper10_minus_nearest": [
+                  21.568627450980387,
+                  1.8465391621129357,
+                  45.46103896103892
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "unembed10": 0.6882,
+                "unembed30": 0.6192,
+                "unembed100": 0.5404,
+                "unembed300": 0.4681
+              },
+              "dose_loss": {
+                "unembed10": 47.1,
+                "unembed30": 52.9,
+                "unembed100": 62.7,
+                "unembed300": 70.6
+              },
+              "bracketed": true,
+              "delta": [
+                -7.357130886542656,
+                -18.34283000949668,
+                11.779209154209124
+              ],
+              "L_interp": 62.3
+            },
+            "size_pair": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "paper10_rot": 0.783,
+                "paper10_pcasize": 0.4761
+              },
+              "dose_loss": {
+                "paper10_rot": 17.6,
+                "paper10_pcasize": 37.3
+              },
+              "bracketed": true,
+              "delta": [
+                22.002444524780934,
+                7.102371130987047,
+                56.24844984635644
+              ],
+              "L_interp": 32.9
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "pca3": 0.4383,
+                "pca10": 0.1677,
+                "pca30": 0.0685
+              },
+              "dose_loss": {
+                "pca3": 33.3,
+                "pca10": 80.4,
+                "pca30": 90.2
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.4383,
+                "loss": 33.3,
+                "paper10_minus_nearest": [
+                  21.568627450980387,
+                  1.8465391621129357,
+                  45.46103896103892
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "unembed10": 0.7019,
+                "unembed30": 0.6581,
+                "unembed100": 0.5814,
+                "unembed300": 0.5568
+              },
+              "dose_loss": {
+                "unembed10": 47.1,
+                "unembed30": 52.9,
+                "unembed100": 62.7,
+                "unembed300": 70.6
+              },
+              "bracketed": true,
+              "delta": [
+                -10.537958773252889,
+                -21.50187806543738,
+                7.135461182336167
+              ],
+              "L_interp": 65.4
+            },
+            "size_pair": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "paper10_rot": 0.7985,
+                "paper10_pcasize": 0.5465
+              },
+              "dose_loss": {
+                "paper10_rot": 17.6,
+                "paper10_pcasize": 37.3
+              },
+              "bracketed": true,
+              "delta": [
+                19.705882352941174,
+                4.518091549295778,
+                53.52682102834541
+              ],
+              "L_interp": 35.2
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          }
+        },
+        "heavy": {
+          "loss": {
+            "top3": 70.6,
+            "paper10": 84.3,
+            "top30": 84.3,
+            "pca3": 66.7,
+            "pca10": 94.1,
+            "pca30": 98.0,
+            "unembed10": 64.7,
+            "unembed30": 78.4,
+            "unembed100": 86.3,
+            "unembed300": 90.2,
+            "paper10_rot": 31.4,
+            "paper10_pcasize": 60.8
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              23.529411764705884,
+              11.627064374789342,
+              46.666666666666664
+            ],
+            "met": true
+          },
+          "paper_contrast": [
+            52.94117647058823,
+            40.38377192982456,
+            77.77777777777777
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "pca3": 0.0624,
+                "pca10": 0.0129,
+                "pca30": 0.0136
+              },
+              "dose_loss": {
+                "pca3": 66.7,
+                "pca10": 94.1,
+                "pca30": 98.0
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.0624,
+                "loss": 66.7,
+                "paper10_minus_nearest": [
+                  17.647058823529406,
+                  3.3333333333333424,
+                  41.666666666666664
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "unembed10": 0.5842,
+                "unembed30": 0.4688,
+                "unembed100": 0.3501,
+                "unembed300": 0.2647
+              },
+              "dose_loss": {
+                "unembed10": 64.7,
+                "unembed30": 78.4,
+                "unembed100": 86.3,
+                "unembed300": 90.2
+              },
+              "bracketed": true,
+              "delta": [
+                3.4964723687431842,
+                -5.188385632162863,
+                9.716995261840212
+              ],
+              "L_interp": 80.8
+            },
+            "size_pair": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "paper10_rot": 0.7153,
+                "paper10_pcasize": 0.2998
+              },
+              "dose_loss": {
+                "paper10_rot": 31.4,
+                "paper10_pcasize": 60.8
+              },
+              "bracketed": true,
+              "delta": [
+                32.935834080631935,
+                22.77111198030948,
+                53.74224578332793
+              ],
+              "L_interp": 51.4
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0609,
+                "pca30": 0.0277
+              },
+              "dose_loss": {
+                "pca3": 66.7,
+                "pca10": 94.1,
+                "pca30": 98.0
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 66.7,
+                "paper10_minus_nearest": [
+                  17.647058823529406,
+                  3.3333333333333424,
+                  41.666666666666664
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "unembed10": 0.5945,
+                "unembed30": 0.4979,
+                "unembed100": 0.3545,
+                "unembed300": 0.2637
+              },
+              "dose_loss": {
+                "unembed10": 64.7,
+                "unembed30": 78.4,
+                "unembed100": 86.3,
+                "unembed300": 90.2
+              },
+              "bracketed": true,
+              "delta": [
+                2.0021365312381505,
+                -5.519102806424147,
+                8.00033732070979
+              ],
+              "L_interp": 82.3
+            },
+            "size_pair": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "paper10_rot": 0.7296,
+                "paper10_pcasize": 0.3827
+              },
+              "dose_loss": {
+                "paper10_rot": 31.4,
+                "paper10_pcasize": 60.8
+              },
+              "bracketed": true,
+              "delta": [
+                27.27933163821286,
+                16.17809791915314,
+                48.93945527720712
+              ],
+              "L_interp": 57.0
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          }
+        }
+      },
+      "keep": {
+        "n": 40,
+        "K_T": [
+          -0.14285714285714285,
+          -0.6,
+          0.16666666666666666
+        ],
+        "K_B": [
+          0.07142857142857142,
+          -0.8462500000000001,
+          0.8
+        ],
+        "label": "both carry it [void: A0 not met]"
+      }
+    },
+    "ML": {
+      "n_analysis": 66,
+      "n_eligible": 72,
+      "bands": {
+        "medium": {
+          "loss": {
+            "top3": 43.9,
+            "paper10": 63.6,
+            "top30": 78.8,
+            "pca3": 28.8,
+            "pca10": 57.6,
+            "pca30": 87.9,
+            "unembed10": 43.9,
+            "unembed30": 48.5,
+            "unembed100": 54.5,
+            "unembed300": 51.5,
+            "paper10_rot": 13.6,
+            "paper10_pcasize": 24.2
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              39.39393939393939,
+              25.0,
+              58.73249299719887
+            ],
+            "met": true
+          },
+          "paper_contrast": [
+            50.0,
+            36.66463414634146,
+            64.91285030758715
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0395,
+                "pca30": 0.0205
+              },
+              "dose_loss": {
+                "pca3": 28.8,
+                "pca10": 57.6,
+                "pca30": 87.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 28.8,
+                "paper10_minus_nearest": [
+                  34.848484848484844,
+                  21.666237113402058,
+                  51.66666666666667
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "unembed10": 0.6882,
+                "unembed30": 0.6192,
+                "unembed100": 0.5404,
+                "unembed300": 0.4681
+              },
+              "dose_loss": {
+                "unembed10": 43.9,
+                "unembed30": 48.5,
+                "unembed100": 54.5,
+                "unembed300": 51.5
+              },
+              "bracketed": true,
+              "delta": [
+                9.391349391349387,
+                -0.8371913580246997,
+                24.445578231292508
+              ],
+              "L_interp": 54.2
+            },
+            "size_pair": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "paper10_rot": 0.783,
+                "paper10_pcasize": 0.4761
+              },
+              "dose_loss": {
+                "paper10_rot": 13.6,
+                "paper10_pcasize": 24.2
+              },
+              "bracketed": true,
+              "delta": [
+                41.74980711416181,
+                28.56878133463954,
+                60.31945838036706
+              ],
+              "L_interp": 21.9
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "pca3": 0.4383,
+                "pca10": 0.1677,
+                "pca30": 0.0685
+              },
+              "dose_loss": {
+                "pca3": 28.8,
+                "pca10": 57.6,
+                "pca30": 87.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.4383,
+                "loss": 28.8,
+                "paper10_minus_nearest": [
+                  34.848484848484844,
+                  21.666237113402058,
+                  51.66666666666667
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "unembed10": 0.7019,
+                "unembed30": 0.6581,
+                "unembed100": 0.5814,
+                "unembed300": 0.5568
+              },
+              "dose_loss": {
+                "unembed10": 43.9,
+                "unembed30": 48.5,
+                "unembed100": 54.5,
+                "unembed300": 51.5
+              },
+              "bracketed": true,
+              "delta": [
+                10.132090132090127,
+                -0.8030900723208304,
+                26.678490028490014
+              ],
+              "L_interp": 53.5
+            },
+            "size_pair": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "paper10_rot": 0.7985,
+                "paper10_pcasize": 0.5465
+              },
+              "dose_loss": {
+                "paper10_rot": 13.6,
+                "paper10_pcasize": 24.2
+              },
+              "bracketed": true,
+              "delta": [
+                40.50757575757575,
+                26.525187938523228,
+                59.743619186046445
+              ],
+              "L_interp": 23.1
+            },
+            "dose_used": "unembed",
+            "label": "partly"
+          }
+        },
+        "heavy": {
+          "loss": {
+            "top3": 81.8,
+            "paper10": 97.0,
+            "top30": 100.0,
+            "pca3": 51.5,
+            "pca10": 90.9,
+            "pca30": 100.0,
+            "unembed10": 71.2,
+            "unembed30": 77.3,
+            "unembed100": 86.4,
+            "unembed300": 95.5,
+            "paper10_rot": 33.3,
+            "paper10_pcasize": 33.3
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              63.63636363636363,
+              50.57438977140643,
+              76.05710349050825
+            ],
+            "met": true
+          },
+          "paper_contrast": [
+            63.63636363636363,
+            52.4984756097561,
+            78.00121951219512
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "pca3": 0.0624,
+                "pca10": 0.0129,
+                "pca30": 0.0136
+              },
+              "dose_loss": {
+                "pca3": 51.5,
+                "pca10": 90.9,
+                "pca30": 100.0
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.0624,
+                "loss": 51.5,
+                "paper10_minus_nearest": [
+                  45.45454545454545,
+                  28.84615384615384,
+                  60.378341194968556
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "unembed10": 0.5842,
+                "unembed30": 0.4688,
+                "unembed100": 0.3501,
+                "unembed300": 0.2647
+              },
+              "dose_loss": {
+                "unembed10": 71.2,
+                "unembed30": 77.3,
+                "unembed100": 86.4,
+                "unembed300": 95.5
+              },
+              "bracketed": true,
+              "delta": [
+                16.931517215285666,
+                6.0208647765401295,
+                33.6761537181871
+              ],
+              "L_interp": 80.0
+            },
+            "size_pair": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "paper10_rot": 0.7153,
+                "paper10_pcasize": 0.2998
+              },
+              "dose_loss": {
+                "paper10_rot": 33.3,
+                "paper10_pcasize": 33.3
+              },
+              "bracketed": true,
+              "delta": [
+                63.63636363636363,
+                52.280524909156945,
+                78.09475232289432
+              ],
+              "L_interp": 33.3
+            },
+            "dose_used": "unembed",
+            "label": "J-selective at matched generic damage"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0609,
+                "pca30": 0.0277
+              },
+              "dose_loss": {
+                "pca3": 51.5,
+                "pca10": 90.9,
+                "pca30": 100.0
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 51.5,
+                "paper10_minus_nearest": [
+                  45.45454545454545,
+                  28.84615384615384,
+                  60.378341194968556
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "unembed10": 0.5945,
+                "unembed30": 0.4979,
+                "unembed100": 0.3545,
+                "unembed300": 0.2637
+              },
+              "dose_loss": {
+                "unembed10": 71.2,
+                "unembed30": 77.3,
+                "unembed100": 86.4,
+                "unembed300": 95.5
+              },
+              "bracketed": true,
+              "delta": [
+                15.199446130904832,
+                5.039433216168715,
+                30.529606008462775
+              ],
+              "L_interp": 81.8
+            },
+            "size_pair": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "paper10_rot": 0.7296,
+                "paper10_pcasize": 0.3827
+              },
+              "dose_loss": {
+                "paper10_rot": 33.3,
+                "paper10_pcasize": 33.3
+              },
+              "bracketed": true,
+              "delta": [
+                63.63636363636363,
+                51.81729625195519,
+                78.63657649765318
+              ],
+              "L_interp": 33.3
+            },
+            "dose_used": "unembed",
+            "label": "J-selective at matched generic damage"
+          }
+        }
+      },
+      "keep": {
+        "n": 29,
+        "K_E": [
+          0.0,
+          -0.3,
+          0.24999999999999997
+        ],
+        "K_T": [
+          0.23076923076923075,
+          -0.16666666666666674,
+          0.5833333333333334
+        ],
+        "label": "shared concept"
+      }
+    },
+    "OO": {
+      "n_analysis": 27,
+      "n_eligible": 28,
+      "bands": {
+        "medium": {
+          "loss": {
+            "top3": 14.8,
+            "paper10": 11.1,
+            "top30": 25.9,
+            "pca3": 22.2,
+            "pca10": 59.3,
+            "pca30": 88.9,
+            "unembed10": 7.4,
+            "unembed30": 14.8,
+            "unembed100": 18.5,
+            "unembed300": 22.2,
+            "paper10_rot": 18.5,
+            "paper10_pcasize": 18.5
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              -7.407407407407408,
+              -24.137931034482758,
+              0.0
+            ],
+            "met": false
+          },
+          "paper_contrast": [
+            -7.407407407407408,
+            -16.684782608695652,
+            0.0
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0395,
+                "pca30": 0.0205
+              },
+              "dose_loss": {
+                "pca3": 22.2,
+                "pca10": 59.3,
+                "pca30": 88.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 22.2,
+                "paper10_minus_nearest": [
+                  -11.11111111111111,
+                  -20.0,
+                  -3.5714285714285703
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "unembed10": 0.6882,
+                "unembed30": 0.6192,
+                "unembed100": 0.5404,
+                "unembed300": 0.4681
+              },
+              "dose_loss": {
+                "unembed10": 7.4,
+                "unembed30": 14.8,
+                "unembed100": 18.5,
+                "unembed300": 22.2
+              },
+              "bracketed": true,
+              "delta": [
+                -7.223805001582782,
+                -16.34639539204757,
+                0.0
+              ],
+              "L_interp": 18.3
+            },
+            "size_pair": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "paper10_rot": 0.783,
+                "paper10_pcasize": 0.4761
+              },
+              "dose_loss": {
+                "paper10_rot": 18.5,
+                "paper10_pcasize": 18.5
+              },
+              "bracketed": true,
+              "delta": [
+                -7.407407407407408,
+                -19.4468832309043,
+                5.798373859602243
+              ],
+              "L_interp": 18.5
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "pca3": 0.4383,
+                "pca10": 0.1677,
+                "pca30": 0.0685
+              },
+              "dose_loss": {
+                "pca3": 22.2,
+                "pca10": 59.3,
+                "pca30": 88.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.4383,
+                "loss": 22.2,
+                "paper10_minus_nearest": [
+                  -11.11111111111111,
+                  -20.0,
+                  -3.5714285714285703
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "unembed10": 0.7019,
+                "unembed30": 0.6581,
+                "unembed100": 0.5814,
+                "unembed300": 0.5568
+              },
+              "dose_loss": {
+                "unembed10": 7.4,
+                "unembed30": 14.8,
+                "unembed100": 18.5,
+                "unembed300": 22.2
+              },
+              "bracketed": true,
+              "delta": [
+                -8.679962013295345,
+                -18.885172798216274,
+                0.0
+              ],
+              "L_interp": 19.8
+            },
+            "size_pair": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "paper10_rot": 0.7985,
+                "paper10_pcasize": 0.5465
+              },
+              "dose_loss": {
+                "paper10_rot": 18.5,
+                "paper10_pcasize": 18.5
+              },
+              "bracketed": true,
+              "delta": [
+                -7.407407407407408,
+                -21.67647058823529,
+                7.326086956521737
+              ],
+              "L_interp": 18.5
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          }
+        },
+        "heavy": {
+          "loss": {
+            "top3": 25.9,
+            "paper10": 37.0,
+            "top30": 55.6,
+            "pca3": 44.4,
+            "pca10": 85.2,
+            "pca30": 88.9,
+            "unembed10": 11.1,
+            "unembed30": 14.8,
+            "unembed100": 22.2,
+            "unembed300": 22.2,
+            "paper10_rot": 22.2,
+            "paper10_pcasize": 25.9
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              11.11111111111111,
+              -23.80952380952381,
+              21.875
+            ],
+            "met": false
+          },
+          "paper_contrast": [
+            14.814814814814817,
+            3.3333333333333357,
+            26.92307692307692
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "pca3": 0.0624,
+                "pca10": 0.0129,
+                "pca30": 0.0136
+              },
+              "dose_loss": {
+                "pca3": 44.4,
+                "pca10": 85.2,
+                "pca30": 88.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.0624,
+                "loss": 44.4,
+                "paper10_minus_nearest": [
+                  -7.407407407407405,
+                  -38.095238095238095,
+                  17.39130434782609
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "unembed10": 0.5842,
+                "unembed30": 0.4688,
+                "unembed100": 0.3501,
+                "unembed300": 0.2647
+              },
+              "dose_loss": {
+                "unembed10": 11.1,
+                "unembed30": 14.8,
+                "unembed100": 22.2,
+                "unembed300": 22.2
+              },
+              "bracketed": true,
+              "delta": [
+                19.968890570479676,
+                0.0,
+                30.567880851649296
+              ],
+              "L_interp": 17.1
+            },
+            "size_pair": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "paper10_rot": 0.7153,
+                "paper10_pcasize": 0.2998
+              },
+              "dose_loss": {
+                "paper10_rot": 22.2,
+                "paper10_pcasize": 25.9
+              },
+              "bracketed": true,
+              "delta": [
+                12.29562355089439,
+                -11.625967286038643,
+                28.324359390204346
+              ],
+              "L_interp": 24.7
+            },
+            "dose_used": "unembed",
+            "label": "partly"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0609,
+                "pca30": 0.0277
+              },
+              "dose_loss": {
+                "pca3": 44.4,
+                "pca10": 85.2,
+                "pca30": 88.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 44.4,
+                "paper10_minus_nearest": [
+                  -7.407407407407405,
+                  -38.095238095238095,
+                  17.39130434782609
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "unembed10": 0.5945,
+                "unembed30": 0.4979,
+                "unembed100": 0.3545,
+                "unembed300": 0.2637
+              },
+              "dose_loss": {
+                "unembed10": 11.1,
+                "unembed30": 14.8,
+                "unembed100": 22.2,
+                "unembed300": 22.2
+              },
+              "bracketed": true,
+              "delta": [
+                18.557573390613815,
+                0.0,
+                28.83580976726847
+              ],
+              "L_interp": 18.5
+            },
+            "size_pair": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "paper10_rot": 0.7296,
+                "paper10_pcasize": 0.3827
+              },
+              "dose_loss": {
+                "paper10_rot": 22.2,
+                "paper10_pcasize": 25.9
+              },
+              "bracketed": true,
+              "delta": [
+                11.583323243330508,
+                -18.952484735267156,
+                31.844883951050264
+              ],
+              "L_interp": 25.5
+            },
+            "dose_used": "unembed",
+            "label": "partly"
+          }
+        }
+      },
+      "keep": {
+        "n": 27,
+        "K_T": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      }
+    },
+    "PO": {
+      "n_analysis": 92,
+      "n_eligible": 92,
+      "bands": {
+        "medium": {
+          "loss": {
+            "top3": 26.1,
+            "paper10": 33.7,
+            "top30": 33.7,
+            "pca3": 16.3,
+            "pca10": 51.1,
+            "pca30": 80.4,
+            "unembed10": 13.0,
+            "unembed30": 22.8,
+            "unembed100": 29.3,
+            "unembed300": 48.9,
+            "paper10_rot": 2.2,
+            "paper10_pcasize": 26.1
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              7.6086956521739175,
+              -4.763049450549452,
+              20.73321661434435
+            ],
+            "met": false
+          },
+          "paper_contrast": [
+            31.521739130434785,
+            22.115384615384617,
+            41.936479490242924
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0395,
+                "pca30": 0.0205
+              },
+              "dose_loss": {
+                "pca3": 16.3,
+                "pca10": 51.1,
+                "pca30": 80.4
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 16.3,
+                "paper10_minus_nearest": [
+                  17.39130434782609,
+                  6.381298992161253,
+                  30.265005913660545
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "unembed10": 0.6882,
+                "unembed30": 0.6192,
+                "unembed100": 0.5404,
+                "unembed300": 0.4681
+              },
+              "dose_loss": {
+                "unembed10": 13.0,
+                "unembed30": 22.8,
+                "unembed100": 29.3,
+                "unembed300": 48.9
+              },
+              "bracketed": true,
+              "delta": [
+                4.671125975473803,
+                -7.23550513496166,
+                17.25815648669305
+              ],
+              "L_interp": 29.0
+            },
+            "size_pair": {
+              "a_star": 0.5443,
+              "dose_agreement": {
+                "paper10_rot": 0.783,
+                "paper10_pcasize": 0.4761
+              },
+              "dose_loss": {
+                "paper10_rot": 2.2,
+                "paper10_pcasize": 26.1
+              },
+              "bracketed": true,
+              "delta": [
+                12.920372561743715,
+                1.6368572530776229,
+                25.226742425256774
+              ],
+              "L_interp": 20.8
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "pca3": 0.4383,
+                "pca10": 0.1677,
+                "pca30": 0.0685
+              },
+              "dose_loss": {
+                "pca3": 16.3,
+                "pca10": 51.1,
+                "pca30": 80.4
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.4383,
+                "loss": 16.3,
+                "paper10_minus_nearest": [
+                  17.39130434782609,
+                  6.381298992161253,
+                  30.265005913660545
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "unembed10": 0.7019,
+                "unembed30": 0.6581,
+                "unembed100": 0.5814,
+                "unembed300": 0.5568
+              },
+              "dose_loss": {
+                "unembed10": 13.0,
+                "unembed30": 22.8,
+                "unembed100": 29.3,
+                "unembed300": 48.9
+              },
+              "bracketed": true,
+              "delta": [
+                -2.37458193979932,
+                -13.646130199658662,
+                9.237117049617055
+              ],
+              "L_interp": 36.1
+            },
+            "size_pair": {
+              "a_star": 0.573,
+              "dose_agreement": {
+                "paper10_rot": 0.7985,
+                "paper10_pcasize": 0.5465
+              },
+              "dose_loss": {
+                "paper10_rot": 2.2,
+                "paper10_pcasize": 26.1
+              },
+              "bracketed": true,
+              "delta": [
+                10.119565217391312,
+                -1.8025175290135391,
+                22.825397727272726
+              ],
+              "L_interp": 23.6
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          }
+        },
+        "heavy": {
+          "loss": {
+            "top3": 43.5,
+            "paper10": 59.8,
+            "top30": 66.3,
+            "pca3": 40.2,
+            "pca10": 85.9,
+            "pca30": 98.9,
+            "unembed10": 27.2,
+            "unembed30": 53.3,
+            "unembed100": 75.0,
+            "unembed300": 91.3,
+            "paper10_rot": 10.9,
+            "paper10_pcasize": 38.0
+          },
+          "A0": {
+            "paper10_minus_max_controls": [
+              21.73913043478261,
+              7.777777777777779,
+              36.36363636363636
+            ],
+            "met": true
+          },
+          "paper_contrast": [
+            48.91304347826087,
+            39.55547112462006,
+            58.14209046767185
+          ],
+          "S_wiki": {
+            "pca": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "pca3": 0.0624,
+                "pca10": 0.0129,
+                "pca30": 0.0136
+              },
+              "dose_loss": {
+                "pca3": 40.2,
+                "pca10": 85.9,
+                "pca30": 98.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.0624,
+                "loss": 40.2,
+                "paper10_minus_nearest": [
+                  19.565217391304344,
+                  4.44444444444445,
+                  35.109005094396146
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "unembed10": 0.5842,
+                "unembed30": 0.4688,
+                "unembed100": 0.3501,
+                "unembed300": 0.2647
+              },
+              "dose_loss": {
+                "unembed10": 27.2,
+                "unembed30": 53.3,
+                "unembed100": 75.0,
+                "unembed300": 91.3
+              },
+              "bracketed": true,
+              "delta": [
+                -0.09129941272269804,
+                -10.961267165062255,
+                10.118640717264592
+              ],
+              "L_interp": 59.9
+            },
+            "size_pair": {
+              "a_star": 0.4327,
+              "dose_agreement": {
+                "paper10_rot": 0.7153,
+                "paper10_pcasize": 0.2998
+              },
+              "dose_loss": {
+                "paper10_rot": 10.9,
+                "paper10_pcasize": 38.0
+              },
+              "bracketed": true,
+              "delta": [
+                30.429846704931673,
+                18.903025961856645,
+                42.34302560901272
+              ],
+              "L_interp": 29.4
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          },
+          "S_v4": {
+            "pca": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "pca3": 0.2232,
+                "pca10": 0.0609,
+                "pca30": 0.0277
+              },
+              "dose_loss": {
+                "pca3": 40.2,
+                "pca10": 85.9,
+                "pca30": 98.9
+              },
+              "bracketed": false,
+              "nearest": {
+                "cond": "pca3",
+                "agreement": 0.2232,
+                "loss": 40.2,
+                "paper10_minus_nearest": [
+                  19.565217391304344,
+                  4.44444444444445,
+                  35.109005094396146
+                ]
+              }
+            },
+            "unembed": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "unembed10": 0.5945,
+                "unembed30": 0.4979,
+                "unembed100": 0.3545,
+                "unembed300": 0.2637
+              },
+              "dose_loss": {
+                "unembed10": 27.2,
+                "unembed30": 53.3,
+                "unembed100": 75.0,
+                "unembed300": 91.3
+              },
+              "bracketed": true,
+              "delta": [
+                -4.2332085275464095,
+                -14.762580226018041,
+                5.540039209281581
+              ],
+              "L_interp": 64.0
+            },
+            "size_pair": {
+              "a_star": 0.4269,
+              "dose_agreement": {
+                "paper10_rot": 0.7296,
+                "paper10_pcasize": 0.3827
+              },
+              "dose_loss": {
+                "paper10_rot": 10.9,
+                "paper10_pcasize": 38.0
+              },
+              "bracketed": true,
+              "delta": [
+                25.203730317914058,
+                12.46146069750687,
+                38.75865656438036
+              ],
+              "L_interp": 34.6
+            },
+            "dose_used": "unembed",
+            "label": "not selective"
+          }
+        }
+      },
+      "rhyme": {
+        "n": 75,
+        "K_T": [
+          0.037037037037037035,
+          -0.09090909090909091,
+          0.16666666666666666
+        ],
+        "K_S": [
+          0.5555555555555556,
+          0.28125,
+          0.8571428571428571
+        ],
+        "reading": "mixed [void: A0 not met]"
+      }
+    }
+  },
+  "edit_rel_tasks": {
+    "heavy/paper10": 0.0847,
+    "heavy/paper10_pcasize": 0.1448,
+    "heavy/paper10_rot": 0.1647,
+    "heavy/pca10": 0.2545,
+    "heavy/pca3": 0.4136,
+    "heavy/pca30": 0.2818,
+    "heavy/top3": 0.076,
+    "heavy/top30": 0.0855,
+    "heavy/unembed10": 0.0839,
+    "heavy/unembed100": 0.0826,
+    "heavy/unembed30": 0.0827,
+    "heavy/unembed300": 0.0991,
+    "medium/keep_B": 0.0845,
+    "medium/keep_E": 0.0801,
+    "medium/keep_S": 0.0859,
+    "medium/keep_T": 0.0873,
+    "medium/paper10": 0.0922,
+    "medium/paper10_pcasize": 0.1572,
+    "medium/paper10_rot": 0.1635,
+    "medium/pca10": 0.2882,
+    "medium/pca3": 0.3694,
+    "medium/pca30": 0.3624,
+    "medium/top3": 0.0828,
+    "medium/top30": 0.0935,
+    "medium/unembed10": 0.1078,
+    "medium/unembed100": 0.1138,
+    "medium/unembed30": 0.1136,
+    "medium/unembed300": 0.1278
+  },
+  "v4": {
+    "run": "nem35l_jsuite_v4_test_chat_ko55_cand2_v1",
+    "medium": {
+      "band": "L28-40",
+      "measures": {
+        "n": {
+          "MP": 385,
+          "MM": 361
+        },
+        "conditions": {
+          "paper10": {
+            "loss_MM": 84.8,
+            "loss_MM_strict": 85.7,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -6.836,
+            "loss_MP": 7.5,
+            "loss_MP_strict": 7.9,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -1.931,
+            "gap": 77.2,
+            "gap_ci": [
+              71.7,
+              82.5
+            ],
+            "gap_strict": 77.8,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 75.6,
+              "gap_ci": [
+                67.7,
+                83.4
+              ]
+            }
+          },
+          "paper10_rot": {
+            "loss_MM": 14.4,
+            "loss_MM_strict": 14.8,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.372,
+            "loss_MP": 4.7,
+            "loss_MP_strict": 5.2,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.085,
+            "gap": 9.7,
+            "gap_ci": [
+              4.4,
+              15.4
+            ],
+            "gap_strict": 9.6,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 8.1,
+              "gap_ci": [
+                0.5,
+                15.8
+              ]
+            }
+          },
+          "paper10_pcasize": {
+            "loss_MM": 10.8,
+            "loss_MM_strict": 11.8,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.642,
+            "loss_MP": 14.3,
+            "loss_MP_strict": 14.7,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.747,
+            "gap": -3.5,
+            "gap_ci": [
+              -9.1,
+              2.4
+            ],
+            "gap_strict": -2.9,
+            "paired": {
+              "n_pairs": 197,
+              "gap": -7.6,
+              "gap_ci": [
+                -15.5,
+                0.5
+              ]
+            }
+          },
+          "unembed10": {
+            "loss_MM": 52.4,
+            "loss_MM_strict": 52.9,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -1.828,
+            "loss_MP": 2.3,
+            "loss_MP_strict": 2.9,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.167,
+            "gap": 50.0,
+            "gap_ci": [
+              44.1,
+              55.9
+            ],
+            "gap_strict": 50.0,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 58.4,
+              "gap_ci": [
+                50.7,
+                65.7
+              ]
+            }
+          },
+          "paper10_keepA": {
+            "loss_MM": 6.9,
+            "loss_MM_strict": 7.8,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": 0.098,
+            "loss_MP": 1.6,
+            "loss_MP_strict": 1.8,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": 0.002,
+            "gap": 5.4,
+            "gap_ci": [
+              1.4,
+              9.7
+            ],
+            "gap_strict": 6.0,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 4.1,
+              "gap_ci": [
+                0.5,
+                8.2
+              ]
+            }
+          },
+          "paper10_keepA_rot": {
+            "loss_MM": 4.4,
+            "loss_MM_strict": 5.0,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.051,
+            "loss_MP": 1.8,
+            "loss_MP_strict": 2.4,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.015,
+            "gap": 2.6,
+            "gap_ci": [
+              -0.7,
+              6.0
+            ],
+            "gap_strict": 2.6,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 3.6,
+              "gap_ci": [
+                -1.0,
+                8.6
+              ]
+            }
+          }
+        },
+        "ratio": {
+          "keepA_net_MM": 2.5,
+          "paper10_net_MM": 70.4,
+          "ratio": 0.035,
+          "ratio_ci": [
+            -0.026000000000000002,
+            0.098
+          ]
+        },
+        "reading": "the recall's J-need is its answer's directions",
+        "share_of_paper10_gap": {
+          "paper10_keepA": 0.07,
+          "paper10_keepA_rot": 0.03
+        }
+      },
+      "V": {
+        "gap": 77.2,
+        "gap_ci": [
+          71.7,
+          82.5
+        ],
+        "rot_gap": 9.7,
+        "pcasize_gap": -3.5,
+        "unembed10_gap": 50.0,
+        "reading": "C1 holds at the paper's strength"
+      },
+      "E_A_median": 0.3388043570668363,
+      "edit_rel_mean": {
+        "paper10": 0.0097,
+        "paper10_rot": 0.0348,
+        "paper10_pcasize": 0.0358,
+        "unembed10": 0.0084,
+        "paper10_keepA": 0.0059,
+        "paper10_keepA_rot": 0.0237
+      }
+    },
+    "heavy": {
+      "band": "L22-44",
+      "measures": {
+        "n": {
+          "MP": 385,
+          "MM": 361
+        },
+        "conditions": {
+          "paper10": {
+            "loss_MM": 89.8,
+            "loss_MM_strict": 90.8,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -13.72,
+            "loss_MP": 67.3,
+            "loss_MP_strict": 68.3,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -10.642,
+            "gap": 22.5,
+            "gap_ci": [
+              15.6,
+              29.5
+            ],
+            "gap_strict": 22.5,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 13.7,
+              "gap_ci": [
+                4.5,
+                22.8
+              ]
+            }
+          },
+          "paper10_rot": {
+            "loss_MM": 21.6,
+            "loss_MM_strict": 22.1,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.682,
+            "loss_MP": 9.9,
+            "loss_MP_strict": 10.2,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.287,
+            "gap": 11.7,
+            "gap_ci": [
+              5.4,
+              17.7
+            ],
+            "gap_strict": 11.9,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 12.7,
+              "gap_ci": [
+                4.2,
+                21.5
+              ]
+            }
+          },
+          "paper10_pcasize": {
+            "loss_MM": 26.3,
+            "loss_MM_strict": 27.5,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -1.885,
+            "loss_MP": 35.8,
+            "loss_MP_strict": 36.1,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -2.828,
+            "gap": -9.5,
+            "gap_ci": [
+              -18.0,
+              -0.8
+            ],
+            "gap_strict": -8.6,
+            "paired": {
+              "n_pairs": 197,
+              "gap": -15.7,
+              "gap_ci": [
+                -26.3,
+                -4.6
+              ]
+            }
+          },
+          "unembed10": {
+            "loss_MM": 73.4,
+            "loss_MM_strict": 74.2,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -4.031,
+            "loss_MP": 31.7,
+            "loss_MP_strict": 32.2,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -2.558,
+            "gap": 41.7,
+            "gap_ci": [
+              34.6,
+              48.3
+            ],
+            "gap_strict": 42.0,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 39.6,
+              "gap_ci": [
+                30.8,
+                48.4
+              ]
+            }
+          },
+          "paper10_keepA": {
+            "loss_MM": 14.7,
+            "loss_MM_strict": 15.4,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.058,
+            "loss_MP": 2.6,
+            "loss_MP_strict": 2.9,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.004,
+            "gap": 12.1,
+            "gap_ci": [
+              7.0,
+              17.6
+            ],
+            "gap_strict": 12.5,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 12.7,
+              "gap_ci": [
+                6.7,
+                19.4
+              ]
+            }
+          },
+          "paper10_keepA_rot": {
+            "loss_MM": 8.6,
+            "loss_MM_strict": 9.2,
+            "n_MM": 361,
+            "n_MM_right_unedited": 357,
+            "dlogp_MM": -0.138,
+            "loss_MP": 2.6,
+            "loss_MP_strict": 3.1,
+            "n_MP": 385,
+            "n_MP_right_unedited": 382,
+            "dlogp_MP": -0.063,
+            "gap": 6.0,
+            "gap_ci": [
+              2.3,
+              9.9
+            ],
+            "gap_strict": 6.1,
+            "paired": {
+              "n_pairs": 197,
+              "gap": 8.1,
+              "gap_ci": [
+                2.5,
+                14.2
+              ]
+            }
+          }
+        },
+        "ratio": {
+          "keepA_net_MM": 6.1,
+          "paper10_net_MM": 68.2,
+          "ratio": 0.089,
+          "ratio_ci": [
+            0.011000000000000001,
+            0.172
+          ]
+        },
+        "reading": "partly",
+        "share_of_paper10_gap": {
+          "paper10_keepA": 0.54,
+          "paper10_keepA_rot": 0.27
+        }
+      },
+      "V": {
+        "gap": 22.5,
+        "gap_ci": [
+          15.6,
+          29.5
+        ],
+        "rot_gap": 11.7,
+        "pcasize_gap": -9.5,
+        "unembed10_gap": 41.7,
+        "reading": "C1 not shown at the paper's strength"
+      },
+      "E_A_median": 0.2680381369226503,
+      "edit_rel_mean": {
+        "paper10": 0.0085,
+        "paper10_rot": 0.0395,
+        "paper10_pcasize": 0.0333,
+        "unembed10": 0.0065,
+        "paper10_keepA": 0.0063,
+        "paper10_keepA_rot": 0.0296
+      }
+    }
+  },
+  "v4_stored_check_none": {
+    "stored_run": "nem35l_jsuite_v4_test_chat_ko37_cand2_v1",
+    "MP/none": {
+      "n_new": 385,
+      "n_stored": 385,
+      "n_both": 385,
+      "same_correct": 383,
+      "same_logp_bits": 0,
+      "max_abs_dlogp": 0.630036
+    },
+    "MM/none": {
+      "n_new": 361,
+      "n_stored": 361,
+      "n_both": 361,
+      "same_correct": 356,
+      "same_logp_bits": 0,
+      "max_abs_dlogp": 0.48739
+    }
+  }
+}

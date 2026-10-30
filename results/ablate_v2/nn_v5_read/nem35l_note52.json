@@ -1,0 +1,120 @@
+{
+ "prefix": "nem35l_",
+ "role": "primary",
+ "run": "/workspace/bridge-jspace/results/ablate_v2/nem35l_jsuite_v5kn2c_test_chat_ko52_cand2_v1",
+ "MC0": {
+  "rescue": {
+   "CapPerp": {
+    "n": 234,
+    "contrast_paper10": 27.8,
+    "contrast_keep": 27.4,
+    "rescue": 0.015,
+    "rescue_ci": [
+     -0.111,
+     0.122
+    ],
+    "rescue_net_rot": 0.015,
+    "rescue_net_rot_ci": [
+     -0.111,
+     0.122
+    ]
+   },
+   "CtyPerp": {
+    "n": 234,
+    "contrast_paper10": 27.8,
+    "contrast_keep": 25.6,
+    "rescue": 0.077,
+    "rescue_ci": [
+     -0.167,
+     0.275
+    ],
+    "rescue_net_rot": 0.077,
+    "rescue_net_rot_ci": [
+     -0.167,
+     0.275
+    ]
+   },
+   "Shared": {
+    "n": 234,
+    "contrast_paper10": 27.8,
+    "contrast_keep": 7.3,
+    "rescue": 0.738,
+    "rescue_ci": [
+     0.545,
+     0.886
+    ],
+    "rescue_net_rot": 0.738,
+    "rescue_net_rot_ci": [
+     0.545,
+     0.886
+    ]
+   }
+  },
+  "reading": "the shared part carries it"
+ },
+ "MC": {
+  "rescue": {
+   "CapPerp": {
+    "n": 237,
+    "contrast_paper10": 20.7,
+    "contrast_keep": 20.7,
+    "rescue": 0.0,
+    "rescue_ci": [
+     -0.447,
+     0.326
+    ],
+    "rescue_net_rot": 0.0,
+    "rescue_net_rot_ci": [
+     -0.514,
+     0.364
+    ]
+   },
+   "CtyPerp": {
+    "n": 237,
+    "contrast_paper10": 20.7,
+    "contrast_keep": 20.3,
+    "rescue": 0.02,
+    "rescue_ci": [
+     -0.344,
+     0.357
+    ],
+    "rescue_net_rot": 0.023,
+    "rescue_net_rot_ci": [
+     -0.383,
+     0.4
+    ]
+   },
+   "Shared": {
+    "n": 237,
+    "contrast_paper10": 20.7,
+    "contrast_keep": 16.0,
+    "rescue": 0.224,
+    "rescue_ci": [
+     -0.324,
+     0.54
+    ],
+    "rescue_net_rot": 0.25,
+    "rescue_net_rot_ci": [
+     -0.37,
+     0.596
+    ]
+   }
+  },
+  "reading": "unclear"
+ },
+ "note44_beside": {
+  "Cap": 1.0,
+  "Cty": 1.0,
+  "CapCty": 1.0,
+  "Rcap": 0.569
+ },
+ "energy_MC0_whole": {
+  "E_CapPerp": 0.0963,
+  "E_CtyPerp": 0.0921,
+  "E_Shared": 0.3185,
+  "rank_CapPerp": 173.0,
+  "rank_CtyPerp": 172.0,
+  "rank_Shared": 30.8571,
+  "n_cos_ge_0.9": 30.8571
+ }
+}
