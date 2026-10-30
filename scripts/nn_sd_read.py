@@ -28,7 +28,14 @@ Reading rules (draft, design doc section 4; the registered amendment's threshold
   G1 failing: no necessity reading ("the knock-out does not break this recall"); G2 failing: R1-R3 are read as "not
   recall-specific".
 
+Amendment 66 addendum (--gate GATE_RUN, scripts/sd_gate.py): the same analysis per stratum. gated = their known check +
+guess wrong + the name/stem filter (PRIMARY for G0-G2 and R1-R2); ungated = every read item (theirs; beside); no_shortcut =
+gated and no direct shortcut (R3 is read here only, with >= --min-r3 items, else "not read (too few no-shortcut items)");
+shortcut = gated with a shortcut. R1-R2 on no_shortcut and shortcut are descriptive. Without --gate the output is unchanged.
+Writes results/sd_necessity/nn_sd_read/RUN_gated[_canonical][_nobridge].json beside the ungated RUN[_nobridge].json.
+
 python scripts/nn_sd_read.py RUN [--late 52 53 54 55] [--controls paper10_rot paper10_pcasize unembed10]
+python scripts/nn_sd_read.py RUN --gate {P}sd_gate_v1 [--name-rule literal|canonical] [--drop-bridge-named]
 """
 
 from __future__ import annotations
@@ -69,7 +76,9 @@ def mean(xs) -> float | None:
     return sum(xs) / len(xs) if xs else None
 
 
-def main(a) -> None:
+def load(a):
+    """The run's manifest, its rows as (conv, bc) -> uid -> row (--drop-bridge-named applied), bridges, the dropped items,
+    and their 12-token outcome as conv -> uid -> outcome (empty without gen.jsonl)."""
     res = Path(a.res)
     run = res / a.run
     man = json.loads((run / "manifest.json").read_text())
@@ -85,6 +94,21 @@ def main(a) -> None:
         bridge_of[r["uid"]] = SP.norm(r["bridge"])
     for key in list(R):  # --drop-bridge-named: an item whose transcript names its bridge in any conversation is left out
         R[key] = {u: r for u, r in R[key].items() if u not in named}
+    g: dict = {}
+    gpath = run / "gen.jsonl"
+    if gpath.exists():
+        g = collections.defaultdict(dict)
+        for line in gpath.open():
+            r = json.loads(line)
+            g[r["conv"]][r["uid"]] = r["outcome"]
+    return res, man, R, bridge_of, named, g
+
+
+def analyse(a, man: dict, R: dict, bridge_of: dict, g: dict, r3: str = "read", min_r3: int = 30) -> dict:
+    """Every measure and reading on the rows R (one stratum). r3: "read" (as registered), "skip" (amendment 66 addendum:
+    R3 is read on the no-shortcut subset only; the numbers stay in effects) or "min" (read only with >= min_r3 items)."""
+    R = collections.defaultdict(dict, R)
+    g = collections.defaultdict(dict, g) if g else {}
     convs = [c for c in man["args"]["convs"]]
     bands = man["edits"]  # [[label, conds], ...]
     mid, mid_conds = bands[0]
@@ -197,12 +221,7 @@ def main(a) -> None:
                                 if vals:
                                     out["readout"][f"{conv} {bc} {grp} {lname} {ls_name} {role} hit@{k}"] = {"n": len(vals), "value": round(mean(vals), 3)}
     # their outcome (unedited generation) and the first-token read's agreement with it
-    gpath = run / "gen.jsonl"
-    if gpath.exists():
-        g: dict = collections.defaultdict(dict)
-        for line in gpath.open():
-            r = json.loads(line)
-            g[r["conv"]][r["uid"]] = r["outcome"]
+    if g:
         for conv in convs:
             oc = collections.Counter(g[conv].values())
             n = sum(oc.values())
@@ -269,18 +288,27 @@ def main(a) -> None:
             r2 = "partly"
         rd.append(f"R2 (lookup vs recall): {r2}; specific flip among held items: visible {round(fv, 1)} "
                   f"(n {F[f'press_vis {test}']['n_held']}), hidden {round(fh, 1)} (n {F[f'press_hid {test}']['n_held']})")  # fmt: skip
-    for conv, kind in (("press_hid", "gain"), ("press_vis", "gain"), ("solo", "loss")):
-        e = E.get(f"{conv} spec {kind} bridgeJ-vs-bridgeJ_ctrl")
-        if e and e["ci"]:
-            r3 = ("the bridge's own directions are needed" if e["ci"][0] > 0 else
-                  "not the bridge's own direction" if e["ci"][1] < 5 else "unclear")  # fmt: skip
-            rd.append(f"R3 ({conv}, bridgeJ - bridgeJ_ctrl {kind}): {r3}; {e['value']} {e['ci']} (n {e['n']})")
-    dest = res / "nn_sd_read"
-    dest.mkdir(parents=True, exist_ok=True)
-    out["dropped_bridge_named"] = len(named)
-    (dest / f"{a.run}{'_nobridge' if a.drop_bridge_named else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
-    # print
-    print(f"# {a.run}: {man['model']['target']}, {man['n_items']} items ({man['items_collide']} collide), convs {convs}")
+    n_read = len({u for d in R.values() for u in d})
+    if r3 == "skip":
+        rd.append("R3: not read on this stratum (amendment 66 addendum: R3 is read on the no-shortcut subset only)")
+    elif r3 == "min" and n_read < min_r3:
+        rd.append(f"R3: not read (too few no-shortcut items: {n_read} < {min_r3})")
+    else:
+        for conv, kind in (("press_hid", "gain"), ("press_vis", "gain"), ("solo", "loss")):
+            e = E.get(f"{conv} spec {kind} bridgeJ-vs-bridgeJ_ctrl")
+            if e and e["ci"]:
+                r3v = ("the bridge's own directions are needed" if e["ci"][0] > 0 else
+                       "not the bridge's own direction" if e["ci"][1] < 5 else "unclear")  # fmt: skip
+                rd.append(f"R3 ({conv}, bridgeJ - bridgeJ_ctrl {kind}): {r3v}; {e['value']} {e['ci']} (n {e['n']})")
+    out["n_read_items"] = n_read
+    return out
+
+
+def report(out: dict, man: dict, a, title: str | None = None, prefix: str = "reading:") -> None:
+    """The printed tables and reading lines of one analysis (the reader's output before amendment 66's addendum)."""
+    convs = [c for c in man["args"]["convs"]]
+    E, F, rd = out["effects"], out["flip"], out["readings"]
+    print(title or f"# {a.run}: {man['model']['target']}, {man['n_items']} items ({man['items_collide']} collide), convs {convs}")
     print("\nrates (% of read items; top token over the whole vocabulary):")
     for k, v in out["rates"].items():
         print(f"  {k:48s} n {v['n']:4d}  |edit|/|h| {v['edit_rel']:.3f}  orig {v['orig']:5.1f}  peer {v['peer']:5.1f}  ctrl {v['ctrl']:4.1f}  other {v['other']:5.1f}  | pick2 peer {v['pick2_peer']:5.1f}  cand peer {v['cand_peer']:5.1f}")
@@ -301,7 +329,63 @@ def main(a) -> None:
             print(f"  {k:90s} {v['value']:+.3f} n {v['n']}")
     print()
     for line in rd:
+        print(prefix, line)
+
+
+STRATA = ("gated", "ungated", "no_shortcut", "shortcut")
+
+
+def main(a) -> None:
+    res, man, R, bridge_of, named, g = load(a)
+    dest = res / "nn_sd_read"
+    dest.mkdir(parents=True, exist_ok=True)
+    if not a.gate:  # the reader as registered in amendment 66 (its output unchanged)
+        out = analyse(a, man, R, bridge_of, g)
+        out.pop("n_read_items")
+        out["dropped_bridge_named"] = len(named)
+        (dest / f"{a.run}{'_nobridge' if a.drop_bridge_named else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
+        report(out, man, a)
+        return
+    # amendment 66 addendum: strata from the gate stage (scripts/sd_gate.py)
+    gate = {json.loads(line)["uid"]: json.loads(line) for line in (res / a.gate / "gate.jsonl").read_text().splitlines()}
+    gkey = "gated" if a.name_rule == "literal" else "gated_canonical"
+    members = {
+        "gated": {u for u, x in gate.items() if x[gkey]},
+        "no_shortcut": {u for u, x in gate.items() if x[gkey] and not x["shortcut"]},
+        "shortcut": {u for u, x in gate.items() if x[gkey] and x["shortcut"]},
+    }
+    read_uids = {u for d in R.values() for u in d}
+    missing = sorted(read_uids - set(gate))
+    assert not missing, f"{len(missing)} read items have no gate row (e.g. {missing[:3]}): wrong --gate run?"
+    outs: dict = {}
+    for st in STRATA:
+        if st == "ungated":
+            Rs, gs = R, g
+        else:
+            S = members[st]
+            Rs = {k: {u: r for u, r in d.items() if u in S} for k, d in R.items()}
+            gs = {conv: {u: o for u, o in d.items() if u in S} for conv, d in g.items()} if g else {}
+        mode = {"gated": "skip", "ungated": "skip", "shortcut": "skip", "no_shortcut": "min"}[st]
+        outs[st] = analyse(a, man, Rs, bridge_of, gs, r3=mode, min_r3=a.min_r3)
+    n = {st: outs[st]["n_read_items"] for st in STRATA}
+    pick = lambda st, pre: [x for x in outs[st]["readings"] if x.startswith(pre)]  # noqa: E731
+    primary = [f"[gated] {x}" for x in pick("gated", ("G0", "G1", "G2", "R1", "R2"))] + [f"[no-shortcut] {x}" for x in pick("no_shortcut", ("R3",))]
+    beside = [f"[ungated] {x}" for x in pick("ungated", ("G0", "G1", "G2", "R1", "R2"))]
+    descriptive = [f"[{st}] {x}" for st in ("no_shortcut", "shortcut") for x in pick(st, ("R1", "R2"))]
+    suffix = "_gated" + ("_canonical" if a.name_rule == "canonical" else "") + ("_nobridge" if a.drop_bridge_named else "")
+    full = {"run": a.run, "gate_run": a.gate, "name_rule": a.name_rule, "min_r3": a.min_r3, "n_read_items": n,
+            "dropped_bridge_named": len(named), "primary": primary, "beside": beside, "descriptive": descriptive, "strata": outs}  # fmt: skip
+    (dest / f"{a.run}{suffix}.json").write_text(json.dumps(full, indent=1) + "\n")
+    for st in STRATA:
+        report(outs[st], man, a, title=f"\n######## stratum {st} ({n[st]} items read; gate {a.gate}, name rule {a.name_rule})",
+               prefix=f"[{st} stratum]")
+    print(f"\n######## amendment 66 addendum readings ({a.run}; gate {a.gate}, name rule {a.name_rule}; items read per stratum {n})")
+    for line in primary:
         print("reading:", line)
+    for line in beside:
+        print("beside:", line)
+    for line in descriptive:
+        print("descriptive:", line)
 
 
 if __name__ == "__main__":
@@ -311,4 +395,9 @@ if __name__ == "__main__":
     ap.add_argument("--controls", nargs="+", default=["paper10_rot", "paper10_pcasize", "unembed10"])
     ap.add_argument("--res", default=str(RES), help="the results directory (tests)")
     ap.add_argument("--drop-bridge-named", action="store_true", help="leave out items whose transcript names their bridge")
+    ap.add_argument("--gate", default=None, help="amendment 66 addendum: the gate run (scripts/sd_gate.py); strata gated / ungated / "
+                    "no_shortcut / shortcut; without it the reader is unchanged")
+    ap.add_argument("--name-rule", choices=["literal", "canonical"], default="literal",
+                    help="with --gate: the registered name/stem rule (every alias) or the canonical-names variant (descriptive)")
+    ap.add_argument("--min-r3", type=int, default=30, help="with --gate: R3 needs this many no-shortcut items")
     main(ap.parse_args())
