@@ -36,6 +36,8 @@ Readings (as registered):
      the wording's relation): Q1 ask_city paper10 loss of e3' >= 20 vs every control, lower end > 0: "the hypothetical's loss
      is one-hop recall from a stated entity"; Q2 the same in instr_city while instr_vis is spared (C2): "an order spares only
      an answer in context (copy vs compute)"; instr_city raw loss <= max(10, hyp_vis raw loss / 3): "the order itself spares".
+     Amendment 81: each cell is read only if, unedited, its 12-token outcome says e3' >= 60% with first-token agreement >= 90%
+     (else "not readable"); the agent there completes the hop-2 relation on e2' (sd_prompts.final_statement).
   Either-answer table (amendment 80, descriptive, every run): orig + peer, peer / (orig + peer), premise word (top token =
      e2''s first token, neither orig nor peer; the run's tokenizer), per conversation and edit.
   Replicates (amendment 77, --ref-run, e.g. the dev split's run against the test split's): each registered reading's label
@@ -364,15 +366,16 @@ def main(a) -> None:
             out["effects"][f"{conv} paper10 loss"] = qr
             ok = all(v["value"] is not None and v["value"] >= 20 and v["ci"] and v["ci"][0] > 0 for v in qs.values())
             vs = ", ".join(f"{c} {fmt(v)}" for c, v in qs.items())
-            # headroom (descriptive, not a registered gate): a loss of e3' needs e3' unedited; below 15% (C3's headroom bound) flag it
-            base = [R[(conv, "none")][u]["cls"] == "peer" for u in R[(conv, "none")] if u in Q]
-            gq = [g[conv][u] == "peer" for u in g.get(conv, {}) if u in Q and u in R[(conv, "none")]]
-            b0 = round(100 * mean(base), 1) if base else None
-            head = (f"[unedited e3' share {b0}% first-token, {round(100 * mean(gq), 1) if gq else None}% in the 12-token outcome"
-                    + ("; below 15%: the loss is at its floor and the label below is not interpretable] " if b0 is not None and b0 < 15 else "] "))  # fmt: skip
-            out["effects"][f"{conv} unedited e3' share (Q items)"] = b0
+            # amendment 81's validity gate: the cell is read only if, unedited, the 12-token outcome says e3' on >= 60% of the Q items
+            # and the first-token read agrees with that outcome on >= 90%; otherwise "not readable"
+            us0 = [u for u in R[(conv, "none")] if u in Q and u in g.get(conv, {})]
+            says = round(100 * mean(g[conv][u] == "peer" for u in us0), 1) if us0 else None
+            agr = round(100 * mean(g[conv][u] == OUT_OF.get(R[(conv, "none")][u]["cls"], "other") for u in us0), 1) if us0 else None
+            valid = says is not None and says >= 60 and agr >= 90
+            head = f"[validity: says e3' {says}% (>= 60), first-token agreement {agr}% (>= 90), n {len(us0)}] "
+            out["effects"][f"{conv} validity (amendment 81)"] = {"says_e3p": says, "agreement": agr, "n": len(us0), "readable": valid}
             if conv == "ask_city":
-                lab = "the hypothetical's loss is one-hop recall from a stated entity" if ok else "not shown"
+                lab = ("the hypothetical's loss is one-hop recall from a stated entity" if ok else "not shown") if valid else "not readable"
                 rd.append(f"Q1 ask_city (city -> country items, n {len(Q)}): {head}{lab}; paper10 spec loss of e3' vs {vs}; paper10 raw loss {fmt(qr)}; "
                           f"hyp_vis raw loss on these items {fmt(qh)}")  # fmt: skip
             else:
@@ -384,6 +387,7 @@ def main(a) -> None:
                     lab = "the order itself spares"
                 else:
                     lab = "not shown" + ("" if spared else " (instr_vis not spared: C2)")
+                lab = lab if valid else "not readable"
                 rd.append(f"Q2 instr_city (city -> country items, n {len(Q)}): {head}{lab}; paper10 spec loss of e3' vs {vs}; paper10 raw loss {fmt(qr)} "
                           f"vs bound max(10, hyp_vis {qh['value']} / 3) = {None if bound is None else round(bound, 1)}; instr_vis C2: {c2_lab.split(';')[0]}; "
                           f"instr_vis raw loss on these items {fmt(raw('instr_vis', E('paper10'), 'loss', within=Q))}")  # fmt: skip

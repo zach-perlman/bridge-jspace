@@ -18,6 +18,7 @@ description, sd_prompts.mu), prem_vis / prem_hid (ours: 3 peers each state only 
 the AGAIN moderator line), in the registered amendment's wording. Amendment 80 note 56c: ask_city (the moderator asks which
 country e2' is in, then "Complete the statement.") and instr_city (the Coordinator orders "the country that e2' is in" as the
 answer); their wording asks for a country, so they fit items whose bridge is a city and answer a country (person-birthcity-cntry).
+Amendment 81: in these two the statement the agent completes is the hop-2 relation on e2' (final_statement), not the composed one.
 """
 
 from __future__ import annotations
@@ -216,6 +217,15 @@ def closing_line(fact: dict, peer: dict, condition: str, own: str) -> tuple[str,
     return "Moderator", FIRST if own == "abs" else AGAIN
 
 
+def final_statement(fact: dict, peer: dict, condition: str) -> str:
+    """The statement the agent completes: the composed statement (theirs, every conversation), except amendment 81's ask_city
+    and instr_city, where it is the fact's hop-2 relation on the peers' bridge (r2_template on e2', e.g. "Zürich is in the
+    country of"), whose answer is e3'."""
+    if condition in ("ask", "instructed_city"):
+        return fact["r2_template"].format(peer["e2"].strip())
+    return fact["composed"]
+
+
 def peer_lines(fact: dict, peer: dict, condition: str, style: str | None, n_peers: int) -> list[str]:
     f, p = fact, peer
     if condition in ("instructed", "hypothetical", "ask", "instructed_city"):
@@ -261,7 +271,7 @@ def render(fact: dict, peer: dict, conv: str, own_answer: str | None = None, bos
                 label = "moderator"
             spans.append((label, start, start + len(line)))
     start = len(text) + len("Agent 1: ")
-    text += f"Agent 1: {fact['composed']}"
+    text += f"Agent 1: {final_statement(fact, peer, condition)}"
     spans.append(("final", start, len(text)))
     return text, spans
 

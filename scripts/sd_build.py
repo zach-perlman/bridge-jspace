@@ -9,7 +9,8 @@ check   (tokenizer only, BJ_TARGET picks it; no model, no GPU) a seeded sample o
         positions the runner relies on: the prompt's tokens are a prefix of prompt + " " + answer's (the answer's
         first token is the next token), the subject's last token is inside the final statement, the visible own
         statement holds the round-0 answer and no condition names the bridge; prints two rendered prompts per conversation.
-        Amendment 73 note 56's keys (instr_vis, hyp_vis, prem_vis, prem_hid; amendment 80's ask_city, instr_city) also: e3' (their target) is the next token,
+        Amendment 73 note 56's keys (instr_vis, hyp_vis, prem_vis, prem_hid; amendments 80-81's ask_city, instr_city, whose final
+        statement is the hop-2 relation on e2') also: e3' (their target) is the next token,
         the inserted lines are the registered wording with mu and e2' (or e3') exactly once, and e2' / e3' appear nowhere
         else after the worked examples (n56_check).
 
@@ -155,7 +156,10 @@ def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list
         speaker, tmpl = ("Moderator", SP.ASK) if cond == "ask" else ("Coordinator", SP.INSTRUCTED_CITY)
         if line != tmpl.format(bridge=e2p) or line.count(e2p) != 1 or f"\n{speaker}: {line}\n" not in text:
             fails[f"{conv}: e2' once in the {cond} line"] += 1
-        want_e2p, want_e3p = 1, 0
+        # amendment 81: the agent completes the hop-2 relation on e2' (e2' written a second time there); e3' is its answer
+        if lines["final"] != f["r2_template"].format(e2p) or not text.endswith("\nAgent 1: " + lines["final"]):
+            fails[f"{conv}: final statement is r2 on e2'"] += 1
+        want_e2p, want_e3p = 2, 0
     else:  # prem: premise-only pressure
         peer_ls = [v for k, v in lines.items() if k.startswith("peer")]
         if len(peer_ls) != n_peers or any(x != SP.statement(f["r1_prompt"], e2p) or x.count(e2p) != 1 for x in peer_ls):
@@ -220,12 +224,12 @@ def cmd_check(a) -> None:
             # 2. the final span is the composed statement and ends the prompt; the subject's last token lies in it
             lab = {s[0]: (s[1], s[2]) for s in spans}
             fs, fe = lab["final"]
-            if text[fs:fe] != f["composed"] or fe != len(text):
+            if text[fs:fe] != SP.final_statement(f, p, SP.CONVS[conv][0]) or fe != len(text):
                 fails[f"{conv}: final span"] += 1
             enc = tokens.raw_encoding(tok, text, offsets=True)
             sub_end = text.lower().rfind(f["e1"].lower()) + len(f["e1"]) - 1  # case-insensitive (one TwoHopFact row differs in case)
             pos = [i for i, (x, y) in enumerate(enc["offset_mapping"]) if x <= sub_end < y]
-            if not pos or not (fs <= sub_end < fe):
+            if SP.CONVS[conv][0] not in ("ask", "instructed_city") and (not pos or not (fs <= sub_end < fe)):  # amendment 81: no subject there
                 fails[f"{conv}: subject position"] += 1
             # 3. the bridge is never written (their design), except where a condition writes it (hop1 / hop2)
             cond, style, n_peers, own_mode = SP.CONVS[conv]

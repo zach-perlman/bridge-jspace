@@ -1,5 +1,7 @@
 #!/bin/bash
-# Prereg amendment 80 note 56c (2026-10-30): is C1 plain one-hop recall, and does an order spare only what is in context?
+# Prereg amendments 80-81 note 56c (2026-10-30): is C1 plain one-hop recall, and does an order spare only what is in context?
+#   Amendment 81: in ask_city and instr_city the agent completes the hop-2 relation on e2' ("<e2'> is in the country of"); each
+#   new cell is read only if, unedited, it says e3' >= 60% with first-token agreement >= 90%.
 # Usage: h200_n56c_1030.sh MODEL GPU [WAITJOB ...]   MODEL: 9b (registered); 27b | nem35l work the same way if ever wanted.
 #   Waits for the WAITJOBs (^EXIT), the model's known stage and gate, and its note 56 test run ({P}sd56_ko_test_v1, for the
 #   reader's reference lines). One knock-out run of scripts/nn_sd_necessity.py on the test split, note 56's items (round 0
@@ -24,7 +26,7 @@ case $M in
   *) echo "=== unknown model $M"; exit 2 ;;
 esac
 KBATCH=${N56_KBATCH:-$KBATCH}; GBATCH=${N56_GBATCH:-$GBATCH}
-W="prereg amendment 80 note 56c, ask_city / instr_city (2026-10-30, $BJ_TARGET)"
+W="prereg amendments 80-81 note 56c, ask_city / instr_city (2026-10-30, $BJ_TARGET)"
 for J in "$@"; do
   echo "=== waiting for $J $(date -u +%T)"
   until grep -qsE "^EXIT [0-9]+" /workspace/runs/$J.log; do sleep 60; done
@@ -35,7 +37,7 @@ for r in $KN $GT; do
   until [ -f results/sd_necessity/$r/summary.json ]; do sleep 60; done
 done
 grep -q '"bridgeJ_peerperp"' scripts/nn_sd_necessity.py || { echo "=== the runner has no bridgeJ_peerperp edit"; exit 1; }
-grep -q '"ask_city"' scripts/sd_prompts.py || { echo "=== sd_prompts has no ask_city"; exit 1; }
+grep -q 'def final_statement' scripts/sd_prompts.py || { echo "=== sd_prompts lacks amendment 81 (final_statement)"; exit 1; }
 mkdir -p /workspace/scratch/n56
 fails=0
 go() {  # go RUN ARGS...: skip a run whose summary exists; log to scratch
