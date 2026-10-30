@@ -3365,3 +3365,8 @@ Zach's MC answer (30 Oct, ~05:00 UTC): run "D" Friday morning, after notes 34-35
 - **The v4cc subset is reported four ways:** all, conflict, aligned and cue_top1. cue_top1 means the J++ top-1 share for the cue beats the item's answer at the description end, from nn_readout_v4cc.
 - **When MM's (paper10 - paper10_rot) loss is <= 0, the ratio is "not read".**
 - **Behaviour of existing conditions is unchanged.** keep_span defaults to None. A CPU unit check shows the new removal_edit is bit-identical, and a 9B smoke on old vs new code gave 66/66 shared rows bit-identical.
+
+##### Amendment 62, cancelled (Zach, 2026-10-30 ~05:42 UTC; before any DeepSeek step ran)
+Zach's MC answer: "Stop DeepSeek". After the novelty review, a mixture-of-experts breadth row ranks below the new experiments on the three main models; Neel's earlier advice was no mixture-of-experts side checks.
+- The waiting job ds-1030-0125 was stopped before Muse's last step ended. Muse's weights were not dropped and DeepSeek was not downloaded. Its log is set aside as .cancelled; no EXIT was written.
+- The waiting chains for notes 34, 35 and 37 were stopped (none had started) and relaunched with no DeepSeek wait (suffix -1030-0543). GPU 0 runs the 27B now; GPU 1 runs Lightning, then the 9B, after Muse's last step.
