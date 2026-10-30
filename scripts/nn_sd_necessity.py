@@ -52,6 +52,12 @@ Amendment 85 note 62 (the defaults leave every earlier run byte-identical):
       minus the answers' and the bridge's) has bridgeJ's token count, else the nearest larger one subsampled to it (seeded),
       else the largest. With any of these, rows carry q_pos and mask_from; ctx2hop rows also ctx_dist (the top token is a first
       token of a distractor country) and perp_n (the token count bridgeJperp is orthogonalised to).
+Amendment 88 (notes 65 / 66; the defaults leave every earlier run byte-identical):
+  ansRe: note 57's energy-matched random span (RE_CONDS; listed after ansJ, whose forward sets its size per prompt); rows carry
+      re_k, re_reached, re_E_target, re_E_match, re_pool
+  verify conversations (ver_true / ver_false): rows carry yn_d (logit " Yes" - logit " No"), yn_top2, yn_any2, yn_top1
+  --gen-edited (addendum, the 27B's read): 12-token greedy generation under every edit and unedited (gen_edited.jsonl, note
+      59's classifier), the edit at the prompt's positions at prefill, as Model.generate_batch
 
 python scripts/nn_sd_necessity.py known --name {P}sd_known_v1 --facts data/sd_v1/facts.jsonl --categories C ... [--per-category N]
 python scripts/nn_sd_necessity.py ko --name {P}sd_ko_v1 --items-run {P}sd_known_v1 --split test --convs solo press_vis ...
@@ -88,7 +94,11 @@ PEERPERP_CONDS = ("bridgeJ_peerperp", "bridgeJ_peerperp_rot")
 PERP_MIN = 1e-3  # columns of norm < 1e-3 after the projection are dropped (amendment 72 note 50's convention)
 # amendment 67 note 42: paper10 at every position but the agent's own earlier answer (skipown), or only there (onlyown)
 OWN_CONDS = ("paper10_skipown", "paper10_skipown_rot", "paper10_onlyown", "paper10_onlyown_rot")
-CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS + PERP_CONDS + PEERPERP_CONDS
+# amendment 88 note 65: ansRe, random letter rows (Random("n50:" + uid).sample(letter rows minus ansJ's, min(16 |A|, d // 2)), nested
+# QR order) cut to the first k whose removed energy reaches ansJ's in ansJ's forward of the same batch (note 57's loop); every
+# position the run edits; ansJ must come before it in the band's list
+RE_CONDS = ("ansRe",)
+CONDITIONS = TOPK_CONDS + tuple(SPAN_CONDS) + OWN_CONDS + PERP_CONDS + PEERPERP_CONDS + RE_CONDS
 
 
 def own_positions(tok, text: str, spans: list[tuple[str, int, int]], fact: dict, own_answer: str) -> tuple[list[int], list[int]]:
@@ -302,6 +312,31 @@ def masked_edit(edit, mask: torch.Tensor):
     return f
 
 
+@torch.no_grad()
+def generate_edited(model, ids: torch.Tensor, edits: dict, max_new: int) -> list[str]:
+    """Amendment 88 addendum: greedy continuations of one-length prompts [B, L] with batch-level edits {layer: edit [B, L, d]}
+    applied to the prompt's positions at prefill only, as Model.generate_batch does (decoding steps unedited); no edits =
+    the unedited continuation."""
+    from bridge_jspace.model import _forward_hooks, _gen_cache_kw
+
+    L = ids.shape[1]
+
+    def hook_for(la: int):
+        def hook(_m, _a, out):
+            h = out[0] if isinstance(out, tuple) else out
+            if h.shape[1] != L:  # a decoding step
+                return None
+            h = edits[la](h.float()).to(h.dtype)
+            return (h, *out[1:]) if isinstance(out, tuple) else h
+
+        return hook
+
+    with _forward_hooks([(model.layers[la], hook_for(la)) for la in sorted(edits)]):
+        out = model.hf.generate(input_ids=ids, attention_mask=torch.ones_like(ids), max_new_tokens=max_new, do_sample=False,
+                                pad_token_id=model.tokenizer.eos_token_id, return_dict_in_generate=True, **_gen_cache_kw())  # fmt: skip
+    return [model.tokenizer.decode(seq[L:], skip_special_tokens=True) for seq in out.sequences]
+
+
 def count_matched_ctrl(tok, fact: dict, pool: list[dict], nb: int, minus: set, avoid_e2: list, avoid_e3: list, seed: int):
     """Amendment 85 note 62's bridgeJ_ctrl (--ctrl-match count): another item's city (pool: same split and category), never
     the item's bridge or a city in avoid_e2, never one whose country is in avoid_e3; candidates in uid order, shuffled by
@@ -399,6 +434,15 @@ def n62_fields(p: dict, row: dict) -> dict:
         out["ctx_dist"] = row["top_id"] in p["dist_ids"]
         out["perp_n"] = len(p["perp_forms"])
     return out
+
+
+def yn_fields(logits: torch.Tensor, p: dict) -> dict:
+    """Amendment 88 note 65's Yes / No read (verify conversations only): d = logit(" Yes") - logit(" No"); both in the top 2,
+    either in the top 2, and the top-1 token's class."""
+    y, n = p["yn"]
+    top2 = logits.topk(2).indices.tolist()
+    return {"yn_d": round(float(logits[y] - logits[n]), 4), "yn_top2": set(top2) == {y, n}, "yn_any2": y in top2 or n in top2,
+            "yn_top1": "yes" if top2[0] == y else "no" if top2[0] == n else "other"}  # fmt: skip
 
 
 def read_answer(logits: torch.Tensor, p: dict) -> dict:
@@ -501,6 +545,15 @@ def stage_ko(a) -> None:
                 if conv == "ctx2hop":  # bridgeJperp off the span of all 4 listed countries' forms; distractors' first tokens
                     q["perp_forms"] = sorted({t for x in [f] + ctx["dist"] for t in SP.forms(tok, x["e3"])})
                     q["dist_ids"] = sorted({t for ids in ctx["dist_ids"] for t in ids})
+    if any(SP.CONVS[c][0] == "verify" for c in a.convs):  # amendment 88 note 65: the " Yes" / " No" tokens read at "Agent 1:"
+        yn = []
+        for w in (" Yes", " No"):
+            t = tok(w, add_special_tokens=False)["input_ids"]
+            assert len(t) == 1, (w, t)
+            yn.append(t[0])
+        for p in prompts:
+            if SP.CONVS[p["conv"]][0] == "verify":
+                p["yn"] = yn
     read = [p for p in prompts if not p["collide"]]
     lens = JLens(model, pins.FROZEN_LENS)
     read_lenses = {"jpp": lens}
@@ -586,6 +639,8 @@ def stage_ko(a) -> None:
                     skip = [t for t in range(width) if t not in own]
                 rs.append(RowSettings(skip=skip, protected=protected[i]))
             return removal_edit("top", dic[la], rs, rotation=rot[la] if cond.endswith("_rot") else None, k=10)
+        if cond in RE_CONDS:  # amendment 88 note 65: the first k random rows, k from ansJ's forward of this prompt's batch
+            return span_edit(dic[la], [re_pool(p)[: p["_re_k"]] for p in chunk])
         if cond in SPAN_CONDS:
             return span_edit(dic[la], [rows_of(p[SPAN_CONDS[cond]]) for p in chunk], rot[la] if cond.endswith("_rot") else None)
         keep = None
@@ -613,6 +668,42 @@ def stage_ko(a) -> None:
                 out[b][name] = per[b]
         return out
 
+    need_re = bool(all_conds & set(RE_CONDS))
+    if need_re:
+        for _, cs in edits_spec:
+            assert "ansRe" not in cs or ("ansJ" in cs and cs.index("ansJ") < cs.index("ansRe")), "ansRe's size comes from ansJ's forward: list ansJ first"
+    re_cache: dict = {}
+
+    def re_pool(p: dict) -> torch.Tensor:
+        """Note 57's random pool for the item (amendment 88 note 65's ansRe): Random("n50:" + uid) over the letter rows minus ansJ's."""
+        if p["uid"] not in re_cache:
+            key = tuple(p["aforms"])
+            if key not in re_cache:  # the letter rows minus A's, once per answer vocabulary
+                A = set(rows_of(p["aforms"]).tolist())
+                re_cache[key] = (len(A), [r for r in range(letters.numel()) if r not in A])
+            nA, cand = re_cache[key]
+            n = min(16 * nA, wg.shape[1] // 2)
+            re_cache[p["uid"]] = torch.tensor(random.Random("n50:" + p["uid"]).sample(cand, n), device="cuda")
+        return re_cache[p["uid"]]
+
+    def observe_re(edit, la: int, chunk: list[dict], pos: torch.Tensor, acc: list[dict]):
+        """In ansJ's forward: each row's energy inside ansJ's span and each random row's (nested QR order), over its edited real
+        positions, summed over the band's layers (note 57's loop); the edit itself is unchanged."""
+
+        def f(h: torch.Tensor) -> torch.Tensor:
+            for b, p in enumerate(chunk):
+                x = h[b].double()[pos[b, : h.shape[1]]]
+                QA = torch.linalg.qr(dic[la].atoms(rows_of(p["aforms"])).double().T)[0]
+                QR = torch.linalg.qr(dic[la].atoms(re_pool(p)).double().T)[0]
+                acc[b]["target"] += float((x @ QA).pow(2).sum())
+                acc[b]["tot"] += float(x.pow(2).sum())
+                c = (x @ QR).pow(2).sum(0)
+                acc[b]["cols"] = c if acc[b]["cols"] is None else acc[b]["cols"] + c
+            return edit(h)
+
+        return f
+
+    gen_edit = bool(a.gen_edited)
     # amendments 72-73: rows carry np (bridgeJ_peer's span size) and prot ({"orig", "peer"}: is that answer's main first token in
     # the prompt's protected set, the clean top-10's letter rows) when the run has any of their edits, or with --log-prot;
     # otherwise rows are as before, byte for byte
@@ -633,6 +724,9 @@ def stage_ko(a) -> None:
         out_rows = []
         clean, rec, _ = forward_read(model, ids, {}, last, read_layers)
         protected = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
+        if gen_edit:  # amendment 88 addendum: the edited generations reuse each prompt's protected rows
+            for b, p in enumerate(chunk):
+                p["_prot"] = protected[b]
         lr = lens_ranks(rec, chunk)
         ext = [{} for _ in chunk]
         if tail:
@@ -645,6 +739,8 @@ def stage_ko(a) -> None:
                              **ext[b]})  # fmt: skip
             if n62:
                 out_rows[-1].update(n62_fields(p, out_rows[-1]))
+            if "yn" in p:  # amendment 88 note 65
+                out_rows[-1].update(yn_fields(clean[b], p))
         for band, conds in edits_spec:
             tb = time.time()
             for cond in conds:
@@ -653,7 +749,24 @@ def stage_ko(a) -> None:
                     mf = torch.tensor([p["mask_from"] for p in chunk], device="cuda")
                     pm = torch.arange(width, device="cuda")[None, :] >= mf[:, None]
                     edits = {la: masked_edit(e, pm) for la, e in edits.items()}
+                if need_re and cond == "ansJ" and "ansRe" in conds:  # note 57's loop: measure ansJ's energy for ansRe's size
+                    real = torch.arange(width, device="cuda")[None, :] <= last[:, None]
+                    if a.pos_from != "all":
+                        real &= torch.arange(width, device="cuda")[None, :] >= torch.tensor([p["mask_from"] for p in chunk], device="cuda")[:, None]
+                    acc_re = [{"target": 0.0, "tot": 0.0, "cols": None} for _ in chunk]
+                    inner = {la: make_edit(cond, la, chunk, protected, width) for la in band}
+                    obs = {la: observe_re(e, la, chunk, real, acc_re) for la, e in inner.items()}
+                    edits = {la: (masked_edit(e, pm) if a.pos_from != "all" else e) for la, e in obs.items()}
                 logits, rec, size = forward_read(model, ids, edits, last, read_layers)
+                if need_re and cond == "ansJ" and "ansRe" in conds:
+                    for b, p in enumerate(chunk):
+                        cum = acc_re[b]["cols"].cumsum(0)
+                        hit = (cum >= acc_re[b]["target"]).nonzero()
+                        k = int(hit[0]) + 1 if hit.numel() else int(cum.numel())
+                        tot = acc_re[b]["tot"] or 1.0
+                        p["_re_k"] = k
+                        p["_re_log"] = {"re_k": k, "re_reached": bool(hit.numel()), "re_E_target": round(acc_re[b]["target"] / tot, 6),
+                                        "re_E_match": round(float(cum[k - 1]) / tot, 6), "re_pool": int(cum.numel())}  # fmt: skip
                 lr = lens_ranks(rec, chunk)
                 for b, p in enumerate(chunk):
                     if cond in OWN_CONDS and not p.get("own_pos"):
@@ -666,6 +779,10 @@ def stage_ko(a) -> None:
                                      "bridge": p["bridge"], "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": band_label(band), "cond": cond,
                                      "edit_rel": round(size[b], 5), **read_answer(logits[b], p),
                                      "ranks": lr[b], **ext[b], **sr})  # fmt: skip
+                    if "yn" in p:  # amendment 88 note 65
+                        out_rows[-1].update(yn_fields(logits[b], p))
+                    if cond in RE_CONDS:  # amendment 88 note 65: ansRe's energy match
+                        out_rows[-1].update(p["_re_log"])
                     if n62:
                         out_rows[-1].update(n62_fields(p, out_rows[-1]))
                         if cond in PERP_CONDS:  # the bridge forms' mean energy share inside the span they are orthogonalised to
@@ -676,6 +793,33 @@ def stage_ko(a) -> None:
             fh.writelines(json.dumps(r) + "\n" for r in out_rows)
         n_rows += len(out_rows)
         print(f"{n_rows} rows, {start + len(chunk)}/{len(order)} prompts, {time.time() - t0:.0f}s", flush=True)
+    if gen_edit:  # amendment 88 addendum: 12-token greedy generation under every edit (and unedited, as a check of this path)
+        assert not (all_conds & set(OWN_CONDS)), "--gen-edited does not cover the note 42 edits"
+        tg0 = time.time()
+        by_uid = {it["fact"]["uid"]: it for it in items}
+        by_len: dict = collections.defaultdict(list)
+        for p in read:
+            by_len[len(p["ids"])].append(p)
+        n_gen = 0
+        with (out_dir / "gen_edited.jsonl").open("w") as fh:
+            for band, conds in [((), ["none"])] + edits_spec:
+                for cond in conds:
+                    for L, ps in sorted(by_len.items()):
+                        for s0 in range(0, len(ps), a.gen_batch):
+                            part = ps[s0 : s0 + a.gen_batch]
+                            gids = torch.tensor([p["ids"] for p in part], device="cuda")
+                            edits = {la: make_edit(cond, la, part, [p["_prot"] for p in part], L) for la in band} if cond != "none" else {}
+                            if a.pos_from != "all" and edits:
+                                pm = torch.arange(L, device="cuda")[None, :] >= torch.tensor([p["mask_from"] for p in part], device="cuda")[:, None]
+                                edits = {la: masked_edit(e, pm) for la, e in edits.items()}
+                            texts = generate_edited(model, gids, edits, a.gen_tokens)
+                            for p, txt in zip(part, texts, strict=True):
+                                ans = SP.clean_answer(txt)
+                                it = by_uid[p["uid"]]
+                                fh.write(json.dumps({"uid": p["uid"], "conv": p["conv"], "band": band_label(band) if band else "-", "cond": cond,
+                                                     "answer": ans, "outcome": SP.classify(ans, it["fact"], it["peer"])}, ensure_ascii=False) + "\n")  # fmt: skip
+                            n_gen += len(part)
+                    print(f"gen-edited {band_label(band) if band else '-'}/{cond}: {n_gen} generations, {time.time() - tg0:.0f}s", flush=True)
     # a plain summary (the reader does the statistics)
     cells: dict = collections.defaultdict(dict)
     acc: dict = collections.defaultdict(list)
@@ -730,6 +874,8 @@ if __name__ == "__main__":
     o.add_argument("--log-prot", action="store_true", help="rows carry np and prot even without an amendment 72-73 edit")
     o.add_argument("--pos-from", default="all", choices=["all", "question", "zero"],
                    help="amendment 85 note 62: edit only from the question's first token (question), or from token 0 through the same mask (zero)")
+    o.add_argument("--gen-edited", action="store_true",
+                   help="amendment 88 addendum: 12-token greedy generation under every edit (and unedited), gen_edited.jsonl")
     o.add_argument("--ctrl-match", default="fact", choices=["fact", "count"],
                    help="bridgeJ_ctrl's city: the control fact's (fact) or amendment 85 note 62's count-matched other item's city (count)")
     args = ap.parse_args()
