@@ -3589,3 +3589,12 @@ Source: /home/zach/scratch/redteam_1030/skeptic_1030.md (an adversarial read of 
 - **Note 38:** Lightning RM fails the specificity guard; the answer part alone reproduces 86-112%; one donor seed.
 - **Note 39:** sufficiency is not established on the 9B; it is driven by capital/language items; necessity is unreadable on Lightning.
 - **Note 35:** not "Lightning dissociates". Composition needs the J-space about equally on Lightning and the 27B; Lightning's key lookup does not.
+
+##### Amendment 67 addendum, note 41 (before any note 41 code runs; seen: the deepen agent's CPU numbers on the 9B silent-dissent rows (keepA's edit is ~0.05 of |h| vs paper10's ~0.085))
+- **Energy-matched keeps.** Added: paper10_keepR2 and paper10_keepR4 (+ _rot each), random letter-token spans of 2x and 4x A's row count (same seeds, nested), together with keepR (1x).
+- **Logged per row:** the fraction of paper10's removal energy that each kept span retains (A, R, R2, R4).
+- **Primary reading** (replacing note 41's keepR rule; the ansR and final-only rules are unchanged):
+  - **"answer-specific keep":** at the random keep whose retained energy is closest to (and not below) A's, the net MM loss ratio is >= 2/3, while keepA's is <= 1/3.
+  - **"energy, not answers":** a random keep retaining no more energy than A has a ratio <= 1/3.
+  - Otherwise **"partly"**.
+- **Descriptive:** rescue as a function of retained energy, A vs the random keeps.
