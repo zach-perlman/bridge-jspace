@@ -1,0 +1,444 @@
+{
+ "run": "nem35l_sd67_ko_test_v1",
+ "gate_run": "nem35l_sd_gate_v1",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "role": "confirmatory",
+ "bands": [
+  "L14-20",
+  "L27-33"
+ ],
+ "fit": "/workspace/scratch/n67/nem35l_fit.pt",
+ "fit_sha256": "c8601ac7317dba2485a85e7b753f00a5d33024de49d1bf6afcf41e7c828a517a",
+ "fit_n_names": 259,
+ "fit_n_classes": 83,
+ "n_read": 526,
+ "n_gated": 432,
+ "n_no_shortcut": 12,
+ "r2_pop": "nosc",
+ "readings": {
+  "fit_check": {
+   "L14-20": {
+    "value": 33.101851851851855,
+    "ci": [
+     25.93,
+     39.81
+    ],
+    "ci_bridges": [
+     13.03,
+     51.51
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 73.14814814814815,
+    "loss_c": 40.0462962962963,
+    "met": true
+   },
+   "L27-33": {
+    "value": 59.72222222222222,
+    "ci": [
+     53.47,
+     65.51
+    ],
+    "ci_bridges": [
+     42.78,
+     73.85
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 72.22222222222221,
+    "loss_c": 12.5,
+    "met": true
+   }
+  },
+  "R1_bands": {
+   "L14-20": {
+    "value": -1.3888888888888888,
+    "ci": [
+     -2.78,
+     -0.23
+    ],
+    "ci_bridges": [
+     -3.08,
+     -0.18
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 0.4629629629629629,
+    "loss_c": 1.8518518518518516,
+    "met": false,
+    "fit_ok": true
+   },
+   "L27-33": {
+    "value": 11.342592592592593,
+    "ci": [
+     8.33,
+     14.35
+    ],
+    "ci_bridges": [
+     6.62,
+     17.96
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 12.5,
+    "loss_c": 1.1574074074074074,
+    "met": false,
+    "fit_ok": true
+   }
+  },
+  "R1": {
+   "label": "this removal family is blind to the subject; claim 4 is untestable with it",
+   "bands": []
+  },
+  "R2_P": {
+   "gated, no shortcut/L14-20": {
+    "value": -8.333333333333332,
+    "ci": [
+     -33.33,
+     16.67
+    ],
+    "ci_bridges": [
+     -33.33,
+     22.22
+    ],
+    "n": 12,
+    "n_bridges": 9,
+    "loss_t": 25.0,
+    "loss_c": 33.33333333333333,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated, no shortcut/L27-33": {
+    "value": 25.0,
+    "ci": [
+     0.0,
+     50.0
+    ],
+    "ci_bridges": [
+     0.0,
+     55.56
+    ],
+    "n": 12,
+    "n_bridges": 9,
+    "loss_t": 41.66666666666667,
+    "loss_c": 16.666666666666664,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L14-20": {
+    "value": 15.046296296296296,
+    "ci": [
+     10.88,
+     19.21
+    ],
+    "ci_bridges": [
+     8.88,
+     21.45
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 25.0,
+    "loss_c": 9.953703703703704,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L27-33": {
+    "value": 15.50925925925926,
+    "ci": [
+     11.81,
+     19.68
+    ],
+    "ci_bridges": [
+     9.98,
+     22.03
+    ],
+    "n": 432,
+    "n_bridges": 161,
+    "loss_t": 20.60185185185185,
+    "loss_c": 5.092592592592593,
+    "label": "not read (R1 not met at this band)"
+   }
+  }
+ },
+ "agreement": {
+  "onehop": 100.0,
+  "solo": 99.07407407407408,
+  "ctx2hop": 100.0
+ },
+ "beside": {
+  "O/L14-20/cityClean-cityClean_RE": {
+   "value": -1.3888888888888888,
+   "ci": [
+    -2.78,
+    -0.23
+   ],
+   "ci_bridges": [
+    -3.08,
+    -0.18
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.4629629629629629,
+   "loss_c": 1.8518518518518516
+  },
+  "O/L14-20/cityClean-cityClean_RJ": {
+   "value": -50.92592592592593,
+   "ci": [
+    -55.79,
+    -46.53
+   ],
+   "ci_bridges": [
+    -65.33,
+    -38.19
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.4629629629629629,
+   "loss_c": 51.388888888888886
+  },
+  "O/L14-20/cityRaw-cityRaw_RE": {
+   "value": 33.101851851851855,
+   "ci": [
+    25.93,
+    39.81
+   ],
+   "ci_bridges": [
+    13.03,
+    51.51
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 73.14814814814815,
+   "loss_c": 40.0462962962963
+  },
+  "P/L14-20/cityClean-cityClean_RE": {
+   "value": 15.046296296296296,
+   "ci": [
+    10.88,
+    19.21
+   ],
+   "ci_bridges": [
+    8.88,
+    21.45
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 25.0,
+   "loss_c": 9.953703703703704
+  },
+  "P/L14-20/cityClean-cityClean_RJ": {
+   "value": -59.72222222222222,
+   "ci": [
+    -64.81,
+    -54.63
+   ],
+   "ci_bridges": [
+    -67.12,
+    -51.76
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 25.0,
+   "loss_c": 84.72222222222221
+  },
+  "P/L14-20/cityRaw-cityRaw_RE": {
+   "value": -7.87037037037037,
+   "ci": [
+    -14.12,
+    -2.31
+   ],
+   "ci_bridges": [
+    -22.38,
+    6.12
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 67.36111111111111,
+   "loss_c": 75.23148148148148
+  },
+  "I/L14-20/cityClean-cityClean_RE": {
+   "value": -0.4629629629629629,
+   "ci": [
+    -1.39,
+    0.46
+   ],
+   "ci_bridges": [
+    -1.4,
+    0.38
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.23148148148148145,
+   "loss_c": 0.6944444444444444
+  },
+  "I/L14-20/cityClean-cityClean_RJ": {
+   "value": -94.67592592592592,
+   "ci": [
+    -96.76,
+    -92.59
+   ],
+   "ci_bridges": [
+    -96.54,
+    -92.46
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.23148148148148145,
+   "loss_c": 94.9074074074074
+  },
+  "I/L14-20/cityRaw-cityRaw_RE": {
+   "value": -49.76851851851852,
+   "ci": [
+    -54.86,
+    -44.91
+   ],
+   "ci_bridges": [
+    -56.41,
+    -43.2
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 4.398148148148148,
+   "loss_c": 54.166666666666664
+  },
+  "O/L27-33/cityClean-cityClean_RE": {
+   "value": 11.342592592592593,
+   "ci": [
+    8.33,
+    14.35
+   ],
+   "ci_bridges": [
+    6.62,
+    17.96
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 12.5,
+   "loss_c": 1.1574074074074074
+  },
+  "O/L27-33/cityClean-cityClean_RJ": {
+   "value": 0.6944444444444444,
+   "ci": [
+    -3.24,
+    4.63
+   ],
+   "ci_bridges": [
+    -5.25,
+    7.0
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 12.5,
+   "loss_c": 11.805555555555555
+  },
+  "O/L27-33/cityRaw-cityRaw_RE": {
+   "value": 59.72222222222222,
+   "ci": [
+    53.47,
+    65.51
+   ],
+   "ci_bridges": [
+    42.78,
+    73.85
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 72.22222222222221,
+   "loss_c": 12.5
+  },
+  "P/L27-33/cityClean-cityClean_RE": {
+   "value": 15.50925925925926,
+   "ci": [
+    11.81,
+    19.68
+   ],
+   "ci_bridges": [
+    9.98,
+    22.03
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 20.60185185185185,
+   "loss_c": 5.092592592592593
+  },
+  "P/L27-33/cityClean-cityClean_RJ": {
+   "value": -16.89814814814815,
+   "ci": [
+    -22.45,
+    -11.11
+   ],
+   "ci_bridges": [
+    -28.27,
+    -5.29
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 20.60185185185185,
+   "loss_c": 37.5
+  },
+  "P/L27-33/cityRaw-cityRaw_RE": {
+   "value": 38.425925925925924,
+   "ci": [
+    31.48,
+    44.91
+   ],
+   "ci_bridges": [
+    22.34,
+    52.43
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 70.37037037037037,
+   "loss_c": 31.944444444444443
+  },
+  "I/L27-33/cityClean-cityClean_RE": {
+   "value": -0.23148148148148145,
+   "ci": [
+    -0.69,
+    0.0
+   ],
+   "ci_bridges": [
+    -0.8,
+    0.0
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.0,
+   "loss_c": 0.23148148148148145
+  },
+  "I/L27-33/cityClean-cityClean_RJ": {
+   "value": -0.4629629629629629,
+   "ci": [
+    -1.16,
+    0.0
+   ],
+   "ci_bridges": [
+    -1.31,
+    0.0
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 0.0,
+   "loss_c": 0.4629629629629629
+  },
+  "I/L27-33/cityRaw-cityRaw_RE": {
+   "value": -2.5462962962962963,
+   "ci": [
+    -4.4,
+    -0.69
+   ],
+   "ci_bridges": [
+    -4.52,
+    -0.72
+   ],
+   "n": 432,
+   "n_bridges": 161,
+   "loss_t": 1.1574074074074074,
+   "loss_c": 3.7037037037037033
+  }
+ }
+}
