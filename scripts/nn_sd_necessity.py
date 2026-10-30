@@ -40,6 +40,18 @@ Edits (one forward each; every position edited; band layers each edited):
       except the tokens of the agent's own earlier answer, or only at them (own_positions: the tokens of its round-0
       completion inside its visible statement; the whole statement's tokens are logged beside, own_spans.jsonl). Only for
       conversations with the earlier answer in view (press_vis, press1_vis, ...): elsewhere no edit is made and no row written.
+Amendment 85 note 62 (the defaults leave every earlier run byte-identical):
+  --convs ctx2hop / onehop (sd_prompts): ctx2hop's fact list from sd_prompts.ctx2hop_spec, its distractors drawn from the same
+      split and category's items of --items-run (all of them, before --n), avoiding the peer's and control's bridges; its
+      bridgeJperp is orthogonalised to the forms of all 4 countries in the list (other conversations: the two answers, note 54)
+  --pos-from question: every edit acts only from the question's first token (sd_prompts.question_char; the first token that
+      overlaps the question's text) to the end; earlier positions keep the unedited residual. --pos-from zero: the same code
+      path from token 0 (the check: must equal --pos-from all). Batches are right-padded, so position t is token t in every row.
+  --ctrl-match count: bridgeJ_ctrl's city is another item's (same split and category; not the item's bridge, its fact list's
+      cities, nor one whose country is K, e3' or a listed country), Random("{seed}-n62ctrl-{uid}") order, the first whose span (forms
+      minus the answers' and the bridge's) has bridgeJ's token count, else the nearest larger one subsampled to it (seeded),
+      else the largest. With any of these, rows carry q_pos and mask_from; ctx2hop rows also ctx_dist (the top token is a first
+      token of a distractor country) and perp_n (the token count bridgeJperp is orthogonalised to).
 
 python scripts/nn_sd_necessity.py known --name {P}sd_known_v1 --facts data/sd_v1/facts.jsonl --categories C ... [--per-category N]
 python scripts/nn_sd_necessity.py ko --name {P}sd_ko_v1 --items-run {P}sd_known_v1 --split test --convs solo press_vis ...
@@ -274,6 +286,48 @@ def perp_span_edit(D, brows: list[torch.Tensor], arows: list[torch.Tensor], rota
     return edit
 
 
+def masked_edit(edit, mask: torch.Tensor):
+    """Amendment 85 note 62: `edit` only where mask [B, T] (bool) is True; elsewhere the hook's input is returned unchanged
+    (the edit itself still runs on every position, so the kept positions get exactly the unmasked edit's numbers). Carries
+    the edit's logged attributes (ranks, ans_share, sinks)."""
+
+    def f(h: torch.Tensor) -> torch.Tensor:
+        h1 = edit(h)
+        assert h1.shape == h.shape and h.shape[:2] == mask.shape, (h.shape, h1.shape, mask.shape)
+        return torch.where(mask[:, :, None], h1, h.to(h1.dtype))
+
+    for k in ("ranks", "ans_share", "sinks"):
+        if hasattr(edit, k):
+            setattr(f, k, getattr(edit, k))
+    return f
+
+
+def count_matched_ctrl(tok, fact: dict, pool: list[dict], nb: int, minus: set, avoid_e2: list, avoid_e3: list, seed: int):
+    """Amendment 85 note 62's bridgeJ_ctrl (--ctrl-match count): another item's city (pool: same split and category), never
+    the item's bridge or a city in avoid_e2, never one whose country is in avoid_e3; candidates in uid order, shuffled by
+    Random("{seed}-n62ctrl-{uid}"); its span = its forms minus `minus` (the answers' and the bridge's forms). The first
+    candidate whose span has nb tokens; else the nearest larger, subsampled to nb (same Random); else the largest.
+    Returns (forms, the city)."""
+    rng = random.Random(f"{seed}-n62ctrl-{fact['uid']}")
+    cands = sorted((p for p in pool if p["uid"] != fact["uid"]), key=lambda p: p["uid"])
+    rng.shuffle(cands)
+    best = None  # (key, forms, city)
+    for p in cands:
+        if any(SP.same_entity(p["e2_aliases"], x) for x in avoid_e2) or any(SP.same_entity(p["e3_aliases"], x) for x in avoid_e3):
+            continue
+        fs = sorted(set(SP.forms(tok, p["e2"])) - minus)
+        if len(fs) == nb:
+            return fs, p["e2"]
+        key = (0, len(fs) - nb) if len(fs) > nb else (1, -len(fs))  # nearest larger first, else the largest
+        if best is None or key < best[0]:
+            best = (key, fs, p["e2"])
+    assert best is not None, fact["uid"]
+    fs = best[1]
+    if len(fs) > nb:
+        fs = sorted(rng.sample(fs, nb))
+    return fs, best[2]
+
+
 @torch.no_grad()
 def forward_read(model, ids: torch.Tensor, edits: dict, last: torch.Tensor, layers: list[int]):
     """ablate.first_token_logits (right-padded rows, each read at its own last position) that also returns each row's
@@ -337,6 +391,16 @@ def role_ranks(logits: torch.Tensor, probes: list[dict[str, list[int]]]) -> list
     return out
 
 
+def n62_fields(p: dict, row: dict) -> dict:
+    """Amendment 85 note 62's row tail (only in runs with its options): the question's first token, the mask's start, and in
+    ctx2hop whether the top token is a distractor country's first token and the size of bridgeJperp's orthogonalising span."""
+    out = {"q_pos": p["q_pos"], "mask_from": p["mask_from"]}
+    if "dist_ids" in p:
+        out["ctx_dist"] = row["top_id"] in p["dist_ids"]
+        out["perp_n"] = len(p["perp_forms"])
+    return out
+
+
 def read_answer(logits: torch.Tensor, p: dict) -> dict:
     """The answer reads of one row's final logits [V]."""
     top = int(logits.argmax())
@@ -383,6 +447,14 @@ def stage_ko(a) -> None:
     aforms = {cat: sorted({t for x in sorted(v) for t in SP.forms(tok, x)}) for cat, v in vocab.items()}
     prompts, n_collide, leak = [], 0, collections.Counter()
     need_own = any(c in OWN_CONDS for _, cs in edits_spec for c in cs)  # note 42 only: the earlier answer's token span
+    # amendment 85 note 62 (off by default): the pool of other items' facts per (split, category), all of --items-run's
+    n62 = a.pos_from != "all" or a.ctrl_match != "fact" or bool({"ctx2hop", "onehop"} & set(a.convs))
+    pool62: dict = collections.defaultdict(list)
+    side62 = []
+    if n62:
+        for line in (RES / a.items_run / "items.jsonl").read_text().splitlines():
+            x = json.loads(line)
+            pool62[(x["split"], x["fact"]["category"])].append(x["fact"])
     for it in items:
         f, p, c = it["fact"], it["peer"], it["control"]
         tg = SP.answer_targets(tok, f, p, c)
@@ -395,8 +467,20 @@ def stage_ko(a) -> None:
         cforms = sorted(set(SP.forms(tok, c["e2"])) - ans_f - set(SP.forms(tok, f["e2"])))
         # amendment 73: bridgeJ_peer's span, the peers' bridge e2' minus the forms of e2, e3 and e3' (as bridgeJ for e2)
         pforms = sorted(set(SP.forms(tok, p["e2"])) - ans_f - set(SP.forms(tok, f["e2"])))
+        ctx, ctrl_e2 = None, c["e2"]
+        if n62:  # amendment 85 note 62: I's fact list; bridgeJ_ctrl count-matched (--ctrl-match count)
+            pool = pool62[(it["split"], f["category"])]
+            if "ctx2hop" in a.convs:
+                ctx = SP.ctx2hop_spec(f, pool, tok, seed=a.seed, avoid=(p, c))
+            if a.ctrl_match == "count":
+                listed = [f] + (ctx["dist"] if ctx else [])
+                cforms, ctrl_e2 = count_matched_ctrl(tok, f, pool, len(bforms), ans_f | set(SP.forms(tok, f["e2"])),
+                                                     [x["e2_aliases"] for x in listed], [x["e3_aliases"] for x in listed + [p]], a.seed)  # fmt: skip
+            side62.append({"uid": f["uid"], "ctrl_e2": ctrl_e2, "nb": len(bforms), "nc": len(cforms),
+                           **({"x": ctx["x"], "sentences": ctx["sentences"], "dist_uids": [x["uid"] for x in ctx["dist"]]} if ctx else {})})  # fmt: skip
         for conv in a.convs:
-            text, spans = SP.render(f, p, conv, own_answer=it["r0_answer"], control=c)  # control: amendment 84's instr_city_lure only
+            # control: amendment 84's instr_city_lure only; ctx: amendment 85's ctx2hop only
+            text, spans = SP.render(f, p, conv, own_answer=it["r0_answer"], control=c, ctx=ctx if conv == "ctx2hop" else None)
             tail = f" {SP.norm(text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS):])} "
             bnamed = any(SP.norm(x) and f" {SP.norm(x)} " in tail for x in f["e2_aliases"])  # an alias of the bridge is written
             leak[conv] += bnamed  # (descriptive; the reader can leave such items out: --drop-bridge-named)
@@ -406,6 +490,17 @@ def stage_ko(a) -> None:
                             "bforms": bforms, "cforms": cforms, "aforms": aforms[f["category"]], "pforms": pforms, "ansforms": sorted(ans_f)})  # fmt: skip
             if need_own:
                 prompts[-1]["own_pos"], prompts[-1]["own_line_pos"] = own_positions(tok, text, spans, f, it["r0_answer"])
+            if n62:  # amendment 85 note 62: the question's first token (the first overlapping its text), the mask's start
+                q = prompts[-1]
+                offs = tokens.raw_encoding(tok, text, offsets=True)["offset_mapping"]
+                assert len(offs) == len(q["ids"])
+                qc = SP.question_char(text)
+                q["q_pos"] = next(i for i, (x, y) in enumerate(offs) if y > qc)
+                assert offs[q["q_pos"]][0] <= qc, (f["uid"], conv, offs[q["q_pos"]], qc)
+                q["mask_from"] = q["q_pos"] if a.pos_from == "question" else 0
+                if conv == "ctx2hop":  # bridgeJperp off the span of all 4 listed countries' forms; distractors' first tokens
+                    q["perp_forms"] = sorted({t for x in [f] + ctx["dist"] for t in SP.forms(tok, x["e3"])})
+                    q["dist_ids"] = sorted({t for ids in ctx["dist_ids"] for t in ids})
     read = [p for p in prompts if not p["collide"]]
     lens = JLens(model, pins.FROZEN_LENS)
     read_lenses = {"jpp": lens}
@@ -431,6 +526,16 @@ def stage_ko(a) -> None:
             for p in prompts:
                 fh.write(json.dumps({"uid": p["uid"], "conv": p["conv"], "own_pos": p["own_pos"], "own_tokens": [tok.decode([p["ids"][i]]) for i in p["own_pos"]],
                                      "own_line_pos": p["own_line_pos"]}, ensure_ascii=False) + "\n")  # fmt: skip
+    if n62:  # amendment 85 note 62: per item the fact list, the control city and the spans' sizes; per prompt the question's start
+        q_by = collections.defaultdict(dict)
+        for p in prompts:
+            q_by[p["uid"]][p["conv"]] = {"q_pos": p["q_pos"], "q_token": tok.decode([p["ids"][p["q_pos"]]]), "n_tokens": len(p["ids"]),
+                                         **({"perp_n": len(p["perp_forms"])} if "perp_forms" in p else {})}  # fmt: skip
+        with (out_dir / "n62_items.jsonl").open("w") as fh:
+            fh.writelines(json.dumps({**s, "q": q_by[s["uid"]]}, ensure_ascii=False) + "\n" for s in side62)
+        manifest["n62"] = {"pos_from": a.pos_from, "ctrl_match": a.ctrl_match, "row_tail": ["q_pos", "mask_from", "ctx_dist", "perp_n"],
+                           "nc_eq_nb": sum(s["nc"] == s["nb"] for s in side62), "n_items": len(side62)}  # fmt: skip
+        (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"{len(items)} items, {len(prompts)} prompts ({len(read)} read; {n_collide} items collide); edits {manifest['edits']}", flush=True)
     t0 = time.time()
     if a.gen:  # their outcome: unedited greedy 12 tokens, classified as theirs
@@ -464,7 +569,8 @@ def stage_ko(a) -> None:
 
     def make_edit(cond: str, la: int, chunk: list[dict], protected: list[torch.Tensor], width: int = 0):
         if cond in PERP_CONDS:  # amendment 72 note 54
-            return perp_span_edit(dic[la], [rows_of(p["bforms"]) for p in chunk], [rows_of(p["ansforms"]) for p in chunk])
+            # amendment 85 note 62: in ctx2hop, off the forms of all 4 listed countries (perp_forms); elsewhere the two answers'
+            return perp_span_edit(dic[la], [rows_of(p["bforms"]) for p in chunk], [rows_of(p.get("perp_forms", p["ansforms"])) for p in chunk])
         if cond in PEERPERP_CONDS:  # amendment 75: the peers' bridge (pforms), orthogonalised to both answers' forms
             return perp_span_edit(dic[la], [rows_of(p["pforms"]) for p in chunk], [rows_of(p["ansforms"]) for p in chunk],
                                   rotation=rot[la] if cond.endswith("_rot") else None)
@@ -537,10 +643,16 @@ def stage_ko(a) -> None:
             out_rows.append({"uid": p["uid"], "conv": p["conv"], "split": p["split"], "category": p["category"], "bridge": p["bridge"],
                              "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": "-", "cond": "none", **read_answer(clean[b], p), "ranks": lr[b],
                              **ext[b]})  # fmt: skip
+            if n62:
+                out_rows[-1].update(n62_fields(p, out_rows[-1]))
         for band, conds in edits_spec:
             tb = time.time()
             for cond in conds:
                 edits = {la: make_edit(cond, la, chunk, protected, width) for la in band}
+                if a.pos_from != "all":  # amendment 85 note 62: only from each row's mask_from (the question's first token, or 0)
+                    mf = torch.tensor([p["mask_from"] for p in chunk], device="cuda")
+                    pm = torch.arange(width, device="cuda")[None, :] >= mf[:, None]
+                    edits = {la: masked_edit(e, pm) for la, e in edits.items()}
                 logits, rec, size = forward_read(model, ids, edits, last, read_layers)
                 lr = lens_ranks(rec, chunk)
                 for b, p in enumerate(chunk):
@@ -554,6 +666,11 @@ def stage_ko(a) -> None:
                                      "bridge": p["bridge"], "bnamed": p["bnamed"], "nb": len(p["bforms"]), "nc": len(p["cforms"]), "band": band_label(band), "cond": cond,
                                      "edit_rel": round(size[b], 5), **read_answer(logits[b], p),
                                      "ranks": lr[b], **ext[b], **sr})  # fmt: skip
+                    if n62:
+                        out_rows[-1].update(n62_fields(p, out_rows[-1]))
+                        if cond in PERP_CONDS:  # the bridge forms' mean energy share inside the span they are orthogonalised to
+                            shs = [edits[la].ans_share[b] for la in band if edits[la].ans_share[b] is not None]
+                            out_rows[-1]["ans_share"] = round(sum(shs) / len(shs), 4) if shs else None
             band_seconds[band_label(band)] += time.time() - tb
         with rows_path.open("a") as fh:
             fh.writelines(json.dumps(r) + "\n" for r in out_rows)
@@ -611,5 +728,9 @@ if __name__ == "__main__":
     o.add_argument("--read-extra", nargs="*", type=int, default=[], help="more read layers (e.g. their band)")
     o.add_argument("--uids", nargs="*", default=None, help="only these fact uids (or one file of uids, one per line)")
     o.add_argument("--log-prot", action="store_true", help="rows carry np and prot even without an amendment 72-73 edit")
+    o.add_argument("--pos-from", default="all", choices=["all", "question", "zero"],
+                   help="amendment 85 note 62: edit only from the question's first token (question), or from token 0 through the same mask (zero)")
+    o.add_argument("--ctrl-match", default="fact", choices=["fact", "count"],
+                   help="bridgeJ_ctrl's city: the control fact's (fact) or amendment 85 note 62's count-matched other item's city (count)")
     args = ap.parse_args()
     {"known": stage_known, "ko": stage_ko}[args.stage](args)
