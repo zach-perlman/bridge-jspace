@@ -4344,3 +4344,12 @@ These are builder choices, recorded so the run is read as built:
   - The same rule is used in (I), (P) and (O), so (P)'s control differs from note 54's control-fact city.
 - **(P) validity:** its unedited K share and paper10 - paper10_rot are printed; G2 is not re-run.
 - **CIs:** bootstrap over items, as registered, with a bridge-clustered CI printed beside. Many items share a city, so the clustered CI is the one quoted on slides if they disagree.
+
+##### Amendment 85, addendum 3: note 62's population, and note 62b (a later band) (box clock at commit; before any note 62 full-run result; seen: the 9B 8-item smoke, where every arm, paper10 included, kept K on 8/8 (I) items at the mid band)
+- **Population.** The no-shortcut filter guards against a person→country shortcut. In (I) the person is fictional, so the shortcut cannot exist. On the test split the gated, no-shortcut stratum is tiny (9B 15, Lightning 12, 27B 11 items).
+  - **R1** is therefore read on all gated items (names as written); the no-shortcut stratum is printed beside.
+  - **R2** stays as registered (no-shortcut, because (P) can use a shortcut). If its CI half-width exceeds 15 points it reads "underpowered". The gated-set R2 is printed beside, with the caveat that shortcut items bias S(P) downward.
+- **Note 62b: the same design at a later band.** The smoke suggests nothing in the J-space at the question's positions is needed for (I) at the mid band.
+  - Bands: the paper's medium band above our mid band: 9B L17-24, 27B L41-49, Lightning L34-40.
+  - Arms, mask, prompts, items and readings are as note 62 (with the population above). Separate runs {P}sd62b_ko_test_v1.
+  - R1 is read per band. "The knock-out sees a needed bridge" if R1 holds at either band; that band is named.
