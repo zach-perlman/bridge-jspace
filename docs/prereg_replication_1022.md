@@ -3370,3 +3370,73 @@ Zach's MC answer (30 Oct, ~05:00 UTC): run "D" Friday morning, after notes 34-35
 Zach's MC answer: "Stop DeepSeek". After the novelty review, a mixture-of-experts breadth row ranks below the new experiments on the three main models; Neel's earlier advice was no mixture-of-experts side checks.
 - The waiting job ds-1030-0125 was stopped before Muse's last step ended. Muse's weights were not dropped and DeepSeek was not downloaded. Its log is set aside as .cancelled; no EXIT was written.
 - The waiting chains for notes 34, 35 and 37 were stopped (none had started) and relaunched with no DeepSeek wait (suffix -1030-0543). GPU 0 runs the 27B now; GPU 1 runs Lightning, then the 9B, after Muse's last step.
+
+#### Amendment 65 (Zach, 2026-10-30, box clock at commit; before any code or run of it): notes 38-39, the answer line closed and tested on the paper's own prompts
+Zach's MC answer (30 Oct ~06:05 UTC): "#1 Size loophole + paper's prompts". Why:
+- Notes 11-13 show that the J-space paper's intermediate swaps act through the relation's answer directions. That is our strongest result with no prior version.
+- Two loopholes are open:
+  1. Note 11 never logged how much of the edit the scrub removes ("the scrub made the edit tiny").
+  2. Its only scrub control is random atoms ("size, not semantics").
+- The result has also never been run on the paper's own items (data/probe_swap.json, 90 two-hop prompts with the paper's swap targets).
+- Design from /home/zach/scratch/redteam_1030/brainstorm_answer_line.md, sections B and A.
+- Models: 27B, 9B, Lightning; Muse (its own J++) descriptive if it fits. One deterministic run per model.
+
+##### Note 38 (first): closing the size and semantics loopholes of notes 11-13 (v3, existing items)
+- **Items.** Note 11's own jobs: v3 rendering 0, RM and PM at each model's band, donor seed 0. The raw arms are rerun in-run and checked against note 11's stored rows.
+- **New nn_swap conditions** (insert donor, k = 10):
+  - insert_k10_noansrel_nm: the scrubbed edit rescaled per row to the unscrubbed edit's norm.
+  - insert_k10_noansrel_x2 and _x4: dose.
+  - insert_k10_noansoff: another relation's vocabulary scrubbed, count-matched (film-director surnames for the four country-type relations; demonyms for films).
+  - insert_k10_noansform (people only): the country names scrubbed instead of the demonyms.
+  - insert_relans: sufficiency, h_X + P_Arel(e).
+  - clamp_noans_nm: clamp_noans's delta rescaled to the clamp's norm.
+- **Logged per row:** ||P_Arel e||^2 / ||e||^2 and ||P_C e||^2 / ||e||^2.
+- **Window sweep:** noansrel_nm and relans over note 11's sweep windows (RM and PM, 80 each).
+- **Read.** cand2 transfer (donor - third), beyond rotated, as note 11.
+- **Readings** (per model):
+  - B1: noansrel_nm transfer <= 1/3 of the swap's -> "inert at matched size". If >= 1/3 -> "the null was partly a size effect", and the slide wording drops to "mostly".
+  - B2: noansoff keeps >= 2/3 while noansrel keeps <= 1/3 -> "the scrub is specific to the asked relation".
+  - B3: relans >= 2/3 of the swap -> "the answer subspace is sufficient".
+  - B1 + B2 + B3 together give "necessary, sufficient, specific and size-controlled".
+  - Descriptive: the norm shares, the dose curve, noansform, clamp_noans_nm.
+
+##### Note 39 (second): the paper's 90 two-hop prompts, decomposed
+- **Items.** data/probe_swap.json. The primary set is items whose answer type has a closed vocabulary of >= 8 values (capitals, languages, continents, colours, numbers, states of matter, first names, months, seasons, countries, US states, currencies, oceans). One-off answers are reported with the own-pair scrub only.
+- **Category vocabularies** are written by a CPU agent from the type label alone, with no model access, and frozen before any run (sha256 recorded in a follow-up addendum before the smoke).
+  - Each covers every form of each value's first token (case; with or without a leading space).
+  - Every token of the item's intermediate and swap_to names is excluded.
+  - Items whose answer type equals the intermediate's type go to a side table.
+- **Gate.** exp02's: the clean greedy continuation has the answer and not the swap answer; single-token first-token scoring. Raw "stripped" prompts are primary; chat prefill is the fallback only for a model with fewer than 50 raw-eligible items.
+- **Swap.** The paper's coordinate swap (SwapClamp on the unit J++ vectors of intermediate <-> swap_to, positions 1..), as exp02's raw_jlens.
+- **Arms**, all at the same windows:
+  1. bridge (the paper's swap);
+  2. answer (answer <-> swap_answer);
+  3. bridge_noA (bridge atoms orthogonalised to the category span A, then swapped);
+  4. bridge_noA_nm (arm 3 rescaled per position to arm 1's edit norm);
+  5. bridge_onlyA (the bridge atoms projected onto span(A), renormalised, swapped);
+  6. bridge_offA (arm 3 with another category's vocabulary of the same count);
+  7. bridge_randA (arm 3 with as many random letter-token atoms);
+  8. bridge_ownA (only the own answer pair);
+  9. the matched-norm null for arms 1, 2 and 5.
+- **Windows.** The paper's cumulative windows from the workspace start:
+  - 27B: L16 -> 20, 24, ..., 60;
+  - 9B: L6 -> 8, 10, ..., 30;
+  - Lightning: L8 -> 12, 16, ..., 48;
+  - plus each model's main band (27B L24-40, exp02's).
+- **Read.** Top-1 next token = swap_answer's first token ("flip"), with delta log p beside. Greedy check on the main band for arms 1, 2, 3 and 5. Logged per row: ||edit|| / ||h|| and the share of arm 1's edit inside span(A).
+- **Lenses.** Published J++; on the 27B also the plain J-lens.
+- **Bootstrap.** Clustered by answer category.
+- **Readings** (per model):
+  - A0: arm 1 at the main band flips >= 30 points above its null (exp02 found 49 on the 27B); otherwise that model's A readings are void.
+  - A1 (primary), at the main band and at the window of arm 1's median onset: K = (arm 3 - null) / (arm 1 - null).
+    - "answer-carried": K <= 1/3;
+    - "intermediate beyond the answer": K >= 2/3;
+    - otherwise "partly";
+    - valid only if arms 6 and 7 keep >= 2/3 (otherwise "scrub not specific").
+  - A2: arm 4 <= 1/3 of arm 1 confirms A1. If arm 4 >= 1/3 while arm 3 <= 1/3 -> "non-answer content is causal but small".
+  - A3: "Frenchness is sufficient" if arm 5 >= 2/3 of arm 1 at the main band.
+  - A4 (timing), with onset = the smallest window end at which an arm flips:
+    - "the paper's timing replicates": median onset(answer) - onset(bridge) >= 2 layers, paired CI above 0;
+    - "the timing lead is answer-category content": that, plus median onset(arm 5) <= onset(arm 1) + 1, plus arm 3 never above its null + 10.
+  - Descriptive splits: word vs number answers; low vs high bridge/answer overlap; J++ vs plain J-lens on the 27B.
+- **Held-out caveat.** The 27B's exp02/exp14 numbers were seen before (14-15 Oct), so only the 9B, Lightning and Muse results are a clean held-out test, and the slides say so.
