@@ -4078,8 +4078,10 @@ def cards_numbers() -> None:
         for m in json.loads(p.read_text())["models"]:
             rec(m["target"], "51.4: the rule's reading", m["label"], p)
     # Z3: the routes test on Zach's passages, position share under the whole change at the first layer
-    for p in X52["z3"]:
+    for p in (*X52["z3"], Z3_122B):
         for m in json.loads(p.read_text())["models"]:
+            if p == Z3_122B and m["target"] != T122:  # its verdict re-reads Lightning and the 27B too
+                continue
             r = m["layer_results"][str(m["layers"][0])]
             rec(
                 m["target"],
@@ -4243,8 +4245,10 @@ def cards_numbers_parts45() -> None:
     for p in X52["persistence"]:
         for target, m in json.loads(p.read_text())["models"].items():
             rec(target, "D4: the rule's reading (the address)", m["U"]["label"], p)
-    for p in X52["z3"]:
+    for p in (*X52["z3"], Z3_122B):
         for m in json.loads(p.read_text())["models"]:
+            if p == Z3_122B and m["target"] != T122:
+                continue
             clause = m["layer_results"][str(m["layers"][0])]["verdict"]["clause"]
             rec(m["target"], "Z3: the rule's reading", clause.split(" (")[0].split(":")[0], p)
     m = json.loads(Z1P_MUSE.read_text())["models"][0]
@@ -4567,6 +4571,65 @@ def contact_sheet(
     plt.close(fig)
 
 
+T122 = "qwen3.5-122b-a10b"  # (Q122 above is the routes figure's slot tuple)
+Q122_DOSE = R / "x51_dose" / "x52_dose-20261029T181109Z" / "verdict.json"
+Q122_CHAIN = R / "x47_chain" / "x52_chain-20261030T094553Z" / "x47_14.json"
+Z3_122B = R / "x50_zach" / "x52_z3-20261030T035019Z" / "z3.json"  # the 122B's Z3 (coverage, Dan 02:05)
+
+
+def record_122b_story() -> None:
+    """The 122B's coverage verdicts (no prediction; UNVERIFIED) in the figure groups the ledger's table figures read:
+    fig01d (the ladder), fig03c (45p), fig16_dose (51.1), fig09d (47.14)."""
+    from scripts import story_b50 as B50
+    from scripts import story_b51 as B51
+
+    p = B50.B122_LADDER
+    (mod,) = [m for m in json.loads(p.read_text())["models"] if m["target"] == T122 and m["status"] == "tested"]
+    for reader, group, _col, _dx, label in B50.LADDER_BARS:
+        cell = mod["cells"][reader][group]
+        for r in mod["rungs"]:
+            c = cell["cost"][str(r)]
+            S.record("fig01d", T122, f"rung {r}: {label}: answers lost beyond random", *[round(x, 4) for x in c],
+                     n=cell["n"], source=rel(p))  # fmt: skip
+            own = cell["kept"]["none"][0] - cell["kept"][f"rand{r}"][0]
+            S.record("fig01d", T122, f"rung {r}: {label}: the random part's own cost (kept with none minus kept with "
+                     "the random part)", round(own, 4), n=cell["n"], source=rel(p))  # fmt: skip
+    p = X52["x45p_122b"]
+    (mod,) = [m for m in json.loads(p.read_text())["models"] if m["target"] == T122]
+    rc, lk = mod["readers"]["recall"], mod["readers"]["lookup"]
+    S.record("fig03c", T122, "45p, (1): recalls switched", rc["hits"]["a1"], n=rc["n"], source=rel(p))
+    for arm, _ in P_ROWS[1:]:
+        r, q = rc["loss"][arm], lk["loss"][arm]
+        if r[0] is not None and r[0] == r[0]:
+            S.record("fig03c", T122, f"45p, {arm}: recall switches lost against (1)", *r, n=rc["n"], source=rel(p))
+        if q[0] is not None and q[0] == q[0]:
+            S.record("fig03c", T122, f"45p, {arm}: lookup switches lost against (1)", *q, n=lk["n"], source=rel(p))
+    p = Q122_DOSE
+    blob = json.loads(p.read_text())
+    (mod,) = [m for m in blob["models"] if m["target"] == T122]
+    rd, key = mod["readers"], B51.key
+    for x in blob["alphas"]:
+        for w in ("recall", "lookup"):
+            S.record("fig16_dose", T122, f"51.1 A: {w} switches with the J++ part by itself at dose {key(x)}, minus a "
+                     "random part (same size) at the same dose", *rd[w]["diff"][f"J({key(x)},0) - R({key(x)},0)"],
+                     n=mod["n"], source=rel(p))  # fmt: skip
+    for suffix, what in (("", "the rest by itself"), ("-U", "the rest by itself without the address"),
+                         ("-RU", "the rest by itself without a random part of the address's share")):  # fmt: skip
+        for x in blob["betas"]:
+            S.record("fig16_dose", T122, f"51.1 B: lookups switched, {what}, dose {key(x)}",
+                     *rd["lookup"]["rate"][f"J(0,{key(x)}){suffix}"], n=mod["n"], source=rel(p))  # fmt: skip
+    p = Q122_CHAIN
+    (mod,) = [m for m in json.loads(p.read_text())["models"] if m["target"] == T122 and m["status"] == "tested"]
+    h, pr = mod["hall"], mod["probe"]
+    for arm, what in (("whole", "the whole change"), ("no_U", "without the hall address"),
+                      ("no_U_rand", "without a random part (same size)"), ("keep_U", "only the hall address kept"),
+                      ("keep_U_rand", "only a random part (same size) kept")):  # fmt: skip
+        S.record("fig09d", T122, f"47.14: hall answers by position, {what}", *h["routes"][arm]["position"], n=h["n"],
+                 source=rel(p))  # fmt: skip
+    S.record("fig09d", T122, "47.14: hall probe at the locker digit", *pr["probe"], n=pr["n"], source=rel(p))
+    S.record("fig09d", T122, "47.14: hall probe's layout baseline", *pr["layout"], n=pr["n"], source=rel(p))
+
+
 def main(argv: list[str] | None = None) -> None:
     """Default: figures/depth/ (+ figures/depth/supp/, data/figures/depth/scorecard.csv, figures/depth/contact_sheet.png). --out DIR:
     the whole draft set (Dan, 26 Oct ~21:50 / ~22:45: figures/archive/drafts/v5): the README figures, the supplementary figures
@@ -4608,6 +4671,7 @@ def main(argv: list[str] | None = None) -> None:
         from scripts import ledger_figures as LF
 
         LF.build_all(plt)
+    record_122b_story()
     check_scorecard_keys(S.DATA_DIR / "scorecard.csv")
     check_claim_cells()
     S.write_data()

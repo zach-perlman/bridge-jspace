@@ -170,9 +170,8 @@ def table(spec: Spec) -> Table:
                     last = j == len(main) - 1
                     right = (ci[2] if ci else v[0]) if last else v[0]
                     # the value label goes left when a grey control sits where it would be written
-                    side = (
-                        "left" if any(s2.control and 0 <= v2[0] - right <= 0.25 * span for s2, v2 in have) else "right"
-                    )
+                    blocked = any(s2.control and 0 <= v2[0] - right <= 0.25 * span for s2, v2 in have)
+                    side = "left" if blocked and v[0] - c.xlim[0] > 0.2 * span else "right"
                     dot(ax, v[0], i, C[s.color], hollow[t], cell=ci, value=v[0] if last else None, vfmt=c.fmt,
                         vside=side)  # fmt: skip
 

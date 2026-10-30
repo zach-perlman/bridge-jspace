@@ -1927,8 +1927,76 @@ FIGURES = (coverage_map, answer_control, address_shape, learned, heads, full_car
            jsuite, last_conflict_words, report_slot1, twobytwo, bindid, code_tool, two_sources, monitor)  # fmt: skip
 
 
+# the 122B's coverage verdicts (Dan 18:20 and 02:05; no prediction; UNVERIFIED), recorded into the same figure groups for
+# the table-style ledger figures (figkit/ledger_tables.py); the figures drawn here stay as they were
+Q122 = "qwen3.5-122b-a10b"
+CUMUL_122B = R / "x47_cumulative" / "x52_cumulative-20261030T010712Z" / "x47_4.json"
+Z1_122B = R / "x50_zach" / "x52_z1-20261029T215701Z" / "z1.json"
+Z1P_122B = R / "x50_zach" / "x52_z1p-20261029T223420Z" / "z1p.json"
+Z2_122B = R / "x50_zach" / "x52_z2-20261030T045145Z" / "z2.json"
+Z3_122B = R / "x50_zach" / "x52_z3-20261030T035019Z" / "z3.json"
+ANSWER_MAP_122B = R / "x52_answer_map" / "x52cov-20261030T045919Z" / "verdict.json"
+LASTCONFLICT_122B = R / "x53_lastconflict" / "x53_lastconflict-20261029T140437Z" / "verdict.json"
+CODE_PROBE_122B = R / "x0_probe" / "x53_7_probe-20261030T002257Z" / "verdict.json"  # 53.7, lookup-only gate
+
+
+def record_122b() -> None:
+    """The 122B's rows, in each figure group's own quantity names."""
+    c = _cumul(CUMUL_122B, Q122, "main")
+    S.record("ledger_cumulative", Q122, "locker first: missed at L", *c["locker-first"]["non_switch"],
+             source=rel(CUMUL_122B))  # fmt: skip
+    S.record("ledger_cumulative", Q122, "locker after: carried before L", *c["locker-after"]["terms"]["before_L"],
+             source=rel(CUMUL_122B))  # fmt: skip
+    for path, what in ((Z1_122B, "true facts"), (Z1P_122B, "made-up facts")):
+        for reader in ("lookup", "recall"):
+            cell = _zach_cell(path, Q122, reader)
+            if cell["valid"]:  # under 30 switches under the whole change: left out
+                S.record("ledger_zach_named", Q122, f"Zach's named passages, {what}, {reader}: switches lost beyond "
+                         "random", *cell["excess"], source=rel(path))  # fmt: skip
+    (m,) = [m for m in load(Z3_122B)["models"] if m["target"] == Q122]
+    for la, lr in m["layer_results"].items():
+        for part in ("identity", "position", "value", "original"):
+            S.record("ledger_zach_routes", Q122, f"L{la}, whole change: {part} share", *lr["shares"]["C2"]["whole"][part],
+                     n=lr["n"], source=rel(Z3_122B))  # fmt: skip
+    (m,) = [m for m in load(Z2_122B)["models"] if m["target"] == Q122]
+    la = str(m["layers"][0])
+    r = m["layer_results"][la]
+    if r["lookup"]["valid"] and r["recall"]["valid"]:
+        S.record("ledger_described", Q122, f"L{la}: our gap (recall minus lookup extra loss)", *r["gap"],
+                 source=rel(Z2_122B))  # fmt: skip
+    if (m.get("beside") or {}).get("full"):
+        S.record("ledger_described", Q122, "Zach's knock-out, recall minus lookup",
+                 *m["beside"]["full"]["paper10"]["m_minus_k"], source=rel(Z2_122B))  # fmt: skip
+    (m,) = [m for m in load(ANSWER_MAP_122B)["models"] if m["target"] == Q122]
+    for d, dname in (("main", "ours"), ("z2", "Zach's")):
+        if d not in m["writes"]:
+            continue
+        for rd in ("lookup", "recall"):
+            best = m["maps"][d]["readers"][rd]["readable"]["best_before"]
+            w = m["writes"][d][rd]["switch"]
+            g = "ans1" if w["ans1"][0] >= w["ans2"][0] else "ans2"
+            S.record("ledger_answer_map", Q122, f"{dname}, {rd}: best top-5 share before the answer layer "
+                     f"({best['group']} L{best['layer']})", best["top5"], source=rel(ANSWER_MAP_122B))  # fmt: skip
+            S.record("ledger_answer_map", Q122, f"{dname}, {rd}: answers changed by the write, gain {g[-1]}", *w[g],
+                     n=m["writes"][d][rd]["n"], source=rel(ANSWER_MAP_122B))  # fmt: skip
+    for run in load(CODE_PROBE_122B)["runs"]:
+        r = next(x for x in run["rows"] if x["subset"] == "all" and x["stratum"] == "before"
+                 and x["target"] == "locker sentence")  # fmt: skip
+        S.record("ledger_code_tool", Q122, f"{run['format']}, probe: locker sentence, locker first", *r["probe"],
+                 source=rel(CODE_PROBE_122B))  # fmt: skip
+        S.record("ledger_code_tool", Q122, f"{run['format']}, probe: the layout alone", *r["layout"],
+                 source=rel(CODE_PROBE_122B))  # fmt: skip
+    (m,) = [m for m in load(LASTCONFLICT_122B)["models"] if m["target"] == Q122]
+    for c in m["cells"]:
+        if c["excess"][0] == c["excess"][0]:  # NaN: nothing switched under the whole change
+            S.record("ledger_last_conflict", Q122, f"{c['reader']} L{c['layer']}: switches lost without the lens part "
+                     "beyond random (last token)", *c["excess"], n=c["n"], source=rel(LASTCONFLICT_122B))  # fmt: skip
+
+
 def build_all(plt) -> list[str]:
-    return [f(plt) for f in FIGURES]
+    out = [f(plt) for f in FIGURES]
+    record_122b()
+    return out
 
 
 if __name__ == "__main__":

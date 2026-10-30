@@ -8704,6 +8704,7 @@ cards,qwen3.5-9b,Z3: position share under the whole change,0.1,0.018181818181818
 cards,muse-glimmer-30b,Z3: position share under the whole change,0.0625,0.0,0.14,48,results/x50_zach/z3-20261028T163053Z/z3.json
 cards,qwen3.6-27b,Z3: position share under the whole change,0.037037037037037035,0.0,0.08641975308641975,81,results/x50_zach/x52_z3-20261029T024151Z/z3.json
 cards,nemotron-3.5-lightning,Z3: position share under the whole change,0.09615384615384616,0.0196078431372549,0.18518518518518517,52,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+cards,qwen3.5-122b-a10b,Z3: position share under the whole change,0.017857142857142856,0.0,0.05555555555555555,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
 cards,qwen3.6-27b,D4: the address's mean overlap over every pair of window layers,0.2556,,,,results/x47_depth_cpu/persistence-20261029T013614Z/persistence.json
 cards,nemotron-3.5-lightning,D4: the address's mean overlap over every pair of window layers,0.3405,,,,results/x47_depth_cpu/persistence-20261029T015607Z/persistence.json
 cards,qwen3.5-9b,47.8: the last layer the lookup needs the J++ part,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
@@ -8793,6 +8794,7 @@ cards,qwen3.5-9b,Z3: the rule's reading,in between,,,,results/x50_zach/z3-202610
 cards,muse-glimmer-30b,Z3: the rule's reading,in between,,,,results/x50_zach/z3-20261028T163053Z/z3.json
 cards,qwen3.6-27b,Z3: the rule's reading,no position route in his layout,,,,results/x50_zach/x52_z3-20261029T024151Z/z3.json
 cards,nemotron-3.5-lightning,Z3: the rule's reading,in between,,,,results/x50_zach/x52_z3-20261029T013329Z/z3.json
+cards,qwen3.5-122b-a10b,Z3: the rule's reading,no position route in his layout,,,,results/x50_zach/x52_z3-20261030T035019Z/z3.json
 cards,muse-glimmer-30b,"Z1-P: lookup, switches lost beyond a random part",0.039999999999999925,0.0,0.1428571428571428,200,results/x50_zach/x52_z1p-20261029T094820Z/z1p.json
 cards,muse-glimmer-30b,"Z1-P: recall, switches lost beyond a random part",0.8144329896907216,0.7227722772277227,0.9021739130434783,200,results/x50_zach/x52_z1p-20261029T094820Z/z1p.json
 cards,muse-glimmer-30b,Z1-P: the gap,0.7744329896907217,0.6346091065292097,0.8901132404181185,200,results/x50_zach/x52_z1p-20261029T094820Z/z1p.json
@@ -10338,6 +10340,106 @@ ledger_monitor,nemotron-3.5-lightning,k = 100: lens part,0.7885,0.75,0.8298,,
 ledger_monitor,nemotron-3.5-lightning,k = 100: random,0.804,0.7752,0.8353,,
 ledger_monitor,nemotron-3.5-lightning,k = 100: energy-matched random,0.936,0.9195,0.9531,,
 ledger_monitor,nemotron-3.5-lightning,the full state,0.9585,0.9429,0.9734,,
+ledger_cumulative,qwen3.5-122b-a10b,locker first: missed at L,0.037735849056603765,0.0,0.09677419354838712,,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+ledger_cumulative,qwen3.5-122b-a10b,locker after: carried before L,1.0,1.0,1.0,,results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.json
+ledger_zach_named,qwen3.5-122b-a10b,"Zach's named passages, true facts, lookup: switches lost beyond random",0.12244897959183665,0.05102040816326536,0.19811320754716977,,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+ledger_zach_named,qwen3.5-122b-a10b,"Zach's named passages, true facts, recall: switches lost beyond random",0.4121621621621623,0.33333333333333337,0.49019924098671724,,results/x50_zach/x52_z1-20261029T215701Z/z1.json
+ledger_zach_named,qwen3.5-122b-a10b,"Zach's named passages, made-up facts, lookup: switches lost beyond random",0.015384615384615441,-0.06557377049180324,0.10000000000000009,,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+ledger_zach_named,qwen3.5-122b-a10b,"Zach's named passages, made-up facts, recall: switches lost beyond random",0.3489932885906041,0.27856916817359845,0.42331400295553273,,results/x50_zach/x52_z1p-20261029T223420Z/z1p.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L33, whole change: identity share",0.5714285714285714,0.4339622641509434,0.7049180327868853,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L33, whole change: position share",0.017857142857142856,0.0,0.05555555555555555,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L33, whole change: value share",0.0,0.0,0.0,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L33, whole change: original share",0.4107142857142857,0.2777777777777778,0.5471698113207547,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L39, whole change: identity share",0.0,0.0,0.0,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L39, whole change: position share",0.0,0.0,0.0,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L39, whole change: value share",0.0,0.0,0.0,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_zach_routes,qwen3.5-122b-a10b,"L39, whole change: original share",1.0,1.0,1.0,56,results/x50_zach/x52_z3-20261030T035019Z/z3.json
+ledger_described,qwen3.5-122b-a10b,"Zach's knock-out, recall minus lookup",0.3835616438356164,0.2676056338028169,0.5070422535211268,,results/x50_zach/x52_z2-20261030T045145Z/z2.json
+ledger_answer_map,qwen3.5-122b-a10b,"ours, lookup: best top-5 share before the answer layer (T L44)",0.95,,,,results/x52_answer_map/x52cov-20261030T045919Z/verdict.json
+ledger_answer_map,qwen3.5-122b-a10b,"ours, lookup: answers changed by the write, gain 2",0.105,0.07482699976542341,0.1330049261083744,200,results/x52_answer_map/x52cov-20261030T045919Z/verdict.json
+ledger_answer_map,qwen3.5-122b-a10b,"ours, recall: best top-5 share before the answer layer (T L44)",0.03,,,,results/x52_answer_map/x52cov-20261030T045919Z/verdict.json
+ledger_answer_map,qwen3.5-122b-a10b,"ours, recall: answers changed by the write, gain 2",0.6,0.5086692744668128,0.684875388511569,200,results/x52_answer_map/x52cov-20261030T045919Z/verdict.json
+ledger_code_tool,qwen3.5-122b-a10b,"code, probe: locker sentence, locker first",0.9197707736389685,0.8841799297230261,0.9496221662468514,,results/x0_probe/x53_7_probe-20261030T002257Z/verdict.json
+ledger_code_tool,qwen3.5-122b-a10b,"code, probe: the layout alone",0.4785100286532951,0.4206702686915888,0.5329359618171968,,results/x0_probe/x53_7_probe-20261030T002257Z/verdict.json
+ledger_code_tool,qwen3.5-122b-a10b,"tool, probe: locker sentence, locker first",0.9327176781002638,0.9109308832425893,0.9527439861967301,,results/x0_probe/x53_7_probe-20261030T002257Z/verdict.json
+ledger_code_tool,qwen3.5-122b-a10b,"tool, probe: the layout alone",0.5303430079155673,0.5037591635338347,0.5562351008557457,,results/x0_probe/x53_7_probe-20261030T002257Z/verdict.json
+ledger_last_conflict,qwen3.5-122b-a10b,lookup L44: switches lost without the lens part beyond random (last token),0.0,0.0,0.0,53,results/x53_lastconflict/x53_lastconflict-20261029T140437Z/verdict.json
+ledger_last_conflict,qwen3.5-122b-a10b,recall L44: switches lost without the lens part beyond random (last token),0.17499999999999996,0.05124999999999999,0.3,53,results/x53_lastconflict/x53_lastconflict-20261029T140437Z/verdict.json
+fig01d,qwen3.5-122b-a10b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0181,0.0,0.0424,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 1: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.006,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0241,-0.0118,0.06,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0181,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: recall, locker before the pick: answers lost beyond random",0.0904,0.0423,0.1525,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0482,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: recall, locker before the pick: answers lost beyond random",0.1084,0.0393,0.1962,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0422,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1265,0.0615,0.2081,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0482,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: recall, locker before the pick: answers lost beyond random",0.0964,0.0094,0.2117,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: recall, locker before the pick: the random part's own cost (kept with none minus kept with the random part)",0.0542,,,166,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0892,0.0524,0.1333,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 1: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0037,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: recall, locker after the pick: answers lost beyond random",0.1301,0.0823,0.1902,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0186,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: recall, locker after the pick: answers lost beyond random",0.145,0.0882,0.2143,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0149,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: recall, locker after the pick: answers lost beyond random",0.1599,0.107,0.2321,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0483,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: recall, locker after the pick: answers lost beyond random",0.197,0.1447,0.2615,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0409,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: recall, locker after the pick: answers lost beyond random",0.0297,-0.0227,0.0928,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: recall, locker after the pick: the random part's own cost (kept with none minus kept with the random part)",0.0743,,,269,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 1: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 2: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 3: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: lookup, every scene: answers lost beyond random",0.0023,0.0,0.0085,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 4: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: lookup, every scene: answers lost beyond random",0.0023,0.0,0.0078,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 5: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig01d,qwen3.5-122b-a10b,"rung 6: lookup, every scene: the random part's own cost (kept with none minus kept with the random part)",0.0,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig03c,qwen3.5-122b-a10b,"45p, (1): recalls switched",125,,,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a2: recall switches lost against (1)",0.16800000000000004,0.10370257452574519,0.24761904761904763,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a2: lookup switches lost against (1)",0.0,0.0,0.0,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a3: recall switches lost against (1)",0.016000000000000014,-0.026785714285714197,0.0625,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a3: lookup switches lost against (1)",-0.007352941176470562,-0.02703162346019505,0.0,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a4: recall switches lost against (1)",-0.03200000000000003,-0.07291666666666652,0.010002525252525329,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig03c,qwen3.5-122b-a10b,"45p, a4: lookup switches lost against (1)",-0.007352941176470562,-0.02703162346019505,0.0,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: lookup switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.05660377358490566,0.0,0.1282051282051282,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: lookup switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.3018867924528302,0.15217391304347827,0.44642857142857145,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: lookup switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",-0.018867924528301886,-0.06818181818181818,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: recall switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",0.32075471698113206,0.15217391304347827,0.4516129032258065,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: lookup switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",-0.09433962264150944,-0.21951219512195122,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",-0.018867924528301883,-0.13333333333333341,0.09090909090909083,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",-0.6037735849056605,-0.7727272727272727,-0.47366642958748245,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself, dose 0.25",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself, dose 0.5",0.05660377358490566,0.0,0.1276595744680851,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself, dose 0.75",0.6226415094339622,0.5,0.75,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself, dose 1",0.8113207547169812,0.6610169491525424,0.9361702127659575,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself, dose 1.5",0.9245283018867925,0.8510372340425533,0.9824561403508771,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.25",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.5",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.75",0.018867924528301886,0.0,0.06521739130434782,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without the address, dose 1",0.20754716981132076,0.11904761904761904,0.3,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without the address, dose 1.5",0.4528301886792453,0.32558139534883723,0.5789473684210527,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.25",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.5",0.0,0.0,0.0,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.09433962264150944,0.02564102564102564,0.17777777777777778,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.39622641509433965,0.2708333333333333,0.5384615384615384,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig16_dose,qwen3.5-122b-a10b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.9056603773584906,0.8333333333333334,0.9761904761904762,53,results/x51_dose/x52_dose-20261029T181109Z/verdict.json
+fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, the whole change",0.4117647058823529,0.3081283542039356,0.5342465753424658,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, without the hall address",0.026143790849673203,0.0,0.06206896551724138,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, without a random part (same size)",0.09803921568627451,0.04430379746835443,0.16418176972281445,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, only the hall address kept",0.3660130718954248,0.2781065088757396,0.4714285714285714,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,"47.14: hall answers by position, only a random part (same size) kept",0.21568627450980393,0.12056523968213279,0.3333333333333333,153,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,47.14: hall probe at the locker digit,1.0,1.0,1.0,300,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
+fig09d,qwen3.5-122b-a10b,47.14: hall probe's layout baseline,0.33666666666666667,0.2857142857142857,0.3882793323514973,300,results/x47_chain/x52_chain-20261030T094553Z/x47_14.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
