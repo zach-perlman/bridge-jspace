@@ -3498,3 +3498,24 @@ Zach's MC answers (30 Oct ~06:40 UTC): five cells + the 1-peer cell; 27B, Lightn
   - most knock-out answers are "other".
 - **Held-out caveat.** Their 27B rates are published, so the 9B and Lightning are the clean held-out tests.
 - **Data.** data/sd_v1/facts.jsonl is derived from TwoHopFact (CC-BY). It is not committed (gitignored); it is rebuilt with scripts/sd_build.py facts from the pinned CSV.
+
+##### Amendment 65 addendum, note 39 (before any full run of it; seen: one 9B smoke on 6 hand-picked items, mechanics only, results not interpreted)
+- **Frozen vocabulary.** data/paper_answer_types.json, sha256 a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0. Built by scripts/paper_answer_types_build.py with tokenizers only, before any note 39 forward pass; read-only, and the runner checks the hash.
+  - probe_swap.json has no answer-type field, so each item's type was assigned from its question and answer text.
+  - Primary set: 63 items. Side table: 3 (two by note 39's rule, plus ex2-city-continent-Sydney, whose answer is also the intermediate's token). Own-pair-only: 24.
+  - Small closed sets were padded to >= 8 values with synonyms.
+  - Lower-case and no-space first-token forms are kept (literal rule).
+  - Each item's scrub set includes its own answer and swap answer.
+  - Arm 6 uses off-category chains, matched to the scrub set's token count.
+- **Main bands.** Each note 20 band extended earlier by 1/8 of depth, as exp02's L24-40 extends the 27B's L32-40: 9B L8-16, Lightning L20-33, Muse L29-42. Muse's windows follow Lightning's (both have 52 blocks).
+- **Lenses.** Lightning and Muse use our own J++ (no published one exists); the 27B uses the published J++ plus the plain J-lens.
+- **Choices.**
+  - **Arm 4** is rescaled per position and layer to arm 1's edit on the same residual (exp02's matched-norm convention).
+  - **"Flip"** means the swap answer is strictly rank 1 among word tokens; the raw top-1 and number twins are logged beside.
+  - **Onset** is the median_high of arm 1's onsets.
+  - **Arm 3 null:** arm 3 uses arm 1's null. A3 subtracts arm 5's own null.
+  - **Bootstrap** clusters are answer types (about 13).
+  - **Own-pair-only items** run arms 1, 2, 8 and the nulls.
+  - **Section E** (composition) is not part of note 39.
+- **27B reproduction gate.** Arm 1 at L24-40 must fall inside exp02 main_v4_jpp's Wilson 95% interval on the shared items, or the run stops before any window.
+- **Seen before the freeze:** about 5 rows of exp02 main_v4_jpp outcomes, while checking that file's format.
