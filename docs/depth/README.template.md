@@ -5,7 +5,7 @@
 
 ## In one minute
 
-- **The lookup reads the bridge word by a pointer (where the item's locker sits) plus an identity code, both outside the lens; never the value.** Removing, adding or swapping the pointer moves the lookup; the lens cannot read it. Five models, three families for the pointer; the identity code outside the lens on four (not run on the 122B); prose, JSON, tables, Zach's made-up-fact passages, 50 neutral sentences; Python code and tool output too (pending hand-check).
+- **The lookup reads the bridge word by a pointer (where the item's locker sits) plus an identity code, both outside the lens; never the value.** Removing, adding or swapping the pointer moves the lookup; the lens cannot read it. Five models, three families for the pointer; the identity code outside the lens on four (the 122B below its gate); prose, JSON, tables, Zach's made-up-fact passages, 50 neutral sentences; Python code and tool output too (pending hand-check).
 - **The recall takes the item's name through the lens part;** on the 9B and Lightning partly the pointer too (pending hand-check).
 - **The lens part holds the item names** ("−carbon, +oxygen"), almost never the answer in our scenes; the answer when it is a word tied to the entity (Zach's passages). At the last token the item is readable but not used.
 - **Scale and order:** the 122B's lookup ignores the lens part ({{pt|lk_excess_k25_122b}} at 25 lens directions, {{pt|lk_excess_k100_122b}} at 100, where the 27B loses {{pt|lk_excess_k100_27b}}); asking the question first matters on the 27B, not on the 122B (pending hand-check).
