@@ -79,6 +79,12 @@ def pointer_keys(m: str) -> None:
         add(f"ptr.{m}.neutral", "pointer", m, "neutral-sentence donor / same-passage swap", t("swap_neutral") / t("swap"), unit="ratio", source=src)
         add(f"ptr.{m}.noown", "pointer", m, "without own-word directions / swap", t("swap_noown") / t("swap"), unit="ratio", source=src)
         add(f"ptr.{m}.rot", "pointer", m, "neutral donor, rotated", t("swap_neutral_rot"), source=src)
+        # the same transfers in points with their 95% intervals (Dan 30 Oct: r4's rows 2-5; scripts/ptr_intervals.py checks
+        # them against the per-item rows)
+        for key, cond, what in (("neutral_pts", "swap_neutral", "neutral-sentence donor, transfer"),
+                                ("noown_pts", "swap_noown", "without own-word directions, transfer"),
+                                ("rot_pts", "swap_neutral_rot", "neutral donor, rotated, transfer")):  # fmt: skip
+            add(f"ptr.{m}.{key}", "pointer", m, what, t(cond), *s[f"memory/{cond}"]["ci"], s[f"memory/{cond}"]["n"], source=src)
         rels = sorted({k.split("/")[0][len("memory_"):] for k in s if k.startswith("memory_")})
         read = [r for r in rels if (s.get(f"memory_{r}/swap", {}).get("transfer") or 0) >= 10]
         held = [r for r in read if s[f"memory_{r}/swap_neutral"]["transfer"] >= 2 / 3 * s[f"memory_{r}/swap"]["transfer"]]
@@ -229,6 +235,9 @@ def collect() -> None:
                 x = F.cell(run, f"paper10/start={st}")
                 if x:
                     add(f"pos.{m}.{st}.{mode.strip('_pos') or 'all'}", "positions", m, f"M - K, start {st}, {mode.strip('_') or 'every token'}", x[0], *x[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
+                xr = F.cell(run, f"paper10_rot/start={st}") if st == "all" else None  # the rotated control of each middle-band removal
+                if xr:
+                    add(f"pos.{m}.{st}.{mode.strip('_pos') or 'all'}.rot", "positions", m, f"M - K, start {st}, {mode.strip('_') or 'every token'} (paper10_rot)", xr[0], *xr[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
     for key, run in (("pos.q27late.bridge", "jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1"), ("pos.q27late.question", "jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1"),
                      ("pos.mi.bridge", "min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1"), ("pos.mi.question", "min14_jsuite_v2_test_chat_ko_cand2_L32-37_posquestion_v1"),
                      ("pos.q122.bridge", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1"), ("pos.q122.question", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1"),
@@ -272,6 +281,8 @@ def collect() -> None:
         if s and "memory_valid/swap" in s:
             add(f"probe.{m}.swap", "probe", m, "J++ swap on probe-valid relations", s["memory_valid/swap"]["transfer"], source=f"results/probe_ceiling/{pr}/summary.json")
             add(f"probe.{m}.probe", "probe", m, "probe-subspace swap", s["memory_valid/swap_probe"]["transfer"], source=f"results/probe_ceiling/{pr}/summary.json")
+            sp = s["memory_valid/swap_probe"]
+            add(f"probe.{m}.probe_pts", "probe", m, "probe-subspace swap, transfer (probe-valid relations)", sp["transfer"], *sp["ci"], sp["n"], source=f"results/probe_ceiling/{pr}/summary.json")
     pointer_keys("nb")
     # ---- 5. dose (amendment 54) and swap dose (amendment 55)
     for (mm, pre, band), m in zip(F.DOSE54, ("q27", "q9", "nl", "mi", "nb", "ds", "mu"), strict=True):

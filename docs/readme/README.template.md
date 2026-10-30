@@ -77,7 +77,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|r4_pointer}}
 
-*One panel per model. Each row is a different source of the swapped-in part; the dot is how many answers move to the other entity's fact, in points.*
+*One panel per model. Each row is a different source of the swapped-in part; the dot is how many answers move to the other entity's fact, in points, with a 95% interval over bridge items. The neutral sentence beats the same-passage swap by +6.0 [3.3, 8.7] / +6.2 [3.2, 8.9] / +0.3 [−2.4, 3.2] points (27B / 9B / Lightning, paired on the same items)<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap; ptr.q9.neutral_minus_swap; ptr.nl.neutral_minus_swap -->.*
 
 - **Test.** Swap another entity's lens part into the bridge, taken from its own passage, from one neutral sentence naming it, or with its name's own directions removed. Decompose the lens part into the vocabulary words it stands for. Compare what the lens shows at the bridge before a recall, before a lookup, and with no question asked (twin set).
 - **Result.**
@@ -160,7 +160,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f8_directions}}
 
-*The 27B's lookup loses more beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions; no intervals (single values from the conflict test).*
+*The 27B's lookup loses more beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions, with an interval over bridge items from the conflict test; Lightning is not drawn (below gate).*
 
 {{fig|f8_facts}}
 

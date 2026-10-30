@@ -259,11 +259,12 @@ def f_directions():
         def f(ax, _r):
             band(ax, -0.1, 0.1, len(DAN))
             for i, (m, _) in enumerate(DAN):
-                c = D.x(f"lk_excess_k{k}_{short[m]}") if m in short else None
+                # the conflict test's direction curve with its 95% interval (data.csv fig02b: x0_kmatch runs)
+                c = D.s(m, f"(a) main test, {k} directions: lookup extra loss", "fig02b")
                 if not c:
                     ax.text(-0.27, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
                     continue
-                dot(ax, c[0], i, C["lookup"], value=c[0], size=9.5 if c[0] > 0.1 else 8)
+                dot(ax, c[0], i, C["lookup"], cell=c, value=c[0], size=9.5 if c[0] > 0.1 else 8)
 
         return f
 
@@ -317,10 +318,11 @@ def f_where():
                     ax.text(2, i, "–", ha="left", va="center", fontsize=12, color=MUTED)
                     continue
                 col_ = C["recall"] if j == 0 else (C["mention"] if j == 1 else C["question"])
-                if band_ == "late" and j:  # the rotated control (at most 2.5 points), where it was run
-                    rot = D.b(keys[band_][j].format(k) + ".rot")
-                    if rot:
-                        dot(ax, rot[0], i, C["control"], size=7)
+                # the rotated control (a few points at most): every cell that has a run (the middle band's position-limited
+                # removals have scored rotated runs: docs/breadth/data.csv pos.*.rot)
+                rot = D.b(("ko.mu.rot" if (k == "mu" and j == 0) else keys[band_][j].format(k) + ".rot"))
+                if rot:
+                    dot(ax, rot[0], i, C["control"], size=7)
                 dot(ax, c[0], i, col_, cell=c, value=c[0], vfmt="{:.0f}", size=9.5 if c[0] > 15 else 8)
 
         return f
@@ -343,7 +345,7 @@ def f_where():
             ("●", C["recall"], "all tokens"),
             ("●", C["mention"], "the bridge's mention"),
             ("●", C["question"], "the question"),
-            ("●", C["control"], "rotated control (deeper layers)"),
+            ("●", C["control"], "rotated control, same size"),
         ],
     )
     t.extra.append(

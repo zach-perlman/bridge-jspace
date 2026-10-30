@@ -575,14 +575,12 @@ def f00_setup(plt) -> None:
     at one layer at the original prompt's bridge word; after that prompt, the two questions, both reading the same
     state, each with the original answer and the changed prompt's (a switch)."""
     check_setup_scene()
-    W, H = S.WIDTH, 4.75
+    W, H = S.WIDTH, 4.5  # no title in the image (Dan 30 Oct): the README caption and the slide carry it
     fig = plt.figure(figsize=(W, H), dpi=200)  # measured at the saved dpi: Agg's hinted widths move with the dpi
     ax = fig.add_axes((0, 0, 1, 1))  # data units: inches from the top left
     ax.set_xlim(0, W)
     ax.set_ylim(H, 0)
     ax.axis("off")
-    S.title(fig, "One prompt, two questions about the same bridge word",
-            "Δ: the bridge word's state in the changed prompt minus that in the original prompt, at one layer.")  # fmt: skip
     r = fig.canvas.get_renderer()
 
     def width(s: str, **kw) -> float:
@@ -617,7 +615,7 @@ def f00_setup(plt) -> None:
             ax.text(end, y, ".", fontsize=S.FONT, va="center")
         return end + 0.12
 
-    ya, yb, yc = 1.0, 1.98, 3.0  # the three prompts' first lines
+    ya, yb, yc = 0.5, 1.48, 2.5  # the three prompts' first lines
     ea = prompt("original", ya, "original\nprompt")
     eb = prompt("changed", yb, "changed\nprompt")
     ax.text(0.1, yb + pitch + 0.36, "(the two\npicks swap)", fontsize=S.FONT - 1, color=grey, va="center",
@@ -650,6 +648,11 @@ def f00_setup(plt) -> None:
         ax.text(xq, y, q, fontsize=S.FONT, va="center")
         ax.text(xa, y, f"{a} → {b}", fontsize=S.FONT, weight="bold", color=col, va="center")
         ax.text(xa + 0.62, y, src, fontsize=S.FONT, color=col, va="center")
+    ax.text(0.1, H - 0.2, "Δ: the bridge word's state in the changed prompt minus the original's, at one layer",
+            fontsize=S.FONT - 1, color=grey, va="center")  # fmt: skip
+    slides = S.OUT.parent / "slides"  # the slide copy: the same image, no title (the slide has its own)
+    slides.mkdir(parents=True, exist_ok=True)
+    fig.savefig(slides / "fig00_setup.png", dpi=200, facecolor="white")
     S.save(fig, "fig00_setup")
 
 

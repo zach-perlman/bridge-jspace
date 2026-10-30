@@ -6284,8 +6284,8 @@ fig12,qwen3.5-9b,"our removal, our scenes (main test): the control (a random par
 fig12,qwen3.5-9b,"our removal, his passages: lookup switches under the whole change",114,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"our removal, his passages: gap",0.3721,0.2693,0.4697,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.0511,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
-fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.3213,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0144,,,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.3213,0.2593,0.3951,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0144,-0.006,0.035,417,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,qwen3.5-9b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0,-0.0207,0.0208,142,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.5-9b,"Zach's operation, his passages: his stored recall minus lookup",0.4789,0.3831,0.5755,142,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, our scenes (main test): gap",0.6,0.5,0.69,200,contrast_27b
@@ -6293,15 +6293,15 @@ fig12,qwen3.6-27b,"our removal, our scenes (main test): the control (a random pa
 fig12,qwen3.6-27b,"our removal, his passages: lookup switches under the whole change",76,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, his passages: gap",0.303,0.1671,0.428,200,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.018,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
-fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.453,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0418,,,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.453,0.379,0.5574,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,qwen3.6-27b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0418,0.019,0.0674,574,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,qwen3.6-27b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.005,0.0,0.0154,199,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,qwen3.6-27b,"Zach's operation, his passages: his stored recall minus lookup",0.4623,0.3835,0.5425,199,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,muse-glimmer-30b,"our removal, our scenes (main test): gap",0.85,0.68,0.98,200,contrast_muse
 fig12,muse-glimmer-30b,"our removal, our scenes (main test): the control (a random part of the same size instead), recall minus lookup",-0.1485,,,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig12,muse-glimmer-30b,"our removal, his passages: lookup switches under the whole change",25,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
-fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0905,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
-fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0685,,,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0905,0.0499,0.1432,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
+fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0685,0.03,0.1195,409,results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json
 fig12,muse-glimmer-30b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0062,0.0,0.0195,161,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,muse-glimmer-30b,"Zach's operation, his passages: his stored recall minus lookup",0.5714,0.4852,0.6548,161,results/x50_zach/z1-20261028T161649Z/z1.json
 fig12,nemotron-3.5-lightning,"our removal, our scenes (main test): gap",0.3106,0.1953,0.4244,200,results/x0_composition/split-by-order-20261029T005451Z/split.json
@@ -6316,8 +6316,8 @@ fig12,qwen3.5-122b-a10b,"our removal, our scenes (main test): the control (a ran
 fig12,qwen3.5-122b-a10b,"our removal, his passages: lookup switches under the whole change",98,,,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
 fig12,qwen3.5-122b-a10b,"our removal, his passages: gap",0.2897,0.2001,0.3818,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
 fig12,qwen3.5-122b-a10b,"our removal, his passages: the control (a random part of the same size instead), recall minus lookup",-0.0756,,,200,results/x50_zach/x52_z1-20261029T215701Z/z1.json
-fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0552,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
-fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0667,,,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0552,0.0,0.1265,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
+fig12,qwen3.5-122b-a10b,"Zach's operation, our scenes (rung 6): the control (a random part of the same size instead), recall minus lookup, every scene (kept with none minus kept with the random part)",0.0667,0.0311,0.1023,435,results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json
 fig12,qwen3.5-122b-a10b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0054,0.0,0.0172,184,results/x50_zach/x52_z1-20261029T215701Z/z1.json
 fig12,qwen3.5-122b-a10b,"Zach's operation, his passages: his stored recall minus lookup",0.5,0.4278,0.573,184,results/x50_zach/x52_z1-20261029T215701Z/z1.json
 fig09a,qwen3.5-9b,recall extra loss without the J++ part: simple,0.06,0.0,0.12,,ss_jpp_rc_excess_9b

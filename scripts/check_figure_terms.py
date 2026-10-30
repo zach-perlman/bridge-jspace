@@ -191,6 +191,10 @@ def readme_ids(lines: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
     return [(where, line, kind) for where, line in lines for kind, rx in README_IDS.items() if re.search(rx, line)]
 
 
+# the image carries no title (Dan 30 Oct, slide readability): its README caption and the slide title say it
+V6_NO_TITLE = {"fig00_setup"}
+
+
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
     """(figure, text, rule) for each v6 rule a V6_FIGS figure breaks. layout: figure -> {"title", "subtitle", "panels"}
     (figure_texts fills it); texts: (figure, drawn text)."""
@@ -201,7 +205,7 @@ def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tupl
             out.append((name, "", "not drawn"))
             continue
         title, sub = lay["title"], lay["subtitle"]
-        if not title.strip():
+        if not title.strip() and name not in V6_NO_TITLE:
             out.append((name, title, "no title"))
         if re.search(r"\d", title):
             out.append((name, title, "digit in the title"))

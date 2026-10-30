@@ -379,6 +379,18 @@ pos.nl.all.all,positions,nl,"M - K, start all, every token",53.1,48,59,,points,r
 pos.nl.all.bridge,positions,nl,"M - K, start all, posbridge",19.9,16,24,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
 pos.nl.all.context,positions,nl,"M - K, start all, poscontext",17.8,14,21,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
 pos.nl.all.question,positions,nl,"M - K, start all, posquestion",22.7,18,27,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q27.all.all.rot,positions,q27,"M - K, start all, every token (paper10_rot)",2.7,1,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q27.all.bridge.rot,positions,q27,"M - K, start all, posbridge (paper10_rot)",1.1,0,2,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q27.all.context.rot,positions,q27,"M - K, start all, poscontext (paper10_rot)",1.7,1,3,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q27.all.question.rot,positions,q27,"M - K, start all, posquestion (paper10_rot)",1.9,1,3,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q9.all.all.rot,positions,q9,"M - K, start all, every token (paper10_rot)",1.8,1,3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q9.all.bridge.rot,positions,q9,"M - K, start all, posbridge (paper10_rot)",0.7,0,1,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q9.all.context.rot,positions,q9,"M - K, start all, poscontext (paper10_rot)",1.2,0,2,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q9.all.question.rot,positions,q9,"M - K, start all, posquestion (paper10_rot)",2.0,1,3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.nl.all.all.rot,positions,nl,"M - K, start all, every token (paper10_rot)",3.6,2,6,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.nl.all.bridge.rot,positions,nl,"M - K, start all, posbridge (paper10_rot)",2.1,1,4,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.nl.all.context.rot,positions,nl,"M - K, start all, poscontext (paper10_rot)",2.0,1,3,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.nl.all.question.rot,positions,nl,"M - K, start all, posquestion (paper10_rot)",1.2,0,2,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
 pos.q27late.bridge,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1,2.9,2,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1.json
 pos.q27late.question,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1,47.1,43,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1.json
 pos.mi.bridge,positions,mi,M - K at min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1,0.0,0,0,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1.json
@@ -489,6 +501,21 @@ ptr.nl.rot,pointer,nl,"neutral donor, rotated",-0.5,,,,points,results/jswap/nem3
 ptr.nl.rel_held,pointer,nl,relations where the neutral donor keeps >= 2/3,7.0,,,,count,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
 ptr.nl.rel_read,pointer,nl,relations read (swap >= 10),7.0,,,,count,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
 ptr.nl.lookup,pointer,nl,first layer where the lens reads X's attribute on >= 50% (answer position),32.0,,,,layer,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.neutral_pts,pointer,q27,"neutral-sentence donor, transfer",70.0,63.1,76.1,898,points,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.noown_pts,pointer,q27,"without own-word directions, transfer",53.9,47.9,59.3,898,points,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.rot_pts,pointer,q27,"neutral donor, rotated, transfer",-0.8,-1.8,0.1,898,points,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+probe.q27.probe_pts,probe,q27,"probe-subspace swap, transfer (probe-valid relations)",8.3,4.5,12.5,891,points,results/probe_ceiling/probe_ceiling_L32-40_v1/summary.json
+ptr.q27.neutral_minus_swap,pointer,q27,"neutral-sentence donor minus same-passage swap, transfer (paired)",6.0,3.3,8.7,898,points,results/jswap/jswap_pointer_v2_s150_v1/rows.jsonl
+ptr.q9.neutral_pts,pointer,q9,"neutral-sentence donor, transfer",69.8,63.8,75.1,624,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.noown_pts,pointer,q9,"without own-word directions, transfer",52.5,47.1,58.0,624,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.rot_pts,pointer,q9,"neutral donor, rotated, transfer",0.7,-0.3,1.6,624,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+probe.q9.probe_pts,probe,q9,"probe-subspace swap, transfer (probe-valid relations)",5.5,2.2,8.9,456,points,results/probe_ceiling/qwen35_9b_probe_ceiling_L12-16_v1/summary.json
+ptr.q9.neutral_minus_swap,pointer,q9,"neutral-sentence donor minus same-passage swap, transfer (paired)",6.2,3.2,8.9,624,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/rows.jsonl
+ptr.nl.neutral_pts,pointer,nl,"neutral-sentence donor, transfer",46.1,40.7,51.6,654,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.noown_pts,pointer,nl,"without own-word directions, transfer",28.5,23.9,33.0,654,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.rot_pts,pointer,nl,"neutral donor, rotated, transfer",-0.5,-1.6,0.6,654,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+probe.nl.probe_pts,probe,nl,"probe-subspace swap, transfer (probe-valid relations)",2.2,0.5,4.3,420,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
+ptr.nl.neutral_minus_swap,pointer,nl,"neutral-sentence donor minus same-passage swap, transfer (paired)",0.3,-2.4,3.2,654,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/rows.jsonl
 probe.nl.swap,probe,nl,J++ swap on probe-valid relations,62.4,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
 probe.nl.probe,probe,nl,probe-subspace swap,2.2,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
 ptr.nb.swap,pointer,nb,"J-part swap, same passage",41.3,34.9,47.7,698,points,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json

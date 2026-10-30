@@ -316,6 +316,39 @@ def lightning_main_gap() -> tuple[tuple, float, int, str, str]:
     return tuple(c["gap"]), rdep[F.X.RECALL] - rdep[F.X.LOOKUP], c["n"], rel(F.LT_SPLIT), rel(F.LT_CONFLICT)
 
 
+def ladder_gap_ci(run: str, rung: int = 6) -> tuple[list[float], list[float]]:
+    """The ladder's recall-minus-lookup gap at a rung and its control's gap, each as [point, lo, hi]: the recall's cost minus
+    the lookup's (cost = kept(random) - kept(removal), every scene) and the same-size random part's own cost (kept with none
+    minus kept with the random part), from the run's per-scene rows, a 95% cluster bootstrap over bridge items with the
+    ladder's own resampler and draws (x0_necessity.resampled_rates: N_BOOT, BOOT_SEED, the same draws for every arm, so the
+    two readers are paired). Dan 30 Oct: the band / locker-scenes column had no interval."""
+    rows = F.X.read_jsonl(S.REPO / "results" / "x49_ladder" / run / "outcomes.jsonl")
+    assert rows, f"no per-scene rows for ladder run {run}"
+    arms = ("none", f"zero{rung}", f"rand{rung}")
+    kept, scenes, ents = {}, {}, {}
+    for w in F.X.READERS:
+        by, ent = {}, {}
+        for r in rows:
+            if r["reader"] == w:
+                ent.setdefault(r["scene"], r["entity"])
+                by[(r["scene"], r["arm"])] = int(r["kept"])
+        scenes[w] = list(ent)
+        ents[w] = [ent[x] for x in scenes[w]]
+        kept[w] = {a: [by[(x, a)] for x in scenes[w]] for a in arms}
+    lk, rc = F.X.READERS
+    assert scenes[lk] == scenes[rc], "the readers' scenes differ: the draws would not be paired"
+    boot = {w: F.X.resampled_rates(kept[w], ents[w]) for w in F.X.READERS}
+    mean = {w: {a: sum(v) / len(v) for a, v in kept[w].items()} for w in F.X.READERS}
+    z, rnd = f"zero{rung}", f"rand{rung}"
+    cost = {w: (mean[w][rnd] - mean[w][z], boot[w][rnd] - boot[w][z]) for w in F.X.READERS}
+    own = {w: (mean[w]["none"] - mean[w][rnd], boot[w]["none"] - boot[w][rnd]) for w in F.X.READERS}
+    out = []
+    for d in (cost, own):
+        pt, b = d[rc][0] - d[lk][0], d[rc][1] - d[lk][1]
+        out.append([pt, *F.X.interval(b)])
+    return out[0], out[1]
+
+
 def build_two_by_two(
     ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two", lightning: bool = False, q122: bool = True
 ) -> str:
@@ -405,11 +438,13 @@ def build_two_by_two(
             own = {w: mod["cells"][w]["all"]["kept"]["none"][0] - mod["cells"][w]["all"]["kept"]["rand6"][0]
                    for w in ("recall", "lookup")}  # fmt: skip
             n = mod["cells"]["recall"]["all"]["n"]
+            gap_iv, own_iv = ladder_gap_ci(mod["run"])
+            assert abs(gap_iv[0] - (rc - lk)) < 1e-3 and abs(own_iv[0] - (own["recall"] - own["lookup"])) < 1e-3, target
             S.record(fid, target, "Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",
-                     round(rc - lk, 4), n=n, source=lad_src[target])  # fmt: skip
+                     round(gap_iv[0], 4), round(gap_iv[1], 4), round(gap_iv[2], 4), n=n, source=lad_src[target])  # fmt: skip
             S.record(fid, target, f"Zach's operation, our scenes (rung 6): {control}, every scene (kept with none "
-                     "minus kept with the random part)", round(own["recall"] - own["lookup"], 4), n=n,
-                     source=lad_src[target])  # fmt: skip
+                     "minus kept with the random part)", round(own_iv[0], 4), round(own_iv[1], 4), round(own_iv[2], 4),
+                     n=n, source=lad_src[target])  # fmt: skip
             cells[(1, 0)].append((i, (rc - lk, None, None), own["recall"] - own["lookup"]))
             ns[(1, 0)].append(str(n))
         # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control

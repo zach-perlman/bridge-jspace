@@ -140,9 +140,9 @@ def r4_pointer():
     models = [("q9", "Qwen 9B"), ("q27", "Qwen 27B"), ("nl", "Lightning")]
 
     def cells(k):
-        own = D.b(f"ptr.{k}.swap")
-        return [own, D.scaled(own, D.b(f"ptr.{k}.neutral")[0]), D.scaled(own, D.b(f"ptr.{k}.noown")[0]),
-                D.b(f"ptr.{k}.rot"), D.b(f"probe.{k}.probe")]  # fmt: skip
+        # every row in points with its 95% interval (scripts/ptr_intervals.py recomputes rows 2-5 from the runs' per-item rows)
+        return [D.b(f"ptr.{k}.swap"), D.b(f"ptr.{k}.neutral_pts"), D.b(f"ptr.{k}.noown_pts"), D.b(f"ptr.{k}.rot_pts"),
+                D.b(f"probe.{k}.probe_pts")]  # fmt: skip
 
     def panel(k):
         def f(ax, _rows):
