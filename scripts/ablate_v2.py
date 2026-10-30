@@ -241,6 +241,75 @@ def measured(inner, emask: torch.Tensor, acc: torch.Tensor):
     return edit
 
 
+N58_DARK_SHARE = 0.05  # amendment 84 note 58: the dark space = W_U's right singular vectors of the smallest 5% singular values
+N58_CACHE = Path("/workspace/scratch/n58")
+
+
+def n58_cond(cond: str) -> tuple[str, tuple[int, int]] | None:
+    """Amendment 84 note 58: darkperm_L<a>-<b> / midperm_L<a>-<b> (the window's layers a..b): ("dark" | "mid", (a, b))."""
+    m = re.fullmatch(r"(dark|mid)perm_L(\d+)-(\d+)", cond)
+    return (m[1], (int(m[2]), int(m[3]))) if m else None
+
+
+def n58_perm(key: str, n: int, width: int) -> list[int]:
+    """Note 58: position t reads the subspace component of position perm[t]; positions 1..n-1 shuffled by
+    random.Random(key) (DarkLens §3.2: the non-initial positions of the sequence), position 0 and any padding fixed."""
+    import random
+
+    p = list(range(1, n))
+    random.Random(key).shuffle(p)
+    return [0] + p + list(range(n, width))
+
+
+def perm_edit(V: torch.Tensor, perms: torch.Tensor):
+    """Note 58 (DarkLens §3.2): h~_t = h_t - P h_t + P h_perm(t) with P = V V^T (V [d, k] orthonormal), then rescaled to |h_t|;
+    position 0 is returned unchanged. perms [B, T] (long)."""
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        x = h.float()
+        c = x @ V  # [B, T, k]
+        cp = torch.gather(c, 1, perms[:, : x.shape[1], None].expand(-1, -1, c.shape[-1]))
+        ht = x + (cp - c) @ V.T
+        out = ht * (x.norm(dim=-1, keepdim=True) / ht.norm(dim=-1, keepdim=True).clamp_min(1e-12))
+        out[:, 0] = x[:, 0]
+        return out
+
+    return edit
+
+
+@torch.no_grad()
+def n58_spectrum(model) -> tuple[torch.Tensor, torch.Tensor]:
+    """W_U's (lm_head.weight, vocab x d) singular values (descending) and right singular vectors [d, d] (columns), from the
+    float64 Gram W^T W (eigh), cached in N58_CACHE/vdark_<target>.pt."""
+    N58_CACHE.mkdir(parents=True, exist_ok=True)
+    path = N58_CACHE / f"vdark_{pins.TARGET}.pt"
+    W = model.hf.lm_head.weight
+    if path.exists():
+        z = torch.load(path)
+        if z["shape"] == list(W.shape):
+            return z["S"].cuda(), z["V"].cuda()
+    G = torch.zeros(W.shape[1], W.shape[1], dtype=torch.float64, device="cuda")
+    for s0 in range(0, W.shape[0], 16384):
+        w = W[s0 : s0 + 16384].double()
+        G += w.T @ w
+    ev, vec = torch.linalg.eigh(G)
+    order = ev.argsort(descending=True)
+    S, V = ev[order].clamp_min(0).sqrt().float(), vec[:, order].float().contiguous()
+    torch.save({"S": S.cpu(), "V": V.cpu(), "shape": list(W.shape), "model": pins.model_pin()}, path)
+    return S, V
+
+
+def mid_block(d: int, d_dark: int, m: int) -> tuple[int, int]:
+    """Note 58's control subspace: m contiguous right singular vectors centred on the median singular value (index d // 2 in
+    descending order), shifted so the dark vectors (the last d_dark) are never included."""
+    lo = max(0, d // 2 - m // 2)
+    hi = lo + m
+    if hi > d - d_dark:
+        hi = d - d_dark
+        lo = hi - m
+    return lo, hi
+
+
 def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str], skip: int = 0,
                   wording: str = "A") -> list[dict]:  # fmt: skip
     """The first n eligible items per family after the first `skip` (a fresh sample of the same set), in a wording."""
@@ -753,6 +822,9 @@ def main(args) -> None:
     n51ks = {top_k(c) for c in args.conditions if is_n51(c)}  # doses whose plain topK forward logs E_A
     n52on = any(is_n52(c) for c in args.conditions)
     n57on = any(n57_kind(c) for c in args.conditions)  # amendment 78 note 57
+    n58V: dict = {}  # amendment 84 note 58: condition -> its subspace basis [d, k]
+    if any(n58_cond(c) for c in args.conditions):
+        n58V = n58_setup(model, tok, args.conditions, out_dir)
     re_ks = {top_k(c) for c in args.conditions if n57_kind(c) == "keepRE"}  # doses whose plain topK forward sets keepRE's size
     items72 = {}
     if any(n49_kind(c) in ("keepOwn", "keepSib") or n57_kind(c) in ("keepRivals", "keepRandRivals") for c in args.conditions):
@@ -1258,7 +1330,11 @@ def main(args) -> None:
                         e44pool = torch.zeros(len(chunk), 4 * cap_rows.numel(), dtype=torch.float64, device="cuda")
                         ov44 = torch.zeros(len(chunk), dtype=torch.float64, device="cuda")
                     acc72 = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")  # amendment 72: |edit|^2, |h|^2 sums
-                    for la in band:
+                    n58c = n58_cond(cond)  # amendment 84 note 58: its own window, not the band
+                    if n58c:
+                        perms = torch.tensor([n58_perm("n58:" + p["id"], len(p["ids"]), width) for p in chunk], device="cuda")
+                        edits = {la: perm_edit(n58V[cond], perms) for la in range(n58c[1][0], n58c[1][1] + 1)}
+                    for la in (() if n58c else band):
                         if n57_kind(cond):  # amendment 78 note 57 (ansRe before ansR's prefix test)
                             edits[la] = edit57(cond, la)
                             continue
@@ -1418,6 +1494,7 @@ def main(args) -> None:
                                          **({"retained": retained[row]} if retained else {}),
                                          **({"retained44": retained44[row]} if retained44 else {}),
                                          **({"keeplog": k72[row]} if k72 else {}),
+                                         **({"window": f"L{n58c[1][0]}-{n58c[1][1]}"} if n58c else {}),
                                          "edit_rel": float(acc72[row, 0] / acc72[row, 1]) if acc72[row, 1] > 0 else None})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
@@ -1461,6 +1538,101 @@ def main(args) -> None:
         lines += ["## agreement with ablate_pilot v1 (same items)", "", json.dumps(summary["v1_agreement"], indent=1)]
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text()[:3000])
+
+
+@torch.no_grad()
+def n58_setup(model, tok, conditions: list[str], out_dir: Path) -> dict:
+    """Amendment 84 note 58: the dark basis (W_U's last 5% right singular vectors) and, per window, the mid-spectrum control's
+    dimension, calibrated so its WikiText NLL increase (64 pinned rows, removal_textloss's: >= 64 words, first 2000 characters,
+    raw encoding, first 128 tokens; next-token loss from position 4) matches the dark permutation's within 10%: a grid of
+    d_dark x {1, 1.5, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18} (and the largest allowed) and up to 8 bisection steps between the
+    bracketing ranks; the closest is used. WikiText row i's permutation: random.Random("n58wt:" + i). Written to n58_calib.json."""
+    from bridge_jspace.model import _forward_hooks
+    from bridge_jspace.tokens import raw_encoding
+
+    S, V = n58_spectrum(model)
+    d = V.shape[0]
+    d_dark = round(N58_DARK_SHARE * d)
+    Vd = V[:, d - d_dark :].contiguous()
+    rows = [r[:2000] for r in pins.wikitext_rows() if len(r.split()) >= 64][:PCA_ROWS]
+    texts = [raw_encoding(tok, r)["input_ids"][:128] for r in rows]
+    groups: dict = collections.defaultdict(list)
+    for i, t in enumerate(texts):
+        groups[len(t)].append((i, t))
+
+    def nll(Vs, layers) -> float:
+        tot, n = 0.0, 0
+        for L, its in groups.items():
+            for s0 in range(0, len(its), 8):
+                part = its[s0 : s0 + 8]
+                x = torch.tensor([t for _, t in part], device="cuda")
+                hooks = []
+                if Vs is not None:
+                    perms = torch.tensor([n58_perm(f"n58wt:{i}", L, L) for i, _ in part], device="cuda")
+                    e = perm_edit(Vs, perms)
+
+                    def hook(_m, _a, out, e=e):
+                        h = out[0] if isinstance(out, tuple) else out
+                        new = e(h.float()).to(h.dtype)
+                        return (new, *out[1:]) if isinstance(out, tuple) else new
+
+                    hooks = [(model.layers[la], hook) for la in layers]
+                with _forward_hooks(hooks):
+                    lg = model.hf(input_ids=x, attention_mask=torch.ones_like(x), use_cache=False).logits.float()
+                ce = torch.nn.functional.cross_entropy(lg[:, 3:-1].reshape(-1, lg.shape[-1]), x[:, 4:].reshape(-1), reduction="none")
+                tot += float(ce.sum())
+                n += ce.numel()
+        return tot / n
+
+    base = nll(None, [])
+    out: dict = {}
+    calib = {"d": d, "d_dark": d_dark, "dark_indices": [d - d_dark, d - 1], "nll_none": base, "n_texts": len(texts),
+             "singular_values": {"max": float(S[0]), "median": float(S[d // 2]), "dark_max": float(S[d - d_dark]), "min": float(S[-1])},
+             "windows": {}}  # fmt: skip
+    for c in conditions:
+        nc = n58_cond(c)
+        if not nc or nc[0] != "dark":
+            continue
+        layers = list(range(nc[1][0], nc[1][1] + 1))
+        w = f"L{nc[1][0]}-{nc[1][1]}"
+        out[c] = Vd
+        dd = nll(Vd, layers) - base
+        tried: dict = {}
+
+        def ev(m: int) -> float:
+            if m not in tried:
+                lo, hi = mid_block(d, d_dark, m)
+                tried[m] = nll(V[:, lo:hi].contiguous(), layers) - base
+            return tried[m]
+
+        grid = sorted({min(d - d_dark, round(d_dark * f)) for f in (1, 1.5, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18)} | {d - d_dark})
+        for m in grid:
+            ev(m)
+        below = [m for m in grid if tried[m] <= dd]
+        above = [m for m in grid if tried[m] >= dd]
+        if below and above and max(below) < min(above):
+            a, b = max(below), min(above)
+            for _ in range(8):
+                best = min(tried, key=lambda m: abs(tried[m] - dd))
+                if dd > 0 and abs(tried[best] - dd) <= 0.1 * dd or b - a <= 1:
+                    break
+                mid = (a + b) // 2
+                if ev(mid) <= dd:
+                    a = mid
+                else:
+                    b = mid
+        m = min(tried, key=lambda m: abs(tried[m] - dd))
+        lo, hi = mid_block(d, d_dark, m)
+        out[f"midperm_{w}"] = V[:, lo:hi].contiguous()
+        calib["windows"][w] = {"layers": layers, "pct_depth": [round(100 * layers[0] / (pins.N_LAYERS - 1), 1), round(100 * layers[-1] / (pins.N_LAYERS - 1), 1)],
+                               "dnll_dark": dd, "mid_dim": m, "mid_indices": [lo, hi - 1], "dnll_mid": tried[m],
+                               "matched_within_10pct": bool(dd > 0 and abs(tried[m] - dd) <= 0.1 * dd),
+                               "tried": {str(k): v for k, v in sorted(tried.items())}}  # fmt: skip
+        print(f"note 58 {w}: dark dNLL {dd:.4f}; mid dim {m} ({lo}-{hi - 1}) dNLL {tried[m]:.4f}", flush=True)
+    missing = [c for c in conditions if n58_cond(c) and c not in out]
+    assert not missing, f"note 58: {missing} have no darkperm of the same window in the run (the control is calibrated against it)"
+    (out_dir / "n58_calib.json").write_text(json.dumps(calib, indent=1) + "\n")
+    return out
 
 
 def _group(rows: list[dict], none: bool = False) -> dict:
@@ -1547,7 +1719,7 @@ if __name__ == "__main__":
                     help="note 37's kept span: every form of the relation's answers (either case, with or without a leading "
                          "space) or cands2 only (ansJ's rows)")  # fmt: skip
     a = ap.parse_args()
-    bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
+    bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None and not n58_cond(c)]
     assert not bad, f"unknown conditions {bad}"
     keepa = [c for c in a.conditions if "keep" in c and "keepown" not in c and c != "keep_own"]
     assert all(keep_kind(c) for c in keepa) and (not keepa or a.tasks), f"notes 37 / 41: {keepa} unknown or without --tasks"
