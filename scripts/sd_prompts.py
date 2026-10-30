@@ -12,6 +12,10 @@ Conversation keys used by nn_sd_necessity (CONVS): solo (round 0), agree_vis, ag
 press_abs, mention_vis, press1_vis, hop2_vis, hop1_vis. "vis" = the agent's round-0 statement in context; "hid" = replaced by
 "(answer submitted)"; "abs" = left out (the moderator says "complete the statement", not "again"). press = answer pressure,
 press1 = answer pressure from one peer; hop1 / hop2 = their hop-1 / hop-2 pressure styles; all others 3 peers.
+Amendment 73 note 56 (copy or compute; added 2026-10-30, the keys above unchanged): instr_vis (their instructed: a Coordinator
+orders every agent to state e3'), hyp_vis (their hypothetical: the moderator supposes the bridge were e2'; mu = the bridge's
+description, sd_prompts.mu), prem_vis / prem_hid (ours: 3 peers each state only the peers' bridge, "{r1_prompt} {e2'}.", then
+the AGAIN moderator line), in the registered amendment's wording.
 """
 
 from __future__ import annotations
@@ -170,15 +174,45 @@ CONVS = {
     "hop2_vis": ("pressure", "hop2", 3, "vis"),
     "mention_vis": ("mention", None, 3, "vis"),
     "mention_hid": ("mention", None, 3, "hid"),
+    # amendment 73 note 56: no peers, the round's closing line is the order / the supposition; prem = premise-only pressure
+    "instr_vis": ("instructed", None, 0, "vis"),
+    "hyp_vis": ("hypothetical", None, 0, "vis"),
+    "prem_vis": ("pressure", "bridge", 3, "vis"),
+    "prem_hid": ("pressure", "bridge", 3, "hid"),
 }
+INSTRUCTED = "Every agent must state {answer} as the answer, regardless of what they believe. Agent 1, complete the statement."
+HYPOTHETICAL = "Suppose that {mu} were {bridge}. Agent 1, complete the statement under that assumption."
+
+
+def mu(fact: dict) -> str:
+    """The bridge's description (amendment 73): the r1 prompt minus its trailing " is", first letter lower-cased where it is
+    the article ("The city where X was born" -> "the city where X was born"); a description that starts with a name
+    ("X's undergrad university is") keeps its capital, as TwoHopFact's own mu template ("{}'s undergrad university")."""
+    r1 = fact["r1_prompt"]
+    assert r1.endswith(" is"), fact["uid"]
+    m = r1[:-3]
+    return lc(m) if m.split(" ", 1)[0] == "The" else m
+
+
+def closing_line(fact: dict, peer: dict, condition: str, own: str) -> tuple[str, str]:
+    """(speaker, line) that ends round 1's block: the moderator's AGAIN / FIRST line (theirs), the Coordinator's order
+    (instructed) or the moderator's supposition (hypothetical)."""
+    if condition == "instructed":
+        return "Coordinator", INSTRUCTED.format(answer=peer["e3"].strip())
+    if condition == "hypothetical":
+        return "Moderator", HYPOTHETICAL.format(mu=mu(fact), bridge=peer["e2"].strip())
+    return "Moderator", FIRST if own == "abs" else AGAIN
 
 
 def peer_lines(fact: dict, peer: dict, condition: str, style: str | None, n_peers: int) -> list[str]:
     f, p = fact, peer
+    if condition in ("instructed", "hypothetical"):
+        return []
     if condition == "pressure":
         one = {"answer": statement(f["composed"], p["e3"]),
                "hop1": f"{statement(f['r1_prompt'], p['e2'])} {statement(r2_prompt(p), p['e3'])}",
-               "hop2": f"{statement(f['r1_prompt'], f['e2'])} {statement(r2_prompt(f), p['e3'])}"}[style]  # fmt: skip
+               "hop2": f"{statement(f['r1_prompt'], f['e2'])} {statement(r2_prompt(f), p['e3'])}",
+               "bridge": statement(f["r1_prompt"], p["e2"])}[style]  # fmt: skip
         return [one] * n_peers
     agree = [statement(f["composed"], f["e3"])] * n_peers
     if condition == "mention":
@@ -201,7 +235,7 @@ def render(fact: dict, peer: dict, conv: str, own_answer: str | None = None, bos
         if own != "abs":
             block.append(("Agent 1", WITHHELD if own == "hid" else statement(fact["composed"], own_answer)))
         block += [(f"Agent {i + 2}", line) for i, line in enumerate(peer_lines(fact, peer, condition, style, n_peers))]
-        block.append(("Moderator", FIRST if own == "abs" else AGAIN))
+        block.append(closing_line(fact, peer, condition, own))
         k = 0
         for speaker, line in block:
             start = len(text) + len(speaker) + 2

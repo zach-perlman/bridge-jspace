@@ -9,6 +9,9 @@ check   (tokenizer only, BJ_TARGET picks it; no model, no GPU) a seeded sample o
         positions the runner relies on: the prompt's tokens are a prefix of prompt + " " + answer's (the answer's
         first token is the next token), the subject's last token is inside the final statement, the visible own
         statement holds the round-0 answer and no condition names the bridge; prints two rendered prompts per conversation.
+        Amendment 73 note 56's keys (instr_vis, hyp_vis, prem_vis, prem_hid) also: e3' (their target) is the next token,
+        the inserted lines are the registered wording with mu and e2' (or e3') exactly once, and e2' / e3' appear nowhere
+        else after the worked examples (n56_check).
 
 python scripts/sd_build.py facts --csv /workspace/data_sd/TwoHopFact.csv --handmade /workspace/data_sd/entity_facts_fe78a9f.py
        --categories landmark-cntry-capital person-birthcity-cntry person-uguniv-hqcity --out data/sd_v1/facts.jsonl
@@ -114,6 +117,56 @@ def cmd_facts(a) -> None:
         print(f"  {s:4s} {k:28s} {v}")
 
 
+def _count(hay: str, needle: str) -> int:
+    """Occurrences of `needle` in `hay` as a whole word sequence after sd_prompts.norm (case, accents, punctuation)."""
+    n = SP.norm(needle)
+    return f" {SP.norm(hay)} ".count(f" {n} ") if n else 0
+
+
+def n56_check(tok, f: dict, p: dict, tg: dict, conv: str, text: str, spans: list, ids: list[int], fails, seen) -> None:
+    """Amendment 73 note 56's keys: (a) the peers' answer e3' (the target) is the next token too: the prompt's ids are a
+    prefix of prompt + " " + e3''s and the next id is e3''s main first token; (b) the inserted lines are the registered
+    wording and hold mu and e2' (hyp_vis), e2' (each prem peer line) or e3' (instr_vis) exactly once (as written); (c) after
+    the worked examples e2' appears exactly once (hyp_vis), once per peer line (prem), never (instr_vis), and e3' only in
+    the order (instr_vis: once; elsewhere never). Failures count in `fails` (the check exits 1)."""
+    from bridge_jspace import tokens
+
+    cond, style, n_peers, _ = SP.CONVS[conv]
+    full = tokens.raw_encoding(tok, text + " " + p["e3"].strip())["input_ids"]
+    if full[: len(ids)] != ids or full[len(ids)] != tg["main"]["peer"]:
+        fails[f"{conv}: peer answer boundary"] += 1
+    lines = {lab: text[s:e] for lab, s, e in spans}
+    e2p, e3p, m = p["e2"].strip(), p["e3"].strip(), SP.mu(f)
+    tail = text[len(SP.PLAIN_HEADER) + len(SP.PLAIN_SHOTS) :]
+    if cond == "hypothetical":
+        line = lines["moderator"]
+        if line != SP.HYPOTHETICAL.format(mu=m, bridge=e2p) or line.count(m) != 1 or line.count(e2p) != 1:
+            fails[f"{conv}: mu / e2' once in the supposition"] += 1
+        if text.count(f"Moderator: Suppose that {m} were {e2p}.") != 1:
+            fails[f"{conv}: supposition once"] += 1
+        want_e2p, want_e3p = 1, 0
+    elif cond == "instructed":
+        line = lines["moderator"]
+        if line != SP.INSTRUCTED.format(answer=e3p) or line.count(e3p) != 1 or f"\nCoordinator: {line}\n" not in text:
+            fails[f"{conv}: e3' once in the order"] += 1
+        want_e2p, want_e3p = 0, 1
+    else:  # prem: premise-only pressure
+        peer_ls = [v for k, v in lines.items() if k.startswith("peer")]
+        if len(peer_ls) != n_peers or any(x != SP.statement(f["r1_prompt"], e2p) or x.count(e2p) != 1 for x in peer_ls):
+            fails[f"{conv}: e2' once per peer line"] += 1
+        if lines["moderator"] != SP.AGAIN:
+            fails[f"{conv}: moderator line"] += 1
+        want_e2p, want_e3p = n_peers, 0
+    if _count(tail, e2p) != want_e2p:
+        fails[f"{conv}: e2' count after the worked examples"] += 1
+    inside = _count(e2p, e3p) * want_e2p  # e3' written inside e2' (the peers' bridge names their answer: the reader drops these)
+    if inside:
+        seen[f"{conv}: e2' names e3' (dropped by the reader)"] += 1
+    if _count(tail, e3p) != want_e3p + inside:
+        fails[f"{conv}: e3' count after the worked examples"] += 1
+    seen[conv] += 1
+
+
 def cmd_check(a) -> None:
     from bridge_jspace import pins, tokens
 
@@ -143,6 +196,7 @@ def cmd_check(a) -> None:
     named: collections.Counter = collections.Counter()
     lengths: dict[str, list[int]] = collections.defaultdict(list)
     examples: dict[str, list[str]] = collections.defaultdict(list)
+    n56: collections.Counter = collections.Counter()
     for t in triples:
         collide[t[1]["category"]] += SP.answer_targets(tok, t[1], t[2], t[3])["collide"]
     print(f"position checks on every sampled item: {len(triples)} items x {len(SP.CONVS)} conversations")
@@ -183,6 +237,8 @@ def cmd_check(a) -> None:
             n_peer_spans = sum(k.startswith("peer") for k in lab)
             if n_peer_spans != n_peers:
                 fails[f"{conv}: peers"] += 1
+            if cond in ("instructed", "hypothetical") or style == "bridge":
+                n56_check(tok, f, p, tg, conv, text, spans, ids, fails, n56)
             if len(examples[conv]) < a.show and f["category"] == ("landmark-cntry-capital", "person-birthcity-cntry")[len(examples[conv]) % 2]:
                 examples[conv].append(f"[{f['uid']} | e2={f['e2']} e3={f['e3']} | peer e2'={p['e2']} e3'={p['e3']} | "
                                       f"control e2={c['e2']} | {len(ids)} tokens, last token {tok.decode(ids[-1:])!r}, "
@@ -192,6 +248,8 @@ def cmd_check(a) -> None:
           {k: (min(v), sorted(v)[len(v) // 2], max(v)) for k, v in lengths.items()})  # fmt: skip
     print("position checks failed:", dict(fails) or "none")
     print("prompts where an alias of the bridge appears after the worked examples (descriptive; hop1/hop2 excluded):", dict(named) or "none")
+    if n56:
+        print("note 56 keys (instr_vis, hyp_vis, prem_vis, prem_hid), prompts checked:", {k: v for k, v in sorted(n56.items())})
     for conv, ex in examples.items():
         for e in ex:
             print(f"\n===== {conv} {e}")
