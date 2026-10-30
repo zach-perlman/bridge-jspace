@@ -678,3 +678,13 @@ coverage_122b_0210: |
   does not have, more than a spec copy; flagged for Dan): 47.7 (c) and 45d (need the 122B's 45d / P_cf refit on varied
   scenes), 51.3 DAS (needs a clean-design DAS source decision as Lightning's NO_CLEAN), 53.8 (its script has no
   coverage path), 47.11 (no single script found).
+decisions_0205_received: "30 Oct ~02:15 Paris (Dan, headed 02:05)"
+decisions_0205: |
+  1. Gate on the routes-scene tests (47.8, 47.14, 47.16, 47.13) on the 122B: the lookup-only gate (the lookup
+     reads O and S right, >= 0.80), as for 53.7 and 47.0; label "adapted design: lookup-only gate; the recall
+     (0.797) is not part of this test", not hollow; recall columns descriptive. (Agent: 47.14's two readers are
+     both lookups, so its own gate holds no recall and stays; 47.13 has no gate of its own.)
+  2. Not queued (47.7 (c), 45d, 51.3, 53.8, 47.11): leave them; grey "not run" with the reason in the ledger.
+  3. Queue order: 47.16, 47.8, 47.13, 47.4, Z3, 47.14, then 49.1, Z2, 52 B last.
+  4. Everything into EXPERIMENTS.md as "coverage, not hand-checked"; README untouched; at the 08:23 check one line
+     per job (done / not tested + reason / failed), the earlier 122B queue included.

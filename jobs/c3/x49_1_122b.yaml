@@ -1,0 +1,26 @@
+id: x49_1_122b
+title: "122B coverage: 49.1 the parts' gain grid on the main test, L33; no prediction; UNVERIFIED"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  NOTE="no prediction: coverage run on an already-scored rule (Dan 30 Oct; the 122B at L33, FP8)";
+  test -f results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl &&
+  uv run python scripts/x49_gain.py run --name qwen35_122b_gain --why "122B coverage: 49.1; $NOTE" &&
+  printf '%s\n' "$NOTE" > results/x49_gain/qwen35_122b_gain/coverage.txt
+question: >-
+  On the 122B's main test, how do the readers respond to the lens part and the rest at gains 0..2?
+why_it_matters: >-
+  Dan 30 Oct 02:05 (batch53.yaml decisions_0205): every 122B test by morning, in his order.
+hypotheses:
+  none: "No prediction: coverage run on an already-scored rule."
+decision_rule: >-
+  49.1's rule verbatim (as jobs/c3/x52_lightning_fill1.yaml), on the 122B's main test (qwen35_122b_x0_necessity_r2's locker-first items, its gate passed).
+controls:
+- "as jobs/c3/x52_lightning_fill1.yaml"
+n: "as jobs/c3/x52_lightning_fill1.yaml, on the 122B"
+seeds: [2510, 888, 0]
+notes: "Coverage, not hand-checked; UNVERIFIED; README untouched. FP8; MoE; 2x H100. Gate: the main test's (passed)."

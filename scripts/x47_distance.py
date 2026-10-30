@@ -50,6 +50,7 @@ import argparse
 import collections
 import hashlib
 import json
+import os
 import random
 import re
 import subprocess
@@ -92,6 +93,10 @@ FILLER_SEED, RAND_SEED = 4716, 4717
 S_WRITE = 2
 NEAR, PROBE_NEAR, SWAP_NEAR, FAR, ACC_MIN, BETA_MAX = 0.10, 0.10, 0.15, 0.20, 0.8, 0.25
 EPS = 1e-9  # a value at a bar counts as at the bar
+# Dan 30 Oct 02:05 (jobs/c3/batch53.yaml decisions_0205): on the 122B the lookup alone gates and selects (BJ_LOOKUP_GATE=1);
+# the recall's numbers are reported beside, descriptive
+LOOKUP_GATE = os.environ.get("BJ_LOOKUP_GATE") == "1"
+LOOKUP_GATE_DESIGN = "adapted design: lookup-only gate; the recall (0.797) is not part of this test"
 ROUTES = ("identity", "position", "value", "original", "other")
 DELTA_ARMS = ("none", "whole", "no_alf", "no_alf_rand")
 ARM_TEXT = {
@@ -312,10 +317,12 @@ def gate_of(cases: list[dict], comp: list[dict], gate_min: float | None = None) 
     right = {(r["scene"], r["reader"], r["variant"]): r for r in comp}
     acc = {w: float(np.mean([right[(c["scene"], w, "org")]["read_right"] for c in cases])) for w in X.READERS}
     said = {w: float(np.mean([right[(c["scene"], w, "org")]["right"] for c in cases])) for w in X.READERS}
+    gated = (X.LOOKUP,) if LOOKUP_GATE else X.READERS
     ok = [c for c in cases if all(right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"]
-                                  for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
-    return {"cases": len(cases), "org_read_accuracy": acc, "org_said_accuracy": said, "gate": gate_min,
-            "pass": bool(cases) and all(a >= gate_min - EPS for a in acc.values()), "eligible": len(ok)}, ok  # fmt: skip
+                                  for w in gated for v in ("org", "alt"))]  # fmt: skip
+    out = {"cases": len(cases), "org_read_accuracy": acc, "org_said_accuracy": said, "gate": gate_min,
+           "pass": bool(cases) and all(acc[w] >= gate_min - EPS for w in gated), "eligible": len(ok)}  # fmt: skip
+    return out | ({"design": LOOKUP_GATE_DESIGN} if LOOKUP_GATE else {}), ok
 
 
 def rand_dir(key: str, d: int):

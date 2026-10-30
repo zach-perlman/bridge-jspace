@@ -60,6 +60,7 @@ import argparse
 import collections
 import json
 import math
+import os
 import random
 import re
 import subprocess
@@ -121,6 +122,10 @@ NOT_INTERPRETABLE, L_J_BAR, L_P_BAR, L_PROBE_BAR = 0.30, 0.10, 0.20, 0.80
 C_EARLY, C_LATE_J, C_LATE_I, C_MODELS, VALUE_BAR = 0.5, 0.1, 0.3, 2, 0.05
 RECALL_WINDOW, RECALL_J_BAR = 0.5, 0.3
 EPS = 1e-9
+# Dan 30 Oct 02:05 (jobs/c3/batch53.yaml decisions_0205): on the 122B the lookup alone gates and selects (BJ_LOOKUP_GATE=1);
+# the recall's numbers are reported beside, descriptive
+LOOKUP_GATE = os.environ.get("BJ_LOOKUP_GATE") == "1"
+LOOKUP_GATE_DESIGN = "adapted design: lookup-only gate; the recall (0.797) is not part of this test"
 MARK = "⟦{}⟧"
 AS_COMPUTED = (
     "Scenes: x6_routes' generator (seed 2510; locker-first), conditions C2 and C0, X0's gate (0.80 per reader on "
@@ -515,10 +520,11 @@ def stage_run(name: str, why: str, n_boot: int = X.N_BOOT, layers: tuple[int, ..
     for cond in ("C0", "C2"):
         mine = [c for c in cases if c["condition"] == cond]
         acc = {w: float(np.mean([right[(c["scene"], w, "org")]["read_right"] for c in mine])) for w in X.READERS}
+        gated = (X.LOOKUP,) if LOOKUP_GATE else X.READERS
         ok = [c for c in mine if all(right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"]
-                                     for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
-        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc, "pass": all(a >= X.GATE for a in acc.values()),
-                      "eligible": len(ok)}  # fmt: skip
+                                     for w in gated for v in ("org", "alt"))]  # fmt: skip
+        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc, "pass": all(acc[w] >= X.GATE for w in gated),
+                      "eligible": len(ok)} | ({"design": LOOKUP_GATE_DESIGN} if LOOKUP_GATE else {})  # fmt: skip
         ok_by[cond] = ok
     X.write_jsonl(out / "competence.jsonl", comp)
     (out / "gate.json").write_text(json.dumps({"dropped": dropped, "gate": gate}, indent=2) + "\n")
