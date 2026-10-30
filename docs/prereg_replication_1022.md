@@ -3598,3 +3598,11 @@ Source: /home/zach/scratch/redteam_1030/skeptic_1030.md (an adversarial read of 
   - **"energy, not answers":** a random keep retaining no more energy than A has a ratio <= 1/3.
   - Otherwise **"partly"**.
 - **Descriptive:** rescue as a function of retained energy, A vs the random keeps.
+
+##### Amendment 66, third addendum (before any 27B note 40 reading; seen: the 9B gated and ungated readings, Lightning's ungated readings, and the deepen agent's 9B log-odds numbers)
+- **Headroom-robust comparison** (a secondary reading, read on the 27B and Lightning gated sets; on the 9B only descriptive, since seen).
+  - The knock-out's specific effect on holding is measured in log-odds: logit P(hold | paper10) - logit P(hold | paper10_rot), among items right in solo. It is computed for press_vis and press_hid, with an item-bootstrap over bridges.
+  - **"Visible > hidden in log-odds":** the visible-minus-hidden difference has its interval below 0, i.e. the knock-out lowers holding more when the answer is visible.
+  - **"Hidden >= visible":** the interval is above 0.
+  - Otherwise **"no difference"**.
+- **Bridge control.** R3 stays unquoted (amendment 67). If a bridgeJ_rot condition is run later, R3 is re-read against it.
