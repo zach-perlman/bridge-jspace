@@ -233,6 +233,16 @@ def read_v4(run: str, bands: dict[str, str], prefix_set: str = "jsuite_v4_test_c
             lines.append(f"reading V keepA {bname} ({blabel}): {m['reading']} (ratio {m['ratio']}; keepA gap {cs['paper10_keepA']['gap']} "
                          f"{cs['paper10_keepA']['gap_ci']})")  # fmt: skip
         lines += ["  " + x for x in K37.table(f"v4 {bname}", m)]
+        # amendment 72's shared log (ablate_v2 from 1d3b7df3 on): paper10's E_A and every condition's edit_rel, when present
+        ea = [r["retained"]["A"] for r in allrows if r["band"] == blabel and r["condition"] == "paper10" and (r.get("retained") or {}).get("A") is not None]
+        er = collections.defaultdict(list)
+        for r in allrows:
+            if r["band"] == blabel and r.get("edit_rel") is not None:
+                er[r["condition"]].append(r["edit_rel"])
+        rec["E_A_median"] = statistics.median(ea) if ea else None
+        rec["edit_rel_mean"] = {c: round(statistics.mean(v), 4) for c, v in er.items()}  # ablate_v2's: sum |edit|^2 / sum |h|^2
+        lines.append(f"  v4 {bname} log: paper10's E_A median {rec['E_A_median']} (n {len(ea)}); edit_rel (ablate_v2's squared ratio) "
+                     + (json.dumps(rec["edit_rel_mean"]) if er else "not logged"))  # fmt: skip
         out[bname] = rec
     return out, lines
 
