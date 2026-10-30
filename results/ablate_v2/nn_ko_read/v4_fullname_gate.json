@@ -1,0 +1,158 @@
+{
+ "9b": {
+  "gap_now": 48.1,
+  "n_ko": {
+   "MM": 267,
+   "MP": 334
+  },
+  "new_gated_items": {
+   "gated_MM": 356,
+   "gated_MP": 479,
+   "new_MP": 61,
+   "new_MM": 40
+  },
+  "new_whole_right": {
+   "MM": 30,
+   "MP": 52
+  },
+  "gap_if_new_items_behave_like_gated": 48.1,
+  "gap_bounds": {
+   "worst_low (new MM lose 0, new MP lose 100)": 30.2,
+   "worst_high (new MM lose 100, new MP lose 0)": 53.8,
+   "new items show no gap (both lose the gated MP rate)": 43.2
+  },
+  "relations_new": {
+   "people": 101
+  },
+  "relations_gated": {
+   "people": 211,
+   "cities": 273,
+   "companies": 179,
+   "landmarks": 86,
+   "films": 86
+  },
+  "popularity_new": {
+   "popular": 88,
+   "less_popular": 13
+  },
+  "popularity_gated": {
+   "popular": 737,
+   "less_popular": 98
+  },
+  "whole_right_rate": {
+   "new": {
+    "MM": 75.0,
+    "MP": 85.2
+   },
+   "gated": {
+    "MM": 82.0,
+    "MP": 75.2
+   }
+  }
+ },
+ "27b": {
+  "gap_now": 57.5,
+  "n_ko": {
+   "MM": 338,
+   "MP": 473
+  },
+  "new_gated_items": {
+   "new_MP": 68,
+   "new_MM": 47,
+   "gated_MP": 553,
+   "gated_MM": 470
+  },
+  "new_whole_right": {
+   "MM": 37,
+   "MP": 64
+  },
+  "gap_if_new_items_behave_like_gated": 57.5,
+  "gap_bounds": {
+   "worst_low (new MM lose 0, new MP lose 100)": 40.3,
+   "worst_high (new MM lose 100, new MP lose 0)": 62.1,
+   "new items show no gap (both lose the gated MP rate)": 51.8
+  },
+  "relations_new": {
+   "people": 111,
+   "companies": 4
+  },
+  "relations_gated": {
+   "people": 250,
+   "cities": 333,
+   "companies": 214,
+   "landmarks": 137,
+   "films": 89
+  },
+  "popularity_new": {
+   "popular": 94,
+   "less_popular": 21
+  },
+  "popularity_gated": {
+   "popular": 893,
+   "less_popular": 130
+  },
+  "whole_right_rate": {
+   "new": {
+    "MM": 78.7,
+    "MP": 94.1
+   },
+   "gated": {
+    "MM": 75.3,
+    "MP": 90.8
+   }
+  }
+ },
+ "lightning": {
+  "gap_now": 52.7,
+  "n_ko": {
+   "MM": 361,
+   "MP": 385
+  },
+  "new_gated_items": {
+   "gated_MM": 483,
+   "gated_MP": 608,
+   "new_MP": 62,
+   "new_MM": 45
+  },
+  "new_whole_right": {
+   "MM": 35,
+   "MP": 41
+  },
+  "gap_if_new_items_behave_like_gated": 52.7,
+  "gap_bounds": {
+   "worst_low (new MM lose 0, new MP lose 100)": 38.5,
+   "worst_high (new MM lose 100, new MP lose 0)": 57.0,
+   "new items show no gap (both lose the gated MP rate)": 48.1
+  },
+  "relations_new": {
+   "people": 99,
+   "companies": 3,
+   "films": 5
+  },
+  "relations_gated": {
+   "people": 269,
+   "cities": 293,
+   "companies": 244,
+   "landmarks": 159,
+   "films": 126
+  },
+  "popularity_new": {
+   "less_popular": 30,
+   "popular": 77
+  },
+  "popularity_gated": {
+   "popular": 963,
+   "less_popular": 128
+  },
+  "whole_right_rate": {
+   "new": {
+    "MM": 77.8,
+    "MP": 66.1
+   },
+   "gated": {
+    "MM": 84.7,
+    "MP": 69.2
+   }
+  }
+ }
+}
