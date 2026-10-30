@@ -223,8 +223,11 @@ remains), **not done** (a check is still open).
 
 - **Found on.** Huawei-0 ("A" = Austria), Uluru-0 ("E" = Ecuador).
 - **What.** The count reads the answer's first token; when it has at most two characters ("A", "G", "Th") a token that starts another word reads as the answer.
-- **Check run.** CPU part only, `scripts/z1p_checks.py`, `results/z1p_checks/20261030T220056Z`: 96 items (scene x reader; 105 tokens, 83 scenes) have a stored tok_A or tok_b of at most two characters after stripping. The GPU part (greedy 4-token decode in each arm, labels the full word would change, effect on both numbers) was **not run**: the 9B is not loaded on the pod.
-- **Status.** Not done (GPU part).
+- **Check run.** CPU count, `scripts/z1p_checks.py`, `results/z1p_checks/20261030T220056Z`: 96 items (scene x reader; 105 tokens, 83 scenes) have a stored tok_A or tok_b of at most two characters after stripping. GPU (H100 pod, the 9B loaded, `scripts/z1p_fulldecode.py`, `runs/z1p_fulldecode/20261030T221428Z`): those 96 items, greedy 4 tokens in each arm (none, whole, without the lens part, without a same-size random part) at L12, same Delta, same OMP and random part as the run; the stored first token was reproduced on 384 of 384 rows; each continuation labeled by the full word (original, changed, other).
+- **Pre-set rule.** Recompute the z1p numbers if more than 5% of the arm rows change label.
+- **Result.** 0 of 384 arm rows change label (0 in every arm; 0 ambiguous): the continuations are the whole words ("France", "Germany", "Thailand"), the same as the first token said. The rule is not triggered; the z1p numbers stand.
+- **Effect on claims.** None.
+- **Status.** Closed.
 
 ## F6. Z1-P (9B): the class rule, the display, the shared first token, the patch
 

@@ -1,0 +1,11 @@
+{
+  "exp": "z1p_fulldecode",
+  "post_hoc": true,
+  "model": "qwen3.5-9b",
+  "run": "qwen35_9b_x52_z1p",
+  "layer": 12,
+  "short_token_max_chars": 2,
+  "new_tokens": 4,
+  "rule": "recompute the z1p numbers if more than 5% of the arm rows (flagged items x 4 arms) change label",
+  "written_utc": "20261030T221428Z"
+}

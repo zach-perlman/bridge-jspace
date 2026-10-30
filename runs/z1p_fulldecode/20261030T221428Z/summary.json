@@ -1,0 +1,27 @@
+{
+ "flagged_items": 96,
+ "scenes": 83,
+ "arm_rows": 384,
+ "stored_top_reproduced": 384,
+ "rows_changing_label": 0,
+ "share_changing_label": 0.0,
+ "ambiguous_rows": 0,
+ "changes_by_arm": {
+  "none": 0,
+  "whole": 0,
+  "no_jpp": 0,
+  "no_jpp_rand": 0
+ },
+ "changes_by_direction": {
+  "A -> A": 0,
+  "A -> b": 0,
+  "A -> other": 0,
+  "b -> A": 0,
+  "b -> b": 0,
+  "b -> other": 0,
+  "other -> A": 0,
+  "other -> b": 0,
+  "other -> other": 0
+ },
+ "recompute": false
+}
