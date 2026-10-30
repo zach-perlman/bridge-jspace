@@ -1,0 +1,26 @@
+{
+  "built_by": "scripts/sd_build.py facts",
+  "csv": "soheeyang/TwoHopFact@59a84cd883f71641a03fb6fa50da92a9603e7845 TwoHopFact.csv",
+  "csv_sha256": "522d3764eba5c297f9fc630073ce5e897eac134e1d04824fed4d5349e605e338",
+  "handmade": "ziangni-sys/silent-dissent@fe78a9f9240efd334b9c3482e08b2c9c028ace18 silent_dissent/entity_facts.py (literals)",
+  "handmade_sha256": "5ef69e582ca314c3b0c359c12d35b2fd36fb11e2c7403cf3c2d4cabfa4f78907",
+  "categories": [
+    "landmark-cntry-capital",
+    "person-birthcity-cntry",
+    "person-uguniv-hqcity",
+    "univ-hqcity-cntry"
+  ],
+  "split": "their split_of: md5('0-' + norm(e2)) % 10000 < 3000 -> dev",
+  "license": "TwoHopFact CC-BY-4.0; silent-dissent MIT",
+  "counts": {
+    "dev/landmark-cntry-capital": 14,
+    "dev/person-birthcity-cntry": 908,
+    "dev/person-uguniv-hqcity": 452,
+    "dev/univ-hqcity-cntry": 465,
+    "test/landmark-cntry-capital": 34,
+    "test/person-birthcity-cntry": 1843,
+    "test/person-uguniv-hqcity": 1359,
+    "test/univ-hqcity-cntry": 1034
+  },
+  "n": 6109
+}

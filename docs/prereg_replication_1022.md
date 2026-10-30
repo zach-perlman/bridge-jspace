@@ -3440,3 +3440,61 @@ Zach's MC answer (30 Oct ~06:05 UTC): "#1 Size loophole + paper's prompts". Why:
     - "the timing lead is answer-category content": that, plus median onset(arm 5) <= onset(arm 1) + 1, plus arm 3 never above its null + 10.
   - Descriptive splits: word vs number answers; low vs high bridge/answer overlap; J++ vs plain J-lens on the 27B.
 - **Held-out caveat.** The 27B's exp02/exp14 numbers were seen before (14-15 Oct), so only the 9B, Lightning and Muse results are a clean held-out test, and the slides say so.
+
+##### Amendment 65 addendum, note 38 (before any full run; seen: the builder's two 9B smokes, n = 8, as mechanics checks only)
+- **Implementation choices recorded** (no reading changes):
+  - **Sweep arms.** The sweep adds insert_k10 (checked against note 11's stored sweep) and insert_k10_rot.
+  - **"Beyond rotated".** Means transfer(cond) - transfer(insert_k10_rot); a share is beyond(cond) / beyond(insert_k10). Clamp arms are read beyond clamp_null.
+  - **Not-read rule.** A model's readings are not read if the swap beyond rotated is under 10 (note 11's k10 < 10 rule).
+  - **Words and the stored check.** Words are RM and PM only, so batches differ from note 11's (which had MM). The stored-row check reports identical-row counts.
+  - **Logged shares.** share_rel and share_c are computed on clean states, averaged over band layers and site rows. The nm / x2 / x4 rescaling uses the in-run edit.
+  - **clamp_ratio** = ||delta_noans||^2 / ||delta_clamp||^2 summed over positions, averaged over layers. This definition was fixed after smoke 1, because a per-position ratio blew up.
+- **Other-relation vocabularies** (n38_vocab.json per run):
+  - For the four country relations, the films relation's 27 director surnames; for films, people's 34 demonyms.
+  - They are count-matched on atom rows (subsampled with Random("n38off:"+rel) or padded from C's atoms).
+  - noansform (people) uses the 34 DEMONYM countries and is not count-matched.
+- **Scope and behaviour.**
+  - relans has no same-size control beyond share_c.
+  - Muse is not included: it has no note 11 v3 jobs.
+  - Existing conditions are byte-identical with the edited nn_swap.py (two 9B smokes, 28 existing conditions).
+
+#### Amendment 66 (Zach, 2026-10-30, box clock at commit; before any GPU run of it): note 40, the first necessity test of "silent dissent"
+Zach's MC answers (30 Oct ~06:40 UTC): five cells + the 1-peer cell; 27B, Lightning and 9B; mid band + the bridge pair + answer kept / answer only; J++ only. Design: /home/zach/scratch/redteam_1030/sd_necessity_design.md.
+- **Setting.** Ni & Zou's plain transcript (arXiv 2610.02702 v2), ported in scripts/sd_prompts.py from their MIT code at commit fe78a9f. Their code is never imported or run.
+- **Items.**
+  - Their three 27B categories: landmark -> country -> capital; person -> birth city -> country; person -> undergrad university -> city.
+  - Their bridge split and their known check, run per model; the test split; items right in round 0.
+  - Items whose answers share a first token are left out of the edited reads.
+  - TwoHopFact at its pinned revision (sha256 522d3764...).
+- **Conversations.**
+  - solo (round 0, no peers);
+  - agree_vis and agree_hid (peers state the agent's own answer; earlier answer visible / hidden);
+  - press_vis and press_hid (3 peers, answer pressure);
+  - press1_vis (1 peer).
+- **Edits**, at every position at the mid band (27B L32-40, 9B L12-16, Lightning L27-33):
+  - paper10, paper10_rot, paper10_pcasize, unembed10;
+  - bridgeJ and bridgeJ_ctrl (the item's own bridge forms vs the control fact's, minus both answers' forms);
+  - paper10_keepA and ansJ (as note 37).
+  - At their late band (27B L52-55, 9B L26-29, Lightning L42-45): paper10 and paper10_rot, descriptive.
+- **Outcome.** The top token at the answer position, classed orig / peer / ctrl / other. Their 12-token outcome is run unedited only.
+- **Readout.** J++ hit@100 (original bridge minus control bridge; original answer minus control answer), descriptive.
+- **Readings** (sd_necessity_design.md section 4, implemented in scripts/nn_sd_read.py). Effects are paired by item; 95% bootstrap over bridges (2000, Random(0)); spec = the paper10 effect minus a control's on the same items.
+  - **G0, 27B reproduction.** Unedited press_vis gives in within 10 points of 38.9% and press_hid within 10 of 72.7%. The first-token read must agree with the 12-token class on >= 90% per conversation. Otherwise every reading is labelled "protocol not reproduced".
+  - **G1, the knock-out bites.** In solo, paper10's spec loss is >= 20 against every control, with the interval's lower end > 0. Otherwise that model has no necessity reading.
+  - **G2, lookup spared.** paper10's loss in agree_vis and agree_hid is <= max(10, solo loss / 3). Otherwise R1-R3 are "not recall-specific".
+  - **R1, per pressure cell, both required.** The spec give-in gain has a lower end > 0 against every control, and gain / loss >= 0.5. If the gain is specific but most lost answers are "other": "moves answers, not to the peers".
+  - **R2.** f = the specific flip (paper10 minus paper10_rot) among items that held unedited.
+    - "with its answer in view, holding is a lookup": f(vis) <= f(hid) / 3 and press_vis's spec-gain upper end < 10;
+    - "it recomputes even with its answer in view": f(vis) >= 2/3 f(hid) and press_vis's spec-gain lower end > 0;
+    - otherwise "partly"; not read if f(hid) <= 0.
+  - **R3**, bridgeJ - bridgeJ_ctrl (gain in press_hid and press_vis; loss in solo), on items with both spans non-empty:
+    - "the bridge's own directions are needed": lower end > 0;
+    - "not the bridge's own direction": upper end < 5 and R1 holds;
+    - otherwise "unclear".
+  - **Descriptive:** the late band; the 1-peer cell; keepA and ansJ; without bridge-named items; per category.
+- **Falsifiers** of the recall-vs-lookup prediction:
+  - give-in rises equally with the answer visible and hidden;
+  - rotated or same-size removal does as much;
+  - most knock-out answers are "other".
+- **Held-out caveat.** Their 27B rates are published, so the 9B and Lightning are the clean held-out tests.
+- **Data.** data/sd_v1/facts.jsonl is derived from TwoHopFact (CC-BY). It is not committed (gitignored); it is rebuilt with scripts/sd_build.py facts from the pinned CSV.

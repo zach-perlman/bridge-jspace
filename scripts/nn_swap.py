@@ -76,6 +76,21 @@ jswap):
   the donor the same with D's description clause; sites at the clause; classes the passage's names (kept X, donor D,
   third another entity)
   jpp_cf h_X + J; jpprand_cf h_X + Jr; nojpp_cf h_X + Δ - J; nojpprand_cf h_X + Δ - Jr ("jshare" on jpp rows: ||J||²/||Δ||²)
+  note 38 (amendment 65; insert donor, k 10; e = insert_k10's edit Jk(h_D) - Jk(h_X); e'_V = the edit with atoms never
+  chosen from V's rows, projected off them, as noansrel; Arel the relation's answers as noansrel):
+  insert_k10_noansrel_nm        h_X + e'_Arel ||e|| / ||e'_Arel||   (per site row and layer: the scrubbed edit at e's norm)
+  insert_k10_noansrel_x2 / _x4  h_X + 2 e'_Arel / 4 e'_Arel          (dose)
+  insert_k10_noansoff           h_X + e'_Off, Off another relation's vocabulary count-matched to Arel's rows (n38_vocab:
+                                film-director surnames for people / cities / companies / landmarks, demonyms for films;
+                                subsampled, or padded with C's atoms)
+  insert_k10_noansform          h_X + e'_Form, Form the people answers' countries (jsuite_v5kc.DEMONYM; people rows only)
+  insert_relans                 h_X + P_Arel e                      (sufficiency)
+  clamp_noans_nm                clamp_noans's delta rescaled per position to the clamp's delta norm (at the same h)
+  rows of these carry share_rel = ||P_Arel e||²/||e||², share_c = ||P_C e||²/||e||² (C: as many of C's atoms as Arel's
+  rows, noansrelctl's), share_off / share_form = ||P_V e||²/||e||², scrub_kept_{rel,off,form} = ||e'_V||²/||e||² (form:
+  people only), each on the clean states (the same for every note 38 row of an item), mean over the band's layers, then
+  the item's site rows; clamp_noans_nm rows carry clamp_ratio = ||delta_noans||²/||delta_clamp||² on the clean states
+  (each summed over positions 1..; mean over layers). The vocabularies are written to <run>/n38_vocab.json.
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
 
@@ -120,6 +135,22 @@ SEED_CTL = 6100  # note 11: the fixed random atoms standing in for the answer at
 N15 = ("remrand", "remkeepown", "remkeeprel", "noaown", "noaownctl", "noarel", "noarelctl", "lensshr", "remshr",
        "remkeepoth", "noaoth", "noaothctl", "lensshrnp", "remshrnp")  # note 15 (+ addenda; oth: two other answers; np: no skip rule)
 N16 = ("jpp", "jpprand", "nojpp", "nojpprand")  # note 16's arm kinds
+N38 = ("insert_k10_noansrel_nm", "insert_k10_noansrel_x2", "insert_k10_noansrel_x4", "insert_k10_noansoff", "insert_k10_noansform",
+       "insert_relans")  # note 38's transplant arms (clamp_noans_nm is with the clamp)
+
+
+def n38_vocab(items: dict) -> dict:
+    """Note 38: the other-relation vocabularies, from the set's own answer_vocab (deterministic). off: the films relation's
+    answers (director surnames) for people, cities, companies and landmarks; the people relation's answers (demonyms) for
+    films. form (people only): the people answers' countries (scripts/jsuite_v5kc.DEMONYM, checked to cover them)."""
+    from scripts.jsuite_v5kc import DEMONYM
+
+    vocab: dict = {}
+    for it in items.values():
+        if it.get("module") == "facts" and it["relation"] not in vocab:
+            vocab[it["relation"]] = sorted(it["answer_vocab"])
+    assert set(DEMONYM) == set(vocab["people"]), "note 38: DEMONYM must cover the people answers"
+    return {"off": {r: vocab["people"] if r == "films" else vocab["films"] for r in vocab}, "form": {"people": sorted(set(DEMONYM.values()))}}
 
 
 def random_subspace_part(delta: torch.Tensor, share: torch.Tensor, basis: torch.Tensor) -> torch.Tensor:
@@ -262,6 +293,29 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             rel_cache[key] = sorted({int(row_of[t]) for t in toks if int(row_of[t]) >= 0})
         return rel_cache[key]
 
+    n38_cache: dict = {}
+    v38 = n38_vocab(items) if any(c in N38 for c in conds) else {}
+
+    def n38_rows(j: dict) -> dict:  # note 38: off (count-matched to Arel's rows) and form (people) rows, as rel_rows; cached
+        key = (j["rel"], j["kind_"])
+        if key not in n38_cache:
+            rel = rel_rows(j)
+
+            def rows_of(words: list[str]) -> list[int]:  # every form of each word's first token, minus the relation's own rows
+                toks = {t for v in words for w in (v, v.lower()) for t in (*JS.forms(tok, w, j["kind_"]), S.ids(tok, " " + w)[0], S.ids(tok, w)[0])}
+                return sorted({int(row_of[t]) for t in toks if int(row_of[t]) >= 0} - set(rel))
+
+            pool = rows_of(v38["off"][j["rel"]])
+            pad = [r for r in c_rows.tolist() if r not in set(rel) | set(pool)][: max(0, len(rel) - len(pool))]
+            off = sorted(random.Random(f"n38off:{j['rel']}").sample(pool, len(rel))) if len(pool) >= len(rel) else pool + pad
+            form = rows_of(v38["form"][j["rel"]]) if j["rel"] in v38["form"] else []
+            dec = lambda rs: [tok.decode([int(letters[r])]) for r in rs]  # noqa: E731
+            n38_cache[key] = {"off": off, "form": form, "rel_rows": len(rel), "rel_tokens": dec(rel), "off_words": v38["off"][j["rel"]],
+                              "off_pool": len(pool), "off_padded_from_c": len(off) - min(len(pool), len(rel)), "off_tokens": dec(off),
+                              "form_words": v38["form"].get(j["rel"], []), "form_tokens": dec(form)}  # fmt: skip
+            (RES / a.name / "n38_vocab.json").write_text(json.dumps({"|".join(k): v for k, v in n38_cache.items()}, indent=1) + "\n")
+        return n38_cache[key]
+
     jdic = {}
     if any(c.split("_")[0] in N16 for c in conds):  # note 16: Dan's dictionary, the letter tokens and the ten digits
         digits = torch.tensor([S.ids(tok, str(i))[0] for i in range(10)], device="cuda")
@@ -269,7 +323,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
         jdic = {la: lens.vectors(la, jids) for la in band}
         from scripts.exp04_brew_parts import signed_omp
     qa, qc = {}, {}
-    if any(c.endswith(("_noans", "_noansctl")) for c in conds):
+    if any(c.endswith(("_noans", "_noansctl")) for c in conds) or "clamp_noans_nm" in conds:  # note 38: clamp_noans_nm too
         for la in band:
             qa[la], qc[la] = basis(dic[la], a_rows), basis(dic[la], c_rows)
         print(f"[{tag}] note 11: {len(a_rows)} answer atoms (rank {qa[band[0]].shape[1]}), control rank {qc[band[0]].shape[1]}", flush=True)
@@ -420,6 +474,60 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                     return hx - (hx @ Q) @ Q.T + (hd @ Q) @ Q.T
                 rx, rd = top_span_removal(dic[la], hx, kk, protected=groups), top_span_removal(dic[la], hd, kk, protected=groups)
                 return hx + (rd - rx) @ rot[la].T if suf == "rot" else hx - rx + rd  # repair_k / repair_k_rot
+            # note 38: per item, the relation's answer rows (as noansrel), the other relation's (off), the people answers'
+            # countries (form), and C's first len(Arel) atoms (noansrelctl's); each as (idx, mask) per site row and the
+            # atom-choice exclusion. The logged shares are taken on the clean states at every band layer (the same for every
+            # note 38 row of an item; equal to the in-run edit's at the band's first layer)
+            n38: dict = {}
+            n38_info: dict = {}
+
+            def n38_edit(w: str, la: int, li: int, hx: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+                """insert_k10's edit e at hx, and the edit scrubbed of w's rows e' (atoms never chosen from them; projected
+                off them; noansrel's for w = rel)."""
+                hd = ins[:, li]
+                e = top_span_removal(dic[la], hd, 10, protected=groups) - top_span_removal(dic[la], hx, 10, protected=groups)
+                idx, msk, G = n38[w]
+                e2 = top_span_removal(dic[la], hd, 10, protected=G) - top_span_removal(dic[la], hx, 10, protected=G)
+                return e, e2 - JS.span_proj(dic[la], e2, idx, msk)
+
+            if any(c in N38 for c in conds):
+                sets = {"rel": [rel_rows(j) for j in chunk], "off": [n38_rows(j)["off"] for j in chunk], "form": [n38_rows(j)["form"] for j in chunk]}
+                sets["c"] = [c_rows[: len(r)].tolist() for r in sets["rel"]]
+                for w, per_item in sets.items():
+                    wd = max(1, max(len(r) for r in per_item))
+                    n38[w] = (torch.tensor([r + [0] * (wd - len(r)) for r in per_item], device="cuda")[bi],
+                              torch.tensor([[1] * len(r) + [0] * (wd - len(r)) for r in per_item], device="cuda")[bi],
+                              [((bi == b).nonzero().squeeze(1), torch.cat([prot[b], torch.tensor(r, dtype=torch.long, device="cuda")])) for b, r in enumerate(per_item)])  # fmt: skip
+                sq = lambda v: (v.double() ** 2).sum(-1)  # noqa: E731
+                acc = collections.defaultdict(list)  # stat -> one [m] tensor per band layer
+                for li, la in enumerate(band):
+                    hx = rec[la][bi, xi]
+                    for w in ("rel", "off", "form"):
+                        e, e2 = n38_edit(w, la, li, hx)
+                        ee = sq(e).clamp_min(1e-30)
+                        acc[f"scrub_kept_{w}"].append(sq(e2) / ee)
+                        acc[f"share_{w}"].append(sq(JS.span_proj(dic[la], e, *n38[w][:2])) / ee)
+                    acc["share_c"].append(sq(JS.span_proj(dic[la], e, *n38["c"][:2])) / ee)
+                for stat, per_layer in acc.items():
+                    v = torch.stack(per_layer).mean(0)
+                    for b, j in enumerate(chunk):
+                        if not stat.endswith("_form") or j["rel"] == "people":
+                            n38_info.setdefault(b, {})[stat] = round(float(v[bi == b].mean()), 4)
+
+            def note38(cond: str, la: int, li: int, hx: torch.Tensor) -> torch.Tensor:
+                if cond == "insert_relans":  # sufficiency: only the relation-vocabulary component of the transplant
+                    e = top_span_removal(dic[la], ins[:, li], 10, protected=groups) - top_span_removal(dic[la], hx, 10, protected=groups)
+                    return hx + JS.span_proj(dic[la], e, *n38["rel"][:2])
+                e, e2 = n38_edit({"noansoff": "off", "noansform": "form"}.get(cond.split("_")[2], "rel"), la, li, hx)
+                if cond.endswith("_nm"):  # per site row: the scrubbed edit at the unscrubbed edit's norm
+                    e2 = e2 * (e.norm(dim=-1, keepdim=True) / e2.norm(dim=-1, keepdim=True).clamp_min(1e-12))
+                elif cond.endswith(("_x2", "_x4")):
+                    e2 = e2 * int(cond[-1])
+                return hx + e2
+
+            def n38_stats(cond: str, b: int) -> dict:  # note 38: the logged shares on this condition's rows
+                return n38_info.get(b, {}) if cond in N38 else n38_info.get(("clamp", b), {}) if cond == "clamp_noans_nm" else {}
+
             # the clamp: X's and D's unit J-lens name vectors per item and layer; clean coordinates swapped
             clamp_atoms, clamp_pinv, clamp_tgt = {}, {}, {}
             if any(c.startswith("clamp") for c in conds):
@@ -430,24 +538,38 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                     P = torch.linalg.pinv(A.double()).float()  # [B, d, 2]
                     c = rec[la] @ P  # [B, T, 2] clean coordinates
                     clamp_atoms[la], clamp_pinv[la], clamp_tgt[la] = A, P, c[..., [1, 0]]
-                    if "clamp_noans" in conds:  # note 13: the name vectors made orthogonal to every answer direction first
+                    if "clamp_noans" in conds or "clamp_noans_nm" in conds:  # note 13: the name vectors made orthogonal to every answer direction first
                         An = A - (A @ qa[la]) @ qa[la].T
                         An = An / An.norm(dim=-1, keepdim=True).clamp_min(1e-6)
                         Pn = torch.linalg.pinv(An.double()).float()
                         clamp_atoms[("noans", la)], clamp_pinv[("noans", la)], clamp_tgt[("noans", la)] = An, Pn, (rec[la] @ Pn)[..., [1, 0]]
+                    if "clamp_noans_nm" in conds:  # note 38: ||delta_noans||² / ||delta_clamp||² on the clean states, summed over positions 1..
+                        dn_, dc_ = ((clamp_tgt[k_] - rec[la] @ clamp_pinv[k_]) @ clamp_atoms[k_] for k_ in (("noans", la), la))
+                        cr = (dn_[:, 1:].double() ** 2).sum((1, 2)) / (dc_[:, 1:].double() ** 2).sum((1, 2)).clamp_min(1e-30)
+                        for b in range(len(chunk)):
+                            n38_info.setdefault(("clamp", b), {}).setdefault("clamp_ratio", []).append(float(cr[b]))
+                for b in range(len(chunk)):
+                    if ("clamp", b) in n38_info:
+                        n38_info[("clamp", b)]["clamp_ratio"] = round(sum(n38_info[("clamp", b)]["clamp_ratio"]) / len(band), 4)
             for cond in conds:
 
                 def hook_fn(la, h, cond=cond):
                     li = band.index(la)
                     h = h.clone()
                     if cond.startswith("clamp"):
-                        k = ("noans", la) if cond == "clamp_noans" else la
+                        k = ("noans", la) if cond in ("clamp_noans", "clamp_noans_nm") else la
                         delta = (clamp_tgt[k] - h.float() @ clamp_pinv[k]) @ clamp_atoms[k]  # [B, T, d]
                         if cond == "clamp_null":
                             delta = delta.norm(dim=-1, keepdim=True) * null[la]
+                        if cond == "clamp_noans_nm":  # note 38: rescaled per position to the clamp's delta norm at the same h
+                            full = (clamp_tgt[la] - h.float() @ clamp_pinv[la]) @ clamp_atoms[la]
+                            delta = delta * (full.norm(dim=-1, keepdim=True) / delta.norm(dim=-1, keepdim=True).clamp_min(1e-12))
                         delta[:, 0] = 0  # position 0 (the attention sink) is never edited, as SwapClamp
                         delta[~ok_rows] = 0
                         return (h.float() + delta).to(h.dtype)
+                    if cond in N38:  # note 38
+                        h[bi, xi] = note38(cond, la, li, h[bi, xi].float()).to(h.dtype)
+                        return h
                     if cond.startswith("repair") or cond.split("_")[-1] in ("noans", "noansctl", "ans", "ansctl", "noansrel", "noansrelctl",
                                                                             "noansown", "noansownctl"):  # note 11 (and its addendum)  # fmt: skip
                         h[bi, xi] = note11(cond, la, li, h[bi, xi].float()).to(h.dtype)
@@ -533,9 +655,11 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                 for b, j in enumerate(chunk):
                     if cond.startswith("clamp") and not bool(ok_rows[b]):
                         continue
+                    if cond == "insert_k10_noansform" and j["rel"] != "people":  # note 38: people only
+                        continue
                     cls, pick = classify(lg[b], j)
                     rows.append({"id": j["id"], "family": j["family"], "condition": cond, "cls": cls, "pick": pick, **meta(j),
-                                 **({"jshare": round(jshare[b], 4)} if cond.startswith("jpp_") and b in jshare else {})})  # fmt: skip
+                                 **({"jshare": round(jshare[b], 4)} if cond.startswith("jpp_") and b in jshare else {}), **n38_stats(cond, b)})  # fmt: skip
         print(f"[{tag}] {len(rows)} rows, {time.time() - t0:.0f}s", flush=True)
 
 
