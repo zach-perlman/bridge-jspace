@@ -545,6 +545,8 @@ None of these claims is hand-checked yet: VERIFIED.md has no entry for any of th
   - Both operations point the same way on both datasets: the recall depends on the lens directions more than the lookup does.
 - **Caveats.**
   - The recheck is today's, run on CPU on the stored run, the rule unchanged: pending hand-check.
+  - Made-up facts, 9B (post hoc): in 23 of 200 passages the lookup's changed answer is the true value of the original bridge (sukiyaki: Japan; France: Europe). Without them the lookup is -0.04 [-0.12, 0.05] (all passages -0.05 [-0.13, 0.03]), the recall 0.55 [0.46, 0.64] (0.59 [0.51, 0.67]) and the gap 0.59 [0.46, 0.72] (0.64 [0.51, 0.76]); the split still holds<!-- src: results/z1p_checks/20261030T222158Z/tables.json | F4 -->.
+  - Made-up facts, 9B (post hoc): in 54 of 200 passages the recall's changed answer stands in its own passage, as another entity's value; its original answer never does. Without those 54 the recall is 0.60 [0.50, 0.70], the lookup -0.02 [-0.13, 0.09] and the gap 0.62 [0.47, 0.78]<!-- src: results/z1p_checks/20261030T222158Z/tables.json | F4b -->.
   - Muse's lookup switches under the whole change on too few of his passages to read its effect, with true facts and with made-up facts ({{dp|fig12|muse|our removal, his passages: lookup switches under the whole change}} and {{dp|cards|muse|Z1-P: lookups switched by the whole change}} of {{dp|catalogue|muse|Zach's passages, named bridge: passages used}}); Muse's and Lightning's made-up-fact gates are just under 0.80, so their numbers there are descriptive only (hollow).
   - The two operations differ in scope and units: only their sign and their order compare.
   - The routes test on his passages has few passages; the 27B is read at its L only.
