@@ -3681,3 +3681,21 @@ Seen before writing: note 41 on the 9B ("partly" keep; removal "not answer-speci
 - **Pipeline:** competence, controls and the gate, then note 37's and note 41's conditions.
 - **"Replicates":** the same note 37 and note 41 readings per model as on seed 4001 (and as on p4002).
 - With note 43, this gives three draws for note 37 (CLAUDE.md asks for >= 3 seeds before calling a result positive).
+
+#### Amendment 70 (Zach's session, 2026-10-30, box clock at commit; Zach away and delegated queueing until 12:00 ET; registered before any note 43, 46 or 48 knock-out reading): note 41's keep reading at matched energy and in log-prob
+Seen before writing:
+- note 41's readings on seed 4001 for the 9B, 27B and Lightning;
+- a post hoc CPU interpolation of seed 4001's stored rows (an agent's, not registered). Random keeps at keepA's own retained energy rescue about 0.42 / 0.34 / ~0 of the accuracy loss, and about 0.51 / 0.48 / 0.33 in answer log-prob. keepA rescues 0.93 / 0.95 / 0.91 and 0.96 / 0.97 / 1.02 (9B / 27B / Lightning).
+
+Not seen: any knock-out reading of notes 43, 46 or 48. The 9B's p4002 knock-out was running at commit time, and its reader had not been run.
+
+These forms are confirmatory only for notes 43, 46 and 48. On seed 4001 they are post hoc and labelled so.
+
+- **Why.** Note 41's keep rule compares keepA with the nearest random keep that holds at least keepA's retained energy. On seed 4001 that keep (R2) held 10-14 points more of the removal's energy than keepA, so the registered rule favours "partly". The matched-energy form removes that offset.
+- **Rule E (matched energy).**
+  - R_rand(E_A) is the accuracy rescue of the random keeps (keepR, keepR2, keepR4, each net of its _rot as in note 41), linearly interpolated in retained energy at E_A, keepA's retained share of the removal.
+  - If E_A lies outside the random keeps' energy range, the reading is "not interpolable" (no extrapolation).
+  - "Answer-specific at matched energy": rescue(keepA) - R_rand(E_A) >= 0.33, with the bootstrap CI's lower end > 0 (note 41's item bootstrap, with the interpolation recomputed per resample). Otherwise "not shown at matched energy".
+- **Rule L (log-prob).** The same comparison, with rescue measured in the gold answer's first-token log p on MM items: rescue_L(X) = 1 - (mean Delta log p under X, net of X_rot) / (mean Delta log p under paper10, net of paper10_rot). Same interpolation and thresholds.
+- **Status.** Note 41's registered keep reading stays the primary for notes 43, 46 and 48. Rules E and L are registered secondaries, reported beside it. A "replicates" claim uses the registered rule. The removal reading (ansJ / ansR) and the final-only reading are unchanged.
+- **Code.** The reader (nn_ko41_read.py, as used by notes 43 / 46 / 48) gains --matched-energy. It is built after this commit, and the registered output stays byte-identical.
