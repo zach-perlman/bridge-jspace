@@ -27,6 +27,7 @@ SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse", "
 ANSWER = R / "x51_answer" / "x51_12-20261028T201842Z" / "verdict.json"
 ANSWER_LIGHTNING = R / "x51_answer" / "x52_answer-20261029T002056Z" / "verdict.json"
 ANSWER_122B = R / "x51_answer" / "x52_answer-20261029T112359Z" / "verdict.json"  # the 122B's E1 (coverage, Dan 11:30)
+TRANSLATED = R / "answer_control_translated"  # the post hoc rows (scripts/answer_control_translated.py): answer directions in any language, K-random twins
 ADDR = R / "x51_addr" / "verdict-20261028T215138Z" / "verdict.json"
 DAS = R / "x51_das" / "verdict-20261028T194630Z" / "verdict.json"
 HEADS = R / "x51_heads" / "x51_2-20261028T190358Z" / "verdict.json"
@@ -160,9 +161,24 @@ def answer_control(plt) -> str:
     order = FIVE
     sources.sort(key=lambda s: order.index(s[1]["target"]))
     blocks = []
+    post = {}
+    runs = sorted(TRANSLATED.glob("*/tables.json")) if TRANSLATED.exists() else []
+    if runs:
+        post = json.loads(runs[-1].read_text())["models"]
+        post_src = rel(runs[-1])
     for path, m in sources:
         rc = m["readers"]["recall"]
-        blocks.append((SHORT[m["target"]], [(lab, rc["extra"][k]) for k, lab in arms], INK, False))
+        rows = [(lab, rc["extra"][k], "") for k, lab in arms]
+        if m["target"] in post:  # Dan 30 Oct: the translated arms beside the English ones (hollow), the K-random twins as the control (grey)
+            e = post[m["target"]]["extra"]
+            rows = [rows[0], rows[1], ("lens out, answer kept: any language ○", e["arm2_any_language"], "post"),
+                    ("control: 15 random kept ○", e["arm2_K_random_english_count"], "control"),
+                    ("control: about 100 random kept ○", e["arm2_K_random_any_language_count"], "control"),
+                    rows[2], ("answer only: any language ○", e["arm3_any_language"], "post")]
+            for what, key in (("lens part out, answer kept: any language", "arm2_any_language"), ("arm 2 with 15 random directions kept", "arm2_K_random_english_count"),
+                              ("arm 2 with about 100 random directions kept", "arm2_K_random_any_language_count"), ("answer directions only: any language", "arm3_any_language")):
+                S.record("ledger_answer_control", m["target"], f"post hoc, main test, recall, switches lost beyond random: {what}", *e[key], n=rc["n"], source=post_src)
+        blocks.append((SHORT[m["target"]], rows, INK, False))
         for k, lab in arms:
             S.record("ledger_answer_control", m["target"], f"main test, recall, switches lost beyond random: {lab}",
                      *rc["extra"][k], n=rc["n"], source=rel(path))  # fmt: skip
@@ -170,21 +186,26 @@ def answer_control(plt) -> str:
         if m["set"] == "z2":
             rc = m["readers"]["recall"]
             blocks.append((f"{SHORT[m['target']]}, Zach's described bridge (withdrawn)",
-                           [(lab, rc["extra"][k]) for k, lab in arms], NULL, True))  # fmt: skip
+                           [(lab, rc["extra"][k], "") for k, lab in arms], NULL, True))  # fmt: skip
             for k, lab in arms:
                 S.record("ledger_answer_control", m["target"], f"Zach's described bridge, recall: {lab}",
                          *rc["extra"][k], n=rc["n"], source=rel(ANSWER))  # fmt: skip
     n_rows = sum(len(b[1]) + 1 for b in blocks)
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.27 * n_rows + 1.6))
-    fig.subplots_adjust(left=0.36, right=0.97, top=1 - 1.05 / fig.get_figheight(), bottom=0.6 / fig.get_figheight())
+    fig.subplots_adjust(left=0.36, right=0.97, top=1 - 1.05 / fig.get_figheight(), bottom=1.3 / fig.get_figheight())
     S.title(fig, "The recall's loss without the lens part is the item, not its answer",
             "Recall: switches blocked beyond a random part (same size), main test at L; whiskers 95%")  # fmt: skip
+    fig.text(0.01, 0.62 / fig.get_figheight(), "○ post hoc: answer in any language (single-token translations); 9B, 27B, Muse;", fontsize=8.5, color=S.COL["muted"], ha="left", va="bottom")
+    fig.text(0.01, 0.3 / fig.get_figheight(), "Lightning and 122B not run. ◇ control: random directions kept instead of the answer's.", fontsize=8.5, color=S.COL["muted"], ha="left", va="bottom")
     y, ticks, labels = 0.0, [], []
     for name, arms_v, col, z2 in blocks:
         ax.text(-0.19, y, name, fontsize=S.FONT, weight="bold", color=S.COL["muted"] if z2 else "#222222", va="center")
         y -= 1
-        for lab, v in arms_v:
-            whisker(ax, y, v, col)
+        for lab, v, style in arms_v:
+            if style == "control":
+                whisker(ax, y, v, S.COL["muted"], hollow=True, size=6.0, marker="D")
+            else:
+                whisker(ax, y, v, col, hollow=style == "post")
             ticks.append(y)
             labels.append(lab)
             y -= 1
