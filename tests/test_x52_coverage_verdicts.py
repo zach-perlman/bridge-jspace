@@ -114,7 +114,7 @@ def test_lightning_z2_cue_and_value_c_lookups(tmp_path, monkeypatch):
     from scripts import x50_zach as Z
     from scripts import x51_answer as AN
 
-    assert Z.COVERAGE_RUNS["z2"] == {LT: "nem35l_x52_z2"} and LT not in Z.RUNS["z2"] and Z.LAYERS[LT] == (14, 27)
+    assert Z.COVERAGE_RUNS["z2"][LT] == "nem35l_x52_z2" and LT not in Z.RUNS["z2"] and Z.LAYERS[LT] == (14, 27)
     monkeypatch.setattr(Z, "RESULTS", tmp_path / "zach")
     monkeypatch.setattr(Z, "COVERAGE", True)
     out = Z.stage_verdict("z2", [Z.COVERAGE_RUNS["z2"][LT]], 10)

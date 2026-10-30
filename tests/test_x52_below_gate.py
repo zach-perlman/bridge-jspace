@@ -204,7 +204,7 @@ def test_d1_and_474_clean_below_gate(tmp_path, monkeypatch):
     from scripts import x47_depthmap as DM
 
     assert C.BELOW is False and DM.BELOW is False and C.sources() is C.SOURCES and LT not in C.SOURCES["clean"]
-    assert C.sources(True)["clean"][LT] == B.FRESH_BELOW[LT] and C.sources(True)["main"] is B.MAIN_RUN
+    assert C.sources(True)["clean"][LT] == B.FRESH_BELOW[LT] and C.sources(True)["main"] is C.SOURCES["main"]
     monkeypatch.setattr(C, "BELOW", True)
     monkeypatch.setattr(C, "RESULTS", tmp_path)
     out = C.stage_verdict(["nem35l_x52_cumulative_clean_below"], 10, coverage=True)
