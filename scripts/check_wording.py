@@ -1,4 +1,5 @@
-"""check_wording: reader-facing text does not say "loss" (a TA read it as training loss; Dan 30 Oct).
+"""check_wording: reader-facing text does not say "loss" (a TA read it as training loss; Dan 30 Oct) and does not say "kept"
+next to a switch or an answer (Dan 30 Oct: "still switched" / "switch blocked", "answers unchanged", "retained").
 
 The band measure is an "accuracy drop (points)", the one-layer measure "switches blocked beyond a random part", both
 together "the effect". Only a training or fitting loss (the J++ lens fit) may say "loss": a line that mentions the fit or
@@ -21,8 +22,24 @@ FILES = (REPO / "README.md", REPO / "docs" / "depth" / "README.md", REPO / "docs
          REPO / "docs" / "breadth" / "README.template.md", REPO / "docs" / "depth" / "x0_details.md",
          REPO / "docs" / "depth" / "x0_details.template.md", REPO / "docs" / "depth" / "digest.md")  # fmt: skip
 LOSS = re.compile(r"\b(loss|lose|loses|lost|losing)\b", re.I)
+# "kept" within three words of switch / switched / answer(s), either side: ambiguous (a switch that survives an arm, an answer that
+# stayed, a part that was retained); other meanings ("the run kept the ids") are not matched
+KEPT = re.compile(r"\b(?:switch\w*|answers?)\b(?:\W+\w+){0,3}?\W+kept\b|\bkept\b(?:\W+\w+){0,3}?\W+\b(?:switch\w*|answers?)\b", re.I)
 FIT = re.compile(r"\b(fit|fitting|training)\b", re.I)
 SKIP = re.compile(r"<!--.*?-->|\{\{.*?\}\}|`[^`\n]*`|\]\([^)]*\)", re.S)
+
+
+def _clean(text: str) -> list[str]:
+    return SKIP.sub(lambda m: " " * len(m.group(0)) if "\n" not in m.group(0) else "\n" * m.group(0).count("\n"), text).split("\n")
+
+
+def kept_words(text: str) -> list[str]:
+    """'line N: …context…' for every "kept" next to a switch or an answer in reader-facing text."""
+    found = []
+    for n, line in enumerate(_clean(text), 1):
+        for m in KEPT.finditer(line):
+            found.append(f"line {n}: …{line[max(0, m.start() - 20) : m.end() + 20].strip()}…")
+    return found
 
 
 def loss_words(text: str) -> list[str]:
@@ -40,11 +57,12 @@ def main() -> int:
     bad = 0
     for path in FILES:
         if path.exists():
-            hits = loss_words(path.read_text(encoding="utf-8"))
+            body = path.read_text(encoding="utf-8")
+            hits = loss_words(body) + kept_words(body)
             bad += len(hits)
             for h in hits:
                 print(f"{path.relative_to(REPO)}: {h}")
-    print(f"check_wording: {bad} use(s) of loss")
+    print(f"check_wording: {bad} use(s) of loss / kept")
     return 1 if bad else 0
 
 

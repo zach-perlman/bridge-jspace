@@ -11,7 +11,7 @@ One vocabulary across every figure the README or docs/depth/x0_details.md shows 
 | random lens directions (a dictionary, Fig. 2 only) | "random lens directions": random directions picked by the same OMP at their own (smaller) share, not the matched control (Dan ~22:40); also where s02 and the x0 details show that dictionary (Dan 27 Oct ~11:45; was "random atoms") | "random directions", "random atoms" |
 | PCA control | "PCA directions (same size)" | "main directions", "the layer's main directions" |
 | removing / keeping | "without the X", "only the X", "whole change" | "part removed", "no J++", "keep-only", "X alone", "edit" |
-| answer classes | "identity", "position", "value", "original answer", "other"; on the main-page figures "identity" only as "identity route", "identity answers" or "identity change" (Dan, 28 Oct ~20:30; `scripts/check_figure_terms.py`) | "unchanged", "original" (alone); a bare "identity" on a main-page figure |
+| answer classes | "identity", "position", "value", "original answer", "other"; on the main-page figures "identity" only as "identity route", "identity answers" or "identity change" (Dan, 28 Oct ~20:30; `scripts/check_figure_terms.py`) | "unchanged" alone (an answer that stayed is "answers unchanged"; Dan, 30 Oct), "original" (alone); a bare "identity" on a main-page figure |
 | prompts | "original prompt", "changed prompt" | "swapped", "Changed" as a row title without "prompt", O / S in figures |
 | lockers | "first / second / third locker" | slot numbers, "slot" |
 | sentence order | "locker before the pick", "locker after the pick" | "locker first/after" (prose may use "locker-first scenes" after defining it once) |

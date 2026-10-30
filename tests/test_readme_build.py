@@ -179,7 +179,7 @@ BANNED = {
     # removing / keeping: "X alone" in any form, "edit" and its inflections
     "removal variants": r"part removed|no J\+\+|(?i:keep-only)|\balone\b|\bedit(?:s|ed|ing)?\b",
     # "original" only as "original answer" / "original prompt" (across a line break too)
-    "answer classes": r"\bunchanged\b|\boriginal\b(?!\s(?:answer|prompt|→)|'s)",
+    "answer classes": r"\bunchanged\b(?<!answers unchanged)(?<!answer unchanged)(?!\s\((?:%|share)\))|\boriginal\b(?!\s(?:answer|prompt|→)|'s)",  # "answers unchanged" is the word for an answer that stayed (Dan 30 Oct)
     # "Changed" as a row title (capitalised, no "prompt" after it); O / S as prompt names: a lone capital letter
     "prompt variants": r"\bswapped\b|\bChanged\b(?!\sprompt)|(?<![\w'’])[OS](?![\w'’.])",
     "slot": r"(?i:\bslots?\b)",
@@ -196,6 +196,9 @@ BANNED = {
     # the run code X0 exactly ("x0_kmatch", a run name, stays)
     # "loss" reads as training loss (a TA, Dan 30 Oct): accuracy drop (band) / switches blocked (one layer) / the effect
     "loss variants": r"(?i:\bloss(?:es)?\b|\blos(?:e|es|ing|t)\b)",
+        # "kept" is ambiguous (a switch that survives an arm, an answer that stayed, a part that was retained; Dan 30 Oct): "still
+    # switched" / "switch blocked", "answers unchanged", "retained"
+    "kept variants": r"(?i:\bkept\b)",
     "x0 details variants": r"(?i:\bexcess\b|\bdependence\b|graded contrast)|\bW_[UE]\b|\bX0\b|\bC =",
 }
 KEPT = {  # exact strings that keep a banned variant, each by Dan's decision

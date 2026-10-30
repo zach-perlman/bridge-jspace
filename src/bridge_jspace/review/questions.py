@@ -214,10 +214,10 @@ class Env:
             return f"digit {row['class']}"
         if "changed" in row and "role" not in row:
             return "changed" if row["changed"] else "unchanged"
-        return "switched" if row.get("switched") else "kept"
+        return "switched" if row.get("switched") else "not switched"
 
     def story(self) -> str:
-        """The item's story in one sentence per reader, from the stored rows: switched / blocked / kept under each arm."""
+        """The item's story in one sentence per reader, from the stored rows: switched / switch blocked / still switched under each arm."""
         pairs, parts = self._pairs(), []
         for w in ("PM", "PP"):
             name, rows = I.READER_NAME[w], self.it["rows"].get(w) or {}
@@ -230,15 +230,15 @@ class Env:
                     parts.append(f"{head} no row under '{self.whole}'")
                 elif not sw:
                     after = (self.it.get("order") or {}).get("original") == "after"
-                    parts.append(f"{head} the whole change did not switch it, it stayed {a}"
+                    parts.append(f"{head} the whole change did not switch it (it stayed {a}), so it adds nothing to the blocked-beyond-random count"
                                  + (" (the locker sentence comes after the pick, so there is nothing for the lookup to follow)" if w == "PP" and after else ""))  # fmt: skip
                 else:
                     bits = [f"the whole change switched it to {b}"]
                     for arm, rnd, phrase in pairs:
-                        bits.append(f"without {phrase} it still switched to {b} (not blocked)" if self.switched(w, arm)
-                                    else f"without {phrase} it stayed {a} (blocked)")  # fmt: skip
-                        bits.append(f"without its random part it still switched to {b} (not blocked)" if self.switched(w, rnd)
-                                    else f"without its random part it stayed {a} (blocked)")  # fmt: skip
+                        bp, br = not self.switched(w, arm), not self.switched(w, rnd)
+                        bits.append(f"without {phrase}: {'switch blocked (it stayed ' + str(a) + ')' if bp else 'still switched'}; "
+                                    f"without a same-size random part (control): {'switch blocked' if br else 'still switched'} "
+                                    f"→ {int(bp) - int(br):+d} to the blocked-beyond-random count")  # fmt: skip
                     parts.append(f"{head} " + "; ".join(bits))
             else:
                 labels = [lb for lb in (self.view.get("decisive") or list(rows)) if lb in rows and lb not in ("unedited", "unwritten")]

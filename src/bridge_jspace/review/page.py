@@ -154,8 +154,8 @@ from memory.</li>
 <b>Logit gap</b>: logit of the changed answer minus logit of the original; above 0 the changed answer is preferred.</li>
 <li><b>What it is</b>: the run's own label for the top token (its code in brackets: A = original answer, b = changed
 answer). The main test stores no top token, only this label, so "another token" cannot be shown.</li>
-<li><b>Extra loss</b>: (switches kept without the random part − switches kept without the part) / switches with the
-whole change. An item counts only if the whole change switched it.</li></ul></details>"""
+<li><b>Blocked beyond random</b>: (items still switched without the random part − items still switched without the part) /
+items the whole change switched. An item counts only if the whole change switched it.</li></ul></details>"""
 
 
 def expected_html(it: dict) -> str:
@@ -276,8 +276,9 @@ def answer_class(what: str) -> str:
 
 
 def contribution(it: dict, w: str) -> list[str]:
-    """How this item counts in the view's extra loss: only items the whole change switched are counted; +1 when the
-    switch is lost without the part and kept without its random part, -1 the reverse, 0 otherwise."""
+    """How this item counts in the view's blocked-beyond-random count: only items the whole change switched are counted; +1
+    when the switch is blocked without the part and still switched without the same-size random part (the control), -1 the
+    reverse, 0 otherwise."""
     v = I.view(it["view"])
     h = v.get("headline")
     entries = [h] if isinstance(h, dict) else h or []
@@ -296,7 +297,7 @@ def contribution(it: dict, w: str) -> list[str]:
     if not pairs or whole is None:
         return []
     if not whole["switched"]:
-        return ["the whole change did not switch it, so it is not among the switches the extra loss counts"]
+        return ["the whole change did not switch it, so it adds nothing to the blocked-beyond-random count"]
     out = []
     for part, rand in pairs:
         rp, rr = rows.get(part), rows.get(rand)
@@ -304,8 +305,8 @@ def contribution(it: dict, w: str) -> list[str]:
             continue
         lost_p, lost_r = not rp["switched"], not rr["switched"]
         n = int(lost_p) - int(lost_r)
-        out.append(f"the whole change switched it; {part}: the switch is {'lost' if lost_p else 'kept'}; {rand}: "
-                   f"{'lost' if lost_r else 'kept'} → this item adds {n:+d} to the extra loss's numerator")  # fmt: skip
+        out.append(f"the whole change switched it; {part}: {'switch blocked' if lost_p else 'still switched'}; {rand}: "
+                   f"{'switch blocked' if lost_r else 'still switched'} → {n:+d} to the blocked-beyond-random count")  # fmt: skip
     return out
 
 

@@ -242,7 +242,7 @@ def conflict_shares(v: dict, m: str, items: list[dict]) -> list[dict]:
 
 
 E1_PAIRS = {"unedited": "unedited", "whole": "whole", "without J++": "arm 1: without the lens part",
-            "without its random part": "arm 1's random part"}  # fmt: skip
+            "without a same-size random part (control)": "arm 1's random part"}  # fmt: skip
 
 
 def label_crosscheck(m: str, items: list[dict]) -> list[dict]:

@@ -216,7 +216,7 @@ def build_atoms(verdict_dir: Path, out_name: str, title: str | None = None) -> s
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
     fig, (a, b, c) = frame(
         title or atoms_title(v),
-        "Taken out of the change at the bridge word: the J++ lens's directions 26–100, the recall's 25 kept, against a "
+        "Taken out of the change at the bridge word: the J++ lens's directions 26–100, the recall's 25 retained, against a "
         "random part (same size). 95% intervals, all fixed in advance. Effect (0–1): switches blocked without the "
         "directions minus those blocked without the random part.",
         (1, 1, 0.55), ROW_IN * len(TARGETS), legend=readers_legend())  # fmt: skip
@@ -539,14 +539,14 @@ def zero_title(v: dict) -> str:
     if not labels:
         return "The J++ part zeroed at one layer: no model tested yet"
     if k == 0 and all(lab.startswith("followed") for lab in labels):
-        return "The J++ part zeroed at one layer: the recall keeps its answers"
+        return "The J++ part zeroed at one layer: the recall's answers stay unchanged"
     return f"The J++ part zeroed at one layer: the recall needs it on {k} of {len(labels)} models"
 
 
 def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, lightning: Path | None = LT_ZERO) -> str:
     """47.5 (x47_zero verdict, x47_5.json): one row per model slot (9B, 27B, Muse, Lightning). On the changed prompt,
     at the bridge word at L, the J++ part's 25 directions taken out of the state (the reader's colour) or a random part
-    (same size, grey): the changed prompt's answers kept (share, 0-1), (a) recall (the rule's bar at 0.8, "followed if
+    (same size, grey): the changed prompt's answers unchanged (share, 0-1), (a) recall (the rule's bar at 0.8, "followed if
     above"; under each row the recall's answers lost beyond random, in pp), (b) lookup. n and the status glyph in each
     panel's corner; the rule's reading is recorded for data.csv, not drawn (v6 iteration 2). Lightning from its own
     verdict folder `lightning` (batch 52 coverage), hollow; None: its slot says "not run"."""
@@ -569,7 +569,7 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, light
         (1, 1), ROW_IN * len(SLOTS5), legend=legend, wrap=False, bottom_in=BOTTOM_IN + 0.45)  # fmt: skip
     row_panels((a, b), len(SLOTS5))
     for ax, name in ((a, "(a) recall"), (b, "(b) lookup")):
-        share_axis(ax, "answers kept (share)")
+        share_axis(ax, "unchanged (share)")
         panel_title(ax, name)
         bar(ax, 0.8, "followed if above", side="left")
     rows, ns, lt_n, status = [], [], None, []

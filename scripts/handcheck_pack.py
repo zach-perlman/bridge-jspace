@@ -52,7 +52,7 @@ X0_RUN = "results/x0_necessity/qwen35_9b_x0_necessity"
 RT_RUN = "results/x6_routes/qwen35_9b_x6_routes"
 X8_RUN = "results/x8_write/qwen35_9b_x8_write"
 # stored arm -> the review view's label for it (docs/review/review_views.yaml)
-X0_ARMS = {"whole": "whole", "no_part": "without J++", "no_rand": "without its random part"}
+X0_ARMS = {"whole": "whole", "no_part": "without J++", "no_rand": "without a same-size random part (control)"}
 RT_ARMS = {
     "whole": "whole",
     "no_alf": "without the pointer directions",
@@ -154,7 +154,7 @@ def gap(pool: list[dict]) -> dict:
 
 def gap_table(g: dict) -> tuple[list[list[str]], list[str]]:
     n, k, s = g["n"], g["k"], g["s"]
-    rows = [["reader", "n", "S_whole", "S_no_part (without J++)", "S_no_rand (without its random part)",
+    rows = [["reader", "n", "S_whole", "S_no_part (without J++)", "S_no_rand (without a same-size random part (control))",
              "1 − S_no_part / S_whole", "1 − S_no_rand / S_whole", "extra loss [CI]"]]  # fmt: skip
     for w in READERS:
         rows.append([NAME[w], str(n), *(f"{k[(w, a)]}/{n} = {s[(w, a)]:.3f}" for a in X0_ARMS),
@@ -575,7 +575,7 @@ X45D_ARMS = {
     "no_rand": ("pcf", "no_rand"),
 }
 X45D_NAME = {"none": "before the change", "whole": "whole", "no_part": "without the refit basis (pcf no_part)",
-             "no_rand": "without its random part (pcf no_rand)"}  # fmt: skip
+             "no_rand": "without a same-size random part (control) (pcf no_rand)"}  # fmt: skip
 LABEL = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse Glimmer 30B"}
 FLOAT_TOL = 1e-9  # the files store full-precision floats; the recount uses the same arithmetic
 
@@ -828,7 +828,7 @@ def x45d_number(pool: list[dict]) -> Addition:
     rows = [(it, it["rows"][a]) for it in pool for a in X45D_ARMS]
     role = sum(role_of(r["top"], it["case"]["readers"]["PP"]) == r["role"] for it, r in rows)
     swr = sum(int(r["switched"]) == int(r["role"] == "b") for _, r in rows)
-    notes = [f"Extra loss = (switches lost without the basis − lost without its random part) / whole switches = "
+    notes = [f"Extra loss = (switches lost without the basis − lost without a same-size random part (control)) / whole switches = "
              f"(1 − {k['no_part']}/{k['whole']}) − (1 − {k['no_rand']}/{k['whole']}) = ({k['no_rand']} − {k['no_part']})"
              f" / {k['whole']} = {f4(ex)}. CI: cluster bootstrap over the bridge item, 10,000 resamples, seed 0 (the "
              "run's X.resampled_rates).",
@@ -1068,7 +1068,7 @@ def x45m_number(model: str, pool: list[dict]) -> Addition:
     assert ref["run"] == Path(X45M_RUNS[model]).name, ref["run"]
     labs = list(X45M_LABEL.values())
     assert not stored_rows(pool, tuple(labs))[1], "45m: a stored row is missing; the recount needs every arm"
-    table = [["scenes", "n", *(f"{NAME[w]} switched: whole / without J++ / without its random part" for w in READERS),
+    table = [["scenes", "n", *(f"{NAME[w]} switched: whole / without J++ / without a same-size random part (control)" for w in READERS),
               *(f"{NAME[w]} extra loss [CI]" for w in READERS), "gap [CI]", "x45m.json gap", "matches"]]  # fmt: skip
     checks = []
     for g in X45M_GROUPS:

@@ -366,10 +366,9 @@ views:
     readme: "docs/depth/README.md, Claims row 1; Part I 'In a conflict, which part of the bridge word does each reader follow?', Fig. 1 (fig01_split)"
     claim: >-
       The recall follows the lens part of the bridge word; the lookup follows the rest (README claim 1, grade A, 27B
-      partial; 9B, 27B, Muse, Lightning, and the 122B). Rule fixed in advance: "Confirmed if the lookup loses at most 0.10
-      beyond random and the recall loses at least 0.30 of its switches without the lens part; killed if the lookup loses
-      at least 0.20 or the recall under 0.20." Switches lost beyond a random part = (switches kept without the random
-      part - switches kept without the lens part) / switches with the whole change.
+      partial; 9B, 27B, Muse, Lightning, and the 122B). Rule fixed in advance: "Confirmed if the lookup has at most 0.10 blocked
+      beyond random and the recall has at least 0.30 blocked of its switches without the lens part; killed if the lookup has at least 0.20 blocked or the recall under 0.20." Switches blocked beyond a random part = (items still switched without the random
+      part - items still switched without the lens part) / switches with the whole change.
     sources: [lk_excess_<m>, rc_excess_<m>, contrast_<m>]
     filters:
       rendering: chat
@@ -379,14 +378,14 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without a same-size random part (control),
                keys: {PP: lk_excess_<m>, PM: rc_excess_<m>, gap: contrast_<m>},
                csv: {PP: "conflict: lookup, switches lost beyond a random part", PM: "conflict: recall, switches lost beyond a random part",
                      gap: "main test (two people swap picks): gap"}}
-    decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
+    decisive: ["unedited", "whole", "without J++", "without a same-size random part (control)"]  # the arms shown side by side on each card
     common: [H1, H2, H3, P1, P2, P3, P4]
-    header: {whole: whole, part: without J++, random: without its random part, min_switched: 30}
+    header: {whole: whole, part: without J++, random: without a same-size random part (control), min_switched: 30}
     questions:
       - id: A1
         text: "Did the whole change switch the recall?"
@@ -409,13 +408,13 @@ views:
         machine: "blocked('PM', 'without J++')"
       - id: A3
         text: "Without its random part, did the recall still switch?"
-        look_at: 'the stored numbers, recall, the "without its random part" row'
-        anchor: "numbers:PM:without its random part"
+        look_at: 'the stored numbers, recall, the "without a same-size random part (control)" row'
+        anchor: "numbers:PM:without a same-size random part (control)"
         yes_if: "the recall still switches when a random part of the same share is removed"
         protects_against: "if the random part blocks it too, the effect is not about J++"
         kind: observe
-        tally: "recall still switched without its random part"
-        machine: "says('PM', 'without its random part')"
+        tally: "recall still switched without a same-size random part (control)"
+        machine: "says('PM', 'without a same-size random part (control)')"
       - id: A4
         text: "Did the whole change switch the lookup? If not: is the asked pick's locker sentence after the pick?"
         look_at: 'the stored numbers, lookup, the "the whole change" row; the order of the pick and locker sentences'
@@ -454,8 +453,8 @@ views:
     readme_rows: [1]  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
     readme_quotes: ["The recall follows the part of the bridge word the lens reads; the lookup follows the rest"]  # README lines containing these, quoted whole
     targeted:
-      nearest: [without J++, without its random part]  # |p_alt - p_org| smallest under either arm, items the whole change switched
-      surprising: {reader: PP, part: without J++, random: without its random part}
+      nearest: [without J++, without a same-size random part (control)]  # |p_alt - p_org| smallest under either arm, items the whole change switched
+      surprising: {reader: PP, part: without J++, random: without a same-size random part (control)}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
@@ -482,14 +481,14 @@ views:
       - qwen3.5-9b|qwen35_9b_x51_12_e1_r2|P2-L0-0031|PP
     common: [H1, H2, H3, P1, P2, P3, P4]
     header: {whole: whole, part: "arm 1: without the lens part", random: "arm 1's random part", min_switched: 30}
-    story: [["arm 1: without the lens part", "arm 1's random part", "the lens part"], ["arm 2: without the lens part, its answer directions kept", "arm 2's random part", "the lens part (answer directions kept)"], ["arm 3: without the answer directions only", "arm 3's random part", "the answer directions only"]]
+    story: [["arm 1: without the lens part", "arm 1's random part", "the lens part"], ["arm 2: without the lens part, its answer directions retained", "arm 2's random part", "the lens part (answer directions kept)"], ["arm 3: without the answer directions only", "arm 3's random part", "the answer directions only"]]
     kind: x51_answer
     readme: "docs/depth/README.md, Part I 'In a conflict ...', the result table's last four rows (specificity; conflict_answer in data.csv)"
     claim: >-
       What the recall follows is the item, not its answer: keeping the answer's lens directions keeps almost all of the
-      recall's loss (0.95 / 0.93 / 0.93 / 0.92 ○), and removing only the answer directions costs it about nothing beyond
-      random. Rule fixed in advance: "the lens effect is the item if the recall keeps at least 0.7 of its loss with the
-      answer directions kept and loses at most 0.10 beyond random without them only"; first, the answer word's lens rank
+      recall's drop (0.95 / 0.93 / 0.93 / 0.92 ○), and removing only the answer directions costs it about nothing beyond
+      random. Rule fixed in advance: "the lens effect is the item if the recall keeps at least 0.7 of its drop with the
+      answer directions retained and has at most 0.10 blocked beyond random without them only"; first, the answer word's lens rank
       at the bridge word (outside the top 50 on >= 90% of items: "the answer word is not read", Muse and Lightning).
     sources: []
     filters:
@@ -500,7 +499,7 @@ views:
         whole: whole
         "arm 1: without the lens part": no_jpp
         "arm 1's random part": no_jpp_rand
-        "arm 2: without the lens part, its answer directions kept": no_jpp_A
+        "arm 2: without the lens part, its answer directions retained": no_jpp_A
         "arm 2's random part": no_jpp_A_rand
         "arm 3: without the answer directions only": no_A
         "arm 3's random part": no_A_rand
@@ -509,11 +508,11 @@ views:
       - {stat: extra_loss, reader: PM, part: "arm 3: without the answer directions only", random: "arm 3's random part",
          csv: "main test, recall: switches lost beyond random without the answer words' directions only"}
       - {stat: answer_rank_below, reader: PM, top: 50, csv: "main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word"}
-    decisive: ["unedited", "whole", "arm 1: without the lens part", "arm 1's random part", "arm 2: without the lens part, its answer directions kept", "arm 2's random part", "arm 3: without the answer directions only", "arm 3's random part"]  # the arms shown side by side on each card
+    decisive: ["unedited", "whole", "arm 1: without the lens part", "arm 1's random part", "arm 2: without the lens part, its answer directions retained", "arm 2's random part", "arm 3: without the answer directions only", "arm 3's random part"]  # the arms shown side by side on each card
     readme_rows: []  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
     readme_quotes: ["What the recall follows is the item, not its answer"]  # README lines containing these, quoted whole
     targeted:
-      nearest: ["arm 1: without the lens part", "arm 2: without the lens part, its answer directions kept"]
+      nearest: ["arm 1: without the lens part", "arm 2: without the lens part, its answer directions retained"]
       surprising: {reader: PP, part: "arm 1: without the lens part", random: "arm 1's random part"}
     runs:
       qwen3.5-9b: [results/x51_answer/qwen35_9b_x51_12_e1_r2]
@@ -656,7 +655,7 @@ views:
     kind: zach
     readme: "docs/depth/README.md, Part V 'His made-up-fact passages'; Claims row 1 (limits)"
     claim: >-
-      On his made-up-fact passages (same rule as the conflict test) the split holds on the 9B: the lookup loses -0.05
+      On his made-up-fact passages (same rule as the conflict test) the split holds on the 9B: the lookup has -0.05 blocked
       [-0.13, 0.03] beyond random, the recall 0.59, gap 0.64. The lookup's passage states a made-up final fact; the
       recall's passage leaves it out, so the recall answers from memory (the true fact).
     sources: []
@@ -667,15 +666,15 @@ views:
         unedited: none
         whole: whole
         without J++: no_jpp
-        without its random part: no_jpp_rand
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, keys: {},
+        without a same-size random part (control): no_jpp_rand
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without a same-size random part (control), keys: {},
                csv: {PP: "Z1-P: lookup, switches lost beyond a random part", PM: "Z1-P: recall, switches lost beyond a random part", gap: "Z1-P: the gap"}}
-    decisive: ["unedited", "whole", "without J++", "without its random part"]  # the arms shown side by side on each card
+    decisive: ["unedited", "whole", "without J++", "without a same-size random part (control)"]  # the arms shown side by side on each card
     readme_rows: []  # docs/depth/README.md claims-table rows, quoted verbatim in the pack
     readme_quotes: ["**His made-up-fact passages**"]  # README lines containing these, quoted whole
     targeted:
-      nearest: [without J++, without its random part]
-      surprising: {reader: PP, part: without J++, random: without its random part}
+      nearest: [without J++, without a same-size random part (control)]
+      surprising: {reader: PP, part: without J++, random: without a same-size random part (control)}
     runs:
       qwen3.5-9b: [results/x50_zach/qwen35_9b_x52_z1p]
     notes: >-
@@ -786,8 +785,8 @@ views:
     readme: "not in the README: docs/depth/EXPERIMENTS.md, 'At the last token, does each reader compute its answer through the lens part or outside it? (53.3)'"
     claim: >-
       Ledger only (no prediction; UNVERIFIED). Rule fixed in advance (Dan 29 Oct 09:30): per reader, "computes outside
-      the lens at the last token" if the loss without the lens part is <= 0.10 beyond random and the rest alone switches
-      >= 0.7 of the whole; "through the lens" if the loss is >= 0.30 beyond random; else in between. At the read peak:
+      the lens at the last token" if the effect without the lens part is <= 0.10 beyond random and the rest alone switches
+      >= 0.7 of the whole; "through the lens" if the effect is >= 0.30 beyond random; else in between. At the read peak:
       the recall outside the lens on the 9B and 27B, in between on Muse, through the lens on Lightning.
     sources: []
     filters:
@@ -797,16 +796,16 @@ views:
         unedited: none
         whole: whole
         without J++: no_jpp
-        without its random part: no_rand
+        without a same-size random part (control): no_rand
         only the J++ part: jpp
         only the rest: rest
     headline:
-      - {stat: extra_loss_at_peak, reader: PP, part: without J++, random: without its random part,
+      - {stat: extra_loss_at_peak, reader: PP, part: without J++, random: without a same-size random part (control),
          csv: "lookup L<layer>: switches lost without the lens part beyond random (last token)"}
-      - {stat: extra_loss_at_peak, reader: PM, part: without J++, random: without its random part,
+      - {stat: extra_loss_at_peak, reader: PM, part: without J++, random: without a same-size random part (control),
          csv: "recall L<layer>: switches lost without the lens part beyond random (last token)"}
     ledger_quotes: ["The recall: at its read-peak layer it computes outside the lens part"]  # docs/depth/EXPERIMENTS.md lines containing these, quoted whole in the pack
-    decisive: ["unedited", "whole", "without J++", "without its random part", "only the rest"]
+    decisive: ["unedited", "whole", "without J++", "without a same-size random part (control)", "only the rest"]
     runs:
       qwen3.5-9b: [results/x53_lastconflict/qwen35_9b_x53_3]
       qwen3.6-27b: [results/x53_lastconflict/x53_3_27b]
@@ -864,8 +863,8 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without a same-size random part (control),
                keys: {PP: single_lk_excess_<m>, PM: single_rc_excess_<m>, gap: single_contrast_<m>}}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_single_r2]
@@ -941,8 +940,8 @@ views:
     kind: routes
     readme: "not yet in the README (batch 45, test 45k: jobs/c3/x45k_*_q2.yaml, Q45.9)"
     claim: >-
-      Fixed in advance: as J++ grows from 25 to 100 atoms, does the lookup lose the identity or the position route in C2
-      beyond a random part of the same share; the 27B's C0 lookup extra loss at k = 100 is the precondition; another
+      Fixed in advance: as J++ grows from 25 to 100 atoms, does the lookup drop the identity or the position route in C2
+      beyond a random part of the same share; the 27B's C0 lookup extra drop at k = 100 is the precondition; another
       scene's 100 atoms refit here (jpp_other) are descriptive in this run. Not scored yet.
     sources: []
     filters:
@@ -1011,7 +1010,7 @@ views:
     claim: >-
       Fixed in advance: a locker item that nobody picks is added to both prompts and the asked pick changes from the
       bridge to it (one token changes, no duplicate pick). The split holds in the clean design if, on at least 2 of 3
-      models, in locker-before scenes the gap is at least 0.3 and the lookup's extra loss at most 0.10 (scripts/x45m.py
+      models, in locker-before scenes the gap is at least 0.3 and the lookup's extra drop at most 0.10 (scripts/x45m.py
       score). Not scored yet.
     sources: []
     filters:
@@ -1023,7 +1022,7 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x45m_fresh]
       qwen3.6-27b: [results/x0_necessity/x45m_fresh_27b]
@@ -1098,7 +1097,7 @@ views:
     readme: "not yet in the README (batch 45, test 45d: x0b_generalize --pcf-from x7_pcf/*_x45d_fit; jobs/c3/batch45.yaml)"
     claim: >-
       Fixed in advance: "pointer elsewhere" if removing the format's label-free basis, refit on the other half of the
-      bridge items, costs the lookup an extra loss of at least 0.2 (lower CI above 0.1) in 2 of the 3 formats; "no linear
+      bridge items, costs the lookup an extra drop of at least 0.2 (lower CI above 0.1) in 2 of the 3 formats; "no linear
       pointer found" if all three are below 0.1; otherwise neither. A format with fewer than 30 lookup switches under the
       whole change does not count (Dan 26 Oct ~21:20, after the first results).
     sources: []
@@ -1187,7 +1186,7 @@ views:
     readme: "not yet in the README (batch 45, test 45g: x0_massmean --mode two_routes; jobs/c3/batch45.yaml)"
     claim: >-
       Fixed in advance (x0_massmean.rule_45g), per run (model x scene set) on the recall: (a) in locker-before scenes the
-      extra loss with J++ and the pointer removed together is at least 0.3 and at least 0.2 above the larger single
+      extra drop with J++ and the pointer removed together is at least 0.3 and at least 0.2 above the larger single
       removal, that difference's paired CI excluding 0; (b) in locker-after scenes J++ alone costs at least 0.3 and adding
       the pointer adds less than 0.1. Rule (a) holds for the batch on at least 3 of 4 models. The groups are the run's
       org_order.
@@ -1295,7 +1294,7 @@ views:
     readme: "docs/depth/README.md, Part I 'Does the split hold in other texts?' (varied rows), Fig. 9a"
     claim: >-
       In prose, JSON and tables the recall follows the lens part and the lookup does not, on all four models (pooled over
-      the formats; rule fixed in advance: holds if the lookup loses at most 0.10 beyond random, upper bound at most 0.20,
+      the formats; rule fixed in advance: holds if the lookup has at most 0.10 blocked beyond random, upper bound at most 0.20,
       and the gap is at least 0.20, lower bound at least 0.10).
     sources: [x0b_lk_excess_<m>, x0b_c_<m>]
     filters:
@@ -1306,12 +1305,12 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without a same-size random part (control),
                keys: {PP: x0b_lk_excess_<m>, PM: x0b_rc_excess_<m>, gap: x0b_c_<m>},
                csv: {PP: "varied: lookup, switches lost beyond a random part", gap: "varied: the gap"}}
     readme_quotes: ["In prose, JSON and tables the recall follows the lens part"]  # docs/depth/README.md lines containing these, quoted whole in the pack
-    decisive: ["unedited", "whole", "without J++", "without its random part"]
+    decisive: ["unedited", "whole", "without J++", "without a same-size random part (control)"]
     runs:
       qwen3.5-9b: [results/x0b_generalize/qwen35_9b_x0b_v2]
       qwen3.6-27b: [results/x0b_generalize/x0b_v2_27b]
@@ -1340,16 +1339,16 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
     headline:
-      - {stat: extra_loss, reader: PP, part: without J++, random: without its random part, key: "nat_lk_excess_<m>|natg75_lk_excess_<m>",
+      - {stat: extra_loss, reader: PP, part: without J++, random: without a same-size random part (control), key: "nat_lk_excess_<m>|natg75_lk_excess_<m>",
          csv: "natural (below gate): lookup, switches lost beyond a random part"}
-      - {stat: extra_loss, reader: PM, part: without J++, random: without its random part, key: "nat_rc_excess_<m>|natg75_rc_excess_<m>",
+      - {stat: extra_loss, reader: PM, part: without J++, random: without a same-size random part (control), key: "nat_rc_excess_<m>|natg75_rc_excess_<m>",
          csv: "natural (below gate): recall, switches lost beyond a random part"}
-      - {stat: gap, part: without J++, random: without its random part, key: "nat_gap_<m>|natg75_gap_<m>",
+      - {stat: gap, part: without J++, random: without a same-size random part (control), key: "nat_gap_<m>|natg75_gap_<m>",
          csv: "natural (below gate): the gap"}
     readme_quotes: ["In natural passages the recall follows it on all four"]  # docs/depth/README.md lines containing these, quoted whole in the pack
-    decisive: ["unedited", "whole", "without J++", "without its random part"]
+    decisive: ["unedited", "whole", "without J++", "without a same-size random part (control)"]
     runs:
       qwen3.5-9b: [results/x5_natural/qwen35_9b_x5_natural_g75, results/x5_natural/qwen35_9b_x5_natural]
       qwen3.6-27b: [results/x5_natural/x5_natural_27b]
@@ -1518,7 +1517,7 @@ views:
       muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
 
   - id: muse_depth
-    title: Muse's J++ extra loss by depth
+    title: Muse's J++ effect by depth
     status: later
     kind: x0
     readme: "Fig. 6 (Muse panel)"
@@ -1545,7 +1544,7 @@ views:
     readme: "Section 1 'It is not a margin effect', Fig. 1b panel 'Same test, scored on the logit difference'"
     claim: >-
       The gap holds on the logit difference: an arm's shift = ld(arm) - ld(unedited), ld = the swapped answer's logit
-      minus the original's; extra loss = (mean shift without the random part - mean shift without J++) / mean shift of
+      minus the original's; extra drop = (mean shift without the random part - mean shift without J++) / mean shift of
       the whole change; gap = the recall's minus the lookup's (Q39.1: all four >= 0.20).
     sources: []
     filters:
@@ -1556,13 +1555,13 @@ views:
         unedited: [none, "-", 0, "-"]
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
-        without its random part: [no_rand, jpp, 25, signed]
+        without a same-size random part (control): [no_rand, jpp, 25, signed]
     ref_file: results/x0_logit_diff/x0_logit_diff_20261026/ld.json  # no data.csv number: compared with the analysis output
     ref_models: {qwen3.5-9b: 9B, qwen3.6-27b: 27B, qwen3.5-122b-a10b: 122B, muse-glimmer-30b: Muse}
     headline:
-      - {stat: ld_extra, reader: PP, part: without J++, random: without its random part, ref: "models.<M>.lookup.extra.0"}
-      - {stat: ld_extra, reader: PM, part: without J++, random: without its random part, ref: "models.<M>.recall.extra.0"}
-      - {stat: ld_gap, part: without J++, random: without its random part, ref: "models.<M>.gap.0"}
+      - {stat: ld_extra, reader: PP, part: without J++, random: without a same-size random part (control), ref: "models.<M>.lookup.extra.0"}
+      - {stat: ld_extra, reader: PM, part: without J++, random: without a same-size random part (control), ref: "models.<M>.recall.extra.0"}
+      - {stat: ld_gap, part: without J++, random: without a same-size random part (control), ref: "models.<M>.gap.0"}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
@@ -1577,7 +1576,7 @@ views:
     readme: "Section 5 'About half of the route is unexplained' (identity outside J++), Fig. 10"
     claim: >-
       With identity added, the sanity swap's lookups still switching drop, against a random part of the same share; the
-      extra loss stays below the 0.80 bar fixed in advance. The recall needs identity on the 27B and Muse, not on the 9B.
+      extra drop stays below the 0.80 bar fixed in advance. The recall needs identity on the 27B and Muse, not on the 9B.
     sources: [rtd_ex_C0_jpp+alf+idout_lk_<m>, rtd_left_C0_jpp+alf+idout_lk_<m>, rtd_randleft_C0_jpp+alf+idout_lk_<m>, rtd_ex_C0_id_rc_<m>]
     filters:
       layer: fixed
@@ -1670,8 +1669,8 @@ fixed_sample:
       - {"item": "qwen3.5-122b-a10b|qwen35_122b_x0_necessity_r2|P2-L0-0265|PM", "model": "qwen3.5-122b-a10b", "reader": "PM", "scene": "P2-L0-0265", "run": "results/x0_necessity/qwen35_122b_x0_necessity_r2", "layer": 33, "stratum": "random: Qwen3.5-122B x recall"}
       - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0037|PM", "model": "muse-glimmer-30b", "reader": "PM", "scene": "P2-L0-0037", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
       - {"item": "muse-glimmer-30b|muse30b_x0_necessity|P2-L0-0274|PP", "model": "muse-glimmer-30b", "reader": "PP", "scene": "P2-L0-0274", "run": "results/x0_necessity/muse30b_x0_necessity", "layer": 26, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
-      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0193|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0193", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without its random part'; 19 candidates)"}
-      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0078|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0078", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without its random part', not under 'without J++'; 24 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0193|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0193", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without a same-size random part (control)'; 19 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x0_necessity|P2-L0-0078|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "P2-L0-0078", "run": "results/x0_necessity/qwen35_9b_x0_necessity", "layer": 12, "stratum": "targeted: surprising (switches under 'without a same-size random part (control)', not under 'without J++'; 24 candidates)"}
     answer_control:
       - {"item": "nemotron-3.5-lightning|nem35l_x52_answer|P2-L0-0078|PP", "model": "nemotron-3.5-lightning", "reader": "PP", "scene": "P2-L0-0078", "run": "results/x51_answer/nem35l_x52_answer", "layer": 14, "stratum": "random: Nemotron 3.5 Lightning x lookup"}
       - {"item": "qwen3.6-27b|x51_12_e1_27b_r2|P2-L0-0043|PM", "model": "qwen3.6-27b", "reader": "PM", "scene": "P2-L0-0043", "run": "results/x51_answer/x51_12_e1_27b_r2", "layer": 32, "stratum": "random: Qwen3.6-27B x recall"}
@@ -1714,8 +1713,8 @@ fixed_sample:
       - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:cities:P-L1-Lisbon-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lisbon-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "random: Qwen3.5-9B x recall"}
       - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:countries:P-L0-Greece-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Greece-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
       - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:countries:P-L0-Italy-0|PM", "model": "qwen3.5-9b", "reader": "PM", "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Italy-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: nearest the decision (|p_alt - p_org| = 0.0000, |ld| 0.000)"}
-      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without its random part'; 4 candidates)"}
-      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without its random part', not under 'without J++'; 3 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without J++', not under 'without a same-size random part (control)'; 4 candidates)"}
+      - {"item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0|PP", "model": "qwen3.5-9b", "reader": "PP", "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Hamburg-0", "run": "results/x50_zach/qwen35_9b_x52_z1p", "layer": 12, "stratum": "targeted: surprising (switches under 'without a same-size random part (control)', not under 'without J++'; 3 candidates)"}
     last_token:
       - {"item": "qwen3.6-27b|x51_10_27b|P2-L0-0015|PP", "model": "qwen3.6-27b", "reader": "PP", "scene": "P2-L0-0015", "run": "results/x51_jread/x51_10_27b", "layer": 60, "stratum": "random: Qwen3.6-27B x lookup"}
       - {"item": "nemotron-3.5-lightning|nem35l_x52_jread|P2-L0-0132|PM", "model": "nemotron-3.5-lightning", "reader": "PM", "scene": "P2-L0-0132", "run": "results/x51_jread/nem35l_x52_jread", "layer": 36, "stratum": "random: Nemotron 3.5 Lightning x recall"}

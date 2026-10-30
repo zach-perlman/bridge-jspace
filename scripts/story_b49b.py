@@ -35,7 +35,7 @@ RAND_DX = 0.11  # the random beside its removal
 RUNG_WORDS = ("1 the bridge word at L; 2 at L..L+3; 3 + the item's mention; 4 + the question; 5 every token, "
               "L..L+3; 6 every token, his band")  # fmt: skip
 SUB = ("Clean one-pick scenes, on the changed prompt: removed at more and more tokens and layers, beside a random "
-       "part (same size, grey) at each token. Answers kept (%), 95% intervals, fixed in advance. Rungs: "
+       "part (same size, grey) at each token. Answers unchanged (%), 95% intervals, fixed in advance. Rungs: "
        + RUNG_WORDS + ". Two definitions, not one: rung 5 takes out the 25 directions of the bridge's J++ part at "
        "every token; rung 6 each token's own top-10 J++ lens directions (Zach's).")  # fmt: skip
 ROW_IN = 1.55  # inches per model row
@@ -95,7 +95,7 @@ def build_ladder(verdict_dir: Path, out_name: str, title: str | None = None) -> 
             n = mod["cells"]["recall"][group]["n"] if mod["status"] == "tested" else 0
             A.panel_title(ax, words + (f", n = {n}" if n else ""))
             if j == 0:
-                ax.set_ylabel(f"{F.name_of(A.TARGETS[i][1])}\nanswers kept (%)")
+                ax.set_ylabel(f"{F.name_of(A.TARGETS[i][1])}\nunchanged (%)")
             if mod["status"] != "tested" or not n:
                 A.status_text(ax, 50, "pending" if mod["status"] == "pending" else "no scenes")
                 continue

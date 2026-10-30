@@ -138,7 +138,7 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
               ["the whole change", "the hall address", "random part (same size)"])  # fmt: skip
     fig, (a, b, c) = frame(
         title or chain_title(v),
-        "Which hall is the pick's locker in? The change at the bridge's locker digit, parts taken out or kept: hall "
+        "Which hall is the pick's locker in? The change at the bridge's locker digit, parts taken out or retained: hall "
         "answers by position (%), 95% intervals, fixed in advance.",
         (1, 0.8, 1.0), ROW_IN * len(rows_m), legend=legend,
         **({"left": 0.235, "bottom_in": A.BOTTOM_IN + 0.5} if coverage is not None else {}))  # fmt: skip
@@ -146,7 +146,7 @@ def build_chain(verdict_dir: Path, out_name: str, title: str | None = None, cove
     A.pct_axis(a, "hall answers\nby position (%)", lim=(-4, 106))
     panel_title(a, "(a) taken out")
     A.pct_axis(b, "hall answers\nby position (%)", lim=(-4, 106))
-    panel_title(b, "(b) only this kept")
+    panel_title(b, "(b) only this retained")
     bar(b, 15, "≥ 15")
     A.text_column(c, "reading")
     labels = []

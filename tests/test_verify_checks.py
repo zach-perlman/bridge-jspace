@@ -227,7 +227,7 @@ def test_marks_skip_jspace_notes_count_the_last_verdict_and_apply_the_stop_rule(
     from bridge_jspace.review import handcheck as H
 
     fs = I.spec()["fixed_sample"]
-    a, b, c = (e["item"] for e in fs["views"]["main_swap"][:3])
+    a, b, c = I.view("main_swap")["five"][:3]  # the five items per view (Dan 30 Oct); the rest of the sample counts as extra
     seed = fs["seed"]
     rows = [{"view": "main_swap", "item": a, "seed": seed, "verdict": "consistent"},
             {"view": "main_swap", "item": a, "seed": seed, "verdict": "wrong", "note": "label b, top '7'"},  # the last counts
@@ -266,10 +266,11 @@ def test_writeup_exports_the_fixed_sample(tmp_path):
     out = W.export(29, tmp_path)
     md = (out / "examples.md").read_text()
     fs = I.spec()["fixed_sample"]["views"]
-    assert md.count("\n#### ") == sum(len(x) for x in fs.values()) == 70
-    assert all(f"`{e['scene']}`" in md for x in fs.values() for e in x)
+    shown = {vid: (len(I.view(vid)["five"]) if I.view(vid).get("five") else len(x)) for vid, x in fs.items()}  # five per view where set
+    assert md.count("\n#### ") == sum(shown.values()) == 45
+    assert all(f"`{e['scene']}`" in md for vid, x in fs.items() for e in x if e["item"] in (I.view(vid).get("five") or [e["item"]]))
     src = json.loads((out / "source.json").read_text())["entry"]
-    assert src["n_examples"] == 70 and [g["n_total"] for g in src["groups"]] == [10] * 7
+    assert src["n_examples"] == 45 and [g["n_total"] for g in src["groups"]] == [shown[v["id"]] for v in I.shown() if v["id"] in shown]
     assert "Answer:" in md and "<|im_start|>" in md  # the prompt as the model saw it
 
 

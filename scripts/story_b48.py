@@ -744,7 +744,7 @@ def mechanism_groups(dirs: dict[str, Path], extra: dict[str, tuple[Path, ...]] |
         "47.6", "verdict.json", lambda v: [(t, r) for t, r in v["b"].items() if r.get("status") == "tested"]
     )
     out.append({"test": "47.6", "src": srcs, "header": "Blocking the pick sentence removes position only",
-                "measure": "identity answers kept with the block (bar: the whole change's, less 10 points)",
+                "measure": "identity answers unchanged with the block (bar: the whole change's, less 10 points)",
                 "rule": "rule: at the bar or above", "bar": None,
                 "cells": {t: [(r["b"]["lookup"]["rate"]["block/sentence/all|identity"], S.COL["identity"], 0.0, "o")]
                           for t, r in b.items()},

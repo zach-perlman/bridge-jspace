@@ -147,7 +147,7 @@ def one_part(got: list[dict], e: dict, m: str, mk: str, v: dict | None = None) -
             else ld_extra(pool, "PM", h) - ld_extra(pool, "PP", h)
         )
         name = (
-            f"{I.READER_NAME[e['reader']]} extra loss on ld"
+            f"{I.READER_NAME[e['reader']]} blocked beyond random on ld"
             if e["stat"] == "ld_extra"
             else "gap on ld (recall - lookup)"
         )
@@ -168,8 +168,8 @@ def one_part(got: list[dict], e: dict, m: str, mk: str, v: dict | None = None) -
             val -= extra_loss(pool, w, {"whole": "whole", "part": e["minus_part"], "random": e["minus_random"]})[0]
     else:
         val = lost(pool, w, e["part"]) - (lost(pool, w, e["minus_part"]) if e["stat"] == "lost_minus" else 0)
-    what = {"extra_loss": "extra loss", "extra_loss_minus": "extra loss minus", "lost": "switches lost",
-            "lost_minus": "switches lost minus"}[e["stat"]]  # fmt: skip
+    what = {"extra_loss": "blocked beyond random", "extra_loss_minus": "blocked beyond random minus", "lost": "switches blocked",
+            "lost_minus": "switches blocked minus"}[e["stat"]]  # fmt: skip
     name = f"{e.get('condition', '')} {I.READER_NAME[w]} {what}: {e['part']}" + (
         f" − {e['minus_part']}" if "minus_part" in e else ""
     )
@@ -207,7 +207,7 @@ def route_shares(v: dict, got: list[dict], e: dict, m: str, mk: str) -> list[dic
 TIER1_STATS = ("share_kept", "answer_rank_below", "x8_target_mean_pairs", "x8_recall_changed", "switch_share",
                "extra_loss_at_peak")  # fmt: skip
 E1_ARMS = {1: ("arm 1: without the lens part", "arm 1's random part"),
-           2: ("arm 2: without the lens part, its answer directions kept", "arm 2's random part")}  # fmt: skip
+           2: ("arm 2: without the lens part, its answer directions retained", "arm 2's random part")}  # fmt: skip
 
 
 def tier1_stat(got: list[dict], e: dict, m: str) -> dict:
@@ -223,7 +223,7 @@ def tier1_stat(got: list[dict], e: dict, m: str) -> dict:
     mine = [it for it in got if it["reader"] == w]
     if e["stat"] == "share_kept":
         ex = {a: extra_loss(got, w, {"whole": "whole", "part": p, "random": r})[0] for a, (p, r) in E1_ARMS.items()}
-        val, what = ex[2] / ex[1] if ex[1] else float("nan"), "share of arm 1's extra loss kept by arm 2"
+        val, what = ex[2] / ex[1] if ex[1] else float("nan"), "share of arm 1's blocked-beyond-random count remaining with arm 2"
     elif e["stat"] == "answer_rank_below":
         rk = [it["more"].get("answer_rank") or {} for it in mine]
         pairs = [(o, s) for r in rk if (o := (r.get("org") or {}).get(w)) is not None
@@ -244,7 +244,7 @@ def tier1_stat(got: list[dict], e: dict, m: str) -> dict:
     elif e["stat"] == "extra_loss_at_peak":  # 53.3: the layer is the reader's read peak, named in data.csv's quantity
         val = extra_loss(got, w, {"whole": "whole", "part": e["part"], "random": e["random"]})[0]
         layer = mine[0]["layer"]
-        what = f"extra loss at the read peak, L{layer}: {e['part']}"
+        what = f"blocked beyond random at the read peak, L{layer}: {e['part']}"
         return {"model": m, "quantity": f"{I.READER_NAME[w]}: {what}", "n": len(mine), "value": val,
                 **compare_csv(val, m, e["csv"].replace("<layer>", str(layer)))}  # fmt: skip
     else:  # switch_share
@@ -270,7 +270,7 @@ def recount(view_id: str) -> list[dict]:
                 out.append(tier1_stat(got, e, m))
             elif "key" not in e and "csv" in e:  # an extra loss read against data.csv only
                 val, n = extra_loss(got, e["reader"], {"whole": e.get("whole", "whole"), **e})
-                out.append({"model": m, "quantity": f"{I.READER_NAME[e['reader']]} extra loss: {e['part']}", "n": n,
+                out.append({"model": m, "quantity": f"{I.READER_NAME[e['reader']]} blocked beyond random: {e['part']}", "n": n,
                             "value": val, **compare_csv(val, m, e["csv"])})  # fmt: skip
             else:
                 out.append(one_part(got, e, m, mk, v))
@@ -283,7 +283,7 @@ def recount(view_id: str) -> list[dict]:
                     continue
                 ex[w], n = extra_loss(got, w, h)
                 key = keys.get(w, "").replace("<m>", mk) or None
-                out.append({"model": m, "quantity": f"{I.READER_NAME[w]} extra loss", "n": n, "value": ex[w],
+                out.append({"model": m, "quantity": f"{I.READER_NAME[w]} blocked beyond random", "n": n, "value": ex[w],
                             **compare_any(ex[w], key, m, qs.get(w))})  # fmt: skip
             if ("gap" in keys or "gap" in qs) and len(ex) == 2:
                 gap = ex["PM"] - ex["PP"]

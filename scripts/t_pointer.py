@@ -40,7 +40,7 @@ SUBSETS = {"pooled": ("prose", "json", "table"), "json + table": ("json", "table
 
 
 def alf_cells(rows: list[dict], scenes: set[str], n_boot: int) -> dict[str, dict]:
-    """Per reader, the pointer arm's cell (whole / without alf / without its random part) on these scenes."""
+    """Per reader, the pointer arm's cell (whole / without alf / without a same-size random part (control)) on these scenes."""
     return NS.cells(rows, scenes, n_boot, "alf")
 
 
