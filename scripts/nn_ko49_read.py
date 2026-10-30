@@ -29,8 +29,13 @@ Beside: MP losses; keepA's rescue (note 37's run); the protections' row counts a
 rescue against alpha for every keep (A from note 37's run, R / R2 / R4 from note 41's, the rest from this run).
 Checks: this run's none / paper10 / paper10_rot rows against note 41's stored run (same reads, same log-prob bits).
 Writes results/ablate_v2/nn_ko_read/{P}note49_50.json (or --out-dir) and prints one "reading ..." line per registered reading.
+Amendment 77 (--set, another v4 draw, e.g. jsuite_v4p4002_test_chat): reads {P}{set}_ko49_cand2_v1; the draw's note 37 / 41 run
+{P}{set}_ko37_cand2_v1 (it holds paper10 / paper10_rot, keepA, ansJ and note 41's R / R2 / R4 / ansR) serves as both stored runs
+and as the stored check; writes {P}{set}_note49_50.json and, per reading, a "reading replication ..." line: "replicates" if the
+label equals draw 4001's ({P}note49_50.json), otherwise "does not replicate" (no pooling across draws). The default call is
+unchanged.
 
-python scripts/nn_ko49_read.py PREFIX [--run-dir DIR] [--out-dir DIR]   (PREFIX "" for the 27B, qwen35_9b_, nem35l_)
+python scripts/nn_ko49_read.py PREFIX [--set SET] [--run-dir DIR] [--out-dir DIR]   (PREFIX "" for the 27B, qwen35_9b_, nem35l_)
 """
 
 from __future__ import annotations
@@ -137,12 +142,14 @@ def lab3(r: float | None, lo: str, hi: str, extra_lo: bool = True) -> str:
     return lo if r <= 1 / 3 and extra_lo else hi if r >= 2 / 3 else "partly"
 
 
-def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> dict:
-    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / SET / "items.jsonl").open()}
-    run = f"{P}{SET}_ko49_cand2_v1"
+def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None, set_name: str = SET) -> dict:
+    items = {json.loads(l)["id"]: json.loads(l) for l in (DATA / set_name / "items.jsonl").open()}
+    run = f"{P}{set_name}_ko49_cand2_v1"
     d = run_dir or RES / "ablate_v2" / run
-    n37, n41 = f"{P}{SET}_ko37_cand2_v1", f"{P}{SET}_ko41_cand2_v1"
-    out: dict = {"prefix": P, "run": str(d), "stored": [n37, n41]}
+    n37, n41 = f"{P}{set_name}_ko37_cand2_v1", f"{P}{set_name}_ko41_cand2_v1"
+    if set_name != SET:  # amendment 77: a draw's note 37 and note 41 conditions ran in one run (notes 43 / 48)
+        n41 = n37
+    out: dict = {"prefix": P, "run": str(d), "stored": [n37, n41], **({"set": set_name} if set_name != SET else {})}
     if not (d / "rows.jsonl").exists():
         print(f"note 49/50 {P or '27b_'}: {d} missing")
         return out
@@ -154,8 +161,10 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
     out["measures"] = m
     out["stored_check"] = K.stored_check(acc, n41)
     cs = m["conditions"]
-    lines = K.table(f"notes 49/50 {P or '27b_'}", m)
     tag = P or "27b_"
+    if set_name != SET:
+        tag = f"{tag} {set_name}"
+    lines = K.table(f"notes 49/50 {tag}", m)
     rat = {x: ratio_of(acc, items, f"paper10_{x}", f"paper10_{x}_rot") for x in N49 + N50}
     ratL = {x: ratio_of(acc, items, f"paper10_{x}", f"paper10_{x}_rot", logp=True) for x in N49 + N50}
     out["ratio"], out["ratio_logp"] = rat, ratL
@@ -249,6 +258,15 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
     lines.append("  rescue vs alpha (MM): " + "; ".join(f"{x}: rescue {t['rescue']} alpha {t['alpha']} E {t['E']}" for x, t in desc.items()))
     pr = E.get("MM", {}).get("prot", {})
     lines.append(f"  protections (MM means): {json.dumps(pr)}; n_rows {json.dumps(E.get('MM', {}).get('n_rows', {}))}")
+    if set_name != SET:  # amendment 77: the same registered label as draw 4001's, per reading
+        ref_p = RES / "ablate_v2" / "nn_ko_read" / f"{P}note49_50.json"
+        ref = json.loads(ref_p.read_text()).get("readings", {}) if ref_p.exists() else {}
+        out["replication"] = {}
+        for k, v in R.items():
+            base = ref.get(k, {}).get("label")
+            rep_ = ("not compared: draw 4001's reading missing" if base is None else "replicates" if base == v["label"] else "does not replicate")
+            out["replication"][k] = {"label": rep_, "draw4001": base, "this_draw": v["label"]}
+            lines.append(f"reading replication note{k[:2]} {k[3:]} {tag}: {rep_!r} (draw 4001 {base!r}, this draw {v['label']!r})")
     lines.append("  MP losses: " + ", ".join(f"{c} {r['loss_MP']}" for c, r in cs.items()))
     sc = out["stored_check"]
     if not sc.get("missing"):
@@ -256,7 +274,7 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
             f"{c} {v['n_both']}/{v['n_new']} same read {v['same_correct']} same logp {v['same_logp_bits']}" for c, v in sc.items() if c != "stored_run"))
     od = out_dir or RES / "ablate_v2" / "nn_ko_read"
     od.mkdir(parents=True, exist_ok=True)
-    (od / f"{P}note49_50.json").write_text(json.dumps(out, indent=1) + "\n")
+    (od / (f"{P}note49_50.json" if set_name == SET else f"{P}{set_name}_note49_50.json")).write_text(json.dumps(out, indent=1) + "\n")
     print("\n".join(lines))
     return out
 
@@ -264,7 +282,8 @@ def main(P: str, run_dir: Path | None = None, out_dir: Path | None = None) -> di
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("prefix", nargs="?", default="")
-    ap.add_argument("--run-dir", type=Path, default=None, help="the run's directory (default results/ablate_v2/{P}jsuite_v4_test_chat_ko49_cand2_v1)")
+    ap.add_argument("--set", default=SET, help="amendment 77: another v4 draw (e.g. jsuite_v4p4002_test_chat)")
+    ap.add_argument("--run-dir", type=Path, default=None, help="the run's directory (default results/ablate_v2/{P}{set}_ko49_cand2_v1)")
     ap.add_argument("--out-dir", type=Path, default=None, help="where the JSON goes (default results/ablate_v2/nn_ko_read)")
     a = ap.parse_args()
-    main(a.prefix, a.run_dir, a.out_dir)
+    main(a.prefix, a.run_dir, a.out_dir, a.set)
