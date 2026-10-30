@@ -79,7 +79,7 @@ MODELS = {
     "qwen3.5-122b": Model("Qwen3.5-122B-A10B (FP8)", "Qwen/Qwen3.5-122B-A10B-FP8", ()),
 }
 NP = "neuronpedia/jacobian-lens@e166deb5"
-ZACH_DAY3 = "Zach, Day 3 plan, as relayed by the coordinator on 22 Oct (not in the committed docs/day3_plan_zach.md)"
+ZACH_DAY3 = "Zach, Day 3 plan, as relayed by the coordinator on 22 Oct (not in the committed docs/archive/day3_plan_zach.md)"
 MUSE_HUB = "zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 eval/eval_ranks_pass_at_k.csv (item-weighted, layers 0-50)"
 ROWS = (
     # Qwen3.6-27B: scored by Zach in exp19 fit_v2 (17 Oct; same recipe evaluate, held-out:0, its own grading)

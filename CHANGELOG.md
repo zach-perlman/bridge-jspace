@@ -32,11 +32,11 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 - Claim 4 (the lens gate) became a methods note: no logit-lens or embedding baseline at the same cells. The J-space part without the bridge's own word added (parts runs, claim 6's test points): lookups 0-2% on the 27B, 9B and 122B; recalls 6-14% (27B), 17-18% (9B), 1-2% (122B); the same-share random part 0-7%.
 - Confidence rule: the README now says the "Holds on" counts include cells under 30 items (the builder counts every judged cell); Olmo-Hybrid's tables fail claim 1 by one item (21 of 24 kept with the DeltaNet layers blocked, 87.5% against the 90% bar).
 - Claim 7: Zach's 9B, 32B and Muse numbers (and "lookups lose at most 13 points") marked "quoted, not reproducible from this repo until Zach pushes"; only the 27B's run is on origin/zach/v8-breadth-1021. STATUS.md lists it under "Waiting on Zach".
-- One prior-work line per claim, pointing to docs/prior_art.md (ec2011a), and a Links entry.
+- One prior-work line per claim, pointing to docs/archive/prior_art.md (ec2011a), and a Links entry.
 
 ## 23 Oct 2026, day
 
-- README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/depth/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/mapping.md, the datasets to docs/datasets.md, the night's notes here.
+- README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/depth/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/archive/mapping.md, the datasets to docs/archive/datasets.md, the night's notes here.
 - Pre-registered before running: the 122B late-binding test (d40f14f, Dan's amendment 98df575), the 27B dose control and layer-16 split (bedbb9a; the split's copy with a same-share random part, 14ef0df), predictions batches 16-17 (e2da840, c3eb3b2).
 - The 27B dose control started at 10:20 UTC, before Dan's batch-16 answers; kept by Dan, results closed until he says open. The layer-16 split was cancelled before running and waits for his answers.
 - Gemma 4's stated-bridge maps rerun as `_r3` (347b40c): the `_r2` copies reused run names whose partial results were on the box. They keep 167 / 169 of 180 scenes (73c4a69 skips misaligned scenes): a recorded deviation.

@@ -102,7 +102,7 @@ When a model chains facts (e.g. *a pet named in the prompt → its locker number
 
 ## 4. Key experiments and status
 
-Every model runs the identical pipeline (`docs/setup_grid.md`). Times are Eastern estimates.
+Every model runs the identical pipeline (`docs/archive/setup_grid.md`). Times are Eastern estimates.
 
 | Model | Knock-out (C1 + checks) | Steering (C2) | Lens check | ETA |
 |---|---|---|---|---|

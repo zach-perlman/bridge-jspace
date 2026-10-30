@@ -52,7 +52,7 @@ $PY scripts/copy_sweep.py --name smoke_copy_sweep_band_1021 --why smoke --tasks 
   --tasks full_v8 --tasks-competence full_v8_competence_v1 --families PP PM MP MM --n 40 || echo "=== copy sweep v2 FAILED"
 echo "=== 27B additions done $(date -u +%FT%TZ)"
 # --- appended 2026-10-21 ~19:50 UTC while this queue waited (Zach: fill the 27B's gaps so it matches Gemma and Qwen3-32B;
-# docs/setup_grid.md): (1) plain-text loss under the knock-out at every layer of 32-40 (it had 32, 36, 40 only);
+# docs/archive/setup_grid.md): (1) plain-text loss under the knock-out at every layer of 32-40 (it had 32, 36, 40 only);
 # (2) the copy-only paste ceiling for the three-step steering (wm2_full3_v1 predates the joint copy); (3) the lens check
 # every model gets: graded on jpp_lens's readout items and scored at every layer, the published J++ and the logit lens.
 echo "=== 27B gap fills $(date -u +%FT%TZ)"
