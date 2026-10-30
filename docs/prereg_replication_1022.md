@@ -3199,3 +3199,77 @@ The 9B's description-only and final-only runs account for about a third and none
   - Note 29b's named key set (jsuite_v5kn2: competence, controls, knock-out, readout).
 - **Windows.** No stage 1 map is run, so they are fixed now by relative depth, from the three main models' rule-derived windows: description end 15-55% of depth (L6-23), final token 70-95% (L30-40).
 - **Readings:** each note's own. Smoke first.
+
+#### Amendment 63 (Zach, 2026-10-30 ~03:35 UTC; before any code or run below): three tests after the literature check
+Zach's MC answers (30 Oct ~03:10 UTC): build notes 34, 35 and 36; queue them after DeepSeek (amendment 62); the probe compares the monitor's view against controls, with the conflict-word read; the three-uses test is named only, capital, new arm only; the route swap uses an outside donor. Why: the literature check (30 Oct) found no J-lens work on memory vs context; trained probes decode an answer's source on other models and data (Brink et al. 2026; Zhao et al. 2024); and the J-space paper frames workspace content as "operated on by whatever function the new context supplies". These tests make the monitor claim a same-data comparison and test that framing directly.
+- **Models and bands.** 9B L12-16, 27B L32-40, Lightning L27-33 (the knock-out and swap bands used throughout). One deterministic run per model. Intervals: 95% bootstrap over bridges (2000 resamples) unless stated otherwise. A smoke of at most 8 items per word on the 9B comes first.
+
+##### Note 34: the provenance probe (jsuite_v5kc2)
+- **Items.** CN and DN (plain question, conflict passage). Each item's label (memory or passage) comes from the existing competence run's unedited answer, as nn_v5_read.kc labels it; "other" items are dropped. CA, DA, TN and TD are not used for training.
+- **Sites.**
+  - s1: X in the question (named: the last token of X's name in the question; described: the description's last token).
+  - s2: the last token of X's false value in its claim sentence in the passage.
+  - s3: the final prompt token.
+- **Layers.** Primary: the band, with features averaged over its layers. Descriptive: every 4th layer from 0.
+- **Feature sets** (the same residual h at each site and layer):
+  - F, the full state: h.
+  - J, the monitor's view: h's coordinates in an orthonormal basis of the span of the J++ vectors of the relation's answer vocabulary at that layer (every value's first token; m dimensions).
+  - R: a seeded random m-dimensional subspace (rotation 888 + layer).
+  - U: the span of the same tokens' unembedding rows.
+  - Z, a zero-shot monitor: the J++ logit of X's true value minus that of its false value at the site (no training).
+- **Probe.** Logistic regression (L2; C picked by inner CV from 0.01, 0.1, 1, 10) on standardised features. 5-fold CV grouped by bridge (an entity's items in one fold). Named, described and pooled are scored separately. AUC on held-out folds.
+- **Controls.** For F, labels shuffled within relation (5 permutations); its AUC must sit near 0.5.
+- **Reading** (per model, at the band, site s1):
+  - "monitor blind": AUC_J <= AUC_R + 0.05 and AUC_F >= AUC_J + 0.10, intervals not overlapping;
+  - "monitor sees": AUC_J >= 0.70 and AUC_J >= AUC_R + 0.10;
+  - otherwise "unclear".
+  - s3 is read the same way; s2 is descriptive.
+  - Claim across models: "a J-lens monitor cannot tell memory from passage, while the model state can" needs "monitor blind" on >= 2 of 3 models at s1, and AUC_F >= 0.70 at s1 or s3 on those models.
+- **Claim read (add-on).** J++ top-20 (note 26's letters filter) at s2 on CN and DN, and at the same position on TN and TD (where the claim states X's true value), paired by scene.
+  - The fixed list: false, fake, wrong, incorrect, untrue, myth, mistaken, mistake, error, lie, lies, fiction, fictional, hoax, rumor, rumour, misinformation, inaccurate, bogus, not, actually, allegedly, supposedly, claimed, claims. Matched case-insensitively on the stripped token, whole token only.
+  - Measures: the share of items with at least one list word in the top-20, and the mean count; conflict minus true control.
+  - Control: 25 vocabulary letter-tokens drawn with seed 34 (none on the list), the same contrast.
+  - Reading:
+    - "conflict seen": a contrast >= 10 points, interval above 0, and the control's contrast <= 1/3 of it;
+    - "not seen": the interval includes 0;
+    - otherwise "weak".
+
+##### Note 35: one remembered fact, three uses (jsuite_v5kn2 and a new arm, named only)
+- **Arm MC** ("compute"), on jsuite_v5kn2's named scenes (same passage and X):
+  - Questions:
+    - people: "What is the capital of {x}'s home country?";
+    - cities: "What is the capital of the country where {x} is located?";
+    - companies: "What is the capital of the country where {x} is based?";
+    - landmarks: "What is the capital of the country where {x} stands?"
+  - The answer is the capital of X's country. Candidates are the capitals of the passage's six countries (cand2).
+  - The set is jsuite_v5kn2c, built by jsuite_v5key.py --compute. Ids are j3:chat:v5kn2c:<suffix> and pair with kn2's by suffix. The existing builds must reproduce byte for byte.
+- **Capitals.** A fixed table written now for every country in the vocabulary (England and United Kingdom: London). A scene is dropped from MC (kn2 is untouched) when:
+  - two of its six capitals share a first token (any of the three tokenizers, either case, with or without a leading space);
+  - a capital shares a 4-letter stem with its own country's name, or is that name;
+  - a capital shares a 4-letter stem with X's name.
+- **Steps** (the competence gate, rendered with the scene's passage, as MP's):
+  - the say question;
+  - the direct capital, "What is the capital of {country}?".
+  - The closed-book control set adds C0, the direct capital with no passage.
+- **Knock-out.** ablate_v2 exactly as note 29b's named run (band; paper10, paper10_rot, unembed10, paper10_pcasize; --tasks-level all --kinds clean --read cand2; same batch), words MC only. The existing MP and MM rows (the v5key2 runs) are reused unchanged (same code path, deterministic).
+- **Contrast.** MC's paper10 loss minus its direct-capital step's loss (its own knock-out rows), as note 29's MP contrast. Bootstrap over items, as note 29. Answer exclusion: MC items whose capital's first-token J++ row is among the removed top-10 at any band layer are dropped from the primary (reported both ways).
+- **Reading** (per model):
+  - MC "needs": contrast >= 15 points with its interval above 0; the same contrast under paper10_rot < 5; and MC's contrast minus the same contrast under paper10_pcasize >= 10.
+  - "dissociation": MC "needs", MP does not ("goes around", or not beyond paper10_pcasize as on the 27B), and MC's minus MP's contrast >= 10 points, interval above 0, paired on scenes where both are gated ok.
+  - "both need": MP needs too. "neither": MC does not need. Otherwise "unclear".
+  - The J-space paper's framing predicts "both need"; ours predicts "dissociation".
+
+##### Note 36: the route swap in the conflict (jsuite_v5kc2)
+- **Items.** CN, CA, DN and DA with an unedited answer.
+- **Donor D.** A bridge of the same relation from the set's pool, drawn with random.Random(scene suffix) and shared by the scene's four words. D is not among the scene's six entities. Its true value differs from X's true and false values and from the five other values in the passage. Its name token differs from X's.
+- **Edit.** At every band layer, at site s1 (note 34): jswap_pointer's swap_neutral, with k = 10. X's top-10 J++ part is replaced by D's top-10 J++ part from the neutral sentence ("A reader asked a question about D in the letters page."). Controls: swap_neutral_rot, swap_neutral_u, paste_neutral.
+- **Answers.** cand2 among the relation's vocabulary. Classes: donor (D's true value), memory (X's true value), passage (X's false value), other.
+- **Primary.**
+  - (a) Plain words (CN, DN): the donor share among items answered memory unedited, under swap_neutral minus under swap_neutral_rot.
+  - (b) "According to" words (CA, DA): the same among items answered passage unedited.
+  - (a) minus (b) is paired by scene.
+- **Reading** (named and described separately, then pooled):
+  - "route-conditional": (a) >= 20 points with its interval above 0, and (b) <= (a)/3 with the interval of (a) - (b) above 0;
+  - "both routes move": (b) >= 2/3 of (a);
+  - otherwise "unclear".
+- **Descriptive.** The change in the passage and memory shares under the edit (does the edit move which source wins?), and the plain items answered passage unedited.
