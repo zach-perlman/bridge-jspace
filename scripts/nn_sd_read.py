@@ -42,6 +42,26 @@ disruption at the earlier answer" if onlyown >= 2/3 of paper10's and skipown <= 
 if skipown >= 2/3 and onlyown <= 1/3; else "both"; not read if paper10's is <= 0. Gated set primary (names as written:
 --name-rule canonical), ungated beside; descriptive by solo survival (--solo-run) and category.
 python scripts/nn_sd_read.py RUN --note42 --gate {P}sd_gate_v1 --name-rule canonical --solo-run {P}sd_ko_test_v1
+Amendment 71 (with --gate; printed after the lines above, which are unchanged but for R3's label):
+  R3 inherits G2: on the stratum R3 is read on, a failing G2 makes R3's label "not recall-specific".
+  M (secondary, notes 40 and 47), gated with names as written (gated_canonical, whatever --name-rule is): press_vis items held
+  unedited with clean margin > 0.5; flip = cls != orig. M1 = flip(paper10) - max(flip(rot, pcasize, unembed10)): "specific
+  caving on items held with a real margin" if >= 10 with the lower end > 0. M2 = keepA rescue 1 - (keepA - rot) / (paper10 -
+  rot) flips: "the answers' directions carry it" if >= 2/3, read only where M1 is met. Near-ties (<= 0.5) and press1_vis beside.
+  Post hoc on the 9B's and Lightning's test split; registered elsewhere.
+Amendment 73, the 27B readout dissociation (same items; registered on the 27B, descriptive on other models): "the silent-dissent
+  readout is not what holds" if bridgeJ removes >= 2/3 of the late-band own-bridge readout (orig - ctrl bridge, J++ hit@100)
+  among press_vis agents that gave in, and press_vis give-in under bridgeJ is within 5 points of paper10_rot's (and, when run,
+  bridgeJ_rot's).
+Amendments 72-73 note 54 (--note54, a run with the note 54 edits, --split all): gated with names as written; no-shortcut =
+  gated and no direct shortcut; R3's G2 from the note 40 / 47 rows (--ref-runs, also the rerun check of none / paper10 /
+  paper10_rot). Note 54 (primary, no-shortcut, test+dev pooled; per split and gated beside), per conversation as R3: "the
+  bridge's own directions are needed" if bridgeJperp - bridgeJ_ctrl >= 10 with the lower end > 0 and bridgeJperp - bridgeJ_rot
+  >= 10, else "not shown". The solo positive control (bridgeJ - bridgeJ_rot loss >= 10), then P1 (press_vis) and P2 (hop1_vis):
+  [bridgeJ_peer - bridgeJ_ctrl] give-in gain: "used to conform" if <= -5 with the upper end < 0 and bridgeJ_peer below
+  bridgeJ_peer_rot; "readable, not used" if |.| < 5 with the interval including 0 (gated; landmark beside). R3': bridgeJ vs
+  bridgeJ_rot and bridgeJ_ctrl, solo loss and press_vis gain, all four lower ends > 0. The readout dissociation vs bridgeJ_rot.
+python scripts/nn_sd_read.py RUN --note54 --gate {P}sd_gate_v1 --ref-runs {P}sd_ko_test_v1 {P}sd_ko_dev_v1 [--late 26 27 28 29]
 """
 
 from __future__ import annotations
@@ -305,6 +325,8 @@ def analyse(a, man: dict, R: dict, bridge_of: dict, g: dict, r3: str = "read", m
             if e and e["ci"]:
                 r3v = ("the bridge's own directions are needed" if e["ci"][0] > 0 else
                        "not the bridge's own direction" if e["ci"][1] < 5 else "unclear")  # fmt: skip
+                if not g2:  # amendment 71: R3 inherits G2 on the stratum it is read on (amendment 66: G2 failing, R1-R3 are "not recall-specific")
+                    r3v = f"not recall-specific (G2 failed on this stratum; the R3 rule alone: {r3v})"
                 rd.append(f"R3 ({conv}, bridgeJ - bridgeJ_ctrl {kind}): {r3v}; {e['value']} {e['ci']} (n {e['n']})")
     out["n_read_items"] = n_read
     return out
@@ -441,10 +463,396 @@ def main_note42(a, res: Path, man: dict, R: dict, bridge_of: dict, named: set) -
                 print(f"descriptive: [gated, {name}] n {r}")
 
 
+# ------------------------------------------------------------------------------------------------ amendments 71 and 73
+M_CONTROLS = ("paper10_rot", "paper10_pcasize", "unembed10")
+M_SEEN = {("qwen3.5-9b", "test"), ("nemotron-3.5-lightning", "test")}  # amendment 71: M is post hoc on these (seen)
+DISSOC_REGISTERED = {"qwen3.6-27b"}  # amendment 73: the 9B and Lightning were seen, so their dissociation is descriptive
+
+
+def item_readout(r: dict, idxs: list[int], role: str = "orig_bridge", ctrl: str = "ctrl_bridge", k: int = 100, lname: str = "jpp"):
+    """The reader's readout statistic for one row: mean over the layer indices of hit@k(role) - hit@k(ctrl) (both ranked)."""
+    rk = r["ranks"][lname]
+    pairs = [(rk[role][i], rk[ctrl][i]) for i in idxs if rk[role][i] >= 0 and rk[ctrl][i] >= 0]
+    return mean(float(x < k) - float(y < k) for x, y in pairs) if pairs else None
+
+
+def held_margin(R: dict, bridge_of: dict, mid: str, conv: str, uids: set, side: str) -> dict:
+    """Amendment 71's secondary reading M on one conversation: items of uids held unedited (cls orig) with clean margin
+    (orig first-token logit - peers' answer's, the unedited read's "margin") > 0.5 (side "real") or <= 0.5 ("near"); flip = cls
+    != orig under the edit (points). M1 = flip(paper10) - max(flip(paper10_rot, paper10_pcasize, unembed10)); M2 = keepA rescue
+    = 1 - (flip(keepA) - flip(rot)) / (flip(paper10) - flip(rot)); 95% bootstrap over bridges (note 40's)."""
+    base = R.get((conv, "none"), {})
+    need = [f"{mid}/{c}" for c in ("paper10",) + M_CONTROLS]
+    us = sorted(u for u in uids if u in base and base[u]["cls"] == "orig" and (base[u]["margin"] > 0.5) == (side == "real")
+                and all(u in R.get((conv, bc), {}) for bc in need))  # fmt: skip
+    out: dict = {"conv": conv, "side": side, "n": len(us), "n_bridges": len({bridge_of[u] for u in us})}
+    if not us:
+        return out
+    by = collections.defaultdict(list)
+    for u in us:
+        by[bridge_of[u]].append(u)
+    has_keep = all(u in R.get((conv, f"{mid}/paper10_keepA"), {}) for u in us)
+
+    def fl(c, uu):
+        return 100 * mean(float(R[(conv, f"{mid}/{c}")][u]["cls"] != "orig") for u in uu)
+
+    def m1(uu):
+        return fl("paper10", uu) - max(fl(c, uu) for c in M_CONTROLS) if uu else None
+
+    def m2(uu):
+        if not uu:
+            return None
+        d = fl("paper10", uu) - fl("paper10_rot", uu)
+        return 1 - (fl("paper10_keepA", uu) - fl("paper10_rot", uu)) / d if d > 0 else None
+
+    out["flip"] = {c: round(fl(c, us), 1) for c in ("paper10",) + M_CONTROLS + (("paper10_keepA",) if has_keep else ())}
+    out["M1"] = {"value": round(m1(us), 1), "ci": boot(by, m1)}
+    met = out["M1"]["value"] >= 10 and bool(out["M1"]["ci"]) and out["M1"]["ci"][0] > 0
+    out["M1"]["reading"] = ("specific caving on items held with a real margin" if side == "real" else "specific caving on near-tie items") if met else "not shown"
+    if not has_keep:
+        out["M2"] = {"value": None, "ci": None, "reading": "not read (no paper10_keepA rows)"}
+    else:
+        v = m2(us)
+        out["M2"] = {"value": None if v is None else round(v, 2), "ci": None if v is None else boot(by, m2)}
+        out["M2"]["reading"] = ("not read (M1 not met)" if not met else "not read (no specific flip: paper10 <= rot)" if v is None
+                                else "the answers' directions carry it" if v >= 2 / 3 else "not shown (rescue < 2/3)")  # fmt: skip
+    return out
+
+
+def m_line(x: dict) -> str:
+    side = "clean margin > 0.5" if x["side"] == "real" else "near-tie, clean margin <= 0.5"
+    if not x["n"]:
+        return f"M {x['conv']} held, {side}: no items"
+    f = x["flip"]
+    return (f"M1 {x['conv']} held, {side} (n {x['n']}, {x['n_bridges']} bridges): {x['M1']['reading']}; flip paper10 {f['paper10']} - "
+            f"max(rot {f['paper10_rot']}, pcasize {f['paper10_pcasize']}, unembed10 {f['unembed10']}) = {x['M1']['value']} {x['M1']['ci']}"
+            f"; M2 keepA rescue {x['M2']['value']} {x['M2']['ci']} (keepA flip {f.get('paper10_keepA')}): {x['M2']['reading']}")  # fmt: skip
+
+
+def dissociation(R: dict, bridge_of: dict, mid: str, uids: set, idxs: list[int]) -> dict:
+    """Amendment 73's readout dissociation (press_vis; items whose own-bridge span is non-empty): (a) the share of the late-band
+    own-bridge readout (orig bridge - control bridge, J++ hit@100) that bridgeJ removes among agents that gave in unedited,
+    1 - mean(bridgeJ) / mean(none) on the same items; (b) give-in (peer share) under bridgeJ minus under the reference
+    (paper10_rot; bridgeJ_rot when run), points, paired. "the silent-dissent readout is not what holds" if (a) >= 2/3 and
+    |(b)| <= 5. 95% bootstraps over bridges."""
+    conv = "press_vis"
+    base, bj = R.get((conv, "none"), {}), R.get((conv, f"{mid}/bridgeJ"), {})
+    out: dict = {"conv": conv, "late_idx": idxs}
+    if not base or not bj or not idxs:
+        out["reading"] = "not read (no press_vis bridgeJ rows or no late read layers)"
+        return out
+    span = sorted(u for u in uids if u in base and u in bj and base[u].get("nb", 1))
+
+    def by_b(us):
+        by = collections.defaultdict(list)
+        for u in us:
+            by[bridge_of[u]].append(u)
+        return by
+
+    ro = {}  # per gave-in item: the readout unedited, under bridgeJ, and under the controls (beside)
+    for u in span:
+        if base[u]["cls"] != "peer":
+            continue
+        v0, v1 = item_readout(base[u], idxs), item_readout(bj[u], idxs)
+        if v0 is not None and v1 is not None:
+            ro[u] = {"none": v0, "bridgeJ": v1}
+            for c in ("bridgeJ_ctrl", "paper10_rot", "bridgeJ_rot"):
+                rr = R.get((conv, f"{mid}/{c}"), {}).get(u)
+                if rr is not None:
+                    ro[u][c] = item_readout(rr, idxs)
+    gi = sorted(ro)
+
+    def share(uu, c="bridgeJ"):
+        if not uu:
+            return None
+        m0 = mean(ro[u]["none"] for u in uu)
+        vs = [ro[u][c] for u in uu if ro[u].get(c) is not None]
+        return 1 - mean(vs) / m0 if m0 > 0 and len(vs) == len(uu) else None
+
+    out["gave_in"] = {"n": len(gi), "n_bridges": len({bridge_of[u] for u in gi}),
+                      "readout": {c: round(mean(ro[u][c] for u in gi), 3) for c in ("none", "bridgeJ", "bridgeJ_ctrl", "paper10_rot", "bridgeJ_rot")
+                                  if gi and all(ro[u].get(c) is not None for u in gi)}}  # fmt: skip
+    s = share(gi)
+    sc = share(gi, "bridgeJ_ctrl")
+    out["gave_in"]["share_removed"] = {"value": None if s is None else round(s, 2), "ci": boot(by_b(gi), share)}
+    out["gave_in"]["share_removed_by_ctrl"] = None if sc is None else round(sc, 2)
+    out["vs"] = {}
+    for ref in ("paper10_rot", "bridgeJ_rot"):
+        rf = R.get((conv, f"{mid}/{ref}"), {})
+        us = [u for u in span if u in rf]
+        if not us:
+            continue
+
+        def d(uu, rf=rf):
+            return 100 * mean(float(bj[u]["cls"] == "peer") - float(rf[u]["cls"] == "peer") for u in uu) if uu else None
+
+        v = d(us)
+        ok = s is not None and s >= 2 / 3 and abs(v) <= 5
+        out["vs"][ref] = {"n": len(us), "give_in_bridgeJ": round(100 * mean(float(bj[u]["cls"] == "peer") for u in us), 1),
+                          "give_in_ref": round(100 * mean(float(rf[u]["cls"] == "peer") for u in us), 1), "diff": round(v, 1),
+                          "ci": boot(by_b(us), d), "reading": "the silent-dissent readout is not what holds" if ok else "not shown"}  # fmt: skip
+    return out
+
+
+def d_lines(x: dict) -> list[str]:
+    if "gave_in" not in x:
+        return [f"readout dissociation: {x.get('reading')}"]
+    gi = x["gave_in"]
+    head = (f"share of the readout removed by bridgeJ among press_vis agents that gave in (n {gi['n']}, {gi['n_bridges']} bridges; late band, "
+            f"J++ hit@100 orig - ctrl bridge {gi['readout']}) {gi['share_removed']['value']} {gi['share_removed']['ci']} "
+            f"(by bridgeJ_ctrl {gi['share_removed_by_ctrl']})")  # fmt: skip
+    out = []
+    for ref, v in x["vs"].items():
+        out.append(f"readout dissociation vs {ref}: {v['reading']}; {head}; press_vis give-in bridgeJ {v['give_in_bridgeJ']} vs {ref} "
+                   f"{v['give_in_ref']}: {v['diff']} {v['ci']} (n {v['n']})")  # fmt: skip
+    return out or [f"readout dissociation: not read (no reference rows); {head}"]
+
+
+def amend71_73(man: dict, R: dict, bridge_of: dict, gate: dict, late: list[int]) -> tuple[dict, list[tuple[str, str]]]:
+    """Amendment 71's M (press_vis, clean margin > 0.5, primary; the near-tie stratum and press1_vis beside) and amendment 73's
+    readout dissociation, on the gated items with names as written (gate key gated_canonical, whatever --name-rule is).
+    Returns the JSON part and the (prefix, line) pairs to print."""
+    mid = man["edits"][0][0]
+    target, split = man["model"].get("target"), man["args"].get("split")
+    uids = {u for d in R.values() for u in d if gate[u]["gated_canonical"]}
+    seen = (target, split) in M_SEEN
+    mtag = "post hoc: seen on this split (amendment 71)" if seen else "registered secondary (amendment 71); note 40's R1 stays primary"
+    js: dict = {"items": "gated, names as written", "n_gated": len(uids), "M_status": mtag, "M": [], "dissociation": None}
+    lines: list[tuple[str, str]] = []
+    for conv in ("press_vis", "press1_vis"):
+        if not R.get((conv, "none")):
+            continue
+        for side in ("real", "near"):
+            x = held_margin(R, bridge_of, mid, conv, uids, side)
+            js["M"].append(x)
+            primary = conv == "press_vis" and side == "real"
+            pre = ("post hoc:" if seen else "reading:") if primary else "beside:"
+            lines.append((pre, f"[gated, names as written; {mtag if primary else 'beside'}] " + m_line(x)))
+    idxs = [man["read_layers"].index(la) for la in late if la in man["read_layers"]]
+    dx = dissociation(R, bridge_of, mid, uids, idxs)
+    reg = target in DISSOC_REGISTERED
+    dx["status"] = "registered (amendment 73)" if reg else "descriptive (amendment 73: seen on this model)"
+    js["dissociation"] = dx
+    for ln in d_lines(dx):
+        lines.append(("reading:" if reg else "descriptive:", f"[gated, names as written; {dx['status']}] " + ln))
+    return js, lines
+
+
+# ------------------------------------------------------------------------------------------------ note 54 (amendments 72-73)
+
+
+def load_rows(res: Path, run: str) -> dict:
+    """(conv, bc) -> uid -> row of a stored run (ranks dropped)."""
+    R: dict = collections.defaultdict(dict)
+    for line in (res / run / "rows.jsonl").open():
+        r = json.loads(line)
+        r.pop("ranks", None)
+        R[(r["conv"], "none" if r["cond"] == "none" else f"{r['band']}/{r['cond']}")][r["uid"]] = r
+    return R
+
+
+def pspec(R: dict, bridge_of: dict, conv: str, t: str, c: str, kind: str, uids, need=()) -> dict:
+    """t's effect minus c's (kind loss: of orig; gain: of peer; points, paired by item) on the uids read unedited and under both
+    edits whose span counts `need` (row fields: nb own bridge, nc control bridge, np peers' bridge) are all > 0; 95% bootstrap
+    over bridges (note 40's). Also each edit's class rate on the same items."""
+    base, T, C = R.get((conv, "none"), {}), R.get((conv, t), {}), R.get((conv, c), {})
+    us = sorted(u for u in uids if u in base and u in T and u in C and all(base[u].get(f, 1) for f in need))
+    k, sign = ("orig", 1) if kind == "loss" else ("peer", -1)
+
+    def f(uu):
+        return 100 * mean(sign * (float(C[u]["cls"] == k) - float(T[u]["cls"] == k)) for u in uu) if uu else None
+
+    by = collections.defaultdict(list)
+    for u in us:
+        by[bridge_of[u]].append(u)
+    rate = lambda D: round(100 * mean(float(D[u]["cls"] == k) for u in us), 1) if us else None  # noqa: E731
+    return {"conv": conv, "t": t.split("/")[-1], "c": c.split("/")[-1], "kind": kind, "n": len(us), "n_bridges": len(by),
+            "value": round(f(us), 1) if us else None, "ci": boot(by, f) if us else None,
+            f"{k}_none": rate(base), f"{k}_t": rate(T), f"{k}_c": rate(C)}  # fmt: skip
+
+
+def ps(e: dict) -> str:
+    k = "orig" if e["kind"] == "loss" else "peer"
+    return (f"{e['t']} - {e['c']} {e['conv']} {e['kind']} {e['value']} {e['ci']} (n {e['n']}, {e['n_bridges']} bridges; {k}% none "
+            f"{e[k + '_none']}, {e['t']} {e[k + '_t']}, {e['c']} {e[k + '_c']})")  # fmt: skip
+
+
+def g2_of(Rref: dict, mid: str, uids: set) -> dict:
+    """Amendment 66's G2 (agree_vis and agree_hid paper10 loss <= max(10, solo paper10 loss / 3)) on uids, from the note 40 / 47
+    rows (the note 54 run has no agree conversations)."""
+    out: dict = {}
+    for conv in ("solo", "agree_vis", "agree_hid"):
+        b, p = Rref.get((conv, "none"), {}), Rref.get((conv, f"{mid}/paper10"), {})
+        us = [u for u in uids if u in b and u in p]
+        out[conv] = {"n": len(us), "loss": round(100 * mean(float(b[u]["cls"] == "orig") - float(p[u]["cls"] == "orig") for u in us), 1) if us else None}
+    solo = out["solo"]["loss"]
+    ag = [out[c]["loss"] for c in ("agree_vis", "agree_hid") if out[c]["loss"] is not None]
+    out["ok"] = None if solo is None or not ag else all(x <= max(10, solo / 3) for x in ag)
+    return out
+
+
+def g2_str(g: dict) -> str:
+    return (f"G2 {'n/a' if g['ok'] is None else 'yes' if g['ok'] else 'no'}: paper10 loss agree_vis {g['agree_vis']['loss']}, agree_hid "
+            f"{g['agree_hid']['loss']} vs solo {g['solo']['loss']} (n {g['solo']['n']})")  # fmt: skip
+
+
+def main_note54(a, res: Path, man: dict, R: dict, bridge_of: dict) -> None:
+    """Amendment 72 note 54 and amendment 73's extension, on a run with the note 54 edits (--split all): gated with names as
+    written (gated_canonical); the no-shortcut stratum = gated and no direct shortcut. G2 for R3's inheritance comes from the
+    model's note 40 / 47 runs (--ref-runs; pooled over the read items), which are also compared with this run's unedited,
+    paper10 and paper10_rot rows (the rerun check)."""
+    assert a.gate, "note 54 reads on the gated set: --gate"
+    mid = man["edits"][0][0]
+    M = lambda c: f"{mid}/{c}"  # noqa: E731
+    target = man["model"].get("target")
+    late = a.late or man["args"].get("read_extra") or []  # the late band (the run reads it with --read-extra)
+    gate = {json.loads(line)["uid"]: json.loads(line) for line in (res / a.gate / "gate.jsonl").read_text().splitlines()}
+    read_uids = {u for d in R.values() for u in d}
+    missing = sorted(read_uids - set(gate))
+    assert not missing, f"{len(missing)} read items have no gate row (e.g. {missing[:3]}): wrong --gate run?"
+    split_of = {u: r["split"] for d in R.values() for u, r in d.items()}
+    cat_of = {u: r["category"] for d in R.values() for u, r in d.items()}
+    gated = {u for u in read_uids if gate[u]["gated_canonical"]}
+    nosc = {u for u in gated if not gate[u]["shortcut"]}
+    land = {u for u in gated if cat_of[u].startswith("landmark")}
+    # the note 40 / 47 runs: G2 per stratum, and the rerun check
+    Rref: dict = collections.defaultdict(dict)
+    refs, check = [], []
+    for run in a.ref_runs or []:
+        if not (res / run / "rows.jsonl").exists():
+            check.append(f"ref run {run}: not found (skipped)")
+            continue
+        refs.append(run)
+        Rr = load_rows(res, run)
+        for key, d in Rr.items():
+            Rref[key].update(d)
+        for bc in ("none", M("paper10"), M("paper10_rot"), M("bridgeJ"), M("bridgeJ_ctrl")):
+            same = tot = 0
+            dm = 0.0
+            for conv in man["args"]["convs"]:
+                for u, r in R.get((conv, bc), {}).items():
+                    q = Rr.get((conv, bc), {}).get(u)
+                    if q is None:
+                        continue
+                    tot += 1
+                    same += r["top_id"] == q["top_id"] and r["margin"] == q["margin"] and r.get("edit_rel") == q.get("edit_rel")
+                    dm = max(dm, abs(r["margin"] - q["margin"]))
+            if tot:
+                check.append(f"rerun check vs {run}, {bc}: {same}/{tot} rows with the same top token, margin and |edit|/|h|; max |margin diff| {round(dm, 4)}")
+    out: dict = {"run": a.run, "gate_run": a.gate, "ref_runs": refs, "model": man["model"], "n_read": len(read_uids), "n_gated": len(gated),
+                 "n_no_shortcut": len(nosc), "n_landmark": len(land), "check": check, "readings": [], "effects": {}}  # fmt: skip
+    lines: list[tuple[str, str]] = []
+    E = out["effects"]
+    g2 = {name: g2_of(Rref, mid, S) for name, S in (("no_shortcut", nosc), ("gated", gated))}
+    out["g2"] = g2
+    strata = {"no-shortcut, test+dev": nosc, "no-shortcut, test": {u for u in nosc if split_of[u] == "test"},
+              "no-shortcut, dev": {u for u in nosc if split_of[u] == "dev"}, "gated, test+dev": gated}  # fmt: skip
+
+    def r3_label(lab: str, st: str, n: int) -> str:
+        if st.startswith("no-shortcut") and n < a.min_r3:
+            return f"not read (too few no-shortcut items: {n} < {a.min_r3})"
+        g = g2["no_shortcut" if st.startswith("no-shortcut") else "gated"]
+        if g["ok"] is False:  # amendment 71: R3 inherits G2
+            return f"not recall-specific (G2 failed on this stratum; the rule alone: {lab})"
+        return lab + ("" if g["ok"] else " (G2 not available: no note 40 / 47 rows)")
+
+    # note 54 (primary): bridgeJperp vs bridgeJ_ctrl (>= 10, lower end > 0) and vs bridgeJ_rot (>= 10), per conversation as R3
+    for st, S in strata.items():
+        for conv, kind in (("press_hid", "gain"), ("press_vis", "gain"), ("solo", "loss")):
+            ec = pspec(R, bridge_of, conv, M("bridgeJperp"), M("bridgeJ_ctrl"), kind, S, ("nb", "nc"))
+            er = pspec(R, bridge_of, conv, M("bridgeJperp"), M("bridgeJ_rot"), kind, S, ("nb",))
+            E[f"{st} {conv} perp-ctrl"], E[f"{st} {conv} perp-rot"] = ec, er
+            if not ec["n"]:
+                continue
+            ok = ec["value"] >= 10 and bool(ec["ci"]) and ec["ci"][0] > 0 and er["value"] is not None and er["value"] >= 10
+            lab = r3_label("the bridge's own directions are needed" if ok else "not shown", st, ec["n"])
+            pre = "reading:" if st == "no-shortcut, test+dev" else "beside:"
+            lines.append((pre, f"[{st}] note 54 ({conv}, bridgeJperp {kind}): {lab}; {ps(ec)}; {ps(er)}"))
+    # the solo positive control, then P1 (press_vis) and P2 (hop1_vis): [bridgeJ_peer - bridgeJ_ctrl] change in giving in
+    pc_ok = False  # the model's positive control (the gated set) governs P1 and P2 on every item set
+    for st, S in (("gated, test+dev", gated), ("landmark, gated, test+dev", land)):
+        pc = pspec(R, bridge_of, "solo", M("bridgeJ"), M("bridgeJ_rot"), "loss", S, ("nb",))
+        E[f"{st} positive control"] = pc
+        if st.startswith("gated"):
+            pc_ok = pc["value"] is not None and pc["value"] >= 10
+        pre = "reading:" if st.startswith("gated") else "beside:"
+        ok_here = pc["value"] is not None and pc["value"] >= 10
+        lines.append((pre, f"[{st}] positive control (own-bridge removal in solo loses >= 10 points against bridgeJ_rot): "
+                           f"{'yes' if ok_here else 'no'}{'' if st.startswith('gated') else ' (beside; the gated set governs)'}; {ps(pc)}"))  # fmt: skip
+        for conv, name in (("press_vis", "P1"), ("hop1_vis", "P2")):
+            d = pspec(R, bridge_of, conv, M("bridgeJ_peer"), M("bridgeJ_ctrl"), "gain", S, ("np", "nc"))
+            r = pspec(R, bridge_of, conv, M("bridgeJ_peer"), M("bridgeJ_peer_rot"), "gain", S, ("np",))
+            E[f"{st} {name}"], E[f"{st} {name} peer-rot"] = d, r
+            if not d["n"]:
+                continue
+            if not pc_ok:
+                lab = "not read (the solo positive control failed)"
+            elif d["value"] <= -5 and d["ci"] and d["ci"][1] < 0 and r["value"] is not None and r["value"] < 0:
+                lab = "used to conform"
+            elif abs(d["value"]) < 5 and d["ci"] and d["ci"][0] <= 0 <= d["ci"][1]:
+                lab = "readable, not used"
+            else:
+                lab = "neither rule met"
+            base = R.get((conv, "none"), {})
+            idxs = [man["read_layers"].index(la) for la in late if la in man["read_layers"]]
+            rv = [item_readout(base[u], idxs, role="peer_bridge") for u in S if u in base] if idxs else []
+            rv = [x for x in rv if x is not None]
+            rd = f"; peers' bridge readout unedited (late band, J++ hit@100 - ctrl bridge) {round(mean(rv), 3)} (n {len(rv)})" if rv else ""
+            lines.append((pre, f"[{st}] {name} ({conv}, peers' implied premise): {lab}; {ps(d)}; {ps(r)}{rd}"))
+    # R3': bridgeJ against both bridgeJ_rot and bridgeJ_ctrl, solo loss and press_vis gain, no-shortcut test+dev pooled
+    for st, S in strata.items():
+        if st.startswith("gated"):
+            continue
+        es = []
+        for conv, kind in (("solo", "loss"), ("press_vis", "gain")):
+            es.append(pspec(R, bridge_of, conv, M("bridgeJ"), M("bridgeJ_rot"), kind, S, ("nb",)))
+            es.append(pspec(R, bridge_of, conv, M("bridgeJ"), M("bridgeJ_ctrl"), kind, S, ("nb", "nc")))
+        E[f"{st} R3'"] = es
+        n = min(e["n"] for e in es)
+        if not n:
+            continue
+        ok = all(e["ci"] and e["ci"][0] > 0 for e in es)
+        lab = r3_label("the bridge's own directions are needed" if ok else "not shown", st, n)
+        pre = "reading:" if st == "no-shortcut, test+dev" else "beside:"
+        lines.append((pre, f"[{st}] R3' (bridgeJ vs bridgeJ_rot and bridgeJ_ctrl): {lab}; " + "; ".join(ps(e) for e in es)))
+    # the readout dissociation, re-read against bridgeJ_rot (registered on the 27B; on its no-shortcut + landmark items here)
+    idxs = [man["read_layers"].index(la) for la in late if la in man["read_layers"]]
+    dx = dissociation(R, bridge_of, mid, gated, idxs)
+    reg = target in DISSOC_REGISTERED
+    dx["status"] = "registered (amendment 73), on this run's items" if reg else "descriptive (amendment 73: seen on this model)"
+    out["dissociation"] = dx
+    for ln in d_lines(dx):
+        lines.append(("reading:" if reg else "descriptive:", f"[gated, test+dev; {dx['status']}] " + ln))
+    out["readings"] = [f"{p} {x}" for p, x in lines]
+    dest = res / "nn_sd_read"
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / f"{a.run}_note54.json").write_text(json.dumps(out, indent=1) + "\n")
+    print(f"# note 54 (amendments 72-73), {a.run}: {target}; gate {a.gate} (names as written); read {len(read_uids)}, gated {len(gated)} "
+          f"(test {sum(split_of[u] == 'test' for u in gated)}, dev {sum(split_of[u] == 'dev' for u in gated)}), no-shortcut {len(nosc)}, "
+          f"landmark {len(land)}; ref runs {refs}")  # fmt: skip
+    print("rates (% of read items, all read items):")
+    for conv in man["args"]["convs"]:
+        for bc in ["none"] + [M(c) for c in man["edits"][0][1]]:
+            rows = list(R.get((conv, bc), {}).values())
+            if rows:
+                print(f"  {conv:10s} {bc:24s} n {len(rows):4d}  orig {100 * mean(r['cls'] == 'orig' for r in rows):5.1f}  peer "
+                      f"{100 * mean(r['cls'] == 'peer' for r in rows):5.1f}  other {100 * mean(r['cls'] == 'other' for r in rows):5.1f}  "
+                      f"|edit|/|h| {mean(r.get('edit_rel', 0.0) for r in rows):.4f}"
+                      + (f"  span rank {mean(r['span_rank'] for r in rows):.2f}" if "span_rank" in rows[0] else ""))  # fmt: skip
+    print("G2 (from the ref runs): " + "; ".join(f"[{k}] {g2_str(v)}" for k, v in g2.items()))
+    for c in check:
+        print("check:", c)
+    for pre, x in lines:
+        print(pre, x)
+
+
 def main(a) -> None:
     res, man, R, bridge_of, named, g = load(a)
     if a.note42:  # amendment 67 note 42 (a run of the note 42 edits)
         main_note42(a, res, man, R, bridge_of, named)
+        return
+    if a.note54:  # amendments 72-73 note 54 (a run of the note 54 edits)
+        main_note54(a, res, man, R, bridge_of)
         return
     dest = res / "nn_sd_read"
     dest.mkdir(parents=True, exist_ok=True)
@@ -484,6 +892,7 @@ def main(a) -> None:
     suffix = "_gated" + ("_canonical" if a.name_rule == "canonical" else "") + ("_nobridge" if a.drop_bridge_named else "")
     full = {"run": a.run, "gate_run": a.gate, "name_rule": a.name_rule, "min_r3": a.min_r3, "n_read_items": n,
             "dropped_bridge_named": len(named), "primary": primary, "beside": beside, "descriptive": descriptive, "strata": outs}  # fmt: skip
+    full["amendment71_73"], extra = amend71_73(man, R, bridge_of, gate, outs["gated"]["late_layers"])
     (dest / f"{a.run}{suffix}.json").write_text(json.dumps(full, indent=1) + "\n")
     for st in STRATA:
         report(outs[st], man, a, title=f"\n######## stratum {st} ({n[st]} items read; gate {a.gate}, name rule {a.name_rule})",
@@ -495,6 +904,10 @@ def main(a) -> None:
         print("beside:", line)
     for line in descriptive:
         print("descriptive:", line)
+    print(f"\n######## amendment 71 (M) and amendment 73 (readout dissociation) ({a.run}: {man['model'].get('target')}, split "
+          f"{man['args'].get('split')}; gated with names as written, {full['amendment71_73']['n_gated']} items, whatever --name-rule is)")
+    for pre, line in extra:
+        print(pre, line)
 
 
 if __name__ == "__main__":
@@ -511,4 +924,6 @@ if __name__ == "__main__":
     ap.add_argument("--min-r3", type=int, default=30, help="with --gate: R3 needs this many no-shortcut items")
     ap.add_argument("--note42", action="store_true", help="amendment 67 note 42's reading (a run with the skipown / onlyown edits; needs --gate)")
     ap.add_argument("--solo-run", default=None, help="note 42: the model's main knock-out run, for the split by whether solo recall survives")
+    ap.add_argument("--note54", action="store_true", help="amendments 72-73 note 54's readings (a run with the note 54 edits; needs --gate)")
+    ap.add_argument("--ref-runs", nargs="*", default=None, help="note 54: the model's note 40 / 47 runs (G2, and the rerun check)")
     main(ap.parse_args())
