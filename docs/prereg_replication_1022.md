@@ -4316,3 +4316,17 @@ Not seen: any condition below.
   - Beside: bridgeJ (unorthogonalised) and ansJ on (I), (P), (O); (O)'s bridgeJ loss.
 
 Not run (proposed, not chosen): the scope test on non-country relations, the energy-matched swap scrub, and the mechanism on natplus.
+
+##### Amendment 85, addendum: note 61b (box clock at commit; before any note 61 reading on Lightning or the 27B, and before any run of it)
+**Note 61b: does the 9B's dark-space lookup route need the full-attention layer?** (v4 draw 4001 twins; note 58's machinery; 9B only)
+- **Why:** every 4-layer window on the 9B holds exactly one full-attention layer (3, 7, 11, 15, 19, ...), so note 58 cannot separate "dark space" from "dark space at an attention layer". Using 3-layer windows matches window size.
+- **Windows** (3 layers each):
+  - with attention: L13-15 (attn 15) and L17-19 (attn 19);
+  - without: L12-14 and L16-18.
+  - darkperm_W and a midperm_W calibrated per window, as note 58's addendum.
+  - DarkLens used 4-layer windows; this is a deviation, and it is labelled.
+- **Readings:**
+  - note 58's D1 per window, unchanged (95%);
+  - **AT (attention contrast):** mean over the with-attention windows of (MP dark - mid) minus the same mean over the without windows, paired bootstrap over MP items. AT >= 15 points with lower end > 0 = "the 9B's dark-space lookup route runs through the full-attention layer's window".
+  - If both without-attention windows meet D1 = "not attention-specific".
+  - Otherwise "partly / not resolved".
