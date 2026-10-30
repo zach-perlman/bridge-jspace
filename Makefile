@@ -20,7 +20,7 @@ typecheck:
 	uv run pyright
 
 test:               ## fast unit tests (no model download)
-	uv run pytest
+	uv run pytest -n auto  # parallel (pytest-xdist): ~2.5 min instead of ~7
 
 test-model:         ## integration tests on Qwen3.5-0.8B + its lenses (CPU ok, a few minutes)
 	uv run pytest -m model
