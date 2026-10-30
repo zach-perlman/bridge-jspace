@@ -1,0 +1,244 @@
+{
+ "qwen3.5-9b": {
+  "run": "qwen35_9b_x0_parts",
+  "layer": 12,
+  "items": 200,
+  "archived_verdict": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json",
+  "cells": {
+   "w/lookup": {
+    "median_share": 0.0413,
+    "excess": [
+     0.0,
+     -0.027,
+     0.0294
+    ],
+    "archived_excess": [
+     0.0,
+     -0.027,
+     0.0294
+    ],
+    "label": "around"
+   },
+   "w/recall": {
+    "median_share": 0.0413,
+    "excess": [
+     0.0209,
+     -0.0049,
+     0.057
+    ],
+    "archived_excess": [
+     0.0209,
+     -0.0049,
+     0.057
+    ],
+    "label": "around"
+   },
+   "jw/lookup": {
+    "median_share": 0.1865,
+    "excess": [
+     -0.019,
+     -0.0672,
+     0.026
+    ],
+    "archived_excess": [
+     -0.019,
+     -0.0672,
+     0.026
+    ],
+    "label": "around"
+   },
+   "jw/recall": {
+    "median_share": 0.1865,
+    "excess": [
+     0.3717,
+     0.3017,
+     0.4348
+    ],
+    "archived_excess": [
+     0.3717,
+     0.3017,
+     0.4348
+    ],
+    "label": "through"
+   },
+   "pca/lookup": {
+    "median_share": 0.3866,
+    "excess": [
+     0.381,
+     0.2936,
+     0.475
+    ],
+    "archived_excess": [
+     0.381,
+     0.2936,
+     0.475
+    ],
+    "label": "through"
+   },
+   "pca/recall": {
+    "median_share": 0.3866,
+    "excess": [
+     0.4712,
+     0.3836,
+     0.5459
+    ],
+    "archived_excess": [
+     0.4712,
+     0.3836,
+     0.5459
+    ],
+    "label": "through"
+   },
+   "jpp/lookup": {
+    "median_share": 0.1858,
+    "excess": [
+     -0.0095,
+     -0.0388,
+     0.0235
+    ],
+    "archived_excess": [
+     -0.0095,
+     -0.0388,
+     0.0235
+    ],
+    "label": "around"
+   },
+   "jpp/recall": {
+    "median_share": 0.1858,
+    "excess": [
+     0.3613,
+     0.2909,
+     0.4205
+    ],
+    "archived_excess": [
+     0.3613,
+     0.2909,
+     0.4205
+    ],
+    "label": "through"
+   }
+  },
+  "reproduces_archived": true
+ },
+ "qwen3.6-27b": {
+  "run": "x0_parts_27b",
+  "layer": 32,
+  "items": 200,
+  "archived_verdict": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json",
+  "cells": {
+   "w/lookup": {
+    "median_share": 0.0291,
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "archived_excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "label": "around"
+   },
+   "w/recall": {
+    "median_share": 0.0291,
+    "excess": [
+     0.1586,
+     0.0822,
+     0.2338
+    ],
+    "archived_excess": [
+     0.1586,
+     0.0822,
+     0.2338
+    ],
+    "label": "mixed"
+   },
+   "jw/lookup": {
+    "median_share": 0.1326,
+    "excess": [
+     0.0521,
+     0.0128,
+     0.0964
+    ],
+    "archived_excess": [
+     0.0521,
+     0.0128,
+     0.0964
+    ],
+    "label": "around"
+   },
+   "jw/recall": {
+    "median_share": 0.1326,
+    "excess": [
+     0.6276,
+     0.5276,
+     0.705
+    ],
+    "archived_excess": [
+     0.6276,
+     0.5276,
+     0.705
+    ],
+    "label": "through"
+   },
+   "pca/lookup": {
+    "median_share": 0.3396,
+    "excess": [
+     0.375,
+     0.2442,
+     0.4912
+    ],
+    "archived_excess": [
+     0.375,
+     0.2442,
+     0.4912
+    ],
+    "label": "through"
+   },
+   "pca/recall": {
+    "median_share": 0.3396,
+    "excess": [
+     0.4345,
+     0.3163,
+     0.5291
+    ],
+    "archived_excess": [
+     0.4345,
+     0.3163,
+     0.5291
+    ],
+    "label": "through"
+   },
+   "jpp/lookup": {
+    "median_share": 0.135,
+    "excess": [
+     0.0417,
+     0.0101,
+     0.0805
+    ],
+    "archived_excess": [
+     0.0417,
+     0.0101,
+     0.0805
+    ],
+    "label": "around"
+   },
+   "jpp/recall": {
+    "median_share": 0.135,
+    "excess": [
+     0.6345,
+     0.5308,
+     0.7197
+    ],
+    "archived_excess": [
+     0.6345,
+     0.5308,
+     0.7197
+    ],
+    "label": "through"
+   }
+  },
+  "reproduces_archived": true
+ }
+}

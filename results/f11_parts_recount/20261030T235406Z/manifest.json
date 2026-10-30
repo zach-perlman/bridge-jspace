@@ -1,0 +1,10 @@
+{
+  "exp": "f11_parts_recount",
+  "post_hoc": true,
+  "cpu": true,
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x0_parts",
+    "qwen3.6-27b": "x0_parts_27b"
+  },
+  "written_utc": "20261030T235406Z"
+}
