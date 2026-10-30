@@ -1,0 +1,2067 @@
+{
+ "scenes": 200,
+ "C1": {
+  "rule": "first token: x50_zach.route / X.read_row (top == tok_b -> changed, == tok_A -> original), the count's switched and role",
+  "arm_rows_with_a_top_token": 1600,
+  "disagree_before": 573,
+  "disagree_after_fix": 0,
+  "before_by_reader_arm": {
+   "PP|whole": 88,
+   "PP|without J++": 86,
+   "PP|without a same-size random part (control)": 86,
+   "PM|unedited": 61,
+   "PM|whole": 52,
+   "PM|without J++": 54,
+   "PM|without a same-size random part (control)": 52,
+   "PP|unedited": 94
+  },
+  "examples": [
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Athens-0|PP",
+    "arm": "whole",
+    "top_text": "Den",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Japan",
+    "cf_answer": "Denmark"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Athens-0|PP",
+    "arm": "without J++",
+    "top_text": "Den",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Japan",
+    "cf_answer": "Denmark"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Athens-0|PP",
+    "arm": "without a same-size random part (control)",
+    "top_text": "Den",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Japan",
+    "cf_answer": "Denmark"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Athens-0|PM",
+    "arm": "unedited",
+    "top_text": "G",
+    "count_rule": "original",
+    "old_narrative": "another",
+    "answer": "Greece",
+    "cf_answer": "Germany"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PP",
+    "arm": "whole",
+    "top_text": "Th",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Italy",
+    "cf_answer": "Thailand"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PP",
+    "arm": "without J++",
+    "top_text": "Th",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Italy",
+    "cf_answer": "Thailand"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PP",
+    "arm": "without a same-size random part (control)",
+    "top_text": "Th",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Italy",
+    "cf_answer": "Thailand"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PM",
+    "arm": "whole",
+    "top_text": "G",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Spain",
+    "cf_answer": "Greece"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PM",
+    "arm": "without J++",
+    "top_text": "G",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Spain",
+    "cf_answer": "Greece"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0|PM",
+    "arm": "without a same-size random part (control)",
+    "top_text": "G",
+    "count_rule": "changed",
+    "old_narrative": "another",
+    "answer": "Spain",
+    "cf_answer": "Greece"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Bruges-0|PP",
+    "arm": "unedited",
+    "top_text": "Pol",
+    "count_rule": "original",
+    "old_narrative": "another",
+    "answer": "Poland",
+    "cf_answer": "Egypt"
+   },
+   {
+    "item": "qwen3.5-9b|qwen35_9b_x52_z1p|jsuite_v2_test_chat/j2:cities:P-L0-Bruges-0|PP",
+    "arm": "whole",
+    "top_text": "Pol",
+    "count_rule": "original",
+    "old_narrative": "another",
+    "answer": "Poland",
+    "cf_answer": "Egypt"
+   }
+  ]
+ },
+ "C2": {
+  "items_with_tok_A_equal_tok_b": 0,
+  "list": []
+ },
+ "full": {
+  "n": 200,
+  "lookup_excess": [
+   -0.04761904761904767,
+   -0.13043478260869545,
+   0.03389830508474567
+  ],
+  "recall_excess": [
+   0.588957055214724,
+   0.505952380952381,
+   0.6730769230769231
+  ],
+  "gap": [
+   0.6365761028337716,
+   0.5109704315318497,
+   0.7645673114883536
+  ],
+  "verdict": "the split holds on his passages"
+ },
+ "C3": {
+  "rows": {
+   "jsuite_v2_test_chat/j2:landmarks:P-L1-Mont Saint-Michel-0|PP": {
+    "check": "4 tokens differ; outside the changed words: [77]",
+    "differing_positions": [
+     75,
+     76,
+     77,
+     78
+    ],
+    "bridge": "Mont Saint-Michel",
+    "cf_bridge": "Christ the Redeemer",
+    "extra_positions": [
+     77
+    ],
+    "extra_tokens": [
+     {
+      "i": 77,
+      "org": "-M",
+      "alt": " Rede",
+      "context_org": "erton visited Mont Saint-Michel last",
+      "inside_landmark_name": true,
+      "org_in_changed_words": false,
+      "alt_in_changed_words": true
+     }
+    ]
+   },
+   "jsuite_v2_test_chat/j2:landmarks:P-L1-Mont Saint-Michel-0|PM": {
+    "check": "4 tokens differ; outside the changed words: [77]",
+    "differing_positions": [
+     75,
+     76,
+     77,
+     78
+    ],
+    "bridge": "Mont Saint-Michel",
+    "cf_bridge": "Christ the Redeemer",
+    "extra_positions": [
+     77
+    ],
+    "extra_tokens": [
+     {
+      "i": 77,
+      "org": "-M",
+      "alt": " Rede",
+      "context_org": "erton visited Mont Saint-Michel last",
+      "inside_landmark_name": true,
+      "org_in_changed_words": false,
+      "alt_in_changed_words": true
+     }
+    ]
+   },
+   "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Christ the Redeemer-0|PP": {
+    "check": "4 tokens differ; outside the changed words: [78, 79]",
+    "differing_positions": [
+     78,
+     79,
+     80,
+     81
+    ],
+    "bridge": "Christ the Redeemer",
+    "cf_bridge": "the Colosseum",
+    "extra_positions": [
+     78,
+     79
+    ],
+    "extra_tokens": [
+     {
+      "i": 78,
+      "org": " Christ",
+      "alt": " the",
+      "context_org": ". Tess Garland visited Christ the Rede",
+      "inside_landmark_name": true,
+      "org_in_changed_words": true,
+      "alt_in_changed_words": false
+     },
+     {
+      "i": 79,
+      "org": " the",
+      "alt": " Col",
+      "context_org": " Tess Garland visited Christ the Redeemer",
+      "inside_landmark_name": true,
+      "org_in_changed_words": false,
+      "alt_in_changed_words": true
+     }
+    ]
+   },
+   "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Christ the Redeemer-0|PM": {
+    "check": "4 tokens differ; outside the changed words: [78, 79]",
+    "differing_positions": [
+     78,
+     79,
+     80,
+     81
+    ],
+    "bridge": "Christ the Redeemer",
+    "cf_bridge": "the Colosseum",
+    "extra_positions": [
+     78,
+     79
+    ],
+    "extra_tokens": [
+     {
+      "i": 78,
+      "org": " Christ",
+      "alt": " the",
+      "context_org": ". Tess Garland visited Christ the Rede",
+      "inside_landmark_name": true,
+      "org_in_changed_words": true,
+      "alt_in_changed_words": false
+     },
+     {
+      "i": 79,
+      "org": " the",
+      "alt": " Col",
+      "context_org": " Tess Garland visited Christ the Redeemer",
+      "inside_landmark_name": true,
+      "org_in_changed_words": false,
+      "alt_in_changed_words": true
+     }
+    ]
+   }
+  },
+  "without_the_two_scenes": {
+   "n": 198,
+   "lookup_excess": [
+    -0.04761904761904756,
+    -0.12903225806451613,
+    0.03389830508474578
+   ],
+   "recall_excess": [
+    0.5838509316770186,
+    0.5,
+    0.6686756227363442
+   ],
+   "gap": [
+    0.6314699792960662,
+    0.5042610633953948,
+    0.7614579098128775
+   ],
+   "verdict": "the split holds on his passages"
+  }
+ },
+ "F4": {
+  "rule": "if the lookup's blocked-beyond-random moves by more than 0.05 or its interval stops including 0, report it as a change to the claim; otherwise a caveat line",
+  "items_full_word_equal": 23,
+  "items_first_token_equal": 23,
+  "list": [
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Toronto-0",
+    "bridge": "Toronto",
+    "k_b": "Canada",
+    "m_true": "Canada",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Gucci-0",
+    "bridge": "Gucci",
+    "k_b": "Italy",
+    "m_true": "Italy",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Finland-0",
+    "bridge": "Finland",
+    "k_b": "Europe",
+    "m_true": "Europe",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Spain-0",
+    "bridge": "Spain",
+    "k_b": "Europe",
+    "m_true": "Europe",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Brazil-0",
+    "bridge": "Brazil",
+    "k_b": "South America",
+    "m_true": "South America",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-France-0",
+    "bridge": "France",
+    "k_b": "Europe",
+    "m_true": "Europe",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Ghana-0",
+    "bridge": "Ghana",
+    "k_b": "Africa",
+    "m_true": "Africa",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Thailand-0",
+    "bridge": "Thailand",
+    "k_b": "Asia",
+    "m_true": "Asia",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L1-Chichen Itza-0",
+    "bridge": "Chichen Itza",
+    "k_b": "Mexico",
+    "m_true": "Mexico",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Portugal-0",
+    "bridge": "Portugal",
+    "k_b": "Portuguese",
+    "m_true": "Portuguese",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Turkey-0",
+    "bridge": "Turkey",
+    "k_b": "Turkish",
+    "m_true": "Turkish",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Escher-0",
+    "bridge": "Escher",
+    "k_b": "Dutch",
+    "m_true": "Dutch",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Fiat-0",
+    "bridge": "Fiat",
+    "k_b": "Italy",
+    "m_true": "Italy",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Ethiopia-0",
+    "bridge": "Ethiopia",
+    "k_b": "Africa",
+    "m_true": "Africa",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Italy-0",
+    "bridge": "Italy",
+    "k_b": "Europe",
+    "m_true": "Europe",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Japan-0",
+    "bridge": "Japan",
+    "k_b": "Asia",
+    "m_true": "Asia",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Kenya-0",
+    "bridge": "Kenya",
+    "k_b": "Africa",
+    "m_true": "Africa",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Morocco-0",
+    "bridge": "Morocco",
+    "k_b": "Africa",
+    "m_true": "Africa",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Bolivia-0",
+    "bridge": "Bolivia",
+    "k_b": "South America",
+    "m_true": "South America",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Japan-0",
+    "bridge": "Japan",
+    "k_b": "Asia",
+    "m_true": "Asia",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Peru-0",
+    "bridge": "Peru",
+    "k_b": "South America",
+    "m_true": "South America",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Spain-0",
+    "bridge": "Spain",
+    "k_b": "Europe",
+    "m_true": "Europe",
+    "full_word_equal": true,
+    "first_token_equal": true
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L0-sukiyaki-0",
+    "bridge": "sukiyaki",
+    "k_b": "Japan",
+    "m_true": "Japan",
+    "full_word_equal": true,
+    "first_token_equal": true
+   }
+  ],
+  "full": {
+   "n": 200,
+   "lookup_excess": [
+    -0.04761904761904767,
+    -0.13043478260869545,
+    0.03389830508474567
+   ],
+   "recall_excess": [
+    0.588957055214724,
+    0.505952380952381,
+    0.6730769230769231
+   ],
+   "gap": [
+    0.6365761028337716,
+    0.5109704315318497,
+    0.7645673114883536
+   ],
+   "verdict": "the split holds on his passages"
+  },
+  "without": {
+   "n": 177,
+   "lookup_excess": [
+    -0.0357142857142857,
+    -0.12068965517241392,
+    0.04999999999999993
+   ],
+   "recall_excess": [
+    0.5524475524475525,
+    0.4642857142857143,
+    0.6447368421052632
+   ],
+   "gap": [
+    0.5881618381618382,
+    0.4600000000000001,
+    0.7200611380594606
+   ],
+   "verdict": "the split holds on his passages"
+  },
+  "lookup_moves_by": 0.0119,
+  "reading": "caveat line"
+ },
+ "F4b": {
+  "recall_items": 200,
+  "appearances": 110,
+  "items_with_a_full_word_in_the_recalls_passage": 54,
+  "without_those_items": {
+   "n": 146,
+   "lookup_excess": [
+    -0.023809523809523947,
+    -0.1282051282051282,
+    0.08571428571428563
+   ],
+   "recall_excess": [
+    0.6,
+    0.5000000000000001,
+    0.7000000000000001
+   ],
+   "gap": [
+    0.6238095238095239,
+    0.47293115582050016,
+    0.7750458291130534
+   ],
+   "verdict": "the split holds on his passages"
+  },
+  "list": [
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Adelaide-0",
+    "which": "b",
+    "word": "India",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Adelaide-0",
+    "which": "b",
+    "word": "India",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Barcelona-0",
+    "which": "b",
+    "word": "Turkey",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Barcelona-0",
+    "which": "b",
+    "word": "Turkey",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Copenhagen-0",
+    "which": "b",
+    "word": "India",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Copenhagen-0",
+    "which": "b",
+    "word": "India",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Gucci-0",
+    "which": "b",
+    "word": "Germany",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Gucci-0",
+    "which": "b",
+    "word": "Germany",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Huawei-0",
+    "which": "b",
+    "word": "Sweden",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Huawei-0",
+    "which": "b",
+    "word": "Sweden",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lacoste-0",
+    "which": "b",
+    "word": "Switzerland",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lacoste-0",
+    "which": "b",
+    "word": "Switzerland",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lindt-0",
+    "which": "b",
+    "word": "Finland",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lindt-0",
+    "which": "b",
+    "word": "Finland",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Bolivia-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Bolivia-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Botswana-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Botswana-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Brazil-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Brazil-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Greece-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Greece-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Italy-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Italy-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Nigeria-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Nigeria-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Paraguay-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L0-Paraguay-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Brazil-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Brazil-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Canada-0",
+    "which": "b",
+    "word": "South America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Canada-0",
+    "which": "b",
+    "word": "South America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-France-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-France-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Ghana-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Ghana-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Greece-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Greece-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Iceland-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Iceland-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Poland-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Poland-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Spain-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:countries:P-L1-Spain-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L1-Saint Basil's Cathedral-0",
+    "which": "b",
+    "word": "Australia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L1-Saint Basil's Cathedral-0",
+    "which": "b",
+    "word": "Australia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Hungary-0",
+    "which": "b",
+    "word": "Arabic",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Hungary-0",
+    "which": "b",
+    "word": "Arabic",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Argentina-0",
+    "which": "b",
+    "word": "Portuguese",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Argentina-0",
+    "which": "b",
+    "word": "Portuguese",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Ghana-0",
+    "which": "b",
+    "word": "Hebrew",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Ghana-0",
+    "which": "b",
+    "word": "Hebrew",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Greece-0",
+    "which": "b",
+    "word": "Italian",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Greece-0",
+    "which": "b",
+    "word": "Italian",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Portugal-0",
+    "which": "b",
+    "word": "Hebrew",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Portugal-0",
+    "which": "b",
+    "word": "Hebrew",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Dante-0",
+    "which": "b",
+    "word": "Greek",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Dante-0",
+    "which": "b",
+    "word": "Greek",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Escher-0",
+    "which": "b",
+    "word": "Hungarian",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Escher-0",
+    "which": "b",
+    "word": "Hungarian",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Puccini-0",
+    "which": "b",
+    "word": "Japanese",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Puccini-0",
+    "which": "b",
+    "word": "Japanese",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Istanbul-0",
+    "which": "b",
+    "word": "Japan",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Istanbul-0",
+    "which": "b",
+    "word": "Japan",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Istanbul-0",
+    "which": "b",
+    "word": "Germany",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Istanbul-0",
+    "which": "b",
+    "word": "Germany",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lyon-0",
+    "which": "b",
+    "word": "Australia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lyon-0",
+    "which": "b",
+    "word": "Australia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Sony-0",
+    "which": "b",
+    "word": "France",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Sony-0",
+    "which": "b",
+    "word": "France",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-BlackBerry-0",
+    "which": "b",
+    "word": "China",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-BlackBerry-0",
+    "which": "b",
+    "word": "China",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Fiat-0",
+    "which": "b",
+    "word": "Canada",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Fiat-0",
+    "which": "b",
+    "word": "Canada",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Hyundai-0",
+    "which": "b",
+    "word": "China",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Hyundai-0",
+    "which": "b",
+    "word": "China",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-IKEA-0",
+    "which": "b",
+    "word": "France",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-IKEA-0",
+    "which": "b",
+    "word": "France",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Peugeot-0",
+    "which": "b",
+    "word": "Italy",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Peugeot-0",
+    "which": "b",
+    "word": "Italy",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Japan-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Japan-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Kenya-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L0-Kenya-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Colombia-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Colombia-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Ecuador-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Ecuador-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Egypt-0",
+    "which": "b",
+    "word": "South America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Egypt-0",
+    "which": "b",
+    "word": "South America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-France-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-France-0",
+    "which": "b",
+    "word": "Africa",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Italy-0",
+    "which": "b",
+    "word": "South America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Italy-0",
+    "which": "b",
+    "word": "South America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Kenya-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Kenya-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Morocco-0",
+    "which": "b",
+    "word": "North America",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Morocco-0",
+    "which": "b",
+    "word": "North America",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Nigeria-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Nigeria-0",
+    "which": "b",
+    "word": "Europe",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Spain-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Spain-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Venezuela-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:countries:P-L1-Venezuela-0",
+    "which": "b",
+    "word": "Asia",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-gazpacho-0",
+    "which": "b",
+    "word": "Austria",
+    "token": "A",
+    "where": "passage",
+    "kind": "first token"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-gazpacho-0",
+    "which": "b",
+    "word": "Austria",
+    "token": "A",
+    "where": "changed passage",
+    "kind": "first token"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-pastel de nata-0",
+    "which": "b",
+    "word": "Mexico",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-pastel de nata-0",
+    "which": "b",
+    "word": "Mexico",
+    "where": "changed passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Mount Fuji-0",
+    "which": "b",
+    "word": "Chile",
+    "where": "passage",
+    "kind": "full word"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Mount Fuji-0",
+    "which": "b",
+    "word": "Chile",
+    "where": "changed passage",
+    "kind": "full word"
+   }
+  ]
+ },
+ "F5": {
+  "gpu_part": "not run (the 9B is not loaded on the pod)",
+  "items_with_a_first_token_of_at_most_2_characters": 96,
+  "tokens": 105,
+  "scenes": 83,
+  "list": [
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Adelaide-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Athens-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Barcelona-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Casablanca-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Casablanca-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Copenhagen-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "I",
+    "word": "Ireland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Mumbai-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "I",
+    "word": "Ireland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Shanghai-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Shanghai-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L0-Vienna-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Athens-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Athens-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Bruges-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Copenhagen-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "I",
+    "word": "Ireland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Lyon-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Moscow-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Toronto-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Vienna-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:cities:P-L1-Vienna-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L0-Haribo-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L0-Huawei-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Huawei-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lacoste-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Lindt-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Nestle-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Rovio-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:companies:P-L1-Rovio-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L0-jerk chicken-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L0-jerk chicken-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L0-jerk chicken-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "J",
+    "word": "Jamaica"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-gazpacho-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-gazpacho-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-paella-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "J",
+    "word": "Jamaica"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-paella-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-spanakopita-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:dishes:P-L1-spanakopita-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L0-Easter Island-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "T",
+    "word": "Tanzania"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L0-Easter Island-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Ch",
+    "word": "Chile"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L0-Easter Island-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "V",
+    "word": "Venezuela"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L0-Mount Kilimanjaro-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "T",
+    "word": "Tanzania"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:landmarks:P-L1-Chichen Itza-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "T",
+    "word": "Tanzania"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Angola-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Ar",
+    "word": "Arabic"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Hungary-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Ar",
+    "word": "Arabic"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Mexico-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Sweden-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Sw",
+    "word": "Swedish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Uruguay-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Swedish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Uruguay-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L0-Uruguay-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Costa Rica-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "M",
+    "word": "Mandarin"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Ghana-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Ghana-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Greece-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Israel-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Israel-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Sw",
+    "word": "Swedish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Mexico-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Portugal-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "He",
+    "word": "Hebrew"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:languages:P-L1-Turkey-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Ar",
+    "word": "Arabic"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Dante-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Ir",
+    "word": "Irish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Edison-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Ir",
+    "word": "Irish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Edison-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "A",
+    "word": "Austrian"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Escher-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Escher-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L0-Goethe-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Ch",
+    "word": "Chilean"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Aristotle-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "F",
+    "word": "Finnish"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Escher-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "D",
+    "word": "Dutch"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Liszt-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Ch",
+    "word": "Chilean"
+   },
+   {
+    "scene": "jsuite_v2_test_chat/j2:people:P-L1-Puccini-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "C",
+    "word": "Czech"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Bangkok-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Buenos Aires-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Calgary-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "I",
+    "word": "Ireland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Geneva-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Istanbul-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Moscow-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Moscow-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Munich-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Porto-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Rio-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L0-Rio-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Bangkok-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Buenos Aires-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Guadalajara-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Hamburg-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Istanbul-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "G",
+    "word": "Greece"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lisbon-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Lyon-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:cities:P-L1-Osaka-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "I",
+    "word": "Ireland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Barilla-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Barilla-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Ferrero-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Hyundai-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Lenovo-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Lindt-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Sony-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L0-Volkswagen-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Huawei-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-IKEA-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:companies:P-L1-Zara-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-gazpacho-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "A",
+    "word": "Austria"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-goulash-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "Sw",
+    "word": "Switzerland"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:dishes:P-L1-pastel de nata-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "Th",
+    "word": "Thailand"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Angel Falls-0",
+    "reader": "PM",
+    "which": "A",
+    "token": "V",
+    "word": "Venezuela"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L0-Mount Fuji-0",
+    "reader": "PM",
+    "which": "b",
+    "token": "Ch",
+    "word": "Chile"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Borobudur-0",
+    "reader": "PP",
+    "which": "b",
+    "token": "V",
+    "word": "Venezuela"
+   },
+   {
+    "scene": "jsuite_v2nb_test_chat/j2:landmarks:P-L1-Uluru-0",
+    "reader": "PP",
+    "which": "A",
+    "token": "E",
+    "word": "Ecuador"
+   }
+  ]
+ }
+}

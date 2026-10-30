@@ -247,6 +247,18 @@ def answer_of(it: dict, w: str, r: dict) -> tuple[str, str]:
             return str(rd["answer"]), f"original answer ({c['bridge']}'s)"
         return "?", "another token (not stored)"
     d = C.top_text(it["model"], r["top"]).strip()
+    if (
+        it["kind"] == "zach" and "role" in r
+    ):  # the count's rule: the answer word's first token (x50_zach.route: top == tok_b / tok_A)
+
+        def word(full: str) -> str:
+            return f", the first token of {full!r}" if d != str(full) else ""
+
+        if r["role"] == "b":
+            return d, f"changed answer ({c['cf_bridge']}'s){word(rd['cf_answer'])}"
+        if r["role"] == "A":
+            return d, f"original answer ({c['bridge']}'s){word(rd['answer'])}"
+        return d, "another answer"
     if it["kind"] == "routes" and w == "PP":
         route = I.route_class(r, it["condition"])
         return d, {"switch": "changed answer", "original": "original answer"}.get(route, f"{route} route")
@@ -603,12 +615,24 @@ def machine_html(text: str) -> str:
     out = []
     for line in text.split(" | "):
         head, *steps = line.split("; ")
-        out.append(f"<div>{E(head)}" + ("<ul class='steps'>" + "".join(f"<li>{E(s)}</li>" for s in steps) + "</ul>" if steps else "") + "</div>")
+        out.append(
+            f"<div>{E(head)}"
+            + ("<ul class='steps'>" + "".join(f"<li>{E(s)}</li>" for s in steps) + "</ul>" if steps else "")
+            + "</div>"
+        )
     return "".join(out)
 
 
-def question_html(it: dict, q: dict, got: dict, uid: str, kind: str, machine_text: str | None = None, error: str | None = None,
-                  red: bool = False) -> str:
+def question_html(
+    it: dict,
+    q: dict,
+    got: dict,
+    uid: str,
+    kind: str,
+    machine_text: str | None = None,
+    error: str | None = None,
+    red: bool = False,
+) -> str:
     """One question to the human: text, where to look (a link that scrolls to and highlights the field), what counts as yes,
     what it protects against, the machine's answer beside it, Yes / No / Unclear and a note (saved as the click is made)."""
     says = ""
@@ -618,8 +642,11 @@ def question_html(it: dict, q: dict, got: dict, uid: str, kind: str, machine_tex
         says = f"<div class='mach mut'>the machine could not compute: {E(error)}</div>"
     look = (f"<a href='#' class='look' onclick=\"return look(this,'{E(q['anchor'])}')\">{E(q['look_at'])}</a>" if q.get("anchor")
             else E(q["look_at"]))  # fmt: skip
-    radios = "".join(f"<label><input type='radio' name='q-{uid}-{q['id']}' value='{a}'{' checked' if got.get('answer') == a else ''} "
-                     f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
+    radios = "".join(
+        f"<label><input type='radio' name='q-{uid}-{q['id']}' value='{a}'{' checked' if got.get('answer') == a else ''} "
+        f"onchange='answerQ(this)'>{a.capitalize()}</label> "
+        for a in Q.ANSWERS
+    )
     return (f"<div class='q{' attn' if red else ''}' data-q='{E(q['id'])}' data-kind='{kind}'><div><b>{E(q['id'])}</b> {E(q['text'])} "
             f"{tag(q['kind'], 'fail' if red else 'st' if q['kind'] == 'observe' else 'oth')}</div>"
             f"<div class='mut'>look at: {look}</div><div class='mut'>yes if: {E(q['yes_if'])}</div>"
@@ -644,8 +671,11 @@ def h3_html(it: dict, q: dict, answers: dict, uid: str) -> str:
         pre = None if err else ("yes" if m[qid][0] else "no")
         cur = got.get("answer") or pre
         detail = "" if err else f"<br><span class='mut'>{E(m[qid][1])}</span>"
-        radios = "".join(f"<label><input type='radio' name='q-{uid}-{qid}' value='{a}'{' checked' if cur == a else ''} "
-                         f"onchange='answerQ(this)'>{a.capitalize()}</label> " for a in Q.ANSWERS)
+        radios = "".join(
+            f"<label><input type='radio' name='q-{uid}-{qid}' value='{a}'{' checked' if cur == a else ''} "
+            f"onchange='answerQ(this)'>{a.capitalize()}</label> "
+            for a in Q.ANSWERS
+        )
         rows.append(f"<div class='q' data-q='{qid}' data-kind='observe'><b>{qid}</b> {E(text)}: <span class='mut'>machine "
                     f"{'could not compute' if err else 'says ' + pre}{' (saved: ' + got['answer'] + ')' if got else ''}</span>{detail}"
                     f"<div class='qa'>{radios}<input type='text' class='qnote' placeholder='note' value='{E(got.get('note', ''))}' "
@@ -671,11 +701,17 @@ def checklist_html(it: dict, seed: int, answers: dict[str, dict]) -> str:
     out = [f"<div class='box check' data-item='{E(it['id'])}' data-view='{E(it['view'])}' data-seed='{seed}'>"
            "<b>Checklist</b> <span class='mut'>Derived mark (from H1 and H2): </span><b class='derived'>–</b>"
            "<span class='mut'> (set the mark below by hand to override)</span>"]  # fmt: skip
-    line = ("<b class='okc'>Machine checks: all pass</b>" if st["all_pass"]
-            else f"<b class='badc'>Machine checks: {len(st['need'])} need you</b> <span class='mut'>(shown below, red)</span>")
+    line = (
+        "<b class='okc'>Machine checks: all pass</b>"
+        if st["all_pass"]
+        else f"<b class='badc'>Machine checks: {len(st['need'])} need you</b> <span class='mut'>(shown below, red)</span>"
+    )
     tags = {"pass": "pass", "fail": "fail", "na": "na", "info": "st"}
-    rows = "".join(f"<tr><td><b>{E(r['q']['id'])}</b></td><td>{E(r['q']['text'])}</td><td>{E(r['text'])}</td>"
-                   f"<td>{tag(r['state'], tags[r['state']])}</td></tr>" for r in st["rows"])
+    rows = "".join(
+        f"<tr><td><b>{E(r['q']['id'])}</b></td><td>{E(r['q']['text'])}</td><td>{E(r['text'])}</td>"
+        f"<td>{tag(r['state'], tags[r['state']])}</td></tr>"
+        for r in st["rows"]
+    )
     out.append(f"<p class='mline'>{line} <details style='display:inline'><summary class='mut'>show the {len(st['rows'])} machine "
                f"answers</summary><table>{rows}</table></details></p>")  # fmt: skip
     for r in st["need"]:  # a machine answer the human has to look at: red, expanded, answered like any question
@@ -695,8 +731,10 @@ def five_box(v: dict) -> str:
     if not v.get("five"):
         return ""
     items = "".join(f"<li><code>{E(i)}</code></li>" for i in v["five"])
-    return (f"<div class='box'><b>Five items, fixed in advance</b> <span class='mut'>{E(' '.join(str(I.spec().get('five_rule', '')).split()))}</span>"
-            f"<ul class='mut'>{items}</ul></div>")
+    return (
+        f"<div class='box'><b>Five items, fixed in advance</b> <span class='mut'>{E(' '.join(str(I.spec().get('five_rule', '')).split()))}</span>"
+        f"<ul class='mut'>{items}</ul></div>"
+    )
 
 
 def header_html(header: dict[str, list[dict]]) -> str:
@@ -704,13 +742,17 @@ def header_html(header: dict[str, list[dict]]) -> str:
     labels against probabilities; pass / fail with one sentence of what each means."""
     if not header:
         return ""
-    out = ["<div class='box'><b>View header</b> <span class='mut'>(computed over every item of the view, per model)</span>"]
+    out = [
+        "<div class='box'><b>View header</b> <span class='mut'>(computed over every item of the view, per model)</span>"
+    ]
     for m, rows in header.items():
         out.append(f"<h3 style='margin:8px 0 2px'>{E(I.spec()['models'][m]['label'])}</h3><table>")
         for r in rows:
             st = {"pass": "pass", "fail": "fail", "na": "na"}[r["status"]]
-            out.append(f"<tr><td style='width:2.5em'><b>{E(r['id'])}</b></td><td style='width:4em'>{tag(r['status'], st)}</td>"
-                       f"<td>{E(r['value'])}<br><span class='mut'>{E(r['means'])}</span></td></tr>")
+            out.append(
+                f"<tr><td style='width:2.5em'><b>{E(r['id'])}</b></td><td style='width:4em'>{tag(r['status'], st)}</td>"
+                f"<td>{E(r['value'])}<br><span class='mut'>{E(r['means'])}</span></td></tr>"
+            )
         out.append("</table>")
     out.append("</div>")
     return "".join(out)
@@ -734,7 +776,9 @@ def card(it: dict, seed: int, server: bool, mark: dict | None, answers: dict | N
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
-    if Q.reader_switched(it) is False:  # Dan 30 Oct: the reader did not switch, so the item does not test the claim for it
+    if (
+        Q.reader_switched(it) is False
+    ):  # Dan 30 Oct: the reader did not switch, so the item does not test the claim for it
         parts.append("<div class='banner'>this reader did not switch: the item does not test the claim for it; "
                      "the other reader is shown for context</div>")  # fmt: skip
     if Q.has_questions(it["view"]):  # the guided checklist (Dan 30 Oct), above the panels it points into
@@ -1125,8 +1169,16 @@ def recount_box(rows: list[dict]) -> str:
 
 
 def view_page(
-    v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bool, commit: str, marks: dict, recount: list[dict],
-    header: dict | None = None, answers: dict | None = None,
+    v: dict,
+    p: dict,
+    samples: dict[str, Any],
+    stats: dict,
+    server: bool,
+    commit: str,
+    marks: dict,
+    recount: list[dict],
+    header: dict | None = None,
+    answers: dict | None = None,
 ) -> str:
     seed = int(p["seed"])
     body = [f"<p><a href='{'/' if server else 'index.html'}'>← all views</a></p><h1>{E(v['title'])}</h1>", controls(v, p, server),
@@ -1154,7 +1206,9 @@ def view_page(
                     body.append(
                         f"<p class='mut'>{len(s['items'])} of {s['population']} items, uniform, seed {seed}</p>"
                     )
-                body += [card(it, seed, server, marks.get(it["id"]), (answers or {}).get(it["id"])) for it in s["items"]]
+                body += [
+                    card(it, seed, server, marks.get(it["id"]), (answers or {}).get(it["id"])) for it in s["items"]
+                ]
     return page(v["title"], "".join(body), server, commit)
 
 
