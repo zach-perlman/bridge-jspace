@@ -3547,3 +3547,9 @@ Zach's MC answer: "Overlap check + better control". Arm 6's other categories wer
 - **The guard is otherwise unchanged:** A1 is valid only if arm 6b AND arm 7 keep >= 2/3. Arm 7 is not changed. So Lightning's A1 stays invalid if arm 7 again keeps < 2/3.
 - **Rerun** of arms 1, 3, 6b, 7 and the null on the primary items, at the main band and at arm 1's median-onset window, on the 9B, Lightning and 27B; Muse descriptive. Arm 1 and the null are rerun in the same job and checked against note 39's stored rows.
 - **Reading.** A1 is re-read with arm 6b. The old arm 6 result is reported beside it, labelled "same-domain control, invalid as a guard".
+
+##### Amendment 66, second addendum (Zach, 2026-10-30, box clock at commit; before any gated note 40 reading; seen: name-filter counts only, plus the builder's 8-item gate smoke)
+Zach's MC answer: "Names as written". The registered name filter (any alias of e1/e2 contains any alias of e3) drops about half of the birth-city items, almost all through Wikidata disambiguation aliases ("Salzburg, Austria"). That is a format artefact: the bridge is never shown in the prompt.
+- **The primary name filter is names as written:** e1, e2 and e3 with no alias lists, contained as a word or sharing a 4-letter stem (scripts/sd_gate.py name_drop_canonical, reader --name-rule canonical).
+- **The alias-based rule is reported beside**, labelled as the originally registered rule.
+- Everything else in the first addendum is unchanged: the guess control, the direct shortcut flag, the strata, R3 only on no-shortcut items with >= 30, and G0's like-for-like check on the ungated set.
