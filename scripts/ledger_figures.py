@@ -193,8 +193,8 @@ def answer_control(plt) -> str:
     n_rows = sum(len(b[1]) + 1 for b in blocks)
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.27 * n_rows + 1.6))
     fig.subplots_adjust(left=0.36, right=0.97, top=1 - 1.05 / fig.get_figheight(), bottom=1.3 / fig.get_figheight())
-    S.title(fig, "The recall's loss without the lens part is the item, not its answer",
-            "Recall: switches blocked beyond a random part (same size), main test at L; whiskers 95%")  # fmt: skip
+    S.title(fig, "The lens part is mostly the item; its answer in other languages is a small part on the 27B and Muse (post hoc)",
+            "Recall: switches blocked beyond a random part (same size), main test at L; whiskers 95%", limit=115)  # fmt: skip
     fig.text(0.01, 0.62 / fig.get_figheight(), "○ post hoc: answer in any language (single-token translations); 9B, 27B, Muse;", fontsize=8.5, color=S.COL["muted"], ha="left", va="bottom")
     fig.text(0.01, 0.3 / fig.get_figheight(), "Lightning and 122B not run. ◇ control: random directions kept instead of the answer's.", fontsize=8.5, color=S.COL["muted"], ha="left", va="bottom")
     y, ticks, labels = 0.0, [], []
