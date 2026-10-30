@@ -16,7 +16,7 @@ rank_of). Vectors at a token and layer: the state (O or S), the change S - O, it
 unit lens vectors (g W_U[t]) J_l x the stored coefficients, X0's fit), the rest (change - J++ part), X0's random part of
 the J++ part's share (stored), and the address part U (the routes test's pointer directions, at L only).
 
-uv run python scripts/review_jspace.py rank-check            # item 3: docs/verify_pack_jspace.md + its verify_pack section
+uv run python scripts/review_jspace.py rank-check            # item 3: docs/review/verify_pack_jspace.md + its verify_pack section
 uv run python scripts/review_jspace.py selfcheck              # 51.12's answer-word ranks and x52_atoms' atoms, sample items
 uv run python scripts/review_jspace.py arms                   # the states jobs' re-read decisive arms vs the stored labels
 uv run python scripts/review_jspace.py calib                  # the CPU readout vs the jobs' GPU calibration readouts
@@ -970,7 +970,7 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
     lines = [SECTION, "",
              "Dan 11:45 (jobs/c3/batch53.yaml inspector_1145 item 3), verbatim: \"Automatic check over every item of the "
              "conflict test and the routes test (not only the sample), at L and the bridge word, results in "
-             "docs/verify_pack.md: the rank of S's bridge token (and its variants) in the readout of the J++ part, of the "
+             "docs/review/verify_pack.md: the rank of S's bridge token (and its variants) in the readout of the J++ part, of the "
              "rest and of a random part of the same share; the share of items with it in the top 50 for each. Flag if the "
              "rest puts it in the top 50 on >= 20% of items more often than the random part does. The same for the answer "
              "words. No rule change: this is a check.\"", "",
@@ -999,7 +999,7 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
              "The parts reproduce the runs': the J++ share of Δ against the run's stored share, per model and test: "
              + "; ".join(f"{label.get(m, m)} {v}: max |gap| {g:.4f} over {n}" for (m, v), (g, n) in share_gaps(rows).items())
              + ".", "",
-             "Model flags (docs/review_views.yaml models; the 122B's lens note from src/bridge_jspace/pins.py): "
+             "Model flags (docs/review/review_views.yaml models; the 122B's lens note from src/bridge_jspace/pins.py): "
              + "; ".join(f"{label.get(m, m)}: " + "; ".join([*I.spec()["models"][m].get("flags", []), *EXTRA_FLAGS.get(m, [])])
                          for m in sorted({r["model"] for r in rows})
                          if I.spec()["models"][m].get("flags") or EXTRA_FLAGS.get(m)) + ".",
@@ -1015,10 +1015,10 @@ def rank_section(rows: list[dict], sources: dict[str, str], note: str = "") -> s
 
 
 def put_section(text: str) -> None:
-    """docs/verify_pack_jspace.md (this check's own file) and the same section in docs/verify_pack.md, replaced in place
+    """docs/review/verify_pack_jspace.md (this check's own file) and the same section in docs/review/verify_pack.md, replaced in place
     (up to the next '## ' heading) or appended. Docs, not review/ or cache/: the CLI writes them, never the panel."""
-    (REPO / "docs" / "verify_pack_jspace.md").write_text(text)
-    pack = REPO / "docs" / "verify_pack.md"
+    (REPO / "docs" / "review" / "verify_pack_jspace.md").write_text(text)
+    pack = REPO / "docs" / "review" / "verify_pack.md"
     old = pack.read_text() if pack.exists() else "# Verification pack\n"
     if SECTION in old:
         a = old.index(SECTION)

@@ -10,7 +10,7 @@ Stages:
   smoke            GPU, after kernel_nll.py has written <run>/knll_kernels.pt and <run>/knll_torch.pt:
                    - kernels: the mamba-ssm commit the load used equals BJ_MAMBA_SSM_REVISION (a 40-hex commit);
                      kernels vs the torch path on 32 WikiText rows within Zach's bar (|mean NLL diff| <= 0.01, top-1
-                     agreement >= 0.95; docs/prereg_replication_1022.md, amendment 44)
+                     agreement >= 0.95; docs/breadth/prereg_replication_1022.md, amendment 44)
                    - lens: the pinned J++ loads (its sha256 asserted by JLens) and has a map at L; the J++ readout of
                      the bridge word at L ranks the bridge among its domain's one-token items (top 10: reported)
                    - scenes: per design (two people swap / clean), the scenes whose bridge is one token at one position

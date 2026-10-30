@@ -13,7 +13,7 @@ Per pair, on outcomes.jsonl: rows keyed per experiment (PAIRS[].key); the exact 
 from (switched / kept, top token, route, role, ...) counted where they differ; p_org, p_alt and ld (the logit
 difference) as max |diff|; rows only in one run listed. Per headline cell the value from each run's rows.
 
-Writes results/checks/clean49_9b.json (once; refuses to overwrite) and docs/handcheck_clean49.md (one line per
+Writes results/checks/clean49_9b.json (once; refuses to overwrite) and docs/depth/notes/handcheck_clean49.md (one line per
 headline cell, then one line per pair). --pending writes the doc alone, with the clean column pending (before the job).
 
 uv run python scripts/x49_clean.py              # CPU, after `jobq pull` brings the clean runs back
@@ -38,7 +38,7 @@ from bridge_jspace import pins
 
 RESULTS = pins.RESULTS_DIR
 OUT = pins.RESULTS_DIR / "checks" / "clean49_9b.json"
-DOC = pins.REPO_ROOT / "docs" / "handcheck_clean49.md"
+DOC = pins.REPO_ROOT / "docs" / "depth" / "notes" / "handcheck_clean49.md"
 JOB = "x49_5_9b"
 LOOKUP, RECALL = "PP", "PM"  # x0_necessity.READERS (not imported: this script needs no model code)
 LAYER = 12  # X0's predicted layer for the 9B

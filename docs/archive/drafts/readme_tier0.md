@@ -1,6 +1,6 @@
 # README drafts from Tier 0 (batch-45 brief, Dan 26 Oct ~18:30). Not merged.
 
-Numbers are the template markers; docs/x0_details.md ("Tier 0 of the batch-45 brief") renders them.
+Numbers are the template markers; docs/depth/x0_details.md ("Tier 0 of the batch-45 brief") renders them.
 
 ## T0.2: Section 1 and Fig. 1's subtitle
 
@@ -23,4 +23,4 @@ Fig. 1's subtitle, second line: "Main test, fixed in advance; the lookup switche
 
 ## T0.4: shares of the change
 
-Section 5's table header: "The part's share of the change (median over items)". Appendix line: "Every '% of the change' is the median over items of ‖PΔ‖² / ‖Δ‖²; the mean and the pooled ratio are in docs/x0_details.md (9B identity removal: median {{num|share_median_jppalfid_9b}}, mean {{num|share_mean_jppalfid_9b}}, pooled {{num|share_pooled_jppalfid_9b}})."
+Section 5's table header: "The part's share of the change (median over items)". Appendix line: "Every '% of the change' is the median over items of ‖PΔ‖² / ‖Δ‖²; the mean and the pooled ratio are in docs/depth/x0_details.md (9B identity removal: median {{num|share_median_jppalfid_9b}}, mean {{num|share_mean_jppalfid_9b}}, pooled {{num|share_pooled_jppalfid_9b}})."

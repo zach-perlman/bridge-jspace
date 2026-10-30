@@ -1,5 +1,5 @@
 """Checks for the deck's depth files (Dan's brief, 29 Oct): every figure and link path in docs/slides/*.md and README.md exists, and
-every sourced number (`<number><!-- src: data/figures/depth/data.csv | quantity -->` or docs/x0_numbers.json keys) equals,
+every sourced number (`<number><!-- src: data/figures/depth/data.csv | quantity -->` or docs/depth/x0_numbers.json keys) equals,
 at 2 decimals, a value its source holds (for a data.csv quantity: any model's row of that quantity).
 
 uv run python scripts/check_slides.py
@@ -27,7 +27,7 @@ def values() -> tuple[dict[str, set[float]], dict]:
             for k in ("value", "lo", "hi"):
                 with contextlib.suppress(TypeError, ValueError):
                     by_q.setdefault(r["quantity"], set()).add(round(float(r[k]), 2))
-    return by_q, json.loads((REPO / "docs/x0_numbers.json").read_text())
+    return by_q, json.loads((REPO / "docs/depth/x0_numbers.json").read_text())
 
 
 def main() -> int:
@@ -43,7 +43,7 @@ def main() -> int:
             n += 1
             if src == "data/figures/depth/data.csv":
                 ok = any(abs(v - x) < 0.006 for k in key.split("; ") for x in by_q.get(k, ()))
-            elif src == "docs/x0_numbers.json":
+            elif src == "docs/depth/x0_numbers.json":
                 raw = [x for k in key.split("; ") for x in re.findall(r"[−-]?\d+\.\d+", str(x0.get(k, "")))]
                 ok = any(abs(v - round(float(x.replace("−", "-")), 2)) < 0.006 for x in raw)
             else:

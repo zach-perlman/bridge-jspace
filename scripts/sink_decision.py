@@ -1,4 +1,4 @@
-"""sink_decision: the attention-sink diagnostic's verdict, by the rule in docs/prereg_sink_1021.md (Zach, 2026-10-21,
+"""sink_decision: the attention-sink diagnostic's verdict, by the rule in docs/breadth/prereg_sink_1021.md (Zach, 2026-10-21,
 written before Gemma's test-set C1 was opened). Reads Gemma's held-out ctrl_v8 run with `paper10_nosink` and
 `paper10_nosink_rot` at layers 30-38, 40-48, 48-56:
 - ARTIFACT if at one or more windows P->P and M->P each keep >= 80%, every word's rotated control keeps >= 90%, and the
@@ -66,7 +66,7 @@ def main(a) -> None:
     v, per = verdict(t)
     out = {"diag_run": a.diag, "verdict": v, "per_window": per, "protocol": "nosink" if v == "ARTIFACT" else "paper10",
            "rule": __doc__.split("\n\n")[0]}  # fmt: skip
-    lines = [f"# Attention-sink diagnostic: {v} (rule fixed in docs/prereg_sink_1021.md)", "",
+    lines = [f"# Attention-sink diagnostic: {v} (rule fixed in docs/breadth/prereg_sink_1021.md)", "",
              "Gemma 4 31B-it, held-out ctrl_v8, knock-out with sink positions left unedited (accuracy %):", "",
              "| window | condition | " + " | ".join(WORDS) + " |", "|---|---|" + "---|" * len(WORDS)]  # fmt: skip
     for b in WINDOWS:

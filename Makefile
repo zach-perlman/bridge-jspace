@@ -89,13 +89,13 @@ autonomy-status:    ## is a window open, until when, watcher and caffeinate aliv
 autonomy-off:       ## close the window now (the old limits back)
 	python3 .claude/autonomy/autonomy.py revoke
 
-review-serve:       ## the review dashboard (docs/review_views.yaml) on http://localhost:$(PORT) (SEED=7 PORT=8001; no GPU)
+review-serve:       ## the review dashboard (docs/review/review_views.yaml) on http://localhost:$(PORT) (SEED=7 PORT=8001; no GPU)
 	uv run python scripts/review.py serve --seed $(or $(SEED),7) --port $(or $(PORT),8001)
 
 review-export:      ## a static sample of every review view under review/seed-<SEED>/ (SEED=0 N=10; no GPU)
 	uv run python scripts/review.py export --seed $(or $(SEED),0) --n $(or $(N),10)
 
-review-summary:     ## docs/review_summary.md: items read by hand per view, flagged, seeds, automatic-check failures
+review-summary:     ## docs/review/review_summary.md: items read by hand per view, flagged, seeds, automatic-check failures
 	uv run python scripts/review.py summary
 
 review-verified:    ## VERIFIED.md's generated section from review/marks.jsonl + the automatic checks + the independent recount
@@ -107,7 +107,7 @@ verify-checks:      ## automatic checks over every item of the tier-1 review vie
 verify-independent: ## the README's conflict-test and routes numbers recounted from scratch -> review/verify_independent.json
 	uv run python scripts/verify_independent.py
 
-verify-pack:        ## docs/verify_pack.md: how to review in 2 hours, the automatic checks, one section per tier-1 view
+verify-pack:        ## docs/review/verify_pack.md: how to review in 2 hours, the automatic checks, one section per tier-1 view
 	uv run python scripts/verify_checks.py
 	-uv run python scripts/verify_independent.py
 	uv run python scripts/verify_pack_tier1.py
@@ -122,6 +122,6 @@ figures-kit:        ## every figure-kit figure for both targets (figures/slides/
 	uv run python -m bridge_jspace.figkit.build $(FIG) --target slide
 	uv run python -m bridge_jspace.figkit.build $(FIG) --target readme
 
-readme: figures-kit ## the root README from docs/README.root.template.md (numbers and figures fill in)
+readme: figures-kit ## the root README from docs/readme/README.template.md (numbers and figures fill in)
 	uv run python scripts/readme_root.py build
 	uv run pytest -q tests/test_readme_sources.py

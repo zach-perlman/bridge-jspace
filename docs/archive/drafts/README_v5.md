@@ -152,10 +152,10 @@ How far does the pointer we found reach?
 
 ## 7. How we checked
 
-- **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
+- **Hand-checked numbers.** None yet ([docs/review/review_summary.md](docs/review/review_summary.md)); [docs/review/verify_pack.md](docs/review/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 106 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
-- **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
+- **Inventory.** [docs/review/inventory.md](docs/review/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 8. Related work and what is new
 
@@ -169,4 +169,4 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 
 ## Appendix A. Links
 
-Every number on this page comes from [data/figures/depth/data.csv](data/figures/depth/data.csv) (also every plotted number) and [docs/x0_numbers.json](docs/x0_numbers.json), each with its source file; [docs/x0_details.md](docs/x0_details.md) has the full tables; [docs/verify_pack.md](docs/verify_pack.md) recounts them. All figures on one page: [docs/figures_contact_sheet.png](docs/figures_contact_sheet.png); the figure plan: [docs/figure_plan.md](docs/figure_plan.md). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [every part](figures/depth/supp/s02_parts_all.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the parts removed together, with the bars fixed in advance](figures/depth/supp/s10_removed_together_bars.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).
+Every number on this page comes from [data/figures/depth/data.csv](data/figures/depth/data.csv) (also every plotted number) and [docs/depth/x0_numbers.json](docs/depth/x0_numbers.json), each with its source file; [docs/depth/x0_details.md](docs/depth/x0_details.md) has the full tables; [docs/review/verify_pack.md](docs/review/verify_pack.md) recounts them. All figures on one page: [figures/depth/contact_sheet.png](figures/depth/contact_sheet.png); the figure plan: [docs/depth/figure_plan.md](docs/depth/figure_plan.md). Supplementary figures: [every scene set](figures/depth/supp/s01_split_all_scene_sets.png), [every part](figures/depth/supp/s02_parts_all.png), [every routes arm](figures/depth/supp/s05_routes_all_arms.png), [the parts removed together, with the bars fixed in advance](figures/depth/supp/s10_removed_together_bars.png). Earlier figures: [figures/archive/status_2026-10-25/](figures/archive/status_2026-10-25/).

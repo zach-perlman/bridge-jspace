@@ -43,14 +43,14 @@ make test-model    # integration on Qwen3.5-0.8B + its lenses (CPU ok, a few min
 uv run python scripts/verify_headlines.py   # every README headline, recomputed from the raw files
 ```
 
-## Hand check (review dashboard, docs/review_views.yaml; CPU only)
+## Hand check (review dashboard, docs/review/review_views.yaml; CPU only)
 ```bash
-make verify-pack              # verify-checks + verify-independent, then docs/verify_pack.md (how to review, findings, views)
+make verify-pack              # verify-checks + verify-independent, then docs/review/verify_pack.md (how to review, findings, views)
 make verify-checks            # automatic checks over every item of the tier-1/2 views -> review/verify_checks.json
 make verify-independent       # README conflict-test / routes numbers recounted from scratch -> review/verify_independent.json
 make review-serve SEED=29     # the dashboard at :8001; the fixed sample (seed 29, views file fixed_sample); marks -> review/marks.jsonl
 make review-export SEED=29 N=10   # the same pages as static HTML under review/seed-29/
-make review-summary           # docs/review_summary.md from the marks (verdicts only; J-space notes skipped)
+make review-summary           # docs/review/review_summary.md from the marks (verdicts only; J-space notes skipped)
 make review-verified          # VERIFIED.md's generated block from the marks (Dan runs it after his marks)
 make examples-render SEED=29  # also examples/review-seed-29/: the items read, for the write-up
 ```

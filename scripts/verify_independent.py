@@ -16,7 +16,7 @@ What it recomputes, per model (the 9B is the brief's; the others the same way, a
                    token each route predicts), not from the stored route label; the share of the C2 items per route;
                    the stored label is compared on the side
 Each number is compared with what the README shows (docs/depth/README.md, the number before its <!-- src --> comment,
-2 decimals) and with its source (docs/x0_numbers.json, or data/figures/depth/data.csv by model and quantity).
+2 decimals) and with its source (docs/depth/x0_numbers.json, or data/figures/depth/data.csv by model and quantity).
 
 uv run python scripts/verify_independent.py             # all models -> review/verify_independent.json
 uv run python scripts/verify_independent.py --models 9b
@@ -34,7 +34,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 README = "docs/depth/README.md"
-NUMBERS = "docs/x0_numbers.json"
+NUMBERS = "docs/depth/x0_numbers.json"
 DATA_CSV = "data/figures/depth/data.csv"
 OUT = "review/verify_independent.json"
 READERS = ("PP", "PM")  # lookup, recall

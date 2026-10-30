@@ -2,7 +2,7 @@
 review dashboard's "Look into J-space" panel (scripts/review_jspace.py). Read-only on results/ except its own run dir;
 no rule, no verdict.
 
-Sample items (the dashboard's items, src/bridge_jspace/review/items.py): every tier-1 view of docs/review_views.yaml, for
+Sample items (the dashboard's items, src/bridge_jspace/review/items.py): every tier-1 view of docs/review/review_views.yaml, for
 the target (BJ_TARGET). The seed-29 sample comes from the views file (items.review_sample, the verification pack's);
 until it exists a planted one stands in: SEED 29, N 10 per view and model, items.sample's uniform draw. Per item, its
 reader's O prompt (the item's own ids) and S prompt (its alt ids), each with the read's suffix (X0's chat read: the
@@ -316,7 +316,7 @@ def model_layer(model: str) -> int:
 def build_plan(model: str, tok=None, with_rank: bool = True) -> dict:
     """Everything the GPU stage reads: the sample items with their prompts and positions, the rank rows."""
     tok = tok or hf_tokenizer(model)
-    assert model in I.spec()["models"], f"{model} is not in docs/review_views.yaml's models"
+    assert model in I.spec()["models"], f"{model} is not in docs/review/review_views.yaml's models"
     sample, sources, dropped = [], {}, collections.Counter()
     for v in tier1_views():
         got, src = sample_items(v, model)
@@ -390,7 +390,7 @@ def manifest(name: str, model: str, layer: int) -> dict:
     return {"exp": EXP, "run": name, "spec": "jobs/c3/batch53.yaml (inspector_1145, item 1)",
             "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "model": pins.model_pin(),
             "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "k": K,
-            "views_file": {"path": "docs/review_views.yaml", "sha256": pins.sha256_file(I.VIEWS_FILE)},
+            "views_file": {"path": "docs/review/review_views.yaml", "sha256": pins.sha256_file(I.VIEWS_FILE)},
             "cache": f"cache/{EXP}/{model}",
             "seeds": {"sample": SEED, "random_subspace": "888 + layer (X0's; CPU QR at L, GPU QR elsewhere)"},
             "verdict": "none (inputs for the review dashboard's J-space panel)"}  # fmt: skip

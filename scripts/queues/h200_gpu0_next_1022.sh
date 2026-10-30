@@ -1,5 +1,5 @@
 #!/bin/bash
-# Zach (2026-10-22 ~17:00 UTC; docs/prereg_replication_1022.md amendment 3): GPU 0 after Muse's steering recovery
+# Zach (2026-10-22 ~17:00 UTC; docs/breadth/prereg_replication_1022.md amendment 3): GPU 0 after Muse's steering recovery
 # (h200_muse_c2fix_1022.sh, whose full-write C2 re-run is swapped for this scored-writes one; identical verdicts):
 # 2026-10-22 ~18:20 UTC (speed-up): the Qwen3-32B and 27B checks moved to GPU 1 (h200_gpu1_checks_1022.sh), run
 # beside the 9B. Left here: (1) Muse's pre-registered C2 at the current band; (2) Qwen3-32B's late-layer write check (54-62); (3) Qwen3-32B's C1

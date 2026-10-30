@@ -16,7 +16,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{conf|f}}                   "medium (holds 7 of 8; Muse: prose fails, 5 items)"
   {{table|f|setting,...}}      one row per judged model (its first listed setting with a value), the rest below
   {{q|text}}                   a number quoted from outside the grid, rendered as is
-  {{num|key}}                  an X0 number from docs/x0_numbers.json (scripts/x0_details.py, from the run files)
+  {{num|key}}                  an X0 number from docs/depth/x0_numbers.json (scripts/x0_details.py, from the run files)
   {{pt|key}}                   the same number's point estimate, without its interval (for ranges in prose)
   {{d|figure|model|quantity}}  a plotted number from data/figures/depth/data.csv (scripts/readme_story_figures.py writes it):
                                "0.08 [0.05, 0.12]"; model as 9b / 27b / 122b / muse or the target name
@@ -284,12 +284,12 @@ def one(x: re.Match[str], book: Book) -> str:
     if kind == "q":
         return "|".join(args)
     if kind in ("num", "pt"):  # an X0 number, recomputed from the run files by scripts/x0_details.py
-        numbers = json.loads((REPO / "docs" / "x0_numbers.json").read_text())
+        numbers = json.loads((REPO / "docs" / "depth" / "x0_numbers.json").read_text())
         if args[0] not in numbers:
-            raise ValueError(f"{x.group(0)}: no such key in docs/x0_numbers.json (run scripts/x0_details.py)")
+            raise ValueError(f"{x.group(0)}: no such key in docs/depth/x0_numbers.json (run scripts/x0_details.py)")
         text = numbers[args[0]]["text"]
         text = text.split(" [")[0] if kind == "pt" else text  # pt: the point estimate, without its interval
-        return text + (book.src("docs/x0_numbers.json", args[0]) if book is not None else "")
+        return text + (book.src("docs/depth/x0_numbers.json", args[0]) if book is not None else "")
     if kind in ("d", "dp"):  # a plotted number from data/figures/depth/data.csv
         r = book.data(*args)
         return fmt_data(r, point=kind == "dp") + book.src(str(DATA_CSV.relative_to(REPO)), r["quantity"])

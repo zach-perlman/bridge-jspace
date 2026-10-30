@@ -2,7 +2,7 @@
 
 ## jsuite_v2_test_chat_ko_cand2_v1 (jsuite_v2_test_chat)
 
-**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/digest.md):
+**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/depth/digest.md):
 
 ```python
 import json
@@ -313,7 +313,7 @@ What is the country of origin of the dish that consists of fries topped with che
 
 ## qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1 (jsuite_v2_test_chat)
 
-**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/digest.md):
+**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/depth/digest.md):
 
 ```python
 import json
@@ -693,7 +693,7 @@ In which country is the city Tess Garland moved to last spring?
 
 ## nem35l_jsuite_v2_test_chat_ko_cand2_v1 (jsuite_v2_test_chat)
 
-**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/digest.md):
+**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/depth/digest.md):
 
 ```python
 import json

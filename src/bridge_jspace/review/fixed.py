@@ -3,7 +3,7 @@ N = 10 per tier-1 view, pooled over the view's models: 6 random, stratified by m
 nearest the decision (|p_alt - p_org| smallest) and 2 "surprising" (the lookup switches without the lens part but not
 without the random part, or the reverse; each view's equivalent is its "targeted" entry in the views file).
 
-Drawn once (`uv run python scripts/review.py sample`) and written into docs/review_views.yaml (fixed_sample): the
+Drawn once (`uv run python scripts/review.py sample`) and written into docs/review/review_views.yaml (fixed_sample): the
 dashboard and the export read the items from there, so no re-roll can change them.
 
 Strata of the 6 random items: the view's models in a seeded order, one item per (model, reader), the reader

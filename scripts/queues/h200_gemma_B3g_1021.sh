@@ -1,6 +1,6 @@
 #!/bin/bash
 # Zach (2026-10-21, decided with Zach; replaces the rest of h200_gemma_B3e_1021.sh once its C1 and specificity control are
-# done; the rest sat at a band where every word is near 0%): the attention-sink diagnostic, docs/prereg_sink_1021.md.
+# done; the rest sat at a band where every word is near 0%): the attention-sink diagnostic, docs/breadth/prereg_sink_1021.md.
 # (1) Gemma, ctrl_v8, layers 30-38 / 40-48 / 48-56, paper10_nosink + rotated: decides (scripts/sink_decision.py writes
 # the protocol for later C1 runs to the marker). Descriptive: (2) Gemma plain-text loss with and without _nosink, (3) the
 # Gemma dose at 30-38, (4) the 27B at 12-20 and 32-40 under _nosink, (5) Gemma's lens check (moved from B3e).
@@ -20,7 +20,7 @@ TWO="PP PM MP MM CP CM"
 T2="--tasks full_v8 --tasks-competence $C2 --tasks-words $TWO --tasks-level all"
 K="--n 1000 --kinds clean --batch 32"
 CTRL="--tasks ctrl_v8 --tasks-words PP PM MP MM --tasks-level all --n 100 --kinds clean --batch 32"
-WHY="Zach (2026-10-21): the attention-sink diagnostic (docs/prereg_sink_1021.md)"
+WHY="Zach (2026-10-21): the attention-sink diagnostic (docs/breadth/prereg_sink_1021.md)"
 uniq_bands() { echo "$@" | tr " " "\n" | awk 'NF && !s[$0]++' | tr "\n" " "; }
 echo "=== start $(date -u +%FT%TZ)"
 BJ_TARGET=$GT $PY scripts/ablate_v2.py --name gemma4itf_sink_diag_v1 --why "$WHY: Gemma, decides" --plan bands \

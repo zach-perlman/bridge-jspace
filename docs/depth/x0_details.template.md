@@ -1,6 +1,6 @@
 # X0 in detail
 
-The README gives the summary; this page holds the tables behind it. Every number is recomputed from the run files by `scripts/x0_details.py`, and every number is unverified. Design and log: [jobs/c3/X0.md](../jobs/c3/X0.md). Run folders: [results/x0_necessity/](../results/x0_necessity/).
+The README gives the summary; this page holds the tables behind it. Every number is recomputed from the run files by `scripts/x0_details.py`, and every number is unverified. Design and log: [jobs/c3/X0.md](../../jobs/c3/X0.md). Run folders: [results/x0_necessity/](../../results/x0_necessity).
 
 **Terms.** "Excess" here is the README's "extra loss": the J-dependence (the share of the whole edit's flips lost when a part is removed) minus that of a random subspace of the same share of ‖Δ‖².
 
@@ -12,7 +12,7 @@ The README gives the summary; this page holds the tables behind it. Every number
 
 CIs are 95%, from a cluster bootstrap over bridge entities (10,000 resamples).
 
-![Overview: excess by layer, two models, three prompt formats](../figures/archive/x0_necessity/overview.png)
+![Overview: excess by layer, two models, three prompt formats](../../figures/archive/x0_necessity/overview.png)
 
 ## Every layer (chat, the bridge's word, J++ at 25 atoms)
 
@@ -28,8 +28,8 @@ Qwen3.5-122B-A10B (n = {{num|n_122b}} scenes, {{num|ents_122b}} bridge entities;
 
 {{tbl|layers_122b}}
 
-![27B detail](../figures/archive/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
-![9B detail](../figures/archive/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
+![27B detail](../../figures/archive/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
+![9B detail](../../figures/archive/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
 ## Every dictionary and number of atoms (the pre-registered layer; added after the data)
 
@@ -47,9 +47,9 @@ Qwen3.5-122B, layer {{num|layer_122b}} (from its X0 run: J++ at 25 / 50 / 100 di
 
 {{tbl|dicts_122b}}
 
-![Equal removed share](../figures/archive/x0_necessity/kmatch.png)
-![Excess against the number of atoms](../figures/archive/x0_necessity/kcurve.png)
-![Share against J-dependence](../figures/archive/x0_necessity/share.png)
+![Equal removed share](../../figures/archive/x0_necessity/kmatch.png)
+![Excess against the number of atoms](../../figures/archive/x0_necessity/kcurve.png)
+![Share against J-dependence](../../figures/archive/x0_necessity/share.png)
 
 On the 27B, the lookup's J-dependence tracks, across layers, the share of ‖Δ‖² that J++ takes (Spearman {{num|share_rho_27b}}). The recall's does not.
 
@@ -72,7 +72,7 @@ Qwen3.5-122B:
 
 {{tbl|strata_122b}}
 
-![Upstream change](../figures/archive/x0_necessity/asked_first.png)
+![Upstream change](../../figures/archive/x0_necessity/asked_first.png)
 
 ## The digit check (the pre-registered layer; added after the data)
 
@@ -93,7 +93,7 @@ Qwen3.5-122B, layer {{num|layer_122b}} (its X0 run; the readout ranks the answer
 
 {{tbl|digit_122b}}
 
-![The digit check](../figures/archive/status_2026-10-24/f6_digits.png)
+![The digit check](../../figures/archive/status_2026-10-24/f6_digits.png)
 
 ## The value, the slot and the identity at the bridge word (x0_probe v4; four models; added after the data)
 
@@ -110,7 +110,7 @@ Beside it, the lens: the J++ readout at the bridge's word ranks the lookup's ans
 - The rest of the top 25 are mostly tokens that are neither context words nor names. Some of them are the bridge in other scripts (フライ for *fly*, 小熊 for *bear*).
 - Digits never enter the top 25, even when every token is allowed ({{num|atoms_digit_top25_all}}). Number words enter {{num|atoms_number_word_top25_all}}.
 
-Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [every token](../results/x0_atoms/x0_atoms_27b_all/tables.md).
+Tables: [letter atoms](../../results/x0_atoms/x0_atoms_27b_letters/tables.md), [every token](../../results/x0_atoms/x0_atoms_27b_all/tables.md).
 
 ## The 23 Oct context cell on the fresh scenes (a replication; not part of X0's rule)
 
@@ -118,7 +118,7 @@ Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [eve
 - lookups flip {{num|ctx_lookup_full}} with the whole change and {{num|ctx_lookup_noj}} without the J++ part;
 - recalls flip {{num|ctx_recall_full}} → {{num|ctx_recall_noj}}, a loss of {{num|ctx_recall_drop}} points, against {{num|ctx_recall_droprand}} for a random part. The difference is {{num|ctx_recall_diff}} (shares).
 
-[Verdict](../results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md).
+[Verdict](../../results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md).
 
 ## The first-mention table (README Section 5 keeps four rows)
 
@@ -189,7 +189,7 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 
 **Shares of the change.** Every "% of the change" in the README is the median over items of ‖PΔ‖² / ‖Δ‖². For the 9B's J++ + pointer + identity outside J++ (sanity swap) that is {{num|share_median_jppalfid_9b}}; the mean of the per-item ratios is {{num|share_mean_jppalfid_9b}} and the pooled ratio (Σ‖PΔ‖² / Σ‖Δ‖²) {{num|share_pooled_jppalfid_9b}} (27B {{num|share_median_jppalfid_27b}} / {{num|share_mean_jppalfid_27b}} / {{num|share_pooled_jppalfid_27b}}; Muse {{num|share_median_jppalfid_muse}} / {{num|share_mean_jppalfid_muse}} / {{num|share_pooled_jppalfid_muse}}).
 
-**The split by sentence order** (main test; [split_by_order.md](split_by_order.md) has every design). The lookup's extra loss is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
+**The split by sentence order** (main test; [split_by_order.md](notes/split_by_order.md) has every design). The lookup's extra loss is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
 
 | Main test | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -216,7 +216,7 @@ A strong write can switch on a route the model does not use at its natural size;
 
 ## Batch 45 behind README v5 (27 Oct; UNVERIFIED)
 
-Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_dan.md), batch 45; specs in [jobs/c3/batch45.yaml](../jobs/c3/batch45.yaml).
+Rules and readings: [predictions/2026-10-26_dan.md](../../predictions/2026-10-26_dan.md), batch 45; specs in [jobs/c3/batch45.yaml](../../jobs/c3/batch45.yaml).
 
 **The clean design (45m, fixed in advance).** An added locker item nobody picks becomes the asked person's pick, so only the bridge token differs. Extra loss without the J++ part (25 directions) against a random part of the same size, at the layer fixed in advance; the lookup's extra loss is not measurable where the locker comes after the pick (too few switches).
 
@@ -269,7 +269,7 @@ Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_da
 
 ## Margins of the non-switchers (batch 47, 47.0b; descriptive, UNVERIFIED)
 
-Why does not every answer switch? The cheapest explanation: the answers the whole change leaves alone were held more firmly before the change. Per design (the main test; the clean design, 45m), model and reader: the unedited logit margin at the read step (the original answer's logit minus the changed answer's; chat, the layer fixed in advance) of the items the whole change switches against those it does not. Means with 95% cluster-bootstrap intervals over the bridge items (10,000 resamples, seed 0; the difference on the same draws); AUC is the chance that a stayer's margin is above a switcher's (0.5: the margin does not separate them). "Locker before the pick": the original bridge's locker sentence comes before the asked pick (as in the split by sentence order). The causal test is 47.4. Spec: [jobs/c3/batch47.yaml](../jobs/c3/batch47.yaml); code: scripts/x47_margins.py.
+Why does not every answer switch? The cheapest explanation: the answers the whole change leaves alone were held more firmly before the change. Per design (the main test; the clean design, 45m), model and reader: the unedited logit margin at the read step (the original answer's logit minus the changed answer's; chat, the layer fixed in advance) of the items the whole change switches against those it does not. Means with 95% cluster-bootstrap intervals over the bridge items (10,000 resamples, seed 0; the difference on the same draws); AUC is the chance that a stayer's margin is above a switcher's (0.5: the margin does not separate them). "Locker before the pick": the original bridge's locker sentence comes before the asked pick (as in the split by sentence order). The causal test is 47.4. Spec: [jobs/c3/batch47.yaml](../../jobs/c3/batch47.yaml); code: scripts/x47_margins.py.
 
 {{tbl|margins_47}}
 
@@ -293,7 +293,7 @@ Why does not every answer switch? The cheapest explanation: the answers the whol
 | The alt's second changed pick | Asked-first vs upstream-change items | Recalls the same; 27B lookups flip less without the upstream change | partly; a single-change alt is next |
 | The lookup's layer profile is the J++ share | J-dependence against share across layers | 27B lookups track it; recalls do not | open |
 
-## Choices made after the data (24 Oct; log in [jobs/c3/X0.md](../jobs/c3/X0.md))
+## Choices made after the data (24 Oct; log in [jobs/c3/X0.md](../../jobs/c3/X0.md))
 
 | Choice | Why | What we did |
 |---|---|---|
@@ -316,7 +316,7 @@ Why does not every answer switch? The cheapest explanation: the answers the whol
 | No chat template, thinking not disabled: gate | ≥ 80% for both readers | can't test | both pass, 80%: wrong |
 | No chat template, thinking off: gate (amendment 2) | the same | can't test | both pass, 80%: wrong |
 
-Scored question by question in [predictions/2026-10-24_dan.md](../predictions/2026-10-24_dan.md).
+Scored question by question in [predictions/2026-10-24_dan.md](../../predictions/2026-10-24_dan.md).
 
 ## Prompt formats and words
 

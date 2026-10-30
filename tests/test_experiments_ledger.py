@@ -25,7 +25,7 @@ CARD = """### A test (1.1, opened x) <a id="a"></a>
 *What is plotted.*
 
 - **Rule, fixed in advance.** "r."
-- **Result.** 0.53<!-- src: docs/handcheck_clean49.md | Main test gap :: 0.53 -->
+- **Result.** 0.53<!-- src: docs/depth/notes/handcheck_clean49.md | Main test gap :: 0.53 -->
 - **Read.**
   - r.
 - **Caveats.**
@@ -119,7 +119,7 @@ def test_the_ledger_follows_the_readme_order():
 
 def test_the_checker_catches_failures():
     assert not L.problems(CARD)
-    assert L.problems(CARD.replace("docs/handcheck_clean49.md", "results/no_such_folder/verdict.md"))
+    assert L.problems(CARD.replace("docs/depth/notes/handcheck_clean49.md", "results/no_such_folder/verdict.md"))
     assert L.problems(CARD.replace(' <a id="a"></a>', ""))
     assert L.problems(CARD + CARD)  # a duplicate anchor
     assert L.problems(CARD.replace("- **Caveats.**\n", ""))

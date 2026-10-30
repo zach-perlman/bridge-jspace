@@ -54,7 +54,7 @@ def plant(root: Path, readme_lookup: str = "0.25", readme_route: str = "0.50") -
     put(root, f"{rr}/outcomes.jsonl", [
         {"scene": "c0", "condition": "C2", "reader": "PP", "arm": "whole", "top": 12, "route": "position"},
         {"scene": "c1", "condition": "C2", "reader": "PP", "arm": "whole", "top": 11, "route": "position"}])  # fmt: skip
-    put(root, "docs/x0_numbers.json", {
+    put(root, "docs/depth/x0_numbers.json", {
         "lk_excess_9b": {"text": "0.25 [0.1, 0.4]", "source": f"{run}/outcomes.jsonl"},
         "rc_excess_9b": {"text": "1.00", "source": f"{run}/outcomes.jsonl"},
         "contrast_9b": {"text": "0.75", "source": f"{run}/outcomes.jsonl"},
@@ -63,10 +63,10 @@ def plant(root: Path, readme_lookup: str = "0.25", readme_route: str = "0.50") -
         "rtk_C2_keep_alf_position_9b": {"text": "0.00", "source": f"{rr}/verdict-1/verdict.json"}})  # fmt: skip
     (root / "data/figures/depth").mkdir(parents=True)
     (root / "data/figures/depth/data.csv").write_text("figure,model,quantity,value,lo,hi,n,source\n")
-    (root / "docs/depth").mkdir(parents=True)
+    (root / "docs/depth").mkdir(parents=True, exist_ok=True)
     (root / "docs/depth/README.md").write_text(
-        f"lookup {readme_lookup} [0.1, 0.4]<!-- src: docs/x0_numbers.json | lk_excess_9b --> | recall "
-        f"1.00<!-- src: docs/x0_numbers.json \\| rc_excess_9b --> | position {readme_route}<!-- src: docs/x0_numbers.json | "
+        f"lookup {readme_lookup} [0.1, 0.4]<!-- src: docs/depth/x0_numbers.json | lk_excess_9b --> | recall "
+        f"1.00<!-- src: docs/depth/x0_numbers.json \\| rc_excess_9b --> | position {readme_route}<!-- src: docs/depth/x0_numbers.json | "
         "rt_C2_whole_position_9b -->\n"
     )
 

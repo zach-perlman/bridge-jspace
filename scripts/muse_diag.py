@@ -1,4 +1,4 @@
-"""muse_diag (Zach, 2026-10-22; docs/prereg_replication_1022.md amendment 6C): why can Muse's recalls be steered through
+"""muse_diag (Zach, 2026-10-22; docs/breadth/prereg_replication_1022.md amendment 6C): why can Muse's recalls be steered through
 the lens but not knocked out? On full_v8's memory-final words (P->M, M->M), items the model gets right, at the model's
 C1 band, the paper10 knock-out is replayed one prompt at a time with its removals logged:
 - (a) the bridge's rank in the lens readout (letter tokens; best of its surface forms) at each band layer, clean, at the

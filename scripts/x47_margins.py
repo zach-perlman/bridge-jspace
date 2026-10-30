@@ -154,7 +154,7 @@ def fmt(v: list[float]) -> str:
 
 
 def table(blob: dict) -> list[str]:
-    """The markdown table (also what scripts/x0_details.py renders into docs/x0_details.md)."""
+    """The markdown table (also what scripts/x0_details.py renders into docs/depth/x0_details.md)."""
     name = {"qwen3.5-9b": "Qwen3.5-9B", "qwen3.6-27b": "Qwen3.6-27B", "muse-glimmer-30b": "Muse Glimmer 30B"}
     lines = ["| design | model (layer) | reader | scenes | n switch / stay | margin, switchers | margin, stayers | "
              "stayers − switchers | median switch / stay | AUC |",

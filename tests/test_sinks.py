@@ -1,4 +1,4 @@
-"""Toy tests (CPU) for the attention-sink variant (docs/prereg_sink_1021.md) and the sink verdict rule."""
+"""Toy tests (CPU) for the attention-sink variant (docs/breadth/prereg_sink_1021.md) and the sink verdict rule."""
 
 import sys
 from pathlib import Path

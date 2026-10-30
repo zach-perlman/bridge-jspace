@@ -15,7 +15,7 @@ Conditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, 
   Zach after the pipeline review): unembed10 and unembed10_rot, paper10's procedure over the unit unembedding rows of
   letter tokens (the final norm's gain folded in: the logit lens's directions, the same at every layer) instead of the
   J-lens vectors: is the damage specific to the J-space, or shared by any token-aligned directions? 2026-10-21
-  (docs/prereg_sink_1021.md): any top-K condition with "_nosink" before its control suffix (paper10_nosink,
+  (docs/breadth/prereg_sink_1021.md): any top-K condition with "_nosink" before its control suffix (paper10_nosink,
   paper10_nosink_rot, unembed10_nosink, top5_nosink_rot, paper10_keepown_nosink, ...) leaves attention-sink positions
   unedited: position 0 and every position whose residual norm exceeds 10x the prompt's median. Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
   v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the

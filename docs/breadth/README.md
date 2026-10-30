@@ -63,7 +63,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
 - **The swap.** Replace the J-part (the span of the top-10 J++ directions) of the bridge's last token with another
   entity's (D).
   - **Transfer**: the share answering D's fact minus the share answering a third entity's.
-- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-57) before the run.
+- **Fixed in advance** = pre-registered in docs/breadth/prereg_replication_1022.md (amendments 1-57) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
 ## 1. Recall needs the J++ directions; reading the stated fact does not
@@ -514,14 +514,14 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 ## 9. How we checked
 
-- **Hand-checked numbers.** None yet; docs/verify_kit.md recomputes the headline M − K from the per-item rows and lists
+- **Hand-checked numbers.** None yet; docs/breadth/verify_kit.md recomputes the headline M − K from the per-item rows and lists
   20 random items per model.
 - **Clean-checkout reruns**: row-identical for the 27B and 9B. Lightning reproduces its headline, not row for row; a
   determinism check traces that to its inputs, not its kernels (Section 2).
   - Amendment 57's results (the larger numbers set, the second three-hop seed, the late bands) reran from a clean
     checkout identical in 11 of 11 comparisons (122394 rows and items; every
     read and log-probability equal), Lightning's late band included.
-- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-57 (with notes). EXPERIMENTS.md has one line per run, with
+- **Pre-registration**: docs/breadth/prereg_replication_1022.md, amendments 1-57 (with notes). EXPERIMENTS.md has one line per run, with
   its W&B link.
 
 ## 10. Next

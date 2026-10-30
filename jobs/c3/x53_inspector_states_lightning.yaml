@@ -27,7 +27,7 @@ decision_rule: >-
   change) is scored on the CPU from rank_check.jsonl: "the rank of S's bridge token (and its variants) in the readout of
   the J++ part, of the rest and of a random part of the same share; the share of items with it in the top 50 for each.
   Flag if the rest puts it in the top 50 on >= 20% of items more often than the random part does. The same for the
-  answer words." As computed (scripts/review_states.py): the sample is docs/review_views.yaml's fixed_sample (seed 29)
+  answer words." As computed (scripts/review_states.py): the sample is docs/review/review_views.yaml's fixed_sample (seed 29)
   for this model; the change's part = x52_atoms.omp_atoms (x0_necessity.fit step for step, K = 25, J++ letter atoms);
   the random part = statement_positions.random_subspace_part at the part's share, basis seed 888 + layer (CPU QR at L).
 controls:

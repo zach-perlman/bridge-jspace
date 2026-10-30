@@ -69,4 +69,4 @@ fact".
 3. **Pointer, probe and size-matched tests stop at 3-5 models.** Missing: Bolt (at K = 100), DeepSeek, OLMo.
 4. **DeepSeek and OLMo** (the likeliest under-dosed) are out of the dose grid until their caches return.
 5. **Three-hop and numbers on v2** (amendment 37B, never run), and **H0 head-on on v2** (computed bridges).
-6. **No human verification yet** (`docs/verify_kit.md`).
+6. **No human verification yet** (`docs/breadth/verify_kit.md`).

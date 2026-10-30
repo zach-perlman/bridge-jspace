@@ -1,4 +1,4 @@
-"""c2_narrow: the narrow C2 (C2'), pre-registered in docs/prereg_replication_1022.md (Zach, 2026-10-21 ~00:55 UTC
+"""c2_narrow: the narrow C2 (C2'), pre-registered in docs/breadth/prereg_replication_1022.md (Zach, 2026-10-21 ~00:55 UTC
 10-22, before any Mistral-Small-24B-2501 or Qwen3-32B run). The 27B's wm2_full2_v2 is the data the rule was read off,
 so on the 27B it is reported, not evidence.
 
@@ -57,7 +57,7 @@ def main(runs: list[str]) -> None:
         recalled = {f: fams[f]["cv_own_direction"] for f in ("MP", "MM") if f in fams}
         out["recalled_reported"] = recalled
         (OUT / f"{run}.json").write_text(json.dumps(out, indent=2) + "\n")
-        lines = [f"# C2' (narrow) / {run}: {out['verdict']} (rule in scripts/c2_narrow.py, docs/prereg_replication_1022.md)", "",
+        lines = [f"# C2' (narrow) / {run}: {out['verdict']} (rule in scripts/c2_narrow.py, docs/breadth/prereg_replication_1022.md)", "",
                  "| source | X->P write (CV) | X->M write (CV) | X->M >= X->P + 10 | X->M >= 3x | intervals apart | min n | pass |",
                  "|---|---|---|---|---|---|---|---|"]  # fmt: skip
         for x, p in out["per_source"].items():

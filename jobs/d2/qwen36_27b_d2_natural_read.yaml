@@ -31,7 +31,7 @@ hypotheses:
   H-relay: 'more than 20% right with the sentence hidden from the last tokens while hidden from every later token leaves <= 10%: other positions (the question words, later sentences) read it and pass the answer on'
   H-deltanet: 'the attention part holds but hiding the sentence in the DeltaNet layers instead costs more than 10 points'
 decision_rule: >-
-  Fixed 2026-10-23 before any run and amended by Dan on 23 Oct, before any run (docs/design_natural_late_read.md;
+  Fixed 2026-10-23 before any run and amended by Dan on 23 Oct, before any run (docs/depth/notes/design_natural_late_read.md;
   scripts/natural_read.py judge, BARS). Items: data/natural_read_v1 (SQuAD v1.1 dev, one question per paragraph, 718).
   The knockout run takes every item the competence run makes eligible, no cap: the answer's first token has 3+
   characters or is its whole first word; with the paragraph, the answer's first token is on top and the greedy answer

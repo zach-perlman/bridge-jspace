@@ -1,10 +1,10 @@
-"""The README figures' shared visual language (Dan, 26 Oct ~16:45; docs/figure_plan.md): sized for GitHub's ~880 px
+"""The README figures' shared visual language (Dan, 26 Oct ~16:45; docs/depth/figure_plan.md): sized for GitHub's ~880 px
 column (8.8 in wide, fonts >= 11 pt), the claim as the title (about 12 words) and one subtitle line on how to read it;
 fixed colours (lookup purple, recall dark grey; identity blue, position orange, value green, unchanged light grey;
 random controls light grey); extra loss as a dot with a 95% CI whisker on a shared [-0.2, 1.0] axis; models in the
 order 9B, 27B, 122B, Muse; one status encoding: filled = fixed in advance, open = after the data, a degree sign on the
 label = a rerun with a gate lowered after the data. Every plotted number is recorded for data/figures/depth/data.csv. The
-words on the figures: docs/glossary.md."""
+words on the figures: docs/depth/glossary.md."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "figures" / "depth"
 SUPP = REPO / "figures" / "depth" / "supp"
 DATA_DIR = REPO / "data" / "figures" / "depth"  # data.csv, scorecard.csv (figures/ holds PNGs only)
-NUMBERS = REPO / "docs" / "x0_numbers.json"
+NUMBERS = REPO / "docs" / "depth" / "x0_numbers.json"
 WIDTH = 8.8  # inches: 880 px at 100 px per inch, GitHub's README column
 COL = {"lookup": "#6a4bd6", "recall": "#3a3a3a", "identity": "#2b7bba", "position": "#e08a1e", "original": "#c8c8c8",
        "value": "#009e73", "other": "#ececec", "control": "#bdbdbd", "band": "#f0f0f0", "muted": "#666666",
@@ -35,7 +35,7 @@ MODELS = (("qwen3.5-9b", "9b", "Qwen3.5-9B"), ("qwen3.6-27b", "27b", "Qwen3.6-27
 XLIM = (-0.2, 1.0)
 NOT_NEEDED = 0.10  # the rule's "not needed" band (X0: extra loss <= 0.10)
 ROWS: list[dict] = []
-# v6 (Dan's README v6 brief, §5; docs/figure_plan.md "v6 style rules"): a reader's layer is not interpretable where the
+# v6 (Dan's README v6 brief, §5; docs/depth/figure_plan.md "v6 style rules"): a reader's layer is not interpretable where the
 # whole change switches < NI_SWITCH of it (scripts/x47_anatomy.py's bar); one look for that shading in every figure.
 NI_SWITCH = 0.30
 NI_SHADE = {"facecolor": "#f6f6f6", "edgecolor": "#d4d4d4", "hatch": "///", "lw": 0, "zorder": 0}
@@ -238,7 +238,7 @@ def save(fig, name: str, supp: bool = False) -> None:
 
 
 def write_data() -> None:
-    """data/figures/depth/data.csv: every plotted number, then every number docs/x0_numbers.json holds (the README's)."""
+    """data/figures/depth/data.csv: every plotted number, then every number docs/depth/x0_numbers.json holds (the README's)."""
     buf = io.StringIO()
     w = csv.DictWriter(buf, fieldnames=["figure", "model", "quantity", "value", "lo", "hi", "n", "source"])
     w.writeheader()

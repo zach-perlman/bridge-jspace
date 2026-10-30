@@ -1,4 +1,4 @@
-"""fig_writeup (Zach, 2026-10-26): the write-up figures, read from the same result files as docs/digest.md (through
+"""fig_writeup (Zach, 2026-10-26): the write-up figures, read from the same result files as docs/depth/digest.md (through
 scripts/results_digest.py's readers, so a figure and the digest cannot disagree). Writes figures/archive/writeup/*.png.
 
   fig1_knockout   M - K under the top-10 J++ removal at each model's band, with its three controls
@@ -218,7 +218,7 @@ def fig3() -> None:
                  x=0.01, ha="left", fontweight="bold", fontsize=11)  # fmt: skip
     note(fig, "K = 10 / 30 / 100 for Bolt and Ministral (amendments 52, 53); K = 10 for the others. B: memory finals pooled; Bolt and the K = 10 points at the\n"
               "knock-out band, Ministral at mid depth (L20-25), where its J++ lens reads the attribute. Rotated swaps are within 1 point of 0 at every K.\n"
-              "95% bootstrap intervals in docs/digest.md.")  # fmt: skip
+              "95% bootstrap intervals in docs/depth/digest.md.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.1, 1, 0.93))
     fig.savefig(OUT / "fig3_dose.png", dpi=180)
 

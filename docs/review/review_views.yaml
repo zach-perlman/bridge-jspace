@@ -1,6 +1,6 @@
 # The review views: one per claim the README makes. The single source of truth for the review dashboard
-# (scripts/review.py: make review-serve / review-export / review-summary) and, from Phase 2, for docs/verify_pack.md.
-# Per view: the claim in the README's words, the docs/x0_numbers.json keys it backs ("sources"; <m> = 9b / 27b / 122b /
+# (scripts/review.py: make review-serve / review-export / review-summary) and, from Phase 2, for docs/review/verify_pack.md.
+# Per view: the claim in the README's words, the docs/depth/x0_numbers.json keys it backs ("sources"; <m> = 9b / 27b / 122b /
 # muse, the same keys as the `source` column of data/figures/depth/data.csv), per model the run dirs and their per-item
 # files, the filters that make the claim's item set (as the verdict used them), and what each answer class means.
 # Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard. headline: the
@@ -685,7 +685,7 @@ views:
     title: Routes test at the early layer
     status: phase1
     kind: routes
-    readme: "Section 3 'Position appears with depth', Fig. 6; docs/x0_details.md 'Depth: the early layer'"
+    readme: "Section 3 'Position appears with depth', Fig. 6; docs/depth/x0_details.md 'Depth: the early layer'"
     claim: >-
       Early, the lookup follows identity only; without J++ the Qwens give the original answer.
     sources: [rte_C2_whole_identity_<m>, rte_C2_no_jpp_original_<m>, rte_C2_no_jpp_recall_follows_s_<m>, rte_C2_whole_position_<m>]
@@ -713,7 +713,7 @@ views:
     title: Pointer directions on the main items
     status: phase1
     kind: massmean
-    readme: "Section 4 'Removing the pointer stops position answers'; docs/x0_details.md pointer table; scorecard row 'The lookup needs the pointer'"
+    readme: "Section 4 'Removing the pointer stops position answers'; docs/depth/x0_details.md pointer table; scorecard row 'The lookup needs the pointer'"
     claim: >-
       Removing the pointer directions (4 directions that say where the item was first mentioned) costs the lookup on
       every model, the recall less.
@@ -1175,7 +1175,7 @@ views:
     title: Translated locker key
     status: later
     kind: x4
-    readme: "not in README v4 (docs/x0_details.md)"
+    readme: "not in README v4 (docs/depth/x0_details.md)"
     claim: "A verbatim locker key is not needed: the lookup switches as often with a translated key."
     sources: [x4_D_animals_<m>, x4_D_elements_27b]
     runs:
@@ -1201,7 +1201,7 @@ views:
     title: Matched scenes and the first-mention split (table 3c)
     status: later
     kind: composition
-    readme: "not in README v4's body (docs/x0_details.md; figures/depth/supp/s01)"
+    readme: "not in README v4's body (docs/depth/x0_details.md; figures/depth/supp/s01)"
     claim: "The recall needs J++ most where the pick is the bridge's first mention."
     sources: [comp_rep_both_gap_<m>, comp_two_fmyes_lk_cell_<m>, comp_two_fmyes_rc_<m>, comp_two_fmno_lk_cell_<m>, comp_two_fmno_rc_<m>,
               comp_one_fmyes_lk_cell_<m>, comp_one_fmyes_rc_<m>, comp_one_fmno_lk_cell_<m>, comp_one_fmno_rc_<m>, comp_rep_fmno_lk_cell_<m>, comp_rep_fmno_rc_<m>]

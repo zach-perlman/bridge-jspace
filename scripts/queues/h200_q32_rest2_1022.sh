@@ -23,7 +23,7 @@ C2=qwen3_32b_full_v8_competence_v1
 C3=qwen3_32b_full_v8b_competence_v1
 [ -f results/tasks_v2/$C2/summary.json ] || { echo "missing Qwen3-32B full_v8 competence: stop"; exit 1; }
 export BJ_TARGET=qwen3-32b
-S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # 2026-10-21: the attention-sink verdict (docs/prereg_sink_1021.md, h200_gemma_B3g_1021.sh)
+S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # 2026-10-21: the attention-sink verdict (docs/breadth/prereg_sink_1021.md, h200_gemma_B3g_1021.sh)
 echo "=== C1 protocol: paper10${S:-}"
 
 WHY="Zach (2026-10-21): Qwen3-32B, every-layer J++ (32 prompts)"

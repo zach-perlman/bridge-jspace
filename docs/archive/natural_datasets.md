@@ -8,7 +8,7 @@ source of each hop in order: **P** read from the passage, **M** recalled from me
 the passage binds "Paul Whitaker was raised in Argentina"; **PM** asks "Which continent is the country where Paul
 Whitaker was raised on?" (Argentina from the passage, South America from memory); **PP** asks where Argentina's
 delegation meets next, a made-up fact stated in the same passage (Asia). Each set directory holds `items.jsonl` and
-`manifest.json` (seed, generator commit). Pre-registration: docs/prereg_replication_1022.md, amendments 10B-20.
+`manifest.json` (seed, generator commit). Pre-registration: docs/breadth/prereg_replication_1022.md, amendments 10B-20.
 Results: EXPERIMENTS.md.
 
 ## The sets

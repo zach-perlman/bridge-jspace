@@ -1,4 +1,4 @@
-legacy: maps the 23 Oct README, see docs/review_views.yaml
+legacy: maps the 23 Oct README, see docs/review/review_views.yaml
 
 # Names, internal codes, scripts and specs
 

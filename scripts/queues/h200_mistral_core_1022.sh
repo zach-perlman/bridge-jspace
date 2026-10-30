@@ -16,7 +16,7 @@ PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -qs "^EXIT" $R-h200q27b-*.log; do sleep 60; done
 export BJ_TARGET=mistral-small-24b-2501
-S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # the sink verdict (docs/prereg_sink_1021.md)
+S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # the sink verdict (docs/breadth/prereg_sink_1021.md)
 echo "=== C1 protocol: paper10${S:-}"
 WHY="Zach (2026-10-21): Mistral-Small-24B-2501, the second family, solarkyle's plain J-lens"
 TWO="PP PM MP MM CP CM"
@@ -76,4 +76,4 @@ BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full2_v1 --why "
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 echo "=== Mistral core (C1 + C2) done $(date -u +%FT%TZ)"
-$PY scripts/c2_narrow.py mistral24_wm2_full2_v1 mistral24_wm2_full2_v1_noguess || echo "=== C2-narrow scoring FAILED"  # appended 2026-10-22 (docs/prereg_replication_1022.md)
+$PY scripts/c2_narrow.py mistral24_wm2_full2_v1 mistral24_wm2_full2_v1_noguess || echo "=== C2-narrow scoring FAILED"  # appended 2026-10-22 (docs/breadth/prereg_replication_1022.md)

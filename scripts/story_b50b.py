@@ -300,7 +300,7 @@ def rows_axis(ax, labels: list[str], first: bool) -> None:
 
 def build_transfer(out_name: str = "fig09a_transfer") -> str:
     """Fig. 9a: per model (9B, 27B, Muse, Lightning, 122B), the recall's and the lookup's extra loss without the J++ part by
-    text format: simple scenes (docs/x0_numbers.json), prose / JSON / table (varied scenes) and natural passages with
+    text format: simple scenes (docs/depth/x0_numbers.json), prose / JSON / table (varied scenes) and natural passages with
     the fact first (run files, readme_story_figures.transfer_cells; Lightning's from its X0b verdict,
     readme_story_figures.lightning_transfer); the 0.10 band. A cell whose whole change switches fewer than 30 lookups is
     omitted and listed in the caption; hollow: the 9B's natural run had its gate lowered after the data, and every

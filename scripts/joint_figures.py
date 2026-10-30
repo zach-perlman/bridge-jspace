@@ -12,7 +12,7 @@ four directions outside the lens); the models Qwen 9B, Qwen 27B, Qwen 122B, Muse
   data/figures/shared/data.csv                  every plotted number with its source (data/figures/depth/data.csv's columns)
   docs/shared/contact_sheet_joint.png      the five, for one look
 
-Sources: docs/breadth/data.csv (Zach's numbers), data/figures/depth/data.csv (ours, with docs/x0_numbers.json's rows), Zach's
+Sources: docs/breadth/data.csv (Zach's numbers), data/figures/depth/data.csv (ours, with docs/depth/x0_numbers.json's rows), Zach's
 stored knock-out scores and swap runs under results/ (controls and the swap of everything else, not in his report), and
 docs/shared/grid.csv. Example texts: Zach's from data/tasks_v2 (his Fig. 0's items), ours from readme_story_figures.f00_setup.
 
@@ -83,7 +83,7 @@ def breadth() -> dict[tuple[str, str], dict]:
 
 
 def depth() -> dict[tuple[str, str, str], dict]:
-    """(figure, model, quantity) -> data/figures/depth/data.csv row; docs/x0_numbers.json's rows are ('numbers', '', key)."""
+    """(figure, model, quantity) -> data/figures/depth/data.csv row; docs/depth/x0_numbers.json's rows are ('numbers', '', key)."""
     return {(r["figure"], r["model"], r["quantity"]): r for r in read_csv(DEPTH)}
 
 

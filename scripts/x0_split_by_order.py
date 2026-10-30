@@ -9,7 +9,7 @@ The pre-registered numbers are the "all" rows of the main test; nothing here rep
 entities, 10,000 resamples, seed 0. Also the lookup's switch rate under the whole change per group (why the lookup is
 measurable only where the locker comes first).
 
-uv run python scripts/x0_split_by_order.py          # results/x0_composition/split-by-order-<stamp>/, docs/split_by_order.md
+uv run python scripts/x0_split_by_order.py          # results/x0_composition/split-by-order-<stamp>/, docs/depth/notes/split_by_order.md
 uv run python scripts/x0_split_by_order.py --targets nemotron-3.5-lightning --no-docs   # batch 52 C: Lightning alone
 """
 
@@ -87,7 +87,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--targets", nargs="+", default=None, help="these models only (default: x0_composition.RUNS')")
-    ap.add_argument("--no-docs", action="store_true", help="do not rewrite docs/split_by_order.md (batch 52 coverage)")
+    ap.add_argument("--no-docs", action="store_true", help="do not rewrite docs/depth/notes/split_by_order.md (batch 52 coverage)")
     a = ap.parse_args()
     runs = dict(C.RUNS)
     if a.targets and any(t not in runs for t in a.targets):
@@ -123,7 +123,7 @@ def main() -> None:
     (out / "split.json").write_text(json.dumps({"manifest": m, "cells": blob}, indent=1) + "\n")
     (out / "split.md").write_text("\n".join(lines) + "\n")
     if not a.no_docs:
-        (pins.REPO_ROOT / "docs" / "split_by_order.md").write_text(
+        (pins.REPO_ROOT / "docs" / "depth" / "notes" / "split_by_order.md").write_text(
             "\n".join(lines) + f"\n\nSource: {out.relative_to(pins.REPO_ROOT)}.\n"
         )
     print("\n".join(lines))

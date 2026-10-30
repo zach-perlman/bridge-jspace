@@ -117,7 +117,7 @@ def bar(ax, x: float, text: str, side: str = "right") -> None:
 
 
 def pct_axis(ax, label: str, lim: tuple[float, float] = (-20, 100), ticks=(0, 50, 100)) -> None:
-    """A share axis in % (docs/glossary.md); data.csv keeps the fractions."""
+    """A share axis in % (docs/depth/glossary.md); data.csv keeps the fractions."""
     ax.set_xlim(*lim)
     ax.axvline(0, color="#999999", lw=0.8, zorder=1)
     ax.set_xticks(list(ticks), [str(t) for t in ticks])
@@ -477,7 +477,7 @@ def build_routes_lens(
                          "costs (whole change minus without it)", *c["random"], n=split["n"],
                          source=cost_src)  # fmt: skip
             if t == REDUNDANT_MODEL and label == REDUNDANT_SLICE:
-                # Dan's label, reworded: "alone" is not a figure word (docs/glossary.md), and 1-25 by itself costs
+                # Dan's label, reworded: "alone" is not a figure word (docs/depth/glossary.md), and 1-25 by itself costs
                 # the 27B more than "little"; the numbers say what "redundant" rests on (both > the sum of each)
                 fall = {k: r["falls"][k]["identity"][0] for k in ("1-25", "26-100", "1-100")}
                 ax.text(SLICE_XLIM[0] + 0.03, ys[t] - 1.45, f"redundant copies:\neach slice {fall['1-25']:.2f} / "

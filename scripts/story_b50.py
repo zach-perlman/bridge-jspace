@@ -5,7 +5,7 @@ data/figures/depth/data.csv with its source file.
 
   fig00b_marks       the mark legend, under Fig. 0
   fig01d_ladder      49.2's removal ladder (x49_2-<UTC>/x49_2.json): E2's figure, replacing fig01c
-  fig12_two_by_two   our operation / Zach's x our scenes / his passages: our main-test gap (docs/x0_numbers.json),
+  fig12_two_by_two   our operation / Zach's x our scenes / his passages: our main-test gap (docs/depth/x0_numbers.json),
                      49.2's rung 6, Z1's gap and his stored M - K rows (x50_zach/z1-<UTC>/z1.json)
 
 The Muse's rung 6 ran at L23-29, not in Zach's band (L36-42): drawn hollow until its rerun lands; likewise the Z1 cell
@@ -284,7 +284,7 @@ def n_tag(ax, text: str, after: str = "") -> None:
 def main_random_gap(target: str, m: str) -> tuple[float, str]:
     """The main test's control for the 2 x 2's first cell: a random part of the J++ part's share taken out instead,
     the recall's switches lost minus the lookup's (each reader's dependence on the random part at L, the point estimate
-    x0_figures.contrast subtracts), from the run's outcomes; checked against docs/x0_numbers.json's rounded rc_rdep /
+    x0_figures.contrast subtracts), from the run's outcomes; checked against docs/depth/x0_numbers.json's rounded rc_rdep /
     lk_rdep. Returns (value, source)."""
     run, la = F.MAIN_RUNS[m], F.X.PREDICTED[target]
     path = F.X.RESULTS / run / "outcomes.jsonl"
@@ -317,7 +317,7 @@ def build_two_by_two(
     ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two", lightning: bool = False
 ) -> str:
     """Fig. 12: recall minus lookup in four cells, our operation / Zach's x our scenes / his passages, one mark for
-    every cell and one scale (Dan's round 3, 28 Oct 21:10): our main-test gap (docs/x0_numbers.json, Fig. 1's); rung 6
+    every cell and one scale (Dan's round 3, 28 Oct 21:10): our main-test gap (docs/depth/x0_numbers.json, Fig. 1's); rung 6
     of the ladder on our clean scenes (recall's cost minus the lookup's, every scene; two separate estimates, so no
     joint interval); Z1's gap on his passages (a lookup with fewer than 30 switches is omitted); his stored M - K rows
     on the same passage ids. In every cell a grey tick: the same operation with a random part of the same size (his:

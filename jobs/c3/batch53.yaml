@@ -311,14 +311,14 @@ additions_1140: |
 
   Also confirm in the 13:00 status: 53.7 started (27B), 53.6 on the 27B and Muse
   specced or queued.
-verify_prep_1145_received: "29 Oct ~11:47 Paris (Dan; refines additions_1140 item 1: the review dashboard and docs/verify_pack.md)"
+verify_prep_1145_received: "29 Oct ~11:47 Paris (Dan; refines additions_1140 item 1: the review dashboard and docs/review/verify_pack.md)"
 verify_prep_1145: |
   Verification prep for tomorrow (Dan, 11:45), CPU only, never at the cost of
   an idle GPU; ready by ~17:00. Use the review dashboard (scripts/review.py,
-  docs/review_views.yaml); the goal: Dan reads ~2 hours tomorrow and only what
+  docs/review/review_views.yaml); the goal: Dan reads ~2 hours tomorrow and only what
   a machine cannot check.
 
-  1. Views: update docs/review_views.yaml to today's headline claims (phase1 =
+  1. Views: update docs/review/review_views.yaml to today's headline claims (phase1 =
      in the dashboard). Add Lightning to models (its pinned tokenizer.json),
      keep the 122B. Tier 1, in this order:
      a. Conflict test (x0): 9B, 27B, Muse, Lightning, 122B.
@@ -340,7 +340,7 @@ verify_prep_1145: |
      view's equivalent), each with the top token and the pipeline's label.
 
   2. Automatic checks over every item of every tier-1 view (Phase 2 recount
-     included), results at the top of docs/verify_pack.md:
+     included), results at the top of docs/review/verify_pack.md:
      - recount each headline number from the per-item files; exact match with
        data/figures/depth/data.csv / x0_numbers.json, else list the mismatch;
      - the edit position decodes to the bridge token (O and S);
@@ -362,7 +362,7 @@ verify_prep_1145: |
      the views file; no re-rolls tomorrow. make review-export SEED=29 N=10 into
      review/seed-29/, and check that make review-serve opens every view.
 
-  4. docs/verify_pack.md, first page "How to review in 2 hours": the order of
+  4. docs/review/verify_pack.md, first page "How to review in 2 hours": the order of
      views, the three questions per item (is the prompt what the claim says;
      is each arm's top token what is shown; does the label follow), how to mark
      (consistent / wrong / unclear), the stop rule (2 wrong in one view → stop,
@@ -415,7 +415,7 @@ inspector_1145: |
 
   3. Automatic check over every item of the conflict test and the routes test
      (not only the sample), at L and the bridge word, results in
-     docs/verify_pack.md: the rank of S's bridge token (and its variants) in
+     docs/review/verify_pack.md: the rank of S's bridge token (and its variants) in
      the readout of the J++ part, of the rest and of a random part of the same
      share; the share of items with it in the top 50 for each. Flag if the rest
      puts it in the top 50 on >= 20% of items more often than the random part

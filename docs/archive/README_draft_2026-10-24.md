@@ -83,7 +83,7 @@ How to read this:
 
 ## More
 
-- [Detailed results](docs/x0_details.md): every layer, every dictionary and number of atoms, subsets, controls, simple explanations we ruled out.
+- [Detailed results](docs/depth/x0_details.md): every layer, every dictionary and number of atoms, subsets, controls, simple explanations we ruled out.
 - [Pre-registration and every change made after the data](jobs/c3/X0.md).
 - [Predictions and scores](predictions/2026-10-24_dan.md), scored question by question.
 - [Earlier claims and history](CHANGELOG.md) · [Zach's breadth results](https://github.com/zach-perlman/bridge-jspace/tree/zach/v8-breadth-1021).

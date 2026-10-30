@@ -1,6 +1,6 @@
 """scripts/story_b48.py: each batch-48 figure drawn from a verdict folder its own script wrote on that script's fake
 run (the fixtures of tests/test_x48_*.py; the verdict json marked planted), with the builder's own title and with a
-passed one; every plotted number recorded against the verdict file; the figure's words pass docs/glossary.md's matcher.
+passed one; every plotted number recorded against the verdict file; the figure's words pass docs/depth/glossary.md's matcher.
 Nothing is written under figures/ (story_style.OUT goes to a temporary folder). No real run is read."""
 
 from __future__ import annotations

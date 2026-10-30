@@ -1,7 +1,7 @@
 """results_digest (Zach, 2026-10-26): one generated table of every model's v2 results, read straight from the result
 files (no hand-copied numbers), for the write-up and its verification. Missing runs print as "-".
 
-python scripts/results_digest.py  ->  docs/digest.md (and prints it)
+python scripts/results_digest.py  ->  docs/depth/digest.md (and prints it)
 """
 
 from __future__ import annotations
@@ -216,7 +216,7 @@ def main() -> None:
     for d in DOSE:
         out += dose_rows(*d)
     text ="\n".join(out) + "\n"
-    (ROOT / "docs" / "digest.md").write_text(text)
+    (ROOT / "docs" / "depth" / "digest.md").write_text(text)
     print(text)
 
 

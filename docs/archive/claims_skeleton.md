@@ -1,6 +1,6 @@
 # Claims and evidence: skeleton (draft, 2026-10-26 evening; for Zach and Dan to edit and lock on day 9)
 
-Bullets, not prose. Every number is in docs/digest.md (generated from results/ by scripts/results_digest.py) unless a
+Bullets, not prose. Every number is in docs/depth/digest.md (generated from results/ by scripts/results_digest.py) unless a
 line names an EXPERIMENTS.md entry. Figures: figures/archive/writeup/fig1-5 (scripts/fig_writeup.py, same readers as the digest).
 Greedy accuracy unless "by probability". Intervals: 95% bootstrap over bridges (seed 0). No LLM-judge numbers anywhere.
 
@@ -32,7 +32,7 @@ Greedy accuracy unless "by probability". Intervals: 95% bootstrap over bridges (
 
 - **Clean-checkout reruns:** the 27B and 9B headlines reproduce row for row (EXPERIMENTS: h200mon0-1026-0340,
   h200rerun0-1025-0445). Lightning has not had one (its 3 renderings are the replication).
-- **Independent recompute:** a few lines over rows.jsonl give +50.9 (27B) and +53.1 (Lightning) (docs/verify_kit.md).
+- **Independent recompute:** a few lines over rows.jsonl give +50.9 (27B) and +53.1 (Lightning) (docs/breadth/verify_kit.md).
 - **Natural passages** (natplus, 10/23): 27B and 9B gaps of roughly 40-50, J-specific. CHECK which EXPERIMENTS lines
   supersede which before quoting a number.
 - **Attacks tried:**

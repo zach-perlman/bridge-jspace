@@ -54,7 +54,7 @@ def breadth() -> dict:
 @cache
 def x0() -> dict:
     out = {}
-    for k, d in json.loads((REPO / "docs/x0_numbers.json").read_text()).items():
+    for k, d in json.loads((REPO / "docs/depth/x0_numbers.json").read_text()).items():
         nums = [
             float(x.replace("−", "-"))
             for x in re.findall(r"[−-]?\d+\.\d+", str(d.get("text", "") if isinstance(d, dict) else d))

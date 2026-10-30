@@ -43,7 +43,7 @@ CLEAN = R / "checks" / "clean49_9b.json"
 LAYER = R / "x51_lightning" / "nem35l_x52_layer_r2" / "layer.json"
 CONFLICT = R / "x0_necessity" / "nem35l_x52_conflict" / "verdict-20261029T001612Z" / "verdict.json"
 CONFLICT_122B = R / "x0_necessity" / "qwen35_122b_x0_necessity_r2" / "verdict-20261024T171509Z" / "verdict.json"
-MAIN = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}  # docs/x0_numbers.json's suffixes
+MAIN = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse"}  # docs/depth/x0_numbers.json's suffixes
 
 
 def rel(p: Path) -> str:

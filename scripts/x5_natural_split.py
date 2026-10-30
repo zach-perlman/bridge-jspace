@@ -4,7 +4,7 @@ comes before the bridge's mention (the binding sentence, the one the swap change
 original's and the new bridge's) as in B1. Writes <run>/split-<stamp>/split.{json,md}. With --examples, also N random
 passages (seed 0) to a Markdown file: the prompt, the swap, both answers, and each reader's answer per arm.
 
-uv run python scripts/x5_natural_split.py --run x5_natural_27b --examples docs/natural_examples.md
+uv run python scripts/x5_natural_split.py --run x5_natural_27b --examples docs/depth/notes/natural_examples.md
 """
 
 from __future__ import annotations

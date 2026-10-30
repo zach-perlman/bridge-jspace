@@ -1,7 +1,7 @@
 """scripts/story_b47b.py: each batch-47 README figure drawn from a PLANTED verdict folder (the verdict stage itself run on
 each script's test fixtures: tests/test_x47_*.py's planted runs; no real result is read), and 47.0's on a planted
 verbal.json. Per figure: the PNG and SVG are written, the default title reads the verdict's own outcome, every plotted
-number is recorded with the verdict file as its source, and the drawn text keeps docs/glossary.md's words and no
+number is recorded with the verdict file as its source, and the drawn text keeps docs/depth/glossary.md's words and no
 retired term (tests/test_readme_build.banned, scripts/check_figure_terms.retired). CPU, no model."""
 
 from __future__ import annotations

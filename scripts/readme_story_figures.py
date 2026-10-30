@@ -1,7 +1,7 @@
 """README v2's figures (Dan, 25 Oct: one story, figures that read at a glance) into figures/depth/ (SVG + PNG) and
 data/figures/depth/data.csv, in story_style's look. Fig. 0 and Fig. 3 are schematics (no data); the others read the run
-files (X0 cells, verdicts) or docs/x0_numbers.json, and record every plotted number. The words on the figures:
-docs/glossary.md (tests/test_readme_build.py checks them).
+files (X0 cells, verdicts) or docs/depth/x0_numbers.json, and record every plotted number. The words on the figures:
+docs/depth/glossary.md (tests/test_readme_build.py checks them).
 
 uv run python scripts/readme_story_figures.py                            # figures/depth/, figures/depth/supp/
 uv run python scripts/readme_story_figures.py --out figures/archive/drafts/v5    # a draft set, Fig. 8b included
@@ -45,9 +45,9 @@ LANDED: dict[str, Any] = {
 
 
 def interval(key: str) -> tuple[float, float, float]:
-    """docs/x0_numbers.json's 'v [lo, hi]' for key; fails loudly where a figure would draw a missing number."""
+    """docs/depth/x0_numbers.json's 'v [lo, hi]' for key; fails loudly where a figure would draw a missing number."""
     v = S.parse(N.get(key))
-    assert v is not None, f"docs/x0_numbers.json: no interval for {key}"
+    assert v is not None, f"docs/depth/x0_numbers.json: no interval for {key}"
     return v
 
 
@@ -475,7 +475,7 @@ SCENES = ("simple", "prose", "json", "table", "natural")
 
 def transfer_cells(target: str, reader: str = X.LOOKUP) -> dict[tuple[str, str], tuple | None]:
     """(scenes, part) -> the reader's (default the lookup's) extra loss (value, lo, hi), and the run's whole-change
-    switches as (scenes, "switched"): simple from docs/x0_numbers.json (J++ on the pointer
+    switches as (scenes, "switched"): simple from docs/depth/x0_numbers.json (J++ on the pointer
     directions' own scenes; the pointer directions there); varied per format and natural (the passages whose fact comes
     before the bridge) from the run files, J++ and the pointer on the same items when the pointer run is in."""
     from scripts import x5_natural_split as NS
@@ -517,7 +517,7 @@ def transfer_cells(target: str, reader: str = X.LOOKUP) -> dict[tuple[str, str],
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# README v4 (Dan, 26 Oct ~16:45; docs/figure_plan.md): one claim per figure, in story order, figures/depth/figNN_*.png.
+# README v4 (Dan, 26 Oct ~16:45; docs/depth/figure_plan.md): one claim per figure, in story order, figures/depth/figNN_*.png.
 # The 26 Oct files (fig0_setup.png ... fig11_order.png) are in figures/archive/; the detail panels go to figures/depth/supp/.
 
 NAMES = {m: name for _, m, name in S.MODELS} | {"lightning": "Nemotron 3.5 Lightning"}
@@ -534,7 +534,7 @@ def legend(fig, handles, labels, y: float, ncol: int | None = None) -> None:
                ncol=ncol or (len(labels) if len(labels) <= 4 else 3), columnspacing=1.2, handlelength=1.4)  # fmt: skip
 
 
-PCT = ([0, 50, 100], ["0", "50", "100"])  # ticks of a share axis in % (docs/glossary.md); data.csv keeps the fractions
+PCT = ([0, 50, 100], ["0", "50", "100"])  # ticks of a share axis in % (docs/depth/glossary.md); data.csv keeps the fractions
 
 
 def reader_handles(plt) -> tuple[list, list[str]]:
@@ -656,7 +656,7 @@ def f00_setup(plt) -> None:
 # Fig. 1 and Fig. 1b (Dan's mock-ups, 26 Oct ~17:15): rows = models; Fig. 1 the main test alone with the gap and its
 # interval at the right; Fig. 1b one panel per other setting. Each setting: the lookup's / recall's / gap's key.
 SHORT = {"9b": "9B", "27b": "27B", "122b": "122B", "muse": "Muse"}
-SETTINGS = {  # the scene sets' names as docs/glossary.md words them (a newline: where Fig. 1b's panel title wraps)
+SETTINGS = {  # the scene sets' names as docs/depth/glossary.md words them (a newline: where Fig. 1b's panel title wraps)
     "main": ("main test (two people swap picks)", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}"),
     "ld": ("main test (two people swap picks),\nscored on the logit difference", "ld_lk_{m}", "ld_rc_{m}", "ld_gap_{m}"),
     "single": ("one-pick scenes\n(only the asked pick changes)", "single_lk_excess_{m}", "single_rc_excess_{m}", "single_contrast_{m}"),
@@ -1153,7 +1153,7 @@ def s03_order_split(plt) -> None:
     sentence before vs after the asked person's pick sentence. (b) The recall's (and the lookup's, where it has at
     least 30 switches) extra loss without the J++ part, locker before vs after the pick: the main test (after the data)
     and the clean one-pick scenes (45m, fixed in advance); on the main test's locker-before rows the gap (recall minus
-    lookup, docs/split_by_order.md; Fig. 1's column until v6)."""
+    lookup, docs/depth/notes/split_by_order.md; Fig. 1's column until v6)."""
     h = 10.25
     fig = plt.figure(figsize=(S.WIDTH, h))
 
@@ -4230,7 +4230,7 @@ def cards_numbers_parts45() -> None:
 VERIFY_INDEPENDENT = S.REPO / "review" / "verify_independent.json"
 VERIFY_CHECKS = S.REPO / "review" / "verify_checks.json"
 CLEAN49 = R / "checks" / "clean49_9b.json"
-RANK_CHECK = S.REPO / "docs" / "verify_pack_jspace.md"
+RANK_CHECK = S.REPO / "docs" / "review" / "verify_pack_jspace.md"
 
 
 def checks_numbers() -> None:
@@ -4482,7 +4482,7 @@ README_NAMES = ("fig11_scorecard", "fig00_setup", "fig00b_marks", "fig01_split",
                 "fig07b_verbal", "fig23_monitor", "fig09b_refit", "fig21_code_tool", "fig03_order", "fig03d_depth_map",
                 "fig22_attention_blocks", "fig06b_anatomy", "fig17_jspace_last_token", "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/depth/ ones off the main sheet keep their
-# files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
+# files and links), the supplementary figures (README Appendix A) and docs/depth/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig16_dose", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09_transfer",
@@ -4499,9 +4499,9 @@ SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_
 
 
 def contact_sheet(
-    plt, names=README_NAMES, dest: Path = S.REPO / "docs" / "figures_contact_sheet.png", cols: int = 3
+    plt, names=README_NAMES, dest: Path = S.REPO / "figures" / "depth" / "contact_sheet.png", cols: int = 3
 ) -> None:
-    """dest (default docs/figures_contact_sheet.png): every README figure at the same width, in story order, for one
+    """dest (default figures/depth/contact_sheet.png): every README figure at the same width, in story order, for one
     look."""
     imgs = [plt.imread(S.OUT / f"{n}.png") for n in names]
     rows = -(-len(imgs) // cols)
@@ -4519,9 +4519,9 @@ def contact_sheet(
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Default: figures/depth/ (+ figures/depth/supp/, data/figures/depth/scorecard.csv, docs/figures_contact_sheet.png). --out DIR:
+    """Default: figures/depth/ (+ figures/depth/supp/, data/figures/depth/scorecard.csv, figures/depth/contact_sheet.png). --out DIR:
     the whole draft set (Dan, 26 Oct ~21:50 / ~22:45: figures/archive/drafts/v5): the README figures, the supplementary figures
-    in DIR/supp, docs/x0_details.md's figures in DIR/x0_necessity (x0_figures) and DIR/status_2026-10-24
+    in DIR/supp, docs/depth/x0_details.md's figures in DIR/x0_necessity (x0_figures) and DIR/status_2026-10-24
     (x0_status_pack's f6), each folder with its data.csv; DIR/contact_sheet.png (the README figures) and
     DIR/contact_sheet_more.png (the rest). figures/depth/, figures/depth/supp/, figures/archive/x0_necessity/ and docs/ stay
     untouched. (Fig. 8b, the 26 Oct draft, is Fig. 8 (a) since batch 45.)"""
@@ -4530,7 +4530,7 @@ def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description="The README figures, their data.csv and contact sheet.")
     ap.add_argument("--out", type=Path, default=None, help="draft output dir (default: figures/story)")
     args = ap.parse_args(argv)
-    sheet = S.REPO / "docs" / "figures_contact_sheet.png"
+    sheet = S.REPO / "figures" / "depth" / "contact_sheet.png"
     out = None
     if args.out is not None:
         out = args.out if args.out.is_absolute() else S.REPO / args.out

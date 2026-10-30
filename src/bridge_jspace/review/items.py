@@ -20,7 +20,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[3]
 CODE_ROOT = REPO  # where scripts/ is imported from (REPO, where the runs are read, is moved in the tests)
-VIEWS_FILE = REPO / "docs" / "review_views.yaml"
+VIEWS_FILE = REPO / "docs" / "review" / "review_views.yaml"
 READERS = ("PP", "PM")  # lookup, recall
 READER_NAME = {"PP": "lookup", "PM": "recall"}
 

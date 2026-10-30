@@ -138,7 +138,7 @@ def ci(rows: list[dict], reps: int = 1000, seed: int = 0) -> tuple[float, float]
 
 
 def main(run: str, middle: str, set_name: str, drop_guessable: bool = False, cond_suffix: str = "") -> None:
-    # cond_suffix (2026-10-21, docs/prereg_sink_1021.md): "_nosink" scores the conditions that leave attention sinks
+    # cond_suffix (2026-10-21, docs/breadth/prereg_sink_1021.md): "_nosink" scores the conditions that leave attention sinks
     # unedited; outputs are written to RUN_nosink[_noguess].md / .json
     s_ = cond_suffix
     P10, P10R, PK, PKR = f"paper10{s_}", f"paper10{s_}_rot", f"paper10_keepown{s_}", f"paper10_keepown{s_}_rot"

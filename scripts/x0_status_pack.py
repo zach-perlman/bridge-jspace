@@ -1,5 +1,5 @@
 """x0_status_pack: the status figures, from the run files only; writes figures/archive/status_2026-10-25/*.png and data.csv
-(every plotted number, and every number of docs/x0_numbers.json, with its run). UNVERIFIED.
+(every plotted number, and every number of docs/depth/x0_numbers.json, with its run). UNVERIFIED.
 
 Dan, 25 Oct: the 24 Oct folder stays as shared; batch 31's runs stay closed until his answers are committed, so their
 panels are drawn as "closed" unless --show-closed (then into a staging folder, --out, until the commit).
@@ -299,8 +299,8 @@ DIGIT = {"qwen3.5-9b": "qwen35_9b_x0_digit_r2", "qwen3.6-27b": "x0_digit_27b_r2"
 
 def f6(plt, F, color, grey) -> None:
     """The digit check, locker-before items: extra flips lost with J++ over letter tokens vs every token (digits
-    included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone. Labels in docs/glossary.md's words (shown
-    on docs/x0_details.md)."""
+    included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone. Labels in docs/depth/glossary.md's words (shown
+    on docs/depth/x0_details.md)."""
     import json
 
     fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 5.6), sharey=True)
@@ -1322,8 +1322,8 @@ def render(out: Path, only: list[str] | None = None, show_closed: bool = False) 
     )
     w.writeheader()
     w.writerows(rows_csv)
-    # every number the README and STATUS.md quote through docs/x0_numbers.json, with its source file
-    for key, num in json.loads((pins.REPO_ROOT / "docs" / "x0_numbers.json").read_text()).items():
+    # every number the README and STATUS.md quote through docs/depth/x0_numbers.json, with its source file
+    for key, num in json.loads((pins.REPO_ROOT / "docs" / "depth" / "x0_numbers.json").read_text()).items():
         w.writerow({"figure": "numbers", "run": num["source"], "quantity": key, "value": num["text"]})
     (OUT / "data.csv").write_text(buf.getvalue())
     return OUT

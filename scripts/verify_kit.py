@@ -3,7 +3,7 @@ For each run: an independent recompute of M - K (a few lines of plain Python ove
 20 random items (seed 0; 10 memory finals, 10 stated-fact finals) with their full prompt text, the expected answer, and
 whether the model got it right unedited and under the J++ removal.
 
-python scripts/verify_kit.py RUN:SET [RUN:SET ...]  ->  docs/verify_kit.md
+python scripts/verify_kit.py RUN:SET [RUN:SET ...]  ->  docs/breadth/verify_kit.md
 """
 
 from __future__ import annotations
@@ -40,7 +40,7 @@ def main(specs: list[str]) -> None:
         ok = [i for (i, c), r in by.items() if c == "none" and r["correct"] and items[i].get("module") == "facts" and items[i]["start"] in "PMT"]
         rng = random.Random(0)
         pick = rng.sample(sorted(i for i in ok if items[i]["final"] == "M"), 10) + rng.sample(sorted(i for i in ok if items[i]["final"] == "K"), 10)
-        out += [f"## {run} ({set_})", "", "**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/digest.md):", "",
+        out += [f"## {run} ({set_})", "", "**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/depth/digest.md):", "",
                 RECOMPUTE.format(run=run, set=set_), "", "**2. Check 20 random items** (10 memory finals M, 10 stated-fact finals K; all right unedited).",
                 "For each: is the expected answer correct? Does a K item state the fact in the passage, and an M item not? "
                 "Did the removal change the answer as the table says?", ""]  # fmt: skip
@@ -50,8 +50,8 @@ def main(specs: list[str]) -> None:
             out += [f"### {n}. {i} (word {it['word']}: start {it['start']}, final {it['final']}; relation {it['relation']}; bridge {it['bridge']})", "",
                     "```", it["context"], "", it["question"], "```", "",
                     f"- Expected: **{it['answer']}**. Right unedited: yes. Right under the J++ removal: **{'yes' if ko.get('correct') else 'no'}**.", ""]  # fmt: skip
-    (ROOT / "docs" / "verify_kit.md").write_text("\n".join(out) + "\n")
-    print(f"wrote docs/verify_kit.md ({len(specs)} runs)")
+    (ROOT / "docs" / "breadth" / "verify_kit.md").write_text("\n".join(out) + "\n")
+    print(f"wrote docs/breadth/verify_kit.md ({len(specs)} runs)")
 
 
 if __name__ == "__main__":

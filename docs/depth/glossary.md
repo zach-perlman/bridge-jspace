@@ -1,6 +1,6 @@
 # Figure vocabulary
 
-One vocabulary across every figure the README or docs/x0_details.md shows (Dan, 26 Oct ~21:50 and ~22:45): Figs. 0-11, 1b and 3b (8b until batch 45, now Fig. 8 (a)), the supplementary figures (s01, s01b, s02, s05, s08, s10), x0_figures' overview, details, kmatch, kcurve, share and asked_first, and the digit check (f6). Scope: every figure label, legend, subtitle, caption and README caption (figure alt texts, "*Fig. N.*" lines, table headers) uses only the canonical strings; prose keeps the exceptions named in the table. `tests/test_readme_build.py` fails on a banned variant in any of these figures' drawn text and in the captions (`docs/drafts/readme_v5_captions.md` until Tuesday's merge, then README.md).
+One vocabulary across every figure the README or docs/depth/x0_details.md shows (Dan, 26 Oct ~21:50 and ~22:45): Figs. 0-11, 1b and 3b (8b until batch 45, now Fig. 8 (a)), the supplementary figures (s01, s01b, s02, s05, s08, s10), x0_figures' overview, details, kmatch, kcurve, share and asked_first, and the digit check (f6). Scope: every figure label, legend, subtitle, caption and README caption (figure alt texts, "*Fig. N.*" lines, table headers) uses only the canonical strings; prose keeps the exceptions named in the table. `tests/test_readme_build.py` fails on a banned variant in any of these figures' drawn text and in the captions (`docs/archive/drafts/readme_v5_captions.md` until Tuesday's merge, then README.md).
 
 | Concept | Canonical label | Banned variants |
 |---|---|---|

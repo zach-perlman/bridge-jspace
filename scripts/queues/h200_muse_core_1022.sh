@@ -15,7 +15,7 @@ R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -qs "^EXIT" $R-h200musefit-*.log; do sleep 60; done  # 2026-10-22: after our J++ fit (h200_muse_fit_1022.sh)
 grep -q '"muse-glimmer-30b": {' src/bridge_jspace/pins.py || { echo "no muse-glimmer-30b J++ target (fit failed): stop"; exit 1; }
 export BJ_TARGET=muse-glimmer-30b
-S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # the sink verdict (docs/prereg_sink_1021.md)
+S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # the sink verdict (docs/breadth/prereg_sink_1021.md)
 echo "=== C1 protocol: paper10${S:-}"
 WHY="Zach (2026-10-22): Muse Glimmer 30B, the second family, our J++"
 TWO="PP PM MP MM CP CM"

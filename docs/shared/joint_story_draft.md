@@ -6,7 +6,7 @@ Draft for the Neel drop-in, 27 Oct; UNVERIFIED; numbers cited to their files
 
 v2, on danorel (5782c055) after the critic's 22 findings. Nothing here is hand-checked; no number below is established. Interpretations that go beyond a file's own reading are marked "reading".
 
-**Source keys.** D = data/figures/depth/data.csv (figure, model, quantity; or the `numbers` key). Z = docs/breadth/data.csv (`key` column). E l.N = EXPERIMENTS.md line N (one run per line). P45 = predictions/2026-10-26_dan.md (the "Result" line under the question). SBO = docs/split_by_order.md. X0D = docs/x0_details.md. DR = docs/depth/README.md. ZR = docs/breadth/README.md. DG = docs/digest.md. CS = docs/archive/claims_skeleton.md. JS = results/jswap/<run>/summary.json (Zach's stored swap summaries; cells he has not reported). G = docs/shared/grid.csv.
+**Source keys.** D = data/figures/depth/data.csv (figure, model, quantity; or the `numbers` key). Z = docs/breadth/data.csv (`key` column). E l.N = EXPERIMENTS.md line N (one run per line). P45 = predictions/2026-10-26_dan.md (the "Result" line under the question). SBO = docs/depth/notes/split_by_order.md. X0D = docs/depth/x0_details.md. DR = docs/depth/README.md. ZR = docs/breadth/README.md. DG = docs/depth/digest.md. CS = docs/archive/claims_skeleton.md. JS = results/jswap/<run>/summary.json (Zach's stored swap summaries; cells he has not reported). G = docs/shared/grid.csv.
 
 **Status tags.** [FA] fixed in advance (pre-registered rule / amendment). [AD] after the data (descriptive, post hoc, gate lowered, or judged against thresholds written for other models). [US] unsourced (only in prose or a message, not in a results-derived file). A tag after a number applies to the test that produced it.
 

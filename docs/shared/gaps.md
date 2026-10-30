@@ -31,7 +31,7 @@ Procedure (helper: scratchpad handcheck_ids.py, re-implementable in a few lines)
 - **Ours → Zach checks.**
   - Our main test (two people swap picks), chat, the layer fixed in advance.
   - The scenes in results/x0_necessity/<run>/outcomes.jsonl at that layer, sorted.
-  - `random.Random(0).sample(scenes, 10)`, the convention of docs/handcheck_pack.md.
+  - `random.Random(0).sample(scenes, 10)`, the convention of docs/review/handcheck_pack.md.
 - **His → Dan checks.**
   - His v2 headline items: facts module, starts P / M / T, final M or K, right unedited (condition "none" correct).
   - Taken from results/ablate_v2/<run>/rows.jsonl with data/tasks_v2/jsuite_v2_test_chat/items.jsonl, sorted by id.
@@ -48,8 +48,8 @@ Primary set: the 27B, the model both headlines share at the same site (our L32 i
 | Backup: Dan checks his | 9B, qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1 | 1127 items | j2:chat:facts:PM-L0-00571 (M), PM-L0-01750 (M), MK-L0-01253 (K), PK-L0-00571 (K), TK-L1-00255 (K), PM-L1-01897 (M), PM-L0-01225 (M), PK-L1-00154 (K), PM-L1-01615 (M), PK-L1-01864 (K) |
 
 What to check per item:
-- **Ours:** the decoded prompt, the asked pick, the expected lookup digit and recall fact, and each reader's stored answer under none / whole / without J++ / without the random part (as docs/handcheck_pack.md).
-- **His:** the expected answer is right; a K item states the fact and an M item does not; the answer under paper10 is as stored (as docs/verify_kit.md §2).
+- **Ours:** the decoded prompt, the asked pick, the expected lookup digit and recall fact, and each reader's stored answer under none / whole / without J++ / without the random part (as docs/review/handcheck_pack.md).
+- **His:** the expected answer is right; a K item states the fact and an M item does not; the answer under paper10 is as stored (as docs/breadth/verify_kit.md §2).
 
 ## Message for Dan to send Zach
 
@@ -67,6 +67,6 @@ What to check per item:
 >    - 45s (Q46.2-Q46.3) runs our main test and clean design on Lightning at L27, the shallowest layer of your L27-33. It needs your Lightning J++ lens file (path and sha) on our box by Wed morning to land before the freeze (Wed 28 Oct evening).
 >    - OK to add your Muse position split / dose specs to our queue after 45r if there is time?
 > 4. **Thursday cross hand check, 10 random items each (seed 0, sorted pool, random.Random(0).sample).**
->    - You check ours: 27B main test (x0_necessity_27b_chat, L32) scenes P2-L0-0102, P2-L0-0204, P2-L0-0111, P2-L0-0010, P2-L0-0069, P2-L0-0136, P2-L0-0130, P2-L0-0107, P2-L0-0080, P2-L0-0128 (cards as in docs/handcheck_pack.md).
+>    - You check ours: 27B main test (x0_necessity_27b_chat, L32) scenes P2-L0-0102, P2-L0-0204, P2-L0-0111, P2-L0-0010, P2-L0-0069, P2-L0-0136, P2-L0-0130, P2-L0-0107, P2-L0-0080, P2-L0-0128 (cards as in docs/review/handcheck_pack.md).
 >    - Dan checks yours: 27B jsuite_v2_test_chat_ko_cand2_v1 items TM-L1-01074, PK-L0-01507, TK-L1-02049, PK-L1-00445, MK-L0-00965, MM-L1-00518, PM-L0-00577, PM-L0-00016, PK-L1-00151, TM-L0-00897 (prefix j2:chat:facts:).
 >    - Backup sets on the 9B are in docs/shared/gaps.md.

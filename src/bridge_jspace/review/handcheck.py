@@ -1,6 +1,6 @@
 """Dan's hand check, read back (Dan 29 Oct 11:45, verify_prep_1145 item 5): the verdict marks in review/marks.jsonl on
 the fixed sample, per tier-1 view, beside the automatic checks (review/verify_checks.json) and the independent recount
-(review/verify_independent.json). Shared by `make review-summary` (docs/review_summary.md) and `make review-verified`
+(review/verify_independent.json). Shared by `make review-summary` (docs/review/review_summary.md) and `make review-verified`
 (VERIFIED.md's generated section).
 
 A mark counts if it has a verdict (consistent / wrong / unclear): the inspector panel's J-space notes ("kind": "jspace",
@@ -62,7 +62,7 @@ def auto_status(view_id: str, checks: dict | None, indep: dict | None) -> tuple[
             + [f"{mm} recount mismatches"] * bool(mm)
         )
         a = (f"passed: {n} items, recount {r['recount']['match']} of {r['recount']['match'] + mm} match" if not bits
-             else f"{'; '.join(bits)} ({n} items; recount {r['recount']['match']} match): see docs/verify_pack.md")  # fmt: skip
+             else f"{'; '.join(bits)} ({n} items; recount {r['recount']['match']} match): see docs/review/verify_pack.md")  # fmt: skip
     prefix = INDEPENDENT.get(view_id)
     if prefix is None:
         b = "not in the independent recount (the brief's: conflict test, routes)"

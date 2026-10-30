@@ -10,10 +10,10 @@ source.
 
 The two sources, never merged:
   depth (Dan's half)    data/figures/depth/scorecard.csv: cell and flag copied; its 'data.csv key' resolves in
-                        docs/x0_numbers.json ('numbers:') or data/figures/depth/data.csv ('figNN:'), whose value is shown.
+                        docs/depth/x0_numbers.json ('numbers:') or data/figures/depth/data.csv ('figNN:'), whose value is shown.
   breadth (Zach's half) docs/breadth/data.csv: one verdict per model by the rules on Zach's scorecard (scripts/fig_neel.py
                         f12, its note), one rule per row of BREADTH_RULES; a model whose data.csv lacks a rule's key is
-                        '-'. Fixed in advance as in his prereg (docs/prereg_replication_1022.md); 'a' where it says not.
+                        '-'. Fixed in advance as in his prereg (docs/breadth/prereg_replication_1022.md); 'a' where it says not.
 Where both halves grade the same claim (SHARED), the figure gives it two strips, Dan's above Zach's.
 Columns: depth's four models first (story_style.MODELS), then the breadth's other five in its table's order.
 

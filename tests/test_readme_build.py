@@ -82,7 +82,7 @@ def test_render_markers(book):
 
 
 def test_point_marker_drops_the_interval():
-    key, text = next((k, v["text"]) for k, v in json.loads((B.REPO / "docs" / "x0_numbers.json").read_text()).items()
+    key, text = next((k, v["text"]) for k, v in json.loads((B.REPO / "docs" / "depth" / "x0_numbers.json").read_text()).items()
                      if " [" in v["text"])  # fmt: skip
     out = B.render(f"{{{{pt|{key}}}}} / {{{{num|{key}}}}}", None).splitlines()[-1]  # type: ignore[arg-type]
     assert out == f"{text.split(' [')[0]} / {text}"
@@ -155,14 +155,14 @@ def test_readme_body_has_no_internal_codes():
     assert not CODES.findall(body), CODES.findall(body)
 
 
-# ---------------------------------------------------------------- the figure vocabulary (docs/glossary.md)
+# ---------------------------------------------------------------- the figure vocabulary (docs/depth/glossary.md)
 
 # Tuesday's merge: check README.md. Set True once the v5 figures and captions are in README.md; until then the
-# canonical lines of docs/drafts/readme_v5_captions.md are checked instead.
+# canonical lines of docs/archive/drafts/readme_v5_captions.md are checked instead.
 CHECK_README = True
-CAPTIONS_DRAFT = B.REPO / "docs" / "drafts" / "readme_v5_captions.md"
+CAPTIONS_DRAFT = B.REPO / "docs" / "archive" / "drafts" / "readme_v5_captions.md"
 
-# docs/glossary.md's banned variants, one regex each. Case-sensitive unless marked (?i:...); \b = whole words only.
+# docs/depth/glossary.md's banned variants, one regex each. Case-sensitive unless marked (?i:...); \b = whole words only.
 BANNED = {
     # "J++" as a part name: a J++ not followed by " part" (or " lens", the lens itself), unless it names the lens in
     # "identity outside J++"
@@ -246,7 +246,7 @@ def test_the_matcher_passes_the_canonical_strings(text):
 
 @pytest.fixture(scope="module")
 def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
-    """Every text drawn on every figure the README or docs/x0_details.md shows, by figure: the README figures (Figs.
+    """Every text drawn on every figure the README or docs/depth/x0_details.md shows, by figure: the README figures (Figs.
     0-11, 1b and 3b), the supplementary ones, x0_figures' and x0_status_pack's f6. Rendered from the run files with
     savefig caught, so nothing is written (the scripts' data.csv and Fig. 11's scorecard.csv go to a temporary
     folder)."""
@@ -286,7 +286,7 @@ def test_every_shown_figure_uses_the_glossary(figure_texts):
     from scripts import readme_story_figures as F
 
     # the README's figures (Fig. 8b is Fig. 8 (a) since batch 45) and the second contact sheet's (supplementary +
-    # docs/x0_details.md's)
+    # docs/depth/x0_details.md's)
     shown = {*F.README_NAMES, *(Path(n).name for n in F.SHEET_MORE)}
     assert shown <= set(figure_texts), shown - set(figure_texts)
     flat = [(name, t) for name, ts in figure_texts.items() for t in ts]
@@ -294,7 +294,7 @@ def test_every_shown_figure_uses_the_glossary(figure_texts):
 
 
 def test_readme_figures_have_no_retired_term(figure_texts):
-    """scripts/check_figure_terms.py's retired terms on the README and supplementary figures (docs/x0_details.md's
+    """scripts/check_figure_terms.py's retired terms on the README and supplementary figures (docs/depth/x0_details.md's
     figures keep their run names as provenance)."""
     from scripts import check_figure_terms as C
     from scripts import readme_story_figures as F

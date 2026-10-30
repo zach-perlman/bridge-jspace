@@ -812,7 +812,7 @@ def fixed_note(v: dict, p: dict) -> str:
     if fs.get("seed") != p["seed"] or v["id"] not in (fs.get("views") or {}) or p["mode"] != "uniform":
         return ""
     return (f"<p class='mut'><b>The fixed sample</b> (seed {p['seed']}, {len(fs['views'][v['id']])} items across the "
-            "models: 6 random by model x reader + 4 targeted, each with its reason; docs/review_views.yaml fixed_sample, "
+            "models: 6 random by model x reader + 4 targeted, each with its reason; docs/review/review_views.yaml fixed_sample, "
             "never re-drawn).")  # fmt: skip
 
 
@@ -912,7 +912,7 @@ def claim_box(v: dict) -> str:
     cls = "; ".join(f"{tag(k)} {E(str(d))}" for k, d in classes.items())
     return (
         f"<div class='box'><p><b>Claim.</b> {E(v['claim'])}</p><p class='mut'>README: {E(v.get('readme', ''))}</p>"
-        f"<p class='mut'>Sources (docs/x0_numbers.json): {E(', '.join(v.get('sources', [])) or 'none yet')}</p>"
+        f"<p class='mut'>Sources (docs/depth/x0_numbers.json): {E(', '.join(v.get('sources', [])) or 'none yet')}</p>"
         f"<p class='mut'>Item set: {E(filters_plain(v))}</p><ul class='mut'>{runs}</ul>"
         f"<p style='font-size:12.5px'>Classes: {cls}</p>"
         + (f"<p class='mut'>{E(v['notes'])}</p>" if v.get("notes") else "")
@@ -1001,7 +1001,7 @@ def view_page(
 
 
 def index_page(rows: list[tuple[dict, dict, list[dict]]], server: bool, commit: str, seed: int, n: int) -> str:
-    body = ["<h1>Review: read the claims' items by hand</h1><p class='mut'>Each view is one README claim (docs/review_views.yaml); "
+    body = ["<h1>Review: read the claims' items by hand</h1><p class='mut'>Each view is one README claim (docs/review/review_views.yaml); "
             f"items come from the runs' per-item files, decoded with the pinned tokenizers. Commit {E(commit)}.</p><table>"
             "<tr><th>view</th><th>items per model (lookup + recall)</th><th>automatic-check failures</th>"
             "<th>recount vs data.csv</th></tr>"]  # fmt: skip

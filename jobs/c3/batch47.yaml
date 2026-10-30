@@ -33,7 +33,7 @@ amendments:
     applies_before: the next enqueue
     items:
       - "Cut 47.6(c), the dereference block: blocking the question's reads of the locker sentences kills the lookup under every hypothesis we hold; discriminates nothing. 47.6(a) and (b) remain as written."
-      - "Tier 2 'probe for the value': do not rerun. Table what exists (x0_probe v4: results/x0_probe/{qwen35_9b,x0_probe_v4_27b,muse30b,qwen35_122b}_x0_probe_v4), CPU: docs/x0_details.md table four models x {answer digit, slot, identity} x {locker-first, locker-after}, probe vs majority / chance / layout baselines with stored intervals; beside it the lens line (J++ readout ranks the answer digit first in 8% / 13% of locker-first items on the 9B / 27B, chance 10%) and the routes result (value 0 of 300 on four models); data.csv rows probe.value.<model>.<order>, probe.slot.<model>.<order>; one Section-3 sentence, after the data."
+      - "Tier 2 'probe for the value': do not rerun. Table what exists (x0_probe v4: results/x0_probe/{qwen35_9b,x0_probe_v4_27b,muse30b,qwen35_122b}_x0_probe_v4), CPU: docs/depth/x0_details.md table four models x {answer digit, slot, identity} x {locker-first, locker-after}, probe vs majority / chance / layout baselines with stored intervals; beside it the lens line (J++ readout ranks the answer digit first in 8% / 13% of locker-first items on the 9B / 27B, chance 10%) and the routes result (value 0 of 300 on four models); data.csv rows probe.value.<model>.<order>, probe.slot.<model>.<order>; one Section-3 sentence, after the data."
       - "Add 47.7 (the value: address by default, prefetched on demand?), see tests."
       - "Batch 48 (jobs/c3/batch48.yaml) is in force; its common settings are batch 47's; Q48.x and Q47.7 in predictions/2026-10-28_dan.md before any is unsealed."
     queue_order: "47.1 -> 47.4 -> 48.1 (9B) -> 47.7(a) -> 48.2 A -> 47.3 -> 47.2 (9B, Muse) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 47.7(b) -> 48.6; cut from the bottom"
@@ -116,7 +116,7 @@ tests:
     design: >-
       From the main test's and the clean design's outcomes.jsonl (ld, p_alt, p_org): for each reader and model, the
       unedited logit margin (original answer minus the changed answer) of items that switch under the whole change
-      against those that do not, with intervals. One table, docs/x0_details.md.
+      against those that do not, with intervals. One table, docs/depth/x0_details.md.
     reading: The cheapest "why not every answer switches" explanation; 47.4 is the causal one. Descriptive.
 
   - id: "47.1"
@@ -280,7 +280,7 @@ tests:
         lens's rank of the same digit. If the digit is decodable (>= 2x chance) and the routes test never follows it, that
         is "decodable, not used", one line in Section 3.
       - Hand-check pack views for 47.1, 47.3, 47.4 as each unseals.
-      - Figures only for tests whose rule is scored; the rest stay in docs/x0_details.md.
+      - Figures only for tests whose rule is scored; the rest stay in docs/depth/x0_details.md.
 
   - id: "47.7"
     added_by: amendment 1 (Dan, 28 Oct ~02:30)

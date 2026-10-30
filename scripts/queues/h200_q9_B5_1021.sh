@@ -1,6 +1,6 @@
 #!/bin/bash
 # 2026-10-21 (replaces h200_q9_B4_1021.sh before it started): every C1 condition follows the attention-sink verdict
-# (paper10 or paper10_nosink; docs/prereg_sink_1021.md); under _nosink, paper10 is also run at the middle band.
+# (paper10 or paper10_nosink; docs/breadth/prereg_sink_1021.md); under _nosink, paper10 is also run at the middle band.
 # 2026-10-21 (Zach: the new suite, not the old one): the middle band is chosen on ctrl_v8 (the v2 generator, seed 712;
 # no prompt or context shared with the test set full_v8), by scripts/choose_band.py, for every model including the 27B.
 # Zach (2026-10-21; replaces h200_q9_B2_1021.sh before it started; decided with Zach: fill GPU 1's idle gap with 9B work,
@@ -29,7 +29,7 @@ else
   until grep -qs "^EXIT" $R-h200q32B-*.log && { [ -f $MK9 ] || grep -qs "^EXIT" $R-h200q9A-*.log; }; do sleep 60; done
 fi
 export BJ_TARGET=qwen3.5-9b
-S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # 2026-10-21: the attention-sink verdict (docs/prereg_sink_1021.md, h200_gemma_B3g_1021.sh)
+S=$( [ "$(cat /workspace/scratch/markers/c1_protocol 2>/dev/null)" = nosink ] && echo _nosink )  # 2026-10-21: the attention-sink verdict (docs/breadth/prereg_sink_1021.md, h200_gemma_B3g_1021.sh)
 echo "=== C1 protocol: paper10${S:-}"
 
 C2=qwen35_9b_full_v8_competence_v1

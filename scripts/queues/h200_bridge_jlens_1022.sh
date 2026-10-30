@@ -1,7 +1,7 @@
 #!/bin/bash
 # Zach (2026-10-22): the 27B lens bridge for Muse, moved ahead on GPU 0 while Muse's weights wait for disk (Mistral was
 # cancelled): the lens check on neuronpedia's published plain J-lens for Qwen3.6-27B (1000 prompts) and on the 27B's J++,
-# then the 27B's C1 at 32-40 with the J-lens (docs/prereg_replication_1022.md, amendment 1).
+# then the 27B's C1 at 32-40 with the J-lens (docs/breadth/prereg_replication_1022.md, amendment 1).
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a

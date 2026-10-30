@@ -31,7 +31,7 @@ import torch
 K_OMP = 25
 K_PAPER = 10
 SINK_RATIO = (
-    10.0  # 2026-10-21 (docs/prereg_sink_1021.md): a position whose residual norm exceeds 10x the prompt's median
+    10.0  # 2026-10-21 (docs/breadth/prereg_sink_1021.md): a position whose residual norm exceeds 10x the prompt's median
 )
 OWN_COS = 0.5
 
@@ -181,7 +181,7 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
     """An edit h [B, T, d] -> h minus its removal, for method 'omp' (k atoms, rows' banned atoms never chosen) or 'top'
     (span of the k highest-logit atoms, rows' protected atoms never chosen); with rotation, the removal vector is turned
     by it before subtraction (the same-size control). Skipped positions are unchanged. With skip_sinks (2026-10-21,
-    docs/prereg_sink_1021.md) position 0 and every position whose residual norm exceeds SINK_RATIO x the row's median
+    docs/breadth/prereg_sink_1021.md) position 0 and every position whose residual norm exceeds SINK_RATIO x the row's median
     are also left unchanged (attention sinks); edit.sinks counts [sink positions, positions] over calls. With size_match
     (an orthonormal basis [n, d]), the removal is replaced by size_matched_removal's along that basis (same norm)."""
     k = k or (K_OMP if method == "omp" else K_PAPER)

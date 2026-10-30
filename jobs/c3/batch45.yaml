@@ -6,7 +6,7 @@
 # Common settings, as before: layers 9B L12, 27B L32, 122B L33 (gate 0.75, after the data, as its routes runs), Muse
 # L26; cluster bootstrap over bridge items, 10,000 resamples, seed 0; every part removed or kept is paired with a random
 # part of the same share of the change; the pointer basis U is the one fit on fresh scenes (x0_massmean's Alf, from the
-# x0_probe_v4 states), never refit unless the test says so; every test gets a verify-pack view (docs/review_views.yaml):
+# x0_probe_v4 states), never refit unless the test says so; every test gets a verify-pack view (docs/review/review_views.yaml):
 # 10 random items (seed 0), the prompt as the model sees it, the patch position marked, each arm's answer.
 #
 # GPU-hours: estimates on one H100 PCIe (the 122B: both GPUs), from the timing ledger of comparable runs.

@@ -1,6 +1,6 @@
 # Draft: the pointer's "first" after 45a (Dan, 26 Oct ~21:40-21:45; merge on Tue after the 122B and the hand check)
 
-Not merged. Each block names the place in docs/README.template.md (line numbers as of 7415c6f0) and the text that replaces it; every choice below is Dan's (~21:40) unless marked. Numbers: Q45.3's verdicts (results/x6_routes/*_x45a*/verdict-*) and the 45a descriptive table (results/x6_routes/x45a-descriptive-20261026T202952Z), after the data where marked. Drafts beside this file: docs/drafts/x0_details_45a.md (the table, for docs/x0_details.template.md) and figures/archive/drafts/fig08b_layout.png with its data.csv rows in data/figures/archive/drafts/fig08b_layout.csv (scripts/readme_story_figures.py f08b_layout; on Tue: add it to README_FIGS with draft=False). UNVERIFIED.
+Not merged. Each block names the place in docs/README.template.md (line numbers as of 7415c6f0) and the text that replaces it; every choice below is Dan's (~21:40) unless marked. Numbers: Q45.3's verdicts (results/x6_routes/*_x45a*/verdict-*) and the 45a descriptive table (results/x6_routes/x45a-descriptive-20261026T202952Z), after the data where marked. Drafts beside this file: docs/archive/drafts/x0_details_45a.md (the table, for docs/depth/x0_details.template.md) and figures/archive/drafts/fig08b_layout.png with its data.csv rows in data/figures/archive/drafts/fig08b_layout.csv (scripts/readme_story_figures.py f08b_layout; on Tue: add it to README_FIGS with draft=False). UNVERIFIED.
 
 ## 1. In one minute
 
@@ -37,10 +37,10 @@ Fig. 8 keeps its panels (a)-(d) unchanged; only its title changes (block 4).
 
 "First-mentioned item, not position in the text" becomes "Pointer tied to the layout (45a)": 9B ~, 27B ~, Muse ✓ (fixed in advance, no "a"), 122B – until its run lands. Footnote on Muse: "on a tie: the pointer part alone gives 36 position answers in V1 against 72 in V0".
 
-## 7. docs/x0_details.md
+## 7. docs/depth/x0_details.md
 
-Add the 45a table (docs/drafts/x0_details_45a.md) as its own section, after the data.
+Add the 45a table (docs/archive/drafts/x0_details_45a.md) as its own section, after the data.
 
 ## Kept
 
-docs/x0_details.template.md line 117, "whether the asked pick is the bridge's first mention", is a scene feature (the strata split), not the pointer's meaning.
+docs/depth/x0_details.template.md line 117, "whether the asked pick is the bridge's first mention", is a scene feature (the strata split), not the pointer's meaning.

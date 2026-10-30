@@ -5,7 +5,7 @@ Fails (exit 1, one line per hit) when a retired term appears in a text the READM
 ids (a snake_case name such as qwen35_9b_x6_routes, or a UTC stamp such as 20261026T224602Z). The figures are
 scripts/readme_story_figures.py's README and supplementary figures, rendered from the run files with savefig caught (no
 file is written); the captions are the figure alt texts and "*Fig. N.*" lines of docs/depth/README.md and the template
-and the canonical lines of docs/drafts/readme_v5_captions.md. docs/glossary.md's word list is checked by
+and the canonical lines of docs/archive/drafts/readme_v5_captions.md. docs/depth/glossary.md's word list is checked by
 tests/test_readme_build.py; this script checks the retired terms only.
 
 The joint story (Dan, 27 Oct ~15:50) adds JOINT_RETIRED, the words the root README and its figures leave to the two
@@ -43,7 +43,7 @@ RETIRED = {
     "run stamp": r"\b\d{8}T\d{6}Z\b",
 }
 CAPTION_FILES = (REPO / "docs" / "depth" / "README.md", REPO / "docs" / "depth" / "README.template.md")
-CAPTIONS_DRAFT = REPO / "docs" / "drafts" / "readme_v5_captions.md"
+CAPTIONS_DRAFT = REPO / "docs" / "archive" / "drafts" / "readme_v5_captions.md"
 ROOT_README = REPO / "README.md"
 JOINT_RETIRED = {
     # a lone capital M or K (the two reports' final codes), also inside "M − K" / "M-K"
@@ -71,7 +71,7 @@ JOINT_RETIRED = {
 }
 
 
-# Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README's main figures
+# Dan's README v6 brief, §5 (docs/depth/figure_plan.md "v6 style rules"), the testable part, on the README's main figures
 # (readme_story_figures.README_NAMES, since v6 iteration 2) and fig15: the title is the conclusion on one line with no
 # digit (no numbers, no model sizes; number words are fine); the subtitle one line, without the rule; at most two
 # panels; "swap" not "write", "address" not "pointer", and none of iteration 2's retired strings

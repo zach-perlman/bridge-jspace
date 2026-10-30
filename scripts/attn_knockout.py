@@ -714,7 +714,7 @@ def build_tasks_cases(tok, set_name: str, families: list[str], domains: list[str
     return cases, dict(report)
 
 
-# ---- natural_read_v1 (SQuAD paragraphs; finding 4 on natural text, docs/design_natural_late_read.md) ---------------
+# ---- natural_read_v1 (SQuAD paragraphs; finding 4 on natural text, docs/depth/notes/design_natural_late_read.md) ---------------
 
 NATURAL = "natural_read_v1"
 

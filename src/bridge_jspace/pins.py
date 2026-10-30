@@ -340,7 +340,7 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jpp": ("local", "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt", "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12")},
         "frozen_lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12",
     },
-    # Is C1's strength the lens or the model? (Zach, 2026-10-22, docs/prereg_replication_1022.md amendment 3.) Qwen3-32B
+    # Is C1's strength the lens or the model? (Zach, 2026-10-22, docs/breadth/prereg_replication_1022.md amendment 3.) Qwen3-32B
     # with neuronpedia's published plain J-lens (557 WikiText prompts) beside our 32-prompt J++; and Qwen3-8B (dense,
     # standard attention like Qwen3-32B, unlike the hybrid 27B and 9B) with its published plain J-lens (461 prompts).
     # allenai/Olmo-Hybrid-Instruct-DPO-7B (Gated DeltaNet linear attention in 24 blocks, full attention in 8; the Olmo architecture pair, prereg amendment 6B; Zach, 2026-10-22): our own J++, the

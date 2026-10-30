@@ -1,7 +1,7 @@
 """cross_model_summary: one table (and figure) of the replication runs, per model, read from the result files as they land
 (Zach, 2026-10-22). C1: the middle band chosen on ctrl_v8, the C1-graded rule's losses, gap and verdict, the guessable
 split, the specificity control (unembedding directions), keep-own-word, the extra rotated-control seeds, the plain-text
-gate. C2: C2-graded and C2-relative (pre-registered), C2' (docs/prereg_replication_1022.md), at the current band and at
+gate. C2: C2-graded and C2-relative (pre-registered), C2' (docs/breadth/prereg_replication_1022.md), at the current band and at
 the aligned band. Missing runs show as "-". Everything unverified until in VERIFIED.md.
 
 python scripts/cross_model_summary.py   (writes results/cross_model/summary.md, .json and figures/archive/cross_model/c1_by_model.png)

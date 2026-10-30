@@ -30,7 +30,7 @@ hypotheses:
   H-late-near-floor: 'the primary bar fails but finding 4''s bar holds (<= 20% right, upper bound <= 30%): most answers need the late read, a few survive another way'
   H-relay: 'more than 20% right with the sentence hidden from the last tokens while hidden from every later token leaves <= 10%: other positions (the question words, later sentences) read it and pass the answer on'
 decision_rule: >-
-  Fixed 2026-10-23 before any run and amended by Dan on 23 Oct, before any run (docs/design_natural_late_read.md;
+  Fixed 2026-10-23 before any run and amended by Dan on 23 Oct, before any run (docs/depth/notes/design_natural_late_read.md;
   scripts/natural_read.py judge, BARS); the rule of qwen36_27b_d2_natural_read without its DeltaNet clause (this model
   has none). Items: data/natural_read_v1 (SQuAD v1.1 dev, one question per paragraph, 718). The knockout run takes
   every item the competence run makes eligible, no cap: the answer's first token has 3+ characters or is its whole

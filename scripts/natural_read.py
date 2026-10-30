@@ -1,4 +1,4 @@
-"""natural_read: finding 4 (the late read) on natural text, lens-free (Dan, 23 Oct; docs/design_natural_late_read.md).
+"""natural_read: finding 4 (the late read) on natural text, lens-free (Dan, 23 Oct; docs/depth/notes/design_natural_late_read.md).
 
 Items. SQuAD v1.1 dev (pins.SQUAD_DEV_*; CC BY-SA 4.0): a Wikipedia paragraph, a question and the answer's span. The
 prompt is the paragraph, a newline, the question and INSTRUCTION as one user turn (chat.chat_text, "Answer:"
@@ -432,7 +432,7 @@ def cell(rows: list[dict], ok: set[str], source: str, dest: str, layers: str, mo
 
 
 def judge(cells: dict[str, dict], n: int, bar: tuple[float, float] = BARS["primary"]) -> str:
-    """The pre-registered rule (docs/design_natural_late_read.md) under one bar (BARS); the controls are finding 4's
+    """The pre-registered rule (docs/depth/notes/design_natural_late_read.md) under one bar (BARS); the controls are finding 4's
     (scripts/d2_formats.py: another sentence >= 90% with lower bound >= 85%; the DeltaNet layers instead >= 90%)."""
     from scripts import d2_formats as DF
 

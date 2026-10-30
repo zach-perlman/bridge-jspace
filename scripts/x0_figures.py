@@ -1,6 +1,6 @@
 """x0_figures: the X0 review figures from the finished runs in results/x0_necessity/ (jobs/c3/X0.md). Writes a new
 results/x0_necessity/figures-<UTC>/ (or --out DIR) with one PNG per figure and data.csv (every drawn number with its
-run). UNVERIFIED. The words on the figures: docs/glossary.md (extra loss, switches lost, gap, the J++ part).
+run). UNVERIFIED. The words on the figures: docs/depth/glossary.md (extra loss, switches lost, gap, the J++ part).
 
 - overview: columns 9B and 27B, rows chat / nochat / raw. Lookup and recall excess (J++ k = 25 minus its random part)
   by layer with 95% CIs and labels; at the pre-registered layer the rule's verdict and the graded contrast C = recall
@@ -49,7 +49,7 @@ RUNS = {("qwen3.5-9b", "chat"): "qwen35_9b_x0_necessity", ("qwen3.5-9b", "raw"):
         ("qwen3.6-27b", "chat"): "x0_necessity_27b_chat", ("qwen3.6-27b", "raw"): "x0_necessity_27b_notemplate",
         ("qwen3.6-27b", "nochat"): "x0_nochat_digit_27b"}  # fmt: skip
 KMATCH = {"qwen3.5-9b": "qwen35_9b_x0_kmatch", "qwen3.6-27b": "x0_kmatch_27b"}
-# the dictionaries as the README figures name them (docs/glossary.md)
+# the dictionaries as the README figures name them (docs/depth/glossary.md)
 DICT_NAME = {
     "jpp": "J++ part",
     "wu": "logit-lens directions",
@@ -305,7 +305,7 @@ def detail(out: Path, run: Run, rend: str, data: list[dict]) -> Path:
     def ser(w, key, d=X.MAIN, i=0, scale=1.0):
         return [scale * c(la, w, d)[key][i] for la in done]
 
-    # A, B and F are shares, drawn in % (docs/glossary.md); data.csv keeps the fractions
+    # A, B and F are shares, drawn in % (docs/depth/glossary.md); data.csv keeps the fractions
     for w in X.READERS:
         for key, ls, what in (("S_whole", "-", "whole change"), ("S_no_part", "--", "without the J++ part")):
             a_s.plot(done, ser(w, key, scale=100), ls, color=color[w], lw=2, marker="o" if ls == "-" else None, ms=4,

@@ -62,7 +62,7 @@ def c1_split() -> Figure:
                   "lost on recalled (M, dark) and stated (K, purple) finals (docs/breadth/data.csv ko.*.lostM / lostK); "
                   "grey tick: the largest same-size control in M − K (rotated, logit lens, PCA). Muse 30B: shared with "
                   "the logit lens; Qwen 122B: gone by probability (Zach's grading). Right (Dan, share): the conflict "
-                  "test at L, switches lost beyond a random part (docs/x0_numbers.json rc_excess_* / lk_excess_*; "
+                  "test at L, switches lost beyond a random part (docs/depth/x0_numbers.json rc_excess_* / lk_excess_*; "
                   "Lightning from data/figures/depth/data.csv), 200 scenes per model, 95% whiskers; bold: recall minus "
                   "lookup (contrast_*); dashed: the lookup's 0.10 bar. Lightning hollow (gate chosen after its "
                   "pre-check; pending hand-check, 29 Oct).", [left, right])  # fmt: skip
@@ -238,7 +238,7 @@ def breaks() -> Figure:
                  "lookup: switches lost beyond a random part", (-0.15, 0.7), rules=[NOT_NEEDED], rotate=15)  # fmt: skip
     return Figure("p7_breaks", "Where it breaks: the 27B with more directions; passages whose fact the model knows.",
                   "Left: the lookup's switches lost beyond a random part without 25 / 50 / 100 lens directions, main "
-                  "test at L, 200 scenes (docs/x0_numbers.json lk_excess_k*). Right: Zach's named passages through "
+                  "test at L, 200 scenes (docs/depth/x0_numbers.json lk_excess_k*). Right: Zach's named passages through "
                   "Dan's conflict test, the lookup with true facts (purple) and made-up facts (dark) (figures/depth/"
                   "data.csv ledger_zach_named). Muse and Lightning missed the made-up-fact gate (descriptive); Lightning "
                   "hollow (pending hand-check, 29 Oct). Dashed: the lookup's 0.10 bar.", [left, right])  # fmt: skip

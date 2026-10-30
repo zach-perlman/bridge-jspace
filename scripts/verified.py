@@ -47,9 +47,9 @@ def block(marks_path: Path, checks: dict | None, indep: dict | None) -> str:
     L = [BEGIN, "", f"## Hand check of the headline claims (seed {fs.get('seed')}, {fs.get('n_per_view')} items per claim)", "",
          f"Generated at {sha}, {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}, from {marks_path.name} ({len(marks)} "
          f"verdict marks), review/verify_checks.json ({(checks or {}).get('generated_utc', 'not run')}) and "
-         "review/verify_independent.json. The items are docs/review_views.yaml's fixed_sample; the last mark per item "
+         "review/verify_independent.json. The items are docs/review/review_views.yaml's fixed_sample; the last mark per item "
          f"counts; a claim with {H.STOP_WRONG} or more items marked wrong is flagged (Dan's stop rule). How each was "
-         "read: docs/verify_pack.md.", "",
+         "read: docs/review/verify_pack.md.", "",
          "| claim | what it says | items read | consistent | wrong | unclear | flagged | automatic checks | independent recount |",
          "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     notes = []

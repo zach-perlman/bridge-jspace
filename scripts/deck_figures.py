@@ -1,5 +1,5 @@
 """The joint deck's figures (deck skeleton brief, 29 Oct ~23:45, Section 5) into figures/archive/deck/ (PNG + SVG each, 16:9,
-2400 x 1350 px). CPU only; every value is read from data/figures/depth/data.csv, docs/x0_numbers.json, docs/breadth/data.csv
+2400 x 1350 px). CPU only; every value is read from data/figures/depth/data.csv, docs/depth/x0_numbers.json, docs/breadth/data.csv
 or docs/shared/grid.csv, never typed. Cells a source does not hold are left out of the frame and listed in
 data/figures/archive/deck/CAPTIONS.md with the n per bar.
 

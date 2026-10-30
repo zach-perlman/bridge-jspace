@@ -37,7 +37,7 @@ drafts on 27 Oct (Dan ~15:30): they are review records, not README content.
 3. Muse and 122B knock-out cells and Lightning's probability reading are after the data. — **fixed**: table footnote and Status line; probability reading tagged.
 4. Lightning's credence rests on the knock-out alone; six caveats. — **fixed**: "Lightning: medium, knock-out only (GAP -> 45s)" with all six caveats.
 5. Claim 3 headline overstated. — **fixed**: scoped to the order pointer on the 9B and Muse; identity low credence; 27B weaknesses listed.
-6. Hand-check pack citation; Brier wording. — **fixed**: cites docs/handcheck_pack.md; DR §7's wording kept.
+6. Hand-check pack citation; Brier wording. — **fixed**: cites docs/review/handcheck_pack.md; DR §7's wording kept.
 7. One-sided complement selection. — **fixed**: 9B CI, 9B TK and Lightning PK / TK added; tag and GAP kept.
 8. Bare "pointer". — **fixed**: "order pointer" / "entity code" throughout; Setup has a warning on words.
 9. "Lightning: GAP -> 45s" under claim 3. — **fixed**: "GAP -> no test planned".
