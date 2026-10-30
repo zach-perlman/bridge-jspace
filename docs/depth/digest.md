@@ -1,12 +1,12 @@
 # Results digest (generated 2026-10-27 08:11 UTC by scripts/results_digest.py)
 
-Every number is read from results/ (jsuite2_score, soft_score, jswap and probe_ceiling summaries). M - K: points lost on
+Every number is read from results/ (jsuite2_score, soft_score, jswap and probe_ceiling summaries). M - K: accuracy drop (points) on
 memory finals minus stated-fact finals under the top-10 J++ removal at the band, start all, 95% bootstrap over bridges.
 Swaps: transfer (donor - third) on PM. '-' = not run (or not yet).
 
 ## Knock-out (test set)
 
-| Model | Band | J++ M - K | n (M) | K lost | rotated | logit lens | by probability | size-matched variance (pcasize) | renderings |
+| Model | Band | J++ M - K | n (M) | K drop | rotated | logit lens | by probability | size-matched variance (pcasize) | renderings |
 |---|---|---|---|---|---|---|---|---|---|
 | Qwen3.6-27B | L32-40 | +51 [46, 55] | 892 | 2.6 | +3 | +2 | +50 [47, 54] | +12 [10, 15] | +49, +50 |
 | Qwen3.5-9B | L12-16 | +43 [37, 49] | 563 | 5.0 | +2 | +1 | +35 [31, 40] | +7 [5, 10] | +42, +43 |

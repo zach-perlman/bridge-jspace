@@ -311,7 +311,7 @@ def j1_recall_needs_lens(plt):
     axes[0].set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
     axes[1].set_title("remove from the patch (Dan)", fontsize=S.FONT + 1, loc="left")
     axes[0].set_xlabel("answers that turn wrong (pp)")
-    axes[1].set_xlabel("share of the patch's switches lost,\nbeyond a random part (%)")
+    axes[1].set_xlabel("share of the patch's switches blocked,\nbeyond a random part (%)")
     hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=8), plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=8),
           plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=13, mew=2.6),
           plt.Line2D([], [], marker="o", ls="", mfc="white", mec=RECALLED, mew=1.6, ms=8)]  # fmt: skip
@@ -488,7 +488,7 @@ def j3_order_signal(plt):
         ax.spines["left"].set_visible(False)
     axl.set_yticks(ticks, labels)
     axr.set_yticks([])
-    axl.set_title("position answers lost\nwhen removed (pp)", fontsize=S.FONT + 1, loc="left")
+    axl.set_title("position answers blocked\nwhen removed (pp)", fontsize=S.FONT + 1, loc="left")
     axr.set_title("answers sent to the chosen\nlocker when written (%)", fontsize=S.FONT + 1, loc="left")
     hs = [Rectangle((0, 0), 1, 1, fc=orange, ec=orange), Rectangle((0, 0), 1, 1, fc=grey, ec=grey)]
     legend_below(fig, hs, ["order signal (4 directions)", "random control of the same size"], 0.06, 2)
@@ -900,7 +900,7 @@ def j9_link(plt):
     axt.set_title("where the lookup's link is made, at the main test's layer", fontsize=S.FONT + 1, loc="left")
     axb.set_title("what the recall reads at the item's earlier mention", fontsize=S.FONT + 1, loc="left")
     axt.set_xlabel("% of the lookup's switches carried")
-    axb.set_xlabel("% of switches lost there")
+    axb.set_xlabel("% of switches blocked there")
     return fig
 
 

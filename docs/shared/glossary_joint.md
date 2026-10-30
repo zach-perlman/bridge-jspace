@@ -14,7 +14,7 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 | PP, PK, PM, TK, TM, MK, MM, … | breadth | start × final: the bridge read (P), tracked (T) or recalled (M), then the final | "lookup answer" / "recalled answer" |
 | P→P→M, M→M→P, … | breadth | three-hop chains, one letter per hop's source | three-step chain ending on a recalled / lookup answer |
 | RM − MM | breadth | the bridge never named minus named once in passing | earlier mention |
-| M − K | breadth | recall points lost minus stated-fact points lost | points more on recalled than on lookup answers |
+| M − K | breadth | recall accuracy drop (points) minus stated-fact accuracy drop (points) | points more on recalled than on lookup answers |
 | recall | depth | "How many legs does Iris's pick have?" | recalled answer |
 | lookup | depth | "Which locker belongs to Iris's pick?" | lookup answer |
 | stated answer | front page until 27 Oct ~19:15 | an answer written in the text (stated = lookup) | lookup answer |
@@ -43,7 +43,7 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 
 | Term in a report or draft | Where | Meaning | Front page |
 |---|---|---|---|
-| extra loss, gap | depth | share of switches lost without a part minus without a random part; recall's minus lookup's | the gap … of the change's effect |
+| switches blocked beyond random, gap | depth | share of switches blocked without a part minus without a random part; recall's minus lookup's | the gap … of the change's effect |
 | switch | depth | the reader gives the changed prompt's answer | moves the answer |
 | transfer | breadth | share answering the donor's fact minus a third entity's | moves the answer (points) |
 | random part | depth | a random subspace with the same share of the change | a random part of the same size |

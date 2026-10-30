@@ -97,7 +97,7 @@ def s01_split(plt) -> None:
     fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 6.3), sharey=True)
     fig.subplots_adjust(left=0.295, right=0.995, top=0.74, bottom=0.09, wspace=0.10)
     S.title(fig, "The split in every scene set",
-            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
+            "Effect (0-1): switches blocked without the J++ part, minus those blocked without a random part\n"
             "(same size); 95% CI. Gap = recall minus lookup.")  # fmt: skip
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
@@ -207,7 +207,7 @@ def s02_parts(plt) -> None:
     S.title(
         fig,
         "Every part we removed, against the J++ part",
-        "Extra loss (0-1): switches lost without the part, minus those lost without a random part\n"
+        "Effect (0-1): switches blocked without the part, minus those blocked without a random part\n"
         "(same size); recall with 95% CI. The first five rows: one-pick scenes (only the asked pick\n"
         "changes); the last three: main test (two people swap picks). Random atoms: a dictionary.",
     )
@@ -361,7 +361,7 @@ def s10_removed_together(plt) -> None:
     S.title(
         fig,
         "Removing the J++ part, the pointer and identity outside J++: the bars",
-        "Sanity swap. Extra loss (0-1): switches lost without the part, minus those lost without a random\n"
+        "Sanity swap. Effect (0-1): switches blocked without the part, minus those blocked without a random\n"
         "part (same size). Dotted: bars fixed in advance (Q34 top, Q36 middle); bottom: Q40's parts with\n"
         "their share of the change.",
     )
@@ -388,7 +388,7 @@ def s10_removed_together(plt) -> None:
         top.set_ylim(-len(parts) + 0.4, 0.6)
         bot.set_xlim(0, 100)
         bot.set_xticks(*PCT)
-        bot.set_xlabel("switches lost (%)")
+        bot.set_xlabel("switches blocked (%)")
         bot.grid(axis="x", color="#eeeeee")
         cv = latest(pins.RESULTS_DIR / "x6_routes" / ctrl_run, "verdict-*/verdict.json") if ctrl_run else None
         cc = {(x["condition"], x["reader"], x["arm"]): x for x in (cv or {}).get("ctrl", [])}
@@ -818,7 +818,7 @@ def f01_split(plt) -> None:
     fig, ax = plt.subplots(figsize=(S.WIDTH, 5.45))
     fig.subplots_adjust(left=0.215, right=0.70, top=0.77, bottom=0.215)
     S.title(fig, "Recall follows the J++ part of the bridge; the lookup mostly does not",
-            "Extra loss: switches lost without the J++ part, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
+            "Switches blocked without the J++ part, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
     # Lightning the fourth row (batch 52), its marks hollow; the 122B the fifth (Dan 11:30), at its own gate, filled.
     # split_rows records the 122B's fig01 rows as before (scripts/joint_figures.py's j1 reads them)
     rows = (*V6_MODELS, LT, B122)
@@ -829,7 +829,7 @@ def f01_split(plt) -> None:
     ax.set_ylim(-len(rows) - 0.05, 0.6)  # room for the band's label under the last row
     ax.text(-0.05, -len(rows) + 0.28, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"],
             linespacing=1.0)  # fmt: skip
-    ax.set_xlabel("extra loss without the J++ part")
+    ax.set_xlabel("switches blocked without the J++ part")
     # the gap (recall minus lookup) and its interval, fixed in advance
     tr = blend(fig, ax)
     x_gap, x_ci = 0.725, 0.79
@@ -858,14 +858,14 @@ def f01b_settings(plt) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.9))
     fig.subplots_adjust(left=0.07, right=0.91, top=0.665, bottom=0.075, wspace=0.42, hspace=0.62)
     S.title(fig, "Recall follows the J++ part more than the lookup in every setting",
-            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
-            "(same size). Logit difference: the share of the logit shift lost instead of switches lost.\n"
+            "Effect (0-1): switches blocked without the J++ part, minus those blocked without a random part\n"
+            "(same size). Logit difference: the share of the logit shift blocked instead of switches blocked.\n"
             "Clean one-pick scenes: the asked pick changes to a locker item nobody picks; the split holds\n"
             "where the gap is at least 0.3 and the lookup at most 0.1.")  # fmt: skip
     for ax, setting in zip(axes.flat, ("ld", "clean", "varied", "natural"), strict=True):
         split_rows(ax, setting, "fig01b", ci=False)
         ax.set_title(SETTINGS[setting][0], loc="left", weight="bold", fontsize=S.FONT + 0.5)
-        ax.set_xlabel("extra loss (logit difference)" if setting == "ld" else "extra loss without the J++ part")
+        ax.set_xlabel("extra effect (logit difference)" if setting == "ld" else "switches blocked without the J++ part")
         if setting != "clean":
             continue
         for i, (_, m, _) in enumerate(S.MODELS):
@@ -888,10 +888,10 @@ def s01b_one_pick(plt) -> None:
     fig, ax = plt.subplots(figsize=(S.WIDTH, 4.9))
     fig.subplots_adjust(left=0.10, right=0.86, top=0.60, bottom=0.27)
     S.title(fig, "One-pick scenes: the new bridge is already another person's pick",
-            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
+            "Effect (0-1): switches blocked without the J++ part, minus those blocked without a random part\n"
             "(same size). One-pick scenes (only the asked pick changes).")  # fmt: skip
     split_rows(ax, "single", "s01b", ci=False)
-    ax.set_xlabel("extra loss without the J++ part")
+    ax.set_xlabel("switches blocked without the J++ part")
     hs, ls = reader_handles(plt)
     sh, sl = S.status_handles(("fixed", "after"))
     legend(fig, hs + sh, ls + sl, 0.74, ncol=4)
@@ -921,7 +921,7 @@ def f02_specificity(plt) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.5), sharex=True)
     fig.subplots_adjust(left=0.13, right=0.99, top=0.69, bottom=0.085, wspace=0.42, hspace=0.38)
     S.title(fig, "No other part of the same size costs the recall as much as the J++ part",
-            "Extra loss (0-1): switches lost without the part, minus those lost without a random part\n"
+            "Effect (0-1): switches blocked without the part, minus those blocked without a random part\n"
             "(same size). Recall with 95% CI; % = the part's share of the change. Random atoms: a dictionary\n"
             "of random lens directions, picked by the same OMP at its own share.\n"
             "J++ part and PCA directions: one-pick scenes (only the asked pick changes).\n"
@@ -991,8 +991,8 @@ def f02b_k(plt) -> None:
 
     minus = lambda v: f"{v:.2f}".replace("-", "−")  # noqa: E731
     S.title(fig, "Why a bigger J++ part costs the 27B lookup: can't tell",
-            "Three causes, fixed in advance (below); none holds on the 27B. Extra loss (0-1): switches lost without\n"
-            "the J++ part, minus those lost without a random part (same size).")  # fmt: skip
+            "Three causes, fixed in advance (below); none holds on the 27B. Effect (0-1): switches blocked without\n"
+            "the J++ part, minus those blocked without a random part (same size).")  # fmt: skip
     fig.text(0.01, 0.1 / h, textwrap.fill(
         "(1) The lens reads identity: from 25 to 100 directions identity answers fall "
         f"{minus(d27['identity'][0])} beyond the random part, but position answers fall {minus(d27['position'][0])} too "
@@ -1011,7 +1011,7 @@ def f02b_k(plt) -> None:
              n=q["generic"]["n"][0], source=q["generic"]["generic_run"])  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
     fig.text(
-        0.01, at(1.05), "(a) Main test, after the data: extra loss without the J++ part, by directions removed", **head
+        0.01, at(1.05), "(a) Main test, after the data: switches blocked without the J++ part, by directions removed", **head
     )
     open_dot = dict(marker="o", ls="", mfc="white", mew=1.6, ms=7)
     legend(fig, [plt.Line2D([], [], mec=S.COL["lookup"], **open_dot), plt.Line2D([], [], mec=S.COL["recall"], **open_dot)],
@@ -1166,8 +1166,8 @@ def s03_order_split(plt) -> None:
     a_top, a_bot = 1.95, 4.15
     ax = fig.add_axes((0.09, at(a_bot), 0.895, at(a_top) - at(a_bot)))
     S.title(fig, "Lookups follow the change mostly when the locker sentence comes first",
-            "Main test (two people swap picks) unless marked. Extra loss (0-1): switches lost without the\n"
-            "J++ part, minus those lost without a random part (same size).")  # fmt: skip
+            "Main test (two people swap picks) unless marked. Effect (0-1): switches blocked without the\n"
+            "J++ part, minus those blocked without a random part (same size).")  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
     fig.text(0.01, at(1.05), "(a) Lookups the whole change switches (%), with 95% intervals; after the data", **head)
     xs, labels = [], []
@@ -1203,7 +1203,7 @@ def s03_order_split(plt) -> None:
            ["lookup", "recall"], at(1.3))  # fmt: skip
 
     # (b) rows: a heading per test, then its models; two panels, locker before / after the pick
-    fig.text(0.01, at(5.55), "(b) Extra loss without the J++ part, locker before vs after the pick", **head)
+    fig.text(0.01, at(5.55), "(b) Switches blocked without the J++ part, locker before vs after the pick", **head)
     sh, sl = S.status_handles(("fixed", "after"))
     hs, ls = reader_handles(plt)
     legend(fig, hs + sh, ls + sl, at(5.85), ncol=4)
@@ -1223,7 +1223,7 @@ def s03_order_split(plt) -> None:
         bx = fig.add_axes((x0, at(b_bot), 0.27, at(b_top) - at(b_bot)))
         S.extra_axis(bx, label=False)
         bx.set_title(f"locker {order} the pick", fontsize=S.FONT, weight="bold")
-        bx.set_xlabel("extra loss without the J++ part")
+        bx.set_xlabel("switches blocked without the J++ part")
         bx.grid(axis="x", color="#eeeeee")
         too_few = []
         for test, m, _label, yy in ys:
@@ -1820,7 +1820,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     # the 122B the fifth slot (Dan 11:30): no 45p run, a narrower grey panel
     fig, axes = plt.subplots(1, 5, figsize=(S.WIDTH, 5.1), sharey=True, gridspec_kw={"width_ratios": [1, 1, 1, 1, 0.6]})
     fig.subplots_adjust(left=0.30, right=0.975, top=0.71, bottom=0.24, wspace=0.12)
-    S.title(fig, title or default, "Clean one-pick scenes, the new item's locker before the pick: switches lost against "
+    S.title(fig, title or default, "Clean one-pick scenes, the new item's locker before the pick: switches blocked against "
             "arm (1)")  # fmt: skip
     for ax, (target, m, _) in zip(axes, (*CARD_MODELS, LT, B122), strict=True):
         lt = m == "lightning"
@@ -1860,7 +1860,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
             S.record("fig03c", target, f"45p, {arm}: recall switches lost against (1)", *r, n=rc["n"], source=src)
         S.record("fig03c", target, "45p: the rule holds", int(bool(mod.get("holds"))), source=src)
     axes[0].set_yticks([-i for i in range(len(P_ROWS))], [r[1] for r in P_ROWS])
-    fig.supxlabel("switches lost (%)", x=0.62, y=0.1, fontsize=S.FONT)
+    fig.supxlabel("switches blocked (%)", x=0.62, y=0.1, fontsize=S.FONT)
     note = ("9B, 27B, Muse: fixed in advance. "
             + ("Lightning below gate (its clean one-pick recall misses the 0.80 gate): descriptive only. "
                if "readers" in by.get(LT[0], {}) else "Lightning: not tested (gate). ") + "122B: not run. " + LT_NOTE)  # fmt: skip
@@ -1898,7 +1898,7 @@ def s01c_nochat(plt, runs: dict[str, str], title: str | None = None) -> None:
     fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 4.6), sharey=True, gridspec_kw={"width_ratios": [1, 1, 0.75]})
     fig.subplots_adjust(left=0.27, right=0.985, top=0.60, bottom=0.15, wspace=0.12)
     S.title(fig, title or "Without the chat template the split is still there (after the data)",
-            "Main test (two people swap picks). Gap = recall's extra loss minus the lookup's (0-1), 95%\n"
+            "Main test (two people swap picks). Gap = recall's effect minus the lookup's (0-1), 95%\n"
             f"intervals. Without the chat template: after the data, {S.LOWERED} gate lowered to 0.75. Routes test: "
             "another\nitem moved, whole change.")  # fmt: skip
     black = "#222222"
@@ -2185,8 +2185,8 @@ def f06_depth(plt) -> None:
     fig, axes = plt.subplots(2, 4, figsize=(S.WIDTH, 6.3), sharex="col", gridspec_kw={"height_ratios": [1.2, 1]})
     fig.subplots_adjust(left=0.11, right=0.985, top=0.71, bottom=0.09, wspace=0.22, hspace=0.18)
     S.title(fig, "Position answers appear with depth, once the lookup stops needing the J++ part",
-            "Extra loss (0-1): switches lost without the J++ part, minus those without a random part (same size).\n"
-            f"Shaded: the lookup still needs the J++ part (extra loss ≥ 0.3). {S.LOWERED} gate lowered to 0.75 after the data.",
+            "Effect (0-1): switches blocked without the J++ part, minus those without a random part (same size).\n"
+            f"Shaded: the lookup still needs the J++ part (effect ≥ 0.3). {S.LOWERED} gate lowered to 0.75 after the data.",
             limit=78)  # fmt: skip
     for j, (target, m, _) in enumerate(S.MODELS):
         top, bot = axes[0, j], axes[1, j]
@@ -2232,7 +2232,7 @@ def f06_depth(plt) -> None:
         bot.set_xlim(min(tested) - 2, max(tested) + 2)
         bot.grid(axis="y", color="#eeeeee")
         bot.set_xlabel("layer")
-    axes[0, 0].set_ylabel("extra loss without\nthe J++ part")
+    axes[0, 0].set_ylabel("switches blocked without\nthe J++ part")
     axes[1, 0].set_ylabel("position\nanswers (%)")
     for ax in axes[:, 1:].flat:
         ax.tick_params(labelleft=False)
@@ -2712,8 +2712,8 @@ def s08_first_sentence(plt) -> None:
 
     grid_a = fig.add_gridspec(1, 4, left=0.24, right=0.98, top=at(2.0), bottom=at(3.85), wspace=0.14)
     S.title(fig, "Supplement to Fig. 8: the first sentence and the label-free pointer",
-            f"All after the data; {S.LOWERED} gate lowered to 0.75 after the data. Extra loss (0-1): switches lost\n"
-            "without the pointer, minus those lost without a random part (same size).")  # fmt: skip
+            f"All after the data; {S.LOWERED} gate lowered to 0.75 after the data. Effect (0-1): switches blocked\n"
+            "without the pointer, minus those blocked without a random part (same size).")  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
     fig.text(0.01, at(1.05), "(a) Without the pointer, by what the prompt names first", **head)
     fig.text(0.01, at(4.55), "(b) label-free pointer: overlap with the pointer (mean cos²)", **head)
@@ -2799,7 +2799,7 @@ def f09_transfer(plt) -> None:
     # Dan 27 Oct ~11:20: the title and the subtitle's refit line; v6 iteration 2: "address", one subtitle line (the
     # data.csv quantities keep their 27 Oct wording)
     S.title(fig, "The split carries over to other texts; the address must be refit for each format",
-            "The lookup's extra loss beyond a random part (same size); a refit address found on "
+            "The lookup's effect beyond a random part (same size); a refit address found on "
             f"{' and '.join(found_on)}, not {' and '.join(not_on)}.", limit=86)  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
     fig.text(0.01, at(0.95), "(a) The address fit on simple scenes, not refit", **head)
@@ -2951,7 +2951,7 @@ def f10_left(plt, matched: bool = True) -> None:
                   "In the routes test, identity outside J++ cuts identity ")  # fmt: skip
     # Dan's title (~22:40): 84 characters, 11.0 pt
     S.title(fig, "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
-            "Sanity swap: lookups still switching (%) of the whole change's switches; purple line: the part's extra loss.\n"
+            "Sanity swap: lookups still switching (%) of the whole change's switches; purple line: the part's effect.\n"
             f"Under each row: the part's share of the change and n. Open marks, {S.LOWERED}: after the data, gate lowered to 0.75.",
             limit=90)  # fmt: skip
     fig.text(0.01, 0.1 / h, textwrap.fill(scenes + f"answers only {cut['9b'][0]:.2f} / {cut['27b'][0]:.2f} / "

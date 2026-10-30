@@ -129,7 +129,7 @@ def build_identity_address(verdicts: tuple[Path, ...], out_name: str = "fig19_id
 # fig20: 53.1's two number cells (x53_2x2's qa_num / qb_num)
 CELLS = (("qa_num", "after"), ("qb_num", "before"))
 ORDER_TITLE = "Question first, one model's lookup leans more on the lens part"
-ORDER_SUB = "Switches lost without the lens part beyond a random part, question after or before the scene; at L"
+ORDER_SUB = "Switches blocked without the lens part beyond a random part, question after or before the scene; at L"
 
 
 def gate_label(cell: dict) -> str:
@@ -149,7 +149,7 @@ def build_order_cell(verdict: Path, out_name: str = "fig20_order_cell") -> str:
     fig.subplots_adjust(left=0.2, right=0.97, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
     S.title(fig, ORDER_TITLE, ORDER_SUB)
     S.extra_axis(ax, label=False)
-    ax.set_xlabel("switches lost beyond random")
+    ax.set_xlabel("switches blocked beyond random")
     ticks, labels = [], []
     for i, (t, name) in enumerate(FIVE):
         y0 = -i * step
@@ -215,7 +215,7 @@ def build_order_cell(verdict: Path, out_name: str = "fig20_order_cell") -> str:
     fig.legend(handles, ["lookup", "recall", S.STATUS_TEXT["fixed"], S.STATUS_TEXT["after"]], loc="lower left",
                bbox_to_anchor=(0.01, 1.08 / h), ncol=4, frameon=False, fontsize=S.FONT - 1)  # fmt: skip
     caption(fig, ["Grey band: the lookup's 0.10 bar. Not tested: the question-first cell's recall missed the 0.80 "
-                  "gate (9B, Muse, Lightning). Right: the lookup's loss with the question first minus after, on the "
+                  "gate (9B, Muse, Lightning). Right: the lookup's effect with the question first minus after, on the "
                   "scenes both cells read; open: that rule was set after the 27B's two cells were seen, before the "
                   "122B ran.", LT_HATCH + " " + B122_NOTE], 1.0)  # fmt: skip
     S.save(fig, out_name)

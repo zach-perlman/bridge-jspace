@@ -320,7 +320,7 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     fig, axes = plt.subplots(1, len(slots), figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.16, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The split carries over to other texts",
-            "Extra loss without the J++ part, beyond a random part (same size), by text format")  # fmt: skip
+            "Switches blocked without the J++ part, beyond a random part (same size), by text format")  # fmt: skip
     omitted: list[tuple[str, str]] = []
     for k, (ax, (target, m, name)) in enumerate(zip(axes, slots, strict=True)):
         S.extra_axis(ax)
@@ -382,7 +382,7 @@ def build_refit(out_name: str = "fig09b_refit", lightning: Path | None = LT_X45D
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.12, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The address must be refit for each text format",
-            "The lookup's extra loss without the address, beyond a random part, on varied scenes")  # fmt: skip
+            "The lookup's switches blocked without the address, beyond a random part, on varied scenes")  # fmt: skip
     omitted = []
     formats = [f for f in FORMATS if f[0] in ("prose", "json", "table")]
     for k, (ax, (target, m, name)) in enumerate(zip(axes, models, strict=True)):

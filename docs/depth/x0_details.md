@@ -3,7 +3,7 @@
 
 The README gives the summary; this page holds the tables behind it. Every number is recomputed from the run files by `scripts/x0_details.py`, and every number is unverified. Design and log: [jobs/c3/X0.md](../../jobs/c3/X0.md). Run folders: [results/x0_necessity/](../../results/x0_necessity).
 
-**Terms.** "Excess" here is the README's "extra loss": the J-dependence (the share of the whole edit's flips lost when a part is removed) minus that of a random subspace of the same share of ‖Δ‖².
+**Terms.** "Excess" here is the README's "switches blocked beyond a random part": the J-dependence (the share of the whole edit's flips blocked when a part is removed) minus that of a random subspace of the same share of ‖Δ‖².
 
 **Labels**, per reader and layer:
 - around: excess ≤ 0.10, upper CI ≤ 0.20;
@@ -446,13 +446,13 @@ Tables: [letter atoms](../../results/x0_atoms/x0_atoms_27b_letters/tables.md), [
 
 27B at layer 32, with the change at every context position, using the 23 Oct code, filter and read (n = 180 per reader):
 - lookups flip 84% with the whole change and 87% without the J++ part;
-- recalls flip 77% → 36%, a loss of 41 points, against −1 for a random part. The difference is 0.42 [0.34, 0.50] (shares).
+- recalls flip 77% → 36%, a drop of 41 points, against −1 for a random part. The difference is 0.42 [0.34, 0.50] (shares).
 
 [Verdict](../../results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md).
 
 ## The first-mention table (README Section 5 keeps four rows)
 
-J++ extra loss by whether the asked pick is the bridge's first mention (no = matched), after the data; italics: under 30 lookup switches (count shown); n: items per row; the 122B's fresh scenes at gate 0.75.
+J++ extra drop by whether the asked pick is the bridge's first mention (no = matched), after the data; italics: under 30 lookup switches (count shown); n: items per row; the 122B's fresh scenes at gate 0.75.
 
 | Swap | First mention? | 9b lookup | 9b recall | 9b n | 27b lookup | 27b recall | 27b n | 122b lookup | 122b recall | 122b n | muse lookup | muse recall | muse n |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -475,15 +475,15 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 | Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06° | 0.32 |
 | Varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
 | Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | not measurable‡ |
-| More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | 0.54 | 0.12 / 0.30 / 0.60 | 0.55 | 0.85 |
+| More J++ directions removed, 100: gap (27B: lookup's extra drop at 25 / 50 / 100) | 0.54 | 0.12 / 0.30 / 0.60 | 0.55 | 0.85 |
 | Logit difference: gap | 0.48 [0.42, 0.53] | 0.47 [0.42, 0.51] | 0.33 [0.29, 0.38] | 0.61 [0.52, 0.68] |
-| Logit difference (lookup / recall extra loss) | −0.05 [−0.07, −0.03] / 0.43 [0.37, 0.48] | 0.13 [0.11, 0.16] / 0.60 [0.54, 0.65] | −0.02 [−0.05, −0.00] / 0.31 [0.26, 0.34] | −0.03 [−0.05, −0.02] / 0.58 [0.49, 0.65] |
+| Logit difference (lookup / recall extra drop) | −0.05 [−0.07, −0.03] / 0.43 [0.37, 0.48] | 0.13 [0.11, 0.16] / 0.60 [0.54, 0.65] | −0.02 [−0.05, −0.00] / 0.31 [0.26, 0.34] | −0.03 [−0.05, −0.02] / 0.58 [0.49, 0.65] |
 
 **The pointer: removed, added alone, written.**
 
 | Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
-| Lookup's extra loss without them | 0.47 [0.41, 0.53] (replicated) | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.41 [0.34, 0.49] (replicated) |
+| Lookup's extra drop without them | 0.47 [0.41, 0.53] (replicated) | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.41 [0.34, 0.49] (replicated) |
 | Position without them / without a random part of their size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
 | Position with only their part / only a random part of its size | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00] | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03] |
 | Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | 0.02 [0.01, 0.03] / 0.46 [0.42, 0.50] / 0.73 [0.70, 0.77]; 0.00 [0.00, 0.00] | 0.01 [0.00, 0.01] / 0.24 [0.20, 0.29] / 0.50 [0.47, 0.53]; 0.01 [0.00, 0.01] | 0.01 [0.00, 0.01] / 0.50 [0.46, 0.54] / 0.66 [0.63, 0.69]; 0.00 [0.00, 0.01] | 0.05 [0.03, 0.07] / 0.52 [0.48, 0.55] / 0.52 [0.50, 0.54]; 0.01 [0.00, 0.02] |
@@ -493,20 +493,20 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 
 | Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
-| Lookup's extra loss without them, by what the first sentence names: the bridge in its locker sentence / the bridge in a pick sentence / another item | 0.66 / 0.24 / 0.29 | 0.24 / 0.07 / 0.00 | 0.52 / 0.18 / 0.08 | 0.51 / 0.21 / 0.00 |
+| Lookup's extra drop without them, by what the first sentence names: the bridge in its locker sentence / the bridge in a pick sentence / another item | 0.66 / 0.24 / 0.29 | 0.24 / 0.07 / 0.00 | 0.52 / 0.18 / 0.08 | 0.51 / 0.21 / 0.00 |
 | Same, by locker sentence: first sentence / first locker, not first / neither | 0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9) | 0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13) | 0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10) | 0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7) |
 | Same, first sentence minus the rest | 0.40 [0.18, 0.60] | 0.21 [0.05, 0.35] | 0.38 [0.21, 0.56] | 0.41 [0.25, 0.59] |
 | Neutral sentence before the first locker / before the first pick: the code's shift (B1 / B2) | 0.15 [0.13, 0.16] / 0.15 [0.14, 0.17] | 0.17 [0.15, 0.19] / 0.17 [0.16, 0.18] | 0.11 [0.09, 0.13]° / 0.28 [0.26, 0.30]° | 0.18 [0.17, 0.20] / 0.17 [0.15, 0.18] |
 | Routes, only their part: moves from or to slot 0 / 1 → 2 and 2 → 1 | 0.10 to 0.76 / 0.00 / 0.00 | 0.00 to 0.44 / 0.00 / 0.00 | 0.15 to 0.47 / 0.00 / 0.00 | 0.16 to 0.69 / 0.04 / 0.16 |
 | Routes, the whole change: 1 → 2 / 2 → 1 | 0.53 / 0.78 | 0.24 / 0.38 | 0.40 / 0.35 | 0.49 / 0.71 |
-| Varied scenes, lookup's extra loss without them | 0.11 [0.08, 0.13] | 0.05 [0.04, 0.06] | 0.06 [0.04, 0.07] | 0.15 [0.11, 0.19] |
+| Varied scenes, lookup's extra drop without them | 0.11 [0.08, 0.13] | 0.05 [0.04, 0.06] | 0.06 [0.04, 0.07] | 0.15 [0.11, 0.19] |
 | Same: prose / json / table | 0.16 / 0.02 / 0.07 | 0.09 / 0.01 / 0.03 | 0.07 / 0.06 / 0.04 | 0.21 / 0.05 / 0.12 |
 | Natural passages (the fact before the bridge) | not tested (gate) | 0.07 [0.00, 0.18] | 0.07 [−0.02, 0.16] | 0.25 [0.00, 0.50] |
 | Sanity swap, both removed minus the pointer alone | 0.12 [0.04, 0.19] | 0.26 [0.19, 0.32] | 0.09 [0.03, 0.16]° | 0.03 [−0.03, 0.08] |
 | Lookups still switching: J++ and the pointer removed | 0.46 [0.41, 0.50] | 0.53 [0.48, 0.57] | 0.50 [0.45, 0.55]° | 0.74 [0.68, 0.79] |
 | Same, with identity outside J++ / its random part | {{num|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{num|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not in this test | {{num|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
-| Recall's extra loss without identity | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | not in this test | 0.39 [0.28, 0.49] |
-| Switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03]° | 0.01 [−0.02, 0.03] |
+| Recall's extra drop without identity | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | not in this test | 0.39 [0.28, 0.49] |
+| Switches blocked: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03]° | 0.01 [−0.02, 0.03] |
 
 **Depth: the early layer.**
 
@@ -519,7 +519,7 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 
 **Shares of the change.** Every "% of the change" in the README is the median over items of ‖PΔ‖² / ‖Δ‖². For the 9B's J++ + pointer + identity outside J++ (sanity swap) that is 56%; the mean of the per-item ratios is 50% and the pooled ratio (Σ‖PΔ‖² / Σ‖Δ‖²) 46% (27B 35% / 37% / 32%; Muse 38% / 35% / 29%).
 
-**The split by sentence order** (main test; [split_by_order.md](notes/split_by_order.md) has every design). The lookup's extra loss is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
+**The split by sentence order** (main test; [split_by_order.md](notes/split_by_order.md) has every design). The lookup's extra drop is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
 
 | Main test | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -548,13 +548,13 @@ A strong write can switch on a route the model does not use at its natural size;
 
 Rules and readings: [predictions/2026-10-26_dan.md](../../predictions/2026-10-26_dan.md), batch 45; specs in [jobs/c3/batch45.yaml](../../jobs/c3/batch45.yaml).
 
-**The clean design (45m, fixed in advance).** An added locker item nobody picks becomes the asked person's pick, so only the bridge token differs. Extra loss without the J++ part (25 directions) against a random part of the same size, at the layer fixed in advance; the lookup's extra loss is not measurable where the locker comes after the pick (too few switches).
+**The clean design (45m, fixed in advance).** An added locker item nobody picks becomes the asked person's pick, so only the bridge token differs. Switches blocked without the J++ part (25 directions) against a random part of the same size, at the layer fixed in advance; the lookup's extra drop is not measurable where the locker comes after the pick (too few switches).
 
 | Clean design | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
 |---|---|---|---|
 | Gap, locker before the pick (the rule) | 0.23 [0.14, 0.31] | 0.53 [0.42, 0.62] | 0.38 [0.23, 0.54] |
-| Lookup extra loss, locker before the pick | −0.01 [−0.03, 0.00] | 0.01 [0.00, 0.02] | 0.05 [0.01, 0.10] |
-| Recall extra loss: locker before / after the pick | 0.21 [0.13, 0.29] / 0.79 [0.70, 0.88] | 0.54 [0.43, 0.63] / 0.87 [0.81, 0.93] | 0.43 [0.28, 0.60] / 0.85 [0.73, 0.93] |
+| Lookup extra drop, locker before the pick | −0.01 [−0.03, 0.00] | 0.01 [0.00, 0.02] | 0.05 [0.01, 0.10] |
+| Recall extra drop: locker before / after the pick | 0.21 [0.13, 0.29] / 0.79 [0.70, 0.88] | 0.54 [0.43, 0.63] / 0.87 [0.81, 0.93] | 0.43 [0.28, 0.60] / 0.85 [0.73, 0.93] |
 | Gap, all scenes | 0.48 [0.40, 0.55] | 0.69 [0.63, 0.75] | 0.64 [0.52, 0.73] |
 | Lookups switched by the whole change: before / after | 99% / 5% | 98% / 0% | 87% / 0% |
 | n: before / after / all | 151 / 166 / 417 | 202 / 236 / 574 | 143 / 170 / 409 |
@@ -576,7 +576,7 @@ Rules and readings: [predictions/2026-10-26_dan.md](../../predictions/2026-10-26
 | 28 | 0.50 | 0.29 | 0.29 | 0.00 |
 | 32 (fixed in advance) | 0.09 | 0.35 | 0.26 | 0.00 |
 
-**A refit pointer per format (45d, fixed in advance).** Fit without labels on half of each format's varied scenes, removed from the change on the other half; the lookup's extra loss (a format with fewer than 30 lookup switches does not count).
+**A refit pointer per format (45d, fixed in advance).** Fit without labels on half of each format's varied scenes, removed from the change on the other half; the lookup's extra drop (a format with fewer than 30 lookup switches does not count).
 
 | Refit pointer | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
 |---|---|---|---|
@@ -645,7 +645,7 @@ Source: results/x47_margins/20261028T010341Z/margins.json.
 
 | Explanation | Test | Result | Status |
 |---|---|---|---|
-| The J++ part is just small | A random part of the same share removed | Recalls lose 0.03 to it at the 27B's layer 32, and 0.77 to J++ | checked |
+| The J++ part is just small | A random part of the same share removed | Recalls drop 0.03 to it at the 27B's layer 32, and 0.77 to J++ | checked |
 | The edit differs between lookups and recalls | The identical patch at the bridge's word | By design | checked |
 | Any token-aligned part would do | W_U, W_E and random lens directions at 25-200 directions | Only J++ costs the recall more than a random subspace of the same share | checked (27B, 9B) |
 | The chat template | No chat template, with thinking not disabled or off | Can't test: the models open a think block or answer in markdown (first-token read right on 0% / 0% of 9B lookups / recalls, 63% / 90.5% on the 27B) | not a test of the hypothesis |

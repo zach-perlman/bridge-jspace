@@ -40,7 +40,7 @@ CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "f3_nine_models": "Across nine models the lens part is carried, needed, or both: graded",
     "f5_atoms": "The lens part's 25 directions are the two bridge words, never the answer word",
     "f6_address": "A probe reads the address, removing the lens part leaves it, a swap moves the lookup, the lens misses it",
-    "f8_directions": "With more lens directions removed, the 27B's lookup loses more",
+    "f8_directions": "With more lens directions removed, the 27B's lookup has more switches blocked",
     "f8_facts": "On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so",
     "f9_where": "Middle layers need the bridge's mention; deeper layers, the question",
     "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",

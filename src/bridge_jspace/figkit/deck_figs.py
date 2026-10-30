@@ -129,9 +129,9 @@ def f_controls():
         w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
         x0 = (t.label_w + t.pad) / w
         x1 = (t.label_w + t.pad * 6 + sum(c.width for c in t.cols[:5])) / w
-        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Band of layers: recall − lookup answers lost", ha="left", va="top",
+        fig.text(x0, 1 - 0.12 / fig.get_figheight(), "Band of layers: recall − lookup accuracy drop", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
-        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "One layer: recall's switches lost beyond random", ha="left", va="top",
+        fig.text(x1, 1 - 0.12 / fig.get_figheight(), "One layer: recall's switches blocked beyond random", ha="left", va="top",
                  fontsize=12.5, color=INK, weight="bold")  # fmt: skip
 
     t.extra.append(group_titles)
@@ -172,10 +172,10 @@ def f_main():
             name_under(ax, cell[0], i, name)
 
     t = Table(rows, [
-        Col(3.3, "Band of layers", "answers lost, recall − lookup", band_panel, (-3, 72), [0, 25, 50, 75], xlabel="points",
+        Col(3.3, "Band of layers", "accuracy drop, recall − lookup", band_panel, (-3, 72), [0, 25, 50, 75], xlabel="accuracy drop (points)",
             cue="→ lens part needed more"),
         Col(2.0, "lens part − control", "points [95% interval]", lambda i, _r: band_diff_parts(ZK[DAN[i][0]]), text=True),
-        Col(3.0, "One layer", "recall's switches lost beyond random", layer_panel, (-0.05, 1.0), [0, 0.5, 1],
+        Col(3.0, "One layer", "switches blocked beyond random", layer_panel, (-0.05, 1.0), [0, 0.5, 1],
             xlabel="share", cue="→ depends more on lens part"),
         Col(2.0, "lens part − control", "share [95% interval]", lambda i, _r: layer_diff_parts(DAN[i][0]), text=True),
     ], label_w=1.45, labels=False, key=[("●", C["lens"], "the lens part"),
@@ -222,7 +222,7 @@ def f_nine():
 
     t = Table(rows, [
         Col(3.4, "answers moved", "to the other entity's fact", carried, (-8, 80), [0, 40, 80], xlabel="points", cue="→ carried more"),
-        Col(3.4, "answers lost", "recall minus lookup", needed, (-3, 70), [0, 30, 60], xlabel="points", cue="→ needed more"),
+        Col(3.4, "accuracy drop", "recall minus lookup", needed, (-3, 70), [0, 30, 60], xlabel="accuracy drop (points)", cue="→ needed more"),
         Col(2.3, "Grade", "", grades, text=True),
     ], label_w=1.45, key=[("|", C["control"], "largest same-size control"), ("●", C["lens"], "at 100 directions"),
                           ("●", C["control"], "122B: scored by probability")])  # fmt: skip
@@ -362,14 +362,14 @@ def f_directions():
         return f
 
     t = Table(rows, [
-        Col(2.45, "25 lens directions", "", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+        Col(2.45, "25 lens directions", "", kcol(25), (-0.3, 0.95), [0, 0.5], xlabel="blocked beyond random",
             cue="→ depends more on lens part"),
-        Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+        Col(2.45, "50 lens directions", "", kcol(50), (-0.3, 0.95), [0, 0.5], xlabel="blocked beyond random",
             cue="→ depends more on lens part"),
-        Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="switches lost beyond random",
+        Col(2.45, "100 lens directions", "", kcol(100), (-0.3, 0.95), [0, 0.5], xlabel="blocked beyond random",
             cue="→ depends more on lens part"),
     ], label_w=1.45, pad=0.22, labels=False, key=[BANDKEY],
-              subtitle="the lookup's loss when more lens directions are removed")  # fmt: skip
+              subtitle="the lookup's switches blocked when more lens directions are removed")  # fmt: skip
     render(t, "f8_directions")
 
 
@@ -390,8 +390,8 @@ def f_facts():
                 dot(ax, mu[0], i, C["lookup_light"], D.hollow(m), size=8)
             dot(ax, tr[0], i, C["lookup"], D.hollow(m), cell=tr, value=tr[0])
 
-    t = Table(rows, [Col(7.0, "fact passages", "the lookup's switches lost without the lens part", zach, (-0.3, 0.9),
-                         [0, 0.25, 0.5, 0.75], xlabel="switches lost beyond random",
+    t = Table(rows, [Col(7.0, "fact passages", "the lookup's switches blocked without the lens part", zach, (-0.3, 0.9),
+                         [0, 0.25, 0.5, 0.75], xlabel="switches blocked beyond random",
                          cue="→ depends more on lens part")],
               label_w=1.45, labels=False,
               key=[("●", C["lookup"], "true facts"), ("●", C["lookup_light"], "made-up facts"), BANDKEY])  # fmt: skip
@@ -454,7 +454,7 @@ def f_where():
         for g, word in enumerate(["Middle layers (the knock-out band)", "Deeper layers"]):
             x = (t.label_w + t.pad + (sum(c.width for c in t.cols[:3]) + 3 * t.pad) * g) / w
             fig.text(x, 1 - 0.12 / fig.get_figheight(), word, ha="left", va="top", fontsize=12.5, weight="bold", color=INK)
-            fig.text(x, 1 - 0.40 / fig.get_figheight(), "the lens part removed at", ha="left", va="top", fontsize=11.5,
+            fig.text(x, 1 - 0.40 / fig.get_figheight(), "accuracy drop when the lens part is removed at", ha="left", va="top", fontsize=11.5,
                      color=MUTED)  # fmt: skip
 
     t.extra.append(band_titles)
@@ -530,8 +530,8 @@ def f_order():
             return [("can't tell", MUTED, "normal")]
         return [(f"{d[0]:+.2f}", INK, "bold"), (f"  [{d[1]:.2f}, {d[2]:.2f}]", MUTED, "normal")]
 
-    t = Table(rows, [Col(5.0, "without the lens part", "switches lost beyond a random part", lk, (-0.25, 0.95), [0, 0.5],
-                         xlabel="switches lost beyond random (share)",
+    t = Table(rows, [Col(5.0, "without the lens part", "switches blocked beyond a random part", lk, (-0.25, 0.95), [0, 0.5],
+                         xlabel="switches blocked beyond random (share)",
                          cue="→ depends more on lens part"),
                      Col(2.1, "before − after", "paired, 95% interval", diff, text=True)], label_w=1.45,
               group=2, key=[[("●", C["lookup"], "lookup"), ("●", C["recall"], "recall"),

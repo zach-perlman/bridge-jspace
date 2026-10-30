@@ -75,6 +75,10 @@ def problems(fig, name: str, names: set[str], titles_ok: bool = False) -> list[s
 
 
 TABLE_BANNED = ("not run", "not tested", "not designed", "invalid", "under 30", "n =")  # "can't tell" and "below gate" are cell reasons (Dan 30 Oct)
+# "loss" reads as training loss (a TA, Dan 30 Oct): the band measure is an "accuracy drop", the one-layer measure "switches
+# blocked"; only a training or fitting loss (the J++ lens fit) may say it
+LOSS_WORDS = re.compile(r"\b(loss|lose|loses|lost|losing)\b", re.I)
+LOSS_OK = re.compile(r"\b(fit|fitting|training)\b", re.I)
 TABLE_NAMES = {"Qwen 9B", "Qwen 27B", "Muse 30B", "Lightning", "Qwen 122B", "DeepSeek", "Ministral", "Bolt", "OLMo"}
 
 
@@ -114,6 +118,8 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
         s = t.get_text()
         if t.get_rotation() not in (0, 0.0):
             out.append(f"{name}: rotated text {s[:25]!r}")
+        if LOSS_WORDS.search(s) and not LOSS_OK.search(s):
+            out.append(f"{name}: the word loss in {s[:25]!r}")
         if any(b in s.lower() for b in TABLE_BANNED):
             out.append(f"{name}: banned text {s[:25]!r}")
         if MODELISH.search(s) and s.strip() not in TABLE_NAMES and len(s.split()) <= 3:

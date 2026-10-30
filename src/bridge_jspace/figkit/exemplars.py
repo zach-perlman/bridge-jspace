@@ -39,7 +39,7 @@ def r1_split():
                 (f"  ({S.ctrl(k):.0f})", MUTED, "normal")]
 
     t = Table(rows, [
-        Col(3.0, "Remove everywhere", "answers that turn wrong", zach, (-4, 70), [0, 20, 40, 60], xlabel="points",
+        Col(3.0, "Remove everywhere", "answers that turn wrong", zach, (-4, 70), [0, 20, 40, 60], xlabel="accuracy drop (points)",
             cue="→ lens part needed more"),
         Col(2.25, "gap", "recall − lookup, 95%", zach_nums, text=True),
         *dan_split_cols(),
@@ -74,7 +74,7 @@ def dan_split_cols(title="Remove from the patch"):
             ("  no interval (aggregate only)", MUTED, "normal"),
         ]  # a paired interval was not computed
 
-    return [Col(3.0, title, "switches lost beyond a random part", dan, (-0.25, 1.0), [0, 0.5, 1.0],
+    return [Col(3.0, title, "switches blocked beyond random", dan, (-0.25, 1.0), [0, 0.5, 1.0],
                 xlabel="share of switches",
                 cue="→ depends more on lens part"),
             Col(3.5, "gap", "recall − lookup, 95%", dan_nums, text=True)]  # fmt: skip

@@ -329,7 +329,7 @@ def build_enrichment(verdict_dir: Path, out_name: str = "fig22_enrichment", titl
     (animals, entities held out) moves from the original item's attribute toward the changed item's, by layer, at the
     position the verdict reads (the bridge token if the probe reads the attribute there, else the last token), under
     the whole change, without the J++ part and without a random part (same size); grey: layers where the probe does not
-    read the attribute; dotted: L + 4, where the rule starts. Right (design B): accuracy lost when MLP writes are
+    read the attribute; dotted: L + 4, where the rule starts. Right (design B): accuracy drop when MLP writes are
     replaced by their mean, per reader, with the two controls."""
     path = verdict_dir / "x48_2.json"
     blob = json.loads(path.read_text())
@@ -344,7 +344,7 @@ def build_enrichment(verdict_dir: Path, out_name: str = "fig22_enrichment", titl
             "Fixed in advance; 95% intervals over bridge items.\n"
             "Left: the legs probe moved from the original prompt's item to the changed one (%), by layer;\n"
             "grey: layers where it cannot read legs. Rule from L + 4 (dotted): whole and random part ≥ 60,\n"
-            "without the J++ part ≤ 30. Right: accuracy lost with MLP writes replaced by their mean;\n"
+            "without the J++ part ≤ 30. Right: accuracy drop with MLP writes replaced by their mean;\n"
             "rule: recall ≥ 40 (thin line), the rest within 10 (grey band)."), limit=86)  # fmt: skip
     for ax, (target, _, name) in zip(axes[:2], TWO, strict=True):
         m = a_by.get(target)
@@ -407,7 +407,7 @@ def build_enrichment(verdict_dir: Path, out_name: str = "fig22_enrichment", titl
         {"header": "control: at the bridge\nword, up to L/2", "cells": cells[2]},
     ], TWO, (-20, 100))  # fmt: skip
     ax.set_xticks([0, 50, 100], ["0", "50", "100"])
-    ax.set_xlabel("accuracy lost (%)")
+    ax.set_xlabel("accuracy drop (%)")
     ax.set_title("recall", fontsize=S.FONT, loc="left", color=S.COL["recall"], weight="bold")
     ax.set_title("lookup", fontsize=S.FONT, loc="center", color=S.COL["lookup"], weight="bold")
     legend(fig, [Line2D([], [], color=c, marker="o", ms=6, lw=1.4) for _, _, c in ARMS_A],
@@ -710,7 +710,7 @@ def mechanism_groups(dirs: dict[str, Path], extra: dict[str, tuple[Path, ...]] |
     out = []
     b, srcs = models("48.2", "x48_2.json", lambda v: [(m["target"], m) for m in v["B"] if m["status"] == "tested"])
     out.append({"test": "48.2", "src": srcs, "header": "Late MLPs at the bridge word carry the recall",
-                "measure": "recall accuracy lost, those MLPs mean-replaced", "rule": "rule ≥ 40", "bar": 40,
+                "measure": "recall accuracy drop, those MLPs mean-replaced", "rule": "rule ≥ 40", "bar": 40,
                 "cells": {t: [(m["readers"]["recall"]["drop"]["bridge_late"], S.COL["recall"], 0.0, "o")]
                           for t, m in b.items()},
                 "n": {t: m["readers"]["recall"]["n"] for t, m in b.items()},

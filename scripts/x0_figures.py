@@ -58,7 +58,7 @@ DICT_NAME = {
 }
 READER = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 XLABEL = "layer of the change (at the bridge word)"
-YLABEL = "extra loss without the J++ part"
+YLABEL = "switches blocked without the J++ part"
 DICT_STYLE = {"jpp": ("-", "o"), "wu": ("--", "s"), "we": (":", "^"), "rand": ("-.", "v")}
 MARK = {"through": dict(marker="o", fillstyle="full"), "around": dict(marker="o", fillstyle="none"),
         "mixed": dict(marker="D", fillstyle="full"), "can't tell": dict(marker="X", fillstyle="full")}  # fmt: skip
@@ -273,12 +273,12 @@ def overview(out: Path, data: list[dict]) -> Path:
     fig.legend(handles=handles, loc="upper center", ncol=6, frameon=False, bbox_to_anchor=(0.5, 0.955))
     fig.suptitle("Does removing the J++ part of the change cost the lookup and the recall more than a random part (same "
                  "size)? · UNVERIFIED", fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
-    caption(fig, F, "Extra loss (0-1) = switches lost without the J++ part − switches lost without a random part (same "
-            "size); switches lost = 1 − switched without the part / switched with the whole change. Bands: 95% "
-            "bootstrap over bridge entities.\nLabels: around = extra loss ≤ 0.10 (upper CI ≤ 0.20); through = switches "
-            "lost without the J++ part ≥ 30% and extra loss ≥ 0.20 (lower CI ≥ 0.10); can't tell (×, dashed) = the whole "
+    caption(fig, F, "Effect (0-1) = switches blocked without the J++ part − switches blocked without a random part (same "
+            "size); switches blocked = 1 − switched without the part / switched with the whole change. Bands: 95% "
+            "bootstrap over bridge entities.\nLabels: around = effect ≤ 0.10 (upper CI ≤ 0.20); through = switches "
+            "blocked without the J++ part ≥ 30% and effect ≥ 0.20 (lower CI ≥ 0.10); can't tell (×, dashed) = the whole "
             "change switches < 30% or < 30 items.\nYellow: the layer fixed in advance (9B: 12, 27B: 32); gap = recall "
-            "extra loss − lookup extra loss there, paired. 'split' only where the labels say lookup around and recall "
+            "effect − lookup effect there, paired. 'split' only where the labels say lookup around and recall "
             "through at the same layer.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.06, 1, 0.94), h_pad=2.2, w_pad=2.5)
     return save(fig, plt, out, "overview")
@@ -323,19 +323,19 @@ def detail(out: Path, run: Run, rend: str, data: list[dict]) -> Path:
     a_s.legend(loc="upper right", frameon=False)
     a_dep.axhline(0, color="black", lw=0.6)
     a_dep.set(
-        ylim=(-20, 105), ylabel="switches lost (%)", title="B  Switches lost: J++ part vs random part (same size)"
+        ylim=(-20, 105), ylabel="switches blocked (%)", title="B  Switches blocked: J++ part vs random part (same size)"
     )
     a_dep.legend(loc="upper right", frameon=False)
     draw_excess(a_ex, run, rend, F)
     thresholds(a_ex)
-    a_ex.set(ylim=(-0.47, 1.1), ylabel=YLABEL, title="C  Extra loss and the label at each layer")
+    a_ex.set(ylim=(-0.47, 1.1), ylabel=YLABEL, title="C  Effect and the label at each layer")
     for ax, w, tag in ((a_lk, X.LOOKUP, "D"), (a_rc, X.RECALL, "E")):
         for d, (ls, mk) in DICT_STYLE.items():
             dd = (d, X.K_MAIN, "signed")
             ax.plot(done, ser(w, "excess", dd), ls, marker=mk, ms=4, lw=2.2 if d == "jpp" else 1.4,
                     color=color[w] if d == "jpp" else "#9a9a9a", label=DICT_NAME[d])  # fmt: skip
         thresholds(ax)
-        ax.set(ylim=(-0.47, 1.1), ylabel="extra loss without the dictionary's part",
+        ax.set(ylim=(-0.47, 1.1), ylabel="switches blocked without the dictionary's part",
                title=f"{tag}  {READER[w].capitalize()}: the J++ part against other dictionaries (25 directions)")  # fmt: skip
         ax.legend(loc="upper right", frameon=False, ncol=2)
     for d, (ls, mk) in DICT_STYLE.items():
@@ -347,8 +347,8 @@ def detail(out: Path, run: Run, rend: str, data: list[dict]) -> Path:
     model, prompt = dict(MODELS).get(target, target), dict(ROWS).get(rend, rend)
     fig.suptitle(f"{model} · {prompt} · the change at the bridge word · n = {n[0]} scenes per cell · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
-    caption(fig, F, "Switches lost = 1 − switched without the part / switched with the whole change; extra loss (0-1) = "
-            "switches lost without a dictionary's part minus those lost without a random part (same size), per item. "
+    caption(fig, F, "Switches blocked = 1 − switched without the part / switched with the whole change; effect (0-1) = "
+            "switches blocked without a dictionary's part minus those blocked without a random part (same size), per item. "
             "Bands: 95% bootstrap over bridge entities.\nLabels as in the overview. Yellow: the layer fixed in advance.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.05, 1, 0.95), w_pad=4, h_pad=2.5)
     return save(fig, plt, out, f"detail_{run.name}_{rend}")
@@ -399,12 +399,12 @@ def kmatch(out: Path, data: list[dict]) -> Path:
             if i == 1:
                 ax.set_xlabel("share of the change removed (%, median)")
             if j == 0:
-                ax.set_ylabel("switches lost (%)")
+                ax.set_ylabel("switches blocked (%)")
             ax.legend(loc="upper left", frameon=False, fontsize=8)
             ax.text(0.98, 0.03, f"run {src.name}", transform=ax.transAxes, ha="right", fontsize=7.5, color=MUTED)
     fig.suptitle("After the data · the J++ part or any dictionary, at an equal share of the change? · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
-    caption(fig, F, "Each point: one dictionary at k directions (signed OMP over the letter-token directions), the switches lost "
+    caption(fig, F, "Each point: one dictionary at k directions (signed OMP over the letter-token directions), the switches blocked "
             "without its part against the median share of the change it removes; grey dots: a random part (same size) "
             "for each point.\nAt an equal share the random part is the same reference for every dictionary. Bands: 95% "
             "bootstrap over bridge entities. Chat, the layer fixed in advance.")  # fmt: skip
@@ -455,13 +455,13 @@ def kcurve(out: Path, data: list[dict]) -> Path:
             if i == 1:
                 ax.set_xlabel("directions removed, k (log scale)")
             if j == 0:
-                ax.set_ylabel("extra loss without the dictionary's part")
+                ax.set_ylabel("switches blocked without the dictionary's part")
             ax.legend(loc="upper left", frameon=False, fontsize=8, ncol=2)
             ax.text(0.98, 0.03, f"run {run.name}", transform=ax.transAxes, ha="right", fontsize=7.5, color=MUTED)
-    fig.suptitle("After the data · extra loss against the number of directions, per dictionary · UNVERIFIED",
+    fig.suptitle("After the data · effect against the number of directions, per dictionary · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
     caption(fig, F, "Each dictionary's 25-200 directions (signed OMP over the letter-token directions) removed at the layer fixed in "
-            "advance; extra loss (0-1) = switches lost without its part minus those lost without a random part (same "
+            "advance; effect (0-1) = switches blocked without its part minus those blocked without a random part (same "
             "size), per item.\nThe J++ part's points carry the median share of the change it removes (%). Dotted lines: "
             "around ≤ 0.10, through ≥ 0.20. Bands: 95% bootstrap over bridge entities. Chat.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.05, 1, 0.95), h_pad=2.5)
@@ -498,8 +498,8 @@ def share_scatter(out: Path, data: list[dict]) -> Path:
                              "quantity": "Jdep_vs_jpp_share", "value": y, "lo": None, "hi": x, "n": None})  # fmt: skip
         ax.set(xlabel="the J++ part's share of the change (%, median over items)", ylim=(-5, 105))
         ax.legend(loc="lower right", frameon=False)
-    axes[0].set_ylabel("switches lost without the J++ part (%)")
-    fig.suptitle("After the data · do the switches lost without the J++ part track its share of the change? · UNVERIFIED",
+    axes[0].set_ylabel("switches blocked without the J++ part (%)")
+    fig.suptitle("After the data · do the switches blocked without the J++ part track its share of the change? · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
     caption(fig, F, "One point per layer with a valid cell (the whole change switches ≥ 30% and ≥ 30 items), the J++ "
             "part at 25 directions. On the 9B the share and the depth fall together, so share and depth cannot be told apart "

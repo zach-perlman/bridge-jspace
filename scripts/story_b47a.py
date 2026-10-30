@@ -217,14 +217,14 @@ def build_atoms(verdict_dir: Path, out_name: str, title: str | None = None) -> s
     fig, (a, b, c) = frame(
         title or atoms_title(v),
         "Taken out of the change at the bridge word: the J++ lens's directions 26–100, the recall's 25 kept, against a "
-        "random part (same size). 95% intervals, all fixed in advance. Extra loss (0–1): switches lost without the "
-        "directions minus those lost without the random part.",
+        "random part (same size). 95% intervals, all fixed in advance. Effect (0–1): switches blocked without the "
+        "directions minus those blocked without the random part.",
         (1, 1, 0.55), ROW_IN * len(TARGETS), legend=readers_legend())  # fmt: skip
     row_panels((a, b, c), len(TARGETS))
-    pct_axis(a, "identity answers lost\nbeyond random (%)")
+    pct_axis(a, "identity answers blocked\nbeyond random (%)")
     panel_title(a, "(a) routes test: lookup")
     S.extra_axis(b, label=False)
-    b.set_xlabel("extra loss")
+    b.set_xlabel("switches blocked beyond random")
     panel_title(b, "(b) main test")
     text_column(c, "reading")
     bar(a, 30, "≥ 30")
@@ -287,12 +287,12 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
     plt = S.setup()
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, title or "Only the J++ part costs the recall; no single part costs the lookup",
-            "The main test; extra loss without each part of the change, beyond a random part of the same size")  # fmt: skip
+            "The main test; switches blocked without each part of the change, beyond a random part of the same size")  # fmt: skip
     ax = fig.add_axes((0.30, 0.6 / h, 0.66, 1 - 1.45 / h - 0.6 / h))
     S.extra_axis(ax, label=False)
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
     ax.grid(axis="x", color="#eeeeee")
-    ax.set_xlabel("extra loss")
+    ax.set_xlabel("switches blocked beyond random")
     ticks, labels, ns = [], [], set()
     y = 0.0
     tr = blended_transform_factory(fig.transFigure, ax.transData)
@@ -507,7 +507,7 @@ def build_routes_lens(
                 ax.text(0.25, ys[t] - 0.5, "not run", ha="center", va="center", color=S.COL["muted"], zorder=5)
         a0.text(0.01, ys[t] - 0.5, F.NAMES[m].replace(" 30B", "\n30B").replace("3.5 L", "3.5\nL"), transform=tr,
                 ha="left", va="center", fontsize=S.FONT, weight="bold", linespacing=1.0)  # fmt: skip
-    axes[1].set_xlabel("answers lost without the directions, beyond a random part (same size)")
+    axes[1].set_xlabel("answers blocked without the directions, beyond a random part (same size)")
     n_txt = ", ".join(str(n) for n in sorted(ns))
     lt_txt = f";  {lt_n}  {S.STATUS_GLYPH['after']}" if lt_n else ""
     axes[-1].text(1.0, 1.0 + 0.32 / body, f"n = {n_txt} per model  {S.STATUS_GLYPH['fixed']}{lt_txt}", transform=axes[-1].transAxes,
@@ -596,7 +596,7 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None, light
                 status_text(ax, y, reading)
             continue
         lost = readers["recall"]["beyond_random"]["L"]
-        a.text(0.03, y, f"lost beyond random: {100 * lost[0]:.0f} pp", va="center", color=S.COL["muted"])
+        a.text(0.03, y, f"blocked beyond random: {100 * lost[0]:.0f} pp", va="center", color=S.COL["muted"])
         S.record(fid, target, "47.5: recall's answers kept, random part minus J++ part taken out (L)", *lost,
                  n=readers["recall"]["n"], source=source)  # fmt: skip
         for ax, w, col in ((a, "recall", S.COL["recall"]), (b, "lookup", S.COL["lookup"])):
@@ -658,7 +658,7 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None, lightn
         bottom_in=BOTTOM_IN + 0.65)  # fmt: skip
     row_panels((a, b, c), len(SLOTS))
     S.extra_axis(a, label=False)
-    a.set_xlabel("extra loss without\nthe J++ part")
+    a.set_xlabel("switches blocked without\nthe J++ part")
     panel_title(a, "(a) the split")
     bar(a, 0.10, "≤ 0.10", side="left")
     bar(a, 0.20, "≥ 0.20")
@@ -666,7 +666,7 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None, lightn
     b.set_xlim(-0.02, 0.3)
     panel_title(b, "(b) the value")
     bar(b, 0.05, "≤ 0.05")
-    share_axis(c, "position answers lost\nbeyond random (share)")
+    share_axis(c, "position answers blocked\nbeyond random (share)")
     c.set_xlim(-0.2, 1.06)
     panel_title(c, "(c) the address")
     bar(c, 0.3, "≥ 0.3")

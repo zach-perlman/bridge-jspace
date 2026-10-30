@@ -70,7 +70,7 @@ def two_by_two():
 
         return f
 
-    cols = [Col(2.3, t, "", col(k), XLIM, XTICKS, xlabel="recall − lookup, share lost", cue="→ recall depends more")
+    cols = [Col(2.3, t, "", col(k), XLIM, XTICKS, xlabel="recall − lookup, effect share", cue="→ recall depends more")
             for k, (t, _q, _c) in enumerate(TWO_BY_TWO)]
     key = [[("●", C["recall"], "gap: recall − lookup"),
             ("●", C["control"], "grey: the same gap with a same-size control"),

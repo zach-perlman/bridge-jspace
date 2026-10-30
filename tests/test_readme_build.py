@@ -194,6 +194,8 @@ BANNED = {
     "status variants": r"fixed in advance \(main test\)|gate lowered after the data",
     # the x0 details' own words (glossary rows added with them): any case for excess / dependence; W_U / W_E and
     # the run code X0 exactly ("x0_kmatch", a run name, stays)
+    # "loss" reads as training loss (a TA, Dan 30 Oct): accuracy drop (band) / switches blocked (one layer) / the effect
+    "loss variants": r"(?i:\bloss(?:es)?\b|\blos(?:e|es|ing|t)\b)",
     "x0 details variants": r"(?i:\bexcess\b|\bdependence\b|graded contrast)|\bW_[UE]\b|\bX0\b|\bC =",
 }
 KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
@@ -236,7 +238,7 @@ def test_the_matcher_catches_each_banned_variant(text):
      "simple scenes", "varied scenes: prose / JSON / table", "code shift (positions)", "β 0.15",
      "° gate lowered to 0.75 after the data", "random part (same size)", "random direction (same size)",
      "random lens directions", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
-     "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches lost (%)",
+     "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches blocked (%)",
      "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
      "Adding the address alone brings position\nanswers back", *sorted(KEPT)],  # sorted: xdist needs one order
 )  # fmt: skip

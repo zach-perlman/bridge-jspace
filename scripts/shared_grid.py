@@ -242,7 +242,7 @@ FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple
             ("without the chat template", "without the chat template"),
             ("never the value, without the chat template", "never the value without the chat template"))),
          ("Internals of remove from the patch", (
-            ("a cause for Qwen 27B's loss at 100 directions", "a tested cause for the 27B's loss with 100 directions"),
+            ("a cause for Qwen 27B's lookup at 100 directions", "a tested cause for the 27B's loss with 100 directions"),
             ("the recalled answer needs only the lens part", "the recall needs only the J++ part, locker after the pick"),
             ("the recalled answer reads the earlier mention", "the recall reads the earlier mention, locker before the pick"),
             ("the link sits in the locker sentences", "the link sits in the locker sentences, clean one-pick scenes")))),

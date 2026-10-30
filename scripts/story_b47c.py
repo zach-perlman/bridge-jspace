@@ -237,7 +237,7 @@ def build_agnostic(verdict_dir: Path, out_name: str, title: str | None = None) -
         "answers by position (%), 95% intervals, fixed in advance.",
         (1, 1, 0.85), ROW_IN * len(rows_m), legend=legend)  # fmt: skip
     A.row_panels((a, b, c), len(rows_m))
-    A.pct_axis(a, "position answers lost\nbeyond random (%)", lim=(-20, 106))
+    A.pct_axis(a, "position answers blocked\nbeyond random (%)", lim=(-20, 106))
     panel_title(a, "(a) without the pointer")
     bar(a, 30, "≥ 30")
     A.pct_axis(b, "position answers (%)", lim=(-4, 106))
@@ -311,12 +311,12 @@ def build_twodefs(verdict_dir: Path, out_name: str, title: str | None = None) ->
     fig, (a, b, c) = frame(
         title or twodefs_title(v),
         "Main test. (i) the J++ part, 25 lens directions fit to the change; (ii) the 10 with the top lens logits. "
-        "Extra loss, 95% intervals, fixed in advance; shaded: (i)'s gap ± 0.15.",
+        "Effect, 95% intervals, fixed in advance; shaded: (i)'s gap ± 0.15.",
         (1, 1, 1), 0.85 * len(rows_m), legend=legend)  # fmt: skip
     A.row_panels((a, b, c), len(rows_m))
     for ax, name in ((a, "(a) (i) the J++ part"), (b, "(b) (ii) top 10 by logit")):
         S.extra_axis(ax, label=False)
-        ax.set_xlabel("extra loss")
+        ax.set_xlabel("blocked beyond random")
         panel_title(ax, name)
     c.set_xlim(-0.4, 1.0)
     c.axvline(0, color="#999999", lw=0.8, zorder=1)
@@ -392,13 +392,13 @@ def build_source(verdict_dir: Path, out_name: str, title: str | None = None) -> 
     legend = ([handle(col) for _, _, col, _ in conds], [lab for _, lab, _, _ in conds])
     fig, (a, b, c) = frame(
         title or source_title(v),
-        "“How many legs?” over a passage with false counts, answered from the text or from memory. Extra loss "
+        "“How many legs?” over a passage with false counts, answered from the text or from memory. Effect "
         "at the bridge word; (b): the pointer + identity outside J++. 95% intervals.",
         (1, 1, 0.8), ROW_IN * len(rows_m), legend=legend)  # fmt: skip
     A.row_panels((a, b, c), len(rows_m))
     for ax, part, name in ((a, "jpp", "(a) the J++ part"), (b, "ui", "(b) pointer + identity")):
         S.extra_axis(ax, label=False)
-        ax.set_xlabel("extra loss without " + ("it" if part == "jpp" else "them"))
+        ax.set_xlabel("switches blocked without " + ("it" if part == "jpp" else "them"))
         panel_title(ax, name)
         bar(ax, 0.10, "≤ 0.10", side="left")
         bar(ax, 0.30, "≥ 0.30")

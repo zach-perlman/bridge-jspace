@@ -217,7 +217,7 @@ def build(ids: list[str] | None = None) -> list[str]:
 # ---- the specs, in the ledger's order ---------------------------------------------------------------------------------
 NB = (-0.1, 0.1)  # the "not needed" band
 MIN_W = 10.5  # inches
-LOST = "switches lost beyond a random part"
+LOST = "switches blocked beyond a random part"
 LT = "nemotron-3.5-lightning"
 Q122 = "qwen3.5-122b-a10b"
 
@@ -225,7 +225,7 @@ SPECS: list[Spec] = [
     Spec("lightning_layers", "ledger_lightning_layers",
          [K("The whole change", "switch rate, 60 scenes", [S("layer sweep, {k}: lookup switch rate", "lookup", "lookup"),
                                                             S("layer sweep, {k}: recall switch rate", "recall", "recall")]),
-          K("Without the lens part", "lost beyond a random part",
+          K("Without the lens part", "blocked beyond a random part",
             [S("conflict test, {k}, lookup: switches lost beyond random", "lookup",
                needs=("conflict test, {k}, lookup: switches under the whole change", 30)),
              S("conflict test, {k}, recall: switches lost beyond random", "recall",
@@ -256,7 +256,7 @@ SPECS: list[Spec] = [
             xlim=(-0.2, 1.0), width=1.9, target=t) for t, _ in D.DAN],
          rows=[(None, str(r), f"rung {r}") for r in range(1, 7)], label_w=1.1),
     Spec("earlier_mention", "fig03c",
-         [K(f"Arm {a}", "lost against (1)", [S(f"45p, a{a}: lookup switches lost against (1)", "lookup", "lookup"),
+         [K(f"Arm {a}", "blocked against (1)", [S(f"45p, a{a}: lookup switches lost against (1)", "lookup", "lookup"),
                                              S(f"45p, a{a}: recall switches lost against (1)", "recall", "recall")],
             xlim=(-0.2, 0.8), xticks=[0, 0.25, 0.5], width=2.3) for a in (2, 3, 4)]),
     Spec("identity_address", "ledger_identity_address",
@@ -278,7 +278,7 @@ SPECS: list[Spec] = [
           K("The recall's subspace", "its recalls switched", [S("recall's subspace", "recall")], xlim=(0, 1.0), width=3.2)]),
     # ---- Part II --------------------------------------------------------------------------------------------------
     Spec("routes_lens", "fig05d",
-         [K(f"Lens directions {r}", "answers lost beyond random",
+         [K(f"Lens directions {r}", "accuracy drop beyond random",
             [S(f"47.1: identity route: answers lost beyond random without lens directions {r}", "identity", "identity route"),
              S(f"47.1: position route: answers lost beyond random without lens directions {r}", "address", "position route")],
             xlim=(-0.4, 0.8), xticks=[0, 0.25, 0.5], width=2.5) for r in ("1-25", "26-100", "1-100")]),
@@ -371,11 +371,11 @@ SPECS: list[Spec] = [
          [K("The bridge-fit swap at L+4", "dose 2: lookups sent to the target", [S("bridge-fit swap at L+4, dose 2: lookups sent to the target", "address")],
             xlim=(0, 1.0), width=5.0)]),
     Spec("last_conflict", "ledger_last_conflict",
-         [K(f"The {w}", "lost beyond random, last token", [S(rf"{w} L{{k}}: switches lost without the lens part beyond random \(last token\)", "lookup" if w == "lookup" else "recall", w, regex=True)],
+         [K(f"The {w}", "blocked beyond random, last token", [S(rf"{w} L{{k}}: switches lost without the lens part beyond random \(last token\)", "lookup" if w == "lookup" else "recall", w, regex=True)],
             xlim=(-0.3, 1.0), band=NB, width=3.0) for w in ("lookup", "recall")],
          rows=lambda: keyed("ledger_last_conflict", r"(?:lookup|recall) L(\d+): switches lost without the lens part beyond random \(last token\)", "L{k}")),
     Spec("last_conflict_words", "ledger_last_conflict_words",
-         [K(f"{at.capitalize()}, {w}", "lost beyond random", [S(f"{{k}}, {w}, {at}", w, w)], xlim=(-0.3, 1.0), band=NB, width=2.3)
+         [K(f"{at.capitalize()}, {w}", "blocked beyond random", [S(f"{{k}}, {w}, {at}", w, w)], xlim=(-0.3, 1.0), band=NB, width=2.3)
           for at in ("answer - 3", "read peak") for w in ("lookup", "recall")],
          rows=[(t, k, n) for t, _ in D.DAN for k, n in (("words", "word answers"), ("locker", "number answers"))]),
     Spec("attnblock", "ledger_attnblock",
@@ -389,7 +389,7 @@ SPECS: list[Spec] = [
                                               S(f"Zach's named passages, {f} facts, recall: switches lost beyond random", "recall", "recall")],
             xlim=(-0.3, 1.0), band=NB, width=3.2) for f in ("true", "made-up")]),
     Spec("jsuite", "ledger_jsuite",
-         [K(title, "lost beyond random", [S(f"{{k}}P lookup: {arm}", "lookup", "lookup"), S(f"{{k}}M recall: {arm}", "recall", "recall")],
+         [K(title, "blocked beyond random", [S(f"{{k}}P lookup: {arm}", "lookup", "lookup"), S(f"{{k}}M recall: {arm}", "recall", "recall")],
             xlim=(-0.3, 1.0), band=NB, width=3.2) for arm, title in (("without the lens part", "Without the lens part"),
                                                                      ("answer directions only", "Answer directions only"))],
          rows=[(t, k, n) for t, _ in D.DAN for k, n in (("P", "named bridge"), ("M", "described bridge"))]),
@@ -410,7 +410,7 @@ SPECS: list[Spec] = [
          rows=[(None, str(k), f"L{k}") for k in range(2, 31, 2)], label_w=1.0),
     # ---- Part VI --------------------------------------------------------------------------------------------------
     Spec("described_bridge", "fig05c",
-         [K("Without the lens part", "extra loss", [S("47.3: lookup's extra loss without the J++ part", "lookup", "lookup"),
+         [K("Without the lens part", "blocked beyond random", [S("47.3: lookup's extra loss without the J++ part", "lookup", "lookup"),
                                                     S("47.3: recall's extra loss without the J++ part", "recall", "recall")],
             xlim=(-0.3, 1.0), band=NB, width=4.0),
           K("gap", "recall − lookup", [S("47.3: gap (recall's extra loss minus the lookup's)", "recall")], text=True, width=1.4)]),
@@ -420,7 +420,7 @@ SPECS: list[Spec] = [
             xlim=(0, 1.0), width=5.0)],
          rows=lambda: keyed("ledger_pooled_probe", r"L(\d+): who picked it, pooled over the locker sentence", "L{k}")),
     Spec("agnostic", "ledger_agnostic",
-         [K(kind.capitalize(), "position lost, beyond random", [S(f"{kind}: position lost without the animal-fit address, beyond random", "control", "fit on animals", control=True)]
+         [K(kind.capitalize(), "position blocked, beyond random", [S(f"{kind}: position lost without the animal-fit address, beyond random", "control", "fit on animals", control=True)]
             + ([S(f"{kind}: position lost without the refit address, beyond random", "address", "refit")] if kind != "animals" else []),
             xlim=(-0.2, 1.0), width=2.6) for kind in ("animals", "fruits", "names")]),
     Spec("described", "ledger_described",

@@ -335,14 +335,14 @@ def f6(plt, F, color, grey) -> None:
         ax.set_title(f"{label}, layer {X.PREDICTED[target]}")
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
-    axes[0].set_ylabel("extra loss without the part")
+    axes[0].set_ylabel("switches blocked without the part")
     axes[0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
          plt.Line2D([], [], color="#777777", lw=2.2), plt.Line2D([], [], color="#777777", lw=1.6, ls="--")]  # fmt: skip
     head(fig, "Adding the digit tokens to the J++ part changes nothing",
-         "Locker before the pick (where lookups switch). Extra loss (0-1): switches lost without the part, minus those "
-         "lost without a random part (same size). The J++ part over letter-bearing tokens (as in the main test) and "
-         "over every token, digits included, gives the same extra loss; removing only the 10 digit directions costs "
+         "Locker before the pick (where lookups switch). Effect (0-1): switches blocked without the part, minus those "
+         "blocked without a random part (same size). The J++ part over letter-bearing tokens (as in the main test) and "
+         "over every token, digits included, gives the same effect; removing only the 10 digit directions costs "
          "nothing.", h, ["lookup", "recall", "J++ part, letter tokens", "J++ part, every token"])  # fmt: skip
     foot(fig, [f"n = 85-101 scenes per point (locker before the pick, the main test's scenes); {CI}. Light band: 0 to "
                "0.10, counts as 'not needed'; dotted line: 0.20, counts as 'needed'. Unverified. Descriptive, after the "

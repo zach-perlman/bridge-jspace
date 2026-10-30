@@ -178,7 +178,7 @@ def answer_control(plt) -> str:
     fig, ax = plt.subplots(figsize=(S.WIDTH, 0.27 * n_rows + 1.6))
     fig.subplots_adjust(left=0.36, right=0.97, top=1 - 1.05 / fig.get_figheight(), bottom=0.6 / fig.get_figheight())
     S.title(fig, "The recall's loss without the lens part is the item, not its answer",
-            "Recall: switches lost beyond a random part (same size), main test at L; whiskers 95%")  # fmt: skip
+            "Recall: switches blocked beyond a random part (same size), main test at L; whiskers 95%")  # fmt: skip
     y, ticks, labels = 0.0, [], []
     for name, arms_v, col, z2 in blocks:
         ax.text(-0.19, y, name, fontsize=S.FONT, weight="bold", color=S.COL["muted"] if z2 else "#222222", va="center")
@@ -192,7 +192,7 @@ def answer_control(plt) -> str:
     ax.tick_params(axis="y", length=0)
     ax.set_ylim(y + 0.4, 0.6)
     zero_band(ax, -0.2, 1.0)
-    ax.set_xlabel("switches lost beyond a random part")
+    ax.set_xlabel("switches blocked beyond a random part")
     return save(fig, "ledger_answer_control")
 
 
@@ -378,7 +378,7 @@ def full_carrier(plt) -> str:
         zero_band(ax, -0.2, 1.0)
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
         ax.axvspan(-0.2, 0.10, color=S.COL["band"], lw=0, zorder=0)
-    fig.text(0.58, 0.03, "switches lost beyond random", ha="center", fontsize=S.FONT)
+    fig.text(0.58, 0.03, "switches blocked beyond random", ha="center", fontsize=S.FONT)
     axes[1].text(0.55, 0.32, "lookup", color=LOOKUP, fontsize=S.LABEL_PT)
     axes[1].text(0.55, -0.18, "recall", color=INK, fontsize=S.LABEL_PT)
     grey_panel("ledger_full_carrier", B122, "not run", axes[4])
@@ -499,7 +499,7 @@ def zach_named(plt) -> str:
         zero_band(ax, -0.25, 1.0)
         ax.axvspan(-0.25, 0.10, color=S.COL["band"], lw=0, zorder=0)
         ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
-        ax.set_xlabel("switches lost beyond random")
+        ax.set_xlabel("switches blocked beyond random")
     note_slot(fig, "ledger_zach_named")
     return save(fig, "ledger_zach_named")
 
@@ -1200,7 +1200,7 @@ def agnostic(plt) -> str:
         ax.set_xticks(range(len(kinds)), kinds)
         ax.set_xlim(-0.5, len(kinds) - 0.5)
         ax.set_ylim(0, 0.75)
-    axes[0].set_ylabel("position answers lost")
+    axes[0].set_ylabel("position answers blocked")
     axes[0].text(-0.45, 0.31, "rule's 0.3", fontsize=S.LABEL_PT, color=S.COL["muted"], va="bottom")
     grey_panel("ledger_agnostic", B122, "not run", axes[-1])
     return save(fig, "ledger_agnostic")
@@ -1803,7 +1803,7 @@ def two_sources(plt) -> str:
                              for key, part, col in (("jpp", "the lens part", JPP), ("ui", "U + I", ADDRESS))]  # fmt: skip
     absent = {"qwen3.5-9b": "not tested\n(gate)", "muse-glimmer-30b": "not tested\n(gate)", LT: "not tested\n(gate)"}
     return four_panels(plt, "ledger_two_sources", "On the 27B neither instruction makes the part follow the source",
-                       "Fact after: switches lost beyond a random part; dotted / dashed: the rule's 0.10 / 0.30",
+                       "Fact after: switches blocked beyond a random part; dotted / dashed: the rule's 0.10 / 0.30",
                        rows, absent, "lost beyond random", xlim=(-0.2, 1.05), bars=((0.10, ":"), (0.30, "--")))
 
 

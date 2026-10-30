@@ -17,7 +17,7 @@ One vocabulary across every figure the README or docs/depth/x0_details.md shows 
 | sentence order | "locker before the pick", "locker after the pick" | "locker first/after" (prose may use "locker-first scenes" after defining it once) |
 | scene sets | "main test (two people swap picks)", "one-pick scenes (only the asked pick changes)", "routes test", "sanity swap", "same item moved", "another item moved", "varied scenes: prose / JSON / table", "natural passages" | C0 / C1 / C2, "json", "simple" alone, "Same test", "one-change scenes" |
 | neutral-sentence test | "a sentence before the first locker", "a sentence between the lockers and the picks" | B1 / B2 |
-| metrics | "extra loss" (0-1, defined in the subtitle wherever it appears); "gap"; "code shift (positions)", written β only after "code shift"; "dose (× a real change)" | "J++ extra loss", "Jdep", "s", "s*", "beta" alone |
+| metrics | "switches blocked beyond a random part" (0-1, defined in the subtitle wherever it appears); "accuracy drop (points)" for the band measure; "gap"; "code shift (positions)", written β only after "code shift"; "dose (× a real change)" | "J++ extra loss", "Jdep", "s", "s*", "beta" alone |
 | shares | answer and switch shares in %, 0-100: "lookups switched (%)", "lookup answers (%)", "lookups still switching (%)" | the same quantities on 0-1 axes, "position share" |
 | cell states | "not tested (gate)"; "not run"; "too few switches (k of n)" | "not in this test", "queued", "queued (if time)", "not measurable" |
 | status | filled "fixed in advance"; open "post hoc" (a gate or rule set after the results were seen; "after the data" until 30 Oct, Dan); "° gate lowered to 0.75 post hoc". Legend only if a figure has both statuses; otherwise one phrase in the subtitle | "fixed in advance (main test)", "° gate lowered after the data" |
@@ -27,7 +27,7 @@ Added for the x0 details figures (26 Oct ~23:00, the same words; Dan to confirm)
 | Concept | Canonical label | Banned variants |
 |---|---|---|
 | the other dictionaries | "logit-lens directions" (W_U), "input-embedding directions" (W_E), "random lens directions"; the J++ dictionary at k directions: "J++ part"; the lens itself: "the J++ lens" | "W_U", "W_E" |
-| X0's metrics | "extra loss"; "switches lost" (1 − switched without the part / switched with the whole change, in %); "gap" | "excess", "dependence", "J-dependence", "graded contrast", "C = ..." |
+| X0's metrics | "switches blocked beyond a random part"; "switches blocked" (1 − switched without the part / switched with the whole change, in %); "gap" | "excess", "dependence", "J-dependence", "graded contrast", "C = ..." |
 | run codes | none on a figure (a run's name as provenance stays) | "X0" |
 
 Added for the batch-45 figures (27 Oct ~00:30, the README v5 figures; Dan to confirm):

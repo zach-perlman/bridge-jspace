@@ -12,7 +12,7 @@ with them; grey is everything secondary.
 
 | role | colour | means |
 |---|---|---|
-| recall | black `#2B2B2B` | the recall reader and what it loses |
+| recall | black `#2B2B2B` | the recall reader and what it needs |
 | lookup | purple `#6B5BD2` | the lookup reader (light `#B8B0EA`: made-up facts; dark `#3F3489`: question after the scene) |
 | lens part | teal `#1A9E8A` | the lens part: the J++ part, the lens's directions |
 | address | orange `#E08A1E` | the address, and the position route |

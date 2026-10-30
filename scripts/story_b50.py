@@ -184,7 +184,7 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
     fig, axes = plt.subplots(n_p, 1, figsize=(S.WIDTH, h), sharex=True)
     fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
     S.title(fig, "Recall needs the J++ part once its other copies go; the lookup never",
-            "The J++ part taken out of the changed prompt, rung by rung; answers lost beyond a random part")  # fmt: skip
+            "The J++ part taken out of the changed prompt, rung by rung; accuracy drop beyond a random part")  # fmt: skip
     omitted, greyed = [], []
     for k, (ax, (target, m, name)) in enumerate(zip(axes, panels, strict=True)):
         mod = by.get(target)
@@ -241,7 +241,7 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder", lightning: 
         ends.append((100 * (lk["none"][0] - lk[f"rand{last}"][0]), "random (tick)", S.COL["muted"]))
         S.end_labels(ax, RUNG_X[last] + LADDER_BARS[-1][3] + LADDER_BAR_W / 2, ends, pad=0.08)
         S.panel_tag(ax, str(mod["cells"]["recall"]["all"]["n"]), "after" if hollow else "fixed")
-    axes[1].set_ylabel("answers lost beyond random (pp)")
+    axes[1].set_ylabel("accuracy drop beyond random (pp)")
     if n_p == 4:  # the axis label between the middle two panels
         axes[1].yaxis.set_label_coords(-0.06, -gap_in / panel_in / 2)
     axes[-1].set_xlim(0.58, RUNG_X[6] + 1.75)  # the end labels' room right of rung 6
@@ -514,8 +514,8 @@ def build_two_by_two(
         ax.set_title(text, fontsize=12, weight="bold", loc="left", pad=24)
     # the row: the operation in bold, then what it counts in Dan's words (the units)
     for ax, head, unit in (
-        (axes[0, 0], "our removal\n(from the\nchange)", "the recall's extra loss\nminus the lookup's\n(share of switches)"),
-        (axes[1, 0], "Zach's operation\n(his lens\ndirections)", "recall answers lost\nminus lookup answers\nlost (points)"),
+        (axes[0, 0], "our removal\n(from the\nchange)", "the recall's switches blocked\nminus the lookup's\n(share)"),
+        (axes[1, 0], "Zach's operation\n(his lens\ndirections)", "recall accuracy drop\nminus lookup accuracy\ndrop (points)"),
     ):  # fmt: skip
         ax.text(-0.72, 0.5, head, transform=ax.transAxes, ha="left", va="bottom", fontsize=12, weight="bold",
                 linespacing=1.05)  # fmt: skip

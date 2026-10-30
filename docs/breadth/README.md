@@ -9,7 +9,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
 - **Recall needs a handful of lens-readable directions; reading the same fact does not.**
   - In Qwen3.6-27B, Qwen3.5-9B and Nemotron 3.5 Lightning (two families), we remove the top 10 J++ directions at one
     band.
-  - Recall then loses 51, 43 and 53 points more than the same question with the
+  - Recall accuracy then drops 51, 43 and 53 points more than the same question with the
     fact stated.
   - This holds under controls fixed before the run.
 - **At the entity's mention, those directions carry which entity it is, not its fact.** Taken from one neutral sentence
@@ -17,14 +17,14 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   the fact there does not carry it.
 - **Across models it is graded.**
   - Of nine models we could test, three show it strongly.
-  - The rest are weak, carry the entity without needing it, share it with the logit lens, or lose it by probability.
+  - The rest are weak, carry the entity without needing it, share it with the logit lens, or show no effect when scored by probability.
   - Bolt (Lightning's larger sibling) and DeepSeek depend on their J++ directions little more than on any removal of
     the same size, at every number of directions.
   - Three more models cannot be tested: any lens removal breaks them.
 - **Beyond two hops, what matters is whether the last step is recalled.**
-  - A three-hop chain needs the directions when its last hop is recalled: Lightning loses
+  - A three-hop chain needs the directions when its last hop is recalled: Lightning's accuracy drops
     36 to 60 points beyond an all-passage chain.
-    When the last hop is read it loses -3 to +2,
+    When the last hop is read it drops -3 to +2,
     even if earlier hops were recalled. It holds on a second data seed. The 27B shows it on three of the four chains
     ending in a recall.
   - Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled one costs
@@ -55,7 +55,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
   unedited.
 - **The knock-out.** At every token, at each layer of one mid-depth band, project out the 10 directions the J++ lens
   reads most there.
-  - **M − K**: recall answers lost minus stated-fact answers lost, in points.
+  - **M − K**: recall accuracy drop minus stated-fact accuracy drop, in points.
 - **Controls of the same size.**
   - The removal **rotated** to a random direction.
   - The **logit lens**'s own top 10.
@@ -74,7 +74,7 @@ Does removing what the lens reads cost recall more than reading?
 
 - **Three models, two families.**
   - M − K is +51 [46, 55] (27B), +43 [37, 49] (9B) and +53 [48, 59] (Lightning).
-  - Stated facts lose 3, 5 and 4 points.
+  - Stated facts drop 3, 5 and 4 points.
 
 ![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](../../figures/breadth/fig01_needed.png)
 *Fig. 1.*
@@ -86,9 +86,9 @@ Does removing what the lens reads cost recall more than reading?
     0.15 of the effect.
 - **It is not a threshold effect.** Scored by the answer's probability, M − K is +50 /
   +35 / +44.
-- **What is lost tracks where the answer is.** Points lost on the 27B, by final:
+- **The drop tracks where the answer is.** Accuracy drop (points) on the 27B, by final:
 
-  | Final | Lost |
+  | Final | Drop |
   |---|---|
   | Fact stated (K) | 3 |
   | New made-up fact stated (P) | 9 |
@@ -105,7 +105,7 @@ Does removing what the lens reads cost recall more than reading?
     directions costs nearly as much as J++ (+24 vs +31);
   - OLMo does not need it (+5);
   - Muse shares more than half of it with the logit lens (+35 of +60);
-  - the 122B loses it by probability (+2 vs +48).
+  - the 122B shows none by probability (+2 vs +48).
 
 ## 2. It is not one dataset, relation, rendering or checkout
 
@@ -170,7 +170,7 @@ Does the split survive everything we could vary?
   | 9B (toy suite) | 0.26 |
 
   The kill bar is 0.75.
-- **Rare bridges lose as much as popular ones**, so Neel's narrow-concept prediction is not supported. natplus,
+- **Rare bridges drop as much as popular ones**, so Neel's narrow-concept prediction is not supported. natplus,
   popular vs rare: 27B +50 vs +56; 9B +39 vs
   +44; Lightning +48 vs +61.
 - **It is mostly from pretraining.** The 9B base model gives +34 against the instruct model's
@@ -179,7 +179,7 @@ Does the split survive everything we could vary?
   - On the 27B (v1), the plain J-lens finds +24 against J++'s +50.
   - The Qwens use published J++ lenses; the other models use our own fits. On the 9B, our own fit gives
     +45 [40, 50] against the published lens's +43 [37, 49].
-- **A bridge never named.** Deleting the bridge's one passing mention adds recall loss: +18 [10, 26] (27B),
+- **A bridge never named.** Deleting the bridge's one passing mention adds to the recall's drop: +18 [10, 26] (27B),
   +12 [5, 19] (9B) and +4 [-3, 11] (Lightning).
 
 ## 3. Where: at the bridge's mention at mid depth, in the question late
@@ -212,7 +212,7 @@ Where in the prompt must the removal act?
   | Muse (L36-42) | +60 | +59 | +2 |
 
   - The 9B's and Lightning's late bands were picked on dev (amendment 57): the latest window where stated facts still
-    lose at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
+    drop at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
   - At these bands more of the effect is shared with the logit lens: 9B +28, Lightning
     +23 (mid band: +1, +9).
 
@@ -295,8 +295,8 @@ How many directions does the dependence need, and when does the removal stop bei
   Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
   +5 and the rotated one +3, but the logit lens's own 10 directions cost +36.
 - **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
-  while losing much of its probability.
-  - Lightning: stated facts lose 4 points by greedy answer at 100 directions, but
+  while its probability drops a lot.
+  - Lightning: stated facts drop 4 points by greedy answer at 100 directions, but
     50 by probability.
   - The plateau rule as pre-registered calls Lightning distributed (K\* 300). On the J-specific excess
     it is concentrated (K\* 1).
@@ -328,7 +328,7 @@ How many directions does the dependence need, and when does the removal stop bei
   - The pre-registered limit stops it at K 10; its J-specific excess peaks at 1 direction
     (+8).
   - Its top direction alone removes 11% of the residual; all 100 remove 21%.
-  - At 100 directions stated facts lose 17 points.
+  - At 100 directions stated facts drop 17 points.
 
 ![The J-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/fig09_dose.png)
 *Fig. 9.*
@@ -348,7 +348,7 @@ larger numbers set).*
 Does the rule hold for longer chains, and for intermediates the model computes from the passage? This is the
 proposal's own question (H0: J-space carries recalled words, not computed variables).
 
-- **A three-hop chain needs J++ when its last hop is recalled.** Points lost beyond the all-passage chain
+- **A three-hop chain needs J++ when its last hop is recalled.** Accuracy drop (points) beyond the all-passage chain
   (P → P → P); each letter is one hop's source. The second seed is jsuite_v2nb (amendment 57: new chains, same design):
 
   | Chain | 27B (v2) | 27B (second seed) | Lightning (v2) | Lightning (second seed) | Lightning (natural set) |
@@ -361,12 +361,12 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
   | M → P → P | +6 [-8, 19] | +7 [-7, 20] | -3 [-15, 8] | -6 [-19, 8] | +6 [-4, 17] |
   | P → M → P | -8 [-20, 4] | -5 [-18, 7] | +2 [-12, 15] | -4 [-18, 12] | -3 [-11, 3] |
 
-  - **Pre-registered:** the four chains ending in a recall lose more than P → P → P; M → P → P and P → M → P do not.
+  - **Pre-registered:** the four chains ending in a recall drop more than P → P → P; M → P → P and P → M → P do not.
     Lightning meets all of it, on v2, on the second seed and on the natural set. The 27B meets it except P → P → M,
     on both seeds (+8 [-4, 21] and +9 [-4, 23]).
-  - **Not predicted:** the 27B's M → M → P also loses; Lightning's does not.
+  - **Not predicted:** the 27B's M → M → P also drops; Lightning's does not.
   - **Controls.**
-    - On the 27B, the rotated and logit-lens removals cost no chain more than P → P → P. P → P → P itself loses
+    - On the 27B, the rotated and logit-lens removals cost no chain more than P → P → P. P → P → P itself drops
       20 points under J++ and 23 rotated,
       so only the excess is read.
     - In Lightning the controls explain part of two cells, on every set. M → P → M: rotated
@@ -375,11 +375,11 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
       +32 on the second seed (n 26).
       P → P → M: logit lens +32 on the natural set, +26 on
       the second seed.
-  - **The 9B cannot be read.** Its all-passage chain alone loses 46 points (rotated
+  - **The 9B cannot be read.** Its all-passage chain alone drops 46 points (rotated
     33; n 24).
   - **The earlier dataset agrees** (27B, v1): M → M → M +35 [21, 49] and P → M → M +33 [22, 46];
     M → P → P -3 and P → M → P -3.
-- **A number computed from the passage does not need J++ to be reported.** Points lost reporting the
+- **A number computed from the passage does not need J++ to be reported.** Accuracy drop (points) reporting the
   number, minus a number read from the passage (digit tokens included in the removal):
 
   | The number is | 27B | 9B | Lightning |
@@ -404,7 +404,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
       like the rule; at ten times the items it does not replicate.
   - **The earlier dataset agrees** (v1): 9B counted +7, computed +1, recalled
     +26 [18, 34]; 27B recalled +15.
-- **H0 head-on: does a number computed from the passage need J++ when it keys a recall?** Points lost, minus the same
+- **H0 head-on: does a number computed from the passage need J++ when it keys a recall?** Accuracy drop (points), minus the same
   recall keyed by a number read from the passage (larger set, amendment 57):
 
   | | 27B | 9B | Lightning |
@@ -416,14 +416,14 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 
   - **Pre-registered:** within 10 of read means the computed number needs no more J++ (H0 holds for numbers). At least
     15 above, with the rotated control within 10, means it routes through J++ (H0 false).
-  - **The 27B:** no more than a read number. Counted is within 10; computed loses less, outside the band on that side.
-  - **The 9B and Lightning: neither outcome.** Computed chains lose more under J++, but the rotated and logit-lens
+  - **The 27B:** no more than a read number. Counted is within 10; computed drops less, outside the band on that side.
+  - **The 9B and Lightning: neither outcome.** Computed chains drop more under J++, but the rotated and logit-lens
     removals also cost them more (rows 3-4), so the pre-registered "H0 false" condition is not met. Composing a computed
     number with a recall is fragile under any edit at the band; part of the gap may still be J-specific.
 - **What this says about H0.**
   - J++ is needed where the last step recalls a fact about an entity, whatever the earlier steps were. It is not
     needed for a recall keyed by a number (a month or planet at a position).
-  - Recalled intermediates followed by a read step lose little in Lightning; the 27B's M → M → P is the exception.
+  - Recalled intermediates followed by a read step drop little in Lightning; the 27B's M → M → P is the exception.
   - A number computed from the passage needs no J++ to be reported (all three models), nor, in the 27B, to key a
     recall. In the 9B and Lightning that last test cannot be read.
   - We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls.
@@ -452,9 +452,9 @@ K\* covers only 1-3 directions, where its effect is about 0.
 ![Every model we tried against every test; the gaps are what is left](../../figures/breadth/fig11_scorecard.png)
 *Fig. 11.*
 
-Untestable: removing the top 10 lens directions adds more plain text loss than the 2-nat bar:
+Untestable: removing the top 10 lens directions adds more plain-text cross-entropy than the 2-nat bar:
 
-| Model | Plain-text loss added |
+| Model | Plain-text cross-entropy added |
 |---|---|
 | Gemma 4 31B-it | +9.25 nats |
 | gpt-oss-20b | +4.73 nats |
@@ -477,8 +477,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - The 27B with the plain J-lens: +24, below 30.
   - The never-named bridge, predicted to cost nothing extra: it costs the 27B +18 and the 9B +12.
   - The 122B by probability (+2). Muse's share with the logit lens. Bolt at 10 directions. OLMo.
-  - The 27B's P → P → M three-hop chain: +8 [-4, 21], predicted to lose more than
-    P → P → P.
+  - The 27B's P → P → M three-hop chain: +8 [-4, 21], predicted to drop more than P → P → P.
   - Lightning's numbers: counting costs +12 (predicted within 10), and reporting a
     recalled number +5 (predicted at least +10).
   - The 9B's three-hop chains: unreadable, because the all-passage chain itself breaks.
@@ -487,7 +486,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
     - Lightning's v2 recall-keyed-by-a-recalled-number result (+47, n
       13) did not replicate (+2).
     - H0 head-on: no reading in the 9B and Lightning (controls also cost computed chains more); in the 27B the
-      computed chain loses 13 less than a read one, outside the within-10 band.
+      computed chain drops 13 less than a read one, outside the within-10 band.
     - Computation feeding a lookup within 10 of a read number (amendment 24): holds on the 9B
       (+9, +10), not on the 27B
       (+16, +18) or Lightning
@@ -498,8 +497,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 - **Design errors.**
   - **A fixed number of directions is not a fixed dose.** The top 10 remove 6% of the residual in Bolt and 13-20%
     elsewhere.
-  - **The dose plateau rule (amendment 54) judged specificity by greedy answers**, which hide the stated facts' lost
-    probability; note 1 adds the excess and probability readings.
+  - **The dose plateau rule (amendment 54) judged specificity by greedy answers**, which hide the stated facts' probability drop; note 1 adds the excess and probability readings.
   - **The dev depth profiles first covered countries only.** Redone on all relations, the bands held.
 - **Limits.**
   - Templated passages over one fact set per dataset; English only.

@@ -187,7 +187,7 @@ def extra_axis(ax, label: bool = True) -> None:
     ax.set_xticks([0, 0.5, 1.0])
     ax.set_xticklabels(["0", "0.5", "1"])
     if label:
-        ax.set_xlabel("extra loss")
+        ax.set_xlabel("switches blocked beyond random")
 
 
 def empty(ax, text: str) -> None:
