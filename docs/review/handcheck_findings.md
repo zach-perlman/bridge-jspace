@@ -280,5 +280,5 @@ remains), **not done** (a check is still open).
   | 122B | 51/53 = 0.96 [0.90, 1.00] | 25/32 = 0.78 [0.63, 0.94] | 12/33 = 0.36 [0.20, 0.57] | 1/82 = 0.01 [0.00, 0.04] | +0.27 [+0.16, +0.38] | +0.68 [+0.56, +0.80] |
 
   Both orders matter: the lookup switches mostly when both locker sentences came before the pick (0.81-0.98), rarely when both came after (0.00-0.06), and in between when they differ (0.21-0.78); the original order's contrast is the larger on four models.
-- **Effect on claims.** Keep claim 10; the 2x2 is a caveat table (draft, not applied to the README or deck): claim 10's "locker-first" and "otherwise" groups mix the two changed-order cells (original before: 0.34-0.78 when the changed order is after, 0.81-0.98 when before).
+- **Effect on claims.** Keep claim 10; the 2x2 is a caveat table (draft, not applied to the README or deck): claim 10's "locker-first" and "otherwise" groups mix the two changed-order cells (original before: 0.21-0.78 when the changed order is after, 0.81-0.98 when before).
 - **Status.** Observation.
