@@ -1,0 +1,220 @@
+{
+  "run": "qwen35_9b_sd67_ko_test_v1",
+  "stage": "ko",
+  "why": "prereg amendment 88 note 67, data-defined positive control (2026-10-30, qwen3.5-9b): O, P and I (test split, person-birthcity-cntry; edits from the question's first token)",
+  "written_utc": "2026-10-30T20:49:45Z",
+  "git_commit": "00772ed7674dd0927202fa33fc6c192d456669de",
+  "git_state": {
+    "head": "00772ed7674dd0927202fa33fc6c192d456669de",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "stage": "ko",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "split": "test",
+    "convs": [
+      "onehop",
+      "solo",
+      "ctx2hop"
+    ],
+    "n": 0,
+    "gen": true,
+    "gen_batch": 64,
+    "name": "qwen35_9b_sd67_ko_test_v1",
+    "why": "prereg amendment 88 note 67, data-defined positive control (2026-10-30, qwen3.5-9b): O, P and I (test split, person-birthcity-cntry; edits from the question's first token)",
+    "fit": "/workspace/scratch/n67/qwen35_9b_fit.pt",
+    "fit_layers": [],
+    "fit_batch": 64,
+    "edits": [
+      "6-10:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp",
+      "12-16:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp"
+    ],
+    "seed": 0,
+    "batch": 16
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "note": "prereg amendment 88 note 67 (sd stage)",
+  "fit": "/workspace/scratch/n67/qwen35_9b_fit.pt",
+  "fit_sha256": "be2f2f661739c5018e7b90f9baa7999e39e4a68ade355ab8acb3ba517a5ff9c5",
+  "fit_log": {
+    "6": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.266,
+      "clean_share_in_class_forms": 0.2388,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3329,
+      "energy_in_class": 0.6671,
+      "mean_norm": 27.19,
+      "mean_norm_centred": 13.06
+    },
+    "7": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2757,
+      "clean_share_in_class_forms": 0.247,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3221,
+      "energy_in_class": 0.6779,
+      "mean_norm": 26.88,
+      "mean_norm_centred": 13.65
+    },
+    "8": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2547,
+      "clean_share_in_class_forms": 0.2299,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3086,
+      "energy_in_class": 0.6914,
+      "mean_norm": 28.97,
+      "mean_norm_centred": 14.08
+    },
+    "9": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.297,
+      "clean_share_in_class_forms": 0.2599,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2978,
+      "energy_in_class": 0.7022,
+      "mean_norm": 32.07,
+      "mean_norm_centred": 14.95
+    },
+    "10": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2704,
+      "clean_share_in_class_forms": 0.2399,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.289,
+      "energy_in_class": 0.711,
+      "mean_norm": 37.04,
+      "mean_norm_centred": 15.69
+    },
+    "12": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.273,
+      "clean_share_in_class_forms": 0.2382,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2723,
+      "energy_in_class": 0.7277,
+      "mean_norm": 37.59,
+      "mean_norm_centred": 15.79
+    },
+    "13": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2627,
+      "clean_share_in_class_forms": 0.2294,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2667,
+      "energy_in_class": 0.7333,
+      "mean_norm": 38.53,
+      "mean_norm_centred": 15.85
+    },
+    "14": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3022,
+      "clean_share_in_class_forms": 0.2676,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2607,
+      "energy_in_class": 0.7393,
+      "mean_norm": 41.71,
+      "mean_norm_centred": 16.22
+    },
+    "15": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3147,
+      "clean_share_in_class_forms": 0.2788,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2572,
+      "energy_in_class": 0.7428,
+      "mean_norm": 41.45,
+      "mean_norm_centred": 16.44
+    },
+    "16": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3385,
+      "clean_share_in_class_forms": 0.3033,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2523,
+      "energy_in_class": 0.7477,
+      "mean_norm": 41.34,
+      "mean_norm_centred": 17.29
+    }
+  },
+  "fit_n_names": 129,
+  "fit_n_classes": 67,
+  "templates": [
+    "I visited {C} last year.",
+    "Last month, {C} hosted the event.",
+    "There is a story about {C}.",
+    "Many people have heard of {C}.",
+    "Yesterday, {C} came up in conversation.",
+    "I read about {C} yesterday."
+  ],
+  "n_items": 350,
+  "n_prompts": 1050,
+  "n_read": 1041,
+  "items_collide": 3,
+  "edits": [
+    [
+      "L6-10",
+      [
+        "cityRaw",
+        "cityRaw_RE",
+        "cityClean",
+        "cityClean_RE",
+        "cityClean_RJ",
+        "bridgeJperp"
+      ]
+    ],
+    [
+      "L12-16",
+      [
+        "cityRaw",
+        "cityRaw_RE",
+        "cityClean",
+        "cityClean_RE",
+        "cityClean_RJ",
+        "bridgeJperp"
+      ]
+    ]
+  ],
+  "pos_from": "question",
+  "seeds": {
+    "re_pool": "ablate.rotation(d, 6700+layer), order Random('n67:'+uid)",
+    "rj_pool": "Random('n67j:'+layer).sample(letter rows, 2048)",
+    "items": 0
+  }
+}
