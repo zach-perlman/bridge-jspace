@@ -4595,3 +4595,28 @@ It is our MP twin in another format: recall a key (the bridge) from memory, then
 - **Seen in the smoke** (n = 8, not a result):
   - at the early band, energy-matched Gaussian removal of the raw subspace is as destructive as the raw subspace, so the early-band fit check may be "not readable";
   - random J++ rows at matched energy are far harsher than random Gaussian directions.
+
+#### Amendment 89 (Zach, 2026-10-30, ~23:10 UTC; written before any run of notes 68-69): two last runs
+- **Note 68: note 57 on the codename set (27B).**
+  - **Question:** do note 57's registered readings (amendment 78: S1, D1 at K30 and K100, A1) hold on the codename set (jsuite_v5al_test_chat), the independent 50-fact sample, on the 27B?
+  - **Setup:** exactly amendment 83's queue (scripts/queues/h200_n57d_1030.sh: the same 26 conditions, band L32-40, gate, batch, cand2 read), with SET = jsuite_v5al_test_chat. The one change: the control set is jsuite_v5alctl_cv_v1 (the codename set's control-set name, as note 46, h200_n46_1030.sh:29). Queue: scripts/queues/h200_n89a_1030.sh.
+  - **Readings:** amendment 78's labels, verbatim, from scripts/nn_ko57_read.py --set jsuite_v5al_test_chat. "Replicates" = the same label as draw 4001's (amendment 83's rule). No pooling across sets.
+  - **Prediction:** all four replicate; S1 0.95-1.10; ansRe gap < 3 points.
+- **Note 69: the answer-direction battery at the description tokens only (27B primary, 9B confirmatory).**
+  - **Question:** where the question describes the bridge (the start_desc tokens), is the recall's need its answer's own directions?
+  - **Setup:** v4 draw 4001 (jsuite_v4_test_chat), note 37's gate, band (27B L32-40, 9B L12-16), batch and cand2 read, all as scripts/queues/h200_kopos_1029.sh with --positions desc (every edit is applied at the description tokens only).
+    - Conditions: paper10 paper10_rot paper10_keepA paper10_keepA_rot ansJ ansJ_rot ansU paper10_onlyA paper10_onlyA_rot paper10_onlyRperp paper10_onlyRperp_rot ansRe ansRe_rot.
+    - Flags: --keepA-forms every --topk-chunk 1024.
+    - Smoke: n = 4 per word.
+    - Order: 27B, then 9B, on one GPU. Queue: scripts/queues/h200_n89c_1030.sh. Reader: scripts/nn_ko89_read.py.
+  - **Readings:**
+    - **D0 (gate):** paper10's gap (MM loss − MP loss) − paper10_rot's gap ≥ 10 points, and paper10's gap CI lower end > paper10_rot's gap. If D0 fails, the model reads "not readable at the description" and no other label is read.
+    - **K-desc:** note 37's rule, verbatim (nn_ko37_read.measures on the description run).
+    - **S1-desc and A1-desc:** note 57's rules, verbatim (nn_ko57_read.main with --run-dir on the description run).
+    - D1 and T1 are not run. The stored check printed by nn_ko57_read compares against the all-position run; it is expected to differ and is not a reading.
+    - Beside: the MP loss under every arm (the lookup twin should be spared) and the energy-matching log.
+  - **Bootstrap:** as note 37 (over bridges, 2000 draws, Random(0)). One deterministic run per model.
+  - **Predictions:**
+    - D0 is met on both. Notes 32-33's stored desc rows give gaps net of rotation of 15.1 (27B) and 19.5 (9B), computed post hoc tonight; Lightning is 6.0 and is not run.
+    - K-desc reads "the recall's J-need is its answer's directions" on both.
+    - S1-desc is met on the 9B and uncertain on the 27B. A1-desc is met on the 27B and uncertain on the 9B.
