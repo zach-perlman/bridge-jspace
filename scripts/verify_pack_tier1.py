@@ -320,8 +320,9 @@ def build(old: str = "") -> str:
           "logit ties (P(original) = P(changed), logit gap 0.0; the argmax keeps the lower token id).", ""]  # fmt: skip
     if ind:
         s = ind["summary"]
-        L += [f"**Independent recount** (review/verify_independent.json): {s['match']} of {s['rows']} numbers equal the "
-              f"README's and their source, {s['mismatch']} differ; the item sets recomputed from competence.jsonl equal "
+        L += [f"**Independent recount** (review/verify_independent.json): {s['match']} of {s['rows']} numbers equal their "
+              f"source ({s['README']['match']} are quoted on the page and equal it, {s['README']['not shown']} are not quoted there, "
+              f"{s['README']['mismatch']} differ from it); the item sets recomputed from competence.jsonl equal "
               "the runs' on every model (conflict test, routes); each routes label recomputed from the raw top-token id "
               "equals the stored one. The 9B (the brief's model):", "",
               "| quantity | recomputed | README shows | source |", "|---|---|---|---|"]  # fmt: skip

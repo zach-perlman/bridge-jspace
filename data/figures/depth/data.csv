@@ -8817,7 +8817,8 @@ cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: the
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: the rule's reading",the split holds on his passages,,,,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: lookups switched by the whole change, fact-first",0.5757575757575758,0.4426229508196721,0.696969696969697,66,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
 cards,qwen3.5-9b,"Z1-P recheck, without the passages holding the true value: lookups switched by the whole change, fact-after",0.05405405405405406,0.013157894736842105,0.10810810810810811,74,results/x50_zach/x53_z1p_clean-20261029T115708Z/verdict.json
-cards,,"checks: the independent recount, rows matching",56 of 63,,,,review/verify_independent.json
+cards,,"checks: the independent recount, rows matching",63 of 63,,,,review/verify_independent.json
+cards,,"checks: the independent recount, rows quoted on the page",32 of 63,,,,review/verify_independent.json
 cards,,checks: items the automatic checks read,"45,942",,,,review/verify_checks.json
 cards,,checks: per-item check failures,4,,,,review/verify_checks.json
 cards,,checks: the per-item checks with a failure,1,,,,review/verify_checks.json

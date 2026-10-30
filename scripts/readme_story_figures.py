@@ -4298,6 +4298,9 @@ def checks_numbers() -> None:
     S.record(
         "cards", "", "checks: the independent recount, rows matching", f"{ind['match']} of {ind['rows']}", source=src
     )
+    S.record(
+        "cards", "", "checks: the independent recount, rows quoted on the page", f"{ind['README']['match']} of {ind['rows']}", source=src
+    )
     t1 = json.loads(VERIFY_CHECKS.read_text())["summary"]
     src = rel(VERIFY_CHECKS)
     S.record("cards", "", "checks: items the automatic checks read", f"{t1['tier1']['items']:,}", source=src)

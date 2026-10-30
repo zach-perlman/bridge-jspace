@@ -292,8 +292,10 @@ def main(argv: list[str] | None = None, root: Path = ROOT) -> dict:
         report["rows"] += rows_for(mk, res, numbers, shown, csvd)
     bad = [r for r in report["rows"] if r["status"] == "mismatch"]
     sets = {mk: (r["conflict"]["items"]["same"], r["routes"]["items"]["same"]) for mk, r in report["models"].items()}
+    page = {k: sum(r["vs README"] == k for r in report["rows"]) for k in ("match", "mismatch", "not shown")}
     report["summary"] = {"rows": len(report["rows"]), "match": sum(r["status"] == "match" for r in report["rows"]),
-                         "mismatch": len(bad), "item sets recomputed = the runs' (conflict, routes)": sets}  # fmt: skip
+                         "mismatch": len(bad), "README": page,
+                         "item sets recomputed = the runs' (conflict, routes)": sets}  # fmt: skip
     (root / a.out).parent.mkdir(parents=True, exist_ok=True)
     (root / a.out).write_text(json.dumps(report, indent=1) + "\n")
     for r in report["rows"]:
