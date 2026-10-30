@@ -3324,3 +3324,11 @@ Zach's MC answer: "#2 fixed + slim #1". **Note 36 is dropped and not run.** Its 
     - B is the H2 closed-book cand2 margin, computed by the script (one value per bridge); correctness is reported beside.
     - The probe is a custom L-BFGS logistic regression on sklearn's objective (sklearn is not on the box).
     - Named is primary, as for this set family.
+
+##### Amendment 63, correction (Zach's session, 2026-10-30 03:35 UTC; no run has started)
+The clock times in the headers of amendment 63 and its two addenda are wrong: I misread the time zone. The commits are the record:
+- amendment 63: 9dc2a241, 02:53 UTC;
+- the first addendum: b65db57d, 03:11 UTC;
+- the second addendum and the code: 134a3154, 03:31 UTC.
+
+All are before any full run of notes 34 and 35; their jobs wait on DeepSeek's EXIT. The jobs are named "-1030-0055". The repo's earlier jobs use the box's UTC clock for their names; this one does not. The jobs were launched at 03:31 UTC (23:31 EDT, 29 Oct).
