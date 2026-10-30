@@ -80,7 +80,7 @@ def readme_citations(nums: dict) -> dict[str, set[str]]:
     """Run dir -> README sections citing it (through {{num|key}} markers and direct links)."""
     cites: dict[str, set[str]] = collections.defaultdict(set)
     section = "top"
-    for line in (REPO / "docs" / "README.template.md").read_text().splitlines():
+    for line in (REPO / "docs" / "depth" / "README.template.md").read_text().splitlines():
         if line.startswith("## "):
             section = line[3:].split(".")[0] if line[3].isdigit() else line[3:]
         for key in re.findall(r"\{\{num\|([^}]+)\}\}", line):
@@ -204,7 +204,7 @@ def classify() -> tuple[list[dict], dict]:
     nums = json.loads((REPO / "docs" / "x0_numbers.json").read_text())
     dates = git_dates()
     runs = run_dirs()
-    grid = re.match(r"<!-- grid: (results/[^ ]+) -->", (REPO / "docs" / "README.template.md").read_text())
+    grid = re.match(r"<!-- grid: (results/[^ ]+) -->", (REPO / "docs" / "depth" / "README.template.md").read_text())
     base = collections.Counter(r.split("/")[-1] for r in runs if r.count("/") == 2)
     names = {r.split("/", 2)[2]: r for r in runs if r.count("/") == 2 and base[r.split("/")[-1]] == 1}
     names.update({r.split("/", 1)[1]: r for r in runs})  # exp/run as named in manifests

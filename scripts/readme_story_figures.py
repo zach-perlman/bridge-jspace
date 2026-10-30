@@ -3203,7 +3203,7 @@ def check_scorecard_keys(path: Path) -> None:
 
 
 # Fig. 11 (Dan's restructure, 29 Oct 12:50): the README's scorecard, right under "In one minute". Rows: the claims
-# table's rows in order, their sentences read from docs/README.template.md; columns: the five models; per cell one
+# table's rows in order, their sentences read from docs/depth/README.template.md; columns: the five models; per cell one
 # word (CLAIM_WORD), read off the claims table's Models column and its cards (agent's reading, UNVERIFIED). Hollow:
 # Lightning everywhere (its gate chosen after its pre-check) and the 122B where its gate was lowered after the data
 # (routes, address, swap: claims 4, 6, 7)
@@ -3211,7 +3211,7 @@ F11_MODELS = ("9b", "27b", "muse", "lightning", "122b")
 F11_TARGET = {m: t for t, m, _ in S.MODELS} | {LT[1]: LT[0]}
 CLAIM_WORD = {"holds": "#2f7d4f", "in part": "#b07a0a", "fails": "#b8433a", "below gate": "#7a7a7a",
               "not run": "#8a8a8a"}  # fmt: skip
-TEMPLATE = S.REPO / "docs" / "README.template.md"
+TEMPLATE = S.REPO / "docs" / "depth" / "README.template.md"
 
 
 def claim_cells(*words: str, hollow_122b: bool = False) -> dict[str, tuple[str, str]]:

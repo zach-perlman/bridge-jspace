@@ -42,7 +42,7 @@ RETIRED = {
     "run id": r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b",
     "run stamp": r"\b\d{8}T\d{6}Z\b",
 }
-CAPTION_FILES = (REPO / "docs" / "depth" / "README.md", REPO / "docs" / "README.template.md")
+CAPTION_FILES = (REPO / "docs" / "depth" / "README.md", REPO / "docs" / "depth" / "README.template.md")
 CAPTIONS_DRAFT = REPO / "docs" / "drafts" / "readme_v5_captions.md"
 ROOT_README = REPO / "README.md"
 JOINT_RETIRED = {

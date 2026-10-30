@@ -230,7 +230,7 @@ class Number:
 
 
 def book(grid_dir: Path | None = None) -> RB.Book:
-    """The grid's main-lens cells (the grid pinned in docs/README.template.md unless given)."""
+    """The grid's main-lens cells (the grid pinned in docs/depth/README.template.md unless given)."""
     return RB.Book(grid_dir or RB.pinned_grid(RB.TEMPLATE.read_text()))
 
 

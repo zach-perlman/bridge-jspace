@@ -36,7 +36,7 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 
 ## 23 Oct 2026, day
 
-- README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/mapping.md, the datasets to docs/datasets.md, the night's notes here.
+- README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/depth/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/mapping.md, the datasets to docs/datasets.md, the night's notes here.
 - Pre-registered before running: the 122B late-binding test (d40f14f, Dan's amendment 98df575), the 27B dose control and layer-16 split (bedbb9a; the split's copy with a same-share random part, 14ef0df), predictions batches 16-17 (e2da840, c3eb3b2).
 - The 27B dose control started at 10:20 UTC, before Dan's batch-16 answers; kept by Dan, results closed until he says open. The layer-16 split was cancelled before running and waits for his answers.
 - Gemma 4's stated-bridge maps rerun as `_r3` (347b40c): the `_r2` copies reused run names whose partial results were on the box. They keep 167 / 169 of 180 scenes (73c4a69 skips misaligned scenes): a recorded deviation.
