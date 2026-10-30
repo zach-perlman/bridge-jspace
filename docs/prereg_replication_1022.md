@@ -4550,3 +4550,15 @@ It is our MP twin in another format: recall a key (the bridge) from memory, then
   - controls: energy-matched random residual directions, plus the raw fit check.
   - **R2-v4 (primary):** MM loss beyond random >= 15, lower end > 0 = "latent recall needs the bridge's identity beyond its answer".
   - **MP is an in-set positive control:** in lookup the bridge is the key for finding the row, so MP must lose >= 15 beyond random. Otherwise the v4 stage is "not readable".
+
+##### Amendment 88, addendum: the 27B is primary for notes 65-67 (box clock at commit; Zach's choice at ~15:50 ET; before any code or run of these notes)
+- **Roles:** the 27B is primary for notes 65, 66 and 67. Their registered labels are decided on the 27B. The 9B and Lightning are confirmatory: the same rules are applied, and every model's labels are reported. This replaces amendment 88's "9B primary, Lightning confirmatory, 27B descriptive".
+- **27B read:**
+  - the 27B generates 12 tokens under EVERY edit, and each generation is classified as e3 / e3' / other (note 59's classifier);
+  - wherever unedited first-token agreement is < 90% in a cell, that cell's shares come from these generations, not the first token;
+  - note 65's Yes / No read stays first-token (logit difference), with the 12-token Yes / No classification printed beside;
+  - the 9B and Lightning keep the first-token read, with the same generation fallback if their agreement is < 90%.
+- **Run order:**
+  - the 27B first, on both GPUs (notes 67 and 65 in parallel, then 66);
+  - then the 9B and Lightning;
+  - code smokes stay on the 9B, and every full run begins with its own 8-item smoke on its model.
