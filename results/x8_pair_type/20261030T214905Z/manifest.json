@@ -1,0 +1,15 @@
+{
+  "exp": "x8_pair_type",
+  "post_hoc": true,
+  "cpu": true,
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x8_write",
+    "qwen3.6-27b": "x8_write_27b",
+    "muse-glimmer-30b": "muse30b_x8_write",
+    "nemotron-3.5-lightning": "nem35l_x52_write",
+    "qwen3.5-122b-a10b": "qwen35_122b_x8_write_g75"
+  },
+  "prediction": "An ordinal address predicts third share (far) > third share (adjacent), largest at s = 1 and falling at s = 4, and absent from the random arms. 'Supported' only if far - adjacent excludes 0 (interval above 0) on at least 3 of 5 models at s = 1 or 2 and the random arms show no such gap (no model's random far - adjacent interval above 0, at s = 1 or 4). Otherwise: 'third is generic disruption'. Applied to the lookup; the recall is reported beside.",
+  "script": "scripts/x8_pair_type.py",
+  "written_utc": "20261030T214905Z"
+}

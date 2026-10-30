@@ -1,0 +1,6151 @@
+{
+ "qwen3.5-9b": {
+  "run": "qwen35_9b_x8_write",
+  "lookup": {
+   "random|1": {
+    "n": {
+     "adjacent": 408,
+     "far": 192
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 408,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 192,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 408,
+     "far": 192
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 408,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 192,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 408,
+     "far": 192
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 9,
+       "share": [
+        0.0221,
+        0.0107,
+        0.0358
+       ]
+      },
+      "original": {
+       "count": 399,
+       "share": [
+        0.9779,
+        0.9642,
+        0.9893
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0104,
+        0.0,
+        0.0264
+       ]
+      },
+      "original": {
+       "count": 190,
+       "share": [
+        0.9896,
+        0.9736,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 408,
+     "far": 192
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 183,
+       "share": [
+        0.4485,
+        0.4101,
+        0.4845
+       ]
+      },
+      "original": {
+       "count": 219,
+       "share": [
+        0.5368,
+        0.4964,
+        0.5766
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0098,
+        0.0022,
+        0.0206
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0049,
+        0.0,
+        0.0131
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 92,
+       "share": [
+        0.4792,
+        0.3941,
+        0.5596
+       ]
+      },
+      "original": {
+       "count": 56,
+       "share": [
+        0.2917,
+        0.2194,
+        0.3701
+       ]
+      },
+      "third": {
+       "count": 33,
+       "share": [
+        0.1719,
+        0.1189,
+        0.2268
+       ]
+      },
+      "other": {
+       "count": 11,
+       "share": [
+        0.0573,
+        0.0249,
+        0.0989
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.1621,
+     0.1082,
+     0.2158
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 408,
+     "far": 192
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 292,
+       "share": [
+        0.7157,
+        0.6692,
+        0.7604
+       ]
+      },
+      "original": {
+       "count": 93,
+       "share": [
+        0.2279,
+        0.1791,
+        0.2772
+       ]
+      },
+      "third": {
+       "count": 17,
+       "share": [
+        0.0417,
+        0.0253,
+        0.0593
+       ]
+      },
+      "other": {
+       "count": 6,
+       "share": [
+        0.0147,
+        0.0041,
+        0.0287
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 149,
+       "share": [
+        0.776,
+        0.7143,
+        0.8356
+       ]
+      },
+      "original": {
+       "count": 9,
+       "share": [
+        0.0469,
+        0.0158,
+        0.0875
+       ]
+      },
+      "third": {
+       "count": 32,
+       "share": [
+        0.1667,
+        0.1148,
+        0.2143
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0104,
+        0.0,
+        0.0272
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.125,
+     0.0689,
+     0.1782
+    ]
+   }
+  },
+  "recall_non_colliding": {
+   "random|1": {
+    "n": {
+     "adjacent": 346,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 344,
+       "share": [
+        0.9942,
+        0.9808,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0192
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 161,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 346,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0029,
+        0.0,
+        0.0103
+       ]
+      },
+      "original": {
+       "count": 341,
+       "share": [
+        0.9855,
+        0.9691,
+        0.9973
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0151
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0143
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 4,
+       "share": [
+        0.0248,
+        0.0,
+        0.0593
+       ]
+      },
+      "original": {
+       "count": 155,
+       "share": [
+        0.9627,
+        0.9231,
+        0.9922
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0222
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.021
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0004,
+     -0.0126,
+     0.0176
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 346,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 11,
+       "share": [
+        0.0318,
+        0.0122,
+        0.0553
+       ]
+      },
+      "original": {
+       "count": 334,
+       "share": [
+        0.9653,
+        0.9408,
+        0.9864
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0029,
+        0.0,
+        0.0096
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 10,
+       "share": [
+        0.0621,
+        0.0276,
+        0.105
+       ]
+      },
+      "original": {
+       "count": 150,
+       "share": [
+        0.9317,
+        0.8855,
+        0.9679
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0222
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0033,
+     -0.008,
+     0.0201
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 346,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 71,
+       "share": [
+        0.2052,
+        0.1555,
+        0.2701
+       ]
+      },
+      "original": {
+       "count": 270,
+       "share": [
+        0.7803,
+        0.7138,
+        0.8325
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0148
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0087,
+        0.0,
+        0.0182
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 38,
+       "share": [
+        0.236,
+        0.1437,
+        0.3514
+       ]
+      },
+      "original": {
+       "count": 114,
+       "share": [
+        0.7081,
+        0.5833,
+        0.8079
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0248,
+        0.0059,
+        0.0494
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0311,
+        0.0079,
+        0.0578
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.019,
+     0.0002,
+     0.0415
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 346,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 125,
+       "share": [
+        0.3613,
+        0.2978,
+        0.4339
+       ]
+      },
+      "original": {
+       "count": 204,
+       "share": [
+        0.5896,
+        0.5094,
+        0.6607
+       ]
+      },
+      "third": {
+       "count": 10,
+       "share": [
+        0.0289,
+        0.0124,
+        0.047
+       ]
+      },
+      "other": {
+       "count": 7,
+       "share": [
+        0.0202,
+        0.0038,
+        0.0432
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 80,
+       "share": [
+        0.4969,
+        0.4078,
+        0.5847
+       ]
+      },
+      "original": {
+       "count": 61,
+       "share": [
+        0.3789,
+        0.3,
+        0.4619
+       ]
+      },
+      "third": {
+       "count": 15,
+       "share": [
+        0.0932,
+        0.0573,
+        0.1288
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0311,
+        0.0072,
+        0.0585
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0643,
+     0.0256,
+     0.1019
+    ]
+   }
+  },
+  "recall_three_legs_distinct": {
+   "random|1": {
+    "n": {
+     "adjacent": 132,
+     "far": 54
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 132,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 54,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 132,
+     "far": 54
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 129,
+       "share": [
+        0.9773,
+        0.9481,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0152,
+        0.0,
+        0.0407
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0076,
+        0.0,
+        0.0248
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.037,
+        0.0,
+        0.0968
+       ]
+      },
+      "original": {
+       "count": 51,
+       "share": [
+        0.9444,
+        0.8696,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0185,
+        0.0,
+        0.0656
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0033,
+     -0.0342,
+     0.0556
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 132,
+     "far": 54
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 4,
+       "share": [
+        0.0303,
+        0.0076,
+        0.0551
+       ]
+      },
+      "original": {
+       "count": 127,
+       "share": [
+        0.9621,
+        0.9348,
+        0.9903
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0076,
+        0.0,
+        0.0263
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0556,
+        0.0,
+        0.1207
+       ]
+      },
+      "original": {
+       "count": 50,
+       "share": [
+        0.9259,
+        0.8462,
+        0.9831
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0185,
+        0.0,
+        0.0656
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0109,
+     -0.021,
+     0.06
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 132,
+     "far": 54
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 22,
+       "share": [
+        0.1667,
+        0.1077,
+        0.2393
+       ]
+      },
+      "original": {
+       "count": 106,
+       "share": [
+        0.803,
+        0.7155,
+        0.875
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0152,
+        0.0,
+        0.0413
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0152,
+        0.0,
+        0.0342
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 7,
+       "share": [
+        0.1296,
+        0.0517,
+        0.2273
+       ]
+      },
+      "original": {
+       "count": 39,
+       "share": [
+        0.7222,
+        0.5897,
+        0.84
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0741,
+        0.0159,
+        0.1587
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0741,
+        0.0179,
+        0.1404
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0589,
+     -0.0003,
+     0.1396
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 132,
+     "far": 54
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 36,
+       "share": [
+        0.2727,
+        0.2029,
+        0.3551
+       ]
+      },
+      "original": {
+       "count": 81,
+       "share": [
+        0.6136,
+        0.5041,
+        0.7055
+       ]
+      },
+      "third": {
+       "count": 10,
+       "share": [
+        0.0758,
+        0.0317,
+        0.1271
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0379,
+        0.0072,
+        0.0821
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 20,
+       "share": [
+        0.3704,
+        0.2632,
+        0.4839
+       ]
+      },
+      "original": {
+       "count": 15,
+       "share": [
+        0.2778,
+        0.1724,
+        0.3788
+       ]
+      },
+      "third": {
+       "count": 15,
+       "share": [
+        0.2778,
+        0.18,
+        0.386
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0741,
+        0.0182,
+        0.1404
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.202,
+     0.0908,
+     0.3124
+    ]
+   }
+  }
+ },
+ "qwen3.6-27b": {
+  "run": "x8_write_27b",
+  "lookup": {
+   "random|1": {
+    "n": {
+     "adjacent": 411,
+     "far": 189
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0024,
+        0.0,
+        0.0076
+       ]
+      },
+      "original": {
+       "count": 410,
+       "share": [
+        0.9976,
+        0.9924,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 189,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 411,
+     "far": 189
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0049,
+        0.0,
+        0.0121
+       ]
+      },
+      "original": {
+       "count": 408,
+       "share": [
+        0.9927,
+        0.9842,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0024,
+        0.0,
+        0.0079
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0053,
+        0.0,
+        0.0185
+       ]
+      },
+      "original": {
+       "count": 184,
+       "share": [
+        0.9735,
+        0.9508,
+        0.994
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0212,
+        0.0051,
+        0.0406
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0188,
+     0.0008,
+     0.0389
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 411,
+     "far": 189
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0073,
+        0.0,
+        0.0152
+       ]
+      },
+      "original": {
+       "count": 407,
+       "share": [
+        0.9903,
+        0.9814,
+        0.9976
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0024,
+        0.0,
+        0.0079
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 187,
+       "share": [
+        0.9894,
+        0.9745,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0106,
+        0.0,
+        0.0255
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0106,
+     0.0,
+     0.0255
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 411,
+     "far": 189
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 111,
+       "share": [
+        0.2701,
+        0.2254,
+        0.315
+       ]
+      },
+      "original": {
+       "count": 299,
+       "share": [
+        0.7275,
+        0.6828,
+        0.7719
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0024,
+        0.0,
+        0.0079
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 34,
+       "share": [
+        0.1799,
+        0.1049,
+        0.2609
+       ]
+      },
+      "original": {
+       "count": 128,
+       "share": [
+        0.6772,
+        0.5971,
+        0.7571
+       ]
+      },
+      "third": {
+       "count": 27,
+       "share": [
+        0.1429,
+        0.1063,
+        0.1768
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.1405,
+     0.1031,
+     0.1751
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 411,
+     "far": 189
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 177,
+       "share": [
+        0.4307,
+        0.3946,
+        0.4653
+       ]
+      },
+      "original": {
+       "count": 211,
+       "share": [
+        0.5134,
+        0.48,
+        0.5448
+       ]
+      },
+      "third": {
+       "count": 20,
+       "share": [
+        0.0487,
+        0.03,
+        0.0695
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0073,
+        0.0,
+        0.0157
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 123,
+       "share": [
+        0.6508,
+        0.5816,
+        0.7225
+       ]
+      },
+      "original": {
+       "count": 10,
+       "share": [
+        0.0529,
+        0.0211,
+        0.0933
+       ]
+      },
+      "third": {
+       "count": 54,
+       "share": [
+        0.2857,
+        0.2189,
+        0.3481
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0106,
+        0.0,
+        0.0349
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.237,
+     0.1617,
+     0.3074
+    ]
+   }
+  },
+  "recall_non_colliding": {
+   "random|1": {
+    "n": {
+     "adjacent": 347,
+     "far": 158
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 347,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 158,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 347,
+     "far": 158
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 346,
+       "share": [
+        0.9971,
+        0.9907,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0029,
+        0.0,
+        0.0093
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0127,
+        0.0,
+        0.04
+       ]
+      },
+      "original": {
+       "count": 156,
+       "share": [
+        0.9873,
+        0.96,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 347,
+     "far": 158
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 345,
+       "share": [
+        0.9942,
+        0.9858,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0142
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0063,
+        0.0,
+        0.02
+       ]
+      },
+      "original": {
+       "count": 156,
+       "share": [
+        0.9873,
+        0.96,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0063,
+        0.0,
+        0.02
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 347,
+     "far": 158
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 9,
+       "share": [
+        0.0259,
+        0.011,
+        0.0434
+       ]
+      },
+      "original": {
+       "count": 333,
+       "share": [
+        0.9597,
+        0.9284,
+        0.9839
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0144,
+        0.0,
+        0.0329
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 7,
+       "share": [
+        0.0443,
+        0.0072,
+        0.0904
+       ]
+      },
+      "original": {
+       "count": 149,
+       "share": [
+        0.943,
+        0.8834,
+        0.9872
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0063,
+        0.0,
+        0.0219
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0063,
+        0.0,
+        0.02
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0063,
+     0.0,
+     0.0219
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 347,
+     "far": 158
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 28,
+       "share": [
+        0.0807,
+        0.0405,
+        0.1286
+       ]
+      },
+      "original": {
+       "count": 313,
+       "share": [
+        0.902,
+        0.8431,
+        0.9507
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 6,
+       "share": [
+        0.0173,
+        0.0,
+        0.0401
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 27,
+       "share": [
+        0.1709,
+        0.1029,
+        0.2519
+       ]
+      },
+      "original": {
+       "count": 128,
+       "share": [
+        0.8101,
+        0.7189,
+        0.8875
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.019,
+        0.0,
+        0.0408
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.019,
+     0.0,
+     0.0408
+    ]
+   }
+  },
+  "recall_three_legs_distinct": {
+   "random|1": {
+    "n": {
+     "adjacent": 143,
+     "far": 51
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 143,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 51,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 143,
+     "far": 51
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 142,
+       "share": [
+        0.993,
+        0.9786,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.007,
+        0.0,
+        0.0214
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 51,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 143,
+     "far": 51
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 141,
+       "share": [
+        0.986,
+        0.9655,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.014,
+        0.0,
+        0.0345
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 50,
+       "share": [
+        0.9804,
+        0.9344,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0196,
+        0.0,
+        0.0656
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 143,
+     "far": 51
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.021,
+        0.0,
+        0.0438
+       ]
+      },
+      "original": {
+       "count": 137,
+       "share": [
+        0.958,
+        0.9245,
+        0.9901
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.021,
+        0.0,
+        0.053
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0196,
+        0.0,
+        0.0617
+       ]
+      },
+      "original": {
+       "count": 48,
+       "share": [
+        0.9412,
+        0.871,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0196,
+        0.0,
+        0.0714
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0196,
+        0.0,
+        0.0656
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0196,
+     0.0,
+     0.0714
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 143,
+     "far": 51
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.0559,
+        0.0221,
+        0.0984
+       ]
+      },
+      "original": {
+       "count": 130,
+       "share": [
+        0.9091,
+        0.8426,
+        0.966
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.035,
+        0.0,
+        0.0818
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.1569,
+        0.0678,
+        0.2766
+       ]
+      },
+      "original": {
+       "count": 40,
+       "share": [
+        0.7843,
+        0.6444,
+        0.8936
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.0588,
+        0.0,
+        0.1333
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0588,
+     0.0,
+     0.1333
+    ]
+   }
+  }
+ },
+ "muse-glimmer-30b": {
+  "run": "muse30b_x8_write",
+  "lookup": {
+   "random|1": {
+    "n": {
+     "adjacent": 401,
+     "far": 199
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 401,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 197,
+       "share": [
+        0.9899,
+        0.9663,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0101,
+        0.0,
+        0.0337
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0101,
+     0.0,
+     0.0337
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 401,
+     "far": 199
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 4,
+       "share": [
+        0.01,
+        0.0,
+        0.024
+       ]
+      },
+      "original": {
+       "count": 396,
+       "share": [
+        0.9875,
+        0.9725,
+        0.9977
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0025,
+        0.0,
+        0.0084
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 190,
+       "share": [
+        0.9548,
+        0.9188,
+        0.9838
+       ]
+      },
+      "third": {
+       "count": 9,
+       "share": [
+        0.0452,
+        0.0162,
+        0.0812
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0427,
+     0.0134,
+     0.0795
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 401,
+     "far": 199
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 21,
+       "share": [
+        0.0524,
+        0.0319,
+        0.0784
+       ]
+      },
+      "original": {
+       "count": 380,
+       "share": [
+        0.9476,
+        0.9216,
+        0.9681
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 9,
+       "share": [
+        0.0452,
+        0.0219,
+        0.0704
+       ]
+      },
+      "original": {
+       "count": 182,
+       "share": [
+        0.9146,
+        0.8728,
+        0.9511
+       ]
+      },
+      "third": {
+       "count": 8,
+       "share": [
+        0.0402,
+        0.0182,
+        0.0667
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0402,
+     0.0182,
+     0.0667
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 401,
+     "far": 199
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 189,
+       "share": [
+        0.4713,
+        0.4341,
+        0.5127
+       ]
+      },
+      "original": {
+       "count": 199,
+       "share": [
+        0.4963,
+        0.452,
+        0.5366
+       ]
+      },
+      "third": {
+       "count": 13,
+       "share": [
+        0.0324,
+        0.0168,
+        0.0494
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 120,
+       "share": [
+        0.603,
+        0.5291,
+        0.6792
+       ]
+      },
+      "original": {
+       "count": 27,
+       "share": [
+        0.1357,
+        0.0841,
+        0.1905
+       ]
+      },
+      "third": {
+       "count": 52,
+       "share": [
+        0.2613,
+        0.2093,
+        0.3155
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.2289,
+     0.1714,
+     0.2883
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 401,
+     "far": 199
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 201,
+       "share": [
+        0.5012,
+        0.4674,
+        0.5372
+       ]
+      },
+      "original": {
+       "count": 131,
+       "share": [
+        0.3267,
+        0.2857,
+        0.3639
+       ]
+      },
+      "third": {
+       "count": 69,
+       "share": [
+        0.1721,
+        0.1392,
+        0.208
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 112,
+       "share": [
+        0.5628,
+        0.5116,
+        0.6178
+       ]
+      },
+      "original": {
+       "count": 9,
+       "share": [
+        0.0452,
+        0.0217,
+        0.0722
+       ]
+      },
+      "third": {
+       "count": 78,
+       "share": [
+        0.392,
+        0.337,
+        0.4444
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.2199,
+     0.143,
+     0.2914
+    ]
+   }
+  },
+  "recall_non_colliding": {
+   "random|1": {
+    "n": {
+     "adjacent": 315,
+     "far": 163
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0032,
+        0.0,
+        0.011
+       ]
+      },
+      "original": {
+       "count": 313,
+       "share": [
+        0.9937,
+        0.9836,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0032,
+        0.0,
+        0.0105
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 163,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 315,
+     "far": 163
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0032,
+        0.0,
+        0.011
+       ]
+      },
+      "original": {
+       "count": 313,
+       "share": [
+        0.9937,
+        0.9836,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0032,
+        0.0,
+        0.0105
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 160,
+       "share": [
+        0.9816,
+        0.9396,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0184,
+        0.0,
+        0.0604
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 315,
+     "far": 163
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0032,
+        0.0,
+        0.0105
+       ]
+      },
+      "original": {
+       "count": 314,
+       "share": [
+        0.9968,
+        0.9895,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 160,
+       "share": [
+        0.9816,
+        0.9396,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0184,
+        0.0,
+        0.0604
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 315,
+     "far": 163
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 10,
+       "share": [
+        0.0317,
+        0.0144,
+        0.0534
+       ]
+      },
+      "original": {
+       "count": 300,
+       "share": [
+        0.9524,
+        0.9216,
+        0.976
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0063,
+        0.0,
+        0.0164
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0095,
+        0.0,
+        0.0229
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.0491,
+        0.0139,
+        0.0949
+       ]
+      },
+      "original": {
+       "count": 149,
+       "share": [
+        0.9141,
+        0.8323,
+        0.9722
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0061,
+        0.0,
+        0.0219
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0307,
+        0.0,
+        0.0884
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     -0.0002,
+     -0.0139,
+     0.0177
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 315,
+     "far": 163
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 15,
+       "share": [
+        0.0476,
+        0.0233,
+        0.0789
+       ]
+      },
+      "original": {
+       "count": 288,
+       "share": [
+        0.9143,
+        0.8533,
+        0.9581
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0127,
+        0.0,
+        0.0307
+       ]
+      },
+      "other": {
+       "count": 8,
+       "share": [
+        0.0254,
+        0.005,
+        0.0576
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 13,
+       "share": [
+        0.0798,
+        0.0392,
+        0.1304
+       ]
+      },
+      "original": {
+       "count": 138,
+       "share": [
+        0.8466,
+        0.7593,
+        0.9157
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.0184,
+        0.0,
+        0.0486
+       ]
+      },
+      "other": {
+       "count": 9,
+       "share": [
+        0.0552,
+        0.0133,
+        0.1161
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0057,
+     -0.0222,
+     0.0388
+    ]
+   }
+  },
+  "recall_three_legs_distinct": {
+   "random|1": {
+    "n": {
+     "adjacent": 118,
+     "far": 52
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 118,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 52,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 118,
+     "far": 52
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 118,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 52,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 118,
+     "far": 52
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0085,
+        0.0,
+        0.0294
+       ]
+      },
+      "original": {
+       "count": 117,
+       "share": [
+        0.9915,
+        0.9706,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 52,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 118,
+     "far": 52
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 4,
+       "share": [
+        0.0339,
+        0.0075,
+        0.0738
+       ]
+      },
+      "original": {
+       "count": 112,
+       "share": [
+        0.9492,
+        0.8917,
+        0.9865
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0169,
+        0.0,
+        0.0463
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0577,
+        0.0,
+        0.1277
+       ]
+      },
+      "original": {
+       "count": 47,
+       "share": [
+        0.9038,
+        0.7959,
+        0.9818
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0192,
+        0.0,
+        0.0698
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0192,
+        0.0,
+        0.0635
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0023,
+     -0.0377,
+     0.0571
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 118,
+     "far": 52
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 5,
+       "share": [
+        0.0424,
+        0.0074,
+        0.1
+       ]
+      },
+      "original": {
+       "count": 108,
+       "share": [
+        0.9153,
+        0.821,
+        0.9766
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0339,
+        0.0,
+        0.0833
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0085,
+        0.0,
+        0.0309
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0577,
+        0.0,
+        0.1277
+       ]
+      },
+      "original": {
+       "count": 43,
+       "share": [
+        0.8269,
+        0.7045,
+        0.9333
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.0577,
+        0.0,
+        0.1552
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0577,
+        0.0,
+        0.122
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0238,
+     -0.0569,
+     0.1275
+    ]
+   }
+  }
+ },
+ "nemotron-3.5-lightning": {
+  "run": "nem35l_x52_write",
+  "lookup": {
+   "random|1": {
+    "n": {
+     "adjacent": 390,
+     "far": 210
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 390,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 210,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 390,
+     "far": 210
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 390,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 210,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 390,
+     "far": 210
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.0205,
+        0.0059,
+        0.0373
+       ]
+      },
+      "original": {
+       "count": 381,
+       "share": [
+        0.9769,
+        0.9594,
+        0.9919
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0026,
+        0.0,
+        0.0087
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 7,
+       "share": [
+        0.0333,
+        0.01,
+        0.0625
+       ]
+      },
+      "original": {
+       "count": 197,
+       "share": [
+        0.9381,
+        0.8991,
+        0.9719
+       ]
+      },
+      "third": {
+       "count": 6,
+       "share": [
+        0.0286,
+        0.0059,
+        0.0541
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.026,
+     0.0027,
+     0.052
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 390,
+     "far": 210
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 168,
+       "share": [
+        0.4308,
+        0.381,
+        0.4791
+       ]
+      },
+      "original": {
+       "count": 215,
+       "share": [
+        0.5513,
+        0.5029,
+        0.6009
+       ]
+      },
+      "third": {
+       "count": 7,
+       "share": [
+        0.0179,
+        0.0073,
+        0.0308
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 134,
+       "share": [
+        0.6381,
+        0.5771,
+        0.7019
+       ]
+      },
+      "original": {
+       "count": 42,
+       "share": [
+        0.2,
+        0.1429,
+        0.2548
+       ]
+      },
+      "third": {
+       "count": 34,
+       "share": [
+        0.1619,
+        0.1211,
+        0.2094
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.144,
+     0.0989,
+     0.1924
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 390,
+     "far": 210
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 236,
+       "share": [
+        0.6051,
+        0.5567,
+        0.6493
+       ]
+      },
+      "original": {
+       "count": 141,
+       "share": [
+        0.3615,
+        0.3161,
+        0.409
+       ]
+      },
+      "third": {
+       "count": 13,
+       "share": [
+        0.0333,
+        0.0165,
+        0.0541
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 176,
+       "share": [
+        0.8381,
+        0.7902,
+        0.8792
+       ]
+      },
+      "original": {
+       "count": 7,
+       "share": [
+        0.0333,
+        0.0133,
+        0.0562
+       ]
+      },
+      "third": {
+       "count": 27,
+       "share": [
+        0.1286,
+        0.087,
+        0.1753
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0953,
+     0.0492,
+     0.1429
+    ]
+   }
+  },
+  "recall_non_colliding": {
+   "random|1": {
+    "n": {
+     "adjacent": 329,
+     "far": 172
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 329,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 172,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 329,
+     "far": 172
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0061,
+        0.0,
+        0.0158
+       ]
+      },
+      "original": {
+       "count": 326,
+       "share": [
+        0.9909,
+        0.9801,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.003,
+        0.0,
+        0.0096
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0058,
+        0.0,
+        0.0192
+       ]
+      },
+      "original": {
+       "count": 168,
+       "share": [
+        0.9767,
+        0.9474,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0174,
+        0.0,
+        0.0366
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 329,
+     "far": 172
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 6,
+       "share": [
+        0.0182,
+        0.0053,
+        0.0352
+       ]
+      },
+      "original": {
+       "count": 322,
+       "share": [
+        0.9787,
+        0.9587,
+        0.9943
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.003,
+        0.0,
+        0.0101
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0174,
+        0.0,
+        0.0428
+       ]
+      },
+      "original": {
+       "count": 168,
+       "share": [
+        0.9767,
+        0.9503,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0058,
+        0.0,
+        0.0192
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 329,
+     "far": 172
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 80,
+       "share": [
+        0.2432,
+        0.1906,
+        0.2962
+       ]
+      },
+      "original": {
+       "count": 241,
+       "share": [
+        0.7325,
+        0.6735,
+        0.7911
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.0091,
+        0.0,
+        0.0194
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0152,
+        0.003,
+        0.0306
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 60,
+       "share": [
+        0.3488,
+        0.2622,
+        0.435
+       ]
+      },
+      "original": {
+       "count": 101,
+       "share": [
+        0.5872,
+        0.5025,
+        0.6747
+       ]
+      },
+      "third": {
+       "count": 6,
+       "share": [
+        0.0349,
+        0.0124,
+        0.06
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0291,
+        0.0058,
+        0.0584
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0258,
+     0.0024,
+     0.052
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 329,
+     "far": 172
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 123,
+       "share": [
+        0.3739,
+        0.3047,
+        0.4413
+       ]
+      },
+      "original": {
+       "count": 193,
+       "share": [
+        0.5866,
+        0.509,
+        0.6689
+       ]
+      },
+      "third": {
+       "count": 8,
+       "share": [
+        0.0243,
+        0.0079,
+        0.043
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0152,
+        0.003,
+        0.0303
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 79,
+       "share": [
+        0.4593,
+        0.3522,
+        0.5567
+       ]
+      },
+      "original": {
+       "count": 73,
+       "share": [
+        0.4244,
+        0.3237,
+        0.5337
+       ]
+      },
+      "third": {
+       "count": 15,
+       "share": [
+        0.0872,
+        0.0496,
+        0.125
+       ]
+      },
+      "other": {
+       "count": 5,
+       "share": [
+        0.0291,
+        0.0055,
+        0.061
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0629,
+     0.026,
+     0.1024
+    ]
+   }
+  },
+  "recall_three_legs_distinct": {
+   "random|1": {
+    "n": {
+     "adjacent": 122,
+     "far": 78
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 122,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 78,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 122,
+     "far": 78
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 122,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 76,
+       "share": [
+        0.9744,
+        0.9403,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0256,
+        0.0,
+        0.0597
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 122,
+     "far": 78
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0082,
+        0.0,
+        0.0278
+       ]
+      },
+      "original": {
+       "count": 120,
+       "share": [
+        0.9836,
+        0.9444,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0082,
+        0.0,
+        0.0278
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 77,
+       "share": [
+        0.9872,
+        0.9559,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0128,
+        0.0,
+        0.0441
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 122,
+     "far": 78
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 30,
+       "share": [
+        0.2459,
+        0.1624,
+        0.3333
+       ]
+      },
+      "original": {
+       "count": 85,
+       "share": [
+        0.6967,
+        0.5909,
+        0.8015
+       ]
+      },
+      "third": {
+       "count": 3,
+       "share": [
+        0.0246,
+        0.0,
+        0.0526
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0328,
+        0.0,
+        0.0704
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 23,
+       "share": [
+        0.2949,
+        0.2121,
+        0.4026
+       ]
+      },
+      "original": {
+       "count": 45,
+       "share": [
+        0.5769,
+        0.4688,
+        0.6703
+       ]
+      },
+      "third": {
+       "count": 6,
+       "share": [
+        0.0769,
+        0.0306,
+        0.127
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0513,
+        0.0127,
+        0.099
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0523,
+     -0.0013,
+     0.1107
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 122,
+     "far": 78
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 47,
+       "share": [
+        0.3852,
+        0.2857,
+        0.4786
+       ]
+      },
+      "original": {
+       "count": 65,
+       "share": [
+        0.5328,
+        0.4272,
+        0.6542
+       ]
+      },
+      "third": {
+       "count": 8,
+       "share": [
+        0.0656,
+        0.0236,
+        0.113
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0164,
+        0.0,
+        0.0492
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 31,
+       "share": [
+        0.3974,
+        0.3115,
+        0.4842
+       ]
+      },
+      "original": {
+       "count": 28,
+       "share": [
+        0.359,
+        0.2553,
+        0.4576
+       ]
+      },
+      "third": {
+       "count": 15,
+       "share": [
+        0.1923,
+        0.1154,
+        0.2778
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0513,
+        0.0,
+        0.1094
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.1267,
+     0.0439,
+     0.2235
+    ]
+   }
+  }
+ },
+ "qwen3.5-122b-a10b": {
+  "run": "qwen35_122b_x8_write_g75",
+  "lookup": {
+   "random|1": {
+    "n": {
+     "adjacent": 403,
+     "far": 197
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 403,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 197,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 403,
+     "far": 197
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0025,
+        0.0,
+        0.0085
+       ]
+      },
+      "original": {
+       "count": 401,
+       "share": [
+        0.995,
+        0.9868,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0025,
+        0.0,
+        0.0085
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0051,
+        0.0,
+        0.0176
+       ]
+      },
+      "original": {
+       "count": 196,
+       "share": [
+        0.9949,
+        0.9824,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     -0.0025,
+     -0.0085,
+     0.0
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 403,
+     "far": 197
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0074,
+        0.0,
+        0.0163
+       ]
+      },
+      "original": {
+       "count": 400,
+       "share": [
+        0.9926,
+        0.9837,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 197,
+       "share": [
+        1.0,
+        1.0,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 403,
+     "far": 197
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 165,
+       "share": [
+        0.4094,
+        0.3755,
+        0.4486
+       ]
+      },
+      "original": {
+       "count": 233,
+       "share": [
+        0.5782,
+        0.5356,
+        0.6154
+       ]
+      },
+      "third": {
+       "count": 5,
+       "share": [
+        0.0124,
+        0.0027,
+        0.0236
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 134,
+       "share": [
+        0.6802,
+        0.6039,
+        0.75
+       ]
+      },
+      "original": {
+       "count": 50,
+       "share": [
+        0.2538,
+        0.1802,
+        0.3353
+       ]
+      },
+      "third": {
+       "count": 13,
+       "share": [
+        0.066,
+        0.037,
+        0.0987
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0536,
+     0.0194,
+     0.0901
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 403,
+     "far": 197
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 235,
+       "share": [
+        0.5831,
+        0.5393,
+        0.6309
+       ]
+      },
+      "original": {
+       "count": 142,
+       "share": [
+        0.3524,
+        0.3073,
+        0.3929
+       ]
+      },
+      "third": {
+       "count": 26,
+       "share": [
+        0.0645,
+        0.0444,
+        0.0868
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 160,
+       "share": [
+        0.8122,
+        0.7597,
+        0.861
+       ]
+      },
+      "original": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "third": {
+       "count": 37,
+       "share": [
+        0.1878,
+        0.139,
+        0.2403
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.1233,
+     0.0635,
+     0.1851
+    ]
+   }
+  },
+  "recall_non_colliding": {
+   "random|1": {
+    "n": {
+     "adjacent": 345,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0158
+       ]
+      },
+      "original": {
+       "count": 340,
+       "share": [
+        0.9855,
+        0.9674,
+        0.9974
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0087,
+        0.0,
+        0.0241
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0214
+       ]
+      },
+      "original": {
+       "count": 159,
+       "share": [
+        0.9876,
+        0.9662,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0226
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0062,
+     0.0,
+     0.0226
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 345,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 4,
+       "share": [
+        0.0116,
+        0.0026,
+        0.0249
+       ]
+      },
+      "original": {
+       "count": 338,
+       "share": [
+        0.9797,
+        0.9601,
+        0.9942
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0087,
+        0.0,
+        0.0241
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 5,
+       "share": [
+        0.0311,
+        0.0054,
+        0.0725
+       ]
+      },
+      "original": {
+       "count": 154,
+       "share": [
+        0.9565,
+        0.9091,
+        0.988
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0226
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0221
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0062,
+     0.0,
+     0.0226
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 345,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.0232,
+        0.0098,
+        0.041
+       ]
+      },
+      "original": {
+       "count": 336,
+       "share": [
+        0.9739,
+        0.9551,
+        0.9882
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0029,
+        0.0,
+        0.01
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 7,
+       "share": [
+        0.0435,
+        0.0169,
+        0.0789
+       ]
+      },
+      "original": {
+       "count": 153,
+       "share": [
+        0.9503,
+        0.9125,
+        0.9787
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0062,
+        0.0,
+        0.0226
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0062,
+     0.0,
+     0.0226
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 345,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 65,
+       "share": [
+        0.1884,
+        0.1321,
+        0.2656
+       ]
+      },
+      "original": {
+       "count": 271,
+       "share": [
+        0.7855,
+        0.7079,
+        0.8442
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0058,
+        0.0,
+        0.0148
+       ]
+      },
+      "other": {
+       "count": 7,
+       "share": [
+        0.0203,
+        0.0053,
+        0.0393
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 44,
+       "share": [
+        0.2733,
+        0.1867,
+        0.3869
+       ]
+      },
+      "original": {
+       "count": 109,
+       "share": [
+        0.677,
+        0.5528,
+        0.7674
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0248,
+        0.0053,
+        0.0548
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0248,
+        0.0,
+        0.0602
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.019,
+     -0.0028,
+     0.0501
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 345,
+     "far": 161
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 132,
+       "share": [
+        0.3826,
+        0.3048,
+        0.4783
+       ]
+      },
+      "original": {
+       "count": 194,
+       "share": [
+        0.5623,
+        0.4612,
+        0.6463
+       ]
+      },
+      "third": {
+       "count": 6,
+       "share": [
+        0.0174,
+        0.0063,
+        0.0293
+       ]
+      },
+      "other": {
+       "count": 13,
+       "share": [
+        0.0377,
+        0.0136,
+        0.0676
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 79,
+       "share": [
+        0.4907,
+        0.3582,
+        0.6296
+       ]
+      },
+      "original": {
+       "count": 64,
+       "share": [
+        0.3975,
+        0.2667,
+        0.5183
+       ]
+      },
+      "third": {
+       "count": 9,
+       "share": [
+        0.0559,
+        0.0229,
+        0.096
+       ]
+      },
+      "other": {
+       "count": 9,
+       "share": [
+        0.0559,
+        0.0112,
+        0.1176
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0385,
+     0.0095,
+     0.0742
+    ]
+   }
+  },
+  "recall_three_legs_distinct": {
+   "random|1": {
+    "n": {
+     "adjacent": 112,
+     "far": 42
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0089,
+        0.0,
+        0.0341
+       ]
+      },
+      "original": {
+       "count": 109,
+       "share": [
+        0.9732,
+        0.9239,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0179,
+        0.0,
+        0.0612
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 41,
+       "share": [
+        0.9762,
+        0.9143,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0857
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0238,
+     0.0,
+     0.0857
+    ]
+   },
+   "random|4": {
+    "n": {
+     "adjacent": 112,
+     "far": 42
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 2,
+       "share": [
+        0.0179,
+        0.0,
+        0.0515
+       ]
+      },
+      "original": {
+       "count": 108,
+       "share": [
+        0.9643,
+        0.9111,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 2,
+       "share": [
+        0.0179,
+        0.0,
+        0.0612
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "original": {
+       "count": 40,
+       "share": [
+        0.9524,
+        0.8649,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0857
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0857
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0238,
+     0.0,
+     0.0857
+    ]
+   },
+   "write|1": {
+    "n": {
+     "adjacent": 112,
+     "far": 42
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 3,
+       "share": [
+        0.0268,
+        0.0,
+        0.0606
+       ]
+      },
+      "original": {
+       "count": 108,
+       "share": [
+        0.9643,
+        0.9263,
+        0.9916
+       ]
+      },
+      "third": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0089,
+        0.0,
+        0.0306
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0714
+       ]
+      },
+      "original": {
+       "count": 40,
+       "share": [
+        0.9524,
+        0.8788,
+        1.0
+       ]
+      },
+      "third": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0857
+       ]
+      },
+      "other": {
+       "count": 0,
+       "share": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0238,
+     0.0,
+     0.0857
+    ]
+   },
+   "write|2": {
+    "n": {
+     "adjacent": 112,
+     "far": 42
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 20,
+       "share": [
+        0.1786,
+        0.1197,
+        0.2568
+       ]
+      },
+      "original": {
+       "count": 86,
+       "share": [
+        0.7679,
+        0.6796,
+        0.8443
+       ]
+      },
+      "third": {
+       "count": 2,
+       "share": [
+        0.0179,
+        0.0,
+        0.0446
+       ]
+      },
+      "other": {
+       "count": 4,
+       "share": [
+        0.0357,
+        0.0,
+        0.0708
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 8,
+       "share": [
+        0.1905,
+        0.0667,
+        0.32
+       ]
+      },
+      "original": {
+       "count": 29,
+       "share": [
+        0.6905,
+        0.5476,
+        0.8205
+       ]
+      },
+      "third": {
+       "count": 4,
+       "share": [
+        0.0952,
+        0.0208,
+        0.2122
+       ]
+      },
+      "other": {
+       "count": 1,
+       "share": [
+        0.0238,
+        0.0,
+        0.0714
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.0773,
+     -0.0044,
+     0.1966
+    ]
+   },
+   "write|4": {
+    "n": {
+     "adjacent": 112,
+     "far": 42
+    },
+    "shares": {
+     "adjacent": {
+      "target": {
+       "count": 39,
+       "share": [
+        0.3482,
+        0.2597,
+        0.4524
+       ]
+      },
+      "original": {
+       "count": 59,
+       "share": [
+        0.5268,
+        0.398,
+        0.6415
+       ]
+      },
+      "third": {
+       "count": 6,
+       "share": [
+        0.0536,
+        0.0213,
+        0.0862
+       ]
+      },
+      "other": {
+       "count": 8,
+       "share": [
+        0.0714,
+        0.0205,
+        0.1322
+       ]
+      }
+     },
+     "far": {
+      "target": {
+       "count": 18,
+       "share": [
+        0.4286,
+        0.2632,
+        0.5714
+       ]
+      },
+      "original": {
+       "count": 12,
+       "share": [
+        0.2857,
+        0.1389,
+        0.4444
+       ]
+      },
+      "third": {
+       "count": 9,
+       "share": [
+        0.2143,
+        0.0952,
+        0.359
+       ]
+      },
+      "other": {
+       "count": 3,
+       "share": [
+        0.0714,
+        0.0,
+        0.1667
+       ]
+      }
+     }
+    },
+    "third_gap_far_minus_adjacent": [
+     0.1607,
+     0.0495,
+     0.2966
+    ]
+   }
+  }
+ },
+ "_verdict": {
+  "lookup": {
+   "models_with_write_gap_above_0_at_s1_or_s2": [
+    "qwen3.5-9b",
+    "qwen3.6-27b",
+    "muse-glimmer-30b",
+    "nemotron-3.5-lightning",
+    "qwen3.5-122b-a10b"
+   ],
+   "models_with_random_gap_above_0": [
+    "qwen3.6-27b",
+    "muse-glimmer-30b"
+   ],
+   "verdict": "third is generic disruption"
+  },
+  "recall_non_colliding": {
+   "models_with_write_gap_above_0_at_s1_or_s2": [
+    "qwen3.5-9b",
+    "nemotron-3.5-lightning"
+   ],
+   "models_with_random_gap_above_0": [],
+   "verdict": "third is generic disruption"
+  },
+  "recall_three_legs_distinct": {
+   "models_with_write_gap_above_0_at_s1_or_s2": [],
+   "models_with_random_gap_above_0": [],
+   "verdict": "third is generic disruption"
+  }
+ }
+}
