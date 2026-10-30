@@ -7,8 +7,12 @@ tokens_of: eleven languages, 4 spellings, whole tokens only, no lone I / V / X).
 part's size-matched random twin is rebuilt from the part's own share, so the twins of arms 2-4 follow the larger A.
 
 Order inside one process (the model is loaded once): (1) pre-flight = the English set through this driver's code, its per-reader
-per-arm switch counts compared with the saved outcomes.jsonl; any difference stops the run before the all-languages arms.
-(2) the all-languages arms. Read-only on every existing run; writes runs/answer_arms_translated/<model>/.
+per-arm switch counts compared with the saved outcomes.jsonl. First attempt (30 Oct): counts had to be equal; it stopped (3 of
+3200 rows differed, all in random-twin arms; runs/.../preflight_stop_20261030). Second gate (Dan 30 Oct, pre-set before this run):
+the non-random arms (none, whole, no_jpp, no_jpp_A, no_A) must match exactly, every random-twin arm (*_rand) within +-1 switch;
+then, for each row that differs, the top-1 vs top-2 logit margin in this run and in the saved run must both be < 0.5 ("numerical
+noise, confirmed"), else stop and report. (2) the all-languages arms, original decision rule unchanged. Read-only on every
+existing run; writes runs/answer_arms_translated/<model>/<tag>/.
 
 Pre-set rule (written to the manifest before the numbers, not changed after): the claim changes only if, on the recall (the
 decisive reader of E1), (a) "answer directions only" (arm 3, all languages) blocks more than its size-matched random part
@@ -75,7 +79,58 @@ def read_arms(model, lens, items, toks_a, deltas, sources, jdic, basis, layer, d
     rows = []
     for i, it in enumerate(progress(items, f"{label}: {len(A.ARMS) + 1} arms x readers (item)")):
         rows += A.read_item(model, "e1", it, layer, arms, i, digits, ws)
-    return rows, norms
+    return rows, norms, arms
+
+
+def gate_counts(c_new: dict, c_old: dict) -> dict:
+    """The second gate's count rule: non-random arms exact, random-twin arms (*_rand) within +-1."""
+    diffs = []
+    for rid in c_old:
+        for arm, old in c_old[rid].items():
+            new = c_new[rid][arm]
+            tol = 1 if arm.endswith("_rand") else 0
+            diffs.append(
+                {"reader": rid, "arm": arm, "saved": old, "now": new, "tolerance": tol, "ok": abs(new - old) <= tol}
+            )
+    return {"ok": all(d["ok"] for d in diffs), "arms": diffs}
+
+
+def margin_check(model, items, arms, rows_new, saved, layer, ws, near: float = 0.5) -> list[dict]:
+    """For each row whose switch differs from the saved run: the top-1 vs top-2 logit margin of this run (the read re-done as
+    read_item does it, same batch, same edits), and the saved run's, which is not stored: the saved row has the top token, p and
+    ld = logit(alt) - logit(org), so when the saved top is the alt or org answer token and this run's top two are those two tokens
+    the saved margin is |ld| (inferred, flagged); otherwise None (cannot be confirmed)."""
+    from scripts.exp04_brew_parts import AddRows
+
+    old = {(r["key"], r["reader"], r["arm"]): r for r in saved}
+    index = {it["key"]: i for i, it in enumerate(items)}
+    names = A.arms_of("e1")
+    out = []
+    for r in rows_new:
+        o = old[(r["key"], r["reader"], r["arm"])]
+        if int(r["sw"]) == int(o["sw"]):
+            continue
+        i = index[r["key"]]
+        it = items[i]
+        rd = it["readers"][r["reader"]]
+        edits = [{}] + [{layer: AddRows(arms[rd["src"]][a][i : i + 1], [rd["pos"]])} for a in names]
+        logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", rd["suffix"], ws)
+        lg = logits[("none", *names).index(r["arm"])].float()
+        v, ix = lg.topk(2)
+        pair = {int(ix[0]), int(ix[1])}
+        margin = float(v[0] - v[1])
+        saved_margin = (
+            abs(float(o["ld"]))
+            if o["top"] in (rd["tok_A"], rd["tok_b"]) and pair == {rd["tok_A"], rd["tok_b"]}
+            else None
+        )
+        out.append({"key": r["key"], "reader": r["reader"], "arm": r["arm"], "saved_sw": int(o["sw"]), "now_sw": int(r["sw"]),
+                    "now_top1": int(ix[0]), "now_top2": int(ix[1]), "now_top_matches_row": int(ix[0]) == int(r["top"]),
+                    "now_margin": round(margin, 4), "now_ld_alt_minus_org": round(float(lg[rd["tok_b"]] - lg[rd["tok_A"]]), 4),
+                    "saved_top": o["top"], "saved_ld_alt_minus_org": o["ld"], "saved_p_org": o["p_org"], "saved_p_alt": o["p_alt"],
+                    "saved_margin_inferred": None if saved_margin is None else round(saved_margin, 4),
+                    "near_tie": bool(margin < near and saved_margin is not None and saved_margin < near)})  # fmt: skip
+    return out
 
 
 def numbers(rows: list[dict], n_boot: int) -> dict:
@@ -125,6 +180,9 @@ def decide(en: dict, al: dict) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True)
+    ap.add_argument(
+        "--tag", default="run2", help="output subfolder (the first attempt's pre-flight stop is kept apart)"
+    )
     a = ap.parse_args()
     import torch
 
@@ -137,7 +195,7 @@ def main() -> None:
     target = pins.TARGET
     layer = A.layer_of("e1", target)
     src = A.RESULTS / a.run
-    out = OUT_ROOT / target
+    out = OUT_ROOT / target / a.tag
     out.mkdir(parents=True, exist_ok=False)
     cases = X.read_jsonl(src / "cases.jsonl")
     items = [{k: v for k, v in c.items() if k != "tokens"} for c in cases]
@@ -153,7 +211,10 @@ def main() -> None:
         "english_set": "the run's own A (cases.jsonl tokens.A)",
         "all_languages_set": "the English set + tokens_of() translations of the items' answer values (answer_translation_check: eleven languages, 4 spellings, whole tokens, no lone I/V/X)",
         "size_matched_random": "each part's random twin rebuilt from the part's own share (x6_routes.removal_arms), seed 888 + layer",
-        "preflight": "English set through this driver; per reader per arm switch counts must equal the saved outcomes.jsonl, else stop",
+        "preflight_first_attempt": "exact counts; STOPPED (3 of 3200 rows differed, random-twin arms only): runs/answer_arms_translated/muse-glimmer-30b/preflight_stop_20261030",
+        "preflight": "second gate (Dan 30 Oct): English set through this driver; non-random arms (none, whole, no_jpp, no_jpp_A, no_A) must equal the saved outcomes.jsonl counts exactly, every random-twin arm (*_rand) within +-1; else stop",
+        "margin_check": "for each row whose switch differs from the saved run: top-1 vs top-2 logit margin in this run and in the saved run (saved margin inferred from its stored ld when the top two are the alt and org answer tokens); all < 0.5: log 'numerical noise, confirmed'; else stop and report",
+        "saved_run_code": "the saved run's manifest has code dirty = true (sha 15938ce4d9798bc9986bebafcd95db9b81f53e19)",
         "decision_rule": DECISION,
         "decisive_reader": "recall (PM)",
         "seed_for_random_items": SEED,
@@ -192,7 +253,7 @@ def main() -> None:
         letters = model.letter_token_ids()
         jdic = lens.vectors(layer, letters).to(dev)
         basis = SP.random_basis(jdic.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to(dev)
-        rows_en, norms_en = read_arms(
+        rows_en, norms_en, arms_en = read_arms(
             model,
             lens,
             items,
@@ -210,15 +271,41 @@ def main() -> None:
         X.write_jsonl(out / "outcomes_english.jsonl", rows_en)
         X.write_jsonl(out / "norms_english.jsonl", norms_en)
         c_new, c_old = counts(rows_en), counts(saved)
-        pre = {"match": c_new == c_old, "counts_driver": c_new, "counts_saved": c_old,
+        gate = gate_counts(c_new, c_old)
+        pre = {"match": c_new == c_old, "gate2_counts": gate, "counts_driver": c_new, "counts_saved": c_old,
                "rows_agreeing": sum(1 for r in rows_en if {(s["key"], s["reader"], s["arm"]): int(s["sw"]) for s in saved}.get((r["key"], r["reader"], r["arm"])) == int(r["sw"])),
                "rows": len(rows_en)}  # fmt: skip
         (out / "preflight.json").write_text(json.dumps(pre, indent=1) + "\n")
-        print("pre-flight:", json.dumps({k: pre[k] for k in ("match", "rows_agreeing", "rows")}), flush=True)
-        if not pre["match"]:
-            print("PRE-FLIGHT DID NOT MATCH the saved outcomes: stop (counts in preflight.json)", flush=True)
+        print(
+            "pre-flight:",
+            json.dumps(
+                {
+                    "exact": pre["match"],
+                    "gate2_ok": gate["ok"],
+                    "rows_agreeing": pre["rows_agreeing"],
+                    "rows": pre["rows"],
+                }
+            ),
+            flush=True,
+        )
+        if not gate["ok"]:
+            print("PRE-FLIGHT (second gate, counts) FAILED: stop (preflight.json)", flush=True)
             sys.exit(2)
-        rows_al, norms_al = read_arms(
+        margins = margin_check(model, items, arms_en, rows_en, saved, layer, ws)
+        pre["margins"] = margins
+        pre["margin_verdict"] = (
+            "numerical noise, confirmed"
+            if margins and all(m["near_tie"] for m in margins)
+            else ("no differing rows" if not margins else "NOT near-ties")
+        )
+        (out / "preflight.json").write_text(json.dumps(pre, indent=1) + "\n")
+        for m in margins:
+            print("differing row:", json.dumps(m), flush=True)
+        print("margin check:", pre["margin_verdict"], flush=True)
+        if margins and not all(m["near_tie"] for m in margins):
+            print("MARGIN CHECK FAILED: stop and report (preflight.json)", flush=True)
+            sys.exit(3)
+        rows_al, norms_al, _ = read_arms(
             model, lens, items, translated, deltas, sources, jdic, basis, layer, digits, ws, "all languages", progress
         )
         X.write_jsonl(out / "outcomes_all_languages.jsonl", rows_al)
@@ -238,7 +325,7 @@ def main() -> None:
             "mean_share_A_english": mean_share(norms_en),
             "mean_share_A_all_languages": mean_share(norms_al),
         },
-        "preflight_match": True,
+        "preflight_gate2": pre["margin_verdict"],
         "english": en,
         "all_languages": al,
         "decision": decide(en, al),

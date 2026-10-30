@@ -31,11 +31,31 @@ remains), **not done** (a check is still open).
 - **Effect on claims.** f5 unchanged. The 51.12 verdicts are unchanged. One caveat line added to the answer-control section of the depth
   README ("The answer control used English answer words only ...").
 - **Status.** Limitation. The label check is closed. The arms with translated answer directions (arms 2 and 3 rebuilt with the answer
-  directions in every language, with the size-matched random parts rebuilt) are **not done**.
+  directions in every language, with the size-matched random parts rebuilt): done, post hoc, Muse only; the pre-set rule says the claim
+  changes (see below); README and deck not yet edited.
   Post hoc attempt (30 Oct, `scripts/answer_arms_translated.py`, `runs/answer_arms_translated/muse-glimmer-30b/preflight_stop_20261030`):
   stopped at the pre-flight. The English-only set through the new driver reproduced the saved `muse30_x51_12_e1_r2` switches in
   3197 of 3200 rows, not all: three arm counts differ by 1 (recall `no_jpp_rand` 123 vs 122 saved, recall `no_A_rand` 117 vs 118,
   lookup `no_jpp_rand` 61 vs 62); all other counts equal. The all-languages arms were not run.
+  Second gate (pre-set by Dan before the rerun, written to `runs/answer_arms_translated/muse-glimmer-30b/run2/manifest.json` first):
+  the non-random arms must match the saved counts exactly, every random-twin arm within ±1 switch; for each differing row the
+  top-1 vs top-2 logit margin in this run and in the saved run must both be < 0.5 ("numerical noise, confirmed"), else stop.
+  Note: the saved run's manifest has `code.dirty = true` (sha 15938ce4), so the saved numbers were not produced from a clean checkout.
+  Result: counts passed (same 3 rows differ, all random-twin arms, by 1). Margins: P2-L0-0037 recall `no_jpp_rand` 0.25 now / 0.0
+  saved; P2-L0-0044 recall `no_A_rand` 0.125 / 0.125; P2-L0-0093 lookup `no_jpp_rand` 0.0 now (this row's standalone re-read
+  gives a different top token than the driver's row, itself a tie) / 0.125 saved. The saved margins are not stored: they are inferred
+  from the saved `ld` (alt minus org logit) because the top two were the alt and org answer tokens. All three below 0.5: numerical noise,
+  confirmed. The all-languages arms then ran (post hoc; same run, items, layer 26, seed, lens; 200 items; answer directions 14.9 per
+  item English, 102.0 all languages; share of ||Δ||² in A 0.0099 → 0.0521; size-matched random parts rebuilt).
+  Pre-set rule (unchanged): the claim changes only if, on the recall, (a) arm 3 (answer directions only, all languages) beats its
+  size-matched random part with the 95% interval excluding 0, or (b) arm 2 (without the lens part, answer directions kept) blocks a
+  different share from the English-only arm with non-overlapping intervals. Result: (a) holds. Recall, arm 3, extra loss (S_rand − S_arm)/S_whole
+  = 0.085, 95% cluster-bootstrap interval [0.018, 0.154] (English-only: −0.017 [−0.055, 0.014]); switches blocked 6 of 118 against −4
+  for the random part. (b) does not hold: arm 2 blocks 0.678 [0.521, 0.788] English-only, 0.483 [0.362, 0.585] all languages (overlap).
+  Lookup: unchanged ("can't tell": arm 1 has no extra loss beyond random). The code's label for the recall moves from "the lens effect
+  is the entity" to "mixed" (arm 2 keeps 0.5 / 0.771 of arm 1's extra loss, below its 0.7 bar). By the pre-set rule the claim changes
+  on Muse; the lower end of (a)'s interval is 0.018 and the random part's count is negative, so it is a thin margin. The README and deck
+  are not edited; this needs your decision.
 
 ## F2. Recall route collision in C2
 
