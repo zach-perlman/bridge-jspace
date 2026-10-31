@@ -163,3 +163,47 @@ def f_depth_curves() -> None:
 
 def f_depth_curves_all() -> None:
     _depth_fig(tuple(DEPTH), "f13c_depth_curves_all", FS - 0.5)
+
+
+# ---- f16: claim 1's ladder -------------------------------------------------------------------------------------------------
+RUNG_LABEL = {1: "one\nlayer", 2: "L to\nL+3", 3: "+ earlier\nmention", 4: "+ the\nquestion", 5: "every\ntoken\nL to L+3", 6: "Zach's lens\ndirections"}
+RUNG_X = {1: 1.0, 2: 2.0, 3: 3.0, 4: 4.2, 5: 5.35, 6: 6.55}  # rungs 3-5 a little apart for their labels; rung 6 (Zach's definition) stands a little apart
+OWN = "the random part's own cost (kept with none minus kept with the random part)"
+
+
+def f_ladder() -> None:
+    """The ladder (fig01d) for the deck: per model the six rungs of taking the lens part out of the changed prompt, the recall (locker before the pick, dark)
+    and the lookup (purple), accuracy drop beyond a random part in points with 95% whiskers, the random part's own cost as a thin grey tick inside each bar."""
+    models = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
+    fig, axes = plt.subplots(1, 3, figsize=(W, H), sharey=True)
+    fig.subplots_adjust(left=0.05, right=0.995, top=1 - 1.7 / H, bottom=1.5 / H, wspace=0.07)
+    for k, (ax, m) in enumerate(zip(axes, models, strict=True)):
+        ax.set_title(NAME[m], fontsize=FS + 2, weight="bold", loc="left", pad=8)
+        for reader, label, col, dx in (("recall, locker before the pick", "recall", C["recall"], -0.2), ("lookup, every scene", "lookup", C["lookup"], 0.2)):
+            for r, x0 in RUNG_X.items():
+                v = D.s(m, f"rung {r}: {reader}: answers lost beyond random", "fig01d")
+                own = D.s(m, f"rung {r}: {reader}: {OWN}", "fig01d")[0]
+                x, val, lo, hi = x0 + dx, 100 * v[0], 100 * v[1], 100 * v[2]
+                ax.bar(x, val, width=0.36, color=col, zorder=2)
+                ax.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.3, zorder=4, solid_capstyle="butt")
+                ax.plot([x - 0.18, x + 0.18], [100 * own] * 2, color=C["control"], lw=2.4, zorder=5, solid_capstyle="butt")
+                ax.annotate(f"{round(val) or 0:d}", (x, max(hi, val)), xytext=(0, 3), textcoords="offset points", ha="center", va="bottom", fontsize=FS - 1.5, color=INK)
+        ax.axhline(0, color="#999999", lw=0.8, zorder=1)
+        ax.axhline(10, color="#8C8C8C", ls="--", lw=1.3, zorder=1)
+        ax.set_xlim(0.4, 7.2)
+        ax.set_ylim(-4, 74)
+        ax.set_xticks(list(RUNG_X.values()), [RUNG_LABEL[r] for r in RUNG_X])
+        ax.set_yticks([0, 20, 40, 60])
+        ax.tick_params(labelsize=9.4, length=3, color=FAINT)
+        ax.set_xlabel("the six rungs", fontsize=FS - 1, color=MUTED, labelpad=3)
+        for sp in ("top", "right"):
+            ax.spines[sp].set_visible(False)
+        ax.spines["left"].set_color(FAINT)
+        ax.spines["bottom"].set_color(FAINT)
+        ax.grid(axis="y", color="#EEEEEE")
+        ax.set_axisbelow(True)
+    _key(fig, [[("■", C["recall"], "normal"), (" recall, locker before the pick      ", MUTED, "normal"), ("■", C["lookup"], "normal"), (" lookup      ", MUTED, "normal"),
+                ("▬", C["control"], "normal"), (" the random part's own cost      - - 10 points      whiskers: 95%", MUTED, "normal")],
+               [("one layer: followed, not needed (other copies); take the copies out: needed; the lookup never", INK, "normal")],
+               [("y axis: accuracy drop beyond a random part (points). Lightning (below its gate) and the 122B (no run) are not drawn.", MUTED, "normal")]], 1 - 0.22 / H)
+    _save(fig, "f16_ladder")
