@@ -1490,6 +1490,8 @@ def f03_order(plt) -> None:
             b.plot([at(xl)], [r[0]], "o", ms=8, color=S.COL["lookup"], mec="#1e1e1e", mew=1.0, zorder=6)
             S.record("fig03", target, f"45q, the rule's arm {arm}: {what} (lookups switched)", *r, n=lk["n"],
                      source=vsrc)  # fmt: skip
+        S.record("fig03", target, "45q: L, the rule's layer", la, source=vsrc)  # the deck's f15_link_crossover marks the rule's cells at L / 2 and L
+        S.record("fig03", target, "45q: L/2, the rule's half layer", half, source=vsrc)
         nq.append(str(mod["sanity"]["pass"]))
         ticks += [at(0), at(la), at(last)]
         tick_labels += ["0", str(la), str(last)]

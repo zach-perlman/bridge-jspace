@@ -256,6 +256,8 @@ fig03,qwen3.5-9b,"45q, layer 30: the copy into the locker sentences (lookups swi
 fig03,qwen3.5-9b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.1691542288557214,0.12,0.22275074696064287,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,qwen3.5-9b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.6965174129353234,0.6542540763571287,0.7351602685581244,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,qwen3.5-9b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.07462686567164178,0.046632124352331605,0.10358610602634506,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.5-9b,"45q: L, the rule's layer",12,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.5-9b,"45q: L/2, the rule's half layer",6,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,qwen3.6-27b,"45q, layer 0: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,qwen3.6-27b,"45q, layer 4: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,qwen3.6-27b,"45q, layer 8: the bridge-word change (lookups switched)",0.9826388888888888,0.9675511435467188,0.9962966379663797,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
@@ -293,6 +295,8 @@ fig03,qwen3.6-27b,"45q, layer 62: the copy into the locker sentences (lookups sw
 fig03,qwen3.6-27b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.013888888888888888,0.003367003367003367,0.027131782945736434,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,qwen3.6-27b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7430555555555556,0.6848249027237354,0.7985611510791367,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,qwen3.6-27b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.04861111111111111,0.016947364657083602,0.08591132409793814,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.6-27b,"45q: L, the rule's layer",32,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,qwen3.6-27b,"45q: L/2, the rule's half layer",16,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,muse-glimmer-30b,"45q, layer 0: the bridge-word change (lookups switched)",1.0,1.0,1.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,muse-glimmer-30b,"45q, layer 4: the bridge-word change (lookups switched)",0.9365853658536586,0.8936170212765957,0.9701492537313433,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,muse-glimmer-30b,"45q, layer 8: the bridge-word change (lookups switched)",0.8048780487804879,0.7521358543417367,0.851063829787234,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
@@ -324,6 +328,8 @@ fig03,muse-glimmer-30b,"45q, layer 50: the copy into the locker sentences (looku
 fig03,muse-glimmer-30b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.00975609756097561,0.0,0.025,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,muse-glimmer-30b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7560975609756098,0.6979166666666666,0.807909604519774,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,muse-glimmer-30b,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.47317073170731705,0.4128997940974605,0.5267868031358885,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,muse-glimmer-30b,"45q: L, the rule's layer",26,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03,muse-glimmer-30b,"45q: L/2, the rule's half layer",13,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
 fig03,nemotron-3.5-lightning,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.10429447852760736,0.060810810810810814,0.15079739442946985,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json
 fig03,nemotron-3.5-lightning,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7484662576687117,0.6853114478114478,0.8081415259636827,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json
 fig03,nemotron-3.5-lightning,"45q, the rule's arm d: copy at L/2, every locker-sentence token (lookups switched)",0.12269938650306748,0.07389162561576355,0.18181818181818182,163,results/x45b_binding/x52_45q_below-20261029T085135Z/x45q.json

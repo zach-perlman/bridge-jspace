@@ -12,6 +12,7 @@ import argparse
 from pathlib import Path
 
 from bridge_jspace.figkit import claim_figs as CF
+from bridge_jspace.figkit import curve_figs as CV
 from bridge_jspace.figkit import deck_figs as F
 from bridge_jspace.figkit import depth_figs as DF
 from bridge_jspace.figkit import dottable as T
@@ -25,12 +26,12 @@ DPI = {"readme": 160, "slide": 200, "depth": 160}
 FIGS = {"r1_c1_split": X.r1_split, "r3_last_token": X.r3_last_token,
         "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f2_main": F.f_main, "f3_nine_models": F.f_nine,
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_directions": F.f_directions, "f8_facts": F.f_facts,
-        "f9_where": F.f_where, "f10_sentence_order": CF.f_sentence_order, "f10a_order_main": CF.f_order_main, "f10b_order_2x2": CF.f_order_2x2, "f6a_address_read_removed": lambda: F.f_address("read_removed"), "f6b_address_swap_lens": lambda: F.f_address("swap_lens"), "f13_depth_anatomy": CF.f_depth, "f14_two_codes": CF.f_two_codes, "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
+        "f9_where": F.f_where, "f10_sentence_order": CF.f_sentence_order, "f10a_order_main": CF.f_order_main, "f10b_order_2x2": CF.f_order_2x2, "f15_link_crossover": CV.f_link_crossover, "f13b_depth_curves": CV.f_depth_curves, "f13c_depth_curves_all": CV.f_depth_curves_all, "f6a_address_read_removed": lambda: F.f_address("read_removed"), "f6b_address_swap_lens": lambda: F.f_address("swap_lens"), "f13_depth_anatomy": CF.f_depth, "f14_two_codes": CF.f_two_codes, "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
         "t12_two_by_two": DF.two_by_two, "p0a_datasets": DF.datasets, "p0b_tools": DF.tools}  # fmt: skip
 DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "f6_address", "r5_routes", "f11_monitor", "r3_last_token", "t12_two_by_two")
-TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens")], "depth": list(DEPTH)}
+TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all")], "depth": list(DEPTH)}
 # p0a_datasets: the root README's datasets figure (Dan 30 Oct: the table style, no title inside)
-TARGET["slide"] = [*(i for i in TARGET["readme"] if i != "f10_sentence_order"), "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
+TARGET["slide"] = [*(i for i in TARGET["readme"] if i != "f10_sentence_order"), "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -67,12 +68,15 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     out.mkdir(parents=True, exist_ok=True)
     X.OUT, F.DPI = str(out), DPI[target]
     CF.OUT, CF.DPI = str(out), DPI[target]
+    CV.OUT, CV.DPI = str(out), DPI[target]
+    CV.PROBLEMS.clear()
     done = []
     for i in TARGET[target]:
         if ids and not any(i.startswith(x) for x in ids):
             continue
         FIGS[i]()
         done.append(i)
+    PROBLEMS.extend(CV.PROBLEMS)
     return done
 
 
