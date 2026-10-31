@@ -1,0 +1,80 @@
+{
+ "L29-30/MM/none": {
+  "n": 290,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L29-30/MM/full_cf": {
+  "n": 290,
+  "kept": 5.9,
+  "donor": 63.8,
+  "third": 9.7,
+  "other": 18.6,
+  "n_third": 290,
+  "transfer": 54.1,
+  "ci": [
+   46.5,
+   61.5
+  ]
+ },
+ "L29-30/MM/lens_cf": {
+  "n": 290,
+  "kept": 41.7,
+  "donor": 41.7,
+  "third": 4.5,
+  "other": 10.0,
+  "n_third": 290,
+  "transfer": 37.2,
+  "ci": [
+   30.5,
+   44.9
+  ]
+ },
+ "L29-30/MM/rem_cf": {
+  "n": 290,
+  "kept": 35.5,
+  "donor": 30.3,
+  "third": 10.7,
+  "other": 20.7,
+  "n_third": 290,
+  "transfer": 19.7,
+  "ci": [
+   12.8,
+   27.2
+  ]
+ },
+ "L29-30/MM/remfix_cf": {
+  "n": 290,
+  "kept": 47.9,
+  "donor": 11.7,
+  "third": 9.0,
+  "other": 25.5,
+  "n_third": 290,
+  "transfer": 2.8,
+  "ci": [
+   -2.1,
+   7.7
+  ]
+ },
+ "L29-30/MM/lensrand_cf": {
+  "n": 290,
+  "kept": 99.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 290,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

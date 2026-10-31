@@ -1,0 +1,355 @@
+{
+  "prev_run": "results/paper_swap_decomp/n39_v1",
+  "run": "results/paper_swap_decomp/n53_v1",
+  "target": "qwen3.6-27b",
+  "window": "24-40",
+  "n_items": 54,
+  "n_categories": 12,
+  "stored_check": {
+    "note39": {
+      "clean": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.5185185185185185,
+        "flip_rate_stored": 0.5185185185185185,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge/null": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_noA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.05555555555555555,
+        "flip_rate_stored": 0.05555555555555555,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.4074074074074074,
+        "flip_rate_stored": 0.4074074074074074,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA/null": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_randA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.4074074074074074,
+        "flip_rate_stored": 0.4074074074074074,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "note39_5r": {
+      "bridge_onlyR": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.07407407407407407,
+        "flip_rate_stored": 0.07407407407407407,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "arm7E_qr_vs_basis_share_max_abs_diff": 1.8520043165715094e-08
+  },
+  "rates": {
+    "bridge": 0.5185185185185185,
+    "bridge_nf": 0.46296296296296297,
+    "bridge_noA": 0.05555555555555555,
+    "bridge_noA_nf": 0.05555555555555555,
+    "bridge_onlyA": 0.4074074074074074,
+    "bridge_onlyA_nf": 0.35185185185185186,
+    "bridge_onlyR": 0.07407407407407407,
+    "bridge_onlyR2": 0.25925925925925924,
+    "bridge_onlyR4": 0.3333333333333333,
+    "bridge_randA": 0.4074074074074074,
+    "bridge_randA2": 0.4074074074074074,
+    "bridge_randA3": 0.37037037037037035,
+    "bridge_randE": 0.12962962962962962,
+    "clean": 0.0,
+    "null_bridge": 0.0,
+    "null_bridge_onlyA": 0.0,
+    "null_bridge_nf": 0.0,
+    "null_bridge_onlyA_nf": 0.0
+  },
+  "A0": {
+    "net1": [
+      0.5185185185185185,
+      0.24703619909502264,
+      0.7936624649859942,
+      0
+    ],
+    "met": true
+  },
+  "energy": {
+    "median_share": {
+      "scrub": 0.4705977895680596,
+      "rand": 0.33287502869087104,
+      "rand2": 0.337089000379338,
+      "rand3": 0.3479313512935358,
+      "R": 0.3295367386411218,
+      "R2": 0.49397843024309945,
+      "R4": 0.6912824213504791,
+      "E": 0.4740788805134156
+    },
+    "arm7E_k_over_nA": {
+      "median": 1.943553525913339,
+      "min": 0.4772727272727273,
+      "max": 6.619402985074627
+    },
+    "arm7E_not_reached": 0
+  },
+  "E1": {
+    "K": [
+      0.10714285714285714,
+      0.0,
+      0.20838815789473655,
+      0
+    ],
+    "keep_7E": [
+      0.25,
+      0.052597840755735495,
+      0.5652173913043478,
+      0
+    ],
+    "K_item_boot": [
+      0.10714285714285714,
+      0.0,
+      0.23076923076923078,
+      0
+    ],
+    "keep_7E_item_boot": [
+      0.25,
+      0.09090909090909091,
+      0.4230769230769231,
+      0
+    ],
+    "reading": "scrub not specific at matched energy"
+  },
+  "guard_spread": {
+    "seeds": {
+      "1": {
+        "arm": "bridge_randA",
+        "keep": [
+          0.7857142857142857,
+          0.6428571428571429,
+          0.8999999999999999,
+          0
+        ],
+        "keep_item_boot": [
+          0.7857142857142857,
+          0.6206486042692938,
+          0.9259920634920631,
+          0
+        ],
+        "A1_with_this_seed_as_guard": "answer-carried"
+      },
+      "2": {
+        "arm": "bridge_randA2",
+        "keep": [
+          0.7857142857142857,
+          0.4444444444444444,
+          0.9574468085106382,
+          0
+        ],
+        "keep_item_boot": [
+          0.7857142857142857,
+          0.6215983224603914,
+          0.9259259259259259,
+          0
+        ],
+        "A1_with_this_seed_as_guard": "answer-carried"
+      },
+      "3": {
+        "arm": "bridge_randA3",
+        "keep": [
+          0.7142857142857143,
+          0.5184865900383141,
+          0.8750000000000001,
+          0
+        ],
+        "keep_item_boot": [
+          0.7142857142857143,
+          0.5357142857142858,
+          0.8696002805049087,
+          0
+        ],
+        "A1_with_this_seed_as_guard": "answer-carried"
+      }
+    },
+    "min": 0.7142857142857143,
+    "max": 0.7857142857142857,
+    "mean": 0.7619047619047619,
+    "n_pass": 3
+  },
+  "E2": {
+    "nested": {
+      "5R": {
+        "arm": "bridge_onlyR",
+        "median_share": 0.3295367386411218,
+        "matched": false,
+        "r5_minus_r5R": [
+          0.3333333333333333,
+          0.125,
+          0.5778070175438595,
+          0
+        ],
+        "over_net1": [
+          0.6428571428571429,
+          0.380952380952381,
+          0.8261244377811092,
+          0
+        ],
+        "specific": true,
+        "r5_minus_r5R_item_boot": [
+          0.3333333333333333,
+          0.20370370370370372,
+          0.46296296296296297,
+          0
+        ]
+      },
+      "5R2": {
+        "arm": "bridge_onlyR2",
+        "median_share": 0.49397843024309945,
+        "matched": true,
+        "r5_minus_r5R": [
+          0.14814814814814814,
+          0.058802216538789386,
+          0.3125,
+          0
+        ],
+        "over_net1": [
+          0.2857142857142857,
+          0.13043478260869568,
+          0.5417613636363631,
+          0
+        ],
+        "specific": false,
+        "r5_minus_r5R_item_boot": [
+          0.14814814814814814,
+          0.037037037037037035,
+          0.2777777777777778,
+          0
+        ]
+      },
+      "5R4": {
+        "arm": "bridge_onlyR4",
+        "median_share": 0.6912824213504791,
+        "matched": true,
+        "r5_minus_r5R": [
+          0.07407407407407407,
+          -0.0434942455242967,
+          0.21213733075435198,
+          0
+        ],
+        "over_net1": [
+          0.14285714285714285,
+          -0.10540935672514622,
+          0.37048611111111046,
+          0
+        ],
+        "specific": false,
+        "r5_minus_r5R_item_boot": [
+          0.07407407407407407,
+          -0.055555555555555525,
+          0.2037037037037037,
+          0
+        ]
+      }
+    },
+    "k": "5R2",
+    "reading": "not answer-specific at matched energy",
+    "per_item_matched": {
+      "r5_minus_r5Rown": [
+        0.12962962962962962,
+        0.05172413793103448,
+        0.270331695331695,
+        0
+      ],
+      "over_net1": [
+        0.25,
+        0.11764705882352942,
+        0.5,
+        0
+      ],
+      "unmatched_items_used_5R4": 4,
+      "counts": {
+        "bridge_onlyR": 9,
+        "bridge_onlyR2": 20,
+        "bridge_onlyR4": 25
+      }
+    }
+  },
+  "E3": {
+    "arm1nf_over_arm1": [
+      0.8928571428571429,
+      0.6666666666666667,
+      1.0,
+      0
+    ],
+    "arm5nf_over_arm5": [
+      0.8636363636363638,
+      0.625,
+      1.0,
+      0
+    ],
+    "arm1nf_net_over_arm1_net": [
+      0.8928571428571429,
+      0.6666666666666667,
+      1.0,
+      0
+    ],
+    "arm5nf_net_over_arm5_net": [
+      0.8636363636363638,
+      0.625,
+      1.0,
+      0
+    ],
+    "K_nf": [
+      0.12,
+      0.0,
+      0.230833333333333,
+      0
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "note39": {
+    "clean": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.4727272727272727,
+      "flip_rate_stored": 0.4727272727272727,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.07272727272727272,
+      "flip_rate_stored": 0.07272727272727272,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.41818181818181815,
+      "flip_rate_stored": 0.41818181818181815,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.2727272727272727,
+      "flip_rate_stored": 0.2727272727272727,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "note39_5r": {
+    "bridge_onlyR": {
+      "n": 55,
+      "identical_rows": 55,
+      "differing_fields": {},
+      "same_flip": 55,
+      "same_swap_rank": 55,
+      "flip_rate_rerun": 0.18181818181818182,
+      "flip_rate_stored": 0.18181818181818182,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "arm7E_qr_vs_basis_share_max_abs_diff": 2.325385051182849e-08
+}

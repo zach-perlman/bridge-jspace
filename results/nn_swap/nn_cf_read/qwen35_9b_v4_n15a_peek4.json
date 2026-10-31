@@ -1,0 +1,54 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n15a_last_MM_L8-11_s0_v1",
+  "qwen35_9b_nn_n15a_last_MM_L8-11_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MM/L8-11": {
+   "n": 416,
+   "donor": {
+    "full_cf": 28.8,
+    "lens_cf": 7.5,
+    "lensshr_cf": 1.4,
+    "none": 0.0,
+    "rem_cf": 24.8,
+    "remshr_cf": 29.6
+   },
+   "kept": {
+    "full_cf": 52.6,
+    "lens_cf": 80.8,
+    "lensshr_cf": 94.7,
+    "none": 99.3,
+    "rem_cf": 60.3,
+    "remshr_cf": 52.4
+   },
+   "third": {
+    "full_cf": 1.7,
+    "lens_cf": 0.7,
+    "lensshr_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.9,
+    "remshr_cf": 1.7
+   },
+   "note15a": {
+    "need_beyond_same_share": [
+     0.167,
+     [
+      0.076,
+      0.257
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.208,
+     [
+      0.125,
+      0.295
+     ]
+    ],
+    "verdict": "weak"
+   }
+  }
+ },
+ "hits": []
+}

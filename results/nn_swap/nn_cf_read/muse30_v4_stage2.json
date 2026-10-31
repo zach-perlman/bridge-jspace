@@ -1,0 +1,1137 @@
+{
+ "runs": [
+  "muse30_nn_cfdec_final_MM_L30-35_s0_v1",
+  "muse30_nn_cfdec_final_MM_L30-35_s1_v1",
+  "muse30_nn_cfdec_final_MM_L36-41_s0_v1",
+  "muse30_nn_cfdec_final_MM_L36-41_s1_v1",
+  "muse30_nn_cfdec_final_MM_L42-47_s0_v1",
+  "muse30_nn_cfdec_final_MM_L42-47_s1_v1",
+  "muse30_nn_cfdec_final_MM_L48-50_s0_v1",
+  "muse30_nn_cfdec_final_MM_L48-50_s1_v1",
+  "muse30_nn_cfdec_final_MP_L30-35_s0_v1",
+  "muse30_nn_cfdec_final_MP_L30-35_s1_v1",
+  "muse30_nn_cfdec_final_MP_L36-41_s0_v1",
+  "muse30_nn_cfdec_final_MP_L36-41_s1_v1",
+  "muse30_nn_cfdec_final_MP_L42-47_s0_v1",
+  "muse30_nn_cfdec_final_MP_L42-47_s1_v1",
+  "muse30_nn_cfdec_final_MP_L48-50_s0_v1",
+  "muse30_nn_cfdec_final_MP_L48-50_s1_v1",
+  "muse30_nn_cfdec_last_MM_L12-17_s0_v1",
+  "muse30_nn_cfdec_last_MM_L12-17_s1_v1",
+  "muse30_nn_cfdec_last_MM_L18-23_s0_v1",
+  "muse30_nn_cfdec_last_MM_L18-23_s1_v1",
+  "muse30_nn_cfdec_last_MP_L12-17_s0_v1",
+  "muse30_nn_cfdec_last_MP_L12-17_s1_v1",
+  "muse30_nn_cfdec_last_MP_L18-23_s0_v1",
+  "muse30_nn_cfdec_last_MP_L18-23_s1_v1",
+  "muse30_nn_cfdec_last_MP_L6-11_s0_v1",
+  "muse30_nn_cfdec_last_MP_L6-11_s1_v1",
+  "muse30_nn_cfdec_span_MM_L0-5_s0_v1",
+  "muse30_nn_cfdec_span_MM_L0-5_s1_v1",
+  "muse30_nn_cfdec_span_MM_L12-17_s0_v1",
+  "muse30_nn_cfdec_span_MM_L12-17_s1_v1",
+  "muse30_nn_cfdec_span_MM_L18-23_s0_v1",
+  "muse30_nn_cfdec_span_MM_L18-23_s1_v1",
+  "muse30_nn_cfdec_span_MM_L24-29_s0_v1",
+  "muse30_nn_cfdec_span_MM_L24-29_s1_v1",
+  "muse30_nn_cfdec_span_MM_L30-35_s0_v1",
+  "muse30_nn_cfdec_span_MM_L30-35_s1_v1",
+  "muse30_nn_cfdec_span_MM_L6-11_s0_v1",
+  "muse30_nn_cfdec_span_MM_L6-11_s1_v1",
+  "muse30_nn_cfdec_span_MP_L0-5_s0_v1",
+  "muse30_nn_cfdec_span_MP_L0-5_s1_v1",
+  "muse30_nn_cfdec_span_MP_L12-17_s0_v1",
+  "muse30_nn_cfdec_span_MP_L12-17_s1_v1",
+  "muse30_nn_cfdec_span_MP_L18-23_s0_v1",
+  "muse30_nn_cfdec_span_MP_L18-23_s1_v1",
+  "muse30_nn_cfdec_span_MP_L24-29_s0_v1",
+  "muse30_nn_cfdec_span_MP_L24-29_s1_v1",
+  "muse30_nn_cfdec_span_MP_L6-11_s0_v1",
+  "muse30_nn_cfdec_span_MP_L6-11_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MM/L30-35": {
+   "n": 605,
+   "donor": {
+    "full_cf": 74.0,
+    "lens_cf": 5.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 63.5,
+    "remfix_cf": 36.0
+   },
+   "kept": {
+    "full_cf": 17.9,
+    "lens_cf": 85.8,
+    "lensrand_cf": 99.8,
+    "none": 99.8,
+    "rem_cf": 26.3,
+    "remfix_cf": 47.4
+   },
+   "third": {
+    "full_cf": 4.8,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 6.0,
+    "remfix_cf": 8.8
+   },
+   "full_minus_rand_ci": [
+    69.7,
+    78.2
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 74.0,
+    "lens": 5.6,
+    "rem": 63.5,
+    "remfix": 36.0,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "final/MM/L36-41": {
+   "n": 605,
+   "donor": {
+    "full_cf": 92.6,
+    "lens_cf": 69.8,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 32.6,
+    "remfix_cf": 1.8
+   },
+   "kept": {
+    "full_cf": 4.0,
+    "lens_cf": 21.7,
+    "lensrand_cf": 99.5,
+    "none": 99.8,
+    "rem_cf": 47.8,
+    "remfix_cf": 91.1
+   },
+   "third": {
+    "full_cf": 1.8,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 12.2,
+    "remfix_cf": 2.6
+   },
+   "full_minus_rand_ci": [
+    90.2,
+    94.8
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 92.6,
+    "lens": 69.8,
+    "rem": 32.6,
+    "remfix": 1.8,
+    "lensrand": 0.0,
+    "verdict": "through"
+   }
+  },
+  "final/MM/L42-47": {
+   "n": 605,
+   "donor": {
+    "full_cf": 93.2,
+    "lens_cf": 82.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 6.3,
+    "remfix_cf": 1.0
+   },
+   "kept": {
+    "full_cf": 3.3,
+    "lens_cf": 12.9,
+    "lensrand_cf": 99.5,
+    "none": 99.8,
+    "rem_cf": 82.6,
+    "remfix_cf": 94.7
+   },
+   "third": {
+    "full_cf": 1.8,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 6.6,
+    "remfix_cf": 2.3
+   },
+   "full_minus_rand_ci": [
+    91.0,
+    95.3
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 93.2,
+    "lens": 82.0,
+    "rem": 6.3,
+    "remfix": 1.0,
+    "lensrand": 0.0,
+    "verdict": "through"
+   }
+  },
+  "final/MM/L48-50": {
+   "n": 605,
+   "donor": {
+    "full_cf": 99.0,
+    "lens_cf": 92.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 9.3,
+    "remfix_cf": 7.1
+   },
+   "kept": {
+    "full_cf": 0.2,
+    "lens_cf": 3.8,
+    "lensrand_cf": 100.0,
+    "none": 99.8,
+    "rem_cf": 73.6,
+    "remfix_cf": 79.0
+   },
+   "third": {
+    "full_cf": 0.5,
+    "lens_cf": 0.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 6.9,
+    "remfix_cf": 4.8
+   },
+   "full_minus_rand_ci": [
+    97.9,
+    99.8
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 99.0,
+    "lens": 92.7,
+    "rem": 9.3,
+    "remfix": 7.1,
+    "lensrand": 0.0,
+    "verdict": "through"
+   }
+  },
+  "final/MP/L30-35": {
+   "n": 684,
+   "donor": {
+    "full_cf": 97.4,
+    "lens_cf": 3.2,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 97.5,
+    "remfix_cf": 92.5
+   },
+   "kept": {
+    "full_cf": 1.9,
+    "lens_cf": 94.9,
+    "lensrand_cf": 99.3,
+    "none": 99.4,
+    "rem_cf": 1.9,
+    "remfix_cf": 5.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.0,
+    "remfix_cf": 0.0
+   },
+   "full_minus_rand_ci": [
+    96.0,
+    98.5
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 97.4,
+    "lens": 3.2,
+    "rem": 97.5,
+    "remfix": 92.5,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "final/MP/L36-41": {
+   "n": 684,
+   "donor": {
+    "full_cf": 98.4,
+    "lens_cf": 12.4,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 93.0,
+    "remfix_cf": 74.3
+   },
+   "kept": {
+    "full_cf": 1.0,
+    "lens_cf": 86.3,
+    "lensrand_cf": 99.1,
+    "none": 99.4,
+    "rem_cf": 5.1,
+    "remfix_cf": 23.5
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.0,
+    "remfix_cf": 0.4
+   },
+   "full_minus_rand_ci": [
+    97.3,
+    99.3
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 98.4,
+    "lens": 12.4,
+    "rem": 93.0,
+    "remfix": 74.3,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "final/MP/L42-47": {
+   "n": 684,
+   "donor": {
+    "full_cf": 98.5,
+    "lens_cf": 44.4,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 74.7,
+    "remfix_cf": 36.0
+   },
+   "kept": {
+    "full_cf": 0.4,
+    "lens_cf": 53.9,
+    "lensrand_cf": 99.0,
+    "none": 99.4,
+    "rem_cf": 21.5,
+    "remfix_cf": 59.2
+   },
+   "third": {
+    "full_cf": 0.1,
+    "lens_cf": 0.4,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.1,
+    "remfix_cf": 0.6
+   },
+   "full_minus_rand_ci": [
+    97.6,
+    99.3
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 98.5,
+    "lens": 44.4,
+    "rem": 74.7,
+    "remfix": 36.0,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "final/MP/L48-50": {
+   "n": 684,
+   "donor": {
+    "full_cf": 99.7,
+    "lens_cf": 82.9,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 29.5,
+    "remfix_cf": 24.3
+   },
+   "kept": {
+    "full_cf": 0.0,
+    "lens_cf": 13.6,
+    "lensrand_cf": 99.1,
+    "none": 99.4,
+    "rem_cf": 62.7,
+    "remfix_cf": 68.3
+   },
+   "third": {
+    "full_cf": 0.1,
+    "lens_cf": 0.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.5,
+    "remfix_cf": 1.2
+   },
+   "full_minus_rand_ci": [
+    99.2,
+    100.0
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 99.7,
+    "lens": 82.9,
+    "rem": 29.5,
+    "remfix": 24.3,
+    "lensrand": 0.0,
+    "verdict": "through"
+   }
+  },
+  "last/MM/L12-17": {
+   "n": 605,
+   "donor": {
+    "full_cf": 31.9,
+    "lens_cf": 1.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 30.6,
+    "remfix_cf": 23.8
+   },
+   "kept": {
+    "full_cf": 48.1,
+    "lens_cf": 96.5,
+    "lensrand_cf": 99.2,
+    "none": 99.8,
+    "rem_cf": 49.6,
+    "remfix_cf": 56.4
+   },
+   "third": {
+    "full_cf": 4.8,
+    "lens_cf": 0.0,
+    "lensrand_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 4.6,
+    "remfix_cf": 3.5
+   },
+   "full_minus_rand_ci": [
+    27.2,
+    36.6
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 31.9,
+    "lens": 1.0,
+    "rem": 30.6,
+    "remfix": 23.8,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "last/MM/L18-23": {
+   "n": 605,
+   "donor": {
+    "full_cf": 24.0,
+    "lens_cf": 2.8,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 22.6,
+    "remfix_cf": 17.7
+   },
+   "kept": {
+    "full_cf": 64.6,
+    "lens_cf": 92.7,
+    "lensrand_cf": 99.5,
+    "none": 99.8,
+    "rem_cf": 65.6,
+    "remfix_cf": 70.6
+   },
+   "third": {
+    "full_cf": 2.0,
+    "lens_cf": 0.2,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 2.1,
+    "remfix_cf": 2.3
+   },
+   "full_minus_rand_ci": [
+    20.0,
+    28.1
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 24.0,
+    "lens": 2.8,
+    "rem": 22.6,
+    "remfix": 17.7,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "last/MP/L6-11": {
+   "n": 684,
+   "donor": {
+    "full_cf": 23.8,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 23.1,
+    "remfix_cf": 21.2
+   },
+   "kept": {
+    "full_cf": 61.4,
+    "lens_cf": 98.4,
+    "lensrand_cf": 99.0,
+    "none": 99.4,
+    "rem_cf": 62.0,
+    "remfix_cf": 63.5
+   },
+   "third": {
+    "full_cf": 1.3,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.5,
+    "remfix_cf": 1.2
+   },
+   "full_minus_rand_ci": [
+    19.9,
+    27.4
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 23.8,
+    "lens": 0.1,
+    "rem": 23.1,
+    "remfix": 21.2,
+    "lensrand": 0.1,
+    "verdict": "around"
+   }
+  },
+  "last/MP/L12-17": {
+   "n": 684,
+   "donor": {
+    "full_cf": 35.1,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 34.2,
+    "remfix_cf": 26.6
+   },
+   "kept": {
+    "full_cf": 53.1,
+    "lens_cf": 98.5,
+    "lensrand_cf": 98.4,
+    "none": 99.4,
+    "rem_cf": 53.7,
+    "remfix_cf": 61.5
+   },
+   "third": {
+    "full_cf": 0.6,
+    "lens_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.6,
+    "remfix_cf": 0.6
+   },
+   "full_minus_rand_ci": [
+    30.1,
+    39.9
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 35.1,
+    "lens": 0.3,
+    "rem": 34.2,
+    "remfix": 26.6,
+    "lensrand": 0.1,
+    "verdict": "around"
+   }
+  },
+  "last/MP/L18-23": {
+   "n": 684,
+   "donor": {
+    "full_cf": 20.5,
+    "lens_cf": 1.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 20.0,
+    "remfix_cf": 19.7
+   },
+   "kept": {
+    "full_cf": 70.6,
+    "lens_cf": 96.2,
+    "lensrand_cf": 99.0,
+    "none": 99.4,
+    "rem_cf": 70.9,
+    "remfix_cf": 72.2
+   },
+   "third": {
+    "full_cf": 1.3,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.3,
+    "remfix_cf": 0.9
+   },
+   "full_minus_rand_ci": [
+    17.2,
+    24.3
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 20.5,
+    "lens": 1.6,
+    "rem": 20.0,
+    "remfix": 19.7,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L0-5": {
+   "n": 602,
+   "donor": {
+    "full_cf": 84.1,
+    "lens_cf": 0.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 83.6,
+    "remfix_cf": 83.7
+   },
+   "kept": {
+    "full_cf": 0.8,
+    "lens_cf": 95.5,
+    "lensrand_cf": 99.2,
+    "none": 99.8,
+    "rem_cf": 1.0,
+    "remfix_cf": 1.0
+   },
+   "third": {
+    "full_cf": 7.1,
+    "lens_cf": 0.2,
+    "lensrand_cf": 0.3,
+    "none": 0.0,
+    "rem_cf": 7.3,
+    "remfix_cf": 6.8
+   },
+   "full_minus_rand_ci": [
+    80.8,
+    87.5
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 84.1,
+    "lens": 0.5,
+    "rem": 83.6,
+    "remfix": 83.7,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L6-11": {
+   "n": 602,
+   "donor": {
+    "full_cf": 89.7,
+    "lens_cf": 0.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 90.2,
+    "remfix_cf": 87.9
+   },
+   "kept": {
+    "full_cf": 0.3,
+    "lens_cf": 95.8,
+    "lensrand_cf": 99.0,
+    "none": 99.8,
+    "rem_cf": 0.3,
+    "remfix_cf": 1.2
+   },
+   "third": {
+    "full_cf": 4.0,
+    "lens_cf": 0.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 3.7,
+    "remfix_cf": 4.0
+   },
+   "full_minus_rand_ci": [
+    86.9,
+    92.2
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 89.7,
+    "lens": 0.5,
+    "rem": 90.2,
+    "remfix": 87.9,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L12-17": {
+   "n": 602,
+   "donor": {
+    "full_cf": 94.9,
+    "lens_cf": 1.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 94.5,
+    "remfix_cf": 91.4
+   },
+   "kept": {
+    "full_cf": 0.2,
+    "lens_cf": 92.4,
+    "lensrand_cf": 99.2,
+    "none": 99.8,
+    "rem_cf": 0.5,
+    "remfix_cf": 0.8
+   },
+   "third": {
+    "full_cf": 2.3,
+    "lens_cf": 0.2,
+    "lensrand_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 2.5,
+    "remfix_cf": 3.0
+   },
+   "full_minus_rand_ci": [
+    92.8,
+    96.8
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 94.9,
+    "lens": 1.7,
+    "rem": 94.5,
+    "remfix": 91.4,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L18-23": {
+   "n": 602,
+   "donor": {
+    "full_cf": 95.0,
+    "lens_cf": 7.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 95.0,
+    "remfix_cf": 90.7
+   },
+   "kept": {
+    "full_cf": 0.3,
+    "lens_cf": 80.4,
+    "lensrand_cf": 99.3,
+    "none": 99.8,
+    "rem_cf": 0.7,
+    "remfix_cf": 1.8
+   },
+   "third": {
+    "full_cf": 2.7,
+    "lens_cf": 0.8,
+    "lensrand_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 2.3,
+    "remfix_cf": 3.7
+   },
+   "full_minus_rand_ci": [
+    92.6,
+    96.9
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 95.0,
+    "lens": 7.3,
+    "rem": 95.0,
+    "remfix": 90.7,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L24-29": {
+   "n": 602,
+   "donor": {
+    "full_cf": 79.1,
+    "lens_cf": 3.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 75.7,
+    "remfix_cf": 70.4
+   },
+   "kept": {
+    "full_cf": 12.8,
+    "lens_cf": 87.9,
+    "lensrand_cf": 99.3,
+    "none": 99.8,
+    "rem_cf": 16.6,
+    "remfix_cf": 20.4
+   },
+   "third": {
+    "full_cf": 2.5,
+    "lens_cf": 0.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 2.3,
+    "remfix_cf": 2.8
+   },
+   "full_minus_rand_ci": [
+    74.6,
+    83.3
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 79.1,
+    "lens": 3.5,
+    "rem": 75.7,
+    "remfix": 70.4,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MM/L30-35": {
+   "n": 602,
+   "donor": {
+    "full_cf": 21.9,
+    "lens_cf": 2.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 21.6,
+    "remfix_cf": 19.8
+   },
+   "kept": {
+    "full_cf": 68.8,
+    "lens_cf": 92.7,
+    "lensrand_cf": 99.7,
+    "none": 99.8,
+    "rem_cf": 68.9,
+    "remfix_cf": 69.9
+   },
+   "third": {
+    "full_cf": 0.8,
+    "lens_cf": 0.2,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.8,
+    "remfix_cf": 1.2
+   },
+   "full_minus_rand_ci": [
+    16.9,
+    27.0
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 21.9,
+    "lens": 2.3,
+    "rem": 21.6,
+    "remfix": 19.8,
+    "lensrand": 0.0,
+    "verdict": "around"
+   }
+  },
+  "span/MP/L0-5": {
+   "n": 684,
+   "donor": {
+    "full_cf": 86.3,
+    "lens_cf": 0.6,
+    "lensrand_cf": 0.3,
+    "none": 0.0,
+    "rem_cf": 86.3,
+    "remfix_cf": 86.1
+   },
+   "kept": {
+    "full_cf": 5.1,
+    "lens_cf": 96.5,
+    "lensrand_cf": 98.8,
+    "none": 99.4,
+    "rem_cf": 4.7,
+    "remfix_cf": 4.5
+   },
+   "third": {
+    "full_cf": 1.2,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 1.2,
+    "remfix_cf": 1.3
+   },
+   "full_minus_rand_ci": [
+    82.5,
+    89.1
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 86.3,
+    "lens": 0.6,
+    "rem": 86.3,
+    "remfix": 86.1,
+    "lensrand": 0.3,
+    "verdict": "around"
+   }
+  },
+  "span/MP/L6-11": {
+   "n": 684,
+   "donor": {
+    "full_cf": 86.5,
+    "lens_cf": 0.4,
+    "lensrand_cf": 0.3,
+    "none": 0.0,
+    "rem_cf": 87.0,
+    "remfix_cf": 86.5
+   },
+   "kept": {
+    "full_cf": 3.8,
+    "lens_cf": 96.8,
+    "lensrand_cf": 99.0,
+    "none": 99.4,
+    "rem_cf": 3.9,
+    "remfix_cf": 4.4
+   },
+   "third": {
+    "full_cf": 1.3,
+    "lens_cf": 0.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.5,
+    "remfix_cf": 1.3
+   },
+   "full_minus_rand_ci": [
+    83.1,
+    89.2
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 86.5,
+    "lens": 0.4,
+    "rem": 87.0,
+    "remfix": 86.5,
+    "lensrand": 0.3,
+    "verdict": "around"
+   }
+  },
+  "span/MP/L12-17": {
+   "n": 684,
+   "donor": {
+    "full_cf": 90.5,
+    "lens_cf": 0.9,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 89.8,
+    "remfix_cf": 86.7
+   },
+   "kept": {
+    "full_cf": 2.3,
+    "lens_cf": 94.0,
+    "lensrand_cf": 98.4,
+    "none": 99.4,
+    "rem_cf": 2.6,
+    "remfix_cf": 3.8
+   },
+   "third": {
+    "full_cf": 1.2,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.3,
+    "remfix_cf": 1.6
+   },
+   "full_minus_rand_ci": [
+    87.8,
+    92.7
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 90.5,
+    "lens": 0.9,
+    "rem": 89.8,
+    "remfix": 86.7,
+    "lensrand": 0.1,
+    "verdict": "around"
+   }
+  },
+  "span/MP/L18-23": {
+   "n": 684,
+   "donor": {
+    "full_cf": 88.2,
+    "lens_cf": 5.4,
+    "lensrand_cf": 0.4,
+    "none": 0.0,
+    "rem_cf": 88.5,
+    "remfix_cf": 88.0
+   },
+   "kept": {
+    "full_cf": 5.7,
+    "lens_cf": 84.9,
+    "lensrand_cf": 98.2,
+    "none": 99.4,
+    "rem_cf": 5.4,
+    "remfix_cf": 5.8
+   },
+   "third": {
+    "full_cf": 1.6,
+    "lens_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 1.8,
+    "remfix_cf": 1.5
+   },
+   "full_minus_rand_ci": [
+    84.5,
+    90.6
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 88.2,
+    "lens": 5.4,
+    "rem": 88.5,
+    "remfix": 88.0,
+    "lensrand": 0.4,
+    "verdict": "around"
+   }
+  },
+  "span/MP/L24-29": {
+   "n": 684,
+   "donor": {
+    "full_cf": 60.1,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 59.9,
+    "remfix_cf": 59.9
+   },
+   "kept": {
+    "full_cf": 32.0,
+    "lens_cf": 98.1,
+    "lensrand_cf": 98.5,
+    "none": 99.4,
+    "rem_cf": 32.5,
+    "remfix_cf": 32.7
+   },
+   "third": {
+    "full_cf": 2.5,
+    "lens_cf": 0.1,
+    "lensrand_cf": 0.1,
+    "none": 0.0,
+    "rem_cf": 2.3,
+    "remfix_cf": 2.3
+   },
+   "full_minus_rand_ci": [
+    55.4,
+    64.6
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 60.1,
+    "lens": 0.1,
+    "rem": 59.9,
+    "remfix": 59.9,
+    "lensrand": 0.1,
+    "verdict": "around"
+   }
+  }
+ },
+ "hits": [
+  {
+   "site": "final",
+   "word": "MM",
+   "band": "L30-35"
+  },
+  {
+   "site": "final",
+   "word": "MM",
+   "band": "L36-41"
+  },
+  {
+   "site": "final",
+   "word": "MM",
+   "band": "L42-47"
+  },
+  {
+   "site": "final",
+   "word": "MM",
+   "band": "L48-50"
+  },
+  {
+   "site": "final",
+   "word": "MP",
+   "band": "L30-35"
+  },
+  {
+   "site": "final",
+   "word": "MP",
+   "band": "L36-41"
+  },
+  {
+   "site": "final",
+   "word": "MP",
+   "band": "L42-47"
+  },
+  {
+   "site": "final",
+   "word": "MP",
+   "band": "L48-50"
+  },
+  {
+   "site": "last",
+   "word": "MM",
+   "band": "L12-17"
+  },
+  {
+   "site": "last",
+   "word": "MM",
+   "band": "L18-23"
+  },
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L6-11"
+  },
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L12-17"
+  },
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L18-23"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L0-5"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L6-11"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L12-17"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L18-23"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L24-29"
+  },
+  {
+   "site": "span",
+   "word": "MM",
+   "band": "L30-35"
+  },
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L0-5"
+  },
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L6-11"
+  },
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L12-17"
+  },
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L18-23"
+  },
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L24-29"
+  }
+ ]
+}

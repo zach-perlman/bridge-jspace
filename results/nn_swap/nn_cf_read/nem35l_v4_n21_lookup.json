@@ -1,0 +1,328 @@
+{
+ "runs": [
+  "nem35l_nn_n21l_last_MP_L11-15_s0_v1",
+  "nem35l_nn_n21l_last_MP_L11-15_s1_v1",
+  "nem35l_nn_n21l_last_MP_L16-20_s0_v1",
+  "nem35l_nn_n21l_last_MP_L16-20_s1_v1",
+  "nem35l_nn_n21l_last_MP_L21-26_s0_v1",
+  "nem35l_nn_n21l_last_MP_L21-26_s1_v1",
+  "nem35l_nn_n21l_last_MP_L6-10_s0_v1",
+  "nem35l_nn_n21l_last_MP_L6-10_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MP/L6-10": {
+   "n": 633,
+   "donor": {
+    "full_cf": 22.6,
+    "jpp_cf": 11.5,
+    "jpprand_cf": 4.7,
+    "lensnp_cf": 0.9,
+    "lensshrnp_cf": 0.0,
+    "nojpp_cf": 22.3,
+    "nojpprand_cf": 22.6,
+    "none": 0.2,
+    "remnp_cf": 23.4,
+    "remshrnp_cf": 22.7
+   },
+   "kept": {
+    "full_cf": 68.4,
+    "jpp_cf": 79.3,
+    "jpprand_cf": 89.3,
+    "lensnp_cf": 95.1,
+    "lensshrnp_cf": 97.9,
+    "nojpp_cf": 69.0,
+    "nojpprand_cf": 69.2,
+    "none": 98.1,
+    "remnp_cf": 67.5,
+    "remshrnp_cf": 68.2
+   },
+   "third": {
+    "full_cf": 1.3,
+    "jpp_cf": 1.1,
+    "jpprand_cf": 0.8,
+    "lensnp_cf": 0.0,
+    "lensshrnp_cf": 0.0,
+    "nojpp_cf": 1.3,
+    "nojpprand_cf": 1.1,
+    "none": 0.0,
+    "remnp_cf": 1.6,
+    "remshrnp_cf": 1.3
+   },
+   "note21np": {
+    "need_beyond_same_share": [
+     -0.028,
+     [
+      -0.08,
+      0.015
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.042,
+     [
+      0.012,
+      0.08
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 22.6,
+    "jpp_minus_rand": 6.8,
+    "removal_minus_rand": 0.3,
+    "jpp_alone_ci": [
+     6.793,
+     [
+      4.647,
+      9.03
+     ]
+    ],
+    "removal_ci": [
+     0.316,
+     [
+      -0.649,
+      1.32
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.151,
+    "verdict": "outside it"
+   }
+  },
+  "last/MP/L11-15": {
+   "n": 633,
+   "donor": {
+    "full_cf": 23.1,
+    "jpp_cf": 12.6,
+    "jpprand_cf": 7.7,
+    "lensnp_cf": 1.4,
+    "lensshrnp_cf": 0.8,
+    "nojpp_cf": 20.9,
+    "nojpprand_cf": 23.2,
+    "none": 0.2,
+    "remnp_cf": 22.9,
+    "remshrnp_cf": 23.1
+   },
+   "kept": {
+    "full_cf": 68.4,
+    "jpp_cf": 78.5,
+    "jpprand_cf": 85.3,
+    "lensnp_cf": 95.6,
+    "lensshrnp_cf": 97.5,
+    "nojpp_cf": 70.9,
+    "nojpprand_cf": 68.4,
+    "none": 98.1,
+    "remnp_cf": 68.2,
+    "remshrnp_cf": 68.2
+   },
+   "third": {
+    "full_cf": 1.1,
+    "jpp_cf": 0.8,
+    "jpprand_cf": 1.3,
+    "lensnp_cf": 0.8,
+    "lensshrnp_cf": 0.3,
+    "nojpp_cf": 0.8,
+    "nojpprand_cf": 0.9,
+    "none": 0.0,
+    "remnp_cf": 0.9,
+    "remshrnp_cf": 0.9
+   },
+   "note21np": {
+    "need_beyond_same_share": [
+     0.007,
+     [
+      -0.023,
+      0.038
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.027,
+     [
+      0.0,
+      0.062
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 23.1,
+    "jpp_minus_rand": 4.9,
+    "removal_minus_rand": 2.4,
+    "jpp_alone_ci": [
+     4.897,
+     [
+      2.358,
+      7.538
+     ]
+    ],
+    "removal_ci": [
+     2.37,
+     [
+      0.782,
+      3.981
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.168,
+    "verdict": "outside it"
+   }
+  },
+  "last/MP/L16-20": {
+   "n": 633,
+   "donor": {
+    "full_cf": 20.7,
+    "jpp_cf": 6.5,
+    "jpprand_cf": 5.7,
+    "lensnp_cf": 0.9,
+    "lensshrnp_cf": 0.6,
+    "nojpp_cf": 20.1,
+    "nojpprand_cf": 20.7,
+    "none": 0.2,
+    "remnp_cf": 20.2,
+    "remshrnp_cf": 20.9
+   },
+   "kept": {
+    "full_cf": 71.9,
+    "jpp_cf": 87.7,
+    "jpprand_cf": 88.8,
+    "lensnp_cf": 97.0,
+    "lensshrnp_cf": 96.5,
+    "nojpp_cf": 73.3,
+    "nojpprand_cf": 71.9,
+    "none": 98.1,
+    "remnp_cf": 72.5,
+    "remshrnp_cf": 71.7
+   },
+   "third": {
+    "full_cf": 1.1,
+    "jpp_cf": 1.3,
+    "jpprand_cf": 0.8,
+    "lensnp_cf": 0.3,
+    "lensshrnp_cf": 0.0,
+    "nojpp_cf": 0.9,
+    "nojpprand_cf": 1.1,
+    "none": 0.0,
+    "remnp_cf": 1.3,
+    "remshrnp_cf": 0.9
+   },
+   "note21np": {
+    "need_beyond_same_share": [
+     0.031,
+     [
+      -0.009,
+      0.07
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.015,
+     [
+      -0.016,
+      0.045
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 20.7,
+    "jpp_minus_rand": 0.8,
+    "removal_minus_rand": 0.6,
+    "jpp_alone_ci": [
+     0.79,
+     [
+      -0.808,
+      2.447
+     ]
+    ],
+    "removal_ci": [
+     0.632,
+     [
+      -0.679,
+      2.158
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.157,
+    "verdict": "outside it"
+   }
+  },
+  "last/MP/L21-26": {
+   "n": 633,
+   "donor": {
+    "full_cf": 20.5,
+    "jpp_cf": 3.8,
+    "jpprand_cf": 5.8,
+    "lensnp_cf": 0.6,
+    "lensshrnp_cf": 0.5,
+    "nojpp_cf": 19.0,
+    "nojpprand_cf": 20.4,
+    "none": 0.2,
+    "remnp_cf": 20.5,
+    "remshrnp_cf": 20.7
+   },
+   "kept": {
+    "full_cf": 75.2,
+    "jpp_cf": 92.9,
+    "jpprand_cf": 90.4,
+    "lensnp_cf": 97.8,
+    "lensshrnp_cf": 96.2,
+    "nojpp_cf": 77.1,
+    "nojpprand_cf": 75.4,
+    "none": 98.1,
+    "remnp_cf": 75.2,
+    "remshrnp_cf": 75.0
+   },
+   "third": {
+    "full_cf": 0.6,
+    "jpp_cf": 0.5,
+    "jpprand_cf": 0.8,
+    "lensnp_cf": 0.2,
+    "lensshrnp_cf": 0.2,
+    "nojpp_cf": 0.5,
+    "nojpprand_cf": 0.6,
+    "none": 0.0,
+    "remnp_cf": 0.5,
+    "remshrnp_cf": 0.6
+   },
+   "note21np": {
+    "need_beyond_same_share": [
+     0.008,
+     [
+      0.0,
+      0.025
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.008,
+     [
+      -0.018,
+      0.036
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 20.5,
+    "jpp_minus_rand": -2.1,
+    "removal_minus_rand": 1.4,
+    "jpp_alone_ci": [
+     -2.054,
+     [
+      -3.52,
+      -0.639
+     ]
+    ],
+    "removal_ci": [
+     1.422,
+     [
+      0.34,
+      2.443
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.176,
+    "verdict": "outside it"
+   }
+  }
+ },
+ "hits": []
+}

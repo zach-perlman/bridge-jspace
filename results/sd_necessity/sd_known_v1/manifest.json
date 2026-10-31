@@ -1,0 +1,45 @@
+{
+  "run": "sd_known_v1",
+  "stage": "known",
+  "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, qwen3.6-27b): their known check, pairing, round 0",
+  "written_utc": "2026-10-30T07:58:12Z",
+  "git_commit": "5133c299c9345ad652eb5abc7ddec207a54f2576",
+  "git_state": {
+    "head": "5133c299c9345ad652eb5abc7ddec207a54f2576",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/paper_swap_6b.py",
+      "scripts/paper_swap_read6b.py",
+      "scripts/queues/h200_n39b_1030.sh"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "args": {
+    "stage": "known",
+    "name": "sd_known_v1",
+    "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, qwen3.6-27b): their known check, pairing, round 0",
+    "facts": "data/sd_v1/facts.jsonl",
+    "categories": [
+      "landmark-cntry-capital",
+      "person-birthcity-cntry",
+      "person-uguniv-hqcity"
+    ],
+    "per_category": 0,
+    "gen_tokens": 12,
+    "batch": 64
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_facts": 4610
+}

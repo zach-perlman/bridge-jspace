@@ -1,0 +1,398 @@
+{
+ "run": "nem35l_sd42_ko_test_v1",
+ "gate_run": "nem35l_sd_gate_v1",
+ "name_rule": "literal",
+ "solo_run": "nem35l_sd_ko_test_v1",
+ "dropped_bridge_named": 0,
+ "gated": {
+  "press_vis": {
+   "n": 331,
+   "paper10": {
+    "value": 5.4,
+    "ci": [
+     -0.29,
+     10.81
+    ]
+   },
+   "paper10_skipown": {
+    "value": -17.2,
+    "ci": [
+     -23.56,
+     -10.51
+    ]
+   },
+   "paper10_onlyown": {
+    "value": -7.9,
+    "ci": [
+     -12.0,
+     -3.79
+    ]
+   },
+   "share_onlyown": -1.46,
+   "share_skipown": -3.19,
+   "reading": "both"
+  },
+  "press1_vis": {
+   "n": 331,
+   "paper10": {
+    "value": 3.6,
+    "ci": [
+     1.66,
+     5.9
+    ]
+   },
+   "paper10_skipown": {
+    "value": -0.6,
+    "ci": [
+     -1.92,
+     0.5
+    ]
+   },
+   "paper10_onlyown": {
+    "value": 0.6,
+    "ci": [
+     0.0,
+     1.65
+    ]
+   },
+   "share_onlyown": 0.17,
+   "share_skipown": -0.17,
+   "reading": "both"
+  }
+ },
+ "ungated": {
+  "press_vis": {
+   "n": 597,
+   "paper10": {
+    "value": 4.4,
+    "ci": [
+     -0.9,
+     10.08
+    ]
+   },
+   "paper10_skipown": {
+    "value": -22.6,
+    "ci": [
+     -29.66,
+     -15.74
+    ]
+   },
+   "paper10_onlyown": {
+    "value": -9.7,
+    "ci": [
+     -13.43,
+     -5.4
+    ]
+   },
+   "share_onlyown": -2.2,
+   "share_skipown": -5.14,
+   "reading": "both"
+  },
+  "press1_vis": {
+   "n": 597,
+   "paper10": {
+    "value": 3.4,
+    "ci": [
+     1.69,
+     5.38
+    ]
+   },
+   "paper10_skipown": {
+    "value": -0.5,
+    "ci": [
+     -1.62,
+     0.48
+    ]
+   },
+   "paper10_onlyown": {
+    "value": -0.2,
+    "ci": [
+     -0.94,
+     0.58
+    ]
+   },
+   "share_onlyown": -0.06,
+   "share_skipown": -0.15,
+   "reading": "both"
+  }
+ },
+ "descriptive": {
+  "solo recall survives": {
+   "press_vis": {
+    "n": 131,
+    "paper10": {
+     "value": 1.5,
+     "ci": [
+      -5.76,
+      9.0
+     ]
+    },
+    "paper10_skipown": {
+     "value": -16.0,
+     "ci": [
+      -25.0,
+      -7.28
+     ]
+    },
+    "paper10_onlyown": {
+     "value": -13.0,
+     "ci": [
+      -20.27,
+      -6.25
+     ]
+    },
+    "share_onlyown": -8.67,
+    "share_skipown": -10.67,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 131,
+    "paper10": {
+     "value": 3.1,
+     "ci": [
+      0.66,
+      6.31
+     ]
+    },
+    "paper10_skipown": {
+     "value": 0.8,
+     "ci": [
+      0.0,
+      2.68
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "share_onlyown": 0.0,
+    "share_skipown": 0.26,
+    "reading": "both"
+   }
+  },
+  "solo recall breaks": {
+   "press_vis": {
+    "n": 200,
+    "paper10": {
+     "value": 8.0,
+     "ci": [
+      1.98,
+      14.29
+     ]
+    },
+    "paper10_skipown": {
+     "value": -18.0,
+     "ci": [
+      -25.6,
+      -9.38
+     ]
+    },
+    "paper10_onlyown": {
+     "value": -4.5,
+     "ci": [
+      -7.76,
+      -0.54
+     ]
+    },
+    "share_onlyown": -0.56,
+    "share_skipown": -2.25,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 200,
+    "paper10": {
+     "value": 4.0,
+     "ci": [
+      1.13,
+      7.47
+     ]
+    },
+    "paper10_skipown": {
+     "value": -1.5,
+     "ci": [
+      -3.68,
+      0.0
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 1.0,
+     "ci": [
+      0.0,
+      2.78
+     ]
+    },
+    "share_onlyown": 0.25,
+    "share_skipown": -0.38,
+    "reading": "both"
+   }
+  },
+  "solo unknown (not in the solo run)": {
+   "n": 0
+  },
+  "category landmark-cntry-capital": {
+   "press_vis": {
+    "n": 26,
+    "paper10": {
+     "value": 11.5,
+     "ci": [
+      -4.17,
+      25.81
+     ]
+    },
+    "paper10_skipown": {
+     "value": 0.0,
+     "ci": [
+      -11.54,
+      11.54
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 3.8,
+     "ci": [
+      0.0,
+      13.04
+     ]
+    },
+    "share_onlyown": 0.33,
+    "share_skipown": 0.0,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 26,
+    "paper10": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "paper10_skipown": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "reading": "not read (no specific give-in gain under paper10)"
+   }
+  },
+  "category person-birthcity-cntry": {
+   "press_vis": {
+    "n": 295,
+    "paper10": {
+     "value": 5.4,
+     "ci": [
+      -0.76,
+      10.7
+     ]
+    },
+    "paper10_skipown": {
+     "value": -18.3,
+     "ci": [
+      -25.77,
+      -10.55
+     ]
+    },
+    "paper10_onlyown": {
+     "value": -9.2,
+     "ci": [
+      -13.4,
+      -4.62
+     ]
+    },
+    "share_onlyown": -1.7,
+    "share_skipown": -3.39,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 295,
+    "paper10": {
+     "value": 4.1,
+     "ci": [
+      1.89,
+      6.97
+     ]
+    },
+    "paper10_skipown": {
+     "value": -0.7,
+     "ci": [
+      -2.18,
+      0.65
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 0.7,
+     "ci": [
+      0.0,
+      1.83
+     ]
+    },
+    "share_onlyown": 0.17,
+    "share_skipown": -0.17,
+    "reading": "both"
+   }
+  },
+  "category person-uguniv-hqcity": {
+   "press_vis": {
+    "n": 10,
+    "paper10": {
+     "value": -10.0,
+     "ci": [
+      -30.0,
+      0.0
+     ]
+    },
+    "paper10_skipown": {
+     "value": -30.0,
+     "ci": [
+      -55.56,
+      -10.0
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 0.0,
+     "ci": [
+      -23.08,
+      30.0
+     ]
+    },
+    "reading": "not read (no specific give-in gain under paper10)"
+   },
+   "press1_vis": {
+    "n": 10,
+    "paper10": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "paper10_skipown": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "reading": "not read (no specific give-in gain under paper10)"
+   }
+  }
+ }
+}

@@ -1,0 +1,60 @@
+{
+  "run": "nn_readout_v5kc2_v1",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "set": "jsuite_v5kc2_test_chat",
+  "competence": "jsuite_v5kc2_test_chat_competence_cand2_v1",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "items": "v4all",
+  "priming": true,
+  "topk": 20,
+  "git_commit": "a2a11b59525dbe4fd0ed7c5009226663be5a074e",
+  "git_state": {
+    "head": "a2a11b59525dbe4fd0ed7c5009226663be5a074e",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  }
+}

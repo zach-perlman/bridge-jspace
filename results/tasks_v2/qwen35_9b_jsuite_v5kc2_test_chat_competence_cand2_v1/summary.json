@@ -1,0 +1,153 @@
+{
+  "seconds": 961,
+  "by_word_level": {
+    "CN/L2": {
+      "n": 670,
+      "whole": 0.23,
+      "all_steps": 0.23,
+      "median_margin": -3.88,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "Russia",
+          21
+        ],
+        [
+          "Germany",
+          18
+        ],
+        [
+          "China",
+          18
+        ]
+      ]
+    },
+    "CA/L2": {
+      "n": 670,
+      "whole": 0,
+      "all_steps": 0.23,
+      "median_margin": -8.62,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "Russia",
+          24
+        ],
+        [
+          "China",
+          24
+        ],
+        [
+          "Italy",
+          23
+        ]
+      ]
+    },
+    "DN/L2": {
+      "n": 670,
+      "whole": 0.6,
+      "all_steps": 0.17,
+      "median_margin": 0.75,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "Spain",
+          15
+        ],
+        [
+          "N",
+          14
+        ],
+        [
+          "Canada",
+          14
+        ]
+      ]
+    },
+    "DA/L2": {
+      "n": 670,
+      "whole": 0.281,
+      "all_steps": 0.17,
+      "median_margin": -1.88,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "Italy",
+          20
+        ],
+        [
+          "Germany",
+          18
+        ],
+        [
+          "China",
+          17
+        ]
+      ]
+    },
+    "TN/L2": {
+      "n": 670,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 8.12,
+      "guess": 0.145,
+      "top_wrong": []
+    },
+    "TD/L2": {
+      "n": 670,
+      "whole": 0.888,
+      "all_steps": 0.824,
+      "median_margin": 4.88,
+      "guess": 0.145,
+      "top_wrong": [
+        [
+          "Canada",
+          5
+        ],
+        [
+          "C",
+          4
+        ],
+        [
+          "Nor",
+          4
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "CN": 0.263,
+      "CA": 0,
+      "DN": 0.624,
+      "DA": 0.392,
+      "TN": 1,
+      "TD": 0.812
+    },
+    "companies": {
+      "CN": 0.052,
+      "CA": 0,
+      "DN": 0.435,
+      "DA": 0.156,
+      "TN": 1,
+      "TD": 0.922
+    },
+    "landmarks": {
+      "CN": 0.479,
+      "CA": 0,
+      "DN": 0.688,
+      "DA": 0.365,
+      "TN": 1,
+      "TD": 0.906
+    },
+    "people": {
+      "CN": 0.218,
+      "CA": 0,
+      "DN": 0.654,
+      "DA": 0.239,
+      "TN": 1,
+      "TD": 0.919
+    }
+  },
+  "pick": {}
+}

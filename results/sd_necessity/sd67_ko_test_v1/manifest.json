@@ -1,0 +1,316 @@
+{
+  "run": "sd67_ko_test_v1",
+  "stage": "ko",
+  "why": "prereg amendment 88 note 67, data-defined positive control (2026-10-30, qwen3.6-27b): O, P and I (test split, person-birthcity-cntry; edits from the question's first token)",
+  "written_utc": "2026-10-30T20:39:57Z",
+  "git_commit": "00772ed7674dd0927202fa33fc6c192d456669de",
+  "git_state": {
+    "head": "00772ed7674dd0927202fa33fc6c192d456669de",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "args": {
+    "stage": "ko",
+    "items_run": "sd_known_v1",
+    "split": "test",
+    "convs": [
+      "onehop",
+      "solo",
+      "ctx2hop"
+    ],
+    "n": 0,
+    "gen": true,
+    "gen_batch": 32,
+    "name": "sd67_ko_test_v1",
+    "why": "prereg amendment 88 note 67, data-defined positive control (2026-10-30, qwen3.6-27b): O, P and I (test split, person-birthcity-cntry; edits from the question's first token)",
+    "fit": "/workspace/scratch/n67/fit.pt",
+    "fit_layers": [],
+    "fit_batch": 64,
+    "edits": [
+      "16-24:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp",
+      "32-40:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp"
+    ],
+    "seed": 0,
+    "batch": 16
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "note": "prereg amendment 88 note 67 (sd stage)",
+  "fit": "/workspace/scratch/n67/fit.pt",
+  "fit_sha256": "2882cefc8c1b83848de7a10b584a9ef0b91e8371033c93a661a7d89c7b67e814",
+  "fit_log": {
+    "16": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.211,
+      "clean_share_in_class_forms": 0.1974,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4277,
+      "energy_in_class": 0.5723,
+      "mean_norm": 79.75,
+      "mean_norm_centred": 30.9
+    },
+    "17": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2148,
+      "clean_share_in_class_forms": 0.2018,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4219,
+      "energy_in_class": 0.5781,
+      "mean_norm": 77.9,
+      "mean_norm_centred": 31.84
+    },
+    "18": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2437,
+      "clean_share_in_class_forms": 0.2277,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4222,
+      "energy_in_class": 0.5778,
+      "mean_norm": 78.13,
+      "mean_norm_centred": 35.4
+    },
+    "19": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2509,
+      "clean_share_in_class_forms": 0.2332,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4192,
+      "energy_in_class": 0.5808,
+      "mean_norm": 71.34,
+      "mean_norm_centred": 38.56
+    },
+    "20": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2037,
+      "clean_share_in_class_forms": 0.1901,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4143,
+      "energy_in_class": 0.5857,
+      "mean_norm": 70.07,
+      "mean_norm_centred": 41.12
+    },
+    "21": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.1906,
+      "clean_share_in_class_forms": 0.1791,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4088,
+      "energy_in_class": 0.5912,
+      "mean_norm": 75.14,
+      "mean_norm_centred": 43.32
+    },
+    "22": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.202,
+      "clean_share_in_class_forms": 0.1877,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4079,
+      "energy_in_class": 0.5921,
+      "mean_norm": 78.22,
+      "mean_norm_centred": 43.92
+    },
+    "23": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.1881,
+      "clean_share_in_class_forms": 0.1768,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4118,
+      "energy_in_class": 0.5882,
+      "mean_norm": 77.13,
+      "mean_norm_centred": 45.58
+    },
+    "24": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.1901,
+      "clean_share_in_class_forms": 0.1757,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.4062,
+      "energy_in_class": 0.5938,
+      "mean_norm": 80.71,
+      "mean_norm_centred": 46.11
+    },
+    "32": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2578,
+      "clean_share_in_class_forms": 0.2342,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3675,
+      "energy_in_class": 0.6325,
+      "mean_norm": 90.17,
+      "mean_norm_centred": 42.76
+    },
+    "33": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2481,
+      "clean_share_in_class_forms": 0.2251,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3595,
+      "energy_in_class": 0.6405,
+      "mean_norm": 90.69,
+      "mean_norm_centred": 42.58
+    },
+    "34": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2346,
+      "clean_share_in_class_forms": 0.2097,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3516,
+      "energy_in_class": 0.6484,
+      "mean_norm": 95.12,
+      "mean_norm_centred": 44.19
+    },
+    "35": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.208,
+      "clean_share_in_class_forms": 0.1816,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3442,
+      "energy_in_class": 0.6558,
+      "mean_norm": 88.53,
+      "mean_norm_centred": 44.75
+    },
+    "36": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2322,
+      "clean_share_in_class_forms": 0.2069,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.336,
+      "energy_in_class": 0.664,
+      "mean_norm": 90.71,
+      "mean_norm_centred": 45.07
+    },
+    "37": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2429,
+      "clean_share_in_class_forms": 0.2192,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3359,
+      "energy_in_class": 0.6641,
+      "mean_norm": 93.98,
+      "mean_norm_centred": 45.84
+    },
+    "38": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.2204,
+      "clean_share_in_class_forms": 0.1966,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3338,
+      "energy_in_class": 0.6662,
+      "mean_norm": 94.5,
+      "mean_norm_centred": 44.59
+    },
+    "39": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.184,
+      "clean_share_in_class_forms": 0.1635,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3372,
+      "energy_in_class": 0.6628,
+      "mean_norm": 88.58,
+      "mean_norm_centred": 44.63
+    },
+    "40": {
+      "rank_raw": 186,
+      "rank_class": 74,
+      "rank_clean": 112,
+      "raw_share_in_class_forms": 0.1806,
+      "clean_share_in_class_forms": 0.1589,
+      "n_class_form_rows": 304,
+      "energy_in_clean": 0.3337,
+      "energy_in_class": 0.6663,
+      "mean_norm": 89.05,
+      "mean_norm_centred": 43.5
+    }
+  },
+  "fit_n_names": 187,
+  "fit_n_classes": 75,
+  "templates": [
+    "I visited {C} last year.",
+    "Last month, {C} hosted the event.",
+    "There is a story about {C}.",
+    "Many people have heard of {C}.",
+    "Yesterday, {C} came up in conversation.",
+    "I read about {C} yesterday."
+  ],
+  "n_items": 418,
+  "n_prompts": 1254,
+  "n_read": 1245,
+  "items_collide": 3,
+  "edits": [
+    [
+      "L16-24",
+      [
+        "cityRaw",
+        "cityRaw_RE",
+        "cityClean",
+        "cityClean_RE",
+        "cityClean_RJ",
+        "bridgeJperp"
+      ]
+    ],
+    [
+      "L32-40",
+      [
+        "cityRaw",
+        "cityRaw_RE",
+        "cityClean",
+        "cityClean_RE",
+        "cityClean_RJ",
+        "bridgeJperp"
+      ]
+    ]
+  ],
+  "pos_from": "question",
+  "seeds": {
+    "re_pool": "ablate.rotation(d, 6700+layer), order Random('n67:'+uid)",
+    "rj_pool": "Random('n67j:'+layer).sample(letter rows, 2048)",
+    "items": 0
+  }
+}

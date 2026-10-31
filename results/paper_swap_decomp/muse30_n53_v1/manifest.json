@@ -1,0 +1,127 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "muse30_n53_v1",
+  "kind": "n53",
+  "why": "Zach (2026-10-30, prereg amendment 72 note 53, muse-glimmer-30b): note 53 run",
+  "note": "prereg amendment 72, note 53 (note 39 with energy-matched controls)",
+  "target": "muse-glimmer-30b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ]
+  },
+  "prev_run": "muse30_n39_v1",
+  "prev_5r_run": "muse30_n39r_v1",
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "windows": [
+    "29-42"
+  ],
+  "main_band": "29-42",
+  "arms_batch_A": [
+    "bridge",
+    "bridge_noA",
+    "bridge_onlyA",
+    "bridge_randA",
+    "bridge_onlyR",
+    "bridge_onlyR2",
+    "bridge_onlyR4",
+    "bridge_randA2",
+    "bridge_randA3"
+  ],
+  "nulls_batch_A": [
+    "bridge",
+    "bridge_onlyA"
+  ],
+  "arms_batch_B": [
+    "bridge_randE",
+    "bridge_nf",
+    "bridge_noA_nf",
+    "bridge_onlyA_nf"
+  ],
+  "nulls_batch_B": [
+    "bridge_nf",
+    "bridge_onlyA_nf"
+  ],
+  "batch_rows": 12,
+  "prompt_end": "stripped",
+  "items": [
+    "amazon-language",
+    "basketball-players",
+    "bird-color-swan",
+    "bird-country-eagle",
+    "birthstone-emerald-month",
+    "chem-atmosphere-Z",
+    "chem-bones-Z",
+    "chem-organic-Z",
+    "chem-photosynthesis-Z",
+    "city-state-Philadelphia",
+    "colosseum-currency",
+    "element-color-gold2",
+    "etym-saturn-position",
+    "etym-wargod-month",
+    "ex-city-capital-Barcelona-Toronto",
+    "ex-city-capital-Lyon-Naples",
+    "ex-city-capital-Naples-Barcelona",
+    "ex-city-capital-Toronto-Lyon",
+    "ex-city-continent-Toronto-Lyon",
+    "ex-city-currency-Toronto-Beijing",
+    "ex-city-currency-Toronto-Mumbai",
+    "ex-city-language-Lyon-Naples",
+    "ex-element-state-26-8",
+    "ex-element-state-26-80",
+    "ex-element-state-8-26",
+    "ex-element-state-8-80",
+    "ex-planet-color-third-fourth",
+    "ex2-city-capital-Munich",
+    "ex2-city-capital-Osaka",
+    "ex2-city-continent-Lima",
+    "ex2-city-language-Cairo",
+    "ex2-city-language-Moscow",
+    "ex2-language-capital-Greek",
+    "ex2-language-capital-Hungarian",
+    "ex2-language-capital-Polish",
+    "ex2-language-capital-Swedish",
+    "ex2-river-capital-Thames",
+    "greatwall-ocean",
+    "holiday-month-christmas2",
+    "organ-count-kidney2",
+    "paper-continent",
+    "person-firstname-darwin",
+    "person-firstname-einstein",
+    "person-firstname-newton",
+    "person-firstname-shakespeare",
+    "planet-3-moons",
+    "spider-legs",
+    "super-populous-capital",
+    "super-smallest-continent",
+    "violin-strings"
+  ],
+  "seeds": {
+    "arm7_s1": "random.Random('n39rand:<target>:<item>') (note 39's arm 7)",
+    "arm7_s2_s3": "random.Random('n53rand<s>:<target>:<item>'), s = 2, 3",
+    "5R_5R2_5R4": "the first |A|, 2|A|, 4|A| draws of random.Random('n39r:' + item) (5R's)",
+    "7E": "the first k of 8 x |A| draws of random.Random('n53:' + item)",
+    "nulls": "note 39's: NULL_SEED + 1000 * item index + arm index (nf nulls: their all-position arm's seed)"
+  },
+  "arm7E_rule": "k = the smallest prefix whose bridge-energy share (mean over the main band's layers of the mean over the two unit bridge atoms of |projection|^2) is >= A's on the same measure; capped at 8|A| (not reached: all 8|A|)",
+  "nf": "every position from 1 except the final one",
+  "command": "scripts/paper_swap_n53.py --name muse30_n53_v1 --why Zach (2026-10-30, prereg amendment 72 note 53, muse-glimmer-30b): note 53 run --prev muse30_n39_v1 --prev5r muse30_n39r_v1",
+  "git_state": {
+    "head": "d0d4d20c378f16dc740b11e6a0009c438d0abb19",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T12:04:40Z"
+}

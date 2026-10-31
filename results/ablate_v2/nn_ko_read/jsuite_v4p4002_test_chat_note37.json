@@ -1,0 +1,219 @@
+{
+ "prefix": "",
+ "v4": {
+  "run": "jsuite_v4p4002_test_chat_ko37_cand2_v1",
+  "stored_check": {
+   "stored_run": "jsuite_v4p4002_test_chat_ko_cand2_v1",
+   "missing": true
+  },
+  "all": {
+   "n": {
+    "MP": 469,
+    "MM": 330
+   },
+   "conditions": {
+    "paper10": {
+     "loss_MM": 77.9,
+     "loss_MM_strict": 78.6,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -3.275,
+     "loss_MP": 20.0,
+     "loss_MP_strict": 20.3,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.727,
+     "gap": 57.8,
+     "gap_ci": [
+      51.1,
+      64.5
+     ],
+     "gap_strict": 58.3,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 53.8,
+      "gap_ci": [
+       45.0,
+       62.3
+      ]
+     }
+    },
+    "paper10_rot": {
+     "loss_MM": 7.0,
+     "loss_MM_strict": 7.0,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -0.086,
+     "loss_MP": 2.6,
+     "loss_MP_strict": 2.6,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.061,
+     "gap": 4.4,
+     "gap_ci": [
+      1.1,
+      7.8
+     ],
+     "gap_strict": 4.4,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 4.0,
+      "gap_ci": [
+       -0.4,
+       8.8
+      ]
+     }
+    },
+    "paper10_keepA": {
+     "loss_MM": 8.8,
+     "loss_MM_strict": 9.2,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -0.14,
+     "loss_MP": 2.6,
+     "loss_MP_strict": 2.6,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.055,
+     "gap": 6.2,
+     "gap_ci": [
+      2.7,
+      10.1
+     ],
+     "gap_strict": 6.6,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 8.0,
+      "gap_ci": [
+       3.5,
+       12.9
+      ]
+     }
+    },
+    "paper10_keepA_rot": {
+     "loss_MM": 4.5,
+     "loss_MM_strict": 5.2,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -0.059,
+     "loss_MP": 1.7,
+     "loss_MP_strict": 1.7,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.031,
+     "gap": 2.8,
+     "gap_ci": [
+      -0.1,
+      5.8
+     ],
+     "gap_strict": 3.5,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 2.4,
+      "gap_ci": [
+       -1.2,
+       6.1
+      ]
+     }
+    },
+    "ansJ": {
+     "loss_MM": 51.2,
+     "loss_MM_strict": 51.7,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -1.819,
+     "loss_MP": 6.6,
+     "loss_MP_strict": 6.6,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.161,
+     "gap": 44.6,
+     "gap_ci": [
+      36.2,
+      53.3
+     ],
+     "gap_strict": 45.1,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 39.4,
+      "gap_ci": [
+       29.4,
+       50.0
+      ]
+     }
+    },
+    "ansJ_rot": {
+     "loss_MM": 3.3,
+     "loss_MM_strict": 4.0,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -0.003,
+     "loss_MP": 0.6,
+     "loss_MP_strict": 0.9,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.005,
+     "gap": 2.7,
+     "gap_ci": [
+      0.1,
+      5.4
+     ],
+     "gap_strict": 3.1,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 1.6,
+      "gap_ci": [
+       -1.3,
+       4.8
+      ]
+     }
+    },
+    "ansU": {
+     "loss_MM": 6.1,
+     "loss_MM_strict": 6.4,
+     "n_MM": 330,
+     "n_MM_right_unedited": 327,
+     "dlogp_MM": -0.066,
+     "loss_MP": 0.4,
+     "loss_MP_strict": 0.4,
+     "n_MP": 469,
+     "n_MP_right_unedited": 468,
+     "dlogp_MP": -0.014,
+     "gap": 5.6,
+     "gap_ci": [
+      2.7,
+      8.9
+     ],
+     "gap_strict": 6.0,
+     "paired": {
+      "n_pairs": 251,
+      "gap": 6.0,
+      "gap_ci": [
+       2.4,
+       10.1
+      ]
+     }
+    }
+   },
+   "ratio": {
+    "keepA_net_MM": 4.3,
+    "paper10_net_MM": 70.9,
+    "ratio": 0.06,
+    "ratio_ci": [
+     0.0,
+     0.12
+    ]
+   },
+   "reading": "the recall's J-need is its answer's directions",
+   "share_of_paper10_gap": {
+    "ansJ": 0.77,
+    "ansJ_rot": 0.05,
+    "ansU": 0.1,
+    "paper10_keepA": 0.11,
+    "paper10_keepA_rot": 0.05
+   }
+  }
+ },
+ "v4cc": {},
+ "set": "jsuite_v4p4002_test_chat"
+}

@@ -1,0 +1,117 @@
+{
+  "items": 51,
+  "rows": 918,
+  "windows": [
+    "8-16"
+  ],
+  "check": {
+    "note39": {
+      "clean": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.37254901960784315,
+        "flip_rate_stored": 0.37254901960784315,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge/null": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_noA": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.0784313725490196,
+        "flip_rate_stored": 0.0784313725490196,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.2549019607843137,
+        "flip_rate_stored": 0.2549019607843137,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA/null": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_randA": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.2549019607843137,
+        "flip_rate_stored": 0.2549019607843137,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "note39_5r": {
+      "bridge_onlyR": {
+        "n": 51,
+        "identical_rows": 51,
+        "differing_fields": {},
+        "same_flip": 51,
+        "same_swap_rank": 51,
+        "flip_rate_rerun": 0.058823529411764705,
+        "flip_rate_stored": 0.058823529411764705,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "arm7E_qr_vs_basis_share_max_abs_diff": 1.9378950888437885e-08
+  },
+  "seconds": 403,
+  "peak_gpu_gb": 18.77,
+  "peak_gpu_reserved_gb": 18.98,
+  "arm7E_not_reached": 0,
+  "arm7E_k_over_nA_median": 2.1379310344827585,
+  "command": "scripts/paper_swap_n53.py --name qwen35_9b_n53_v1 --why Zach (2026-10-30, prereg amendment 72 note 53, qwen3.5-9b): note 53 run --prev qwen35_9b_n39_v1 --prev5r qwen35_9b_n39r_v1",
+  "git_state": {
+    "head": "e5539836d00e17fcf598ee745795cc5668618728",
+    "dirty_files": [
+      "data/SOURCES.md",
+      "scripts/paper_ko_decomp.py",
+      "scripts/removal_textloss.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_sd_ma1_read.py",
+      "scripts/paper_ko_read55.py",
+      "scripts/queues/h200_n55_1030.sh",
+      "scripts/queues/h200_n56_1030.sh"
+    ],
+    "code_diff_sha256": "5715acfaf238fa5b7fd6b2c563e4758a180f6859d2277ecc3893651ed92e22df"
+  },
+  "reader": "python scripts/paper_swap_read53.py results/paper_swap_decomp/qwen35_9b_n39_v1 results/paper_swap_decomp/qwen35_9b_n53_v1"
+}

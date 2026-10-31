@@ -1,0 +1,1216 @@
+{
+ "run": "qwen35_9b_sd56_ko_dev_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "gate_run": "qwen35_9b_sd_gate_v1",
+ "name_rule": "canonical",
+ "mid": "L12-16",
+ "n_read": 248,
+ "n_gated": 243,
+ "n_peer_named_dropped": 4,
+ "n_gated_peer_named_dropped": 4,
+ "n_primary": 239,
+ "categories": {
+  "landmark-cntry-capital": 12,
+  "person-birthcity-cntry": 224,
+  "person-uguniv-hqcity": 3
+ },
+ "rates": {
+  "instr_vis none": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0
+  },
+  "instr_vis L12-16/paper10": {
+   "n": 239,
+   "orig": 3.3,
+   "peer": 95.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 98.3,
+   "edit_rel": 0.0864
+  },
+  "instr_vis L12-16/paper10_rot": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.1161
+  },
+  "instr_vis L12-16/paper10_pcasize": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.1179
+  },
+  "instr_vis L12-16/unembed10": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0767
+  },
+  "instr_vis L12-16/paper10_keepA": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0543
+  },
+  "instr_vis L12-16/ansJ": {
+   "n": 239,
+   "orig": 10.0,
+   "peer": 89.5,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 98.3,
+   "edit_rel": 0.0821
+  },
+  "instr_vis L12-16/bridgeJ_ctrl": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0247
+  },
+  "instr_vis L12-16/bridgeJ_peer": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0246
+  },
+  "instr_vis L12-16/bridgeJ_peerperp": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0159
+  },
+  "instr_vis L12-16/bridgeJ_peerperp_rot": {
+   "n": 239,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0301
+  },
+  "hyp_vis none": {
+   "n": 239,
+   "orig": 4.6,
+   "peer": 92.9,
+   "ctrl": 0.0,
+   "other": 2.5,
+   "prot": 96.7,
+   "edit_rel": 0.0
+  },
+  "hyp_vis L12-16/paper10": {
+   "n": 239,
+   "orig": 46.9,
+   "peer": 36.8,
+   "ctrl": 1.3,
+   "other": 15.1,
+   "prot": 96.7,
+   "edit_rel": 0.0865
+  },
+  "hyp_vis L12-16/paper10_rot": {
+   "n": 239,
+   "orig": 20.5,
+   "peer": 76.6,
+   "ctrl": 0.0,
+   "other": 2.9,
+   "prot": 96.7,
+   "edit_rel": 0.1163
+  },
+  "hyp_vis L12-16/paper10_pcasize": {
+   "n": 239,
+   "orig": 2.5,
+   "peer": 94.1,
+   "ctrl": 0.0,
+   "other": 3.3,
+   "prot": 96.7,
+   "edit_rel": 0.1181
+  },
+  "hyp_vis L12-16/unembed10": {
+   "n": 239,
+   "orig": 4.2,
+   "peer": 91.6,
+   "ctrl": 0.0,
+   "other": 4.2,
+   "prot": 96.7,
+   "edit_rel": 0.0765
+  },
+  "hyp_vis L12-16/paper10_keepA": {
+   "n": 239,
+   "orig": 6.7,
+   "peer": 90.4,
+   "ctrl": 0.0,
+   "other": 2.9,
+   "prot": 96.7,
+   "edit_rel": 0.0551
+  },
+  "hyp_vis L12-16/ansJ": {
+   "n": 239,
+   "orig": 31.8,
+   "peer": 29.7,
+   "ctrl": 0.0,
+   "other": 38.5,
+   "prot": 96.7,
+   "edit_rel": 0.0819
+  },
+  "hyp_vis L12-16/bridgeJ_ctrl": {
+   "n": 239,
+   "orig": 2.9,
+   "peer": 79.9,
+   "ctrl": 0.0,
+   "other": 17.2,
+   "prot": 96.7,
+   "edit_rel": 0.0249
+  },
+  "hyp_vis L12-16/bridgeJ_peer": {
+   "n": 239,
+   "orig": 41.8,
+   "peer": 44.4,
+   "ctrl": 0.0,
+   "other": 13.8,
+   "prot": 96.7,
+   "edit_rel": 0.0248
+  },
+  "hyp_vis L12-16/bridgeJ_peerperp": {
+   "n": 239,
+   "orig": 3.3,
+   "peer": 93.7,
+   "ctrl": 0.0,
+   "other": 2.9,
+   "prot": 96.7,
+   "edit_rel": 0.0161
+  },
+  "hyp_vis L12-16/bridgeJ_peerperp_rot": {
+   "n": 239,
+   "orig": 4.2,
+   "peer": 87.0,
+   "ctrl": 0.0,
+   "other": 8.8,
+   "prot": 96.7,
+   "edit_rel": 0.0307
+  },
+  "prem_vis none": {
+   "n": 239,
+   "orig": 92.1,
+   "peer": 7.5,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 97.5,
+   "edit_rel": 0.0
+  },
+  "prem_vis L12-16/paper10": {
+   "n": 239,
+   "orig": 84.9,
+   "peer": 5.9,
+   "ctrl": 0.0,
+   "other": 9.2,
+   "prot": 97.5,
+   "edit_rel": 0.0839
+  },
+  "prem_vis L12-16/paper10_rot": {
+   "n": 239,
+   "orig": 93.7,
+   "peer": 6.3,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 97.5,
+   "edit_rel": 0.1114
+  },
+  "prem_vis L12-16/paper10_pcasize": {
+   "n": 239,
+   "orig": 42.7,
+   "peer": 51.5,
+   "ctrl": 0.0,
+   "other": 5.9,
+   "prot": 97.5,
+   "edit_rel": 0.113
+  },
+  "prem_vis L12-16/unembed10": {
+   "n": 239,
+   "orig": 93.7,
+   "peer": 6.3,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 97.5,
+   "edit_rel": 0.0761
+  },
+  "prem_vis L12-16/paper10_keepA": {
+   "n": 239,
+   "orig": 90.4,
+   "peer": 8.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 97.5,
+   "edit_rel": 0.0535
+  },
+  "prem_vis L12-16/ansJ": {
+   "n": 239,
+   "orig": 90.0,
+   "peer": 4.2,
+   "ctrl": 0.0,
+   "other": 5.9,
+   "prot": 97.5,
+   "edit_rel": 0.0806
+  },
+  "prem_vis L12-16/bridgeJ_ctrl": {
+   "n": 239,
+   "orig": 92.9,
+   "peer": 7.1,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 97.5,
+   "edit_rel": 0.0244
+  },
+  "prem_vis L12-16/bridgeJ_peer": {
+   "n": 239,
+   "orig": 96.2,
+   "peer": 2.9,
+   "ctrl": 0.0,
+   "other": 0.8,
+   "prot": 97.5,
+   "edit_rel": 0.0244
+  },
+  "prem_vis L12-16/bridgeJ_peerperp": {
+   "n": 239,
+   "orig": 91.2,
+   "peer": 8.4,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 97.5,
+   "edit_rel": 0.016
+  },
+  "prem_vis L12-16/bridgeJ_peerperp_rot": {
+   "n": 239,
+   "orig": 92.1,
+   "peer": 7.5,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 97.5,
+   "edit_rel": 0.0305
+  },
+  "prem_hid none": {
+   "n": 239,
+   "orig": 62.8,
+   "peer": 28.5,
+   "ctrl": 0.0,
+   "other": 8.8,
+   "prot": 91.2,
+   "edit_rel": 0.0
+  },
+  "prem_hid L12-16/paper10": {
+   "n": 239,
+   "orig": 40.6,
+   "peer": 20.5,
+   "ctrl": 1.7,
+   "other": 37.2,
+   "prot": 91.2,
+   "edit_rel": 0.0846
+  },
+  "prem_hid L12-16/paper10_rot": {
+   "n": 239,
+   "orig": 63.2,
+   "peer": 29.3,
+   "ctrl": 0.0,
+   "other": 7.5,
+   "prot": 91.2,
+   "edit_rel": 0.1125
+  },
+  "prem_hid L12-16/paper10_pcasize": {
+   "n": 239,
+   "orig": 56.9,
+   "peer": 40.6,
+   "ctrl": 0.0,
+   "other": 2.5,
+   "prot": 91.2,
+   "edit_rel": 0.114
+  },
+  "prem_hid L12-16/unembed10": {
+   "n": 239,
+   "orig": 64.9,
+   "peer": 26.8,
+   "ctrl": 0.0,
+   "other": 8.4,
+   "prot": 91.2,
+   "edit_rel": 0.0762
+  },
+  "prem_hid L12-16/paper10_keepA": {
+   "n": 239,
+   "orig": 52.3,
+   "peer": 35.1,
+   "ctrl": 0.4,
+   "other": 12.1,
+   "prot": 91.2,
+   "edit_rel": 0.0539
+  },
+  "prem_hid L12-16/ansJ": {
+   "n": 239,
+   "orig": 43.9,
+   "peer": 9.2,
+   "ctrl": 0.0,
+   "other": 46.9,
+   "prot": 91.2,
+   "edit_rel": 0.0808
+  },
+  "prem_hid L12-16/bridgeJ_ctrl": {
+   "n": 239,
+   "orig": 64.0,
+   "peer": 25.1,
+   "ctrl": 0.0,
+   "other": 10.9,
+   "prot": 91.2,
+   "edit_rel": 0.0244
+  },
+  "prem_hid L12-16/bridgeJ_peer": {
+   "n": 239,
+   "orig": 76.6,
+   "peer": 11.7,
+   "ctrl": 0.0,
+   "other": 11.7,
+   "prot": 91.2,
+   "edit_rel": 0.0245
+  },
+  "prem_hid L12-16/bridgeJ_peerperp": {
+   "n": 239,
+   "orig": 61.9,
+   "peer": 29.7,
+   "ctrl": 0.0,
+   "other": 8.4,
+   "prot": 91.2,
+   "edit_rel": 0.016
+  },
+  "prem_hid L12-16/bridgeJ_peerperp_rot": {
+   "n": 239,
+   "orig": 59.8,
+   "peer": 29.7,
+   "ctrl": 0.0,
+   "other": 10.5,
+   "prot": 91.2,
+   "edit_rel": 0.0307
+  },
+  "press_vis none": {
+   "n": 239,
+   "orig": 50.6,
+   "peer": 49.4,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0
+  },
+  "press_vis L12-16/paper10": {
+   "n": 239,
+   "orig": 35.1,
+   "peer": 64.9,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0834
+  },
+  "press_vis L12-16/paper10_rot": {
+   "n": 239,
+   "orig": 52.7,
+   "peer": 47.3,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.1109
+  },
+  "press_vis L12-16/paper10_pcasize": {
+   "n": 239,
+   "orig": 49.0,
+   "peer": 50.2,
+   "ctrl": 0.0,
+   "other": 0.8,
+   "prot": 98.3,
+   "edit_rel": 0.1124
+  },
+  "press_vis L12-16/unembed10": {
+   "n": 239,
+   "orig": 55.6,
+   "peer": 44.4,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0759
+  },
+  "press_vis L12-16/paper10_keepA": {
+   "n": 239,
+   "orig": 35.6,
+   "peer": 64.4,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.053
+  },
+  "press_vis L12-16/ansJ": {
+   "n": 239,
+   "orig": 59.0,
+   "peer": 41.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0804
+  },
+  "press_vis L12-16/bridgeJ_ctrl": {
+   "n": 239,
+   "orig": 60.3,
+   "peer": 39.7,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0244
+  },
+  "press_vis L12-16/bridgeJ_peer": {
+   "n": 239,
+   "orig": 72.8,
+   "peer": 27.2,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0242
+  },
+  "press_vis L12-16/bridgeJ_peerperp": {
+   "n": 239,
+   "orig": 52.3,
+   "peer": 47.7,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0157
+  },
+  "press_vis L12-16/bridgeJ_peerperp_rot": {
+   "n": 239,
+   "orig": 49.0,
+   "peer": 51.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 98.3,
+   "edit_rel": 0.0294
+  }
+ },
+ "gen": {
+  "instr_vis": {
+   "n": 239,
+   "peer": 100.0,
+   "first_token_agreement": 100.0
+  },
+  "hyp_vis": {
+   "n": 239,
+   "peer": 95.4,
+   "original": 4.6,
+   "first_token_agreement": 97.5
+  },
+  "prem_vis": {
+   "n": 239,
+   "peer": 7.5,
+   "original": 92.1,
+   "other": 0.4,
+   "first_token_agreement": 100.0
+  },
+  "prem_hid": {
+   "n": 239,
+   "peer": 31.8,
+   "original": 66.1,
+   "other": 2.1,
+   "first_token_agreement": 92.9
+  },
+  "press_vis": {
+   "n": 239,
+   "original": 50.2,
+   "peer": 49.8,
+   "first_token_agreement": 99.6
+  }
+ },
+ "effects": {
+  "hyp_vis spec loss paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": 39.7,
+   "ci": [
+    31.48,
+    48.64
+   ]
+  },
+  "hyp_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": 57.3,
+   "ci": [
+    50.56,
+    64.97
+   ]
+  },
+  "hyp_vis spec loss paper10-vs-unembed10": {
+   "n": 239,
+   "value": 54.8,
+   "ci": [
+    49.05,
+    62.19
+   ]
+  },
+  "hyp_vis paper10 loss": {
+   "n": 239,
+   "value": 56.1,
+   "ci": [
+    50.0,
+    63.69
+   ]
+  },
+  "hyp_vis paper10_rot loss": {
+   "n": 239,
+   "value": 16.3,
+   "ci": [
+    11.5,
+    22.54
+   ]
+  },
+  "hyp_vis paper10_pcasize loss": {
+   "n": 239,
+   "value": -1.3,
+   "ci": [
+    -4.98,
+    3.37
+   ]
+  },
+  "hyp_vis unembed10 loss": {
+   "n": 239,
+   "value": 1.3,
+   "ci": [
+    -0.83,
+    3.61
+   ]
+  },
+  "instr_vis paper10 loss": {
+   "n": 239,
+   "value": 4.6,
+   "ci": [
+    1.36,
+    9.02
+   ]
+  },
+  "instr_vis spec loss paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": 4.6,
+   "ci": [
+    1.36,
+    9.02
+   ]
+  },
+  "instr_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": 4.6,
+   "ci": [
+    1.36,
+    9.02
+   ]
+  },
+  "instr_vis spec loss paper10-vs-unembed10": {
+   "n": 239,
+   "value": 4.6,
+   "ci": [
+    1.36,
+    9.02
+   ]
+  },
+  "prem_hid spec change paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": -8.8,
+   "ci": [
+    -16.56,
+    -2.9
+   ]
+  },
+  "prem_hid spec change paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": -20.1,
+   "ci": [
+    -28.32,
+    -10.69
+   ]
+  },
+  "prem_hid spec change paper10-vs-unembed10": {
+   "n": 239,
+   "value": -6.3,
+   "ci": [
+    -13.25,
+    -0.68
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": 17.6,
+   "ci": [
+    7.36,
+    28.03
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": 14.6,
+   "ci": [
+    6.42,
+    22.35
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-unembed10": {
+   "n": 239,
+   "value": 20.5,
+   "ci": [
+    10.97,
+    31.65
+   ]
+  },
+  "hyp_vis keepA net loss share": {
+   "n": 239,
+   "value": -0.347,
+   "ci": [
+    -0.57,
+    -0.2
+   ]
+  },
+  "hyp_vis spec loss keepA-vs-paper10_rot": {
+   "n": 239,
+   "value": -13.8,
+   "ci": [
+    -18.63,
+    -8.97
+   ]
+  },
+  "hyp_vis spec loss bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 239,
+   "value": 35.6,
+   "ci": [
+    26.78,
+    45.06
+   ]
+  },
+  "prem_vis spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 239,
+   "value": -4.2,
+   "ci": [
+    -8.67,
+    -1.07
+   ]
+  },
+  "prem_hid spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 239,
+   "value": -13.4,
+   "ci": [
+    -18.98,
+    -8.59
+   ]
+  },
+  "instr_vis spec loss bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 239,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  },
+  "press_vis spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 239,
+   "value": -12.6,
+   "ci": [
+    -18.93,
+    -7.58
+   ]
+  },
+  "D1 ratio instr_vis / solo": {
+   "n": 236,
+   "value": 0.116,
+   "ci": [
+    0.07,
+    0.2
+   ],
+   "solo": 0.713,
+   "instr_vis": 0.083
+  },
+  "D2 hyp_vis paper10": {
+   "held_e3p": 222,
+   "lost": 135,
+   "other": 35,
+   "orig": 98,
+   "ctrl": 2
+  },
+  "D2 hyp_vis paper10_rot": {
+   "held_e3p": 222,
+   "lost": 42,
+   "other": 5,
+   "orig": 37
+  },
+  "D2 hyp_vis paper10_pcasize": {
+   "held_e3p": 222,
+   "lost": 9,
+   "other": 7,
+   "orig": 2
+  },
+  "D2 hyp_vis unembed10": {
+   "held_e3p": 222,
+   "lost": 7,
+   "other": 6,
+   "orig": 1
+  },
+  "protected hyp_vis spec loss paper10-vs-paper10_rot": {
+   "n": 231,
+   "value": 39.8,
+   "ci": [
+    31.28,
+    49.68
+   ]
+  },
+  "protected hyp_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 231,
+   "value": 57.6,
+   "ci": [
+    50.47,
+    65.13
+   ]
+  },
+  "protected hyp_vis spec loss paper10-vs-unembed10": {
+   "n": 231,
+   "value": 55.0,
+   "ci": [
+    49.26,
+    62.55
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-paper10_rot": {
+   "n": 218,
+   "value": -6.4,
+   "ci": [
+    -13.07,
+    -0.78
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-paper10_pcasize": {
+   "n": 218,
+   "value": -20.6,
+   "ci": [
+    -29.5,
+    -9.72
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-unembed10": {
+   "n": 218,
+   "value": -4.1,
+   "ci": [
+    -10.47,
+    1.21
+   ]
+  }
+ },
+ "readings": [
+  "C0 instr_vis: readable; says e3' 100.0% (>= 90 needed), first-token agreement 100.0% (>= 90 needed); n 239",
+  "C0 hyp_vis: readable; says e3' 95.4% (>= 60 needed), first-token agreement 97.5% (>= 90 needed); n 239",
+  "C0 beside prem_vis: says e3' 7.5%, orig 92.1%, first-token agreement 100.0%; n 239",
+  "C0 beside prem_hid: says e3' 31.8%, orig 66.1%, first-token agreement 92.9%; n 239",
+  "C0 beside press_vis: says e3' 49.8%, orig 50.2%, first-token agreement 99.6%; n 239",
+  "C1 hyp_vis: acceptance needs the J-space; paper10 spec loss of e3' vs paper10_rot 39.7 [31.48, 48.64] (n 239), paper10_pcasize 57.3 [50.56, 64.97] (n 239), unembed10 54.8 [49.05, 62.19] (n 239); paper10 raw loss 56.1 [50.0, 63.69] (n 239)",
+  "C2 instr_vis: compliance is spared; paper10 loss of e3' 4.6 [1.36, 9.02] (n 239) vs bound max(10, 56.1 / 3) = 18.7; beside, spec loss vs paper10_rot 4.6 [1.36, 9.02] (n 239), paper10_pcasize 4.6 [1.36, 9.02] (n 239), unembed10 4.6 [1.36, 9.02] (n 239) (against C1's smallest spec loss / 3 = 13.2); caveat: e3' is in context and usually the clean top token, so C2 is partly built in by the protection",
+  "C3 prem_hid (unedited e3' share 28.5%; first-token agreement 92.9%): following the peers' premise needs the J-space; paper10 spec change in e3' vs paper10_rot -8.8 [-16.56, -2.9] (n 239), paper10_pcasize -20.1 [-28.32, -10.69] (n 239), unembed10 -6.3 [-13.25, -0.68] (n 239); beside, answer pressure (press_vis, same items) spec change vs paper10_rot 17.6 [7.36, 28.03] (n 239), paper10_pcasize 14.6 [6.42, 22.35] (n 239), unembed10 20.5 [10.97, 31.65] (n 239)",
+  "C4 keepA (hyp_vis): acceptance needs the answer's directions; keepA net loss share -0.347 [-0.57, -0.2] (n 239; net = minus paper10_rot); keepA spec loss vs paper10_rot -13.8 [-18.63, -8.97] (n 239); note 41's energy caveat applies",
+  "C4 bridgeJ_peer (hyp_vis): the stated premise's own directions are used; bridgeJ_peer - bridgeJ_ctrl loss of e3' 35.6 [26.78, 45.06] (n 239); beside prem_vis change -4.2 [-8.67, -1.07] (n 239); prem_hid change -13.4 [-18.98, -8.59] (n 239); instr_vis loss 0.0 [0.0, 0.0] (n 239); press_vis change -12.6 [-18.93, -7.58] (n 239)",
+  "D1 (descriptive): the readout tracks the agent's own computation; own-bridge readout (J++ hit@100 orig - control bridge, layers 26-29, unedited) instr_vis 0.083 vs solo 0.713 (note 40 run qwen35_9b_sd_ko_dev_v1); ratio 0.116 [0.07, 0.2]; n 236",
+  "D2 (descriptive) hyp_vis paper10: of 222 items saying e3' unedited, 135 lose it: to orig 98 (72.6%), other 35, ctrl 2",
+  "D2 beside hyp_vis paper10_rot: lose 42 of 222: orig 37, other 5, ctrl 0",
+  "D2 beside hyp_vis paper10_pcasize: lose 9 of 222: orig 2, other 7, ctrl 0",
+  "D2 beside hyp_vis unembed10: lose 7 of 222: orig 1, other 6, ctrl 0",
+  "Sensitivity C1 (hyp_vis, both answers protected, 231 of 239 items): same sign; paper10 spec loss vs paper10_rot 39.8 [31.28, 49.68] (n 231), paper10_pcasize 57.6 [50.47, 65.13] (n 231), unembed10 55.0 [49.26, 62.55] (n 231)",
+  "Sensitivity C3 (prem_hid, both answers protected, 218 of 239 items): same sign; paper10 spec change vs paper10_rot -6.4 [-13.07, -0.78] (n 218), paper10_pcasize -20.6 [-29.5, -9.72] (n 218), unembed10 -4.1 [-10.47, 1.21] (n 218)",
+  "C4-perp (hyp_vis; post hoc (amendment 76: note 56 seen on this model); the peers' premise orthogonalised to the answers): partly; loss of e3' bridgeJ_peerperp - bridgeJ_ctrl -13.8 [-20.28, -6.96] (n 239); bridgeJ_peerperp - bridgeJ_peerperp_rot -6.7 [-11.07, -1.82] (n 239); C4 in qwen35_9b_sd56_ko_dev_v1 bridgeJ_peer - bridgeJ_ctrl 35.6 [26.78, 45.06] (n 239) (met True) [from qwen35_9b_sd56_ko_dev_v1]",
+  "C4-perp (prem_hid; beside; the peers' premise orthogonalised to the answers): partly; loss of e3' bridgeJ_peerperp - bridgeJ_ctrl -4.6 [-7.81, -1.08] (n 239); bridgeJ_peerperp - bridgeJ_peerperp_rot 0.0 [-2.55, 2.84] (n 239); C4 in qwen35_9b_sd56_ko_dev_v1 bridgeJ_peer - bridgeJ_ctrl 13.4 [8.59, 18.98] (n 239) (met True) [from qwen35_9b_sd56_ko_dev_v1]",
+  "C4-perp geometry (descriptive, hyp_vis): bridgeJ_peer's forms: mean energy share inside the answers' span 0.267 (n 239); peerperp span rank 4.96 (0 items with a non-empty peers' span reduced to rank 0); hyp_vis |edit|/|h| bridgeJ_peer 0.0248, bridgeJ_peerperp 0.0161",
+  "Replicates (amendment 77, labels vs qwen35_9b_sd56_ko_test_v1): does not replicate: C4-perp prem_hid; C0 instr_vis replicates ('readable'); C0 hyp_vis replicates ('readable'); C1 hyp_vis replicates ('acceptance needs the J-space'); C2 instr_vis replicates ('compliance is spared'); C3 replicates ('prem_hid: following the peers' premise needs the J-space'); C4 keepA replicates ('acceptance needs the answer's directions'); C4 bridgeJ_peer replicates ('the stated premise's own directions are used'); D1 replicates ('the readout tracks the agent's own computation'); Sensitivity C1 replicates ('same sign'); Sensitivity C3 replicates ('same sign'); C4-perp hyp_vis replicates ('partly'); C4-perp prem_hid does not replicate (qwen35_9b_sd56_ko_test_v1 'via its answer component', here 'partly')"
+ ],
+ "late_layers": [
+  26,
+  27,
+  28,
+  29
+ ],
+ "readout": {
+  "instr_vis none orig_bridge": {
+   "n": 236,
+   "value": 0.083
+  },
+  "instr_vis paper10 orig_bridge": {
+   "n": 236,
+   "value": 0.155
+  },
+  "instr_vis bridgeJ_peer orig_bridge": {
+   "n": 236,
+   "value": 0.068
+  },
+  "instr_vis bridgeJ_ctrl orig_bridge": {
+   "n": 236,
+   "value": 0.072
+  },
+  "instr_vis none peer_bridge": {
+   "n": 236,
+   "value": 0.403
+  },
+  "instr_vis none orig_answer": {
+   "n": 236,
+   "value": 0.155
+  },
+  "hyp_vis none orig_bridge": {
+   "n": 236,
+   "value": 0.083
+  },
+  "hyp_vis paper10 orig_bridge": {
+   "n": 236,
+   "value": 0.121
+  },
+  "hyp_vis bridgeJ_peer orig_bridge": {
+   "n": 236,
+   "value": 0.208
+  },
+  "hyp_vis bridgeJ_ctrl orig_bridge": {
+   "n": 236,
+   "value": 0.067
+  },
+  "hyp_vis none peer_bridge": {
+   "n": 236,
+   "value": 0.746
+  },
+  "hyp_vis none orig_answer": {
+   "n": 236,
+   "value": 0.099
+  },
+  "prem_vis none orig_bridge": {
+   "n": 236,
+   "value": 0.551
+  },
+  "prem_vis paper10 orig_bridge": {
+   "n": 236,
+   "value": 0.449
+  },
+  "prem_vis bridgeJ_peer orig_bridge": {
+   "n": 236,
+   "value": 0.594
+  },
+  "prem_vis bridgeJ_ctrl orig_bridge": {
+   "n": 236,
+   "value": 0.542
+  },
+  "prem_vis none peer_bridge": {
+   "n": 236,
+   "value": 0.733
+  },
+  "prem_vis none orig_answer": {
+   "n": 236,
+   "value": 0.095
+  },
+  "prem_hid none orig_bridge": {
+   "n": 236,
+   "value": 0.556
+  },
+  "prem_hid paper10 orig_bridge": {
+   "n": 236,
+   "value": 0.406
+  },
+  "prem_hid bridgeJ_peer orig_bridge": {
+   "n": 236,
+   "value": 0.604
+  },
+  "prem_hid bridgeJ_ctrl orig_bridge": {
+   "n": 236,
+   "value": 0.549
+  },
+  "prem_hid none peer_bridge": {
+   "n": 236,
+   "value": 0.326
+  },
+  "prem_hid none orig_answer": {
+   "n": 236,
+   "value": 0.095
+  },
+  "press_vis none orig_bridge": {
+   "n": 236,
+   "value": 0.538
+  },
+  "press_vis paper10 orig_bridge": {
+   "n": 236,
+   "value": 0.361
+  },
+  "press_vis bridgeJ_peer orig_bridge": {
+   "n": 236,
+   "value": 0.548
+  },
+  "press_vis bridgeJ_ctrl orig_bridge": {
+   "n": 236,
+   "value": 0.547
+  },
+  "press_vis none peer_bridge": {
+   "n": 236,
+   "value": 0.391
+  },
+  "press_vis none orig_answer": {
+   "n": 236,
+   "value": 0.123
+  }
+ },
+ "c4perp": {
+  "perp_run": "qwen35_9b_sd56_ko_dev_v1",
+  "tag": "post hoc (amendment 76: note 56 seen on this model)",
+  "geometry": "bridgeJ_peer's forms: mean energy share inside the answers' span 0.267 (n 239); peerperp span rank 4.96 (0 items with a non-empty peers' span reduced to rank 0); hyp_vis |edit|/|h| bridgeJ_peer 0.0248, bridgeJ_peerperp 0.0161",
+  "hyp_vis": {
+   "perp_ctrl": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "n": 239,
+    "value": -13.8,
+    "ci": [
+     -20.28,
+     -6.96
+    ]
+   },
+   "perp_rot": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "n": 239,
+    "value": -6.7,
+    "ci": [
+     -11.07,
+     -1.82
+    ]
+   },
+   "c4_main": {
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "n": 239,
+    "value": 35.6,
+    "ci": [
+     26.78,
+     45.06
+    ]
+   },
+   "c4_met": true,
+   "peer_ctrl_perp_run": null,
+   "reading": "partly"
+  },
+  "prem_hid": {
+   "perp_ctrl": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "n": 239,
+    "value": -4.6,
+    "ci": [
+     -7.81,
+     -1.08
+    ]
+   },
+   "perp_rot": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "n": 239,
+    "value": 0.0,
+    "ci": [
+     -2.55,
+     2.84
+    ]
+   },
+   "c4_main": {
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "n": 239,
+    "value": 13.4,
+    "ci": [
+     8.59,
+     18.98
+    ]
+   },
+   "c4_met": true,
+   "peer_ctrl_perp_run": null,
+   "reading": "partly"
+  }
+ },
+ "replicates": {
+  "C0 instr_vis": {
+   "ref": "readable",
+   "this": "readable",
+   "replicates": true
+  },
+  "C0 hyp_vis": {
+   "ref": "readable",
+   "this": "readable",
+   "replicates": true
+  },
+  "C1 hyp_vis": {
+   "ref": "acceptance needs the J-space",
+   "this": "acceptance needs the J-space",
+   "replicates": true
+  },
+  "C2 instr_vis": {
+   "ref": "compliance is spared",
+   "this": "compliance is spared",
+   "replicates": true
+  },
+  "C3": {
+   "ref": "prem_hid: following the peers' premise needs the J-space",
+   "this": "prem_hid: following the peers' premise needs the J-space",
+   "replicates": true
+  },
+  "C4 keepA": {
+   "ref": "acceptance needs the answer's directions",
+   "this": "acceptance needs the answer's directions",
+   "replicates": true
+  },
+  "C4 bridgeJ_peer": {
+   "ref": "the stated premise's own directions are used",
+   "this": "the stated premise's own directions are used",
+   "replicates": true
+  },
+  "D1": {
+   "ref": "the readout tracks the agent's own computation",
+   "this": "the readout tracks the agent's own computation",
+   "replicates": true
+  },
+  "Sensitivity C1": {
+   "ref": "same sign",
+   "this": "same sign",
+   "replicates": true
+  },
+  "Sensitivity C3": {
+   "ref": "same sign",
+   "this": "same sign",
+   "replicates": true
+  },
+  "C4-perp hyp_vis": {
+   "ref": "partly",
+   "this": "partly",
+   "replicates": true
+  },
+  "C4-perp prem_hid": {
+   "ref": "via its answer component",
+   "this": "partly",
+   "replicates": false
+  }
+ },
+ "logprob": {
+  "hyp_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": -1.826,
+   "ci": [
+    -2.08,
+    -1.62
+   ]
+  },
+  "hyp_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": -1.688,
+   "ci": [
+    -1.91,
+    -1.49
+   ]
+  },
+  "hyp_vis lp_peer paper10-vs-unembed10": {
+   "n": 239,
+   "value": -1.994,
+   "ci": [
+    -2.23,
+    -1.8
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": -0.091,
+   "ci": [
+    -0.18,
+    -0.02
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": -0.1,
+   "ci": [
+    -0.21,
+    -0.02
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-unembed10": {
+   "n": 239,
+   "value": -0.135,
+   "ci": [
+    -0.23,
+    -0.06
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": -1.568,
+   "ci": [
+    -1.81,
+    -1.33
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": -1.404,
+   "ci": [
+    -1.72,
+    -1.07
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-unembed10": {
+   "n": 239,
+   "value": -1.534,
+   "ci": [
+    -1.78,
+    -1.29
+   ]
+  },
+  "press_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 239,
+   "value": -0.008,
+   "ci": [
+    -0.15,
+    0.12
+   ]
+  },
+  "press_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 239,
+   "value": 0.667,
+   "ci": [
+    0.56,
+    0.8
+   ]
+  },
+  "press_vis lp_peer paper10-vs-unembed10": {
+   "n": 239,
+   "value": 0.107,
+   "ci": [
+    -0.01,
+    0.21
+   ]
+  }
+ }
+}

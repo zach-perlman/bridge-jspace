@@ -1,0 +1,87 @@
+{
+  "seconds": 137,
+  "target": "nemotron-3.5-lightning",
+  "n_items": 982,
+  "by": {
+    "all/landmark-cntry-capital": {
+      "n": 43,
+      "guess_right": 1,
+      "shortcut": 23,
+      "name_drop": 0,
+      "gated": 42,
+      "no_shortcut": 20,
+      "name_drop_canonical": 0,
+      "gated_canonical": 42
+    },
+    "all/person-birthcity-cntry": {
+      "n": 856,
+      "guess_right": 91,
+      "shortcut": 832,
+      "name_drop": 397,
+      "gated": 443,
+      "no_shortcut": 15,
+      "name_drop_canonical": 7,
+      "gated_canonical": 758
+    },
+    "all/person-uguniv-hqcity": {
+      "n": 83,
+      "guess_right": 17,
+      "shortcut": 50,
+      "name_drop": 58,
+      "gated": 12,
+      "no_shortcut": 4,
+      "name_drop_canonical": 39,
+      "gated_canonical": 28
+    },
+    "all/ALL": {
+      "n": 982,
+      "guess_right": 109,
+      "shortcut": 905,
+      "name_drop": 455,
+      "gated": 497,
+      "no_shortcut": 39,
+      "name_drop_canonical": 46,
+      "gated_canonical": 828
+    },
+    "test_round0_right/landmark-cntry-capital": {
+      "n": 27,
+      "guess_right": 1,
+      "shortcut": 15,
+      "name_drop": 0,
+      "gated": 26,
+      "no_shortcut": 12,
+      "name_drop_canonical": 0,
+      "gated_canonical": 26
+    },
+    "test_round0_right/person-birthcity-cntry": {
+      "n": 528,
+      "guess_right": 89,
+      "shortcut": 516,
+      "name_drop": 219,
+      "gated": 295,
+      "no_shortcut": 6,
+      "name_drop_canonical": 6,
+      "gated_canonical": 433
+    },
+    "test_round0_right/person-uguniv-hqcity": {
+      "n": 44,
+      "guess_right": 2,
+      "shortcut": 32,
+      "name_drop": 34,
+      "gated": 10,
+      "no_shortcut": 3,
+      "name_drop_canonical": 23,
+      "gated_canonical": 19
+    },
+    "test_round0_right/ALL": {
+      "n": 599,
+      "guess_right": 92,
+      "shortcut": 563,
+      "name_drop": 253,
+      "gated": 331,
+      "no_shortcut": 21,
+      "name_drop_canonical": 29,
+      "gated_canonical": 478
+    }
+  }
+}

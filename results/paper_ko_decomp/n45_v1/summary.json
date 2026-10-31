@@ -1,0 +1,33 @@
+{
+  "gate": {
+    "ML": {
+      "raw_eligible": 89,
+      "n": 107,
+      "prompt_end": "stripped"
+    },
+    "MH": {
+      "raw_eligible": 62,
+      "n": 93,
+      "prompt_end": "stripped"
+    },
+    "OO": {
+      "raw_eligible": 36,
+      "n": 55,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "ML": 89,
+    "MH": 62,
+    "OO": 36
+  },
+  "clean_correct": {
+    "ML": 85,
+    "MH": 59,
+    "OO": 36
+  },
+  "rows": 4514,
+  "byte_check_all_equal": true,
+  "seconds": 567,
+  "reader": "python scripts/paper_ko_read.py results/paper_ko_decomp/n45_v1"
+}

@@ -1,0 +1,306 @@
+{
+ "seconds": 256,
+ "n": 300,
+ "cells": {
+  "RM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RA/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RA/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RA/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RN/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RN/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "RN/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PPP/none": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "PPP/filler300": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "PPP/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "MPP/none": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "MPP/filler300": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "MPP/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "PMP/none": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "PMP/filler300": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "PMP/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "PPM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PPM/filler300": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "PPM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MPM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MPM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MPM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MMP/none": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "MMP/filler300": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "MMP/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PMM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PMM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "PMM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MMM/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MMM/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "MMM/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nPR/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nPR/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nPR/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nKR/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nKR/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nKR/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nAR/none": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nAR/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nAR/repeat5": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nMR/none": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "nMR/filler300": {
+   "n": 4,
+   "acc_cand2": 1.0
+  },
+  "nMR/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "nPL/none": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nPL/filler300": {
+   "n": 4,
+   "acc_cand2": 0.75
+  },
+  "nPL/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nKL/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nKL/filler300": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nKL/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "nAL/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nAL/filler300": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nAL/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nML/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nML/filler300": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nML/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nPM/none": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nPM/filler300": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nPM/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nKM/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nKM/filler300": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nKM/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  },
+  "nAM/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nAM/filler300": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nAM/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nMM/none": {
+   "n": 4,
+   "acc_cand2": 0.0
+  },
+  "nMM/filler300": {
+   "n": 4,
+   "acc_cand2": 0.5
+  },
+  "nMM/repeat5": {
+   "n": 4,
+   "acc_cand2": 0.25
+  }
+ }
+}

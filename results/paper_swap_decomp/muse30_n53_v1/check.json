@@ -1,0 +1,87 @@
+{
+  "note39": {
+    "clean": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.44,
+      "flip_rate_stored": 0.44,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.06,
+      "flip_rate_stored": 0.06,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.4,
+      "flip_rate_stored": 0.4,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.42,
+      "flip_rate_stored": 0.42,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "note39_5r": {
+    "bridge_onlyR": {
+      "n": 50,
+      "identical_rows": 50,
+      "differing_fields": {},
+      "same_flip": 50,
+      "same_swap_rank": 50,
+      "flip_rate_rerun": 0.02,
+      "flip_rate_stored": 0.02,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "arm7E_qr_vs_basis_share_max_abs_diff": 1.800459309420077e-08
+}

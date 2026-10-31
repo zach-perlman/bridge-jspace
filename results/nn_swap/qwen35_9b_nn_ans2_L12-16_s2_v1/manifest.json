@@ -1,0 +1,67 @@
+{
+  "run": "qwen35_9b_nn_ans2_L12-16_s2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 11 addendum): narrower scrubs, qwen3.5-9b L12-16, donor seed 2",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "12-16"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "qwen35_9b_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "site": "last",
+  "conditions": [
+    "insert_k10_noansrel",
+    "insert_k10_noansrelctl",
+    "insert_k10_noansown",
+    "insert_k10_noansownctl",
+    "latent_k10_noansrel",
+    "latent_k10_noansrelctl",
+    "latent_k10_noansown",
+    "latent_k10_noansownctl",
+    "remove_k10_noansrel",
+    "remove_k10_noansown"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random('2:' + item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 2,
+  "items": "eligible",
+  "sample_refs": 80,
+  "scene_words": null,
+  "git_commit": "7ed28d12f66790d3e5b0c68a6918dc3ed1dea451",
+  "git_state": {
+    "head": "7ed28d12f66790d3e5b0c68a6918dc3ed1dea451",
+    "dirty_files": [
+      "docs/v3_sha256.txt",
+      "scripts/build_v3.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/queues/h200_ra_1028.sh"
+    ],
+    "code_diff_sha256": "d4cb3c58abb6e3e7d9c86cf732cd10757fc45cfc5ea2b445e66e25942eed3e6e"
+  },
+  "bj_gram_proj": "1"
+}

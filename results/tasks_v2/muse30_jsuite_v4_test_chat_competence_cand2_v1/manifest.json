@@ -1,0 +1,31 @@
+{
+  "run": "muse30_jsuite_v4_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-29, prereg amendment 59 note 28, Muse Glimmer 30B): competence",
+  "set": "jsuite_v4_test_chat",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "6c067dcfb6301cf0bfaeebce7d218ef9b6fe20f5",
+  "git_state": {
+    "head": "6c067dcfb6301cf0bfaeebce7d218ef9b6fe20f5",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_topk_read.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "MP",
+    "MM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-29T19:09:59Z"
+}

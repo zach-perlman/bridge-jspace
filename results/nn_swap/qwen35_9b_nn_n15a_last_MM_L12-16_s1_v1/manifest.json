@@ -1,0 +1,57 @@
+{
+  "run": "qwen35_9b_nn_n15a_last_MM_L12-16_s1_v1",
+  "why": "Zach (2026-10-29, prereg amendment 58 note 15 addendum): last / MM / L12-16, donor seed 1",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "12-16"
+  ],
+  "set": "jsuite_v4_test_chat",
+  "competence": "qwen35_9b_jsuite_v4_test_chat_competence_cand2_v1",
+  "words": [
+    "MM"
+  ],
+  "site": "last",
+  "conditions": [
+    "full_cf",
+    "lens_cf",
+    "rem_cf",
+    "lensshr_cf",
+    "remshr_cf"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random('1:' + item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 1,
+  "items": "v4ok",
+  "sample_refs": 0,
+  "scene_words": null,
+  "cv_h1": "qwen35_9b_jsuite_v4_cv_v1",
+  "git_commit": "b5cec8cdc4fe9d8fe77628555625964a5a62b7bf",
+  "git_state": {
+    "head": "b5cec8cdc4fe9d8fe77628555625964a5a62b7bf",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

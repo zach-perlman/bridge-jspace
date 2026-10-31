@@ -1,0 +1,123 @@
+{
+ "run": "nem35l_sd65_ko_test_v1",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "role": "confirmatory",
+ "band": "L27-33",
+ "n_read": 526,
+ "n_items": 431,
+ "n_peer_named_dropped": 1,
+ "gen_edited": true,
+ "readings": [
+  "reading validity [nemotron-3.5-lightning, confirmatory; test split; band L27-33]: Yes or No among the top-2 tokens in 100.0% of V rows (every edit; unedited 100.0%; >= 90 required; both the top 2: 39.7%), unedited balanced accuracy 95.1% (n 431; >= 85 required): valid",
+  "reading V1 [nemotron-3.5-lightning, confirmatory; test split; band L27-33]: verification survives the knock-out; L_V (BA spec loss) 3.7 [1.97, 5.45] (bridges [1.46, 6.0]; n 431, 161 bridges); L_G (G spec loss, first token) 49.9 [45.01, 54.29] (bridges [40.36, 59.23]; n 431); thresholds max(10, L_G/3) = 16.6, L_G/2 = 24.9"
+ ],
+ "beside": {
+  "V- accuracy spec loss": {
+   "value": -1.160092807424594,
+   "ci": [
+    -2.32,
+    -0.46
+   ],
+   "ci_bridges": [
+    -2.38,
+    -0.25
+   ],
+   "n": 431
+  },
+  "paired ranking spec loss": {
+   "value": 0.0,
+   "ci": [
+    -0.7,
+    0.0
+   ],
+   "ci_bridges": [
+    -0.69,
+    0.0
+   ],
+   "n": 431
+  },
+  "yes_bias_shift": {
+   "value": -0.5876595127610209,
+   "ci": [
+    -0.63,
+    -0.54
+   ],
+   "n": 431
+  },
+  "C2 spec loss": {
+   "value": 2.784222737819025,
+   "ci": [
+    0.7,
+    4.99
+   ],
+   "ci_bridges": [
+    0.25,
+    5.44
+   ],
+   "n": 431
+  },
+  "BA ansJ - ansRe loss": {
+   "value": -0.6960556844547563,
+   "ci": [
+    -1.39,
+    0.0
+   ],
+   "ci_bridges": [
+    -1.45,
+    0.0
+   ],
+   "n": 431
+  },
+  "G ansJ - ansRe loss": {
+   "value": 78.88631090487239,
+   "ci": [
+    74.94,
+    82.6
+   ],
+   "ci_bridges": [
+    74.34,
+    83.49
+   ],
+   "n": 431
+  }
+ },
+ "source": {
+  "solo": "first token",
+  "choose_tf": "first token",
+  "choose_ft": "first token"
+ },
+ "validity": {
+  "yn_any2": 100.0,
+  "yn_any2_unedited": 100.0,
+  "yn_both_top2": 39.675174013921115,
+  "ba_unedited": 95.1276102088167,
+  "n": 431,
+  "valid": true
+ },
+ "V1": {
+  "label": "verification survives the knock-out",
+  "L_V": 3.7122969837587005,
+  "ci": [
+   1.97,
+   5.45
+  ],
+  "ci_bridges": [
+   1.46,
+   6.0
+  ],
+  "n": 431,
+  "L_G": 49.88399071925754,
+  "ci_G": [
+   45.01,
+   54.29
+  ],
+  "n_G": 431
+ }
+}

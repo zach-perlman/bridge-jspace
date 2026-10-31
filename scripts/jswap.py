@@ -63,6 +63,35 @@ WORDS = ("PP", "PK", "PM", "PA", "TP", "TK", "TM", "TA")
 # v2 (jsuite_v2_*, amendment 34 B): 15 facts words (finals P K M A N) for eligibility, the read and tracked starts swapped
 ALL_WORDS_V2 = tuple(s + f for s in "PMT" for f in "PKMAN")
 WORDS_V2 = tuple(s + f for s in "PT" for f in "PKMAN")
+# jsuite v3 (amendment 58 note 5): every word (eligibility by the scene rule over V3_SCENE), swapped on the read start's
+# P K M A N finals and the tracked start's K M
+ALL_WORDS_V3 = ("PP", "PK", "PM", "PA", "PN", "PH", "PC", "PD", "PE", "PF", "PG", "MP", "MK", "MM", "MA", "MN", "TK", "TM",
+                "WK", "WM", "XK", "XM", "QK", "QM", "JK", "JM", "YK", "YM", "RM")  # fmt: skip
+WORDS_V3 = ("PP", "PK", "PM", "PA", "PN", "TK", "TM")
+V3_SCENE = ["PK", "PM", "MK", "MM", "WK", "WM", "TK", "TM", "XK", "XM", "QK", "QM", "JK", "JM", "YK", "YM", "RM"]
+_T3: dict = {}
+
+
+def table(it: dict) -> dict:
+    """The relation's templates and facts: v3's tables for jsuite v3 items, else jsuite_v2_tables.REL2."""
+    if it["id"].startswith("j3:"):
+        if not _T3:
+            from scripts import jsuite_v3_tables as T3
+
+            _T3.update(T3.tables())
+        t = _T3[it["relation"]]
+        if it.get("extra_facts"):  # note 24 (jsuite_v4cc): people outside v3's tables carry their facts on the item
+            t = {**t, "facts": {**t["facts"], **{e: tuple(v) for e, v in it["extra_facts"].items()}}}
+        return t
+    return TB.REL2[it["relation"]]
+
+
+def v3_prompts(tok, set_name: str, comp: str, words, scene: list[str] | None = None) -> list[dict]:
+    """tasks_prompts for jsuite v3: every v3 word of the given list, eligibility by the scene rule over V3_SCENE (or
+    the given scene words: note 10, a model with competence on RM only)."""
+    scene = scene or V3_SCENE
+    return tasks_prompts(tok, set_name, comp, [w for w in ALL_WORDS_V3 if w in set(words) | set(scene)], 1000, ["clean"], "all",
+                         scene_words=scene)
 CONDS = ("swap", "remove", "swap_rot", "swap_u", "swap_comp", "paste")
 ANS_CONDS = ("swap_ans", "swap_ans_u", "swap_ans_rot", "swap_noans")
 
@@ -81,14 +110,15 @@ def cap(s: str) -> str:
     return s[0].upper() + s[1:]
 
 
-def pfact_value(tpl: str, ctx: str, e: str, vocab: list[str]) -> str | None:
-    """The value the passage's new-fact sentence (template tpl) gives entity e, or None."""
+def pfact_value(tpl: str, ctx: str, e: str, vocab: list[str], the: bool = False) -> str | None:
+    """The value the passage's new-fact sentence (template tpl) gives entity e, or None. the (jsuite v3, amendment 58
+    note 5): the value may carry v3's display article ("a city in the Netherlands")."""
     rx = ""
     for lit, field, _, _ in string.Formatter().parse(tpl):
         rx += re.escape(lit)
         if field is None:
             continue
-        rx += {"x": re.escape(e), "X": re.escape(cap(e)), "a": r"(?P<v>[A-Za-z][A-Za-z ]*?)",
+        rx += {"x": re.escape(e), "X": re.escape(cap(e)), "a": (r"(?:[Tt]he )?" if the else "") + r"(?P<v>[A-Za-z][A-Za-z ]*?)",
                "al": r"(?P<v>[a-z][a-z ]*?)", "an": r"(?:a|an)"}[field]  # fmt: skip
     m = re.search(rx + r"(?=[.,!?\s])", ctx)
     if not m:
@@ -124,17 +154,21 @@ def main(a) -> None:
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
     v2 = a.set.startswith("jsuite_v2")
-    words_all, words = (ALL_WORDS_V2, WORDS_V2) if v2 else (ALL_WORDS, WORDS)
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(words_all), 1000, ["clean"], "all") if p["family"] in words]
+    v3 = a.set.startswith("jsuite_v3")
+    words_all, words = (ALL_WORDS_V3, WORDS_V3) if v3 else (ALL_WORDS_V2, WORDS_V2) if v2 else (ALL_WORDS, WORDS)
+    if v3:
+        prompts = [p for p in v3_prompts(tok, a.set, a.competence, words) if p["family"] in words]
+    else:
+        prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(words_all), 1000, ["clean"], "all") if p["family"] in words]
     jobs = []
     for p in prompts:
         it = items[p["id"]]
         x, dom, kind = it["bridge"], it["domain"], it["kind"]  # the whole question's read kind (chat: "open")
-        t = TB.REL2[it["relation"]] if it.get("module") == "facts" else NP.TYPES[dom]
+        t = table(it) if it.get("module") == "facts" else NP.TYPES[dom]
         vocab = it["answer_vocab"]
         if it["final"] == "P":
             tpl = t["pfact"][it["wording"]]
-            ans = {e: pfact_value(tpl, it["context"], e, vocab) for e in it["entities"]}
+            ans = {e: pfact_value(tpl, it["context"], e, vocab, the=it["id"].startswith("j3:")) for e in it["entities"]}
         else:
             ans = {e: t["facts"][e][0] for e in it["entities"]}
         if ans.get(x) is None:

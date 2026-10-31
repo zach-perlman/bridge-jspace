@@ -1,0 +1,2433 @@
+{
+ "prefix": "nem35l_",
+ "band": {
+  "run": "nem35l_nn38_L27-33_v1",
+  "band": "27-33",
+  "git_commit": "2d037c7df778bc699328dcdf0cc080c96e3740aa",
+  "words": {
+   "RM": {
+    "insert": {
+     "insert_k10": {
+      "n": 196,
+      "transfer": 15.8,
+      "ci": [
+       10.47,
+       22.22
+      ],
+      "kept": 78.6,
+      "beyond": 15.8,
+      "beyond_ci": [
+       10.47,
+       22.22
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 196,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 99.5
+     },
+     "insert_k10_noansrel": {
+      "n": 196,
+      "transfer": 1.0,
+      "ci": [
+       0.0,
+       2.65
+      ],
+      "kept": 95.4,
+      "beyond": 1.0,
+      "beyond_ci": [
+       0.0,
+       2.65
+      ],
+      "share": 0.065,
+      "share_ci": [
+       0.0,
+       0.17
+      ],
+      "raw_share": 0.065
+     },
+     "insert_k10_noansrelctl": {
+      "n": 196,
+      "transfer": 11.7,
+      "ci": [
+       7.07,
+       17.24
+      ],
+      "kept": 82.7,
+      "beyond": 11.7,
+      "beyond_ci": [
+       7.07,
+       17.24
+      ],
+      "share": 0.742,
+      "share_ci": [
+       0.57,
+       0.91
+      ],
+      "raw_share": 0.742
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 196,
+      "transfer": 0.5,
+      "ci": [
+       0.0,
+       2.0
+      ],
+      "kept": 94.4,
+      "beyond": 0.5,
+      "beyond_ci": [
+       0.0,
+       2.0
+      ],
+      "share": 0.032,
+      "share_ci": [
+       0.0,
+       0.11
+      ],
+      "raw_share": 0.032
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 196,
+      "transfer": 0.5,
+      "ci": [
+       0.0,
+       1.56
+      ],
+      "kept": 91.8,
+      "beyond": 0.5,
+      "beyond_ci": [
+       0.0,
+       1.56
+      ],
+      "share": 0.032,
+      "share_ci": [
+       0.0,
+       0.11
+      ],
+      "raw_share": 0.032
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 196,
+      "transfer": 1.0,
+      "ci": [
+       0.0,
+       2.56
+      ],
+      "kept": 85.7,
+      "beyond": 1.0,
+      "beyond_ci": [
+       0.0,
+       2.56
+      ],
+      "share": 0.065,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "raw_share": 0.065
+     },
+     "insert_k10_noansoff": {
+      "n": 196,
+      "transfer": 9.2,
+      "ci": [
+       4.55,
+       14.29
+      ],
+      "kept": 83.2,
+      "beyond": 9.2,
+      "beyond_ci": [
+       4.55,
+       14.29
+      ],
+      "share": 0.581,
+      "share_ci": [
+       0.33,
+       0.79
+      ],
+      "raw_share": 0.581
+     },
+     "insert_k10_noansform": {
+      "n": 58,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_relans": {
+      "n": 196,
+      "transfer": 14.8,
+      "ci": [
+       9.52,
+       20.74
+      ],
+      "kept": 76.5,
+      "beyond": 14.8,
+      "beyond_ci": [
+       9.52,
+       20.74
+      ],
+      "share": 0.935,
+      "share_ci": [
+       0.79,
+       1.1
+      ],
+      "raw_share": 0.935
+     }
+    },
+    "clamp": {
+     "clamp": {
+      "n": 192,
+      "transfer": 12.5,
+      "ci": [
+       7.22,
+       18.72
+      ],
+      "kept": 70.3,
+      "beyond": 12.5,
+      "beyond_ci": [
+       7.22,
+       18.72
+      ]
+     },
+     "clamp_null": {
+      "n": 192,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 99.0
+     },
+     "clamp_noans": {
+      "n": 192,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "clamp_noans_nm": {
+      "n": 192,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 99.5,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    },
+    "readings": {
+     "swap_beyond_rot": 15.8,
+     "share_nm": 0.032,
+     "share_off": 0.581,
+     "share_rel": 0.065,
+     "share_relans": 0.935,
+     "B1": "inert at matched size",
+     "B2": "not met",
+     "B3": "the answer subspace is sufficient",
+     "all": false
+    },
+    "norm_shares": {
+     "share_rel": {
+      "kept_items": {
+       "n": 196,
+       "mean": 0.395,
+       "median": 0.3836,
+       "ci": [
+        0.37,
+        0.42
+       ]
+      },
+      "all_items": {
+       "n": 196,
+       "mean": 0.395,
+       "median": 0.3836,
+       "ci": [
+        0.37,
+        0.42
+       ]
+      }
+     },
+     "share_c": {
+      "kept_items": {
+       "n": 196,
+       "mean": 0.271,
+       "median": 0.2713,
+       "ci": [
+        0.26,
+        0.28
+       ]
+      },
+      "all_items": {
+       "n": 196,
+       "mean": 0.271,
+       "median": 0.2713,
+       "ci": [
+        0.26,
+        0.28
+       ]
+      }
+     },
+     "share_off": {
+      "kept_items": {
+       "n": 196,
+       "mean": 0.261,
+       "median": 0.265,
+       "ci": [
+        0.25,
+        0.27
+       ]
+      },
+      "all_items": {
+       "n": 196,
+       "mean": 0.261,
+       "median": 0.265,
+       "ci": [
+        0.25,
+        0.27
+       ]
+      }
+     },
+     "share_form": {
+      "kept_items": {
+       "n": 58,
+       "mean": 0.3353,
+       "median": 0.3103,
+       "ci": [
+        0.3,
+        0.38
+       ]
+      },
+      "all_items": {
+       "n": 58,
+       "mean": 0.3353,
+       "median": 0.3103,
+       "ci": [
+        0.3,
+        0.38
+       ]
+      }
+     },
+     "scrub_kept_rel": {
+      "kept_items": {
+       "n": 196,
+       "mean": 0.6253,
+       "median": 0.6395,
+       "ci": [
+        0.6,
+        0.65
+       ]
+      },
+      "all_items": {
+       "n": 196,
+       "mean": 0.6253,
+       "median": 0.6395,
+       "ci": [
+        0.6,
+        0.65
+       ]
+      }
+     },
+     "scrub_kept_off": {
+      "kept_items": {
+       "n": 196,
+       "mean": 0.7396,
+       "median": 0.736,
+       "ci": [
+        0.73,
+        0.75
+       ]
+      },
+      "all_items": {
+       "n": 196,
+       "mean": 0.7396,
+       "median": 0.736,
+       "ci": [
+        0.73,
+        0.75
+       ]
+      }
+     },
+     "scrub_kept_form": {
+      "kept_items": {
+       "n": 58,
+       "mean": 0.6845,
+       "median": 0.7152,
+       "ci": [
+        0.65,
+        0.72
+       ]
+      },
+      "all_items": {
+       "n": 58,
+       "mean": 0.6845,
+       "median": 0.7152,
+       "ci": [
+        0.65,
+        0.72
+       ]
+      }
+     },
+     "clamp_ratio": {
+      "kept_items": {
+       "n": 192,
+       "mean": 0.9096,
+       "median": 0.6908,
+       "ci": [
+        0.77,
+        1.08
+       ]
+      },
+      "all_items": {
+       "n": 192,
+       "mean": 0.9096,
+       "median": 0.6908,
+       "ci": [
+        0.77,
+        1.08
+       ]
+      }
+     }
+    },
+    "dose": {
+     "insert_k10_noansrel": {
+      "n": 196,
+      "transfer": 1.0,
+      "beyond": 1.0,
+      "beyond_ci": [
+       0.0,
+       2.65
+      ],
+      "share": 0.065,
+      "share_ci": [
+       0.0,
+       0.17
+      ],
+      "edit_norm_vs_swap": 0.787
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 196,
+      "transfer": 0.5,
+      "beyond": 0.5,
+      "beyond_ci": [
+       0.0,
+       2.0
+      ],
+      "share": 0.032,
+      "share_ci": [
+       0.0,
+       0.11
+      ],
+      "edit_norm_vs_swap": 1.0
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 196,
+      "transfer": 0.5,
+      "beyond": 0.5,
+      "beyond_ci": [
+       0.0,
+       1.56
+      ],
+      "share": 0.032,
+      "share_ci": [
+       0.0,
+       0.11
+      ],
+      "edit_norm_vs_swap": 1.573
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 196,
+      "transfer": 1.0,
+      "beyond": 1.0,
+      "beyond_ci": [
+       0.0,
+       2.56
+      ],
+      "share": 0.065,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "edit_norm_vs_swap": 3.146
+     }
+    },
+    "people_form": {
+     "insert_k10": {
+      "n": 58,
+      "transfer": 17.2,
+      "ci": [
+       6.67,
+       29.03
+      ],
+      "kept": 72.4,
+      "beyond": 17.2,
+      "beyond_ci": [
+       6.67,
+       29.03
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 58,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0
+     },
+     "insert_k10_noansrel": {
+      "n": 58,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_k10_noansoff": {
+      "n": 58,
+      "transfer": 5.2,
+      "ci": [
+       0.0,
+       11.11
+      ],
+      "kept": 89.7,
+      "beyond": 5.2,
+      "beyond_ci": [
+       0.0,
+       11.11
+      ],
+      "share": 0.3,
+      "share_ci": [
+       0.0,
+       0.7
+      ],
+      "raw_share": 0.3
+     },
+     "insert_k10_noansform": {
+      "n": 58,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    }
+   },
+   "PM": {
+    "insert": {
+     "insert_k10": {
+      "n": 80,
+      "transfer": 27.5,
+      "ci": [
+       17.72,
+       37.18
+      ],
+      "kept": 50.0,
+      "beyond": 27.5,
+      "beyond_ci": [
+       17.72,
+       37.18
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 80,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 93.8
+     },
+     "insert_k10_noansrel": {
+      "n": 80,
+      "transfer": 1.2,
+      "ci": [
+       0.0,
+       3.95
+      ],
+      "kept": 93.8,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "raw_share": 0.045
+     },
+     "insert_k10_noansrelctl": {
+      "n": 80,
+      "transfer": 22.5,
+      "ci": [
+       13.95,
+       31.33
+      ],
+      "kept": 52.5,
+      "beyond": 22.5,
+      "beyond_ci": [
+       13.95,
+       31.33
+      ],
+      "share": 0.818,
+      "share_ci": [
+       0.58,
+       1.08
+      ],
+      "raw_share": 0.818
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 80,
+      "transfer": 1.2,
+      "ci": [
+       0.0,
+       3.95
+      ],
+      "kept": 91.2,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "raw_share": 0.045
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 80,
+      "transfer": 1.2,
+      "ci": [
+       0.0,
+       3.95
+      ],
+      "kept": 86.2,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "raw_share": 0.045
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 80,
+      "transfer": -1.2,
+      "ci": [
+       -7.32,
+       3.85
+      ],
+      "kept": 47.5,
+      "beyond": -1.2,
+      "beyond_ci": [
+       -7.32,
+       3.85
+      ],
+      "share": -0.045,
+      "share_ci": [
+       -0.28,
+       0.15
+      ],
+      "raw_share": -0.045
+     },
+     "insert_k10_noansoff": {
+      "n": 80,
+      "transfer": 18.8,
+      "ci": [
+       10.84,
+       27.85
+      ],
+      "kept": 58.8,
+      "beyond": 18.8,
+      "beyond_ci": [
+       10.84,
+       27.85
+      ],
+      "share": 0.682,
+      "share_ci": [
+       0.46,
+       0.89
+      ],
+      "raw_share": 0.682
+     },
+     "insert_k10_noansform": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.2,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_relans": {
+      "n": 80,
+      "transfer": 23.8,
+      "ci": [
+       13.41,
+       33.33
+      ],
+      "kept": 42.5,
+      "beyond": 23.8,
+      "beyond_ci": [
+       13.41,
+       33.33
+      ],
+      "share": 0.864,
+      "share_ci": [
+       0.6,
+       1.1
+      ],
+      "raw_share": 0.864
+     }
+    },
+    "clamp": {
+     "clamp": {
+      "n": 79,
+      "transfer": 22.8,
+      "ci": [
+       12.79,
+       32.53
+      ],
+      "kept": 46.8,
+      "beyond": 22.8,
+      "beyond_ci": [
+       12.79,
+       32.53
+      ]
+     },
+     "clamp_null": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 93.7
+     },
+     "clamp_noans": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 100.0,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "clamp_noans_nm": {
+      "n": 79,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 98.7,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    },
+    "readings": {
+     "swap_beyond_rot": 27.5,
+     "share_nm": 0.045,
+     "share_off": 0.682,
+     "share_rel": 0.045,
+     "share_relans": 0.864,
+     "B1": "inert at matched size",
+     "B2": "the scrub is specific to the asked relation",
+     "B3": "the answer subspace is sufficient",
+     "all": "necessary, sufficient, specific and size-controlled"
+    },
+    "norm_shares": {
+     "share_rel": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.4616,
+       "median": 0.4282,
+       "ci": [
+        0.42,
+        0.5
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.4616,
+       "median": 0.4282,
+       "ci": [
+        0.42,
+        0.5
+       ]
+      }
+     },
+     "share_c": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.2789,
+       "median": 0.2797,
+       "ci": [
+        0.26,
+        0.29
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.2789,
+       "median": 0.2797,
+       "ci": [
+        0.26,
+        0.29
+       ]
+      }
+     },
+     "share_off": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.2859,
+       "median": 0.286,
+       "ci": [
+        0.27,
+        0.3
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.2859,
+       "median": 0.286,
+       "ci": [
+        0.27,
+        0.3
+       ]
+      }
+     },
+     "share_form": {
+      "kept_items": {
+       "n": 26,
+       "mean": 0.3491,
+       "median": 0.3229,
+       "ci": [
+        0.3,
+        0.39
+       ]
+      },
+      "all_items": {
+       "n": 26,
+       "mean": 0.3491,
+       "median": 0.3229,
+       "ci": [
+        0.3,
+        0.39
+       ]
+      }
+     },
+     "scrub_kept_rel": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.5582,
+       "median": 0.5835,
+       "ci": [
+        0.52,
+        0.6
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.5582,
+       "median": 0.5835,
+       "ci": [
+        0.52,
+        0.6
+       ]
+      }
+     },
+     "scrub_kept_off": {
+      "kept_items": {
+       "n": 80,
+       "mean": 0.7145,
+       "median": 0.714,
+       "ci": [
+        0.7,
+        0.73
+       ]
+      },
+      "all_items": {
+       "n": 80,
+       "mean": 0.7145,
+       "median": 0.714,
+       "ci": [
+        0.7,
+        0.73
+       ]
+      }
+     },
+     "scrub_kept_form": {
+      "kept_items": {
+       "n": 26,
+       "mean": 0.6677,
+       "median": 0.6908,
+       "ci": [
+        0.63,
+        0.71
+       ]
+      },
+      "all_items": {
+       "n": 26,
+       "mean": 0.6677,
+       "median": 0.6908,
+       "ci": [
+        0.63,
+        0.71
+       ]
+      }
+     },
+     "clamp_ratio": {
+      "kept_items": {
+       "n": 79,
+       "mean": 0.7715,
+       "median": 0.6566,
+       "ci": [
+        0.67,
+        0.9
+       ]
+      },
+      "all_items": {
+       "n": 79,
+       "mean": 0.7715,
+       "median": 0.6566,
+       "ci": [
+        0.67,
+        0.9
+       ]
+      }
+     }
+    },
+    "dose": {
+     "insert_k10_noansrel": {
+      "n": 80,
+      "transfer": 1.2,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "edit_norm_vs_swap": 0.74
+     },
+     "insert_k10_noansrel_nm": {
+      "n": 80,
+      "transfer": 1.2,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "edit_norm_vs_swap": 1.0
+     },
+     "insert_k10_noansrel_x2": {
+      "n": 80,
+      "transfer": 1.2,
+      "beyond": 1.2,
+      "beyond_ci": [
+       0.0,
+       3.95
+      ],
+      "share": 0.045,
+      "share_ci": [
+       0.0,
+       0.16
+      ],
+      "edit_norm_vs_swap": 1.479
+     },
+     "insert_k10_noansrel_x4": {
+      "n": 80,
+      "transfer": -1.2,
+      "beyond": -1.2,
+      "beyond_ci": [
+       -7.32,
+       3.85
+      ],
+      "share": -0.045,
+      "share_ci": [
+       -0.28,
+       0.15
+      ],
+      "edit_norm_vs_swap": 2.959
+     }
+    },
+    "people_form": {
+     "insert_k10": {
+      "n": 26,
+      "transfer": 15.4,
+      "ci": [
+       3.7,
+       28.0
+      ],
+      "kept": 46.2,
+      "beyond": 15.4,
+      "beyond_ci": [
+       3.7,
+       28.0
+      ]
+     },
+     "insert_k10_rot": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 88.5
+     },
+     "insert_k10_noansrel": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.2,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     },
+     "insert_k10_noansoff": {
+      "n": 26,
+      "transfer": 11.5,
+      "ci": [
+       0.0,
+       25.81
+      ],
+      "kept": 53.8,
+      "beyond": 11.5,
+      "beyond_ci": [
+       0.0,
+       25.81
+      ],
+      "share": 0.75,
+      "share_ci": [
+       0.0,
+       2.0
+      ],
+      "raw_share": 0.75
+     },
+     "insert_k10_noansform": {
+      "n": 26,
+      "transfer": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "kept": 96.2,
+      "beyond": 0.0,
+      "beyond_ci": [
+       0.0,
+       0.0
+      ],
+      "share": 0.0,
+      "share_ci": [
+       0.0,
+       0.0
+      ],
+      "raw_share": 0.0
+     }
+    }
+   }
+  },
+  "stored_check": {
+   "nem35l_nn_ans2_L27-33_s0_v1": {
+    "none": {
+     "ours": 276,
+     "common": 276,
+     "identical": 276,
+     "same_donor_third": 276,
+     "mismatch": []
+    },
+    "insert_k10_noansrel": {
+     "ours": 276,
+     "common": 276,
+     "identical": 275,
+     "same_donor_third": 276,
+     "mismatch": [
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L2-r0-01702"
+      ]
+     ]
+    },
+    "insert_k10_noansrelctl": {
+     "ours": 276,
+     "common": 276,
+     "identical": 274,
+     "same_donor_third": 276,
+     "mismatch": [
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L1-r0-00028"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L2-r0-01702"
+      ]
+     ]
+    }
+   },
+   "nem35l_nn_ans_L27-33_s0_v1": {
+    "none": {
+     "ours": 276,
+     "common": 276,
+     "identical": 276,
+     "same_donor_third": 276,
+     "mismatch": []
+    },
+    "insert_k10": {
+     "ours": 276,
+     "common": 276,
+     "identical": 273,
+     "same_donor_third": 276,
+     "mismatch": [
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L1-r0-00028"
+      ],
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-00505"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L2-r0-00076"
+      ]
+     ]
+    }
+   },
+   "nem35l_nn_clampnoans_L27-33_v1": {
+    "none": {
+     "ours": 276,
+     "common": 276,
+     "identical": 276,
+     "same_donor_third": 276,
+     "mismatch": []
+    },
+    "clamp": {
+     "ours": 271,
+     "common": 271,
+     "identical": 268,
+     "same_donor_third": 271,
+     "mismatch": [
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-02093"
+      ],
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-03297"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L2-r0-00076"
+      ]
+     ]
+    },
+    "clamp_null": {
+     "ours": 271,
+     "common": 271,
+     "identical": 269,
+     "same_donor_third": 271,
+     "mismatch": [
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-02060"
+      ],
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-05389"
+      ]
+     ]
+    },
+    "clamp_noans": {
+     "ours": 271,
+     "common": 271,
+     "identical": 271,
+     "same_donor_third": 271,
+     "mismatch": []
+    }
+   },
+   "nem35l_nn_swap_L27-33_v1": {
+    "none": {
+     "ours": 276,
+     "common": 276,
+     "identical": 276,
+     "same_donor_third": 276,
+     "mismatch": []
+    },
+    "insert_k10_rot": {
+     "ours": 276,
+     "common": 276,
+     "identical": 272,
+     "same_donor_third": 276,
+     "mismatch": [
+      [
+       "L27-33",
+       "RM",
+       "j3:chat:facts:RM-L2-r0-05389"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L3-r0-00159"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L3-r0-01779"
+      ],
+      [
+       "L27-33",
+       "PM",
+       "j3:chat:facts:PM-L3-r0-03069"
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "sweep": {
+  "run": "nem35l_nn38_sweep_v1",
+  "windows": {
+   "L6-10/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 8.8,
+     "ci": [
+      3.7,
+      15.79
+     ],
+     "kept": 81.2,
+     "beyond": 8.8,
+     "beyond_ci": [
+      3.7,
+      15.79
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 93.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      0.0,
+      6.49
+     ],
+     "kept": 87.5,
+     "beyond": 2.5,
+     "beyond_ci": [
+      0.0,
+      6.49
+     ],
+     "share": 0.286,
+     "share_ci": [
+      0.0,
+      0.86
+     ],
+     "raw_share": 0.286
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 5.0,
+     "ci": [
+      1.22,
+      11.11
+     ],
+     "kept": 87.5,
+     "beyond": 5.0,
+     "beyond_ci": [
+      1.22,
+      11.11
+     ],
+     "share": 0.571,
+     "share_ci": [
+      0.2,
+      1.0
+     ],
+     "raw_share": 0.571
+    }
+   },
+   "L11-15/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 12.5,
+     "ci": [
+      5.0,
+      21.79
+     ],
+     "kept": 76.2,
+     "beyond": 12.5,
+     "beyond_ci": [
+      5.0,
+      21.79
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 93.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      8.54
+     ],
+     "kept": 83.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      8.54
+     ],
+     "share": 0.3,
+     "share_ci": [
+      0.0,
+      0.67
+     ],
+     "raw_share": 0.3
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 12.5,
+     "ci": [
+      6.02,
+      20.48
+     ],
+     "kept": 75.0,
+     "beyond": 12.5,
+     "beyond_ci": [
+      6.02,
+      20.48
+     ],
+     "share": 1.0,
+     "share_ci": [
+      0.67,
+      1.62
+     ],
+     "raw_share": 1.0
+    }
+   },
+   "L16-20/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 16.2,
+     "ci": [
+      7.59,
+      25.0
+     ],
+     "kept": 68.8,
+     "beyond": 16.2,
+     "beyond_ci": [
+      7.59,
+      25.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      0.0,
+      6.25
+     ],
+     "kept": 86.2,
+     "beyond": 2.5,
+     "beyond_ci": [
+      0.0,
+      6.25
+     ],
+     "share": 0.154,
+     "share_ci": [
+      0.0,
+      0.39
+     ],
+     "raw_share": 0.154
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 10.0,
+     "ci": [
+      2.63,
+      18.42
+     ],
+     "kept": 70.0,
+     "beyond": 10.0,
+     "beyond_ci": [
+      2.63,
+      18.42
+     ],
+     "share": 0.615,
+     "share_ci": [
+      0.3,
+      0.88
+     ],
+     "raw_share": 0.615
+    }
+   },
+   "L21-26/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 18.8,
+     "ci": [
+      8.97,
+      28.57
+     ],
+     "kept": 65.0,
+     "beyond": 18.8,
+     "beyond_ci": [
+      8.97,
+      28.57
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 95.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      7.89
+     ],
+     "kept": 87.5,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      7.89
+     ],
+     "share": 0.2,
+     "share_ci": [
+      0.0,
+      0.5
+     ],
+     "raw_share": 0.2
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 15.0,
+     "ci": [
+      5.0,
+      25.64
+     ],
+     "kept": 68.8,
+     "beyond": 15.0,
+     "beyond_ci": [
+      5.0,
+      25.64
+     ],
+     "share": 0.8,
+     "share_ci": [
+      0.5,
+      1.0
+     ],
+     "raw_share": 0.8
+    }
+   },
+   "L27-33/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 13.8,
+     "ci": [
+      6.33,
+      21.79
+     ],
+     "kept": 75.0,
+     "beyond": 13.8,
+     "beyond_ci": [
+      6.33,
+      21.79
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      4.76
+     ],
+     "kept": 92.5,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      4.76
+     ],
+     "share": 0.091,
+     "share_ci": [
+      0.0,
+      0.33
+     ],
+     "raw_share": 0.091
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 13.8,
+     "ci": [
+      6.58,
+      22.08
+     ],
+     "kept": 73.8,
+     "beyond": 13.8,
+     "beyond_ci": [
+      6.58,
+      22.08
+     ],
+     "share": 1.0,
+     "share_ci": [
+      0.75,
+      1.37
+     ],
+     "raw_share": 1.0
+    }
+   },
+   "L34-39/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      4.76
+     ],
+     "kept": 98.8,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      4.76
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      4.76
+     ],
+     "kept": 98.8,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      4.76
+     ],
+     "share": 1.0,
+     "share_ci": [
+      1.0,
+      1.0
+     ],
+     "raw_share": 1.0
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      4.76
+     ],
+     "kept": 97.5,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      4.76
+     ],
+     "share": 1.0,
+     "share_ci": [
+      1.0,
+      1.0
+     ],
+     "raw_share": 1.0
+    }
+   },
+   "L40-45/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L46-50/RM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L6-10/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 21.2,
+     "ci": [
+      12.94,
+      30.26
+     ],
+     "kept": 56.2,
+     "beyond": 21.2,
+     "beyond_ci": [
+      12.94,
+      30.26
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      3.95
+     ],
+     "kept": 90.0,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      3.95
+     ],
+     "share": 0.059,
+     "share_ci": [
+      0.0,
+      0.21
+     ],
+     "raw_share": 0.059
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 13.8,
+     "ci": [
+      6.45,
+      21.79
+     ],
+     "kept": 68.8,
+     "beyond": 13.8,
+     "beyond_ci": [
+      6.45,
+      21.79
+     ],
+     "share": 0.647,
+     "share_ci": [
+      0.39,
+      0.94
+     ],
+     "raw_share": 0.647
+    }
+   },
+   "L11-15/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 27.5,
+     "ci": [
+      16.87,
+      38.96
+     ],
+     "kept": 43.8,
+     "beyond": 27.5,
+     "beyond_ci": [
+      16.87,
+      38.96
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      7.89
+     ],
+     "kept": 83.8,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      7.89
+     ],
+     "share": 0.136,
+     "share_ci": [
+      0.0,
+      0.31
+     ],
+     "raw_share": 0.136
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 18.8,
+     "ci": [
+      8.97,
+      28.77
+     ],
+     "kept": 50.0,
+     "beyond": 18.8,
+     "beyond_ci": [
+      8.97,
+      28.77
+     ],
+     "share": 0.682,
+     "share_ci": [
+      0.42,
+      0.91
+     ],
+     "raw_share": 0.682
+    }
+   },
+   "L16-20/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 28.8,
+     "ci": [
+      18.07,
+      40.26
+     ],
+     "kept": 40.0,
+     "beyond": 28.8,
+     "beyond_ci": [
+      18.07,
+      40.26
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 95.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 3.8,
+     "ci": [
+      0.0,
+      7.89
+     ],
+     "kept": 85.0,
+     "beyond": 3.8,
+     "beyond_ci": [
+      0.0,
+      7.89
+     ],
+     "share": 0.13,
+     "share_ci": [
+      0.0,
+      0.3
+     ],
+     "raw_share": 0.13
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 22.5,
+     "ci": [
+      14.1,
+      31.71
+     ],
+     "kept": 40.0,
+     "beyond": 22.5,
+     "beyond_ci": [
+      14.1,
+      31.71
+     ],
+     "share": 0.783,
+     "share_ci": [
+      0.56,
+      1.12
+     ],
+     "raw_share": 0.783
+    }
+   },
+   "L21-26/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 42.5,
+     "ci": [
+      31.33,
+      52.5
+     ],
+     "kept": 33.8,
+     "beyond": 42.5,
+     "beyond_ci": [
+      31.33,
+      52.5
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 87.5
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 2.5,
+     "ci": [
+      0.0,
+      6.33
+     ],
+     "kept": 80.0,
+     "beyond": 2.5,
+     "beyond_ci": [
+      0.0,
+      6.33
+     ],
+     "share": 0.059,
+     "share_ci": [
+      0.0,
+      0.14
+     ],
+     "raw_share": 0.059
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 31.2,
+     "ci": [
+      21.33,
+      41.67
+     ],
+     "kept": 32.5,
+     "beyond": 31.2,
+     "beyond_ci": [
+      21.33,
+      41.67
+     ],
+     "share": 0.735,
+     "share_ci": [
+      0.57,
+      0.9
+     ],
+     "raw_share": 0.735
+    }
+   },
+   "L27-33/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 26.2,
+     "ci": [
+      16.67,
+      35.8
+     ],
+     "kept": 50.0,
+     "beyond": 26.2,
+     "beyond_ci": [
+      16.67,
+      35.8
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 93.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 1.2,
+     "ci": [
+      0.0,
+      3.95
+     ],
+     "kept": 90.0,
+     "beyond": 1.2,
+     "beyond_ci": [
+      0.0,
+      3.95
+     ],
+     "share": 0.048,
+     "share_ci": [
+      0.0,
+      0.17
+     ],
+     "raw_share": 0.048
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 22.5,
+     "ci": [
+      12.36,
+      32.0
+     ],
+     "kept": 42.5,
+     "beyond": 22.5,
+     "beyond_ci": [
+      12.36,
+      32.0
+     ],
+     "share": 0.857,
+     "share_ci": [
+      0.6,
+      1.1
+     ],
+     "raw_share": 0.857
+    }
+   },
+   "L34-39/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 98.8
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L40-45/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 97.5,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   },
+   "L46-50/PM": {
+    "insert_k10": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0
+    },
+    "insert_k10_noansrel_nm": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    },
+    "insert_relans": {
+     "n": 80,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "kept": 100.0,
+     "beyond": 0.0,
+     "beyond_ci": [
+      0.0,
+      0.0
+     ],
+     "share": null,
+     "share_ci": null,
+     "raw_share": null
+    }
+   }
+  },
+  "onset": {
+   "RM/insert_k10": {
+    "raw": "L11-15",
+    "beyond_rot": "L11-15"
+   },
+   "RM/insert_k10_noansrel_nm": {
+    "raw": null,
+    "beyond_rot": null
+   },
+   "RM/insert_relans": {
+    "raw": "L11-15",
+    "beyond_rot": "L11-15"
+   },
+   "RM/stored_note11/insert_ans": {
+    "raw": null,
+    "series": {
+     "L6-10": 2.5,
+     "L11-15": 2.5,
+     "L16-20": 3.8,
+     "L21-26": 5.0,
+     "L27-33": 1.2,
+     "L34-39": 1.2,
+     "L40-45": 1.2,
+     "L46-50": 0.0
+    }
+   },
+   "RM/stored_note11/insert_k10": {
+    "raw": "L11-15",
+    "series": {
+     "L6-10": 8.8,
+     "L11-15": 12.5,
+     "L16-20": 16.2,
+     "L21-26": 18.8,
+     "L27-33": 13.8,
+     "L34-39": 1.2,
+     "L40-45": 0.0,
+     "L46-50": 0.0
+    }
+   },
+   "PM/insert_k10": {
+    "raw": "L6-10",
+    "beyond_rot": "L6-10"
+   },
+   "PM/insert_k10_noansrel_nm": {
+    "raw": null,
+    "beyond_rot": null
+   },
+   "PM/insert_relans": {
+    "raw": "L6-10",
+    "beyond_rot": "L6-10"
+   },
+   "PM/stored_note11/insert_ans": {
+    "raw": "L16-20",
+    "series": {
+     "L6-10": 7.5,
+     "L11-15": 6.2,
+     "L16-20": 11.2,
+     "L21-26": 13.8,
+     "L27-33": 6.2,
+     "L34-39": 0.0,
+     "L40-45": 0.0,
+     "L46-50": 0.0
+    }
+   },
+   "PM/stored_note11/insert_k10": {
+    "raw": "L6-10",
+    "series": {
+     "L6-10": 21.2,
+     "L11-15": 27.5,
+     "L16-20": 28.8,
+     "L21-26": 42.5,
+     "L27-33": 26.2,
+     "L34-39": 0.0,
+     "L40-45": 0.0,
+     "L46-50": 0.0
+    }
+   }
+  },
+  "stored_check": {
+   "nem35l_nn_ans_sweep_v1": {
+    "none": {
+     "ours": 1280,
+     "common": 1280,
+     "identical": 1280,
+     "same_donor_third": 1280,
+     "mismatch": []
+    },
+    "insert_k10": {
+     "ours": 1280,
+     "common": 1280,
+     "identical": 1280,
+     "same_donor_third": 1280,
+     "mismatch": []
+    }
+   }
+  }
+ }
+}

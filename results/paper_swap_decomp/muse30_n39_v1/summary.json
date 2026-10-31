@@ -1,0 +1,23 @@
+{
+  "gate": {
+    "raw_eligible": 66,
+    "prompt_end": "stripped"
+  },
+  "statuses": {
+    "eligible": 66,
+    "clean_wrong": 20,
+    "clean_ambiguous": 1,
+    "multi_token:answer": 2,
+    "multi_token:swap_answer": 1
+  },
+  "eligible_by_set": {
+    "primary": 50,
+    "own_pair_only": 15,
+    "side_table": 1
+  },
+  "rows": 7128,
+  "greedy_rows": 417,
+  "seconds": 579,
+  "repro": null,
+  "reader": "python scripts/paper_swap_read.py results/paper_swap_decomp/muse30_n39_v1"
+}

@@ -1,0 +1,56 @@
+{
+ "runs": [
+  "qwen35_9b_nn_cfdec_final_MP_L21-24_s0_v1",
+  "qwen35_9b_nn_cfdec_final_MP_L21-24_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "final/MP/L21-24": {
+   "n": 577,
+   "donor": {
+    "full_cf": 38.8,
+    "lens_cf": 1.4,
+    "lensrand_cf": 0.2,
+    "none": 0.0,
+    "rem_cf": 38.1,
+    "remfix_cf": 28.6
+   },
+   "kept": {
+    "full_cf": 60.3,
+    "lens_cf": 97.7,
+    "lensrand_cf": 99.8,
+    "none": 100.0,
+    "rem_cf": 60.7,
+    "remfix_cf": 69.8
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lens_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0,
+    "rem_cf": 0.0,
+    "remfix_cf": 0.2
+   },
+   "full_minus_rand_ci": [
+    33.6,
+    43.6
+   ],
+   "bridge_lives_here": true,
+   "decomposition": {
+    "full": 38.8,
+    "lens": 1.4,
+    "rem": 38.1,
+    "remfix": 28.6,
+    "lensrand": 0.2,
+    "verdict": "around"
+   }
+  }
+ },
+ "hits": [
+  {
+   "site": "final",
+   "word": "MP",
+   "band": "L21-24"
+  }
+ ]
+}

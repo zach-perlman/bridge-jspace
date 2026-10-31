@@ -1,0 +1,110 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "muse30_n39b_v1",
+  "kind": "rerun_6b",
+  "why": "Zach (2026-10-30, prereg amendment 65 second addendum note 39, muse-glimmer-30b): arm 6b rerun",
+  "note": "prereg amendment 65 second addendum, note 39",
+  "target": "muse-glimmer-30b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ]
+  },
+  "prev_run": "muse30_n39_v1",
+  "overlap_run": "muse30_n39b_overlap",
+  "overlap_sha256": "b6698f44c44d36152899ed0c2a0d7ce3a0173f8787e72158fa24100ee2eb3799",
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "windows": [
+    "29-42",
+    "8-24"
+  ],
+  "main_band": "29-42",
+  "median_onset_windows": {
+    "jpp": "8-24"
+  },
+  "arms": [
+    "bridge",
+    "bridge_noA",
+    "bridge_off6b",
+    "bridge_randA"
+  ],
+  "null_arms": [
+    "bridge"
+  ],
+  "prompt_end": "stripped",
+  "items": [
+    "amazon-language",
+    "basketball-players",
+    "bird-color-swan",
+    "bird-country-eagle",
+    "birthstone-emerald-month",
+    "chem-atmosphere-Z",
+    "chem-bones-Z",
+    "chem-organic-Z",
+    "chem-photosynthesis-Z",
+    "city-state-Philadelphia",
+    "colosseum-currency",
+    "element-color-gold2",
+    "etym-saturn-position",
+    "etym-wargod-month",
+    "ex-city-capital-Barcelona-Toronto",
+    "ex-city-capital-Lyon-Naples",
+    "ex-city-capital-Naples-Barcelona",
+    "ex-city-capital-Toronto-Lyon",
+    "ex-city-continent-Toronto-Lyon",
+    "ex-city-currency-Toronto-Beijing",
+    "ex-city-currency-Toronto-Mumbai",
+    "ex-city-language-Lyon-Naples",
+    "ex-element-state-26-8",
+    "ex-element-state-26-80",
+    "ex-element-state-8-26",
+    "ex-element-state-8-80",
+    "ex-planet-color-third-fourth",
+    "ex2-city-capital-Munich",
+    "ex2-city-capital-Osaka",
+    "ex2-city-continent-Lima",
+    "ex2-city-language-Cairo",
+    "ex2-city-language-Moscow",
+    "ex2-language-capital-Greek",
+    "ex2-language-capital-Hungarian",
+    "ex2-language-capital-Polish",
+    "ex2-language-capital-Swedish",
+    "ex2-river-capital-Thames",
+    "greatwall-ocean",
+    "holiday-month-christmas2",
+    "organ-count-kidney2",
+    "paper-continent",
+    "person-firstname-darwin",
+    "person-firstname-einstein",
+    "person-firstname-newton",
+    "person-firstname-shakespeare",
+    "planet-3-moons",
+    "spider-legs",
+    "super-populous-capital",
+    "super-smallest-continent",
+    "violin-strings"
+  ],
+  "arm6b": "overlap.json's per-item category and tokens (selected on the J++ lens; used for every lens)",
+  "command": "scripts/paper_swap_6b.py rerun --name muse30_n39b_v1 --why Zach (2026-10-30, prereg amendment 65 second addendum note 39, muse-glimmer-30b): arm 6b rerun --prev muse30_n39_v1 --overlap muse30_n39b_overlap",
+  "git_state": {
+    "head": "a916929bf07fef1d060a3bc62c480798b5556c2f",
+    "dirty_files": [
+      "scripts/ablate_v2.py",
+      "src/bridge_jspace/ablate.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "13be3accd16147e4f438f3e9c505ce51958fe9c3749a1211dc30c81af00de457"
+  },
+  "written_utc": "2026-10-30T08:15:46Z"
+}

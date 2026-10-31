@@ -1,0 +1,66 @@
+{
+  "seconds": 305,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.568,
+      "all_steps": 0.973,
+      "median_margin": -3.72,
+      "guess": 0.164,
+      "top_wrong": [
+        [
+          "yellow",
+          48
+        ],
+        [
+          "blue",
+          36
+        ],
+        [
+          "grey",
+          31
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.983,
+      "all_steps": 0.973,
+      "median_margin": 3.25,
+      "guess": 0.166,
+      "top_wrong": [
+        [
+          "United",
+          3
+        ],
+        [
+          "Canada",
+          2
+        ],
+        [
+          "China",
+          1
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.879,
+      "MM": 1
+    },
+    "companies": {
+      "MP": 0.439,
+      "MM": 0.955
+    },
+    "landmarks": {
+      "MP": 0.52,
+      "MM": 1
+    },
+    "people": {
+      "MP": 0.383,
+      "MM": 0.979
+    }
+  },
+  "pick": {}
+}

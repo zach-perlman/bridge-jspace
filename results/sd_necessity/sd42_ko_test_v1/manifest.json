@@ -1,0 +1,130 @@
+{
+  "run": "sd42_ko_test_v1",
+  "stage": "ko",
+  "why": "amendment 67 note 42 (2026-10-30, qwen3.6-27b): position split (press_vis, press1_vis; test split)",
+  "written_utc": "2026-10-30T12:03:20Z",
+  "git_commit": "75d48d3eb983d27889b5beca78620ce145f5b150",
+  "git_state": {
+    "head": "75d48d3eb983d27889b5beca78620ce145f5b150",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_canonical.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_nobridge.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "sd42_ko_test_v1",
+    "why": "amendment 67 note 42 (2026-10-30, qwen3.6-27b): position split (press_vis, press1_vis; test split)",
+    "items_run": "sd_known_v1",
+    "split": "test",
+    "categories": null,
+    "convs": [
+      "press_vis",
+      "press1_vis"
+    ],
+    "edits": [
+      "32-40:paper10,paper10_rot,paper10_skipown,paper10_skipown_rot,paper10_onlyown,paper10_onlyown_rot"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 32,
+    "gen": false,
+    "gen_tokens": 12,
+    "gen_batch": 64,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [],
+    "uids": null,
+    "log_prot": false
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 478,
+  "n_prompts": 956,
+  "n_read": 950,
+  "items_collide": 3,
+  "prompts_naming_bridge": {
+    "press_vis": 3,
+    "press1_vis": 3
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L32-40",
+      [
+        "paper10",
+        "paper10_rot",
+        "paper10_skipown",
+        "paper10_skipown_rot",
+        "paper10_onlyown",
+        "paper10_onlyown_rot"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 53,
+    "person-uguniv-hqcity": 26,
+    "landmark-cntry-capital": 20
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 234,
+    "person-uguniv-hqcity": 128,
+    "landmark-cntry-capital": 93
+  }
+}

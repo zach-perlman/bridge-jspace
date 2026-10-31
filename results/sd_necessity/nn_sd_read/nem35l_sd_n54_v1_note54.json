@@ -1,0 +1,1071 @@
+{
+ "run": "nem35l_sd_n54_v1",
+ "gate_run": "nem35l_sd_gate_v1",
+ "ref_runs": [
+  "nem35l_sd_ko_test_v1",
+  "nem35l_sd_ko_dev_v1"
+ ],
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "n_read": 937,
+ "n_gated": 794,
+ "n_no_shortcut": 41,
+ "n_landmark": 39,
+ "check": [
+  "rerun check vs nem35l_sd_ko_test_v1, none: 261/1791 rows with the same top token, margin and |edit|/|h|; max |margin diff| 2.0",
+  "rerun check vs nem35l_sd_ko_test_v1, L27-33/paper10: 2/1791 rows with the same top token, margin and |edit|/|h|; max |margin diff| 6.5625",
+  "rerun check vs nem35l_sd_ko_test_v1, L27-33/paper10_rot: 6/1791 rows with the same top token, margin and |edit|/|h|; max |margin diff| 1.625",
+  "rerun check vs nem35l_sd_ko_test_v1, L27-33/bridgeJ: 23/1791 rows with the same top token, margin and |edit|/|h|; max |margin diff| 2.25",
+  "rerun check vs nem35l_sd_ko_test_v1, L27-33/bridgeJ_ctrl: 17/1791 rows with the same top token, margin and |edit|/|h|; max |margin diff| 2.25",
+  "rerun check vs nem35l_sd_ko_dev_v1, none: 158/1020 rows with the same top token, margin and |edit|/|h|; max |margin diff| 1.5",
+  "rerun check vs nem35l_sd_ko_dev_v1, L27-33/paper10: 2/1020 rows with the same top token, margin and |edit|/|h|; max |margin diff| 4.625",
+  "rerun check vs nem35l_sd_ko_dev_v1, L27-33/paper10_rot: 1/1020 rows with the same top token, margin and |edit|/|h|; max |margin diff| 2.875",
+  "rerun check vs nem35l_sd_ko_dev_v1, L27-33/bridgeJ: 11/1020 rows with the same top token, margin and |edit|/|h|; max |margin diff| 2.0",
+  "rerun check vs nem35l_sd_ko_dev_v1, L27-33/bridgeJ_ctrl: 16/1020 rows with the same top token, margin and |edit|/|h|; max |margin diff| 1.5"
+ ],
+ "readings": [
+  "reading: [no-shortcut, test+dev] note 54 (press_hid, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_hid gain 9.8 [2.17, 20.0] (n 41, 36 bridges; peer% none 73.2, bridgeJperp 82.9, bridgeJ_ctrl 73.2); bridgeJperp - bridgeJ_rot press_hid gain -4.9 [-17.07, 5.13] (n 41, 36 bridges; peer% none 73.2, bridgeJperp 82.9, bridgeJ_rot 87.8)",
+  "reading: [no-shortcut, test+dev] note 54 (press_vis, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_vis gain 0.0 [0.0, 0.0] (n 41, 36 bridges; peer% none 34.1, bridgeJperp 34.1, bridgeJ_ctrl 34.1); bridgeJperp - bridgeJ_rot press_vis gain -2.4 [-11.36, 5.41] (n 41, 36 bridges; peer% none 34.1, bridgeJperp 34.1, bridgeJ_rot 36.6)",
+  "reading: [no-shortcut, test+dev] note 54 (solo, bridgeJperp loss): not shown; bridgeJperp - bridgeJ_ctrl solo loss 4.9 [-8.7, 19.51] (n 41, 36 bridges; orig% none 97.6, bridgeJperp 78.0, bridgeJ_ctrl 82.9); bridgeJperp - bridgeJ_rot solo loss 14.6 [2.33, 28.26] (n 41, 36 bridges; orig% none 97.6, bridgeJperp 78.0, bridgeJ_rot 92.7)",
+  "beside: [no-shortcut, test] note 54 (press_hid, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_hid gain 6.7 [0.0, 18.52] (n 30, 25 bridges; peer% none 76.7, bridgeJperp 90.0, bridgeJ_ctrl 83.3); bridgeJperp - bridgeJ_rot press_hid gain -3.3 [-18.75, 9.38] (n 30, 25 bridges; peer% none 76.7, bridgeJperp 90.0, bridgeJ_rot 93.3)",
+  "beside: [no-shortcut, test] note 54 (press_vis, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_vis gain 0.0 [0.0, 0.0] (n 30, 25 bridges; peer% none 33.3, bridgeJperp 33.3, bridgeJ_ctrl 33.3); bridgeJperp - bridgeJ_rot press_vis gain 0.0 [-10.34, 8.33] (n 30, 25 bridges; peer% none 33.3, bridgeJperp 33.3, bridgeJ_rot 33.3)",
+  "beside: [no-shortcut, test] note 54 (solo, bridgeJperp loss): not shown; bridgeJperp - bridgeJ_ctrl solo loss 3.3 [-13.33, 22.22] (n 30, 25 bridges; orig% none 96.7, bridgeJperp 76.7, bridgeJ_ctrl 80.0); bridgeJperp - bridgeJ_rot solo loss 16.7 [0.0, 34.62] (n 30, 25 bridges; orig% none 96.7, bridgeJperp 76.7, bridgeJ_rot 93.3)",
+  "beside: [no-shortcut, dev] note 54 (press_hid, bridgeJperp gain): not read (too few no-shortcut items: 11 < 30); bridgeJperp - bridgeJ_ctrl press_hid gain 18.2 [0.0, 45.45] (n 11, 11 bridges; peer% none 63.6, bridgeJperp 63.6, bridgeJ_ctrl 45.5); bridgeJperp - bridgeJ_rot press_hid gain -9.1 [-27.27, 0.0] (n 11, 11 bridges; peer% none 63.6, bridgeJperp 63.6, bridgeJ_rot 72.7)",
+  "beside: [no-shortcut, dev] note 54 (press_vis, bridgeJperp gain): not read (too few no-shortcut items: 11 < 30); bridgeJperp - bridgeJ_ctrl press_vis gain 0.0 [0.0, 0.0] (n 11, 11 bridges; peer% none 36.4, bridgeJperp 36.4, bridgeJ_ctrl 36.4); bridgeJperp - bridgeJ_rot press_vis gain -9.1 [-27.27, 0.0] (n 11, 11 bridges; peer% none 36.4, bridgeJperp 36.4, bridgeJ_rot 45.5)",
+  "beside: [no-shortcut, dev] note 54 (solo, bridgeJperp loss): not read (too few no-shortcut items: 11 < 30); bridgeJperp - bridgeJ_ctrl solo loss 9.1 [0.0, 27.27] (n 11, 11 bridges; orig% none 100.0, bridgeJperp 81.8, bridgeJ_ctrl 90.9); bridgeJperp - bridgeJ_rot solo loss 9.1 [0.0, 27.27] (n 11, 11 bridges; orig% none 100.0, bridgeJperp 81.8, bridgeJ_rot 90.9)",
+  "beside: [gated, test+dev] note 54 (press_hid, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_hid gain 2.3 [1.14, 3.59] (n 794, 292 bridges; peer% none 93.7, bridgeJperp 94.1, bridgeJ_ctrl 91.8); bridgeJperp - bridgeJ_rot press_hid gain -1.9 [-3.35, -0.71] (n 794, 292 bridges; peer% none 93.7, bridgeJperp 94.1, bridgeJ_rot 96.0)",
+  "beside: [gated, test+dev] note 54 (press_vis, bridgeJperp gain): not shown; bridgeJperp - bridgeJ_ctrl press_vis gain -2.0 [-3.68, -0.25] (n 794, 292 bridges; peer% none 22.3, bridgeJperp 21.0, bridgeJ_ctrl 23.0); bridgeJperp - bridgeJ_rot press_vis gain -3.7 [-5.31, -1.91] (n 794, 292 bridges; peer% none 22.3, bridgeJperp 21.0, bridgeJ_rot 24.7)",
+  "beside: [gated, test+dev] note 54 (solo, bridgeJperp loss): not shown; bridgeJperp - bridgeJ_ctrl solo loss 0.4 [-0.54, 1.36] (n 794, 292 bridges; orig% none 98.7, bridgeJperp 97.9, bridgeJ_ctrl 98.2); bridgeJperp - bridgeJ_rot solo loss 0.6 [-0.48, 1.88] (n 794, 292 bridges; orig% none 98.7, bridgeJperp 97.9, bridgeJ_rot 98.5)",
+  "reading: [gated, test+dev] positive control (own-bridge removal in solo loses >= 10 points against bridgeJ_rot): yes; bridgeJ - bridgeJ_rot solo loss 31.4 [25.46, 37.08] (n 794, 292 bridges; orig% none 98.7, bridgeJ 67.1, bridgeJ_rot 98.5)",
+  "reading: [gated, test+dev] P1 (press_vis, peers' implied premise): used to conform; bridgeJ_peer - bridgeJ_ctrl press_vis gain -5.7 [-7.7, -3.51] (n 787, 288 bridges; peer% none 22.1, bridgeJ_peer 17.3, bridgeJ_ctrl 23.0); bridgeJ_peer - bridgeJ_peer_rot press_vis gain -5.6 [-8.02, -3.25] (n 787, 288 bridges; peer% none 22.1, bridgeJ_peer 17.3, bridgeJ_peer_rot 22.9); peers' bridge readout unedited (late band, J++ hit@100 - ctrl bridge) 0.219 (n 775)",
+  "reading: [gated, test+dev] P2 (hop1_vis, peers' implied premise): neither rule met; bridgeJ_peer - bridgeJ_ctrl hop1_vis gain -2.4 [-3.77, -1.34] (n 787, 288 bridges; peer% none 4.3, bridgeJ_peer 3.3, bridgeJ_ctrl 5.7); bridgeJ_peer - bridgeJ_peer_rot hop1_vis gain -0.8 [-1.8, 0.14] (n 787, 288 bridges; peer% none 4.3, bridgeJ_peer 3.3, bridgeJ_peer_rot 4.1); peers' bridge readout unedited (late band, J++ hit@100 - ctrl bridge) 0.524 (n 775)",
+  "beside: [landmark, gated, test+dev] positive control (own-bridge removal in solo loses >= 10 points against bridgeJ_rot): yes (beside; the gated set governs); bridgeJ - bridgeJ_rot solo loss 76.9 [62.5, 90.0] (n 39, 28 bridges; orig% none 100.0, bridgeJ 20.5, bridgeJ_rot 97.4)",
+  "beside: [landmark, gated, test+dev] P1 (press_vis, peers' implied premise): readable, not used; bridgeJ_peer - bridgeJ_ctrl press_vis gain 0.0 [0.0, 0.0] (n 39, 28 bridges; peer% none 0.0, bridgeJ_peer 0.0, bridgeJ_ctrl 0.0); bridgeJ_peer - bridgeJ_peer_rot press_vis gain 0.0 [0.0, 0.0] (n 39, 28 bridges; peer% none 0.0, bridgeJ_peer 0.0, bridgeJ_peer_rot 0.0); peers' bridge readout unedited (late band, J++ hit@100 - ctrl bridge) 0.058 (n 39)",
+  "beside: [landmark, gated, test+dev] P2 (hop1_vis, peers' implied premise): used to conform; bridgeJ_peer - bridgeJ_ctrl hop1_vis gain -23.1 [-36.11, -11.9] (n 39, 28 bridges; peer% none 33.3, bridgeJ_peer 10.3, bridgeJ_ctrl 33.3); bridgeJ_peer - bridgeJ_peer_rot hop1_vis gain -20.5 [-33.33, -10.0] (n 39, 28 bridges; peer% none 33.3, bridgeJ_peer 10.3, bridgeJ_peer_rot 30.8); peers' bridge readout unedited (late band, J++ hit@100 - ctrl bridge) 0.737 (n 39)",
+  "reading: [no-shortcut, test+dev] R3' (bridgeJ vs bridgeJ_rot and bridgeJ_ctrl): the bridge's own directions are needed; bridgeJ - bridgeJ_rot solo loss 68.3 [53.33, 82.5] (n 41, 36 bridges; orig% none 97.6, bridgeJ 24.4, bridgeJ_rot 92.7); bridgeJ - bridgeJ_ctrl solo loss 58.5 [39.13, 75.0] (n 41, 36 bridges; orig% none 97.6, bridgeJ 24.4, bridgeJ_ctrl 82.9); bridgeJ - bridgeJ_rot press_vis gain 22.0 [7.69, 35.42] (n 41, 36 bridges; peer% none 34.1, bridgeJ 58.5, bridgeJ_rot 36.6); bridgeJ - bridgeJ_ctrl press_vis gain 24.4 [10.81, 37.21] (n 41, 36 bridges; peer% none 34.1, bridgeJ 58.5, bridgeJ_ctrl 34.1)",
+  "beside: [no-shortcut, test] R3' (bridgeJ vs bridgeJ_rot and bridgeJ_ctrl): the bridge's own directions are needed; bridgeJ - bridgeJ_rot solo loss 73.3 [55.17, 90.32] (n 30, 25 bridges; orig% none 96.7, bridgeJ 20.0, bridgeJ_rot 93.3); bridgeJ - bridgeJ_ctrl solo loss 60.0 [37.93, 80.0] (n 30, 25 bridges; orig% none 96.7, bridgeJ 20.0, bridgeJ_ctrl 80.0); bridgeJ - bridgeJ_rot press_vis gain 30.0 [14.29, 45.16] (n 30, 25 bridges; peer% none 33.3, bridgeJ 63.3, bridgeJ_rot 33.3); bridgeJ - bridgeJ_ctrl press_vis gain 30.0 [14.81, 45.45] (n 30, 25 bridges; peer% none 33.3, bridgeJ 63.3, bridgeJ_ctrl 33.3)",
+  "beside: [no-shortcut, dev] R3' (bridgeJ vs bridgeJ_rot and bridgeJ_ctrl): not read (too few no-shortcut items: 11 < 30); bridgeJ - bridgeJ_rot solo loss 54.5 [27.27, 81.82] (n 11, 11 bridges; orig% none 100.0, bridgeJ 36.4, bridgeJ_rot 90.9); bridgeJ - bridgeJ_ctrl solo loss 54.5 [27.27, 81.82] (n 11, 11 bridges; orig% none 100.0, bridgeJ 36.4, bridgeJ_ctrl 90.9); bridgeJ - bridgeJ_rot press_vis gain 0.0 [-27.27, 27.27] (n 11, 11 bridges; peer% none 36.4, bridgeJ 45.5, bridgeJ_rot 45.5); bridgeJ - bridgeJ_ctrl press_vis gain 9.1 [0.0, 27.27] (n 11, 11 bridges; peer% none 36.4, bridgeJ 45.5, bridgeJ_ctrl 36.4)",
+  "descriptive: [gated, test+dev; descriptive (amendment 73: seen on this model)] readout dissociation vs paper10_rot: the silent-dissent readout is not what holds; share of the readout removed by bridgeJ among press_vis agents that gave in (n 172, 74 bridges; late band, J++ hit@100 orig - ctrl bridge {'none': 0.701, 'bridgeJ': 0.081, 'bridgeJ_ctrl': 0.676, 'paper10_rot': 0.69, 'bridgeJ_rot': 0.695}) 0.88 [0.8, 0.94] (by bridgeJ_ctrl 0.04); press_vis give-in bridgeJ 38.2 vs paper10_rot 34.5: 3.7 [-0.27, 7.38] (n 794)",
+  "descriptive: [gated, test+dev; descriptive (amendment 73: seen on this model)] readout dissociation vs bridgeJ_rot: not shown; share of the readout removed by bridgeJ among press_vis agents that gave in (n 172, 74 bridges; late band, J++ hit@100 orig - ctrl bridge {'none': 0.701, 'bridgeJ': 0.081, 'bridgeJ_ctrl': 0.676, 'paper10_rot': 0.69, 'bridgeJ_rot': 0.695}) 0.88 [0.8, 0.94] (by bridgeJ_ctrl 0.04); press_vis give-in bridgeJ 38.2 vs bridgeJ_rot 24.7: 13.5 [9.25, 17.36] (n 794)",
+  "post hoc: [gated, test+dev; post hoc (amendment 78: seen on this model)] D-held vs bridgeJ_rot: the readout's removal moves holders; press_vis agents that held unedited, cave (peers' answer) under bridgeJ minus under bridgeJ_rot, by whether solo survives bridgeJ: solo breaks 35.6 [27.27, 43.96] (n 180, 89 bridges; cave bridgeJ 40.6, bridgeJ_rot 5.0); solo survives 10.2 [5.45, 15.28] (n 431, 219 bridges; cave bridgeJ 13.7, bridgeJ_rot 3.5)",
+  "post hoc: [gated, test+dev; post hoc (amendment 78: seen on this model)] D-held vs bridgeJ_ctrl: the readout's removal moves holders; press_vis agents that held unedited, cave (peers' answer) under bridgeJ minus under bridgeJ_ctrl, by whether solo survives bridgeJ: solo breaks 38.9 [30.26, 47.42] (n 180, 89 bridges; cave bridgeJ 40.6, bridgeJ_ctrl 1.7); solo survives 10.9 [6.43, 15.38] (n 431, 219 bridges; cave bridgeJ 13.7, bridgeJ_ctrl 2.8)",
+  "descriptive: [gated, test+dev] P1-perp geometry: bridgeJ_peer's forms: mean energy share inside the answers' span 0.34 (n 787); peerperp span rank 4.81 (0 items with a non-empty peers' span reduced to rank 0; 7 with an empty one); press_vis |edit|/|h| bridgeJ_peer 0.0372, bridgeJ_peerperp 0.0249",
+  "beside: [gated, test+dev] P1-perp's positive control and P1 (from this run): positive control yes; bridgeJ - bridgeJ_rot solo loss 31.4 [25.46, 37.08] (n 794, 292 bridges; orig% none 98.7, bridgeJ 67.1, bridgeJ_rot 98.5); P1 met True, P2 met False",
+  "reading: [gated, test+dev; registered (amendment 75)] P1-perp (press_vis, the peers' premise orthogonalised to the answers): partly; bridgeJ_peerperp - bridgeJ_ctrl press_vis gain -2.7 [-4.23, -1.05] (n 787, 288 bridges; peer% none 22.1, bridgeJ_peerperp 20.3, bridgeJ_ctrl 23.0); bridgeJ_peerperp - bridgeJ_peerperp_rot press_vis gain -3.8 [-5.37, -2.19] (n 787, 288 bridges; peer% none 22.1, bridgeJ_peerperp 20.3, bridgeJ_peerperp_rot 24.1); this run's bridgeJ_peer - bridgeJ_ctrl press_vis gain -5.7 [-7.7, -3.51] (n 787, 288 bridges; peer% none 22.1, bridgeJ_peer 17.3, bridgeJ_ctrl 23.0)",
+  "beside: [gated, test+dev; beside] P1-perp (hop1_vis, the peers' premise orthogonalised to the answers): partly; bridgeJ_peerperp - bridgeJ_ctrl hop1_vis gain -1.3 [-2.54, -0.23] (n 787, 288 bridges; peer% none 4.3, bridgeJ_peerperp 4.4, bridgeJ_ctrl 5.7); bridgeJ_peerperp - bridgeJ_peerperp_rot hop1_vis gain 0.5 [-0.11, 1.23] (n 787, 288 bridges; peer% none 4.3, bridgeJ_peerperp 4.4, bridgeJ_peerperp_rot 3.9); this run's bridgeJ_peer - bridgeJ_ctrl hop1_vis gain -2.4 [-3.77, -1.34] (n 787, 288 bridges; peer% none 4.3, bridgeJ_peer 3.3, bridgeJ_ctrl 5.7)"
+ ],
+ "effects": {
+  "no-shortcut, test+dev press_hid perp-ctrl": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 41,
+   "n_bridges": 36,
+   "value": 9.8,
+   "ci": [
+    2.17,
+    20.0
+   ],
+   "peer_none": 73.2,
+   "peer_t": 82.9,
+   "peer_c": 73.2
+  },
+  "no-shortcut, test+dev press_hid perp-rot": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 41,
+   "n_bridges": 36,
+   "value": -4.9,
+   "ci": [
+    -17.07,
+    5.13
+   ],
+   "peer_none": 73.2,
+   "peer_t": 82.9,
+   "peer_c": 87.8
+  },
+  "no-shortcut, test+dev press_vis perp-ctrl": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 41,
+   "n_bridges": 36,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "peer_none": 34.1,
+   "peer_t": 34.1,
+   "peer_c": 34.1
+  },
+  "no-shortcut, test+dev press_vis perp-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 41,
+   "n_bridges": 36,
+   "value": -2.4,
+   "ci": [
+    -11.36,
+    5.41
+   ],
+   "peer_none": 34.1,
+   "peer_t": 34.1,
+   "peer_c": 36.6
+  },
+  "no-shortcut, test+dev solo perp-ctrl": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "loss",
+   "n": 41,
+   "n_bridges": 36,
+   "value": 4.9,
+   "ci": [
+    -8.7,
+    19.51
+   ],
+   "orig_none": 97.6,
+   "orig_t": 78.0,
+   "orig_c": 82.9
+  },
+  "no-shortcut, test+dev solo perp-rot": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 41,
+   "n_bridges": 36,
+   "value": 14.6,
+   "ci": [
+    2.33,
+    28.26
+   ],
+   "orig_none": 97.6,
+   "orig_t": 78.0,
+   "orig_c": 92.7
+  },
+  "no-shortcut, test press_hid perp-ctrl": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 30,
+   "n_bridges": 25,
+   "value": 6.7,
+   "ci": [
+    0.0,
+    18.52
+   ],
+   "peer_none": 76.7,
+   "peer_t": 90.0,
+   "peer_c": 83.3
+  },
+  "no-shortcut, test press_hid perp-rot": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 30,
+   "n_bridges": 25,
+   "value": -3.3,
+   "ci": [
+    -18.75,
+    9.38
+   ],
+   "peer_none": 76.7,
+   "peer_t": 90.0,
+   "peer_c": 93.3
+  },
+  "no-shortcut, test press_vis perp-ctrl": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 30,
+   "n_bridges": 25,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "peer_none": 33.3,
+   "peer_t": 33.3,
+   "peer_c": 33.3
+  },
+  "no-shortcut, test press_vis perp-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 30,
+   "n_bridges": 25,
+   "value": 0.0,
+   "ci": [
+    -10.34,
+    8.33
+   ],
+   "peer_none": 33.3,
+   "peer_t": 33.3,
+   "peer_c": 33.3
+  },
+  "no-shortcut, test solo perp-ctrl": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "loss",
+   "n": 30,
+   "n_bridges": 25,
+   "value": 3.3,
+   "ci": [
+    -13.33,
+    22.22
+   ],
+   "orig_none": 96.7,
+   "orig_t": 76.7,
+   "orig_c": 80.0
+  },
+  "no-shortcut, test solo perp-rot": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 30,
+   "n_bridges": 25,
+   "value": 16.7,
+   "ci": [
+    0.0,
+    34.62
+   ],
+   "orig_none": 96.7,
+   "orig_t": 76.7,
+   "orig_c": 93.3
+  },
+  "no-shortcut, dev press_hid perp-ctrl": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 11,
+   "n_bridges": 11,
+   "value": 18.2,
+   "ci": [
+    0.0,
+    45.45
+   ],
+   "peer_none": 63.6,
+   "peer_t": 63.6,
+   "peer_c": 45.5
+  },
+  "no-shortcut, dev press_hid perp-rot": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 11,
+   "n_bridges": 11,
+   "value": -9.1,
+   "ci": [
+    -27.27,
+    0.0
+   ],
+   "peer_none": 63.6,
+   "peer_t": 63.6,
+   "peer_c": 72.7
+  },
+  "no-shortcut, dev press_vis perp-ctrl": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 11,
+   "n_bridges": 11,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "peer_none": 36.4,
+   "peer_t": 36.4,
+   "peer_c": 36.4
+  },
+  "no-shortcut, dev press_vis perp-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 11,
+   "n_bridges": 11,
+   "value": -9.1,
+   "ci": [
+    -27.27,
+    0.0
+   ],
+   "peer_none": 36.4,
+   "peer_t": 36.4,
+   "peer_c": 45.5
+  },
+  "no-shortcut, dev solo perp-ctrl": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "loss",
+   "n": 11,
+   "n_bridges": 11,
+   "value": 9.1,
+   "ci": [
+    0.0,
+    27.27
+   ],
+   "orig_none": 100.0,
+   "orig_t": 81.8,
+   "orig_c": 90.9
+  },
+  "no-shortcut, dev solo perp-rot": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 11,
+   "n_bridges": 11,
+   "value": 9.1,
+   "ci": [
+    0.0,
+    27.27
+   ],
+   "orig_none": 100.0,
+   "orig_t": 81.8,
+   "orig_c": 90.9
+  },
+  "gated, test+dev press_hid perp-ctrl": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 794,
+   "n_bridges": 292,
+   "value": 2.3,
+   "ci": [
+    1.14,
+    3.59
+   ],
+   "peer_none": 93.7,
+   "peer_t": 94.1,
+   "peer_c": 91.8
+  },
+  "gated, test+dev press_hid perp-rot": {
+   "conv": "press_hid",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 794,
+   "n_bridges": 292,
+   "value": -1.9,
+   "ci": [
+    -3.35,
+    -0.71
+   ],
+   "peer_none": 93.7,
+   "peer_t": 94.1,
+   "peer_c": 96.0
+  },
+  "gated, test+dev press_vis perp-ctrl": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 794,
+   "n_bridges": 292,
+   "value": -2.0,
+   "ci": [
+    -3.68,
+    -0.25
+   ],
+   "peer_none": 22.3,
+   "peer_t": 21.0,
+   "peer_c": 23.0
+  },
+  "gated, test+dev press_vis perp-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "gain",
+   "n": 794,
+   "n_bridges": 292,
+   "value": -3.7,
+   "ci": [
+    -5.31,
+    -1.91
+   ],
+   "peer_none": 22.3,
+   "peer_t": 21.0,
+   "peer_c": 24.7
+  },
+  "gated, test+dev solo perp-ctrl": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_ctrl",
+   "kind": "loss",
+   "n": 794,
+   "n_bridges": 292,
+   "value": 0.4,
+   "ci": [
+    -0.54,
+    1.36
+   ],
+   "orig_none": 98.7,
+   "orig_t": 97.9,
+   "orig_c": 98.2
+  },
+  "gated, test+dev solo perp-rot": {
+   "conv": "solo",
+   "t": "bridgeJperp",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 794,
+   "n_bridges": 292,
+   "value": 0.6,
+   "ci": [
+    -0.48,
+    1.88
+   ],
+   "orig_none": 98.7,
+   "orig_t": 97.9,
+   "orig_c": 98.5
+  },
+  "gated, test+dev positive control": {
+   "conv": "solo",
+   "t": "bridgeJ",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 794,
+   "n_bridges": 292,
+   "value": 31.4,
+   "ci": [
+    25.46,
+    37.08
+   ],
+   "orig_none": 98.7,
+   "orig_t": 67.1,
+   "orig_c": 98.5
+  },
+  "gated, test+dev P1": {
+   "conv": "press_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 787,
+   "n_bridges": 288,
+   "value": -5.7,
+   "ci": [
+    -7.7,
+    -3.51
+   ],
+   "peer_none": 22.1,
+   "peer_t": 17.3,
+   "peer_c": 23.0
+  },
+  "gated, test+dev P1 peer-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_peer_rot",
+   "kind": "gain",
+   "n": 787,
+   "n_bridges": 288,
+   "value": -5.6,
+   "ci": [
+    -8.02,
+    -3.25
+   ],
+   "peer_none": 22.1,
+   "peer_t": 17.3,
+   "peer_c": 22.9
+  },
+  "gated, test+dev P2": {
+   "conv": "hop1_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 787,
+   "n_bridges": 288,
+   "value": -2.4,
+   "ci": [
+    -3.77,
+    -1.34
+   ],
+   "peer_none": 4.3,
+   "peer_t": 3.3,
+   "peer_c": 5.7
+  },
+  "gated, test+dev P2 peer-rot": {
+   "conv": "hop1_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_peer_rot",
+   "kind": "gain",
+   "n": 787,
+   "n_bridges": 288,
+   "value": -0.8,
+   "ci": [
+    -1.8,
+    0.14
+   ],
+   "peer_none": 4.3,
+   "peer_t": 3.3,
+   "peer_c": 4.1
+  },
+  "landmark, gated, test+dev positive control": {
+   "conv": "solo",
+   "t": "bridgeJ",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 39,
+   "n_bridges": 28,
+   "value": 76.9,
+   "ci": [
+    62.5,
+    90.0
+   ],
+   "orig_none": 100.0,
+   "orig_t": 20.5,
+   "orig_c": 97.4
+  },
+  "landmark, gated, test+dev P1": {
+   "conv": "press_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 39,
+   "n_bridges": 28,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "peer_none": 0.0,
+   "peer_t": 0.0,
+   "peer_c": 0.0
+  },
+  "landmark, gated, test+dev P1 peer-rot": {
+   "conv": "press_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_peer_rot",
+   "kind": "gain",
+   "n": 39,
+   "n_bridges": 28,
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "peer_none": 0.0,
+   "peer_t": 0.0,
+   "peer_c": 0.0
+  },
+  "landmark, gated, test+dev P2": {
+   "conv": "hop1_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_ctrl",
+   "kind": "gain",
+   "n": 39,
+   "n_bridges": 28,
+   "value": -23.1,
+   "ci": [
+    -36.11,
+    -11.9
+   ],
+   "peer_none": 33.3,
+   "peer_t": 10.3,
+   "peer_c": 33.3
+  },
+  "landmark, gated, test+dev P2 peer-rot": {
+   "conv": "hop1_vis",
+   "t": "bridgeJ_peer",
+   "c": "bridgeJ_peer_rot",
+   "kind": "gain",
+   "n": 39,
+   "n_bridges": 28,
+   "value": -20.5,
+   "ci": [
+    -33.33,
+    -10.0
+   ],
+   "peer_none": 33.3,
+   "peer_t": 10.3,
+   "peer_c": 30.8
+  },
+  "no-shortcut, test+dev R3'": [
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "loss",
+    "n": 41,
+    "n_bridges": 36,
+    "value": 68.3,
+    "ci": [
+     53.33,
+     82.5
+    ],
+    "orig_none": 97.6,
+    "orig_t": 24.4,
+    "orig_c": 92.7
+   },
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "loss",
+    "n": 41,
+    "n_bridges": 36,
+    "value": 58.5,
+    "ci": [
+     39.13,
+     75.0
+    ],
+    "orig_none": 97.6,
+    "orig_t": 24.4,
+    "orig_c": 82.9
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "gain",
+    "n": 41,
+    "n_bridges": 36,
+    "value": 22.0,
+    "ci": [
+     7.69,
+     35.42
+    ],
+    "peer_none": 34.1,
+    "peer_t": 58.5,
+    "peer_c": 36.6
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 41,
+    "n_bridges": 36,
+    "value": 24.4,
+    "ci": [
+     10.81,
+     37.21
+    ],
+    "peer_none": 34.1,
+    "peer_t": 58.5,
+    "peer_c": 34.1
+   }
+  ],
+  "no-shortcut, test R3'": [
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "loss",
+    "n": 30,
+    "n_bridges": 25,
+    "value": 73.3,
+    "ci": [
+     55.17,
+     90.32
+    ],
+    "orig_none": 96.7,
+    "orig_t": 20.0,
+    "orig_c": 93.3
+   },
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "loss",
+    "n": 30,
+    "n_bridges": 25,
+    "value": 60.0,
+    "ci": [
+     37.93,
+     80.0
+    ],
+    "orig_none": 96.7,
+    "orig_t": 20.0,
+    "orig_c": 80.0
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "gain",
+    "n": 30,
+    "n_bridges": 25,
+    "value": 30.0,
+    "ci": [
+     14.29,
+     45.16
+    ],
+    "peer_none": 33.3,
+    "peer_t": 63.3,
+    "peer_c": 33.3
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 30,
+    "n_bridges": 25,
+    "value": 30.0,
+    "ci": [
+     14.81,
+     45.45
+    ],
+    "peer_none": 33.3,
+    "peer_t": 63.3,
+    "peer_c": 33.3
+   }
+  ],
+  "no-shortcut, dev R3'": [
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "loss",
+    "n": 11,
+    "n_bridges": 11,
+    "value": 54.5,
+    "ci": [
+     27.27,
+     81.82
+    ],
+    "orig_none": 100.0,
+    "orig_t": 36.4,
+    "orig_c": 90.9
+   },
+   {
+    "conv": "solo",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "loss",
+    "n": 11,
+    "n_bridges": 11,
+    "value": 54.5,
+    "ci": [
+     27.27,
+     81.82
+    ],
+    "orig_none": 100.0,
+    "orig_t": 36.4,
+    "orig_c": 90.9
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_rot",
+    "kind": "gain",
+    "n": 11,
+    "n_bridges": 11,
+    "value": 0.0,
+    "ci": [
+     -27.27,
+     27.27
+    ],
+    "peer_none": 36.4,
+    "peer_t": 45.5,
+    "peer_c": 45.5
+   },
+   {
+    "conv": "press_vis",
+    "t": "bridgeJ",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 11,
+    "n_bridges": 11,
+    "value": 9.1,
+    "ci": [
+     0.0,
+     27.27
+    ],
+    "peer_none": 36.4,
+    "peer_t": 45.5,
+    "peer_c": 36.4
+   }
+  ]
+ },
+ "g2": {
+  "no_shortcut": {
+   "solo": {
+    "n": 41,
+    "loss": 58.5
+   },
+   "agree_vis": {
+    "n": 41,
+    "loss": 0.0
+   },
+   "agree_hid": {
+    "n": 41,
+    "loss": 4.9
+   },
+   "ok": true
+  },
+  "gated": {
+   "solo": {
+    "n": 794,
+    "loss": 47.9
+   },
+   "agree_vis": {
+    "n": 794,
+    "loss": 0.0
+   },
+   "agree_hid": {
+    "n": 794,
+    "loss": 0.4
+   },
+   "ok": true
+  }
+ },
+ "dissociation": {
+  "conv": "press_vis",
+  "late_idx": [
+   21,
+   22,
+   23,
+   24
+  ],
+  "gave_in": {
+   "n": 172,
+   "n_bridges": 74,
+   "readout": {
+    "none": 0.701,
+    "bridgeJ": 0.081,
+    "bridgeJ_ctrl": 0.676,
+    "paper10_rot": 0.69,
+    "bridgeJ_rot": 0.695
+   },
+   "share_removed": {
+    "value": 0.88,
+    "ci": [
+     0.8,
+     0.94
+    ]
+   },
+   "share_removed_by_ctrl": 0.04
+  },
+  "vs": {
+   "paper10_rot": {
+    "n": 794,
+    "give_in_bridgeJ": 38.2,
+    "give_in_ref": 34.5,
+    "diff": 3.7,
+    "ci": [
+     -0.27,
+     7.38
+    ],
+    "reading": "the silent-dissent readout is not what holds"
+   },
+   "bridgeJ_rot": {
+    "n": 794,
+    "give_in_bridgeJ": 38.2,
+    "give_in_ref": 24.7,
+    "diff": 13.5,
+    "ci": [
+     9.25,
+     17.36
+    ],
+    "reading": "not shown"
+   }
+  },
+  "status": "descriptive (amendment 73: seen on this model)"
+ },
+ "d_held": {
+  "conv": "press_vis",
+  "vs": {
+   "bridgeJ_rot": {
+    "solo breaks": {
+     "n": 180,
+     "n_bridges": 89,
+     "excess": 35.6,
+     "ci": [
+      27.27,
+      43.96
+     ],
+     "cave_bridgeJ": 40.6,
+     "cave_ref": 5.0
+    },
+    "solo survives": {
+     "n": 431,
+     "n_bridges": 219,
+     "excess": 10.2,
+     "ci": [
+      5.45,
+      15.28
+     ],
+     "cave_bridgeJ": 13.7,
+     "cave_ref": 3.5
+    },
+    "reading": "the readout's removal moves holders"
+   },
+   "bridgeJ_ctrl": {
+    "solo breaks": {
+     "n": 180,
+     "n_bridges": 89,
+     "excess": 38.9,
+     "ci": [
+      30.26,
+      47.42
+     ],
+     "cave_bridgeJ": 40.6,
+     "cave_ref": 1.7
+    },
+    "solo survives": {
+     "n": 431,
+     "n_bridges": 219,
+     "excess": 10.9,
+     "ci": [
+      6.43,
+      15.38
+     ],
+     "cave_bridgeJ": 13.7,
+     "cave_ref": 2.8
+    },
+    "reading": "the readout's removal moves holders"
+   }
+  },
+  "status": "post hoc (amendment 78: seen on this model)"
+ },
+ "p1perp": {
+  "positive_control_from": "this run",
+  "pc": {
+   "conv": "solo",
+   "t": "bridgeJ",
+   "c": "bridgeJ_rot",
+   "kind": "loss",
+   "n": 794,
+   "n_bridges": 292,
+   "value": 31.4,
+   "ci": [
+    25.46,
+    37.08
+   ],
+   "orig_none": 98.7,
+   "orig_t": 67.1,
+   "orig_c": 98.5
+  },
+  "pc_ok": true,
+  "geometry": "bridgeJ_peer's forms: mean energy share inside the answers' span 0.34 (n 787); peerperp span rank 4.81 (0 items with a non-empty peers' span reduced to rank 0; 7 with an empty one); press_vis |edit|/|h| bridgeJ_peer 0.0372, bridgeJ_peerperp 0.0249",
+  "press_vis": {
+   "perp_ctrl": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": -2.7,
+    "ci": [
+     -4.23,
+     -1.05
+    ],
+    "peer_none": 22.1,
+    "peer_t": 20.3,
+    "peer_c": 23.0
+   },
+   "perp_rot": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": -3.8,
+    "ci": [
+     -5.37,
+     -2.19
+    ],
+    "peer_none": 22.1,
+    "peer_t": 20.3,
+    "peer_c": 24.1
+   },
+   "peer_ctrl_this_run": {
+    "conv": "press_vis",
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": -5.7,
+    "ci": [
+     -7.7,
+     -3.51
+    ],
+    "peer_none": 22.1,
+    "peer_t": 17.3,
+    "peer_c": 23.0
+   },
+   "reading": "partly"
+  },
+  "hop1_vis": {
+   "perp_ctrl": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": -1.3,
+    "ci": [
+     -2.54,
+     -0.23
+    ],
+    "peer_none": 4.3,
+    "peer_t": 4.4,
+    "peer_c": 5.7
+   },
+   "perp_rot": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": 0.5,
+    "ci": [
+     -0.11,
+     1.23
+    ],
+    "peer_none": 4.3,
+    "peer_t": 4.4,
+    "peer_c": 3.9
+   },
+   "peer_ctrl_this_run": {
+    "conv": "hop1_vis",
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "kind": "gain",
+    "n": 787,
+    "n_bridges": 288,
+    "value": -2.4,
+    "ci": [
+     -3.77,
+     -1.34
+    ],
+    "peer_none": 4.3,
+    "peer_t": 3.3,
+    "peer_c": 5.7
+   },
+   "reading": "partly"
+  }
+ }
+}

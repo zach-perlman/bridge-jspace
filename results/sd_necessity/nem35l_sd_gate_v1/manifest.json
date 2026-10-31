@@ -1,0 +1,52 @@
+{
+  "run": "nem35l_sd_gate_v1",
+  "stage": "gate",
+  "why": "amendment 66 addendum (2026-10-30, nemotron-3.5-lightning): the gate on every known item",
+  "written_utc": "2026-10-30T08:02:04Z",
+  "git_commit": "7d0dbc6f2f1809510f7cd78e34b57bc98faeb33b",
+  "git_state": {
+    "head": "7d0dbc6f2f1809510f7cd78e34b57bc98faeb33b",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": [
+    "jpp",
+    "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  ],
+  "args": {
+    "name": "nem35l_sd_gate_v1",
+    "why": "amendment 66 addendum (2026-10-30, nemotron-3.5-lightning): the gate on every known item",
+    "items_run": "nem35l_sd_known_v1",
+    "n": 0,
+    "gen_tokens": 12,
+    "batch": 32,
+    "cpu_check": false,
+    "facts": "data/sd_v1/facts.jsonl",
+    "full": false
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 982,
+  "generic": {
+    "person-birthcity-cntry": "the person",
+    "person-uguniv-hqcity": "the person",
+    "landmark-cntry-capital": "the landmark",
+    "univ-hqcity-cntry": "the university"
+  },
+  "direct": {
+    "person-birthcity-cntry": "{e1} is a citizen of the country of",
+    "person-uguniv-hqcity": "The city most associated with {e1} is",
+    "landmark-cntry-capital": "The city most associated with {e1} is"
+  },
+  "prefix": "The capital city of Japan is Tokyo.\nThe author of the play Hamlet is William Shakespeare.\n"
+}

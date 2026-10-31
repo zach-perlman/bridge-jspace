@@ -1,0 +1,65 @@
+{
+ "knockout": {
+  "run": "nem35l_jsuite_v5al_test_chat_ko_cand2_v1",
+  "n": {
+   "MM": 240,
+   "MP": 414
+  },
+  "conditions": {
+   "paper10": {
+    "loss_MM": 78.3,
+    "loss_MP": 7.7,
+    "gap": 70.6,
+    "gap_ci": [
+     64.3,
+     76.5
+    ]
+   },
+   "paper10_pcasize": {
+    "loss_MM": 25.0,
+    "loss_MP": 14.0,
+    "gap": 11.0,
+    "gap_ci": [
+     4.5,
+     17.5
+    ]
+   },
+   "paper10_rot": {
+    "loss_MM": 9.6,
+    "loss_MP": 3.4,
+    "gap": 6.2,
+    "gap_ci": [
+     1.3,
+     11.3
+    ]
+   },
+   "unembed10": {
+    "loss_MM": 20.0,
+    "loss_MP": 2.2,
+    "gap": 17.8,
+    "gap_ci": [
+     12.3,
+     23.2
+    ]
+   }
+  }
+ },
+ "reading1": true,
+ "priming": {
+  "n": 690,
+  "remembered": 5.2,
+  "third": 3.6,
+  "ctxreal": 3.5,
+  "rem_minus_third": 1.6,
+  "ci": [
+   -0.026,
+   3.523
+  ],
+  "rem_minus_ctxreal": 1.7,
+  "ci_ctxreal": [
+   -0.013,
+   3.481
+  ]
+ },
+ "reading2": "not shown"
+}

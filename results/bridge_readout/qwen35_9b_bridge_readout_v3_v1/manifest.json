@@ -1,0 +1,25 @@
+{
+  "run": "qwen35_9b_bridge_readout_v3_v1",
+  "target": "qwen3.5-9b",
+  "set": "jsuite_v3_test_chat",
+  "competence": "qwen35_9b_jsuite_v3_test_chat_competence_cand2_v1",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "git_commit": "2f6fa4d4f2997dad1f4823cb7ed2f6e2e5225f33"
+}

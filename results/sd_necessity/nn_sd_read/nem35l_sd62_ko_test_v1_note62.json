@@ -1,0 +1,486 @@
+{
+ "run": "nem35l_sd62_ko_test_v1",
+ "gate_run": "nem35l_sd_gate_v1",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "band": "L27-33",
+ "pos_from": "question",
+ "ctrl_match": "count",
+ "n_read": 526,
+ "n_gated": 432,
+ "n_no_shortcut": 12,
+ "strata": {
+  "gated, no shortcut": {
+   "n": 12,
+   "validity": {
+    "I_K_none": 100.0,
+    "I_ci": [
+     100.0,
+     100.0
+    ],
+    "I_n": 12,
+    "I_readable": true,
+    "P_K_none": 91.66666666666666,
+    "P_n": 12,
+    "P_paper10_spec": 41.66666666666667,
+    "P_paper10_spec_ci": [
+     16.67,
+     75.0
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 12,
+     "n_bridges": 9,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    },
+    "P": {
+     "n": 12,
+     "n_bridges": 9,
+     "perp_minus_ctrl": 8.333333333333332,
+     "ci": [
+      0.0,
+      25.0
+     ],
+     "ci_bridges": [
+      0.0,
+      33.33
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      -25.0,
+      25.0
+     ],
+     "ci_rot_bridges": [
+      -25.0,
+      25.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": -8.333333333333332,
+     "loss_rot": 0.0
+    },
+    "O": {
+     "n": 12,
+     "n_bridges": 9,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": 0.0,
+    "S_P": 0.0,
+    "ci": [
+     -25.0,
+     25.0
+    ],
+    "ci_bridges": [
+     -25.0,
+     25.0
+    ],
+    "n": 12
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 12
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 12
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 12
+    },
+    "I:ansJ loss": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 12
+    },
+    "I:paper10 - paper10_rot": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 12
+    },
+    "P:bridgeJ loss": {
+     "value": 75.0,
+     "ci": [
+      50.0,
+      100.0
+     ],
+     "n": 12
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 75.0,
+     "ci": [
+      50.0,
+      100.0
+     ],
+     "n": 12
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 83.33333333333334,
+     "ci": [
+      58.33,
+      100.0
+     ],
+     "n": 12
+    },
+    "P:ansJ loss": {
+     "value": 91.66666666666666,
+     "ci": [
+      75.0,
+      100.0
+     ],
+     "n": 12
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 41.66666666666667,
+     "ci": [
+      16.67,
+      75.0
+     ],
+     "n": 12
+    },
+    "O:bridgeJ loss": {
+     "value": 16.666666666666664,
+     "ci": [
+      0.0,
+      41.67
+     ],
+     "n": 12
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 16.666666666666664,
+     "ci": [
+      0.0,
+      41.67
+     ],
+     "n": 12
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 16.666666666666664,
+     "ci": [
+      0.0,
+      41.67
+     ],
+     "n": 12
+    },
+    "O:ansJ loss": {
+     "value": 75.0,
+     "ci": [
+      50.0,
+      100.0
+     ],
+     "n": 12
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 25.0,
+     "ci": [
+      0.0,
+      50.0
+     ],
+     "n": 12
+    }
+   }
+  },
+  "gated": {
+   "n": 432,
+   "validity": {
+    "I_K_none": 100.0,
+    "I_ci": [
+     100.0,
+     100.0
+    ],
+    "I_n": 432,
+    "I_readable": true,
+    "P_K_none": 98.61111111111111,
+    "P_n": 432,
+    "P_paper10_spec": 44.44444444444444,
+    "P_paper10_spec_ci": [
+     39.58,
+     49.54
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 432,
+     "n_bridges": 161,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    },
+    "P": {
+     "n": 432,
+     "n_bridges": 161,
+     "perp_minus_ctrl": -0.4629629629629629,
+     "ci": [
+      -1.85,
+      0.69
+     ],
+     "ci_bridges": [
+      -1.9,
+      0.99
+     ],
+     "perp_minus_rot": -0.9259259259259258,
+     "ci_rot": [
+      -2.31,
+      0.46
+     ],
+     "ci_rot_bridges": [
+      -2.56,
+      0.74
+     ],
+     "loss_perp": -0.23148148148148145,
+     "loss_ctrl": 0.23148148148148145,
+     "loss_rot": 0.6944444444444444
+    },
+    "O": {
+     "n": 432,
+     "n_bridges": 161,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": -0.23148148148148145,
+     "ci_rot": [
+      -0.69,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      -0.83,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.23148148148148145
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": 0.0,
+    "S_P": -0.9259259259259258,
+    "ci": [
+     -0.23,
+     2.55
+    ],
+    "ci_bridges": [
+     -0.34,
+     2.6
+    ],
+    "n": 432
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 0.23148148148148145,
+     "ci": [
+      0.0,
+      0.69
+     ],
+     "n": 432
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 0.23148148148148145,
+     "ci": [
+      0.0,
+      0.69
+     ],
+     "n": 432
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": 0.23148148148148145,
+     "ci": [
+      0.0,
+      0.69
+     ],
+     "n": 432
+    },
+    "I:ansJ loss": {
+     "value": 1.8518518518518516,
+     "ci": [
+      0.69,
+      3.24
+     ],
+     "n": 432
+    },
+    "I:paper10 - paper10_rot": {
+     "value": 0.23148148148148145,
+     "ci": [
+      0.0,
+      0.69
+     ],
+     "n": 432
+    },
+    "P:bridgeJ loss": {
+     "value": 29.629629629629626,
+     "ci": [
+      25.23,
+      34.26
+     ],
+     "n": 432
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 28.935185185185187,
+     "ci": [
+      24.54,
+      33.8
+     ],
+     "n": 432
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 29.398148148148145,
+     "ci": [
+      25.0,
+      34.26
+     ],
+     "n": 432
+    },
+    "P:ansJ loss": {
+     "value": 87.96296296296296,
+     "ci": [
+      84.95,
+      90.97
+     ],
+     "n": 432
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 44.44444444444444,
+     "ci": [
+      39.58,
+      49.54
+     ],
+     "n": 432
+    },
+    "O:bridgeJ loss": {
+     "value": 25.23148148148148,
+     "ci": [
+      21.3,
+      29.4
+     ],
+     "n": 432
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 25.0,
+     "ci": [
+      20.83,
+      29.17
+     ],
+     "n": 432
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 25.23148148148148,
+     "ci": [
+      21.3,
+      29.4
+     ],
+     "n": 432
+    },
+    "O:ansJ loss": {
+     "value": 75.0,
+     "ci": [
+      70.83,
+      78.94
+     ],
+     "n": 432
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 18.75,
+     "ci": [
+      15.28,
+      22.45
+     ],
+     "n": 432
+    }
+   }
+  }
+ }
+}

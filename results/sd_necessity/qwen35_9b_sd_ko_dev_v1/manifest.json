@@ -1,0 +1,141 @@
+{
+  "run": "qwen35_9b_sd_ko_dev_v1",
+  "stage": "ko",
+  "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, qwen3.5-9b): the knock-out, their dev split (held-out replication)",
+  "written_utc": "2026-10-30T09:34:04Z",
+  "git_commit": "11815bd41431adad97200d2da629b5c61f40ce40",
+  "git_state": {
+    "head": "11815bd41431adad97200d2da629b5c61f40ce40",
+    "dirty_files": [
+      "data/SOURCES.md",
+      "scripts/paper_ko_decomp.py",
+      "scripts/removal_textloss.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_sd_ma1_read.py",
+      "scripts/paper_ko_read55.py",
+      "scripts/queues/h200_n55_1030.sh",
+      "scripts/queues/h200_n56_1030.sh"
+    ],
+    "code_diff_sha256": "5715acfaf238fa5b7fd6b2c563e4758a180f6859d2277ecc3893651ed92e22df"
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "qwen35_9b_sd_ko_dev_v1",
+    "why": "silent-dissent necessity (2026-10-30, design sd_necessity_design.md, qwen3.5-9b): the knock-out, their dev split (held-out replication)",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "split": "dev",
+    "categories": null,
+    "convs": [
+      "solo",
+      "agree_vis",
+      "agree_hid",
+      "press_vis",
+      "press_hid",
+      "press1_vis"
+    ],
+    "edits": [
+      "12-16:paper10,paper10_rot,paper10_pcasize,unembed10,bridgeJ,bridgeJ_ctrl,paper10_keepA,ansJ",
+      "26-29:paper10,paper10_rot"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 32,
+    "gen": true,
+    "gen_tokens": 12,
+    "gen_batch": 64,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 249,
+  "n_prompts": 1494,
+  "n_read": 1488,
+  "items_collide": 1,
+  "prompts_naming_bridge": {
+    "solo": 0,
+    "agree_vis": 0,
+    "agree_hid": 0,
+    "press_vis": 0,
+    "press_hid": 0,
+    "press1_vis": 0
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L12-16",
+      [
+        "paper10",
+        "paper10_rot",
+        "paper10_pcasize",
+        "unembed10",
+        "bridgeJ",
+        "bridgeJ_ctrl",
+        "paper10_keepA",
+        "ansJ"
+      ]
+    ],
+    [
+      "L26-29",
+      [
+        "paper10",
+        "paper10_rot"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 30,
+    "person-uguniv-hqcity": 6,
+    "landmark-cntry-capital": 8
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 142,
+    "person-uguniv-hqcity": 24,
+    "landmark-cntry-capital": 40
+  }
+}

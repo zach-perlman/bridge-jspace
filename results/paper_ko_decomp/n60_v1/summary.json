@@ -1,0 +1,41 @@
+{
+  "gate": {
+    "MH": {
+      "raw_eligible": 62,
+      "n": 93,
+      "prompt_end": "stripped"
+    },
+    "PO": {
+      "raw_eligible": 90,
+      "n": 98,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "MH": 62,
+    "PO": 90
+  },
+  "clean_correct": {
+    "MH": 59,
+    "PO": 90
+  },
+  "rows": 2270,
+  "byte_check_all_equal": true,
+  "seconds": 377,
+  "reader": "python scripts/paper_ko_read60.py results/paper_ko_decomp/n60_v1",
+  "note": "prereg amendment 85 note 60",
+  "command": "scripts/paper_ko_decomp.py --name n60_v1 --why Zach (2026-10-30, prereg amendment 85 note 60, qwen3.6-27b): note 60, outputs vs pivots on the paper's tasks --n60 --sets MH PO --bands medium=35-49 --prev39 n39_v1",
+  "git_state": {
+    "head": "edafc19b9b7e1e8d2fec13d0eff1091a6ccab6ab",
+    "dirty_files": [
+      "scripts/nn_sd_necessity.py",
+      "scripts/sd_prompts.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_sd62_read.py",
+      "scripts/queues/h200_n62_1030.sh"
+    ],
+    "code_diff_sha256": "5194d22caf14572feaf19bb03ff626725fca26bf60f59ad1aa053f613c35956f"
+  }
+}

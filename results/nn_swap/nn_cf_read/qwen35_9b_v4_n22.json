@@ -1,0 +1,94 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n22_s0_v1",
+  "qwen35_9b_nn_n22_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MM/L4-11": {
+   "n": 416,
+   "donor": {
+    "clamp": 16.8,
+    "clamp_noans": 0.0,
+    "clamp_null": 0.2,
+    "none": 0.0
+   },
+   "kept": {
+    "clamp": 65.9,
+    "clamp_noans": 97.6,
+    "clamp_null": 95.9,
+    "none": 99.3
+   },
+   "third": {
+    "clamp": 1.2,
+    "clamp_noans": 0.5,
+    "clamp_null": 0.2,
+    "none": 0.0
+   }
+  },
+  "last/MM/L12-16": {
+   "n": 416,
+   "donor": {
+    "clamp": 15.9,
+    "clamp_noans": 0.0,
+    "clamp_null": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "clamp": 68.5,
+    "clamp_noans": 98.8,
+    "clamp_null": 93.8,
+    "none": 99.3
+   },
+   "third": {
+    "clamp": 1.2,
+    "clamp_noans": 0.0,
+    "clamp_null": 0.2,
+    "none": 0.0
+   }
+  },
+  "last/MP/L4-11": {
+   "n": 577,
+   "donor": {
+    "clamp": 3.4,
+    "clamp_noans": 1.4,
+    "clamp_null": 1.4,
+    "none": 0.0
+   },
+   "kept": {
+    "clamp": 90.7,
+    "clamp_noans": 97.0,
+    "clamp_null": 92.7,
+    "none": 100.0
+   },
+   "third": {
+    "clamp": 1.2,
+    "clamp_noans": 0.4,
+    "clamp_null": 0.0,
+    "none": 0.0
+   }
+  },
+  "last/MP/L12-16": {
+   "n": 577,
+   "donor": {
+    "clamp": 0.7,
+    "clamp_noans": 0.5,
+    "clamp_null": 0.9,
+    "none": 0.0
+   },
+   "kept": {
+    "clamp": 97.7,
+    "clamp_noans": 99.1,
+    "clamp_null": 97.9,
+    "none": 100.0
+   },
+   "third": {
+    "clamp": 0.0,
+    "clamp_noans": 0.0,
+    "clamp_null": 0.0,
+    "none": 0.0
+   }
+  }
+ },
+ "hits": []
+}

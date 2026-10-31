@@ -1,0 +1,30 @@
+{
+  "run": "nem35l_nn_probe_v4_v1",
+  "why": "Zach (2026-10-29, prereg amendment 58 notes 21-23, nemotron-3.5-lightning): note 23",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "set": "jsuite_v4_test_chat",
+  "competence": "nem35l_jsuite_v4_test_chat_competence_cand2_v1",
+  "cv_h1": "nem35l_jsuite_v4_cv_v1",
+  "readout": "nem35l_nn_readout_v4_v1",
+  "every": 2,
+  "steps": 300,
+  "seed": 0,
+  "limit": 0,
+  "git_commit": "5f57bf6d064b68f589907ac628e49e586bb790e8",
+  "git_state": {
+    "head": "5f57bf6d064b68f589907ac628e49e586bb790e8",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  }
+}

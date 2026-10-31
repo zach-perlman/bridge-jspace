@@ -1,0 +1,404 @@
+{
+ "run": "qwen35_9b_sd42_ko_test_v1",
+ "gate_run": "qwen35_9b_sd_gate_v1",
+ "name_rule": "canonical",
+ "solo_run": "qwen35_9b_sd_ko_test_v1",
+ "dropped_bridge_named": 0,
+ "gated": {
+  "press_vis": {
+   "n": 298,
+   "paper10": {
+    "value": 16.1,
+    "ci": [
+     8.3,
+     25.08
+    ]
+   },
+   "paper10_skipown": {
+    "value": -14.4,
+    "ci": [
+     -21.75,
+     -7.43
+    ]
+   },
+   "paper10_onlyown": {
+    "value": 10.1,
+    "ci": [
+     3.66,
+     15.71
+    ]
+   },
+   "share_onlyown": 0.63,
+   "share_skipown": -0.89,
+   "reading": "both"
+  },
+  "press1_vis": {
+   "n": 298,
+   "paper10": {
+    "value": 26.8,
+    "ci": [
+     16.8,
+     36.19
+    ]
+   },
+   "paper10_skipown": {
+    "value": -3.4,
+    "ci": [
+     -7.88,
+     0.35
+    ]
+   },
+   "paper10_onlyown": {
+    "value": 11.1,
+    "ci": [
+     5.36,
+     17.39
+    ]
+   },
+   "share_onlyown": 0.41,
+   "share_skipown": -0.13,
+   "reading": "both"
+  }
+ },
+ "ungated": {
+  "press_vis": {
+   "n": 404,
+   "paper10": {
+    "value": 15.3,
+    "ci": [
+     9.42,
+     22.62
+    ]
+   },
+   "paper10_skipown": {
+    "value": -13.6,
+    "ci": [
+     -20.27,
+     -8.23
+    ]
+   },
+   "paper10_onlyown": {
+    "value": 17.6,
+    "ci": [
+     6.69,
+     26.85
+    ]
+   },
+   "share_onlyown": 1.15,
+   "share_skipown": -0.89,
+   "reading": "a lookup disruption at the earlier answer"
+  },
+  "press1_vis": {
+   "n": 404,
+   "paper10": {
+    "value": 26.7,
+    "ci": [
+     17.47,
+     33.83
+    ]
+   },
+   "paper10_skipown": {
+    "value": -4.0,
+    "ci": [
+     -7.07,
+     -0.66
+    ]
+   },
+   "paper10_onlyown": {
+    "value": 15.8,
+    "ci": [
+     7.49,
+     22.38
+    ]
+   },
+   "share_onlyown": 0.59,
+   "share_skipown": -0.15,
+   "reading": "both"
+  }
+ },
+ "descriptive": {
+  "solo recall survives": {
+   "press_vis": {
+    "n": 175,
+    "paper10": {
+     "value": 13.1,
+     "ci": [
+      2.4,
+      24.61
+     ]
+    },
+    "paper10_skipown": {
+     "value": -22.9,
+     "ci": [
+      -32.57,
+      -14.43
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 14.9,
+     "ci": [
+      6.88,
+      22.22
+     ]
+    },
+    "share_onlyown": 1.14,
+    "share_skipown": -1.75,
+    "reading": "a lookup disruption at the earlier answer"
+   },
+   "press1_vis": {
+    "n": 175,
+    "paper10": {
+     "value": 25.7,
+     "ci": [
+      14.12,
+      36.76
+     ]
+    },
+    "paper10_skipown": {
+     "value": -4.0,
+     "ci": [
+      -8.94,
+      0.53
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 12.0,
+     "ci": [
+      5.95,
+      18.23
+     ]
+    },
+    "share_onlyown": 0.47,
+    "share_skipown": -0.16,
+    "reading": "both"
+   }
+  },
+  "solo recall breaks": {
+   "press_vis": {
+    "n": 123,
+    "paper10": {
+     "value": 20.3,
+     "ci": [
+      12.58,
+      29.81
+     ]
+    },
+    "paper10_skipown": {
+     "value": -2.4,
+     "ci": [
+      -10.85,
+      6.54
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 3.3,
+     "ci": [
+      -4.67,
+      9.9
+     ]
+    },
+    "share_onlyown": 0.16,
+    "share_skipown": -0.12,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 123,
+    "paper10": {
+     "value": 28.5,
+     "ci": [
+      15.0,
+      41.6
+     ]
+    },
+    "paper10_skipown": {
+     "value": -2.4,
+     "ci": [
+      -8.76,
+      2.68
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 9.8,
+     "ci": [
+      1.92,
+      20.0
+     ]
+    },
+    "share_onlyown": 0.34,
+    "share_skipown": -0.08,
+    "reading": "both"
+   }
+  },
+  "solo unknown (not in the solo run)": {
+   "n": 0
+  },
+  "category landmark-cntry-capital": {
+   "press_vis": {
+    "n": 27,
+    "paper10": {
+     "value": 7.4,
+     "ci": [
+      -14.29,
+      31.03
+     ]
+    },
+    "paper10_skipown": {
+     "value": -7.4,
+     "ci": [
+      -26.92,
+      9.68
+     ]
+    },
+    "paper10_onlyown": {
+     "value": -25.9,
+     "ci": [
+      -45.83,
+      -4.35
+     ]
+    },
+    "share_onlyown": -3.5,
+    "share_skipown": -1.0,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 27,
+    "paper10": {
+     "value": 18.5,
+     "ci": [
+      6.67,
+      32.26
+     ]
+    },
+    "paper10_skipown": {
+     "value": 3.7,
+     "ci": [
+      0.0,
+      10.34
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 3.7,
+     "ci": [
+      0.0,
+      13.64
+     ]
+    },
+    "share_onlyown": 0.2,
+    "share_skipown": 0.2,
+    "reading": "both"
+   }
+  },
+  "category person-birthcity-cntry": {
+   "press_vis": {
+    "n": 258,
+    "paper10": {
+     "value": 17.1,
+     "ci": [
+      8.64,
+      26.73
+     ]
+    },
+    "paper10_skipown": {
+     "value": -15.9,
+     "ci": [
+      -24.17,
+      -8.33
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 14.0,
+     "ci": [
+      8.1,
+      19.35
+     ]
+    },
+    "share_onlyown": 0.82,
+    "share_skipown": -0.93,
+    "reading": "a lookup disruption at the earlier answer"
+   },
+   "press1_vis": {
+    "n": 258,
+    "paper10": {
+     "value": 27.5,
+     "ci": [
+      16.35,
+      37.44
+     ]
+    },
+    "paper10_skipown": {
+     "value": -4.7,
+     "ci": [
+      -9.71,
+      -0.93
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 12.0,
+     "ci": [
+      5.81,
+      18.89
+     ]
+    },
+    "share_onlyown": 0.44,
+    "share_skipown": -0.17,
+    "reading": "both"
+   }
+  },
+  "category person-uguniv-hqcity": {
+   "press_vis": {
+    "n": 13,
+    "paper10": {
+     "value": 15.4,
+     "ci": [
+      -20.0,
+      40.91
+     ]
+    },
+    "paper10_skipown": {
+     "value": 0.0,
+     "ci": [
+      -22.22,
+      25.0
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 7.7,
+     "ci": [
+      0.0,
+      27.27
+     ]
+    },
+    "share_onlyown": 0.5,
+    "share_skipown": 0.0,
+    "reading": "both"
+   },
+   "press1_vis": {
+    "n": 13,
+    "paper10": {
+     "value": 30.8,
+     "ci": [
+      -8.33,
+      64.29
+     ]
+    },
+    "paper10_skipown": {
+     "value": 7.7,
+     "ci": [
+      -22.22,
+      35.71
+     ]
+    },
+    "paper10_onlyown": {
+     "value": 7.7,
+     "ci": [
+      -22.22,
+      35.71
+     ]
+    },
+    "share_onlyown": 0.25,
+    "share_skipown": 0.25,
+    "reading": "both"
+   }
+  }
+ }
+}

@@ -1,0 +1,113 @@
+{
+  "items": 55,
+  "rows": 990,
+  "windows": [
+    "20-33"
+  ],
+  "check": {
+    "note39": {
+      "clean": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.4727272727272727,
+        "flip_rate_stored": 0.4727272727272727,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge/null": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_noA": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.07272727272727272,
+        "flip_rate_stored": 0.07272727272727272,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.41818181818181815,
+        "flip_rate_stored": 0.41818181818181815,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA/null": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_randA": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.2727272727272727,
+        "flip_rate_stored": 0.2727272727272727,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "note39_5r": {
+      "bridge_onlyR": {
+        "n": 55,
+        "identical_rows": 55,
+        "differing_fields": {},
+        "same_flip": 55,
+        "same_swap_rank": 55,
+        "flip_rate_rerun": 0.18181818181818182,
+        "flip_rate_stored": 0.18181818181818182,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "arm7E_qr_vs_basis_share_max_abs_diff": 2.325385051182849e-08
+  },
+  "seconds": 144,
+  "peak_gpu_gb": 60.01,
+  "peak_gpu_reserved_gb": 61.42,
+  "arm7E_not_reached": 0,
+  "arm7E_k_over_nA_median": 1.8918918918918919,
+  "command": "scripts/paper_swap_n53.py --name nem35l_n53_v1 --why Zach (2026-10-30, prereg amendment 72 note 53, nemotron-3.5-lightning): note 53 run --prev nem35l_n39_v1 --prev5r nem35l_n39r_v1",
+  "git_state": {
+    "head": "75d48d3eb983d27889b5beca78620ce145f5b150",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_canonical.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_nobridge.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "reader": "python scripts/paper_swap_read53.py results/paper_swap_decomp/nem35l_n39_v1 results/paper_swap_decomp/nem35l_n53_v1"
+}

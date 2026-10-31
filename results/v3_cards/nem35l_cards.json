@@ -1,0 +1,1089 @@
+{
+ "model": "Nemotron 3.5 Lightning",
+ "cells": {
+  "JH-L1": {
+   "n": 234,
+   "cand2": 94.4,
+   "free": 92.7,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "JK-L1": {
+   "n": 234,
+   "cand2": 99.6,
+   "free": 99.6,
+   "hop1": 99.1,
+   "hop2": 100.0,
+   "guess": 26.9,
+   "chance": 3.4,
+   "real_share": 0.99
+  },
+  "JM-L1": {
+   "n": 234,
+   "cand2": 77.8,
+   "free": 76.1,
+   "hop1": 99.6,
+   "hop2": 91.5,
+   "guess": 3.8,
+   "chance": 3.4,
+   "real_share": 0.77
+  },
+  "MA-L1": {
+   "n": 234,
+   "cand2": 94.0,
+   "free": 97.0,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MA-L2": {
+   "n": 234,
+   "cand2": 91.5,
+   "free": 91.0,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MC-L1": {
+   "n": 234,
+   "cand2": 21.4,
+   "free": 15.8,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MC-L2": {
+   "n": 234,
+   "cand2": 30.8,
+   "free": 23.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MD-L1": {
+   "n": 234,
+   "cand2": 23.9,
+   "free": 18.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MD-L2": {
+   "n": 234,
+   "cand2": 29.1,
+   "free": 23.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "ME-L1": {
+   "n": 234,
+   "cand2": 46.6,
+   "free": 40.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "ME-L2": {
+   "n": 234,
+   "cand2": 46.2,
+   "free": 39.7,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MF-L1": {
+   "n": 234,
+   "cand2": 47.0,
+   "free": 41.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MF-L2": {
+   "n": 234,
+   "cand2": 47.4,
+   "free": 41.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MG-L1": {
+   "n": 234,
+   "cand2": 97.0,
+   "free": 96.6,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MG-L2": {
+   "n": 234,
+   "cand2": 91.5,
+   "free": 91.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MH-L1": {
+   "n": 234,
+   "cand2": 92.7,
+   "free": 94.0,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MH-L2": {
+   "n": 234,
+   "cand2": 85.0,
+   "free": 86.8,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MK-L1": {
+   "n": 234,
+   "cand2": 96.2,
+   "free": 96.6,
+   "hop1": 81.6,
+   "hop2": 99.6,
+   "guess": 33.3,
+   "chance": 3.4,
+   "real_share": 0.94
+  },
+  "MK-L2": {
+   "n": 234,
+   "cand2": 90.6,
+   "free": 91.0,
+   "hop1": 81.6,
+   "hop2": 100.0,
+   "guess": 24.8,
+   "chance": 3.4,
+   "real_share": 0.87
+  },
+  "MM-L1": {
+   "n": 234,
+   "cand2": 91.0,
+   "free": 93.6,
+   "hop1": 77.8,
+   "hop2": 94.9,
+   "guess": 1.3,
+   "chance": 3.4,
+   "real_share": 0.91
+  },
+  "MM-L2": {
+   "n": 234,
+   "cand2": 84.6,
+   "free": 87.2,
+   "hop1": 78.2,
+   "hop2": 96.6,
+   "guess": 0.4,
+   "chance": 3.4,
+   "real_share": 0.85
+  },
+  "MN-L1": {
+   "n": 234,
+   "cand2": 89.3,
+   "free": 93.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MN-L2": {
+   "n": 234,
+   "cand2": 85.0,
+   "free": 88.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MP-L1": {
+   "n": 234,
+   "cand2": 81.2,
+   "free": 81.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "MP-L2": {
+   "n": 234,
+   "cand2": 60.3,
+   "free": 60.3,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PA-L1": {
+   "n": 234,
+   "cand2": 90.6,
+   "free": 93.6,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PA-L2": {
+   "n": 234,
+   "cand2": 90.6,
+   "free": 91.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PC-L1": {
+   "n": 234,
+   "cand2": 72.2,
+   "free": 68.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PC-L2": {
+   "n": 234,
+   "cand2": 75.6,
+   "free": 72.6,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PC-L3": {
+   "n": 234,
+   "cand2": 77.4,
+   "free": 72.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PD-L1": {
+   "n": 234,
+   "cand2": 76.5,
+   "free": 71.8,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PD-L2": {
+   "n": 234,
+   "cand2": 78.2,
+   "free": 76.1,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PD-L3": {
+   "n": 234,
+   "cand2": 82.1,
+   "free": 78.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PE-L1": {
+   "n": 234,
+   "cand2": 81.2,
+   "free": 78.6,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PE-L2": {
+   "n": 234,
+   "cand2": 82.5,
+   "free": 79.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PE-L3": {
+   "n": 234,
+   "cand2": 80.8,
+   "free": 77.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PF-L1": {
+   "n": 234,
+   "cand2": 83.3,
+   "free": 80.3,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PF-L2": {
+   "n": 234,
+   "cand2": 83.3,
+   "free": 81.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PF-L3": {
+   "n": 234,
+   "cand2": 83.3,
+   "free": 81.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PG-L1": {
+   "n": 234,
+   "cand2": 97.4,
+   "free": 97.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PG-L2": {
+   "n": 234,
+   "cand2": 98.7,
+   "free": 99.1,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PG-L3": {
+   "n": 234,
+   "cand2": 96.6,
+   "free": 96.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PH-L1": {
+   "n": 234,
+   "cand2": 93.6,
+   "free": 96.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PH-L2": {
+   "n": 234,
+   "cand2": 92.3,
+   "free": 91.0,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PH-L3": {
+   "n": 234,
+   "cand2": 91.5,
+   "free": 83.8,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PK-L1": {
+   "n": 234,
+   "cand2": 98.3,
+   "free": 98.7,
+   "hop1": 91.5,
+   "hop2": 100.0,
+   "guess": 29.1,
+   "chance": 3.4,
+   "real_share": 0.98
+  },
+  "PK-L2": {
+   "n": 234,
+   "cand2": 99.6,
+   "free": 99.6,
+   "hop1": 92.3,
+   "hop2": 100.0,
+   "guess": 15.4,
+   "chance": 3.4,
+   "real_share": 1.0
+  },
+  "PK-L3": {
+   "n": 234,
+   "cand2": 97.9,
+   "free": 96.6,
+   "hop1": 92.7,
+   "hop2": 100.0,
+   "guess": 9.0,
+   "chance": 3.4,
+   "real_share": 0.98
+  },
+  "PM-L1": {
+   "n": 234,
+   "cand2": 89.7,
+   "free": 91.5,
+   "hop1": 91.0,
+   "hop2": 94.4,
+   "guess": 13.7,
+   "chance": 3.4,
+   "real_share": 0.88
+  },
+  "PM-L2": {
+   "n": 234,
+   "cand2": 88.0,
+   "free": 88.9,
+   "hop1": 91.0,
+   "hop2": 94.9,
+   "guess": 4.7,
+   "chance": 3.4,
+   "real_share": 0.87
+  },
+  "PM-L3": {
+   "n": 234,
+   "cand2": 82.9,
+   "free": 73.9,
+   "hop1": 91.5,
+   "hop2": 94.9,
+   "guess": 1.3,
+   "chance": 3.4,
+   "real_share": 0.83
+  },
+  "PN-L1": {
+   "n": 234,
+   "cand2": 92.7,
+   "free": 94.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PN-L2": {
+   "n": 234,
+   "cand2": 85.9,
+   "free": 90.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PP-L1": {
+   "n": 234,
+   "cand2": 85.9,
+   "free": 85.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "PP-L2": {
+   "n": 234,
+   "cand2": 83.3,
+   "free": 82.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "QH-L1": {
+   "n": 234,
+   "cand2": 91.9,
+   "free": 91.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "QK-L1": {
+   "n": 234,
+   "cand2": 98.7,
+   "free": 98.7,
+   "hop1": 99.6,
+   "hop2": 100.0,
+   "guess": 35.5,
+   "chance": 3.4,
+   "real_share": 0.98
+  },
+  "QM-L1": {
+   "n": 234,
+   "cand2": 79.5,
+   "free": 75.6,
+   "hop1": 99.6,
+   "hop2": 93.6,
+   "guess": 6.8,
+   "chance": 3.4,
+   "real_share": 0.78
+  },
+  "RA-L1": {
+   "n": 234,
+   "cand2": 79.1,
+   "free": 77.8,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "RA-L2": {
+   "n": 234,
+   "cand2": 70.1,
+   "free": 75.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "RM-L1": {
+   "n": 234,
+   "cand2": 65.8,
+   "free": 67.5,
+   "hop1": 58.5,
+   "hop2": 97.0,
+   "guess": 0.0,
+   "chance": 3.4,
+   "real_share": 0.66
+  },
+  "RM-L2": {
+   "n": 234,
+   "cand2": 64.5,
+   "free": 70.5,
+   "hop1": 60.3,
+   "hop2": 93.2,
+   "guess": 0.0,
+   "chance": 3.4,
+   "real_share": 0.65
+  },
+  "RN-L1": {
+   "n": 234,
+   "cand2": 65.4,
+   "free": 69.2,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "RN-L2": {
+   "n": 234,
+   "cand2": 65.8,
+   "free": 70.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "TK-L1": {
+   "n": 234,
+   "cand2": 61.1,
+   "free": 62.0,
+   "hop1": 76.1,
+   "hop2": 100.0,
+   "guess": 32.5,
+   "chance": 3.4,
+   "real_share": 0.42
+  },
+  "TM-L1": {
+   "n": 234,
+   "cand2": 34.6,
+   "free": 39.3,
+   "hop1": 72.6,
+   "hop2": 94.9,
+   "guess": 12.4,
+   "chance": 3.4,
+   "real_share": 0.25
+  },
+  "WA-L1": {
+   "n": 234,
+   "cand2": 93.6,
+   "free": 94.4,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "WA-L2": {
+   "n": 234,
+   "cand2": 87.6,
+   "free": 88.9,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "WK-L1": {
+   "n": 234,
+   "cand2": 96.2,
+   "free": 95.7,
+   "hop1": 82.5,
+   "hop2": 100.0,
+   "guess": 30.3,
+   "chance": 3.4,
+   "real_share": 0.95
+  },
+  "WK-L2": {
+   "n": 234,
+   "cand2": 91.9,
+   "free": 91.9,
+   "hop1": 78.6,
+   "hop2": 100.0,
+   "guess": 21.8,
+   "chance": 3.4,
+   "real_share": 0.9
+  },
+  "WM-L1": {
+   "n": 234,
+   "cand2": 86.3,
+   "free": 91.0,
+   "hop1": 79.9,
+   "hop2": 96.2,
+   "guess": 0.9,
+   "chance": 3.4,
+   "real_share": 0.86
+  },
+  "WM-L2": {
+   "n": 234,
+   "cand2": 81.6,
+   "free": 85.5,
+   "hop1": 75.6,
+   "hop2": 96.2,
+   "guess": 0.9,
+   "chance": 3.4,
+   "real_share": 0.81
+  },
+  "WN-L1": {
+   "n": 234,
+   "cand2": 87.6,
+   "free": 91.5,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "WN-L2": {
+   "n": 234,
+   "cand2": 82.5,
+   "free": 86.3,
+   "hop1": null,
+   "hop2": null,
+   "guess": null,
+   "chance": 3.4,
+   "real_share": null
+  },
+  "XK-L1": {
+   "n": 234,
+   "cand2": 25.2,
+   "free": 24.4,
+   "hop1": 30.3,
+   "hop2": 99.6,
+   "guess": 26.5,
+   "chance": 3.4,
+   "real_share": -0.02
+  },
+  "XM-L1": {
+   "n": 234,
+   "cand2": 7.3,
+   "free": 9.0,
+   "hop1": 36.3,
+   "hop2": 94.4,
+   "guess": 4.3,
+   "chance": 3.4,
+   "real_share": 0.03
+  },
+  "YK-L1": {
+   "n": 234,
+   "cand2": 97.9,
+   "free": 97.4,
+   "hop1": 91.0,
+   "hop2": 100.0,
+   "guess": 35.5,
+   "chance": 3.4,
+   "real_share": 0.97
+  },
+  "YM-L1": {
+   "n": 234,
+   "cand2": 89.7,
+   "free": 92.7,
+   "hop1": 90.6,
+   "hop2": 96.2,
+   "guess": 16.2,
+   "chance": 3.4,
+   "real_share": 0.88
+  }
+ },
+ "conflict": {
+  "MC-all": {
+   "n": 468,
+   "passage": 19.7,
+   "memory": 68.8,
+   "other": 11.5
+  },
+  "MC-far": {
+   "n": 293,
+   "passage": 15.4,
+   "memory": 72.4,
+   "other": 12.3
+  },
+  "MC-near": {
+   "n": 175,
+   "passage": 26.9,
+   "memory": 62.9,
+   "other": 10.3
+  },
+  "MD-all": {
+   "n": 468,
+   "passage": 21.2,
+   "memory": 67.9,
+   "other": 10.9
+  },
+  "MD-far": {
+   "n": 293,
+   "passage": 15.4,
+   "memory": 72.0,
+   "other": 12.6
+  },
+  "MD-near": {
+   "n": 175,
+   "passage": 30.9,
+   "memory": 61.1,
+   "other": 8.0
+  },
+  "ME-all": {
+   "n": 468,
+   "passage": 40.0,
+   "memory": 47.2,
+   "other": 12.8
+  },
+  "ME-far": {
+   "n": 293,
+   "passage": 35.2,
+   "memory": 49.5,
+   "other": 15.4
+  },
+  "ME-near": {
+   "n": 175,
+   "passage": 48.0,
+   "memory": 43.4,
+   "other": 8.6
+  },
+  "MF-all": {
+   "n": 468,
+   "passage": 41.7,
+   "memory": 44.2,
+   "other": 14.1
+  },
+  "MF-far": {
+   "n": 293,
+   "passage": 36.9,
+   "memory": 47.4,
+   "other": 15.7
+  },
+  "MF-near": {
+   "n": 175,
+   "passage": 49.7,
+   "memory": 38.9,
+   "other": 11.4
+  },
+  "PC-all": {
+   "n": 702,
+   "passage": 71.1,
+   "memory": 23.1,
+   "other": 5.8
+  },
+  "PC-far": {
+   "n": 431,
+   "passage": 67.7,
+   "memory": 26.5,
+   "other": 5.8
+  },
+  "PC-near": {
+   "n": 271,
+   "passage": 76.4,
+   "memory": 17.7,
+   "other": 5.9
+  },
+  "PD-all": {
+   "n": 702,
+   "passage": 75.4,
+   "memory": 18.9,
+   "other": 5.7
+  },
+  "PD-far": {
+   "n": 431,
+   "passage": 72.2,
+   "memory": 21.6,
+   "other": 6.3
+  },
+  "PD-near": {
+   "n": 271,
+   "passage": 80.4,
+   "memory": 14.8,
+   "other": 4.8
+  },
+  "PE-all": {
+   "n": 702,
+   "passage": 78.6,
+   "memory": 15.5,
+   "other": 5.8
+  },
+  "PE-far": {
+   "n": 431,
+   "passage": 77.5,
+   "memory": 16.7,
+   "other": 5.8
+  },
+  "PE-near": {
+   "n": 271,
+   "passage": 80.4,
+   "memory": 13.7,
+   "other": 5.9
+  },
+  "PF-all": {
+   "n": 702,
+   "passage": 80.9,
+   "memory": 12.8,
+   "other": 6.3
+  },
+  "PF-far": {
+   "n": 431,
+   "passage": 80.0,
+   "memory": 13.7,
+   "other": 6.3
+  },
+  "PF-near": {
+   "n": 271,
+   "passage": 82.3,
+   "memory": 11.4,
+   "other": 6.3
+  }
+ },
+ "lure_capture_of_wrong": {
+  "JM-L1": {
+   "wrong": 56,
+   "lure": 44.6
+  },
+  "MA-L1": {
+   "wrong": 7,
+   "lure": 28.6
+  },
+  "MA-L2": {
+   "wrong": 21,
+   "lure": 23.8
+  },
+  "MM-L1": {
+   "wrong": 15,
+   "lure": 26.7
+  },
+  "MM-L2": {
+   "wrong": 30,
+   "lure": 33.3
+  },
+  "MN-L1": {
+   "wrong": 16,
+   "lure": 0.0
+  },
+  "MN-L2": {
+   "wrong": 27,
+   "lure": 0.0
+  },
+  "PA-L1": {
+   "wrong": 15,
+   "lure": 13.3
+  },
+  "PA-L2": {
+   "wrong": 20,
+   "lure": 15.0
+  },
+  "PM-L1": {
+   "wrong": 20,
+   "lure": 10.0
+  },
+  "PM-L2": {
+   "wrong": 26,
+   "lure": 11.5
+  },
+  "PM-L3": {
+   "wrong": 61,
+   "lure": 13.1
+  },
+  "PN-L1": {
+   "wrong": 13,
+   "lure": 0.0
+  },
+  "PN-L2": {
+   "wrong": 23,
+   "lure": 0.0
+  },
+  "QM-L1": {
+   "wrong": 57,
+   "lure": 17.5
+  },
+  "RA-L1": {
+   "wrong": 52,
+   "lure": 7.7
+  },
+  "RA-L2": {
+   "wrong": 58,
+   "lure": 25.9
+  },
+  "RM-L1": {
+   "wrong": 76,
+   "lure": 19.7
+  },
+  "RM-L2": {
+   "wrong": 69,
+   "lure": 31.9
+  },
+  "RN-L1": {
+   "wrong": 72,
+   "lure": 0.0
+  },
+  "RN-L2": {
+   "wrong": 68,
+   "lure": 0.0
+  },
+  "TM-L1": {
+   "wrong": 142,
+   "lure": 74.6
+  },
+  "WA-L1": {
+   "wrong": 13,
+   "lure": 7.7
+  },
+  "WA-L2": {
+   "wrong": 26,
+   "lure": 19.2
+  },
+  "WM-L1": {
+   "wrong": 21,
+   "lure": 28.6
+  },
+  "WM-L2": {
+   "wrong": 34,
+   "lure": 32.4
+  },
+  "WN-L1": {
+   "wrong": 20,
+   "lure": 0.0
+  },
+  "WN-L2": {
+   "wrong": 32,
+   "lure": 0.0
+  },
+  "XM-L1": {
+   "wrong": 213,
+   "lure": 47.9
+  },
+  "YM-L1": {
+   "wrong": 17,
+   "lure": 41.2
+  }
+ },
+ "eligible_scenes": {
+  "J-L1": "177/234",
+  "M-L1": "153/234",
+  "M-L2": "150/234",
+  "P-L1": "152/234",
+  "P-L2": "181/234",
+  "P-L3": "172/234",
+  "Q-L1": "179/234",
+  "R-L1": "101/234",
+  "R-L2": "95/234",
+  "T-L1": "54/234",
+  "W-L1": "156/234",
+  "W-L2": "139/234",
+  "X-L1": "8/234"
+ },
+ "y_consistency": {
+  "YK": {
+   "alt": 97.4,
+   "orig": 0.0,
+   "other": 2.6,
+   "n": 234
+  },
+  "YM": {
+   "alt": 92.7,
+   "orig": 0.0,
+   "other": 7.3,
+   "n": 234
+  }
+ },
+ "probes_skip_bridge_right": {
+  "cities": "82.4% of 34",
+  "companies": "53.8% of 26",
+  "films": "75.0% of 8",
+  "landmarks": "42.9% of 7",
+  "people": "74.2% of 66"
+ }
+}

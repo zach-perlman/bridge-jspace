@@ -1,0 +1,20 @@
+{
+  "run": "muse30_greedy_all_v2test_v1",
+  "why": "Zach (2026-10-27, prereg amendment 58 note 1): Muse",
+  "written_utc": "2026-10-27T23:10:54Z",
+  "git_commit": "7d14ef0c4139e00003fae40fa1006211017a9667",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "jsuite_v2_test_chat",
+  "n_items": 7080,
+  "max_new_tokens": 24,
+  "batch": 32,
+  "limit": 0,
+  "greedy": true,
+  "doc": "greedy_all (Zach, 2026-10-27, prereg amendment 58 note 1): the model's raw greedy reply to every item's whole\nquestion, unedited. The competence and knock-out runs read only whether the answer's first token outranks the\nrelation's other answers (cand2). This records what the model actually writes, for every item (eligible or not), so\nfree-generation accuracy, answer form and any reasoning before the answer can be scored later (note 2's rule, CPU).\nPrompts are built exactly as ablate_v2.tasks_prompts builds the whole question (tasks_v2.render, thinking off,\n\"Answer:\" prefilled, a space after it for digit answers). Greedy, --max-new tokens, prompts of one length batched\ntogether (no padding: the hybrid models' recurrent layers would see pad tokens). Descriptive, no rule.\nWrites results/greedy_all/NAME/{manifest.json, rows.jsonl, summary.json}."
+}

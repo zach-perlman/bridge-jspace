@@ -1,0 +1,67 @@
+{
+  "run": "muse30_nn_cf_last_s0_v1",
+  "why": "Zach (2026-10-29, prereg amendment 59 note 28, Muse Glimmer 30B): counterfactual map, site last, donor seed 0",
+  "target": "muse-glimmer-30b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "0-5",
+    "6-11",
+    "12-17",
+    "18-23",
+    "24-29",
+    "30-35",
+    "36-41",
+    "42-47",
+    "48-50"
+  ],
+  "set": "jsuite_v4_test_chat",
+  "competence": "muse30_jsuite_v4_test_chat_competence_cand2_v1",
+  "words": [
+    "MP",
+    "MM"
+  ],
+  "site": "last",
+  "conditions": [
+    "full_cf",
+    "lensrand_cf"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "v4ok",
+  "sample_refs": 0,
+  "scene_words": null,
+  "cv_h1": "muse30_jsuite_v4_cv_v1",
+  "value_swap": false,
+  "position_swap": false,
+  "resample": false,
+  "report": false,
+  "git_commit": "b675ae3c282388f282ccff3e99cf43b43aec2def",
+  "git_state": {
+    "head": "b675ae3c282388f282ccff3e99cf43b43aec2def",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

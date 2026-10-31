@@ -1,0 +1,443 @@
+{
+ "run": "qwen35_9b_sd67_ko_test_v1",
+ "gate_run": "qwen35_9b_sd_gate_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "role": "confirmatory",
+ "bands": [
+  "L6-10",
+  "L12-16"
+ ],
+ "fit": "/workspace/scratch/n67/qwen35_9b_fit.pt",
+ "fit_sha256": "be2f2f661739c5018e7b90f9baa7999e39e4a68ade355ab8acb3ba517a5ff9c5",
+ "fit_n_names": 129,
+ "fit_n_classes": 67,
+ "n_read": 347,
+ "n_gated": 258,
+ "n_no_shortcut": 15,
+ "r2_pop": "nosc",
+ "readings": {
+  "fit_check": {
+   "L6-10": {
+    "value": -1.550387596899225,
+    "ci": [
+     -4.26,
+     1.16
+    ],
+    "ci_bridges": [
+     -6.0,
+     1.16
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 96.51162790697676,
+    "loss_c": 98.06201550387597,
+    "met": false
+   },
+   "L12-16": {
+    "value": 22.868217054263564,
+    "ci": [
+     14.73,
+     31.4
+    ],
+    "ci_bridges": [
+     -0.84,
+     40.16
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 82.55813953488372,
+    "loss_c": 59.68992248062015,
+    "met": true
+   }
+  },
+  "R1_bands": {
+   "L6-10": {
+    "value": -1.550387596899225,
+    "ci": [
+     -3.49,
+     0.39
+    ],
+    "ci_bridges": [
+     -3.78,
+     0.0
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 0.3875968992248062,
+    "loss_c": 1.937984496124031,
+    "met": false,
+    "fit_ok": false
+   },
+   "L12-16": {
+    "value": -0.7751937984496124,
+    "ci": [
+     -1.94,
+     0.0
+    ],
+    "ci_bridges": [
+     -1.99,
+     0.0
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 0.0,
+    "loss_c": 0.7751937984496124,
+    "met": false,
+    "fit_ok": true
+   }
+  },
+  "R1": {
+   "label": "this removal family is blind to the subject; claim 4 is untestable with it",
+   "bands": []
+  },
+  "R2_P": {
+   "gated, no shortcut/L6-10": {
+    "value": 0.0,
+    "ci": [
+     -20.0,
+     20.0
+    ],
+    "ci_bridges": [
+     -42.86,
+     9.38
+    ],
+    "n": 15,
+    "n_bridges": 6,
+    "loss_t": 6.666666666666667,
+    "loss_c": 6.666666666666667,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated, no shortcut/L12-16": {
+    "value": 6.666666666666667,
+    "ci": [
+     0.0,
+     20.0
+    ],
+    "ci_bridges": [
+     0.0,
+     10.0
+    ],
+    "n": 15,
+    "n_bridges": 6,
+    "loss_t": 6.666666666666667,
+    "loss_c": 0.0,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L6-10": {
+    "value": 2.7131782945736433,
+    "ci": [
+     -1.55,
+     7.36
+    ],
+    "ci_bridges": [
+     -2.69,
+     7.98
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 10.852713178294573,
+    "loss_c": 8.13953488372093,
+    "label": "not read (R1 not met at this band)"
+   },
+   "gated/L12-16": {
+    "value": 3.10077519379845,
+    "ci": [
+     -0.39,
+     6.59
+    ],
+    "ci_bridges": [
+     -1.29,
+     7.26
+    ],
+    "n": 258,
+    "n_bridges": 76,
+    "loss_t": 6.976744186046512,
+    "loss_c": 3.875968992248062,
+    "label": "not read (R1 not met at this band)"
+   }
+  }
+ },
+ "agreement": {
+  "onehop": 100.0,
+  "solo": 100.0,
+  "ctx2hop": 99.6124031007752
+ },
+ "beside": {
+  "O/L6-10/cityClean-cityClean_RE": {
+   "value": -1.550387596899225,
+   "ci": [
+    -3.49,
+    0.39
+   ],
+   "ci_bridges": [
+    -3.78,
+    0.0
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 0.3875968992248062,
+   "loss_c": 1.937984496124031
+  },
+  "O/L6-10/cityClean-cityClean_RJ": {
+   "value": -96.12403100775194,
+   "ci": [
+    -98.45,
+    -93.8
+   ],
+   "ci_bridges": [
+    -100.0,
+    -87.61
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 0.3875968992248062,
+   "loss_c": 96.51162790697676
+  },
+  "O/L6-10/cityRaw-cityRaw_RE": {
+   "value": -1.550387596899225,
+   "ci": [
+    -4.26,
+    1.16
+   ],
+   "ci_bridges": [
+    -6.0,
+    1.16
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 96.51162790697676,
+   "loss_c": 98.06201550387597
+  },
+  "P/L6-10/cityClean-cityClean_RE": {
+   "value": 2.7131782945736433,
+   "ci": [
+    -1.55,
+    7.36
+   ],
+   "ci_bridges": [
+    -2.69,
+    7.98
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 10.852713178294573,
+   "loss_c": 8.13953488372093
+  },
+  "P/L6-10/cityClean-cityClean_RJ": {
+   "value": -87.98449612403101,
+   "ci": [
+    -91.86,
+    -83.72
+   ],
+   "ci_bridges": [
+    -93.0,
+    -81.86
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 10.852713178294573,
+   "loss_c": 98.83720930232558
+  },
+  "P/L6-10/cityRaw-cityRaw_RE": {
+   "value": 1.550387596899225,
+   "ci": [
+    0.0,
+    3.49
+   ],
+   "ci_bridges": [
+    0.0,
+    3.62
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 99.6124031007752,
+   "loss_c": 98.06201550387597
+  },
+  "I/L6-10/cityClean-cityClean_RE": {
+   "value": -8.13953488372093,
+   "ci": [
+    -12.4,
+    -3.88
+   ],
+   "ci_bridges": [
+    -12.36,
+    -3.64
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 2.3255813953488373,
+   "loss_c": 10.465116279069768
+  },
+  "I/L6-10/cityClean-cityClean_RJ": {
+   "value": -90.31007751937985,
+   "ci": [
+    -93.8,
+    -86.43
+   ],
+   "ci_bridges": [
+    -94.3,
+    -85.71
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 2.3255813953488373,
+   "loss_c": 92.63565891472868
+  },
+  "I/L6-10/cityRaw-cityRaw_RE": {
+   "value": 4.651162790697675,
+   "ci": [
+    1.16,
+    8.53
+   ],
+   "ci_bridges": [
+    1.32,
+    8.93
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 94.96124031007753,
+   "loss_c": 90.31007751937985
+  },
+  "O/L12-16/cityClean-cityClean_RE": {
+   "value": -0.7751937984496124,
+   "ci": [
+    -1.94,
+    0.0
+   ],
+   "ci_bridges": [
+    -1.99,
+    0.0
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 0.0,
+   "loss_c": 0.7751937984496124
+  },
+  "O/L12-16/cityClean-cityClean_RJ": {
+   "value": -85.65891472868216,
+   "ci": [
+    -89.92,
+    -81.4
+   ],
+   "ci_bridges": [
+    -94.12,
+    -73.62
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 0.0,
+   "loss_c": 85.65891472868216
+  },
+  "O/L12-16/cityRaw-cityRaw_RE": {
+   "value": 22.868217054263564,
+   "ci": [
+    14.73,
+    31.4
+   ],
+   "ci_bridges": [
+    -0.84,
+    40.16
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 82.55813953488372,
+   "loss_c": 59.68992248062015
+  },
+  "P/L12-16/cityClean-cityClean_RE": {
+   "value": 3.10077519379845,
+   "ci": [
+    -0.39,
+    6.59
+   ],
+   "ci_bridges": [
+    -1.29,
+    7.26
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 6.976744186046512,
+   "loss_c": 3.875968992248062
+  },
+  "P/L12-16/cityClean-cityClean_RJ": {
+   "value": -53.48837209302325,
+   "ci": [
+    -60.08,
+    -46.9
+   ],
+   "ci_bridges": [
+    -66.05,
+    -40.09
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 6.976744186046512,
+   "loss_c": 60.46511627906976
+  },
+  "P/L12-16/cityRaw-cityRaw_RE": {
+   "value": 2.3255813953488373,
+   "ci": [
+    -4.65,
+    9.69
+   ],
+   "ci_bridges": [
+    -12.39,
+    13.88
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 81.78294573643412,
+   "loss_c": 79.45736434108527
+  },
+  "I/L12-16/cityClean-cityClean_RE": {
+   "value": -5.426356589147287,
+   "ci": [
+    -10.08,
+    -1.16
+   ],
+   "ci_bridges": [
+    -11.07,
+    -0.73
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 5.813953488372093,
+   "loss_c": 11.24031007751938
+  },
+  "I/L12-16/cityClean-cityClean_RJ": {
+   "value": -83.72093023255815,
+   "ci": [
+    -87.98,
+    -79.07
+   ],
+   "ci_bridges": [
+    -87.76,
+    -79.44
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 5.813953488372093,
+   "loss_c": 89.53488372093024
+  },
+  "I/L12-16/cityRaw-cityRaw_RE": {
+   "value": -55.81395348837209,
+   "ci": [
+    -62.02,
+    -49.22
+   ],
+   "ci_bridges": [
+    -62.46,
+    -47.96
+   ],
+   "n": 258,
+   "n_bridges": 76,
+   "loss_t": 10.077519379844961,
+   "loss_c": 65.89147286821705
+  }
+ }
+}

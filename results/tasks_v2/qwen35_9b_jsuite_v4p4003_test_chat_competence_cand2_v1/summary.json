@@ -1,0 +1,70 @@
+{
+  "seconds": 615,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.763,
+      "all_steps": 0.797,
+      "median_margin": 2.81,
+      "guess": 0.169,
+      "top_wrong": [
+        [
+          "Russia",
+          12
+        ],
+        [
+          "Nor",
+          11
+        ],
+        [
+          "Mexico",
+          10
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.558,
+      "all_steps": 0.494,
+      "median_margin": 0.31,
+      "guess": 0.001,
+      "top_wrong": [
+        [
+          "Spain",
+          16
+        ],
+        [
+          "United",
+          14
+        ],
+        [
+          "Germany",
+          13
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.431,
+      "MM": 0.658
+    },
+    "companies": {
+      "MP": 0.875,
+      "MM": 0.637
+    },
+    "films": {
+      "MP": 0.854,
+      "MM": 0.153
+    },
+    "landmarks": {
+      "MP": 0.828,
+      "MM": 0.388
+    },
+    "people": {
+      "MP": 0.877,
+      "MM": 0.738
+    }
+  },
+  "pick": {}
+}

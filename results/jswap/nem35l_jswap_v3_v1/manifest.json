@@ -1,0 +1,29 @@
+{
+  "run": "nem35l_jswap_v3_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 5): nemotron-3.5-lightning J-part swap at L27-33",
+  "target": "nemotron-3.5-lightning",
+  "band": "27-33",
+  "set": "jsuite_v3_test_chat",
+  "competence": "nem35l_jsuite_v3_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "e5fbcfd9bfbe4aef0b59dc3718ebedc956169541",
+  "git_state": {
+    "head": "e5fbcfd9bfbe4aef0b59dc3718ebedc956169541",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 0,
+  "sample_seed": 0
+}

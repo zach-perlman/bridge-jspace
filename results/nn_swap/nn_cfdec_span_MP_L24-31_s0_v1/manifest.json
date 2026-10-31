@@ -1,0 +1,61 @@
+{
+  "run": "nn_cfdec_span_MP_L24-31_s0_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 14): qwen3.6-27b decomposition at span / MP / L24-31, donor seed 0",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "24-31"
+  ],
+  "set": "jsuite_v4_test_chat",
+  "competence": "jsuite_v4_test_chat_competence_cand2_v1",
+  "words": [
+    "MP"
+  ],
+  "site": "span",
+  "conditions": [
+    "full_cf",
+    "lens_cf",
+    "rem_cf",
+    "remfix_cf",
+    "lensrand_cf"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "v4ok",
+  "sample_refs": 0,
+  "scene_words": null,
+  "cv_h1": "jsuite_v4_cv_v1",
+  "value_swap": false,
+  "position_swap": false,
+  "resample": false,
+  "report": false,
+  "git_commit": "5f57bf6d064b68f589907ac628e49e586bb790e8",
+  "git_state": {
+    "head": "5f57bf6d064b68f589907ac628e49e586bb790e8",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

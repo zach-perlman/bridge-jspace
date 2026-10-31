@@ -1,0 +1,226 @@
+{
+  "exp": "paper_ko_decomp",
+  "run": "n55_v1",
+  "why": "Zach (2026-10-30, prereg amendment 72 note 55, qwen3.6-27b): note 55, the paper's sets and the text metric at its medium and heavy strengths",
+  "note": "prereg amendment 72 note 55",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ]
+  },
+  "data": {
+    "ML": {
+      "file": "data/lens_eval_multilingual.json",
+      "sha256": "fa70b9bd89416a6d8d985a80dc628b109ae6fd3b25b9275c0fc5065d7ff4a0ef",
+      "n_run": 107
+    },
+    "MH": {
+      "file": "data/lens_eval_multihop.json",
+      "sha256": "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416",
+      "n_run": 93
+    },
+    "OO": {
+      "file": "data/lens_eval_order_ops.json",
+      "sha256": "b203206d16ff628152cc86f3838604e06cb54776f3e14fa1c34f150db8bc7560",
+      "n_run": 55
+    },
+    "PO": {
+      "file": "data/lens_eval_poetry.json",
+      "sha256": "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc",
+      "n_run": 98
+    }
+  },
+  "source": "safety-research/jpp_lens@93f02cd data/jlens/evaluations (copied unchanged)",
+  "main_band": null,
+  "early_window": null,
+  "early_from": null,
+  "conditions": {
+    "ML": [
+      "top3@medium",
+      "paper10@medium",
+      "top30@medium",
+      "pca3@medium",
+      "pca10@medium",
+      "pca30@medium",
+      "unembed10@medium",
+      "unembed30@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "unembed100@medium",
+      "unembed300@medium",
+      "keep_T@medium",
+      "keep_E@medium",
+      "top3@heavy",
+      "paper10@heavy",
+      "top30@heavy",
+      "pca3@heavy",
+      "pca10@heavy",
+      "pca30@heavy",
+      "unembed10@heavy",
+      "unembed30@heavy",
+      "paper10_rot@heavy",
+      "paper10_pcasize@heavy",
+      "unembed100@heavy",
+      "unembed300@heavy"
+    ],
+    "MH": [
+      "top3@medium",
+      "paper10@medium",
+      "top30@medium",
+      "pca3@medium",
+      "pca10@medium",
+      "pca30@medium",
+      "unembed10@medium",
+      "unembed30@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "unembed100@medium",
+      "unembed300@medium",
+      "keep_T@medium",
+      "keep_B@medium",
+      "top3@heavy",
+      "paper10@heavy",
+      "top30@heavy",
+      "pca3@heavy",
+      "pca10@heavy",
+      "pca30@heavy",
+      "unembed10@heavy",
+      "unembed30@heavy",
+      "paper10_rot@heavy",
+      "paper10_pcasize@heavy",
+      "unembed100@heavy",
+      "unembed300@heavy"
+    ],
+    "OO": [
+      "top3@medium",
+      "paper10@medium",
+      "top30@medium",
+      "pca3@medium",
+      "pca10@medium",
+      "pca30@medium",
+      "unembed10@medium",
+      "unembed30@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "unembed100@medium",
+      "unembed300@medium",
+      "keep_T@medium",
+      "top3@heavy",
+      "paper10@heavy",
+      "top30@heavy",
+      "pca3@heavy",
+      "pca10@heavy",
+      "pca30@heavy",
+      "unembed10@heavy",
+      "unembed30@heavy",
+      "paper10_rot@heavy",
+      "paper10_pcasize@heavy",
+      "unembed100@heavy",
+      "unembed300@heavy"
+    ],
+    "PO": [
+      "top3@medium",
+      "paper10@medium",
+      "top30@medium",
+      "pca3@medium",
+      "pca10@medium",
+      "pca30@medium",
+      "unembed10@medium",
+      "unembed30@medium",
+      "paper10_rot@medium",
+      "paper10_pcasize@medium",
+      "unembed100@medium",
+      "unembed300@medium",
+      "keep_T@medium",
+      "keep_S@medium",
+      "top3@heavy",
+      "paper10@heavy",
+      "top30@heavy",
+      "pca3@heavy",
+      "pca10@heavy",
+      "pca30@heavy",
+      "unembed10@heavy",
+      "unembed30@heavy",
+      "paper10_rot@heavy",
+      "paper10_pcasize@heavy",
+      "unembed100@heavy",
+      "unembed300@heavy"
+    ]
+  },
+  "seeds": {
+    "rotation": "ablate_v2 SEED_ROT 888 + layer",
+    "ctl": "Random('n45ctl:<set>:<item>')",
+    "keepR": "Random('n45R<k>:<set>:<item>')",
+    "ctl_choice": "Random('n45ctlpick:<set>:<item>')"
+  },
+  "gate": "greedy 6 tokens, normalised prefix match; chat_prefill for ML / MH if < 50 raw-eligible (full runs)",
+  "tf32": true,
+  "bj_gram_proj": "1",
+  "command": "scripts/paper_ko_decomp.py --name n55_v1 --why Zach (2026-10-30, prereg amendment 72 note 55, qwen3.6-27b): note 55, the paper's sets and the text metric at its medium and heavy strengths --sets ML MH OO PO --bands medium=35-49 heavy=27-55 --keep-band medium",
+  "git_state": {
+    "head": "75562b3d8de26d203f7291b62232f08917ea8148",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/nem35l_sd_ko_test_v1_gated.json",
+      "results/sd_necessity/nn_sd_read/nem35l_sd_ko_test_v1_gated_canonical.json",
+      "results/sd_necessity/nn_sd_read/nem35l_sd_ko_test_v1_gated_nobridge.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T13:33:46Z",
+  "bands": {
+    "medium": "35-49",
+    "heavy": "27-55"
+  },
+  "keep_band": "medium",
+  "byte_check": {
+    "conditions": [
+      "paper10",
+      "paper10_rot",
+      "top3",
+      "top30"
+    ],
+    "bands": [
+      "medium",
+      "heavy"
+    ],
+    "items": "first 8 gated MH"
+  },
+  "text": {
+    "conditions": [
+      "paper10",
+      "paper10_rot",
+      "top3",
+      "top30",
+      "pca3",
+      "pca10",
+      "pca30",
+      "unembed10",
+      "unembed30",
+      "paper10_pcasize",
+      "paper10_noprot",
+      "unembed100",
+      "unembed300"
+    ],
+    "n_per_set": 64,
+    "sets": [
+      "wiki",
+      "v4"
+    ],
+    "code": "scripts/removal_textloss.agreement"
+  },
+  "po_rule": "T = intermediates[0]; S = last alphabetic word of the couplet's first line; cluster = T's spelled rhyme",
+  "force_chat": []
+}

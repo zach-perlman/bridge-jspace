@@ -1,0 +1,33 @@
+{
+  "gate": {
+    "ML": {
+      "raw_eligible": 72,
+      "n": 107,
+      "prompt_end": "stripped"
+    },
+    "MH": {
+      "raw_eligible": 54,
+      "n": 93,
+      "prompt_end": "stripped"
+    },
+    "OO": {
+      "raw_eligible": 28,
+      "n": 55,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "ML": 72,
+    "MH": 54,
+    "OO": 28
+  },
+  "clean_correct": {
+    "ML": 66,
+    "MH": 51,
+    "OO": 27
+  },
+  "rows": 3710,
+  "byte_check_all_equal": true,
+  "seconds": 194,
+  "reader": "python scripts/paper_ko_read.py results/paper_ko_decomp/nem35l_n45_v1"
+}

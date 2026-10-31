@@ -1,0 +1,470 @@
+{
+ "L12-16/RM/none": {
+  "n": 112,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/insert_k10": {
+  "n": 112,
+  "kept": 53.6,
+  "donor": 41.1,
+  "third": 0.0,
+  "other": 5.4,
+  "n_third": 112,
+  "transfer": 41.1,
+  "ci": [
+   30.6,
+   50.9
+  ]
+ },
+ "L12-16/MM/insert_k10": {
+  "n": 80,
+  "kept": 83.8,
+  "donor": 11.2,
+  "third": 0.0,
+  "other": 5.0,
+  "n_third": 80,
+  "transfer": 11.2,
+  "ci": [
+   4.9,
+   18.4
+  ]
+ },
+ "L12-16/PM/insert_k10": {
+  "n": 80,
+  "kept": 22.5,
+  "donor": 61.2,
+  "third": 0.0,
+  "other": 16.2,
+  "n_third": 80,
+  "transfer": 61.2,
+  "ci": [
+   50.0,
+   73.1
+  ]
+ },
+ "L12-16/RM/latent_k10": {
+  "n": 112,
+  "kept": 69.6,
+  "donor": 13.4,
+  "third": 0.9,
+  "other": 16.1,
+  "n_third": 112,
+  "transfer": 12.5,
+  "ci": [
+   6.1,
+   19.4
+  ]
+ },
+ "L12-16/MM/latent_k10": {
+  "n": 80,
+  "kept": 92.5,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 5.0,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   0.0,
+   6.5
+  ]
+ },
+ "L12-16/PM/latent_k10": {
+  "n": 80,
+  "kept": 48.8,
+  "donor": 25.0,
+  "third": 1.2,
+  "other": 25.0,
+  "n_third": 80,
+  "transfer": 23.8,
+  "ci": [
+   14.3,
+   33.8
+  ]
+ },
+ "L12-16/RM/insert_k10_noans": {
+  "n": 112,
+  "kept": 92.9,
+  "donor": 0.9,
+  "third": 0.0,
+  "other": 6.2,
+  "n_third": 112,
+  "transfer": 0.9,
+  "ci": [
+   0.0,
+   2.9
+  ]
+ },
+ "L12-16/MM/insert_k10_noans": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/insert_k10_noans": {
+  "n": 80,
+  "kept": 93.8,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 6.2,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/insert_k10_noansctl": {
+  "n": 112,
+  "kept": 73.2,
+  "donor": 17.9,
+  "third": 0.0,
+  "other": 8.9,
+  "n_third": 112,
+  "transfer": 17.9,
+  "ci": [
+   10.3,
+   25.9
+  ]
+ },
+ "L12-16/MM/insert_k10_noansctl": {
+  "n": 80,
+  "kept": 90.0,
+  "donor": 5.0,
+  "third": 0.0,
+  "other": 5.0,
+  "n_third": 80,
+  "transfer": 5.0,
+  "ci": [
+   1.2,
+   10.1
+  ]
+ },
+ "L12-16/PM/insert_k10_noansctl": {
+  "n": 80,
+  "kept": 51.2,
+  "donor": 32.5,
+  "third": 0.0,
+  "other": 16.2,
+  "n_third": 80,
+  "transfer": 32.5,
+  "ci": [
+   21.7,
+   43.8
+  ]
+ },
+ "L12-16/RM/insert_ans": {
+  "n": 112,
+  "kept": 71.4,
+  "donor": 17.9,
+  "third": 0.0,
+  "other": 10.7,
+  "n_third": 112,
+  "transfer": 17.9,
+  "ci": [
+   10.9,
+   26.4
+  ]
+ },
+ "L12-16/MM/insert_ans": {
+  "n": 80,
+  "kept": 88.8,
+  "donor": 6.2,
+  "third": 0.0,
+  "other": 5.0,
+  "n_third": 80,
+  "transfer": 6.2,
+  "ci": [
+   1.3,
+   12.2
+  ]
+ },
+ "L12-16/PM/insert_ans": {
+  "n": 80,
+  "kept": 76.2,
+  "donor": 12.5,
+  "third": 0.0,
+  "other": 11.2,
+  "n_third": 80,
+  "transfer": 12.5,
+  "ci": [
+   5.8,
+   20.0
+  ]
+ },
+ "L12-16/RM/insert_ansctl": {
+  "n": 112,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/insert_ansctl": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/insert_ansctl": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/latent_k10_noans": {
+  "n": 112,
+  "kept": 92.9,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 7.1,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/latent_k10_noans": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/latent_k10_noans": {
+  "n": 80,
+  "kept": 98.8,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/latent_k10_noansctl": {
+  "n": 112,
+  "kept": 89.3,
+  "donor": 3.6,
+  "third": 0.0,
+  "other": 7.1,
+  "n_third": 112,
+  "transfer": 3.6,
+  "ci": [
+   0.9,
+   7.3
+  ]
+ },
+ "L12-16/MM/latent_k10_noansctl": {
+  "n": 80,
+  "kept": 92.5,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 6.2,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.9
+  ]
+ },
+ "L12-16/PM/latent_k10_noansctl": {
+  "n": 80,
+  "kept": 81.2,
+  "donor": 11.2,
+  "third": 0.0,
+  "other": 7.5,
+  "n_third": 80,
+  "transfer": 11.2,
+  "ci": [
+   4.9,
+   18.5
+  ]
+ },
+ "L12-16/RM/latent_ans": {
+  "n": 112,
+  "kept": 85.7,
+  "donor": 3.6,
+  "third": 0.0,
+  "other": 10.7,
+  "n_third": 112,
+  "transfer": 3.6,
+  "ci": [
+   0.9,
+   7.7
+  ]
+ },
+ "L12-16/MM/latent_ans": {
+  "n": 80,
+  "kept": 93.8,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 5.0,
+  "n_third": 80,
+  "transfer": 1.2,
+  "ci": [
+   0.0,
+   3.9
+  ]
+ },
+ "L12-16/PM/latent_ans": {
+  "n": 80,
+  "kept": 86.2,
+  "donor": 3.8,
+  "third": 1.2,
+  "other": 8.8,
+  "n_third": 80,
+  "transfer": 2.5,
+  "ci": [
+   -2.4,
+   7.6
+  ]
+ },
+ "L12-16/RM/latent_ansctl": {
+  "n": 112,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/latent_ansctl": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/latent_ansctl": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/remove_k10_noans": {
+  "n": 112,
+  "kept": 97.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 2.7,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/remove_k10_noans": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/remove_k10_noans": {
+  "n": 80,
+  "kept": 98.8,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

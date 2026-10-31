@@ -1,0 +1,80 @@
+{
+ "L57-62/MM/none": {
+  "n": 350,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L57-62/MM/full_cf": {
+  "n": 350,
+  "kept": 1.7,
+  "donor": 70.6,
+  "third": 22.3,
+  "other": 4.6,
+  "n_third": 350,
+  "transfer": 48.3,
+  "ci": [
+   39.0,
+   57.0
+  ]
+ },
+ "L57-62/MM/lens_cf": {
+  "n": 350,
+  "kept": 36.6,
+  "donor": 47.4,
+  "third": 9.4,
+  "other": 2.0,
+  "n_third": 350,
+  "transfer": 38.0,
+  "ci": [
+   30.6,
+   45.0
+  ]
+ },
+ "L57-62/MM/rem_cf": {
+  "n": 350,
+  "kept": 3.1,
+  "donor": 55.7,
+  "third": 31.7,
+  "other": 8.3,
+  "n_third": 350,
+  "transfer": 24.0,
+  "ci": [
+   13.6,
+   34.0
+  ]
+ },
+ "L57-62/MM/remfix_cf": {
+  "n": 350,
+  "kept": 30.6,
+  "donor": 16.0,
+  "third": 28.9,
+  "other": 17.7,
+  "n_third": 350,
+  "transfer": -12.9,
+  "ci": [
+   -19.2,
+   -6.1
+  ]
+ },
+ "L57-62/MM/lensrand_cf": {
+  "n": 350,
+  "kept": 99.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 350,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

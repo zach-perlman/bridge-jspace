@@ -1,0 +1,129 @@
+{
+  "run": "qwen35_9b_sd62_ko_test_v1",
+  "stage": "ko",
+  "why": "prereg amendment 85 note 62, bridge positive control (2026-10-30, qwen3.5-9b, test split): I, P and O (test split, person-birthcity-cntry; edits from the question's first token)",
+  "written_utc": "2026-10-30T18:48:59Z",
+  "git_commit": "7fda93ba09c4c08fc309f444c48eb25487770527",
+  "git_state": {
+    "head": "7fda93ba09c4c08fc309f444c48eb25487770527",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "qwen35_9b_sd62_ko_test_v1",
+    "why": "prereg amendment 85 note 62, bridge positive control (2026-10-30, qwen3.5-9b, test split): I, P and O (test split, person-birthcity-cntry; edits from the question's first token)",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "split": "test",
+    "categories": [
+      "person-birthcity-cntry"
+    ],
+    "convs": [
+      "ctx2hop",
+      "solo",
+      "onehop"
+    ],
+    "edits": [
+      "12-16:paper10,paper10_rot,bridgeJ,bridgeJ_rot,bridgeJ_ctrl,bridgeJperp,ansJ"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 32,
+    "gen": true,
+    "gen_tokens": 12,
+    "gen_batch": 64,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [],
+    "uids": null,
+    "log_prot": false,
+    "pos_from": "question",
+    "ctrl_match": "count"
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 350,
+  "n_prompts": 1050,
+  "n_read": 1041,
+  "items_collide": 3,
+  "prompts_naming_bridge": {
+    "ctx2hop": 350,
+    "solo": 0,
+    "onehop": 350
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L12-16",
+      [
+        "paper10",
+        "paper10_rot",
+        "bridgeJ",
+        "bridgeJ_rot",
+        "bridgeJ_ctrl",
+        "bridgeJperp",
+        "ansJ"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 45
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 193
+  },
+  "n62": {
+    "pos_from": "question",
+    "ctrl_match": "count",
+    "row_tail": [
+      "q_pos",
+      "mask_from",
+      "ctx_dist",
+      "perp_n"
+    ],
+    "nc_eq_nb": 307,
+    "n_items": 350
+  },
+  "row_tail": [
+    "np",
+    "prot"
+  ]
+}

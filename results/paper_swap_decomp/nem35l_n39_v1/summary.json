@@ -1,0 +1,23 @@
+{
+  "gate": {
+    "raw_eligible": 74,
+    "prompt_end": "stripped"
+  },
+  "statuses": {
+    "eligible": 74,
+    "clean_wrong": 10,
+    "multi_token:answer+swap_answer": 1,
+    "multi_token:swap_answer": 3,
+    "multi_token:answer": 2
+  },
+  "eligible_by_set": {
+    "primary": 55,
+    "own_pair_only": 18,
+    "side_table": 1
+  },
+  "rows": 7914,
+  "greedy_rows": 464,
+  "seconds": 472,
+  "repro": null,
+  "reader": "python scripts/paper_swap_read.py results/paper_swap_decomp/nem35l_n39_v1"
+}

@@ -1,0 +1,53 @@
+{
+ "readout": "nem35l_nn_readout_comp_v1",
+ "split": {
+  "jlens/attr": {
+   "before": 54.1,
+   "after": 70.0,
+   "n_before": 111,
+   "n_after": 60,
+   "before_minus_after": -15.9,
+   "ci": [
+    -30.8,
+    -1.0
+   ],
+   "precomputed": false
+  },
+  "jlens/bridge": {
+   "before": 35.1,
+   "after": 31.7,
+   "n_before": 111,
+   "n_after": 60,
+   "before_minus_after": 3.5,
+   "ci": [
+    -11.8,
+    17.9
+   ],
+   "precomputed": false
+  },
+  "logit/attr": {
+   "before": 49.2,
+   "after": 61.1,
+   "n_before": 111,
+   "n_after": 60,
+   "before_minus_after": -11.9,
+   "ci": [
+    -26.2,
+    2.3
+   ],
+   "precomputed": false
+  },
+  "logit/bridge": {
+   "before": 40.2,
+   "after": 28.3,
+   "n_before": 111,
+   "n_after": 60,
+   "before_minus_after": 11.9,
+   "ci": [
+    -1.9,
+    25.5
+   ],
+   "precomputed": false
+  }
+ }
+}

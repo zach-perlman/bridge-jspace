@@ -1,0 +1,267 @@
+{
+ "behaviour": {
+  "CN": {
+   "n": 666,
+   "memory": 10.7,
+   "passage": 89.3,
+   "other": 0.0
+  },
+  "CA": {
+   "n": 666,
+   "memory": 0.6,
+   "passage": 99.4,
+   "other": 0.0
+  },
+  "DN": {
+   "n": 482,
+   "memory": 32.4,
+   "passage": 61.0,
+   "other": 6.6
+  },
+  "DA": {
+   "n": 482,
+   "memory": 7.5,
+   "passage": 86.3,
+   "other": 6.2
+  },
+  "TN": {
+   "n": 666,
+   "memory": 100.0,
+   "passage": 0.0,
+   "other": 0.0
+  },
+  "TD": {
+   "n": 482,
+   "memory": 97.5,
+   "passage": 0.0,
+   "other": 2.5
+  }
+ },
+ "knockout": {
+  "share": {
+   "none": {
+    "memory": 20.4,
+    "passage": 77.8,
+    "other": 1.7
+   },
+   "paper10": {
+    "memory": 2.4,
+    "passage": 87.0,
+    "other": 10.6
+   },
+   "paper10_rot": {
+    "memory": 24.9,
+    "passage": 72.8,
+    "other": 2.3
+   },
+   "unembed10": {
+    "memory": 17.2,
+    "passage": 81.1,
+    "other": 1.6
+   },
+   "paper10_pcasize": {
+    "memory": 38.0,
+    "passage": 57.6,
+    "other": 4.4
+   }
+  },
+  "shift_paper10": {
+   "shift": 9.2,
+   "ci": [
+    5.815,
+    12.286
+   ]
+  },
+  "shift_paper10_rot": {
+   "shift": -5.0,
+   "ci": [
+    -6.731,
+    -3.21
+   ]
+  },
+  "shift_unembed10": {
+   "shift": 3.3,
+   "ci": [
+    1.613,
+    4.99
+   ]
+  },
+  "shift_paper10_pcasize": {
+   "shift": -20.2,
+   "ci": [
+    -23.349,
+    -17.143
+   ]
+  },
+  "paper10_minus_paper10_rot": {
+   "d": 14.2,
+   "ci": [
+    10.976,
+    17.184
+   ],
+   "met": true
+  },
+  "paper10_minus_unembed10": {
+   "d": 5.9,
+   "ci": [
+    3.082,
+    8.657
+   ],
+   "met": false
+  }
+ },
+ "bridge": {
+  "CN/jlens": {
+   "memory": {
+    "n": 71,
+    "attr": 80.5,
+    "other": 0.8,
+    "third": 0.2,
+    "ctxreal": 0.1
+   },
+   "passage": {
+    "n": 595,
+    "attr": 80.5,
+    "other": 2.6,
+    "third": 1.0,
+    "ctxreal": 0.9
+   },
+   "auc": 0.51,
+   "reading": "memory channel"
+  },
+  "CN/logit": {
+   "memory": {
+    "n": 71,
+    "attr": 15.6,
+    "other": 4.1,
+    "third": 2.3,
+    "ctxreal": 1.8
+   },
+   "passage": {
+    "n": 595,
+    "attr": 12.9,
+    "other": 3.8,
+    "third": 3.2,
+    "ctxreal": 2.9
+   },
+   "auc": 0.535
+  },
+  "DN/jlens": {
+   "memory": {
+    "n": 156,
+    "attr": 50.1,
+    "other": 2.5,
+    "third": 2.4,
+    "ctxreal": 2.1
+   },
+   "passage": {
+    "n": 294,
+    "attr": 50.6,
+    "other": 3.8,
+    "third": 2.0,
+    "ctxreal": 1.8
+   },
+   "auc": 0.498,
+   "reading": "memory channel"
+  },
+  "DN/logit": {
+   "memory": {
+    "n": 156,
+    "attr": 14.9,
+    "other": 4.0,
+    "third": 4.1,
+    "ctxreal": 2.5
+   },
+   "passage": {
+    "n": 294,
+    "attr": 13.2,
+    "other": 3.5,
+    "third": 4.0,
+    "ctxreal": 4.8
+   },
+   "auc": 0.5
+  },
+  "CA/jlens": {
+   "memory": {
+    "n": 4,
+    "attr": 88.5,
+    "other": 0.0,
+    "third": 0.0,
+    "ctxreal": 0.0
+   },
+   "passage": {
+    "n": 662,
+    "attr": 76.3,
+    "other": 2.7,
+    "third": 1.1,
+    "ctxreal": 0.8
+   },
+   "auc": 0.535,
+   "reading": "memory strength"
+  },
+  "CA/logit": {
+   "memory": {
+    "n": 4,
+    "attr": 15.4,
+    "other": 9.6,
+    "third": 5.8,
+    "ctxreal": 9.6
+   },
+   "passage": {
+    "n": 662,
+    "attr": 11.4,
+    "other": 3.8,
+    "third": 2.6,
+    "ctxreal": 3.1
+   },
+   "auc": 0.362
+  },
+  "DA/jlens": {
+   "memory": {
+    "n": 36,
+    "attr": 56.0,
+    "other": 1.1,
+    "third": 0.9,
+    "ctxreal": 1.9
+   },
+   "passage": {
+    "n": 416,
+    "attr": 48.4,
+    "other": 3.5,
+    "third": 1.8,
+    "ctxreal": 1.5
+   },
+   "auc": 0.553,
+   "reading": "memory channel"
+  },
+  "DA/logit": {
+   "memory": {
+    "n": 36,
+    "attr": 12.6,
+    "other": 3.4,
+    "third": 2.1,
+    "ctxreal": 8.1
+   },
+   "passage": {
+    "n": 416,
+    "attr": 12.2,
+    "other": 3.8,
+    "third": 3.5,
+    "ctxreal": 2.2
+   },
+   "auc": 0.495
+  }
+ },
+ "framing": {
+  "CN->CA": {
+   "n": 666,
+   "bridge_true_share_change": -4.1,
+   "passage_share_change": 10.1
+  },
+  "DN->DA": {
+   "n": 482,
+   "bridge_true_share_change": -1.3,
+   "passage_share_change": 25.3
+  }
+ }
+}

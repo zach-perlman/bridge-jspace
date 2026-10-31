@@ -1,0 +1,111 @@
+{
+  "items": 54,
+  "rows": 972,
+  "windows": [
+    "24-40"
+  ],
+  "check": {
+    "note39": {
+      "clean": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.5185185185185185,
+        "flip_rate_stored": 0.5185185185185185,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge/null": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_noA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.05555555555555555,
+        "flip_rate_stored": 0.05555555555555555,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.4074074074074074,
+        "flip_rate_stored": 0.4074074074074074,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_onlyA/null": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.0,
+        "flip_rate_stored": 0.0,
+        "max_abs_dlogp_diff": 0.0
+      },
+      "bridge_randA": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.4074074074074074,
+        "flip_rate_stored": 0.4074074074074074,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "note39_5r": {
+      "bridge_onlyR": {
+        "n": 54,
+        "identical_rows": 54,
+        "differing_fields": {},
+        "same_flip": 54,
+        "same_swap_rank": 54,
+        "flip_rate_rerun": 0.07407407407407407,
+        "flip_rate_stored": 0.07407407407407407,
+        "max_abs_dlogp_diff": 0.0
+      }
+    },
+    "arm7E_qr_vs_basis_share_max_abs_diff": 1.8520043165715094e-08
+  },
+  "seconds": 194,
+  "peak_gpu_gb": 54.09,
+  "peak_gpu_reserved_gb": 54.56,
+  "arm7E_not_reached": 0,
+  "arm7E_k_over_nA_median": 1.9439252336448598,
+  "command": "scripts/paper_swap_n53.py --name n53_v1 --why Zach (2026-10-30, prereg amendment 72 note 53, qwen3.6-27b): note 53 run --prev n39_v1 --prev5r n39r_v1",
+  "git_state": {
+    "head": "d0d4d20c378f16dc740b11e6a0009c438d0abb19",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/nem35l_sd_ko_test_v1_gated.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "reader": "python scripts/paper_swap_read53.py results/paper_swap_decomp/n39_v1 results/paper_swap_decomp/n53_v1"
+}

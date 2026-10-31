@@ -1,0 +1,132 @@
+{
+ "L21-26/MP/none": {
+  "n": 411,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 411,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L21-26/MP/full_cf": {
+  "n": 411,
+  "kept": 80.3,
+  "donor": 14.8,
+  "third": 1.2,
+  "other": 3.2,
+  "n_third": 411,
+  "transfer": 13.6,
+  "ci": [
+   10.1,
+   17.6
+  ]
+ },
+ "L21-26/MP/jpp_cf": {
+  "n": 411,
+  "kept": 94.4,
+  "donor": 3.6,
+  "third": 0.0,
+  "other": 1.9,
+  "n_third": 411,
+  "transfer": 3.6,
+  "ci": [
+   2.1,
+   5.5
+  ]
+ },
+ "L21-26/MP/jpprand_cf": {
+  "n": 411,
+  "kept": 91.5,
+  "donor": 5.4,
+  "third": 0.2,
+  "other": 2.4,
+  "n_third": 411,
+  "transfer": 5.1,
+  "ci": [
+   2.8,
+   7.4
+  ]
+ },
+ "L21-26/MP/nojpp_cf": {
+  "n": 411,
+  "kept": 82.7,
+  "donor": 13.1,
+  "third": 0.7,
+  "other": 2.9,
+  "n_third": 411,
+  "transfer": 12.4,
+  "ci": [
+   9.2,
+   15.7
+  ]
+ },
+ "L21-26/MP/nojpprand_cf": {
+  "n": 411,
+  "kept": 80.8,
+  "donor": 14.8,
+  "third": 1.0,
+  "other": 2.9,
+  "n_third": 411,
+  "transfer": 13.9,
+  "ci": [
+   10.2,
+   17.7
+  ]
+ },
+ "L21-26/MP/lensnp_cf": {
+  "n": 411,
+  "kept": 98.5,
+  "donor": 0.7,
+  "third": 0.0,
+  "other": 0.5,
+  "n_third": 411,
+  "transfer": 0.7,
+  "ci": [
+   0.0,
+   1.8
+  ]
+ },
+ "L21-26/MP/remnp_cf": {
+  "n": 411,
+  "kept": 80.8,
+  "donor": 14.8,
+  "third": 1.0,
+  "other": 2.9,
+  "n_third": 411,
+  "transfer": 13.9,
+  "ci": [
+   10.4,
+   17.7
+  ]
+ },
+ "L21-26/MP/lensshrnp_cf": {
+  "n": 411,
+  "kept": 98.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.2,
+  "n_third": 411,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L21-26/MP/remshrnp_cf": {
+  "n": 411,
+  "kept": 80.3,
+  "donor": 15.1,
+  "third": 1.0,
+  "other": 3.2,
+  "n_third": 411,
+  "transfer": 14.1,
+  "ci": [
+   10.1,
+   17.8
+  ]
+ }
+}

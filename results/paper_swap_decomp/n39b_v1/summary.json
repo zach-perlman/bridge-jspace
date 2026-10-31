@@ -1,0 +1,46 @@
+{
+  "items": 54,
+  "rows": 1620,
+  "windows": [
+    "24-40",
+    "16-24",
+    "16-36"
+  ],
+  "check": {
+    "bridge": {
+      "n": 324,
+      "same_flip": 324,
+      "same_swap_rank": 324,
+      "flip_rate_rerun": 0.35802469135802467,
+      "flip_rate_stored": 0.35802469135802467,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 324,
+      "same_flip": 324,
+      "same_swap_rank": 324,
+      "flip_rate_rerun": 0.030864197530864196,
+      "flip_rate_stored": 0.030864197530864196,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 324,
+      "same_flip": 324,
+      "same_swap_rank": 324,
+      "flip_rate_rerun": 0.24074074074074073,
+      "flip_rate_stored": 0.24074074074074073,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 324,
+      "same_flip": 324,
+      "same_swap_rank": 324,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "overlap_geometry_max_abs_diff": 0.0
+  },
+  "seconds": 184,
+  "reader": "python scripts/paper_swap_read6b.py results/paper_swap_decomp/n39_v1 results/paper_swap_decomp/n39b_v1"
+}

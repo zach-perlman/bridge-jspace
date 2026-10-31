@@ -1,0 +1,133 @@
+{
+  "run": "qwen35_9b_sd59_ko_dev_v1",
+  "stage": "ko",
+  "why": "prereg amendment 84 note 59, agent safety settings (2026-10-30, qwen3.5-9b, dev split): K, A, B and solo (dev split, person-birthcity-cntry)",
+  "written_utc": "2026-10-30T18:14:26Z",
+  "git_commit": "7919808e508efa788a64241062ba37fc6e145832",
+  "git_state": {
+    "head": "7919808e508efa788a64241062ba37fc6e145832",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "qwen35_9b_sd59_ko_dev_v1",
+    "why": "prereg amendment 84 note 59, agent safety settings (2026-10-30, qwen3.5-9b, dev split): K, A, B and solo (dev split, person-birthcity-cntry)",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "split": "dev",
+    "categories": [
+      "person-birthcity-cntry"
+    ],
+    "convs": [
+      "solo",
+      "instr_city",
+      "instr_city_seen",
+      "instr_city_lure",
+      "instr_vis",
+      "judge_ft",
+      "judge_tf",
+      "judge_ver",
+      "syc_wrong",
+      "syc_right",
+      "syc_doubt",
+      "tool_wrong"
+    ],
+    "edits": [
+      "12-16:paper10,paper10_rot,paper10_pcasize,unembed10,paper10_keepA,ansJ,ansJ_rot"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 32,
+    "gen": true,
+    "gen_tokens": 12,
+    "gen_batch": 64,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [],
+    "uids": null,
+    "log_prot": true
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 227,
+  "n_prompts": 2724,
+  "n_read": 2712,
+  "items_collide": 1,
+  "prompts_naming_bridge": {
+    "solo": 0,
+    "instr_city": 0,
+    "instr_city_seen": 0,
+    "instr_city_lure": 0,
+    "instr_vis": 0,
+    "judge_ft": 0,
+    "judge_tf": 0,
+    "judge_ver": 0,
+    "syc_wrong": 0,
+    "syc_right": 0,
+    "syc_doubt": 0,
+    "tool_wrong": 0
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L12-16",
+      [
+        "paper10",
+        "paper10_rot",
+        "paper10_pcasize",
+        "unembed10",
+        "paper10_keepA",
+        "ansJ",
+        "ansJ_rot"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 30
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 142
+  },
+  "row_tail": [
+    "np",
+    "prot"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "seconds": 430,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.698,
+      "all_steps": 0.8,
+      "median_margin": 2.88,
+      "guess": 0.16,
+      "top_wrong": [
+        [
+          "Germany",
+          16
+        ],
+        [
+          "A",
+          10
+        ],
+        [
+          "Belg",
+          10
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.728,
+      "all_steps": 0.529,
+      "median_margin": 1.5,
+      "guess": 0.002,
+      "top_wrong": [
+        [
+          "Japan",
+          7
+        ],
+        [
+          "Germany",
+          7
+        ],
+        [
+          "Tur",
+          7
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.431,
+      "MM": 0.787
+    },
+    "companies": {
+      "MP": 0.781,
+      "MM": 0.75
+    },
+    "films": {
+      "MP": 0.889,
+      "MM": 0.354
+    },
+    "landmarks": {
+      "MP": 0.629,
+      "MM": 0.819
+    },
+    "people": {
+      "MP": 0.782,
+      "MM": 0.837
+    }
+  },
+  "pick": {}
+}

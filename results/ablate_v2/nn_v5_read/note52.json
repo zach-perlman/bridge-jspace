@@ -1,0 +1,120 @@
+{
+ "prefix": "",
+ "role": "primary",
+ "run": "/workspace/bridge-jspace/results/ablate_v2/jsuite_v5kn2c_test_chat_ko52_cand2_v1",
+ "MC0": {
+  "rescue": {
+   "CapPerp": {
+    "n": 248,
+    "contrast_paper10": 24.2,
+    "contrast_keep": 21.8,
+    "rescue": 0.1,
+    "rescue_ci": [
+     -0.238,
+     0.383
+    ],
+    "rescue_net_rot": 0.1,
+    "rescue_net_rot_ci": [
+     -0.238,
+     0.383
+    ]
+   },
+   "CtyPerp": {
+    "n": 248,
+    "contrast_paper10": 24.2,
+    "contrast_keep": 22.6,
+    "rescue": 0.067,
+    "rescue_ci": [
+     -0.189,
+     0.304
+    ],
+    "rescue_net_rot": 0.067,
+    "rescue_net_rot_ci": [
+     -0.189,
+     0.304
+    ]
+   },
+   "Shared": {
+    "n": 248,
+    "contrast_paper10": 24.2,
+    "contrast_keep": 8.1,
+    "rescue": 0.667,
+    "rescue_ci": [
+     0.408,
+     0.848
+    ],
+    "rescue_net_rot": 0.667,
+    "rescue_net_rot_ci": [
+     0.408,
+     0.848
+    ]
+   }
+  },
+  "reading": "the shared part carries it"
+ },
+ "MC": {
+  "rescue": {
+   "CapPerp": {
+    "n": 236,
+    "contrast_paper10": 16.9,
+    "contrast_keep": 14.8,
+    "rescue": 0.125,
+    "rescue_ci": [
+     -0.5,
+     0.537
+    ],
+    "rescue_net_rot": 0.132,
+    "rescue_net_rot_ci": [
+     -0.542,
+     0.588
+    ]
+   },
+   "CtyPerp": {
+    "n": 236,
+    "contrast_paper10": 16.9,
+    "contrast_keep": 21.2,
+    "rescue": -0.25,
+    "rescue_ci": [
+     -1.7,
+     0.175
+    ],
+    "rescue_net_rot": -0.263,
+    "rescue_net_rot_ci": [
+     -1.867,
+     0.182
+    ]
+   },
+   "Shared": {
+    "n": 236,
+    "contrast_paper10": 16.9,
+    "contrast_keep": 7.6,
+    "rescue": 0.55,
+    "rescue_ci": [
+     -0.13,
+     0.875
+    ],
+    "rescue_net_rot": 0.579,
+    "rescue_net_rot_ci": [
+     -0.143,
+     0.933
+    ]
+   }
+  },
+  "reading": "unclear"
+ },
+ "note44_beside": {
+  "Cap": 0.967,
+  "Cty": 0.983,
+  "CapCty": 0.983,
+  "Rcap": 0.55
+ },
+ "energy_MC0_whole": {
+  "E_CapPerp": 0.1291,
+  "E_CtyPerp": 0.1279,
+  "E_Shared": 0.2668,
+  "rank_CapPerp": 172.0,
+  "rank_CtyPerp": 171.0,
+  "rank_Shared": 29.2222,
+  "n_cos_ge_0.9": 29.2222
+ }
+}

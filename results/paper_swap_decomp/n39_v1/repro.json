@@ -1,0 +1,63 @@
+{
+  "exp02_run": "results/exp02_swaps/main_v4_jpp",
+  "exp02_cell_all": "49% [38, 60] (n 77), null 0%",
+  "real": {
+    "n_shared": 72,
+    "greedy_flip_ours": [
+      0.5138888888888888,
+      0.40069555910198956,
+      0.625675192569916
+    ],
+    "greedy_flip_exp02": [
+      0.5138888888888888,
+      0.40069555910198956,
+      0.625675192569916
+    ],
+    "agree": 72,
+    "ours_only": 0,
+    "exp02_only": 0,
+    "first_token_flip_ours": 0.4444444444444444,
+    "first_token_flip_exp02": 0.4444444444444444,
+    "batched_first_token": {
+      "n": 72,
+      "ours": 0.4583333333333333,
+      "exp02": 0.4444444444444444,
+      "agree": 71
+    }
+  },
+  "null": {
+    "n_shared": 72,
+    "greedy_flip_ours": [
+      0.0,
+      0.0,
+      0.05065293981139638
+    ],
+    "greedy_flip_exp02": [
+      0.0,
+      0.0,
+      0.05065293981139638
+    ],
+    "agree": 72,
+    "ours_only": 0,
+    "exp02_only": 0,
+    "first_token_flip_ours": 0.0,
+    "first_token_flip_exp02": 0.0,
+    "batched_first_token": {
+      "n": 72,
+      "ours": 0.0,
+      "exp02": 0.0,
+      "agree": 72
+    }
+  },
+  "reproduced": true,
+  "rule": "reproduced if our greedy flip rate on the shared items lies inside exp02's Wilson 95% interval on them",
+  "n_eligible_ours": 72,
+  "only_ours": [],
+  "only_exp02": [
+    "ex-city-currency-Toronto-Mumbai",
+    "gem-source-pearl",
+    "organ-location-brain",
+    "person-century-lincoln",
+    "tree-product-oak"
+  ]
+}

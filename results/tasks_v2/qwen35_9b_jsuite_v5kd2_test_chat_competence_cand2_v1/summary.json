@@ -1,0 +1,66 @@
+{
+  "seconds": 494,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.314,
+      "all_steps": 0.407,
+      "median_margin": -0.5,
+      "guess": 0.169,
+      "top_wrong": [
+        [
+          "Blue",
+          75
+        ],
+        [
+          "Green",
+          52
+        ],
+        [
+          "Pink",
+          37
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.674,
+      "all_steps": 0.545,
+      "median_margin": 1.12,
+      "guess": 0.161,
+      "top_wrong": [
+        [
+          "Spain",
+          14
+        ],
+        [
+          "United",
+          14
+        ],
+        [
+          "N",
+          12
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.374,
+      "MM": 0.687
+    },
+    "companies": {
+      "MP": 0.295,
+      "MM": 0.644
+    },
+    "landmarks": {
+      "MP": 0.31,
+      "MM": 0.53
+    },
+    "people": {
+      "MP": 0.271,
+      "MM": 0.761
+    }
+  },
+  "pick": {}
+}

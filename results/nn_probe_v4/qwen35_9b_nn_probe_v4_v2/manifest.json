@@ -1,0 +1,36 @@
+{
+  "run": "qwen35_9b_nn_probe_v4_v2",
+  "why": "Zach (2026-10-29, prereg amendment 58 note 23 addendum 2, qwen3.5-9b): more training data",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "jsuite_v4_test_chat",
+  "competence": "qwen35_9b_jsuite_v4_test_chat_competence_cand2_v1",
+  "cv_h1": "qwen35_9b_jsuite_v4_cv_v1",
+  "readout": "qwen35_9b_nn_readout_v4_v1",
+  "every": 2,
+  "steps": 300,
+  "seed": 0,
+  "limit": 0,
+  "extra_sets": [
+    "jsuite_v4p4002_test_chat",
+    "jsuite_v4p4003_test_chat",
+    "jsuite_v4p4004_test_chat",
+    "jsuite_v4p4005_test_chat",
+    "jsuite_v4p4006_test_chat"
+  ],
+  "git_commit": "aea65949cfa4fbf03809e6d5dd7f076c2833843c",
+  "git_state": {
+    "head": "aea65949cfa4fbf03809e6d5dd7f076c2833843c",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  }
+}

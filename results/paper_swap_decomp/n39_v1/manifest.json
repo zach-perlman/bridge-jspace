@@ -1,0 +1,97 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "n39_v1",
+  "why": "Zach (2026-10-30, prereg amendment 65 note 39, qwen3.6-27b): note 39, the paper's prompts decomposed",
+  "note": "prereg amendment 65, note 39",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "jlens": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ]
+  },
+  "items": {
+    "file": "data/probe_swap.json",
+    "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796",
+    "n_run": 90,
+    "full": true
+  },
+  "vocabulary": {
+    "file": "data/paper_answer_types.json",
+    "sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0"
+  },
+  "windows": [
+    "16-20",
+    "16-24",
+    "16-28",
+    "16-32",
+    "16-36",
+    "16-40",
+    "16-44",
+    "16-48",
+    "16-52",
+    "16-56",
+    "16-60"
+  ],
+  "main_band": "24-40",
+  "main_band_rule": "note 20's band 32-40 extended earlier by 1/8 of the depth (as exp02's 27B L24-40 extends L32-40)",
+  "arms": [
+    "bridge",
+    "answer",
+    "bridge_noA",
+    "bridge_noA_nm",
+    "bridge_onlyA",
+    "bridge_offA",
+    "bridge_randA",
+    "bridge_ownA"
+  ],
+  "null_arms": [
+    "bridge",
+    "answer",
+    "bridge_onlyA"
+  ],
+  "greedy_arms": [
+    "bridge",
+    "answer",
+    "bridge_noA",
+    "bridge_onlyA"
+  ],
+  "own_pair_arms": [
+    "bridge",
+    "answer",
+    "bridge_ownA"
+  ],
+  "seeds": {
+    "null": "NULL_SEED 0 + 1000 * item index + arm index (exp02 raw_jlens = bridge 0, exp14 answer 1)",
+    "rand_atoms": "random.Random('n39rand:<target>:<item>')",
+    "off": "frozen in the vocabulary file"
+  },
+  "prompt_end": "auto",
+  "chat_fallback_below": 50,
+  "repro_gate": true,
+  "positions": "every position from 1 (exp02's 'all')",
+  "flip": "swap answer's single-token surfaces at word rank 1 of the next-token logits (strict, formatting excluded)",
+  "command": "scripts/paper_swap_decomp.py --name n39_v1 --why Zach (2026-10-30, prereg amendment 65 note 39, qwen3.6-27b): note 39, the paper's prompts decomposed --repro-gate",
+  "git_state": {
+    "head": "69fdb42c382ed2f373c7bf567081270051e12ddc",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T07:18:47Z"
+}

@@ -1,0 +1,45 @@
+{
+  "run": "qwen35_9b_jsuite_v3r1_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 6): qwen3.5-9b jsuite_v3r1_test_chat competence (K and M words, eligibility)",
+  "set": "jsuite_v3r1_test_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "a25b75eb478831e4ee541794d2fd642c398ad451",
+  "git_state": {
+    "head": "a25b75eb478831e4ee541794d2fd642c398ad451",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PK",
+    "PM",
+    "MK",
+    "MM",
+    "WK",
+    "WM",
+    "TK",
+    "TM",
+    "XK",
+    "XM",
+    "QK",
+    "QM",
+    "JK",
+    "JM",
+    "YK",
+    "YM",
+    "RM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T00:30:42Z"
+}

@@ -1,0 +1,44 @@
+{
+  "items": 51,
+  "rows": 510,
+  "windows": [
+    "8-16",
+    "6-8"
+  ],
+  "check": {
+    "bridge": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.3333333333333333,
+      "flip_rate_stored": 0.3333333333333333,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.19607843137254902,
+      "flip_rate_stored": 0.19607843137254902,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "seconds": 81,
+  "reader": "python scripts/paper_swap_read5r.py results/paper_swap_decomp/qwen35_9b_n39_v1 results/paper_swap_decomp/qwen35_9b_n39r_v1"
+}

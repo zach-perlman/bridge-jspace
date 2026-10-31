@@ -1,0 +1,297 @@
+{
+  "seconds": 364,
+  "fit_seconds": 0,
+  "band_seconds": {
+    "L6-10": 91,
+    "L12-16": 89
+  },
+  "peak_gb": 27.56,
+  "fit_log": {
+    "6": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.266,
+      "clean_share_in_class_forms": 0.2388,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3329,
+      "energy_in_class": 0.6671,
+      "mean_norm": 27.19,
+      "mean_norm_centred": 13.06
+    },
+    "7": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2757,
+      "clean_share_in_class_forms": 0.247,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3221,
+      "energy_in_class": 0.6779,
+      "mean_norm": 26.88,
+      "mean_norm_centred": 13.65
+    },
+    "8": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2547,
+      "clean_share_in_class_forms": 0.2299,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.3086,
+      "energy_in_class": 0.6914,
+      "mean_norm": 28.97,
+      "mean_norm_centred": 14.08
+    },
+    "9": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.297,
+      "clean_share_in_class_forms": 0.2599,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2978,
+      "energy_in_class": 0.7022,
+      "mean_norm": 32.07,
+      "mean_norm_centred": 14.95
+    },
+    "10": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2704,
+      "clean_share_in_class_forms": 0.2399,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.289,
+      "energy_in_class": 0.711,
+      "mean_norm": 37.04,
+      "mean_norm_centred": 15.69
+    },
+    "12": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.273,
+      "clean_share_in_class_forms": 0.2382,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2723,
+      "energy_in_class": 0.7277,
+      "mean_norm": 37.59,
+      "mean_norm_centred": 15.79
+    },
+    "13": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.2627,
+      "clean_share_in_class_forms": 0.2294,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2667,
+      "energy_in_class": 0.7333,
+      "mean_norm": 38.53,
+      "mean_norm_centred": 15.85
+    },
+    "14": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3022,
+      "clean_share_in_class_forms": 0.2676,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2607,
+      "energy_in_class": 0.7393,
+      "mean_norm": 41.71,
+      "mean_norm_centred": 16.22
+    },
+    "15": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3147,
+      "clean_share_in_class_forms": 0.2788,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2572,
+      "energy_in_class": 0.7428,
+      "mean_norm": 41.45,
+      "mean_norm_centred": 16.44
+    },
+    "16": {
+      "rank_raw": 128,
+      "rank_class": 66,
+      "rank_clean": 62,
+      "raw_share_in_class_forms": 0.3385,
+      "clean_share_in_class_forms": 0.3033,
+      "n_class_form_rows": 276,
+      "energy_in_clean": 0.2523,
+      "energy_in_class": 0.7477,
+      "mean_norm": 41.34,
+      "mean_norm_centred": 17.29
+    }
+  },
+  "cells": {
+    "ctx2hop": {
+      "-/none": {
+        "n": 347,
+        "K": 0.9769
+      },
+      "L12-16/bridgeJperp": {
+        "n": 347,
+        "K": 0.9769
+      },
+      "L12-16/cityClean": {
+        "n": 347,
+        "K": 0.9337
+      },
+      "L12-16/cityClean_RE": {
+        "n": 347,
+        "K": 0.879
+      },
+      "L12-16/cityClean_RJ": {
+        "n": 347,
+        "K": 0.0548
+      },
+      "L12-16/cityRaw": {
+        "n": 347,
+        "K": 0.902
+      },
+      "L12-16/cityRaw_RE": {
+        "n": 347,
+        "K": 0.3429
+      },
+      "L6-10/bridgeJperp": {
+        "n": 347,
+        "K": 0.9769
+      },
+      "L6-10/cityClean": {
+        "n": 347,
+        "K": 0.9597
+      },
+      "L6-10/cityClean_RE": {
+        "n": 347,
+        "K": 0.8963
+      },
+      "L6-10/cityClean_RJ": {
+        "n": 347,
+        "K": 0.0317
+      },
+      "L6-10/cityRaw": {
+        "n": 347,
+        "K": 0.0144
+      },
+      "L6-10/cityRaw_RE": {
+        "n": 347,
+        "K": 0.0634
+      }
+    },
+    "onehop": {
+      "-/none": {
+        "n": 347,
+        "K": 1.0
+      },
+      "L12-16/bridgeJperp": {
+        "n": 347,
+        "K": 0.9971
+      },
+      "L12-16/cityClean": {
+        "n": 347,
+        "K": 1.0
+      },
+      "L12-16/cityClean_RE": {
+        "n": 347,
+        "K": 0.9942
+      },
+      "L12-16/cityClean_RJ": {
+        "n": 347,
+        "K": 0.1066
+      },
+      "L12-16/cityRaw": {
+        "n": 347,
+        "K": 0.1297
+      },
+      "L12-16/cityRaw_RE": {
+        "n": 347,
+        "K": 0.4496
+      },
+      "L6-10/bridgeJperp": {
+        "n": 347,
+        "K": 1.0
+      },
+      "L6-10/cityClean": {
+        "n": 347,
+        "K": 0.9971
+      },
+      "L6-10/cityClean_RE": {
+        "n": 347,
+        "K": 0.9856
+      },
+      "L6-10/cityClean_RJ": {
+        "n": 347,
+        "K": 0.0259
+      },
+      "L6-10/cityRaw": {
+        "n": 347,
+        "K": 0.0259
+      },
+      "L6-10/cityRaw_RE": {
+        "n": 347,
+        "K": 0.0173
+      }
+    },
+    "solo": {
+      "-/none": {
+        "n": 347,
+        "K": 1.0
+      },
+      "L12-16/bridgeJperp": {
+        "n": 347,
+        "K": 0.9971
+      },
+      "L12-16/cityClean": {
+        "n": 347,
+        "K": 0.9452
+      },
+      "L12-16/cityClean_RE": {
+        "n": 347,
+        "K": 0.9712
+      },
+      "L12-16/cityClean_RJ": {
+        "n": 347,
+        "K": 0.4841
+      },
+      "L12-16/cityRaw": {
+        "n": 347,
+        "K": 0.3285
+      },
+      "L12-16/cityRaw_RE": {
+        "n": 347,
+        "K": 0.2334
+      },
+      "L6-10/bridgeJperp": {
+        "n": 347,
+        "K": 0.9942
+      },
+      "L6-10/cityClean": {
+        "n": 347,
+        "K": 0.9164
+      },
+      "L6-10/cityClean_RE": {
+        "n": 347,
+        "K": 0.9337
+      },
+      "L6-10/cityClean_RJ": {
+        "n": 347,
+        "K": 0.0144
+      },
+      "L6-10/cityRaw": {
+        "n": 347,
+        "K": 0.0029
+      },
+      "L6-10/cityRaw_RE": {
+        "n": 347,
+        "K": 0.0173
+      }
+    }
+  },
+  "command": "scripts/nn_sd67_datactl.py ko --name qwen35_9b_sd67_ko_test_v1 --why prereg amendment 88 note 67, data-defined positive control (2026-10-30, qwen3.5-9b): O, P and I (test split, person-birthcity-cntry; edits from the question's first token) --items-run qwen35_9b_sd_known_v1 --fit /workspace/scratch/n67/qwen35_9b_fit.pt --split test --edits 6-10:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp 12-16:cityRaw,cityRaw_RE,cityClean,cityClean_RE,cityClean_RJ,bridgeJperp --batch 16 --gen --gen-batch 64",
+  "git_commit": "00772ed7674dd0927202fa33fc6c192d456669de"
+}

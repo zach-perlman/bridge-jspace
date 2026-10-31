@@ -1,0 +1,70 @@
+{
+  "seconds": 1102,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.937,
+      "all_steps": 0.81,
+      "median_margin": 5.22,
+      "guess": 0.164,
+      "top_wrong": [
+        [
+          "G",
+          5
+        ],
+        [
+          "Australia",
+          5
+        ],
+        [
+          "Hung",
+          4
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.819,
+      "all_steps": 0.622,
+      "median_margin": 4.0,
+      "guess": 0.021,
+      "top_wrong": [
+        [
+          "S",
+          7
+        ],
+        [
+          "Christopher",
+          7
+        ],
+        [
+          "Cl",
+          7
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.822,
+      "MM": 0.901
+    },
+    "companies": {
+      "MP": 0.981,
+      "MM": 0.969
+    },
+    "films": {
+      "MP": 0.972,
+      "MM": 0.278
+    },
+    "landmarks": {
+      "MP": 0.931,
+      "MM": 0.94
+    },
+    "people": {
+      "MP": 0.984,
+      "MM": 0.913
+    }
+  },
+  "pick": {}
+}

@@ -1,0 +1,301 @@
+{
+ "prefix": "",
+ "run": "nn_readout_v4prime_v1",
+ "windows": {
+  "desc_end": [
+   16,
+   40
+  ],
+  "final": [
+   49,
+   62
+  ]
+ },
+ "n_paired": 270,
+ "n_MP_ok": 415,
+ "n_MM_ok": 354,
+ "cells": {
+  "paired/desc_end/jlens": {
+   "MP/attr": 2.0,
+   "MP/other": 47.9,
+   "MP/third": 1.8,
+   "MP/ctx": 2.4,
+   "MP/bridge": 35.4,
+   "MM/attr": 49.9,
+   "MM/other": 2.0,
+   "MM/third": 2.6,
+   "MM/ctx": 1.9,
+   "MM/bridge": 34.8,
+   "MM_attr_minus_third": 47.236,
+   "MP_other_minus_third": 46.097,
+   "MP_said_minus_other": -45.869,
+   "rho": 0.976,
+   "ci": {
+    "MM_attr_minus_third": [
+     40.663,
+     54.148
+    ],
+    "MP_other_minus_third": [
+     39.744,
+     52.727
+    ],
+    "MP_said_minus_other": [
+     -52.723,
+     -39.491
+    ],
+    "rho": [
+     0.933,
+     1.025
+    ]
+   }
+  },
+  "paired/desc_end/logit": {
+   "MP/attr": 2.6,
+   "MP/other": 11.6,
+   "MP/third": 2.7,
+   "MP/ctx": 3.9,
+   "MP/bridge": 5.6,
+   "MM/attr": 12.2,
+   "MM/other": 2.3,
+   "MM/third": 2.8,
+   "MM/ctx": 3.0,
+   "MM/bridge": 6.8,
+   "MM_attr_minus_third": 9.402,
+   "MP_other_minus_third": 8.832,
+   "MP_said_minus_other": -8.946,
+   "rho": 0.939,
+   "ci": {
+    "MM_attr_minus_third": [
+     5.735,
+     13.187
+    ],
+    "MP_other_minus_third": [
+     4.911,
+     13.0
+    ],
+    "MP_said_minus_other": [
+     -12.764,
+     -5.219
+    ],
+    "rho": [
+     0.717,
+     1.153
+    ]
+   }
+  },
+  "paired/final/jlens": {
+   "MP/attr": 67.2,
+   "MP/other": 3.4,
+   "MP/third": 1.2,
+   "MP/ctx": 1.7,
+   "MP/bridge": 7.4,
+   "MM/attr": 81.9,
+   "MM/other": 2.3,
+   "MM/third": 0.6,
+   "MM/ctx": 0.5,
+   "MM/bridge": 46.8,
+   "MM_attr_minus_third": 81.27,
+   "MP_other_minus_third": 2.222,
+   "MP_said_minus_other": 63.81,
+   "rho": 0.027,
+   "ci": {
+    "MM_attr_minus_third": [
+     76.686,
+     85.547
+    ],
+    "MP_other_minus_third": [
+     0.627,
+     3.948
+    ],
+    "MP_said_minus_other": [
+     60.623,
+     66.827
+    ],
+    "rho": [
+     0.008,
+     0.048
+    ]
+   }
+  },
+  "paired/final/logit": {
+   "MP/attr": 66.9,
+   "MP/other": 2.6,
+   "MP/third": 0.9,
+   "MP/ctx": 2.4,
+   "MP/bridge": 6.1,
+   "MM/attr": 62.0,
+   "MM/other": 4.4,
+   "MM/third": 0.5,
+   "MM/ctx": 1.3,
+   "MM/bridge": 31.3,
+   "MM_attr_minus_third": 61.534,
+   "MP_other_minus_third": 1.693,
+   "MP_said_minus_other": 64.339,
+   "rho": 0.028,
+   "ci": {
+    "MM_attr_minus_third": [
+     58.437,
+     64.636
+    ],
+    "MP_other_minus_third": [
+     0.541,
+     2.941
+    ],
+    "MP_said_minus_other": [
+     61.254,
+     67.303
+    ],
+    "rho": [
+     0.009,
+     0.047
+    ]
+   }
+  },
+  "all_ok/desc_end/jlens": {
+   "MP/attr": 2.2,
+   "MP/other": 48.1,
+   "MP/third": 1.6,
+   "MP/ctx": 2.1,
+   "MP/bridge": 31.6,
+   "MM/attr": 50.1,
+   "MM/other": 1.9,
+   "MM/third": 2.5,
+   "MM/ctx": 1.7,
+   "MM/bridge": 35.8,
+   "MM_attr_minus_third": 47.545,
+   "MP_other_minus_third": 46.469,
+   "MP_said_minus_other": -45.839,
+   "rho": 0.977,
+   "ci": {
+    "MM_attr_minus_third": [
+     41.714,
+     53.32
+    ],
+    "MP_other_minus_third": [
+     40.726,
+     52.141
+    ],
+    "MP_said_minus_other": [
+     -51.695,
+     -39.989
+    ],
+    "rho": [
+     0.902,
+     1.062
+    ]
+   }
+  },
+  "all_ok/desc_end/logit": {
+   "MP/attr": 2.6,
+   "MP/other": 12.2,
+   "MP/third": 2.5,
+   "MP/ctx": 4.2,
+   "MP/bridge": 6.1,
+   "MM/attr": 11.6,
+   "MM/other": 2.6,
+   "MM/third": 2.9,
+   "MM/ctx": 3.0,
+   "MM/bridge": 7.1,
+   "MM_attr_minus_third": 8.714,
+   "MP_other_minus_third": 9.676,
+   "MP_said_minus_other": -9.657,
+   "rho": 1.11,
+   "ci": {
+    "MM_attr_minus_third": [
+     5.423,
+     12.151
+    ],
+    "MP_other_minus_third": [
+     6.404,
+     13.038
+    ],
+    "MP_said_minus_other": [
+     -12.957,
+     -6.413
+    ],
+    "rho": [
+     0.853,
+     1.505
+    ]
+   }
+  },
+  "all_ok/final/jlens": {
+   "MP/attr": 68.7,
+   "MP/other": 3.6,
+   "MP/third": 1.0,
+   "MP/ctx": 1.7,
+   "MP/bridge": 7.3,
+   "MM/attr": 80.8,
+   "MM/other": 2.3,
+   "MM/third": 0.6,
+   "MM/ctx": 0.6,
+   "MM/bridge": 49.6,
+   "MM_attr_minus_third": 80.226,
+   "MP_other_minus_third": 2.582,
+   "MP_said_minus_other": 65.06,
+   "rho": 0.032,
+   "ci": {
+    "MM_attr_minus_third": [
+     76.163,
+     84.15
+    ],
+    "MP_other_minus_third": [
+     1.203,
+     3.924
+    ],
+    "MP_said_minus_other": [
+     62.612,
+     67.582
+    ],
+    "rho": [
+     0.015,
+     0.048
+    ]
+   }
+  },
+  "all_ok/final/logit": {
+   "MP/attr": 67.4,
+   "MP/other": 2.7,
+   "MP/third": 0.9,
+   "MP/ctx": 2.3,
+   "MP/bridge": 5.9,
+   "MM/attr": 61.7,
+   "MM/other": 4.1,
+   "MM/third": 0.8,
+   "MM/ctx": 1.7,
+   "MM/bridge": 34.1,
+   "MM_attr_minus_third": 60.856,
+   "MP_other_minus_third": 1.79,
+   "MP_said_minus_other": 64.716,
+   "rho": 0.029,
+   "ci": {
+    "MM_attr_minus_third": [
+     57.883,
+     63.807
+    ],
+    "MP_other_minus_third": [
+     0.691,
+     2.94
+    ],
+    "MP_said_minus_other": [
+     62.452,
+     67.03
+    ],
+    "rho": [
+     0.011,
+     0.048
+    ]
+   }
+  }
+ },
+ "reading": {
+  "bridge": "the person's attribute, whatever will be said",
+  "rho": 0.976,
+  "rho_ci": [
+   0.933,
+   1.025
+  ],
+  "end_shows_what_will_be_said": true,
+  "end_said_minus_other": 63.81
+ }
+}

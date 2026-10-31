@@ -1,0 +1,87 @@
+{
+  "seconds": 93,
+  "target": "qwen3.6-27b",
+  "n_items": 809,
+  "by": {
+    "all/landmark-cntry-capital": {
+      "n": 45,
+      "guess_right": 2,
+      "shortcut": 24,
+      "name_drop": 0,
+      "gated": 43,
+      "no_shortcut": 21,
+      "name_drop_canonical": 0,
+      "gated_canonical": 43
+    },
+    "all/person-birthcity-cntry": {
+      "n": 691,
+      "guess_right": 90,
+      "shortcut": 655,
+      "name_drop": 325,
+      "gated": 351,
+      "no_shortcut": 34,
+      "name_drop_canonical": 3,
+      "gated_canonical": 598
+    },
+    "all/person-uguniv-hqcity": {
+      "n": 73,
+      "guess_right": 17,
+      "shortcut": 31,
+      "name_drop": 41,
+      "gated": 18,
+      "no_shortcut": 10,
+      "name_drop_canonical": 34,
+      "gated_canonical": 24
+    },
+    "all/ALL": {
+      "n": 809,
+      "guess_right": 109,
+      "shortcut": 710,
+      "name_drop": 366,
+      "gated": 412,
+      "no_shortcut": 65,
+      "name_drop_canonical": 37,
+      "gated_canonical": 665
+    },
+    "test_round0_right/landmark-cntry-capital": {
+      "n": 27,
+      "guess_right": 2,
+      "shortcut": 16,
+      "name_drop": 0,
+      "gated": 25,
+      "no_shortcut": 11,
+      "name_drop_canonical": 0,
+      "gated_canonical": 25
+    },
+    "test_round0_right/person-birthcity-cntry": {
+      "n": 418,
+      "guess_right": 89,
+      "shortcut": 407,
+      "name_drop": 181,
+      "gated": 222,
+      "no_shortcut": 10,
+      "name_drop_canonical": 2,
+      "gated_canonical": 327
+    },
+    "test_round0_right/person-uguniv-hqcity": {
+      "n": 33,
+      "guess_right": 1,
+      "shortcut": 14,
+      "name_drop": 21,
+      "gated": 12,
+      "no_shortcut": 7,
+      "name_drop_canonical": 19,
+      "gated_canonical": 14
+    },
+    "test_round0_right/ALL": {
+      "n": 478,
+      "guess_right": 92,
+      "shortcut": 437,
+      "name_drop": 202,
+      "gated": 259,
+      "no_shortcut": 28,
+      "name_drop_canonical": 21,
+      "gated_canonical": 366
+    }
+  }
+}

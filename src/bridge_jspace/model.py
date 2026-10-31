@@ -203,6 +203,7 @@ class Model:
                 pad_token_id=self.tokenizer.eos_token_id,
                 output_logits=True,
                 return_dict_in_generate=True,
+                **_gen_cache_kw(),
             )
         new = out.sequences[0, prompt_len:]
         return out.logits[0][0].float(), self.tokenizer.decode(new, skip_special_tokens=True), int(new.shape[0])
@@ -250,6 +251,7 @@ class Model:
                 pad_token_id=self.tokenizer.eos_token_id,
                 output_logits=first_logits or steps,
                 return_dict_in_generate=True,
+                **_gen_cache_kw(),
             )
         texts = [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
         if steps:
@@ -385,6 +387,12 @@ def load_model(bj_device_map: str | None = None) -> Model:
     mask = torch.zeros(vocab, dtype=torch.bool, device="cuda")
     mask[formatting] = True
     return Model(hf, tokenizer, decoded, special, mask)
+
+
+def _gen_cache_kw() -> dict[str, Any]:
+    """2026-10-29: a model built by its own code (pins remote_lm, Bolt) wants its hybrid Mamba cache, and generate() hands
+    it transformers' DynamicCache; it generates without a cache (as natural_v1's hop 1 does). Other models: unchanged."""
+    return {"use_cache": False} if pins.TARGETS[pins.TARGET].get("remote_lm") else {}
 
 
 def _remote_lm(path: str, spec: dict[str, Any]):

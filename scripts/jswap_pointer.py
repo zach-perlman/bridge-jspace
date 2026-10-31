@@ -78,16 +78,18 @@ def main(a) -> None:
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(JS.ALL_WORDS_V2), 1000, ["clean"], "all")
-               if p["family"] in JS.WORDS_V2 and items[p["id"]].get("module") == "facts"]  # fmt: skip
+    v3 = a.set.startswith("jsuite_v3")  # amendment 58 note 5
+    WORDS = JS.WORDS_V3 if v3 else JS.WORDS_V2
+    base = JS.v3_prompts(tok, a.set, a.competence, WORDS) if v3 else tasks_prompts(tok, a.set, a.competence, list(JS.ALL_WORDS_V2), 1000, ["clean"], "all")
+    prompts = [p for p in base if p["family"] in WORDS and items[p["id"]].get("module") == "facts"]  # fmt: skip
     jobs = []
     for p in prompts:  # jswap's jobs exactly (the same rng draws)
         it = items[p["id"]]
         x, kind = it["bridge"], it["kind"]
-        t = TB.REL2[it["relation"]]
+        t = JS.table(it)
         vocab = it["answer_vocab"]
         if it["final"] == "P":
-            ans = {e: JS.pfact_value(t["pfact"][it["wording"]], it["context"], e, vocab) for e in it["entities"]}
+            ans = {e: JS.pfact_value(t["pfact"][it["wording"]], it["context"], e, vocab, the=v3) for e in it["entities"]}
         else:
             ans = {e: t["facts"][e][0] for e in it["entities"]}
         if ans.get(x) is None:
@@ -111,9 +113,9 @@ def main(a) -> None:
     if a.sample_per_word:
         pick = {f: set(range(len(v))) if len(v) <= a.sample_per_word else set(random.Random(f"0:{f}").sample(range(len(v)), a.sample_per_word))
                 for f, v in per.items()}  # fmt: skip
-        jobs = [j for f in JS.WORDS_V2 for k, j in enumerate(per[f]) if k in pick[f]]
+        jobs = [j for f in WORDS for k, j in enumerate(per[f]) if k in pick[f]]
     if a.limit:
-        jobs = [j for f in JS.WORDS_V2 for j in per[f][: a.limit]]
+        jobs = [j for f in WORDS for j in per[f][: a.limit]]
 
     # 1. the neutral donor prompts, one per donor entity (and read kind / format, as the chat render needs)
     neutral = {}

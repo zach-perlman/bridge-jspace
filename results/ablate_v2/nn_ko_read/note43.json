@@ -1,0 +1,44 @@
+{
+ "prefix": "",
+ "readings": {
+  "note37": {
+   "4001": "the recall's J-need is its answer's directions",
+   "4002": "the recall's J-need is its answer's directions",
+   "replicates": true
+  },
+  "note41_keep": {
+   "4001": "partly",
+   "4002": "partly",
+   "replicates": true
+  },
+  "note41_removal": {
+   "4001": "answer-specific removal",
+   "4002": "answer-specific removal",
+   "replicates": true
+  }
+ },
+ "headline_gap": {
+  "4001": {
+   "gap": 57.5,
+   "gap_ci": [
+    50.3,
+    65.4
+   ],
+   "loss_MM": 76.9,
+   "loss_MP": 19.5,
+   "n_MM": 338,
+   "n_MP": 473
+  },
+  "4002": {
+   "gap": 57.8,
+   "gap_ci": [
+    51.1,
+    64.5
+   ],
+   "loss_MM": 77.9,
+   "loss_MP": 20.0,
+   "n_MM": 330,
+   "n_MP": 469
+  }
+ }
+}
