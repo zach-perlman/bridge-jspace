@@ -274,7 +274,8 @@ def f_atoms():
 
 
 # ---- F6: the address, four columns (read / remove / swap / lens) ---------------------------------------------------
-def f_address():
+def f_address(part: str = ""):
+    """part: '' the four-column figure; 'read_removed' (probe, removal) or 'swap_lens' (swap, lens): the deck's two halves, wide, 2400 px."""
     rows = [Row(NAME[m]) for m, _ in DAN]
     short = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "qwen3.5-122b-a10b": "122b"}
 
@@ -300,7 +301,7 @@ def f_address():
         for i, (m, _) in enumerate(DAN):
             a, r = removal_cells(m)
             connector(ax, a[0], r[0], i)
-            dot(ax, r[0], i, C["control"], size=8)
+            dot(ax, r[0], i, C["control"], size=8, value=r[0] if part else None)  # the deck's half prints the random part's value too
             dot(ax, a[0], i, C["address"], D.hollow(m, True), value=a[0], vside="left")
         head_label(ax, 0.0, "address removed", C["address"], ha="left")
 
@@ -328,18 +329,33 @@ def f_address():
         head_label(ax, 0, "swap", C["address"], ha="left")
         head_label(ax, 31, "item change", C["identity"], ha="right")
 
-    t = Table(rows, [
-        Col(2.35, "probe accuracy", "at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy",
-            cue="→ address more readable"),
-        Col(2.35, "position answers", "lookups following the position", remove, (-0.2, 0.62), [0, 0.25, 0.5],
-            xlabel="share of lookups", cue="← address needed"),
-        Col(2.35, "lookups sent", "to the new locker", swap, (-0.03, 0.66), [0, 0.25, 0.5],
-            xlabel="share of lookups", cue="→ swap works"),
-        Col(2.35, "lens rebuild", "z from 200 random vectors", lens, (-2.5, 34), [0, 10, 20],
-            xlabel="z (distance from random)", cue="→ lens sees it"),
-    ], label_w=1.45, pad=0.22, key=[("●", C["control"], "a random part taken out (column 2), a random vector written in (column 3)"),
-                                                  ("■", BAND, "range of the random vectors (column 4)")])  # fmt: skip
-    render(t, "f6_address")
+    cols = {
+        "probe": Col(2.35, "probe accuracy", "at the bridge word", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy", cue="→ address more readable"),
+        "remove": Col(2.35, "position answers", "lookups following the position", remove, (-0.2, 0.62), [0, 0.25, 0.5],
+                      xlabel="share of lookups", cue="← address needed"),
+        "swap": Col(2.35, "lookups sent", "to the new locker", swap, (-0.03, 0.66), [0, 0.25, 0.5], xlabel="share of lookups", cue="→ swap works"),
+        "lens": Col(2.35, "lens rebuild", "z from 200 random vectors", lens, (-2.5, 34), [0, 10, 20], xlabel="z (distance from random)", cue="→ lens sees it"),
+    }
+    keys = {
+        "": [("●", C["control"], "a random part taken out (column 2), a random vector written in (column 3)"), ("■", BAND, "range of the random vectors (column 4)")],
+        "read_removed": [("●", C["control"], "a random part taken out (right panel)")],
+        "swap_lens": [("●", C["control"], "a random vector written in (left panel)"), ("■", BAND, "range of 200 random vectors (right panel)")],
+    }
+    names = {"": "f6_address", "read_removed": "f6a_address_read_removed", "swap_lens": "f6b_address_swap_lens"}
+    use = {"": list(cols), "read_removed": ["probe", "remove"], "swap_lens": ["swap", "lens"]}[part]
+    if part:  # the deck's halves: wide panels, taller rows (2400 x about 1000 px)
+        for k in use:
+            cols[k].width = 4.95
+    from bridge_jspace.figkit import dottable as T
+
+    old = T.ROW_H
+    T.ROW_H = 0.55 if part else old
+    try:
+        t = Table(rows, [cols[k] for k in use], label_w=1.45, pad=0.22, key=keys[part])
+        render(t, names[part])
+    finally:
+        T.ROW_H = old
+
 
 
 # ---- F8: where it breaks, two figures (review v3: two different findings) -------------------------------------------
