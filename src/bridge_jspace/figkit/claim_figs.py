@@ -4,6 +4,11 @@ files); no caption inside the figure (the deck and the README carry it)."""
 
 from __future__ import annotations
 
+import csv
+import json
+from functools import cache
+from pathlib import Path
+
 from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
@@ -242,3 +247,176 @@ def f_order_2x2() -> None:
             key=[("●", C["lookup_dark"], "the changed prompt's locker sentence came before the pick"), ("●", C["lookup_light"], "after the pick")],
         )
         _render(t, "f10b_order_2x2")
+
+
+# ---- f18 / f19 (31 Oct): code and tool output; six lockers ------------------------------------------------------------------
+REPO = Path(__file__).resolve().parents[3]
+_PRINTED: set = set()
+
+
+@cache
+def _csv_rows() -> dict:
+    with (REPO / "data/figures/depth/data.csv").open(newline="") as f:
+        return {(r["figure"], r["model"], r["quantity"]): r for r in csv.DictReader(f)}
+
+
+def _num(x: str):
+    try:
+        return float(x)
+    except ValueError:
+        return None
+
+
+def row_value(figure: str, model: str, quantity: str):
+    """(value, lo, hi) from data.csv; every row read is printed once with its source, so the plotted numbers can be checked."""
+    r = _csv_rows()[(figure, model, quantity)]
+    v, lo, hi = _num(r["value"]), _num(r["lo"]), _num(r["hi"])
+    if (figure, model, quantity) not in _PRINTED:
+        _PRINTED.add((figure, model, quantity))
+        print(f"{figure} | {model} | {quantity} = {r['value']}" + (f" [{r['lo']}, {r['hi']}]" if r["lo"] else "") + f" n={r['n']} | {r['source']}")
+    return v, lo, hi
+
+
+def f_code_tool() -> None:
+    """Deck (replaces fig21_code_tool): does the address carry over to Python code and tool output? Rows: 9B code (the probe was below its gate: a grey text row in
+    the probe panel; its routes test was run, so the position panel has it), 9B tool output, 27B code, 27B tool output. A: the probe at the bridge word (dot),
+    the layout-only baseline (grey tick), the same probe in prose (small open tick). B: the position answers when another item moves, without the address,
+    only the address, a same-size random part removed (grey)."""
+    fig = "fig21_code_tool"
+    rows_def = (("qwen3.5-9b", "code"), ("qwen3.5-9b", "tool"), ("qwen3.6-27b", "code"), ("qwen3.6-27b", "tool"))
+    rows = [Row(NAME[m], sub="code" if c == "code" else "tool output") for m, c in rows_def]
+    base = "code and tool output, {}: "
+    gate = _csv_rows()[(fig, "qwen3.5-9b", base.format("code") + "the probe's status")]
+    print(f"{fig} | qwen3.5-9b | code: the probe's status = {gate['value']} | {gate['source']}")
+    gate_num = gate["value"].split("gate ")[1].split(" <")[0]  # "0.669"
+
+    def probe(ax, _r):
+        for i, (m, c) in enumerate(rows_def):
+            if m == "qwen3.5-9b" and c == "code":
+                ax.text(0.42, i, f"below gate: probe {gate_num} < 0.80", ha="left", va="center", fontsize=12, color=MUTED)
+                continue
+            v = row_value(fig, m, base.format(c) + "the locker probe at the bridge word, locker-first scenes")
+            b = row_value(fig, m, base.format(c) + "the locker probe's layout baseline, locker-first scenes")[0]
+            pr = row_value(fig, m, base.format(c) + "the locker probe in prose, locker-first scenes (stored)")[0]
+            ax.plot([b, b], [i - 0.26, i + 0.26], color=C["control"], lw=2.6, zorder=3)
+            ax.plot([pr, pr], [i - 0.2, i + 0.2], color=C["address"], lw=3.6, zorder=3, solid_capstyle="butt")
+            ax.plot([pr, pr], [i - 0.2, i + 0.2], color="white", lw=1.4, zorder=3.1, solid_capstyle="butt")  # an open tick
+            dot(ax, v[0], i, C["address"], False, size=11, cell=v, value=v[0], vside="left")
+
+    def move(ax, _r):
+        for i, (m, c) in enumerate(rows_def):
+            no = row_value(fig, m, base.format(c) + "another item moved, no_alf: position share")
+            kp = row_value(fig, m, base.format(c) + "another item moved, keep_alf: position share")
+            rd = row_value(fig, m, base.format(c) + "another item moved, no_alf_rand: position share")
+            connector(ax, min(no[0], rd[0]), max(no[0], rd[0]), i)
+            dot(ax, rd[0], i, C["control"], False, size=10, value=rd[0], vside="right", box=False)
+            dot(ax, no[0], i, C["address"], False, size=11)
+            ax.annotate(f"{no[0]:.2f}", (no[0], i), xytext=(0, 11), textcoords="offset points", ha="center", va="bottom", fontsize=11.5, color=C["address"])
+            dot(ax, kp[0], i, C["address"], False, size=6.5, zorder=6)
+
+    def n_col(i, _r):
+        m, c = rows_def[i]
+        n = row_value(fig, m, base.format(c) + "another item moved, no_alf: position share")
+        print(f"{fig} | n per row {m} {c} = {_csv_rows()[(fig, m, base.format(c) + 'another item moved, no_alf: position share')]['n']}")
+        return [(f"{int(_csv_rows()[(fig, m, base.format(c) + 'another item moved, no_alf: position share')]['n'])}", INK, "bold")]
+
+    def group_titles(fig_):
+        pass
+
+    with _slide(0.62):
+        t = Table(
+            rows,
+            [
+                Col(3.75, "probe reads the address", "at the bridge word, accuracy", probe, (0.4, 1.03), [0.5, 0.75, 1], xlabel="accuracy", cue="→ more readable"),
+                Col(4.45, "position answers when another item moves", "share of lookups on the position route", move, (-0.04, 0.6), [0, 0.25, 0.5],
+                    xlabel="share of lookups", cue="← the address is needed"),
+                Col(0.9, "scenes", "per row", n_col, text=True),
+            ],
+            label_w=1.9,
+            labels=False,
+            head=0.8,
+            key=[[("●", C["address"], "without the address"), ("●", C["address"], "only the address (small)"), ("●", C["control"], "a same-size random part removed"),
+                  ("▮", C["control"], "layout-only probe"), ("▮", C["address"], "the same probe in prose")]],
+        )
+        _render(t, "f18_code_tool")
+
+
+def _shift_cells(path: str, model: str) -> list[tuple[float, float]]:
+    """(shift, random) at dose 2 for the five start lockers, from a verdict's cells (the 27B and the 122B have no data.csv rows)."""
+    d = json.loads((REPO / path).read_text())
+    m = next(x for x in d["models"] if x["target"] == model)
+    out = []
+    for k in range(1, 6):
+        c = m["cells"]["shifts"][f"2|v|{k}"]
+        print(f"{path} | {model} | shifts 2|v|{k} (n={c['n']}) shift={c['shift'][0]} random={c['random'][0]}")
+        out.append((c["shift"][0], c["random"][0]))
+    return out
+
+
+def f_six_lockers() -> None:
+    """Deck (replaces fig09b_six_lockers): with six lockers, does each locker have its own code? A: the pairs of lockers (of 30) whose address swap reaches the
+    25% bar, per model. B: the lookups sent one locker on by the shift vector (purple, mean over the five start lockers, the range as a line) against a random
+    direction of the same size (grey), the 25% bar dashed."""
+    models = [(m, n) for m, n in DAN]
+    rows = [Row(NAME[m]) for m, _ in models]
+    six = {"qwen3.6-27b": "results/x47_six/x52_six-20261029T004919Z/x47_2.json", "qwen3.5-122b-a10b": "results/x47_six/x52_six-20261029T231821Z/x47_2.json"}
+    pairs = {}
+    for m, _ in models:
+        pairs[m] = row_value("fig09b", m, "47.2: pairwise writes reaching 25% (dose 2)")[0] if m not in six else row_value("cards", m, "47.2: pairwise writes reaching 25% (dose 2)")[0]
+    starts = {}
+    ordn = ("1st", "2nd", "3rd", "4th", "5th")
+    for m, _ in models:
+        if m in six:
+            starts[m] = _shift_cells(six[m], m)
+        else:
+            starts[m] = [(row_value("fig09b", m, f"47.2: lookups sent one locker on from the {o} locker, the shift vector, dose 2")[0],
+                          row_value("fig09b", m, f"47.2: lookups sent one locker on from the {o} locker, a random direction (same size), dose 2")[0]) for o in ordn]
+
+    def bars(ax, _r):
+        for i, (m, _) in enumerate(models):
+            v = int(pairs[m])
+            hol = D.hollow(m)
+            ax.barh(i, v, height=0.52, color="white" if hol else C["lookup"], edgecolor=C["lookup"], linewidth=2.2, zorder=2)
+            ax.text(v + 0.8, i, f"{v} of 30", ha="left", va="center", fontsize=12.5, color=C["lookup"], weight="bold", zorder=6,
+                    bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})
+        ax.plot([15, 15], [len(models) - 0.5, -0.5], color="#8C8C8C", ls=(0, (4, 3)), lw=1.3, zorder=1)
+        ax.text(15.4, -0.45, "half", ha="left", va="bottom", fontsize=11, color=MUTED)
+
+    def shifts(ax, _r):
+        for i, (m, _) in enumerate(models):
+            sh = [a for a, _b in starts[m]]
+            rd = [b for _a, b in starts[m]]
+            mean_s, mean_r = sum(sh) / 5, sum(rd) / 5
+            print(f"f19 | {m} | mean over the five start lockers: shift {mean_s:.4f} (min {min(sh):.2f}, max {max(sh):.2f}), random {mean_r:.4f}")
+            hol = D.hollow(m)
+            ax.plot([min(sh), max(sh)], [i, i], color=C["lookup"], lw=2.6, zorder=3, solid_capstyle="butt")
+            dot(ax, mean_r, i, C["control"], False, size=9, value=None)
+            dot(ax, mean_s, i, C["lookup"], hol, size=11)
+            ax.annotate(f"{mean_s:.2f}", (mean_s, i), xytext=(0, 11), textcoords="offset points", ha="center", va="bottom", fontsize=11.5, color=C["lookup"])
+        ax.plot([0.25, 0.25], [len(models) - 0.5, -0.5], color="#8C8C8C", ls=(0, (4, 3)), lw=1.3, zorder=1)
+        ax.text(0.255, -0.45, "the 25% bar", ha="left", va="bottom", fontsize=11, color=MUTED)
+
+    with _slide(0.54):
+        t = Table(
+            rows,
+            [
+                Col(4.95, "", "pairs of lockers (of 30) reaching the 25% bar", bars, (0, 33), [0, 15, 30], xlabel="pairs of lockers",
+                    cue="→ more pairs"),
+                Col(4.75, "", "lookups sent one locker on: mean, range", shifts, (-0.03, 0.4),
+                    [0, 0.25], xlabel="share of lookups", cue="→ the shift works"),
+            ],
+            label_w=1.45,
+            labels=False,
+            head=1.2,
+            key=[("■", C["lookup"], "pairs reaching the bar; the shift vector (mean, range as a line)"), ("●", C["control"], "a random direction, same size")],
+        )
+
+        def titles(fig_):
+            w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
+            x0 = (t.label_w + t.pad) / w
+            x1 = (t.label_w + t.pad * 2 + t.cols[0].width) / w
+            for x, txt in ((x0, "each locker has\nits own code"), (x1, "no single shift moves the\nlookup one locker on")):
+                fig_.text(x, 1 - 0.12 / fig_.get_figheight(), txt, ha="left", va="top", fontsize=13, color=INK, weight="bold", linespacing=1.2)
+
+        t.extra.append(titles)
+        _render(t, "f19_six_lockers")

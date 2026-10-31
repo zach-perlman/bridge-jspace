@@ -8763,6 +8763,7 @@ cards,qwen3.5-122b-a10b,"45p: recall, loss in (2) minus (3)",0.15200000000000002
 cards,qwen3.5-122b-a10b,"45p: recall, loss in (2) minus (4)",0.20000000000000007,0.14728112175102592,0.26531063752934814,166,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
 cards,qwen3.5-122b-a10b,45p: holds,no,,,,results/x45p/x53_45p_coverage-20261030T002915Z/x45p.json
 cards,qwen3.5-122b-a10b,47.2: pairwise writes reaching 25% (dose 2),21,,,30,results/x47_six/x52_six-20261029T231821Z/x47_2.json
+cards,qwen3.5-122b-a10b,47.2: test scenes,300,,,,results/x47_six/x52_six-20261029T231821Z/x47_2.json
 cards,qwen3.5-122b-a10b,47.1 routes gate: the recall's read accuracy (the gate needs 0.80),0.7971,,,484,results/x6_routes/qwen35_122b_routes_x47_1/gate.json
 cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: pointer,0.044577636290341616,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
 cards,nemotron-3.5-lightning,47.0 (b) share rebuilt by 25 lens directions: random draws (mean),0.030900454046204687,,,,results/x47_verbal/summary-20261029T005548Z/verbal.json
