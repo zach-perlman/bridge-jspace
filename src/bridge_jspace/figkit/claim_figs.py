@@ -5,6 +5,7 @@ files); no caption inside the figure (the deck and the README carry it)."""
 from __future__ import annotations
 
 from bridge_jspace.figkit import data as D
+from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit.dottable import INK, MUTED, C, Col, Row, Table, connector, dot, head_label
 
@@ -14,6 +15,9 @@ NAME, DAN = X.NAME, X.DAN
 ORDER_Q = "lookups switched by the whole change, locker sentence {}"
 BOTH_Q = "post hoc, original locker sentence {} the pick, changed {}: lookups switched by the whole change"  # {}: before / after
 OFFSET = 0.0
+ZACH_Q = "Zach's passages, L{}: lookups switched by the whole change, fact-{}"  # {}: the model's layer; first / after
+ZACH_L = {"qwen3.5-9b": 12, "qwen3.6-27b": 32, "muse-glimmer-30b": 26, "nemotron-3.5-lightning": 14}
+SLIDE_W, SLIDE_ROW = 12.0, 0.55  # inches: the deck figures are 2400 px wide at 200 dpi; the row height sets the height
 
 
 def _render(t: Table, name: str) -> None:
@@ -132,3 +136,99 @@ def f_two_codes() -> None:
         label_w=1.45,
     )
     _render(t, "f14_two_codes")
+
+
+def _slide(row_h: float = SLIDE_ROW):
+    """Context for the deck's wide figures: the row height sets the image height, about 2400 x 1000 px (12 x 5 in at 200 dpi)."""
+
+    class _Ctx:
+        def __enter__(self):
+            self.old = T.ROW_H
+            T.ROW_H = row_h
+            return self
+
+        def __exit__(self, *_):
+            T.ROW_H = self.old
+
+    return _Ctx()
+
+
+def f_order_main() -> None:
+    """Deck: the claim fixed in advance. Per model the share of lookups switched by the change at the bridge word, the sentence after the pick (light) against
+    before it (dark); left the locker scenes, right Zach's fact passages (the 122B not run)."""
+    models = [(m, n) for m, n in DAN if D.s(m, ORDER_Q.format("before the pick"), "fig03")]
+    rows = [Row(NAME[m]) for m, _ in models]
+
+    def lanes(get):
+        def f(ax, _rows):
+            for i, (m, _) in enumerate(models):
+                got = get(m)
+                if got is None:
+                    ax.text(0.5, i, "no run", ha="center", va="center", fontsize=12.5, color=MUTED)
+                    continue
+                b, a = got
+                hol = D.hollow(m)
+                connector(ax, a[0], b[0], i)
+                dot(ax, a[0], i, C["lookup_light"], hol, size=11, cell=a, vside="left")
+                ax.annotate(f"{a[0]:.2f}", (a[1], i), xytext=(-5, 0), textcoords="offset points", ha="right", va="center", fontsize=11.5, color=C["lookup"], zorder=6)
+                dot(ax, b[0], i, C["lookup_dark"], hol, size=11, cell=b, value=b[0])
+
+        return f
+
+    def locker(m):
+        return D.s(m, ORDER_Q.format("before the pick"), "fig03"), D.s(m, ORDER_Q.format("after the pick"), "fig03")
+
+    def zach(m):
+        if m not in ZACH_L:
+            return None
+        return D.s(m, ZACH_Q.format(ZACH_L[m], "first"), "fig03"), D.s(m, ZACH_Q.format(ZACH_L[m], "after"), "fig03")
+
+    with _slide(0.5):
+        t = Table(
+            rows,
+            [
+                Col(4.85, "Locker scenes", "", lanes(locker), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
+                Col(4.85, "Zach's fact passages", "", lanes(zach), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
+            ],
+            label_w=1.55,
+            labels=False,
+            head=0.8,
+            key=[("●", C["lookup_dark"], "the locker / fact sentence came before the pick"), ("●", C["lookup_light"], "after the pick")],
+        )
+        _render(t, "f10a_order_main")
+
+
+def f_order_2x2() -> None:
+    """Deck, appendix (post hoc): per model the lookups switched for the four cells of the 2 x 2 (the original and the changed prompt's locker sentence, before or
+    after the pick), four markers in four lanes on one axis."""
+    models = [(m, n) for m, n in DAN if D.s(m, BOTH_Q.format("before", "before"), "fig03")]
+    rows = [Row(NAME[m]) for m, _ in models]
+    cells = (  # (original, changed, colour, lane offset)
+        ("after", "after", C["lookup_light"], -0.36),
+        ("after", "before", C["neutral"], -0.12),
+        ("before", "after", C["lookup"], 0.12),
+        ("before", "before", C["lookup_dark"], 0.36),
+    )
+
+    def panel(ax, _rows):
+        for i, (m, _) in enumerate(models):
+            for o, a, col, dy in cells:
+                c = D.s(m, BOTH_Q.format(o, a), "fig03")
+                if c:
+                    dot(ax, c[0], i + dy, col, True, size=9, cell=c, box=False)
+                    ax.annotate(f"{c[0]:.2f}", (c[2], i + dy), xytext=(6, 0), textcoords="offset points", ha="left", va="center", fontsize=11.5,
+                                color=C["lookup"] if col == C["lookup_light"] else col, zorder=6)
+
+    with _slide(0.66):
+        t = Table(
+            rows,
+            [Col(9.95, "Lookups switched, by the locker sentence's place in each prompt", "", panel, (-0.05, 1.12), [0, 0.5, 1],
+                 xlabel="lookups switched (share)", cue="→ more switched")],
+            label_w=1.55,
+            labels=False,
+            head=0.7,
+            key=[[("○", C["lookup_dark"], "locker first in both prompts"), ("○", C["lookup"], "first in the original only"),
+                  ("○", C["neutral"], "first in the changed only"), ("○", C["lookup_light"], "after the pick in both"),
+                  ("○", INK, "hollow: post hoc")]],
+        )
+        _render(t, "f10b_order_2x2")
