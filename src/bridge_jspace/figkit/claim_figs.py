@@ -97,45 +97,59 @@ def f_depth() -> None:
 
 
 def f_two_codes() -> None:
-    """Post hoc: the same scenes followed one by one (another item moved, lookup). Position-route scenes that leave position without the address vs a random part;
-    identity-route scenes that go to position without J++ vs a random part; the paired difference beside each."""
+    """Deck and README: the same scenes followed one by one (another item moved, lookup; every cell post hoc, so every mark is hollow). Left: of the scenes
+    on the position route under the whole change, the share that leave it without the address (orange) against without a same-size random part (grey);
+    right: of the scenes on the identity route, the share that go to position without the J++ part (teal) against without its random part; beside each panel
+    the paired difference with its 95% interval."""
     models = [(m, n) for m, n in DAN if D.s(m, "post hoc, another item moved, lookup: Position scenes that leave position, without the address", "fig24")]
     rows = [Row(NAME[m]) for m, _ in models]
     qa = "post hoc, another item moved, lookup: Position scenes that leave position, "
     qb = "post hoc, another item moved, lookup: Identity scenes that go to position, "
 
-    def panel(q: str, arm: str, col, word: str):
+    def panel(q: str, arm: str, col):
         def f(ax, _rows):
             for i, (m, _) in enumerate(models):
                 a, r = D.s(m, q + arm, "fig24"), D.s(m, q + "without a same-size random part", "fig24")
                 connector(ax, r[0], a[0], i)
-                dot(ax, r[0], i, C["control"], True, size=9, value=None)
-                dot(ax, a[0], i, col, True, size=9.5)
-            head_label(ax, 0.02, "random part", MUTED, ha="left")
-            head_label(ax, 0.45, word, col, ha="left")
+                dot(ax, r[0], i, C["control"], True, size=10, cell=r, value=r[0], vside="left")
+                dot(ax, a[0], i, col, True, size=10, cell=a, value=a[0])
 
         return f
 
-    def diff(q: str):
-        def f(i, _r):
-            d = D.s(models[i][0], q + "paired difference", "fig24")
-            return [(f"{d[0]:+.2f}", INK, "bold"), (f"  [{d[1]:+.2f}, {d[2]:+.2f}]", MUTED, "normal")]
+    def forest(q: str, col):
+        def f(ax, _rows):
+            for i, (m, _) in enumerate(models):
+                d = D.s(m, q + "paired difference", "fig24")
+                dot(ax, d[0], i, col, True, size=10, cell=d, value=d[0], vfmt="{:+.2f}")
 
         return f
 
-    t = Table(
-        rows,
-        [
-            Col(3.2, "leave position", "position scenes, post hoc", panel(qa, "without the address", C["address"], "without the address"), (-0.02, 1.0), [0, 0.5, 1],
-                xlabel="share of the scenes", cue="→ more leave"),
-            Col(1.9, "difference", "paired, 95%", diff(qa), text=True),
-            Col(3.2, "go to position", "identity scenes, post hoc", panel(qb, "without the J++ part", C["lookup"], "without J++"), (-0.02, 1.0), [0, 0.5, 1],
-                xlabel="share of the scenes", cue="→ more go"),
-            Col(1.9, "difference", "paired, 95%", diff(qb), text=True),
-        ],
-        label_w=1.45,
-    )
-    _render(t, "f14_two_codes")
+    def group_titles(fig):
+        w = t.label_w + sum(c.width for c in t.cols) + t.pad * (len(t.cols) + 1)
+        x0 = (t.label_w + t.pad) / w
+        x1 = (t.label_w + t.pad * 3 + t.cols[0].width + t.cols[1].width) / w
+        for x, txt in ((x0, "Without the address,\nposition answers disappear"), (x1, "Without the lens part, identity\nanswers turn into position")):
+            fig.text(x, 1 - 0.12 / fig.get_figheight(), txt, ha="left", va="top", fontsize=13, color=INK, weight="bold", linespacing=1.2)
+
+    with _slide(0.5):
+        t = Table(
+            rows,
+            [
+                Col(2.55, "scenes that leave position", "among position-route scenes", panel(qa, "without the address", C["address"]), (-0.2, 1.1), [0, 0.5, 1],
+                    xlabel="share of the scenes", cue="→ more leave"),
+                Col(2.25, "difference", "95% interval", forest(qa, C["address"]), (-0.1, 1.25), [0, 0.5, 1], xlabel="difference (share)", cue="0 = no effect, larger →"),
+                Col(2.55, "scenes that go to position", "among identity-route scenes", panel(qb, "without the J++ part", C["lens"]), (-0.2, 1.1), [0, 0.5, 1],
+                    xlabel="share of the scenes", cue="→ more go"),
+                Col(2.25, "difference", "95% interval", forest(qb, C["lens"]), (-0.1, 1.25), [0, 0.5, 1], xlabel="difference (share)", cue="0 = no effect, larger →"),
+            ],
+            label_w=1.4,
+            pad=0.2,
+            labels=False,
+            head=1.35,
+            key=[("●", C["address"], "without the address"), ("●", C["lens"], "without the lens part"), ("●", C["control"], "without a same-size random part")],
+        )
+        t.extra.append(group_titles)
+        _render(t, "f14_two_codes")
 
 
 def _slide(row_h: float = SLIDE_ROW):
