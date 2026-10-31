@@ -34,7 +34,7 @@ def _layers(model: str, figure: str, pattern: str) -> list[int]:
 
 def _key(fig, rows: list[list[tuple[str, str, str]]], y0: float) -> None:
     for i, parts in enumerate(rows):
-        rich(fig, 0.012, y0 - i * 0.36 / H, parts, size=FS - 0.5)
+        rich(fig, 0.012, y0 - i * 0.36 / fig.get_figheight(), parts, size=FS - 0.5)
 
 
 def _axis_x(ax, depth: int, xmax: float = 1.03) -> None:
@@ -207,3 +207,85 @@ def f_ladder() -> None:
                [("one layer: followed, not needed (other copies); take the copies out: needed; the lookup never", INK, "normal")],
                [("y axis: accuracy drop beyond a random part (points). Lightning (below its gate) and the 122B (no run) are not drawn.", MUTED, "normal")]], 1 - 0.22 / H)
     _save(fig, "f16_ladder")
+
+
+# ---- f17: attention follows the swap; no small set of heads carries it ---------------------------------------------------------
+def f_attention() -> None:
+    """Left (fig13_attention, 49.7): the last token's attention on the old (slot j) and the new (slot k) locker sentence, mean of five heads, under no change,
+    the swap with the answer switched, the swap with the answer staying, a random vector. Right (ledger_heads, 51.2): the share of the swap's switch cut by
+    blocking the top 1 / 3 / 5 / 10 heads and the best layer's heads, against random head sets of the same number, the rule's 0.5 bar."""
+    h = 5.7
+    fig = plt.figure(figsize=(W, h))
+    top, bottom = 2.0 / h, 1.3 / h
+    ph = 1 - top - bottom
+    left_models = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
+    pre = "attention mass on slot {}'s locker sentence, {} (mean of five heads, read half)"
+    conds = (("no change, switched pairs", "no change", 0.25, C["lookup"]), ("the swap, answer switched", "swap, switched", 1.0, C["lookup"]),
+             ("the swap, answer stayed", "swap, stayed", 0.55, C["lookup"]), ("a random vector, switched pairs", "random vector", 1.0, C["control"]))
+    x0, pw, gap = 0.058, 0.145, 0.012
+    for k, m in enumerate(left_models):
+        ax = fig.add_axes((x0 + k * (pw + gap), bottom, pw, ph))
+        ax.set_title(NAME[m], fontsize=FS + 1, weight="bold", loc="left", pad=6)
+        for gi, slot in enumerate(("j", "k")):
+            for ci, (q, _lab, alpha, col) in enumerate(conds):
+                v = D.s(m, pre.format(slot, q), "fig13")
+                x = gi + (ci - 1.5) * 0.235
+                ax.bar(x, v[0], width=0.22, color=col, alpha=alpha, lw=0, zorder=2)
+                ax.plot([x, x], [v[1], v[2]], color="#1e1e1e", lw=1.1, zorder=3)
+                ax.annotate(f"{v[0]:.2f}".lstrip("0"), (x, v[2]), xytext=(0, 2), textcoords="offset points", ha="center", va="bottom", fontsize=9.4, color=INK)
+        ax.set_xlim(-0.55, 1.55)
+        ax.set_ylim(0, 0.92)
+        ax.set_xticks([0, 1], ["old", "new"])
+        ax.set_yticks([0, 0.5] if k == 0 else [], ["0", "0.5"] if k == 0 else [])
+        ax.tick_params(labelsize=FS - 1.5, length=3, color=FAINT)
+        for sp in ("top", "right"):
+            ax.spines[sp].set_visible(False)
+        for sp in ("left", "bottom"):
+            ax.spines[sp].set_color(FAINT)
+        ax.grid(axis="y", color="#EEEEEE")
+        ax.set_axisbelow(True)
+        ax.set_xlabel("locker sentence", fontsize=FS - 1.5, color=MUTED, labelpad=2)
+    fig.text(x0, 1 - 1.4 / h, "attention on each locker sentence at the last token", fontsize=FS - 0.5, color=INK, weight="bold")
+    # right: five head sets, rows = models
+    sets = (("top 1", "top 1"), ("top 3", "top 3"), ("top 5", "top 5"), ("top 10", "top 10"), ("best layer", "best layer"))
+    rmodels = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning")
+    rx0, rw, rgap = 0.60, 0.07, 0.0045
+    for k, (key, title) in enumerate(sets):
+        ax = fig.add_axes((rx0 + k * (rw + rgap), bottom, rw, ph))
+        ax.set_title(title, fontsize=FS - 1, weight="bold", loc="left", pad=6)
+        ax.set_xlim(-0.12, 0.62)
+        ax.set_ylim(len(rmodels) - 0.5, -0.95)
+        for i, m in enumerate(rmodels):
+            v = D.s(m, f"last token, {key}: share of the swap's switch cut", "ledger_heads")
+            rnd = D.s(m, f"last token, {key}: random sets' mean cut", "ledger_heads")
+            hol = D.hollow(m)
+            if v is None:
+                continue
+            ax.plot([v[1], v[2]], [i, i], color=C["lookup"], lw=1.8, zorder=3)
+            ax.plot([rnd[0]] * 2, [i - 0.25, i + 0.25], color=C["control"], lw=2.4, zorder=4)
+            ax.plot([v[0]], [i], "o", ms=8, color=C["lookup"], mfc="white" if hol else C["lookup"], mew=1.8, zorder=5)
+            ax.annotate(f"{v[0]:.2f}".replace("-0.00", "0.00"), (max(v[2], v[0]), i), xytext=(0, 9), textcoords="offset points", ha="center", va="bottom", fontsize=9.4, color=INK)
+        ax.axvline(0.5, color="#555555", ls=":", lw=1.3, zorder=1)
+        ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+        ax.set_yticks([])
+        ax.set_xticks([0, 0.5], ["0", "0.5"])
+        ax.tick_params(labelsize=FS - 2.5, length=3, color=FAINT)
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(False)
+        ax.spines["bottom"].set_color(FAINT)
+        ax.grid(axis="x", color="#EEEEEE")
+        ax.set_axisbelow(True)
+        ax.set_xlabel("cut", fontsize=FS - 1.5, color=MUTED, labelpad=2)
+        if k == 0:
+            for i, m in enumerate(rmodels):
+                fig.text(rx0 - 0.006, bottom + ph * (1 - (i + 0.95) / (len(rmodels) + 0.45)), NAME[m], ha="right", va="center", fontsize=FS - 1.5, color=INK, weight="bold")
+    fig.text(rx0, 1 - 1.4 / h, "share of the swap's switch cut by blocking heads", fontsize=FS - 0.5, color=INK, weight="bold")
+    rows = [[("Left, bars:  ", MUTED, "normal"), ("●", C["lookup_light"], "normal"), (" no change   ", MUTED, "normal"), ("●", C["lookup"], "normal"),
+             (" the swap, answer switched   ", MUTED, "normal"), ("●", C["lookup_light"], "normal"), (" the swap, answer stayed   ", MUTED, "normal"),
+             ("●", C["control"], "normal"), (" a random vector", MUTED, "normal")],
+            [("Right, dots:  ", MUTED, "normal"), ("●", C["lookup"], "normal"), (" the top heads   ", MUTED, "normal"), ("▬", C["control"], "normal"),
+             (" random heads of the same number   ┆ the rule's 0.5 bar   (the 122B is not in these tests)", MUTED, "normal")],
+            [("the address moves attention to the new locker; no small set of heads carries it", INK, "normal"),
+             ("      whiskers: 95%      ○ post hoc (Lightning)", MUTED, "normal")]]
+    _key(fig, rows, 1 - 0.22 / h)
+    _save(fig, "f17_attention")
