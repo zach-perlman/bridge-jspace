@@ -199,36 +199,32 @@ def f_order_main() -> None:
 
 
 def f_order_2x2() -> None:
-    """Deck, appendix (post hoc): per model the lookups switched for the four cells of the 2 x 2 (the original and the changed prompt's locker sentence, before or
-    after the pick), four markers in four lanes on one axis."""
+    """Deck, appendix (post hoc): the 2 x 2 in the encoding of f10a. Left the scenes whose original prompt has the locker sentence before the pick, right those
+    with it after; in each, the lookups switched when the changed prompt's locker sentence comes after the pick (light) against before it (dark)."""
     models = [(m, n) for m, n in DAN if D.s(m, BOTH_Q.format("before", "before"), "fig03")]
     rows = [Row(NAME[m]) for m, _ in models]
-    cells = (  # (original, changed, colour, lane offset)
-        ("after", "after", C["lookup_light"], -0.36),
-        ("after", "before", C["neutral"], -0.12),
-        ("before", "after", C["lookup"], 0.12),
-        ("before", "before", C["lookup_dark"], 0.36),
-    )
 
-    def panel(ax, _rows):
-        for i, (m, _) in enumerate(models):
-            for o, a, col, dy in cells:
-                c = D.s(m, BOTH_Q.format(o, a), "fig03")
-                if c:
-                    dot(ax, c[0], i + dy, col, True, size=9, cell=c, box=False)
-                    ax.annotate(f"{c[0]:.2f}", (c[2], i + dy), xytext=(6, 0), textcoords="offset points", ha="left", va="center", fontsize=11.5,
-                                color=C["lookup"] if col == C["lookup_light"] else col, zorder=6)
+    def lanes(orig: str):
+        def f(ax, _rows):
+            for i, (m, _) in enumerate(models):
+                b, a = D.s(m, BOTH_Q.format(orig, "before"), "fig03"), D.s(m, BOTH_Q.format(orig, "after"), "fig03")
+                connector(ax, a[0], b[0], i)
+                dot(ax, a[0], i, C["lookup_light"], True, size=11, cell=a, vside="left")
+                ax.annotate(f"{a[0]:.2f}", (a[1], i), xytext=(-5, 0), textcoords="offset points", ha="right", va="center", fontsize=11.5, color=C["lookup"], zorder=6)
+                dot(ax, b[0], i, C["lookup_dark"], True, size=11, cell=b, value=b[0])
 
-    with _slide(0.66):
+        return f
+
+    with _slide(0.5):
         t = Table(
             rows,
-            [Col(9.95, "Lookups switched, by the locker sentence's place in each prompt", "", panel, (-0.05, 1.12), [0, 0.5, 1],
-                 xlabel="lookups switched (share)", cue="→ more switched")],
+            [
+                Col(4.85, "Original prompt: locker first", "", lanes("before"), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
+                Col(4.85, "Original prompt: locker after the pick", "", lanes("after"), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
+            ],
             label_w=1.55,
             labels=False,
-            head=0.7,
-            key=[[("○", C["lookup_dark"], "locker first in both prompts"), ("○", C["lookup"], "first in the original only"),
-                  ("○", C["neutral"], "first in the changed only"), ("○", C["lookup_light"], "after the pick in both"),
-                  ("○", INK, "hollow: post hoc")]],
+            head=0.8,
+            key=[("●", C["lookup_dark"], "the changed prompt's locker sentence came before the pick"), ("●", C["lookup_light"], "after the pick")],
         )
         _render(t, "f10b_order_2x2")
