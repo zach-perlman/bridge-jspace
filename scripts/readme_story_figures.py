@@ -1275,35 +1275,18 @@ ORDER_SWEEP = (("bw", "the bridge-word change", "--", "o"), ("ls", "the copy int
 BLOCK = 1.3  # Fig. 3 (b): one block per model on one axis, each block the model's layers scaled to [0, 1]
 
 
-def order_both(fig, pos, rows, long_name) -> None:
-    """Panel D of fig03_order: per model four hollow dots (post hoc), original / changed locker sentence before (B) or after (A) the pick, with 95%
-    cluster-bootstrap intervals (results/x0_order_2x2, scripts/x0_order_2x2.py)."""
+def order_both_rows(rows) -> None:
+    """The post hoc 2 x 2 (results/x0_order_2x2, scripts/x0_order_2x2.py): per model four lookup switch rates with 95% cluster-bootstrap intervals, original /
+    changed locker sentence before or after the pick. Recorded for data.csv (the deck's f10b_order_2x2 and the depth README's card read them); not drawn on
+    fig03_order (31 Oct, Dan: panel D lives in f10b)."""
     path = sorted((S.REPO / "results" / "x0_order_2x2").glob("*/tables.json"))[-1]
     t = json.loads(path.read_text())
-    ax = fig.add_axes(pos)
-    cells = (("before", "before", "B/B"), ("before", "after", "B/A"), ("after", "before", "A/B"), ("after", "after", "A/A"))
-    for i, (target, m, _) in enumerate(rows):
-        d = t[target]["cells"]
-        for j, (o, a_, lab) in enumerate(cells):
-            x = i + (j - 1.5) * 0.2
-            r = d[f"original {o} / changed {a_}"]
-            p, lo, hi = r["rate"]
-            ax.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
-            ax.plot([x], [p], "o", color=S.COL["lookup"], ms=7, mfc="white", mec=S.COL["lookup"], mew=1.8, zorder=4)
-            ax.text(x, -0.06, lab, ha="center", va="top", fontsize=S.FONT - 2.5)
-            S.record("fig03", target, f"post hoc, original locker sentence {o} the pick, changed {a_}: lookups switched by the whole change",
-                     round(p, 4), round(lo, 4), round(hi, 4), r["n"], source=rel(path))  # fmt: skip
-        ax.text(i, -0.3, long_name[m], ha="center", va="top", fontsize=S.FONT, weight="bold", linespacing=1.0)
-    ax.set_xlim(-0.6, len(rows) - 0.4)
-    ax.set_ylim(-0.02, 1.05)
-    ax.set_xticks([])
-    ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
-    ax.set_ylabel("lookups switched (share)")
-    ax.grid(axis="y", color="#eeeeee")
-    ax.set_axisbelow(True)
-    ax.set_title("D  Both orders matter: original prompt's / changed prompt's locker sentence", loc="left", fontsize=12,
-                 weight="bold", pad=26)  # fmt: skip
-    S.panel_tag(ax, "24–82 per dot", "after")
+    for target, _m, _ in rows:
+        for o in ("before", "after"):
+            for a_ in ("before", "after"):
+                p, lo, hi = t[target]["cells"][f"original {o} / changed {a_}"]["rate"]
+                S.record("fig03", target, f"post hoc, original locker sentence {o} the pick, changed {a_}: lookups switched by the whole change",
+                         round(p, 4), round(lo, 4), round(hi, 4), t[target]["cells"][f"original {o} / changed {a_}"]["n"], source=rel(path))  # fmt: skip
 
 
 def f03_order(plt) -> None:
@@ -1318,14 +1301,14 @@ def f03_order(plt) -> None:
     The old Fig. 3 with the 122B and its extra-loss panel: figures/depth/supp/s03_order_split; the old Fig. 3b stays
     fig03b_layers until the README drops it. Lightning (batch 52, hollow): A from its conflict test at L14, B from its
     Z1 run (LT_Z1), C not tested (its clean one-pick scenes missed their gate)."""
-    h = 15.0  # the bottom 0.3 in: the 122B's caption line; panel D (both orders, post hoc) at 11.55-13.0 in (the panels keep their places from the top)
+    h = 11.85  # the bottom 0.3 in: the 122B's caption line (the panels keep their places from the top)
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
         return (left, 1 - bottom_in / h, width, (bottom_in - top_in) / h)
 
     S.title(fig, "Locker after the pick: the link is made in the locker sentences",
-            "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer. D: both orders (post hoc).")  # fmt: skip
+            "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer.")  # fmt: skip
     a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
     zb = fig.add_axes(box(0.11, 0.86, 5.35, 6.75))  # four models: three-line order labels, two-line names
     b = fig.add_axes(box(0.11, 0.81, 8.3, 10.55))
@@ -1475,6 +1458,10 @@ def f03_order(plt) -> None:
             continue
         if mod is None or mod["run"] not in sweep or "readers" not in mod:
             b.text(x0 + 0.5, 0.5, "not run" if mod is None else "not tested", ha="center", color=S.COL["muted"])
+            if mod is None:  # the empty block names the two lines (31 Oct: the labels left the curves, where they overlapped them)
+                for y, ls, lab in ((0.90, "--", "the change at\nthe bridge word"), (0.70, "-", "the change copied into\nthe locker sentences")):
+                    b.plot([x0 - 0.02, x0 + 0.13], [y, y], color=S.COL["lookup"], ls=ls, lw=2.0, zorder=2)
+                    b.text(x0 + 0.17, y, lab, va="center", ha="left", fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0)
             continue
         cells = sorted(sweep[mod["run"]]["cells"][X.LOOKUP], key=lambda c: c["layer"])
         last = cells[-1]["layer"]
@@ -1506,14 +1493,6 @@ def f03_order(plt) -> None:
         nq.append(str(mod["sanity"]["pass"]))
         ticks += [at(0), at(la), at(last)]
         tick_labels += ["0", str(la), str(last)]
-        if k == 0:  # the copy's line labelled on the first block
-            peak = max(cells, key=lambda c: c["ls"][0])
-            b.text(at(peak["layer"]) + 0.05, peak["ls"][0] + 0.05, "the change copied into\nthe locker sentences", va="bottom",
-                   fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0)  # fmt: skip
-        if k == 1:  # Dan (21:50): the panel names its dashed line too, under the 27B's plateau (empty there)
-            b.text(at(cells[0]["layer"]) + 0.02, 0.45, "change at the\nbridge word", va="center", ha="left",
-                   fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0, zorder=4,
-                   bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})  # fmt: skip
     b.set_xlim(-0.06, (len(blocks) - 1) * BLOCK + 1.06)
     b.set_xticks(ticks, tick_labels)
     b.set_ylim(-0.03, 1.05)
@@ -1523,9 +1502,8 @@ def f03_order(plt) -> None:
     b.grid(axis="y", color="#eeeeee")
     b.set_axisbelow(True)
     S.panel_tag(b, ", ".join(nq), "after")
-    # (d) post hoc, CPU (results/x0_order_2x2): the lookup's switch under the whole change by both orders: the original prompt's bridge locker
-    # sentence before / after the asked pick x the changed prompt's (the changed pick names the new bridge; the lockers stay put)
-    order_both(fig, box(0.11, 0.86, 11.55, 13.0), rows, long_name)
+    # the post hoc 2 x 2 (both orders) is not drawn here any more (deck: f10b_order_2x2); its rows stay in data.csv
+    order_both_rows(rows)
     hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["lookup"]),
           plt.Line2D([], [], marker="D", ls="", color=S.COL["recall"], ms=5.5),
           plt.Line2D([], [], color=S.COL["lookup"], ls="--", lw=2.0), plt.Line2D([], [], color=S.COL["lookup"], lw=2.0),
