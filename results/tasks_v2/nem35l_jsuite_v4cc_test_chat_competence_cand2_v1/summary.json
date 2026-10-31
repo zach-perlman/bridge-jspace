@@ -1,0 +1,54 @@
+{
+  "seconds": 208,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 198,
+      "whole": 0.631,
+      "all_steps": 0.879,
+      "median_margin": 1.81,
+      "guess": 0.106,
+      "top_wrong": [
+        [
+          "Dan",
+          10
+        ],
+        [
+          "Italian",
+          9
+        ],
+        [
+          "C",
+          5
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 198,
+      "whole": 0.768,
+      "all_steps": 0.47,
+      "median_margin": 1.25,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "American",
+          6
+        ],
+        [
+          "Dan",
+          4
+        ],
+        [
+          "British",
+          4
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "people": {
+      "MP": 0.631,
+      "MM": 0.768
+    }
+  },
+  "pick": {}
+}

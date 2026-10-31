@@ -1,0 +1,70 @@
+{
+  "seconds": 575,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.683,
+      "all_steps": 0.799,
+      "median_margin": 2.88,
+      "guess": 0.133,
+      "top_wrong": [
+        [
+          "Germany",
+          15
+        ],
+        [
+          "Japan",
+          13
+        ],
+        [
+          "Spain",
+          11
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.729,
+      "all_steps": 0.538,
+      "median_margin": 1.5,
+      "guess": 0.008,
+      "top_wrong": [
+        [
+          "Japan",
+          8
+        ],
+        [
+          "Cl",
+          8
+        ],
+        [
+          "Pol",
+          7
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.342,
+      "MM": 0.787
+    },
+    "companies": {
+      "MP": 0.812,
+      "MM": 0.756
+    },
+    "films": {
+      "MP": 0.868,
+      "MM": 0.333
+    },
+    "landmarks": {
+      "MP": 0.707,
+      "MM": 0.888
+    },
+    "people": {
+      "MP": 0.758,
+      "MM": 0.817
+    }
+  },
+  "pick": {}
+}

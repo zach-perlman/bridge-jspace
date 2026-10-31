@@ -1,0 +1,31 @@
+{
+  "run": "qwen35_9b_jswap_v3_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 5): qwen3.5-9b J-part swap at L12-16",
+  "target": "qwen3.5-9b",
+  "band": "12-16",
+  "set": "jsuite_v3_test_chat",
+  "competence": "qwen35_9b_jsuite_v3_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "a25b75eb478831e4ee541794d2fd642c398ad451",
+  "git_state": {
+    "head": "a25b75eb478831e4ee541794d2fd642c398ad451",
+    "dirty_files": [
+      "scripts/v3_cards.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "0aaed5ab1540fb94720036c76a41d6775a6e1f3adcc18fc75088af40c608be2e"
+  },
+  "limit": 0,
+  "sample_per_word": 0,
+  "sample_seed": 0
+}

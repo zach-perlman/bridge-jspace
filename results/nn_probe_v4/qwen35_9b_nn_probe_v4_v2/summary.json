@@ -1,0 +1,593 @@
+{
+ "folds": [
+  [
+   5376,
+   852
+  ],
+  [
+   5376,
+   852
+  ]
+ ],
+ "n_test": 1704,
+ "n_test_gated": 642,
+ "chance": 2.2,
+ "layers": {
+  "L0": {
+   "lr": {
+    "all": 7.6,
+    "gated": 8.4,
+    "gated_ci": [
+     4.6,
+     12.6
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.7,
+    "gated": 2.0,
+    "gated_ci": [
+     0.5,
+     4.2
+    ]
+   },
+   "nc": {
+    "all": 6.2,
+    "gated": 5.3,
+    "gated_ci": [
+     2.0,
+     9.2
+    ]
+   },
+   "nc_shuffled": {
+    "all": 3.1,
+    "gated": 2.8,
+    "gated_ci": [
+     1.1,
+     4.8
+    ]
+   },
+   "lens_jlens_gated": 1.6,
+   "lens_logit_gated": 0.9
+  },
+  "L2": {
+   "lr": {
+    "all": 11.7,
+    "gated": 12.8,
+    "gated_ci": [
+     7.8,
+     18.1
+    ]
+   },
+   "lr_shuffled": {
+    "all": 4.3,
+    "gated": 2.2,
+    "gated_ci": [
+     0.8,
+     4.1
+    ]
+   },
+   "nc": {
+    "all": 11.2,
+    "gated": 11.8,
+    "gated_ci": [
+     6.9,
+     17.1
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.9,
+    "gated": 2.2,
+    "gated_ci": [
+     0.8,
+     3.9
+    ]
+   },
+   "lens_jlens_gated": 5.1,
+   "lens_logit_gated": 3.1
+  },
+  "L4": {
+   "lr": {
+    "all": 13.9,
+    "gated": 16.4,
+    "gated_ci": [
+     10.8,
+     22.3
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.5,
+    "gated": 1.6,
+    "gated_ci": [
+     0.5,
+     2.8
+    ]
+   },
+   "nc": {
+    "all": 12.5,
+    "gated": 13.6,
+    "gated_ci": [
+     8.7,
+     18.6
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.3,
+    "gated": 1.9,
+    "gated_ci": [
+     0.6,
+     3.4
+    ]
+   },
+   "lens_jlens_gated": 15.2,
+   "lens_logit_gated": 3.7
+  },
+  "L6": {
+   "lr": {
+    "all": 17.8,
+    "gated": 20.1,
+    "gated_ci": [
+     14.4,
+     26.2
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.5,
+    "gated": 1.7,
+    "gated_ci": [
+     0.6,
+     2.9
+    ]
+   },
+   "nc": {
+    "all": 17.1,
+    "gated": 18.4,
+    "gated_ci": [
+     12.6,
+     24.2
+    ]
+   },
+   "nc_shuffled": {
+    "all": 3.3,
+    "gated": 2.6,
+    "gated_ci": [
+     1.2,
+     4.4
+    ]
+   },
+   "lens_jlens_gated": 25.0,
+   "lens_logit_gated": 5.8
+  },
+  "L8": {
+   "lr": {
+    "all": 21.2,
+    "gated": 24.9,
+    "gated_ci": [
+     18.7,
+     31.3
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.2,
+    "gated": 2.0,
+    "gated_ci": [
+     0.8,
+     3.5
+    ]
+   },
+   "nc": {
+    "all": 19.2,
+    "gated": 21.8,
+    "gated_ci": [
+     15.3,
+     28.0
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.2,
+    "gated": 1.4,
+    "gated_ci": [
+     0.3,
+     2.7
+    ]
+   },
+   "lens_jlens_gated": 28.3,
+   "lens_logit_gated": 9.3
+  },
+  "L10": {
+   "lr": {
+    "all": 19.0,
+    "gated": 21.2,
+    "gated_ci": [
+     15.2,
+     27.1
+    ]
+   },
+   "lr_shuffled": {
+    "all": 1.6,
+    "gated": 1.7,
+    "gated_ci": [
+     0.6,
+     3.1
+    ]
+   },
+   "nc": {
+    "all": 18.1,
+    "gated": 19.5,
+    "gated_ci": [
+     13.6,
+     25.5
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.9,
+    "gated": 0.8,
+    "gated_ci": [
+     0.2,
+     1.6
+    ]
+   },
+   "lens_jlens_gated": 26.9,
+   "lens_logit_gated": 6.1
+  },
+  "L12": {
+   "lr": {
+    "all": 15.7,
+    "gated": 17.1,
+    "gated_ci": [
+     11.7,
+     22.4
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.1,
+    "gated": 1.4,
+    "gated_ci": [
+     0.5,
+     2.6
+    ]
+   },
+   "nc": {
+    "all": 15.2,
+    "gated": 15.7,
+    "gated_ci": [
+     10.6,
+     21.2
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.9,
+    "gated": 1.1,
+    "gated_ci": [
+     0.3,
+     2.1
+    ]
+   },
+   "lens_jlens_gated": 29.0,
+   "lens_logit_gated": 6.8
+  },
+  "L14": {
+   "lr": {
+    "all": 7.6,
+    "gated": 8.7,
+    "gated_ci": [
+     5.3,
+     12.4
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.2,
+    "gated": 3.0,
+    "gated_ci": [
+     1.6,
+     4.5
+    ]
+   },
+   "nc": {
+    "all": 12.8,
+    "gated": 12.5,
+    "gated_ci": [
+     7.9,
+     17.2
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.0,
+    "gated": 1.1,
+    "gated_ci": [
+     0.3,
+     1.9
+    ]
+   },
+   "lens_jlens_gated": 29.4,
+   "lens_logit_gated": 3.1
+  },
+  "L16": {
+   "lr": {
+    "all": 10.2,
+    "gated": 10.9,
+    "gated_ci": [
+     7.0,
+     14.9
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.3,
+    "gated": 2.2,
+    "gated_ci": [
+     1.1,
+     3.4
+    ]
+   },
+   "nc": {
+    "all": 12.3,
+    "gated": 12.5,
+    "gated_ci": [
+     7.8,
+     17.1
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.1,
+    "gated": 1.2,
+    "gated_ci": [
+     0.3,
+     2.3
+    ]
+   },
+   "lens_jlens_gated": 28.5,
+   "lens_logit_gated": 4.5
+  },
+  "L18": {
+   "lr": {
+    "all": 9.9,
+    "gated": 10.6,
+    "gated_ci": [
+     6.3,
+     15.0
+    ]
+   },
+   "lr_shuffled": {
+    "all": 1.8,
+    "gated": 1.7,
+    "gated_ci": [
+     0.6,
+     3.0
+    ]
+   },
+   "nc": {
+    "all": 12.4,
+    "gated": 12.9,
+    "gated_ci": [
+     8.1,
+     17.8
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.3,
+    "gated": 1.6,
+    "gated_ci": [
+     0.5,
+     3.0
+    ]
+   },
+   "lens_jlens_gated": 26.4,
+   "lens_logit_gated": 4.5
+  },
+  "L20": {
+   "lr": {
+    "all": 15.3,
+    "gated": 17.1,
+    "gated_ci": [
+     12.3,
+     22.4
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.3,
+    "gated": 2.3,
+    "gated_ci": [
+     1.0,
+     4.0
+    ]
+   },
+   "nc": {
+    "all": 17.1,
+    "gated": 19.3,
+    "gated_ci": [
+     13.8,
+     25.0
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.5,
+    "gated": 1.2,
+    "gated_ci": [
+     0.2,
+     2.5
+    ]
+   },
+   "lens_jlens_gated": 29.2,
+   "lens_logit_gated": 26.0
+  },
+  "L22": {
+   "lr": {
+    "all": 15.7,
+    "gated": 17.8,
+    "gated_ci": [
+     12.8,
+     22.5
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.3,
+    "gated": 1.9,
+    "gated_ci": [
+     0.6,
+     3.3
+    ]
+   },
+   "nc": {
+    "all": 16.0,
+    "gated": 16.8,
+    "gated_ci": [
+     11.9,
+     22.0
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.8,
+    "gated": 1.4,
+    "gated_ci": [
+     0.5,
+     2.6
+    ]
+   },
+   "lens_jlens_gated": 27.8,
+   "lens_logit_gated": 29.0
+  },
+  "L24": {
+   "lr": {
+    "all": 30.7,
+    "gated": 36.3,
+    "gated_ci": [
+     29.0,
+     42.9
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.9,
+    "gated": 2.8,
+    "gated_ci": [
+     1.4,
+     4.5
+    ]
+   },
+   "nc": {
+    "all": 26.4,
+    "gated": 29.8,
+    "gated_ci": [
+     22.7,
+     36.5
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.0,
+    "gated": 1.4,
+    "gated_ci": [
+     0.5,
+     2.6
+    ]
+   },
+   "lens_jlens_gated": 38.6,
+   "lens_logit_gated": 46.2
+  },
+  "L26": {
+   "lr": {
+    "all": 31.9,
+    "gated": 36.9,
+    "gated_ci": [
+     29.8,
+     43.4
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.3,
+    "gated": 1.9,
+    "gated_ci": [
+     0.8,
+     3.1
+    ]
+   },
+   "nc": {
+    "all": 24.8,
+    "gated": 27.7,
+    "gated_ci": [
+     21.9,
+     34.0
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.8,
+    "gated": 1.2,
+    "gated_ci": [
+     0.3,
+     2.4
+    ]
+   },
+   "lens_jlens_gated": 43.9,
+   "lens_logit_gated": 55.4
+  },
+  "L28": {
+   "lr": {
+    "all": 26.0,
+    "gated": 29.4,
+    "gated_ci": [
+     23.0,
+     36.0
+    ]
+   },
+   "lr_shuffled": {
+    "all": 1.9,
+    "gated": 1.4,
+    "gated_ci": [
+     0.5,
+     2.6
+    ]
+   },
+   "nc": {
+    "all": 25.4,
+    "gated": 28.7,
+    "gated_ci": [
+     22.2,
+     35.0
+    ]
+   },
+   "nc_shuffled": {
+    "all": 2.1,
+    "gated": 0.9,
+    "gated_ci": [
+     0.2,
+     1.9
+    ]
+   },
+   "lens_jlens_gated": 63.6,
+   "lens_logit_gated": 64.9
+  },
+  "L30": {
+   "lr": {
+    "all": 33.3,
+    "gated": 38.2,
+    "gated_ci": [
+     31.1,
+     45.1
+    ]
+   },
+   "lr_shuffled": {
+    "all": 2.5,
+    "gated": 2.0,
+    "gated_ci": [
+     0.9,
+     3.3
+    ]
+   },
+   "nc": {
+    "all": 26.9,
+    "gated": 30.7,
+    "gated_ci": [
+     24.2,
+     37.2
+    ]
+   },
+   "nc_shuffled": {
+    "all": 1.5,
+    "gated": 0.8,
+    "gated_ci": [
+     0.0,
+     1.8
+    ]
+   },
+   "lens_jlens_gated": 66.4,
+   "lens_logit_gated": 62.9
+  }
+ }
+}

@@ -71,8 +71,244 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
     "TBL": "competence_tool_v1", "TBR": "competence_tool_v1",
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
-              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize")  # fmt: skip
+              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize",
+              "ansJ", "ansJ_rot", "ansU", "ansU_rot",  # ans*: amendment 58 note 3
+              "paper10_keepA", "paper10_keepA_rot",  # amendment 64 note 37: paper10's r minus its part in the answers' J++ span
+              "paper10_keepR", "paper10_keepR_rot", "paper10_keepR2", "paper10_keepR2_rot", "paper10_keepR4",
+              "paper10_keepR4_rot", "ansR", "ansR_rot",  # amendment 67 note 41 + addendum: random kept / removed spans
+              "paper10_keepCap", "paper10_keepCty", "paper10_keepCapCty", "paper10_keepRcap", "ansCap", "ansCty",
+              "ansCty_rot",  # fmt: skip  # amendment 68 note 44: capitals vs countries (jsuite_v5kn2c MC0)
+              "ansRk", "ansRk_rot",  # fmt: skip  # amendment 72 note 50: random rows as many as ansJ's (cands2)
+              "ansRe", "ansRe_rot")  # fmt: skip  # amendment 78 note 57: random rows energy-matched to ansJ's removal
+# amendment 72 notes 49, 50, 52 (paper10_*: the protections, keeps and onlyA, each + _rot except note 52's) and note 51
+# (topK_keepA / _rot): see n49_kind, is_n52, is_n51 and the docstring of main's "amendment 72" block
+N49_KINDS = ("protF", "protC", "keepT10", "keepRT10", "keepOwn", "keepSib", "keepR4perp", "keepR8perp", "onlyA")
+N52_KEEPS = ("CapPerp", "CtyPerp", "Shared")
+N52B_KEEPS = ("RShared", "RCapPerp", "RCtyPerp", "SharedNoLit")  # amendment 80 note 52b: energy-matched random twins; Shared minus literal rows
+PERP_TOL = 1e-3  # note 50 / 52: a re-orthonormalised column whose norm after projection is below this is dropped
+SHARED_COS = 0.9  # note 52: keepShared = the principal vectors of span(Cap) and span(Cty) with cosine >= this
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
+KEEPA_ROWS = {"every": "forms", "cands2": "cands2"}  # note 37's kept span: every form, or ansJ's rows (cands2) only
+RAND_MULT = {"R": 1, "R2": 2, "R4": 4}  # note 41: random kept spans of 1x, 2x, 4x A's row count, nested (R in R2 in R4)
+
+
+def keep_kind(cond: str) -> str | None:
+    """The kept span of a paper10_keep* condition: A (note 37) or R, R2, R4 (note 41); None for any other condition."""
+    m = re.fullmatch(r"paper10_keep(A|R|R2|R4|Cap|Cty|CapCty|Rcap)(_rot)?", cond)  # Cap ... Rcap: amendment 68 note 44
+    if m:
+        return m[1]
+    # amendment 72: note 49's T10 / RT10 / Own / Sib, note 50's perps, note 52's residualised spans, note 51's topK_keepA
+    m = re.fullmatch(r"paper10_keep(T10|RT10|Own|Sib|R4perp|R8perp|CapPerp|CtyPerp|Shared|RShared|RCapPerp|RCtyPerp|SharedNoLit)(_rot)?", cond) or re.fullmatch(
+        r"top\d+_keep(A)(_rot)?", cond)
+    if m:
+        return m[1]
+    # amendment 78 note 57: the rivals' spans and the energy-matched random keep at dose K
+    m = re.fullmatch(r"paper10_keep(Rivals|RandRivals)(_rot)?", cond) or re.fullmatch(r"top\d+_keep(RE)(_rot)?", cond)
+    return m[1] if m else None
+
+
+def n57_kind(cond: str) -> str | None:
+    """Amendment 78 note 57: onlyRperp, keepRivals, keepRandRivals (paper10_X / _rot), keepRE (topK_keepRE / _rot), ansRe (/ _rot)."""
+    if cond in ("ansRe", "ansRe_rot"):
+        return "ansRe"
+    m = re.fullmatch(r"paper10_(onlyRperp|keepRivals|keepRandRivals)(_rot)?", cond) or re.fullmatch(r"top\d+_(keepRE)(_rot)?", cond)
+    return m[1] if m else None
+
+
+def n49_kind(cond: str) -> str | None:
+    """Amendment 72 notes 49 / 50: protF, protC, keepT10, keepRT10, keepOwn, keepSib, keepR4perp, keepR8perp, onlyA (each
+    paper10_X or paper10_X_rot), and "ansRk" for ansRk / ansRk_rot; None for any other condition."""
+    if cond in ("ansRk", "ansRk_rot"):
+        return "ansRk"
+    m = re.fullmatch(r"paper10_(" + "|".join(N49_KINDS) + r")(_rot)?", cond)
+    return m[1] if m else None
+
+
+def is_n51(cond: str) -> bool:
+    """Amendment 72 note 51: topK_keepA / topK_keepA_rot (topK's removal, paper10's protection, A's span kept)."""
+    return re.fullmatch(r"top\d+_keepA(_rot)?", cond) is not None
+
+
+def is_n52(cond: str) -> bool:
+    """Amendment 72 note 52: paper10_keepCapPerp / keepCtyPerp / keepShared (note 44's spans residualised); amendment 80 note 52b:
+    paper10_keepRShared / keepRCapPerp / keepRCtyPerp (random keeps energy-matched to each span in paper10's forward, the first k
+    rows of note 44's Rcap pool) and paper10_keepSharedNoLit."""
+    return keep_kind(cond) in N52_KEEPS + N52B_KEEPS
+
+
+def is_n44(cond: str) -> bool:
+    """Note 44's conditions: paper10_keepCap / Cty / CapCty / Rcap (+ _rot) and ansCap / ansCty (+ _rot)."""
+    return keep_kind(cond) in ("Cap", "Cty", "CapCty", "Rcap") or re.fullmatch(r"ans(Cap|Cty)(_rot)?", cond) is not None
+
+
+N44_SAY_SET = "jsuite_v5kn2_test_chat"  # note 44: the countries are kn2's say vocabulary (its MM answer_vocab)
+
+
+def n44_values() -> tuple[list[str], list[str]]:
+    """Note 44's capitals (note 35's table, scripts/jsuite_v5key.CAPITAL, and CAPITAL_ALIASES) and countries (kn2's say
+    vocabulary), sorted."""
+    from scripts import jsuite_v5key as K5
+    from scripts import tasks_v2 as T
+
+    caps = set(K5.CAPITAL.values()) | {x for v in K5.CAPITAL_ALIASES.values() for x in v}
+    ctys = {v for it in T.load(N44_SAY_SET) if it["word"] == "MM" for v in it["answer_vocab"]}
+    return sorted(caps), sorted(ctys)
+
+
+def n44_subsample(item_id: str, rows: list[int], n: int) -> list[int]:
+    """Note 44: keepCty's rows count-matched to keepCap's, random.Random("n44:" + item id).sample(rows, n), sorted (all of
+    them if there are no more than n)."""
+    import random
+
+    return sorted(rows) if len(rows) <= n else sorted(random.Random("n44:" + item_id).sample(rows, n))
+
+
+def is_rand(cond: str) -> bool:
+    """Note 41's conditions on the random rows: paper10_keepR / R2 / R4 (+ _rot) and ansR (+ _rot)."""
+    return keep_kind(cond) in RAND_MULT or cond in ("ansR", "ansR_rot")
+
+
+def random_rows(item_id: str, n: int, n_dict: int, exclude: set[int]) -> list[int]:
+    """Amendment 67 note 41 (+ addendum): 4n letter-token dictionary rows drawn with random.Random("n41:" + item id) from
+    the rows not in exclude (A's rows and the protected rows), in draw order; R = the first n, R2 the first 2n, R4 all."""
+    import random
+
+    pool = [i for i in range(n_dict) if i not in exclude]
+    return random.Random("n41:" + item_id).sample(pool, 4 * n)
+
+
+def forms45(word: str) -> list[str]:
+    """Note 45's forms of a word (scripts/paper_ko_decomp.forms): as written, lower case, capitalised; with and without a
+    leading space."""
+    cases = dict.fromkeys([word, word.lower(), word[:1].upper() + word[1:]])
+    return [p + c for c in cases for p in ("", " ")]
+
+
+def first_token_ids(tok, word: str) -> set[int]:
+    """Amendment 72 note 49 (note 45's rule): the first token of every form of the word, whitespace-only tokens dropped."""
+    out = set()
+    for f in forms45(word):
+        ids = tok(f, add_special_tokens=False).input_ids
+        if ids and tok.decode([ids[0]]).strip():
+            out.add(ids[0])
+    return out
+
+
+def perp_basis(Q: torch.Tensor, V: torch.Tensor) -> torch.Tensor:
+    """Amendment 72 notes 50 / 52: an orthonormal basis [d, r] of span(V's rows) projected off span(Q) (Q [d, k]
+    orthonormal) and re-orthonormalised: Gram-Schmidt by one QR of [Q | V^T]; a column whose norm after projection off Q
+    and the earlier columns (|R_jj|) is below PERP_TOL is dropped (r = the rank logged)."""
+    k = Q.shape[1]
+    q, r = torch.linalg.qr(torch.cat([Q.double(), V.double().T], 1))
+    keep = r.diagonal()[k:].abs() >= PERP_TOL
+    return q[:, k:][:, keep].contiguous()
+
+
+def shared_basis(Qa: torch.Tensor, Qb: torch.Tensor) -> tuple[torch.Tensor, list[float]]:
+    """Amendment 72 note 52: span(a) ∩ span(b) estimated as the principal vectors (Qa u_i, Qb v_i) with cosine s_i >=
+    SHARED_COS, each pair's normalised bisector (orthonormal across i); and every principal cosine >= SHARED_COS."""
+    U, S_, Vh = torch.linalg.svd(Qa.T.double() @ Qb.double(), full_matrices=False)
+    sel = S_ >= SHARED_COS
+    B = Qa.double() @ U[:, sel] + Qb.double() @ Vh.T[:, sel]
+    return (B / B.norm(dim=0, keepdim=True)).contiguous(), [round(float(x), 4) for x in S_[sel]]
+
+
+class LazySpans:
+    """Amendment 72: per-row kept spans built when removal_edit iterates over them (inside the forward), so the large
+    note 50 / 52 bases (up to [d, 8|A|] per row and layer) are never all held at once."""
+
+    def __init__(self, fn, n: int):
+        self.fn, self.n = fn, n
+
+    def __iter__(self):
+        return (self.fn(i) for i in range(self.n))
+
+
+def measured(inner, emask: torch.Tensor, acc: torch.Tensor):
+    """Amendment 72 (shared logging, every condition): wraps an edit to log |edit| / |h|: per batch row b, acc[b] +=
+    [sum over b's edited positions of |edit(h) - h|^2, the same sum of |h|^2] at each layer call; the row's edit_rel is
+    acc[b, 0] / acc[b, 1] (summed over the band's layers). The edit's output is returned unchanged (the same tensor)."""
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        out = inner(h)
+        x = h.float()
+        m = emask[:, : x.shape[1]].double()
+        acc[:, 0] += ((x - out.reshape(x.shape)).double().pow(2).sum(-1) * m).sum(1)
+        acc[:, 1] += (x.double().pow(2).sum(-1) * m).sum(1)
+        return out
+
+    if hasattr(inner, "sinks"):  # _nosink conditions: the same counter list
+        edit.sinks = inner.sinks
+    return edit
+
+
+N58_DARK_SHARE = 0.05  # amendment 84 note 58: the dark space = W_U's right singular vectors of the smallest 5% singular values
+N58_CACHE = Path("/workspace/scratch/n58")
+
+
+def n58_cond(cond: str) -> tuple[str, tuple[int, int]] | None:
+    """Amendment 84 note 58: darkperm_L<a>-<b> / midperm_L<a>-<b> (the window's layers a..b): ("dark" | "mid", (a, b))."""
+    m = re.fullmatch(r"(dark|mid)perm_L(\d+)-(\d+)", cond)
+    return (m[1], (int(m[2]), int(m[3]))) if m else None
+
+
+def n58_perm(key: str, n: int, width: int) -> list[int]:
+    """Note 58: position t reads the subspace component of position perm[t]; positions 1..n-1 shuffled by
+    random.Random(key) (DarkLens §3.2: the non-initial positions of the sequence), position 0 and any padding fixed."""
+    import random
+
+    p = list(range(1, n))
+    random.Random(key).shuffle(p)
+    return [0] + p + list(range(n, width))
+
+
+def perm_edit(V: torch.Tensor, perms: torch.Tensor):
+    """Note 58 (DarkLens §3.2): h~_t = h_t - P h_t + P h_perm(t) with P = V V^T (V [d, k] orthonormal), then rescaled to |h_t|;
+    position 0 is returned unchanged. perms [B, T] (long)."""
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        x = h.float()
+        c = x @ V  # [B, T, k]
+        cp = torch.gather(c, 1, perms[:, : x.shape[1], None].expand(-1, -1, c.shape[-1]))
+        ht = x + (cp - c) @ V.T
+        out = ht * (x.norm(dim=-1, keepdim=True) / ht.norm(dim=-1, keepdim=True).clamp_min(1e-12))
+        out[:, 0] = x[:, 0]
+        return out
+
+    return edit
+
+
+@torch.no_grad()
+def n58_spectrum(model) -> tuple[torch.Tensor, torch.Tensor]:
+    """W_U's (lm_head.weight, vocab x d) singular values (descending) and right singular vectors [d, d] (columns), from the
+    float64 Gram W^T W (eigh), cached in N58_CACHE/vdark_<target>.pt."""
+    N58_CACHE.mkdir(parents=True, exist_ok=True)
+    path = N58_CACHE / f"vdark_{pins.TARGET}.pt"
+    W = model.hf.lm_head.weight
+    if path.exists():
+        z = torch.load(path)
+        if z["shape"] == list(W.shape):
+            return z["S"].cuda(), z["V"].cuda()
+    G = torch.zeros(W.shape[1], W.shape[1], dtype=torch.float64, device="cuda")
+    for s0 in range(0, W.shape[0], 16384):
+        w = W[s0 : s0 + 16384].double()
+        G += w.T @ w
+    ev, vec = torch.linalg.eigh(G)
+    order = ev.argsort(descending=True)
+    S, V = ev[order].clamp_min(0).sqrt().float(), vec[:, order].float().contiguous()
+    torch.save({"S": S.cpu(), "V": V.cpu(), "shape": list(W.shape), "model": pins.model_pin()}, path)
+    return S, V
+
+
+def mid_block(d: int, d_dark: int, m: int) -> tuple[int, int]:
+    """Note 58's control subspace: m contiguous right singular vectors centred on the median singular value (index d // 2 in
+    descending order), shifted so the dark vectors (the last d_dark) are never included."""
+    lo = max(0, d // 2 - m // 2)
+    hi = lo + m
+    if hi > d - d_dark:
+        hi = d - d_dark
+        lo = hi - m
+    return lo, hi
 
 
 def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str], skip: int = 0,
@@ -141,7 +377,8 @@ def built_country_prompts(model, tok, fams: list[str], n: int) -> list[dict]:
 
 
 def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n: int, kinds: list[str],
-                  level: str = "pick", strata: tuple[str, ...] = ("core",), per_word: bool = False) -> list[dict]:  # fmt: skip
+                  level: str = "pick", strata: tuple[str, ...] = ("core",), per_word: bool = False,
+                  scene_words: list[str] | None = None) -> list[dict]:  # fmt: skip
     """tasks_v2 items of the compared words (--tasks-words) from scenes the model gets right on them throughout, at
     one level for the comparison (tasks_v2.eligible), first n per word; the whole question ('clean') and each step
     alone ('stepN'), each with its own instruction, read as the suite reads them (a digit after 'Answer: ')."""
@@ -149,7 +386,7 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
 
     assert words, "--tasks-words: name the compared words (they set the level and the eligibility)"
     out = []
-    for it in T.eligible(set_name, comp_run, words, n, level, strata=tuple(strata), per_word=per_word):
+    for it in T.eligible(set_name, comp_run, words, n, level, strata=tuple(strata), per_word=per_word, scene_words=scene_words):
         parts = [("clean", it["question"], it["answer"], it["kind"])]
         parts += [(f"step{i}", st["question"], st["answer"], st["kind"]) for i, st in enumerate(it["steps"], 1)]
         for kind, q, a, k in parts:
@@ -159,7 +396,7 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
                 S.ids(tok, " ") if k == "digit" else []
             )
             out.append({"family": it["word"], "id": it["id"], "kind": kind, "ids": ids, "tok": S.answer_token(tok, a, k),
-                        "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]})  # fmt: skip
+                        "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"], "desc": it.get("start_desc")})  # fmt: skip
             if "framing" in it:  # natural_v1 (2026-10-23): the read's candidates, its relation's answers (bridges for hop 1)
                 own = it["steps"][int(kind[4:]) - 1].get("cand_vocab") if kind.startswith("step") else it.get("answer_vocab")
                 vocab = own or natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]  # natural3: own
@@ -169,6 +406,11 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
                 ok2 = both(a) | ({t for x in it["steps"][0].get("alts", []) for t in both(x)} if kind == "step1" else set())
                 out[-1]["ok2"] = sorted(ok2)
                 out[-1]["cands2"] = sorted({t for v in vocab for t in both(v)} | ok2)
+                # forms (amendment 64 note 37, paper10_keepA's span): cands2 plus the same answers' first tokens with a
+                # leading space, either case (note 35's "any form"); used by --keepA-forms every only
+                sp = lambda v: {S.ids(tok, " " + v)[0], S.ids(tok, " " + v.lower())[0]}  # noqa: E731
+                src = set(vocab) | {a} | (set(it["steps"][0].get("alts", [])) if kind == "step1" else set())
+                out[-1]["forms"] = sorted(set(out[-1]["cands2"]) | {t for v in src for t in sp(v)})
     return out
 
 
@@ -260,11 +502,15 @@ def question_start(tok, ids: list[int]) -> int:
     return next(i for i, s in enumerate(starts) if s + len(pieces[i]) > q_start)
 
 
-def outside_positions(mode: str, n: int, q0: int, bridge_pos: list[int]) -> list[int]:
+def outside_positions(mode: str, n: int, q0: int, bridge_pos: list[int], desc_pos: list[int] | None = None) -> list[int]:
     """Positions a removal leaves unedited under --positions: all (none), context (the question on), question (before
     it), final (every position but the last, the answer position; 2026-10-24) or bridge (every position but the
-    bridge's mentions; a prompt that never names its bridge, e.g. a recalled start, is left unedited; 2026-10-24)."""
+    bridge's mentions; a prompt that never names its bridge, e.g. a recalled start, is left unedited; 2026-10-24) or desc
+    (amendment 61 note 33: every position but the question's description of the bridge, start_desc; none found: unedited)."""
     keep = set(bridge_pos)
+    if mode == "desc":
+        d = set(desc_pos or [])
+        return [i for i in range(n) if i not in d]
     return {"all": [], "context": list(range(q0, n)), "question": list(range(q0)), "final": list(range(n - 1)),
             "bridge": [i for i in range(n) if i not in keep]}[mode]  # fmt: skip
 
@@ -305,6 +551,12 @@ def top_k(cond: str) -> int | None:
         return 10
     # topK: the J-lens dictionary; unembedK (2026-10-22, the size-matched specificity control): the unembedding rows
     m = re.fullmatch(r"(?:top|unembed|pca)(\d+)(_nosink)?(_rot|_rdict|_pcasize)?", cond)  # _pcasize: amendment 54
+    if m:
+        return int(m[1])
+    m = re.fullmatch(r"top(\d+)_keepA(_rot)?", cond)  # amendment 72 note 51: topK with A's span kept (paper10's protection)
+    if m:
+        return int(m[1])
+    m = re.fullmatch(r"top(\d+)_keepRE(_rot)?", cond)  # amendment 78 note 57: topK with an energy-matched random span kept
     return int(m[1]) if m else None
 
 
@@ -342,6 +594,32 @@ def conditions_for(band: tuple[int, ...], conditions: list[str]) -> list[str]:
     return [c for c in conditions if len(band) <= WIDE or top_k(c) is not None]
 
 
+def answer_span_edit(D, rows: list[torch.Tensor], outside: list[list[int]], rotation: torch.Tensor | None = None):
+    """Amendment 58 note 3 (Zach, 2026-10-27): at every edited position of batch row b, remove the projection onto the
+    span of D's unit vectors for rows[b] (the item's candidate answers' first tokens, both cases: its cands2), the
+    same span at every position; with rotation, the removal vector is turned by it (the same-size control).
+    Positions in outside[b] are unchanged."""
+    bases = []
+    for r in rows:
+        A = D.atoms(r).double()  # [k, d]
+        Q, _ = torch.linalg.qr(A.T)  # [d, k], orthonormal columns spanning the candidates' directions
+        bases.append(Q)
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        out = h.float().clone()
+        for b, Q in enumerate(bases):
+            x = out[b].double()
+            r = (x @ Q) @ Q.T
+            if outside[b]:
+                r[torch.tensor(outside[b], device=h.device)] = 0
+            if rotation is not None:
+                r = r @ rotation.double().T
+            out[b] = (x - r).float()
+        return out
+
+    return edit
+
+
 def label(band: tuple[int, ...]) -> str:
     contiguous = band == tuple(range(band[0], band[-1] + 1))
     return f"L{band[0]}-{band[-1]}" if contiguous and len(band) > 1 else "L" + ",".join(map(str, band))
@@ -365,8 +643,63 @@ def main(args) -> None:
                 "git_commit": commit, "git_state": pins.git_state(), "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "tasks_scene_words": args.tasks_scene_words, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
+    if any(keep_kind(c) or is_rand(c) for c in args.conditions):  # amendment 64 note 37; amendment 67 note 41
+        manifest["keepA_forms"] = args.keepA_forms
+    if any(is_rand(c) for c in args.conditions):
+        manifest["n41_random_rows"] = ('random.Random("n41:" + id).sample(letter-token rows minus A\'s rows minus the protected '
+                                       "rows, 4 |A|), in draw order: R = the first |A|, R2 the first 2 |A|, R4 all (rand_rows.jsonl)")
+    if any(is_n44(c) for c in args.conditions):
+        manifest["n44_spans"] = ("Cap: every form of every capital in jsuite_v5key.CAPITAL / CAPITAL_ALIASES; Cty: every form of every "
+                                 f"country in {N44_SAY_SET}'s MM answer_vocab, count-matched to Cap by random.Random(\"n44:\" + id).sample; "
+                                 "CapCty: their union; Rcap: random.Random(\"n41:\" + id).sample(letter rows minus Cap's minus the "
+                                 "protected, 4 |Cap|), its shortest prefix whose share of paper10's removal energy is >= Cap's (n44_spans.json, "
+                                 "n44_rows.jsonl, paper10 rows' retained44)")  # fmt: skip
+    if any(n49_kind(c) or is_n51(c) or is_n52(c) for c in args.conditions):  # amendment 72 notes 49-52
+        manifest["amendment72"] = {
+            "protF": "protected = paper10's (clean top-10 letter rows) + the letter rows of the first token of every form (note 45: "
+                     "stripped decode as written, lower, capitalised; with and without a leading space) of each clean top-10 token",
+            "protC": f"protF + every letter row with cosine >= {OWN_COS} to a clean top-10 letter token's atom at that layer",
+            "keepT10": "keep_span = QR of the unit J++ vectors of protF's rows (the top-10's own rows + added forms)",
+            "keepRT10": 'random.Random("n49:" + id).sample(letter rows minus protF\'s rows, |T10 rows|)',
+            "keepOwn": "every form of the item's own answer (note 37's forms: as read and lower case; leading space, either case)",
+            "keepSib": 'one sibling answer of the relation (answer_vocab), letter rows disjoint from Own\'s, row count matched (closest if '
+                       'none), random.Random("n49sib:" + id).choice(sorted candidates)',
+            "R4perp_R8perp": 'note 41\'s rows (random.Random("n41:" + id); R8 = the 8|A| draw, its first 4|A| = R4, asserted), each '
+                             f"projected off span(A) per layer and re-orthonormalised (one QR of [Q_A | V]; |R_jj| < {PERP_TOL} dropped)",
+            "onlyA": "r' = P_A r under paper10's protection (+ _rot: turned by the same rotation)",
+            "ansRk": 'answer_span_edit over random.Random("n50:" + id).sample(letter rows minus A\'s rows, |cands2 rows|)',
+            "topK_keepA": "topK's removal (paper10's protection: the clean top-10 letter rows) minus its part in span(A)",
+            "CapPerp_CtyPerp": "note 44's Cap span projected off the item's Cty span per layer (and the reverse), as R4perp",
+            "Shared": f"bisectors of the principal vectors of span(Cap) and span(Cty) with cosine >= {SHARED_COS}",
+            "keeplog": "keeplog.jsonl: per item, in paper10's (and topK's) forward, summed over the band's layers and edited positions: "
+                       "E_X = sum |P_X r|^2 / sum |r|^2 for each keep; alpha_X = 1 - sum |P_A (r - P_X r)|^2 / sum |P_A r|^2; for "
+                       "protF / protC (their removal r_X recomputed on paper10's residuals) E_X = 1 - sum <r, r_X> / sum |r|^2 and the "
+                       "share of paper10's answer part they still remove, sum |P_A r_X|^2 / sum |P_A r|^2; ranks; |edit| / |h|. The new "
+                       "conditions' rows carry keeplog: |edit| / |h| in their own forward and the kept rank / protected row count",
+            "topk_chunk": args.topk_chunk,
+            **({"note52b": "keepRShared / RCapPerp / RCtyPerp: the first k rows of note 44's Rcap pool (random.Random(\"n41:\" + id), "
+                           "4 |Cap| rows, nested QR), k per item = the smallest prefix whose share of paper10's removal energy reaches the "
+                           "span's (paper10's forward; keeplog k52b, E_R*); keepSharedNoLit: Shared projected off the item's rows in both "
+                           "Cap and its Cty, re-orthonormalised (perp_basis)"} if any(keep_kind(c) in N52B_KEEPS for c in args.conditions) else {}),
+        }  # fmt: skip
+    if any(n57_kind(c) for c in args.conditions):  # amendment 78 note 57
+        manifest["amendment78"] = {
+            "onlyRperp": 'r\' = P_X r; X = the first k columns of QR([Q_A | V]) beyond A (V: random.Random("n41:" + id).sample(note 41\'s pool, '
+                         "16 |A|), its first 4 |A| = note 41's R4, asserted); k per item = the smallest whose share of paper10's removal "
+                         "energy (paper10's forward, summed over layers and positions) reaches E_A (all 16 |A| if none: reached false)",
+            "topK_keepRE": "topK's removal minus its part in span(first k of the same 16 |A| rows), k per item energy-matched to E_A in "
+                           "topK's forward (nested QR of the rows)",
+            "ansRe": 'answer_span_edit over the first k of random.Random("n50:" + id).sample(letter rows minus A\'s, 16 |cands2 rows|) (its '
+                     "first |cands2 rows| = ansRk's), k = the smallest whose removed energy reaches ansJ's in ansJ's forward",
+            "keepRivals": "keep span = every form (note 37's) of every relation answer (not gold) with a form among the clean top-10 tokens, "
+                          "gold's form rows removed",
+            "keepRandRivals": 'as many random relation answers (not gold, not rivals, no form in the top-10, no gold row), each matched to a '
+                              'rival\'s form-row count (closest), random.Random("n57rr:" + id) order',
+            "logs": "n57_rows.jsonl (rows, rivals, tokens), n57_log.jsonl (per item and matching forward: k, reached, E_target, E_match); "
+                    "rows: edit_rel, keeplog.rank",
+        }  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     suite_fams = [f for f in args.families if f in COMPETENCE]
@@ -390,7 +723,14 @@ def main(args) -> None:
             args.tasks_level,
             args.tasks_strata,
             args.tasks_per_word,
+            args.tasks_scene_words,
         )
+        if args.tasks_v4_h1:  # amendment 58 note 20: v4's gate (scripts/nn_swap.v4_split): H1 closed-book right, guess wrong
+            from scripts.nn_swap import v4_split
+
+            v4ok = {i for i, s in v4_split(args.tasks_competence, args.tasks_v4_h1, args.tasks).items() if s == "ok"}
+            prompts = [p for p in prompts if p["id"] in v4ok]
+            print(f"note 20: v4's gate keeps {len(prompts)} prompts", flush=True)
         if args.sample_per_word:  # 2026-10-26 (amendment 49): a seeded random subset of each word's items, not the first n
             import random
 
@@ -417,7 +757,8 @@ def main(args) -> None:
     for p in prompts:
         p["skip"] = bridge_positions(tok, p["ids"], p["bridge"]) if p["bridge"] else []
         q0 = question_start(tok, p["ids"])
-        p["outside"] = outside_positions(args.positions, len(p["ids"]), q0, p["skip"])
+        dpos = bridge_positions(tok, p["ids"], p["desc"]) if args.positions == "desc" and p.get("desc") else []
+        p["outside"] = outside_positions(args.positions, len(p["ids"]), q0, p["skip"], dpos)
     print(len(prompts), "prompts;", len(bands), "bands;", len(args.conditions), "conditions", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -434,7 +775,7 @@ def main(args) -> None:
     rot = {la: rotation(wg.shape[1], SEED_ROT + args.seed_offset + la) for la in layers}
     rdict = {la: RotatedDictionary(dic[la], rotation(wg.shape[1], SEED_DICT + args.seed_offset + la)) for la in layers}
     unembed = None  # the logit lens's directions: the same dictionary with J = identity, one for every layer
-    if any(c.startswith("unembed") for c in args.conditions):
+    if any(c.startswith("unembed") or c.startswith("ansU") for c in args.conditions):
         unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
     pca = {}  # 2026-10-25 (TA note, variance control): the residual's top principal directions at each layer, +/- each
     if any("pca" in c for c in args.conditions):  # paper10_pcasize (amendment 48 note 1): paper10's size, along these
@@ -446,6 +787,22 @@ def main(args) -> None:
             gauss[la] = MatrixDictionary(torch.nn.functional.normalize(torch.randn((letters.numel(), wg.shape[1]),
                                                                                     device="cuda", generator=g), dim=-1))  # fmt: skip
     own_cache: dict[tuple[str, int], torch.Tensor] = {}
+    cap_rows = cty_rows = None  # note 44: the letter-token rows of every form of every capital / country
+    if any(is_n44(c) or is_n52(c) for c in args.conditions):  # amendment 72 note 52: note 44's spans, residualised
+        caps, ctys = n44_values()
+
+        def every_form(vals: list[str]) -> torch.Tensor:  # either case, with or without a leading space (note 37's forms)
+            ids = {S.ids(tok, f)[0] for v in vals for f in (v, v.lower(), " " + v, " " + v.lower())}
+            rr = row_of[torch.tensor(sorted(ids), device="cuda")]
+            return rr[rr >= 0].unique()
+
+        cap_rows, cty_rows = every_form(caps), every_form(ctys)
+        shared = sorted(set(cap_rows.tolist()) & set(cty_rows.tolist()))
+        print(f"note 44: {len(caps)} capitals -> {cap_rows.numel()} rows; {len(ctys)} countries -> {cty_rows.numel()} rows; "
+              f"{len(shared)} rows shared", flush=True)
+        (out_dir / "n44_spans.json").write_text(json.dumps({"capitals": caps, "countries": ctys, "cap_rows": cap_rows.tolist(),
+                                                            "cty_rows": cty_rows.tolist(), "shared_rows": shared,
+                                                            "shared_tokens": [model.decoded[int(letters[i])] for i in shared]}) + "\n")  # fmt: skip
 
     def own_rows(word: str, la: int) -> torch.Tensor:
         if (word, la) not in own_cache:
@@ -459,6 +816,96 @@ def main(args) -> None:
                 rows |= set((cos >= OWN_COS).nonzero().squeeze(1).tolist())
             own_cache[(word, la)] = torch.tensor(sorted(rows), dtype=torch.long, device="cuda")
         return own_cache[(word, la)]
+
+    # amendment 72 (notes 49-52): which machinery this run needs
+    n4950 = any(n49_kind(c) for c in args.conditions)
+    has_keepA = any(keep_kind(c) == "A" for c in args.conditions)  # amendment 72 (shared): paper10 logs E_A whenever A is kept
+    n51ks = {top_k(c) for c in args.conditions if is_n51(c)}  # doses whose plain topK forward logs E_A
+    n52on = any(is_n52(c) for c in args.conditions)
+    n57on = any(n57_kind(c) for c in args.conditions)  # amendment 78 note 57
+    n58V: dict = {}  # amendment 84 note 58: condition -> its subspace basis [d, k]
+    if any(n58_cond(c) for c in args.conditions):
+        n58V = n58_setup(model, tok, args.conditions, out_dir)
+    re_ks = {top_k(c) for c in args.conditions if n57_kind(c) == "keepRE"}  # doses whose plain topK forward sets keepRE's size
+    items72 = {}
+    if any(n49_kind(c) in ("keepOwn", "keepSib") or n57_kind(c) in ("keepRivals", "keepRandRivals") for c in args.conditions):
+        from scripts import tasks_v2 as T
+
+        items72 = {it["id"]: it for it in T.load(args.tasks)}
+    form_cache: dict[int, list[int]] = {}  # token id -> letter rows of the first tokens of its forms (note 45)
+    nbr_cache: dict[tuple[int, int], torch.Tensor] = {}  # (letter row, layer) -> rows with cosine >= OWN_COS to its atom
+
+    def form_rows(t: int) -> list[int]:
+        if t not in form_cache:
+            w = model.decoded[t].strip()
+            form_cache[t] = sorted({int(row_of[i]) for i in first_token_ids(tok, w) if int(row_of[i]) >= 0}) if w else []
+        return form_cache[t]
+
+    def nbr_rows(row: int, la: int) -> torch.Tensor:
+        if (row, la) not in nbr_cache:
+            cos = dic[la].scores(dic[la].atoms(torch.tensor([row], device="cuda")))[0]
+            nbr_cache[(row, la)] = (cos >= OWN_COS).nonzero().squeeze(1)
+        return nbr_cache[(row, la)]
+
+    def letter_rows(ids_: set[int]) -> list[int]:
+        return sorted({int(row_of[i]) for i in ids_ if int(row_of[i]) >= 0})
+
+    def answer_forms(v: str, k: str) -> set[int]:  # note 37's forms of one answer: as read and lower case; leading space, either case
+        return {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k), S.ids(tok, " " + v)[0], S.ids(tok, " " + v.lower())[0]}
+
+    def own_sib(p: dict) -> dict:
+        """Note 49: the item's own answer's form rows, and one sibling's (letter rows disjoint from own's, count matched)."""
+        it = items72.get(p["id"])
+        if it is None or p["kind"] != "clean":
+            return {"own": [], "sib": [], "sib_word": None, "sib_matched": False}
+        a, k = it["answer"], it["kind"]
+        own = letter_rows(answer_forms(a, k))
+        vocab = it.get("answer_vocab") or natural_vocab(args.tasks)[(it["domain"], "answer")]
+        cands = {}
+        for v in sorted(set(vocab)):
+            if v.lower() == a.lower():
+                continue
+            rr = letter_rows(answer_forms(v, k))
+            if rr and not set(rr) & set(own) and S.answer_token(tok, v, k) != S.answer_token(tok, a, k):
+                cands[v] = rr
+        if not cands:
+            return {"own": own, "sib": [], "sib_word": None, "sib_matched": False}
+        best = min(abs(len(rr) - len(own)) for rr in cands.values())
+        pool = sorted(v for v, rr in cands.items() if abs(len(rr) - len(own)) == best)
+        import random
+
+        v = random.Random("n49sib:" + p["id"]).choice(pool)
+        return {"own": own, "sib": cands[v], "sib_word": v, "sib_matched": best == 0}
+
+    def rivals_of(p: dict, top10_ids: list[int]) -> dict:
+        """Note 57: the relation's answers (not gold) with a form among the clean top-10 tokens (rivals; their form rows minus
+        gold's), and as many random answers of the relation that are not gold, not rivals, have no form in the top-10 and no row
+        of gold's, each with its rival's form-row count (closest if none; Random("n57rr:" + id) order)."""
+        it = items72.get(p["id"])
+        if it is None or p["kind"] != "clean":
+            return {"riv": [], "rand": [], "riv_rows": [], "rand_rows": [], "riv_tok": [], "rand_tok": [], "matched": False}
+        a, k = it["answer"], it["kind"]
+        vocab = sorted(set(it.get("answer_vocab") or natural_vocab(args.tasks)[(it["domain"], "answer")]))
+        S10 = set(top10_ids)
+        gold = set(letter_rows(answer_forms(a, k)))
+        rows_v = {v: sorted(set(letter_rows(answer_forms(v, k))) - gold) for v in vocab}
+        riv = [v for v in vocab if v.lower() != a.lower() and answer_forms(v, k) & S10]
+        pool = [v for v in vocab if v.lower() != a.lower() and v not in riv and not answer_forms(v, k) & S10
+                and not set(letter_rows(answer_forms(v, k))) & gold and rows_v[v]]  # fmt: skip
+        import random
+
+        random.Random("n57rr:" + p["id"]).shuffle(pool)
+        rand: list[str] = []
+        for v in riv:
+            left = [u for u in pool if u not in rand]
+            if not left:
+                break
+            want = len(rows_v[v])
+            rand.append(min(left, key=lambda u: abs(len(rows_v[u]) - want)))  # the first in seeded order among the closest
+        rr = sorted({x for v in riv for x in rows_v[v]})
+        ra = sorted({x for v in rand for x in rows_v[v]})
+        return {"riv": riv, "rand": rand, "riv_rows": rr, "rand_rows": ra, "matched": len(rr) == len(ra) and len(rand) == len(riv),
+                "riv_tok": sorted({t for v in riv for t in answer_forms(v, k)}), "rand_tok": sorted({t for v in rand for t in answer_forms(v, k)})}
 
     t0 = time.time()
     rows_out, band_seconds = [], collections.Counter()
@@ -488,11 +935,429 @@ def main(args) -> None:
             # does the protected set (clean top-10 at the answer position) shield the bridge itself? (logged per row)
             shields = [bool(p["bridge"]) and bool(set(model.surface_ids(p["bridge"])) & set(t.tolist()))
                        for p, t in zip(chunk, clean.topk(10, dim=1).indices, strict=True)]  # fmt: skip
+            span_cache: dict = {}  # note 37: (layer, rows) -> kept span, this batch only
+            a_rows, rand_rows = [], []  # note 41: per row, A's dictionary rows and its 4|A| random rows (draw order)
+            if any(is_rand(c) for c in args.conditions) or n4950 or n57on:  # amendments 72 / 78 use A and note 41's rows too
+                for i, p in enumerate(chunk):
+                    rr = row_of[torch.tensor(p[KEEPA_ROWS[args.keepA_forms]], device="cuda")]
+                    a_rows.append(rr[rr >= 0].unique())
+                    pick = random_rows(p["id"], a_rows[-1].numel(), letters.numel(), set(a_rows[-1].tolist()) | set(protected[i].tolist()))
+                    rand_rows.append(torch.tensor(pick, device="cuda"))
+                with (out_dir / "rand_rows.jsonl").open("a") as fh:  # the draws, for audit
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "n_A": int(a_rows[i].numel()),
+                                              "rows4": rand_rows[i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+
+            n44: dict = {}  # note 44: per row, its Cty rows (count-matched), CapCty rows, Rcap pool (draw order) and Rcap's size
+            if cap_rows is not None:
+                nc = cap_rows.numel()
+                for i, p in enumerate(chunk):
+                    cty = torch.tensor(n44_subsample(p["id"], cty_rows.tolist(), nc), device="cuda")
+                    n44.setdefault("cty", []).append(cty)
+                    n44.setdefault("capcty", []).append(torch.cat([cap_rows, cty]).unique())
+                    pool = random_rows(p["id"], nc, letters.numel(), set(cap_rows.tolist()) | set(protected[i].tolist()))
+                    n44.setdefault("pool", []).append(torch.tensor(pool, device="cuda"))
+                n44["k"] = [4 * nc] * len(chunk)  # set from paper10's forward (energy-matched); paper10 runs first
+                with (out_dir / "n44_rows.jsonl").open("a") as fh:  # the draws, for audit
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "kind": p["kind"], "cty_rows": n44["cty"][i].tolist(),
+                                              "rcap_pool": n44["pool"][i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+
+            def kept_span(i: int, la: int, kind: str) -> torch.Tensor:
+                """Row i's kept span at layer la (orthonormal [d, k]): A as note 37, or the first 1x / 2x / 4x |A| columns of
+                one QR of the 4|A| random rows' J++ unit vectors (their spans are nested); note 44: Cap, Cty, CapCty, or Rcap
+                (the first k rows of the item's 4|Cap| random pool, k energy-matched in paper10's forward). Only Cap is cached
+                across conditions: the per-item note 44 spans are rebuilt per use (GPU memory: up to 32 rows x 9 layers)."""
+                if kind == "A":
+                    rr = row_of[torch.tensor(chunk[i][KEEPA_ROWS[args.keepA_forms]], device="cuda")]
+                    rr = rr[rr >= 0].unique()
+                elif kind in ("Cty", "CapCty", "Rcap"):
+                    rr = n44["pool"][i][: n44["k"][i]] if kind == "Rcap" else n44[{"Cty": "cty", "CapCty": "capcty"}[kind]][i]
+                    return torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                elif kind == "Cap":
+                    rr = cap_rows
+                else:
+                    rr = rand_rows[i]
+                ck = (la, tuple(rr.tolist()))
+                if ck not in span_cache:
+                    span_cache[ck] = torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                return span_cache[ck] if kind in ("A", "R4", "Cap") else span_cache[ck][:, : RAND_MULT[kind] * a_rows[i].numel()]
+
+            # amendment 72 notes 49 / 50: per row, protF's rows (= keepT10's), keepRT10's, own / sibling forms, R8, ansRk's rows
+            g72: dict = {}
+            emask = torch.zeros(len(chunk), width, dtype=torch.bool, device="cuda")  # edited positions (|edit| / |h| log)
+            for i, p in enumerate(chunk):
+                emask[i, : len(p["ids"])] = True
+                if p["outside"]:
+                    emask[i, torch.tensor(p["outside"], device="cuda")] = False
+            if n4950:
+                import random
+
+                top10 = clean.topk(10, dim=1).indices
+                for i, p in enumerate(chunk):
+                    added = sorted({r_ for t in top10[i].tolist() for r_ in form_rows(t)} - set(protected[i].tolist()))
+                    pf = torch.cat([protected[i], torch.tensor(added, dtype=torch.long, device="cuda")]).unique()
+                    g72.setdefault("protF", []).append(pf)
+                    g72.setdefault("n_added", []).append(len(added))
+                    excl = set(pf.tolist())
+                    pool = [j for j in range(letters.numel()) if j not in excl]
+                    g72.setdefault("RT10", []).append(torch.tensor(sorted(random.Random("n49:" + p["id"]).sample(pool, pf.numel())), device="cuda"))
+                    os_ = own_sib(p)
+                    g72.setdefault("Own", []).append(torch.tensor(os_["own"], dtype=torch.long, device="cuda"))
+                    g72.setdefault("Sib", []).append(torch.tensor(os_["sib"], dtype=torch.long, device="cuda"))
+                    g72.setdefault("sib", []).append({k: os_[k] for k in ("sib_word", "sib_matched")})
+                    n = a_rows[i].numel()
+                    excl = set(a_rows[i].tolist()) | set(protected[i].tolist())
+                    r8 = random.Random("n41:" + p["id"]).sample([j for j in range(letters.numel()) if j not in excl], 8 * n)
+                    assert r8[: 4 * n] == rand_rows[i].tolist(), "note 50: R8's first 4|A| rows are not note 41's R4"
+                    g72.setdefault("R8", []).append(torch.tensor(r8, device="cuda"))
+                    c2 = row_of[torch.tensor(p["cands2"], device="cuda")]
+                    nc = int(c2[c2 >= 0].unique().numel())
+                    excl = set(a_rows[i].tolist())
+                    g72.setdefault("Rk", []).append(torch.tensor(random.Random("n50:" + p["id"]).sample(
+                        [j for j in range(letters.numel()) if j not in excl], nc), device="cuda"))  # fmt: skip
+                with (out_dir / "n49_rows.jsonl").open("a") as fh:  # the per-item rows, for audit
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "kind": p["kind"],
+                                              "top10": top10[i].tolist(), "protected": protected[i].tolist(),
+                                              "protF": g72["protF"][i].tolist(), "RT10": g72["RT10"][i].tolist(),
+                                              "own": g72["Own"][i].tolist(), "sib": g72["Sib"][i].tolist(), **g72["sib"][i],
+                                              "R8_beyond_R4": g72["R8"][i][4 * a_rows[i].numel():].tolist(),
+                                              "Rk": g72["Rk"][i].tolist()}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+            g57: dict = {}  # amendment 78 note 57: per row, R16 / Re draws, rivals, and the energy-matched sizes (set in the forwards)
+            if n57on:
+                import random
+
+                top10_57 = clean.topk(10, dim=1).indices.tolist()
+                for i, p in enumerate(chunk):
+                    n = a_rows[i].numel()
+                    excl = set(a_rows[i].tolist()) | set(protected[i].tolist())
+                    r16 = random.Random("n41:" + p["id"]).sample([j for j in range(letters.numel()) if j not in excl], 16 * n)
+                    assert r16[: 4 * n] == rand_rows[i].tolist(), "note 57: the 16|A| draw's first 4|A| rows are not note 41's R4"
+                    g57.setdefault("R16", []).append(torch.tensor(r16, device="cuda"))
+                    c2 = row_of[torch.tensor(p["cands2"], device="cuda")]
+                    c2 = c2[c2 >= 0].unique()
+                    g57.setdefault("J", []).append(c2)
+                    exa = set(a_rows[i].tolist())
+                    g57.setdefault("Re", []).append(torch.tensor(random.Random("n50:" + p["id"]).sample(
+                        [j for j in range(letters.numel()) if j not in exa], 16 * c2.numel()), device="cuda"))  # fmt: skip
+                    rv = rivals_of(p, top10_57[i])
+                    g57.setdefault("riv", []).append(rv)
+                    g57.setdefault("Rivals", []).append(torch.tensor(rv["riv_rows"], dtype=torch.long, device="cuda"))
+                    g57.setdefault("RandRivals", []).append(torch.tensor(rv["rand_rows"], dtype=torch.long, device="cuda"))
+                g57["k_onlyR"] = [int(x.numel()) for x in g57["R16"]]  # defaults (all rows) until the matching forward sets them
+                g57["k_RE"] = {K_: [int(x.numel()) for x in g57["R16"]] for K_ in re_ks}
+                g57["k_Re"] = [int(x.numel()) for x in g57["Re"]]
+                with (out_dir / "n57_rows.jsonl").open("a") as fh:
+                    fh.writelines(json.dumps({"id": p["id"], "family": p["family"], "kind": p["kind"], "top10": top10_57[i], "n_A": int(a_rows[i].numel()),
+                                              "R16_beyond_R4": g57["R16"][i][4 * a_rows[i].numel():].tolist(), "Re": g57["Re"][i].tolist(),
+                                              **g57["riv"][i]}) + "\n" for i, p in enumerate(chunk))  # fmt: skip
+            acc57: dict = {}  # cond -> per row {"target", "tot", "cols", ...}, filled in the matching forwards
+
+            def obs57(r: torch.Tensor, B: int, T: int, la: int, cond: str, h: torch.Tensor) -> None:
+                """Note 57's matching in paper10's forward (onlyRperp's size; the rivals' E) and in topK's (keepRE's size). Reads r only."""
+                A_ = acc57.setdefault(cond, [collections.defaultdict(float) for _ in range(B)])
+                for b in range(B):
+                    rb = r[b * T : (b + 1) * T].double()
+                    QA = kept_span(b, la, "A")
+                    l = A_[b]
+                    l["target"] += float((rb @ QA).pow(2).sum())
+                    l["tot"] += float(rb.pow(2).sum())
+                    V = dic[la].atoms(g57["R16"][b]).double()
+                    if cond == "paper10":
+                        q, R_ = torch.linalg.qr(torch.cat([QA, V.T], 1))
+                        Q = q[:, QA.shape[1] :]
+                        l["min_R"] = min(l.get("min_R", 1e9), float(R_.diagonal()[QA.shape[1] :].abs().min()))
+                        for kk in ("Rivals", "RandRivals"):
+                            if f"paper10_keep{kk}" in args.conditions and g57[kk][b].numel():
+                                l["E_" + kk] += float((rb @ torch.linalg.qr(dic[la].atoms(g57[kk][b]).double().T)[0]).pow(2).sum())
+                    else:
+                        Q = torch.linalg.qr(V.T)[0]
+                    c = (rb @ Q).pow(2).sum(0)
+                    l["cols"] = c if isinstance(l["cols"], float) else l["cols"] + c
+
+            def obs57_ans(h: torch.Tensor, la: int) -> None:
+                """Note 57: ansJ's removed energy and each random row's in ansJ's forward (edited positions), for ansRe's size."""
+                A_ = acc57.setdefault("ansJ", [collections.defaultdict(float) for _ in range(h.shape[0])])
+                for b in range(h.shape[0]):
+                    xb = h[b].double()[emask[b, : h.shape[1]]]
+                    l = A_[b]
+                    l["target"] += float((xb @ torch.linalg.qr(dic[la].atoms(g57["J"][b]).double().T)[0]).pow(2).sum())
+                    l["tot"] += float(xb.pow(2).sum())
+                    c = (xb @ torch.linalg.qr(dic[la].atoms(g57["Re"][b]).double().T)[0]).pow(2).sum(0)
+                    l["cols"] = c if isinstance(l["cols"], float) else l["cols"] + c
+
+            def finalize57(cond: str) -> None:
+                """Set the energy-matched sizes from cond's forward and log them (n57_log.jsonl)."""
+                lines_ = []
+                for b, l in enumerate(acc57.pop(cond)):
+                    cum = l["cols"].cumsum(0)
+                    hit = (cum >= l["target"]).nonzero()
+                    k = int(hit[0]) + 1 if hit.numel() else cum.numel()
+                    if cond == "paper10":
+                        g57["k_onlyR"][b] = k
+                    elif cond == "ansJ":
+                        g57["k_Re"][b] = k
+                    else:
+                        g57["k_RE"][top_k(cond)][b] = k
+                    tot = l["tot"]
+                    lines_.append({"id": chunk[b]["id"], "family": chunk[b]["family"], "kind": chunk[b]["kind"], "forward": cond, "k": k,
+                                   "n_pool": int(cum.numel()), "reached": bool(hit.numel()), "E_target": l["target"] / tot if tot > 0 else None,
+                                   "E_match": float(cum[k - 1]) / tot if tot > 0 else None, "min_R": l.get("min_R"),
+                                   **{k_: v / tot for k_, v in l.items() if k_.startswith("E_") and tot > 0}})  # fmt: skip
+                with (out_dir / "n57_log.jsonl").open("a") as fh:
+                    fh.writelines(json.dumps(x) + "\n" for x in lines_)
+
+            def edit57(cond: str, la: int):
+                """Note 57's edit for cond at layer la."""
+                rot_ = rot[la] if cond.endswith("_rot") else None
+                kind = n57_kind(cond)
+                if kind == "ansRe":
+                    rows_ = [g57["Re"][i][: g57["k_Re"][i]] for i in range(len(chunk))]
+                    for i in range(len(chunk)):
+                        rank72[cond][i].append(int(rows_[i].numel()))
+                    return answer_span_edit(dic[la], rows_, [p["outside"] for p in chunk], rotation=rot_)
+                rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
+                if kind == "onlyRperp":  # r' = P_X r, X the energy-matched random span orthogonal to A
+                    cap: dict = {}
+                    inner = removal_edit("top", dic[la], rs, k=10, observe=lambda r, B, T: cap.__setitem__("r", r))
+
+                    def only(h: torch.Tensor, inner=inner, cap=cap, la=la, rot_=rot_, cond=cond) -> torch.Tensor:
+                        B, T, d = h.shape
+                        inner(h)
+                        r = cap.pop("r")
+                        out = torch.zeros_like(r)
+                        for b in range(B):
+                            QA = kept_span(b, la, "A")
+                            V = dic[la].atoms(g57["R16"][b][: g57["k_onlyR"][b]]).double()
+                            Q = torch.linalg.qr(torch.cat([QA, V.T], 1))[0][:, QA.shape[1] :]
+                            rank72[cond][b].append(int(Q.shape[1]))
+                            rb = r[b * T : (b + 1) * T].double()
+                            out[b * T : (b + 1) * T] = ((rb @ Q) @ Q.T).float()
+                        if rot_ is not None:
+                            out = out @ rot_.T
+                        return (h.reshape(B * T, d).float() - out).reshape(B, T, d)
+
+                    return only
+                K_ = top_k(cond)
+
+                def fn(i: int, la=la, kind=kind, cond=cond, K_=K_) -> torch.Tensor:
+                    rr = g57["R16"][i][: g57["k_RE"][K_][i]] if kind == "keepRE" else g57[kind.removeprefix("keep")][i]
+                    Q = (torch.linalg.qr(dic[la].atoms(rr).double().T)[0] if rr.numel()
+                         else torch.zeros(wg.shape[1], 0, dtype=torch.float64, device="cuda"))  # fmt: skip
+                    rank72[cond][i].append(int(Q.shape[1]))
+                    return Q
+
+                return removal_edit("top", dic[la], rs, rotation=rot_, k=K_, keep_span=LazySpans(fn, len(chunk)),
+                                    **({"chunk": args.topk_chunk} if args.topk_chunk and K_ > 10 else {}))  # fmt: skip
+
+            protc_cache: dict = {}
+
+            def protc_rows(i: int, la: int) -> torch.Tensor:
+                """Note 49's protC at layer la: protF's rows + every row with cosine >= OWN_COS to a clean top-10 letter token's atom."""
+                if (i, la) not in protc_cache:
+                    protc_cache[(i, la)] = torch.cat([g72["protF"][i]] + [nbr_rows(int(r_), la) for r_ in protected[i]]).unique()
+                return protc_cache[(i, la)]
+
+            rank72: dict = collections.defaultdict(lambda: collections.defaultdict(list))  # cond -> row -> kept rank per layer
+
+            def span72(i: int, la: int, kind: str) -> torch.Tensor:
+                """Amendment 72's kept spans (orthonormal [d, r]) of row i at layer la."""
+                if kind in ("T10", "RT10", "Own", "Sib"):
+                    rr = g72["protF" if kind == "T10" else kind][i]
+                    if rr.numel() == 0:
+                        return torch.zeros(wg.shape[1], 0, dtype=torch.float64, device="cuda")
+                    return torch.linalg.qr(dic[la].atoms(rr).double().T)[0]
+                if kind in ("R4perp", "R8perp"):
+                    return perp_basis(kept_span(i, la, "A"), dic[la].atoms(rand_rows[i] if kind == "R4perp" else g72["R8"][i]))
+                if kind == "CapPerp":
+                    return perp_basis(kept_span(i, la, "Cty"), dic[la].atoms(cap_rows))
+                if kind == "CtyPerp":
+                    return perp_basis(kept_span(i, la, "Cap"), dic[la].atoms(n44["cty"][i]))
+                if kind == "Shared":
+                    return shared_basis(kept_span(i, la, "Cap"), kept_span(i, la, "Cty"))[0]
+                if kind == "SharedNoLit":  # note 52b: Shared projected off the rows literally in both sets (this item's Cty)
+                    lit = sorted(set(cap_rows.tolist()) & set(n44["cty"][i].tolist()))
+                    ql = (torch.linalg.qr(dic[la].atoms(torch.tensor(lit, device="cuda")).double().T)[0] if lit
+                          else torch.zeros(wg.shape[1], 0, dtype=torch.float64, device="cuda"))  # fmt: skip
+                    return perp_basis(ql, shared_basis(kept_span(i, la, "Cap"), kept_span(i, la, "Cty"))[0].T)
+                if kind in ("RShared", "RCapPerp", "RCtyPerp"):  # note 52b: the first k rows of the Rcap pool, k matched in paper10's forward
+                    return torch.linalg.qr(dic[la].atoms(n44["pool"][i][: k52b[kind[1:]][i]]).double().T)[0]
+                raise ValueError(kind)
+
+            def edit72(cond: str, la: int):
+                """Amendment 72's edit for cond at layer la (notes 49, 50, 52)."""
+                rot_ = rot[la] if cond.endswith("_rot") else None
+                kind = n49_kind(cond)
+                outside = [p["outside"] for p in chunk]
+                if kind == "ansRk":  # note 50: answer_span_edit over as many random rows as ansJ's
+                    for i in range(len(chunk)):
+                        rank72[cond][i].append(int(g72["Rk"][i].numel()))
+                    return answer_span_edit(dic[la], list(g72["Rk"]), outside, rotation=rot_)
+                rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
+                if kind in ("protF", "protC"):
+                    rs = [RowSettings(skip=p["outside"], protected=g72["protF"][i] if kind == "protF" else protc_rows(i, la))
+                          for i, p in enumerate(chunk)]  # fmt: skip
+                    for i in range(len(chunk)):
+                        rank72[cond][i].append(int(rs[i].protected.numel()))
+                    return removal_edit("top", dic[la], rs, rotation=rot_, k=10)
+                if kind == "onlyA":  # note 50: r' = P_A r (the removal's answer part only), turned for _rot
+                    cap: dict = {}
+                    inner = removal_edit("top", dic[la], rs, k=10, observe=lambda r, B, T: cap.__setitem__("r", r))
+
+                    def only(h: torch.Tensor, inner=inner, cap=cap, la=la, rot_=rot_) -> torch.Tensor:
+                        B, T, d = h.shape
+                        inner(h)
+                        r = cap.pop("r")
+                        out = torch.zeros_like(r)
+                        for b in range(B):
+                            Q = kept_span(b, la, "A")
+                            rb = r[b * T : (b + 1) * T].double()
+                            out[b * T : (b + 1) * T] = ((rb @ Q) @ Q.T).float()
+                        if rot_ is not None:
+                            out = out @ rot_.T
+                        return (h.reshape(B * T, d).float() - out).reshape(B, T, d)
+
+                    for i in range(len(chunk)):
+                        rank72[cond][i].append(int(kept_span(i, la, "A").shape[1]))
+                    return only
+                kk = keep_kind(cond)  # a kept span: T10, RT10, Own, Sib, R4perp, R8perp, CapPerp, CtyPerp, Shared
+
+                def fn(i: int, la=la, kk=kk, cond=cond) -> torch.Tensor:
+                    Q = span72(i, la, kk)
+                    rank72[cond][i].append(int(Q.shape[1]))
+                    return Q
+
+                return removal_edit("top", dic[la], rs, rotation=rot_, k=10, keep_span=LazySpans(fn, len(chunk)))
+
+            log72: dict = {}  # paper10's (notes 49, 50, 52) and topK's (note 51) per-row sums, filled by observe72
+            k52b = {kk: [int(x.numel()) for x in n44.get("pool", [])] for kk in N52_KEEPS}  # note 52b: matched sizes (set after paper10)
+
+            def observe72(r: torch.Tensor, B: int, T: int, la: int, cond: str, h: torch.Tensor) -> None:
+                """Amendment 72's log in paper10's forward (notes 49 / 50 / 52) or a plain topK's (note 51): energies of r in each
+                kept span, alpha, the protections' removals on the same residuals, ranks, |edit| / |h|. Reads r only."""
+                L = log72.setdefault(cond, [collections.Counter() for _ in range(B)])
+                d = h.shape[-1]
+                x = h.reshape(B * T, d).float()
+                xn = x.norm(dim=-1)
+                rp: dict = {}
+                if cond == "paper10" and n4950:
+                    for kp in ("F", "C"):
+                        if any(n49_kind(c) == "prot" + kp for c in args.conditions):
+                            cap: dict = {}
+                            rs = [RowSettings(skip=p["outside"], protected=g72["protF"][i] if kp == "F" else protc_rows(i, la))
+                                  for i, p in enumerate(chunk)]  # fmt: skip
+                            removal_edit("top", dic[la], rs, k=10, observe=lambda rr, B_, T_, cap=cap: cap.__setitem__("r", rr.clone()))(h)
+                            rp[kp] = cap["r"]
+                for b in range(B):
+                    rb = r[b * T : (b + 1) * T].double()
+                    m = emask[b, :T]
+                    l = L[b]
+                    l["energy"] += float(rb.pow(2).sum())
+                    l["dr2"] += float(r[b * T : (b + 1) * T].double().pow(2).sum(-1)[m].sum())
+                    l["h2"] += float(xn[b * T : (b + 1) * T].double().pow(2)[m].sum())
+                    l["layers"] += 1
+                    if cond == "paper10" and n52on:
+                        for kk in N52_KEEPS + ("SharedNoLit",):
+                            if f"paper10_keep{kk}" in args.conditions or f"paper10_keepR{kk}" in args.conditions:
+                                if kk == "Shared":
+                                    Q, cs = shared_basis(kept_span(b, la, "Cap"), kept_span(b, la, "Cty"))
+                                    l["n_cos_ge"] += len(cs)
+                                    if "paper10_keepSharedNoLit" in args.conditions:  # note 52b: literal shared rows per item
+                                        l["n_lit"] = len(set(cap_rows.tolist()) & set(n44["cty"][b].tolist()))
+                                else:
+                                    Q = span72(b, la, kk)
+                                l["E_" + kk] += float((rb @ Q).pow(2).sum())
+                                l["rank_" + kk] += Q.shape[1]
+                        continue
+                    QA = kept_span(b, la, "A")
+                    aA = rb @ QA
+                    l["ansE"] += float(aA.pow(2).sum())
+                    l["E_A"] += float(aA.pow(2).sum())
+                    l["rank_A"] += QA.shape[1]
+                    if cond != "paper10":  # note 51: topK's E_A only
+                        continue
+                    spans = {"A": QA, "R": kept_span(b, la, "R"), "R2": kept_span(b, la, "R2"), "R4": kept_span(b, la, "R4")}
+                    for kk in ("T10", "RT10", "Own", "Sib", "R4perp", "R8perp"):
+                        if f"paper10_keep{kk}" in args.conditions:
+                            spans[kk] = span72(b, la, kk)
+                    for kk, Q in spans.items():
+                        pX = rb @ Q
+                        l["alpha_num_" + kk] += float(((rb - pX @ Q.T) @ QA).pow(2).sum())
+                        if kk != "A":  # A's energy and rank are logged above
+                            l["E_" + kk] += float(pX.pow(2).sum())
+                            l["rank_" + kk] += Q.shape[1]
+                    for kp, rX in rp.items():
+                        rXb = rX[b * T : (b + 1) * T].double()
+                        l["dot_" + kp] += float((rb * rXb).sum())
+                        l["ansX_" + kp] += float((rXb @ QA).pow(2).sum())
+                        l["dr2_" + kp] += float(rX[b * T : (b + 1) * T].double().pow(2).sum(-1)[m].sum())
+                        l["n_prot_" + kp] += int(g72["protF"][b].numel() if kp == "F" else protc_rows(b, la).numel())
+
+            def keeplog_line(cond: str, b: int) -> dict:
+                l, p = log72[cond][b], chunk[b]
+                nl, e, a = max(l["layers"], 1), l["energy"], l["ansE"]
+                out = {"id": p["id"], "family": p["family"], "kind": p["kind"], "condition": cond, "energy": e,
+                       "edit_rel": l["dr2"] / l["h2"] if l["h2"] > 0 else None, "E": {}, "rank": {}}  # fmt: skip
+                for k_, v in l.items():
+                    if k_.startswith("E_"):
+                        out["E"][k_[2:]] = v / e if e > 0 else None
+                    elif k_.startswith("rank_"):
+                        out["rank"][k_[5:]] = v / nl
+                if cond == "paper10" and n4950:
+                    out["ansE"] = a
+                    out["alpha"] = {k_[10:]: (1 - v / a if a > 0 else None) for k_, v in l.items() if k_.startswith("alpha_num_")}
+                    out["prot"] = {kp: {"E": (1 - l["dot_" + kp] / e if e > 0 else None), "ans_removed": (l["ansX_" + kp] / a if a > 0 else None),
+                                        "edit_rel": l["dr2_" + kp] / l["h2"] if l["h2"] > 0 else None, "n_rows": l["n_prot_" + kp] / nl}
+                                   for kp in ("F", "C") if ("dot_" + kp) in l}  # fmt: skip
+                    out["n_rows"] = {"A": int(a_rows[b].numel()), "protected": int(protected[b].numel()), "protF": int(g72["protF"][b].numel()),
+                                     "protF_added": g72["n_added"][b], "RT10": int(g72["RT10"][b].numel()), "Own": int(g72["Own"][b].numel()),
+                                     "Sib": int(g72["Sib"][b].numel()), "R8": int(g72["R8"][b].numel()), "Rk": int(g72["Rk"][b].numel())}  # fmt: skip
+                    out["sib"] = g72["sib"][b]
+                if cond == "paper10" and n52on:
+                    out["n_cos_ge_shared"] = l["n_cos_ge"] / nl
+                    if any(k_.startswith("k_R") for k_ in l):  # note 52b: the matched random keeps' sizes
+                        out["k52b"] = {k_: v for k_, v in l.items() if k_.startswith(("k_R", "reached_R", "n_pool"))}
+                    if "n_lit" in l:
+                        out["n_lit_shared_rows"] = l["n_lit"]
+                return out
+
             for band in bands:
                 tb = time.time()
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
-                    for la in band:
+                    energy = torch.zeros(len(chunk), 5, dtype=torch.float64, device="cuda") if rand_rows else None  # note 41: |r|^2, in A, R, R2, R4
+                    if energy is None and has_keepA:  # amendment 72 (shared): |r|^2 and its part in A when A is kept but no note 41 rows
+                        energy = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")
+                    if n44 and cond == "paper10":  # note 44: |r|^2, in Cap, Cty, CapCty; the pool's per-column energy; span overlap
+                        e44 = torch.zeros(len(chunk), 4, dtype=torch.float64, device="cuda")
+                        e44pool = torch.zeros(len(chunk), 4 * cap_rows.numel(), dtype=torch.float64, device="cuda")
+                        ov44 = torch.zeros(len(chunk), dtype=torch.float64, device="cuda")
+                    acc72 = torch.zeros(len(chunk), 2, dtype=torch.float64, device="cuda")  # amendment 72: |edit|^2, |h|^2 sums
+                    n58c = n58_cond(cond)  # amendment 84 note 58: its own window, not the band
+                    if n58c:
+                        perms = torch.tensor([n58_perm("n58:" + p["id"], len(p["ids"]), width) for p in chunk], device="cuda")
+                        edits = {la: perm_edit(n58V[cond], perms) for la in range(n58c[1][0], n58c[1][1] + 1)}
+                    for la in (() if n58c else band):
+                        if n57_kind(cond):  # amendment 78 note 57 (ansRe before ansR's prefix test)
+                            edits[la] = edit57(cond, la)
+                            continue
+                        if n49_kind(cond) or is_n52(cond):  # amendment 72 notes 49, 50, 52 (ansRk before ansR's prefix test)
+                            edits[la] = edit72(cond, la)
+                            continue
+                        if cond.startswith("ans"):  # amendment 58 note 3: the candidate answers' directions only
+                            if cond.startswith("ansR"):  # amendment 67 note 41: R's span instead (the first |A| random rows)
+                                cand_rows = [rr[: a_rows[i].numel()] for i, rr in enumerate(rand_rows)]
+                            elif cond.startswith("ansCap"):  # amendment 68 note 44: every form of every capital
+                                cand_rows = [cap_rows] * len(chunk)
+                            elif cond.startswith("ansCty"):  # note 44: the item's count-matched country rows
+                                cand_rows = list(n44["cty"])
+                            else:
+                                cand_rows = []
+                                for p in chunk:
+                                    rr = row_of[torch.tensor(p["cands2"], device="cuda")]
+                                    cand_rows.append(rr[rr >= 0].unique())
+                            edits[la] = answer_span_edit(unembed if cond.startswith("ansU") else dic[la], cand_rows,
+                                                         [p["outside"] for p in chunk],
+                                                         rotation=rot[la] if cond.endswith("_rot") else None)
+                            continue
                         if cond.startswith("pca"):  # the variance control: no protected atoms (they index token rows)
                             rs = [RowSettings(skip=p["outside"]) for p in chunk]
                         elif top_k(cond) is not None and "keepown" in cond:  # C1's kill test under paper10 (2026-10-21)
@@ -510,6 +1375,41 @@ def main(args) -> None:
                         method = "top" if top_k(cond) is not None else "omp"
                         d = (unembed if cond.startswith("unembed") else pca[la] if cond.startswith("pca") else rdict[la] if cond.endswith("_rdict")
                              else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
+                        keep = None
+                        if keep_kind(cond):  # amendment 64 note 37: the span A of the J++ unit vectors at this layer of the
+                            # relation's answers (--keepA-forms; QR as answer_span_edit), kept out of paper10's r; note 41: R, R2, R4
+                            keep = [kept_span(i, la, keep_kind(cond)) for i in range(len(chunk))]
+                        observe = None
+                        if cond == "paper10" and (rand_rows or n44 or has_keepA):  # note 41 addendum / note 44 / amendment 72: paper10's removal energy per span
+                            def observe(r, B, T, la=la):
+                                for b in range(B):
+                                    rb = r[b * T : (b + 1) * T].double()
+                                    if rand_rows:
+                                        n = a_rows[b].numel()
+                                        e4 = (rb @ kept_span(b, la, "R4")).pow(2).sum(0)  # per column of the nested basis
+                                        energy[b] += torch.stack([rb.pow(2).sum(), (rb @ kept_span(b, la, "A")).pow(2).sum(),
+                                                                  e4[:n].sum(), e4[: 2 * n].sum(), e4.sum()])  # fmt: skip
+                                    elif has_keepA:  # amendment 72 (shared): A only
+                                        energy[b] += torch.stack([rb.pow(2).sum(), (rb @ kept_span(b, la, "A")).pow(2).sum()])
+                                    if n44:
+                                        qc, qt = kept_span(b, la, "Cap"), kept_span(b, la, "Cty")
+                                        e44[b] += torch.stack([rb.pow(2).sum(), (rb @ qc).pow(2).sum(), (rb @ qt).pow(2).sum(),
+                                                               (rb @ kept_span(b, la, "CapCty")).pow(2).sum()])  # fmt: skip
+                                        qp = torch.linalg.qr(dic[la].atoms(n44["pool"][b]).double().T)[0]  # nested: prefixes span prefixes
+                                        e44pool[b] += (rb @ qp).pow(2).sum(0)
+                                        ov44[b] += (qc.T @ qt).pow(2).sum() / min(qc.shape[1], qt.shape[1]) / len(band)
+                        holder: dict = {}
+                        if (cond == "paper10" and (n4950 or n52on)) or (cond in (f"top{k_}" for k_ in n51ks)):  # amendment 72 log
+                            def observe(r, B, T, la=la, cond=cond, base=observe, holder=holder):
+                                if base is not None:
+                                    base(r, B, T)
+                                observe72(r, B, T, la, cond, holder["h"])
+                        need57 = n57on and (cond == "paper10" or cond in (f"top{k_}" for k_ in re_ks))
+                        if need57:  # amendment 78 note 57: the energy matching (onlyRperp's, keepRE's sizes)
+                            def observe(r, B, T, la=la, cond=cond, base=observe, holder=holder):
+                                if base is not None:
+                                    base(r, B, T)
+                                obs57(r, B, T, la, cond, holder["h"])
                         edits[la] = removal_edit(
                             method,
                             d,
@@ -518,7 +1418,27 @@ def main(args) -> None:
                             k=top_k(cond),
                             skip_sinks="_nosink" in cond,
                             size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None,
+                            keep_span=keep,
+                            observe=observe,
+                            **({"chunk": args.topk_chunk} if args.topk_chunk and top_k(cond) is not None and top_k(cond) > 10 else {}),
                         )
+                        if holder is not None and observe is not None and (cond == "paper10" and (n4950 or n52on) or cond in (f"top{k_}" for k_ in n51ks) or need57):
+                            def with_h(h, inner=edits[la], holder=holder):  # the residual, for observe72 (output unchanged)
+                                holder["h"] = h
+                                return inner(h)
+
+                            edits[la] = with_h
+                    if n57on and cond == "ansJ" and any(n57_kind(c) == "ansRe" for c in args.conditions):  # note 57: ansRe's size
+
+                        def ans_obs(inner, la_):
+                            def f(h: torch.Tensor) -> torch.Tensor:
+                                obs57_ans(h, la_)
+                                return inner(h)
+
+                            return f
+
+                        edits = {la_: ans_obs(e_, la_) for la_, e_ in edits.items()}
+                    edits = {la_: measured(e_, emask, acc72) for la_, e_ in edits.items()}  # amendment 72: |edit| / |h|, every row
                     logits = first_token_logits(model, ids, edits, last)
                     if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition
                         tally = sink_tally.setdefault(f"{label(band)}/{cond}", [0, 0])
@@ -527,10 +1447,56 @@ def main(args) -> None:
                             tally[1] += e.sinks[1]
                             e.sinks[0] = e.sinks[1] = 0
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
+                    retained = []  # note 41 addendum: per row, the share of paper10's removal energy (summed over the edited
+                    if cond == "paper10" and rand_rows:  # positions and the band's layers) lying in A, R, R2, R4
+                        e = energy.tolist()
+                        retained = [{"energy": x[0], **{k: (x[j] / x[0] if x[0] > 0 else None) for j, k in enumerate(("A", "R", "R2", "R4"), 1)}}
+                                    for x in e]  # fmt: skip
+                    elif cond == "paper10" and has_keepA:  # amendment 72 (shared): A's retained share when no note 41 rows are drawn
+                        retained = [{"energy": x[0], "A": (x[1] / x[0] if x[0] > 0 else None)} for x in energy.tolist()]
+                    retained44 = []  # note 44: the same shares for Cap, Cty, CapCty; Rcap = the smallest prefix of the item's pool whose
+                    if n44 and cond == "paper10":  # share is not below Cap's (all of it if none reaches), used by paper10_keepRcap
+                        cum = e44pool.cumsum(1)
+                        for b in range(len(chunk)):
+                            hit = (cum[b] >= e44[b, 1]).nonzero()
+                            n44["k"][b] = int(hit[0]) + 1 if hit.numel() else cum.shape[1]
+                            tot = float(e44[b, 0])
+                            retained44.append({"energy": tot, **{k: (float(e44[b, j]) / tot if tot > 0 else None) for j, k in enumerate(("Cap", "Cty", "CapCty"), 1)},
+                                               "Rcap": float(cum[b, n44["k"][b] - 1]) / tot if tot > 0 else None, "k_Rcap": n44["k"][b],
+                                               "Rcap_reached": bool(hit.numel()), "n_cap": int(cap_rows.numel()), "n_cty": int(n44["cty"][b].numel()),
+                                               "shared_rows": len(set(cap_rows.tolist()) & set(n44["cty"][b].tolist())),
+                                               "span_overlap": float(ov44[b])})  # fmt: skip
+                    if cond in acc57:  # note 57: the energy-matched sizes from this forward
+                        finalize57(cond)
+                    k72 = []  # amendment 72: the new conditions' own |edit| / |h| and kept rank (or protected rows), mean over layers
+                    if n49_kind(cond) or is_n51(cond) or is_n52(cond) or n57_kind(cond):
+                        for row in range(len(chunk)):
+                            rk_ = rank72[cond][row] if not is_n51(cond) else [kept_span(row, la_, "A").shape[1] for la_ in band]
+                            k72.append({"rank": sum(rk_) / len(rk_) if rk_ else None})
+                    if cond == "paper10" and n52on and any(f"paper10_keepR{kk}" in args.conditions for kk in N52_KEEPS):
+                        for b in range(len(chunk)):  # note 52b: k = the smallest Rcap-pool prefix whose energy reaches the span's
+                            l = log72["paper10"][b]
+                            cum = e44pool[b].cumsum(0)
+                            l["n_pool"] = int(cum.numel())
+                            for kk in N52_KEEPS:
+                                if f"paper10_keepR{kk}" in args.conditions:
+                                    hit = (cum >= l["E_" + kk]).nonzero()
+                                    k52b[kk][b] = int(hit[0]) + 1 if hit.numel() else int(cum.numel())
+                                    l["k_R" + kk], l["reached_R" + kk] = k52b[kk][b], bool(hit.numel())
+                                    l["E_R" + kk] = float(cum[k52b[kk][b] - 1])
+                    if cond in log72:  # paper10's / topK's per-item log (keeplog.jsonl)
+                        with (out_dir / "keeplog.jsonl").open("a") as fh:
+                            fh.writelines(json.dumps({"band": label(band), **keeplog_line(cond, b)}) + "\n" for b in range(len(chunk)))
+                        del log72[cond]
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
                                          "condition": cond, **reads(logits[row], p, args.read),
-                                         "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"]})  # fmt: skip
+                                         "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"],
+                                         **({"retained": retained[row]} if retained else {}),
+                                         **({"retained44": retained44[row]} if retained44 else {}),
+                                         **({"keeplog": k72[row]} if k72 else {}),
+                                         **({"window": f"L{n58c[1][0]}-{n58c[1][1]}"} if n58c else {}),
+                                         "edit_rel": float(acc72[row, 0] / acc72[row, 1]) if acc72[row, 1] > 0 else None})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
                 fh.writelines(json.dumps(r) + "\n" for r in rows_out[written:])
@@ -573,6 +1539,101 @@ def main(args) -> None:
         lines += ["## agreement with ablate_pilot v1 (same items)", "", json.dumps(summary["v1_agreement"], indent=1)]
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text()[:3000])
+
+
+@torch.no_grad()
+def n58_setup(model, tok, conditions: list[str], out_dir: Path) -> dict:
+    """Amendment 84 note 58: the dark basis (W_U's last 5% right singular vectors) and, per window, the mid-spectrum control's
+    dimension, calibrated so its WikiText NLL increase (64 pinned rows, removal_textloss's: >= 64 words, first 2000 characters,
+    raw encoding, first 128 tokens; next-token loss from position 4) matches the dark permutation's within 10%: a grid of
+    d_dark x {1, 1.5, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18} (and the largest allowed) and up to 8 bisection steps between the
+    bracketing ranks; the closest is used. WikiText row i's permutation: random.Random("n58wt:" + i). Written to n58_calib.json."""
+    from bridge_jspace.model import _forward_hooks
+    from bridge_jspace.tokens import raw_encoding
+
+    S, V = n58_spectrum(model)
+    d = V.shape[0]
+    d_dark = round(N58_DARK_SHARE * d)
+    Vd = V[:, d - d_dark :].contiguous()
+    rows = [r[:2000] for r in pins.wikitext_rows() if len(r.split()) >= 64][:PCA_ROWS]
+    texts = [raw_encoding(tok, r)["input_ids"][:128] for r in rows]
+    groups: dict = collections.defaultdict(list)
+    for i, t in enumerate(texts):
+        groups[len(t)].append((i, t))
+
+    def nll(Vs, layers) -> float:
+        tot, n = 0.0, 0
+        for L, its in groups.items():
+            for s0 in range(0, len(its), 8):
+                part = its[s0 : s0 + 8]
+                x = torch.tensor([t for _, t in part], device="cuda")
+                hooks = []
+                if Vs is not None:
+                    perms = torch.tensor([n58_perm(f"n58wt:{i}", L, L) for i, _ in part], device="cuda")
+                    e = perm_edit(Vs, perms)
+
+                    def hook(_m, _a, out, e=e):
+                        h = out[0] if isinstance(out, tuple) else out
+                        new = e(h.float()).to(h.dtype)
+                        return (new, *out[1:]) if isinstance(out, tuple) else new
+
+                    hooks = [(model.layers[la], hook) for la in layers]
+                with _forward_hooks(hooks):
+                    lg = model.hf(input_ids=x, attention_mask=torch.ones_like(x), use_cache=False).logits.float()
+                ce = torch.nn.functional.cross_entropy(lg[:, 3:-1].reshape(-1, lg.shape[-1]), x[:, 4:].reshape(-1), reduction="none")
+                tot += float(ce.sum())
+                n += ce.numel()
+        return tot / n
+
+    base = nll(None, [])
+    out: dict = {}
+    calib = {"d": d, "d_dark": d_dark, "dark_indices": [d - d_dark, d - 1], "nll_none": base, "n_texts": len(texts),
+             "singular_values": {"max": float(S[0]), "median": float(S[d // 2]), "dark_max": float(S[d - d_dark]), "min": float(S[-1])},
+             "windows": {}}  # fmt: skip
+    for c in conditions:
+        nc = n58_cond(c)
+        if not nc or nc[0] != "dark":
+            continue
+        layers = list(range(nc[1][0], nc[1][1] + 1))
+        w = f"L{nc[1][0]}-{nc[1][1]}"
+        out[c] = Vd
+        dd = nll(Vd, layers) - base
+        tried: dict = {}
+
+        def ev(m: int) -> float:
+            if m not in tried:
+                lo, hi = mid_block(d, d_dark, m)
+                tried[m] = nll(V[:, lo:hi].contiguous(), layers) - base
+            return tried[m]
+
+        grid = sorted({min(d - d_dark, round(d_dark * f)) for f in (1, 1.5, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18)} | {d - d_dark})
+        for m in grid:
+            ev(m)
+        below = [m for m in grid if tried[m] <= dd]
+        above = [m for m in grid if tried[m] >= dd]
+        if below and above and max(below) < min(above):
+            a, b = max(below), min(above)
+            for _ in range(8):
+                best = min(tried, key=lambda m: abs(tried[m] - dd))
+                if dd > 0 and abs(tried[best] - dd) <= 0.1 * dd or b - a <= 1:
+                    break
+                mid = (a + b) // 2
+                if ev(mid) <= dd:
+                    a = mid
+                else:
+                    b = mid
+        m = min(tried, key=lambda m: abs(tried[m] - dd))
+        lo, hi = mid_block(d, d_dark, m)
+        out[f"midperm_{w}"] = V[:, lo:hi].contiguous()
+        calib["windows"][w] = {"layers": layers, "pct_depth": [round(100 * layers[0] / (pins.N_LAYERS - 1), 1), round(100 * layers[-1] / (pins.N_LAYERS - 1), 1)],
+                               "dnll_dark": dd, "mid_dim": m, "mid_indices": [lo, hi - 1], "dnll_mid": tried[m],
+                               "matched_within_10pct": bool(dd > 0 and abs(tried[m] - dd) <= 0.1 * dd),
+                               "tried": {str(k): v for k, v in sorted(tried.items())}}  # fmt: skip
+        print(f"note 58 {w}: dark dNLL {dd:.4f}; mid dim {m} ({lo}-{hi - 1}) dNLL {tried[m]:.4f}", flush=True)
+    missing = [c for c in conditions if n58_cond(c) and c not in out]
+    assert not missing, f"note 58: {missing} have no darkperm of the same window in the run (the control is calibrated against it)"
+    (out_dir / "n58_calib.json").write_text(json.dumps(calib, indent=1) + "\n")
+    return out
 
 
 def _group(rows: list[dict], none: bool = False) -> dict:
@@ -645,12 +1706,41 @@ if __name__ == "__main__":
         "--tasks-strata", nargs="+", default=["core"], help="tasks_v2 strata (core, secondary: planets 3-step)"
     )
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
+    ap.add_argument("--tasks-v4-h1", default=None, help="note 20: v4's H1 competence_variants run; keep v4_split's ok items only")
+    ap.add_argument("--tasks-scene-words", nargs="*", default=None,
+                    help="amendment 58 note 4 (v3): a scene passes when its items of these words are right; the compared words are kept on it")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
-    ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge"],
+    ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge", "desc"],
                     help="where to remove: every position, only before the question (the facts), only from the "
                          "question on (question, instruction, 'Answer:'; see question_start), only the last position, "
                          "or only the bridge's mentions (bridge_positions)")  # fmt: skip
+    ap.add_argument("--topk-chunk", type=int, default=0,
+                    help="amendment 72 note 51: rows per chunk for top-K removals with K > 10 (memory at K = 100); 0: removal_edit's default")
+    ap.add_argument("--keepA-forms", dest="keepA_forms", choices=sorted(KEEPA_ROWS), default="every",
+                    help="note 37's kept span: every form of the relation's answers (either case, with or without a leading "
+                         "space) or cands2 only (ansJ's rows)")  # fmt: skip
     a = ap.parse_args()
-    bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
+    bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None and not n58_cond(c)]
     assert not bad, f"unknown conditions {bad}"
+    keepa = [c for c in a.conditions if "keep" in c and "keepown" not in c and c != "keep_own"]
+    assert all(keep_kind(c) for c in keepa) and (not keepa or a.tasks), f"notes 37 / 41: {keepa} unknown or without --tasks"
+    n44c = [c for c in a.conditions if is_n44(c)]
+    assert not n44c or (a.tasks and "paper10" in a.conditions and ("paper10_keepRcap" not in a.conditions
+                        or a.conditions.index("paper10") < a.conditions.index("paper10_keepRcap"))), \
+        f"note 44: {n44c} need --tasks and paper10 in the run, before paper10_keepRcap (it sets Rcap's size)"
+    rand = [c for c in a.conditions if is_rand(c)]
+    assert not rand or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions), \
+        f"note 41: {rand} need --tasks, --keepA-forms every and paper10 in the run (the retained-energy log)"
+    n57c = [c for c in a.conditions if n57_kind(c)]  # amendment 78 note 57: each matching forward runs before its condition
+    pos = {c: i for i, c in enumerate(a.conditions)}
+    assert all((n57_kind(c) == "ansRe" and pos.get("ansJ", 1e9) < pos[c]) or (n57_kind(c) == "keepRE" and pos.get(f"top{top_k(c)}", 1e9) < pos[c])
+               or (n57_kind(c) not in ("ansRe", "keepRE") and pos.get("paper10", 1e9) < pos[c]) for c in n57c) and not (n57c and any(is_n52(c) for c in a.conditions)), \
+        f"note 57: {n57c} need paper10 / topK / ansJ earlier in --conditions (they set the matched sizes), and no note 52 conditions"  # fmt: skip
+    assert all(pos.get("paper10", 1e9) < pos[c] for c in a.conditions if keep_kind(c) in ("RShared", "RCapPerp", "RCtyPerp")), \
+        "note 52b: paper10 must run before the matched random keeps (it sets their sizes)"
+    n72 = [c for c in a.conditions if n49_kind(c) or is_n51(c) or is_n52(c) or n57_kind(c)]  # amendments 72 / 78 / 80
+    assert not n72 or (a.tasks and a.keepA_forms == "every" and "paper10" in a.conditions and "paper10_rot" in a.conditions
+                       and not any("_nosink" in c for c in n72)
+                       and not (any(n49_kind(c) for c in n72) and any(is_n52(c) for c in n72))), \
+        f"amendment 72: {n72} need --tasks, --keepA-forms every and paper10 / paper10_rot in the run (notes 49/50 and 52 in separate runs)"  # fmt: skip
     main(a)

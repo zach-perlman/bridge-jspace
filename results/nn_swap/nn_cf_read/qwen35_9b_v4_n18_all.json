@@ -1,0 +1,480 @@
+{
+ "runs": [
+  "qwen35_9b_nn_n18_last_s0_v1",
+  "qwen35_9b_nn_n18_span_s0_v1",
+  "qwen35_9b_nn_n18_final_s0_v1",
+  "qwen35_9b_nn_n18_last_s1_v1",
+  "qwen35_9b_nn_n18_span_s1_v1",
+  "qwen35_9b_nn_n18_final_s1_v1"
+ ],
+ "pairs": "all",
+ "cells": {
+  "final/MM/L21-24": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.1,
+    "lensrand_cf": 99.1,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.2,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "final/MM/L25-28": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 98.8,
+    "lensrand_cf": 99.5,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.7,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "final/MM/L29-30": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 97.1,
+    "lensrand_cf": 99.7,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 1.9,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "final/MP/L21-24": {
+   "n": 720,
+   "donor": {
+    "full_cf": 1.2,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 96.9,
+    "lensrand_cf": 99.9,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.4,
+    2.2
+   ],
+   "bridge_lives_here": false
+  },
+  "final/MP/L25-28": {
+   "n": 720,
+   "donor": {
+    "full_cf": 0.4,
+    "lensrand_cf": 0.1,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 97.8,
+    "lensrand_cf": 99.7,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    -0.3,
+    0.9
+   ],
+   "bridge_lives_here": false
+  },
+  "final/MP/L29-30": {
+   "n": 720,
+   "donor": {
+    "full_cf": 1.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 95.4,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.1,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.3,
+    1.9
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MM/L4-7": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.5,
+    "lensrand_cf": 99.1,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.2,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MM/L8-11": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.0,
+    "lensrand_cf": 99.1,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MM/L12-16": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.0,
+    "lensrand_cf": 99.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L4-7": {
+   "n": 720,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.9,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L8-11": {
+   "n": 720,
+   "donor": {
+    "full_cf": 1.2,
+    "lensrand_cf": 0.1,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 96.1,
+    "lensrand_cf": 99.9,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.4,
+    1.9
+   ],
+   "bridge_lives_here": false
+  },
+  "last/MP/L12-16": {
+   "n": 720,
+   "donor": {
+    "full_cf": 5.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 89.0,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.4,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    3.5,
+    7.8
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MM/L0-3": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.0,
+    "lensrand_cf": 99.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MM/L4-7": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 98.6,
+    "lensrand_cf": 99.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.7,
+    "lensrand_cf": 0.2,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MM/L8-11": {
+   "n": 584,
+   "donor": {
+    "full_cf": 0.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 97.3,
+    "lensrand_cf": 99.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.3,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    1.1
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MM/L12-16": {
+   "n": 584,
+   "donor": {
+    "full_cf": 1.9,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 92.0,
+    "lensrand_cf": 99.3,
+    "none": 99.3
+   },
+   "third": {
+    "full_cf": 0.5,
+    "lensrand_cf": 0.3,
+    "none": 0.3
+   },
+   "full_minus_rand_ci": [
+    0.8,
+    3.2
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MP/L0-3": {
+   "n": 720,
+   "donor": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 99.9,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    0.0
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MP/L4-7": {
+   "n": 720,
+   "donor": {
+    "full_cf": 0.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 98.9,
+    "lensrand_cf": 99.9,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.0,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    0.0,
+    1.3
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MP/L8-11": {
+   "n": 720,
+   "donor": {
+    "full_cf": 6.5,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 85.6,
+    "lensrand_cf": 99.9,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.6,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    4.4,
+    8.8
+   ],
+   "bridge_lives_here": false
+  },
+  "span/MP/L12-16": {
+   "n": 720,
+   "donor": {
+    "full_cf": 31.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "kept": {
+    "full_cf": 51.1,
+    "lensrand_cf": 100.0,
+    "none": 100.0
+   },
+   "third": {
+    "full_cf": 0.7,
+    "lensrand_cf": 0.0,
+    "none": 0.0
+   },
+   "full_minus_rand_ci": [
+    27.8,
+    35.7
+   ],
+   "bridge_lives_here": true
+  }
+ },
+ "hits": [
+  {
+   "site": "span",
+   "word": "MP",
+   "band": "L12-16"
+  }
+ ]
+}

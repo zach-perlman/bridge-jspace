@@ -1,0 +1,574 @@
+{
+ "L12-16/RM/none": {
+  "n": 112,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/none": {
+  "n": 149,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/none": {
+  "n": 149,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/full_insert": {
+  "n": 112,
+  "kept": 0.0,
+  "donor": 96.4,
+  "third": 0.0,
+  "other": 3.6,
+  "n_third": 112,
+  "transfer": 96.4,
+  "ci": [
+   92.9,
+   99.1
+  ]
+ },
+ "L12-16/MM/full_insert": {
+  "n": 149,
+  "kept": 5.4,
+  "donor": 83.2,
+  "third": 0.0,
+  "other": 11.4,
+  "n_third": 149,
+  "transfer": 83.2,
+  "ci": [
+   76.7,
+   88.9
+  ]
+ },
+ "L12-16/PM/full_insert": {
+  "n": 149,
+  "kept": 22.1,
+  "donor": 42.3,
+  "third": 3.4,
+  "other": 32.2,
+  "n_third": 149,
+  "transfer": 38.9,
+  "ci": [
+   30.0,
+   47.6
+  ]
+ },
+ "L12-16/RM/lens_insert": {
+  "n": 112,
+  "kept": 3.6,
+  "donor": 93.8,
+  "third": 0.0,
+  "other": 2.7,
+  "n_third": 112,
+  "transfer": 93.8,
+  "ci": [
+   88.3,
+   98.2
+  ]
+ },
+ "L12-16/MM/lens_insert": {
+  "n": 149,
+  "kept": 58.4,
+  "donor": 31.5,
+  "third": 0.7,
+  "other": 9.4,
+  "n_third": 149,
+  "transfer": 30.9,
+  "ci": [
+   23.2,
+   39.3
+  ]
+ },
+ "L12-16/PM/lens_insert": {
+  "n": 149,
+  "kept": 24.2,
+  "donor": 63.1,
+  "third": 0.7,
+  "other": 12.1,
+  "n_third": 149,
+  "transfer": 62.4,
+  "ci": [
+   53.8,
+   71.4
+  ]
+ },
+ "L12-16/RM/rem_insert": {
+  "n": 112,
+  "kept": 2.7,
+  "donor": 85.7,
+  "third": 0.9,
+  "other": 10.7,
+  "n_third": 112,
+  "transfer": 84.8,
+  "ci": [
+   77.0,
+   91.1
+  ]
+ },
+ "L12-16/MM/rem_insert": {
+  "n": 149,
+  "kept": 8.7,
+  "donor": 71.1,
+  "third": 0.0,
+  "other": 20.1,
+  "n_third": 149,
+  "transfer": 71.1,
+  "ci": [
+   63.5,
+   78.7
+  ]
+ },
+ "L12-16/PM/rem_insert": {
+  "n": 149,
+  "kept": 37.6,
+  "donor": 18.1,
+  "third": 3.4,
+  "other": 40.9,
+  "n_third": 149,
+  "transfer": 14.8,
+  "ci": [
+   7.8,
+   22.2
+  ]
+ },
+ "L12-16/RM/remfix_insert": {
+  "n": 112,
+  "kept": 14.3,
+  "donor": 47.3,
+  "third": 1.8,
+  "other": 36.6,
+  "n_third": 112,
+  "transfer": 45.5,
+  "ci": [
+   34.9,
+   55.2
+  ]
+ },
+ "L12-16/MM/remfix_insert": {
+  "n": 149,
+  "kept": 14.8,
+  "donor": 45.6,
+  "third": 0.0,
+  "other": 39.6,
+  "n_third": 149,
+  "transfer": 45.6,
+  "ci": [
+   37.7,
+   53.4
+  ]
+ },
+ "L12-16/PM/remfix_insert": {
+  "n": 149,
+  "kept": 55.7,
+  "donor": 4.7,
+  "third": 2.7,
+  "other": 36.9,
+  "n_third": 149,
+  "transfer": 2.0,
+  "ci": [
+   -2.1,
+   6.6
+  ]
+ },
+ "L12-16/RM/lensrand_insert": {
+  "n": 112,
+  "kept": 98.2,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.8,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/lensrand_insert": {
+  "n": 149,
+  "kept": 99.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/lensrand_insert": {
+  "n": 149,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/full_latent": {
+  "n": 112,
+  "kept": 0.0,
+  "donor": 58.0,
+  "third": 3.6,
+  "other": 38.4,
+  "n_third": 112,
+  "transfer": 54.5,
+  "ci": [
+   42.7,
+   64.4
+  ]
+ },
+ "L12-16/MM/full_latent": {
+  "n": 149,
+  "kept": 14.8,
+  "donor": 59.1,
+  "third": 1.3,
+  "other": 24.8,
+  "n_third": 149,
+  "transfer": 57.7,
+  "ci": [
+   49.3,
+   65.2
+  ]
+ },
+ "L12-16/PM/full_latent": {
+  "n": 149,
+  "kept": 26.8,
+  "donor": 8.7,
+  "third": 2.0,
+  "other": 62.4,
+  "n_third": 149,
+  "transfer": 6.7,
+  "ci": [
+   1.4,
+   11.6
+  ]
+ },
+ "L12-16/RM/lens_latent": {
+  "n": 112,
+  "kept": 31.2,
+  "donor": 39.3,
+  "third": 0.9,
+  "other": 28.6,
+  "n_third": 112,
+  "transfer": 38.4,
+  "ci": [
+   29.2,
+   47.8
+  ]
+ },
+ "L12-16/MM/lens_latent": {
+  "n": 149,
+  "kept": 78.5,
+  "donor": 9.4,
+  "third": 0.0,
+  "other": 12.1,
+  "n_third": 149,
+  "transfer": 9.4,
+  "ci": [
+   4.8,
+   14.5
+  ]
+ },
+ "L12-16/PM/lens_latent": {
+  "n": 149,
+  "kept": 51.7,
+  "donor": 24.2,
+  "third": 0.7,
+  "other": 23.5,
+  "n_third": 149,
+  "transfer": 23.5,
+  "ci": [
+   16.7,
+   30.7
+  ]
+ },
+ "L12-16/RM/rem_latent": {
+  "n": 112,
+  "kept": 7.1,
+  "donor": 42.0,
+  "third": 3.6,
+  "other": 47.3,
+  "n_third": 112,
+  "transfer": 38.4,
+  "ci": [
+   27.3,
+   49.6
+  ]
+ },
+ "L12-16/MM/rem_latent": {
+  "n": 149,
+  "kept": 16.8,
+  "donor": 45.6,
+  "third": 1.3,
+  "other": 36.2,
+  "n_third": 149,
+  "transfer": 44.3,
+  "ci": [
+   36.1,
+   52.8
+  ]
+ },
+ "L12-16/PM/rem_latent": {
+  "n": 149,
+  "kept": 29.5,
+  "donor": 4.7,
+  "third": 2.0,
+  "other": 63.8,
+  "n_third": 149,
+  "transfer": 2.7,
+  "ci": [
+   -1.3,
+   6.8
+  ]
+ },
+ "L12-16/RM/remfix_latent": {
+  "n": 112,
+  "kept": 13.4,
+  "donor": 26.8,
+  "third": 2.7,
+  "other": 57.1,
+  "n_third": 112,
+  "transfer": 24.1,
+  "ci": [
+   15.2,
+   33.0
+  ]
+ },
+ "L12-16/MM/remfix_latent": {
+  "n": 149,
+  "kept": 18.1,
+  "donor": 34.9,
+  "third": 2.7,
+  "other": 44.3,
+  "n_third": 149,
+  "transfer": 32.2,
+  "ci": [
+   24.3,
+   40.7
+  ]
+ },
+ "L12-16/PM/remfix_latent": {
+  "n": 149,
+  "kept": 33.6,
+  "donor": 4.0,
+  "third": 2.0,
+  "other": 60.4,
+  "n_third": 149,
+  "transfer": 2.0,
+  "ci": [
+   -1.9,
+   6.1
+  ]
+ },
+ "L12-16/RM/lensrand_latent": {
+  "n": 112,
+  "kept": 99.1,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.9,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/lensrand_latent": {
+  "n": 149,
+  "kept": 99.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/lensrand_latent": {
+  "n": 149,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 149,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PK/none": {
+  "n": 150,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 150,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PK/full_insert": {
+  "n": 150,
+  "kept": 74.7,
+  "donor": 6.7,
+  "third": 1.3,
+  "other": 17.3,
+  "n_third": 150,
+  "transfer": 5.3,
+  "ci": [
+   1.4,
+   10.1
+  ]
+ },
+ "L12-16/PK/lens_insert": {
+  "n": 150,
+  "kept": 93.3,
+  "donor": 4.7,
+  "third": 0.7,
+  "other": 1.3,
+  "n_third": 150,
+  "transfer": 4.0,
+  "ci": [
+   0.7,
+   8.0
+  ]
+ },
+ "L12-16/PK/rem_insert": {
+  "n": 150,
+  "kept": 82.7,
+  "donor": 0.7,
+  "third": 1.3,
+  "other": 15.3,
+  "n_third": 150,
+  "transfer": -0.7,
+  "ci": [
+   -2.9,
+   1.4
+  ]
+ },
+ "L12-16/PK/remfix_insert": {
+  "n": 150,
+  "kept": 84.0,
+  "donor": 0.7,
+  "third": 0.7,
+  "other": 14.7,
+  "n_third": 150,
+  "transfer": 0.0,
+  "ci": [
+   -2.0,
+   2.0
+  ]
+ },
+ "L12-16/PK/lensrand_insert": {
+  "n": 150,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 150,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PK/full_latent": {
+  "n": 150,
+  "kept": 77.3,
+  "donor": 2.0,
+  "third": 1.3,
+  "other": 19.3,
+  "n_third": 150,
+  "transfer": 0.7,
+  "ci": [
+   -2.1,
+   3.5
+  ]
+ },
+ "L12-16/PK/lens_latent": {
+  "n": 150,
+  "kept": 96.0,
+  "donor": 2.0,
+  "third": 0.0,
+  "other": 2.0,
+  "n_third": 150,
+  "transfer": 2.0,
+  "ci": [
+   0.0,
+   4.6
+  ]
+ },
+ "L12-16/PK/rem_latent": {
+  "n": 150,
+  "kept": 77.3,
+  "donor": 2.0,
+  "third": 1.3,
+  "other": 19.3,
+  "n_third": 150,
+  "transfer": 0.7,
+  "ci": [
+   -2.0,
+   3.6
+  ]
+ },
+ "L12-16/PK/remfix_latent": {
+  "n": 150,
+  "kept": 78.0,
+  "donor": 1.3,
+  "third": 1.3,
+  "other": 19.3,
+  "n_third": 150,
+  "transfer": 0.0,
+  "ci": [
+   -2.6,
+   2.6
+  ]
+ },
+ "L12-16/PK/lensrand_latent": {
+  "n": 150,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 150,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

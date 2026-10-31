@@ -1,0 +1,18 @@
+note 41 nem35l_: missing ['nem35l_jsuite_v4p4003_test_chat_ko41_posfinal_cand2_v1']
+note 41 run A nem35l_: n MP 389 MM 381
+  paper10            loss MP    5.4 MM   59.1  gap   53.7 [46.6, 60.8]  paired 54.1 [44.1, 63.7] (n 218)  dlogp MP -0.169 MM -3.017
+  paper10_rot        loss MP    3.1 MM    5.2  gap    2.2 [-0.6, 5.2]  paired 1.8 [-2.5, 6.2] (n 218)  dlogp MP -0.058 MM -0.083
+  paper10_keepR      loss MP    2.6 MM   54.9  gap   52.3 [46.3, 58.2]  paired 56.0 [47.0, 64.3] (n 218)  dlogp MP -0.095 MM -2.065
+  paper10_keepR_rot  loss MP    2.3 MM    5.0  gap    2.7 [-0.1, 5.6]  paired 3.7 [-0.5, 8.1] (n 218)  dlogp MP -0.04 MM -0.078
+  paper10_keepR2     loss MP    2.6 MM   39.1  gap   36.5 [30.8, 42.2]  paired 38.1 [29.8, 45.5] (n 218)  dlogp MP -0.078 MM -1.481
+  paper10_keepR2_rot loss MP    2.1 MM    4.2  gap    2.1 [-0.3, 4.6]  paired 2.8 [-0.9, 6.5] (n 218)  dlogp MP -0.023 MM -0.059
+  paper10_keepR4     loss MP    1.3 MM   24.4  gap   23.1 [18.1, 28.5]  paired 26.1 [18.9, 33.3] (n 218)  dlogp MP -0.03 MM -0.756
+  paper10_keepR4_rot loss MP    0.8 MM    2.4  gap    1.6 [-0.1, 3.4]  paired 2.3 [-0.4, 5.2] (n 218)  dlogp MP -0.017 MM -0.031
+  ansR               loss MP    3.3 MM   13.1  gap    9.8 [5.3, 14.2]  paired 9.6 [3.8, 15.8] (n 218)  dlogp MP -0.069 MM -0.474
+  ansR_rot           loss MP    5.1 MM   13.4  gap    8.2 [4.3, 12.7]  paired 6.4 [0.5, 12.4] (n 218)  dlogp MP -0.093 MM -0.244
+  share of paper10's gap: {}
+  rescue vs retained energy (MM): A: E 0.4873 ratio 0.024 [-0.036000000000000004, 0.08199999999999999] rescue 0.976; R: E 0.5223 ratio 0.927 [0.8190000000000001, 1.056] rescue 0.073; R2: E 0.6111 ratio 0.649 [0.555, 0.75] rescue 0.351; R4: E 0.7177 ratio 0.41 [0.311, 0.513] rescue 0.59
+  keep reading: answer-specific keep (matched random keep R; note 41's original keepR rule, replaced: answer-specific keep)
+  reading E matched energy (accuracy) (amendment 70, registered secondary, beside the keep reading): n MM 381 (A) / 381 (R), E_A 0.487, rescue A 0.976; R E 0.522 rescue 0.073, R2 E 0.611 rescue 0.351, R4 E 0.718 rescue 0.590; R_rand(E_A) nan; A - R_rand nan [no CI] (2000 draws, 2000 dropped) -> not interpolable
+  reading L log-prob (gold first-token log p, MM) (amendment 70, registered secondary, beside the keep reading): n MM 381 (A) / 381 (R), E_A 0.487, rescue A 1.026; R E 0.522 rescue 0.323, R2 E 0.611 rescue 0.515, R4 E 0.718 rescue 0.753; R_rand(E_A) nan; A - R_rand nan [no CI] (2000 draws, 2000 dropped) -> not interpolable
+  removal: ansR gap 9.8 vs ansJ gap 29.8 (ratio 0.328 [0.188, 0.483]) -> answer-specific removal

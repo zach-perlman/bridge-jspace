@@ -1,0 +1,80 @@
+{
+ "L12-16/MP/none": {
+  "n": 360,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 360,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MP/full_cf": {
+  "n": 360,
+  "kept": 7.8,
+  "donor": 76.1,
+  "third": 5.3,
+  "other": 10.8,
+  "n_third": 360,
+  "transfer": 70.8,
+  "ci": [
+   64.4,
+   76.7
+  ]
+ },
+ "L12-16/MP/lens_cf": {
+  "n": 360,
+  "kept": 93.3,
+  "donor": 2.5,
+  "third": 0.0,
+  "other": 4.2,
+  "n_third": 360,
+  "transfer": 2.5,
+  "ci": [
+   1.1,
+   4.1
+  ]
+ },
+ "L12-16/MP/rem_cf": {
+  "n": 360,
+  "kept": 8.6,
+  "donor": 75.6,
+  "third": 3.9,
+  "other": 11.9,
+  "n_third": 360,
+  "transfer": 71.7,
+  "ci": [
+   65.5,
+   77.1
+  ]
+ },
+ "L12-16/MP/remfix_cf": {
+  "n": 360,
+  "kept": 8.9,
+  "donor": 75.8,
+  "third": 3.6,
+  "other": 11.4,
+  "n_third": 360,
+  "transfer": 72.2,
+  "ci": [
+   66.4,
+   78.0
+  ]
+ },
+ "L12-16/MP/lensrand_cf": {
+  "n": 360,
+  "kept": 98.9,
+  "donor": 0.3,
+  "third": 0.0,
+  "other": 0.8,
+  "n_third": 360,
+  "transfer": 0.3,
+  "ci": [
+   0.0,
+   0.8
+  ]
+ }
+}

@@ -1,0 +1,43 @@
+{
+  "gate": {
+    "ML": {
+      "raw_eligible": 72,
+      "n": 107,
+      "prompt_end": "stripped"
+    },
+    "MH": {
+      "raw_eligible": 54,
+      "n": 93,
+      "prompt_end": "stripped"
+    },
+    "PO": {
+      "raw_eligible": 92,
+      "n": 98,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "ML": 72,
+    "MH": 54,
+    "PO": 92
+  },
+  "clean_correct": {
+    "ML": 66,
+    "MH": 51,
+    "PO": 92
+  },
+  "rows": 3238,
+  "byte_check_all_equal": true,
+  "seconds": 292,
+  "reader": "python scripts/paper_ko_read60.py results/paper_ko_decomp/nem35l_n60_v1",
+  "note": "prereg amendment 85 note 60",
+  "command": "scripts/paper_ko_decomp.py --name nem35l_n60_v1 --why Zach (2026-10-30, prereg amendment 85 note 60, nemotron-3.5-lightning): note 60, outputs vs pivots on the paper's tasks --n60 --sets ML MH PO --bands medium=28-40 --prev39 nem35l_n39_v1",
+  "git_state": {
+    "head": "f448b1572985e6c4cc60f66178d81b42d87ecd3c",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  }
+}

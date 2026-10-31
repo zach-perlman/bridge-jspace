@@ -1,0 +1,66 @@
+{
+  "seconds": 732,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 582,
+      "whole": 0.995,
+      "all_steps": 0.938,
+      "median_margin": 7.62,
+      "guess": 0.122,
+      "top_wrong": [
+        [
+          "Spanish",
+          1
+        ],
+        [
+          "German",
+          1
+        ],
+        [
+          "I",
+          1
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 582,
+      "whole": 0.734,
+      "all_steps": 0.727,
+      "median_margin": 2.5,
+      "guess": 0.04,
+      "top_wrong": [
+        [
+          "Bel",
+          8
+        ],
+        [
+          "Brazil",
+          7
+        ],
+        [
+          "Col",
+          6
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.993,
+      "MM": 0.98
+    },
+    "companies": {
+      "MP": 1,
+      "MM": 0.783
+    },
+    "landmarks": {
+      "MP": 1,
+      "MM": 0.867
+    },
+    "people": {
+      "MP": 0.989,
+      "MM": 0.418
+    }
+  },
+  "pick": {}
+}

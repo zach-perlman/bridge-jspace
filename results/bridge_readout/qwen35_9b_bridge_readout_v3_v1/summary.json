@@ -1,0 +1,578 @@
+{
+ "L0/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 3.6,
+  "chance": 3.4,
+  "median_rank": 91195.5
+ },
+ "L0/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 2.9,
+  "chance": 3.4,
+  "median_rank": 92654.5
+ },
+ "L0/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 2.5,
+  "chance": 3.3,
+  "median_rank": 77957
+ },
+ "L0/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 3.0,
+  "chance": 3.4,
+  "median_rank": 8976.0
+ },
+ "L0/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 2.6,
+  "chance": 3.4,
+  "median_rank": 9262.5
+ },
+ "L0/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 2.5,
+  "chance": 3.3,
+  "median_rank": 7238
+ },
+ "L2/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 51.3,
+  "chance": 3.4,
+  "median_rank": 109.0
+ },
+ "L2/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 51.3,
+  "chance": 3.4,
+  "median_rank": 97.0
+ },
+ "L2/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 72.8,
+  "chance": 3.3,
+  "median_rank": 11
+ },
+ "L2/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 8.2,
+  "chance": 3.4,
+  "median_rank": 6284.0
+ },
+ "L2/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 9.4,
+  "chance": 3.4,
+  "median_rank": 6245.5
+ },
+ "L2/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 9.9,
+  "chance": 3.3,
+  "median_rank": 4290
+ },
+ "L4/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 60.1,
+  "chance": 3.4,
+  "median_rank": 124.0
+ },
+ "L4/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 60.4,
+  "chance": 3.4,
+  "median_rank": 127.5
+ },
+ "L4/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 77.8,
+  "chance": 3.3,
+  "median_rank": 36
+ },
+ "L4/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 9.5,
+  "chance": 3.4,
+  "median_rank": 3641.5
+ },
+ "L4/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 10.1,
+  "chance": 3.4,
+  "median_rank": 3463.0
+ },
+ "L4/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 8.6,
+  "chance": 3.3,
+  "median_rank": 2232
+ },
+ "L6/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 79.7,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L6/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 80.8,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L6/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 90.1,
+  "chance": 3.3,
+  "median_rank": 3
+ },
+ "L6/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 24.5,
+  "chance": 3.4,
+  "median_rank": 1235.0
+ },
+ "L6/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 23.1,
+  "chance": 3.4,
+  "median_rank": 1226.0
+ },
+ "L6/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 35.8,
+  "chance": 3.3,
+  "median_rank": 377
+ },
+ "L8/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 78.7,
+  "chance": 3.4,
+  "median_rank": 7.0
+ },
+ "L8/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 80.8,
+  "chance": 3.4,
+  "median_rank": 7.5
+ },
+ "L8/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 86.4,
+  "chance": 3.3,
+  "median_rank": 3
+ },
+ "L8/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 33.1,
+  "chance": 3.4,
+  "median_rank": 993.0
+ },
+ "L8/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 33.1,
+  "chance": 3.4,
+  "median_rank": 1050.0
+ },
+ "L8/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 38.3,
+  "chance": 3.3,
+  "median_rank": 483
+ },
+ "L10/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 81.6,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L10/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 82.1,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L10/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 87.7,
+  "chance": 3.3,
+  "median_rank": 2
+ },
+ "L10/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 34.0,
+  "chance": 3.4,
+  "median_rank": 552.5
+ },
+ "L10/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 34.4,
+  "chance": 3.4,
+  "median_rank": 449.5
+ },
+ "L10/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 40.7,
+  "chance": 3.3,
+  "median_rank": 234
+ },
+ "L12/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 84.2,
+  "chance": 3.4,
+  "median_rank": 3.0
+ },
+ "L12/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 82.1,
+  "chance": 3.4,
+  "median_rank": 3.0
+ },
+ "L12/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 85.2,
+  "chance": 3.3,
+  "median_rank": 2
+ },
+ "L12/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 34.0,
+  "chance": 3.4,
+  "median_rank": 1799.0
+ },
+ "L12/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 32.8,
+  "chance": 3.4,
+  "median_rank": 1652.5
+ },
+ "L12/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 40.7,
+  "chance": 3.3,
+  "median_rank": 894
+ },
+ "L14/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 86.7,
+  "chance": 3.4,
+  "median_rank": 3.0
+ },
+ "L14/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 86.7,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L14/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 88.9,
+  "chance": 3.3,
+  "median_rank": 2
+ },
+ "L14/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 19.6,
+  "chance": 3.4,
+  "median_rank": 2962.5
+ },
+ "L14/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 15.9,
+  "chance": 3.4,
+  "median_rank": 2965.0
+ },
+ "L14/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 18.5,
+  "chance": 3.3,
+  "median_rank": 1727
+ },
+ "L16/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 88.0,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L16/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 89.0,
+  "chance": 3.4,
+  "median_rank": 4.0
+ },
+ "L16/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 90.1,
+  "chance": 3.3,
+  "median_rank": 3
+ },
+ "L16/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 30.4,
+  "chance": 3.4,
+  "median_rank": 2036.5
+ },
+ "L16/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 26.9,
+  "chance": 3.4,
+  "median_rank": 1931.0
+ },
+ "L16/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 34.6,
+  "chance": 3.3,
+  "median_rank": 925
+ },
+ "L18/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 86.1,
+  "chance": 3.4,
+  "median_rank": 5.0
+ },
+ "L18/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 88.3,
+  "chance": 3.4,
+  "median_rank": 6.0
+ },
+ "L18/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 84.0,
+  "chance": 3.3,
+  "median_rank": 5
+ },
+ "L18/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 39.0,
+  "chance": 3.4,
+  "median_rank": 862.0
+ },
+ "L18/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 40.6,
+  "chance": 3.4,
+  "median_rank": 767.5
+ },
+ "L18/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 53.1,
+  "chance": 3.3,
+  "median_rank": 255
+ },
+ "L20/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 87.8,
+  "chance": 3.4,
+  "median_rank": 5.5
+ },
+ "L20/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 87.3,
+  "chance": 3.4,
+  "median_rank": 6.0
+ },
+ "L20/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 87.7,
+  "chance": 3.3,
+  "median_rank": 5
+ },
+ "L20/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 75.1,
+  "chance": 3.4,
+  "median_rank": 147.0
+ },
+ "L20/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 73.7,
+  "chance": 3.4,
+  "median_rank": 120.5
+ },
+ "L20/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 84.0,
+  "chance": 3.3,
+  "median_rank": 42
+ },
+ "L22/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 86.3,
+  "chance": 3.4,
+  "median_rank": 9.0
+ },
+ "L22/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 86.4,
+  "chance": 3.4,
+  "median_rank": 9.0
+ },
+ "L22/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 88.9,
+  "chance": 3.3,
+  "median_rank": 7
+ },
+ "L22/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 65.2,
+  "chance": 3.4,
+  "median_rank": 353.0
+ },
+ "L22/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 64.6,
+  "chance": 3.4,
+  "median_rank": 263.5
+ },
+ "L22/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 77.8,
+  "chance": 3.3,
+  "median_rank": 129
+ },
+ "L24/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 84.8,
+  "chance": 3.4,
+  "median_rank": 23.5
+ },
+ "L24/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 84.1,
+  "chance": 3.4,
+  "median_rank": 24.5
+ },
+ "L24/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 86.4,
+  "chance": 3.3,
+  "median_rank": 14
+ },
+ "L24/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 86.5,
+  "chance": 3.4,
+  "median_rank": 30.5
+ },
+ "L24/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 85.7,
+  "chance": 3.4,
+  "median_rank": 37.0
+ },
+ "L24/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 91.4,
+  "chance": 3.3,
+  "median_rank": 10
+ },
+ "L26/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 82.3,
+  "chance": 3.4,
+  "median_rank": 49.0
+ },
+ "L26/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 82.1,
+  "chance": 3.4,
+  "median_rank": 56.5
+ },
+ "L26/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 79.0,
+  "chance": 3.3,
+  "median_rank": 38
+ },
+ "L26/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 86.5,
+  "chance": 3.4,
+  "median_rank": 26.0
+ },
+ "L26/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 84.7,
+  "chance": 3.4,
+  "median_rank": 25.0
+ },
+ "L26/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 92.6,
+  "chance": 3.3,
+  "median_rank": 9
+ },
+ "L28/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 94.5,
+  "chance": 3.4,
+  "median_rank": 2.0
+ },
+ "L28/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 94.5,
+  "chance": 3.4,
+  "median_rank": 2.0
+ },
+ "L28/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 93.8,
+  "chance": 3.3,
+  "median_rank": 2
+ },
+ "L28/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 83.3,
+  "chance": 3.4,
+  "median_rank": 42.0
+ },
+ "L28/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 81.2,
+  "chance": 3.4,
+  "median_rank": 44.5
+ },
+ "L28/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 95.1,
+  "chance": 3.3,
+  "median_rank": 14
+ },
+ "L30/jlens/PM": {
+  "n": 474,
+  "top_among_candidates": 73.2,
+  "chance": 3.4,
+  "median_rank": 298.0
+ },
+ "L30/jlens/PN": {
+  "n": 308,
+  "top_among_candidates": 74.0,
+  "chance": 3.4,
+  "median_rank": 327.5
+ },
+ "L30/jlens/TM": {
+  "n": 81,
+  "top_among_candidates": 81.5,
+  "chance": 3.3,
+  "median_rank": 140
+ },
+ "L30/logit/PM": {
+  "n": 474,
+  "top_among_candidates": 74.1,
+  "chance": 3.4,
+  "median_rank": 77.0
+ },
+ "L30/logit/PN": {
+  "n": 308,
+  "top_among_candidates": 73.4,
+  "chance": 3.4,
+  "median_rank": 94.5
+ },
+ "L30/logit/TM": {
+  "n": 81,
+  "top_among_candidates": 80.2,
+  "chance": 3.3,
+  "median_rank": 59
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "prefix": "nem35l_",
+ "readings": {
+  "note37": {
+   "4001": "the recall's J-need is its answer's directions",
+   "4002": "the recall's J-need is its answer's directions",
+   "replicates": true
+  },
+  "note41_keep": {
+   "4001": "answer-specific keep",
+   "4002": "answer-specific keep",
+   "replicates": true
+  },
+  "note41_removal": {
+   "4001": "answer-specific removal",
+   "4002": "not answer-specific",
+   "replicates": false
+  }
+ },
+ "headline_gap": {
+  "4001": {
+   "gap": 52.2,
+   "gap_ci": [
+    45.3,
+    58.8
+   ],
+   "loss_MM": 59.0,
+   "loss_MP": 6.8,
+   "n_MM": 361,
+   "n_MP": 385
+  },
+  "4002": {
+   "gap": 53.7,
+   "gap_ci": [
+    47.3,
+    60.1
+   ],
+   "loss_MM": 58.8,
+   "loss_MP": 5.0,
+   "n_MM": 376,
+   "n_MP": 377
+  }
+ }
+}

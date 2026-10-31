@@ -1,0 +1,111 @@
+{
+  "gate": {
+    "ML": {
+      "raw_eligible": 79,
+      "n": 107,
+      "prompt_end": "stripped"
+    },
+    "MH": {
+      "raw_eligible": 49,
+      "n": 93,
+      "prompt_end": "chat_prefill",
+      "chat_eligible": 52
+    },
+    "OO": {
+      "raw_eligible": 14,
+      "n": 55,
+      "prompt_end": "stripped"
+    },
+    "PO": {
+      "raw_eligible": 88,
+      "n": 98,
+      "prompt_end": "stripped"
+    }
+  },
+  "eligible": {
+    "ML": 79,
+    "MH": 52,
+    "OO": 14,
+    "PO": 88
+  },
+  "clean_correct": {
+    "ML": 77,
+    "MH": 49,
+    "OO": 13,
+    "PO": 88
+  },
+  "rows": 6277,
+  "byte_check_all_equal": true,
+  "seconds": 926,
+  "reader": "python scripts/paper_ko_read55.py results/paper_ko_decomp/qwen35_9b_n55_v1",
+  "note": "prereg amendment 72 note 55",
+  "command": "scripts/paper_ko_decomp.py --name qwen35_9b_n55_v1 --why Zach (2026-10-30, prereg amendment 72 note 55, qwen3.5-9b): note 55, the paper's sets and the text metric at its medium and heavy strengths --sets ML MH OO PO --bands medium=17-24 heavy=14-27 --keep-band medium",
+  "git_state": {
+    "head": "6596453cbfa0984e9608d6b11d0ef44c1c4c6bdc",
+    "dirty_files": [
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_canonical.json",
+      "results/sd_necessity/nn_sd_read/qwen35_9b_sd_ko_test_v1_gated_nobridge.json"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "text_agreement": {
+    "wiki/-/none": 1.0,
+    "wiki/medium/paper10": 0.6772,
+    "wiki/medium/paper10_rot": 0.8433,
+    "wiki/medium/top3": 0.724,
+    "wiki/medium/top30": 0.6252,
+    "wiki/medium/pca3": 0.1984,
+    "wiki/medium/pca10": 0.0903,
+    "wiki/medium/pca30": 0.0314,
+    "wiki/medium/unembed10": 0.7882,
+    "wiki/medium/unembed30": 0.763,
+    "wiki/medium/paper10_pcasize": 0.6048,
+    "wiki/medium/paper10_noprot": 0.6496,
+    "wiki/medium/unembed100": 0.7094,
+    "wiki/medium/unembed300": 0.6596,
+    "wiki/heavy/paper10": 0.5207,
+    "wiki/heavy/paper10_rot": 0.7906,
+    "wiki/heavy/top3": 0.6237,
+    "wiki/heavy/top30": 0.3979,
+    "wiki/heavy/pca3": 0.0695,
+    "wiki/heavy/pca10": 0.0143,
+    "wiki/heavy/pca30": 0.0065,
+    "wiki/heavy/unembed10": 0.6961,
+    "wiki/heavy/unembed30": 0.6594,
+    "wiki/heavy/paper10_pcasize": 0.4193,
+    "wiki/heavy/paper10_noprot": 0.4646,
+    "wiki/heavy/unembed100": 0.5942,
+    "wiki/heavy/unembed300": 0.5327,
+    "v4/-/none": 1.0,
+    "v4/medium/paper10": 0.5927,
+    "v4/medium/paper10_rot": 0.8139,
+    "v4/medium/top3": 0.6959,
+    "v4/medium/top30": 0.5005,
+    "v4/medium/pca3": 0.3474,
+    "v4/medium/pca10": 0.1938,
+    "v4/medium/pca30": 0.123,
+    "v4/medium/unembed10": 0.793,
+    "v4/medium/unembed30": 0.7622,
+    "v4/medium/paper10_pcasize": 0.573,
+    "v4/medium/paper10_noprot": 0.5592,
+    "v4/medium/unembed100": 0.7102,
+    "v4/medium/unembed300": 0.6534,
+    "v4/heavy/paper10": 0.4113,
+    "v4/heavy/paper10_rot": 0.7688,
+    "v4/heavy/top3": 0.5378,
+    "v4/heavy/top30": 0.2847,
+    "v4/heavy/pca3": 0.1244,
+    "v4/heavy/pca10": 0.0669,
+    "v4/heavy/pca30": 0.034,
+    "v4/heavy/unembed10": 0.6826,
+    "v4/heavy/unembed30": 0.644,
+    "v4/heavy/paper10_pcasize": 0.4204,
+    "v4/heavy/paper10_noprot": 0.3596,
+    "v4/heavy/unembed100": 0.5752,
+    "v4/heavy/unembed300": 0.5166
+  }
+}

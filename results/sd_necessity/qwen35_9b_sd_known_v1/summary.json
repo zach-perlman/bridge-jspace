@@ -1,0 +1,49 @@
+{
+  "seconds": 299,
+  "n_facts": 4610,
+  "known": 692,
+  "by": {
+    "dev/landmark-cntry-capital": {
+      "facts": 14,
+      "known": 13,
+      "items": 13,
+      "round0_right": 12
+    },
+    "dev/person-birthcity-cntry": {
+      "facts": 908,
+      "known": 235,
+      "items": 235,
+      "round0_right": 227
+    },
+    "dev/person-uguniv-hqcity": {
+      "facts": 452,
+      "known": 13,
+      "items": 13,
+      "round0_right": 10
+    },
+    "test/landmark-cntry-capital": {
+      "facts": 34,
+      "known": 31,
+      "items": 31,
+      "round0_right": 29
+    },
+    "test/person-birthcity-cntry": {
+      "facts": 1843,
+      "known": 362,
+      "items": 362,
+      "round0_right": 350
+    },
+    "test/person-uguniv-hqcity": {
+      "facts": 1359,
+      "known": 38,
+      "items": 38,
+      "round0_right": 28
+    }
+  },
+  "dev_items": 261,
+  "dev_round0_right": 249,
+  "dev_round0_accuracy": 0.954,
+  "test_items": 431,
+  "test_round0_right": 407,
+  "test_round0_accuracy": 0.9443
+}

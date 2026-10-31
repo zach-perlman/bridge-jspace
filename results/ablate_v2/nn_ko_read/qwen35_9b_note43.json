@@ -1,0 +1,44 @@
+{
+ "prefix": "qwen35_9b_",
+ "readings": {
+  "note37": {
+   "4001": "the recall's J-need is its answer's directions",
+   "4002": "the recall's J-need is its answer's directions",
+   "replicates": true
+  },
+  "note41_keep": {
+   "4001": "partly",
+   "4002": "partly",
+   "replicates": true
+  },
+  "note41_removal": {
+   "4001": "not answer-specific",
+   "4002": "answer-specific removal",
+   "replicates": false
+  }
+ },
+ "headline_gap": {
+  "4001": {
+   "gap": 48.1,
+   "gap_ci": [
+    39.2,
+    56.2
+   ],
+   "loss_MM": 62.2,
+   "loss_MP": 14.1,
+   "n_MM": 267,
+   "n_MP": 334
+  },
+  "4002": {
+   "gap": 50.5,
+   "gap_ci": [
+    42.8,
+    57.5
+   ],
+   "loss_MM": 66.7,
+   "loss_MP": 16.2,
+   "n_MM": 276,
+   "n_MP": 333
+  }
+ }
+}

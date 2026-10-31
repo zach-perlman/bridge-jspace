@@ -1,0 +1,57 @@
+{
+  "run": "qwen35_9b_nn_repair_L12-16_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 11): composition-failure repair, qwen3.5-9b L12-16",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "12-16"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "qwen35_9b_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM"
+  ],
+  "site": "last",
+  "conditions": [
+    "repair_k10",
+    "repair_k10_rand",
+    "repair_k10_rot",
+    "repair_k10_noans",
+    "repair_full",
+    "insert_k10"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "fail",
+  "sample_refs": 0,
+  "scene_words": null,
+  "git_commit": "bb75c79de2819927a2f728c8541293779739bd5c",
+  "git_state": {
+    "head": "bb75c79de2819927a2f728c8541293779739bd5c",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

@@ -1,0 +1,211 @@
+{
+  "prev_run": "results/paper_swap_decomp/qwen35_9b_n39_v1",
+  "rerun": "results/paper_swap_decomp/qwen35_9b_n39r_v1",
+  "target": "qwen3.5-9b",
+  "n_items": 51,
+  "n_without_nation": 33,
+  "stored_check": {
+    "bridge": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.3333333333333333,
+      "flip_rate_stored": 0.3333333333333333,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.19607843137254902,
+      "flip_rate_stored": 0.19607843137254902,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_onlyA/null": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    }
+  },
+  "blocks": {
+    "jpp/main_band/primary": {
+      "window": "8-16",
+      "n": 51,
+      "rates": {
+        "r1": 0.37254901960784315,
+        "r0": 0.0,
+        "r5": 0.2549019607843137,
+        "r5null": 0.0,
+        "r5R": 0.058823529411764705
+      },
+      "arm1_net": [
+        0.37254901960784315,
+        0.09993902439024391,
+        0.6346153846153846,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.196078431372549,
+        0.0,
+        0.42628805620608873,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.5263157894736841,
+        0.0,
+        0.7619047619047619,
+        3
+      ],
+      "A3_ratio": [
+        0.6842105263157894,
+        0.0,
+        0.9130434782608695,
+        3
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.15789473684210525,
+        0.0,
+        0.3333333333333333,
+        3
+      ],
+      "reading": "not answer-specific"
+    },
+    "jpp/main_band/without_capital_language_country": {
+      "window": "8-16",
+      "n": 33,
+      "rates": {
+        "r1": 0.18181818181818182,
+        "r0": 0.0,
+        "r5": 0.030303030303030304,
+        "r5null": 0.0,
+        "r5R": 0.030303030303030304
+      },
+      "arm1_net": [
+        0.18181818181818182,
+        0.0,
+        0.4444444444444444,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.0,
+        0.0,
+        0.0,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        56
+      ],
+      "A3_ratio": [
+        0.16666666666666666,
+        0.0,
+        0.3333333333333333,
+        56
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.16666666666666666,
+        0.0,
+        0.3333333333333333,
+        56
+      ],
+      "reading": "not answer-specific"
+    },
+    "jpp/median_onset/primary": {
+      "window": "6-8",
+      "n": 51,
+      "rates": {
+        "r1": 0.29411764705882354,
+        "r0": 0.0,
+        "r5": 0.13725490196078433,
+        "r5null": 0.0,
+        "r5R": 0.0
+      },
+      "arm1_net": [
+        0.29411764705882354,
+        0.0487328506097561,
+        0.5536210317460315,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.13725490196078433,
+        0.0,
+        0.2833333333333333,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.4666666666666667,
+        0.0,
+        0.6666666666666666,
+        13
+      ],
+      "A3_ratio": [
+        0.4666666666666667,
+        0.0,
+        0.6666666666666666,
+        13
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        13
+      ],
+      "reading": "not answer-specific"
+    },
+    "jpp/median_onset/without_capital_language_country": {
+      "window": "6-8",
+      "n": 33,
+      "rates": {
+        "r1": 0.09090909090909091,
+        "r0": 0.0,
+        "r5": 0.0,
+        "r5null": 0.0,
+        "r5R": 0.0
+      },
+      "arm1_net": [
+        0.09090909090909091,
+        0.0,
+        0.2857142857142857,
+        0
+      ],
+      "r5_minus_r5R": [
+        0.0,
+        0.0,
+        0.0,
+        0
+      ],
+      "r5_minus_r5R_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        177
+      ],
+      "A3_ratio": [
+        0.0,
+        0.0,
+        0.0,
+        177
+      ],
+      "arm5R_net_over_arm1_net": [
+        0.0,
+        0.0,
+        0.0,
+        177
+      ],
+      "reading": "not answer-specific"
+    }
+  }
+}

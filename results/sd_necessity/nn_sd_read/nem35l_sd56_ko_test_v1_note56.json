@@ -1,0 +1,1154 @@
+{
+ "run": "nem35l_sd56_ko_test_v1",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "gate_run": "nem35l_sd_gate_v1",
+ "name_rule": "canonical",
+ "mid": "L27-33",
+ "n_read": 597,
+ "n_gated": 477,
+ "n_peer_named_dropped": 21,
+ "n_gated_peer_named_dropped": 13,
+ "n_primary": 464,
+ "categories": {
+  "landmark-cntry-capital": 26,
+  "person-birthcity-cntry": 431,
+  "person-uguniv-hqcity": 7
+ },
+ "rates": {
+  "instr_vis none": {
+   "n": 464,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.0
+  },
+  "instr_vis L27-33/paper10": {
+   "n": 464,
+   "orig": 0.6,
+   "peer": 99.4,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.1173
+  },
+  "instr_vis L27-33/paper10_rot": {
+   "n": 464,
+   "orig": 0.9,
+   "peer": 99.1,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.1619
+  },
+  "instr_vis L27-33/paper10_pcasize": {
+   "n": 464,
+   "orig": 9.9,
+   "peer": 88.4,
+   "ctrl": 0.0,
+   "other": 1.7,
+   "prot": 99.1,
+   "edit_rel": 0.169
+  },
+  "instr_vis L27-33/unembed10": {
+   "n": 464,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.1176
+  },
+  "instr_vis L27-33/paper10_keepA": {
+   "n": 464,
+   "orig": 0.2,
+   "peer": 99.8,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.0724
+  },
+  "instr_vis L27-33/ansJ": {
+   "n": 464,
+   "orig": 36.4,
+   "peer": 60.3,
+   "ctrl": 0.0,
+   "other": 3.2,
+   "prot": 99.1,
+   "edit_rel": 0.1703
+  },
+  "instr_vis L27-33/bridgeJ_ctrl": {
+   "n": 464,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.0351
+  },
+  "instr_vis L27-33/bridgeJ_peer": {
+   "n": 464,
+   "orig": 1.5,
+   "peer": 98.3,
+   "ctrl": 0.0,
+   "other": 0.2,
+   "prot": 99.1,
+   "edit_rel": 0.037
+  },
+  "instr_vis L27-33/bridgeJ_peerperp": {
+   "n": 464,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.0245
+  },
+  "instr_vis L27-33/bridgeJ_peerperp_rot": {
+   "n": 464,
+   "orig": 0.0,
+   "peer": 100.0,
+   "ctrl": 0.0,
+   "other": 0.0,
+   "prot": 99.1,
+   "edit_rel": 0.0409
+  },
+  "hyp_vis none": {
+   "n": 464,
+   "orig": 17.7,
+   "peer": 81.7,
+   "ctrl": 0.0,
+   "other": 0.6,
+   "prot": 92.5,
+   "edit_rel": 0.0
+  },
+  "hyp_vis L27-33/paper10": {
+   "n": 464,
+   "orig": 55.8,
+   "peer": 31.0,
+   "ctrl": 0.2,
+   "other": 12.9,
+   "prot": 92.5,
+   "edit_rel": 0.117
+  },
+  "hyp_vis L27-33/paper10_rot": {
+   "n": 464,
+   "orig": 34.1,
+   "peer": 65.5,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 92.5,
+   "edit_rel": 0.1619
+  },
+  "hyp_vis L27-33/paper10_pcasize": {
+   "n": 464,
+   "orig": 58.6,
+   "peer": 40.3,
+   "ctrl": 0.0,
+   "other": 1.1,
+   "prot": 92.5,
+   "edit_rel": 0.169
+  },
+  "hyp_vis L27-33/unembed10": {
+   "n": 464,
+   "orig": 23.5,
+   "peer": 75.4,
+   "ctrl": 0.0,
+   "other": 1.1,
+   "prot": 92.5,
+   "edit_rel": 0.1169
+  },
+  "hyp_vis L27-33/paper10_keepA": {
+   "n": 464,
+   "orig": 21.8,
+   "peer": 77.8,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 92.5,
+   "edit_rel": 0.0727
+  },
+  "hyp_vis L27-33/ansJ": {
+   "n": 464,
+   "orig": 47.2,
+   "peer": 11.6,
+   "ctrl": 0.2,
+   "other": 40.9,
+   "prot": 92.5,
+   "edit_rel": 0.1701
+  },
+  "hyp_vis L27-33/bridgeJ_ctrl": {
+   "n": 464,
+   "orig": 23.1,
+   "peer": 76.5,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 92.5,
+   "edit_rel": 0.0352
+  },
+  "hyp_vis L27-33/bridgeJ_peer": {
+   "n": 464,
+   "orig": 61.2,
+   "peer": 34.5,
+   "ctrl": 0.2,
+   "other": 4.1,
+   "prot": 92.5,
+   "edit_rel": 0.0374
+  },
+  "hyp_vis L27-33/bridgeJ_peerperp": {
+   "n": 464,
+   "orig": 16.2,
+   "peer": 83.6,
+   "ctrl": 0.0,
+   "other": 0.2,
+   "prot": 92.5,
+   "edit_rel": 0.0248
+  },
+  "hyp_vis L27-33/bridgeJ_peerperp_rot": {
+   "n": 464,
+   "orig": 19.6,
+   "peer": 80.0,
+   "ctrl": 0.0,
+   "other": 0.4,
+   "prot": 92.5,
+   "edit_rel": 0.042
+  },
+  "prem_vis none": {
+   "n": 464,
+   "orig": 96.3,
+   "peer": 2.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.0
+  },
+  "prem_vis L27-33/paper10": {
+   "n": 464,
+   "orig": 94.0,
+   "peer": 1.3,
+   "ctrl": 0.2,
+   "other": 4.5,
+   "prot": 81.9,
+   "edit_rel": 0.1174
+  },
+  "prem_vis L27-33/paper10_rot": {
+   "n": 464,
+   "orig": 97.8,
+   "peer": 0.9,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.1607
+  },
+  "prem_vis L27-33/paper10_pcasize": {
+   "n": 464,
+   "orig": 98.1,
+   "peer": 0.6,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.1672
+  },
+  "prem_vis L27-33/unembed10": {
+   "n": 464,
+   "orig": 96.8,
+   "peer": 1.9,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.1166
+  },
+  "prem_vis L27-33/paper10_keepA": {
+   "n": 464,
+   "orig": 96.3,
+   "peer": 2.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.0728
+  },
+  "prem_vis L27-33/ansJ": {
+   "n": 464,
+   "orig": 90.1,
+   "peer": 0.6,
+   "ctrl": 0.0,
+   "other": 9.3,
+   "prot": 81.9,
+   "edit_rel": 0.171
+  },
+  "prem_vis L27-33/bridgeJ_ctrl": {
+   "n": 464,
+   "orig": 96.3,
+   "peer": 2.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.0354
+  },
+  "prem_vis L27-33/bridgeJ_peer": {
+   "n": 464,
+   "orig": 97.6,
+   "peer": 0.9,
+   "ctrl": 0.0,
+   "other": 1.5,
+   "prot": 81.9,
+   "edit_rel": 0.0376
+  },
+  "prem_vis L27-33/bridgeJ_peerperp": {
+   "n": 464,
+   "orig": 96.8,
+   "peer": 1.9,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.0251
+  },
+  "prem_vis L27-33/bridgeJ_peerperp_rot": {
+   "n": 464,
+   "orig": 96.6,
+   "peer": 2.2,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 81.9,
+   "edit_rel": 0.0425
+  },
+  "prem_hid none": {
+   "n": 464,
+   "orig": 66.8,
+   "peer": 23.9,
+   "ctrl": 0.4,
+   "other": 8.8,
+   "prot": 79.3,
+   "edit_rel": 0.0
+  },
+  "prem_hid L27-33/paper10": {
+   "n": 464,
+   "orig": 18.8,
+   "peer": 7.8,
+   "ctrl": 0.6,
+   "other": 72.8,
+   "prot": 79.3,
+   "edit_rel": 0.1172
+  },
+  "prem_hid L27-33/paper10_rot": {
+   "n": 464,
+   "orig": 69.0,
+   "peer": 23.9,
+   "ctrl": 0.4,
+   "other": 6.7,
+   "prot": 79.3,
+   "edit_rel": 0.1608
+  },
+  "prem_hid L27-33/paper10_pcasize": {
+   "n": 464,
+   "orig": 66.6,
+   "peer": 23.1,
+   "ctrl": 0.4,
+   "other": 9.9,
+   "prot": 79.3,
+   "edit_rel": 0.1672
+  },
+  "prem_hid L27-33/unembed10": {
+   "n": 464,
+   "orig": 58.6,
+   "peer": 25.6,
+   "ctrl": 0.9,
+   "other": 14.9,
+   "prot": 79.3,
+   "edit_rel": 0.1169
+  },
+  "prem_hid L27-33/paper10_keepA": {
+   "n": 464,
+   "orig": 65.7,
+   "peer": 25.9,
+   "ctrl": 0.4,
+   "other": 8.0,
+   "prot": 79.3,
+   "edit_rel": 0.0737
+  },
+  "prem_hid L27-33/ansJ": {
+   "n": 464,
+   "orig": 1.1,
+   "peer": 0.6,
+   "ctrl": 0.0,
+   "other": 98.3,
+   "prot": 79.3,
+   "edit_rel": 0.1706
+  },
+  "prem_hid L27-33/bridgeJ_ctrl": {
+   "n": 464,
+   "orig": 71.1,
+   "peer": 20.5,
+   "ctrl": 0.0,
+   "other": 8.4,
+   "prot": 79.3,
+   "edit_rel": 0.0353
+  },
+  "prem_hid L27-33/bridgeJ_peer": {
+   "n": 464,
+   "orig": 80.4,
+   "peer": 4.3,
+   "ctrl": 0.4,
+   "other": 14.9,
+   "prot": 79.3,
+   "edit_rel": 0.0377
+  },
+  "prem_hid L27-33/bridgeJ_peerperp": {
+   "n": 464,
+   "orig": 66.2,
+   "peer": 26.1,
+   "ctrl": 0.4,
+   "other": 7.3,
+   "prot": 79.3,
+   "edit_rel": 0.0252
+  },
+  "prem_hid L27-33/bridgeJ_peerperp_rot": {
+   "n": 464,
+   "orig": 66.2,
+   "peer": 23.1,
+   "ctrl": 0.4,
+   "other": 10.3,
+   "prot": 79.3,
+   "edit_rel": 0.0428
+  },
+  "press_vis none": {
+   "n": 464,
+   "orig": 76.3,
+   "peer": 22.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0
+  },
+  "press_vis L27-33/paper10": {
+   "n": 464,
+   "orig": 58.6,
+   "peer": 39.2,
+   "ctrl": 0.0,
+   "other": 2.2,
+   "prot": 100.0,
+   "edit_rel": 0.1179
+  },
+  "press_vis L27-33/paper10_rot": {
+   "n": 464,
+   "orig": 64.0,
+   "peer": 34.9,
+   "ctrl": 0.0,
+   "other": 1.1,
+   "prot": 100.0,
+   "edit_rel": 0.1621
+  },
+  "press_vis L27-33/paper10_pcasize": {
+   "n": 464,
+   "orig": 65.9,
+   "peer": 33.2,
+   "ctrl": 0.0,
+   "other": 0.9,
+   "prot": 100.0,
+   "edit_rel": 0.1686
+  },
+  "press_vis L27-33/unembed10": {
+   "n": 464,
+   "orig": 60.3,
+   "peer": 38.6,
+   "ctrl": 0.0,
+   "other": 1.1,
+   "prot": 100.0,
+   "edit_rel": 0.1167
+  },
+  "press_vis L27-33/paper10_keepA": {
+   "n": 464,
+   "orig": 77.2,
+   "peer": 21.6,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0717
+  },
+  "press_vis L27-33/ansJ": {
+   "n": 464,
+   "orig": 39.9,
+   "peer": 56.7,
+   "ctrl": 0.0,
+   "other": 3.4,
+   "prot": 100.0,
+   "edit_rel": 0.1713
+  },
+  "press_vis L27-33/bridgeJ_ctrl": {
+   "n": 464,
+   "orig": 76.3,
+   "peer": 22.4,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0355
+  },
+  "press_vis L27-33/bridgeJ_peer": {
+   "n": 464,
+   "orig": 80.6,
+   "peer": 18.1,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0375
+  },
+  "press_vis L27-33/bridgeJ_peerperp": {
+   "n": 464,
+   "orig": 78.2,
+   "peer": 20.5,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0248
+  },
+  "press_vis L27-33/bridgeJ_peerperp_rot": {
+   "n": 464,
+   "orig": 75.9,
+   "peer": 22.8,
+   "ctrl": 0.0,
+   "other": 1.3,
+   "prot": 100.0,
+   "edit_rel": 0.0408
+  }
+ },
+ "gen": {
+  "instr_vis": {
+   "n": 464,
+   "peer": 100.0,
+   "first_token_agreement": 100.0
+  },
+  "hyp_vis": {
+   "n": 464,
+   "peer": 81.7,
+   "original": 17.7,
+   "other": 0.6,
+   "first_token_agreement": 100.0
+  },
+  "prem_vis": {
+   "n": 464,
+   "original": 97.8,
+   "peer": 2.2,
+   "first_token_agreement": 98.5
+  },
+  "prem_hid": {
+   "n": 464,
+   "original": 70.5,
+   "peer": 24.8,
+   "other": 4.7,
+   "first_token_agreement": 95.3
+  },
+  "press_vis": {
+   "n": 464,
+   "original": 77.2,
+   "peer": 22.8,
+   "first_token_agreement": 98.5
+  }
+ },
+ "effects": {
+  "hyp_vis spec loss paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": 34.5,
+   "ci": [
+    29.41,
+    39.39
+   ]
+  },
+  "hyp_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": 9.3,
+   "ci": [
+    3.95,
+    14.35
+   ]
+  },
+  "hyp_vis spec loss paper10-vs-unembed10": {
+   "n": 464,
+   "value": 44.4,
+   "ci": [
+    39.68,
+    48.8
+   ]
+  },
+  "hyp_vis paper10 loss": {
+   "n": 464,
+   "value": 50.6,
+   "ci": [
+    44.5,
+    57.24
+   ]
+  },
+  "hyp_vis paper10_rot loss": {
+   "n": 464,
+   "value": 16.2,
+   "ci": [
+    11.39,
+    20.94
+   ]
+  },
+  "hyp_vis paper10_pcasize loss": {
+   "n": 464,
+   "value": 41.4,
+   "ci": [
+    35.71,
+    47.78
+   ]
+  },
+  "hyp_vis unembed10 loss": {
+   "n": 464,
+   "value": 6.2,
+   "ci": [
+    2.08,
+    10.75
+   ]
+  },
+  "instr_vis paper10 loss": {
+   "n": 464,
+   "value": 0.6,
+   "ci": [
+    0.0,
+    1.54
+   ]
+  },
+  "instr_vis spec loss paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": -0.2,
+   "ci": [
+    -1.39,
+    0.94
+   ]
+  },
+  "instr_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": -11.0,
+   "ci": [
+    -14.66,
+    -7.75
+   ]
+  },
+  "instr_vis spec loss paper10-vs-unembed10": {
+   "n": 464,
+   "value": 0.6,
+   "ci": [
+    0.0,
+    1.54
+   ]
+  },
+  "prem_hid spec change paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": -16.2,
+   "ci": [
+    -21.48,
+    -11.15
+   ]
+  },
+  "prem_hid spec change paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": -15.3,
+   "ci": [
+    -19.7,
+    -11.07
+   ]
+  },
+  "prem_hid spec change paper10-vs-unembed10": {
+   "n": 464,
+   "value": -17.9,
+   "ci": [
+    -23.35,
+    -12.45
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": 4.3,
+   "ci": [
+    -3.26,
+    11.21
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": 6.0,
+   "ci": [
+    0.73,
+    11.49
+   ]
+  },
+  "press_vis (C3 items) spec change paper10-vs-unembed10": {
+   "n": 464,
+   "value": 0.6,
+   "ci": [
+    -6.43,
+    7.44
+   ]
+  },
+  "hyp_vis keepA net loss share": {
+   "n": 464,
+   "value": -0.356,
+   "ci": [
+    -0.55,
+    -0.17
+   ]
+  },
+  "hyp_vis spec loss keepA-vs-paper10_rot": {
+   "n": 464,
+   "value": -12.3,
+   "ci": [
+    -18.16,
+    -6.36
+   ]
+  },
+  "hyp_vis spec loss bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 464,
+   "value": 42.0,
+   "ci": [
+    35.86,
+    48.45
+   ]
+  },
+  "prem_vis spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 464,
+   "value": -1.5,
+   "ci": [
+    -2.91,
+    -0.49
+   ]
+  },
+  "prem_hid spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 464,
+   "value": -16.2,
+   "ci": [
+    -19.82,
+    -12.61
+   ]
+  },
+  "instr_vis spec loss bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 464,
+   "value": 1.7,
+   "ci": [
+    0.71,
+    2.97
+   ]
+  },
+  "press_vis spec change bridgeJ_peer-vs-bridgeJ_ctrl": {
+   "n": 464,
+   "value": -4.3,
+   "ci": [
+    -6.46,
+    -2.3
+   ]
+  },
+  "D1 ratio instr_vis / solo": {
+   "n": 459,
+   "value": 0.511,
+   "ci": [
+    0.37,
+    0.62
+   ],
+   "solo": 0.745,
+   "instr_vis": 0.38
+  },
+  "D2 hyp_vis paper10": {
+   "held_e3p": 379,
+   "lost": 240,
+   "other": 41,
+   "orig": 198,
+   "ctrl": 1
+  },
+  "D2 hyp_vis paper10_rot": {
+   "held_e3p": 379,
+   "lost": 80,
+   "orig": 79,
+   "other": 1
+  },
+  "D2 hyp_vis paper10_pcasize": {
+   "held_e3p": 379,
+   "lost": 193,
+   "orig": 188,
+   "other": 5
+  },
+  "D2 hyp_vis unembed10": {
+   "held_e3p": 379,
+   "lost": 45,
+   "other": 4,
+   "orig": 41
+  },
+  "protected hyp_vis spec loss paper10-vs-paper10_rot": {
+   "n": 429,
+   "value": 33.6,
+   "ci": [
+    27.75,
+    38.46
+   ]
+  },
+  "protected hyp_vis spec loss paper10-vs-paper10_pcasize": {
+   "n": 429,
+   "value": 6.5,
+   "ci": [
+    0.54,
+    11.45
+   ]
+  },
+  "protected hyp_vis spec loss paper10-vs-unembed10": {
+   "n": 429,
+   "value": 44.1,
+   "ci": [
+    38.73,
+    48.53
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-paper10_rot": {
+   "n": 368,
+   "value": -20.4,
+   "ci": [
+    -27.18,
+    -13.33
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-paper10_pcasize": {
+   "n": 368,
+   "value": -18.8,
+   "ci": [
+    -24.06,
+    -13.38
+   ]
+  },
+  "protected prem_hid spec change paper10-vs-unembed10": {
+   "n": 368,
+   "value": -22.3,
+   "ci": [
+    -29.38,
+    -15.23
+   ]
+  }
+ },
+ "readings": [
+  "C0 instr_vis: readable; says e3' 100.0% (>= 90 needed), first-token agreement 100.0% (>= 90 needed); n 464",
+  "C0 hyp_vis: readable; says e3' 81.7% (>= 60 needed), first-token agreement 100.0% (>= 90 needed); n 464",
+  "C0 beside prem_vis: says e3' 2.2%, orig 97.8%, first-token agreement 98.5%; n 464",
+  "C0 beside prem_hid: says e3' 24.8%, orig 70.5%, first-token agreement 95.3%; n 464",
+  "C0 beside press_vis: says e3' 22.8%, orig 77.2%, first-token agreement 98.5%; n 464",
+  "C1 hyp_vis: not shown; paper10 spec loss of e3' vs paper10_rot 34.5 [29.41, 39.39] (n 464), paper10_pcasize 9.3 [3.95, 14.35] (n 464), unembed10 44.4 [39.68, 48.8] (n 464); paper10 raw loss 50.6 [44.5, 57.24] (n 464)",
+  "C2 instr_vis: compliance is spared; paper10 loss of e3' 0.6 [0.0, 1.54] (n 464) vs bound max(10, 50.6 / 3) = 16.9; beside, spec loss vs paper10_rot -0.2 [-1.39, 0.94] (n 464), paper10_pcasize -11.0 [-14.66, -7.75] (n 464), unembed10 0.6 [0.0, 1.54] (n 464) (against C1's smallest spec loss / 3 = 3.1); caveat: e3' is in context and usually the clean top token, so C2 is partly built in by the protection",
+  "C3 prem_hid (unedited e3' share 23.9%; first-token agreement 95.3%): following the peers' premise needs the J-space; paper10 spec change in e3' vs paper10_rot -16.2 [-21.48, -11.15] (n 464), paper10_pcasize -15.3 [-19.7, -11.07] (n 464), unembed10 -17.9 [-23.35, -12.45] (n 464); beside, answer pressure (press_vis, same items) spec change vs paper10_rot 4.3 [-3.26, 11.21] (n 464), paper10_pcasize 6.0 [0.73, 11.49] (n 464), unembed10 0.6 [-6.43, 7.44] (n 464)",
+  "C4 keepA (hyp_vis): acceptance needs the answer's directions; keepA net loss share -0.356 [-0.55, -0.17] (n 464; net = minus paper10_rot); keepA spec loss vs paper10_rot -12.3 [-18.16, -6.36] (n 464); note 41's energy caveat applies",
+  "C4 bridgeJ_peer (hyp_vis): the stated premise's own directions are used; bridgeJ_peer - bridgeJ_ctrl loss of e3' 42.0 [35.86, 48.45] (n 464); beside prem_vis change -1.5 [-2.91, -0.49] (n 464); prem_hid change -16.2 [-19.82, -12.61] (n 464); instr_vis loss 1.7 [0.71, 2.97] (n 464); press_vis change -4.3 [-6.46, -2.3] (n 464)",
+  "D1 (descriptive): between; own-bridge readout (J++ hit@100 orig - control bridge, layers 42-45, unedited) instr_vis 0.38 vs solo 0.745 (note 40 run nem35l_sd_ko_test_v1); ratio 0.511 [0.37, 0.62]; n 459",
+  "D2 (descriptive) hyp_vis paper10: of 379 items saying e3' unedited, 240 lose it: to orig 198 (82.5%), other 41, ctrl 1",
+  "D2 beside hyp_vis paper10_rot: lose 80 of 379: orig 79, other 1, ctrl 0",
+  "D2 beside hyp_vis paper10_pcasize: lose 193 of 379: orig 188, other 5, ctrl 0",
+  "D2 beside hyp_vis unembed10: lose 45 of 379: orig 41, other 4, ctrl 0",
+  "Sensitivity C1 (hyp_vis, both answers protected, 429 of 464 items): same sign; paper10 spec loss vs paper10_rot 33.6 [27.75, 38.46] (n 429), paper10_pcasize 6.5 [0.54, 11.45] (n 429), unembed10 44.1 [38.73, 48.53] (n 429)",
+  "Sensitivity C3 (prem_hid, both answers protected, 368 of 464 items): same sign; paper10 spec change vs paper10_rot -20.4 [-27.18, -13.33] (n 368), paper10_pcasize -18.8 [-24.06, -13.38] (n 368), unembed10 -22.3 [-29.38, -15.23] (n 368)",
+  "C4-perp (hyp_vis; registered (amendment 76); the peers' premise orthogonalised to the answers): partly; loss of e3' bridgeJ_peerperp - bridgeJ_ctrl -7.1 [-10.22, -3.92] (n 464); bridgeJ_peerperp - bridgeJ_peerperp_rot -3.7 [-6.1, -1.1] (n 464); C4 in nem35l_sd56_ko_test_v1 bridgeJ_peer - bridgeJ_ctrl 42.0 [35.86, 48.45] (n 464) (met True) [from nem35l_sd56_ko_test_v1]",
+  "C4-perp (prem_hid; beside; the peers' premise orthogonalised to the answers): partly; loss of e3' bridgeJ_peerperp - bridgeJ_ctrl -5.6 [-9.94, -1.93] (n 464); bridgeJ_peerperp - bridgeJ_peerperp_rot -3.0 [-5.47, -0.64] (n 464); C4 in nem35l_sd56_ko_test_v1 bridgeJ_peer - bridgeJ_ctrl 16.2 [12.61, 19.82] (n 464) (met True) [from nem35l_sd56_ko_test_v1]",
+  "C4-perp geometry (descriptive, hyp_vis): bridgeJ_peer's forms: mean energy share inside the answers' span 0.336 (n 464); peerperp span rank 4.82 (0 items with a non-empty peers' span reduced to rank 0); hyp_vis |edit|/|h| bridgeJ_peer 0.0374, bridgeJ_peerperp 0.0248"
+ ],
+ "late_layers": [
+  42,
+  43,
+  44,
+  45
+ ],
+ "readout": {
+  "instr_vis none orig_bridge": {
+   "n": 459,
+   "value": 0.38
+  },
+  "instr_vis paper10 orig_bridge": {
+   "n": 459,
+   "value": 0.093
+  },
+  "instr_vis bridgeJ_peer orig_bridge": {
+   "n": 459,
+   "value": 0.375
+  },
+  "instr_vis bridgeJ_ctrl orig_bridge": {
+   "n": 459,
+   "value": 0.361
+  },
+  "instr_vis none peer_bridge": {
+   "n": 459,
+   "value": 0.435
+  },
+  "instr_vis none orig_answer": {
+   "n": 459,
+   "value": 0.599
+  },
+  "hyp_vis none orig_bridge": {
+   "n": 459,
+   "value": 0.264
+  },
+  "hyp_vis paper10 orig_bridge": {
+   "n": 459,
+   "value": 0.084
+  },
+  "hyp_vis bridgeJ_peer orig_bridge": {
+   "n": 459,
+   "value": 0.373
+  },
+  "hyp_vis bridgeJ_ctrl orig_bridge": {
+   "n": 459,
+   "value": 0.238
+  },
+  "hyp_vis none peer_bridge": {
+   "n": 459,
+   "value": 0.973
+  },
+  "hyp_vis none orig_answer": {
+   "n": 459,
+   "value": 0.464
+  },
+  "prem_vis none orig_bridge": {
+   "n": 459,
+   "value": 0.66
+  },
+  "prem_vis paper10 orig_bridge": {
+   "n": 459,
+   "value": 0.399
+  },
+  "prem_vis bridgeJ_peer orig_bridge": {
+   "n": 459,
+   "value": 0.643
+  },
+  "prem_vis bridgeJ_ctrl orig_bridge": {
+   "n": 459,
+   "value": 0.642
+  },
+  "prem_vis none peer_bridge": {
+   "n": 459,
+   "value": 0.515
+  },
+  "prem_vis none orig_answer": {
+   "n": 459,
+   "value": 0.569
+  },
+  "prem_hid none orig_bridge": {
+   "n": 459,
+   "value": 0.594
+  },
+  "prem_hid paper10 orig_bridge": {
+   "n": 459,
+   "value": 0.224
+  },
+  "prem_hid bridgeJ_peer orig_bridge": {
+   "n": 459,
+   "value": 0.604
+  },
+  "prem_hid bridgeJ_ctrl orig_bridge": {
+   "n": 459,
+   "value": 0.59
+  },
+  "prem_hid none peer_bridge": {
+   "n": 459,
+   "value": 0.771
+  },
+  "prem_hid none orig_answer": {
+   "n": 459,
+   "value": 0.435
+  },
+  "press_vis none orig_bridge": {
+   "n": 459,
+   "value": 0.581
+  },
+  "press_vis paper10 orig_bridge": {
+   "n": 459,
+   "value": 0.31
+  },
+  "press_vis bridgeJ_peer orig_bridge": {
+   "n": 459,
+   "value": 0.555
+  },
+  "press_vis bridgeJ_ctrl orig_bridge": {
+   "n": 459,
+   "value": 0.557
+  },
+  "press_vis none peer_bridge": {
+   "n": 459,
+   "value": 0.193
+  },
+  "press_vis none orig_answer": {
+   "n": 459,
+   "value": 0.516
+  }
+ },
+ "c4perp": {
+  "perp_run": "nem35l_sd56_ko_test_v1",
+  "tag": "registered (amendment 76)",
+  "geometry": "bridgeJ_peer's forms: mean energy share inside the answers' span 0.336 (n 464); peerperp span rank 4.82 (0 items with a non-empty peers' span reduced to rank 0); hyp_vis |edit|/|h| bridgeJ_peer 0.0374, bridgeJ_peerperp 0.0248",
+  "hyp_vis": {
+   "perp_ctrl": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "n": 464,
+    "value": -7.1,
+    "ci": [
+     -10.22,
+     -3.92
+    ]
+   },
+   "perp_rot": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "n": 464,
+    "value": -3.7,
+    "ci": [
+     -6.1,
+     -1.1
+    ]
+   },
+   "c4_main": {
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "n": 464,
+    "value": 42.0,
+    "ci": [
+     35.86,
+     48.45
+    ]
+   },
+   "c4_met": true,
+   "peer_ctrl_perp_run": null,
+   "reading": "partly"
+  },
+  "prem_hid": {
+   "perp_ctrl": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_ctrl",
+    "n": 464,
+    "value": -5.6,
+    "ci": [
+     -9.94,
+     -1.93
+    ]
+   },
+   "perp_rot": {
+    "t": "bridgeJ_peerperp",
+    "c": "bridgeJ_peerperp_rot",
+    "n": 464,
+    "value": -3.0,
+    "ci": [
+     -5.47,
+     -0.64
+    ]
+   },
+   "c4_main": {
+    "t": "bridgeJ_peer",
+    "c": "bridgeJ_ctrl",
+    "n": 464,
+    "value": 16.2,
+    "ci": [
+     12.61,
+     19.82
+    ]
+   },
+   "c4_met": true,
+   "peer_ctrl_perp_run": null,
+   "reading": "partly"
+  }
+ },
+ "logprob": {
+  "hyp_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": -1.811,
+   "ci": [
+    -2.09,
+    -1.55
+   ]
+  },
+  "hyp_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": -0.907,
+   "ci": [
+    -1.18,
+    -0.65
+   ]
+  },
+  "hyp_vis lp_peer paper10-vs-unembed10": {
+   "n": 464,
+   "value": -1.891,
+   "ci": [
+    -2.17,
+    -1.63
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": 0.1,
+   "ci": [
+    0.07,
+    0.13
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": 0.371,
+   "ci": [
+    0.3,
+    0.46
+   ]
+  },
+  "instr_vis lp_peer paper10-vs-unembed10": {
+   "n": 464,
+   "value": 0.005,
+   "ci": [
+    -0.01,
+    0.02
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": -3.544,
+   "ci": [
+    -4.14,
+    -3.0
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": -2.853,
+   "ci": [
+    -3.3,
+    -2.43
+   ]
+  },
+  "prem_hid lp_peer paper10-vs-unembed10": {
+   "n": 464,
+   "value": -3.417,
+   "ci": [
+    -3.99,
+    -2.89
+   ]
+  },
+  "press_vis lp_peer paper10-vs-paper10_rot": {
+   "n": 464,
+   "value": -0.45,
+   "ci": [
+    -0.62,
+    -0.27
+   ]
+  },
+  "press_vis lp_peer paper10-vs-paper10_pcasize": {
+   "n": 464,
+   "value": 0.272,
+   "ci": [
+    0.07,
+    0.5
+   ]
+  },
+  "press_vis lp_peer paper10-vs-unembed10": {
+   "n": 464,
+   "value": -0.579,
+   "ci": [
+    -0.74,
+    -0.41
+   ]
+  }
+ }
+}

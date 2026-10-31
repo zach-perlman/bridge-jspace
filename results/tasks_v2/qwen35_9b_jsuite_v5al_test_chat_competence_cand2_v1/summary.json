@@ -1,0 +1,66 @@
+{
+  "seconds": 772,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 582,
+      "whole": 0.854,
+      "all_steps": 0.919,
+      "median_margin": 4.12,
+      "guess": 0.122,
+      "top_wrong": [
+        [
+          "Hung",
+          5
+        ],
+        [
+          "China",
+          5
+        ],
+        [
+          "Canada",
+          5
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 582,
+      "whole": 0.443,
+      "all_steps": 0.691,
+      "median_margin": -1.0,
+      "guess": 0.022,
+      "top_wrong": [
+        [
+          "Nor",
+          12
+        ],
+        [
+          "Brazil",
+          10
+        ],
+        [
+          "C",
+          10
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.85,
+      "MM": 0.824
+    },
+    "companies": {
+      "MP": 0.942,
+      "MM": 0.375
+    },
+    "landmarks": {
+      "MP": 0.767,
+      "MM": 0.533
+    },
+    "people": {
+      "MP": 0.857,
+      "MM": 0.122
+    }
+  },
+  "pick": {}
+}

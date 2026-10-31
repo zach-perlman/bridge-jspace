@@ -1,0 +1,171 @@
+{
+ "L16-23/MP/none": {
+  "n": 499,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L16-23/MP/full_cf": {
+  "n": 499,
+  "kept": 67.1,
+  "donor": 29.5,
+  "third": 3.4,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 26.1,
+  "ci": [
+   21.3,
+   30.9
+  ]
+ },
+ "L16-23/MP/jpp_cf": {
+  "n": 499,
+  "kept": 78.6,
+  "donor": 18.6,
+  "third": 2.8,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 15.8,
+  "ci": [
+   11.6,
+   19.7
+  ]
+ },
+ "L16-23/MP/jpprand_cf": {
+  "n": 499,
+  "kept": 88.6,
+  "donor": 9.8,
+  "third": 1.6,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 8.2,
+  "ci": [
+   5.1,
+   11.1
+  ]
+ },
+ "L16-23/MP/nojpp_cf": {
+  "n": 499,
+  "kept": 71.1,
+  "donor": 25.3,
+  "third": 3.6,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 21.6,
+  "ci": [
+   17.2,
+   26.1
+  ]
+ },
+ "L16-23/MP/nojpprand_cf": {
+  "n": 499,
+  "kept": 66.7,
+  "donor": 29.9,
+  "third": 3.4,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 26.5,
+  "ci": [
+   21.7,
+   31.1
+  ]
+ },
+ "L16-23/MP/lens_cf": {
+  "n": 499,
+  "kept": 99.0,
+  "donor": 1.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 1.0,
+  "ci": [
+   0.2,
+   2.0
+  ]
+ },
+ "L16-23/MP/rem_cf": {
+  "n": 499,
+  "kept": 68.7,
+  "donor": 28.1,
+  "third": 3.2,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 24.8,
+  "ci": [
+   20.1,
+   29.9
+  ]
+ },
+ "L16-23/MP/lensrand_cf": {
+  "n": 499,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L16-23/MP/lensnp_cf": {
+  "n": 499,
+  "kept": 98.8,
+  "donor": 1.2,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 1.2,
+  "ci": [
+   0.4,
+   2.2
+  ]
+ },
+ "L16-23/MP/remnp_cf": {
+  "n": 499,
+  "kept": 68.9,
+  "donor": 28.1,
+  "third": 3.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 25.1,
+  "ci": [
+   20.5,
+   30.1
+  ]
+ },
+ "L16-23/MP/lensshrnp_cf": {
+  "n": 499,
+  "kept": 99.4,
+  "donor": 0.6,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 0.6,
+  "ci": [
+   0.0,
+   1.4
+  ]
+ },
+ "L16-23/MP/remshrnp_cf": {
+  "n": 499,
+  "kept": 66.9,
+  "donor": 29.7,
+  "third": 3.4,
+  "other": 0.0,
+  "n_third": 499,
+  "transfer": 26.3,
+  "ci": [
+   21.2,
+   31.3
+  ]
+ }
+}

@@ -1,0 +1,42 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "n39b_overlap",
+  "kind": "overlap",
+  "note": "prereg amendment 65 second addendum, note 39",
+  "target": "qwen3.6-27b",
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ]
+  },
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "main_band": "24-40",
+  "pool": [
+    "colour",
+    "shape",
+    "unit",
+    "occupation",
+    "weekday",
+    "month",
+    "number",
+    "state_of_matter"
+  ],
+  "n_rand": 20,
+  "device": "cuda",
+  "command": "scripts/paper_swap_6b.py overlap --name n39b_overlap",
+  "git_state": {
+    "head": "c5f3e3bfa7c3343a52dd4941f21dc46543ec3141",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/paper_swap_6b.py",
+      "scripts/paper_swap_read6b.py",
+      "scripts/queues/h200_n39b_1030.sh",
+      "scripts/sd_gate.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T07:47:07Z"
+}

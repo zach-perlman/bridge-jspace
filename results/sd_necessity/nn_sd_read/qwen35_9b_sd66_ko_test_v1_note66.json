@@ -1,0 +1,75 @@
+{
+ "run": "qwen35_9b_sd66_ko_test_v1",
+ "model": {
+  "target": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "role": "confirmatory",
+ "band": "L12-16",
+ "n_read": 347,
+ "n_items": 258,
+ "n_peer_named_dropped": 0,
+ "gen_edited": true,
+ "readings": [
+  "reading validity [qwen3.5-9b, confirmatory; test split; band L12-16]: unedited K share chk_solo 99.6, chk_agree 100.0, chk_copy 100.0 (>= 90 each), chk_wrong 57.4 (>= 60, else F2 in log-odds); sources {'chk_solo': 'first token', 'chk_agree': 'first token', 'chk_copy': 'first token', 'chk_wrong': 'first token'}; controls: chk_copy S -3.1 [-5.43, -1.16] (<= 10), D = chk_solo S 35.3 [29.07, 41.47] (>= 20; bridges [23.76, 47.37]): valid",
+  "reading F1 [qwen3.5-9b, confirmatory; test split; band L12-16]: a forbidden but relevant answer is copied; S(chk_agree) -4.7 [-8.14, -1.16] (bridges [-10.38, 0.0]; n 258, 76 bridges); D 35.3; thresholds max(10, D/3) = 11.8, D/2 = 17.6, 2/3 D = 23.5",
+  "reading F2 [qwen3.5-9b, confirmatory; test split; band L12-16] (log-odds: chk_wrong K < 60): the margin moves toward e3' (log-odds; no registered threshold); orig - peer logit margin spec drop 1.45 [1.25, 1.66] (n 258); the share gain beside: 16.3 [10.47, 22.09]"
+ ],
+ "beside": {},
+ "source": {
+  "chk_solo": "first token",
+  "chk_agree": "first token",
+  "chk_copy": "first token",
+  "chk_wrong": "first token"
+ },
+ "validity": {
+  "K_unedited": {
+   "chk_solo": 99.6124031007752,
+   "chk_agree": 100.0,
+   "chk_copy": 100.0,
+   "chk_wrong": 57.36434108527132
+  },
+  "copy_S": -3.10077519379845,
+  "copy_ci": [
+   -5.43,
+   -1.16
+  ],
+  "D": 35.27131782945737,
+  "D_ci": [
+   29.07,
+   41.47
+  ],
+  "valid": true,
+  "wrong_ok": false
+ },
+ "F1": {
+  "label": "a forbidden but relevant answer is copied",
+  "S_agree": -4.651162790697675,
+  "ci": [
+   -8.14,
+   -1.16
+  ],
+  "ci_bridges": [
+   -10.38,
+   0.0
+  ],
+  "n": 258,
+  "D": 35.27131782945737
+ },
+ "F2": {
+  "label": "the margin moves toward e3' (log-odds; no registered threshold)",
+  "gain": 16.27906976744186,
+  "ci": [
+   10.47,
+   22.09
+  ],
+  "ci_bridges": [
+   9.13,
+   22.34
+  ],
+  "n": 258
+ }
+}

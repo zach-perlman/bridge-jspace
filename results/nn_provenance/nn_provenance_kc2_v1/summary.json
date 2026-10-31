@@ -1,0 +1,80 @@
+{
+ "n_prompts": 2680,
+ "n_by_word": {
+  "CN": 670,
+  "DN": 670,
+  "TN": 670,
+  "TD": 670
+ },
+ "n_probe": 1294,
+ "n_probe_by_word_label": {
+  "CN/memory": 71,
+  "CN/passage": 599,
+  "DN/memory": 204,
+  "DN/passage": 420
+ },
+ "n_dropped_other": 46,
+ "n_unlabelled": 0,
+ "layers": [
+  0,
+  4,
+  8,
+  12,
+  16,
+  20,
+  24,
+  28,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  44,
+  48,
+  52,
+  56,
+  60
+ ],
+ "band": [
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40
+ ],
+ "m": {
+  "cities": 70,
+  "companies": 42,
+  "landmarks": 56,
+  "people": 68
+ },
+ "union_m": 141,
+ "fp16_overflow": 0,
+ "max_abs_h": 192.0,
+ "seconds": {
+  "load": 14,
+  "forward_and_features": 265,
+  "h2_margin": 19,
+  "total": 312
+ },
+ "B": {
+  "definition": "the closed-book named recall's (kc2ctl H2) cand2 answer margin, computed by this script (one forward per scene, rendered by competence_variants.prompt, variant none): best logit of X's true value's first tokens (ok2) minus the best other cand2 candidate's, at the final position; the controls run records no margin",
+  "n_scenes": 670,
+  "cand2_correct_agrees_with_controls_run": "670 of 670"
+ },
+ "seeds": {
+  "rotation": "888+layer",
+  "control_tokens": 34
+ },
+ "deterministic": "one forward per prompt, no sampling",
+ "command": "python scripts/nn_provenance.py --name nn_provenance_kc2_v1 --why Zach (2026-10-30, prereg amendment 63 note 34 + addenda: the provenance probe, qwen3.6-27b) --band 32-40 --competence jsuite_v5kc2_test_chat_competence_cand2_v1",
+ "git_commit": "61cf3568f893bc54389b23e90d1515774fc783b4"
+}

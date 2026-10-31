@@ -1,0 +1,31 @@
+{
+  "run": "qwen35_9b_jsuite_v3ra_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 12): qwen3.5-9b competence on rendering A (RM MM PM)",
+  "set": "jsuite_v3ra_test_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "9c8f475f4a4489edefdb8615f44172890e081d3f",
+  "git_state": {
+    "head": "9c8f475f4a4489edefdb8615f44172890e081d3f",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T19:56:03Z"
+}

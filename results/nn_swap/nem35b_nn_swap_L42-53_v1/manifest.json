@@ -1,0 +1,68 @@
+{
+  "run": "nem35b_nn_swap_L42-53_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 10 addendum): Bolt never-named swap at L42-53, references capped at 80",
+  "target": "nemotron-3.5-bolt",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "42-53"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "nem35b_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "site": "last",
+  "conditions": [
+    "insert_k10",
+    "insert_k10_rand",
+    "insert_k10_rot",
+    "insert_k10_u",
+    "latent_k10",
+    "latent_k10_rand",
+    "latent_k10_rot",
+    "latent_k10_u",
+    "insert_k30",
+    "insert_k30_rand",
+    "latent_k30",
+    "latent_k30_rand",
+    "insert_k100",
+    "insert_k100_rand",
+    "latent_k100",
+    "latent_k100_rand",
+    "clamp",
+    "clamp_null"
+  ],
+  "ks": [
+    10,
+    30,
+    100
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer"
+  },
+  "git_commit": "ebaa6aec2b999f7f90f139299cefba393a8163d4",
+  "git_state": {
+    "head": "ebaa6aec2b999f7f90f139299cefba393a8163d4",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

@@ -1,0 +1,35 @@
+{
+  "bridge": {
+    "n": 100,
+    "same_flip": 100,
+    "same_swap_rank": 100,
+    "flip_rate_rerun": 0.39,
+    "flip_rate_stored": 0.39,
+    "max_abs_dlogp_diff": 0.0
+  },
+  "bridge_noA": {
+    "n": 100,
+    "same_flip": 100,
+    "same_swap_rank": 100,
+    "flip_rate_rerun": 0.03,
+    "flip_rate_stored": 0.03,
+    "max_abs_dlogp_diff": 0.0
+  },
+  "bridge_randA": {
+    "n": 100,
+    "same_flip": 100,
+    "same_swap_rank": 100,
+    "flip_rate_rerun": 0.28,
+    "flip_rate_stored": 0.28,
+    "max_abs_dlogp_diff": 0.0
+  },
+  "bridge/null": {
+    "n": 100,
+    "same_flip": 100,
+    "same_swap_rank": 100,
+    "flip_rate_rerun": 0.0,
+    "flip_rate_stored": 0.0,
+    "max_abs_dlogp_diff": 0.0
+  },
+  "overlap_geometry_max_abs_diff": 0.0
+}

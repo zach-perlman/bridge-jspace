@@ -177,13 +177,19 @@ def size_matched_removal(x: torch.Tensor, r: torch.Tensor, basis: torch.Tensor) 
 
 def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tensor | None = None,
                  k: int | None = None, chunk: int = 4096, skip_sinks: bool = False,
-                 size_match: torch.Tensor | None = None) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
+                 size_match: torch.Tensor | None = None,
+                 keep_span: list[torch.Tensor] | None = None,
+                 observe: Callable[[torch.Tensor, int, int], None] | None = None) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
     """An edit h [B, T, d] -> h minus its removal, for method 'omp' (k atoms, rows' banned atoms never chosen) or 'top'
     (span of the k highest-logit atoms, rows' protected atoms never chosen); with rotation, the removal vector is turned
     by it before subtraction (the same-size control). Skipped positions are unchanged. With skip_sinks (2026-10-21,
     docs/breadth/prereg_sink_1021.md) position 0 and every position whose residual norm exceeds SINK_RATIO x the row's median
     are also left unchanged (attention sinks); edit.sinks counts [sink positions, positions] over calls. With size_match
-    (an orthonormal basis [n, d]), the removal is replaced by size_matched_removal's along that basis (same norm)."""
+    (an orthonormal basis [n, d]), the removal is replaced by size_matched_removal's along that basis (same norm). With
+    keep_span (prereg amendment 64 note 37: one orthonormal basis [d, k] per batch row), each row's removal vector loses
+    its component in that span before any rotation: r' = r - Q Q^T r (paper10_keepA, paper10_keepA_rot). With observe
+    (amendment 67 addendum, note 41's retained-energy log), observe(r, B, T) is called with the removal vectors [B * T, d]
+    before any keep_span, rotation or size match; it only reads them."""
     k = k or (K_OMP if method == "omp" else K_PAPER)
     counts = [0, 0]
 
@@ -220,6 +226,12 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
                 r[sel] = top_span_removal(dic, x[sel], k, protected=groups)
             else:
                 raise ValueError(method)
+        if observe is not None:  # note 41: read-only look at the removal (skipped positions are 0)
+            observe(r, B, T)
+        if keep_span is not None:  # note 37: the removal minus its part in the kept span (skipped positions stay 0)
+            for b, Q in enumerate(keep_span):
+                rb = r[b * T : (b + 1) * T].double()
+                r[b * T : (b + 1) * T] = (rb - (rb @ Q) @ Q.T).float()
         if rotation is not None:
             r = r @ rotation.T
         if size_match is not None:

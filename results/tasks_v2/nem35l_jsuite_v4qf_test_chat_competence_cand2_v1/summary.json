@@ -1,0 +1,70 @@
+{
+  "seconds": 393,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.757,
+      "all_steps": 0.779,
+      "median_margin": 2.62,
+      "guess": 0.165,
+      "top_wrong": [
+        [
+          "Germany",
+          9
+        ],
+        [
+          "C",
+          8
+        ],
+        [
+          "Pol",
+          7
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.757,
+      "all_steps": 0.387,
+      "median_margin": 2.0,
+      "guess": 0.01,
+      "top_wrong": [
+        [
+          "Belg",
+          7
+        ],
+        [
+          "Steven",
+          6
+        ],
+        [
+          "A",
+          5
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.589,
+      "MM": 0.847
+    },
+    "companies": {
+      "MP": 0.887,
+      "MM": 0.812
+    },
+    "films": {
+      "MP": 0.854,
+      "MM": 0.382
+    },
+    "landmarks": {
+      "MP": 0.664,
+      "MM": 0.879
+    },
+    "people": {
+      "MP": 0.798,
+      "MM": 0.81
+    }
+  },
+  "pick": {}
+}

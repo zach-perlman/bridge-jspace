@@ -1,0 +1,128 @@
+{
+  "prev_run": "results/paper_swap_decomp/nem35l_n39_v1",
+  "rerun": "results/paper_swap_decomp/nem35l_n39b_v1",
+  "target": "nemotron-3.5-lightning",
+  "n_items": 55,
+  "n_categories": 12,
+  "stored_check": {
+    "bridge": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.4090909090909091,
+      "flip_rate_stored": 0.4090909090909091,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.05454545454545454,
+      "flip_rate_stored": 0.05454545454545454,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.23636363636363636,
+      "flip_rate_stored": 0.23636363636363636,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 110,
+      "same_flip": 110,
+      "same_swap_rank": 110,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "overlap_geometry_max_abs_diff": 0.0
+  },
+  "A1_6b": {
+    "jpp/main_band": {
+      "window": "20-33",
+      "rates": {
+        "bridge": 0.4727272727272727,
+        "bridge_noA": 0.07272727272727272,
+        "bridge_off6b": 0.41818181818181815,
+        "bridge_randA": 0.2727272727272727,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.15384615384615385,
+        0.05882352941176471,
+        0.27999999999999997,
+        0
+      ],
+      "keep_arm6b": [
+        0.8846153846153846,
+        0.7916666666666666,
+        1.0,
+        0
+      ],
+      "keep_arm7": [
+        0.5769230769230769,
+        0.4444444444444444,
+        0.7142857142857143,
+        0
+      ],
+      "valid": false,
+      "reading": "scrub not specific (arm 6b keeps 0.88, arm 7 keeps 0.58; K = 0.15 would read 'answer-carried')",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.15384615384615385,
+        0.0,
+        0.42857142857142855,
+        0
+      ],
+      "stored_K": [
+        0.15384615384615385,
+        0.05882352941176471,
+        0.27999999999999997,
+        0
+      ]
+    },
+    "jpp/median_onset": {
+      "window": "8-20",
+      "rates": {
+        "bridge": 0.34545454545454546,
+        "bridge_noA": 0.03636363636363636,
+        "bridge_off6b": 0.23636363636363636,
+        "bridge_randA": 0.2,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.10526315789473684,
+        0.0,
+        0.3333333333333333,
+        0
+      ],
+      "keep_arm6b": [
+        0.6842105263157895,
+        0.4444444444444445,
+        1.0,
+        0
+      ],
+      "keep_arm7": [
+        0.5789473684210527,
+        0.4642857142857143,
+        0.75,
+        0
+      ],
+      "valid": false,
+      "reading": "scrub not specific (arm 6b keeps 0.68, arm 7 keeps 0.58; K = 0.11 would read 'answer-carried')",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.05263157894736842,
+        0.0,
+        0.16691176470588104,
+        0
+      ],
+      "stored_K": [
+        0.10526315789473684,
+        0.0,
+        0.3333333333333333,
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,487 @@
+{
+ "prefix": "qwen35_9b_",
+ "behaviour": {
+  "MM/conflict": {
+   "n_eligible": 35,
+   "whole_acc": 62.9,
+   "n_errors": 13,
+   "cue_share_of_errors": 46.2,
+   "cue_share_ci": [
+    15.4,
+    75.0
+   ],
+   "chance": 3.0,
+   "shortcut_taken": true
+  },
+  "MM/aligned": {
+   "n_eligible": 20,
+   "whole_acc": 85.0
+  },
+  "MP/conflict": {
+   "n_eligible": 74,
+   "whole_acc": 85.1
+  },
+  "MP/aligned": {
+   "n_eligible": 49,
+   "whole_acc": 79.6
+  }
+ },
+ "answer": {
+  "final/L21-24/aligned": {
+   "n": 23,
+   "own": {
+    "e1": [
+     0.75,
+     [
+      0.25,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     1.0,
+     [
+      1.0,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.333,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.75,
+     [
+      0.25,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.25,
+     [
+      0.0,
+      0.75
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 0.333,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   }
+  },
+  "final/L21-24/conflict": {
+   "n": 30,
+   "own": {
+    "e1": [
+     0.375,
+     [
+      0.0,
+      0.75
+     ]
+    ],
+    "e2": [
+     0.125,
+     [
+      0.0,
+      0.429
+     ]
+    ],
+    "e3": [
+     0.625,
+     [
+      0.2,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.333,
+    "e3_over_e1": 1.667,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.375,
+     [
+      0.0,
+      0.75
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.5,
+     [
+      0.0,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.333,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "final/L25-28/aligned": {
+   "n": 23,
+   "own": {
+    "e1": [
+     0.889,
+     [
+      0.7,
+      1.0
+     ]
+    ],
+    "e2": [
+     -0.111,
+     [
+      -0.429,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.889,
+     [
+      0.7,
+      1.0
+     ]
+    ],
+    "e2_over_e1": -0.125,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.889,
+     [
+      0.7,
+      1.0
+     ]
+    ],
+    "e2": [
+     -0.222,
+     [
+      -0.6,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.778,
+     [
+      0.4,
+      1.0
+     ]
+    ],
+    "e2_over_e1": -0.25,
+    "e3_over_e1": 0.875,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "final/L25-28/conflict": {
+   "n": 30,
+   "own": {
+    "e1": [
+     0.545,
+     [
+      0.2,
+      0.889
+     ]
+    ],
+    "e2": [
+     -0.091,
+     [
+      -0.3,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.545,
+     [
+      0.2,
+      0.889
+     ]
+    ],
+    "e2_over_e1": -0.167,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.545,
+     [
+      0.2,
+      0.889
+     ]
+    ],
+    "e2": [
+     -0.182,
+     [
+      -0.455,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.545,
+     [
+      0.2,
+      0.889
+     ]
+    ],
+    "e2_over_e1": -0.334,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "last/L12-16/aligned": {
+   "n": 23,
+   "own": {
+    "e1": [
+     0.667,
+     [
+      0.5,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.333,
+     [
+      0.0,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 0.499,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.667,
+     [
+      0.5,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.667,
+     [
+      0.5,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "last/L12-16/conflict": {
+   "n": 30,
+   "own": {
+    "e1": [
+     0.375,
+     [
+      0.0,
+      0.727
+     ]
+    ],
+    "e2": [
+     0.125,
+     [
+      0.0,
+      0.4
+     ]
+    ],
+    "e3": [
+     0.25,
+     [
+      0.0,
+      0.6
+     ]
+    ],
+    "e2_over_e1": 0.333,
+    "e3_over_e1": 0.667,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.375,
+     [
+      0.0,
+      0.727
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.375,
+     [
+      0.0,
+      0.75
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  }
+ },
+ "knockout": {
+  "conflict/paper10": {
+   "n_MM": 21,
+   "n_MP": 60,
+   "loss_MM": 76.2,
+   "loss_MP": 11.7,
+   "gap": 64.5,
+   "gap_ci": [
+    43.6,
+    83.8
+   ]
+  },
+  "conflict/paper10_rot": {
+   "n_MM": 21,
+   "n_MP": 60,
+   "loss_MM": 19.0,
+   "loss_MP": 5.0,
+   "gap": 14.0,
+   "gap_ci": [
+    -2.1,
+    33.1
+   ]
+  },
+  "conflict/unembed10": {
+   "n_MM": 21,
+   "n_MP": 60,
+   "loss_MM": 9.5,
+   "loss_MP": 5.0,
+   "gap": 4.5,
+   "gap_ci": [
+    -8.3,
+    18.8
+   ]
+  },
+  "conflict/paper10_pcasize": {
+   "n_MM": 21,
+   "n_MP": 60,
+   "loss_MM": 19.0,
+   "loss_MP": 20.0,
+   "gap": -1.0,
+   "gap_ci": [
+    -20.5,
+    18.6
+   ]
+  },
+  "aligned/paper10": {
+   "n_MM": 17,
+   "n_MP": 38,
+   "loss_MM": 47.1,
+   "loss_MP": 18.4,
+   "gap": 28.6,
+   "gap_ci": [
+    1.9,
+    55.4
+   ]
+  },
+  "aligned/paper10_rot": {
+   "n_MM": 17,
+   "n_MP": 38,
+   "loss_MM": 0.0,
+   "loss_MP": 2.6,
+   "gap": -2.6,
+   "gap_ci": [
+    -7.9,
+    0.0
+   ]
+  },
+  "aligned/unembed10": {
+   "n_MM": 17,
+   "n_MP": 38,
+   "loss_MM": 0.0,
+   "loss_MP": 5.3,
+   "gap": -5.3,
+   "gap_ci": [
+    -13.2,
+    0.0
+   ]
+  },
+  "aligned/paper10_pcasize": {
+   "n_MM": 17,
+   "n_MP": 38,
+   "loss_MM": 0.0,
+   "loss_MP": 23.7,
+   "gap": -23.7,
+   "gap_ci": [
+    -36.8,
+    -10.5
+   ]
+  }
+ }
+}

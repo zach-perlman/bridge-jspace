@@ -1,0 +1,485 @@
+{
+ "run": "sd62_ko_test_v1",
+ "gate_run": "sd_gate_v1",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "band": "L32-40",
+ "pos_from": "question",
+ "ctrl_match": "count",
+ "n_read": 415,
+ "n_gated": 325,
+ "n_no_shortcut": 11,
+ "strata": {
+  "gated, no shortcut": {
+   "n": 11,
+   "validity": {
+    "I_K_none": 100.0,
+    "I_ci": [
+     100.0,
+     100.0
+    ],
+    "I_n": 11,
+    "I_readable": true,
+    "P_K_none": 100.0,
+    "P_n": 11,
+    "P_paper10_spec": 45.45454545454545,
+    "P_paper10_spec_ci": [
+     18.18,
+     72.73
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 11,
+     "n_bridges": 7,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    },
+    "P": {
+     "n": 11,
+     "n_bridges": 7,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 0.0,
+     "ci_rot": [
+      0.0,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.0,
+     "loss_rot": 0.0
+    },
+    "O": {
+     "n": 11,
+     "n_bridges": 7,
+     "perp_minus_ctrl": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "ci_bridges": [
+      0.0,
+      0.0
+     ],
+     "perp_minus_rot": 9.090909090909092,
+     "ci_rot": [
+      0.0,
+      27.27
+     ],
+     "ci_rot_bridges": [
+      0.0,
+      42.86
+     ],
+     "loss_perp": 9.090909090909092,
+     "loss_ctrl": 9.090909090909092,
+     "loss_rot": 0.0
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": 0.0,
+    "S_P": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "ci_bridges": [
+     0.0,
+     0.0
+    ],
+    "n": 11
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 11
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 11
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 11
+    },
+    "I:ansJ loss": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 11
+    },
+    "I:paper10 - paper10_rot": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n": 11
+    },
+    "P:bridgeJ loss": {
+     "value": 36.36363636363637,
+     "ci": [
+      9.09,
+      63.64
+     ],
+     "n": 11
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 36.36363636363637,
+     "ci": [
+      9.09,
+      63.64
+     ],
+     "n": 11
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 36.36363636363637,
+     "ci": [
+      9.09,
+      63.64
+     ],
+     "n": 11
+    },
+    "P:ansJ loss": {
+     "value": 18.181818181818183,
+     "ci": [
+      0.0,
+      45.45
+     ],
+     "n": 11
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 45.45454545454545,
+     "ci": [
+      18.18,
+      72.73
+     ],
+     "n": 11
+    },
+    "O:bridgeJ loss": {
+     "value": 72.72727272727273,
+     "ci": [
+      45.45,
+      90.91
+     ],
+     "n": 11
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 72.72727272727273,
+     "ci": [
+      45.45,
+      90.91
+     ],
+     "n": 11
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 63.63636363636363,
+     "ci": [
+      36.36,
+      90.91
+     ],
+     "n": 11
+    },
+    "O:ansJ loss": {
+     "value": 72.72727272727273,
+     "ci": [
+      45.45,
+      90.91
+     ],
+     "n": 11
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 18.181818181818183,
+     "ci": [
+      0.0,
+      45.45
+     ],
+     "n": 11
+    }
+   }
+  },
+  "gated": {
+   "n": 325,
+   "validity": {
+    "I_K_none": 99.07692307692308,
+    "I_ci": [
+     97.85,
+     100.0
+    ],
+    "I_n": 325,
+    "I_readable": true,
+    "P_K_none": 95.6923076923077,
+    "P_n": 325,
+    "P_paper10_spec": 38.76923076923077,
+    "P_paper10_spec_ci": [
+     33.54,
+     44.31
+    ]
+   },
+   "R1_cells": {
+    "I": {
+     "n": 325,
+     "n_bridges": 116,
+     "perp_minus_ctrl": -0.9230769230769231,
+     "ci": [
+      -2.15,
+      0.0
+     ],
+     "ci_bridges": [
+      -2.23,
+      0.0
+     ],
+     "perp_minus_rot": -0.3076923076923077,
+     "ci_rot": [
+      -0.92,
+      0.0
+     ],
+     "ci_rot_bridges": [
+      -1.05,
+      0.0
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": 0.9230769230769231,
+     "loss_rot": 0.3076923076923077
+    },
+    "P": {
+     "n": 325,
+     "n_bridges": 116,
+     "perp_minus_ctrl": 0.3076923076923077,
+     "ci": [
+      -1.85,
+      2.15
+     ],
+     "ci_bridges": [
+      -1.87,
+      2.92
+     ],
+     "perp_minus_rot": -0.6153846153846154,
+     "ci_rot": [
+      -2.77,
+      1.54
+     ],
+     "ci_rot_bridges": [
+      -3.54,
+      2.26
+     ],
+     "loss_perp": 0.0,
+     "loss_ctrl": -0.3076923076923077,
+     "loss_rot": 0.6153846153846154
+    },
+    "O": {
+     "n": 325,
+     "n_bridges": 116,
+     "perp_minus_ctrl": -0.6153846153846154,
+     "ci": [
+      -1.85,
+      0.62
+     ],
+     "ci_bridges": [
+      -2.41,
+      0.66
+     ],
+     "perp_minus_rot": 0.3076923076923077,
+     "ci_rot": [
+      -0.92,
+      1.85
+     ],
+     "ci_rot_bridges": [
+      -1.52,
+      2.36
+     ],
+     "loss_perp": 1.2307692307692308,
+     "loss_ctrl": 1.8461538461538463,
+     "loss_rot": 0.9230769230769231
+    }
+   },
+   "R1": false,
+   "R2": {
+    "label": "not read (R1 not met)",
+    "S_I": -0.9230769230769231,
+    "S_P": -0.6153846153846154,
+    "ci": [
+     -2.77,
+     2.15
+    ],
+    "ci_bridges": [
+     -3.53,
+     2.69
+    ],
+    "n": 325
+   },
+   "beside": {
+    "I:bridgeJ loss": {
+     "value": 0.3076923076923077,
+     "ci": [
+      -0.62,
+      1.54
+     ],
+     "n": 325
+    },
+    "I:bridgeJ - bridgeJ_rot": {
+     "value": 0.0,
+     "ci": [
+      -0.92,
+      0.92
+     ],
+     "n": 325
+    },
+    "I:bridgeJ - bridgeJ_ctrl": {
+     "value": -0.6153846153846154,
+     "ci": [
+      -1.85,
+      0.62
+     ],
+     "n": 325
+    },
+    "I:ansJ loss": {
+     "value": -0.6153846153846154,
+     "ci": [
+      -1.85,
+      0.62
+     ],
+     "n": 325
+    },
+    "I:paper10 - paper10_rot": {
+     "value": -0.3076923076923077,
+     "ci": [
+      -1.54,
+      0.62
+     ],
+     "n": 325
+    },
+    "P:bridgeJ loss": {
+     "value": 14.461538461538462,
+     "ci": [
+      10.46,
+      18.77
+     ],
+     "n": 325
+    },
+    "P:bridgeJ - bridgeJ_rot": {
+     "value": 13.846153846153847,
+     "ci": [
+      9.85,
+      18.15
+     ],
+     "n": 325
+    },
+    "P:bridgeJ - bridgeJ_ctrl": {
+     "value": 14.76923076923077,
+     "ci": [
+      10.77,
+      19.08
+     ],
+     "n": 325
+    },
+    "P:ansJ loss": {
+     "value": 33.23076923076923,
+     "ci": [
+      27.38,
+      39.08
+     ],
+     "n": 325
+    },
+    "P:paper10 - paper10_rot": {
+     "value": 38.76923076923077,
+     "ci": [
+      33.54,
+      44.31
+     ],
+     "n": 325
+    },
+    "O:bridgeJ loss": {
+     "value": 29.230769230769234,
+     "ci": [
+      24.31,
+      34.46
+     ],
+     "n": 325
+    },
+    "O:bridgeJ - bridgeJ_rot": {
+     "value": 28.307692307692307,
+     "ci": [
+      23.08,
+      33.54
+     ],
+     "n": 325
+    },
+    "O:bridgeJ - bridgeJ_ctrl": {
+     "value": 27.384615384615387,
+     "ci": [
+      22.15,
+      32.62
+     ],
+     "n": 325
+    },
+    "O:ansJ loss": {
+     "value": 60.92307692307693,
+     "ci": [
+      55.69,
+      66.15
+     ],
+     "n": 325
+    },
+    "O:paper10 - paper10_rot": {
+     "value": 48.0,
+     "ci": [
+      42.77,
+      53.54
+     ],
+     "n": 325
+    }
+   }
+  }
+ }
+}

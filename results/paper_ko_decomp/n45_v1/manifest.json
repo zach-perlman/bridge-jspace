@@ -1,0 +1,139 @@
+{
+  "exp": "paper_ko_decomp",
+  "run": "n45_v1",
+  "why": "Zach (2026-10-30, prereg amendment 68 note 45, qwen3.6-27b): note 45",
+  "note": "prereg amendment 68 note 45",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ]
+  },
+  "data": {
+    "ML": {
+      "file": "data/lens_eval_multilingual.json",
+      "sha256": "fa70b9bd89416a6d8d985a80dc628b109ae6fd3b25b9275c0fc5065d7ff4a0ef",
+      "n_run": 107
+    },
+    "MH": {
+      "file": "data/lens_eval_multihop.json",
+      "sha256": "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416",
+      "n_run": 93
+    },
+    "OO": {
+      "file": "data/lens_eval_order_ops.json",
+      "sha256": "b203206d16ff628152cc86f3838604e06cb54776f3e14fa1c34f150db8bc7560",
+      "n_run": 55
+    }
+  },
+  "source": "safety-research/jpp_lens@93f02cd data/jlens/evaluations (copied unchanged)",
+  "main_band": "24-40",
+  "early_window": "16-24",
+  "early_from": "paper_swap_decomp/n39_v1 (arm 1's median onset, J++)",
+  "conditions": {
+    "ML": [
+      "paper10",
+      "paper10_rot",
+      "paper10_pcasize",
+      "unembed10",
+      "keep_T",
+      "keep_E",
+      "keep_I",
+      "keep_R",
+      "keep_L",
+      "keep_ctl",
+      "keepR1",
+      "keepR2",
+      "keepR3",
+      "rm_T",
+      "rm_T_rot",
+      "rm_E",
+      "rm_E_rot",
+      "rm_R",
+      "rm_R_rot",
+      "rm_L",
+      "rm_L_rot",
+      "rm_ctl",
+      "rm_ctl_rot",
+      "paper10@early",
+      "paper10_rot@early",
+      "keep_T@early",
+      "keep_E@early"
+    ],
+    "MH": [
+      "paper10",
+      "paper10_rot",
+      "paper10_pcasize",
+      "unembed10",
+      "keep_T",
+      "keep_B",
+      "keep_ctl",
+      "keepR1",
+      "keepR2",
+      "keepR3",
+      "rm_T",
+      "rm_T_rot",
+      "rm_B",
+      "rm_B_rot",
+      "rm_ctl",
+      "rm_ctl_rot",
+      "paper10@early",
+      "paper10_rot@early",
+      "keep_T@early",
+      "keep_B@early"
+    ],
+    "OO": [
+      "paper10",
+      "paper10_rot",
+      "paper10_pcasize",
+      "unembed10",
+      "keep_T",
+      "keep_P",
+      "keep_O",
+      "keep_ctl",
+      "keepR1",
+      "keepR2",
+      "keepR3",
+      "rm_T",
+      "rm_T_rot",
+      "rm_ctl",
+      "rm_ctl_rot",
+      "paper10@early",
+      "paper10_rot@early",
+      "keep_T@early",
+      "keep_P@early"
+    ]
+  },
+  "seeds": {
+    "rotation": "ablate_v2 SEED_ROT 888 + layer",
+    "ctl": "Random('n45ctl:<set>:<item>')",
+    "keepR": "Random('n45R<k>:<set>:<item>')",
+    "ctl_choice": "Random('n45ctlpick:<set>:<item>')"
+  },
+  "gate": "greedy 6 tokens, normalised prefix match; chat_prefill for ML / MH if < 50 raw-eligible (full runs)",
+  "tf32": true,
+  "bj_gram_proj": "1",
+  "command": "scripts/paper_ko_decomp.py --name n45_v1 --why Zach (2026-10-30, prereg amendment 68 note 45, qwen3.6-27b): note 45 --prev39 n39_v1",
+  "git_state": {
+    "head": "c26ecdb6515e5ecdd2d944aa3f91c7afb7eaede2",
+    "dirty_files": [
+      "scripts/nn_sd_necessity.py",
+      "scripts/nn_sd_read.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/queues/h200_sd42_1030.sh"
+    ],
+    "code_diff_sha256": "ae71d0290596d33d75d5dc905eb19f8af0572e6f3c1b1a234ebd589208dddb73"
+  },
+  "written_utc": "2026-10-30T08:46:11Z"
+}

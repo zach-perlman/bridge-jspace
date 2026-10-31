@@ -1,0 +1,274 @@
+{
+ "L21-26/MM/insert": {
+  "n": 150,
+  "full": 93.3,
+  "lens": 42.0,
+  "rem": 91.3,
+  "remfix": 74.0,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    89.0,
+    96.9
+   ],
+   "lens": [
+    33.5,
+    50.6
+   ],
+   "rem": [
+    86.5,
+    95.7
+   ],
+   "remfix": [
+    66.7,
+    80.6
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 0.45,
+  "rem_share": 0.98,
+  "remfix_share": 0.79,
+  "reading": "around"
+ },
+ "L21-26/MM/latent": {
+  "n": 150,
+  "full": 55.3,
+  "lens": 15.3,
+  "rem": 56.7,
+  "remfix": 44.7,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    46.5,
+    64.3
+   ],
+   "lens": [
+    8.9,
+    22.2
+   ],
+   "rem": [
+    48.3,
+    64.5
+   ],
+   "remfix": [
+    36.4,
+    52.6
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 0.28,
+  "rem_share": 1.03,
+  "remfix_share": 0.81,
+  "reading": "around"
+ },
+ "L21-26/PK/insert": {
+  "n": 149,
+  "full": 3.4,
+  "lens": 1.3,
+  "rem": 2.0,
+  "remfix": 1.3,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    0.7,
+    6.5
+   ],
+   "lens": [
+    0.0,
+    3.4
+   ],
+   "rem": [
+    0.0,
+    4.3
+   ],
+   "remfix": [
+    0.0,
+    3.4
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 0.38,
+  "rem_share": 0.59,
+  "remfix_share": 0.38,
+  "reading": "not read"
+ },
+ "L21-26/PK/latent": {
+  "n": 149,
+  "full": 0.7,
+  "lens": 2.7,
+  "rem": 0.7,
+  "remfix": 0.7,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    0.0,
+    2.1
+   ],
+   "lens": [
+    0.6,
+    5.5
+   ],
+   "rem": [
+    0.0,
+    2.1
+   ],
+   "remfix": [
+    0.0,
+    2.0
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 3.86,
+  "rem_share": 1.0,
+  "remfix_share": 1.0,
+  "reading": "not read"
+ },
+ "L21-26/PM/insert": {
+  "n": 148,
+  "full": 27.0,
+  "lens": 50.7,
+  "rem": 14.9,
+  "remfix": 6.1,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    20.0,
+    34.7
+   ],
+   "lens": [
+    42.4,
+    59.7
+   ],
+   "rem": [
+    9.2,
+    20.9
+   ],
+   "remfix": [
+    1.8,
+    11.5
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 1.88,
+  "rem_share": 0.55,
+  "remfix_share": 0.23,
+  "reading": "through"
+ },
+ "L21-26/PM/latent": {
+  "n": 148,
+  "full": 6.8,
+  "lens": 20.9,
+  "rem": 4.1,
+  "remfix": 4.1,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    0.7,
+    12.9
+   ],
+   "lens": [
+    13.7,
+    28.6
+   ],
+   "rem": [
+    -0.7,
+    9.2
+   ],
+   "remfix": [
+    -0.7,
+    8.9
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 3.07,
+  "rem_share": 0.6,
+  "remfix_share": 0.6,
+  "reading": "not read"
+ },
+ "L21-26/RM/insert": {
+  "n": 196,
+  "full": 93.4,
+  "lens": 62.8,
+  "rem": 87.2,
+  "remfix": 64.8,
+  "lensrand": 0.0,
+  "ci": {
+   "full": [
+    88.4,
+    97.5
+   ],
+   "lens": [
+    55.0,
+    70.7
+   ],
+   "rem": [
+    81.1,
+    91.9
+   ],
+   "remfix": [
+    56.7,
+    72.2
+   ],
+   "lensrand": [
+    0.0,
+    0.0
+   ]
+  },
+  "lens_share": 0.67,
+  "rem_share": 0.93,
+  "remfix_share": 0.69,
+  "reading": "around"
+ },
+ "L21-26/RM/latent": {
+  "n": 196,
+  "full": 62.8,
+  "lens": 36.7,
+  "rem": 57.1,
+  "remfix": 45.4,
+  "lensrand": 0.5,
+  "ci": {
+   "full": [
+    55.1,
+    70.0
+   ],
+   "lens": [
+    29.6,
+    44.5
+   ],
+   "rem": [
+    49.5,
+    64.3
+   ],
+   "remfix": [
+    37.0,
+    53.3
+   ],
+   "lensrand": [
+    0.0,
+    2.0
+   ]
+  },
+  "lens_share": 0.58,
+  "rem_share": 0.91,
+  "remfix_share": 0.72,
+  "reading": "around"
+ }
+}

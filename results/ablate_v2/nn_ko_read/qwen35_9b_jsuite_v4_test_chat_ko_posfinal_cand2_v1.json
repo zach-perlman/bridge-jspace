@@ -1,0 +1,27 @@
+{
+ "run": "qwen35_9b_jsuite_v4_test_chat_ko_posfinal_cand2_v1",
+ "n": {
+  "MM": 267,
+  "MP": 334
+ },
+ "conditions": {
+  "paper10": {
+   "loss_MM": 0.7,
+   "loss_MP": 0.6,
+   "gap": 0.2,
+   "gap_ci": [
+    -1.5,
+    1.9
+   ]
+  },
+  "paper10_rot": {
+   "loss_MM": 0.0,
+   "loss_MP": 0.3,
+   "gap": -0.3,
+   "gap_ci": [
+    -1.4,
+    0.8
+   ]
+  }
+ }
+}

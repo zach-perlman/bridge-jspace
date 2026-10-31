@@ -1,0 +1,128 @@
+{
+  "prev_run": "results/paper_swap_decomp/qwen35_9b_n39_v1",
+  "rerun": "results/paper_swap_decomp/qwen35_9b_n39b_v1",
+  "target": "qwen3.5-9b",
+  "n_items": 51,
+  "n_categories": 13,
+  "stored_check": {
+    "bridge": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.3333333333333333,
+      "flip_rate_stored": 0.3333333333333333,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_noA": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.049019607843137254,
+      "flip_rate_stored": 0.049019607843137254,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge_randA": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.16666666666666666,
+      "flip_rate_stored": 0.16666666666666666,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "bridge/null": {
+      "n": 102,
+      "same_flip": 102,
+      "same_swap_rank": 102,
+      "flip_rate_rerun": 0.0,
+      "flip_rate_stored": 0.0,
+      "max_abs_dlogp_diff": 0.0
+    },
+    "overlap_geometry_max_abs_diff": 0.0
+  },
+  "A1_6b": {
+    "jpp/main_band": {
+      "window": "8-16",
+      "rates": {
+        "bridge": 0.37254901960784315,
+        "bridge_noA": 0.0784313725490196,
+        "bridge_off6b": 0.27450980392156865,
+        "bridge_randA": 0.2549019607843137,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.21052631578947367,
+        0.0,
+        0.9052631578947272,
+        3
+      ],
+      "keep_arm6b": [
+        0.736842105263158,
+        0.4,
+        1.0,
+        3
+      ],
+      "keep_arm7": [
+        0.6842105263157894,
+        0.4,
+        1.0,
+        3
+      ],
+      "valid": true,
+      "reading": "answer-carried",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.10526315789473684,
+        0.0,
+        0.5,
+        3
+      ],
+      "stored_K": [
+        0.21052631578947367,
+        0.0,
+        0.9052631578947272,
+        3
+      ]
+    },
+    "jpp/median_onset": {
+      "window": "6-8",
+      "rates": {
+        "bridge": 0.29411764705882354,
+        "bridge_noA": 0.0196078431372549,
+        "bridge_off6b": 0.1568627450980392,
+        "bridge_randA": 0.0784313725490196,
+        "null_bridge": 0.0
+      },
+      "K": [
+        0.06666666666666667,
+        0.0,
+        0.6,
+        13
+      ],
+      "keep_arm6b": [
+        0.5333333333333333,
+        0.33333333333333337,
+        1.0,
+        13
+      ],
+      "keep_arm7": [
+        0.26666666666666666,
+        0.0,
+        1.0,
+        13
+      ],
+      "valid": false,
+      "reading": "scrub not specific (arm 6b keeps 0.53, arm 7 keeps 0.27; K = 0.07 would read 'answer-carried')",
+      "old_arm6_same_domain_invalid_as_guard": [
+        0.06666666666666667,
+        0.0,
+        0.6,
+        13
+      ],
+      "stored_K": [
+        0.06666666666666667,
+        0.0,
+        0.6,
+        13
+      ]
+    }
+  }
+}

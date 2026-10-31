@@ -1,0 +1,308 @@
+Token wall (prereg amendment 59 note 26 addendum): J++, letter tokens, top-10 per even layer; '*' = inside note 25's window.
+Tags: J=JUNK F=FUNC R=REAL PV=PV_X CU=CUE CV=CTX_VAL CL=CLASS B=BRIDGE CN=CTX_NAME OC=OCC K=KNOW D=DESC FR=FRAME PA=PASSAGE CD=CODE NL=NONLATIN_OTHER O=OTHER; '~' = matched through a translated name; '·' = leading space.
+
+=== jsuite_v4_test_chat | cities | scene w0-00256 | X = Alexandria | REAL Egypt | PV_X Denmark | MP MP_fail | MM MM_ok
+description: the city that had a lighthouse that was one of the Seven Wonders of the Ancient World
+MP: Which country is this year's twin city of the city that had a lighthouse that was one of the Seven Wonders of the Ancient World in?
+MM: Which country is the city that had a lighthouse that was one of the Seven Wonders of the Ancient World in?
+--- site desc_end (window L6-26) ---
+      MP                                                                                                                  || MM
+ L0   :Set/O .output/CD .Access/CD .Domain/CD .е/CD .Iter/CD :Get/O .User/CD .Match/CD .Model/CD                          || :Set/O .output/CD .Access/CD .Domain/CD .е/CD .Iter/CD :Get/O .User/CD .Match/CD .Model/CD
+ L2   Ar/O ·and/F A/F In/F and/F .L/CD ·arms/O of/F Z/O An/F                                                              || Ar/O ·and/F A/F In/F and/F .L/CD ·arms/O Z/O An/F ·I/F
+ L4   ·Röm/O orld/O czas/O /XMLSchema/CD ·Architektur/O ifik/O roite/O ישראל/NL aż/O ífic/O                               || ·Röm/O orld/O czas/O /XMLSchema/CD ·Architektur/O ifik/O ·Weltkrieg/O roite/O ישראל/NL ·Weltmeister/O
+*L6   ·griech/CV~ gypt/O ·Ägypt/R~ 希腊/CV~ ·Röm/O ölker/O ·Ägypten/R~ ·röm/O ·Türkei/CL~ 西班牙/CL~                           || ·griech/CV~ gypt/O ·Röm/O ·Ägypt/R~ 希腊/CV~ ölker/O ·Ägypten/R~ ·röm/O ·Türkei/CL~ ksiyon/O
+*L8   ·archaeological/O ·Atlas/O ·Atlantis/O ·archae/O ·Legends/O ·legends/O ·Atl/O ·legend/O ·ATL/O ·World/D             || ·Atlantis/O ·Atlas/O ·archaeological/O ·Legends/O ·legends/O ·legend/O ·archae/O ·ATL/O ·Atl/O ·Sunset/O
+*L10  ·the/F ·to/F ·that/F ·a/F ·in/F ·of/F ·port/CL ·and/F ·as/F ·No/F                                                   || ·the/F ·to/F ·port/CL ·a/F ·that/F ·in/F ·Port/CL ·of/F ·No/F ·and/F
+*L12  ·that/F ·the/F ·gall/O Ar/O ·a/F ·of/F ·maga/O ·quarter/O ·to/F ·magazine/O                                         || ·the/F ·that/F Ar/O ·a/F ·gall/O ·of/F ·quarter/O ·maga/O ·to/F ·building/O
+*L14  ·archaeological/O ·archae/O ·artific/O arch/O artifact/O ·artifact/O ·landmark/O ·ancient/D ·arché/O ·WD/O          || ·archaeological/O gypt/O ·Greek/CV artifact/O 希腊/CV~ ·arché/O ·archae/O arch/O ·Egyptian/R ·Greece/CV
+*L16  ·Byzant/O 希腊/CV~ ·griech/CV~ ·Herod/O ·Greek/CV ·Olympus/O ·Byzantine/O ·Constantinople/O ·Byz/O ·ω/NL              || ·griech/CV~ 希腊/CV~ gypt/O ·Byzant/O ·Grèce/CV~ ·Greeks/CV ·Ägypten/R~ ·Herod/O ·Griechenland/CV~ ·Byzantine/O
+*L18  ·ancient/D ·Museum/O ·monuments/O ·archaeological/O ·Monument/O ·Pyram/O ·museum/O ·Port/CL ·Ancient/D ·Monuments/O || ·Museum/O ·museum/O ·ancient/D ·monuments/O ·archaeological/O ·Ancient/D ·museums/O ·Greek/CV ·Pyram/O ·Monument/O
+*L20  ·ancient/D ·Museum/O ·Port/CL ·archaeological/O ·Ancient/D ·Aqu/O ·Pyram/O ·Zeus/O ·port/CL ·sculpture/O            || ·Museum/O ·ancient/D ·museum/O ·Greek/CV ·Port/CL ·Alexandria/B ·Ancient/D ·archaeological/O ·sculpture/O ·Aqu/O
+*L22  ·Aqu/O ·that/F ·Z/O ·underwater/O ·W/O ·aqu/O ·ancient/D ·in/F ·the/F ·and/F                                        || ·ancient/D ·that/F ·called/O ·Aqu/O ·named/O ·known/PA ·in/F ·legend/O ·underwater/O ·the/F
+*L24  ·Aqu/O ·underwater/O ·ancient/D ·destroyed/O ·that/F ·Gall/O ·Land/O ·Port/CL ·cities/D ·Water/PA                   || ·called/O ·underwater/O ·destroyed/O ·that/F ·ancient/D ·named/O ·known/PA ·historical/O ·captured/O ·Aqu/O
+*L26  gypt/O ·Egyptian/R ·égypt/R~ ·Ägypt/R~ ·Louvre/O ·griech/CV~ ·Ancient/D ·Greece/CV ·Pho/O ·Egypt/R                  || ·Egyptian/R ·égypt/R~ gypt/O ·Ägypt/R~ ·underwater/O ·Egypt/R ·Ancient/D ·Ägypten/R~ ·monument/O ·griech/CV~
+ L28  ·Egyptian/R ·Egypt/R ·Ancient/D Anc/D ·beaches/O ·égypt/R~ gypt/O ·underwater/O ·Egyptians/R ·Greece/CV             || ·Egyptian/R ·Egypt/R ·Ancient/D ·underwater/O ·égypt/R~ ·Ägypt/R~ ·Egyptians/R ·Sea/O gypt/O ·Cairo/O
+ L30  ·Egypt/R ·Egyptian/R ·Ancient/D ·Ägypt/R~ gypt/O ·Egipto/R~ ·Ägypten/R~ ·Atlantis/O ·égypt/R~ Anc/D                 || ·Egypt/R ·Egyptian/R ·Ägypt/R~ gypt/O ·Ägypten/R~ ·égypt/R~ ·Egipto/R~ ·Cairo/O ·Egyptians/R ·Ancient/D
+ L32  Anc/D ·Ägypt/R~ gypt/O ·Egyptians/R Atlant/O sea/O ·Egipto/R~ ·Ägypten/R~ ·Egyptian/R (location/FR                  || gypt/O ·Egyptians/R ·Egyptian/R ·Ägypt/R~ )は/NL ·Egypt/R sea/O ·Egipto/R~ ·Located/FR ·égypt/R~
+ L34  ·Egypt/R ·Egyptian/R ·Egyptians/R ·Greece/CV ·Ancient/D ·Location/FR Anc/D ·Cities/D ·Sea/O ·Located/FR             || ·located/FR ·Egypt/R ·Located/FR ·Egyptian/R ·belongs/O ·Greece/CV ·Sea/O ·Location/FR ·belonged/O ·location/FR
+ L36  ·Egyptian/R ·Egypt/R ·Ancient/D ·Egyptians/R ·Greece/CV Anc/D ·Towers/O ·located/FR ·Location/FR ·cities/D          || ·located/FR ·Located/FR ·belongs/O ·location/FR ·belonged/O ·Location/FR ·belong/O ·locations/FR ·LOC/O ·resides/O
+ L38  Anc/D ·Towers/O ·Location/FR Location/FR ·Egypt/R ·located/FR ·Ancient/D ·Greece/CV ·Located/FR ·Cities/D           || ·located/FR ·belonged/O ·belongs/O ·Located/FR ·belong/O ·location/FR ·belonging/O ·Location/FR belongs/O ·resides/O
+ L40  ·located/FR ·Located/FR (W/O Location/FR ·Cities/D ·Location/FR ·Towers/O ·captured/O ·disappeared/O (location/FR   || ·located/FR ·Located/FR ·belonged/O ·belongs/O ·belong/O ·location/FR ·LOC/O loc/FR ·situated/FR ·Location/FR
+ L42  ?name/O ?不/NL ?q/O ?l/O 呢/NL ”吗/NL ?当然/NL ·Located/FR 吗/NL Locations/FR                                             || ·located/FR ·Located/FR ·belonged/O ?name/O ·belongs/O .location/FR (location/FR ·ubicada/O Location/FR ·situated/FR
+ L44  ?name/O ?不/NL ?l/O ?q/O ”吗/NL ?当然/NL 吗/NL ?v/O ?id/O ”呢/NL                                                          || ·located/FR ·Located/FR ·situated/FR ·LOC/O ?name/O ·belongs/O ·belonged/O ?q/O ?不/NL ”吗/NL
+ L46  ?l/O ?name/O ?不/NL ?q/O ?v/O ?t/F ?当然/NL ?id/O ”吗/NL ですか/NL                                                         || ·Located/FR ·located/FR ?name/O ?l/O ·LOC/O Loc/O ?q/O ?v/O ?不/NL ·situated/FR
+ L48  ?l/O ?q/O ?t/F ?name/O ·Located/FR ?v/O ?不/NL ·Built/O ·located/FR NEW/O                                            || ·located/FR ·Located/FR ·LOC/O Loc/O loc/FR LOC/O ?l/O ?name/O .loc/CD ·situated/FR
+ L50  ·and/F ·in/F ·as/F ·located/FR ·but/F ·before/F ·according/O ?l/O ·when/F ·among/O                                  || ·located/FR ·in/F ·associated/O ·and/F ·Located/FR ·called/O ·named/O ·with/F ·likely/O ·mentioned/O
+--- site final (window L34-50) ---
+      MP                                                                                                                     || MM
+ L0   ší/O ción/O onomía/O ·molekul/O czas/O íj/O órm/O ·gesellschaft/O abilità/O jący/O                                     || ší/O ción/O onomía/O ·molekul/O czas/O íj/O órm/O ·gesellschaft/O abilità/O jący/O
+ L2   Ar/O ·and/F ·I/F ·of/F ·se/O ·to/F and/F ·p/O ·in/F A/F                                                                || Ar/O ·and/F ·I/F ·se/O and/F ·of/F A/F ·to/F ·p/O of/F
+ L4   onomía/O íj/O czas/O ción/O jąc/O ksiyon/O abilità/O nä/O fäh/O estä/O                                                 || onomía/O íj/O czas/O ción/O ksiyon/O jąc/O abilità/O nä/O fäh/O estä/O
+ L6   ·Garland/O ·Avery/O ·ACT/O artzen/O ·close/O ·AW/O ·Minden/O acker/O ·TAG/O ·Cochrane/O                                || ·Garland/O ·Avery/O artzen/O ·ACT/O ·close/O ·TAG/O ·ACL/O ·AW/O ·ACS/O ·Minden/O
+ L8   @v/CD @end/CD @Rest/CD @Data/CD lossen/O @gmail/CD numero/O #get/CD @Entity/CD ksiyon/O                                || @v/CD @end/CD @gmail/CD @Rest/CD @Data/CD #get/CD @Entity/CD lossen/O @Service/CD &icon/O
+ L10  onomía/O ción/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O 印度/CL~ ्ब/NL jący/O                                    || ción/O onomía/O órm/O ksiyon/O ·gesellschaft/O ·molekul/O jąc/O 印度/CL~ ्ब/NL jący/O
+ L12  <table/CD ARCHAR/O =df/CD ailable/O ·jüd/O @property/CD hospital/O encv/O <A/F طان/NL                                  || ARCHAR/O <table/CD ailable/O hospital/O ·supl/O =df/CD encv/O <A/F MISSION/O @property/CD
+ L14  artzen/O hibang/O ARCHAR/O CIAL/O ·magazines/O laxis/O quias/O atasaray/O ·magazine/O argin/O                          || ARCHAR/O CIAL/O ·magazines/O hibang/O artzen/O ·magazine/O laxis/O quias/O argin/O zac/O
+ L16  hibang/O atges/O onderlinge/O ·intermédia/O anao/O ATUS/O oglio/O ·나�/NL tnie/O ·Arap/O                                || hibang/O atges/O anao/O ·intermédia/O ATUS/O onderlinge/O oglio/O ·나�/NL tnie/O ggio/O
+ L18  Braz/CL Jose/O Jacques/O Argentina/CL Brazil/CL KC/O AK/O Miller/O AFC/O ·Praga/O                                      || Braz/CL Jose/O Texas/O Jacques/O Mexico/CL Miller/O Argentina/CL Kap/O Brazil/CL KC/O
+ L20  ·Dakota/O ·Sokol/O KC/O ·Saskatchewan/O ·Sioux/O /S/F Argent/CL /kotlin/CD VC/O ·Belarus/O                             || KC/O /S/F ·Sokol/O /K/CD /Z/CD /kotlin/CD LC/O ·Laos/O Jose/O /G/CD
+ L22  /Z/CD ·Bohemia/O Germany/CL ·Siles/O Argentina/CL ·Belarus/O Deutschland/CL~ /V/CD :C/O ·Jakob/O                       || /Z/CD /The/F Germany/CL /V/CD /My/F ·Bohemia/O ·Siles/O /S/F Argentina/CL /A/F
+ L24  USA/CL Z/O ·Belarus/O ·Russia/CL France/CL ·France/CL China/CL country/FR Country/FR ·countries/FR                     || USA/CL ·countries/FR ·Europe/O ·USA/CL ·France/CL ·country/FR Europe/O country/FR France/CL continent/O
+ L26  Argentina/CL Countries/FR France/CL country/FR Country/FR Foreign/O ประเทศ/NL ·Ländern/O ·países/CL~ ·Frankreich/CL~   || Argentina/CL France/CL Countries/FR USA/CL country/FR Spain/CL Foreign/O Francia/CL~ French/CL Country/FR
+ L28  France/CL Country/FR Countries/FR country/FR Germany/CL ·France/CL ·Germany/CL Russia/CL Europe/O ·countries/FR        || Countries/FR France/CL country/FR Country/FR Italy/CL Argentina/CL ·France/CL ·Countries/FR USA/CL Europe/O
+ L30  Germany/CL Argentina/CL Portugal/CL France/CL Finland/CV Countries/FR Deutschland/CL~ country/FR ·Germany/CL Italy/CL  || ·Greece/CV gypt/O France/CL ·Egypt/R Portugal/CL Countries/FR ·Griechenland/CV~ Spain/CL ·Egipto/R~ ·Algeria/O
+ L32  Germany/CL Argentina/CL France/CL Finland/CV Portugal/CL Italy/CL Brazil/CL Countries/FR Spain/CL Deutschland/CL~      || gypt/O ·Greece/CV ·Griechenland/CV~ Sea/O ·Egypt/R ·Egipto/R~ France/CL Italy/CL Spain/CL ·Egyptians/R
+*L34  ·Poland/CV ·Norway/CV ·Austria/CV Germany/CL Portugal/CL France/CL ·Germany/CL Finland/CV Countries/FR Country/FR      || ·Greece/CV ·Egypt/R Italy/CL France/CL ·Turkey/CL ·Italy/CL ·Griechenland/CV~ Israel/O gypt/O Germany/CL
+*L36  ·Norway/CV ·Poland/CV ·Austria/CV ·Italy/CL Italy/CL Portugal/CL Germany/CL ·Germany/CL ·Portugal/CL ·Greece/CV        || ·Greece/CV ·Italy/CL ·Egypt/R Italy/CL Israel/O ·Turkey/CL ·Griechenland/CV~ ·Israel/O France/CL ·France/CL
+*L38  ·Norway/CV ·Poland/CV ·Greece/CV ·Austria/CV Portugal/CL ·Italy/CL Italy/CL ·Portugal/CL Finland/CV Germany/CL         || ·Greece/CV ·Egypt/R gypt/O ·Egyptian/R ·Greek/CV ·Greeks/CV ·Egyptians/R ·Griechenland/CV~ Italy/CL 希腊/CV~
+*L40  ·Norway/CV ·Greece/CV ·Denmark/PV ·Austria/CV ·Portugal/CL ·Poland/CV ·Finland/CV Portugal/CL ·Norwegen/CV~ ·Sweden/CL || ·Greece/CV ·Egypt/R ·Greeks/CV ·Griechenland/CV~ gypt/O ·Greek/CV ·Hellen/CV ·Egyptians/R ·Cyprus/O ·Turkey/CL
+*L42  ·Norway/CV Finland/CV ·Finland/CV ·Noruega/CV~ ·Norwegen/CV~ Nor/F ·Greece/CV ·Norvège/CV~ ·Austria/CV ·Finnland/CV~   || ·Greece/CV ·Egypt/R ·Griechenland/CV~ gypt/O ·Grèce/CV~ ·Greeks/CV ·Egipto/R~ 希腊/CV~ ·Hellen/CV ·Greek/CV
+*L44  ·Norway/CV Finland/CV ·Poland/CV Nor/F Pol/CV ·Finland/CV ·Noruega/CV~ ·Norwegen/CV~ ·Norvège/CV~ ·Greece/CV           || ·Greece/CV ·Egypt/R gypt/O ·Griechenland/CV~ ·Greeks/CV ·Greek/CV 希腊/CV~ ·Grèce/CV~ ·Egyptian/R ·Egipto/R~
+*L46  Nor/F Finland/CV ·Norway/CV ·Noruega/CV~ Pol/CV ·Norwegen/CV~ ·Finland/CV ·Poland/CV Brazil/CL Portugal/CL             || ·Greece/CV ·Egypt/R gypt/O ·Griechenland/CV~ ·Egipto/R~ egy/R ·Ägypten/R~ ·Grèce/CV~ Israel/O Anc/D
+*L48  Nor/F Pol/CV Finland/CV ·Norway/CV ·Poland/CV ·Greece/CV Brazil/CL ·Finland/CV ·Noruega/CV~ Portugal/CL                || ·Egypt/R ·Greece/CV ·Egipto/R~ ·Griechenland/CV~ egy/R ·Ägypten/R~ ·Turkey/CL Italy/CL ·Grecia/CV~ gypt/O
+*L50  Nor/F Finland/CV Pol/CV ·Norway/CV Brazil/CL Den/PV ·Poland/CV ·Finland/CV ·Greece/CV Germany/CL                       || E/O ·Greece/CV ·Egypt/R G/O Anc/D egy/R Cy/O Italy/CL gypt/O Alex/B
+
+=== jsuite_v4_test_chat | companies | scene w0-00454 | X = Acer | REAL Taiwan | PV_X Spain | MP MP_ok | MM MM_ok
+description: the company that makes the Aspire and Predator laptops
+MP: Which country will get the new regional office of the company that makes the Aspire and Predator laptops?
+MM: What is the country of origin of the company that makes the Aspire and Predator laptops?
+--- site desc_end (window L6-26) ---
+      MP                                                                                                                               || MM
+ L0   ción/O ·gesellschaft/O íj/O numero/O /ou/CD :Set/O onomía/O 日本では/CL~ ající/O czas/O                                              || ción/O íj/O ·gesellschaft/O numero/O /ou/CD :Set/O onomía/O 日本では/CL~ ající/O czas/O
+ L2   Ar/O ·and/F ·to/F ·Ar/O ·I/F ·arms/O ·in/F A/F ·se/O ·p/O                                                                        || Ar/O ·and/F ·to/F ·in/F ·arms/O ·I/F ·Ar/O ·a/F ·p/O ·of/F
+ L4   ·to/F ·for/F ·that/F ·and/F ·in/F ·the/F ook/O ·Las/O ·with/F ·Carroll/O                                                         || ·for/F ·to/F ·that/F ook/O ·Las/O ·in/F ·the/F ·and/F ·with/F ·captured/O
+*L6   ·Baxter/O ·Ratt/O ·Bow/O ·Dock/O ·Pens/O ·Indian/CL ·Baker/O ·Haw/O LM/O ·Bowman/O                                               || reek/O /Java/CD Indian/CL 印度/CL~ ·Baxter/O Repositories/O kter/O /js/CD ř/O ·푸/NL
+*L8   ·the/F ·to/F ·and/F ·that/F ·a/F ·in/F ·of/F ·for/F ·with/F ·from/F                                                              || ·the/F ·to/F ·and/F ·that/F ·a/F ·in/F ·for/F ·of/F ·A/F ·with/F
+*L10  ·the/F ·to/F ·in/F ·and/F ·a/F ·of/F ·that/F ·from/F ·on/F ·for/F                                                                || ·the/F ·to/F ·in/F ·and/F ·a/F ·of/F ·that/F ·from/F ·as/F ·for/F
+*L12  ·the/F ·that/F ·A/F ·a/F ·of/F ·in/F ·L/O ·and/F ·Van/O ·to/F                                                                    || ·the/F ·a/F ·of/F ·that/F ·A/F ·gall/O ·L/O ·Van/O ·in/F ·to/F
+*L14  ·Arsenal/O ·arsenal/O ·arms/O ·and/F ·their/F ·OR/F ·S/F ·mac/O ·of/F ·in/F                                                      || ·Arsenal/O ·arsenal/O ·BL/O ·arms/O ·product/O ·in/F ·home/O ·and/F ·e/O ·their/F
+*L16  ’s/F “The/F ’t/F ·laptop/D “We/F “I/F “ह/NL ”라고/NL ·hardware/O “अ/NL                                                             || ’t/F “The/F “I/F “We/F ’s/F ”라고/NL ’ll/F “이/NL “अ/NL ·laptop/D
+*L18  ·sales/O ·P/O ·A/F ·in/F ·R/O ·hardware/O ·factory/O ·the/F ·L/O ·and/F                                                          || ·factory/O ·factories/O ·sales/O ·manufacturers/O ·manufacturer/O ·manufacturing/O ·manufact/O ·company/D ·in/F ·manufacture/O
+*L20  ·the/F ·in/F ·and/F ·R/O ·a/F ·L/O ·Z/O ·that/F ·O/F ·E/O                                                                        || ·in/F ·and/F ·the/F ·that/F ·L/O ·a/F ·R/O ·of/F ·S/F ·P/O
+*L22  ·named/O ·called/PA ·known/O ·the/F ·a/F ·in/F PC/O ·now/F ·name/O ·their/F                                                      || ·named/O ·called/PA ·known/O ·brand/O ·company/D ·name/O ·now/F ·is/F ·manufacturer/O ·that/F
+*L24  ·known/O ·called/PA ·named/O ·PC/O ·name/O ·sold/O ·hardware/O ·imported/O ·NAME/O PC/O                                          || ·named/O ·called/PA ·known/O ·brand/O ·sold/O ·name/O ·factory/O ·home/O ·NAME/O ·PC/O
+*L26  ·laptop/D ·lapt/D ·hardware/O ·computer/K ·Electronics/O 公司/NL ·Electronic/O ·Computer/K ?name/O ·elektron/O                     || ·manufacturer/O ·hardware/O ·computer/K ·Electronics/O ·laptop/D ·named/O ·Electronic/O ·brand/O ·company/D ·lapt/D
+ L28  ·company/D ·Company/D Company/D ·manufacturer/O ·named/O ·Software/O ·Manufacturer/O ·companies/D ·hardware/O ·Companies/D       || ·named/O ·company/D ·factory/O ·brand/O ·manufacturer/O ·Software/O ·hardware/O ·Company/D ·Electronic/O ·Factory/O
+ L30  ·Manufacturer/O ·Company/D ·manufacturer/O ·PC/O ·Manufact/O ·company/D ·manufacturers/O ·Hardware/O ·Computer/K ·respectively/O || ·Manufacturer/O ·manufacturer/O ·brand/O ·hardware/O ·series/O ·NEXT/PA ·lapt/D ·Hardware/O ·which/F ·laptop/D
+ L32  Company/D Known/O company/D named/O mentioned/O ·Manufacturer/O known/O Software/O names/O software/O                            || mentioned/O named/O ·Manufacturer/O software/O Named/O Software/O brand/O names/O Company/D Devices/O
+ L34  —A/F ·Companies/D ·Company/D ·Manufacturer/O ·Hardware/O ·sells/O ·publishes/O ·Anth/O ·announced/PA ·Aerospace/O                || ·mentioned/O ·Hardware/O mentioned/O ·brand/O ·hardware/O ·named/O ·announced/PA ·Ans/O ·Ami/O ·sold/O
+ L36  ·announced/PA ·mentioned/O ·brand/O ·named/O brand/O ·Company/D ·Hardware/O ·sells/O ·manufacturer/O ·announces/O                || ·mentioned/O mentioned/O ·named/O ·mention/O ·referred/O ·brand/O ·announced/PA ·referenced/O ·mentions/O ·called/PA
+ L38  ·mentioned/O ?v/O ·announced/PA ?name/O ·Hardware/O mentioned/O ,A/F ·sold/O ·announces/O ·hardware/O                            || ·mentioned/O mentioned/O ·referenced/O ·referred/O ·mention/O ·announced/PA ·named/O ·advertised/O ·mentions/O ·discussed/O
+ L40  ·announced/PA ·mentioned/O ·brand/O brand/O PC/O ·named/O ·announces/O Brand/O PCs/O ?v/O                                        || ·mentioned/O mentioned/O ·mention/O ·referenced/O ·mentions/O ·announced/PA ·referred/O ·advertised/O ·mentionné/O ·shown/O
+ L42  ?name/O <A/F ?v/O PCs/O ,A/F brand/O ?q/O [A/F (A/F ?不/NL                                                                        || ·mentioned/O mentioned/O ·mencionado/O ·mentionné/O ·mencion/O ·erwähnt/O ·referenced/O ·mention/O ·المذك/NL ·mentions/O
+ L44  ?name/O ?不/NL PCs/O ?v/O ?q/O ”吗/NL PC/O ?当然/NL ·PCs/O ?l/O                                                                      || ·mentioned/O mentioned/O ·mentionné/O ·referenced/O ·mencionado/O ·erwähnt/O ·mencion/O ·mention/O PCs/O ?name/O
+ L46  ?v/O ?name/O ?l/O ?不/NL ?q/O ですか/NL ?id/O PCs/O ?当然/NL /products/CD                                                              || ·mentioned/O mentioned/O ?v/O ?name/O ·mentionné/O /products/CD ?不/NL ·mencionado/O ·referenced/O ·erwähnt/O
+ L48  ?v/O PCs/O ?l/O /products/CD ?name/O ?q/O ·PCs/O /org/CD ·computers/K ·NEXT/PA                                                   || ·mentioned/O /products/CD mentioned/O PCs/O ?v/O ·referenced/O ?name/O ·mentionné/O ·erwähnt/O .comment/CD
+ L50  ·and/F ·mentioned/O ·named/O ·based/FR ·in/F ·listed/O ·according/O ·after/F ·brands/O ·brand/O                                  || ·mentioned/O ·and/F ·listed/O ·based/FR ·brand/O ·that/F ·named/O ·referenced/O ·brands/O ·sold/O
+--- site final (window L34-50) ---
+      MP                                                                                                              || MM
+ L0   ší/O onomía/O ·molekul/O ción/O czas/O órm/O ·gesellschaft/O íj/O jący/O abilità/O                              || ší/O ción/O onomía/O ·molekul/O czas/O íj/O órm/O ·gesellschaft/O abilità/O jący/O
+ L2   Ar/O ·and/F ·I/F ·se/O and/F ·of/F ·to/F A/F ·p/O of/F                                                          || Ar/O ·and/F ·I/F ·se/O and/F ·of/F A/F ·to/F of/F ·p/O
+ L4   onomía/O íj/O ksiyon/O ción/O jąc/O czas/O abilità/O nä/O mě/O estä/O                                           || onomía/O íj/O ksiyon/O czas/O jąc/O ción/O abilità/O nä/O mě/O fäh/O
+ L6   ·Garland/O ·Avery/O ·ACT/O ·AW/O ·close/O ·CAL/O artzen/O ·Barl/O ·READ/O ·Cochrane/O                           || ·Garland/O ·Avery/O ·ACT/O ·AW/O ·close/O ·Cochrane/O artzen/O ·CAL/O ·Barl/O ·MAG/O
+ L8   @end/CD @v/CD lossen/O @Rest/CD @Data/CD numero/O ksiyon/O ción/O @Component/CD @Entity/CD                      || @v/CD @end/CD @Data/CD @Rest/CD lossen/O numero/O ksiyon/O @gmail/CD @Entity/CD @Component/CD
+ L10  ción/O onomía/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O 印度/CL~ ्ब/NL jący/O                             || ción/O onomía/O órm/O ksiyon/O ·gesellschaft/O ·molekul/O jąc/O 印度/CL~ ्ब/NL ·moléculas/O
+ L12  <table/CD ARCHAR/O ailable/O =df/CD @Table/CD @property/CD ·jüd/O ·supl/O chutz/O <Text/CD                      || ARCHAR/O ailable/O <table/CD ·supl/O ·magaz/O <A/F @property/CD =df/CD hospital/O ·magazines/O
+ L14  ·magazines/O artzen/O ·magazine/O laxis/O hibang/O ARCHAR/O querque/O CIAL/O razol/O racht/O                    || ·magazines/O ·magazine/O artzen/O laxis/O aganda/O chol/O mag/O ARCHAR/O ·magaz/O CIAL/O
+ L16  hibang/O atges/O onderlinge/O ·intermédia/O tnie/O ATUS/O oglio/O şiktaş/O artzen/O ·나�/NL                      || hibang/O atges/O ATUS/O ·intermédia/O artzen/O şiktaş/O tnie/O onderlinge/O ·Katow/O ·colour/O
+ L18  Braz/CL Texas/O Jose/O ·Missouri/O Argentina/O ·Siles/O KC/O ·Kansas/O ski/O Kö/O                               || Braz/CL Jose/O ·Siles/O Texas/O ·Praga/O ·Katow/O Argentina/O Germany/CL Mexico/CV KC/O
+ L20  ·Dakota/O ·Saskatchewan/O ·Nebraska/O ·Sokol/O KC/O Argent/O ·Sioux/O Pra/O /S/F ·Iowa/O                        || ·Sokol/O KC/O /kotlin/CD LC/O Argentina/O Jose/O Joh/O ·Siles/O ·Saskatchewan/O Argent/O
+ L22  /Z/CD :A/F /A/F ·Belarus/O ·Saskatchewan/O /V/CD Argentina/O ·Sokol/O Germany/CL ·Kaz/O                         || USA/CV Argentina/O -Amer/CV British/O Germany/CL :A/F :C/O ·Belarus/O .global/CD ·Sov/O
+ L24  USA/CV ·USA/CV ·Germany/CL ·Europe/O ·Australia/CL Z/O Europe/O ·Belarus/O ·German/CL Germany/CL                || USA/CV ·USA/CV ·Japan/CL ·Europe/O ·American/CV ·America/CV ·China/CL Japan/CL China/CL American/CV
+ L26  Argentina/O Countries/FR Germany/CL Europe/O France/CV USA/CV country/FR Country/FR ประเทศ/NL ·países/CL~       || Japan/CL Countries/FR Argentina/O USA/CV Foreign/O country/FR Asia/O France/CV Country/FR Japanese/CL
+ L28  Europe/O Germany/CL ·Europe/O European/O ·Germany/CL France/CV USA/CV German/CL Countries/FR ·European/O        || Germany/CL Europe/O Countries/FR USA/CV Japan/CL country/FR European/O Country/FR France/CV ·Germany/CL
+ L30  Portugal/O Europe/O ·Indonesia/O Germany/CL Italy/CL France/CV Finland/CL ·Indones/O European/O Asia/O          || ·Indonesia/O Portugal/O ·Indones/O Finland/CL Countries/FR Japan/CL ·Indonesian/O Germany/CL country/FR China/CL
+ L32  Europe/O Portugal/O Italy/CL France/CV Germany/CL desktop/O ·Türkei/O Countries/FR Finland/CL -Europe/O         || Countries/FR Portugal/O Finland/CL Japan/CL Italy/CL Europe/O Germany/CL country/FR desktop/O ·Indones/O
+*L34  Spain/PV ·Spain/PV Europe/O ·Europe/O Portugal/O Italy/CL ·Greece/O Germany/CL ·Italy/CL ·Portugal/O            || Japan/CL ·Albania/O ·Japan/CL ·Austria/CL ·Netherlands/CL Country/FR ·Hungary/O Australia/CL Countries/FR ·Greece/O
+*L36  ·Spain/PV Spain/PV China/CL ·Taiwan/R ·China/CL India/CL ·Italy/CL ·Portugal/O ·India/CL ·Philippines/O         || Japan/CL ·Japan/CL China/CL ·Taiwan/R ·China/CL ·Austria/CL ·Albania/O ·Hungary/O ·Greece/O ·Australia/CL
+*L38  ·Spain/PV Spain/PV ·Italy/CL ·Portugal/O ·Austria/CL Italy/CL ·Switzerland/O ·Hungary/O Portugal/O ·Taiwan/R    || Japan/CL ·Taiwan/R ·Japan/CL ·Hungary/O China/CL ·Portugal/O ·Austria/CL ·Greece/O ·Cyprus/O ·Taiwanese/R
+*L40  ·Spain/PV Spain/PV ·Portugal/O ·Switzerland/O ·Ireland/CL ·Taiwan/R Portugal/O ·Italy/CL ·Albania/O ·Austria/CL || ·Taiwan/R ·Taiwanese/R Tai/R ·Taipei/O Pred/D ·Asp/D 台湾/R~ ·Pred/D pred/D Asp/D
+*L42  Spain/PV ·Spain/PV ·Spanien/PV~ España/PV~ ·España/PV~ ·Spagna/PV~ 西班牙/PV~ ·Espanha/PV~ ·스페인/PV~ ·Espagne/PV~   || ·Taiwan/R Tai/R ·Taiwanese/R 台湾/R~ ·Taipei/O 台灣/NL Australia/CL Japan/CL 台北/NL China/CL
+*L44  Spain/PV ·Spain/PV ·Spanien/PV~ España/PV~ ·España/PV~ 西班牙/PV~ ·Spagna/PV~ Portugal/O Spanish/PV ·스페인/PV~       || ·Taiwan/R Tai/R ·Taiwanese/R 台湾/R~ China/CL Japan/CL ·Taipei/O 台灣/NL Asia/O Chinese/CL
+*L46  Spain/PV ·Spain/PV Canada/CV ·Spanien/PV~ Portugal/O España/PV~ ·España/PV~ Italy/CL Spanish/PV ·Spagna/PV~     || Tai/R ·Taiwan/R China/CL ·Taipei/O Asp/D ·Taiwanese/R Australia/CL 台湾/R~ Asia/O Japan/CL
+*L48  Spain/PV ·Spain/PV Canada/CV ·Spanien/PV~ India/CL España/PV~ ·España/PV~ Portugal/O ·Espanha/PV~ Italy/CL      || Tai/R ·Taiwan/R China/CL 台湾/R~ tai/R Australia/CL Japan/CL India/CL 台灣/NL Country/FR
+*L50  Spain/PV ·Spain/PV Canada/CV India/CL France/CV Germany/CL Mexico/CV Australia/CL Portugal/O China/CL           || Tai/R ·Taiwan/R A/F The/F Based/FR Australia/CL 台湾/R~ China/CL Answer/FR 台灣/NL
+
+=== jsuite_v4_test_chat | landmarks | scene w0-00614 | X = Abu Simbel | REAL Egypt | PV_X France | MP MP_ok | MM MM_ok
+description: the landmark that is a pair of rock temples moved in the 1960s to escape the waters of a new reservoir
+MP: A film studio from which country made the new documentary about the landmark that is a pair of rock temples moved in the 1960s to escape the waters of a new reservoir?
+MM: Which country is the landmark that is a pair of rock temples moved in the 1960s to escape the waters of a new reservoir in?
+--- site desc_end (window L6-26) ---
+      MP                                                                                                       || MM
+ L0   íj/O ·gesellschaft/O ción/O onomía/O 日本では/CV~ .е/CD ší/O zí/O numero/O ající/O                           || íj/O ción/O ·gesellschaft/O onomía/O 日本では/CV~ ší/O numero/O zí/O .е/CD ající/O
+ L2   ·and/F Ar/O ·to/F ·in/F ·a/F ·arms/O ·of/F ·the/F ·on/F ·that/F                                          || ·and/F Ar/O ·to/F ·in/F ·a/F ·arms/O ·of/F ·the/F ·that/F ·on/F
+ L4   ·the/F ·and/F ·to/F ·in/F ·that/F ·of/F ·a/F ·on/F ·captured/O ·for/F                                    || ·the/F ·and/F ·to/F ·in/F ·that/F ·of/F ·a/F ·on/F ·for/F ·captured/O
+*L6   ·and/F ·arms/O ·to/F ·Ross/O ·the/F ·arsenal/O ·Arsenal/O ·Garland/O ·in/F ·that/F                       || ·and/F ·arms/O ·to/F ·the/F ·Ross/O ·arsenal/O ·Arsenal/O ·Garland/O ·in/F ·that/F
+*L8   ·the/F ·water/D ·a/F ·to/F ·and/F ·that/F ·in/F ·of/F ·an/F ·on/F                                        || ·the/F ·a/F ·water/D ·to/F ·and/F ·in/F ·that/F ·of/F ·an/F ·on/F
+*L10  ·reservoir/D ·lake/O ·River/O ·water/D ·river/O ·Reserv/D ·Lake/O ·Water/D ·lakes/O ·vessel/O            || ·lake/O ·reservoir/D ·River/O ·river/O ·water/D ·Reserv/D ·Lake/O ·lakes/O ·Water/D ·vessel/O
+*L12  ·reservoir/D ·Reserv/D ·river/O ·River/O ·lake/O ·water/D ·Water/D ·Lake/O ·lakes/O ·Bank/O              || ·reservoir/D ·Reserv/D ·river/O ·River/O ·lake/O ·water/D ·Water/D ·lakes/O ·Lake/O ·reservoirs/D
+*L14  湖/NL ·lake/O ·lakes/O ·river/O ·río/O ·ferrocarril/O ·rivière/O ·aguas/O ·bateaux/O ·inond/O             || 湖/NL ·río/O ·lake/O ·aguas/O ·lakes/O ·rivière/O ·ferrocarril/O ·inond/O ·river/O ·irrig/O
+*L16  湖/NL river/O ·reservoir/D ·lake/O ·النهر/NL ·rivière/O ·river/O ·Reserv/D ·reservoirs/D 河/NL             || 湖/NL ·reservoir/D ·Reserv/D river/O ·النهر/NL ·reservoirs/D ·rivière/O ·river/O ·lake/O ·fiume/O
+*L18  ·lake/O ·river/O ·reservoir/D ·Lake/O ·lakes/O ·River/O ·Reserv/D ·reservoirs/D River/O ·rivers/O        || ·lake/O ·reservoir/D ·river/O ·Lake/O ·lakes/O ·Reserv/D ·River/O ·reservoirs/D River/O ·irrigation/O
+*L20  ·lake/O ·Lake/O ·river/O ·River/O ·reservoir/D ·lakes/O ·water/D ·Reserv/D ·rivers/O ·Rivers/O           || ·lake/O ·river/O ·Lake/O ·River/O ·reservoir/D ·Reserv/D ·lakes/O ·water/D ·rivers/O ·Rivers/O
+*L22  ·River/O ·river/O ·lake/O ·water/D ·Lake/O ·lakes/O ·reservoir/D ·Reserv/D ·rivers/O ·named/O            || ·River/O ·river/O ·water/D ·lake/O ·Lake/O ·reservoir/D ·of/F ·that/F ·Reserv/D ·named/O
+*L24  ·lake/O ·lakes/O ·river/O ·water/D ·Lake/O ·River/O ·rivers/O ·waters/D ·irrigation/O ·reservoir/D       || ·lake/O ·lakes/O ·water/D ·river/O ·River/O ·Lake/O ·waters/D ·rivers/O ·Water/D ·reservoir/D
+*L26  湖/NL ·lake/O ·lakes/O ·물을/NL ·aguas/O ·río/O ·cuenca/O 水/NL ·ماء/NL ·rivière/O                           || 湖/NL ·lake/O ·lakes/O ·aguas/O ·río/O ·cuenca/O ·물을/NL 水/NL ·rivière/O lake/O
+ L28  湖/NL ·lakes/O ·inond/O ·lake/O ·물을/NL ·flooding/O ·flooded/O ·Basin/O ·irrig/O ·aguas/O                  || ·lakes/O ·lake/O 湖/NL ·flooded/O ·flooding/O ·irrigation/O ·river/O ·irrig/O ·basin/O ·물을/NL
+ L30  湖/NL ·Basin/O ·lake/O ·río/O ·lakes/O River/O ·basin/O ·aguas/O ·Türkei/CV~ ·inond/O                     || 湖/NL ·lakes/O ·lake/O ·Reserv/D ·basin/O ·Basin/O ·river/O lake/O ·basins/O River/O
+ L32  湖/NL ·inond/O ·aguas/O ·Basin/O ·ماء/NL ·basin/O ·río/O ·basins/O ·Türkei/CV~ ·النهر/NL                  || 湖/NL ·basin/O ·Basin/O )は/NL ·basins/O ·inond/O ·aguas/O ·Türkei/CV~ ·río/O ·ماء/NL
+ L34  ·lake/O ·lakes/O 湖/NL ·Reserv/D ·물을/NL ·water/D ·irrigation/O ·reservoir/D ·flooded/O ·Lake/O            || ·lake/O ·lakes/O ·water/D ·Reserv/D ·Water/D ·Lake/O ·물을/NL ·reservoir/D 湖/NL ·irrigation/O
+ L36  ·Reserv/D ·reservoir/D ·lake/O ·lakes/O ·reservoirs/D ·Lake/O 湖/NL ·water/D ·Reserve/O ·reserv/D         || ·Reserv/D ·reservoir/D ·lake/O ·lakes/O ·reservoirs/D ·water/D ·Lake/O ·located/FR ·Water/D ·belonged/O
+ L38  ·reservoir/D ·Reserv/D ·lake/O ·reservoirs/D ·lakes/O ·reserv/D ·réserv/O 湖/NL lake/O ·Lake/O            || ·Reserv/D ·reservoir/D ·reservoirs/D ·located/FR ·belonged/O ·réserv/O ·reserv/D ·belongs/O ·lake/O ·lakes/O
+ L40  ·Reserv/D ·reservoir/D ·reservoirs/D ·lake/O ·lakes/O ·created/O ·reserv/D ·named/O ·formed/O ·water/D   || ·located/FR ·named/O ·Reserv/D ·reservoir/D ·Located/FR named/O ·reserv/D ·reservoirs/D ·belongs/O ·associated/O
+ L42  ?name/O ?不/NL .created/CD ?当然/NL Created/O created/O Generated/O Named/O named/O gypt/O                  || ·Located/FR ·located/FR named/O belongs/O ·belonged/O ·belongs/O ·situated/FR ·belong/O ·situés/O Named/O
+ L44  ?不/NL ?name/O .created/CD gypt/O Created/O 湖/NL ·lake/O ·UNESCO/O ?当然/NL ?l/O                            || ·belongs/O ·located/FR ·belonged/O belongs/O ·belong/O ·Located/FR ·belonging/O ·associated/O ·situated/FR ·named/O
+ L46  ?l/O ?不/NL ?name/O Created/O .created/CD ?q/O ?t/F ?当然/NL ?v/O created/O                                 || ·located/FR ·belongs/O belongs/O ·belonged/O ·Located/FR ·belong/O ?name/O ·associated/O associated/O ·belonging/O
+ L48  ·lake/O ·created/O ·Created/O Created/O ·formed/O ·caused/O ·constructed/O .created/CD created/O ·Nile/O || ·located/FR ·associated/O ·named/O ·belongs/O ·Located/FR ·attributed/O ·lake/O ·belong/O ·Associated/O ·belonged/O
+ L50  ·created/O ·in/F ·behind/O ·caused/O ·formed/O ·and/F ·lake/O ·on/F ·due/O ·named/O                      || ·located/FR ·named/O ·associated/O ·in/F ·called/O ·from/F ·known/O ·belongs/O ·primarily/O ·belong/O
+--- site final (window L34-50) ---
+      MP                                                                                                             || MM
+ L0   ší/O ción/O onomía/O ·molekul/O czas/O órm/O íj/O ·gesellschaft/O jący/O abilità/O                             || ší/O ción/O onomía/O ·molekul/O czas/O órm/O íj/O ·gesellschaft/O jący/O abilità/O
+ L2   Ar/O ·and/F ·I/F ·of/F ·to/F ·se/O ·in/F ·p/O and/F ·a/F                                                       || Ar/O ·and/F ·I/F ·of/F ·to/F and/F ·se/O ·p/O ·in/F A/F
+ L4   onomía/O íj/O ksiyon/O czas/O jąc/O ción/O nä/O mě/O abilità/O sicht/O                                         || onomía/O íj/O ksiyon/O ción/O czas/O jąc/O abilità/O nä/O mě/O sicht/O
+ L6   ·Garland/O ·Avery/O ·AW/O ·close/O ·ACT/O ·two/O ·Rag/O ·CAL/O ·Cochrane/O ·RIP/O                              || ·Garland/O ·Avery/O ·AW/O ·ACT/O ·close/O artzen/O ·CAL/O ·Cochrane/O ·RIP/O acker/O
+ L8   @end/CD @v/CD lossen/O @Rest/CD @Data/CD numero/O ksiyon/O ्ब/NL @Entity/CD ción/O                             || @v/CD @end/CD @Rest/CD @Data/CD @gmail/CD @Entity/CD lossen/O #get/CD @Service/CD &icon/O
+ L10  ción/O onomía/O órm/O ksiyon/O ·gesellschaft/O ·molekul/O jąc/O ्ब/NL 印度/CL~ jący/O                            || ción/O onomía/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O 印度/CL~ ्ब/NL jący/O
+ L12  <table/CD ailable/O ARCHAR/O ·jüd/O =df/CD chutz/O <Text/CD ·jüdischen/O ográfico/O <A/F                       || <table/CD ailable/O ARCHAR/O =df/CD <A/F @property/CD <Text/CD chutz/O <HTML/CD ·jüd/O
+ L14  hibang/O ARCHAR/O ·magazines/O laxis/O artzen/O atasaray/O querque/O auchy/O ·magazine/O racht/O               || ARCHAR/O hibang/O atasaray/O laxis/O quias/O ·magazines/O querque/O artzen/O CIAL/O .stackexchange/CD
+ L16  hibang/O atges/O ATUS/O ·intermédia/O ·나�/NL tnie/O onderlinge/O Spielbericht/O ·후작/NL oglio/O                 || hibang/O atges/O ·나�/NL ·intermédia/O ATUS/O tnie/O onderlinge/O oglio/O 此之外/NL ·후작/NL
+ L18  ski/O Germany/CL German/CL ·Siles/O Miller/O Jose/O KC/O Texas/O Jacques/O AK/O                                || Jose/O Braz/CL Miller/O AK/O KC/O Texas/O ski/O Argentina/CL Kap/O KG/O
+ L20  ·alemán/CL~ ·Sachsen/O German/CL ·Siles/O ·alemão/CL~ VC/O Deutschland/CL~ ·Böh/O ドイツ/CL~ Argent/CL            || ·Sachsen/O VC/O ·Siles/O KC/O Jose/O Argent/CL ·Santiago/O Argentina/CL ·Sokol/O ·Saskatchewan/O
+ L22  Germany/CL ·Oskar/O :A/F German/CL ·Bohemia/O Hans/O Belg/O /Z/CD ·Siles/O Foreign/O                           || Argentina/CL 共和国/NL ·Siles/O hof/O ·Mongolia/O ·Myanmar/O ·Sachsen/O Germany/CL ·Bolivia/O ·Belarus/O
+ L24  USA/CL Z/O ·USA/CL ·Z/O aku/O ·Kaz/O ·China/CL ·Hans/O China/CL ·France/PV                                     || USA/CL ·countries/FR Countries/FR ·UNESCO/O Europe/O country/FR ·USA/CL Germany/CL ·continents/O ·Namibia/O
+ L26  France/PV Argentina/CL Countries/FR Francia/PV~ Foreign/O French/PV country/FR フランス/PV~ ประเทศ/NL Belg/O       || Countries/FR Argentina/CL Foreign/O country/FR ·países/O foreign/O national/FR France/PV USA/CL Country/FR
+ L28  France/PV country/FR Europe/O Germany/CL Country/FR China/CL Countries/FR ·France/PV Asia/O European/O         || Countries/FR country/FR Country/FR ·Countries/FR France/PV Germany/CL Argentina/CL _country/FR ·Algeria/O ·Uzbekistan/O
+ L30  Germany/CL Finland/O France/PV Deutschland/CL~ German/CL ·Germany/CL China/CL Europe/O Argentina/CL England/O  || Countries/FR Germany/CL Finland/O Argentina/CL ·Algeria/O _country/FR country/FR Country/FR France/PV ·Uzbekistan/O
+ L32  France/PV gypt/O ·Egyptians/R ·Ägypten/R~ ·Egipto/R~ ·Egypt/R Germany/CL Finland/O Italy/CV ·Frankreich/PV~    || gypt/O ·Egypt/R ·Egipto/R~ Countries/FR ·Ägypten/R~ ·Egyptians/R ·Ethiopia/O Argentina/CL Finland/O ·Algeria/O
+*L34  France/PV ·France/PV French/PV Finland/O ·Egypt/R Germany/CL -France/PV ·Frankreich/PV~ フランス/PV~ Arab/O        || ·Egypt/R Finland/O Germany/CL ·Switzerland/O ·Germany/CL Countries/FR ·Sweden/O ·Ägypten/R~ ·Finland/O France/PV
+*L36  France/PV ·France/PV ·Switzerland/O ·Egypt/R ·Belgium/O Finland/O Germany/CL ·Finland/O ·Sweden/O ·Germany/CL  || ·Egypt/R ·Switzerland/O ·Ethiopia/O Germany/CL ·Sweden/O gypt/O ·Italy/CV Finland/O ·Belgium/O ישראל/NL
+*L38  France/PV ·France/PV ·Egypt/R Germany/CL ·Switzerland/O Finland/O ·Sweden/O ·Finland/O ·Germany/CL ·Egyptian/R || ·Egypt/R gypt/O ·Egyptian/R ·Ethiopia/O ·Egyptians/R ·Ägypten/R~ ·Egipto/R~ ·Sudan/O Israel/CL ·Switzerland/O
+*L40  ·Switzerland/O ·Egypt/R France/PV ·France/PV ·Sweden/O ·Belgium/O Germany/CL ·Germany/CL ·UAE/O ·Finland/O     || ·Egypt/R gypt/O ·Egyptian/R ·Sudan/O ·Egyptians/R ·Ethiopia/O ·Ägypten/R~ ·Egipto/R~ ·Switzerland/O ·egip/R~
+*L42  France/PV ·France/PV ·Frankreich/PV~ French/PV Germany/CL Finland/O ·Switzerland/O Belg/O 法国/PV~ フランス/PV~      || gypt/O ·Egypt/R ·Ägypten/R~ ·Egipto/R~ ·egip/R~ ·Ägypt/R~ ·Egyptian/R ·Ethiopia/O ישראל/NL ·Sudan/O
+*L44  France/PV ·France/PV French/PV Germany/CL Finland/O ·Frankreich/PV~ Belg/O フランス/PV~ ·Switzerland/O 法国/PV~      || ·Egypt/R gypt/O ·Ägypten/R~ ·Egipto/R~ ·Egyptian/R ·Ägypt/R~ ·Ethiopia/O ·egip/R~ ·égypt/R~ ·Egyptians/R
+*L46  France/PV ·France/PV Germany/CL French/PV Finland/O Belg/O Israel/CL ·Frankreich/PV~ ·Switzerland/O Arab/O     || ·Egypt/R gypt/O ·Egipto/R~ ·Ägypten/R~ egy/R ·egip/R~ ·Ägypt/R~ ·Egyptian/R Arab/O ·égypt/R~
+*L48  France/PV ·France/PV Germany/CL French/PV Finland/O ·Egypt/R ·Frankreich/PV~ India/CL Spain/CL Russia/CL       || ·Egypt/R ·Egipto/R~ ·Ägypten/R~ egy/R ·Egipt/R~ gypt/O ·Ägypt/R~ ·Egyptian/R ·egip/R~ Egy/O
+*L50  France/PV ·France/PV French/PV Germany/CL Finland/O E/O ·Egypt/R Spain/CL Sw/O England/O                       || E/O ·Egypt/R egy/R gypt/O Anc/O ·E/O A/F ·Egipt/R~ ·Egipto/R~ N/O
+
+=== jsuite_v4_test_chat | people | scene w0-00002 | X = Achebe | REAL Nigerian | PV_X Brazilian | MP MP_fail | MM MM_ok
+description: the person who wrote Arrow of God
+MP: Which nationality is the actor cast as the person who wrote Arrow of God in the new film?
+MM: Which nationality was the person who wrote Arrow of God?
+--- site desc_end (window L6-26) ---
+      MP                                                                                                                  || MM
+ L0   ción/O íj/O ·gesellschaft/O numero/O /ou/CD :Set/O .е/CD onomía/O órm/O abilità/O                                   || ción/O íj/O ·gesellschaft/O numero/O /ou/CD :Set/O .е/CD onomía/O órm/O abilità/O
+ L2   Ar/O ·and/F A/F and/F Z/O of/F In/F ·arms/O .L/CD ·ar/O                                                             || Ar/O ·and/F Z/O and/F A/F of/F In/F ·arms/O .L/CD ·ar/O
+ L4   ·to/F ·that/F ·the/F ·and/F ·in/F ·a/F ·of/F ·on/F ·No/F ·Van/O                                                     || ·to/F ·that/F ·the/F ·and/F ·in/F ·a/F ·of/F ·on/F ·No/F ·Van/O
+*L6   ·to/F ·the/F ·and/F ·Do/F ·that/F ·in/F ·a/F ·of/F ·I/F ·on/F                                                       || ·to/F ·Do/F ·the/F ·and/F ·that/F ·in/F ·a/F ·of/F ·I/F ·Chap/O
+*L8   ·the/F ·to/F ·that/F ·and/F ·in/F ·a/F ·of/F ·for/F ·S/F ·on/F                                                      || ·the/F ·to/F ·that/F ·and/F ·in/F ·a/F ·of/F ·for/F ·on/F ·S/F
+*L10  ·the/F ·to/F ·in/F ·and/F ·a/F ·that/F ·on/F ·of/F ·from/F ·as/F                                                    || ·the/F ·to/F ·in/F ·and/F ·a/F ·that/F ·on/F ·of/F ·from/F ·as/F
+*L12  ·the/F ·that/F ·a/F ·in/F ·to/F ·Ar/O ·i/F ·of/F ·L/O ·Is/F                                                         || ·the/F ·that/F ·a/F ·in/F ·to/F ·i/F ·Ar/O ·of/F ·gra/O ·L/O
+*L14  ·magazine/O ·Crown/O ·Tob/O ·Ig/O ·Eag/O ·goat/O ·Gra/O ·Apple/O ·that/F ·readers/O                                 || ·magazine/O ·that/F ·in/F ·Crown/O ·Tob/O ·and/F ·the/F ·to/F ·Ig/O ·Eag/O
+*L16  ·Sin/O ·Ned/O ·Tob/O ·Allah/O ·Ish/O ·covered/O ·goat/O ·that/F ·Crown/O ·i/F                                       || ·Sin/O ·Tob/O ·Ig/O ·goat/O ·Ned/O ·i/F ·Crown/O ·in/F ·smoke/O ·Ish/O
+*L18  ·Allah/O ·Islam/O ·priest/O ·mosque/O Islam/O ·Hinduism/O ·Muslim/O ·Imam/O ·islam/O ·priests/O                     || ·Allah/O ·mosque/O ·Islam/O ·priest/O ·Hinduism/O Islam/O ·Nigerian/R ·Imam/O ·Niger/R ·Nigeria/R
+*L20  ·Allah/O ·Ish/O ·Ig/O ·Tob/O ·Priest/O ·Jehov/O ·priest/O ·Nj/O ·Crown/O ·Imam/O                                    || ·Ig/O ·Ish/O ·Tob/O ·Allah/O ·Jehov/O ·Priest/O ·book/O ·Togo/O ·Nj/O ·priest/O
+*L22  ·book/O ·Book/O ·and/F ·Barl/O ·Ish/O ·Mos/O ·Ig/O ·Allah/O ·Tob/O ·books/O                                         || ·Ig/O ·book/O ·Book/O ·Barl/O ·African/O ·Ish/O ·by/F ·Mos/O ·Tob/O ·in/F
+*L24  ·Ghana/O ·Niger/R ·Hindu/O ·Islam/O ·Nigerian/R ·Nigeria/R ·Allah/O ·islam/O Islam/O ·Hinduism/O                    || ·Nigerian/R ·Niger/R ·Nigeria/R ·Ghana/O ·Allah/O ·Senegal/O ·Africans/O ·Togo/O ·Hindu/O ·Islam/O
+*L26  宗教/NL ·종교/NL ·Hinduism/O Islam/O ·religioso/O ·religieux/O ·literar/OC ·religi/O ·Hindu/O ·Niger/R                  || 宗教/NL ·Niger/R ·Nigerian/R ·Ghana/O ·Hinduism/O ·종교/NL ·Nigeria/R ·Bahá/O ·relig/O Islam/O
+ L28  ·literar/OC ·Hindu/O Islam/O ·literary/OC ·Literary/OC 宗教/NL ·Hindus/O ·Mohammad/O ·Imam/O ·Bahá/O                  || ·Niger/R ·literary/OC ·Literary/OC ·Ghana/O ·Nigerian/R ·Nigeria/R ·Hindu/O /book/CD ·Allah/O ·literar/OC
+ L30  宗教/NL ·صلى الله عليه وسلم/NL ·religious/O ·Allah/O ·Religious/O ·theolog/O Islam/O ·Religion/O ·hindu/O ·Hinduism/O || ·Niger/R ·Allah/O ·religious/O ·Religion/O ·theolog/O —which/F ·divine/O ·Jehov/O ·Nigerian/R ·Nigeria/R
+ L32  ·literar/OC (Tree/O 宗教/NL /Java/CD /Game/CD ·Religious/O ·Religions/O Islam/O ·religioso/O ·Religion/O              || (Tree/O ·literar/OC 宗教/NL ·Literary/OC ·Religion/O /Game/CD zí/O ·Religious/O /Java/CD ·Religions/O
+ L34  ·Religion/O ·Religious/O ·religious/O ·Literary/OC ·religion/O ·Religions/O /The/F (Tree/O ·Theology/O ·literary/OC || —a/F ·Religion/O —which/F —A/F ·religious/O ·literary/OC ·Africans/O —the/F ·Nigeria/R ·Literary/OC
+ L36  ·Nigeria/R ·Nigerian/R ·Africans/O ·African/O ·Niger/R Nig/R ·Ghana/O ·Africa/O ·african/O -Af/O                    || ·Nigeria/R ·Nigerian/R ·African/O ·Africans/O Nig/R ·Niger/R ·Ghana/O ·literary/OC ·novels/OC ·Africa/O
+ L38  ·Nigeria/R /The/F ·Africans/O ·African/O /A/F ,A/F ·Africa/O ·Nigerian/R /I/F -Af/O                                 || ·Nigeria/R ·African/O ·Africans/O —a/F ·Nigerian/R Nig/R ·Niger/R -Af/O ·published/O ,a/F
+ L40  dess/O /I/F /The/F /A/F ·Africans/O (I/F (G/O /G/CD /book/CD ·Nigeria/R                                             || /book/CD ·Nigeria/R Book/O ·written/O (book/O ·Nigerian/R ·published/O Nig/R ·novels/OC ·Books/O
+ L42  ·Nigerian/R Nig/R thiop/O /The/F ·Nigeria/R ?name/O ?不/NL /Auth/OC Actor/FR Native/FR                               || ·Nigerian/R Nig/R (book/O ·Nigeria/R /book/CD thiop/O ?name/O ·Niger/R ?不/NL 书/NL
+ L44  ?name/O ?不/NL ?id/O ”吗/NL ·Nigerian/R ?q/O ?l/O ?v/O :N/O Nig/R                                                     || ?name/O ?不/NL ·Nigerian/R ?id/O (book/O ”吗/NL ·Nigeria/R ·novels/OC /book/CD Nig/R
+ L46  ?name/O ?id/O ?l/O ?不/NL ?q/O ?v/O ?t/F ”吗/NL :N/O Things/K                                                         || ?name/O ?id/O ?不/NL ?l/O ?q/O Book/O /book/CD :N/O (book/O ?v/O
+ L48  ?l/O ?name/O ?q/O ?v/O ?id/O ?不/NL ·Arrow/D CAA/O ?t/F Indian/CL                                                    || ·Chin/CL ·written/O ?name/O ·Nigerian/R ?l/O ·considered/O ·Arrow/D ·nominated/O ·published/O published/O
+ L50  ·and/F ·in/F ·assigned/O ·based/FR ·written/O ·for/F ·or/F ·when/F ·coming/O ·likely/O                              || ·and/F ·written/O ·based/FR ·by/F ·considered/O ·originally/O ·in/F ·assigned/O ·published/O ·named/O
+--- site final (window L34-50) ---
+      MP                                                                                                                   || MM
+ L0   ción/O ší/O ·molekul/O czas/O onomía/O íj/O ·gesellschaft/O órm/O abilità/O �本/NL                                    || ción/O ší/O ·molekul/O czas/O onomía/O íj/O ·gesellschaft/O órm/O abilità/O �本/NL
+ L2   Ar/O ·and/F and/F ·I/F ·se/O A/F ·of/F of/F ·p/O ·to/F                                                               || Ar/O ·and/F and/F ·I/F ·se/O A/F of/F ·of/F ·p/O ·to/F
+ L4   íj/O onomía/O czas/O ksiyon/O jąc/O ción/O abilità/O nä/O fäh/O estä/O                                               || íj/O onomía/O czas/O ksiyon/O jąc/O ción/O abilità/O nä/O estä/O fäh/O
+ L6   ·Garland/O ·Avery/O ·close/O ·ACT/O artzen/O ·AW/O ·CAL/O ·MAG/O ·charcoal/O ·two/PA                                 || ·Garland/O ·Avery/O ·close/O ·ACT/O artzen/O ·AW/O ·charcoal/O ·MAG/O ·two/PA ·CAL/O
+ L8   @v/CD @end/CD @Data/CD @Rest/CD @gmail/CD #get/CD lossen/O @Entity/CD @Component/CD ksiyon/O                         || @v/CD @end/CD @Data/CD @Rest/CD @gmail/CD #get/CD lossen/O @Component/CD @Entity/CD @Service/CD
+ L10  onomía/O ción/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O ्ब/NL zí/O 印度/CL~                                    || onomía/O ción/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O ्ब/NL zí/O jący/O
+ L12  <table/CD ARCHAR/O ailable/O =df/CD ·jüd/O hospital/O @property/CD طان/NL ·supl/O <HTML/CD                           || <table/CD ARCHAR/O ailable/O =df/CD hospital/O ·supl/O طان/NL ccount/O ·jüd/O @Table/CD
+ L14  laxis/O hibang/O querque/O ARCHAR/O atko/O atasaray/O razol/O quias/O aktivni/O ·magazines/O                         || ARCHAR/O laxis/O querque/O atko/O hibang/O atasaray/O chol/O razol/O quias/O ·magazines/O
+ L16  hibang/O ggio/O ·Tomáš/O oglio/O tnie/O ·Trương/O şiktaş/O onderlinge/O atges/O ăt/O                                 || hibang/O atges/O ·Tomáš/O tnie/O onderlinge/O ·Trương/O ggio/O ·intermédia/O oglio/O şiktaş/O
+ L18  ski/O Jose/O ·Praga/O Kap/O Jacques/O tk/O ·Siles/O Miller/O AK/O KC/O                                               || Jacques/O ski/O Jose/O ·Siles/O ·Praga/O German/CV Germany/CV Miller/O Kap/O Braz/PV
+ L20  Argent/CL ·Sokol/O ·Saskatchewan/O ·Sachsen/O ·alemán/CV~ /kotlin/CD Argentina/CL ·Siles/O /K/CD /S/F                || ·Siles/O ·Sokol/O /kotlin/CD Joh/O Argent/CL Argentina/CL ·Saskatchewan/O KC/O ·Sachsen/O ·alemán/CV~
+ L22  German/CV ·Belarus/O Germany/CV ·Oskar/O ·Bohemia/O /Z/CD ·Siles/O ·Uzbek/O ·Kazakhstan/O ·Kazakh/O                  || /Z/CD German/CV ·Jakob/O Germany/CV ·Siles/O Joh/O /A/F /The/F /My/F /V/CD
+ L24  ·German/CV ·Norwegian/CL ·British/CL British/CL ·nationality/FR German/CV ·Germany/CV ·Norway/CL USA/CL Germany/CV   || ·nationality/FR ·British/CL ·Afrika/O ·ethnicity/O ·Namibia/O USA/CL ·Afro/O ·Africans/O British/CL ·African/O
+ L26  Argentina/CL ·Indones/O 西班牙/CL~ Foreign/O Argent/CL ·Uzbek/O España/CL~ Spain/CL ·Indonesian/O Spanish/CL            || ·Indones/O Argentina/CL ·Indonesian/O ·Indonesia/O ·Filipino/O India/CL country/FR Foreign/O ·Gujar/O national/FR
+ L28  Argentina/CL country/FR Asia/O France/CL Country/FR ·Uzbek/O national/FR Chinese/CL ·nationality/FR ·Filipino/O      || country/FR national/FR ·Filipino/O ·Indonesian/O ·Indones/O ·nationality/FR ·Vietnamese/O France/CL ·Indonesia/O India/CL
+ L30  ·Pakistani/O ·Indones/O ·Bangl/O ·Indonesian/O India/CL ·Albanian/O national/FR Portugal/CL ·Pakistan/O Argentina/CL || ·Nigerian/R ·Nigeria/R ·Pakistani/O ·Indones/O India/CL ·Africans/O ·Pakistan/O ·Niger/R ·Ghana/O Indian/CL
+ L32  ·Indones/O ·Bangl/O ·Nigerian/R national/FR Argentina/CL foreign/O ·Niger/R India/CL ·Pakistani/O Foreign/O          || ·Nigerian/R ·Niger/R ·Indones/O ·Nigeria/R national/FR ·Africans/O country/FR India/CL native/FR ·Pakistani/O
+*L34  ·Nigerian/R ·Bangl/O ·Africans/O ·Pakistani/O ·Brazili/PV Indian/CL British/CL ·Nigeria/R ·Bulgarian/O ·Albanian/O   || ·Nigerian/R ·Africans/O ·Nigeria/R Japanese/CL ·Pakistani/O ·Albanian/O ·African/O ·Japanese/CL ·Niger/R Chinese/CL
+*L36  ·Nigerian/R ·Africans/O ·African/O ·Pakistani/O ·Bangl/O British/CL ·Ethiopian/O ·Israeli/O ·Brazilian/PV Indian/CL  || ·Nigerian/R ·Africans/O ·African/O ·Nigeria/R ·Japanese/CL ·Pakistani/O Japanese/CL ·Niger/R Chinese/CL ·Ghana/O
+*L38  ·Nigerian/R ·African/O ·Africans/O ·Pakistani/O ·Ethiopian/O ·Bangl/O ·Nigeria/R ·Brazilian/PV Indian/CL ·Indian/CL  || ·Nigerian/R ·African/O ·Japanese/CL ·Africans/O ·Nigeria/R Japanese/CL ·Pakistani/O Chinese/CL British/CL ·Niger/R
+*L40  ·Nigerian/R ·Brazilian/PV ·African/O ·Ethiopian/O ·Africans/O ·Pakistani/O ·Bangl/O Braz/PV ·Indian/CL ·Nigeria/R    || ·Nigerian/R ·Nigeria/R ·African/O ·Africans/O ·Ethiopian/O ·Pakistani/O ·Niger/R ·Indian/CL Indian/CL British/CL
+*L42  ·Nigerian/R ·Brazilian/PV Braz/PV ·Bangl/O ·Brazili/PV ·Ethiopian/O ·Pakistani/O ·Chilean/CV British/CL ·Bulgarian/O || ·Nigerian/R ·Nigeria/R British/CL ·Pakistani/O ·Irish/CL ·Ethiopian/O ·Niger/R ·Bangl/O Chinese/CL Nig/R
+*L44  ·Nigerian/R ·Brazilian/PV Braz/PV ·Bangl/O ·Chilean/CV ·Brazili/PV ·Pakistani/O ·Ethiopian/O British/CL ·Taiwanese/O || ·Nigerian/R ·Nigeria/R Nig/R ·Niger/R British/CL Chinese/CL ·Pakistani/O ·Ug/O ·Ethiopian/O ·Irish/CL
+*L46  ·Nigerian/R Braz/PV ·Brazilian/PV British/CL Nig/R ·Bangl/O Ig/O Indian/CL South/CV Af/O                             || ·Nigerian/R Ig/O Nig/R ·Ig/O ·Nigeria/R British/CL ·Niger/R Ng/O Og/O Indian/CL
+*L48  ·Nigerian/R Braz/PV Indian/CL ·Brazilian/PV British/CL South/CV Ig/O Brown/O ·Bangl/O ·Chilean/CV                    || ·Nigerian/R Ig/O Indian/CL Nig/R British/CL ·Ig/O Chinese/CL Ng/O ·Nigeria/R Canadian/CL
+*L50  ·Nigerian/R Braz/PV British/CL N/O ·Brazilian/PV Ig/O South/CV Indian/CL American/CL Canadian/CL                     || Ig/O N/O ·Nigerian/R ·Ig/O British/CL Nig/R ·N/O B/O Af/O I/F
+
+=== jsuite_v4cc_test_chat | people | scene w0-00000 | X = Bartholdi | REAL French | PV_X English | MP MP_conflict | MM MM_conflict
+description: the person who designed the Statue of Liberty in New York Harbor
+MP: Which nationality is the actor cast as the person who designed the Statue of Liberty in New York Harbor in the new film?
+MM: Which nationality was the person who designed the Statue of Liberty in New York Harbor?
+--- site desc_end (window L6-26) ---
+      MP                                                                                                        || MM
+ L0   ción/O íj/O ·gesellschaft/O :Set/O /ou/CD ší/O ající/O numero/O .е/CD ·Dokument/O                         || ción/O íj/O ·gesellschaft/O :Set/O /ou/CD ší/O ající/O numero/O .е/CD ·Dokument/O
+ L2   Ar/O A/F In/F Z/O ·and/F and/F An/F Se/O var/CD .S/F                                                      || Ar/O A/F In/F Z/O ·and/F and/F An/F var/CD Se/O .L/CD
+ L4   ·and/F ·the/F ·to/F ·that/F ·in/F ·on/F ·of/F ·a/F ·for/F ·at/F                                           || ·and/F ·to/F ·the/F ·that/F ·in/F ·Harbor/D ·on/F ·of/F ·for/F ·a/F
+*L6   ·Harbor/D ·Dock/O ·Bay/O ·dock/O ·captured/O ·Harbour/O ·Garrison/O ·Ship/O ·Port/CL ·Battery/O           || ·Harbor/D ·Dock/O ·Bay/O ·dock/O ·Harbour/O ·captured/O ·Garrison/O ·Battery/O ·Ship/O ·harbor/D
+*L8   ·the/F ·and/F ·to/F ·a/F ·that/F ·in/F ·of/F ·on/F ·for/F ·an/F                                           || ·the/F ·and/F ·to/F ·a/F ·in/F ·that/F ·of/F ·on/F ·for/F ·an/F
+*L10  ·the/F ·to/F ·in/F ·and/F ·that/F ·of/F ·on/F ·a/F ·from/F ·port/CL                                       || ·the/F ·to/F ·in/F ·and/F ·that/F ·of/F ·on/F ·a/F ·from/F ·port/CL
+*L12  ·Harbor/D ·dock/O ·Dock/O ·marina/O ·river/O ·River/O ·Port/CL ·harbor/D ·the/F ·ferry/O                  || ·Harbor/D ·dock/O ·Dock/O ·marina/O ·river/O ·ferry/O ·River/O ·harbor/D ·Port/CL ·Brooklyn/O
+*L14  ·Harbor/D ·Staten/O ·harbor/D ·Dock/O ·Brooklyn/O ·maritime/O ·dock/O Jackson/O ·Ferry/O ·Jacksonville/O  || ·Harbor/D ·Staten/O ·harbor/D ·Dock/O ·Brooklyn/O ·dock/O ·maritime/O ·Ferry/O ·ferry/O Jackson/O
+*L16  ·Harbor/D ·Brooklyn/O ·Dock/O ·marina/O ·dock/O ·Staten/O ·underwater/O ·Harbour/O ·Ferry/O ·docking/O    || ·Harbor/D ·Brooklyn/O ·Dock/O ·marina/O ·Staten/O ·Harbour/O ·NJ/O ·dock/O “The/F ·underwater/O
+*L18  ·Ship/O ·Dock/O ·Brooklyn/O ·ferry/O ·dock/O ·Island/O ·Harbor/D ·vessel/O ·vessels/O ·Ferry/O            || ·Dock/O ·Ship/O ·ferry/O ·Brooklyn/O ·dock/O ·Harbor/D ·vessel/O ·vessels/O ·Island/O ·boat/O
+*L20  ·Harbor/D ·Brooklyn/O ·Dock/O ·Island/O ·dock/O ·and/F ·the/F ·Port/CL ·ferry/O ·Ship/O                   || ·Harbor/D ·Brooklyn/O ·Dock/O ·Island/O ·ferry/O ·dock/O ·Ship/O ·the/F ·and/F ·Ferry/O
+*L22  ·and/F ·in/F ·the/F ·that/F ·a/F ·on/F ·to/F ·Island/O ·was/F ·Port/CL                                    || ·in/F ·the/F ·and/F ·a/F ·was/F ·on/F ·that/F ·Island/O ·to/F ·Harbor/D
+*L24  ·ferry/O ·land/O ·Atlantic/O ·ships/O ·Land/O ·water/O ·City/O ·maritime/O ·Island/O ·city/O              || ·ferry/O ·NYC/O ·land/O ·Atlantic/O ·Island/O ·City/O ·Land/O ·ships/O ·water/O ·city/O
+*L26  ·Harbor/D ·Airport/O ·ferry/O ·maritime/O ·Dock/O ·Ferry/O ·Ocean/O ·Museum/O ·Park/O ·airport/O          || ·Harbor/D ·NJ/O ·ferry/O ·Airport/O ·Ocean/O ·Dock/O ·Ferry/O ·Park/O ·Museum/O ·maritime/O
+ L28  ·maritime/O ·ferry/O ·Harbor/D ·Ferry/O ·Maritime/O ·Basin/O ·Commodore/O ·Airport/O Atlantique/O ·Navy/O || ·maritime/O ·ferry/O ·Harbor/D ·NYC/O ·Ferry/O ·Nassau/O ·Navy/O ·Maritime/O ·ashore/O ·Staten/O
+ L30  ·Harbor/D (H/O ·Hafen/O ·Commodore/O ·ferry/O ·maritime/O ,H/O ·Maritime/O HMS/O /H/CD                    || (H/O ·Harbor/D /H/CD ,H/O ·Hafen/O HMS/O ·Commodore/O HO/O ·ferry/O ·maritime/O
+ L32  Construction/O reef/O (H/O Atlantique/O )は/NL )이다/NL /Java/CD ·Basin/O .Security/CD yük/O                 || (H/O /Java/CD reef/O /H/CD )は/NL ·Basin/O retir/O HO/O Atlantique/O )이다/NL
+ L34  ·maritime/O ·ferry/O ·Maritime/O ·Harbor/D ·Ferry/O —which/F ·Museum/O ·seaw/O —that/F ·sailors/O         || ·maritime/O —which/F —that/F ·sailing/O ·Harbor/D ·Maritime/O ·Museum/O —a/F —the/F ·historically/O
+ L36  ·Harbor/D ·ferry/O ·seaw/O ·maritime/O ·marina/O ·Ferry/O ·sea/O sea/O ·seas/O ·sailing/O                 || ·Harbor/D ·NYC/O ·ferry/O ·historically/O ·originally/O ·Ferry/O ·maritime/O ·Sea/O sea/O ·sailing/O
+ L38  land/O —that/F ·Lands/O —which/F (op/O ·Land/O —the/F Land/O lands/O ·monuments/O                         || ·historically/O ·originally/O —that/F ·traditionally/O ·initially/O —the/F —which/F ·NYC/O ·architects/O ·sculptor/OC
+ L40  ?name/O 습니까/NL land/O ?不/NL ?v/O ですか/NL Land/O stad/O lands/O USA/CU                                      || ·originally/O ·historically/O ?name/O ·initially/O ·according/O ·traditionally/O (H/O USA/CU ·USA/CU ·sculpture/OC
+ L42  ?name/O ?不/NL ?q/O ?当然/NL ですか/NL ”吗/NL ?v/O 吗/NL STAT/D 呢/NL                                              || ?name/O ?不/NL ·DESIGN/D design/O ?当然/NL ”吗/NL ですか/NL ·originalmente/O Design/D .Native/FR
+ L44  ?不/NL ?name/O ”吗/NL ですか/NL ?q/O 습니까/NL ?v/O ?当然/NL ?l/O 吗/NL                                              || ?不/NL ?name/O ”吗/NL ·DESIGN/D ですか/NL ?当然/NL ·Designer/O -design/O ?q/O ?v/O
+ L46  ?name/O ?不/NL ?l/O ?v/O ?q/O ですか/NL ”吗/NL ?当然/NL 습니까/NL 입니까/NL                                            || ?name/O ?不/NL ?l/O ?v/O ?当然/NL ·DESIGN/D ですか/NL ?q/O ANGE/PA 입니까/NL
+ L48  ?l/O QUEST/O NEW/D ?name/O ·ANS/O STAT/D ?v/O ?q/O ?不/NL ·STAT/D                                          || ·DESIGN/D ·ANS/O ·originally/O ·Answer/FR QUEST/O ?l/O ?name/O STAT/D ·Originally/O .original/CD
+ L50  ·in/F ·according/O ·based/FR ·and/F ·to/F ·for/F ·when/F ·during/F ·from/F ·after/F                       || ·originally/O ·based/FR ·according/O ·in/F ·before/F ·designed/D ·when/F ·to/F ·named/O ·and/F
+--- site final (window L34-50) ---
+      MP                                                                                                                   || MM
+ L0   ší/O ción/O onomía/O ·molekul/O czas/O ·gesellschaft/O íj/O órm/O jący/O abilità/O                                   || ší/O ción/O onomía/O ·molekul/O czas/O ·gesellschaft/O íj/O órm/O jący/O abilità/O
+ L2   Ar/O ·and/F ·of/F ·I/F ·to/F ·in/F ·se/O ·p/O and/F ·a/F                                                             || Ar/O ·and/F ·of/F ·I/F ·to/F ·se/O ·in/F ·p/O and/F ·a/F
+ L4   onomía/O íj/O ksiyon/O czas/O jąc/O ción/O abilità/O nä/O mě/O fäh/O                                                 || onomía/O íj/O ksiyon/O czas/O jąc/O ción/O abilità/O nä/O mě/O fäh/O
+ L6   ·Garland/O ·Avery/O ·close/PA ·ACT/O ·AW/O ·two/O artzen/O ·CAL/O ·AT/F acker/O                                      || ·Garland/O ·close/PA ·Avery/O ·ACT/O ·AW/O ·two/O artzen/O ·CAL/O ·MAG/O acker/O
+ L8   @v/CD @end/CD @Data/CD @Rest/CD lossen/O @gmail/CD #get/CD numero/O ksiyon/O @Entity/CD                              || @v/CD @end/CD @Data/CD @Rest/CD @gmail/CD lossen/O #get/CD @Entity/CD numero/O @Component/CD
+ L10  onomía/O ción/O ksiyon/O órm/O ·molekul/O ·gesellschaft/O jąc/O ्ब/NL jący/O zí/O                                    || onomía/O ción/O órm/O ksiyon/O ·molekul/O ·gesellschaft/O jąc/O ्ब/NL 印度/CL~ zí/O
+ L12  ARCHAR/O <table/CD ailable/O ·supl/O =df/CD @property/CD chutz/O <HTML/CD طان/NL hospital/O                          || ARCHAR/O <table/CD ailable/O ·supl/O =df/CD <A/F ·trenches/O 此之外/NL hospital/O @property/CD
+ L14  artzen/O laxis/O hibang/O ARCHAR/O atasaray/O ·magazines/O querque/O CIAL/O aktivni/O razol/O                        || laxis/O artzen/O hibang/O ARCHAR/O ·magazines/O querque/O CIAL/O atasaray/O ·magazine/O razol/O
+ L16  hibang/O ggio/O ·Tomáš/O tnie/O onderlinge/O ·Miroslav/O ·Trương/O oglio/O şiktaş/O atges/O                          || hibang/O tnie/O ggio/O onderlinge/O atges/O ·Tomáš/O ·Trương/O oglio/O 此之外/NL ologne/O
+ L18  Jose/O tk/O ski/O ·Siles/O Braz/CV AK/O Kö/O German/CL czyk/O Kap/O                                                  || Jose/O ·Siles/O Braz/CV ·Praga/O ski/O Miller/O tk/O kg/O German/CL Germany/CL
+ L20  ·Sokol/O ·Siles/O ·Kazakh/O /kotlin/CD ·Saskatchewan/O Argent/CL ·Belarus/O ·Sachsen/O czyk/O ·Knut/O                || ·Sokol/O ·Siles/O Argent/CL Joh/O ·Sachsen/O KC/O /kotlin/CD Jose/O Jak/O Pra/O
+ L22  ·Belarus/O German/CL ·Siles/O Germany/CL ·Oskar/O British/PV ·Czech/CL ·Bohemia/O ·alemán/CL~ ·Miroslav/O            || German/CL Germany/CL ·Siles/O Jose/O ·Sachsen/O ·Jakob/O /Z/CD British/PV ·Bohemia/O Joh/O
+ L24  British/PV ·German/CL ·British/PV German/CL ·nationality/FR USA/CU ·Norwegian/CL American/CU Germany/CL ·American/CU || ·nationality/FR ·German/CL USA/CU ·American/CU American/CU ·British/PV ·USA/CU German/CL ·Germany/CL ·Europe/O
+ L26  Argentina/CL French/R German/CL France/R Germany/CL Belg/CL British/PV Foreign/O England/PV ドイツ/CL~                  || French/R France/R Foreign/O ·nationality/FR Argentina/CL foreign/O German/CL Belg/CL ·foreigners/O フランス/R~
+ L28  German/CL Germany/CL European/O Europe/O British/PV France/R ·German/CL French/R ·Germany/CL ·Germans/CL             || German/CL European/O France/R Germany/CL French/R Europe/O ·Europeans/O ·German/CL ·Germans/CL ·nationality/FR
+ L30  France/R French/R Germany/CL German/CL Finland/O European/O Belg/CL British/PV ·Frankreich/R~ Francia/R~             || France/R French/R -France/R Francia/R~ 法国/R~ フランス/R~ ·Frankreich/R~ Italian/CL Germany/CL German/CL
+ L32  French/R France/R 法国/R~ フランス/R~ ·Franzosen/O ·Frankreich/R~ ·프랑스/R~ Belg/CL ·franceses/R~ German/CL                  || France/R French/R 法国/R~ フランス/R~ -France/R ·Franzosen/O ·Frankreich/R~ ·französ/R~ Belg/CL ·프랑스/R~
+*L34  England/PV French/R European/O ·Europeans/O France/R ·England/PV English/PV ·France/R ·European/O ·French/R          || French/R France/R ·France/R ·French/R フランス/R~ 法国/R~ ·프랑스/R~ -France/R ·Frankreich/R~ ·Franzosen/O
+*L36  English/PV French/R ·English/PV ·French/R British/PV England/PV European/O ·British/PV ·European/O German/CL         || French/R ·French/R France/R Italian/CL ·France/R フランス/R~ ·Italian/CL ·Belgian/CL ·Italians/CL 法国/R~
+*L38  English/PV French/R England/PV British/PV European/O ·English/PV ·French/R ·England/PV ·British/PV ·European/O       || French/R ·French/R France/R Italian/CL ·France/R ·Italian/CL ·Italians/CL German/CL フランス/R~ 法国/R~
+*L40  French/R ·French/R British/PV ·British/PV English/PV ·English/PV ·Danish/CV England/PV ·England/PV European/O        || French/R ·French/R France/R ·français/R~ ·France/R ·Français/R~ ·sculptor/OC フランス/R~ ·Franco/O 法国/R~
+*L42  English/PV ·English/PV French/R english/PV ·anglais/PV~ ·Anglais/PV~ British/PV 英語/PV~ England/PV ·French/R          || French/R ·French/R 法国/R~ フランス/R~ ·français/R~ France/R ·프랑스/R~ ·Français/R~ Italian/CL ·Französ/R~
+*L44  English/PV ·English/PV english/PV French/R ·anglais/PV~ ·Anglais/PV~ British/PV 英語/PV~ England/PV ·english/PV        || French/R ·French/R ·français/R~ フランス/R~ ·Français/R~ France/R ·Französ/R~ 法国/R~ ·프랑스/R~ English/PV
+*L46  English/PV ·English/PV english/PV French/R British/PV England/PV ·Anglais/PV~ ·anglais/PV~ ENG/O 英語/PV~              || French/R ·French/R English/PV France/R ·Französ/R~ ·français/R~ ·Français/R~ FR/O フランス/R~ American/CU
+*L48  English/PV ·English/PV ENG/O english/PV French/R British/PV England/PV ·ENG/O Eng/O ·Anglais/PV~                     || French/R ·French/R English/PV FR/O Fran/R France/R ·Französ/R~ American/CU François/O ·französischer/O
+*L50  English/PV ·English/PV French/R english/PV British/PV American/CU ·english/PV England/PV The/F ENG/O                 || French/R ·French/R English/PV France/R American/CU Fran/R The/F FR/O ·English/PV Italian/CL
+

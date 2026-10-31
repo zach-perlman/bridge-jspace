@@ -1,0 +1,487 @@
+{
+ "prefix": "nem35l_",
+ "behaviour": {
+  "MM/conflict": {
+   "n_eligible": 42,
+   "whole_acc": 83.3,
+   "n_errors": 7,
+   "cue_share_of_errors": 28.6,
+   "cue_share_ci": [
+    0.0,
+    75.0
+   ],
+   "chance": 3.0,
+   "shortcut_taken": false
+  },
+  "MM/aligned": {
+   "n_eligible": 42,
+   "whole_acc": 100.0
+  },
+  "MP/conflict": {
+   "n_eligible": 77,
+   "whole_acc": 72.7
+  },
+  "MP/aligned": {
+   "n_eligible": 66,
+   "whole_acc": 57.6
+  }
+ },
+ "answer": {
+  "final/L34-39/aligned": {
+   "n": 70,
+   "own": {
+    "e1": [
+     0.785,
+     [
+      0.635,
+      0.907
+     ]
+    ],
+    "e2": [
+     0.123,
+     [
+      0.015,
+      0.247
+     ]
+    ],
+    "e3": [
+     0.446,
+     [
+      0.288,
+      0.612
+     ]
+    ],
+    "e2_over_e1": 0.157,
+    "e3_over_e1": 0.568,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.785,
+     [
+      0.635,
+      0.907
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.815,
+     [
+      0.712,
+      0.9
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.038,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "final/L34-39/conflict": {
+   "n": 53,
+   "own": {
+    "e1": [
+     0.784,
+     [
+      0.622,
+      0.941
+     ]
+    ],
+    "e2": [
+     0.216,
+     [
+      0.094,
+      0.341
+     ]
+    ],
+    "e3": [
+     0.333,
+     [
+      0.213,
+      0.466
+     ]
+    ],
+    "e2_over_e1": 0.276,
+    "e3_over_e1": 0.425,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.784,
+     [
+      0.622,
+      0.941
+     ]
+    ],
+    "e2": [
+     0.02,
+     [
+      0.0,
+      0.065
+     ]
+    ],
+    "e3": [
+     0.765,
+     [
+      0.655,
+      0.878
+     ]
+    ],
+    "e2_over_e1": 0.026,
+    "e3_over_e1": 0.976,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "final/L40-45/aligned": {
+   "n": 70,
+   "own": {
+    "e1": [
+     0.94,
+     [
+      0.882,
+      0.986
+     ]
+    ],
+    "e2": [
+     0.149,
+     [
+      0.062,
+      0.246
+     ]
+    ],
+    "e3": [
+     0.582,
+     [
+      0.446,
+      0.725
+     ]
+    ],
+    "e2_over_e1": 0.159,
+    "e3_over_e1": 0.619,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.94,
+     [
+      0.882,
+      0.986
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.91,
+     [
+      0.836,
+      0.982
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 0.968,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "final/L40-45/conflict": {
+   "n": 53,
+   "own": {
+    "e1": [
+     0.961,
+     [
+      0.907,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.157,
+     [
+      0.067,
+      0.259
+     ]
+    ],
+    "e3": [
+     0.471,
+     [
+      0.345,
+      0.596
+     ]
+    ],
+    "e2_over_e1": 0.163,
+    "e3_over_e1": 0.49,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.961,
+     [
+      0.907,
+      1.0
+     ]
+    ],
+    "e2": [
+     -0.02,
+     [
+      -0.077,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.961,
+     [
+      0.896,
+      1.0
+     ]
+    ],
+    "e2_over_e1": -0.021,
+    "e3_over_e1": 1.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "last/L21-26/aligned": {
+   "n": 70,
+   "own": {
+    "e1": [
+     0.455,
+     [
+      0.0,
+      0.714
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.545,
+     [
+      0.143,
+      0.8
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.198,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   },
+   "rel": {
+    "e1": [
+     0.455,
+     [
+      0.0,
+      0.714
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.636,
+     [
+      0.286,
+      0.9
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 1.398,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  },
+  "last/L21-26/conflict": {
+   "n": 53,
+   "own": {
+    "e1": [
+     0.4,
+     [
+      0.0,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 0.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "mixed",
+    "verdict": "mixed"
+   },
+   "rel": {
+    "e1": [
+     0.4,
+     [
+      0.0,
+      1.0
+     ]
+    ],
+    "e2": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ]
+    ],
+    "e3": [
+     0.8,
+     [
+      0.5,
+      1.0
+     ]
+    ],
+    "e2_over_e1": 0.0,
+    "e3_over_e1": 2.0,
+    "answer_not_read_share": 0.0,
+    "n_ranked": 0,
+    "arms": "the lens part is the answer",
+    "verdict": "the lens part is the answer"
+   }
+  }
+ },
+ "knockout": {
+  "conflict/paper10": {
+   "n_MM": 35,
+   "n_MP": 56,
+   "loss_MM": 48.6,
+   "loss_MP": 10.7,
+   "gap": 37.9,
+   "gap_ci": [
+    18.9,
+    55.7
+   ]
+  },
+  "conflict/paper10_rot": {
+   "n_MM": 35,
+   "n_MP": 56,
+   "loss_MM": 8.6,
+   "loss_MP": 5.4,
+   "gap": 3.2,
+   "gap_ci": [
+    -7.1,
+    14.6
+   ]
+  },
+  "conflict/unembed10": {
+   "n_MM": 35,
+   "n_MP": 56,
+   "loss_MM": 17.1,
+   "loss_MP": 0.0,
+   "gap": 17.1,
+   "gap_ci": [
+    5.7,
+    31.4
+   ]
+  },
+  "conflict/paper10_pcasize": {
+   "n_MM": 35,
+   "n_MP": 56,
+   "loss_MM": 5.7,
+   "loss_MP": 23.2,
+   "gap": -17.5,
+   "gap_ci": [
+    -30.4,
+    -4.3
+   ]
+  },
+  "aligned/paper10": {
+   "n_MM": 38,
+   "n_MP": 35,
+   "loss_MM": 47.4,
+   "loss_MP": 0.0,
+   "gap": 47.4,
+   "gap_ci": [
+    31.6,
+    63.2
+   ]
+  },
+  "aligned/paper10_rot": {
+   "n_MM": 38,
+   "n_MP": 35,
+   "loss_MM": 2.6,
+   "loss_MP": 5.7,
+   "gap": -3.1,
+   "gap_ci": [
+    -14.7,
+    7.9
+   ]
+  },
+  "aligned/unembed10": {
+   "n_MM": 38,
+   "n_MP": 35,
+   "loss_MM": 7.9,
+   "loss_MP": 2.9,
+   "gap": 5.0,
+   "gap_ci": [
+    -5.7,
+    15.8
+   ]
+  },
+  "aligned/paper10_pcasize": {
+   "n_MM": 38,
+   "n_MP": 35,
+   "loss_MM": 10.5,
+   "loss_MP": 14.3,
+   "gap": -3.8,
+   "gap_ci": [
+    -22.0,
+    12.7
+   ]
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+  "seconds": 691,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 602,
+      "whole": 0.608,
+      "all_steps": 0.62,
+      "median_margin": -1.38,
+      "guess": 0.158,
+      "top_wrong": [
+        [
+          "silver",
+          26
+        ],
+        [
+          "grey",
+          23
+        ],
+        [
+          "black",
+          22
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 602,
+      "whole": 0.831,
+      "all_steps": 0.659,
+      "median_margin": 2.38,
+      "guess": 0.184,
+      "top_wrong": [
+        [
+          "United",
+          17
+        ],
+        [
+          "Per",
+          8
+        ],
+        [
+          "Canada",
+          8
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.643,
+      "MM": 0.868
+    },
+    "companies": {
+      "MP": 0.538,
+      "MM": 0.788
+    },
+    "landmarks": {
+      "MP": 0.55,
+      "MM": 0.69
+    },
+    "people": {
+      "MP": 0.654,
+      "MM": 0.899
+    }
+  },
+  "pick": {}
+}

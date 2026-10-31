@@ -1,0 +1,18 @@
+note 41 qwen35_9b_: missing ['qwen35_9b_jsuite_v5al_test_chat_ko41_posfinal_cand2_v1']
+note 41 run A qwen35_9b_: n MP 403 MM 216
+  paper10            loss MP    6.9 MM   62.0  gap   55.1 [46.7, 63.6]  paired 53.6 [44.6, 63.0] (n 151)  dlogp MP -0.251 MM -2.955
+  paper10_rot        loss MP    4.7 MM    7.9  gap    3.2 [-0.9, 7.4]  paired 0.7 [-5.1, 6.3] (n 151)  dlogp MP -0.098 MM -0.153
+  paper10_keepR      loss MP    5.5 MM   41.7  gap   36.2 [29.1, 43.6]  paired 35.8 [26.8, 45.4] (n 151)  dlogp MP -0.206 MM -1.844
+  paper10_keepR_rot  loss MP    2.7 MM    7.4  gap    4.7 [0.9, 8.8]  paired 2.6 [-3.1, 8.3] (n 151)  dlogp MP -0.052 MM -0.088
+  paper10_keepR2     loss MP    4.0 MM   32.4  gap   28.4 [20.9, 36.0]  paired 27.8 [19.2, 36.7] (n 151)  dlogp MP -0.105 MM -1.165
+  paper10_keepR2_rot loss MP    2.0 MM    3.7  gap    1.7 [-1.1, 4.7]  paired 1.3 [-2.9, 5.7] (n 151)  dlogp MP -0.035 MM -0.032
+  paper10_keepR4     loss MP    2.7 MM   18.5  gap   15.8 [9.6, 22.2]  paired 16.6 [9.3, 24.3] (n 151)  dlogp MP -0.05 MM -0.452
+  paper10_keepR4_rot loss MP    0.7 MM    2.3  gap    1.6 [-0.4, 3.8]  paired 0.7 [-2.7, 4.1] (n 151)  dlogp MP -0.014 MM 0.008
+  ansR               loss MP    5.5 MM    9.3  gap    3.8 [-0.7, 8.2]  paired 3.3 [-2.8, 9.2] (n 151)  dlogp MP -0.119 MM -0.307
+  ansR_rot           loss MP    7.9 MM   19.0  gap   11.0 [5.5, 17.3]  paired 10.6 [3.4, 18.1] (n 151)  dlogp MP -0.187 MM -0.571
+  share of paper10's gap: {}
+  rescue vs retained energy (MM): A: E 0.4458 ratio 0.009 [-0.054000000000000006, 0.073] rescue 0.991; R: E 0.3827 ratio 0.632 [0.505, 0.7709999999999999] rescue 0.368; R2: E 0.5369 ratio 0.53 [0.4, 0.6729999999999999] rescue 0.47; R4: E 0.7058 ratio 0.299 [0.196, 0.426] rescue 0.701
+  keep reading: partly (matched random keep R2; note 41's original keepR rule, replaced: partly)
+  reading E matched energy (accuracy) (amendment 70, registered secondary, beside the keep reading): n MM 216 (A) / 216 (R), E_A 0.446, rescue A 0.991; R E 0.383 rescue 0.368, R2 E 0.537 rescue 0.470, R4 E 0.706 rescue 0.701; R_rand(E_A) 0.410; A - R_rand 0.582 [0.453, 0.707] (2000 draws, 0 dropped) -> answer-specific at matched energy
+  reading L log-prob (gold first-token log p, MM) (amendment 70, registered secondary, beside the keep reading): n MM 216 (A) / 216 (R), E_A 0.446, rescue A 0.992; R E 0.383 rescue 0.373, R2 E 0.537 rescue 0.596, R4 E 0.706 rescue 0.836; R_rand(E_A) 0.464; A - R_rand 0.528 [0.451, 0.610] (2000 draws, 0 dropped) -> answer-specific at matched energy
+  removal: ansR gap 3.8 vs ansJ gap 36.4 (ratio 0.104 [-0.018000000000000002, 0.23199999999999998]) -> answer-specific removal

@@ -1,0 +1,45 @@
+{
+ "run": "jsuite_v4_test_chat_ko_cand2_v1",
+ "n": {
+  "MM": 338,
+  "MP": 473
+ },
+ "conditions": {
+  "paper10": {
+   "loss_MM": 76.9,
+   "loss_MP": 19.5,
+   "gap": 57.5,
+   "gap_ci": [
+    51.8,
+    63.1
+   ]
+  },
+  "paper10_pcasize": {
+   "loss_MM": 25.1,
+   "loss_MP": 14.8,
+   "gap": 10.3,
+   "gap_ci": [
+    5.0,
+    16.1
+   ]
+  },
+  "paper10_rot": {
+   "loss_MM": 8.3,
+   "loss_MP": 2.3,
+   "gap": 6.0,
+   "gap_ci": [
+    2.8,
+    9.2
+   ]
+  },
+  "unembed10": {
+   "loss_MM": 3.8,
+   "loss_MP": 1.7,
+   "gap": 2.2,
+   "gap_ci": [
+    -0.5,
+    4.9
+   ]
+  }
+ }
+}

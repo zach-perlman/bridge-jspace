@@ -1,0 +1,61 @@
+{
+  "run": "qwen35_9b_nn_n22_s1_v1",
+  "why": "Zach (2026-10-29, prereg amendment 58 notes 21-23, qwen3.5-9b): note 22, the clamp on v4, donor seed 1",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "4-11",
+    "12-16"
+  ],
+  "set": "jsuite_v4_test_chat",
+  "competence": "qwen35_9b_jsuite_v4_test_chat_competence_cand2_v1",
+  "words": [
+    "MP",
+    "MM"
+  ],
+  "site": "last",
+  "conditions": [
+    "clamp",
+    "clamp_null",
+    "clamp_noans"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random('1:' + item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 1,
+  "items": "v4ok",
+  "sample_refs": 0,
+  "scene_words": null,
+  "cv_h1": "qwen35_9b_jsuite_v4_cv_v1",
+  "value_swap": false,
+  "position_swap": false,
+  "resample": false,
+  "report": false,
+  "git_commit": "f1518f756f6cbfb7c65520c547ba7ac8eaadc7c8",
+  "git_state": {
+    "head": "f1518f756f6cbfb7c65520c547ba7ac8eaadc7c8",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

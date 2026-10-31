@@ -1,0 +1,45 @@
+{
+  "run": "muse30_jsuite_v3_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 6): muse-glimmer-30b jsuite_v3_test_chat competence (K and M words, eligibility)",
+  "set": "jsuite_v3_test_chat",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "5934d9933b788fac60aae1dba4442f608ba7dcc3",
+  "git_state": {
+    "head": "5934d9933b788fac60aae1dba4442f608ba7dcc3",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PK",
+    "PM",
+    "MK",
+    "MM",
+    "WK",
+    "WM",
+    "TK",
+    "TM",
+    "XK",
+    "XM",
+    "QK",
+    "QM",
+    "JK",
+    "JM",
+    "YK",
+    "YM",
+    "RM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T05:39:47Z"
+}

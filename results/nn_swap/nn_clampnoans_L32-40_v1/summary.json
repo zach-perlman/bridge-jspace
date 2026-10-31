@@ -1,0 +1,158 @@
+{
+ "L32-40/RM/none": {
+  "n": 134,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 134,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/PM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/RM/clamp": {
+  "n": 131,
+  "kept": 55.0,
+  "donor": 22.9,
+  "third": 0.0,
+  "other": 22.1,
+  "n_third": 131,
+  "transfer": 22.9,
+  "ci": [
+   16.0,
+   30.7
+  ]
+ },
+ "L32-40/PM/clamp": {
+  "n": 79,
+  "kept": 67.1,
+  "donor": 26.6,
+  "third": 0.0,
+  "other": 6.3,
+  "n_third": 79,
+  "transfer": 26.6,
+  "ci": [
+   16.9,
+   37.5
+  ]
+ },
+ "L32-40/RM/clamp_null": {
+  "n": 131,
+  "kept": 96.2,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 3.8,
+  "n_third": 131,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/PM/clamp_null": {
+  "n": 79,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/RM/clamp_noans": {
+  "n": 131,
+  "kept": 97.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 2.3,
+  "n_third": 131,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/PM/clamp_noans": {
+  "n": 79,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MM/clamp": {
+  "n": 79,
+  "kept": 68.4,
+  "donor": 22.8,
+  "third": 1.3,
+  "other": 7.6,
+  "n_third": 79,
+  "transfer": 21.5,
+  "ci": [
+   11.5,
+   32.5
+  ]
+ },
+ "L32-40/MM/clamp_null": {
+  "n": 79,
+  "kept": 98.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.3,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MM/clamp_noans": {
+  "n": 79,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

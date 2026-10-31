@@ -1,0 +1,120 @@
+{
+  "run": "qwen35_9b_sd65_ko_test_v1",
+  "stage": "ko",
+  "why": "prereg amendment 88 note 65, generate vs verify (2026-10-30, qwen3.5-9b, test split): G, V+, V-, C2 (test split, person-birthcity-cntry)",
+  "written_utc": "2026-10-30T19:56:17Z",
+  "git_commit": "a7e1d313aee07f60dfe4ccfd2dedfb76c970894e",
+  "git_state": {
+    "head": "a7e1d313aee07f60dfe4ccfd2dedfb76c970894e",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_sd67_datactl.py",
+      "scripts/nn_sd67_read.py",
+      "scripts/queues/h200_n67_1030.sh"
+    ],
+    "code_diff_sha256": null
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "args": {
+    "stage": "ko",
+    "name": "qwen35_9b_sd65_ko_test_v1",
+    "why": "prereg amendment 88 note 65, generate vs verify (2026-10-30, qwen3.5-9b, test split): G, V+, V-, C2 (test split, person-birthcity-cntry)",
+    "items_run": "qwen35_9b_sd_known_v1",
+    "split": "test",
+    "categories": [
+      "person-birthcity-cntry"
+    ],
+    "convs": [
+      "solo",
+      "ver_true",
+      "ver_false",
+      "choose_tf",
+      "choose_ft"
+    ],
+    "edits": [
+      "12-16:paper10,paper10_rot,paper10_pcasize,unembed10,ansJ,ansRe"
+    ],
+    "n": 0,
+    "seed": 0,
+    "batch": 32,
+    "gen": true,
+    "gen_tokens": 12,
+    "gen_batch": 64,
+    "read_lenses": [
+      "jpp"
+    ],
+    "read_every": 2,
+    "read_extra": [],
+    "uids": null,
+    "log_prot": false,
+    "pos_from": "all",
+    "gen_edited": true,
+    "ctrl_match": "fact"
+  },
+  "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)",
+  "n_items": 350,
+  "n_prompts": 1750,
+  "n_read": 1735,
+  "items_collide": 3,
+  "prompts_naming_bridge": {
+    "solo": 0,
+    "ver_true": 2,
+    "ver_false": 0,
+    "choose_tf": 2,
+    "choose_ft": 2
+  },
+  "read_layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "read_lenses": [
+    "jpp"
+  ],
+  "edits": [
+    [
+      "L12-16",
+      [
+        "paper10",
+        "paper10_rot",
+        "paper10_pcasize",
+        "unembed10",
+        "ansJ",
+        "ansRe"
+      ]
+    ]
+  ],
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "cand_sizes": {
+    "person-birthcity-cntry": 45
+  },
+  "aforms_sizes": {
+    "person-birthcity-cntry": 193
+  }
+}

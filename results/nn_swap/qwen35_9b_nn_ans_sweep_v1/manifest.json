@@ -1,0 +1,64 @@
+{
+  "run": "qwen35_9b_nn_ans_sweep_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 11): timing sweep, qwen3.5-9b",
+  "target": "qwen3.5-9b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "bands": [
+    "4-7",
+    "8-11",
+    "12-16",
+    "17-20",
+    "21-24",
+    "25-28"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "qwen35_9b_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "PM"
+  ],
+  "site": "last",
+  "conditions": [
+    "insert_k10",
+    "insert_k10_noans",
+    "insert_ans",
+    "latent_k10",
+    "latent_k10_noans",
+    "latent_ans",
+    "insert_k10_rand"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 80,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "eligible",
+  "sample_refs": 0,
+  "scene_words": null,
+  "git_commit": "373ac724996dbe339b8e50454e140bae446ecbbb",
+  "git_state": {
+    "head": "373ac724996dbe339b8e50454e140bae446ecbbb",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

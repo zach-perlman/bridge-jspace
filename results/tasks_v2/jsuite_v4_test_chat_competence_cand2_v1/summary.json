@@ -1,0 +1,70 @@
+{
+  "seconds": 889,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.908,
+      "all_steps": 0.888,
+      "median_margin": 5.88,
+      "guess": 0.151,
+      "top_wrong": [
+        [
+          "Mexico",
+          5
+        ],
+        [
+          "Hung",
+          4
+        ],
+        [
+          "Turkey",
+          4
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.556,
+      "all_steps": 0.621,
+      "median_margin": 0.38,
+      "guess": 0.014,
+      "top_wrong": [
+        [
+          "Fin",
+          11
+        ],
+        [
+          "C",
+          9
+        ],
+        [
+          "A",
+          9
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.718,
+      "MM": 0.802
+    },
+    "companies": {
+      "MP": 0.944,
+      "MM": 0.787
+    },
+    "films": {
+      "MP": 0.979,
+      "MM": 0.049
+    },
+    "landmarks": {
+      "MP": 0.957,
+      "MM": 0.414
+    },
+    "people": {
+      "MP": 0.976,
+      "MM": 0.567
+    }
+  },
+  "pick": {}
+}

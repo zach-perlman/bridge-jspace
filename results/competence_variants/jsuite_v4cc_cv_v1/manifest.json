@@ -1,0 +1,28 @@
+{
+  "run": "jsuite_v4cc_cv_v1",
+  "why": "Zach (2026-10-29, prereg amendment 58 note 24, qwen3.6-27b): controls",
+  "written_utc": "2026-10-29T12:52:01Z",
+  "git_commit": "5f57bf6d064b68f589907ac628e49e586bb790e8",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "jsuite_v4ctlcc_test_chat",
+  "words": [
+    "H1",
+    "RG",
+    "RO"
+  ],
+  "variants": [
+    "none"
+  ],
+  "n_items": 594,
+  "max_new_tokens": 24,
+  "batch": 16,
+  "limit": 0,
+  "read": "cand2",
+  "doc": "competence_variants (Zach, 2026-10-27, prereg amendment 58 note 2): unedited accuracy of every item of the chosen words\nunder prompt variants, after Redwood's no-CoT tests (Greenblatt 2026): \"none\" (the competence prompt), \"filler300\" (the\nquestion followed by the integers 1..300, content-free filler, before the instruction) and \"repeat5\" (the question\nwritten five times). The passage is unchanged. Reads: cand2 on the first generated token (as competence and the\nknock-outs read) and the greedy reply (--max-new tokens), one generate per batch of same-length prompts (no padding).\nDescriptive, no rule. Writes results/competence_variants/NAME/{manifest.json, rows.jsonl, summary.json}."
+}

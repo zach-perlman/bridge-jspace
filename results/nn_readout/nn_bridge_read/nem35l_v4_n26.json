@@ -1,0 +1,215 @@
+{
+ "prefix": "nem35l_",
+ "windows": {
+  "desc_end": [
+   6,
+   26
+  ],
+  "final": [
+   34,
+   50
+  ]
+ },
+ "b": {
+  "jlens": {
+   "n": 395,
+   "MM_ok/attr": 35.3,
+   "MM_ok/other": 2.4,
+   "MM_ok/third": 3.3,
+   "MM_ok/bridge": 21.7,
+   "MP_ok/attr": 2.0,
+   "MP_ok/other": 33.3,
+   "MP_ok/third": 2.4,
+   "MP_ok/bridge": 18.1,
+   "H1_mmok/attr": 36.2,
+   "H1_mmok/other": 2.6,
+   "H1_mmok/third": 2.2,
+   "H1_mmok/bridge": 22.3,
+   "RG_mmok/attr": 34.9,
+   "RG_mmok/other": 2.6,
+   "RG_mmok/third": 2.2,
+   "RG_mmok/bridge": 21.4,
+   "rho_H1": 1.06,
+   "rho_H1_ci": [
+    0.975,
+    1.153
+   ],
+   "rho_RG": 1.019,
+   "rho_RG_ci": [
+    0.97,
+    1.073
+   ]
+  },
+  "logit": {
+   "n": 395,
+   "MM_ok/attr": 31.9,
+   "MM_ok/other": 3.0,
+   "MM_ok/third": 2.6,
+   "MM_ok/bridge": 21.8,
+   "MP_ok/attr": 3.4,
+   "MP_ok/other": 30.6,
+   "MP_ok/third": 3.0,
+   "MP_ok/bridge": 19.2,
+   "H1_mmok/attr": 33.9,
+   "H1_mmok/other": 2.7,
+   "H1_mmok/third": 2.5,
+   "H1_mmok/bridge": 22.8,
+   "RG_mmok/attr": 31.1,
+   "RG_mmok/other": 2.7,
+   "RG_mmok/third": 2.1,
+   "RG_mmok/bridge": 21.7,
+   "rho_H1": 1.069,
+   "rho_H1_ci": [
+    0.98,
+    1.17
+   ],
+   "rho_RG": 0.99,
+   "rho_RG_ci": [
+    0.931,
+    1.056
+   ]
+  },
+  "reading": "association (no relation asked)"
+ },
+ "c": {
+  "known/jlens": {
+   "conflict": {
+    "n": 102,
+    "n_MP": 51,
+    "rem": 5.1,
+    "cue": 65.9,
+    "third": 0.8,
+    "d": -60.8,
+    "d_ci": [
+     -75.182,
+     -44.697
+    ],
+    "d_MP": -59.2,
+    "d_MM": -62.4
+   },
+   "aligned": {
+    "n": 114,
+    "n_MP": 57,
+    "rem": 74.1,
+    "cue": NaN,
+    "third": 0.8
+   }
+  },
+  "gated/jlens": {
+   "conflict": {
+    "n": 119,
+    "n_MP": 77,
+    "rem": 5.2,
+    "cue": 72.3,
+    "third": 0.8,
+    "d": -67.2,
+    "d_ci": [
+     -79.453,
+     -53.569
+    ],
+    "d_MP": -69.3,
+    "d_MM": -63.2
+   },
+   "aligned": {
+    "n": 108,
+    "n_MP": 66,
+    "rem": 71.6,
+    "cue": NaN,
+    "third": 1.4
+   }
+  },
+  "all/jlens": {
+   "conflict": {
+    "n": 200,
+    "n_MP": 100,
+    "rem": 3.7,
+    "cue": 71.5,
+    "third": 0.8,
+    "d": -67.7,
+    "d_ci": [
+     -77.136,
+     -57.682
+    ],
+    "d_MP": -67.1,
+    "d_MM": -68.4
+   },
+   "aligned": {
+    "n": 196,
+    "n_MP": 98,
+    "rem": 63.7,
+    "cue": NaN,
+    "third": 1.6
+   }
+  },
+  "known/logit": {
+   "conflict": {
+    "n": 102,
+    "n_MP": 51,
+    "rem": 6.3,
+    "cue": 49.0,
+    "third": 2.2,
+    "d": -42.7,
+    "d_ci": [
+     -58.662,
+     -26.777
+    ],
+    "d_MP": -40.1,
+    "d_MM": -45.3
+   },
+   "aligned": {
+    "n": 114,
+    "n_MP": 57,
+    "rem": 66.1,
+    "cue": NaN,
+    "third": 0.5
+   }
+  },
+  "gated/logit": {
+   "conflict": {
+    "n": 119,
+    "n_MP": 77,
+    "rem": 5.7,
+    "cue": 49.5,
+    "third": 2.5,
+    "d": -43.8,
+    "d_ci": [
+     -57.858,
+     -29.293
+    ],
+    "d_MP": -43.9,
+    "d_MM": -43.5
+   },
+   "aligned": {
+    "n": 108,
+    "n_MP": 66,
+    "rem": 62.9,
+    "cue": NaN,
+    "third": 0.6
+   }
+  },
+  "all/logit": {
+   "conflict": {
+    "n": 200,
+    "n_MP": 100,
+    "rem": 4.5,
+    "cue": 50.3,
+    "third": 2.0,
+    "d": -45.9,
+    "d_ci": [
+     -57.0,
+     -35.318
+    ],
+    "d_MP": -43.8,
+    "d_MM": -47.9
+   },
+   "aligned": {
+    "n": 196,
+    "n_MP": 98,
+    "rem": 56.7,
+    "cue": NaN,
+    "third": 0.6
+   }
+  },
+  "reading": "the description's words"
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "run": "nem35l_sd66_ko_test_v1",
+ "model": {
+  "target": "nemotron-3.5-lightning",
+  "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+  "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "kernels": "hub"
+ },
+ "role": "confirmatory",
+ "band": "L27-33",
+ "n_read": 526,
+ "n_items": 431,
+ "n_peer_named_dropped": 1,
+ "gen_edited": true,
+ "readings": [
+  "reading validity [nemotron-3.5-lightning, confirmatory; test split; band L27-33]: unedited K share chk_solo 94.4, chk_agree 99.3, chk_copy 100.0 (>= 90 each), chk_wrong 94.2 (>= 60, else F2 in log-odds); sources {'chk_solo': 'first token', 'chk_agree': 'first token', 'chk_copy': 'first token', 'chk_wrong': 'first token'}; controls: chk_copy S 0.0 [0.0, 0.0] (<= 10), D = chk_solo S 43.9 [38.75, 48.96] (>= 20; bridges [36.89, 50.57]): valid",
+  "reading F1 [nemotron-3.5-lightning, confirmatory; test split; band L27-33]: a forbidden but relevant answer is copied; S(chk_agree) 6.5 [3.48, 9.51] (bridges [3.02, 10.85]; n 431, 161 bridges); D 43.9; thresholds max(10, D/3) = 14.6, D/2 = 21.9, 2/3 D = 29.2",
+  "reading F2 [nemotron-3.5-lightning, confirmatory; test split; band L27-33]: not shown; spec gain of e3' in chk_wrong 4.6 [0.93, 8.35] (bridges [0.75, 9.01]; n 431, 161 bridges)"
+ ],
+ "beside": {},
+ "source": {
+  "chk_solo": "first token",
+  "chk_agree": "first token",
+  "chk_copy": "first token",
+  "chk_wrong": "first token"
+ },
+ "validity": {
+  "K_unedited": {
+   "chk_solo": 94.43155452436194,
+   "chk_agree": 99.30394431554525,
+   "chk_copy": 100.0,
+   "chk_wrong": 94.19953596287704
+  },
+  "copy_S": 0.0,
+  "copy_ci": [
+   0.0,
+   0.0
+  ],
+  "D": 43.851508120649655,
+  "D_ci": [
+   38.75,
+   48.96
+  ],
+  "valid": true,
+  "wrong_ok": true
+ },
+ "F1": {
+  "label": "a forbidden but relevant answer is copied",
+  "S_agree": 6.496519721577726,
+  "ci": [
+   3.48,
+   9.51
+  ],
+  "ci_bridges": [
+   3.02,
+   10.85
+  ],
+  "n": 431,
+  "D": 43.851508120649655
+ },
+ "F2": {
+  "label": "not shown",
+  "gain": 4.640371229698376,
+  "ci": [
+   0.93,
+   8.35
+  ],
+  "ci_bridges": [
+   0.75,
+   9.01
+  ],
+  "n": 431
+ }
+}

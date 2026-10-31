@@ -1,0 +1,70 @@
+{
+  "seconds": 765,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.759,
+      "all_steps": 0.786,
+      "median_margin": 2.5,
+      "guess": 0.161,
+      "top_wrong": [
+        [
+          "Russia",
+          13
+        ],
+        [
+          "Hung",
+          12
+        ],
+        [
+          "Spain",
+          12
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.582,
+      "all_steps": 0.495,
+      "median_margin": 0.62,
+      "guess": 0.001,
+      "top_wrong": [
+        [
+          "N",
+          12
+        ],
+        [
+          "Spain",
+          12
+        ],
+        [
+          "United",
+          11
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.455,
+      "MM": 0.688
+    },
+    "companies": {
+      "MP": 0.887,
+      "MM": 0.7
+    },
+    "films": {
+      "MP": 0.84,
+      "MM": 0.139
+    },
+    "landmarks": {
+      "MP": 0.81,
+      "MM": 0.448
+    },
+    "people": {
+      "MP": 0.849,
+      "MM": 0.738
+    }
+  },
+  "pick": {}
+}

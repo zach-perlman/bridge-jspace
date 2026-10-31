@@ -1,0 +1,48 @@
+{
+  "run": "nem35l_jsuite_v3_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-27, prereg amendment 58 note 4): nemotron-3.5-lightning v3 competence (K and M words, eligibility)",
+  "set": "jsuite_v3_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "a25b75eb478831e4ee541794d2fd642c398ad451",
+  "git_state": {
+    "head": "a25b75eb478831e4ee541794d2fd642c398ad451",
+    "dirty_files": [
+      "scripts/v3_cards.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "0aaed5ab1540fb94720036c76a41d6775a6e1f3adcc18fc75088af40c608be2e"
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PK",
+    "PM",
+    "MK",
+    "MM",
+    "WK",
+    "WM",
+    "TK",
+    "TM",
+    "XK",
+    "XM",
+    "QK",
+    "QM",
+    "JK",
+    "JM",
+    "YK",
+    "YM",
+    "RM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T00:59:46Z"
+}

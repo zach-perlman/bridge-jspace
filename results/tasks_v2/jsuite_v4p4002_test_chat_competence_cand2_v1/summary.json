@@ -1,0 +1,70 @@
+{
+  "seconds": 1179,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.899,
+      "all_steps": 0.89,
+      "median_margin": 6.0,
+      "guess": 0.169,
+      "top_wrong": [
+        [
+          "Fin",
+          5
+        ],
+        [
+          "Canada",
+          5
+        ],
+        [
+          "China",
+          4
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.543,
+      "all_steps": 0.62,
+      "median_margin": 0.38,
+      "guess": 0.011,
+      "top_wrong": [
+        [
+          "Egypt",
+          12
+        ],
+        [
+          "N",
+          10
+        ],
+        [
+          "France",
+          10
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.708,
+      "MM": 0.782
+    },
+    "companies": {
+      "MP": 0.963,
+      "MM": 0.806
+    },
+    "films": {
+      "MP": 0.958,
+      "MM": 0.056
+    },
+    "landmarks": {
+      "MP": 0.94,
+      "MM": 0.362
+    },
+    "people": {
+      "MP": 0.96,
+      "MM": 0.548
+    }
+  },
+  "pick": {}
+}

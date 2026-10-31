@@ -1,0 +1,70 @@
+{
+  "seconds": 948,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 874,
+      "whole": 0.756,
+      "all_steps": 0.8,
+      "median_margin": 1.25,
+      "guess": 0.162,
+      "top_wrong": [
+        [
+          "<|eot|>",
+          32
+        ],
+        [
+          "Answer",
+          13
+        ],
+        [
+          "Brazil",
+          7
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 874,
+      "whole": 0.654,
+      "all_steps": 0.532,
+      "median_margin": 0.62,
+      "guess": 0.007,
+      "top_wrong": [
+        [
+          "<|eot|>",
+          42
+        ],
+        [
+          "Brazil",
+          10
+        ],
+        [
+          "South",
+          9
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.46,
+      "MM": 0.733
+    },
+    "companies": {
+      "MP": 0.894,
+      "MM": 0.844
+    },
+    "films": {
+      "MP": 0.785,
+      "MM": 0.09
+    },
+    "landmarks": {
+      "MP": 0.759,
+      "MM": 0.681
+    },
+    "people": {
+      "MP": 0.889,
+      "MM": 0.782
+    }
+  },
+  "pick": {}
+}

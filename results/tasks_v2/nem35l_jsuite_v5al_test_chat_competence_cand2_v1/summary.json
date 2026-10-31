@@ -1,0 +1,66 @@
+{
+  "seconds": 359,
+  "by_word_level": {
+    "MP/L2": {
+      "n": 582,
+      "whole": 0.864,
+      "all_steps": 0.919,
+      "median_margin": 4.38,
+      "guess": 0.119,
+      "top_wrong": [
+        [
+          "Pol",
+          4
+        ],
+        [
+          "Canadian",
+          4
+        ],
+        [
+          "Australia",
+          4
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 582,
+      "whole": 0.545,
+      "all_steps": 0.651,
+      "median_margin": 0.19,
+      "guess": 0.021,
+      "top_wrong": [
+        [
+          "Nor",
+          9
+        ],
+        [
+          "Sw",
+          9
+        ],
+        [
+          "A",
+          9
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "MP": 0.863,
+      "MM": 0.699
+    },
+    "companies": {
+      "MP": 0.983,
+      "MM": 0.283
+    },
+    "landmarks": {
+      "MP": 0.833,
+      "MM": 0.708
+    },
+    "people": {
+      "MP": 0.81,
+      "MM": 0.481
+    }
+  },
+  "pick": {}
+}

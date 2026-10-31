@@ -1,0 +1,196 @@
+{
+  "seconds": 1149,
+  "by_word_level": {
+    "PM/L1": {
+      "n": 234,
+      "whole": 0.744,
+      "all_steps": 0.812,
+      "median_margin": 1.69,
+      "guess": 0.115,
+      "top_wrong": [
+        [
+          "Ir",
+          2
+        ],
+        [
+          "A",
+          2
+        ],
+        [
+          "Sw",
+          2
+        ]
+      ]
+    },
+    "PM/L2": {
+      "n": 234,
+      "whole": 0.769,
+      "all_steps": 0.812,
+      "median_margin": 2.5,
+      "guess": 0.034,
+      "top_wrong": [
+        [
+          "English",
+          3
+        ],
+        [
+          "Port",
+          3
+        ],
+        [
+          "Nor",
+          3
+        ]
+      ]
+    },
+    "PM/L3": {
+      "n": 234,
+      "whole": 0.765,
+      "all_steps": 0.838,
+      "median_margin": 2.62,
+      "guess": 0.03,
+      "top_wrong": [
+        [
+          "British",
+          8
+        ],
+        [
+          "American",
+          3
+        ],
+        [
+          "United",
+          3
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 234,
+      "whole": 0.769,
+      "all_steps": 0.701,
+      "median_margin": 3.5,
+      "guess": 0.047,
+      "top_wrong": [
+        [
+          "N",
+          4
+        ],
+        [
+          "China",
+          3
+        ],
+        [
+          "American",
+          2
+        ]
+      ]
+    },
+    "MM/L2": {
+      "n": 234,
+      "whole": 0.786,
+      "all_steps": 0.726,
+      "median_margin": 2.62,
+      "guess": 0.009,
+      "top_wrong": [
+        [
+          "G",
+          4
+        ],
+        [
+          "Germany",
+          4
+        ],
+        [
+          "United",
+          4
+        ]
+      ]
+    },
+    "MM/L3": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "RM/L1": {
+      "n": 234,
+      "whole": 0.41,
+      "all_steps": 0.342,
+      "median_margin": -1.25,
+      "guess": 0.004,
+      "top_wrong": [
+        [
+          "United",
+          11
+        ],
+        [
+          "Italy",
+          8
+        ],
+        [
+          "Germany",
+          7
+        ]
+      ]
+    },
+    "RM/L2": {
+      "n": 234,
+      "whole": 0.436,
+      "all_steps": 0.35,
+      "median_margin": -1.0,
+      "guess": 0.004,
+      "top_wrong": [
+        [
+          "Spain",
+          8
+        ],
+        [
+          "China",
+          8
+        ],
+        [
+          "United",
+          7
+        ]
+      ]
+    },
+    "RM/L3": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PM": 0.987,
+      "MM": 0.696,
+      "RM": 0.52
+    },
+    "companies": {
+      "PM": 0.875,
+      "MM": 0.875,
+      "RM": 0.438
+    },
+    "films": {
+      "PM": 0.45,
+      "MM": 0.412,
+      "RM": 0.062
+    },
+    "landmarks": {
+      "PM": 1,
+      "MM": 0.912,
+      "RM": 0.3
+    },
+    "people": {
+      "PM": 0.545,
+      "MM": 0.929,
+      "RM": 0.643
+    }
+  },
+  "pick": {}
+}

@@ -1,0 +1,57 @@
+{
+  "run": "nem35l_nn_readout_v4cc_v1",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "set": "jsuite_v4cc_test_chat",
+  "competence": "nem35l_jsuite_v4cc_test_chat_competence_cand2_v1",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "items": "v4cc",
+  "priming": true,
+  "topk": 20,
+  "git_commit": "9714ac817e53cc629a503983b7dcdde2ebac7c79",
+  "git_state": {
+    "head": "9714ac817e53cc629a503983b7dcdde2ebac7c79",
+    "dirty_files": [
+      "scripts/jsuite_v5key.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "678a4f0181e83a682b6c4bcd62864ec167011fd6762c954bfdf27ae75bf0e0a5"
+  }
+}

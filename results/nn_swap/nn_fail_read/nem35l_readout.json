@@ -1,0 +1,52 @@
+{
+ "readout": {
+  "jlens/bridge": {
+   "ok": 33.9,
+   "fail": 25.4,
+   "n_ok": 171,
+   "n_fail": 38,
+   "ok_minus_fail": 8.5,
+   "ci": [
+    -7.3,
+    23.6
+   ],
+   "missing_in_failures": false
+  },
+  "jlens/attr": {
+   "ok": 59.6,
+   "fail": 22.8,
+   "n_ok": 171,
+   "n_fail": 38,
+   "ok_minus_fail": 36.8,
+   "ci": [
+    21.8,
+    51.5
+   ],
+   "missing_in_failures": true
+  },
+  "logit/bridge": {
+   "ok": 36.1,
+   "fail": 33.3,
+   "n_ok": 171,
+   "n_fail": 38,
+   "ok_minus_fail": 2.7,
+   "ci": [
+    -15.8,
+    20.3
+   ],
+   "missing_in_failures": false
+  },
+  "logit/attr": {
+   "ok": 53.4,
+   "fail": 18.4,
+   "n_ok": 171,
+   "n_fail": 38,
+   "ok_minus_fail": 35.0,
+   "ci": [
+    19.4,
+    48.7
+   ],
+   "missing_in_failures": true
+  }
+ }
+}

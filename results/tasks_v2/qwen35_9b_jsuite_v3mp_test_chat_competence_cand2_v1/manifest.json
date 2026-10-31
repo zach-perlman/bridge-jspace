@@ -1,0 +1,29 @@
+{
+  "run": "qwen35_9b_jsuite_v3mp_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 13): qwen3.5-9b competence on MP (hop 2 the passage lookup)",
+  "set": "jsuite_v3mp_test_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "3ea819fed835b074cb6bcb38494bd66ca52ca5ee",
+  "git_state": {
+    "head": "3ea819fed835b074cb6bcb38494bd66ca52ca5ee",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "MP"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T20:25:22Z"
+}

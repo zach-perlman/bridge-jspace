@@ -1,0 +1,85 @@
+{
+  "run": "nem35l_nn_ansra_L27-33_s0_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 12): bridge or answer on rendering A, nemotron-3.5-lightning L27-33, donor seed 0",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "bands": [
+    "27-33"
+  ],
+  "set": "jsuite_v3ra_test_chat",
+  "competence": "nem35l_jsuite_v3ra_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "site": "last",
+  "conditions": [
+    "insert_k10",
+    "insert_k10_rand",
+    "insert_k10_rot",
+    "insert_ans",
+    "insert_ansctl",
+    "insert_k10_noans",
+    "insert_k10_noansctl",
+    "insert_k10_noansrel",
+    "insert_k10_noansrelctl",
+    "insert_k10_noansown",
+    "insert_k10_noansownctl",
+    "latent_k10",
+    "latent_k10_rand",
+    "latent_k10_rot",
+    "latent_ans",
+    "latent_ansctl",
+    "latent_k10_noans",
+    "latent_k10_noansctl",
+    "latent_k10_noansrel",
+    "latent_k10_noansrelctl",
+    "latent_k10_noansown",
+    "latent_k10_noansownctl",
+    "remove_k10",
+    "remove_k10_rot",
+    "remove_k10_noans",
+    "remove_k10_noansrel",
+    "remove_k10_noansown"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "eligible",
+  "sample_refs": 80,
+  "scene_words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "git_commit": "0257b0c018ff3488a2b0ade14553a78cc3cb7f37",
+  "git_state": {
+    "head": "0257b0c018ff3488a2b0ade14553a78cc3cb7f37",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "bj_gram_proj": "1"
+}

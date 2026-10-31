@@ -1,0 +1,5618 @@
+[
+ {
+  "relation": "people",
+  "bridge": "Beethoven",
+  "answer": "German",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "composer",
+    "clause": "wrote the Moonlight Sonata"
+   },
+   {
+    "noun": "composer",
+    "clause": "kept composing after he had become completely deaf"
+   }
+  ],
+  "skip_cues": [
+   "Moonlight Sonata",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Gutenberg",
+  "answer": "German",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "inventor",
+    "clause": "introduced printing with movable metal type around 1440"
+   },
+   {
+    "noun": "printer",
+    "clause": "produced one of the first major books printed with movable type, a Bible"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Freud",
+  "answer": "Austrian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "doctor",
+    "clause": "founded psychoanalysis"
+   },
+   {
+    "noun": "writer",
+    "clause": "wrote The Interpretation of Dreams"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "The Interpretation of Dreams"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Klimt",
+  "answer": "Austrian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Kiss in gold leaf"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted the golden Portrait of Adele Bloch-Bauer I"
+   }
+  ],
+  "skip_cues": [
+   "The Kiss",
+   "Portrait of Adele Bloch-Bauer I"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Descartes",
+  "answer": "French",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "philosopher",
+    "clause": "wrote 'I think, therefore I am'"
+   },
+   {
+    "noun": "philosopher",
+    "clause": "wrote Meditations on First Philosophy"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Meditations on First Philosophy"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Monet",
+  "answer": "French",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted the Water Lilies series"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted Impression, Sunrise, which gave a movement its name"
+   }
+  ],
+  "skip_cues": [
+   "Water Lilies",
+   "Impression, Sunrise"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Galileo",
+  "answer": "Italian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "astronomer",
+    "clause": "discovered the four largest moons of Jupiter"
+   },
+   {
+    "noun": "scientist",
+    "clause": "was tried by the Inquisition for defending the idea that the Earth moves around the Sun"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Vivaldi",
+  "answer": "Italian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "composer",
+    "clause": "wrote The Four Seasons violin concertos"
+   },
+   {
+    "noun": "composer",
+    "clause": "was a red-haired priest who wrote hundreds of concertos"
+   }
+  ],
+  "skip_cues": [
+   "The Four Seasons",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Picasso",
+  "answer": "Spanish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "co-founded Cubism"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted The Old Guitarist during his Blue Period"
+   }
+  ],
+  "skip_cues": [
+   "Cubism",
+   "The Old Guitarist"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Dali",
+  "answer": "Spanish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Persistence of Memory with its melting clocks"
+   },
+   {
+    "noun": "artist",
+    "clause": "was a surrealist famous for his upturned waxed mustache"
+   }
+  ],
+  "skip_cues": [
+   "The Persistence of Memory",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Dalí",
+   "Salvador Dalí",
+   "Salvador Dali"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Tolstoy",
+  "answer": "Russian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "writer",
+    "clause": "wrote War and Peace"
+   },
+   {
+    "noun": "writer",
+    "clause": "wrote the novel about an aristocrat who throws herself under a train"
+   }
+  ],
+  "skip_cues": [
+   "War and Peace",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Tchaikovsky",
+  "answer": "Russian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "composer",
+    "clause": "wrote the ballet Swan Lake"
+   },
+   {
+    "noun": "composer",
+    "clause": "wrote The Nutcracker ballet"
+   }
+  ],
+  "skip_cues": [
+   "Swan Lake",
+   "The Nutcracker"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Copernicus",
+  "answer": "Polish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "astronomer",
+    "clause": "proposed in 1543 that the Earth orbits the Sun"
+   },
+   {
+    "noun": "astronomer",
+    "clause": "wrote On the Revolutions of the Heavenly Spheres"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "On the Revolutions of the Heavenly Spheres"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "John Paul II",
+  "answer": "Polish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "pope",
+    "clause": "led the Catholic Church from 1978 to 2005"
+   },
+   {
+    "noun": "pope",
+    "clause": "survived being shot in an assassination attempt in 1981"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Pope John Paul II",
+   "Karol Wojtyła",
+   "Wojtyla"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Liszt",
+  "answer": "Hungarian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "composer",
+    "clause": "wrote the Liebestraum piano pieces"
+   },
+   {
+    "noun": "pianist",
+    "clause": "was a 19th-century piano virtuoso whose fans fought over his handkerchiefs and gloves"
+   }
+  ],
+  "skip_cues": [
+   "Liebestraum",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Rubik",
+  "answer": "Hungarian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "inventor",
+    "clause": "invented a colorful twisting cube puzzle in 1974"
+   },
+   {
+    "noun": "architect",
+    "clause": "invented the best-selling puzzle toy of all time while teaching design"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Ernő Rubik",
+   "Erno Rubik"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Dvorak",
+  "answer": "Czech",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "composer",
+    "clause": "wrote the New World Symphony"
+   },
+   {
+    "noun": "composer",
+    "clause": "wrote the opera Rusalka"
+   }
+  ],
+  "skip_cues": [
+   "New World Symphony",
+   "Rusalka"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": true,
+  "bridge_alts": [
+   "Dvořák",
+   "Antonín Dvořák"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Havel",
+  "answer": "Czech",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "playwright",
+    "clause": "was a dissident playwright who became his country's first post-communist president"
+   },
+   {
+    "noun": "playwright",
+    "clause": "wrote the play The Garden Party"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "The Garden Party"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Václav Havel",
+   "Vaclav Havel"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Van Gogh",
+  "answer": "Dutch",
+  "answer_aliases": [
+   "Netherlands"
+  ],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Starry Night"
+   },
+   {
+    "noun": "painter",
+    "clause": "cut off part of his own ear"
+   }
+  ],
+  "skip_cues": [
+   "The Starry Night",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": [
+   "Vincent van Gogh",
+   "van Gogh"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Rembrandt",
+  "answer": "Dutch",
+  "answer_aliases": [
+   "Netherlands"
+  ],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Night Watch"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted about eighty self-portraits over his lifetime"
+   }
+  ],
+  "skip_cues": [
+   "The Night Watch",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Magritte",
+  "answer": "Belgian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted a pipe above the words This is not a pipe"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted The Son of Man, a man whose face is hidden by an apple"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "The Son of Man"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Herge",
+  "answer": "Belgian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "cartoonist",
+    "clause": "created the comic hero Tintin"
+   },
+   {
+    "noun": "cartoonist",
+    "clause": "created a boy reporter who travels with a white dog named Snowy"
+   }
+  ],
+  "skip_cues": [
+   "Tintin",
+   "Snowy"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Hergé"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Nobel",
+  "answer": "Swedish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "chemist",
+    "clause": "invented dynamite"
+   },
+   {
+    "noun": "chemist",
+    "clause": "left his fortune to fund a set of yearly prizes"
+   }
+  ],
+  "skip_cues": [
+   "dynamite",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Linnaeus",
+  "answer": "Swedish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "botanist",
+    "clause": "created the two-part naming system for species"
+   },
+   {
+    "noun": "botanist",
+    "clause": "is called the father of modern taxonomy"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Ibsen",
+  "answer": "Norwegian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "playwright",
+    "clause": "wrote A Doll's House"
+   },
+   {
+    "noun": "playwright",
+    "clause": "wrote Hedda Gabler"
+   }
+  ],
+  "skip_cues": [
+   "A Doll's House",
+   "Hedda Gabler"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Munch",
+  "answer": "Norwegian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Scream"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted The Sick Child"
+   }
+  ],
+  "skip_cues": [
+   "The Scream",
+   "The Sick Child"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Hans Christian Andersen",
+  "answer": "Danish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "writer",
+    "clause": "wrote The Ugly Duckling"
+   },
+   {
+    "noun": "writer",
+    "clause": "wrote the fairy tale The Little Mermaid"
+   }
+  ],
+  "skip_cues": [
+   "The Ugly Duckling",
+   "The Little Mermaid"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Andersen"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Kierkegaard",
+  "answer": "Danish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "philosopher",
+    "clause": "wrote Fear and Trembling"
+   },
+   {
+    "noun": "philosopher",
+    "clause": "is called the father of existentialism"
+   }
+  ],
+  "skip_cues": [
+   "Fear and Trembling",
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Aristotle",
+  "answer": "Greek",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "philosopher",
+    "clause": "tutored Alexander the Great"
+   },
+   {
+    "noun": "philosopher",
+    "clause": "wrote the Nicomachean Ethics"
+   }
+  ],
+  "skip_cues": [
+   "Alexander the Great",
+   "Nicomachean Ethics"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Archimedes",
+  "answer": "Greek",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "mathematician",
+    "clause": "is said to have shouted Eureka in his bath"
+   },
+   {
+    "noun": "mathematician",
+    "clause": "said Give me a place to stand and I will move the Earth"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Gandhi",
+  "answer": "Indian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "leader",
+    "clause": "led nonviolent civil disobedience and was assassinated in 1948"
+   },
+   {
+    "noun": "leader",
+    "clause": "led the 1930 Salt March"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Salt March"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Tagore",
+  "answer": "Indian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "poet",
+    "clause": "became the first non-European to win the Nobel Prize in Literature, in 1913"
+   },
+   {
+    "noun": "poet",
+    "clause": "wrote the songs that became the national anthems of two countries"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Hokusai",
+  "answer": "Japanese",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "artist",
+    "clause": "made the woodblock print The Great Wave"
+   },
+   {
+    "noun": "artist",
+    "clause": "is said to have produced over 30,000 works and changed his name dozens of times"
+   }
+  ],
+  "skip_cues": [
+   "The Great Wave",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Murakami",
+  "answer": "Japanese",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "wrote Kafka on the Shore"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote the novel 1Q84"
+   }
+  ],
+  "skip_cues": [
+   "Kafka on the Shore",
+   "1Q84"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Confucius",
+  "answer": "Chinese",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "philosopher",
+    "clause": "had his sayings collected in the Analects"
+   },
+   {
+    "noun": "philosopher",
+    "clause": "taught that filial piety is the root of virtue"
+   }
+  ],
+  "skip_cues": [
+   "Analects",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Sun Tzu",
+  "answer": "Chinese",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "general",
+    "clause": "wrote The Art of War"
+   },
+   {
+    "noun": "general",
+    "clause": "is credited with the saying Know your enemy and know yourself"
+   }
+  ],
+  "skip_cues": [
+   "The Art of War",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": [
+   "Sunzi"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Edison",
+  "answer": "American",
+  "answer_aliases": [
+   "US"
+  ],
+  "descriptions": [
+   {
+    "noun": "inventor",
+    "clause": "invented the phonograph"
+   },
+   {
+    "noun": "inventor",
+    "clause": "patented over a thousand inventions, including a practical light bulb"
+   }
+  ],
+  "skip_cues": [
+   "phonograph",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Twain",
+  "answer": "American",
+  "answer_aliases": [
+   "US"
+  ],
+  "descriptions": [
+   {
+    "noun": "writer",
+    "clause": "wrote The Adventures of Tom Sawyer"
+   },
+   {
+    "noun": "writer",
+    "clause": "wrote Adventures of Huckleberry Finn"
+   }
+  ],
+  "skip_cues": [
+   "The Adventures of Tom Sawyer",
+   "Adventures of Huckleberry Finn"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Shakespeare",
+  "answer": "English",
+  "answer_aliases": [
+   "British"
+  ],
+  "descriptions": [
+   {
+    "noun": "playwright",
+    "clause": "wrote Hamlet"
+   },
+   {
+    "noun": "playwright",
+    "clause": "wrote Romeo and Juliet"
+   }
+  ],
+  "skip_cues": [
+   "Hamlet",
+   "Romeo and Juliet"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Newton",
+  "answer": "English",
+  "answer_aliases": [
+   "British"
+  ],
+  "descriptions": [
+   {
+    "noun": "physicist",
+    "clause": "formulated the laws of motion and universal gravitation"
+   },
+   {
+    "noun": "physicist",
+    "clause": "is said to have been inspired by a falling apple"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Joyce",
+  "answer": "Irish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "wrote Ulysses"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote Finnegans Wake"
+   }
+  ],
+  "skip_cues": [
+   "Ulysses",
+   "Finnegans Wake"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Wilde",
+  "answer": "Irish",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "writer",
+    "clause": "wrote The Picture of Dorian Gray"
+   },
+   {
+    "noun": "playwright",
+    "clause": "wrote The Importance of Being Earnest"
+   }
+  ],
+  "skip_cues": [
+   "The Picture of Dorian Gray",
+   "The Importance of Being Earnest"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Borges",
+  "answer": "Argentine",
+  "answer_aliases": [
+   "Argentinian"
+  ],
+  "descriptions": [
+   {
+    "noun": "writer",
+    "clause": "wrote the story The Library of Babel"
+   },
+   {
+    "noun": "writer",
+    "clause": "wrote the story The Garden of Forking Paths"
+   }
+  ],
+  "skip_cues": [
+   "The Library of Babel",
+   "The Garden of Forking Paths"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Messi",
+  "answer": "Argentine",
+  "answer_aliases": [
+   "Argentinian"
+  ],
+  "descriptions": [
+   {
+    "noun": "footballer",
+    "clause": "has won the Ballon d'Or eight times"
+   },
+   {
+    "noun": "footballer",
+    "clause": "scored 91 goals in the calendar year 2012"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Pele",
+  "answer": "Brazilian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "footballer",
+    "clause": "won three World Cups as a player"
+   },
+   {
+    "noun": "footballer",
+    "clause": "is often called the King of Football"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Pelé"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Coelho",
+  "answer": "Brazilian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "wrote The Alchemist"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote Veronika Decides to Die"
+   }
+  ],
+  "skip_cues": [
+   "The Alchemist",
+   "Veronika Decides to Die"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Kahlo",
+  "answer": "Mexican",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "painter",
+    "clause": "painted The Two Fridas"
+   },
+   {
+    "noun": "painter",
+    "clause": "painted self-portraits showing her joined eyebrows"
+   }
+  ],
+  "skip_cues": [
+   "The Two Fridas",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Frida Kahlo"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Garcia Marquez",
+  "answer": "Colombian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "wrote One Hundred Years of Solitude"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote Love in the Time of Cholera"
+   }
+  ],
+  "skip_cues": [
+   "One Hundred Years of Solitude",
+   "Love in the Time of Cholera"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "García Márquez",
+   "Gabriel García Márquez",
+   "Gabriel Garcia Marquez",
+   "Márquez",
+   "Marquez"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Shakira",
+  "answer": "Colombian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "singer",
+    "clause": "sang Hips Don't Lie"
+   },
+   {
+    "noun": "singer",
+    "clause": "sang the 2010 World Cup song Waka Waka"
+   }
+  ],
+  "skip_cues": [
+   "Hips Don't Lie",
+   "Waka Waka"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Neruda",
+  "answer": "Chilean",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "poet",
+    "clause": "wrote Twenty Love Poems and a Song of Despair"
+   },
+   {
+    "noun": "poet",
+    "clause": "won the 1971 Nobel Prize in Literature"
+   }
+  ],
+  "skip_cues": [
+   "Twenty Love Poems and a Song of Despair",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Gretzky",
+  "answer": "Canadian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "ice hockey player",
+    "clause": "is nicknamed The Great One"
+   },
+   {
+    "noun": "ice hockey player",
+    "clause": "holds the record for the most career points in the NHL"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Leonard Cohen",
+  "answer": "Canadian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "singer",
+    "clause": "wrote the song Hallelujah"
+   },
+   {
+    "noun": "singer",
+    "clause": "wrote the song Suzanne"
+   }
+  ],
+  "skip_cues": [
+   "Hallelujah",
+   "Suzanne"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Cohen"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Steve Irwin",
+  "answer": "Australian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "wildlife presenter",
+    "clause": "was known on television as the Crocodile Hunter"
+   },
+   {
+    "noun": "wildlife presenter",
+    "clause": "was killed by a stingray barb in 2006"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Irwin"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Bradman",
+  "answer": "Australian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "cricketer",
+    "clause": "finished with a Test batting average of 99.94"
+   },
+   {
+    "noun": "cricketer",
+    "clause": "is widely considered the greatest batsman of all time"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Salah",
+  "answer": "Egyptian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "footballer",
+    "clause": "scored 32 goals in his first Premier League season with Liverpool"
+   },
+   {
+    "noun": "footballer",
+    "clause": "won the Premier League Golden Boot in 2018"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Mahfouz",
+  "answer": "Egyptian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "won the 1988 Nobel Prize in Literature"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote Children of the Alley"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Children of the Alley"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Achebe",
+  "answer": "Nigerian",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "novelist",
+    "clause": "wrote Things Fall Apart"
+   },
+   {
+    "noun": "novelist",
+    "clause": "wrote Arrow of God"
+   }
+  ],
+  "skip_cues": [
+   "Things Fall Apart",
+   "Arrow of God"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Cristiano Ronaldo",
+  "answer": "Portuguese",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "footballer",
+    "clause": "has scored the most goals in men's international football"
+   },
+   {
+    "noun": "footballer",
+    "clause": "won the Ballon d'Or five times and plays with the number 7"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Ronaldo"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Mandela",
+  "answer": "South African",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "leader",
+    "clause": "spent 27 years in prison before becoming president"
+   },
+   {
+    "noun": "leader",
+    "clause": "shared the 1993 Nobel Peace Prize with F. W. de Klerk"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Tutu",
+  "answer": "South African",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "archbishop",
+    "clause": "won the 1984 Nobel Peace Prize"
+   },
+   {
+    "noun": "archbishop",
+    "clause": "chaired the Truth and Reconciliation Commission"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "people",
+  "bridge": "Kipchoge",
+  "answer": "Kenyan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "runner",
+    "clause": "became the first person to run a marathon in under two hours"
+   },
+   {
+    "noun": "runner",
+    "clause": "won the Olympic marathon in 2016 and 2021"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Eliud Kipchoge"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Usain Bolt",
+  "answer": "Jamaican",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "sprinter",
+    "clause": "holds the 100 metres world record of 9.58 seconds"
+   },
+   {
+    "noun": "sprinter",
+    "clause": "won the 100 metres at three straight Olympic Games"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Bolt"
+  ]
+ },
+ {
+  "relation": "people",
+  "bridge": "Bob Marley",
+  "answer": "Jamaican",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "singer",
+    "clause": "sang One Love"
+   },
+   {
+    "noun": "singer",
+    "clause": "sang Redemption Song"
+   }
+  ],
+  "skip_cues": [
+   "One Love",
+   "Redemption Song"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Marley"
+  ]
+ },
+ {
+  "relation": "cities",
+  "bridge": "Kyoto",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was the imperial capital for over a thousand years until 1869"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 1997 climate conference that produced a protocol on emissions"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Hiroshima",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was destroyed by the first atomic bomb used in war"
+   },
+   {
+    "noun": "city",
+    "clause": "is home to a baseball team called the Carp"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Carp"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Shanghai",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "has the world's busiest container port"
+   },
+   {
+    "noun": "city",
+    "clause": "has a magnetic-levitation train line to its main airport"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Beijing",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2008 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2022 Winter Olympics"
+   }
+  ],
+  "skip_cues": [
+   "2008 Summer Olympics",
+   "2022 Winter Olympics"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Mumbai",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was formerly called Bombay"
+   },
+   {
+    "noun": "city",
+    "clause": "suffered terror attacks on a luxury hotel in November 2008"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Jaipur",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is known as the Pink City"
+   },
+   {
+    "noun": "city",
+    "clause": "was founded in 1727 by a ruler who built large stone astronomical observatories"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Munich",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1972 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "is home to the football club with the most national league titles in its country"
+   }
+  ],
+  "skip_cues": [
+   "1972 Summer Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Dresden",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was firebombed by Allied aircraft in February 1945"
+   },
+   {
+    "noun": "city",
+    "clause": "has a rebuilt baroque church whose ruins stood for decades after the war"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Venice",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is built on over a hundred small islands in a lagoon"
+   },
+   {
+    "noun": "city",
+    "clause": "hosts the world's oldest film festival"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Turin",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "keeps a famous burial shroud in its cathedral"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2006 Winter Olympics"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "2006 Winter Olympics"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Marseille",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was founded by Greek sailors around 600 BC"
+   },
+   {
+    "noun": "city",
+    "clause": "is the second most populous city of its country and a major Mediterranean port"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Lyon",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosts the headquarters of Interpol"
+   },
+   {
+    "noun": "city",
+    "clause": "is where two brothers filmed one of the first motion pictures in 1895"
+   }
+  ],
+  "skip_cues": [
+   "Interpol",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Barcelona",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1992 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "has a football club whose motto is More than a club"
+   }
+  ],
+  "skip_cues": [
+   "1992 Summer Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Seville",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "holds the tomb of Christopher Columbus in its cathedral"
+   },
+   {
+    "noun": "city",
+    "clause": "is the setting of the opera Carmen"
+   }
+  ],
+  "skip_cues": [
+   "Christopher Columbus",
+   "Carmen"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Lisbon",
+  "answer": "Portugal",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was largely destroyed by an earthquake in 1755"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 1998 World Expo"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Porto",
+  "answer": "Portugal",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "gave its name to a fortified dessert wine"
+   },
+   {
+    "noun": "city",
+    "clause": "is home to the football club that won the 2004 Champions League"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Chicago",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "had a great fire in 1871"
+   },
+   {
+    "noun": "city",
+    "clause": "is nicknamed the Windy City"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Las Vegas",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is a desert city famous for casinos on the Strip"
+   },
+   {
+    "noun": "city",
+    "clause": "is nicknamed Sin City"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Vancouver",
+  "answer": "Canada",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2010 Winter Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "is a Pacific port often ranked among the world's most livable cities"
+   }
+  ],
+  "skip_cues": [
+   "2010 Winter Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Montreal",
+  "answer": "Canada",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1976 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the Expo 67 world's fair"
+   }
+  ],
+  "skip_cues": [
+   "1976 Summer Olympics",
+   "Expo 67"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Rio de Janeiro",
+  "answer": "Brazil",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2016 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 1992 Earth Summit"
+   }
+  ],
+  "skip_cues": [
+   "2016 Summer Olympics",
+   "1992 Earth Summit"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Sao Paulo",
+  "answer": "Brazil",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is the most populous city in the Southern Hemisphere"
+   },
+   {
+    "noun": "city",
+    "clause": "has the largest economy of any city in the Southern Hemisphere"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": [
+   "São Paulo"
+  ]
+ },
+ {
+  "relation": "cities",
+  "bridge": "Buenos Aires",
+  "answer": "Argentina",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is where the tango emerged in the late 1800s"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2018 Summer Youth Olympics"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Guadalajara",
+  "answer": "Mexico",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is famous as the home of mariachi music"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2011 Pan American Games"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Cancun",
+  "answer": "Mexico",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is a beach resort built from scratch in the 1970s"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2010 UN climate conference"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Cancún"
+  ]
+ },
+ {
+  "relation": "cities",
+  "bridge": "Adelaide",
+  "answer": "Australia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was named after the queen consort of King William IV"
+   },
+   {
+    "noun": "city",
+    "clause": "was planned in 1836 by Colonel William Light"
+   }
+  ],
+  "skip_cues": [
+   "William IV",
+   "William Light"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Sydney",
+  "answer": "Australia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2000 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "holds New Year's Eve fireworks over its harbour that are broadcast worldwide"
+   }
+  ],
+  "skip_cues": [
+   "2000 Summer Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Moscow",
+  "answer": "Russia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1980 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "has a metro system famous for its palatial stations"
+   }
+  ],
+  "skip_cues": [
+   "1980 Summer Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "St Petersburg",
+  "answer": "Russia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was besieged for 872 days during the Second World War"
+   },
+   {
+    "noun": "city",
+    "clause": "was founded in 1703 and served as the imperial capital for two centuries"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Saint Petersburg",
+   "St. Petersburg"
+  ]
+ },
+ {
+  "relation": "cities",
+  "bridge": "Athens",
+  "answer": "Greece",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the first modern Olympic Games in 1896"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2004 Summer Olympics"
+   }
+  ],
+  "skip_cues": [
+   "1896 Olympic Games",
+   "2004 Summer Olympics"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Istanbul",
+  "answer": "Turkey",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was the capital of the Byzantine Empire as Constantinople"
+   },
+   {
+    "noun": "city",
+    "clause": "straddles two continents"
+   }
+  ],
+  "skip_cues": [
+   "Constantinople",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Alexandria",
+  "answer": "Egypt",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was founded by Alexander the Great"
+   },
+   {
+    "noun": "city",
+    "clause": "had a lighthouse that was one of the Seven Wonders of the Ancient World"
+   }
+  ],
+  "skip_cues": [
+   "Alexander the Great",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Casablanca",
+  "answer": "Morocco",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "gave its name to a 1942 film starring Humphrey Bogart"
+   },
+   {
+    "noun": "city",
+    "clause": "has one of the world's largest mosques, with a minaret over the sea"
+   }
+  ],
+  "skip_cues": [
+   "Humphrey Bogart",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Johannesburg",
+  "answer": "South Africa",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2010 FIFA World Cup final"
+   },
+   {
+    "noun": "city",
+    "clause": "grew out of a gold rush in 1886"
+   }
+  ],
+  "skip_cues": [
+   "2010 FIFA World Cup",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Nairobi",
+  "answer": "Kenya",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosts the headquarters of the UN Environment Programme"
+   },
+   {
+    "noun": "city",
+    "clause": "has a national park with wild lions inside its city limits"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Bangkok",
+  "answer": "Thailand",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "has one of the longest ceremonial names of any city"
+   },
+   {
+    "noun": "city",
+    "clause": "has often been ranked the world's most visited city"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Rotterdam",
+  "answer": "Netherlands",
+  "answer_aliases": [
+   "the Netherlands",
+   "Holland"
+  ],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "has the largest seaport in Europe"
+   },
+   {
+    "noun": "city",
+    "clause": "was largely rebuilt in a modern style after being bombed in 1940"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Amsterdam",
+  "answer": "Netherlands",
+  "answer_aliases": [
+   "the Netherlands",
+   "Holland"
+  ],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is where Anne Frank hid during the war"
+   },
+   {
+    "noun": "city",
+    "clause": "is known for its ring of 17th-century canals and its bicycles"
+   }
+  ],
+  "skip_cues": [
+   "Anne Frank",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Bruges",
+  "answer": "Belgium",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is famous for its medieval canals and lace"
+   },
+   {
+    "noun": "city",
+    "clause": "has a famous 13th-century belfry"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Copenhagen",
+  "answer": "Denmark",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 2009 UN climate summit"
+   },
+   {
+    "noun": "city",
+    "clause": "is often ranked the world's most bicycle-friendly city"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Stockholm",
+  "answer": "Sweden",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is built on fourteen islands"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 1912 Summer Olympics"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "1912 Summer Olympics"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Oslo",
+  "answer": "Norway",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1952 Winter Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "has a museum holding a preserved polar exploration ship, the Fram"
+   }
+  ],
+  "skip_cues": [
+   "1952 Winter Olympics",
+   "Fram"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Helsinki",
+  "answer": "Finland",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1952 Summer Olympics"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 1975 security conference that produced its Final Act"
+   }
+  ],
+  "skip_cues": [
+   "1952 Summer Olympics",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Warsaw",
+  "answer": "Poland",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "had its old town rebuilt after it was razed in 1944"
+   },
+   {
+    "noun": "city",
+    "clause": "gave its name to a Cold War military alliance"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Prague",
+  "answer": "Czech Republic",
+  "answer_aliases": [
+   "the Czech Republic",
+   "Czechia"
+  ],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "has the oldest astronomical clock still in operation"
+   },
+   {
+    "noun": "city",
+    "clause": "gave its name to a 1968 spring of political reform"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Vienna",
+  "answer": "Austria",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "hosted the 1814-15 congress that redrew the map of Europe"
+   },
+   {
+    "noun": "city",
+    "clause": "is famous for the waltz and its New Year's Concert"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Salzburg",
+  "answer": "Austria",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is where The Sound of Music was filmed"
+   },
+   {
+    "noun": "city",
+    "clause": "is the birthplace of the composer of The Magic Flute"
+   }
+  ],
+  "skip_cues": [
+   "The Sound of Music",
+   "The Magic Flute"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Budapest",
+  "answer": "Hungary",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was formed in 1873 by merging three towns on both banks of a river"
+   },
+   {
+    "noun": "city",
+    "clause": "has one of the largest parliament buildings in Europe on its riverbank"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Dublin",
+  "answer": "Ireland",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "is where the Easter Rising began in 1916"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2003 Special Olympics World Summer Games"
+   }
+  ],
+  "skip_cues": [
+   "Easter Rising",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Lima",
+  "answer": "Peru",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was founded by Francisco Pizarro in 1535"
+   },
+   {
+    "noun": "city",
+    "clause": "hosted the 2019 Pan American Games"
+   }
+  ],
+  "skip_cues": [
+   "Francisco Pizarro",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "cities",
+  "bridge": "Medellin",
+  "answer": "Colombia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "city",
+    "clause": "was once dominated by Pablo Escobar's cartel"
+   },
+   {
+    "noun": "city",
+    "clause": "is known as the City of Eternal Spring"
+   }
+  ],
+  "skip_cues": [
+   "Pablo Escobar",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Medellín"
+  ]
+ },
+ {
+  "relation": "companies",
+  "bridge": "Sony",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "created the Walkman"
+   },
+   {
+    "noun": "company",
+    "clause": "makes the PlayStation consoles"
+   }
+  ],
+  "skip_cues": [
+   "Walkman",
+   "PlayStation"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Nintendo",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "created the Super Mario games"
+   },
+   {
+    "noun": "company",
+    "clause": "makes the Switch game console"
+   }
+  ],
+  "skip_cues": [
+   "Super Mario",
+   "Switch"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Samsung",
+  "answer": "South Korea",
+  "answer_aliases": [
+   "Korea"
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the Galaxy smartphones"
+   },
+   {
+    "noun": "company",
+    "clause": "is the world's largest maker of memory chips"
+   }
+  ],
+  "skip_cues": [
+   "Galaxy",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Hyundai",
+  "answer": "South Korea",
+  "answer_aliases": [
+   "Korea"
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the Elantra and Tucson cars"
+   },
+   {
+    "noun": "company",
+    "clause": "owns the Kia car brand"
+   }
+  ],
+  "skip_cues": [
+   "Elantra",
+   "Kia"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Huawei",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the telecom equipment maker hit by US sanctions in 2019"
+   },
+   {
+    "noun": "company",
+    "clause": "makes the Mate and P series smartphones"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Alibaba",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "held a record $25 billion stock market listing in 2014"
+   },
+   {
+    "noun": "company",
+    "clause": "runs the shopping site Taobao"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Taobao"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Adidas",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes sportswear with three stripes"
+   },
+   {
+    "noun": "company",
+    "clause": "was founded by one of two feuding brothers whose sibling founded Puma"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Puma"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Haribo",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the gold bear gummy candies"
+   },
+   {
+    "noun": "company",
+    "clause": "is the candy maker that invented the gummy bear in 1922"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Ferrari",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes sports cars with a prancing horse badge"
+   },
+   {
+    "noun": "company",
+    "clause": "is the most successful team in Formula One history"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Formula One"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Gucci",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the fashion house famous for its horsebit loafers"
+   },
+   {
+    "noun": "company",
+    "clause": "uses a logo of two interlocking letter Gs"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Michelin",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the tire maker that awards stars to restaurants"
+   },
+   {
+    "noun": "company",
+    "clause": "has a mascot made of tires called Bibendum"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Bibendum"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "L'Oreal",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the cosmetics giant with the slogan Because you're worth it"
+   },
+   {
+    "noun": "company",
+    "clause": "is the world's largest cosmetics company"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": [
+   "L'Oréal",
+   "LOreal"
+  ]
+ },
+ {
+  "relation": "companies",
+  "bridge": "Zara",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the fast-fashion clothing chain owned by Inditex"
+   },
+   {
+    "noun": "company",
+    "clause": "can move a clothing design from sketch to store in about two weeks"
+   }
+  ],
+  "skip_cues": [
+   "Inditex",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Chupa Chups",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes lollipops with a logo designed by a surrealist painter"
+   },
+   {
+    "noun": "company",
+    "clause": "makes the lollipops that were taken to the Mir space station"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Mir"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "IKEA",
+  "answer": "Sweden",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "sells flat-pack furniture"
+   },
+   {
+    "noun": "company",
+    "clause": "sells the Billy bookcase"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Billy"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Spotify",
+  "answer": "Sweden",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "runs the music streaming service with a green logo"
+   },
+   {
+    "noun": "company",
+    "clause": "launched a music streaming service in 2008 that pays artists per stream"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Nokia",
+  "answer": "Finland",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "was once the world's biggest maker of mobile phones"
+   },
+   {
+    "noun": "company",
+    "clause": "made the famously durable 3310 phone"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "3310"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Rovio",
+  "answer": "Finland",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "created the game Angry Birds"
+   },
+   {
+    "noun": "company",
+    "clause": "made a 2016 animated film about furious flightless birds"
+   }
+  ],
+  "skip_cues": [
+   "Angry Birds",
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "LEGO",
+  "answer": "Denmark",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes interlocking plastic toy bricks"
+   },
+   {
+    "noun": "company",
+    "clause": "runs theme parks full of models built from toy bricks"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Carlsberg",
+  "answer": "Denmark",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "brews the lager advertised as probably the best beer in the world"
+   },
+   {
+    "noun": "company",
+    "clause": "funded the laboratory where the pH scale was invented"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Philips",
+  "answer": "Netherlands",
+  "answer_aliases": [
+   "the Netherlands",
+   "Holland"
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "co-developed the compact disc"
+   },
+   {
+    "noun": "company",
+    "clause": "is known for its electric shavers and light bulbs"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Heineken",
+  "answer": "Netherlands",
+  "answer_aliases": [
+   "the Netherlands",
+   "Holland"
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "brews a lager sold in a green bottle with a red star"
+   },
+   {
+    "noun": "company",
+    "clause": "is the world's second-largest brewer"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Apple",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the iPhone"
+   },
+   {
+    "noun": "company",
+    "clause": "was founded in a garage in 1976 by two men named Steve"
+   }
+  ],
+  "skip_cues": [
+   "iPhone",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Coca-Cola",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes a soft drink with a famously secret recipe"
+   },
+   {
+    "noun": "company",
+    "clause": "introduced its famous contour bottle in 1915"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Lululemon",
+  "answer": "Canada",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the athletic apparel brand best known for its yoga pants"
+   },
+   {
+    "noun": "company",
+    "clause": "was founded in 1998 and sells the Align leggings"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Align"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "BlackBerry",
+  "answer": "Canada",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "made the smartphones with physical keyboards that were popular in the 2000s"
+   },
+   {
+    "noun": "company",
+    "clause": "made the phone nicknamed the CrackBerry"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Tata",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the conglomerate that bought Jaguar Land Rover in 2008"
+   },
+   {
+    "noun": "company",
+    "clause": "made the Nano, once the world's cheapest car"
+   }
+  ],
+  "skip_cues": [
+   "Jaguar Land Rover",
+   "Nano"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Infosys",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the IT outsourcing firm founded in 1981 by seven engineers"
+   },
+   {
+    "noun": "company",
+    "clause": "is a software services giant whose campus runs its own training university for new hires"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "TSMC",
+  "answer": "Taiwan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the world's largest contract chipmaker"
+   },
+   {
+    "noun": "company",
+    "clause": "manufactures the processors designed for Apple's iPhones"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Acer",
+  "answer": "Taiwan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the Aspire and Predator laptops"
+   },
+   {
+    "noun": "company",
+    "clause": "is a computer maker that bought Gateway in 2007"
+   }
+  ],
+  "skip_cues": [
+   "Aspire",
+   "Gateway"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Embraer",
+  "answer": "Brazil",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes the E-Jet family of regional airliners"
+   },
+   {
+    "noun": "company",
+    "clause": "makes the Phenom and Legacy business jets"
+   }
+  ],
+  "skip_cues": [
+   "E-Jet",
+   "Phenom"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Havaianas",
+  "answer": "Brazil",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes rubber flip-flops"
+   },
+   {
+    "noun": "company",
+    "clause": "makes flip-flops whose sole pattern imitates grains of rice"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Corona",
+  "answer": "Mexico",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes a beer often served with a wedge of lime"
+   },
+   {
+    "noun": "company",
+    "clause": "brews a pale lager sold in clear bottles worldwide"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Bimbo",
+  "answer": "Mexico",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the world's largest bakery company"
+   },
+   {
+    "noun": "company",
+    "clause": "makes sliced bread with a teddy-bear mascot"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Red Bull",
+  "answer": "Austria",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes an energy drink that claims to give you wings"
+   },
+   {
+    "noun": "company",
+    "clause": "sponsored a skydive from the stratosphere in 2012"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Swarovski",
+  "answer": "Austria",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes precision-cut crystal glass"
+   },
+   {
+    "noun": "company",
+    "clause": "makes crystal jewelry with a swan logo"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Kaspersky",
+  "answer": "Russia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "makes antivirus software"
+   },
+   {
+    "noun": "company",
+    "clause": "is the cybersecurity firm that discovered the Flame espionage malware in 2012"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Flame"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Gazprom",
+  "answer": "Russia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the world's largest natural gas company"
+   },
+   {
+    "noun": "company",
+    "clause": "built the Nord Stream gas pipelines"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Nord Stream"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Ryanair",
+  "answer": "Ireland",
+  "answer_aliases": [
+   "the Republic of Ireland"
+  ],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "is the low-cost airline famous for strict baggage fees"
+   },
+   {
+    "noun": "company",
+    "clause": "is Europe's largest airline by passengers carried"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "companies",
+  "bridge": "Canva",
+  "answer": "Australia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "company",
+    "clause": "runs an online graphic design platform with drag-and-drop templates"
+   },
+   {
+    "noun": "company",
+    "clause": "is a design software company that launched its platform in 2013"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Great Pyramid of Giza",
+  "answer": "Egypt",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the only one of the Seven Wonders of the Ancient World still standing"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was the tallest human-made structure in the world for nearly 4,000 years"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Abu Simbel",
+  "answer": "Egypt",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a pair of rock temples moved in the 1960s to escape the waters of a new reservoir"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a temple where sunlight reaches the inner sanctuary on only two days a year"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Machu Picchu",
+  "answer": "Peru",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a 15th-century citadel brought to world attention by Hiram Bingham in 1911"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a citadel whose ruins sit on a mountain ridge above a river gorge"
+   }
+  ],
+  "skip_cues": [
+   "Hiram Bingham",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Nazca Lines",
+  "answer": "Peru",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a set of giant ancient figures etched into the desert, best seen from the air"
+   },
+   {
+    "noun": "landmark",
+    "clause": "includes huge ground drawings of a hummingbird, a monkey and a spider"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Chichen Itza",
+  "answer": "Mexico",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an ancient city where a serpent-shaped shadow crawls down a stepped pyramid at the equinoxes"
+   },
+   {
+    "noun": "landmark",
+    "clause": "has a sacred sinkhole into which offerings were thrown"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Taj Mahal",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a white marble mausoleum built by an emperor for his favorite wife"
+   },
+   {
+    "noun": "landmark",
+    "clause": "took about 20,000 workers some 22 years to build in the 17th century"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Golden Temple",
+  "answer": "India",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a gold-covered temple whose free kitchen serves about 100,000 meals a day"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a gilded shrine that stands in the middle of a sacred pool"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Great Wall",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a series of fortifications thousands of kilometres long built over many dynasties"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is often wrongly said to be visible from the Moon with the naked eye"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Great Wall of China"
+  ]
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Terracotta Army",
+  "answer": "China",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a buried army of thousands of life-size clay soldiers"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was discovered by farmers digging a well in 1974"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Angkor Wat",
+  "answer": "Cambodia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the largest religious monument in the world"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a 12th-century temple complex originally dedicated to Vishnu"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Vishnu"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Colosseum",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an ancient amphitheater where gladiators fought"
+   },
+   {
+    "noun": "landmark",
+    "clause": "could hold an estimated 50,000 spectators and was completed in 80 AD"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Leaning Tower of Pisa",
+  "answer": "Italy",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a bell tower famous for its unintended tilt"
+   },
+   {
+    "noun": "landmark",
+    "clause": "began to lean during construction in the 12th century because of soft ground"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Eiffel Tower",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a wrought-iron lattice tower built for the World's Fair of 1889"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was the tallest structure in the world until 1930"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Mont Saint-Michel",
+  "answer": "France",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a tidal island crowned by a medieval abbey"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is an island abbey cut off from the mainland by some of the strongest tides in Europe"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Mont-Saint-Michel"
+  ]
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Sagrada Familia",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a basilica that has been under construction since 1882"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a basilica designed with eighteen spires"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Alhambra",
+  "answer": "Spain",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a hilltop palace and fortress with the Court of the Lions"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was the last stronghold of Muslim rulers to fall, in 1492"
+   }
+  ],
+  "skip_cues": [
+   "Court of the Lions",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Statue of Liberty",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a copper statue of a robed woman holding a torch, unveiled in 1886"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a statue that turned green as its copper surface oxidized"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Golden Gate Bridge",
+  "answer": "United States",
+  "answer_aliases": [
+   "the United States",
+   "USA",
+   "the USA",
+   "US",
+   "the US",
+   "America",
+   "U.S."
+  ],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an orange suspension bridge that opened in 1937"
+   },
+   {
+    "noun": "landmark",
+    "clause": "had the longest suspension bridge span in the world when it opened"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Christ the Redeemer",
+  "answer": "Brazil",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an Art Deco statue with outstretched arms on a mountaintop"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a 30-metre statue completed in 1931 that is regularly struck by lightning"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Uluru",
+  "answer": "Australia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a giant red sandstone monolith sacred to its traditional owners"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a monolith that appears to change color at sunrise and sunset"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Sydney Opera House",
+  "answer": "Australia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a performing arts venue with roofs shaped like sails"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a concert venue completed in 1973 after its architect quit the project"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Saint Basil's Cathedral",
+  "answer": "Russia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a church with colorful onion domes"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a 16th-century church whose architects, legend says, were blinded afterwards"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Acropolis",
+  "answer": "Greece",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an ancient citadel whose temple to a goddess of wisdom dates from the 5th century BC"
+   },
+   {
+    "noun": "landmark",
+    "clause": "has a temple whose marble sculptures are largely held in a London museum"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Blue Mosque",
+  "answer": "Turkey",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an Ottoman-era mosque whose interior is covered in blue tiles"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a 17th-century mosque with six minarets"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Hagia Sophia",
+  "answer": "Turkey",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a domed building that has served as a cathedral, a mosque and a museum"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was the world's largest cathedral for nearly a thousand years"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Petra",
+  "answer": "Jordan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is an ancient city carved into rose-red cliffs"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was a filming location for the third Indiana Jones film"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Indiana Jones"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Easter Island",
+  "answer": "Chile",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a remote island famous for giant stone heads called moai"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is an island more than 2,000 kilometres from the nearest inhabited land"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Mount Kilimanjaro",
+  "answer": "Tanzania",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the highest mountain on its continent"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a dormant volcano with three cones whose glaciers are shrinking"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Angel Falls",
+  "answer": "Venezuela",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the world's highest uninterrupted waterfall"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is named after an American aviator who landed on top of it in 1937"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Petronas Towers",
+  "answer": "Malaysia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "were the world's tallest buildings from 1998 to 2004"
+   },
+   {
+    "noun": "landmark",
+    "clause": "are twin skyscrapers joined by a two-storey sky bridge"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Mount Fuji",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the highest peak of its country, a snow-capped volcano"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a volcano that last erupted in 1707"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Fushimi Inari Shrine",
+  "answer": "Japan",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a shrine with paths lined by thousands of vermilion gates"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is the head shrine of a rice god whose messengers are foxes"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Neuschwanstein",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a fairy-tale castle that inspired Disney's Sleeping Beauty castle"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a castle built for a king who died mysteriously before it was finished"
+   }
+  ],
+  "skip_cues": [
+   "Sleeping Beauty",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": true,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Brandenburg Gate",
+  "answer": "Germany",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a neoclassical gate that stood next to the wall dividing a city"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a gate topped by a chariot drawn by four horses"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Ha Long Bay",
+  "answer": "Vietnam",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a bay with thousands of limestone islands and islets"
+   },
+   {
+    "noun": "landmark",
+    "clause": "was a filming location of the 2017 film Kong: Skull Island"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Kong: Skull Island"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Borobudur",
+  "answer": "Indonesia",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is the world's largest Buddhist temple"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a 9th-century temple decorated with 504 Buddha statues"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the CN Tower",
+  "answer": "Canada",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "was the world's tallest free-standing structure for over thirty years"
+   },
+   {
+    "noun": "landmark",
+    "clause": "has a glass floor and an outdoor walk 356 metres up"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Table Mountain",
+  "answer": "South Africa",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a flat-topped mountain often covered by a tablecloth of cloud"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a flat-topped mountain that is among the oldest in the world"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "the Perito Moreno Glacier",
+  "answer": "Argentina",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a glacier famous for its collapsing ice wall"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is one of the few glaciers in the world that is still advancing"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "landmarks",
+  "bridge": "Masada",
+  "answer": "Israel",
+  "answer_aliases": [],
+  "descriptions": [
+   {
+    "noun": "landmark",
+    "clause": "is a desert fortress on a plateau where defenders chose death over capture in 73 AD"
+   },
+   {
+    "noun": "landmark",
+    "clause": "is a cliff-top fortress built by King Herod"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "King Herod"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Jaws",
+  "answer": "Spielberg",
+  "answer_aliases": [
+   "Steven Spielberg"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a shark terrorizing a beach town"
+   },
+   {
+    "noun": "film",
+    "clause": "is often called the first summer blockbuster, released in 1975"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Schindler's List",
+  "answer": "Spielberg",
+  "answer_aliases": [
+   "Steven Spielberg"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a factory owner who saves over a thousand Jews during the Holocaust"
+   },
+   {
+    "noun": "film",
+    "clause": "won the Academy Award for Best Picture in 1994 and was shot mostly in black and white"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Psycho",
+  "answer": "Hitchcock",
+  "answer_aliases": [
+   "Alfred Hitchcock"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has a famous murder in a motel shower"
+   },
+   {
+    "noun": "film",
+    "clause": "is a 1960 thriller about a motel keeper with a dead mother"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Vertigo",
+  "answer": "Hitchcock",
+  "answer_aliases": [
+   "Alfred Hitchcock"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a detective with a fear of heights who becomes obsessed with a woman"
+   },
+   {
+    "noun": "film",
+    "clause": "topped the Sight and Sound critics' poll in 2012"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Titanic",
+  "answer": "Cameron",
+  "answer_aliases": [
+   "James Cameron"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "tells a romance aboard a doomed ocean liner"
+   },
+   {
+    "noun": "film",
+    "clause": "won eleven Academy Awards in 1998"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Avatar",
+  "answer": "Cameron",
+  "answer_aliases": [
+   "James Cameron"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a paraplegic marine on an alien moon called Pandora"
+   },
+   {
+    "noun": "film",
+    "clause": "is the highest-grossing film of all time"
+   }
+  ],
+  "skip_cues": [
+   "Pandora",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Inception",
+  "answer": "Nolan",
+  "answer_aliases": [
+   "Christopher Nolan"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows thieves who plant an idea inside a target's dream"
+   },
+   {
+    "noun": "film",
+    "clause": "ends with a spinning top that may or may not fall"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Interstellar",
+  "answer": "Nolan",
+  "answer_aliases": [
+   "Christopher Nolan"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows astronauts through a wormhole to find a new home for humanity"
+   },
+   {
+    "noun": "film",
+    "clause": "has a planet where an hour equals seven years on Earth"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "2001: A Space Odyssey",
+  "answer": "Kubrick",
+  "answer_aliases": [
+   "Stanley Kubrick"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has a murderous onboard computer called HAL"
+   },
+   {
+    "noun": "film",
+    "clause": "opens with apes discovering a black monolith"
+   }
+  ],
+  "skip_cues": [
+   "HAL",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Shining",
+  "answer": "Kubrick",
+  "answer_aliases": [
+   "Stanley Kubrick"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a writer who goes mad as winter caretaker of an isolated hotel"
+   },
+   {
+    "noun": "film",
+    "clause": "has the line Here's Johnny"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Pulp Fiction",
+  "answer": "Tarantino",
+  "answer_aliases": [
+   "Quentin Tarantino"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has a dance contest, a mysterious briefcase and a hitman reciting scripture"
+   },
+   {
+    "noun": "film",
+    "clause": "won the Palme d'Or in 1994"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Kill Bill",
+  "answer": "Tarantino",
+  "answer_aliases": [
+   "Quentin Tarantino"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a bride in a yellow jumpsuit taking revenge on her former assassin squad"
+   },
+   {
+    "noun": "film",
+    "clause": "was released in two volumes in 2003 and 2004"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Goodfellas",
+  "answer": "Scorsese",
+  "answer_aliases": [
+   "Martin Scorsese"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a gangster who becomes an informant, based on a true story from 1990"
+   },
+   {
+    "noun": "film",
+    "clause": "has a famous long tracking shot through a nightclub kitchen"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Taxi Driver",
+  "answer": "Scorsese",
+  "answer_aliases": [
+   "Martin Scorsese"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has the line You talkin' to me?"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a lonely night-shift cab driver who turns vigilante"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Alien",
+  "answer": "Scott",
+  "answer_aliases": [
+   "Ridley Scott"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a spaceship crew hunted by a creature that bursts from a chest"
+   },
+   {
+    "noun": "film",
+    "clause": "has the tagline In space no one can hear you scream"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Blade Runner",
+  "answer": "Scott",
+  "answer_aliases": [
+   "Ridley Scott"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a detective hunting escaped replicants"
+   },
+   {
+    "noun": "film",
+    "clause": "ends with a speech about tears in rain"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Spirited Away",
+  "answer": "Miyazaki",
+  "answer_aliases": [
+   "Hayao Miyazaki"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a girl trapped in a bathhouse for spirits"
+   },
+   {
+    "noun": "film",
+    "clause": "won the Academy Award for Best Animated Feature in 2003"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "My Neighbor Totoro",
+  "answer": "Miyazaki",
+  "answer_aliases": [
+   "Hayao Miyazaki"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows two sisters who meet a giant forest spirit and ride a cat-shaped bus"
+   },
+   {
+    "noun": "film",
+    "clause": "has a forest spirit that became a studio's logo"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Forrest Gump",
+  "answer": "Zemeckis",
+  "answer_aliases": [
+   "Robert Zemeckis"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has the line Life is like a box of chocolates"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a slow-witted man who keeps turning up at historic events"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Back to the Future",
+  "answer": "Zemeckis",
+  "answer_aliases": [
+   "Robert Zemeckis"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a teenager sent back to 1955 in a time-traveling car"
+   },
+   {
+    "noun": "film",
+    "clause": "has a time machine that needs 1.21 gigawatts"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Social Network",
+  "answer": "Fincher",
+  "answer_aliases": [
+   "David Fincher"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "tells the story of the founding of Facebook"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a Harvard student sued by two twins over a website"
+   }
+  ],
+  "skip_cues": [
+   "Facebook",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Fight Club",
+  "answer": "Fincher",
+  "answer_aliases": [
+   "David Fincher"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows an insomniac who starts an underground fighting club"
+   },
+   {
+    "noun": "film",
+    "clause": "has the rule that you do not talk about the club"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Crouching Tiger, Hidden Dragon",
+  "answer": "Lee",
+  "answer_aliases": [
+   "Ang Lee"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has martial arts fights in the treetops of a bamboo forest"
+   },
+   {
+    "noun": "film",
+    "clause": "follows warriors searching for a stolen sword called Green Destiny"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Green Destiny"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Life of Pi",
+  "answer": "Lee",
+  "answer_aliases": [
+   "Ang Lee"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a boy stranded in a lifeboat with a tiger"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a castaway who shares a boat with a Bengal tiger named Richard Parker"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Richard Parker"
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Star Wars",
+  "answer": "Lucas",
+  "answer_aliases": [
+   "George Lucas"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "is the 1977 space opera about a farm boy who joins a rebellion against an empire"
+   },
+   {
+    "noun": "film",
+    "clause": "introduced the villain Darth Vader"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Darth Vader"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Fellowship of the Ring",
+  "answer": "Jackson",
+  "answer_aliases": [
+   "Peter Jackson"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "is the 2001 fantasy film about a group formed to destroy a powerful ring"
+   },
+   {
+    "noun": "film",
+    "clause": "is the first part of a fantasy trilogy that was filmed back to back"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Amelie",
+  "answer": "Jeunet",
+  "answer_aliases": [
+   "Jean-Pierre Jeunet"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a shy waitress who secretly improves the lives of people around her"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a young woman who returns a lost box of childhood treasures to its owner"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "Amélie"
+  ]
+ },
+ {
+  "relation": "films",
+  "bridge": "Life Is Beautiful",
+  "answer": "Benigni",
+  "answer_aliases": [
+   "Roberto Benigni"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a father who convinces his son that a concentration camp is a game"
+   },
+   {
+    "noun": "film",
+    "clause": "won its star the Academy Award for Best Actor in 1999 and was also directed by him"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Seventh Seal",
+  "answer": "Bergman",
+  "answer_aliases": [
+   "Ingmar Bergman"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "has a knight playing chess with Death"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a knight returning from the Crusades during the Black Death"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Good, the Bad and the Ugly",
+  "answer": "Leone",
+  "answer_aliases": [
+   "Sergio Leone"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows three gunslingers competing for buried Confederate gold"
+   },
+   {
+    "noun": "film",
+    "clause": "ends with a three-way standoff in a cemetery"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Edward Scissorhands",
+  "answer": "Burton",
+  "answer_aliases": [
+   "Tim Burton"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows an artificial man with blades for hands"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a gentle young man who carves hedges and ice with his hands"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Toy Story",
+  "answer": "Lasseter",
+  "answer_aliases": [
+   "John Lasseter"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "was the first entirely computer-animated feature film"
+   },
+   {
+    "noun": "film",
+    "clause": "follows a cowboy doll jealous of a new space ranger toy"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Silence of the Lambs",
+  "answer": "Demme",
+  "answer_aliases": [
+   "Jonathan Demme"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows an FBI trainee who consults an imprisoned cannibal psychiatrist"
+   },
+   {
+    "noun": "film",
+    "clause": "won the five top Academy Awards in 1992"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Citizen Kane",
+  "answer": "Welles",
+  "answer_aliases": [
+   "Orson Welles"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a newspaper tycoon whose last word is Rosebud"
+   },
+   {
+    "noun": "film",
+    "clause": "is often voted the greatest film ever made, released in 1941"
+   }
+  ],
+  "skip_cues": [
+   "Rosebud",
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "8 1/2",
+  "answer": "Fellini",
+  "answer_aliases": [
+   "Federico Fellini"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a film director suffering from creative block"
+   },
+   {
+    "noun": "film",
+    "clause": "is a 1963 film whose title counts its director's previous films"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "less_popular",
+  "name_reveals_answer": false,
+  "bridge_alts": [
+   "8½",
+   "Eight and a Half"
+  ]
+ },
+ {
+  "relation": "films",
+  "bridge": "Unforgiven",
+  "answer": "Eastwood",
+  "answer_aliases": [
+   "Clint Eastwood"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a retired gunslinger who takes one last bounty job"
+   },
+   {
+    "noun": "film",
+    "clause": "is a revisionist western that won Best Picture in 1993"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Million Dollar Baby",
+  "answer": "Eastwood",
+  "answer_aliases": [
+   "Clint Eastwood"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a waitress trained to box by an aging trainer"
+   },
+   {
+    "noun": "film",
+    "clause": "is a boxing drama that won Best Picture in 2005"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Arrival",
+  "answer": "Villeneuve",
+  "answer_aliases": [
+   "Denis Villeneuve"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a linguist decoding the language of aliens who land in twelve pods"
+   },
+   {
+    "noun": "film",
+    "clause": "is a 2016 film about aliens whose written language changes how a linguist perceives time"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "Get Out",
+  "answer": "Peele",
+  "answer_aliases": [
+   "Jordan Peele"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a young man whose visit to his girlfriend's family uncovers a hypnosis plot"
+   },
+   {
+    "noun": "film",
+    "clause": "is a 2017 horror film about a family that transplants brains into captive guests"
+   }
+  ],
+  "skip_cues": [
+   null,
+   null
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ },
+ {
+  "relation": "films",
+  "bridge": "The Grand Budapest Hotel",
+  "answer": "Anderson",
+  "answer_aliases": [
+   "Wes Anderson"
+  ],
+  "descriptions": [
+   {
+    "noun": "film",
+    "clause": "follows a mountain hotel's concierge and his lobby boy"
+   },
+   {
+    "noun": "film",
+    "clause": "is a symmetrical pastel comedy about a stolen Renaissance painting called Boy with Apple"
+   }
+  ],
+  "skip_cues": [
+   null,
+   "Boy with Apple"
+  ],
+  "popularity": "popular",
+  "name_reveals_answer": false,
+  "bridge_alts": []
+ }
+]

@@ -1,0 +1,452 @@
+{
+ "PA/none": {
+  "n": 308,
+  "kept": 100.0,
+  "donor_ctx": 2.9,
+  "ctx_differs": 100.0
+ },
+ "PA/paste_xrel": {
+  "n": 308,
+  "kept": 33.8,
+  "donor_ctx": 0.6,
+  "ctx_differs": 100.0,
+  "other": 22.1,
+  "donor": 41.9,
+  "third": 2.3
+ },
+ "PA/swap": {
+  "n": 308,
+  "kept": 40.9,
+  "donor_ctx": 1.0,
+  "ctx_differs": 100.0,
+  "donor": 51.9,
+  "other": 6.8,
+  "third": 0.3
+ },
+ "PA/swap_srel": {
+  "n": 308,
+  "kept": 39.6,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 52.6,
+  "other": 7.1,
+  "third": 0.6
+ },
+ "PA/swap_xrel": {
+  "n": 308,
+  "kept": 39.9,
+  "donor_ctx": 0.3,
+  "ctx_differs": 100.0,
+  "donor": 51.9,
+  "other": 7.8,
+  "third": 0.3
+ },
+ "PA/swap_xrel_rot": {
+  "n": 308,
+  "kept": 100.0,
+  "donor_ctx": 2.9,
+  "ctx_differs": 100.0
+ },
+ "PA/swap_xrel_u": {
+  "n": 308,
+  "kept": 100.0,
+  "donor_ctx": 2.9,
+  "ctx_differs": 100.0
+ },
+ "PK/none": {
+  "n": 474,
+  "kept": 100.0,
+  "donor_ctx": 3.6,
+  "ctx_differs": 100.0
+ },
+ "PK/paste_xrel": {
+  "n": 474,
+  "donor": 17.3,
+  "donor_ctx": 3.2,
+  "ctx_differs": 100.0,
+  "kept": 67.3,
+  "third": 3.0,
+  "other": 12.4
+ },
+ "PK/swap": {
+  "n": 474,
+  "kept": 94.3,
+  "donor_ctx": 3.2,
+  "ctx_differs": 100.0,
+  "donor": 4.6,
+  "third": 0.4,
+  "other": 0.6
+ },
+ "PK/swap_srel": {
+  "n": 474,
+  "kept": 94.5,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 4.6,
+  "third": 0.4,
+  "other": 0.4
+ },
+ "PK/swap_xrel": {
+  "n": 474,
+  "kept": 93.7,
+  "donor_ctx": 3.0,
+  "ctx_differs": 100.0,
+  "donor": 5.3,
+  "third": 0.4,
+  "other": 0.6
+ },
+ "PK/swap_xrel_rot": {
+  "n": 474,
+  "kept": 99.6,
+  "donor_ctx": 3.6,
+  "ctx_differs": 100.0,
+  "other": 0.2,
+  "donor": 0.2
+ },
+ "PK/swap_xrel_u": {
+  "n": 474,
+  "kept": 100.0,
+  "donor_ctx": 3.6,
+  "ctx_differs": 100.0
+ },
+ "PM/none": {
+  "n": 473,
+  "kept": 100.0,
+  "donor_ctx": 2.5,
+  "ctx_differs": 100.0
+ },
+ "PM/paste_xrel": {
+  "n": 473,
+  "kept": 22.4,
+  "donor_ctx": 2.7,
+  "ctx_differs": 100.0,
+  "donor": 41.0,
+  "other": 33.0,
+  "third": 3.6
+ },
+ "PM/swap": {
+  "n": 473,
+  "kept": 28.5,
+  "donor_ctx": 0.8,
+  "ctx_differs": 100.0,
+  "donor": 56.7,
+  "other": 13.7,
+  "third": 1.1
+ },
+ "PM/swap_srel": {
+  "n": 473,
+  "kept": 27.7,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 57.7,
+  "other": 13.5,
+  "third": 1.1
+ },
+ "PM/swap_xrel": {
+  "n": 473,
+  "kept": 29.0,
+  "donor_ctx": 1.3,
+  "ctx_differs": 100.0,
+  "donor": 57.5,
+  "other": 13.1,
+  "third": 0.4
+ },
+ "PM/swap_xrel_rot": {
+  "n": 473,
+  "kept": 96.0,
+  "donor_ctx": 2.7,
+  "ctx_differs": 100.0,
+  "third": 0.4,
+  "other": 3.6
+ },
+ "PM/swap_xrel_u": {
+  "n": 473,
+  "kept": 99.2,
+  "donor_ctx": 2.5,
+  "ctx_differs": 100.0,
+  "third": 0.2,
+  "other": 0.6
+ },
+ "PN/none": {
+  "n": 299,
+  "kept": 100.0,
+  "donor_ctx": 3.3,
+  "ctx_differs": 100.0
+ },
+ "PN/paste_xrel": {
+  "n": 299,
+  "third": 6.4,
+  "donor_ctx": 1.3,
+  "ctx_differs": 100.0,
+  "donor": 47.8,
+  "other": 23.7,
+  "kept": 22.1
+ },
+ "PN/swap": {
+  "n": 299,
+  "third": 1.0,
+  "donor_ctx": 1.7,
+  "ctx_differs": 100.0,
+  "donor": 58.5,
+  "kept": 29.4,
+  "other": 11.0
+ },
+ "PN/swap_srel": {
+  "n": 299,
+  "third": 1.7,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 60.9,
+  "other": 10.7,
+  "kept": 26.8
+ },
+ "PN/swap_xrel": {
+  "n": 299,
+  "third": 1.0,
+  "donor_ctx": 1.0,
+  "ctx_differs": 100.0,
+  "donor": 61.9,
+  "kept": 25.4,
+  "other": 11.7
+ },
+ "PN/swap_xrel_rot": {
+  "n": 299,
+  "kept": 97.7,
+  "donor_ctx": 3.3,
+  "ctx_differs": 100.0,
+  "other": 1.7,
+  "third": 0.3,
+  "donor": 0.3
+ },
+ "PN/swap_xrel_u": {
+  "n": 299,
+  "kept": 99.7,
+  "donor_ctx": 3.3,
+  "ctx_differs": 100.0,
+  "other": 0.3
+ },
+ "PP/none": {
+  "n": 255,
+  "kept": 100.0,
+  "donor_ctx": 3.9,
+  "ctx_differs": 100.0
+ },
+ "PP/paste_xrel": {
+  "n": 255,
+  "third": 5.5,
+  "donor_ctx": 4.3,
+  "ctx_differs": 100.0,
+  "kept": 72.5,
+  "donor": 8.6,
+  "other": 13.3
+ },
+ "PP/swap": {
+  "n": 255,
+  "kept": 99.2,
+  "donor_ctx": 4.3,
+  "ctx_differs": 100.0,
+  "other": 0.8
+ },
+ "PP/swap_srel": {
+  "n": 255,
+  "kept": 99.2,
+  "donor_ctx": 1.6,
+  "ctx_differs": 98.8,
+  "other": 0.8
+ },
+ "PP/swap_xrel": {
+  "n": 255,
+  "kept": 98.0,
+  "donor_ctx": 3.9,
+  "ctx_differs": 100.0,
+  "donor": 0.8,
+  "other": 1.2
+ },
+ "PP/swap_xrel_rot": {
+  "n": 255,
+  "kept": 98.0,
+  "donor_ctx": 3.9,
+  "ctx_differs": 100.0,
+  "donor": 0.4,
+  "third": 0.4,
+  "other": 1.2
+ },
+ "PP/swap_xrel_u": {
+  "n": 255,
+  "kept": 99.6,
+  "donor_ctx": 3.5,
+  "ctx_differs": 100.0,
+  "other": 0.4
+ },
+ "TK/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor_ctx": 7.5,
+  "ctx_differs": 100.0
+ },
+ "TK/paste_xrel": {
+  "n": 80,
+  "other": 15.0,
+  "donor_ctx": 3.8,
+  "ctx_differs": 100.0,
+  "kept": 52.5,
+  "donor": 22.5,
+  "third": 10.0
+ },
+ "TK/swap": {
+  "n": 80,
+  "kept": 88.8,
+  "donor_ctx": 6.2,
+  "ctx_differs": 100.0,
+  "donor": 6.2,
+  "third": 2.5,
+  "other": 2.5
+ },
+ "TK/swap_srel": {
+  "n": 80,
+  "kept": 87.5,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 7.5,
+  "third": 1.2,
+  "other": 3.8
+ },
+ "TK/swap_xrel": {
+  "n": 80,
+  "kept": 85.0,
+  "donor_ctx": 6.2,
+  "ctx_differs": 100.0,
+  "donor": 8.8,
+  "third": 2.5,
+  "other": 3.8
+ },
+ "TK/swap_xrel_rot": {
+  "n": 80,
+  "kept": 97.5,
+  "donor_ctx": 6.2,
+  "ctx_differs": 100.0,
+  "third": 1.2,
+  "other": 1.2
+ },
+ "TK/swap_xrel_u": {
+  "n": 80,
+  "kept": 100.0,
+  "donor_ctx": 7.5,
+  "ctx_differs": 100.0
+ },
+ "TM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor_ctx": 2.5,
+  "ctx_differs": 100.0
+ },
+ "TM/paste_xrel": {
+  "n": 80,
+  "other": 43.8,
+  "donor_ctx": 0.0,
+  "ctx_differs": 100.0,
+  "donor": 37.5,
+  "kept": 13.8,
+  "third": 5.0
+ },
+ "TM/swap": {
+  "n": 80,
+  "other": 22.5,
+  "donor_ctx": 0.0,
+  "ctx_differs": 100.0,
+  "donor": 53.8,
+  "kept": 21.2,
+  "third": 2.5
+ },
+ "TM/swap_srel": {
+  "n": 80,
+  "other": 25.0,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 55.0,
+  "kept": 18.8,
+  "third": 1.2
+ },
+ "TM/swap_xrel": {
+  "n": 80,
+  "other": 23.8,
+  "donor_ctx": 0.0,
+  "ctx_differs": 100.0,
+  "donor": 57.5,
+  "kept": 18.8
+ },
+ "TM/swap_xrel_rot": {
+  "n": 80,
+  "kept": 90.0,
+  "donor_ctx": 2.5,
+  "ctx_differs": 100.0,
+  "other": 8.8,
+  "donor": 1.2
+ },
+ "TM/swap_xrel_u": {
+  "n": 80,
+  "kept": 98.8,
+  "donor_ctx": 2.5,
+  "ctx_differs": 100.0,
+  "other": 1.2
+ },
+ "memory/none": {
+  "n": 1160,
+  "kept": 100.0,
+  "donor_ctx": 2.8,
+  "ctx_differs": 100.0
+ },
+ "memory/paste_xrel": {
+  "n": 1160,
+  "kept": 24.7,
+  "donor_ctx": 1.6,
+  "ctx_differs": 100.0,
+  "donor": 42.8,
+  "other": 28.4,
+  "third": 4.1
+ },
+ "memory/swap": {
+  "n": 1160,
+  "kept": 31.6,
+  "donor_ctx": 1.0,
+  "ctx_differs": 100.0,
+  "donor": 55.7,
+  "other": 11.8,
+  "third": 0.9
+ },
+ "memory/swap_srel": {
+  "n": 1160,
+  "kept": 30.0,
+  "donor_ctx": 0.0,
+  "ctx_differs": 0.0,
+  "donor": 57.0,
+  "other": 11.9,
+  "third": 1.1
+ },
+ "memory/swap_xrel": {
+  "n": 1160,
+  "kept": 30.3,
+  "donor_ctx": 0.9,
+  "ctx_differs": 100.0,
+  "donor": 57.2,
+  "other": 12.1,
+  "third": 0.5
+ },
+ "memory/swap_xrel_rot": {
+  "n": 1160,
+  "kept": 97.1,
+  "donor_ctx": 2.9,
+  "ctx_differs": 100.0,
+  "other": 2.5,
+  "third": 0.3,
+  "donor": 0.2
+ },
+ "memory/swap_xrel_u": {
+  "n": 1160,
+  "kept": 99.5,
+  "donor_ctx": 2.8,
+  "ctx_differs": 100.0,
+  "other": 0.4,
+  "third": 0.1
+ }
+}

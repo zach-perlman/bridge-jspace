@@ -1,0 +1,312 @@
+{
+ "runs": [
+  "nn_n21_last_L16-23_s0_v1",
+  "nn_n21_last_L16-23_s1_v1",
+  "nn_n21_last_L24-31_s0_v1",
+  "nn_n21_last_L24-31_s1_v1",
+  "nn_n21_last_L32-40_s0_v1",
+  "nn_n21_last_L32-40_s1_v1",
+  "nn_n21l_last_MP_L16-23_s0_v1",
+  "nn_n21l_last_MP_L16-23_s1_v1",
+  "nn_n21l_last_MP_L24-31_s0_v1",
+  "nn_n21l_last_MP_L24-31_s1_v1",
+  "nn_n21l_last_MP_L32-40_s0_v1",
+  "nn_n21l_last_MP_L32-40_s1_v1"
+ ],
+ "pairs": "cf_ok",
+ "cells": {
+  "last/MP/L16-23": {
+   "n": 1899,
+   "donor": {
+    "full_cf": 29.0,
+    "jpp_cf": 17.4,
+    "jpprand_cf": 10.1,
+    "lens_cf": 1.1,
+    "lensnp_cf": 1.8,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.7,
+    "nojpp_cf": 24.8,
+    "nojpprand_cf": 28.9,
+    "none": 0.1,
+    "rem_cf": 26.5,
+    "remnp_cf": 27.4,
+    "remshrnp_cf": 29.1
+   },
+   "kept": {
+    "full_cf": 67.1,
+    "jpp_cf": 78.9,
+    "jpprand_cf": 87.6,
+    "lens_cf": 98.6,
+    "lensnp_cf": 97.4,
+    "lensrand_cf": 99.6,
+    "lensshrnp_cf": 98.7,
+    "nojpp_cf": 71.3,
+    "nojpprand_cf": 67.1,
+    "none": 99.8,
+    "rem_cf": 70.3,
+    "remnp_cf": 69.0,
+    "remshrnp_cf": 67.0
+   },
+   "third": {
+    "full_cf": 2.1,
+    "jpp_cf": 1.7,
+    "jpprand_cf": 1.1,
+    "lens_cf": 0.3,
+    "lensnp_cf": 0.2,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.2,
+    "nojpp_cf": 2.2,
+    "nojpprand_cf": 2.2,
+    "none": 0.1,
+    "rem_cf": 3.2,
+    "remnp_cf": 1.9,
+    "remshrnp_cf": 2.1
+   },
+   "full_minus_rand_ci": [
+    23.8,
+    31.6
+   ],
+   "bridge_lives_here": true,
+   "note21np": {
+    "need_beyond_same_share": [
+     0.06,
+     [
+      0.034,
+      0.088
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.04,
+     [
+      0.018,
+      0.065
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 29.0,
+    "jpp_minus_rand": 7.3,
+    "removal_minus_rand": 4.1,
+    "jpp_alone_ci": [
+     7.267,
+     [
+      5.407,
+      9.086
+     ]
+    ],
+    "removal_ci": [
+     4.055,
+     [
+      3.01,
+      5.18
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.131,
+    "verdict": "outside it"
+   }
+  },
+  "last/MP/L24-31": {
+   "n": 1899,
+   "donor": {
+    "full_cf": 30.4,
+    "jpp_cf": 24.0,
+    "jpprand_cf": 10.8,
+    "lens_cf": 2.9,
+    "lensnp_cf": 3.9,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.6,
+    "nojpp_cf": 19.5,
+    "nojpprand_cf": 30.4,
+    "none": 0.1,
+    "rem_cf": 23.1,
+    "remnp_cf": 24.6,
+    "remshrnp_cf": 30.6
+   },
+   "kept": {
+    "full_cf": 66.0,
+    "jpp_cf": 71.6,
+    "jpprand_cf": 86.9,
+    "lens_cf": 96.5,
+    "lensnp_cf": 94.6,
+    "lensrand_cf": 99.6,
+    "lensshrnp_cf": 98.8,
+    "nojpp_cf": 78.0,
+    "nojpprand_cf": 65.9,
+    "none": 99.8,
+    "rem_cf": 74.2,
+    "remnp_cf": 72.5,
+    "remshrnp_cf": 65.9
+   },
+   "third": {
+    "full_cf": 1.9,
+    "jpp_cf": 2.0,
+    "jpprand_cf": 0.7,
+    "lens_cf": 0.6,
+    "lensnp_cf": 0.4,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.1,
+    "nojpp_cf": 1.0,
+    "nojpprand_cf": 1.9,
+    "none": 0.1,
+    "rem_cf": 2.7,
+    "remnp_cf": 1.3,
+    "remshrnp_cf": 1.8
+   },
+   "full_minus_rand_ci": [
+    25.3,
+    32.2
+   ],
+   "bridge_lives_here": true,
+   "note21np": {
+    "need_beyond_same_share": [
+     0.196,
+     [
+      0.159,
+      0.234
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.107,
+     [
+      0.073,
+      0.15
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 30.4,
+    "jpp_minus_rand": 13.2,
+    "removal_minus_rand": 10.8,
+    "jpp_alone_ci": [
+     13.165,
+     [
+      11.129,
+      15.331
+     ]
+    ],
+    "removal_ci": [
+     10.848,
+     [
+      9.063,
+      12.691
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.147,
+    "verdict": "mixed"
+   }
+  },
+  "last/MP/L32-40": {
+   "n": 1899,
+   "donor": {
+    "full_cf": 25.1,
+    "jpp_cf": 14.5,
+    "jpprand_cf": 8.6,
+    "lens_cf": 1.5,
+    "lensnp_cf": 1.7,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.7,
+    "nojpp_cf": 17.0,
+    "nojpprand_cf": 24.4,
+    "none": 0.1,
+    "rem_cf": 17.2,
+    "remnp_cf": 21.0,
+    "remshrnp_cf": 24.6
+   },
+   "kept": {
+    "full_cf": 72.9,
+    "jpp_cf": 83.0,
+    "jpprand_cf": 89.2,
+    "lens_cf": 97.7,
+    "lensnp_cf": 97.1,
+    "lensrand_cf": 99.6,
+    "lensshrnp_cf": 98.5,
+    "nojpp_cf": 81.4,
+    "nojpprand_cf": 73.5,
+    "none": 99.8,
+    "rem_cf": 81.2,
+    "remnp_cf": 76.7,
+    "remshrnp_cf": 73.3
+   },
+   "third": {
+    "full_cf": 0.8,
+    "jpp_cf": 1.3,
+    "jpprand_cf": 0.9,
+    "lens_cf": 0.7,
+    "lensnp_cf": 0.5,
+    "lensrand_cf": 0.2,
+    "lensshrnp_cf": 0.1,
+    "nojpp_cf": 0.6,
+    "nojpprand_cf": 0.8,
+    "none": 0.1,
+    "rem_cf": 1.6,
+    "remnp_cf": 0.8,
+    "remshrnp_cf": 0.8
+   },
+   "full_minus_rand_ci": [
+    18.4,
+    24.9
+   ],
+   "bridge_lives_here": true,
+   "note21np": {
+    "need_beyond_same_share": [
+     0.145,
+     [
+      0.109,
+      0.182
+     ]
+    ],
+    "alone_beyond_same_share": [
+     0.04,
+     [
+      0.015,
+      0.067
+     ]
+    ],
+    "verdict": "not needed"
+   },
+   "note16": {
+    "full": 25.1,
+    "jpp_minus_rand": 5.9,
+    "removal_minus_rand": 7.4,
+    "jpp_alone_ci": [
+     5.898,
+     [
+      4.406,
+      7.581
+     ]
+    ],
+    "removal_ci": [
+     7.425,
+     [
+      5.996,
+      8.915
+     ]
+    ],
+    "positive_check_pass": false,
+    "jshare_mean": 0.152,
+    "verdict": "outside it"
+   }
+  }
+ },
+ "hits": [
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L16-23"
+  },
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L24-31"
+  },
+  {
+   "site": "last",
+   "word": "MP",
+   "band": "L32-40"
+  }
+ ]
+}

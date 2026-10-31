@@ -1,0 +1,315 @@
+{
+  "run": "results/paper_ko_decomp/nem35l_n45_v1",
+  "target": "nemotron-3.5-lightning",
+  "byte_check_all_equal": true,
+  "sets": {
+    "MH": {
+      "n_analysis": 51,
+      "n_eligible": 54,
+      "losses_main": {
+        "paper10": 54.90196078431372,
+        "paper10_rot": 21.568627450980394,
+        "paper10_pcasize": 33.333333333333336,
+        "unembed10": 27.45098039215686
+      },
+      "A0": {
+        "paper10_minus_max_controls": [
+          21.568627450980387,
+          4.545454545454547,
+          52.791666666666586
+        ],
+        "met": true,
+        "reading": "the knock-out bites"
+      },
+      "validity": {
+        "n": 40,
+        "K_keepR": [
+          0.9523809523809524,
+          0.8333333333333335,
+          1.111111111111111
+        ],
+        "K_keep_ctl": [
+          0.7142857142857143,
+          0.30769230769230776,
+          1.1538461538461537
+        ],
+        "valid": true,
+        "reading": "spans specific"
+      },
+      "main": {
+        "n": 40,
+        "K_T": [
+          0.07142857142857142,
+          -0.3333333333333333,
+          0.5454545454545456
+        ],
+        "K_B": [
+          -0.2857142857142857,
+          -1.3,
+          0.375
+        ],
+        "reading": "both carry it"
+      },
+      "early": {
+        "K_T": [
+          0.27586206896551724,
+          0.0,
+          0.45283018867924535
+        ],
+        "K_B": [
+          0.1724137931034483,
+          0.0,
+          0.3335937499999987
+        ],
+        "paper10_net_loss": [
+          72.5,
+          62.5,
+          86.36363636363636
+        ],
+        "reading": "the intermediate is not shown needed early"
+      },
+      "rm_B_minus_rm_ctl": [
+        31.372549019607845,
+        20.0,
+        56.666666666666664
+      ],
+      "all_items_beside": {
+        "K_T": [
+          0.05882352941176472,
+          -0.4,
+          0.43750000000000006
+        ],
+        "K_B": [
+          -0.3529411764705883,
+          -1.2727272727272725,
+          0.2
+        ]
+      },
+      "single_token_target": {
+        "n": 48,
+        "K_T": 0.05882352941176466,
+        "K_B": -0.35294117647058826
+      },
+      "multi_token_target": {
+        "n": 3,
+        "K_T": NaN,
+        "K_B": NaN
+      },
+      "protected_counts": {
+        "T": 30,
+        "B": 11,
+        "ctl": 1,
+        "R1": 0,
+        "R2": 0,
+        "R3": 0
+      }
+    },
+    "ML": {
+      "n_analysis": 66,
+      "n_eligible": 72,
+      "losses_main": {
+        "paper10": 25.757575757575758,
+        "paper10_rot": 10.606060606060606,
+        "paper10_pcasize": 13.636363636363637,
+        "unembed10": 13.636363636363637
+      },
+      "A0": {
+        "paper10_minus_max_controls": [
+          12.121212121212121,
+          0.9893849961919278,
+          23.335106382978715
+        ],
+        "met": false,
+        "reading": "the knock-out does not bite on this set"
+      },
+      "validity": {
+        "n": 29,
+        "K_keepR": [
+          1.2500000000000002,
+          0.5555555555555555,
+          3.3333333333333335
+        ],
+        "K_keep_ctl": [
+          1.0,
+          -0.2499999999999999,
+          3.9999999999999996
+        ],
+        "valid": true,
+        "reading": "spans specific"
+      },
+      "pivot": {
+        "n": 29,
+        "K_E": [
+          0.24999999999999994,
+          -1.0,
+          0.6666666666666671
+        ],
+        "K_T": [
+          -0.25000000000000017,
+          -3.0,
+          0.6666666666666667
+        ],
+        "reading": "shared concept [void: A0 not met]"
+      },
+      "K_R": {
+        "n": 66,
+        "K": [
+          0.30000000000000004,
+          -0.6000000000000001,
+          0.75
+        ],
+        "reading": "the relation carries it [void: A0 not met]"
+      },
+      "K_L": {
+        "n": 63,
+        "K": [
+          0.49999999999999983,
+          -0.1683333333333333,
+          1.0
+        ],
+        "reading": "partly [void: A0 not met]"
+      },
+      "K_I": {
+        "n": 64,
+        "K": [
+          0.2222222222222222,
+          -0.9999999999999999,
+          0.7272727272727274
+        ]
+      },
+      "necessity_E": {
+        "n": 59,
+        "rm_minus_rm_ctl": [
+          1.694915254237288,
+          0.0,
+          8.333333333333334
+        ],
+        "rm_rot": 3.389830508474576,
+        "reading": "the English pivot not shown necessary [void: A0 not met]"
+      },
+      "necessity_R": {
+        "n": 66,
+        "rm_minus_rm_ctl": [
+          -1.5151515151515156,
+          -3.5294117647058822,
+          0.0
+        ],
+        "rm_rot": 3.0303030303030303,
+        "reading": "the relation not shown necessary [void: A0 not met]"
+      },
+      "necessity_L": {
+        "n": 66,
+        "rm_minus_rm_ctl": [
+          0.0,
+          -7.317073170731707,
+          4.687959558823527
+        ],
+        "rm_rot": 3.0303030303030303,
+        "reading": "the language not shown necessary [void: A0 not met]"
+      },
+      "all_items_beside": {
+        "K_E": [
+          0.20000000000000004,
+          -0.7499999999999999,
+          0.46153846153846134
+        ],
+        "K_T": [
+          0.4000000000000001,
+          -0.9999999999999997,
+          1.083333333333333
+        ]
+      },
+      "single_token_target": {
+        "n": 14,
+        "K_T": NaN,
+        "K_E": NaN
+      },
+      "multi_token_target": {
+        "n": 52,
+        "K_T": 0.3999999999999999,
+        "K_E": 0.3
+      },
+      "protected_counts": {
+        "T": 66,
+        "L": 3,
+        "R": 0,
+        "I": 2,
+        "E": 37,
+        "ctl": 2,
+        "R1": 0,
+        "R2": 0,
+        "R3": 0
+      }
+    },
+    "OO": {
+      "n_analysis": 27,
+      "n_eligible": 28,
+      "losses_main": {
+        "paper10": 14.814814814814815,
+        "paper10_rot": 7.407407407407407,
+        "paper10_pcasize": 7.407407407407407,
+        "unembed10": 3.7037037037037037
+      },
+      "A0": {
+        "paper10_minus_max_controls": [
+          7.407407407407407,
+          -10.526315789473683,
+          17.857142857142858
+        ],
+        "met": false,
+        "reading": "the knock-out does not bite on this set"
+      },
+      "validity": {
+        "n": 27,
+        "K_keepR": [
+          1.0,
+          0.4444444444444444,
+          2.3333333333333335
+        ],
+        "K_keep_ctl": [
+          1.5,
+          1.0,
+          2.9999999999999987
+        ],
+        "valid": true,
+        "reading": "spans specific"
+      },
+      "descriptive": {
+        "T": [
+          1.5,
+          1.0,
+          2.9999999999999987
+        ],
+        "P": [
+          0.49999999999999994,
+          -1.0,
+          1.0
+        ],
+        "O": [
+          1.5,
+          0.0,
+          4.000000000000001
+        ]
+      },
+      "single_token_target": {
+        "n": 7,
+        "K_T": 1.0,
+        "K_P": 0.0
+      },
+      "multi_token_target": {
+        "n": 20,
+        "K_T": 2.0,
+        "K_P": 1.0
+      },
+      "protected_counts": {
+        "T": 1,
+        "P": 0,
+        "O": 0,
+        "ctl": 0,
+        "R1": 0,
+        "R2": 0,
+        "R3": 0
+      }
+    }
+  }
+}

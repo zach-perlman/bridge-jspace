@@ -1,0 +1,39 @@
+{
+ "repair": {
+  "n": 51,
+  "fix_rate": {
+   "insert_k10": 2.0,
+   "none": 0.0,
+   "repair_full": 72.5,
+   "repair_k10": 39.2,
+   "repair_k10_noans": 3.9,
+   "repair_k10_rand": 2.0,
+   "repair_k10_rot": 0.0
+  },
+  "vs": {
+   "repair_k10_rand": {
+    "diff": 37.3,
+    "ci": [
+     21.6,
+     55.3
+    ]
+   },
+   "repair_k10_rot": {
+    "diff": 39.2,
+    "ci": [
+     25.0,
+     56.2
+    ]
+   },
+   "insert_k10": {
+    "diff": 37.3,
+    "ci": [
+     23.5,
+     54.2
+    ]
+   }
+  },
+  "repairs": true,
+  "through_bridge_not_answer": false
+ }
+}

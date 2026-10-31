@@ -1,0 +1,102 @@
+{
+  "seconds": 102,
+  "band_seconds": {
+    "L12-16": 75
+  },
+  "cells": {
+    "hyp_vis": {
+      "-/none": {
+        "n": 404,
+        "orig": 0.0866,
+        "peer": 0.9084,
+        "ctrl": 0.0025,
+        "other": 0.0025,
+        "pick2_peer": 0.9208,
+        "cand_peer": 0.9109
+      },
+      "L12-16/bridgeJ_ctrl": {
+        "n": 404,
+        "orig": 0.1213,
+        "peer": 0.8267,
+        "ctrl": 0.0025,
+        "other": 0.0495,
+        "pick2_peer": 0.8787,
+        "cand_peer": 0.8738
+      },
+      "L12-16/bridgeJ_peer": {
+        "n": 404,
+        "orig": 0.5,
+        "peer": 0.2847,
+        "ctrl": 0.0,
+        "other": 0.2153,
+        "pick2_peer": 0.4257,
+        "cand_peer": 0.4109
+      },
+      "L12-16/bridgeJ_peerperp": {
+        "n": 404,
+        "orig": 0.0743,
+        "peer": 0.9109,
+        "ctrl": 0.0025,
+        "other": 0.0124,
+        "pick2_peer": 0.9233,
+        "cand_peer": 0.9183
+      },
+      "L12-16/bridgeJ_peerperp_rot": {
+        "n": 404,
+        "orig": 0.1188,
+        "peer": 0.8441,
+        "ctrl": 0.0,
+        "other": 0.0371,
+        "pick2_peer": 0.8911,
+        "cand_peer": 0.8812
+      }
+    },
+    "prem_hid": {
+      "-/none": {
+        "n": 404,
+        "orig": 0.651,
+        "peer": 0.2847,
+        "ctrl": 0.0,
+        "other": 0.0644,
+        "pick2_peer": 0.3168,
+        "cand_peer": 0.2995
+      },
+      "L12-16/bridgeJ_ctrl": {
+        "n": 404,
+        "orig": 0.6708,
+        "peer": 0.2624,
+        "ctrl": 0.0,
+        "other": 0.0668,
+        "pick2_peer": 0.2772,
+        "cand_peer": 0.2723
+      },
+      "L12-16/bridgeJ_peer": {
+        "n": 404,
+        "orig": 0.8317,
+        "peer": 0.0817,
+        "ctrl": 0.0,
+        "other": 0.0866,
+        "pick2_peer": 0.1064,
+        "cand_peer": 0.0891
+      },
+      "L12-16/bridgeJ_peerperp": {
+        "n": 404,
+        "orig": 0.6609,
+        "peer": 0.2822,
+        "ctrl": 0.0,
+        "other": 0.0569,
+        "pick2_peer": 0.3094,
+        "cand_peer": 0.2995
+      },
+      "L12-16/bridgeJ_peerperp_rot": {
+        "n": 404,
+        "orig": 0.6584,
+        "peer": 0.2748,
+        "ctrl": 0.0,
+        "other": 0.0668,
+        "pick2_peer": 0.302,
+        "cand_peer": 0.297
+      }
+    }
+  }
+}

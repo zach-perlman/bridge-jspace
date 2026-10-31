@@ -1,0 +1,87 @@
+{
+  "seconds": 73,
+  "target": "qwen3.5-9b",
+  "n_items": 692,
+  "by": {
+    "all/landmark-cntry-capital": {
+      "n": 44,
+      "guess_right": 2,
+      "shortcut": 26,
+      "name_drop": 0,
+      "gated": 42,
+      "no_shortcut": 18,
+      "name_drop_canonical": 0,
+      "gated_canonical": 42
+    },
+    "all/person-birthcity-cntry": {
+      "n": 597,
+      "guess_right": 91,
+      "shortcut": 574,
+      "name_drop": 319,
+      "gated": 263,
+      "no_shortcut": 20,
+      "name_drop_canonical": 6,
+      "gated_canonical": 500
+    },
+    "all/person-uguniv-hqcity": {
+      "n": 51,
+      "guess_right": 1,
+      "shortcut": 30,
+      "name_drop": 33,
+      "gated": 17,
+      "no_shortcut": 6,
+      "name_drop_canonical": 25,
+      "gated_canonical": 25
+    },
+    "all/ALL": {
+      "n": 692,
+      "guess_right": 94,
+      "shortcut": 630,
+      "name_drop": 352,
+      "gated": 322,
+      "no_shortcut": 44,
+      "name_drop_canonical": 31,
+      "gated_canonical": 567
+    },
+    "test_round0_right/landmark-cntry-capital": {
+      "n": 29,
+      "guess_right": 2,
+      "shortcut": 17,
+      "name_drop": 0,
+      "gated": 27,
+      "no_shortcut": 12,
+      "name_drop_canonical": 0,
+      "gated_canonical": 27
+    },
+    "test_round0_right/person-birthcity-cntry": {
+      "n": 350,
+      "guess_right": 87,
+      "shortcut": 335,
+      "name_drop": 170,
+      "gated": 166,
+      "no_shortcut": 14,
+      "name_drop_canonical": 4,
+      "gated_canonical": 259
+    },
+    "test_round0_right/person-uguniv-hqcity": {
+      "n": 28,
+      "guess_right": 0,
+      "shortcut": 22,
+      "name_drop": 20,
+      "gated": 8,
+      "no_shortcut": 1,
+      "name_drop_canonical": 15,
+      "gated_canonical": 13
+    },
+    "test_round0_right/ALL": {
+      "n": 407,
+      "guess_right": 89,
+      "shortcut": 374,
+      "name_drop": 190,
+      "gated": 201,
+      "no_shortcut": 27,
+      "name_drop_canonical": 19,
+      "gated_canonical": 299
+    }
+  }
+}

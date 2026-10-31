@@ -1,0 +1,113 @@
+{
+  "exp": "paper_swap_decomp",
+  "run": "nem35l_n39b_v1",
+  "kind": "rerun_6b",
+  "why": "Zach (2026-10-30, prereg amendment 65 second addendum note 39, nemotron-3.5-lightning): arm 6b rerun",
+  "note": "prereg amendment 65 second addendum, note 39",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lenses": {
+    "jpp": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ]
+  },
+  "prev_run": "nem35l_n39_v1",
+  "overlap_run": "nem35l_n39b_overlap",
+  "overlap_sha256": "9f7f295a3d22d4ea32e8ba6c5420bcda8746d9f7d4b9c96493502913b05fe0be",
+  "vocabulary_sha256": "a93fc6342cf6fa1d59a5af9370e324bf40cc6cce5b030fe95312935f24b2abf0",
+  "windows": [
+    "20-33",
+    "8-20"
+  ],
+  "main_band": "20-33",
+  "median_onset_windows": {
+    "jpp": "8-20"
+  },
+  "arms": [
+    "bridge",
+    "bridge_noA",
+    "bridge_off6b",
+    "bridge_randA"
+  ],
+  "null_arms": [
+    "bridge"
+  ],
+  "prompt_end": "stripped",
+  "items": [
+    "amazon-language",
+    "animal-legs-buffalo2",
+    "atomic-80-state",
+    "bird-color-swan",
+    "birthstone-emerald-month",
+    "chem-atmosphere-Z",
+    "chem-organic-Z",
+    "chem-photosynthesis-Z",
+    "christmas-season",
+    "city-state-Philadelphia",
+    "colosseum-currency",
+    "element-color-gold2",
+    "etym-frigg-position",
+    "etym-saturn-position",
+    "etym-wargod-month",
+    "ex-city-capital-Barcelona-Toronto",
+    "ex-city-capital-Lyon-Naples",
+    "ex-city-capital-Naples-Barcelona",
+    "ex-city-continent-Toronto-Lyon",
+    "ex-city-currency-Toronto-Beijing",
+    "ex-city-language-Lyon-Naples",
+    "ex-element-state-26-8",
+    "ex-element-state-26-80",
+    "ex-element-state-8-26",
+    "ex-element-state-8-80",
+    "ex-element-state-80-8",
+    "ex-planet-color-third-fourth",
+    "ex2-city-capital-Munich",
+    "ex2-city-capital-Osaka",
+    "ex2-city-continent-Lima",
+    "ex2-city-language-Cairo",
+    "ex2-city-language-Moscow",
+    "ex2-language-capital-Greek",
+    "ex2-language-capital-Hungarian",
+    "ex2-language-capital-Polish",
+    "ex2-language-capital-Swedish",
+    "ex2-river-capital-Thames",
+    "func-filters-count",
+    "func-pumps-chambers",
+    "gem-color-ruby",
+    "holiday-month-christmas2",
+    "organ-count-kidney2",
+    "paper-continent",
+    "person-country-napoleon",
+    "person-country-shakespeare",
+    "person-firstname-darwin",
+    "person-firstname-einstein",
+    "person-firstname-mozart",
+    "person-firstname-newton",
+    "person-firstname-shakespeare",
+    "planet-3-moons",
+    "spider-legs",
+    "super-populous-capital",
+    "super-smallest-continent",
+    "violin-strings"
+  ],
+  "arm6b": "overlap.json's per-item category and tokens (selected on the J++ lens; used for every lens)",
+  "command": "scripts/paper_swap_6b.py rerun --name nem35l_n39b_v1 --why Zach (2026-10-30, prereg amendment 65 second addendum note 39, nemotron-3.5-lightning): arm 6b rerun --prev nem35l_n39_v1 --overlap nem35l_n39b_overlap",
+  "git_state": {
+    "head": "a916929bf07fef1d060a3bc62c480798b5556c2f",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "written_utc": "2026-10-30T08:12:47Z"
+}
