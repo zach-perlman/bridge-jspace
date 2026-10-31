@@ -71,8 +71,9 @@ def f_sentence_order() -> None:
 
 
 def f_depth() -> None:
-    """Claim 12: per model the layer where the locker probe reads the address, where position answers start, and the last layer the lookup needs the J++
-    part, as a share of the model's depth (the layer number beside each dot); the 27B's full grid."""
+    """Claim 12 (deck): per model two markers on one axis, the layer as a share of the model's depth: where the locker probe first reads the address (>= 0.80)
+    and where the position answers begin (>= 0.20), the layer printed beside each; no line between them. The 27B row (its full grid) carries the note on the
+    lookup's last layer needing the lens part. The lookup's own reading is text in the README, not drawn here."""
     depth = {"qwen3.5-9b": 32, "qwen3.6-27b": 64, "muse-glimmer-30b": 52, "nemotron-3.5-lightning": 52, "qwen3.5-122b-a10b": 48}
     models = [(m, n) for m, n in DAN if D.s(m, "47.8: l_probe", "fig06")]
     rows = [Row(NAME[m] + (" (full grid)" if m == "qwen3.6-27b" else "")) for m, _ in models]
@@ -80,20 +81,19 @@ def f_depth() -> None:
     def depth_col(ax, _rows):
         for i, (m, _) in enumerate(models):
             hol = D.hollow(m, True)
-            lp, ls, lj = (D.s(m, f"47.8: {k}", "fig06")[0] for k in ("l_probe", "l_P", "l_J"))
-            n = depth[m]
-            xs = [lp / n, ls / n, lj / n]
-            connector(ax, min(xs), max(xs), i)
-            left_most = min(xs)
-            for x, v, col, dy in ((lp / n, lp, C["control"], 0.0), (ls / n, ls, C["address"], -0.17), (lj / n, lj, C["lookup"], 0.17)):
-                dot(ax, x, i + dy, col, hol, value=v, vfmt="L{:.0f}", size=9, vside="left" if x == left_most and col != C["control"] or (x == left_most and xs.count(x) == 1) else "right")
-        head_label(ax, 0.0, "address readable", C["control"], ha="left")
-        head_label(ax, 0.38, "position answers start", C["address"], ha="left")
-        head_label(ax, 0.72, "lookup's last J++ layer", C["lookup"], ha="left")
+            lp, ls = (D.s(m, f"47.8: {k}", "fig06")[0] for k in ("l_probe", "l_P"))
+            for v, col in ((lp, C["control"]), (ls, C["address"])):
+                dot(ax, v / depth[m], i, col, hol, size=11, value=v, vfmt="L{:.0f}")
+            if m == "qwen3.6-27b":
+                lj = D.s(m, "47.8: l_J", "fig06")[0]
+                ax.text(0.60, i, f"full grid: the lookup still needs the lens part\nuntil L{lj:.0f}, after position answers begin (L{ls:.0f})", ha="left", va="center", fontsize=11.5,
+                        color=C["lookup"], linespacing=1.2)
 
-    t = Table(rows, [Col(8.2, "when, by depth", "the layer as a share of the model's depth", depth_col, (-0.04, 1.1), [0, 0.5, 1], xlabel="share of the depth", cue="→ deeper")],
-              label_w=2.1)
-    _render(t, "f13_depth_anatomy")
+    with _slide(0.6):
+        t = Table(rows, [Col(9.6, "", "", depth_col, (-0.03, 1.02), [0, 0.25, 0.5, 0.75, 1], xlabel="layer, as a share of the model's depth", cue="→ deeper")],
+                  label_w=1.9, labels=False, head=0.3,
+                  key=[("●", C["control"], "address readable (probe ≥ 0.80)"), ("●", C["address"], "position answers begin (≥ 0.20)")])
+        _render(t, "f13_depth_anatomy")
 
 
 def f_two_codes() -> None:

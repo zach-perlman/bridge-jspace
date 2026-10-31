@@ -3547,63 +3547,85 @@ def anatomy_models() -> list[tuple[dict, str]]:
 
 
 def f06_depth(plt) -> None:
-    """E12 (31 Oct): when, by depth. Per model one panel, x = the layer: the lookup's and the recall's switches blocked without the J++ part beyond a
-    random part (circle, diamond; 95% intervals), the position answers under the whole change when another item moves (orange squares), the locker
-    probe's accuracy (grey line); three marks: l_probe (the address is readable), l_P (position answers start), l_J (the last layer the lookup
-    needs the J++ part). All from 47.8's verdicts, the files the claims table's l_J / l_P / l_probe come from (the 27B: its full grid, where the
-    handoff rule (a) fails: l_J 40 after l_P 28). Lightning and the 122B hollow (coverage / gate chosen after)."""
+    """E12 (v2, 31 Oct): when, by depth, one row of five panels. x = the layer as a share of the model's depth (the layer numbers as the second line of the
+    ticks). Three series, each its own line with 95% whiskers: the locker probe's accuracy (grey), the position answers under the whole change when another
+    item moves (orange), the lookup's switches blocked without the J++ part beyond a random part (purple). The layers where the whole change switches < 0.30
+    (outside the gate, S.NI_SWITCH) are drawn faded, no marks. Two events as small ticks on the top axis: the probe's first layer at >= 0.80 (l_probe) and
+    the first layer where the position answers reach 0.20 (l_P). The J++ part's own reading is not a layer: per panel the number of gated layers where the
+    lookup's effect is above 0.10, and its largest value ("never needs the lens part" when none). The recall is not part of claim 12 and is not drawn.
+    All from 47.8's verdicts (the 27B: its full grid), the files the claims table's l_probe / l_P come from. Lightning and the 122B hollow (gate chosen after)."""
     models = anatomy_models()
-    nr, nc, row_in = 2, 3, 2.75
-    h = 2.6 + nr * row_in + 1.45
-    fig, axes = plt.subplots(nr, nc, figsize=(S.WIDTH, h), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 2.6 / h, bottom=1.45 / h, wspace=0.10, hspace=0.62)
+    W, H = 13.0, 5.1
+    fig, axes = plt.subplots(1, len(models), figsize=(W, H), sharey=True, squeeze=False)
+    axes = axes[0]
+    fig.subplots_adjust(left=0.055, right=0.99, top=1 - 2.35 / H, bottom=1.05 / H, wspace=0.16)
     S.title(fig, "The address is readable before the lookup uses it",
-            "Switches blocked without the J++ part beyond a random part (lookup, recall), position answers, the locker probe; whiskers 95%.")  # fmt: skip
-    for ax, (m, src) in zip(axes.flat, models, strict=False):
+            "Per model, by layer as a share of the depth; whiskers 95%; faded: layers where the whole change switches under 0.30 (outside the gate).")  # fmt: skip
+    fs = 13
+    for ax, (m, src) in zip(axes, models, strict=True):
         target, rules, rows = m["target"], m["rules"], m["figure"]["rows"]
         hollow = target in ("nemotron-3.5-lightning", "qwen3.5-122b-a10b")
+        depth = m["n_layers"]
         layers = [int(x) for x in m["layers"]]
-        name = next(lab for t, _, lab in (*S.MODELS, LT) if t == target)
-        ax.set_title(name + (" (full grid)" if target == "qwen3.6-27b" else ""), fontsize=S.FONT, weight="bold", loc="left")
+        gated = [bool(m["cells"][str(la)]["lookup"]["interpretable"]) for la in layers]
+        name = {"qwen3.5-9b": "Qwen 9B", "qwen3.6-27b": "Qwen 27B (full grid)", "muse-glimmer-30b": "Muse 30B", "nemotron-3.5-lightning": "Lightning ○",
+                "qwen3.5-122b-a10b": "Qwen 122B ○"}[target]
+        ax.set_title(name, fontsize=fs, weight="bold", loc="left", pad=34)
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
-        acc = [rows["probe.slot"][str(la)][0] for la in layers]
-        ax.plot(layers, acc, color=S.COL["control"], lw=1.4, ls="--", zorder=2)
-        for key, col, mk, dx, what in (("loss.lookup.J", S.COL["lookup"], "o", -0.5, "lookup"), ("loss.recall.J", S.COL["recall"], "D", 0.5, "recall"),
-                                       ("lookup.whole.position", S.COL["position"], "s", 0.0, "position answers")):  # fmt: skip
-            for la in layers:
+        series = (("probe.slot", S.COL["control"], "o", "the locker probe's accuracy"),
+                  ("lookup.whole.position", S.COL["position"], "s", "position answers under the whole change"),
+                  ("loss.lookup.J", S.COL["lookup"], "o", "lookup: switches blocked beyond random without the J++ part"))  # fmt: skip
+        for key, col, mk, what in series:
+            pts = [(la / depth, rows[key][str(la)], g) for la, g in zip(layers, gated, strict=True) if rows[key][str(la)][0] == rows[key][str(la)][0]]
+            on = [(x, v) for x, v, g in pts if g]
+            if on:
+                ax.plot([x for x, _ in on], [v[0] for _, v in on], color=col, lw=1.8, zorder=3)
+            last = [(x, v) for x, v, g in pts if g][-1:]  # the faded tail starts where the gated line ends
+            off = last + [(x, v) for x, v, g in pts if not g]
+            if len(off) > 1:
+                ax.plot([x for x, _ in off], [v[0] for _, v in off], color=col, lw=1.4, alpha=0.3, zorder=2)
+            for x, v in on:
+                ax.plot([x, x], [v[1], v[2]], color=col, lw=1.3, alpha=0.8, zorder=3)
+                ax.plot([x], [v[0]], mk, color=col, ms=5.5, mfc="white" if hollow else col, mew=1.3, zorder=4)
+            for la, g in zip(layers, gated, strict=True):
                 v = rows[key][str(la)]
-                ax.plot([la + dx] * 2, [v[1], v[2]], color=col, lw=1.1, alpha=0.8, zorder=3)
-                ax.plot([la + dx], [v[0]], mk, color=col, ms=4.6 if mk != "D" else 4.0, mfc="white" if hollow else col, mec=col, mew=1.2, zorder=4)
-                S.record("fig06", target, f"47.8, layer {la}: {what}" + (" (switches blocked beyond random without the J++ part)" if "loss" in key else " under the whole change"),
-                         *v, n=m["cells"][str(la)]["lookup"]["n"], source=src)  # fmt: skip
-        for la in layers:
-            S.record("fig06", target, f"47.8, layer {la}: the locker probe's accuracy", *rows["probe.slot"][str(la)], source=src)
-        for key, ls, lab, y in (("l_probe", ":", "probe", 1.1), ("l_P", "--", "position", 1.1), ("l_J", "-", "J++", 1.1)):
-            x0 = rules[key]
-            col = S.COL["lookup"] if key == "l_J" else S.COL["position"] if key == "l_P" else S.COL["control"]
-            ax.axvline(x0, color=col, ls=ls, lw=1.4, zorder=2, ymax=0.9)
-            S.record("fig06", target, f"47.8: {key}", x0, source=src)
-        ax.set_ylim(-0.25, 1.1)
+                if v[0] == v[0]:
+                    S.record("fig06", target, f"47.8, layer {la}: {what}", *v, n=m["cells"][str(la)]["lookup"]["n"], source=src)
+        for la, g in zip(layers, gated, strict=True):
+            S.record("fig06", target, f"47.8, layer {la}: lookup switches under the whole change", *m["cells"][str(la)]["lookup"]["switch"]["whole"],
+                     n=m["cells"][str(la)]["lookup"]["n"], source=src)  # the gate's value
+        for key, col, what in (("l_probe", S.COL["control"], "address readable"), ("l_P", S.COL["position"], "position answers begin")):
+            x0 = rules[key] / depth
+            ax.plot([x0], [1.0], "v", transform=ax.get_xaxis_transform(), clip_on=False, color=col, ms=9, zorder=5, mfc="white" if hollow else col, mew=1.4)
+            ax.annotate(f"L{rules[key]}", (x0, 1.0), xycoords=ax.get_xaxis_transform(), xytext=(0, 9), textcoords="offset points", ha="center", va="bottom", fontsize=fs - 1,
+                        color=col if col != S.COL["control"] else S.COL["muted"], annotation_clip=False)  # fmt: skip
+            S.record("fig06", target, f"47.8: {key}", rules[key], source=src)
+        S.record("fig06", target, "47.8: l_J", rules["l_J"], source=src)  # the rule's last layer needing the J++ part (quoted in the 27B note on the slide, not drawn)
+        # the J++ part's own reading: not a layer (the lookup's effect is small at every gated layer)
+        jp = [(la, rows["loss.lookup.J"][str(la)][0]) for la, g in zip(layers, gated, strict=True) if g]
+        over = [la for la, v in jp if v > 0.10 + 1e-9]
+        top = max(v for _, v in jp)
+        S.record("fig06", target, "47.8: gated layers", len(jp), source=src)
+        S.record("fig06", target, "47.8: gated layers where the lookup's switches blocked without the J++ part exceed 0.10", len(over), source=src)
+        S.record("fig06", target, "47.8: the largest lookup switches blocked without the J++ part at a gated layer", top, source=src)
+        txt = "never needs the\nlens part" if not over else f"above 0.10 at {len(over)}\nof {len(jp)} layers\n(max {top:.2f})"
+        ax.text(0.98, 0.74, txt, transform=ax.transAxes, ha="right", va="center", fontsize=fs - 1, color=S.COL["lookup"], linespacing=1.15)
+        ax.set_ylim(-0.15, 1.08)
+        ax.set_xlim(-0.03, 1.03)
         ax.set_yticks([0, 0.5, 1.0], ["0", "0.5", "1"])
-        ax.set_xlim(0, m["n_layers"])
-        ax.set_xlabel("layer")
+        ax.set_xticks([0, 0.5, 1.0], [f"{t:g}\nL{round(t * depth)}" for t in (0, 0.5, 1.0)])
+        ax.tick_params(labelsize=fs - 1)
         ax.grid(axis="y", color="#eeeeee")
-        ax.text(0.98, 0.03, f"probe L{rules['l_probe']} · position L{rules['l_P']} · J++ part L{rules['l_J']}", transform=ax.transAxes, ha="right", va="bottom",
-                fontsize=S.FONT - 2, color=S.COL["muted"])  # fmt: skip
-    for ax in axes.flat[len(models):]:
-        ax.axis("off")
-    for ax in axes[:, 0]:
-        ax.set_ylabel("share / effect")
-    hs = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=6), plt.Line2D([], [], marker="D", ls="", color=S.COL["recall"], ms=5),
-          plt.Line2D([], [], marker="s", ls="", color=S.COL["position"], ms=6), plt.Line2D([], [], ls="--", color=S.COL["control"], lw=1.4),
-          plt.Line2D([], [], ls=":", color=S.COL["control"], lw=1.4), plt.Line2D([], [], ls="--", color=S.COL["position"], lw=1.4),
-          plt.Line2D([], [], ls="-", color=S.COL["lookup"], lw=1.4)]  # fmt: skip
-    legend(fig, hs, ["lookup: blocked without the J++ part", "recall: blocked without the J++ part", "position answers (lookup)", "locker probe accuracy", "probe readable",
-                     "position answers start", "lookup's last layer needing the J++ part"], 1 - 1.0 / h, ncol=3)  # fmt: skip
-    fig.text(0.01, 0.12 / h, "Hollow: Lightning (gate chosen after the pre-check), the 122B (coverage run, gate lowered).\nIn the 27B's full grid the handoff rule (a) fails: the lookup needs the J++ part up to L40, after position answers start (L28).", fontsize=S.FONT - 2, color=S.COL["muted"], va="bottom")  # fmt: skip
+    axes[0].set_ylabel("share (0-1)", fontsize=fs)
+    fig.text(0.5, 0.06, "layer as a share of the model's depth (second line: the layer)", ha="center", va="bottom", fontsize=fs, color=S.COL["muted"])
+    hs = [plt.Line2D([], [], marker="o", color=S.COL["control"], lw=1.8, ms=6), plt.Line2D([], [], marker="s", color=S.COL["position"], lw=1.8, ms=6),
+          plt.Line2D([], [], marker="o", color=S.COL["lookup"], lw=1.8, ms=6), plt.Line2D([], [], color="#888888", lw=1.4, alpha=0.35),
+          plt.Line2D([], [], marker="v", ls="", color=S.COL["control"], ms=8), plt.Line2D([], [], marker="v", ls="", color=S.COL["position"], ms=8),
+          plt.Line2D([], [], marker="o", ls="", color="#555555", mfc="white", ms=7)]  # fmt: skip
+    fig.legend(hs, ["locker probe accuracy", "position answers (whole change)", "lookup: blocked without the J++ part (beyond random)",
+                    "faded: whole change < 0.30 (outside the gate)", "address readable (probe ≥ 0.80)", "position answers begin (≥ 0.20)", "hollow: post hoc"],
+               loc="upper left", bbox_to_anchor=(0.0, 1 - 0.80 / H), frameon=False, ncol=4, fontsize=fs - 2, columnspacing=1.2, handlelength=1.6)  # fmt: skip
     S.save(fig, "fig06_depth")
-
-
 
 
 def f06b_anatomy(plt) -> None:
