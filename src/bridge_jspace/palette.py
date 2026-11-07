@@ -1,7 +1,6 @@
-"""The one palette and the style rules of every figure in the repo (Dan, 30 Oct: the same colour for the same concept in
-all README.md files). docs/shared/figure_style.md explains the logic; this module is its single source: the figure kit
-(figkit/dottable.py), the depth story figures (scripts/story_style.py) and the audit of the embedded figures
-(scripts/check_style.py) all read it.
+"""The model order and names, and the role colours the experiment scripts plot their own runs with (scripts/story_style.py).
+The published figures take their colours and words from plotstyle.toml (styles-plot; docs/shared/figure_style.md);
+the hexes of ROLE are the same.
 
 A colour is a role, never a model, a panel or a variable (grammar v2, 7 Nov): one hue per role in ROLE; grey is a
 control and nothing else; a status (post hoc, descriptive, not claimed) is never a colour.
@@ -9,7 +8,7 @@ control and nothing else; a status (post hoc, descriptive, not claimed) is never
 
 from __future__ import annotations
 
-# ---- roles: what is drawn (figure grammar v2, docs/shared/figure_style.md A) ---------------------------------------
+# ---- roles: what is drawn (the same hexes as plotstyle.toml [roles]) ----------------------------------------------
 # one hue per role; a shade never encodes a variable (a second condition of a reader is its own column, named in words)
 ROLE = {
     "recall": "#2B2B2B",  # the recall reader, and what it loses

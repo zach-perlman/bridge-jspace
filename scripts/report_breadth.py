@@ -12,7 +12,7 @@ experiments table; {{head}} the commit. A marker whose key is not in data.csv st
 python scripts/report_breadth.py            (CPU only; reads results/ and the clean worktree's results)
 python scripts/report_breadth.py --redraw-keys   append only the keys data.csv lacks (collect_redraw: the numbers the
                                                  styles-plot redraw of figures/breadth needs); existing rows untouched
-python scripts/report_breadth.py --copy-figures  also copy fig_neel's pod renders into figures/breadth (old figure set)
+python scripts/report_breadth.py --render        the page alone, from the data.csv on disk (no run files needed)
 """
 
 from __future__ import annotations
@@ -31,7 +31,6 @@ from scripts import breadth_data as F  # noqa: E402  the result readers (out of 
 
 D, RES, A2, SET = F.D, F.RES, F.A2, F.SET
 OUT = ROOT / "docs" / "breadth"
-FIGS_OUT = ROOT / "figures" / "breadth"  # figures/ by track (Dan, 30 Oct)
 CLEAN = Path("/workspace/clean_bridge/results")
 ROWS: list[dict] = []
 
@@ -660,19 +659,6 @@ FIGS = {"F01_dataset": "fig00_dataset", "F03_needed": "fig01_needed", "F04_setti
         "F02_readable": "fig08_readable", "F10_dose": "fig09_dose", "F11_beyond": "fig10_beyond", "F12_scorecard": "fig11_scorecard"}  # fmt: skip
 
 
-def copy_figures() -> None:
-    """The figure set (scripts/fig_neel.py, rendered into /workspace/scratch/neel_figures) under the README's names."""
-    import shutil
-
-    from scripts import fig_neel  # noqa: PLC0415  the old figure set only
-
-    FIGS_OUT.mkdir(parents=True, exist_ok=True)
-    for src, dst in FIGS.items():
-        f = fig_neel.OUT / f"{src}.png"
-        if f.exists():
-            shutil.copyfile(f, FIGS_OUT / f"{dst}.png")
-
-
 COLUMNS = ["key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source"]
 
 
@@ -700,8 +686,6 @@ if __name__ == "__main__":
         load_rows()
         render()
         sys.exit(0)
-    if "--copy-figures" in sys.argv:
-        copy_figures()
     collect()
     collect_night()
     collect_redraw()

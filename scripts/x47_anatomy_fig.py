@@ -37,6 +37,29 @@ MODELS = (("qwen3.5-9b", "9b", "Qwen3.5-9B", 32), ("qwen3.6-27b", "27b", "Qwen3.
 NAME = {t: n for t, _, n, _ in MODELS}
 KEEP_RUNS = {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b"}  # keep-only arms at L (Muse: none)
 PROBE_RUNS = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b", "muse": "muse30b_x0_probe_v4"}
+# the main test's runs and the routes sweep (moved from the retired scripts/readme_story_figures.py, 7 Nov)
+DEPTH_RUNS = {"muse": "muse30b_x0_necessity_depth"}
+MAIN_RUNS = {
+    "9b": "qwen35_9b_x0_necessity",
+    "27b": "x0_necessity_27b_chat",
+    "122b": "qwen35_122b_x0_necessity_r2",
+    "muse": "muse30b_x0_necessity",
+}
+ROUTE_LAYERS = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_routes_sweep_l8", 8, "after"),
+                       ("qwen35_9b_x6_routes_sweep_l10", 10, "after"), ("qwen35_9b_x6_routes", 12, "fixed")),
+                "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_sweep_l20_27b", 20, "after"),
+                        ("x6_routes_sweep_l24_27b", 24, "after"), ("x6_routes_sweep_l28_27b", 28, "after"),
+                        ("x6_routes_27b", 32, "fixed")),
+                "122b": (("qwen35_122b_x6_routes_sweep_l24_g75", 24, "after"), ("qwen35_122b_x6_routes_l27_g75", 27, "after"),
+                         ("qwen35_122b_x6_routes_sweep_l30_g75", 30, "after"), ("qwen35_122b_x6_routes_g75", 33, "after"),
+                         ("qwen35_122b_x6_routes_sweep_l36_g75", 36, "after")),
+                # Muse: L34 not tested (the sanity swap moved the lookup in no scene; batch 38's G2)
+                "muse": (("muse30b_x6_routes_l13", 13, "fixed"), ("muse30b_x6_routes", 26, "fixed"))}  # fmt: skip
+
+
+def depth_run(m: str) -> str:
+    run = DEPTH_RUNS.get(m)
+    return run if run and (X.RESULTS / run / "outcomes.jsonl").exists() else MAIN_RUNS[m]
 ROWS = ("lookup under the whole change", "what carries each route (keep-only)", "what each route needs (extra loss)",
         "the recall", "probes at the bridge word")  # fmt: skip
 ROUTE_COL = {"identity": S.COL["identity"], "position": S.COL["position"], "value": S.COL["value"],
@@ -167,10 +190,9 @@ def _latest(path: Path, pattern: str):
 
 
 def preview_models() -> list[dict]:
-    """The contract's dicts from what exists: the main test's depth cells (readme_story_figures.depth_run; J++ extra
+    """The contract's dicts from what exists: the main test's depth cells (depth_run; J++ extra
     loss and the whole change's switch per reader), the routes verdicts at ROUTE_LAYERS (C2 whole shares), the keep-only
     runs at L (keep_jpp / keep_alf), x0_probe v4 at L (locker-before stratum)."""
-    from scripts import readme_story_figures as RF
     from scripts import x0_figures as XF
 
     out = []
@@ -178,7 +200,7 @@ def preview_models() -> list[dict]:
         rows: dict[str, dict] = {}
         ni: dict[str, list[int]] = {"lookup": [], "recall": []}
         L = X.PREDICTED[target]
-        run = RF.depth_run(m)
+        run = depth_run(m)
         layers: set[int] = set()
         if (X.RESULTS / run / "outcomes.jsonl").exists():
             cells = XF.Run(run).cells("chat")
@@ -192,7 +214,7 @@ def preview_models() -> list[dict]:
                     rows.setdefault("recall.whole.switch", {})[la] = list(c["S_whole"])
                 if c["S_whole"][0] < 0.30:
                     ni[name].append(la)
-        for run, la, _ in RF.ROUTE_LAYERS.get(m, ()):
+        for run, la, _ in ROUTE_LAYERS.get(m, ()):
             v = _latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
             r = next((r for r in (v or {}).get("rows", []) if r["condition"] == "C2" and r["arm"] == "whole"), None)
             if r is None:
@@ -220,5 +242,5 @@ def preview_models() -> list[dict]:
                 rows.setdefault(f"probe.{key}", {})[L] = r["probe"]
         out.append({"target": target, "n_layers": n_layers, "L": L, "layers": sorted(layers) or [L], "ni": ni,
                     "rows": rows, "status": "preview from the Fig 6 runs", "sources": {"depth": run,
-                    "routes": [r for r, _, _ in RF.ROUTE_LAYERS.get(m, ())], "keep": KEEP_RUNS.get(m), "probe": PROBE_RUNS[m]}})  # fmt: skip
+                    "routes": [r for r, _, _ in ROUTE_LAYERS.get(m, ())], "keep": KEEP_RUNS.get(m), "probe": PROBE_RUNS[m]}})  # fmt: skip
     return out

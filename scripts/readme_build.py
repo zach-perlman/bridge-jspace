@@ -268,26 +268,71 @@ def render(template: str, book: Book) -> str:
     return "\n".join(out).rstrip() + "\n"
 
 
+# the claims by model (moved from the retired scripts/readme_story_figures.py, 7 Nov): Lightning everywhere (its gate
+# chosen after its pre-check) and the 122B where its gate was lowered after the data (routes, address, swap: claims
+# 4, 6, 7)
+CLAIM_SHORT = {"9b": "9B", "27b": "27B", "122b": "122B", "muse": "Muse", "lightning": "Lightning"}
+F11_MODELS = ("9b", "27b", "muse", "lightning", "122b")
+
+
+def claim_cells(*words: str, hollow_122b: bool = False) -> dict[str, tuple[str, str]]:
+    """One claim's cells, {model: (word, flag)}, from five words in F11_MODELS' order: Lightning's flag 'hollow', the
+    122B's too if hollow_122b."""
+    flags = ("", "", "", "hollow", "hollow" if hollow_122b else "")
+    return dict(zip(F11_MODELS, zip(words, flags, strict=True), strict=True))
+
+
+CLAIM_CELLS = {
+    1: claim_cells("holds", "in part", "holds", "holds", "holds"),
+    # the 122B's cells from its coverage runs (Dan 30 Oct: "all runs in"; agent's reading, UNVERIFIED): 2 (47.5), 3 (45p),
+    # 8 (47.2), 9 (47.0, lookup-only gate: hollow), 11 (47.4, the 9B's pattern), 12 (47.8, lookup-only gate: hollow)
+    2: claim_cells("holds", "holds", "holds", "holds", "holds"),
+    3: claim_cells("holds", "holds", "holds", "below gate", "fails"),
+    4: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+    5: claim_cells("holds", "holds", "holds", "holds", "below gate"),  # the 122B: routes recall 0.797 < 0.80
+    6: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+    7: claim_cells("holds", "fails", "holds", "holds", "holds", hollow_122b=True),
+    8: claim_cells("holds", "fails", "holds", "holds", "holds"),
+    9: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+    10: claim_cells("holds", "holds", "holds", "holds", "in part"),  # the 122B: its order split only, the copy not run
+    11: claim_cells("holds", "holds", "holds", "holds", "holds"),
+    12: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
+}
+# cell footnotes, {(claim, model): (mark, note)}; Lightning's claim 10: Dan 18:10 (jobs/c3/batch53.yaml decisions_1810 item 3)
+F11_NOTES = {(10, "lightning"): ("¹", "Lightning, claim 10: the order split is descriptive; the copy test only below "
+                                      "gate (0.751).")}  # fmt: skip
+
+
+def claims_table(path: Path = TEMPLATE) -> list[tuple[str, str]]:
+    """The first two columns (id, claim) of the template's "## Claims" table, in order."""
+    lines = path.read_text().split("## Claims", 1)[1].splitlines()
+    rows = []
+    for ln in lines:
+        if ln.startswith("|"):
+            rows.append(ln)
+        elif rows:
+            break
+    return [(ln.split("|")[1].strip(), ln.split("|")[2].strip()) for ln in rows[2:]]
+
+
 def scorecard() -> list[str]:
     """The claims by model as a markdown table (Dan's 01:58 brief: Fig. 11 as markdown, no red and green): the claims
-    table's sentences, readme_story_figures.CLAIM_CELLS's words; "○" post hoc, a cell that has no result says why ("below gate", "not run"),
+    table's sentences, CLAIM_CELLS's words; "○" post hoc, a cell that has no result says why ("below gate", "not run"),
     "fails" in bold, the cell notes as footnotes."""
-    from scripts import readme_story_figures as F
-
-    claims = dict(F.claims_table(TEMPLATE))
+    claims = dict(claims_table(TEMPLATE))
     word = {"holds": "holds", "in part": "in part", "fails": "**fails**", "below gate": "below gate", "not run": "not run"}
-    head = [F.SHORT[m] + (" ○" if m == "lightning" else "") for m in F.F11_MODELS]
+    head = [CLAIM_SHORT[m] + (" ○" if m == "lightning" else "") for m in F11_MODELS]
     out = ["| # | Claim | " + " | ".join(head) + " |", "|---|---|" + "---|" * len(head)]
-    for n, cells in F.CLAIM_CELLS.items():
+    for n, cells in CLAIM_CELLS.items():
         row = []
         for m, (w, flag) in cells.items():
             cell = word[w] + (
                 " ○" if flag == "hollow" and m != "lightning" and w not in ("not run", "below gate") else ""
             )
-            row.append(cell + F.F11_NOTES.get((n, m), ("",))[0])
+            row.append(cell + F11_NOTES.get((n, m), ("",))[0])
         out.append(f"| {n} | {claims[str(n)]} | " + " | ".join(row) + " |")
-    notes = list(F.F11_NOTES.values())
-    return [*out, "", *[f"{mark} {note}" for mark, note in F.F11_NOTES.values()], *([""] if notes else [])]
+    notes = list(F11_NOTES.values())
+    return [*out, "", *[f"{mark} {note}" for mark, note in F11_NOTES.values()], *([""] if notes else [])]
 
 
 def one(x: re.Match[str], book: Book) -> str:

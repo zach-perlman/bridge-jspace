@@ -43,7 +43,6 @@ LEFT_OUT = {
     ),
     "scripts/tasks_v2.py:make": "a data set's manifest; with --counterfactuals it records its target and tokenizer",
     "scripts/x0_composition.py:main": "CPU analysis of existing runs' outputs; no model",
-    "scripts/xfig_depth_profile.py:build": "a figure's manifest; no model",
     "scripts/lens_fit/lens_eval.py:main": "the J++ recipe's evaluation: model, lenses and device map are its own "
     "arguments (recorded); it reads no BJ_ switch",
     "scripts/indep_check.py:run": "the independent re-implementation imports nothing from bridge_jspace; model, lens "

@@ -36,7 +36,7 @@ $PY scripts/jsuite2_score.py $r --set $SET | grep -E "^facts \S+ +start=all" | s
 $PY scripts/soft_score.py $r --set $SET | sed "s/^/=== DOSE dsv4fSOFT /"
 K=$(CUDA_VISIBLE_DEVICES="" .venv/bin/python -c "
 import sys; sys.path[:0] = ['.', 'src']
-from scripts import fig_neel as F
+from scripts import breadth_data as F
 d = F.dose_data('DeepSeek-V4-Flash', 'dsv4f_', 'L18-23'); rd = F.dose_readings(d)
 ok = [r for r in d if r['exc'] is not None and (rd['limit'] is None or r['k'] < rd['limit'])] or [r for r in d if r['exc'] is not None]
 print(max(ok, key=lambda r: r['exc'])['k'])" 2>/dev/null)

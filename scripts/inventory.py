@@ -33,7 +33,7 @@ REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "docs" / "review" / "inventory.md"
 README_PAGE = REPO / "docs" / "depth" / "README.md"  # the built README (the root README.md is an index since the merge)
 # scripts that write what the README shows: the page, docs/depth/x0_numbers.json + docs/depth/x0_details.md, figures/depth/
-README_CHAIN = ("scripts/readme_build.py", "scripts/x0_details.py", "scripts/readme_story_figures.py")
+README_CHAIN = ("scripts/readme_build.py", "scripts/x0_details.py")
 REVIEW_TOOLS = ("scripts/review.py", "scripts/inventory.py")
 LEGACY_NAME = re.compile(
     r"^(exp\d\d|pointer_|alias_pointer|code_pointer|d[1-5][a-z]?_|suite_|quick_|phase\d|recovery_)"
