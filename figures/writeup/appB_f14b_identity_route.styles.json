@@ -1,0 +1,187 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "4923edad75052d6d19d1b55c8cb5f2bac6e003a984df16f90ccee761721d2c11"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "d033ea25030c5e192b80db5f72b63622645fbfccc891b63fd57b41981fcfd06d"
+ },
+ "figure": "appB_f14b_identity_route",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "7ef90eaf4246c773992dcfd01054c899d7bfbe0667d7d8ee71eb787dbe623225",
+  "dpi": 200
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "a random part"
+ ],
+ "cells": {
+  "lens.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f14.lens.q9": "0.24",
+  "f14.lens.q27": "0.18",
+  "f14.lens.mu": "0.06",
+  "f14.lens.nl": "0.17",
+  "f14.lens.q122": "0.14",
+  "f14.lens.diff.q9": "+0.12",
+  "f14.lens.diff.q27": "+0.18",
+  "f14.lens.diff.mu": "+0.03",
+  "f14.lens.diff.nl": "+0.08",
+  "f14.lens.diff.q122": "+0.11"
+ },
+ "problems": []
+}

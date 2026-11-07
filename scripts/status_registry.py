@@ -148,6 +148,7 @@ def styles_plot_port() -> list[dict]:
             out.append(post_hoc("appB_f14_two_codes", f"{tag}.{k}", "the two removals, every cell post hoc",
                                 f"{src}writeup_claims.py appB_f14_two_codes"))  # fmt: skip
         out.append(by_hollow("appB_f19_six_lockers", f"six.{k}", m, what="six lockers"))
+        out.append(by_hollow("appB_f5_atoms", f"atoms.{k}", m, what="the lens part's atoms (writeup_appendix.f5_atoms)"))
     for k in ("q9", "q27", "mu", "nl"):  # appB_f9's models
         for band_ in ("mid", "late"):
             for j in range(3):
@@ -224,6 +225,12 @@ def fig05_split(writeup: list[dict]) -> list[dict]:
             for r in writeup if r["figure"] == "fig05_controls"]  # fmt: skip
 
 
+def f14_split(writeup: list[dict]) -> list[dict]:
+    """appB_f14 drawn as two figures (Dan, 7 Nov): the position route's cells and the identity route's."""
+    return [{**r, "figure": "appB_f14a_position_route" if r["cell"].startswith("address.") else "appB_f14b_identity_route"}
+            for r in writeup if r["figure"] == "appB_f14_two_codes"]  # fmt: skip
+
+
 # Lightning's status per test (Dan, 7 Nov, decision 8): the breadth tests are fixed in advance where the
 # preregistration registered Lightning's runs; the depth tests are post hoc (figkit/data.py hollow() is depth-only)
 PREREG = "docs/breadth/prereg_replication_1022.md"
@@ -272,7 +279,7 @@ UNCLEAR: set[str] = set()
 
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
-    writeup += fig05_split(writeup)
+    writeup += fig05_split(writeup) + f14_split(writeup)
     return lightning([*writeup, *readme_set(writeup)])
 
 

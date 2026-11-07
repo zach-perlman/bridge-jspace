@@ -1,0 +1,226 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "4923edad75052d6d19d1b55c8cb5f2bac6e003a984df16f90ccee761721d2c11"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "d033ea25030c5e192b80db5f72b63622645fbfccc891b63fd57b41981fcfd06d"
+ },
+ "figure": "fig05a_controls_band",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "a31bc6ce70c5f99a6fe5020362a336e137fa71e7b0152fc4ee6e223d03ef26f7",
+  "dpi": 200
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "PCA",
+  "logit lens",
+  "rotated"
+ ],
+ "cells": {
+  "band.mu": {
+   "timing": "post_hoc",
+   "claim": "not_claimed"
+  },
+  "band.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "band.q122": {
+   "timing": "post_hoc",
+   "claim": "not_claimed"
+  },
+  "band.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "band.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: PCA · logit lens · rotated",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "fig05.band_diff.q9": "+35.4",
+  "fig05.band_diff.q9.interval": "[29.3, 40.9]",
+  "fig05.band_diff.q27": "+38.5",
+  "fig05.band_diff.q27.interval": "[33.8, 43.3]",
+  "fig05.band_diff.mu": "+25.3",
+  "fig05.band_diff.mu.interval": "[20.3, 30.4]",
+  "fig05.band_diff.nl": "+44.4",
+  "fig05.band_diff.nl.interval": "[38.2, 49.8]",
+  "fig05.band_diff.q122": "+36.6",
+  "fig05.band_diff.q122.interval": "[31.7, 41.0]",
+  "ko.q9.mk": "42.6",
+  "ko.q27.mk": "50.9",
+  "ko.mu.mk": "59.9",
+  "ko.nl.mk": "53.1",
+  "ko.q122.mk": "48.5"
+ },
+ "problems": []
+}

@@ -76,6 +76,8 @@ def fig01_main_split() -> sp.Figure:
 
 # ---- Fig. 4: the twin set ----------------------------------------------------------------------------------------------
 LANES = (("paper10", None), ("paper10_rot", "control"), ("paper10_keepA", "answer"))
+# the conditions named in grey under each model; the colours stay roles (Dan, 7 Nov: labelled lanes)
+LANE_WORD = {"paper10": "knock-out", "paper10_rot": "rotated", "paper10_keepA": "answer span kept"}
 # each lane's own colour word ("knock-out", "answer span kept") does not fit one line over a post-width accuracy panel
 # (SP606, by design), so the lanes keep their roles' words
 
@@ -101,8 +103,6 @@ def fig04_twin_set() -> sp.Figure:
                 if c is not None:
                     cells[(m, cond)] = est(c, f"{unit_key}.{cond}.{ZK[m]}", key=data_key(cond, ZK[m]), label=True,
                                            interval=unit_key == "gap")  # fmt: skip
-            # Dan wants "answer span kept" as the brick word (decision 11): it does not fit one strip line beside the
-            # reader's word (SP606, 0.1.4), so the role word stays until the library allows it
             out.append(sp.Series(role or reader, cells, control="rotated" if role == "control" else None))
         return out
 
@@ -118,7 +118,7 @@ def fig04_twin_set() -> sp.Figure:
         lo, hi = v.format(min(unedited), "accuracy"), v.format(max(unedited), "accuracy")
         note = f"unedited: {lo}–{hi}% right on every model" if lo != hi else f"unedited: {lo}% right on every model"
     table = sp.DotTable(models, [accuracy("recall"), accuracy("lookup"), gap], row_sub=sub,
-                        lanes=[sp.Lane(c) for c, _ in LANES], note=note)  # fmt: skip
+                        lanes=[sp.Lane(c, LANE_WORD[c]) for c, _ in LANES], note=note)  # fmt: skip
     return sp.Figure("fig04_twin_set", v).add(table)
 
 
@@ -290,7 +290,8 @@ def write_order(out: Path = OUT) -> Path:
     from bridge_jspace.figkit.tables import WRITEUP_ORDER
 
     path = out / "order.txt"
-    path.write_text("".join(f"{i}.png\n" for i in WRITEUP_ORDER))
+    order = [j for i in WRITEUP_ORDER for j in (*writeup_sp_b.SPLIT.get(i, ()), i)]
+    path.write_text("".join(f"{i}.png\n" for i in order))
     return path
 
 

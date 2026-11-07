@@ -1,0 +1,187 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "4923edad75052d6d19d1b55c8cb5f2bac6e003a984df16f90ccee761721d2c11"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "d033ea25030c5e192b80db5f72b63622645fbfccc891b63fd57b41981fcfd06d"
+ },
+ "figure": "appB_f14a_position_route",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "4eb70c2d4b7ec3de7c1c20316d4790ef2c0ff675e9d700a703a3ea664da1e674",
+  "dpi": 200
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "a random part"
+ ],
+ "cells": {
+  "address.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f14.address.q9": "0.86",
+  "f14.address.q27": "0.84",
+  "f14.address.mu": "0.51",
+  "f14.address.nl": "0.81",
+  "f14.address.q122": "0.88",
+  "f14.address.diff.q9": "+0.80",
+  "f14.address.diff.q27": "+0.58",
+  "f14.address.diff.mu": "+0.48",
+  "f14.address.diff.nl": "+0.77",
+  "f14.address.diff.q122": "+0.76"
+ },
+ "problems": []
+}

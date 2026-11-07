@@ -419,7 +419,6 @@ def appB_f14_two_codes() -> sp.Figure:
                              series=[sp.Series("control", r, control="a random part"), sp.Series(role, a)],
                              connect=("control", role))  # fmt: skip
         diff = sp.DotColumn("difference", "scenes_difference", (-0.1, 1.25), (0, 0.5, 1), series=[sp.Series(role, d)])
-        # the route as the table's grey note: a bold group header made the pair taller than the post allows
         return sp.DotTable(models, [share, diff], note=note)
 
     return sp.Figure("appB_f14_two_codes", vocab()).add(
@@ -427,6 +426,55 @@ def appB_f14_two_codes() -> sp.Figure:
              "scenes that leave position"),
         half(qb, "without the J++ part", "lens", "identity-route scenes, without the lens part",
              "scenes that go to position"))  # fmt: skip
+
+
+# appB_f14 as two figures (Dan, 7 Nov: tighten, else split): stacked, the pair is 0.98 wide : high, under the post's
+# 1.0; side by side, the routes' headers do not fit their groups and the labels meet
+def appB_f14a_position_route() -> sp.Figure:
+    """The position-route scenes that leave position without the address, against a random part (appB_f14's top)."""
+    return sp.Figure("appB_f14a_position_route", vocab()).add(appB_f14_two_codes().blocks[0])
+
+
+def appB_f14b_identity_route() -> sp.Figure:
+    """The identity-route scenes that go to position without the lens part, against a random part (its bottom)."""
+    return sp.Figure("appB_f14b_identity_route", vocab()).add(appB_f14_two_codes().blocks[1])
+
+
+# ---- Fig. 5 as two figures (Dan, 7 Nov): the band test and the one-layer test ---------------------------------------------
+def fig05a_controls_band() -> sp.Figure:
+    """Fig. 5's band of layers (fact passages): the recall − lookup gap under the lens part's removal against rotated,
+    logit-lens and PCA parts of the same size, and the difference lens part − largest control."""
+    top = fig05_controls().blocks[0]
+    return sp.Figure("fig05a_controls_band", vocab()).add(top)
+
+
+def fig05b_controls_layer() -> sp.Figure:
+    """Fig. 5's one layer (locker scenes): the recall's switches blocked beyond random under the lens part against
+    same-size controls from the earlier runs, and the difference lens part − largest control."""
+    bottom = fig05_controls().blocks[1]
+    return sp.Figure("fig05b_controls_layer", vocab()).add(bottom)
+
+
+# ---- appendix B f5: what the lens part decodes to -------------------------------------------------------------------------
+ATOMS = "52 A: share of the rebuilt energy, "
+WORDS = (("old", "the old bridge word", "old bridge word"), ("new", "the new bridge word", "new bridge word"),
+         ("other", "another scene word or its class", "another scene word"), ("none", "no scene word", "no scene word"))
+
+
+def appB_f5_atoms() -> sp.Figure:
+    """Of the lens part's 25 directions, the share of the rebuilt energy by the word each decodes to, one column per
+    word type (teal: the lens part's energy); an answer word's share beside (Dan, 7 Nov: no stack)."""
+    models = [m for m in DAN if D.s(m, ATOMS + WORDS[0][1])]
+    cols = []
+    for key, q, header in WORDS:
+        cells = {m: est(need(D.s(m, ATOMS + q), m), f"atoms.{ZK[m]}", key=f"f5.{key}.{ZK[m]}", label=True)
+                 for m in models}  # fmt: skip
+        cols.append(sp.DotColumn(header, "rebuilt", (-0.05, 1.1), (0, 0.5, 1), series=[sp.Series("lens", cells)]))
+    answer = {m: est(need(D.s(m, ATOMS + "an answer word"), m), f"atoms.{ZK[m]}", key=f"f5.answer.{ZK[m]}")
+              for m in models}  # fmt: skip
+    cols.append(sp.TextColumn("answer word", "rebuilt", answer, unit_title=False))
+    t = sp.DotTable(models, cols, note="of the lens part's 25 directions, by the word each decodes to")
+    return sp.Figure("appB_f5_atoms", vocab()).add(t)
 
 
 # ---- appendix B f19: six lockers -----------------------------------------------------------------------------------------
@@ -563,40 +611,39 @@ def fig02_datasets() -> sp.Figure:
 
 # ---- Fig. 3: the tools (layers x tokens grids) ---------------------------------------------------------------------------
 def fig03_tools() -> sp.Figure:
-    """The three tools as grids (layers x tokens): a cell the tool changes is outlined in its colour and dotted (the lens
-    part teal, another entity's part blue); the bridge word's column is labelled."""
+    """The three tools as grids (layers x tokens): the cells a tool changes are one box in its colour (the lens part
+    teal, another entity's part blue) with its words right under it (Dan, 7 Nov: a word beside every coloured
+    element); the bridge word's column is labelled. The grid is an illustration: its band is the bottom rows."""
     nl, nt, bridge, cell = 4, 7, 4, 0.27  # layers, tokens, the bridge word's token, a cell's side (in)
-    panels = (("remove everywhere", "a band of layers, every token", {(r, t) for r in (1, 2) for t in range(nt)}, "lens"),
-              ("removed from the patch", "one layer, the bridge word", {(2, bridge)}, "lens"),
-              ("swap", "the bridge word, over the band", {(1, bridge), (2, bridge)}, "identity"))  # fmt: skip
+    panels = (("remove everywhere", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
+              ("removed from the patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
+               "lens part removed"),
+              ("swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "identity",
+               ("another entity's", "lens part swapped in")))  # fmt: skip
     el: list = []
-    for k, (title, sub, cells, role) in enumerate(panels):
+    for k, (title, sub, (r0, r1, t0, t1), role, word) in enumerate(panels):
         x0 = 0.12 + k * 2.66
         gx, gy = x0 + 0.62, 0.95
         el += [sp.Words(x0, 0.2, [(title, None)], bold=True), sp.Words(x0, 0.47, [(sub, None)]),
                sp.Words(gx + bridge * cell - 0.08, gy - 0.14, [("bridge", None)]),
                sp.Words(x0, gy + nl * cell / 2, [("layers", None)]),
-               sp.Words(gx + nt * cell / 2 - 0.25, gy + nl * cell + 0.2, [("tokens", None)])]  # fmt: skip
-        for r in range(nl):
-            for t in range(nt):
-                hit = (r, t) in cells
-                el.append(sp.Box(gx + t * cell + 0.015, gy + r * cell + 0.015, cell - 0.03, cell - 0.03,
-                                 role=role if hit else None))  # fmt: skip
-                if hit:
-                    el.append(sp.Mark(gx + (t + 0.5) * cell, gy + (r + 0.5) * cell, role))
-    y = 0.95 + nl * 0.27 + 0.55
-    el += [sp.Mark(0.2, y, "lens"), sp.Words(0.38, y, [("lens part removed", "lens")], bold=True),
-           sp.Mark(2.86, y, "identity"),
-           sp.Words(3.04, y, [("another entity's lens part swapped in", "identity")], bold=True)]  # fmt: skip
-    return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(y + 0.25, el))
+               sp.Words(gx + nt * cell / 2 - 0.25, gy + nl * cell + 0.67, [("tokens", None)])]  # fmt: skip
+        el += [sp.Box(gx + t * cell + 0.015, gy + r * cell + 0.015, cell - 0.03, cell - 0.03)
+               for r in range(nl) for t in range(nt) if not (r0 <= r < r1 and t0 <= t < t1)]  # fmt: skip
+        el += [sp.Box(gx + t0 * cell + 0.015, gy + r0 * cell + 0.015, (t1 - t0) * cell - 0.03, (r1 - r0) * cell - 0.03,
+                      role=role),
+               *(sp.Words(min(gx + t0 * cell, x0 + 2.55 - 1.2 * _width(w, bold=True)), gy + nl * cell + 0.17 + 0.22 * j, [(w, role)],
+                          bold=True)
+                 for j, w in enumerate((word,) if isinstance(word, str) else word))]  # fmt: skip
+    return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(gy + nl * cell + 0.87, el))
 
 
 # Declared, but styles-plot refuses them in strict mode (they stay on figkit until a decision):
 # fig05 (two five-panel tables: 0.80 wide : high, under the post's 1.0; labels cross lines), appB_f14 (two five-row
-# tables: 0.98), fig03 (a schematic of coloured grid cells: direct labels want a word beside every coloured cell),
+# tables: 0.98)
 # fig10 (0.1.5: a left label is set past every mark of its row, onto the grey control; Lightning's 'descriptive' tag and its
 # 'no energy-matched control' note overlap on the row's second line).
-BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes, "fig03_tools": fig03_tools,
+BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes,
            "fig10_answer_span": fig10_answer_span}
 # Not declared (the grammar has no form for them yet): fig06 and appB_f18 (a second same-role estimate in one row),
 # fig07 (stack whiskers), appB_f5 (stack segments that are not roles), appB_f15 (sweep points with their own
@@ -605,4 +652,10 @@ FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
         "fig08b_address_swap_lens": fig08b_address_swap_lens, "fig11_orthogonal": fig11_orthogonal,
         "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
         "appB_f12_order": appB_f12_order, "appB_f8_facts": appB_f8_facts, "appB_f8_directions": appB_f8_directions,
-        "appB_f19_six_lockers": appB_f19_six_lockers, "fig08a_address_read_remove": fig08a_address_read_remove}  # fmt: skip
+        "appB_f19_six_lockers": appB_f19_six_lockers, "fig08a_address_read_remove": fig08a_address_read_remove,
+        "fig05a_controls_band": fig05a_controls_band, "fig05b_controls_layer": fig05b_controls_layer,
+        "appB_f5_atoms": appB_f5_atoms, "appB_f14a_position_route": appB_f14a_position_route,
+        "appB_f14b_identity_route": appB_f14b_identity_route, "fig03_tools": fig03_tools}  # fmt: skip
+# Fig. 5 is drawn as two new files; the post embeds both where it embedded fig05_controls.png
+SPLIT = {"fig05_controls": ("fig05a_controls_band", "fig05b_controls_layer"),
+         "appB_f14_two_codes": ("appB_f14a_position_route", "appB_f14b_identity_route")}
