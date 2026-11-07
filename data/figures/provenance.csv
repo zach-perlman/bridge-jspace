@@ -1,0 +1,8 @@
+key,value,source
+prov.runs,102,scripts/provenance_counts.py: run folders (manifest.json) behind README.md's numbers
+prov.untraced,24,scripts/provenance_counts.py: cited result files with no manifest found beside or above them
+prov.no_commit,5,"scripts/provenance_counts.py: of the runs, manifests without a git commit"
+prov.no_lens_sha,22,"scripts/provenance_counts.py: of the runs, manifests without a lens sha256"
+g1.writers_unrecorded,43,scripts/provenance_counts.py: manifest writers that recorded no switches before bd43870f (the test's scan)
+g1.writers_switches,26,"scripts/provenance_counts.py: of those, writers that record their switches since bd43870f"
+g1.writers_left_out,17,"scripts/provenance_counts.py: of those, writers bd43870f left out of the check (no model loaded)"

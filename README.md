@@ -390,6 +390,13 @@ Across nine models, whether the lens part is carried, needed, or both:
 - **Independent recounts.** Code written from scratch recounts the depth headline numbers from the per-item files and matches 63 of 63 against their sources<!-- src: docs/depth/README.md | matches 63 of 63 -->; automatic checks read 45,942 items<!-- src: docs/depth/README.md | 45,942 items read --> and their recount matches 245 of 245 numbers<!-- src: docs/depth/README.md | their recount matches 245 of 245 -->.
 - **What we dropped**, each with the test that dropped it: [depth](docs/depth/README.md#tested-and-dropped), [breadth](docs/breadth/README.md#8-what-did-not-hold). Every number here carries a source comment, checked by `tests/test_readme_sources.py`.
 
+<details><summary>Run provenance</summary>
+
+- **The runs behind this page.** Its numbers trace to 102<!-- src: data/figures/provenance.csv | prov.runs --> run folders: 5<!-- src: data/figures/provenance.csv | prov.no_commit --> of their manifests record no git commit, and 22<!-- src: data/figures/provenance.csv | prov.no_lens_sha --> no lens sha256 (where a commit is recorded, the lens follows from the model's pin at that commit, `configs/models/*.yaml`); 24<!-- src: data/figures/provenance.csv | prov.untraced --> cited files are CPU read-outs or verdicts with no manifest of their own. Counted by `scripts/provenance_counts.py`.
+- **Environment switches.** The 43<!-- src: data/figures/provenance.csv | g1.writers_unrecorded --> late-sprint run scripts did not record their environment switches; 26<!-- src: data/figures/provenance.csv | g1.writers_switches --> of them now do, and the other 17<!-- src: data/figures/provenance.csv | g1.writers_left_out --> load no model. For the runs already on disk the `BJ_` variables (device map, batch size) were not recorded.
+
+</details>
+
 <details><summary>Red-teaming and reusable pieces</summary>
 
 - **Red-teaming.** A shortcut found in one twin-set variant, and false values in the conflict variant that were too easy to reject, were fixed by rebuilding both sets, with the changes fixed in advance, before any result was read.
