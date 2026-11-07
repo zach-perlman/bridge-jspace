@@ -231,7 +231,29 @@ def figA1_rows() -> list[dict]:
     return out
 
 
-BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows)
+PROBE_RUN = {"qwen3.5-9b": "qwen35_9b_probe_ceiling_L12-16_v1", "qwen3.6-27b": "probe_ceiling_L32-40_v1",
+             "nemotron-3.5-lightning": "nem35l_probe_ceiling_L27-33_v1"}  # fmt: skip
+
+
+def fig12_rows() -> list[dict]:
+    """Not drawn (Fig. 12 shows the pointer runs only): the post's text compares the lens part's swap with a probe's
+    subspace on the same run and items (the probe-valid relations of the probe-ceiling run), transfer in points."""
+    out = []
+    for model, run in PROBE_RUN.items():
+        k = SHORT[model]
+        src = f"results/probe_ceiling/{run}/summary.json"
+        s = json.loads((REPO / src).read_text())
+        for key, cond, what in (("lens", "swap", "the lens part (J++) swapped in"),
+                                ("probe", "swap_probe", "a probe's subspace swapped in")):  # fmt: skip
+            v = s[f"memory_valid/{cond}"]
+            out.append(_row(f"fig12.same_run.{key}.{k}", "fig12_pointer (text)", model,
+                            f"{what}, transfer on the probe-valid relations (one run, one item set)", v["transfer"],
+                            *(v.get("ci") or (None, None)), n=v.get("n"), unit="points",
+                            source=f'{src} ["memory_valid/{cond}"].transfer'))  # fmt: skip
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows)
 
 
 def rows() -> list[dict]:

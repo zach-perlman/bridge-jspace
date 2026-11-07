@@ -167,11 +167,11 @@ def fig07_routes() -> None:
 # ---- Fig. 12: the pointer (r4_pointer) ----------------------------------------------------------------------------
 def fig12_pointer() -> None:
     """As r4: conditions as rows, models as columns, every cell in points with its 95% interval (docs/breadth/data.csv
-    ptr.*, probe.*). The paired difference "neutral sentence minus own passage" is a row of its own, in text, where no
-    line runs (r4 printed it inside the panel)."""
+    ptr.*). The paired difference "neutral sentence minus own passage" is a row of its own, in text, where no line runs
+    (r4 printed it inside the panel). r4's probe-subspace row is left out: its run has another item set, so the post
+    compares it with the lens part as text, both from that run (data/figures/writeup/data.csv fig12.same_run.*)."""
     conds = [(("another entity D's", "own passage"), "lens"), (("one neutral sentence", "about D"), "lens"),
-             (("without D's", "own-word directions"), "lens"), (("rotated (control)",), "control"),
-             (("a probe's subspace", "(reads the fact)"), "neutral")]  # fmt: skip
+             (("without D's", "own-word directions"), "lens"), (("rotated (control)",), "control")]  # fmt: skip
     diff_label = ("neutral − own passage", "paired, points")
     labels = [c for c, _ in conds] + [diff_label]
     rows = [Row("") for _ in labels]
@@ -180,8 +180,7 @@ def fig12_pointer() -> None:
     lim = (-8, 92)
 
     def cells(k):
-        return [D.b(f"ptr.{k}.swap"), D.b(f"ptr.{k}.neutral_pts"), D.b(f"ptr.{k}.noown_pts"), D.b(f"ptr.{k}.rot_pts"),
-                D.b(f"probe.{k}.probe_pts")]  # fmt: skip
+        return [D.b(f"ptr.{k}.swap"), D.b(f"ptr.{k}.neutral_pts"), D.b(f"ptr.{k}.noown_pts"), D.b(f"ptr.{k}.rot_pts")]
 
     def panel(k):
         def f(ax, _rows):
@@ -211,9 +210,8 @@ def fig12_pointer() -> None:
     t = W.table(rows, [Col(1.86, n, items(k), panel(k), lim, [0, 40, 80], xlabel="points", cue="→ more follow D")
                        for k, n in models], label_w=1.95, labels=False, row_h=0.56, skip_lines=(n_dots,), head=1.15, title_top=0.75,
                 subtitle="D: another entity of the same kind · answers moved to D's fact",
-                key=[[("●", C["lens"], "the lens part, from D"), ("●", C["control"], "rotated control")],
-                     [("●", C["neutral"], "a probe's subspace: supervised comparison"),
-                      ("", MUTED, "whiskers: 95% interval")]])  # fmt: skip
+                key=[("●", C["lens"], "the lens part, from D"), ("●", C["control"], "rotated control"),
+                     ("", MUTED, "whiskers: 95% interval")])  # fmt: skip
     # the pointer runs are not the swap run Fig. 6 pools: another item set, so their swap differs from Fig. 6's
     def runs_note(fig):  # a second grey line under the subtitle
         fig.text(0.12 / fig.get_figwidth(), 1 - 0.42 / fig.get_figheight(),

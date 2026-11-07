@@ -20,7 +20,7 @@ DATA = REPO / "data" / "figures" / "writeup" / "data.csv"
 PATH = re.compile(r"\b(?:results|data|docs|scripts)/[\w.\-/\[\]]+")
 # the precision each figure prints (one precision per column; Amendment 1): key prefix -> decimals
 PRINTED = {"fig04.recall": 0, "fig04.lookup": 0, "fig04.gap": 1, "fig05.band_diff": 1, "fig10.span_only_matched": 2,
-           "fig10": 2, "fig11": 1, "figA1": 1}  # fmt: skip
+           "fig10": 2, "fig11": 1, "figA1": 1, "fig12": 1}  # fmt: skip
 
 
 def _stored() -> list[dict]:
