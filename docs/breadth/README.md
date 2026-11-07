@@ -35,7 +35,13 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at b830e65f from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at c9f13bbc from the run files.
+
+## What we predicted
+
+Every hypothesis this track tested, with its verdict and source, is in the [hypotheses ledger](../plans/hypotheses.md); failed and withdrawn ones are kept.
+In short: C1 (memory steps need the J-space, lookups do not) **held**, graded across models; H0 **failed** for recalled entities; H3 (any lookup in the chain) and the Olmo architecture prediction **failed**.
+C2′ **held in part**; C3 (computed bridges) was **not tested in the final design**.
 
 ## Setup
 
