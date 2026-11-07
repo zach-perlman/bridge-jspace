@@ -30,7 +30,7 @@ TWIN = WB.TWIN
 # README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
 ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
-         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets"}  # fmt: skip
+         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets", "p0b_tools": "fig03_tools"}  # fmt: skip
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 
 
@@ -234,7 +234,7 @@ FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4
 # 'address swap' and 'a change of item' overlap in one strip; value labels on a mark and across lines).
 BLOCKED = {"f6_address": f6_address}
 # Left on figkit: f3_nine_models (a second same-role estimate in one row: Bolt at 100 directions, the 122B scored by
-# probability), r5_routes (stack whiskers), p0b_tools (a schematic of coloured grid cells, as the write-up's fig03).
+# probability), r5_routes (stack whiskers).
 
 
 DEPTH = REPO / "figures" / "depth"
