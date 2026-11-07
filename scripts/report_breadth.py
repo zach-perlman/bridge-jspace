@@ -10,11 +10,15 @@ Markers: {{v|key}} value; {{a|key}} its size, unsigned; {{ci|key}} "[lo, hi]"; {
 experiments table; {{head}} the commit. A marker whose key is not in data.csv stops the build.
 
 python scripts/report_breadth.py            (CPU only; reads results/ and the clean worktree's results)
+python scripts/report_breadth.py --redraw-keys   append only the keys data.csv lacks (collect_redraw: the numbers the
+                                                 styles-plot redraw of figures/breadth needs); existing rows untouched
+python scripts/report_breadth.py --copy-figures  also copy fig_neel's pod renders into figures/breadth (old figure set)
 """
 
 from __future__ import annotations
 
 import csv
+import io
 import json
 import re
 import subprocess
@@ -23,7 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
-from scripts import fig_neel as F  # noqa: E402
+from scripts import breadth_data as F  # noqa: E402  the result readers (out of fig_neel.py, 7 Nov)
 
 D, RES, A2, SET = F.D, F.RES, F.A2, F.SET
 OUT = ROOT / "docs" / "breadth"
@@ -400,6 +404,124 @@ def collect_night() -> None:
         add("det.nl.same", "reruns", "nl", "determinism check: rows with identical log-probability", sum(ra[x]["logp"] == rb[x]["logp"] for x in sh), unit="count", source="results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1")
 
 
+def collect_redraw() -> None:
+    """7 Nov: the numbers fig_neel.py drew but data.csv lacked, so figures/breadth can be redrawn from data.csv alone
+    (styles-plot). Same readers and runs as fig_neel's panels; README figure names in the comments."""
+    ID = {v[1]: k for k, v in M.items()}  # results_digest label -> model id
+    # ---- fig00_dataset (F01): C the relations of the test split; D eligibility per model and start
+    items_path = F.DATA / SET / "items.jsonl"
+    src = str(items_path.relative_to(ROOT))
+    facts = [d for d in map(json.loads, items_path.read_text().splitlines()) if d["module"] == "facts"]
+    add("data.facts", "dataset", "all", "facts items on test", len(facts), unit="count", source=src)
+    add("data.relations", "dataset", "all", "relations", len({d["relation"] for d in facts}), unit="count", source=src)
+    add("data.pairs", "dataset", "all", "(relation, bridge) pairs on test", len({(d["relation"], d["bridge"]) for d in facts}), unit="count", source=src)
+    add("data.words", "dataset", "all", "words (how the bridge is reached x where the answer comes from)", len({d["word"] for d in facts}), unit="count", source=src)
+    for rel in F.RELATIONS:
+        ds = [d for d in facts if d["relation"] == rel]
+        add(f"data.rel.{rel}.items", "dataset", "all", f"test items, relation {rel}", len(ds), unit="count", source=src)
+        add(f"data.rel.{rel}.bridges", "dataset", "all", f"bridges, relation {rel}", len({d["bridge"] for d in ds}), unit="count", source=src)
+        add(f"data.rel.{rel}.answers", "dataset", "all", f"distinct answers, relation {rel}", len({d["real"] for d in ds if d.get("real")}), unit="count", source=src)
+    from scripts import tasks_v2 as T  # noqa: PLC0415
+
+    by_id = {d["id"]: d for d in facts}
+    for m in ("q27", "q122", "nb", "mi", "nl", "q9", "mu", "ds"):
+        comp = f"{M[m][2]}{SET}_competence_cand2_v1"
+        if not (RES / "tasks_v2" / comp / "items.jsonl").exists():
+            continue
+        ids = {it["id"] for it in T.eligible(SET, comp, F.WORDS, 1000, "all")}  # the call ablate_v2 makes (--tasks-level all, --n 1000)
+        csrc = f"results/tasks_v2/{comp}/items.jsonl"
+        for st in "PMT":
+            add(f"elig.{m}.{st}", "dataset", m, f"eligible test items, start {st}", sum(1 for i in ids if by_id.get(i, {}).get("start") == st), unit="count", source=csrc)
+        add(f"elig.{m}", "dataset", m, "eligible test items (every part right unedited)", sum(1 for i in ids if i in by_id), unit="count", source=csrc)
+    # ---- fig03_robust (F05) A: the rotated control per relation
+    for m in V2:
+        ko = ko_run(m)[1]
+        for rel in F.RELATIONS:
+            x = F.cell(ko, f"paper10_rot/relation={rel}")
+            if x:
+                add(f"ko.{m}.rel.{rel}.rot", "knockout", m, f"M - K, relation {rel}, paper10_rot", x[0], *x[1], source=f"results/ablate_v2/jsuite2_score/{ko}.json")
+    # ---- fig04_where (F06) A: depth profiles, a 1/8-wide window slid through the model (dev)
+    for lab, run in F.PROFILES:
+        m, src = ID[lab], f"results/ablate_v2/profile/{run}.json"
+        s = jl(A2 / "profile" / f"{run}.json")
+        if not s:
+            continue
+        add(f"prof.{m}.layers", "where", m, "layers in the model", s["n_layers"], unit="count", source=src)
+        for band, b in s["bands"].items():
+            lo, hi = b["depth"]
+            add(f"prof.{m}.{band}.depth", "where", m, f"window {band}: middle of its depth (lo, hi: its ends)", (lo + hi) / 2, lo, hi, unit="share", source=src)
+            for cond, q in (("paper10", ""), ("unembed10", ".u"), ("paper10_rot", ".rot")):
+                c = b[cond]
+                add(f"prof.{m}.{band}{q}", "where", m, f"M - K on dev, window {band}, {cond}", c["M-K"], *c["M-K_ci"], c["n"]["M"], source=src)
+                add(f"prof.{m}.{band}{q}.lossK", "where", m, f"stated facts (K) lost, window {band}, {cond}", c["loss"]["K"], n=c["n"]["K"], unit="abs", source=src)
+    # B: the late bands' all-token runs and the 122B's whole-passage run (the mid bands are pos.* in collect)
+    for key, run in (("pos.mi.all", "min14_jsuite_v2_test_chat_ko_cand2_v1"), ("pos.q122.all", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1"),
+                     ("pos.q122.context", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_poscontext_v1")):  # fmt: skip
+        x = F.cell(run, "paper10/start=all")
+        if x:
+            add(key, "positions", key.split(".")[1], f"M - K at {run}", x[0], *x[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
+    # ---- fig06_pointer (F08): the pointer run's logit-lens part and paste; the cross-relation pair; the probe run's J++ swap
+    for lab in F.HEAD:
+        m = ID[lab]
+        run = dict(D.POINTER)[lab]
+        s, src = jl(RES / "jswap" / run / "summary.json"), f"results/jswap/{run}/summary.json"
+        if s:
+            for key, cond, what in (("neutral_u_pts", "swap_neutral_u", "logit-lens part of the neutral sentence, transfer"),
+                                    ("paste_neutral_pts", "paste_neutral", "whole residual of the neutral sentence (paste), transfer")):  # fmt: skip
+                c = s[f"memory/{cond}"]
+                add(f"ptr.{m}.{key}", "pointer", m, what, c["transfer"], *c["ci"], c["n"], source=src)
+        xr = ko_run(m)[8]
+        s, src = jl(RES / "jswap" / xr / "summary.json"), f"results/jswap/{xr}/summary.json"
+        if s:
+            for key, cond, what in (("srel", "swap_srel", "J-part from a passage on the same relation, transfer"),
+                                    ("xrel", "swap_xrel", "J-part from a passage on another relation, transfer")):  # fmt: skip
+                c = s[f"memory/{cond}"]
+                add(f"xrel.{m}.{key}", "pointer", m, what, c["transfer"], *c["ci"], c["n"], source=src)
+        pr = ko_run(m)[6]
+        s, src = jl(RES / "probe_ceiling" / pr / "summary.json"), f"results/probe_ceiling/{pr}/summary.json"
+        if s and "memory_valid/swap" in s:
+            c = s["memory_valid/swap"]
+            add(f"probe.{m}.swap_pts", "probe", m, "J++ swap on probe-valid relations, transfer", c["transfer"], *c["ci"], c["n"], source=src)
+    # ---- fig07_lookup (F09): the J++ lens at the answer position, layer by layer (pointer run, memory finals)
+    for lab in F.HEAD:
+        m = ID[lab]
+        run = dict(D.POINTER)[lab]
+        s, src = jl(RES / "jswap" / run / "summary.json"), f"results/jswap/{run}/summary.json"
+        if not s:
+            continue
+        tl = s["timeline_memory"]
+        for la in sorted({int(k.split("/L")[1]) for k in tl}):
+            for key, cond, field, what in (("kept", "none", "kept", "unedited: X's own attribute"),
+                                           ("neutral", "swap_neutral", "donor", "J-part from a neutral sentence about D: D's attribute"),
+                                           ("swap", "swap", "donor", "J-part from D's passage: D's attribute")):  # fmt: skip
+                c = tl[f"{cond}/L{la}"]
+                add(f"look.{m}.L{la}.{key}", "lookup", m, f"lens top pick at the answer position, layer {la}: {what}", c[field], n=c["n"], unit="pct", source=src)
+    # ---- fig08_readable (F02): what each lens ranks first at the bridge's mention (start P, final M), by layer
+    for lab, run in F.READOUT:
+        m, src = ID[lab], f"results/bridge_readout/{run}/summary.json"
+        s = jl(RES / "bridge_readout" / run / "summary.json")
+        if not s:
+            continue
+        lays = sorted({int(k.split("/")[0][1:]) for k in s})
+        prof = jl(A2 / "profile" / f"{F.LAYER_COUNT[lab]}.json")
+        if prof:
+            add(f"read.{m}.layers", "readable", m, "layers in the model", prof["n_layers"], unit="count", source=f"results/ablate_v2/profile/{F.LAYER_COUNT[lab]}.json")
+        add(f"read.{m}.chance", "readable", m, "chance: one of the relation's answers at random", s[f"L{lays[0]}/jlens/PM"]["chance"], unit="pct", source=src)
+        for la in lays:
+            for kind in ("jlens", "logit"):
+                c = s[f"L{la}/{kind}/PM"]
+                add(f"read.{m}.L{la}.{kind}", "readable", m, f"true attribute ranked first among the relation's answers, layer {la}, {kind}", c["top_among_candidates"], n=c["n"], unit="pct", source=src)
+    # ---- fig10_beyond (F11) C: the reply classes the spot-check lacked (still right and the bridge's name are in collect)
+    for m, run in (("q27", "natplus_v1_chat_genspot_cand2_v1"), ("q9", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("nl", "nem35l_natplus_v1_chat_genspot_cand2_v1"), ("mu", "muse30_natplus_v1_chat_genspot_cand2_v1")):
+        s = jl(RES / "gen_spot" / run / "summary.json")
+        if s:
+            for w in ("PM", "MM"):
+                cl = s["cells"][f"{w}/paper10"]["class"]
+                n = sum(cl.values())
+                for k, what in (("lure", "a lure in the passage"), ("other_cand", "another valid answer"), ("other", "something else")):
+                    add(f"gen.{m}.{w}.{k}", "spot-check", m, f"{w}: replies giving {what}", 100 * cl.get(k, 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
+
+
 # ---- rendering
 def fmt(r: dict, ci: bool = False) -> str:
     v, u = r["value"], r["unit"]
@@ -478,20 +600,45 @@ def copy_figures() -> None:
     """The figure set (scripts/fig_neel.py, rendered into /workspace/scratch/neel_figures) under the README's names."""
     import shutil
 
+    from scripts import fig_neel  # noqa: PLC0415  the old figure set only
+
     FIGS_OUT.mkdir(parents=True, exist_ok=True)
     for src, dst in FIGS.items():
-        f = F.OUT / f"{src}.png"
+        f = fig_neel.OUT / f"{src}.png"
         if f.exists():
             shutil.copyfile(f, FIGS_OUT / f"{dst}.png")
 
 
+COLUMNS = ["key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source"]
+
+
+def append_new_keys() -> list[str]:
+    """Append to data.csv the rows of keys it lacks, leaving every existing line as it is (data.csv is also written by
+    ptr_intervals.py and f2_differences.py and holds clean-worktree rows that cannot be rebuilt off the pod)."""
+    path = OUT / "data.csv"
+    old = path.read_bytes().decode("utf-8")  # as is: read_text would turn its \r\n into \n
+    have = {r["key"] for r in csv.DictReader(io.StringIO(old))}
+    new = [r for r in ROWS if r["key"] not in have]
+    buf = io.StringIO()
+    csv.DictWriter(buf, fieldnames=COLUMNS).writerows(new)
+    path.write_text(old + buf.getvalue(), newline="")
+    return [r["key"] for r in new]
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    copy_figures()
+    if "--redraw-keys" in sys.argv:
+        collect_redraw()
+        added = append_new_keys()
+        print(f"data.csv: {len(added)} rows appended")
+        sys.exit(0)
+    if "--copy-figures" in sys.argv:
+        copy_figures()
     collect()
     collect_night()
+    collect_redraw()
     with (OUT / "data.csv").open("w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source"])
+        w = csv.DictWriter(fh, fieldnames=COLUMNS)
         w.writeheader()
         w.writerows(ROWS)
     print(f"data.csv: {len(ROWS)} rows")
