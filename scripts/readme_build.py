@@ -18,6 +18,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{q|text}}                   a number quoted from outside the grid, rendered as is
   {{num|key}}                  an X0 number from docs/depth/x0_numbers.json (scripts/x0_details.py, from the run files)
   {{pt|key}}                   the same number's point estimate, without its interval (for ranges in prose)
+  {{sh|key}}                   the same point estimate, a percentage written as a share ("65%" → "0.65")
   {{d|figure|model|quantity}}  a plotted number from data/figures/depth/data.csv (scripts/readme_story_figures.py writes it):
                                "0.08 [0.05, 0.12]"; model as 9b / 27b / 122b / muse or the target name
   {{dp|figure|model|quantity}} the same number's point estimate
@@ -354,12 +355,16 @@ def one(x: re.Match[str], book: Book) -> str:
         return book.conf(args[0])
     if kind == "q":
         return "|".join(args)
-    if kind in ("num", "pt"):  # an X0 number, recomputed from the run files by scripts/x0_details.py
+    if kind in ("num", "pt", "sh"):  # an X0 number, recomputed from the run files by scripts/x0_details.py
         numbers = json.loads((REPO / "docs" / "depth" / "x0_numbers.json").read_text())
         if args[0] not in numbers:
             raise ValueError(f"{x.group(0)}: no such key in docs/depth/x0_numbers.json (run scripts/x0_details.py)")
         text = numbers[args[0]]["text"]
-        text = text.split(" [")[0] if kind == "pt" else text  # pt: the point estimate, without its interval
+        text = text.split(" [")[0] if kind in ("pt", "sh") else text  # pt: the point estimate, without its interval
+        if kind == "sh":  # the depth track writes shares: "65%" → "0.65"
+            if not text.endswith("%"):
+                raise ValueError(f"{x.group(0)}: {text!r} is not a percentage")
+            text = f"{float(text[:-1]) / 100:.2f}"
         return text + (book.src("docs/depth/x0_numbers.json", args[0]) if book is not None else "")
     if kind in ("d", "dp"):  # a plotted number from data/figures/depth/data.csv
         r = book.data(*args)
