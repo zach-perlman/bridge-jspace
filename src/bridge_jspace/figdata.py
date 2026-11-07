@@ -243,6 +243,25 @@ TWO_BY_TWO = [
      "Zach's operation, his passages: his rotated-direction control, recall minus lookup"),
 ]  # fmt: skip
 
+# ---- the example scene (scripts/examples.py's E1 rule) ---------------------------------------------------------------
+E1_RUN = REPO / "results/x0_necessity/x0_necessity_27b_chat"
+
+
+@cache
+def e1_words(n: int) -> tuple[str, ...]:
+    """The last n words of E1's scene up to and including its bridge word (E1: the main test's first scene in its
+    per-item file, Qwen 27B, at the main test's layer), for the tools figure's token axis."""
+    layer = int(json.loads((REPO / "docs/depth/x0_numbers.json").read_text())["layer_27b"]["text"])
+    with (E1_RUN / "outcomes.jsonl").open() as f:
+        first = next(r["scene"] for r in map(json.loads, f) if r["layer"] == layer)
+    with (E1_RUN / "cases.jsonl").open() as f:
+        case = next(c for c in map(json.loads, f) if c["scene"] == first and c["rendering"] == "chat")
+    asked = re.match(r"Which locker belongs to (\w+)'s pick", case["readers"]["PP"]["question"]).group(1)
+    sentence = f"{asked} picked the {case['bridge']}"
+    end = case["context"].index(sentence) + len(sentence)
+    return tuple(case["context"][:end].split()[-n:])
+
+
 # ---- words the builders fill in --------------------------------------------------------------------------------------------
 READ_ALOUD = ("read: on {model}, removing the lens part everywhere drops recall {recall} points and lookup {lookup}; the gap is {gap}, "
               "the largest same-size control's {ctrl}")  # fmt: skip

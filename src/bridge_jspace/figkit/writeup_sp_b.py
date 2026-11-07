@@ -615,20 +615,24 @@ def fig02_datasets(width: float | None = None) -> sp.Figure:
 
 # ---- Fig. 3: the tools (layers x tokens grids) ---------------------------------------------------------------------------
 def fig03_tools(width: float | None = None) -> sp.Figure:
-    """The three tools as grids (layers x tokens): the cells a tool changes are one box in its colour (the lens part
-    teal, another entity's part blue) with its words centred right under it (Dan, 7 Nov: a word beside every coloured
-    element); the bridge word's column is labelled. The grid is an illustration: its band is the bottom rows. The
-    layout follows the target's width (the README draws it at 11 in, the post at 8 in)."""
+    """The three tools as grids (layers x tokens) over a real scene's last words (example E1's, its bridge word last
+    and bold): the cells a tool changes are one box in the lens part's colour, whoever's lens part it is (README brief
+    F1: teal for every lens part), with its words centred right under it (a word beside every coloured element). The
+    grid is an illustration: its band is the bottom rows. The layout follows the target's width (the README draws it
+    at 11 in, the post at 8 in)."""
     width = width or vocab().target("post").width_in
-    nl, nt, bridge = 4, 7, 4  # layers, tokens, the bridge word's token
+    words = D.e1_words(5)
+    nl, nt = 4, len(words)
+    bridge = nt - 1  # the bridge word: the last word shown
     panels = (("remove everywhere", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
               ("removed from the patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
                "lens part removed"),
-              ("swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "identity",
+              ("swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "lens",
                ("another entity's", "lens part swapped in")))  # fmt: skip
     panel_w, label_w = (width - 0.24) / 3, 0.62
-    cell = min((panel_w - label_w - 0.12) / nt, 0.42)
-    gy, line = 0.95, 0.22
+    cell = min((panel_w - label_w - 0.12) / nt, 0.5)
+    line = 0.22
+    gy = 0.95 + line  # the scene's words take two staggered lines above the grid
     words_n = max(1 if isinstance(w, str) else len(w) for *_, w in panels)
     el: list = []
     for k, (title, sub, (r0, r1, t0, t1), role, word) in enumerate(panels):
@@ -636,19 +640,22 @@ def fig03_tools(width: float | None = None) -> sp.Figure:
         gx = x0 + label_w
         grid_bottom = gy + nl * cell
         el += [sp.Words(x0, 0.2, [(title, None)], bold=True), sp.Words(x0, 0.47, [(sub, None)]),
-               sp.Words(gx + (bridge + 0.5) * cell - _width("bridge") / 2, gy - 0.14, [("bridge", None)]),
                sp.Words(x0, gy + nl * cell / 2, [("layers", None)]),
-               sp.Words(gx + nt * cell / 2 - _width("tokens") / 2, grid_bottom + 0.17 + line * words_n + 0.12,
-                        [("tokens", None)])]  # fmt: skip
+               sp.Words(x0, gy - 0.14 - line / 2, [("tokens", None)])]  # fmt: skip
+        for j, w in enumerate(words):  # the scene's words over their cells, on two staggered lines
+            y = gy - 0.14 - line * ((nt - 1 - j) % 2)
+            el.append(sp.Words(gx + (j + 0.5) * cell - _width(w, bold=j == bridge) / 2, y, [(w, None, j == bridge)],
+                               verbatim=True))  # fmt: skip
         el += [sp.Box(gx + t * cell + 0.015, gy + r * cell + 0.015, cell - 0.03, cell - 0.03)
                for r in range(nl) for t in range(nt) if not (r0 <= r < r1 and t0 <= t < t1)]  # fmt: skip
         box_mid = gx + (t0 + t1) / 2 * cell
         el.append(sp.Box(gx + t0 * cell + 0.015, gy + r0 * cell + 0.015, (t1 - t0) * cell - 0.03,
                          (r1 - r0) * cell - 0.03, role=role))  # fmt: skip
+        below = grid_bottom + 0.17
         for j, w in enumerate((word,) if isinstance(word, str) else word):  # centred under the box, inside the panel
             x = min(max(box_mid - _width(w, bold=True) / 2, gx), x0 + panel_w - 0.1 - _width(w, bold=True))
-            el.append(sp.Words(x, grid_bottom + 0.17 + line * j, [(w, role)], bold=True))
-    height = gy + nl * cell + 0.17 + line * words_n + 0.12 + 0.3
+            el.append(sp.Words(x, below + line * j, [(w, role)], bold=True))
+    height = gy + nl * cell + 0.17 + line * words_n + 0.3
     return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(height, el))
 
 

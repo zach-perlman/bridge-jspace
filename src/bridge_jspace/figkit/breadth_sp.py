@@ -517,7 +517,6 @@ def fig10c_beyond() -> sp.Figure:
     return sp.Figure("breadth_fig10c_beyond", vocab()).add(t)
 
 
-
 FIGS = {"fig01_needed": fig01_needed, "fig03a_robust": fig03a_robust, "fig03b_robust": fig03b_robust,
         "fig04_where": fig04_where, "fig05_carries": fig05_carries, "fig09_dose": fig09_dose,
         "fig02_datasets": fig02_datasets, "fig02b_datasets": fig02b_datasets, "fig10a1_beyond": fig10a1_beyond,
