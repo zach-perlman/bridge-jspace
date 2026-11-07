@@ -29,9 +29,12 @@ NAMES = [
     r"\bL\d+(?:-\d+)?\b|\bL/\d\b",  # L26, L36-42, L/2
     r"\bQ\d+\.\d+(?:-Q\d+\.\d+)?\b",  # Q46.1, Q46.2-Q46.3
     r"\b\d+[a-z]\b",  # 45r, 45p
-    r"\b\d{1,2} Oct\b",  # dates
+    r"\b\d{1,2}–\d{1,2} Oct\b|\b\d{1,2} Oct\b|\b20\d\d\b",  # dates, date ranges, years
+    r"\bMATS \d+\.\d\b",  # the programme's name
     r"\bQwen\d\.\d\b",
-    r"\bH0\b",  # Zach's hypothesis name
+    r"\b[HC]\d\b′?",  # hypothesis names (H0-H3, C1-C3, C2′), docs/plans/hypotheses.md
+    r"\bclaims? \d+(?:, \d+)*\b",  # the depth report's numbered claims
+    r"\bGemma \d\b",  # a model name
     r"\bFinding \d\b",  # a section of the README itself
 ]
 
@@ -130,3 +133,46 @@ def test_checks_catch_failures():
     assert unsourced_lines("- the gap is 0.53 on the 27B")
     assert not unsourced_lines("- the 27B at L32 (45r, Q46.1, 27 Oct; Finding 2)")
     assert unsourced_lines("- Finding 2 moves the stated answer by 24.6 points")
+
+
+# ---- the page's shape (README brief, 7 Nov: esk-audit's outline) ---------------------------------------------------------
+TEMPLATE = REPO / "docs" / "readme" / "README.template.md"
+WORD_BUDGET = 3500  # visible words outside <details>, comments, code blocks and image links
+
+
+def visible_words(text: str) -> int:
+    for pat in (r"<!--.*?-->", r"<details>.*?</details>", r"```.*?```", r"!\[[^\]]*\]\([^)]*\)"):
+        text = re.sub(pat, " ", text, flags=re.S)
+    text = re.sub(r"\]\([^)]*\)", "]", text)
+    return len(re.findall(r"\w[\w'’.-]*", text))
+
+
+def test_visible_text_within_the_word_budget():
+    assert visible_words(README.read_text(encoding="utf-8")) <= WORD_BUDGET
+
+
+def test_alt_texts_are_unique():
+    alts = re.findall(r"!\[([^\]]*)\]\(", README.read_text(encoding="utf-8"))
+    assert len(alts) == len(set(alts)), sorted(a for a in alts if alts.count(a) > 1)
+
+
+def test_every_figure_takes_its_caption_from_the_store():
+    """In the template, each figure of a set (but the key, which the paragraph above it explains) is followed by its
+    {{caption|set/stem}}: one caption per PNG, the same on every page."""
+    from bridge_jspace.figkit import layout as L
+
+    lines = [ln for ln in TEMPLATE.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    bad = []
+    for i, ln in enumerate(lines):
+        m = re.fullmatch(r"\{\{fig\|([\w-]+)\}\}", ln.strip())
+        img = re.match(r"!\[[^\]]*\]\(figures/([\w-]+)/([\w-]+)\.png\)", ln.strip())
+        if m:
+            want = f"readme/{L.path('readme', m.group(1)).stem}"
+        elif img and img.group(2) != "00_key":
+            want = f"{img.group(1)}/{img.group(2)}"
+        else:
+            continue
+        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        if not nxt.startswith("{{caption|" + want + "}}"):
+            bad.append(want)
+    assert not bad, bad
