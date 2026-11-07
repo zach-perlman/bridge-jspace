@@ -33,6 +33,16 @@ A recent interpretability tool, the J++ lens, reads a language model's hidden st
 
 *The two kinds of prompt. Top: a fact passage, where the final fact is stated in the passage or left to memory. Bottom: a locker scene, where the same bridge word feeds a lookup question and a recall question.*
 
+**Real examples.** Each card below is one real item, picked by the rule printed on it, never by its outcome; the line under it says how typical it is.
+
+![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/examples/01_locker_scene.png)
+
+{{caption|examples/01_locker_scene}}
+
+![One real fact passage, Qwen 27B: the final fact stated for the lookup, left to memory for the recall](figures/examples/02_fact_passage.png)
+
+{{caption|examples/02_fact_passage}}
+
 - **Fact passages** (breadth track). A short passage mentions an entity; the question needs one of its facts. In the matched pair the fact is either stated in the passage or left to memory; everything else is identical. The main set, `jsuite_v2`, has 8 relations; 179 bridge facts on test and 5,370 test items<!-- src: docs/breadth/README.md | 8 relations; 179 bridge facts on test; 5,370 test items -->. Earlier sets (toy puzzles, natural fact chains, natural text) give the same picture. The newest set, `jsuite_v4` (**the twin set**), describes six people instead of naming them and adds three variants: a codename defined in the passage, a real conflict between the passage and memory, and a remembered attribute used as a key into the passage.
 - **Locker scenes** (depth track). "The locker of carbon is 3. The locker of helium is 5. ... Eric picked carbon." The lookup asks "Which locker belongs to Eric's pick?"; the recall asks "What is the atomic number of Eric's pick?" Both pass through the bridge word "carbon". <!-- src: docs/depth/README.md | The locker of carbon is 3. The locker of helium is 5. -->
 - **The lens part.** The directions the J++ lens reads at the bridge: the top 10 in the breadth track<!-- src: docs/breadth/README.md | project out the 10 directions the J++ lens reads most there -->; in the depth track, the 25 that best rebuild the change between two prompts<!-- src: docs/depth/README.md | the 25 directions of the J++ lens that best rebuild the change -->.
@@ -124,6 +134,10 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 - **Confidence.** Medium. Reading and removal were fixed in advance on three models. The swap's rule fixed in advance was read at the wrong dose and said no on every model<!-- src: docs/depth/README.md | read at s = 1 and said no on every model -->; the numbers above use twice that dose, chosen afterwards. Lightning and the 122B's lowered gate are post hoc.
 - **Limits.** The 27B's address is weak: its swap reaches only 0.25, and adding the address alone does not bring position answers back. The probe is refit for each format. The address points to the item's mention, not to a number: on the 9B and Lightning its swap also changes 0.21 / 0.27 ○ of recalls<!-- src: data/figures/depth/data.csv | the address swap at s = 2: recalls that change -->.
 - **Takeaway.** What the lookup uses is linearly readable and causally effective, but invisible to the lens. A monitor that reads only the lens misses it.
+
+![One real routes scene, Qwen 9B: the three routes predict three lockers; the lookup takes the identity route's](figures/examples/03_routes.png)
+
+{{caption|examples/03_routes}}
 
 {{fig|r5_routes}}
 

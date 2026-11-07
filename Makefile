@@ -142,7 +142,8 @@ readme:             ## the three READMEs from their templates (root, docs/depth,
 	uv run python -m bridge_jspace.figkit.readme_sp
 	uv run python -m bridge_jspace.figkit.depth_sp
 	uv run python -m bridge_jspace.figkit.breadth_sp
-	for s in readme depth breadth; do \
+	uv run python scripts/examples.py
+	for s in readme depth breadth examples; do \
 		uv run styles-plot check figures/$$s --vocab plotstyle.toml || exit 1; \
 		uv run styles-plot sheet figures/$$s -o figures/$$s/_sheets --order figures/$$s/_meta/order.txt || exit 1; \
 	done

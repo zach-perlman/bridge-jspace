@@ -34,8 +34,12 @@ def breadth() -> dict[str, str]:
 def x0() -> dict[str, str]:
     out = {}
     for k, d in json.loads((REPO / "docs/depth/x0_numbers.json").read_text()).items():
-        m = re.search(r"[−-]?\d+\.\d+", str(d.get("text", "")) if isinstance(d, dict) else str(d))
-        if m:
+        text = str(d.get("text", "")) if isinstance(d, dict) else str(d)
+        # the first decimal; a text without one (a count, a layer) gives its first whole number
+        m = re.search(r"[−-]?\d+\.\d+", text) or re.fullmatch(r"\s*([−-]?\d+)\s*", text)
+        if m and m.groups():
+            out[k] = m.group(1)
+        elif m:
             out[k] = m.group(0)
     return out
 
