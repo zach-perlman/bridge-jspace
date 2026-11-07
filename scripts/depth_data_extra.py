@@ -22,6 +22,7 @@ KRAND = "answer arms: recall, the all-language shift beyond the same count of ra
 KRAND_RUNS = {"qwen3.5-9b": "runs/answer_arms_krand/qwen3.5-9b/krand/summary.json",
               "qwen3.6-27b": "runs/answer_arms_krand/qwen3.6-27b/krand_b8/summary.json",
               "muse-glimmer-30b": "runs/answer_arms_krand/muse-glimmer-30b/krand/summary.json"}  # fmt: skip
+KRAND_FIRST_27B = "runs/answer_arms_krand/qwen3.6-27b/krand/summary.json"
 Z1P = "results/z1p_checks/20261030T222158Z/tables.json"
 # (table key, path inside it, the row's quantity); n is read from the path's parent
 Z1P_ROWS = (
@@ -41,6 +42,13 @@ def rows() -> list[dict]:
         v, lo, hi = rec["b_beyond_K_random"]
         out.append({"figure": "cards", "model": model, "quantity": KRAND, "value": v, "lo": lo, "hi": hi,
                     "n": rec["n"], "source": path})  # fmt: skip
+    # the 27B's first run (14 rows per batch) missed the arms check's count gate and was rerun as krand_b8; the card
+    # names both, so its value is a row too
+    rec = json.loads((REPO / KRAND_FIRST_27B).read_text())["readers"]["recall"]
+    v, lo, hi = rec["b_beyond_K_random"]
+    out.append({"figure": "cards", "model": "qwen3.6-27b", "quantity": KRAND + ", first run (14 rows per batch; "
+                "missed the count gate, rerun as krand_b8)", "value": v, "lo": lo, "hi": hi, "n": rec["n"],
+                "source": KRAND_FIRST_27B})  # fmt: skip
     tables = json.loads((REPO / Z1P).read_text())
     model = json.loads((REPO / Z1P).with_name("manifest.json").read_text())["model"]
     for key, (part, field), quantity in Z1P_ROWS:

@@ -16176,3 +16176,4 @@ cards,qwen3.5-9b,"made-up facts F4, without the 23 passages: the gap",0.58816183
 cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: lookup, switches lost beyond a random part",-0.023809523809523947,-0.1282051282051282,0.08571428571428563,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
 cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: recall, switches lost beyond a random part",0.6,0.5000000000000001,0.7000000000000001,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
 cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: the gap",0.6238095238095239,0.47293115582050016,0.7750458291130534,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
+cards,qwen3.6-27b,"answer arms: recall, the all-language shift beyond the same count of random directions (b_beyond_K_random), first run (14 rows per batch; missed the count gate, rerun as krand_b8)",0.0121,-0.0325,0.0703,200,runs/answer_arms_krand/qwen3.6-27b/krand/summary.json
