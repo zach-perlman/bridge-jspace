@@ -130,9 +130,13 @@ The same at one layer, where each control is removed from the patch instead of t
 
 ![A probe reads the address, and removing the lens part leaves it](figures/readme/06_address_read_remove.png)
 
+*Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).<!-- src: plotstyle.toml | 95% interval -->*
+
+Swapping another locker's address in moves the lookup, and the lens's directions do not rebuild that swap:
+
 ![A swap of the address moves the lookup; the lens misses it](figures/readme/07_address_swap_lens.png)
 
-*Rows are models; columns are four tests of the address, each with its control in grey.*
+*Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).<!-- src: plotstyle.toml | z against 200 random vectors --><!-- src: docs/depth/README.md | the 25 directions of the J++ lens that best rebuild the change -->*
 
 - **Test.** Train a probe at the bridge word to read which locker sentence holds the item's locker. Remove the probe's directions from the patch. Write another locker's address in. Measure how much of that write the lens directions rebuild.
 - **Result.**

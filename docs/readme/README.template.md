@@ -129,6 +129,10 @@ The same at one layer, where each control is removed from the patch instead of t
 
 {{fig|f6a_address_read_remove}}
 
+{{caption|readme/06_address_read_remove}}
+
+Swapping another locker's address in moves the lookup, and the lens's directions do not rebuild that swap:
+
 {{fig|f6b_address_swap_lens}}
 
 {{caption|readme/07_address_swap_lens}}
