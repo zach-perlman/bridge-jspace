@@ -300,9 +300,18 @@ TAKEAWAY = {
 
 
 def shows() -> dict[str, str]:
-    """Each figure's line in the index: its takeaway, else its builder's first sentence."""
-    first = {fid: " ".join((f.__doc__ or "").split()).split(". ")[0].rstrip(".") for fid, f in FIGS.items()}
-    return {fid: TAKEAWAY.get(fid) or first[fid] for fid in FIGS}
+    """Each figure's line in the index: its takeaway in bold, then its caption from the caption store
+    (figures/writeup/_meta/captions.toml); a figure without a caption falls back to its builder's first sentence."""
+    from bridge_jspace.figkit import captions
+
+    names = L.names("writeup")
+    out = {}
+    for fid, f in FIGS.items():
+        stored = captions.load("writeup").get(names.get(fid, ""), "")
+        first = " ".join((f.__doc__ or "").split()).split(". ")[0].rstrip(".")
+        lead = f"**{TAKEAWAY[fid]}.** " if fid in TAKEAWAY else ""
+        out[fid] = lead + (stored or first)
+    return out
 
 
 def build(ids=None) -> list[str]:
