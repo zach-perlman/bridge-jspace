@@ -25,6 +25,7 @@ from bridge_jspace.figkit import writeup_appendix as WP
 from bridge_jspace.figkit import writeup_claims as WC
 from bridge_jspace.figkit import writeup_figs as W
 from bridge_jspace.figkit import writeup_intro as WI
+from bridge_jspace.figkit import writeup_sp as SP
 from bridge_jspace.figkit import writeup_v2 as W2
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
@@ -55,7 +56,8 @@ DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "f6_address", "r5_routes", "f1
 TARGET = {"readme": [i for i in FIGS if i not in WRITEUP_FIGS and i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers")], "depth": list(DEPTH)}
 # p0a_datasets: the root README's datasets figure (Dan 30 Oct: the table style, no title inside)
 TARGET["slide"] = [*(i for i in TARGET["readme"] if i != "f10_sentence_order"), "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
-TARGET["writeup"] = list(WRITEUP_FIGS)
+# the styles-plot figures (figkit/writeup_sp.py) are not built here
+TARGET["writeup"] = [i for i in WRITEUP_FIGS if i not in SP.FIGS]
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -144,11 +146,7 @@ if __name__ == "__main__":
     print("\n".join(PROBLEMS) or "lint: clean")
     if not a.ids:
         pngs = [OUT[a.target] / f"{i}.png" for i in TARGET[a.target]]
-        if a.target == "writeup":  # the post's column: every figure at 720 px, in post order; and in grayscale
-            from PIL import Image
-
-            page_sheet(pngs, OUT[a.target] / "contact_sheet.png", width=720)
-            Image.open(OUT[a.target] / "contact_sheet.png").convert("L").save(OUT[a.target] / "contact_sheet_gray.png")
+        if a.target == "writeup":  # the contact sheets come from `styles-plot sheet` (Makefile figures-writeup)
             for fid, fails in sorted(GR.CVD.items()):  # check 8: reported with the numbers, never fixed silently
                 for kind, ra, rb, d, floor in fails:
                     print(f"colour vision: {fid}: {ra}-{rb} under {kind}: CIEDE2000 {d} < {floor}")

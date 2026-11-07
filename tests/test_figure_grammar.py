@@ -1,11 +1,9 @@
 """Figure grammar v2 (docs/shared/figure_style.md): the meaning checks of figkit/grammar.py catch what they should, the
-status registry is well formed, the pilot figures pass, one data key prints one string in every figure, and the
-CIEDE2000 used by the colour-vision check is the published one."""
+status registry is well formed, and the CIEDE2000 used by the colour-vision check is the published one."""
 
 from __future__ import annotations
 
 import csv
-from collections import defaultdict
 
 import matplotlib
 
@@ -15,9 +13,7 @@ import pytest
 
 from bridge_jspace import palette as P
 from bridge_jspace.figkit import grammar as G
-from bridge_jspace.figkit import tables as TB
 from bridge_jspace.figkit import terms as TM
-from bridge_jspace.figkit import writeup_v2 as W2
 from bridge_jspace.figkit.colour_vision import ciede2000
 
 FAKE = {("t", "a"): {"status": "fixed_in_advance", "tag": ""}, ("t", "b"): {"status": "post_hoc", "tag": ""}}
@@ -127,32 +123,3 @@ def test_the_palette_has_one_hue_per_role():
 def test_ciede2000_matches_sharma(a, b, want):
     """Sharma, Wu and Dalal (2005), table 1, pairs 1, 22 and 25."""
     assert round(ciede2000(a, b), 4) == want
-
-
-@pytest.fixture(scope="module")
-def pilot(tmp_path_factory):
-    out = tmp_path_factory.mktemp("v2")
-    saved = TB.OUT["writeup"]
-    TB.OUT["writeup"] = out
-    TB.PROBLEMS.clear()
-    G.NUMBERS.clear()
-    try:
-        TB.build("writeup", list(W2.FIGS))
-    finally:
-        TB.OUT["writeup"] = saved
-    return out, list(TB.PROBLEMS), list(G.NUMBERS)
-
-
-def test_the_pilot_figures_pass_every_check(pilot):
-    out, problems, _ = pilot
-    assert problems == []
-    for fid in W2.FIGS:
-        assert (out / f"{fid}.png").exists()
-
-
-def test_one_data_key_prints_one_string_everywhere(pilot):
-    _, _, numbers = pilot
-    seen = defaultdict(set)
-    for _fid, key, s in numbers:
-        seen[key].add(s)
-    assert {k: v for k, v in seen.items() if len(v) > 1} == {}

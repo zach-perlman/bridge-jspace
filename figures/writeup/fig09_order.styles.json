@@ -1,0 +1,268 @@
+{
+ "styles_plot": "0.1.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "5b7a90697ab6706a1738256547dc6e40540ff47e5fa7a7bbad4f37dca64fc108"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "14c45e55d5c25d3356f05c41ce482e1ff56220321be63797eb8996a028a10ddc"
+ },
+ "figure": "fig09_order",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "e5a1c7e8351a4e026e7d08534e3b364fa16f77c69171bf0b352fa88919f29573",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "facts.after.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.after.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "facts.after.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.after.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.first.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.first.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "facts.first.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.first.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.after.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.after.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "locker.after.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.after.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.after.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.first.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.first.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "locker.first.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.first.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "locker.first.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.first.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.first.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.after.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.first.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.first.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.first.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "locker.after.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.first.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.first.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.after.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.first.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.first.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "order.locker.first.q9": "0.86",
+  "order.locker.after.q9": "0.19",
+  "order.locker.first.q27": "0.76",
+  "order.locker.after.q27": "0.09",
+  "order.locker.first.mu": "0.65",
+  "order.locker.after.mu": "0.09",
+  "order.locker.first.nl": "0.86",
+  "order.locker.after.nl": "0.15",
+  "order.locker.first.q122": "0.89",
+  "order.locker.after.q122": "0.11",
+  "order.facts.first.q9": "0.78",
+  "order.facts.after.q9": "0.36",
+  "order.facts.first.q27": "0.67",
+  "order.facts.after.q27": "0.11",
+  "order.facts.first.mu": "0.20",
+  "order.facts.after.mu": "0.05",
+  "order.facts.first.nl": "0.71",
+  "order.facts.after.nl": "0.38"
+ },
+ "problems": []
+}

@@ -1,0 +1,335 @@
+# The write-up's vocabulary for styles-plot (docs: https://github.com/danorel/styles-plot, docs/ADOPTING.md).
+# Carried over from src/bridge_jspace/figkit/terms.py and palette.py; tests/test_plotstyle.py keeps them in sync.
+# Mention and question have no colours (Dan, 7 Nov): they are not roles.
+
+[project]
+name = "bridge-jspace"
+
+[roles.recall]
+slot = "ink"
+word = "recall"
+meaning = "the recall reader"
+
+[roles.lookup]
+slot = "violet"
+word = "lookup"
+meaning = "the lookup reader"
+
+[roles.lens]
+slot = "teal"
+word = "lens part"
+meaning = "the lens part: J++ directions read at a word"
+
+[roles.address]
+slot = "amber"
+word = "address"
+meaning = "the address and the position route"
+
+[roles.identity]
+slot = "blue"
+word = "identity"
+meaning = "the identity route; a change of item"
+
+[roles.answer]
+slot = "brick"
+word = "answer"
+meaning = "the answer span; the answers' own directions"
+
+[roles.neutral]
+slot = "slate"
+word = "neutral"
+meaning = "a method of no role (a probe's subspace)"
+
+[controls]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change"]
+
+[key]
+tick = "the largest same-size control"
+band = "within 0.10 of a random part"
+
+[intervals]
+ci95 = "95% interval"
+
+# a paired difference printed with its sign (neutral sentence − own passage)
+[formats.points_signed]
+decimals = 1
+sign = true
+
+[units.accuracy]
+title = "accuracy (%)"
+quantity = "answers right"
+format = "accuracy"
+
+[units.drop]
+title = "accuracy drop (points)"
+quantity = "accuracy drop"
+format = "points"
+
+[units.gap]
+title = "gap: recall \u2212 lookup (points)"
+quantity = "gap"
+format = "points"
+
+[units.switches]
+title = "share of switches"
+quantity = "switches blocked"
+format = "share"
+
+[units.lookups]
+title = "share of lookups"
+quantity = "lookups"
+format = "share"
+
+[units.rebuilt]
+title = "share of the rebuilt energy"
+quantity = "rebuilt energy"
+format = "share"
+
+[units.damage]
+title = "\u00d7 the full damage"
+quantity = "of the damage"
+format = "ratio"
+
+[units.z]
+title = "z against 200 random vectors"
+quantity = "distance from random"
+format = "z"
+
+[units.lookups_switched]
+title = "share of lookups switched"
+quantity = "lookups switched"
+format = "share"
+
+[units.moved]
+title = "answers moved (points)"
+quantity = "answers moved"
+format = "points"
+
+[units.attention]
+title = "share of the last token's attention"
+quantity = "attention"
+format = "share"
+
+[units.cut]
+title = "share of the swap's switches cut"
+quantity = "switches cut"
+format = "share"
+
+[units.gap_share]
+title = "gap: recall \u2212 lookup (share of switches)"
+quantity = "gap"
+format = "share"
+
+[units.moved_difference]
+title = "difference (points)"
+quantity = "answers moved"
+format = "points_signed"
+cue = false
+
+[terms]
+canonical = [
+    "Band of layers \u00b7 fact passages",
+    "Fact passages",
+    "Locker scenes",
+    "One layer \u00b7 locker scenes",
+    "a change of item",
+    "about another entity",
+    "accuracy drop",
+    "address",
+    "address swap",
+    "another entity",
+    "another entity's own passage",
+    "another entity: one of the same kind \u00b7 answers moved to its fact",
+    "answer span",
+    "answer span kept",
+    "answer span removed",
+    "answer stayed",
+    "answer switched",
+    "colour = role",
+    "fact sentence after",
+    "fact sentence first",
+    "fixed in advance",
+    "gap: recall \u2212 lookup",
+    "identity",
+    "knock-out",
+    "lens part",
+    "lens part swapped in",
+    "locker sentence after",
+    "locker sentence first",
+    "lookup twins",
+    "marks",
+    "neutral sentence \u2212 own passage",
+    "new locker sentence",
+    "of another entity",
+    "old locker sentence",
+    "one neutral sentence",
+    "one neutral sentence about another entity",
+    "position",
+    "post hoc",
+    "recall twins",
+    "removed from the patch",
+    "sentence after the pick",
+    "sentence before the pick",
+    "share cut",
+    "swapped in",
+    "switches blocked",
+    "switches blocked beyond random",
+    "the number",
+    "the pointer runs: a different item set from Fig. 6's swap",
+    "the swap, answer stayed",
+    "the swap, answer switched",
+    "the top 10 heads",
+    "the whole change",
+    "top 10 [95%] \u00b7 10 random",
+    "top 10 heads",
+    "top 10 heads [95%] \u00b7 10 random heads",
+    "under the address swap",
+    "without another entity's own-word directions",
+    "without own-word directions",
+    "zeroing the top 10 heads",
+]
+templates = [
+    "{num} items",
+    "{num} / {num} items",
+    "{entity} \u00b7 {num} / {num} items",
+    "bar fixed in advance: {num}",
+    "unedited: {num}\u2013{num}% right on every model",
+    "unedited: {num}% right on every model",
+    "read: on {entity}, the knock-out drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
+]
+missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval"]
+not_claimed = ["shared with the logit lens", "gone when scored by probability"]
+
+[[terms.banned]]
+pattern = "\\bJ\\+\\+ part\\b"
+regex = true
+use = "lens part"
+
+[[terms.banned]]
+pattern = "\\bJ-part\\b"
+regex = true
+use = "lens part"
+
+[[terms.banned]]
+pattern = "\\btaken out\\b"
+regex = true
+use = "knock-out / removed from the patch"
+
+[[terms.banned]]
+pattern = "\\bKO\\b"
+regex = true
+use = "knock-out"
+
+[[terms.banned]]
+pattern = "\\bablat"
+regex = true
+use = "knock-out"
+
+[[terms.banned]]
+pattern = "\\bitem change\\b"
+regex = true
+use = "a change of item"
+
+[[terms.banned]]
+pattern = "\\bdonor\\b"
+regex = true
+use = "another entity"
+
+[[terms.banned]]
+pattern = "\\bD\\b"
+regex = true
+use = "another entity"
+
+[[terms.banned]]
+pattern = "\\bM \u2212 K\\b"
+regex = true
+use = "gap: recall \u2212 lookup"
+
+[[terms.banned]]
+pattern = "\\bslot\\b"
+regex = true
+use = "address"
+
+[[terms.banned]]
+pattern = "\\bALF\\b"
+regex = true
+use = "address"
+
+[[terms.banned]]
+pattern = "\\bkeepA\\b"
+regex = true
+use = "answer span kept"
+
+[[terms.banned]]
+pattern = "\\bregistered\\b"
+regex = true
+use = "fixed in advance"
+
+[[terms.banned]]
+pattern = "\\bpts\\b"
+regex = true
+use = "points"
+
+[[terms.banned]]
+pattern = "\\bstated\\b"
+regex = true
+use = "lookup"
+
+[[terms.banned]]
+pattern = "\\b(?:write|writes|written|wrote)\\b"
+regex = true
+use = "swapped in"
+
+[[terms.banned]]
+pattern = "\\b(?i:loss|lose|loses|lost|losing)\\b"
+regex = true
+use = "drop"
+
+[[entities.models]]
+key = "qwen3.5-9b"
+name = "Qwen 9B"
+id = "q9"
+
+[[entities.models]]
+key = "qwen3.6-27b"
+name = "Qwen 27B"
+id = "q27"
+
+[[entities.models]]
+key = "muse-glimmer-30b"
+name = "Muse 30B"
+id = "mu"
+
+[[entities.models]]
+key = "nemotron-3.5-lightning"
+name = "Lightning"
+id = "nl"
+
+[[entities.models]]
+key = "qwen3.5-122b-a10b"
+name = "Qwen 122B"
+id = "q122"
+
+# breadth only
+[[entities.models]]
+key = "deepseek"
+name = "DeepSeek"
+id = "ds"
+
+[[entities.models]]
+key = "ministral"
+name = "Ministral"
+id = "mi"
+
+[[entities.models]]
+key = "bolt"
+name = "Bolt"
+id = "nb"
+
+[[entities.models]]
+key = "olmo"
+name = "OLMo"
+id = "ol"
+
+[registry]
+path = "data/figures/status_sp.csv"

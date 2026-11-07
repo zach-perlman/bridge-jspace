@@ -85,10 +85,10 @@ def test_writeup_ids_stay_out_of_the_readme():
 
 def test_build_restores_the_default_font_sizes(tmp_path, monkeypatch):
     monkeypatch.setitem(TB.OUT, "writeup", tmp_path)
-    TB.build("writeup", ["fig01"])
+    TB.build("writeup", ["fig02"])
     assert T.FS == T.FS_DEFAULT
     assert T.MIN_ROW_H == 0.0
-    assert (tmp_path / "fig01_main_split.png").exists()
+    assert (tmp_path / "fig02_datasets.png").exists()
 
 
 def test_png_problems_flags_a_wrong_width(tmp_path):

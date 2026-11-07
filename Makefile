@@ -125,10 +125,14 @@ figures-kit:        ## the setup figures (p0a, p0b) and the table figures for th
 
 figures-writeup:    ## the LessWrong post's figures (figures/writeup/, 1600 px) with their contact sheet and checks
 	uv run python scripts/writeup_data.py
+	uv run python scripts/convert_status_registry.py
 	uv run python -m bridge_jspace.figkit.tables --target writeup
+	uv run python -m bridge_jspace.figkit.writeup_sp
+	uv run styles-plot check figures/writeup --vocab plotstyle.toml
+	uv run styles-plot sheet figures/writeup
 	uv run python scripts/check_style.py --writeup
 	uv run python scripts/check_figure_terms.py --writeup
-	uv run pytest -q tests/test_writeup_figures.py tests/test_figure_grammar.py
+	uv run pytest -q tests/test_writeup_figures.py tests/test_figure_grammar.py tests/test_writeup_sp.py
 
 writeup-examples:    ## the write-up's real prompts and answers per experiment (docs/writeup/examples.md) and its checks
 	uv run python scripts/writeup_examples.py
