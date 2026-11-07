@@ -57,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026. Built at aa368d7d from the run files.
+- **Runs.** As of 29 Oct 2026. Built at b33d1f1d from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -789,11 +789,11 @@ Every number on this page carries a source comment into data/figures/depth/data.
 | `depth/07_depth.png` | claim 12 · [Is the address readable before the lookup uses it, on every model?](#is-the-address-readable-before-the-lookup-uses-it-on-every-model) | On the 9B, 27B and Muse the address is readable before the lookup uses it |
 | `depth/08_depth_more.png` | claim 12 · [Is the address readable before the lookup uses it, on every model?](#is-the-address-readable-before-the-lookup-uses-it-on-every-model) | On Lightning and the 122B too, the address is readable before the lookup uses it |
 | `depth/09_two_by_two.png` | [Does the split hold on the fact passages, and do the breadth track's operation and the depth track's agree?](#does-the-split-hold-on-the-fact-passages-and-do-the-breadth-tracks-operation-and-the-depth-tracks-agree) | Both operations, both datasets, one direction |
-| [`depth/s01_split_all_scene_sets.png`](../../figures/depth/s01_split_all_scene_sets.png) | supplementary | every scene set |
+| [`depth/s01_split_all_scene_sets.png`](../../figures/depth/s01_split_all_scene_sets.png) (post hoc) | supplementary | every scene set |
 | [`depth/11_settings.png`](../../figures/depth/11_settings.png) | supplementary | the settings |
 | [`depth/s02_parts_all.png`](../../figures/depth/s02_parts_all.png) | supplementary | every part |
-| [`depth/12_specificity.png`](../../figures/depth/12_specificity.png) | supplementary | parts of the same size |
-| [`depth/13_k_curve.png`](../../figures/depth/13_k_curve.png) | supplementary | the 27B with more directions |
+| [`depth/12_specificity.png`](../../figures/depth/12_specificity.png) (post hoc) | supplementary | parts of the same size |
+| [`depth/13_k_curve.png`](../../figures/depth/13_k_curve.png) (post hoc) | supplementary | the 27B with more directions |
 | [`depth/14_k_routes.png`](../../figures/depth/14_k_routes.png) | supplementary | the 27B with more directions (part 2) |
 | [`depth/16_dose_lens.png`](../../figures/depth/16_dose_lens.png) | supplementary | the dose curves |
 | [`depth/17_dose_rest.png`](../../figures/depth/17_dose_rest.png) | supplementary | the dose curves (part 2) |
@@ -801,20 +801,20 @@ Every number on this page carries a source comment into data/figures/depth/data.
 | [`depth/s03_order_split.png`](../../figures/depth/s03_order_split.png) | supplementary | the order split with every model |
 | [`depth/20_layers.png`](../../figures/depth/20_layers.png) | supplementary | the layer sweep |
 | [`depth/s04_link_copy_variants.png`](../../figures/depth/s04_link_copy_variants.png) | supplementary | the link copy variants, 9B |
-| [`depth/s05_link_copy_27b.png`](../../figures/depth/s05_link_copy_27b.png) | supplementary | the link copy variants, 27B |
-| [`depth/s06_link_copy_muse.png`](../../figures/depth/s06_link_copy_muse.png) | supplementary | the link copy variants, Muse |
+| [`depth/s05_link_copy_27b.png`](../../figures/depth/s05_link_copy_27b.png) (post hoc) | supplementary | the link copy variants, 27B |
+| [`depth/s06_link_copy_muse.png`](../../figures/depth/s06_link_copy_muse.png) (post hoc) | supplementary | the link copy variants, Muse |
 | [`depth/21_address_depth.png`](../../figures/depth/21_address_depth.png) | supplementary | the address across depth |
-| [`depth/s08_recall_follows_swap.png`](../../figures/depth/s08_recall_follows_swap.png) | supplementary | the recall follows the swap |
+| [`depth/s08_recall_follows_swap.png`](../../figures/depth/s08_recall_follows_swap.png) (post hoc) | supplementary | the recall follows the swap |
 | [`depth/s09_lens_readout.png`](../../figures/depth/s09_lens_readout.png) | supplementary | the lens readout of the swap |
 | [`depth/22_probe_errors.png`](../../figures/depth/22_probe_errors.png) | supplementary | the lookup's errors |
-| [`depth/23_first_locker.png`](../../figures/depth/23_first_locker.png) | supplementary | the first locker |
-| [`depth/s10_pointer_moves_and_neutral_sentence.png`](../../figures/depth/s10_pointer_moves_and_neutral_sentence.png) | supplementary | the first sentence and the moves |
+| [`depth/23_first_locker.png`](../../figures/depth/23_first_locker.png) (post hoc) | supplementary | the first locker |
+| [`depth/s10_pointer_moves_and_neutral_sentence.png`](../../figures/depth/s10_pointer_moves_and_neutral_sentence.png) (post hoc) | supplementary | the first sentence and the moves |
 | [`depth/s11_routes_design.png`](../../figures/depth/s11_routes_design.png) | supplementary | the routes test drawn large |
 | [`depth/s12_routes_taken_out.png`](../../figures/depth/s12_routes_taken_out.png) | supplementary | every routes arm |
 | [`depth/s13_routes_kept.png`](../../figures/depth/s13_routes_kept.png) | supplementary | every routes arm (part 2) |
 | [`depth/24_formation.png`](../../figures/depth/24_formation.png) | supplementary | the blocked pick sentence |
 | [`depth/25_chain.png`](../../figures/depth/25_chain.png) | supplementary | chained addresses |
-| [`depth/26_what_is_left.png`](../../figures/depth/26_what_is_left.png) | supplementary | what is left of the route |
+| [`depth/26_what_is_left.png`](../../figures/depth/26_what_is_left.png) (post hoc) | supplementary | what is left of the route |
 | [`depth/27_enrichment.png`](../../figures/depth/27_enrichment.png) | supplementary | attribute probe and MLPs |
 | [`depth/28_binding.png`](../../figures/depth/28_binding.png) | supplementary | binding |
 | [`depth/29_binding_added.png`](../../figures/depth/29_binding_added.png) | supplementary | binding (part 2) |
