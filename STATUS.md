@@ -438,16 +438,16 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
   - It also removes word answers (name answers −35% even in a pure lookup).
   - It may be erasing the subject's identity rather than the workspace.
 
-![The 27B families under three measures](figures/archive/overview_1020/story_2x2.png)
+*[figure removed: The 27B families under three measures]*
 *The suite's families under the three measures (27B).*
 
-![Lens write by depth](figures/archive/overview_1020/story_depth.png)
+*[figure removed: Lens write by depth]*
 *Where the lens can write the bridge, by depth: 27B vs 122B.*
 
-![Settings and models](figures/archive/overview_1020/overnight_1020.png)
+*[figure removed: Settings and models]*
 *Read vs write and the knock-out across settings and models.*
 
-![Evidence by model](figures/archive/overview_1020/evidence_by_model.png)
+*[figure removed: Evidence by model]*
 *Which claims each model supports, contradicts or can't test.*
 
 ## Where things are

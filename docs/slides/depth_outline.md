@@ -6,7 +6,7 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 ## D1. The lookup goes around the lens part of the bridge word; the recall goes through it
 
-![](../../figures/archive/slides/d1_split.png)
+*[figure removed]*
 
 - **The conflict test, main test at L.** Without the lens part, beyond a random part, the recall loses 0.50<!-- src: docs/depth/x0_numbers.json | rc_excess_9b --> / 0.74<!-- src: docs/depth/x0_numbers.json | rc_excess_27b --> / 0.75<!-- src: docs/depth/x0_numbers.json | rc_excess_muse --> / 0.34 ○<!-- src: data/figures/depth/data.csv | conflict: recall, switches lost beyond a random part --> / 0.32<!-- src: docs/depth/x0_numbers.json | rc_excess_122b --> of its switches; the lookup −0.03<!-- src: docs/depth/x0_numbers.json | lk_excess_9b --> / 0.14<!-- src: docs/depth/x0_numbers.json | lk_excess_27b --> / −0.10<!-- src: docs/depth/x0_numbers.json | lk_excess_muse --> / 0.03 ○<!-- src: data/figures/depth/data.csv | conflict: lookup, switches lost beyond a random part --> / 0.00<!-- src: docs/depth/x0_numbers.json | lk_excess_122b -->. The rule: confirmed on the 9B, Muse, Lightning ○ and the 122B; not confirmed on the 27B. Lightning: pending hand-check.
 - **What the lens part is.** Its 25 directions put 0.09<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the original bridge word -->-0.18<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the original bridge word --> of the rebuilt energy on the old bridge word and 0.11<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the new bridge word -->-0.19<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the new bridge word --> on the new one, 0.00<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the reader's answer word --> on the answer word; 0.61<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in no scene word -->-0.79<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in no scene word --> matches no word of the scene (0.77 on the 9B and 27B). Four models; the 122B not run. Pending hand-check.
@@ -17,13 +17,13 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 **Limits.** The 27B (in part). Zach's true-fact passages, where the lookup can answer from memory (the 9B's and 27B's lookups follow the lens part there: 0.26<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->). Fact-after lookups on the full carrier (0.41 ○<!-- src: data/figures/depth/data.csv | 51.7: fact-after lookups, full carrier: switches lost beyond a random part --> to 0.51<!-- src: data/figures/depth/data.csv | 51.7: fact-after lookups, full carrier: switches lost beyond a random part -->).
 
-**Example.** ![](../../figures/archive/slides/ex_d1.png)
+**Example.** *[figure removed]*
 
 **Speaker notes.** Neel: "Isn't the lens part just the bridge word's token embedding, so of course the recall needs it?" Answer: the logit lens's own directions for the same words cost the recall about 0, and same-size PCA directions 0.13-0.21 against the lens part's 0.26-0.66; and keeping the answer word's lens directions keeps 0.92-0.98 of the recall's loss, so it is the item, not the answer.
 
 ## D2. The lookup reads an address: a probe finds it, a swap moves it, the lens cannot see it
 
-![](../../figures/archive/slides/d2_address.png)
+*[figure removed]*
 
 - **A probe finds it.** At the bridge word a probe reads which locker sentence holds the item's locker: 0.97<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.97<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.85 ○<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes --> / 0.92<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, against a layout baseline of 0.53<!-- src: data/figures/depth/data.csv | the locker probe's layout baseline, locker-first scenes -->. In tool output 0.97<!-- src: data/figures/depth/data.csv | code and tool output, tool: the locker probe at the bridge word, locker-first scenes --> (9B) and 0.99<!-- src: data/figures/depth/data.csv | code and tool output, tool: the locker probe at the bridge word, locker-first scenes --> (27B); in code 0.95<!-- src: data/figures/depth/data.csv | code and tool output, code: the locker probe at the bridge word, locker-first scenes --> (27B; pending hand-check).
 - **Without it, position answers fall.** Without the address, beyond a random part: 0.08<!-- src: data/figures/depth/data.csv | another item moved, no_alf: position share --> vs 0.54<!-- src: data/figures/depth/data.csv | another item moved, no_alf_rand: position share --> on the 9B; position answers drop beyond a random part on all five models.
@@ -35,13 +35,13 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 **Limits.** The swap's rule fixed in advance read it at s = 1 and said no on every model (a design error; the numbers above are at s = 2, after the data). The address is refit per format. Added by itself it brings little back in code and tool output (0.01<!-- src: data/figures/depth/data.csv | code and tool output, code: another item moved, keep_alf: position share -->-0.08<!-- src: data/figures/depth/data.csv | code and tool output, tool: another item moved, keep_alf: position share -->). The 27B's address is weak.
 
-**Example.** ![](../../figures/archive/slides/ex_d2.png)
+**Example.** *[figure removed]*
 
 **Speaker notes.** Neel: "Is the address just position-in-context (an index), readable by anything?" Answer: the layout baseline reads 0.53, the probe 0.85-0.99; with the locker after the pick the same probe reads 0.33-0.36; removing four directions costs position answers far beyond a random part; and the swap moves lookups at s = 2 while a random vector at s = 4 moves none.
 
 ## D3. Readable is not used: the lens reads the entity at the last token, and the answer does not go through it
 
-![](../../figures/depth/fig17_jspace_last_token.png)
+*[figure removed]*
 
 - At the last token a probe on the lens part reads the recall's bridge entity: 0.97<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part --> / 0.95<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part --> / 0.95<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part --> / 0.98 ○<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part --> (four models; the 122B not run).
 - The lens swap moves 0.00<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> / 0.01<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> / 0.01<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> / 0.14 ○<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches --> of recalls; the whole-state patch 0.95<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the whole-state patch's switches -->-1.00<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the whole-state patch's switches -->. The rule: "(b) readable, not used" on all four.
@@ -52,13 +52,13 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 **Limits.** At gain 2 the lens part moves part of Muse's and Lightning's recalls beyond a random part. One layer (the read peak). Locker-first scenes only.
 
-**Example.** ![](../../figures/archive/slides/ex_d3.png)
+**Example.** *[figure removed]*
 
 **Speaker notes.** Neel: "Maybe your swap is too small to matter at the last token." Answer: it is the changed prompt's own lens part at a real change's size; the whole-state patch at the same site switches 0.95-1.00; at twice the size the lens part moves some recalls only on Muse and Lightning, still well under the whole patch.
 
 ## D4. Where it breaks
 
-![](../../figures/archive/slides/d4_limits.png)
+*[figure removed]*
 
 - **(a) More lens directions:** the 27B's lookup loses 0.60<!-- src: docs/depth/x0_numbers.json | lk_excess_k100_27b --> beyond random at 100 lens directions; the 122B's −0.12<!-- src: docs/depth/x0_numbers.json | lk_excess_k100_122b -->. The 27B is "not confirmed" at 25 (0.14<!-- src: docs/depth/x0_numbers.json | lk_excess_27b -->).
 - **(b) Zach's named passages:** with true facts the lookups of the 9B and 27B follow the lens part (0.26<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->: they can answer from memory); with made-up facts the split holds on the 9B and is in between on the 27B; Lightning not tested there (gate).
@@ -68,7 +68,7 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 ## D5. How we checked, and what we dropped
 
-![](../../figures/depth/fig11_scorecard.png)
+*[figure removed]*
 
 - Independent recount: 56 of 63 numbers match, from code written from scratch.
 - Automatic checks on 45,942 items; 4 per-item failures, all from one check's limit on hyphenated names.
