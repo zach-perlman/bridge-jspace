@@ -91,8 +91,8 @@ def fig09c_formation() -> sp.Figure:
 
 # ---- fig10e: a second route to the recall (48.5) -----------------------------------------------------------------------
 F10E_LANES = (("i", "(i) without the J++ part", "without the lens part"),
-              ("ii", "(ii) (i) and the pointer write", "and the pointer swapped in"),
-              ("iii", "(iii) the pointer write only", "the pointer swapped in only"),
+              ("ii", "(ii) (i) and the pointer write", "and the address swapped in"),
+              ("iii", "(iii) the pointer write only", "the address swapped in only"),
               ("iv", "(iv) (i) and a random direction (same size)", "and a random vector"))  # fmt: skip
 RECALL_OUTCOMES = (("written", "the written locker's item", "the target locker's item", "address"),
                    ("changed", "the changed item", "the changed item", "identity"),
@@ -340,7 +340,7 @@ def fig10c2_binding_added() -> sp.Figure:
 
 # ---- fig10d: heads (48.4), rows read from the run file ------------------------------------------------------------------
 HEAD_PARTS = (("jpp", "J++ part", "the lens part", "lens"), ("rest", "the rest (the change minus its J++ part)",
-              "the rest", "neutral"), ("pointer", "pointer", "the pointer", "address"))  # fmt: skip
+              "the rest", "neutral"), ("pointer", "pointer", "the address", "address"))  # fmt: skip
 
 
 def _heads(m: str) -> list[str]:
@@ -424,7 +424,7 @@ def s07_recall_follows_swap() -> sp.Figure:
 
 
 # ---- s07b: the lens readout of the swap (47.0), the null as grey columns -----------------------------------------------
-S07B_LANES = (("write", "the pointer swapped in", "address"), ("identity", "the identity change", "identity"))
+S07B_LANES = (("write", "the address swapped in", "address"), ("identity", "the identity change", "identity"))
 
 
 def s07b_lens_readout() -> sp.Figure:

@@ -63,8 +63,8 @@ GATE = 30  # X0's bar, fixed before the data: a cell with fewer whole-change loo
 
 def fig09_transfer() -> sp.Figure:
     """(a) After the data: per model and setting (columns), the lookup's extra loss without the lens part and without
-    the pointer fit on simple scenes. (b) 45d (fixed in advance): per format (lanes), the lookup's extra loss without
-    the pointer fit on simple scenes and without a pointer refit on that format; a cell under X0's 30-switch bar is
+    the address fit on simple scenes. (b) 45d (fixed in advance): per format (lanes), the lookup's extra loss without
+    the address fit on simple scenes and without an address refit on that format; a cell under X0's 30-switch bar is
     not counted."""
     f = "fig09"
     models = models_with(f, ["lookup extra loss without J++: simple"])
@@ -82,7 +82,7 @@ def fig09_transfer() -> sp.Figure:
                 lens[m] = sp.Missing("no run")
         cols.append(sp.DotColumn(header, "switches", (-0.1, 0.6), (0, 0.25, 0.5),
                                  series=[sp.Series("lens", lens), sp.Series("address", ptr)]))  # fmt: skip
-    top = sp.DotTable(models, cols, note="after the data: the pointer fit on simple scenes, not refit")
+    top = sp.DotTable(models, cols, note="after the data: the address fit on simple scenes, not refit")
     refit_models = models_with(f, ["(b) prose: lookup switches with the whole change"])
     fit, refit = {}, {}
     for m in refit_models:
@@ -93,22 +93,22 @@ def fig09_transfer() -> sp.Figure:
                 fit[(m, key)] = sp.Missing("too few switches")
                 continue
             for store, w, tag in (
-                (fit, "the pointer fit on simple scenes", "fit"),
+                (fit, "the pointer fit on simple scenes", "fit"),  # data keys (data/figures/depth/data.csv)
                 (refit, "the refit pointer", "refit"),
             ):
                 store[(m, key)] = est(need(cell(f, m, f"(b) {key}: lookup extra loss without {w}"), w),
                                       f"refit.{k}", key=f"f09.b.{key}.{tag}.{k}")  # fmt: skip
     bottom = sp.DotTable(refit_models, [
-        sp.DotColumn("pointer fit on simple scenes", "switches", (-0.05, 0.33), (0, 0.15, 0.3),
+        sp.DotColumn("address fit on simple scenes", "switches", (-0.05, 0.33), (0, 0.15, 0.3),
                      series=[sp.Series("address", fit)]),
-        sp.DotColumn("pointer refit on the format", "switches", (-0.05, 0.33), (0, 0.15, 0.3),
+        sp.DotColumn("address refit on the format", "switches", (-0.05, 0.33), (0, 0.15, 0.3),
                      series=[sp.Series("address", refit)]),
     ], lanes=[sp.Lane(k_, label) for k_, label in FORMATS[1:4]])  # fmt: skip
     return sp.Figure("fig09_transfer", vocab()).add(top, bottom)
 
 
 # ---- Fig. 10: what is left ---------------------------------------------------------------------------------------------
-REMOVALS = (("jpp", "J++ part + pointer", "lens part and pointer"),
+REMOVALS = (("jpp", "J++ part + pointer", "lens part and address"),
             ("idout", "+ identity outside J++", "+ identity outside the lens part"),
             ("wrong", "+ wrong pair instead (scenes where it reached 0.9 of identity's share)", "+ a wrong pair instead"))  # fmt: skip
 
