@@ -1,25 +1,27 @@
 {
- "styles_plot": "0.1.5",
+ "styles_plot": "0.1.6",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "f52f672f3c1c39aefe015d12725ae22998dda7479a19222a5617997aa751bed5"
+  "sha256": "70f82d92b188eece12aa3d5d5e5b78977917c6da663e99905b7306f9b4114e63"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "63b075cb68d9f5767a03c03ae30a262ba25af6d4dd9ed39bfd8d1790bcb710b7"
+  "sha256": "818fce2b3d35ad3e6fb290f4b8fc345bda8b5589b6064e7b85c502dd22ebc83f"
  },
  "figure": "breadth_fig04_where",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "e28bff163a4e1881daa0f9cc25831336014ffc08c434cc8906a537722e67d440",
+  "sha256": "84bbee796d0c54d7190fbe826fbef0ead92e437a8910cecf6dcf4149eb45c758",
   "dpi": 160
  },
  "roles": [
   "neutral"
  ],
- "controls": [],
+ "controls": [
+  "rotated"
+ ],
  "cells": {
   "pos.nl": {
    "timing": "fixed_in_advance",
@@ -64,7 +66,21 @@
   },
   {
    "kind": "line",
+   "role": "control",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
    "role": "neutral",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
    "cell": "prof.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed"
@@ -78,6 +94,13 @@
   },
   {
    "kind": "line",
+   "role": "control",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
    "role": "neutral",
    "cell": "prof.mi",
    "timing": "fixed_in_advance",
@@ -85,7 +108,21 @@
   },
   {
    "kind": "line",
+   "role": "control",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
    "role": "neutral",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
    "cell": "prof.nb",
    "timing": "fixed_in_advance",
    "claim": "claimed"
@@ -188,6 +225,7 @@
   }
  ],
  "key": [
+  "grey: rotated",
   "shading: 95% interval",
   "whiskers: 95% interval"
  ],

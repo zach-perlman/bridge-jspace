@@ -358,11 +358,11 @@ def depth_set_b() -> list[dict]:
     return out
 
 
-BREADTH_FIGS = {"breadth_fig01_needed": ("mk", "lost"), "breadth_fig03_robust": ("robust",), "breadth_fig04_where": ("pos", "prof"),
+BREADTH_FIGS = {"breadth_fig01_needed": ("mk", "lost"), "breadth_fig03a_robust": ("robust",), "breadth_fig03b_robust": ("robust",), "breadth_fig04_where": ("pos", "prof"),
                 "breadth_fig05_carries": ("swap",), "breadth_fig09_dose": ("dose",), "breadth_fig02_datasets": ("data", "var"),
                 "breadth_fig07_lookup": ("look",), "breadth_fig08_readable": ("read",)}  # fmt: skip
 # per breadth model, the registration of its tests in Zach's preregistration (before that model's data); Muse 30B and
-# Qwen 122B: their band test post hoc, as the write-up's Fig. 1 (listed as a disagreement with Amendments 1 and 34)
+# Qwen 122B per cell (Dan, 7 Nov: fixed in advance where Amendment 1 / 34 registered the run): MU_Q122
 BREADTH_CITE = {
     "q27": f"{PREREG} Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)",
     "q9": f"{PREREG} Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)",
@@ -371,13 +371,38 @@ BREADTH_CITE = {
     "nb": f"{PREREG} Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)",
     "ol": f"{PREREG} Amendment 31 (OLMo-3 32B base with its published J++)",
 }
+# Muse 30B and Qwen 122B (Dan, 7 Nov): a cell is fixed in advance where the preregistration registered its run. Their
+# breadth cells read the v2 runs (jsuite_v2: knock-out, position, dose), which Amendments 1 (Muse: C1-graded and C2' on
+# the toy set) and 34 (the 122B: J-swap and readout on module 1) do not name: those stay post hoc and are listed. The
+# 122B's position-restricted v2 knock-out is registered by Amendment 36 ("before the run").
+MU_Q122 = {("pos", "q122"): f"{PREREG} Amendment 36 (where the 122B's knock-out acts, position-restricted, v2; before "
+                            "the run)"}  # fmt: skip
+# fig02 panel B: the other models on the datasets they ran (cell other.<dataset>.<id>)
+OTHER = {
+    ("toy", "q32"): f"{PREREG} header, C1 (Qwen3-32B, before any of its results)",
+    ("toy2", "q32"): f"{PREREG} Amendment 6 A (fresh data seed; Qwen3-32B L44-52)",
+    ("toy", "mu"): f"{PREREG} Amendment 1 (Muse: C1-graded at the band chosen on its ctrl_v8 sweep)",
+    ("toy", "oh7"): f"{PREREG} Amendments 6 B and 7 (the Olmo pair; a powered Olmo test)",
+    ("toy", "o7"): f"{PREREG} Amendments 6 B and 7 (the Olmo pair; a powered Olmo test)",
+    ("natural", "oh7"): f"{PREREG} Amendment 12 (the natural pilot on the Olmo pair)",
+    ("natural", "o7"): f"{PREREG} Amendment 12 (the natural pilot on the Olmo pair)",
+    ("v1", "q122"): f"{PREREG} Amendment 27 B (the 122B on module 1 at its pre-registered band)",
+    ("v1", "ol"): BREADTH_CITE["ol"], ("v2", "ol"): BREADTH_CITE["ol"],
+}
+OTHER_CELLS = {"q32": ("toy", "toy2"), "q122": ("toy", "v1", "v2"), "mu": ("toy", "natplus", "v1", "v2"),
+               "oh7": ("toy", "natural"), "o7": ("toy", "natural"), "ol": ("v1", "v2")}  # fmt: skip
+# fig10a / fig10b (three hops, numbers) and fig10c (what the model says instead)
+A56 = f"{PREREG} Amendment 56 A (v2 modules 2 and 3 on the 27B, 9B and Lightning; before any run)"
+A57 = f"{PREREG} Amendment 57 (a powered numbers set and a second three-hop seed; before any run)"
+A19 = f"{PREREG} Amendment 19 A (generation spot-check on natplus: the 27B, 9B, Muse)"
+A55 = f"{PREREG} Amendment 55 (gen_spot on natplus: what Lightning says under the knock-out)"
 
 
 def breadth_set(readme: list[dict]) -> list[dict]:
     """The breadth README's figures (figkit/breadth_sp.py): a cell is fixed in advance where Zach's preregistration
-    registered that model's tests before its data (BREADTH_CITE; Lightning by lightning(), Amendment 45 note 2); Muse
-    30B and Qwen 122B post hoc as the write-up's Fig. 1. Which cells each amendment covers is per model, not checked
-    cell by cell (listed). fig06_pointer is the README's r4_pointer (its rows copied)."""
+    registered that model's tests before its data (BREADTH_CITE; Lightning by lightning(), Amendment 45 note 2; Muse
+    30B and Qwen 122B per cell, MU_Q122). Which cells each amendment covers is per model, not checked cell by cell
+    (listed). fig06_pointer is the README's r4_pointer (its rows copied)."""
     ids = [*SHORT.values(), "ds", "mi", "nb", "ol"]  # the breadth-only models' ids (plotstyle.toml)
     out = [{**r, "figure": "breadth_fig06_pointer", "source": f"{r['source']} (as r4_pointer, drawn for docs/breadth)"}
            for r in readme if r["figure"] == "r4_pointer"]  # fmt: skip
@@ -387,15 +412,63 @@ def breadth_set(readme: list[dict]) -> list[dict]:
             for cid in cids:
                 cell = f"{cid}.{k}"
                 if k in ("mu", "q122"):
-                    out.append(row(fig, cell, "post_hoc", "this model's band test was run after the data (as the "
-                                   "write-up's Fig. 1)", "figures/writeup/README.md Fig. 1 row"))  # fmt: skip
-                    DISAGREEMENTS.append(f"{fig} {cell}: post hoc as the write-up's Fig. 1; {PREREG} Amendments 1 "
-                                         "(Muse) and 34 (the 122B) registered runs on these models")  # fmt: skip
+                    if cite := MU_Q122.get((cid, k)):
+                        out.append(row(fig, cell, "fixed_in_advance", "registered before this run", cite))
+                    else:
+                        out.append(row(fig, cell, "post_hoc", "a v2 run that Amendment 1 (Muse) / 34 (the 122B) does "
+                                       "not register (as the write-up's Fig. 1)", f"{PREREG}; Dan 7 Nov"))  # fmt: skip
+                        UNCLEAR.add(f"{fig} {cell}: post hoc; Amendments 1 (Muse) and 34 (the 122B) register other "
+                                    "runs on this model, not this v2 run")  # fmt: skip
                 elif k == "nl":
                     out.append(row(fig, cell, "fixed_in_advance", "Lightning's breadth test", CHAIN))
                 else:
                     out.append(row(fig, cell, "fixed_in_advance", "registered before this model's data",
                                    BREADTH_CITE[k]))  # fmt: skip
+    return out + breadth_new()
+
+
+def breadth_new() -> list[dict]:
+    """Cells of the breadth figures drawn after e7f9a9d9: fig02 panel B, fig03's never-named table, fig05 panel B,
+    fig10a / fig10b / fig10c, fig00b."""
+    out = []
+    for k, dss in OTHER_CELLS.items():  # fig02 panel B
+        for ds in dss:
+            cell = f"other.{ds}.{k}"
+            cite = OTHER.get((ds, k)) or MU_Q122.get((ds, k))
+            if cite:
+                out.append(row("breadth_fig02b_datasets", cell, "fixed_in_advance", "registered before this run", cite))
+            else:
+                out.append(row("breadth_fig02b_datasets", cell, "post_hoc", "no amendment names this run on this model",
+                               f"{PREREG}; Dan 7 Nov"))  # fmt: skip
+                UNCLEAR.add(f"breadth_fig02b_datasets {cell}: no amendment names this run on this model; post hoc")
+    never = {"q27": f"{PREREG} Amendment 35 note 1 (start R, the 27B; before any R item ran)",
+             "q9": f"{PREREG} Amendment 37 (the 9B's R items; before any run)",
+             "nl": f"{PREREG} Amendment 54 note 2 (Lightning's never-named bridge; before the run)"}  # fmt: skip
+    for k, cite in never.items():  # fig03: the never-named start (R) on the three strong models
+        out.append(row("breadth_fig03b_robust", f"never.{k}", "fixed_in_advance", "registered before the run", cite))
+    for k in ("q9", "q27"):  # fig05 panel B: the answer direction within the swapped lens part
+        out.append(row("breadth_fig05_carries", f"ans.{k}", "fixed_in_advance", "registered before the run",
+                       f"{PREREG} Amendment 38 A (what the J-part at the mention carries: swap_ans, swap_noans, "
+                       "swap_ans_rot; the 27B and 9B)"))  # fmt: skip
+    for ds, cite in (("v2", A56), ("nb", A57)):  # fig10a: three hops; fig10b: numbers
+        for k in ("q27", "nl"):
+            for fig in ("breadth_fig10a1_beyond", "breadth_fig10a2_beyond"):
+                out.append(row(fig, f"three.{ds}.{k}", "fixed_in_advance", "registered before the run", cite))
+        for k in ("q9", "q27", "nl"):
+            out.append(row("breadth_fig10b_beyond", f"num.{ds}.{k}", "fixed_in_advance", "registered before the run",
+                           cite))  # fmt: skip
+    for fig in ("breadth_fig10a1_beyond", "breadth_fig10a2_beyond"):
+        out.append(row(fig, "three.nat3.nl", "post_hoc", "Lightning's natural three-hop set: no amendment registers it "
+                       "on Lightning", f"{PREREG} Amendment 15 (three-step natural chains, the 27B)"))  # fmt: skip
+    UNCLEAR.add("breadth_fig10a1/a2_beyond three.nat3.nl: Amendment 15 registers natural three-hop chains before Lightning "
+                "was queued (Amendment 40); post hoc")  # fmt: skip
+    for k, cite in (("q27", A19), ("q9", A19), ("mu", A19), ("nl", A55)):  # fig10c
+        out.append(row("breadth_fig10c_beyond", f"gen.{k}", "fixed_in_advance", "registered before the run", cite))
+    for k in ("q27", "q122", "nb", "mi", "nl", "q9", "mu", "ds"):  # fig00b: eligibility counts (data, not a test)
+        out.append(row("breadth_fig00b_dataset", f"elig.{k}", "fixed_in_advance", "a count of the dataset and the "
+                       "model's competence run, not a test", "results/tasks_v2/<model>_competence; scripts/tasks_v2.py"))  # fmt: skip
+    out.append(row("breadth_fig00b_dataset", "relations", "fixed_in_advance", "a count of the dataset, not a test",
+                   "data/tasks_v2/jsuite_v2_test_chat/items.jsonl"))  # fmt: skip
     return out
 
 

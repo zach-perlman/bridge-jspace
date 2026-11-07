@@ -1,0 +1,109 @@
+{
+ "styles_plot": "0.1.6",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "70f82d92b188eece12aa3d5d5e5b78977917c6da663e99905b7306f9b4114e63"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "818fce2b3d35ad3e6fb290f4b8fc345bda8b5589b6064e7b85c502dd22ebc83f"
+ },
+ "figure": "breadth_fig07_lookup",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "69bae8328f34ae66b663591633c25980718535b8d9c3030457a98e5827dd3020",
+  "dpi": 160
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "no change"
+ ],
+ "cells": {
+  "look.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "look.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "look.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "look.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "look.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "look.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "look.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ ],
+ "key": [
+  "grey: no change"
+ ],
+ "numbers": {},
+ "problems": []
+}

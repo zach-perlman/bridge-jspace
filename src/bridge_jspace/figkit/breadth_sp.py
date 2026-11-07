@@ -10,8 +10,10 @@ uv run python -m bridge_jspace.figkit.breadth_sp [ids...]
 
 from __future__ import annotations
 
+import csv
 import re
 import sys
+from functools import cache
 
 import styles_plot as sp
 
@@ -34,6 +36,17 @@ def ids() -> dict[str, str]:
 
 def b(key: str):
     return D.b(key)
+
+
+@cache
+def _n() -> dict[str, int]:
+    """data.csv's n column by key (D.b carries value, lo, hi only)."""
+    with (REPO / "docs/breadth/data.csv").open() as f:
+        return {r["key"]: int(float(r["n"])) for r in csv.DictReader(f) if r["n"]}
+
+
+def n_of(key: str) -> int | None:
+    return _n().get(key)
 
 
 def est(c, cell, key, label=False, interval=True) -> sp.Est:
@@ -66,7 +79,7 @@ def fig01_needed() -> sp.Figure:
               for k, name in CONTROLS01]  # fmt: skip
     # one column per arm: grey dots of different controls in one column could not be told apart
     top = sp.DotTable([m for _i, m in rows], [
-        sp.DotColumn("lens part knocked out", "gap", (-8, 72), (0, 30, 60), series=[sp.Series("neutral", lens)]),
+        sp.DotColumn("lens part knocked out", "gap", (-8, 72), (0, 30, 60), series=[sp.Series("neutral", lens, word="lens part knocked out")]),
         *(sp.DotColumn(s.control, "gap", (-8, 72), (0, 30, 60), series=[s]) for s in series),
     ])  # fmt: skip
     strong = [(i, m) for i, m in rows if i in ("q9", "q27", "nl")]
@@ -106,19 +119,35 @@ def _by_condition(kind, conds, key, cid, rows, rot=None, lim=(-8, 100)):
                 ctrl[c] = est(r, f"{cid}.{i}", rot.format(i, c), interval=False)
         series = [sp.Series("control", ctrl, control="rotated")] if ctrl else []
         cols.append(sp.DotColumn(vocab().entity("models", m).name, "gap", lim, (0, 40, 80),
-                                 series=[*series, sp.Series("neutral", lens)]))  # fmt: skip
+                                 series=[*series, sp.Series("neutral", lens, word=vocab().entity("models", m).name)]))  # fmt: skip
     return sp.DotTable([c for c, _n in conds], cols, kind=kind)
 
 
-def fig03_robust() -> sp.Figure:
-    """For the three strong models, M − K under the top-10 knock-out on every relation (the rotated knock-out grey),
-    every start, and the replications (renderings, test halves, scored by probability)."""
-    rows = [(i, m) for i, m in models_with("ko.{}.mk") if i in ("q9", "q27", "nl")]
+def _strong():
+    return [(i, m) for i, m in models_with("ko.{}.mk") if i in ("q9", "q27", "nl")]
+
+
+def fig03a_robust() -> sp.Figure:
+    """For the three strong models, M − K under the top-10 knock-out on every relation (the rotated knock-out grey).
+    fig03_robust split in two (too tall for the readme target with the never-named table: Dan's rule, split)."""
     rel = tuple((r, r) for r in RELATIONS)
-    v = vocab().with_entities("relations", rel).with_entities("checks", STARTS + REPLICATIONS)
-    return sp.Figure("breadth_fig03_robust", v).add(
-        _by_condition("relations", rel, "ko.{}.rel.{}", "robust", rows, rot="ko.{}.rel.{}.rot"),
-        _by_condition("checks", STARTS + REPLICATIONS, "ko.{}.{}", "robust", rows),
+    v = vocab().with_entities("relations", rel)
+    return sp.Figure("breadth_fig03a_robust", v).add(
+        _by_condition("relations", rel, "ko.{}.rel.{}", "robust", _strong(), rot="ko.{}.rel.{}.rot")
+    )
+
+
+def fig03b_robust() -> sp.Figure:
+    """For the three strong models, M − K on every start and the replications (renderings, test halves, scored by
+    probability); below, its own table: the extra recall drop when the bridge is never named (RM − MM, start R; Dan
+    7 Nov: a different quantity, its own axis)."""
+    rows = _strong()
+    v = vocab().with_entities("checks", STARTS + REPLICATIONS)
+    never = {m: est(c, f"never.{i}", f"r.{i}", label=True) for i, m in rows if (c := b(f"r.{i}"))}
+    never_t = sp.DotTable([m for _i, m in rows], [sp.DotColumn("bridge never named", "extra_loss", (-8, 40), (0, 15, 30),
+                                                               series=[sp.Series("neutral", never, word="bridge never named")])])  # fmt: skip
+    return sp.Figure("breadth_fig03b_robust", v).add(
+        _by_condition("checks", STARTS + REPLICATIONS, "ko.{}.{}", "robust", rows), never_t
     )
 
 
@@ -147,7 +176,23 @@ def fig05_carries() -> sp.Figure:
         sp.DotColumn("another entity's lens part swapped in", "moved", (-6, 80), (0, 30, 60),
                      series=[sp.Series("lens", lens)]),
         *(sp.DotColumn(s.control, "moved", (-6, 80), (0, 30, 60), series=[s]) for s in series)])  # fmt: skip
-    return sp.Figure("breadth_fig05_carries", vocab()).add(t)
+    # B: is it just the answer token? The swap, the swap with the answer's direction taken out, the answer's direction
+    # alone, and that direction rotated (grey), for the 27B and 9B (P → M finals)
+    v = vocab().with_entities("answer_swaps", ANS)
+    cols = []
+    for i in ("q27", "q9"):
+        lens = {k: est(c, f"ans.{i}", f"ans.{i}.{k}", label=True) for k, _n in ANS[:3] if (c := b(f"ans.{i}.{k}"))}
+        rot = {k: est(c, f"ans.{i}", f"ans.{i}.{k}", label=True) for k, _n in ANS[3:] if (c := b(f"ans.{i}.{k}"))}
+        cols.append(sp.DotColumn(v.entity("models", ids()[i]).name, "moved", (-6, 90), (0, 30, 60),
+                                 series=[sp.Series("lens", lens), sp.Series("control", rot, control="rotated")]))  # fmt: skip
+    b_ = sp.DotTable(
+        [k for k, _n in ANS], cols, kind="answer_swaps", note="the answer's direction in the swapped lens part"
+    )
+    return sp.Figure("breadth_fig05_carries", v).add(t, b_)
+
+
+ANS = (("swap", "the whole lens part (top 10)"), ("swap_noans", "the lens part minus the answer's direction"),
+       ("swap_ans", "the answer's direction only"), ("swap_ans_rot", "the answer's direction, rotated"))  # fmt: skip
 
 
 # ---- fig09: dose ----------------------------------------------------------------------------------------------------
@@ -169,7 +214,7 @@ def fig09_dose() -> sp.Figure:
             if r:
                 rot[m] = est(r, f"dose.{i}", f"dose.{i}.k{k}.rot", interval=False)
         cols.append(sp.DotColumn(f"{k} lens directions", "gap", (-8, 80), (0, 30, 60),
-                                 series=[sp.Series("control", rot, control="rotated"), sp.Series("neutral", lens)]))  # fmt: skip
+                                 series=[sp.Series("control", rot, control="rotated"), sp.Series("neutral", lens, word=f"{k} lens directions")]))  # fmt: skip
     return sp.Figure("breadth_fig09_dose", vocab()).add(sp.DotTable([m for _i, m in rows], cols))
 
 
@@ -181,13 +226,15 @@ WHERE = (("all", "every token"), ("bridge", "the bridge's mention"), ("context",
 def fig04_where() -> sp.Figure:
     """(top) Per model, M − K on dev by the depth of the knocked-out window (each window at the middle of its depth,
     with its interval); (bottom) M − K when the knock-out acts only at some tokens (columns): every token, the bridge's
-    mention, the passage around it, the question (all starts pooled). The rotated windows are not drawn: a grey line
-    needs its control's name (styles-plot 0.1.5)."""
+    mention, the passage around it, the question (all starts pooled). The rotated knock-out at the same windows is the
+    grey line."""
     rows = models_with("pos.{}.all.all")
     cols = []
     for w, header in WHERE:
         cells = {m: est(c, f"pos.{i}", f"pos.{i}.all.{w}", label=True) for i, m in rows if (c := b(f"pos.{i}.all.{w}"))}
-        cols.append(sp.DotColumn(header, "gap", (-8, 70), (0, 30, 60), series=[sp.Series("neutral", cells)]))
+        cols.append(
+            sp.DotColumn(header, "gap", (-8, 70), (0, 30, 60), series=[sp.Series("neutral", cells, word=header)])
+        )
     lines, prof_rows = [], []
     for i, m in ids().items():
         rx = re.compile(rf"^prof\.{i}\.(L\d+-\d+)$")
@@ -198,6 +245,11 @@ def fig04_where() -> sp.Figure:
         x = [d for d, _v in win]
         lines.append(sp.Line(m, "neutral", x, [v_[0] for _d, v_ in win], cell=f"prof.{i}",
                              band=([v_[1] for _d, v_ in win], [v_[2] for _d, v_ in win])))  # fmt: skip
+        rot = sorted((d[0], r[0]) for k, _v in D.breadth().items() if rx.match(k)
+                     and (d := b(f"{k}.depth")) and (r := b(f"{k}.rot")))  # fmt: skip
+        if rot:  # the rotated knock-out at the same windows (styles-plot 0.1.6: a grey line names its control)
+            lines.append(sp.Line(m, "control", [d for d, _r in rot], [r for _d, r in rot], cell=f"prof.{i}",
+                                 control="rotated"))  # fmt: skip
     sweep = sp.Sweep(prof_rows, "depth_share", "gap", lines, xlim=(0, 1), panel_h=0.9)
     return sp.Figure("breadth_fig04_where", vocab()).add(sweep, sp.DotTable([m for _i, m in rows], cols))
 
@@ -236,12 +288,51 @@ def fig02_datasets() -> sp.Figure:
             if c := b(key.format(i)):
                 lens[row] = est(c, f"var.{i}", key.format(i))
         name = v.entity("models", m).name
-        cols += [sp.DotColumn(name, "gap", (-8, 62), (0, 30, 60), series=[sp.Series("neutral", lens)], rules=rule),
+        cols += [sp.DotColumn(name, "gap", (-8, 62), (0, 30, 60), series=[sp.Series("neutral", lens, word=name)], rules=rule),
                  sp.DotColumn(f"{name}: logit lens", "gap", (-8, 62), (0, 30, 60),
                               series=[sp.Series("control", ctrl, control="logit lens")])]  # fmt: skip
     vv = v.with_entities("datasets", [(r, n) for r, _k, n, _u in DATASETS] + [(r, n) for r, _k, n in VARIANTS])
     rows = [r for r, *_ in DATASETS] + [r for r, *_ in VARIANTS]
     return sp.Figure("breadth_fig02_datasets", vv).add(sp.DotTable(rows, cols, kind="datasets"))
+
+
+def fig02b_datasets() -> sp.Figure:
+    """fig02's panel B (its own file: with panel A the figure is too tall for the readme target): the other models
+    on the datasets they ran, each dataset's own contrast, against the plan's 30-point bar."""
+    return sp.Figure("breadth_fig02b_datasets", vocab()).add(
+        _others([sp.Rule(BAR30, "bar fixed in advance: {}", unit="gap", key="breadth.bar30")])
+    )
+
+
+# fig02 B: the other models on the datasets they ran; each dataset's own contrast (the same keys fig_neel's F04 B read)
+OTHER_DS = (("toy", "toy puzzles"), ("toy2", "toy, data seed 2"), ("natural", "natural chains"), ("natplus", "natplus"),
+            ("v1", "suite v1"), ("v2", "suite v2"))  # fmt: skip
+OTHER_KEY = {
+    ("q32", "toy"): "old.q32.qwen3_32b_full2_ko_v1", ("q32", "toy2"): "old.q32.qwen3_32b_fresh2_ko_v1",
+    ("q122", "toy"): "old.q122.qwen35_122b_full2_ko_v1", ("q122", "v1"): "v1.q122", ("q122", "v2"): "ko.q122.mk",
+    ("mu", "toy"): "old.mu.muse30_full2_ko_v1", ("mu", "natplus"): "natplus.mu", ("mu", "v1"): "v1.mu",
+    ("mu", "v2"): "ko.mu.mk",
+    ("oh7", "toy"): "old.oh7.olmoh7_big2_ko_v1", ("oh7", "natural"): "old.oh7.olmoh7_natural_v1_chat_ko_v1",
+    ("o7", "toy"): "old.o7.olmo3d7_big2_ko_v1", ("o7", "natural"): "old.o7.olmo3d7_natural_v1_chat_ko_v1",
+    ("ol", "v1"): "v1.ol", ("ol", "v2"): "ko.ol.mk",
+}  # fmt: skip
+
+
+def _others(rule) -> sp.DotTable:
+    rows = [(i, m) for i, m in ids().items() if any(k[0] == i for k in OTHER_KEY)]
+    cols = []
+    for ds, header in OTHER_DS:
+        cells = {}
+        for i, m in rows:
+            key = OTHER_KEY.get((i, ds))
+            c = b(key) if key else None
+            cells[m] = est(c, f"other.{ds}.{i}", key, label=True) if c else sp.Missing("no run")
+        cols.append(
+            sp.DotColumn(
+                header, "gap", (-10, 100), (0, 30, 60), series=[sp.Series("neutral", cells, word=header)], rules=rule
+            )
+        )
+    return sp.DotTable([m for _i, m in rows], cols, note="other models on the datasets they ran")
 
 
 # ---- sweeps: fig04's depth profile, fig07, fig08 ----------------------------------------------------------------------
@@ -268,7 +359,17 @@ def fig07_lookup() -> sp.Figure:
                                 ("kept", "control", None)):  # fmt: skip
             if pts[suf]:
                 x, y = zip(*pts[suf], strict=True)
-                lines.append(sp.Line(m, role, list(x), list(y), cell=f"look.{i}", word=word))
+                lines.append(
+                    sp.Line(
+                        m,
+                        role,
+                        list(x),
+                        list(y),
+                        cell=f"look.{i}",
+                        word=word,
+                        control="no change" if role == "control" else None,
+                    )
+                )
     return sp.Figure("breadth_fig07_lookup", vocab()).add(sp.Sweep([m for _i, m in rows], "layer", "top_pick", lines))
 
 
@@ -283,9 +384,151 @@ def fig08_readable() -> sp.Figure:
         for suf, role in (("jlens", "lens"), ("logit", "control")):
             if pts[suf]:
                 x, y = zip(*pts[suf], strict=True)
-                lines.append(sp.Line(m, role, [la / n for la in x], list(y), cell=f"read.{i}"))
+                lines.append(
+                    sp.Line(
+                        m,
+                        role,
+                        [la / n for la in x],
+                        list(y),
+                        cell=f"read.{i}",
+                        control="logit lens" if role == "control" else None,
+                    )
+                )
     return sp.Figure("breadth_fig08_readable", vocab()).add(sp.Sweep([m for _i, m in rows], "depth_share", "ranked_first",
                                                              lines, xlim=(0, 1)))  # fmt: skip
+
+
+# ---- fig10: beyond two hops (Dan 7 Nov: split per panel) -------------------------------------------------------------
+ARMS = (("paper10", "lens part knocked out", "neutral", None), ("paper10_rot", "rotated", "control", "rotated"),
+        ("unembed10", "logit lens", "control", "logit lens"))  # fmt: skip
+CHAINS = ("MMM", "PMM", "MPM", "PPM", "MMP", "MPP", "PMP")  # above PPM: the last hop is a recall
+THREE = (("v2", "jsuite v2", "mod.{}.threehop.{}.{}-PPP"), ("nb", "second data seed", "mod2.{}.threehop.{}.{}-PPP"),
+         ("nat3", "natural three-hop set", "nat3.{}.{}.{}"))  # fmt: skip
+
+
+def _arm_columns(rows_keys, cell_of, key_of, unit, lim, ticks):
+    """One column per arm (the knock-out, rotated, logit lens): one grey per column."""
+    cols = []
+    for arm, header, role, control in ARMS:
+        cells = {}
+        for rk in rows_keys:
+            key = key_of(rk, arm)
+            c = b(key) if key else None
+            if c:
+                cells[rk] = est(c, cell_of(rk), key, label=role != "control")
+            elif role != "control":
+                cells[rk] = sp.Missing("no run")
+        cols.append(
+            sp.DotColumn(
+                header,
+                unit,
+                lim,
+                ticks,
+                series=[sp.Series(role, cells, control=control, word=header if role == "neutral" else None)],
+            )
+        )
+    return cols
+
+
+def fig10a1_beyond() -> sp.Figure:
+    """Three hops whose last hop is a recall (the chains the plan predicts need the lens part)."""
+    return _three("breadth_fig10a1_beyond", CHAINS[:4])
+
+
+def fig10a2_beyond() -> sp.Figure:
+    """Three hops whose last hop is read in the passage (the chains the plan predicts do not)."""
+    return _three("breadth_fig10a2_beyond", CHAINS[4:])
+
+
+def _three(fid: str, chains: tuple[str, ...]) -> sp.Figure:
+    """Three hops: per chain (rows; each letter one hop's source) and data set (lanes), the accuracy drop beyond the
+    all-passage chain P → P → P under the lens part's top-10 knock-out, rotated and logit lens beside, for the 27B and
+    Lightning (the 9B left out as before: its P → P → P alone loses most of its accuracy). fig10a split by the last
+    hop: one table of all seven chains is too tall for the readme target."""
+    v = vocab().with_entities("chains", [(c, " → ".join(c)) for c in chains])
+    groups = []
+    for i in ("q27", "nl"):
+
+        def key_of(rk, arm, i=i):
+            chain, ds = rk
+            pat = next(p for d, _n, p in THREE if d == ds)
+            return pat.format(i, arm, chain) if ds != "nat3" or i == "nl" else None
+
+        rks = [(c, ds) for c in chains for ds, *_ in THREE]
+        cols = _arm_columns(rks, lambda rk, i=i: f"three.{rk[1]}.{i}", key_of, "beyond_ppp", (-25, 110), (0, 40, 80))
+        groups += [sp.ColumnGroup(v.entity("models", ids()[i]).name, cols), sp.Gutter()]
+    t = sp.DotTable(list(chains), groups[:-1], kind="chains", lanes=[sp.Lane(ds, name) for ds, name, _p in THREE],
+                    note="three hops: each letter is one hop's source, P read in the passage, M recalled")  # fmt: skip
+    return sp.Figure(fid, v).add(t)
+
+
+NUMBERS = (("KR-PR", "v2", "counted, then reported"), ("AR-PR", "v2", "computed, then reported"),
+           ("MR-PR", "v2", "recalled, then reported"), ("KM-PM", "nb", "counted, then used to recall"),
+           ("AM-PM", "nb", "computed, then used to recall"), ("MM-ML", "nb", "recalled, then used to recall, not to look up"))  # fmt: skip
+
+
+def fig10b_beyond() -> sp.Figure:
+    """Numbers: per final (rows: how the number was made and what it is used for), the accuracy drop beyond the same
+    final with the number read from the passage, per model (lanes), under the knock-out and its two controls. The
+    reported rows are jsuite v2, the rows used to recall the larger second set (jsuite v2nb)."""
+    models = [(i, ids()[i]) for i in ("q9", "q27", "nl")]  # the vocabulary's order
+    v = vocab().with_entities("finals_n", [(c, name) for c, _ds, name in NUMBERS])
+    ds_of = {c: ds for c, ds, _n in NUMBERS}
+
+    def key_of(rk, arm):
+        contrast, i = rk
+        return f"{'mod' if ds_of[contrast] == 'v2' else 'mod2'}.{i}.numbers.{arm}.{contrast}"
+
+    rks = [(c, i) for c, *_ in NUMBERS for i, _m in models]
+    cols = _arm_columns(rks, lambda rk: f"num.{ds_of[rk[0]]}.{rk[1]}", key_of, "beyond_read", (-25, 75), (0, 30, 60))
+    t = sp.DotTable([c for c, *_ in NUMBERS], cols, kind="finals_n",
+                    lanes=[sp.Lane(i, v.entity("models", m).name) for i, m in models])  # fmt: skip
+    return sp.Figure("breadth_fig10b_beyond", v).add(t)
+
+
+REPLIES = (("right", "still right"), ("lure", "a lure in the passage"), ("other_cand", "another valid answer"),
+           ("other", "something else"), ("bridge", "the bridge's name"))  # fmt: skip
+FINALS_GEN = (("PM", "P → M"), ("MM", "M → M"))
+
+
+def fig10c_beyond() -> sp.Figure:
+    """What the model says instead: per model and final (lanes), the share of greedy replies under the knock-out in
+    each class (columns; five classes: a dot table of shares, no stack), on natplus, with the number of replies."""
+    rows = [(i, m) for i, m in ids().items() if b(f"gen.{i}.PM.right")]
+    cols = []
+    for k, header in REPLIES:
+        cells = {(m, w): est(c, f"gen.{i}", f"gen.{i}.{w}.{k}", label=True)
+                 for i, m in rows for w, _n in FINALS_GEN if (c := b(f"gen.{i}.{w}.{k}"))}  # fmt: skip
+        cols.append(
+            sp.DotColumn(header, "replies", (-5, 105), (0, 50, 100), series=[sp.Series("neutral", cells, word=header)])
+        )
+    n = {(m, w): sp.Est(float(c), key=f"gen.{i}.{w}.n", cell=f"gen.{i}")
+         for i, m in rows for w, _n in FINALS_GEN if (c := n_of(f"gen.{i}.{w}.right"))}  # fmt: skip
+    cols.append(sp.TextColumn("replies", "replies_n", n))
+    t = sp.DotTable([m for _i, m in rows], cols, lanes=[sp.Lane(w, name) for w, name in FINALS_GEN],
+                    note="generated replies on natplus under the knock-out")  # fmt: skip
+    return sp.Figure("breadth_fig10c_beyond", vocab()).add(t)
+
+
+# ---- fig00b: the dataset's counts (the schematic half is fig00a) ------------------------------------------------------
+def fig00b_dataset() -> sp.Figure:
+    """The test split's relations (items, bridges, distinct answers) and, per model, the eligible test items (every
+    part right unedited) by start and in all, as counts read from data.csv."""
+    v = vocab().with_entities("relations", [(r, r) for r in RELATIONS])
+    rel = [r for r in RELATIONS if b(f"data.rel.{r}.items")]
+    rel_cols = [sp.TextColumn(header, "items", {r: sp.Est(b(f"data.rel.{r}.{k}")[0], key=f"data.rel.{r}.{k}",
+                                                          cell="relations") for r in rel})
+                for k, header in (("items", "items"), ("bridges", "bridges"), ("answers", "answers"))]  # fmt: skip
+    t1 = sp.DotTable(rel, rel_cols, kind="relations", note="the test split's eight relations")
+    total = int(b("data.facts")[0])
+    rows = [(i, m) for i, m in ids().items() if b(f"elig.{i}")]
+    cols = [sp.TextColumn(f"start {st}", "items", {m: sp.Est(b(f"elig.{i}.{st}")[0], key=f"elig.{i}.{st}", cell=f"elig.{i}")
+                                                   for i, m in rows})
+            for st in "PMT"]  # fmt: skip
+    cols.append(sp.TextColumn("every start", "items", {m: sp.Count(int(b(f"elig.{i}")[0]), total, key=f"elig.{i}",
+                                                                   cell=f"elig.{i}") for i, m in rows}))  # fmt: skip
+    t2 = sp.DotTable([m for _i, m in rows], cols, note="eligible test items: every part right unedited")
+    return sp.Figure("breadth_fig00b_dataset", v).add(t1, t2)
 
 
 def _pointer():
@@ -294,12 +537,11 @@ def _pointer():
     return fig
 
 
-FIGS = {"fig01_needed": fig01_needed, "fig03_robust": fig03_robust, "fig04_where": fig04_where,
-        "fig05_carries": fig05_carries, "fig06_pointer": _pointer, "fig09_dose": fig09_dose,
-        "fig02_datasets": fig02_datasets}  # fmt: skip
-# fig07_lookup and fig08_readable are declared but refused (SP304: a grey line needs its control's name; styles-plot
-# 0.1.5's Line has no control=): they stay on scripts/fig_neel.py until the library names grey lines.
-BLOCKED = {"fig07_lookup": fig07_lookup, "fig08_readable": fig08_readable}
+FIGS = {"fig01_needed": fig01_needed, "fig03a_robust": fig03a_robust, "fig03b_robust": fig03b_robust,
+        "fig04_where": fig04_where, "fig05_carries": fig05_carries, "fig06_pointer": _pointer, "fig09_dose": fig09_dose,
+        "fig02_datasets": fig02_datasets, "fig02b_datasets": fig02b_datasets, "fig10a1_beyond": fig10a1_beyond,
+        "fig10a2_beyond": fig10a2_beyond, "fig10b_beyond": fig10b_beyond, "fig10c_beyond": fig10c_beyond,
+        "fig00b_dataset": fig00b_dataset, "fig07_lookup": fig07_lookup, "fig08_readable": fig08_readable}  # fmt: skip
 
 
 def build(ids_=None) -> list[str]:

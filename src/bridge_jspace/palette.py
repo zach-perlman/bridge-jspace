@@ -44,7 +44,7 @@ MODELS = (  # one model order everywhere; then the breadth-only models
     ("nemotron-3.5-lightning", "Lightning"),
     ("qwen3.5-122b-a10b", "Qwen 122B"),
 )
-BREADTH_ONLY = ("DeepSeek", "Ministral", "Bolt", "OLMo")
+BREADTH_ONLY = ("DeepSeek", "Ministral", "Bolt", "OLMo", "Qwen3-32B", "Olmo-Hybrid 7B", "Olmo-3 7B")
 
 # every colour a figure may draw in a hue (greys aside)
 ALLOWED = {c.lower() for c in (*ROLE.values(), *SHADE.values(), INK, MUTED)}

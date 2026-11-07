@@ -1,0 +1,142 @@
+{
+ "styles_plot": "0.1.6",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "70f82d92b188eece12aa3d5d5e5b78977917c6da663e99905b7306f9b4114e63"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "818fce2b3d35ad3e6fb290f4b8fc345bda8b5589b6064e7b85c502dd22ebc83f"
+ },
+ "figure": "breadth_fig08_readable",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "1e73c6657bc35bf53e132aa7e624c3aaee4544a6d6db52f5c47668b94c2c4eb7",
+  "dpi": 160
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "logit lens"
+ ],
+ "cells": {
+  "read.ds": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "read.mi": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "read.nb": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "read.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "read.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "read.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.ds",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.ds",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "read.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "read.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ ],
+ "key": [
+  "grey: logit lens"
+ ],
+ "numbers": {},
+ "problems": []
+}

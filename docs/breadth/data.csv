@@ -3011,3 +3011,7 @@ gen.mu.PM.other,spot-check,mu,PM: replies giving something else,7.071,,,99,pct,r
 gen.mu.MM.lure,spot-check,mu,MM: replies giving a lure in the passage,0.0,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.MM.other_cand,spot-check,mu,MM: replies giving another valid answer,14.118,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.MM.other,spot-check,mu,MM: replies giving something else,54.118,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
+v1.q122,datasets,q122,"jsuite v1 M - P (qwen35_122b_jsuite_v1_facts_test_chat_ko_cand2_v1, paper10)",37.2,31,44,,points,results/ablate_v2/jsuite_score/qwen35_122b_jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.mu,datasets,mu,"jsuite v1 M - P (muse30_jsuite_v1_facts_test_chat_ko_cand2_v1, paper10)",68.1,61,76,,points,results/ablate_v2/jsuite_score/muse30_jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.ol,datasets,ol,"jsuite v1 M - P (olmo32_jsuite_v1_facts_test_qa_ko_cand2_v1, paper10)",-3.3,-8,2,,points,results/ablate_v2/jsuite_score/olmo32_jsuite_v1_facts_test_qa_ko_cand2_v1.json
+natplus.mu,datasets,mu,natplus all/all paper10,63.3,58,69,,points,results/ablate_v2/natplus_split/muse30_natplus_v1_chat_ko_cand2_v1.json

@@ -520,6 +520,15 @@ def collect_redraw() -> None:
                 n = sum(cl.values())
                 for k, what in (("lure", "a lure in the passage"), ("other_cand", "another valid answer"), ("other", "something else")):
                     add(f"gen.{m}.{w}.{k}", "spot-check", m, f"{w}: replies giving {what}", 100 * cl.get(k, 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
+    # ---- fig02_datasets (F04) B: the other models' v1 and natplus gaps (toy and natural are the old.* rows)
+    for m, run in (("q122", "qwen35_122b_jsuite_v1_facts_test_chat_ko_cand2_v1"), ("mu", "muse30_jsuite_v1_facts_test_chat_ko_cand2_v1"),
+                   ("ol", "olmo32_jsuite_v1_facts_test_qa_ko_cand2_v1")):  # fmt: skip
+        x = F.v1(run)
+        if x:
+            add(f"v1.{m}", "datasets", m, f"jsuite v1 M - P ({run}, paper10)", x[0], *x[1], source=f"results/ablate_v2/jsuite_score/{run}.json")
+    x = F.natplus("muse30_natplus_v1_chat_ko_cand2_v1")
+    if x:
+        add("natplus.mu", "datasets", "mu", "natplus all/all paper10", x[0], *(x[1] or (None, None)), source="results/ablate_v2/natplus_split/muse30_natplus_v1_chat_ko_cand2_v1.json")
 
 
 # ---- rendering
