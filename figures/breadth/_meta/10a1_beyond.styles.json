@@ -2,27 +2,24 @@
  "styles_plot": "0.1.12",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "90badacf159489ad7fb76752de9fd48539a486e5f3ff851522e031a36c13e0f1"
+  "sha256": "e00b715ab579bc1d4ae21e2057bd08685334e1be8f9b3b01c18d7190a68df22e"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "f64b92bb3ae44c173976bd9c35cc470510c21e9993572bdd397791c066430d3f"
+  "sha256": "5dfb962ab3a4c8a0db03609f84aa50343f5ce4dd2be0fa61cb86866ed5bf3c49"
  },
  "figure": "breadth_fig10a1_beyond",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "pixels_sha256": "98be9da10640f29f464fb9270af98c694e66c3bc26dde0d1ff672714b079b874",
+  "pixels_sha256": "bedae86084f97ce5f304f600700039996bf7e1d753dcd3a54368f721868dfae0",
   "dpi": 160
  },
  "roles": [
   "neutral"
  ],
- "controls": [
-  "logit lens",
-  "rotated"
- ],
+ "controls": [],
  "cells": {
   "three.nat3.nl": {
    "timing": "post_hoc",
@@ -112,134 +109,6 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "three.v2.nl",
    "timing": "fixed_in_advance",
@@ -329,198 +198,6 @@
   {
    "kind": "dot",
    "role": "neutral",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nat3.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.v2.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "three.nb.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
    "cell": "three.nat3.nl",
    "timing": "post_hoc",
    "claim": "claimed",
@@ -528,7 +205,7 @@
   }
  ],
  "key": [
-  "grey: logit lens · rotated",
+  "grey tick: the largest same-size control",
   "whiskers: 95% interval",
   "○ post hoc"
  ],

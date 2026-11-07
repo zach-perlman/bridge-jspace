@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at abd7664b from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 83d4953f from the run files.
 
 ## Setup
 
@@ -470,13 +470,21 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
     recall. In the 9B and Lightning that last test cannot be read.
   - We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls.
 
-![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](../../figures/breadth/10a1_beyond.png)
+Chains whose last hop recalls, per chain and data set; grey tick: the larger of the rotated and logit-lens controls.
 
-![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](../../figures/breadth/10a2_beyond.png)
+![Chains whose last hop recalls: the knock-out turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/10a1_beyond.png)
 
-![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](../../figures/breadth/10b_beyond.png)
+Chains whose last hop reads the passage, the same way.
 
-![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](../../figures/breadth/10c_beyond.png)
+![Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall](../../figures/breadth/10a2_beyond.png)
+
+Numbers counted, computed or recalled from the passage, then reported or used to recall.
+
+![A number made from the passage and then used: the extra cost under the knock-out, per model](../../figures/breadth/10b_beyond.png)
+
+What the model says instead under the knock-out, in five classes of reply.
+
+![Generated replies under the knock-out, sorted into five classes, per model](../../figures/breadth/10c_beyond.png)
 *Fig. 10.*
 
 ## 7. Every model, every test

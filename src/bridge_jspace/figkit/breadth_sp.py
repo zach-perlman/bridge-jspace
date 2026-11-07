@@ -434,13 +434,19 @@ def fig10a2_beyond() -> sp.Figure:
     return _three("breadth_fig10a2_beyond", CHAINS[4:])
 
 
+THREE_HEAD = "three hops: each letter is one hop's source, P read in the passage, M recalled"
+
+
 def _three(fid: str, chains: tuple[str, ...]) -> sp.Figure:
-    """Three hops: per chain (rows; each letter one hop's source) and data set (lanes), the accuracy drop beyond the
-    all-passage chain P → P → P under the lens part's top-10 knock-out, rotated and logit lens beside, for the 27B and
-    Lightning (the 9B left out as before: its P → P → P alone loses most of its accuracy). fig10a split by the last
-    hop: one table of all seven chains is too tall for the readme target."""
+    """Three hops (README brief F6): per chain (rows; each letter one hop's source) and data set (lanes), the accuracy
+    drop beyond the all-passage chain P → P → P under the lens part's top-10 knock-out, one axis per model (the 27B and
+    Lightning; the 9B left out as before: its P → P → P alone loses most of its accuracy), the largest of its two
+    same-size controls (rotated, logit lens) as the grey tick on the same axis. fig10a split by the last hop: one table
+    of all seven chains is too tall for the readme target."""
     v = vocab().with_entities("chains", [(c, " → ".join(c)) for c in chains])
-    groups = []
+    knock, controls = ARMS[0][0], [arm for arm, *_ in ARMS[1:]]
+    rks = [(c, ds) for c in chains for ds, *_ in THREE]
+    cols = []
     for i in ("q27", "nl"):
 
         def key_of(rk, arm, i=i):
@@ -448,11 +454,18 @@ def _three(fid: str, chains: tuple[str, ...]) -> sp.Figure:
             pat = next(p for d, _n, p in THREE if d == ds)
             return pat.format(i, arm, chain) if ds != "nat3" or i == "nl" else None
 
-        rks = [(c, ds) for c in chains for ds, *_ in THREE]
-        cols = _arm_columns(rks, lambda rk, i=i: f"three.{rk[1]}.{i}", key_of, "beyond_ppp", (-25, 110), (0, 40, 80))
-        groups += [sp.ColumnGroup(v.entity("models", ids()[i]).name, cols), sp.Gutter()]
-    t = sp.DotTable(list(chains), groups[:-1], kind="chains", lanes=[sp.Lane(ds, name) for ds, name, _p in THREE],
-                    note="three hops: each letter is one hop's source, P read in the passage, M recalled")  # fmt: skip
+        cells, ticks = {}, {}
+        for rk in rks:
+            key = key_of(rk, knock)
+            c = b(key) if key else None
+            cells[rk] = est(c, f"three.{rk[1]}.{i}", key, label=True) if c else sp.Missing("no run")
+            ctl = [x[0] for arm in controls if (k := key_of(rk, arm)) and (x := b(k))]
+            if ctl:
+                ticks[rk] = max(ctl)
+        cols.append(sp.DotColumn(v.entity("models", ids()[i]).name, "beyond_ppp", (-25, 110), (0, 40, 80),
+                                 series=[sp.Series("neutral", cells, word=ARMS[0][1])], ticks=ticks))  # fmt: skip
+    t = sp.DotTable(list(chains), [sp.ColumnGroup(THREE_HEAD, cols)], kind="chains",
+                    lanes=[sp.Lane(ds, name) for ds, name, _p in THREE])  # fmt: skip
     return sp.Figure(fid, v).add(t)
 
 
