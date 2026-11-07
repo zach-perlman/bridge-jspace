@@ -181,6 +181,7 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
 
 
 MARK_CLEAR = 4.0  # points of white between a marker's edge and any text (a label closer reads as sitting on its dot)
+LINE_CLEAR = 1.5  # points of white between a line and any text (a text ending on a rule reads as crossing it)
 
 
 def crossings(fig, name: str) -> list[str]:
@@ -211,12 +212,12 @@ def drawn_obstacles(fig) -> tuple[list, list]:
     for ax in fig.axes:
         for s in ax.spines.values():
             if s.get_visible():
-                paths.append((s.get_transform().transform_path(s.get_path()), s.get_linewidth() * px / 2))
+                paths.append((s.get_transform().transform_path(s.get_path()), (s.get_linewidth() / 2 + LINE_CLEAR) * px))
         for ln in ax.lines:
             if not ln.get_visible() or _hex(ln.get_color()) == GRID.lower():
                 continue
             if ln.get_linestyle() not in ("None", "", " ") and len(ln.get_xydata()) > 1:
-                paths.append((ln.get_transform().transform_path(ln.get_path()), ln.get_linewidth() * px / 2))
+                paths.append((ln.get_transform().transform_path(ln.get_path()), (ln.get_linewidth() / 2 + LINE_CLEAR) * px))
             if ln.get_marker() not in ("None", None, "", " "):
                 rad = (ln.get_markersize() + ln.get_markeredgewidth()) * px / 2
                 marks += [(p, rad + MARK_CLEAR * px) for p in ln.get_transform().transform(ln.get_xydata())]

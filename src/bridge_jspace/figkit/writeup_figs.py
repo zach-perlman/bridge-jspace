@@ -96,6 +96,7 @@ def value(ax, x, y, cell, color, vfmt, i=None, size=9.5, zebra=None):
     line or mark drawn so far (figkit/lint.py hit: draw a row's dots before its values) and stays inside the panel; if
     neither side does, on row i's lower line."""
     fig = ax.figure
+    fig.canvas.draw()  # the spines' positions are set on the first draw
     r = fig.canvas.get_renderer()
     obstacles = lint.drawn_obstacles(fig)
     lim = ax.get_xlim()
@@ -533,8 +534,8 @@ AGENT_COLS = (("copy", "copy", "a given answer", "vs rotated (pts)"),
 
 def figA1_agents() -> None:
     """Per task inside the agent transcripts, the knock-out's accuracy drop minus a control's (points, bridge-clustered
-    95%), one x scale for all five tasks. A cell whose registered reading is descriptive is grey and says so on its
-    lower line (grey, not hollow: hollow means post hoc only)."""
+    95%), one x scale for every task drawn (a task missing a model's run is left out). A cell whose registered reading
+    is descriptive is grey and says so on its lower line (grey, not hollow: hollow means post hoc only)."""
     rows = [Row(n) for _, n in TWIN_MODELS]
     lim = (-25, 80)
 
@@ -561,11 +562,79 @@ def figA1_agents() -> None:
 
         return f
 
-    t = table(rows, [Col(1.3, title, sub, task(col), lim, [0, 30, 60], xlabel=xl, cue="→ needed more", zero=False)
-                     for col, title, sub, xl in AGENT_COLS], label_w=1.0, labels=False, head=0.75,
+    # a task is drawn only when every model has its run (derive: note 56c ran on the 9B only, so the column is dropped
+    # until the 27B and Lightning runs exist; its 9B row stays in data.csv)
+    cols = [c for c in AGENT_COLS if all(w(f"figA1.{c[0]}.{k}") for k, _ in TWIN_MODELS)]
+    width = (WIDTH - 1.0) / len(cols) - 0.12
+    t = table(rows, [Col(width, title, sub, task(col), lim, [0, 30, 60], xlabel=xl, cue="→ needed more", zero=False)
+                     for col, title, sub, xl in cols], label_w=1.0, labels=False, head=0.75,
               key=[[("●", C["recall"], "the knock-out's accuracy drop minus a control's, 95% whiskers")],
                    [("●", C["control"], "descriptive: no registered reading for this cell")]])  # fmt: skip
     t.render(f"{OUT}/figA1_agents.png", dpi=DPI)
+
+
+# ---- Fig. 0: one bridge word, two readers (a schematic, no numbers) ---------------------------------------------------
+# the locker scene of the datasets figure (depth_figs.datasets, p0a): the scene, its two questions and their answers
+SCENE = (("The locker of carbon is 3. The locker of helium is 5. Eric picked ", "normal"), ("carbon", "bold"), (".", "normal"))
+READERS = (("lookup", C["lookup"], "Which locker belongs to\nEric's pick?", "3, read in the scene"),
+           ("recall", C["recall"], "What is the atomic number\nof Eric's pick?", "6, from memory"))  # fmt: skip
+PARTS = (("lens part", C["lens"]), ("identity", C["identity"]), ("address", C["address"]))
+
+
+def fig00_schematic() -> None:
+    """The carbon locker scene: the bridge word's state holds the lens part (teal), the identity (blue) and the
+    address (orange); the recall reads the lens part, the lookup reads the identity and the address."""
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
+
+    fw, fh = WIDTH, 3.6
+    fig = plt.figure(figsize=(fw, fh), dpi=DPI)
+    r = fig.canvas.get_renderer()
+
+    def box(x0, y0, x1, y1, edge):
+        fig.patches.append(FancyBboxPatch((x0, y0), x1 - x0, y1 - y0, boxstyle="round,pad=0,rounding_size=0.015",
+                                          transform=fig.transFigure, facecolor="white", edgecolor=edge, lw=1.2))  # fmt: skip
+
+    def arrow(a, b, col, rad=0.0):
+        fig.patches.append(FancyArrowPatch(a, b, transform=fig.transFigure, arrowstyle="-|>,head_length=6,head_width=3.5",
+                                           color=col, lw=1.8, connectionstyle=f"arc3,rad={rad}", shrinkA=0, shrinkB=2))  # fmt: skip
+
+    x, bridge = 0.03, None  # the scene, its bridge word in bold
+    for text, weight in SCENE:
+        t = fig.text(x, 0.9, text, ha="left", va="center", fontsize=FS["title"], weight=weight, color=INK)
+        bb = t.get_window_extent(r)
+        if weight == "bold":
+            bridge = (bb.x0 + bb.x1) / 2 / fig.bbox.width
+        x += bb.width / fig.bbox.width
+    fig.text(bridge, 0.80, "the bridge word", ha="center", va="center", fontsize=FS["small"], color=MUTED)
+
+    sx0, sx1, sy0, sy1 = 0.40, 0.60, 0.38, 0.72  # the bridge word's state: its three parts
+    box(sx0, sy0, sx1, sy1, T.FAINT)
+    fig.text(sx0 + 0.02, sy1 - 0.05, "its state", ha="left", va="center", fontsize=FS["small"], color=MUTED)
+    ys = {}
+    for k, (word, col) in enumerate(PARTS):
+        y = sy1 - 0.125 - k * 0.075
+        ys[word] = y
+        fig.patches.append(Rectangle((sx0 + 0.02, y - 0.022), 0.022, 0.044, transform=fig.transFigure, color=col))
+        fig.text(sx0 + 0.055, y, word, ha="left", va="center", fontsize=FS["text"], weight="bold", color=col)
+    arrow((bridge, 0.76), (sx1 - 0.03, sy1 + 0.005), MUTED, rad=-0.2)
+
+    for k, (name, col, question, answer) in enumerate(READERS):
+        x0 = 0.03 if k == 0 else 0.67
+        x1 = x0 + 0.30
+        box(x0, 0.05, x1, 0.40, col)
+        fig.text(x0 + 0.02, 0.35, name, ha="left", va="center", fontsize=FS["title"], weight="bold", color=col)
+        fig.text(x0 + 0.02, 0.235, question, ha="left", va="center", fontsize=FS["text"], color=INK, linespacing=1.15)
+        fig.text(x0 + 0.02, 0.10, f"→ {answer}", ha="left", va="center", fontsize=FS["text"], weight="bold", color=col)
+    for word in ("identity", "address"):  # the lookup reads these two
+        arrow((sx0 - 0.005, ys[word]), (0.33 - 0.005, 0.40), C[word], rad=0.12 if word == "identity" else 0.05)
+    arrow((sx1 + 0.005, ys["lens part"]), (0.67 + 0.005, 0.40), C["lens"], rad=-0.15)
+
+    path = f"{OUT}/fig00_schematic.png"
+    if T.BEFORE_SAVE is not None:
+        T.BEFORE_SAVE(fig, path)
+    fig.savefig(path, dpi=DPI, facecolor="white")
+    plt.close(fig)
 
 
 @cache
@@ -577,6 +646,6 @@ def _quantities() -> dict:
         return {r["key"]: r["quantity"] for r in csv.DictReader(f)}
 
 
-FIGS = {"fig01_main_split": fig01_main_split, "fig04_twin_set": fig04_twin_set,
+FIGS = {"fig00_schematic": fig00_schematic, "fig01_main_split": fig01_main_split, "fig04_twin_set": fig04_twin_set,
         "fig05_controls": fig05_controls, "fig10_answer_span": fig10_answer_span,
         "fig11_orthogonal": fig11_orthogonal, "figA1_agents": figA1_agents}  # post order; fixed names  # fmt: skip

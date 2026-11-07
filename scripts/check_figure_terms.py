@@ -394,6 +394,9 @@ WRITEUP_RETIRED = {
     "stated": r"(?i)\bstated\b",
     "write": r"(?i)\b(?:write|writes|writing|written|wrote)\b",
 }
+# a dataset's own words quoted in a figure (the fact-passage question in Fig. 2): the ban on "write" is about the
+# address, not about a prompt the models read, so these exact (figure, term, quoted text) are exempt
+WRITEUP_QUOTED = {("fig02_datasets", "write", "The composer who wrote The Magic Flute")}
 
 
 def writeup_texts() -> list[tuple[str, str]]:
@@ -424,7 +427,8 @@ def writeup_texts() -> list[tuple[str, str]]:
 
 def writeup_main() -> int:
     texts = writeup_texts()
-    hits = [(w, t, term) for w, t in texts for term, rx in {**RETIRED, **WRITEUP_RETIRED}.items() if re.search(rx, t)]
+    hits = [(w, t, term) for w, t in texts for term, rx in {**RETIRED, **WRITEUP_RETIRED}.items()
+            if re.search(rx, t) and not any((w, term) == (f, q) and s in t for f, q, s in WRITEUP_QUOTED)]  # fmt: skip
     for where, text, term in hits:
         print(f"{where}: {term!r} in {text!r}")
     print(f"check_figure_terms --writeup: {len(hits)} banned term(s) in {len({w for w, _ in texts})} figure(s)")

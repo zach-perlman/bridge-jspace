@@ -19,7 +19,11 @@ from bridge_jspace.figkit import depth_figs as DF
 from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit import lint
+from bridge_jspace.figkit import writeup_address as WA
+from bridge_jspace.figkit import writeup_appendix as WP
+from bridge_jspace.figkit import writeup_claims as WC
 from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace.figkit import writeup_intro as WI
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
 from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT, WRITEUP_MIN_ROW
@@ -27,18 +31,29 @@ from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT, WRITEUP_MIN_ROW
 OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth",
        "writeup": REPO / "figures" / "writeup"}  # fmt: skip
 DPI = {"readme": 160, "slide": 200, "depth": 160, "writeup": WRITEUP.dpi}
+# the LessWrong post's figures in post order, then the appendix in the brief's order; the file names are fixed (the post
+# embeds figures/writeup/<id>.png)
+WRITEUP_MODULES = (W, WI, WA, WC, WP)
+_WFIGS = {k: v for m in WRITEUP_MODULES for k, v in m.FIGS.items()}
+WRITEUP_ORDER = ("fig00_schematic", "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set", "fig05_controls",
+                 "fig06_nine_models", "fig07_routes", "fig08a_address_read_remove", "fig08b_address_swap_lens",
+                 "fig09_order", "fig10_answer_span", "fig11_orthogonal", "fig12_pointer", "fig13_last_token",
+                 "figA1_agents", "appB_f5_atoms", "appB_f14_two_codes", "appB_f9_where", "appB_f12_order",
+                 "appB_f8_facts", "appB_f8_directions", "appB_f15_link_crossover", "appB_f17_attention",
+                 "appB_f18_code_tool", "appB_f19_six_lockers")  # fmt: skip
+assert set(WRITEUP_ORDER) == set(_WFIGS), set(WRITEUP_ORDER) ^ set(_WFIGS)
+WRITEUP_FIGS = {k: _WFIGS[k] for k in WRITEUP_ORDER}
 FIGS = {"r1_c1_split": X.r1_split, "r3_last_token": X.r3_last_token,
         "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f2_main": F.f_main, "f3_nine_models": F.f_nine,
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_directions": F.f_directions, "f8_facts": F.f_facts,
         "f9_where": F.f_where, "f10_sentence_order": CF.f_sentence_order, "f10a_order_main": CF.f_order_main, "f10b_order_2x2": CF.f_order_2x2, "f15_link_crossover": CV.f_link_crossover, "f13b_depth_curves": CV.f_depth_curves, "f13c_depth_curves_all": CV.f_depth_curves_all, "f16_ladder": CV.f_ladder, "f17_attention": CV.f_attention, "f18_code_tool": CF.f_code_tool, "f19_six_lockers": CF.f_six_lockers, "f6a_address_read_removed": lambda: F.f_address("read_removed"), "f6b_address_swap_lens": lambda: F.f_address("swap_lens"), "f13_depth_anatomy": CF.f_depth, "f14_two_codes": CF.f_two_codes, "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
         "t12_two_by_two": DF.two_by_two, "p0a_datasets": DF.datasets, "p0b_tools": DF.tools,
-        **W.FIGS}  # fmt: skip
+        **WRITEUP_FIGS}  # fmt: skip
 DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "f6_address", "r5_routes", "f11_monitor", "r3_last_token", "t12_two_by_two")
-TARGET = {"readme": [i for i in FIGS if i not in W.FIGS and i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers")], "depth": list(DEPTH)}
+TARGET = {"readme": [i for i in FIGS if i not in WRITEUP_FIGS and i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers")], "depth": list(DEPTH)}
 # p0a_datasets: the root README's datasets figure (Dan 30 Oct: the table style, no title inside)
 TARGET["slide"] = [*(i for i in TARGET["readme"] if i != "f10_sentence_order"), "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
-# the LessWrong post's figures in post order; the file names are fixed (the post embeds figures/writeup/<id>.png)
-TARGET["writeup"] = list(W.FIGS)
+TARGET["writeup"] = list(WRITEUP_FIGS)
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -82,9 +97,10 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     X.OUT, F.DPI = str(out), DPI[target]
     CF.OUT, CF.DPI = str(out), DPI[target]
     CV.OUT, CV.DPI = str(out), DPI[target]
-    W.OUT = str(out)
+    for m in WRITEUP_MODULES:
+        m.OUT = str(out)
+        m.PROBLEMS.clear()
     CV.PROBLEMS.clear()
-    W.PROBLEMS.clear()
     fs, min_row, gap, vbox = dict(T.FS), T.MIN_ROW_H, T.VALUE_GAP, T.VALUE_BOX
     if target == "writeup":
         T.FS.update(W.FS)
@@ -104,7 +120,8 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
         T.FS.update(fs)
         T.MIN_ROW_H, T.VALUE_GAP, T.VALUE_BOX = min_row, gap, vbox
     PROBLEMS.extend(CV.PROBLEMS)
-    PROBLEMS.extend(W.PROBLEMS)
+    for m in WRITEUP_MODULES:
+        PROBLEMS.extend(m.PROBLEMS)
     return done
 
 
