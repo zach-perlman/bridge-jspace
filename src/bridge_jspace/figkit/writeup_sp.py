@@ -195,7 +195,7 @@ def fig12_pointer() -> sp.Figure:
                                   panel("rot", "rotated"),
                                   sp.TextColumn("neutral sentence − own passage", "moved_difference",
                                                 {m: diff(m) for m in models}, unit_title=False)],
-                         note="the pointer runs: a different item set from Fig. 6's swap")  # fmt: skip
+                         note="the lens-part swap runs: a different item set from Fig. 6's swap")  # fmt: skip
     return sp.Figure("fig12_pointer", vocab()).add(top, bottom)
 
 

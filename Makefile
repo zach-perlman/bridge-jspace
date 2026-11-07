@@ -127,6 +127,8 @@ figures-writeup:    ## the LessWrong post's figures (figures/writeup/, styles-pl
 	uv run python -m bridge_jspace.figkit.writeup_sp
 	uv run styles-plot check figures/writeup --vocab plotstyle.toml
 	uv run styles-plot sheet figures/writeup -o figures/writeup/_sheets --order figures/writeup/_meta/order.txt
+	uv run python scripts/writeup_figure_map.py
+	uv run python scripts/writeup_contact_sheet.py
 	uv run pytest -q tests/test_writeup_sp.py tests/test_figure_layout.py
 
 writeup-examples:    ## the write-up's real prompts and answers per experiment (docs/writeup/examples.md) and its checks
