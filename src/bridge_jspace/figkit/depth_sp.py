@@ -334,7 +334,7 @@ def fig14_learned() -> sp.Figure:
     for m in models:
         k = ZK[m]
 
-        def e(quantity, key, **kw):
+        def e(quantity, key, m=m, k=k, **kw):
             return est(need(cell(f, m, q + quantity), quantity), f"learned.{k}", key=f"f14.{key}.{k}", **kw)
 
         learned[m] = e(
