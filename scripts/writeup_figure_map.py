@@ -1,0 +1,138 @@
+"""docs/writeup/figure_map.md: the post's figures in order, for swapping them in the Google Doc by hand: number, section,
+file, caption (read from the caption stores, figures/<set>/_meta/captions.toml, src comments dropped) and what changed
+against the deck figure the Doc shows now (the figkit versions as of 25d7b48e).
+
+uv run python scripts/writeup_figure_map.py
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(REPO), str(REPO / "src")]
+from bridge_jspace.figkit import captions  # noqa: E402
+
+OUT = REPO / "docs/writeup/figure_map.md"
+F1, F2, F3, F4 = ("Finding 1: recall needs the lens part", "Finding 2: lookup runs on codes outside the lens",
+                  "Finding 3: recall needs its answer's own directions",
+                  "Finding 4: a lens reading reports associations, not use")  # fmt: skip
+
+# (number, section, [(set, file stem)], what changed against the deck figure)
+ROWS = [
+    ("top", "TL;DR, under the title", [("writeup", "00_schematic")],
+     "Same scene and three parts, now coloured words with dots instead of squares; each arrow carries its label"),
+    ("key", "How to read the numbers", [("writeup", "00_key")],
+     "Roles in two columns with no \"mention\" or \"question\" colours (neutral is now a quantity of no role, such "
+     "as a difference); every control named; one example row (Qwen 27B's band test) read aloud, \"removing the lens "
+     "part everywhere\""),
+    ("1", F1, [("writeup", "01_main_split")],
+     "Whiskers span the full interval (the deck's were one-sided); the gap is slate, not black; the one-layer header "
+     "reads \"switches blocked beyond random\"; the largest control is a grey tick, not a number in brackets (the old "
+     "caption's \"in brackets\" no longer applies); not-claimed tags under the band panels"),
+    ("2", "Setup: the two datasets",
+     [("writeup", "02_datasets"), ("examples", "01_locker_scene"), ("examples", "02_fact_passage")],
+     "The prompt table is unchanged in content; the example cards E1 and E2 are new: real items picked by a stated "
+     "rule, each reader's answer under each operation"),
+    ("3", "Setup: the three tools", [("writeup", "03_tools")],
+     "Grids over a real scene's last words (bridge word in bold) instead of blank cells; one teal box per test; the "
+     "swap is teal (a lens part), not blue"),
+    ("4", F1, [("writeup", "04_twin_set")],
+     "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "
+     "lanes are tagged descriptive; the gap is slate with full whiskers"),
+    ("5", F1, [("writeup", "05a_controls_band"), ("writeup", "05b_controls_layer")],
+     "Split into two figures (band of layers, one layer); one column per control on the same scale; the post embeds "
+     "both where it embedded fig05_controls"),
+    ("6", F1, [("writeup", "06_nine_models")],
+     "No grade column (verdicts are in the text); Bolt's larger swap and the 122B scored by probability get their "
+     "own columns; gaps slate with the grey tick; two not-claimed tags"),
+    ("7", F2, [("examples", "03_routes"), ("writeup", "07_routes")],
+     "The stack has no whiskers and no numbers in the bars; the position share's interval and the number's share sit "
+     "in columns beside it; the E4 card shows the lockers each route predicts on a real scene"),
+    ("8", F2, [("writeup", "08a_address_read_remove"), ("writeup", "08b_address_swap_lens")],
+     "The layout-only probe is a grey dot (was a tick); the removal is a dumbbell to its random control; \"item "
+     "change\" reads \"a change of item\"; no left-pointing cue"),
+    ("9", F2, [("writeup", "09_order")],
+     "Two labelled lanes per model (sentence before, after the pick); full whiskers; no zero line"),
+    ("10", F3, [("writeup", "10_answer_span")],
+     "The random keep is a grey dot with its value; descriptive tags on the keep cells; the matched-share notes "
+     "under their cells"),
+    ("11", F3, [("writeup", "11_orthogonal")],
+     "Panels swapped (the data-built subspace first, with its bar fixed in advance); the orthogonal arm is a hollow "
+     "slate dot (post hoc); colour words instead of legend lines"),
+    ("12", F4, [("writeup", "12_pointer")],
+     "Two tables in one figure (was two pasted images); full whiskers; the difference is signed, its interval not"),
+    ("13", F4, [("writeup", "13_last_token")],
+     "A column with the lens part's value; the whole state swapped in is a named grey control"),
+    ("A1", "Appendix A: agents", [("writeup", "a01_agents")],
+     "Dots in the recall's colour throughout; descriptive cells tagged in grey words (no longer grey dots)"),
+    ("B1", "Appendix B", [("writeup", "a02_atoms")],
+     "One dot column per word type (old bridge word, new bridge word, another scene word, no scene word) and the "
+     "answer word's share"),
+    ("B2", "Appendix B", [("writeup", "a03_position_route")],
+     "The top half of appB_f14_two_codes as its own figure; all estimates post hoc, said once in the key"),
+    ("B3", "Appendix B", [("writeup", "a04_identity_route")],
+     "The bottom half of appB_f14_two_codes as its own figure; all estimates post hoc"),
+    ("B4", "Appendix B", [("writeup", "a05_where")], "Values print in the points unit's decimals; a grey rotated dot per cell"),
+    ("B5", "Appendix B", [("writeup", "a06_order")],
+     "Two labelled lanes per model (question after, before the scene) instead of shades; gate words in the cells"),
+    ("B6", "Appendix B", [("writeup", "a07_facts")], "Two labelled lanes (true facts, made-up facts); made-up values printed"),
+    ("B7", "Appendix B", [("writeup", "a08_directions")], "One column per number of directions on the grey band"),
+    ("B8", "Appendix B", [("writeup", "a09_link_crossover")],
+     "Two lookup lines named at their ends; the cells fixed in advance as points with whiskers; a grey post-hoc tag "
+     "per panel; no numbers-only table"),
+    ("B9", "Appendix B", [("writeup", "a10_attention")],
+     "Four labelled lanes per model; both controls grey and named; the colour word reads \"address swap\""),
+    ("B10", "Appendix B", [("writeup", "a11_heads")],
+     "The bar fixed in advance as a labelled dashed rule; the values in two columns"),
+    ("B11", "Appendix B", [("writeup", "a12_code_tool")],
+     "Redrawn from the depth figure: each arm in its own column against a random part; \"below gate\" where the "
+     "9B's code probe was not run"),
+    ("B12", "Appendix B", [("writeup", "a13_six_lockers")],
+     "Pairs as dots and a count column instead of bars; the shift vector's whisker is the range over start lockers"),
+]  # fmt: skip
+
+HEAD = """<!-- Generated by scripts/writeup_figure_map.py from the caption stores; edit the script or the stores. -->
+# Write-up figure map: what goes where in the Google Doc
+
+For swapping the post's figures by hand (agents do not edit the Doc): in the post's order, each figure's number, the
+section it sits in, the file to upload, its caption, and what changed against the deck figure the Doc shows now (the
+figkit versions as of `25d7b48e`). Files are in `figures/writeup/` unless they start with `examples/` (the example
+cards, `figures/examples/`).
+
+- **Captions** come from one store per set (`figures/writeup/_meta/captions.toml`, `figures/examples/_meta/captions.toml`);
+  the same text is in each set's index (`figures/<set>/README.md`) and under each figure on the contact sheet
+  `docs/review/writeup_contact_sheet.png`.
+- **Sections** follow the order of results in the finishing-pass brief (Finding 1 recall needs the lens part,
+  2 lookup runs on codes outside the lens, 3 recall needs its answer's own directions, 4 a lens reading reports
+  associations, not use); check each against the Doc's own headings.
+- **Figure 1's old caption** ("in brackets, the largest same-size control's gap") no longer applies: the largest
+  same-size control is a grey tick on the gap's axis.
+- **Tag (proposed, not created):** `v1.0-writeup` at the commit that closes the finishing pass, once the Doc shows
+  these files. The write-up PNGs last changed at `7e0e3c03`; their captions at this map's commit. For Dan:
+  `git tag -a v1.0-writeup <commit> -m "Figures and text as in the LessWrong post" && git push origin v1.0-writeup`.
+
+| № | section | file | caption | changed against the deck figure |
+|---|---|---|---|---|
+"""
+
+
+def cell(text: str) -> str:
+    return re.sub(r"<!--.*?-->", "", text).replace("|", "\\|").strip()
+
+
+def main() -> None:
+    lines = []
+    for num, section, files, change in ROWS:
+        names = "<br>".join(f"`{'examples/' if s == 'examples' else ''}{stem}.png`" for s, stem in files)
+        caps = "<br><br>".join(cell(captions.caption(s, stem)) for s, stem in files)
+        lines.append(f"| {num} | {section} | {names} | {caps} | {cell(change)} |")
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(HEAD + "\n".join(lines) + "\n")
+    print(f"wrote {OUT.relative_to(REPO)}: {len(ROWS)} rows")
+
+
+if __name__ == "__main__":
+    main()
