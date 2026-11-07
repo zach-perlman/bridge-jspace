@@ -240,6 +240,18 @@ def ordered_rows(m: dict) -> list[tuple[str | None, dict]]:
     return [(part, r) for _, _, part, r in sorted(keyed, key=lambda k: (k[0], k[1]))]
 
 
+# printed labels name the data set or the track, not a person (docs pass P3-6, 7 Nov); the matrix's row labels and the
+# HEATMAP labels stay as keys
+DISPLAY = (("Zach's passages", "the fact passages"), ("Zach's Z2", "the fact passages' Z2"),
+           ("on his passages", "on the fact passages"), ("his passages", "the fact passages"))  # fmt: skip
+
+
+def display(label: str) -> str:
+    for old, new in DISPLAY:
+        label = label.replace(old, new)
+    return label[0].upper() + label[1:] if label.startswith("the fact passages") else label
+
+
 def table(matrix: Path = MATRIX) -> str:
     """The coverage table: one row per matrix row in the README's order under its Part, each cell a symbol and, where the
     matrix has a note, a footnote number; the notes numbered under the table (one number per distinct note)."""
@@ -252,7 +264,7 @@ def table(matrix: Path = MATRIX) -> str:
         if part != last:
             lines.append(f"| **{PART_TITLE[part]}** |" + " |" * len(COLUMNS))
             last = part
-        name = r["row"].replace("|", "/")
+        name = display(r["row"]).replace("|", "/")
         if r["row"] in ANCHORS:
             name = f"[{name}](#{ANCHORS[r['row']]})"
         cells = []
@@ -300,7 +312,7 @@ def verdict_tables() -> str:
                 cell = (v + words[len(bare):]) if bare in (v, "confirmed", "holds") else f"{v}: {words}"
                 row.append(f"**{cell}**" if code == "F" else cell)
             rule, checked = meta.get(anchor, ("not stated", "not stated"))
-            out.append(f"| [{label}](#{anchor}) | " + " | ".join(row) + f" | {rule} | {checked} |")
+            out.append(f"| [{display(label)}](#{anchor}) | " + " | ".join(row) + f" | {rule} | {checked} |")
     return "\n".join(out[1:])
 
 
