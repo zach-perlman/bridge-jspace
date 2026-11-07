@@ -22,7 +22,7 @@ from bridge_jspace.figkit import lint
 from bridge_jspace.figkit import writeup_figs as W
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
-from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT
+from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT, WRITEUP_MIN_ROW
 
 OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth",
        "writeup": REPO / "figures" / "writeup"}  # fmt: skip
@@ -80,9 +80,10 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     W.OUT = str(out)
     CV.PROBLEMS.clear()
     W.PROBLEMS.clear()
-    fs = dict(T.FS)
+    fs, min_row = dict(T.FS), T.MIN_ROW_H
     if target == "writeup":
         T.FS.update(W.FS)
+        T.MIN_ROW_H = WRITEUP_MIN_ROW
     done = []
     try:
         for i in TARGET[target]:
@@ -95,6 +96,7 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     finally:
         T.FS.clear()
         T.FS.update(fs)
+        T.MIN_ROW_H = min_row
     PROBLEMS.extend(CV.PROBLEMS)
     PROBLEMS.extend(W.PROBLEMS)
     return done

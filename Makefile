@@ -124,6 +124,7 @@ figures-kit:        ## the setup figures (p0a, p0b) and the table figures for th
 	uv run python -m bridge_jspace.figkit.tables --target slide
 
 figures-writeup:    ## the LessWrong post's figures (figures/writeup/, 1600 px) with their contact sheet and checks
+	uv run python scripts/writeup_data.py
 	uv run python -m bridge_jspace.figkit.tables --target writeup
 	uv run python scripts/check_style.py --writeup
 	uv run python scripts/check_figure_terms.py --writeup

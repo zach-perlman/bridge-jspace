@@ -37,6 +37,7 @@ SLIDE = replace(Theme("slide"), axis=14, tick=13, label=13, value=12, dpi=200,
 # the LessWrong post's column (~720 px shown): 8.0 in at 200 dpi = 1600 px, nothing under 11 pt, no title (the caption
 # lives in the post), opaque white (the site has a dark mode)
 WRITEUP = replace(Theme("writeup"), axis=12, tick=11, label=11, value=11, dpi=200, sizes={"full": (8.0, 4.4)})
-WRITEUP_HEIGHT = (2.6, 5.5)  # inches: the range a "full" figure's height may take
-WRITEUP_ASPECT = (1.4, 2.6)  # width : height
+# width : height (Amendment 1: height is cheap in a scrolling column, width is the limit; was 1.4-2.6)
+WRITEUP_ASPECT = (1.0, 2.6)
+WRITEUP_MIN_ROW = 0.32  # inches: no dot-table row of the write-up shorter than this (Amendment 1: rows are not squeezed)
 THEMES = {"readme": README, "slide": SLIDE}  # build.py's spec targets; the write-up is built by figkit/tables.py only

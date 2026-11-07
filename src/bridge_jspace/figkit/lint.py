@@ -16,9 +16,13 @@ MODELISH = re.compile(r"Qwen|Muse|Lightning|Nemotron|Bolt|OLMo|DeepSeek|Ministra
 
 
 def _redgreen(c) -> bool:
+    from bridge_jspace.palette import SHADE
+
     try:
         h = to_hex(c)
     except ValueError:
+        return False
+    if h.lower() == SHADE["answer"].lower():  # the palette's brick (the answer word): allowed, never next to a green
         return False
     r, g, b = (int(h[i : i + 2], 16) for i in (1, 3, 5))
     return (r > 150 and g < 90 and b < 90) or (g > 120 and r < 90 and b < 110 and g - max(r, b) > 50)
@@ -176,7 +180,7 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
     return sorted(set(out))
 
 
-def png_problems(path, width: int = 1600, aspect: tuple[float, float] = (1.4, 2.6)) -> list[str]:
+def png_problems(path, width: int = 1600, aspect: tuple[float, float] = (1.0, 2.6)) -> list[str]:
     """A saved write-up PNG: exactly `width` px wide, width:height inside `aspect`, opaque white background (the
     corners and any alpha)."""
     import numpy as np

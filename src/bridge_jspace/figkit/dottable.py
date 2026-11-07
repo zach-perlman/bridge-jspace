@@ -37,6 +37,7 @@ HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure
 FS_DEFAULT = {"name": 13, "title": 13, "sub": 11.5, "rowsub": 11, "subrow": 11.5, "hollow": 12, "xlabel": 11.5,
               "cue": 10.5, "key": 11.5, "text": 12.5, "value": 11.5, "head": 12, "small": 10.5}  # fmt: skip
 FS = dict(FS_DEFAULT)
+MIN_ROW_H = 0.0  # inches; a target may set a floor (the write-up: 0.32) and a shorter row is an error, not a lint line
 
 
 @dataclass
@@ -59,6 +60,7 @@ class Col:
     align: str = "left"
     xlabel: str = ""  # the axis title under the ticks, with the unit (G4)
     cue: str = ""  # one grey line under the axis title: which way is "more", at most six words ("→ depends more on the lens part")
+    gutter: bool = False  # an empty white column between two halves of a table: the zebra stripes stop at it
 
 
 @dataclass
@@ -104,6 +106,8 @@ class Table:
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
         rh = ROW_H if self.row_h is None else self.row_h
+        if rh < MIN_ROW_H - 1e-9:
+            raise ValueError(f"row height {rh} in under the target's floor {MIN_ROW_H} in")
         body = n * rh + lab
         xlab = (XLAB_H if any(c.xlabel for c in self.cols) else 0.0) + (CUE_H if any(c.cue for c in self.cols) else 0.0)
         key_rows = self._key_rows(key)
@@ -113,11 +117,19 @@ class Table:
         fx = lambda inch: inch / width  # noqa: E731
         top = head + lab  # first row's top edge, inches from the figure top
 
-        if self.zebra:  # stripes across the whole table, behind everything
+        spans, x0, xc = [], 0.0, self.label_w + self.pad  # zebra spans (inches): the whole width, cut at each gutter
+        for c in self.cols:
+            if c.gutter:
+                spans.append((x0, xc - self.pad / 2))
+                x0 = xc + c.width + self.pad / 2
+            xc += c.width + self.pad
+        spans.append((x0, width))
+        if self.zebra:  # stripes across the table, behind everything
             for i in range(n):
                 if (i // self.group) % 2 == 0:
-                    fig.patches.append(Rectangle((0, fy(top + (i + 1) * rh)), 1, rh / height,
-                                                 transform=fig.transFigure, color=ZEBRA, zorder=-5))  # fmt: skip
+                    for a, b in spans:
+                        fig.patches.append(Rectangle((fx(a), fy(top + (i + 1) * rh)), fx(b - a), rh / height,
+                                                     transform=fig.transFigure, color=ZEBRA, zorder=-5))  # fmt: skip
         for i, r in enumerate(self.rows):  # row labels
             y = fy(top + (i + 0.5) * rh)
             if not r.name and r.sub:  # a sub-row of a group (S6): its short label alone, indented, grey
@@ -134,7 +146,7 @@ class Table:
                          fontsize=FS["hollow"], color=MUTED)  # fmt: skip
             if r.sub:
                 box = {"boxstyle": "square,pad=0.1", "facecolor": ZEBRA if (i // self.group) % 2 == 0 and self.zebra
-                       else "white", "edgecolor": "none"} if self.sub_lift else None  # fmt: skip
+                       else "white", "edgecolor": "none"} if self.sub_lift else None  # masks the grid lines it crosses  # fmt: skip
                 fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=FS["rowsub"], color=MUTED,
                          bbox=box, zorder=5)  # fmt: skip
 
@@ -143,6 +155,9 @@ class Table:
         title_y = 0.22 + head - HEAD_H if self.title_top is None else self.title_top
         x = self.label_w + self.pad
         for c in self.cols:
+            if c.gutter:
+                x += c.width + self.pad
+                continue
             if c.title:
                 fig.text(fx(x), fy(title_y), c.title, ha="left", va="top", fontsize=FS["title"], weight="bold", color=INK)
             if c.sub:

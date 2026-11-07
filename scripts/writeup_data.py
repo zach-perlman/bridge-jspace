@@ -1,0 +1,216 @@
+"""writeup_data: the numbers of the LessWrong write-up's figures that no existing data file holds, recomputed from the
+run files into data/figures/writeup/data.csv (the schema of docs/breadth/data.csv: key, figure, model, quantity, value,
+lo, hi, n, unit, source). CPU only; it reads results/ and never writes there.
+
+The `source` column names every file a row is computed from (repo-relative), with the condition or field inside it, and
+the code that computes it. A reader script that only prints has its output saved under data/figures/writeup/raw/.
+
+uv run python scripts/writeup_data.py            # recompute and write data/figures/writeup/data.csv
+uv run python scripts/writeup_data.py --check    # recompute and compare with the stored file, write nothing
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(REPO / "src"))
+from bridge_jspace.figkit import specs as S  # noqa: E402
+from scripts import f2_differences as F2  # noqa: E402
+
+OUT = REPO / "data" / "figures" / "writeup" / "data.csv"
+FIELDS = ("key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source")
+DIGITS = 4  # stored precision; the figures print fewer
+ZK_MODEL = {"q9": "qwen3.5-9b", "q27": "qwen3.6-27b", "mu": "muse-glimmer-30b", "nl": "nemotron-3.5-lightning",
+            "q122": "qwen3.5-122b-a10b"}  # fmt: skip
+SHORT = {m: k for k, m in ZK_MODEL.items()}  # the kit's short model ids (figkit/exemplars.ZK) in every key
+
+
+def _row(key, figure, model, quantity, value, lo=None, hi=None, n=None, unit="", source="") -> dict:
+    r = lambda x: "" if x is None else round(float(x), DIGITS)  # noqa: E731
+    return {"key": key, "figure": figure, "model": model, "quantity": quantity, "value": r(value), "lo": r(lo),
+            "hi": r(hi), "n": "" if n is None else int(n), "unit": unit, "source": source}  # fmt: skip
+
+
+# ---- fig05: the band difference at one decimal (docs/breadth/data.csv stores its interval rounded to whole points) ----
+def fig05_rows() -> list[dict]:
+    """Per model, the lens part minus its largest same-size control (specs.largest: rotated, logit lens or PCA), M - K
+    in points, paired on the same items: f2_differences.band_difference (clusters relation:bridge, 1000 draws,
+    random.Random(0)), the same computation as the f2.band.* rows, kept unrounded."""
+    out = []
+    for k, (run, pca_run) in F2.BAND_RUNS.items():
+        top = S.largest(k)
+        if top is None:
+            continue
+        cond = F2.CONTROLS[top[0]][0]
+        other = pca_run if top[0] == "pc" else run
+        if other is None:
+            continue
+        iv = F2.band_difference(run, "paper10", other, cond)
+        if iv is None:
+            continue
+        src = (f"results/ablate_v2/{run}/rows.jsonl (paper10) minus results/ablate_v2/{other}/rows.jsonl ({cond}); "
+               f"items data/tasks_v2/{F2.SET}/items.jsonl; scripts/f2_differences.py band_difference")  # fmt: skip
+        out.append(_row(f"fig05.band_diff.{k}", "fig05_controls", ZK_MODEL[k],
+                        f"M - K, lens part minus {F2.CONTROLS[top[0]][1]} (paired; the largest same-size control)",
+                        *iv, unit="points", source=src))  # fmt: skip
+    return out
+
+
+# ---- fig04: the twin set (note 41, v4 draw 4001), the registered population: every gated item ---------------------------
+ABLATE = REPO / "results" / "ablate_v2"
+TWIN_PREFIX = {"qwen3.5-9b": "qwen35_9b_", "qwen3.6-27b": "", "nemotron-3.5-lightning": "nem35l_"}
+READER = {"MM": "recall", "MP": "lookup"}
+
+
+def fig04_rows() -> list[dict]:
+    """Per model and twin (recall = MM, lookup = MP), accuracy (%) unedited, under the knock-out (paper10), rotated
+    (paper10_rot) and the knock-out keeping the answer span (paper10_keepA); the recall - lookup gap of paper10 and of
+    paper10_rot, points, with the registered interval (nn_ko37_read.boot: bridges resampled, 2000 draws, Random(0)).
+    Accuracies: the ko41 run's summary.json over all gated items. keepA: note 37's run (same items and unedited reads,
+    asserted by note41.json's stored check), whose rows are not in the repo: unedited minus its stored loss (to 0.1)."""
+    out = []
+    for model, p in TWIN_PREFIX.items():
+        run = f"results/ablate_v2/{p}jsuite_v4_test_chat_ko41_cand2_v1/summary.json"
+        note = f"results/ablate_v2/nn_ko_read/{p}note41.json"
+        s, n41 = json.loads((REPO / run).read_text()), json.loads((REPO / note).read_text())
+        band = next(iter(s["cells"]))
+        cell, keep = s["cells"][band], n41["n37"]["conditions"]["paper10_keepA"]
+        assert n41["n37"]["n"] == n41["A"]["n"], model  # keepA on the same population as the registered gap
+        for fam, reader in READER.items():
+            n = n41["A"]["n"][fam]
+            un = 100 * s["unedited_accuracy"][f"{fam}/clean"]
+            accs = {"unedited": (un, f'{run} unedited_accuracy["{fam}/clean"]'),
+                    **{c: (100 * cell[f"{fam}/clean"][c]["accuracy"], f'{run} cells["{band}"]["{fam}/clean"]["{c}"].accuracy')
+                       for c in ("paper10", "paper10_rot")},
+                    "paper10_keepA": (un - keep[f"loss_{fam}"],
+                                      f'{run} unedited_accuracy minus {note} n37.conditions.paper10_keepA.loss_{fam}')}  # fmt: skip
+            for cond, (v, src) in accs.items():
+                out.append(_row(f"fig04.{reader}.{cond}.{SHORT[model]}", "fig04_twin_set", model,
+                                f"{reader} twins ({fam}), accuracy, {cond}, band {band}", v, n=n, unit="%",
+                                source=src))  # fmt: skip
+        for cond in ("paper10", "paper10_rot"):
+            c = n41["A"]["conditions"][cond]
+            out.append(_row(f"fig04.gap.{cond}.{SHORT[model]}", "fig04_twin_set", model,
+                            f"recall - lookup accuracy drop, {cond} (registered: all gated items, draw 4001)",
+                            c["gap"], *c["gap_ci"], n=n41["A"]["n"]["MM"] + n41["A"]["n"]["MP"], unit="points",
+                            source=f"{note} A.conditions.{cond}.gap, gap_ci (scripts/nn_ko41_read.py)"))  # fmt: skip
+    return out
+
+
+# ---- fig11: removals orthogonal to the answers (notes 62 and 67; the stored reader outputs, rows not in the repo) -------
+SD_READ = "results/sd_necessity/nn_sd_read"
+SD_BAND = {"qwen3.5-9b": "L12-16", "qwen3.6-27b": "L32-40", "nemotron-3.5-lightning": "L27-33"}  # note 67's mid band
+
+
+def fig11_rows() -> list[dict]:
+    """Panel 1 (note 62, the one-hop question "{city} is in the country of", gated items, descriptive): accuracy loss in
+    points of the city's J++ directions, of the same directions made orthogonal to the answers (no interval stored), and
+    of the answers' own J++ directions. Panel 2 (note 67's registered R1, mid band): the cleaned data-built city subspace
+    minus energy-matched random directions, points, item interval (the bridge-clustered one beside it in the source)."""
+    out = []
+    for model, p in TWIN_PREFIX.items():
+        k = SHORT[model]
+        src62 = f"{SD_READ}/{p}sd62_ko_test_v1_note62.json"
+        g = json.loads((REPO / src62).read_text())["strata"]["gated"]
+        for key, field in (("city", "O:bridgeJ loss"), ("answers", "O:ansJ loss")):
+            c = g["beside"][field]
+            out.append(_row(f"fig11.onehop.{key}.{k}", "fig11_orthogonal", model,
+                            f"one-hop question, accuracy loss, {field}", c["value"], *c["ci"], n=c["n"],
+                            unit="points", source=f'{src62} strata.gated.beside["{field}"] (scripts/nn_sd62_read.py)'))  # fmt: skip
+        o = g["R1_cells"]["O"]
+        out.append(_row(f"fig11.onehop.city_perp.{k}", "fig11_orthogonal", model,
+                        "one-hop question, accuracy loss, the city's J++ directions orthogonal to the answers (no interval)",
+                        o["loss_perp"], n=o["n"], unit="points",
+                        source=f"{src62} strata.gated.R1_cells.O.loss_perp (scripts/nn_sd62_read.py)"))  # fmt: skip
+        src67 = f"{SD_READ}/{p}sd67_ko_test_v1_note67.json"
+        r = json.loads((REPO / src67).read_text())["readings"]["R1_bands"][SD_BAND[model]]
+        out.append(_row(f"fig11.clean_subspace.{k}", "fig11_orthogonal", model,
+                        f"cleaned city subspace minus energy-matched random, band {SD_BAND[model]} (registered R1, bar 15)",
+                        r["value"], *r["ci"], n=r["n"], unit="points",
+                        source=f'{src67} readings.R1_bands["{SD_BAND[model]}"].value, ci (scripts/nn_sd67_read.py)'))  # fmt: skip
+    return out
+
+
+# ---- fig10: what recall loses is its answer's own directions (notes 41, 50, 57, 68; the stored reader outputs) ----------
+KO_READ = "results/ablate_v2/nn_ko_read"
+
+
+def fig10_rows() -> list[dict]:
+    """(a) keepA's rescue of the recall (note 41 keep table, row A: 1 - net keep / net paper10; interval 1 - ratio_ci)
+    and its grey control, note 50's P1: a random keep orthogonal to the answers, the one whose energy is closest to and
+    not below keepA's (its rescue, or the reading's label where neither holds enough energy). (b) note 57's S1 on v4
+    draw 4001 and (c) on the codename set (jsuite_v5al): [net onlyA - net onlyRperp] / net paper10, with onlyRperp's
+    energy matching (matching.paper10.reached_share: the share of items whose random part reached its target energy)."""
+    out = []
+    for model, p in TWIN_PREFIX.items():
+        k = SHORT[model]
+        src41 = f"{KO_READ}/{p}note41.json"
+        a = json.loads((REPO / src41).read_text())["keep"]["table"]["A"]
+        out.append(_row(f"fig10.keep_span.{k}", "fig10_answer_span", model,
+                        "share of the recall's damage undone by keeping only the answer span (keepA rescue)",
+                        a["rescue"], 1 - a["ratio_ci"][1], 1 - a["ratio_ci"][0], n=a["n_MM"], unit="share",
+                        source=f"{src41} keep.table.A.rescue; interval 1 - ratio_ci (scripts/nn_ko41_read.py)"))  # fmt: skip
+        src50 = f"{KO_READ}/{p}note49_50.json"
+        p1 = json.loads((REPO / src50).read_text())["readings"]["50_P1"]
+        e = f"keepA energy {p1['E_A']}"
+        if "rescue" in p1:
+            out.append(_row(f"fig10.keep_ctrl.{k}", "fig10_answer_span", model,
+                            f"rescue of a random keep orthogonal to the answers ({p1['perp']}, energy "
+                            f"{p1['E_perps'][p1['perp']]}; {e})", p1["rescue"], *p1["rescue_ci"], n=p1["n_MM"],
+                            unit="share", source=f'{src50} readings["50_P1"].rescue, rescue_ci (scripts/nn_ko49_read.py)'))  # fmt: skip
+        else:
+            out.append(_row(f"fig10.keep_ctrl.{k}", "fig10_answer_span", model,
+                            f"no control: {p1['label']} (energies {p1['E_perps']}; {e})", None, unit="share",
+                            source=f'{src50} readings["50_P1"].label (scripts/nn_ko49_read.py)'))  # fmt: skip
+        for panel, name in (("v4", f"{p}note57.json"), ("codename", f"{p}jsuite_v5al_test_chat_note57.json")):
+            src = f"{KO_READ}/{name}"
+            d = json.loads((REPO / src).read_text())
+            s1, mt = d["readings"]["S1"], d["matching"]["paper10"]
+            out.append(_row(f"fig10.span_only.{panel}.{k}", "fig10_answer_span", model,
+                            "removing only the answer span, net of energy-matched random, as a multiple of the full "
+                            f"damage (S1, {d['run'].split('/')[-1]})", s1["value"], *s1["ci"], n=s1["n_MM"],
+                            unit="multiple", source=f"{src} readings.S1.value, ci (scripts/nn_ko57_read.py)"))  # fmt: skip
+            out.append(_row(f"fig10.span_only_matched.{panel}.{k}", "fig10_answer_span", model,
+                            "share of items whose random part reached its target energy (onlyRperp)",
+                            mt["reached_share"], n=mt["n"], unit="share",
+                            source=f"{src} matching.paper10.reached_share (scripts/nn_ko57_read.py)"))  # fmt: skip
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows)
+
+
+def rows() -> list[dict]:
+    return [r for b in BUILDERS for r in b()]
+
+
+def stored() -> list[dict]:
+    with OUT.open() as f:
+        return list(csv.DictReader(f))
+
+
+def main(argv: list[str]) -> int:
+    new = rows()
+    for r in new:
+        print(f"{r['key']:34s} {r['value']:>10} [{r['lo']}, {r['hi']}]  n={r['n']}")
+    if "--check" in argv:
+        old = {r["key"]: r for r in stored()}
+        bad = [r["key"] for r in new if {k: str(v) for k, v in r.items()} != old.get(r["key"])]
+        print(f"writeup_data --check: {len(bad)} row(s) differ from {OUT.relative_to(REPO)}: {bad}")
+        return 1 if bad or len(old) != len(new) else 0
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    with OUT.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w.writeheader()
+        w.writerows(new)
+    print(f"wrote {len(new)} rows to {OUT.relative_to(REPO)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))
