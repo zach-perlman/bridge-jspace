@@ -41,7 +41,7 @@
 - **Swap and state copy**: a swap replaces one code at the bridge word by another's; a state copy moves the changed prompt's states at chosen tokens and layers into the original.
 - **Probe, lens readout, layer sweep**: a linear read-out trained on states; the lens's top words at a token; one test repeated over layers.
 
-**Terms used in the cards**: the **ladder** (test 49.2) takes the lens part out of the changed prompt step by step (more layers, the earlier mention, the question, every token), each step against a random part; the **full carrier** (test 51.7) changes the bridge token at every layer up to L on the fact passages. In verbatim rule quotes, "J-space" means the lens's directions and "pointer" the address unless a gloss says otherwise.
+**Terms used in the cards**: the **ladder** takes the lens part out of the changed prompt step by step (more layers, the earlier mention, the question, every token), each step against a random part; the **full carrier** changes the bridge token at every layer up to L on the fact passages. In verbatim rule quotes, "J-space" means the lens's directions and "pointer" the address unless a gloss says otherwise.
 
 **Marks**: **†**: not in the hand-checked sample: the result's review view was not among the 46 items read by hand ([findings](docs/review/handcheck_findings.md)); the hand-check is done, this is not a promise of one.
 
