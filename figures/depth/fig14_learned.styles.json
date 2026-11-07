@@ -1,0 +1,166 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "6c2ecc883b43595dc61d371d533cc59fd59a520535cd8d5b6f5978eeef85eaf5"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "837c83c467edf0c2d16ed8df909103cf1a2b9a4d8262006bf3fb663d4de007d9"
+ },
+ "figure": "fig14_learned",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "22a385907c44422afb7d2e4108527f44b3691e74acfa263ac7a288381aad621d",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "a random subspace",
+  "shuffled pairs"
+ ],
+ "cells": {
+  "learned.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "learned.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "learned.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: a random subspace · shuffled pairs",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "f14.random.q9": "0.00",
+  "f14.random.q9.interval": "[0.00, 0.00]",
+  "f14.random.q27": "0.00",
+  "f14.random.q27.interval": "[0.00, 0.00]",
+  "f14.random.mu": "0.00",
+  "f14.random.mu.interval": "[0.00, 0.00]",
+  "f14.whole.q9": "0.38",
+  "f14.whole.q9.interval": "[0.23, 0.48]",
+  "f14.whole.q27": "0.03",
+  "f14.whole.q27.interval": "[0.00, 0.07]",
+  "f14.whole.mu": "0.02",
+  "f14.whole.mu.interval": "[0.00, 0.05]",
+  "f14.energy.q9": "0.25",
+  "f14.energy.q27": "0.23",
+  "f14.energy.mu": "0.19",
+  "f14.learned.q9": "0.97",
+  "f14.learned.q27": "0.95",
+  "f14.learned.mu": "0.98",
+  "f14.moved.q9": "0.42",
+  "f14.moved.q27": "0.10",
+  "f14.moved.mu": "0.04"
+ },
+ "problems": []
+}

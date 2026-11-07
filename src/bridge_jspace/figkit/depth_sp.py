@@ -14,7 +14,7 @@ import styles_plot as sp
 
 from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import readme_sp as RS
-from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, vocab
+from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
 
 OUT = REPO / "figures" / "depth"
 DAN = [m for m, _ in D.DAN]
@@ -270,10 +270,114 @@ def fig09d_chain() -> sp.Figure:
     return sp.Figure("fig09d_chain", vocab()).add(sp.DotTable(models, cols))
 
 
+# ---- fig21: code and tool output ---------------------------------------------------------------------------------------
+def fig21_code_tool() -> sp.Figure:
+    """53.7: in code and in tool output (lanes), the locker probe at the bridge word against its layout baseline, and
+    the position answers without the address and with only it kept, each against a random part of the same size."""
+    stem = "code and tool output, {}: "
+    models = [
+        m for m in DAN if cell("fig21_code_tool", m, stem.format("tool") + "another item moved, no_alf: position share")
+    ]
+    probe, base = {}, {}
+    arms = {"no_alf": ({}, {}), "keep_alf": ({}, {})}
+    for m in models:
+        k = ZK[m]
+        for lane in ("code", "tool"):
+            q = stem.format(lane)
+            p_ = cell("fig21_code_tool", m, q + "the locker probe at the bridge word, locker-first scenes")
+            if p_:
+                probe[(m, lane)] = est(p_, f"code.{k}", key=f"f21.{lane}.probe.{k}", label=True)
+                b = cell("fig21_code_tool", m, q + "the locker probe's layout baseline, locker-first scenes")
+                base[(m, lane)] = est(b, f"code.{k}", key=f"f21.{lane}.layout.{k}", interval=False)
+            else:
+                probe[(m, lane)] = sp.Missing("below gate")
+            for arm, (a, r) in arms.items():
+                c = cell("fig21_code_tool", m, q + f"another item moved, {arm}: position share")
+                c_r = cell("fig21_code_tool", m, q + f"another item moved, {arm}_rand: position share")
+                a[(m, lane)] = est(c, f"code.{k}", key=f"f21.{lane}.{arm}.{k}", label=True)
+                r[(m, lane)] = est(c_r, f"code.{k}", key=f"f21.{lane}.{arm}_rand.{k}", interval=False)
+    cols = [
+        sp.DotColumn(
+            "locker probe",
+            "probe_accuracy",
+            (0.4, 1.17),
+            (0.5, 0.75, 1),
+            series=[sp.Series("control", base, control="layout-only probe"), sp.Series("address", probe)],
+        )
+    ]
+    for arm, header in (("no_alf", "without the address"), ("keep_alf", "only the address kept")):
+        a, r = arms[arm]
+        cols.append(
+            sp.DotColumn(
+                header,
+                "lookups",
+                (-0.04, 0.68),
+                (0, 0.25, 0.5),
+                series=[sp.Series("control", r, control="a random part"), sp.Series("address", a)],
+            )
+        )
+    t = sp.DotTable(models, cols, lanes=[sp.Lane("code", "code"), sp.Lane("tool", "tool output")])
+    return sp.Figure("fig21_code_tool", vocab()).add(t)
+
+
+# ---- fig14: the learned address ----------------------------------------------------------------------------------------
+def fig14_learned() -> sp.Figure:
+    """51.3: a 4-dimensional address learned on the address test pairs carries the lookups' position switches,
+    against one learned on shuffled pairs (grey) and a random subspace (beside); it moves the recalls, against a
+    random subspace (grey) and the whole change (beside); the hand-built address's energy inside it."""
+    q = "51.3: "
+    f = "fig14_learned"
+    models = models_with(
+        f, [q + "lookups' position switches carried by the learned address, k = 4, address test pairs"]
+    )
+    learned, shuffled, rand_c, moved, rand_m, whole, energy = ({} for _ in range(7))
+    for m in models:
+        k = ZK[m]
+
+        def e(quantity, key, **kw):
+            return est(need(cell(f, m, q + quantity), quantity), f"learned.{k}", key=f"f14.{key}.{k}", **kw)
+
+        learned[m] = e(
+            "lookups' position switches carried by the learned address, k = 4, address test pairs",
+            "learned",
+            label=True,
+        )
+        shuffled[m] = e(
+            "lookups' position switches carried by a subspace learned on shuffled pairs, k = 4, address test pairs",
+            "shuffled",
+        )
+        rand_c[m] = e("lookups' position switches carried by a random subspace, k = 4, address test pairs", "random")
+        moved[m] = e("recalls moved by the learned address, k = 4, address test pairs", "moved", label=True)
+        rand_m[m] = e("recalls moved by a random subspace, k = 4, address test pairs", "moved_random")
+        whole[m] = e("recalls moved by the whole change, address test pairs", "whole")
+        energy[m] = e("the hand-built address's energy inside the learned address, k = 4", "energy")
+    cols = [
+        sp.DotColumn(
+            "position switches carried",
+            "carried",
+            (-0.05, 1.3),
+            (0, 0.5, 1),
+            series=[sp.Series("control", shuffled, control="shuffled pairs"), sp.Series("address", learned)],
+        ),
+        sp.TextColumn("a random subspace", "carried", rand_c, unit_title=False),
+        sp.DotColumn(
+            "recalls moved",
+            "recalls",
+            (-0.05, 0.65),
+            (0, 0.25, 0.5),
+            series=[sp.Series("control", rand_m, control="a random subspace"), sp.Series("address", moved)],
+        ),
+        sp.TextColumn("the whole change", "recalls", whole, unit_title=False),
+        sp.TextColumn("hand-built address's energy inside", "change_share", energy, unit_title=False),
+    ]
+    t = sp.DotTable(models, cols, note="a 4-dimensional address learned on the address test pairs")
+    return sp.Figure(f, vocab()).add(t)
+
+
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_settings, "fig01c_zeroing": fig01c_zeroing,
         "fig02_specificity": fig02_specificity, "fig05b_identity_outside": fig05b_identity_outside,
         "fig05c_described_bridge": fig05c_described_bridge, "fig07c_probe_errors": fig07c_probe_errors,
-        "fig09d_chain": fig09d_chain}  # fmt: skip
+        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned}  # fmt: skip
 
 
 def build(ids=None) -> list[str]:

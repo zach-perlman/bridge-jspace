@@ -2,18 +2,18 @@
  "styles_plot": "0.1.5",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "efb2e523a3e494cd800d93afd61086cdcb2e5b7b9baba5175a7fa449772ee892"
+  "sha256": "6c2ecc883b43595dc61d371d533cc59fd59a520535cd8d5b6f5978eeef85eaf5"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "3d0af0622ff3a0b2de374dd9bd670ed73990518c0f4c43497e5faa5f19ce0814"
+  "sha256": "837c83c467edf0c2d16ed8df909103cf1a2b9a4d8262006bf3fb663d4de007d9"
  },
  "figure": "key",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "10a861871c773d09f2416b8a21b90c0e285202b9a1822a38b01e6d1be72e9fe2",
+  "sha256": "faaa6810f1ae26f12d6f3cb62dc39f51ea31c086e25a556a6cc5539357645b9c",
   "dpi": 200
  },
  "roles": [
@@ -60,9 +60,10 @@
   "grey: rotated · logit lens · PCA · a random",
   "heads · no change · random lens directions",
   "part · energy-matched random · a random",
+  "random subspace",
   "vector · layout-only probe · 10 random",
   "whiskers: 95% interval",
-  "· most common locker",
+  "· most common locker · shuffled pairs · a",
   "· the whole state swapped in · the full state",
   "○ post hoc"
  ],

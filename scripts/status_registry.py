@@ -246,7 +246,7 @@ BREADTH = {  # (figure, cell prefix) -> the registration it cites
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
               "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
               "fig02_specificity", "fig05b_identity_outside", "fig05c_described_bridge", "fig07c_probe_errors",
-              "fig09d_chain"}  # fmt: skip
+              "fig09d_chain", "fig21_code_tool", "fig14_learned"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
 
@@ -307,7 +307,9 @@ def depth_set(writeup: list[dict]) -> list[dict]:
         for fid, cid, rule, src in (("fig01c_zeroing", "zero", "47.5", "story_b47a.py build_zero"),
                                     ("fig05c_described_bridge", "described", "47.3", "story_b47a.py build_cue"),
                                     ("fig07c_probe_errors", "errors", "47.13", "story_b47a.py build_errors"),
-                                    ("fig09d_chain", "hall", "47.14", "story_b47c.py build_chain")):  # fmt: skip
+                                    ("fig09d_chain", "hall", "47.14", "story_b47c.py build_chain"),
+                                    ("fig21_code_tool", "code", "53.7", "story_b53b.py build_code_tool"),
+                                    ("fig14_learned", "learned", "51.3", "story_b51.py build_learned")):  # fmt: skip
             out.append(fixed(fid, f"{cid}.{k}", f"{rule}, set before its data", f"scripts/{src}"))
     return out
 

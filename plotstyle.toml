@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace"]
 
 [key]
 tick = "the largest same-size control"
@@ -216,6 +216,11 @@ title = "share of the logit shift blocked"
 quantity = "logit shift blocked"
 format = "share"
 
+[units.carried]
+title = "share of the position switches carried"
+quantity = "switches carried"
+format = "share"
+
 [units.kept]
 title = "share of answers kept"
 quantity = "answers kept"
@@ -263,6 +268,9 @@ canonical = [
     "logit-lens directions", "random lens directions", "lens directions 26–100", "without the lens part",
     "position answers cut", "wrong answers' locker predicted", "given the layout", "lens's top item right",
     "hall probe", "without the hall address", "only the hall address kept", "share of the change",
+    "locker probe", "only the address kept", "without the address", "code", "tool output", "position switches carried",
+    "a random subspace", "recalls moved", "the whole change", "hand-built address's energy inside",
+    "a 4-dimensional address learned on the address test pairs",
     "Band of layers \u00b7 fact passages",
     "Fact passages",
     "Locker scenes",
