@@ -42,12 +42,14 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | s01 | <a href="s01_split_all_scene_sets.png"><img src="s01_split_all_scene_sets.png" width="260" alt="s01_split_all_scene_sets"></a> | every scene set | all post hoc · UNVERIFIED |
 | s02 | <a href="s02_parts_all.png"><img src="s02_parts_all.png" width="260" alt="s02_parts_all"></a> | every part | 20 of 32 cells post hoc · UNVERIFIED |
 | s03 | <a href="s03_order_split.png"><img src="s03_order_split.png" width="260" alt="s03_order_split"></a> | the order split with every model | 8 of 14 cells post hoc · UNVERIFIED |
-| s04 | <a href="s04_link_copy_variants.png"><img src="s04_link_copy_variants.png" width="260" alt="s04_link_copy_variants"></a> | the link copy variants | 15 of 18 cells post hoc · UNVERIFIED |
-| s05 | <a href="s05_cumulative.png"><img src="s05_cumulative.png" width="260" alt="s05_cumulative"></a> | the lookups the change misses | 1 of 7 cells post hoc · UNVERIFIED |
-| s06 | <a href="s06_recall_follows_swap.png"><img src="s06_recall_follows_swap.png" width="260" alt="s06_recall_follows_swap"></a> | the recall follows the swap | all post hoc · UNVERIFIED |
-| s07 | <a href="s07_lens_readout.png"><img src="s07_lens_readout.png" width="260" alt="s07_lens_readout"></a> | the lens readout of the swap | UNVERIFIED |
-| s08 | <a href="s08_pointer_moves_and_neutral_sentence.png"><img src="s08_pointer_moves_and_neutral_sentence.png" width="260" alt="s08_pointer_moves_and_neutral_sentence"></a> | the first sentence and the moves | all post hoc · UNVERIFIED |
-| s09 | <a href="s09_routes_design.png"><img src="s09_routes_design.png" width="260" alt="s09_routes_design"></a> | the routes test drawn large | UNVERIFIED |
-| s10 | <a href="s10_routes_taken_out.png"><img src="s10_routes_taken_out.png" width="260" alt="s10_routes_taken_out"></a> | every routes arm | 5 of 20 cells post hoc · UNVERIFIED |
-| s11 | <a href="s11_routes_kept.png"><img src="s11_routes_kept.png" width="260" alt="s11_routes_kept"></a> | 2 | 4 of 16 cells post hoc · UNVERIFIED |
-| s12 | <a href="s12_das_muse.png"><img src="s12_das_muse.png" width="260" alt="s12_das_muse"></a> | Muse's learned subspaces | UNVERIFIED |
+| s04 | <a href="s04_link_copy_variants.png"><img src="s04_link_copy_variants.png" width="260" alt="s04_link_copy_variants"></a> | 9B | 5 of 8 cells post hoc · UNVERIFIED |
+| s05 | <a href="s05_link_copy_27b.png"><img src="s05_link_copy_27b.png" width="260" alt="s05_link_copy_27b"></a> | 27B | all post hoc · UNVERIFIED |
+| s06 | <a href="s06_link_copy_muse.png"><img src="s06_link_copy_muse.png" width="260" alt="s06_link_copy_muse"></a> | Muse | all post hoc · UNVERIFIED |
+| s07 | <a href="s07_cumulative.png"><img src="s07_cumulative.png" width="260" alt="s07_cumulative"></a> | the lookups the change misses | 1 of 7 cells post hoc · UNVERIFIED |
+| s08 | <a href="s08_recall_follows_swap.png"><img src="s08_recall_follows_swap.png" width="260" alt="s08_recall_follows_swap"></a> | the recall follows the swap | all post hoc · UNVERIFIED |
+| s09 | <a href="s09_lens_readout.png"><img src="s09_lens_readout.png" width="260" alt="s09_lens_readout"></a> | the lens readout of the swap | UNVERIFIED |
+| s10 | <a href="s10_pointer_moves_and_neutral_sentence.png"><img src="s10_pointer_moves_and_neutral_sentence.png" width="260" alt="s10_pointer_moves_and_neutral_sentence"></a> | the first sentence and the moves | all post hoc · UNVERIFIED |
+| s11 | <a href="s11_routes_design.png"><img src="s11_routes_design.png" width="260" alt="s11_routes_design"></a> | the routes test drawn large | UNVERIFIED |
+| s12 | <a href="s12_routes_taken_out.png"><img src="s12_routes_taken_out.png" width="260" alt="s12_routes_taken_out"></a> | every routes arm | 5 of 20 cells post hoc · UNVERIFIED |
+| s13 | <a href="s13_routes_kept.png"><img src="s13_routes_kept.png" width="260" alt="s13_routes_kept"></a> | 2 | 4 of 16 cells post hoc · UNVERIFIED |
+| s14 | <a href="s14_das_muse.png"><img src="s14_das_muse.png" width="260" alt="s14_das_muse"></a> | Muse's learned subspaces | UNVERIFIED |

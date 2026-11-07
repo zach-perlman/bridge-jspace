@@ -41,7 +41,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
         "fig10_what_is_left", "fig10b_enrichment", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads",
         "fig10e_second_route", "fig13_attention", "fig14_learned", "fig09_transfer", "fig24_two_codes")),
               *(("supp", i) for i in (
-                  "s01_split_all_scene_sets", "s02_parts_all", "s03_order_split", "s03d_link_copy_variants",
+                  "s01_split_all_scene_sets", "s02_parts_all", "s03_order_split", "s03d_link_copy_variants", "s03f_link_copy_27b", "s03g_link_copy_muse",
                   "s03e_cumulative", "s07_recall_follows_swap", "s07b_lens_readout",
                   "s08b_pointer_moves_and_neutral_sentence", "s04_routes_design", "s05a_routes_taken_out",
                   "s05b_routes_kept", "s12_das_muse"))],

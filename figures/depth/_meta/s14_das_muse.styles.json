@@ -1,91 +1,35 @@
 {
- "styles_plot": "0.1.9",
+ "styles_plot": "0.1.11",
  "vocab": {
   "project": "bridge-jspace",
   "sha256": "ebe1309bf90b6ee1a6f49160cf05c8adb9f268ee3d5bd65eb5943e26738ba61c"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "510c95dc6aba98a360f288d4ef8a4c023c7eb88fa0d67d0f437f9e94bc5d291b"
+  "sha256": "9b9b5753501186e57345fff825ee2ba450774e1db1d8cae1d85d8d5d926366b4"
  },
- "figure": "s05b_routes_kept",
+ "figure": "s12_das_muse",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "bb9c9cfdfc5f77dc79cdb4e58dc78879230850ac5a1677e659037b2595d84e9c",
+  "pixels_sha256": "e18ed297598e288f26ae3d95db89edfb100a8fa77fd227d37291c6b2f5c801c0",
   "dpi": 160
  },
  "roles": [
-  "address",
-  "identity",
-  "neutral"
+  "lookup",
+  "recall"
  ],
  "controls": [
-  "a random part"
+  "a random subspace",
+  "shuffled pairs"
  ],
  "cells": {
-  "routes.keep_alf.mu": {
+  "learned.mu": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   },
-  "routes.keep_alf.q122": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "routes.keep_alf.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_alf.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_alf_rand.mu": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_alf_rand.q122": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "routes.keep_alf_rand.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_alf_rand.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp.mu": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp.q122": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp_rand.mu": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp_rand.q122": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp_rand.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "routes.keep_jpp_rand.q9": {
+  "learned.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   }
@@ -93,8 +37,64 @@
  "marks": [
   {
    "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_alf.q9",
+   "role": "lookup",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -102,15 +102,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_jpp.q9",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -118,15 +110,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_alf.q27",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -134,15 +118,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_jpp.q27",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -150,15 +126,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_alf.mu",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -166,15 +134,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_jpp.mu",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -182,47 +142,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_alf.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "routes.keep_alf_rand.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "identity",
-   "cell": "routes.keep_jpp.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "routes.keep_jpp_rand.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_alf.q9",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -230,15 +150,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_jpp.q9",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -246,15 +158,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_alf.q27",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -262,15 +166,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_jpp.q27",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -278,15 +174,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_alf.mu",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -294,15 +182,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_jpp.mu",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -310,47 +190,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_alf.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "routes.keep_alf_rand.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "address",
-   "cell": "routes.keep_jpp.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "routes.keep_jpp_rand.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_alf.q9",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -358,15 +198,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_jpp.q9",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -374,15 +206,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_alf.q27",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -390,15 +214,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_jpp.q27",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -406,15 +222,71 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q27",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
   },
   {
    "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_alf.mu",
+   "role": "recall",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "learned.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -422,15 +294,7 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_jpp.mu",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -438,48 +302,127 @@
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.mu",
+   "cell": "learned.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
   },
   {
    "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_alf.q122",
-   "timing": "post_hoc",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_alf_rand.q122",
-   "timing": "post_hoc",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
    "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "routes.keep_jpp.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
    "role": "control",
-   "cell": "routes.keep_jpp_rand.q122",
-   "timing": "post_hoc",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "learned.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
   }
  ],
  "key": [
-  "grey: a random part",
-  "whiskers: 95% interval",
-  "○ post hoc"
+  "grey: a random subspace · shuffled pairs",
+  "whiskers: 95% interval"
  ],
  "numbers": {},
  "problems": []

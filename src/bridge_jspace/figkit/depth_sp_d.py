@@ -6,6 +6,7 @@ rows the story builders recorded in data/figures/depth/data.csv. depth_sp.FIGS i
 
 from __future__ import annotations
 
+import dataclasses
 import re
 from itertools import pairwise
 
@@ -84,13 +85,16 @@ def fig03b_layers() -> sp.Figure:
                           f"sweep.copy.{k}", word="copied at every locker-sentence token"))  # fmt: skip
         for arm, p, r in _arm_points(m, f, ARMS):
             points.append(p)
-            vals[arm][m] = est(r, f"arm.{arm}.{k}", key=f"f03b.{arm}.{k}")
+            vals[arm][m] = est(r, f"arm.{arm}.{k}", key=f"f03b.{arm}.{k}", label=True)
         s = need(D.s(m, "45q, the rule: copy at L's share of the changed prompt's lookup switches", f), m)
-        share[m] = est(s, f"arm.c.{k}", key=f"f03b.share.{k}")
-    sweep = sp.Sweep(list(Q45), "depth_share", "lookups_switched", lines, points=points, panel_h=1.0,
+        share[m] = est(s, f"arm.c.{k}", key=f"f03b.share.{k}", label=True)
+    sweep = sp.Sweep(list(Q45), "depth_share", "lookups_switched", lines, points=points, panel_h=0.9,
                      ylim=(-0.04, 1.1), yticks=(0, 0.5, 1), xlim=XLIM, xticks=XTICKS)  # fmt: skip
-    cols = [sp.TextColumn(ARM_HEADER[a], "lookups_switched", vals[a], unit_title=False) for a, *_ in ARMS]
-    cols.append(sp.TextColumn("copy at L's share of the switches", "change_share", share, unit_title=False))
+    # the fixed cells as dots under the sweep (a numbers-only table is markdown, SP612)
+    cols = [sp.DotColumn(ARM_HEADER[a], "lookups_switched", (-0.04, 1.1), (0, 0.5, 1),
+                         series=[sp.Series("lookup", vals[a])]) for a, *_ in ARMS]  # fmt: skip
+    cols.append(sp.DotColumn("copy at L's share of the switches", "change_share", (-0.04, 1.1), (0, 0.5, 1),
+                             series=[sp.Series("lookup", share)]))  # fmt: skip
     return sp.Figure("fig03b_layers", vocab()).add(sweep, sp.DotTable(list(Q45), cols))
 
 
@@ -102,15 +106,41 @@ S03D = (("every", "copy at every locker-sentence token", "every locker-sentence 
         ("period", "copy at the period only", "the period only"))  # fmt: skip
 
 
-def s03d_link_copy_variants() -> sp.Figure:
-    """45q, by depth: the lookups switched when the change is copied at every locker-sentence token, at the item's
-    own tokens, at the other tokens, at the number only and at the period only (five lookup lines named at their
-    ends); at L, the copy without the lens part against without a random part of the same size (grey)."""
+# s03d is three figures, one per model (Dan, 7 Nov: too tall → split): five copies as rows, one line each, since the
+# copies' lines end at one value and named lines in one panel cannot be told apart (SP611)
+S03D_FIG = {"qwen3.5-9b": "s03d_link_copy_variants", "qwen3.6-27b": "s03f_link_copy_27b",
+            "muse-glimmer-30b": "s03g_link_copy_muse"}  # fmt: skip
+
+
+def _s03d_sweep(m: str):
     f = "s03d"
-    lines = [line(m, f, f"45q, layer {{}}: {q} (lookups switched)", "lookup", f"sweep.{key}.{ZK[m]}", word=w)
-             for m in Q45 for key, q, w in S03D]  # fmt: skip
-    sweep = sp.Sweep(list(Q45), "depth_share", "lookups_switched", lines, panel_h=1.2, ylim=(-0.04, 1.1),
-                     yticks=(0, 0.5, 1), xlim=XLIM, xticks=XTICKS)  # fmt: skip
+    v = vocab().with_entities("copies", [(key, w) for key, _q, w in S03D])
+    lines = [dataclasses.replace(line(m, f, f"45q, layer {{}}: {q} (lookups switched)", "lookup",
+                                      f"sweep.{key}.{ZK[m]}"), row=key) for key, q, _w in S03D]  # fmt: skip
+    sweep = sp.Sweep([key for key, *_ in S03D], "depth_share", "lookups_switched", lines, kind="copies", panel_h=0.5, ylim=(-0.04, 1.1), yticks=(0, 1), xlim=XLIM,
+                     xticks=XTICKS)  # fmt: skip
+    return v, sweep
+
+
+def s03f_link_copy_27b() -> sp.Figure:
+    """s03d's layer sweep on the 27B (see s03d_link_copy_variants)."""
+    v, sweep = _s03d_sweep("qwen3.6-27b")
+    return sp.Figure(S03D_FIG["qwen3.6-27b"], v, subtitle=v.entity("models", "qwen3.6-27b").name).add(sweep)
+
+
+def s03g_link_copy_muse() -> sp.Figure:
+    """s03d's layer sweep on Muse 30B (see s03d_link_copy_variants)."""
+    v, sweep = _s03d_sweep("muse-glimmer-30b")
+    return sp.Figure(S03D_FIG["muse-glimmer-30b"], v, subtitle=v.entity("models", "muse-glimmer-30b").name).add(sweep)
+
+
+def s03d_link_copy_variants() -> sp.Figure:
+    """45q, by depth on the 9B: the lookups switched when the change is copied at every locker-sentence token, at the
+    item's own tokens, at the other tokens, at the number only and at the period only (one panel per copy, one line
+    each; the 27B and Muse in s03f, s03g); at L on every model, the copy without the lens part against without a
+    random part of the same size (grey)."""
+    f = "s03d"
+    v, sweep = _s03d_sweep("qwen3.5-9b")
     at = {}
     for key, q in (("c", "the rule's arm c: copy at L, every locker-sentence token"),
                    ("nolens", "copy at L without the J++ part"), ("rand", "copy at L without a random part (same size)")):  # fmt: skip
@@ -121,7 +151,8 @@ def s03d_link_copy_variants() -> sp.Figure:
                          series=[sp.Series("lens", at["nolens"])]),
             sp.DotColumn("without a random part", "lookups_switched", (-0.04, 1.1), (0, 0.5, 1),
                          series=[sp.Series("control", at["rand"], control="a random part")])]  # fmt: skip
-    return sp.Figure("s03d_link_copy_variants", vocab()).add(sweep, sp.DotTable(list(Q45), cols))
+    return sp.Figure("s03d_link_copy_variants", v, subtitle=v.entity("models", "qwen3.5-9b").name).add(
+        sweep, sp.DotTable(list(Q45), cols))
 
 
 # ---- fig06_depth: when, by depth (47.8) --------------------------------------------------------------------------------
@@ -145,18 +176,29 @@ def _fig06(fid: str, keep) -> sp.Figure:
                        f"depth.{k}")]  # fmt: skip
         wins.append((m, windows(m, f, F06 + "lookup switches under the whole change", CV.GATE)))
     figs = sp.Figure(fid, vocab())
-    for m, w in wins:
+
+    def low(m):
         own = [ln for ln in lines if ln.row == m]
-        lo = min(min(ln.y) for ln in own)
-        lo = min(lo, *(min(ln.band[0]) for ln in own if ln.band))
-        deep = lo < -0.5  # outside the gate an interval can run far below 0 (Lightning): every value is drawn
-        figs.add(sp.Sweep([m], "depth_share", "depth_share_y", own, windows=w, panel_h=1.5 if deep else 0.9,
-                          ylim=(min(-0.04, lo - 0.03), 1.1), yticks=(round(lo), 0, 1) if deep else (0, 0.5, 1),
-                          xlim=XLIM, xticks=XTICKS))  # fmt: skip
+        return min(min(min(ln.y) for ln in own), *(min(ln.band[0]) for ln in own if ln.band))
+
+    # the models on one y range share one block with a gate window per row; a model whose interval runs far below 0
+    # outside its gate (Lightning) gets its own block, so every value is drawn without squashing the others
+    shallow = [m for m, _w in wins if low(m) >= -0.5]
+    if shallow:
+        figs.add(sp.Sweep(shallow, "depth_share", "depth_share_y", [ln for ln in lines if ln.row in shallow],
+                          windows={m: w for m, w in wins if m in shallow}, panel_h=0.9, ylim=(-0.04, 1.1),
+                          yticks=(0, 0.5, 1), xlim=XLIM, xticks=XTICKS))  # fmt: skip
+    for m, w in wins:
+        if m in shallow:
+            continue
+        lo = low(m)
+        figs.add(sp.Sweep([m], "depth_share", "depth_share_y", [ln for ln in lines if ln.row == m], windows=w,
+                          panel_h=1.5, ylim=(lo - 0.03, 1.1), yticks=(round(lo), 0, 1), xlim=XLIM,
+                          xticks=XTICKS))  # fmt: skip
     return figs
 
 
-# one gate window per model needs its own sweep block (a Sweep's windows hold for every row): too tall as one figure
+# fig06 stays two figures (the gates fixed in advance, and the two chosen after the data); within each, one block
 def fig06_depth() -> sp.Figure:
     """47.8 by depth on the three models whose gate was fixed in advance (see _fig06)."""
     return _fig06("fig06_depth", ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b"))
@@ -183,13 +225,12 @@ def fig06c_address_depth() -> sp.Figure:
             sp.Line(m, "address", [x / CV.DEPTH[m] for x, _ in pts], [y for _, y in pts], cell=f"overlap.{ZK[m]}")
         )
         c = need(D.s(m, "D4: the address's mean overlap over every pair of window layers", f), m)
-        mean[m] = est(c, f"overlap.{ZK[m]}", key=f"f06c.mean.{ZK[m]}")
-    # ticks at 0 and 0.5 only: a 1 on one panel touches the 0 of the panel under it (library spacing, reported)
-    sweep = sp.Sweep(
-        models, "depth_share", "overlap", lines, panel_h=1.0, ylim=(0, 1.0), yticks=(0, 0.5), xlim=XLIM, xticks=XTICKS
-    )
-    table = sp.DotTable(models, [sp.TextColumn("mean overlap, every pair of window layers", "overlap", mean,
-                                               unit_title=False)])  # fmt: skip
+        mean[m] = est(c, f"overlap.{ZK[m]}", key=f"f06c.mean.{ZK[m]}", label=True)
+    sweep = sp.Sweep(models, "depth_share", "overlap", lines, panel_h=1.0, ylim=(0, 1.0), yticks=(0, 0.5, 1),
+                     xlim=XLIM, xticks=XTICKS)  # fmt: skip
+    # the mean as a dot per model (a numbers-only table is markdown, SP612)
+    table = sp.DotTable(models, [sp.DotColumn("mean overlap, every pair of window layers", "overlap", (0, 1.0),
+                                              (0, 0.5, 1), series=[sp.Series("address", mean)])])  # fmt: skip
     return sp.Figure("fig06c_address_depth", vocab()).add(sweep, table)
 
 
@@ -312,5 +353,6 @@ def s04_routes_design() -> sp.Figure:
 
 
 FIGS = {"fig03b_layers": fig03b_layers, "s03d_link_copy_variants": s03d_link_copy_variants,
+        "s03f_link_copy_27b": s03f_link_copy_27b, "s03g_link_copy_muse": s03g_link_copy_muse,
         "fig06_depth": fig06_depth, "fig06d_depth_more": fig06d_depth_more, "fig06c_address_depth": fig06c_address_depth, "fig10b_enrichment": fig10b_enrichment, "fig00_setup": fig00_setup, "s04_routes_design": s04_routes_design}  # fmt: skip
-SUPP = {"s03d_link_copy_variants", "s04_routes_design"}
+SUPP = {"s03d_link_copy_variants", "s03f_link_copy_27b", "s03g_link_copy_muse", "s04_routes_design"}

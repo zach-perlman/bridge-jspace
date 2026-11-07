@@ -253,7 +253,7 @@ DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_addr
               "s03_order_split", "s08b_pointer_moves_and_neutral_sentence", "fig09c_formation", "fig10e_second_route",
               "s05a_routes_taken_out", "s05b_routes_kept", "s03e_cumulative", "fig16a_dose_lens", "fig16b_dose_rest",
               "s12_das_muse", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads", "s07_recall_follows_swap",
-              "s07b_lens_readout", "fig02b_k_curve", "fig02c_k_routes", "fig03b_layers", "s03d_link_copy_variants",
+              "s07b_lens_readout", "fig02b_k_curve", "fig02c_k_routes", "fig03b_layers", "s03d_link_copy_variants", "s03f_link_copy_27b", "s03g_link_copy_muse",
               "fig06_depth", "fig06d_depth_more", "fig06c_address_depth", "fig10b_enrichment"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
@@ -416,8 +416,10 @@ def depth_set_d() -> list[dict]:
         for tag in ("bridge", "copy"):
             out.append(post_hoc("fig03b_layers", f"sweep.{tag}.{k}", "the layer sweep", cv))
         out.append(fixed("s03d_link_copy_variants", f"arm.c.{k}", "rule 45q's arm c at L", f"{src} s03d_q"))
-        for key, *_ in S03D:
-            out.append(post_hoc("s03d_link_copy_variants", f"sweep.{key}.{k}", "the layer sweep", cv))
+        for key, *_ in S03D:  # s03d is one figure per model's sweep (depth_sp_d.S03D_FIG)
+            sweep_fig = {"q9": "s03d_link_copy_variants", "q27": "s03f_link_copy_27b", "mu": "s03g_link_copy_muse"}
+            if k in sweep_fig:
+                out.append(post_hoc(sweep_fig[k], f"sweep.{key}.{k}", "the layer sweep", cv))
         for fid in ("fig06_depth", "fig06d_depth_more"):
             out.append(by_hollow(fid, f"depth.{k}", m, lowered=True, what="47.8, by depth"))
         out.append(fixed("fig06c_address_depth", f"overlap.{k}", "D4, under its stated rule",

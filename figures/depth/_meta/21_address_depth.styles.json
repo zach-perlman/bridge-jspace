@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.9",
+ "styles_plot": "0.1.11",
  "vocab": {
   "project": "bridge-jspace",
   "sha256": "ebe1309bf90b6ee1a6f49160cf05c8adb9f268ee3d5bd65eb5943e26738ba61c"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "510c95dc6aba98a360f288d4ef8a4c023c7eb88fa0d67d0f437f9e94bc5d291b"
+  "sha256": "9b9b5753501186e57345fff825ee2ba450774e1db1d8cae1d85d8d5d926366b4"
  },
  "figure": "fig06c_address_depth",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "3098c4f6d63a7f5493648c067086c2cc8e2fb3f6de2d86bfcd1c2ac1eea96acd",
+  "pixels_sha256": "426e9052931f69cd3db9cd061448d3a01c98a3212419ab05cccfdd95c9c2852a",
   "dpi": 160
  },
  "roles": [
@@ -44,6 +44,22 @@
    "cell": "overlap.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "overlap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "overlap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
   }
  ],
  "key": [],

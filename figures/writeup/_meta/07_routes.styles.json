@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.9",
+ "styles_plot": "0.1.11",
  "vocab": {
   "project": "bridge-jspace",
   "sha256": "ebe1309bf90b6ee1a6f49160cf05c8adb9f268ee3d5bd65eb5943e26738ba61c"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "510c95dc6aba98a360f288d4ef8a4c023c7eb88fa0d67d0f437f9e94bc5d291b"
+  "sha256": "9b9b5753501186e57345fff825ee2ba450774e1db1d8cae1d85d8d5d926366b4"
  },
  "figure": "fig07_routes",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "383b2359a41ca6f1d48392383e6b333ffd856579df97c39d4d26c5a13bc21783",
+  "pixels_sha256": "9bff1d251d83682466bbd4160a8b32d18d84beb443672f71471607305e184225",
   "dpi": 200
  },
  "roles": [

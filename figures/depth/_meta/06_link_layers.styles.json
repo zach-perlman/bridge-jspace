@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.9",
+ "styles_plot": "0.1.11",
  "vocab": {
   "project": "bridge-jspace",
   "sha256": "ebe1309bf90b6ee1a6f49160cf05c8adb9f268ee3d5bd65eb5943e26738ba61c"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "510c95dc6aba98a360f288d4ef8a4c023c7eb88fa0d67d0f437f9e94bc5d291b"
+  "sha256": "9b9b5753501186e57345fff825ee2ba450774e1db1d8cae1d85d8d5d926366b4"
  },
  "figure": "fig03c_link_layers",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "4de4e21aadd8aa9bc8ab3e98171932a6370c5299f0ec1a18772a8cfe0ac37d23",
+  "pixels_sha256": "d4b33ceb1af629db35c7b6188ff894286576f6c63f46842e2249acc7863b91f0",
   "dpi": 160
  },
  "roles": [
@@ -204,23 +204,14 @@
  ],
  "numbers": {
   "f15.a.q9": "0.17",
-  "f15.a.q9.interval": "[0.12, 0.22]",
-  "f15.a.q27": "0.01",
-  "f15.a.q27.interval": "[0.00, 0.03]",
-  "f15.a.mu": "0.01",
-  "f15.a.mu.interval": "[0.00, 0.03]",
   "f15.c.q9": "0.70",
-  "f15.c.q9.interval": "[0.65, 0.74]",
-  "f15.c.q27": "0.74",
-  "f15.c.q27.interval": "[0.68, 0.80]",
-  "f15.c.mu": "0.76",
-  "f15.c.mu.interval": "[0.70, 0.81]",
   "f15.d.q9": "0.07",
-  "f15.d.q9.interval": "[0.05, 0.10]",
+  "f15.a.q27": "0.01",
+  "f15.c.q27": "0.74",
   "f15.d.q27": "0.05",
-  "f15.d.q27.interval": "[0.02, 0.09]",
-  "f15.d.mu": "0.47",
-  "f15.d.mu.interval": "[0.41, 0.53]"
+  "f15.a.mu": "0.01",
+  "f15.c.mu": "0.76",
+  "f15.d.mu": "0.47"
  },
  "problems": []
 }

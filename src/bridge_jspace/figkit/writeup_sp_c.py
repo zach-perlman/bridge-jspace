@@ -101,9 +101,8 @@ LINK = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")  # Lightning below its 
 def appB_f15_link_crossover() -> sp.Figure:
     """Per model, the lookups switched over the depth by the change at the bridge word and by the same change copied
     into the locker sentences (two lookup lines, named in words), and the three cells fixed in advance at L and L/2 as
-    points with their own 95% whiskers; their values, with the intervals, in the table under the sweep (labels on
-    the crossing curves would sit on a line)."""
-    lines, points, values = [], [], {arm: {} for arm, *_ in ARMS}
+    points with their own 95% whiskers and their values beside them."""
+    lines, points = [], []
     for m in LINK:
         k, depth = ZK[m], CV.DEPTH[m]
         layers = CV._layers(m, "fig03", r"45q, layer (\d+): the bridge-word change")
@@ -118,13 +117,10 @@ def appB_f15_link_crossover() -> sp.Figure:
             r = need(D.s(m, f"45q, the rule's arm {arm}: {what} (lookups switched)", "fig03"), f"{m} {arm}")
             cell = f"arm.{arm}.{k}"
             points.append(sp.Point(m, "lookup", (L if which == "L" else half) / depth, cell=cell, value=r[0],
-                                   lo=r[1], hi=r[2]))  # fmt: skip
-            values[arm][m] = est(r, cell, key=f"f15.{arm}.{k}")
+                                   lo=r[1], hi=r[2], key=f"f15.{arm}.{k}", label=True))  # fmt: skip
     sweep = sp.Sweep(list(LINK), "depth_share", "lookups_switched", lines, points=points, panel_h=1.0,
                      xlim=(-0.04, 1.03), ylim=(-0.04, 1.1), xticks=(0, 0.5, 1), yticks=(0, 0.5, 1))  # fmt: skip
-    table = sp.DotTable(list(LINK), [sp.TextColumn(ARM_HEADER[arm], "lookups_switched", values[arm], unit_title=False)
-                                     for arm, *_ in ARMS])  # fmt: skip
-    return sp.Figure("appB_f15_link_crossover", vocab()).add(sweep, table)
+    return sp.Figure("appB_f15_link_crossover", vocab()).add(sweep)
 
 
 # ---- appendix B f18: code and tool output (the depth README's fig21, the same cells) ------------------------------------
