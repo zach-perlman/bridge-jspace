@@ -4,7 +4,8 @@ operation, read from the per-item run files. The rule and the item id are printe
 card's population rate beside it (by key, in figures/examples/_meta/captions.toml).
 
   E1 depth   the main test (two people swap picks), Qwen 27B: results/x0_necessity/x0_necessity_27b_chat/
-  E2 breadth a fact passage with the final fact stated (lookup) and without it (recall), Qwen 27B, jsuite v2 test:
+  E2 breadth a fact passage with the final fact stated (lookup) and without it (recall), Qwen 27B, jsuite v2 test; the
+             one card picked by its outcome (Dan, 8 Nov: show a flip), said on the card, its rate in the caption:
              data/tasks_v2/jsuite_v2_test_chat/items.jsonl + results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
   E3 chains  three three-hop chains about one entity (P → P → P, P → M → M, M → P → M), Qwen 27B: the same items file +
              results/ablate_v2/jsuite_v2_test_chat_threehop_ko_cand2_v1/rows.jsonl
@@ -121,22 +122,39 @@ def e2_fact_passage() -> sp.Figure:
     scenes: dict[str, dict] = {}
     for i in items:
         scenes.setdefault(i["scene"], {})[i["word"]] = i
+    correct = {(r["id"], r["condition"]): r["correct"] for r in rows}
+
+    def flips(pm: dict) -> bool:
+        """The pattern the card shows (Dan, 8 Nov: show a flip): both right before, the recall wrong with the lens part
+        removed and right with a rotated part removed, the lookup right throughout."""
+        pk = scenes[pm["scene"]]["PK"]
+        return (all(correct.get((pk["id"], c)) for c, _ in BREADTH_ARMS)
+                and correct.get((pm["id"], "none")) and not correct.get((pm["id"], "paper10"), True)
+                and correct.get((pm["id"], "paper10_rot")))  # fmt: skip
+
     pm = next(i for i in items if i["word"] == "PM" and "PK" in scenes[i["scene"]] and i["id"] in have
-              and scenes[i["scene"]]["PK"]["id"] in have)  # fmt: skip
+              and scenes[i["scene"]]["PK"]["id"] in have and flips(i))  # fmt: skip
     pk = scenes[pm["scene"]]["PK"]
-    stated = [ln for ln in pk["context"].split("\n") if ln not in pm["context"].split("\n")]
+    # the two passages differ sentence by sentence (a passage may be one paragraph): the lookup's states the facts the
+    # recall's replaces with filler about the same entities
+    lookup_s, recall_s = _sentences(pk["context"]), _sentences(pm["context"])
+    stated = [s for s in lookup_s if s not in recall_s]
+    filler = [s for s in recall_s if s not in lookup_s]
     repo = json.loads((KO.parent / "manifest.json").read_text())["model"]["repo"]
     passage: list[tuple] = []
-    for ln in pk["context"].split("\n"):
-        text = ln.removeprefix("- ")
-        if ln in stated:
+    bridge_done = False
+    for s in lookup_s:
+        text = s.removeprefix("- ")
+        if s in stated:
             passage.append((text + " ", "lookup"))
-        elif pm["bridge"] in text:
-            passage += [*bold(text, pm["bridge"]), (" ", None)]
+        elif pm["bridge"] in text and not bridge_done:  # the bridge in bold where the passage first names it
+            passage += [*bold(text, pm["bridge"], text.index(pm["bridge"])), (" ", None)]
+            bridge_done = True
         else:
             passage.append((text + " ", None))
     parts = [passage,
-             [("Recall:", "recall", True), (" the same passage without the lines in the lookup's colour.", None)],
+             [("Recall:", "recall", True), (" the same passage with the sentences in the lookup's colour replaced by: ",
+                                             None), (" ".join(filler), "recall")],
              [("Question (both):", None, True), (f" {pk['question']}", None)]]  # fmt: skip
     answers: dict[str, dict[str, str]] = {"lookup": {}, "recall": {}}
     for r in rows:
@@ -147,10 +165,16 @@ def e2_fact_passage() -> sp.Figure:
     card = sp.Card(prompt=parts, columns=[c for _, c in BREADTH_ARMS],
                    rows=[sp.CardRow("lookup", "lookup", answers["lookup"]),
                          sp.CardRow("recall", "recall", answers["recall"])],
-                   note=f"Picked by rule: the first final-from-memory item in {rel(ITEMS)} whose pair (the same scene "
-                        f"with the final fact stated) both passed the gate, Qwen 27B; the removal at layers "
-                        f"{_band(rows)} · items {pk['id']}, {pm['id']}")  # fmt: skip
+                   note=f"Picked to show the typical flip: the first final-from-memory item in {rel(ITEMS)} whose "
+                        f"recall turns wrong with the lens part removed and stays right with a rotated part removed, "
+                        f"while its stated pair's lookup stays right, Qwen 27B; the removal at layers {_band(rows)} · "
+                        f"items {pk['id']}, {pm['id']}")  # fmt: skip
     return sp.Figure("e2_fact_passage", vocab(), direct_labels=True).add(card)
+
+
+def _sentences(context: str) -> list[str]:
+    """A passage's lines, each split into its sentences."""
+    return [s for s in re.split(r"(?<=[.!?])\s+|\n+", context) if s.strip()]
 
 
 def _band(rows: list[dict]) -> str:
