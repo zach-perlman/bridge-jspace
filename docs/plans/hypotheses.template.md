@@ -53,7 +53,7 @@ Design: a 2 × 2 of use × answer source, each cell with the intermediate stated
 - **Predicted (verbatim):** outside whenever a lookup in the prompt appears anywhere in its chain ("fits our country results best so far").
 - **Decided by:** three-hop chains (each hop read in the passage P or recalled M), accuracy drop beyond the all-passage chain P → P → P ([prereg amendments 56, 57](../breadth/prereg_replication_1022.md)).
 - **Numbers.** P → M → M, which starts with a lookup, still drops beyond P → P → P: 27B {{bci|mod.q27.threehop.paper10.PMM-PPP}} (second seed {{bci|mod2.q27.threehop.paper10.PMM-PPP}}), Lightning {{bci|mod.nl.threehop.paper10.PMM-PPP}} (second seed {{bci|mod2.nl.threehop.paper10.PMM-PPP}}).
-- **Read.** What decides is whether the last hop recalls, not whether any hop reads the prompt. The 9B's chains cannot be read (its all-passage chain alone drops {{b|mod.q9.threehop.paper10.loss.PPP}}).
+- **Read.** Failed on both models that can be read: on the 27B and on Lightning, P → M → M starts with a lookup in the prompt, so H3 puts its bridge outside and predicts no drop beyond P → P → P; it still drops beyond it, on both seeds. The one chain that fits H3 is the 27B's P → P → M ({{bci|mod.q27.threehop.paper10.PPM-PPP}}; second seed {{bci|mod2.q27.threehop.paper10.PPM-PPP}}): it ends in a recall, yet its interval includes zero. The 9B's chains cannot be read (its all-passage chain alone drops {{b|mod.q9.threehop.paper10.loss.PPP}}).
 - **Links:** [breadth README §6](../breadth/README.md).
 
 ## The sprint plan (20 Oct): C1–C3
