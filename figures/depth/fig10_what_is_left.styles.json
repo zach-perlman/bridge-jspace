@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.8",
+ "styles_plot": "0.1.9",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
+  "sha256": "30f6a7908e0ab350b3ffdd11c1fccc545f075c1581d3d4c9eaae350aee2b1987"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
  },
  "figure": "fig10_what_is_left",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "78ab35327706f691652e57d7ae0f63765d7af6bfea76ffce0b36aae1057107f0",
+  "sha256": "dfa8fa2ef3b86bb1420edee36609a546e57e94d26c719f90b2cbd35a889ca4ef",
   "dpi": 160
  },
  "roles": [
@@ -75,7 +75,7 @@
    "cell": "left.jpp.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -83,7 +83,7 @@
    "cell": "left.jpp.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -91,7 +91,7 @@
    "cell": "left.idout.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -99,7 +99,7 @@
    "cell": "left.idout.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -107,7 +107,7 @@
    "cell": "left.wrong.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -115,7 +115,7 @@
    "cell": "left.wrong.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -123,7 +123,7 @@
    "cell": "left.jpp.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -131,7 +131,7 @@
    "cell": "left.jpp.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -139,7 +139,7 @@
    "cell": "left.idout.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -147,7 +147,7 @@
    "cell": "left.idout.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -155,7 +155,7 @@
    "cell": "left.wrong.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -163,7 +163,7 @@
    "cell": "left.wrong.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -171,7 +171,7 @@
    "cell": "left.jpp.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -179,7 +179,7 @@
    "cell": "left.jpp.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -187,7 +187,7 @@
    "cell": "left.idout.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -195,7 +195,7 @@
    "cell": "left.idout.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -203,7 +203,7 @@
    "cell": "left.wrong.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -211,7 +211,7 @@
    "cell": "left.wrong.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -219,7 +219,7 @@
    "cell": "left.jpp.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -227,7 +227,7 @@
    "cell": "left.jpp.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -235,7 +235,7 @@
    "cell": "left.idout.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -243,13 +243,13 @@
    "cell": "left.idout.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   }
  ],
  "key": [
+  "all estimates post hoc",
   "grey: a random part",
-  "whiskers: 95% interval",
-  "○ post hoc"
+  "whiskers: 95% interval"
  ],
  "numbers": {
   "f10.jpp.share.q9": "0.33",

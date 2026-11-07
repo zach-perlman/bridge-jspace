@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.8",
+ "styles_plot": "0.1.9",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
+  "sha256": "30f6a7908e0ab350b3ffdd11c1fccc545f075c1581d3d4c9eaae350aee2b1987"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
  },
  "figure": "f14_two_codes",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "090e39c713a92cf4cad8686c4b353b918b0ae7be5eade16201eae0ac496b1cd1",
+  "sha256": "c3a2e7f068b7ad3d6f137988f64e8984185783a105608f0d9f2c93f9297ecae2",
   "dpi": 160
  },
  "roles": [
@@ -72,7 +72,7 @@
    "cell": "address.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -80,7 +80,7 @@
    "cell": "address.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -88,7 +88,7 @@
    "cell": "address.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -96,7 +96,7 @@
    "cell": "address.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -104,7 +104,7 @@
    "cell": "address.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -112,7 +112,7 @@
    "cell": "address.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -120,7 +120,7 @@
    "cell": "address.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -128,7 +128,7 @@
    "cell": "address.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -136,7 +136,7 @@
    "cell": "address.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -144,7 +144,7 @@
    "cell": "address.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -152,7 +152,7 @@
    "cell": "address.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -160,7 +160,7 @@
    "cell": "address.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -168,7 +168,7 @@
    "cell": "address.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -176,7 +176,7 @@
    "cell": "address.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -184,7 +184,7 @@
    "cell": "address.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -192,7 +192,7 @@
    "cell": "lens.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -200,7 +200,7 @@
    "cell": "lens.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -208,7 +208,7 @@
    "cell": "lens.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -216,7 +216,7 @@
    "cell": "lens.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -224,7 +224,7 @@
    "cell": "lens.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -232,7 +232,7 @@
    "cell": "lens.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -240,7 +240,7 @@
    "cell": "lens.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -248,7 +248,7 @@
    "cell": "lens.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -256,7 +256,7 @@
    "cell": "lens.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -264,7 +264,7 @@
    "cell": "lens.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -272,7 +272,7 @@
    "cell": "lens.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -280,7 +280,7 @@
    "cell": "lens.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -288,7 +288,7 @@
    "cell": "lens.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -296,7 +296,7 @@
    "cell": "lens.nl",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -304,13 +304,13 @@
    "cell": "lens.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   }
  ],
  "key": [
+  "all estimates post hoc",
   "grey: a random part",
-  "whiskers: 95% interval",
-  "○ post hoc"
+  "whiskers: 95% interval"
  ],
  "numbers": {
   "f14.address.q9": "0.86",

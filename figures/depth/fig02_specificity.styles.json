@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.8",
+ "styles_plot": "0.1.9",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
+  "sha256": "30f6a7908e0ab350b3ffdd11c1fccc545f075c1581d3d4c9eaae350aee2b1987"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
  },
  "figure": "fig02_specificity",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "7724b152eeef471b0f1efc95debee45125ca519940c9f815752a93ffa5a14dea",
+  "sha256": "4c4c3b20e7efec6c37483e6a9995a90f3b1f7a432a3e7f85cb25a85b67cbc089",
   "dpi": 160
  },
  "roles": [
@@ -94,7 +94,7 @@
    "cell": "jpp.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -102,7 +102,7 @@
    "cell": "jpp.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -110,7 +110,7 @@
    "cell": "pca.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -118,7 +118,7 @@
    "cell": "pca.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -126,7 +126,7 @@
    "cell": "wu.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -134,7 +134,7 @@
    "cell": "wu.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -142,7 +142,7 @@
    "cell": "rand.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -150,7 +150,7 @@
    "cell": "rand.q9",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -158,7 +158,7 @@
    "cell": "jpp.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -166,7 +166,7 @@
    "cell": "jpp.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -174,7 +174,7 @@
    "cell": "pca.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -182,7 +182,7 @@
    "cell": "pca.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -190,7 +190,7 @@
    "cell": "wu.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -198,7 +198,7 @@
    "cell": "wu.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -206,7 +206,7 @@
    "cell": "rand.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -214,7 +214,7 @@
    "cell": "rand.q27",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -222,7 +222,7 @@
    "cell": "jpp.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -230,7 +230,7 @@
    "cell": "jpp.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -238,7 +238,7 @@
    "cell": "pca.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -246,7 +246,7 @@
    "cell": "pca.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -254,7 +254,7 @@
    "cell": "wu.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -262,7 +262,7 @@
    "cell": "wu.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -270,7 +270,7 @@
    "cell": "rand.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -278,7 +278,7 @@
    "cell": "rand.mu",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -286,7 +286,7 @@
    "cell": "jpp.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -294,7 +294,7 @@
    "cell": "jpp.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -302,7 +302,7 @@
    "cell": "pca.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -310,7 +310,7 @@
    "cell": "pca.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -318,7 +318,7 @@
    "cell": "wu.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -326,7 +326,7 @@
    "cell": "wu.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -334,7 +334,7 @@
    "cell": "rand.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -342,13 +342,13 @@
    "cell": "rand.q122",
    "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   }
  ],
  "key": [
+  "all estimates post hoc",
   "grey band: within 0.10 of a random part",
-  "whiskers: 95% interval",
-  "○ post hoc"
+  "whiskers: 95% interval"
  ],
  "numbers": {
   "fig02_specificity.jpp.share.q9": "0.19",
