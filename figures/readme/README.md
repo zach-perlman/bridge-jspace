@@ -19,7 +19,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | 11 | <a href="11_monitor.png"><img src="11_monitor.png" width="260" alt="11_monitor"></a> | At the last token the lens part reads the address worse than a random part of the same energy | 1 of 5 cells post hoc · UNVERIFIED |
 | 12 | <a href="12_last_token.png"><img src="12_last_token.png" width="260" alt="12_last_token"></a> | At the last token the lens reads the entity, and the answer does not go through it | 1 of 5 cells post hoc · UNVERIFIED |
 | 13 | <a href="13_nine_models.png"><img src="13_nine_models.png" width="260" alt="13_nine_models"></a> | Across nine models the lens part is carried, needed, or both: graded | 4 of 18 cells post hoc · UNVERIFIED |
-| 14 | <a href="14_directions.png"><img src="14_directions.png" width="260" alt="14_directions"></a> | With more lens directions removed, the 27B's lookup has more switches blocked | UNVERIFIED |
-| 15 | <a href="15_facts.png"><img src="15_facts.png" width="260" alt="15_facts"></a> | On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so | 1 of 4 cells post hoc · UNVERIFIED |
-| 16 | <a href="16_order.png"><img src="16_order.png" width="260" alt="16_order"></a> | With the question before the scene, the 27B's lookup leans a little more on the lens part; the other models missed the gate | 3 of 7 cells post hoc · UNVERIFIED |
-| 17 | <a href="17_where.png"><img src="17_where.png" width="260" alt="17_where"></a> | Middle layers need the bridge's mention; deeper layers, the question | UNVERIFIED |
+| 14 | <a href="14_directions.png"><img src="14_directions.png" width="260" alt="14_directions"></a> | more lens directions, more of the 27B's lookup blocked | UNVERIFIED |
+| 15 | <a href="15_facts.png"><img src="15_facts.png" width="260" alt="15_facts"></a> | known facts against made-up ones | 1 of 4 cells post hoc · UNVERIFIED |
+| 16 | <a href="16_order.png"><img src="16_order.png" width="260" alt="16_order"></a> | question before or after the scene | 3 of 7 cells post hoc · UNVERIFIED |
+| 17 | <a href="17_where.png"><img src="17_where.png" width="260" alt="17_where"></a> | Where the need sits, layer by layer | UNVERIFIED |

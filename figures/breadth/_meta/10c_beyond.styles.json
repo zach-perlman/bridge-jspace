@@ -1,17 +1,18 @@
 {
- "styles_plot": "0.1.12",
+ "styles_plot": "0.1.13",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "90badacf159489ad7fb76752de9fd48539a486e5f3ff851522e031a36c13e0f1"
+  "sha256": "e00b715ab579bc1d4ae21e2057bd08685334e1be8f9b3b01c18d7190a68df22e"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "f64b92bb3ae44c173976bd9c35cc470510c21e9993572bdd397791c066430d3f"
+  "sha256": "5dfb962ab3a4c8a0db03609f84aa50343f5ce4dd2be0fa61cb86866ed5bf3c49"
  },
  "figure": "breadth_fig10c_beyond",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
+ "text_only": false,
  "png": {
   "pixels_sha256": "6d919d0e3ad568a08a6726c03aacfc8b3abfdcee679338adfd2b1c4e8ab813ab",
   "dpi": 160

@@ -1,5 +1,5 @@
 {
- "styles_plot": "0.1.12",
+ "styles_plot": "0.1.13",
  "vocab": {
   "project": "bridge-jspace",
   "sha256": "e00b715ab579bc1d4ae21e2057bd08685334e1be8f9b3b01c18d7190a68df22e"
@@ -12,6 +12,7 @@
  "target": "readme",
  "mode": "strict",
  "publishable": true,
+ "text_only": false,
  "png": {
   "pixels_sha256": "c44258ad20aa684748b5507d04166196fce58a489ae573c21963d50c410182b7",
   "dpi": 160
